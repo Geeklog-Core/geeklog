@@ -3666,6 +3666,12 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'lang' => $LANG_LOGVIEW['log_viewer'],
                         'num' => '', 
                         'image' => $_CONF['layout_url'] . '/images/icons/log_viewer.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_inGroup('Root'),
+                        'url' => $_CONF['site_url'] . '/filemanager/index.php',
+                        'lang' => $LANG01['filemanager'],
+                        'num' => '', 
+                        'image' => $_CONF['layout_url'] . '/images/icons/filemanager.' . $_IMAGE_TYPE,
+						'target' => '_blank'),
                     array('condition' => true,
                         'url' =>$_CONF['site_url'] . '/users.php?mode=logout',
                         'lang' => $LANG01[35],
@@ -3732,6 +3738,12 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                     }
                     $adminmenu->set_var('branch_spaces',  '&nbsp;&nbsp;&nbsp;');
 
+                    if (isset($cc_arr[$i]['target'])) {
+                        $adminmenu->set_var('target', ' target="' . $cc_arr[$i]['target'] . '"');
+                    } else {
+                        $adminmenu->set_var('target', '');
+                    }
+
                     $item = $adminmenu->finish($adminmenu->parse('item',
                                     ($thisUrl == $cc_arr[$i]['url']) ? 'current' : 'option'));
                     
@@ -3742,7 +3754,13 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         $admin_templates->set_var('page_image',  $cc_arr[$i]['image']);
                         $admin_templates->set_var('option_label', $cc_arr[$i]['lang']);
                         $admin_templates->set_var('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
-                
+
+                        if (isset($cc_arr[$i]['target'])) {
+                            $admin_templates->set_var('target', ' target="' . $cc_arr[$i]['target'] . '"');
+                        } else {
+                            $admin_templates->set_var('target', '');
+                        }
+
                         $item = $admin_templates->parse('cc_main_options', 'ccitem', false);
                     }                    
                 }

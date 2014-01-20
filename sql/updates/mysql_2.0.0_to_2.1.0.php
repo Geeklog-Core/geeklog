@@ -38,6 +38,58 @@ $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE `sid` `sid` VARCHAR(128) N
 // Clear out Older Stories Block
 $_SQL[] = "UPDATE {$_TABLES['blocks']} SET `content` = '' WHERE name = 'older_stories'";
 
+// Add Filemanager
+function update_addFilemanager()
+{
+    global $_CONF, $_TABLES;
+
+    $configAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Configuration Admin' ");
+    $storyAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin' ");
+
+    if (DB_count($_TABLES['groups'], 'grp_name', 'Static Page Admin') == 1) {
+        $staticPageAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin' ");
+    } else {
+        $staticPageAdminId = NULL;
+    }
+
+    // Add Filemanager Admin group
+    DB_query("INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (null, 'Filemanager Admin', 'Has full access to File Manager', 1);");
+    $groupId = DB_insertId();
+
+    // Add features
+    $featureIds = array();
+
+    DB_query("INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (null, 'filemanager.admin', 'Ability to use File Manager', 0)");
+    $featureIds['filemanager.admin'] = DB_insertId();
+    DB_query("INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (null, 'config.Filemanager.tab_general', 'Access to configure Filemanager General Settings', 0)");
+    $featureIds['config.Filemanager.tab_general'] = DB_insertId();
+    DB_query("INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (null, 'config.Filemanager.tab_upload', 'Access to configure Filemanager Upload Settings', 0)");
+    $featureIds['config.Filemanager.tab_upload'] = DB_insertId();
+    DB_query("INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (null, 'config.Filemanager.tab_images', 'Access to configure Filemanager Images Settings', 0)");
+    $featureIds['config.Filemanager.tab_images'] = DB_insertId();
+    DB_query("INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (null, 'config.Filemanager.tab_videos', 'Access to configure Filemanager Videos Settings', 0)");
+    $featureIds['config.Filemanager.tab_videos'] = DB_insertId();
+    DB_query("INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (null, 'config.Filemanager.tab_audios', 'Access to configure Filemanager Audios Settings', 0)");
+    $featureIds['config.Filemanager.tab_audios'] = DB_insertId();
+
+    // Add access rights
+    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['filemanager.admin']}, {$groupId}) ");
+    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['filemanager.admin']}, {$storyAdminId}) ");
+
+    if ($staticPageAdminId !== NULL) {
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['filemanager.admin']}, {$staticPageAdminId}) ");
+    }
+
+    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_general']}, {$configAdminId}) ");
+	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_upload']}, {$configAdminId}) ");
+	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_images']}, {$configAdminId}) ");
+	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_videos']}, {$configAdminId}) ");
+	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_audios']}, {$configAdminId}) ");
+
+    // Add group assignment
+    DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ({$groupId}, NULL, 1) ");
+}
+
 /**
  * Add new config options
  *
@@ -109,6 +161,110 @@ function update_ConfValuesFor210()
     
     // Title To Id Option for supported Admin Editors
     $c->add('titletoid',0,'select',7,31,1,1820,TRUE, $me, 31);
+
+    // Subgroup: File Manager
+    // subgroup
+    $sg  =  (int) DB_getItem($_TABLES['conf_values'], "MAX(subgroup)" ) + 1;
+
+    // fieldset
+    $fs  = (int) DB_getItem($_TABLES['conf_values'], "MAX(fieldset)") + 1;
+
+    // tab
+    $tab = (int) DB_getItem($_TABLES['conf_values'], "MAX(tab)") + 1;
+    
+    // sort
+    $so  = (int) DB_getItem($_TABLES['conf_values'], "MAX(sort_order)") + 10;
+
+    // Subgroup: File Manager - General Settings
+    $c->add('sg_filemanager', NULL, 'subgroup', $sg, $fs, NULL, 0, TRUE, $me, 0);
+
+    $c->add('tab_filemanager_general', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_general', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_disabled', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_browse_only', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_default_view_mode', 'grid', 'select', $sg, $fs, 34, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_show_confirmation', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_search_box', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_file_sorting', 'default', 'select', $sg, $fs, 35, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_chars_only_latin', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_date_format', 'Y-m-d H:i:s', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_logger', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_show_thumbs', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_generate_thumbnails', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+
+    // Subgroup: File Manager - Upload
+    $fs++;
+    $tab++;
+
+    $c->add('tab_filemanager_upload', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_upload', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_upload_restrictions', array('jpg', 'jpeg', 'gif', 'png', 'svg', 'txt', 'pdf', 'odp', 'ods', 'odt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'ogv', 'mp4', 'webm', 'ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_upload_overwrite', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_upload_images_only', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_upload_file_size_limit', 16, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_unallowed_files', array('.htaccess'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_unallowed_dirs', array('_thumbs', '.CDN_ACCESS_LOGS', 'cloudservers'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_unallowed_files_regexp', '/^\\./uis', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_unallowed_dirs_regexp', '/^\\./uis', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+
+    // Subgroup: File Manager - Images
+    $fs++;
+    $tab++;
+
+    $c->add('tab_filemanager_images', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_images', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_images_ext', array('jpg', 'jpeg', 'gif', 'png', 'svg'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+
+    // Subgroup: File Manager - Videos
+    $fs++;
+    $tab++;
+
+    $c->add('tab_filemanager_videos', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_videos', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_show_video_player', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_videos_ext', array('ogv', 'mp4', 'webm'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_videos_player_width', 400, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_videos_player_height', 222, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+
+    // Subgroup: File Manager - Audios
+    $fs++;
+    $tab++;
+
+    $c->add('tab_filemanager_audios', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_audios', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_show_audio_player', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_audios_ext', array('ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
 
     return true;
 }

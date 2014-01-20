@@ -188,7 +188,8 @@ $LANG01 = array(
     'google' => 'Login with Google',
     'microsoft' => 'Login with Microsoft',
     'yahoo' => 'Login with Yahoo',
-    'ctl' => 'Clear Cache'
+    'ctl' => 'Clear Cache',
+    'filemanager' => 'File Manager'
 );
 
 ###############################################################################
@@ -2161,7 +2162,33 @@ $LANG_confignames['Core'] = array(
     'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
     'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
     'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs',
-    'breadcrumb_root_site_name' => 'Site Name as Breadcrumb Root?'
+    'breadcrumb_root_site_name' => 'Site Name as Breadcrumb Root?',
+    'filemanager_disabled' => 'Disable Filemanager?',
+    'filemanager_browse_only' => 'Browse only mode?',
+    'filemanager_default_view_mode' => 'Default view mode',
+    'filemanager_show_confirmation' => 'Show confirmation?',
+    'filemanager_search_box' => 'Show search box?',
+    'filemanager_file_sorting' => 'File sorting',
+    'filemanager_chars_only_latin' => 'Allow only latin chars?',
+    'filemanager_date_format' => 'Date time format',
+    'filemanager_logger' => 'Enable logger?',
+    'filemanager_show_thumbs' => 'Show thumbnails?',
+    'filemanager_generate_thumbnails' => 'Generate thumbnails?',
+    'filemanager_upload_restrictions' => 'Allowed file extensions',
+    'filemanager_upload_overwrite' => 'Overwrite existing file?',
+    'filemanager_upload_images_only' => 'Upload images only?',
+    'filemanager_upload_file_size_limit' => 'Upload file size limit (MiB)',
+    'filemanager_unallowed_files' => 'Unallowed files',
+    'filemanager_unallowed_dirs' => 'Unallowed directories',
+    'filemanager_unallowed_files_regexp' => 'Regular expression for unallowed files',
+    'filemanager_unallowed_dirs_regexp' => 'Regular expression for unallowed directories',
+    'filemanager_images_ext' => 'Image file extensions',
+    'filemanager_show_video_player' => 'Show video player?',
+    'filemanager_videos_ext' => 'Video file extensions',
+    'filemanager_videos_player_width' => 'Video player width (px)',
+    'filemanager_videos_player_height' => 'Video player height (px)',
+    'filemanager_show_audio_player' => 'Show audio player?',
+    'filemanager_audios_ext' => 'Audio file extensions'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2172,7 +2199,8 @@ $LANG_configsubgroups['Core'] = array(
     'sg_users' => 'Membres et contributions',
     'sg_images' => 'Images',
     'sg_locale' => 'Langages et Locale',
-    'sg_misc' => 'Divers'
+    'sg_misc' => 'Divers',
+    'sg_filemanager' => 'Filemanager'
 );
 
 $LANG_fs['Core'] = array(
@@ -2221,7 +2249,12 @@ $LANG_fs['Core'] = array(
     'fs_webservices' => 'Webservices',
     'fs_autotag_permissions' => 'Permissions d\'utilisation des autotags',
     'fs_breadcrumbs' => 'Breadcrumbs',
-    'fs_pass' => 'Password Settings'
+    'fs_pass' => 'Password Settings',
+    'fs_filemanager_general' => 'General Settings',
+    'fs_filemanager_upload' => 'Upload',
+    'fs_filemanager_images' => 'Images',
+    'fs_filemanager_videos' => 'Videos',
+    'fs_filemanager_audios' => 'Audios'
 );
 
 $LANG_tab['Core'] = array(
@@ -2264,7 +2297,12 @@ $LANG_tab['Core'] = array(
     'tab_iplookup' => 'IP Lookup',
     'tab_permissions' => 'Permissions',
     'tab_webservices' => 'Webservices',
-    'tab_topics' => 'Topics'
+    'tab_topics' => 'Topics',
+    'tab_filemanager_general' => 'General Settings',
+    'tab_filemanager_upload' => 'Upload',
+    'tab_filemanager_images' => 'Images',
+    'tab_filemanager_videos' => 'Videos',
+    'tab_filemanager_audios' => 'Audios'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2301,7 +2339,9 @@ $LANG_configselects['Core'] = array(
     30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'),
     31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
     32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
-    33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3)
+    33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3),
+    34 => array('grid' => 'grid', 'list' => 'list'),
+    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC')
 );
 
 ###############################################################################

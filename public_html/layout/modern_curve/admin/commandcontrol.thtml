@@ -13,7 +13,7 @@
 {cc_main_options}
 <!-- END ccrow -->
 <!-- BEGIN ccitem -->
-<li><a href="{page_url}"><img src="{page_image}" alt=""{xhtml}></a><a href="{page_url}">{option_label}</a></li>
+<li><a href="{page_url}"{target}><img src="{page_image}" alt=""{xhtml}></a><a href="{page_url}"{target}>{option_label}</a></li>
 <!-- END ccitem -->
 
 {# end {templatelocation} #}

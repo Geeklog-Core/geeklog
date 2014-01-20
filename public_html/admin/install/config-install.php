@@ -467,6 +467,103 @@ function install_config()
     $c->add('disable_breadcrumbs_articles', 0, 'select', 7, 45, 0, 2020, TRUE, $me, 45);
     $c->add('disable_breadcrumbs_plugins', 0, 'select', 7, 45, 0, 2030, TRUE, $me, 45);
     $c->add('breadcrumb_root_site_name', 0, 'select', 7, 45, 0, 2040, TRUE, $me, 45);
+
+    // Subgroup: File Manager
+    $sg  =  8;		// subgroup
+    $fs  = 46;		// fieldset
+    $tab = 46;		// tab
+    $so  = 2050;	// sort
+
+    // Subgroup: File Manager - General Settings
+    $c->add('sg_filemanager', NULL, 'subgroup', $sg, $fs, NULL, 0, TRUE, $me, 0);
+
+    $c->add('tab_filemanager_general', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_general', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_disabled', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_browse_only', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_default_view_mode', 'grid', 'select', $sg, $fs, 34, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_show_confirmation', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_search_box', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_file_sorting', 'default', 'select', $sg, $fs, 35, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_chars_only_latin', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_date_format', 'Y-m-d H:i:s', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_logger', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_show_thumbs', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_generate_thumbnails', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+
+    // Subgroup: File Manager - Upload
+    $fs++;
+    $tab++;
+
+    $c->add('tab_filemanager_upload', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_upload', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_upload_restrictions', array('jpg', 'jpeg', 'gif', 'png', 'svg', 'txt', 'pdf', 'odp', 'ods', 'odt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'ogv', 'mp4', 'webm', 'ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_upload_overwrite', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_upload_images_only', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_upload_file_size_limit', 16, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_unallowed_files', array('.htaccess'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_unallowed_dirs', array('_thumbs', '.CDN_ACCESS_LOGS', 'cloudservers'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_unallowed_files_regexp', '/^\\./uis', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_unallowed_dirs_regexp', '/^\\./uis', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+
+    // Subgroup: File Manager - Images
+    $fs++;
+    $tab++;
+
+    $c->add('tab_filemanager_images', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_images', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_images_ext', array('jpg', 'jpeg', 'gif', 'png', 'svg'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+
+    // Subgroup: File Manager - Videos
+    $fs++;
+    $tab++;
+
+    $c->add('tab_filemanager_videos', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_videos', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_show_video_player', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_videos_ext', array('ogv', 'mp4', 'webm'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_videos_player_width', 400, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_videos_player_height', 222, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
+
+    // Subgroup: File Manager - Audios
+    $fs++;
+    $tab++;
+
+    $c->add('tab_filemanager_audios', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_filemanager_audios', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+
+    $c->add('filemanager_show_audio_player', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $so += 10;
+    $c->add('filemanager_audios_ext', array('ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $so += 10;
 }
 
 ?>

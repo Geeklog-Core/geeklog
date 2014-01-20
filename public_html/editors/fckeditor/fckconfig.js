@@ -323,3 +323,26 @@ FCKConfig.BackgroundBlockerOpacity = 0.50 ;
 FCKConfig.MsWebBrowserControlCompat = false ;
 
 FCKConfig.PreventSubmitHandler = false ;
+
+// Filemanager integration
+(function () {
+	var filemanagerUrl = FCKConfig.BasePath.replace(/\/editors\/fckeditor\/editor\/$/, '') + '/filemanager/index.php';
+	
+	if (FCKConfig.FlashBrowser && (FCKConfig.FlashBrowser === true)) {
+		FCKConfig.FlashBrowserURL = filemanagerUrl;
+	}
+	
+	if (FCKConfig.ImageBrowser && (FCKConfig.ImageBrowser === true)) {
+		FCKConfig.ImageBrowserURL = filemanagerUrl;
+	}
+	
+	if (FCKConfig.LinkBrowser && (FCKConfig.LinkBrowser === true)) {
+		FCKConfig.LinkBrowserURL = filemanagerUrl;
+	}
+	
+	// You can upload files from within the Filemanager, so "Upload" tabs in
+	// FCKeditor dialogs are unnecessary.
+	FCKConfig.FlashUpload = false;
+	FCKConfig.ImageUpload = false;
+	FCKConfig.LinkUpload  = false;
+})();

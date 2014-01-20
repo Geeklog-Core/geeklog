@@ -79,4 +79,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'others', items: [ '-' ] },
 		{ name: 'about', items: [ 'About' ] }
 	];
+
+	// Filemanager
+	config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php';
 };

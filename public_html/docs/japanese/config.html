@@ -16,9 +16,10 @@
 
 <h2>コンフィギュレーション用ファイル</h2>
 
-<p>旧バージョンのGeeklogでは、<tt>config.php</tt>という主要な設定を網羅した巨大なファイルを使用していました。Geeklog 1.5.0では、設定の大部分はデータベースに記録され、管理者機能内の<b>コンフィギュレーション(Configuration)</b>からアクセスできるようになりました。</p>
+<p>旧バージョンのGeeklogでは、主要な設定を網羅した<tt>config.php</tt>
+という巨大なファイルを使用していました。Geeklog 1.5.0では、設定の大部分はデータベースに記録され、管理者機能内の<b>コンフィギュレーション(Configuration)</b>からアクセスできるようになりました。</p>
 
-<p>技術上の理由で、依然としてファイルに保存する必要のある設定もあります。そのような設定ファイルは次の2つです：</p>
+<p>技術上の理由で、依然としてファイルに保存する必要のある設定もあります。次の2つです:</p>
 <ul>
 <li><a href="#db-config.php">db-config.php</a></li>
 <li><a href="#siteconfig.php">siteconfig.php</a></li>
@@ -38,6 +39,7 @@
 <li><a href="#images">画像(Images)</a></li>
 <li><a href="#languages">言語とロケール(Languages and Locale)</a></li>
 <li><a href="#misc">その他(Miscellaneous)</a></li>
+<li><a href="#filemanager">ファイルマネージャー(File Manager)</a></li>
 </ul>
 
 <h2><a name="site">サイト</a></h2>
@@ -1561,6 +1563,155 @@
   <td valign="top"><a name="desc_breadcrumb_root_site_name">サイト名をパンくずリストのルートにする(breadcrumb_root_site_name)</a></td>
   <td valign="top">false</td>
   <td valign="top">サイト名をパンくずリストのルートにするを<code>true</code>にすると、サイト名をパンくずリストのルートにします。</td></tr>
+</table>
+
+<h2><a name="filemanager">ファイルマネージャー(File Manager)</a></h2>
+
+<p>Geeklog-2.1.0では、MITライセンスでSimon Georgetが公開しているオープンソースのファイルブラウザー <a href="https://github.com/simogeo/Filemanager">Filemanager</a> を組み込みました。</p>
+<p>新規インストール時には、Root管理者、記事管理者(Story Admins)、静的ページ管理者(Static Page Admins)だけがファイルマネージャーを使用できます。</p>
+
+<h3><a name="filemanager_general">ファイルマネージャー: 全般</a></h3>
+
+<table border="1" width="100%">
+<tr><th style="width:8%">項目(変数)</th>
+    <th style="width:29%">デフォルト</th>
+    <th style="width:63%">説明</th></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_disabled">ファイルマネージャーを無効にする(filemanager_disabled)</a></td>
+  <td valign="top">いいえ(false)</td>
+  <td valign="top"><code>はい(true)</code>にすると、Rootグループに所属するユーザー以外はファイルマネージャーを使用できなくなります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_browse_only">閲覧のみ(filemanager_browse_only)</a></td>
+  <td valign="top">いいえ(false)</td>
+  <td valign="top"><code>はい(true)</code>にすると、ファイルマネージャーは閲覧専用になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_default_view_mode">表示モードの初期値(filemanager_default_view_mode)</a></td>
+  <td valign="top">グリッド</td>
+  <td valign="top">表示モードの初期値を指定します。可能なオプションは'グリッド'と'リスト'です。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_show_confirmation">確認メッセージを表示する(filemanager_show_confirmation)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">はい(true)にすると、確認メッセージを表示します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_search_box">検索ボックスを表示する(filemanager_search_box)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">はい(true)にすると、検索ボックスを表示します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_file_sorting">ファイルのソート方法(filemanager_file_sorting)</a></td>
+  <td valign="top">default</td>
+  <td valign="top">ファイル・ディレクトリの表示順の初期値を指定します。可能なオプションは、'デフォルト'、'名前(昇順)'、'名前(降順)'、'種類(昇順)'、'種類(降順)'、'変更日時(昇順)'、'変更日時(降順)'です。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_chars_only_latin">ファイル名にラテン文字だけを許可する(filemanager_chars_only_latin)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">はい(true)にすると、フォルダー名としてラテン文字しか使えなくなります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_date_format">日付のフォーマット(filemanager_date_format)</a></td>
+  <td valign="top">Y-m-d H:i:s</td>
+  <td valign="top">日時の表示フォーマットを指定します。詳しくは、<a href="http://www.php.net/manual/ja/function.date.php" title="別ウィンドウで外部サイトを表示します" target="_blank">このページ</a>をご覧ください。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_logger">ロガーを有効にする(filemanager_logger)</a></td>
+  <td valign="top">いいえ(false)</td>
+  <td valign="top">はい(true)にすると、ファイルマネージャーはサーバー側の処理をGeeklogのエラーファイル(error.log)に記録します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_show_thumbs">サムネール画像を表示する(filemanager_show_thumbs)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">はい(true)にすると、サムネール画像を表示します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_generate_thumbnails">サムネール画像を作成する(filemanager_generate_thumbnails)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">はい(true)にすると、表示速度向上のためPHPを使用してサムネール画像を作成します。サムネール画像は隠しフォルダー '_thumbs' に保存されます。このフォルダーを表示するには、「表示しないディレクトリ」オプションから、'_thumbs' を除いてください。</td></tr>
+</table>
+
+<h3><a name="filemanager_upload">ファイルマネージャー: アップロード</a></h3>
+
+<table border="1" width="100%">
+<tr><th style="width:8%">項目(変数)</th>
+    <th style="width:29%">デフォルト</th>
+    <th style="width:63%">説明</th></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_upload_restrictions">許可するファイル拡張子(filemanager_upload_restrictions)</a></td>
+  <td valign="top">'jpg', 'jpeg', 'gif', 'png', 'svg', 'txt', 'pdf', 'odp', 'ods', 'odt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'ogv', 'mp4', 'webm', 'ogg', 'mp3', 'wav'</td>
+  <td valign="top">アップロードできるファイルの拡張子を指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_upload_overwrite">既存のファイルを上書きする(filemanager_upload_overwrite)</a></td>
+  <td valign="top">いいえ(false)</td>
+  <td valign="top">同名のファイルをアップロードする場合、はい(true)にすると、既存のファイルを上書きします。いいえ(false)にするとファイル名にインデックスを付加します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_upload_images_only">画像ファイルだけをアップロードする(filemanager_upload_images_only)</a></td>
+  <td valign="top">いいえ(false)</td>
+  <td valign="top">はい(true)にすると、画像ファイルしかアップロードできなくなります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_upload_file_size_limit">アップロードするファイルサイズの上限(filemanager_upload_file_size_limit)</a></td>
+  <td valign="top">16</td>
+  <td valign="top">HTML5とPHPコネクターでアップロードできるファイルサイズの上限をメガバイト単位で指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_unallowed_files">表示しないファイル名(filemanager_unallowed_files)</a></td>
+  <td valign="top">'.htaccess'</td>
+  <td valign="top">表示しないファイル名を指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_unallowed_dirs">表示しないディレクトリ(filemanager_unallowed_dirs)</a></td>
+  <td valign="top">'_thumbs', '.CDN_ACCESS_LOGS', 'cloudservers'</td>
+  <td valign="top">表示しないディレクトリ名を指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_unallowed_files_regexp">表示しないファイル名の正規表現(filemanager_unallowed_files_regexp)</a></td>
+  <td valign="top">'/^\\./uis'</td>
+  <td valign="top">表示しないファイル名を正規表現で指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_unallowed_dirs_regexp">表示しないディレクトリ名の正規表現(filemanager_unallowed_dirs_regexp)</a></td>
+  <td valign="top">'/^\\./uis'</td>
+  <td valign="top">表示しないディレクトリ名を正規表現で指定します。</td></tr>
+</table>
+
+<h3><a name="filemanager_images">ファイルマネージャー: 画像</a></h3>
+
+<table border="1" width="100%">
+<tr><th style="width:8%">項目(変数)</th>
+    <th style="width:29%">デフォルト</th>
+    <th style="width:63%">説明</th></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_images_ext">画像ファイルの拡張子(filemanager_images_ext)</a></td>
+  <td valign="top">'jpg', 'jpeg', 'gif', 'png', 'svg'</td>
+  <td valign="top">アップロードできる画像ファイルの拡張子を指定します。</td></tr>
+</table>
+
+<h3><a name="filemanager_videos">ファイルマネージャー: ビデオ</a></h3>
+
+<table border="1" width="100%">
+<tr><th style="width:8%">項目(変数)</th>
+    <th style="width:29%">デフォルト</th>
+    <th style="width:63%">説明</th></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_show_video_player">動画プレーヤーを表示する(filemanager_show_video_player)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">はい(true)にすると、ブラウザーの動画プレイヤーを表示します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_videos_ext">動画ファイルの拡張子(filemanager_videos_ext)</a></td>
+  <td valign="top">'ogv', 'mp4', 'webm'</td>
+  <td valign="top">アップロードできる動画ファイルの拡張子を指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_videos_player_width">動画プレーヤーの幅(filemanager_videos_player_width)</a></td>
+  <td valign="top">400</td>
+  <td valign="top">動画プレイヤーの幅をピクセル単位で指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_videos_player_height">動画プレーヤーの高さ(filemanager_videos_player_height)</a></td>
+  <td valign="top">222</td>
+  <td valign="top">動画プレイヤーの高さをピクセル単位で指定します。</td></tr>
+</table>
+
+<h3><a name="filemanager_audios">ファイルマネージャー: オーディオ</a></h3>
+
+<table border="1" width="100%">
+<tr><th style="width:8%">項目(変数)</th>
+    <th style="width:29%">デフォルト</th>
+    <th style="width:63%">説明</th></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_show_audio_player">オーディオプレーヤーを表示する(filemanager_show_audio_player)</a></td>
+  <td valign="top">はい(true)</td>
+  <td valign="top">はい(true)にすると、ブラウザーのオーディオプレイヤーを表示します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_filemanager_audios_ext">オーディオファイルの拡張子(filemanager_audios_ext)</a></td>
+  <td valign="top">'ogg', 'mp3', 'wav'</td>
+  <td valign="top">アップロードできる音声ファイルの拡張子を指定します。</td></tr>
 </table>
 
 <h2><a name="db-config.php">db-config.php</a></h2>

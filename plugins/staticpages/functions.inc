@@ -1479,7 +1479,14 @@ function plugin_upgrade_staticpages()
                     DB_query($sql);
                 }
             }
-            
+
+            // Give "filemanager.admin" feature to Static Page Admin
+            if (DB_count($_TABLES['features'], 'ft_name', 'filemanager.admin') == 1) {
+                $featureId = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'filemanager.admin' ");
+                $staticPageAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin' ");
+                DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureId}, {$staticPageAdminId}) ");
+            }
+
             SP_update_ConfValues_1_6_5();
 
             $current_version = '1.6.6';
