@@ -1,12 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Geeklog Documentation - Variables in Themes</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Variables in Themes</div>
 
 <h1>Variables in Themes</h1>
@@ -58,7 +59,7 @@ created when you use an undefined variable.</p>
     <td>Holds either the site's name and slogan or the site name and the title
         of the current story.</td></tr>
 <tr><td><code>background_image</code></td>
-    <td><tt>http://www.example.com/layout/<br>XSilver/images/bg.gif</tt></td>
+    <td><tt>http://www.example.com/layout/<br />XSilver/images/bg.gif</tt></td>
     <td>Points to a file named <tt>bg.gif</tt> in the <tt>images</tt> folder of
         the current theme, intended to be used as a background image.</td></tr>
 <tr><td><code>site_mail</code></td>
@@ -84,7 +85,7 @@ created when you use an undefined variable.</p>
     <td>The current date and time, formatted according to
         <code>$_CONF['date']</code>.</td></tr>
 <tr><td><code>site_logo</code></td>
-    <td><tt>http://www.example.com/layout/<br>professional/images/logo.png</tt></td>
+    <td><tt>http://www.example.com/layout/<br />professional/images/logo.png</tt></td>
     <td>Points to the logo image in the <tt>images</tt> directory of the
         current theme, intended to be used as the site's logo. This is usually
         a GIF image (<tt>logo.gif</tt>), but the image type can be overwritten
@@ -97,7 +98,7 @@ created when you use an undefined variable.</p>
     <td>iso-8859-1</td>
     <td>The character set for the current language file.</td></tr>
 <tr><td><code>lang_id</code></td>
-    <td><tt>en-GB</tt>
+    <td><tt>en-GB</tt></td>
     <td>An ID representing the language used on your site. Ideally, this should
         be an ISO language/country code, e.g. 'en-GB' for British English. The
         value for this variable is the language shortcut used in the
@@ -107,7 +108,7 @@ created when you use an undefined variable.</p>
         up with a value like 'German' if your site is running on a non-Unix
         system (and which is not a valid ISO code).</td></tr>
 <tr><td><code>lang_attribute</code></td>
-    <td><tt>lang="en-GB"</tt>
+    <td><tt>lang="en-GB"</tt></td>
     <td>An <a href="http://www.w3.org/TR/html4/struct/dirlang.html#adef-lang">HTML lang attribute</a> (including the value) to be used in your site
         header's HTML to indicate the language of your site or of the current
         page, e.g. like so: <pre>&lt;html {lang_attribute}&gt;</pre>
@@ -216,7 +217,7 @@ file (which is used to display a story on its own page).</p>
 <tr><td><code>story_introtext_only</code></td>
     <td>Welcome and let me be the first to congratulate you on installing Geeklog ...</td>
     <td>As the name implies, this variable <em>always</em> contains
-        <em>only</em> the story's intro text portion.</td>
+        <em>only</em> the story's intro text portion.</td></tr>
 <tr><td><code>story_bodytext_only</code></td>
     <td><i>(...)</i></td>
     <td>This variable is only set when displaying the entire story. It contains
@@ -231,7 +232,7 @@ file (which is used to display a story on its own page).</p>
     <td>On the site's index page (<tt>index.php</tt>), this variable contains
         1 for the first story, 2 for the second, etc. This is independent
         whether the first story is a featured story or not. The counter restarts
-        with every new page (<tt>index.php?page=2</tt>, etc.).<br>
+        with every new page (<tt>index.php?page=2</tt>, etc.).<br />
         The variable contains 0 on the article page (<tt>article.php</tt>) and
         in story previews.</td></tr>
 </table>
@@ -258,7 +259,7 @@ story is displayed on the index page <em>and</em> the body text of the story is
     <td>Link to the story on a separate page, including the number of word in
         the body text.</td></tr>
 <tr><td><code>start_readmore_anchortag</code></td>
-    <td><code>&lt;a href=".../article.php<br>?story=20021022234959146"&gt;</code></td>
+    <td><code>&lt;a href=".../article.php<br />?story=20021022234959146"&gt;</code></td>
     <td>Opening tag for a link to the story on a separate page.</td></tr>
 <tr><td><code>end_readmore_anchortag</code></td>
     <td><code>&lt;/a&gt;</code></td>
@@ -297,7 +298,7 @@ enabled and when comments have been made to the story already:</p>
     <th style="width:29%">Example</th>
     <th style="width:63%">Description</th></tr>
 <tr><td><code>comments_url</code></td>
-    <td><tt>http://www.example.com/article.php<br>?story=20021022234959146#comments</tt></td>
+    <td><tt>http://www.example.com/article.php<br />?story=20021022234959146#comments</tt></td>
     <td>URL of the comments section (when a story is displayed on a separate
         page).</td></tr>
 <tr><td><code>comments_text</code></td>
@@ -306,7 +307,7 @@ enabled and when comments have been made to the story already:</p>
         preferred language.</td></tr>
 <tr><td><code>comments_with_count</code></td>
     <td>2</td>
-    <td>The number of comments to the story (will always be 1 or greater). <br>This string becomes a link as soon as there are comments available, pointing to <code>&lt;a href=".../article.php?story=20021022234959146#comments"&gt;</code></td></tr>
+    <td>The number of comments to the story (will always be 1 or greater). <br />This string becomes a link as soon as there are comments available, pointing to <code>&lt;a href=".../article.php?story=20021022234959146#comments"&gt;</code></td></tr>
 <tr><td><code>comments_with_count</code></td>
     <td>2</td>
     <td>The number of comments to story only (may be 0).</td></tr>
@@ -314,7 +315,7 @@ enabled and when comments have been made to the story already:</p>
     <td>comments</td>
     <td>The word "comments" in the user's preferred language.</td></tr>
 <tr><td><code>post_comment_link</code></td>
-    <td><code>&lt;a href=".../comment.php<br>?sid=20021022234959146&amp;pid=0<br>&amp;type=article"&gt;Post a comment&lt;/a&gt;</code></td>
+    <td><code>&lt;a href=".../comment.php<br />?sid=20021022234959146&amp;pid=0<br />&amp;type=article"&gt;Post a comment&lt;/a&gt;</code></td>
     <td>Link to the comment submission form (using "Post a comment" in the
         user's preferred language as the link text).</td></tr>
 </table>
@@ -346,7 +347,7 @@ when you allow the name of the story's author to be displayed:</p>
         is enabled, it will contain the author's full name (if provided).
         Otherwise, it will contain the username.</td></tr>
 <tr><td><code>start_contributedby_anchortag</code></td>
-    <td><code>&lt;a class="storybyline" href="http://www.example.com/<br>users.php?mode=profile&amp;uid=7"&gt;</code></td>
+    <td><code>&lt;a class="storybyline" href="http://www.example.com/<br />users.php?mode=profile&amp;uid=7"&gt;</code></td>
     <td>Opening tag for a link to the story author's profile (empty for
         anonymous authors).</td></tr>
 <tr><td><code>end_contributedby_anchortag</code></td>
@@ -354,7 +355,7 @@ when you allow the name of the story's author to be displayed:</p>
     <td>Closing tag for a link to the story author's profile (empty for
         anonymous authors).</td></tr>
 <tr><td><code>contributedby_url</code></td>
-    <td><tt>http://www.example.com/<br>users.php?mode=profile&amp;uid=7</tt></td>
+    <td><tt>http://www.example.com/<br />users.php?mode=profile&amp;uid=7</tt></td>
     <td>Link to the story author's profile (empty for anonymous authors).</td></tr>
 <tr><td><code>contributedby_photo</code></td>
     <td><tt>&lt;img src=".../images/userphotos/Tony.gif" alt="Tony Bibbs"&gt;</tt></td>
@@ -383,22 +384,22 @@ display preferences:</p>
     <th style="width:29%">Example</th>
     <th style="width:63%">Description</th></tr>
 <tr><td><code>story_anchortag_and_image</code></td>
-    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
+    <td><code>&lt;a href="http://www.example.com/<br />index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
     <td>Topic icon for the story's topic, enclosed in a link to the site's
         index page, sorted by topic.</td></tr>
 <tr><td><code>story_anchortag_and_image_no_align</code></td>
-    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
+    <td><code>&lt;a href="http://www.example.com/<br />index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
     <td>Same as <code>{story_anchortag_and_image}</code> but without the
         <code>align</code> attribute for the topic image.</td></tr>
 <tr><td><code>story_topic_image</code></td>
-    <td><code>&lt;img src="http://www.example.com/<br>images/topics/topic_gl.gif" align="right" alt="Geeklog" title="Geeklog"&gt;</code></td>
+    <td><code>&lt;img src="http://www.example.com/<br />images/topics/topic_gl.gif" align="right" alt="Geeklog" title="Geeklog"&gt;</code></td>
     <td>Topic icon for the story.</td></tr>
 <tr><td><code>story_topic_image_no_align</code></td>
-    <td><code>&lt;img src="http://www.example.com/<br>images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</code></td>
+    <td><code>&lt;img src="http://www.example.com/<br />images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</code></td>
     <td>Same as <code>{story_topic_image}</code> but without the
         <code>align</code> attribute for the topic image.</td></tr>
 <tr><td><code>story_topic_image_url</code></td>
-    <td><code>http://www.example.com/<br>images/topics/topic_gl.gif</code></td>
+    <td><code>http://www.example.com/<br />images/topics/topic_gl.gif</code></td>
     <td>Just the URL of the topic icon.</td></tr>
 <tr><td><code>story_topic_id</code></td>
     <td>General</td>
@@ -407,7 +408,7 @@ display preferences:</p>
     <td>General News</td>
     <td>Topic name (as seen on the Sections block).</td></tr>
 <tr><td><code>story_topic_url</code></td>
-    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=General"&gt;</code></td>
+    <td><code>&lt;a href="http://www.example.com/<br />index.php?topic=General"&gt;</code></td>
     <td>URL to your site's index page, so that only stories with the story's
         topic are displayed.</td></tr>
 </table>
@@ -420,17 +421,17 @@ permissions to edit a story:</p>
     <th style="width:29%">Example</th>
     <th style="width:63%">Description</th></tr>
 <tr><td><code>edit_link</code></td>
-    <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;edit&lt;/a&gt;</code></td>
+    <td><code>&lt;a href=".../admin/story.php<br />?mode=edit&amp;sid=20021022234959146"&gt;edit&lt;/a&gt;</code></td>
     <td>Link to open the story in the admin's story editor.</td></tr>
 <tr><td><code>edit_icon</code></td>
-    <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;&lt;img src=".../images/edit.gif"&gt;&lt;/a&gt;</code></td>
+    <td><code>&lt;a href=".../admin/story.php<br />?mode=edit&amp;sid=20021022234959146"&gt;&lt;img src=".../images/edit.gif"&gt;&lt;/a&gt;</code></td>
     <td>An icon linking to the admin's story editor to edit the story.</td></tr>
 <tr><td><code>edit_image</code></td>
     <td><code>&lt;img src=".../images/edit.gif"&gt;</code></td>
     <td>Only the <code>img</code> tag for the edit icon, without the
         link.</td></tr>
 <tr><td><code>edit_url</code></td>
-    <td><tt>http://www.example.com/admin/story.php<br>?mode=edit&amp;sid=20021022234959146</tt></td>
+    <td><tt>http://www.example.com/admin/story.php<br />?mode=edit&amp;sid=20021022234959146</tt></td>
     <td>URL to open the story in the admin's story editor</td></tr>
 <tr><td><code>lang_edit_text</code></td>
     <td>edit</td>
@@ -438,7 +439,7 @@ permissions to edit a story:</p>
 </table>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>
+    <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br />
     All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
 </div>
 </body>

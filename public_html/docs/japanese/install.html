@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="ja">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <title>インストール方法 | Geeklogドキュメント</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
-  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - インストール方法</div>
 
 <h1>Geeklogのインストール</h1>
@@ -88,7 +88,7 @@
             <p>Geeklogのインストールウィザードは自動的にインストールを行うので、単に表示される手順に従ってください。</p>
         </li>
         <li>
-            <p><strong>インストールが終了したら、必ず、 <code>admin/install</code> ディレクトリを削除してください。サイトに最初に表示される記事を読んで、管理者としてのログイン情報を知り、デフォルト状態のパスワードを速やかに変更してください。</strong><br>
+            <p><strong>インストールが終了したら、必ず、 <code>admin/install</code> ディレクトリを削除してください。サイトに最初に表示される記事を読んで、管理者としてのログイン情報を知り、デフォルト状態のパスワードを速やかに変更してください。</strong><br />
 </p>
         </li>
     </ol>
@@ -164,7 +164,7 @@
                 <ul>
                     <li>パスをシングルクォート(')できちんと閉じていない</li>
                     <li>行末のセミコロン(;)が抜けている</li>
-                    <li>文字列内でシングルクォート(')を使っているのにエスケープし忘れている(たとえば、 <code>Joe&yen;'s Site</code> と書かなければならないのに、 <code>Joe's Site</code> と書いている)
+                    <li>文字列内でシングルクォート(')を使っているのにエスケープし忘れている(たとえば、 <code>Joe&yen;'s Site</code> と書かなければならないのに、 <code>Joe's Site</code> と書いている)</li>
                 </ul>
             </li>
             <li>
@@ -197,14 +197,14 @@
                 </ul>
             </li>
             <li>
-                <p><strong>エラー:</strong> <code>Warning: mysql_connect(): Access denied for user: 'username@localhost' (Using password: YES) in /path/to/geeklog/system/databases/mysql.class.php on line 104<br>
+                <p><strong>エラー:</strong> <code>Warning: mysql_connect(): Access denied for user: 'username@localhost' (Using password: YES) in /path/to/geeklog/system/databases/mysql.class.php on line 104<br />
 Cannnot connect to DB server</code></p>
 
                 <p><strong>答え:</strong> まず最初に、 <code>siteconfig.php</code> 中のデータベースの設定が正しいか確認してください。特にMySQLユーザーのアカウント名とパスワード、データベース名、MySQLサーバー名。</p>
 
                 <p>自分でサーバーを運営しているなら、MySQLのユーザーに適切な権限を与える必要があるかもしれません。その場合は、管理者としてMySQLサーバーにログインし、次のコマンドを発行してください:</p>
 
-                <p><code>GRANT ALL PRIVILEGES ON <strong>[database_name]</strong> TO <strong>[user@host]</strong> IDENTIFIED BY '<strong>[password]</strong>';<br>
+                <p><code>GRANT ALL PRIVILEGES ON <strong>[database_name]</strong> TO <strong>[user@host]</strong> IDENTIFIED BY '<strong>[password]</strong>';<br />
                 FLUSH PRIVILEGES;</code></p>
                 
                 <p><strong>[小文字]</strong> の部分は適切な値に置き換えてください。</p>
@@ -241,7 +241,7 @@ Cannnot connect to DB server</code></p>
         </ol>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br>
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

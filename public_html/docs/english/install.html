@@ -1,12 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Geeklog Documentation - Installation Instructions</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Installation Instructions</div>
 
 <h1>Installing Geeklog</h1>
@@ -18,9 +19,9 @@
       <li><a href="#preinstall">Required Software</a></li>
       <li><a href="#things_you_should_know">Things You Should Know</a></li>
     </ul></li>
-  <li><a href="#install">New Installation</a>
-  <li><a href="#upgrade">Upgrading</a>
-  <li><a href="#migrate">Migrating</a>
+  <li><a href="#install">New Installation</a></li>
+  <li><a href="#upgrade">Upgrading</a></li>
+  <li><a href="#migrate">Migrating</a></li>
   <li><a href="#installprob">Common Problems and Troubleshooting</a></li>
 </ul>
 
@@ -47,10 +48,10 @@
 
     <p>Before installing Geeklog for the first time, please make sure you:</p>
     <ul>
-        <li>Know how to determine the path of your root web directory. (<a href="#glossary">What is a path?</a>)
-        <li>Have the ability to unpack the downloaded Geeklog tarball file.
-        <li>Have the ability to create a new database or have access to an existing one.
-        <li>Have access to your web server via SSH or FTP so you can change permissions on a few files and directories.
+        <li>Know how to determine the path of your root web directory. (<a href="#glossary">What is a path?</a>)</li>
+        <li>Have the ability to unpack the downloaded Geeklog tarball file.</li>
+        <li>Have the ability to create a new database or have access to an existing one.</li>
+        <li>Have access to your web server via SSH or FTP so you can change permissions on a few files and directories.</li>
     </ul>
     
 
@@ -89,7 +90,7 @@
             <p>The Geeklog installation wizard was designed to automate the install process. Simply follow the installation steps.</p>
         </li>
         <li>
-            <p>Once you have completed the installation be sure to delete the <code>admin/install</code> directory. Also, read the first story on your Geeklog site to learn how to log in as the administrator and change the default password.<br>
+            <p>Once you have completed the installation be sure to delete the <code>admin/install</code> directory. Also, read the first story on your Geeklog site to learn how to log in as the administrator and change the default password.<br />
 </p>
         </li>        
     </ol>
@@ -161,7 +162,7 @@
                 <ul>
                     <li>not enclosing paths in single quotes properly</li>
                     <li>missing semicolon at the end of the line</li>
-                    <li>using single quotes within a string (you need to write <code>Joe's Site</code> as <code>Joe\'s Site</code>, escaping the extra quote)
+                    <li>using single quotes within a string (you need to write <code>Joe's Site</code> as <code>Joe\'s Site</code>, escaping the extra quote)</li>
                 </ul>
             </li>
             <li>
@@ -194,14 +195,14 @@
                 </ul>
             </li>
             <li>
-                <p><strong>Error:</strong> <code>Warning: mysql_connect(): Access denied for user: 'username@localhost' (Using password: YES) in /path/to/geeklog/system/databases/mysql.class.php on line 104<br>
+                <p><strong>Error:</strong> <code>Warning: mysql_connect(): Access denied for user: 'username@localhost' (Using password: YES) in /path/to/geeklog/system/databases/mysql.class.php on line 104<br />
 Cannnot connect to DB server</code></p>
 
                 <p><strong>Answer:</strong> First of all, make sure the database settings in <code>siteconfig.php</code> are correct, specifically the name and password of your MySQL user, the name of your database, and the name of your MySQL server.</p>
 
                 <p>If you're running your own server, you may need to give your MySQL user proper permissions. Log in to MySQL as the MySQL root user and issue these commands:</p>
 
-                <p><code>GRANT ALL PRIVILEGES ON <em>[database_name]</em> TO <em>[user@host]</em> IDENTIFIED BY '<em>[password]</em>';<br>
+                <p><code>GRANT ALL PRIVILEGES ON <em>[database_name]</em> TO <em>[user@host]</em> IDENTIFIED BY '<em>[password]</em>';<br />
                 FLUSH PRIVILEGES;</code></p>
                 
                 <p>Replace the <em>[lower-case]</em> strings with the actual values.</p>
@@ -242,8 +243,8 @@ Cannnot connect to DB server</code></p>
 
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>
-    All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft. <br>
+    <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br />
+    All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft. <br />
     Extended version of this document created by Jason C. Levine and Matt West
 </div>
 

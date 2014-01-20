@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="ja">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <title>変更点 | Geeklogドキュメント</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
-  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更履歴</div>
 
 <h1><a name="changes">変更履歴</a></h1>
@@ -60,7 +60,7 @@
 
 <h2><a name="changes182">Geeklog 1.8.2</a></h2>
 
-Geeklog 1.8.2はメンテナンスリリースで, 主に MySQL 5.5対応とTwitter OAuthログインの不具合対応と若干の修正を行いました。
+<p>Geeklog 1.8.2はメンテナンスリリースで, 主に MySQL 5.5対応とTwitter OAuthログインの不具合対応と若干の修正を行いました。
 データベース、テーマ、言語ファイルは何も変更はないのでソースの置き換えだけで大丈夫です。</p>
 
 <h3>バグ修正</h3>
@@ -155,7 +155,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <li>Geeklog 1.7.0において、プラグインへのコメント投稿でタイプエラーがありました。
     そのため、該当プラグインのコメントとして認識されませんでした。</li>
 <li>サイトのアドバンストエディターのモードを不可にした場合も、ユーザー毎のモードを残しました。</li>
-<li>マイアカウントの"Show & Hide Boxes"を修正しました。</li>
+<li>マイアカウントの"Show &amp; Hide Boxes"を修正しました。</li>
 <li>ブロック内の中括弧がエスケープされてしまってたとえばJavaScript codeが動作しなくなる問題があり、Geeklog 1.7.0での変更を戻しました。
 </li>
 <li>1.7.0 で<code>COM_refresh()</code>の際にContent-Type headerを送るようにするとコンフリクトする ので元に戻しました。(例 Forum)</li>
@@ -217,7 +217,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
         <li>(セッションのクッキーのような)「重要な」クッキーは、今後はHttpOnlyフラグをセットして作成されるようになりました。これにより、このフラグをサポートしたブラウザーで、ある種のXSS(クロスサイト・スクリプティング)攻撃の防止できるでしょう。</li>
         <li>テンプレートのエラーは、そのテンプレートのパスを見せてしまう代わりに、<a href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=65">標準のエラーハンドラ</a>を呼び出すようになりました。</li>
         <li>Spam-Xのいくつかのクラスのファイルで、直接アクセスする(訳注: 実際に動作していなかった)防止の処理を修正しました。</li>
-    </ul>
+    </ul></li>
 </ul>
 
 <p><a href="theme.html#changes">テーマの変更</a>の一覧も併せてご覧下さい。</p>
@@ -225,7 +225,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <h3>バグ修正</h3>
 
 <ul>
-<li>一定の期日が経過した後で、自動的に<a href="config.html#desc_article_comment_close_enabled">記事に対するコメントの受付を終了する</a>機能のバグを修正しました。このバグのためにコメントの受付が終了した記事で再びコメントを受け付けるようにするには、次のSQLコマンドを使用します:<br>
+<li>一定の期日が経過した後で、自動的に<a href="config.html#desc_article_comment_close_enabled">記事に対するコメントの受付を終了する</a>機能のバグを修正しました。このバグのためにコメントの受付が終了した記事で再びコメントを受け付けるようにするには、次のSQLコマンドを使用します:<br />
     <code style="margin-left:2em">UPDATE gl_stories SET commentcode = 0, comment_expire = 0 WHERE commentcode = 1;</code></li>
 <li>コメントの投稿間隔制限が無視されていました。</li>
 <li>他のグループに登録できないというグループ・エディターのバグを修正しました。(この問題はGeeklog 1.6.0にだけ存在しました。)</li>
@@ -237,11 +237,11 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 
 <p>このリリースでは以下のセキュリティ対策を行いました:</p>
 <ul>
-<li>不法に任意のファイルをFCKeditorを介してアップロード可能でした。<br>
+<li>不法に任意のファイルをFCKeditorを介してアップロード可能でした。<br />
   アップロードされるファイルはFCKeditorのフィルターを通過しなければならないため、スクリプトをアップロードすることは不可能でした。(従って、Geeklogのサイトとしての整合性が壊されるといった危険性はありませんでした。)
-  しかしながら、マルウェアの置き場として使用されていたという報告がありました。<br>
-  今回のアップデートではFCKeditorを無効としているか、ゲストユーザーの場合にはアップロードの機能を使用できないようにしました。<br>
-  また、アーカイブ形式のファイルのアップロードも許可しません。<br>
+  しかしながら、マルウェアの置き場として使用されていたという報告がありました。<br />
+  今回のアップデートではFCKeditorを無効としているか、ゲストユーザーの場合にはアップロードの機能を使用できないようにしました。<br />
+  また、アーカイブ形式のファイルのアップロードも許可しません。<br />
   さらに、FCKeditorを使ってファイルをアップロードするには、何らかの「編集」の権限が必要です。(これは一時的な対応です。将来のGeeklogのバージョンでは「アップロード」という独立した権限を採用する予定です)。</li>
 </ul>
 
@@ -286,7 +286,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <ul>
 <li>Geeklogは現在PHP 4.3.0以降をサポートしていますが、PHP開発チームは2008年8月にはPHP 4のサポートを終了しています。PHP 4でGeeklogを活用しているユーザーは、できるだけはやくPHP 5へのアップグレードを検討してください。</li>
 <li><a href="http://www.fckeditor.net/">FCKeditor</a>を2.6.4.1を同梱しました。</li>
-<li>新しいプラグイン「<a href="http://wiki.geeklog.net/index.php/XMLSitemap_Plugin">XMLSitemap</a>」を同梱しました。このプラグインは、すべての主要な検索エンジンがサポートしている<a href="http://www.sitemaps.org/">XMLのサイトマップ・ファイル</a>を自動生成します。プラグインはmystral-kk氏※により開発されました。<br>
+<li>新しいプラグイン「<a href="http://wiki.geeklog.net/index.php/XMLSitemap_Plugin">XMLSitemap</a>」を同梱しました。このプラグインは、すべての主要な検索エンジンがサポートしている<a href="http://www.sitemaps.org/">XMLのサイトマップ・ファイル</a>を自動生成します。プラグインはmystral-kk氏※により開発されました。<br />
 （※訳者註：Geeklog Japaneseコア開発者です。）</li>
 <li>いくつかの<a href="http://wiki.geeklog.net/index.php/New_Plugin_API_Functions_in_Geeklog_1.6.0">新しいプラグインAPIの機能</a>が追加されて、既存のプラグインAPIも拡張されてました。</li>
 <li>他の言語に翻訳できるように、含めているドキュメントの場所を<tt>docs/english</tt>に移動しました。Geeklogの中のドキュメントへのリンクは自動的に、そのときに利用している言語に応じたリンクとなります。(適切な翻訳がみつからなければ、英語のドキュメントを表示します。）</li>
@@ -400,7 +400,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <li>記事フィード用に「トップページに表示する記事すべて(All Frontpage Stories)」のオプションを追加しました。「該当する話題にのみ表示」の記事をフィードに含めないようにすることができます。</li>
 <li>コンフィギュレーションにおいて、たとえば誤ってあるオプションを「設定(restore)」した後で、元の状態に戻す(unset)ことができるようになりました。</li>
 <li>コンフィギュレーションで設定した値を<tt>siteconfig.php</tt>で上書きできるようになりました。<code>$_CONF['rootdebug']</code>オプションなどを設定するのに役に立つでしょう。</li>
-<li>リモート認証を行うユーザーがWebサービスを利用できるようになりました（ユーザー名として、<tt>ユーザー名@サービス名</tt> を使用する必要があります）。<br>
+<li>リモート認証を行うユーザーがWebサービスを利用できるようになりました（ユーザー名として、<tt>ユーザー名@サービス名</tt> を使用する必要があります）。<br />
     <strong>注意:</strong> OpenIDユーザーは認証方法に関する技術上の問題のため、Webサービスを<em>利用できません</em>。</li>
 <li>Webサービス(AtomPub)の互換性を高めました。</li>
 </ul>
@@ -450,7 +450,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <h3>新機能</h3>
 
 <ul>
-<li>Microsoft SQL Serverをサポート。今回のリリースより、GeeklogをMicrosoft SQL Serverにインストールできるようになりました。MySQLだけではなくなったのです。MS SQLサポートはRandy Kolenkoにより開発されました。Randy、ありがとう!<br>
+<li>Microsoft SQL Serverをサポート。今回のリリースより、GeeklogをMicrosoft SQL Serverにインストールできるようになりました。MySQLだけではなくなったのです。MS SQLサポートはRandy Kolenkoにより開発されました。Randy、ありがとう!<br />
     サードパーティによるプラグインがMicrosoft SQL Serverで動作するには、MS SQLをサポートする必要があります。同梱しているプラグイン(カレンダー、リンク、アンケート、Spam-X、静的ページ)は既にMS SQLをサポートするようアップグレード済みです。</li>
 <li><a href="calendar.html">カレンダープラグイン</a>: 以前は本体に組み込まれていたカレンダーとイベント機能は今回からプラグインとして分離されました。Geeklog 1.4.0で実施された<a href="polls.html">アンケート</a>と<a href="links.html">リンク</a>機能に始まるプラグイン化の流れはこれで終了し、Geeklogのモジュール化が進みました。サイトに不要な機能を無効にしたり差し替えることが容易になっています。</li>
 <li><a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">多言語サポート(Multi-language support)</a>： Geeklogを用いて真の多言語サイトの構築が可能になりました。ナビゲーションだけでなくサイトのコンテンツもまた、言語を切り替えれば追随します。</li>
@@ -488,15 +488,15 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 
 <ul>
 <li>public_htmlディレクトリの外にあるファイルの一部が直接実行される可能性がありました。これらのファイルがURL経由でアクセス可能なようにGeeklogがインストールされている場合(これは、インストール方法では全然お勧めしていない方法です)、リモートサーバから悪意のあるコードをアップロードして、実行するために利用される可能性がありました。
-    <br><br>
+    <br /><br />
     詳細は、<a href="http://www.geeklog.net/article.php/so-called-exploit">いわゆるGeeklogの脆弱性投稿(So-called Geeklog "exploit" posted)</a>をご覧ください。
-    <br><br>
+    <br /><br />
     今回のリリースでは、public_htmlディレクトリの外にあるファイルが直接実行されるのを防ぐ機能を追加しました。とはいえ、public_htmlディレクトリの外にあるファイルがURL経由でアクセス可能なようにGeeklogをインストールしているなら、修正することをお勧めします(詳細は、<a href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=56">FAQ</a>をご覧くださいdetails)。
 </li>
 <li>(Geeklogのconfig.phpでFCKeditorを無効にしていても)、FCKeditorに統合されている"mcpuk"ファイルマネージャを使えば、任意のPHPコードをアップロードすることが可能になっていました。Webサーバの設定しだいでは、アップロードしたコードを実行することも可能でした。
-    <br><br>
+    <br /><br />
     詳細は、<a href="http://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">FCKeditorのmcpukファイルマネージャの脆弱性(Exploit for FCKeditor's mcpuk file manager)</a>をご覧ください。
-    <br><br>
+    <br /><br />
     今回のリリースでは、該当ファイルマネージャは取り除かれています。したがって、FCKeditor経由で画像などのファイルをアップロードすることはできなくなっています。Geeklogの将来のバージョンでは、更新されたFCKeditorとファイルマネージャを同梱することになるでしょう。
 </li>
 </ul>
@@ -545,7 +545,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
     <li>Blogger.comやLiveJournal.comなどのような別のサービスのアカウントを持っている利用者が、サイトに直接登録しなくても自動的にログインできる新しい遠隔認証システムが追加されました（リモートアカウントは、通常アカウントとして禁止することもできます。）。</li>
     <li>管理部分が改訂され、より見やすく分類されたリストとなっています。&ldquo;コマンドとコントロール&rdquo; (moderation.php) も新たなアイコンででき、管理部分ごとにアイコンがあります。さらに、管理ブロック、コマンド、コントロールはアルファベット順にソートできるようになりました。</li>
     <li>FCKeditor(WYSIWYGエディター)が付いています。作動させるには、config.phpの <code>$_CONF['advanced_editor'] = true</code> に設定してください。</li>
-    <li>検索では、大きなデータベースを検索する際のタイムアウトを防ぐため、ページごとの検索結果を指定した件数だけ表示するようになりました。<br><strong>注意</strong><strong>:</strong>「ページ」検索をサポートするには、プラグインをアップデートする必要があります。アップデートをしないと、Geeklogはプラグイン検索ページの結果を正しく表示しません。プラグインがアップデートされていないと、全データベースを検索することになりますが、Geeklogは現在の検索結果のページしか表示しないことになります。</li>
+    <li>検索では、大きなデータベースを検索する際のタイムアウトを防ぐため、ページごとの検索結果を指定した件数だけ表示するようになりました。<br /><strong>注意</strong><strong>:</strong>「ページ」検索をサポートするには、プラグインをアップデートする必要があります。アップデートをしないと、Geeklogはプラグイン検索ページの結果を正しく表示しません。プラグインがアップデートされていないと、全データベースを検索することになりますが、Geeklogは現在の検索結果のページしか表示しないことになります。</li>
     <li>「記事一覧」が導入され、過去の記事が年ごと月ごとにソートされ、見やすく表示できるようになりました。</li>
     <li>新たなオブジェクト（記事、話題、ブロックなど）のデフォルトパーミッションを、config.phpで設定できるようになりました。</li>
 </ul>
@@ -593,7 +593,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <p>Geeklog 1.3.11 は、Geeklog1.3.10を上回るバグ修正とセキュリティリリースであり、1.3.10に替わるものです。1つのバグ修正が1つのデータベースの変更を伴うので、バージョン番号の変更が必要となりました。</p>
 <h3>セキュリティ問題</h3>
 <ul>
-    <li>ゲストユーザーによる投稿がconfig.phpで無効にされていても、ゲストユーザーが記事を投稿することが可能でした。 (Barry Wongの報告)<br>しかし、config.phpで無効にしていない限り、これらの記事は承認待ちの状態になっていました。</li>
+    <li>ゲストユーザーによる投稿がconfig.phpで無効にされていても、ゲストユーザーが記事を投稿することが可能でした。 (Barry Wongの報告)<br />しかし、config.phpで無効にしていない限り、これらの記事は承認待ちの状態になっていました。</li>
     <li>リンクやイベント投稿のパラメーターがフィルタリングされておらず、SQLインジェクションの可能性がありました。</li>
     <li>関連ブロック用のリンクが、フィルタリングされていない記事テキストから作成され、クロスサイト・スクリプティング攻撃の可能性がありました。(Vincent Furiaの報告)</li>
 </ul>
@@ -615,19 +615,19 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <p>また、古いテーマ（クラシック、クリーン、デジタル・モノクローム、ゲームサーバ、スムース・ブルー、Xシルバー、ヤフー）の配信を取りやめることに決定しました。それらは別のターボールとして利用できます。</p>
 <h3>新機能</h3>
 <ul>
-    <li><a href="spamx.html">Spam-Xプラグイン</a>が含まれています。Tom Willetによりスパム検出プラグインが提供され、それはデフォルトでGeeklogの一部としてインストールされます。<br>プラグインが、データベースにブラックリストを保存するために少し修正されました。プラグインの旧バージョンのユーザーの方は、プラグインの管理パネルを通して各ブラックリストをインポートする必要があります。</li>
+    <li><a href="spamx.html">Spam-Xプラグイン</a>が含まれています。Tom Willetによりスパム検出プラグインが提供され、それはデフォルトでGeeklogの一部としてインストールされます。<br />プラグインが、データベースにブラックリストを保存するために少し修正されました。プラグインの旧バージョンのユーザーの方は、プラグインの管理パネルを通して各ブラックリストをインポートする必要があります。</li>
     <li>記事アーカイブ機能: 記事を「アーカイブ」話題に移動するか、所定の時間に自動的に削除することが可能です。</li>
     <li>カスタマイズ・メニュー・バー: サイトのメニューバーは、config.phpで<a href="config.html#menu_elements">設定</a>できます。例えば、どんなエントリがどんな順番で表示されるかを選択できます。また、lib-custom.phpに関数を入れてカスタム項目を追加することもできます。</li>
     <li>テキスト・メールのクリック可能なリンク: HTML ではないメール内のURLはGeeklogにより認識され、クリック可能のリンクとして表示されます。</li>
     <li>編集可能記事ID: 記事のID (静的ページのIDのような)は変更でき、読み取り可能なURLにできます。（検索エンジンによって、特にURLの書き換えをして利用する場合、検出されるチャンスがずっと増えます。） </li>
-    <li>自動リンクは記事やコメント内で利用できる新しいフォームのリンクです。自動リンクは名前がタグネームになっていて、IDがリンク先のオブジェクトのIDで、リンクテキストがリンクのテキストとして使われている[<em>name</em>:<em>id</em><em>link text</em>]フォームを取っています。<br>例: [story:email-bug About the email bug]は&lt;a href=&quot;http://example.com/article.php/email-bug&quot;&gt;About the email bug&lt;/a&gt;となります。<br>搭載自動タグに関しては、リンクテキストはオプションで、所定のものがない場合、Geeklogはオブジェクトのタイトル（story, event, static page）を利用します。<br>記事にリンクする[story:]とイベントにリンクする[event:]が、あらかじめ定義された自動タグです。プラグインは自分自身の自動タグを定義して、自分のコントロール下でオブジェクトにリンクすることができます。静的ページのプラグインは、すでに[staticpage:]という自動タグを提供しています。</li>
+    <li>自動リンクは記事やコメント内で利用できる新しいフォームのリンクです。自動リンクは名前がタグネームになっていて、IDがリンク先のオブジェクトのIDで、リンクテキストがリンクのテキストとして使われている[<em>name</em>:<em>id</em><em>link text</em>]フォームを取っています。<br />例: [story:email-bug About the email bug]は&lt;a href=&quot;http://example.com/article.php/email-bug&quot;&gt;About the email bug&lt;/a&gt;となります。<br />搭載自動タグに関しては、リンクテキストはオプションで、所定のものがない場合、Geeklogはオブジェクトのタイトル（story, event, static page）を利用します。<br />記事にリンクする[story:]とイベントにリンクする[event:]が、あらかじめ定義された自動タグです。プラグインは自分自身の自動タグを定義して、自分のコントロール下でオブジェクトにリンクすることができます。静的ページのプラグインは、すでに[staticpage:]という自動タグを提供しています。</li>
     <li>カスタマイズ可能のEメール: あなたのサイトに登録しているユーザーに送信されたEメールは、テキストファイル(/path/to/geeklog/data/welcome_email.txt)のテキストを利用することで、完全にカスタマイズできます。</li>
     <li>タイムゾーンハック: 一般的な &quot;<a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=40196">タイムゾーンハック</a>&quot; が含まれています。あなたのサーバが別のタイムゾーンにある場合、サイトのタイムゾーンを設定できます。</li>
 </ul>
 <h3>その他の改良点</h3>
 <ul>
     <li>すべての動作を改善するため、さまざまな変更を行いました。</li>
-    <li>新しいインストール用に、あなたのMySQLバージョンがInnoDBのテーブル現在のMySQL4.0または3.x&rdquo;Max&rdquo;で作られている）をサポートしていれば、InnoDBテーブル（MyISAMの代わり）を利用できるオプション機能があります。既存のデータベースは、スクリプト admin/install/toinnodb.php.を利用してInnoDBに変換できます。<br>警告:InnoDB テーブルを使用すると、データベースのバックアップがいくらか複雑になります。小さいサイズや中程度のサイズのサイトは、MyISAMテーブルで十分に作動するので、不安な場合はInnoDBテーブルを使用しないでください。</li>
+    <li>新しいインストール用に、あなたのMySQLバージョンがInnoDBのテーブル現在のMySQL4.0または3.x&rdquo;Max&rdquo;で作られている）をサポートしていれば、InnoDBテーブル（MyISAMの代わり）を利用できるオプション機能があります。既存のデータベースは、スクリプト admin/install/toinnodb.php.を利用してInnoDBに変換できます。<br />警告:InnoDB テーブルを使用すると、データベースのバックアップがいくらか複雑になります。小さいサイズや中程度のサイズのサイトは、MyISAMテーブルで十分に作動するので、不安な場合はInnoDBテーブルを使用しないでください。</li>
     <li>カレンダーの週は、日曜日か月曜日から始められます。</li>
     <li>静的ページのプラグインには、静的ページの印刷用ページを表示するためのオプションがあります。</li>
 </ul>
@@ -656,14 +656,14 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
     <li>画像の高さは最大値を越えるが、幅は最大値を越えない場合、画像のリサイズは作動しませんでした(bug #242)。</li>
     <li>画像を再リサイズするためにGDライブラリを使用すると、リサイズしていない画像を保存することはできませんでした(bug #197)。</li>
     <li>GDライブラリを使用すると、 GIF画像はPNGフォーマットに変換されましたが、GeeklogはGIFバージョンを表示しようとしていました。 LZW パテントが<a href="http://www.unisys.com/about__unisys/lzw">終了</a>してから、再びGIF画像を使用することが安全となり、PNG変換はなくなりました。</li>
-    <li>ターボールにも、ユーザーが抱えているEメールトラブルが報告されている、アップグレードされたPEARパッケージが含まれています(bug #246)。<br>注意:これらは、Geeklog1.3.9sr2に同梱したのと同じPEARパッケージです。</li>
+    <li>ターボールにも、ユーザーが抱えているEメールトラブルが報告されている、アップグレードされたPEARパッケージが含まれています(bug #246)。<br />注意:これらは、Geeklog1.3.9sr2に同梱したのと同じPEARパッケージです。</li>
 </ul>
 <p><a href="theme.html#changes">テーマ変更</a>もあり、その中のいつくかは、新しい機能を動作させるために重要であることにご注意ください。（たとえば、編集可能な記事IDとその記事・アーカイブのオプション）!</p>
 <p>本リリースには、Geeklogのコミュニティによって提供された様々な改良点が含まれています。 (確認のためdocsまたはhistoryファイルをご参照ください。)</p>
 <h2><a name="changes139sr3" id="changes139sr3">Geeklog 1.3.9sr3</a></h2>
 <p>本リリースは、以下のセキュリティ問題に対応しました。</p>
 <ul>
-    <li>ゲストユーザーの投稿がconfig.phpで無効にされていても、投稿することが可能でした(Barry Wongの報告)。<br>config.phpで無効にしない限り、これらの記事はまだ承認待ちの状態になっていました。<br></li>
+    <li>ゲストユーザーの投稿がconfig.phpで無効にされていても、投稿することが可能でした(Barry Wongの報告)。<br />config.phpで無効にしない限り、これらの記事はまだ承認待ちの状態になっていました。<br /></li>
     <li>リンクやイベント投稿のパラメーターがフィルタリングされておらず、SQLインジェクションの可能性がありました。</li>
 </ul>
 <h2><a name="changes139sr2" id="changes139sr2">Geeklog 1.3.9sr2</a></h2>
@@ -680,7 +680,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <h2><a name="changes139sr1" id="changes139sr1">Geeklog 1.3.9sr1</a></h2>
 <p>本リリースは、以下のセキュリティ問題に対応しました。</p>
 <ul>
-    <li>ゲストユーザーのコメント投稿がconfig.phpで無効になっていても、投稿することができていました。<br>このバグは、明らかに一定のGeeklogのサイトへ数百のスパムメールを送信するために、スパマーによって開発されたものです。</li>
+    <li>ゲストユーザーのコメント投稿がconfig.phpで無効になっていても、投稿することができていました。<br />このバグは、明らかに一定のGeeklogのサイトへ数百のスパムメールを送信するために、スパマーによって開発されたものです。</li>
     <li>コメント投稿をチェックする速度制限が付加されました。</li>
     <li>どの話題もゲストユーザーには見えなかった場合、記事の閲覧許可によっては、サイトのインデックスページがゲストユーザーに対して記事を表示していた可能性があります。</li>
     <li>話題に関するデイリーダイジェスト・Eメールを、ユーザーがまだ移動した話題から取得していました(bug #178)。</li>
@@ -699,7 +699,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <h3>新機能</h3>
 <ul>
     <li>Geeklogは、すべてのEメールを送信するため、PEAR::Mailを使用しています。それにより、PHPの搭載メール機能（前述）やsendmail、SMTPを介してEメールを送信することができます。</li>
-    <li>RSSフィードを作成したり設定したりするContent Syndicationという新しい管理オプションがあります。新たな記事をすべて含んでいる標準フィードに加え、話題ごとや次のイベント用、リンク用のフィードを作成することができます。<br>この機能は、プラグインがフィードを追加できることで拡張可能です。フィードクラスを追加することで、RSS0.91以外のフォーマットでフィードを提供することも可能です。</li>
+    <li>RSSフィードを作成したり設定したりするContent Syndicationという新しい管理オプションがあります。新たな記事をすべて含んでいる標準フィードに加え、話題ごとや次のイベント用、リンク用のフィードを作成することができます。<br />この機能は、プラグインがフィードを追加できることで拡張可能です。フィードクラスを追加することで、RSS0.91以外のフォーマットでフィードを提供することも可能です。</li>
     <li>管理者は、ブロックのリストからブロックの順番を簡単に変更することができます。</li>
     <li>グループにユーザーを追加する代わりとなるインターフェースがあります（JavaScriptが必要です）。</li>
     <li>管理者グループのユーザーは、自分自身がメンバになっているグループに他のユーザーを割り当てることだけできます。</li>
@@ -731,7 +731,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <h2>Geeklog<a name="changes138-1sr5" id="changes138-1sr5"> 1.3.8-1sr5</a></h2>
 <p>本リリースは、以下のセキュリティ問題に対応しました。</p>
 <ul>
-    <li>ゲストユーザーのコメント投稿がconfig.phpで無効にされていても、コメント投稿が可能でした。<br>このバグは、明らかに一定のGeeklogのサイトへ数百のスパムメールを送信するために、スパマーによって開発されたものです。</li>
+    <li>ゲストユーザーのコメント投稿がconfig.phpで無効にされていても、コメント投稿が可能でした。<br />このバグは、明らかに一定のGeeklogのサイトへ数百のスパムメールを送信するために、スパマーによって開発されたものです。</li>
 </ul>
 <h2>Geeklog<a name="changes138-1sr4" id="changes138-1sr4"> 1.3.8-1sr4</a></h2>
 <p>本リリースは、以下のセキュリティ問題に対応しました。</p>
@@ -837,7 +837,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
     <li>管理者アカウントを含め、Geeklogサイトのアカウントごとに有効なセッションIDを取得することが可能でした。 (SCANアソシエイツの報告)</li>
     <li>Internet Explorerを使うと、埋め込まれたPHPコードで画像をアップロードでき、実行することが可能でした。 (SCAN アソシエイツの報告)</li>
     <li>記事のパーミッションが話題のパーミッションを無効にしてしまい、アクセスできなかったユーザーに記事を表示する結果となりました(Andrew Lawlorの報告)。これは2003年5月15日にリリースされた新しいindex.phpで既に修正されました。</li>
-    <li>以下のタグのいずれかを許可されたHTMLのリストに追加すると、サイトがスクリプトの攻撃を受けやすくなってしまうという警告がconfig.phpに追加されました。<br>&lt;img&gt; &lt;span&gt; &lt;marquee&gt; &lt;script&gt; &lt;embed&gt; &lt;object&gt; &lt;iframe&gt;<br>(Joat Dedeの指摘)</li>
+    <li>以下のタグのいずれかを許可されたHTMLのリストに追加すると、サイトがスクリプトの攻撃を受けやすくなってしまうという警告がconfig.phpに追加されました。<br />&lt;img&gt; &lt;span&gt; &lt;marquee&gt; &lt;script&gt; &lt;embed&gt; &lt;object&gt; &lt;iframe&gt;<br />(Joat Dedeの指摘)</li>
 </ul>
 <p>このアップデートには、ユーザーが管理エリアで見る「アクセスが拒否されました」というよく見られるエラーメッセージに対する修正が含まれています。（たとえば、記事を保存しようとしたり、記事管理者許可のあるユーザー「のみ」とする場合）</p>
 <p>1.3.7sr2の完全なターボールにも、アップデートされた種々の新しい言語ファイルが含まれています（詳細はChangelogをご参照ください。）。</p>
@@ -862,7 +862,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <h2><a name="changes137" id="changes137">Geeklog 1.3.7</a></h2>
 <h3>新機能</h3>
 <ul>
-    <li>通知Eメールは、新しい記事、リンク、あるいはイベントが掲載されたか、新しいユーザーがそのサイトに登録したときに送信されます(詳細は<a href="config.html#submission">投稿の設定</a>をご参照ください。)。<br>この機能がGeeklogのセキュリティ機能と一緒にはなっていないことにご注意ください。多くの方からこの機能性が望まれたので、本当にハック以上のものでした。</li>
+    <li>通知Eメールは、新しい記事、リンク、あるいはイベントが掲載されたか、新しいユーザーがそのサイトに登録したときに送信されます(詳細は<a href="config.html#submission">投稿の設定</a>をご参照ください。)。<br />この機能がGeeklogのセキュリティ機能と一緒にはなっていないことにご注意ください。多くの方からこの機能性が望まれたので、本当にハック以上のものでした。</li>
     <li>新着ブロックの「過去24時間の記事」をクリックすると、新しい記事が表示されます。</li>
     <li>ユーザーの写真は、記事の画像と同じくリサイズされています（画像ライブラリの使用が設定されている場合）。ユーザーの写真の最大サイズは、config.phpの別々の設定変数で設定できます。</li>
     <li>プラグインメニューは、ファイルシステムに存在するがまだインストールしていないプラグインすべてを表示しています。また、容易にインストールできるように、それらのプラグインのインストールスクリプトへのリンクも提供しています。</li>
@@ -912,7 +912,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <p>寄稿者: Gene Wood、 Blaine Lang、 Tom Willet、及び Roger Websterが本リリースに寄稿いたしました。</p>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br>
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

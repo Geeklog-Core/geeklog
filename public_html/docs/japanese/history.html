@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更詳細履歴</div>
 
 <h1>Geeklogの変更詳細履歴</h1>
@@ -21,7 +21,7 @@
 
 <h2>Mar 8, 2013 (2.0.0rc3)</h2>
 
-<li>
+<ul>
 <li>jQuery を version 1.9.1にアップグレードしました。[Tom]</li>
 <li>jQuery UI を version 1.10.1にアップグレードしました。[Tom]</li>
 <li>プロフィールページの"すべての投稿を検索(Find all postings by ...)"に空テキストを許可しなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001565">#0001565</a>) [Tom]</li>
@@ -45,7 +45,7 @@
 
 <p>セキュリティーの問題以外の修正:</p>
 <ul>
-<li>jQueryをバージョン1.9.0に更新しました。[Tom] [Kenji]
+<li>jQueryをバージョン1.9.0に更新しました。[Tom] [Kenji]</li>
 <li>jQuery UIをバージョン1.10.0に更新しました。[Tom] [Kenji]</li>
 <li>ユーザーバッチ処理管理を使用したときに"Illegal string offset 'phantom'"となるエラーを修正しました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001558">#0001558</a>) [Dirk]</li>
 <li>2.0.0 のMySQL用話題アップグレードスクリプトを最適化しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001544">#0001544</a>) [Tom]</li>
@@ -189,13 +189,13 @@
 <h2>Oct 9, 2011 (1.8.1)</h2>
 
 <ul>
-<li>バッドワードチェックの完全一致のオプションの問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001392">#0001392</a>) [Tom]
-<li>空のコンフィギュレーション配列に要素を追加する時の問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001396">#0001396</a>) [Tom]
-<li>RootデバッグオプションでOAuthのコンシューマー・キーとコンシューマー・シークレットを削除 [Dirk]
+<li>バッドワードチェックの完全一致のオプションの問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001392">#0001392</a>) [Tom]</li>
+<li>空のコンフィギュレーション配列に要素を追加する時の問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001396">#0001396</a>) [Tom]</li>
+<li>RootデバッグオプションでOAuthのコンシューマー・キーとコンシューマー・シークレットを削除 [Dirk]</li>
 <li>コンフィギュレーション配列から要素を削除する時の問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001394">#0001394</a>で、dengen氏からパッチを提供)</li>
-<li>関連情報ブロックのバッドワードチェックを回避 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001393">#0001393</a>) [Tom, Dirk]
+<li>関連情報ブロックのバッドワードチェックを回避 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001393">#0001393</a>) [Tom, Dirk]</li>
 <li>管理者のユーザーの編集でユーザーの写真の名前の変更に失敗したときにエラーメッセージを表示した問題を修正 [Dirk]</li>
-<li>初期状態で失敗したMS SQLの問い合わせの詳細を表示しない [Dirk]
+<li>初期状態で失敗したMS SQLの問い合わせの詳細を表示しない [Dirk]</li>
 </ul>
 
 <ul>
@@ -304,7 +304,7 @@
 <li>OAuthユーザーデータのサニタイズエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001322">#0001322</a>) [Dirk]</li>
 <li>コンフィギュレーションのHTMLエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001318">#0001318</a>, パッチ提供: dengen) [Tom, Rouslan]</li>
 <li>プラグインの管理画面のタイトルセルにnowrapを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001321">#0001321</a>) [Tom]</li>
-<li>カレンダープラグインの編集のパーミッションチェックのエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001312">#0001317, パッチ提供: dengen)</li>
+<li>カレンダープラグインの編集のパーミッションチェックのエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001312">#0001317, パッチ提供: dengen)</a></li>
 <li>jQueryウィジェットと効果のミスを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001312">#0001312</a>) [Tom]</li>
 <li>setJavaScriptFile の/抜けの修正を行いました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001315">#0001315</a>) [Tom]</li>
 <li>アドバンストエディターを有効にしたときなど、JavaScript が無効であれば警告のコメントを表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001282">#0001282</a>) [Tom]</li>
@@ -370,11 +370,11 @@
     GUIDを受け入れるようにしました。ただし、そのGUIDがURLに見える場合に限ります。[Dirk]</li>
   <li>印刷用ページにnoindexロボットメタタグを追加してサーチエンジンに
     インデックスされないようにしました。[Tom]</li>
-  <li>テンプレートに書き込まれた自動タグが動作しない場合があるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001246">#0001246</a>) [Tom]
+  <li>テンプレートに書き込まれた自動タグが動作しない場合があるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001246">#0001246</a>) [Tom]</li>
   <li>lib-custom.phpのCUSTOM_userCreate()サンプルコードに$bulkimportフラグを
     使うようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001208">#0001208</a>) [Dirk]<br />
     CUSTOM_userCreate()を自分でカスタマイズしている場合、このフラグを正しく
-    使っているか（バッチユーザーインポートの際にtrueに設定する）を確認してください！</li>
+    使っているか（バッチユーザーインポートの際にtrueに設定する）を確認してください!</li>
   <li>サポートするPHPのバージョンをPHP5.2.0以上に設定し、PHP4互換のコードを
     すべて削除しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001217">#0001217</a>) [Dirk]</li>
   <li>CMT_saveCommentを最適化しコードをクリーンアップしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0000939">#0000939</a>)
@@ -409,7 +409,7 @@
 <h3>Polls Plugin</h3>
 
 <ul>
-  <li>デフォルトのアンケートを変更しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001277">#0001277</a>) [Rouslan]
+  <li>デフォルトのアンケートを変更しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001277">#0001277</a>) [Rouslan]</li>
   <li>投票者の数が正しくカウントされていない問題を修正。複数の質問を
     アップデートする際にこの問題が発生していました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001056">#0001056</a>, 提供: Erisco)</li>
 </ul>
@@ -490,7 +490,7 @@
 <li>自動タグをテンプレートに記述できるようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001181">#0001181</a>) [Tom]</li>
 <li>プラグインは文字列をreturnできるようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0000619">#0000619</a>パッチ提供: jmucchiello)</li>
 <li>管理者リストは、空白のかわりに、0を表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001060">#0001060</a>パッチ提供: jmucchiello)</li>
-<li>マイアカウントの"Show & Hide Boxes"を修正しました。(reported by Pushkar) [Dirk]</li>
+<li>マイアカウントの"Show &amp; Hide Boxes"を修正しました。(reported by Pushkar) [Dirk]</li>
 <li>ドラフト記事リストで、(話題IDではなく)話題名を表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001171">#0001171</a>) [Dirk]</li>
 <li>COM_formatTimeStringで４週間以上を扱えるようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001158">#0001158</a>) [Dirk]</li>
 <li>検索フォームにもPLG_templateSetVarsを追加しました。[Dirk]</li>

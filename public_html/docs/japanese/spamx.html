@@ -1,16 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="ja">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <title>Spam-Xプラグイン | Geeklogドキュメント</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
-  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
-  <meta name="robots" content="noindex">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet" />
+  <meta name="robots" content="noindex" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - Geeklog Spam-Xプラグイン</div>
 
 <h1>Geeklog Spam-Xプラグイン</h1>
@@ -38,7 +38,7 @@
 <li>ユーザーのプロフィール</li>
 </ul>
 
-<h2><a name="modules">モジュールの種類</a></h2>
+<h2><a name="module_types">モジュールの種類</a></h2>
 
 <p>Spam-Xプラグインは、コメントスパム送信者の変化に対して容易に対応できるよう、拡張性を重視して開発されました。<a href="#examine">検出(Examine)</a>、<a href="#action">アクション(Action)</a>、<a href="#admin">管理(Admin)</a>モジュールの3種類があります。新規モジュールは1個のファイルに収められているので、該当ディレクトリに追加しさえすれば、プラグインの機能を追加できます。</p>
 
@@ -64,7 +64,7 @@
 
 <p>SLVはRuss Jonesが<a href="http://www.linksleeve.org/">www.linksleeve.org</a>で運営している無料のサービスです。</p>
 
-<p><strong><a name="slvprivacy">プライバシーポリシーの表示</a></strong><br>
+<p><strong><a name="slvprivacy">プライバシーポリシーの表示</a></strong><br />
 SLVを使用しているということは、自分のサイトから第三者のサイトに情報を送信していることになるということを強調しておいた方がよいでしょう。法体系によっては、ユーザーにこの事実を告知する必要があるかもしれません。ご自分の地域のプライバシーに関する法律を確認してください。</p>
 
 <p>運用している状況によっては（たとえば、企業のイントラネットなど）、情報を外部のサイトに送信することが望ましくない場合もあるでしょう。その場合は、 <tt>SLV.Examine.class.php</tt>, <tt>SLVbase.class.php</tt>, <tt>SLVreport.Action.class.php</tt>, <tt>SLVwhitelist.Admin.class.php</tt> の4つのファイルをSpam-Xのディレクトリ(<tt>/path/to/geeklog/plugins/spamx</tt>)から削除すれば、SLVを無効にできます。単にSpam-Xプラグインを無効にする（または、アンインストールする）だけでもよいです。</p>
@@ -113,7 +113,7 @@ will be checked against the SFS database. If found the Geeklog user account will
 not be created.</p>
 
 <p>SFS is a free service and can be found at <a
-href="http://www.stopforumspam.com/">www.stopforumspam.com</a>.
+href="http://www.stopforumspam.com/">www.stopforumspam.com</a>.</p>
 
 <h3><a name="snl">Spam Number of Links (SNL)</a></h3>
 
@@ -142,7 +142,7 @@ user field.</p>
 
 <p><a href="#personal">パーソナルブラックリスト</a>、<a href="#ip">IPフィルター</a>、<a href="#ipofurl">URLのIPフィルター</a>、<a href="#header">HTTPヘッダーフィルター</a>モジュール用の管理モジュールは新しい項目を追加するためのフォームを提供します。既存の項目を削除するには、単にその項目をクリックするだけです。</p>
 
-<p><strong>SLVホワイトリスト</strong>管理モジュールを使えば、SLVに通報したくないURLを追加できます。サイトに投稿されるデータにたまたまある特定のURLが頻繁に含まれているが、SLVにスパムと判定されてほしくないときに役に立ちます。<br>自分のサイトのURL(つまり、「管理者用メニュー - コンフィギュレーション - Geeklog - サイト」の「<a href="config.html#desc_site_url">サイトURL</a>」)は自動的にホワイトリストに登録されるので、このモジュールで新たに登録する必要はありません。</p>
+<p><strong>SLVホワイトリスト</strong>管理モジュールを使えば、SLVに通報したくないURLを追加できます。サイトに投稿されるデータにたまたまある特定のURLが頻繁に含まれているが、SLVにスパムと判定されてほしくないときに役に立ちます。<br />自分のサイトのURL(つまり、「管理者用メニュー - コンフィギュレーション - Geeklog - サイト」の「<a href="config.html#desc_site_url">サイトURL</a>」)は自動的にホワイトリストに登録されるので、このモジュールで新たに登録する必要はありません。</p>
 
 <p><strong>ログ閲覧</strong>モジュールを使用すれば、Spam-Xログファイルの閲覧・クリアができます。ログファイルには、スパム送信元のIPアドレスやユーザーID（登録ユーザーがスパムを投稿した場合）、検出モジュール名などの追加情報が含まれています。</p>
 
@@ -193,7 +193,7 @@ user field.</p>
 </tr>
 </table>
 
-<h3><a name="main">モジュール</a></h3>
+<h3><a name="modules">モジュール</a></h3>
 
 <table>
 <tr><th style="width:25%">項目(変数)</th>
@@ -223,7 +223,7 @@ user field.</p>
 <p>Spam-Xプラグインの詳細情報とサポート掲示板は、<a href="http://www.pigstye.net/gplugs/staticpages/index.php/spamx" rel="nofollow">Spam-Xプラグインのホームページ</a>と<a href="http://wiki.geeklog.net/wiki/index.php/Dealing_with_Spam">Geeklog Wiki</a>にあります。</p>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br>
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 </body>

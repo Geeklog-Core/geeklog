@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="ja">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <title>テーマで使用できる変数 | Geeklogドキュメント</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
-  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - テーマで使用できる変数</div>
 
 <h1>テーマで使用できる変数</h1>
@@ -43,7 +43,7 @@
     <td>Geeklog Site - Another Nifty Geeklog Site</td>
     <td>サイト名及びスローガンと、現在の記事のタイトルです。</td></tr>
 <tr><td><code>background_image</code></td>
-    <td><tt>http://www.example.com/layout/<br>XSilver/images/bg.gif</tt></td>
+    <td><tt>http://www.example.com/layout/<br />XSilver/images/bg.gif</tt></td>
     <td>現在のテーマの <tt>images</tt> ディレクトリ内の <tt>bg.gif</tt> を指しています。背景画像として使用することを想定しています。</td></tr>
 <tr><td><code>site_mail</code></td>
     <td><tt>admin@example.com</tt></td>
@@ -61,8 +61,8 @@
     <td>Thursday, November 28 2002 @ 11:43 AM PST</td>
     <td>現在の日付と時刻で、<code>$_CONF['date']</code>に従ってフォーマットされます。</td></tr>
 <tr><td><code>site_logo</code></td>
-    <td><tt>http://www.example.com/layout/<br>professional/images/logo.png</tt></td>
-    <td>現在のテーマの<tt>images</tt>ディレクトリ内にあるロゴ画像を指し、ロゴとして表示されることを想定しています。ふつう、GIF画像(<tt>logo.gif</tt>)ですが、画像タイプはテーマごとに変更することができます（たとえば、Professionalテーマでは、PNG画像を使用しているので、ロゴは <tt>logo.png</tt> になっています。）。<br><strong>訳注：</strong>画像タイプを変更するには、テーマの <tt>functions.php</tt> 内で、<br><code>$_IMAGE_TYPE = 'png';</code><br>のように定義します。もちろん、画像は自分で差し替えてください。</td></tr>
+    <td><tt>http://www.example.com/layout/<br />professional/images/logo.png</tt></td>
+    <td>現在のテーマの<tt>images</tt>ディレクトリ内にあるロゴ画像を指し、ロゴとして表示されることを想定しています。ふつう、GIF画像(<tt>logo.gif</tt>)ですが、画像タイプはテーマごとに変更することができます（たとえば、Professionalテーマでは、PNG画像を使用しているので、ロゴは <tt>logo.png</tt> になっています。）。<br /><strong>訳注：</strong>画像タイプを変更するには、テーマの <tt>functions.php</tt> 内で、<br /><code>$_IMAGE_TYPE = 'png';</code><br />のように定義します。もちろん、画像は自分で差し替えてください。</td></tr>
 <tr><td><code>theme</code></td>
     <td>professional</td>
     <td>現在のテーマ名です。</td></tr>
@@ -147,7 +147,7 @@
     <td>ユーザーが現在使用している言語の「今日の注目記事(Today's Featured Article)」に相当する語句です。<strong>注目記事の場合にしか利用できません。</strong></td></tr>
 <tr><td><code>story_counter</code></td>
     <td>1</td>
-    <td>サイトのインデックスページ(<tt>index.php</tt>)では、この変数は最初の記事の場合は 1 、2番目の記事の場合は 2 、以下同様となります。最初の記事が注目記事かどうかとは無関係です。ページが変わる（たとえば、<tt>index.php?page=2</tt> など）ごとにカウンタはリセットされます。<br>記事を個々に表示しているとき(<tt>article.php</tt>)やプレビューでは 0 になります。</td></tr>
+    <td>サイトのインデックスページ(<tt>index.php</tt>)では、この変数は最初の記事の場合は 1 、2番目の記事の場合は 2 、以下同様となります。最初の記事が注目記事かどうかとは無関係です。ページが変わる（たとえば、<tt>index.php?page=2</tt> など）ごとにカウンタはリセットされます。<br />記事を個々に表示しているとき(<tt>article.php</tt>)やプレビューでは 0 になります。</td></tr>
 </table>
 
 <p><a name="readmore">以下の変数</a>は、記事がインデックスページに表示され、<strong>かつ</strong>、記事の本文が空白でないときに限って使用できます。</p>
@@ -169,7 +169,7 @@
     <td><code>&lt;a href="..."&gt;read more&lt;/a&gt; (62 words)</code></td>
     <td>記事の個別ページへのリンクで、本文の語数を含みます。</td></tr>
 <tr><td><code>start_readmore_anchortag</code></td>
-    <td><code>&lt;a href=".../article.php<br>?story=20021022234959146"&gt;</code></td>
+    <td><code>&lt;a href=".../article.php<br />?story=20021022234959146"&gt;</code></td>
     <td>記事の個別ページへのリンクに関する開きタグです。</td></tr>
 <tr><td><code>end_readmore_anchortag</code></td>
     <td><code>&lt;/a&gt;</code></td>
@@ -195,19 +195,19 @@
     <th style="width:25%">例</th>
     <th style="width:50%">説明</th></tr>
 <tr><td><code>comments_url</code></td>
-    <td><tt>http://www.example.com/article.php<br>?story=20021022234959146#comments</tt></td>
+    <td><tt>http://www.example.com/article.php<br />?story=20021022234959146#comments</tt></td>
     <td>コメントセクションのURLです（記事が個別に表示されている場合）。</td></tr>
 <tr><td><code>comments_text</code></td>
     <td>2 comments</td>
     <td>コメント数の後に、ユーザーが現在使用している言語の「コメント(comments)」に相当する語句を続けたものです。</td></tr>
 <tr><td><code>comments_with_count</code></td>
     <td>2</td>
-    <td>記事へのコメント数（常に 1 以上）。<br>この文字列は、コメントが受け付けられるとすぐに<code>&lt;a href=".../article.php?story=20021022234959146#comments"&gt;</code>を指すリンクに変わります。</td></tr>
+    <td>記事へのコメント数（常に 1 以上）。<br />この文字列は、コメントが受け付けられるとすぐに<code>&lt;a href=".../article.php?story=20021022234959146#comments"&gt;</code>を指すリンクに変わります。</td></tr>
 <tr><td><code>lang_comments</code></td>
     <td>comments</td>
     <td>ユーザーが現在使用している言語の「コメント(comments)」に相当する語句です。</td></tr>
 <tr><td><code>post_comment_link</code></td>
-    <td><code>&lt;a href=".../comment.php<br>?sid=20021022234959146&amp;pid=0<br>&amp;type=article"&gt;Post a comment&lt;/a&gt;</code></td>
+    <td><code>&lt;a href=".../comment.php<br />?sid=20021022234959146&amp;pid=0<br />&amp;type=article"&gt;Post a comment&lt;/a&gt;</code></td>
     <td>コメント投稿用フォームへのリンクです（リンクテキストにユーザーが現在使用している言語の「コメント投稿(Post a comment)」に相当する語句を使用します。）。</td></tr>
 </table>
 
@@ -233,13 +233,13 @@
     <td>Tony Bibbs</td>
     <td>記事所有者名です。もし<code>$_CONF['show_fullname']</code>が有効な場合、（もし設定されていたら）所有者のフルネーム、そうでなければユーザー名になります。</td></tr>
 <tr><td><code>start_contributedby_anchortag</code></td>
-    <td><code>&lt;a class="storybyline" href="http://www.example.com/<br>users.php?mode=profile&amp;uid=7"&gt;</code></td>
+    <td><code>&lt;a class="storybyline" href="http://www.example.com/<br />users.php?mode=profile&amp;uid=7"&gt;</code></td>
     <td>記事所有者のプロフィールへのリンクの開きタグです（ゲストユーザーの場合は空白）。</td></tr>
 <tr><td><code>end_contributedby_anchortag</code></td>
     <td><code>&lt;/a&gt;</code></td>
     <td>記事所有者のプロフィールへのリンクの閉じタグです（ゲストユーザーの場合は、空白）。</td></tr>
 <tr><td><code>contributedby_url</code></td>
-    <td><tt>http://www.example.com/<br>users.php?mode=profile&amp;uid=7</tt></td>
+    <td><tt>http://www.example.com/<br />users.php?mode=profile&amp;uid=7</tt></td>
     <td>記事所有者のプロフィールへのリンク（ゲストユーザーの場合は空白）。</td></tr>
 <tr><td><code>contributedby_photo</code></td>
     <td><tt>&lt;img src=".../images/userphotos/Tony.gif" alt="Tony Bibbs"&gt;</tt></td>
@@ -256,19 +256,19 @@
     <th style="width:25%">例</th>
     <th style="width:50%">説明</th></tr>
 <tr><td><code>story_anchortag_and_image</code></td>
-    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
+    <td><code>&lt;a href="http://www.example.com/<br />index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
     <td>記事の話題に対応するアイコンで、話題でソートされたサイトのインデックスページへのリンクになっています。</td></tr>
 <tr><td><code>story_anchortag_and_image_no_align</code></td>
-    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
+    <td><code>&lt;a href="http://www.example.com/<br />index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
     <td><code>{story_anchortag_and_image}</code>変数と同じですが、話題の画像の<code>align</code>属性を含みません。</td></tr>
 <tr><td><code>story_topic_image</code></td>
-    <td><code>&lt;img src="http://www.example.com/<br>images/topics/topic_gl.gif" align="right" alt="Geeklog" title="Geeklog"&gt;</code></td>
+    <td><code>&lt;img src="http://www.example.com/<br />images/topics/topic_gl.gif" align="right" alt="Geeklog" title="Geeklog"&gt;</code></td>
     <td>記事に対応する話題アイコンです。</td></tr>
 <tr><td><code>story_topic_image_no_align</code></td>
-    <td><code>&lt;img src="http://www.example.com/<br>images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</code></td>
+    <td><code>&lt;img src="http://www.example.com/<br />images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</code></td>
     <td><code>{story_topic_image}</code>変数と同じですが、話題の画像の<code>align</code>属性を含みません。</td></tr>
 <tr><td><code>story_topic_image_url</code></td>
-    <td><code>http://www.example.com/<br>images/topics/topic_gl.gif</code></td>
+    <td><code>http://www.example.com/<br />images/topics/topic_gl.gif</code></td>
     <td>話題アイコンのURLです。</td></tr>
 <tr><td><code>story_topic_id</code></td>
     <td>General</td>
@@ -277,7 +277,7 @@
     <td>General News</td>
     <td>セクションブロックなどに表示される話題名です。</td></tr>
 <tr><td><code>story_topic_url</code></td>
-    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=General"&gt;</code></td>
+    <td><code>&lt;a href="http://www.example.com/<br />index.php?topic=General"&gt;</code></td>
     <td>現在の話題の記事だけを表示するサイトのインデックスページのURLです。</td></tr>
 </table>
 
@@ -288,13 +288,13 @@
     <th style="width:25%">例</th>
     <th style="width:50%">説明</th></tr>
 <tr><td><code>edit_link</code></td>
-    <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;edit&lt;/a&gt;</code></td>
+    <td><code>&lt;a href=".../admin/story.php<br />?mode=edit&amp;sid=20021022234959146"&gt;edit&lt;/a&gt;</code></td>
     <td>管理者の記事エディターで記事を編集するためのリンクです。</td></tr>
 <tr><td><code>edit_icon</code></td>
-    <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;&lt;img src=".../images/edit.gif"&gt;&lt;/a&gt;</code></td>
+    <td><code>&lt;a href=".../admin/story.php<br />?mode=edit&amp;sid=20021022234959146"&gt;&lt;img src=".../images/edit.gif"&gt;&lt;/a&gt;</code></td>
     <td>記事を編集するための管理者の記事エディターへリンクしているアイコンです。</td></tr>
 <tr><td><code>edit_url</code></td>
-    <td><tt>http://www.example.com/admin/story.php<br>?mode=edit&amp;sid=20021022234959146</tt></td>
+    <td><tt>http://www.example.com/admin/story.php<br />?mode=edit&amp;sid=20021022234959146</tt></td>
     <td>管理者の記事エディターで記事を編集するためのURLです。</td></tr>
 <tr><td><code>lang_edit_text</code></td>
     <td>edit</td>
@@ -302,7 +302,7 @@
 </table>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br>
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

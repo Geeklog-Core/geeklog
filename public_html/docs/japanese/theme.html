@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="ja">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <title>テーマ作成 | Geeklogドキュメント</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
-  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - テーマ作成</div>
 
 <p><small>(Geeklogの最近のバージョンにおける<a href="#changes">テーマ変更</a>一覧については、下記参照のこと。)</small></p>
@@ -72,7 +72,7 @@ $user_templates-&gt;set_file (array ('profile'=&gt;'profile.thtml', 'row'=&gt;'c
 <h3><a name="tips">ヒントと注意点</a></h3>
 
 <p><strong><a name="wysiwyg">テーマとWYSIWYGエディター：</a></strong>
-Geeklogが使用するテンプレートファイルは完全なHTMLファイルではなく、断片に過ぎません。Geeklogはこの断片を組み合わせて適切なHTMLドキュメントを作成します。しかし、このため一部のWYSIWYG HTMLエディターが誤動作し、ファイルに不足しているHTML要素を勝手に追加して、Geeklogにとっては使い物にならなくしてしまうことがあります。<br>テーマの編集には、単純なテキストエディターを使用することをお勧めします。</p>
+Geeklogが使用するテンプレートファイルは完全なHTMLファイルではなく、断片に過ぎません。Geeklogはこの断片を組み合わせて適切なHTMLドキュメントを作成します。しかし、このため一部のWYSIWYG HTMLエディターが誤動作し、ファイルに不足しているHTML要素を勝手に追加して、Geeklogにとっては使い物にならなくしてしまうことがあります。<br />テーマの編集には、単純なテキストエディターを使用することをお勧めします。</p>
 
 <p><strong><a name="xhtml">XHTML:</a></strong>
 Geeklog は XHTML準拠のサイトを作成できます。HTMLにもXHTMLにも準拠したテーマを作成できます。
@@ -86,12 +86,12 @@ Geeklog は XHTML準拠のサイトを作成できます。HTMLにもXHTMLにも
 左右のブロックの外見を変えることができます。詳細は、<a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=21070">Geeklogホームページのこの記事</a>を参照してください。</p>
 
 <p><strong><a name="polls">アンケート：</a></strong>
-投票結果をグラフで表示する際、複数の色の棒グラフを使用するには、<code>{answer_counter}</code> と <code>{answer_odd}</code> テーマ変数を <tt>pollbooth/pollvotes_bar.thtml</tt> テンプレートファイル内で使用するとよいでしょう。<code>{answer_counter}</code> はそれぞれの回答数に置き換えられるので、 <tt>bar{answer_counter}.gif</tt> と記述すると、結果として <tt>bar1.gif</tt>, <tt>bar2.gif</tt> のようになります。GIFファイルごとに色を変えておけば、回答ごとに色も変わることになります。<br>
+投票結果をグラフで表示する際、複数の色の棒グラフを使用するには、<code>{answer_counter}</code> と <code>{answer_odd}</code> テーマ変数を <tt>pollbooth/pollvotes_bar.thtml</tt> テンプレートファイル内で使用するとよいでしょう。<code>{answer_counter}</code> はそれぞれの回答数に置き換えられるので、 <tt>bar{answer_counter}.gif</tt> と記述すると、結果として <tt>bar1.gif</tt>, <tt>bar2.gif</tt> のようになります。GIFファイルごとに色を変えておけば、回答ごとに色も変わることになります。<br />
 <code>{answer_odd}</code> は回答ごとに 0 から 1、1 から 0 と変わるので、<tt>bar{answer_odd}.gif</tt> と記述すると、結果として奇数番目の回答は <tt>bar0.gif</tt> 、偶数番目の回答は <tt>bar1.gif</tt> となります。</p>
 
 <p><strong><a name="left-blocks">右ブロック内で左ブロックを表示する：</a></strong>
-<code>$_CONF['left_blocks_in_footer']</code> はかなり変わったオプションです。このオプションを使用すると、サイトのフッター（つまり <tt>footer.thtml</tt>）内で <code>{left_blocks}</code> テンプレート変数が使用できるようになる一方で、ヘッダー（<tt>header.thtml</tt>）内では <code>{left_blocks}</code> テンプレート変数が使用できなくなります。<br>
-これを利用すると、2列レイアウト（1列は右ブロック用、もう1列はコンテンツ用）を実現できます。単にすべてのブロックを右ブロックに移動しただけでは期待した動作にはなりません。普通、左ブロックしか表示しないようなページ（たとえば、<tt>article.php</tt> や管理者用のページ）では、<em>全くブロックが表示されない</em> からです。 <code>$_CONF['left_blocks_in_footer'] = 1</code> にすると、この動作が修正され、システム内部では依然として<strong>左</strong>ブロックとして扱われていても、実際には<strong>右</strong>ブロックに表示されるようになります。<br>
+<code>$_CONF['left_blocks_in_footer']</code> はかなり変わったオプションです。このオプションを使用すると、サイトのフッター（つまり <tt>footer.thtml</tt>）内で <code>{left_blocks}</code> テンプレート変数が使用できるようになる一方で、ヘッダー（<tt>header.thtml</tt>）内では <code>{left_blocks}</code> テンプレート変数が使用できなくなります。<br />
+これを利用すると、2列レイアウト（1列は右ブロック用、もう1列はコンテンツ用）を実現できます。単にすべてのブロックを右ブロックに移動しただけでは期待した動作にはなりません。普通、左ブロックしか表示しないようなページ（たとえば、<tt>article.php</tt> や管理者用のページ）では、<em>全くブロックが表示されない</em> からです。 <code>$_CONF['left_blocks_in_footer'] = 1</code> にすると、この動作が修正され、システム内部では依然として<strong>左</strong>ブロックとして扱われていても、実際には<strong>右</strong>ブロックに表示されるようになります。<br />
 テーマの <tt>header.thtml</tt>, <tt>footer.thtml</tt>, <tt>leftblocks.thtml</tt> はたぶん、修正する必要があるでしょう。ですから、<tt>left_blocks_in_footer</tt> オプションはコンフィギュレーションでは設定できず、テーマの <tt>functions.php</tt> 内で設定すべきです。そうすることで、たとえば、ユーザーに「普通の」テーマと右ブロックテーマを選択する余地を与えることさえできるようにります。</p>
 
 <p><strong><a name="error-message">エラーメッセージ：</a></strong>
@@ -101,15 +101,15 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 多くのWebサイトでは、パーマネントリンク、つまり記事に対応する永続的なURLを提供しています。Geeklogでデフォルトの Professional テーマでは、記事の見出しが既にその機能を果たしています。つまり、記事の永続的なURLへのリンクとなっています（article.phpを指しています）。しかし、この方法はあまり目につかないし、訪問者がページのどこかにパーマネントリンクがあるのを期待することが多いため、自分でパーマネントリンクを追加する方法を次に示します。</p>
 <ol>
 <li>記事のテンプレートファイル内に適当な場所を探します。既に記事関係のリンクが多数含まれているので、<tt>storytext.thtml</tt> 内の story-footer セクションがよいかもしれません。</li>
-<li>パーマネントリンクを設置する場所を決めたら、次のコードを入力します。<br>
-<code style="margin-left:2em">&lt;a href="{article_url}"&gt;{lang_permalink}&lt;a&gt;</code><br>
+<li>パーマネントリンクを設置する場所を決めたら、次のコードを入力します。<br />
+<code style="margin-left:2em">&lt;a href="{article_url}"&gt;{lang_permalink}&lt;a&gt;</code><br />
 これで、記事へのリンク(<tt>article_url</tt>)が、現在の言語ファイルの「パーマネントリンク(Permalink)」に相当する語句(<tt>lang_permalink</tt>)を用いて追加されました。</li>
 <li>徹底的にやりましょう。この時点では、パーマネントリンクは注目記事以外の記事でしか表示されません。また、<acronym title="Cascading Style Sheet">CSS</acronym>を使用して外見を変更したり、リンクの場所を調節する必要があるでしょう。</li>
 <li>同じコードを <tt>featuredstorytext.thtml</tt> と <tt>archivestorytext.thtml</tt> テンプレートファイルに追加すれば、注目記事にもパーマネントリンクが表示されるようになります。</li>
 </ol>
 
 
-<h2><a name="changes">Theme changes in Geeklog 2.0.0</a></h2>
+<h2><a name="changes200">Theme changes in Geeklog 2.0.0</a></h2>
 
 <p>Geeklog 2.0.0には2つのテーマエンジンが存在します。現在、DeminとModern Curveテーマは2.0.0のテーマエンジンを使っています。Professional および Professional CSS テーマは1.8.1テーマエンジンを使っています。 
 1.8.1テーマエンジンはそのうちGeeklogからなくなります。そのため、テーマを開発するなら新しいテーマエンジンを使ってください。くわしくはGeeklog Wiki <a href="http://wiki.geeklog.net/index.php/Theme_Developers_Guide">Theme Developers Guide</a>を。</p>
@@ -141,7 +141,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 </ul>
 
 
-<h2><a name="changes">Theme changes in Geeklog 1.8.0</a></h2>
+<h2><a name="changes180">Theme changes in Geeklog 1.8.0</a></h2>
 
 <ul>
 <li>新たにテーマ変数 <code>{plg_footercode}</code> が <tt>footer.thtml</tt>に追加されました。
@@ -186,8 +186,8 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     最大画素数、話題アイコンの最大ファイルサイズ、縮小されるかどうかを表示する
     テーマ変数 <code>{icon_max_dimensions}</code>を追加しました。</li>
 <li>話題エディターテンプレート<tt>admin/topic/topiceditor.thtml</tt>に、
-    話題IDの変更ができるようにするため、</li>hiddenフィールドの"<tt>old_tid</tt>"を
-    追加しました。
+    話題IDの変更ができるようにするため、hiddenフィールドの"<tt>old_tid</tt>"を
+    追加しました。</li>
 <li>記事エディターテンプレート<tt>admin/topic/storyeditor.thtml</tt> と
     <tt>admin/topic/storyeditor_advanced.thtml</tt>に、メタタグが無効のとき、
     メタ description と メタ keywordsを隠すためのテーマ変数 
@@ -356,7 +356,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     Geeklog 1.6.0では古い定義を復活させます。つまり、アンカータグのテーマ変数は
     所有者のプロファイルへのリンクの開始と終了のタグを含みます。
     テーマ変数<tt>{contributedby_author}</tt>は、所有者の名前だけです。</li>
-<li>新テーマ変数<tt>{photo_max_dimensions}</tt>はユーザー写真の最大値をセットしています。<br>
+<li>新テーマ変数<tt>{photo_max_dimensions}</tt>はユーザー写真の最大値をセットしています。<br />
     ユーザー写真のサイズ: <tt>preferences/userphoto.thtml</tt></li>
 <li>記事や静的ページで、印刷用のテンプレートファイル<tt>printable.thtml</tt>を利用する際に
     読み込まれるスタイルシート<tt>print.css</tt>が追加されました。</li>
@@ -592,7 +592,7 @@ if (empty($lang)) {
 <ul>
 <li><tt>leftblocks.thtml</tt> と <tt>rightblocks.thtml</tt> にはブロックの横幅の最小値を維持するために &lt;div&gt; タグが使用されていましたが、CSSの <tt>block-bg-spreader</tt> というクラスに置き換えられました。</li>
 <li>アンケートプラグインのテンプレートで、CSSのブロック関係のクラスとの混同を避けるため、 block-vote-results クラスが poll-vote-results に、 block-vote クラスが poll-vote に変更されました。</li>
-<li>カレンダープラグインが使用するテンプレートファイルがプラグイン用のディレクトリ(<tt>/非公開領域/plugins/calendar/templates</tt>)へ移動され、テーマディレクトリ内の calendar ディレクトリをそっくり削除できるようになりました。<br>
+<li>カレンダープラグインが使用するテンプレートファイルがプラグイン用のディレクトリ(<tt>/非公開領域/plugins/calendar/templates</tt>)へ移動され、テーマディレクトリ内の calendar ディレクトリをそっくり削除できるようになりました。<br />
     <tt>submitevent.thtml</tt>, <tt>editpersonalevent.thtml</tt>,
     <tt>admin/eventeditor.thtml</tt>, <tt>dayview/quickaddform.thtml</tt> テンプレートで、<a href="calendar.html#desc_hour_mode">24時間制</a>で時刻を入力できるようになりました。hidden 属性の hour_mode フィールドが必要になり、テンプレートに応じて、am/pmを選ぶドロップダウンリストが <code>{startampm_selection}</code>, <code>{endampm_selection}</code>, <code>{ampm_selection}</code> テンプレート変数として、また、分を選ぶドロップダウンリストが <code>{startminute_options}</code>, <code>{endminute_options}</code>, <code>{minute_options}</code> テンプレート変数として利用できるようになりました。</li>
 <li>オブジェクトの作成者（たとえば、記事やコメントの作成者）やオブジェクトの所有者（たとえば、ブロックの所有者）が表示されるテンプレートならどれでも、<code>{author}</code> と <code>{owner}</code> テンプレート変数が利用できるようになりました。この2つの変数は <a href="config.html#desc_show_fullname">$_CONF['show_fullname']</a> の設定に従って、ユーザーのフルネームかユーザー名（アカウント名）のいずれかを表示します。</li>
@@ -658,8 +658,8 @@ if (empty($lang)) {
 <li><tt>preferences/profile.thtml</tt> テンプレートに、パスワードを変更するためのフィールド（現在のパスワード、新規パスワードの確認用）が追加されました。</li>
 <li>検索フォーム(<tt>search/searchform.thtml</tt>)に1ページあたりの検索結果の表示数を設定するオプションが追加され、ハードコードされていたオプションが削除されました（リンクはプラグインになったので、<code>{plugin_types}</code> オプションの一部として表示されるからです）。</li>
 <li>自分のサイトにユーザーがリモート認証を利用してログインするのを許可する場合、<tt>loginform.thtml</tt> テンプレートファイルに <code>{services}</code> テンプレート変数を追加しなければならなくなりました。</li>
-<li>自分のサイトでトラックバックを有効にする場合、記事のテンプレートファイルにたとえば次のように、トラックバック用のセクションを追加する必要があります。<br>
-    <code>{start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}</code><br>具体例は、Professionalテーマの記事用テンプレートを参照してください。</li>
+<li>自分のサイトでトラックバックを有効にする場合、記事のテンプレートファイルにたとえば次のように、トラックバック用のセクションを追加する必要があります。<br />
+    <code>{start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}</code><br />具体例は、Professionalテーマの記事用テンプレートを参照してください。</li>
 <li>サイトの統計情報用の <tt>stats/sitestatistics.thtml</tt> テンプレートファイルが変更されました（リンクとアンケート用の項目が削除され、登録ユーザー数を表す項目が追加されました）。プラグインの項目を表示するための <tt>stats/singlesummary.thtml</tt> というテンプレートファイルが追加されました。</li>
 <li>以前、掲示板プラグインなどが使用していた <tt>navbar</tt> ディレクトリがGeeklogテーマの一部になりました。テンプレートファイルファイルが2つ(<tt>menuitem.thtml</tt> と <tt>navbar.thtml</tt>)と画像ファイルが2つ(<tt>button.gif</tt> と <tt>button_over.gif</tt>）が含まれています。</li>
 </ul>
@@ -715,7 +715,7 @@ distribution.</p>
 <li>The plugin editor, <tt>admin/plugins/editor.thml</tt>, now displays 2
     version numbers for the plugin: The installed version and the (possibly
     differing) version of the actual code.  In the latter case, it will also
-    display an update button.<br>
+    display an update button.<br />
     The list of plugins, <tt>admin/plugins/pluginlist.thtml</tt> and
     <tt>admin/plugins/listitem.thtml</tt>, also displays the 2 version numbers
     and now supports paging when more than 25 plugins are installed.</li>
@@ -773,7 +773,7 @@ develop their own themes.</p>
     Geeklog uses can now be styled individually: list-feed, list-new-comments,
     list-new-links, list-new-plugins, list-older-stories, list-personal-events,
     list-site-events, list-story-options, list-whats-related (the names should
-    be self-explanatory).<br>
+    be self-explanatory).<br />
     Use {list_class_name} to get the actual class name, and {list_class} to get
     class="classname".</li>
 <li>Several class names have been introduced so that the 2 small calendars
@@ -797,7 +797,7 @@ develop their own themes.</p>
 <li>Template files <tt>comment/comment.thtml</tt> and
     <tt>comment/thread.thtml</tt> have been added and
     <tt>comment/startcomment.thtml</tt> has been changed to implement
-    template-driven comments.<br>
+    template-driven comments.<br />
     Please note that <tt>comment/comment.thtml</tt> was changed <em>again</em>
     in Geeklog 1.3.9rc2.</li>
 <li>A <code>{link_edit}</code> variable has been added to
@@ -953,7 +953,7 @@ are necessary.</p>
     in the theme's <tt>functions.php</tt> file. The variable should point to
     a directory that has the same hierarchy as Geeklog's images directory
     (note that the path to topic images is stored relative to Geeklog's
-    public_html directory).<br>
+    public_html directory).<br />
     <strong>Example:</strong>
     <code>$_THEME_URL = $_CONF['layout_url'];</code></li>
   <li>The <code>$_BLOCK_TEMPLATE</code> "hack" can now be applied to the
@@ -1014,7 +1014,7 @@ this shouldn't be too much of a hassle ...</p>
 <ul>
   <li>The template file <tt>admin/mail/mailform.thtml</tt> has been added.
     This form for sending emails to other users of the site was previously
-    hard-coded into Geeklog.<br>
+    hard-coded into Geeklog.<br />
     If you followed the above advice and copied over the <tt>admin</tt>
     directory to your theme, you got this file already.</li>
   <li>Two new files <tt>menuitem_last.thtml</tt> and
@@ -1027,7 +1027,7 @@ this shouldn't be too much of a hassle ...</p>
     menu bar, <tt>menuitem_none.thtml</tt> is used.</li>
   <li>New files have been added and the existing files have been changed for
     the links section (<tt>links</tt> directory). Again, we recommend to just
-    copy over those files from one of the themes that ship with Geeklog.<br>
+    copy over those files from one of the themes that ship with Geeklog.<br />
     The new files are: <tt>categoryactivecol.thtml</tt>,
     <tt>categorycol.thtml</tt>, <tt>categorynavigation.thtml</tt>,
     <tt>categoryrow.thtml</tt>, <tt>pagenavigation.thtml</tt></li>
@@ -1038,7 +1038,7 @@ this shouldn't be too much of a hassle ...</p>
     Geeklog. You should also copy over the file <tt>users/storyrow.thtml</tt>
     which describes the block for the last 1o stories.</li>
   <li>The Classic theme has been updated to have an "Edit" link (for
-    StoryAdmins) in every story now.<br>
+    StoryAdmins) in every story now.<br />
     Files changed: <tt>storybodytext.thtml</tt>,
     <tt>featuredstorybodytext.thtml</tt></li>
   <li>In the Classic and Digital Monochrome themes the "contact" link now
@@ -1049,12 +1049,12 @@ this shouldn't be too much of a hassle ...</p>
 
 <h3>CSS changes</h3>
 <ul>
-<li>The underscore '_' is not a valid character in CSS. Therefore, some class names used by the Geeklog calendar have been changed to use the dash '-' instead. You may need to change your stylesheet accordingly.<br>
+<li>The underscore '_' is not a valid character in CSS. Therefore, some class names used by the Geeklog calendar have been changed to use the dash '-' instead. You may need to change your stylesheet accordingly.<br />
 Names that changed: <b>cal-oldday</b>, <b>cal-today</b>,
 <b>cal-futureday</b>, <b>cal-nullday</b>, <b>weekview-curday</b>,
 <b>weekview-offday</b></li>
 <li>A new class named <b>pagenav</b> can be used to format the paged
-  navigation.<br>
+  navigation.<br />
   Please note that this change was made <em>after</em> the release of Geeklog
   1.3.6rc1 and affects the use of the paged navigation in
   <tt>admin/user/userslist.thtml</tt> and <tt>links/links.thtml</tt>: In
@@ -1072,7 +1072,7 @@ you put the above line <em>before</em> the <code>&lt;title&gt;</code> tag in
 the <code>&lt;head&gt;</code> section of your <tt>header.thtml</tt> file.</p>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br>
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

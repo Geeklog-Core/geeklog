@@ -1,12 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Geeklog Documentation - Configuration</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Configuration</div>
 
 <h1>Geeklog Configuration</h1>
@@ -19,7 +20,7 @@ the configuration options have been moved to the database and can now be
 reached from the <b>Configuration</b> admin panel within Geeklog.</p>
 
 <p>For technical reasons, some configuration options still have to be
-stored in files. There are two such configuration files now:
+stored in files. There are two such configuration files now:</p>
 <ul>
 <li><a href="#db-config.php">db-config.php</a></li>
 <li><a href="#siteconfig.php">siteconfig.php</a></li>
@@ -77,7 +78,7 @@ manually.</p>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
   <td valign="top">This contains the message to display when a Geeklog site is
     disabled. If the text begins with "http:" then visitors are redirected to
-    that URL.<br>
+    that URL.<br />
     <strong>Note:</strong> The option actually disable the site can be found
     in the <tt>siteconfig.php</tt> file.</td></tr>
 <tr>
@@ -92,7 +93,7 @@ manually.</p>
 <tr>
   <td valign="top"><a name="desc_url_rewrite">url_rewrite</a></td>
   <td valign="top">false</td>
-  <td valign="top">Enable (true) or disable (false) URL rewriting.<br>
+  <td valign="top">Enable (true) or disable (false) URL rewriting.<br />
     Also see the section on <a href="#url-rewrite">URL Rewriting</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cdn_hosted">cdn_hosted</a></td>
@@ -102,8 +103,8 @@ manually.</p>
 <tr>
   <td valign="top"><a name="desc_meta_tags">meta_tags</a></td>
   <td valign="top">disabled</td>
-  <td valign="top">Enabled - The meta tags for stories and topics will be displayed. If none are found, then the default will be used. The default will also be used for any page that doesn't have meta tags.<br>
-      Enabled (Default for Homepage only) - The same as Enabled except, the defaults are used only for the Homepage.<br>
+  <td valign="top">Enabled - The meta tags for stories and topics will be displayed. If none are found, then the default will be used. The default will also be used for any page that doesn't have meta tags.<br />
+      Enabled (Default for Homepage only) - The same as Enabled except, the defaults are used only for the Homepage.<br />
     Disabled - Meta tags are not used.</td></tr>
 <tr>
   <td valign="top"><a name="desc_meta_description">meta_description</a></td>
@@ -202,28 +203,28 @@ the admin panel.</p>
     <td valign="top">If this value is 1, then the entire introtext of the stories will be included in the news feed. Any number greater than 1 limits the introtext to that many characters (e.g. a value of 80 would only include the first 80 characters from the introtext in the feed). If set to 0, the introtext is not included in the feed.</td></tr>
 <tr><td valign="top"><a name="desc_rdf_language">rdf_language</a></td>
     <td valign="top">en-gb</td>
-    <td valign="top">Value for the feed's language tag. Depending on your site's language and operating system, this may differ from the language setting in the locale (see above).<br><strong>Example:</strong> The PHP locale setting for German is 'de_DE' while the correct language setting for a German RSS feed would be 'de-DE' (note the dash instead of the underscore).</td></tr>
+    <td valign="top">Value for the feed's language tag. Depending on your site's language and operating system, this may differ from the language setting in the locale (see above).<br /><strong>Example:</strong> The PHP locale setting for German is 'de_DE' while the correct language setting for a German RSS feed would be 'de-DE' (note the dash instead of the underscore).</td></tr>
 <tr><td valign="top"><a name="desc_syndication_max_headlines">syndication_max_headlines</a></td>
     <td valign="top">0</td>
-    <td valign="top">Upper limit for the max. number of headlines when <em>importing</em> a feed (into a portal block). The limit can also be set for each individual portal block in the block menu.<br>
+    <td valign="top">Upper limit for the max. number of headlines when <em>importing</em> a feed (into a portal block). The limit can also be set for each individual portal block in the block menu.<br />
     When set to 0, all headlines are imported.</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_tag">comment_feeds_article_tag</a></td>
-    <td valign="top"><xmp><p>[Original Article: <a href=\"%s\">%s</a>%s%s]\n</xmp></td>
-    <td valign="top">The string used to enter a tag about the article for the comment:<br><br>
-    This must take three strings, in the order:<br>
-    Article URL - the url to the article<br>
-    Article title - the title of the article<br>
-    Article Author tag, the result of evaluating 'article_author_tag'<br>
-    Comment author tag, the result of evaluating 'comment_author_tag'<br><br>
+    <td valign="top"><pre>&lt;p&gt;[Original Article: <a href="%s">%s</a>%s%s]\n</pre></td>
+    <td valign="top">The string used to enter a tag about the article for the comment:<br /><br />
+    This must take three strings, in the order:<br />
+    Article URL - the url to the article<br />
+    Article title - the title of the article<br />
+    Article Author tag, the result of evaluating 'article_author_tag'<br />
+    Comment author tag, the result of evaluating 'comment_author_tag'<br /><br />
     This is generated with a sprintf command, so each item is indicated by a %s. If you want either of the last two to be blank, set article_author_tag and/or comment_author_tag to be empty strings.</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_tag_position">comment_feeds_article_tag_position</a></td>
     <td valign="top">end</td>
     <td valign="top">The position of the article_tag in the comment body. This indicates where the article tag, when formatted, should be inserted into the comment. This may be start, end or none.</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_author_tag">comment_feeds_article_author_tag</a></td>
     <td valign="top"></td>
-    <td valign="top">A tag to link to the article author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string. An example of an Article Author Tag would be: <xmp> Written By: <a href=\"%s\">%s</a></xmp></td></tr>
+    <td valign="top">A tag to link to the article author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string. An example of an Article Author Tag would be: <pre> Written By: <a href="%s">%s</a></pre></td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_comment_author_tag">comment_feeds_comment_author_tag</a></td>
-    <td valign="top"><xmp>, Comment By: <a href=\"%s\">%s</a></xmp></td>
+    <td valign="top"><pre>, Comment By: <a href="%s">%s</a></pre></td>
     <td valign="top">A tag to link to the comment author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string.</td></tr>    
 </table>
 
@@ -251,10 +252,10 @@ the admin panel.</p>
 <tr><td valign="top"><a name="desc_path_images">path_images</a></td>
     <td valign="top">/path/to/geeklog/public_html/images/</td>
     <td valign="top">Path where Geeklog expects to find its images, including
-        user photos and images for stories.</td>
+        user photos and images for stories.</td></tr>
 <tr><td valign="top"><a name="desc_path_editors">path_editors</a></td>
     <td valign="top">/path/to/geeklog/public_html/editors/</td>
-    <td valign="top">Path where all WYSIWYG editors reside.</td>
+    <td valign="top">Path where all WYSIWYG editors reside.</td></tr>
 </table>
 
 <h3><a name="site_pear">Site: PEAR</a></h3>
@@ -382,7 +383,6 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">1</td>
   <td valign="top">Minimum numbers of stories than can appear on a topic page</td></tr>
 <tr>
-<tr>
   <td valign="top"><a name="desc_contributedbyline">contributedbyline</a></td>
   <td valign="top">1</td>
   <td valign="top">Show author username to public, and enable search by username (0=no, 1=yes)</td></tr>
@@ -464,7 +464,6 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">1</td>
   <td valign="top">Set to display related topics on just article pages, article and topic pages, or no pages at all.</td></tr>
 <tr>
-<tr>
   <td valign="top"><a name="desc_related_topics_max">related_topics_max</a></td>
   <td valign="top">6</td>
   <td valign="top">Maximum numbers of topics to display for Related Topics. If 0 will display all related topics.</td></tr>
@@ -483,7 +482,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_default_cache_time_article">default_cache_time_article</a></td>
   <td valign="top">0</td>
-  <td valign="top">The default cache time for a article. Possible values:<br>
+  <td valign="top">The default cache time for a article. Possible values:<br />
     <ul>
         <li>1 or more = Amount of seconds a article will be cached before it is regenerated and saved again to a new cache file.</li>
         <li>0 = Not cached. Article is always regenerated.</li>
@@ -519,8 +518,8 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     the trackback URL (again, if they don't match, it's probably spam). Note
     that you can <strong>add up the values</strong> below to do more than one
     check (but using option 1 <em>and</em> 2 doesn't make sense and will be
-    treated as if you requested option 2).<br>
-    Options are: 0 = don't perform any checks, 1 = check only for your site's main URL (<code>$_CONF['site_url']</code>), 2 = check for the exact URL of the entry (e.g. an article) on your site, 4 = check IP address of the sender of the trackback against the site referred to in the trackback URL.<br>
+    treated as if you requested option 2).<br />
+    Options are: 0 = don't perform any checks, 1 = check only for your site's main URL (<code>$_CONF['site_url']</code>), 2 = check for the exact URL of the entry (e.g. an article) on your site, 4 = check IP address of the sender of the trackback against the site referred to in the trackback URL.<br />
     <b>Example:</b> <code>$_CONF['check_trackback_link'] = 6; // check for the exact URL (2) and proper IP address (4)</code></td></tr>
 <tr>
   <td valign="top"><a name="desc_multiple_trackbacks">multiple_trackbacks</a></td>
@@ -554,7 +553,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     you may have linked in the article. This option lets you specify how these
     "self pingbacks" are to be handled: 0 = skip them, i.e. don't send pingbacks
     to stories on your own site; 1 = allow them, but obey the speed limit;
-    2 = allow them and ignore the speed limit.<br>
+    2 = allow them and ignore the speed limit.<br />
     If your article contains more than one link to other stories on your site,
     then option 1 is probably of limited use, as it would only pingback the
     first linked story and run into the speed limit for the others.</td></tr>
@@ -666,7 +665,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">1</td>
   <td valign="top">Add a link "GL Version Test" to the Admin block so that you
     can easily check if your Geeklog version is up to date. Set this to 0 if
-    you don't want that link to show up.<br>
+    you don't want that link to show up.<br />
     <strong>Note:</strong> The link is only displayed to members of the Root
     group anyway.</td></tr>
 </table>
@@ -680,7 +679,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_sortmethod">sortmethod</a></td>
   <td valign="top">alpha</td>
-  <td valign="top">alpha = Sort topics in topic list alphabetically<br>
+  <td valign="top">alpha = Sort topics in topic list alphabetically<br />
     sortnum = Sort topics in topic list by the given sort number</td></tr>
 <tr>
   <td valign="top"><a name="desc_showstorycount">showstorycount</a></td>
@@ -825,26 +824,26 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_user_login_method_openid">openid</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Whether to allow logins using <a href="http://openid.net/">OpenID</a>. This will display a special OpenID login below the normal login field.<br>
+  <td valign="top">Whether to allow logins using <a href="http://openid.net/">OpenID</a>. This will display a special OpenID login below the normal login field.<br />
     <strong>Note:</strong> Currently only OpenID 1.1 is supported.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_3rdparty">3rdparty</a></td>
   <td valign="top"><code>false</code></td>
   <td valign="top">Allow (when set to <tt>true</tt>) users who already have
     an account with some other service to log into your Geeklog site with the
-    login for that service. Currently supported: LDAP and LiveJournal.<br>
+    login for that service. Currently supported: LDAP and LiveJournal.<br />
     Please note that to enable login for a specific service, you need an
     authorization class in <tt>system/classes/authentication</tt>. If you only
     want to allow LDAP but not LiveJournal users (or vice versa), simply
-    remove the class file for the unwanted service(s).<br>
+    remove the class file for the unwanted service(s).<br />
     See <a href="http://www.geeklog.net/article.php/remote-authentication">Remote Authentication in Geeklog</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">oauth</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Whether to allow logins using <a href="http://oauth.net/">OAuth</a>. This will display a special OAuth login below the normal login field.<br>
-    <strong>Note:</strong> Currently OAuth 1.0, 1.0a, and 2.0 is supported (depends on what the OAuth provider supports). Current login methods supported: Facebook, Twitter, LinkedIn, Google, Microsoft, and Yahoo.<br>
+  <td valign="top">Whether to allow logins using <a href="http://oauth.net/">OAuth</a>. This will display a special OAuth login below the normal login field.<br />
+    <strong>Note:</strong> Currently OAuth 1.0, 1.0a, and 2.0 is supported (depends on what the OAuth provider supports). Current login methods supported: Facebook, Twitter, LinkedIn, Google, Microsoft, and Yahoo.<br />
     To enable logins for a specific method, you need to enable the method below and you must also update the config options with the correct key and secret string values. 
-    The PHP extension OpenSSL is required to be loaded for OAuth logins to work.<br>
+    The PHP extension OpenSSL is required to be loaded for OAuth logins to work.<br />
     See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_login">facebook_login</a></td>
@@ -855,13 +854,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_facebook_consumer_key">facebook_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Facebook OAuth login method. Visit this <a href="http://developers.facebook.com/setup/">Facebook Developers page</a> 
-  to create an application to receive your key and secret.<br>
+  to create an application to receive your key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_secret">facebook_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Facebook OAuth login method. Visit this <a href="http://developers.facebook.com/setup/">Facebook Developers page</a> 
-  to create an application to receive your key and secret.<br>
+  to create an application to receive your key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_login">linkedin_login</a></td>
@@ -872,13 +871,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_linkedin_consumer_key">linkedin_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use LinkedIn OAuth login method. Visit this <a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a> 
-  to create an application to receive your API and secret key.<br>
+  to create an application to receive your API and secret key.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_secret">linkedin_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use LinkedIn OAuth login method. Visit this <a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a> 
-  to create an application to receive your API and secret key.<br>
+  to create an application to receive your API and secret key.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_login">twitter_login</a></td>
@@ -889,13 +888,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_twitter_consumer_key">twitter_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a> 
-  to create an application to receive your consumer key and secret.<br>
+  to create an application to receive your consumer key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_secret">twitter_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a> 
-  to create an application to receive your consumer key and secret.<br>
+  to create an application to receive your consumer key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_login">google_login</a></td>
@@ -906,13 +905,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_google_consumer_key">google_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a> 
-  to create an application to receive your client ID and client secret.<br>
+  to create an application to receive your client ID and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_consumer_secret">google_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a> 
-  to create an application to receive your client ID and client secret.<br>
+  to create an application to receive your client ID and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_login">microsoft_login</a></td>
@@ -923,13 +922,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_microsoft_consumer_key">microsoft_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a> 
-  to create an application to receive your client id and client secret.<br>
+  to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_secret">microsoft_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a> 
-  to create an application to receive your client id and client secret.<br>
+  to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_login">yahoo_login</a></td>
@@ -940,13 +939,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_yahoo_consumer_key">yahoo_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a>  
-  to create an application to receive your consumer key and consumer secret.<br>
+  to create an application to receive your consumer key and consumer secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_consumer_secret">yahoo_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a> 
-  to create an application to receive your consumer key and consumer secret.<br>
+  to create an application to receive your consumer key and consumer secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_user">aftersave_user</a></td>
@@ -1074,7 +1073,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">When the user submission queue is enabled this can contain a
     comma-separated list of domain names from which user submissions will not
     be queued (but approved automatically). Regular expressions are also allowed
-    and interpreted.<br><strong>Example:</strong>
+    and interpreted.<br /><strong>Example:</strong>
     <tt>'mycompany.com,myothercompany.com'</tt></td></tr>
 <tr>
   <td valign="top"><a name="desc_disallow_domains">disallow_domains</a></td>
@@ -1083,7 +1082,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     (see above): A list of domain names that are <em>not</em> allowed in email
     addresses of new users. Note that this list is <em>always</em> used, even
     when the user submission queue has been switched off. Again, regular
-    expression can be used.<br><strong>Example</strong> disallow email addresses
+    expression can be used.<br /><strong>Example</strong> disallow email addresses
     with a certain domain name and from any ".edu" domain:
     <tt>'somebaddomain.com,\.edu$'</tt></td></tr>
 </table>
@@ -1187,7 +1186,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">30</td>
   <td valign="top">Number of days after which a story is to be automatically
     closed for comments, i.e. no new comments can be posted after that many
-    days.<br>
+    days.<br />
     Note that this is only the default value to which the "Disable Comments"
     option is set when creating a new story. It will not take effect unless it
     has also been enabled for the story.</td></tr>
@@ -1242,7 +1241,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">If you chose 'netpbm' for <code>$_CONF['image_lib']</code>
     above, then this should hold the complete path to the <em>directory</em>
     where the binaries from the Netpbm package are kept, e.g.
-    <code>'/usr/bin/netpbm/'</code>. Note that the path must end in a slash.<br>
+    <code>'/usr/bin/netpbm/'</code>. Note that the path must end in a slash.<br />
     Precompiled binaries for various platforms can be downloaded from the <a
     href="http://netpbm.sourceforge.net/">Netpbm homepage</a>.</td></tr>
 </table>
@@ -1272,7 +1271,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     an arbitrary range of 0-100 to specify the "quality" (note that this is
     <em>not</em> a percent value). The default, when not set, is 75 which
     provides good quality in most cases. In some cases, higher values may
-    provide better results.<br>
+    provide better results.<br />
     Rules of thumb: Values above 90 usually don't improve the image quality any
     more but only produce larger files. Values below 50 will result in poor
     image quality. Values of 25 and below will produce distorted
@@ -1333,7 +1332,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_max_topicicon_size">max_topicicon_size</a></td>
   <td valign="top">65536 <i>(equals 64 KB)</i></td>
   <td valign="top">Max. size of a topic icon in bytes. If it exceeds this, it
-    is rejected (even if you're using a graphics package to resize images).</td>
+    is rejected (even if you're using a graphics package to resize images).</td></tr>
 </table>
 
 <h3><a name="images_photos">Images: Photos</a></h3>
@@ -1347,7 +1346,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">128</td>
   <td valign="top">Max. width of a user photo in pixels. If it exceeds this, it
     is either rejected or resized (depending on the setting of
-    <code>$_CONF['image_lib']</code> above).</tr>
+    <code>$_CONF['image_lib']</code> above).</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_height">max_photo_height</a></td>
   <td valign="top">128</td>
@@ -1390,7 +1389,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">If enabled (set to <tt>true</tt>), a user's avatar image will
     be requested from <a href="http://gravatar.com/">gravatar.com</a> if the
     user didn't upload a user photo (i.e. an uploaded photo always takes
-    precedence).<br>
+    precedence).<br />
     Please note that this option may slow down your site on pages that display
     a lot of userphotos for different users (e.g. forum threads).</td></tr>
 <tr>
@@ -1429,10 +1428,10 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><i>(disabled)</i></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the Geeklog language files to use. These shortcuts must each contain the same number of characters and 
-    the language file must exist in the Geeklog languages directory.<br>
+    the language file must exist in the Geeklog languages directory.<br />
     When creating content that supports multiple langagues (topics, articles, blocks, staticpages, etc.) 
     you would end the id of the content with one of these shortcuts ('storyid_en' or 'storyid2_de'). This would then map this content to the specific language. 
-    For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br> 
+    For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br /> 
     For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages. 
     Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 <tr>
@@ -1440,7 +1439,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><i>(disabled)</i></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the language's native name ("English",
-    "Deutsch", etc.). These shortcuts must match the shortcuts set in the "Language Files" configuration option.<br> 
+    "Deutsch", etc.). These shortcuts must match the shortcuts set in the "Language Files" configuration option.<br /> 
     For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages. 
     Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 </table>
@@ -1513,7 +1512,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><i>(disabled)</i></td>
   <td valign="top">If your server is located in a different timezone, use this
     option to set your local (i.e. your own) timezone, so that the time and
-    date on the site match your own.<br>
+    date on the site match your own.<br />
     This option is known as the "<a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=21232">timezone hack</a>" and may not work on some
     servers.</td></tr>
 </table>
@@ -1598,11 +1597,11 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     or a new user has registered with the site. The <tt>array()</tt> can hold
     any combination of  the strings <tt>'story'</tt>, <tt>'comment'</tt>,
     <tt>'trackback'</tt>, <tt>'pingback'</tt>, and <tt>'user'</tt> (separated
-    by commas), depending on which notification(s) you want.<br>
+    by commas), depending on which notification(s) you want.<br />
     <strong>Example:</strong> <code>array('story','user');</code> would
     send notifications when a new story has been submitted or a new user has
     registered. No notifications would be sent, for example, for new
-    comments.</td>
+    comments.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cron_schedule_interval">cron_schedule_interval</a></td>
   <td valign="top">0</td>
@@ -1611,10 +1610,10 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <code>CUSTOM_runScheduledTask</code> function in your
     <tt>lib-custom.php</tt>. The value given is in seconds and specifies the
     interval in which the code should be executed (e.g. 86400 for daily
-    activation).<br>
+    activation).<br />
     Please note that to trigger this action, you will need to have someone
     visit your site at around the specified time. On a site with few visitors,
-    the code may only be executed with considerable delay.<br>
+    the code may only be executed with considerable delay.<br />
     Set to 0 to disable.</td></tr>
 <tr>
   <td valign="top"><a name="desc_disable_autolinks">disable_autolinks</a></td>
@@ -1639,7 +1638,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     webserver, HTML output will be compressed before sending it to the browser.
     This will typically result in much smaller amounts of data to be sent
     (usually between 20% and 25%, compared to the uncompressed output). It may,
-    however, result in slightly more load on the webserver.<br>
+    however, result in slightly more load on the webserver.<br />
     For now, this feature should be considered <strong>experimental</strong> and
     hasn't been implemented for all HTML output yet.</td></tr>
 <tr>
@@ -1660,7 +1659,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_default_cache_time_block">default_cache_time_block</a></td>
   <td valign="top">0</td>
-  <td valign="top">The default cache time for a block. Possible values:<br>
+  <td valign="top">The default cache time for a block. Possible values:<br />
     <ul>
         <li>1 or more = Amount of seconds a block will be cached before it is regenerated and saved again to a new cache file.</li>
         <li>0 = Not cached. Block is always regenerated.</li>
@@ -1686,7 +1685,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     display the actual error message to members of the Root group (to prevent
     leakage of possibly sensitive information). When set to <code>true</code>,
     this information will be displayed to <em>all</em> users. <strong>Use only
-    for debugging purposes!</strong><br>
+    for debugging purposes!</strong><br />
     Tip: If an error prevents you from logging into your site to enable that
     option, you can also <a href="#desc_rootdebug_siteconfig">enable it in your
     <tt>siteconfig.php</tt></a> file.</td></tr>
@@ -1781,7 +1780,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
   <td valign="top"><i>not set</i></td>
-  <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br>
+  <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br />
 <code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
 </table>
 
@@ -1810,7 +1809,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 
 <p>Also see <a href="http://wiki.geeklog.net/wiki/index.php/Using_the_Webservices">Using the Webservices</a> in the Geeklog Wiki.</p>
 
-<h3><a name="misc_ip_webservices">Miscellaneous: Topics</a></h3>
+<h3><a name="misc_topics">Miscellaneous: Topics</a></h3>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
@@ -1880,7 +1879,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_filemanager_date_format">filemanager_date_format</a></td>
   <td valign="top">Y-m-d H:i:s</td>
-  <td valign="top">Format of the date to display.  See <a href="http://www.php.net/manual/en/function.date.php" title="Move to an external page in a new window" target="_blank">this page</a> for details.</td></tr>
+  <td valign="top">Format of the date to display.  See <a href="http://www.php.net/manual/en/function.date.php" title="Move to an external page in a new window">this page</a> for details.</td></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_logger">filemanager_logger</a></td>
   <td valign="top">false</td>
@@ -2041,7 +2040,7 @@ the installation and you should not normally have to edit this file.</p>
   <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
   <td valign="top">true</td>
   <td valign="top">A Geeklog site can be disabled quickly (e.g. for maintenance)
-    by setting this to 'false'.<br>
+    by setting this to 'false'.<br />
     Also see the <a href="#desc_site_disabled_msg">site_disabled_msg</a>
     configuration option.</td></tr>
 <tr>
@@ -2049,7 +2048,7 @@ the installation and you should not normally have to edit this file.</p>
   <td valign="top">iso-8859-1</td>
   <td valign="top">Character encoding used by Geeklog when serving HTML pages or
     sending email. Only used if the language file did not already set
-    another character encoding.<br>
+    another character encoding.<br />
     For <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">multi-language</a> setups, using <code>'utf-8'</code> as the default character
     set is recommended.</td></tr>
 <tr>
@@ -2058,10 +2057,10 @@ the installation and you should not normally have to edit this file.</p>
   <td valign="top">Same as the '<a href="#desc_rootdebug">rootdebug</a>' option
     in the Configuration. However, sometimes an error may occur that prevents
     you from logging into your site and enabling the 'rootdebug' option. In
-    such a case, you can uncomment this line and enable the option here.<br>
+    such a case, you can uncomment this line and enable the option here.<br />
     In addition to 'true' and 'false', you can also set this option to 'force'
     (only in <tt>siteconfig.php</tt>). This will enable displaying of sensitive
-    information like passwords and cookies.<br>
+    information like passwords and cookies.<br />
     In any case, the same strong warning as <a href="#desc_rootdebug">above</a>
     applies here, too: <strong>Do not leave this option enabled on a "live"
     site!</strong></td></tr>
@@ -2095,7 +2094,7 @@ People interested in translating Geeklog to other languages are encouraged
 to join the <a
 href="http://lists.geeklog.net/listinfo/geeklog-translations">geeklog-translations</a>
 mailing list. All important information concerning translating Geeklog will
-be posted there.
+be posted there.</p>
 
 <h3><a name="date_formats">Locale and Date Formats</a></h3>
 
@@ -2106,12 +2105,12 @@ are handled by your locale. Isn't that smart? Locale names are OS
 dependent. On most UNIX hosts, you can find locale codes in the
 <i>/usr/share/locale/locale.alias</i> file and on some systems the command
 <i>locale -a</i> will display all available locales on a system. If a
-locale doesn't exist you can create it using the <i>localedef</i> command.
+locale doesn't exist you can create it using the <i>localedef</i> command.</p>
 
 <p>More info on locale: <a
-href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a><br>
+href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a><br />
 More info on localdef: <a
-href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a>
+href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a></p>
 
 <h3>Date Format Syntax</h3>
 
@@ -2152,7 +2151,7 @@ href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www
 </ul>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>
+    <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br />
     All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
 </div>
 

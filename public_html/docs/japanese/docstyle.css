@@ -23,7 +23,7 @@ table {
 table th,
 table td {
   border: 1px #AAA solid;
-  padding: 0.2em;
+  padding: .2em;
   vertical-align: top;
   line-height: 140%;
   font-size: 1.0em;

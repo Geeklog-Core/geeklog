@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang=" ja">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <title>コンフィギュレーション | Geeklogドキュメント</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
-  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklogドキュメント</a> - コンフィギュレーション</div>
 
 <h1>Geeklogのコンフィギュレーション</h1>
@@ -66,9 +66,10 @@
   <td valign="top"><a name="desc_site_slogan">スローガン(site_slogan)</a></td>
   <td valign="top">Another Nifty Geeklog Site</td>
   <td valign="top">サイトのスローガンを指定します。HTMLの&lt;title&gt;フィールドに追加されます。</td></tr>
+<tr>
   <td valign="top"><a name="desc_site_disabled_msg">サイト閉鎖用メッセージ(site_disabled_msg)</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
-  <td valign="top">Geeklogのサイトを一時的に閉鎖するときに表示するメッセージを指定します。メッセージが"http:"で始まる場合、サイトの訪問者はそのURLへリダイレクトされます。<br>
+  <td valign="top">Geeklogのサイトを一時的に閉鎖するときに表示するメッセージを指定します。メッセージが"http:"で始まる場合、サイトの訪問者はそのURLへリダイレクトされます。<br />
     <strong>注:</strong>実際にサイトを閉鎖するかどうかを決める設定は、<tt>siteconfig.php</tt>ファイルの中にあります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_owner_name">管理者名(owner_name)</a></td>
@@ -81,7 +82,7 @@
 <tr>
   <td valign="top"><a name="desc_url_rewrite">URLリライト(url_rewrite)</a></td>
   <td valign="top">いいえ(false)</td>
-  <td valign="top">はい(true)でURLリライトを行い、いいえ(false)で行わないようになります。<br>
+  <td valign="top">はい(true)でURLリライトを行い、いいえ(false)で行わないようになります。<br />
     下記の<a href="#url-rewrite">URLリライト</a>のセクションを参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cdn_hosted">CDNのjQueryを使う(cdn_hosted)</a></td>
@@ -91,8 +92,8 @@
 <tr>
   <td valign="top"><a name="desc_meta_tags">メタタグ(meta_tags)</a></td>
   <td valign="top">無効にする</td>
-  <td valign="top">有効にする - 記事と話題用のメタタグが出力されます。メタタグが見つからない場合、デフォルトが使用されます。メタタグがない他のすべてのページでデフォルトが使用されます。<br>
-      有効にする(トップページにのみデフォルトを使用する) - トップページに対してだけデフォルトを使用するという点を除いて、「はい」と同じです。<br>
+  <td valign="top">有効にする - 記事と話題用のメタタグが出力されます。メタタグが見つからない場合、デフォルトが使用されます。メタタグがない他のすべてのページでデフォルトが使用されます。<br />
+      有効にする(トップページにのみデフォルトを使用する) - トップページに対してだけデフォルトを使用するという点を除いて、「はい」と同じです。<br />
     無効にする - メタタグを使用しません。</td></tr>
 <tr>
   <td valign="top">サイトの<a name="desc_meta_description">説明文のメタタグ(meta_description)</a></td>
@@ -176,28 +177,28 @@
     <td valign="top">1 にすると、記事の冒頭文全部がRSSフィードに出力されます。1 より大きな数字を指定すると、その字数分だけ冒頭文が出力されます(たとえば、80 と指定すると、冒頭文の最初の80文字だけがRSSフィードに出力されます。)。0 にすると、冒頭文はRSSフィードに出力されません。</td></tr>
 <tr><td valign="top"><a name="desc_rdf_language">フィードの言語(rdf_language)</a></td>
     <td valign="top">en-gb</td>
-    <td valign="top">RSSフィードの言語を指定します。サイトの言語とオペレーティングシステムにより、この値はロケールの設定（下記参照）と異なる値になることもあります。<br><strong>例:</strong> PHPでドイツ語のロケールは'de_DE'ですが、ドイツ語のRSSフィードを表す正しい設定は'de-DE'でしょう(アンダースコア("_"の代わりにダッシュ"-"を使う点に注意してください)。</td></tr>
+    <td valign="top">RSSフィードの言語を指定します。サイトの言語とオペレーティングシステムにより、この値はロケールの設定（下記参照）と異なる値になることもあります。<br /><strong>例:</strong> PHPでドイツ語のロケールは'de_DE'ですが、ドイツ語のRSSフィードを表す正しい設定は'de-DE'でしょう(アンダースコア("_"の代わりにダッシュ"-"を使う点に注意してください)。</td></tr>
 <tr><td valign="top"><a name="desc_syndication_max_headlines">インポートする記事の最大数(syndication_max_headlines)</a></td>
     <td valign="top">0</td>
-    <td valign="top">記事を（ポータルブロックに）<em>インポート</em>するときの最大文字数を指定します。ブロックメニューでポータルブロックごとに設定することもできます。<br>
+    <td valign="top">記事を（ポータルブロックに）<em>インポート</em>するときの最大文字数を指定します。ブロックメニューでポータルブロックごとに設定することもできます。<br />
     0 にするとすべての記事がインポートされます。</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_tag">comment_feeds_article_tag</a></td>
-    <td valign="top"><xmp><p>[Original Article: <a href=\"%s\">%s</a>%s%s]\n</xmp></td>
-    <td valign="top">The string used to enter a tag about the article for the comment:<br><br>
-    This must take three strings, in the order:<br>
-    Article URL - the url to the article<br>
-    Article title - the title of the article<br>
-    Article Author tag, the result of evaluating 'article_author_tag'<br>
-    Comment author tag, the result of evaluating 'comment_author_tag'<br><br>
+    <td valign="top"><pre>&lt;p&gt;[Original Article: <a href="%s">%s</a>%s%s]\n</pre></td>
+    <td valign="top">The string used to enter a tag about the article for the comment:<br /><br />
+    This must take three strings, in the order:<br />
+    Article URL - the url to the article<br />
+    Article title - the title of the article<br />
+    Article Author tag, the result of evaluating 'article_author_tag'<br />
+    Comment author tag, the result of evaluating 'comment_author_tag'<br /><br />
     This is generated with a sprintf command, so each item is indicated by a %s. If you want either of the last two to be blank, set article_author_tag and/or comment_author_tag to be empty strings.</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_tag_position">comment_feeds_article_tag_position</a></td>
     <td valign="top">end</td>
     <td valign="top">The position of the article_tag in the comment body. This indicates where the article tag, when formatted, should be inserted into the comment. This may be start, end or none.</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_author_tag">comment_feeds_article_author_tag</a></td>
     <td valign="top"></td>
-    <td valign="top">A tag to link to the article author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string. An example of an Article Author Tag would be: <xmp> Written By: <a href=\"%s\">%s</a></xmp></td></tr>
+    <td valign="top">A tag to link to the article author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string. An example of an Article Author Tag would be: <pre> Written By: <a href="%s">%s</a></pre></td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_comment_author_tag">comment_feeds_comment_author_tag</a></td>
-    <td valign="top"><xmp>, Comment By: <a href=\"%s\">%s</a></xmp></td>
+    <td valign="top"><pre>, Comment By: <a href="%s">%s</a></pre></td>
     <td valign="top">A tag to link to the comment author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string.</td></tr>    
 </table>
 
@@ -227,7 +228,7 @@
     <td valign="top">ユーザーの写真や記事の写真を含めて、画像ファイルを置くディレクトリのパスを指定します。</td></tr>
 <tr><td valign="top"><a name="desc_path_editors">アドバンストエディター(path_editors)</a></td>
     <td valign="top">/path/to/geeklog/public_html/editors/</td>
-    <td valign="top">WYSIWYGエディタのあるディレクトリを指定します。</td>
+    <td valign="top">WYSIWYGエディタのあるディレクトリを指定します。</td></tr>
 </table>
 
 <h3><a name="site_pear">サイト: PEAR</a></h3>
@@ -410,7 +411,6 @@
   <td valign="top">1</td>
   <td valign="top">Set to display related topics on just article pages, article and topic pages, or no pages at all.</td></tr>
 <tr>
-<tr>
   <td valign="top"><a name="desc_related_topics_max">related_topics_max</a></td>
   <td valign="top">6</td>
   <td valign="top">Maximum numbers of topics to display for Related Topics. If 0 will display all related topics.</td></tr>
@@ -429,7 +429,7 @@
 <tr>
   <td valign="top"><a name="desc_default_cache_time_article">default_cache_time_article</a></td>
   <td valign="top">0</td>
-  <td valign="top">The default cache time for a article. Possible values:<br>
+  <td valign="top">The default cache time for a article. Possible values:<br />
     <ul>
         <li>1 or more = Amount of seconds a article will be cached before it is regenerated and saved again to a new cache file.</li>
         <li>0 = Not cached. Article is always regenerated.</li>
@@ -458,7 +458,7 @@
 <tr>
   <td valign="top"><a name="desc_check_trackback_link">トラックバックのリンクチェック(check_trackback_link)</a></td>
   <td valign="top">2</td>
-  <td valign="top">トラックバックの有効性をチェックする方法を指定します。トラックバック中に含まれるURLが自分のサイトへのバックリンクを実際に含んでいるかチェックできます（含んでいない場合はスパムでしょう）。また、トラックバックが適切なIPアドレス、すなわち、トラックバックURL中のサイトのIPアドレスから送信されたものかどうかチェックできます（IPアドレスが一致しない場合はスパムでしょう）。下記の<strong>数値を足し合わせる</strong>ことによって複数項目のチェックができます(とはいえ、1 と 2 を<em>同時に</em>使うのは無意味であり、2 しか指定していないものとして処理されます。)。<br>
+  <td valign="top">トラックバックの有効性をチェックする方法を指定します。トラックバック中に含まれるURLが自分のサイトへのバックリンクを実際に含んでいるかチェックできます（含んでいない場合はスパムでしょう）。また、トラックバックが適切なIPアドレス、すなわち、トラックバックURL中のサイトのIPアドレスから送信されたものかどうかチェックできます（IPアドレスが一致しない場合はスパムでしょう）。下記の<strong>数値を足し合わせる</strong>ことによって複数項目のチェックができます(とはいえ、1 と 2 を<em>同時に</em>使うのは無意味であり、2 しか指定していないものとして処理されます。)。<br />
 	<ul>
 		<li>ノーチェック(0) = チェックを行いません。</li>
 		<li>URLリンクをチェックする(1) = サイトのベースURLしかチェックしません。</li>
@@ -469,7 +469,7 @@
 <tr>
   <td valign="top"><a name="desc_multiple_trackbacks">マルチプルトラックバック(multiple_trackbacks)</a></td>
   <td valign="top">拒否する(0)</td>
-  <td valign="top">同一発信元から複数のトラックバックとピングバックを受け取った場合の処理を指定します。<br>
+  <td valign="top">同一発信元から複数のトラックバックとピングバックを受け取った場合の処理を指定します。<br />
 		<ul>
 			<li>拒否する(0) = 最初のトラックバック/ピングバックのみを保存し、残りは無視します。</li>
 			<li>最新ポストのみ保存する(1) = 上書きする、つまり、最新のトラックバック/ピングバックのみを保存します。</li>
@@ -494,12 +494,12 @@
 <tr>
   <td valign="top"><a name="desc_pingback_self">自身へピングバックする(pingback_self)</a></td>
   <td valign="top">スキップする(0)</td>
-  <td valign="top">ピングバックは記事内でリンクされている<em>すべての</em> URLに自動的に送信されます。このURLには自分のサイトも含まれます。この設定は自分のサイトへのピングバックの処理法を指定します。<br>
+  <td valign="top">ピングバックは記事内でリンクされている<em>すべての</em> URLに自動的に送信されます。このURLには自分のサイトも含まれます。この設定は自分のサイトへのピングバックの処理法を指定します。<br />
 		<ul>
 			<li>スキップする(0) = ピングバックをスキップします。つまり、自分のサイトへはピングバックを送信しません。</li>
 			<li>許可する（間隔制限あり）(1) = ピングバックを許可しますが、速度制限に従います。</li>
 			<li>許可する（間隔制限なし）(2) = ピングバックを許可し、速度制限を無視します。</li>
-		</ul><br>記事の中に自分のサイトの他の記事に対する複数のリンクがある場合、「許可する（間隔制限あり）(1)」はあまり役に立たないでしょう。1番目のリンクへはピングバックを送信できますが、残りは間隔制限に引っかかるからです。</td></tr>
+		</ul><br />記事の中に自分のサイトの他の記事に対する複数のリンクがある場合、「許可する（間隔制限あり）(1)」はあまり役に立たないでしょう。1番目のリンクへはピングバックを送信できますが、残りは間隔制限に引っかかるからです。</td></tr>
 <tr>
   <td valign="top"><a name="desc_ping_enabled">ピングを有効にする(ping_enabled)</a></td>
   <td valign="top">はい(true)</td>
@@ -590,7 +590,7 @@
 <tr>
   <td valign="top"><a name="desc_link_versionchecker">バージョン検査のリンクを表示する(link_versionchecker)</a></td>
   <td valign="top">はい(1)</td>
-  <td valign="top">はい(<tt>1</tt>)にすると、管理者ブロックに「GLバージョンテスト」へのリンクが追加され、最新のGeeklogをインストールしているかどうかを簡単にチェックできるようになります。いいえ(0)にすると、追加されません。<br>
+  <td valign="top">はい(<tt>1</tt>)にすると、管理者ブロックに「GLバージョンテスト」へのリンクが追加され、最新のGeeklogをインストールしているかどうかを簡単にチェックできるようになります。いいえ(0)にすると、追加されません。<br />
     <strong>注:</strong> このリンクはRootユーザーにしか表示されません。</td></tr>
 </table>
 
@@ -603,7 +603,7 @@
 <tr>
   <td valign="top"><a name="desc_sortmethod">ソート方法(sortmethod)</a></td>
   <td valign="top">アルファベット順(alpha)</td>
-  <td valign="top">アルファベット順(alpha) = 話題をアルファベット順にソートするか、<br>番号順(sortnum) = 話題をソート番号順にソートするかを指定します。</td></tr>
+  <td valign="top">アルファベット順(alpha) = 話題をアルファベット順にソートするか、<br />番号順(sortnum) = 話題をソート番号順にソートするかを指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_showstorycount">記事数を表示する(showstorycount)</a></td>
   <td valign="top">はい(1)</td>
@@ -738,19 +738,19 @@
 <tr>
   <td valign="top"><a name="desc_user_login_method_openid">ログイン方法[openid](user_login_method_openid)</a></td>
   <td valign="top"><code>いいえ(false)</code></td>
-  <td valign="top"><a href="http://openid.net/">OpenID</a>を使用したログインを許可するかどうかを指定します。<code>はい(true)</code>にすると、通常のログイン入力欄の下に特別なOpenIDログイン用の入力欄が表示されます。<br>
+  <td valign="top"><a href="http://openid.net/">OpenID</a>を使用したログインを許可するかどうかを指定します。<code>はい(true)</code>にすると、通常のログイン入力欄の下に特別なOpenIDログイン用の入力欄が表示されます。<br />
     <strong>注:</strong> 現在サポートされているのは、OpenID 1.1だけです。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_3rdparty">ログイン方法[3rdparty](user_login_method_3rdparty)</a></td>
   <td valign="top"><code>いいえ(false)</code></td>
-  <td valign="top">はい(true)にすると、外部サービスに既にアカウントを持っているユーザーがそのアカウント使ってGeeklogにログインできるようになります。現在サポートされているのは、LDAPとLiveJournalです。<br>
+  <td valign="top">はい(true)にすると、外部サービスに既にアカウントを持っているユーザーがそのアカウント使ってGeeklogにログインできるようになります。現在サポートされているのは、LDAPとLiveJournalです。<br />
     特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<tt>system/classes/authentication</tt>に必要です。したがって、LDAPを用いたログインは許可するがLiveJournalを用いたログインは禁止したいという場合、単に不要なサービスの認証クラスを削除するだけでよいのです。詳細は、<a href="http://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">ログイン方法[oauth](user_login_method_oauth)</a></td>
   <td valign="top"><code>いいえ(false)</code></td>
-  <td valign="top"><a href="http://oauth.net/">OAuth</a>によるログインを許可するかどうかを設定します。許可すると、通常のログインフォームの下にOAuthログインが表示されます。<br>
-    <strong>Note:</strong>現在はOAuth 1.0のみをサポートしています。現在可能なサポート: Facebook、Twitter、LinkedInです。<br>特定のログイン方法を有効にするには、<tt>system/classes/oauth</tt>に認証のクラスが必要です。あなたがもしFacebookのみで、Twitterだけにしたければ(逆もまた同様), 単に
-    欲しくないクラスのファイルを削除するか、以下の設定オプションを使用してください。また、以下の設定オプションで正しいキーと秘密の文字列($consumer_secret)も設定しなければなりません。PHP extenstion OpenSSLをロードしている必要があります。<br>
+  <td valign="top"><a href="http://oauth.net/">OAuth</a>によるログインを許可するかどうかを設定します。許可すると、通常のログインフォームの下にOAuthログインが表示されます。<br />
+    <strong>Note:</strong>現在はOAuth 1.0のみをサポートしています。現在可能なサポート: Facebook、Twitter、LinkedInです。<br />特定のログイン方法を有効にするには、<tt>system/classes/oauth</tt>に認証のクラスが必要です。あなたがもしFacebookのみで、Twitterだけにしたければ(逆もまた同様), 単に
+    欲しくないクラスのファイルを削除するか、以下の設定オプションを使用してください。また、以下の設定オプションで正しいキーと秘密の文字列($consumer_secret)も設定しなければなりません。PHP extenstion OpenSSLをロードしている必要があります。<br />
     さらに詳しい情報は<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_login">FacebookのOAuthを有効にする(facebook_login)</a></td>
@@ -759,12 +759,12 @@
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_key">Facebook OAuth Application ID(facebook_consumer_key)</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Facebook OAuth ログイン利用時には入力してください。アプリケーションを作成してkeyとsecretを取得するには、この<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>を参照してください。<br>
+  <td valign="top">Facebook OAuth ログイン利用時には入力してください。アプリケーションを作成してkeyとsecretを取得するには、この<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_secret">Facebook OAuth Application Secret(facebook_consumer_secret)</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Facebook OAuth ログイン利用時には入力してください。アプリケーションを作成してkeyとsecretを取得するには、この<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>を参照してください。<br>
+  <td valign="top">Facebook OAuth ログイン利用時には入力してください。アプリケーションを作成してkeyとsecretを取得するには、この<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>を参照してください。<br />
   より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_login">LinkedInのOAuthを有効にする(linkedin_login)</a></td>
@@ -773,12 +773,12 @@
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_key">LinkedIn OAuth API Key(linkedin_consumer_key)</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">LinkedIn OAuth ログイン利用時には入力してください。アプリケーションを作成してAPI KeyとSecret Keyを取得するには、この<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>を参照してください。<br>
+  <td valign="top">LinkedIn OAuth ログイン利用時には入力してください。アプリケーションを作成してAPI KeyとSecret Keyを取得するには、この<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_secret">LinkedIn OAuth Secret Key(linkedin_consumer_secret)</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">LinkedIn OAuth ログイン利用時には入力してください。アプリケーションを作成してAPI KeyとSecret Keyを取得するには、この<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>を参照してください。<br>
+  <td valign="top">LinkedIn OAuth ログイン利用時には入力してください。アプリケーションを作成してAPI KeyとSecret Keyを取得するには、この<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_login">TwitterのOAuthを有効にする(twitter_login)</a></td>
@@ -787,12 +787,12 @@
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_key">Twitter OAuth Consumer Key(twitter_consumer_key)</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Twitter OAuth ログイン利用時には入力してください。アプリケーションを作成してconsumer Keyとsecretを取得するには、この<a href="https://twitter.com/apps">Twitter Application page</a>を参照してください。<br>
+  <td valign="top">Twitter OAuth ログイン利用時には入力してください。アプリケーションを作成してconsumer Keyとsecretを取得するには、この<a href="https://twitter.com/apps">Twitter Application page</a>を参照してください。<br />
   より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_secret">Twitter OAuth Consumer Secret(twitter_consumer_secret)</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Twitter OAuth ログイン利用時には入力してください。アプリケーションを作成してconsumer keyと secretを取得するには、この<a href="https://twitter.com/apps">Twitter Application page</a>を参照してください。<br>
+  <td valign="top">Twitter OAuth ログイン利用時には入力してください。アプリケーションを作成してconsumer keyと secretを取得するには、この<a href="https://twitter.com/apps">Twitter Application page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_login">google_login</a></td>
@@ -803,13 +803,13 @@
   <td valign="top"><a name="desc_google_consumer_key">google_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a> 
-  to create an application to receive your client ID and client secret.<br>
+  to create an application to receive your client ID and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_consumer_secret">google_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a> 
-  to create an application to receive your client ID and client secret.<br>
+  to create an application to receive your client ID and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_login">microsoft_login</a></td>
@@ -820,13 +820,13 @@
   <td valign="top"><a name="desc_microsoft_consumer_key">microsoft_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a> 
-  to create an application to receive your client id and client secret.<br>
+  to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_secret">microsoft_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a> 
-  to create an application to receive your client id and client secret.<br>
+  to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_login">yahoo_login</a></td>
@@ -837,13 +837,13 @@
   <td valign="top"><a name="desc_yahoo_consumer_key">yahoo_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a>  
-  to create an application to receive your consumer key and consumer secret.<br>
+  to create an application to receive your consumer key and consumer secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_consumer_secret">yahoo_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
   <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a> 
-  to create an application to receive your consumer key and consumer secret.<br>
+  to create an application to receive your consumer key and consumer secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_user">ユーザー保存後の画面遷移(aftersave_user)</a></td>
@@ -951,12 +951,12 @@
 <tr>
   <td valign="top"><a name="desc_allow_domains">自動的に許可するドメイン(allow_domains)</a></td>
   <td valign="top">''（空白）</td>
-  <td valign="top">上記の承認待ちを有効にした場合でも、このドメインリスト（コンマで区切る）から登録申請したときには承認待ちの状態にならず、即座に承認されます。ドメイン名に正規表現も使えます。<br><strong>例:</strong>
+  <td valign="top">上記の承認待ちを有効にした場合でも、このドメインリスト（コンマで区切る）から登録申請したときには承認待ちの状態にならず、即座に承認されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong>
     <tt>'mycompany.com,myothercompany.com'</tt></td></tr>
 <tr>
   <td valign="top"><a name="desc_disallow_domains">自動的に拒否するドメイン(disallow_domains)</a></td>
   <td valign="top">''（空白）</td>
-  <td valign="top">上記の「自動的に許可するドメイン」の逆で、このリストに含まれるドメインのユーザーは、上記の「管理者の承認が必要」の設定にかかわらず、自動的に拒否されます。ドメイン名に正規表現も使えます。<br><strong>例:</strong> あるドメインと".edu"ドメインのすべてを拒否します。
+  <td valign="top">上記の「自動的に許可するドメイン」の逆で、このリストに含まれるドメインのユーザーは、上記の「管理者の承認が必要」の設定にかかわらず、自動的に拒否されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong> あるドメインと".edu"ドメインのすべてを拒否します。
     <tt>'somebaddomain.com,\.edu$'</tt></td></tr>
 </table>
 
@@ -1045,7 +1045,7 @@
 <tr>
   <td valign="top"><a name="desc_article_comment_close_days">停止までの日数(デフォルト) (article_comment_close_days)</a></td>
   <td valign="top">30</td>
-  <td valign="top">記事投稿後、コメント受付を自動的に終了するまでの日数を指定します。<br>
+  <td valign="top">記事投稿後、コメント受付を自動的に終了するまでの日数を指定します。<br />
 記事の新規作成時のデフォルトはコメント無効です。有効にしない限り、コメントは有効になりません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_close_rec_stories">コメント可能な記事の最大数(comment_close_rec_stories)</a></td>
@@ -1085,7 +1085,7 @@
 <tr>
   <td valign="top"><a name="desc_path_to_netpbm">Netpbmへのパス(path_to_netpbm)</a></td>
   <td valign="top"><i>(無効)</i></td>
-  <td valign="top">上記の「画像ライブラリ」にnetpbmを選んだ場合、Netpbmのバイナリがある<em>ディレクトリ</em>の完全なパスを <code>'/usr/bin/netpbm/'</code> のように指定します。パスの最後はスラッシュ'/'でなければなりません。<br>様々なプラットフォーム用にコンパイルされたバイナリのパッケージは、<a href="http://netpbm.sourceforge.net/">Netpbm homepage</a>からダウンロードできます。</td></tr>
+  <td valign="top">上記の「画像ライブラリ」にnetpbmを選んだ場合、Netpbmのバイナリがある<em>ディレクトリ</em>の完全なパスを <code>'/usr/bin/netpbm/'</code> のように指定します。パスの最後はスラッシュ'/'でなければなりません。<br />様々なプラットフォーム用にコンパイルされたバイナリのパッケージは、<a href="http://netpbm.sourceforge.net/">Netpbm homepage</a>からダウンロードできます。</td></tr>
 </table>
 
 <h3><a name="images_upload">画像: アップロード</a></h3>
@@ -1105,7 +1105,7 @@
 <tr>
   <td valign="top"><a name="desc_jpeg_quality">JPEGの画質(jpeg_quality)</a></td>
   <td valign="top"><i>(disabled)</i></td>
-  <td valign="top">JPEG画像をリサイズする際の画質を指定します。Geeklogでサポートされているすべての画像ライブラリはIJG JPEGライブラリをベースにしており、0から100の範囲で画質を指定します(これはパーセント値ではないことに注意してください。)。値を設定しない場合は、デフォルトは75で、これはほとんどの場合、適切な数値です。場合によっては、より大きな数値の方が画質が良くなります。<br>
+  <td valign="top">JPEG画像をリサイズする際の画質を指定します。Geeklogでサポートされているすべての画像ライブラリはIJG JPEGライブラリをベースにしており、0から100の範囲で画質を指定します(これはパーセント値ではないことに注意してください。)。値を設定しない場合は、デフォルトは75で、これはほとんどの場合、適切な数値です。場合によっては、より大きな数値の方が画質が良くなります。<br />
     経験則: 90以上を指定しても画質は良くならず、画像サイズばかりが大きくなります。50以下では画質が悪くなります。25以下では画像が歪んでしまいます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_debug_image_upload">画像のアップロードをデバッグする(debug_image_upload)</a></td>
@@ -1162,7 +1162,7 @@
 <tr>
   <td valign="top"><a name="desc_max_photo_width">幅の最大値(max_photo_width)</a></td>
   <td valign="top">128</td>
-  <td valign="top">写真の幅の最大値を指定します（単位：ピクセル）。この数値を超えた場合、画像は拒否されるかリサイズされます（上記の画像ライブラリの設定による）。</tr>
+  <td valign="top">写真の幅の最大値を指定します（単位：ピクセル）。この数値を超えた場合、画像は拒否されるかリサイズされます（上記の画像ライブラリの設定による）。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_height">高さの最大値(max_photo_height)</a></td>
   <td valign="top">128</td>
@@ -1190,7 +1190,7 @@
 <tr>
   <td valign="top"><a name="desc_use_gravatar">Gravatarを使用する(use_gravatar)</a></td>
   <td valign="top">いいえ(false)</td>
-  <td valign="top">はい(<tt>true</tt>)にすると、ユーザーが写真をアップロードしていない場合、アバター用の画像が<a href="http://gravatar.com/">gravatar.com</a>にリクエストされます（つまり、アップロードされた写真の方が常に優先されます）。<br>
+  <td valign="top">はい(<tt>true</tt>)にすると、ユーザーが写真をアップロードしていない場合、アバター用の画像が<a href="http://gravatar.com/">gravatar.com</a>にリクエストされます（つまり、アップロードされた写真の方が常に優先されます）。<br />
     このオプションを有効にすると、（掲示板のスレッドなどの）複数ユーザーの多数の写真を表示するページでは、スピードダウンする可能性があることに注意してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_gravatar_rating">Gravatarの評価(gravatar_rating)</a></td>
@@ -1368,13 +1368,13 @@
 			<li><tt>pingback</tt></li>
 			<li><tt>user</tt></li>
 		</ul>
-		です。必要なものを組み合わせて登録します。<br>
+		です。必要なものを組み合わせて登録します。<br />
     <strong>例:</strong> <code>story と user</code> とすると、新規記事が投稿された場合とユーザーが登録された場合に通知されます。たとえば、新規コメントが投稿された場合には、通知は来ません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cron_schedule_interval">Cronのスケジュール間隔(cron_schedule_interval)</a></td>
   <td valign="top">0（秒）</td>
-  <td valign="top">Geeklogは<a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>、つまり、一定の間隔で行う作業を擬似的に行うことができます。実行されるPHPのコードは、プラグインか<tt>lib-custom.php</tt>中の<code>CUSTOM_runScheduledTask</code> 関数で指定します。ここで設定する値は、作業が行われる間隔を秒単位で指定します。デフォルトは0秒です。 例) 86400秒 = 24時間<br>
-    この作業が行われるには、予定の時刻付近で誰かがサイトを訪問する必要があることに注意してください。訪問者がほとんどいないサイトでは、作業の開始がかなり遅れる可能性があります。<br>この機能を無効にするには、0を指定します。</td></tr>
+  <td valign="top">Geeklogは<a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>、つまり、一定の間隔で行う作業を擬似的に行うことができます。実行されるPHPのコードは、プラグインか<tt>lib-custom.php</tt>中の<code>CUSTOM_runScheduledTask</code> 関数で指定します。ここで設定する値は、作業が行われる間隔を秒単位で指定します。デフォルトは0秒です。 例) 86400秒 = 24時間<br />
+    この作業が行われるには、予定の時刻付近で誰かがサイトを訪問する必要があることに注意してください。訪問者がほとんどいないサイトでは、作業の開始がかなり遅れる可能性があります。<br />この機能を無効にするには、0を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_disable_autolinks">自動タグを無効にする(disable_autolinks)</a></td>
   <td valign="top">いいえ(0)</td>
@@ -1389,11 +1389,7 @@
 <tr>
   <td valign="top"><a name="desc_linktext_maxlen">クリッカブル表示の長さ(linktext_maxlen)</a></td>
   <td valign="top">50</td>
-  <td valign="top">クリッカブルURLの最大文字数を指定します。もし0なら短縮しません。</td></tr>    
-<tr>
-  <td valign="top"><a name="desc_linktext_maxlen">クリッカブルリンクの長さ(linktext_maxlen)</a></td>
-  <td valign="top">50</td>
-  <td valign="top">クリッカブルURL表示の最大文字数を指定します。もし0なら短縮しません。</td></tr>    
+  <td valign="top">クリッカブルURLの最大文字数を指定します。もし0なら短縮しません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_compressed_output">HTML出力を圧縮して送信する(disable_compressed_output) </a></td>
   <td valign="top">いいえ(false)</td>
@@ -1409,7 +1405,7 @@
 <tr>
   <td valign="top"><a name="desc_default_cache_time_block">default_cache_time_block</a></td>
   <td valign="top">0</td>
-  <td valign="top">The default cache time for a block. Possible values:<br>
+  <td valign="top">The default cache time for a block. Possible values:<br />
     <ul>
         <li>1 or more = Amount of seconds a block will be cached before it is regenerated and saved again to a new cache file.</li>
         <li>0 = Not cached. Block is always regenerated.</li>
@@ -1431,7 +1427,7 @@
 <tr>
   <td valign="top"><a name="desc_rootdebug">Rootデバッグ(rootdebug)</a></td>
   <td valign="top"><code>いいえ(false)</code></td>
-  <td valign="top">PHPのエラーが発生したとき、（重要な情報の漏洩を防ぐため）GeeklogのエラーハンドラはRootグループに属するメンバーにしか実際のエラー情報を表示しません。はい(<code>true</code>)にすると、この情報が<em>すべての</em> ユーザーに表示されるようになります。<strong>デバッグ目的にのみ使用してください。</strong><br>
+  <td valign="top">PHPのエラーが発生したとき、（重要な情報の漏洩を防ぐため）GeeklogのエラーハンドラはRootグループに属するメンバーにしか実際のエラー情報を表示しません。はい(<code>true</code>)にすると、この情報が<em>すべての</em> ユーザーに表示されるようになります。<strong>デバッグ目的にのみ使用してください。</strong><br />
     ヒント: エラーのためにサイトにログインできない場合、<a href="#desc_rootdebug_siteconfig">このオプションを<tt>siteconfig.php</tt></a>の中で有効にすることができます。</td></tr>
 </table>
 
@@ -1492,7 +1488,7 @@
 <tr>
   <td valign="top"><a name="desc_censormode">語句の検査(censormode)</a></td>
   <td valign="top">チェックする（完全一致）(1)</td>
-  <td valign="top">ユーザーの投稿とコメントに関して、「チェックしない(0)」、「チェックする（完全一致）(1)」はバッドワードに完全に一致するもののみチェックし、「チェックする（前方一致）(2)」はバッドワードで始まるものをすべてチェックし、「チェックする（部分一致）(3)」はバッドワードを含むものをすべてチェックします。<br>（訳注）日本語などのマルチバイト文字では、「チェックする（前方一致）」と「チェックする（部分一致）」は誤動作する可能性があります。</td></tr>
+  <td valign="top">ユーザーの投稿とコメントに関して、「チェックしない(0)」、「チェックする（完全一致）(1)」はバッドワードに完全に一致するもののみチェックし、「チェックする（前方一致）(2)」はバッドワードで始まるものをすべてチェックし、「チェックする（部分一致）(3)」はバッドワードを含むものをすべてチェックします。<br />（訳注）日本語などのマルチバイト文字では、「チェックする（前方一致）」と「チェックする（部分一致）」は誤動作する可能性があります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_censorreplace">置き換えるワード(censorreplace)</a></td>
   <td valign="top">*censored*</td>
@@ -1512,7 +1508,7 @@
 <tr>
   <td valign="top"><a name="desc_ip_lookup">IPアドレス検索(ip_lookup)</a></td>
   <td valign="top"><i>設定されていない</i></td>
-  <td valign="top">コメントを投稿した人のIPアドレスは記録され、管理者には表示されます。IPアドレス検索サービスを設定した場合、表示されたIPアドレスをクリックするとそのIPの所有者を調べることが可能になり、不正使用をインターネットサービスプロバイダーに通報しやすくなります。<br>設定値には、IP検索サービスの完全なURLを指定します。IPアドレスが入る部分は '<code>*</code>' にします。Tom Willetの<a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a>パッケージを使うこともできます。この場合は、<code>/nettools/whois.php?domain=*</code> <br>と指定します。</td></tr>
+  <td valign="top">コメントを投稿した人のIPアドレスは記録され、管理者には表示されます。IPアドレス検索サービスを設定した場合、表示されたIPアドレスをクリックするとそのIPの所有者を調べることが可能になり、不正使用をインターネットサービスプロバイダーに通報しやすくなります。<br />設定値には、IP検索サービスの完全なURLを指定します。IPアドレスが入る部分は '<code>*</code>' にします。Tom Willetの<a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a>パッケージを使うこともできます。この場合は、<code>/nettools/whois.php?domain=*</code> <br />と指定します。</td></tr>
 </table>
 
 <h3><a name="misc_ip_webservices">その他: Webサービス</a></h3>
@@ -1537,7 +1533,7 @@
 
 <p>Geeklog Wikiの<a href="http://wiki.geeklog.net/wiki/index.php/Using_the_Webservices">Webサービスを使用する(Using the Webservices)</a>も参照してください。</p>
 
-<h3><a name="misc_ip_webservices">Miscellaneous: Topics</a></h3>
+<h3><a name="misc_topics">Miscellaneous: Topics</a></h3>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
@@ -1607,7 +1603,7 @@
 <tr>
   <td valign="top"><a name="desc_filemanager_date_format">日付のフォーマット(filemanager_date_format)</a></td>
   <td valign="top">Y-m-d H:i:s</td>
-  <td valign="top">日時の表示フォーマットを指定します。詳しくは、<a href="http://www.php.net/manual/ja/function.date.php" title="別ウィンドウで外部サイトを表示します" target="_blank">このページ</a>をご覧ください。</td></tr>
+  <td valign="top">日時の表示フォーマットを指定します。詳しくは、<a href="http://www.php.net/manual/ja/function.date.php" title="別ウィンドウで外部サイトを表示します">このページ</a>をご覧ください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_logger">ロガーを有効にする(filemanager_logger)</a></td>
   <td valign="top">いいえ(false)</td>
@@ -1739,7 +1735,7 @@
     <td valign="top">Geeklogが使用するすべてのテーブル名の前につける接頭子を指定します（データベースを使用する他のアプリケーションとの衝突を避けるため。）。</td></tr>
 <tr><td valign="top">_DB_dbms</td>
     <td valign="top">mysql</td>
-    <td valign="top">Geeklogが使用するデータベースシステムの種類を指定します。<br>
+    <td valign="top">Geeklogが使用するデータベースシステムの種類を指定します。<br />
             <ul>
                 <li><code>mysql</code> (MySQL)</li>
                 <li><code>mssql</code> (Microsoft SQL Server)</li>
@@ -1765,18 +1761,18 @@
 <tr>
   <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
   <td valign="top">true</td>
-  <td valign="top">falseにするとGeeklogのサイトを閉鎖できます（メンテナンス作業中など）。<br>
+  <td valign="top">falseにするとGeeklogのサイトを閉鎖できます（メンテナンス作業中など）。<br />
     <a href="#desc_site_disabled_msg">サイト閉鎖用メッセージ(site_disabled_msg)</a>も参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_charset">default_charset</a></td>
   <td valign="top">iso-8859-1</td>
-  <td valign="top">HTMLページやEメールを送信するときにGeeklogが使用する文字セットのエンコーディングを指定します。言語ファイルによってエンコーディングが設定されていない場合にのみ、この設定値が使用されます。<br>
+  <td valign="top">HTMLページやEメールを送信するときにGeeklogが使用する文字セットのエンコーディングを指定します。言語ファイルによってエンコーディングが設定されていない場合にのみ、この設定値が使用されます。<br />
     <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">多言語サポート(multi-language)</a>を行うサイトの場合、 <code>utf-8</code> をデフォルトとして使用することが推奨されています。</td></tr>
 <tr>
   <td valign="top"><a name="desc_rootdebug_siteconfig">rootdebug</a></td>
   <td valign="top"><i>(無効)</i></td>
-  <td valign="top">コンフィギュレーションの'<a href="#desc_rootdebug">rootdebug</a>'オプションと同じです。しかしながら、時にはエラーが発生するため、サイトにログインして'rootdebug'オプションを有効にできないときがあります。このような場合には、この行のコメントを外し、この箇所でオプションを有効にできます。<br>
-    'true'と'false'以外に、'force'(<tt>siteconfig.php</tt>の中でのみ有効)を指定できます。これを指定すると、パスワードやクッキーなどの重要な情報も表示できます。<br>
+  <td valign="top">コンフィギュレーションの'<a href="#desc_rootdebug">rootdebug</a>'オプションと同じです。しかしながら、時にはエラーが発生するため、サイトにログインして'rootdebug'オプションを有効にできないときがあります。このような場合には、この行のコメントを外し、この箇所でオプションを有効にできます。<br />
+    'true'と'false'以外に、'force'(<tt>siteconfig.php</tt>の中でのみ有効)を指定できます。これを指定すると、パスワードやクッキーなどの重要な情報も表示できます。<br />
     いずれにせよ、<a href="#desc_rootdebug">上述</a>と同様な警告をしておきます。<strong>実際に使用しているサイトでこのオプションを有効なままにしておかないでください!</strong></td></tr>
 </table>
 
@@ -1800,8 +1796,8 @@
 
 <p>ロケールと日時のフォーマットの設定はコンフィギュレーションで行えます。ロケールを設定するには、適切な文字列を設定するか空白のままにしておきます。後者の場合は、オペレーティングシステムのロケールの既定値が使用されます。日時のフォーマットはロケールによって処理が決まります。ロケール名はオペレーティングシステムに依存します。ほとんどのUNIX系のホストでは、ロケールコードは<i>/usr/share/locale/locale.alias</i> ファイルに記述されており、<i>locale -a</i> コマンドで利用可能なロケールすべてを表示できるシステムもあります。ロケールが存在しない場合は、<i>localedef</i> コマンドで作成できます。</p>
 
-<p>ロケールに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>、<br>
-<code>localdef</code> コマンドに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a><br>を参照してください。</p>
+<p>ロケールに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>、<br />
+<code>localdef</code> コマンドに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a><br />を参照してください。</p>
 
 <h3>日時のフォーマット</h3>
 <p>（訳注：以下の表現は、<a href="http://jp.php.net/manual/ja/function.strftime.php">PHPマニュアル</a>の表現を参考に、一部を修正しています。）</p>
@@ -1843,7 +1839,7 @@
 </ul>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br>
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

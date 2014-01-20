@@ -1,12 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Geeklog Documentation - Changes</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
 </head>
 
 <body>
-<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90"></a></p>
+<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Changes</div>
 
 <h1><a name="changes">Changes</a></h1>
@@ -170,7 +171,7 @@ Aung Khant of the YGN Ethical Hacker Group.</p>
     i.e. the comments were not recognized as plugin comments.</li>
 <li>Changing anything in My Account while Advanced Editor was disabled for the
     site also disabled the user's setting for the Advanced Editor.</li>
-<li>Fixed the "Show & Hide Boxes" option in My Account.</li>
+<li>Fixed the "Show &amp; Hide Boxes" option in My Account.</li>
 <li>Reverted a change from Geeklog 1.7.0: Curly braces in block content are not
     escaped any longer. To avoid words in curly braces being interpreted as
     template variables (e.g. for JavaScript code), add a space after the opening
@@ -260,7 +261,7 @@ originally reported by Bookoo of the Nine Situations Group.</p>
         <li>Template errors will now trigger the <a href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=65">standard error handler</a> instead of
             exposing the template path.</li>
         <li>Fixed inclusion protection for some of the Spam-X class files.</li>
-    </ul>
+    </ul></li>
 </ul>
 
 <p>Please also see the list of <a href="theme.html#changes">theme changes</a>.</p>
@@ -270,7 +271,7 @@ originally reported by Bookoo of the Nine Situations Group.</p>
 <ul>
 <li>Fixed automatic <a href="config.html#desc_article_comment_close_enabled">closing of stories for comments</a> after a certain amount of days. If you need to
     re-open comments on stories that were closed due to this bug, you can use
-    this SQL request:<br>
+    this SQL request:<br />
     <code style="margin-left:2em">UPDATE gl_stories SET commentcode = 0, comment_expire = 0 WHERE commentcode = 1;</code></li>
 <li>The comment speed limit was being ignored.</li>
 <li>Fixed a bug in the Group Editor that didn't let you add groups to other
@@ -285,8 +286,8 @@ originally reported by Bookoo of the Nine Situations Group.</p>
 
 <p>This release addresses the following security issue:</p>
 <ul>
-<li>Unauthorized file uploads were possible through FCKeditor.<br>
-Uploaded files still had to go through FCKeditor's filter, so it was not possible to upload scripts (and the integrity of the Geeklog site as such was not in danger). There were, however, reports that this was used to host malware.<br>
+<li>Unauthorized file uploads were possible through FCKeditor.<br />
+Uploaded files still had to go through FCKeditor's filter, so it was not possible to upload scripts (and the integrity of the Geeklog site as such was not in danger). There were, however, reports that this was used to host malware.<br />
 This update prevents use of the upload feature when FCKeditor is disabled and disables it for anonymous users. It also doesn't allow uploading of archive files any more. Furthermore, you need some sort of "edit" permission now to be able to upload files through FCKeditor (this is meant as an interim measure - we will probably introduce a separate "upload" permission in future Geeklog versions).</li>
 </ul>
 
@@ -494,7 +495,7 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
 <li>Configuration options can now be overwritten in <tt>siteconfig.php</tt>.
     This is mostly useful for the <code>$_CONF['rootdebug']</code> option.</li>
 <li>Remotely authenticated users can now use the webservices (they need to use
-    <tt>username@servicename</tt> for their username).<br>
+    <tt>username@servicename</tt> for their username).<br />
     <strong>Note:</strong> OpenID users can <em>not</em> use the webservices,
     due to technical issues with the authentication method.</li>
 <li>Improved compatibility of the webservices (i.e. AtomPub).</li>
@@ -564,7 +565,7 @@ the 2007 Google Summer of Code:</p>
 <li>Support for Microsoft SQL Server. Starting with this release, Geeklog can
     now also be installed on Microsoft SQL Server, so it's no longer restricted
     to just MySQL. The MS SQL support was developed by Randy Kolenko.
-    Thanks, Randy!<br>
+    Thanks, Randy!<br />
     Please note that any third-party plugins will have to offer support for
     MS SQL before they can be installed on Microsoft SQL Server. The bundled
     plugins (Calendar, Links, Polls, Spam-X, Static Pages) have already been
@@ -625,11 +626,11 @@ introduced in Geeklog 1.4.0sr5.</p>
     were accessible from a URL (which has always been strongly discouraged in
     the installation instructions) then those files could be used to load and
     execute malicious code from a remote server.
-    <br><br>
+    <br /><br />
     More information: <a
     href="http://www.geeklog.net/article.php/so-called-exploit">So-called
     Geeklog "exploit" posted</a>
-    <br><br>
+    <br /><br />
     In this release, we've added the missing execution prevention for all files
     outside of public_html. We would still, however, suggest that you fix your
     Geeklog install if the files outside of public_html are accessible from a
@@ -641,9 +642,9 @@ introduced in Geeklog 1.4.0sr5.</p>
     upload of arbitrary PHP code (even if FCKeditor was disabled in Geeklog's
     config.php). Depending on your webserver's configuration, it was then
     possible to execute that uploaded code.
-    <br><br>
+    <br /><br />
     More information: <a href="http://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">Exploit for FCKeditor's mcpuk file manager</a>
-    <br><br>
+    <br /><br />
     The file manager has been removed from this release. You will therefore no
     longer be able to upload files, e.g. images, through FCKeditor. Future
     versions of Geeklog will ship with an updated version of FCKeditor and its
@@ -733,7 +734,7 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
     <code>$_CONF['advanced_editor'] = true;</code> in your
     <tt>config.php</tt>.</li>
 <li>The search now only displays a specified amount of results per page to
-    avoid running into timeouts when searching through large databases.<br>
+    avoid running into timeouts when searching through large databases.<br />
     <b>Note:</b> Plugins will have to be updated to support the "paged" search.
     Until then, Geeklog fakes the paged results for plugin searches, which
     means that a plugin that hasn't been updated will still search through the
@@ -816,7 +817,7 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
     (reported by LWC). The same problem also existed with poll comments.</li>
 <li>Supplying an illegal start or end date to the advanced search resulted in a
     warning message that disclosed the path to the Geeklog install on the
-    server (reported by r0t3d3Vil).<br>
+    server (reported by r0t3d3Vil).<br />
     It was <strong>not</strong> possible to use this for SQL injections.</li>
 </ol>
 
@@ -830,7 +831,7 @@ static pages when URL rewriting was enabled, that were introduced in
 <p>This release provides security enhancements and better spam protection
 originally developed for Geeklog 1.3.12. It also addresses a few bugs where
 the bugfix could be integrated with a reasonable amount of work (other bugfixes
-will have to wait for the 1.3.12 release).
+will have to wait for the 1.3.12 release).</p>
 
 <h3>Security and Spam protection</h3>
 <ul>
@@ -898,7 +899,7 @@ be exploited to extract user data such as the user's password hash.</li>
 <h3>Security issues</h3>
 <ol>
 <li>It was possible to submit stories anonymously even if anonymous submissions
-    were turned off in <tt>config.php</tt> (reported by Barry Wong).<br>
+    were turned off in <tt>config.php</tt> (reported by Barry Wong).<br />
     These stories still ended up in the submission queue, though, unless you
     disabled it in <tt>config.php</tt>.</li>
 <li>Some of the parameters in link and event submissions weren't filtered,
@@ -943,7 +944,7 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
 <ul>
 <li><a href="spamx.html" rel="nofollow">Spam-X plugin</a> included. Tom Willet
     has kindly provided his spam detection plugin, which is now part of the
-    default Geeklog install.<br>
+    default Geeklog install.<br />
     The plugin has been modified slightly to store the blacklists in the
     database. Users of the previous version of the plugin will have to import
     their personal blacklist via the plugin's admin panel.</li>
@@ -964,12 +965,12 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
     An autolink takes the form
     <code>[<i>name</i>:<i>id</i> <i>link text</i>]</code> where <i>name</i> is
     the tag name, <i>id</i> is the ID of an object the link should be pointing
-    to, and <i>link text</i> is used as the text of the link.<br>
+    to, and <i>link text</i> is used as the text of the link.<br />
     Example: <code>[story:email-bug About the email bug]</code> would be
-    translated into <code>&lt;a href="http://example.com/article.php/email-bug"&gt;About the email bug&lt;/a&gt;</code><br>
+    translated into <code>&lt;a href="http://example.com/article.php/email-bug"&gt;About the email bug&lt;/a&gt;</code><br />
     For the built-in autotags, the <i>link text</i> is optional and Geeklog
     will use the title of the object (story / event / static page) if it is not
-    given.<br>
+    given.<br />
     Predefined autotags are <code>[story:]</code> to link to stories and
     <code>[event:]</code> to link to events. Plugins can define their own
     autotags to provide links to objects under their control. The Static Pages
@@ -990,7 +991,7 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
 <li>On fresh installs, there is now an option to use InnoDB tables (instead of
     MyISAM) if your MySQL version supports them (as of MySQL 4.0, or 3.x "Max"
     builds). Existing databases can be converted to InnoDB by using the script
-    <tt>admin/install/toinnodb.php</tt>.<br>
+    <tt>admin/install/toinnodb.php</tt>.<br />
     <strong>Warning:</strong> Using InnoDB tables makes database backups
     somewhat more complicated. Small and medium-sized sites should work just
     fine with MyISAM tables, so if in doubt <em>don't</em> use InnoDB
@@ -1059,7 +1060,7 @@ environment it's running in.</p>
     now <a href="http://www.unisys.com/about__unisys/lzw">expired</a>, it is
     safe to use GIF images again and the PNG conversion has been dropped.</li>
 <li>The tarball also includes updated PEAR packages which should address the
-    email problems some users were having (bug #246).<br>
+    email problems some users were having (bug #246).<br />
     <strong>Note:</strong> These are the same PEAR packages that already
     shipped with Geeklog 1.3.9sr2.</li>
 </ul>
@@ -1076,7 +1077,7 @@ the editable story IDs and the story archive options)!</p>
 
 <ol>
 <li>It was possible to submit stories anonymously even if anonymous submissions
-    were turned off in <tt>config.php</tt> (reported by Barry Wong).<br>
+    were turned off in <tt>config.php</tt> (reported by Barry Wong).<br />
     These stories still ended up in the submission queue, though, unless you
     disabled it in <tt>config.php</tt>.</li>
 <li>Some of the parameters in link and event submissions weren't filtered,
@@ -1107,7 +1108,7 @@ the editable story IDs and the story archive options)!</p>
 
 <ol>
 <li>It was possible to post anonymous comments, even when anonymous comment
-    posting had been switched off in config.php.<br>
+    posting had been switched off in config.php.<br />
     This bug was apparently exploited by spammers to send hundreds of spam
     posts to certain Geeklog sites.</li>
 <li>Added additional speed limit checks for comments and submissions.</li>
@@ -1149,7 +1150,7 @@ the editable story IDs and the story archive options)!</p>
 <li>There is a new admin option called Content Syndication that lets you
     create and configure (RSS) feeds. In addition to the standard feed
     containing all the new stories, you can now create feeds per topic, for
-    upcoming events, and for links.<br>
+    upcoming events, and for links.<br />
     This feature is extensible in that plugins can provide additional feeds.
     It is also possible to provide feeds in formats other than RSS 0.91 by
     providing additional feed classes.</li>
@@ -1218,7 +1219,7 @@ against SQL injections.</p>
 
 <ol>
 <li>It was possible to post anonymous comments, even when anonymous comment
-    posting had been switched off in config.php.<br>
+    posting had been switched off in config.php.<br />
     This bug was apparently exploited by spammers to send hundreds of spam
     posts to certain Geeklog sites.</li>
 </ol>
@@ -1282,7 +1283,7 @@ against SQL injections.</p>
 <h3>Security issues</h3>
 <ol>
 <li>By including Ulf Harnhammar's <a href="http://sourceforge.net/projects/kses/" title="kses homepage">kses</a> HTML filter, this release addresses a variety of possible Javascript injection and CSS defacement issues.</li>
-<li>Details of SQL errors will not be reported in the browser any more (but only in Geeklog's error.log file). This will avoid disclosing any sensitive information as part of the error message (which is so far the only problem we have found with the alleged SQL injection issues that have been reported).
+<li>Details of SQL errors will not be reported in the browser any more (but only in Geeklog's error.log file). This will avoid disclosing any sensitive information as part of the error message (which is so far the only problem we have found with the alleged SQL injection issues that have been reported).</li>
 </ol>
 
 <p>Please note that at the moment we do <strong>not</strong> recommend to use Geeklog with MySQL 4.1 (which, at the time of this writing, is in alpha state and should not be used on production sites anyway). An upcoming release of Geeklog will include more thorough filtering of SQL injections attempts, thus also fixing the problems with MySQL 4.1.</p>
@@ -1311,7 +1312,7 @@ variety of (mostly minor) bugfixes. None of those fixes are security-related.</p
     versions.</li>
 <li>Fixed a problem with the What's Related block on stories that contain
     images.</li>
-<li>Skip user "Anonymous" when sending out the Daily Digest.
+<li>Skip user "Anonymous" when sending out the Daily Digest.</li>
 <li>Prevent admin from changing a user's email address to one that's already
     used by another user.</li>
 <li>Update RSS feed and Older Stories block when deleting a story.</li>
@@ -1332,27 +1333,27 @@ href="staticpages.html">Static Pages documentation</a> for details.</p>
 <ul>
   <li>The search function has been rewritten. You can now search for the
     exact phrase, all the words, or any of the words from a query. Search
-    words are also highlighted in stories.
+    words are also highlighted in stories.</li>
   <li>New Privacy options: Users can decide whether they want to receive
     email from other users and/or admins and whether they want to show up in
-    the Who's Online block.
+    the Who's Online block.</li>
   <li>You can now get a list of all users who are in a certain group (from the
-    Admin's group editor).
+    Admin's group editor).</li>
   <li>When scaling is configured for images in stories, you can now keep the
     unscaled image (has to be enabled in config.php first). In that case, the
     scaled-down image in the story will serve as a thumbnail and link to the
-    unscaled image.
+    unscaled image.</li>
   <li>You can now make one topic the default topic. The topic selection in the
     story submission form will then default to that topic. However, when
     browsing by topic (index.php?topic=Geeklog etc.) new story submissions will
-    default to the current topic.
+    default to the current topic.</li>
   <li>You can give your users the ability to change their username and delete
-    their account. Both features have to be enabled in config.php.
+    their account. Both features have to be enabled in config.php.</li>
   <li>Extended Plugin API: Plugins can now display content in Geeklog's
     center area, add their own information to the user profile, and add
-    information to the site's header (<code>&lt;head&gt;</code> section).
+    information to the site's header (<code>&lt;head&gt;</code> section).</li>
   <li>There's a new API for custom registration forms (see
-    <tt>lib-custom.php</tt> for sample code).
+    <tt>lib-custom.php</tt> for sample code).</li>
   <li>There have been quite a few theme changes in order to move most larger
     portions of hard-coded HTML to template files and to give theme designers
     more control over the layout. Please consult the <a
@@ -1366,19 +1367,19 @@ href="staticpages.html">Static Pages documentation</a> for details.</p>
     your old password and sending you a new one, you will now receive an
     email with a unique link in it. If you follow this link, you can enter a
     new password directly. Otherwise, you can simply ignore the email and your
-    old password will remain valid.
+    old password will remain valid.</li>
   <li>Topic access was not always checked properly. If Story Admins report
     getting access denied messages after upgrading to 1.3.8, check your topic
-    permissions carefully.
+    permissions carefully.</li>
   <li>The poll editor let you enter one answer too many (i.e. when the max.
     number of answers was set to 10 you could actually enter 11). Please check
     your existing polls or you may lose the last answer if you exceeded the
     max. number of answers in a poll (adjust $_CONF['maxanswers'] accordingly,
-    if necessary).
+    if necessary).</li>
   <li>Geeklog should install and run again on old versions of MySQL
     (specifically, 3.22.xx). Please note that some of these old versions aren't
     even supported by MySQL AB any more and MySQL installs older than 3.23.54
-    are having security issues.
+    are having security issues.</li>
 </ul>
 
 
@@ -1431,7 +1432,7 @@ href="staticpages.html">Static Pages documentation</a> for details.</p>
 <h3>Security issues</h3>
 <ol>
 <li>By including Ulf Harnhammar's <a href="http://sourceforge.net/projects/kses/" title="kses homepage">kses</a> HTML filter, this release addresses a variety of possible Javascript injection and CSS defacement issues.</li>
-<li>Details of SQL errors will not be reported in the browser any more (but only in Geeklog's error.log file). This will avoid disclosing any sensitive information as part of the error message (which is so far the only problem we have found with the alleged SQL injection issues that have been reported).
+<li>Details of SQL errors will not be reported in the browser any more (but only in Geeklog's error.log file). This will avoid disclosing any sensitive information as part of the error message (which is so far the only problem we have found with the alleged SQL injection issues that have been reported).</li>
 </ol>
 
 <p>Please note that at the moment we do <strong>not</strong> recommend to use Geeklog with MySQL 4.1 (which, at the time of this writing, is in alpha state and should not be used on production sites anyway). An upcoming release of Geeklog will include more thorough filtering of SQL injections attempts, thus also fixing the problems with MySQL 4.1.</p>
@@ -1454,9 +1455,9 @@ All users are <em>strongly</em> encouraged to upgrade to this version ASAP.</p>
     2003-05-15.</li>
 <li>Added a warning in <tt>config.php</tt> that adding any of the following
     tags to the list of allowable HTML can make the site vulnerable to
-    scripting attacks:<br>
+    scripting attacks:<br />
     <code>&lt;img&gt; &lt;span&gt; &lt;marquee&gt; &lt;script&gt;
-          &lt;embed&gt; &lt;object&gt; &lt;iframe&gt;</code><br>
+          &lt;embed&gt; &lt;object&gt; &lt;iframe&gt;</code><br />
     (pointed out by Joat Dede).</li>
 </ol>
 
@@ -1487,7 +1488,7 @@ All users are strongly recommended to upgrade to this version.</p>
 <li>Fixed possible causes for endless loops with the redirect in index.php: No redirect will be done if $HTTP_SERVER_VARS['HTTP_HOST'] is not set. Also, the comparison of the configured and actual server name is not case-sensitive any more.</li>
 <li>Fixed image resizing when using ImageMagick.</li>
 <li>The new user notification email (introduced in Geeklog 1.3.7) was always
- sent out, even if 'user' was not listed in $_CONF['notification'].
+ sent out, even if 'user' was not listed in $_CONF['notification'].</li>
 <li>The Admin menu will now be displayed for users who have Admin access to plugins only, but not to one of the core Admin features.</li>
 <li>The default for the daily digest is now back to "off", i.e. new users will not receive it automatically. To enable the daily digest for new users again, set $_CONF['emailstoriesperdefault'] = 1 in config.php.</li>
 </ul>
@@ -1502,7 +1503,7 @@ All users are strongly recommended to upgrade to this version.</p>
 <ul>
   <li>A notification email can now be sent when a new story, link, or event
     has been submitted or a new user has registered with the site (see the
-    <a href="config.html#submission">submission settings</a> for details).<br>
+    <a href="config.html#submission">submission settings</a> for details).<br />
     Please note that this feature doesn't tie in with Geeklog's security
     features - it's really more of a hack, since many people asked for this
     functionality.</li>
@@ -1634,7 +1635,7 @@ already has the new index fields.</p>
 Roger Webster have contributed to this release. Thank you!</p>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net">The Geeklog Documentation Project</a><br>
+    <a href="http://wiki.geeklog.net">The Geeklog Documentation Project</a><br />
     All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
 </div>
 
