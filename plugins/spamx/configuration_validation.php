@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X                                                              |
+// | Spam-X                                                                    |
 // +---------------------------------------------------------------------------+
 // | configuration_validation.php                                              |
 // |                                                                           |
-// | List of validation rules for the Links plugin configurations                          |
+// | List of validation rules for the Links plugin configurations              |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |

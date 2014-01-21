@@ -46,6 +46,7 @@
 */
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
+require_once $_CONF['path_system'] . '/lib-admin.php';
 
 $display = '';
 
@@ -73,38 +74,77 @@ $T->parse('output', 'admin');
 $display .= $T->finish($T->get_var('output'));
 
 $files = array();
+
 if ($dir = @opendir($_CONF['path'] . 'plugins/spamx/')) {
     while (($file = readdir($dir)) !== false) {
         if (is_file($_CONF['path'] . 'plugins/spamx/' . $file)) {
-            if (substr($file, -16) == '.Admin.class.php') {
+            if (substr($file, -16) === '.Admin.class.php') {
                 $tmp = str_replace('.Admin.class.php', '', $file);
                 array_push($files, $tmp);
             }
         }
     }
+
     closedir($dir);
 }
+
 $display .= '<p><b>' . $LANG_SX00['adminc'] . '</b></p><ul>';
+$header_arr = array(
+    array(
+        'text'  => $LANG_SX00['plugin'],
+        'field' => 'title'
+    ),
+    array(
+        'text'  => $LANG_SX00['action'],
+        'field' => 'edit'
+    )
+);
+$data_arr = array();
 
 foreach ($files as $file) {
     require_once $_CONF['path'] . 'plugins/spamx/' . $file . '.Admin.class.php';
 
     $CM = new $file;
-    $display .= '<li>' . COM_createLink($CM->link(), $_CONF['site_admin_url']
-             . '/plugins/spamx/index.php?command=' . $file) . '</li>';
+    $action = 'Edit';
+    $link = $CM->link();
+    
+    if (strpos($link, 'Edit ') !== false) {
+        $link = substr($link, 5);
+    } else {
+        $action = 'View';
+    }
+    
+    $data_arr[] = array(
+        'title' => $link,
+        'edit'  => COM_createLink(
+            $LANG_SX00[strtolower($action)],
+            $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=' . $file
+        )
+    );
 }
-$display .= '<li>' . COM_createLink($LANG_SX00['documentation'],
-                        plugin_getdocumentationurl_spamx('index')) . '</li>';
-$display .= '</ul>';
+
+$data_arr[] = array(
+    'title' => $LANG_SX00['documentation'],
+    'edit'  => COM_createLink(
+        $LANG_SX00['view'],
+        plugin_getdocumentationurl_spamx('index')
+    )
+);
+$display.= ADMIN_simpleList($fieldfunction, $header_arr, $text_arr, $data_arr, $menu_arr, $options, $form_arr);
 
 if (isset($_REQUEST['command'])) {
     $cmd = COM_applyFilter($_REQUEST['command']);
+
     if (!empty($cmd) && in_array($cmd, $files)) {
         $CM = new $cmd;
         $display .= $CM->display();
     }
 }
-$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_SX00['plugin_name']));
+
+$display = COM_createHTMLDocument(
+    $display,
+    array('pagetitle' => $LANG_SX00['plugin_name'])
+);
 
 COM_output($display);
 

@@ -28,56 +28,58 @@ require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 * @package Spam-X
 *
 */
-class LogView extends BaseAdmin {
-    /**
-     * Constructor
-     */
-    function display()
-    {
-        global $_CONF, $LANG_SX00;
+class LogView extends BaseAdmin
+{
+    const MAX_LOG_SIZE = 100000;
+    const LOG_FILE     = 'spamx.log';
 
-        $display = '';
-
-        $max_Log_Size = 100000;
-        $action = '';
-        if (isset ($_POST['action'])) {
-            $action = COM_applyFilter ($_POST['action']);
-        }
-        $path = $_CONF['site_admin_url']
-              . '/plugins/spamx/index.php?command=LogView';
-        $log = 'spamx.log';
-        $display .= "<form method=\"post\" action=\"{$path}\"><div>";
-        $display .= "<input type=\"submit\" name=\"action\" value=\"{$LANG_SX00['clearlog']}\"" . XHTML . ">";
-        $display .= "</div></form>";
-        if ($action == $LANG_SX00['clearlog']) {
-            $timestamp = strftime("%c");
-            $fd = fopen($_CONF['path_log'] . $log, "w");
-            fputs($fd, "$timestamp {$LANG_SX00['logcleared']} \n");
-            fclose($fd);
-        }
-        $fsize = filesize($_CONF['path_log'] . $log);
-        if ($fsize > $max_Log_Size) {
-          $fd=fopen($_CONF['path_log'] . $log, "r");
-          fseek($fd,-$max_Log_Size,SEEK_END);
-          $data = fgets($fd);
-          $data = fread($fd,$max_Log_Size);
-          fclose($fd);
-          $fd = fopen($_CONF['path_log'] . $log, "w");
-          fputs($fd, "$timestamp {$LANG_SX00['logcleared']} \n");
-          fwrite($fd,$data);
-          fclose($fd);
-        }
-        $display .= "<hr" . XHTML . "><pre>";
-        $display .= implode('', file($_CONF['path_log'] . $log));
-        $display .= "</pre>";
-        return $display;
-    }
-
-    function link()
+    public function __construct()
     {
         global $LANG_SX00;
 
-        return $LANG_SX00['viewlog'];
+        $this->moduleName = '';
+        $this->command    = 'LogView';
+        $this->titleText  = '';
+        $this->linkText   = $LANG_SX00['viewlog'];
+    }
+
+    public function display()
+    {
+        global $_CONF, $LANG_SX00;
+
+        $action = $this->getAction();
+        $path = $_CONF['site_admin_url']
+              . '/plugins/spamx/index.php?command=LogView';
+        $log = 'spamx.log';
+        $display = '<form method="post" action="' . $path . '"><div>'
+                 . '<input type="submit" name="action" value="'
+                 . $LANG_SX00['clearlog'] . '"' . XHTML . '>'
+                 . '</div></form>';
+
+        if ($action === $LANG_SX00['clearlog']) {
+            $entry = strftime('%c') . ' ' . $LANG_SX00['logcleared'] . " \n";
+            file_put_contents($_CONF['path_log'] . self::LOG_FILE, $entry, LOCK_EX);
+        }
+
+        $fsize = filesize($_CONF['path_log'] . self::LOG_FILE);
+
+        if ($fsize > self::MAX_LOG_SIZE) {
+            $fd = fopen($_CONF['path_log'] . self::LOG_FILE, 'r');
+            fseek($fd, - self::MAX_LOG_SIZE, SEEK_END);
+            $data = fgets($fd);
+            $data = fread($fd, self::MAX_LOG_SIZE);
+            fclose($fd);
+
+            $entry = $timestamp . ' ' . $LANG_SX00['logcleared'] . " \n"
+                   . $data;
+            file_put_contents($_CONF['path_log'] . self::LOG_FILE, $entry, LOCK_EX);
+        }
+
+        $display .= '<hr' . XHTML . '><pre>'
+                 .  file_get_contents($_CONF['path_log'] . self::LOG_FILE)
+                 .  '</pre>';
+
+        return $display;
     }
 }
 

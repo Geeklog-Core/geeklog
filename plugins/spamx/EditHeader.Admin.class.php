@@ -30,85 +30,42 @@ require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 * @package Spam-X
 *
 */
-class EditHeader extends BaseAdmin {
-    /**
-     * Constructor
-     */
-    function display()
+class EditHeader extends BaseAdmin
+{
+    public function __construct()
+    {
+        global $LANG_SX00;
+
+        $this->moduleName = 'HTTPHeader';
+        $this->command    = 'EditHeader';
+        $this->titleText  = $LANG_SX00['headerblack'];
+        $this->linkText   = $LANG_SX00['edit_http_header_blacklist'];
+    }
+
+    public function display()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
 
-        $action = '';
-        if (isset($_GET['action'])) {
-            $action = $_GET['action'];
-        } elseif (isset($_POST['paction'])) {
-            $action = $_POST['paction'];
-        }
+        $action = $this->getAction();
+        $entry  = $this->getEntry();
 
-        if (($action == 'delete') && SEC_checkToken()) {
-            $entry = $_GET['entry'];
-            if (!empty($entry)) {
-                $dbentry = DB_escapeString($entry);
-                DB_delete($_TABLES['spamx'], array('name', 'value'),
-                                             array('HTTPHeader', $dbentry));
-            }
-        } elseif (($action == $LANG_SX00['addentry']) && SEC_checkToken()) {
+        if (($action === 'delete') && SEC_checkToken()) {
+            $this->deleteEntry($entry);
+        } elseif (($action === $LANG_SX00['addentry']) && SEC_checkToken()) {
             $entry = '';
-            $name = COM_applyFilter($_REQUEST['header-name']);
-            $n = explode(':', $name);
-            $name = $n[0];
+            $name  = COM_applyFilter($_REQUEST['header-name']);
+            $n     = explode(':', $name);
+            $name  = $n[0];
             $value = $_REQUEST['header-value'];
 
             if (!empty($name) && !empty($value)) {
                 $entry = $name . ': ' . $value;
             }
 
-            $dbentry = DB_escapeString($entry);
-            if (!empty($entry)) {
-                $result = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('HTTPHeader','$dbentry')");
-            }
+            $this->addEntry($entry);
         }
 
-        $token = SEC_createToken();
-        $display = '<hr' . XHTML . '>' . LB . '<p><b>';
-        $display .= $LANG_SX00['headerblack'];
-        $display .= '</b></p>' . LB . '<ul>' . LB;
-        $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='HTTPHeader' ORDER BY value");
-        $nrows = DB_numRows($result);
-        for ($i = 0; $i < $nrows; $i++) {
-            list($e) = DB_fetchArray($result);
-
-            $display .= '<li>'. COM_createLink(htmlspecialchars($e),
-                $_CONF['site_admin_url']
-                . '/plugins/spamx/index.php?command=EditHeader&amp;action=delete&amp;entry=' . urlencode($e) . '&amp;' . CSRF_TOKEN . '=' . $token) . '</li>' . LB;
-        }
-        $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
-        $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
-
-        $display .= '<form method="post" action="' . $_CONF['site_admin_url']
-                 . '/plugins/spamx/index.php?command=EditHeader">' . LB;
-        $display .= '<table border="0" width="100%">' . LB;
-        $display .= '<tr><td align="right"><b>Header:</b></td>' . LB;
-        $display .= '<td><input type="text" size="40" name="header-name"'
-                 . XHTML . '> e.g. <tt>User-Agent</tt></td></tr>' . LB;
-        $display .= '<tr><td align="right"><b>Content:</b></td>' . LB;
-        $display .= '<td><input type="text" size="40" name="header-value"'
-                 . XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB;
-        $display .= '</table>' . LB;
-        $display .= '<p><input type="submit" name="paction" value="'
-                 . $LANG_SX00['addentry'] . '"' . XHTML . '>';
-        $display .= '<input type="hidden" name="' . CSRF_TOKEN
-                 . "\" value=\"{$token}\"" . XHTML . '></p>' . LB;
-        $display .= '</form>' . LB;
-
-        return $display;
-    }
-
-    function link()
-    {
-        global $LANG_SX00;
-
-        return $LANG_SX00['edit_http_header_blacklist'];        
+        return $this->getWidget();
     }
 }
 

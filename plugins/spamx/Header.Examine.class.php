@@ -32,14 +32,12 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 * @package Spam-X
 *
 */
-class Header extends BaseCommand {
-    /**
-     * No Constructor Use BaseCommand constructor
-     */
+class Header extends BaseCommand
+{
     /**
      * Here we do the work
      */
-    function execute($comment)
+    public function execute($comment)
     {
         global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
 
@@ -50,36 +48,39 @@ class Header extends BaseCommand {
         }
 
         // get HTTP headers of the current request
-        if (function_exists ('getallheaders')) {
-            $headers = getallheaders ();
+        if (function_exists('getallheaders')) {
+            $headers = getallheaders();
         } else {
             // if getallheaders() is not available, we have to fake it using
             // the $_SERVER['HTTP_...'] values
-            $headers = array ();
+            $headers = array();
+
             foreach ($_SERVER as $key => $content) {
-                if (substr ($key, 0, 4) == 'HTTP') {
+                if (substr($key, 0, 4) === 'HTTP') {
                     $name = str_replace ('_', '-', substr ($key, 5));
                     $headers[$name] = $content;
                 }
             }
         }
 
-        $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name='HTTPHeader'", 1);
-        $nrows = DB_numRows ($result);
+        $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='HTTPHeader'", 1);
+        $nrows = DB_numRows($result);
 
-        $ans = 0;
+        $ans = PLG_SPAM_NOT_FOUND;
+
         for ($i = 0; $i < $nrows; $i++) {
-            list ($entry) = DB_fetchArray ($result);
+            list ($entry) = DB_fetchArray($result);
 
-            $v = explode (':', $entry);
-            $name = trim ($v[0]);
-            $value = trim ($v[1]);
-            $value = str_replace ('#', '\\#', $value);
+            $v = explode(':', $entry);
+            $name  = trim($v[0]);
+            $value = trim($v[1]);
+            $value = str_replace('#', '\\#', $value);
 
             foreach ($headers as $key => $content) {
-                if (strcasecmp ($name, $key) == 0) {
-                    if (preg_match ("#$value#i", $content)) {
-                        $ans = 1; // quit on first positive match
+                if (strcasecmp($name, $key) === 0) {
+                    if (preg_match("#{$value}#i", $content)) {
+                        $ans = PLG_SPAM_FOUND;	// quit on first positive match
+                        DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='HTTPHeader' AND value='" . DB_escapeString($entry) . "'", 1);
                         SPAMX_log ($LANG_SX00['foundspam'] . $entry .
                                    $LANG_SX00['foundspam2'] . $uid . 
                                    $LANG_SX00['foundspam3'] .

@@ -7,45 +7,24 @@
  *
  * @package Spam-X
  * @subpackage Modules
- * @abstract
  *
  */
-class BaseCommand {
-    /**
-     * 
-     * @access public 
-     */
+abstract class BaseCommand
+{
+    protected $result     = PLG_SPAM_ACTION_NONE;	// Result of execute command
+    protected $actionCode = PLG_SPAM_ACTION_NONE;	// Action code
 
-    var $result = null; // Result of execute command
-    var $num = 0; // Action Number	
+    abstract function execute($comment);
 
-    /**
-     * Constructor
-     * 
-     * @access public 
-     */
-    function BaseCommand()
+    public function getResult()
     {
+        return $this->result;
     } 
 
-    function execute($comment)
+    public function getActionCode()
     {
-        return 0;
-    } 
-
-    function result()
-    {
-        global $result;
-
-        return $result;
-    } 
-
-    function number()
-    {
-        global $num;
-
-        return $num;
-    } 
-} 
+        return $this->actionCode;
+    }
+}
 
 ?>

@@ -129,8 +129,8 @@ function plugin_compatible_with_this_version_spamx($pi_name)
 
     if (! function_exists('PLG_spamAction')) {
         return false;
-    }   
-    
+    }
+
     if (! function_exists('SEC_createToken')) {
         return false;
     }

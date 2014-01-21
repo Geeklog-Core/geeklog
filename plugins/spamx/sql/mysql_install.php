@@ -33,7 +33,8 @@
 $_SQL[] = "
 CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
-  value varchar(255) NOT NULL default '', 
+  value varchar(255) NOT NULL default '',
+  counter int(11) NOT NULL default '0',
   INDEX spamx_name(name)
 ) ENGINE=MyISAM
 ";

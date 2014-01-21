@@ -180,7 +180,8 @@ class IP extends BaseCommand {
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='IP'", 1);
         $nrows = DB_numRows($result);
 
-        $ans = 0;
+        $ans = PLG_SPAM_NOT_FOUND;
+
         for ($i = 0; $i < $nrows; $i++) {
             list($val) = DB_fetchArray($result);
 
@@ -194,7 +195,8 @@ class IP extends BaseCommand {
             }
 
             if ($matches) {
-                $ans = 1; // quit on first positive match
+                $ans = PLG_SPAM_FOUND;	// quit on first positive match
+                DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='IP' AND value='" . DB_escapeString($val) . "'", 1);
                 SPAMX_log($LANG_SX00['foundspam'] . $val .
                           $LANG_SX00['foundspam2'] . $uid .
                           $LANG_SX00['foundspam3'] . $ip);

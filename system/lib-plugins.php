@@ -58,6 +58,16 @@ define('PLG_RET_PERMISSION_DENIED',   -2);  // access to item or object denied
 define('PLG_RET_AUTH_FAILED',         -3);  // authentication failed
 define('PLG_RET_PRECONDITION_FAILED', -4);  // a precondition was not met
 
+// Response codes for checking for a SPAM
+define('PLG_SPAM_NOT_FOUND',       0);
+define('PLG_SPAM_FOUND',           1);
+define('PLG_SPAM_UNSURE',          2);
+
+// Constants for actions when a SPAM was found
+define('PLG_SPAM_ACTION_NONE',     0);
+define('PLG_SPAM_ACTION_NOTIFY',   8);
+define('PLG_SPAM_ACTION_DELETE', 128);
+
 // buffer for function names for the center block API
 $PLG_bufferCenterAPI = array();
 $PLG_buffered = false;
@@ -2221,10 +2231,9 @@ function PLG_checkforSpam($content, $action = -1)
         $function = 'plugin_checkforSpam_' . $pi_name;
         if (function_exists($function)) {
             $result = $function($content, $action);
-            if ($result > 0) { // Plugin found a match for spam
 
+            if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
                 $result = PLG_spamAction($content, $action);
-
                 return $result;
             }
         }
@@ -2233,10 +2242,9 @@ function PLG_checkforSpam($content, $action = -1)
     $function = 'CUSTOM_checkforSpam';
     if (function_exists($function)) {
         $result = $function($content, $action);
-        if ($result > 0) { // Plugin found a match for spam
 
+        if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
             $result = PLG_spamAction($content, $action);
-
             return $result;
         }
     }
@@ -2263,10 +2271,11 @@ function PLG_spamAction($content, $action = -1)
 {
     global $_PLUGINS;
 
-    $result = 0;
+    $result = PLG_SPAM_NOT_FOUND;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_spamaction_' . $pi_name;
+
         if (function_exists($function)) {
             $res = $function($content, $action);
             $result = max($result, $res);
@@ -2274,6 +2283,7 @@ function PLG_spamAction($content, $action = -1)
     }
 
     $function = 'CUSTOM_spamaction';
+
     if (function_exists($function)) {
         $res = $function($content, $action);
         $result = max($result, $res);

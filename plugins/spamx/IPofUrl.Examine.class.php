@@ -54,28 +54,34 @@ class IPofUrl extends BaseCommand {
         * regex to find urls $2 = fqd
         */
         $regx = '(ftp|http|file)://([^/\\s]+)';
-        $num = preg_match_all ("#{$regx}#", html_entity_decode ($comment), $urls);
+        $num = preg_match_all("#{$regx}#", html_entity_decode($comment), $urls);
 
-        $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name='IPofUrl'", 1);
-        $nrows = DB_numRows ($result);
+        $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='IPofUrl'", 1);
+        $nrows = DB_numRows($result);
 
-        $ans = 0;
+        $ans = PLG_SPAM_NOT_FOUND;
+
         for ($j = 1; $j <= $nrows; $j++) {
-            list ($val) = DB_fetchArray ($result);
+            list ($val) = DB_fetchArray($result);
+
             for ($i = 0; $i < $num; $i++) {
-              $ip = gethostbyname ($urls[2][$i]);
-              if ($val == $ip) {
-                $ans = 1; // quit on first positive match
-                SPAMX_log ($LANG_SX00['foundspam'] . $urls[2][$i] .
-                           $LANG_SX00['foundspam2'] . $uid .
-                           $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
-                break;
-              }
+                $ip = gethostbyname($urls[2][$i]);
+
+                if ($val == $ip) {
+                    $ans = PLG_SPAM_FOUND;	// quit on first positive match
+                    DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter WHERE name='IPofUrl' AND value='" . DB_escapeString($val) . "'", 1);
+                    SPAMX_log($LANG_SX00['foundspam'] . $urls[2][$i] .
+                              $LANG_SX00['foundspam2'] . $uid .
+                              $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                    break;
+                }
             }
-            if ($ans == 1) {
-              break;
+
+            if ($ans == PLG_SPAM_FOUND) {
+                break;
             }
         }
+
         return $ans;
     }
 }

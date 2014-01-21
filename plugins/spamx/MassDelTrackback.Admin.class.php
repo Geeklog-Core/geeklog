@@ -31,19 +31,32 @@ require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 * @package Spam-X
 *
 */
-class MassDelTrackback extends BaseAdmin {
+class MassDelTrackback extends BaseAdmin
+{
+    public function __construct()
+    {
+        global $LANG_SX00;
 
-    function display()
+        $this->moduleName = '';
+        $this->command    = 'MassDelTrackback';
+        $this->titleText  = '';
+        $this->linkText   = $LANG_SX00['mass_delete_trackback_spam'];
+    }
+
+    public function display()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
 
         $display = $LANG_SX00['masstb'];
 
         $act = '';
+
         if (isset($_POST['action'])) {
             $act = COM_applyFilter($_POST['action']);
         }
+
         $lmt = 0;
+
         if (isset($_POST['limit'])) {
             $lmt = COM_applyFilter($_POST['limit'], true);
         }
@@ -64,6 +77,7 @@ class MassDelTrackback extends BaseAdmin {
                         }
                     }
                 }
+
                 closedir($dir);
             }
 
@@ -71,6 +85,7 @@ class MassDelTrackback extends BaseAdmin {
 
             $result = DB_query("SELECT cid,sid,type,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) AS date FROM {$_TABLES['trackback']} ORDER BY date DESC LIMIT $lmt");
             $nrows = DB_numRows($result);
+
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray($result);
                 $comment = TRB_formatComment($A['url'], $A['title'],
@@ -78,21 +93,24 @@ class MassDelTrackback extends BaseAdmin {
 
                 foreach ($Spamx_Examine as $Examine) {
                     $EX = new $Examine;
-                    if(method_exists($EX, 'reexecute'))
-                    {
-                    	$res = $EX->reexecute($comment, $A['date'], $A['ipaddress'], $A['type']);
+
+                    if (method_exists($EX, 'reexecute')) {
+                        $res = $EX->reexecute($comment, $A['date'], $A['ipaddress'], $A['type']);
                     } else {
-                    	$res = $EX->execute($comment);
+                        $res = $EX->execute($comment);
                     }
-                    if ($res == 1) {
+
+                    if ($res == PLG_SPAM_FOUND) {
                         break;
                     }
                 }
-                if ($res == 1) {
+
+                if ($res == PLG_SPAM_FOUND) {
                     $this->deltrackback($A['cid'], $A['sid'], $A['type']);
-                    $numc = $numc + 1;
+                    $numc++;
                 }
             }
+
             $display .= '<p>' . $numc . $LANG_SX00['comdel'] . '</p>' . LB;
         } else {
             $token = SEC_createToken();
@@ -124,13 +142,6 @@ class MassDelTrackback extends BaseAdmin {
         return $display;
     }
 
-    function link()
-    {
-        global $LANG_SX00;
-
-        return $LANG_SX00['mass_delete_trackback_spam'];
-    }
-
     /**
     * Deletes a given trackback comment
     *
@@ -140,14 +151,14 @@ class MassDelTrackback extends BaseAdmin {
     * @return   void
     *
     */
-    function deltrackback($cid, $sid, $type)
+    public function deltrackback($cid, $sid, $type)
     {
         global $_TABLES, $LANG_SX00;
 
         if (TRB_allowDelete($sid, $type)) {
             TRB_deleteTrackbackComment($cid);
 
-            if ($type == 'article') {
+            if ($type === 'article') {
                 $tbcount = DB_count($_TABLES['trackback'],
                                     array('type', 'sid'),
                                     array('article', $sid));

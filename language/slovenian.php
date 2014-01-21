@@ -2125,6 +2125,7 @@ $LANG_confignames['Core'] = array(
     'frame_options' => 'Zašèiti proti "clickjackingu"',
     'page_navigation_max_pages' => 'Max Pages for Navigation',
     'default_cache_time_block' => 'Default Block Cache Time',
+    'titletoid' => 'Enable Title To Id?',
     'censormode' => 'Naèin cenzor?',
     'censorreplace' => 'Tekst namesto cenzuriranega',
     'censorlist' => 'seznam cenzur',

@@ -115,7 +115,7 @@ function plugin_initconfig_spamx()
                 'text', 0, 0, null, 40, $enable_email, 'spamx', 0);
         $c->add('spamx_action', $_SPX_DEFAULT['action'], 'text',
                 0, 0, null, 50, false, 'spamx', 0);
-        
+
         $c->add('tab_modules', NULL, 'tab', 0, 0, NULL, 0, true, 'spamx', 10);
         $c->add('fs_sfs', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx', 10);
         $c->add('sfs_enabled', $_SPX_DEFAULT['sfs_enabled'], 'select',

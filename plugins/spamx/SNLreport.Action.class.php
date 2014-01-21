@@ -33,38 +33,29 @@ require_once ($_CONF['path'] . 'plugins/spamx/' . 'SNLbase.class.php');
 * based in large part on the works of Dirk Haun, Tom Willet (Spam-X) and Russ Jones (SLV)
 */
 
-class SNLreport extends BaseCommand {
-    /**
-     * Constructor
-     * Numbers are always binary digits and added together to make call
-     */
-    function SNLreport()
+class SNLreport extends BaseCommand
+{
+    public function __construct()
     {
-        global $num;
-
-        // Actually, this is the code used by the DeleteComment class.
-        // We're piggybacking on the delete operation here.
-        $num = 128;
+        $this->actionCode = PLG_SPAM_ACTION_DELETE;
     }
 
     /**
      * Here we do the work
      */
-    function execute ($comment)
+    public function execute($comment)
     {
-        global $result;
+        $this->result = PLG_SPAM_ACTION_DELETE;
 
-        $result = 128;
-
-        if (isset ($GLOBALS['SNL_triggered']) && $GLOBALS['SNL_triggered']) {
+        if (isset($GLOBALS['SNL_triggered']) && $GLOBALS['SNL_triggered']) {
             // the Examine class already reported these to SNL
-            return 1;
+            return PLG_SPAM_FOUND;
         }
 
         $SNL = new SNLbase();
-        $SNL->CheckForSpam ($comment);
+        $SNL->CheckForSpam($comment);
 
-        return 1;
+        return PLG_SPAM_FOUND;
     }
 }
 

@@ -2131,6 +2131,7 @@ $LANG_confignames['Core'] = array(
     'frame_options' => '"クリックジャッキング"を防止',
     'page_navigation_max_pages' => 'ページナビゲーションの最大ページ数',
     'default_cache_time_block' => 'ブロックのデフォルトキャシュタイム',
+    'titletoid' => 'Enable Title To Id?',
     'censormode' => '語句の検査',
     'censorreplace' => '置き換える単語',
     'censorlist' => 'バッドワード',

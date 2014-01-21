@@ -31,18 +31,15 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 * @package Spam-X
 *
 */
-class SFS extends BaseCommand {
-    /**
-     * No Constructor - use BaseCommand constructor
-     */
-
+class SFS extends BaseCommand
+{
     /**
      * The execute method examines the Email address
      *
      * @param   string  $email      Email text to examine
      * @return  int                 0: no spam, else: spam detected
      */
-    function execute($email)
+    public function execute($email)
     {
         global $result;
 
@@ -57,29 +54,30 @@ class SFS extends BaseCommand {
      * @param   string  $email  Email address of user
      * @param   string  $ip     IP address of user
      * @return  int             0: no spam, else: spam detected
-     * @access  private
      */
-    function _process($email, $ip)
+    private function _process($email, $ip)
     {
         global $_TABLES, $LANG_SX00, $_SPX_CONF;
 
-        if (!isset ($_SPX_CONF['sfs_enabled'])) {
+        if (!isset($_SPX_CONF['sfs_enabled'])) {
             $_SPX_CONF['sfs_enabled'] = false;
         }
-        
+
         if (!$_SPX_CONF['sfs_enabled']) {
-            return 0;     // invalid data, assume ok
+            return PLG_SPAM_NOT_FOUND;	// invalid data, assume ok
         }
-        
-        $db_email = mysql_escape_string($email);
-        $db_ip = mysql_escape_string($ip);
+
+        $db_email = DB_escapeString($email);
+        $db_ip    = DB_escapeString($ip);
         //  Include Blacklist Data
         //  Check for IP address
-        $result = DB_query("SELECT value FROM {$_TABLES['spamx']}
+        $result = DB_query("SELECT name, value FROM {$_TABLES['spamx']}
                 WHERE name='IP' AND value='$db_ip'
                 OR name='email' AND value='$db_email'", 1);
         if (DB_numRows($result) > 0) {
-            return 1;
+            list ($name, $value) = DB_fetchAarray($result);
+            DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter WHERE name='" . DB_escapeString($name) . "' AND value='" . DB_escapeString($value) . "'", 1);
+            return PLG_SPAM_FOUND;
         }
 
         $em = urlencode($email);
@@ -87,61 +85,65 @@ class SFS extends BaseCommand {
         if (!empty($ip)) {
             $query .= "&ip=$ip";
         }
-        
-        if (!isset ($_SPX_CONF['timeout'])) {
+
+        if (!isset($_SPX_CONF['timeout'])) {
             $_SPX_CONF['timeout'] = 5; // seconds
         }
 
-		require_once 'HTTP/Request.php';
+        require_once 'HTTP/Request.php';
 
-		$req = new HTTP_Request(
-			$query,
-			array(
-				'timeout' => $_SPX_CONF['timeout'],
-			)
-		);
+        $req = new HTTP_Request(
+            $query,
+            array(
+                'timeout' => $_SPX_CONF['timeout'],
+            )
+        );
 
         if ($this->_verbose) {
             SPAMX_log('Sending to SFS: ' . $query);
         }
 
-		if ($req->sendRequest() === TRUE) {
-			$result = $req->getResponseBody();
+        if ($req->sendRequest() === TRUE) {
+            $result = $req->getResponseBody();
 
-			if ($result === FALSE) {
-				return 0;	// Response body is not set, assume ok
-			}
+            if ($result === FALSE) {
+                return PLG_SPAM_NOT_FOUND;	// Response body is not set, assume ok
+            }
 
-			$result = unserialize($result);
+            $result = unserialize($result);
 
-	        if (!$result) {
-	            if ($this->_verbose) {
-	                SPAMX_log ("SFS: no spam detected");
-	            }
+            if (!$result) {
+                if ($this->_verbose) {
+                    SPAMX_log ("SFS: no spam detected");
+                }
 
-	            return 0;	// Invalid data, assume ok
-	        }
-		} else {
-			return 0;		// PEAR Error, assume ok
-		}
-		
-        if ($result['email']['appears'] == 1)
-            $value_arr[] = "('email', '$db_email')";
-        if ($result['ip']['appears'] == 1)
-            $value_arr[] = "('IP', '$db_ip')";
-        if (!empty($value_arr)) {
-            $values = implode(',', $value_arr);
-            $sql = "INSERT INTO {$_TABLES['spamx']} (name, value) 
-                    VALUES $values";
-            DB_query($sql);
-            
-            $log_msg = sprintf($LANG_SX00['email_ip_spam'], $email, $ip);
-            SPAMX_log($log_msg);
-           
-            return 1;
+                return PLG_SPAM_NOT_FOUND;	// Invalid data, assume ok
+            }
+        } else {
+            return PLG_SPAM_NOT_FOUND;	// PEAR Error, assume ok
         }
 
-        return 0;
+        if ($result['email']['appears'] == 1) {
+            $value_arr[] = "('email', '$db_email')";
+        }
+
+        if ($result['ip']['appears'] == 1) {
+            $value_arr[] = "('IP', '$db_ip')";
+        }
+
+        if (!empty($value_arr)) {
+            $values = implode(',', $value_arr);
+            $sql = "INSERT INTO {$_TABLES['spamx']} (name, value, 0) 
+                    VALUES $values";
+            DB_query($sql);
+
+            $log_msg = sprintf($LANG_SX00['email_ip_spam'], $email, $ip);
+            SPAMX_log($log_msg);
+
+            return PLG_SPAM_FOUND;
+        }
+
+        return PLG_SPAM_NOT_FOUND;
     }
 }
 

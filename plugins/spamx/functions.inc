@@ -234,13 +234,13 @@ function plugin_upgrade_spamx()
                 foreach ($_SQL as $sql) {
                     DB_query($sql);
                 }
-            }            
+            }
 
             if (! $current_config) {
                 // Remove admin override since not needed anymore
                 $c = config::get_instance();
                 $c->del('admin_override', 'spamx');
-    
+
                 // late fix: ensure 'notification_email' option can be disabled
                 $result = DB_query("SELECT value, default_value FROM {$_TABLES['conf_values']} WHERE name = 'notification_email' AND group_name = 'spamx'");
                 list($value, $default_value) = DB_fetchArray($result);
@@ -251,7 +251,7 @@ function plugin_upgrade_spamx()
                     }
                 }
             }
-            
+
             $current_version = '1.2.1';
             break;
 
@@ -261,17 +261,17 @@ function plugin_upgrade_spamx()
                 foreach ($_SQL as $sql) {
                     DB_query($sql);
                 }
-            }            
+            }
 
             if (! $current_config) {
                 spamx_update_ConfValues_1_2_1();  
             }
-            
+
             spamx_update_ConfigSecurity_1_2_1();
 
             $current_version = '1.2.2';
             break;
-            
+
         case '1.2.2':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
@@ -300,6 +300,17 @@ function plugin_upgrade_spamx()
             spamx_update_ConfigSecurity_1_2_2();
 
             $current_version = '1.3.0';
+            break;
+
+        case '1.3.0':	// Shipped with Geeklog-2.0.0
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            $current_version = '1.3.1';
             break;
 
         default:
@@ -355,10 +366,10 @@ function plugin_migrate_spamx($old_conf)
 function plugin_checkforSpam_spamx ($comment, $action = -1)
 {
     global $_CONF, $_SPX_CONF;
-    
+
     // skip spam check for members of a group that has the spamx.skip right.
     if (SEC_hasRights('spamx.skip')) {
-        return 0;
+        return PLG_SPAM_NOT_FOUND;
     }
 
     $spamx_path = $_CONF['path'] . 'plugins/spamx/';
@@ -377,13 +388,15 @@ function plugin_checkforSpam_spamx ($comment, $action = -1)
         closedir ($dir);
     }
 
-    $res = 0;
+    $res = PLG_SPAM_NOT_FOUND;
+
     foreach ($Spamx_Examine as $Examine) {
         $filename = $Examine . '.Examine.class.php';
         require_once ($spamx_path . $filename);
         $EX = new $Examine;
-        $res = $EX->execute ($comment);
-        if ($res == 1) {
+        $res = $EX->execute($comment);
+
+        if ($res != PLG_SPAM_NOT_FOUND) {
             break;
         }
     }
@@ -403,7 +416,7 @@ function plugin_spamaction_spamx ($comment, $action)
 {
     global $_CONF, $_SPX_CONF;
 
-    $res = 0;
+    $res = PLG_SPAM_NOT_FOUND;
 
     $spamx_path = $_CONF['path'] . 'plugins/spamx/';
 
@@ -420,19 +433,18 @@ function plugin_spamaction_spamx ($comment, $action)
                     $sfile = str_replace ('.Action.class.php', '', $file);
                     require_once ($spamx_path . $file);
                     $CM = new $sfile;
-                    $Spamx_Action[$sfile] = $CM->number ();
+                    $Spamx_Action[$sfile] = $CM->getActionCode();
                 }
             }
         }
         closedir ($dir);
     }
 
-    foreach ($Spamx_Action as $Act => $Num) {
-        if (($action & $Num) == $Num) {
+    foreach ($Spamx_Action as $Act => $actionCode) {
+        if (($action & $actionCode) == $actionCode) {
             $AC = new $Act;
-            $AC->execute ($comment);
-
-            $res = max ($res, $AC->result ());
+            $AC->execute($comment);
+            $res = max($res, $AC->getResult());
         }
     }
 

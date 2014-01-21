@@ -36,38 +36,29 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'SLVbase.class.php';
 * @package Spam-X
 *
 */
-class SLVreport extends BaseCommand {
-    /**
-     * Constructor
-     * Numbers are always binary digits and added together to make call
-     */
-    function SLVreport()
+class SLVreport extends BaseCommand
+{
+    public function __construct()
     {
-        global $num;
-
-        // Actually, this is the code used by the DeleteComment class.
-        // We're piggybacking on the delete operation here.
-        $num = 128;
+        $this->ActionCode = PLG_SPAM_ACTION_DELETE;
     }
 
     /**
      * Here we do the work
      */
-    function execute ($comment)
+    public function execute($comment)
     {
-        global $result;
+        $this->result = PLG_SPAM_ACTION_DELETE;
 
-        $result = 128;
-
-        if (isset ($GLOBALS['slv_triggered']) && $GLOBALS['slv_triggered']) {
+        if (isset($GLOBALS['slv_triggered']) && $GLOBALS['slv_triggered']) {
             // the Examine class already reported these to SLV
-            return 1;
+            return PLG_SPAM_FOUND;
         }
 
         $slv = new SLVbase();
-        $slv->CheckForSpam ($comment);
+        $slv->CheckForSpam($comment);
 
-        return 1;
+        return PLG_SPAM_FOUND;
     }
 }
 
