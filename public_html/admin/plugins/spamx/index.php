@@ -65,13 +65,18 @@ if (!SEC_hasRights('spamx.admin')) {
 * Main
 */
 
-$T = COM_newTemplate($_CONF['path'] . 'plugins/spamx/templates');
-$T->set_file('admin', 'admin.thtml');
-$T->set_var('header', $LANG_SX00['admin']);
-$T->set_var('plugin_name', $LANG_SX00['plugin_name']);
-$T->set_var('plugin', 'spamx');
-$T->parse('output', 'admin');
-$display .= $T->finish($T->get_var('output'));
+$display = '';
+
+$menu_arr = array (
+    array('url' => $_CONF['site_admin_url'],
+          'text' => $LANG_ADMIN['admin_home'])
+);
+
+$display  = COM_startBlock ($LANG_SX00['plugin_name'],'', COM_getBlockTemplate ('_admin_block', 'header'));
+$display .= ADMIN_createMenu( $menu_arr,
+                             $LANG_SX00['adminc'],
+                             plugin_geticon_spamx()
+);
 
 $files = array();
 
@@ -88,7 +93,6 @@ if ($dir = @opendir($_CONF['path'] . 'plugins/spamx/')) {
     closedir($dir);
 }
 
-$display .= '<p><b>' . $LANG_SX00['adminc'] . '</b></p><ul>';
 $header_arr = array(
     array(
         'text'  => $LANG_SX00['plugin'],
@@ -140,6 +144,8 @@ if (isset($_REQUEST['command'])) {
         $display .= $CM->display();
     }
 }
+
+$display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
 $display = COM_createHTMLDocument(
     $display,
