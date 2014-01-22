@@ -1253,13 +1253,12 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
  * @return   int         -1 == queued, 0 == comment saved, > 0 indicates error
  *
  */
-// FIXME: This function relies on $cid being NULL without being initialized in 
-//        the case of a comment submission. This is not ideal.
 function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03;
 
     $ret = 0;
+    $cid = 0;
 
     // Get a valid uid
     if (empty ($_USER['uid'])) {
@@ -1436,12 +1435,15 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     // save user notification information
     if (isset($_POST['notify']) && ($ret == -1 || $ret == 0) ) {
-        $deletehash = md5($title . $cid . $comment . rand());
+        $cid4hash = ($cid == 0) ? '' : $cid;
+        $cid4db   = ($cid == 0) ? null : $cid;
+
+        $deletehash = md5($title . $cid4hash . $comment . rand());
         if ($ret == -1) {
             //null goes into cid, comment not published yet, set moderation queue id
-            DB_save($_TABLES['commentnotifications'], 'uid,deletehash,mid',"$uid,'$deletehash',$cid");
+            DB_save($_TABLES['commentnotifications'], 'uid,deletehash,mid',"$uid,'$deletehash',{$cid4db}");
         } else {
-            DB_save($_TABLES['commentnotifications'], 'cid,uid,deletehash',"$cid,$uid,'$deletehash'");
+            DB_save($_TABLES['commentnotifications'], 'cid,uid,deletehash',"{$cid4db},$uid,'$deletehash'");
         }
     }
 
