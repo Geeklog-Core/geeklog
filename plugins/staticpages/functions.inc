@@ -101,7 +101,7 @@ function plugin_getmenuitems_staticpages()
             $order .= 'sp_id';
         }
     }
-    
+
     if (!empty($topic)) {
         $topic_sql = " AND (ta.tid = '$topic' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
     } else {
@@ -111,7 +111,7 @@ function plugin_getmenuitems_staticpages()
             $topic_sql = " AND (ta.tid = '" . TOPIC_ALL_OPTION . "')";
         }
     }
-    
+
     // Have to recheck for homeonly and all since the staticpage could be that
     $com_topic_sql = COM_getTopicSQL('', 0, 'ta');
     if ($com_topic_sql != "") {
@@ -212,7 +212,7 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'staticpages',
                                   $LANG03[14], $postmode);
-        
+
         if (!defined('COMMENT_ON_SAME_PAGE')) {
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
         } else {
@@ -353,18 +353,18 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $spage = COM_newTemplate($template_path);
         $spage->set_file(array('page'     => 'staticpage.thtml',
                                'comments' => 'spcomments.thtml'));
-        
+
         $spage->set_var('sp_id', $page);
-        
+
         if ($A['sp_inblock'] == 1) {
             $spage->set_var('block_start', COM_startBlock(stripslashes($A['sp_title']), $A['sp_help'],
                             COM_getBlockTemplate('_staticpages_block', 'header')));            
         }        
-        
+
         if (XHTML != '') {
             $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
         }
-        
+
         $breadcrumb_trail = '';
         if ($_CONF['supported_version_theme'] == '1.8.1') {
             if (!$_SP_CONF['disable_breadcrumbs_staticpages']) {
@@ -484,12 +484,12 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
         // Call to plugins to set template variables
         PLG_templateSetVars('staticpage', $spage);
-        
+
         if ($A['sp_inblock'] == 1) {
             $spage->set_var('block_end', COM_endBlock(COM_getBlockTemplate('_staticpages_block',
                                                          'footer')));
         }
-        
+
 
         $retval .= $spage->finish($spage->parse('output', 'page'));
 
@@ -510,7 +510,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         } else {
             $rightblock = -1;
         }
-        
+
         $breadcrumbs = '';
         if (!$_SP_CONF['disable_breadcrumbs_staticpages']) {
             $breadcrumbs = TOPIC_breadcrumbs('staticpages', $page);
@@ -653,7 +653,7 @@ function SP_printPage($page, $A)
 */
 function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $comment_mode = 'nested', $comment_page = 1, $msg = 0, $query = '')
 {
-    global $_TABLES;
+    global $_TABLES, $_USER;
 
     $retval = '';
 
@@ -664,9 +664,20 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
     $svc_msg = array();
 
     if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
-        //// Grab page id from database since some comparisons are case sensitive and staticpage ids are not.
-        $page = DB_getItem($_TABLES['staticpage'], 'sp_id', "sp_id = '$page' ");
-        
+        // Grab page id from database since some comparisons are case sensitive
+        // and staticpage ids are not.
+        $result = DB_query(
+            "SELECT sp_id, owner_id "
+            . "FROM {$_TABLES['staticpage']} "
+            . "WHERE (sp_id = '" . DB_escapeString($page) . "')"
+        );
+
+        if ($result !== false) {
+            list ($page, $owner_id) = DB_fetchArray($result);
+        } else {
+            $owner_id = 0;
+        }
+
         if ($mode == 'print') {
             $retval = SP_printPage($page, $retval);
         } elseif ($mode =='autotag') {
@@ -675,9 +686,16 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
             $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode, $comment_page, $msg, $query);
         }
 
-        // increment hit counter for page
-        DB_query("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE (sp_id = '$page') AND (draft_flag = 0) AND (template_flag = 0)");
-
+        // Increment hit counter for page, but don't count views for the author
+        // of the page (feature request #0001572)
+        if (COM_isAnonUser() || ($_USER['uid'] != $owner_id)) {
+            DB_query(
+                "UPDATE {$_TABLES['staticpage']} "
+                . "SET sp_hits = sp_hits + 1 "
+                . "WHERE (sp_id = '" . DB_escapeString($page) . "')  "
+                . "  AND (draft_flag = 0) AND (template_flag = 0) "
+            );
+        }
     }
 
     return $retval;
@@ -771,7 +789,7 @@ function plugin_searchtypes_staticpages()
 
     if ($_SP_CONF['includesearch'] == 1) {
         $tmp['staticpages'] = $LANG_STATIC['staticpages'];
-        
+
         return $tmp;
     }
 }
@@ -825,7 +843,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
             $sql .= "AND (ta.tid IN('".TOPIC_ALL_OPTION."',{$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND (ta.tid = '".$topic."' OR ta.tid = '".TOPIC_ALL_OPTION."')))) ";
         }
     }
-        
+
     if ($_SP_CONF['includesearchcenterblocks'] == 0) {
         $sql .='AND sp_centerblock = 0 ';
     }
@@ -873,7 +891,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
             $sql .= "AND (ta.tid IN('".TOPIC_ALL_OPTION."',{$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND (ta.tid = '".$topic."' OR ta.tid = '".TOPIC_ALL_OPTION."')))) ";
         }
     }    
-    
+
     $search_c = new SearchCriteria('comments', array($LANG_STATIC['staticpages'],$LANG09[66]));
 
     $columns = array('title' => 'c.title', 'comment');
@@ -1035,7 +1053,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
         WHERE (sp_centerblock = 1) AND (draft_flag = 0) AND (template_flag = 0) 
         AND ta.type = 'staticpages' AND ta.id = sp_id
         " . COM_getLangSql('sp_id', 'AND') . ' AND ' . $moresql . $perms . " ORDER BY " . $sort;
-        
+
     $result = DB_query($spsql);
 
     $pages = DB_numRows($result);
@@ -1065,7 +1083,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
             $template_path = staticpages_templatePath();
             $spage = COM_newTemplate($template_path);
             $spage->set_file(array('page' => 'centerblock.thtml'));
-            
+
             if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
                 && (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
                $spage->set_var('block_start', COM_startBlock ($S['sp_title'], $S['sp_help'],
@@ -1132,18 +1150,18 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
                         'mode'  => $mode
                          );
             $svc_msg = array();
-        
+
             if (PLG_invokeService('staticpages', 'get', $args, $SP_retval, $svc_msg) == PLG_RET_OK) {  
                 $content = $SP_retval['sp_content'];
             }
-            
+
             $spage->set_var('content', $content);
-            
+
             if (($S['sp_inblock'] == 1) && !empty ($S['sp_title']) &&
                     (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
                 $spage->set_var('block_end', COM_endBlock(COM_getBlockTemplate('_staticpages_centerblock', 'footer')));
             }
-            
+
             $retval .= $spage->finish($spage->parse('output', 'page'));
 
             if ($where == 0) {
@@ -1152,7 +1170,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
                 } elseif ($S['sp_format'] != 'blankpage') {
                     $rightblock = -1;
                 }
-                
+
                 if ($S['sp_format'] != 'blankpage') {
                     $retval = COM_createHTMLDocument($retval, array('what' => $what, 'rightblock' => $rightblock));
                 }
@@ -1247,7 +1265,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
             $_SP_CONF[$p][2], $_SP_CONF[$p][3]) == $flag) {
             $tagnames[] = 'staticpage';
         }
-        
+
         if (count($tagnames) > 0) {
             return $tagnames;
         }
@@ -1446,15 +1464,15 @@ function plugin_upgrade_staticpages()
                 // Set new Tab column to whatever fieldset is
                 $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'staticpages'";
                 DB_query($sql);
-                
+
                 SP_update_ConfValues_1_6_3();
             }
-            
+
             SP_update_ConfigSecurity_1_6_3();
 
             $current_version = '1.6.4';
             break;
-            
+
         case '1.6.4':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
@@ -1471,7 +1489,7 @@ function plugin_upgrade_staticpages()
 
             $current_version = '1.6.5';
             break; 
-        
+
         case '1.6.5':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
@@ -1491,7 +1509,7 @@ function plugin_upgrade_staticpages()
 
             $current_version = '1.6.6';
             break;             
-            
+
         default:
             $done = true;
         }
@@ -1692,7 +1710,7 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
     global $_SP_CONF, $LANG_STATIC;
 
     $retval = '';
-    
+
     // Retrieve non php staticpage from cache
     if ($cache_time > -1 AND $sp_php == 0) {
         // Don't need to cache per theme since not rendered in a block yet 
@@ -1710,15 +1728,15 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
             }
         }    
     }    
-    
+
     // See if uses template, if so get it
     if ($template_id != '') {
-        
+
         $retval = '';
         $mode = '';
-        
+
         $xmlObject = simplexml_load_string($sp_content);
-        
+
         // create array of XML data
         $tag = array();    
         foreach($xmlObject->variable as $variable) {
@@ -1726,12 +1744,12 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
             $value = $variable->data;
             $tag[$key] = $value;
         }    
-    
+
         // Loop through variables to replace any autotags first
         foreach ($tag as &$value) {
             $value = PLG_replaceTags($value);
         }
-        
+
         $args = array(
                     'sp_id' => $template_id,
                     'mode'  => $mode,
@@ -1739,17 +1757,17 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
                     'gl_svc' => ''
                      );
         $svc_msg = array();    
-    
+
         if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
             $retval['sp_content'] = str_replace(array_keys($tag), array_values($tag), $retval['sp_content']);
             // Remove any unknown staticpage template variables as long as they use the curly brackets ie {templatevariable}
             // If template variable format is different then any unused ones will display
             $retval['sp_content'] = preg_replace('/{[^ \t\r\n}]+}/', '', $retval['sp_content']);
-            
+
             $sp_content = $retval['sp_content'];
         }
     }     
-    
+
     if ($_SP_CONF['allow_php'] == 1) {
         // Check for type (ie html or php)
         if ($sp_php == 1) {
@@ -1760,7 +1778,7 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
             $sp_content = ob_get_contents();
             ob_end_clean();
         }
-        
+
         $sp_content = PLG_replaceTags($sp_content);
     } else {
         if ($sp_php != 0) {
@@ -1770,11 +1788,11 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
             $sp_content .= PLG_replaceTags($sp_content);
         }
     }
-    
+
     $sp_content = stripslashes($sp_content);
 
     if (($cache_time > 0 OR $cache_time == -1) AND $sp_php == 0) { CACHE_create_instance($cacheInstance, $sp_content); }
-    
+
     return $sp_content;
 }
 
@@ -1824,7 +1842,7 @@ function plugin_getrelateditems_staticpages($tids, $max, $trim)
     global $_CONF, $_TABLES, $_SP_CONF;
 
     $newstaticpages = array();
-    
+
     // Use setting from What's New block here since similar settings needed
     if ($_SP_CONF['hidenewstaticpages'] == 'modified') {
         $datecolumn = 'modified';
@@ -1838,7 +1856,7 @@ function plugin_getrelateditems_staticpages($tids, $max, $trim)
     if ($_SP_CONF['includephp'] == 0) {
         $extra_sql .=' AND sp_php = 0';
     }
-    
+
     // Find newest Static Pages user has access too
     $sql = "SELECT sp_id, sp_title, UNIX_TIMESTAMP({$datecolumn}) sp_date 
         FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta   
@@ -1910,9 +1928,9 @@ function plugin_getwhatsnew_staticpages()
         {$extra_sql} 
         " . COM_getPermSQL('AND') . " 
         ORDER BY {$datecolumn} DESC LIMIT 15";
-        
+
     $sql['mssql'] = $sql['mysql'];    
-    
+
     $sql['pgsql'] = "SELECT sp_id, sp_title 
         FROM {$_TABLES['staticpage']} 
         WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND (template_flag = 0) AND ({$datecolumn} >= (NOW() - INTERVAL '{$_SP_CONF['newstaticpagesinterval']} SECONDS')) 
@@ -1968,7 +1986,7 @@ function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
     global $_CONF, $_TABLES;
 
     $stwhere = '';
-    
+
     if ($uid > 0) {
         $stwhere = " AND ({$_TABLES['comments']}.uid = $uid)";
     }    
@@ -1993,7 +2011,7 @@ function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
         for ($x = 0; $x < $nrows; $x++) {
             $A[] = DB_fetchArray($result);    
         }
-        
+
         return $A;
     }
 }
@@ -2091,7 +2109,7 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                             'mode'  => $mode
                              );
                 $svc_msg = array();
-            
+
                 if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {     
                     $props[$p] = $retval['sp_content'];
                 }
@@ -2258,21 +2276,21 @@ function plugin_itemdeleted_staticpages($id, $type)
     // we're really only interested in Topic Deletes
     if ($type == 'topic') {
         // Need to make sure at least one topic left. Default is all
-        
+
         // Find all staticpages that are assigned to the deleted topic
         $sql = "SELECT id FROM {$_TABLES['topic_assignments']} WHERE type = 'staticpages' AND tid ='$id'";
-        
+
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
-    
+
         for($i = 0; $i < $nrows; $i++) {        
             $A = DB_fetchArray($result);
-            
+
             // Now check if staticpage has at least 2 topics (1 will be deleted)
             $sql = "SELECT id FROM {$_TABLES['topic_assignments']} WHERE type = 'staticpages' AND id ='{$A['id']}'";
             $resultB = DB_query($sql);
             $nrowsB = DB_numRows($resultB);
-        
+
             if ($nrowsB < 2) {
                 // Only deleted topic assigned so add all topic default assignment
                 TOPIC_addTopicAssignments('staticpages', $A['id']);
@@ -2294,7 +2312,7 @@ function plugin_itemdeleted_staticpages($id, $type)
 function plugin_group_changed_staticpages($grp_id, $mode)
 {
     global $_TABLES, $_GROUPS, $_PO_CONF;
-    
+
     if ($mode == 'delete') {
         // Change any deleted group ids to Static Page Admin if exist, if does not change to root group
         $new_group_id = 0;
@@ -2310,7 +2328,7 @@ function plugin_group_changed_staticpages($grp_id, $mode)
                 }
             }
         }    
-        
+
         // Update Staticpages with new group id
         $sql = "UPDATE {$_TABLES['staticpage']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
         $result = DB_query($sql);
