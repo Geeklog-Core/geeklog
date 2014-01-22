@@ -281,16 +281,13 @@ if ($A['count'] > 0) {
             }
         }
 
-		// Don't count views for the author of the article (feature request #0001572)
-		if (COM_isAnonUser() || ($_USER['uid'] != $story->displayElements('uid'))) {
-			DB_query("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '" . DB_escapeString($story->getSid()) . "') AND (date <= NOW()) AND (draft_flag = 0)");
-		}
+        DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '".$story->getSid()."') AND (date <= NOW()) AND (draft_flag = 0)");
 
         // Display whats related
 
         $story_template = COM_newTemplate($_CONF['path_layout'] . 'article');
         $story_template->set_file('article','article.thtml');
-
+ 
         $story_template->set_var('story_id', $story->getSid());
         $story_template->set_var('story_title', $pagetitle);
         $story_options = array ();
@@ -396,11 +393,11 @@ if ($A['count'] > 0) {
                 $story_page = $mode;
                 $mode = '';
             }
-
+            
             if( $story_page <= 0 ) {
                 $story_page = 1;
             }
-
+            
             $article_arr = explode( '[page_break]', $story->displayElements('bodytext'));
             $page_break_count = count($article_arr);
             if ($page_break_count > 1) {
@@ -453,7 +450,7 @@ if ($A['count'] > 0) {
             $story_template->set_var ('trackback', '');
         }
         $display .= $story_template->finish ($story_template->parse ('output', 'article'));
-
+        
         $breadcrumbs = TOPIC_breadcrumbs('article', $story->getSid());
 
         $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headercode));
