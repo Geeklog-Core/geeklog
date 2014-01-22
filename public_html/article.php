@@ -252,10 +252,20 @@ if ($A['count'] > 0) {
                     . XHTML . '>';
 
         // Meta Tags
-        If ($_CONF['meta_tags'] > 0) {
-            $meta_description  = $story->DisplayElements('meta_description');
-            $meta_keywords  = $story->DisplayElements('meta_keywords');        
-            $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
+        if ($_CONF['meta_tags'] > 0) {
+            $headercode .= LB . PLG_getMetaTags(
+                'article', $story->getSid(),
+                array(
+                    array(
+                        'name'    => 'description',
+                        'content' => $story->DisplayElements('meta_description')
+                    ),
+                    array(
+                        'name'    => 'keywords',
+                        'content' => $story->DisplayElements('meta_keywords')
+                    )
+                )
+            );
         }
 
         if ($story->DisplayElements('trackbackcode') == 0) {

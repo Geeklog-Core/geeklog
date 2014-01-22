@@ -171,10 +171,21 @@ if (empty($pid)) {
     } else {
         // Meta Tags
         $headercode = '';
+
         if ($_PO_CONF['meta_tags'] > 0) {
-            $meta_description = stripslashes($A['meta_description']);
-            $meta_keywords = stripslashes($A['meta_keywords']);            
-            $headercode = COM_createMetaTags($meta_description, $meta_keywords);
+            $headercode = LB . PLG_getMetaTags(
+                'poll', $pid,
+                array(
+                    array(
+                        'name'    => 'description',
+                        'content' => stripslashes($A['meta_description'])
+                    ),
+                    array(
+                        'name'    => 'keywords',
+                        'content' => stripslashes($A['meta_keywords'])
+                    )
+                )
+            );
         }
 
         if ($msg > 0) {

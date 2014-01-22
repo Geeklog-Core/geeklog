@@ -398,10 +398,19 @@ if ($topic)
     if ($_CONF['meta_tags'] > 0) {
         $result = DB_query ("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
         $A = DB_fetchArray ($result);
-
-        $meta_description = stripslashes($A['meta_description']);
-        $meta_keywords = stripslashes($A['meta_keywords']);
-        $header .= COM_createMetaTags($meta_description, $meta_keywords);
+        $header .= LB . PLG_getMetaTags(
+            'homepage', '',
+            array(
+                array(
+                    'name'    => 'description',
+                    'content' => stripslashes($A['meta_description'])
+                ),
+                array(
+                    'name'    => 'keywords',
+                    'content' => stripslashes($A['meta_keywords'])
+                )
+            )
+        );
     }
 }
 

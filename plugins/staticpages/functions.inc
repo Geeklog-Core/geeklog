@@ -331,10 +331,21 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
         // Meta Tags
         if ($_SP_CONF['meta_tags'] > 0) {
-            $meta_description = $A['meta_description'];
-            $meta_keywords = $A['meta_keywords'];
-            $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
+            $headercode .= LB . PLG_getMetaTags(
+                'staticpages', $page,
+                array (
+                    array(
+                        'name'    => 'description',
+                        'content' => $A['meta_description']
+                    ),
+                    array(
+                        'name'    => 'keywords',
+                        'content' => $A['meta_keywords']
+                    )
+                )
+            );
         }
+
         $page_title = $A['sp_page_title'];
         if(empty($page_title)) {
             $page_title = $A['sp_title'];
