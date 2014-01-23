@@ -158,13 +158,32 @@ $_FM_CONF = array(
 );
 
 // Values to be overridden by Geeklog (system)
-$fileRoot = $_CONF['path_html'] . 'images/library/';
-$fileRoot = str_replace('\\', '/', $fileRoot);
-$docRoot  = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+$relPaths = array(
+    'Image' => 'images/library/Image/',
+    'Flash' => 'images/library/Flash/',
+    'Media' => 'images/library/Media/',
+    'File'  => 'images/library/File/',
+    'Root'  => 'images/',
+);
 
+$type = isset($_GET['Type']) ? COM_applyFilter($_GET['Type']) : '';
+
+if (!array_key_exists($type, $relPaths)) {
+    $type = 'Image';
+}
+
+$fileRoot   = $_CONF['path_html'] . $relPaths[$type];
+$fileRoot   = str_replace('\\', '/', $fileRoot);
+$docRoot    = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
 $serverRoot = (stripos($fileRoot, $docRoot) === 0);
-preg_match('@\Ahttps?://[^/]+(/.*/)filemanager/index\.php@i', COM_getCurrentURL(), $match);
-$relPath = $match[1] . 'images/library/';
+
+if (preg_match('@\Ahttps?://[^/]+(/.*/)filemanager/index\.php@i', COM_getCurrentURL(), $match)) {
+    $relPath = $match[1];
+} else {
+    $relPath = '/';
+}
+
+$relPath .= $relPaths[$type];
 
 $_FM_CONF['options']['culture']            = COM_getLangIso639Code();
 $_FM_CONF['options']['defaultViewMode']    = $_CONF['filemanager_default_view_mode'];
