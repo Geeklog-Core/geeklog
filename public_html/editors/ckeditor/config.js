@@ -81,5 +81,8 @@ CKEDITOR.editorConfig = function( config ) {
 	];
 
 	// Filemanager
-	config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php';
+	config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=File';
+//	config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Media';
+	config.filebrowserImageBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Image';
+	config.filebrowserFlashBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Flash';
 };

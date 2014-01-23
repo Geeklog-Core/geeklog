@@ -3667,7 +3667,7 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'num' => '', 
                         'image' => $_CONF['layout_url'] . '/images/icons/log_viewer.' . $_IMAGE_TYPE),
                     array('condition' => SEC_inGroup('Root'),
-                        'url' => $_CONF['site_url'] . '/filemanager/index.php',
+                        'url' => $_CONF['site_url'] . '/filemanager/index.php?Type=Root',
                         'lang' => $LANG01['filemanager'],
                         'num' => '', 
                         'image' => $_CONF['layout_url'] . '/images/icons/filemanager.' . $_IMAGE_TYPE,

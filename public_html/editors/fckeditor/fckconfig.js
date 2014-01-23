@@ -325,21 +325,23 @@ FCKConfig.MsWebBrowserControlCompat = false ;
 FCKConfig.PreventSubmitHandler = false ;
 
 // Filemanager integration
+// NOTE: if you would like to use the original file browser shipped with FCKeditor,
+// please comment out the following lines.
 (function () {
 	var filemanagerUrl = FCKConfig.BasePath.replace(/\/editors\/fckeditor\/editor\/$/, '') + '/filemanager/index.php';
-	
+
 	if (FCKConfig.FlashBrowser && (FCKConfig.FlashBrowser === true)) {
-		FCKConfig.FlashBrowserURL = filemanagerUrl;
+		FCKConfig.FlashBrowserURL = filemanagerUrl + '?Type=Flash';
 	}
-	
+
 	if (FCKConfig.ImageBrowser && (FCKConfig.ImageBrowser === true)) {
-		FCKConfig.ImageBrowserURL = filemanagerUrl;
+		FCKConfig.ImageBrowserURL = filemanagerUrl + '?Type=Image';
 	}
-	
+
 	if (FCKConfig.LinkBrowser && (FCKConfig.LinkBrowser === true)) {
-		FCKConfig.LinkBrowserURL = filemanagerUrl;
+		FCKConfig.LinkBrowserURL = filemanagerUrl + '?Type=File';
 	}
-	
+
 	// You can upload files from within the Filemanager, so "Upload" tabs in
 	// FCKeditor dialogs are unnecessary.
 	FCKConfig.FlashUpload = false;

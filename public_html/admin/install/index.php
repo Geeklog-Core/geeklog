@@ -1136,8 +1136,17 @@ if (INST_phpOutOfDate()) {
                                 $_PATH['public_html/'] . 'images/topics/',
                                 $_PATH['public_html/'] . 'images/userphotos',
                                 $_PATH['public_html/'] . 'filemanager/scripts/filemanager.config.js',
-                                $_PATH['public_html/'] . 'images/library/_thumbs/Image/',
-                                $_PATH['public_html/'] . 'images/library/_thumbs/Image/icons/');
+                                $_PATH['public_html/'] . 'images/library/File/',
+                                $_PATH['public_html/'] . 'images/library/Flash/',
+                                $_PATH['public_html/'] . 'images/library/Image/',
+                                $_PATH['public_html/'] . 'images/library/Image/_thumbs/',
+                                $_PATH['public_html/'] . 'images/library/Image/icons/',
+                                $_PATH['public_html/'] . 'images/library/Media/',
+                                $_PATH['public_html/'] . 'images/_thumbs/',
+                                $_PATH['public_html/'] . 'images/_thumbs/articles/',
+                                $_PATH['public_html/'] . 'images/_thumbs/library/Image/',
+                                $_PATH['public_html/'] . 'images/_thumbs/userphotos/',
+			);
 
             if (!isset($_CONF['allow_mysqldump']) && $_DB_dbms == 'mysql') {
                 array_splice($file_list, 1, 0, $gl_path . 'backups/');
