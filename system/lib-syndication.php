@@ -163,7 +163,7 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
         AND ta.tid = '$tid'" . COM_getTopicSQL('AND', 1, 'ta') . "
         GROUP BY sid
         ORDER BY date DESC $limitsql";
-        
+
     $result = DB_query($sql);
     $nrows = DB_numRows( $result );
 
@@ -264,7 +264,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 
         $topic = stripslashes( DB_getItem( $_TABLES['topics'], 'topic',
                                "tid = '$tid'" ));
-        
+
         // Retrieve list of inherited topics for anonymous user
         $tid_list = TOPIC_getChildList($tid, 1);        
 
@@ -276,7 +276,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '$tid'))) 
             GROUP BY sid 
             ORDER BY date DESC $limitsql";
-        
+
         $result = DB_query($sql);
 
         $nrows = DB_numRows( $result );
@@ -290,7 +290,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
             $fulltext = PLG_replaceTags( $fulltext );
             $storytext = ($contentLength == 1) ? $fulltext : COM_truncateHTML ($fulltext, $contentLength, ' ...');
- 
+
 
             $fulltext = trim( $fulltext );
             $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
@@ -359,7 +359,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
     $link = $_CONF['site_url'];
 
     $where = '';
-    
+
     if( !empty( $limit ))
     {
         if( substr( $limit, -1 ) == 'h' ) // last xx hours
@@ -415,7 +415,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         WHERE draft_flag = 0 AND date <= NOW() AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 $where AND perm_anon > 0 
         GROUP BY sid,ta.tid
         ORDER BY date DESC $limitsql";
-    
+
     $result = DB_query($sql);
 
     $content = array();
@@ -446,7 +446,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
                 $fulltext = COM_nl2br($fulltext);
             }
         }
-        
+
         $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                    . $row['sid'] );
         $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion, $fid, ($frontpage_only ? '::frontpage' : '::all'));
@@ -490,6 +490,8 @@ function SYND_updateFeed( $fid )
 {
     global $_CONF, $_TABLES, $_SYND_DEBUG;
 
+    SYND_fixCharset($fid);
+
     $result = DB_query( "SELECT * FROM {$_TABLES['syndication']} WHERE fid = $fid");
     $A = DB_fetchArray( $result );
     if( $A['is_enabled'] == 1 )
@@ -505,7 +507,7 @@ function SYND_updateFeed( $fid )
                                           . '/classes/syndication/' );
         $format = explode( '-', $A['format'] );
         $feed = $factory->writer( $format[0], $format[1] );
-        
+
         if( $feed )
         {
             $feed->encoding = $A['charset'];
@@ -604,7 +606,7 @@ function SYND_updateFeed( $fid )
                 $filename = substr( $_CONF['rdf_file'], $pos + 1 );
             }
             $feed->url = SYND_getFeedUrl( $filename );
-            
+
             $feed->extensions = PLG_getFeedExtensionTags($A['type'], $format[0], $format[1], $A['topic'], $fid, $feed);
 
             /* Inject the self reference for Atom into RSS feeds. Illogical?
@@ -655,7 +657,7 @@ function SYND_updateFeed( $fid )
 function SYND_truncateSummary($text, $length)
 {
     $storytext = ($length == 1) ? $text : COM_truncateHTML ($text, $length, ' ...');
-    
+
     return $storytext;
 }
 
@@ -749,6 +751,39 @@ function SYND_getDefaultFeedUrl()
     }
 
     return $feed;
+}
+
+/**
+* Fix the character set of a default feed file which is hard-coded as 'iso-8859-1'.
+*
+* @param   int   $fid   feed id
+*/
+function SYND_fixCharset($fid)
+{
+    global $_CONF, $_TABLES, $_SYND_DEBUG;
+
+    $sql = "SELECT COUNT(filename) AS cnt "
+         . "FROM {$_TABLES['syndication']} "
+         . "WHERE (fid = {$fid}) AND (filename = 'geeklog.rss') "
+         . "AND (charset = 'iso-8859-1')";
+    $result = DB_query($sql);
+
+    if ($result !== false) {
+        list ($cnt) = DB_fetchArray($result);
+
+        if ($cnt == 1) {
+            $fileName = SYND_getFeedPath('geeklog.rss');
+            clearstatcache();
+
+            if (@filesize($fileName) === 0) {
+                $charset = DB_escapeString(COM_getCharset());
+                $sql = "UPDATE {$_TABLES['syndication']} "
+                     . "SET charset = '{$charset}' "
+                     . "WHERE (fid = {$fid})";
+                DB_query($sql);
+            }
+        }
+    }
 }
 
 ?>
