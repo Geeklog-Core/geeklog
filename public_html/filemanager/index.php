@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Filemanager browser                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2013 by the following authors:                              |
+// | Copyright (C) 2014 by the following authors:                              |
 // |                                                                           |
 // | Authors: Riaan Los       - mail AT riaanlos DOT nl                        |
 // |          Simon Georget   - simon AT linea21 DOT com                       |
@@ -67,8 +67,8 @@ $_FM_CONF = array(
         'fileSorting' => 'default',
         'chars_only_latin' => true,
         'dateFormat' => 'd M Y H:i',
-        'serverRoot' => false,
-        'fileRoot' => true,
+        'serverRoot' => true,
+        'fileRoot' => false,
         'relPath' => false,
         'logger' => false,
         'capabilities' => array('select', 'download', 'rename', 'move', 'delete'),
@@ -172,10 +172,8 @@ if (!array_key_exists($type, $relPaths)) {
     $type = 'Image';
 }
 
-$fileRoot   = $_CONF['path_html'] . $relPaths[$type];
-$fileRoot   = str_replace('\\', '/', $fileRoot);
-$docRoot    = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
-$serverRoot = (stripos($fileRoot, $docRoot) === 0);
+$fileRoot = $_CONF['path_html'] . $relPaths[$type];
+$fileRoot = str_replace('\\', '/', $fileRoot);
 
 if (preg_match('@\Ahttps?://[^/]+(/.*/)filemanager/index\.php@i', COM_getCurrentURL(), $match)) {
     $relPath = $match[1];
@@ -195,7 +193,7 @@ $_FM_CONF['options']['searchBox']          = $_CONF['filemanager_search_box'];
 $_FM_CONF['options']['fileSorting']        = $_CONF['filemanager_file_sorting'];
 $_FM_CONF['options']['chars_only_latin']   = $_CONF['filemanager_chars_only_latin'];
 $_FM_CONF['options']['dateFormat']         = $_CONF['filemanager_date_format'];
-$_FM_CONF['options']['serverRoot']         = $serverRoot;
+$_FM_CONF['options']['serverRoot']         = false;
 $_FM_CONF['options']['fileRoot']           = $fileRoot;
 $_FM_CONF['options']['relPath']            = $relPath;
 $_FM_CONF['options']['logger']             = $_CONF['filemanager_logger'];
