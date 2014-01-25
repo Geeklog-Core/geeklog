@@ -8914,12 +8914,13 @@ function COM_getLangIso639Code($langName = NULL)
 /**
 * Setup Advanced Editor
 *
-* @param   string   $custom    location of custom script file relative to
-*                              public_html directory. Include '/' at beginning
-* @param   string   $myeditor  
+* @param   string   $custom       location of custom script file relative to
+*                                 public_html directory. Include '/' at beginning
+* @param   string   $permissions  comma-separated list of rights which identify the current user as an "Admin"
+* @param   string   $myeditor     
 * @return  void
 */
-function COM_setupAdvancedEditor($custom, $myeditor='')
+function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myeditor='')
 {
     global $_CONF, $_USER, $_SCRIPTS;
 
@@ -8953,9 +8954,19 @@ function COM_setupAdvancedEditor($custom, $myeditor='')
     if (empty($footer))   $footer   = true;
     if (empty($priority)) $priority = 100;
 
+    if (empty($permissions) || !SEC_hasRights($permissions) ||
+            empty($_CONF['admin_html'])) {
+        $html = $_CONF['user_html'];
+    } else {
+        $html = array_merge_recursive($_CONF['user_html'],
+                                      $_CONF['admin_html'],
+                                      $_CONF['advanced_html']);
+    }
+
     // Add core JavaScript global variables
     $script  = '<script type="text/javascript">' . LB
              . 'var geeklogEditorName = "' . $name . '";' . LB
+             . 'var geeklogAllowedHtml = ' . json_encode($html) . ';' . LB
              . '</script>' . LB;
     $_SCRIPTS->setJavaScript($script);
 

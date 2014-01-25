@@ -1028,6 +1028,8 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                 $mode = 'error';
             }
 
+            $permission = ($type == 'article') ? 'story.edit' : "$type.edit";
+
             $comment_template = COM_newTemplate($_CONF['path_layout'] . 'comment');
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $comment_template->set_file('form', 'commentform_advanced.thtml');
@@ -1040,7 +1042,7 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                 $comment_template->set_var('noscript', COM_getNoScript(false, '', $link_message));
                 
                 // Setup Advanced Editor
-                COM_setupAdvancedEditor('/javascript/submitcomment_adveditor.js');
+                COM_setupAdvancedEditor('/javascript/submitcomment_adveditor.js', $permission);
 
             } else {
                 $comment_template->set_file('form', 'commentform.thtml');
@@ -1177,7 +1179,6 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
             $comment_template->set_var('postmode_options',
                 COM_optionList($_TABLES['postmodes'], 'code,name', $postmode));
             $allowed_html = '';
-            $permission = ($type == 'article') ? 'story.edit' : "$type.edit";
             foreach (array('plaintext', 'html') as $pm) {
                 $allowed_html .= COM_allowedHTML($permission, false, 1, $pm);
             }

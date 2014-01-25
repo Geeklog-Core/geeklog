@@ -103,7 +103,7 @@ function staticpageeditor_form($A)
         $sp_template->set_var('noscript', COM_getNoScript(false, '', $link_message));        
         
         // Setup Advanced Editor
-        COM_setupAdvancedEditor('/staticpages/adveditor.js');
+        COM_setupAdvancedEditor('/staticpages/adveditor.js', 'staticpages.edit');
         
         $sp_template->set_var('lang_expandhelp', $LANG24[67]);
         $sp_template->set_var('lang_reducehelp', $LANG24[68]);
