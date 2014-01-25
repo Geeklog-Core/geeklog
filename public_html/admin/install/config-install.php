@@ -368,7 +368,7 @@ function install_config()
     $c->add('fs_locale', NULL, 'fieldset', 6, 29, NULL, 0, TRUE, $me, 29);
     $c->add('locale','en_GB','text',6,29,NULL,360,TRUE, $me, 29);
     $c->add('date','%A, %B %d %Y @ %I:%M %p %Z','text',6,29,NULL,370,TRUE, $me, 29);
-    $c->add('daytime','%m/%d %I:%M%p','text',6,29,NULL,380,TRUE, $me, 29);
+    $c->add('daytime','%Y-%m-%d %H:%M','text',6,29,NULL,380,TRUE, $me, 29);
     $c->add('shortdate','%x','text',6,29,NULL,390,TRUE, $me, 29);
     $c->add('dateonly','%d-%b','text',6,29,NULL,400,TRUE, $me, 29);
     $c->add('timeonly','%I:%M%p','text',6,29,NULL,410,TRUE, $me, 29);
