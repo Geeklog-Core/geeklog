@@ -103,9 +103,7 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.protectedSource.push(/<pre[\s\S]+?\/pre>/g);
 	config.protectedSource.push(/\[code[^:][\s\S]+?\/code\]/g);
-	config.protectedSource.push(/\[code:[a-z0-9_]+[\s\S]+?\/code:[a-z0-9_]+\]/g);
 	config.protectedSource.push(/\[raw[\s\S]+?\/raw\]/g);
-	config.protectedSource.push(/\[[a-z0-9_:]+\]/g);
 
 	config.toolbar = 'toolbar1';
 
