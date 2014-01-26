@@ -1494,7 +1494,7 @@ function plugin_autotags_story($op, $content = '', $autotag = '')
         if (! empty($sid)) {
             $result = DB_query("SELECT COUNT(*) AS count "
                 . "FROM {$_TABLES['stories']} "
-                . "WHERE sid = '$sid'" . COM_getPermSql('AND'));
+                . "WHERE sid = '$sid'");
             $A = DB_fetchArray($result);
             if ($A['count'] > 0) {
 

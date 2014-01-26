@@ -732,7 +732,7 @@ function plugin_submit_calendar($mode = 'master')
         exit;
     }
     // otherwise non-admin or admin-personal. do personal form or public submission.
-	
+
     // Loads jQuery UI datepicker
     $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
@@ -1183,13 +1183,13 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
     } elseif ($op == 'description') {
         return array (
             'event' => $LANG_CAL_1['autotag_desc_event']
-            );        
+        );        
     } else if ($op == 'parse') {
         $eid = COM_applyFilter($autotag['parm1']);
         if (! empty($eid)) {
             $result = DB_query("SELECT COUNT(*) AS count "
                 . "FROM {$_TABLES['events']} "
-                . "WHERE eid = '$eid'" . COM_getPermSql('AND'));
+                . "WHERE eid = '$eid'");
             $A = DB_fetchArray($result);
             if ($A['count'] > 0) {
                 $url = $_CONF['site_url'] . '/calendar/event.php?eid=' . $eid;
@@ -1612,15 +1612,15 @@ function plugin_upgrade_calendar()
                 // Set new Tab column to whatever fieldset is
                 $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'calendar'";
                 DB_query($sql);
-                
+
                 calendar_update_ConfValues_1_1_1();
             }
-            
+
             calendar_update_ConfigSecurity_1_1_1();
 
             $current_version = '1.1.2';
             break;
-            
+
         case '1.1.2':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
@@ -1635,12 +1635,12 @@ function plugin_upgrade_calendar()
 
             calendar_update_ConfigSecurity_1_1_2();
             calendar_update_Zipcode_1_1_2();
-            
+
             $current_version = '1.1.3';
             break;            
 
         case '1.1.3':
-            
+
             $current_version = '1.1.4';
             break;            
 
@@ -2176,9 +2176,9 @@ function plugin_getconfigtooltip_calendar($id)
 function plugin_getBlocks_calendar($side, $topic='')
 {
     global $_TABLES, $_CONF, $_CA_CONF, $LANG_CAL_1;
-    
+
     $retval = array();
-    
+
     $owner_id = SEC_getDefaultRootUser();
 
     // Check permissions first
@@ -2188,7 +2188,7 @@ function plugin_getBlocks_calendar($side, $topic='')
             if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) { 
                 // Create a block
                 $display = phpblock_calendar();
-                
+
                 $retval[] = array('name'           => 'events',
                                   'type'           => 'dynamic',
                                   'onleft'         => $_CA_CONF['block_isleft'],
@@ -2200,7 +2200,7 @@ function plugin_getBlocks_calendar($side, $topic='')
             }
         }
     }
-    
+
     return $retval;
 }
 
@@ -2220,11 +2220,11 @@ function plugin_getBlocks_calendar($side, $topic='')
 function plugin_getBlocksConfig_calendar($side, $topic='')
 {
     global $_TABLES, $_CONF, $_CA_CONF, $LANG_CAL_1;
-    
+
     $retval = array();
-    
+
     $owner_id = SEC_getDefaultRootUser();
-    
+
     // Check permissions first
     if (SEC_hasAccess($owner_id, $_CA_CONF['block_group_id'], $_CA_CONF['block_permissions'][0], $_CA_CONF['block_permissions'][1], $_CA_CONF['block_permissions'][2], $_CA_CONF['block_permissions'][3])) {
         if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) { 
@@ -2243,7 +2243,7 @@ function plugin_getBlocksConfig_calendar($side, $topic='')
                               );
         }
     }
-    
+
     return $retval;
 }
 
@@ -2259,7 +2259,7 @@ function plugin_getBlocksConfig_calendar($side, $topic='')
 function plugin_group_changed_calendar($grp_id, $mode)
 {
     global $_TABLES, $_GROUPS, $_CA_CONF;
-    
+
     if ($mode == 'delete') {
         // Change any deleted group ids to Polls Admin if exist, if does not change to root group
         $new_group_id = 0;
@@ -2275,21 +2275,21 @@ function plugin_group_changed_calendar($grp_id, $mode)
                 }
             }
         }    
-        
+
         // Update Events with new group id
         $sql = "UPDATE {$_TABLES['events']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
         $result = DB_query($sql);
-        
+
         // Update Events with new group id
         $sql = "UPDATE {$_TABLES['personal_events']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
         $result = DB_query($sql);
-        
+
         // Update Events Block group if need be
         if ($_CA_CONF['block_group_id'] == $grp_id) {
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_group_id', $new_group_id, 'calendar');
-            
+
         }
    }
 }
@@ -2338,7 +2338,7 @@ function plugin_itemsaved_calendar($id, $type, $old_id)
         if ($key > 0) {
             // Update config
             $_CA_CONF['block_topic'][$key] = $id;
-            
+
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_topic', $_CA_CONF['block_topic'], 'calendar');
@@ -2366,7 +2366,7 @@ function plugin_itemdeleted_calendar($id, $type)
         if ($key > 0) {
             // delete item from config
             unset($_CA_CONF['block_topic'][$key]);
-            
+
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_topic', $_CA_CONF['block_topic'], 'calendar');

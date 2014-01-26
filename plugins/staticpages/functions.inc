@@ -1292,7 +1292,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
             if (! empty($sp_id)) {
                 $result = DB_query("SELECT COUNT(*) AS count "
                     . "FROM {$_TABLES['staticpage']} "
-                    . "WHERE sp_id = '$sp_id'" . COM_getPermSql('AND'));
+                    . "WHERE sp_id = '$sp_id'");
                 $A = DB_fetchArray($result);
                 if ($A['count'] > 0) {
                     $url = COM_buildUrl($_CONF['site_url']
@@ -1313,7 +1313,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
             if (! empty($sp_id)) {
                 $result = DB_query("SELECT COUNT(*) AS count "
                     . "FROM {$_TABLES['staticpage']} "
-                    . "WHERE sp_id = '$sp_id'" . COM_getPermSql('AND'));
+                    . "WHERE sp_id = '$sp_id'");
                 $A = DB_fetchArray($result);
                 if ($A['count'] > 0) {
                     if (isset($recursive[$sp_id])) {
