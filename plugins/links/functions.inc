@@ -218,7 +218,7 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
         if (! empty($lid)) {
             $result = DB_query("SELECT COUNT(*) AS count "
                 . "FROM {$_TABLES['links']} "
-                . "WHERE lid = '$lid'" . COM_getPermSql('AND'));
+                . "WHERE lid = '$lid'");
             $A = DB_fetchArray($result);
             if ($A['count'] > 0) {
                 $url = COM_buildUrl($_CONF['site_url']

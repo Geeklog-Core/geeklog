@@ -1582,7 +1582,7 @@ function plugin_autotags_polls($op, $content = '', $autotag = '')
         if (! empty($pid)) {
             $result = DB_query("SELECT COUNT(*) AS count "
                 . "FROM {$_TABLES['polltopics']} "
-                . "WHERE pid = '$pid'" . COM_getPermSql('AND'));
+                . "WHERE pid = '$pid'");
             $A = DB_fetchArray($result);
             if ($A['count'] > 0) {
                 switch ($autotag['tag']) {
