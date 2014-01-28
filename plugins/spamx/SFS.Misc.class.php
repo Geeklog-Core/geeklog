@@ -75,8 +75,8 @@ class SFS extends BaseCommand
                 WHERE name='IP' AND value='$db_ip'
                 OR name='email' AND value='$db_email'", 1);
         if (DB_numRows($result) > 0) {
-            list ($name, $value) = DB_fetchAarray($result);
-            DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter WHERE name='" . DB_escapeString($name) . "' AND value='" . DB_escapeString($value) . "'", 1);
+            list ($name, $value) = DB_fetchArray($result);
+            DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='" . DB_escapeString($name) . "' AND value='" . DB_escapeString($value) . "'", 1);
             return PLG_SPAM_FOUND;
         }
 
@@ -133,7 +133,7 @@ class SFS extends BaseCommand
 
         if (!empty($value_arr)) {
             $values = implode(',', $value_arr);
-            $sql = "INSERT INTO {$_TABLES['spamx']} (name, value, 0) 
+            $sql = "INSERT INTO {$_TABLES['spamx']} (name, value) 
                     VALUES $values";
             DB_query($sql);
 

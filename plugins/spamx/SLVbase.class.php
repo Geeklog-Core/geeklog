@@ -131,7 +131,7 @@ class SLVbase
                 if (!empty($link)) {
                     if (preg_match("#$val#i", $link)) {
                         $links[$key] = '';
-                        DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter WHERE name='SLVwhitelist' AND value='" . DB_escapeString($A['value']) . "'", 1);
+                        DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='SLVwhitelist' AND value='" . DB_escapeString($A['value']) . "'", 1);
                     }
                 }
             }

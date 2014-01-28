@@ -69,7 +69,7 @@ class IPofUrl extends BaseCommand {
 
                 if ($val == $ip) {
                     $ans = PLG_SPAM_FOUND;	// quit on first positive match
-                    DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter WHERE name='IPofUrl' AND value='" . DB_escapeString($val) . "'", 1);
+                    DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='IPofUrl' AND value='" . DB_escapeString($val) . "'", 1);
                     SPAMX_log($LANG_SX00['foundspam'] . $urls[2][$i] .
                               $LANG_SX00['foundspam2'] . $uid .
                               $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
