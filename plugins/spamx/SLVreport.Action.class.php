@@ -40,7 +40,7 @@ class SLVreport extends BaseCommand
 {
     public function __construct()
     {
-        $this->ActionCode = PLG_SPAM_ACTION_DELETE;
+        $this->actionCode = PLG_SPAM_ACTION_DELETE;
     }
 
     /**

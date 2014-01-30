@@ -16,20 +16,48 @@ abstract class BaseAdmin
     protected $command;
     protected $titleText;
     protected $linkText;
+    protected $csrfToken;
 
+    /**
+    * Getter method for protected properties
+    *
+    * @param    string    $name
+    * @return   string
+    */
+    public function __get($name)
+    {
+        if (in_array($name, array('moduleName', 'command', 'titleText', 'linkText'))) {
+            return $this->$name;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Returns the action the user posted
+    *
+    * @return    string
+    */
     protected function getAction()
     {
         $action = '';
 
         if (isset($_GET['action'])) {
             $action = $_GET['action'];
-        } elseif (isset($_POST['paction'])) {
+        } else if (isset($_POST['paction'])) {
             $action = $_POST['paction'];
+        } else if (isset($_POST['delbutton_x']) && isset($_POST['delbutton_y'])) {
+            $action = 'mass_delete';
         }
 
         return $action;
     }
 
+    /**
+    * Returns the entry the user posted
+    *
+    * @return    string
+    */
     protected function getEntry()
     {
         $entry = '';
@@ -43,75 +71,205 @@ abstract class BaseAdmin
         return $entry;
     }
 
+    /**
+    * Removes an entry from database
+    *
+    * @return    boolean    true = success, false = otherwise
+    */
     protected function deleteEntry($entry)
     {
         global $_TABLES;
 
+        $retval = true;
+
         if (!empty($entry)) {
             $entry = DB_escapeString($entry);
-            DB_query("DELETE FROM {$_TABLES['spamx']} WHERE (name ='{$this->moduleName}' AND value = '{$entry}') LIMIT 1");
+            $retval = DB_query("DELETE FROM {$_TABLES['spamx']} WHERE (name ='{$this->moduleName}' AND value = '{$entry}') LIMIT 1");
         }
+
+        return $retval;
     }
 
+    /**
+    * Removes all entries the user selected from database
+    *
+    * @return    boolean    true = success, false = otherwise
+    */
+    protected function deleteSelectedEntries(array $entries)
+    {
+        $retval = true;
+
+        if (count($entries) > 0) {
+            foreach ($entries as $entry) {
+                $retval = $retval && $this->deleteEntry($entry);
+            }
+        }
+
+        return $retval;
+    }
+
+    /**
+    * Adds an entry to database
+    *
+    * @param    string    $entry
+    * @return   boolean   true = success, false = otherwise
+    */
     protected function addEntry($entry)
     {
         global $_TABLES;
 
+        $retval = true;
+
         if (!empty($entry)) {
-            $entry  = str_replace(' ', '', $entry);
-            $entry  = DB_escapeString($entry);
-            DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('{$this->moduleName}', '{$entry}', 0)");
+            $entry = str_replace(' ', '', $entry);
+            $entry = DB_escapeString($entry);
+            $retval = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('{$this->moduleName}', '{$entry}', 0, '0000-00-00 00:00:00')");
         }
+
+        return $retval;
     }
 
-    protected function getList($csrfToken)
+    /**
+    * Escapes a string so as to be safely displayed
+    *
+    * @param    string    $str
+    * @return   string
+    */
+    public function escape($str)
     {
-        global $_CONF, $_TABLES, $LANG_SX00;
+        static $charset = null;
 
-        $result = DB_query("SELECT value, counter FROM {$_TABLES['spamx']} WHERE (name = '{$this->moduleName}') ORDER BY value");
-        $nrows = DB_numRows($result);
-        $header_arr = array(
-            array(
-                'text'  => $LANG_SX00['value'],
-                'field' => 'value'
-            ),
-            array(
-                'text'  => $LANG_SX00['counter'],
-                'field' => 'count'
-            )
-        );
-        $data_arr = array();
+        if ($charset === null) {
+            $charset = COM_getCharset();
+        }
 
-        for ($i = 0; $i < $nrows; $i++) {
-            list($e, $c) = DB_fetchArray($result);
-            $link = COM_createLink(
-                htmlspecialchars($e),
+        return htmlspecialchars($str, ENT_QUOTES, $charset);
+    }
+
+    /**
+    * Callback function for ADMIN_list
+    *
+    * @param    string    $fieldName
+    * @param    string    $fieldValue
+    * @param    array     $A
+    * @param    array     $iconArr
+    * @return   string
+    */
+    public function fieldFunction($fieldName, $fieldValue, $A, $iconArr)
+    {
+        global $_CONF;
+
+        $retval = $fieldValue;
+
+        if ($fieldName === 'id') {
+            $retval = '<input type="checkbox" name="delitem[]" value="'
+                    . $this->escape($fieldValue) . '"' . XHTML . '>';
+        } else if ($fieldName === 'value') {
+            $retval = COM_createLink(
+                $this->escape($fieldValue),
                 $_CONF['site_admin_url'] . '/plugins/spamx/index.php?'
                 . http_build_query(array(
                     'command'  => $this->command,
                     'action'   => 'delete',
-                    'entry'    => $e,
-                    CSRF_TOKEN => $csrfToken
+                    'entry'    => $fieldValue,
+                    CSRF_TOKEN => $this->csrfToken
                 ))
             );
-            $data_arr[] = array(
-                'value' => $link,
-                'count' => ' ' . $c
-            );
+
+        } else if ($fieldName === 'regdate') {
+            // Does nothing for now
         }
 
-        return ADMIN_simpleList($fieldfunction, $header_arr, $text_arr, $data_arr, $menu_arr, $options, $form_arr);
+        return $retval;
     }
 
+    /**
+    * Returns a list of data
+    *
+    * @return   string
+    */
+    protected function getList()
+    {
+        global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG01, $LANG33, $LANG_SX00;
+
+        $fieldfunction = array($this, 'fieldFunction');
+        $header_arr = array(
+            array(
+                'text'  => '<input type="checkbox" name="chk_selectall" title="' . $LANG01[126] . '" onclick="caItems(this.form);"' . XHTML . '>',
+                'field' => 'id',
+                'sort'  => false,
+            ),
+            array(
+                'text'  => $LANG_SX00['value'],
+                'field' => 'value',
+                'sort'  => true,
+            ),
+            array(
+                'text'  => $LANG_SX00['counter'],
+                'field' => 'counter',
+                'sort'  => true,
+            ),
+            array(
+                'text'  => $LANG33[30],
+                'field' => 'regdate',
+                'sort'  => true,
+            ),
+        );
+
+        $text_arr = array(
+            'form_url'   => $_CONF['site_admin_url'] . '/plugins/spamx/index.php?'
+                . http_build_query(array(
+                    'command'  => $this->command,
+                    CSRF_TOKEN => $this->csrfToken
+                )),
+            'has_extras' => true,
+            'title'      => $this->titleText,
+        );
+
+        $query_arr = array(
+            'sql'          => "SELECT value AS id, value, counter, regdate FROM {$_TABLES['spamx']} WHERE (name = '{$this->moduleName}') ",
+            'query_fields' => array('value', 'counter', 'regdate'),
+        );
+
+        $defsort_arr = array(
+            'field'     => 'regdate',
+            'direction' => 'DESC',
+        );
+
+        $filter  = '';
+        $extra   = '';
+        $options = '';
+
+        $form_arr = array(
+            'bottom' => '<input type="image" name="delbutton" alt="delbutton" src="'
+                . $_CONF['layout_url'] . '/images/deleteitem.' . $_IMAGE_TYPE
+                . '" title="' . $LANG01[124] . '" onclick="return confirm(\''
+                . $LANG01[125] . '\');"' . XHTML . '>'
+        );
+
+        $showsearch = true;
+        $pagenavurl = '';
+
+        return ADMIN_list('Spam-X', $fieldfunction, $header_arr, $text_arr,
+            $query_arr, $defsort_arr, $filter, $extra, $options, $form_arr,
+            $showsearch, $pagenavurl);
+    }
+
+    /**
+    * Returns a widget to be displayed for each command
+    *
+    * @return   string
+    * @note     this method is overriden in EditHeader class, since it requires
+    *           two input fields.
+    */
     protected function getWidget()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
 
-        $token = SEC_createToken();
+        $this->csrfToken = SEC_createToken();
         $display = '<hr' . XHTML . '>' . LB
-                 . '<p><b>' . $this->titleText . '</b></p>' . LB
                  . '<p>' . $LANG_SX00['e1'] . '</p>' . LB
-                 . $this->getList($token)
+                 . $this->getList()
                  . '<p>' . $LANG_SX00['e2'] . '</p>' . LB
                  . '<form method="post" action="' . $_CONF['site_admin_url']
                  . '/plugins/spamx/index.php?command=' . $this->command . '">' . LB
@@ -120,12 +278,17 @@ abstract class BaseAdmin
                  . '<input type="submit" name="paction" value="'
                  . $LANG_SX00['addentry'] . '"' . XHTML . '>' . LB
                  . '<input type="hidden" name="' . CSRF_TOKEN
-                 . '" value="' . $token . '"' . XHTML . '>' . LB
+                 . '" value="' . $this->csrfToken . '"' . XHTML . '>' . LB
                  . '</div></form>' . LB;
 
         return $display;
     }
 
+    /**
+    * Public interface for executing a command and showing data
+    *
+    * @return   string
+    */
     public function display()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
@@ -133,18 +296,26 @@ abstract class BaseAdmin
         $action = $this->getAction();
         $entry  = $this->getEntry();
 
-        if (($action === 'delete') && SEC_checkToken()) {
-            $this->deleteEntry($entry);
-        } else if (($action === $LANG_SX00['addentry']) && SEC_checkToken()) {
-            $this->addEntry($entry);
+        if (!empty($action) && SEC_checkToken()) {
+            switch ($action) {
+                case 'delete':
+                    $this->deleteEntry($entry);
+                    break;
+
+                case $LANG_SX00['addentry']:
+                    $this->addEntry($entry);
+                    break;
+
+                case 'mass_delete':
+                    if (isset($_POST['delitem'])) {
+                        $this->deleteSelectedEntries($_POST['delitem']);
+                    }
+
+                    break;
+            }
         }
 
         return $this->getWidget();
-    }
-
-    public function link()
-    {
-        return $this->linkText;
     }
 }
 

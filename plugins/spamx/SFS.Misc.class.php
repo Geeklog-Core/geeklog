@@ -41,10 +41,8 @@ class SFS extends BaseCommand
      */
     public function execute($email)
     {
-        global $result;
-
-        $result = $this->_process($email, $_SERVER['REMOTE_ADDR']);
-        return $result;
+        $this->result = $this->_process($email, $_SERVER['REMOTE_ADDR']);
+        return $this->result;
     }
 
 

@@ -47,9 +47,10 @@ $_UPDATES = array(
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.spamx.tab_modules', 'Access to configure Spam-x modules', 0)" 
     ),
 
-	'1.3.0' => array(
-		"ALTER TABLE {$_TABLES['spmax']} ADD counter INT NOT NULL DEFAULT '0'"
-	)
+    '1.3.0' => array(
+        "ALTER TABLE {$_TABLES['spmax']} ADD counter INT NOT NULL DEFAULT '0'",
+        "ALTER TABLE {$_TABLES['spmax']} ADD regdate datetime NOT NULL default '0000-00-00 00:00:00'"
+    )
 );
 
 /**

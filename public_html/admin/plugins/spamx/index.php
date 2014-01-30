@@ -48,6 +48,11 @@ require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
 require_once $_CONF['path_system'] . '/lib-admin.php';
 
+if (!in_array('spamx', $_PLUGINS)) {
+    COM_handle404();
+    exit;
+}
+
 $display = '';
 
 // Only let admin users access this page
@@ -72,11 +77,10 @@ $menu_arr = array (
           'text' => $LANG_ADMIN['admin_home'])
 );
 
-$display  = COM_startBlock ($LANG_SX00['plugin_name'],'', COM_getBlockTemplate ('_admin_block', 'header'));
-$display .= ADMIN_createMenu( $menu_arr,
-                             $LANG_SX00['adminc'],
-                             plugin_geticon_spamx()
+$display = COM_startBlock(
+    $LANG_SX00['plugin_name'], '', COM_getBlockTemplate('_admin_block', 'header')
 );
+$display .= ADMIN_createMenu($menu_arr, $LANG_SX00['adminc'], plugin_geticon_spamx());
 
 $files = array();
 
@@ -99,6 +103,10 @@ $header_arr = array(
         'field' => 'title'
     ),
     array(
+        'text'  => $LANG33[30],
+        'field' => 'regdate'
+    ),
+    array(
         'text'  => $LANG_SX00['action'],
         'field' => 'edit'
     )
@@ -109,18 +117,21 @@ foreach ($files as $file) {
     require_once $_CONF['path'] . 'plugins/spamx/' . $file . '.Admin.class.php';
 
     $CM = new $file;
-    $action = 'Edit';
-    $link = $CM->link();
-    
+    $action  = 'Edit';
+    $link    = $CM->linkText;
+    $regdate = '-';
+
     if (strpos($link, 'Edit ') !== false) {
         $link = substr($link, 5);
+        $regdate = DB_getItem($_TABLES['spamx'], 'regdate', "name = '{$CM->moduleName}' ORDER BY regdate DESC ");
     } else {
         $action = 'View';
     }
-    
+
     $data_arr[] = array(
-        'title' => $link,
-        'edit'  => COM_createLink(
+        'title'   => $link,
+        'regdate' => $regdate,
+        'edit'    => COM_createLink(
             $LANG_SX00[strtolower($action)],
             $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=' . $file
         )
@@ -128,8 +139,9 @@ foreach ($files as $file) {
 }
 
 $data_arr[] = array(
-    'title' => $LANG_SX00['documentation'],
-    'edit'  => COM_createLink(
+    'title'   => $LANG_SX00['documentation'],
+    'regdate' => '-',
+    'edit'    => COM_createLink(
         $LANG_SX00['view'],
         plugin_getdocumentationurl_spamx('index')
     )

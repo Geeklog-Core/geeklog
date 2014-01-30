@@ -43,7 +43,8 @@ $_UPDATES = array(
     ),
 
     '1.3.0' => array(
-        "ALTER TABLE {$_TABLES['spamx']} ADD COLUMN counter int NOT NULL DEFAULT 0 AFTER value"
+        "ALTER TABLE {$_TABLES['spamx']} ADD COLUMN counter int NOT NULL DEFAULT 0 AFTER value",
+        "ALTER TABLE {$_TABLES['spamx']} ADD COLUMN regdate timestamp NOT NULL default NULL AFTER counter"
     )
 );
 

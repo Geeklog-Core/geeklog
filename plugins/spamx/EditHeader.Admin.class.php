@@ -42,6 +42,34 @@ class EditHeader extends BaseAdmin
         $this->linkText   = $LANG_SX00['edit_http_header_blacklist'];
     }
 
+    protected function getWidget()
+    {
+        global $_CONF, $_TABLES, $LANG_SX00;
+
+        $this->csrfToken = SEC_createToken();
+        $display = '<hr' . XHTML . '>' . LB
+                 . '<p>' . $LANG_SX00['e1'] . '</p>' . LB
+                 . $this->getList()
+                 . '<p>' . $LANG_SX00['e2'] . '</p>' . LB
+                 .  '<form method="post" action="' . $_CONF['site_admin_url']
+                 . '/plugins/spamx/index.php?command=EditHeader">' . LB
+                 .  '<table border="0" width="100%">' . LB
+                 .  '<tr><td align="right"><b>Header:</b></td>' . LB
+                 .  '<td><input type="text" size="40" name="header-name"'
+                 .  XHTML . '> e.g. <tt>User-Agent</tt></td></tr>' . LB
+                 .  '<tr><td align="right"><b>Content:</b></td>' . LB
+                 .  '<td><input type="text" size="40" name="header-value"'
+                 .  XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB
+                 .  '</table>' . LB
+                 .  '<p><input type="submit" name="paction" value="'
+                 .  $LANG_SX00['addentry'] . '"' . XHTML . '>'
+                 .  '<input type="hidden" name="' . CSRF_TOKEN
+                 .  '" value="' . $this->csrfToken . '"' . XHTML . '></p>' . LB
+                 .  '</form>' . LB;
+
+        return $display;
+    }
+
     public function display()
     {
         global $_CONF, $_TABLES, $LANG_SX00;

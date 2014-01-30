@@ -37,7 +37,7 @@ class EditBlackList extends BaseAdmin
 
         $this->moduleName = 'Personal';
         $this->command    = 'EditBlackList';
-        $this->titleText  = $LANG_SX00['ipblack'];
+        $this->titleText  = $LANG_SX00['pblack'];
         $this->linkText   = $LANG_SX00['edit_personal_blacklist'];
     }
 
@@ -48,14 +48,29 @@ class EditBlackList extends BaseAdmin
         $action = $this->getAction();
         $entry  = $this->getEntry();
 
-        if (($action === 'delete') && SEC_checkToken()) {
-            $this->deleteEntry($entry);
-        } elseif (($action === $LANG_SX00['addentry']) && SEC_checkToken()) {
-            $this->addEntry($entry);
-        } elseif (($action === $LANG_SX00['addcen']) && SEC_checkToken()) {
-            foreach ($_CONF['censorlist'] as $entry) {
-                $entry  = DB_escapeString($entry);
-                $result = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('{$this->modulename}', '{$entry}', 0)");
+        if (!empty($action) && SEC_checkToken()) {
+            switch ($action) {
+                case 'delete':
+                    $this->deleteEntry($entry);
+                    break;
+
+                case $LANG_SX00['addentry']:
+                    $this->addEntry($entry);
+                    break;
+
+                case $LANG_SX00['addcen']:
+                    foreach ($_CONF['censorlist'] as $entry) {
+                        $this->addEntry($entry);
+                    }
+
+                    break;
+
+                case 'mass_delete':
+                    if (isset($_POST['delitem'])) {
+                        $this->deleteSelectedEntries($_POST['delitem']);
+                    }
+
+                    break;
             }
         }
 

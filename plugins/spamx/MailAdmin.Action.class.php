@@ -39,14 +39,9 @@ class MailAdmin extends BaseCommand
 
     public function execute($comment)
     {
-        global $_CONF, $_USER, $LANG_SX00, $_SPX_CONF;
+        global $_CONF, $LANG_SX00, $_SPX_CONF;
 
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $uid = $_USER['uid'];
-        } else {
-            $uid = 1;
-        }
-        $uid .= '@' . $_SERVER['REMOTE_ADDR'];
+        $uid = $this->getUid() . '@' . $_SERVER['REMOTE_ADDR'];
         $msg = sprintf ($LANG_SX00['emailmsg'],
                         $_CONF['site_name'], $uid, $comment);
 

@@ -47,13 +47,9 @@ class BlackList extends BaseCommand
      */
     public function execute($comment)
     {
-        global $_CONF, $_TABLES, $_USER, $LANG_SX00;
+        global $_CONF, $_TABLES, $LANG_SX00;
 
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $uid = $_USER['uid'];
-        } else {
-            $uid = 1;
-        }
+        $uid = $this->getUid();
 
         /**
          * Include Blacklist Data
@@ -76,7 +72,7 @@ class BlackList extends BaseCommand
 
             if (preg_match ("#$val#i", $comment)) {
                 $ans = PLG_SPAM_FOUND;	// quit on first positive match
-                DB_query ("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='Personal' AND value='" . DB_escapeString($originalVal) . "'", 1);
+                $this->updateStat('Personal', $originalVal);
                 SPAMX_log ($LANG_SX00['foundspam'] . $val .
                            $LANG_SX00['foundspam2'] . $uid .
                            $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);

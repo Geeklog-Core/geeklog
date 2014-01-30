@@ -48,7 +48,8 @@ $_UPDATES = array(
     ),
 
     '1.3.0' => array(
-        "ALTER TABLES {$_TABLES['spamx']} ADD [counter] [int] NOT NULL default (0) AFTER [value]"
+        "ALTER TABLES {$_TABLES['spamx']} ADD [counter] [int] NOT NULL default (0) AFTER [value]",
+        "ALTER TABLES {$_TABLES['spamx']} ADD [regdate] [datetime] NOT NULL AFTER [counter]"
     )
 );
 

@@ -30,22 +30,16 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 * @package Spam-X
 *
 */
-class IPofUrl extends BaseCommand {
-    /**
-     * No Constructor Use BaseCommand constructor
-     */
+class IPofUrl extends BaseCommand
+{
     /**
      * Here we do the work
      */
-    function execute($comment)
+    public function execute($comment)
     {
-        global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
+        global $_CONF, $_TABLES, $LANG_SX00;
 
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $uid = $_USER['uid'];
-        } else {
-            $uid = 1;
-        }
+        $uid = $this->getUid();
 
         /**
          * Check for IP of url in blacklist
@@ -69,7 +63,7 @@ class IPofUrl extends BaseCommand {
 
                 if ($val == $ip) {
                     $ans = PLG_SPAM_FOUND;	// quit on first positive match
-                    DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='IPofUrl' AND value='" . DB_escapeString($val) . "'", 1);
+                    $this->updateStat('IPofUrl', $val);
                     SPAMX_log($LANG_SX00['foundspam'] . $urls[2][$i] .
                               $LANG_SX00['foundspam2'] . $uid .
                               $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);

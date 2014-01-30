@@ -29,7 +29,8 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
  * @package Spam-X
  *
  */
-class DeleteComment extends BaseCommand {
+class DeleteComment extends BaseCommand
+{
     /**
      * Constructor
      * Numbers are always binary digits and added together to make call

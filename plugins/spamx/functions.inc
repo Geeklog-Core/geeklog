@@ -40,12 +40,6 @@ if (!isset($_SPX_CONF['timeout'])) {
 }
 
 
-// Response codes for checking for a SPAM
-define('PLG_SPAM_NOT_FOUND',       0);
-define('PLG_SPAM_FOUND',           1);
-define('PLG_SPAM_UNSURE',          2);
-
-
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
 // +---------------------------------------------------------------------------+

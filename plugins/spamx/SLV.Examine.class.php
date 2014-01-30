@@ -38,15 +38,10 @@ class SLV extends BaseCommand
      */
     public function execute($comment)
     {
-        global $_USER, $LANG_SX00;
+        global $LANG_SX00;
 
         $ans = PLG_SPAM_NOT_FOUND;
-
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $uid = $_USER['uid'];
-        } else {
-            $uid = 1;
-        }
+        $uid = $this->getUid();
 
         $slv = new SLVbase();
         if ($slv->CheckForSpam ($comment)) {

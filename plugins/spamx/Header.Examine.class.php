@@ -39,13 +39,9 @@ class Header extends BaseCommand
      */
     public function execute($comment)
     {
-        global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
+        global $_CONF, $_TABLES, $LANG_SX00;
 
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $uid = $_USER['uid'];
-        } else {
-            $uid = 1;
-        }
+        $uid = $this->getUid();
 
         // get HTTP headers of the current request
         if (function_exists('getallheaders')) {
@@ -80,7 +76,7 @@ class Header extends BaseCommand
                 if (strcasecmp($name, $key) === 0) {
                     if (preg_match("#{$value}#i", $content)) {
                         $ans = PLG_SPAM_FOUND;	// quit on first positive match
-                        DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='HTTPHeader' AND value='" . DB_escapeString($entry) . "'", 1);
+                        $this->updateStat('HTTPHeader', $entry);
                         SPAMX_log ($LANG_SX00['foundspam'] . $entry .
                                    $LANG_SX00['foundspam2'] . $uid . 
                                    $LANG_SX00['foundspam3'] .
