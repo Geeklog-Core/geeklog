@@ -166,7 +166,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                     $fieldvalue = '';
                 }
                 if ($use_fieldfunction) {
-                    $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $data_arr[$i], $icon_arr);
+                    $fieldvalue = call_user_func($fieldfunction, $fieldname, $fieldvalue, $data_arr[$i], $icon_arr);
                 }
                 if (!empty($header_arr[$j]['field_class'])) {
                     $admin_templates->set_var('class', $header_arr[$j]['field_class']);
@@ -515,9 +515,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                 $fieldvalue = '';                
             }
             switch ($use_fieldfunction) {
-            case 2: $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A, $icon_arr, $extra);
+            case 2: $fieldvalue = call_user_func($fieldfunction, $fieldname, $fieldvalue, $A, $icon_arr, $extra);
                     break;
-            case 1: $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A, $icon_arr);
+            case 1: $fieldvalue = call_user_func($fieldfunction, $fieldname, $fieldvalue, $A, $icon_arr);
                     break;
             default: break;
             }
