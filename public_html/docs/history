@@ -19,7 +19,7 @@ Geeklog History/Changes:
   now includes 1.0, 1.0a, and 2.0 (depends on what the provider supports) [Tom]
 - Javascript and css can now be loaded in a specified order. [Tom]
 - Numerous fixes for multi-language support [Tom]
-- Added CKEditor as the default advanced editor for Geeklog [Dengen]
+- Added CKEditor 4.3.2 as the default advanced editor for Geeklog [Dengen]
 - New article render which fixes entities etc... from showing up where they 
   shouldn't [Dengen]
 - New Advanced Editor System that allows developers to easily to add new 
@@ -31,6 +31,7 @@ Geeklog History/Changes:
 - Updated Hebrew language files, provided by LWC
 - jQuery can now be included in the header [Tom]
 - Updated to jQuery 1.10.2 and jQuery UI to 1.10.3 [Tom]
+- Added Filemanager [Kenji ITO]
 
 Mar 29, 2013 (2.0.0)
 ------------
