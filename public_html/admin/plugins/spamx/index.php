@@ -146,7 +146,7 @@ $data_arr[] = array(
         plugin_getdocumentationurl_spamx('index')
     )
 );
-$display.= ADMIN_simpleList($fieldfunction, $header_arr, $text_arr, $data_arr, $menu_arr, $options, $form_arr);
+$display.= ADMIN_simpleList(null, $header_arr, null, $data_arr);
 
 if (isset($_REQUEST['command'])) {
     $cmd = COM_applyFilter($_REQUEST['command']);
