@@ -289,7 +289,7 @@ class GLText
 
     // Private Methods:
 
-    private function _htmLawed($str, $permissions)
+    private static function _htmLawed($str, $permissions)
     {
         global $_CONF, $_USER;
 
@@ -374,7 +374,7 @@ class GLText
      * @access  private
      *
      */
-    private function _editUnescape($in, $postmode)
+    private static function _editUnescape($in, $postmode)
     {
         if (!in_array($postmode, array('html', 'wikitext'))) {
             // advanced editor or plaintext can handle themselves...
@@ -411,7 +411,7 @@ class GLText
      * @access  private
      *
      */
-    private function _escapeSPChars($str)
+    private static function _escapeSPChars($str)
     {
         $search  = array('&',     '<',    '>',    '[',     ']'    );
         $replace = array('&amp;', '&lt;', '&gt;', '&#91;', '&#93;');
@@ -428,7 +428,7 @@ class GLText
      * @access  private
      *
      */
-    private function _maskCode($str)
+    private static function _maskCode($str)
     {
         return rawurlencode($str);
     }
@@ -441,12 +441,12 @@ class GLText
      * @access  private
      *
      */
-    private function _unmaskCode($str)
+    private static function _unmaskCode($str)
     {
         return rawurldecode($str);
     }
 
-    private function _handleSpecialTag_callback($str, $tags, $args)
+    private static function _handleSpecialTag_callback($str, $tags, $args)
     {
         if (is_array($args)) {
             $function = array_shift($args);
@@ -493,7 +493,7 @@ class GLText
         return $str;
     }
 
-    private function _unescapeSpecialTag($in, $tags)
+    private static function _unescapeSpecialTag($in, $tags)
     {
         $inlower = MBYTE_strtolower($in);
         $start_pos = MBYTE_strpos($inlower, $tags[0]);
@@ -532,4 +532,5 @@ class GLText
         return $out;
     }
 }
+
 ?>
