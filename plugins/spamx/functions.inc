@@ -382,7 +382,9 @@ function plugin_checkforSpam_spamx ($comment, $action = -1)
     // Clear out any old records
     if ($_SPX_CONF['max_age'] > 1) {
         $timestamp = DB_escapeString(date('Y-m-d'));
-        $sql = "DELETE FROM {$_TABLES['spamx']} WHERE DATE_ADD(regdate,INTERVAL {$_SPX_CONF['max_age']} DAY) < '$timestamp'";
+        $sql = "DELETE FROM {$_TABLES['spamx']} 
+            WHERE DATE_ADD(regdate,INTERVAL {$_SPX_CONF['max_age']} DAY) < '$timestamp' 
+            AND name <> 'SLVwhitelist'";
         DB_query($sql);        
     }
 

@@ -118,6 +118,8 @@ class SLVbase
     public function checkWhitelist(&$links)
     {
         global $_TABLES;
+        
+        $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
 
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='SLVwhitelist'", 1);
         $nrows = DB_numRows($result);
@@ -131,7 +133,7 @@ class SLVbase
                 if (!empty($link)) {
                     if (preg_match("#$val#i", $link)) {
                         $links[$key] = '';
-                        DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='SLVwhitelist' AND value='" . DB_escapeString($A['value']) . "'", 1);
+                        DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1, regdate = '$timestamp' WHERE name='SLVwhitelist' AND value='" . DB_escapeString($A['value']) . "'", 1);
                     }
                 }
             }
