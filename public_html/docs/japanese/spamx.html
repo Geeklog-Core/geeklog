@@ -176,7 +176,7 @@ user field.</p>
   <td><code>はい(true)</code></td>
   <td>はい(true)にすると、スパムと認識された投稿がログファイル(<tt>spamx.log</tt>)に記録されます。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_timeout">タイムアウト(timeout)</a></td>
   <td>5（秒）</td>
   <td>SLVなどの外部サービスと通信する際のタイムアウトとなる秒数を指定します。</td>
@@ -186,10 +186,15 @@ user field.</p>
   <td><code>「管理者用メニュー - コンフィギュレーション - Geeklog - サイト」の「サイトのメールアドレス」の設定値</code></td>
   <td>管理者メール<a href="#action">アクションモジュール</a>が有効になっている場合、スパム通知の送信先Eメールアドレスを指定します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_spamx_action">Spam-Xの動作(action)</a></td>
   <td>128</td>
   <td>「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_spamx">Spam-X</a>」が設定されていない場合に備えるための設定です。言い換えれば、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「Spam-X」の設定の方が優先します。</td>
+</tr>
+<tr>
+  <td><a name="desc_max_age">max_age</a></td>
+  <td>0</td>
+  <td>The max age in days to keep spamx records since there last update (0 = infinite).</td>
 </tr>
 </table>
 
@@ -205,7 +210,12 @@ user field.</p>
   <td><code>true</code></td>
   <td>Stop Forum Spam (SFS)モジュールを有効にするかどうか。有効ならユーザー新規登録時にEmailアドレスとユーザーIPをStopForumSpam.comを参照してSpam判定します。</td>
 </tr>
-<tr class="r2">
+<tr>
+  <td><a name="desc_sfs_confidence">sfs_confidence</a></td>
+  <td><code>25</code></td>
+  <td>The threshold for the Stop Forum Spam confidence score (as a percentage) which is a reasonably good indicator that the field under test, would result in unwanted activity. The range of this inputed value must be from 1 to 100.</td>
+</tr>
+<tr>
   <td><a name="desc_snl_enabled">Spam Number of Linksモジュールを有効(snl_enabled)</a></td>
   <td><code>true</code></td>
   <td>Spam Number of Links (SNL)モジュールを有効にするかどうか。If enabled it will only allow a specified number of links in a post or when a user creates or updates their profile.</td>

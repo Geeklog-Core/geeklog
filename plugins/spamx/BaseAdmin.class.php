@@ -123,7 +123,8 @@ abstract class BaseAdmin
         if (!empty($entry)) {
             $entry = str_replace(' ', '', $entry);
             $entry = DB_escapeString($entry);
-            $retval = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('{$this->moduleName}', '{$entry}', 0, '0000-00-00 00:00:00')");
+            $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
+            $retval = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('{$this->moduleName}', '{$entry}', 0, '$timestamp')");
         }
 
         return $retval;

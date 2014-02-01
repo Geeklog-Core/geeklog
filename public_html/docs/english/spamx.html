@@ -285,7 +285,7 @@ panel:</p>
   <td>Whether to log recognized spam posts in the <tt>spamx.log</tt> logfile
     (if set to <code>true</code>) or not (<code>false</code>).</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_timeout">timeout</a></td>
   <td>5</td>
   <td>Timeout (in seconds) for contacting external services such as SLV and SFS.</td>
@@ -296,13 +296,18 @@ panel:</p>
   <td>Email address to which spam notifications are sent when the Mail Admin
     <a href="#action">action module</a> is enabled.</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_spamx_action">spamx_action</a></td>
   <td>128</td>
   <td>This only exists as a fallback in case <a
     href="config.html#desc_spamx">$_CONF['spamx']</a> in Geeklog's main
     configuration is not set. I.e. <code>$_CONF['spamx']</code> takes
     precedence.</td>
+</tr>
+<tr>
+  <td><a name="desc_max_age">max_age</a></td>
+  <td>0</td>
+  <td>The max age in days to keep spamx records since there last update (0 = infinite).</td>
 </tr>
 </table>
 
@@ -318,7 +323,12 @@ panel:</p>
   <td><code>true</code></td>
   <td>Whether the Stop Forum Spam (SFS) module is enabled or not. If enabled then email and ip addresses of new user registrations will be checked with StopForumSpam.com to see if they are spam.</td>
 </tr>
-<tr class="r2">
+<tr>
+  <td><a name="desc_sfs_confidence">sfs_confidence</a></td>
+  <td><code>25</code></td>
+  <td>The threshold for the Stop Forum Spam confidence score (as a percentage) which is a reasonably good indicator that the field under test, would result in unwanted activity. The range of this inputed value must be from 1 to 100.</td>
+</tr>
+<tr>
   <td><a name="desc_snl_enabled">snl_enabled</a></td>
   <td><code>true</code></td>
   <td>Whether the Spam Number of Links (SNL) module is enabled or not. If enabled it will only allow a specified number of links in a post or when a user creates or updates their profile.</td>

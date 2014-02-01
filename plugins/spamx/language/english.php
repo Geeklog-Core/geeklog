@@ -165,7 +165,9 @@ $LANG_confignames['spamx'] = array(
     'notification_email' => 'Notification Email',
     'logging' => 'Enable Logging',
     'timeout' => 'Timeout', 
+    'max_age' => 'Max Age of Records',
     'sfs_enabled' => 'Enable SFS',
+    'sfs_confidence' => 'Confidence Threshold',
     'snl_enabled' => 'Enable SNL',
     'snl_num_links' => 'Number of links'
 );

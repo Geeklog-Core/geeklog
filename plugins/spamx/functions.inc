@@ -309,6 +309,8 @@ function plugin_upgrade_spamx()
                     DB_query($sql);
                 }
             }
+            
+            spamx_update_ConfValues_1_3_0();
 
             $current_version = '1.3.1';
             break;
@@ -365,11 +367,23 @@ function plugin_migrate_spamx($old_conf)
  */
 function plugin_checkforSpam_spamx ($comment, $action = -1)
 {
-    global $_CONF, $_SPX_CONF;
+    global $_CONF, $_SPX_CONF, $_TABLES;
 
     // skip spam check for members of a group that has the spamx.skip right.
     if (SEC_hasRights('spamx.skip')) {
         return PLG_SPAM_NOT_FOUND;
+    }
+    
+    
+    if (!isset($_SPX_CONF['max_age'])) {
+        $_SPX_CONF['max_age'] = 0;
+    }
+
+    // Clear out any old records
+    if ($_SPX_CONF['max_age'] > 1) {
+        $timestamp = DB_escapeString(date('Y-m-d'));
+        $sql = "DELETE FROM {$_TABLES['spamx']} WHERE DATE_ADD(regdate,INTERVAL {$_SPX_CONF['max_age']} DAY) < '$timestamp'";
+        DB_query($sql);        
     }
 
     $spamx_path = $_CONF['path'] . 'plugins/spamx/';
@@ -389,6 +403,8 @@ function plugin_checkforSpam_spamx ($comment, $action = -1)
     }
 
     $res = PLG_SPAM_NOT_FOUND;
+    
+    asort($Spamx_Examine); // Sort the files. IP Class needs to execute before Stop Forum Spam class yo save on calls to stopforumspam.com
 
     foreach ($Spamx_Examine as $Examine) {
         $filename = $Examine . '.Examine.class.php';

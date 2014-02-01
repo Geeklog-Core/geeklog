@@ -64,6 +64,14 @@ class SFS extends BaseCommand
         if (!$_SPX_CONF['sfs_enabled']) {
             return PLG_SPAM_NOT_FOUND;	// invalid data, assume ok
         }
+        
+        if (!$_SPX_CONF['sfs_confidence']) {
+            $_SPX_CONF['sfs_enabled'] = 25;
+        }
+
+        if (!isset($_SPX_CONF['timeout'])) {
+            $_SPX_CONF['timeout'] = 5; // seconds
+        }        
 
         $db_email = DB_escapeString($email);
         $db_ip    = DB_escapeString($ip);
@@ -74,18 +82,15 @@ class SFS extends BaseCommand
                 OR name='email' AND value='$db_email'", 1);
         if (DB_numRows($result) > 0) {
             list ($name, $value) = DB_fetchArray($result);
-            DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1 WHERE name='" . DB_escapeString($name) . "' AND value='" . DB_escapeString($value) . "'", 1);
+            $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
+            DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1, regdate = '$timestamp' WHERE name='" . DB_escapeString($name) . "' AND value='" . DB_escapeString($value) . "'", 1);
             return PLG_SPAM_FOUND;
         }
-
+        
         $em = urlencode($email);
         $query = "http://www.stopforumspam.com/api?f=serial&email=$em";
         if (!empty($ip)) {
             $query .= "&ip=$ip";
-        }
-
-        if (!isset($_SPX_CONF['timeout'])) {
-            $_SPX_CONF['timeout'] = 5; // seconds
         }
 
         require_once 'HTTP/Request.php';
@@ -119,28 +124,37 @@ class SFS extends BaseCommand
             }
         } else {
             return PLG_SPAM_NOT_FOUND;	// PEAR Error, assume ok
-        }
+        }        
 
-        if ($result['email']['appears'] == 1) {
-            $value_arr[] = "('email', '$db_email')";
-        }
-
-        if ($result['ip']['appears'] == 1) {
-            $value_arr[] = "('IP', '$db_ip')";
-        }
-
-        if (!empty($value_arr)) {
+        if (!$result) return PLG_SPAM_NOT_FOUND;     // invalid data, assume ok
+        
+        if (
+           (isset($result['email']) && $result['email']['appears'] == 1 && $result['email']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) ||
+           ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] )
+           ) {
+            $timestamp = DB_escapeString(date('Y-m-d H:i:s'));        
+            if (isset($result['email']) && $result['email']['appears'] == 1 && $result['email']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) {
+                $value_arr[] = "('email', '$db_email', '$timestamp')";
+            }
+            if ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) {
+                $value_arr[] = "('IP', '$db_ip', '$timestamp')";
+            }        
             $values = implode(',', $value_arr);
-            $sql = "INSERT INTO {$_TABLES['spamx']} (name, value) 
+            $sql = "INSERT INTO {$_TABLES['spamx']} (name, value, regdate) 
                     VALUES $values";
             DB_query($sql);
 
             $log_msg = sprintf($LANG_SX00['email_ip_spam'], $email, $ip);
             SPAMX_log($log_msg);
-
+            
             return PLG_SPAM_FOUND;
+        } else {
+            if ($this->_verbose) {
+                SPAMX_log ("SFS: spammer IP not detected: " . $ip . " Spammer email not detected: " . $email);
+            }            
         }
-
+        
+        // Passed the checks
         return PLG_SPAM_NOT_FOUND;
     }
 }

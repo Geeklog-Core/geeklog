@@ -39,4 +39,24 @@ function spamx_update_ConfValues_1_2_2()
     return true;
 }
 
+function spamx_update_ConfValues_1_3_0()
+{
+    global $_CONF, $_SPX_DEFAULT;
+
+    // Now add in new Config options
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/spamx/install_defaults.php';
+
+    // Add in new config options
+    $c->add('max_age', $_SPX_DEFAULT['max_age'], 'text',
+                    0, 0, null, 60, true, 'spamx', 0);  
+    $c->add('sfs_confidence', $_SPX_DEFAULT['sfs_confidence'], 'text',
+                    0, 0, null, 20, true, 'spamx', 10);      
+
+    return true;
+}
+
 ?>
