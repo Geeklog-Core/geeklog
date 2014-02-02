@@ -380,11 +380,24 @@ function plugin_checkforSpam_spamx ($comment, $action = -1)
     }
 
     // Clear out any old records
-    if ($_SPX_CONF['max_age'] > 1) {
+    $deletelist = '';
+    if (is_array($_SPX_CONF['records_delete'])) {
+        foreach ($_SPX_CONF['records_delete'] as $record) {
+            if (!empty($record)) {
+                $record = DB_escapeString($record);
+                if ($deletelist == '') {
+                    $deletelist = "'$record'";
+                } else {
+                    $deletelist .= ", '$record'";
+                }
+            }
+        }
+    }
+    if ($_SPX_CONF['max_age'] > 1 && $deletelist != '') {
         $timestamp = DB_escapeString(date('Y-m-d'));
         $sql = "DELETE FROM {$_TABLES['spamx']} 
             WHERE DATE_ADD(regdate,INTERVAL {$_SPX_CONF['max_age']} DAY) < '$timestamp' 
-            AND name <> 'SLVwhitelist'";
+            AND name IN ($deletelist)";
         DB_query($sql);        
     }
 

@@ -307,7 +307,19 @@ panel:</p>
 <tr>
   <td><a name="desc_max_age">max_age</a></td>
   <td>0</td>
-  <td>The max age in days to keep spamx records since there last update (0 = infinite). SLV Whitelist records will not be deleted.</td>
+  <td>The max age in days to keep Spam-X records since there last update (0 = infinite). SLV Whitelist records will not be deleted.</td>
+</tr>
+<tr>
+  <td><a name="desc_records_delete">records_delete</a></td>
+  <td><code>'email', 'IP'</code></td>
+  <td>The Spam-X record types to delete when max age is reached. Default types include:<ul>
+    <li>Personal Blacklist = 'Personal'</li>
+    <li>HTTP Header Blacklist = 'HTTPHeader'</li>
+    <li>IP Blacklist = 'IP'</li>
+    <li>IP of URL Blacklist = 'IPofUrl'</li>
+    <li>SFS Email Blacklist = 'email'</li>
+    <li>SLV Whitelist = 'SLVwhitelist'</li>
+  </ul></td>
 </tr>
 </table>
 

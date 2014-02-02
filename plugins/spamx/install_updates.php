@@ -54,7 +54,8 @@ function spamx_update_ConfValues_1_3_0()
     $c->add('max_age', $_SPX_DEFAULT['max_age'], 'text',
                     0, 0, null, 60, true, 'spamx', 0);  
     $c->add('sfs_confidence', $_SPX_DEFAULT['sfs_confidence'], 'text',
-                    0, 0, null, 20, true, 'spamx', 10);      
+                    0, 0, null, 20, true, 'spamx', 10); 
+    $c->add('records_delete', array('email','IP'), '%text', 0, 0, NULL, 70, TRUE, 'spamx', 0);
 
     return true;
 }

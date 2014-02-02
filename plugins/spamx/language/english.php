@@ -166,6 +166,7 @@ $LANG_confignames['spamx'] = array(
     'logging' => 'Enable Logging',
     'timeout' => 'Timeout', 
     'max_age' => 'Max Age of Records',
+    'records_delete' => 'Record Types to Delete',
     'sfs_enabled' => 'Enable SFS',
     'sfs_confidence' => 'Confidence Threshold',
     'snl_enabled' => 'Enable SNL',
