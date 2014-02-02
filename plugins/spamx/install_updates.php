@@ -55,7 +55,7 @@ function spamx_update_ConfValues_1_3_0()
                     0, 0, null, 60, true, 'spamx', 0);  
     $c->add('sfs_confidence', $_SPX_DEFAULT['sfs_confidence'], 'text',
                     0, 0, null, 20, true, 'spamx', 10); 
-    $c->add('records_delete', array('email','IP'), '%text', 0, 0, NULL, 70, TRUE, 'spamx', 0);
+    $c->add('records_delete', $_SPX_DEFAULT['records_delete'], '%text', 0, 0, NULL, 70, TRUE, 'spamx', 0);
 
     return true;
 }

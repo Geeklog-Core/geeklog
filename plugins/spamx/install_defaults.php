@@ -71,6 +71,9 @@ $_SPX_DEFAULT['timeout'] = 5; // in seconds
 // The max age in days to keep spamx records since there last update (0 = infinite) 
 $_SPX_DEFAULT['max_age'] = 0; 
 
+// The record types to delete when max age is reached
+$_SPX_DEFAULT['records_delete'] = array('email','IP');
+
 // If the module Stop Forum Spam is enabled
 $_SPX_DEFAULT['sfs_enabled'] = false;
 
@@ -123,7 +126,7 @@ function plugin_initconfig_spamx()
                 0, 0, null, 50, false, 'spamx', 0);
         $c->add('max_age', $_SPX_DEFAULT['max_age'], 'text',
                         0, 0, null, 60, true, 'spamx', 0);
-        $c->add('records_delete', array('email','IP'), '%text', 0, 0, NULL, 70, TRUE, 'spamx', 0);        
+        $c->add('records_delete', $_SPX_DEFAULT['records_delete'], '%text', 0, 0, NULL, 70, TRUE, 'spamx', 0);        
 
         $c->add('tab_modules', NULL, 'tab', 0, 0, NULL, 0, true, 'spamx', 10);
         $c->add('fs_sfs', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx', 10);
