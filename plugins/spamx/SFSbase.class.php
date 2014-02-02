@@ -109,6 +109,7 @@ class SFSbase
             SPAMX_log ("SFS: spammer IP detected: " . $ip);
             
             // Add IP to SFS IP list... assuming sfs runs after ip check so no dups
+            $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
             $db_ip = DB_escapeString($ip);
             $sql = "INSERT INTO {$_TABLES['spamx']} (name, value, regdate) 
                     VALUES ('IP', '$db_ip', '$timestamp')";
