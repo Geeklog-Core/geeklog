@@ -47,7 +47,7 @@ class SFSbase
     */
     function CheckForSpam ($post)
     {
-        global $_SPX_CONF, $REMOTE_ADDR;
+        global $_SPX_CONF;
         
         if (!isset($_SPX_CONF['sfs_enabled'])) {
             $_SPX_CONF['sfs_enabled'] = false;
@@ -66,7 +66,7 @@ class SFSbase
         }        
 
         
-        $ip = $REMOTE_ADDR;
+        $ip = $_SERVER['REMOTE_ADDR'];
         $query = "http://www.stopforumspam.com/api?f=serial&ip=$ip";
 
         require_once 'HTTP/Request.php';
