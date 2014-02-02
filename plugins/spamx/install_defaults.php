@@ -75,7 +75,7 @@ $_SPX_DEFAULT['max_age'] = 0;
 $_SPX_DEFAULT['sfs_enabled'] = false;
 
 // The threshold for the Stop Forum Spam confidence score (percentage) which is a reasonably good indicator that the field under test, would result in unwanted activity. 
-$_SPX_CONF['sfs_confidence'] = 25;
+$_SPX_DEFAULT['sfs_confidence'] = 25;
 
 // If the module Spam Number of Links is enabled
 $_SPX_DEFAULT['snl_enabled'] = false;

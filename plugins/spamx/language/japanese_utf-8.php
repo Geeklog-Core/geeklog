@@ -165,9 +165,12 @@ $LANG_confignames['spamx'] = array(
     'notification_email' => 'メール通知',
     'logging' => 'ログを有効にする',
     'timeout' => 'タイムアウト',
-    'sfs_enabled' => 'Stop Forum Spamモジュールを有効',
-    'snl_enabled' => 'Spam Number of Linksモジュールを有効',
-    'snl_num_links' => 'リンクの数'
+    'max_age' => 'スパム記録の保存日数',
+    'records_delete' => 'Record Types to Delete',
+    'sfs_enabled' => 'Stop Forum Spamモジュールを有効にする',
+    'sfs_confidence' => '信頼スコアの閾値',
+    'snl_enabled' => 'Spam Number of Linksモジュールを有効にする',
+    'snl_num_links' => 'リンクの数'    
 );
 
 $LANG_configsubgroups['spamx'] = array(
