@@ -82,9 +82,9 @@ SLVを使用しているということは、自分のサイトから第三者�
 
 <h3><a name="ip">IPフィルター(IP Filter)</a></h3>
 
-<p>1つないし少数のIPアドレスから送信されるスパムに出くわすこともあります。IPフィルターモジュールに追加することで、これらのIPアドレスから送信されるスパムを自動的にブロックできます。</p>
+<p>1つないし少数のIPアドレスから送信されるスパムに出くわすこともあります。IPフィルターモジュールを追加することで、これらのIPアドレスから送信されるスパムを自動的にブロックできます。</p>
 
-<p>IPアドレスを1つずつだけでなく、<a href="http://en.wikipedia.org/wiki/CIDR" title="Classless Inter-Domain Routing">CIDR</a>表記や<i>開始アドレス</i>-<i>終了アドレス</i> という形式で、IPアドレスの範囲を指定することもできます。</p>
+<p>単一のIPアドレスだけでなく、<a href="http://en.wikipedia.org/wiki/CIDR" title="Classless Inter-Domain Routing">CIDR</a>表記や<i>開始アドレス</i>-<i>終了アドレス</i> という形式で、IPアドレスの範囲を指定することもできます。</p>
 
 <p>IPアドレスが実際にはあまりよい判断基準にはならないということに注意してください。インターネットサービスプロバイダやホスティングサービスの中にはスパムの温床として知られているものもありますが、それらのIPアドレスをブロックしてもあまり役には立たないでしょう。スパム送信者はインターネットへ接続し直すときに新しいIPアドレスを取得するのに対し、ブロックされたIPアドレスは他の罪もないユーザーが使用することがよくあるからです。</p>
 
@@ -106,22 +106,21 @@ SLVを使用しているということは、自分のサイトから第三者�
 
 <h3><a name="sfs">Stop Forum Spam (SFS)</a></h3>
 
-<p>Stop Forum Spam is a centralized, server-based service that provides lists of 
-ips, usernames and email addresses of know spammers of forums and blogs. With this 
-module enabled, on new user registrations the ip of the user and email address 
-will be checked against the SFS database. If found the Geeklog user account will 
-not be created.</p>
+<p>Stop Forum Spamは集約されたサーバーを基にするサービスで、
+掲示板やブログの既知のスパム送信者のIPアドレス、ユーザー名、メールアドレスのリストを提供します。
+このモジュールを有効にすると、新規ユーザーの登録の際に、ユーザーのIPアドレスとメールアドレスを
+SFSのデータベースでチェックします。該当データが見つかった場合、
+Geeklog上のユーザーアカウントは作成されません。</p>
 
-<p>SFS is a free service and can be found at <a
-href="http://www.stopforumspam.com/">www.stopforumspam.com</a>.</p>
+<p>SFSはフリーのサービスで、<a
+href="http://www.stopforumspam.com/">www.stopforumspam.com</a>で運営されています。</p>
 
 <h3><a name="snl">Spam Number of Links (SNL)</a></h3>
 
-<p>With this module enabled you can limit the number of links that appear in a 
-post and user profile. To enable the module and set the number of links you need 
-to update the Spam-X configuration. If enabled you should allow at least 1 link 
-to take into account when a user creates a profile since Homepage is a default 
-user field.</p>
+<p>このモジュールを有効にすると、投稿とユーザーのプロフィールに含まれるリンクの数を制限することができます。
+このモジュールを有効にしてリンクの数を設定するには、
+コンフィギュレーションからSpam-Xの設定を変更する必要があります。有効にする場合は、リンク数を少なくとも1個に設定した方がよいでしょう。
+ホームページのフィールドは既定でプロフィールのページに作成されるからです。</p>
 
 <h2><a name="action">アクションモジュール</a></h2>
 
@@ -129,13 +128,13 @@ user field.</p>
 
 <p>その名前が示すとおり、<b>管理者メールアクション(Mail Admin Action)</b> モジュールはスパムを検出したときに、サイト管理者にメールで通知します。多数の通知メールが送られる可能性があるため、デフォルトでは無効になっています。</p>
 
-<p>アクションモジュールは使用する前に個別に有効にする必要があります(一方、検出モジュールはSpam-Xのディレクトリに放り込むだけで有効になります。)。このため、すべてのアクションモジュールは独自の番号を持っています。有効にしたいすべてのモジュールの番号を足し合わせた数値を、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_spamx">Spam-X</a>」に入力します。</p>
+<p>アクションモジュールは使用する前に個別に有効にする必要があります(一方、検出モジュールはSpam-Xのディレクトリにファイルを入れるだけで有効になります。)。このため、すべてのアクションモジュールは独自の番号を持っています。有効にしたいすべてのモジュールの番号を足し合わせた数値を、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_spamx">Spam-X</a>」に入力します。</p>
 
 <h3>例</h3>
 
 <p>削除アクションモジュールの数字は 128、管理者メールアクションモジュールは 8 です。両方のモジュールを有効にするには、128 + 8 = 136 を入力します。</p>
 
-<p>SLV検出モジュールは、他の検出モジュールが捕捉したスパム投稿を確実にSLVに通知します<strong>SLVアクション(SLV Action)</strong> モジュールによって補完されています。このモジュールは削除アクションモジュールと連動しているので、削除アクションモジュールを有効にすると、SLVアクションモジュールも有効になります。</p>
+<p>SLV検出モジュールは、他の検出モジュールが捕捉したスパム投稿を確実にSLVに通知します。<strong>SLVアクション(SLV Action)</strong> モジュールによって補完されています。このモジュールは削除アクションモジュールと連動しているので、削除アクションモジュールを有効にすると、SLVアクションモジュールも有効になります。</p>
 
 
 <h2><a name="admin">管理モジュール</a></h2>
@@ -158,7 +157,7 @@ user field.</p>
 
 <h2><a name="trackback">トラックバックスパム</a></h2>
 
-<p><a href="trackback.html">トラックバック</a>もまた、Geeklogに受け入れられる前にSpam-Xプラグインで検査されます。トラックバックの場合、追加できるチェックがあります。トラックバックを送信してきたサイトが自分のサイトへのバックリンクを含んでいるかどうかをチェックするよう、設定できます。その上、トラックバックURLに含まれるサイトのIPアドレスがトラックバック送信元のIPアドレスと一致するかをチェックすることもできます。これらの検査に合格しないトラックバックはふつう、スパムです。詳細は、<a href="config.html#desc_check_trackback_link">設定用のドキュメント</a>を参照してください。</p>
+<p><a href="trackback.html">トラックバック</a>もまた、Geeklogが受け入れる前にSpam-Xプラグインで検査されます。トラックバックの場合、追加できるチェックがあります。トラックバックを送信してきたサイトが自分のサイトへのバックリンクを含んでいるかどうかをチェックするよう、設定できます。さらに、トラックバックURLに含まれるサイトのIPアドレスがトラックバック送信元のIPアドレスと一致するかをチェックすることもできます。これらの検査に合格しないトラックバックはふつう、スパムです。詳細は、<a href="config.html#desc_check_trackback_link">設定用のドキュメント</a>を参照してください。</p>
 
 <h2><a name="config.php">コンフィギュレーション</a></h2>
 
@@ -184,7 +183,7 @@ user field.</p>
 <tr>
   <td><a name="desc_notification_email">メールで通知する(notification_email)</a></td>
   <td><code>「管理者用メニュー - コンフィギュレーション - Geeklog - サイト」の「サイトのメールアドレス」の設定値</code></td>
-  <td>管理者メール<a href="#action">アクションモジュール</a>が有効になっている場合、スパム通知の送信先Eメールアドレスを指定します。</td>
+  <td>管理者メール<a href="#action">アクションモジュール</a>が有効になっている場合、スパム通知の送信先メールアドレスを指定します。指定しない場合は、サイトのメールアドレス($_CONF['site_mail'])に送信されます。</td>
 </tr>
 <tr>
   <td><a name="desc_spamx_action">Spam-Xの動作(action)</a></td>
@@ -192,9 +191,9 @@ user field.</p>
   <td>「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_spamx">Spam-X</a>」が設定されていない場合に備えるための設定です。言い換えれば、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「Spam-X」の設定の方が優先します。</td>
 </tr>
 <tr>
-  <td><a name="desc_max_age">max_age</a></td>
+  <td><a name="desc_max_age">スパム記録の保存日数</a></td>
   <td>0</td>
-  <td>The max age in days to keep spamx records since there last update (0 = infinite). SLV Whitelist records will not be deleted.</td>
+  <td>Spam-Xの記録をデータベースに保存する最大の日数を指定します(0 = 無制限に保存)。SLVホワイトリストの記録は削除しません。</td>
 </tr>
 </table>
 
@@ -208,22 +207,22 @@ user field.</p>
 <tr>
   <td><a name="desc_sfs_enabled">Stop Forum Spamモジュールを有効(sfs_enabled)</a></td>
   <td><code>true</code></td>
-  <td>Stop Forum Spam (SFS)モジュールを有効にするかどうか。有効ならユーザー新規登録時にEmailアドレスとユーザーIPをStopForumSpam.comを参照してSpam判定します。</td>
+  <td>Stop Forum Spam (SFS)モジュールを有効にするかどうかを指定します。有効にすると、ユーザー新規登録時にユーザーのメールアドレスとIPアドレスをStopForumSpam.comに照会してスパム判定を行います。</td>
 </tr>
 <tr>
-  <td><a name="desc_sfs_confidence">sfs_confidence</a></td>
+  <td><a name="desc_sfs_confidence">信頼スコアの閾値(sfs_confidence)</a></td>
   <td><code>25</code></td>
-  <td>The threshold for the Stop Forum Spam confidence score (as a percentage) which is a reasonably good indicator that the field under test, would result in unwanted activity. The range of this inputed value must be from 1 to 100.</td>
+  <td>Stop Forum Spamの信頼スコアの閾値(パーセント)で、この値を超えると、検証しているフィールドが望ましくない活動を行うことになることを示すかなり良い目安になります。1から100の範囲で入力します。</td>
 </tr>
 <tr>
   <td><a name="desc_snl_enabled">Spam Number of Linksモジュールを有効(snl_enabled)</a></td>
   <td><code>true</code></td>
-  <td>Spam Number of Links (SNL)モジュールを有効にするかどうか。If enabled it will only allow a specified number of links in a post or when a user creates or updates their profile.</td>
+  <td>Spam Number of Links (SNL)モジュールを有効にするかどうかを指定します。有効にすると、ユーザーが投稿したり、プロフィールを作成・更新したりする際に、含まれるリンクの数を指定された数に制限するようになります。</td>
 </tr>
 <tr>
   <td><a name="desc_snl_num_links">リンク数(snl_num_links)</a></td>
   <td>5</td>
-  <td>The maximum number of links allowed in a post or profile before it is considered spam.</td>
+  <td>投稿やプロフィールでリンクと見なさないリンクの最大数。</td>
 </tr>
 </table>
 
