@@ -84,7 +84,7 @@ abstract class BaseAdmin
 
         if (!empty($entry)) {
             $entry = DB_escapeString($entry);
-            $retval = DB_query("DELETE FROM {$_TABLES['spamx']} WHERE (name ='{$this->moduleName}' AND value = '{$entry}') LIMIT 1");
+            $retval = DB_query("DELETE FROM {$_TABLES['spamx']} WHERE (name ='{$this->moduleName}' AND value = '{$entry}')");
         }
 
         return $retval;
