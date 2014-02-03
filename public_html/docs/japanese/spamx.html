@@ -191,20 +191,20 @@ href="http://www.stopforumspam.com/">www.stopforumspam.com</a>で運営されて
   <td>「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_spamx">Spam-X</a>」が設定されていない場合に備えるための設定です。言い換えれば、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「Spam-X」の設定の方が優先します。</td>
 </tr>
 <tr>
-  <td><a name="desc_max_age">スパム記録の保存日数</a></td>
+  <td><a name="desc_max_age">スパム記録の保存日数(max_age)</a></td>
   <td>0</td>
-  <td>The max age in days to keep Spam-X records since there last update (0 = infinite). SLV Whitelist records will not be deleted.</td>
-</tr>
+  <td>Spam-Xの記録をデータベースに保存する最大の日数を指定します(0 = 無制限に保存)。SLVホワイトリストの記録は削除しません。</td>
+ </tr></tr>
 <tr>
-  <td><a name="desc_records_delete">records_delete</a></td>
+  <td><a name="desc_records_delete">削除する記録の種類(records_delete)</a></td>
   <td><code>'email', 'IP'</code></td>
-  <td>The Spam-X record types to delete when max age is reached. Default types include:<ul>
-    <li>Personal Blacklist = 'Personal'</li>
-    <li>HTTP Header Blacklist = 'HTTPHeader'</li>
-    <li>IP Blacklist = 'IP'</li>
-    <li>IP of URL Blacklist = 'IPofUrl'</li>
-    <li>SFS Email Blacklist = 'email'</li>
-    <li>SLV Whitelist = 'SLVwhitelist'</li>
+  <td>スパム記録の保存日数に達した時に削除する記録の種類を指定します。デフォルトでは次のものがあります:<ul>
+    <li>'Personal' = パーソナルブラックリスト</li>
+    <li>'HTTPHeader' = HTTPヘッダーブラックリスト</li>
+    <li>'IP' = IPフィルター</li>
+    <li>'IPofUrl' = URLのIPフィルター</li>
+    <li>'email' = Stop Forum Spamのブラックリスト</li>
+    <li>'SLVwhitelist' = SLVホワイトリスト</li>
   </ul></td>
 </tr>
 </table>
@@ -218,7 +218,7 @@ href="http://www.stopforumspam.com/">www.stopforumspam.com</a>で運営されて
 </tr>
 <tr>
   <td><a name="desc_sfs_enabled">Stop Forum Spamモジュールを有効(sfs_enabled)</a></td>
-  <td><code>true</code></td>
+  <td><code>いいえ(false)</code></td>
   <td>Stop Forum Spam (SFS)モジュールを有効にするかどうかを指定します。有効にすると、ユーザー新規登録時にユーザーのメールアドレスとIPアドレスをStopForumSpam.comに照会してスパム判定を行います。</td>
 </tr>
 <tr>
@@ -228,7 +228,7 @@ href="http://www.stopforumspam.com/">www.stopforumspam.com</a>で運営されて
 </tr>
 <tr>
   <td><a name="desc_snl_enabled">Spam Number of Linksモジュールを有効(snl_enabled)</a></td>
-  <td><code>true</code></td>
+  <td><code>いいえ(false)</code></td>
   <td>Spam Number of Links (SNL)モジュールを有効にするかどうかを指定します。有効にすると、ユーザーが投稿したり、プロフィールを作成・更新したりする際に、含まれるリンクの数を指定された数に制限するようになります。</td>
 </tr>
 <tr>
