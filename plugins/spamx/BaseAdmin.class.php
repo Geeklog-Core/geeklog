@@ -123,8 +123,18 @@ abstract class BaseAdmin
         if (!empty($entry)) {
             $entry = str_replace(' ', '', $entry);
             $entry = DB_escapeString($entry);
-            $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
-            $retval = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('{$this->moduleName}', '{$entry}', 0, '$timestamp')");
+            $count = DB_getItem(
+                $_TABLES['spamx'],
+                "COUNT(*)",
+                "name ='" . DB_escapeString($this->moduleName)
+                    . "' AND value = '" . $entry . "'"
+            );
+
+            // Lets the user add a unique record only
+            if ($count == 0) {
+                $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
+                $retval = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('{$this->moduleName}', '{$entry}', 0, '$timestamp')");
+            }
         }
 
         return $retval;

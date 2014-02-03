@@ -40,6 +40,10 @@ CREATE TABLE [dbo].[{$_TABLES['spamx']}] (
 ) ON [PRIMARY]
 ";
 
+$_SQL[] = "
+ALTER TABLE [dbo].[{$_TABLES['spamx']}] 
+ADD CONSTRAINT [PK_spamx] PRIMARY KEY CLUSTERED ([name], [value]) ON [PRIMARY]";
+
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter', '0')";
 
 ?>

@@ -36,7 +36,8 @@ CREATE TABLE {$_TABLES['spamx']} (
   value varchar(255) NOT NULL default '',
   counter int(11) NOT NULL default '0',
   regdate datetime NOT NULL default '0000-00-00 00:00:00',
-  INDEX spamx_name(name)
+  INDEX spamx_name(name),
+  PRIMARY KEY (name, value)
 ) ENGINE=MyISAM
 ";
 

@@ -35,7 +35,8 @@ CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
   value varchar(255) NOT NULL default '',
   counter int NOT NULL default 0,
-  regdate timestamp NOT NULL default NULL
+  regdate timestamp NOT NULL default NULL,
+  PRIMARY KEY (name, value)
 );
   CREATE INDEX {$_TABLES['spamx']}_name ON {$_TABLES['spamx']}(name);
 ";
