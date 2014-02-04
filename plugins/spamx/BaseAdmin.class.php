@@ -112,16 +112,19 @@ abstract class BaseAdmin
     * Adds an entry to database
     *
     * @param    string    $entry
+    * @param    string    $spaces
     * @return   boolean   true = success, false = otherwise
     */
-    protected function addEntry($entry)
+    protected function addEntry($entry, $spaces = false)
     {
         global $_TABLES;
 
         $retval = true;
 
         if (!empty($entry)) {
-            $entry = str_replace(' ', '', $entry);
+            if (!$spaces) {
+                $entry = str_replace(' ', '', $entry);
+            }
             $entry = DB_escapeString($entry);
             $count = DB_getItem(
                 $_TABLES['spamx'],
