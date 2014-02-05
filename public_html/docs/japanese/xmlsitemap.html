@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Geeklogドキュメント - XMLSitemapプラグイン</title>
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+</head>
+
+<body>
+<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
+<div class="menu"><a href="index.html">Geeklogドキュメント</a> - XMLSitemapプラグイン</div>
+
+<h1>XMLSitemapプラグイン</h1>
+
+<p>XMLSitemapプラグインは、主要な検索エンジン全てがサポートしている<a href="http://www.sitemaps.org/">XML形式のサイトマップファイル</a>を作成し、オプションで検索エンジンに通知します。このサイトマップファイルは、訪問者がサイトで見ることができる全てのコンテンツを検索エンジンが発見しやすくするために使用されます。基本的には、sitemape.xmlファイルはサイトにある全てのコンテンツのURLの一覧を載せています。詳しくは、<a href="http://www.sitemaps.org/">sitemaps.org(英語)</a>をご覧ください。</p>
+
+<h2><a name="configuration">設定</a></h2>
+
+<p>XMLSitemapプラグインはコンフィギュレーションで設定できます:</p>
+
+<h3><a name="main">XMLSitemapの主要設定</a></h3>
+
+<table>
+<tr><th style="width: 25%;">項目(変数)</th>
+    <th style="width: 25%;">デフォルト</th>
+    <th style="width: 50%;">説明</th>
+</tr>
+<tr>
+  <td><a name="desc_sitemap_file">サイトマップファイル名(sitemap_file)</a></td>
+  <td>sitemap.xml</td>
+  <td><i>普通の</i>XMLサイトマップのファイル名を指定します。このファイルは<strong>公開ディレクトリ</strong>(lib-common.phpのあるディレクトリ)に置き、Webサーバーが書き込むことができる必要があります。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_mobile_sitemap_file">モバイルサイトマップ名(mobile_sitemap_file)</a></td>
+  <td>(空白)</td>
+  <td>モバイルユーザーのために最適化されたコンテンツ用のXMLサイトマップのファイル名を指定します。このファイルは<strong>公開ディレクトリ</strong>(lib-common.phpのあるディレクトリ)に置き、Webサーバーが書き込むことができる必要があります。</td>
+</tr>
+<tr>
+  <td><a name="desc_types">サイトマップの内容(types)</a></td>
+  <td>article, calendar, polls, staticpages</td>
+  <td>XMLサイトマップファイルに含めたいコンテンツの種類を指定します。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_exclude">除外するプラグイン(exclude)</a></td>
+  <td>links</td>
+  <td>XMLサイトマップファイルに<strong>含めたくない</strong>コンテンツの種類を指定します。</td>
+</tr>
+</table>
+
+<h3><a name="priorities">優先度</a></h3>
+
+<table>
+<tr><th style="width: 25%;">項目(変数)</th>
+    <th style="width: 25%;">デフォルト</th>
+    <th style="width: 50%;">説明</th>
+</tr>
+<tr>
+  <td><a name="desc_priorities">優先度(priorities)</a></td>
+  <td>0.5</td>
+  <td>コンテンツの種類ごとにサイト内での相対的な優先度を指定します。有効な値の範囲は0.0(最も低い)から1.0(最も高い)です。検索エンジンはこの値を使用して、サイトのオーナーがどのURLをより重要と考えているか判断します。したがって、すべてのコンテンツの種類に1.0を指定しても意味はありません。</td>
+</tr>
+</table>
+
+<h3><a name="frequencies">更新頻度</a></h3>
+
+<table>
+<tr><th style="width: 25%;">項目(変数)</th>
+    <th style="width: 25%;">デフォルト</th>
+    <th style="width: 50%;">説明</th>
+</tr>
+<tr>
+  <td><a name="desc_frequencies">更新頻度(frequencies)</a></td>
+  <td>静的ページは'毎週'、他は'毎日'</td>
+  <td>コンテンツが更新される頻度を指定します。有効な値は、'常時'、'毎時間'、'毎日'、'毎週'、'毎月'、'毎年'、'更新しない'です。検索エンジンはこの値を使用して、どれくらいの頻度でコンテンツをチェックすべきかを判断します。しかしながら、'常時'を指定しても検索エンジンが必ずサイトを訪問するとは限りません。したがって、ほとんどの場合、'毎日'か'毎週'を指定しておくとよいでしょう。</td>
+</tr>
+</table>
+
+<h3><a name="ping">Ping送信</a></h3>
+
+<table>
+<tr><th style="width: 25%;">項目(変数)</th>
+    <th style="width: 25%;">デフォルト</th>
+    <th style="width: 50%;">説明</th>
+</tr>
+<tr>
+  <td><a name="desc_ping_google">Googleにpingを送信する(ping_google)</a></td>
+  <td>はい</td>
+  <td>「はい」に設定すると、コンテンツを更新するたびにXMLSitemapプラグインはGoogleの検索エンジンにサイトマップファイルの更新を通知します。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_ping_bing">Bingにpingを送信する(ping_bing)</a></td>
+  <td>いいえ</td>
+  <td>「はい」に設定すると、コンテンツを更新するたびにXMLSitemapプラグインはBingの検索エンジンにサイトマップファイルの更新を通知します。</td>
+</tr>
+<tr>
+  <td><a name="desc_ping_ask">Askにpingを送信する(ping_ask)</a></td>
+  <td>いいえ</td>
+  <td>「はい」に設定すると、コンテンツを更新するたびにXMLSitemapプラグインはAskの検索エンジンにサイトマップファイルの更新を通知します。</td>
+</tr>
+</table>
+
+<div class="footer">
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
+    本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
+</div>
+
+</body>
+</html>

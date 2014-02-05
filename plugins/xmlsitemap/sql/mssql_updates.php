@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | XMLSitemap Plugin 1.0                                                     |
+// | XMLSitemap Plugin 2.0                                                     |
 // +---------------------------------------------------------------------------+
 // | mssql_updates.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                         |
+// | Copyright (C) 2009-2014 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |

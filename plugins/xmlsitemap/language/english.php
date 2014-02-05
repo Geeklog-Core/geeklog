@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | XMLSitemap Plugin                                                         |
+// | XMLSitemap Plugin 2.0                                                     |
 // +---------------------------------------------------------------------------+
 // | english.php                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2014 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -27,8 +27,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------|
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(__FILE__)) !== FALSE) {
-    die ('This file can not be used on its own.');
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
+    die('This file can not be used on its own.');
 }
 
 global $LANG32;
@@ -51,6 +51,9 @@ $LANG_confignames['xmlsitemap'] = array(
     'exclude'             => 'Plugins to exclude from sitemap',
     'priorities'          => '',
     'frequencies'         => '',
+    'ping_google'         => 'Send ping to Google',
+    'ping_bing'           => 'Send ping to Bing',
+    'ping_ask'            => 'Send ping to Ask',
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
@@ -61,12 +64,14 @@ $LANG_tab['xmlsitemap'] = array(
     'tab_main' => 'XMLSitemap Main Settings',
     'tab_pri'  => 'Priority',
     'tab_freq' => 'Update frequency',
+    'tab_ping' => 'Ping',
 );
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemap Main Settings',
     'fs_pri'  => 'Priority (default = 0.5, lowest = 0.0, highest = 1.0)',
     'fs_freq' => 'Update frequency',
+    'fs_ping' => 'Send ping on updating sitemap',
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

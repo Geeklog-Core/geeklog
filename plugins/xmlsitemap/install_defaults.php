@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | XMLSitemap Plugin 1.0                                                     |
+// | XMLSitemap Plugin 2.0                                                     |
 // +---------------------------------------------------------------------------+
 // | install_defaults.php                                                      |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2014 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -38,7 +38,7 @@
 * @package XMLSitemap
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'install_defaults.php') !== FALSE) {
+if (stripos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -80,48 +80,63 @@ $_XMLSMAP_DEFAULT['frequencies'] = array(
     'staticpages' => 'weekly'
 );
 
+// Ping targets
+$_XMLSMAP_DEFAULT['ping_google'] = true;
+$_XMLSMAP_DEFAULT['ping_bing']   = true;
+$_XMLSMAP_DEFAULT['ping_ask']    = true;
+
 /**
 * Initialize XMLSitemap plugin configuration
 *
 * Creates the database entries for the configuation if they don't already
 * exist.  Initial values will be taken from $_XMLSMAP_DEFAULT.
 *
-* @return   boolean     TRUE: success; FALSE: an error occurred
+* @return   boolean     true: success; false: an error occurred
 */
 function plugin_initconfig_xmlsitemap()
 {
     global $_XMLSMAP_DEFAULT;
-    
+
     $me = 'xmlsitemap';
-    
     $c = config::get_instance();
+
     if (!$c->group_exists($me)) {
-        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, $me, 0);
-        $c->add('tab_main', NULL, 'tab', 0, 0, NULL, 0, TRUE, $me, 0);
-        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, $me, 0);
+        $c->add('sg_main', null, 'subgroup', 0, 0, null, 0, true, $me, 0);
+        $c->add('tab_main', null, 'tab', 0, 0, null, 0, true, $me, 0);
+        $c->add('fs_main', null, 'fieldset', 0, 0, null, 0, true, $me, 0);
         $c->add('sitemap_file', $_XMLSMAP_DEFAULT['sitemap_file'], 'text',
-            0, 0, NULL, 10, TRUE, $me, 0);
+            0, 0, null, 10, true, $me, 0);
         $c->add('mobile_sitemap_file', $_XMLSMAP_DEFAULT['mobile_sitemap_file'],
-            'text', 0, 0, NULL, 20, FALSE, $me, 0);
-        $c->add('types', $_XMLSMAP_DEFAULT['types'], '%text', 0, 0, NULL, 30,
-            TRUE, $me, 0);
-        $c->add('exclude', $_XMLSMAP_DEFAULT['exclude'], '%text', 0, 0, NULL,
-            40, TRUE, $me, 0);
-        
+            'text', 0, 0, null, 20, false, $me, 0);
+        $c->add('types', $_XMLSMAP_DEFAULT['types'], '%text', 0, 0, null, 30,
+            true, $me, 0);
+        $c->add('exclude', $_XMLSMAP_DEFAULT['exclude'], '%text', 0, 0, null,
+            40, true, $me, 0);
+
         // Priorities
-        $c->add('tab_pri', NULL, 'tab', 0, 1, NULL, 0, TRUE, $me, 1);
-        $c->add('fs_pri', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, $me, 1);
+        $c->add('tab_pri', null, 'tab', 0, 1, null, 0, true, $me, 1);
+        $c->add('fs_pri', null, 'fieldset', 0, 1, null, 0, true, $me, 1);
         $c->add('priorities', $_XMLSMAP_DEFAULT['priorities'], '*text', 0, 1,
-             NULL, 50, TRUE, $me, 1);
-        
+             null, 50, true, $me, 1);
+
         // Frequencies
-        $c->add('tab_freq', NULL, 'tab', 0, 2, NULL, 0, TRUE, $me, 2);
-        $c->add('fs_freq', NULL, 'fieldset', 0, 2, NULL, 0, TRUE, $me, 2);
+        $c->add('tab_freq', null, 'tab', 0, 2, null, 0, true, $me, 2);
+        $c->add('fs_freq', null, 'fieldset', 0, 2, null, 0, true, $me, 2);
         $c->add('frequencies', $_XMLSMAP_DEFAULT['frequencies'], '@select', 0,
-            2, 20, 60, TRUE, $me, 2);
+            2, 20, 60, true, $me, 2);
+
+        // Ping targets
+        $c->add('tab_ping', null, 'tab', 0, 3, null, 0, true, $me, 3);
+        $c->add('fs_ping', null, 'fieldset', 0, 3, null, 0, true, $me, 3);
+        $c->add('ping_google', $_XMLSMAP_DEFAULT['ping_google'], 'select', 0,
+            3, 1, 100, true, $me, 3);
+        $c->add('ping_bing', $_XMLSMAP_DEFAULT['ping_bing'], 'select', 0,
+            3, 1, 110, true, $me, 3);
+        $c->add('ping_ask', $_XMLSMAP_DEFAULT['ping_ask'], 'select', 0,
+            3, 1, 120, true, $me, 3);
     }
-    
-    return TRUE;
+
+    return true;
 }
 
 ?>

@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | XML Sitemap                                                              |
+// | XML Sitemap 2.0                                                           |
 // +---------------------------------------------------------------------------+
 // | configuration_validation.php                                              |
 // |                                                                           |
-// | List of validation rules for the Links plugin configurations                          |
+// | List of validation rules for the Links plugin configurations              |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'configuration_validation.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -53,5 +53,10 @@ $_CONF_VALIDATE['xmlsitemap']['frequencies[polls]'] = array(
 $_CONF_VALIDATE['xmlsitemap']['frequencies[staticpages]'] = array(
     'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'), true)
 );
+
+// Ping target
+$_CONF_VALIDATE['xmlsitemap']['ping_google'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['xmlsitemap']['ping_bing']   = array('rule' => 'boolean');
+$_CONF_VALIDATE['xmlsitemap']['ping_ask']    = array('rule' => 'boolean');
 
 ?>

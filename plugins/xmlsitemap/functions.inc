@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | XMLSitemap Plugin 1.0                                                     |
+// | XMLSitemap Plugin 2.0                                                     |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the XMLSitemap |
 // | Plugin's PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2014 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -38,24 +38,21 @@
 * @package XMLSitemap
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== FALSE) {
+if (stripos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
 }
 
-/**
-* Language file Include
-*/
+// Language file Include
 $langfile = $_CONF['path'] . 'plugins/xmlsitemap/language/' . $_CONF['language'] . '.php';
 clearstatcache();
+
 if (file_exists($langfile)) {
     include_once $langfile;
 } else {
     include_once $_CONF['path'] . 'plugins/xmlsitemap/language/english.php';
 }
 
-/**
-* Load the plugin configuration
-*/
+// Load the plugin configuration
 $_XMLSMAP_CONF = XMLSMAP_loadConfig();
 
 // +---------------------------------------------------------------------------+
@@ -81,7 +78,7 @@ function plugin_chkVersion_xmlsitemap()
 /**
 * Upgrade the plugin
 *
-* @return   boolean TRUE (= success)
+* @return   boolean true (= success)
 */
 function plugin_upgrade_xmlsitemap()
 {
@@ -90,9 +87,10 @@ function plugin_upgrade_xmlsitemap()
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                                     "pi_name = 'xmlsitemap'");
     $code_version = plugin_chkVersion_xmlsitemap();
+
     if ($installed_version == $code_version) {
         // nothing to do
-        return TRUE;
+        return true;
     }
 
     require_once $_CONF['path'] . 'plugins/xmlsitemap/autoinstall.php';
@@ -103,14 +101,13 @@ function plugin_upgrade_xmlsitemap()
 
     $inst_parms = plugin_autoinstall_xmlsitemap('xmlsitemap');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
-    
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/sql/'
-                                . $_DB_dbms . '_updates.php';
-                                
-    require_once $_CONF['path'] . 'plugins/xmlsitemap/install_updates.php';                                   
+
+    require_once $_CONF['path'] . 'plugins/xmlsitemap/sql/' . $_DB_dbms . '_updates.php';
+    require_once $_CONF['path'] . 'plugins/xmlsitemap/install_updates.php';
 
     $current_version = $installed_version;
     $done = false;
+
     while (! $done) {
         switch ($current_version) {
         case '1.0.0':
@@ -122,10 +119,15 @@ function plugin_upgrade_xmlsitemap()
             }
 
             xmlsitemap_update_ConfValues_1_0_0();
-            
             xmlsitemap_update_ConfigSecurity_1_0_0();
 
             $current_version = '1.0.1';
+            break;
+
+        case '1.0.1':
+            xmlsitemap_update_ConfValues_1_0_1();
+
+            $current_version = '2.0.0';
             break;
 
         default:
@@ -136,7 +138,7 @@ function plugin_upgrade_xmlsitemap()
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'xmlsitemap'");
 
-    return TRUE;
+    return true;
 }
 
 /**
@@ -171,7 +173,7 @@ function plugin_autouninstall_xmlsitemap()
 /**
 * Loads config infor with config.class.php
 *
-* @return   mixed   XMLSitemap config array or FALSE
+* @return   mixed   XMLSitemap config array or false
 */
 function XMLSMAP_loadConfig()
 {
@@ -183,7 +185,7 @@ function XMLSMAP_loadConfig()
     if ($config->group_exists('xmlsitemap')) {
         return $config->get_config('xmlsitemap');
     } else {
-        return FALSE;
+        return false;
     }
 }
 
@@ -197,9 +199,9 @@ function XMLSMAP_loadConfig()
 */
 function XMLSMAP_esc($str)
 {
-    static $encoding = NULL;
+    static $encoding = null;
 
-    if ($encoding === NULL) {
+    if ($encoding === null) {
         $encoding = COM_getCharset();;
     }
 
@@ -218,23 +220,21 @@ function XMLSMAP_esc($str)
 * @param    string  $type       plugin name
 * @param    string  $include    plugin to add after install/enabled
 * @param    string  $exclude    plugin to remove after uninstall/disabled
-* @return   boolean             TRUE = success, FALSE = otherwise
+* @return   boolean             true = success, false = otherwise
 */
-function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
+function XMLSMAP_update($type = null, $include = null, $exclude = null)
 {
     global $_CONF, $_XMLSMAP_CONF;
 
-    if (($type !== NULL)
-            AND !in_array($type, $_XMLSMAP_CONF['types'])) {
+    if (($type !== null) && !in_array($type, $_XMLSMAP_CONF['types'])) {
         // Notified about content change, but from an irrelevant plugin, one
         // that doesn't implement 'plugin_getiteminfo_xxx' function.
-        return TRUE;
+        return true;
     }
 
-    if (($type !== NULL) &&
-            in_array($type, $_XMLSMAP_CONF['exclude'])) {
+    if (($type !== null) && in_array($type, $_XMLSMAP_CONF['exclude'])) {
         // plugin is on our exclude list, so ignore
-        return TRUE;
+        return true;
     }
 
     require_once $_CONF['path'] . 'plugins/xmlsitemap/xmlsitemap.class.php';
@@ -254,13 +254,13 @@ function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
 
     // Set types
     $types = array_diff($_XMLSMAP_CONF['types'], $_XMLSMAP_CONF['exclude']);
-    if ($include !== NULL) {
-        if (($index = array_search($exclude, $types)) === FALSE) {
+    if ($include !== null) {
+        if (($index = array_search($exclude, $types)) === false) {
             $types[] = $include;
         }
     }
-    if ($exclude !== NULL) {
-        if (($index = array_search($exclude, $types)) !== FALSE) {
+    if ($exclude !== null) {
+        if (($index = array_search($exclude, $types)) !== false) {
             unset($types[$index]);
         }
     }
@@ -277,7 +277,28 @@ function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
         $sitemap->setChangeFreq($type, $freq);
     }
 
-    return $sitemap->create();
+    $retval = $sitemap->create();
+
+    // Send ping to search engines
+    $pingTargets = array();
+
+    if (isset($_XMLSMAP_CONF['ping_google']) && $_XMLSMAP_CONF['ping_google']) {
+        $pingTargets[] = 'google';
+    }
+
+    if (isset($_XMLSMAP_CONF['ping_bing']) && $_XMLSMAP_CONF['ping_bing']) {
+        $pingTargets[] = 'bing';
+    }
+
+    if (isset($_XMLSMAP_CONF['ping_ask']) && $_XMLSMAP_CONF['ping_ask']) {
+        $pingTargets[] = 'ask';
+    }
+
+    if (count($pingTargets) > 0) {
+        $sitemap->sendPing($pingTargets);
+    }
+
+    return $retval;
 }
 
 /**
@@ -310,7 +331,7 @@ function plugin_itemdeleted_xmlsitemap($id, $type)
 /**
 * Callback function when this plugin is being enabled/disabled
 *
-* @param    boolean $enable     TRUE: we're being enabled, FALSE: disabled
+* @param    boolean $enable     true: we're being enabled, false: disabled
 * @return   void
 * @see      PLG_enableStateChange
 */
@@ -341,7 +362,7 @@ function XMLSITEMAP_checkChange($name)
 {
     global $_CONF, $_PLUGINS, $_TABLES, $_XMLSMAP_CONF;
 
-    if (count($_XMLSMAP_CONF[$name]) == 0) {
+    if (count($_XMLSMAP_CONF[$name]) === 0) {
         return;
     }
 
@@ -359,10 +380,10 @@ function XMLSITEMAP_checkChange($name)
                 break;
 
             case 'priorities':
-                if (!is_numeric($key) AND in_array($key, $enabled_plugins)) {
+                if (!is_numeric($key) && in_array($key, $enabled_plugins)) {
                     $value = (float) $value;
 
-                    if (($value < 0.0) OR ($value > 1.0)) {
+                    if (($value < 0.0) || ($value > 1.0)) {
                         $value = 0.5;
                     }
 
@@ -375,8 +396,8 @@ function XMLSITEMAP_checkChange($name)
                 $valid_change_freqs = array('always', 'hourly', 'daily',
                         'weekly', 'monthly', 'yearly', 'never');
 
-                if (!is_numeric($key) AND in_array($key, $enabled_plugins)
-                        AND in_array($value, $valid_change_freqs)) {
+                if (!is_numeric($key) && in_array($key, $enabled_plugins)
+                        && in_array($value, $valid_change_freqs)) {
                     $valids[$key] = $value;
                 }
                 break;
@@ -408,6 +429,7 @@ function XMLSITEMAP_checkChange($name)
         */
         $priorities  = array();
         $frequencies = array();
+
         foreach ($enabled_plugins as $plugin) {
             if (in_array($plugin, $_XMLSMAP_CONF['types'])) {
                 // plugin is active: ensure we have prio. + freq. entries
@@ -476,10 +498,10 @@ function plugin_configchange_xmlsitemap($group, $changes = array())
 {
     global $_XMLSMAP_CONF;
 
-    $need_update = FALSE;
+    $need_update = false;
 
     if ($group == 'xmlsitemap') {
-        if (is_array($changes) AND (count($changes) > 0)) {
+        if (is_array($changes) && (count($changes) > 0)) {
             /**
             * At this time, changes in configuration is not reflected in
             * $_XMLSMAP_CONF yet.  So we have to reload them from DB.
@@ -496,11 +518,11 @@ function plugin_configchange_xmlsitemap($group, $changes = array())
                 }
             }
 
-            $need_update = TRUE;
+            $need_update = true;
         }
     } else {
         if (in_array($group, $_XMLSMAP_CONF['types'])) {
-            $need_update = TRUE;
+            $need_update = true;
         }
     }
 
@@ -523,9 +545,9 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
 {
     global $_CONF, $_XMLSMAP_CONF;
 
-    $need_update = FALSE;
-    $include = NULL;
-    $exclude = NULL;
+    $need_update = false;
+    $include     = null;
+    $exclude     = null;
 
     switch ($status) {
         case 'installed':
@@ -543,13 +565,13 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
                 $config->set('types', $_XMLSMAP_CONF['types'], 'xmlsitemap');
                 $config->set('priorities', $_XMLSMAP_CONF['priorities'], 'xmlsitemap');
                 $config->set('frequencies', $_XMLSMAP_CONF['frequencies'], 'xmlsitemap');
-                $need_update = TRUE;
+                $need_update = true;
             }
 
             break;
 
         case 'uninstalled':
-            if (($pos = array_search($type, $_XMLSMAP_CONF['types'])) !== FALSE) {
+            if (($pos = array_search($type, $_XMLSMAP_CONF['types'])) !== false) {
 
                 // A plugin supporting plugin_getiteminfo_xxx() was uninstalled.
                 unset($_XMLSMAP_CONF['types'][$pos]);
@@ -562,7 +584,7 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
                 $config->set('types', $_XMLSMAP_CONF['types'], 'xmlsitemap');
                 $config->set('priorities', $_XMLSMAP_CONF['priorities'], 'xmlsitemap');
                 $config->set('frequencies', $_XMLSMAP_CONF['frequencies'], 'xmlsitemap');
-                $need_update = TRUE;
+                $need_update = true;
             }
             break;
 
@@ -585,14 +607,68 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
 
                 // A plugin supporting plugin_getiteminfo_xxx() was
                 // enabled/disabled.
-                $need_update = TRUE;
+                $need_update = true;
             }
             break;
     }
 
     if ($need_update) {
-        XMLSMAP_update(NULL, $include, $exclude);
+        XMLSMAP_update(null, $include, $exclude);
     }
+}
+
+/**
+* Provide URL of a documentation file
+*
+* @param    string  $file   documentation file being requested, e.g. 'config'
+* @return   mixed           URL or false when not available
+*
+*/
+function plugin_getdocumentationurl_xmlsitemap($file)
+{
+    global $_CONF;
+
+    static $docurl;
+
+    switch ($file) {
+    case 'index':
+    case 'config':
+        if (isset($docurl)) {
+            $retval = $docurl;
+        } else {
+            $doclang = COM_getLanguageName();
+            $docs = 'docs/' . $doclang . '/xmlsitemap.html';
+
+            if (file_exists($_CONF['path_html'] . $docs)) {
+                $retval = $_CONF['site_url'] . '/' . $docs;
+            } else {
+                $retval = $_CONF['site_url'] . '/docs/english/smlsitemap.html';
+            }
+
+            $docurl = $retval;
+        }
+        break;
+
+    default:
+        $retval = false;
+        break;
+    }
+
+    return $retval;
+}
+
+/**
+* Provides text for a Configuration tooltip
+*
+* @param    string  $id     Id of config value
+* @return   mixed           Text to use regular tooltip, NULL to use config 
+*                           tooltip hack, or empty string when not available
+*
+*/
+function plugin_getconfigtooltip_xmlsitemap($id)
+{   
+    // Use config tooltip hack where tooltip is read from the config documentation
+    return;
 }
 
 /**

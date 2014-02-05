@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | XMLSitemap Plugin 1.0                                                     |
+// | XMLSitemap Plugin 2.0                                                     |
 // +---------------------------------------------------------------------------+
 // | autoinstall.php                                                           |
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2014 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -52,11 +52,11 @@ function plugin_autoinstall_xmlsitemap($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.0.1',
+        'pi_version'      => '2.0.0',
         'pi_gl_version'   => '1.8.0',
         'pi_homepage'     => 'http://www.geeklog.net/',
     );
-    
+
     $groups = array(
         $pi_admin => 'Has full access to ' . $pi_display_name . ' features'
     );
@@ -87,19 +87,19 @@ function plugin_autoinstall_xmlsitemap($pi_name)
 * Load plugin configuration from database
 *
 * @param    string  $pi_name    Plugin name
-* @return   boolean             TRUE on success, otherwise FALSE
+* @return   boolean             true on success, otherwise false
 * @see      plugin_initconfig_xmlsitemap
 *
 */
 function plugin_load_configuration_xmlsitemap($pi_name)
 {
     global $_CONF;
-    
+
     $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
-    
+
     require_once $_CONF['path_system'] . 'classes/config.class.php';
     require_once $base_path . 'install_defaults.php';
-    
+
     return plugin_initconfig_xmlsitemap();
 }
 
@@ -107,7 +107,7 @@ function plugin_load_configuration_xmlsitemap($pi_name)
 * Check if the plugin is compatible with this Geeklog version
 *
 * @param    string  $pi_name    Plugin name
-* @return   boolean             TRUE: plugin compatible; FALSE: not compatible
+* @return   boolean             true: plugin compatible; false: not compatible
 *
 */
 function plugin_compatible_with_this_version_xmlsitemap($pi_name)
@@ -117,6 +117,7 @@ function plugin_compatible_with_this_version_xmlsitemap($pi_name)
     // check if we support the DBMS the site is running on
     $dbFile = $_CONF['path'] . 'plugins/' . $pi_name . '/sql/'
             . $_DB_dbms . '_install.php';
+
     if (! file_exists($dbFile)) {
         return false;
     }
@@ -128,14 +129,14 @@ function plugin_compatible_with_this_version_xmlsitemap($pi_name)
 * Perform post-install operations
 *
 * @param    string  $pi_name    Plugin name
-* @return   boolean             TRUE: plugin compatible; FALSE: not compatible
+* @return   boolean             true: plugin compatible; false: not compatible
 */
 function plugin_postinstall_xmlsitemap($pi_name)
 {
     global $_CONF, $_XMLSMAP_CONF;
-    
+
     require_once $_CONF['path'] . 'plugins/xmlsitemap/functions.inc';
-    
+
     // Create an XML sitemap for the first time
     return XMLSMAP_update();
 }

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | xmlsitemap.class.php                                                      |
 // |                                                                           |
 // | Google Sitemap Generator classes                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2013 by the following authors:                         |
+// | Copyright (C) 2009-2014 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO        - geeklog AT mystral-kk DOT net                 |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -61,6 +61,9 @@ if (stripos($_SERVER['PHP_SELF'], 'xmlsitemap.class.php') !== FALSE) {
 class SitemapXML
 {
     // Constants
+    const MAX_NUM_ENTRIES = 50000;
+    const MAX_FILE_SIZE   = 10485760;	// 1MB
+    const PING_INTERVAL   = 3600;		// 1 hour
     const LB = "\n";
 
     // Vars
@@ -162,7 +165,8 @@ class SitemapXML
     public function checkPriority($str)
     {
         $v = (float) $str;
-        return (($v >= 0.0) AND ($v <= 1.0)) ? $v : 0.5;
+
+        return (($v >= 0.0) && ($v <= 1.0)) ? $v : 0.5;
     }
 
     /**
@@ -174,6 +178,7 @@ class SitemapXML
     public function setPriority($type, $value)
     {
         $value = $this->checkPriority($value);
+
         if ($value != 0.5) {
             $this->_priorities[$type] = $value;
         }
@@ -203,6 +208,7 @@ class SitemapXML
     public function checkChangeFreq($str)
     {
         $str = strtolower($str);
+
         return in_array($str, $this->_valid_change_freqs) ? $str : '';
     }
 
@@ -216,6 +222,7 @@ class SitemapXML
     public function setChangeFreq($type, $value)
     {
         $value = $this->checkChangeFreq($value);
+
         if ($value != '') {
             $this->_change_freqs[$type] = $value;
         }
@@ -230,11 +237,7 @@ class SitemapXML
     */
     public function getChangeFreq($type)
     {
-        if (isset($this->_change_freqs[$type])) {
-            return $this->_change_freqs[$type];
-        } else {
-            return '';
-        }
+        return isset($this->_change_freqs[$type]) ? $this->_change_freqs[$type] : '';
     }
 
     /**
@@ -269,9 +272,9 @@ class SitemapXML
     */
     private function _normalizeURL($url)
     {
-        static $encoding = NULL;
+        static $encoding = null;
 
-        if ($encoding === NULL) {
+        if ($encoding === null) {
             $encoding = $this->getEncoding();
         }
 
@@ -303,6 +306,7 @@ class SitemapXML
 
                 if (array_key_exists($timezone, $GLOBALS['_DATE_TIMEZONE_DATA'])) {
                     $offset = $GLOBALS['_DATE_TIMEZONE_DATA'][$timezone]['offset'];
+
                     if ($offset >= 0) {
                         $retval = '+';
                     } else {
@@ -314,11 +318,11 @@ class SitemapXML
                     $min  = ($offset - 3600000 * $hour) % 60000;
                     $retval .= sprintf('%02d:%02d', $hour, $min);
                 } else {
-                    COM_errorLog(__CLASS__ . ': $_CONF[\'timezone\'] is wrong: ' . $_CONF['timezone']);
-                    $retval = FALSE;
+                    COM_errorLog(__METHOD__ . ': $_CONF[\'timezone\'] is wrong: ' . $_CONF['timezone']);
+                    $retval = false;
                 }
             } else {
-                $retval = FALSE;
+                $retval = false;
             }
         }
 
@@ -348,7 +352,7 @@ class SitemapXML
             } else if (is_callable('utf8_encode')) {
                 $str = utf8_encode($str);
             } else {
-                COM_errorLog(__CLASS__ .  ': No way to convert encoding to utf-8.');
+                COM_errorLog(__METHOD__ .  ': No way to convert encoding to utf-8.');
             }
         }
 
@@ -364,46 +368,52 @@ class SitemapXML
     */
     protected function _write($filename, $sitemap)
     {
-        $retval = FALSE;
+        $retval = false;
 
         if (!@touch($filename)) {
-            COM_errorLog(__CLASS__ . ': Cannot write the sitemap file: ' . $filename);
+            COM_errorLog(__METHOD__ . ': Cannot write into the sitemap file: ' . $filename);
             return $retval;
         }
 
-        // If file name is '*.gz', then we use gz* functions
+        // If file name is '*.gz', then we use Zlib functions
         $parts = pathinfo($filename);
-        if (isset($parts['extension'])
-         AND (strtolower($parts['extension']) == 'gz')
-         AND is_callable('gzopen')) {
+
+        if (isset($parts['extension']) &&
+                (strtolower($parts['extension']) === 'gz') &&
+                is_callable('gzopen')) {
             // Save as a gzipped file
-            $gp = gzopen($filename, 'r+b');
-            if ($gp === FALSE) {
-                COM_errorLog(__CLASS__ . ': Cannot create the sitemap file: ' . $filename);
+            $gp = @gzopen($filename, 'r+b');
+
+            if ($gp === false) {
+                COM_errorLog(__METHOD__ . ': Cannot create the sitemap file: ' . $filename);
             } else {
                 if (flock($gp, LOCK_EX)) {
                     ftruncate($gp, 0);
                     gzrewind($gp);
                     gzwrite($gp, $sitemap);
+					flock($gp, LOCK_UN);
                     gzclose($gp);
-                    $retval = TRUE;
+                    $retval = true;
                 } else {
-                    COM_errorLog(__CLASS__ . ': Cannot lock the sitemap file for writing: '  . $filename);
+                    COM_errorLog(__METHOD__ . ': Cannot lock the sitemap file for writing: '  . $filename);
                 }
             }
         } else {
-            $fp = fopen($filename, 'r+b');
-            if ($fp === FALSE) {
-                COM_errorLog(__CLASS__ . ': Cannot create the sitemap file: ' . $filename);
+            $fp = @fopen($filename, 'r+b');
+
+            if ($fp === false) {
+                COM_errorLog(__METHOD__ . ': Cannot create the sitemap file: ' . $filename);
             } else {
                 if (flock($fp, LOCK_EX)) {
                     ftruncate($fp, 0);
                     rewind($fp);
                     fwrite($fp, $sitemap);
+					fflush($fp);
+					flock($fp, LOCK_UN);
                     fclose($fp);
-                    $retval = TRUE;
+                    $retval = true;
                 } else {
-                    COM_errorLog(__CLASS__ . ': Cannot lock the sitemap file for writing: ' . $filename);
+                    COM_errorLog(__METHOD__ . ': Cannot lock the sitemap file for writing: ' . $filename);
                 }
             }
         }
@@ -427,14 +437,14 @@ class SitemapXML
         $options = array();
 
         if (count($types) === 0) {
-            COM_errorLog(__CLASS__ . ': No content type is specified.');
-            return FALSE;
+            COM_errorLog(__METHOD__ . ': No content type is specified.');
+            return false;
         }
 
         foreach ($types as $type) {
             $result = PLG_getItemInfo($type, '*', $what, 1, $options);
 
-            if (is_array($result) AND (count($result) > 0)) {
+            if (is_array($result) && (count($result) > 0)) {
                 foreach ($result as $entry) {
                     if (isset($entry['url'])) {
                         $url = $this->_normalizeURL($entry['url']);
@@ -453,6 +463,7 @@ class SitemapXML
 
                     // Frequency of change
                     $change_freq = $this->getChangeFreq($type);
+
                     if ($change_freq != '') {
                         $sitemap .= '    <changefreq>' . $change_freq
                                  .  '</changefreq>' . self::LB;
@@ -465,23 +476,26 @@ class SitemapXML
                         // Add the time part for frequently changed items
                         if (in_array($change_freq, array('always', 'hourly', 'daily'))) {
                             $timezone = $this->_getTimezoneStr();
-                            if ($timezone !== FALSE) {
+
+                            if ($timezone !== false) {
                                 $date .= 'T' . date('H:i:s', $entry['date-modified'])
                                       .  $timezone;
                             }
                         }
+
                         $sitemap .= '    <lastmod>' . $date . '</lastmod>' . self::LB;
                     }
 
                     // Priority
                     $priority = $this->getPriority($type);
+
                     if ($priority != 0.5) {
                         $sitemap .= '    <priority>' . (string) $priority
                                  .  '</priority>' . self::LB;
                     }
 
                     $sitemap .= '  </url>' . self::LB;
-                    $this->_num_entries ++;
+                    $this->_num_entries++;
                 }
             }
         }
@@ -493,24 +507,24 @@ class SitemapXML
                      . $sitemap
                      . '</urlset>' . self::LB;
         } else {
-            return TRUE;
+            return true;
         }
 
         // Check the number of items and the size of the sitemap file
-        if ($this->_num_entries > 50000) {
-            COM_errorLog(__CLASS__ . ': The number of items in the sitemap file must be 50,000 or smaller.');
-            return FALSE;
-        } else if (strlen($sitemap) > 10485760) {
-            COM_errorLog(__CLASS__ . ': The size of the sitemap file must be 1048,5760 bytes (= 1MB) or smaller.');
-            return FALSE;
+        if ($this->_num_entries > self::MAX_NUM_ENTRIES) {
+            COM_errorLog(__METHOD__ . ': The number of items in the sitemap file must be ' . self::MAX_NUM_ENTRIES . ' or smaller.');
+            return false;
+        } else if (strlen($sitemap) > self::MAX_FILE_SIZE) {
+            COM_errorLog(__METHOD__ . ': The size of the sitemap file must be ' . self::MAX_FILE_SIZE . ' bytes or smaller.');
+            return false;
         }
 
         // Write the sitemap into file(s)
-        list($filename, $mobile_filename) = $this->getFileNames();
+        list ($filename, $mobile_filename) = $this->getFileNames();
 
         if ($filename != '') {
             if (!$this->_write($filename, $sitemap)) {
-                return FALSE;
+                return false;
             }
         }
 
@@ -528,11 +542,117 @@ class SitemapXML
             );
 
             if (!$this->_write($mobile_filename, $sitemap)) {
-                return FALSE;
+                return false;
             }
         }
 
-        return TRUE;
+        return true;
+    }
+    
+    /**
+    * Sends a ping to search engines
+    *
+    * @param    array of string    $destinations    an array of search engine
+    *                                               types.  Currently supported are
+    *                                               'google', 'bing' and 'ask'.
+    * @return   int                the number of successful pings
+    */
+    public sendPing(array $destinations)
+    {
+        global $_CONF, $_TABLES;
+
+        // Checks if arguments are good
+        $destinations = array_unique($destinations);
+        list ($sitemap, ) = $this->getFileNames();
+
+        if ($sitemap == '') {
+            COM_errorLog(__METHOD__ . ': sitemap file name is not specified.');
+            return false;
+        } else if (count($destinations) === 0) {
+            COM_errorLog(__METHOD__ . ': target URL is not specified.');
+            return false;
+        }
+
+        // Checks for the record of previous pings
+        $hasRecord = false;
+        $sql = "SELECT value FROM {$_TABLES['vars']} WHERE (name = 'xmlsitemap.pings') ";
+        $result = DB_query($sql);
+
+        if (($result !== false) && (DB_numRows($result) == 1)) {
+            $hasRecord = true;
+            list ($A) = DB_getchArray($result);
+            $records  = json_decode($A);
+        } else {
+            $records = array();
+        ]
+
+        $success = 0;
+        $sitemap = $_CONF['site_url'] . '/' . $sitemap;
+        require_once 'HTTP/Request.php';
+
+        foreach ($destinations as $dest) {
+            $dest = strtolower($dest);
+
+            // Checks if there was a record of a previous ping
+            if (isset($records[$dest]) &&
+                    ($records[$dest] + self::PING_INTERVAL > time())) {
+                continue;
+            }
+
+            switch ($dest) {
+                case 'google':
+                    $url = 'http://www.google.com/webmasters/tools/ping?sitemap='
+                         . urlencode($sitemap);
+                    break;
+
+                case 'bing':
+                    $url = 'http://www.bing.com/webmaster/ping.aspx?sitemap='
+                         . urlencode($sitemap);
+                    break;
+
+                case 'ask':
+                    $url = 'http://submissions.ask.com/ping?sitemap='
+                         . urlencode($sitemap);
+                    break;
+
+                default:
+                    COM_errorLog(__METHOD__ . ': unknown target "' . $dest . '"is specified.');
+                    continue;
+            }
+
+            // Sends a ping to the API of a search engine
+            $req = new HTTP_Request($url);
+            $req->setMethod(HTTP_REQUEST_METHOD_GET);
+            $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
+            $response = $req->sendRequest();
+
+            if (PEAR::isError($response)) {
+                COM_errorLog(__METHOD__ . ': HTTP error: ' . $response->getMessage());
+            } else if ($req->getResponseCode() != 200) {
+                COM_errorLog(__METHOD__ . ': HTTP error code: ' . $req->getResponseCode());
+            } else {
+                $success++;
+                $records[$dest] = time();
+            }
+        }
+
+        // Writes back a record of pings into database
+        $records = json_encode($records);
+        $records = DB_escapeString($records);
+
+        if ($hasRecord) {
+            $sql = "UPDATE {$_TABLES['vars']} SET value = '{$records}' "
+                 . "WHERE (name = 'xmlsitemap.pings') ";
+        } else {
+            $sql = "INSERT INTO {$_TABLES['vars']} (name, value) "
+                 . "VALUES ('xmlsitemap.pings', '{$records}') ";
+        }
+
+        if (DB_query($sql) === false) {
+            COM_errorLog(__METHOD__ . ': cannot save ping records into database');
+        }
+
+        return (count($destinations) === $success);
     }
 }   // End of SitemapXML class
 

@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Geeklog Documentation - XMLSitemap Plugin</title>
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+</head>
+
+<body>
+<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
+<div class="menu"><a href="index.html">Geeklog Documentation</a> - XMLSitemap Plugin</div>
+
+<h1>XMLSitemap Plugin</h1>
+
+<p>The purpose of the XMLSitemap Plugin is to create <a href="http://www.sitemaps.org/">XML sitemap files</a> as supported by all major search engines.  Such a sitemap file is meant for use by search engines to make it easier to find all the content available on your site.  Basically, a sitemape.xml file is a list of the URLs of all content pages on your website.  For more information, see <a href="http://www.sitemaps.org/">sitemaps.org</a>.</p>
+
+<h2><a name="configuration">Configuration</a></h2>
+
+<p>The configuration of the XMLSitemap plugin can be changed from the Configuration admin panel:</p>
+
+<h3><a name="main">XMLSitemap Main Settings</a></h3>
+
+<table>
+<tr><th style="width: 25%;">Variable</th>
+    <th style="width: 25%;">Default Value</th>
+    <th style="width: 50%;">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_sitemap_file">sitemap_file</a></td>
+  <td>sitemap.xml</td>
+  <td>The file name of a <i>normal</i> XML sitemap file.  This file has to be located in the <strong>public_html</strong> directory (where lib-common.php resides) and be writable from the Web server.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_mobile_sitemap_file">mobile_sitemap_file</a></td>
+  <td>(empty)</td>
+  <td>The file name of an XML sitemap file for contents optimized for mobile users.  This file has to be located in the <strong>public_html</strong> directory (where lib-common.php resides) and be writable from the Web server.</td>
+</tr>
+<tr>
+  <td><a name="desc_types">types</a></td>
+  <td>article, calendar, polls, staticpages</td>
+  <td>Types of contents you would like to set in the XML sitemap file(s).</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_exclude">exclude</a></td>
+  <td>links</td>
+  <td>Types of contents you would like to <strong>exclude</strong> from the XML sitemap file(s).</td>
+</tr>
+</table>
+
+<h3><a name="priorities">Priorities</a></h3>
+
+<table>
+<tr><th style="width: 25%;">Variable</th>
+    <th style="width: 25%;">Default Value</th>
+    <th style="width: 50%;">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_priorities">priorities</a></td>
+  <td>0.5</td>
+  <td>The priority of some contents relative to other contents.  Valid values range from 0.0 (lowest) to 1.0 (highest).  This value will be used by search engine crawlers just to decide what URLs you think more important, so specifying 1.0 to all types of contents will be meaningless.</td>
+</tr>
+</table>
+
+<h3><a name="frequencies">Frequencies</a></h3>
+
+<table>
+<tr><th style="width: 25%;">Variable</th>
+    <th style="width: 25%;">Default Value</th>
+    <th style="width: 50%;">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_frequencies">frequencies</a></td>
+  <td>'weekly' for staticpages, 'daily' for others</td>
+  <td>The frequency with which some type of contents are likely to be updated.  Valid values include 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', and 'never'.  This value will be used by search engine crawlers just to decide how often they should check the contents.  However, specifying 'always' doesn't mean that search engine crawlers will surely visit your site.  So, specifiying 'daily' or 'weekly' would be better in most cases.</td>
+</tr>
+</table>
+
+<h3><a name="ping">Ping</a></h3>
+
+<table>
+<tr><th style="width: 25%;">Variable</th>
+    <th style="width: 25%;">Default Value</th>
+    <th style="width: 50%;">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_ping_google">ping_google</a></td>
+  <td>True</td>
+  <td>If you set this to true, the XMLSitemap plugin will automatically inform Google crawlers when you update contents.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_ping_bing">ping_bing</a></td>
+  <td>True</td>
+  <td>If you set this to true, the XMLSitemap plugin will automatically inform Bing crawlers when you update contents.</td>
+</tr>
+<tr>
+  <td><a name="desc_ping_ask">ping_ask</a></td>
+  <td>True</td>
+  <td>If you set this to true, the XMLSitemap plugin will automatically inform Ask crawlers when you update contents.</td>
+</tr>
+</table>
+
+<div class="footer">
+    <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br />
+    All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
+</div>
+
+</body>
+</html>
