@@ -557,7 +557,7 @@ class SitemapXML
     *                                               'google', 'bing' and 'ask'.
     * @return   int                the number of successful pings
     */
-    public sendPing(array $destinations)
+    public function sendPing(array $destinations)
     {
         global $_CONF, $_TABLES;
 
