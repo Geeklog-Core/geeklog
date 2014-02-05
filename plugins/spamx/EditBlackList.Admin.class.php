@@ -55,12 +55,12 @@ class EditBlackList extends BaseAdmin
                     break;
 
                 case $LANG_SX00['addentry']:
-                    $this->addEntry($entry);
+                    $this->addEntry($entry, true);
                     break;
 
                 case $LANG_SX00['addcen']:
                     foreach ($_CONF['censorlist'] as $entry) {
-                        $this->addEntry($entry);
+                        $this->addEntry($entry, true);
                     }
 
                     break;
