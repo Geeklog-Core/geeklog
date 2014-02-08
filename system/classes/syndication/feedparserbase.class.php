@@ -1,309 +1,294 @@
 <?php
-  /****************************************************************************/
-  /* FeedParserBase.class.php                                                 */
-  /*                                                                          */
-  /****************************************************************************/
-  /* Copyright (c) 2004 Michael Jervis (mike@fuckingbrit.com)                 */
-  /*                                                                          */
-  /* This software is licensed under the terms of the ZLIB License:           */
-  /*                                                                          */
-  /* This software is provided 'as-is', without any express or implied        */
-  /* warranty. In no event will the authors be held liable for any damages    */
-  /* arising from the use of this software.                                   */
-  /*                                                                          */
-  /* Permission is granted to anyone to use this software for any purpose,    */
-  /* including commercial applications, and to alter it and redistribute it   */
-  /* freely, subject to the following restrictions:                           */
-  /*                                                                          */
-  /*  1. The origin of this software must not be misrepresented; you must not */
-  /*     claim that you wrote the original software. If you use this software */
-  /*     in a product, an acknowledgment in the product documentation would be*/
-  /*     appreciated but is not required.                                     */
-  /*                                                                          */
-  /*  2. Altered source versions must be plainly marked as such, and must not */
-  /*     be misrepresented as being the original software.                    */
-  /*                                                                          */
-  /*  3. This notice may not be removed or altered from any source            */
-  /*     distribution.                                                        */
-  /****************************************************************************/
 
-  /**
-   * FeedParserBase provides an abstract ancestor class for feed parsers.
-   *
-   * @author Michael Jervis (mike@fuckingbrit.com)
-   * @copyright Michael Jervis 2004
-   * @abstract
-   */
-  class FeedParserBase
-  {
-    /**
-      * An array of items.
-      *
-      * This holds all the news from the source. This should be an array of
-      * associative arrays. Each item will have:
-      * title - The title
-      * URI - Link to the full story
-      * date - The date of the article
-      * Optional (pre-defined) items are:
-      * summary - Short version of article
-      * text - full version
-      * author - Who wrote the article
-      */
-    var $articles;
+/****************************************************************************/
+/* FeedParserBase.class.php                                                 */
+/*                                                                          */
+/****************************************************************************/
+/* Copyright (c) 2004 Michael Jervis (mike@fuckingbrit.com)                 */
+/*                                                                          */
+/* This software is licensed under the terms of the ZLIB License:           */
+/*                                                                          */
+/* This software is provided 'as-is', without any express or implied        */
+/* warranty. In no event will the authors be held liable for any damages    */
+/* arising from the use of this software.                                   */
+/*                                                                          */
+/* Permission is granted to anyone to use this software for any purpose,    */
+/* including commercial applications, and to alter it and redistribute it   */
+/* freely, subject to the following restrictions:                           */
+/*                                                                          */
+/*  1. The origin of this software must not be misrepresented; you must not */
+/*     claim that you wrote the original software. If you use this software */
+/*     in a product, an acknowledgment in the product documentation would be*/
+/*     appreciated but is not required.                                     */
+/*                                                                          */
+/*  2. Altered source versions must be plainly marked as such, and must not */
+/*     be misrepresented as being the original software.                    */
+/*                                                                          */
+/*  3. This notice may not be removed or altered from any source            */
+/*     distribution.                                                        */
+/****************************************************************************/
+
+/**
+* FeedParserBase provides an abstract ancestor class for feed parsers.
+*
+* @author Michael Jervis (mike@fuckingbrit.com)
+* @copyright Michael Jervis 2004
+* @abstract
+*/
+abstract class FeedParserBase
+{
+    const LB  = "\n";
+    const LB2 = "\n\n";
 
     /**
-      * Encoding tag for the XML declaration
-      */
-    var $encoding;
+    * An array of items.
+    *
+    * This holds all the news from the source. This should be an array of
+    * associative arrays. Each item will have:
+    * title - The title
+    * URI - Link to the full story
+    * date - The date of the article
+    * Optional (pre-defined) items are:
+    * summary - Short version of article
+    * text - full version
+    * author - Who wrote the article
+    */
+    public $articles;
 
     /**
-      * Language for the feed
-      */
-    var $lang;
+    * Encoding tag for the XML declaration
+    */
+    public $encoding;
 
     /**
-      * Title for the feed
-      */
-    var $title;
+    * Language for the feed
+    */
+    public $lang;
 
     /**
-      * The description of the feed
-      */
-    var $description;
+    * Title for the feed
+    */
+    public $title;
 
     /**
-      * The URL of the feed
-      */
-    var $url;
+    * The description of the feed
+    */
+    public $description;
 
     /**
-      * URL of the site
-      */
-    var $sitelink;
+    * The URL of the feed
+    */
+    public $url;
 
     /**
-      * Site contact
-      */
-    var $sitecontact;
+    * URL of the site
+    */
+    public $sitelink;
 
     /**
-      * copyright tag:
-      */
-    var $copyright;
+    * Site contact
+    */
+    public $sitecontact;
 
     /**
-      * system powering the feed
-      */
-    var $system;
+    * copyright tag:
+    */
+    public $copyright;
 
     /**
-      * Image to link to the feed.
-      */
-    var $feedlogo;
+    * system powering the feed
+    */
+    public $system;
 
     /**
-      * Additional namespaces to add.
-      */
-    var $namespaces;
+    * Image to link to the feed.
+    */
+    public $feedlogo;
 
     /**
-      * Additional tags to add.
-      */
-    var $extensions;
+    * Additional namespaces to add.
+    */
+    public $namespaces;
 
     /**
-      * Stuff for parsing XML
-      */
-    var $_currentTag;
+    * Additional tags to add.
+    */
+    public $extensions;
 
-    function FeedParserBase()
+    /**
+    * Stuff for parsing XML
+    */
+    protected $_currentTag;
+
+    /**
+    * @var boolean
+    */
+    protected $_inItem;
+
+    /**
+    * @var array
+    */
+    protected $_currentItem;
+
+    public function __construct()
     {
-      $this->encoding = 'iso-8859-1';
-      $title = 'Killer Feed System Feed';
-      $this->lang = 'en-gb';
-      $currentTag = '';
-      $articles = array();
+        $this->encoding     = 'iso-8859-1';
+        $this->title        = 'Killer Feed System Feed';
+        $this->lang         = 'en-gb';
+        $this->namespaces   = array();
+        $this->extensions   = array();
+        $this->articles     = array();
+        $this->currentTag   = '';
+        $this->_inItem      = false;
+        $this->_currentItem = array();
     }
 
     /**
-      * Create a file for the stream
-      *
-      * Writes the $items content to the file supplied in the format we have
-      * specified. Uses the (abstract) function formatArticle to return XML
-      * for an article.
-      *
-      * @param string $fileName The fully qualified path to the file to create.
-      * @param int $limit (optional) max number of items to write.
-      */
-    function createFeed( $fileName, $limit='' )
+    * Make sure a string is safe to be chardata in an xml element
+    *
+    * @param    string     $string          the string to escape.
+    * @param    boolean    $doubleEncode    whether to encode HTML entities
+    */
+    protected function _safeXML($string, $doubleEncode = true)
     {
-      /* Start the XML Feed formating */
-      $xml = $this->_feedHeader();
+        $retval = @htmlspecialchars($string, ENT_QUOTES, $this->encoding);
 
-      /* Start with a limit of the size of the array, then, if we have a
-       * specific max length use that unless it's bigger than our count */
-      $count = count( $this->articles );
-      if( $limit )
-      {
-        if( $limit < $count )
-        {
-          $count = $limit;
+        if (!$doubleEncode) {
+            $retval = str_replace('&amp;amp;', '&amp;', $retval);
         }
-      }
 
-      /* Put the first $count items into the xml, using formatArticle */
-      for( $i = 0; $i < $count; $i++ )
-      {
-        $xml .= $this->_formatArticle( $this->articles[$i] );
-      }
-
-      /* Close off the feed */
-      $xml .= $this->_feedFooter();
-      /* And write it to file */
-      return $this->_writeFile( $fileName, $xml );
+        return $retval;
     }
 
-    function _writeFile( $fileName, $data )
+    protected function _writeFile($fileName, $data)
     {
-      if( $fp = @fopen( $fileName, 'w' ) )
-      {
-        fputs( $fp, $data );
-        fclose( $fp );
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    /**
-      * Format an article into feed specific XML.
-      *
-      * Takes an associative article array and turns it into an XML definition
-      * of an article.
-      * @param array $article ASsociative array describing an article.
-      */
-    function _formatArticle( $article )
-    {
-      $xml = "<article>\n";
-      while( list($key, $value) = each( $article ) )
-      {
-        if($key != 'extensions')
-        {
-            $value = $this->_safeXML( $value );
-            $xml .= "<$key>$value</$key>\n>";
+        if (($fp = @fopen($fileName, 'w')) !== false) {
+            fputs($fp, $data);
+            fclose($fp);
+            return true;
         } else {
-            if(is_array($value))
-            {
-                foreach( $value as $ext )
-                {
-                    $xml .= $ext."\n";
-                }
-            } else {
-                $xml .= $value."\n";
-            }
+            return false;
+        }
+    }
+
+    /**
+    * Create a file for the stream
+    *
+    * Writes the $items content to the file supplied in the format we have
+    * specified. Uses the (abstract) function formatArticle to return XML
+    * for an article.
+    *
+    * @param    string    $fileName    The fully qualified path to the file to create.
+    * @param    int       $limit       (optional) max number of items to write.
+    */
+    public function createFeed($fileName, $limit = '')
+    {
+        // Start the XML Feed formating
+        $xml = $this->_feedHeader();
+
+        // Start with a limit of the size of the array, then, if we have a
+        // specific max length use that unless it's bigger than our count
+        $count = count($this->articles);
+
+        if ($limit && ($limit < $count)) {
+            $count = $limit;
         }
 
-      }
-      $xml .= "</article>\n";
-      return $xml;
+        // Put the first $count items into the xml, using formatArticle
+        for ($i = 0; $i < $count; $i++) {
+            $xml .= $this->_formatArticle($this->articles[$i]);
+        }
+
+        // Close off the feed
+        $xml .= $this->_feedFooter();
+
+        // And write it to file
+        return $this->_writeFile($fileName, $xml);
     }
 
     /**
-      * Make sure a string is safe to be chardata in an xml element
-      *
-      * @param string $string the string to escape.
-      */
-    function _safeXML( $string )
+    * Return the formatted start of a feed.
+    *
+    * This will start the xml and create header information about the feed
+    * itself.
+    */
+    protected function _feedHeader()
     {
-      return htmlspecialchars($string);
+        $xml = '<?xml version="1.0" encoding="' . $this->encoding . '"?>' . self::LB;
+
+        return $xml;
     }
 
     /**
-      * Return the formatted start of a feed.
-      *
-      * This will start the xml and create header information about the feed
-      * itself.
-      */
-    function _feedHeader()
+    * Inject extending tags into the feed header, if needed.
+    */
+    protected function _injectExtendingTags()
     {
-      $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
+        $xml = '';
 
-      $xml .= '<feed'.$this->_injectNamespaces().">\n";
-
-      $xml .= "<title>{$this->title}</title>\n";
-      $xml .= $this->_injectExtendingTags();
-      return $xml;
-    }
-    
-    /**
-      * Inject extending tags into the feed header, if needed.
-      */
-    function _injectExtendingTags()
-    {
-      $xml = '';
-      if( is_array( $this->extensions ) )
-      {
-        $this->extensions = array_unique($this->extensions);
-        $xml .= implode("\n", $this->extensions) . "\n";
-      }
-      return $xml;
-    }
-
-    /**
-      * Inject XMLNS items into the feed master element, if needed.
-      */
-    function _injectNamespaces()
-    {
-        $xml = ' ';
-        if( is_array($this->namespaces) )
-        {
-            $this->namespaces = array_unique($this->namespaces);
-            $xml .= implode(' ', $this->namespaces);
+        if (count($this->extensions) > 0) {
+            $this->extensions = array_unique($this->extensions);
+            $xml = ' ' . implode(self::LB, $this->extensions) . self::LB;
         }
 
         return $xml;
     }
 
     /**
-      * Return the formatted end of a feed.
-      *
-      * just closes things off nicely.
-      */
-    function _feedFooter()
+    * Inject XMLNS items into the feed master element, if needed.
+    */
+    protected function _injectNamespaces()
     {
-      $xml = '</feed>';
-      return $xml;
+        $xml = ' ';
+
+        if (count($this->namespaces) > 0) {
+            $this->namespaces = array_unique($this->namespaces);
+            $xml = implode(' ', $this->namespaces);
+        }
+
+        return $xml;
     }
 
     /**
-      * Handle the begining of an XML element
-      *
-      * This is called from the parserfactory once the type of data has been
-      * determined. Standard XML_PARSER element handler.
-      *
-      * @author Michael Jervis (mike@fuckingbrit.com)
-      * @copyright Michael Jervis 2004
-      */
-    function startElement($parser, $name, $attributes)
-    {
-    }
+    * Format an article into feed specific XML.
+    *
+    * Takes an associative article array and turns it into an XML definition
+    * of an article.
+    * @param array $article ASsociative array describing an article.
+    */
+    abstract protected function _formatArticle(array $article);
 
     /**
-      * Handle the close of an XML element
-      *
-      * Called by the parserfactory during parsing.
-      */
-    function endElement($parser, $name)
-    {
-    }
+    * Return the formatted end of a feed.
+    *
+    * just closes things off nicely.
+    */
+    abstract protected function _feedFooter();
 
     /**
-      * Handles character data.
-      *
-      * Called by the parserfactory during parsing.
-      */
-    function charData($parser, $data)
-    {
-    }
-  }
+    * Handle the begining of an XML element
+    *
+    * This is called from the parserfactory once the type of data has been
+    * determined. Standard XML_PARSER element handler.
+    *
+    * @author Michael Jervis (mike@fuckingbrit.com)
+    * @copyright Michael Jervis 2004
+    */
+    abstract public function startElement($parser, $name, $attributes);
+
+    /**
+    * Handle the close of an XML element
+    *
+    * Called by the parserfactory during parsing.
+    */
+    abstract public function endElement($parser, $name);
+
+    /**
+    * Handles character data.
+    *
+    * Called by the parserfactory during parsing.
+    */
+    abstract public function charData($parser, $data);
+}
+
 ?>
