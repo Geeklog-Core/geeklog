@@ -584,7 +584,7 @@ class SitemapXML
             $records  = json_decode($A);
         } else {
             $records = array();
-        ]
+        }
 
         $success = 0;
         $sitemap = $_CONF['site_url'] . '/' . $sitemap;
