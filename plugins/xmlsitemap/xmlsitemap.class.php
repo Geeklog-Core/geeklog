@@ -580,7 +580,7 @@ class SitemapXML
 
         if (($result !== false) && (DB_numRows($result) == 1)) {
             $hasRecord = true;
-            list ($A) = DB_getchArray($result);
+            list ($A) = DB_fetchArray($result);
             $records  = json_decode($A);
         } else {
             $records = array();
