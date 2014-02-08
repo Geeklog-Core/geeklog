@@ -361,7 +361,7 @@ input.search {
 
 #exclude_topic .checkboxes-list li,
 #boxesblock .checkboxes-list li {
-  display: inline;
+/*  display: inline;	*/
   margin-left: 0.5em; /* rtl */
 }
 

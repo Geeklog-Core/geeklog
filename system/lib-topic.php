@@ -365,17 +365,19 @@ function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific
             // Make sure to show topics for proper language and access level only
             if ($archive_tid != $id && $_TOPICS[$count_topic]['access'] > 0 && (($lang_id == '') || ($lang_id != '' && $_TOPICS[$count_topic]['language_id'] == $lang_id))) {
                 $title =  $_TOPICS[$count_topic]['title'];
-                
-                $branch_spaces = "";
-                for ($branch_count = $start_topic; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
-                    $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
-                }
-                $retval .= '<li>' . $branch_spaces . '<input type="checkbox" name="' . $fieldname . '[]" value="' . $id . '"';
-                
+                $retval .= '<li>'
+                        .  str_repeat(
+                                '&nbsp;&nbsp;&nbsp;',
+                                $_TOPICS[$count_topic]['branch_level'] - $start_topic + 1
+                           )
+                        .  '<input type="checkbox" id="id-' . $id . '" name="'
+                        .  $fieldname . '[]" value="' . $id . '"';
+
                 if (in_array($id, $selected_ids)) {
                     $retval .= ' checked="checked"';
                 }
-                $retval .= XHTML . '><span>' . $title . '</span></li>' . LB;
+
+                $retval .= XHTML . '><label for="id-' . $id . '">' . $title . '</label></li>' . LB;
             } else {
                 // Cannot pick child as parent so skip
                 $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];            

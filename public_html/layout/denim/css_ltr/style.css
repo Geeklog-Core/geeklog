@@ -2267,7 +2267,7 @@ span.warning  em { color: #CE5C00; }
 
 #exclude_topic > .checkboxes-list > li,
 #boxesblock > .checkboxes-list > li {
-  display: inline;
+/*  display: inline;	*/
   margin-right: 0.5em; /* rtl */
 }
 

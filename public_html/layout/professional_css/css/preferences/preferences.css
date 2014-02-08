@@ -48,7 +48,7 @@ form#profile ul.checkboxes-list {
 }
 
 form#profile ul.checkboxes-list li {
-  display: inline;
+/*  display: inline;	*/
   margin-right: 0.5em;
 }
 
