@@ -34,7 +34,7 @@
 // +---------------------------------------------------------------------------+
 
 // Prevent PHP from reporting uninitialized variables
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR);
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -8204,6 +8204,25 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
         return;
     }
 
+    // Table of error code and error type
+    $errorTypes = array(
+            1 => 'E_ERROR',
+            2 => 'E_WARNING',
+            4 => 'E_PARSE',
+            8 => 'E_NOTICE',
+           16 => 'E_CORE_ERROR',
+           32 => 'E_CORE_WARNING',
+           64 => 'E_COMPILE_ERROR',
+          128 => 'E_COMPILE_WARNING',
+          256 => 'E_USER_ERROR',
+          512 => 'E_USER_WARNING',
+         1024 => 'E_USER_NOTICE',
+         2048 => 'E_STRICT',			// Since PHP-5.0.0
+         4096 => 'E_RECOVERABLE_ERROR',	// Since PHP-5.2.0
+         8192 => 'E_DEPRECATED',		// Since PHP-5.3.0
+        16384 => 'E_USER_DEPRECATED',	// Since PHP-5.3.0
+    );
+
     /*
      * If we have a root user, then output detailed error message:
      */
@@ -8230,7 +8249,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             } else {
                 echo '<p>(This text is only displayed to users in the group \'Root\')</p>';
             }
-            echo "<p>$errno - $errstr @ $errfile line $errline</p>";
+            echo "<p>$errorTypes[$errno]($errno) - $errstr @ $errfile line $errline</p>";
 
             if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
                 if ('force' != ''.$_CONF['rootdebug']) {
@@ -8304,7 +8323,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     }
 
     // if we do not throw the error back to an admin, still log it in the error.log
-    COM_errorLog("$errno - $errstr @ $errfile line $errline", 1);
+    COM_errorLog("$errorTypes[$errno]($errno) - $errstr @ $errfile line $errline", 1);
 
     header('HTTP/1.1 500 Internal Server Error');
     header('Status: 500 Internal Server Error');
