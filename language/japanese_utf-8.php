@@ -1825,9 +1825,9 @@ $LANG_ADMIN = array(
 # database.
 
 $LANG_commentcodes = array(
-    0 => 'コメントを有効',
-    -1 => 'コメントを無効',
-    1 => 'コメントを停止'
+    0 => 'コメント機能を有効にする',
+    -1 => 'コメント機能を無効にする',
+    1 => 'コメントの受付を停止する(表示のみ)'
 );
 
 $LANG_commentmodes = array(
@@ -2109,7 +2109,7 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => 'コメントの投稿間隔の制限',
     'comment_limit' => '表示件数',
     'comment_mode' => '表示モード',
-    'comment_order' => 'Comment Order',
+    'comment_order' => '表示する順序',
     'comment_code' => '新規作成時のデフォルト',
     'comment_edit' => 'コメントの編集を許可する',
     'comment_edittime' => 'コメントの編集時間(秒)',
@@ -2148,7 +2148,7 @@ $LANG_confignames['Core'] = array(
     'disable_webservices' => 'Webサービスを無効にする',
     'restrict_webservices' => 'Webサービスを制限する',
     'article_comment_close_enabled' => '自動的にコメントの受付を停止(デフォルト)',
-    'article_comment_close_days' => '停止までの日数(デフォルト)',
+    'article_comment_close_days' => '受付停止までの日数(デフォルト)',
     'comment_close_rec_stories' => 'コメント可能な記事の最大数',
     'allow_reply_notifications' => '返信のメール通知を許可する',
     'comment_on_same_page' => '同じページでコメントを投稿する',
@@ -2332,7 +2332,7 @@ $LANG_configselects['Core'] = array(
     14 => array('日曜日' => 'Sun', '月曜日' => 'Mon'),
     15 => array('番号順' => 'sortnum', 'アルファベット順' => 'alpha'),
     16 => array('いいえ' => 0, '検索オプションのみ要求' => 1, 'すべての検索機能で要求' => 2),
-    17 => array('許可する' => 0, '許可しない' => -1),
+    17 => array('コメント機能を有効にする' => 0, 'コメント機能を無効にする' => -1),
     18 => array('チェックしない' => 0, 'チェックする(完全一致)' => 1, 'チェックする(前方一致)' => 2, 'チェックする(部分一致)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('完全一致' => 'phrase', 'すべてのキーワードを含む' => 'all', 'いずれかのキーワードを含む' => 'any'),
@@ -2345,8 +2345,8 @@ $LANG_configselects['Core'] = array(
     27 => array('表示回数 (昇順)' => 'hits|asc', '表示回数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc'),
     28 => array('アクセス不可' => 0, '利用する' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('開始' => 'start', '終了' => 'end', 'なし' => 'none'),
-    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
+    30 => array('最初' => 'start', '最後' => 'end', 'なし' => 'none'),
+    31 => array('新しいものから' => 'DESC', '古いものから' => 'ASC'),
     32 => array('無効にする' => 0, '記事のページのみ' => 1, '記事と話題' => 2),
     33 => array('無効にする' => 0, '有効にする' => 1, '有効にする (リンクなし)' => 2, '有効にする (外部リンクなし)' => 3),
     34 => array('グリッド' => 'grid', 'リスト' => 'list'),

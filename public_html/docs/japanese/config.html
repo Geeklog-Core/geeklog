@@ -19,7 +19,7 @@
 <p>旧バージョンのGeeklogでは、主要な設定を網羅した<tt>config.php</tt>
 という巨大なファイルを使用していました。Geeklog 1.5.0では、設定の大部分はデータベースに記録され、管理者機能内の<b>コンフィギュレーション(Configuration)</b>からアクセスできるようになりました。</p>
 
-<p>技術上の理由で、依然としてファイルに保存する必要のある設定もあります。次の2つです:</p>
+<p>技術上の理由で、ファイルに保存しなければならない設定もあります。次の2つです:</p>
 <ul>
 <li><a href="#db-config.php">db-config.php</a></li>
 <li><a href="#siteconfig.php">siteconfig.php</a></li>
@@ -57,7 +57,7 @@
 <tr>
   <td valign="top"><a name="desc_site_admin_url">管理画面のURL(site_admin_url)</a></td>
   <td valign="top">http://www.example.com/admin</td>
-  <td valign="top">サイトの管理画面のURLを指定します(最後にスラッシュ '/' をつけないでください。)。手動で設定する必要はありませんが、一部のWebホスティングサービスでは（Geeklog以外の用途で）"admin"ディレクトリの場所が決められている場合があります。このような場合には、Geeklogの<tt>admin</tt>ディレクトリの名前を変更して、それに応じて管理画面のURLを変えることで、ディレクトリ名の衝突を防ぐことができます。</td></tr>
+  <td valign="top">サイトの管理画面のURLを指定します(最後にスラッシュ '/' をつけないでください。)。手動で設定する必要はありませんが、一部のWebホスティングサービスでは(Geeklog以外の用途で)"admin"ディレクトリの場所が決められている場合があります。このような場合には、Geeklogの<tt>admin</tt>ディレクトリの名前を変更して、それに応じて管理画面のURLを変えることで、ディレクトリ名の衝突を防ぐことができます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_name">サイト名(site_name)</a></td>
   <td valign="top">Geeklog Site</td>
@@ -118,10 +118,10 @@
 <tr>
   <td valign="top"><a name="desc_noreply_mail">No-Replyメールアドレス(noreply_mail)</a></td>
   <td valign="top">noreply@example.com</td>
-  <td valign="top">ユーザー登録時などにGeeklogがメールを送る送信元アドレスを指定します。サイトのメールアドレスと同じにするか、スパム送信者がサイトに登録することで管理者のメールアドレスを知るのを防ぐために送信専用アドレスを指定してください（スパム送信者がこのアドレスにメールを送ってもエラーメールが返るだけです。）。このアドレスがサイト管理者のメールアドレスと同じでない場合、送信するメッセージに「このメールは自動送信されたものです。返信しないでください。」というメッセージが追加されます。</td></tr>
+  <td valign="top">ユーザー登録時などにGeeklogがメールを送る送信元アドレスを指定します。サイトのメールアドレスと同じにするか、スパム送信者がサイトに登録することで管理者のメールアドレスを知るのを防ぐために送信専用アドレスを指定してください(スパム送信者がこのアドレスにメールを送ってもエラーメールが返るだけです。)。このアドレスがサイト管理者のメールアドレスと同じでない場合、送信するメッセージに「このメールは自動送信されたものです。返信しないでください。」というメッセージが追加されます。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_backend">メール設定(backend)</a></td>
     <td valign="top">mail</td>
-    <td valign="top">メールの送信方法を選択します。'smtp'（SMTPプロトコルでメールサーバと直接交信）, 'sendmail'（オペレーティングシステムにインストールされているsendmailプログラム経由）, 'mail'（PHPのmail()関数使用）のどれかを指定します。</td></tr>
+    <td valign="top">メールの送信方法を選択します。'smtp'(SMTPプロトコルでメールサーバと直接交信), 'sendmail'(オペレーティングシステムにインストールされているsendmailプログラム経由), 'mail'(PHPのmail()関数使用)のどれかを指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_sendmail_path">メール設定(sendmail_path)</a></td>
     <td valign="top"><tt>/usr/bin/sendmail</tt></td>
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailバイナリへの完全なパスを指定します。</td></tr>
@@ -138,7 +138,7 @@
     <td valign="top">0</td>
     <td valign="top">送信方法で'smtp'を選択した場合に、SMTPサーバが認証を必要とするなら
         <code>1</code> に、必要としないなら、
-        <code>0</code> （あるいは空白のまま）に設定します。</td></tr>
+        <code>0</code> (あるいは空白のまま)に設定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_username">メール設定(username)</a></td>
     <td valign="top">smtp-username</td>
     <td valign="top">送信方法で'smtp'を選択した場合に、SMTPサーバのアカウント名を指定します。</td></tr>
@@ -177,29 +177,31 @@
     <td valign="top">1 にすると、記事の冒頭文全部がRSSフィードに出力されます。1 より大きな数字を指定すると、その字数分だけ冒頭文が出力されます(たとえば、80 と指定すると、冒頭文の最初の80文字だけがRSSフィードに出力されます。)。0 にすると、冒頭文はRSSフィードに出力されません。</td></tr>
 <tr><td valign="top"><a name="desc_rdf_language">フィードの言語(rdf_language)</a></td>
     <td valign="top">en-gb</td>
-    <td valign="top">RSSフィードの言語を指定します。サイトの言語とオペレーティングシステムにより、この値はロケールの設定（下記参照）と異なる値になることもあります。<br /><strong>例:</strong> PHPでドイツ語のロケールは'de_DE'ですが、ドイツ語のRSSフィードを表す正しい設定は'de-DE'でしょう(アンダースコア("_"の代わりにダッシュ"-"を使う点に注意してください)。</td></tr>
+    <td valign="top">RSSフィードの言語を指定します。サイトの言語とオペレーティングシステムにより、この値はロケールの設定(下記参照)と異なる値になることもあります。<br /><strong>例:</strong> PHPでドイツ語のロケールは'de_DE'ですが、ドイツ語のRSSフィードを表す正しい設定は'de-DE'でしょう(アンダースコア("_"の代わりにダッシュ"-"を使う点に注意してください)。</td></tr>
 <tr><td valign="top"><a name="desc_syndication_max_headlines">インポートする記事の最大数(syndication_max_headlines)</a></td>
     <td valign="top">0</td>
-    <td valign="top">記事を（ポータルブロックに）<em>インポート</em>するときの最大文字数を指定します。ブロックメニューでポータルブロックごとに設定することもできます。<br />
+    <td valign="top">記事を(ポータルブロックに)<em>インポート</em>するときの最大文字数を指定します。ブロックメニューでポータルブロックごとに設定することもできます。<br />
     0 にするとすべての記事がインポートされます。</td></tr>
-<tr><td valign="top"><a name="desc_comment_feeds_article_tag">comment_feeds_article_tag</a></td>
-    <td valign="top"><pre>&lt;p&gt;[Original Article: <a href="%s">%s</a>%s%s]\n</pre></td>
-    <td valign="top">The string used to enter a tag about the article for the comment:<br /><br />
-    This must take three strings, in the order:<br />
-    Article URL - the url to the article<br />
-    Article title - the title of the article<br />
-    Article Author tag, the result of evaluating 'article_author_tag'<br />
-    Comment author tag, the result of evaluating 'comment_author_tag'<br /><br />
-    This is generated with a sprintf command, so each item is indicated by a %s. If you want either of the last two to be blank, set article_author_tag and/or comment_author_tag to be empty strings.</td></tr>
-<tr><td valign="top"><a name="desc_comment_feeds_article_tag_position">comment_feeds_article_tag_position</a></td>
-    <td valign="top">end</td>
-    <td valign="top">The position of the article_tag in the comment body. This indicates where the article tag, when formatted, should be inserted into the comment. This may be start, end or none.</td></tr>
-<tr><td valign="top"><a name="desc_comment_feeds_article_author_tag">comment_feeds_article_author_tag</a></td>
-    <td valign="top"></td>
-    <td valign="top">A tag to link to the article author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string. An example of an Article Author Tag would be: <pre> Written By: <a href="%s">%s</a></pre></td></tr>
-<tr><td valign="top"><a name="desc_comment_feeds_comment_author_tag">comment_feeds_comment_author_tag</a></td>
-    <td valign="top"><pre>, Comment By: <a href="%s">%s</a></pre></td>
-    <td valign="top">A tag to link to the comment author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string.</td></tr>    
+<tr><td valign="top"><a name="desc_comment_feeds_article_tag">記事のタグ(comment_feeds_article_tag)</a></td>
+    <td valign="top"><pre>&lt;p&gt;[Original Article: &lt;a href="%s"&gt;%s&lt;/a&gt;%s%s]\n</pre></td>
+    <td valign="top">コメント用に記事を指定するタグを指定します:<br /><br />
+    次の順序で4つの文字列(%s)が必要です:<br />
+	<ol>
+    <li>記事のURL - 記事のURL</li>
+    <li>記事のタイトル - 記事のタイトル</li>
+    <li>記事の投稿者のタグ - コンフィギュレーションの「記事の投稿者のタグ(article_author_tag)」を評価した結果</li>
+    <li>コメントの投稿者のタグ - コンフィギュレーションの「コメントの投稿者のタグ(comment_author_tag)」を評価した結果</li>
+	</ol><br />
+    このタグはPHPのsprintfコマンドを用いて表示するため、それぞれの項目は%sで示されています。最後の2つのタグのうちいずれかを空白にするなら、コンフィギュレーションで「記事の投稿者のタグ」や「コメントの投稿者のタグ」を空白にしてください。</td></tr>
+<tr><td valign="top"><a name="desc_comment_feeds_article_tag_position">記事のタグの位置(comment_feeds_article_tag_position)</a></td>
+    <td valign="top">最後(end)</td>
+    <td valign="top">コメント本体内で記事のタグの表示位置を指定します。指定できるのは「最初(start)」、「最後(end)」、「なし(none)」です。</td></tr>
+<tr><td valign="top"><a name="desc_comment_feeds_article_author_tag">記事の投稿者のタグ(comment_feeds_article_author_tag)</a></td>
+    <td valign="top">(空白)</td>
+    <td valign="top">記事投稿者のプロフィール・名前を表示するリンクを表すタグを指定します。このタグはコンフィギュレーションの「記事のタグ」内で使用されます。したがって、記事投稿者の情報を表示したくない場合は空白にしてください。表示する場合は、たとえば、<pre> 記事の投稿者: &lt;a href="%s"&gt;%s&lt;/a&gt;</pre> と指定します。</td></tr>
+<tr><td valign="top"><a name="desc_comment_feeds_comment_author_tag">コメントの投稿者のタグ(comment_feeds_comment_author_tag)</a></td>
+    <td valign="top"><pre>, Comment By: &lt;a href="%s"&gt;%s&lt;/a&gt;</pre></td>
+    <td valign="top">コメント投稿者のプロフィール・名前を表示するリンクを表すタグを指定します。このタグはコンフィギュレーションの「記事のタグ」内で使用されます。したがって、コメント投稿者の情報を表示したくない場合は空白にしてください。</td></tr>
 </table>
 
 <h3><a name="site_paths">サイト: パス</a></h3>
@@ -219,7 +221,7 @@
     <td valign="top">Geeklogの言語ファイルのパスを指定します。</td></tr>
 <tr><td valign="top"><a name="desc_backup_path">バックアップ(backup_path)</a></td>
     <td valign="top">/path/to/geeklog/backups/</td>
-    <td valign="top">mysqldump（下記参照）がデータベースのバックアップを保存するパスを指定します。</td></tr>
+    <td valign="top">mysqldump(下記参照)がデータベースのバックアップを保存するパスを指定します。</td></tr>
 <tr><td valign="top"><a name="desc_path_data">データ(path_data)</a></td>
     <td valign="top">/path/to/geeklog/data/</td>
     <td valign="top">データディレクトリのパスを指定します。</td></tr>
@@ -239,7 +241,7 @@
     <th style="width:50%">説明</th></tr>
 <tr><td valign="top"><a name="desc_have_pear">PEARをインストールしている(have_pear)</a></td>
     <td valign="top">いいえ(<code>false</code>)</td>
-    <td valign="top"><a href="http://pear.php.net/">PEAR</a>をサーバにインストールしているかどうかを指定します。いいえ(<code>false</code>)にすると、Geeklogは<code>$_CONF['path_pear']</code>（下記参照）にインストールされているPEARパッケージを使用します。</td></tr>
+    <td valign="top"><a href="http://pear.php.net/">PEAR</a>をサーバにインストールしているかどうかを指定します。いいえ(<code>false</code>)にすると、Geeklogは<code>$_CONF['path_pear']</code>(下記参照)にインストールされているPEARパッケージを使用します。</td></tr>
 <tr><td valign="top"><a name="desc_path_pear">PEARのパス(path_pear)</a></td>
     <td valign="top"><tt>/path/to/geeklog/system/pear/</tt></td>
     <td valign="top">上記の「PEARがある」がいいえ(<code>false</code>)のとき、Geeklogが必要とする<a href="http://pear.php.net/">PEAR</a>パッケージ(メール送信時のPEAR::Mailなど)を探すパスを指定します。</td></tr>
@@ -294,7 +296,7 @@
 <tr>
   <td valign="top"><a name="desc_search_show_sort">ユーザーにソートを許可する(search_show_sort)</a></td>
   <td valign="top">はい(true)</td>
-  <td valign="top">検索結果表示で「テーブルスタイル(Table)」を選択している場合のみ有効です。カラム毎にソート（並び替え）ができるようにボタンを表示するかどうかを指定します。</td></tr>
+  <td valign="top">検索結果表示で「テーブルスタイル(Table)」を選択している場合のみ有効です。カラム毎にソート(並び替え)ができるようにボタンを表示するかどうかを指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_search_show_num">検索順の番号を表示する(search_show_num)</a></td>
   <td valign="top">はい(true)</td>
@@ -306,7 +308,7 @@
 <tr>
   <td valign="top">グループのセパレータ<a name="desc_search_separator">(search_separator)</a></td>
   <td valign="top"> &amp;gt; (前後に空白)</td>
-  <td valign="top">検索結果表示でタイプとサブグループを隔てるセパレータ（文字・記号）を指定します。</td></tr>
+  <td valign="top">検索結果表示でタイプとサブグループを隔てるセパレータ(文字・記号)を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_search_def_keytype">検索条件のデフォルト(search_def_keytype)</a></td>
   <td valign="top">'完全一致'(phrase)</td>
@@ -366,7 +368,7 @@
 <tr>
   <td valign="top"><a name="desc_page_break_comments">改ページ時のコメント表示位置(page_break_comments)</a></td>
   <td valign="top">最後のページ(last)</td>
-  <td valign="top">記事中の <code>[page_break]</code> タグが許可されている場合（上記参照）、記事のコメントをどこに表示するかを指定します。「<code>最後のページ(last)</code>」は、記事の最後のページのみに表示、「<code>最初のページ(first)</code>」は、最初のページのみに表示、「<code>全ページ(all)</code>」は、すべてのページに表示します。</td></tr>
+  <td valign="top">記事中の <code>[page_break]</code> タグが許可されている場合(上記参照)、記事のコメントをどこに表示するかを指定します。「<code>最後のページ(last)</code>」は、記事の最後のページのみに表示、「<code>最初のページ(first)</code>」は、最初のページのみに表示、「<code>全ページ(all)</code>」は、すべてのページに表示します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_image_align">話題アイコンの表示位置(article_image_align)</a></td>
   <td valign="top">右(right)</td>
@@ -378,11 +380,11 @@
 <tr>
   <td valign="top"><a name="desc_draft_flag">ドラフトモードをデフォルトにする(draft_flag)</a></td>
   <td valign="top">いいえ(0)</td>
-  <td valign="top">Story Adminが作成する新規記事のデフォルトを指定します。はい(1)なら記事のドラフト（草稿）フラグをセットし、いいえ(0)ならセットしません。</td></tr>
+  <td valign="top">Story Adminが作成する新規記事のデフォルトを指定します。はい(1)なら記事のドラフト(草稿)フラグをセットし、いいえ(0)ならセットしません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_frontpage">トップページ配置をデフォルトにする(frontpage)</a></td>
   <td valign="top">いいえ(0)</td>
-  <td valign="top">新規記事とユーザーによる投稿の際のデフォルトを指定します。はい(1)なら記事をサイトのトップページに表示し、いいえ(0)なら表示しません（話題のページのみ表示します）。この設定はアーカイブにされた記事には適用されず、記事がトップページに表示されることは<em>ありません</em>。</td></tr>
+  <td valign="top">新規記事とユーザーによる投稿の際のデフォルトを指定します。はい(1)なら記事をサイトのトップページに表示し、いいえ(0)なら表示しません(話題のページのみ表示します)。この設定はアーカイブにされた記事には適用されず、記事がトップページに表示されることは<em>ありません</em>。</td></tr>
 <tr>
   <td valign="top"><a name="desc_hide_no_news_msg">記事がない場合のメッセージを表示しない(hide_no_news_msg)</a></td>
   <td valign="top">いいえ(0)</td>
@@ -401,8 +403,8 @@
   <td valign="top">記事を保存した後、どのページに移動するかを指定します。
     <ul>
     <li>作成した項目を表示する(item): 作成した記事を表示します。</li>
-    <li>項目一覧を表示する(list)（デフォルト）: 記事一覧を表示します。</li>
-    <li>Homeを表示する(home): サイトのHomeページ（トップページ）を表示します。</li>
+    <li>項目一覧を表示する(list)(デフォルト): 記事一覧を表示します。</li>
+    <li>Homeを表示する(home): サイトのHomeページ(トップページ)を表示します。</li>
     <li>管理画面TOPを表示する(admin): 管理画面を表示します。</li>
     </ul>
   <strong>注意:</strong> 記事を投稿する場合、このオプションは無視されます。承認待ちの記事を編集すると、常に承認待ち一覧(つまり、管理画面)へ戻ります。</td></tr>
@@ -453,16 +455,16 @@
   <td valign="top">新規記事のデフォルトを設定します。0 ならトラックバックを有効、-1 なら無効にします。</td></tr>
 <tr>
   <td valign="top"><a name="desc_trackbackspeedlimit">トラックバックの間隔制限(trackbackspeedlimit)</a></td>
-  <td valign="top">300（秒）</td>
-  <td valign="top">同一IPから2回目のトラックバック/ピングバックを受け取りが可能になるまでの時間を指定します（単位：秒）。</td></tr>
+  <td valign="top">300(秒)</td>
+  <td valign="top">同一IPから2回目のトラックバック/ピングバックを受け取りが可能になるまでの時間を指定します(単位：秒)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_check_trackback_link">トラックバックのリンクチェック(check_trackback_link)</a></td>
   <td valign="top">2</td>
-  <td valign="top">トラックバックの有効性をチェックする方法を指定します。トラックバック中に含まれるURLが自分のサイトへのバックリンクを実際に含んでいるかチェックできます（含んでいない場合はスパムでしょう）。また、トラックバックが適切なIPアドレス、すなわち、トラックバックURL中のサイトのIPアドレスから送信されたものかどうかチェックできます（IPアドレスが一致しない場合はスパムでしょう）。下記の<strong>数値を足し合わせる</strong>ことによって複数項目のチェックができます(とはいえ、1 と 2 を<em>同時に</em>使うのは無意味であり、2 しか指定していないものとして処理されます。)。<br />
+  <td valign="top">トラックバックの有効性をチェックする方法を指定します。トラックバック中に含まれるURLが自分のサイトへのバックリンクを実際に含んでいるかチェックできます(含んでいない場合はスパムでしょう)。また、トラックバックが適切なIPアドレス、すなわち、トラックバックURL中のサイトのIPアドレスから送信されたものかどうかチェックできます(IPアドレスが一致しない場合はスパムでしょう)。下記の<strong>数値を足し合わせる</strong>ことによって複数項目のチェックができます(とはいえ、1 と 2 を<em>同時に</em>使うのは無意味であり、2 しか指定していないものとして処理されます。)。<br />
 	<ul>
 		<li>ノーチェック(0) = チェックを行いません。</li>
 		<li>URLリンクをチェックする(1) = サイトのベースURLしかチェックしません。</li>
-		<li>フルURLをチェックする(2) = サイトのアイテム（たとえば、記事）の完全なURLが含まれているかチェックします。</li>
+		<li>フルURLをチェックする(2) = サイトのアイテム(たとえば、記事)の完全なURLが含まれているかチェックします。</li>
 		<li>IPとURLリンクをチェックする(4) = トラックバック送信者のIPアドレスとトラックバックURLで参照されているサイトのIPアドレスを照合します。</li>
 	</ul>
     <b>例:</b> <code>$_CONF['check_trackback_link'] = 6; // URLの厳密なチェック(2)とIPアドレスのチェック(4)</code>を行います。</td></tr>
@@ -497,9 +499,9 @@
   <td valign="top">ピングバックは記事内でリンクされている<em>すべての</em> URLに自動的に送信されます。このURLには自分のサイトも含まれます。この設定は自分のサイトへのピングバックの処理法を指定します。<br />
 		<ul>
 			<li>スキップする(0) = ピングバックをスキップします。つまり、自分のサイトへはピングバックを送信しません。</li>
-			<li>許可する（間隔制限あり）(1) = ピングバックを許可しますが、速度制限に従います。</li>
-			<li>許可する（間隔制限なし）(2) = ピングバックを許可し、速度制限を無視します。</li>
-		</ul><br />記事の中に自分のサイトの他の記事に対する複数のリンクがある場合、「許可する（間隔制限あり）(1)」はあまり役に立たないでしょう。1番目のリンクへはピングバックを送信できますが、残りは間隔制限に引っかかるからです。</td></tr>
+			<li>許可する(間隔制限あり)(1) = ピングバックを許可しますが、速度制限に従います。</li>
+			<li>許可する(間隔制限なし)(2) = ピングバックを許可し、速度制限を無視します。</li>
+		</ul><br />記事の中に自分のサイトの他の記事に対する複数のリンクがある場合、「許可する(間隔制限あり)(1)」はあまり役に立たないでしょう。1番目のリンクへはピングバックを送信できますが、残りは間隔制限に引っかかるからです。</td></tr>
 <tr>
   <td valign="top"><a name="desc_ping_enabled">ピングを有効にする(ping_enabled)</a></td>
   <td valign="top">はい(true)</td>
@@ -528,10 +530,10 @@
   <td valign="top"><a name="desc_menu_elements">メニュー項目(menu_elements)</a></td>
   <td valign="top"><code>array('contribute', 'search', 'stats', 'directory',
     'plugins')</code></td>
-  <td valign="top">どのメニュー項目をサイトのメニューバー（グローバルメニュー）に表示するかを指定します（使用するテーマにメニューバーを表示するための<code>{menu_elements}</code>テンプレート変数が使用されている場合）。<tt>'home'</tt>（トップページ）,
-    <tt>'contribute'</tt>（記事投稿）, <tt>'search'</tt>（検索）, <tt>'stats'</tt>,
-    <tt>'directory'</tt>（記事一覧) , <tt>'login'</tt>, <tt>'prefs'</tt>（マイアカウント）, <tt>'plugins'</tt>（プラグイン）,
-    <tt>'custom'</tt>（カスタム）を好きな数だけ好きな順序で組み合わせることができます。<tt>'plugins'</tt>（プラグイン）は<code>{plg_menu_elements}</code>テンプレート変数と同じで、各プラグインが提供するメニュー項目です。<tt>'custom'</tt>（カスタム）は<code>CUSTOM_menuEntries</code>カスタム関数が返すメニュー項目です（詳細は<tt>lib-custom.php</tt>を参照してください。）。</td></tr>
+  <td valign="top">どのメニュー項目をサイトのメニューバー(グローバルメニュー)に表示するかを指定します(使用するテーマにメニューバーを表示するための<code>{menu_elements}</code>テンプレート変数が使用されている場合)。<tt>'home'</tt>(トップページ),
+    <tt>'contribute'</tt>(記事投稿), <tt>'search'</tt>(検索), <tt>'stats'</tt>,
+    <tt>'directory'</tt>(記事一覧) , <tt>'login'</tt>, <tt>'prefs'</tt>(マイアカウント), <tt>'plugins'</tt>(プラグイン),
+    <tt>'custom'</tt>(カスタム)を好きな数だけ好きな順序で組み合わせることができます。<tt>'plugins'</tt>(プラグイン)は<code>{plg_menu_elements}</code>テンプレート変数と同じで、各プラグインが提供するメニュー項目です。<tt>'custom'</tt>(カスタム)は<code>CUSTOM_menuEntries</code>カスタム関数が返すメニュー項目です(詳細は<tt>lib-custom.php</tt>を参照してください。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cache_templates">cache_templates</a></td>
   <td valign="top">true</td>
@@ -615,7 +617,7 @@
 <tr>
   <td valign="top"><a name="desc_hide_home_link">Homeへのリンクを表示しない(hide_home_link)</a></td>
   <td valign="top">いいえ(0)</td>
-  <td valign="top">はい(1)にすると、セクションブロックに"Home"（トップページ）へのリンクが表示されなくなります。</td></tr>
+  <td valign="top">はい(1)にすると、セクションブロックに"Home"(トップページ)へのリンクが表示されなくなります。</td></tr>
 </table>
 
 <h3><a name="blocks_who">ブロック: オンラインユーザーブロック</a></h3>
@@ -626,7 +628,7 @@
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_whosonline_threshold">セッションのしきい値(whosonline_threshold)</a></td>
-  <td valign="top">300（秒）</td>
+  <td valign="top">300(秒)</td>
   <td valign="top">オンラインユーザーブロックに表示された後、ユーザーがどれくらいの間操作をしないとオンラインユーザーブロックに表示されなくなるかを決める秒数を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_whosonline_anonymous">ゲストユーザーに表示しない(whosonline_anonymous)</a></td>
@@ -710,7 +712,7 @@
 <tr>
   <td valign="top"><a name="desc_allow_username_change">ユーザー名変更を許可する(allow_username_change)</a></td>
   <td valign="top">いいえ(0)</td>
-  <td valign="top">はい(1)にすると、ユーザーはユーザー名（ログイン名）を変更できるようになります。古いユーザー名で投稿された記事やコメントは自動的に新しいユーザー名で表示されます。</td></tr>
+  <td valign="top">はい(1)にすると、ユーザーはユーザー名(ログイン名)を変更できるようになります。古いユーザー名で投稿された記事やコメントは自動的に新しいユーザー名で表示されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_account_delete">アカウント削除を許可する(allow_account_delete)</a></td>
   <td valign="top">いいえ(0)</td>
@@ -851,7 +853,7 @@
   <td valign="top">ユーザーのデータが保存された後、どのページに移動するかを指定します。
     <ul>
     <li>作成した項目を表示する(item): ユーザーのプロフィーを表示します。</li>
-    <li>項目一覧を表示する(list)（デフォルト）: ユーザー一覧を表示します。</li>
+    <li>項目一覧を表示する(list)(デフォルト): ユーザー一覧を表示します。</li>
     <li>サイトのトップページを表示する(home)</li>
     <li>管理画面TOPを表示する(admin)</li>
     </ul></td></tr>
@@ -884,7 +886,7 @@
     <td valign="top">はい(1)にすると、以下の設定すべてよりも優先され、サイトの<em>どの</em> 部分にアクセスするにもログインが必要になります。特定の部分しかアクセス制御が必要でないなら、いいえ(0)にして、以下の項目で個別に設定するとよいでしょう。</td></tr>
 <tr><td valign="top"><a name="desc_submitloginrequired">投稿にログインを必要とする(submitloginrequired)</a></td>
     <td valign="top">いいえ(0)</td>
-    <td valign="top">はい(1)にすると、登録ユーザーしか記事や（リンク・カレンダーなどの）プラグインが管理する項目を投稿できなくなります。</td></tr>
+    <td valign="top">はい(1)にすると、登録ユーザーしか記事や(リンク・カレンダーなどの)プラグインが管理する項目を投稿できなくなります。</td></tr>
 <tr><td valign="top"><a name="desc_commentsloginrequired">コメント投稿[ログイン要求](commentsloginrequired)</a></td>
     <td valign="top">いいえ(0)</td>
     <td valign="top">はい(1)にすると、登録ユーザーしかコメントを投稿できなくなります。</td></tr>
@@ -910,15 +912,15 @@
 
 <tr>
   <td valign="top"><a name="desc_passwordspeedlimit">パスワード要求間隔制限(passwordspeedlimit)</a></td>
-  <td valign="top">300（秒）</td>
-  <td valign="top">新しいパスワードを要求する間隔の最小値（単位：秒）を指定します。</td></tr>
+  <td valign="top">300(秒)</td>
+  <td valign="top">新しいパスワードを要求する間隔の最小値(単位：秒)を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_login_attempts">ログイン試行回数制限(login_attempts)</a></td>
   <td valign="top">3</td>
   <td valign="top">下記のログイン試行間隔制限が発動してログインが一時的に不可能になるまでのログイン試行回数の最大値を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_login_speedlimit">ログイン試行間隔制限(login_speedlimit)</a></td>
-  <td valign="top">300（秒）</td>
+  <td valign="top">300(秒)</td>
   <td valign="top">上記のログイン試行回数の制限を超えてログインに失敗した場合、次にログインが可能になるまでの待ち時間を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_pass_alg">パスワードのハッシュアルゴリズム(pass_alg)</a></td>
@@ -950,12 +952,12 @@
   <td valign="top">はい(1)にすると、ユーザーの登録申請は管理者による承認待ちの状態になります。いいえ(0)にすると、即座に登録されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_domains">自動的に許可するドメイン(allow_domains)</a></td>
-  <td valign="top">''（空白）</td>
-  <td valign="top">上記の承認待ちを有効にした場合でも、このドメインリスト（コンマで区切る）から登録申請したときには承認待ちの状態にならず、即座に承認されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong>
+  <td valign="top">''(空白)</td>
+  <td valign="top">上記の承認待ちを有効にした場合でも、このドメインリスト(コンマで区切る)から登録申請したときには承認待ちの状態にならず、即座に承認されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong>
     <tt>'mycompany.com,myothercompany.com'</tt></td></tr>
 <tr>
   <td valign="top"><a name="desc_disallow_domains">自動的に拒否するドメイン(disallow_domains)</a></td>
-  <td valign="top">''（空白）</td>
+  <td valign="top">''(空白)</td>
   <td valign="top">上記の「自動的に許可するドメイン」の逆で、このリストに含まれるドメインのユーザーは、上記の「管理者の承認が必要」の設定にかかわらず、自動的に拒否されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong> あるドメインと".edu"ドメインのすべてを拒否します。
     <tt>'somebaddomain.com,\.edu$'</tt></td></tr>
 </table>
@@ -980,8 +982,8 @@
   <td valign="top">投稿モードのデフォルトをHTML(html)かテキスト(plaintext)で指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_speedlimit">投稿間隔の制限(speedlimit)</a></td>
-  <td valign="top">45（秒）</td>
-  <td valign="top">投稿と投稿の間に最小限空けなければならない間隔（単位：秒）を指定します。サービス不能攻撃(<acronym title="Denial of Service">DoS</acronym>)を防ぐのに役立ちます。</td></tr>
+  <td valign="top">45(秒)</td>
+  <td valign="top">投稿と投稿の間に最小限空けなければならない間隔(単位：秒)を指定します。サービス不能攻撃(<acronym title="Denial of Service">DoS</acronym>)を防ぐのに役立ちます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_skip_preview">プレビューしないで投稿する(skip_preview)</a></td>
   <td valign="top">いいえ(0)</td>
@@ -1008,8 +1010,8 @@
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_commentspeedlimit">コメントの投稿間隔の制限(commentspeedlimit)</a></td>
-  <td valign="top">45（秒）</td>
-  <td valign="top">ユーザーがコメントを連続して投稿する際に最低限空けなければならない間隔（単位：秒）を指定します。</td></tr>
+  <td valign="top">45(秒)</td>
+  <td valign="top">ユーザーがコメントを連続して投稿する際に最低限空けなければならない間隔(単位：秒)を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_limit">表示件数(comment_limit)</a></td>
   <td valign="top">100</td>
@@ -1019,13 +1021,13 @@
   <td valign="top">入れ子(nested)</td>
   <td valign="top">コメントの表示方法として、一覧(flat)、入れ子(nested)、ツリー(threaded)、表示しない(nocomments)のうちのどれかを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_comment_order">comment_order</a></td>
-  <td valign="top">ASC</td>
-  <td valign="top">Date sort order to display comments at the top level (ASC = Oldest First, DESC = Newest First)</td></tr>
+  <td valign="top"><a name="desc_comment_order">表示する順序(comment_order)</a></td>
+  <td valign="top">古いものから(ASC)</td>
+  <td valign="top">コメントを表示する順序を「古いものから(ASC)」か「新しいものから(DESC)」で指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_code">新規作成時のデフォルト(comment_code)</a></td>
-  <td valign="top">はい(0)</td>
-  <td valign="top">新規記事に対するデフォルトを指定します。はい(0)なら許可し、いいえ(-1)なら許可しません。</td></tr>
+  <td valign="top">コメント機能を有効にする(0)</td>
+  <td valign="top">新規記事に対するコメント機能の有効・無効の初期値を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_edit">コメントの編集を許可する(comment_edit)</a></td>
   <td valign="top">いいえ(0)</td>
@@ -1037,7 +1039,7 @@
 <tr>
   <td valign="top"><a name="desc_comment_edittime">コメントの編集時間(秒) (comment_edittime)</a></td>
   <td valign="top">1800</td>
-  <td valign="top">上記コメント編集権限を持ったユーザーが、コメント投稿後、コメントを編集できる期間（秒）を指定します。ゲストユーザーは編集できません。</td></tr>
+  <td valign="top">上記コメント編集権限を持ったユーザーが、コメント投稿後、コメントを編集できる期間(秒)を指定します。ゲストユーザーは編集できません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_enabled">自動的にコメントの受付を停止(デフォルト)(article_comment_close_enabled</a>)</td>
   <td valign="top">いいえ(0)</td>
@@ -1101,7 +1103,7 @@
 <tr>
   <td valign="top"><a name="desc_allow_user_scaling">ユーザーに画像のサイズ変更を許可する(allow_user_scaling)</a></td>
   <td valign="top">はい(1)</td>
-  <td valign="top">はい(1)にすると、上記のように元画像を保存する場合、記事の中でリサイズされた画像を使えるようになります。言い換えると、記事の中で（<code>[image<i>X</i>]</code> に加えて）<code>[unscaled<i>X</i>]</code> タグを使えるようになります。</td></tr>
+  <td valign="top">はい(1)にすると、上記のように元画像を保存する場合、記事の中でリサイズされた画像を使えるようになります。言い換えると、記事の中で(<code>[image<i>X</i>]</code> に加えて)<code>[unscaled<i>X</i>]</code> タグを使えるようになります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_jpeg_quality">JPEGの画質(jpeg_quality)</a></td>
   <td valign="top"><i>(disabled)</i></td>
@@ -1122,15 +1124,15 @@
 <tr>
   <td valign="top"><a name="desc_max_image_width">幅の最大値(max_image_width)</a></td>
   <td valign="top">160</td>
-  <td valign="top">画像の幅の最大値を指定します（単位：ピクセル）。この数値を超えた場合、画像は拒否されるかリサイズされます（上記の画像ライブラリの設定による）。</td></tr>
+  <td valign="top">画像の幅の最大値を指定します(単位：ピクセル)。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_image_height">高さの最大値(max_image_height)</a></td>
   <td valign="top">160</td>
-  <td valign="top">画像の高さの最大値を指定します（単位：ピクセル）。この数値を超えた場合、画像は拒否されるかリサイズされます（上記の画像ライブラリの設定による）。</td></tr>
+  <td valign="top">画像の高さの最大値を指定します(単位：ピクセル)。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_image_size">ファイルサイズの最大値(max_image_size)</a></td>
   <td valign="top">1048576 <i>(= 1 MB)</i></td>
-  <td valign="top">ファイルサイズの最大値を指定します（単位：バイト）。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
+  <td valign="top">ファイルサイズの最大値を指定します(単位：バイト)。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
 </table>
 
 <h3><a name="images_topic">画像: 話題アイコン</a></h3>
@@ -1142,15 +1144,15 @@
 <tr>
   <td valign="top"><a name="desc_max_topicicon_width">幅の最大値(max_topicicon_width)</a></td>
   <td valign="top">48</td>
-  <td valign="top">話題アイコンの幅の最大値を指定します（単位：ピクセル）。この数値を超えた場合、画像は拒否されるかリサイズされます（上記の画像ライブラリの設定による）。</td></tr>
+  <td valign="top">話題アイコンの幅の最大値を指定します(単位：ピクセル)。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_topicicon_height">高さの最大値(max_topicicon_height)</a></td>
   <td valign="top">48</td>
-  <td valign="top">話題アイコンの高さの最大値を指定します（単位：ピクセル）。この数値を超えた場合、画像は拒否されるかリサイズされます（上記の画像ライブラリの設定による）。</td></tr>
+  <td valign="top">話題アイコンの高さの最大値を指定します(単位：ピクセル)。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_topicicon_size">ファイルサイズの最大値(max_topicicon_size)</a></td>
   <td valign="top">65536 <i>(= 64 KB)</i></td>
-  <td valign="top">ファイルサイズの最大値を指定します（単位：バイト）。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
+  <td valign="top">ファイルサイズの最大値を指定します(単位：バイト)。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
 </table>
 
 <h3><a name="images_photos">画像: ユーザーの写真</a></h3>
@@ -1162,19 +1164,19 @@
 <tr>
   <td valign="top"><a name="desc_max_photo_width">幅の最大値(max_photo_width)</a></td>
   <td valign="top">128</td>
-  <td valign="top">写真の幅の最大値を指定します（単位：ピクセル）。この数値を超えた場合、画像は拒否されるかリサイズされます（上記の画像ライブラリの設定による）。</td></tr>
+  <td valign="top">写真の幅の最大値を指定します(単位：ピクセル)。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_height">高さの最大値(max_photo_height)</a></td>
   <td valign="top">128</td>
-  <td valign="top">写真の高さの最大値を指定します（単位：ピクセル）。この数値を超えた場合、画像は拒否されるかリサイズされます（上記の画像ライブラリの設定による）。</td></tr>
+  <td valign="top">写真の高さの最大値を指定します(単位：ピクセル)。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_size">ファイルサイズの最大値(max_photo_size)</a></td>
   <td valign="top">65536 <i>(= 64 KB)</i></td>
-  <td valign="top">ファイルサイズの最大値を指定します（単位：バイト）。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
+  <td valign="top">ファイルサイズの最大値を指定します(単位：バイト)。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_force_photo_width">幅を固定する(force_photo_width)</a></td>
   <td valign="top"><i>(無効)</i></td>
-  <td valign="top">この設定を有効にしても、ユーザーの写真を<em>表示する</em>ときにしか適用されません。写真表示用の <code>&lt;img&gt;</code>タグがここで指定されたサイズで出力されます。つまり、実際の写真のサイズはより大きくても、小さな（ここで指定された）サイズでしか表示されません。（掲示板などで）奇妙な形をしたユーザーの写真がページのレイアウトを台無しにするのを防ぎたい場合に役に立つでしょう。</td></tr>
+  <td valign="top">この設定を有効にしても、ユーザーの写真を<em>表示する</em>ときにしか適用されません。写真表示用の <code>&lt;img&gt;</code>タグがここで指定されたサイズで出力されます。つまり、実際の写真のサイズはより大きくても、小さな(ここで指定された)サイズでしか表示されません。(掲示板などで)奇妙な形をしたユーザーの写真がページのレイアウトを台無しにするのを防ぎたい場合に役に立つでしょう。</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_photo">写真のデフォルト(default_photo)</a></td>
   <td valign="top"><i>(無効)</i></td>
@@ -1190,12 +1192,12 @@
 <tr>
   <td valign="top"><a name="desc_use_gravatar">Gravatarを使用する(use_gravatar)</a></td>
   <td valign="top">いいえ(false)</td>
-  <td valign="top">はい(<tt>true</tt>)にすると、ユーザーが写真をアップロードしていない場合、アバター用の画像が<a href="http://gravatar.com/">gravatar.com</a>にリクエストされます（つまり、アップロードされた写真の方が常に優先されます）。<br />
-    このオプションを有効にすると、（掲示板のスレッドなどの）複数ユーザーの多数の写真を表示するページでは、スピードダウンする可能性があることに注意してください。</td></tr>
+  <td valign="top">はい(<tt>true</tt>)にすると、ユーザーが写真をアップロードしていない場合、アバター用の画像が<a href="http://gravatar.com/">gravatar.com</a>にリクエストされます(つまり、アップロードされた写真の方が常に優先されます)。<br />
+    このオプションを有効にすると、(掲示板のスレッドなどの)複数ユーザーの多数の写真を表示するページでは、スピードダウンする可能性があることに注意してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_gravatar_rating">Gravatarの評価(gravatar_rating)</a></td>
   <td valign="top"><i>無効(disabled)</i></td>
-  <td valign="top">gravatar.comへ投稿されたアバターは、（米国で）映画鑑賞用に使われている評価システム
+  <td valign="top">gravatar.comへ投稿されたアバターは、(米国で)映画鑑賞用に使われている評価システム
 		<ul>
 			<li>G = General Audiences：一般向け</li>
 			<li>PG = Parental Guidance：保護者の指導が望ましい</li>
@@ -1267,7 +1269,7 @@
 <tr>
   <td valign="top"><a name="desc_hour_mode">時間制(hour_mode)</a></td>
   <td valign="top">12</td>
-  <td valign="top">（記事の公開時刻などの）時間設定のあるアイテムを投稿したり編集したりするときに使う時間のフォーマットを指定します。12（12時間制。am/pmを使用します。）か24（24時間制）のどちらかです。</td></tr>
+  <td valign="top">(記事の公開時刻などの)時間設定のあるアイテムを投稿したり編集したりするときに使う時間のフォーマットを指定します。12(12時間制。am/pmを使用します。)か24(24時間制)のどちらかです。</td></tr>
 <tr>
   <td valign="top"><a name="desc_thousand_separator">千単位の区切り文字(thousand_separator)</a></td>
   <td valign="top"><code>,</code></td>
@@ -1322,7 +1324,7 @@
   <td valign="top">timezone</td>
   <td valign="top">タイムゾーンを保存するクッキーの名前を指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_cookie_anon_name">ゲストユーザー名のクッキー名（cookie_anon_name</a>）</td>
+  <td valign="top"><a name="desc_cookie_anon_name">ゲストユーザー名のクッキー名(cookie_anon_name</a>)</td>
   <td valign="top">anon_name</td>
   <td valign="top">ゲストユーザーの名前を保存するクッキーの名前を指定します。</td></tr>
 <tr>
@@ -1331,24 +1333,24 @@
   <td valign="top">はい(1)にすると、セッションIDにランダムな数字だけでなくユーザーのIPも埋め込みます。こうすることで、安全性は高まりますが、ダイアルアップユーザーが毎回ログインしなければならなくなる可能性も高まります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_perm_cookie_timeout">パーマネントクッキーの有効期限(default_perm_cookie_timeout)</a></td>
-  <td valign="top">28800（秒）</td>
-  <td valign="top">パーマネントクッキーの有効期限のデフォルトを指定します（単位：秒）。28800秒 = 8時間 です。</td></tr>
+  <td valign="top">28800(秒)</td>
+  <td valign="top">パーマネントクッキーの有効期限のデフォルトを指定します(単位：秒)。28800秒 = 8時間 です。</td></tr>
 <tr>
   <td valign="top"><a name="desc_session_cookie_timeout">セッションの有効期限(session_cookie_timeout)</a></td>
-  <td valign="top">7200（秒）</td>
-  <td valign="top">セッションの有効期限を指定します（単位：秒）。デフォルトは 7200秒 = 2時間 です。</td></tr>
+  <td valign="top">7200(秒)</td>
+  <td valign="top">セッションの有効期限を指定します(単位：秒)。デフォルトは 7200秒 = 2時間 です。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookie_path">クッキーのパス(cookie_path)</a></td>
   <td valign="top">/</td>
-  <td valign="top">クッキーが有効となるサーバ上のパスを指定します（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。）。</td></tr>
+  <td valign="top">クッキーが有効となるサーバ上のパスを指定します(詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookiedomain">クッキーのドメイン(cookiedomain)</a></td>
   <td valign="top"><i>(空白)</i></td>
-  <td valign="top">クッキーが有効となるドメインを指定します。GeeklogはサイトのURLに基づき、正しいドメインを推測しようとします（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。）。</td></tr>
+  <td valign="top">クッキーが有効となるドメインを指定します。GeeklogはサイトのURLに基づき、正しいドメインを推測しようとします(詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookiesecure">セキュア(HTTPS)なクッキー(cookiesecure)</a></td>
   <td valign="top">いいえ(0)</td>
-  <td valign="top">サイトがHTTPSプロトコルを使用している場合に限って、はい(1)にしてください（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。）。</td></tr>
+  <td valign="top">サイトがHTTPSプロトコルを使用している場合に限って、はい(1)にしてください(詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。)。</td></tr>
 </table>
 
 <h3><a name="misc_misc">その他: その他</a></h3>
@@ -1372,7 +1374,7 @@
     <strong>例:</strong> <code>story と user</code> とすると、新規記事が投稿された場合とユーザーが登録された場合に通知されます。たとえば、新規コメントが投稿された場合には、通知は来ません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cron_schedule_interval">Cronのスケジュール間隔(cron_schedule_interval)</a></td>
-  <td valign="top">0（秒）</td>
+  <td valign="top">0(秒)</td>
   <td valign="top">Geeklogは<a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>、つまり、一定の間隔で行う作業を擬似的に行うことができます。実行されるPHPのコードは、プラグインか<tt>lib-custom.php</tt>中の<code>CUSTOM_runScheduledTask</code> 関数で指定します。ここで設定する値は、作業が行われる間隔を秒単位で指定します。デフォルトは0秒です。 例) 86400秒 = 24時間<br />
     この作業が行われるには、予定の時刻付近で誰かがサイトを訪問する必要があることに注意してください。訪問者がほとんどいないサイトでは、作業の開始がかなり遅れる可能性があります。<br />この機能を無効にするには、0を指定します。</td></tr>
 <tr>
@@ -1427,7 +1429,7 @@
 <tr>
   <td valign="top"><a name="desc_rootdebug">Rootデバッグ(rootdebug)</a></td>
   <td valign="top"><code>いいえ(false)</code></td>
-  <td valign="top">PHPのエラーが発生したとき、（重要な情報の漏洩を防ぐため）GeeklogのエラーハンドラはRootグループに属するメンバーにしか実際のエラー情報を表示しません。はい(<code>true</code>)にすると、この情報が<em>すべての</em> ユーザーに表示されるようになります。<strong>デバッグ目的にのみ使用してください。</strong><br />
+  <td valign="top">PHPのエラーが発生したとき、(重要な情報の漏洩を防ぐため)GeeklogのエラーハンドラはRootグループに属するメンバーにしか実際のエラー情報を表示しません。はい(<code>true</code>)にすると、この情報が<em>すべての</em> ユーザーに表示されるようになります。<strong>デバッグ目的にのみ使用してください。</strong><br />
     ヒント: エラーのためにサイトにログインできない場合、<a href="#desc_rootdebug_siteconfig">このオプションを<tt>siteconfig.php</tt></a>の中で有効にすることができます。</td></tr>
 </table>
 
@@ -1464,7 +1466,7 @@
 <tr>
   <td valign="top"><a name="desc_admin_html">管理者HTML(admin_html)</a></td>
   <td valign="top">管理者HTMLに追加するHTMLタグ(例 テーブルタグ)</td>
-  <td valign="top">管理者が使用できるHTMLタグと属性のリストを指定します。管理者は上記のユーザーHTMLも使えます。ユーザーHTMLに登録されているHTMLタグに属性を追加して再定義した場合、管理者HTMLの方が有効になります。たとえば、ユーザーHTMLでは（JavaScriptを使えないようにするため）&lt;p&gt;タグのstyle属性を無効にするが、管理者HTMLではstyle属性を有効にするといったことができます。</td></tr>
+  <td valign="top">管理者が使用できるHTMLタグと属性のリストを指定します。管理者は上記のユーザーHTMLも使えます。ユーザーHTMLに登録されているHTMLタグに属性を追加して再定義した場合、管理者HTMLの方が有効になります。たとえば、ユーザーHTMLでは(JavaScriptを使えないようにするため)&lt;p&gt;タグのstyle属性を無効にするが、管理者HTMLではstyle属性を有効にするといったことができます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_advanced_html">アドバンストエディター用追加HTML(advanced_html)</a></td>
   <td valign="top">アドバンストエディターに追加するHTMLタグ(例 画像)</td>
@@ -1476,7 +1478,7 @@
 <tr>
   <td valign="top"><a name="desc_allowed_protocols">許可するプロトコル(allowed_protocols)</a></td>
   <td valign="top">array ('http', 'https', 'ftp');</td>
-  <td valign="top">リンク（つまりHTMLの&lt;a&gt;タグ）で有効なプロトコルを指定します。</td></tr>
+  <td valign="top">リンク(つまりHTMLの&lt;a&gt;タグ)で有効なプロトコルを指定します。</td></tr>
 </table>
 
 <h3><a name="misc_censoring">その他: バッドワードチェック(Censoring)</a></h3>
@@ -1487,8 +1489,8 @@
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_censormode">語句の検査(censormode)</a></td>
-  <td valign="top">チェックする（完全一致）(1)</td>
-  <td valign="top">ユーザーの投稿とコメントに関して、「チェックしない(0)」、「チェックする（完全一致）(1)」はバッドワードに完全に一致するもののみチェックし、「チェックする（前方一致）(2)」はバッドワードで始まるものをすべてチェックし、「チェックする（部分一致）(3)」はバッドワードを含むものをすべてチェックします。<br />（訳注）日本語などのマルチバイト文字では、「チェックする（前方一致）」と「チェックする（部分一致）」は誤動作する可能性があります。</td></tr>
+  <td valign="top">チェックする(完全一致)(1)</td>
+  <td valign="top">ユーザーの投稿とコメントに関して、「チェックしない(0)」、「チェックする(完全一致)(1)」はバッドワードに完全に一致するもののみチェックし、「チェックする(前方一致)(2)」はバッドワードで始まるものをすべてチェックし、「チェックする(部分一致)(3)」はバッドワードを含むものをすべてチェックします。<br />(訳注)日本語などのマルチバイト文字では、「チェックする(前方一致)」と「チェックする(部分一致)」は誤動作する可能性があります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_censorreplace">置き換えるワード(censorreplace)</a></td>
   <td valign="top">*censored*</td>
@@ -1732,7 +1734,7 @@
     <td valign="top">データベースユーザーのパスワードを指定します。</td></tr>
 <tr><td valign="top">_DB_table_prefix</td>
     <td valign="top">gl_</td>
-    <td valign="top">Geeklogが使用するすべてのテーブル名の前につける接頭子を指定します（データベースを使用する他のアプリケーションとの衝突を避けるため。）。</td></tr>
+    <td valign="top">Geeklogが使用するすべてのテーブル名の前につける接頭子を指定します(データベースを使用する他のアプリケーションとの衝突を避けるため。)。</td></tr>
 <tr><td valign="top">_DB_dbms</td>
     <td valign="top">mysql</td>
     <td valign="top">Geeklogが使用するデータベースシステムの種類を指定します。<br />
@@ -1754,14 +1756,14 @@
     <th style="width:50%">説明</th></tr>
 <tr><td valign="top"><a name="desc_path">path</a></td>
     <td valign="top">/path/to/geeklog/</td>
-    <td valign="top">Geeklogの基本パスを指定します（最後にスラッシュ '/' が必要です。）。</td></tr>
+    <td valign="top">Geeklogの基本パスを指定します(最後にスラッシュ '/' が必要です。)。</td></tr>
 <tr><td valign="top"><a name="desc_path_system">path_system</a></td>
     <td valign="top">/path/to/geeklog/system/</td>
-    <td valign="top">Geeklogのシステムライブラリのパスを指定します（最後にスラッシュ '/' が必要です。）。このディレクトリにはGeeklogが使用するライブラリが格納されています。</td></tr>
+    <td valign="top">Geeklogのシステムライブラリのパスを指定します(最後にスラッシュ '/' が必要です。)。このディレクトリにはGeeklogが使用するライブラリが格納されています。</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
   <td valign="top">true</td>
-  <td valign="top">falseにするとGeeklogのサイトを閉鎖できます（メンテナンス作業中など）。<br />
+  <td valign="top">falseにするとGeeklogのサイトを閉鎖できます(メンテナンス作業中など)。<br />
     <a href="#desc_site_disabled_msg">サイト閉鎖用メッセージ(site_disabled_msg)</a>も参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_charset">default_charset</a></td>
@@ -1779,13 +1781,13 @@
 
 <h2><a name="url-rewrite">URLリライト</a></h2>
 
-<p>Geeklogには、単純でありながら役に立つURLリライト機能が含まれており、クローラーに適した（つまり、検索エンジンのインデックス作成用ボットがサイトを訪問しやすくなる）URLを出力できます。この機能は、記事・静的ページ・記事一覧・リンクプラグインのURLでサポートされています。</p>
+<p>Geeklogには、単純でありながら役に立つURLリライト機能が含まれており、クローラーに適した(つまり、検索エンジンのインデックス作成用ボットがサイトを訪問しやすくなる)URLを出力できます。この機能は、記事・静的ページ・記事一覧・リンクプラグインのURLでサポートされています。</p>
 <p>URL書き換えにより、たとえば</p>
 <p style="margin-left:4em;"><tt>http://www.geeklog.net/article.php?story=20021022234959146</tt></p>
 <p>というURLは、</p>
 <p style="margin-left:4em;"><tt>http://www.geeklog.net/article.php/20021022234959146</tt></p>
 <p>となります。1番目の形式のURLを解釈する検索エンジンもありますが、Googleは2番目の形式を好み、1番目の形式を無視するようです。</p>
-<p><strong>注意:</strong>この機能はすべてのWebサーバで機能するとは限りません。Apache（全バージョン）では機能しますが、<acronym title="Internt Information Service">IIS</acronym>（の少なくとも一部のバージョン）では<em>動作しない</em> ことが知られています。サイトを公開する前に検証してください。</p>
+<p><strong>注意:</strong>この機能はすべてのWebサーバで機能するとは限りません。Apache(全バージョン)では機能しますが、<acronym title="Internt Information Service">IIS</acronym>(の少なくとも一部のバージョン)では<em>動作しない</em> ことが知られています。サイトを公開する前に検証してください。</p>
 
 
 <h2><a name="Localization">ローカリゼーション(Localization)</a></h2>
@@ -1800,7 +1802,7 @@
 <code>localdef</code> コマンドに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a><br />を参照してください。</p>
 
 <h3>日時のフォーマット</h3>
-<p>（訳注：以下の表現は、<a href="http://jp.php.net/manual/ja/function.strftime.php">PHPマニュアル</a>の表現を参考に、一部を修正しています。）</p>
+<p>(訳注：以下の表現は、<a href="http://jp.php.net/manual/ja/function.strftime.php">PHPマニュアル</a>の表現を参考に、一部を修正しています。)</p>
 
 <ul>
   <li><tt>%a - 短縮された曜日の現在のロケールに基づいた名前</tt></li>
