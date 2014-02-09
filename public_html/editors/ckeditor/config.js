@@ -83,6 +83,11 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 
+	// Add extra plugins
+	// Makes protected source sections visible and editable.
+	// Especially important for [code]..[/code] and [raw]..[/raw] for Geeklog.
+	config.extraPlugins = 'showprotected';
+
 	// Disable Advanced Content Filter
 	config.allowedContent = true;
 
