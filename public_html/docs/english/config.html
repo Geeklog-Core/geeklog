@@ -634,10 +634,10 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">false</td>
   <td valign="top">Each template contains some internal comments 
   (surrounded with {# #} ) that are removed before the template is sent to the 
-  browser.  If this option is set to True, the {# and #} will become <!-- --> 
-  HTML comments and will be included in the output to the browser.  Also, the 
-  beginning and end of each template, along with it's physical location on the 
-  server, will be included in the output.  This feature is useful if you are 
+  browser.  If this option is set to True, the {# and #} will become &lt!-- --&gt; 
+  HTML comments and will be included in the output to the browser.  Also, at the 
+  beginning and end of each template, its physical location on the 
+  server, will be included in the output only if you are in the Root group and the <code>debug</code> property of the template class is set to the value other than 0.  This feature is useful if you are 
   trying to determine which template controls a specific display item, or when 
   developing a new theme. If this is set to False, the comments are removed 
   prior to sending the output to the browser.</td></tr>    
