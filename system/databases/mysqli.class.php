@@ -580,9 +580,14 @@ class database
         $retval = '';
 
         if ($recordset->data_seek($row)) {
-            $row = $recordset->fetch_row();
+            if (is_numeric($field)) {
+                $field = intval($field, 10);
+                $row = $recordset->fetch_row();
+            } else {
+                $row = $recordset->fetch_assoc();
+            }
 
-            if (($row !== NULL) AND ($field < count($row))) {
+            if (($row !== NULL) AND isset($row[$field])) {
                 $retval = $row[$field];
             }
         }
