@@ -48,8 +48,8 @@ $_UPDATES = array(
     ),
 
     '1.3.0' => array(
-        "ALTER TABLE {$_TABLES['spmax']} ADD counter INT NOT NULL DEFAULT '0'",
-        "ALTER TABLE {$_TABLES['spmax']} ADD regdate datetime NOT NULL default '0000-00-00 00:00:00'"
+        "ALTER TABLE {$_TABLES['spamx']} ADD counter INT NOT NULL DEFAULT '0'",
+        "ALTER TABLE {$_TABLES['spamx']} ADD regdate datetime NOT NULL default '0000-00-00 00:00:00'"
     )
 );
 
