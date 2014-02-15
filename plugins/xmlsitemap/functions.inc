@@ -362,7 +362,8 @@ function XMLSITEMAP_checkChange($name)
 {
     global $_CONF, $_PLUGINS, $_TABLES, $_XMLSMAP_CONF;
 
-    if (count($_XMLSMAP_CONF[$name]) === 0) {
+    if (!in_array($name, array('types', 'priorities', 'frequencies')) ||
+            (count($_XMLSMAP_CONF[$name]) === 0)) {
         return;
     }
 

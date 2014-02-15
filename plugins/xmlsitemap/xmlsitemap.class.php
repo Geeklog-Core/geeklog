@@ -567,10 +567,10 @@ class SitemapXML
 
         if ($sitemap == '') {
             COM_errorLog(__METHOD__ . ': sitemap file name is not specified.');
-            return false;
+            return 0;
         } else if (count($destinations) === 0) {
             COM_errorLog(__METHOD__ . ': target URL is not specified.');
-            return false;
+            return 0;
         }
 
         // Checks for the record of previous pings
@@ -581,7 +581,7 @@ class SitemapXML
         if (($result !== false) && (DB_numRows($result) == 1)) {
             $hasRecord = true;
             list ($A) = DB_fetchArray($result);
-            $records  = json_decode($A);
+            $records  = json_decode($A, true);
         } else {
             $records = array();
         }
