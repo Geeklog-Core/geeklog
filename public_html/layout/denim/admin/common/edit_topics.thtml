@@ -2,8 +2,8 @@
 
 <div id="panel_radio_options" style="vertical-align:top;display:inline-block;{options_hide}">
     <input type="hidden" name="topic_options_hide" value="{topic_options_hide}"{xhtml}>
-    <input type="radio" name="topic_option" value="all" id="topic_option_all" {all_checked}{xhtml}> {lang_all}
-    <input type="radio" name="topic_option" value="homeonly" id="topic_option_homeonly" {homeonly_checked}{xhtml}> {lang_homeonly}
+    <label><input type="radio" name="topic_option" value="all" id="topic_option_all" {all_checked}{xhtml}> {lang_all}</label>
+    <label><input type="radio" name="topic_option" value="homeonly" id="topic_option_homeonly" {homeonly_checked}{xhtml}> {lang_homeonly}</label>
     <span style="{topic_option_hide}"><input type="radio" name="topic_option" id="topic_option_selectedtopics" value="selectedtopics" {selectedtopics_checked}{xhtml}></span>
 </div>
 <div id="panel_topic_options" style="vertical-align:top;display:inline-block;{topic_hide}">
