@@ -98,17 +98,25 @@ $.fn.sortSelect = function() {
 
 // Change topic control display
 function changeTopicControlDisplay() {
-    var $display = ($('#tid option:selected').size() == 0)
+    var $display = '';
+
+    if ($('#panel_radio_options').is(':visible')) {
+        $display = ($('#topic_option_selectedtopics').is(':checked'))
+                 ? 'inline-block' : 'none';
+        $('#panel_topic_options').css('display', $display);
+    }
+
+    $display = ($('#tid option:selected').size() == 0)
                  ? 'none' : 'inline-block';
     if ($('#panel_radio_options').is(':visible') &&
         !$('#topic_option_selectedtopics').is(':checked')) {
         $display = 'none';
     }
-    $inherit = 'none';
+    var $inherit = 'none';
     if ($('input[name="topic_inherit_hide"]').val() == 0) {
         $inherit = $display;
     }
-    $defalut = 'none';
+    var $defalut = 'none';
     if ($('input[name="topic_default_hide"]').val() == 0) {
         $defalut = $display;
     }

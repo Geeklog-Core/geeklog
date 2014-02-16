@@ -438,6 +438,7 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
                 $title =  $_TOPICS[$count_topic]['title'];
                 
                 $retval .= '<option value="' . $id . '"';
+                $retval .= ' title="' . $title . '"';
                 if (in_array($id, $selected_ids)) {
                     $retval .= ' selected="selected"';
                 }
@@ -449,6 +450,7 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
                     $title = $LANG21[47];
                     
                     $retval .= '<option value="' . $id . '"';
+                    $retval .= ' title="' . $title . '"';
                     if (in_array($id, $selected_ids)) {
                         $retval .= ' selected="selected"';
                     }
@@ -460,6 +462,7 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
                     $title = $LANG21[7];
                     
                     $retval .= '<option value="' . $id . '"';
+                    $retval .= ' title="' . $title . '"';
                     if (in_array($id, $selected_ids)) {
                         $retval .= ' selected="selected"';
                     }
@@ -491,6 +494,7 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
                     }
                     
                     $retval .= '<option value="' . $id . '"';
+                    $retval .= ' title="' . $title . '"';
                     
                     if (in_array($id, $selected_ids)) {
                         $retval .= ' selected="selected"';
@@ -930,8 +934,6 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
 //    }
     
     if ($show_options) {
-        $topic_templates->set_var('lang_all', $LANG27[38]);
-        $topic_templates->set_var('lang_homeonly', $LANG27[39]);        
         $topic_templates->set_var('topic_options_hide', '0');
         $topic_info = $LANG27[41];
         if ($topic_option == TOPIC_ALL_OPTION) {
@@ -969,6 +971,10 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
         return '';
     }
    
+    $topic_templates->set_var('lang_all', $LANG27[38]);
+    $topic_templates->set_var('lang_homeonly', $LANG27[39]);
+    $topic_templates->set_var('lang_selected', $LANG27[54]);
+    $topic_templates->set_var('lang_assigned', $LANG27[55]);
     $topic_templates->set_var('lang_inherit', $LANG27[44]);
     $topic_templates->set_var('lang_default', $LANG27[45]);
 
