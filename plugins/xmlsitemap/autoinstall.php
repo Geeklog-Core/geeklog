@@ -64,13 +64,15 @@ function plugin_autoinstall_xmlsitemap($pi_name)
     $features = array(
         'config.' . $pi_name . '.tab_main'   => 'Access to configure general XMLSitemap settings',
         'config.' . $pi_name . '.tab_pri'    => 'Access to configure XMLSitemap priorities',
-        'config.' . $pi_name . '.tab_freq'   => 'Access to configure XMLSitemap update frequency'
+        'config.' . $pi_name . '.tab_freq'   => 'Access to configure XMLSitemap update frequency',
+        'config.' . $pi_name . '.tab_ping'   => 'Access to configure XMLSitemap pings'
     );
 
     $mappings = array(
         'config.' . $pi_name . '.tab_main'   => array($pi_admin),
         'config.' . $pi_name . '.tab_pri'    => array($pi_admin),
-        'config.' . $pi_name . '.tab_freq'   => array($pi_admin)
+        'config.' . $pi_name . '.tab_freq'   => array($pi_admin),
+        'config.' . $pi_name . '.tab_ping'   => array($pi_admin)
     );
 
     $inst_parms = array(

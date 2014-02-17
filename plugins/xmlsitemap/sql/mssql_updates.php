@@ -34,7 +34,7 @@
 */
 
 $_UPDATES = array(
-
+    
     '1.0.0' => array(
         // Set new Tab column to whatever fieldset is
         "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'xmlsitemap'",
@@ -42,8 +42,11 @@ $_UPDATES = array(
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_main', 'Access to configure general XMLSitemap settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_pri', 'Access to configure XMLSitemap priorities', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_freq', 'Access to configure XMLSitemap update frequency', 0)"
+    ), 
+    '1.0.1' => array(
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_freq', 'Access to configure XMLSitemap update ping', 0)"
     )
-
+    
 );
 
 /**
@@ -93,6 +96,31 @@ function xmlsitemap_update_ConfigSecurity_1_0_0()
                 $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
                 DB_query($sql);
             }
+        }
+    }
+
+}
+
+/**
+ * Add is new security rights for the Group "XMLSitemap Admin"
+ *
+ */
+function xmlsitemap_update_ConfigSecurity_1_0_1()
+{
+    global $_TABLES;
+
+    // Add in security rights for XMLSitemap Admin
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                           "grp_name = 'XMLSitemap Admin'");
+
+    if ($group_id > 0) {
+        $ft_name = 'config.xmlsitemap.tab_ping';
+
+        $ft_id = DB_getItem($_TABLES['features'], 'ft_id',
+                            "ft_name = '$ft_name'");
+        if ($ft_id > 0) {
+            $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
+            DB_query($sql);
         }
     }
 

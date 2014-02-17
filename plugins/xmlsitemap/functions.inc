@@ -125,7 +125,14 @@ function plugin_upgrade_xmlsitemap()
             break;
 
         case '1.0.1':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }            
             xmlsitemap_update_ConfValues_1_0_1();
+            xmlsitemap_update_ConfigSecurity_1_0_1();
 
             $current_version = '2.0.0';
             break;
@@ -158,11 +165,12 @@ function plugin_autouninstall_xmlsitemap()
         /* give the full name of the feature, as in the db */
         'features' => array('config.xmlsitemap.tab_main',
                             'config.xmlsitemap.tab_pri',
-                            'config.xmlsitemap.tab_freq'),
+                            'config.xmlsitemap.tab_freq', 
+                            'config.xmlsitemap.tab_ping'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array(),
         /* give all vars with their name */
-        'vars' => array('xmlsitemap_filename', 'xmlsitemap_mobile'),
+        'vars' => array('xmlsitemap_filename', 'xmlsitemap_mobile', 'xmlsitemap.pings'),
     );
 
     XMLSITEMAP_removeSitemapFiles();
