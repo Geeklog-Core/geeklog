@@ -135,7 +135,7 @@ function theme_js_files_modern_curve()
     return array(
        array(
             'file'      => '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js',
-            'footer'    => true, // Not requred, default = true
+            'footer'    => false, // Not requred, default = true
             'priority'  => 100 // Not requred, default = 100
         ),
         array(
