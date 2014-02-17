@@ -47,7 +47,7 @@ class SFSbase
     */
     function CheckForSpam ($post)
     {
-        global $_SPX_CONF;
+        global $_SPX_CONF, $_TABLES;
         
         if (!isset($_SPX_CONF['sfs_enabled'])) {
             $_SPX_CONF['sfs_enabled'] = false;
