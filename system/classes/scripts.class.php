@@ -163,6 +163,10 @@ class scripts {
         $names[] = 'jquery.ui.tabs';
         $names[] = 'jquery.ui.tooltip';
 
+        // jQuery Timepicker Addon (http://trentrichardson.com/examples/timepicker/)
+        $names[] = 'jquery-ui-timepicker-addon';
+        $names[] = 'jquery-ui-slideraccess';
+
         // Set jQuery UI Effects
         $names[] = 'jquery.ui.effect-min'; // core
         $names[] = 'jquery.ui.effect-blind';

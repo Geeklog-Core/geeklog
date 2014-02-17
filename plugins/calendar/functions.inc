@@ -733,10 +733,12 @@ function plugin_submit_calendar($mode = 'master')
     }
     // otherwise non-admin or admin-personal. do personal form or public submission.
 
-    // Loads jQuery UI datepicker
+    // Loads jQuery UI datepicker and timepicker-addon
+    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.slider');
     $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
-    $_SCRIPTS->setJavaScriptFile('datepicker', '/javascript/datepicker.js');
+    $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon');
+    $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');
 
     $langCode = COM_getLangIso639Code();
     $toolTip  = $MESSAGE[118];
@@ -744,8 +746,10 @@ function plugin_submit_calendar($mode = 'master')
 
     $_SCRIPTS->setJavaScript(
         "jQuery(function () {"
-        . "  geeklog.datepicker.set('start', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
-        . "  geeklog.datepicker.set('end', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
+        . "  geeklog.hour_mode = {$_CONF['hour_mode']};"
+        . "  geeklog.datetimepicker.options.stepMinute = 15;"
+        . "  geeklog.datetimepicker.set('start', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
+        . "  geeklog.datetimepicker.set('end', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
         . "});", TRUE, TRUE
     );
 
