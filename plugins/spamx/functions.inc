@@ -136,11 +136,15 @@ function plugin_cclabel_spamx()
  */
 function plugin_getadminoption_spamx()
 {
-    global $_CONF, $LANG_SX00;
+    global $_CONF, $LANG_SX00, $_TABLES;
 
     if (SEC_hasRights('spamx.admin')) {
+        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['spamx']}");
+        $A = DB_fetchArray ($result);
+        $count = $A['cnt'];
+       
         return array($LANG_SX00['plugin_name'],
-            $_CONF['site_admin_url'] . '/plugins/spamx/index.php', '', 'tools');
+            $_CONF['site_admin_url'] . '/plugins/spamx/index.php', $count, 'tools');
     }
 }
 
