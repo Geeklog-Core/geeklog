@@ -840,23 +840,22 @@ function TOPIC_getDataTopicSelectionControl(&$topic_option, &$tids, &$inherit_ti
 function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show_inherit = false, $show_default = false)
 {
     global $_CONF, $LANG27, $_TABLES, $topic, $_SCRIPTS;
-    
+
     $tids = array();
     $inherit_tids = array();
     $default_tid = '';
     // Set Default Topic Option
+    $topic_option = TOPIC_SELECTED_OPTION;
     if ($show_options) {
         $topic_option = TOPIC_ALL_OPTION; // Default to all topics so things will work similar to how topics handled before Geeklog 2.0.0
-    } else {
-        $topic_option = TOPIC_SELECTED_OPTION;
     }
-    
+
     // Do they have any access to topics first?
-    
+
     // Retrieve Topic options
     $from_db = true;
     if (empty($type) || empty($id)) {
-        $from_db = false; 
+        $from_db = false;
     }
     if (!$from_db) {
          // see if a selection control variable is_a set. If not then first time for display of control
@@ -864,24 +863,23 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
             TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
         } else {
             // Figure out if we set current topic for first display or use default topic
-            if ($topic_option == TOPIC_SELECTED_OPTION AND empty($tids)) {
+            if ($topic_option == TOPIC_SELECTED_OPTION && empty($tids)) {
                 if ($topic == '') {
-                    $tids = (DB_getItem($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND')));
+                    $tids = DB_getItem($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND'));
                 } else {
                     $tids = $topic;
                 }
             }
         }
-    } else {    
+    } else {
         $sql = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
-    
+
         $result = DB_query($sql);
         $B = DB_fetchArray($result);
         $nrows = DB_numRows($result);
         if ($nrows > 0) {
             if ($B['tid'] == TOPIC_ALL_OPTION || $B['tid'] == TOPIC_HOMEONLY_OPTION) {
                 $topic_option = $B['tid'];
-                $A['tid'] ='';
             } else {
                 $topic_option = TOPIC_SELECTED_OPTION;
                 $tids = array();
@@ -891,7 +889,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
                 }
                 if ($B['tdefault'] == 1) {
                     $default_tid = $B['tid'];
-                }        
+                }
                 for ($i = 1; $i < $nrows; $i++) {
                     $B = DB_fetchArray($result);
                     $tids[] = $B['tid'];
@@ -915,102 +913,102 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
 
     $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/common');
     $topic_templates->set_file(array('editor' => 'edit_topics.thtml'));
-    
+
     $_SCRIPTS->setJavaScriptLibrary('jquery');
     $_SCRIPTS->setJavascriptFile('topic_control', '/javascript/topic_control.js');
-    
-    $topiclist = TOPIC_getTopicListSelect($tids, false);
-    if ($topiclist == '') { // Topics do not exist
-        $topic_templates->set_var('topic_option_hide', 'display: none;');
-        $topic_templates->set_var('topic_hide', 'display: none;');
-    } else {
-        $topic_templates->set_var('topic_options', $topiclist);
-    }
-    
-//    // If no topic selection then do not show inherit or default
-//    if (empty($tids)) {
-//        $show_inherit = false;
-//        $show_default = false;
-//    }
-    
-    if ($show_options) {
-        $topic_templates->set_var('topic_options_hide', '0');
-        $topic_info = $LANG27[41];
-        if ($topic_option == TOPIC_ALL_OPTION) {
-            $topic_templates->set_var('all_checked', 'checked="checked"');
-            $topic_templates->set_var('homeonly_checked', '');
-            $topic_templates->set_var('selectedtopics_checked', '');
-            
-//            $show_inherit = false;
-//            $show_default = false;            
-        } elseif ($topic_option == TOPIC_HOMEONLY_OPTION) {
-            $topic_templates->set_var('all_checked', '');
-            $topic_templates->set_var('homeonly_checked', 'checked="checked"');
-            $topic_templates->set_var('selectedtopics_checked', '');
 
-//            $show_inherit = false;
-//            $show_default = false;            
-        } else{
-            $topic_templates->set_var('homeonly_checked', '');
-            
-            // if no topics found cannot check so set default
-            if ($topiclist == '') {
-                $topic_templates->set_var('all_checked', 'checked="checked"');
-                $topic_templates->set_var('selectedtopics_checked', '');
-            } else {
-                $topic_templates->set_var('all_checked', '');
-                $topic_templates->set_var('selectedtopics_checked', 'checked="checked"');
-            }
-        }
-    } else {
-        $topic_templates->set_var('options_hide', 'display: none;');
-        $topic_templates->set_var('topic_options_hide', '1');          
-    }
-    
+    $topiclist = TOPIC_getTopicListSelect($tids, false);
     if (!$show_options && $topiclist == '') { // If access to no topics return nothing
         return '';
     }
-   
-    $topic_templates->set_var('lang_all', $LANG27[38]);
+
+    $topic_hide = false; // If false then topics multi select box will be visible
+    $val_hide = 'display:none;';
+    if ($topiclist == '') { // Topics do not exist
+        $topic_hide = true;
+        $topic_templates->set_var('topic_option_hide', $val_hide);
+    } else {
+        $topic_templates->set_var('topic_options', $topiclist);
+    }
+
+    if ($show_options && $topic_option !== TOPIC_SELECTED_OPTION) {
+        $topic_hide = true;
+    }
+    $inherit_hide = true; // If false then inhert topic selection will be visible
+    $default_hide = true; // If false then default topic selection will be visible
+    if (!$topic_hide) {
+        $inherit_hide = $show_inherit ? false : true;
+        $default_hide = $show_default ? false : true;
+    }
+
+    if ($show_options) {
+        $topic_templates->set_var('topic_options_hide', '0');
+        $topic_info = $LANG27[41];
+        $val_checked = 'checked="checked"';
+        $all_checked            = ($topic_option == TOPIC_ALL_OPTION)      ? $val_checked : '';
+        $homeonly_checked       = ($topic_option == TOPIC_HOMEONLY_OPTION) ? $val_checked : '';
+        $selectedtopics_checked = ($topic_option == TOPIC_SELECTED_OPTION) ? $val_checked : '';
+        // if no topics found cannot check so set default
+        if ($topic_option == TOPIC_SELECTED_OPTION && $topiclist == '') {
+            $all_checked = $val_checked;
+            $selectedtopics_checked = '';
+        }
+        $topic_templates->set_var('all_checked', $val_checked);
+        $topic_templates->set_var('homeonly_checked', $homeonly_checked);
+        $topic_templates->set_var('selectedtopics_checked', $selectedtopics_checked);
+    } else {
+        $topic_templates->set_var('options_hide', $val_hide);
+        $topic_templates->set_var('topic_options_hide', '1');
+    }
+
+    $opt_dummy = '<option value="dummy">dummy</option>';
+    $inherit_options = $opt_dummy;
+    $topic_inherit_hide = '1';
+    if ($show_inherit) {
+        $topic_inherit_hide = '0';
+        $topic_info .= $LANG27[42];
+        if (!empty($inherit_tids)) {
+            if ($from_db) {
+                $inherit_options = TOPIC_getOtherListSelect($type, $id, $inherit_tids);
+            } else {
+                $inherit_options = TOPIC_getOtherListSelect($type, $id, $inherit_tids, $tids);
+            }
+        } else {
+            $inherit_hide = true;
+        }
+    }
+
+    $default_options = $opt_dummy;
+    $topic_default_hide = '1';
+    if ($show_default) {
+        $topic_default_hide = '0';
+        $topic_info .= $LANG27[43];
+        if (!empty($default_tid)) {
+            if ($from_db) {
+                $default_options = TOPIC_getOtherListSelect($type, $id, $default_tid);
+            } else {
+                $default_options = TOPIC_getOtherListSelect($type, $id, $default_tid, $tids);
+            }
+        } else {
+            $default_hide = true;
+        }
+    }
+
+    $topic_templates->set_var('topic_inherit_hide', $topic_inherit_hide);
+    $topic_templates->set_var('inherit_options',    $inherit_options);
+    $topic_templates->set_var('topic_default_hide', $topic_default_hide);
+    $topic_templates->set_var('default_options',    $default_options);
+    $topic_templates->set_var('topic_hide',   $topic_hide   ? $val_hide : '');
+    $topic_templates->set_var('inherit_hide', $inherit_hide ? $val_hide : '');
+    $topic_templates->set_var('default_hide', $default_hide ? $val_hide : '');
+    $topic_templates->set_var('info_hide', '');
+    $topic_templates->set_var('topic_info', $topic_info);
+    $topic_templates->set_var('lang_all',      $LANG27[38]);
     $topic_templates->set_var('lang_homeonly', $LANG27[39]);
     $topic_templates->set_var('lang_selected', $LANG27[54]);
     $topic_templates->set_var('lang_assigned', $LANG27[55]);
-    $topic_templates->set_var('lang_inherit', $LANG27[44]);
-    $topic_templates->set_var('lang_default', $LANG27[45]);
-
-    if ($show_inherit) {
-//        $topic_templates->set_var('lang_inherit', $LANG27[44]);
-        $topic_templates->set_var('topic_inherit_hide', '0');
-        $topic_info .= $LANG27[42];
-        if ($from_db) {
-            $topic_templates->set_var('inherit_options', TOPIC_getOtherListSelect($type, $id, $inherit_tids));
-        } else {
-            $topic_templates->set_var('inherit_options', TOPIC_getOtherListSelect($type, $id, $inherit_tids, $tids));
-        }
-    } else {
-//        $topic_templates->set_var('inherit_hide', 'display: none;');
-        $topic_templates->set_var('topic_inherit_hide', '1');
-        $topic_templates->set_var('inherit_options', '<option value="dummy">dummy</option>');
-    }
-    
-    if ($show_default) {
-//        $topic_templates->set_var('lang_default', $LANG27[45]);
-        $topic_templates->set_var('topic_default_hide', '0');
-        $topic_info .= $LANG27[43];
-        if ($from_db) {
-            $topic_templates->set_var('default_options', TOPIC_getOtherListSelect($type, $id, $default_tid));
-        } else {
-            $topic_templates->set_var('default_options', TOPIC_getOtherListSelect($type, $id, $default_tid, $tids));
-        }
-    } else {
-//        $topic_templates->set_var('default_hide', 'display: none;');
-        $topic_templates->set_var('topic_default_hide', '1');
-        $topic_templates->set_var('default_options', '<option value="dummy">dummy</option>');
-    }
-
-    $topic_templates->set_var('info_hide', '');
-    $topic_templates->set_var('topic_info', $topic_info);
-    
+    $topic_templates->set_var('lang_inherit',  $LANG27[44]);
+    $topic_templates->set_var('lang_default',  $LANG27[45]);
     $topic_templates->parse('output', 'editor');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
 
