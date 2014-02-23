@@ -165,6 +165,7 @@ class scripts {
 
         // jQuery Timepicker Addon (http://trentrichardson.com/examples/timepicker/)
         $names[] = 'jquery-ui-timepicker-addon';
+        $names[] = 'jquery-ui-timepicker-addon-i18n';
         $names[] = 'jquery-ui-slideraccess';
 
         // Set jQuery UI Effects
