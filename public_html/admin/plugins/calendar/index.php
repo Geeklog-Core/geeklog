@@ -83,6 +83,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon');
+    $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon-i18n');
     $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');
 
     // Add JavaScript

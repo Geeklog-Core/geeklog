@@ -107,7 +107,7 @@ function changeTopicControlDisplay() {
     }
 
     $display = ($('#tid option:selected').size() == 0)
-                 ? 'none' : 'inline-block';
+             ? 'none' : 'inline-block';
     if ($('#panel_radio_options').is(':visible') &&
         !$('#topic_option_selectedtopics').is(':checked')) {
         $display = 'none';
@@ -123,7 +123,3 @@ function changeTopicControlDisplay() {
     $('#panel_inherit_options').css('display', $inherit);
     $('#panel_default_options').css('display', $defalut);
 }
-
-$(function() {
-    changeTopicControlDisplay();
-});
