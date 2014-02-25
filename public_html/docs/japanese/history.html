@@ -356,7 +356,7 @@
   <li>スタートアップ時にSQLエラーの記録を行うようにしました。[Dirk]</li>
   <li>プラグインのロード順をコンフィギュレーションで設定できるようにしました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001247">#0001247</a>,
     パッチ提供: Rouslan Placella)</li>
-  <li>プラグインリストがステータスでソートできるようにしました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001249">#0001249</a>, 提供:
+  <li>プラグインリストをステータスで並べ替えできるようにしました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001249">#0001249</a>, 提供:
     Rouslan Placella)</li>
   <li>PLG_getFooterCode関数が追加され、footerにテーマ変数{plg_footercode}が
     使用できるようになりました。これで、たとえばJavaScriptコードなどをできる
@@ -610,7 +610,7 @@
   <li>アドバンストエディターFCKeditorで、許可されたhtmlタグと自動タグの表示における
   バグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1020">#0001020</a>, パッチ提供: Chetan)</li>
-  <li>日付による検索結果表示のソートのバグを修正しました。
+  <li>日付による検索結果表示の並べ替えのバグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1002">#0001002</a>) [Sami]</li>
   <li>期限切れのセキュリティトークンの再認証ができるようになったので、セキュティ・
   トークンの期限を表示する必要がなくなりました。例外: OpenID によるログインユーザーは
@@ -764,7 +764,7 @@
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1043">#0001043</a>) [Dirk]</li>
   <li>メタタグを無効にしている場合、静的ページ編集画面にメタタグのフォームを表示しないようにしました。[Dirk]</li>
   <li>コメント停止中の静的ページで、印刷用ページの空の角括弧の組を出なくしました。[Dirk]</li>
-  <li>静的ページ管理画面のリスト表示におけるソートのデフォルトを追加しました。
+  <li>静的ページ管理画面のリスト表示における並べ替えのデフォルトを追加しました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=812">#0000812</a>) [Dirk]</li>
   <li>FCKeditor利用時の場合の静的ページ編集エリアの初期サイズを大きくしました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=1037">#0001037</a>) [Dirk]</li>
@@ -817,7 +817,7 @@
 <ul>
   <li>検索結果の署名が緑色にハードコードされていたのをスタイルシート("searchresult-byline"クラス追加)で指定するように変更しました(検索結果をGoogle風に表示するとき) [Dirk] </li>
   <li>「検索条件の修正」で「タイトルのみ」というチェックボックスの状態がページ間で維持されていなかったバグを修正しました。[Dirk]<br />注: このバグを修正するには search/searchform.thtml テンプレートを修正する必要があります。</li>
-  <li>検索結果のページで「ソート...」と「検索結果xx件」ドロップダウンリストの表示を改善しました(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=910">#0000910</a>)。[Sami, LWC]</li>
+  <li>検索結果のページで「並べ替え...」と「検索結果xx件」ドロップダウンリストの表示を改善しました(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=910">#0000910</a>)。[Sami, LWC]</li>
   <li>検索結果でXHTMLを指定しているときでもHTMLの&lt;br&gt;タグを使用していました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1022">#0001022</a>, パッチ提供: taca)</li>
   <li>'data'ディレクトリがない場合に間違ったパスが報告されるバグを修正しました。(報告: Markus Wollschlager) [Dirk]</li>
   <li>管理者メニューでプラグインが0個のアイテムを返す場合に'N/A'と表示していたバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1025">#0001025</a>) [Dirk]</li>
@@ -855,7 +855,7 @@
   <li>話題の並べ換え順フィールドで128以上の数値を指定できるようになりました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=1011">#0001011</a>)[Dirk]</li>
   <li>Story Adminが記事の編集権限を持たないとき、Geeklogは"access denied"を表示しようとして"call to a member function on a non-object"エラーを発生させていました。(報告: Chase and Cesar) [Dirk]</li>
   <li>外部アプリケーションが検索結果に出力を送れるようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=985">#0000985</a>)[Sami]</li>
-  <li>検索結果で、現在のソート順/表示数の上限を維持するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1007">#0001007</a>) [Sami]</li>
+  <li>検索結果で、現在の並べ替え順/表示数の上限を維持するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1007">#0001007</a>) [Sami]</li>
   <li>記事へのコメントが許可されていないときにコメントフォームを表示しないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=994">#0000994</a>) [Dirk]</li>
   <li>ユーザーの投稿を承認/却下した後で管理者パネルの承認待ちが更新されない古いバグを修正しました。[Dirk]</li>
   <li>プラグインの自動インストールで複数のプラグイングループの作成に関するバグを修正しました。[Randy, Dirk]</li>
@@ -1027,7 +1027,7 @@
 
 <h3>1.6.0b2からの変更点:</h3>
 <ul>
-  <li>検索結果のソートと制限のコンボボックスで、IE6とSafariでの互換性の問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=874">#0000874</a>の一部) [Sami]</li>
+  <li>検索結果の並べ替えと制限のコンボボックスで、IE6とSafariでの互換性の問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=874">#0000874</a>の一部) [Sami]</li>
   <li>コンフィギュレーションのHTMLの誤りを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=907">#0000907</a>) [Dirk]</li>
   <li>インストール・スクリプトを削除するように、より目立つ念押しの表示を追加しました。[Dirk]</li>
   <li>プラグインで、コメント・バーから親のオブジェクト(記事と静的ページ)へのリンクが適切に動作するようにしました。[Dirk]</li>
@@ -1130,7 +1130,7 @@
   <ul>
     <li>ウェブサービスは無効にしました。</li>
     <li>cronjobのエミュレーションはoffです。</li>
-    <li>デフォルトの話題のソート順序はアルファベット順です。</li>
+    <li>デフォルトの話題の並べ替え順序はアルファベット順です。</li>
     <li>デフォルトのコメントの表示モードは入れ子です。</li>
   </ul>
   これらの設定は、以前のバージョンのGeeklogから更新する場合は<strong>変わりません。</strong></li>
@@ -1330,7 +1330,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>インストールスクリプトがdb-config.phpを探せない場合に、メッセージは常に英語としました。つまり画面上、言語の変更ができないようにしました。[Dirk]</li>
   <li>1.5.0以前のGeeklogからのアップグレードの場合、plugin
     config.phpファイルはリネームしないようにしました。[Dirk]</li>
-  <li>ソートできなかった管理画面の項目をソート可能としました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=791">#0000791</a>, 報告とパッチ提供: hiroron)</li>
+  <li>並べ替えできなかった管理画面の項目を並べ替え可能としました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=791">#0000791</a>, 報告とパッチ提供: hiroron)</li>
   <li>STORY_getItemInfoを修正して、未来の日付とドラフトフラグのチェックをするようにしました。[mystral-kk,
     Dirk]</li>
   <li>COM_getPermSQLでのCOM_isAnonUserの誤用を訂正しました。(1.5.0以降) [Dirk]</li>
