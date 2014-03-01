@@ -155,6 +155,7 @@ geeklog.datetimepicker = {
 
         // Sets default locale
         $.datepicker.setDefaults($.datepicker.regional[langCode]);
+        $.timepicker.setDefaults($.timepicker.regional[langCode]);
 
         // Set options for datetimepickers
         this.options.buttonImage = imgUrl;
