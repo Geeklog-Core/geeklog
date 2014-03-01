@@ -51,8 +51,6 @@ pre {
   white-space: pre;
   border: 1px solid #DDD;
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
 }
 
 q:before {
@@ -156,8 +154,6 @@ fieldset {
   margin: 0 0 1em 0;
   padding: 8px 12px;
   border: 1px solid #CCC;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
   border-radius: 4px;
 }
 
@@ -251,8 +247,6 @@ select {
   border: 1px solid #ccc;
   padding: 4px;
   outline: none;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
   border-radius: 3px;
   font-size: 13px;
   color: #555;
@@ -281,8 +275,6 @@ input[type="email"]:focus,
 textarea:focus {
   border: 1px solid #aaa;
   color: #222;
-  -moz-box-shadow: 0 0 3px rgba(0,0,0,.2);
-  -webkit-box-shadow: 0 0 3px rgba(0,0,0,.2);
   box-shadow:  0 0 3px rgba(0,0,0,.2);
 }
 
@@ -294,18 +286,14 @@ input[type="submit"],
 input[type="reset"],
 input[type="button"] {
   background: #eee; /* Old browsers */
-  background: #eee -moz-linear-gradient(top, rgba(255,255,255,.2) 0%, rgba(0,0,0,.2) 100%); /* FF3.6+ */
-  background: #eee -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,.2)), color-stop(100%,rgba(0,0,0,.2))); /* Chrome,Safari4+ */
   background: #eee -webkit-linear-gradient(top, rgba(255,255,255,.2) 0%,rgba(0,0,0,.2) 100%); /* Chrome10+,Safari5.1+ */
   background: #eee -o-linear-gradient(top, rgba(255,255,255,.2) 0%,rgba(0,0,0,.2) 100%); /* Opera11.10+ */
   background: #eee -ms-linear-gradient(top, rgba(255,255,255,.2) 0%,rgba(0,0,0,.2) 100%); /* IE10+ */
-  background: #eee linear-gradient(top, rgba(255,255,255,.2) 0%,rgba(0,0,0,.2) 100%); /* W3C */
+  background: #eee linear-gradient(to bottom, rgba(255,255,255,.2) 0%,rgba(0,0,0,.2) 100%); /* W3C */
   border: 1px solid #aaa;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
   padding: 4px 9px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
   border-radius: 3px;
   color: #444;
   display: inline-block;
@@ -324,12 +312,10 @@ input[type="reset"]:hover,
 input[type="button"]:hover {
   color: #222;
   background: #ddd; /* Old browsers */
-  background: #ddd -moz-linear-gradient(top, rgba(255,255,255,.3) 0%, rgba(0,0,0,.3) 100%); /* FF3.6+ */
-  background: #ddd -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,.3)), color-stop(100%,rgba(0,0,0,.3))); /* Chrome,Safari4+ */
   background: #ddd -webkit-linear-gradient(top, rgba(255,255,255,.3) 0%,rgba(0,0,0,.3) 100%); /* Chrome10+,Safari5.1+ */
   background: #ddd -o-linear-gradient(top, rgba(255,255,255,.3) 0%,rgba(0,0,0,.3) 100%); /* Opera11.10+ */
   background: #ddd -ms-linear-gradient(top, rgba(255,255,255,.3) 0%,rgba(0,0,0,.3) 100%); /* IE10+ */
-  background: #ddd linear-gradient(top, rgba(255,255,255,.3) 0%,rgba(0,0,0,.3) 100%); /* W3C */
+  background: #ddd linear-gradient(to bottom, rgba(255,255,255,.3) 0%,rgba(0,0,0,.3) 100%); /* W3C */
   border: 1px solid #888;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
@@ -342,12 +328,10 @@ input[type="reset"]:active,
 input[type="button"]:active {
   border: 1px solid #666;
   background: #ccc; /* Old browsers */
-  background: #ccc -moz-linear-gradient(top, rgba(255,255,255,.35) 0%, rgba(10,10,10,.4) 100%); /* FF3.6+ */
-  background: #ccc -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,.35)), color-stop(100%,rgba(10,10,10,.4))); /* Chrome,Safari4+ */
   background: #ccc -webkit-linear-gradient(top, rgba(255,255,255,.35) 0%,rgba(10,10,10,.4) 100%); /* Chrome10+,Safari5.1+ */
   background: #ccc -o-linear-gradient(top, rgba(255,255,255,.35) 0%,rgba(10,10,10,.4) 100%); /* Opera11.10+ */
   background: #ccc -ms-linear-gradient(top, rgba(255,255,255,.35) 0%,rgba(10,10,10,.4) 100%); /* IE10+ */
-  background: #ccc linear-gradient(top, rgba(255,255,255,.35) 0%,rgba(10,10,10,.4) 100%); /* W3C */
+  background: #ccc linear-gradient(to bottom, rgba(255,255,255,.35) 0%,rgba(10,10,10,.4) 100%); /* W3C */
 }
 
 .button.full-width,
@@ -1833,11 +1817,8 @@ div.third-party-login {
 }
 .gl-tooltip:hover span {
   border-radius: 8px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
   box-shadow: 2px 2px 8px #666;
   -webkit-box-shadow: 2px 2px 8px #666;
-  -moz-box-shadow: 2px 2px 8px #666;
   font-size: 1em;
   text-align: right; /* rtl */
   white-space:normal;
@@ -1916,8 +1897,6 @@ span.warning  em { color: #CE5C00; }
   padding: 3px;
   background: none repeat scroll 0 0 #EEE;
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
 }
 
 #commentbar:after {
@@ -2163,25 +2142,17 @@ span.warning  em { color: #CE5C00; }
   border-right-width: 1px; /* rtl */
   margin: 0;
   color: #111;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
   border-bottom-color: #FFF;
 }
 
 .li-navlist:first-child a {
   border-width: 1px;
-  -moz-border-radius-topright: 3px; /* rtl */
-  -webkit-border-top-right-radius: 3px; /* rtl */
   border-top-right-radius: 3px; /* rtl */
 }
 
 .li-navlist:last-child a {
-  -moz-border-radius-topleft: 3px; /* rtl */
-  -webkit-border-top-left-radius: 3px; /* rtl */
   border-top-left-radius: 3px; /* rtl */
 }
 
@@ -2463,8 +2434,6 @@ dd#profile-user_photo {
   padding: 10px 5px;
   line-height: 1.25;
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
