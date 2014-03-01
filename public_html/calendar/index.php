@@ -823,13 +823,9 @@ if ($mode == 'personal') {
 
 $smallcal_prev = getSmallCalendar ($prevmonth, $prevyear, $mode);
 $cal_templates->set_var ('previous_months_calendar', $smallcal_prev);
-$cal_templates->set_var ('previous_months_cal',
-                         '<font size="-2">' . LB . $smallcal_prev . '</font>');
 
 $smallcal_next = getSmallCalendar ($nextmonth, $nextyear, $mode);
 $cal_templates->set_var ('next_months_calendar', $smallcal_next);
-$cal_templates->set_var ('next_months_cal',
-                         '<font size="-2">' . LB . $smallcal_next . '</font>');
 
 $cal_templates->set_var('cal_prevmo_num', $prevmonth);
 $cal_templates->set_var('cal_prevyr_num', $prevyear);
