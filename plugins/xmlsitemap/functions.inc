@@ -298,10 +298,6 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
         $pingTargets[] = 'bing';
     }
 
-    if (isset($_XMLSMAP_CONF['ping_ask']) && $_XMLSMAP_CONF['ping_ask']) {
-        $pingTargets[] = 'ask';
-    }
-
     if (count($pingTargets) > 0) {
         $sitemap->sendPing($pingTargets);
     }

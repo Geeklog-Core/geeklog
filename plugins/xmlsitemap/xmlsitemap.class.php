@@ -554,7 +554,7 @@ class SitemapXML
     *
     * @param    array of string    $destinations    an array of search engine
     *                                               types.  Currently supported are
-    *                                               'google', 'bing' and 'ask'.
+    *                                               'google' and 'bing'.
     * @return   int                the number of successful pings
     */
     public function sendPing(array $destinations)
@@ -601,17 +601,12 @@ class SitemapXML
 
             switch ($dest) {
                 case 'google':
-                    $url = 'http://www.google.com/webmasters/tools/ping?sitemap='
+                    $url = 'www.google.com/webmasters/tools/ping?sitemap='
                          . urlencode($sitemap);
                     break;
 
                 case 'bing':
-                    $url = 'http://www.bing.com/webmaster/ping.aspx?sitemap='
-                         . urlencode($sitemap);
-                    break;
-
-                case 'ask':
-                    $url = 'http://submissions.ask.com/ping?sitemap='
+                    $url = 'http://www.bing.com/ping?sitemap='
                          . urlencode($sitemap);
                     break;
 

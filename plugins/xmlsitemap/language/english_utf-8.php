@@ -53,7 +53,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'frequencies'         => '',
     'ping_google'         => 'Send ping to Google',
     'ping_bing'           => 'Send ping to Bing',
-    'ping_ask'            => 'Send ping to Ask',
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(

@@ -49,7 +49,6 @@ $LANG_confignames['xmlsitemap'] = array(
     'frequencies' => '',
     'ping_google' => 'Googleにpingを送信する',
     'ping_bing' => 'Bingにpingを送信する',
-    'ping_ask' => 'Askにpingを送信する',
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
