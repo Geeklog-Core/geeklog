@@ -46,12 +46,6 @@ function update_addFilemanager()
     $configAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Configuration Admin' ");
     $storyAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin' ");
 
-    if (DB_count($_TABLES['groups'], 'grp_name', 'Static Page Admin') == 1) {
-        $staticPageAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin' ");
-    } else {
-        $staticPageAdminId = NULL;
-    }
-
     // Add Filemanager Admin group
     DB_query("INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (null, 'Filemanager Admin', 'Has full access to File Manager', 1);");
     $groupId = DB_insertId();
@@ -75,11 +69,6 @@ function update_addFilemanager()
     // Add access rights
     DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['filemanager.admin']}, {$groupId}) ");
     DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['filemanager.admin']}, {$storyAdminId}) ");
-
-    if ($staticPageAdminId !== NULL) {
-        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['filemanager.admin']}, {$staticPageAdminId}) ");
-    }
-
     DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_general']}, {$configAdminId}) ");
 	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_upload']}, {$configAdminId}) ");
 	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_images']}, {$configAdminId}) ");
