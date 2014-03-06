@@ -20,6 +20,7 @@ system/lib-custom.php
 
 public_html/.htaccess
 public_html/sitemap.xml
+public_html/filemanager/scripts/filemanager.config.js
 
 # test framework, if present
 public_html/tests
