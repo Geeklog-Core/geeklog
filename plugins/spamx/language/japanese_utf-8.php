@@ -170,7 +170,7 @@ $LANG_confignames['spamx'] = array(
     'sfs_enabled' => 'Stop Forum Spamモジュールを有効にする',
     'sfs_confidence' => '信頼スコアの閾値',
     'snl_enabled' => 'Spam Number of Linksモジュールを有効にする',
-    'snl_num_links' => 'リンクの数'    
+    'snl_num_links' => 'リンクの数'
 );
 
 $LANG_configsubgroups['spamx'] = array(

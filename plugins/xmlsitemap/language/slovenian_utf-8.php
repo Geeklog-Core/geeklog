@@ -46,7 +46,9 @@ $LANG_confignames['xmlsitemap'] = array(
     'types' => 'Vsebina kazala strani',
     'exclude' => 'Vtièniki za ikljuèitev iz kazala strani',
     'priorities' => '',
-    'frequencies' => ''
+    'frequencies' => '',
+    'ping_google' => 'Send ping to Google',
+    'ping_bing' => 'Send ping to Bing'
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
@@ -56,13 +58,15 @@ $LANG_configsubgroups['xmlsitemap'] = array(
 $LANG_tab['xmlsitemap'] = array(
     'tab_main' => 'XMLSitemap Main Settings',
     'tab_pri' => 'Priority',
-    'tab_freq' => 'Update frequency'
+    'tab_freq' => 'Update frequency',
+    'tab_ping' => 'Ping'
 );
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => ' Glavne nastavitve XML kazala strani',
     'fs_pri' => 'Prioriteta (prednastavljena = 0.5, najnižja = 0.0, najvišja = 1.0)',
-    'fs_freq' => 'Pogostost posodobitev'
+    'fs_freq' => 'Pogostost posodobitev',
+    'fs_ping' => 'Send ping on updating sitemap'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

@@ -46,7 +46,9 @@ $LANG_confignames['xmlsitemap'] = array(
     'types' => 'תוכן ה-sitemap',
     'exclude' => 'Plugins שלא יכללו ב-sitemap',
     'priorities' => '',
-    'frequencies' => ''
+    'frequencies' => '',
+    'ping_google' => 'Send ping to Google',
+    'ping_bing' => 'Send ping to Bing'
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
@@ -56,13 +58,15 @@ $LANG_configsubgroups['xmlsitemap'] = array(
 $LANG_tab['xmlsitemap'] = array(
     'tab_main' => 'הגדרות כלליות של XMLSitemap',
     'tab_pri' => 'עדיפות',
-    'tab_freq' => 'תכיפות עדכונים'
+    'tab_freq' => 'תכיפות עדכונים',
+    'tab_ping' => 'Ping'
 );
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'ההגדרות הכלליות של XMLSitemap',
     'fs_pri' => 'עדיפות (ברירת המחדל = 0.5, הכי נמוך = 0.0, הכי גבוה = 1.0)',
-    'fs_freq' => 'תדירות עדכונים'
+    'fs_freq' => 'תדירות עדכונים',
+    'fs_ping' => 'Send ping on updating sitemap'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

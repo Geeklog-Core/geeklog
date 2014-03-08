@@ -161,7 +161,10 @@ $LANG_confignames['spamx'] = array(
     'notification_email' => 'Teavituskiri',
     'logging' => 'Luba logimine',
     'timeout' => 'Ajapiir',
+    'max_age' => 'Max Age of Records',
+    'records_delete' => 'Record Types to Delete',
     'sfs_enabled' => 'Enable SFS',
+    'sfs_confidence' => 'Confidence Threshold',
     'snl_enabled' => 'Enable SNL',
     'snl_num_links' => 'Number of links'
 );

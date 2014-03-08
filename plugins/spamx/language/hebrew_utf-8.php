@@ -160,7 +160,10 @@ $LANG_confignames['spamx'] = array(
     'notification_email' => 'התרעה בהודעת אימייל',
     'logging' => 'איפשור לוג',
     'timeout' => 'פקיעת זמן מוקצב',
+    'max_age' => 'Max Age of Records',
+    'records_delete' => 'Record Types to Delete',
     'sfs_enabled' => 'איפשור SFS',
+    'sfs_confidence' => 'Confidence Threshold',
     'snl_enabled' => 'איפשור SNL',
     'snl_num_links' => 'מספר הקישורים'
 );
