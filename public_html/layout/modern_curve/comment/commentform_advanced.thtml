@@ -41,8 +41,6 @@
           </dd>
         </dl>
     
-        {captcha}
-    
         <dl class="importantstuff">
           <dt>{lang_importantstuff}</dt>
           <dd>
@@ -55,6 +53,8 @@
             </ul>
           </dd>
         </dl>
+        
+        {captcha}
     
         <ul class="submit">
           <li><input type="submit" name="{nprefix}mode" value="{lang_preview}" class="submit"{xhtml}></li>
