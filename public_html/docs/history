@@ -32,6 +32,7 @@ Geeklog History/Changes:
 - jQuery can now be included in the header [Tom]
 - Updated to jQuery 1.10.2 and jQuery UI to 1.10.3 [Tom]
 - Added a Filemanager [Kenji ITO]
+- Added timepicker jQuery control [Dengen]
 
 Mar 29, 2013 (2.0.0)
 ------------
