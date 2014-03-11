@@ -7,7 +7,7 @@ Geeklog History/Changes:
   files will be used unless they are included in the new theme directory [Tom]
 - Added configruable caching support for blocks (regular and gldefault), 
   staticpages and articles [Tom]
-- Speed increases by caching topic tree structire [Tom]
+- Speed increases by caching topic tree structure [Tom]
 - What's Related article block now includes all Topics. Can set length of titles 
   [Tom]
 - Articles now list what Topics they are filed under. [Tom]
@@ -31,7 +31,7 @@ Geeklog History/Changes:
 - Updated Hebrew language files, provided by LWC
 - jQuery can now be included in the header [Tom]
 - Updated to jQuery 1.10.2 and jQuery UI to 1.10.3 [Tom]
-- Added Filemanager [Kenji ITO]
+- Added a Filemanager [Kenji ITO]
 
 Mar 29, 2013 (2.0.0)
 ------------
