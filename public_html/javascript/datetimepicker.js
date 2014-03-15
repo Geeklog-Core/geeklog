@@ -136,7 +136,7 @@ geeklog.datetimepicker = {
     * @return  (void)
     */
     set: function (selectorName, langCode, toolTip, imgUrl) {
-        var $ = jQuery, inputId, dt;
+        var $ = jQuery, inputId, dt, tt;
 
         // Checks parameters
         if (!selectorName) {
@@ -186,7 +186,11 @@ geeklog.datetimepicker = {
             $("select[name='" + selectorName + "_hour']").val(dt.substr(11, 2));
             $("select[name='" + selectorName + "_minute']").val(dt.substr(14, 2));
             if (geeklog.hour_mode == 12) {
-                $("select[name='" + selectorName + "_ampm']").val(dt.substr(17, 2));
+                tt = dt.substr(17);
+                if (tt != 'am' && tt != 'pm') {
+                    tt = ($.inArray(tt, $.timepicker._defaults.amNames) == -1) ? 'pm' : 'am';
+                }
+                $("select[name='" + selectorName + "_ampm']").val(tt);
             }
         });
 
