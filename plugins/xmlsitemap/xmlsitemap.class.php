@@ -601,7 +601,7 @@ class SitemapXML
 
             switch ($dest) {
                 case 'google':
-                    $url = 'www.google.com/webmasters/tools/ping?sitemap='
+                    $url = 'http://www.google.com/webmasters/tools/ping?sitemap='
                          . urlencode($sitemap);
                     break;
 
