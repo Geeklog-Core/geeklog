@@ -736,7 +736,7 @@ function _postprocess($str)
                 if ($this->debug & 4) {
                     echo "<p><b>subst:</b> varname $varname does not reference a file</p>\n";
                 }
-                return true;
+                return "";
             }
 
             if (!is_readable($filename)) {
@@ -744,7 +744,7 @@ function _postprocess($str)
                 if ($this->debug & 4) {
                     echo "<p><b>subst:</b> file $filename Does Not Exist or is not readable</p>\n";
                 }
-                return true;
+                return "";
             }
 
             $p = pathinfo($filename);
@@ -769,7 +769,7 @@ function _postprocess($str)
                 if ($this->debug & 4) {
                     echo "<p><b>subst:</b> varname $varname does not reference a file</p>\n";
                 }
-                return true;
+                return "";
             }
 
             ob_start();
