@@ -26,6 +26,10 @@ function xmlsitemap_update_ConfValues_1_0_1()
 
     $c = config::get_instance();
     $me = 'xmlsitemap';
+    
+    // Content types to include lastmod element
+    $c->add('lastmod', $_XMLSMAP_DEFAULT['lastmod'], '%text', 0, 0, null,
+        50, true, $me, 0);       
 
     // Ping targets
     $c->add('tab_ping', null, 'tab', 0, 3, null, 0, true, $me, 3);

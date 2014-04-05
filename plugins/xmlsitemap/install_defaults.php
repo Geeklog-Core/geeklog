@@ -63,6 +63,9 @@ $_XMLSMAP_DEFAULT['types'] = array('article', 'calendar', 'polls', 'staticpages'
 // Plugins to exclude from sitemap
 $_XMLSMAP_DEFAULT['exclude'] = array('links');
 
+// Content types to include lastmod element for (last modification date)
+$_XMLSMAP_DEFAULT['lastmod'] = array('article', 'calendar', 'polls', 'staticpages');
+
 // Priorities (must be between 0.0 and 1.0; default value is 0.5)
 $_XMLSMAP_DEFAULT['priorities'] = array(
     'article'     => 0.5,
@@ -112,6 +115,8 @@ function plugin_initconfig_xmlsitemap()
             true, $me, 0);
         $c->add('exclude', $_XMLSMAP_DEFAULT['exclude'], '%text', 0, 0, null,
             40, true, $me, 0);
+        $c->add('lastmod', $_XMLSMAP_DEFAULT['lastmod'], '%text', 0, 0, null,
+            50, true, $me, 0);        
 
         // Priorities
         $c->add('tab_pri', null, 'tab', 0, 1, null, 0, true, $me, 1);

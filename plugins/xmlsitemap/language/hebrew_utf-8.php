@@ -45,6 +45,7 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'שם קובץ Mobile Sitemap',
     'types' => 'תוכן ה-sitemap',
     'exclude' => 'Plugins שלא יכללו ב-sitemap',
+    'lastmod' => 'Content Types to include lastmod element',
     'priorities' => '',
     'frequencies' => '',
     'ping_google' => 'Send ping to Google',
@@ -75,7 +76,7 @@ $LANG_configselects['xmlsitemap'] = array(
     1 => array('כן' => true, 'לא' => false),
     9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
-    20 => array('תמיד' => 'always', 'כל שעה' => 'hourly', 'יומי' => 'daily', 'שבועי' => 'weekly', 'חודשי' => 'monthly', 'שנתי' => 'yearly', 'אף פעם' => 'never')
+    20 => array('תמיד' => 'always', 'כל שעה' => 'hourly', 'יומי' => 'daily', 'שבועי' => 'weekly', 'חודשי' => 'monthly', 'שנתי' => 'yearly', 'אף פעם' => 'never', 'hidden' => 'hidden')
 );
 
 ?>

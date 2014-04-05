@@ -45,6 +45,7 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'Mobilno ime kazala strani',
     'types' => 'Vsebina kazala strani',
     'exclude' => 'Vtièniki za ikljuèitev iz kazala strani',
+    'lastmod' => 'Content Types to include lastmod element',
     'priorities' => '',
     'frequencies' => '',
     'ping_google' => 'Send ping to Google',
@@ -75,7 +76,7 @@ $LANG_configselects['xmlsitemap'] = array(
     1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
     9 => array('Naprej na stran' => 'item', 'Prikaži seznam' => 'list', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
-    20 => array('vedno' => 'always', 'ob uri' => 'hourly', 'dnevno' => 'daily', 'tedensko' => 'weekly', 'meseèno' => 'monthly', 'letno' => 'yearly', 'nikoli' => 'never')
+    20 => array('vedno' => 'always', 'ob uri' => 'hourly', 'dnevno' => 'daily', 'tedensko' => 'weekly', 'meseèno' => 'monthly', 'letno' => 'yearly', 'nikoli' => 'never', 'hidden' => 'hidden')
 );
 
 ?>

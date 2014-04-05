@@ -42,16 +42,16 @@ $_CONF_VALIDATE['xmlsitemap']['mobile_sitemap_file'] = array('rule' => 'notEmpty
 
 // Update frequency
 $_CONF_VALIDATE['xmlsitemap']['frequencies[article]'] = array(
-    'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'), true)
+    'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never', 'hidden'), true)
 );
 $_CONF_VALIDATE['xmlsitemap']['frequencies[calendar]'] = array(
-    'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'), true)
+    'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never', 'hidden'), true)
 );
 $_CONF_VALIDATE['xmlsitemap']['frequencies[polls]'] = array(
-    'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'), true)
+    'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never', 'hidden'), true)
 );
 $_CONF_VALIDATE['xmlsitemap']['frequencies[staticpages]'] = array(
-    'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'), true)
+    'rule' => array('inList', array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never', 'hidden'), true)
 );
 
 // Ping target

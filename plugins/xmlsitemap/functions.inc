@@ -399,7 +399,7 @@ function XMLSITEMAP_checkChange($name)
             case 'frequencies':
                 $value = strtolower(trim($value));
                 $valid_change_freqs = array('always', 'hourly', 'daily',
-                        'weekly', 'monthly', 'yearly', 'never');
+                        'weekly', 'monthly', 'yearly', 'never', 'hidden');
 
                 if (!is_numeric($key) && in_array($key, $enabled_plugins)
                         && in_array($value, $valid_change_freqs)) {

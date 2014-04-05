@@ -45,6 +45,7 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'Nom du fichier Sitemap Mobile',
     'types' => 'Contenu du sitemap',
     'exclude' => 'Plugins à exclure du sitemap',
+    'lastmod' => 'Content Types to include lastmod element',
     'priorities' => '',
     'frequencies' => '',
     'ping_google' => 'Send ping to Google',
@@ -75,7 +76,7 @@ $LANG_configselects['xmlsitemap'] = array(
     1 => array('Vrai' => true, 'Faux' => false),
     9 => array('Tranférer à la page' => 'item', 'Afficher la liste' => 'list', 'Afficher page d\'accueil' => 'home', 'Afficher page d\'administration' => 'admin'),
     12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture Ecriture' => 3),
-    20 => array('toujours' => 'always', 'Toutes les heures' => 'hourly', 'Quotidienne' => 'daily', 'Hebdomadaire' => 'weekly', 'mensuelle' => 'monthly', 'annuelle' => 'yearly', 'jamais' => 'never')
+    20 => array('toujours' => 'always', 'Toutes les heures' => 'hourly', 'Quotidienne' => 'daily', 'Hebdomadaire' => 'weekly', 'mensuelle' => 'monthly', 'annuelle' => 'yearly', 'jamais' => 'never', 'hidden' => 'hidden')
 );
 
 ?>

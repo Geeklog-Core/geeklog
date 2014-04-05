@@ -45,6 +45,7 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'Mobile Saidikaardi faili nimi',
     'types' => 'Saidikaardi sisu',
     'exclude' => 'Saidikaardilt väljajäätavad pluginad',
+    'lastmod' => 'Content Types to include lastmod element',
     'priorities' => '',
     'frequencies' => '',
     'ping_google' => 'Send ping to Google',
@@ -75,7 +76,7 @@ $LANG_configselects['xmlsitemap'] = array(
     1 => array('Jah' => true, 'Ei' => false),
     9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehte' => 'admin'),
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
-    20 => array('Alati' => 'always', 'Tunni tagant' => 'hourly', 'päeva tagant' => 'daily', 'nädala tagant' => 'weekly', 'kuu tagant' => 'monthly', 'aasta tagant' => 'yearly', 'mitte kunagi' => 'never')
+    20 => array('Alati' => 'always', 'Tunni tagant' => 'hourly', 'päeva tagant' => 'daily', 'nädala tagant' => 'weekly', 'kuu tagant' => 'monthly', 'aasta tagant' => 'yearly', 'mitte kunagi' => 'never', 'hidden' => 'hidden')
 );
 
 ?>

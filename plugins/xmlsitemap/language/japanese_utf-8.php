@@ -45,6 +45,7 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'モバイルサイトマップ名',
     'types' => 'サイトマップの内容',
     'exclude' => '除外するプラグイン',
+    'lastmod' => 'Content Types to include lastmod element',
     'priorities' => '',
     'frequencies' => '',
     'ping_google' => 'Googleにpingを送信する',
@@ -75,7 +76,7 @@ $LANG_configselects['xmlsitemap'] = array(
     1 => array('はい' => true, 'いいえ' => false),
     9 => array('ページを表示' => 'item', 'リストを表示' => 'list', 'ホームを表示' => 'home', '管理画面のトップを表示' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    20 => array('常時' => 'always', '毎時間' => 'hourly', '毎日' => 'daily', '毎週' => 'weekly', '毎月' => 'monthly', '毎年' => 'yearly', '更新しない' => 'never')
+    20 => array('常時' => 'always', '毎時間' => 'hourly', '毎日' => 'daily', '毎週' => 'weekly', '毎月' => 'monthly', '毎年' => 'yearly', '更新しない' => 'never', 'hidden' => 'hidden')
 );
 
 ?>
