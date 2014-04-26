@@ -1380,10 +1380,12 @@ function SEC_createToken($ttl = 1200)
            . " AND (ttl > 0)";                           
     DB_query($sql);
     
-    /* Destroy tokens for this user/url combination */
-    $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id='{$uid}' AND urlfor='$pageURL'";
-    DB_query($sql);
-    
+    /* Destroy tokens for this user/url combination. Since annonymous user share same id do not delete */
+    if ($uid != 1) {
+         $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id = '{$uid}' AND urlfor= '$pageURL'";
+         DB_query($sql);
+     }
+     
     /* Create a token for this user/url combination */
     /* NOTE: TTL mapping for PageURL not yet implemented */
     $sql = "INSERT INTO {$_TABLES['tokens']} (token, created, owner_id, urlfor, ttl) "
@@ -1498,7 +1500,8 @@ function SECINT_checkToken()
              *  token is not expired.
              *  the http referer is the url for which the token was created.
              */
-            if( $_USER['uid'] != $tokendata['owner_id'] ) {
+            $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
+            if ($uid != $tokendata['owner_id']) {             
                 $return = false;
             } else if($tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
                 $return = false;
