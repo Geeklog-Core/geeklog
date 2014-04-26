@@ -25,10 +25,10 @@
           <dt><label for="comment_text">{lang_comment}</label></dt>
           <dd>
             <div id="text_editor" style="display: {show_texteditor};">
-              <textarea cols="45" rows="10" name="comment" id="comment_text">{comment}</textarea>
+              <textarea cols="90" rows="10" name="comment" id="comment_text">{comment}</textarea>
             </div>
             <div id="html_editor" style="display: {show_htmleditor};">
-              <textarea cols="45" rows="10" name="comment_html" id="comment_html">{comment}</textarea>
+              <textarea cols="90" rows="10" name="comment_html" id="comment_html">{comment}</textarea>
             </div>
           </dd>
           <dd class="description">{allowed_html}</dd>
