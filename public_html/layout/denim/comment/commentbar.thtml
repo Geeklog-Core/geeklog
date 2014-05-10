@@ -18,9 +18,7 @@
       <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
       <input type="hidden" name="title" value="{comment_title}"{xhtml}>
       {hidden_field_reply}
-      <div style="padding:0.3em;{show_link_to_commenteditform}">
-          <a class="button" href="#commenteditform">{lang_reply}</a>
-      </div>
+      {jump_link_for_commenteditform}
     </div>
   </form>
 
@@ -36,5 +34,11 @@
 </div>
 
 <p class="disclaimer">{lang_disclaimer}</p>
+
+<!-- BEGIN commenteditform_jumplink -->
+      <div style="padding:0.3em;">
+          <a class="button" href="#commenteditform">{lang_reply}</a>
+      </div>
+<!-- END commenteditform_jumplink -->
 
 <!-- } comment/commentbar.thtml -->

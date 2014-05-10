@@ -82,6 +82,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
 
     $commentbar = COM_newTemplate($_CONF['path_layout'] . 'comment');
     $commentbar->set_file( array( 'commentbar' => 'commentbar.thtml' ));
+    $commentbar->set_block('commentbar', 'commenteditform_jumplink');
 
     $commentbar->set_var( 'lang_comments', $LANG01[3] );
     $commentbar->set_var( 'lang_refresh', $LANG01[39] );
@@ -90,10 +91,11 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
 
     if ( $ccode == 0 && !COMMENT_ON_SAME_PAGE) {
         $commentbar->set_var( 'reply_hidden_or_submit', 'submit' );
-        $commentbar->set_var( 'show_link_to_commenteditform', 'display:none;' );
+        // $commentbar->set_var( 'show_link_to_commenteditform', 'display:none;' );
+        $commentbar->set_var( 'jump_link_for_commenteditform', '' );
     } else {
         $commentbar->set_var( 'reply_hidden_or_submit', 'hidden' );
-        $commentbar->set_var( 'show_link_to_commenteditform', '' );
+		$commentbar->parse( 'jump_link_for_commenteditform', 'commenteditform_jumplink' );
     }
     $commentbar->set_var( 'num_comments', COM_numberFormat( $nrows ));
     $commentbar->set_var( 'comment_type', $type );
