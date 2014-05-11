@@ -230,6 +230,7 @@ featured and archived stories.</li>
 <li>Added <tt>/admin/envcheck.thtml</tt> and related css for the Enviroment Check Admin page.</li>
 <li>Updated <tt>/admin/topic/storyeditor.thtml</tt>, <tt>/admin/topic/storyeditor_advanced.thtml</tt> and <tt>/admin/topic/topiceditor.thtml</tt>. Ids can now be upto 128 characters long so changed max length (for Topic Name as well). Also added javascript which runs topic_2_id.js which converts titles to nice looking ids.</li>
 <li>Added the template variable {titletoid} to the story editor, topic editor and staticpage editor template files. It enables/disables the use of javascript to automatic update the ids when the title is changed.</li>
+<li>In the template file <tt>/comment/commentbar.thtml</tt> removed template variable {show_link_to_commenteditform}. Added the template block commenteditform_jumplink and the template variable {jump_link_for_commenteditform}.</li>
 </ul>
 
 <h2><a name="changes200">Theme changes in Geeklog 2.0.0</a></h2>
