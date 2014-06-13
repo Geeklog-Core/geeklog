@@ -427,7 +427,7 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
         if (empty($photo) || ($photo == 'none')) {
             // no photo - try gravatar.com, if allowed
             if ($_CONF['use_gravatar']) {
-                $img = 'http://www.gravatar.com/avatar/' . md5($email);
+                $img = 'https://www.gravatar.com/avatar/' . md5($email);
                 $parms = array();
                 if ($width > 0) {
                     $parms[] = 's=' . $width;
