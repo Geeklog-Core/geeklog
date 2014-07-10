@@ -941,7 +941,7 @@ default:
         PLG_loginUser ($_USER['uid']);
 
         // Now that we handled session cookies, handle longterm cookie
-        if (!isset($_COOKIE[$_CONF['cookie_name']]) || !isset($_COOKIE['password'])) {
+        if (!isset($_COOKIE[$_CONF['cookie_name']]) || !isset($_COOKIE['cookie_password'])) {
             // Either their cookie expired or they are new
             $cooktime = COM_getUserCookieTimeout();
             if ($VERBOSE) {
