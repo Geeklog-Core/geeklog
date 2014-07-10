@@ -1186,6 +1186,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     $header->set_var( 'site_logo', $_CONF['layout_url']
                                    . '/images/logo.' . $_IMAGE_TYPE );
     $header->set_var( 'theme', $_CONF['theme'] );
+    $header->set_var( 'datetime_html5', strftime('%FT%T', $curtime[1]) );
 
     $header->set_var('charset', COM_getCharset());
     $header->set_var('direction', $LANG_DIRECTION);
@@ -1877,6 +1878,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $header->set_var( 'site_logo', $_CONF['layout_url']
                                    . '/images/logo.' . $_IMAGE_TYPE );
     $header->set_var( 'theme', $_CONF['theme'] );
+    $header->set_var( 'datetime_html5', strftime('%FT%T', $curtime[1]) );
 
     $header->set_var('charset', COM_getCharset());
     $header->set_var('direction', $LANG_DIRECTION);

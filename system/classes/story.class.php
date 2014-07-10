@@ -1802,10 +1802,17 @@ class Story
             $return = COM_getUserDateTimeFormat($this->_date);
 
             $return = $return[0];
+            
             break;
+            
+        case 'datetime':
+             $return = strftime('%FT%T', $this->_date);
+
+             break;            
 
         case 'unixdate':
             $return = $this->_date;
+            
             break;
 
         case 'hits':
