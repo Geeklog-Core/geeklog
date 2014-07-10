@@ -148,6 +148,10 @@ $etag = md5(microtime(TRUE));
 
 // Send correct header type:
 header('Content-Type: text/css; charset=UTF-8');
+// Add Cache Expire in 1 week
+header('Cache-control: must-revalidate');
+header('Expires: '.gmdate('D, d M Y H:i:s', time() + 604800).' GMT');
+
 header('ETag: "' . $etag . '"');
 
 // Output the contents of each file
