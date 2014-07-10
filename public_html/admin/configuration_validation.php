@@ -425,7 +425,7 @@ $_CONF_VALIDATE['Core']['max_photo_width'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['max_photo_height'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['max_photo_size'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['force_photo_width'] = array('rule' => 'numeric');
-$_CONF_VALIDATE['Core']['default_photo'] = array('rule' => 'file');
+$_CONF_VALIDATE['Core']['default_photo'] = array('rule' => 'url');
 
 /* Subgroup Images, Tab Gravatar */
 $_CONF_VALIDATE['Core']['use_gravatar'] = array('rule' => 'boolean');
