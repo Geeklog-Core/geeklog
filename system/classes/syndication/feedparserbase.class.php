@@ -239,11 +239,11 @@ abstract class FeedParserBase
     */
     protected function _injectNamespaces()
     {
-        $xml = ' ';
+        $xml = '';
 
         if (count($this->namespaces) > 0) {
             $this->namespaces = array_unique($this->namespaces);
-            $xml = implode(' ', $this->namespaces);
+            $xml = ' ' . implode(' ', $this->namespaces);
         }
 
         return $xml;
