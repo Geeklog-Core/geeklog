@@ -561,7 +561,11 @@ function SYND_updateFeed( $fid )
             $feed->system = 'Geeklog';
 
             /* Gather any other stuff */
-            $feed->namespaces = PLG_getFeedNSExtensions($A['type'], $format[0], $format[1], $A['topic'], $fid);
+            $feed->namespaces = array_merge(
+                $feed->namespaces,
+                PLG_getFeedNSExtensions($A['type'], $format[0], $format[1], $A['topic'], $fid)
+            );
+
             /* If the feed is RSS, and trackback is enabled */
             if( $_CONF['trackback_enabled'] && ($format[0] == 'RSS') )
             {
