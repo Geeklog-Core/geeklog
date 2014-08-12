@@ -4449,12 +4449,12 @@ function COM_showBlocks( $side, $topic='' )
         }
     }
 
-    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, cache_time, ";
+    $blocksql['mssql']  = "SELECT DISTINCT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, cache_time, ";
     $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
     $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
-    $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
-    $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
+    $blocksql['mysql'] = "SELECT DISTINCT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
+    $blocksql['pgsql'] = 'SELECT DISTINCT b.*, date_part(\'epoch\', rdfupdated) AS date ';
 
     $blocksql['mysql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
     $blocksql['mssql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
