@@ -1165,8 +1165,8 @@ class Story
             if (!isset($_CONF['show_topic_icon'])) {
                 $_CONF['show_topic_icon'] = 1;
             }
-
-            if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$tmptid}'") == 1) {
+/*
+            if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$tmptid}'") == 1) { // A bug using undefined variable $tmptid
                 $this->_frontpage = 0;
             } elseif (isset($_CONF['frontpage'])) {
                 $this->_frontpage = $_CONF['frontpage'];
@@ -1174,7 +1174,8 @@ class Story
                 $this->_frontpage = 1;
             }
 
-            $this->_oldsid = $this->_sid;
+            $this->_oldsid = $this->_sid; // dead code
+*/
             $this->_date = mktime();
             $this->_featured = 0;
             $this->_commentcode = $_CONF['comment_code'];
@@ -1195,6 +1196,28 @@ class Story
             $this->_perm_members = $T['perm_members'];
             $this->_perm_anon = $T['perm_anon'];
             */
+
+            // Save Topics selected
+            TOPIC_saveTopicSelectionControl('article', $this->_sid);
+
+            $sql = "SELECT group_id,perm_owner,perm_group,perm_members,perm_anon,archive_flag "
+                 . "FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta "
+                 . "WHERE ta.type = 'article' AND ta.id = '{$this->_sid}' "
+                 . "AND ta.tdefault = 1 AND ta.tid = t.tid";
+            $result = DB_query($sql);
+            $A = DB_fetchArray($result);
+            if ($A['archive_flag'] == 1) {
+                $this->_frontpage = 0;
+            } elseif (isset($_CONF['frontpage'])) {
+                $this->_frontpage = $_CONF['frontpage'];
+            } else {
+                $this->_frontpage = 1;
+            }
+            $this->_group_id     = $A['group_id'];
+            $this->_perm_owner   = $A['perm_owner'];
+            $this->_perm_group   = $A['perm_group'];
+            $this->_perm_members = $A['perm_members'];
+            $this->_perm_anon    = $A['perm_anon'];
 
             $this->saveToDatabase();
 
