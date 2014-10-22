@@ -496,7 +496,14 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         $passwd_conf = '';
     }
 
-    if ($passwd != $passwd_conf) { // passwords don't match
+    $passwd_changed = true;
+    if (empty($service) &&
+      SEC_encryptUserPassword($passwd, $uid) === 0 &&
+      $passwd_conf === '') {
+        $passwd_changed = false;
+    }
+
+    if ($passwd_changed && $passwd != $passwd_conf) { // passwords don't match
         return edituser($uid, 67);
     }
 
@@ -611,7 +618,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 
             $curphoto = DB_escapeString($curphoto);
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
-            if (!empty($passwd)) {
+            if ($passwd_changed && !empty($passwd)) {
                 SEC_updateUserPassword($passwd, $uid);
             }
             if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userSave'))) {
