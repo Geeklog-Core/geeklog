@@ -198,6 +198,7 @@ class Search
                                       'authors'    => 'searchauthors.thtml'));
         $searchform->set_var('search_intro', $LANG09[19]);
         $searchform->set_var('lang_keywords', $LANG09[2]);
+        $searchform->set_var('lang_keytype', $LANG09[36]);
         $searchform->set_var('lang_date', $LANG09[20]);
         $searchform->set_var('lang_to', $LANG09[21]);
         $searchform->set_var('date_format', $LANG09[22]);

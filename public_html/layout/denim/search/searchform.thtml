@@ -9,7 +9,7 @@
       <dt><label for="advsearchform-query">{lang_keywords}</label></dt>
       <dd>
         <input type="text" maxlength="35" value="{query}" name="query" id="advsearchform-query" class="size3"{xhtml}>
-        <select name="keyType" id="advsearchform-keyType">
+        <select name="keyType" title="{lang_keytype}" id="advsearchform-keyType">
           <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
           <option value="all" {key_all_selected}>{lang_all_words}</option>
           <option value="any" {key_any_selected}>{lang_any_word}</option>
