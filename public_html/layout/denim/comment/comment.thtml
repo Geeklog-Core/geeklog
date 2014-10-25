@@ -10,7 +10,7 @@
   <div class="comment_content">{comments}</div>
 
   <div class="comment_navi">[
-   <span {hide_if_preview}>{reply_option} {parent_link} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="self bookmark" title="{lang_permlink}">#</a></span>
+   <span {hide_if_preview}>{reply_option} {parent_link} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark" title="{lang_permlink}">#</a></span>
   ]</div>
 </div>
 

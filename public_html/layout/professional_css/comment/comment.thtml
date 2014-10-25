@@ -13,7 +13,7 @@
     <li>{reply_option}</li>
     <li>{parent_link}</li>
     <li>{delete_option}</li>
-    <li class="permlink"><a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="self bookmark">{lang_permlink}</a></li>
+    <li class="permlink"><a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark">{lang_permlink}</a></li>
   </ul>
 </div>
 
