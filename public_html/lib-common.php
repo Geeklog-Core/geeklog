@@ -4870,6 +4870,9 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
              ($_CONF['skip_html_filter_for_root'] == 1) &&
             SEC_inGroup('Root'))) || ($filter_html_flag == 0)) {
         $description = $LANG01[123]; // All HTML is allowed
+        if (in_array($post_mode, array('plaintext', 'wikitext'))) {
+            $description = $LANG01[131]; // No HTML is allowed
+        }
     } elseif ($filter_html_flag == 2 ||
             in_array($post_mode, array('plaintext', 'wikitext'))) {
         $description = $LANG01[131]; // No HTML is allowed
