@@ -634,14 +634,25 @@ function add_array(arr_name, index, arr_type) {
     new_obj.children("div:first").text(index);
     new_id = "arr_" + arr_name + "_" + index;
     sub_id = arr_name + "[" + index + "]";
-    new_obj.children("input.hide_show_toggle").attr("onclick", "hide_show_toggle('" + new_id + "', this);");
-    new_obj.children("input[type='hidden']").attr("name", sub_id + "[nameholder]");
+    new_obj.children("input.toggle_hidden")
+           .attr("onclick", "toggleHidden('" + new_id + "', this);");
+    new_obj.children("input[type='hidden']")
+           .attr("name", sub_id + "[nameholder]");
+    new_obj.children("div.named_config_list")
+           .attr("id", new_id);
 
-    var sub_obj = new_obj.children("div:[id='arr_" + arr_name + "_" + "placeholder']");
-    sub_obj.attr("id", new_id);
-    sub_obj.children("div:first").children("input[type='hidden']").attr("name", sub_id + "[nameholder]");
-    sub_obj.children("div:last").attr("id", "add_" + arr_name + "_" + index);
-    sub_obj.children("div:last").children("input.add_ele_input").attr("onclick", "handleAdd(this, '" + arr_type + "', '" + sub_id + "')");
+    var sub1_obj = new_obj.children("div.named_config_list")
+                          .children("div.config_name");
+    sub1_obj.children("input[name='" + arr_name + "[placeholder][placeholder][nameholder]']")
+            .attr("name", sub_id + "[placeholder][nameholder]");
+    sub1_obj.children("input[name='" + arr_name + "[placeholder][placeholder]']")
+            .attr("name", sub_id + "[placeholder]");
+
+    var sub2_obj = new_obj.children("div.named_config_list")
+                          .children("div#add_" + arr_name + "_" + "placeholder");
+    sub2_obj.attr("id", "add_" + arr_name + "_" + index);
+    sub2_obj.children("input.add_ele_input")
+            .attr("onclick", "handleAdd(this, '" + arr_type + "', '" + sub_id + "')");
 }
 
 function add_element(arr_name, index, arr_type) {
