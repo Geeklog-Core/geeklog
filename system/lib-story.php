@@ -295,20 +295,31 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var('story_title_link', $story->DisplayElements('title'));
         }
         
+        $related_topics = '';
+        
         if ($index == 'n') {
             if ($_CONF['supported_version_theme'] == '1.8.1') {
                 $article->set_var('breadcrumb_trail', TOPIC_breadcrumbs('article', $story->getSid()));
             }
             
             if ($_CONF['related_topics'] > 0) {
-                $article->set_var('related_topics', TOPIC_relatedTopics('article', $story->getSid(), $_CONF['related_topics_max']));
+                $related_topics = TOPIC_relatedTopics('article', $story->getSid(), $_CONF['related_topics_max']);
+                $article->set_var('related_topics', $related_topics);
             }
         } elseif ($index != 'p') {
             if ($_CONF['related_topics'] > 1) {
-                $article->set_var('related_topics', TOPIC_relatedTopics('article', $story->getSid(), $_CONF['related_topics_max']));
+                $related_topics = TOPIC_relatedTopics('article', $story->getSid(), $_CONF['related_topics_max']);
+                $article->set_var('related_topics', $related_topics);
             }
         }
     
+        $page_selector = '';
+        $readmore_link = '';
+        $post_comment_link = '';
+        $plugin_itemdisplay = '';
+        $comments_with_count = '';
+        $trackbacks_with_count = '';
+
         if (( $index == 'n' ) || ( $index == 'p' ))
         {
             if( empty( $bodytext ))
@@ -337,14 +348,14 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     if ($story_page > $page_break_count) { // Can't have page count greate than actual number of pages
                         $story_page = $page_break_count;
                     }
-                    $pagelinks = COM_printPageNavigation(
+                    $page_selector = COM_printPageNavigation(
                         $articleUrl, $story_page, $page_break_count,
                         'mode=', $_CONF['url_rewrite'], $LANG01[118]);
                     if( count( $article_array ) > 1 )
                     {
                         $bodytext = $article_array[$story_page - 1];
                     }
-                    $article->set_var( 'page_selector', $pagelinks );
+                    $article->set_var( 'page_selector', $page_selector );
     
                     if (
                          ( ($_CONF['page_break_comments'] == 'last')  and
@@ -400,13 +411,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $article->set_var( 'lang_readmore_words', $LANG01[62] );
                 $article->set_var( 'readmore_words', $numwords );
     
-                $article->set_var( 'readmore_link',
-                    COM_createLink(
+                $readmore_link = COM_createLink(
                         $LANG01[2],
                         $articleUrl,
                         array('class'=>'story-read-more-link')
-                    )
-                    . ' (' . $numwords . ' ' . $LANG01[62] . ') ' );
+                ) . ' (' . $numwords . ' ' . $LANG01[62] . ') ';
+                $article->set_var('readmore_link', $readmore_link);
                 $article->set_var('start_readmore_anchortag', '<a href="'
                         . $articleUrl . '" class="story-read-more-link">');
                 $article->set_var('end_readmore_anchortag', '</a>');
@@ -436,7 +446,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                             . $LANG01[104] . ' ' . COM_getDisplayName ($C['cuid'],
                                                     $C['username'], $C['fullname'])
                             . '</span>';
-                    $article->set_var( 'comments_with_count', COM_createLink($comments_with_count, $commentsUrl));
+                    $comments_with_count = COM_createLink($comments_with_count, $commentsUrl);
+                    $article->set_var( 'comments_with_count', $comments_with_count );
                     $article->set_var( 'start_comments_anchortag', '<a href="'
                             . $commentsUrl . '">' );
                     $article->set_var( 'end_comments_anchortag', '</a>' );
@@ -469,9 +480,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 							$postCommentUrl .= '#commenteditform';
 						}
                     }
-                    $article->set_var( 'post_comment_link',
-                            COM_createLink($LANG01[60], $postCommentUrl,
-                                           array('rel' => 'nofollow')));
+                    $post_comment_link = COM_createLink($LANG01[60], $postCommentUrl,
+                        array('rel' => 'nofollow'));
+                    $article->set_var( 'post_comment_link', $post_comment_link );
                 /*
                     $article->set_var( 'subscribe_link',
                             COM_createLink('Nubbies', '', array('rel' => 'nofollow'))
@@ -496,12 +507,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                                                       . $LANG_TRB['trackbacks'] );
                 $article->set_var( 'trackbacks_count', $num_trackbacks );
                 $article->set_var( 'lang_trackbacks', $LANG_TRB['trackbacks'] );
-                $article->set_var( 'trackbacks_with_count',
-                    COM_createLink(
-                        sprintf( $LANG01[122], $num_trackbacks ),
-                        $trackbacksUrl
-                    )
-                );
     
                 if(SEC_hasRights( 'story.ping' ))
                 {
@@ -515,21 +520,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     );
                 }
     
-                if( $story->DisplayElements('trackbacks') > 0 )
-                {
-                    $article->set_var( 'trackbacks_with_count',
-                        COM_createLink(
-                            sprintf( $LANG01[122], $num_trackbacks ),
-                            $trackbacksUrl
-                        )
-                    );
+                $trackbacks_with_count = sprintf($LANG01[122], $num_trackbacks);
+                if ($story->DisplayElements('trackbacks') > 0) {
+                    $trackbacks_with_count = COM_createLink(
+                        $trackbacks_with_count, $trackbacksUrl);
                 }
-                else
-                {
-                    $article->set_var( 'trackbacks_with_count',
-                            sprintf( $LANG01[122], $num_trackbacks )
-                    );
-                }
+                $article->set_var('trackbacks_with_count', $trackbacks_with_count);
             }
     
             if(( $_CONF['hideemailicon'] == 1 ) ||
@@ -591,6 +587,26 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'edit_icon', COM_createLink($editiconhtml, $editUrl) );
             $article->set_var( 'edit_image', $editiconhtml);
         }
+    
+        $navi_list = ture;
+        $feedback_list = ture;
+        if ($index == 'p') {
+            $navi_list = false;
+            $feedback_list = false;
+        } else {
+            $navi_list = 
+                ($page_selector !== ''
+              || $readmore_link !== ''
+              || $post_comment_link !== '');
+            $feedback_list =
+                ($plugin_itemdisplay !== ''
+              || $comments_with_count !== ''
+              || $trackbacks_with_count !== '');
+        }
+        $story_footer = ($navi_list || $feedback_list || $related_topics !== '');
+        $article->set_var('navi_list', $navi_list);
+        $article->set_var('feedback_list', $feedback_list);
+        $article->set_var('story_footer', $story_footer);
     
         if ($story->DisplayElements('featured') == 1) {
             $article->set_var('lang_todays_featured_article', $LANG05[4]);

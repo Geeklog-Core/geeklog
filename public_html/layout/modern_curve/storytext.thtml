@@ -34,20 +34,24 @@
   <div class="story_introtext">
     {story_text_no_br}
   </div>
-  
+
   {related_topics}
 
+{!if navi_list}
   <ul class="navi">
-    <li>{page_selector}</li>
-    <li>{readmore_link}</li>
-    <li>{post_comment_link}</li>
+    {!if page_selector}<li>{page_selector}</li>{!endif}
+    {!if readmore_link}<li>{readmore_link}</li>{!endif}
+    {!if post_comment_link}<li>{post_comment_link}</li>{!endif}
   </ul>
+{!endif}
 
+{!if feedback_list}
   <ul class="feedback">
-    <li>{plugin_itemdisplay}</li>
-    <li>{comments_with_count}</li>
-    <li>{trackbacks_with_count}</li>
+    {!if plugin_itemdisplay}<li>{plugin_itemdisplay}</li>{!endif}
+    {!if comments_with_count}<li>{comments_with_count}</li>{!endif}
+    {!if trackbacks_with_count}<li>{trackbacks_with_count}</li>{!endif}
   </ul>
+{!endif}
 </div>
 
 {# end {templatelocation} #}
