@@ -1,12 +1,9 @@
 {doctype}
-<html{lang_attribute}{xmlns}>
+<html>
 
-<head profile="http://www.w3.org/2003/g/data-view">
-<meta http-equiv="Content-Type" content="text/html; charset={charset}"{xhtml}>
+<head>
+<meta charset="{charset}"{xhtml}>
 <title>{page_title_and_site_name}</title>
-<meta http-equiv="Content-Script-Type" content="text/javascript"{xhtml}>
-<meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
-<meta http-equiv="imagetoolbar" content="no"{xhtml}>
 
 <!-- Mobile Specific Metas -->
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"{xhtml}>
@@ -19,8 +16,10 @@
 {feed_url}
 {rel_links}
 {plg_headercode}
+
 <!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/ie8.css"{xhtml}><![endif]-->
 <!--[if lt IE 9]><script type="text/javascript" src="{layout_url}/javascript/respond.min.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 <body dir="{direction}" class="{layout_columns}">
@@ -30,26 +29,22 @@
   <!-- #container { -->
   <div id="container">
 
-    <!-- #header { -->
-    <div id="header">
+    <header id="header" role="banner">
       <div id="header-content" class="type1">
         <h1 class="site_name"><a href="{site_url}" title="{site_name}">{site_name}</a></h1>
         <p class="site_slogan">{site_slogan}</p>
       </div>
-    </div>
-    <!-- } #header -->
+    </header>
 
     <hr class="separator"{xhtml}>
 
-    <!-- #navigation { -->
-    <div id="navigation">
+    <nav id="navigation" role="navigation">
       <div class="navigation_content">
         <ul id="navigation_ul">
           {menu_elements}
         </ul>
       </div>
-    </div>
-    <!-- } #navigation -->
+    </nav>
 
     <hr class="separator"{xhtml}>
 
@@ -58,7 +53,7 @@
 
       <!-- Center Block Container -->
       <div id="centerblocks">
-        <div id="main-content">
+        <div id="main-content" role="main">
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
           {breadcrumb_trail}
           

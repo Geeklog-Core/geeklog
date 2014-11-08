@@ -9,7 +9,7 @@
 
   <div class="comment_content">{comments}</div>
 
-  <div class="comment_navi">[
+  <div class="comment_navi" role="navigation">[
    <span {hide_if_preview}>{reply_option} {parent_link} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark" title="{lang_permlink}">#</a></span>
   ]</div>
 </div>

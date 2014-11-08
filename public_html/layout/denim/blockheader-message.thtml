@@ -1,7 +1,7 @@
 
 <!-- blockheader-message.thtml { -->
 
-<div class="block-message">
+<aside class="block-message">
   <dl>
     <dt class="title">{showhide}{block_title}{block_help}</dt>
     <dd class="message">

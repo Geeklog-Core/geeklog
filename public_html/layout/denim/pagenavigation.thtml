@@ -1,10 +1,10 @@
 {# begin {templatelocation} #}
 
-<div class="gl-pagenav">
+<nav class="gl-pagenav" role="navigation">
 {message}<span>{start_first_anchortag}{lang_first}{end_first_anchortag}</span> |
 <span>{start_previous_anchortag}{lang_previous}{end_previous_anchortag}</span> |
 {pages}
-</div>
+</nav>
 <!-- BEGIN message -->
 <p>{message_text}</p>
 <!-- END message -->

@@ -11,7 +11,7 @@
 // | Denim theme is based on prior work by:                                    |
 // | Authors: Fumito Arakawa   - http://phize.net/                             |
 // |          Tetsuko Konma    - http://www.ivywe.co.jp/                       |
-// |          Geeklog Japanese - http://www.geeklog.jp/                        |
+// |          Geeklog Japan    - http://www.geeklog.jp/                        |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -35,7 +35,7 @@
   Pofile
 ==============================================================================*/
 
-Geeklog theme using XHTML 1.0 Transitional + CSS 2.0 and eliminate table tags.
+Geeklog theme using HTML5 + CSS 3.0 and eliminate table tags.
 This theme is adopted the Responsive Web Design.
 This theme is mobile friendly.
 
@@ -47,8 +47,8 @@ This theme is mobile friendly.
 Basic markup is following:
 
 <div id="container">
-    <div id="header">Header</div>
-    <div id="navigation">Navigation</div>
+    <header id="header">Header</header>
+    <nav id="navigation">Navigation</nav>
     <div id="wrapper">
         <div id="centerblocks">
             <div id="main-content">Main Content</div>
@@ -56,5 +56,5 @@ Basic markup is following:
         <div id="leftblocks">Left Blocks</div>
         <div id="rightblocks">Right Blocks</div>
     </div>
-    <div id="footer">Footer</div>
+    <footer id="footer">Footer</footer>
 </div>

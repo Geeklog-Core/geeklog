@@ -1,7 +1,7 @@
 
 <!-- comment/startcomment.thtml { -->
 
-<div id="{area_id}">
+<aside id="{area_id}">
   <div id="comments">
     {commentbar}
     {comments}
@@ -9,6 +9,6 @@
     <p class="pagenav">{pagenav}</p>
   </div>
   {commenteditor}
-</div>
+</aside>
 
 <!-- } comment/startcomment.thtml -->

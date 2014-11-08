@@ -1,8 +1,8 @@
 
     <hr class="separator"{xhtml}>
 
-    <div id="leftblocks">
-      <div class="block-left" id="block-left-search">
+    <div id="leftblocks" role="complementary">
+      <section class="block-left" role="search" id="block-left-search">
         <h2 class="block-title">{button_search}</h2>
         <div class="block-left-content">
           <form action="{site_url}/search.php" method="get" id="searchform">
@@ -23,7 +23,7 @@
             </fieldset>
           </form>
         </div>
-      </div>
+      </section>
 
       {geeklog_blocks}
     </div>

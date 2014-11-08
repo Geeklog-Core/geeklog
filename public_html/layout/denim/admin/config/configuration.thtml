@@ -9,11 +9,11 @@
     </form>
 
     <div id="config_menu">
-        <div id="search-configuration-container">
-            <label for="search-configuration">{search_configuration_label}</label>
+        <section id="search-configuration-container" role="search">
+            <h2 class="block-title">{search_configuration_label}</h2>
             <input name="search-configuration" id="search-configuration" type="text" value="{search_configuration_value}"{xhtml}>
             <input name="tab-id" id="tab-id" type="hidden" value="{tab_id_value}"{xhtml}>
-        </div>
+        </section>
         {config_menu}
     </div>
 

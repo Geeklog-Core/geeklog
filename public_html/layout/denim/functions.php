@@ -46,7 +46,7 @@ function theme_config_denim()
 {
     return array(
         'image_type' => 'png',
-        'doctype'    => 'xhtml10transitional', 
+        'doctype'    => 'xhtml5',
         'supported_version_theme' => '2.0.0' // support new theme format for the later Geeklog 2.0.0
     );
 }

@@ -1,9 +1,9 @@
 
 <!-- blockheader-list.thtml { -->
 
-<div class="block-list">
+<section class="block-list">
     <h2 class="block-title">{block_title}{block_help}</h2>
-      <div class="block-list-content">
+  <nav class="block-list-content" role="navigation">
       <ul class="noliststyle">
 
 <!-- } blockheader-list.thtml -->
