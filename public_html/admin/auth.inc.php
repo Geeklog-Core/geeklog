@@ -82,7 +82,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
         }
     }
     if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,syndication.edit','OR')) {
-        $display .= COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
+        $display .= COM_refresh($_CONF['site_admin_url'] . '/index.php');
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
@@ -103,7 +103,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
                      . COM_accessLog($LANG20[3] . ' ' . $_POST['loginname']);
         }
 
-        $display .= '<form action="' . $_CONF['site_admin_url'] . '/moderation.php" method="post">'
+        $display .= '<form action="' . $_CONF['site_admin_url'] . '/index.php" method="post">'
             .'<table cellspacing="0" cellpadding="3" border="0" width="100%">'.LB
             .'<tr><td class="alignright"><b><label for="loginname">'.$LANG20[4].'</label></b></td>'.LB
             .'<td><input type="text" name="loginname" id="loginname" size="16" maxlength="16"' . XHTML . '></td>'.LB
