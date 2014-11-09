@@ -158,6 +158,68 @@ function editdefaultblock ($A, $access)
 }
 
 /**
+* Override the post data to the data given in the parameter
+*
+* This is helper function for editblock function
+*
+* @param    array    $A    Array of data by reference
+* @return   nothing
+*/
+function overridePostdata(&$A)
+{
+    if (isset($_POST['name'])) {
+        $A['name'] = COM_sanitizeID($_POST['name']);
+    }
+    if (isset($_POST['title'])) {
+        $A['title'] = COM_stripslashes(strip_tags($_POST['title']));
+    }
+    if (isset($_POST['help'])) {
+        $A['help'] = COM_sanitizeUrl($_POST['help'], array('http', 'https'));
+    }
+    if (in_array($_POST['type'], array('normal', 'portal', 'phpblock', 'gldefault'))) {
+        $A['type'] = $_POST['type'];
+    }
+    if (isset($_POST['blockorder'])) {
+        $A['blockorder'] = COM_applyFilter($_POST['blockorder'], true);
+    }
+    if (isset($_POST['content'])) {
+        $A['content'] = $_POST['content']; // to be sanitized when saving
+    }
+    if (isset($_POST['rdfurl'])) {
+        $A['rdfurl'] = $_POST['rdfurl']; // to be sanitized when saving
+    }
+    if (isset($_POST['rdfupdated'])) {
+        $A['rdfupdated'] = COM_applyFilter($_POST['rdfupdated']);
+    }
+    if (isset($_POST['rdflimit'])) {
+        $A['rdflimit'] = COM_applyFilter($_POST['rdflimit'], true);
+    }
+    if (isset($_POST['phpblockfn'])) {
+        $A['phpblockfn'] = $_POST['phpblockfn']; // to be sanitized when saving
+    }
+    if (isset($_POST['owner_id'])) {
+        $A['owner_id'] = COM_applyFilter($_POST['owner_id'], true);
+    }
+    if (isset($_POST['group_id'])) {
+        $A['group_id'] = COM_applyFilter($_POST['group_id'], true);
+    }
+
+    list($A['perm_owner'], $A['perm_group'],
+         $A['perm_members'], $A['perm_anon']) =
+             SEC_getPermissionValues(
+                 $_POST['perm_owner'], $_POST['perm_group'],
+                 $_POST['perm_members'], $_POST['perm_anon']);
+
+    $A['onleft'] = ($_POST['onleft'] == 1) ? 1 : 0;
+    $A['is_enabled'] = ($_POST['is_enabled'] == 'on') ? 1 : 0;
+    $A['allow_autotags'] = ($_POST['allow_autotags'] == 'on') ? 1 : 0;
+
+    if (isset($_POST['cache_time'])) {
+        $A['cache_time'] = COM_applyFilter($_POST['cache_time'], true);
+    }
+}
+
+/**
 * Shows the block editor
 *
 * This will show a block edit form.  If this is a Geeklog default block it will
@@ -224,6 +286,9 @@ function editblock ($bid = '')
         }
         SEC_setDefaultPermissions ($A, $_CONF['default_permissions_block']);
         $access = 3;
+        if ($_POST['mode'] == $LANG_ADMIN['save'] && !empty($LANG_ADMIN['save'])) {
+            overridePostdata($A);
+        }
     }
 
     $token = SEC_createToken();
@@ -895,9 +960,17 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
+    $name = '';
+    if (isset ($_POST['name'])) {
+        $name = COM_sanitizeID ($_POST['name']);
+    }
     $help = '';
     if (isset ($_POST['help'])) {
         $help = COM_sanitizeUrl ($_POST['help'], array ('http', 'https'));
+    }
+    $blockorder = 0;
+    if (isset ($_POST['blockorder'])) {
+        $blockorder = COM_applyFilter ($_POST['blockorder'], true);
     }
     $content = '';
     if (isset ($_POST['content'])) {
@@ -909,7 +982,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
     $rdfupdated = '';
     if (isset ($_POST['rdfupdated'])) {
-        $rdfupdated = $_POST['rdfupdated'];
+        $rdfupdated = COM_applyFilter ($_POST['rdfupdated']);
     }
     $rdflimit = 0;
     if (isset ($_POST['rdflimit'])) {
@@ -931,8 +1004,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_POST['cache_time'])) {
         $cache_time = COM_applyFilter ($_POST['cache_time'], true);
     }    
-    $display .= saveblock ($bid, $_POST['name'], $_POST['title'],
-                    $help, $_POST['type'], $_POST['blockorder'], $content,
+    $display .= saveblock ($bid, $name, $_POST['title'],
+                    $help, $_POST['type'], $blockorder, $content,
                     $rdfurl, $rdfupdated,
                     $rdflimit, $phpblockfn, $_POST['onleft'],
                     COM_applyFilter ($_POST['owner_id'], true),
