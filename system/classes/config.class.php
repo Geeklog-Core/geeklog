@@ -240,7 +240,7 @@ class config {
         }
 
         // Now figure out other info since tabs are now specified
-        $sql = "SELECT name, value, group_name, type, subgroup, tab FROM {$_TABLES['conf_values']} WHERE type <> 'tab'";
+        $sql = "SELECT name, value, group_name, type, subgroup, tab FROM {$_TABLES['conf_values']} WHERE type <> 'tab' AND type <> 'hidden'";
         $result = DB_query($sql);
         $false_str = serialize(false);
         while ($row = DB_fetchArray($result)) {
