@@ -240,7 +240,7 @@ class config {
         }
 
         // Now figure out other info since tabs are now specified
-        $sql = "SELECT name, value, group_name, type, subgroup, tab FROM {$_TABLES['conf_values']} WHERE type <> 'tab' AND type <> 'hidden'";
+        $sql = "SELECT name, value, group_name, type, subgroup, tab FROM {$_TABLES['conf_values']} WHERE type <> 'tab'";
         $result = DB_query($sql);
         $false_str = serialize(false);
         while ($row = DB_fetchArray($result)) {
@@ -1993,8 +1993,9 @@ class config {
                                 if (array_key_exists($conf, $LANG_fs[$group])) {
                                     $label = $LANG_fs[$group][$conf];
                                 } else {
-                                    // No label found, set name
-                                    $label = $conf;
+                                    // No label found
+                                    // Maybe config value type is hidden, so skip
+                                    continue;
                                 }
                             }
                             
