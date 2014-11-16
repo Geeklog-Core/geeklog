@@ -588,8 +588,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'edit_image', $editiconhtml);
         }
     
-        $navi_list = ture;
-        $feedback_list = ture;
+        $navi_list = true;
+        $feedback_list = true;
         if ($index == 'p') {
             $navi_list = false;
             $feedback_list = false;
