@@ -7199,6 +7199,11 @@ function COM_dateDiff( $interval, $date1, $date2 )
 function COM_getCurrentURL()
 {
     global $_CONF;
+    static $thisUrl;
+
+    if ($thisUrl !== null) {
+        return $thisUrl;
+    }
 
     $thisUrl = '';
 
@@ -7626,6 +7631,11 @@ function COM_getLanguageFromBrowser()
 function COM_getLanguage()
 {
     global $_CONF, $_USER;
+    static $langfile;
+
+    if ($langfile !== null) {
+        return $langfile;
+    }
 
     $langfile = '';
 
@@ -7645,7 +7655,9 @@ function COM_getLanguage()
     }
 
     // if all else fails, return the default language
-    return $_CONF['language'];
+    $langfile = $_CONF['language'];
+
+    return $langfile;
 }
 
 /**
