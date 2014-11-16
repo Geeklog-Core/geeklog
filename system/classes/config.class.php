@@ -392,15 +392,21 @@ class config {
     {
         global $_TABLES;
         
+        $escaped_name = DB_escapeString($name);
+        $escaped_grp = DB_escapeString($group);
+
+        if (empty($tab_id)) {
+            $tab_id = DB_getItem($_TABLES['conf_values'], 'tab',
+                    "name = '$escaped_name' AND group_name = '$escaped_grp'");
+            if (empty($tab_id)) return false;
+        }
+
         // check if current user other than Root has access to
         $tab_name = $this->_get_tab_name($group, $tab_id);
         $ft = $this->conf_type['tab'][$group][$tab_name];
         if ( !SEC_inGroup('Root') && !SEC_hasRights($ft) ) {
             return false;
         }
-
-        $escaped_name = DB_escapeString($name);
-        $escaped_grp = DB_escapeString($group);
 
         $result = DB_query("SELECT value, default_value FROM {$_TABLES['conf_values']} WHERE name = '{$escaped_name}' AND group_name = '{$escaped_grp}'");
         list($value, $default_value) = DB_fetchArray($result);
@@ -431,6 +437,15 @@ class config {
     {
         global $_TABLES;
         
+        $escaped_name = DB_escapeString($name);
+        $escaped_grp = DB_escapeString($group);
+
+        if (empty($tab_id)) {
+            $tab_id = DB_getItem($_TABLES['conf_values'], 'tab',
+                    "name = '$escaped_name' AND group_name = '$escaped_grp'");
+            if (empty($tab_id)) return false;
+        }
+
         // check if current user other than Root has access to
         $tab_name = $this->_get_tab_name($group, $tab_id);
         $ft = $this->conf_type['tab'][$group][$tab_name];
@@ -438,8 +453,6 @@ class config {
             return false;
         }
 
-        $escaped_name = DB_escapeString($name);
-        $escaped_grp = DB_escapeString($group);
         $default_value = DB_getItem($_TABLES['conf_values'], 'default_value',
                 "name = '{$escaped_name}' AND group_name = '{$escaped_grp}'");
         $sql = "UPDATE {$_TABLES['conf_values']} SET value = 'unset'";
