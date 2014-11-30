@@ -182,6 +182,8 @@ function plugin_postinstall_staticpages($pi_name)
         $staticPageAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin' ");
         DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureId}, {$staticPageAdminId}) ");
     }
+
+    return true;
 }
 
 ?>
