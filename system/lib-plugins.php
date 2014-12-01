@@ -353,6 +353,11 @@ function PLG_uninstall($type)
         DB_delete($_TABLES['conf_values'], 'group_name', $type);
         COM_errorLog('...success', 1);
 
+        // remove topic assignment table data for this plugin
+        COM_errorLog("Attempting to remove topic assignments table records for $type", 1);
+        DB_delete($_TABLES['topic_assignments'], 'type', $type);
+        COM_errorLog('...success', 1);
+
         // uninstall the plugin
         COM_errorLog("Attempting to unregister the $type plugin from Geeklog", 1);
         DB_delete($_TABLES['plugins'], 'pi_name', $type);
