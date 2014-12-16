@@ -751,7 +751,7 @@ function batchdelete()
     if (isset($_REQUEST['usr_type'])) {
         $usr_type = COM_applyFilter($_REQUEST['usr_type']);
     }
-    if (! in_array($usr_type, array('phantom', 'sort', 'old', 'recent'))) {
+    if (! in_array($usr_type, array('phantom', 'short', 'old', 'recent'))) {
         $usr_type = 'phantom';
     }
 
