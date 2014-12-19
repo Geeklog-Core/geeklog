@@ -260,6 +260,7 @@ require_once( $_CONF['path_system'] . 'lib-custom.php' );
 */
 
 require_once( $_CONF['path_system'] . 'lib-sessions.php' );
+SESS_sessionCheck(); // Load user data
 TimeZoneConfig::setUserTimeZone();
 
 if (COM_isAnonUser()) {

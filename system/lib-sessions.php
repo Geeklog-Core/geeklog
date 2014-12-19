@@ -60,18 +60,13 @@ if (empty ($_CONF['cookiedomain'])) {
     }
 }
 
-// LOAD USER DATA. NOTE: I'm not sure why I have to set $_USER like this because
-// it's supposed to be a global variable.  I tried setting $_USER from within
-// SESS_sessionCheck() and it doesn't work.
-$_USER = SESS_sessionCheck();
-
 /**
 * This gets the state for the user
 *
 * Much of this code if from phpBB (www.phpbb.org).  This checks the session
 * cookie and long term cookie to get the users state.
 *
-* @return   array   returns $_USER array
+* @return   void
 *
 */
 function SESS_sessionCheck()
@@ -82,7 +77,7 @@ function SESS_sessionCheck()
         COM_errorLog("***Inside SESS_sessionCheck***",1);
     }
 
-    unset($_USER);
+    $_USER = array();
 
     // We MUST do this up here, so it's set even if the cookie's not present.
     $user_logged_in = 0;
@@ -278,13 +273,6 @@ function SESS_sessionCheck()
     }
 
     $_USER['session_id'] = $sessid;
-    
-    // Ensure $_USER is set to avoid warnings (path exposure...)
-    if (isset($_USER)) {
-        return $_USER;
-    } else {
-        return NULL;
-    }
 }
 
 /**
