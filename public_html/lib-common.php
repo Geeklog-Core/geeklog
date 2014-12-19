@@ -447,8 +447,8 @@ if( setlocale( LC_ALL, $_CONF['locale'] ) === false ) {
 $func = "theme_css_" . $_CONF['theme'];
 if (function_exists($func)) {
     foreach ($func() as $info) {
-        $file = $info['file'];
-        $name   = (!empty($info['name']))   ? $info['name']   : md5($file);
+        $file = (!empty($info['file'])) ? $info['file'] : '';
+        $name = (!empty($info['name'])) ? $info['name'] : md5(!empty($file) ? $file : strval(time()));
         $constant   = (!empty($info['constant']))   ? $info['constant']   : true;
         $attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
         $priority = (!empty($info['priority']))   ? $info['priority']   : 100;

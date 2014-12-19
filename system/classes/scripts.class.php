@@ -469,7 +469,11 @@ class scripts {
 
         $extra = '';
         foreach ($attributes as $key => $value) {
-            $extra .= " $key=\"$value\"";
+            if (in_array($key, array('rel', 'type', 'href'))) {
+                $this->css_files[$name][$key] = $value;
+            } else {
+                $extra .= " $key=\"$value\"";
+            }
         }
 
         $this->css_files[$name]['name'] = $name;
@@ -540,9 +544,27 @@ class scripts {
         }
         // Set CSS Files
         foreach ($this->css_files as $file) {
-            if ($file['load'] && isset($file['file'])) {
-                $csslink = '<link rel="stylesheet" type="text/css" href="'
-                         . $_CONF['site_url'] . $file['file'] . '"' . $file['extra'] . XHTML . '>' . LB;                    
+            $rel = 'stylesheet';
+            if (!empty($file['rel'])) {
+                $rel = $file['rel'];
+            }
+            $type = 'text/css';
+            if (!empty($file['type'])) {
+                $type = $file['type'];
+            }
+            $href = '';
+            if (!empty($file['file'])) {
+                $href = $_CONF['site_url'] . $file['file'];
+            }
+            if (!empty($file['href'])) {
+                $href = $file['href'];
+            }
+            
+            if ($file['load'] && !empty($href)) {
+                $csslink = '<link rel="' . $rel
+                         . '" type="' . $type
+                         . '" href="' . $href
+                         . '"' . $file['extra'] . XHTML . '>' . LB;
                 
                 if (isset($file['name']) && $file['name'] == 'theme') { // load theme css first
                     $headercode = $csslink . $headercode;
@@ -551,7 +573,7 @@ class scripts {
                 }
             }
         }
-        // Set CSS         
+        // Set CSS
         if ($this->css_set) {
             $headercode .= '<style type="text/css">' . LB;
             foreach ($this->css as $css) {
