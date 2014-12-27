@@ -91,7 +91,8 @@ function SESS_sessionCheck()
             COM_errorLog("Got $sessid as the session ID",1);
         }
 
-        $userid = SESS_getUserIdFromSession($sessid, $_CONF['session_cookie_timeout'], $_SERVER['REMOTE_ADDR'], $_CONF['cookie_ip']);
+        $userid = SESS_getUserIdFromSession($sessid, $_CONF['session_cookie_timeout'],
+            $_SERVER['REMOTE_ADDR'], $_CONF['cookie_ip']);
 
         if ($_SESS_VERBOSE) {
             COM_errorLog("Got $userid as User ID from the session ID",1);
@@ -105,8 +106,10 @@ function SESS_sessionCheck()
                 SESS_updateSessionTime($sessid, $_CONF['cookie_ip']);
                 $_USER = SESS_getUserDataFromId($userid);
                 if ($_SESS_VERBOSE) {
-                    COM_errorLog("Got " . count($_USER) . " pieces of data from userdata", 1);
-                    COM_errorLog(COM_debug($_USER), 1);
+                    $str = "Got " . count($_USER) . " pieces of data from userdata \n";
+                    foreach ($_USER as $k => $v)
+                        $str .= sprintf("%15s [%s] \n", $k, $v);
+                    COM_errorLog($str, 1);
                 }
                 $_USER['auto_login'] = false;
             }
@@ -175,8 +178,11 @@ function SESS_sessionCheck()
                         COM_errorLog("Create new session and write cookie",1);
                     }
                     // Create new session and write cookie
-                    $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
-                    SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+                    $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'],
+                        $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                    SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'],
+                        $_CONF['cookie_session'], $_CONF['cookie_path'],
+                        $_CONF['cookiedomain'], $_CONF['cookiesecure']);
                     $_USER = SESS_getUserDataFromId($userid);
                     $_USER['auto_login'] = true;
                 }
@@ -189,8 +195,11 @@ function SESS_sessionCheck()
             // Anonymous user has session id but it has been expired and wiped from the db so reset.
             // Or new anonymous user so create new session and write cookie.
             $userid = 1;
-            $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
-            SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+            $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'],
+                $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+            SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'],
+                $_CONF['cookie_session'], $_CONF['cookie_path'],
+                $_CONF['cookiedomain'], $_CONF['cookiesecure']);
         }
     }
 
@@ -220,7 +229,9 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("*** Inside SESS_newSession ***",1);
-        COM_errorLog("Args to new_session: userid = $userid, remote_ip = $remote_ip, lifespan = $lifespan, md5_based = $md5_based",1);
+        COM_errorLog("Args to SESS_newSession: userid = $userid, "
+            . "remote_ip = $remote_ip, lifespan = $lifespan, "
+            . "md5_based = $md5_based",1);
     }
     $sessid = mt_rand();
 
@@ -228,11 +239,10 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     // session ID.  This has the advantage of better security but it may
     // required dialed users to login every time.  You can turn the below
     // code on in the configuration (it's turned off by default)
+    $md5_sessid = '';
     if ($md5_based == 1) {
         $ip = str_replace('.','',$remote_ip);
         $md5_sessid = md5($ip + $sessid);
-    } else {
-        $md5_sessid = '';
     }
 
     $ctime = time();
@@ -258,7 +268,7 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
         }
 
         if (!$delresult) {
-            die("Delete failed in new_session()");
+            die("Delete failed in SESS_newSession()");
         }
     }
     // Remove the anonymous session for this user
@@ -271,29 +281,33 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     }
 
     // Create new session
-    if (empty ($md5_sessid)) {
-        $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, uid, start_time, remote_ip, whos_online) VALUES ($sessid, $userid, $currtime, '$remote_ip', 1)";
+    if ($md5_based == 1) {
+        $sql = "INSERT INTO {$_TABLES['sessions']} "
+            . "(sess_id, md5_sess_id, uid, start_time, remote_ip, whos_online) "
+            . "VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip', 1)";
     } else {
-        $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, md5_sess_id, uid, start_time, remote_ip, whos_online) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip', 1)";
+        $sql = "INSERT INTO {$_TABLES['sessions']} "
+            . "(sess_id, uid, start_time, remote_ip, whos_online) "
+            . "VALUES ($sessid, $userid, $currtime, '$remote_ip', 1)";
     }
     $result = DB_query($sql);
-    if ($result) {
-        if ($_CONF['lastlogin'] == true) {
-            // Update userinfo record to record the date and time as lastlogin
-            DB_query("UPDATE {$_TABLES['userinfo']} SET lastlogin = UNIX_TIMESTAMP() WHERE uid=$userid");
-        }
-        if ($_SESS_VERBOSE) COM_errorLog("Assigned the following session id: $sessid",1);
-        if ($_SESS_VERBOSE) COM_errorLog("*** Leaving SESS_newSession ***",1);
-        if ($md5_based == 1) {
-            return $md5_sessid;
-        } else {
-            return $sessid;
-        }
-    } else {
+    if (!$result) {
         echo DB_error().": ".DB_error()."<br" . XHTML . ">";
-        die("Insert failed in new_session()");
+        die("Insert failed in SESS_newSession()");
     }
-    if ($_SESS_VERBOSE) COM_errorLog("*** Leaving SESS_newSession ***",1);
+
+    if ($_CONF['lastlogin'] == true) {
+        // Update userinfo record to record the date and time as lastlogin
+        DB_query("UPDATE {$_TABLES['userinfo']} SET lastlogin = UNIX_TIMESTAMP() WHERE uid=$userid");
+    }
+    if ($_SESS_VERBOSE) {
+        COM_errorLog("Assigned the following session id: $sessid",1);
+        COM_errorLog("*** Leaving SESS_newSession ***",1);
+    }
+    if ($md5_based == 1) {
+        return $md5_sessid;
+    }
+    return $sessid;
 }
 
 /**
@@ -318,7 +332,8 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
     // window. since session expiry is handled on the server-side, cookie expiry
     // time isn't a big deal.
     if ($_SESS_VERBOSE) {
-        COM_errorLog ("Setting session cookie: setcookie($cookiename, $sessid, 0, $cookiepath, $cookiedomain, $cookiesecure);", 1);
+        COM_errorLog("Setting session cookie: setcookie($cookiename, $sessid, 0, "
+            . "$cookiepath, $cookiedomain, $cookiesecure);", 1);
     }
 
     if (SEC_setCookie($cookiename, $sessid, 0, $cookiepath, $cookiedomain,
@@ -348,18 +363,18 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
         COM_errorLog("*** Inside SESS_getUserIdFromSession ***",1);
     }
 
-    $mintime = time() - $cookietime;
+    $mintime = (string) (time() - $cookietime);
 
     if ($md5_based == 1) {
-        $sql = "SELECT uid FROM {$_TABLES['sessions']} WHERE "
-        . "(md5_sess_id = '$sessid') AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
+        $sql_where = "md5_sess_id = '$sessid'";
     } else {
-        $sql = "SELECT uid FROM {$_TABLES['sessions']} WHERE "
-        . "(sess_id = '$sessid') AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
+        $sql_where = "sess_id = '$sessid'";
     }
+    $sql = "SELECT uid FROM {$_TABLES['sessions']} WHERE "
+        . "($sql_where) AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
 
     if ($_SESS_VERBOSE) {
-        COM_errorLog("SQL in SESS_getUserIdFromSession is:\n $sql\n", 1);
+        COM_errorLog("SQL in SESS_getUserIdFromSession is: \n$sql \n", 1);
     }
 
     $result = DB_query($sql);
@@ -372,9 +387,8 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
     if ($numrows == 1) {
         $row = DB_fetchArray($result);
         return $row['uid'];
-    } else {
-        return 0;
     }
+    return 0;
 }
 
 /**
@@ -395,12 +409,12 @@ function SESS_updateSessionTime($sessid, $md5_based=0)
     $newtime = (string) time();
 
     if ($md5_based == 1) {
-        $sql = "UPDATE {$_TABLES['sessions']} SET start_time = $newtime, whos_online = 1 WHERE (md5_sess_id = '$sessid')";
+        $sql_where = "md5_sess_id = '$sessid'";
     } else {
-        $sql = "UPDATE {$_TABLES['sessions']} SET start_time = $newtime, whos_online = 1 WHERE (sess_id = '$sessid')";
+        $sql_where = "sess_id = '$sessid'";
     }
-
-    $result = DB_query($sql);
+    DB_query("UPDATE {$_TABLES['sessions']} "
+        . "SET start_time = $newtime, whos_online = 1 WHERE ($sql_where)");
 
     return 1;
 }
@@ -440,12 +454,12 @@ function SESS_getUserData($username)
         . "WHERE {$_TABLES['dateformats']}.dfid = {$_TABLES['userprefs']}.dfid AND "
         . "{$_TABLES['userprefs']}.uid = {$_TABLES['users']}.uid AND username = '$username'";
 
-    if(!$result = DB_query($sql)) {
-        COM_errorLog("error in get_userdata", 1);
+    if (!$result = DB_query($sql)) {
+        COM_errorLog("Error in SESS_getUserData", 1);
     }
 
-    if(!$myrow = DB_fetchArray($result)) {
-        COM_errorLog("error in get_userdata", 1);
+    if (!$myrow = DB_fetchArray($result)) {
+        COM_errorLog("Error in SESS_getUserData", 1);
     }
 
     return $myrow;
@@ -465,8 +479,8 @@ function SESS_getUserDataFromId($userid)
     global $_TABLES;
 
     $sql = "SELECT *,format FROM {$_TABLES['dateformats']},{$_TABLES['users']},{$_TABLES['userprefs']} "
-     . "WHERE {$_TABLES['dateformats']}.dfid = {$_TABLES['userprefs']}.dfid AND "
-     . "{$_TABLES['userprefs']}.uid = $userid AND {$_TABLES['users']}.uid = $userid";
+        . "WHERE {$_TABLES['dateformats']}.dfid = {$_TABLES['userprefs']}.dfid AND "
+        . "{$_TABLES['userprefs']}.uid = $userid AND {$_TABLES['users']}.uid = $userid";
 
     if (!$result = DB_query($sql)) {
         $userdata = array('error' => '1');
@@ -516,12 +530,11 @@ function SESS_getVariable($variable)
 
     $session_id = $_USER['session_id'];
 
-    if ( $_CONF['cookie_ip'] == 1) { // $md5_based  Indicates if sessid is MD5 hash
+    if ($_CONF['cookie_ip'] == 1) { // $md5_based  Indicates if sessid is MD5 hash
         $sql_where = "md5_sess_id = '$session_id'";
     } else {
         $sql_where = "sess_id = '$session_id'";
     }
-
     $retval = DB_getItem($_TABLES['sessions'], $variable, $sql_where);
 
     return $retval;
@@ -544,13 +557,13 @@ function SESS_setVariable($variable, $value, $session_id = 0)
         $session_id = $_USER['session_id'];
     }
 
-    if ( $_CONF['cookie_ip'] == 1) { // $md5_based  Indicates if sessid is MD5 hash
-        $sql = "UPDATE {$_TABLES['sessions']} SET $variable = '$value' WHERE (md5_sess_id = '$session_id')";
+    if ($_CONF['cookie_ip'] == 1) { // $md5_based  Indicates if sessid is MD5 hash
+        $sql_where = "md5_sess_id = '$session_id'";
     } else {
-        $sql = "UPDATE {$_TABLES['sessions']} SET $variable = '$value' WHERE (sess_id = '$session_id')";
+        $sql_where = "sess_id = '$session_id'";
     }
-
-    $result = DB_query($sql);
+    DB_query("UPDATE {$_TABLES['sessions']} "
+        . "SET $variable = '$value' WHERE ($sql_where)");
 
     return 1;
 }
