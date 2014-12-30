@@ -516,6 +516,16 @@ else
 $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 
 /**
+* Build global array of Link Tags used by the header of a page. This is a stop  
+* gap measure to support pagination with rel=”next” and rel=”prev” in 
+* COM_printPageNavigation. When the GL Page class is finished this global  
+* function will no longer be accessible.
+*
+*/
+
+$relLinks = array();
+
+/**
 * Build global array of Topics current user has access to
 *
 * @global array $_TOPICS
@@ -977,7 +987,7 @@ function COM_renderMenu( &$header, $plugin_menu )
 function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
-           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS;
+           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $relLinks;
 
     global $_GLOBAL_WHAT;
     $_GLOBAL_WHAT = $what;
@@ -1087,7 +1097,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     $header->set_var('rdf_file', $feed);
     $header->set_var('rss_url', $feed);
 
-    $relLinks = array();
     if (COM_onFrontpage()) {
         $relLinks['canonical'] = '<link rel="canonical" href="'
                                . $_CONF['site_url'] . '/"' . XHTML . '>';
@@ -1642,7 +1651,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 function COM_createHTMLDocument(&$content = '', $information = array())
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
-           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_PAGE_TIMER;
+           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_PAGE_TIMER, $relLinks;
 
    // Retrieve required variables from information array
    if (isset($information['what'])) {
@@ -1782,7 +1791,6 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     // for backward compatibility only - use {feed_url} instead
     $feed = SYND_getDefaultFeedUrl();
 
-    $relLinks = array();
     if (COM_onFrontpage()) {
         $relLinks['canonical'] = '<link rel="canonical" href="'
                                . $_CONF['site_url'] . '/"' . XHTML . '>';
@@ -5686,7 +5694,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
                                   $page_str='page=', $do_rewrite=false, $msg='',
                                   $open_ended = '')
 {
-    global $_CONF, $LANG05;
+    global $_CONF, $LANG05, $relLinks;
 
     if (function_exists('CUSTOM_printPageNavigation')) {
         return CUSTOM_printPageNavigation($base_url, $curpage, $num_pages, $page_str, $do_rewrite, $msg, $open_ended);
@@ -5733,6 +5741,8 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         $page_navigation->set_var('end_first_anchortag', '</a>');
         $page_navigation->set_var('start_previous_anchortag', '<a href="' . $first_url . $pg . $last_url . '">');
         $page_navigation->set_var('end_previous_anchortag', '</a>');
+        // Add in Pagination for previous page
+        $relLinks['prev'] = '<link rel="prev" href="' . $first_url . $pg . $last_url . '"' . XHTML . '>';        
     } else {
         $page_navigation->set_var('start_first_anchortag', '');
         $page_navigation->set_var('end_first_anchortag', '');
@@ -5787,8 +5797,8 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
             $page_navigation->set_var('end_next_anchortag', '</a>');
             $page_navigation->set_var('start_last_anchortag', '<a href="' . $first_url . $sep . $page_str . $num_pages . $last_url . '">');
             $page_navigation->set_var('end_last_anchortag', '</a>');
-
-
+            // Add in Pagination for previous page
+            $relLinks['next'] = '<link rel="next" href="' . $first_url . $sep . $page_str . ($curpage + 1) . $last_url  . '"' . XHTML . '>';
         }
         $page_navigation->parse('pages', 'nav-end', true);
     }
