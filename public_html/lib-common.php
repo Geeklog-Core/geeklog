@@ -516,9 +516,9 @@ else
 $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 
 /**
-* Build global array of Link Tags used by the header of a page. This is a stop  
-* gap measure to support pagination with rel=”next” and rel=”prev” in 
-* COM_printPageNavigation. When the GL Page class is finished this global  
+* Build global array of Link Tags used by the header of a page. This is a stop
+* gap measure to support pagination with rel="next" and rel="prev" in
+* COM_printPageNavigation. When the GL Page class is finished this global
 * function will no longer be accessible.
 *
 */
