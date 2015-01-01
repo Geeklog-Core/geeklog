@@ -163,8 +163,8 @@ class scripts {
         $names[] = 'jquery.ui.tabs';
         $names[] = 'jquery.ui.tooltip';
 
-        // jQuery Timepicker Addon (http://trentrichardson.com/examples/timepicker/)
-        // Version ?
+        // jQuery Timepicker Addon (https://github.com/trentrichardson/jQuery-Timepicker-Addon)
+        // Version 1.5.0
         $names[] = 'jquery-ui-timepicker-addon';
         $names[] = 'jquery-ui-timepicker-addon-i18n';
         $names[] = 'jquery-ui-slideraccess';
