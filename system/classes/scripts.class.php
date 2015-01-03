@@ -128,7 +128,7 @@ class scripts {
         // jQuery UI (http://plugins.jquery.com/ui.core/ and https://github.com/jquery/jquery-ui/releases)
         // When upgrading jQuery UI include the Redmond theme and all Core, Interactions and Widgets
         // Include minified version only of js
-        $version_jQuery_ui = '1.10.3'; // '1.10.1'; // '1.10.0'; // '1.8.20'; // '1.8.11';
+        $version_jQuery_ui = '1.11.2'; // '1.10.3'; // '1.10.1'; // '1.10.0'; // '1.8.20'; // '1.8.11';
         $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui .'/jquery-ui.min.js';
         
         // Set jQuery UI CSS
@@ -158,6 +158,7 @@ class scripts {
         $names[] = 'jquery.ui.dialog';
         $names[] = 'jquery.ui.menu';
         $names[] = 'jquery.ui.progressbar';
+        $names[] = 'jquery.ui.selectmenu';
         $names[] = 'jquery.ui.slider';
         $names[] = 'jquery.ui.spinner';
         $names[] = 'jquery.ui.tabs';
@@ -170,7 +171,7 @@ class scripts {
         $names[] = 'jquery-ui-slideraccess';
 
         // Set jQuery UI Effects
-        $names[] = 'jquery.ui.effect-min'; // core
+        $names[] = 'jquery.ui.effect';
         $names[] = 'jquery.ui.effect-blind';
         $names[] = 'jquery.ui.effect-bounce';
         $names[] = 'jquery.ui.effect-clip';
@@ -179,9 +180,11 @@ class scripts {
         $names[] = 'jquery.ui.effect-fade';
         $names[] = 'jquery.ui.effect-fold';
         $names[] = 'jquery.ui.effect-highlight';
+        $names[] = 'jquery.ui.effect-puff';
         $names[] = 'jquery.ui.effect-pulsate';
         $names[] = 'jquery.ui.effect-scale';
         $names[] = 'jquery.ui.effect-shake';
+        $names[] = 'jquery.ui.effect-size';
         $names[] = 'jquery.ui.effect-slide';
         $names[] = 'jquery.ui.effect-transfer';
         
