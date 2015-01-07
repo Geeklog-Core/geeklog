@@ -2,7 +2,7 @@
 /*
  * http.php
  *
- * @(#) $Header: /opt2/ena/metal/http/http.php,v 1.90 2013/02/20 11:45:28 mlemos Exp $
+ * @(#) $Header: /opt2/ena/metal/http/http.php,v 1.92 2014/08/14 23:17:34 mlemos Exp $
  *
  */
 
@@ -27,7 +27,7 @@ class http_class
 
 	var $protocol="http";
 	var $request_method="GET";
-	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.90 $)';
+	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.92 $)';
 	var $accept='';
 	var $authentication_mechanism="";
 	var $user;
@@ -1546,6 +1546,11 @@ class http_class
 					return($this->SetError("it was received an unexpected HTTP response status", HTTP_CLIENT_ERROR_PROTOCOL_FAILURE));
 				$this->response_status=$matches[1];
 				$this->response_message=$matches[2];
+				if($this->response_status == 204)
+				{
+					$this->content_length = 0;
+					$this->content_length_set = 1;
+				}
 			}
 			if($line=="")
 			{
@@ -1990,6 +1995,36 @@ class http_class
 			if(strlen($block) == 0)
 				return('');
 			$body .= $block;
+		}
+	}
+
+	Function ReadWholeReplyIntoTemporaryFile(&$file)
+	{
+		if(!($file = tmpfile()))
+			return $this->SetPHPError('could not create the temporary file to save the response', $php_errormsg, HTTP_CLIENT_ERROR_CANNOT_ACCESS_LOCAL_FILE);
+		for(;;)
+		{
+			if(strlen($error = $this->ReadReplyBody($block, $this->file_buffer_length)))
+			{
+				fclose($file);
+				return($error);
+			}
+			if(strlen($block) == 0)
+			{
+				if(@fseek($file, 0) != 0)
+				{
+					$error = $this->SetPHPError('could not seek to the beginning of temporary file with the response', $php_errormsg, HTTP_CLIENT_ERROR_CANNOT_ACCESS_LOCAL_FILE);
+					fclose($file);
+					return $error;
+				}
+				return('');
+			}
+			if(!@fwrite($file, $block))
+			{
+				$error = $this->SetPHPError('could not write to the temporary file to save the response', $php_errormsg, HTTP_CLIENT_ERROR_CANNOT_ACCESS_LOCAL_FILE);
+				fclose($file);
+				return $error;
+			}
 		}
 	}
 

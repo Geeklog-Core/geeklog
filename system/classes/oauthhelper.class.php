@@ -36,7 +36,14 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'oauthhelper.class.php') !== false)
     die('This file can not be used on its own.');
 }
 
-require_once 'http/http.php';
+// http://www.phpclasses.org/package/3-PHP-HTTP-client-to-access-Web-site-pages.html
+// httpclient 1.0.2 - Updated 2014-08-14
+// No changes to file required to upgrade
+require_once 'http/http.php'; 
+// http://www.phpclasses.org/package/7700-PHP-Authorize-and-access-APIs-using-OAuth.html
+// oauth-api 1.0.39 - Updated 2014-12-22
+// To upgrade need to update Initialize function in oauth_client.php. Replace upper case with lower case letters in case statement
+// facebook, google, microsoft, twitter, linkedin, yahoo
 require_once 'oauth/oauth_client.php';
 
 // Enable to show debug info for OAuth
