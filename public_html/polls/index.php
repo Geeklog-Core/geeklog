@@ -203,7 +203,7 @@ if (empty($pid)) {
             ) {
             $display .= POLLS_pollVote($pid, true, 0, $order, $mode, $page);
         } else {
-            $display .= POLLS_pollResults($pid, 400, $order, $mode, $page);
+            $display .= POLLS_pollResults($pid, 100, $order, $mode, $page);
         }
         $display = COM_createHTMLDocument($display, array('pagetitle' => $polltopic, 'headercode' => $headercode));
     }

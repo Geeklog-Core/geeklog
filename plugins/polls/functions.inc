@@ -761,7 +761,7 @@ function POLLS_pollsave($pid, $aid)
 * @return     string   HTML Formated Poll Results
 *
 */
-function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $page = 1, $displaytype = 0)
+function POLLS_pollResults($pid, $scale=100, $order='', $mode='', $page = 1, $displaytype = 0)
 {
     global $_CONF, $_TABLES, $_USER, $_IMAGE_TYPE,
            $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE, $LANG25;
@@ -881,7 +881,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $page = 1, $di
                     $poll->set_var('answer_num', COM_numberFormat($A['votes']));
                     $poll->set_var('answer_percent',
                                     sprintf('%.2f', $percent * 100));
-                    if ($scale < 120) {
+                    if ($scale < 50) {
                         $poll->parse('poll_votes', 'votes_num', true );
                     } else {
                         $width = (int)($percent * $scale);
@@ -916,7 +916,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $page = 1, $di
 
             $retval .= $poll->finish($poll->parse('output', 'result' ));
 
-            if($scale > 399 && $P['commentcode'] >= 0 && $displaytype != 2) {
+            if($scale > 99 && $P['commentcode'] >= 0 && $displaytype != 2) {
                 $delete_option = (SEC_hasRights('polls.edit') &&
                     SEC_hasAccess($P['owner_id'], $P['group_id'],
                     $P['perm_owner'], $P['perm_group'], $P['perm_members'],
@@ -967,7 +967,7 @@ function POLLS_ipAlreadyVoted($pid, $ip = '' )
 */
 function phpblock_polls()
 {
-    return POLLS_showPoll(60, '', false, 1);
+    return POLLS_showPoll(0, '', false, 1);
 }
 
 
@@ -1281,8 +1281,12 @@ function plugin_upgrade_polls()
             }
 
             $current_version = '2.1.5';
-            break;             
-
+            break;
+            
+        case '2.1.5':            
+            $current_version = '2.1.6';
+            break;
+        	
         default:
             $done = true;
         }
