@@ -360,8 +360,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $retval .= COM_showMessage($msg, 'staticpages');
         }
 
-        $template_path = staticpages_templatePath();
-        $spage = COM_newTemplate($template_path);
+        $spage = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
         $spage->set_file(array('page'     => 'staticpage.thtml',
                                'comments' => 'spcomments.thtml'));
 
@@ -546,8 +545,7 @@ function SP_printPage($page, $A)
     global $_CONF, $_TABLES, $LANG01, $LANG_STATIC, $LANG_DIRECTION,
            $_IMAGE_TYPE;
 
-    $template_path = staticpages_templatePath();
-    $print = COM_newTemplate($template_path);
+    $print = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
     $print->set_file(array('print' => 'printable.thtml'));
     $print->set_var('site_slogan', $_CONF['site_slogan']);
 
@@ -1091,8 +1089,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
                 }
             }
 
-            $template_path = staticpages_templatePath();
-            $spage = COM_newTemplate($template_path);
+            $spage = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
             $spage->set_file(array('page' => 'centerblock.thtml'));
 
             if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
@@ -1519,7 +1516,11 @@ function plugin_upgrade_staticpages()
             SP_update_ConfValues_1_6_5();
 
             $current_version = '1.6.6';
-            break;             
+            break;  
+            
+        case '1.6.6':
+            $current_version = '1.6.7';
+            break;  
 
         default:
             $done = true;
@@ -1590,35 +1591,6 @@ function plugin_autouninstall_staticpages ()
     );
 
     return $out;
-}
-
-/**
-* Get path for the template files.
-*
-* @param    string  $path   subdirectory within the base template path
-* @return   string          full path to template directory
-*
-*/
-function staticpages_templatePath ($path = '')
-{
-    global $_CONF;
-
-    if (empty ($path)) {
-        $layout_path = $_CONF['path_layout'] . 'staticpages';
-    } else {
-        $layout_path = $_CONF['path_layout'] . 'staticpages/' . $path;
-    }
-
-    if (is_dir ($layout_path)) {
-        $retval = $layout_path;
-    } else {
-        $retval = $_CONF['path'] . 'plugins/staticpages/templates';
-        if (!empty ($path)) {
-            $retval .= '/' . $path;
-        }
-    }
-
-    return $retval;
 }
 
 function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)

@@ -69,7 +69,6 @@ function staticpageeditor_form($A)
            $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG01, $LANG24,
            $LANG_postmodes, $MESSAGE, $_IMAGE_TYPE, $_SCRIPTS;
 
-    $template_path = staticpages_templatePath('admin');
     if (!empty($sp_id) && $mode=='edit') {
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
     } else {
@@ -90,7 +89,7 @@ function staticpageeditor_form($A)
     }
     $retval = '';
     
-    $sp_template = COM_newTemplate($template_path);
+    $sp_template = COM_newTemplate(CTL_plugin_templatePath('staticpages', 'admin'));
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $sp_template->set_file('form', 'editor_advanced.thtml');
         
