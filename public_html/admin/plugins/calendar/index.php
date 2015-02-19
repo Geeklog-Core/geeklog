@@ -108,7 +108,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $retval .= COM_showMessageText($msg, $LANG_CAL_ADMIN[2]);
     }
 
-    $event_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/admin');
+    $event_templates = COM_newTemplate(CTL_plugin_templatePath('calendar', 'admin'));
     $event_templates->set_file('editor','eventeditor.thtml');
 
     $allowed = '';

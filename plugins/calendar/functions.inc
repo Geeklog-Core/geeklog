@@ -671,7 +671,7 @@ function plugin_getheadercode_calendar()
 
     // use the CSS only if we are on the plugin's pages
     if (substr_count ($_SERVER['PHP_SELF'], '/calendar/') > 0) {
-        $_SCRIPTS->setCSSFile('calendar', '/calendar/style.css', false);
+        $_SCRIPTS->setCSSFile('calendar', CTL_plugin_cssURL('calendar'), false);
     }
 }
 
@@ -757,7 +757,7 @@ function plugin_submit_calendar($mode = 'master')
     $retval = '';
 
     $retval .= COM_startBlock ($LANG_CAL_1[26], 'submitevent.html');
-    $eventform = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/');
+    $eventform = COM_newTemplate(CTL_plugin_templatePath('calendar'));
     $eventform->set_file ('eventform', 'submitevent.thtml');
     if ($mode != 'personal') {
         $eventform->set_var ('explanation', $LANG_CAL_1[27]);
@@ -941,7 +941,7 @@ function CALENDAR_listOld()
             'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $cal_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/admin');
+    $cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar', 'admin'));
     $cal_templates->set_file(array('form' => 'batchdelete.thtml'));
     $cal_templates->set_var('usr_time', $usr_time);
     $cal_templates->set_var('lang_text_start', $LANG_CAL_ADMIN[28]);
@@ -1649,6 +1649,10 @@ function plugin_upgrade_calendar()
             $current_version = '1.1.4';
             break;            
 
+        case '1.1.4':
+
+            $current_version = '1.1.5';
+            break;             
         default:
             $done = true;
             break;
@@ -1736,36 +1740,6 @@ function plugin_autouninstall_calendar ()
         'vars'=> array()
     );
     return $out;
-}
-
-
-/**
-* Get path for the template files.
-*
-* @param    string  $path   subdirectory within the base template path
-* @return   string          full path to template directory
-*
-*/
-function calendar_templatePath ($path = '')
-{
-    global $_CONF;
-
-    if (empty ($path)) {
-        $layout_path = $_CONF['path_layout'] . calendar;
-    } else {
-        $layout_path = $_CONF['path_layout'] . calendar . '/' . $path;
-    }
-
-    if (is_dir ($layout_path)) {
-        $retval = $layout_path;
-    } else {
-        $retval = $_CONF['path'] . 'plugins/calendar/templates';
-        if (!empty ($path)) {
-            $retval .= '/' . $path;
-        }
-    }
-
-    return $retval;
 }
 
 /**

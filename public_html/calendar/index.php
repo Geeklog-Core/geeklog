@@ -481,7 +481,7 @@ $cal->setCalendarMatrix ($month, $year);
 
 switch ($view) {
 case 'day':
-    $cal_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/dayview');
+    $cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar', 'dayview'));
     $cal_templates->set_file(array('column'=>'column.thtml',
                                    'event'=>'singleevent.thtml',
                                    'dayview'=>'dayview.thtml',
@@ -613,7 +613,7 @@ case 'day':
     break;
 
 case 'week':
-    $cal_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates');
+    $cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar'));
     $cal_templates->set_file(array('week'=>'weekview/weekview.thtml',
                                    'events'=>'weekview/events.thtml',
                                    'quickadd'=>'dayview/quickaddform.thtml'));
@@ -801,7 +801,7 @@ case 'savepersonal':
 default: // month view
 // Load templates
 
-$cal_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates');
+$cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar'));
 $cal_templates->set_file (array (
         'calendar'    => 'calendar.thtml',
         'week'        => 'calendarweek.thtml',

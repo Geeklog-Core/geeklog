@@ -64,7 +64,7 @@ function adduserevent ($eid)
         $retval .= COM_startBlock (sprintf ($LANG_CAL_1[11],
                                             COM_getDisplayName()));
         $A = DB_fetchArray($result);
-        $cal_template = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/');
+        $cal_template = COM_newTemplate(CTL_plugin_templatePath('calendar'));
         $cal_template->set_file(array('addevent' => 'addevent.thtml'));
         $cal_template->set_var('intro_msg', $LANG_CAL_1[8]);
         $cal_template->set_var('lang_event', $LANG_CAL_1[12]);
@@ -176,7 +176,7 @@ function editpersonalevent ($A)
 {
     global $_CONF, $_CA_CONF, $LANG_CAL_1;
 
-    $cal_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/');
+    $cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar'));
     $cal_templates->set_file('form','editpersonalevent.thtml');
 
     $cal_templates->set_var ('lang_title', $LANG_CAL_1[28]);
@@ -494,7 +494,7 @@ default:
                  . "and DATE_FORMAT(dateend,'%Y-%m-%d') "
                  . "ORDER BY datestart ASC,timestart ASC,title";
     }
-    $cal_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/');
+    $cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar'));
     $cal_templates->set_file (array (
             'events'    => 'events.thtml',
             'details'   => 'eventdetails.thtml',
