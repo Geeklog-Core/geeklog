@@ -422,36 +422,6 @@ function plugin_autouninstall_polls ()
 }
 
 /**
-* Get path for the template files.
-*
-* @param    string  $path   subdirectory within the base template path
-* @return   string          full path to template directory
-*
-*/
-function polls_templatePath ($path = '')
-{
-    global $_CONF;
-
-    if (empty ($path)) {
-        $layout_path = $_CONF['path_layout'] . polls;
-    } else {
-        $layout_path = $_CONF['path_layout'] . polls . '/' . $path;
-    }
-
-    if (is_dir ($layout_path)) {
-        $retval = $layout_path;
-    } else {
-        $retval = $_CONF['path'] . 'plugins/polls/templates';
-        if (!empty ($path)) {
-            $retval .= '/' . $path;
-        }
-    }
-
-    return $retval;
-}
-
-
-/**
 * Shows a poll form
 *
 * Shows an HTML formatted poll for the given topic ID
@@ -492,8 +462,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
             $nquestions = DB_numRows($questions );
 
             if ($nquestions > 0) {
-                $poll = COM_newTemplate($_CONF['path']
-                                     . 'plugins/polls/templates/');
+                $poll = COM_newTemplate(CTL_plugin_templatePath('polls'));
                 $poll->set_file(array('panswer'    => 'pollanswer.thtml',
                                       'block'      => 'pollblock.thtml',
                                       'pquestions' => 'pollquestions.thtml',
@@ -811,7 +780,7 @@ function POLLS_pollResults($pid, $scale=100, $order='', $mode='', $page = 1, $di
         }
 
         if ($nquestions > 0){
-            $poll = COM_newTemplate($_CONF['path'] . 'plugins/polls/templates/' );
+            $poll = COM_newTemplate(CTL_plugin_templatePath('polls'));
             $poll->set_file(array('result' => 'pollresult.thtml',
                 'question' => 'pollquestion.thtml',
                 'comments' => 'pollcomments.thtml',
@@ -1121,7 +1090,7 @@ function plugin_getheadercode_polls()
     // You normally only set the css file when needed but with the possibility of
     // the poll block or autotag being displayed after COM_SiteHeader being called
     // we need to set it just in case
-    $_SCRIPTS->setCSSFile('polls', '/polls/style.css');
+    $_SCRIPTS->setCSSFile('polls', CTL_plugin_cssURL('polls'));
 }
 
 

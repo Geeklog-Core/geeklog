@@ -400,8 +400,7 @@ function editpoll ($pid = '')
     );
     $retval .= SEC_getTokenExpiryNotice($token);
 
-    $poll_templates = COM_newTemplate($_CONF['path']
-                                    . 'plugins/polls/templates/admin/');
+    $poll_templates = COM_newTemplate(CTL_plugin_templatePath('polls', 'admin'));
     $poll_templates->set_file (array ('editor' => 'polleditor.thtml',
                                       'question' => 'pollquestions.thtml',
                                       'answer' => 'pollansweroption.thtml'));
