@@ -215,7 +215,7 @@ function links_edit_category($cid, $pid)
                               COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= SEC_getTokenExpiryNotice($token);
 
-    $T = COM_newTemplate($_CONF['path'] . 'plugins/links/templates/admin');
+    $T = COM_newTemplate(CTL_plugin_templatePath('links', 'admin'));
     $T->set_file(array('page' => 'categoryeditor.thtml'));
 
     $T->set_var('lang_pagetitle', $LANG_LINKS_ADMIN[28]);

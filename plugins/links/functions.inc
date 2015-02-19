@@ -797,6 +797,11 @@ function plugin_upgrade_links()
 
             $current_version = '2.1.3';
             break;            
+
+        case '2.1.3':
+
+            $current_version = '2.1.4';
+            break;   
             
         default:
             $done = true;
@@ -1015,7 +1020,7 @@ function plugin_submit_links()
 
     $retval = COM_startBlock ($LANG_LINKS_SUBMIT[1], 'submitlink.html');
 
-    $linkform = COM_newTemplate($_CONF['path'] . 'plugins/links/templates');
+    $linkform = COM_newTemplate(CTL_plugin_templatePath('links'));
     $linkform->set_file('linkform', 'submitlink.thtml');
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);

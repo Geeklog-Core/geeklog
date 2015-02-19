@@ -141,7 +141,7 @@ function links_list($message)
         }
     }
 
-    $linklist = COM_newTemplate($_CONF['path'] . 'plugins/links/templates/');
+    $linklist = COM_newTemplate(CTL_plugin_templatePath('links'));
     $linklist->set_file (array ('linklist' => 'links.thtml',
                                 'catlinks' => 'categorylinks.thtml',
                                 'link'     => 'linkdetails.thtml',

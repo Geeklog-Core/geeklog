@@ -93,7 +93,7 @@ function editlink ($mode, $lid = '')
 
     $retval = '';
 
-    $link_templates = COM_newTemplate($_CONF['path'] . 'plugins/links/templates/admin/');
+    $link_templates = COM_newTemplate(CTL_plugin_templatePath('links', 'admin'));
     $link_templates->set_file('editor','linkeditor.thtml');
 
     $link_templates->set_var('lang_pagetitle', $LANG_LINKS_ADMIN[28]);
