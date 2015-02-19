@@ -51,7 +51,7 @@ function plugin_autoinstall_spamx($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.3.1',
+        'pi_version'      => '1.3.2',
         'pi_gl_version'   => '2.1.0',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );
