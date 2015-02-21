@@ -691,9 +691,6 @@ function plugin_upgrade_links()
         return 3002;
     }
 
-    $inst_parms = plugin_autoinstall_links('links');
-    $pi_gl_version = $inst_parms['info']['pi_gl_version'];
-
     require_once $_CONF['path'] . 'plugins/links/sql/'
                                 . $_DB_dbms . '_updates.php';
 
@@ -808,7 +805,7 @@ function plugin_upgrade_links()
         }
     }
 
-    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'links'");
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$installed_version' WHERE pi_name = 'links'");
 
     return true;
 }

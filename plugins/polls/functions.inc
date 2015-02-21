@@ -1118,9 +1118,6 @@ function plugin_upgrade_polls()
         return 3002;
     }
 
-    $inst_parms = plugin_autoinstall_polls('polls');
-    $pi_gl_version = $inst_parms['info']['pi_gl_version'];
-
     require_once $_CONF['path'] . 'plugins/polls/sql/'
                                 . $_DB_dbms . '_updates.php';
 
@@ -1261,7 +1258,7 @@ function plugin_upgrade_polls()
         }
     }
 
-    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'polls'");
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$installed_version' WHERE pi_name = 'polls'");
 
     return true;
 }
