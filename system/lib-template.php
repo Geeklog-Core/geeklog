@@ -120,25 +120,25 @@ function CTL_plugin_templatePath($plugin, $path = '')
 
     // See if plugin templates exist in current theme 
 	if (empty($path)) {
-        $retval[] = $_CONF['path_layout'] . $plugin;
+        $retval[] = "{$_CONF['path_layout']}$plugin";
     } else {
-        $retval[] = $_CONF['path_layout'] . $plugin . '/' . $path;
+        $retval[] = "{$_CONF['path_layout']}$plugin/$path";
     }
     
 	// Now Check to see if default theme exists, if so add it to the mix
 	if (!empty($_CONF['theme_default'])) {
 		if (empty($path)) {
-			$retval[] = $_CONF['path_layout_default'] . $plugin;
+			$retval[] = "{$_CONF['path_layout_default']}$plugin";
 		} else {
-			$retval[] = $_CONF['path_layout_default'] . $plugin . '/' . $path;
+			$retval[] = "{$_CONF['path_layout_default']}$plugin/$path";
 		}
 	}
 
 	// See if current theme templates stored with plugin
 	if (empty($path)) {
-		$layout_path = $_CONF['path'] . 'plugins/' . $plugin . '/templates/'. $_CONF['theme'];
+		$layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme']}";
 	} else {
-		$layout_path = $_CONF['path'] . 'plugins/' . $plugin . '/templates/' . $_CONF['theme'] . '/' . $path;
+		$layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme']}/$path";
 	}
 	
 	if (is_dir($layout_path)) {
@@ -148,9 +148,9 @@ function CTL_plugin_templatePath($plugin, $path = '')
 	// Now Check to see if default theme exists for templates stored with plugin
 	if (!empty($_CONF['theme_default'])) {
 		if (empty($path)) {
-			$layout_path = $_CONF['path'] . 'plugins/' . $plugin . '/templates/'. $_CONF['theme_default'];
+			$layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme_default']}";
 		} else {
-			$layout_path = $_CONF['path'] . 'plugins/' . $plugin . '/templates/' . $_CONF['theme_default'] . '/' . $path;
+			$layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme_default']}/$path";
 		}
 		
 		if (is_dir($layout_path)) {
@@ -159,7 +159,7 @@ function CTL_plugin_templatePath($plugin, $path = '')
 	}
 	
 	// Use default templates then
-	$layout_path = $_CONF['path'] . 'plugins/' . $plugin . '/templates/default';
+	$layout_path = "{$_CONF['path']}plugins/$plugin/templates/default";
 	if (!empty($path)) {
 		$layout_path .= '/' . $path;
 	}	
@@ -169,35 +169,37 @@ function CTL_plugin_templatePath($plugin, $path = '')
     return $retval;
 }
 
+
 /**
-* Get HTML path for the plugin css file.
+* Get HTML path for a plugin file.
 *
 * @param    string  $plugin		name of plugin
-* @param    string  $filename   name of css file
-* @return   string          	full HTML path to css file
+* @param    string  $directory  name of directory
+* @param    string  $filename   name of file
+* @return   string          	full HTML path to file
 *
 */
-function CTL_plugin_cssURL($plugin, $filename = "style.css")
+function CTL_plugin_themebaseURL($plugin, $directory, $filename)
 {
     global $_CONF;
 
     // See if plugin css file exist in current theme 
-	$css_file = $_CONF['path_layout'] . $plugin . '/' . $filename;
-    if (file_exists($css_file)) {
-        $retval = $_CONF['layout_url'] . '/' . $plugin . '/' . $filename;
+	$file = "{$_CONF['path_layout']}$plugin/$filename";
+    if (file_exists($file)) {
+        $retval = "{$_CONF['layout_url']}/$plugin/$filename";
     } else {
     	// See if current theme templates stored with plugin
-		$css_file = $_CONF['path_html'] . '/' . $plugin . '/css/'. $_CONF['theme'] . '/' . $filename;
-		if (file_exists($css_file)) {
-			$retval = '/' . $plugin . '/css/'. $_CONF['theme'] . '/' . $filename;;
+		$file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme']}/$filename";
+		if (file_exists($file)) {
+			$retval = "/$plugin/$directory/{$_CONF['theme']}/$filename";
 		} else {
-			// Use default templates then. This should always exist = $_CONF['path_html'] . '/' . $plugin . '/css/default/' . $filename;
-			$css_file = $_CONF['path_html'] . '/' . $plugin . '/css/default/' . $filename;
-			if (file_exists($css_file)) {
-				$retval = '/' . $plugin . '/css/default/' . $filename;
+			// Use default templates then. This should always exist 
+			$file = "{$_CONF['path_html']}/$plugin/$directory/default/$filename";
+			if (file_exists($file)) {
+				$retval = "/$plugin/$directory/default/$filename";
 			} else {
-				// Last guess for css file location
-				$retval = '/' . $plugin . '/' . $filename;
+				// Last guess for file location
+				$retval = "/$plugin/$filename";
 			}
 		}
     }
@@ -206,31 +208,33 @@ function CTL_plugin_cssURL($plugin, $filename = "style.css")
 }
 
 /**
-* Get HTML path for the plugin css file.
+* Get physical path or url for plugin directory that could be located either in 
+* the theme layout directory or the plugins directory
 *
 * @param    string  $plugin		name of plugin
-* @param    string  $filename   name of css file
-* @return   string          	full HTML path to css file
+* @param    string  $directory 	name of directory
+* @param    boolean $return_url flag to return url
+* @return   string          	url or physical path 
 *
 */
-function CTL_plugin_dirLocation($plugin, $path = "images", $return_url = true)
+function CTL_plugin_dirLocation($plugin, $directory = "images", $return_url = true)
 {
     global $_CONF;
 
     // See if plugin image files exist in current theme 
-	$images_path = $_CONF['path_layout'] . $plugin . '/' . $path;
-    if (is_dir($images_path)) {
+	$path = "{$_CONF['path_layout']}$plugin/$directory";
+    if (is_dir($path)) {
     	if ($return_url) {
-    		$retval = $_CONF['layout_url'] . '/' . $plugin . '/' . $path;
+    		$retval = "{$_CONF['layout_url']}/$plugin/$directory";
 		} else {
-			$retval = $images_path;
+			$retval = $path;
 		}
     } else {
-    	// Use default location then. This should always exist : $images_path = $_CONF['path_html'] . '/' . $plugin . '/' . $path;
+    	// Use default location then. This should always exist
     	if ($return_url) {
-    		$retval =  $_CONF['site_url'] . '/' . $plugin . '/' . $path;
+    		$retval =  "{$_CONF['site_url']}/$plugin/$directory";
 		} else {
-			$retval =  $_CONF['path_html'] . '/' . $plugin . '/' . $path;
+			$retval =  "{$_CONF['path_html']}/$plugin/$directory";
 		}
     }
 

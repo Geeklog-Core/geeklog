@@ -1090,7 +1090,7 @@ function plugin_getheadercode_polls()
     // You normally only set the css file when needed but with the possibility of
     // the poll block or autotag being displayed after COM_SiteHeader being called
     // we need to set it just in case
-    $_SCRIPTS->setCSSFile('polls', CTL_plugin_cssURL('polls'));
+    $_SCRIPTS->setCSSFile('polls', CTL_plugin_themebaseURL('polls', 'css', 'style.css'));
 }
 
 
