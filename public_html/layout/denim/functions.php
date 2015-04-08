@@ -60,8 +60,8 @@ function theme_css_denim()
 
     return array(
         array(
-            'name' => 'theme',            
-            'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style.css',
+            'name' => 'theme',
+            'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style.min.css', // change '/style.css' during debugging
             'attributes' => array('media' => 'all')
         )
     );
