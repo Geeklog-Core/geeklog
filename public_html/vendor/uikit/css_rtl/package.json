@@ -1,0 +1,22 @@
+{
+  "name": "css_rtl",
+  "version": "1.0.0",
+  "description": "UIkit css rtl version",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build"
+  },
+  "author": "dengen",
+  "license": "MIT",
+  "devDependencies": {
+    "R2": "^1.4.3",
+    "del": "^1.1.1",
+    "glob": "^5.0.5",
+    "gulp": "^3.8.11",
+    "gulp-minify-css": "^1.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.3",
+    "gulp-shell": "^0.4.1",
+    "run-sequence": "^1.0.2"
+  }
+}
