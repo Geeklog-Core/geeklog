@@ -2941,7 +2941,7 @@ div.third-party-login {
 --------------------------------------*/
 
 .gl-tooltip span {
-  margin-right: -999em;
+  margin-left: -999em;
   position: absolute;
   text-align: right;
   width: 250px;
@@ -2968,7 +2968,7 @@ div.third-party-login {
   right: 2.2em;
   top: 2.2em;
   z-index: 99;
-  margin-right: 0;
+  margin-left: 0;
   width: 250px;
 }
 

@@ -15,11 +15,9 @@ var pkg         = require('./package.json'),
     replace     = require('gulp-replace'),
     watch       = require('gulp-watch'),
     nib         = require('nib'),
-    mkdirp      = require('mkdirp'),
     browserSync = require('browser-sync');
 
 //var site_url  = 'http://localhost:8000/your_site'; // set the same value as the $_CONF['site_url']
-var site_url  = 'http://localhost:8080/work/nightly12/'; // set the same value as the $_CONF['site_url']
 
 var banner = "<%= pkg.title %> <%= pkg.version %> | Copyright (C) 2012-2015 by <%= pkg.author %> | <%= pkg.homepage %> | License:<%= pkg.license %>";
 
@@ -43,7 +41,7 @@ gulp.task('bs-reload', function () {
 });
 
 gulp.task('build', function() {
-    runSequence('stylus', 'copy_LR', 'swap_LR', ['minify1', 'minify2', 'modify'], 'deploy', function() {
+    runSequence('stylus', 'copy_LR', 'swap_LR', 'fix_issue', 'minify', 'modify', 'deploy', function() {
         browserSync.reload();
     });
 });
@@ -60,24 +58,14 @@ gulp.task('stylus', function() {
         .pipe(gulp.dest('./dest/css_ltr'));
 });
 
-gulp.task('minify1', function() {
-    return gulp.src(['!./dest/css_ltr/*.min.css', './dest/css_ltr/*.css'])
+gulp.task('minify', function() {
+    return gulp.src(['!./dest/**/*.min.css', './dest/**/*.css'])
         .pipe(rename({ suffix: '.min' }))
         //.pipe(cmq())
         //.pipe(csso())
         .pipe(minifycss())
         .pipe(header("/* " + banner + " */\n", { 'pkg' : pkg } ))
-        .pipe(gulp.dest('./dest/css_ltr'));
-});
-
-gulp.task('minify2', function() {
-    return gulp.src(['!./dest/css_rtl/*.min.css', './dest/css_rtl/*.css'])
-        .pipe(rename({ suffix: '.min' }))
-        //.pipe(cmq())
-        //.pipe(csso())
-        .pipe(minifycss())
-        .pipe(header("/* " + banner + " */\n", { 'pkg' : pkg } ))
-        .pipe(gulp.dest('./dest/css_rtl'));
+        .pipe(gulp.dest('./dest/'));
 });
 
 gulp.task('deploy', function() {
@@ -90,55 +78,58 @@ gulp.task('copy_LR', function() {
         .pipe(gulp.dest('./dest/css_rtl/'));
 });
 
-gulp.task('swap_LR',
-    shell.task([
-        'r2 ./dest/css_rtl/style.css ./dest/css_rtl/style.css --no-compress'
-    ])
-);
+gulp.task('swap_LR', function() {
+    return shell.task('r2 ./dest/css_rtl/style.css ./dest/css_rtl/style.css --no-compress')();
+});
 
-gulp.task('mkdir', function(done) {
-    mkdirp('./dest/css_rtl')
-    done();
+gulp.task('fix_issue', function() {
+    return gulp.src('./dest/css_rtl/style.css')
+        .pipe(replace(/\.gl-tooltip span((?:\n|.)+?)margin-right/mg,
+            function(str, p1, offset, s) {
+                return '.gl-tooltip span' + p1 + 'margin-left';
+            }))
+        .pipe(replace(/\.gl-tooltip:hover span((?:\n|.)+?)margin-right/mg,
+            function(str, p1, offset, s) {
+                return '.gl-tooltip:hover span' + p1 + 'margin-left';
+            }))
+        .pipe(gulp.dest('./dest/css_rtl/'));
 });
 
 gulp.task('modify', function(done) {
 
     var regex = /(\/\*\/?(?:\n|[^\/]|[^\*]\/)*\*\/)|(^@media\s+[^\n]+\{\n(?:\n|.)*?\n\})|(^(?:#|\.|\w)(?:\n|.)+?\{\n(?:\n|.)*?\n\})/mg;
 
-    glob('./dest/css_?t?/style.css', function (err, files) {
+    var files = glob.sync('./dest/css_?t?/style.css');
 
-        if (err) throw err;
+    files.forEach(function(file) {
 
-        files.forEach(function(file) {
+        var str = [];
 
-            var str = [];
+        fs.readFile(file, {encoding: 'utf-8'}, function(err, content) {
 
-            fs.readFile(file, {encoding: 'utf-8'}, function(err, content) {
+            if (err) throw err;
 
-                if (err) throw err;
+            var matches, tmp;
 
-                var matches, tmp;
-
-                while (matches = regex.exec(content)) {
-                    if (matches[1] !== undefined) { // comment
-                        tmp = matches[1];
-                        if (tmp.indexOf('\n') != -1) {
-                            tmp += '\n';
-                        }
-                        str.push(tmp);
-                    }
-                    if (matches[2] !== undefined) { // @media
-                        tmp = modifyMedia(matches[2]);
+            while (matches = regex.exec(content)) {
+                if (matches[1] !== undefined) { // comment
+                    tmp = matches[1];
+                    if (tmp.indexOf('\n') != -1) {
                         tmp += '\n';
-                        str.push(tmp);
                     }
-                    if (matches[3] !== undefined) { // CSS rule set
-                        str.push(matches[3] + '\n');
-                    }
+                    str.push(tmp);
                 }
-                fs.writeFile(file, str.join('\n'), function(err) {
-                    if (err) throw err;
-                });
+                if (matches[2] !== undefined) { // @media
+                    tmp = modifyMedia(matches[2]);
+                    tmp += '\n';
+                    str.push(tmp);
+                }
+                if (matches[3] !== undefined) { // CSS rule set
+                    str.push(matches[3] + '\n');
+                }
+            }
+            fs.writeFile(file, str.join('\n'), function(err) {
+                if (err) throw err;
             });
         });
     });
