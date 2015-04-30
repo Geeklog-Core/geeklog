@@ -1,4 +1,4 @@
-/*! UIkit 2.19.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.20.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(core) {
 
     if (typeof define == "function" && define.amd) { // AMD
@@ -41,12 +41,12 @@
 
     "use strict";
 
-    var UI = {}, _UI = window.UIkit;
+    var UI = {}, _UI = window.UIkit ? Object.create(window.UIkit) : undefined;
 
-    UI.version = '2.19.0';
+    UI.version = '2.20.1';
 
     UI.noConflict = function() {
-        // resore UIkit version
+        // restore UIkit version
         if (_UI) {
             window.UIkit = _UI;
             $.UIkit      = _UI;
@@ -66,22 +66,6 @@
     UI.$doc  = UI.$(document);
     UI.$win  = UI.$(window);
     UI.$html = UI.$('html');
-
-    UI.fn = function(command, options) {
-
-        var args = arguments, cmd = command.match(/^([a-z\-]+)(?:\.([a-z]+))?/i), component = cmd[1], method = cmd[2];
-
-        if (!UI[component]) {
-            $.error("UIkit component [" + component + "] does not exist.");
-            return this;
-        }
-
-        return this.each(function() {
-            var $this = $(this), data = $this.data(component);
-            if (!data) $this.data(component, (data = UI[component](this, method ? undefined : options)));
-            if (method) data[method].apply(data, Array.prototype.slice.call(args, 1));
-        });
-    };
 
     UI.support = {};
     UI.support.transition = (function() {
@@ -124,9 +108,25 @@
         return animationEnd && { end: animationEnd };
     })();
 
-    UI.support.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function(callback){ setTimeout(callback, 1000/60); };
+    window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || function(callback, element) {
+        var currTime = new Date().getTime();
+        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+        var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
+        lastTime = currTime + timeToCall;
+        return id;
+    };
+
+    if (!window.cancelAnimationFrame) {
+
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+    }
+
+    window.requestAnimationFrame = window.requestAnimationFrame;
+
     UI.support.touch                 = (
-        ('ontouchstart' in window && navigator.userAgent.toLowerCase().match(/mobile|tablet/)) ||
+        ('ontouchstart' in document) ||
         (global.DocumentTouch && document instanceof global.DocumentTouch)  ||
         (global.navigator.msPointerEnabled && global.navigator.msMaxTouchPoints > 0) || //IE 10
         (global.navigator.pointerEnabled && global.navigator.maxTouchPoints > 0) || //IE >=11
@@ -344,6 +344,25 @@
     UI.Utils.events.click = UI.support.touch ? 'tap' : 'click';
 
     window.UIkit = UI;
+
+    // deprecated
+
+    UI.fn = function(command, options) {
+
+        var args = arguments, cmd = command.match(/^([a-z\-]+)(?:\.([a-z]+))?/i), component = cmd[1], method = cmd[2];
+
+        if (!UI[component]) {
+            $.error("UIkit component [" + component + "] does not exist.");
+            return this;
+        }
+
+        return this.each(function() {
+            var $this = $(this), data = $this.data(component);
+            if (!data) $this.data(component, (data = UI[component](this, method ? undefined : options)));
+            if (method) data[method].apply(data, Array.prototype.slice.call(args, 1));
+        });
+    };
+
     $.UIkit      = UI;
     $.fn.uk      = UI.fn;
 
@@ -1091,7 +1110,7 @@
         scrollspies    = [],
         checkScrollSpy = function() {
             for(var i=0; i < scrollspies.length; i++) {
-                UI.support.requestAnimationFrame.apply(window, [scrollspies[i].check]);
+                window.requestAnimationFrame.apply(window, [scrollspies[i].check]);
             }
         };
 
@@ -1194,7 +1213,7 @@
     var scrollspynavs = [],
         checkScrollSpyNavs = function() {
             for(var i=0; i < scrollspynavs.length; i++) {
-                UI.support.requestAnimationFrame.apply(window, [scrollspynavs[i].check]);
+                window.requestAnimationFrame.apply(window, [scrollspynavs[i].check]);
             }
         };
 
@@ -1640,7 +1659,8 @@
            'remaintime' : 800,
            'justify'    : false,
            'boundary'   : UI.$win,
-           'delay'      : 0
+           'delay'      : 0,
+           'hoverDelayIdle'  : 250
         },
 
         remainIdle: false,
@@ -1728,7 +1748,21 @@
                         clearTimeout(hoverIdle);
                     }
 
-                    hoverIdle = setTimeout($this.show.bind($this), $this.options.delay);
+                    if (active && active == $this) {
+                        return;
+                    }
+
+                    // pseudo manuAim
+                    if (active && active != $this) {
+
+                        hoverIdle = setTimeout(function() {
+                            hoverIdle = setTimeout($this.show.bind($this), $this.options.delay);
+                        }, $this.options.hoverDelayIdle);
+
+                    } else {
+
+                        hoverIdle = setTimeout($this.show.bind($this), $this.options.delay);
+                    }
 
                 }).on("mouseleave", function() {
 
@@ -1737,7 +1771,7 @@
                     }
 
                     $this.remainIdle = setTimeout(function() {
-                        $this.hide();
+                        if (active && active == $this) $this.hide();
                     }, $this.options.remaintime);
 
                 }).on("click", function(e){
@@ -2103,7 +2137,6 @@
 
             var $this = this;
 
-            this.transition = UI.support.transition;
             this.paddingdir = "padding-" + (UI.langdirection == 'left' ? "right":"left");
             this.dialog     = this.find(".uk-modal-dialog");
 
@@ -2335,6 +2368,38 @@
         });
 
         modal.show();
+    };
+
+    UI.modal.prompt = function(text, value, onsubmit, options) {
+
+        onsubmit = UI.$.isFunction(onsubmit) ? onsubmit : function(value){};
+
+        var modal = UI.modal.dialog(([
+            text ? '<div class="uk-modal-content uk-form">'+String(text)+'</div>':'',
+            '<div class="uk-margin-small-top uk-modal-content uk-form"><p><input type="text" class="uk-width-1-1"></p></div>',
+            '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary js-modal-ok">Ok</button> <button class="uk-button uk-modal-close">Cancel</button></div>'
+        ]).join(""), UI.$.extend({bgclose:false, keyboard:false}, options)),
+        input = modal.element.find("input[type='text']").val(value || '');
+
+        modal.element.find(".js-modal-ok").on("click", function(){
+            if (onsubmit(input.val())!==false){
+                modal.hide();
+            }
+        });
+        modal.show();
+        setTimeout(function(){ input.focus(); }, 100);
+    };
+
+    UI.modal.blockUI = function(content, options) {
+
+        var modal = UI.modal.dialog(([
+            '<div class="uk-margin uk-modal-content">'+String(content || '<div class="uk-text-center">...</div>')+'</div>'
+        ]).join(""), UI.$.extend({bgclose:false, keyboard:false}, options));
+
+        modal.content = modal.element.find('.uk-modal-content:first');
+        modal.show();
+
+        return modal;
     };
 
 
@@ -2583,8 +2648,8 @@
 
             element.on("click", "a[href^='#']", function(e){
 
-                var element = UI.$(this),
-                    href = element.attr("href");
+                var link = UI.$(this),
+                    href = link.attr("href");
 
                 if (href == "#") {
                     return;
@@ -2592,14 +2657,20 @@
 
                 UI.$doc.one('hide.uk.offcanvas', function() {
 
-                    var target = UI.$(href);
+                    var target;
+
+                    try {
+                        target = UI.$(href);
+                    } catch (e){
+                        target = ""
+                    }
 
                     if (!target.length) {
                         target = UI.$('[name="'+href.replace('#','')+'"]');
                     }
 
-                    if (UI.Utils.scrollToElement && target.length) {
-                        UI.Utils.scrollToElement(target);
+                    if (target.length && link.attr('data-uk-smooth-scroll') && UI.Utils.scrollToElement) {
+                        UI.Utils.scrollToElement(target, UI.Utils.options(link.attr('data-uk-smooth-scroll') || '{}'));
                     } else {
                         window.location.href = href;
                     }
@@ -3034,7 +3105,7 @@
 
                 var link = UI.$(this);
 
-                $this.element.children(':not(.uk-tab-responsive)').eq(link.data('index')).trigger('click');
+                $this.element.children('li:not(.uk-tab-responsive)').eq(link.data('index')).trigger('click');
             });
 
             this.on('show.uk.switcher change.uk.tab', function(e, tab) {
@@ -3072,7 +3143,7 @@
 
         check: function() {
 
-            var children = this.element.children(':not(.uk-tab-responsive)').removeClass('uk-hidden');
+            var children = this.element.children('li:not(.uk-tab-responsive)').removeClass('uk-hidden');
 
             if (!children.length) return;
 
@@ -3107,7 +3178,7 @@
                 }
             }
 
-            this.responsivetab[this.responsivetab.lst.children().length ? 'removeClass':'addClass']('uk-hidden');
+            this.responsivetab[this.responsivetab.lst.children('li').length ? 'removeClass':'addClass']('uk-hidden');
         }
     });
 

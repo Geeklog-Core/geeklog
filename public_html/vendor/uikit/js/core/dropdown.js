@@ -1,4 +1,4 @@
-/*! UIkit 2.19.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.20.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(UI) {
 
     "use strict";
@@ -12,7 +12,8 @@
            'remaintime' : 800,
            'justify'    : false,
            'boundary'   : UI.$win,
-           'delay'      : 0
+           'delay'      : 0,
+           'hoverDelayIdle'  : 250
         },
 
         remainIdle: false,
@@ -100,7 +101,21 @@
                         clearTimeout(hoverIdle);
                     }
 
-                    hoverIdle = setTimeout($this.show.bind($this), $this.options.delay);
+                    if (active && active == $this) {
+                        return;
+                    }
+
+                    // pseudo manuAim
+                    if (active && active != $this) {
+
+                        hoverIdle = setTimeout(function() {
+                            hoverIdle = setTimeout($this.show.bind($this), $this.options.delay);
+                        }, $this.options.hoverDelayIdle);
+
+                    } else {
+
+                        hoverIdle = setTimeout($this.show.bind($this), $this.options.delay);
+                    }
 
                 }).on("mouseleave", function() {
 
@@ -109,7 +124,7 @@
                     }
 
                     $this.remainIdle = setTimeout(function() {
-                        $this.hide();
+                        if (active && active == $this) $this.hide();
                     }, $this.options.remaintime);
 
                 }).on("click", function(e){
