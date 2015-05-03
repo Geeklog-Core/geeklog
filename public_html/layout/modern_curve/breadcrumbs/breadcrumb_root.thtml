@@ -1,5 +1,0 @@
-{# begin {templatelocation} #}
-
-{breadcrumb_root}
-
-{# end {templatelocation} #}

@@ -1,6 +1,0 @@
-{# begin {templatelocation} #}
-
-    <span{!if microdata} itemprop="title"{!endif}>{name}</span> {separator}
-{breadcrumb_child}
-
-{# end {templatelocation} #}

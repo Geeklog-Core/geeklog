@@ -1,8 +1,0 @@
-
-<!-- breadcrumbs/breadcrumb_child.thtml { -->
-
-<span{!if microdata} itemprop="child" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"{!endif}>
-    {breadcrumb}
-</span>
-
-<!-- } breadcrumbs/breadcrumb_child.thtml -->

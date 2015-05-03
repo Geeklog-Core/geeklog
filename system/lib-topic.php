@@ -1342,14 +1342,14 @@ function TOPIC_breadcrumbs($type, $id)
     }
     $result = DB_query($sql);
     if (DB_numRows($result) > 0) {
-        $breadcrumb_t = COM_newTemplate($_CONF['path_layout'] . 'breadcrumbs/');
-        $breadcrumb_t->set_file(array(
-            'breadcrumbs_t'       => 'breadcrumbs.thtml',
-            'breadcrumb_child_t'  => 'breadcrumb_child.thtml',
-            'breadcrumb_root_t'   => 'breadcrumb_root.thtml',
-            'breadcrumb_nolink_t' => 'breadcrumb_nolink.thtml',
-            'breadcrumb_t'        => 'breadcrumb.thtml'));
-        if (in_array($_CONF['doctype'], array('html5', 'xhtml5'))) {
+        $breadcrumb_t = COM_newTemplate($_CONF['path_layout']);
+		$breadcrumb_t->set_file (array('breadcrumbs_list' => 'breadcrumbs.thtml')); 
+		
+		$breadcrumb_t->set_block('breadcrumbs_list', 'breadcrumb');
+		$breadcrumb_t->set_block('breadcrumbs_list', 'breadcrumb_item');
+		$breadcrumb_t->set_block('breadcrumbs_list', 'breadcrumb_item_nolink');
+        
+		if (in_array($_CONF['doctype'], array('html5', 'xhtml5'))) {
             $breadcrumb_t->set_var('microdata', true);
         }
         $rootname = $_CONF['breadcrumb_root_site_name'] ?
@@ -1374,8 +1374,13 @@ function TOPIC_breadcrumbs($type, $id)
                 'topic' => $rootname,
                 'parent_id' => '');
 
+            // Now flip array so it is printed out in proper order (top to bottom)
+            $breadcrumb_a = array_reverse($breadcrumb_a);
+            
             $retval = '';
+            $count = 0;
             foreach ($breadcrumb_a as $value) {
+            	$count++;
                 // double check access (users may have access to a subtopic
                 // but not a parent topic, this shouldn't really happen though)
                 $topic_access = 0;
@@ -1386,32 +1391,24 @@ function TOPIC_breadcrumbs($type, $id)
 
                 if ($topic_access == 0) { // Do not have access to view page
                     $url = '';
-                    $use_template = 'breadcrumb_nolink_t';
+                    $use_block = 'breadcrumb_item_nolink';
                 } else {
                     $url = $_CONF['site_url'] . '/index.php';
                     if ($value['tid'] != TOPIC_ROOT) {
                         $url .= '?topic=' . $value['tid'];
                     }
-                    $use_template = 'breadcrumb_t';
+                    $use_block = 'breadcrumb_item';
                 }
                 $breadcrumb_t->set_var('url', $url);
                 $breadcrumb_t->set_var('name', $value['topic']);
-                $breadcrumb_t->set_var('breadcrumb_child', $retval);
-                $breadcrumb_t->set_var('separator', empty($retval) ? '' : $separator);
-                if ($value['tid'] == TOPIC_ROOT) {
-                    $breadcrumb_t->parse('breadcrumb_root', $use_template);
-                    $breadcrumb_t->parse('output', 'breadcrumb_root_t');
-                } else {
-                    $breadcrumb_t->parse('breadcrumb', $use_template);
-                    $breadcrumb_t->parse('output', 'breadcrumb_child_t');
-                }
-
-                $retval = $breadcrumb_t->finish($breadcrumb_t->get_var('output'));
+                $breadcrumb_t->set_var('count', $count);
+                $breadcrumb_t->set_var('separator', ($count == 1) ? '' : $separator);
+				$breadcrumb_t->parse('breadcrumb_items', $use_block, ($count == 1) ? false : true);
             }
-            $breadcrumb_t->set_var('breadcrumbs_list', $retval);
-            $breadcrumb_t->parse('output', 'breadcrumbs_t');
-            $breadcrumbs_output .= $breadcrumb_t->finish($breadcrumb_t->get_var('output'));
+            $breadcrumb_t->parse('breadcrumbs', 'breadcrumb', true);
         }
+        $breadcrumb_t->parse('output', 'breadcrumbs_list');
+        $breadcrumbs_output .= $breadcrumb_t->finish($breadcrumb_t->get_var('output'));
     }
 
     return $breadcrumbs_output;
