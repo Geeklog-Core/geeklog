@@ -1,56 +1,27 @@
 
 $stage = 'base'
 
-body, div,
-p, blockquote, pre, code,
-dl, dt, dd,
+p,
+ul,
+ol,
+dl,
+blockquote,
+pre,
+address,
 fieldset,
-form, legend
-    margin: 0
-    padding: 0
-
-body
-    font-family: arial, verdana, tahoma, helvetica, sans-serif
-    font-size: 13px
-    // All Mobile Sizes (devices and browser)
-    @media only screen and (max-width: $breakpoint-small-max)
-        font-size: 15px
-    line-height: 1.3
-    color: $base-text-color
-    -webkit-font-smoothing: antialiased /*! Fix for webkit rendering */
-    -webkit-text-size-adjust: 100%
-    hook-selector($stage, "" + selector())
+figure
+    margin-top: 0;
 
 h1, h2
-    margin: 1em 0
-    padding: 0
-    font-weight: bold
-    font-size: 115%
+    font-size: 20px
+    margin: 0.3em 0
 
 h3, h4, h5, h6
     margin: 0.5em 0
-    padding: 0
-    font-weight: bold
-    font-size: 100%
 
 address
     font-style: normal
     font-weight: normal
-
-p
-    margin: 1em 0
-    line-height: 1.7em
-
-pre
-    background: none repeat scroll 0 0 #F4F4F4
-    font-family: monospace
-    line-height: 1.5
-    margin: 1em 0
-    padding: 1em
-    overflow: auto
-    white-space: pre
-    border: 1px solid #DDD
-    border-radius: 4px
 
 q:before
     content: open-quote
@@ -78,6 +49,12 @@ a:link,
 a:visited,
 a:hover
     color: $base-anker-color
+
+a:link,
+a:active,
+a:visited,
+a:hover
+    outline: 0
 
 ul, ol, dl
     margin: 1em 0
@@ -116,20 +93,6 @@ sup
     font-size: 0.83em
     line-height: normal
 
-blockquote
-    background: none repeat scroll 0 0 #F5F5F5
-    border-color: #BBB
-    border-style: solid
-    border-width: 1px 0
-    color: #666
-    margin: 1em 0
-    padding: 5px 10px
-    font-style: italic
-
-blockquote p
-    margin-top: 0.5em
-    margin-bottom: 0.5em
-
 fieldset
     margin: 0 0 1em 0
     padding: 8px 12px
@@ -149,17 +112,7 @@ img
     border: none
     vertical-align: bottom
 
-/*! Table */
-
-th
-    font-weight: bold
-    text-align: left
-    margin: 0
-    background-color: $basic-table-th-background // #DAE0ED // compatible with professional
-
-td
-    margin: 0
-
+/* Table */
 /*
 table
     text-align: left
@@ -190,35 +143,6 @@ table img
 
 /*! Forms */
 
-input
-    margin: 2px
-
-input,
-select,
-textarea
-    font-family: arial, verdana, tahoma, helvetica, sans-serif
-    margin-top: 2px
-    margin-bottom: 2px
-
-select,
-input
-    vertical-align: middle
-
-input[type="text"],
-input[type="password"],
-input[type="email"],
-textarea,
-select
-    border: 1px solid #ccc
-    padding: 4px
-    outline: none
-    border-radius: 3px
-    font-size: 13px
-    color: #555
-    margin-left: 0
-    margin-right: 3px
-    max-width: 100%
-
 // Mobile Portrait Size to Mobile Landscape Size (devices and browsers)
 //@media only screen and (max-width: 479px)
 @media only screen and (max-width: $breakpoint-mini-max)
@@ -244,54 +168,246 @@ textarea:focus
     color: $base-text-color
     box-shadow: 0 0 3px rgba(0,0,0,.2)
 
-/*! Buttons */
+/* ========================================================================
+   Component: Button for Geeklog
+ ========================================================================== */
 
-.button,
-button,
-input[type="submit"],
-input[type="reset"],
-input[type="button"]
-    background: #eee linear-gradient(to bottom, rgba(255,255,255,.2) 0%,rgba(0,0,0,.2) 100%)
-    border: 1px solid #aaa
-    border-top: 1px solid #ccc
-    border-left: 1px solid #ccc
-    padding: 4px 9px
-    border-radius: 3px
-    color: #444
-    display: inline-block
-    font-size: 12px
-    font-weight: bold
-    text-decoration: none
-    text-shadow: 0 1px rgba(255, 255, 255, .75)
-    cursor: pointer
-    line-height: normal
-    &:hover
-        color: #222
-        background: #ddd linear-gradient(to bottom, rgba(255,255,255,.3) 0%,rgba(0,0,0,.3) 100%)
-        border: 1px solid #888
-        border-top: 1px solid #aaa
-        border-left: 1px solid #aaa
-    &:active
-        border: 1px solid #666
-        background: #ccc linear-gradient(to bottom, rgba(255,255,255,.35) 0%,rgba(10,10,10,.4) 100%)
-    &.full-width
-        width: 100%
-        padding-left: 0 !important
-        padding-right: 0 !important
-        text-align: center
+/*
+ * Removes inner padding and border in Firefox 4+.
+ */
 
-/*! Fix for odd Mozilla border & padding issues */
-button::-moz-focus-inner,
-input::-moz-focus-inner
+input[type="submit"]::-moz-focus-inner
     border: 0
     padding: 0
 
-a.button:link,
-a.button:visited
-    color: #444
-
-a.button:hover
-    color: #222
+/*
+ * 1. Correct inability to style clickable `input` types in iOS.
+ * 2. Remove margins in Chrome, Safari and Opera.
+ * 3. Remove borders for `button`.
+ * 4. Address `overflow` set to `hidden` in IE 8/9/10/11.
+ * 5. Correct `font` properties and `color` not being inherited for `button`.
+ * 6. Address inconsistent `text-transform` inheritance which is only inherit in Firefox and IE
+ * 7. Style
+ * 8. `line-height` is used to create a height
+ * 9. `min-height` is necessary for `input` elements in Firefox and Opera because `line-height` is not working.
+ * 10. Reset button group whitespace hack
+ * 11. Required for `a`.
+ */
+input[type="submit"]
+    /* 1 */
+    -webkit-appearance: none
+    /* 2 */
+    margin: 0
+    /* 3 */
+    border: none
+    /* 4 */
+    overflow: visible
+    /* 5 */
+    font: inherit
+    color: #444444
+    /* 6 */
+    text-transform: none
+    /* 7 */
+    display: inline-block
+    -moz-box-sizing: border-box
+    box-sizing: border-box
+    padding: 0 12px
+    if $var-uikit-theme == 'default'
+        background: #eeeeee
+    if $var-uikit-theme == 'gradient'
+        background: #f7f7f7
+    if $var-uikit-theme == 'almost-flat'
+        background: #f5f5f5
+    vertical-align: middle
+    /* 8 */
+    line-height: 28px
+    /* 9 */
+    min-height: 30px
+    /* 10 */
+    font-size: 1rem
+    /* 11 */
     text-decoration: none
+    text-align: center
+    if $var-uikit-theme == 'gradient'
+        border: 1px solid rgba(0, 0, 0, 0.2)
+        border-bottom-color: rgba(0, 0, 0, 0.3)
+        background-origin: border-box
+        background-image: -webkit-linear-gradient(top, #ffffff, #eeeeee)
+        background-image: linear-gradient(to bottom, #ffffff, #eeeeee)
+        border-radius: 4px
+        text-shadow: 0 1px 0 #ffffff
+    if $var-uikit-theme == 'almost-flat'
+        border: 1px solid rgba(0, 0, 0, 0.06)
+        border-radius: 4px
+        text-shadow: 0 1px 0 #ffffff
+
+
+
+input[type="submit"]:not(:disabled)
+    cursor: pointer
+
+/*
+ * Hover
+ * 1. Apply hover style also to focus state
+ * 2. Remove default focus style
+ * 3. Required for `a` elements
+ */
+input[type="submit"]:hover,
+input[type="submit"]:focus
+    if $var-uikit-theme == 'default'
+        background-color: #f5f5f5
+    if $var-uikit-theme == 'gradient'
+        background-color: #fafafa
+    if $var-uikit-theme == 'almost-flat'
+        background-color: #fafafa
+    color: #444444
+    /* 2 */
+    outline: none
+    /* 3 */
+    text-decoration: none
+    if $var-uikit-theme == 'gradient'
+        background-image: none
+    if $var-uikit-theme == 'almost-flat'
+        border-color: rgba(0, 0, 0, 0.16)
+
+/* Active */
+input[type="submit"]:active,
+input[type="submit"].uk-active
+    if $var-uikit-theme == 'default'
+        background-color: #dddddd
+    if $var-uikit-theme == 'gradient'
+        background-color: #f5f5f5
+    if $var-uikit-theme == 'almost-flat'
+        background-color: #eeeeee
+    color: #444444
+    if $var-uikit-theme == 'gradient'
+        border-color: rgba(0, 0, 0, 0.2)
+        border-top-color: rgba(0, 0, 0, 0.3)
+        background-image: none
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1)
+
+/* Disabled state
+ * Overrides also the color modifiers
+ ========================================================================== */
+/* Equal for all button types */
+input[type="submit"]:disabled
+    if $var-uikit-theme == 'default'
+        background-color: #f5f5f5
+    if $var-uikit-theme == 'gradient'
+        background-color: #fafafa
+    if $var-uikit-theme == 'almost-flat'
+        background-color: #fafafa
+    color: #999999
+    if $var-uikit-theme == 'gradient'
+        border-color: rgba(0, 0, 0, 0.2)
+        background-image: none
+        box-shadow: none
+        text-shadow: 0 1px 0 #ffffff
+    if $var-uikit-theme == 'almost-flat'
+        border-color: rgba(0, 0, 0, 0.06);
+        box-shadow: none;
+        text-shadow: 0 1px 0 #ffffff;
+
+/* Sub-object `uk-button-group`
+ ========================================================================== */
+/*
+ * Remove whitespace between child elements when using `inline-block`
+ */
+.uk-button-group input[type="submit"]
+    vertical-align: top
+
+if $var-uikit-theme == 'gradient'
+
+    /* Sub-object `uk-button-group`
+     ========================================================================== */
+    /*
+     * Reset border-radius
+     */
+    .uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"]
+        border-radius: 0
+
+    .uk-button-group > div:first-child input[type="submit"]
+        border-top-right-radius: 0
+        border-bottom-right-radius: 0
+
+    .uk-button-group > div:last-child input[type="submit"]
+        border-top-left-radius: 0
+        border-bottom-left-radius: 0
+
+    /*
+     * Collapse border
+     */
+    .uk-button-group > div:nth-child(n+2) input[type="submit"]
+        margin-left: -1px
+
+if $var-uikit-theme == 'almost-flat'
+
+    /* Sub-object `uk-button-group`
+     ========================================================================== */
+    /*
+     * Reset border-radius
+     */
+    .uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"]
+        border-left-color: rgba(0,0,0,0.1)
+        border-right-color: rgba(0,0,0,0.1)
+        border-radius: 0
+
+    .uk-button-group > div:first-child input[type="submit"]
+        border-right-color: rgba(0,0,0,0.1)
+        border-top-right-radius: 0
+        border-bottom-right-radius: 0
+
+    .uk-button-group > div:last-child input[type="submit"]
+        border-left-color: rgba(0,0,0,0.1)
+        border-top-left-radius: 0
+        border-bottom-left-radius: 0
+
+    /*
+     * Collapse border
+     */
+    .uk-button-group > div:nth-child(n+2) input[type="submit"]
+        margin-left: -1px
+
+/* ========================================================================
+   Component: Contrast for Geeklog
+ ========================================================================== */
+
+.uk-contrast input[type="submit"]
+    color: #444444
+    background: #ffffff
+    if $var-uikit-theme == 'gradient'
+        border-color: transparent
+    if $var-uikit-theme == 'almost-flat'
+        border-color: transparent
+
+.uk-contrast input[type="submit"]:hover,
+.uk-contrast input[type="submit"]:focus
+    background-color: rgba(255, 255, 255, 0.8)
+    color: #444444
+    if $var-uikit-theme == 'gradient'
+        border-color: transparent
+    if $var-uikit-theme == 'almost-flat'
+        border-color: transparent
+
+.uk-contrast input[type="submit"]:active,
+.uk-contrast input[type="submit"].uk-active
+    background-color: rgba(255, 255, 255, 0.7)
+    color: #444444
+    if $var-uikit-theme == 'gradient'
+        box-shadow: none
+
+
+
+/*! Modify UIkit */
+.uk-form input,
+.uk-form button,
+.uk-form select,
+.uk-form textarea
+    margin 0 1px 2px
+
+.uk-form > .admin-list-search
+    margin-bottom: 0.5em
+
+
 
 hook-root($stage)

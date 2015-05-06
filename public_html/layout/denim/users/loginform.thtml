@@ -2,7 +2,7 @@
 <!-- users/loginform.thtml { -->
 
 {start_block_loginagain}
-  <form action="{site_url}/users.php" method="post" id="userloginform" class="compact">
+  <form action="{site_url}/users.php" method="post" id="userloginform" class="compact uk-form">
     <fieldset>
       <legend>{lang_login}</legend>
 

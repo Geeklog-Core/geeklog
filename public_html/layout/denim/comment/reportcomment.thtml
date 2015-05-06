@@ -1,7 +1,7 @@
 
 <!-- comment/reportcomment.thtml { -->
 
-<form action="{site_url}/comment.php" method="post" id="reportcomment">
+<form action="{site_url}/comment.php" method="post" id="reportcomment" class="uk-form">
 
   <div class="user_basic">
     <div class="reportcomment">{comment}</div>

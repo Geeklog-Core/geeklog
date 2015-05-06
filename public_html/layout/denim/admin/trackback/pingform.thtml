@@ -5,7 +5,7 @@
 
 {ping_results}
 
-<form action="{php_self}" method="post" id="pingform" class="compact">
+<form action="{php_self}" method="post" id="pingform" class="compact uk-form">
   <fieldset>
     <dl class="form_block">
       <dt>{pingback_button}</dt>

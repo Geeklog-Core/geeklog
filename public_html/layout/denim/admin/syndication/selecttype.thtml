@@ -1,7 +1,7 @@
 
 <!-- admin/syndication/selecttype.thtml { -->
 
-<form action="{site_admin_url}/syndication.php" method="post" id="admin-selecttype">
+<form action="{site_admin_url}/syndication.php" method="post" id="admin-selecttype" class="uk-form">
   <fieldset>
     <legend>{lang_go}</legend>
 

@@ -1,7 +1,7 @@
 
 <!-- admin/block/defaultblockeditor.thtml { -->
 
-<form action="{site_admin_url}/block.php" method="post" id="admin-blockeditor" class="compact">
+<form action="{site_admin_url}/block.php" method="post" id="admin-blockeditor" class="compact uk-form">
 
   <div class="admin_basic">
     <dl class="form_block">

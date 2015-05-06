@@ -151,7 +151,7 @@ $(function() {
     }
     
     $('.table-wrapper').before('<div class="admin-table-changer">'
-        + '<a class="admin-list-table-changer button" href="javascript:void(0);">'
+        + '<a class="admin-list-table-changer uk-button uk-button-mini button" href="javascript:void(0);">'
         + (iswide ? btntext1 : btntext2)
         + '</a></div>'
     );
@@ -174,4 +174,6 @@ $(function() {
         
         iswide = !iswide;
     });
+    
+    $('form').addClass('uk-form');
 });

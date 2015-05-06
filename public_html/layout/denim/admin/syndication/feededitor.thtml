@@ -2,7 +2,7 @@
 <!-- admin/syndication/feededitor.thtml { -->
 
 {start_feed_editor}
-<form action="{site_admin_url}/syndication.php" method="post" id="admin-feededitor" class="compact">
+<form action="{site_admin_url}/syndication.php" method="post" id="admin-feededitor" class="compact uk-form">
 
   <div class="admin_basic">
     <dl class="form_block">

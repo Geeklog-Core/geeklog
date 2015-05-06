@@ -4,7 +4,7 @@
 {start_block_postacomment}
 <div id="commenteditform">
 
-<form action="{form_url}" method="post" id="commentform" class="compact">
+<form action="{form_url}" method="post" id="commentform" class="compact uk-form">
 
   <div class="user_basic">
     <dl class="form_block">

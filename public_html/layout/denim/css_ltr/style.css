@@ -1,42 +1,21 @@
 /* Geeklog Denim Theme 1.1.0 | Copyright (C) 2012-2015 by dengen | http://www.trybese.com/~dengen/log/ | License:GPLv2 */
-body,
-div,
 p,
+ul,
+ol,
+dl,
 blockquote,
 pre,
-code,
-dl,
-dt,
-dd,
+address,
 fieldset,
-form,
-legend {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: arial, verdana, tahoma, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 1.3;
-  color: #222;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-size-adjust: 100%;
-}
-
-@media only screen and (max-width: 767px) {
-
-  body {
-    font-size: 15px;
-  }
+figure {
+  margin-top: 0;
 }
 
 h1,
 h2 {
-  margin: 1em 0;
-  padding: 0;
-  font-weight: bold;
-  font-size: 115%;
+  font-size: 24px;
+  font-size: 20px;
+  margin: .3em 0;
 }
 
 h3,
@@ -44,32 +23,11 @@ h4,
 h5,
 h6 {
   margin: .5em 0;
-  padding: 0;
-  font-weight: bold;
-  font-size: 100%;
 }
 
 address {
   font-style: normal;
   font-weight: normal;
-}
-
-p {
-  margin: 1em 0;
-  line-height: 1.7em;
-}
-
-pre {
-  background: none repeat scroll 0 0 #F4F4F4;
-  font-family: monospace;
-  line-height: 1.5;
-  margin: 1em 0;
-  padding: 1em;
-  overflow: auto;
-  white-space: pre;
-  border: 1px solid #DDD;
-  -webkit-border-radius: 4px;
-  border-radius: 4px;
 }
 
 q:before {
@@ -111,6 +69,13 @@ a:link,
 a:visited,
 a:hover {
   color: #2664A2;
+}
+
+a:link,
+a:active,
+a:visited,
+a:hover {
+  outline: 0;
 }
 
 ul,
@@ -161,22 +126,6 @@ sup {
   line-height: normal;
 }
 
-blockquote {
-  background: none repeat scroll 0 0 #F5F5F5;
-  border-color: #BBB;
-  border-style: solid;
-  border-width: 1px 0;
-  color: #666;
-  margin: 1em 0;
-  padding: 5px 10px;
-  font-style: italic;
-}
-
-blockquote p {
-  margin-top: .5em;
-  margin-bottom: .5em;
-}
-
 fieldset {
   margin: 0 0 1em 0;
   padding: 8px 12px;
@@ -202,57 +151,11 @@ img {
   vertical-align: bottom;
 }
 
-/* Table */
-th {
-  font-weight: bold;
-  text-align: left;
-  margin: 0;
-  background-color: #DAE0ED;
-}
-
-td {
-  margin: 0;
-}
-
 table img {
   vertical-align: middle;
 }
 
 /* Forms */
-input {
-  margin: 2px;
-}
-
-input,
-select,
-textarea {
-  font-family: arial, verdana, tahoma, helvetica, sans-serif;
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
-
-select,
-input {
-  vertical-align: middle;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="email"],
-textarea,
-select {
-  border: 1px solid #CCC;
-  padding: 4px;
-  outline: none;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  font-size: 13px;
-  color: #555;
-  margin-left: 0;
-  margin-right: 3px;
-  max-width: 100%;
-}
-
 @media only screen and (max-width: 479px) {
 
   select {
@@ -284,88 +187,152 @@ textarea:focus {
   box-shadow: 0 0 3px rgba(0,0,0,.2);
 }
 
-/* Buttons */
-.button,
-button,
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
-  background: #EEE -webkit-linear-gradient(top, rgba(255,255,255,.2) 0%, rgba(0,0,0,.2) 100%);
-  background: #EEE -moz-linear-gradient(top, rgba(255,255,255,.2) 0%, rgba(0,0,0,.2) 100%);
-  background: #EEE -o-linear-gradient(top, rgba(255,255,255,.2) 0%, rgba(0,0,0,.2) 100%);
-  background: #EEE -ms-linear-gradient(top, rgba(255,255,255,.2) 0%, rgba(0,0,0,.2) 100%);
-  background: #EEE linear-gradient(to bottom, rgba(255,255,255,.2) 0%, rgba(0,0,0,.2) 100%);
-  border: 1px solid #AAA;
-  border-top: 1px solid #CCC;
-  border-left: 1px solid #CCC;
-  padding: 4px 9px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  color: #444;
-  display: inline-block;
-  font-size: 12px;
-  font-weight: bold;
-  text-decoration: none;
-  text-shadow: 0 1px rgba(255,255,255,.75);
-  cursor: pointer;
-  line-height: normal;
-}
-
-.button:hover,
-button:hover,
-input[type="submit"]:hover,
-input[type="reset"]:hover,
-input[type="button"]:hover {
-  color: #222;
-  background: #DDD -webkit-linear-gradient(top, rgba(255,255,255,.3) 0%, rgba(0,0,0,.3) 100%);
-  background: #DDD -moz-linear-gradient(top, rgba(255,255,255,.3) 0%, rgba(0,0,0,.3) 100%);
-  background: #DDD -o-linear-gradient(top, rgba(255,255,255,.3) 0%, rgba(0,0,0,.3) 100%);
-  background: #DDD -ms-linear-gradient(top, rgba(255,255,255,.3) 0%, rgba(0,0,0,.3) 100%);
-  background: #DDD linear-gradient(to bottom, rgba(255,255,255,.3) 0%, rgba(0,0,0,.3) 100%);
-  border: 1px solid #888;
-  border-top: 1px solid #AAA;
-  border-left: 1px solid #AAA;
-}
-
-.button:active,
-button:active,
-input[type="submit"]:active,
-input[type="reset"]:active,
-input[type="button"]:active {
-  border: 1px solid #666;
-  background: #CCC -webkit-linear-gradient(top, rgba(255,255,255,.35) 0%, rgba(10,10,10,.4) 100%);
-  background: #CCC -moz-linear-gradient(top, rgba(255,255,255,.35) 0%, rgba(10,10,10,.4) 100%);
-  background: #CCC -o-linear-gradient(top, rgba(255,255,255,.35) 0%, rgba(10,10,10,.4) 100%);
-  background: #CCC -ms-linear-gradient(top, rgba(255,255,255,.35) 0%, rgba(10,10,10,.4) 100%);
-  background: #CCC linear-gradient(to bottom, rgba(255,255,255,.35) 0%, rgba(10,10,10,.4) 100%);
-}
-
-.button.full-width,
-button.full-width,
-input[type="submit"].full-width,
-input[type="reset"].full-width,
-input[type="button"].full-width {
-  width: 100%;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  text-align: center;
-}
-
-/* Fix for odd Mozilla border & padding issues */
-button::-moz-focus-inner,
-input::-moz-focus-inner {
+input[type="submit"]::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
 
-a.button:link,
-a.button:visited {
+input[type="submit"] {
+  /* 1 */
+  -webkit-appearance: none;
+  /* 2 */
+  margin: 0;
+  /* 3 */
+  border: none;
+  /* 4 */
+  overflow: visible;
+  /* 5 */
+  font: inherit;
   color: #444;
+  /* 6 */
+  text-transform: none;
+  /* 7 */
+  display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 12px;
+  background: #F7F7F7;
+  vertical-align: middle;
+  /* 8 */
+  line-height: 28px;
+  /* 9 */
+  min-height: 30px;
+  /* 10 */
+  font-size: 1rem;
+  /* 11 */
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,.2);
+  border-bottom-color: rgba(0,0,0,.3);
+  -webkit-background-origin: border;
+  -moz-background-origin: border;
+  background-origin: border-box;
+  background-image: -webkit--webkit-linear-gradient(top, #FFF, #EEE);
+  background-image: -webkit--moz-linear-gradient(top, #FFF, #EEE);
+  background-image: -webkit--o-linear-gradient(top, #FFF, #EEE);
+  background-image: -webkit--ms-linear-gradient(top, #FFF, #EEE);
+  background-image: -webkit-linear-gradient(to bottom, #FFF, #EEE);
+  background-image: -webkit-linear-gradient(top, #FFF, #EEE);
+  background-image: -moz-linear-gradient(top, #FFF, #EEE);
+  background-image: -o-linear-gradient(top, #FFF, #EEE);
+  background-image: -ms-linear-gradient(top, #FFF, #EEE);
+  background-image: linear-gradient(to bottom, #FFF, #EEE);
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  text-shadow: 0 1px 0 #FFF;
 }
 
-a.button:hover {
-  color: #222;
+input[type="submit"]:not(:disabled) {
+  cursor: pointer;
+}
+
+input[type="submit"]:hover,
+input[type="submit"]:focus {
+  background-color: #FAFAFA;
+  color: #444;
+  /* 2 */
+  outline: none;
+  /* 3 */
   text-decoration: none;
+  background-image: none;
+}
+
+input[type="submit"]:active,
+input[type="submit"].uk-active {
+  background-color: #F5F5F5;
+  color: #444;
+  border-color: rgba(0,0,0,.2);
+  border-top-color: rgba(0,0,0,.3);
+  background-image: none;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
+}
+
+input[type="submit"]:disabled {
+  background-color: #FAFAFA;
+  color: #999;
+  border-color: rgba(0,0,0,.2);
+  background-image: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  text-shadow: 0 1px 0 #FFF;
+}
+
+.uk-button-group input[type="submit"] {
+  vertical-align: top;
+}
+
+.uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"] {
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+
+.uk-button-group > div:first-child input[type="submit"] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.uk-button-group > div:last-child input[type="submit"] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.uk-button-group > div:nth-child(n+2) input[type="submit"] {
+  margin-left: -1px;
+}
+
+.uk-contrast input[type="submit"] {
+  color: #444;
+  background: #FFF;
+  border-color: transparent;
+}
+
+.uk-contrast input[type="submit"]:hover,
+.uk-contrast input[type="submit"]:focus {
+  background-color: rgba(255,255,255,.8);
+  color: #444;
+  border-color: transparent;
+}
+
+.uk-contrast input[type="submit"]:active,
+.uk-contrast input[type="submit"].uk-active {
+  background-color: rgba(255,255,255,.7);
+  color: #444;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.uk-form input,
+.uk-form button,
+.uk-form select,
+.uk-form textarea {
+  margin: 0 1px 2px;
+}
+
+.uk-form > .admin-list-search {
+  margin-bottom: .5em;
 }
 
 /*--------------------------------------
@@ -565,13 +532,13 @@ a.button:hover {
 
 .warning {
   background: transparent;
-  color: #F00;
+  color: #D14;
   font-weight: bold;
 }
 
 .warningsmall {
   background: transparent;
-  color: #F00;
+  color: #D14;
 }
 
 /* Default Plugin CSS Declarations */
@@ -895,43 +862,43 @@ a.pluginButton:hover {
   background: none;
 }
 
-.sizenum {
+.size1 {
   width: 60px;
 }
 
-.sizenum {
+.size2 {
   width: 120px;
 }
 
-.sizenum {
+.size3 {
   width: 180px;
 }
 
-.sizenum {
+.size4 {
   width: 240px;
 }
 
-.sizenum {
+.size5 {
   width: 300px;
 }
 
-.sizenum {
+.size6 {
   width: 360px;
 }
 
-.sizenum {
+.size7 {
   width: 420px;
 }
 
-.sizenum {
+.size8 {
   width: 480px;
 }
 
-.sizenum {
+.size9 {
   width: 540px;
 }
 
-.sizenum {
+.size10 {
   width: 600px;
 }
 
@@ -972,7 +939,7 @@ a.pluginButton:hover {
   .size9,
   .size10,
   .wide {
-    width: 95%;
+    width: 100%;
   }
 }
 
@@ -2008,12 +1975,13 @@ body.center-right #config_content {
 /* Site Name */
 .site_name {
   position: relative;
-  margin: 20px 0 0 20px;
-  padding: 0;
   float: left;
-  font-size: 2.3em;
+  font-size: 30px;
   font-weight: bold;
   text-shadow: 0 2px 2px rgba(0,0,0,.5);
+  line-height: 36px;
+  margin: 22px 0 0 20px;
+  padding: 0;
 }
 
 .site_name a:link,
@@ -2028,6 +1996,7 @@ body.center-right #config_content {
   .site_name {
     margin: 6px 0 0 8px;
     font-size: 1.6em;
+    line-height: 1.6em;
   }
 }
 
@@ -2081,7 +2050,6 @@ body.center-right #config_content {
   list-style: none;
   margin: 0;
   padding: 0;
-  font-weight: bold;
 }
 
 #navigation li {
@@ -2091,6 +2059,7 @@ body.center-right #config_content {
 }
 
 #navigation li a {
+  font-size: 13px;
   display: block;
   line-height: 30px;
   margin: 0;
@@ -2135,19 +2104,16 @@ body.center-right #config_content {
   Center Block Content
 --------------------------------------*/
 
-#centerblocks {
-  line-height: 1.5em;
-}
-
 /* Welcome Message */
 .welcome_msg {
-  margin: 0 0 1.5em;
+  margin: .5em 0 1.5em;
   padding: .5em 0;
   border-bottom: 1px solid #E7E7E7;
   color: #888;
 }
 
 /* Block */
+#centerblocks section.block-center,
 #centerblocks div.block-center {
   margin: 0 0 1em 0;
   padding: 0 0 2em 0;
@@ -2160,7 +2126,7 @@ body.center-right #config_content {
 
 #footer {
   border-top: 1px solid #CCC;
-  font-size: 90%;
+  font-size: 12px;
   color: #666;
   background-color: transparent;
 }
@@ -2294,8 +2260,8 @@ body.center-right #config_content {
 #rightblocks .sideoption a {
   display: block;
   color: #222;
-  height: 2.3em;
-  line-height: 2.3em;
+  height: 1.8em;
+  line-height: 1.8em;
   overflow: hidden;
   padding: 0 5px;
   white-space: nowrap;
@@ -2319,8 +2285,8 @@ body.center-right #config_content {
   list-style: none outside;
   color: #999;
   display: block;
-  height: 2.3em;
-  line-height: 2.3em;
+  height: 1.8em;
+  line-height: 1.8em;
   overflow: hidden;
   margin: 0;
   padding: 0 5px;
@@ -2338,6 +2304,7 @@ body.center-right #config_content {
 #rightblocks .sideoption_group_label {
   color: #630;
   font-size: 103%;
+  font-weight: bold;
   height: 1.6em;
   line-height: 1.6em;
   overflow: hidden;
@@ -2506,7 +2473,7 @@ h4 img {
 .block-list {
   margin: 0 8px .5em 8px;
   padding: 8px 0;
-  font-size: 95%;
+  font-size: 13px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -2525,8 +2492,9 @@ h4 img {
   margin: 0 0 .5em 0;
   padding: 0 0 .1em 0;
   border-bottom: 1px solid #CCC;
-  font-size: 105%;
+  font-size: 14px;
   font-weight: bold;
+  line-height: 20px;
 }
 
 /*--------------------------------------
@@ -2883,7 +2851,7 @@ div.third-party-login {
 /* Story Body */
 .story_introtext {
   margin: 0 0 2em 0;
-  line-height: 1.7em;
+  line-height: 1.625;
   zoom: 1;
 }
 
@@ -2902,7 +2870,7 @@ div.third-party-login {
   float: right;
   width: 48px;
   height: 48px;
-  margin: 0 0 10px 10px;
+  margin: 15px;
 }
 
 /* Navigation */
@@ -3178,71 +3146,71 @@ span.warning em {
 }
 
 /* Individual Comment Level(Nested | Tree) */
-.level-num * 25 {
+.level-0 {
   margin-left: 0;
 }
 
-.level-num * 25 {
+.level-25 {
   margin-left: 16px;
 }
 
-.level-num * 25 {
+.level-50 {
   margin-left: 32px;
 }
 
-.level-num * 25 {
+.level-75 {
   margin-left: 48px;
 }
 
-.level-num * 25 {
+.level-100 {
   margin-left: 64px;
 }
 
-.level-num * 25 {
+.level-125 {
   margin-left: 80px;
 }
 
-.level-num * 25 {
+.level-150 {
   margin-left: 96px;
 }
 
-.level-num * 25 {
+.level-175 {
   margin-left: 112px;
 }
 
-.level-num * 25 {
+.level-200 {
   margin-left: 128px;
 }
 
-.level-num * 25 {
+.level-225 {
   margin-left: 144px;
 }
 
-.level-num * 25 {
+.level-250 {
   margin-left: 160px;
 }
 
-.level-num * 25 {
+.level-275 {
   margin-left: 176px;
 }
 
-.level-num * 25 {
+.level-300 {
   margin-left: 192px;
 }
 
-.level-num * 25 {
+.level-325 {
   margin-left: 208px;
 }
 
-.level-num * 25 {
+.level-350 {
   margin-left: 224px;
 }
 
-.level-num * 25 {
+.level-375 {
   margin-left: 240px;
 }
 
-.level-num * 25 {
+.level-400 {
   margin-left: 256px;
 }
 
@@ -3881,7 +3849,7 @@ dd#profile-user_photo {
 }
 
 .admin-table-changer a {
-  width: 50px;
+  width: 60px;
   text-align: center;
   font-size: 85%;
   padding: 2px 6px;
@@ -4144,6 +4112,17 @@ b.status_black {
   width: 85%;
 }
 
+@media only screen and (max-width: 962px) {
+
+  .story_editor dt {
+    width: auto;
+  }
+
+  .story_editor dd {
+    width: auto;
+  }
+}
+
 #text_editor dd.description {
   margin-left: 15%;
 }
@@ -4312,8 +4291,8 @@ b.status_black {
 .configoption a {
   display: block;
   color: #222;
-  height: 2.3em;
-  line-height: 2.3em;
+  height: 1.8em;
+  line-height: 1.8em;
   overflow: hidden;
   padding: 0 5px;
   white-space: nowrap;
@@ -4328,8 +4307,8 @@ b.status_black {
   list-style: none outside;
   color: #999;
   display: block;
-  height: 2.3em;
-  line-height: 2.3em;
+  height: 1.8em;
+  line-height: 1.8em;
   overflow: hidden;
   margin: 0;
   padding: 0 5px;

@@ -1,6 +1,6 @@
 <!-- search/searchform.thtml { -->
 
-<form action="{site_url}/search.php" method="get" id="advsearchform" class="compact">
+<form action="{site_url}/search.php" method="get" id="advsearchform" class="compact uk-form">
 
   <div class="user_basic">
     <p class="form_message">{search_intro}</p>

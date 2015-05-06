@@ -5,7 +5,7 @@
 <div id="advanced_editor" style="display:none;">
   {start_block_postacomment}
   <div id="commenteditform">
-    <form action="{form_url}" method="post" onsubmit='set_postcontent();' id="commentform_advanced" class="compact">
+    <form action="{form_url}" method="post" onsubmit='set_postcontent();' id="commentform_advanced" class="compact uk-form">
       <div class="user_basic">
         <dl class="form_block">
           <dt class="dt-commentform-username">{lang_username}</dt>

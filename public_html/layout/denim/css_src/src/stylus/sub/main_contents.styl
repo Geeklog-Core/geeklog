@@ -74,7 +74,7 @@ $stage = 'main_contents'
 /*! Story Body */
 .story_introtext
     margin: 0 0 2em 0
-    line-height: 1.7em
+    line-height: 1.625
     clearfix()
     hook-selector($stage, "" + selector())
 
@@ -83,7 +83,7 @@ $stage = 'main_contents'
     float: right
     width: 48px
     height: 48px
-    margin: 0 0 10px 10px
+    margin: 15px
     hook-selector($stage, "" + selector())
 
 /*! Navigation */
@@ -294,7 +294,7 @@ span
 
 /*! Individual Comment Level(Nested | Tree) */
 for num in (0..16)
-    .level-num * 25
+    .level-{num * 25}
         margin-left: (num * 16)px
 
 /*! Comment Information */

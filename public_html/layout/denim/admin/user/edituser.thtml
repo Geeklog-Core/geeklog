@@ -1,7 +1,7 @@
 
 <!-- admin/user/edituser.thtml { -->
 
-<form action="{site_admin_url}/user.php" method="post" id="admin-edituser">
+<form action="{site_admin_url}/user.php" method="post" id="admin-edituser" class="uk-form">
 
   <div class="admin_basic compact">
     <dl class="form_block">

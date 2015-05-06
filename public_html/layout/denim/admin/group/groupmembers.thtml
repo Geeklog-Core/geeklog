@@ -3,7 +3,7 @@
 
 <script type="text/JavaScript" src="{site_url}/javascript/moveusers.js"></script>
 
-<form name="groupusers" action="{phpself}?group={groupid}" method="post" id="admin-groupmembers">
+<form name="groupusers" action="{phpself}?group={groupid}" method="post" id="admin-groupmembers" class="uk-form">
 
   <div class="admin_basic clearfix" style="height:300px">
     <div class="listmembers">

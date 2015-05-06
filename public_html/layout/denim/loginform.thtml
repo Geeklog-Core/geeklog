@@ -1,7 +1,7 @@
 
 <!-- loginform.thtml { -->
 
-<form action="{site_url}/users.php" method="post" id="loginform">
+<form action="{site_url}/users.php" method="post" id="loginform" class="uk-form">
   <fieldset class="noborder_fieldset">
     <legend class="hidden_legend">{lang_login}</legend>
 

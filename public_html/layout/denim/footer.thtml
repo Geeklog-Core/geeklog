@@ -1,6 +1,4 @@
 
-<!-- footer.thtml { -->
-
         </div>
       </div>
 
@@ -35,8 +33,6 @@
     FixHTML('leftblocks', 'centerblocks', 'rightblocks');
   -->
   </script>
-
-<!-- } footer.thtml -->
 
 </body>
 

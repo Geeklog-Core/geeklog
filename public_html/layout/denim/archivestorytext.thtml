@@ -16,11 +16,15 @@
   </header>
 
   <div itemprop="articleBody" class="story_introtext">
+{!if story_anchortag_and_image_no_align}
     <span class="story_image">{story_anchortag_and_image_no_align}</span>
+{!endif}
     {story_text_no_br}
   </div>
 
+{!if story_footer}
   <footer>
+
     {related_topics}
 
 {!if navi_list}
@@ -38,7 +42,9 @@
       {!if trackbacks_with_count}<li>{trackbacks_with_count}</li>{!endif}
     </ul>
 {!endif}
+
   </footer>
+{!endif}
 </article>
 
 {# end {templatelocation} #}

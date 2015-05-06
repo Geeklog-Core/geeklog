@@ -1,7 +1,7 @@
 
 <!-- admin/lists/searchmenu.thtml { -->
 
-<form action="{form_url}" method="post">
+<form action="{form_url}" method="post" class="uk-form">
   <div class="admin-list-search">
     <div class="search-part">
       {filter}

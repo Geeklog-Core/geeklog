@@ -12,12 +12,11 @@ bottom-space($size = 10px)
 hook-root($stage = '')
 
     if $stage == 'base'
-
-        body
+        html
             $color = $var-base-color
             $hue = hue($color)
             $color= hue(#3465A4, $hue)
-            // like modern_curve
+            //background: none
             //background: linear-gradient(top, $color 0, #eeeeec 400px, #eeeeec 100%)
             background: linear-gradient(top, $color 0, #eeeeec 1000px)
 
@@ -51,12 +50,12 @@ hook-root($stage = '')
             background-color: white
 
         .story_status
-            margin: 0 0 0 50px
+            margin: 0 0 15px 50px
             padding-top: 5px
 
         .story_image
             float: left
-            margin: -45px 10px 10px 0
+            margin: -60px 10px 10px 0
 
 
 hook-selector($stage = '', $selector = '')

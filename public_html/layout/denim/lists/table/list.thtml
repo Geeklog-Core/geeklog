@@ -3,7 +3,7 @@
 
                             {list_top}
                             <div class="admin-list-search">
-                                <form name="page_limit" style="display: inline;">
+                                <form name="page_limit" style="display: inline;" class="uk-form">
                                 <select name="page_limit_links" style="{show_limit}" onchange="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value">
                                     {page_limit}
                                 </select>

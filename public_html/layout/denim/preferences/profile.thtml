@@ -14,7 +14,7 @@
   </fieldset>
 </div>
 
-<form action="{site_url}/usersettings.php" method="post" {enctype} id="profile">
+<form action="{site_url}/usersettings.php" method="post" {enctype} id="profile" class="uk-form">
 
 <div id="pe_namepass" class="jsenabled_show">
   <fieldset>

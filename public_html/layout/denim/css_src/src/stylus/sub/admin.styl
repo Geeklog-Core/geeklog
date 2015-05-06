@@ -120,7 +120,7 @@ $stage = 'admin'
     margin-right: 2px
     margin-bottom: 2px
     a
-        width: 50px
+        width: 60px
         text-align: center
         font-size: 85%
         padding: 2px 6px
@@ -269,6 +269,11 @@ b.status_black
         width: 14%
     dd
         width: 85%
+    @media only screen and (max-width: $breakpoint-medium-max)
+        dt
+            width: auto
+        dd
+            width: auto
 
 #text_editor dd.description
     margin-left: 15%

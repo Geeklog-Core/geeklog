@@ -10,7 +10,7 @@
 </div>
 
 <div id="commentbar">
-  <form action="{editor_url}" method="post" id="commentbar-comment">
+  <form action="{editor_url}" method="post" id="commentbar-comment" class="uk-form">
     <div class="submit">
       <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}" class="submit"{xhtml}>
       <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
@@ -22,7 +22,7 @@
     </div>
   </form>
 
-  <form action="{parent_url}" method="post" id="commentbar-selector">
+  <form action="{parent_url}" method="post" id="commentbar-selector" class="uk-form">
     <div>
       {order_selector} {mode_selector}
       <input type="submit" value="{lang_refresh}" class="submit"{xhtml}>

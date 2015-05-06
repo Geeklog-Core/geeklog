@@ -24,8 +24,6 @@
 
 <body dir="{direction}" class="{layout_columns}">
 
-<!-- header.thtml { -->
-
   <!-- #container { -->
   <div id="container">
 
@@ -56,5 +54,4 @@
         <div id="main-content" role="main">
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
           {breadcrumb_trail}
-          
-<!-- } header.thtml -->
+

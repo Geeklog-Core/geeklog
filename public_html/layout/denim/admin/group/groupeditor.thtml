@@ -1,7 +1,7 @@
 
 <!-- admin/group/groupeditor.thtml { -->
 
-<form action="{site_admin_url}/group.php" method="post" id="admin-groupeditor">
+<form action="{site_admin_url}/group.php" method="post" id="admin-groupeditor" class="uk-form">
 
   <div class="admin_basic compact">
     <dl class="form_block">

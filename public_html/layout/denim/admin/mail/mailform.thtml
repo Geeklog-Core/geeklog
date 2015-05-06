@@ -1,6 +1,6 @@
 <!-- admin/mail/mailform.thtml { -->
 
-<form action="{php_self}" method="post" id="admin-mailform" class="compact">
+<form action="{php_self}" method="post" id="admin-mailform" class="compact uk-form">
 
   <div class="admin_basic">
     <dl class="form_block">
