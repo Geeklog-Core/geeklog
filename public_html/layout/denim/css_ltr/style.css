@@ -13,7 +13,6 @@ figure {
 
 h1,
 h2 {
-  font-size: 24px;
   font-size: 20px;
   margin: .3em 0;
 }
@@ -56,26 +55,14 @@ acronym[title] {
   border-bottom: 1px dotted;
 }
 
-a:link,
-a:visited {
-  text-decoration: none;
+a {
+  color: #2664A2;
+  outline: 0;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
-a:link,
-a:visited,
 a:hover {
   color: #2664A2;
-}
-
-a:link,
-a:active,
-a:visited,
-a:hover {
-  outline: 0;
+  text-decoration: underline;
 }
 
 ul,
@@ -324,6 +311,7 @@ input[type="submit"]:disabled {
   box-shadow: none;
 }
 
+/* Modify UIkit */
 .uk-form input,
 .uk-form button,
 .uk-form select,
