@@ -32,9 +32,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-/** 
- * Geeklog portal page that tracks link click throughs. 
- * 
+/**
+ * Geeklog portal page that tracks link click throughs.
+ *
  * @package Links
  * @subpackage public_html
  * @filesource
@@ -47,11 +47,11 @@
  * @author Tom Willett, twillett AT users DOT sourceforge DOT net
  * @author Blaine Lang, langmail AT sympatico DOT ca
  * @author Dirk Haun, dirk AT haun-online DOT de
- * 
+ *
  */
 
 /**
-* Geeklog common function library 
+* Geeklog common function library
 */
 require_once '../lib-common.php';
 

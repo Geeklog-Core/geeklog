@@ -43,9 +43,9 @@
   </fieldset>
 
   <div class="submit">
-    <input type="hidden" value="{old_cid_value}" name="old_cid"{xhtml}> 
+    <input type="hidden" value="{old_cid_value}" name="old_cid"{xhtml}>
     <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-    <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}> 
+    <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
     <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
     {delete_option}
   </div>

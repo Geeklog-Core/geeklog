@@ -62,8 +62,8 @@ class SitemapXML
 {
     // Constants
     const MAX_NUM_ENTRIES = 50000;
-    const MAX_FILE_SIZE   = 10485760;	// 1MB
-    const PING_INTERVAL   = 3600;		// 1 hour
+    const MAX_FILE_SIZE   = 10485760;   // 1MB
+    const PING_INTERVAL   = 3600;       // 1 hour
     const LB = "\n";
 
     // Vars
@@ -391,7 +391,7 @@ class SitemapXML
                     ftruncate($gp, 0);
                     gzrewind($gp);
                     gzwrite($gp, $sitemap);
-					flock($gp, LOCK_UN);
+                    flock($gp, LOCK_UN);
                     gzclose($gp);
                     $retval = true;
                 } else {
@@ -408,8 +408,8 @@ class SitemapXML
                     ftruncate($fp, 0);
                     rewind($fp);
                     fwrite($fp, $sitemap);
-					fflush($fp);
-					flock($fp, LOCK_UN);
+                    fflush($fp);
+                    flock($fp, LOCK_UN);
                     fclose($fp);
                     $retval = true;
                 } else {
@@ -482,7 +482,7 @@ class SitemapXML
                                       .  $timezone;
                             }
                         }
-                        
+
                         if (in_array($type, $_XMLSMAP_CONF['lastmod'])) {
                             $sitemap .= '    <lastmod>' . $date . '</lastmod>' . self::LB;
                         }
@@ -550,7 +550,7 @@ class SitemapXML
 
         return true;
     }
-    
+
     /**
     * Sends a ping to search engines
     *

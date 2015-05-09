@@ -50,7 +50,7 @@ class url {
     * @access private
     */
     private $_enabled = true;
-    
+
     /**
     * Constructor
     *
@@ -88,14 +88,14 @@ class url {
             $this->_arguments = explode('/', substr($_ENV['ORIG_PATH_INFO'], 1));
         } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
             $this->_arguments = explode('/', substr($_SERVER['ORIG_PATH_INFO'], 1));
-            
-            // Added for IIS 7 to work in FastCGI mode 
+
+            // Added for IIS 7 to work in FastCGI mode
             array_shift ($this->_arguments);
             if ( $this->_arguments[0] == substr($_SERVER['SCRIPT_NAME'],1) ) {
                 array_shift($this->_arguments);
             }
             // end of add
-            
+
         } else {
             $this->_arguments = array();
         }
@@ -115,7 +115,7 @@ class url {
             $this->_enabled = false;
         }
     }
-    
+
     /**
     * Returns whether or not URL rewriting is enabled
     *
@@ -126,7 +126,7 @@ class url {
     {
         return $this->_enabled;
     }
-    
+
     /**
     * Returns the number of variables found in query string
     *
@@ -139,7 +139,7 @@ class url {
     {
         return count($this->_arguments);
     }
-    
+
     /**
     * Assigns logical names to query string variables
     *
@@ -158,7 +158,7 @@ class url {
             for ($i = 1; $i <= count($this->_arguments); $i++) {
                 $newArray[current($names)] = current($this->_arguments);
                 next($names);
-		next($this->_arguments);
+        next($this->_arguments);
             }
             $this->_arguments = $newArray;
             reset($this->_arguments);
@@ -177,23 +177,23 @@ class url {
     */
     function getArgument($name)
     {
-        // if in GET VARS array return it 
+        // if in GET VARS array return it
         if (!empty($_GET[$name])) {
             return $_GET[$name];
         }
-        
-        // Added for IIS 7 to work in FastCGI mode        
-        // if in REQUEST VARS array return it 
+
+        // Added for IIS 7 to work in FastCGI mode
+        // if in REQUEST VARS array return it
         if (!empty($_REQUEST[$name])) {
             return $_REQUEST[$name];
-        }   
+        }
         // end of add
 
         // ok, pull from query string
         if (in_array($name,array_keys($this->_arguments))) {
             return $this->_arguments[$name];
         }
-        
+
         return '';
     }
 
@@ -235,7 +235,7 @@ class url {
             next($finalList);
         }
         return str_replace('?' . $query_string,$newArgs,$url);
-    }    
+    }
 }
 
 ?>

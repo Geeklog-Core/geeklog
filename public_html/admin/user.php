@@ -150,7 +150,7 @@ function edituser($uid = '', $msg = '')
 
     $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file (array ('form'      => 'edituser.thtml',
-                                      'password'  => 'password.thtml',        
+                                      'password'  => 'password.thtml',
                                       'groupedit' => 'groupedit.thtml'));
     $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
@@ -218,7 +218,7 @@ function edituser($uid = '', $msg = '')
     } else {
         $user_templates->set_var ('user_fullname', '');
     }
-    
+
     if (empty($A['remoteservice'])) {
         $user_templates->set_var('lang_password', $LANG28[5]);
         $user_templates->set_var('lang_password_conf', $LANG28[39]);
@@ -226,7 +226,7 @@ function edituser($uid = '', $msg = '')
     } else {
         $user_templates->set_var ('password_option', '');
     }
-    
+
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
     if (isset ($A['email'])) {
         $user_templates->set_var('user_email', htmlspecialchars($A['email']));
@@ -488,7 +488,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         COM_errorLog("**** entering saveusers****", 1);
         COM_errorLog("group size at beginning = " . count($groups), 1);
     }
-    
+
     $service = DB_getItem($_TABLES['users'], 'remoteservice', "uid = $uid");
     // If remote service then assume blank password
     if (! empty($service)) {

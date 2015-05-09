@@ -36,12 +36,12 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'config-install.php') !== false) {
 function install_config()
 {
     global $_CONF, $_TABLES;
-    
-    
+
+
     // Parameters for add function:  $param_name, $default_value, $type, $subgroup, $fieldset=null, $selection_array=null, $sort=0, $set=true, $group='Core', $tab=null
 
     $me = 'Core';
-    
+
     $c = config::get_instance();
 
     // Subgroup: Site
@@ -78,12 +78,12 @@ function install_config()
     $c->add('rdf_storytext',1,'text',0,2,NULL,1410,TRUE, $me, 2);
     $c->add('rdf_language','en-gb','text',0,2,NULL,1420,TRUE, $me, 2);
     $c->add('syndication_max_headlines',0,'text',0,2,NULL,1430,TRUE, $me, 2);
-    
+
     $c->add('fs_syndication_comment', NULL, 'fieldset', 0, 3, NULL, 0, TRUE, $me, 2);
     $c->add('comment_feeds_article_tag', "<p>[Original Article: <a href=\"%s\">%s</a>%s%s]\n", 'text', 0, 3, NULL, 10, TRUE, $me, 2);
-    $c->add('comment_feeds_article_tag_position', 'end', 'select', 0, 3, 30, 20, TRUE, $me, 2);        
-    $c->add('comment_feeds_article_author_tag', '', 'text', 0, 3, NULL, 30, TRUE, $me, 2);        
-    $c->add('comment_feeds_comment_author_tag', ", Comment By: <a href=\"%s\">%s</a>", 'text', 0, 3, NULL, 40, TRUE, $me, 2);     
+    $c->add('comment_feeds_article_tag_position', 'end', 'select', 0, 3, 30, 20, TRUE, $me, 2);
+    $c->add('comment_feeds_article_author_tag', '', 'text', 0, 3, NULL, 30, TRUE, $me, 2);
+    $c->add('comment_feeds_comment_author_tag', ", Comment By: <a href=\"%s\">%s</a>", 'text', 0, 3, NULL, 40, TRUE, $me, 2);
 
     $c->add('tab_paths', NULL, 'tab', 0, 3, NULL, 0, TRUE, $me, 3);
     $c->add('fs_paths', NULL, 'fieldset', 0, 3, NULL, 0, TRUE, $me, 3);
@@ -168,7 +168,7 @@ function install_config()
 
     // Subgroup: Theme
     $c->add('sg_theme', NULL, 'subgroup', 2, 0, NULL, 0, TRUE, $me, 0);
-    
+
     $c->add('tab_theme', NULL, 'tab', 2, 10, NULL, 0, TRUE, $me, 10);
     $c->add('fs_theme', NULL, 'fieldset', 2, 10, NULL, 0, TRUE, $me, 10);
     $c->add('theme','modern_curve','select',2,10,NULL,190,TRUE, $me, 10);
@@ -181,11 +181,11 @@ function install_config()
     $c->add('fs_theme_advanced', NULL, 'fieldset', 2, 11, NULL, 0, TRUE, $me, 11);
     $c->add('show_right_blocks',FALSE,'select',2,11,1,1350,TRUE, $me, 11);
     $c->add('showfirstasfeatured',0,'select',2,11,0,1360,TRUE, $me, 11);
-    $c->add('template_comments',FALSE,'select',2,11,1,1370,TRUE, $me, 11);    
+    $c->add('template_comments',FALSE,'select',2,11,1,1370,TRUE, $me, 11);
 
     // Subgroup: Blocks
     $c->add('sg_blocks', NULL, 'subgroup', 3, 0, NULL, 0, TRUE, $me, 0);
-    
+
     $c->add('tab_admin_block', NULL, 'tab', 3, 12, NULL, 0, TRUE, $me, 12);
     $c->add('fs_admin_block', NULL, 'fieldset', 3, 12, NULL, 0, TRUE, $me, 12);
     $c->add('sort_admin',TRUE,'select',3,12,1,340,TRUE, $me, 12);
@@ -244,15 +244,15 @@ function install_config()
     $c->add('twitter_consumer_secret','','text',4,16,NULL,358,TRUE, $me, 16);
     $c->add('google_login',0,'select',4,16,1,359,TRUE, $me, 16);
     $c->add('google_consumer_key','','text',4,16,NULL,360,TRUE, $me, 16);
-    $c->add('google_consumer_secret','','text',4,16,NULL,361,TRUE, $me, 16);    
+    $c->add('google_consumer_secret','','text',4,16,NULL,361,TRUE, $me, 16);
     $c->add('microsoft_login',0,'select',4,16,1,362,TRUE, $me, 16);
     $c->add('microsoft_consumer_key','','text',4,16,NULL,363,TRUE, $me, 16);
-    $c->add('microsoft_consumer_secret','','text',4,16,NULL,364,TRUE, $me, 16);    
+    $c->add('microsoft_consumer_secret','','text',4,16,NULL,364,TRUE, $me, 16);
     $c->add('yahoo_login',0,'select',4,16,1,365,TRUE, $me, 16);
     $c->add('yahoo_consumer_key','','text',4,16,NULL,366,TRUE, $me, 16);
-    $c->add('yahoo_consumer_secret','','text',4,16,NULL,367,TRUE, $me, 16);    
+    $c->add('yahoo_consumer_secret','','text',4,16,NULL,367,TRUE, $me, 16);
     $c->add('aftersave_user','item','select',4,16,9,1340,TRUE, $me, 16);
-    
+
     $c->add('tab_spamx', NULL, 'tab', 4, 17, NULL, 0, TRUE, $me, 17);
     $c->add('fs_spamx', NULL, 'fieldset', 4, 17, NULL, 0, TRUE, $me, 17);
     $c->add('spamx',128,'text',4,17,NULL,330,TRUE, $me, 17);
@@ -439,7 +439,7 @@ function install_config()
     $c->add('fs_iplookup', NULL, 'fieldset', 7, 36, NULL, 0, TRUE, $me, 36);
     $c->add('ip_lookup','/nettools/whois.php?domain=*','text',7,36,NULL,1790,FALSE, $me, 36);
 
-    
+
     $c->add('tab_permissions', NULL, 'tab', 7, 37, NULL, 0, TRUE, $me, 37);
     $c->add('fs_perm_story', NULL, 'fieldset', 7, 37, NULL, 0, TRUE, $me, 37);
     $c->add('default_permissions_story',array(3, 2, 2, 2),'@select',7,37,12,1820,TRUE, $me, 37);
@@ -459,7 +459,7 @@ function install_config()
     $c->add('disable_webservices',   1, 'select', 7, 40, 0, 1840, TRUE, $me, 40);
     $c->add('restrict_webservices',  0, 'select', 7, 40, 0, 1850, TRUE, $me, 40);
     $c->add('atom_max_stories',     10, 'text',   7, 40, 0, 1860, TRUE, $me, 40);
-    
+
     $c->add('tab_topics', NULL, 'tab', 7, 45, NULL, 0, TRUE, $me, 45);
     $c->add('fs_breadcrumbs', NULL, 'fieldset', 7, 45, NULL, 0, TRUE, $me, 45);
     $c->add('multiple_breadcrumbs', 0, 'select', 7, 45, 0, 2000, TRUE, $me, 45);
@@ -469,10 +469,10 @@ function install_config()
     $c->add('breadcrumb_root_site_name', 0, 'select', 7, 45, 0, 2040, TRUE, $me, 45);
 
     // Subgroup: File Manager
-    $sg  =  8;		// subgroup
-    $fs  = 46;		// fieldset
-    $tab = 46;		// tab
-    $so  = 2050;	// sort
+    $sg  =  8;      // subgroup
+    $fs  = 46;      // fieldset
+    $tab = 46;      // tab
+    $so  = 2050;    // sort
 
     // Subgroup: File Manager - General Settings
     $c->add('sg_filemanager', NULL, 'subgroup', $sg, $fs, NULL, 0, TRUE, $me, 0);

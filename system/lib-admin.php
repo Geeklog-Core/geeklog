@@ -418,7 +418,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             if (!empty($pagenavurl)) { // used for any additional filters
                 $th_subtags .= $pagenavurl;
             }
-            
+
             $th_subtags .= "';\"";
         }
 
@@ -434,11 +434,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->clear_var('class');
         $admin_templates->clear_var('header_text');
     }
-    
+
 
     if (!empty($query_arr['query_group'])){ # add group by to sql
         $group_by_sql = " GROUP BY {$query_arr['query_group']}";
-    }    
+    }
 
     if ($has_extras && $showsearch) {
         /**
@@ -492,7 +492,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         if (!empty($extra)) $use_fieldfunction = 2;
         else $use_fieldfunction = 1;
     } else $use_fieldfunction = 0;
-    
+
     # SQL
     $sql .= "$filter_str $group_by_sql $order_sql $limit;";
     // echo $sql;
@@ -512,7 +512,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             if (isset($A[$fieldname])) {
                 $fieldvalue = strval($A[$fieldname]); # yes, get its data
             } else {
-                $fieldvalue = '';                
+                $fieldvalue = '';
             }
             switch ($use_fieldfunction) {
             case 2: $fieldvalue = call_user_func($fieldfunction, $fieldname, $fieldvalue, $A, $icon_arr, $extra);
@@ -702,7 +702,7 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
                         ."</map>";
             }
             break;
-            
+
         case 'topic':
             $retval = TOPIC_getTopicAdminColumn('block', $A['bid']);
             break;
@@ -725,7 +725,7 @@ function ADMIN_getListField_dynamicblocks($fieldname, $fieldvalue, $A, $icon_arr
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE, $_TABLES;
 
     $retval = false;
-    
+
     switch ($fieldname) {
     case 'title':
         $retval = stripslashes($A['title']);
@@ -744,12 +744,12 @@ function ADMIN_getListField_dynamicblocks($fieldname, $fieldvalue, $A, $icon_arr
 
     case 'topic':
         if ($A['topic_option'] == TOPIC_ALL_OPTION) {
-            $retval = $LANG21[7];                
+            $retval = $LANG21[7];
         } elseif ($A['topic_option'] == TOPIC_HOMEONLY_OPTION) {
-            $retval = $LANG21[43];    
+            $retval = $LANG21[43];
         } else {
             $element_num = count($A['topic']);
-            
+
             if ($element_num == 0) {
                 $retval = $LANG21[47]; // None
             } elseif ($element_num > 1) {
@@ -757,7 +757,7 @@ function ADMIN_getListField_dynamicblocks($fieldname, $fieldvalue, $A, $icon_arr
             } else {
                 $retval = DB_getItem($_TABLES['topics'], 'topic', "tid = '{$A['topic'][0]}'");
             }
-        }        
+        }
 
         break;
 
@@ -1039,7 +1039,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
             $current_access = DB_getItem($_TABLES['topics'], 'perm_anon', "tid = '" . DB_escapeString($tid) . "'");
             if ($topic_anon < $current_access) {
                 $topic_anon = $current_access;
-            }            
+            }
         }
 
         if (($A['draft_flag'] == 0) && ($A['unixdate'] < time()) &&
@@ -1054,7 +1054,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = '';
         }
         break;
-        
+
     case 'tid':
         $retval = TOPIC_getTopicAdminColumn('article', $A['sid']);
         break;
@@ -1508,7 +1508,7 @@ function ADMIN_getListField_newplugins($fieldname, $fieldvalue, $A, $icon_arr, $
 function ADMIN_getListField_topics($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
     global $_CONF, $LANG_ACCESS, $_TABLES, $LANG27, $LANG32;
-    
+
     $retval = false;
 
     $access = SEC_hasAccess($A['owner_id'],     $A['group_id'],

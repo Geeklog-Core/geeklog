@@ -125,10 +125,10 @@ function phpblock_calendar( $help='', $title='' )
             $eventSql .= "WHERE dateend >= DATEADD(hh, 24, NOW()) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
         } else if($_DB_dbms =='pgsql')
         {
-            $eventSql .= "WHERE dateend >= (NOW() - INTERVAL '1 day') AND (NOW() - INTERVAL '$range days') < datestart ";   
-        } 
+            $eventSql .= "WHERE dateend >= (NOW() - INTERVAL '1 day') AND (NOW() - INTERVAL '$range days') < datestart ";
+        }
         else {
-            $eventSql .= "WHERE dateend >= (NOW() - INTERVAL 24 HOUR) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";            
+            $eventSql .= "WHERE dateend >= (NOW() - INTERVAL 24 HOUR) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
         }
         $eventSql .= 'ORDER BY datestart,timestart';
 
@@ -840,7 +840,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_location', $LANG_CAL_1[39]);
     $eventform->set_var('lang_description', $LANG_CAL_1[5]);
     $allowed = COM_allowedHTML('calendar.edit', false, 2);
-    $eventform->set_var('lang_allowed_html', $allowed);       
+    $eventform->set_var('lang_allowed_html', $allowed);
     PLG_templateSetVars('calendar', $eventform);
     $eventform->set_var('lang_submit', $LANG12[8]);
     $eventform->set_var('mode', $mode);
@@ -1188,7 +1188,7 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
     } elseif ($op == 'description') {
         return array (
             'event' => $LANG_CAL_1['autotag_desc_event']
-        );        
+        );
     } else if ($op == 'parse') {
         $eid = COM_applyFilter($autotag['parm1']);
         if (! empty($eid)) {
@@ -1610,7 +1610,7 @@ function plugin_upgrade_calendar()
             }
 
             if (! $current_config) {
-                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run
                 // Set new Tab column to whatever fieldset is
                 $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'calendar'";
                 DB_query($sql);
@@ -1639,17 +1639,17 @@ function plugin_upgrade_calendar()
             calendar_update_Zipcode_1_1_2();
 
             $current_version = '1.1.3';
-            break;            
+            break;
 
         case '1.1.3':
 
             $current_version = '1.1.4';
-            break;            
+            break;
 
         case '1.1.4':
 
             $current_version = '1.1.5';
-            break;             
+            break;
         default:
             $done = true;
             break;
@@ -1724,12 +1724,12 @@ function plugin_autouninstall_calendar ()
         /* give the full name of the group, as in the db */
         'groups' => array('Calendar Admin'),
         /* give the full name of the feature, as in the db */
-        'features' => array('calendar.edit', 
-                            'calendar.moderate', 
+        'features' => array('calendar.edit',
+                            'calendar.moderate',
                             'calendar.submit',
                             'config.calendar.tab_main',
                             'config.calendar.tab_permissions',
-                            'config.calendar.tab_autotag_permissions', 
+                            'config.calendar.tab_autotag_permissions',
                             'config.calendar.tab_events_block'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_calendar'),
@@ -2127,12 +2127,12 @@ function plugin_getdocumentationurl_calendar($file)
 * Provides text for a Configuration tooltip
 *
 * @param    string  $id     Id of config value
-* @return   mixed           Text to use regular tooltip, NULL to use config 
+* @return   mixed           Text to use regular tooltip, NULL to use config
 *                           tooltip hack, or empty string when not available
 *
 */
 function plugin_getconfigtooltip_calendar($id)
-{   
+{
     // Use config tooltip hack where tooltip is read from the config documentation
     return;
 }
@@ -2161,7 +2161,7 @@ function plugin_getBlocks_calendar($side, $topic='')
     if ($_CA_CONF['block_enable'] && SEC_hasAccess($owner_id, $_CA_CONF['block_group_id'], $_CA_CONF['block_permissions'][0], $_CA_CONF['block_permissions'][1], $_CA_CONF['block_permissions'][2], $_CA_CONF['block_permissions'][3])) {
         // Check if right topic
         if (($_CA_CONF['block_topic_option'] == TOPIC_ALL_OPTION) || ($_CA_CONF['block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_CA_CONF['block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_CA_CONF['block_topic']))) {
-            if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) { 
+            if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) {
                 // Create a block
                 $display = phpblock_calendar();
 
@@ -2203,7 +2203,7 @@ function plugin_getBlocksConfig_calendar($side, $topic='')
 
     // Check permissions first
     if (SEC_hasAccess($owner_id, $_CA_CONF['block_group_id'], $_CA_CONF['block_permissions'][0], $_CA_CONF['block_permissions'][1], $_CA_CONF['block_permissions'][2], $_CA_CONF['block_permissions'][3])) {
-        if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) { 
+        if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) {
             $retval[] = array('plugin'         => $LANG_CAL_1[16],
                               'name'           => 'events',
                               'title'          => $LANG_CAL_1[50],
@@ -2250,14 +2250,14 @@ function plugin_group_changed_calendar($grp_id, $mode)
                     $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
                 }
             }
-        }    
+        }
 
         // Update Events with new group id
-        $sql = "UPDATE {$_TABLES['events']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $sql = "UPDATE {$_TABLES['events']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
 
         // Update Events with new group id
-        $sql = "UPDATE {$_TABLES['personal_events']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $sql = "UPDATE {$_TABLES['personal_events']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
 
         // Update Events Block group if need be
@@ -2318,7 +2318,7 @@ function plugin_itemsaved_calendar($id, $type, $old_id)
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_topic', $_CA_CONF['block_topic'], 'calendar');
-        }        
+        }
     }
 }
 
@@ -2346,7 +2346,7 @@ function plugin_itemdeleted_calendar($id, $type)
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_topic', $_CA_CONF['block_topic'], 'calendar');
-        }    
+        }
         // Note: All topics could get deleted from array which would mean the block would not display untill user adds more in config
     }
 }

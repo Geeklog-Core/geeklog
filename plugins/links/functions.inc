@@ -134,7 +134,7 @@ function plugin_getwhatsnew_links()
     // Get newest links
     if($_DB_dbms=='pgsql')
     {
-        $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (NOW() - INTERVAL '{$_LI_CONF['newlinksinterval']} SECONDS'))" . COM_getPermSQL('AND') . LINKS_getCategorySQL('AND') . ' ORDER BY date DESC LIMIT 15';   
+        $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (NOW() - INTERVAL '{$_LI_CONF['newlinksinterval']} SECONDS'))" . COM_getPermSQL('AND') . LINKS_getCategorySQL('AND') . ' ORDER BY date DESC LIMIT 15';
     }
     else
     {
@@ -205,7 +205,7 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
         if (COM_getPermTag($owner_id, $group_id, $_LI_CONF['autotag_permissions_link'][0], $_LI_CONF['autotag_permissions_link'][1], $_LI_CONF['autotag_permissions_link'][2], $_LI_CONF['autotag_permissions_link'][3]) == $flag) {
             $tagnames[] = 'link';
         }
-        
+
         if (count($tagnames) > 0) {
             return $tagnames;
         }
@@ -260,9 +260,9 @@ function plugin_chkVersion_links ()
 {
     global $_CONF;
 
-    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';          
+    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';
 
-    $inst_parms = plugin_autoinstall_links('links'); 
+    $inst_parms = plugin_autoinstall_links('links');
 
     return $inst_parms['info']['pi_version'];
 }
@@ -745,7 +745,7 @@ function plugin_upgrade_links()
                     $c = config::get_instance();
                     $c->add('new_window',false,'select',0,0,1,55,TRUE,'links');
                 }
-    
+
                 if (! isset($_LI_CONF['category_permissions'])) {
                     $c = config::get_instance();
                     $c->add('fs_cpermissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'links');
@@ -766,14 +766,14 @@ function plugin_upgrade_links()
             }
 
             if (! $current_config) {
-                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run
                 // Set new Tab column to whatever fieldset is
                 $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'links'";
                 DB_query($sql);
-                
+
                 links_update_ConfValues_2_1_0();
             }
-            
+
             links_update_ConfigSecurity_2_1_0();
 
             $current_version = '2.1.1';
@@ -789,17 +789,17 @@ function plugin_upgrade_links()
 
             $current_version = '2.1.2';
             break;
-            
+
         case '2.1.2':
 
             $current_version = '2.1.3';
-            break;            
+            break;
 
         case '2.1.3':
 
             $current_version = '2.1.4';
-            break;   
-            
+            break;
+
         default:
             $done = true;
         }
@@ -1030,7 +1030,7 @@ function plugin_submit_links()
     $linkform->set_var('lang_description', $LANG12[15]);
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
     $allowed = COM_allowedHTML('links.edit', false, 2);
-    $linkform->set_var('lang_allowed_html', $allowed);    
+    $linkform->set_var('lang_allowed_html', $allowed);
     PLG_templateSetVars('links', $linkform);
     $linkform->set_var('lang_submit', $LANG12[8]);
     $linkform->set_var('max_url_length', 255);
@@ -1381,13 +1381,13 @@ function plugin_autouninstall_links ()
         /* give the full name of the group, as in the db */
         'groups' => array('Links Admin'),
         /* give the full name of the feature, as in the db */
-        'features' => array('links.edit', 
-                            'links.moderate', 
-                            'links.submit', 
-                            'config.links.tab_public', 
-                            'config.links.tab_admin', 
-                            'config.links.tab_permissions', 
-                            'config.links.tab_cpermissions', 
+        'features' => array('links.edit',
+                            'links.moderate',
+                            'links.submit',
+                            'config.links.tab_public',
+                            'config.links.tab_admin',
+                            'config.links.tab_permissions',
+                            'config.links.tab_cpermissions',
                             'config.links.tab_autotag_permissions'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_topic_categories', 'phpblock_topic_links'),
@@ -1535,8 +1535,8 @@ function phpblock_topic_links()
         $topic_sql = "(c.tid='{$tid}' OR c.tid='" . TOPIC_ALL_OPTION . "') ";
     } else {
         $topic_sql = "(c.tid='" . TOPIC_ALL_OPTION . "') ";
-    }        
-        
+    }
+
     $result = DB_query("SELECT l.lid, l.title, l.url, c.cid FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE " . $topic_sql . COM_getPermSQL('AND', 0, 2, 'c'));
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
@@ -1571,8 +1571,8 @@ function phpblock_topic_categories()
         $topic_sql = "(tid='{$tid}' OR tid='" . TOPIC_ALL_OPTION . "') ";
     } else {
         $topic_sql = "(tid='" . TOPIC_ALL_OPTION . "') ";
-    } 
-    
+    }
+
 
     $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']} WHERE " . $topic_sql . COM_getPermSQL ('AND'));
     $nrows = DB_numRows($result);
@@ -1842,12 +1842,12 @@ function plugin_getdocumentationurl_links($file)
 * Provides text for a Configuration tooltip
 *
 * @param    string  $id     Id of config value
-* @return   mixed           Text to use regular tooltip, NULL to use config 
+* @return   mixed           Text to use regular tooltip, NULL to use config
 *                           tooltip hack, or empty string when not available
 *
 */
 function plugin_getconfigtooltip_links($id)
-{   
+{
     // Use config tooltip hack where tooltip is read from the config documentation
     return;
 }
@@ -1864,7 +1864,7 @@ function plugin_getconfigtooltip_links($id)
 function plugin_group_changed_links($grp_id, $mode)
 {
     global $_TABLES, $_GROUPS, $_LI_CONF;
-    
+
     if ($mode == 'delete') {
         // Change any deleted group ids to Links Admin if exist, if does not change to root group
         $new_group_id = 0;
@@ -1879,13 +1879,13 @@ function plugin_group_changed_links($grp_id, $mode)
                     $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
                 }
             }
-        }    
-        
+        }
+
         // Update Link tables with new group id
-        $sql = "UPDATE {$_TABLES['links']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $sql = "UPDATE {$_TABLES['links']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
-        
-        $sql = "UPDATE {$_TABLES['linkcategories']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+
+        $sql = "UPDATE {$_TABLES['linkcategories']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
    }
 }

@@ -5,7 +5,7 @@
   <div class="admin_basic">
     <dl>
       <dt><label for="admin-mailform-to_group">{lang_to}</label></dt>
-	  <dd>
+      <dd>
         <select name="to_group" id="admin-mailform-to_group">
           <option value="">{lang_selectgroup}</option>
           {group_options}

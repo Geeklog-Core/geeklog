@@ -88,22 +88,22 @@ function staticpageeditor_form($A)
         }
     }
     $retval = '';
-    
+
     $sp_template = COM_newTemplate(CTL_plugin_templatePath('staticpages', 'admin'));
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $sp_template->set_file('form', 'editor_advanced.thtml');
-        
+
         // Shouldn't really have to check if anonymous user but who knows...
         if (COM_isAnonUser()) {
             $link_message = "";
         } else {
-            $link_message = $LANG01[138];    
-        } 
-        $sp_template->set_var('noscript', COM_getNoScript(false, '', $link_message));        
-        
+            $link_message = $LANG01[138];
+        }
+        $sp_template->set_var('noscript', COM_getNoScript(false, '', $link_message));
+
         // Setup Advanced Editor
         COM_setupAdvancedEditor('/staticpages/adveditor.js', 'staticpages.edit');
-        
+
         $sp_template->set_var('lang_expandhelp', $LANG24[67]);
         $sp_template->set_var('lang_reducehelp', $LANG24[68]);
         $sp_template->set_var('lang_toolbar', $LANG24[70]);
@@ -136,7 +136,7 @@ function staticpageeditor_form($A)
     } else {
         $sp_template->set_file('form', 'editor.thtml');
     }
-    
+
     // Add JavaScript
     if ($_CONF['titletoid']) {
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
@@ -248,8 +248,8 @@ function staticpageeditor_form($A)
     } else {
         $sp_template->set_var('centerblock_checked', '');
     }
-    
-    $sp_template->set_var('lang_position', $LANG_STATIC['position']); 
+
+    $sp_template->set_var('lang_position', $LANG_STATIC['position']);
     $position = '<select name="sp_where">';
     $position .= '<option value="1"';
     if ($A['sp_where'] == 1) {
@@ -329,7 +329,7 @@ function staticpageeditor_form($A)
         $sp_template->set_var('draft_flag_checked', '');
     }
     $sp_template->set_var('lang_draft', $LANG_STATIC['draft']);
-    
+
     $sp_template->set_var('lang_cache_time', $LANG_STATIC['cache_time']);
     $sp_template->set_var('lang_cache_time_desc', $LANG_STATIC['cache_time_desc']);
     $sp_template->set_var('cache_time', $A['cache_time']);
@@ -351,13 +351,13 @@ function staticpageeditor_form($A)
     }
     $sp_template->set_var('sp_title', $title);
     $sp_template->set_var('sp_page_title', $page_title);
-    
+
     $sp_template->set_var('lang_topic', $LANG_STATIC['topic']);
     if ($mode != 'clone') {
         // want to use default topic selection if new staticpage so pass in blank id
         $topic_sp_id = $A['sp_id'];
         if (empty($sp_id) && $mode=='edit') { // means new
-            $topic_sp_id = '';    
+            $topic_sp_id = '';
         }
 
         $sp_template->set_var('topic_selection',
@@ -366,7 +366,7 @@ function staticpageeditor_form($A)
         $sp_template->set_var('topic_selection',
                               TOPIC_getTopicSelectionControl ('staticpages', $A['clone_sp_id'], true, false, true));
     }
-    
+
     $sp_template->set_var('lang_metadescription',
                           $LANG_ADMIN['meta_description']);
     $sp_template->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
@@ -374,7 +374,7 @@ function staticpageeditor_form($A)
         $sp_template->set_var('meta_description', $A['meta_description']);
     }
     if (!empty($A['meta_keywords'])) {
-        $sp_template->set_var('meta_keywords', $A['meta_keywords']);        
+        $sp_template->set_var('meta_keywords', $A['meta_keywords']);
     }
     if (($_CONF['meta_tags'] > 0) && ($_SP_CONF['meta_tags'] > 0)) {
         $sp_template->set_var('hide_meta', '');
@@ -387,8 +387,8 @@ function staticpageeditor_form($A)
         $sp_template->set_var('template_flag_checked', '');
     }
     $sp_template->set_var('lang_template', $LANG_STATIC['template']);
-    $sp_template->set_var('lang_template_flag_msg', $LANG_STATIC['template_msg']);    
-    
+    $sp_template->set_var('lang_template_flag_msg', $LANG_STATIC['template_msg']);
+
     $template_list = templatelist($A['template_id']);
     $template_none = '<option value=""';
     if ($A['template_id'] == "") {
@@ -399,7 +399,7 @@ function staticpageeditor_form($A)
                           . $template_none . $template_list . '</select>');
     $sp_template->set_var('lang_use_template', $LANG_STATIC['use_template']);
     $sp_template->set_var('lang_use_template_msg', $LANG_STATIC['use_template_msg']);
-    
+
     $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
     if (isset($A['sp_onmenu']) && ($A['sp_onmenu'] == 1)) {
         $sp_template->set_var('onmenu_checked', 'checked="checked"');
@@ -501,17 +501,17 @@ function templatelist( $selected = '' )
 
     $sql = "SELECT sp_id, sp_title FROM {$_TABLES['staticpage']} WHERE template_flag = 1 AND (draft_flag = 0)" . $perms . " ORDER BY sp_title";
     $result = DB_query ($sql);
-    $nrows = DB_numRows ($result);   
+    $nrows = DB_numRows ($result);
 
     if ($nrows > 0) {
         for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray ($result);      
+            $A = DB_fetchArray ($result);
 
             $retval .= '<option value="' . $A['sp_id'] . '"';
             if ($A['sp_id'] == $selected) {
                 $retval .= ' selected="selected"';
             }
-            $retval .= '>' . $A['sp_title'] . '</option>'; 
+            $retval .= '>' . $A['sp_title'] . '</option>';
         }
     }
 
@@ -683,7 +683,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         }
         if (isset($A['meta_keywords'])) {
             $A['meta_keywords'] = strip_tags($A['meta_keywords']);
-        }    
+        }
 
         $A['editor'] = $editor;
 
@@ -848,7 +848,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         if (!isset($_POST['template_flag'])) {
             $_POST['template_flag'] = '';
         }
-        
+
         $display .= submitstaticpage($sp_id, $_POST['sp_title'], $_POST['sp_page_title'],
             $_POST['sp_content'], COM_applyFilter($_POST['sp_hits'], true),
             COM_applyFilter($_POST['sp_format']), $_POST['sp_onmenu'],
@@ -861,7 +861,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
             $sp_help,
             COM_applyFilter($_POST['sp_where'], true), $_POST['sp_inblock'],
             COM_applyFilter($_POST['postmode']), $_POST['meta_description'],
-            $_POST['meta_keywords'], $_POST['draft_flag'], $_POST['template_flag'], $_POST['template_id'], COM_applyFilter($_POST['cache_time'], true)); 
+            $_POST['meta_keywords'], $_POST['draft_flag'], $_POST['template_flag'], $_POST['template_id'], COM_applyFilter($_POST['cache_time'], true));
     } else {
         $display = COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }

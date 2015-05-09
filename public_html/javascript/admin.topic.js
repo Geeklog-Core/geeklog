@@ -17,7 +17,7 @@ $(function() {
             return {
                 width:  img.width,
                 height: img.height
-            }; 
+            };
         },
         natural = getNaturalSize(obj[0]),
         top  = -natural.height + 24,

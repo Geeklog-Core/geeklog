@@ -28,7 +28,7 @@
         </li>
       </ul>
     </fieldset>
-  </form>                               
+  </form>
 {end_block}
 
 {# end {templatelocation} #}

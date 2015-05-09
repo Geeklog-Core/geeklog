@@ -324,7 +324,7 @@ function loginform($hide_forgotpw_link = false, $userstatus = -1)
     } elseif ($userstatus == -2) { // No error user just visited page to login
         $cfg['title']   = $LANG04['user_login'];
         $cfg['message'] = $LANG04['user_login_message'];
-    } else { // Status should be -1 which is login error        
+    } else { // Status should be -1 which is login error
         $cfg['title']   = $LANG04[65];
         $cfg['message'] = $LANG04[66];
     }
@@ -778,7 +778,7 @@ case 'new':
     }
 
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[22]));
-    
+
     break;
 
 case 'tokenexpired':
@@ -924,7 +924,7 @@ default:
 
             $consumer->doAction($oauth_userinfo);
 
-        }        
+        }
     } else {
         $status = -2; // User just visited login page no error. -1 = error
     }

@@ -156,10 +156,10 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
     }
 
     // "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid'" . COM_getTopicSQL('AND', 1) . " AND perm_anon > 0 ORDER BY date DESC $limitsql"
-    $sql = "SELECT sid 
-        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+    $sql = "SELECT sid
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
         WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0
-        AND ta.type = 'article' AND ta.id = sid 
+        AND ta.type = 'article' AND ta.id = sid
         AND ta.tid = '$tid'" . COM_getTopicSQL('AND', 1, 'ta') . "
         GROUP BY sid
         ORDER BY date DESC $limitsql";
@@ -202,7 +202,7 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
 */
 function SYND_feedUpdateCheck($topic, $update_data, $limit, $updated_topic = '', $updated_id = '')
 {
-    $is_current = true; 
+    $is_current = true;
 
     switch($topic) {
     case '::all':
@@ -266,15 +266,15 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
                                "tid = '$tid'" ));
 
         // Retrieve list of inherited topics for anonymous user
-        $tid_list = TOPIC_getChildList($tid, 1);        
+        $tid_list = TOPIC_getChildList($tid, 1);
 
         //$sql = "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql";
-        $sql = "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode 
-            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-            WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 
-            AND ta.type = 'article' AND ta.id = sid 
-            AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '$tid'))) 
-            GROUP BY sid 
+        $sql = "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode
+            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+            WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0
+            AND ta.type = 'article' AND ta.id = sid
+            AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '$tid')))
+            GROUP BY sid
             ORDER BY date DESC $limitsql";
 
         $result = DB_query($sql);
@@ -295,7 +295,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $fulltext = trim( $fulltext );
             $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
-            if( $row['postmode'] == 'plaintext' ) 
+            if( $row['postmode'] == 'plaintext' )
             {
                 if( !empty($storytext) )
                 {
@@ -410,9 +410,9 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $where .= ' AND frontpage = 1';
     }
 
-    $sql = "SELECT sid,ta.tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode 
-        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-        WHERE draft_flag = 0 AND date <= NOW() AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 $where AND perm_anon > 0 
+    $sql = "SELECT sid,ta.tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+        WHERE draft_flag = 0 AND date <= NOW() AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 $where AND perm_anon > 0
         GROUP BY sid,ta.tid
         ORDER BY date DESC $limitsql";
 
@@ -435,7 +435,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $fulltext = trim( $fulltext );
         $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
-        if( $row['postmode'] == 'plaintext' ) 
+        if( $row['postmode'] == 'plaintext' )
         {
             if( !empty($storytext) )
             {

@@ -406,11 +406,11 @@ $LANG04 = array(
     162 => 'will not be scaled',
     163 => 'Re-Authentication Failed',
     164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
-    165 => 'Use Advanced Editor', 
+    165 => 'Use Advanced Editor',
     166 => 'Re-synch Remote Account',
     167 => 'Remote login',
     168 => 'You may also login with one of the remote authentication services below.',
-    'user_login' => 'User Login', 
+    'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
 );
@@ -485,7 +485,7 @@ $LANG08 = array(
     37 => 'Send me a copy of this email',
     38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:",
     39 => 'Your last message was ',
-    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"    
+    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
 );
 
 ###############################################################################
@@ -747,7 +747,7 @@ $LANG_ENVCHECK = array(
     'location'                  => 'Location',
     'status'                    => 'Status',
     'item'                      => 'Item',
-    
+
     /* Left incase we decided to use jhead and/or jpegtran Program in future */
     'jhead'                     => 'jhead Program',
     'jhead_not_found'           => 'Unable to locate the jhead executable.',
@@ -755,7 +755,7 @@ $LANG_ENVCHECK = array(
     'jpegtran'                  => 'jpegtran Program',
     'jpegtran_not_found'        => 'Unable to locate the jpegtran executable.',
     'jpegtran_ok'               => 'The jpegtran executable is installed.',
-    
+
     'showhide_phpinfo'          => 'Show/Hide Full PHP Info',
     'view_online'               => 'Click here %s to view online',
     'no_new_items'              => 'No New Items',
@@ -986,24 +986,24 @@ $LANG27 = array(
     27 => 'Or Upload Topic Icon',
     28 => 'Maximum',
     29 => 'File Upload Errors',
-    30 => 'Stories in Topic', 
+    30 => 'Stories in Topic',
     31 => 'You have used a restricted Topic ID. Please choose another one.',
     32 => 'Parent Topic',
     33 => 'Inherit',
     34 => 'Parent topic inherits all inheritable items',
-    35 => 'Hidden', 
+    35 => 'Hidden',
     36 => 'Topic will be hidden in the Topic Block until it\'s parent topic is selected',
     37 => 'Root',
     38 => 'All',
-    39 => 'Homepage Only', 
+    39 => 'Homepage Only',
     40 => 'Assign one or more topics. ',
-    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item to. ', 
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item to. ',
     42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. ',
-    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actual topic the user is in is not found. ', 
+    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actual topic the user is in is not found. ',
     44 => 'Inherit',
     45 => 'Default',
     46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
-    47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.', 
+    47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
     48 => 'Parent Topic Id not found.',
     49 => 'This Topic ID is already being used. Please choose another one.',
     50 => 'Yes',
@@ -1012,12 +1012,12 @@ $LANG27 = array(
     53 => 'Image',
     54 => 'Selected',
     55 => 'Assigned',
-    'breadcrumb_separator' => '>', 
+    'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'Home',
     'autotag_desc_topic' => '[topic:id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.',
     'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - Creates a clickable horizontal list of related topics based on the item id and type.',
     'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
-    'no_related_items' => 'No related items found.', 
+    'no_related_items' => 'No related items found.',
     'topics:' => 'Topics:',
     'filed_under:' => 'Filed under:'
 );
@@ -1116,7 +1116,7 @@ $LANG28 = array(
     88 => 'Default Group',
     89 => 'Check to make this a default group for new users',
     90 => 'Apply "Default Group" change to existing user accounts',
-    'autotag_desc_user' => '[user: name alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.' 
+    'autotag_desc_user' => '[user: name alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -1584,7 +1584,7 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => '404 Error',
     2 => '<p>Gee, I\'ve looked everywhere but I can not find:</p><p><b>%s</b></p>',
-    3 => "<p>We're sorry, but the page you have requested does not exist. Please feel free to check the <a href=\"{$_CONF['site_url']}/\">main page</a> or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost.", 
+    3 => "<p>We're sorry, but the page you have requested does not exist. Please feel free to check the <a href=\"{$_CONF['site_url']}/\">main page</a> or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost.",
     4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost.",
 );
 
@@ -1713,7 +1713,7 @@ $LANG_SECTEST = array(
     'reachable'     => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
     'not_sure'      => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
-    'remove_inst'   => 'You should really remove the install directory %s once you have your site up and running without any errors.', 
+    'remove_inst'   => 'You should really remove the install directory %s once you have your site up and running without any errors.',
     'remove_inst2'  => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
     'inst_removed'  => 'Good! You seem to have removed the install directory already.',
     'fix_password'  => 'You still have not changed the <strong>default password</strong> from "password" on the default Admin user account.',
@@ -1810,7 +1810,7 @@ $LANG_ADMIN = array (
     'list'          => 'list',
     'list_all'      => 'List all',
     'meta_description' => 'Meta Description',
-    'meta_keywords' => 'Meta Keywords',        
+    'meta_keywords' => 'Meta Keywords',
     'na'            => 'N/A',
     'unavailable'   => 'N/A',
     'warning'       => '!!!',
@@ -1946,11 +1946,11 @@ $LANG_confignames['Core'] = array(
     'custom_registration' => "Enable Custom Registration",
     'user_login_method' => "User Login Method",
     'facebook_login' => "Enable OAuth Login Method Facebook",
-    'facebook_consumer_key' => "Facebook OAuth Application ID",    
-    'facebook_consumer_secret' => "Facebook OAuth Application Secret",    
+    'facebook_consumer_key' => "Facebook OAuth Application ID",
+    'facebook_consumer_secret' => "Facebook OAuth Application Secret",
     'linkedin_login' => "Enable OAuth Login Method LinkedIn",
-    'linkedin_consumer_key' => "LinkedIn OAuth API Key",    
-    'linkedin_consumer_secret' => "LinkedIn OAuth Secret Key",    
+    'linkedin_consumer_key' => "LinkedIn OAuth API Key",
+    'linkedin_consumer_secret' => "LinkedIn OAuth Secret Key",
     'twitter_login' => "Enable OAuth Login Method Twitter",
     'twitter_consumer_key' => "Twitter OAuth Consumer Key",
     'twitter_consumer_secret' => "Twitter OAuth Consumer Secret",
@@ -2085,7 +2085,7 @@ $LANG_confignames['Core'] = array(
     'comment_feeds_article_tag' => 'Article Tag',
     'comment_feeds_article_tag_position' => 'Article Tag Position',
     'comment_feeds_article_author_tag' => 'Article Author Tag',
-    'comment_feeds_comment_author_tag' => 'Comment Author Tag', 
+    'comment_feeds_comment_author_tag' => 'Comment Author Tag',
     'copyrightyear' => "Copyright Year",
     'image_lib' => "Image Library",
     'path_to_mogrify' => "Path to Mogrify",
@@ -2141,7 +2141,7 @@ $LANG_confignames['Core'] = array(
     'cdn_hosted' => "Use CDN-hosted copy of jQuery",
     'meta_tags' => "Meta Tags",
     'meta_description' => "Default Meta Description",
-    'meta_keywords' => "Default Meta Keywords",    
+    'meta_keywords' => "Default Meta Keywords",
     'default_permissions_block' => "Block Default Permissions",
     'default_permissions_story' => "Story Default Permissions",
     'default_permissions_topic' => "Topic Default Permissions",
@@ -2162,8 +2162,8 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => "Show Page Limits?",
     'search_separator' => "Group Separator",
     'search_def_keytype' => "Default Search Method",
-    'search_def_sort' => "Default Sort Order", 
-    'autotag_permissions_story' => '[story: ] Permissions', 
+    'search_def_sort' => "Default Sort Order",
+    'autotag_permissions_story' => '[story: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
@@ -2257,16 +2257,16 @@ $LANG_fs['Core'] = array(
     'fs_perm_topic' => 'Topic Default Permission',
     'fs_perm_block' => 'Block Default Permission',
     'fs_webservices' => 'Webservices',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions', 
+    'fs_autotag_permissions' => 'Autotag Usage Permissions',
     'fs_breadcrumbs' => 'Breadcrumbs',
     'fs_pass' => 'Password Settings',
-	'fs_filemanager_general' => 'General Settings',
-	'fs_filemanager_upload' => 'Upload',
-	'fs_filemanager_images' => 'Images',
-	'fs_filemanager_videos' => 'Videos',
-	'fs_filemanager_audios' => 'Audios'
+    'fs_filemanager_general' => 'General Settings',
+    'fs_filemanager_upload' => 'Upload',
+    'fs_filemanager_images' => 'Images',
+    'fs_filemanager_videos' => 'Videos',
+    'fs_filemanager_audios' => 'Audios'
 );
-    
+
 $LANG_tab['Core'] = array(
     'tab_site' => 'Site',
     'tab_paths' => 'Paths',
@@ -2308,11 +2308,11 @@ $LANG_tab['Core'] = array(
     'tab_permissions' => 'Permissions',
     'tab_webservices' => 'Webservices',
     'tab_topics' => 'Topics',
-	'tab_filemanager_general' => 'General Settings',
-	'tab_filemanager_upload' => 'Upload',
-	'tab_filemanager_images' => 'Images',
-	'tab_filemanager_videos' => 'Videos',
-	'tab_filemanager_audios' => 'Audios'
+    'tab_filemanager_general' => 'General Settings',
+    'tab_filemanager_upload' => 'Upload',
+    'tab_filemanager_images' => 'Images',
+    'tab_filemanager_videos' => 'Videos',
+    'tab_filemanager_audios' => 'Audios'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2350,15 +2350,15 @@ $LANG_configselects['Core'] = array(
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'Login' => 'login', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'), 
+    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'), 
-    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'), 
-    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2), 
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'),
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
+    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
     33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3),
-	34 => array('grid' => 'grid', 'list' => 'list'),
-	35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
+    34 => array('grid' => 'grid', 'list' => 'list'),
+    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
 );
 
 ################################################################################
@@ -2392,23 +2392,23 @@ $LANG_VALIDATION = array(
     'mail_settings_backend' => "This field must be one of 'smtp', 'sendmail', or 'mail'",
     'mail_settings_sendmail_path' => 'This field must contains a valid path to sendmail binary',
     'mail_settings_host' => 'This field must contain a valid hostname',
-    'mail_settings_port' => 'This field must be between 0 - 65535', 
-    'rdf_limit' => 'This field must be numeric', 
+    'mail_settings_port' => 'This field must be between 0 - 65535',
+    'rdf_limit' => 'This field must be numeric',
     'path' => 'Path does not exist',
-    'file' => 'File does not exist', 
+    'file' => 'File does not exist',
     'search_limits' => 'This field must be numeric and separated with a comma',
-    'num_search_results' => "This field must be numeric and from the 'search_limits' field above", 
+    'num_search_results' => "This field must be numeric and from the 'search_limits' field above",
     'theme' => 'Theme directory does not exist',
     'path_themes' => 'Theme path must be an absolute path and make sure the last character contains the ' .
                      'directory separator',
     'path_to_mogrify' => 'You must set the image library to imagemagick and fill this field with the ' .
                          'complete path to the mogrify executable',
     'path_to_netpbm' => 'You must set the image library to netpbm and fill this field with the ' .
-                         'directory where the binaries from the Netpbm package are kept',  
+                         'directory where the binaries from the Netpbm package are kept',
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
     'single_char' => 'This field must be a single character',
-    'page_navigation_max_pages' => 'This field must be between 2 - 21', 
+    'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 

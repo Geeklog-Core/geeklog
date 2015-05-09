@@ -106,7 +106,7 @@ function USER_deleteAccount ($uid)
     // delete submissions
     DB_delete ($_TABLES['storysubmission'], 'uid', $uid);
     DB_delete ($_TABLES['commentsubmissions'], 'uid', $uid); // Includes article and plugin submissions
-    
+
     // delete user photo, if enabled & exists
     if ($_CONF['allow_user_photo'] == 1) {
         $photo = DB_getItem ($_TABLES['users'], 'photo', "uid = $uid");
@@ -250,7 +250,7 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
     if (! empty($passwd)) {
         // Since no uid exists yet we can't use SEC_updateUserPassword and must handle things manually
         $salt = SEC_generateSalt();
-        $passwd = SEC_encryptPassword($passwd, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']); 
+        $passwd = SEC_encryptPassword($passwd, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
         $fields .= ',passwd,salt,algorithm,stretch';
         $values .= ",'$passwd','$salt','" . $_CONF['pass_alg'] . "','" . $_CONF['pass_stretch'] . "'";
     }
@@ -594,7 +594,7 @@ function USER_emailMatches ($email, $domain_list)
         $email_domain = substr ($email, strpos ($email, '@') + 1);
 
         foreach ($domains as $domain) {
-            $domain = trim($domain);	// To fix bug #0001701
+            $domain = trim($domain);    // To fix bug #0001701
 
             if (preg_match("#{$domain}#i", $email_domain)) {
                 $match_found = true;
@@ -873,7 +873,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     if ($A['status'] != USER_ACCOUNT_ACTIVE && !SEC_hasRights('user.edit')) {
         COM_handle404();
     }
-    
+
     $display_name = COM_getDisplayName($uid, $A['username'], $A['fullname']);
     $display_name = htmlspecialchars($display_name);
 
@@ -962,7 +962,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         $user_templates->parse ('email_option', 'email', true);
     } else {
         $user_templates->set_var ('email_option', '');
-    }    
+    }
     $user_templates->set_var('lang_homepage', $LANG04[6]);
     $user_templates->set_var('user_homepage', COM_killJS($A['homepage']));
     $user_templates->set_var('lang_location', $LANG04[106]);
@@ -990,12 +990,12 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 
     // list of last 10 stories by this user
     if (count($tids) > 0) {
-        $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate 
-            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-            WHERE (uid = $uid) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL('AND') . " 
-            AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+        $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate
+            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+            WHERE (uid = $uid) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL('AND') . "
+            AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1
             ORDER BY unixdate DESC LIMIT 10";
-            
+
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
     } else {
@@ -1031,18 +1031,18 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     // list of last 10 comments by this user
     $new_plugin_comments = array();
     $new_plugin_comments = PLG_getWhatsNewComment('', 10, $uid);
-    
+
     if( !empty($new_plugin_comments) ) {
         // Sort array by element lastdate newest to oldest
-        foreach($new_plugin_comments as $k=>$v) {		
-            $b[$k] = strtolower($v['unixdate']);	
-        }	
-        arsort($b);	
-        foreach($b as $key=>$val) {		
-            $temp[] = $new_plugin_comments[$key];	
-        }	   
-        $new_plugin_comments = $temp;   
-           
+        foreach($new_plugin_comments as $k=>$v) {
+            $b[$k] = strtolower($v['unixdate']);
+        }
+        arsort($b);
+        foreach($b as $key=>$val) {
+            $temp[] = $new_plugin_comments[$key];
+        }
+        $new_plugin_comments = $temp;
+
         $i = 0;
         foreach ($new_plugin_comments as $C) {
             $i = $i + 1;
@@ -1060,9 +1060,9 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
             $user_templates->set_var('comment_date', $commenttime[0]);
             $user_templates->parse('comment_row', 'row', true);
-            
+
             if ($i == 10) {
-                break;   
+                break;
             }
         }
     } else {
@@ -1134,19 +1134,19 @@ function plugin_autotags_user($op, $content = '', $autotag = '')
             $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                                    "grp_name = 'User Admin'");
         }
-        $owner_id = SEC_getDefaultRootUser();   
+        $owner_id = SEC_getDefaultRootUser();
 
         if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_user'][0], $_CONF['autotag_permissions_user'][1], $_CONF['autotag_permissions_user'][2], $_CONF['autotag_permissions_user'][3]) == $flag) {
             $tagnames[] = 'user';
         }
-        
+
         if (count($tagnames) > 0) {
             return $tagnames;
         }
     } elseif ($op == 'description') {
         return array (
             'user' => $LANG28['autotag_desc_user']
-            );          
+            );
     } elseif ($op == 'parse') {
         $uname = COM_applyFilter($autotag['parm1']);
         $uname = DB_escapeString($uname);

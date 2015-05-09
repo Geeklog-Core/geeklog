@@ -65,7 +65,7 @@ function plugin_autoinstall_polls($pi_name)
         'config.' . $pi_name . '.tab_whatsnew'              => 'Access to configure ' . $pi_name . ' what\'s new block',
         'config.' . $pi_name . '.tab_main'                  => 'Access to configure general ' . $pi_name . ' settings',
         'config.' . $pi_name . '.tab_permissions'           => 'Access to configure ' . $pi_name . ' default permissions',
-        'config.' . $pi_name . '.tab_autotag_permissions'   => 'Access to configure ' . $pi_name . ' autotag usage permissions', 
+        'config.' . $pi_name . '.tab_autotag_permissions'   => 'Access to configure ' . $pi_name . ' autotag usage permissions',
         'config.' . $pi_name . '.tab_poll_block'            => 'Access to configure ' . $pi_name . ' block'
     );
 
@@ -74,8 +74,8 @@ function plugin_autoinstall_polls($pi_name)
         'config.' . $pi_name . '.tab_whatsnew'              => array($pi_admin),
         'config.' . $pi_name . '.tab_main'                  => array($pi_admin),
         'config.' . $pi_name . '.tab_permissions'           => array($pi_admin),
-        'config.' . $pi_name . '.tab_autotag_permissions'   => array($pi_admin), 
-        'config.' . $pi_name . '.tab_poll_block'            => array($pi_admin)        
+        'config.' . $pi_name . '.tab_autotag_permissions'   => array($pi_admin),
+        'config.' . $pi_name . '.tab_poll_block'            => array($pi_admin)
     );
 
     $tables = array(
@@ -163,10 +163,10 @@ function plugin_compatible_with_this_version_polls($pi_name)
     if (! function_exists('SEC_loginRequiredForm')) {
         return false;
     }
-    
+
     if (! function_exists('CTL_plugin_templatePath')) {
         return false;
-    }    
+    }
 
     return true;
 }

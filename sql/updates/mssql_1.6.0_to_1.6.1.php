@@ -1,9 +1,9 @@
 <?php
 
-// Add meta tag columns to story table 
+// Add meta tag columns to story table
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER frontpage, ADD [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description";
 
-// Add meta tag columns to topics table 
+// Add meta tag columns to topics table
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER imageurl, ADD [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description";
 
 /**

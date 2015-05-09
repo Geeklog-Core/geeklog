@@ -402,7 +402,7 @@ class database {
             }
         } else {
             // just regular string values, build sql
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -441,7 +441,7 @@ class database {
             $sql = "UPDATE $table SET $item_to_set = $value_to_set";
         } else {
             $sql = "UPDATE $table SET $item_to_set = '$value_to_set'";
-        } 
+        }
 
         if (is_array($id) || is_array($value)) {
             $num_ids = count($id);
@@ -464,7 +464,7 @@ class database {
             }
         } else {
             // These are regular strings, build sql
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -521,7 +521,7 @@ class database {
                 return false;
             }
         } else {
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -583,7 +583,7 @@ class database {
                 return false;
             }
         } else {
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }

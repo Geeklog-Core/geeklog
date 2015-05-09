@@ -36,7 +36,7 @@
         <li><a name="public_html">public_html</a>: URLでアクセスされる、公開領域の一般的なディレクトリ名(その他: htdocs, www)です。</li>
         <li><acronym title="Uniform Resource Locator">URL</acronym>: Uniform Resource LocatorはWeb上の情報の特定の部分を表すアドレス(<code>http://www.foo.com/</code>)です。</li>
     </ul>
-    
+
 
 <h2><a name="installation_requirements">インストールに必要なもの</a></h2>
 
@@ -53,7 +53,7 @@
         <li>データベースを新規作成するか、既存のデータベースにアクセスできる。</li>
         <li>WebサーバーにSSHやFTPでアクセスして、いくつかのファイルとディレクトリのパーミッションを変更できる。</li>
     </ul>
-    
+
 
 <h2><a name="install">新規インストール</a></h2>
 
@@ -64,7 +64,7 @@
         <li>
             <p>次のコマンドを実行して、ダウンロードしたターボールを展開（解凍）します。</p>
             <p><code>tar -zxvf geeklog-2.0.0.tar.gz</code> </p>
-            
+
             <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。(訳註: ExpLZH)</p>
         </li>
         <li>
@@ -72,9 +72,9 @@
         </li>
         <li>
             <p><code>geeklog-2.0.0/public_html/</code> ディレクトリの中身をWebサーバーのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>
-        
+
             <p>次に、<code>geeklog-2.0.0/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ（お勧め!）かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
-            
+
             <p><strong>注意:</strong> ホスティング会社がドキュメントツリーの外にファイルを置くことを許可していない場合は、</p>
             <ol>
                 <li>ドキュメントルート内に推測されにくい名前でディレクトリを作成します(つまり、"geeklog"などと名付けるのはダメ)。</li>
@@ -84,7 +84,7 @@
         </li>
         <li>
             <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します（<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します）。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
-            
+
             <p>Geeklogのインストールウィザードは自動的にインストールを行うので、単に表示される手順に従ってください。</p>
         </li>
         <li>
@@ -92,14 +92,14 @@
 </p>
         </li>
     </ol>
-   
+
 
 <h2><a name="upgrade">旧バージョンからのアップグレード</a></h2>
 
-    <p>データベースが既に存在していて更新する必要があるということを除けば、アップグレードは新規インストールと全く同じです。</p> 
+    <p>データベースが既に存在していて更新する必要があるということを除けば、アップグレードは新規インストールと全く同じです。</p>
 
     <p>現在インストールしているGeeklogの中で自分で変更したカスタムコードがあれば（特に <code>lib-custom.php</code>。カスタマイズしたコードはすべてこのファイルの中に入れることをお勧めします）、必ずバックアップを取っておいてください。修正したテーマ、画像、静的ページのバックアップを必ず取っておいてください。</p>
-            
+
     <p>また、データベースのバックアップも必ず取っておいてください。ファイル類とデータベースをバックアップする重要性はいくら強調してもし足りないくらいです。</p>
 
     <p><strong>警告しましたよ!</strong></p>
@@ -110,7 +110,7 @@
         <li>
             <p>次のコマンドを実行して、ダウンロードしたターボールを展開（解凍）します。</p>
             <p><code>tar -zxvf geeklog-2.0.0.tar.gz</code> </p>
-            
+
             <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
         </li>
         <li>
@@ -125,7 +125,7 @@
         </li>
         <li>
             <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します（<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します）。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
-            
+
             <p>Geeklogのインストールウィザードは自動的にインストールを行うので、単に表示される手順に従ってください。</p>
         </li>
         <li>
@@ -136,7 +136,7 @@
             <p>必要なら <code>lib-custom.php</code> などのバックアップしておいたコードやテーマなどのファイル類を戻します。</p>
         </li>
     </ol>
-   
+
 
 <h2><a name="migrate">移行</a></h2>
 
@@ -150,7 +150,7 @@
 
 <h2><a name="installprob">よくある問題と解決法</a></h2>
 
-    <p>先に進む前に、 <code>siteconfig.php</code> を開き、<strong>パスを確認してください</strong>。パスが不正であったり、間違いがあったりすると、様々な種類のエラーが発生します。</p>   
+    <p>先に進む前に、 <code>siteconfig.php</code> を開き、<strong>パスを確認してください</strong>。パスが不正であったり、間違いがあったりすると、様々な種類のエラーが発生します。</p>
 
 <p>エラーメッセージが出たら、それを注意深く読んでください。PHPに詳しくなくても、エラーに関するヒントは得られます。エラーメッセージに含まれるパス情報に特に注意してください。上述の通り、パスの間違いは最もよく見られる原因です。</p>
 
@@ -206,9 +206,9 @@ Cannnot connect to DB server</code></p>
 
                 <p><code>GRANT ALL PRIVILEGES ON <strong>[database_name]</strong> TO <strong>[user@host]</strong> IDENTIFIED BY '<strong>[password]</strong>';<br />
                 FLUSH PRIVILEGES;</code></p>
-                
+
                 <p><strong>[小文字]</strong> の部分は適切な値に置き換えてください。</p>
-                
+
                 <p>データベースの権限をもっと制限したい、あるいは制限する必要がある場合でも、少なくとも ALTER, CREATE, DELETE, INSERT, SELECT, UPDATE 権限をデータベース・ユーザーに与える必要があります。ALTER と CREATE 権限は、Geeklogのインストールとアップグレード、プラグインやアッドオン(add-ons)のインストールを行うときしか必要ではありません。</p>
             </li>
             <li>

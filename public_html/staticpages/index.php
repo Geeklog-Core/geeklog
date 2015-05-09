@@ -90,9 +90,9 @@ if (isset($_GET['msg'])) {
     }
 }
 
-// Handle just template staticpage security here, rest done in services.     
-// Cannot view template staticpages directly. If template staticpage bail here 
-// if user doesn't have edit rights. 
+// Handle just template staticpage security here, rest done in services.
+// Cannot view template staticpages directly. If template staticpage bail here
+// if user doesn't have edit rights.
 if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$page'") == 1) {
     if (SEC_hasRights('staticpages.edit')) {
         $perms = SP_getPerms('', '3');
@@ -106,7 +106,7 @@ if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$page'") == 1)
     } else {
         COM_handle404();
         exit;
-    }        
+    }
 }
 
 $retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode, $comment_page, $msg, $query);

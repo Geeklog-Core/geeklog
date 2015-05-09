@@ -10,13 +10,13 @@
 # Last updated : 2004-08-04
 # Date finished: 2004-08-04
 # History:
-# 2004-08-04	Update for Geeklog 1.3.8-1sr5 started and completed.
-# 2003-06-08	Corrected LANG22[15], capitalize first word
-# 2003-04-02	Corrected capitalization of MESSAGE[48].
-# 2003-03-30	Translated the last (and final) part
-# 2003-03-23	Translated down to and including LANG23 (link.php)
-# 2003-03-18	First half of the file translated
-# 2003-03-10	Translation started
+# 2004-08-04    Update for Geeklog 1.3.8-1sr5 started and completed.
+# 2003-06-08    Corrected LANG22[15], capitalize first word
+# 2003-04-02    Corrected capitalization of MESSAGE[48].
+# 2003-03-30    Translated the last (and final) part
+# 2003-03-23    Translated down to and including LANG23 (link.php)
+# 2003-03-18    First half of the file translated
+# 2003-03-10    Translation started
 #
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com

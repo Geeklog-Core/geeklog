@@ -189,7 +189,7 @@ class downloader
     function _setAvailableExtensions($extensions = array())
     {
         if (count($extensions) == 0) {
-            $this->_availableMimeTypes = 
+            $this->_availableMimeTypes =
                 array(
                     'tgz'  => 'application/x-gzip-compressed',
                     'gz'   => 'application/x-gzip-compressed',
@@ -448,14 +448,14 @@ class downloader
             $this->_addError('Specified source directory, ' . $uploadDir . ' is not a valid directory');
             return false;
         }
-        
+
         if (!is_readable($uploadDir)) {
             $this->_addError('Specified source directory, ' . $uploadDir . ' exists but is not readable');
             return false;
         }
-        
+
         $this->_sourceDirectory = $uploadDir;
-        
+
         return true;
     }
 
@@ -489,7 +489,7 @@ class downloader
             }
         }
 
-        if (strstr( PHP_OS, "WIN")) {  // Added as test1 below was failing on Windows platforms 
+        if (strstr( PHP_OS, "WIN")) {  // Added as test1 below was failing on Windows platforms
             $strPathSeparator = '\\';
             $this->_sourceDirectory = str_replace('/','\\',$this->_sourceDirectory);
         } else {
@@ -502,7 +502,7 @@ class downloader
 
 
         // Ensure file exists and is accessible
-        if(!is_file($this->_sourceDirectory . $fileName) OR 
+        if(!is_file($this->_sourceDirectory . $fileName) OR
             ($this->_sourceDirectory <> (dirname($this->_sourceDirectory . $strPathSeparator .$fileName) .$strPathSeparator)) ) {
             $this->_addError('Specified file ' . $this->_sourceDirectory . $fileName . ' does not exist or is not accessible');
             return false;

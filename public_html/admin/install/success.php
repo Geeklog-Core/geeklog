@@ -82,11 +82,11 @@ case 'migrate':
     $display .= $LANG_SUCCESS[22];
     break;
 }
- 
+
 $display .= $LANG_SUCCESS[4] . '</p>' ;
 
 if ($type == 'install') {
-	$display .= '<p>' . $LANG_SUCCESS[5] . '</p>
+    $display .= '<p>' . $LANG_SUCCESS[5] . '</p>
     <p>' . $LANG_SUCCESS[6] . ' <strong>' . $LANG_SUCCESS[7] . '</strong><br' . XHTML . '>
     ' . $LANG_SUCCESS[8] . ' <strong>' . $LANG_SUCCESS[9] . '</strong></p> <br' . XHTML . '>';
 }

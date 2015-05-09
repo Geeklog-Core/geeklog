@@ -62,7 +62,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   pid varchar(128) NOT NULL default '',
   topic varchar(255) default NULL,
   meta_description TEXT NULL,
-  meta_keywords TEXT NULL,    
+  meta_keywords TEXT NULL,
   voters mediumint(8) unsigned default NULL,
   questions int(11) NOT NULL default '0',
   `created` datetime default NULL,

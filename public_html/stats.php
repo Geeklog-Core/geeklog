@@ -63,7 +63,7 @@ $data_arr[] = array('title' => $LANG10[2], 'stats' => COM_NumberFormat ($totalhi
 
 if ($_CONF['lastlogin']) {
     // if we keep track of the last login date, count the number of users
-    // that have logged in during the last 4 weeks 
+    // that have logged in during the last 4 weeks
     $sql = array();
     $sql['pgsql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin::int4 >= date_part('epoch', INTERVAL '28 DAY'))";
     $sql['mysql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 28 DAY)))";
@@ -83,11 +83,11 @@ $topicsql = COM_getTopicSql ('AND', 0, 'ta');
 $id = array ('draft_flag', 'date');
 $values = array ('0', 'NOW()');
 
-$sql = "SELECT COUNT(DISTINCT sid) AS count, SUM(comments) AS ccount 
-    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
-    WHERE ta.type = 'article' AND ta.id = sid 
+$sql = "SELECT COUNT(DISTINCT sid) AS count, SUM(comments) AS ccount
+    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+    WHERE ta.type = 'article' AND ta.id = sid
     AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql;
-   
+
 $result = DB_query ($sql);
 $A = DB_fetchArray ($result);
 if (empty ($A['ccount'])) {
@@ -118,9 +118,9 @@ $display .= PLG_getPluginStats (1);
 
 // Detailed story statistics
 
-$sql = "SELECT sid,title,hits 
-    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-    WHERE ta.type = 'article' AND ta.id = sid 
+$sql = "SELECT sid,title,hits
+    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+    WHERE ta.type = 'article' AND ta.id = sid
     AND (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . $topicsql . " GROUP BY sid ORDER BY hits DESC LIMIT 10";
 
 $result = DB_query($sql);
@@ -154,9 +154,9 @@ if ($nrows > 0) {
 }
 
 // Top Ten Commented Stories
-$sql = "SELECT sid,title,comments 
-    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
-    WHERE ta.type = 'article' AND ta.id = sid 
+$sql = "SELECT sid,title,comments
+    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+    WHERE ta.type = 'article' AND ta.id = sid
     AND (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10";
 
 $result = DB_query($sql);
@@ -190,11 +190,11 @@ if ($nrows > 0) {
 // Top Ten Trackback Comments
 
 if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
-    $sql = "SELECT s.sid, s.title, COUNT(*) AS count 
-        FROM {$_TABLES['stories']} s,{$_TABLES['trackback']} AS t, {$_TABLES['topic_assignments']} ta 
-        WHERE ta.type = 'article' AND ta.id = s.sid 
+    $sql = "SELECT s.sid, s.title, COUNT(*) AS count
+        FROM {$_TABLES['stories']} s,{$_TABLES['trackback']} AS t, {$_TABLES['topic_assignments']} ta
+        WHERE ta.type = 'article' AND ta.id = s.sid
         AND (s.draft_flag = 0) AND (s.date <= NOW()) AND (s.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid, s.sid, s.title ORDER BY count DESC LIMIT 10";
-    
+
     $result = DB_query ($sql);
     $nrows = DB_numRows ($result);
     if ($nrows > 0) {
@@ -225,9 +225,9 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
 }
 
 // Top Ten Emailed Stories
-$sql = "SELECT sid,title,numemails 
-    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
-    WHERE ta.type = 'article' AND ta.id = sid 
+$sql = "SELECT sid,title,numemails
+    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+    WHERE ta.type = 'article' AND ta.id = sid
     AND (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY numemails DESC LIMIT 10";
 
 $result = DB_query($sql);

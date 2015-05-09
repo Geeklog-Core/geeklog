@@ -48,7 +48,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   CREATE INDEX {$_TABLES['blocks']}_is_enabled ON {$_TABLES['blocks']}(is_enabled);
   CREATE INDEX {$_TABLES['blocks']}_type ON {$_TABLES['blocks']}(type);
   CREATE INDEX {$_TABLES['blocks']}_name ON {$_TABLES['blocks']}(name);
-  CREATE INDEX {$_TABLES['blocks']}_onleft ON {$_TABLES['blocks']}(onleft); 
+  CREATE INDEX {$_TABLES['blocks']}_onleft ON {$_TABLES['blocks']}(onleft);
 ";
 
 $_SQL[] = "
@@ -56,7 +56,7 @@ CREATE TABLE {$_TABLES['commentcodes']} (
   code smallint NOT NULL default '0',
   name varchar(32) default NULL,
   PRIMARY KEY (code)
-) 
+)
 ";
 
 $_SQL[] = "
@@ -107,7 +107,7 @@ CREATE TABLE {$_TABLES['comments']} (
   CREATE INDEX {$_TABLES['comments']}_uid ON {$_TABLES['comments']}(uid);
   CREATE INDEX {$_TABLES['comments']}_lft ON {$_TABLES['comments']}(lft);
   CREATE INDEX {$_TABLES['comments']}_rht ON {$_TABLES['comments']}(rht);
-  CREATE INDEX {$_TABLES['comments']}_date ON {$_TABLES['comments']}(date); 
+  CREATE INDEX {$_TABLES['comments']}_date ON {$_TABLES['comments']}(date);
 ";
 
 $_SQL[] = "
@@ -209,7 +209,7 @@ CREATE TABLE {$_TABLES['groups']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['maillist']} (
-  code SERIAL, 
+  code SERIAL,
   name varchar(32) default NULL,
   PRIMARY KEY (code)
 )
@@ -396,7 +396,7 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
   type varchar(30) NOT NULL,
   id varchar(128) NOT NULL,
   inherit smallint NOT NULL default '1',
-  tdefault smallint NOT NULL default '0',   
+  tdefault smallint NOT NULL default '0',
   PRIMARY KEY  (tid,type,id)
 )
 ";

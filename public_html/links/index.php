@@ -53,7 +53,7 @@
  *
  */
 
-/** 
+/**
 * Geeklog common function library
 */
 require_once '../lib-common.php';
@@ -111,7 +111,7 @@ function links_list($message)
             $page_title = sprintf ($LANG_LINKS[114] . ': %s', $category);
         }
     }
-    
+
     // Check has access and existent to this category
     if ($cid != $_LI_CONF['root']) {
         $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$cat}'");
@@ -122,7 +122,7 @@ function links_list($message)
             COM_output($display);
             exit;
         }
-        
+
         // check existent
         if ( !isset($A['owner_id']) ) {
             $display .= COM_showMessage (16, 'links');

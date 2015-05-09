@@ -4,10 +4,10 @@
 $_SQL[] = "DELETE FROM {$_TABLES['usercomment']} WHERE uid = 1";
 
 // Add Cache Time variable to Blocks table
-$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD [cache_time] INT NOT NULL DEFAULT '0' AFTER [allow_autotags]"; 
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD [cache_time] INT NOT NULL DEFAULT '0' AFTER [allow_autotags]";
 
 // Add Cache Time variable to Blocks table
-$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD [cache_time] INT NOT NULL DEFAULT '0' AFTER [meta_keywords]"; 
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD [cache_time] INT NOT NULL DEFAULT '0' AFTER [meta_keywords]";
 
 // Remove unused columns in Comments table
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']}  DROP `score`, DROP `reason`";
@@ -70,10 +70,10 @@ function update_addFilemanager()
     DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['filemanager.admin']}, {$groupId}) ");
     DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['filemanager.admin']}, {$storyAdminId}) ");
     DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_general']}, {$configAdminId}) ");
-	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_upload']}, {$configAdminId}) ");
-	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_images']}, {$configAdminId}) ");
-	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_videos']}, {$configAdminId}) ");
-	DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_audios']}, {$configAdminId}) ");
+    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_upload']}, {$configAdminId}) ");
+    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_images']}, {$configAdminId}) ");
+    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_videos']}, {$configAdminId}) ");
+    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureIds['config.Filemanager.tab_audios']}, {$configAdminId}) ");
 
     // Add group assignment
     DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ({$groupId}, NULL, 1) ");
@@ -92,31 +92,31 @@ function update_ConfValuesFor210()
     $c = config::get_instance();
 
     $me = 'Core';
-    
+
     // Default Comment Order
     $c->add('comment_order','ASC','select',4,21,31,1665,TRUE, $me, 21);
-    
+
     // Caching Template Library Options
     $c->add('cache_templates',TRUE,'select',2,10,1,220,TRUE, $me, 10);
     $c->add('template_comments',FALSE,'select',2,11,1,1370,TRUE, $me, 11);
-    
-    // Article Related Topics    
+
+    // Article Related Topics
     $c->add('related_topics',1,'select',1,7,32,1340,TRUE, $me, 7);
-    $c->add('related_topics_max',6,'text',1,7,NULL,1350,TRUE, $me, 7);   
-    
+    $c->add('related_topics_max',6,'text',1,7,NULL,1350,TRUE, $me, 7);
+
     // Article What's Related
     $c->add('whats_related',1,'select',1,7,33,1360,TRUE, $me, 7);
     $c->add('whats_related_max',0,'text',1,7,NULL,1370,TRUE, $me, 7);
     $c->add('whats_related_trim',26,'text',1,7,NULL,1380,TRUE, $me, 7);
-    
+
     // What's New Block
-    $c->add('whatsnew_cache_time',3600,'text',3,15,NULL,1060,TRUE, $me, 15);    
+    $c->add('whatsnew_cache_time',3600,'text',3,15,NULL,1060,TRUE, $me, 15);
 
     // New Topic autotag permissions
     $c->add('autotag_permissions_topic', array(2, 2, 2, 2), '@select', 7, 41, 28, 1890, TRUE, $me, 37);
     $c->add('autotag_permissions_related_topics', array(2, 2, 0, 0), '@select', 7, 41, 28, 1900, TRUE, $me, 37);
     $c->add('autotag_permissions_related_items', array(2, 2, 0, 0), '@select', 7, 41, 28, 1910, TRUE, $me, 37);
-    
+
     // Update Language Configuration
     $c->del('allow_user_language', 'Core');
     $c->add('allow_user_language', 1,'select',6,28,0,360,TRUE, $me, 28); // Move from Users and Submissions to Language
@@ -124,32 +124,32 @@ function update_ConfValuesFor210()
     $c->del('language_files', 'Core');
     $c->add('language_files',array('en'=>'english_utf-8', 'de'=>'german_formal_utf-8'),'*text',6,29,NULL,470,FALSE, $me, 28);
     $c->del('languages', 'Core');
-    $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,29,NULL,480,FALSE, $me, 28);       
-    
-    // New OAuth Services 
+    $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,29,NULL,480,FALSE, $me, 28);
+
+    // New OAuth Services
     $c->add('google_login',0,'select',4,16,1,359,TRUE, $me, 16);
     $c->add('google_consumer_key','','text',4,16,NULL,360,TRUE, $me, 16);
-    $c->add('google_consumer_secret','','text',4,16,NULL,361,TRUE, $me, 16);    
+    $c->add('google_consumer_secret','','text',4,16,NULL,361,TRUE, $me, 16);
     $c->add('microsoft_login',0,'select',4,16,1,362,TRUE, $me, 16);
     $c->add('microsoft_consumer_key','','text',4,16,NULL,363,TRUE, $me, 16);
     $c->add('microsoft_consumer_secret','','text',4,16,NULL,364,TRUE, $me, 16);
     $c->add('yahoo_login',0,'select',4,16,1,365,TRUE, $me, 16);
     $c->add('yahoo_consumer_key','','text',4,16,NULL,366,TRUE, $me, 16);
-    $c->add('yahoo_consumer_secret','','text',4,16,NULL,367,TRUE, $me, 16);       
+    $c->add('yahoo_consumer_secret','','text',4,16,NULL,367,TRUE, $me, 16);
 
     // Advanced Editor Options
     $c->add('path_editors','','text',0,3,NULL,132,TRUE, $me, 3);
     $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
-    
+
     // Remove path_themes (the location of the layout directory since hardcoded now)
-    $c->del('path_themes', 'Core');    
-    
+    $c->del('path_themes', 'Core');
+
     // Default Cache Times
     $c->add('default_cache_time_article',0,'text',1,7,NULL,1390,TRUE, $me, 7);
-    $c->add('default_cache_time_block',0,'text',7,31,NULL,1810,TRUE, $me, 31);    
-    
+    $c->add('default_cache_time_block',0,'text',7,31,NULL,1810,TRUE, $me, 31);
+
     // Title To Id Option for supported Admin Editors
-    $c->add('titletoid',0,'select',7,31,1,1820,TRUE, $me, 31);    
+    $c->add('titletoid',0,'select',7,31,1,1820,TRUE, $me, 31);
 
     // Subgroup: File Manager
     // subgroup
@@ -160,7 +160,7 @@ function update_ConfValuesFor210()
 
     // tab
     $tab = (int) DB_getItem($_TABLES['conf_values'], "MAX(tab)") + 1;
-    
+
     // sort
     $so  = (int) DB_getItem($_TABLES['conf_values'], "MAX(sort_order)") + 10;
 

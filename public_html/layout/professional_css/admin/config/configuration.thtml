@@ -22,7 +22,7 @@
                 <div class="block-bg-left"> {config_menu} </div>
             </td>
             <td style="vertical-align:top; width: 100%">
-            
+
                 <div class="saved_message {error_validation_class}" style="display:{show_changeblock}">
                     {lang_changes_made}
                     {lang_error_validation_occurs}
@@ -34,14 +34,14 @@
                   <input type="hidden" name="sub_group" value="{open_sg}"{xhtml}>
                   <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                 </div>
-    
+
                 <div id="tabs">
-                
+
                 {tab_li}
-    
+
                 <!-- BEGIN tab -->
                 <div style="margin-top:10px;" id="{tab_id}">
-                
+
                 <!-- BEGIN notes -->
                 <div class="notes">
                  <h4>{tab_display}</h4>
@@ -49,14 +49,14 @@
                  <span class="warningsmall">{tab_warning}</span>
                 </div>
                 <!-- END notes -->
-    
+
                 {tab_contents}
-                
+
                 </div>
                 <!-- END tab -->
-                
+
                 </div>
-    
+
                 <div id="bottom_buttons" class="aligncenter">
                     <input type="submit" id="save_changes" value="{lang_save_changes}"{xhtml}>
                     <input type="submit" id="form_reset" name="form_reset" value="{lang_reset_form}"{xhtml}>
@@ -64,7 +64,7 @@
                 </div>
 
                 </form>
-    
+
             </td>
         </tr>
     </table>

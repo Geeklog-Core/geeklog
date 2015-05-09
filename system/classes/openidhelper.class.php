@@ -113,7 +113,7 @@ class SimpleActionHandler extends ActionHandler {
             if (isset($this->query['openid_sreg_fullname'])) {
                 $openid_sreg_fullname = $this->query['openid_sreg_fullname'];
             }
-            
+
             USER_createAccount($openid_nickname, $openid_sreg_email, SEC_generateRandomPassword(),
                     $openid_sreg_fullname, '', $this->query['openid_identity'],
                     'openid');

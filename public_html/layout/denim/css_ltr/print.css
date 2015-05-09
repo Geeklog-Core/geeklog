@@ -20,7 +20,7 @@ body {
   color: #000;
   font-size: small; /* 10pt */
   font-family: verdana, arial, sans-serif;
-  font-weight: normal; 
+  font-weight: normal;
   line-height: 1.3em;
 }
 
@@ -148,7 +148,7 @@ th {
 
 #print div#header h2 {
   font-size: 1.5em;
-  font-weight: bold; 
+  font-weight: bold;
   line-height: 1.5em;
 
   padding: 5px 0px;

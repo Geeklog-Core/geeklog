@@ -30,7 +30,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VA
 
 // add the 'Webservices Users' group
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Webservices Users', 'Can use the Webservices API (if restricted)', 0)";
- 
+
 // add the security tokens table:
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['tokens']}] (
@@ -41,7 +41,7 @@ CREATE TABLE [dbo].[{$_TABLES['tokens']}] (
     [ttl] numeric(8,0) NOT NULL DEFAULT 1
 ) ON [PRIMARY]
 ";
- 
+
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['tokens']}] ADD
     CONSTRAINT [PK_{$_TABLES['tokens']}] PRIMARY KEY  CLUSTERED
     (
@@ -68,7 +68,7 @@ function create_ConfValues()
           [fieldset] [int] NULL )
         ON [PRIMARY]
         ");
-        
+
     DB_query ("
         ALTER function [DESCRIBE](@d as varchar(100)='', @c as varchar(100)=null)
         RETURNS table AS

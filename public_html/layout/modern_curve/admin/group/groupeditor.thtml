@@ -48,7 +48,7 @@
   </fieldset>
 
   <fieldset>
-    <legend>{lang_rights}</legend>  
+    <legend>{lang_rights}</legend>
 
     <dl>
       <dd class="description">{lang_rightsmsg}</dd>

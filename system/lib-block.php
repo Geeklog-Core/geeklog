@@ -41,7 +41,7 @@ $_BLOCK_DEBUG = false;
  * aren't a plugin (and likely never will be), implementing some of the API
  * functions here will save us from doing special handling elsewhere.
  */
- 
+
 /**
 * This function is called to inform plugins when a group's information has
 * changed or a new group has been created.
@@ -54,7 +54,7 @@ $_BLOCK_DEBUG = false;
 function plugin_group_changed_block($grp_id, $mode)
 {
     global $_TABLES, $_GROUPS;
-    
+
     if ($mode == 'delete') {
         // Change any deleted group ids to Block Admin if exist, if does not change to root group
         $new_group_id = 0;
@@ -69,10 +69,10 @@ function plugin_group_changed_block($grp_id, $mode)
                     $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
                 }
             }
-        }    
-        
+        }
+
         // Update Block with new group id
-        $sql = "UPDATE {$_TABLES['blocks']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $sql = "UPDATE {$_TABLES['blocks']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
    }
 }

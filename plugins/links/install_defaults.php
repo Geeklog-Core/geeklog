@@ -211,7 +211,7 @@ function plugin_initconfig_links()
                 0, 0, 0, 30, true, 'links', 0);
         $c->add('show_top10', $_LI_DEFAULT['show_top10'], 'select',
                 0, 0, 1, 40, true, 'links', 0);
-        $c->add('show_category_descriptions', $_LI_DEFAULT['show_category_descriptions'], 
+        $c->add('show_category_descriptions', $_LI_DEFAULT['show_category_descriptions'],
                 'select', 0, 0, 1, 50, true, 'links', 0);
         $c->add('new_window', $_LI_DEFAULT['new_window'], 'select',
                 0, 0, 1, 55, true, 'links',0);
@@ -244,11 +244,11 @@ function plugin_initconfig_links()
         $c->add('fs_cpermissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'links', 3);
         $c->add('category_permissions', $_LI_DEFAULT['category_permissions'],
                 '@select', 0, 3, 12, 150, true, 'links', 3);
-        
+
         $c->add('tab_autotag_permissions', NULL, 'tab', 0, 10, NULL, 0, true, 'links', 10);
         $c->add('fs_autotag_permissions', NULL, 'fieldset', 0, 10, NULL, 0, true, 'links', 10);
-        $c->add('autotag_permissions_link', $_LI_DEFAULT['autotag_permissions_link'], '@select', 
-                0, 10, 13, 10, true, 'links', 10);             
+        $c->add('autotag_permissions_link', $_LI_DEFAULT['autotag_permissions_link'], '@select',
+                0, 10, 13, 10, true, 'links', 10);
 
     }
 

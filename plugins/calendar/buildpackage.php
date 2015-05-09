@@ -45,14 +45,14 @@ $e = $pkg->setOptions(
     array(
         'packagefile'       => 'package-calendar.xml',
         'outputdirectory'    => $glDir . DIRECTORY_SEPARATOR,
-        'packagedirectory'  => $glDir . DIRECTORY_SEPARATOR,        
+        'packagedirectory'  => $glDir . DIRECTORY_SEPARATOR,
         'baseinstalldir'    => 'Geeklog',
         'pathtopackagefile' => dirname(__FILE__),
         'filelistgenerator' => 'CVS',
         'ignore'            => array(
                                  'buildpackage*.php',
                                  'package.xml',
-                                 '*.tgz'  
+                                 '*.tgz'
                                ),
         'include'           => array(
                                     $packagedir . '/',

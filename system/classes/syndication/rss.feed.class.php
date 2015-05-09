@@ -114,10 +114,10 @@ class RSS20 extends FeedParserBase
         }
 
         if (array_key_exists('summary', $article) && (strlen($article['summary']) > 0)) {
-        	$xml .= '<description>'
-            	 . $this->_safeXML($article['summary'])
+            $xml .= '<description>'
+                 . $this->_safeXML($article['summary'])
                  . '</description>' . self::LB;
-        }        
+        }
 
         if (isset($article['extensions']) && is_array($article['extensions'])) {
             $xml .= implode(self::LB, $article['extensions']) . self::LB;
@@ -149,7 +149,7 @@ class RSS20 extends FeedParserBase
                  .  $this->_safeXML($this->description)
                  .  '</description>' . self::LB;
         }
-        
+
         if (strlen($this->sitecontact) > 0) {
              $xml .= '<managingEditor>'
                   . $this->_safeXML($this->sitecontact)
@@ -159,7 +159,7 @@ class RSS20 extends FeedParserBase
                   . $this->_safeXML($this->sitecontact)
                   . ' (' . $_CONF['site_name'] . ')'
                   . '</webMaster>' . self::LB;
-         }        
+         }
 
         if (strlen($this->copyright) > 0) {
             $xml .= '<copyright>'
@@ -321,10 +321,10 @@ class RSS0x extends FeedParserBase
              . '<link>' . $this->_safeXML($article['link'], false) . '</link>' . self::LB;
 
         if (array_key_exists('summary', $article) && (strlen($article['summary']) > 0)) {
-        	$xml .= '<description>'
-            	 . $this->_safeXML($article['summary'])
-            	 . '</description>' . self::LB;
-         }        
+            $xml .= '<description>'
+                 . $this->_safeXML($article['summary'])
+                 . '</description>' . self::LB;
+         }
 
         if (is_array($article['extensions'])) {
             $xml .= implode(self::LB, $article['extensions']) . self::LB;

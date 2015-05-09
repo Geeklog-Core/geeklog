@@ -480,9 +480,9 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
             $dateend = $datestart;
         }
     }
-    
+
     // Remove any autotags the user doesn't have permission to use
-    $description = PLG_replaceTags($description, '', true);    
+    $description = PLG_replaceTags($description, '', true);
 
     // clean 'em up
     if ($postmode == 'html') {

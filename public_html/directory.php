@@ -244,7 +244,7 @@ function DIR_displayMonth(&$template, $dir_topic, $year, $month)
     $start = sprintf('%04d-%02d-01 00:00:00', $year, $month);
     $lastday = DIR_lastDayOfMonth($month, $year);
     $end   = sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $lastday);
-    
+
     $sql = array();
     $sql['mysql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DATE_FORMAT(date, '%e') AS mday
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
@@ -260,14 +260,14 @@ function DIR_displayMonth(&$template, $dir_topic, $year, $month)
 
     if ($dir_topic != 'all') {
         // Retrieve list of inherited topics
-        $tid_list = TOPIC_getChildList($dir_topic);        
+        $tid_list = TOPIC_getChildList($dir_topic);
         $sql['mysql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
         $sql['mssql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
         $sql['pgsql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
     } else {
-        $sql['mysql'] .= COM_getTopicSql('AND', 0, 'ta');   
-        $sql['mssql'] .= COM_getTopicSql('AND', 0, 'ta');  
-        $sql['pgsql'] .= COM_getTopicSql('AND', 0, 'ta');         
+        $sql['mysql'] .= COM_getTopicSql('AND', 0, 'ta');
+        $sql['mssql'] .= COM_getTopicSql('AND', 0, 'ta');
+        $sql['pgsql'] .= COM_getTopicSql('AND', 0, 'ta');
     }
     $sql['mysql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY sid ORDER BY date ASC";
     $sql['mssql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY sid ORDER BY date ASC";
@@ -360,21 +360,21 @@ function DIR_displayYear(&$template, $dir_topic, $year)
         FROM {$_TABLES['stories']} , {$_TABLES['topic_assignments']} ta
         WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())
         AND ta.type = 'article' AND ta.id = sid ";
-    
+
     if ($dir_topic != 'all') {
         // Retrieve list of inherited topics
-        $tid_list = TOPIC_getChildList($dir_topic);        
+        $tid_list = TOPIC_getChildList($dir_topic);
         $monthsql['mysql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
         $monthsql['mssql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
         $monthsql['pgsql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
     } else {
-        $monthsql['mysql'] .= COM_getTopicSql('AND', 0, 'ta');   
-        $monthsql['mssql'] .= COM_getTopicSql('AND', 0, 'ta');  
-        $monthsql['pgsql'] .= COM_getTopicSql('AND', 0, 'ta');         
+        $monthsql['mysql'] .= COM_getTopicSql('AND', 0, 'ta');
+        $monthsql['mssql'] .= COM_getTopicSql('AND', 0, 'ta');
+        $monthsql['pgsql'] .= COM_getTopicSql('AND', 0, 'ta');
     }
     $monthsql['mysql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY MONTH(date) ORDER BY date ASC";
     $monthsql['mssql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY MONTH(date) ORDER BY month(date) ASC";
-    $monthsql['pgsql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY month,date ORDER BY DATE ASC";    
+    $monthsql['pgsql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY month,date ORDER BY DATE ASC";
 
     $mresult = DB_query($monthsql);
     $nummonths = DB_numRows($mresult);

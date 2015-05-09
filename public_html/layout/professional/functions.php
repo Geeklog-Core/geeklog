@@ -56,10 +56,10 @@ function theme_config_professional()
 function theme_css_professional()
 {
     global $_CONF, $LANG_DIRECTION;
-    
+
     return array(
         array(
-            'name' => 'theme',       
+            'name' => 'theme',
             'file' => '/layout/' . $_CONF['theme'] . '/style.css'
         )
     );

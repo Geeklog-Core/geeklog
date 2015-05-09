@@ -361,7 +361,7 @@ function printrights($grp_id = '', $core = 0)
 {
     global $_TABLES, $_USER, $LANG_ACCESS, $_GROUP_VERBOSE;
 
-    $num_cols = 2;	// number of columns
+    $num_cols = 2;  // number of columns
     // this gets a bit complicated so bear with the comments
 
     // get a list of all the features that the current user (i.e. Group Admin)

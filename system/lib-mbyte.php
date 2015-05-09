@@ -45,7 +45,7 @@ function MBYTE_languageList ($charset = 'utf-8', $multilanguage = false)
 
     $language = array ();
     $fd = opendir ($_CONF['path_language']);
-    
+
     while (($file = @readdir ($fd)) !== false) {
         if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
                 && is_file ($_CONF['path_language'] . $file)
@@ -84,8 +84,8 @@ function MBYTE_languageList ($charset = 'utf-8', $multilanguage = false)
         }
     }
     asort ($language);
-    
-    return $language;	
+
+    return $language;
 }
 
 
@@ -99,7 +99,7 @@ function MBYTE_checkEnabled($test = '', $enabled = true)
 
     if (!isset($mb_enabled)) {
         $mb_enabled = false;
-        if (strcasecmp($LANG_CHARSET, 'utf-8') == 0) {			
+        if (strcasecmp($LANG_CHARSET, 'utf-8') == 0) {
             if (empty($test)) {
                 // Normal situation in live environment
                 if (function_exists('mb_eregi_replace')) {
@@ -124,13 +124,13 @@ function MBYTE_checkEnabled($test = '', $enabled = true)
     }
 
     return $mb_enabled;
-}	
+}
 
 
 function MBYTE_strlen($str)
 {
     static $mb_enabled;
-    
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }

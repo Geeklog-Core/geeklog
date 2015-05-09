@@ -75,10 +75,10 @@ class Header extends BaseCommand
             foreach ($headers as $key => $content) {
                 if (strcasecmp($name, $key) === 0) {
                     if (preg_match("#{$value}#i", $content)) {
-                        $ans = PLG_SPAM_FOUND;	// quit on first positive match
+                        $ans = PLG_SPAM_FOUND;  // quit on first positive match
                         $this->updateStat('HTTPHeader', $entry);
                         SPAMX_log ($LANG_SX00['foundspam'] . $entry .
-                                   $LANG_SX00['foundspam2'] . $uid . 
+                                   $LANG_SX00['foundspam2'] . $uid .
                                    $LANG_SX00['foundspam3'] .
                                    $_SERVER['REMOTE_ADDR']);
                         break;

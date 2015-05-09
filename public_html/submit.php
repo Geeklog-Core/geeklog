@@ -127,13 +127,13 @@ function submitstory()
         if (COM_isAnonUser()) {
             $link_message = "";
         } else {
-            $link_message = $LANG01[138];    
-        } 
+            $link_message = $LANG01[138];
+        }
         $storyform->set_var('noscript', COM_getNoScript(false, '', $link_message));
-        
+
         // Setup Advanced Editor
         COM_setupAdvancedEditor('/javascript/submitstory_adveditor.js');
-        
+
         if ($story->EditElements('postmode') == 'html') {
             $storyform->set_var ('show_texteditor', 'none');
             $storyform->set_var ('show_htmleditor', '');
@@ -180,7 +180,7 @@ function submitstory()
     $storyform->set_var('story_title', $story->EditElements('title'));
     $storyform->set_var('lang_topic', $LANG12[28]);
 
-    
+
     $tlist = TOPIC_getTopicSelectionControl('article', '', false, false, false);
     $storyform->set_var('topic_selection', $tlist);
     if (empty($tlist)) {
@@ -358,19 +358,19 @@ function savesubmission($type, $A)
             // plugin should include its own redirect - but in case handle
             // it here and redirect to the main page
             PLG_submissionSaved($type);
-            
+
             return COM_refresh ($_CONF['site_url'] . '/index.php');
         } else {
             PLG_submissionSaved($type);
-            
+
             return $retval;
         }
     }
-    
+
 
     if (!empty($A['title']) && !empty($A['introtext']) && TOPIC_checkTopicSelectionControl()) {
         $retval = savestory ($A);
-        
+
         PLG_submissionSaved($type);
     } else {
         $retval = COM_showMessageText($LANG12[23], $LANG12[22]) // return missing fields error

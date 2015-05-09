@@ -56,9 +56,9 @@
                                                             <li>{lang_instr_line5}</li></ul>
                                                             <input type="submit" name="{nprefix}mode" value="{lang_preview}"{xhtml}>
                                                             <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
-                                                            {save_option} 
-                                                            <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}> 
-                                                            {delete_option} 
+                                                            {save_option}
+                                                            <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}>
+                                                            {delete_option}
                                                             {notification}
                                                         </td>
                                                     </tr>

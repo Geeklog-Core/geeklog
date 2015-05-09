@@ -38,7 +38,7 @@
 *
 */
 
-/* Example Use 
+/* Example Use
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
 
     $menuitems = array (
@@ -180,7 +180,7 @@ class navbar  {
         $retval = $navtemplate->finish($navtemplate->get_var('output'));
         return $retval;
     }
-    
+
     function openBreadcrumbs() {
         global $_CONF;
         $this->_bctemplate = COM_newTemplate($_CONF['path_layout'] . 'navbar');
@@ -188,7 +188,7 @@ class navbar  {
             'breadcrumbs'   => 'breadcrumbs.thtml',
             'link'          => 'breadcrumb_link.thtml'));
     }
-    
+
     function add_breadcrumbs($url,$label,$title='') {
         if ($this->_numbreadcrumbs == '') {
             $this->_numbreadcrumbs = 0;
@@ -198,26 +198,26 @@ class navbar  {
         $this->_bctemplate->set_var('link_title',$title);
         if ($this->_numbreadcrumbs > 0) {
             $this->_bctemplate->set_var('link_separator','/&nbsp;');
-     
+
         }  else {
             $this->_bctemplate->set_var('link_separator','');
-        }            
+        }
         $this->_bctemplate->parse('breadcrumb_links','link',true);
         $this->_numbreadcrumbs = $this->_numbreadcrumbs + 1;
     }
-    
+
     function add_lastBreadcrumb($label) {
         if (trim($label) != '') {
             $label = "/&nbsp;$label";
             $this->_bctemplate->set_var('last_label',$label);
-        }           
-    }      
+        }
+    }
 
     function closeBreadcrumbs() {
         $this->_bctemplate->parse('output', 'breadcrumbs');
-        return $this->_bctemplate->finish ($this->_bctemplate->get_var('output'));         
-    }    
-    
+        return $this->_bctemplate->finish ($this->_bctemplate->get_var('output'));
+    }
+
 
 }
 

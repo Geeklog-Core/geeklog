@@ -4,11 +4,11 @@
 * File: SNL.Action.class.php
 * This is the Spam Number of Links Action class for the Geeklog Spam-X plugin
 *
-* Copyright  (C) 2006 Tom Homer	 - WebSiteMaster AT cogeco DOT com   
+* Copyright  (C) 2006 Tom Homer  - WebSiteMaster AT cogeco DOT com
 *
 * Licensed under the GNU General Public License
 *
-* 
+*
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'SNLreport.Action.class.php') !== false) {

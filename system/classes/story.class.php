@@ -513,12 +513,12 @@ class Story
             } else {
                 $this->_show_topic_icon = 1;
             }
-            
+
             if (isset($_CONF['default_cache_time_article'])) {
                 $this->_cache_time = $_CONF['default_cache_time_article'];
             } else {
                 $this->_cache_time = 0;
-            }            
+            }
 
             if (COM_isAnonUser()) {
                 $this->_uid = 1;
@@ -1715,7 +1715,7 @@ class Story
             }
 
             break;
-            
+
         case 'cache_time':
             if ($this->_cache_time < -1 OR $this->_cache_time == '') {
                 $return  = $_CONF['default_cache_time_article'];
@@ -1825,17 +1825,17 @@ class Story
             $return = COM_getUserDateTimeFormat($this->_date);
 
             $return = $return[0];
-            
+
             break;
-            
+
         case 'datetime':
              $return = strftime('%FT%T', $this->_date);
 
-             break;            
+             break;
 
         case 'unixdate':
             $return = $this->_date;
-            
+
             break;
 
         case 'hits':

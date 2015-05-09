@@ -38,8 +38,8 @@
 
     <dl>
       {password_option}
-      
-      {resynch_option}      
+
+      {resynch_option}
 
       <dt><label for="cooktime">{lang_cooktime}</label></dt>
       <dd>{cooktime_selector}</dd>

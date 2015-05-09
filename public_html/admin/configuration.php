@@ -142,7 +142,7 @@ function configmanager_select_advanced_editor_name_helper()
     clearstatcache();
     while (($dir = @readdir($fd)) == TRUE) {
         if (is_dir($_CONF['path_editors'] . $dir) &&
-                $dir <> '.' && 
+                $dir <> '.' &&
                 $dir <> '..' &&
                 $dir <> 'CVS' &&
                 substr($dir, 0 , 1) <> '.') {
@@ -183,65 +183,65 @@ function configmanager_select_advanced_editor_name_helper()
 
 /**
  * Custom validation rule for copyrightyear
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_copyrightyear($rule, $ruleParams) {
     $year = $ruleParams[0]['copyrightyear'];
-    
+
     return preg_match('/^\d{1,4}\s{0,1}\-{0,1}\s{0,1}\d{0,4}$/', $year);
 }
 
 /**
  * Custom validation rule for mail_settings[sendmail_path]
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_mail_settings_sendmail_path($rule, $ruleParams) {
     $ret = true;
     if ( isset($ruleParams[2]['backend']) && $ruleParams[2]['backend'] == 'sendmail' ) {
-        if ( isset($ruleParams[0]['mail_settings[sendmail_path]']) && 
-             empty($ruleParams[0]['mail_settings[sendmail_path]']) ) 
+        if ( isset($ruleParams[0]['mail_settings[sendmail_path]']) &&
+             empty($ruleParams[0]['mail_settings[sendmail_path]']) )
         {
             $ret = false;
         } else if ( is_string($ruleParams[0]['mail_settings[sendmail_path]']) ) {
             $ret = true;
         }
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for Feed Limit
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_rdf_limit($rule, $ruleParams) {
     $ret = false;
     if ( isset($ruleParams[0]['rdf_limit']) ) {
         $ret = preg_match('/^[\d]+h?$/i', $ruleParams[0]['rdf_limit']);
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for check path existence
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_path($rule, $ruleParams) {
     $ret = false;
@@ -251,17 +251,17 @@ function custom_validation_path($rule, $ruleParams) {
         }
         $ret = is_dir($ruleParams[0][$paramName]);
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for check file existence
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_file($rule, $ruleParams) {
     $ret = false;
@@ -271,124 +271,124 @@ function custom_validation_file($rule, $ruleParams) {
         }
         $ret = file_exists($ruleParams[0][$paramName]);
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for page limits for search
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_search_limits($rule, $ruleParams) {
     $ret = false;
     if ( isset($ruleParams[0]['search_limits']) ) {
         $limits = explode(',', $ruleParams[0]['search_limits']);
-        
+
         $prevLimit = 0;
         foreach ($limits as $limit) {
             if ( !is_numeric($limit) || $limit < 0 ) {
                 $ret = false;
                 break;
             }
-            
+
             if ( $limit < $prevLimit ) {
                 $ret = false;
                 break;
             }
-            
+
             $ret = true;
             $prevLimit = $limit;
         }
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for number of searh results
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_num_search_results($rule, $ruleParams) {
     global $_CONF;
-    
+
     $ret = false;
-    if ( isset($_CONF['search_limits']) && 
+    if ( isset($_CONF['search_limits']) &&
          isset($ruleParams[0]['num_search_results']) )
     {
-        
+
         $limits = explode(',', $_CONF['search_limits']);
-        
+
         if ( in_array($ruleParams[0]['num_search_results'], $limits) ) {
             $ret = true;
         }
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for theme
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_theme($rule, $ruleParams) {
     global $_CONF;
-    
+
     $ret = false;
-    if ( isset($_CONF['path_themes']) && 
+    if ( isset($_CONF['path_themes']) &&
          isset($ruleParams[0]['theme']) )
     {
         if ( is_dir($_CONF['path_themes'] . DIRECTORY_SEPARATOR . $ruleParams[0]['theme']) ) {
             $ret = true;
         }
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for path_themes
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
-function custom_validation_path_themes($rule, $ruleParams) {    
+function custom_validation_path_themes($rule, $ruleParams) {
     $ret = false;
     if ( isset($ruleParams[0]['path_themes']) && is_dir($ruleParams[0]['path_themes']) ) {
         $ret = true;
     }
-    
+
     if ( substr($ruleParams[0]['path_themes'], -1) !== DIRECTORY_SEPARATOR ) {
         $ret = false;
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for path_to_mogrify
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_path_to_mogrify($rule, $ruleParams) {
     global $_CONF;
-    
+
     $ret = false;
     if ( isset($ruleParams[0]['path_to_mogrify']) && isset($_CONF['image_lib']) &&
          $_CONF['image_lib'] == 'imagemagick' &&
@@ -396,21 +396,21 @@ function custom_validation_path_to_mogrify($rule, $ruleParams) {
     {
         $ret = true;
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for path_to_netpbm
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_path_to_netpbm($rule, $ruleParams) {
     global $_CONF;
-    
+
     $ret = false;
     if ( isset($ruleParams[0]['path_to_netpbm']) && isset($_CONF['image_lib']) &&
          $_CONF['image_lib'] == 'netpbm' &&
@@ -418,21 +418,21 @@ function custom_validation_path_to_netpbm($rule, $ruleParams) {
     {
         $ret = true;
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for language
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_language($rule, $ruleParams) {
     global $_CONF;
-    
+
     $ret = false;
     $languages = array_flip(MBYTE_languageList($_CONF['default_charset']));
     if ( isset($ruleParams[0]['language']) &&
@@ -440,55 +440,55 @@ function custom_validation_language($rule, $ruleParams) {
     {
         $ret = true;
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for timezone
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_timezone($rule, $ruleParams) {
     global $_CONF;
-    
+
     require_once $_CONF['path_system'] . 'classes/timezoneconfig.class.php';
     $timezones = array_flip(TimeZoneConfig::listAvailableTimeZones());
-    
+
     $ret = false;
-    if ( isset($ruleParams[0]['timezone']) && 
+    if ( isset($ruleParams[0]['timezone']) &&
          in_array($ruleParams[0]['timezone'], $timezones) )
     {
         $ret = true;
     }
-    
+
     return $ret;
 }
 
 /**
  * Custom validation rule for single character
- * 
+ *
  * @param string $rule String of rule name
  * @param array $ruleParams Parameter of validation
  * @return boolean Success
- * 
+ *
  */
 function custom_validation_single_char($rule, $ruleParams) {
     $ret = false;
-    
+
     if ( isset($ruleParams[0]) ) {
         foreach ($ruleParams[0] as $paramName => $paramValue ) {
             break;
         }
-        
+
         if ( preg_match('/^[\s\w.,;\-]{1}$/i', $paramValue) ) {
             $ret = true;
         }
     }
-    
+
     return $ret;
 }
 
@@ -552,7 +552,7 @@ $conf_group = array_key_exists('conf_group', $_POST)
             ? COM_applyFilter($_POST['conf_group']) : $default_conf_group;
 
 if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
-    
+
     if ($_POST['set_action'] == 'restore') {
         $config->restore_param(
             $_POST['name'], $conf_group, $_POST['subgroup'], $_POST['tab']
@@ -562,11 +562,11 @@ if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
             $_POST['name'], $conf_group, $_POST['subgroup'], $_POST['tab']
         );
     }
-    
-    // notify plugins when config item enabled or disabled 
+
+    // notify plugins when config item enabled or disabled
     $config_item[] = $_POST['name'];
     PLG_configChange($conf_group, $config_item);
-    
+
         $subgroup = array_key_exists('subgroup', $_POST)
               ? COM_applyFilter($_POST['subgroup']) : null;
     $display = $config->get_ui($conf_group, $subgroup);
@@ -576,7 +576,7 @@ if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
         if ($conf_group == 'Core') {
             require_once 'configuration_validation.php';
         } else {
-            // Retrieve plugin config validation if found 
+            // Retrieve plugin config validation if found
             $filename = $_CONF['path'] . 'plugins/' . $conf_group . '/configuration_validation.php';
             if (file_exists($filename)) {
                 require_once $filename;
@@ -593,13 +593,13 @@ if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
     //$display = $config->get_ui($conf_group, $_POST['sub_group'], $result);
     $sub_group = array_key_exists('sub_group', $_POST)
                ? COM_applyFilter($_POST['sub_group']) : '0';
-    $display = $config->get_ui($conf_group, $sub_group, $result);    
+    $display = $config->get_ui($conf_group, $sub_group, $result);
 } else {
     //$display = $config->get_ui($conf_group, array_key_exists('subgroup', $_POST)
     //                                       ?  $_POST['subgroup'] : null);
     $subgroup = array_key_exists('subgroup', $_POST)
               ? COM_applyFilter($_POST['subgroup']) : null;
-    $display = $config->get_ui($conf_group, $subgroup);    
+    $display = $config->get_ui($conf_group, $subgroup);
 }
 
 COM_output($display);

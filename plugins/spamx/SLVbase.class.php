@@ -118,7 +118,7 @@ class SLVbase
     public function checkWhitelist(&$links)
     {
         global $_TABLES;
-        
+
         $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
 
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='SLVwhitelist'", 1);

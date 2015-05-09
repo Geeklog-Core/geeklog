@@ -52,7 +52,7 @@ $LANG_DIRECTION = $dir; // Need to set this for themes function.php file
 
 // Set Path Variables
 $path_html = dirname(dirname(getcwd())); // Should always be the directory above
-$path_themes = $path_html . '/layout/';  
+$path_themes = $path_html . '/layout/';
 $path_layout = $path_themes . $theme . '/';
 // Set etag file name and path
 // have moved or renamed /data directory, please change the following line accordingly.
@@ -64,7 +64,7 @@ $etag_filename =  $_CONF['path'] . 'data/layout_css/' . $theme . '_' . $dir . '_
 if (file_exists($path_layout . 'functions.php')) {
     require_once $path_layout . 'functions.php';
 } else {
-    exit;    
+    exit;
 }
 
 /**
@@ -88,9 +88,9 @@ if (!empty($theme_default)) {
     if (file_exists($path_layout_default . 'functions.php')) {
         require_once $path_layout_default . 'functions.php';
     } else {
-        exit;    
+        exit;
     }
-    
+
     /* Include scripts on behalf of the theme */
     $_CONF['theme'] = $theme_default; // Need to set this for default themes function.php file
     $func = "theme_css_" . $theme_default;
@@ -99,7 +99,7 @@ if (!empty($theme_default)) {
             $info['priority'] = (!empty($info['priority']))   ? $info['priority']   : 100;
             $cssfiles[] = $info;
         }
-    }        
+    }
 }
 /* Include scripts on behalf of the theme */
 $_CONF['theme'] = $theme; // Need to set this for themes function.php file
@@ -133,7 +133,7 @@ $cssfiles[] = $info;
 if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
     if (is_readable($etag_filename)) {
         $etag = file_get_contents($etag_filename);
-        
+
         if (!empty($etag) AND (trim($_SERVER['HTTP_IF_NONE_MATCH'], '"\'') === $etag)) {
             header('HTTP/1.1 304 Not Modified');
             header('Status: 304 Not Modified');
@@ -162,7 +162,7 @@ foreach ($cssfiles as $file) {
     if (!empty($theme_default)) {
         $css_file_default = $path_html . $file['file'];
     }
-    $css_file = $path_html . $file['file'];  
+    $css_file = $path_html . $file['file'];
 
     if (!empty($theme_default)) {
         // First add own theme css file if found else add default css file
@@ -177,20 +177,20 @@ foreach ($cssfiles as $file) {
             $full_filepath = $css_file;
         }
     }
-    
+
     if (!empty($full_filepath)) {
         $css = file_get_contents($full_filepath);
         $css = preg_replace("@/\*.*?\*/@sm", '', $css); // strip comments
         $css = preg_replace("@\s*\n+\s*@sm", "\n", $css); // strip indentation
-    
+
         // Replace {right} and {left} placeholders with actual values.
         // Used for RTL support in some themes.
         $css = str_replace('{right}', $right, $css);
         $css = str_replace('{left}', $left, $css);
-    
+
         // Output
         echo "\n/* $full_filepath */\n";
-         
+
         echo $css;
     }
 }

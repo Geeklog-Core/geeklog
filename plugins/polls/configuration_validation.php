@@ -52,7 +52,7 @@ $_CONF_VALIDATE['polls']['meta_tags'] = array('rule' => 'boolean');
 
 // What's New Block
 $_CONF_VALIDATE['polls']['newpollsinterval'] = array('rule' => 'numeric');
-$_CONF_VALIDATE['polls']['hidenewpolls'] = array(    
+$_CONF_VALIDATE['polls']['hidenewpolls'] = array(
     'rule' => array('inList', array('hide', 'modified', 'created'), true)
 );
 $_CONF_VALIDATE['polls']['title_trim_length'] = array('rule' => 'numeric');

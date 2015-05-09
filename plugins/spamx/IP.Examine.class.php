@@ -185,7 +185,7 @@ class IP extends BaseCommand
             }
 
             if ($matches) {
-                $ans = PLG_SPAM_FOUND;	// quit on first positive match
+                $ans = PLG_SPAM_FOUND;  // quit on first positive match
                 $this->updateStat('IP', $val);
                 SPAMX_log($LANG_SX00['foundspam'] . $val .
                           $LANG_SX00['foundspam2'] . $uid .

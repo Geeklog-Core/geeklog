@@ -289,8 +289,8 @@ function editfeed ($fid = 0, $type = '')
 
     $feed_template->set_var('lang_header_topic', $LANG33[45]);
     $feed_template->set_var('header_topic_options', TOPIC_getTopicListSelect($A['header_tid'], 6, true));
-    
-    
+
+
     $feed_template->set_var('lang_save', $LANG_ADMIN['save']);
     $feed_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     if ($A['fid'] > 0) {
@@ -356,7 +356,7 @@ function editfeed ($fid = 0, $type = '')
     $selection .= '</select>' . LB;
     $feed_template->set_var ('feed_limits', $limits);
     $feed_template->set_var ('feed_limits_what', $selection);
-      
+
     if ($A['type'] != 'article' AND $A['type'] != 'comment') {
         $result = DB_query("SELECT pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name='{$A['type']}'");
         if ($result) {
@@ -368,7 +368,7 @@ function editfeed ($fid = 0, $type = '')
         }
     }
     $options = PLG_getFeedNames ($A['type']);
-    
+
     $selection = '<select name="topic">' . LB;
     foreach ($options as $o) {
         $selection .= '<option value="' . $o['id'] . '"';
@@ -377,7 +377,7 @@ function editfeed ($fid = 0, $type = '')
         }
         $selection .= '>' . $o['name'] . '</option>' . LB;
     }
-    $selection .= '</select>' . LB;        
+    $selection .= '</select>' . LB;
 
     $feed_template->set_var ('feed_topic', $selection);
 
@@ -409,7 +409,7 @@ function newfeed ()
     $retval = '';
 
     $plugins = PLG_supportingFeeds ();
-    
+
     $selection = '<select name="type">' . LB;
     foreach ($plugins as $p) {
         $selection .= '<option value="' . $p . '">' . ucwords ($p)
@@ -495,7 +495,7 @@ function savefeed ($A)
                 . editfeed ($A['fid'], $A['type']);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[38]));
         return $retval;
-    }    
+    }
 
     $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['syndication']} WHERE filename = '{$A['filename']}' AND (fid <> '{$A['fid']}')");
     $C = DB_fetchArray($result);
@@ -517,9 +517,9 @@ function savefeed ($A)
     }
 
     // we can compensate if these are missing ...
-	if (!empty($A['charset'])) {
-		$A['charset'] = preg_replace('/[^0-9a-zA-Z_\-]/', '', $A['charset']);
-	}
+    if (!empty($A['charset'])) {
+        $A['charset'] = preg_replace('/[^0-9a-zA-Z_\-]/', '', $A['charset']);
+    }
 
     if (empty($A['charset'])) {
         $A['charset'] = $_CONF['default_charset'];
@@ -529,8 +529,8 @@ function savefeed ($A)
     }
 
     if (!empty($A['language'])) {
-		$A['language'] = preg_replace('/[^0-9a-zA-Z_\.\-]/', '', $A['language']);
-	}
+        $A['language'] = preg_replace('/[^0-9a-zA-Z_\.\-]/', '', $A['language']);
+    }
 
     if (empty($A['language'])) {
         $A['language'] = $_CONF['rdf_language'];
@@ -539,9 +539,9 @@ function savefeed ($A)
         }
     }
 
-	if (!empty($A['content_length'])) {
-		$A['content_length'] = intval($A['content_length'], 10);
-	}
+    if (!empty($A['content_length'])) {
+        $A['content_length'] = intval($A['content_length'], 10);
+    }
 
     if (empty($A['content_length']) || ($A['content_length'] < 0)) {
         $A['content_length'] = 0;

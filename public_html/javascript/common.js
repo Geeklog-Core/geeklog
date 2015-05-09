@@ -31,7 +31,7 @@
 // Check All Items - generic function that can be used to check and un-check all items in a list
 // Used in the Admin Lists - like on the moderation page
 // -------------------------------------------------------------------
-   function caItems(f) {  
+   function caItems(f) {
        var n=f.elements.length;
        for (i=0;i<n; i++) {
            var field=f.elements[i];

@@ -101,7 +101,7 @@ if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_D
 
 function s($index) {
     global $self, $LANG_RESCUE;
-    
+
     return str_replace('{{SELF}}', $self, $LANG_RESCUE[$index]);
 }
 
@@ -111,12 +111,12 @@ function e($index) {
 
 function langSelector() {
     global $lang, $LANG_CHARSET;
-    
+
     $retval = '<form action="" method="post">' . LB
             . '<div>' . LB
             . '<select name="lang">' . LB;
     $files = glob(dirname(__FILE__) . '/language/*.php');
-    
+
     if ($files !== FALSE) {
         foreach ($files as $file) {
             $file = str_replace('.php', '', basename($file));
@@ -125,20 +125,20 @@ function langSelector() {
                     .  $file . '</option>' . LB;
         }
     }
-    
+
     $retval .= '</select>' . LB
             .  '<input type="submit" name="submit" value="' . s(41) . '" />' . LB
             .  '</div>' . LB
             .  '</form>' . LB;
-    
+
     return $retval;
 }
 
 function encryptPassword($password) {
     global $_TABLES;
-    
+
     $version = preg_replace('/[^0-9.]/', '', VERSION);
-    
+
     if (version_compare($version, '2.0.0', '<')) {
         $retval = SEC_encryptPassword($password);
     } else {
@@ -149,13 +149,13 @@ function encryptPassword($password) {
         $stretch   = unserialize($stretch);
         $retval = SEC_encryptPassword($password, $salt, $algorithm, $stretch);
     }
-    
+
     return $retval;
 }
 
 function render($renderType, $args = array()) {
     global $_TABLES, $self, $configs, $LANG_CHARSET, $LANG_DIRECTION, $lang;
-    
+
     header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -171,7 +171,7 @@ function render($renderType, $args = array()) {
             <div class="header-navigation-line">
                 <a href="index.php" class="header-navigation"><?php e(2); ?></a>&nbsp;&nbsp;&nbsp;<?php echo langSelector(); ?>&nbsp;&nbsp;
             </div>
-        </div>          
+        </div>
         <h1><?php e(3); ?></h1>
         <div class="box important">
             <p><?php e(4); ?></p>
@@ -467,10 +467,10 @@ function printHtmlStyle() {
     fieldset {
         border: 0px solid #ccc;
     }
-    
+
     .header-navigation-line {
         text-align:right;
-    }    
+    }
 </style>
 <?php
 }
@@ -481,10 +481,10 @@ function printJs() {
     function toggle(objId){
         var o = document.getElementById(objId),
             i, others;
-        
+
         o.style.display = (o.style.display === 'none') ? 'block' : 'none';
         others = document.getElementsByTagName('div');
-        
+
         for (i = 0; i < others.length; i++) {
             if (((others[i].id === 'plugins') || (others[i].id === 'blocks') ||
                  (others[i].id === 'conf') || (others[i].id === 'pass')) &&
@@ -497,7 +497,7 @@ function printJs() {
     //The following does not work in IE and I don't care!
     function toggleRadio(checked, elements){
         var radios = elements;
-        
+
         if (checked) {
             radios[0].click();
         } else {

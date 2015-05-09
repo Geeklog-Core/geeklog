@@ -35,7 +35,7 @@
     $mytimer = new timerobject();
 
     // Set precision of the results to 4 significan't digits
-    // NOTE: this call is optional, code defaults to 2 
+    // NOTE: this call is optional, code defaults to 2
     $mytimer->setPrecision(4);
 
     // Start the timer
@@ -144,7 +144,7 @@ class timerobject {
         return $this->getElapsedTime();
     }
 
-    /** 
+    /**
     * Restarts the timer
     *
     * Same as startTimer excepts this clears everything out first
@@ -154,14 +154,14 @@ class timerobject {
     {
         $this->_endtime = '';
         $this->_elapsedtime = '';
-        
-        $this->startTimer();      
+
+        $this->startTimer();
     }
 
     /**
     * Gets the elapsed time
     *
-    * This returns the elapsed time with the proper number of 
+    * This returns the elapsed time with the proper number of
     * significant digits
     *
     * @return   float   Elasped time in seconds formatted to degree of precision specified

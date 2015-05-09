@@ -116,7 +116,7 @@ function plugin_initconfig_xmlsitemap()
         $c->add('exclude', $_XMLSMAP_DEFAULT['exclude'], '%text', 0, 0, null,
             40, true, $me, 0);
         $c->add('lastmod', $_XMLSMAP_DEFAULT['lastmod'], '%text', 0, 0, null,
-            50, true, $me, 0);        
+            50, true, $me, 0);
 
         // Priorities
         $c->add('tab_pri', null, 'tab', 0, 1, null, 0, true, $me, 1);

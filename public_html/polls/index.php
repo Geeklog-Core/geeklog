@@ -163,7 +163,7 @@ if (empty($pid)) {
 } elseif (! empty($pid)) {
     $result = DB_query ("SELECT topic, meta_description, meta_keywords FROM {$_TABLES['polltopics']} WHERE pid = '{$pid}'" . COM_getPermSQL('AND'));
     $A = DB_fetchArray ($result);
-    
+
     $polltopic = $A['topic'];
     if (empty($polltopic)) {
         // poll doesn't exist or user doesn't have access

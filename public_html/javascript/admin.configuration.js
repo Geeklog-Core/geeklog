@@ -94,7 +94,7 @@ var selectedTab;
 $(function() {
     // start bootstrap
     var bootstrap = true;
-    
+
     // dropdown menu when tabs overflow
     var dropDown = '';
     // init tabs
@@ -102,13 +102,13 @@ $(function() {
         beforeActivate: function(e, ui) {
             if (ui.newTab.children('a').attr('href') === '#tab-dropdown') {
                 var container = ui.newTab.parent();
-                
+
                 if ($('#tabs-dropdown').length > 0) {
                     $('#tabs-dropdown').toggle();
                 } else {
                     ui.newTab.append(dropDown);
                     container.removeClass('ui-tabs-active ui-state-active');
-                    
+
                     // show it and the positioning!
                     $('#tabs-dropdown').show().position({
                         of: ui.newTab,
@@ -117,7 +117,7 @@ $(function() {
                         offset: '0 ' + container.height()
                     });
                 }
-                
+
                 return false;
             } else {
                 $('#tabs-dropdown').hide().parent().removeClass('ui-tabs-active ui-state-active');
@@ -130,7 +130,7 @@ $(function() {
     var hiddenTabs = {};
     var dropDownShown = false;
     var lastTabsWidth = 0;
-    
+
     // init autocomplete
     $('#search-configuration').search_config({
         delay: 0,
@@ -143,10 +143,10 @@ $(function() {
         select: function(event, ui) {
             $('#search-configuration').val(ui.item.label);
             $('#tab-id').val(ui.item.tab_id);
-            
+
             document.group.conf_group.value = ui.item.group;
             document.group.subgroup.value = ui.item.subgroup;
-            
+
             // we need this input for #search-configuration value
             // after submitted
             if ( $(document.group['search-configuration-cached']).length ) {
@@ -158,14 +158,14 @@ $(function() {
                 $(document.group).append( search_label);
                 $(document.group).append( tab_id );
             }
-            
+
             document.group.action = frmGroupAction + '?' + 'tab-' + ui.item.tab_id + '#' + ui.item.value;
             document.group.submit();
-            
+
             return false;
         }
     });
-    
+
     // init help tooltip
     var tooltipCachedPage = '';
     var tooltipHideDelay = 300;
@@ -185,19 +185,19 @@ $(function() {
         var jqobj = $(this);
 
         var confVar = jqobj.attr('id');
-        
+
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
-        
+
         var pos = jqobj.parent().offset();
         var tabs_pos = $('#tabs').offset();
         var height = jqobj.height();
-        
+
         tooltipContainer.css({
             left: (tabs_pos.left + 8) + 'px',
             top: (pos.top + height + 5) + 'px',
             width: ($('#tabs').width() - 12) + 'px'
         });
-        
+
 //        $('#tootip-loading').show();
         $.get(attrHref, function(data) {
             $('#tootip-loading').hide();
@@ -217,12 +217,12 @@ $(function() {
                 tds.eq(0).children("a").attr('href', attrHref + '#' + confVar);
                 tds.eq(0).children("a").attr('target', 'help');
                 $('#tooltip-content').html(
-                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(0).html() + '</div>' + 
-                    '<div id="tooltip-variable" class="tooltip-doc">'        + tds.eq(0).html() + '</div></div>' + 
-                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(1).html() + '</div>' + 
-                    '<div id="tooltip-default" class="tooltip-doc">'         + tds.eq(1).html() + '</div></div>' + 
-                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(2).html() + '</div>' + 
-                    '<div id="tooltip-description" class="tooltip-doc">'     + desc + '</div></div>' + 
+                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(0).html() + '</div>' +
+                    '<div id="tooltip-variable" class="tooltip-doc">'        + tds.eq(0).html() + '</div></div>' +
+                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(1).html() + '</div>' +
+                    '<div id="tooltip-default" class="tooltip-doc">'         + tds.eq(1).html() + '</div></div>' +
+                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(2).html() + '</div>' +
+                    '<div id="tooltip-description" class="tooltip-doc">'     + desc + '</div></div>' +
                     '<a href="javascript:void(0);" id="tooltip-close">X</a>'
                 );
             } else {
@@ -231,12 +231,12 @@ $(function() {
                 )
             }
         });
-        
+
         tooltipContainer.show();
     });
     $(document).on('mouseout', '.tooltip', function() {
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
-        
+
         tooltipHideTimer = setTimeout(function() {
             tooltipContainer.hide();
         }, tooltipHideDelay);
@@ -246,7 +246,7 @@ $(function() {
     });
     $('#tooltip-container').mouseout(function() {
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
-        
+
         tooltipHideTimer = setTimeout(function() {
             tooltipContainer.hide();
         }, tooltipHideDelay);
@@ -260,12 +260,12 @@ $(function() {
     $(window).resize(function() {
         tabsOverflowHandler();
     });
-    
+
     // click event handler
     $(document.body).click(function(e) {
         var target = $(e.target);
         var targetParent = target.parent();
-        
+
         if ($('#tabs-dropdown').length > 0) {
             if ((target.attr('class') === 'ui-tabs-anchor') && (target.attr('href') !== '#tab-dropdown')) {
                 var idx = tabs.tabs('option', 'active');
@@ -285,7 +285,7 @@ $(function() {
                 e.preventDefault();
                 return false;
             }
-            
+
             if ((target.attr('id') === 'tabs-dropdown') ||
                     (targetParent.attr('id') === 'tabs-dropdown') ||
                     (targetParent.parent().attr('id') === 'tabs-dropdown' )) {
@@ -295,25 +295,25 @@ $(function() {
 
         $('#tabs-dropdown').hide();
         $('.config_name', tabs).removeClass('active-config');
-        
+
         if ( target.is('input') || target.is('select') || target.is('textarea') ) {
             var tr = $(target, tabs).parent();
-            
+
             // save changes
             if ( target.attr('id') == 'save_changes' || target.attr('id') == 'form_reset' ) {
                 document.subgroup.action = frmGroupAction + '?' + selectedTab.substr(1);
             }
-            
+
             // change class of currently active row
             if ( tr.hasClass('config_name') ) tr.addClass('active-config');
         }
-        
+
         // select config from message box
         if ( target.hasClass('select_config') ) {
             for (key in autocomplete_data ) {
-                if ( autocomplete_data[key].value == target.text() && 
+                if ( autocomplete_data[key].value == target.text() &&
                      autocomplete_data[key].group == target.attr('group') &&
-                     autocomplete_data[key].subgroup == target.attr('subgroup')) 
+                     autocomplete_data[key].subgroup == target.attr('subgroup'))
                 {
                     selectTab( '#tab-' + autocomplete_data[key].tab_id, target.attr('href') );
                     if ( selectedTab === undefined ) {
@@ -324,49 +324,49 @@ $(function() {
                 }
             }
         }
-        
+
         // unset action
         if ( target.hasClass('unset_param') ) {
             unset(target, target.attr('href').substr(1) );
-            
+
             e.preventDefault();
             return false;
         }
-        
+
         // restore action
         if ( target.hasClass('restore_param') ) {
             restore(target, target.attr('href').substr(1) );
-            
+
             e.preventDefault();
             return false;
         }
     });
-    
+
     // dropdown click
     $(document).on('click', '#tabs-dropdown', function(e) {
         dropDownHandler(e);
     });
-    
+
     function dropDownHandler(e) {
         var target = $(e.target);
-        
+
         if ( target.is('a') || target.is('li')  ) {
             selectTabInHiddenTabs( target.attr('href') );
         }
-        
+
         return false;
     }
-    
+
     /**
      * Select tab by href
      */
     function selectTab(href, conf) {
         var foundInTabs = false;
-        
+
         // first search in ordinary tabs
         $("#tabs > ul > li").each(function(idx) {
             var a = $('a', this);
-            
+
             if (a.attr('href') == href) {
                 tabs.tabs('option', 'active', idx);
                 if ( conf ) {
@@ -374,11 +374,11 @@ $(function() {
                 }
                 selectedTab = href;
                 foundInTabs = true;
-                
+
                 return true;
             }
         });
-        
+
         // maybe in hiddenTabs
         if ( !foundInTabs ) {
             for (htab in hiddenTabs) {
@@ -391,10 +391,10 @@ $(function() {
                 }
             }
         }
-        
+
         return foundInTabs
     }
-    
+
     /**
      * Select tab that reside in drop down by href
      */
@@ -410,27 +410,27 @@ $(function() {
         $(href).show();
         selectedTab = href;
     }
-    
+
     function getSelectedConf() {
         var tab = '#' + window.location.search.substr(1);
         var conf = window.location.hash;
-        
+
         selectTab(tab, conf);
         if ( selectedTab === undefined ) {
             var idx = tabs.tabs('option', 'active');
             selectedTab = $("#tabs > ul > li:eq(" + idx + ") a").attr('href');
         }
     }
-    
+
     function selectConf(confName) {
         var conf = $("input[name='" + confName.substr(1) + "[nameholder]" + "']").parent();
-        
+
         conf.addClass('active-config');
     }
-    
+
     function tabsOverflowHandler() {
         var total = getTotalTabsWidth();
-        
+
         //$('#tabs-dropdown').hide();
         if ( total.overflowAt !== null ) {
             createDropDownTab(total.overflowAt, total.width);
@@ -444,81 +444,81 @@ $(function() {
                 tabsOverflowHandler();
             }
         }
-        
+
         // select the selected tab
         if ( selectedTab ) {
-            selectTab( selectedTab, false );    
+            selectTab( selectedTab, false );
         }
     }
-    
+
     function getTotalTabsWidth() {
         var totalWidth = 10;
         var tabsWidth = tabs.width();
         var overflowAt = null;
-        
+
         $("#tabs > ul > li").each(function(idx) {
             totalWidth += ($(this).width() + 5);
-            
+
             if (totalWidth >= tabsWidth && overflowAt === null) {
                 overflowAt = idx;
             }
         });
-        
+
         return {'width': totalWidth, 'overflowAt': overflowAt};
     }
-    
+
     function createDropDownTab(idxAfter, totalWidth) {
         var tabsLength = geeklog.admin.configuration.getTabLength(tabs);
 
         dropDown = '';
         if ( idxAfter > 0 ) {
             idxAfter -= 1;
-            
+
             // remove tabs after the dropdown
             for ( var i = tabsLength-1; i >= idxAfter; i-- ) {
                 var currenTab = $('li:eq('+i+') a', tabs);
-                
+
                 if ( currenTab.length ) {
                     var currenTabHref = currenTab.attr('href');
-                    
+
                     // when there's a dropdown
                     if ( currenTabHref == '#tab-dropdown' ) {
                         geeklog.admin.configuration.removeTab(tabs, 1);
                     } else {
                         var currenTabContent = $( currenTabHref );
-                    
-                        hiddenTabs[currenTabHref] = {  
+
+                        hiddenTabs[currenTabHref] = {
                             'tab_title': currenTab.text(),
                             'tab_content': currenTabContent.html()
                         };
-                        
+
                         geeklog.admin.configuration.removeTab(tabs, i);
                     }
                 }
             }
-            
+
             if ( $('a[href=#tab-dropdown]', tabs).length ) {
                 geeklog.admin.configuration.removeTab(tabs, geeklog.admin.configuration.getTabLength(tabs) - 1);
             }
-            
+
             for ( tab in hiddenTabs ) {
-                dropDown = '<li><a href="' + tab + '">' + 
+                dropDown = '<li><a href="' + tab + '">' +
                             hiddenTabs[tab]['tab_title'] + '</a></li>' + dropDown;
-                            
-                var tabs_content = '<div id="' + tab.substr(1) + '" ' + 
+
+                var tabs_content = '<div id="' + tab.substr(1) + '" ' +
                                    'class="ui-tabs-panel ui-widget-content ' +
                                    'ui-corner-bottom ui-tabs-hide">' +
                                    hiddenTabs[tab]['tab_content'] +
                                    '</div>';
-                
+
                 // append the tab if not exists
                 if ( !$(tab).length ) {
                     tabs.append( tabs_content );
                 }
             }
-            
+
             if ( dropDown.length ) {
-                dropDown = '<ul id="tabs-dropdown" class="ui-widget-content">' + 
+                dropDown = '<ul id="tabs-dropdown" class="ui-widget-content">' +
                             dropDown + '</ul>';
             }
         }
@@ -527,39 +527,39 @@ $(function() {
         geeklog.admin.configuration.addTab(tabs, '#tab-dropdown', geeklog.lang.tabs_more, idxAfter);
         dropDownTabIdx  = idxAfter;
     }
-    
+
     function reinitDropDownTab() {
         var tabsLength = geeklog.admin.configuration.getTabLength(tabs);
-        
+
         if ( dropDownShown ) {
             geeklog.admin.configuration.removeTab(tabs, tabsLength - 1);
             dropDownShown = false;
         }
-        
+
         for ( tab in hiddenTabs ) {
             geeklog.admin.configuration.addTab(tabs, tab, hiddenTabs[tab]['tab_title'], tabsLength - 1);
             $( tab ).html( hiddenTabs[tab]['tab_content'] );
         }
         hiddenTabs = {}
     }
-    
+
     function restore(el, param){
         document.group.subgroup.value = document.subgroup.sub_group.value;
         action = document.createElement("INPUT");
         action.setAttribute("value", "restore");
         action.setAttribute("name", "set_action");
         action.setAttribute("type", "hidden");
-        
+
         namev = document.createElement("INPUT");
         namev.setAttribute("value", param);
         namev.setAttribute("type", "hidden");
         namev.setAttribute("name", "name");
-        
+
         tab = document.createElement("INPUT");
         tab.setAttribute("value", selectedTab.substr(5));
         tab.setAttribute("type", "hidden");
         tab.setAttribute("name", "tab");
-        
+
         document.group.appendChild(tab);
         document.group.appendChild(namev);
         document.group.appendChild(action);
@@ -573,17 +573,17 @@ $(function() {
         action.setAttribute("value", "unset");
         action.setAttribute("name", "set_action");
         action.setAttribute("type", "hidden");
-        
+
         namev = document.createElement("INPUT");
         namev.setAttribute("value", param);
         namev.setAttribute("type", "hidden");
         namev.setAttribute("name", "name");
-        
+
         tab = document.createElement("INPUT");
         tab.setAttribute("value", selectedTab.substr(5));
         tab.setAttribute("type", "hidden");
         tab.setAttribute("name", "tab");
-        
+
         // get tr id
         /*
         var tr = $(this).parent().parent();
@@ -596,13 +596,13 @@ $(function() {
         document.group.action = frmGroupAction + '?' + selectedTab.substr(1) + '#' + param;
         document.group.submit();
     }
-    
+
     // initialize selected tab
     selectedTab = $("#tabs > ul > li:eq(0) a").attr('href');
-    
+
     // runs overflow handler once in bootstrap
     tabsOverflowHandler();
-    
+
     // get selected tab and config if passed on url
     getSelectedConf();
 
@@ -611,7 +611,7 @@ $(function() {
 });
 
 /**
- * functions to handle element 
+ * functions to handle element
  */
 function handleAdd(self, arr_type, arr_name) {
     var index = "#numeric#"; // numeric index
@@ -688,7 +688,7 @@ function reindexNumericIndex(arr_name) {
         var element = $(this);
         var i = element.index();
         // skip "Add Element" button element and "placeholder" element
-        if (i > 0 && i < length - 1) { 
+        if (i > 0 && i < length - 1) {
             i--;
             element.children("div:first").text(i);
             element.children(".opt").attr("name", arr_name + "[" + i + "]");
@@ -701,7 +701,7 @@ function gl_cfg_remove(self) {
     var elements_div = element_div.parentNode;
     var elements_obj = $(elements_div);
     $(element_div).remove();
-    
+
     // reindex numerical lists
     if (elements_obj.attr("class") == "numerical_config_list") {
         var arr_name = elements_obj.attr("id");

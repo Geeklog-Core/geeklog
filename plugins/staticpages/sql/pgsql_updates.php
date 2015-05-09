@@ -38,19 +38,19 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD template_flag int default '0' AFTER meta_keywords",
         "ALTER TABLE {$_TABLES['staticpage']} ADD template_id varchar(40) NOT NULL default '' AFTER template_flag"
     ),
-    
+
     '1.6.3' => array(
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.staticpages.tab_main', 'Access to configure static pages main settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.staticpages.tab_whatsnew', 'Access to configure static pages what\'s new block', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.staticpages.tab_search', 'Access to configure static pages search results', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.staticpages.tab_permissions', 'Access to configure static pages default permissions', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.staticpages.tab_autotag_permissions', 'Access to configure static pages autotag usage permissions', 0)"
-    ),    
-    
+    ),
+
     '1.6.5' => array(
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `template_id`", 
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `template_id`",
         "ALTER TABLE {$_TABLES['staticpage']} CHANGE `sp_id` `sp_id` VARCHAR(128) NOT NULL DEFAULT ''"
-    )  
+    )
 );
 
 /**
@@ -60,7 +60,7 @@ $_UPDATES = array(
 function SP_update_ConfigSecurity_1_6_3()
 {
     global $_TABLES;
-    
+
     // Add in security rights for Static Page Admin
     $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                             "grp_name = 'Static Page Admin'");
@@ -71,15 +71,15 @@ function SP_update_ConfigSecurity_1_6_3()
         $ft_names[] = 'config.staticpages.tab_search';
         $ft_names[] = 'config.staticpages.tab_permissions';
         $ft_names[] = 'config.staticpages.tab_autotag_permissions';
-        
+
         foreach ($ft_names as $name) {
-            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");         
+            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");
             if ($ft_id > 0) {
                 $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
                 DB_query($sql);
             }
-        }        
-    }    
+        }
+    }
 
 }
 

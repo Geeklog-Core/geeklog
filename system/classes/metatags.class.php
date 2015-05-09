@@ -60,13 +60,13 @@ class Metatags
         $this->tags = array();
 
         // This property has the following key/values:
-# 		'charset'					// New in HTML5
-# 		'name/*
-# 		'http-equiv/content-type'
-# 		'http-equiv/default-style'
-# 		'http-equiv/refresh'
-# 		'scheme'					// Not supported in HTML5
-#		'others'
+#       'charset'                   // New in HTML5
+#       'name/*
+#       'http-equiv/content-type'
+#       'http-equiv/default-style'
+#       'http-equiv/refresh'
+#       'scheme'                    // Not supported in HTML5
+#       'others'
     }
 
     /**
@@ -169,7 +169,7 @@ class Metatags
         $htmlGlobalAttributes5 = array(
             'contenteditable', 'draggable', 'dropzone', 'hidden',
             'spellcheck', 'translate',
-        );	// plus 'data-*'
+        );  // plus 'data-*'
 
         if (in_array($attr, $htmlGlobalAttributes4)) {
             return true;
@@ -226,12 +226,12 @@ class Metatags
     * Adds a meta tag
     *
     * @param    array    $pairs    For example, if you want to add
-	*                              <meta name="description" content="SOME CONTENT">,
-	*                              specifify array('name' => 'description',
+    *                              <meta name="description" content="SOME CONTENT">,
+    *                              specifify array('name' => 'description',
     *                              'content' => 'SOME CONTENT').  This method can
-	*                              be called many times, but values specified later
-	*                              will overwrite the previous ones if they are the
-	*                              same meta tag.
+    *                              be called many times, but values specified later
+    *                              will overwrite the previous ones if they are the
+    *                              same meta tag.
     * @return   boolean            true = valid tag, false = otherwise
     */
     public function addTag(array $pairs)
@@ -261,7 +261,7 @@ class Metatags
             if (in_array($k, $validAttributes)) {
                 if (($k !== 'content') && ($attr !== '')) {
                     $this->log(__METHOD__ . ': duplicate attribute "' . $k . '" detected');
-                    return false;	// Duplicate attribute
+                    return false;   // Duplicate attribute
                 }
 
                 switch ($k) {
@@ -286,7 +286,7 @@ class Metatags
                             $content = $v;
                         } else {
                             $this->log(__METHOD__ . ': duplicate "content" attribute detected');
-                            return false;	// Duplicate content
+                            return false;   // Duplicate content
                         }
 
                         break;

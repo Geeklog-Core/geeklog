@@ -80,12 +80,12 @@ function usersubmissions($token)
         $menu_arr,
         $LANG29['submissions_desc'],
         $_CONF['layout_url'] . '/images/icons/moderation.'. $_IMAGE_TYPE
-    );    
+    );
 
-    // IMPORTANT - If any of the below submission lists change, please 
-    // update the function SEC_hasModerationAccess in lib-security.php to 
+    // IMPORTANT - If any of the below submission lists change, please
+    // update the function SEC_hasModerationAccess in lib-security.php to
     // reflect the changes
-    
+
     if (SEC_hasRights('story.moderate')) {
         $retval .= itemlist('story', $token);
     }
@@ -95,7 +95,7 @@ function usersubmissions($token)
             $retval .= itemlist('story_draft', $token);
         }
     }
-    
+
     if ($_CONF['commentsubmission'] == 1) {
         if (SEC_hasRights('comment.moderate')) {
             $retval .= itemlist('comment', $token);
@@ -109,7 +109,7 @@ function usersubmissions($token)
     }
 
     $retval .= PLG_showModerationList($token);
-    
+
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
@@ -214,7 +214,7 @@ function itemlist($type, $token)
             array('text' => $LANG29[1], 'field' => 'approve'),
             array('text' => $LANG29[42], 'field' => 'uid'),
             array('text' => $LANG29[43], 'field' => 'publishfuture')
-        );            
+        );
     } elseif ($type == 'story' || $type == 'story_draft') {
         $header_arr = array(      // display 'text' and use table field 'field'
             array('text' => $LANG_ADMIN['edit'], 'field' => 0),
@@ -224,7 +224,7 @@ function itemlist($type, $token)
             array('text' => $H[3], 'field' => 4),
             array('text' => $LANG29[2], 'field' => 'delete'),
             array('text' => $LANG29[1], 'field' => 'approve')
-        );            
+        );
     } else {
         $header_arr = array(      // display 'text' and use table field 'field'
             array('text' => $LANG_ADMIN['edit'], 'field' => 0),
@@ -233,7 +233,7 @@ function itemlist($type, $token)
             array('text' => $H[2], 'field' => 3),
             array('text' => $LANG29[2], 'field' => 'delete'),
             array('text' => $LANG29[1], 'field' => 'approve')
-        );          
+        );
     }
 
     $text_arr = array('has_menu' => false,
@@ -378,7 +378,7 @@ function moderation($mid, $action, $type, $count)
             // There may be some plugin specific processing that needs to
             // happen first.
             $retval .= PLG_deleteSubmission($type, $mid[$i]);
-            
+
             // Notify plugins of a submission that is deleted
             PLG_submissionDeleted($type);
 
@@ -387,10 +387,10 @@ function moderation($mid, $action, $type, $count)
 
         case 'approve':
             if ($type == 'story') {
-                $sql = "SELECT *, ta.tid 
-                    FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta 
+                $sql = "SELECT *, ta.tid
+                    FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta
                     WHERE ta.type = 'article' AND ta.id = sid  AND sid = '$mid[$i]'";
-                
+
                 $result = DB_query ($sql);
                 $A = DB_fetchArray ($result);
                 $A['related'] = DB_escapeString(implode ("\n", STORY_extractLinks ($A['introtext'])));
@@ -416,7 +416,7 @@ function moderation($mid, $action, $type, $count)
             } elseif ($type == 'comment') {
                 $sid = CMT_approveModeration($mid[$i]);
                 if (! in_array($sid, $sidArray)) {
-                    $sidArray[$i] = $sid; 
+                    $sidArray[$i] = $sid;
                 }
             } else {
                 /**
@@ -464,7 +464,7 @@ function moderation($mid, $action, $type, $count)
                 // There may be some plugin specific processing that needs
                 // to happen first.
                 $retval .= PLG_deleteSubmission($type, $delitem);
-                
+
                 // Notify plugins of a submission type that is deleted
                 PLG_submissionDeleted($type);
 

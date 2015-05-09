@@ -3,10 +3,10 @@
 /**
  * File: DeleteComment.Action.class.php
  * This is the Delete Comment Action  for the Geeklog Spam-X plugin
- * 
+ *
  * Copyright (C) 2004-2005 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
- * 
+ *
  * Licensed under GNU General Public License
  *
  * @package Spam-X
@@ -24,8 +24,8 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
  * Action Class which just discards comment
- * 
- * @author Tom Willett  tomw@pigstye.net 
+ *
+ * @author Tom Willett  tomw@pigstye.net
  * @package Spam-X
  *
  */
@@ -38,7 +38,7 @@ class DeleteComment extends BaseCommand
     public function __construct()
     {
         $this->actionCode = PLG_SPAM_ACTION_DELETE;
-    } 
+    }
 
     public function execute($comment)
     {

@@ -3,10 +3,10 @@
 /**
  * File: BlackList.Examine.class.php
  * This is the Personal BlackList Examine class for the Geeklog Spam-X plugin
- * 
+ *
  * Copyright (C) 2004-2006 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
- * 
+ *
  * Licensed under GNU General Public License
  *
  * @package Spam-X
@@ -24,8 +24,8 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
  * Examines Comment according to Personal BLacklist
- * 
- * @author Tom Willett tomw AT pigstye DOT net 
+ *
+ * @author Tom Willett tomw AT pigstye DOT net
  * @package Spam-X
  *
  */
@@ -71,7 +71,7 @@ class BlackList extends BaseCommand
             $val = str_replace ('#', '\\#', $val);
 
             if (preg_match ("#$val#i", $comment)) {
-                $ans = PLG_SPAM_FOUND;	// quit on first positive match
+                $ans = PLG_SPAM_FOUND;  // quit on first positive match
                 $this->updateStat('Personal', $originalVal);
                 SPAMX_log ($LANG_SX00['foundspam'] . $val .
                            $LANG_SX00['foundspam2'] . $uid .

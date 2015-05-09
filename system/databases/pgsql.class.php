@@ -875,7 +875,7 @@ class database {
         } else {
             if (pg_result_error($result)) {
                 $this->_errorlog(pg_result_error($result)
-                    . "$fn. SQL in question: $sql");        
+                    . "$fn. SQL in question: $sql");
                 if ($this->_display_error) {
                     $error = 'Error ' . pg_result_error($result);
                 } else {

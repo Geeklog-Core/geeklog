@@ -49,7 +49,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-/** 
+/**
 * Geeklog common function library and Admin authentication
 */
 require_once '../../../lib-common.php';
@@ -252,7 +252,7 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
 
     // Remove any autotags the user doesn't have permission to use
     $description = PLG_replaceTags($description, '', true);
-    
+
     // clean 'em up
     $description = DB_escapeString(COM_checkHTML(COM_checkWords($description),
                               'links.edit'));

@@ -59,7 +59,7 @@ function plugin_autoinstall_calendar($pi_name)
         $pi_name . '.submit'                                => 'May skip the event submission queue',
         'config.' . $pi_name . '.tab_main'                  => 'Access to configure general calendar settings',
         'config.' . $pi_name . '.tab_permissions'           => 'Access to configure event default permissions',
-        'config.' . $pi_name . '.tab_autotag_permissions'   => 'Access to configure event autotag usage permissions', 
+        'config.' . $pi_name . '.tab_autotag_permissions'   => 'Access to configure event autotag usage permissions',
         'config.' . $pi_name . '.tab_events_block'          => 'Access to configure events block'
     );
 
@@ -69,7 +69,7 @@ function plugin_autoinstall_calendar($pi_name)
         $pi_name . '.submit'                                => array($pi_admin),
         'config.' . $pi_name . '.tab_main'                  => array($pi_admin),
         'config.' . $pi_name . '.tab_permissions'           => array($pi_admin),
-        'config.' . $pi_name . '.tab_autotag_permissions'   => array($pi_admin), 
+        'config.' . $pi_name . '.tab_autotag_permissions'   => array($pi_admin),
         'config.' . $pi_name . '.tab_events_block'          => array($pi_admin)
     );
 
@@ -122,12 +122,12 @@ function plugin_compatible_with_this_version_calendar($pi_name)
         // if this function exists, then someone's trying to install the
         // plugin on Geeklog 1.4.0 or older - sorry, but that won't work
         return false;
-    }   
+    }
 
     if (!function_exists('MBYTE_strpos')) {
         // the plugin requires the multi-byte functions
-        return false; 
-    }   
+        return false;
+    }
 
     if (!function_exists('COM_createLink')) {
         return false;

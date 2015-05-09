@@ -142,7 +142,7 @@ function plugin_getadminoption_spamx()
         $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['spamx']}");
         $A = DB_fetchArray ($result);
         $count = $A['cnt'];
-       
+
         return array($LANG_SX00['plugin_name'],
             $_CONF['site_admin_url'] . '/plugins/spamx/index.php', $count, 'tools');
     }
@@ -157,9 +157,9 @@ function plugin_chkVersion_spamx()
 {
     global $_CONF;
 
-    require_once $_CONF['path'] . 'plugins/spamx/autoinstall.php';          
+    require_once $_CONF['path'] . 'plugins/spamx/autoinstall.php';
 
-    $inst_parms = plugin_autoinstall_spamx('spamx'); 
+    $inst_parms = plugin_autoinstall_spamx('spamx');
 
     return $inst_parms['info']['pi_version'];
 }
@@ -268,7 +268,7 @@ function plugin_upgrade_spamx()
             }
 
             if (! $current_config) {
-                spamx_update_ConfValues_1_2_1();  
+                spamx_update_ConfValues_1_2_1();
             }
 
             spamx_update_ConfigSecurity_1_2_1();
@@ -285,7 +285,7 @@ function plugin_upgrade_spamx()
             }
 
             if (! $current_config) {
-                // Update to Config Tables must be performed here and not in regular SQL update array since if config is current then they shouldn't be run   
+                // Update to Config Tables must be performed here and not in regular SQL update array since if config is current then they shouldn't be run
                 // Set new Tab column to whatever fieldset is
                 $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'spamx'";
                 DB_query($sql);
@@ -296,7 +296,7 @@ function plugin_upgrade_spamx()
 
                 // in an earlier update we accidentally renamed the 'action' option to 'spamx_name' - fix that
                 $sql = "UPDATE {$_TABLES['conf_values']} SET name = 'spamx_action' WHERE name = 'spamx_name' AND group_name = 'spamx'";
-                DB_query($sql);   
+                DB_query($sql);
 
                 spamx_update_ConfValues_1_2_2();
             }
@@ -306,23 +306,23 @@ function plugin_upgrade_spamx()
             $current_version = '1.3.0';
             break;
 
-        case '1.3.0':	// Shipped with Geeklog-2.0.0
+        case '1.3.0':   // Shipped with Geeklog-2.0.0
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
                 foreach ($_SQL as $sql) {
                     DB_query($sql);
                 }
             }
-            
+
             spamx_update_ConfValues_1_3_0();
 
             $current_version = '1.3.1';
             break;
-            
-        case '1.3.1':	// Shipped with Geeklog-2.1.1            
-			$current_version = '1.3.2';
+
+        case '1.3.1':   // Shipped with Geeklog-2.1.1
+            $current_version = '1.3.2';
             break;
-        	
+
         default:
             $done = true;
         }
@@ -381,8 +381,8 @@ function plugin_checkforSpam_spamx ($comment, $action = -1)
     if (SEC_hasRights('spamx.skip')) {
         return PLG_SPAM_NOT_FOUND;
     }
-    
-    
+
+
     if (!isset($_SPX_CONF['max_age'])) {
         $_SPX_CONF['max_age'] = 0;
     }
@@ -403,10 +403,10 @@ function plugin_checkforSpam_spamx ($comment, $action = -1)
     }
     if ($_SPX_CONF['max_age'] > 1 && $deletelist != '') {
         $timestamp = DB_escapeString(date('Y-m-d'));
-        $sql = "DELETE FROM {$_TABLES['spamx']} 
-            WHERE DATE_ADD(regdate,INTERVAL {$_SPX_CONF['max_age']} DAY) < '$timestamp' 
+        $sql = "DELETE FROM {$_TABLES['spamx']}
+            WHERE DATE_ADD(regdate,INTERVAL {$_SPX_CONF['max_age']} DAY) < '$timestamp'
             AND name IN ($deletelist)";
-        DB_query($sql);        
+        DB_query($sql);
     }
 
     $spamx_path = $_CONF['path'] . 'plugins/spamx/';
@@ -426,7 +426,7 @@ function plugin_checkforSpam_spamx ($comment, $action = -1)
     }
 
     $res = PLG_SPAM_NOT_FOUND;
-    
+
     asort($Spamx_Examine); // Sort the files. IP Class needs to execute before Stop Forum Spam class yo save on calls to stopforumspam.com
 
     foreach ($Spamx_Examine as $Examine) {
@@ -550,9 +550,9 @@ function plugin_autouninstall_spamx ()
         /* give the full name of the group, as in the db */
         'groups' => array('spamx Admin'),
         /* give the full name of the feature, as in the db */
-        'features' => array('spamx.admin', 
-                            'spamx.view', 
-                            'spamx.skip', 
+        'features' => array('spamx.admin',
+                            'spamx.view',
+                            'spamx.skip',
                             'config.spamx.tab_main'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array(),
@@ -605,12 +605,12 @@ function plugin_getdocumentationurl_spamx($file)
 * Provides text for a Configuration tooltip
 *
 * @param    string  $id     Id of config value
-* @return   mixed           Text to use regular tooltip, NULL to use config 
+* @return   mixed           Text to use regular tooltip, NULL to use config
 *                           tooltip hack, or empty string when not available
 *
 */
 function plugin_getconfigtooltip_spamx($id)
-{   
+{
     // Use config tooltip hack where tooltip is read from the config documentation
     return;
 }
@@ -620,7 +620,7 @@ function plugin_getconfigtooltip_spamx($id)
 *
 * @param    string  $type       Type of item
 * @param    string  $username   Type of item
-* @return   string              
+* @return   string
 *
 */
 function plugin_itemPreSave_spamx($type, $username)

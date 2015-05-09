@@ -111,10 +111,10 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_explanation', $LANG21[52]);
     $block_templates->set_var('block_name',$A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
-    
+
     $block_templates->set_var('topic_selection',
                           TOPIC_getTopicSelectionControl ('block', $A['bid'], true, true));
-    
+
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
@@ -244,10 +244,10 @@ function editblock ($bid = '')
         $sql['mssql'] .= "perm_owner, perm_group, perm_members, perm_anon, allow_autotags, cache_time FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
 
         $sql['pgsql'] = "SELECT * FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
-        
+
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
-        
+
         $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
         if (($access == 2) || ($access == 0) ||
                 (TOPIC_hasMultiTopicAccess('block', $bid) < 3)) {
@@ -334,9 +334,9 @@ function editblock ($bid = '')
     $block_templates->set_var('block_name', $A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
     $block_templates->set_var('lang_nospaces', $LANG21[49]);
-    
+
     $block_templates->set_var('topic_selection',
-                          TOPIC_getTopicSelectionControl ('block', $A['bid'], true, true));    
+                          TOPIC_getTopicSelectionControl ('block', $A['bid'], true, true));
 
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
@@ -361,7 +361,7 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_cachetime', $LANG21['cache_time']);
     $block_templates->set_var('lang_cachetime_desc', $LANG21['cache_time_desc']);
     $block_templates->set_var('cache_time', $A['cache_time']);
-    
+
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $ownername = COM_getDisplayName ($A['owner_id']);
@@ -422,7 +422,7 @@ jQuery(function () {
     var $ = jQuery;
     $('#admin-blockeditor-type').on('change', function () {
         var fs, i, fieldsets = ['normal', 'phpblock', 'portal'];
-        
+
         for (i = 0; i < 3; i++) {
             if (this.value === fieldsets[i]) {
                 $('#fs-' + fieldsets[i] + '-options').show();
@@ -469,7 +469,7 @@ function listblocks()
     );
 
     reorderblocks();
-    
+
     // Left
     // Regular Blocks
     $header_arr = array(      # display 'text' and use table field 'field'
@@ -487,7 +487,7 @@ function listblocks()
 
     $text_arr = array(
         'has_extras' => true,
-		'title'      => "$LANG21[20] ($LANG21[40])",
+        'title'      => "$LANG21[20] ($LANG21[40])",
         'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 
@@ -508,13 +508,13 @@ function listblocks()
                     . XHTML . '>'
     );
 
-	$retval .= ADMIN_list(
+    $retval .= ADMIN_list(
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
         $query_arr, $defsort_arr, '', $token, '', $form_arr
     );
-    
 
-    // Dynamic blocks 
+
+    // Dynamic blocks
     $dyn_header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
         array('text' => $LANG21[69], 'field' => 'plugin', 'sort' => true),
@@ -523,25 +523,25 @@ function listblocks()
         array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
         array('text' => $LANG_ADMIN['topic'], 'field' => 'topic', 'sort' => true),
         array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
-    );    
+    );
 
-	
-	$dyn_text_arr = array(
+
+    $dyn_text_arr = array(
         'title'      => "$LANG21[22] ($LANG21[40])",
         'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
-	
-	$leftblocks = PLG_getBlocksConfig('left', '');    
-	
-	// Sort Dynamic Blocks on Block Order
+
+    $leftblocks = PLG_getBlocksConfig('left', '');
+
+    // Sort Dynamic Blocks on Block Order
     usort($leftblocks, "cmpDynamicBlocks");
 
-	$retval .= ADMIN_simpleList('ADMIN_getListField_dynamicblocks', $dyn_header_arr, $dyn_text_arr,
+    $retval .= ADMIN_simpleList('ADMIN_getListField_dynamicblocks', $dyn_header_arr, $dyn_text_arr,
                     $leftblocks, '', $form_arr);
-	
+
 
     // Right
-    // Regular Blocks	
+    // Regular Blocks
     $query_arr = array(
         'table' => 'blocks',
         'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 0",
@@ -569,27 +569,27 @@ function listblocks()
         $query_arr, $defsort_arr, '', $token, '', $form_arr
     );
 
-	// Dynamic blocks
-	$dyn_text_arr = array(
+    // Dynamic blocks
+    $dyn_text_arr = array(
         'title'      => "$LANG21[22] ($LANG21[41])",
         'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
-	
-	$rightblocks = PLG_getBlocksConfig('right', '');
-	
-	// Sort Dynamic Blocks on Block Order
+
+    $rightblocks = PLG_getBlocksConfig('right', '');
+
+    // Sort Dynamic Blocks on Block Order
     usort($rightblocks, "cmpDynamicBlocks");
 
-	$retval .= ADMIN_simpleList('ADMIN_getListField_dynamicblocks', $dyn_header_arr, $dyn_text_arr,
+    $retval .= ADMIN_simpleList('ADMIN_getListField_dynamicblocks', $dyn_header_arr, $dyn_text_arr,
                     $rightblocks, '', $form_arr);
-	
-	$retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
-	
+
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+
     return $retval;
 }
 
 /**
-* Used by listblocks function when sorting the dynamic block array using the 
+* Used by listblocks function when sorting the dynamic block array using the
 * usort function
 *
 * @return   boolean
@@ -653,7 +653,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
         $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
                 $perm_members, $perm_anon);
     }
-    
+
     if (($access < 3) || !TOPIC_hasMultiTopicAccess('topic') || !SEC_inGroup($group_id)) {
         $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $MESSAGE[30]));
@@ -675,10 +675,10 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
         } else {
             $allow_autotags = 0;
         }
-        
+
         if ($cache_time < -1 OR $cache_time == "") {
             $cache_time = $_CONF['default_cache_time_block'];
-        }        
+        }
 
         if ($type == 'portal') {
             $content = '';
@@ -724,7 +724,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
             $rdfupdated = '';
             $rdflimit = 0;
             $phpblockfn = '';
-            
+
             if ($allow_autotags == 1) {
                 // Remove any autotags the user doesn't have permission to use
                 $content = PLG_replaceTags($content, '', true);
@@ -748,20 +748,20 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
             $sql['mysql'] = $sql['mssql'] = "INSERT INTO {$_TABLES['blocks']} "
              .'(name,title,help,type,blockorder,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
              ."VALUES ('$name','$title','$help','$type','$blockorder','$content','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
-            
+
              $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
              .'(bid,name,title,help,type,blockorder,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
              ."VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockorder','$content','$rdfurl','1970-01-01','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
-             
+
              DB_query($sql);
              $bid = DB_insertId();
         }
 
         TOPIC_saveTopicSelectionControl('block', $bid);
-        
+
         $cacheInstance = 'block__' . $bid . '__';  // remove any of this blocks instances if exists
-        CACHE_remove_instance($cacheInstance);            
-        
+        CACHE_remove_instance($cacheInstance);
+
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
         if (empty($name)) {
@@ -917,11 +917,11 @@ function deleteBlock ($bid)
     }
 
     TOPIC_deleteTopicAssignments('block', $bid);
-    
+
     DB_delete ($_TABLES['blocks'], 'bid', $bid);
-    
+
     $cacheInstance = 'block__' . $bid . '__';  // remove any of this blocks instances if exists
-    CACHE_remove_instance($cacheInstance);            
+    CACHE_remove_instance($cacheInstance);
 
     return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=12');
 }
@@ -948,7 +948,7 @@ if (isset($_POST['blockenabler']) && SEC_checkToken()) {
     }
     changeBlockStatus($enabledblocks, $visibleblocks);
 }
-    
+
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
         COM_errorLog ('Attempted to delete block, bid empty or null, value =' . $bid);
@@ -1003,7 +1003,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $cache_time = $_CONF['default_cache_time_block'];
     if (isset ($_POST['cache_time'])) {
         $cache_time = COM_applyFilter ($_POST['cache_time'], true);
-    }    
+    }
     $display .= saveblock ($bid, $name, $_POST['title'],
                     $help, $_POST['type'], $blockorder, $content,
                     $rdfurl, $rdfupdated,

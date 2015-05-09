@@ -5,8 +5,8 @@ $_SQL[] = "
 CREATE TABLE  [dbo].[{$_TABLES['topic_assignments']}] (
   [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
   [type]  [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-  [id]  [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL, 
-  [inherit] [tinyint] NOT NULL, 
+  [id]  [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+  [inherit] [tinyint] NOT NULL,
   [tdefault] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
@@ -36,7 +36,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_article_pu
 function update_StoryTopicAssignmentsFor200()
 {
     global $_TABLES;
-    
+
     $story_tables[] = $_TABLES['stories'];
     $story_tables[] = $_TABLES['storysubmission'];
 
@@ -44,8 +44,8 @@ function update_StoryTopicAssignmentsFor200()
         $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault)
                 SELECT tid, 'article' AS type, sid, 1 AS inherit, 1 AS tdefault
                 FROM $story_table";
-        DB_query($sql);   
-        
+        DB_query($sql);
+
         // Remove tid from table
         $sql = "ALTER TABLE $story_table DROP tid";
         DB_query($sql);
@@ -60,16 +60,16 @@ function update_StoryTopicAssignmentsFor200()
 function update_BlockTopicAssignmentsFor200()
 {
     global $_TABLES;
-    
+
     $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault)
             SELECT tid, 'block' AS type, bid, 1 AS inherit, 0 AS tdefault
             FROM {$_TABLES['blocks']}";
     DB_query($sql);
 
     // Remove Topic Id from blocks table
-    $sql = "ALTER TABLE {$_TABLES['blocks']} DROP tid";    
+    $sql = "ALTER TABLE {$_TABLES['blocks']} DROP tid";
     DB_query($sql);
-    
+
 }
 
 
@@ -86,28 +86,28 @@ function update_ConfValuesFor200()
     $c = config::get_instance();
 
     $me = 'Core';
-    
+
     // Breadcrumbs
     $c->add('tab_topics', NULL, 'tab', 7, 45, NULL, 0, TRUE, $me, 45);
     $c->add('fs_breadcrumbs', NULL, 'fieldset', 7, 45, NULL, 0, TRUE, $me, 45);
     $c->add('multiple_breadcrumbs', 0, 'select', 7, 45, 0, 2000, TRUE, $me, 45);
     $c->add('disable_breadcrumbs_topics', 0, 'select', 7, 45, 0, 2010, TRUE, $me, 45);
     $c->add('disable_breadcrumbs_articles', 0, 'select', 7, 45, 0, 2020, TRUE, $me, 45);
-    $c->add('disable_breadcrumbs_plugins', 0, 'select', 7, 45, 0, 2030, TRUE, $me, 45);  
-    
+    $c->add('disable_breadcrumbs_plugins', 0, 'select', 7, 45, 0, 2030, TRUE, $me, 45);
+
     // Password Update
     $c->add('fs_pass', NULL, 'fieldset', 4, 42, NULL, 0, TRUE, $me, 18);
     $c->add('pass_alg', 1, 'select', 4, 42, 29, 800, TRUE, $me, 18);
     $c->add('pass_stretch', 4096, 'text', 4, 42, NULL, 810, TRUE, $me, 18);
 
     // Max Link Text
-    $c->add('linktext_maxlen',50,'text',7,31,NULL,1754,TRUE, $me,31);   
-    
+    $c->add('linktext_maxlen',50,'text',7,31,NULL,1754,TRUE, $me,31);
+
     // Email CC settings
     $c->add('mail_cc_enabled', 1, 'select', 0, 1, 0, 180, TRUE, $me, 1);
     $c->add('mail_cc_default', 0, 'select', 0, 1, 0, 190, TRUE, $me, 1);
 
-    // Comments    
+    // Comments
     $c->add('comment_on_same_page',0,'select',4,21,0, 1690, TRUE, $me, 21);
     $c->add('show_comments_at_replying',0,'select',4,21,0, 1691, TRUE, $me, 21);
 
@@ -118,18 +118,18 @@ function update_ConfValuesFor200()
     $c->del('search_no_data', 'Core');
 
     // Breadcrumb Root Site Name
-    $c->add('breadcrumb_root_site_name', 0, 'select', 7, 45, 0, 2040, TRUE, $me, 45);    
-    
+    $c->add('breadcrumb_root_site_name', 0, 'select', 7, 45, 0, 2040, TRUE, $me, 45);
+
     // Page Navigation
     $c->add('page_navigation_max_pages',7,'text',7,31,NULL,1800,TRUE, $me, 31);
 
     // Add in Comment Syndication
     $c->add('fs_syndication_comment', NULL, 'fieldset', 0, 3, NULL, 0, TRUE, $me, 2);
     $c->add('comment_feeds_article_tag', "<p>[Original Article: <a href=\"%s\">%s</a>%s%s]\n", 'text', 0, 3, NULL, 10, TRUE, $me, 2);
-    $c->add('comment_feeds_article_tag_position', 'end', 'select', 0, 3, 30, 20, TRUE, $me, 2);        
-    $c->add('comment_feeds_article_author_tag', '', 'text', 0, 3, NULL, 30, TRUE, $me, 2);        
-    $c->add('comment_feeds_comment_author_tag', ", Comment By: <a href=\"%s\">%s</a>", 'text', 0, 3, NULL, 40, TRUE, $me, 2);   
-    
+    $c->add('comment_feeds_article_tag_position', 'end', 'select', 0, 3, 30, 20, TRUE, $me, 2);
+    $c->add('comment_feeds_article_author_tag', '', 'text', 0, 3, NULL, 30, TRUE, $me, 2);
+    $c->add('comment_feeds_comment_author_tag', ", Comment By: <a href=\"%s\">%s</a>", 'text', 0, 3, NULL, 40, TRUE, $me, 2);
+
     return true;
 }
 

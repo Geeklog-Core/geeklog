@@ -40,7 +40,7 @@
 class database {
 
     // PRIVATE PROPERTIES
-    
+
     /**
     * @access private
     */
@@ -82,9 +82,9 @@ class database {
     var $_lastInsertID=array();
     var $_fastForwardRows=array();
     var $_NoArraylastInsertID='';
-    
-    
-    
+
+
+
     // PRIVATE METHODS
 
     /**
@@ -224,98 +224,98 @@ class database {
         $this->_errorlog_fn = $functionname;
     }
 
-    
-    
+
+
     function cleanseSQL($originalsql,$skipQuoteReplacement=0){
         $sql=$originalsql;
-        
+
         if(!$skipQuoteReplacement){
             $tempsql=str_replace('\"',"''",$sql);
             $sql=$tempsql;
             }
-            
+
        if(!$skipQuoteReplacement){
             $tempsql=str_replace("\'","''",$sql);
             $sql=$tempsql;
             }
-        
+
         $sql=$this->changeDESCRIBE($sql);
-        
+
         $sql=$sql . " ";
-        
+
         $tempsql=str_replace("`","",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("unix_timestamp","UNIX_TIMESTAMP",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("UNIX_TIMESTAMP","dbo.UNIX_TIMESTAMP",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("date_format","DATE_FORMAT",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("DATE_FORMAT","dbo.DATE_FORMAT",$sql);
         $sql=$tempsql;
 
         $tempsql=str_replace("from_unixtime","FROM_UNIXTIME",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("FROM_UNIXTIME","dbo.FROM_UNIXTIME",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("dbo.UNIX_TIMESTAMP()","dbo.UNIX_TIMESTAMP('')",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("dbo.FROM_UNIXTIME()","dbo.FROM_UNIXTIME('')",$sql);
         $sql=$tempsql;
-        
+
         //$tempsql=str_replace("dbo.FROM_UNIXTIME(')","dbo.FROM_UNIXTIME('')",$sql);
         //$sql=$tempsql;
-        
+
         $tempsql=$this->cleanse_date_sub($sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("NOW()","getUTCDate()",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("now()","getUTCDate()",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("STRAIGHT_JOIN","",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("straight_join","",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("WHERE 1 ","WHERE 1=1 ",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("where 1 ","where 1=1 ",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("to_days","TO_DAYS",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("TO_DAYS","dbo.TO_DAYS",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("CURDATE()","getDate()",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("'0000-00-00 00:00:00'","NULL",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("'null'","null",$sql);
         $sql=$tempsql;
-        
+
         $tempsql=str_replace("dbo.dbo.","dbo.",$sql);
         $sql=$tempsql;
-        
+
         return $sql;
         }
-    
-    
+
+
     //swaps out the propriatary DESC function in mysql and replaces it with our UDF version
     function changeDESCRIBE($sql){
         $sql=trim($sql);
@@ -337,10 +337,10 @@ class database {
             return $sql;
             }
         }
-    
-        
-    
-    
+
+
+
+
     /**
     * Executes a query on the server
     *
@@ -353,7 +353,7 @@ class database {
     */
     function dbQuery($sql,$ignore_errors=0,$skipQuoteReplacement=0)
     {
-     
+
         $sql=$this->cleanseSQL($sql,$skipQuoteReplacement);
         //limit detection
         $testSQL=strtolower($sql);
@@ -362,37 +362,37 @@ class database {
             if($isIn>0){
                 //there is a LIMIT clause in there
                 //lets get its offset as a string to the end of the sql call
-                 
+
                 $limitclause=strstr($testSQL,' limit ');
                 $testSQL=substr($sql,0,$isIn);
-                
+
                 $limitclause=trim($limitclause);
-                MBYTE_eregi("limit ([^,]+),(.*)", $limitclause,$arrayStr); 
-                
+                MBYTE_eregi("limit ([^,]+),(.*)", $limitclause,$arrayStr);
+
                 $left=trim($arrayStr[1]);
                 $rightStr=trim($arrayStr[2]);
-                
-                
+
+
                 if($rigthStr=='' and $left==''){
                     //this is the case where we have a single limit value
                     //this is IDENTICAL to the usage of the TOP clause
                     $left=strstr($limitclause, ' ');
                     $left=trim($left);
                     $mode=1;
-                    
-                    
+
+
                     }//end if $rightstr...
                 else{
                     //left and right have something useful
-                    //this means we'll have to do some kind of temp table manipulation.... 
+                    //this means we'll have to do some kind of temp table manipulation....
                     $rightStr=str_replace(";","",$rightStr);
                     $mode=2;
                     }//end else
                 $sql=$testSQL;
                 }
-                
+
         //end limit detection
-        
+
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n***inside database->dbQuery***<br" . XHTML . ">");
@@ -400,7 +400,7 @@ class database {
         }
 
         if($mode==0){
-           
+
             }
         elseif($mode==1){//this is a simple limit clause
             $testSQL=strtolower($sql);
@@ -417,14 +417,14 @@ class database {
                 }
             }
         else{//this is a tough limit clause
-            
+
             }
-            
-        //check for insert... handle this differently    
+
+        //check for insert... handle this differently
         $testSQL=strtolower($sql);
         $testSQL = ' ' . $testSQL;
         $isIn=strpos($testSQL,'insert ');
-        $isInsert=0; 
+        $isInsert=0;
         if($isIn>0){
             //next we have to check if it already ends in a semi colon
             $testSQL=trim($sql);
@@ -435,18 +435,18 @@ class database {
             else{
                 $sql .=" select SCOPE_IDENTITY()";
                 }
-            
+
             $isInsert=1;
             }
-        
+
         //echo "<pre>" . $sql . "</pre>";
-    
+
         // Run query
         if ($ignore_errors == 1) {
             $result = @mssql_query($sql,$this->_db);
-            
+
         } else {
-           
+
             $result = @mssql_query($sql,$this->_db) or trigger_error($this->dbError($sql) . ' - ' . $sql, E_USER_ERROR);
             if($result==FALSE){
                 echo "Query Failed: ";
@@ -462,15 +462,15 @@ class database {
             }
 
        $this->_fastForwardRows=0;
-        if($result!=FALSE){     
+        if($result!=FALSE){
             if($mode==2){
                 //got the result set
                 //fast forward thru the set
-                
+
                 @mssql_data_seek($result,$left-1);
-                
-                
-                
+
+
+
                 if(!is_array($this->_limitRows)){
                     $this->_limitRows=array();
                     }
@@ -480,7 +480,7 @@ class database {
                 else{
                     $this->array_push_associative($this->_limitRows, array("{$result}"=>"{$rightStr}")) ;
                     }
-                
+
                 if(!is_array($this->_numberOfRowsAskedFor)){
                     $this->_numberOfRowsAskedFor=array();
                     }
@@ -490,7 +490,7 @@ class database {
                 else{
                     $this->array_push_associative($this->_numberOfRowsAskedFor, array("{$result}"=>"0")) ;
                     }
-                
+
                 if(!is_array($this->_fastForwardRows)){
                     $this->_fastForwardRows=array();
                     }
@@ -500,7 +500,7 @@ class database {
                 else{
                     $this->array_push_associative($this->_fastForwardRows, array("{$result}"=>"{$left}")) ;
                     }
-    
+
                 //$this->array_push_associative($this->_numberOfRowsAskedFor, array("{$result}"=>"0")) ;
                 //$this->array_push_associative($this->_fastForwardRows, array("{$result}"=>"{$left}")) ;
 
@@ -510,12 +510,12 @@ class database {
             return $result;
             }
         else{
-            return false;    
+            return false;
             }
-               
-        
-        
-        
+
+
+
+
         }
 
     /**
@@ -542,17 +542,17 @@ class database {
         $result=$this->dbQuery($sql);
         $numRows=$this->dbNumRows($result);
 
-        if($numRows>0){ //this is the instance that there is a primary key we know about.. thus, find out the value of the 
+        if($numRows>0){ //this is the instance that there is a primary key we know about.. thus, find out the value of the
                         //primary key in the $values field and see what it equals..  do a delete first using this primary key's value
                         //and THEN do an insert.  otherwise, just do the insert.
                 $valsArray=$this->parse_csv_sql_string($values);
                 $fieldsArray=$this->parse_csv_sql_string($fields);
                 $arrResults=$this->dbFetchArray($result);
                 $primaryKeyField=strtolower($arrResults[0]);
-               
+
                 while ($colname = current($fieldsArray)) {
                     if ( strtolower($colname) == $primaryKeyField) { //we have a match
-                    
+
                        $sql="delete from {$table} where ". current($fieldsArray) . "='". current($valsArray)  . "'";
                        $this->dbQuery($sql);
                        break;
@@ -565,7 +565,7 @@ class database {
         $values=$this->cleanseSQL($values);
         $values=str_replace("'",'"',$values);
         $sql="EXEC doIndexInsert '{$table}', '{$fields}', '{$values}'";
-       
+
         $result=$this->dbQuery($sql,1);
         mssql_free_result($result);
         if ($this->isVerbose()) {
@@ -573,10 +573,10 @@ class database {
         }
     }
 
-    
-    
-    
-    
+
+
+
+
     /**
     * Deletes data from the database
     *
@@ -613,12 +613,12 @@ class database {
                 }
             } else {
                 // error, they both have to be arrays and of the
-                // same size 
+                // same size
                 return false;
             }
         } else {
             // just regular string values, build sql
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -657,7 +657,7 @@ class database {
             $sql = "UPDATE $table SET $item_to_set = $value_to_set";
         } else {
             $sql = "UPDATE $table SET $item_to_set = '$value_to_set'";
-        } 
+        }
 
         if (is_array($id) || is_array($value)) {
             if (is_array($id) && is_array($value) && count($id) == count($value)) {
@@ -679,7 +679,7 @@ class database {
             }
         } else {
             // These are regular strings, build sql
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -735,14 +735,14 @@ class database {
                 return false;
             }
         } else {
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
 
-        
-        
-        
+
+
+
         if ($this->isVerbose()) {
             print "\n*** sql = $sql ***<br" . XHTML . ">";
         }
@@ -799,7 +799,7 @@ class database {
                 return false;
             }
         } else {
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -836,7 +836,7 @@ class database {
             }
             if( (($this->_fastForwardRows["{$recordset}"]+$this->_limitRows["{$recordset}"])> @mssql_num_rows($recordset)) && $this->_fastForwardRows["{$recordset}"]!=0 ){
                 //only return num rows - fast forwarded rows
-                
+
                 return @mssql_num_rows($recordset)-$this->_fastForwardRows["{$recordset}"]+1;
                 }
             elseif($this->_limitRows["{$recordset}"]>@mssql_num_rows($recordset) || $this->_limitRows["{$recordset}"]==''){
@@ -845,8 +845,8 @@ class database {
             else{
                 return $this->_limitRows["{$recordset}"];
                 }
-            
-            
+
+
         } else {
             if ($this->isVerbose()) {
                 $this->_errorlog("got no rows<br" . XHTML . ">");
@@ -938,34 +938,34 @@ class database {
       $this->_numberOfRowsAskedFor["{$recordset}"] = $this->_numberOfRowsAskedFor["{$recordset}"] +1;
       if( ($this->_limitRows["{$recordset}"]) !=($this->_numberOfRowsAskedFor["{$recordset}"]-1)  || $this->_limitRows["{$recordset}"]=='' || $this->_limitRows["{$recordset}"]==0){
           //echo $this->dbNumRows($recordset) ."-{$this->_numberOfRowsAskedFor["{$recordset}"]}-{$this->_limitRows["{$recordset}"]}<hr" . XHTML . ">";
-        return @mssql_fetch_array($recordset);//, $result_type);  
+        return @mssql_fetch_array($recordset);//, $result_type);
         }
       else{
-        return FALSE;  
+        return FALSE;
         }
-    
-    
-    
-        
+
+
+
+
     }
 
     /**
     * Returns the last ID inserted
-    * 
+    *
     * Returns the last auto_increment ID generated
     *
     * @param    resource    $link_identifier    identifier for opened link
     * @return   int                             Returns last auto-generated ID
     *
     * please note that this is a dangerous function to use without providing the proper resource identifier
-    * your code should ALWAYS call this function with its resource identifier otherwise you'll just pull off the 
+    * your code should ALWAYS call this function with its resource identifier otherwise you'll just pull off the
     * last insertted ID which MAY or MAY NOT be the one from YOUR specific insert.  You've been warned!
     */
     function dbInsertId($link_identifier ='',$sequence='')
     {
-     
-       if ($link_identifier ==''){  //wow is this dangerous...  
-                                    //this is the LAST insertted ID no matter what.. thus, this may not be your resource's insertted id.. 
+
+       if ($link_identifier ==''){  //wow is this dangerous...
+                                    //this is the LAST insertted ID no matter what.. thus, this may not be your resource's insertted id..
                                     //you should, and I'm only telling you this once, ALWAYS USE YOUR RESOURCE IDENTIFIER when calling this function
            return $this->_NoArraylastInsertID;
         }
@@ -1015,7 +1015,7 @@ class database {
             } else if (substr($msg, 0, 25) == 'The COLUMN was renamed to') {
                 $this->_errorlog('Column Renamed: "' . $msg . '"$fn. SQL in question: ' . $sql);
             } else {
-                $this->_errorlog($msg . ': ' . $msg . "$fn. SQL in question: $sql");        
+                $this->_errorlog($msg . ': ' . $msg . "$fn. SQL in question: $sql");
                 if ($this->_display_error) {
                     return  $msg . ': ' . $sql;
                 } else {
@@ -1026,9 +1026,9 @@ class database {
 
         return;
     }
-    
-    
-    
+
+
+
     /**
     * returns a sql string that has the pesky date_sub removed from it
     *
@@ -1037,24 +1037,24 @@ class database {
     * @return   string      return sql string
     *
     */
-    function cleanse_date_sub($sql){      
+    function cleanse_date_sub($sql){
         $string=$sql;
         $testString=strtolower($string);
         $isIn=strpos($testString,'date_sub');
-        
+
         while($isIn>0){
             $testString=strtolower($string);
             $isIn=strpos($testString,'date_sub');
             if($isIn>0){
-                
+
                 $startLoc=strpos($testString,'date_sub');
                 $rightStr=ltrim(substr($string,$startLoc+8,strlen($string)));
 
-                //eregi("\((.*),([^\)]+\))", $rightStr,$left); 
-                 MBYTE_eregi("\(([^,]+),([^\)]+\))", $rightStr,$left); 
-                
-              
-                 
+                //eregi("\((.*),([^\)]+\))", $rightStr,$left);
+                 MBYTE_eregi("\(([^,]+),([^\)]+\))", $rightStr,$left);
+
+
+
                 $firstParm=$left[1];
                 $secondParm=trim($left[2]);
 
@@ -1069,14 +1069,14 @@ class database {
                 else{
                     $mode=1;
                     }
-                
+
                 if($mode==0){
                     $replaceString='date_sub(' . $firstParm . ',' . $left[2] . ')';
                     }
                 else{
                     $replaceString='DATE_SUB(' . $firstParm . ',' . $left[2] . ')';
                     }
- 
+
                 $secondParmArray = explode(' ',$secondParm);
                 $intervalTime=$secondParmArray[1];
                 $typeForInterval=$secondParmArray[2];
@@ -1084,19 +1084,19 @@ class database {
                       $intervalTime = '-' . $intervalTime;
                     }
                 $replaceWITHString= "dateadd({$typeForInterval},{$intervalTime},{$firstParm})";
- 
+
                 $string=str_replace($replaceString,$replaceWITHString,$string);
-                
+
                 //$replaceString='DATE_SUB(' . $firstParm . ',' . $left[2] . ')';
                 //$string=str_replace($replaceString,$replaceWITHString,$string);
-                
+
                 $tempsql=str_replace("now()","getDate()",$string);
                 $string=$tempsql;
             }
-    
+
         }
        return $string;
-       
+
     }
 
 
@@ -1136,7 +1136,7 @@ class database {
             $this->_errorlog("\n*** Inside database->dbLockTable ***");
         }
 
-        
+
         $sql = "BEGIN TRAN";
 
         $this->dbQuery($sql);

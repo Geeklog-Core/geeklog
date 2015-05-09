@@ -5,8 +5,8 @@
     <legend>{lang_search}</legend>
 
     <ul class="filter">
-	  <li>{filter}</li>
-	</ul>
+      <li>{filter}</li>
+    </ul>
 
     <dl>
       <dt>{lang_search}</dt>

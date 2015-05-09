@@ -206,9 +206,9 @@ function TRB_allowDelete ($sid, $type)
 
     if ($type == 'article') {
         $sid = DB_escapeString($sid);
-        
+
         $sql = "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getPermSql ('AND', 0, 3);
-        
+
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
 

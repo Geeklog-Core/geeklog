@@ -69,7 +69,7 @@ if (!SEC_hasRights('plugin.edit')) {
     COM_output($display);
     exit;
 }
-       
+
 /**
 * Shows the plugin information center for installed plugins
 *
@@ -200,7 +200,7 @@ function plugin_info_uninstalled($pi_name)
     $plg_templates->set_var('end_block',
             COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
      $retval .= $plg_templates->finish($plg_templates->parse('output', 'editor'));
- 
+
      return $retval;
 }
 
@@ -444,7 +444,7 @@ function listplugins($token)
     // JS required by the delete feature
     $retval .= '<script type="text/javascript">/* quick Javascript confirmation function */';
     $retval .= 'function confirm_action(msg,url){if(confirm(msg)){location.href=url;}}';
-    $retval .= '</script>'; 
+    $retval .= '</script>';
 
     $retval .= COM_startBlock($LANG32[5], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
@@ -731,7 +731,7 @@ function plugin_upload()
                     $pi_was_enabled = ($A['pi_enabled'] == 1);
                 }
 
-				$callback = 'plugin_enablestatechange_' . $dirname;
+                $callback = 'plugin_enablestatechange_' . $dirname;
 
                 if ($pi_was_enabled) {
                     // disable temporarily while we move the files around
@@ -1120,8 +1120,8 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
             $sql['pgsql']="INSERT INTO {$_TABLES['groups']} (grp_id,grp_name, grp_descr) VALUES ((SELECT NEXTVAL('{$_TABLES['groups']}_grp_id_seq')),'$grp_name', '$grp_desc')";
             $sql['mysql']="INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')";
             $sql['mssql']="INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')";
-           
-            
+
+
             DB_query($sql,1);
             if (DB_error()) {
                 COM_errorLog('Error creating plugin group', 1);
@@ -1184,16 +1184,16 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
             $ft_name = DB_escapeString($feature);
             $ft_desc = DB_escapeString($desc);
             $sql=array();
-            
+
              $sql['pgsql']="INSERT INTO {$_TABLES['features']} (ft_id,ft_name, ft_descr)
-                     VALUES ((SELECT nextval('{$_TABLES['features']}_ft_id_seq')),'$ft_name', '$ft_desc')"; 
-                       
+                     VALUES ((SELECT nextval('{$_TABLES['features']}_ft_id_seq')),'$ft_name', '$ft_desc')";
+
              $sql['mysql']="INSERT INTO {$_TABLES['features']} (ft_name, ft_descr)
                     VALUES ('$ft_name', '$ft_desc')";
-                    
+
              $sql['mysql']="INSERT INTO {$_TABLES['features']} (ft_name, ft_descr)
                     VALUES ('$ft_name', '$ft_desc')";
-            
+
             DB_query($sql,1);
             if (DB_error()) {
                 COM_errorLog('Error adding plugin feature', 1);

@@ -3,10 +3,10 @@
 /**
  * File: english.php
  * This is the English language file for the Geeklog Spam-X plugin
- * 
+ *
  * Copyright (C) 2004-2008 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
- * 
+ *
  * Licensed under GNU General Public License
  *
  * $Id: english.php,v 1.23 2008/04/13 11:59:08 dhaun Exp $
@@ -91,17 +91,17 @@ $LANG_SX00 = array (
     'foundspam' => 'Found Spam Post matching ',
     'foundspam2' => ' posted by user ',
     'foundspam3' => ' from IP ',
-	'deletespam' => 'Delete Spam',
-	'numtocheck' => 'Number of Comments to check',
-	'note1'		=> '<p>Note: Mass Delete is intended to help you when you are hit by',
-	'note2'		=> ' comment spam and Spam-X does not catch it.</p><ul><li>First find the link(s) or other ',
-	'note3'		=> 'identifiers of this spam comment and add it to your personal blacklist.</li><li>Then ',
-	'note4'		=> 'come back here and have Spam-X check the latest comments for spam.</li></ul><p>Comments ',
-	'note5'		=> 'are checked from newest comment to oldest -- checking more comments ',
-	'note6'		=> 'requires more time for the check.</p>',
-	'masshead'	=> '<hr' . XHTML . '><h1 align="center">Mass Delete Spam Comments</h1>',
-	'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
-	'comdel'	=> ' comments deleted.',
+    'deletespam' => 'Delete Spam',
+    'numtocheck' => 'Number of Comments to check',
+    'note1'     => '<p>Note: Mass Delete is intended to help you when you are hit by',
+    'note2'     => ' comment spam and Spam-X does not catch it.</p><ul><li>First find the link(s) or other ',
+    'note3'     => 'identifiers of this spam comment and add it to your personal blacklist.</li><li>Then ',
+    'note4'     => 'come back here and have Spam-X check the latest comments for spam.</li></ul><p>Comments ',
+    'note5'     => 'are checked from newest comment to oldest -- checking more comments ',
+    'note6'     => 'requires more time for the check.</p>',
+    'masshead'  => '<hr' . XHTML . '><h1 align="center">Mass Delete Spam Comments</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
+    'comdel'    => ' comments deleted.',
     'initial_Pimport' => '<p>Personal Blacklist Import"',
     'initial_import' => 'Initial MT-Blacklist Import',
     'import_success' => '<p>Successfully imported %d blacklist entries.',
@@ -130,7 +130,7 @@ $LANG_SX00 = array (
     'stats_deleted' => 'Posts deleted as spam',
 
     'invalid_email_or_ip'   => 'Invalid e-mail address or IP address has been blocked.',
-    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',    
+    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',
     'edit_personal_blacklist' => 'Edit Personal Blacklist',
     'mass_delete_spam_comments' => 'Mass Delete Spam Comments',
     'mass_delete_trackback_spam' => 'Mass Delete Trackback Spam',
@@ -139,7 +139,7 @@ $LANG_SX00 = array (
     'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
     'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
     'edit_slv_whitelist' => 'Edit SLV Whitelist',
-    
+
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLV Whitelist'
 );
@@ -164,7 +164,7 @@ $LANG_confignames['spamx'] = array(
     'spamx_action' => 'Spam-X Actions',
     'notification_email' => 'Notification Email',
     'logging' => 'Enable Logging',
-    'timeout' => 'Timeout', 
+    'timeout' => 'Timeout',
     'max_age' => 'Max Age of Records',
     'records_delete' => 'Record Types to Delete',
     'sfs_enabled' => 'Enable SFS',
@@ -179,12 +179,12 @@ $LANG_configsubgroups['spamx'] = array(
 
 $LANG_tab['spamx'] = array(
     'tab_main' => 'Spam-X Main Settings',
-    'tab_modules' => 'Modules'    
+    'tab_modules' => 'Modules'
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Spam-X Main Settings', 
-    'fs_sfs' => 'Stop Forum Spam (SFS)', 
+    'fs_main' => 'Spam-X Main Settings',
+    'fs_sfs' => 'Stop Forum Spam (SFS)',
     'fs_snl' => 'Spam Number of Links (SNL)'
 );
 

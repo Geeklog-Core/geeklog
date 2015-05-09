@@ -35,7 +35,7 @@ global $LANG32;
 
 $LANG_XMLSMAP = array(
     'plugin'            => 'XMLSitemap',
-    'admin'		        => 'XMLSitemap Admin',
+    'admin'             => 'XMLSitemap Admin',
 );
 
 // Localization of the Admin Configuration UI
@@ -49,7 +49,7 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'Mobile Sitemap file name',
     'types'               => 'Contents of sitemap',
     'exclude'             => 'Plugins to exclude from sitemap',
-    'lastmod'             => 'Content Types to include lastmod element',    
+    'lastmod'             => 'Content Types to include lastmod element',
     'priorities'          => '',
     'frequencies'         => '',
     'ping_google'         => 'Send ping to Google',

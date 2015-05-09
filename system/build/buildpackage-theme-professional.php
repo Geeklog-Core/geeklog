@@ -5,28 +5,28 @@
 /**
  * Geeklog 1.x
  *
- * This program is free software; you can redistribute it and/or modify it under the terms of the 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See 
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
  * the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program; if 
+ * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  *
  */
 
 /**
- * Generates the package.xml for Geeklog's Professional Theme. 
+ * Generates the package.xml for Geeklog's Professional Theme.
  *
  * @author Christian Weiske <cweiske@cweiske.de>
  * @author Tony Bibbs <tony.bibbs@geeklog.net>
  * @version $Id: buildpackage-theme-professional.php,v 1.1 2007/03/19 18:40:39 tony Exp $
  * @copyright The Geeklog Development Team, 2007
- * 
+ *
  */
 require_once 'PEAR/PackageFileManager2.php';
 

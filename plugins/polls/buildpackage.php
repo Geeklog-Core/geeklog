@@ -49,7 +49,7 @@ $e = $pkg->setOptions(
         'ignore'            => array(
                                  'buildpackage*.php',
                                  'package.xml',
-                                 '*.tgz'  
+                                 '*.tgz'
                                ),
         'include'           => array(
                                     $packagedir . '/',

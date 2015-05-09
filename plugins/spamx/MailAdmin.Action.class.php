@@ -3,10 +3,10 @@
 /**
  * File: MailAdmin.Action.class.php
  * This is the Mail Admin Action for the Geeklog Spam-X plugin
- * 
+ *
  * Copyright (C) 2004-2008 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
- * 
+ *
  * Licensed under GNU General Public License
  *
  * @package Spam-X
@@ -24,8 +24,8 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
  * Action Class which emails the spam post to the site admin
- * 
- * @author Tom Willett  tomw@pigstye.net 
+ *
+ * @author Tom Willett  tomw@pigstye.net
  *
  * @package Spam-X
  *
@@ -35,7 +35,7 @@ class MailAdmin extends BaseCommand
     public function __construct()
     {
         $this->actionCode = PLG_SPAM_ACTION_NOTIFY;
-    } 
+    }
 
     public function execute($comment)
     {

@@ -37,8 +37,8 @@
 // Even through the webservers with hard runtime limit and those in safe mode
 // Works fine with Internet Explorer 7.0 and Firefox 2.x
 //
-// Author:       Alexey Ozerov (alexey at ozerov dot de) 
-//               AJAX & CSV functionalities: Krzysiek Herod (kr81uni at wp dot pl) 
+// Author:       Alexey Ozerov (alexey at ozerov dot de)
+//               AJAX & CSV functionalities: Krzysiek Herod (kr81uni at wp dot pl)
 // Copyright:    GPL (C) 2003-2008
 // More Infos:   http://www.ozerov.de/bigdump.php
 //
@@ -114,14 +114,14 @@ else if (isset($_SERVER["ORIG_SCRIPT_FILENAME"]))
   $upload_dir=dirname($_SERVER["ORIG_SCRIPT_FILENAME"]);
 else if (isset($_SERVER["PATH_TRANSLATED"]))
   $upload_dir=dirname($_SERVER["PATH_TRANSLATED"]);
-else 
+else
   $upload_dir=dirname($_SERVER["SCRIPT_FILENAME"]);
 
 
 // Connect to the database
 if (!$error && !TESTMODE) {
   $dbconnection = @mysql_connect($db_server,$db_username,$db_password);
-  if ($dbconnection) 
+  if ($dbconnection)
     $db = mysql_select_db($db_name);
   if (!$dbconnection || !$db) {
     echo INST_getAlertMsg($LANG_ERROR[9] . mysql_error() . '<br' . XHTML .'>' . $LANG_ERROR[10]);
@@ -140,7 +140,7 @@ if (!$error && !isset ($_REQUEST["fn"]) && $filename!="") {
 
 
 // Open the file
-if (!$error && isset($_REQUEST["start"])) { 
+if (!$error && isset($_REQUEST["start"])) {
   // Set current filename ($filename overrides $_REQUEST["fn"] if set)
   if ($filename != "")
     $curfilename = $filename;
@@ -225,7 +225,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
       // Handle DOS and Mac encoded linebreaks (I don't know if it will work on Win32 or Mac Servers)
       $dumpline=str_replace("\r\n", "\n", $dumpline);
       $dumpline=str_replace("\r", "\n", $dumpline);
-            
+
       // Skip comments and blank lines only if NOT in parents
       if (!$inparents){
         $skipline=false;
@@ -257,7 +257,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
       // Don't count the line if in parents (text fields may include unlimited linebreaks)
       if (!$inparents)
         $querylines++;
-      
+
       // Stop if query contains more lines as defined by MAX_QUERY_LINES
       if ($querylines>MAX_QUERY_LINES) {
     echo INST_getAlertMsg($LANG_BIGDUMP[14] . $linenumber . $LANG_BIGDUMP[15] . MAX_QUERY_LINES . $LANG_BIGDUMP[16]);
@@ -283,11 +283,11 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
 
   // Get the current file position
   if (!$error) {
-    if (!$gzipmode) 
+    if (!$gzipmode)
       $foffset = ftell($file);
     else
       $foffset = gztell($file);
-    if (!$foffset) { 
+    if (!$foffset) {
       echo INST_getAlertMsg($LANG_BIGDUMP[20]);
       $error = true;
     }
@@ -295,12 +295,12 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
 
 // Print statistics
 
-  if (!$error) { 
+  if (!$error) {
     $lines_this   = $linenumber-$_REQUEST["start"];
     $lines_done   = $linenumber-1;
     $lines_togo   = ' ? ';
     $lines_tota   = ' ? ';
-    
+
     $queries_this = $queries;
     $queries_done = $totalqueries;
     $queries_togo = ' ? ';
@@ -312,7 +312,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
     $kbytes_done  = round($bytes_done/1024,2);
     $mbytes_this  = round($kbytes_this/1024,2);
     $mbytes_done  = round($kbytes_done/1024,2);
-   
+
     if (!$gzipmode) {
       $bytes_togo  = $filesize-$foffset;
       $bytes_tota  = $filesize;
@@ -320,17 +320,17 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
       $kbytes_tota = round($bytes_tota/1024,2);
       $mbytes_togo = round($kbytes_togo/1024,2);
       $mbytes_tota = round($kbytes_tota/1024,2);
-      
+
       $pct_this   = ceil($bytes_this/$filesize*100);
       $pct_done   = ceil($foffset/$filesize*100);
       $pct_togo   = 100 - $pct_done;
       $pct_tota   = 100;
 
-      if ($bytes_togo==0) 
-      { $lines_togo   = '0'; 
-        $lines_tota   = $linenumber-1; 
-        $queries_togo = '0'; 
-        $queries_tota = $totalqueries; 
+      if ($bytes_togo==0)
+      { $lines_togo   = '0';
+        $lines_tota   = $linenumber-1;
+        $queries_togo = '0';
+        $queries_tota = $totalqueries;
       }
 
       $pct_bar    = "<div style=\"height:15px;width:$pct_done%;background-color:#000080;margin:0px;\"></div>";
@@ -341,22 +341,22 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
       $kbytes_tota = ' ? ';
       $mbytes_togo = ' ? ';
       $mbytes_tota = ' ? ';
-      
+
       $pct_this    = ' ? ';
       $pct_done    = ' ? ';
       $pct_togo    = ' ? ';
       $pct_tota    = 100;
       $pct_bar     = str_replace(' ','&nbsp;','<tt>[         ' . $LANG_BIGDUMP[21] . '          ]</tt>');
     }
-    
+
     echo '
         <table width="650" border="0" cellpadding="3" cellspacing="1">
         <tr><th align="left" width="125">' . $LANG_BIGDUMP[22] . ': ' . $pct_done . '%</th><td colspan="4">' . $pct_bar . '</td></tr>
         </table><br' . XHTML . '>' . LB;
 
     // Finish message and restart the script
-    if ($linenumber<$_REQUEST["start"]+$linespersession) { 
-    
+    if ($linenumber<$_REQUEST["start"]+$linespersession) {
+
         echo INST_getAlertMsg($LANG_BIGDUMP[23], 'success');
         /*** Go back to Geeklog installer ***/
         echo ("<script language=\"JavaScript\" type=\"text/javascript\">window.setTimeout('location.href=\""
@@ -365,8 +365,8 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
             . '&site_url=' . $_REQUEST['site_url']
             . '&site_admin_url=' . $_REQUEST['site_admin_url'] . "\";',3000);</script>\n");
 
-    } else { 
-    
+    } else {
+
         if ($delaypersession != 0) {
             echo '<p><b>' . $LANG_BIGDUMP[24] . $delaypersession . $LANG_BIGDUMP[25] . LB;
         }

@@ -57,22 +57,22 @@ $_CONF_VALIDATE['Core']['site_mail'] = array('rule' => 'email');
 $_CONF_VALIDATE['Core']['noreply_mail'] = array('rule' => 'email');
 $_CONF_VALIDATE['Core']['mail_settings[backend]'] = array(
     'rule' => array('inList', array('smtp', 'sendmail', 'mail')),
-    'message' => isset($LANG_VALIDATION['mail_settings_backend']) ? 
+    'message' => isset($LANG_VALIDATION['mail_settings_backend']) ?
                  $LANG_VALIDATION['mail_settings_backend'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['mail_settings[sendmail_path]'] = array(
     'rule' => 'mail_settings_sendmail_path',
-    'message' => isset($LANG_VALIDATION['mail_settings_sendmail_path']) ? 
+    'message' => isset($LANG_VALIDATION['mail_settings_sendmail_path']) ?
                  $LANG_VALIDATION['mail_settings_sendmail_path'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['mail_settings[host]'] = array(
     'rule' => 'url',
-    'message' => isset($LANG_VALIDATION['mail_settings_host']) ? 
+    'message' => isset($LANG_VALIDATION['mail_settings_host']) ?
                  $LANG_VALIDATION['mail_settings_host'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['mail_settings[port]'] = array(
     'rule' => array('range', 0, 65535),
-    'message' => isset($LANG_VALIDATION['mail_settings_port']) ? 
+    'message' => isset($LANG_VALIDATION['mail_settings_port']) ?
                  $LANG_VALIDATION['mail_settings_port'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['mail_settings[auth]'] = array('rule' => 'boolean');
@@ -86,7 +86,7 @@ $_CONF_VALIDATE['Core']['backend'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['rdf_file'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['rdf_limit'] = array(
     'rule' => 'rdf_limit',
-    'message' => isset($LANG_VALIDATION['rdf_limit']) ? 
+    'message' => isset($LANG_VALIDATION['rdf_limit']) ?
                  $LANG_VALIDATION['rdf_limit'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['rdf_storytext'] = array('rule' => 'numeric');
@@ -102,37 +102,37 @@ $_CONF_VALIDATE['Core']['comment_feeds_comment_author_tag'] = array('rule' => 's
 /* Subgroup Site, Tab Paths */
 $_CONF_VALIDATE['Core']['path_html'] = array(
     'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ? 
+    'message' => isset($LANG_VALIDATION['path']) ?
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['path_log'] = array(
     'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ? 
+    'message' => isset($LANG_VALIDATION['path']) ?
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['path_language'] = array(
     'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ? 
+    'message' => isset($LANG_VALIDATION['path']) ?
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['backup_path'] = array(
     'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ? 
+    'message' => isset($LANG_VALIDATION['path']) ?
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['path_data'] = array(
     'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ? 
+    'message' => isset($LANG_VALIDATION['path']) ?
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['path_images'] = array(
     'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ? 
+    'message' => isset($LANG_VALIDATION['path']) ?
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['path_editors'] = array(
     'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ? 
+    'message' => isset($LANG_VALIDATION['path']) ?
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 
@@ -140,7 +140,7 @@ $_CONF_VALIDATE['Core']['path_editors'] = array(
 $_CONF_VALIDATE['Core']['have_pear'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['path_pear'] = array(
     'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ? 
+    'message' => isset($LANG_VALIDATION['path']) ?
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 
@@ -148,7 +148,7 @@ $_CONF_VALIDATE['Core']['path_pear'] = array(
 $_CONF_VALIDATE['Core']['allow_mysqldump'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['mysqldump_path'] = array(
     'rule' => 'file',
-    'message' => isset($LANG_VALIDATION['file']) ? 
+    'message' => isset($LANG_VALIDATION['file']) ?
                  $LANG_VALIDATION['file'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['mysqldump_filename_mask'] = array('rule' => 'notEmpty');
@@ -157,12 +157,12 @@ $_CONF_VALIDATE['Core']['mysqldump_filename_mask'] = array('rule' => 'notEmpty')
 $_CONF_VALIDATE['Core']['search_style'] = array('rule' => array('inList', array('google', 'table'), true));
 $_CONF_VALIDATE['Core']['search_limits'] = array(
     'rule' => 'search_limits',
-    'message' => isset($LANG_VALIDATION['search_limits']) ? 
+    'message' => isset($LANG_VALIDATION['search_limits']) ?
                  $LANG_VALIDATION['search_limits'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['num_search_results'] = array(
     'rule' => 'num_search_results',
-    'message' => isset($LANG_VALIDATION['num_search_results']) ? 
+    'message' => isset($LANG_VALIDATION['num_search_results']) ?
                  $LANG_VALIDATION['num_search_results'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['search_show_limit'] = array('rule' => 'boolean');
@@ -210,7 +210,7 @@ $_CONF_VALIDATE['Core']['related_topics'] = array(
 $_CONF_VALIDATE['Core']['related_topics_max'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['whats_related'] = array(
     'rule' => array('inList', array(0, 1, 2, 3), false)
-);    
+);
 $_CONF_VALIDATE['Core']['whats_related_max'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['whats_related_trim'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['default_cache_time_article'] = array('rule' => 'numeric');
@@ -239,7 +239,7 @@ $_CONF_VALIDATE['Core']['ping_enabled'] = array('rule' => 'boolean');
 /* Subgroup Theme, Tab Theme */
 $_CONF_VALIDATE['Core']['theme'] = array(
     'rule' => 'theme',
-    'message' => isset($LANG_VALIDATION['theme']) ? 
+    'message' => isset($LANG_VALIDATION['theme']) ?
                  $LANG_VALIDATION['theme'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['doctype'] = array(
@@ -249,7 +249,7 @@ $_CONF_VALIDATE['Core']['doctype'] = array(
 );
 $_CONF_VALIDATE['Core']['path_themes'] = array(
     'rule' => 'path_themes',
-    'message' => isset($LANG_VALIDATION['path_themes']) ? 
+    'message' => isset($LANG_VALIDATION['path_themes']) ?
                  $LANG_VALIDATION['path_themes'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['cache_templates'] = array('rule' => 'boolean');
@@ -346,7 +346,7 @@ $_CONF_VALIDATE['Core']['login_speedlimit'] = array('rule' => 'numeric');
 /* Subgroup User and Submissions, Tab Login Settings, Fieldset Password */
 $_CONF_VALIDATE['Core']['pass_alg'] = array(
     'rule' => 'hash_function',
-    'message' => isset($LANG_VALIDATION['hash']) ? 
+    'message' => isset($LANG_VALIDATION['hash']) ?
                  $LANG_VALIDATION['hash'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['pass_stretch'] = array('rule' => array('comparison', '>', 0));
@@ -395,12 +395,12 @@ $_CONF_VALIDATE['Core']['image_lib'] = array(
 );
 $_CONF_VALIDATE['Core']['path_to_mogrify'] = array(
     'rule' => 'path_to_mogrify',
-    'message' => isset($LANG_VALIDATION['path_to_mogrify']) ? 
+    'message' => isset($LANG_VALIDATION['path_to_mogrify']) ?
                  $LANG_VALIDATION['path_to_mogrify'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['path_to_netpbm'] = array(
     'rule' => 'path_to_netpbm',
-    'message' => isset($LANG_VALIDATION['path_to_netpbm']) ? 
+    'message' => isset($LANG_VALIDATION['path_to_netpbm']) ?
                  $LANG_VALIDATION['path_to_netpbm'] : $LANG_VALIDATION['default']
 );
 
@@ -436,7 +436,7 @@ $_CONF_VALIDATE['Core']['gravatar_rating'] = array(
 /* Subgroup Language, Tab Language */
 $_CONF_VALIDATE['Core']['language'] = array(
     'rule' => 'language',
-    'message' => isset($LANG_VALIDATION['language']) ? 
+    'message' => isset($LANG_VALIDATION['language']) ?
                  $LANG_VALIDATION['language'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['allow_user_language'] = array('rule' => 'boolean');
@@ -456,18 +456,18 @@ $_CONF_VALIDATE['Core']['hour_mode'] = array(
 );
 $_CONF_VALIDATE['Core']['thousand_separator'] = array(
     'rule' => 'single_char',
-    'message' => isset($LANG_VALIDATION['single_char']) ? 
+    'message' => isset($LANG_VALIDATION['single_char']) ?
                  $LANG_VALIDATION['single_char'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['decimal_separator'] = array(
     'rule' => 'single_char',
-    'message' => isset($LANG_VALIDATION['single_char']) ? 
+    'message' => isset($LANG_VALIDATION['single_char']) ?
                  $LANG_VALIDATION['single_char'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['decimal_count'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['timezone'] = array(
     'rule' => 'timezone',
-    'message' => isset($LANG_VALIDATION['timezone']) ? 
+    'message' => isset($LANG_VALIDATION['timezone']) ?
                  $LANG_VALIDATION['timezone'] : $LANG_VALIDATION['default']
 );
 
@@ -497,7 +497,7 @@ $_CONF_VALIDATE['Core']['frame_options'] = array(
 );
 $_CONF_VALIDATE['Core']['page_navigation_max_pages'] = array(
     'rule' => array('range', 2, 21),
-    'message' => isset($LANG_VALIDATION['page_navigation_max_pages']) ? 
+    'message' => isset($LANG_VALIDATION['page_navigation_max_pages']) ?
                  $LANG_VALIDATION['page_navigation_max_pages'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['default_cache_time_block'] = array('rule' => 'numeric');

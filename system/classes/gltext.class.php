@@ -403,7 +403,7 @@ class GLText
     }
 
     /**
-     * Callback funtion for escapes all special characters within a 
+     * Callback funtion for escapes all special characters within a
      * [code] ... [/code] section.
      *
      * @param   string  $str  the code section to encode

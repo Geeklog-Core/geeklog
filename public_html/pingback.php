@@ -216,8 +216,8 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
     }
 
     if (isset ($_CONF['notification']) &&
-            in_array ('pingback', $_CONF['notification'])) {                  
-        TRB_sendNotificationEmail ($saved, 'pingback');                               
+            in_array ('pingback', $_CONF['notification'])) {
+        TRB_sendNotificationEmail ($saved, 'pingback');
     }
 
     return new XML_RPC_Response (new XML_RPC_Value ($PNB_ERROR['success']));

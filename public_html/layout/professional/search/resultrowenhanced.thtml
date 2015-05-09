@@ -1,5 +1,5 @@
                                 <tr>
-                                	<td>
+                                    <td>
                                         <table width="100%">
                                             {data_cols}
                                         </table>

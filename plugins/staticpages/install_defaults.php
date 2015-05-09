@@ -112,7 +112,7 @@ $_SP_DEFAULT['include_search_PHP'] = 0;
 // The maximum number of items displayed when an Atom feed is requested
 $_SP_DEFAULT['atom_max_items'] = 10;
 
-// Display Meta Tags for static pages (1 = show, 0 = don't) 
+// Display Meta Tags for static pages (1 = show, 0 = don't)
 $_SP_DEFAULT['meta_tags'] = 0;
 
 // Whether to enable (0) or disable (-1) comments by default
@@ -203,7 +203,7 @@ function plugin_initconfig_staticpages()
         $c->add('draft_flag', $_SP_DEFAULT['draft_flag'], 'select',
                 0, 0, 0, 127, true, 'staticpages', 0);
         $c->add('disable_breadcrumbs_staticpages', $_SP_DEFAULT['disable_breadcrumbs_staticpages'], 'select',
-                0, 0, 0, 128, true, 'staticpages', 0);        
+                0, 0, 0, 128, true, 'staticpages', 0);
         $c->add('default_cache_time', $_SP_DEFAULT['default_cache_time'], 'text',
                 0, 0, null, 129, true, 'staticpages', 0);
 
@@ -218,8 +218,8 @@ function plugin_initconfig_staticpages()
         $c->add('includecenterblocks',$_SP_DEFAULT['include_centerblocks'],'select',
                 0, 1, 0, 40, TRUE, 'staticpages', 1);
         $c->add('includephp',$_SP_DEFAULT['include_PHP'],'select',
-                0, 1, 0, 50, TRUE, 'staticpages', 1);        
-        
+                0, 1, 0, 50, TRUE, 'staticpages', 1);
+
         $c->add('tab_search', NULL, 'tab', 0, 2, NULL, 0, true, 'staticpages', 2);
         $c->add('fs_search', NULL, 'fieldset', 0, 2, NULL, 0, true, 'staticpages', 2);
         $c->add('includesearch', $_SP_DEFAULT['include_search'], 'select',
@@ -227,19 +227,19 @@ function plugin_initconfig_staticpages()
         $c->add('includesearchcenterblocks',$_SP_DEFAULT['include_search_centerblocks'],'select',
                 0, 2, 0, 20, TRUE, 'staticpages', 2);
         $c->add('includesearchphp',$_SP_DEFAULT['include_search_PHP'],'select',
-                0, 2, 0, 30, TRUE, 'staticpages', 2);   
-        
+                0, 2, 0, 30, TRUE, 'staticpages', 2);
+
         $c->add('tab_permissions', NULL, 'tab', 0, 3, NULL, 0, true, 'staticpages', 3);
         $c->add('fs_permissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'staticpages', 3);
         $c->add('default_permissions', $_SP_DEFAULT['default_permissions'],'@select',
                 0, 3, 12, 130, true, 'staticpages', 3);
-        
+
         $c->add('tab_autotag_permissions', NULL, 'tab', 0, 10, NULL, 0, true, 'staticpages', 10);
         $c->add('fs_autotag_permissions', NULL, 'fieldset', 0, 10, NULL, 0, true, 'staticpages', 10);
-        $c->add('autotag_permissions_staticpage', $_SP_DEFAULT['autotag_permissions_staticpage'], '@select', 
-                0, 10, 13, 10, true, 'staticpages', 10);       
-        $c->add('autotag_permissions_staticpage_content', $_SP_DEFAULT['autotag_permissions_staticpage_content'], '@select', 
-                0, 10, 13, 10, true, 'staticpages', 10);          
+        $c->add('autotag_permissions_staticpage', $_SP_DEFAULT['autotag_permissions_staticpage'], '@select',
+                0, 10, 13, 10, true, 'staticpages', 10);
+        $c->add('autotag_permissions_staticpage_content', $_SP_DEFAULT['autotag_permissions_staticpage_content'], '@select',
+                0, 10, 13, 10, true, 'staticpages', 10);
     }
 
     return true;

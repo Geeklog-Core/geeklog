@@ -55,7 +55,7 @@ $downloader->setAllowedExtensions(array('gif'  => 'image/gif',
                                         'png'  => 'image/x-png'
                                        )
                                  );
-                                 
+
 COM_setArgNames(array('mode', 'image'));
 $mode  = COM_applyFilter(COM_getArgument('mode'));
 $image = COM_applyFilter(COM_getArgument('image'));

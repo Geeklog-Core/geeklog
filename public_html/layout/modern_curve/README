@@ -75,10 +75,10 @@ would also need to add to the array in the fuction theme_config_your_theme_name
     +trackback
     +users
     +css ------------------- CSS
-    | |                        
+    | |
     | |
     | +plugin -------------- for Plugins
-    |  |                       
+    |  |
     |  +forum.css ---------- for Forum Plugin
     |
     +images ---------------- Images

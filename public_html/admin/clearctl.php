@@ -36,7 +36,7 @@ if (!SEC_inGroup ('Root')) {
     $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the clear cache.");
     COM_output($display);
-    exit;    
+    exit;
 }
 
 /*

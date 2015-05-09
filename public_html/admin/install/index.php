@@ -174,7 +174,7 @@ function INST_installEngine($install_type, $install_step)
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[43] . ' ' . INST_helpLink('db_prefix') . '</label> <input type="text" name="db_prefix" value="' . htmlspecialchars($db_prefix) . '" size="20"' . XHTML . '></p>
 
             <br' . XHTML . '>
-            <h2>' . $LANG_INSTALL[44] . '</h2> 
+            <h2>' . $LANG_INSTALL[44] . '</h2>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . htmlspecialchars($site_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[48] . ' ' . INST_helpLink('site_mail') . '</label> <input type="text" name="site_mail" value="' . htmlspecialchars($site_mail) . '" size="50"' . XHTML . '></p>
@@ -228,13 +228,13 @@ function INST_installEngine($install_type, $install_step)
                      . $LANG_INSTALL[107] . '</p>'
                      . INST_showReturnFormData($_POST) . LB;
         // Check if we can connect to the database
-        } else if (!INST_dbConnect($DB)) { 
+        } else if (!INST_dbConnect($DB)) {
             $display .= '<h2>' . $LANG_INSTALL[54] . '</h2><p>'
                      . $LANG_INSTALL[55] . '</p>'
                      . INST_showReturnFormData($_POST) . LB;
 
         // Check if the user's version of MySQL is out of date
-        } else if (INST_mysqlOutOfDate($DB)) { 
+        } else if (INST_mysqlOutOfDate($DB)) {
 
             $myv = mysql_v($DB['host'], $DB['user'], $DB['pass']);
             $display .= '<h1>' . sprintf($LANG_INSTALL[51], SUPPORTED_MYSQL_VER)
@@ -392,8 +392,8 @@ function INST_installEngine($install_type, $install_step)
     case 3:
 
         $gl_path        = str_replace('db-config.php', '', $dbconfig_path);
-        $install_plugins= ((isset($_REQUEST['install_plugins']) && !empty($_REQUEST['install_plugins'])) 
-                            ? true 
+        $install_plugins= ((isset($_REQUEST['install_plugins']) && !empty($_REQUEST['install_plugins']))
+                            ? true
                             : false);
         $next_link      = ($install_plugins
                             ? 'install-plugins.php?language=' . $language
@@ -425,7 +425,7 @@ function INST_installEngine($install_type, $install_step)
                 if($_DB_dbms=='pgsql')
                 {
                     //Create a func to check if plpgsql is already installed
-                    DB_query("CREATE OR REPLACE FUNCTION make_plpgsql() 
+                    DB_query("CREATE OR REPLACE FUNCTION make_plpgsql()
                     RETURNS VOID LANGUAGE SQL AS $$
                     CREATE LANGUAGE plpgsql;
                     $$;
@@ -435,19 +435,19 @@ function INST_installEngine($install_type, $install_step)
                         THEN NULL
                         ELSE make_plpgsql() END;");
                     //Create a function to check if table exists
-                    DB_query("CREATE OR REPLACE FUNCTION check_table(varchar, varchar) 
-                        RETURNS boolean AS $$ 
-                         DECLARE 
-                           v_cnt integer; 
-                           v_tbl boolean; 
-                         BEGIN 
-                           SELECT count(1) INTO v_cnt FROM pg_tables where tablename = $1 and 
-                        schemaname = $2; 
-                            IF v_cnt > 0 THEN 
-                             v_tbl = 'true'; 
-                            END IF; 
-                        return v_tbl; 
-                        END; 
+                    DB_query("CREATE OR REPLACE FUNCTION check_table(varchar, varchar)
+                        RETURNS boolean AS $$
+                         DECLARE
+                           v_cnt integer;
+                           v_tbl boolean;
+                         BEGIN
+                           SELECT count(1) INTO v_cnt FROM pg_tables where tablename = $1 and
+                        schemaname = $2;
+                            IF v_cnt > 0 THEN
+                             v_tbl = 'true';
+                            END IF;
+                        return v_tbl;
+                        END;
                         $$ LANGUAGE 'plpgsql'");
                 }
 
@@ -645,8 +645,8 @@ function INST_installEngine($install_type, $install_step)
                 }
                 break;
         }
-        
-        // Clear the Geeklog Cache        
+
+        // Clear the Geeklog Cache
         INST_clearCache();
 
         break;
@@ -659,8 +659,8 @@ function INST_installEngine($install_type, $install_step)
         INST_pluginUpgrades();
 
         $install_plugins = ((isset($_GET['install_plugins']) &&
-                                !empty($_GET['install_plugins'])) 
-                         ? true 
+                                !empty($_GET['install_plugins']))
+                         ? true
                          : false);
 
         if (! $install_plugins) {
@@ -1029,7 +1029,7 @@ if (INST_phpOutOfDate()) {
 
     /**
      * The script first checks the location of the db-config.php file. By default
-     * the file is located in Geeklog-1.x/ but the script will also check the 
+     * the file is located in Geeklog-1.x/ but the script will also check the
      * public_html/ directory. If the script can't find the file in either of these
      * two places, then it will ask the user to user its location.
      */
@@ -1146,7 +1146,7 @@ if (INST_phpOutOfDate()) {
                                 $_PATH['public_html/'] . 'images/_thumbs/articles/',
                                 $_PATH['public_html/'] . 'images/_thumbs/library/Image/',
                                 $_PATH['public_html/'] . 'images/_thumbs/userphotos/',
-			);
+            );
 
             if (!isset($_CONF['allow_mysqldump']) && $_DB_dbms == 'mysql') {
                 array_splice($file_list, 1, 0, $gl_path . 'backups/');
@@ -1186,7 +1186,7 @@ if (INST_phpOutOfDate()) {
                 $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[97] . '</h1>' . LB;
                 $display .= $LANG_INSTALL[110];
                 $cmd = 'chcon -Rt httpd_user_rw_content_t '.$cmd_selinux;
-                $display .= '<p class="codeblock"><code>' . $cmd . LB 
+                $display .= '<p class="codeblock"><code>' . $cmd . LB
                     . '</code></p><br ' . XHTML . '>' . LB;
                 $display_step++;
             }
@@ -1198,7 +1198,7 @@ if (INST_phpOutOfDate()) {
 
                 if (isset($_GET['install_type'])) {
                     // If the user tried to start an installation before setting file permissions
-                    $display .= '<p><div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' 
+                    $display .= '<p><div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> '
                                 . $LANG_INSTALL[21] . '</div></p>' . LB;
                 } else {
                     // The first page that is displayed during the "check_permissions" step
@@ -1212,7 +1212,7 @@ if (INST_phpOutOfDate()) {
                     . $display_permissions . '</div>' . LB
                     . '<h2 class="clearboth">' . $LANG_INSTALL[98] . '</h2>' . LB
                     . '<p>' . $LANG_INSTALL[99] . '</p>' . LB
-                    . '<p class="codeblock"><code>' . $chmod_string . LB 
+                    . '<p class="codeblock"><code>' . $chmod_string . LB
                     . '</code></p><br ' . XHTML . '>' . LB;
                 $step++;
 
@@ -1222,7 +1222,7 @@ if (INST_phpOutOfDate()) {
                 $install_type = (isset($_REQUEST['install_type']) && !empty($_REQUEST['install_type'])) ? $_REQUEST['install_type'] : null ;
 
                 // Check if the user clicked one of the install, upgrade, or migrate buttons
-                if (isset($install_type)) { 
+                if (isset($install_type)) {
 
                     // If they did, determine which method they selected
                     switch ($install_type) {
@@ -1243,7 +1243,7 @@ if (INST_phpOutOfDate()) {
                                 . '&public_html_path=' . urlencode($_PATH['public_html/'])
                                 . '&language=' . $language
                                 . '&op=' . $install_type
-                                . '&display_step=' . ($display_step+1)); 
+                                . '&display_step=' . ($display_step+1));
 
                 }
 
@@ -1296,7 +1296,7 @@ if (INST_phpOutOfDate()) {
 
         // Continue onto the install, upgrade, or migration
         switch ($_GET['op']) {
-        case 'migrate': 
+        case 'migrate':
             // migrate
             header('Location: migrate.php?'
                         . 'dbconfig_path=' . urlencode($_PATH['db-config.php'])
@@ -1305,8 +1305,8 @@ if (INST_phpOutOfDate()) {
             break;
         case $LANG_INSTALL[24] || $LANG_INSTALL[25]:
             // install or upgrade
-            header('Location: index.php?mode=' . $_GET['op'] 
-                . '&dbconfig_path=' . urlencode($_PATH['db-config.php']) 
+            header('Location: index.php?mode=' . $_GET['op']
+                . '&dbconfig_path=' . urlencode($_PATH['db-config.php'])
                 . '&language=' . $language
                 . '&display_step=' . $_REQUEST['display_step']);
             break;
@@ -1332,7 +1332,7 @@ if (INST_phpOutOfDate()) {
         }
 
         // Run the installation function
-        INST_installEngine($mode, $step); 
+        INST_installEngine($mode, $step);
 
         break;
 
@@ -1343,7 +1343,7 @@ if (INST_phpOutOfDate()) {
 $display .= '<br' . XHTML . '><br' . XHTML . '>' . LB
     . '</div>' . LB
     . '</div>' . LB
-    . '</body>' . LB 
+    . '</body>' . LB
     . '</html>';
 
 header('Content-Type: text/html; charset=' . $LANG_CHARSET);

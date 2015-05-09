@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1.0                                                               |
+// | Geeklog 2.1.0                                                             |
 // +---------------------------------------------------------------------------+
 // | oauthhelper.class.php                                                     |
 // | version: 2.1.0                                                            |
@@ -39,7 +39,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'oauthhelper.class.php') !== false)
 // http://www.phpclasses.org/package/3-PHP-HTTP-client-to-access-Web-site-pages.html
 // httpclient 1.0.2 - Updated 2014-08-14
 // No changes to file required to upgrade
-require_once 'http/http.php'; 
+require_once 'http/http.php';
 // http://www.phpclasses.org/package/7700-PHP-Authorize-and-access-APIs-using-OAuth.html
 // oauth-api 1.0.39 - Updated 2014-12-22
 // To upgrade need to update Initialize function in oauth_client.php. Replace upper case with lower case letters in case statement
@@ -61,8 +61,8 @@ class OAuthConsumer {
             $service = str_replace("oauth.", "", $service);
         }
 
-    	$this->client = new oauth_client_class;
-    	$this->client->server     = $service;
+        $this->client = new oauth_client_class;
+        $this->client->server     = $service;
         $this->client->debug      = $_SYSTEM['debug_oauth'];
         $this->client->debug_http = $_SYSTEM['debug_oauth'];
 
@@ -122,43 +122,43 @@ class OAuthConsumer {
 
     public function authenticate_user() {
         global $_SYSTEM;
-    	if ( ($success = $this->client->Initialize() ) ) {
-    		if ( ($success = $this->client->Process() ) ) {
-    			if(strlen($this->client->authorization_error)) {
-				    $this->client->error = $this->client->authorization_error;
-				    $this->error = $this->client->authorization_error;
-				    $success = false;
-			    } elseif(strlen($this->client->access_token)) {
+        if ( ($success = $this->client->Initialize() ) ) {
+            if ( ($success = $this->client->Process() ) ) {
+                if(strlen($this->client->authorization_error)) {
+                    $this->client->error = $this->client->authorization_error;
+                    $this->error = $this->client->authorization_error;
+                    $success = false;
+                } elseif(strlen($this->client->access_token)) {
                     $user = $this->get_userinfo();
                 }
-    		}
-    		$success = $this->client->Finalize($success);
-    	}
+            }
+            $success = $this->client->Finalize($success);
+        }
         if ($_SYSTEM['debug_oauth'] ) COM_errorLog($this->client->debug_output);
-    	if ($this->client->exit) {
-    		exit;
-    	}
-    	if ($success) {
-    	    return $user;
-    	}
-    	return $success;
+        if ($this->client->exit) {
+            exit;
+        }
+        if ($success) {
+            return $user;
+        }
+        return $success;
     }
 
     public function get_userinfo() {
 
          if (strlen($this->client->access_token)) {
-    	    $success = $this->client->CallAPI(
-    		    $this->api_url,
-    			'GET', $this->q_api, array('FailOnAccessError'=>true), $user);
-    	}
-   		$success = $this->client->Finalize($success);
+            $success = $this->client->CallAPI(
+                $this->api_url,
+                'GET', $this->q_api, array('FailOnAccessError'=>true), $user);
+        }
+        $success = $this->client->Finalize($success);
 
-    	if ($this->client->exit) {
-    		exit;
-    	}
-    	if ($success) {
-    	    return $user;
-    	}
+        if ($this->client->exit) {
+            exit;
+        }
+        if ($success) {
+            return $user;
+        }
     }
 
     public function setRedirectURL($url) {
@@ -345,8 +345,8 @@ class OAuthConsumer {
                     'passwd'         => '',
                     'passwd2'        => '',
                     'fullname'       => ($info->query->results->profile->givenName . ' ' . $info->query->results->profile->familyName),
-                    'homepage'       => $info->query->results->profile->profileUrl, 
-                    'remoteusername' => DB_escapeString($info->query->results->profile->guid), 
+                    'homepage'       => $info->query->results->profile->profileUrl,
+                    'remoteusername' => DB_escapeString($info->query->results->profile->guid),
                     'remoteservice'  => 'oauth.yahoo',
                     'remotephoto'    => $info->query->results->profile->image->imageUrl,
                 );
@@ -383,7 +383,7 @@ class OAuthConsumer {
 
     protected function _DBupdate_users($uid, $users) {
         global $_TABLES, $_CONF;
-        
+
         $photo = '';
 
         $sql = "UPDATE {$_TABLES['users']} SET remoteusername = '".DB_escapeString($users['remoteusername'])."', remoteservice = '".DB_escapeString($users['remoteservice'])."', status = 3 ";
@@ -397,10 +397,10 @@ class OAuthConsumer {
                     unlink($image);
                 }
                 rename($save_img, $image);
-                
+
                 $photo = $uid . $ext;
                 $img_path = $this->_handleImageResize($_CONF['path_images'] . 'userphotos/' . $photo);
-                
+
                 // If nothing returned then image resize did not go right
                 if (!empty($img_path)) {
                     if (!file_exists($img_path)) {
@@ -410,16 +410,16 @@ class OAuthConsumer {
                     USER_deletePhoto($photo, false);
                     $photo = '';
                 }
-                
+
                 $sql .= ", photo = '".DB_escapeString($photo)."'"; // update photo even if blank just incase OAuth profile picture has been removed
             }
         }
         $sql .= " WHERE uid = ".(int) $uid;
         DB_query($sql);
     }
-    
+
     protected function _saveUserPhoto($from, $to) {
-        // Use Pear HTTP Request 2 since first Facebook url to profile picture redirects to a new location 
+        // Use Pear HTTP Request 2 since first Facebook url to profile picture redirects to a new location
         $ret = '';
         require_once 'HTTP/Request2.php';
         $request = new HTTP_Request2($from, HTTP_Request2::METHOD_GET);
@@ -431,7 +431,7 @@ class OAuthConsumer {
             'max_redirects' => 5,
             'ssl_verify_peer'   => false,
             'ssl_verify_host'   => false
-        ));        
+        ));
         $request->setHeader('User-Agent', 'Geeklog/' . VERSION);
         $request->setHeader('Referer', COM_getCurrentUrl());
         $response = $request->send();
@@ -440,7 +440,7 @@ class OAuthConsumer {
             $ret = file_put_contents($to, $img);
         }
         return $ret;
-    }    
+    }
 
     protected function _getImageExt($img, $dot = true) {
         $size = @getimagesize($img);
@@ -460,16 +460,16 @@ class OAuthConsumer {
         }
         return ($dot ? '.' : '') . $ext;
     }
-    
+
     protected function _handleImageResize($to_path) {
         global $_CONF;
-        
+
         require_once ($_CONF['path_system'] . 'classes/upload.class.php');
-        
+
         // Figure out file name
         $path_parts = pathinfo($to_path);
         $filename = $path_parts['basename'];
-        
+
         $upload = new upload();
         if (!empty ($_CONF['image_lib'])) {
             if ($_CONF['image_lib'] == 'imagemagick') {
@@ -502,7 +502,7 @@ class OAuthConsumer {
         if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
             return;
         }
-        
+
         // Current path of image to resize
         $path = $_CONF['path_images'] . 'userphotos/' . $filename;
         $path_parts = pathinfo($path);
@@ -523,8 +523,8 @@ class OAuthConsumer {
         }
         $_FILES['imagefile']['size'] = filesize($_FILES['imagefile']['tmp_name'] );
         $_FILES['imagefile']['error'] = '';
-        $_FILES['imagefile']['non_upload'] = true; // Flag to bypass upload process via browser file form 
-        
+        $_FILES['imagefile']['non_upload'] = true; // Flag to bypass upload process via browser file form
+
         // do the upload
         if (!empty($filename)) {
             $upload->setFileNames($filename);
@@ -543,13 +543,13 @@ class OAuthConsumer {
                 $upload->setMaxFileSize($_CONF['max_image_size']);
             }
             $upload->uploadFiles();
-        
+
             if ($upload->areErrors()) {
-                return; 
+                return;
             }
-        }            
-            
-        return $path; // return new path and filename       
+        }
+
+        return $path; // return new path and filename
     }
 }
 

@@ -9,7 +9,7 @@
 
         <p class="message">{lang_message}</p>
 
-          <input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}>        
+          <input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}>
           <label for="loginform-loginname">{lang_username}</label>
           <div style="clear:both"></div>
           {services}

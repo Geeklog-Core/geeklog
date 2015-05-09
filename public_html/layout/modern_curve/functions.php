@@ -58,19 +58,19 @@ function theme_config_modern_curve()
 function theme_css_modern_curve()
 {
     global $_CONF, $LANG_DIRECTION;
-         
+
     /* // Sample css settings
-    return array(        
+    return array(
          array(
              'name' => 'theme', // Not required but if set to theme then will always be loaded first
-             'file' => '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION, 
+             'file' => '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION,
              'attributes' => array('media' => 'all'), // Not requred
              'priority'   => 100  // Not requred, default = 100
          )
-    );         
-     */    
+    );
+     */
 
-    // Instead of importing all files in a single css file we will load them seperately 
+    // Instead of importing all files in a single css file we will load them seperately
     // since each file needs to be processed by style.css.php for language template vars
     return array(
          array('file' => '/layout/' . $_CONF['theme'] . '/css/compatible.css', 'priority' => 1.00),
@@ -81,7 +81,7 @@ function theme_css_modern_curve()
          array('file' => '/layout/' . $_CONF['theme'] . '/css/option.css', 'priority' => 1.05),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/form.css', 'priority' => 1.06),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/story.css', 'priority' => 1.07),
-         
+
          array('file' => '/layout/' . $_CONF['theme'] . '/css/article/article.css', 'priority' => 1.08),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/comment/comment.css', 'priority' => 1.09),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/navbar/navbar.css', 'priority' => 1.10),
@@ -91,7 +91,7 @@ function theme_css_modern_curve()
          array('file' => '/layout/' . $_CONF['theme'] . '/css/submit/submit.css', 'priority' => 1.14),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/trackback/trackback.css', 'priority' => 1.15),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/users/users.css', 'priority' => 1.16),
-         
+
          array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/common.css', 'priority' => 1.17),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/block.css', 'priority' => 1.18),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/envcheck.css', 'priority' => 1.19),
@@ -104,10 +104,10 @@ function theme_css_modern_curve()
          array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/trackback.css', 'priority' => 1.26),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/user.css', 'priority' => 1.27),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/configuration.css', 'priority' => 1.28),
-         
+
          array('file' => '/layout/' . $_CONF['theme'] . '/css/plugin/japanize.css', 'priority' => 1.29),
          array('file' => '/layout/' . $_CONF['theme'] . '/css/plugin/sitecalendar.css', 'priority' => 1.30),
-         
+
          array('file' => '/layout/' . $_CONF['theme'] . '/css/tooltips/tooltips.css', 'priority' => 1.31),
     );
 }
@@ -131,7 +131,7 @@ function theme_js_libs_modern_curve()
 function theme_js_files_modern_curve()
 {
     global $_CONF;
-    
+
     return array(
        array(
             'file'      => '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js',
@@ -143,7 +143,7 @@ function theme_js_files_modern_curve()
         ),
         array(
             'file'     => '/layout/' . $_CONF['theme'] . '/javascript/search.js',
-        )        
+        )
     );
 }
 

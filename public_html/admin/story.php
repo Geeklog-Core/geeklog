@@ -126,14 +126,14 @@ function liststories($current_topic = '')
     if (empty($seltopics)) {
         $retval .= COM_showMessage(101);
         return $retval;
-    }    
+    }
     if ($current_topic == TOPIC_ALL_OPTION) {
         // Retrieve list of inherited topics
         // $tid_list = TOPIC_getChildList(TOPIC_ROOT);
-        
+
         // Retrieve list of all topics user has access to (did not do inherit way since may not see all stories has access too)
         $tid_list = TOPIC_getList(0, true, false);
-            
+
         if (empty($tid_list)) {
             $retval .= COM_showMessage(101);
             return $retval;
@@ -142,9 +142,9 @@ function liststories($current_topic = '')
     } else {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($current_topic);
-        
+
         // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
-        $excludetopics = " (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$current_topic}')))";        
+        $excludetopics = " (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$current_topic}')))";
         /*
         $seltopics = COM_topicList('tid,topic', $current_topic, 1, true);
         if (empty($seltopics)) {
@@ -188,7 +188,7 @@ function liststories($current_topic = '')
 
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
                         'text' => $LANG_ADMIN['admin_home']);
-    
+
     $form_arr = array('bottom' => '', 'top' => '');
 
     $retval .= COM_startBlock($LANG24[22], '',
@@ -206,7 +206,7 @@ function liststories($current_topic = '')
 
     $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
           ."UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} "
-          ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['stories']}.uid={$_TABLES['users']}.uid " 
+          ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['stories']}.uid={$_TABLES['users']}.uid "
           ."LEFT JOIN {$_TABLES['topic_assignments']} ta ON ta.type = 'article' AND ta.id = sid "
           ."WHERE 1=1 ";
 
@@ -220,10 +220,10 @@ function liststories($current_topic = '')
         'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
         'default_filter' => $excludetopics . COM_getPermSQL('AND')
     );
-    
+
     // Add in topic filter so it is remembered with paging
     $pagenavurl = '&amp;tid=' . $current_topic;
-    
+
     $retval .= ADMIN_list('story', 'ADMIN_getListField_stories', $header_arr,
                           $text_arr, $query_arr, $defsort_arr, $filter, '', '', $form_arr, true, $pagenavurl);
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
@@ -551,13 +551,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $story_templates->set_var('hide_meta', ' style="display:none;"');
     }
     $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
-    
+
     if ($mode == 'preview') {
         $tlist = TOPIC_getTopicSelectionControl('article', '', false, true, true);
-    } else {        
+    } else {
         $tlist = TOPIC_getTopicSelectionControl('article', $oldsid, false, true, true);
     }
-    
+
     if (empty($tlist)) {
         $display .= COM_showMessage(101);
         return $display;
@@ -572,8 +572,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     }
     $story_templates->set_var('lang_cachetime', $LANG24['cache_time']);
     $story_templates->set_var('lang_cachetime_desc', $LANG24['cache_time_desc']);
-    $story_templates->set_var('cache_time', $story->EditElements('cache_time'));    
-    
+    $story_templates->set_var('cache_time', $story->EditElements('cache_time'));
+
     $story_templates->set_var('lang_draft', $LANG24[34]);
     if ($story->EditElements('draft_flag')) {
         $story_templates->set_var('is_checked', 'checked="checked"');
@@ -668,7 +668,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $story_templates->set_var('lang_postmode', $LANG24[4]);
     $story_templates->set_var('lang_publishoptions',$LANG24[76]);
     $story_templates->set_var('noscript', COM_getNoScript(false, $LANG24[77], sprintf($LANG24[78],$_CONF['site_admin_url'], $sid)));
-    
+
     $postmode = $story->EditElements('postmode');
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         if ($story->EditElements('advanced_editor_mode') == 1 OR $story->EditElements('postmode') == 'adveditor') {
@@ -745,8 +745,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     if ($_CONF['titletoid']) {
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
         $story_templates->set_var('titletoid', true);
-    }     
-    $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');    
+    }
+    $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');
 
     // Loads jQuery UI datepicker and timepicker-addon
     $_SCRIPTS->setJavaScriptLibrary('jquery.ui.slider');
@@ -773,7 +773,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     // Setup Advanced Editor
     COM_setupAdvancedEditor('/javascript/storyeditor_adveditor.js');
-    
+
     $story_templates->set_var('saved_images', $saved_images);
     $story_templates->set_var('image_form_elements', $fileinputs);
     $story_templates->set_var('lang_hits', $LANG24[18]);
@@ -895,7 +895,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         } else if (SEC_checkToken()) {
             // Delete Topic Assignments for this submission
             TOPIC_deleteTopicAssignments('article', $sid);
-            
+
             DB_delete ($_TABLES['storysubmission'], 'sid', $sid,
                        $_CONF['site_admin_url'] . '/moderation.php');
         } else {

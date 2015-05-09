@@ -672,7 +672,7 @@ function DB_escapeString($str)
 {
     global $_DB;
 
-	return $_DB->dbEscapeString($str);
+    return $_DB->dbEscapeString($str);
 }
 
 ?>

@@ -103,7 +103,7 @@ function edittopic ($tid = '')
             return $retval;
         }
     }
-    
+
     $token = SEC_createToken();
 
     $retval .= COM_startBlock ($LANG27[1], '',
@@ -137,14 +137,14 @@ function edittopic ($tid = '')
     if ($_CONF['titletoid']) {
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
         $topic_templates->set_var('titletoid', true);
-    }    
+    }
     $topic_templates->set_var('lang_topicid', $LANG27[2]);
     $topic_templates->set_var('topic_id', $A['tid']);
-    
+
     $topic_templates->set_var('lang_parent_id', $LANG27[32]);
     $topic_templates->set_var('parent_id_options',
                               TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true));
-    
+
     $topic_templates->set_var('lang_inherit', $LANG27[33]);
     $topic_templates->set_var('lang_inherit_info', $LANG27[34]);
     if ($A['inherit'] == 1) {
@@ -152,15 +152,15 @@ function edittopic ($tid = '')
     } else {
         $topic_templates->set_var ('inherit_checked', '');
     }
-    
+
     $topic_templates->set_var('lang_hidden', $LANG27[35]);
     $topic_templates->set_var('lang_hidden_info', $LANG27[36]);
     if ($A['hidden'] == 1) {
         $topic_templates->set_var ('hidden_checked', 'checked="checked"');
     } else {
         $topic_templates->set_var ('hidden_checked', '');
-    }    
-    
+    }
+
     $topic_templates->set_var('lang_donotusespaces', $LANG27[5]);
     $topic_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $topic_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -367,13 +367,13 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $tid = COM_sanitizeID($tid);
-    
+
     // Check if tid is a restricted name
     $restricted_tid = false;
     if (!strcasecmp($tid, TOPIC_ALL_OPTION) || !strcasecmp($tid, TOPIC_NONE_OPTION) || !strcasecmp($tid, TOPIC_HOMEONLY_OPTION) || !strcasecmp($tid, TOPIC_SELECTED_OPTION) || !strcasecmp($tid, TOPIC_ROOT)) {
         $restricted_tid = true;
     }
-    
+
     // Check if tid is used by another topic
     $duplicate_tid = false;
     $old_tid = '';
@@ -390,24 +390,24 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
         } else {
             if (!strcasecmp($tid, DB_getItem($_TABLES['topics'], 'tid', "tid = '$tid'"))) {
                 $duplicate_tid = true;
-            }            
+            }
         }
     }
-    
+
     // Make sure parent id exists
     $parent_id_found = false;
     if ($parent_id == DB_getItem($_TABLES['topics'], 'tid', "tid = '$parent_id'") || $parent_id == TOPIC_ROOT) {
         $parent_id_found = true;
-    
-    }    
-    
+
+    }
+
     // Check if parent archive topic, if so bail
     $archive_parent = false;
-    $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');    
+    $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');
     if ($parent_id == $archive_tid) {
         $archive_parent = true;
     }
-    
+
     // If archive topic, make sure no child topics else bail
     $archive_child = false;
     $is_archive = ($is_archive == 'on') ? 1 : 0;
@@ -416,8 +416,8 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $archive_child = true;
         }
     }
-    
-    
+
+
     $access = 0;
     if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
         $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$tid}'");
@@ -446,7 +446,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $in_Group = SEC_inGroup($A['group_id']);
         } else {
             $access = 3;
-            $in_Group = true; 
+            $in_Group = true;
         }
         if (($access < 3) || !$in_Group) {
             $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
@@ -460,29 +460,29 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $topic = DB_escapeString(strip_tags($topic));
             $meta_description = DB_escapeString(strip_tags($meta_description));
             $meta_keywords = DB_escapeString(strip_tags($meta_keywords));
-    
+
             if ($is_default == 'on') {
                 $is_default = 1;
                 DB_query ("UPDATE {$_TABLES['topics']} SET is_default = 0 WHERE is_default = 1");
             } else {
                 $is_default = 0;
             }
-    
+
             if ($is_archive) {
                 // $tid is the archive topic
                 // - if it wasn't already, mark all its stories "archived" now
                 if ($archive_tid != $tid) {
-                    $sql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta 
+                    $sql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
                             SET s.featured = 0, s.frontpage = 0, s.statuscode = " . STORY_ARCHIVE_ON_EXPIRE . "
                             WHERE ta.type = 'article' AND ta.tid = '$tid' AND ta.id = s.sid";
                     DB_query($sql);
-                    
+
                     $sql = "UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1";
                     DB_query($sql);
                 }
-                
+
                 // Set hidden and inherit to false since archive topic now
-                $inherit = ''; 
+                $inherit = '';
                 $hidden = '';
             } else {
                 // $tid is not the archive topic
@@ -492,44 +492,44 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                             SET s.statuscode = 0
                             WHERE ta.type = 'article' AND ta.tid = '$tid' AND ta.id = s.sid";
                     DB_query($sql);
-                    
+
                     $sql = "UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1";
                     DB_query($sql);
                 }
             }
-            
+
             $inherit = ($inherit == 'on') ? 1 : 0;
-            
+
             $hidden = ($hidden == 'on') ? 1 : 0;
             // Cannot hide root topics so switch if needed
             if ($parent_id == TOPIC_ROOT && $hidden == 1) {
                 $hidden = 0;
             }
-            
+
             // If not a new topic and id change then...
             if (!empty($old_tid)) {
                 if ($tid != $old_tid) {
                     changetopicid($tid, $old_tid);
-    
+
                     $old_tid = DB_escapeString($old_tid);
                     DB_delete($_TABLES['topics'], 'tid', $old_tid);
                 }
             }
-    
+
             DB_save($_TABLES['topics'],'tid, topic, inherit, hidden, parent_id, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', $inherit, $hidden, '$parent_id', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
-    
+
             if ($old_tid != $tid) {
                 PLG_itemSaved($tid, 'topic', $old_tid);
             } else {
                 PLG_itemSaved($tid, 'topic');
             }
-            
+
             // Reorder Topics, Delete topic cache and reload topic tree
-            reorderTopics(); 
-            
+            reorderTopics();
+
             // update feed(s)
             COM_rdfUpToDateCheck('article', $tid);
-    
+
             $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
         } elseif ($restricted_tid) {
             $retval .= COM_errorLog($LANG27[31], 2);
@@ -658,16 +658,16 @@ function reorderTopics()
         }
     }
 
-    // Delete topic cache info since topics have changed    
+    // Delete topic cache info since topics have changed
     $cacheInstance = 'topicsblock__';
-    CACHE_remove_instance($cacheInstance);   
+    CACHE_remove_instance($cacheInstance);
 
     $cacheInstance = 'topic_tree__';
     CACHE_remove_instance($cacheInstance);
-    
+
     // Update Topics Array to reflect any changes since not sure what is called after
     $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
-    
+
 }
 
 /**
@@ -706,12 +706,12 @@ function moveTopics($tid, $where)
     }
 
     DB_query("UPDATE {$_TABLES['topics']} SET sortnum = $order WHERE tid = '$tid'");
-    
+
     PLG_itemSaved($tid, 'topic');
-    
+
     // Reorder Topics, Delete topic cache and reload topic tree
-    reorderTopics(); 
-    
+    reorderTopics();
+
 }
 
 /**
@@ -739,7 +739,7 @@ function deleteTopic ($tid)
 
     // same with feeds
     DB_query ("UPDATE {$_TABLES['syndication']} SET topic = '::all', is_enabled = 0 WHERE topic = '$tid'");
-    
+
     // Need to cycle through stories from topic
     // Only delete story if only this one topic
     // Make sure to check if this topic is default for story. If is make another topic default.
@@ -754,18 +754,18 @@ function deleteTopic ($tid)
     $object_type[$_TABLES['blocks']] = 'block';
 
     foreach ($object_tables as $object_table) {
-        $sql = "SELECT {$object_tables_id[$object_table]}, ta.tdefault  
-            FROM $object_table, {$_TABLES['topic_assignments']} ta  
+        $sql = "SELECT {$object_tables_id[$object_table]}, ta.tdefault
+            FROM $object_table, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = '{$object_type[$object_table]}' AND ta.id = {$object_tables_id[$object_table]} AND ta.tid = '$tid'";
         $result = DB_query ($sql);
         $numStories = DB_numRows($result);
         for ($i = 0; $i < $numStories; $i++) {
             $A = DB_fetchArray($result);
-            
+
             // Now check if another topic exists for this story
-            $sql = "SELECT {$object_tables_id[$object_table]}, ta.tid 
-                FROM $object_table, {$_TABLES['topic_assignments']} ta  
-                WHERE ta.type = '{$object_type[$object_table]}' AND ta.id = {$object_tables_id[$object_table]}  
+            $sql = "SELECT {$object_tables_id[$object_table]}, ta.tid
+                FROM $object_table, {$_TABLES['topic_assignments']} ta
+                WHERE ta.type = '{$object_type[$object_table]}' AND ta.id = {$object_tables_id[$object_table]}
                 AND ta.tid <> '$tid' AND {$object_tables_id[$object_table]} = '{$A[$object_tables_id[$object_table]]}'";
             $resultB = DB_query($sql);
             $numTopics = DB_numRows($resultB);
@@ -777,37 +777,37 @@ function deleteTopic ($tid)
                                                     array($A['sid'], 'article'));
                     DB_delete($_TABLES['trackback'], array('sid', 'type'),
                                                      array($A['sid'], 'article'));
-                    
+
                     if ($object_table == $_TABLES['stories']) {
                         PLG_itemDeleted($A['sid'], 'article');
                     }
                 }
-                  
+
                 DB_delete($object_table, $object_tables_id[$object_table], $A[$object_tables_id[$object_table]]);
             } else {
                 // Story still exists for other topics so make sure one is default
                 if ($object_table == $_TABLES['stories'] || $object_table == $_TABLES['storysubmission']) {
                     if ($A['tdefault'] == 1) {
                         $B = DB_fetchArray($resultB);
-                        
+
                         $sql = "UPDATE {$_TABLES['topic_assignments']} SET tdefault = 1 WHERE type = 'article' AND tid = '{$B['tid']}' AND id = '{$B['sid']}'";
-                        DB_query($sql);                
+                        DB_query($sql);
                     }
                 }
             }
         }
     }
-    
+
     // Notify of Delete topic so other plugins can deal with their items without topics
     PLG_itemDeleted($tid, 'topic');
-    
+
     // delete these
     DB_delete($_TABLES['topic_assignments'], 'tid', $tid);
     DB_delete($_TABLES['topics'], 'tid', $tid);
 
     // Reorder Topics, Delete topic cache and reload topic tree
-    reorderTopics(); 
-    
+    reorderTopics();
+
     // update feed(s)
     COM_rdfUpToDateCheck('article');
 
@@ -971,7 +971,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset($_POST['parent_id'])) {
         $parent_id = COM_applyFilter($_POST['parent_id']);
     }
-    
+
     $sortnum = 0;
     if (isset($_POST['sortnum'])) {
         $sortnum = COM_applyFilter($_POST['sortnum'], true);
@@ -998,7 +998,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 } elseif ($mode == 'change_sortnum' && SEC_checkToken()) {
     $display .= COM_showMessageFromParameter();
     moveTopics(COM_applyFilter($_GET['tid']), COM_applyFilter($_GET['where']));
-    
+
     $display .= listTopics(SEC_createToken());
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
 

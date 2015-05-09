@@ -29,7 +29,7 @@
         </li>
       </ul>
     </fieldset>
-  </form>                               
+  </form>
 {end_block}
 
 <!-- } users/registrationform.thtml -->

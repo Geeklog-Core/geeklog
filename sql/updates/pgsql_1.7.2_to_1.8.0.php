@@ -72,19 +72,19 @@ function update_UsersFor180()
 
     require_once $_CONF['path_system'] . 'lib-security.php';
     require_once $_CONF['path_system'] . 'lib-user.php';
-    
+
     $passwords = array();
-    
+
     $sql = "SELECT uid FROM {$_TABLES['users']} WHERE (remoteservice IS NOT NULL OR remoteservice != '') AND passwd = ''";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
     for($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        
+
         $passwd = null;
         SEC_updateUserPassword($passwd, $A['uid']);
-    }    
+    }
 
 }
 
@@ -95,7 +95,7 @@ function update_UsersFor180()
 function update_ConfigSecurityFor180()
 {
     global $_TABLES;
-    
+
     // Add in security rights for Configuration Admins
     $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                             "grp_name = 'Configuration Admin'");
@@ -103,7 +103,7 @@ function update_ConfigSecurityFor180()
     if ($group_id > 0) {
         // Assign Config Group to Root Group
         DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ($group_id,NULL,1)");
-        
+
         $ft_names[] = 'config.Core.tab_site';
         $ft_names[] = 'config.Core.tab_mail';
         $ft_names[] = 'config.Core.tab_syndication';
@@ -143,15 +143,15 @@ function update_ConfigSecurityFor180()
         $ft_names[] = 'config.Core.tab_iplookup';
         $ft_names[] = 'config.Core.tab_permissions';
         $ft_names[] = 'config.Core.tab_webservices';
-        
+
         foreach ($ft_names as $name) {
-            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");         
+            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");
             if ($ft_id > 0) {
                 $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
                 DB_query($sql);
             }
-        }        
-    }    
+        }
+    }
 
 }
 
@@ -168,7 +168,7 @@ function update_ConfValuesFor180()
     $c = config::get_instance();
 
     $me = 'Core';
-    
+
     // whosonline block
     $c->add('whosonline_photo',0,'select',3,14,0,930,TRUE,$me,14);
 
@@ -186,19 +186,19 @@ function update_ConfValuesFor180()
     $c->add('linkedin_consumer_secret','','text',4,16,NULL,355,TRUE,$me,16);
     $c->add('twitter_login',0,'select',4,16,1,356,TRUE,$me,16);
     $c->add('twitter_consumer_key','','text',4,16,NULL,357,TRUE,$me,16);
-    $c->add('twitter_consumer_secret','','text',4,16,NULL,358,TRUE,$me,16);   
-    
+    $c->add('twitter_consumer_secret','','text',4,16,NULL,358,TRUE,$me,16);
+
     // Autotag usage permissions - Use Permissions tab
     $c->add('fs_autotag_permissions', NULL, 'fieldset', 7, 41, NULL, 0, TRUE, $me, 37);
     $c->add('autotag_permissions_story', array(2, 2, 2, 2), '@select', 7, 41, 28, 1870, TRUE, $me, 37);
     $c->add('autotag_permissions_user', array(2, 2, 2, 2), '@select', 7, 41, 28, 1880, TRUE, $me, 37);
-    
+
     // JavaScript use Google CDN for jQuery
     $c->add('cdn_hosted',FALSE,'select',0,0,1,1900,TRUE, $me, 0);
-    
+
     // Owner Name Configuration
-    $c->add('owner_name','','text',0,0,NULL,1000,TRUE, $me, 0);    
-    
+    $c->add('owner_name','','text',0,0,NULL,1000,TRUE, $me, 0);
+
     // Add in all the New Tabs
     $c->add('tab_site', NULL, 'tab', 0, 0, NULL, 0, TRUE, $me, 0);
     $c->add('tab_mail', NULL, 'tab', 0, 1, NULL, 0, TRUE, $me, 1);
@@ -239,7 +239,7 @@ function update_ConfValuesFor180()
     $c->add('tab_iplookup', NULL, 'tab', 7, 36, NULL, 0, TRUE, $me, 36);
     $c->add('tab_permissions', NULL, 'tab', 7, 37, NULL, 0, TRUE, $me, 37);
     $c->add('tab_webservices', NULL, 'tab', 7, 40, NULL, 0, TRUE, $me, 40);
-    
+
     return true;
 }
 

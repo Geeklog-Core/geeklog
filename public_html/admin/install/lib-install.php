@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
@@ -33,7 +33,7 @@
 /**
  * The functionality of many of these functions already exists in other
  * Geeklog libraries. However, during the first few stages of the
- * installation either those libraries cannot be accessed or dependency 
+ * installation either those libraries cannot be accessed or dependency
  * libraries cannot be accessed.
  */
 
@@ -70,7 +70,7 @@ if (!defined('SUPPORTED_MYSQL_VER')) {
 
 $language = INST_getLanguage();
 // Include the language file
-require_once 'language/' . $language . '.php'; 
+require_once 'language/' . $language . '.php';
 
 if (empty($LANG_DIRECTION)) {
     $LANG_DIRECTION = 'ltr';
@@ -117,12 +117,12 @@ if (isset($_SERVER['CONTENT_LENGTH'])) {
     // This code is thanks to v3 AT sonic-world DOT ru via PHP.net
     $POST_MAX_SIZE = ini_get('post_max_size');
     $mul = substr($POST_MAX_SIZE, -1);
-    $mul = ($mul == 'M' 
-            ? 1048576 
-            : ( $mul == 'K' 
-                ? 1024 
-                : ( $mul == 'G' 
-                    ? 1073741824 
+    $mul = ($mul == 'M'
+            ? 1048576
+            : ( $mul == 'K'
+                ? 1024
+                : ( $mul == 'G'
+                    ? 1073741824
                     : 1 ) ) );
 
     if (($_SERVER['CONTENT_LENGTH'] > ($mul*((int)$POST_MAX_SIZE))) && $POST_MAX_SIZE) {
@@ -154,11 +154,11 @@ function INST_getHeader($mHeading)
 {
     global $LANG_CHARSET, $LANG_INSTALL, $LANG_DIRECTION;
 
-    return (defined('XHTML') 
-            ? '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' 
+    return (defined('XHTML')
+            ? '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
                 . '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">'
-            : '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' 
-                . '<html>' ) 
+            : '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'
+                . '<html>' )
         . '<head>
 <meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '"' . XHTML . '>
 <meta name="robots" content="noindex,nofollow"' . XHTML . '>
@@ -167,9 +167,9 @@ function INST_getHeader($mHeading)
 <meta http-equiv="Expires" content="-1"/>
 <link rel="stylesheet" type="text/css" href="layout/style.css"' . XHTML . '>
 <script language="javascript" type="text/javascript">
-function INST_selectMigrationType() 
+function INST_selectMigrationType()
 {
-    var myType = document.migrate.migration_type.value;  
+    var myType = document.migrate.migration_type.value;
     var migrationSelect = document.getElementById("migration-select");
     var migrationUpload = document.getElementById("migration-upload");
     var migrationUploadWarning = document.getElementById("migration-upload-warning");
@@ -225,7 +225,7 @@ function INST_getFooter()
     return '<br' . XHTML . '><br' . XHTML . '>' . LB
         . '</div>' . LB
         . '</div>' . LB
-        . '</body>' . LB 
+        . '</body>' . LB
         . '</html>';
 }
 
@@ -258,7 +258,7 @@ function INST_phpOutOfDate()
     if (($phpv[0] <  $minv[0]) ||
        (($phpv[0] == $minv[0]) && ($phpv[1] <  $minv[1])) ||
        (($phpv[0] == $minv[0]) && ($phpv[1] == $minv[1]) && ($phpv[2] < $minv[2]))) {
-        return true;    
+        return true;
     }
 
     return false;
@@ -320,7 +320,7 @@ function INST_mysqlOutOfDate($db)
 }
 
 /**
- * Written to aid in install script development 
+ * Written to aid in install script development
  *
  * NOTE:    This code is a modified copy from PHP.net
  *
@@ -329,7 +329,7 @@ function INST_mysqlOutOfDate($db)
  * @return  string          Filesize string
  *
  */
-function INST_formatSize($size, $dec_places = 0) 
+function INST_formatSize($size, $dec_places = 0)
 {
     $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
     for ($i=0; ($size > 1024 && isset($sizes[$i+1])) ; $i++) {
@@ -525,7 +525,7 @@ function INST_dbExists($db)
  * @return  boolean         True if URL exists, false if not
  *
  */
-function INST_urlExists($url) 
+function INST_urlExists($url)
 {
 /*
     $handle = curl_init($url);
@@ -551,7 +551,7 @@ function INST_urlExists($url)
  *                          returns false if no error occured
  *
  */
-function INST_getUploadError($mFile) 
+function INST_getUploadError($mFile)
 {
     global $LANG_ERROR;
 
@@ -637,7 +637,7 @@ function INST_getAlertMsg($mMessage, $mType = 'notice')
         $mType = $LANG_INSTALL[59]; break;
     }
 
-    return '<div class="notice"><span class="' . $mStyle . '">' . $mType .':</span> ' 
+    return '<div class="notice"><span class="' . $mStyle . '">' . $mType .':</span> '
         . $mMessage . '</div>' . LB;
 
 }
@@ -674,7 +674,7 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
         }
         break;
 
-    case 'mssql':    
+    case 'mssql':
         $db_handle = @mssql_connect($_DB_host, $_DB_user, $_DB_pass);
         if ($db_handle) {
             $connected = @mssql_select_db($_DB_name, $db_handle);
@@ -794,7 +794,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 
     // add plugin tables, if any
     if (! empty($inst_parms['tables'])) {
-        $tables = $inst_parms['tables'];                                       
+        $tables = $inst_parms['tables'];
         foreach ($tables as $table) {
             $_TABLES[$table] = $_DB_table_prefix . $table;
         }
@@ -902,7 +902,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
         }
     }
 
-    // Add plugin's Admin group to the Root user group 
+    // Add plugin's Admin group to the Root user group
     // (assumes that the Root group's ID is always 1)
     if (count($groups) > 0) {
         if ($verbose) {
@@ -979,7 +979,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
             PLG_uninstall($plugin);
 
             return false;
-        }   
+        }
     }
 
     if ($verbose) {
@@ -1275,7 +1275,7 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
     }
 
     foreach ($dbs as $dbname => $info) {
-        $prefix = $info['file']; 
+        $prefix = $info['file'];
         if (file_exists($gl_path . '/sql/' . $prefix . '_tableanddata.php') &&
                 file_exists($gl_path . '/system/databases/' . $prefix
                                      . '.class.php')) {
@@ -1441,7 +1441,7 @@ function INST_checkCacheDir($path,$template,$classCounter)
 /**
  * Replaces all newlines in a string with <br> or <br />,
  * depending on the detected setting.  Ported from "lib-common.php"
- * 
+ *
  * @param    string    $string  The string to modify
  * @return   string             The modified string
  */

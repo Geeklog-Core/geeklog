@@ -90,9 +90,9 @@ if (INST_phpOutOfDate()) {
 
         // If 'file_uploads' is enabled in php.ini and the plugin directories are writable by the web server.
         $upload_enabled = (ini_get('file_uploads')
-                            && is_writable($_CONF['path'] . 'plugins/') 
+                            && is_writable($_CONF['path'] . 'plugins/')
                             && is_writable($_CONF['path_html'])
-                            && is_writable(INST_getAdminPath() . 'plugins/')) 
+                            && is_writable(INST_getAdminPath() . 'plugins/'))
                                 ? true
                                 : false;
 
@@ -102,7 +102,7 @@ if (INST_phpOutOfDate()) {
 
         // Check if a plugin file was uploaded
         $upload_success = false;
-        if (isset($_FILES['plugin'])) { 
+        if (isset($_FILES['plugin'])) {
 
             if ($error_msg = INST_getUploadError($_FILES['plugin'])) { // If an error occured while uploading the file.
 
@@ -139,7 +139,7 @@ if (INST_phpOutOfDate()) {
 
                 } else {
 
-                    /** 
+                    /**
                      * Install the plugin
                      * This doesn't work if the public_html & public_html/admin/plugins directories aren't 777
                      */
@@ -173,11 +173,11 @@ if (INST_phpOutOfDate()) {
                     /**
                      * One time I wanted to install a muffler on my car and
                      * needed to match up the outside diameter of the car's
-                     * exhaust pipe to the inside diameter of the muffler. 
+                     * exhaust pipe to the inside diameter of the muffler.
                      * Unfortunately, when I went to the auto parts store they
                      * didn't have a coupling adapter that would perfectly
                      * match the two pipes, only a bunch of smaller adapters.
-                     * I ended up using about 4 small adapters to step down 
+                     * I ended up using about 4 small adapters to step down
                      * one size at a time to the size of the muffler's input.
                      *
                      * It's kind of like this regular expression:
@@ -202,7 +202,7 @@ if (INST_phpOutOfDate()) {
 
                     // Extract the uploaded archive to the plugins directory
                     if ($_FILES['plugin']['type'] == 'application/zip') {
-    
+
                         // Zip
                         $upload_success = $archive->extract(array('add_path' => $_CONF['path'] . 'plugins/'));
 
@@ -214,7 +214,7 @@ if (INST_phpOutOfDate()) {
                     }
 
                     $plg_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
-                    if ($upload_success) { 
+                    if ($upload_success) {
 
                         if (file_exists($plg_path . 'public_html')) {
                             rename($plg_path . 'public_html',
@@ -240,8 +240,8 @@ if (INST_phpOutOfDate()) {
 
             // Show the upload form
             $display .= '<br' . XHTML . '>' . LB
-                . (($upload_success) 
-                    ? '<div class="notice"><span class="success">' . $LANG_PLUGINS[7] . '</span> ' . sprintf($LANG_PLUGINS[8], $pi_name) . '</div>' 
+                . (($upload_success)
+                    ? '<div class="notice"><span class="success">' . $LANG_PLUGINS[7] . '</span> ' . sprintf($LANG_PLUGINS[8], $pi_name) . '</div>'
                     : '') . LB
                 . '<h2>' . $LANG_PLUGINS[9] . '</h2>' . LB
                 . '<form name="plugins_upload" action="install-plugins.php" method="POST" enctype="multipart/form-data">' . LB
@@ -299,12 +299,12 @@ if (INST_phpOutOfDate()) {
              */
             $fd = opendir($plugins_dir);
             while (($plugin = @readdir($fd)) == TRUE) {
-    
+
                 if (($plugin <> '.') && ($plugin <> '..') &&
                         ($plugin <> 'CVS') && (substr($plugin, 0, 1) <> '.') &&
                         (substr($plugin, 0, 1) <> '_') &&
                         is_dir($plugins_dir . $plugin)) {
-    
+
                     clearstatcache ();
                     $plugin_dir = $plugins_dir . $plugin;
 
@@ -321,7 +321,7 @@ if (INST_phpOutOfDate()) {
                         /**
                          * Make sure the plugin is installed in the correct locations
                          */
-                        // If the plugin has a public_html directory 
+                        // If the plugin has a public_html directory
                         // then it should have files in Geeklog's public_html
                         $missing_public_html = false;
                         if (file_exists($plugin_dir . '/public_html')) { // If it has a public_html
@@ -329,7 +329,7 @@ if (INST_phpOutOfDate()) {
                             if (!file_exists($_CONF['path_html'] . $plugin)) { // If it doesn't have a folder in GL's public_html
 
                                 $missing_public_html = true;
-    
+
                             }
 
                         }
@@ -371,11 +371,11 @@ if (INST_phpOutOfDate()) {
 
                         }
                         if (! $missing_admin && empty($pi_name)) {
-                        
+
                             /**
                              * Plugins keep their config info in install.php
                              */
-                            
+
                             $plugin_inst = $admin_dir . '/plugins/' . $plugin . '/install.php';
                             $fdata = '';
                             $fhandle = @fopen($plugin_inst, 'r');
@@ -405,7 +405,7 @@ if (INST_phpOutOfDate()) {
                                 $pi_display_name = preg_replace('/\'.*$/', '', $pi_display_name);
 
                             } else {
-                            
+
                                 $pi_display_name = ucwords(str_replace('_', ' ',
                                                            $pi_name));
 
@@ -418,7 +418,7 @@ if (INST_phpOutOfDate()) {
                                 $pi_version = preg_replace('/\'.*$/', '', $pi_version);
 
                             }
-                            
+
                             // $gl_version
                             if (preg_match('/^.*\$gl\_version=\'/', $fdata)) {
 
@@ -433,7 +433,7 @@ if (INST_phpOutOfDate()) {
                                 $pi_url = preg_replace('/^.*\$pi\_url=\'/', '', $fdata);
                                 $pi_url = preg_replace('/\'.*$/', '', $pi_url);
 
-                            }                                
+                            }
 
                         }
 
@@ -442,13 +442,13 @@ if (INST_phpOutOfDate()) {
                                 . ($missing_autoinstall ? ' disabled="disabled"' : ' checked="checked"') . XHTML . '>' . LB
                             . '</td>' . LB
                             . '<td valign="top">' . LB
-                                . '<input type="hidden" name="plugins[' . $plugin . '][name]" value="' . $plugin . '"' . XHTML . '>' 
+                                . '<input type="hidden" name="plugins[' . $plugin . '][name]" value="' . $plugin . '"' . XHTML . '>'
                                 . '<input type="hidden" name="plugins[' . $plugin . '][pi_url]" value="' . $pi_url . '"' . XHTML . '>'
                                 . $pi_display_name . LB
                                 . ($missing_autoinstall ? '<p><small><b>' . $LANG_PLUGINS[17] . ':</b> ' . $LANG_PLUGINS[18] . '</small></p>' : '')
                             . '</td>' . LB
-                            . '<td align="center"><input type="hidden" name="plugins[' . $plugin . '][version]" value="' . $pi_version . '"' . XHTML . '>' 
-                                . $pi_version 
+                            . '<td align="center"><input type="hidden" name="plugins[' . $plugin . '][version]" value="' . $pi_version . '"' . XHTML . '>'
+                                . $pi_version
                             . '</td>' . LB
                             . '</tr>' . LB;
 
@@ -461,20 +461,20 @@ if (INST_phpOutOfDate()) {
                 . '<input type="button" class="button big-button" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()"' . XHTML . '>' . LB
                 . '<input type="submit" class="button big-button" name="submit" value="' . $LANG_INSTALL[50] . ' &gt;&gt;"' . XHTML . '>' . LB
                 . '</form></p>' . LB;
-                
+
         } else {
 
             $display .= '<p>' . $LANG_PLUGINS[20] . '</p>' . LB
                 . '<form action="install-plugins.php" method="POST">' . LB
                 . '<input type="submit" class="button big-button" name="refresh" value="' . $LANG_PLUGINS[19] . '"' . XHTML . '>' . LB
                 . '</form></p>' . LB;
-        
+
         }
 
         break;
 
     /**
-     * Step 2 - Install the selected plugins 
+     * Step 2 - Install the selected plugins
      */
     case 2:
 

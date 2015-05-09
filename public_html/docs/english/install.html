@@ -34,7 +34,7 @@
         <li><a name="public_html">public_html</a>: Common name for the directory on a webserver that contains all files that are accessible via a URL (other common names: htdocs, www)</li>
         <li>URL: Uniform Resource Locator, the address of a specific piece of information on the web (<code>http://www.foo.com/</code>)</li>
     </ul>
-    
+
 
 <h2><a name="installation_requirements">Installation Requirements</a></h2>
 
@@ -53,7 +53,7 @@
         <li>Have the ability to create a new database or have access to an existing one.</li>
         <li>Have access to your web server via SSH or FTP so you can change permissions on a few files and directories.</li>
     </ul>
-    
+
 
 <h2><a name="install">New Installation</a></h2>
 
@@ -64,7 +64,7 @@
         <li>
             <p>Unpack the downloaded tarball file by running: </p>
             <p><code>tar -zxvf geeklog-2.0.0.tar.gz</code> </p>
-            
+
             <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/">7-Zip</a> or <a href="http://www.rarlab.com/">WinRAR</a> if you must decompress the file locally.</p>
         </li>
         <li>
@@ -72,9 +72,9 @@
         </li>
         <li>
             <p>Place the contents of <code>geeklog-2.0.0/public_html/</code> into your web root directory on your web server. The web root directory is often named "public_html", "htdocs", or "www".</p>
-        
+
             <p>Next, place the remaining contents of <code>geeklog-2.0.0/</code> into either the parent directory of your root web directory (recommended) or any other non public folder and the installation wizard will attempt to locate them automatically. If it cannot you will be asked to specify their paths during installation. This is done as a security measure to prevent access to Geeklog system files by Internet users. </p>
-            
+
             <p><strong>Note:</strong> If your hosting provider does not allow you to place files outside of your root web directory:</p>
             <ul>
                 <li>Create an inconspicuous directory (i.e. don't name it "geeklog") in your root web directory.</li>
@@ -84,24 +84,24 @@
         </li>
         <li>
             <p>Open your browser and navigate to the Geeklog installation wizard file <code>admin/install/index.php</code> on your web server. The path to this file will depend on where you chose to put the Geeklog files on your web server. The default location is: </p>
-            
+
             <p><code>http://[your_geeklog_site]/admin/install/index.php</code></p>
-            
+
             <p>The Geeklog installation wizard was designed to automate the install process. Simply follow the installation steps.</p>
         </li>
         <li>
             <p>Once you have completed the installation be sure to delete the <code>admin/install</code> directory. Also, read the first story on your Geeklog site to learn how to log in as the administrator and change the default password.<br />
 </p>
-        </li>        
+        </li>
     </ol>
-   
+
 
 <h2><a name="upgrade">Upgrading</a></h2>
 
-    <p>Upgrading is no different than a New Installation except your database already exists and needs to be updated.</p> 
+    <p>Upgrading is no different than a New Installation except your database already exists and needs to be updated.</p>
 
     <p>Take extreme care to back up any files from your current Geeklog installation that have any custom code in them, especially lib-custom.php (where all custom code should reside). Be sure to back up any modified themes, images, and static pages from your current installation.</p>
-            
+
     <p>Also, please be sure to back up your database. We can't stress the importance of backing up your files and database enough. </p>
 
     <p><strong>YOU HAVE BEEN WARNED.</strong></p>
@@ -112,7 +112,7 @@
         <li>
             <p>Unpack the downloaded tarball file by running: </p>
             <p><code>tar -zxvf geeklog-2.0.0.tar.gz</code> </p>
-            
+
             <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/">7-Zip</a> or <a href="http://www.rarlab.com/">WinRAR</a> if you must decompress the file locally.</p>
         </li>
         <li>
@@ -126,16 +126,16 @@
         </li>
         <li>
             <p>Open your browser and navigate to the Geeklog installation wizard file <code>admin/install/index.php</code> on your web server. The path to this file will depend on where you chose to put the Geeklog files on your web server. The default location is: </p>
-            
+
             <p><code>http://[your_geeklog_site]/admin/install/index.php</code></p>
-            
+
             <p>The Geeklog installation wizard was designed to automate the upgrade process. Simply follow the installation steps.</p>
         </li>
         <li>
             <p>Once you have completed the upgrade be sure to delete the <code>admin/install</code> directory.</p>
-        </li>        
+        </li>
     </ol>
-   
+
 <h2><a name="migrate">Migrating</a></h2>
 
 <p>The install script's "Migrate" option will help you move your site to another server or domain name. It will update the configuration information stored in the database and can also update URLs in content, such as articles (in case the domain name or URL of your Geeklog site changed).</p>
@@ -148,7 +148,7 @@
 
 <h2><a name="installprob">Common Problems and Troubleshooting</a></h2>
 
-    <p>Before you go any further, please open siteconfig.php and <strong>double check your paths!</strong> Bad paths, or typos in the paths, will cause all sorts of errors in Geeklog.</p>   
+    <p>Before you go any further, please open siteconfig.php and <strong>double check your paths!</strong> Bad paths, or typos in the paths, will cause all sorts of errors in Geeklog.</p>
 
 <p>When you get an error message, please read it carefully. Even if you're not familiar with PHP, it will give you a hint about what is wrong. Pay special attention at the paths contained in the error message. As mentioned before, wrong paths are the most common cause for problems.</p>
 
@@ -204,9 +204,9 @@ Cannnot connect to DB server</code></p>
 
                 <p><code>GRANT ALL PRIVILEGES ON <em>[database_name]</em> TO <em>[user@host]</em> IDENTIFIED BY '<em>[password]</em>';<br />
                 FLUSH PRIVILEGES;</code></p>
-                
+
                 <p>Replace the <em>[lower-case]</em> strings with the actual values.</p>
-                
+
                 <p>If you want (or need) to be more restrictive with database permissions: You will need to at least grant the ALTER, CREATE, DELETE, INSERT, SELECT, and UPDATE permissions to your database user. ALTER and CREATE permissions are only needed for installing and upgrading Geeklog, as well as for installing plugins and other add-ons.</p>
             </li>
             <li>

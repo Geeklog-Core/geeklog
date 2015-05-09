@@ -79,7 +79,7 @@ CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
     [timestart] [smalldatetime] NULL ,
     [timeend] [smalldatetime] NULL,
     [owner_id] [numeric](8, 0) NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 $_SQL[] = "
@@ -108,7 +108,7 @@ CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [smalldatetime] NULL ,
     [timeend] [smalldatetime] NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 

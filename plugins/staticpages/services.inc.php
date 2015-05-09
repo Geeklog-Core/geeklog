@@ -1,6 +1,6 @@
 <?php
 
-// Reminder: always indent with 4 spaces (no tabs). 
+// Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
 // | Static Pages Plugin 1.6                                                   |
 // +---------------------------------------------------------------------------+
@@ -55,7 +55,7 @@ define('STATICPAGE_MAX_ID_LENGTH', 128);
  * @param   array   args     Contains all the data provided by the client
  * @param   string  &output  OUTPUT parameter containing the returned text
  * @param   string  &svc_msg OUTPUT parameter containing any service messages
- * @return  int		     Response code as defined in lib-plugins.php
+ * @return  int          Response code as defined in lib-plugins.php
  */
 function service_submit_staticpages($args, &$output, &$svc_msg)
 {
@@ -80,7 +80,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $gl_edit = $args['gl_edit'];
     }
     if ($gl_edit) {
-        // This is EDIT mode, so there should be an sp_old_id 
+        // This is EDIT mode, so there should be an sp_old_id
         if (empty($args['sp_old_id'])) {
             if (!empty($args['id'])) {
                 $args['sp_old_id'] = $args['id'];
@@ -129,7 +129,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
     }
 
-    // Apply filters to the parameters passed by the webservice 
+    // Apply filters to the parameters passed by the webservice
     if ($args['gl_svc']) {
         $par_str = array('mode', 'sp_id', 'sp_old_id', 'sp_format',
                          'postmode');
@@ -153,7 +153,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
     }
 
-    // START: Staticpages defaults 
+    // START: Staticpages defaults
 
     if(empty($args['sp_format'])) {
         $args['sp_format'] = 'allblocks';
@@ -172,7 +172,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
 
     if ($args['gl_svc']) {
-        // Permissions 
+        // Permissions
         if (!isset($args['perm_owner'])) {
             $args['perm_owner'] = $_SP_CONF['default_permissions'][0];
         } else {
@@ -193,7 +193,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         } else {
             $args['perm_anon'] = COM_applyBasicFilter($args['perm_anon'], true);
         }
- 
+
         if (!isset($args['sp_onmenu'])) {
             $args['sp_onmenu'] = '';
         } elseif (($args['sp_onmenu'] == 'on') && empty($args['sp_label'])) {
@@ -205,16 +205,16 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $svc_msg['error_desc'] = 'No content';
             return PLG_RET_ERROR;
         }
-        
+
         if (!TOPIC_checkTopicSelectionControl()) {
             $svc_msg['error_desc'] = 'No topic selected.';
             return PLG_RET_ERROR;
-        }     
-        
+        }
+
         if (!TOPIC_hasMultiTopicAccess('topic') < 3) {
             $svc_msg['error_desc'] = 'Do not have access to one or more of selected topics.';
             return PLG_RET_ERROR;
-        }            
+        }
 
         if (empty($args['sp_inblock']) && ($_SP_CONF['in_block'] == '1')) {
             $args['sp_inblock'] = 'on';
@@ -227,11 +227,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (empty($args['draft_flag']) && ($_SP_CONF['draft_flag'] == '1')) {
             $args['draft_flag'] = 'on';
         }
-        
+
         if (empty($args['cache_time'])) {
             $args['cache_time'] = $_SP_CONF['default_cache_time'];;
-        }        
-        
+        }
+
         if (empty($args['template_flag'])) {
             $args['template_flag'] = '';
         }
@@ -239,10 +239,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (empty($args['template_id'])) {
             $args['template_id'] = '';
         }
-        
+
     }
 
-    // END: Staticpages defaults 
+    // END: Staticpages defaults
 
     $sp_id = $args['sp_id'];
     $sp_title = $args['sp_title'];
@@ -261,7 +261,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
     }
     $meta_description = $args['meta_description'];
-    $meta_keywords = $args['meta_keywords'];    
+    $meta_keywords = $args['meta_keywords'];
     $commentcode = $args['commentcode'];
     $owner_id = $args['owner_id'];
     $group_id = $args['group_id'];
@@ -289,7 +289,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $postmode = $args['postmode'];
 
     if ($gl_edit && !empty($args['gl_etag'])) {
-        // First load the original staticpage to check if it has been modified 
+        // First load the original staticpage to check if it has been modified
         $o = array();
         $s = array();
         $r = service_get_staticpages(array('sp_id' => $sp_old_id, 'gl_svc' => true), $o, $s);
@@ -362,10 +362,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $template_flag = 0;
         }
 
-        
+
         // Remove any autotags the user doesn't have permission to use
         $sp_content = PLG_replaceTags($sp_content, '', true);
-        // Clean up the text        
+        // Clean up the text
         if ($_SP_CONF['censor'] == 1) {
             $sp_content = COM_checkWords ($sp_content);
             $sp_title = COM_checkWords ($sp_title);
@@ -385,13 +385,13 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $sp_page_title = DB_escapeString($sp_page_title);
         $sp_label = DB_escapeString($sp_label);
         $meta_description = DB_escapeString($meta_description);
-        $meta_keywords = DB_escapeString($meta_keywords);        
+        $meta_keywords = DB_escapeString($meta_keywords);
 
         // If user does not have php edit perms, then set php flag to 0.
         if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights ('staticpages.PHP')) {
             $sp_php = 0;
         }
-        
+
         // If PHP page then no cache
         if ($sp_php == 0) {
             if ($cache_time < -1) {
@@ -400,11 +400,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         } else {
             $cache_time = $_SP_CONF['default_cache_time'];
         }
-        
+
         // If marked as a template then set id to nothing and other default settings
         if ($template_flag == 1) {
             $template_id = '';
-            
+
             $sp_onmenu = 0;
             $sp_label = "";
             $sp_centerblock = 0;
@@ -412,7 +412,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $cache_time = 0;
             $sp_inblock = 0;
             $sp_nf = 0;
-            
+
             $sp_hits = 0;
             $meta_description = "";
             $meta_keywords = "";
@@ -421,36 +421,36 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$sp_old_id'") == 1) {
                 $sql = "UPDATE {$_TABLES['staticpage']} SET template_id = '' WHERE template_id = '$sp_old_id'";
                 $result = DB_query($sql);
-            }            
-            
+            }
+
             if ($template_id != '') {
                 // If using a template, make sure php disabled
                 $sp_php = 0;
-                
+
                 // Double check template id exists and is still a template
                 $perms = SP_getPerms();
                 if (!empty($perms)) {
                     $perms = ' AND ' . $perms;
-                }        
+                }
                 if (DB_getItem($_TABLES['staticpage'], 'COUNT(sp_id)',("sp_id = '$template_id' AND template_flag = 1 AND (draft_flag = 0)" . $perms)) == 0) {
                     $template_id = '';
                 }
             }
         }
-        
+
         // make sure there's only one "entire page" static page per topic
         if (($sp_centerblock == 1) && ($sp_where == 0)) {
-            // Retrieve Topic data 
+            // Retrieve Topic data
             TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
 
-            $sql = "UPDATE {$_TABLES['staticpage']},{$_TABLES['topic_assignments']} ta SET sp_centerblock = 0 
-                WHERE (sp_centerblock = 1) AND (sp_where = 0) AND (draft_flag = 0) 
+            $sql = "UPDATE {$_TABLES['staticpage']},{$_TABLES['topic_assignments']} ta SET sp_centerblock = 0
+                WHERE (sp_centerblock = 1) AND (sp_where = 0) AND (draft_flag = 0)
                  AND ta.type = 'staticpages' AND ta.id = sp_id ";
 
             if ($topic_option == TOPIC_ALL_OPTION || $topic_option == TOPIC_HOMEONLY_OPTION) {
                 $sql .= " AND (ta.tid = '$topic_option')";
             } else {
-                $sql .= " AND (ta.tid IN ('" . implode( "','", $tids ) . "'))";    
+                $sql .= " AND (ta.tid IN ('" . implode( "','", $tids ) . "'))";
             }
 
             // if we're in a multi-language setup, we need to allow one "entire
@@ -475,13 +475,13 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (!$args['gl_svc']) {
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
-        
+
         // Retrieve created date
         $datecreated = DB_getItem($_TABLES['staticpage'], 'created',"sp_id = '$sp_id'");
         if ($datecreated == '') {
             $datecreated = date('Y-m-d H:i:s');
         }
-        
+
         DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode',
                 "'$sp_id','$sp_title','$sp_page_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
@@ -489,37 +489,37 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                         ."'$sp_inblock','$postmode'");
 
         TOPIC_saveTopicSelectionControl('staticpages', $sp_id);
-        
+
         if ($delete_old_page && !empty ($sp_old_id)) {
             // If a template and the id changed, update any staticpages that use it
             if ($template_flag == 1) {
                 $sql = "UPDATE {$_TABLES['staticpage']} SET template_id = '$sp_id' WHERE template_id = '$sp_old_id'";
-                $result = DB_query($sql);            
+                $result = DB_query($sql);
             }
-            
+
             // Delete Topic Assignments for this old staticpage since we just created new ones
-            TOPIC_deleteTopicAssignments('staticpages', $sp_old_id);              
-            
+            TOPIC_deleteTopicAssignments('staticpages', $sp_old_id);
+
             DB_delete($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
 
         if (empty($sp_old_id) || ($sp_id == $sp_old_id)) {
             if (!$template_flag) {
                 PLG_itemSaved($sp_id, 'staticpages');
-                
-               // Clear Cache    
+
+               // Clear Cache
                 $cacheInstance = 'staticpage__' . $sp_id . '__';
-                CACHE_remove_instance($cacheInstance);                      
+                CACHE_remove_instance($cacheInstance);
             } else {
                 // If template then have to notify of all pages that use this template that a change to the page happened
                 $sql = "SELECT sp_id FROM {$_TABLES['staticpage']} WHERE template_id = '{$sp_id}'";
                 $result = DB_query($sql);
                 while ($A = DB_fetchArray($result)) {
                     PLG_itemSaved($A['sp_id'], 'staticpages');
-                    
-                   // Clear Cache    
+
+                   // Clear Cache
                     $cacheInstance = 'staticpage__' . $A['sp_id'] . '__';
-                    CACHE_remove_instance($cacheInstance);                          
+                    CACHE_remove_instance($cacheInstance);
                 }
             }
         } else {
@@ -528,21 +528,21 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                       array(DB_escapeString($sp_old_id), 'staticpages'));
             if (!$template_flag) {
                 PLG_itemSaved($sp_id, 'staticpages', $sp_old_id);
-                
-                // Clear Cache    
+
+                // Clear Cache
                 $cacheInstance = 'staticpage__' . $sp_old_id . '__';
-                CACHE_remove_instance($cacheInstance);                    
+                CACHE_remove_instance($cacheInstance);
             } else {
                 // If template then have to notify of all pages that use this template that a change to the page happened
                 $sql = "SELECT sp_id FROM {$_TABLES['staticpage']} WHERE template_id = '{$sp_id}'";
                 $result = DB_query($sql);
                 while ($A = DB_fetchArray($result)) {
                     PLG_itemSaved($A['sp_id'], 'staticpages');
-                    
-                    // Clear Cache    
+
+                    // Clear Cache
                     $cacheInstance = 'staticpage__' . $A['sp_id'] . '__';
-                    CACHE_remove_instance($cacheInstance);                        
-                }                
+                    CACHE_remove_instance($cacheInstance);
+                }
             }
         }
 
@@ -569,7 +569,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
  * @param   array   args    Contains all the data provided by the client
  * @param   string  &output OUTPUT parameter containing the returned text
  * @param   string  &svc_msg OUTPUT parameter containing any service messages
- * @return  int		    Response code as defined in lib-plugins.php
+ * @return  int         Response code as defined in lib-plugins.php
  */
 function service_delete_staticpages($args, &$output, &$svc_msg)
 {
@@ -581,7 +581,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     if (empty($args['sp_id']) && !empty($args['id']))
         $args['sp_id'] = $args['id'];
 
-    // Apply filters to the parameters passed by the webservice 
+    // Apply filters to the parameters passed by the webservice
 
     if ($args['gl_svc']) {
         $args['sp_id'] = COM_applyBasicFilter($args['sp_id']);
@@ -610,12 +610,12 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
                                     array($sp_id, 'staticpages'));
 
     TOPIC_deleteTopicAssignments('staticpages', $sp_id);
-    
+
     PLG_itemDeleted($sp_id, 'staticpages');
 
-    // Clear Cache    
+    // Clear Cache
     $cacheInstance = 'staticpage__' . $sp_id . '__';
-    CACHE_remove_instance($cacheInstance);    
+    CACHE_remove_instance($cacheInstance);
 
     return PLG_RET_OK;
 }
@@ -626,7 +626,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
  * @param   array   args    Contains all the data provided by the client
  * @param   string  &output OUTPUT parameter containing the returned text
  * @param   string  &svc_msg OUTPUT parameter containing any service messages
- * @return  int		    Response code as defined in lib-plugins.php
+ * @return  int         Response code as defined in lib-plugins.php
  */
 function service_get_staticpages($args, &$output, &$svc_msg)
 {
@@ -697,12 +697,12 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         if (! empty($perms)) {
             $perms = ' AND ' . $perms;
         }
-       
+
         // Topic Permissions
         $topic_perms = COM_getTopicSQL('', 0, 'ta');
         if ($topic_perms != "") {
             $topic_perms = " AND (" . $topic_perms . "";
-    
+
             if (COM_onFrontpage()) {
                 $topic_perms .= " OR (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "'))";
             } else {
@@ -710,8 +710,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                 $topic_perms .= " OR (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "'))";
             }
         }
-        $topic_perms .= " GROUP BY sp_id";        
-        
+        $topic_perms .= " GROUP BY sp_id";
+
         $sql = array();
         $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,"
                       . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
@@ -787,7 +787,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                     }
                 } else {
                     if ($mode !== 'autotag') {
-                        COM_handle404();   
+                        COM_handle404();
                     }
                 }
             }
@@ -848,7 +848,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
         $count = 0;
         while (($output_item = DB_fetchArray ($result, false)) !== false) {
-            // WE ASSUME $output doesn't have any confidential fields 
+            // WE ASSUME $output doesn't have any confidential fields
 
             $count += 1;
             if ($count == $max_items) {
@@ -857,7 +857,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             }
 
             if($args['gl_svc']) {
-                // This date format is PHP 5 only, but only the web-service uses the value 
+                // This date format is PHP 5 only, but only the web-service uses the value
                 $output_item['published']    = date('c', strtotime($output_item['created']));
                 $output_item['updated']      = date('c', strtotime($output_item['modified']));
                 $output_item['id']           = $output_item['sp_id'];

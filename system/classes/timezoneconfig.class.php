@@ -37,9 +37,9 @@
 *
 * For the original "Timezone Hack" discussion, see
 * @link http://www.geeklog.net/forum/viewtopic.php?showtopic=21232
-* 
+*
 * @author Dirk Haun, dirk AT haun-online DOT de
-* 
+*
 */
 class TimeZoneConfig {
 

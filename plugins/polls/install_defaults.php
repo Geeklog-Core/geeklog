@@ -88,7 +88,7 @@ $_PO_DEFAULT['new_polls_interval'] = 1209600; // 2 weeks
 $_PO_DEFAULT['hide_new_polls'] = 'hide'; // 'hide', 'created', 'modified'
 $_PO_DEFAULT['title_trim_length'] = 20;
 
-// Display Meta Tags for static pages (1 = show, 0 = don't) 
+// Display Meta Tags for static pages (1 = show, 0 = don't)
 $_PO_DEFAULT['meta_tags'] = 0;
 
 // Poll Block
@@ -162,8 +162,8 @@ function plugin_initconfig_polls()
         $c->add('aftersave', $_PO_DEFAULT['aftersave'], 'select',
                 0, 0, 9, 90, true, 'polls', 0);
         $c->add('meta_tags', $_PO_DEFAULT['meta_tags'], 'select',
-                0, 0, 0, 100, true, 'polls', 0);        
-        
+                0, 0, 0, 100, true, 'polls', 0);
+
         $c->add('tab_whatsnew', NULL, 'tab', 0, 1, NULL, 0, true, 'polls', 1);
         $c->add('fs_whatsnew', NULL, 'fieldset', 0, 1, NULL, 0, true, 'polls', 1);
         $c->add('newpollsinterval',$_PO_DEFAULT['new_polls_interval'],'text',
@@ -175,31 +175,31 @@ function plugin_initconfig_polls()
 
         $c->add('tab_permissions', NULL, 'tab', 0, 2, NULL, 0, true, 'polls', 2);
         $c->add('fs_permissions', NULL, 'fieldset', 0, 2, NULL, 0, true, 'polls', 2);
-        $c->add('default_permissions', $_PO_DEFAULT['default_permissions'], '@select', 
+        $c->add('default_permissions', $_PO_DEFAULT['default_permissions'], '@select',
                 0, 2, 12, 100, true, 'polls', 2);
-        
+
         $c->add('tab_autotag_permissions', NULL, 'tab', 0, 10, NULL, 0, true, 'polls', 10);
         $c->add('fs_autotag_permissions', NULL, 'fieldset', 0, 10, NULL, 0, true, 'polls', 10);
-        $c->add('autotag_permissions_poll', $_PO_DEFAULT['autotag_permissions_poll'], '@select', 
-                0, 10, 13, 10, true, 'polls', 10);       
-        $c->add('autotag_permissions_poll_vote', $_PO_DEFAULT['autotag_permissions_poll_vote'], '@select', 
-                0, 10, 13, 10, true, 'polls', 10);       
-        $c->add('autotag_permissions_poll_result', $_PO_DEFAULT['autotag_permissions_poll_result'], '@select', 
+        $c->add('autotag_permissions_poll', $_PO_DEFAULT['autotag_permissions_poll'], '@select',
                 0, 10, 13, 10, true, 'polls', 10);
-        
+        $c->add('autotag_permissions_poll_vote', $_PO_DEFAULT['autotag_permissions_poll_vote'], '@select',
+                0, 10, 13, 10, true, 'polls', 10);
+        $c->add('autotag_permissions_poll_result', $_PO_DEFAULT['autotag_permissions_poll_result'], '@select',
+                0, 10, 13, 10, true, 'polls', 10);
+
         $c->add('tab_poll_block', NULL, 'tab', 0, 20, NULL, 0, true, 'polls', 20);
         $c->add('fs_block_settings', NULL, 'fieldset', 0, 10, NULL, 0, true, 'polls', 20);
-        $c->add('block_enable', $_PO_DEFAULT['block_enable'], 'select', 
+        $c->add('block_enable', $_PO_DEFAULT['block_enable'], 'select',
                 0, 10, 0, 10, true, 'polls', 20);
-        $c->add('block_isleft', $_PO_DEFAULT['block_isleft'], 'select', 
+        $c->add('block_isleft', $_PO_DEFAULT['block_isleft'], 'select',
                 0, 10, 0, 20, true, 'polls', 20);
         $c->add('block_order', $_PO_DEFAULT['block_order'], 'text',
                 0, 10, 0, 30, true, 'polls', 20);
         $c->add('block_topic_option', $_PO_DEFAULT['block_topic_option'],'select',
-                0, 10, 15, 40, true, 'polls', 20);  
+                0, 10, 15, 40, true, 'polls', 20);
         $c->add('block_topic', $_PO_DEFAULT['block_topic'], '%select',
                 0, 10, NULL, 50, true, 'polls', 20);
-    
+
         $c->add('fs_block_permissions', NULL, 'fieldset', 0, 20, NULL, 0, true, 'polls', 20);
         $new_group_id = 0;
         if (isset($_GROUPS['Polls Admin'])) {
@@ -213,11 +213,11 @@ function plugin_initconfig_polls()
                     $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
                 }
             }
-        }         
+        }
         $c->add('block_group_id', $new_group_id,'select',
-                0, 20, NULL, 10, TRUE, 'polls', 20);        
-        $c->add('block_permissions', $_PO_DEFAULT['block_permissions'], '@select', 
-                0, 20, 14, 20, true, 'polls', 20);       
+                0, 20, NULL, 10, TRUE, 'polls', 20);
+        $c->add('block_permissions', $_PO_DEFAULT['block_permissions'], '@select',
+                0, 20, 14, 20, true, 'polls', 20);
     }
 
     return true;

@@ -3,7 +3,7 @@
 {noscript}
 <div id="advanced_editor" style="display:none;">
     <form action="{site_url}/submit.php" method="post" onsubmit="set_postcontent();" id="submitstory_advanced" class="compact">
-    
+
       <div class="user_basic">
         <dl>
           <dt>{lang_username}</dt>
@@ -13,13 +13,13 @@
               <li>{create_account}</li>
             </ul>
           </dd>
-    
+
           <dt><label for="submitstory_advanced-title">{lang_title}</label></dt>
           <dd><input type="text" size="36" maxlength="96" value="{story_title}" name="title" id="submitstory_advanced-title" class="text"{xhtml}></dd>
-    
+
           <dt><label for="submitstory_advanced-tid">{lang_topic}</label></dt>
           <dd>{topic_selection}</dd>
-    
+
           <dt><label for="introtext">{lang_story}</label></dt>
           <dd>
             <div id="text_editor" style="display: {show_texteditor};">
@@ -29,7 +29,7 @@
               <textarea cols="45" rows="15" name="introhtml" id="introhtml">{story_introtext}</textarea>
             </div>
           </dd>
-     
+
           <dt><label for="submitstory_advanced-postmode">{lang_postmode}</label></dt>
           <dd>
             <select name="postmode" id="sel_editmode" {change_editormode}>
@@ -38,9 +38,9 @@
           </dd>
           <dd class="description">{allowed_html}</dd>
         </dl>
-    
+
         {captcha}
-    
+
         <ul class="submit">
           <li><input name="mode" type="submit" value="{lang_preview}" class="submit"{xhtml}></li>
           <li>

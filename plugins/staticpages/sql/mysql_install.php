@@ -49,7 +49,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_label varchar(64) default NULL,
   commentcode tinyint(4) NOT NULL default '0',
   meta_description TEXT NULL,
-  meta_keywords TEXT NULL,  
+  meta_keywords TEXT NULL,
   template_flag tinyint(1) unsigned default '0',
   template_id varchar(40) NOT NULL default '',
   cache_time INT NOT NULL DEFAULT '0',

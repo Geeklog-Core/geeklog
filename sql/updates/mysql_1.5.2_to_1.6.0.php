@@ -28,7 +28,7 @@ CREATE TABLE {$_TABLES['commentnotifications']} (
   deletehash varchar(32) NOT NULL,
   mid int(10) default NULL,
   PRIMARY KEY  (deletehash)
-) ENGINE=MyISAM 
+) ENGINE=MyISAM
 ";
 $_SQL[] = "
 CREATE TABLE {$_TABLES['commentsubmissions']} (

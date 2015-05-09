@@ -20,7 +20,7 @@ function FixHTML(leftblocksID, centerblocksID, rightblocksID) {
     if (leftblocks  && centerblocks && !rightblocks) classValue = 'left-center';
     if (!leftblocks && centerblocks && rightblocks ) classValue = 'center-right';
     if (!leftblocks && centerblocks && !rightblocks) classValue = 'center';
-    
+
     // Set body class attribute by HTML structure
     document.body.setAttribute(classattr, classValue);
 }

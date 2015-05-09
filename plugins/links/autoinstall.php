@@ -63,7 +63,7 @@ function plugin_autoinstall_links($pi_name)
     $features = array(
         $pi_name . '.edit'                                  => 'Access to links editor',
         $pi_name . '.moderate'                              => 'Ability to moderate pending links',
-        $pi_name . '.submit'                                => 'May skip the links submission queue', 
+        $pi_name . '.submit'                                => 'May skip the links submission queue',
         'config.' . $pi_name . '.tab_public'                => 'Access to configure public links list settings',
         'config.' . $pi_name . '.tab_admin'                 => 'Access to configure links admin settings',
         'config.' . $pi_name . '.tab_permissions'           => 'Access to configure link permissions',
@@ -79,7 +79,7 @@ function plugin_autoinstall_links($pi_name)
         'config.' . $pi_name . '.tab_admin'                 => array($pi_admin),
         'config.' . $pi_name . '.tab_permissions'           => array($pi_admin),
         'config.' . $pi_name . '.tab_cpermissions'          => array($pi_admin),
-        'config.' . $pi_name . '.tab_autotag_permissions'   => array($pi_admin)        
+        'config.' . $pi_name . '.tab_autotag_permissions'   => array($pi_admin)
     );
 
     $tables = array(

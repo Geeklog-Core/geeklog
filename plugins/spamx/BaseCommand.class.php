@@ -2,8 +2,8 @@
 
 /**
  * Basic Command Abstract class
- * 
- * @author Tom Willett	tomw AT pigstye DOT net 
+ *
+ * @author Tom Willett  tomw AT pigstye DOT net
  *
  * @package Spam-X
  * @subpackage Modules
@@ -11,8 +11,8 @@
  */
 abstract class BaseCommand
 {
-    protected $result     = PLG_SPAM_ACTION_NONE;	// Result of execute command
-    protected $actionCode = PLG_SPAM_ACTION_NONE;	// Action code
+    protected $result     = PLG_SPAM_ACTION_NONE;   // Result of execute command
+    protected $actionCode = PLG_SPAM_ACTION_NONE;   // Action code
 
     abstract public function execute($comment);
 

@@ -56,7 +56,7 @@ CREATE TABLE features (
   PRIMARY KEY  (ft_id),
   KEY ft_name (ft_name)
 ) ENGINE=MyISAM;
-                        
+
 CREATE TABLE group_assignments (
   ug_main_grp_id mediumint(8) NOT NULL default '0',
   ug_uid mediumint(8) unsigned default NULL,
@@ -115,7 +115,7 @@ CREATE TABLE plugins (
   pi_homepage varchar(128) NOT NULL default '',
   PRIMARY KEY  (pi_name)
 ) ENGINE=MyISAM;
-                                                                                                        
+
 ALTER TABLE stories ADD numemails mediumint(8) unsigned NOT NULL default '0';
 ALTER TABLE stories ADD owner_id mediumint(8) NOT NULL default '0';
 ALTER TABLE stories ADD group_id mediumint(8) NOT NULL default '2';

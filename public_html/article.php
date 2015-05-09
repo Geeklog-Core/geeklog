@@ -291,10 +291,10 @@ if ($A['count'] > 0) {
             }
         }
 
-		// Don't count views for the author of the article (feature request #0001572)
-		if (COM_isAnonUser() || ($_USER['uid'] != $story->displayElements('uid'))) {
-			DB_query("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '" . DB_escapeString($story->getSid()) . "') AND (date <= NOW()) AND (draft_flag = 0)");
-		}
+        // Don't count views for the author of the article (feature request #0001572)
+        if (COM_isAnonUser() || ($_USER['uid'] != $story->displayElements('uid'))) {
+            DB_query("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '" . DB_escapeString($story->getSid()) . "') AND (date <= NOW()) AND (draft_flag = 0)");
+        }
 
         // Display whats related
 
@@ -469,7 +469,7 @@ if ($A['count'] > 0) {
         $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headercode));
     }
 } else {
-    COM_handle404();  
+    COM_handle404();
 }
 
 COM_output($display);

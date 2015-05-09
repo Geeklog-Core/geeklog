@@ -24,7 +24,7 @@
 
         <dt><label>{lang_topic}</label></dt>
         <dd>{topic_selection}</dd>
-        
+
         <dt><label for="sp-editor-sp_format">{lang_pageformat}</label></dt>
         <dd><select name="sp_format" id="sp-editor-sp_format">
               <option value="blankpage" {blankpage_selected}>{lang_blankpage}</option>
@@ -52,8 +52,8 @@
 
         <dt><label for="sp-editor-cache_time">{lang_cache_time}</label></dt>
         <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="sp-editor-cachetime" class="text"{xhtml}></dd>
-        <dd class="description">{lang_cache_time_desc}</dd>          
-        
+        <dd class="description">{lang_cache_time_desc}</dd>
+
         <dt><label>{lang_lastupdated}</label></dt>
         <dd>{sp_formateddate}</dd>
 

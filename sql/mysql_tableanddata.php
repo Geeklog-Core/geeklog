@@ -83,7 +83,7 @@ CREATE TABLE {$_TABLES['commentnotifications']} (
   deletehash varchar(32) NOT NULL,
   mid int(10) default NULL,
   PRIMARY KEY  (deletehash)
-) ENGINE=MyISAM 
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
@@ -398,7 +398,7 @@ CREATE TABLE `{$_TABLES['topic_assignments']}` (
   `type` varchar(30) NOT NULL,
   `id` varchar(128) NOT NULL,
   `inherit` tinyint(1) NOT NULL default '1',
-  `tdefault` tinyint(1) NOT NULL default '0', 
+  `tdefault` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`tid`,`type`,`id`)
 ) ENGINE=MyISAM";
 

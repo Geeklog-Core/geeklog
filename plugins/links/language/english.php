@@ -279,7 +279,7 @@ $LANG_confignames['links'] = array(
     'root' => 'ID of Root Category',
     'default_permissions' => 'Link Default Permissions',
     'category_permissions' => 'Category Default Permissions',
-    'autotag_permissions_link' => '[link: ] Permissions'    
+    'autotag_permissions_link' => '[link: ] Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -290,7 +290,7 @@ $LANG_tab['links'] = array(
     'tab_public' => 'Public Links List Settings',
     'tab_admin' => 'Links Admin Settings',
     'tab_permissions' => 'Link Permissions',
-    'tab_cpermissions' => 'Category Permissions', 
+    'tab_cpermissions' => 'Category Permissions',
     'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
@@ -299,7 +299,7 @@ $LANG_fs['links'] = array(
     'fs_admin' => 'Links Admin Settings',
     'fs_permissions' => 'Link Permissions',
     'fs_cpermissions' => 'Category Permissions',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'  
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']

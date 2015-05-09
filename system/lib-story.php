@@ -82,7 +82,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     } else {
         $article_filevar = 'article';
     }
-    
+
     if (empty( $storytpl)) {
         $storytpl = 'storytext.thtml';
     }
@@ -96,22 +96,22 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             'archivearticle'   => 'archivestorytext.thtml',
             'archivebodytext'  => 'archivestorybodytext.thtml'
             ));
-    
+
     $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                                 . $story->getSid());
     $article->set_var('article_url', $articleUrl);
-    $article->set_var('story_title', $story->DisplayElements('title')); 
-    
+    $article->set_var('story_title', $story->DisplayElements('title'));
+
     // Date formatting set by user therefore cannot be cached
     $article->set_var('story_date', $story->DisplayElements('date'), false, true);
-    $article->set_var('story_datetime', $story->DisplayElements('datetime'), false, true );    
+    $article->set_var('story_datetime', $story->DisplayElements('datetime'), false, true );
 
     // Story views increase with every visit so cannot be cached
     if( $_CONF['hideviewscount'] != 1 ) {
         $article->set_var('lang_views', $LANG01[106], false, true);
         $article->set_var('story_hits', $story->DisplayElements('hits'), false, true);
-    }      
-    
+    }
+
     // Topic Icon is user configurable so do not cache
     $topicname = $story->DisplayElements('topic');
     $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $story->DisplayElements('tid');
@@ -145,7 +145,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var('story_topic_image_no_align', $topicimage_noalign, false, true);
         }
     }
-    
+
     // Main article content
     if ($index == 'p') {
         $introtext = $story->getPreviewText('introtext');
@@ -162,8 +162,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     if (!empty($query)) {
         $introtext = COM_highlightQuery($introtext, $query );
         $bodytext  = COM_highlightQuery($bodytext, $query );
-    }    
-    
+    }
+
     // begin instance caching...
     $cache_time = $story->DisplayElements('cache_time');
     $current_article_tid = $story->DisplayElements('tid');
@@ -172,30 +172,30 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     if ($cache_time > 0 OR $cache_time == -1) {
         $hash = CACHE_security_hash();
         $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $mode . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_USER['theme'];
-        
+
         if ($_CONF['cache_templates']) {
             $retval = $article->check_instance($cacheInstance, $article_filevar);
         } else {
             $retval = CACHE_check_instance($cacheInstance);
         }
-        
+
         if ($retval AND $cache_time == -1) {
             // Cache file found so use it since no time limit set to recreate
-            
+
         } elseif ($retval AND $cache_time > 0) {
             $lu = CACHE_get_instance_update($cacheInstance);
             $now = time();
             if (($now - $lu) < $cache_time ) {
                 // Cache file found so use it since under time limit set to recreate
-                
+
             } else {
                 // generate article and create cache file
                 // Cache time is not built into template caching so need to delete it manually and reset $retval
-                CACHE_remove_instance($cacheInstance); 
+                CACHE_remove_instance($cacheInstance);
                 $retval = false;
             }
         } else {
-            // Need to reset especially if caching is disabled for a certain story but tempalte caching has been enabled for the theme 
+            // Need to reset especially if caching is disabled for a certain story but tempalte caching has been enabled for the theme
             $retval = false;
         }
     }
@@ -203,17 +203,17 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     if ($index == 'p' || !empty($query) || !$retval) {
     // end of instance cache
         $article->set_var('article_filevar','');
-        
+
         $article->set_var( 'site_name', $_CONF['site_name'] );
         //$article->set_var( 'story_date', $story->DisplayElements('date') );
         $article->set_var( 'story_date_short', $story->DisplayElements('shortdate') );
         $article->set_var( 'story_date_only', $story->DisplayElements('dateonly') );
         $article->set_var( 'story_id', $story->getSid() );
-    
+
         if ($_CONF['contributedbyline'] == 1) {
             $article->set_var('lang_contributed_by', $LANG01[1]);
             $article->set_var('contributedby_uid', $story->DisplayElements('uid'));
-    
+
             $fullname = $story->DisplayElements('fullname');
             $username = $story->DisplayElements('username');
             $article->set_var('contributedby_user', $username);
@@ -222,12 +222,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             } else {
                 $article->set_var('contributedby_fullname',$fullname);
             }
-    
+
             $authorname = COM_getDisplayName($story->DisplayElements('uid'),
                                              $username, $fullname);
             $article->set_var('contributedby_author', $authorname);
             $article->set_var('author', $authorname);
-    
+
             if ($story->DisplayElements('uid') > 1) {
                 $profileUrl = $_CONF['site_url']
                             . '/users.php?mode=profile&amp;uid='
@@ -238,7 +238,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $article->set_var('end_contributedby_anchortag', '</a>');
                 $article->set_var('contributedby_url', $profileUrl);
             }
-    
+
             $photo = '';
             if ($_CONF['allow_user_photo'] == 1) {
                 $authphoto = $story->DisplayElements('photo');
@@ -262,16 +262,16 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $article->set_var ('camera_icon', '');
             }
         }
-      
+
         $article->set_var('story_topic_id', $story->DisplayElements('tid'));
         $article->set_var('story_topic_name', $topicname);
-    
+
         $article->set_var( 'story_topic_url', $topicurl );
-    
+
         $recent_post_anchortag = '';
 
         $article->set_var('lang_permalink', $LANG01[127]);
-    
+
         $show_comments = true;
         // n = Full display of article. p = 'Preview' mode.
         if ((($index != 'n') && ($index != 'p')) || !empty($query)) {
@@ -294,14 +294,14 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         } else {
             $article->set_var('story_title_link', $story->DisplayElements('title'));
         }
-        
+
         $related_topics = '';
-        
+
         if ($index == 'n') {
             if ($_CONF['supported_version_theme'] == '1.8.1') {
                 $article->set_var('breadcrumb_trail', TOPIC_breadcrumbs('article', $story->getSid()));
             }
-            
+
             if ($_CONF['related_topics'] > 0) {
                 $related_topics = TOPIC_relatedTopics('article', $story->getSid(), $_CONF['related_topics_max']);
                 $article->set_var('related_topics', $related_topics);
@@ -312,7 +312,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $article->set_var('related_topics', $related_topics);
             }
         }
-    
+
         $page_selector = '';
         $readmore_link = '';
         $post_comment_link = '';
@@ -332,7 +332,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 if(( $_CONF['allow_page_breaks'] == 1 ) and ( $index == 'n' ))
                 {
                     $story_page = 1;
-    
+
                     // page selector
                     if (is_numeric($mode)) {
                         $story_page = $mode;
@@ -356,7 +356,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                         $bodytext = $article_array[$story_page - 1];
                     }
                     $article->set_var( 'page_selector', $page_selector );
-    
+
                     if (
                          ( ($_CONF['page_break_comments'] == 'last')  and
                            ($story_page < count($article_array)) )
@@ -369,14 +369,14 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     }
                     $article->set_var( 'story_page', $story_page );
                 }
-    
+
                 $article->set_var('story_introtext', $introtext
                         . '<br' . XHTML . '><br' . XHTML . '>' . $bodytext);
                 $article->set_var('story_text_no_br', $introtext . ' ' . $bodytext);
             }
             $article->set_var( 'story_introtext_only', $introtext );
             $article->set_var( 'story_bodytext_only', $bodytext );
-    
+
             if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ) &&
                     SEC_hasRights( 'story.ping' ))
             {
@@ -404,13 +404,13 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'story_introtext', $introtext );
             $article->set_var( 'story_text_no_br', $introtext );
             $article->set_var( 'story_introtext_only', $introtext );
-    
+
             if($readmore)
             {
                 $article->set_var( 'lang_readmore', $LANG01[2] );
                 $article->set_var( 'lang_readmore_words', $LANG01[62] );
                 $article->set_var( 'readmore_words', $numwords );
-    
+
                 $readmore_link = COM_createLink(
                         $LANG01[2],
                         $articleUrl,
@@ -422,7 +422,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $article->set_var('end_readmore_anchortag', '</a>');
                 $article->set_var('read_more_class', 'class="story-read-more-link"');
             }
-    
+
             if(( $story->DisplayElements('commentcode') >= 0 ) and ( $show_comments ))
             {
                 $commentsUrl = COM_buildUrl( $_CONF['site_url']
@@ -434,12 +434,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                         COM_numberFormat ( $story->DisplayElements('comments') ));
                 $article->set_var( 'lang_comments', $LANG01[3] );
                 $comments_with_count = sprintf( $LANG01[121], COM_numberFormat( $story->DisplayElements('comments') ));
-    
+
                 if( $story->DisplayElements('comments') > 0 )
                 {
                     $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username,fullname,{$_TABLES['comments']}.uid as cuid FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '".$story->getSid()."' ORDER BY date DESC LIMIT 1" );
                     $C = DB_fetchArray( $result );
-    
+
                     $recent_post_anchortag = '<span class="storybyline">'
                             . $LANG01[27] . ': '
                             . strftime( $_CONF['daytime'], $C['day'] ) . ' '
@@ -463,9 +463,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                         $recent_post_anchortag = COM_createLink($LANG01[60],
                             $_CONF['site_url'] . '/comment.php?sid=' . $story->getSid()
                                 . '&amp;pid=0&amp;type=article');
-						if ($_CONF['show_comments_at_replying'] == true) {
-							$recent_post_anchortag .= '#commenteditform';
-						}
+                        if ($_CONF['show_comments_at_replying'] == true) {
+                            $recent_post_anchortag .= '#commenteditform';
+                        }
                     }
                 }
                 if( $story->DisplayElements( 'commentcode' ) == 0 )
@@ -476,9 +476,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     } else {
                         $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
                                     . $story->getSid() . '&amp;pid=0&amp;type=article';
-						if ($_CONF['show_comments_at_replying'] == true) {
-							$postCommentUrl .= '#commenteditform';
-						}
+                        if ($_CONF['show_comments_at_replying'] == true) {
+                            $postCommentUrl .= '#commenteditform';
+                        }
                     }
                     $post_comment_link = COM_createLink($LANG01[60], $postCommentUrl,
                         array('rel' => 'nofollow'));
@@ -495,7 +495,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     $article->set_var( 'end_post_comment_anchortag', '</a>' );
                 }
             }
-    
+
             if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ) &&
                     ( $story->DisplayElements('trackbackcode') >= 0 ) && ( $show_comments ))
             {
@@ -507,7 +507,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                                                       . $LANG_TRB['trackbacks'] );
                 $article->set_var( 'trackbacks_count', $num_trackbacks );
                 $article->set_var( 'lang_trackbacks', $LANG_TRB['trackbacks'] );
-    
+
                 if(SEC_hasRights( 'story.ping' ))
                 {
                     $pingurl = $_CONF['site_admin_url']
@@ -519,7 +519,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                         COM_createLink($pingico, $pingurl)
                     );
                 }
-    
+
                 $trackbacks_with_count = sprintf($LANG01[122], $num_trackbacks);
                 if ($story->DisplayElements('trackbacks') > 0) {
                     $trackbacks_with_count = COM_createLink(
@@ -527,7 +527,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 }
                 $article->set_var('trackbacks_with_count', $trackbacks_with_count);
             }
-    
+
             if(( $_CONF['hideemailicon'] == 1 ) ||
                ( COM_isAnonUser() &&
                     (( $_CONF['loginrequired'] == 1 ) ||
@@ -566,13 +566,13 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $article->set_var( 'lang_print_story_alt', $LANG01[65] );
             }
             $article->set_var( 'story_display', 'index' );
-    
+
             $storycounter++;
             $article->set_var( 'story_counter', $storycounter );
         }
-        
+
         $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
-    
+
         if (($index != 'p') AND SEC_hasRights('story.edit') AND
                 ($story->checkAccess() == 3) AND
                 (TOPIC_hasMultiTopicAccess('article', $story->DisplayElements('sid')) == 3)) {
@@ -587,14 +587,14 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'edit_icon', COM_createLink($editiconhtml, $editUrl) );
             $article->set_var( 'edit_image', $editiconhtml);
         }
-    
+
         $navi_list = true;
         $feedback_list = true;
         if ($index == 'p') {
             $navi_list = false;
             $feedback_list = false;
         } else {
-            $navi_list = 
+            $navi_list =
                 ($page_selector !== ''
               || $readmore_link !== ''
               || $post_comment_link !== '');
@@ -607,7 +607,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $article->set_var('navi_list', $navi_list);
         $article->set_var('feedback_list', $feedback_list);
         $article->set_var('story_footer', $story_footer);
-    
+
         if ($story->DisplayElements('featured') == 1) {
             $article->set_var('lang_todays_featured_article', $LANG05[4]);
             $article->parse('story_bodyhtml', 'featuredbodytext', true);
@@ -619,7 +619,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->parse('story_bodyhtml', 'bodytext', true);
             PLG_templateSetVars('storytext', $article);
         }
-    
+
         PLG_templateSetVars($article_filevar, $article);
 
         if ($index != 'p' AND ($cache_time > 0 OR $cache_time == -1)) {
@@ -628,15 +628,15 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         }
     } else {
         PLG_templateSetVars($article_filevar, $article);
-        
-        if (!$_CONF['cache_templates']) { 
+
+        if (!$_CONF['cache_templates']) {
             // $article->set_var($article_filevar, $retval);
-            // Hack: Cannot set the template variable directly with set_var since 
-            // this template variable was set with set_file which uses the templatecode array (set_var uses varvals array) 
+            // Hack: Cannot set the template variable directly with set_var since
+            // this template variable was set with set_file which uses the templatecode array (set_var uses varvals array)
             // so have to update the templatecode array directly. This array really shouldn't be accessed this way
             // and this hack should be changed in the future: either set_var or set_file functions need to allow update of the file template variable found in templatecode
             $article->templateCode[$article_filevar] = $retval;
-        }        
+        }
     }
 
     $article->parse('finalstory', $article_filevar);
@@ -709,30 +709,30 @@ function STORY_whatsRelated($related, $uid, $sid)
                 $rel = array ();
             }
 
-            // Used to hunt out duplicates. Stores urls that have already passed filters            
+            // Used to hunt out duplicates. Stores urls that have already passed filters
             $urls = array();
-        
+
             foreach ($rel as $key => &$value) {
                 if (preg_match("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i",
                                $value, $matches) === 1) {
-                    
-                    // Go through array and remove links with no link text except link. Since a max of only 23 characters of link text showen then compare only this    
+
+                    // Go through array and remove links with no link text except link. Since a max of only 23 characters of link text showen then compare only this
                     if (substr($matches[1] , 0, 23) != substr($matches[2] , 0, 23)) {
                         // Check if outbound links (if needed)
                         $passd_check = false;
                         if ($_CONF['whats_related'] == 3) { // no outbound links
                             if ($_CONF['site_url'] == substr($matches[1] , 0, strlen($_CONF['site_url']))) {
-                                $passd_check = true; 
+                                $passd_check = true;
                             }
                         } else {
-                            $passd_check = true;    
+                            $passd_check = true;
                         }
-                            
-                        if ($passd_check) {    
+
+                        if ($passd_check) {
                             // Go through array and remove any duplicates of this link
                             if (in_array($matches[1], $urls)) {
                                // remove it from the array
-                               unset($rel[$key]);                       
+                               unset($rel[$key]);
                             } else {
                                 $urls[] = $matches[1];
                                 // Now Check Words
@@ -752,7 +752,7 @@ function STORY_whatsRelated($related, $uid, $sid)
                 }
             }
         }
-        
+
         $topics = array();
         if (!COM_isAnonUser() || (( $_CONF['loginrequired'] == 0 ) &&
                ( $_CONF['searchloginrequired'] == 0))) {
@@ -762,10 +762,10 @@ function STORY_whatsRelated($related, $uid, $sid)
                 $author = $LANG24[37] . ' ' . COM_getDisplayName($uid);
                 if ($_CONF['whats_related_trim'] > 0 && (MBYTE_strlen($author) > $_CONF['whats_related_trim'])) {
                     $author = substr($author, 0, $_CONF['whats_related_trim'] - 3 ) . '...';
-                }                
+                }
                 $topics[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">$author</a>";
             }
-    
+
             // Retrieve topics
             $tids = TOPIC_getTopicIdsForObject('article', $sid, 0);
             foreach ($tids as $tid) {
@@ -777,14 +777,14 @@ function STORY_whatsRelated($related, $uid, $sid)
                 }
                 $topics[] = '<a href="' . $_CONF['site_url']
                        . '/search.php?mode=search&amp;type=stories&amp;topic=' . $tid
-                       . '">' . $topic . '</a>';          
-            }               
+                       . '">' . $topic . '</a>';
+            }
         }
-    
+
         // If line limit then split between related links and topics
         if ($_CONF['whats_related_max'] > 0) {
             if ($_CONF['whats_related_max'] < 3) {
-                $rel = array(); // Reset related links so at least user search and default topic search is displayed 
+                $rel = array(); // Reset related links so at least user search and default topic search is displayed
                 $topics = array_slice($topics, 0, 2);
             } else {
                 $rel_max_num_items = intval($_CONF['whats_related_max'] / 2);
@@ -805,7 +805,7 @@ function STORY_whatsRelated($related, $uid, $sid)
                 }
                 $rel = array_slice($rel, 0, $rel_max_num_items);
                 $topics = array_slice($topics, 0, $topic_max_num_items);
-            
+
             }
         }
         $result = array_merge($rel, $topics);
@@ -817,7 +817,7 @@ function STORY_whatsRelated($related, $uid, $sid)
     } else {
         $related = '';
     }
-    
+
     return $related;
 }
 
@@ -923,7 +923,7 @@ function STORY_doDeleteThisStoryNow($sid)
     DB_delete($_TABLES['stories'], 'sid', $sid);
 
     TOPIC_deleteTopicAssignments('article', $sid);
-    
+
     // notify plugins
     PLG_itemDeleted($sid, 'article');
 
@@ -937,8 +937,8 @@ function STORY_doDeleteThisStoryNow($sid)
 /**
 * Updates last_article_publish variables stored in vars table.
 *
-* Note: Used when insert/update/delete an article. last_article_publish is used to 
-*       determine new articles and if feeds need to be updated. 
+* Note: Used when insert/update/delete an article. last_article_publish is used to
+*       determine new articles and if feeds need to be updated.
 *
 */
 function STORY_updateLastArticlePublished()
@@ -948,10 +948,10 @@ function STORY_updateLastArticlePublished()
     //Set new latest article published in feed
     $sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
     $result = DB_query($sql);
-    
+
     $A = DB_fetchArray($result);
     DB_query("UPDATE {$_TABLES['vars']} SET value='{$A['date']}' WHERE name='last_article_publish'");
-    
+
 }
 
 /*
@@ -980,10 +980,10 @@ function plugin_getrelateditems_story($tids, $max, $trim)
     }
 
     // Find the newest stories the user has access too
-    $sql = "SELECT sid, title, UNIX_TIMESTAMP(date) s_date 
-        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
-        WHERE ta.type = 'article' AND ta.id = sid AND (ta.tid IN ('" . implode( "','", $tids ) . "')) 
-        AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . COM_getLangSQL( 'sid', 'AND' ) . " 
+    $sql = "SELECT sid, title, UNIX_TIMESTAMP(date) s_date
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+        WHERE ta.type = 'article' AND ta.id = sid AND (ta.tid IN ('" . implode( "','", $tids ) . "'))
+        AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . COM_getLangSQL( 'sid', 'AND' ) . "
         GROUP BY sid ORDER BY s_date DESC LIMIT {$max}";
 
     $result = DB_query($sql);
@@ -995,7 +995,7 @@ function plugin_getrelateditems_story($tids, $max, $trim)
             $A = DB_fetchArray($result);
 
             $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
-                                . $A['sid']);            
+                                . $A['sid']);
 
             $title = COM_undoSpecialChars(stripslashes( $A['title']));
             if ($trim > 0) {
@@ -1016,12 +1016,12 @@ function plugin_getrelateditems_story($tids, $max, $trim)
     }
 
     return $newstories;
-} 
- 
+}
+
 /**
 * Return new Story comments for the What's New block
 *
-* @param    string  $numreturn  If 0 will return results for What's New Block. 
+* @param    string  $numreturn  If 0 will return results for What's New Block.
 *                               If > 0 will return last X new comments for User Profile.
 * @param    string  $uid        ID of the user to return results for. 0 = all users.
 * @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
@@ -1032,7 +1032,7 @@ function plugin_getwhatsnewcomment_story($numreturn = 0, $uid = 0)
     global $_CONF, $_TABLES;
 
     $topicsql = COM_getTopicSql ('AND', 0, 'ta');
-    
+
     $stwhere = '';
     if( !COM_isAnonUser() ) {
         $stwhere .= "((s.owner_id IS NOT NULL AND s.perm_owner IS NOT NULL) OR ";
@@ -1041,45 +1041,45 @@ function plugin_getwhatsnewcomment_story($numreturn = 0, $uid = 0)
     } else {
         $stwhere .= "(s.perm_anon IS NOT NULL)";
     }
-    
+
     if ($uid > 0) {
         $stwhere .= " AND (c.uid = $uid)";
     }
     if ($numreturn == 0 ) {
-        $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, s.title, s.sid, max(c.date) AS lastdate 
-            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ") 
-            , {$_TABLES['topic_assignments']} ta 
-            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) 
-            GROUP BY c.sid,type, s.title, s.title, s.sid 
+        $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, s.title, s.sid, max(c.date) AS lastdate
+            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ")
+            , {$_TABLES['topic_assignments']} ta
+            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})))
+            GROUP BY c.sid,type, s.title, s.title, s.sid
             ORDER BY 5 DESC LIMIT 15";
 
-        $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, c.type, s.title, s.sid, max(c.date) AS lastdate 
+        $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, c.type, s.title, s.sid, max(c.date) AS lastdate
             FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND','s') . ")
-            , {$_TABLES['topic_assignments']} ta 
-            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) 
-            GROUP BY c.sid, c.type, s.title, s.title, s.sid 
+            , {$_TABLES['topic_assignments']} ta
+            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})))
+            GROUP BY c.sid, c.type, s.title, s.title, s.sid
             ORDER BY 5 DESC LIMIT 15";
 
-        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, c.type, s.title, s.sid, max(c.date) AS lastdate 
-            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ") 
-            , {$_TABLES['topic_assignments']} ta 
-            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) AND ((({$stwhere}))) 
-            GROUP BY c.sid,c.type, s.title, s.title, s.sid 
+        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, c.type, s.title, s.sid, max(c.date) AS lastdate
+            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ")
+            , {$_TABLES['topic_assignments']} ta
+            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) AND ((({$stwhere})))
+            GROUP BY c.sid,c.type, s.title, s.title, s.sid
             ORDER BY 5 DESC LIMIT 15";
 
     } else {
-        $sql = "SELECT s.sid, c.title, cid, UNIX_TIMESTAMP(c.date) AS unixdate 
-            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ") 
-            , {$_TABLES['topic_assignments']} ta 
+        $sql = "SELECT s.sid, c.title, cid, UNIX_TIMESTAMP(c.date) AS unixdate
+            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ")
+            , {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND ({$stwhere}) ORDER BY unixdate DESC LIMIT $numreturn";
     }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($x = 0; $x < $nrows; $x++) {
-            $A[] = DB_fetchArray($result);    
+            $A[] = DB_fetchArray($result);
         }
-        
+
         return $A;
     }
 }
@@ -1302,7 +1302,7 @@ function plugin_moderationvalues_story()
 function plugin_moderationdelete_story($sid)
 {
     global $_TABLES;
-    
+
     TOPIC_deleteTopicAssignments('article', $sid);
 
     DB_delete($_TABLES['storysubmission'], 'sid', $sid);
@@ -1448,7 +1448,7 @@ function plugin_moderationapprove_story_draft($sid)
 function plugin_group_changed_story($grp_id, $mode)
 {
     global $_TABLES, $_GROUPS;
-    
+
     if ($mode == 'delete') {
         // Change any deleted group ids to Story Admin if exist, if does not change to root group
         $new_group_id = 0;
@@ -1463,10 +1463,10 @@ function plugin_group_changed_story($grp_id, $mode)
                     $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
                 }
             }
-        }    
-        
+        }
+
         // Update Story with new group id
-        $sql = "UPDATE {$_TABLES['stories']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $sql = "UPDATE {$_TABLES['stories']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
    }
 }
@@ -1503,14 +1503,14 @@ function plugin_autotags_story($op, $content = '', $autotag = '')
             $_CONF[$p][2], $_CONF[$p][3]) == $flag) {
             $tagnames[] = 'story';
         }
-        
+
         if (count($tagnames) > 0) {
             return $tagnames;
         }
     } elseif ($op == 'description') {
         return array (
             'story' => $LANG24['autotag_desc_story']
-            );        
+            );
     } else {
         $sid = COM_applyFilter($autotag['parm1']);
         $sid = COM_switchLanguageIdForObject($sid);
@@ -1580,10 +1580,10 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
     } else { // success
         $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $id));
         DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $id);
-        
-        // Comment count in Older Stories block may have changed so delete cache 
+
+        // Comment count in Older Stories block may have changed so delete cache
         $cacheInstance = 'olderarticles__'; // remove all olderarticles instances
-        CACHE_remove_instance($cacheInstance); 
+        CACHE_remove_instance($cacheInstance);
 
         $retval = COM_refresh(COM_buildUrl($_CONF['site_url']
                               . "/article.php?story=$id"));
@@ -1616,11 +1616,11 @@ function plugin_deletecomment_article($cid, $id)
         CMT_deleteComment($cid, $id, 'article');
         $comments = DB_count ($_TABLES['comments'], 'sid', $id);
         DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $id);
-        
-        // Comment count in Older Stories block may have changed so delete cache 
+
+        // Comment count in Older Stories block may have changed so delete cache
         $cacheInstance = 'olderstories__'; // remove all olderstories instances
-        CACHE_remove_instance($cacheInstance); 
-        
+        CACHE_remove_instance($cacheInstance);
+
         $retval .= COM_refresh(COM_buildUrl($_CONF['site_url']
                  . "/article.php?story=$id") . '#comments');
     } else {
@@ -1652,7 +1652,7 @@ function plugin_displaycomment_article($id, $cid, $title, $order, $format, $page
 
     $sql = 'SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, perm_group, '
          . "perm_members, perm_anon FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE (sid = '$id') "
-         . 'AND (draft_flag = 0) AND (commentcode >= 0) AND (date <= NOW()) AND ta.type = "article" AND ta.id = sid ' . COM_getPermSQL('AND') 
+         . 'AND (draft_flag = 0) AND (commentcode >= 0) AND (date <= NOW()) AND ta.type = "article" AND ta.id = sid ' . COM_getPermSQL('AND')
          . COM_getTopicSQL('AND', 0, 'ta') . ' GROUP BY sid, owner_id, group_id, perm_owner, perm_group,perm_members, perm_anon ';
     $result = DB_query ($sql);
     $A = DB_fetchArray ($result);
@@ -1684,7 +1684,7 @@ function plugin_getfeednames_article()
     global $_TABLES, $LANG33;
 
     $feeds = array ();
-    
+
     $feeds[] = array ('id' => '::frontpage', 'name' => $LANG33[53]);
     $feeds[] = array ('id' => '::all', 'name' => $LANG33[23]);
 
@@ -1713,7 +1713,7 @@ function plugin_configchange_article($group, $changes = array())
 
     // If trim length changes then need to redo all related url's for articles
     if ($group == 'Core' AND in_array('whats_related_trim', $changes)) {
-        $sql = "SELECT sid, introtext, bodytext FROM {$_TABLES['stories']}";  
+        $sql = "SELECT sid, introtext, bodytext FROM {$_TABLES['stories']}";
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
         if ($nrows > 0) {
@@ -1724,10 +1724,10 @@ function plugin_configchange_article($group, $changes = array())
                 $fulltext = PLG_replaceTags($A['introtext']) . ' ' . PLG_replaceTags($A['bodytext']);
                 $related =  DB_escapeString(implode("\n", STORY_extractLinks($fulltext, $_CONF['whats_related_trim'])));
                 if (!empty($related)) {
-                    DB_query("UPDATE {$_TABLES['stories']} SET related = '$related' WHERE sid = '{$A['sid']}'");                    
+                    DB_query("UPDATE {$_TABLES['stories']} SET related = '$related' WHERE sid = '{$A['sid']}'");
                 }
             }
-            
+
         }
     // For if any articles are being cached
     } elseif ($group == 'Core' AND (in_array('site_name', $changes) OR
@@ -1744,7 +1744,7 @@ function plugin_configchange_article($group, $changes = array())
                               in_array('loginrequired', $changes) OR
                               in_array('emailstoryloginrequired', $changes) OR
                               in_array('hideprintericon', $changes))) {
-        // If any Article options changed then delete all article cache 
+        // If any Article options changed then delete all article cache
         $cacheInstance = 'article__';
         CACHE_remove_instance($cacheInstance);
     }
@@ -1761,7 +1761,7 @@ function plugin_configchange_article($group, $changes = array())
  *
  * @param   array   args    Contains all the data provided by the client
  * @param   string  &output OUTPUT parameter containing the returned text
- * @return  int		    Response code as defined in lib-plugins.php
+ * @return  int         Response code as defined in lib-plugins.php
  */
 function service_submit_story($args, &$output, &$svc_msg)
 {
@@ -1812,7 +1812,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         $content = $args['content'];
     } else if (!empty($args['summary'])) {
         $content = $args['summary'];
-    }   
+    }
     if (!empty($content)) {
         $parts = explode('[page_break]', $content);
         if (count($parts) == 1) {
@@ -1855,13 +1855,13 @@ function service_submit_story($args, &$output, &$svc_msg)
             }
         }
     } */
-    
-    
-    
-    /* This is a solution for above but the above has issues  
+
+
+
+    /* This is a solution for above but the above has issues
     if (!TOPIC_checkTopicSelectionControl()) {
         $svc_msg['error_desc'] = 'No topics selected or available';
-        return PLG_RET_ERROR;        
+        return PLG_RET_ERROR;
     }
    */
 
@@ -1979,14 +1979,14 @@ function service_submit_story($args, &$output, &$svc_msg)
     $result = $story->loadFromArgsArray($args);
 
     $sid = $story->getSid();
-    
+
     // Check if topics selected if not prompt required field
     if ($result == STORY_LOADED_OK) {
         if (!TOPIC_checkTopicSelectionControl()) {
             $result = STORY_EMPTY_REQUIRED_FIELDS;
-        }    
+        }
     }
-    
+
     switch ($result) {
     case STORY_DUPLICATE_SID:
         $output .= COM_errorLog ($LANG24[24], 2);
@@ -2176,7 +2176,7 @@ function service_submit_story($args, &$output, &$svc_msg)
  *
  * @param   array   args    Contains all the data provided by the client
  * @param   string  &output OUTPUT parameter containing the returned text
- * @return  int		    Response code as defined in lib-plugins.php
+ * @return  int         Response code as defined in lib-plugins.php
  */
 function service_delete_story($args, &$output, &$svc_msg)
 {
@@ -2219,7 +2219,7 @@ function service_delete_story($args, &$output, &$svc_msg)
  *
  * @param   array   args    Contains all the data provided by the client
  * @param   string  &output OUTPUT parameter containing the returned text
- * @return  int		    Response code as defined in lib-plugins.php
+ * @return  int         Response code as defined in lib-plugins.php
  */
 function service_get_story($args, &$output, &$svc_msg)
 {

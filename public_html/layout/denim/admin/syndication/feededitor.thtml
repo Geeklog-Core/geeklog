@@ -41,7 +41,7 @@
       <dt><label for="admin-feededitor-feedlogo">{lang_feedlogo}</label></dt>
       <dd><input type="text" maxlength="255" value="{feed_logo}" name="feedlogo" id="admin-feededitor-feedlogo" class="size5"{xhtml}></dd>
       <dd class="description">{lang_feedlogo_explain}</dd>
-  
+
       <dt><label for="admin-feededitor-filename">{lang_filename}</label></dt>
       <dd><input type="text" value="{feed_filename}" name="filename" id="admin-feededitor-filename" class="size5"{xhtml}></dd>
 

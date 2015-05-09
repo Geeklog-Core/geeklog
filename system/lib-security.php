@@ -89,7 +89,7 @@ if (!defined('CSRF_TOKEN')) {
 *       used through out the page.
 *
 * @param        int     $uid            User ID to get information for. If empty current user.
-* @return	array	Associative Array grp_name -> ug_main_grp_id of group ID's user belongs to
+* @return   array   Associative Array grp_name -> ug_main_grp_id of group ID's user belongs to
 *
 */
 function SEC_getUserGroups($uid='')
@@ -301,15 +301,15 @@ function SEC_hasConfigAcess()
 /**
 * Checks to see if current user has access to a admin moderation page
 *
-* @return       boolean 	
+* @return       boolean
 *
 */
 function SEC_hasModerationAccess()
 {
     global $_CONF;
-    
+
     $hasAccess = false;
-    
+
     if (SEC_hasRights('story.moderate')) {
         $hasAccess = true;
     }
@@ -319,7 +319,7 @@ function SEC_hasModerationAccess()
             $hasAccess = true;
         }
     }
-    
+
     if ($_CONF['commentsubmission'] == 1) {
         if (SEC_hasRights('comment.moderate')) {
             $hasAccess = true;
@@ -331,11 +331,11 @@ function SEC_hasModerationAccess()
             $hasAccess = true;
         }
     }
-    
+
     if (PLG_isModerator()) {
         $hasAccess = false;
     }
-    
+
     return $hasAccess;
 }
 
@@ -343,7 +343,7 @@ function SEC_hasModerationAccess()
 * Checks to see if current user has access to a topic
 *
 * @param        string      $tid        ID for topic to check on
-* @return       int 	returns 3 for read/edit 2 for read only 0 for no access
+* @return       int     returns 3 for read/edit 2 for read only 0 for no access
 *
 */
 function SEC_hasTopicAccess($tid)
@@ -375,7 +375,7 @@ function SEC_hasTopicAccess($tid)
 * @param        int     $perm_members   Permissions logged in members have
 * @param        int     $perm_anon      Permissions anonymous users have
 * @param        int     $uid            User id or 0 = current user
-* @return       int 	returns 3 for read/edit 2 for read only 0 for no access
+* @return       int     returns 3 for read/edit 2 for read only 0 for no access
 *
 */
 function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon, $uid = 0)
@@ -390,7 +390,7 @@ function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members
             $uid = $_USER['uid'];
         }
     }
-    
+
     // If user is in Root group then return full access
     if (SEC_inGroup('Root', $uid)) {
         return 3;
@@ -612,7 +612,7 @@ function SEC_getUserPermissions($grp_id='', $uid='')
 * @param        array       $perm_members   Array of member permissions
 * @param        array       $perm_anon      Array of anonymous user permissions
 * @return       array       returns numeric equivalent for each permissions array (2 = read, 3=edit/read)
-* @see	SEC_getPermissionsHTML
+* @see  SEC_getPermissionsHTML
 * @see  SEC_getPermissionValue
 *
 */
@@ -1332,7 +1332,7 @@ function SEC_updateUserPassword(&$password = '', $uid = '') {
     $salt = SEC_generateSalt();
     $newhash = SEC_encryptPassword($password, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
     $query = 'UPDATE ' . $_TABLES['users'] . " SET passwd = '$newhash', "
-        . "salt = '$salt', algorithm ='" . $_CONF['pass_alg'] . "', " 
+        . "salt = '$salt', algorithm ='" . $_CONF['pass_alg'] . "', "
         . 'stretch = ' . $_CONF['pass_stretch'] . " WHERE uid = $uid";
     DB_query($query);
 
@@ -1361,37 +1361,37 @@ function SEC_createToken($ttl = 1200)
     if (isset($last_token)) {
         return $last_token;
     }
-    
-	$uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
-    
+
+    $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
+
     /* Figure out the full url to the current page */
     $pageURL = COM_getCurrentURL();
-    
+
     /* Generate the token */
     $token = md5($uid.$pageURL.uniqid (rand (), 1));
     $pageURL = DB_escapeString($pageURL);
-    
+
     /* Destroy exired tokens: */
     $sql['mssql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATEADD(ss, ttl, created) < NOW())"
            . " AND (ttl > 0)";
     $sql['mysql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
            . " AND (ttl > 0)";
     $sql['pgsql'] = "DELETE FROM {$_TABLES['tokens']} WHERE ROUND(EXTRACT(EPOCH FROM ABSTIME(created)))::int4 + (SELECT ttl from {$_TABLES['tokens']} LIMIT 1) < ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW())))::int4"
-           . " AND (ttl > 0)";                           
+           . " AND (ttl > 0)";
     DB_query($sql);
-    
+
     /* Destroy tokens for this user/url combination. Since annonymous user share same id do not delete */
     if ($uid != 1) {
          $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id = '{$uid}' AND urlfor= '$pageURL'";
          DB_query($sql);
      }
-     
+
     /* Create a token for this user/url combination */
     /* NOTE: TTL mapping for PageURL not yet implemented */
     $sql = "INSERT INTO {$_TABLES['tokens']} (token, created, owner_id, urlfor, ttl) "
            . "VALUES ('$token', NOW(), $uid, '$pageURL', $ttl)";
     DB_query($sql);
-           
+
     $last_token = $token;
 
     /* And return the token to the user */
@@ -1467,13 +1467,13 @@ function SECINT_checkToken()
 
     $token = ''; // Default to no token.
     $return = false; // Default to fail.
-    
+
     if (array_key_exists(CSRF_TOKEN, $_GET)) {
         $token = COM_applyFilter($_GET[CSRF_TOKEN]);
     } elseif (array_key_exists(CSRF_TOKEN, $_POST)) {
         $token = COM_applyFilter($_POST[CSRF_TOKEN]);
     }
-    
+
     if(trim($token) != '') {
         if($_DB_dbms != 'mssql') {
             $sql['mysql'] = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
@@ -1481,13 +1481,13 @@ function SECINT_checkToken()
             $sql['pgsql'] = "SELECT ((UNIX_TIMESTAMP(created) + ttl) < UNIX_TIMESTAMP() AND ttl > 0)::int4 as expired, owner_id, urlfor FROM "
                . "{$_TABLES['tokens']} WHERE token='$token'";
         } else {
-            $sql['mssql'] = "SELECT owner_id, urlfor, expired = 
-                      CASE 
+            $sql['mssql'] = "SELECT owner_id, urlfor, expired =
+                      CASE
                          WHEN (DATEADD(s,ttl,created) < getUTCDate()) AND (ttl>0) THEN 1
-                
+
                          ELSE 0
                       END
-                    FROM {$_TABLES['tokens']} WHERE token='$token'"; 
+                    FROM {$_TABLES['tokens']} WHERE token='$token'";
         }
         $tokens = DB_query($sql);
         $numberOfTokens = DB_numRows($tokens);
@@ -1501,7 +1501,7 @@ function SECINT_checkToken()
              *  the http referer is the url for which the token was created.
              */
             $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
-            if ($uid != $tokendata['owner_id']) {             
+            if ($uid != $tokendata['owner_id']) {
                 $return = false;
             } else if($tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
                 $return = false;
@@ -1510,14 +1510,14 @@ function SECINT_checkToken()
             } else {
                 $return = true; // Everything is AOK in only one condition...
             }
-           
+
             // It's a one time token. So eat it.
             DB_delete($_TABLES['tokens'], 'token', $token);
         }
     } else {
         $return = false; // no token.
     }
-    
+
     return $return;
 }
 
@@ -1531,7 +1531,7 @@ function SECINT_checkToken()
 * @return   string              HTML for the authentication form
 * @access   private
 *
-*/ 
+*/
 function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $files = '')
 {
     global $LANG20, $LANG_ADMIN;
@@ -1666,7 +1666,7 @@ function SEC_getTokenExpiryTime($token)
         $sql['mysql'] = "SELECT UNIX_TIMESTAMP(DATE_ADD(created, INTERVAL ttl SECOND)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
         $sql['mssql'] = "SELECT UNIX_TIMESTAMP(DATEADD(ss, ttl, created)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
         $sql['pgsql'] = "SELECT UNIX_TIMESTAMP(created) + ttl AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
-        
+
         $result = DB_query($sql);
         if (DB_numRows($result) == 1) {
             list($retval) = DB_fetchArray($result);
@@ -1880,7 +1880,7 @@ function SEC_loginForm($use_config = array())
     );
 
     $config = array_merge($default_config, $use_config);
-    
+
     $loginform = COM_newTemplate($_CONF['path_layout'] . 'users');
     $loginform->set_file('login', 'loginform.thtml');
 
@@ -1972,7 +1972,7 @@ function SEC_loginForm($use_config = array())
     }
 
     // OAuth remote authentification.
-    if (!$config['no_oauth_login'] && $_CONF['user_login_method']['oauth'] && 
+    if (!$config['no_oauth_login'] && $_CONF['user_login_method']['oauth'] &&
             ($_CONF['usersubmission'] == 0) &&
             !$_CONF['disable_new_user_registration']) {
         $have_remote_login = true;
@@ -2055,17 +2055,17 @@ function SEC_collectRemoteOAuthModules()
 function SEC_getDefaultRootUser()
 {
     global $_TABLES;
-     
+
     $rootgrp = DB_getItem ($_TABLES['groups'], 'grp_id',
                            "grp_name = 'Root'");
-    
-    $sql = "SELECT u.uid FROM {$_TABLES['users']} u,{$_TABLES['group_assignments']} ga  
+
+    $sql = "SELECT u.uid FROM {$_TABLES['users']} u,{$_TABLES['group_assignments']} ga
             WHERE u.uid > 1 AND u.uid = ga.ug_uid AND (ga.ug_main_grp_id = $rootgrp)
             GROUP BY u.uid ORDER BY u.uid ASC LIMIT 1";
-    
+
     $result = DB_query ($sql);
-    $A = DB_fetchArray ($result);      
-    
+    $A = DB_fetchArray ($result);
+
     return $A['uid'];
 }
 

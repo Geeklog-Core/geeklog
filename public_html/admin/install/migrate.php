@@ -193,7 +193,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
         $unpacked_file = $file['filename'];
     } else {
         $unpacked_file = substr($file['filename'], strlen($dirname) + 1);
-    } 
+    }
 
     $success = false;
     if ($type == 'zip') {
@@ -315,13 +315,13 @@ if (INST_phpOutOfDate()) {
         $site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : INST_getSiteUrl();
         $site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : INST_getSiteAdminUrl();
 
-        $display .= '<h2>' . $LANG_INSTALL[31] . '</h2>' . LB 
-            . '<form action="migrate.php" method="post" name="migrate" enctype="multipart/form-data">' . LB 
+        $display .= '<h2>' . $LANG_INSTALL[31] . '</h2>' . LB
+            . '<form action="migrate.php" method="post" name="migrate" enctype="multipart/form-data">' . LB
             . '<input type="hidden" name="step" value="2"' . XHTML . '>' . LB
             . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>' . LB
-            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db[type]">' . LB 
-                . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . LB 
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db[type]">' . LB
+                . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . LB
             . '</select></p>' . LB
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db[host]" value="' . $_FORM['host'] .'" size="20"' . XHTML . '></p>' . LB
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"' . XHTML . '></p>' . LB
@@ -352,13 +352,13 @@ if (INST_phpOutOfDate()) {
             . '<span id="migration-select">' . LB;
 
         // Check if there are any files in the backups directory
-        if (count($backup_files) > 0) { 
+        if (count($backup_files) > 0) {
 
             $display .= '<select name="backup_file">' . LB
                 . '<option value="">' . $LANG_MIGRATE[10] . '</option>' . LB;
 
             // List each of the backup files in the backups directory
-            foreach ($backup_files as $file_path) { 
+            foreach ($backup_files as $file_path) {
 
                 $file_path   = str_replace('../../../backups/', '', $file_path);
                 $filename    = str_replace($backup_dir, '', $file_path);
@@ -372,9 +372,9 @@ if (INST_phpOutOfDate()) {
 
             $display .= '</select>' . LB;
 
-        } else { 
+        } else {
 
-            $display .= $LANG_MIGRATE[11] . LB; 
+            $display .= $LANG_MIGRATE[11] . LB;
 
         }
 
@@ -397,7 +397,7 @@ if (INST_phpOutOfDate()) {
             . '</p>' . LB
             . '<div id="migration-upload-warning">' . LB;
 
-        if ($file_uploads) { 
+        if ($file_uploads) {
 
             if ($is_writable) {
 
@@ -409,12 +409,12 @@ if (INST_phpOutOfDate()) {
 
             }
 
-        } 
+        }
 
         $display .= '</div><br' . XHTML . '>' . LB
-            . '<p>' 
+            . '<p>'
             // Todo: Add "Refresh" button to refresh the list of files in the backups directory
-            // . '<input type="button" name="refresh" class="submit" value="' . 'Refresh' . '" onclick="INST_refreshBackupList()"' . XHTML . '>' 
+            // . '<input type="button" name="refresh" class="submit" value="' . 'Refresh' . '" onclick="INST_refreshBackupList()"' . XHTML . '>'
             . '<input type="submit" name="submit" class="submit button" value="' . $LANG_MIGRATE[16] . ' &gt;&gt;"' . XHTML . '></p>' . LB
             . '</form>' . LB;
 
@@ -477,12 +477,12 @@ if (INST_phpOutOfDate()) {
 
         // Check if we can't connect to the database
         $DB = $_REQUEST['db'];
-        if (!INST_dbConnect($DB)) { 
+        if (!INST_dbConnect($DB)) {
 
             $display .= INST_getAlertMsg($LANG_INSTALL[54]);
             $import_errors++;
 
-        } else {         
+        } else {
 
             // Check if the user's version of MySQL is out of date
             // (needs to connect to MySQL in order to check)
@@ -492,20 +492,20 @@ if (INST_phpOutOfDate()) {
                                                      SUPPORTED_MYSQL_VER));
                 $import_errors++;
 
-            } 
+            }
 
         }
 
         // Check if the database doesn't exist
-        if (!INST_dbExists($DB)) { 
+        if (!INST_dbExists($DB)) {
 
             $display .= INST_getAlertMsg($LANG_INSTALL[56]);
             $import_errors++;
 
-        } 
+        }
 
         // Continue with the import if there were no previous errors
-        if ($import_errors == 0) { 
+        if ($import_errors == 0) {
 
             // Check if the form was received from Step 1
             if (isset($_REQUEST['db'])) {
@@ -522,8 +522,8 @@ if (INST_phpOutOfDate()) {
             switch ($_REQUEST['migration_type']) {
             case 'select':
 
-                header('Location: migrate.php?step=3&dbconfig_path=' . $dbconfig_path 
-                    . '&language=' . $language 
+                header('Location: migrate.php?step=3&dbconfig_path=' . $dbconfig_path
+                    . '&language=' . $language
                     . '&backup_file=' . urlencode($backup_file['name'])
                     . '&site_url=' . urlencode($_REQUEST['site_url'])
                     . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
@@ -535,7 +535,7 @@ if (INST_phpOutOfDate()) {
 
                 if (file_exists($backup_dir . $backup_file['name'])) { // If file already exists.
 
-                    // Ask the user if they want to overwrite the original 
+                    // Ask the user if they want to overwrite the original
                     // but for now save the file as a copy so it won't need
                     // to be uploaded again.
                     $backup_file_copy = str_replace('.sql', '_uploaded.sql', $backup_file['name']);
@@ -567,8 +567,8 @@ if (INST_phpOutOfDate()) {
 
                     } else {
 
-                        header('Location: migrate.php?step=3&dbconfig_path=' . $dbconfig_path 
-                            . '&language=' . $language 
+                        header('Location: migrate.php?step=3&dbconfig_path=' . $dbconfig_path
+                            . '&language=' . $language
                             . '&backup_file=' . urlencode($backup_file['name'])
                             . '&site_url=' . urlencode($_REQUEST['site_url'])
                             . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
@@ -638,9 +638,9 @@ if (INST_phpOutOfDate()) {
     /**
      * Page 3 - Gets the database table prefix from the database file.
      * Overwrites an existing database file if requested by the user.
-     * Sends the database filename (and a few other variables) 
+     * Sends the database filename (and a few other variables)
      * to bigdump.php, which performs the import.
-     * 
+     *
      */
     case 3:
 
@@ -650,7 +650,7 @@ if (INST_phpOutOfDate()) {
         $backup_file = $_REQUEST['backup_file'];
 
         // If the user chose to overwrite an existing backup file
-        if (isset($_REQUEST['overwrite_file'])) { 
+        if (isset($_REQUEST['overwrite_file'])) {
 
             // Overwrite the old file with the new file.
             rename($backup_dir . str_replace('.sql', '_uploaded.sql', $backup_file), $backup_dir . $backup_file);
@@ -733,7 +733,7 @@ if (INST_phpOutOfDate()) {
                 header('Location: bigdump.php?start=1&foffset=0&totalqueries=0'
                     . '&db_connection_charset=' . $db_connection_charset
                     . '&language=' . $language
-                    . '&fn=' . urlencode($backup_dir . $backup_file) 
+                    . '&fn=' . urlencode($backup_dir . $backup_file)
                     . '&site_url=' . urlencode($_REQUEST['site_url'])
                     . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
 
@@ -805,7 +805,7 @@ if (INST_phpOutOfDate()) {
         }
 
         /**
-         * Let's assume that the paths that were imported from the backup are 
+         * Let's assume that the paths that were imported from the backup are
          * incorrect and update them with the current paths.
          *
          * Note: When updating the config settings in the database, we also
@@ -881,9 +881,9 @@ if (INST_phpOutOfDate()) {
          * Check for missing plugins
          */
 
-        // We want to add a log entry for any plugins that have been disabled 
-        // but we can't actually call lib-common.php until all missing plugins 
-        // have been disabled. So we keep track of missing plugins in the 
+        // We want to add a log entry for any plugins that have been disabled
+        // but we can't actually call lib-common.php until all missing plugins
+        // have been disabled. So we keep track of missing plugins in the
         // $_MISSING_PLUGINS array then call lib-common.php and log them after
         // they've been disabled.
         $_MISSING_PLUGINS = array();
@@ -892,7 +892,7 @@ if (INST_phpOutOfDate()) {
         $missing_plugins = 0;
         $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
         $num_plugins = DB_numRows($result);
-        for ($i = 0; $i < $num_plugins; $i++) { // Look in the plugins directories to ensure that those plugins exist. 
+        for ($i = 0; $i < $num_plugins; $i++) { // Look in the plugins directories to ensure that those plugins exist.
 
             $plugin = DB_fetchArray($result);
 
@@ -905,13 +905,13 @@ if (INST_phpOutOfDate()) {
 
                 $missing_plugins++;
 
-            } 
+            }
 
         }
 
         // Any missing plugins have been disabled, now we can get lib-common.php
         // so we can call COM_errorLog().
-        require_once $html_path . 'lib-common.php'; 
+        require_once $html_path . 'lib-common.php';
 
         // including lib-common.php overwrites our $language variable
         $language = INST_getLanguage();
@@ -919,7 +919,7 @@ if (INST_phpOutOfDate()) {
         // Log any missing plugins
         foreach ($_MISSING_PLUGINS as $m_p) {
 
-            COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[27] . $m_p . $LANG_MIGRATE[28]); 
+            COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[27] . $m_p . $LANG_MIGRATE[28]);
 
         }
 
@@ -949,11 +949,11 @@ if (INST_phpOutOfDate()) {
         $num_article_images = DB_numRows($result);
         for ($i = 0; $i < $num_article_images; $i++) {
 
-            $article_image = DB_fetchArray($result); // 
+            $article_image = DB_fetchArray($result); //
             if (!file_exists($html_path . 'images/articles/' . $article_image['ai_filename'])) { // If article image does not exist
 
                 // Log the error
-                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $article_image['ai_filename'] . $LANG_MIGRATE[30] . $_TABLES['article_images'] . $LANG_MIGRATE[31] . $html_path . 'images/articles/'); 
+                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $article_image['ai_filename'] . $LANG_MIGRATE[30] . $_TABLES['article_images'] . $LANG_MIGRATE[31] . $html_path . 'images/articles/');
 
                 $missing_article_images = true;
                 $missing_images = true;
@@ -971,7 +971,7 @@ if (INST_phpOutOfDate()) {
             if (!file_exists($html_path . $topic_image['imageurl'])) { // If topic image does not exist
 
                 // Log the error
-                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $topic_image['imageurl'] . $LANG_MIGRATE[30] . $_TABLES['topics'] . $LANG_MIGRATE[31] . $html_path . 'images/topics/'); 
+                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $topic_image['imageurl'] . $LANG_MIGRATE[30] . $_TABLES['topics'] . $LANG_MIGRATE[31] . $html_path . 'images/topics/');
 
                 $missing_topic_images = true;
                 $missing_images = true;
@@ -990,7 +990,7 @@ if (INST_phpOutOfDate()) {
             if (!file_exists($html_path . 'images/userphotos/' . $userphoto_image['photo'])) { // If userphoto image does not exist
 
                 // Log the error
-                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $userphoto_image['photo'] . $LANG_MIGRATE[30] . $_TABLES['users'] . $LANG_MIGRATE[31] . $html_path . 'images/userphotos/'); 
+                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $userphoto_image['photo'] . $LANG_MIGRATE[30] . $_TABLES['users'] . $LANG_MIGRATE[31] . $html_path . 'images/userphotos/');
 
                 $missing_userphoto_images = true;
                 $missing_images = true;
@@ -1005,11 +1005,11 @@ if (INST_phpOutOfDate()) {
 
             INST_updateSiteUrl($_OLD_CONF['site_url'], $_CONF['site_url']);
         }
-        
-        // Clear the Geeklog Cache incase paths etc. in cache files        
-        INST_clearCache();        
 
-        /** 
+        // Clear the Geeklog Cache incase paths etc. in cache files
+        INST_clearCache();
+
+        /**
          * Import complete.
          *
          */
@@ -1022,7 +1022,7 @@ if (INST_phpOutOfDate()) {
                         . '<p>' . $LANG_MIGRATE[38] . '</p>' . LB;
 
             // Plugins
-            if ($missing_plugins > 0) { 
+            if ($missing_plugins > 0) {
 
                 $display .= INST_getAlertMsg($LANG_MIGRATE[32] . ' <code>' . $_CONF['path'] . 'plugins/</code> ' . $LANG_MIGRATE[33], 'notice');
 
@@ -1035,21 +1035,21 @@ if (INST_phpOutOfDate()) {
             }
 
             // Article images
-            if ($missing_article_images) { 
+            if ($missing_article_images) {
 
                 $display .= INST_getAlertMsg($LANG_MIGRATE[34] . ' <code>' . $html_path . 'images/articles/</code> ' . $LANG_MIGRATE[35], 'notice');
 
             }
 
             // Topic images
-            if ($missing_topic_images) { 
+            if ($missing_topic_images) {
 
                 $display .= INST_getAlertMsg($LANG_MIGRATE[34] . ' <code>' . $html_path . 'images/topics/</code> ' . $LANG_MIGRATE[35], 'notice');
 
             }
 
             // Userphoto images
-            if ($missing_userphoto_images) { 
+            if ($missing_userphoto_images) {
 
                 $display .= INST_getAlertMsg($LANG_MIGRATE[34] . ' <code>' . $html_path . 'images/userphotos/</code> ' . $LANG_MIGRATE[35], 'notice');
 
@@ -1061,7 +1061,7 @@ if (INST_phpOutOfDate()) {
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="" value=""' . XHTML . '>' . LB
                 . '<p><input type="submit" class="button big-button" name="" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '></p>' . LB
-                . '</form>'; 
+                . '</form>';
 
         } else {
 

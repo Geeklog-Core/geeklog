@@ -25,7 +25,7 @@
                 <h4>{lang_password_help_title}</h4>
                 <p class="last">
                     {lang_password_help}<br{xhtml}><br{xhtml}>
-                    <span class="warningsmall">{lang_enter_current_password}</span>  
+                    <span class="warningsmall">{lang_enter_current_password}</span>
                 </p>
             </div>
             <table class="inputTable" border="0">

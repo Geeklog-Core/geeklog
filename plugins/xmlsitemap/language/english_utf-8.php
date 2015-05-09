@@ -35,7 +35,7 @@ global $LANG32;
 
 $LANG_XMLSMAP = array(
     'plugin'            => 'XMLSitemap',
-    'admin'		        => 'XMLSitemap Admin',
+    'admin'             => 'XMLSitemap Admin',
 );
 
 // Localization of the Admin Configuration UI

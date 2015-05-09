@@ -40,21 +40,21 @@ class scripts {
 
     private $library_files; // Array of available jQuery library files that can be loaded
     private $library_files_footer; // Location of loading library files
-    
+
     private $jquery_cdn; // Flag to use jQuery file from CDN-hosted source (Google)
     private $jquery_cdn_file; // Location of jQuery file at Google
-    
+
     private $jquery_ui_cdn; // Flag to use jQuery UI file from CDN-hosted source (Google)
     private $jquery_ui_cdn_file; // Location of jQuery UI file at Google
-    
+
     private $script_files; // Array of JavaScript files set to be loaded either in the header or footer
-    
+
     private $css_files; // Array of CSS files set to be loaded
-    
+
     private $scripts; // Array of JavaScript set to be loaded either in the header or footer
-    
+
     private $restricted_names; // Restricted names list for JavaScript files
-    
+
     private $header_set; // Flag to know if Header Code already has been retrieved
     private $javascript_set; // Flag to know if ANY JavaScript has been set yet
     private $css_set; // Flag to know if ANY css has been set yet
@@ -68,9 +68,9 @@ class scripts {
     *
     */
     function __construct() {
-        
+
         global $_CONF, $_USER;
-        
+
         $this->library_files = array();
         $this->library_files_footer = true;
         $this->jquery_ui_cdn = false;
@@ -80,42 +80,42 @@ class scripts {
         $this->css = array();
         $this->restricted_names = array();
         $this->lang = array();
-        
+
         $this->header_set = false;
         $this->javascript_set = false;
-        
+
         $this->jquery_cdn = false;
         $this->jquery_ui_cdn = false;
-        
+
         // Find available JavaScript libraries
-        $this->findJavaScriptLibraries();     
-        
+        $this->findJavaScriptLibraries();
+
         // Automatically set Common library since we have not updated core yet to set it when needed
         $this->setJavaScriptLibrary('common');
-        
+
         // Setup restricted names after setting main libraries (do not want plugins messing with them)
         $this->restricted_names = array('core', 'jquery');
-        
+
     }
-    
+
     /**
     * Build a list of available JavaScript Libraries
     *
     * @access    private
-    * @return    boolean 
+    * @return    boolean
     *
     */
     private function findJavaScriptLibraries() {
-        
+
         global $_CONF;
-        
+
         $theme_path = '/layout/' . $_CONF['theme'];
-        
+
         // Add Geeklog Specific JavaScript files. Treat them as library files since other plugins may try to load them
         $name = 'common';
         $this->library_files[$name]['file'] = 'javascript/common.js';
-        $this->library_files[$name]['load'] = false;        
-                     
+        $this->library_files[$name]['load'] = false;
+
         // jQuery (http://jquery.com/download/)
         // Find available jQuery library files
         $version_jQuery = '1.11.2'; // '1.10.2'; // '1.9.1'; // '1.9.0'; // '1.7.2'; // '1.6.3';
@@ -130,25 +130,25 @@ class scripts {
         // Include minified version only of js
         $version_jQuery_ui = '1.11.2'; // '1.10.3'; // '1.10.1'; // '1.10.0'; // '1.8.20'; // '1.8.11';
         $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui .'/jquery-ui.min.js';
-        
+
         // Set jQuery UI CSS
         $this->setCSSFilePrivate('jquery.ui.all', $theme_path . '/jquery_ui/jquery.ui.all.css', false);
         $this->setCSSFilePrivate('jquery.ui', $theme_path . '/jquery_ui/jquery-ui.css', false);
-        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);        
+        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);
 
         // Set jQuery UI Core
         $names[] = 'jquery.ui.core';
         $names[] = 'jquery.ui.widget';
         $names[] = 'jquery.ui.position';
         $names[] = 'jquery.ui.mouse';
-        
+
         // Set jQuery UI Interactions
         $names[] = 'jquery.ui.draggable';
         $names[] = 'jquery.ui.droppable';
         $names[] = 'jquery.ui.resizable';
         $names[] = 'jquery.ui.selectable';
         $names[] = 'jquery.ui.sortable';
-        
+
         // Set jQuery UI Widgets
         $names[] = 'jquery.ui.accordion';
         $names[] = 'jquery.ui.autocomplete';
@@ -187,33 +187,33 @@ class scripts {
         $names[] = 'jquery.ui.effect-size';
         $names[] = 'jquery.ui.effect-slide';
         $names[] = 'jquery.ui.effect-transfer';
-        
+
         foreach ($names as $name) {
             $this->library_files[$name]['file'] = 'javascript/jquery_ui/' . $name . '.min.js';
             $this->library_files[$name]['load'] = false;
-        }         
+        }
     }
-    
+
     /**
     * Set JavaScript Libraries to load
     *
     * @param    $name       name of JavaScript library to flag for loading
     * @param    $footer     set to true to include script in footer, else script placed in header
     * @access   public
-    * @return   boolean 
+    * @return   boolean
     *
     */
     public function setJavaScriptLibrary($name, $footer = true) {
-        
+
         global $_CONF;
-        
+
         $name = strtolower($name);
-                 
+
         if (!$footer) {
             // If something wants a library in the header then all in the header
-            $this->library_files_footer = false;    
+            $this->library_files_footer = false;
         }
-        
+
         if (isset($this->library_files[$name])) {
             if (!$this->library_files[$name]['load']) {
                 $this->library_files[$name]['load'] = true;
@@ -222,20 +222,20 @@ class scripts {
                     // Check that file exists, if not use Google version
                     if (!file_exists($_CONF['path_html'] . $this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
-                        
+
                         $this->css_files['jquery.ui']['load'] = true;
                         $this->css_files['jquery.ui.all']['load'] = false;
                     } else {
                         $this->css_files['jquery.ui.all']['load'] = true;
-                    }                  
+                    }
                     $this->css_files['jquery.ui.geeklog']['load'] = true;
-                    
+
                     $this->library_files['jquery']['load'] = true;
                     $this->library_files['jquery.ui.core']['load'] = true;
                     $this->library_files['jquery.ui.widget']['load'] = true;
                     $this->library_files['jquery.ui.position']['load'] = true;
                     $this->library_files['jquery.ui.mouse']['load'] = true;
-                    
+
                     if ($_CONF['cdn_hosted']) {
                         $this->jquery_cdn = true;
                         $this->jquery_ui_cdn = true;
@@ -246,26 +246,26 @@ class scripts {
 
             }
             $this->javascript_set = true;
-            
+
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
     * Set Libraries file to load. Used only by class.
     *
     * @access   private
-    * @return   boolean 
+    * @return   boolean
     *
-    */      
+    */
     private function setJavaScriptLibraries() {
 
         global $_CONF;
 
         $librarycode = '';
-        
+
         if ($this->jquery_cdn) {
             $librarycode .= '<script type="text/javascript" src="' . $this->jquery_cdn_file . '"></script>' . LB;
             $this->library_files['jquery']['load'] = false; // Set to false so not reloaded
@@ -276,7 +276,7 @@ class scripts {
                     if (substr($key, 0, 7) == 'jquery.') {
                         $file['load'] = false;
                     }
-                }                    
+                }
             }
         } elseif ($this->jquery_ui_cdn) { // This might happen if a jQuery UI file is not found
             $librarycode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $this->library_files['jquery']['file'] . '"></script>' . LB;
@@ -287,7 +287,7 @@ class scripts {
                 if (substr($key, 0, 7) == 'jquery.') {
                     $file['load'] = false;
                 }
-            }                  
+            }
         }
 
         // Now load in the rest of the libraries
@@ -296,9 +296,9 @@ class scripts {
                 $librarycode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $file['file'] . '"></script>' . LB;
             }
         }
-        
+
         return $librarycode;
-    }     
+    }
 
     /**
     * Set JavaScript to load
@@ -307,11 +307,11 @@ class scripts {
     * @param    $wrap       set to true to place script tags around contents of $script
     * @param    $footer     set to true to include script in footer, else script placed in header
     * @access   public
-    * @return   boolean 
+    * @return   boolean
     *
-    */    
+    */
     public function setJavaScript($script, $wrap = false, $footer = true) {
-        
+
         // If header code make sure header not already set
         if ($this->header_set && !$footer) {
             return false;
@@ -322,15 +322,15 @@ class scripts {
         } else {
             $location = 'header';
         }
-        
+
         if ($wrap) {
             $script = '<script type="text/javascript">' . $script . '</script>';
         }
-            
+
         $this->scripts[$location][] = $script;
-        
+
         $this->javascript_set = true;
-        
+
         return true;
     }
 
@@ -342,11 +342,11 @@ class scripts {
     * @param    $footer     set to true to include script in footer, else script placed in header
     * @param    $priority   In what order the script should be loaded in
     * @access   public
-    * @return   boolean 
+    * @return   boolean
     *
-    */     
+    */
     public function setJavaScriptFile($name, $file, $footer = true, $priority = 100) {
-        
+
         global $_CONF;
 
         // If header code make sure header not already set
@@ -368,16 +368,16 @@ class scripts {
         if (! is_file($path) || ! is_readable($path)) {
             return false;
         }
-        
+
         $this->script_files[$name]['file'] = $file;
         $this->script_files[$name]['footer'] = $footer;
         $this->script_files[$name]['priority'] = $priority;
-        
+
         $this->javascript_set = true;
-        
+
         return true;
     }
-    
+
     /**
     * Set CSS file to load. Used only by class.
     *
@@ -387,9 +387,9 @@ class scripts {
     * @param    $file       location of file relative to public_html directory. Include '/' at beginning
     * @param    $load       set to true to load script right away. Should only be loaded when related script is loaded
     * @access   private
-    * @return   boolean 
+    * @return   boolean
     *
-    */      
+    */
     private function setCSSFilePrivate($name, $file, $load = true) {
 
         global $_CONF;
@@ -398,27 +398,27 @@ class scripts {
         if ($this->header_set) {
             return false;
         }
-        
+
         // Make sure valid name
         if (in_array(strtolower($name), $this->restricted_names, true)) {
             return false;
-        }        
+        }
 
         // Make sure file exists and is readable. We don't want any 403 or 404, right?
         $path = substr($_CONF['path_html'], 0, -1) . $file;
         if (! is_file($path) || ! is_readable($path)) {
             return false;
         }
-        
+
         $this->css_files[$name]['file'] = $file;
         $this->css_files[$name]['extra'] = '';
         $this->css_files[$name]['priority'] = 100; // Default is 100
         $this->css_files[$name]['constant'] = false;
         $this->css_files[$name]['load'] = $load;
-        
+
         return true;
     }
-    
+
     /**
     * Set language variables used in JavaScript.
     *
@@ -442,25 +442,25 @@ class scripts {
     * @param    $constant   Future use. Set to true if file is planned to be loaded all the time (Caching/Compression)
     * @param    $attributes (optional) array of extra attributes
     * @param    $priority   In what order the script should be loaded in
-    * @param    $type       Type of css file  (current possible choices are theme or other)   
+    * @param    $type       Type of css file  (current possible choices are theme or other)
     * @access   public
-    * @return   boolean 
+    * @return   boolean
     *
     */
     public function setCSSFile($name, $file, $constant = true, $attributes = array(), $priority = 100, $type = '') {
-        
+
         global $_CONF;
 
         // If header code make sure header not already set
         if ($this->header_set) {
             return false;
         }
-        
+
         // Make sure valid name
         if (in_array(strtolower($name), $this->restricted_names, true)) {
             return false;
-        }        
-        
+        }
+
         // Make sure file exists and is readable. We don't want any 403 or 404, right?
         $path = substr($_CONF['path_html'], 0, -1) . $file;
         // Strip parameters
@@ -491,46 +491,46 @@ class scripts {
         } else {
             $this->css_files[$name]['load'] = true;
         }
-        
+
         return true;
     }
-    
+
 
     /**
     * Set CSS in header using style tag
     *
     * @param    $css        css to include in head
     * @access   public
-    * @return   boolean 
+    * @return   boolean
     *
-    */    
+    */
     public function setCSS($css) {
-        
+
         // If header code make sure header not already set
         if ($this->header_set) {
             return false;
         }
-            
+
         $this->css[] = $css;
-        
+
         $this->css_set = true;
-        
+
         return true;
-    }    
+    }
 
     /**
     * Returns header code (JavaScript and CSS) to include in the Head of the webpage
     *
     * @access   public
-    * @return   string 
+    * @return   string
     *
-    */     
+    */
     public function getHeader() {
-        
+
         global $_CONF, $MESSAGE, $LANG_DIRECTION;
-        
+
         $this->header_set = true;
-        
+
         $headercode = '';
 
         // Sort CSS Files based on priority
@@ -539,7 +539,7 @@ class scripts {
           $priority[$k] = $d['priority'];
         }
         array_multisort($priority, SORT_ASC, $this->css_files);
-        
+
         // See if theme uses ETag, if so load first
         if ($_CONF['theme_etag']) {
             $csslink = '<link rel="stylesheet" type="text/css" href="'
@@ -563,13 +563,13 @@ class scripts {
             if (!empty($file['href'])) {
                 $href = $file['href'];
             }
-            
+
             if ($file['load'] && !empty($href)) {
                 $csslink = '<link rel="' . $rel
                          . '" type="' . $type
                          . '" href="' . $href
                          . '"' . $file['extra'] . XHTML . '>' . LB;
-                
+
                 if (isset($file['name']) && $file['name'] == 'theme') { // load theme css first
                     $headercode = $csslink . $headercode;
                 } else {
@@ -585,12 +585,12 @@ class scripts {
             }
             $headercode .= '</style>' . LB;
         }
-        
+
         // Set JavaScript Library files first incase other scripts need them
         if (!$this->library_files_footer) { // // Do we load jQuery now?
             $headercode .= $this->setJavaScriptLibraries();
         }
-        
+
         // Set JavaScript Variables (do this before file in case variables are needed)
         $iso639Code = COM_getLangIso639Code();
         $lang = array(
@@ -641,7 +641,7 @@ EOD;
         foreach($this->script_files as $k => $d) {
           $priority[$k] = $d['priority'];
         }
-        array_multisort($priority, SORT_ASC, $this->script_files);          
+        array_multisort($priority, SORT_ASC, $this->script_files);
 
         // Set JavaScript Files
         foreach ($this->script_files as $file) {
@@ -649,7 +649,7 @@ EOD;
                 $headercode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . $file['file'] . '"></script>' . LB;
             }
         }
-            
+
         return $headercode;
     }
 
@@ -675,29 +675,29 @@ EOD;
     * Returns JavaScript footer code to be placed just before </body>
     *
     * @access   public
-    * @return   string 
+    * @return   string
     *
-    */     
+    */
     public function getFooter() {
-        
+
         global $_CONF, $_USER;
-        
+
         $footercode = '';
-        
+
         // Do we need to set JavaScript
         if ($this->javascript_set) {
             // Set JavaScript Library files first incase other scripts need them
             if ($this->library_files_footer) { // Has jQuery already been loaded in header?
                 $footercode .= $this->setJavaScriptLibraries();
             }
-            
+
             // Set JavaScript (do this before file incase variables are needed)
             if (isset($this->scripts['footer'])) {
                 foreach ($this->scripts['footer'] as $script) {
                     $footercode .= $script . LB;
                 }
             }
-            
+
             // Set JavaScript Files
             foreach ($this->script_files as $file) {
                 if ($file['footer']) {
@@ -705,7 +705,7 @@ EOD;
                 }
             }
         }
-        
+
         return $footercode;
     }
 

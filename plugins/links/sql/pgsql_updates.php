@@ -45,8 +45,8 @@ $_UPDATES = array(
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_permissions', 'Access to configure link permissions', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_cpermissions', '" . DB_escapeString('Access to configure link\'s category permissions') . "', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_autotag_permissions', '". DB_escapeString('Access to configure link\'s autotag usage permissions') . "', 0)"
-    )    
-    
+    )
+
 );
 
 /**
@@ -56,7 +56,7 @@ $_UPDATES = array(
 function links_update_ConfigSecurity_2_1_0()
 {
     global $_TABLES;
-    
+
     // Add in security rights for Links Admin
     $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                             "grp_name = 'Links Admin'");
@@ -67,15 +67,15 @@ function links_update_ConfigSecurity_2_1_0()
         $ft_names[] = 'config.links.tab_permissions';
         $ft_names[] = 'config.links.tab_cpermissions';
         $ft_names[] = 'config.links.tab_autotag_permissions';
-        
+
         foreach ($ft_names as $name) {
-            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");         
+            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");
             if ($ft_id > 0) {
                 $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
                 DB_query($sql);
             }
-        }        
-    }    
+        }
+    }
 
 }
 

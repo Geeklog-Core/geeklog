@@ -22,7 +22,7 @@
           </dd>
           <dt class="title"><label for="commentform-title">{lang_title}</label></dt>
           <dd class="title"><input type="text" size="32" value="{title}" maxlength="96" name="title" id="commentform-title" class="text"{xhtml}></dd>
-    
+
           <dt><label for="comment_text">{lang_comment}</label></dt>
           <dd>
             <div id="text_editor" style="display: {show_texteditor};">
@@ -33,7 +33,7 @@
             </div>
           </dd>
           <dd class="description">{allowed_html}</dd>
-    
+
           <dt><label for="commentform-postmode">{lang_postmode}</label></dt>
           <dd>
             <select id="sel_editmode" name="postmode" onchange="change_editmode(this);">
@@ -41,9 +41,9 @@
             </select>
           </dd>
         </dl>
-    
+
         {captcha}
-    
+
         <dl class="importantstuff">
           <dt>{lang_importantstuff}</dt>
           <dd>
@@ -56,14 +56,14 @@
             </ul>
           </dd>
         </dl>
-    
+
         <ul class="submit">
           <li><input type="submit" name="{nprefix}mode" value="{lang_preview}" class="submit"{xhtml}></li>
           <li>
             <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
-            {save_option} 
-            <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}> 
-            {delete_option} 
+            {save_option}
+            <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}>
+            {delete_option}
             {notification}
           </li>
         </ul>

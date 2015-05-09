@@ -50,7 +50,7 @@
  * @author Euan McKay, info AT heatherengineering DOT com
  */
 
-/** 
+/**
 * Geeklog common function library and Admin authentication
 */
 require_once '../../../lib-common.php';
@@ -275,7 +275,7 @@ function links_edit_category($cid, $pid)
     */
     $T->set_var('topic_selection', '<select name="tid" id="tid">'
         . TOPIC_getTopicListSelect($A['tid'], 2, true) . '</select>');
-    
+
 
     if (empty($cid)) {
         $num_links = $LANG_ADMIN['na'];

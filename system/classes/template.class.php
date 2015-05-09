@@ -70,12 +70,12 @@ $TEMPLATE_OPTIONS = array(
     'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's docroot.
     'cache_by_language' => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
     'default_vars' => array(                                // list of vars found in all templates.
-                        'xhtml' => $xhtml, // Will be reset by lib-common       
+                        'xhtml' => $xhtml, // Will be reset by lib-common
                         'site_url' => $_CONF['site_url'],
                         'site_admin_url' => $_CONF['site_admin_url'],
                         'layout_url' => $_CONF['layout_url'], // Can be set by lib-common on theme change
                         'anonymous_user' => true, // Set to false in lib-common if current visitor is logged in
-                        
+
                       ),
     'hook' => array(),
 );
@@ -232,7 +232,7 @@ class Template
   * @see       halt
   */
   var $last_error     = "";
- 
+
   /**
   * The name of a function is retained in this variable and is used to do any pre processing work.
   *
@@ -241,7 +241,7 @@ class Template
   * @see       _preprocess
   */
   var $preprocess_fn     = '';
-   
+
   /**
   * The name of a function is retained in this variable and is used to do any post processing work.
   *
@@ -256,7 +256,7 @@ class Template
 *
 * Perform any post processing work by calling the function held in $preprocess_fn
 *
-* @param    string      $str        
+* @param    string      $str
 * @access   private
 */
 function _preprocess($str)
@@ -265,7 +265,7 @@ function _preprocess($str)
     if (function_exists($function)) {
         $str = $function($str);
     }
-    
+
     return $str;
 }
 
@@ -274,7 +274,7 @@ function _preprocess($str)
 *
 * Perform any post processing work by calling the function held in $postprocess_fn
 *
-* @param    string      $str        
+* @param    string      $str
 * @access   private
 */
 function _postprocess($str)
@@ -283,9 +283,9 @@ function _postprocess($str)
     if (function_exists($function)) {
         $str = $function($str);
     }
-    
+
     return $str;
-}  
+}
     /******************************************************************************
     * Class constructor. May be called with two optional parameters.
     * The first parameter sets the template directory the second parameter
@@ -517,7 +517,7 @@ function _postprocess($str)
             $this->blocks[$varname] = $p['dirname'].'/'.substr($p['basename'],0,-(strlen($p['extension'])+1)).'__'.$varname.'.'.$p['extension'];
             $this->file[$varname] = $p['dirname'].'/'.substr($p['basename'],0,-(strlen($p['extension'])+1)).'.'.$p['extension'];
         }
-        
+
         return true;
     }
 
@@ -1098,9 +1098,9 @@ function _postprocess($str)
                 $str = call_user_func($function, $str);
             }
         }
-        
+
         $str = $this->_postprocess($str);
-        
+
         return $str;
     }
 
@@ -1782,9 +1782,9 @@ function _postprocess($str)
         if ($template_fstat > $cache_fstat ) {
 
             $str = @file_get_contents($filename);
-            
+
             // Do any preprocessing
-            $str = $this->_preprocess($str);            
+            $str = $this->_preprocess($str);
 
             // check for begin/end block stuff
             $reg = "/\s*<!--\s+BEGIN ([-\w\d_]+)\s+-->\s*?\n?(\s*.*?\n?)\s*<!--\s+END \\1\s+-->\s*?\n?/smU";
@@ -1880,7 +1880,7 @@ function _postprocess($str)
 
         // Do any preprocessing
         $str = $this->_preprocess($str);
-        
+
         // check for begin/end block stuff
         $reg = "/\s*<!--\s+BEGIN ([-\w\d_]+)\s+-->\s*?\n?(\s*.*?\n?)\s*<!--\s+END \\1\s+-->\s*?\n?/smU";
         $matches = array();
@@ -2015,7 +2015,7 @@ function _postprocess($str)
       // $iid = str_replace('-','_',$iid);
       $filename = $path_cache.'instance__'.$iid.'.php';
       if (file_exists($filename) && array_key_exists($filevar, $this->file)) {
-          $this->file[$filevar] = $filename; 
+          $this->file[$filevar] = $filename;
           return true;
       }
       return false;
@@ -2091,11 +2091,11 @@ function CACHE_remove_instance($iid)
 
     $iid = str_replace(array('..', '/', '\\', ':'), '', $iid);
     // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores ... this affects articles and staticpages
-    // When creating the cache instance file we use COM_sanitizeFilename which doesn't change dashes so 
+    // When creating the cache instance file we use COM_sanitizeFilename which doesn't change dashes so
     // no need to change here when deleting cache file (since names will not match).
     // Dashes can be used in ids like with blocks, articles, and staticpages
     // Confusion may have happened since this is done for cache theme template files but not cache instances
-    // $iid = str_replace('-','_',$iid); 
+    // $iid = str_replace('-','_',$iid);
     $path_cache = substr($TEMPLATE_OPTIONS['path_cache'], 0, -1);
     CACHE_clean_directories($path_cache, 'instance__'.$iid);
 }

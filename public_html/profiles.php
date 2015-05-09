@@ -81,7 +81,7 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
     if ($last > 0) {
         $retval = COM_showMessageText($LANG08[39] . $last . $LANG08[40], $LANG12[26]);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
-        
+
         return $retval;
     }
 
@@ -352,7 +352,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     if (! empty($bodytext)) {
         $mailtext .= LB . LB . $bodytext;
     }
-    $mailtext .= LB . LB 
+    $mailtext .= LB . LB
         . '------------------------------------------------------------' . LB;
 
     if ($story->DisplayElements('commentcode') == 0) { // comments allowed

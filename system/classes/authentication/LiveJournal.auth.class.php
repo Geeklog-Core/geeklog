@@ -39,7 +39,7 @@ class LiveJournal
     var $email;
     var $fullname;
     var $homepage;
-    
+
     function authenticate($username, $password)
     {
         /* check it's livejournal.com */

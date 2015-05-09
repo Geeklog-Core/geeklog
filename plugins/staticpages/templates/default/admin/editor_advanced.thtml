@@ -8,7 +8,7 @@
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-sp_title">{lang_title}</label></dt>
         <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('sp-advanced_editor-sp_title','sp-advanced_editor-sp_id');" {!endif}name="sp_title" value="{sp_title}" id="sp-advanced_editor-sp_title" class="size5"{xhtml}></dd>
-        
+
         <dt><label for="sp-advanced_editor-sp_id">{lang_id}</label></dt>
         <dd><input type="text" dir="ltr" name="sp_id" maxlength="128" value="{sp_id}" id="sp-advanced_editor-sp_id" class="size5"{xhtml}></dd>
 
@@ -26,7 +26,7 @@
 
         <dt><label>{lang_topic}</label></dt>
         <dd>{topic_selection}</dd>
-        
+
         <dt><label for="sp-advanced_editor-sp_format">{lang_pageformat}</label></dt>
         <dd><select name="sp_format" id="sp-advanced_editor-sp_format">
               <option value="blankpage" {blankpage_selected}>{lang_blankpage}</option>
@@ -85,7 +85,7 @@
 
         <dt><label for="sp-advanced_editor-cache_time">{lang_cache_time}</label></dt>
         <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="sp-advanced_editor-cachetime" class="text"{xhtml}></dd>
-        <dd class="description">{lang_cache_time_desc}</dd>        
+        <dd class="description">{lang_cache_time_desc}</dd>
 
         <dt><label>{lang_lastupdated}</label></dt>
         <dd>{sp_formateddate}</dd>

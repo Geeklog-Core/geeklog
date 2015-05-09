@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | configuration_validation.php                                              |
 // |                                                                           |
-// | List of validation rules for the Links plugin configurations                          |
+// | List of validation rules for the Links plugin configurations              |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
@@ -38,13 +38,13 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !==
 $_CONF_VALIDATE['staticpages']['allow_php'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['staticpages']['sort_by'] = array(
     'rule' => array('inList', array('date', 'id', 'title'), true)
-);    
+);
 $_CONF_VALIDATE['staticpages']['sort_menu_by'] = array(
     'rule' => array('inList', array('date', 'id', 'title', 'label'), true)
-);    
+);
 $_CONF_VALIDATE['staticpages']['sort_list_by'] = array(
     'rule' => array('inList', array('date', 'id', 'title', 'author'), true)
-);    
+);
 $_CONF_VALIDATE['staticpages']['delete_pages'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['staticpages']['in_block'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['staticpages']['show_hits'] = array('rule' => 'boolean');

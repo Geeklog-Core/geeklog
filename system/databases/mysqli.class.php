@@ -358,7 +358,7 @@ class database
             }
         } else {
             // just regular string values, build sql
-            if (!empty($id) AND (isset($value) OR ($value != ''))) { 
+            if (!empty($id) AND (isset($value) OR ($value != ''))) {
                 $retval .= " WHERE $id = '$value'";
             }
         }
@@ -427,7 +427,7 @@ class database
             $sql = "UPDATE $table SET $item_to_set = $value_to_set";
         } else {
             $sql = "UPDATE $table SET $item_to_set = '$value_to_set'";
-        } 
+        }
 
         $id_and_value = $this->_buildIdValuePair($id, $value);
 

@@ -10,19 +10,19 @@
 
 <!-- BEGIN breadcrumb_item -->
 <span{!if microdata} itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"{!endif}>
-	{separator} 
-	<a href="{url}"{!if microdata} itemprop="item"{!endif}>
-		<span{!if microdata} itemprop="name"{!endif}>{name}</span>
-	</a> 
-	{!if microdata}<meta itemprop="position" content="{count}" />{!endif}
+    {separator}
+    <a href="{url}"{!if microdata} itemprop="item"{!endif}>
+        <span{!if microdata} itemprop="name"{!endif}>{name}</span>
+    </a>
+    {!if microdata}<meta itemprop="position" content="{count}" />{!endif}
 </span>
 <!-- END breadcrumb_item -->
 
 <!-- BEGIN breadcrumb_item_nolink -->
 <span{!if microdata} itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"{!endif}>
-	{separator} 
-	<span{!if microdata} itemprop="name"{!endif}>{name}</span>
-	{!if microdata}<meta itemprop="position" content="{count}" />{!endif}
+    {separator}
+    <span{!if microdata} itemprop="name"{!endif}>{name}</span>
+    {!if microdata}<meta itemprop="position" content="{count}" />{!endif}
 </span>
 <!-- END breadcrumb_item_nolink -->
 

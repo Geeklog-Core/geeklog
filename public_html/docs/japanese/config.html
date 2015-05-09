@@ -186,12 +186,12 @@
     <td valign="top"><pre>&lt;p&gt;[Original Article: &lt;a href="%s"&gt;%s&lt;/a&gt;%s%s]\n</pre></td>
     <td valign="top">コメント用に記事を指定するタグを指定します:<br /><br />
     次の順序で4つの文字列(%s)が必要です:<br />
-	<ol>
+    <ol>
     <li>記事のURL - 記事のURL</li>
     <li>記事のタイトル - 記事のタイトル</li>
     <li>記事の投稿者のタグ - コンフィギュレーションの「記事の投稿者のタグ(article_author_tag)」を評価した結果</li>
     <li>コメントの投稿者のタグ - コンフィギュレーションの「コメントの投稿者のタグ(comment_author_tag)」を評価した結果</li>
-	</ol><br />
+    </ol><br />
     このタグはPHPのsprintfコマンドを用いて表示するため、それぞれの項目は %s で示されています。最後の2つのタグのうちいずれかを空白にするなら、コンフィギュレーションで「記事の投稿者のタグ」や「コメントの投稿者のタグ」を空白にしてください。</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_tag_position">記事のタグの位置(comment_feeds_article_tag_position)</a></td>
     <td valign="top">最後(end)</td>
@@ -461,25 +461,25 @@
   <td valign="top"><a name="desc_check_trackback_link">トラックバックの検査(check_trackback_link)</a></td>
   <td valign="top">完全なURLを検査する</td>
   <td valign="top">トラックバックの有効性をチェックする方法を指定します。トラックバック中に含まれるURLが自分のサイトへのバックリンクを実際に含んでいるかチェックできます(含んでいない場合はスパムでしょう)。また、トラックバックが適切なIPアドレス、すなわち、トラックバックURL中のサイトのIPアドレスから送信されたものかどうかチェックできます(IPアドレスが一致しない場合はスパムでしょう)。<br />
-	<ol>
-		<li>何も検査しない - 検査を行いません。</li>
-		<li>サイトのURLを検査する - サイトのベースURL($_CONF['site_url'])しか検査しません。</li>
-		<li>完全なURLを検査する - サイトのアイテム(たとえば、記事)の完全なURLが含まれているか検査します。</li>
-		<li>サイトのURLと完全なURLを検査する - 上記2.と3.を併せて検査します。</li>
-		<li>IPアドレスとサイトのIPアドレスを検査する - トラックバック送信者のIPアドレスとトラックバックURLで参照されているサイトのIPアドレスを照合します。</li>
-		<li>IPアドレスとサイトのURLを検査する - 上記2.と5.を併せて検査します。</li>
-		<li>IPアドレスと完全なURLを検査する - 上記3.と5.を併せて検査します。</li>
-		<li>IPアドレス、完全なURL、サイトのURLを検査する - 上記2., 3., 5.を併せて検査します。</li>
-	</ol></td></tr>
+    <ol>
+        <li>何も検査しない - 検査を行いません。</li>
+        <li>サイトのURLを検査する - サイトのベースURL($_CONF['site_url'])しか検査しません。</li>
+        <li>完全なURLを検査する - サイトのアイテム(たとえば、記事)の完全なURLが含まれているか検査します。</li>
+        <li>サイトのURLと完全なURLを検査する - 上記2.と3.を併せて検査します。</li>
+        <li>IPアドレスとサイトのIPアドレスを検査する - トラックバック送信者のIPアドレスとトラックバックURLで参照されているサイトのIPアドレスを照合します。</li>
+        <li>IPアドレスとサイトのURLを検査する - 上記2.と5.を併せて検査します。</li>
+        <li>IPアドレスと完全なURLを検査する - 上記3.と5.を併せて検査します。</li>
+        <li>IPアドレス、完全なURL、サイトのURLを検査する - 上記2., 3., 5.を併せて検査します。</li>
+    </ol></td></tr>
 <tr>
   <td valign="top"><a name="desc_multiple_trackbacks">マルチプルトラックバック(multiple_trackbacks)</a></td>
   <td valign="top">拒否する</td>
   <td valign="top">同一発信元から複数のトラックバックとピングバックを受け取った場合の処理を指定します。<br />
-		<ul>
-			<li>拒否する - 最初のトラックバック/ピングバックのみを保存し、残りは無視します。</li>
-			<li>最後に送信されたものだけ保持する - 上書きする、つまり、最新のトラックバック/ピングバックのみを保存します。</li>
-			<li>複数送信を許可する - すべて許可します。</li>
-		</ul></td></tr>
+        <ul>
+            <li>拒否する - 最初のトラックバック/ピングバックのみを保存し、残りは無視します。</li>
+            <li>最後に送信されたものだけ保持する - 上書きする、つまり、最新のトラックバック/ピングバックのみを保存します。</li>
+            <li>複数送信を許可する - すべて許可します。</li>
+        </ul></td></tr>
 </table>
 
 <h3><a name="stories_pingback">記事とトラックバック: ピングバック</a></h3>
@@ -500,11 +500,11 @@
   <td valign="top"><a name="desc_pingback_self">自身へピングバックする(pingback_self)</a></td>
   <td valign="top">スキップする</td>
   <td valign="top">ピングバックは記事内でリンクされている<em>すべての</em> URLに自動的に送信されます。このURLには自分のサイトも含まれます。この設定は自分のサイトへのピングバックの処理法を指定します。<br />
-		<ul>
-			<li>スキップする - ピングバックをスキップします。つまり、自分のサイトへはピングバックを送信しません。</li>
-			<li>許可する(間隔制限あり) = ピングバックを許可しますが、間隔制限に従います。</li>
-			<li>許可する(間隔制限なし) = ピングバックを許可し、間隔制限を無視します。</li>
-		</ul><br />記事の中に自分のサイトの他の記事に対する複数のリンクがある場合、「許可する(間隔制限あり)」はあまり役に立たないでしょう。1番目のリンクへはピングバックを送信できますが、残りは間隔制限に引っかかるからです。</td></tr>
+        <ul>
+            <li>スキップする - ピングバックをスキップします。つまり、自分のサイトへはピングバックを送信しません。</li>
+            <li>許可する(間隔制限あり) = ピングバックを許可しますが、間隔制限に従います。</li>
+            <li>許可する(間隔制限なし) = ピングバックを許可し、間隔制限を無視します。</li>
+        </ul><br />記事の中に自分のサイトの他の記事に対する複数のリンクがある場合、「許可する(間隔制限あり)」はあまり役に立たないでしょう。1番目のリンクへはピングバックを送信できますが、残りは間隔制限に引っかかるからです。</td></tr>
 <tr>
   <td valign="top"><a name="desc_ping_enabled">更新ピングを有効にする(ping_enabled)</a></td>
   <td valign="top">はい</td>
@@ -1192,13 +1192,13 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_gravatar_rating">Gravatarの評価(gravatar_rating)</a></td>
   <td valign="top"><i>無効(disabled)</i></td>
   <td valign="top">gravatar.comへ投稿されたアバターは、(米国で)映画鑑賞用に使われている評価システム
-		<ul>
-			<li>G = General Audiences：一般向け</li>
-			<li>PG = Parental Guidance：保護者の指導が望ましい</li>
-			<li>R = Restriced：保護者同伴で入場可</li>
-			<li>X = Explicit：17歳未満入場禁止</li>
-		</ul>
-		を用いて評価されます。このオプションでは、表示されるアバターの<em>最も厳しい</em>ランクを指定します。たとえばRを指定すると、G、PG、Rランクのアバターは表示されますが、Xランクのアバターは一切表示されなくなります。</td></tr>
+        <ul>
+            <li>G = General Audiences：一般向け</li>
+            <li>PG = Parental Guidance：保護者の指導が望ましい</li>
+            <li>R = Restriced：保護者同伴で入場可</li>
+            <li>X = Explicit：17歳未満入場禁止</li>
+        </ul>
+        を用いて評価されます。このオプションでは、表示されるアバターの<em>最も厳しい</em>ランクを指定します。たとえばRを指定すると、G、PG、Rランクのアバターは表示されますが、Xランクのアバターは一切表示されなくなります。</td></tr>
 </table>
 
 
@@ -1357,14 +1357,14 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_notification">通知(notification)</a></td>
   <td valign="top"></td>
   <td valign="top">新規の記事・コメントが投稿された場合、トラックバック・ピングバックを受信した場合、新規ユーザーが登録された場合に、サイトのメールアドレス<tt>$_CONF['site_email']</tt>に通知メールを送信するリストを指定します。この<tt>リスト</tt>に登録できるのは、
-		<ul>
-			<li><tt>story</tt></li>
-			<li><tt>comment</tt></li>
-			<li><tt>trackback</tt></li>
-			<li><tt>pingback</tt></li>
-			<li><tt>user</tt></li>
-		</ul>
-		です。必要なものを組み合わせて登録します。<br />
+        <ul>
+            <li><tt>story</tt></li>
+            <li><tt>comment</tt></li>
+            <li><tt>trackback</tt></li>
+            <li><tt>pingback</tt></li>
+            <li><tt>user</tt></li>
+        </ul>
+        です。必要なものを組み合わせて登録します。<br />
     <strong>例:</strong> <code>story と user</code> とすると、新規記事が投稿された場合とユーザーが登録された場合に通知されます。たとえば、新規コメントが投稿された場合には、通知は来ません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cron_schedule_interval">Cronのスケジュール間隔(cron_schedule_interval)</a></td>
@@ -1734,7 +1734,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <td valign="top">Geeklogが使用するデータベースシステムの種類を指定します。<br />
             <ul>
                 <li><code>mysql</code> (MySQL)</li>
-				<li><code>pgsql</code> (PostgreSQL)</li>
+                <li><code>pgsql</code> (PostgreSQL)</li>
                 <li><code>mssql</code> (Microsoft SQL Server)</li>
             </ul>
             のいずれかを指定します。</td></tr>

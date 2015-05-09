@@ -268,7 +268,7 @@ function WS_get()
     if ($WS_VERBOSE) {
         COM_errorLog("WS: GET request received");
     }
-    
+
     WS_dissectURI($args);
 
     if ($WS_INTROSPECTION) {
@@ -843,8 +843,8 @@ function WS_authenticate()
 
                 if ($pwdigest == $mydigest) {
                     $password = $pwd;
-                }   
-            }   
+                }
+            }
         }
 
         if ($WS_VERBOSE) {
@@ -952,7 +952,7 @@ function WS_authenticate()
             if ($WS_VERBOSE) {
                 COM_errorLog("WS: Wrong login credentials - counting as 2 failed attempts");
             }
-        } elseif ($WS_VERBOSE) { 
+        } elseif ($WS_VERBOSE) {
             COM_errorLog("WS: Empty login credentials - counting as 1 failed attempt");
         }
         WS_error(PLG_RET_AUTH_FAILED);
@@ -990,7 +990,7 @@ function WS_writeSync()
  * @param    int     $max_length     max. length of the created ID
  * @return   string                  new ID
  * @link     http://tools.ietf.org/html/rfc5023#section-9.7
- * 
+ *
  */
 function WS_makeId($slug = '', $max_length = 40)
 {

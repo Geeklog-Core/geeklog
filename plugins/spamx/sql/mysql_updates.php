@@ -44,7 +44,7 @@ $_UPDATES = array(
     ),
 
     '1.2.2' => array(
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.spamx.tab_modules', 'Access to configure Spam-x modules', 0)" 
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.spamx.tab_modules', 'Access to configure Spam-x modules', 0)"
     ),
 
     '1.3.0' => array(

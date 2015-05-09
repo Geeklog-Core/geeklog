@@ -36,7 +36,7 @@ require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-story.php';
 
 /**
-* Update array if need be with correct topic. 
+* Update array if need be with correct topic.
 *
 * @param    array   A           Array of articles from db
 * @param    string  tid_list    List of child topics of current topic
@@ -45,46 +45,46 @@ require_once $_CONF['path_system'] . 'lib-story.php';
 function fixTopic(&$A, $tid_list)
 {
     global $_TABLES, $topic;
-    
+
     if (!empty($topic)) {
         // This case may happen if a article belongs to the current topic but the default topic for the article is a child  of the current topic.
         $sql = "SELECT t.topic, t.imageurl
-            FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
-            WHERE t.tid = ta.tid  
+            FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
+            WHERE t.tid = ta.tid
             AND ta.type = 'article' AND ta.id = '{$A['sid']}' AND ta.tid = '$topic'
             " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
-           
+
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
         if ($nrows > 0) {
             $B = DB_fetchArray($result);
             $A['topic'] = $B['topic'];
-            $A['imageurl'] = $B['imageurl']; 
+            $A['imageurl'] = $B['imageurl'];
         } else {
             // Does not belong to current topic so check inherited
-            
+
             // Make sure sort order the same as in TOPIC_getTopic or articles with multiple topics might not display in the right topic when clicked
             $sql = "SELECT t.topic, t.imageurl
-                FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
-                WHERE t.tid = ta.tid  
-                AND ta.type = 'article' AND ta.id = '{$A['sid']}' 
-                AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}'))) 
-                " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't') . " 
+                FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
+                WHERE t.tid = ta.tid
+                AND ta.type = 'article' AND ta.id = '{$A['sid']}'
+                AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')))
+                " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't') . "
                 ORDER BY ta.tdefault DESC, ta.tid ASC";
-                
+
             $result = DB_query($sql);
             $nrows = DB_numRows($result);
             if ($nrows > 0) {
                 $B = DB_fetchArray($result);
                 $A['topic'] = $B['topic'];
-                $A['imageurl'] = $B['imageurl']; 
+                $A['imageurl'] = $B['imageurl'];
             }
         }
     }
 }
 
 // See if user has access to view topic else display message.
-// This check has already been done in lib-common so re check to figure out if 
+// This check has already been done in lib-common so re check to figure out if
 // 404 message needs to be displayed.
 $topic_check = '';
 if (isset($_GET['topic'])) {
@@ -94,7 +94,7 @@ if (isset($_GET['topic'])) {
 }
 if ($topic_check != '') {
     if (strtolower($topic_check) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic_check' " . COM_getPermSQL('AND')))) {
-        COM_handle404();  
+        COM_handle404();
     }
 }
 
@@ -226,13 +226,13 @@ while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray (
             // Delete all topic references to story except topic default
             $asql = "DELETE FROM {$_TABLES['topic_assignments']} WHERE type = 'article' AND id = '{$sid}' AND tdefault = 0";
             DB_query ($asql);
-            
+
             // Now move over story to archive topic
-            $asql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta  
-                    SET ta.tid = '$archivetid', s.frontpage = '0', s.featured = '0' 
+            $asql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
+                    SET ta.tid = '$archivetid', s.frontpage = '0', s.featured = '0'
                     WHERE s.sid='{$sid}' AND ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1";
             DB_query ($asql);
-            
+
         }
     } else if ($statuscode == STORY_DELETE_ON_EXPIRE) {
         COM_errorLog("Delete Story and comments: $sid, Topic: $expiretopic, Title: $title, Expired: $expire");
@@ -252,7 +252,7 @@ $tid_list = '';
 if (!empty($topic)) {
     // Retrieve list of inherited topics
     $tid_list = TOPIC_getChildList($topic);
-    
+
     // Could have empty list if $topic does not exist or does not have permission so let it equal topic and will error out properly at end
     if (empty($tid_list)) {
         $tid_list = "'" . $topic . "'";
@@ -289,15 +289,15 @@ if ($_CONF['allow_user_photo'] == 1) {
 
 $msql = array();
 
-// The incorrect t.topic, t.imageurl will most likely be return ... will fix later in fixtopic function. 
+// The incorrect t.topic, t.imageurl will most likely be return ... will fix later in fixtopic function.
 // Could not fix in sql since 2 many variables to contend with plus speed of sql statement probably an issue
-$msql['mysql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate, "         
+$msql['mysql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate, "
          . 'UNIX_TIMESTAMP(s.expire) as expireunix, '
          . $userfields . ", t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta,{$_TABLES['users']} AS u, "
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
          . " ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND "
-         . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";     
+         . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 
 $msql['mssql'] = "SELECT s.sid, s.uid, s.draft_flag, ta.tid, s.date, s.title, cast(s.introtext as text) as introtext, cast(s.bodytext as text) as bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
          . " UNIX_TIMESTAMP(s.date) AS unixdate, "
@@ -306,15 +306,15 @@ $msql['mssql'] = "SELECT s.sid, s.uid, s.draft_flag, ta.tid, s.date, s.title, ca
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u, "
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
          . " ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND "
-         . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";   
-         
+         . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
+
 $msql['pgsql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
             {$userfields}, t.topic, t.imageurl
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
-            {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND 
-            ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND 
-            {$sql} GROUP BY s.sid, ta.tid, expireunix, {$userfields}, t.topic, t.imageurl ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";   
+            {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND
+            ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
+            {$sql} GROUP BY s.sid, ta.tid, expireunix, {$userfields}, t.topic, t.imageurl ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";
 
 $result = DB_query ($msql);
 
@@ -333,7 +333,7 @@ if ( $A = DB_fetchArray( $result ) ) {
         $story->_featured = 1;
     }
 
-    
+
     // Display breadcrumb trail
     if (!empty($topic)) {
         $breadcrumbs = TOPIC_breadcrumbs('topic', $topic);
@@ -341,7 +341,7 @@ if ( $A = DB_fetchArray( $result ) ) {
             $display .= $breadcrumbs;
         }
     }
-    
+
     // display first article
     $display .= STORY_renderArticle ($story, 'y');
 
@@ -379,14 +379,14 @@ if ( $A = DB_fetchArray( $result ) ) {
                         COM_getBlockTemplate ('_msg_block', 'header')) . $LANG05[2];
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         }
-    
+
         $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
     } else {
         $topic_url = '';
         if (!empty($topic)) {
             $topic_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
-        }        
-        COM_handle404($topic_url);    
+        }
+        COM_handle404($topic_url);
     }
 }
 

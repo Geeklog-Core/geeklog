@@ -28,7 +28,7 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// 
+//
 // $Id: trackback.php,v 1.9 2005/12/17 16:34:28 dhaun Exp $
 
 require_once ('lib-common.php');
@@ -71,11 +71,11 @@ if (empty ($type)) {
 if ($type == 'article') {
     // check if they have access to this story
     $sid = DB_escapeString($id);
-    
-    $sql = "SELECT trackbackcode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-            WHERE (sid = '$sid') AND (date <= NOW()) AND (draft_flag = 0)" 
+
+    $sql = "SELECT trackbackcode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+            WHERE (sid = '$sid') AND (date <= NOW()) AND (draft_flag = 0)"
             . COM_getPermSql('AND') . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', 0 , 'ta');
-    
+
     $result = DB_query($sql);
     if (DB_numRows ($result) == 1) {
         $A = DB_fetchArray ($result);

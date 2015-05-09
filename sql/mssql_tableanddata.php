@@ -259,9 +259,9 @@ CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
     [start_time] [numeric](10, 0) NOT NULL ,
     [remote_ip] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [uid] [int] NOT NULL ,
-    [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, 
-    [whos_online] [tinyint] NOT NULL, 
-    [topic] [varchar] (128) NOT NULL, 
+    [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+    [whos_online] [tinyint] NOT NULL,
+    [topic] [varchar] (128) NOT NULL,
 ) ON [PRIMARY]
 ";
 
@@ -374,8 +374,8 @@ $_SQL[] = "
 CREATE TABLE  [dbo].[{$_TABLES['topic_assignments']}] (
   [tid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
   [type]  [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-  [id]  [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL, 
-  [inherit] [tinyint] NOT NULL, 
+  [id]  [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+  [inherit] [tinyint] NOT NULL,
   [tdefault] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";

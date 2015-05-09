@@ -68,16 +68,16 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [sp_nf] [tinyint] NULL ,
     [sp_inblock] [tinyint] NULL  ,
     [postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
     CONSTRAINT [DF_{$_TABLES['staticpage']}] DEFAULT ('html') FOR [postmode],
     CONSTRAINT [DF_{$_TABLES['staticpage']}] DEFAULT ('0') FOR [cache_time],
-	CONSTRAINT [PK_{$_TABLES['staticpage']}] PRIMARY KEY  CLUSTERED
-	(
-		[sp_id]
-	)  ON [PRIMARY]
+    CONSTRAINT [PK_{$_TABLES['staticpage']}] PRIMARY KEY  CLUSTERED
+    (
+        [sp_id]
+    )  ON [PRIMARY]
 ";
 
 ?>

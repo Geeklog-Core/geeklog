@@ -58,10 +58,10 @@ if (file_exists($langfile)) {
 
 /**
 * Check and see if we need to load the plugin configuration
-*/ 
+*/
 if (!isset($_PO_CONF['pollsloginrequired'])) {
     require_once $_CONF['path_system'] . 'classes/config.class.php';
-    
+
     $po_config = config::get_instance();
     $_PO_CONF = $po_config->get_config('polls');
 }
@@ -120,14 +120,14 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= CMT_commentForm ($title, $comment, $id, $pid, 'polls',
                                    $LANG03[14], $postmode);
-        
+
         if (!defined('COMMENT_ON_SAME_PAGE')) {
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
         } else {
             if (!COMMENT_ON_SAME_PAGE) {
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
             }
-        }        
+        }
     } else { // success
         $retval = COM_refresh ($_CONF['site_url']
                                 . "/polls/index.php?pid=$id");
@@ -363,9 +363,9 @@ function plugin_chkVersion_polls()
 {
     global $_CONF;
 
-    require_once $_CONF['path'] . 'plugins/polls/autoinstall.php';          
+    require_once $_CONF['path'] . 'plugins/polls/autoinstall.php';
 
-    $inst_parms = plugin_autoinstall_polls('polls'); 
+    $inst_parms = plugin_autoinstall_polls('polls');
 
     return $inst_parms['info']['pi_version'];
 }
@@ -407,7 +407,7 @@ function plugin_autouninstall_polls ()
         /* give the full name of the group, as in the db */
         'groups' => array('Polls Admin'),
         /* give the full name of the feature, as in the db */
-        'features' => array('polls.edit', 
+        'features' => array('polls.edit',
                             'config.polls.tab_whatsnew',
                             'config.polls.tab_main',
                             'config.polls.tab_permissions',
@@ -440,7 +440,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
            $_IMAGE_TYPE;
 
     $retval = '';
-    
+
     $result = DB_query("SELECT topic,voters,commentcode,is_open,hideresults,owner_id "
         . ",group_id,perm_owner,perm_group,perm_anon,perm_members "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql('AND'));
@@ -451,7 +451,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
     }
 
     $P = DB_fetchArray($result);
-    
+
     if ((!isset($_COOKIE[$pid]) && !POLLS_ipAlreadyVoted($pid)) or ($P['is_open'] == 1)) {
         if ($ntopics == 1) {
             $questions_sql = "SELECT question,qid "
@@ -601,7 +601,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
 * @param        int     $size           Size in pixels of poll results
 * @param        string  $pid            Poll topic ID to show (optional)
 * @param        boolean $showall        Show only the first question or all
-* @param        int     $displaytype    Possible values 0 = Normal, 1 = In Block, 2 = autotag 
+* @param        int     $displaytype    Possible values 0 = Normal, 1 = In Block, 2 = autotag
 * @return       string  HTML formatted string of poll
 * @see function COM_pollVote
 * @see function COM_pollResults
@@ -612,7 +612,7 @@ function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
     global $_CONF, $_TABLES, $_PO_CONF, $LANG_POLLS;
 
     $retval = '';
-    
+
     DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < UNIX_TIMESTAMP() - {$_PO_CONF['polladdresstime']}");
 
     if (!empty($pid)) {
@@ -621,7 +621,7 @@ function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
         if (($displaytype == 2) && ($Q['is_open'] == 0)) {
             $retval = '<div class="poll-autotag-message">'
                     . $LANG_POLLS['pollclosed'] . '</div>';
-        }        
+        }
         if (!isset($_COOKIE['poll-' . $pid]) && !POLLS_ipAlreadyVoted($pid) &&
                 ($Q['is_open'] == 1)) {
             $retval .= POLLS_pollVote($pid, $showall, $displaytype);
@@ -736,7 +736,7 @@ function POLLS_pollResults($pid, $scale=100, $order='', $mode='', $page = 1, $di
            $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE, $LANG25;
 
     $retval = '';
-    
+
     $topic_sql = "SELECT topic,voters,is_open,hideresults,commentcode,owner_id,group_id,"
         . "perm_owner,perm_group,perm_members,perm_anon "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'";
@@ -762,10 +762,10 @@ function POLLS_pollResults($pid, $scale=100, $order='', $mode='', $page = 1, $di
         if ($displaytype == 2) {
             $retval = '<div class="poll-autotag-message">' . $LANG_POLLS['pollhidden']. "</div>";
         }
-        
+
         return $retval;
     }
-    
+
     $ntopic = DB_numRows($result);
     if ($ntopic == 1) {
         $questions_sql = "SELECT qid,pid,question "
@@ -1086,7 +1086,7 @@ function plugin_templatesetvars_polls ($templatename, &$template)
 function plugin_getheadercode_polls()
 {
     global $_SCRIPTS;
-    
+
     // You normally only set the css file when needed but with the possibility of
     // the poll block or autotag being displayed after COM_SiteHeader being called
     // we need to set it just in case
@@ -1208,11 +1208,11 @@ function plugin_upgrade_polls()
             }
 
             if (! $current_config) {
-                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run
                 // Set new Tab column to whatever fieldset is
                 $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'polls'";
-                DB_query($sql);                
-        
+                DB_query($sql);
+
                 polls_update_ConfValues_2_1_2();
             }
 
@@ -1220,7 +1220,7 @@ function plugin_upgrade_polls()
 
             $current_version = '2.1.3';
             break;
-            
+
         case '2.1.3':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
@@ -1232,7 +1232,7 @@ function plugin_upgrade_polls()
             if (! $current_config) {
                 polls_update_ConfValues_2_1_3();
             }
-            
+
             polls_update_ConfigSecurity_2_1_3();
 
             $current_version = '2.1.4';
@@ -1248,11 +1248,11 @@ function plugin_upgrade_polls()
 
             $current_version = '2.1.5';
             break;
-            
-        case '2.1.5':            
+
+        case '2.1.5':
             $current_version = '2.1.6';
             break;
-        	
+
         default:
             $done = true;
         }
@@ -1288,7 +1288,7 @@ function plugin_migrate_polls($old_conf)
 }
 
 /**
-* Return information for a poll                                                                                                                     
+* Return information for a poll
 *
 * @param    string  $pid        poll ID or '*'
 * @param    string  $what       comma-separated list of properties
@@ -1300,7 +1300,7 @@ function plugin_migrate_polls($old_conf)
 function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
 {
     global $_CONF, $_TABLES, $_USER;
-    
+
     // parse $what to see what we need to pull from the database
     $properties = explode(',', $what);
     $fields = array();
@@ -1385,15 +1385,15 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
                         $userid = 1;
                     } else {
                         $userid = $_USER['uid'];
-                    }                    
+                    }
                     // Users who have already voted but cannot see the results cannot view link (unless they are the admin or the owner)
                     $has_Permissions = false;
                     if (($A['hideresults'] == 0) || (isset($_USER['uid']) && ($_USER['uid'] == $A['owner_id'])) || SEC_inGroup('Root')) {
                         $has_Permissions = true;
                     }
-                    if ($has_Permissions || (!$has_Permissions && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {                    
-                        $props['url'] = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid']; // . '&amp;aid=-1';                   
-                    } 
+                    if ($has_Permissions || (!$has_Permissions && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
+                        $props['url'] = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid']; // . '&amp;aid=-1';
+                    }
                 }
                 break;
             default:
@@ -1471,12 +1471,12 @@ function plugin_getdocumentationurl_polls($file)
 * Provides text for a Configuration tooltip
 *
 * @param    string  $id     Id of config value
-* @return   mixed           Text to use regular tooltip, NULL to use config 
+* @return   mixed           Text to use regular tooltip, NULL to use config
 *                           tooltip hack, or empty string when not available
 *
 */
 function plugin_getconfigtooltip_polls($id)
-{   
+{
     // Use config tooltip hack where tooltip is read from the config documentation
     return;
 }
@@ -1501,7 +1501,7 @@ function plugin_getcommenturlid_polls()
 
 /**
 * Poll Autotags
-* [poll: pid] - Displays a link to a poll using the Poll Topic as the title. A alternate title may be specified. 
+* [poll: pid] - Displays a link to a poll using the Poll Topic as the title. A alternate title may be specified.
 * [poll_vote: pid pid class:poll-autotag showall:1] - Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions
 * [poll_result: pid class:poll-autotag] - Class not required. Class specifies the css class
 *
@@ -1526,7 +1526,7 @@ function plugin_autotags_polls($op, $content = '', $autotag = '')
             $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                                    "grp_name = 'Polls Admin'");
         }
-        $owner_id = SEC_getDefaultRootUser();     
+        $owner_id = SEC_getDefaultRootUser();
 
         if (COM_getPermTag($owner_id, $group_id, $_PO_CONF['autotag_permissions_poll_vote'][0], $_PO_CONF['autotag_permissions_poll_vote'][1], $_PO_CONF['autotag_permissions_poll_vote'][2], $_PO_CONF['autotag_permissions_poll_vote'][3]) == $flag) {
             $tagnames[] = 'poll_vote';
@@ -1537,7 +1537,7 @@ function plugin_autotags_polls($op, $content = '', $autotag = '')
         if (COM_getPermTag($owner_id, $group_id, $_PO_CONF['autotag_permissions_poll'][0], $_PO_CONF['autotag_permissions_poll'][1], $_PO_CONF['autotag_permissions_poll'][2], $_PO_CONF['autotag_permissions_poll'][3]) == $flag) {
             $tagnames[] = 'poll';
         }
-        
+
         if (count($tagnames) > 0) {
             return $tagnames;
         }
@@ -1647,18 +1647,18 @@ function plugin_getwhatsnew_polls()
         $datecolumn = 'created';
     }
     $sql = array();
-    $sql['mysql'] = "SELECT pid, topic, hideresults, owner_id 
-        FROM {$_TABLES['polltopics']} 
-        WHERE ({$datecolumn} >= (DATE_SUB(NOW(), INTERVAL {$_PO_CONF['newpollsinterval']} SECOND))) 
-        " . COM_getPermSQL('AND') . " 
+    $sql['mysql'] = "SELECT pid, topic, hideresults, owner_id
+        FROM {$_TABLES['polltopics']}
+        WHERE ({$datecolumn} >= (DATE_SUB(NOW(), INTERVAL {$_PO_CONF['newpollsinterval']} SECOND)))
+        " . COM_getPermSQL('AND') . "
         ORDER BY {$datecolumn} DESC LIMIT 15";
-        
+
     $sql['mssql'] = $sql['mysql'];
-    
-    $sql['pgsql'] = "SELECT  pid, topic, hideresults, owner_id 
-        FROM {$_TABLES['polltopics']} 
-        WHERE ({$datecolumn} >= (NOW() - INTERVAL '{$_PO_CONF['newpollsinterval']} SECONDS')) 
-        " . COM_getPermSQL('AND') . " 
+
+    $sql['pgsql'] = "SELECT  pid, topic, hideresults, owner_id
+        FROM {$_TABLES['polltopics']}
+        WHERE ({$datecolumn} >= (NOW() - INTERVAL '{$_PO_CONF['newpollsinterval']} SECONDS'))
+        " . COM_getPermSQL('AND') . "
         ORDER BY {$datecolumn} DESC LIMIT 15";
 
     $result = DB_query($sql);
@@ -1674,7 +1674,7 @@ function plugin_getwhatsnew_polls()
             if (($A['hideresults'] == 0) || (isset($_USER['uid']) && ($_USER['uid'] == $A['owner_id'])) || SEC_inGroup('Root')) {
                 $has_Permissions = true;
             }
-            if ($has_Permissions || (!$has_Permissions && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {                    
+            if ($has_Permissions || (!$has_Permissions && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
             //if ($_USER['uid'] == 2 || ($_USER['uid'] != 2 && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
                 $url = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid'];
                 $title = COM_undoSpecialChars(stripslashes( $A['topic']));
@@ -1687,19 +1687,19 @@ function plugin_getwhatsnew_polls()
                 }
                 $apoll = str_replace('$', '&#36;', $titletouse);
                 $apoll = str_replace(' ', '&nbsp;', $apoll);
-    
+
                 $newpolls[] = COM_createLink($apoll, $url, $attr);
             }
         }
-        
+
         if (isset($url)) {
             $retval .= COM_makeList($newpolls, 'list-new-plugins');
         }
     }
-    
+
     if ($nrows == 0 || !isset($url)) {
         $retval .= $LANG_POLLS['no_new_polls'] . '<br' . XHTML . '>' . LB;
-    }     
+    }
 
     return $retval;
 }
@@ -1707,7 +1707,7 @@ function plugin_getwhatsnew_polls()
 /**
 * Return new Polls comments for the What's New block
 *
-* @param    string  $numreturn  If 0 will return results for What's New Block. 
+* @param    string  $numreturn  If 0 will return results for What's New Block.
 *                               If > 0 will return last X new comments for User Profile.
 * @param    string  $uid        ID of the user to return results for. 0 = all users.
 * @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
@@ -1718,10 +1718,10 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
     global $_CONF, $_TABLES;
 
     $stwhere = '';
-    
+
     if ($uid > 0) {
         $stwhere = " AND ({$_TABLES['comments']}.uid = $uid)";
-    }    
+    }
     if ($numreturn == 0 ) {
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
             . " WHERE type = 'polls' AND (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
@@ -1741,7 +1741,7 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($x = 0; $x < $nrows; $x++) {
-            $A[] = DB_fetchArray($result);    
+            $A[] = DB_fetchArray($result);
         }
         return $A;
     }
@@ -1762,19 +1762,19 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
 function plugin_getBlocks_polls($side, $topic='')
 {
     global $_TABLES, $_CONF, $_PO_CONF, $LANG_POLLS;
-    
+
     $retval = array();
-    
+
     $owner_id = SEC_getDefaultRootUser();
-    
+
     // Check permissions first
     if ($_PO_CONF['block_enable'] && SEC_hasAccess($owner_id, $_PO_CONF['block_group_id'], $_PO_CONF['block_permissions'][0], $_PO_CONF['block_permissions'][1], $_PO_CONF['block_permissions'][2], $_PO_CONF['block_permissions'][3])) {
         // Check if right topic
         if (($_PO_CONF['block_topic_option'] == TOPIC_ALL_OPTION) || ($_PO_CONF['block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_PO_CONF['block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_PO_CONF['block_topic']))) {
-            if (($side=='left' && $_PO_CONF['block_isleft'] == 1) || ($side=='right' && $_PO_CONF['block_isleft'] == 0)) { 
+            if (($side=='left' && $_PO_CONF['block_isleft'] == 1) || ($side=='right' && $_PO_CONF['block_isleft'] == 0)) {
                 // Create a block
                 $display = phpblock_polls();
-                
+
                 $retval[] = array('name'           => 'polls',
                                   'type'           => 'dynamic',
                                   'onleft'         => $_PO_CONF['block_isleft'],
@@ -1786,7 +1786,7 @@ function plugin_getBlocks_polls($side, $topic='')
             }
         }
     }
-    
+
     return $retval;
 }
 
@@ -1805,14 +1805,14 @@ function plugin_getBlocks_polls($side, $topic='')
 function plugin_getBlocksConfig_polls($side, $topic='')
 {
     global $_TABLES, $_CONF, $_PO_CONF, $LANG_POLLS;
-    
+
     $retval = array();
-    
+
     $owner_id = SEC_getDefaultRootUser();
-    
+
     // Check permissions first
     if (SEC_hasAccess($owner_id, $_PO_CONF['block_group_id'], $_PO_CONF['block_permissions'][0], $_PO_CONF['block_permissions'][1], $_PO_CONF['block_permissions'][2], $_PO_CONF['block_permissions'][3])) {
-        if (($side=='left' && $_PO_CONF['block_isleft'] == 1) || ($side=='right' && $_PO_CONF['block_isleft'] == 0)) { 
+        if (($side=='left' && $_PO_CONF['block_isleft'] == 1) || ($side=='right' && $_PO_CONF['block_isleft'] == 0)) {
             $retval[] = array('plugin'         => $LANG_POLLS['polls'],
                               'name'           => 'polls',
                               'title'          => $LANG_POLLS['poll'],
@@ -1828,7 +1828,7 @@ function plugin_getBlocksConfig_polls($side, $topic='')
                               );
         }
     }
-    
+
     return $retval;
 }
 
@@ -1844,7 +1844,7 @@ function plugin_getBlocksConfig_polls($side, $topic='')
 function plugin_group_changed_polls($grp_id, $mode)
 {
     global $_TABLES, $_GROUPS, $_PO_CONF;
-    
+
     if ($mode == 'delete') {
         // Change any deleted group ids to Polls Admin if exist, if does not change to root group
         $new_group_id = 0;
@@ -1859,18 +1859,18 @@ function plugin_group_changed_polls($grp_id, $mode)
                     $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
                 }
             }
-        }    
-        
+        }
+
         // Update Polls with new group id
-        $sql = "UPDATE {$_TABLES['polltopics']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $sql = "UPDATE {$_TABLES['polltopics']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
-        
+
         // Update Polls Block group if need be
         if ($_PO_CONF['block_group_id'] == $grp_id) {
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_group_id', $new_group_id, 'polls');
-            
+
         }
    }
 }
@@ -1918,11 +1918,11 @@ function plugin_itemsaved_polls($id, $type, $old_id)
         if ($key > 0) {
             // Update config
             $_PO_CONF['block_topic'][$key] = $id;
-            
+
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_topic', $_PO_CONF['block_topic'], 'polls');
-        }        
+        }
     }
 }
 
@@ -1946,11 +1946,11 @@ function plugin_itemdeleted_polls($id, $type)
         if ($key > 0) {
             // delete item from config
             unset($_PO_CONF['block_topic'][$key]);
-            
+
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_topic', $_PO_CONF['block_topic'], 'polls');
-        }    
+        }
         // Note: All topics could get deleted from array which would mean the block would not display untill user adds more in config
     }
 }

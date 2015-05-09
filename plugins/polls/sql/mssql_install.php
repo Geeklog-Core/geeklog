@@ -61,7 +61,7 @@ CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
     [pid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [topic] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,    
+    [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [voters] [numeric](8, 0) NULL ,
     [questions] [int] NOT NULL ,
     [created] [datetime] NULL ,

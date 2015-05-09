@@ -129,10 +129,10 @@ class LDAP
             case 'md5':
                 if (preg_match("/^\$/", $correct_cyphertext)) {
                     // passwd/style-shadow MD5, starting with '$'
-	                $password_cyphertext = crypt($password);
+                    $password_cyphertext = crypt($password);
                 } else {
                     // hexadecimal MD5
-	                $password_cyphertext = md5($password);
+                    $password_cyphertext = md5($password);
                 }
                 break;
 

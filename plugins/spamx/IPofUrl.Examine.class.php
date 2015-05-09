@@ -62,7 +62,7 @@ class IPofUrl extends BaseCommand
                 $ip = gethostbyname($urls[2][$i]);
 
                 if ($val == $ip) {
-                    $ans = PLG_SPAM_FOUND;	// quit on first positive match
+                    $ans = PLG_SPAM_FOUND;  // quit on first positive match
                     $this->updateStat('IPofUrl', $val);
                     SPAMX_log($LANG_SX00['foundspam'] . $urls[2][$i] .
                               $LANG_SX00['foundspam2'] . $uid .

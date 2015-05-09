@@ -54,9 +54,9 @@ $_UPDATES = array(
           [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
           [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
           CONSTRAINT [PK_{$_TABLES['pollquestions']}] PRIMARY KEY  CLUSTERED
-	      (
-		    [qid]
-	      )  ON [PRIMARY]
+          (
+            [qid]
+          )  ON [PRIMARY]
         ) ON [PRIMARY]",
         // in 1.4.1, "don't display poll" was equivalent to "closed"
         "UPDATE {$_TABLES['polltopics']} SET is_open = 0 WHERE display = 0"
@@ -89,22 +89,22 @@ $_UPDATES = array(
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_main', 'Access to configure general polls settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_permissions', 'Access to configure polls default permissions', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_autotag_permissions', 'Access to configure polls autotag usage permissions', 0)"
-    ),     
+    ),
 
     '2.1.3' => array(
         // Delete Poll block since moved to dynamic
-        "DELETE FROM {$_TABLES['blocks']} WHERE phpblockfn = 'phpblock_polls'", 
+        "DELETE FROM {$_TABLES['blocks']} WHERE phpblockfn = 'phpblock_polls'",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_poll_block', 'Access to configure poll block', 0)"
-    ), 
-    
+    ),
+
     '2.1.4' => array(
         // Poll Id now 128 characters
-        "ALTER TABLE {$_TABLES['pollanswers']} CHANGE [pid] VARCHAR(128) NOT NULL DEFAULT ''", 
+        "ALTER TABLE {$_TABLES['pollanswers']} CHANGE [pid] VARCHAR(128) NOT NULL DEFAULT ''",
         "ALTER TABLE {$_TABLES['pollquestions']} CHANGE [pid] VARCHAR(128) NOT NULL DEFAULT ''",
         "ALTER TABLE {$_TABLES['polltopics']} CHANGE [pid] VARCHAR(128) NOT NULL DEFAULT ''",
         "ALTER TABLE {$_TABLES['pollvoters']} CHANGE [pid] VARCHAR(128) NOT NULL"
     )
-    
+
 );
 
 /**
@@ -143,7 +143,7 @@ function polls_update_ConfValues_2_1_0()
     require_once $_CONF['path'] . 'plugins/polls/install_defaults.php';
 
     $c = config::get_instance();
-    
+
     // meta tag config options.
     $c->add('meta_tags', $_PO_DEFAULT['meta_tags'], 'select', 0, 0, 0, 100, true, 'polls');
 
@@ -156,10 +156,10 @@ function polls_update_ConfValues_2_1_1()
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
     require_once $_CONF['path'] . 'plugins/polls/install_defaults.php';
-    
+
     $c = config::get_instance();
 
-    // What's New Block    
+    // What's New Block
     $c->add('fs_whatsnew', NULL, 'fieldset',
             0, 1, NULL, 0, true, 'polls');
     $c->add('newpollsinterval',$_PO_DEFAULT['new_polls_interval'],'text',
@@ -172,11 +172,11 @@ function polls_update_ConfValues_2_1_1()
     // Permissions (needed to redefine order on configuration form)
     $c->del('fs_permissions','polls');
     $c->del('default_permissions','polls');
-    
-    $c->add('fs_permissions', NULL, 'fieldset', 
+
+    $c->add('fs_permissions', NULL, 'fieldset',
             0, 2, NULL, 0, true, 'polls');
-    $c->add('default_permissions', $_PO_CONF['default_permissions'], '@select', 
-            0, 2, 12, 100, true, 'polls');    
+    $c->add('default_permissions', $_PO_CONF['default_permissions'], '@select',
+            0, 2, 12, 100, true, 'polls');
 
     return true;
 }
@@ -188,7 +188,7 @@ function polls_update_ConfValues_2_1_1()
 function polls_update_ConfigSecurity_2_1_2()
 {
     global $_TABLES;
-    
+
     // Add in security rights for Polls Admin
     $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                             "grp_name = 'Polls Admin'");
@@ -198,15 +198,15 @@ function polls_update_ConfigSecurity_2_1_2()
         $ft_names[] = 'config.polls.tab_main';
         $ft_names[] = 'config.polls.tab_permissions';
         $ft_names[] = 'config.polls.tab_autotag_permissions';
-        
+
         foreach ($ft_names as $name) {
-            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");         
+            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");
             if ($ft_id > 0) {
                 $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
                 DB_query($sql);
             }
-        }        
-    }    
+        }
+    }
 
 }
 
@@ -217,16 +217,16 @@ function polls_update_ConfigSecurity_2_1_2()
 function polls_update_ConfigSecurity_2_1_3()
 {
     global $_TABLES;
-    
+
     // Add in security rights for Polls Admin
     $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                             "grp_name = 'Polls Admin'");
 
     if ($group_id > 0) {
-        $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'config.polls.tab_poll_block'");   
+        $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'config.polls.tab_poll_block'");
         $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
-        DB_query($sql);    
-    }    
+        DB_query($sql);
+    }
 
 }
 

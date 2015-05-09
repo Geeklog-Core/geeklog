@@ -127,6 +127,6 @@ $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LOGVIEW['log_viewer']));
 
-COM_output($display);  
+COM_output($display);
 exit;
 ?>

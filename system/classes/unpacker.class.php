@@ -33,47 +33,47 @@
 
 /**
  * Geeklog plugin unpacker - Archive Libs Wrapper
- * 
- * This class wraps calls to pecl Zip, pear Zip, pear Tar, using the best 
+ *
+ * This class wraps calls to pecl Zip, pear Zip, pear Tar, using the best
  * package available to unpack or list information about the archive.
- * 
+ *
  * @author Justin Carlson, justin DOT carlson AT gmail DOT com
- * 
+ *
  */
 class unpacker {
 
     // mime types ( these are not very reliable, varies browser to browser )
     // for the best results, pass the real filename as well as the mime type
     var $mime_def = array('application/zip'              => 'zip',
-    					  'application/x-zip'            => 'zip',
-    					  'application/x-zip-compressed' => 'zip',
-    					  'multipart/x-zip'              => 'zip',
-    					  'application/gzip'             => 'tar',
-    					  'application/tar'              => 'tar',
-    					  'application/x-tar'            => 'tar',
-    					  'application/x-gtar'           => 'tar',
-    					  'application/x-gzip'           => 'tar',
-    					  'application/x-gzip-compressed'=> 'tar',
-    					  'application/octet-stream'     => 'tar',
-    					  'application/x-compress'       => 'tar',
-    					  'application/x-compressed'     => 'tar');
+                          'application/x-zip'            => 'zip',
+                          'application/x-zip-compressed' => 'zip',
+                          'multipart/x-zip'              => 'zip',
+                          'application/gzip'             => 'tar',
+                          'application/tar'              => 'tar',
+                          'application/x-tar'            => 'tar',
+                          'application/x-gtar'           => 'tar',
+                          'application/x-gzip'           => 'tar',
+                          'application/x-gzip-compressed'=> 'tar',
+                          'application/octet-stream'     => 'tar',
+                          'application/x-compress'       => 'tar',
+                          'application/x-compressed'     => 'tar');
 
-    var $file = null; // archive name 
+    var $file = null; // archive name
     var $filesize = null; // archive size (in bytes)
-    var $ext = null; // archive ext 
-    var $contents = null; // archive contents 
+    var $ext = null; // archive ext
+    var $contents = null; // archive contents
     var $archive = null; // archive resource handle
     var $errorno = null; // error number ( set when returned false )
     var $error = null; // error text ( set when returned false )
-    var $u_size = null; // uncompressed archive size 
+    var $u_size = null; // uncompressed archive size
     var $d_sep = null; // directory separator default
-    var $type = null; // archive type  
+    var $type = null; // archive type
     var $comp = null; // archive compression type (private)
 
 
     /**
      * Constructor
-     * 
+     *
      * @param string $file full path to archive
      * @param string $mime_type mime type ( optional, application/zip, /tar, etc )
      * @return boolean $success result of loading archive passed
@@ -111,7 +111,7 @@ class unpacker {
 
                 // if a known mime type was not provided, expect real filename
                 // mime types are not reliable so this is the reccommended way
-                // for example: unpacker($_FILES['foo']['name'],$type); 
+                // for example: unpacker($_FILES['foo']['name'],$type);
                 // .tar, .tgz, .tar.gz, .tar.bz2, and .tar.bz are supported
                 if ($this->ext == 'r.gz' || $this->ext == '.tgz') {
                     $this->type = 'tar';
@@ -143,7 +143,7 @@ class unpacker {
      * Open - Constructor Wrapper
      * This clears the vars and loads another file.
      * ( May never be used )
-     * 
+     *
      * @param string $file full path to archive
      * @param string $optional_type mime type ( application/zip, /tar, etc )
      * @return boolean $success result of loading archive passed
@@ -164,9 +164,9 @@ class unpacker {
     }
 
     /**
-     * 
+     *
      * Decides which loader to call, or returns false if one isn't found.
-     * 
+     *
      * @return boolean $success result of loading archive passed
      */
     function load_file() {
@@ -181,7 +181,7 @@ class unpacker {
 
     /**
      * load a zip archive
-     * 
+     *
      * @return boolean $success result of loading archive passed
      */
     function load_zip() {
@@ -197,7 +197,7 @@ class unpacker {
 
         } else {
 
-            // use Pear Archive_Zip     
+            // use Pear Archive_Zip
             require_once 'Archive/Zip.php';
             $this->archive = new Archive_Zip($this->file);
             // unfortunately, we can't tell if it succeeded
@@ -210,12 +210,12 @@ class unpacker {
 
     /**
      * load a tar archive
-     * 
+     *
      * @return boolean $success result of loading archive passed
      */
     function load_tar() {
 
-        // use Pear Archive_Tar 
+        // use Pear Archive_Tar
         require_once 'Archive/Tar.php';
         $this->archive = new Archive_Tar($this->file, $this->comp);
 
@@ -226,7 +226,7 @@ class unpacker {
 
     /**
      * return contents of archive (wrapper)
-     * 
+     *
      * @return array array(array('filename','size','etc')) archive contents
      */
     function getlist() {
@@ -234,7 +234,7 @@ class unpacker {
         // see if content are cached
         if (is_array($this->contents)) {
             return $this->contents;
-        }        
+        }
 
         // not cached, load and cache the content list
         $handler = 'list_' . $this->type;
@@ -249,7 +249,7 @@ class unpacker {
 
     /**
      * return contents of zip archive
-     * 
+     *
      * @return array array(array('filename','size','etc')) archive contents
      */
     function list_zip() {
@@ -266,7 +266,7 @@ class unpacker {
             $this->contents = array();
             for ($i = 0; $i < $this->archive->numFiles; $i ++) {
 
-                // Make ZipArchive's info look like Archive_Zip's 
+                // Make ZipArchive's info look like Archive_Zip's
                 $zip_entry = $this->archive->statIndex($i);
                 $this->contents[$i]['filename'] = $zip_entry['name'];
                 $this->contents[$i]['size'] = $zip_entry['size'];
@@ -274,7 +274,7 @@ class unpacker {
                 $this->contents[$i]['method'] = $zip_entry['comp_method'];
 
             }
-            // return the contents list            
+            // return the contents list
             return $this->contents;
 
         // using PEAR::Archive_Zip
@@ -292,7 +292,7 @@ class unpacker {
 
     /**
      * return contents of tar archive
-     * 
+     *
      * @return array array(array('filename','size','etc')) archive contents
      */
     function list_tar() {
@@ -307,8 +307,8 @@ class unpacker {
 
     /**
      * unpack the archive in the target path (wrapper)
-     * 
-     * @param string $target_path destination 
+     *
+     * @param string $target_path destination
      * @param array $item_array array of specific path/file(s)
      * @return boolean result
      */
@@ -333,9 +333,9 @@ class unpacker {
     }
 
     /**
-     * unpack a zip archive in the target path 
-     * 
-     * @param string $target_path destination 
+     * unpack a zip archive in the target path
+     *
+     * @param string $target_path destination
      * @param array $item_array array of specific path/file(s)
      * @return boolean result
      */
@@ -392,9 +392,9 @@ class unpacker {
     }
 
     /**
-     * unpack a tar archive in the target path 
-     * 
-     * @param string $target_path destination 
+     * unpack a tar archive in the target path
+     *
+     * @param string $target_path destination
      * @param array $item_array array of specific path/file(s)
      * @return boolean result
      */
@@ -412,8 +412,8 @@ class unpacker {
     }
 
     /**
-     * return the first directory name in the archive 
-     * 
+     * return the first directory name in the archive
+     *
      * @return mixed string directory name, or boolean false
      */
     function getdir() {
@@ -429,8 +429,8 @@ class unpacker {
     }
 
     /**
-     * return the total unpacked size of the archive 
-     * 
+     * return the total unpacked size of the archive
+     *
      * @return mixed (size in bytes or false on error)
      */
     function getunpackedsize() {
@@ -455,12 +455,12 @@ class unpacker {
     }
 
      /**
-     * sets an error number and string to report if asked 
+     * sets an error number and string to report if asked
      * acts as a wrapper for return false, to set an error
      * at the same time
-     * 
+     *
      * @param string $errorno error number ( anything goes )
-     * @param string $error error text ( anything goes ) 
+     * @param string $error error text ( anything goes )
      * @return boolean, always false
      */
     function setError($errorno, $error) {
