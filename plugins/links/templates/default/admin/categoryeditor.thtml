@@ -2,7 +2,7 @@
 <!-- plugins/links/templates/admin/categoryeditor.thtml { -->
 
 <p>{instructions}</p>
-<form action="{site_admin_url}/plugins/links/category.php" method="post" id="links-categoryeditor" class="compact">
+<form action="{site_admin_url}/plugins/links/category.php" method="post" id="links-categoryeditor" class="compact uk-form">
   <div class="admin_basic">
     <dl class="form_block">
       <dt><label for="links-categoryeditor-pid">{lang_parent}</label></dt>

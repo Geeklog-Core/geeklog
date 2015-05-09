@@ -108,7 +108,7 @@ class MassDelete extends BaseAdmin
             $display .= '<p>' . $numc . $LANG_SX00['comdel'] . '</p>' . LB;
         } else {
             $token = SEC_createToken();
-            $display .= '<form method="post" action="'
+            $display .= '<form class="uk-form" method="post" action="'
                      .  $_CONF['site_admin_url']
                      .  '/plugins/spamx/index.php?command=MassDelete"><div>';
             $display .= $LANG_SX00['numtocheck'] . '&nbsp;&nbsp;&nbsp;'

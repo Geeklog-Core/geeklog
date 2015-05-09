@@ -24,7 +24,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <form name="userevent" method="post" action="{site_url}/calendar/event.php">
+                                        <form name="userevent" method="post" action="{site_url}/calendar/event.php" class="uk-form">
                                             <div>
                                                 <input type="hidden" name="action" value="saveuserevent"{xhtml}>
                                                 <input type="hidden" name="eid" value="{event_id}"{xhtml}>

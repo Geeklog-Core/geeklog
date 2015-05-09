@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 
   {start_block_editor}
-  <form action="{site_admin_url}/plugins/staticpages/index.php" method="post" id="sp-editor" class="compact">
+  <form action="{site_admin_url}/plugins/staticpages/index.php" method="post" id="sp-editor" class="compact uk-form" >
     <div class="admin_basic">
       <dl class="form_block">
         <dt><label for="sp-editor-sp_title">{lang_title}</label></dt>

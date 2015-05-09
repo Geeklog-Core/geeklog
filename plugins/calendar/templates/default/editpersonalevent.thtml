@@ -1,4 +1,4 @@
-                            <form action="{site_url}/calendar/event.php" method="post">
+                            <form action="{site_url}/calendar/event.php" method="post" class="uk-form">
                                 <input type="hidden" name="calendar_type" value="personal"{xhtml}>
                                 <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
                                 <input type="hidden" name="eid" value="{eid}"{xhtml}>

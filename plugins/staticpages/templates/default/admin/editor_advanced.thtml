@@ -3,7 +3,7 @@
 {noscript}
 <div id="advanced_editor" style="display:none;">
   {start_block_editor}
-  <form action="{site_admin_url}/plugins/staticpages/index.php" method="post" onsubmit='set_postcontent();' id="sp-advanced_editor" class="compact">
+  <form action="{site_admin_url}/plugins/staticpages/index.php" method="post" onsubmit='set_postcontent();' id="sp-advanced_editor" class="compact uk-form" >
     <div class="admin_basic">
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-sp_title">{lang_title}</label></dt>

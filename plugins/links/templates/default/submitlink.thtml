@@ -1,7 +1,7 @@
 
 <!-- links/submitlink.thtml { -->
 
-<form action="{site_url}/submit.php" method="post" id="submitlink" class="compact">
+<form action="{site_url}/submit.php" method="post" id="submitlink" class="compact uk-form">
   <div class="admin_basic">
     <dl class="form_block">
       <dt><label for="submitlink-title">{lang_title}</label></dt>

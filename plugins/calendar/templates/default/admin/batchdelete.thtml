@@ -1,4 +1,4 @@
-<form style="display:inline" action="{site_admin_url}/plugins/calendar/index.php?mode=batchdelete" method="post">
+<form style="display:inline" action="{site_admin_url}/plugins/calendar/index.php?mode=batchdelete" method="post" class="uk-form">
     <div style="display: inline;">
         <input type="hidden" name="mode" value="batchdelete"{xhtml}>
         <input type="hidden" name="usr_time" value="{usr_time}"{xhtml}>
