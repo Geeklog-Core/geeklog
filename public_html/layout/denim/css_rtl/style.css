@@ -174,12 +174,16 @@ textarea:focus {
   box-shadow: 0 0 3px rgba(0,0,0,.2);
 }
 
-input[type="submit"]::-moz-focus-inner {
+input[type="submit"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
 
-input[type="submit"] {
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
   /* 1 */
   -webkit-appearance: none;
   /* 2 */
@@ -231,12 +235,18 @@ input[type="submit"] {
   text-shadow: 0 1px 0 #FFF;
 }
 
-input[type="submit"]:not(:disabled) {
+input[type="submit"]:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="reset"]:not(:disabled) {
   cursor: pointer;
 }
 
 input[type="submit"]:hover,
-input[type="submit"]:focus {
+input[type="button"]:hover,
+input[type="reset"]:hover,
+input[type="submit"]:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus {
   background-color: #FAFAFA;
   color: #444;
   /* 2 */
@@ -247,7 +257,11 @@ input[type="submit"]:focus {
 }
 
 input[type="submit"]:active,
-input[type="submit"].uk-active {
+input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"].uk-active,
+input[type="button"].uk-active,
+input[type="reset"].uk-active {
   background-color: #F5F5F5;
   color: #444;
   border-color: rgba(0,0,0,.2);
@@ -257,7 +271,9 @@ input[type="submit"].uk-active {
   box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
 }
 
-input[type="submit"]:disabled {
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+input[type="reset"]:disabled {
   background-color: #FAFAFA;
   color: #999;
   border-color: rgba(0,0,0,.2);
@@ -267,44 +283,64 @@ input[type="submit"]:disabled {
   text-shadow: 0 1px 0 #FFF;
 }
 
-.uk-button-group input[type="submit"] {
+.uk-button-group input[type="submit"],
+.uk-button-group input[type="button"],
+.uk-button-group input[type="reset"] {
   vertical-align: top;
 }
 
-.uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"] {
+.uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"],
+.uk-button-group > div:not(:first-child):not(:last-child) input[type="button"],
+.uk-button-group > div:not(:first-child):not(:last-child) input[type="reset"] {
   -webkit-border-radius: 0;
   border-radius: 0;
 }
 
-.uk-button-group > div:first-child input[type="submit"] {
+.uk-button-group > div:first-child input[type="submit"],
+.uk-button-group > div:first-child input[type="button"],
+.uk-button-group > div:first-child input[type="reset"] {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.uk-button-group > div:last-child input[type="submit"] {
+.uk-button-group > div:last-child input[type="submit"],
+.uk-button-group > div:last-child input[type="button"],
+.uk-button-group > div:last-child input[type="reset"] {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.uk-button-group > div:nth-child(n+2) input[type="submit"] {
+.uk-button-group > div:nth-child(n+2) input[type="submit"],
+.uk-button-group > div:nth-child(n+2) input[type="button"],
+.uk-button-group > div:nth-child(n+2) input[type="reset"] {
   margin-right: -1px;
 }
 
-.uk-contrast input[type="submit"] {
+.uk-contrast input[type="submit"],
+.uk-contrast input[type="button"],
+.uk-contrast input[type="reset"] {
   color: #444;
   background: #FFF;
   border-color: transparent;
 }
 
 .uk-contrast input[type="submit"]:hover,
-.uk-contrast input[type="submit"]:focus {
+.uk-contrast input[type="button"]:hover,
+.uk-contrast input[type="reset"]:hover,
+.uk-contrast input[type="submit"]:focus,
+.uk-contrast input[type="button"]:focus,
+.uk-contrast input[type="reset"]:focus {
   background-color: rgba(255,255,255,.8);
   color: #444;
   border-color: transparent;
 }
 
 .uk-contrast input[type="submit"]:active,
-.uk-contrast input[type="submit"].uk-active {
+.uk-contrast input[type="button"]:active,
+.uk-contrast input[type="reset"]:active,
+.uk-contrast input[type="submit"].uk-active,
+.uk-contrast input[type="button"].uk-active,
+.uk-contrast input[type="reset"].uk-active {
   background-color: rgba(255,255,255,.7);
   color: #444;
   -webkit-box-shadow: none;

@@ -166,7 +166,9 @@ textarea:focus
  * Removes inner padding and border in Firefox 4+.
  */
 
-input[type="submit"]::-moz-focus-inner
+input[type="submit"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner
     border: 0
     padding: 0
 
@@ -183,7 +185,9 @@ input[type="submit"]::-moz-focus-inner
  * 10. Reset button group whitespace hack
  * 11. Required for `a`.
  */
-input[type="submit"]
+input[type="submit"],
+input[type="button"],
+input[type="reset"]
     /* 1 */
     -webkit-appearance: none
     /* 2 */
@@ -233,7 +237,9 @@ input[type="submit"]
 
 
 
-input[type="submit"]:not(:disabled)
+input[type="submit"]:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="reset"]:not(:disabled)
     cursor: pointer
 
 /*
@@ -243,7 +249,11 @@ input[type="submit"]:not(:disabled)
  * 3. Required for `a` elements
  */
 input[type="submit"]:hover,
-input[type="submit"]:focus
+input[type="button"]:hover,
+input[type="reset"]:hover,
+input[type="submit"]:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus
     if $var-uikit-theme == 'default'
         background-color: #f5f5f5
     if $var-uikit-theme == 'gradient'
@@ -262,7 +272,11 @@ input[type="submit"]:focus
 
 /* Active */
 input[type="submit"]:active,
-input[type="submit"].uk-active
+input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"].uk-active,
+input[type="button"].uk-active,
+input[type="reset"].uk-active
     if $var-uikit-theme == 'default'
         background-color: #dddddd
     if $var-uikit-theme == 'gradient'
@@ -280,7 +294,9 @@ input[type="submit"].uk-active
  * Overrides also the color modifiers
  ========================================================================== */
 /* Equal for all button types */
-input[type="submit"]:disabled
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+input[type="reset"]:disabled
     if $var-uikit-theme == 'default'
         background-color: #f5f5f5
     if $var-uikit-theme == 'gradient'
@@ -303,7 +319,9 @@ input[type="submit"]:disabled
 /*
  * Remove whitespace between child elements when using `inline-block`
  */
-.uk-button-group input[type="submit"]
+.uk-button-group input[type="submit"],
+.uk-button-group input[type="button"],
+.uk-button-group input[type="reset"]
     vertical-align: top
 
 if $var-uikit-theme == 'gradient'
@@ -313,21 +331,29 @@ if $var-uikit-theme == 'gradient'
     /*
      * Reset border-radius
      */
-    .uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"]
+    .uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"],
+    .uk-button-group > div:not(:first-child):not(:last-child) input[type="button"],
+    .uk-button-group > div:not(:first-child):not(:last-child) input[type="reset"]
         border-radius: 0
 
-    .uk-button-group > div:first-child input[type="submit"]
+    .uk-button-group > div:first-child input[type="submit"],
+    .uk-button-group > div:first-child input[type="button"],
+    .uk-button-group > div:first-child input[type="reset"]
         border-top-right-radius: 0
         border-bottom-right-radius: 0
 
-    .uk-button-group > div:last-child input[type="submit"]
+    .uk-button-group > div:last-child input[type="submit"],
+    .uk-button-group > div:last-child input[type="button"],
+    .uk-button-group > div:last-child input[type="reset"]
         border-top-left-radius: 0
         border-bottom-left-radius: 0
 
     /*
      * Collapse border
      */
-    .uk-button-group > div:nth-child(n+2) input[type="submit"]
+    .uk-button-group > div:nth-child(n+2) input[type="submit"],
+    .uk-button-group > div:nth-child(n+2) input[type="button"],
+    .uk-button-group > div:nth-child(n+2) input[type="reset"]
         margin-left: -1px
 
 if $var-uikit-theme == 'almost-flat'
@@ -337,17 +363,23 @@ if $var-uikit-theme == 'almost-flat'
     /*
      * Reset border-radius
      */
-    .uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"]
+    .uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"],
+    .uk-button-group > div:not(:first-child):not(:last-child) input[type="button"],
+    .uk-button-group > div:not(:first-child):not(:last-child) input[type="reset"]
         border-left-color: rgba(0,0,0,0.1)
         border-right-color: rgba(0,0,0,0.1)
         border-radius: 0
 
-    .uk-button-group > div:first-child input[type="submit"]
+    .uk-button-group > div:first-child input[type="submit"],
+    .uk-button-group > div:first-child input[type="button"],
+    .uk-button-group > div:first-child input[type="reset"]
         border-right-color: rgba(0,0,0,0.1)
         border-top-right-radius: 0
         border-bottom-right-radius: 0
 
-    .uk-button-group > div:last-child input[type="submit"]
+    .uk-button-group > div:last-child input[type="submit"],
+    .uk-button-group > div:last-child input[type="button"],
+    .uk-button-group > div:last-child input[type="reset"]
         border-left-color: rgba(0,0,0,0.1)
         border-top-left-radius: 0
         border-bottom-left-radius: 0
@@ -355,14 +387,18 @@ if $var-uikit-theme == 'almost-flat'
     /*
      * Collapse border
      */
-    .uk-button-group > div:nth-child(n+2) input[type="submit"]
+    .uk-button-group > div:nth-child(n+2) input[type="submit"],
+    .uk-button-group > div:nth-child(n+2) input[type="button"],
+    .uk-button-group > div:nth-child(n+2) input[type="reset"]
         margin-left: -1px
 
 /* ========================================================================
    Component: Contrast for Geeklog
  ========================================================================== */
 
-.uk-contrast input[type="submit"]
+.uk-contrast input[type="submit"],
+.uk-contrast input[type="button"],
+.uk-contrast input[type="reset"]
     color: #444444
     background: #ffffff
     if $var-uikit-theme == 'gradient'
@@ -371,7 +407,11 @@ if $var-uikit-theme == 'almost-flat'
         border-color: transparent
 
 .uk-contrast input[type="submit"]:hover,
-.uk-contrast input[type="submit"]:focus
+.uk-contrast input[type="button"]:hover,
+.uk-contrast input[type="reset"]:hover,
+.uk-contrast input[type="submit"]:focus,
+.uk-contrast input[type="button"]:focus,
+.uk-contrast input[type="reset"]:focus
     background-color: rgba(255, 255, 255, 0.8)
     color: #444444
     if $var-uikit-theme == 'gradient'
@@ -380,7 +420,11 @@ if $var-uikit-theme == 'almost-flat'
         border-color: transparent
 
 .uk-contrast input[type="submit"]:active,
-.uk-contrast input[type="submit"].uk-active
+.uk-contrast input[type="button"]:active,
+.uk-contrast input[type="reset"]:active,
+.uk-contrast input[type="submit"].uk-active,
+.uk-contrast input[type="button"].uk-active,
+.uk-contrast input[type="reset"].uk-active
     background-color: rgba(255, 255, 255, 0.7)
     color: #444444
     if $var-uikit-theme == 'gradient'
