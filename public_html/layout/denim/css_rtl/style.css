@@ -3429,12 +3429,13 @@ span.warning em {
   text-align: center;
   color: #CCC;
   margin: 0 0 1.5em;
+  line-height: 1.4em;
 }
 
 .gl-pagenav a,
 .gl-pagenav b {
   display: inline-block;
-  margin: 1px;
+  margin: 1px 2px;
   padding: 2px 7px;
   background: transparent;
   border: 1px solid #E7E7E7;
@@ -3451,8 +3452,6 @@ span.warning em {
 
 .gl-pagenav span {
   display: inline-block;
-  padding: 4px;
-  line-height: 1.7;
   color: #999;
 }
 
@@ -3466,6 +3465,11 @@ span.warning em {
 .gl-pagenav span a:hover {
   background: transparent;
   border: none;
+}
+
+.gl-pagenav .divider {
+  padding: 0;
+  margin: 0 4px;
 }
 
 /*--------------------------------------
