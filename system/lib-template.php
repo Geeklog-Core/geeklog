@@ -171,35 +171,72 @@ function CTL_plugin_templatePath($plugin, $path = '')
 
 
 /**
-* Get HTML path for a plugin file.
+* Get HTML path for a plugin file (url or physical file location).
+* Order of checking is:
+* - theme path/plugin/file
+* - html path/plugin/directory/file
+* - html path/plugin/directory/theme/file
+* - html path/plugin/directory/default/file
+* - html path/plugin/file (url path only)
+* - plugin path/plugin/directory/theme/file (physical path only)
+* - plugin path/plugin/directory/default/file (physical path only)
 *
 * @param    string  $plugin     name of plugin
 * @param    string  $directory  name of directory
 * @param    string  $filename   name of file
+* @param    boolean $return_url return url path or file path
 * @return   string              full HTML path to file
 *
 */
-function CTL_plugin_themebaseURL($plugin, $directory, $filename)
+function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = true)
 {
     global $_CONF;
+    
+    $retval = "";
 
-    // See if plugin css file exist in current theme
+    // See if plugin file exist in current theme
     $file = "{$_CONF['path_layout']}$plugin/$filename";
     if (file_exists($file)) {
-        $retval = "{$_CONF['layout_url']}/$plugin/$filename";
+    	if ($return_url) {
+    		$retval = "{$_CONF['layout_url']}/$plugin/$filename";
+		} else {
+			$retval = $file;
+		}
     } else {
         // See if current theme templates stored with plugin
         $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme']}/$filename";
         if (file_exists($file)) {
-            $retval = "/$plugin/$directory/{$_CONF['theme']}/$filename";
+        	if ($return_url) {
+        		$retval = "/$plugin/$directory/{$_CONF['theme']}/$filename";
+			} else {
+				$retval = $file;
+			}
         } else {
             // Use default templates then. This should always exist
             $file = "{$_CONF['path_html']}/$plugin/$directory/default/$filename";
             if (file_exists($file)) {
-                $retval = "/$plugin/$directory/default/$filename";
+            	if ($return_url) {
+            		$retval = "/$plugin/$directory/default/$filename";
+				} else {
+					$retval = $file;
+				}
             } else {
-                // Last guess for file location
-                $retval = "/$plugin/$filename";
+            	if ($return_url) {
+					// Last guess for URL file location
+					$retval = "/$plugin/$filename";
+				} else {
+					// See if current theme templates stored with plugin
+					$file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme']}/$filename";
+					if (file_exists($file)) {
+						$retval = $file;
+					} else {
+						// Use default templates then. This should always exist
+						$file = "{$_CONF['path']}plugins/$plugin/$directory/default/$filename";
+						if (file_exists($file)) {
+							$retval = $file;
+						}
+					}
+				}
             }
         }
     }
@@ -239,6 +276,57 @@ function CTL_plugin_dirLocation($plugin, $directory = "images", $return_url = tr
     }
 
     return $retval;
+}
+
+/**
+* Include plugin template functions file which may/may not do anything or exist.
+* This will currently set any additional css and javascript that is theme specific for a plugin templates
+*
+* @param    string  $plugin     name of plugin
+*
+*/
+function CTL_plugin_setTemplatesFunctions($plugin)
+{
+	global $_SCRIPTS, $_CONF;	
+	
+	$templateFuncutionsLocation = CTL_plugin_themeFindFile($plugin, 'templates', 'functions.php', false);
+	if (!empty($templateFuncutionsLocation) AND file_exists($templateFuncutionsLocation)) {
+		require_once $templateFuncutionsLocation;
+		
+		/* Include scripts on behalf of plugin template files that are theme specfic */
+		$func = $plugin . "_css_" . $_CONF['theme'];
+		if (function_exists($func)) {
+			foreach ($func() as $info) {
+				$file = (!empty($info['file'])) ? $info['file'] : '';
+				$name = (!empty($info['name'])) ? $info['name'] : md5(!empty($file) ? $file : strval(time()));
+				$constant   = (!empty($info['constant']))   ? $info['constant']   : true;
+				$attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
+				$priority = (!empty($info['priority']))   ? $info['priority']   : 100;
+				$_SCRIPTS->setCssFile($name, $file, $constant, $attributes, $priority, 'theme');
+			}
+		}
+		$func = $plugin . "_js_libs_" . $_CONF['theme'];
+		if (function_exists($func)) {
+			foreach ($func() as $info) {
+				$footer = true;
+				if (isset($info['footer']) && !$info['footer']) {
+					$footer = false;
+				}
+				$_SCRIPTS->setJavaScriptLibrary($info['library'], $footer);
+			}
+		}
+		$func = $plugin . "_js_files_" . $_CONF['theme'];
+		if (function_exists($func)) {
+			foreach ($func() as $info) {
+				$footer = true;
+				if (isset($info['footer']) && !$info['footer']) {
+					$footer = false;
+				}
+				$priority = (!empty($info['priority']))   ? $info['priority']   : 100;
+				$_SCRIPTS->setJavaScriptFile(md5($info['file']), $info['file'], $footer, $priority);
+			}
+		}    	
+	}
 }
 
 /*

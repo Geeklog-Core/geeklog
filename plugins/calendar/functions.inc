@@ -671,7 +671,7 @@ function plugin_getheadercode_calendar()
 
     // use the CSS only if we are on the plugin's pages
     if (substr_count ($_SERVER['PHP_SELF'], '/calendar/') > 0) {
-        $_SCRIPTS->setCSSFile('calendar', CTL_plugin_themebaseURL('calendar', 'css', 'style.css'), false);
+        $_SCRIPTS->setCSSFile('calendar', CTL_plugin_themeFindFile('calendar', 'css', 'style.css'), false);
     }
 }
 
