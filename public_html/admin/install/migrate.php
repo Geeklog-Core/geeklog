@@ -851,6 +851,14 @@ if (INST_phpOutOfDate()) {
         $config->set('cookie_path', INST_guessCookiePath($_CONF['site_url']));
         $_CONF['cookie_path'] = INST_guessCookiePath($_CONF['site_url']);
 
+        if (substr($_CONF['site_url'], 0, 6) == 'https:') {
+            $config->set('cookiesecure', TRUE);
+            $_CONF['cookiesecure'] = 1;
+        } else {
+            $config->set('cookiesecure', FALSE);
+            $_CONF['cookiesecure'] = 0;
+        }
+
         // check the default theme
         $theme = '';
         if (empty($_CONF['theme'])) {
