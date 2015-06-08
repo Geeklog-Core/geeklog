@@ -13,18 +13,10 @@
                 <input type="text" size="15" maxlength="255" value="{button_search}" name="query"
                   onfocus="if (this.value == '{button_search}') this.value = ''"
                   onblur="if (this.value == '') this.value = '{button_search}'"{xhtml}>
-              </div>
-              <!--
-              <div class="searchform">
-                <input type="text" class="search" size="16" maxlength="255" value="{button_search}" name="query"
-                  onfocus="if (this.value == '{button_search}') this.value = ''"
-                  onblur="if (this.value == '') this.value = '{button_search}'"{xhtml}>
-                <button type="submit" value="{button_search}" class="uk-button" style="display:none;">{button_search}</button>
                 <input type="hidden" value="all" name="type"{xhtml}>
                 <input type="hidden" value="all" name="keyType"{xhtml}>
-                <input type="hidden" value="search" name="mode"{xhtml}>
+                <input type="hidden" value="search" name="mode"{xhtml}>                  
               </div>
-              -->
               <div class="navi">
                 <a href="{site_url}/search.php">{button_advsearch}</a>
               </div>
