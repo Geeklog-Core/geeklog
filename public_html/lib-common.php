@@ -8230,7 +8230,7 @@ function COM_handle404($alternate_url = '')
   */
 function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='')
 {
-    global $_CONF, $_USER;
+    global $_CONF, $_USER, $LANG01;
 
     // Handle @ operator
     if (error_reporting() == 0) {
@@ -8360,6 +8360,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
 
     header('HTTP/1.1 500 Internal Server Error');
     header('Status: 500 Internal Server Error');
+    header('Content-Type: text/html; charset=' . COM_getCharset());
 
     // Does the theme implement an error message html file?
     if (!empty($_CONF['path_layout']) &&
@@ -8372,10 +8373,12 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
         include $_CONF['path_layout_default'] . 'errormessage.html';
     } else {
         // Otherwise, display simple error message
-        $title = 'An Error Occurred';
+        $title = $LANG01[141];
+
         if (!empty($_CONF['site_name'])) {
             $title = $_CONF['site_name'] . ' - ' . $title;
         }
+
         echo "
         <html>
             <head>
@@ -8383,8 +8386,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             </head>
             <body>
             <div style=\"width: 100%; text-align: center;\">
-            Unfortunately, an error has occurred rendering this page. Please try
-            again later.
+            {$LANG01[142]}
             </div>
             </body>
         </html>

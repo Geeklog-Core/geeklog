@@ -190,6 +190,8 @@ $LANG01 = array(
     138 => "アドバンストエディターを無効にして、JavaScriptが不要なノーマルエディターを有効にするには<a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">こちら</a>をクリックしてください。",
     139 => "ホームページへは<a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">こちら</a>をクリック",
     140 => '使用できる自動タグ:',
+    141 => 'エラーが発生しました',
+    142 => 'このページを表示する際にエラーが発生しました。しばらくしてから、もう一度お試しください。',
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
     'linkedin' => 'LinkedInでログイン',
@@ -2402,6 +2404,5 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-
 
 ?>
