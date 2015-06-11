@@ -138,6 +138,12 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-common.php') !== false) {
 // | Library Includes: You shouldn't have to touch anything below here         |
 // +---------------------------------------------------------------------------+
 
+// Input class (since Geeklog-2.1.1)
+require_once $_CONF['path_system'] . 'classes/input.class.php';
+$_INPUT  = new GL_Input(false); // request variables with magic_quotes_gpc handled
+$_FINPUT = new GL_Input(true);  // request variables with magic_quotes_gpc handled
+                                // and COM_applyBasicFilter applied
+
 /**
 * If needed, add our PEAR path to the list of include paths
 *
