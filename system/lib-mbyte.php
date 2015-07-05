@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-mbyte.php                                                             |
 // |                                                                           |
 // | function collection to handle mutli-byte related issues                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2015 by the following authors:                         |
 // |                                                                           |
 // | Authors: Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
 // +---------------------------------------------------------------------------+
@@ -29,49 +29,49 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-mbyte.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
     die('This file can not be used on its own!');
 }
 
 // This function is supposed to display only language files in selection drop-
 // downs that are utf-8
-function MBYTE_languageList ($charset = 'utf-8', $multilanguage = false)
+function MBYTE_languageList($charset = 'utf-8', $multilanguage = false)
 {
     global $_CONF;
 
-    if ($charset != 'utf-8') {
+    if ($charset !== 'utf-8') {
         $charset = '';
     }
 
-    $language = array ();
-    $fd = opendir ($_CONF['path_language']);
+    $language = array();
+    $fd = opendir($_CONF['path_language']);
 
-    while (($file = @readdir ($fd)) !== false) {
-        if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
-                && is_file ($_CONF['path_language'] . $file)
-                && ((empty ($charset) && (strstr ($file, '_utf-8') === false))
-                    || (($charset == 'utf-8') && strstr ($file, '_utf-8')))) {
-            clearstatcache ();
-            $file = str_replace ('.php', '', $file);
-            $langfile = str_replace ('_utf-8', '', $file);
-            $uscore = strpos ($langfile, '_');
+    while (($file = @readdir($fd)) !== false) {
+        if ((substr($file, 0, 1) !== '.') && preg_match('/\.php$/i', $file)
+                && is_file($_CONF['path_language'] . $file)
+                && ((empty($charset) && (strstr($file, '_utf-8') === false))
+                    || (($charset === 'utf-8') && strstr($file, '_utf-8')))) {
+            clearstatcache();
+            $file = str_replace('.php', '', $file);
+            $langfile = str_replace('_utf-8', '', $file);
+            $uscore = strpos($langfile, '_');
             if ($uscore === false) {
-                $lngname = ucfirst ($langfile);
+                $lngname = ucfirst($langfile);
             } else {
-                $lngname = ucfirst (substr ($langfile, 0, $uscore));
-                $lngadd = substr ($langfile, $uscore + 1);
-                $lngadd = str_replace ('utf-8', '', $lngadd);
-                $lngadd = str_replace ('_', ', ', $lngadd);
-                $word = explode (' ', $lngadd);
+                $lngname = ucfirst(substr($langfile, 0, $uscore));
+                $lngadd = substr($langfile, $uscore + 1);
+                $lngadd = str_replace('utf-8', '', $lngadd);
+                $lngadd = str_replace('_', ', ', $lngadd);
+                $word = explode(' ', $lngadd);
                 $lngadd = '';
                 foreach ($word as $w) {
-                    if (preg_match ('/[0-9]+/', $w)) {
-                        $lngadd .= strtoupper ($w) . ' ';
+                    if (preg_match('/[0-9]+/', $w)) {
+                        $lngadd .= strtoupper($w) . ' ';
                     } else {
-                        $lngadd .= ucfirst ($w) . ' ';
+                        $lngadd .= ucfirst($w) . ' ';
                     }
                 }
-                $lngname .= ' (' . trim ($lngadd) . ')';
+                $lngname .= ' (' . trim($lngadd) . ')';
             }
             // Multi language content
             if ($multilanguage) {
@@ -83,11 +83,10 @@ function MBYTE_languageList ($charset = 'utf-8', $multilanguage = false)
             }
         }
     }
-    asort ($language);
+    asort($language);
 
     return $language;
 }
-
 
 // replacement functions for UTF-8 functions
 // $test, $enabled parameters only relevant for the PHPUnit test suite
@@ -99,7 +98,7 @@ function MBYTE_checkEnabled($test = '', $enabled = true)
 
     if (!isset($mb_enabled)) {
         $mb_enabled = false;
-        if (strcasecmp($LANG_CHARSET, 'utf-8') == 0) {
+        if (strcasecmp($LANG_CHARSET, 'utf-8') === 0) {
             if (empty($test)) {
                 // Normal situation in live environment
                 if (function_exists('mb_eregi_replace')) {
@@ -107,14 +106,14 @@ function MBYTE_checkEnabled($test = '', $enabled = true)
                     mb_regex_encoding('UTF-8');
                     mb_regex_set_options('l');
                 }
-            } elseif ($test == 'test') {
+            } elseif ($test === 'test') {
                 // Just for tests, true if we want function to exist
                 if ($enabled) {
                     $mb_enabled = mb_internal_encoding('UTF-8');
                     mb_regex_encoding('UTF-8');
                     mb_regex_set_options('l');
                 }
-            } elseif ($test == 'test-reset') {
+            } elseif ($test === 'test-reset') {
                 // Just for tests, allow resetting $mb_enabled
                 if (isset($mb_enabled)) {
                     unset($mb_enabled);
@@ -125,7 +124,6 @@ function MBYTE_checkEnabled($test = '', $enabled = true)
 
     return $mb_enabled;
 }
-
 
 function MBYTE_strlen($str)
 {
@@ -143,7 +141,7 @@ function MBYTE_strlen($str)
     return $result;
 }
 
-function MBYTE_substr($str, $start, $length = NULL)
+function MBYTE_substr($str, $start, $length = null)
 {
     static $mb_enabled;
 
@@ -151,15 +149,13 @@ function MBYTE_substr($str, $start, $length = NULL)
         $mb_enabled = MBYTE_checkEnabled();
     }
     if ($mb_enabled) {
-        if( $length === NULL )
-        {
+        if ($length === null) {
             $result = mb_substr($str, $start);
         } else {
             $result = mb_substr($str, $start, $length);
         }
     } else {
-        if( $length === NULL )
-        {
+        if ($length === null) {
             $result = substr($str, $start);
         } else {
             $result = substr($str, $start, $length);
@@ -169,7 +165,7 @@ function MBYTE_substr($str, $start, $length = NULL)
     return $result;
 }
 
-function MBYTE_strpos($haystack, $needle, $offset = NULL)
+function MBYTE_strpos($haystack, $needle, $offset = null)
 {
     static $mb_enabled;
 
@@ -185,7 +181,7 @@ function MBYTE_strpos($haystack, $needle, $offset = NULL)
     return $result;
 }
 
-function MBYTE_strrpos($haystack, $needle, $offset = NULL)
+function MBYTE_strrpos($haystack, $needle, $offset = null)
 {
     static $mb_enabled;
 
@@ -193,13 +189,13 @@ function MBYTE_strrpos($haystack, $needle, $offset = NULL)
         $mb_enabled = MBYTE_checkEnabled();
     }
     if ($mb_enabled) {
-        if ($offset === NULL) {
+        if ($offset === null) {
             $result = mb_strrpos($haystack, $needle);
         } else {
             $result = mb_strrpos($haystack, $needle, $offset);
         }
     } else {
-        if ($offset === NULL) {
+        if ($offset === null) {
             $result = strrpos($haystack, $needle);
         } else {
             $result = strrpos($haystack, $needle, $offset);
@@ -225,7 +221,7 @@ function MBYTE_strtolower($str)
     return $result;
 }
 
-function MBYTE_eregi($pattern, $str, &$regs = NULL)
+function MBYTE_eregi($pattern, $str, &$regs = null)
 {
     static $mb_enabled;
 
@@ -237,7 +233,7 @@ function MBYTE_eregi($pattern, $str, &$regs = NULL)
     } else {
         $result = preg_match('/' . addcslashes($pattern, '/') . '/i', $str, $regs);
 
-        if ($regs === NULL) {
+        if ($regs === null) {
             $result = 1;
         } else {
             if ($result === 1) {
@@ -246,8 +242,8 @@ function MBYTE_eregi($pattern, $str, &$regs = NULL)
                 if ($result === 0) {
                     $result = 1;
                 }
-            } else if ($result === 0) {
-                $result = FALSE;
+            } elseif ($result === 0) {
+                $result = false;
             }
         }
     }
@@ -271,17 +267,59 @@ function MBYTE_eregi_replace($pattern, $replace, $str)
     return $result;
 }
 
-/** those are currently not needed in GL, left here if needed later
+/**
+* @since Geeklog-2.1.1
+*/
+function MBYTE_stripos($haystack, $needle, $offset = null)
+{
+    static $mb_enabled;
 
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled() && is_callable('mb_stripos');
+    }
+
+    if ($mb_enabled) {
+        $result = mb_stripos($haystack, $needle, $offset);
+    } else {
+        $result = stripos($haystack, $needle, $offset);
+    }
+
+    return $result;
+}
+
+/**
+* @since Geeklog-2.1.1
+*/
+function MBYTE_strtoupper($str)
+{
+    static $mb_enabled;
+
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled() && is_callable('mb_strtoupper');
+    }
+
+    if ($mb_enabled) {
+        $result = mb_strtoupper($str);
+    } else {
+        $result = strtoupper($str);
+    }
+
+    return $result;
+}
+
+/**
+* @since Geeklog-2.1.1
+*/
 function MBYTE_substr_count($haystack, $needle)
 {
     static $mb_enabled;
 
     if (!isset($mb_enabled)) {
-        $mb_enabled = MBYTE_checkEnabled();
+        $mb_enabled = MBYTE_checkEnabled() && is_callable('mb_substr_count');
     }
+
     if ($mb_enabled) {
-        $result = mb_substr_count($haystack, $needle, 'utf-8');
+        $result = mb_substr_count($haystack, $needle);
     } else {
         $result = substr_count($haystack, $needle);
     }
@@ -289,21 +327,7 @@ function MBYTE_substr_count($haystack, $needle)
     return $result;
 }
 
-function MBYTE_strtoupper($str)
-{
-    static $mb_enabled;
-
-    if (!isset($mb_enabled)) {
-        $mb_enabled = MBYTE_checkEnabled();
-    }
-    if ($mb_enabled) {
-        $result = mb_strtoupper($str, 'utf-8');
-    } else {
-        $result = strtoupper($str);
-    }
-
-    return $result;
-}
+/** those are currently not needed in GL, left here if needed later
 
 function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL)
 {
@@ -347,7 +371,6 @@ mb_strimwidth -- Get truncated string with specified width
 mb_strrpos --  Find position of last occurrence of a string in a string
 mb_strwidth -- Return width of string
 mb_substitute_character -- Set/Get substitution character
-mb_substr_count -- Count the number of substring occurrences
 */
 
 ?>
