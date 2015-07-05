@@ -4441,42 +4441,37 @@ function COM_showBlock( $name, $help='', $title='', $position='' )
 * @return   string  HTML Formated blocks
 *
 */
-
-function COM_showBlocks( $side, $topic='' )
+function COM_showBlocks($side, $topic = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $_TOPICS;
 
     $retval = '';
 
     // Get user preferences on blocks
-    if( !isset( $_USER['noboxes'] ) || !isset( $_USER['boxes'] ))
-    {
-        if( !COM_isAnonUser() )
-        {
-            $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} "
-                               ."WHERE uid = '{$_USER['uid']}'" );
-            list($_USER['boxes'], $_USER['noboxes']) = DB_fetchArray( $result );
-        }
-        else
-        {
+    if (!isset($_USER['noboxes']) || !isset($_USER['boxes'])) {
+        if (!COM_isAnonUser()) {
+            $result = DB_query("SELECT boxes,noboxes FROM {$_TABLES['userindex']} "
+                               ."WHERE uid = '{$_USER['uid']}'");
+            list($_USER['boxes'], $_USER['noboxes']) = DB_fetchArray($result);
+        } else {
             $_USER['boxes'] = '';
             $_USER['noboxes'] = 0;
         }
     }
 
-    $blocksql['mssql']  = "SELECT DISTINCT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, cache_time, ";
+    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, cache_time, ";
     $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
     $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
-    $blocksql['mysql'] = "SELECT DISTINCT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
-    $blocksql['pgsql'] = 'SELECT DISTINCT b.*, date_part(\'epoch\', rdfupdated) AS date ';
+    $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
+    $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
 
     $blocksql['mysql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
     $blocksql['mssql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
     $blocksql['pgsql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id::integer = bid AND is_enabled = 1";
 
     $commonsql = '';
-    if ($side == 'left') {
+    if ($side === 'left') {
         $commonsql .= " AND onleft = 1";
     } else {
         $commonsql .= " AND onleft = 0";
@@ -4484,62 +4479,60 @@ function COM_showBlocks( $side, $topic='' )
 
     // Figure out topic access
     $topic_access = 0;
-    if(!empty($topic) && $topic != TOPIC_ALL_OPTION && $topic != TOPIC_HOMEONLY_OPTION) {
+    if (!empty($topic) && ($topic != TOPIC_ALL_OPTION) && ($topic != TOPIC_HOMEONLY_OPTION)) {
         $topic_index = TOPIC_getIndex($topic);
         if ($topic_index > 0) {
             $topic_access = $_TOPICS[$topic_index]['access'];
         }
     }
 
-    if(!empty($topic) && $topic != TOPIC_ALL_OPTION && $topic != TOPIC_HOMEONLY_OPTION && $topic_access > 0) {
+    if (!empty($topic) && ($topic != TOPIC_ALL_OPTION) && ($topic != TOPIC_HOMEONLY_OPTION) &&
+            ($topic_access > 0)) {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($topic);
-        // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
+        // Get list of blocks to display (except for dynamic). This includes blocks
+        // for all topics, and child blocks that are inherited
         $commonsql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')) OR ta.tid = 'all')";
     } else {
-        if( COM_onFrontpage() ) {
+        if (COM_onFrontpage()) {
             $commonsql .= " AND (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
         } else {
             $commonsql .= " AND (ta.tid = '" . TOPIC_ALL_OPTION . "')";
         }
     }
 
-    if( !empty( $_USER['boxes'] )) {
-        $BOXES = str_replace( ' ', ',', $_USER['boxes'] );
-
+    if (!empty($_USER['boxes'])) {
+        $BOXES = str_replace(' ', ',', $_USER['boxes']);
         $commonsql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
 
+    $commonsql .= " GROUP BY bid ";
     $commonsql .= ' ORDER BY blockorder,title ASC';
 
     $blocksql['mysql'] .= $commonsql;
     $blocksql['mssql'] .= $commonsql;
     $blocksql['pgsql'] .= $commonsql;
 
-    $result = DB_query( $blocksql );
-    $nrows = DB_numRows( $result );
+    $result = DB_query($blocksql);
+    $nrows = DB_numRows($result);
 
     // convert result set to an array of associated arrays
     $blocks = array();
-    for( $i = 0; $i < $nrows; $i++ )
-    {
-        $blocks[] = DB_fetchArray( $result );
+    for ($i = 0; $i < $nrows; $i++) {
+        $blocks[] = DB_fetchArray($result);
     }
 
     // Check and see if any plugins have blocks to show
-    $pluginBlocks = PLG_getBlocks( $side, $topic );
-    $blocks = array_merge( $blocks, $pluginBlocks );
+    $pluginBlocks = PLG_getBlocks($side, $topic);
+    $blocks = array_merge($blocks, $pluginBlocks);
 
     // sort the resulting array by block order
     $column = 'blockorder';
     $sortedBlocks = $blocks;
-    $num_sortedBlocks = count( $sortedBlocks );
-    for( $i = 0; $i < $num_sortedBlocks - 1; $i++ )
-    {
-        for( $j = 0; $j < $num_sortedBlocks - 1 - $i; $j++ )
-        {
-            if( $sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column] )
-            {
+    $num_sortedBlocks = count($sortedBlocks);
+    for ($i = 0; $i < $num_sortedBlocks - 1; $i++) {
+        for ($j = 0; $j < $num_sortedBlocks - 1 - $i; $j++) {
+            if ($sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column]) {
                 $tmp = $sortedBlocks[$j];
                 $sortedBlocks[$j] = $sortedBlocks[$j + 1];
                 $sortedBlocks[$j + 1] = $tmp;
@@ -4550,11 +4543,10 @@ function COM_showBlocks( $side, $topic='' )
 
     // Loop though resulting sorted array and pass associative arrays
     // to COM_formatBlock
-    foreach( $blocks as $A )
-    {
-        if( $A['type'] == 'dynamic' or SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) > 0 )
-        {
-           $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
+    foreach ($blocks as $A) {
+        if (($A['type'] === 'dynamic') ||
+				SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) > 0) {
+           $retval .= COM_formatBlock($A, $_USER['noboxes']);
         }
     }
 
