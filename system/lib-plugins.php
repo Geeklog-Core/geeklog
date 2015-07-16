@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-plugins.php                                                           |
 // |                                                                           |
@@ -114,7 +114,7 @@ function PLG_callFunctionForAllPlugins($function_name)
 *
 * This is a generic function used by some of the other API functions to
 * call a function for a specific plugin and, optionally pass parameters.
-* This function can handle up to 5 arguments and if more exist it will
+* This function can handle up to 7 arguments and if more exist it will
 * try to pass the entire args array to the function.
 *
 * @param        string      $function       holds name of function to call
@@ -3453,6 +3453,57 @@ function PLG_getMetaTags($type, $id, array $myTags = array())
     }
 
     return $obj->build();
+}
+
+/**
+ * Ask plugins for items they want to include in an XML site map
+ *
+ * @param    string    $type    plugin type (incl. 'article' for stories)
+ * @param    int       $uid     user ID or 0 = current user; should be 1 (= anonymous user) in most cases
+ * @param    int       $limit   the max number of items to be returned (0 = no limit)
+ * @return   array              array of array(
+ *                                   'url'           => the URL of an item (mandatory),
+ *                                   'date-modified' => the UNIX timestamp when an item was last modified (optional)
+ *                                   'change-freq'   => one of 'always', 'hourly', 'daily', 'weekly',
+ *                                                      'monthly', 'yearly', 'never' (optional)
+ *                                   'priority'      => a float value showing the priority of an item, must be
+ *                                                      between 0.0 (lowest) and 1.0 (highest) (optional)
+ *                               )
+ * @since    Geeklog-2.1.1
+ * @link     http://wiki.geeklog.net/index.php/PLG_getSitemapItems
+ *
+ */
+function PLG_collectSitemapItems($type, $uid = 1, $limit = 0)
+{
+    global $_CONF;
+
+    if (($type === 'article') || ($type === 'story')) {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+        $type = 'story';
+    }
+
+    $uid   = intval($uid, 10);
+    $limit = intval($limit, 10);
+    $args = array(
+        1 => $uid,
+        2 => $limit,
+    );
+
+    if ($type === 'CUSTOM') {
+        // Collect sitemap items from custom function
+        $function = 'CUSTOM_collectSitemapItems';
+    } else {
+        // Collect sitemap items from a plugin
+        $function = 'plugin_collectSitemapItems_' . $type;
+    }
+
+    $result = PLG_callFunctionForOnePlugin($function, $args);
+
+    if (!is_array($result) || (count($result) === 0)) {
+        $result = array();
+    }
+
+    return $result;
 }
 
 ?>
