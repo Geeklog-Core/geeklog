@@ -589,7 +589,9 @@ class SitemapXML
         }
 
         $success = 0;
-        $sitemap = $_CONF['site_url'] . '/' . $sitemap;
+        $sitemapUrl = $_CONF['site_url'] . '/' . basename($sitemap);
+        $sitemapUrl = urlencode($sitemapUrl);
+
         require_once 'HTTP/Request.php';
 
         foreach ($destinations as $dest) {
@@ -603,13 +605,11 @@ class SitemapXML
 
             switch ($dest) {
                 case 'google':
-                    $url = 'http://www.google.com/webmasters/tools/ping?sitemap='
-                         . urlencode($sitemap);
+                    $url = 'http://www.google.com/webmasters/tools/ping?sitemap=' . $sitemapUrl;
                     break;
 
                 case 'bing':
-                    $url = 'http://www.bing.com/ping?sitemap='
-                         . urlencode($sitemap);
+                    $url = 'http://www.bing.com/ping?sitemap=' . $sitemapUrl;
                     break;
 
                 default:
