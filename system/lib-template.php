@@ -176,9 +176,11 @@ function CTL_plugin_templatePath($plugin, $path = '')
 * - theme path/plugin/file
 * - html path/plugin/directory/file
 * - html path/plugin/directory/theme/file
+* - html path/plugin/directory/theme_default/file * if default theme exists
 * - html path/plugin/directory/default/file
 * - html path/plugin/file (url path only)
 * - plugin path/plugin/directory/theme/file (physical path only)
+* - plugin path/plugin/directory/theme_default/file (physical path only) * if default theme exists
 * - plugin path/plugin/directory/default/file (physical path only)
 *
 * @param    string  $plugin     name of plugin
@@ -212,31 +214,47 @@ function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = 
 				$retval = $file;
 			}
         } else {
-            // Use default templates then. This should always exist
-            $file = "{$_CONF['path_html']}/$plugin/$directory/default/$filename";
-            if (file_exists($file)) {
-            	if ($return_url) {
-            		$retval = "/$plugin/$directory/default/$filename";
-				} else {
-					$retval = $file;
-				}
-            } else {
-            	if ($return_url) {
-					// Last guess for URL file location
-					$retval = "/$plugin/$filename";
-				} else {
-					// See if current theme templates stored with plugin
-					$file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme']}/$filename";
-					if (file_exists($file)) {
-						$retval = $file;
-					} else {
-						// Use default templates then. This should always exist
-						$file = "{$_CONF['path']}plugins/$plugin/$directory/default/$filename";
-						if (file_exists($file)) {
-							$retval = $file;
-						}
-					}
-				}
+            // Check to see if theme has theme_default. If so check there
+            $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme_default']}/$filename";
+            if (!empty($_CONF['theme_default']) AND file_exists($file)) {
+                if ($return_url) {
+                    $retval = "/$plugin/$directory/{$_CONF['theme_default']}/$filename";
+                } else {
+                    $retval = $file;
+                }
+            } else {        
+                // Use default templates then. This should always exist
+                $file = "{$_CONF['path_html']}/$plugin/$directory/default/$filename";
+                if (file_exists($file)) {
+                    if ($return_url) {
+                        $retval = "/$plugin/$directory/default/$filename";
+                    } else {
+                        $retval = $file;
+                    }
+                } else {
+                    if ($return_url) {
+                        // Last guess for URL file location
+                        $retval = "/$plugin/$filename";
+                    } else {
+                        // See if current theme templates stored with plugin
+                        $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme']}/$filename";
+                        if (file_exists($file)) {
+                            $retval = $file;
+                        } else {
+                            // Check to see if theme has theme_default. If so check there
+                            $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme_default']}/$filename";
+                            if (!empty($_CONF['theme_default']) AND file_exists($file)) {
+                                $retval = $file;
+                            } else {        
+                                // Use default templates then. This should always exist
+                                $file = "{$_CONF['path']}plugins/$plugin/$directory/default/$filename";
+                                if (file_exists($file)) {
+                                    $retval = $file;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
