@@ -36,9 +36,7 @@
 <p class="disclaimer">{lang_disclaimer}</p>
 
 <!-- BEGIN commenteditform_jumplink -->
-      <div style="padding:0.3em;">
-          <a class="button" href="#commenteditform">{lang_reply}</a>
-      </div>
+      <a class="uk-button" href="#commenteditform">{lang_reply}</a>
 <!-- END commenteditform_jumplink -->
 
 <!-- } comment/commentbar.thtml -->
