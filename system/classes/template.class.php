@@ -610,6 +610,10 @@ function _postprocess($str)
                         $this->varvals[$k] .= $v;
                     } else {
                         $this->varvals[$k] = $v;
+                        
+                        if (is_array($value)) {
+                            foreach ($value as $k => $v) { $this->set_var($varname.'['.$k.']', $v, $append); }
+                         }                        
                     }
                     if ($nocache) {
                         $this->nocache[$k] = true;
