@@ -2,7 +2,7 @@
 /*
  * http.php
  *
- * @(#) $Header: /opt2/ena/metal/http/http.php,v 1.92 2014/08/14 23:17:34 mlemos Exp $
+ * @(#) $Header: /opt2/ena/metal/http/http.php,v 1.93 2015/08/22 18:53:37 mlemos Exp $
  *
  */
 
@@ -27,7 +27,7 @@ class http_class
 
 	var $protocol="http";
 	var $request_method="GET";
-	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.92 $)';
+	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.93 $)';
 	var $accept='';
 	var $authentication_mechanism="";
 	var $user;
@@ -640,6 +640,8 @@ class http_class
 			$this->socks_host_port=$arguments["SOCKSHostPort"];
 		if(IsSet($arguments["SOCKSVersion"]))
 			$this->socks_version=$arguments["SOCKSVersion"];
+		if(IsSet($arguments["PreferCurl"]))
+			$this->prefer_curl=$arguments["PreferCurl"];
 		if(IsSet($arguments["Protocol"]))
 			$this->protocol=$arguments["Protocol"];
 		switch(strtolower($this->protocol))
@@ -1009,7 +1011,9 @@ class http_class
 
 	Function ConnectFromProxy($arguments, &$headers)
 	{
-		if(!$this->PutLine('CONNECT '.$this->host_name.':'.($this->host_port ? $this->host_port : 443).' HTTP/1.0')
+		$host = $this->host_name.':'.($this->host_port ? $this->host_port : 443);
+		$this->OutputDebug('Connecting from proxy to host '.$host);
+		if(!$this->PutLine('CONNECT '.$host.' HTTP/1.0')
 		|| (strlen($this->user_agent)
 		&& !$this->PutLine('User-Agent: '.$this->user_agent))
 		|| (strlen($this->accept)
@@ -1034,12 +1038,15 @@ class http_class
 		switch($this->response_status)
 		{
 			case "200":
-				if(!@stream_socket_enable_crypto($this->connection, 1, STREAM_CRYPTO_METHOD_SSLv23_CLIENT))
+				$this->OutputDebug('Establishing the cryptography layer with host '.$host);
+				if(!stream_socket_enable_crypto($this->connection, 1, STREAM_CRYPTO_METHOD_SSLv23_CLIENT))
 				{
+					$this->OutputDebug('Failed establishing the cryptography layer with host '.$host);
 					$this->SetPHPError('it was not possible to start a SSL encrypted connection via this proxy', $php_errormsg, HTTP_CLIENT_ERROR_COMMUNICATION_FAILURE);
 					$this->Disconnect();
 					return($this->error);
 				}
+				$this->OutputDebug('Succeeded establishing the cryptography layer with host '.$host);
 				$this->state = "Connected";
 				break;
 			case "407":
