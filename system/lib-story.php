@@ -96,6 +96,57 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             'archivearticle'   => 'archivestorytext.thtml',
             'archivebodytext'  => 'archivestorybodytext.thtml'
             ));
+            
+    // begin instance caching...
+    $cache_time = $story->DisplayElements('cache_time');
+    $current_article_tid = $story->DisplayElements('tid');
+    $retval = false; // If stays false will rebuild article and not used cache (checks done below)
+
+    if ($cache_time > 0 OR $cache_time == -1) {
+        $hash = CACHE_security_hash();
+        $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $mode . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_USER['theme'];
+
+        if ($_CONF['cache_templates']) {
+            $retval = $article->check_instance($cacheInstance, $article_filevar);
+        } else {
+            $retval = CACHE_check_instance($cacheInstance);
+        }
+
+        if ($retval AND $cache_time == -1) {
+            // Cache file found so use it since no time limit set to recreate
+
+        } elseif ($retval AND $cache_time > 0) {
+            $lu = CACHE_get_instance_update($cacheInstance);
+            $now = time();
+            if (($now - $lu) < $cache_time ) {
+                // Cache file found so use it since under time limit set to recreate
+
+            } else {
+                // generate article and create cache file
+                // Cache time is not built into template caching so need to delete it manually and reset $retval
+                if ($_CONF['cache_templates']) {
+                    // Need to close and recreate template class since issues arise when theme templates are cached
+                    unset($article); // Close template class
+                    CACHE_remove_instance($cacheInstance);
+                    $article = COM_newTemplate($_CONF['path_layout']);
+                    $article->set_file( array(
+                            'article'          => $storytpl,
+                            'bodytext'         => 'storybodytext.thtml',
+                            'featuredarticle'  => 'featuredstorytext.thtml',
+                            'featuredbodytext' => 'featuredstorybodytext.thtml',
+                            'archivearticle'   => 'archivestorytext.thtml',
+                            'archivebodytext'  => 'archivestorybodytext.thtml'
+                            ));                
+                } else { // theme templates are not cache so can go ahead and delete story cache
+                    CACHE_remove_instance($cacheInstance);
+                }
+                $retval = false;
+            }
+        } else {
+            // Need to reset especially if caching is disabled for a certain story but template caching has been enabled for the theme
+            $retval = false;
+        }
+    }               
 
     $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                                 . $story->getSid());
@@ -164,44 +215,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $bodytext  = COM_highlightQuery($bodytext, $query );
     }
 
-    // begin instance caching...
-    $cache_time = $story->DisplayElements('cache_time');
-    $current_article_tid = $story->DisplayElements('tid');
-    $retval = false; // If stays false will rebuild article and not used cache (checks done below)
 
-    if ($cache_time > 0 OR $cache_time == -1) {
-        $hash = CACHE_security_hash();
-        $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $mode . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_USER['theme'];
-
-        if ($_CONF['cache_templates']) {
-            $retval = $article->check_instance($cacheInstance, $article_filevar);
-        } else {
-            $retval = CACHE_check_instance($cacheInstance);
-        }
-
-        if ($retval AND $cache_time == -1) {
-            // Cache file found so use it since no time limit set to recreate
-
-        } elseif ($retval AND $cache_time > 0) {
-            $lu = CACHE_get_instance_update($cacheInstance);
-            $now = time();
-            if (($now - $lu) < $cache_time ) {
-                // Cache file found so use it since under time limit set to recreate
-
-            } else {
-                // generate article and create cache file
-                // Cache time is not built into template caching so need to delete it manually and reset $retval
-                CACHE_remove_instance($cacheInstance);
-                $retval = false;
-            }
-        } else {
-            // Need to reset especially if caching is disabled for a certain story but tempalte caching has been enabled for the theme
-            $retval = false;
-        }
-    }
-
-    if ($index == 'p' || !empty($query) || !$retval) {
-    // end of instance cache
+    // Create article only if preview, or query not empty, or if no cache version or cache version is not required
+    if ($index == 'p' || !empty($query) || !$retval) { 
         $article->set_var('article_filevar','');
 
         $article->set_var( 'site_name', $_CONF['site_name'] );
@@ -345,7 +361,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     }
                     $article_array = explode( '[page_break]', $bodytext );
                     $page_break_count = count($article_array);
-                    if ($story_page > $page_break_count) { // Can't have page count greate than actual number of pages
+                    if ($story_page > $page_break_count) { // Can't have page count greater than actual number of pages
                         $story_page = $page_break_count;
                     }
                     $page_selector = COM_printPageNavigation(
