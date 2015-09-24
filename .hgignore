@@ -22,6 +22,27 @@ public_html/.htaccess
 public_html/sitemap.xml
 public_html/filemanager/scripts/filemanager.config.js
 
+data/layout_cache
+data/layout_css
+
+logs
+public_html/images/articles
+public_html/images/userphotos
+public_html/images/topics
+
+# popular plugins, if present
+plugins/forum
+public_html/forum
+public_html/admin/forum
+plugins/gus
+public_html/gus
+public_html/admin/gus
+plugins/ban
+public_html/admin/ban
+plugins/autotags
+public_html/autotags
+public_html/admin/autotags
+
 # test framework, if present
 public_html/tests
 
