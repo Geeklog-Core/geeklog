@@ -79,7 +79,7 @@ class SLVbase
         $cli = new XML_RPC_Client('/slv.php', 'http://www.linksleeve.org');
 
         if ($this->_debug) {
-            $client->setDebug(1);
+            $cli->setDebug(1);
         }
 
         $resp = $cli->send($msg, $_SPX_CONF['timeout']);
