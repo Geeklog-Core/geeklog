@@ -1393,9 +1393,9 @@ function TOPIC_breadcrumbs($type, $id)
                     $url = '';
                     $use_block = 'breadcrumb_item_nolink';
                 } else {
-                    $url = $_CONF['site_url'] . '/index.php';
+                    $url = $_CONF['site_url'] . '/';
                     if ($value['tid'] != TOPIC_ROOT) {
-                        $url .= '?topic=' . $value['tid'];
+                        $url .= 'index.php?topic=' . $value['tid'];
                     }
                     $use_block = 'breadcrumb_item';
                 }
