@@ -469,6 +469,29 @@ function custom_validation_timezone($rule, $ruleParams) {
 }
 
 /**
+ * Custom validation rule to determine if HTML or PHP tags exist
+ *
+ * @param string $rule String of rule name
+ * @param array $ruleParams Parameter of validation
+ * @return boolean Success
+ *
+ */
+function custom_validation_noTags($rule, $ruleParams) {
+    $ret = false;
+    
+    if (isset($ruleParams[0])) {
+        foreach ($ruleParams[0] as $paramName => $paramValue ) {
+            break;
+        }
+        if ($ruleParams[0][$paramName] == strip_tags($ruleParams[0][$paramName])) {
+            $ret = true;
+        }        
+    }
+
+    return $ret;
+}
+
+/**
  * Custom validation rule for single character
  *
  * @param string $rule String of rule name

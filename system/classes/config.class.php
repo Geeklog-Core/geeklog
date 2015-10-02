@@ -1565,6 +1565,7 @@ class config {
 
         foreach ($this->config_array[$group] as $param_name => $param_value) {
             if (array_key_exists($param_name, $change_array)) {
+                // Sanitize input before validation of input begins
                 $change_array[$param_name] =
                     $this->_validate_input($param_name, $group, $change_array[$param_name]);
 
@@ -1614,6 +1615,7 @@ class config {
         if ( empty($this->validationErrors) ) {
             // only set if there is no validation error
             foreach ( $pass_validation as $param => $val ) {
+                /*
                 if ($group === 'Core') {
                     switch ($param) {
                         case 'site_name':
@@ -1650,13 +1652,14 @@ class config {
                             break;
                     }
                 }
+                */
 
                 $this->set($param, $val, $group);
                 $success_array[$param] = true;
             }
             $this->_post_configuration();
         } else {
-            // temporaly save the changed values
+            // temporally save the changed values
             foreach ( $pass_validation as $param => $val ) {
                 $this->tmpValues[$group][$param] = $val;
             }
@@ -1723,17 +1726,70 @@ class config {
             }
         } else {
             $r = COM_stripslashes($input_val);
+            // Boolean default check
+            // Numeric check
+            // String Sanitize
             if ($r == 'b:0' OR $r == 'b:1') {
                 $r = ($r == 'b:1');
-            }
-            //if (is_numeric($r)) {
-            if (is_numeric($r) && $this->_validate_numeric($config, $group)) {
+            } elseif (is_numeric($r) && $this->_validate_numeric($config, $group)) {
                 $r = $r + 0;
+            } else {
+                $r = $this->_sanitize_string($config, $group, $input_val);
             }
         }
 
         return $r;
     }
+    
+    /**
+     * Returns sanitized string.
+     *
+     * @param string $config Configuration variable
+     * @param string $group Configuration group
+     * @return sanitized string
+     * @access public
+     */
+    function _sanitize_string($config, $group, $input_val) {
+        global $_CONF_VALIDATE;
+
+        if ( isset($_CONF_VALIDATE[$group][$config]) &&
+             !empty($_CONF_VALIDATE[$group][$config]) )
+        {
+            $default_strip_tags = true;
+            foreach ($_CONF_VALIDATE[$group][$config] as $index => $validator) {
+                if ($index == 'sanitize') {
+                    if (is_array($validator)) {
+                        $rule_type = $validator[0];
+                    } else {
+                        $rule_type = $validator;
+                    }
+                    switch ($rule_type) {
+                        case 'none':
+                            $default_strip_tags = false;
+                            break;
+                        
+                        case 'noTags':
+                            $input_val = strip_tags($input_val);
+                            $default_strip_tags = false;
+                            break;
+                            
+                        case 'approveHTML':
+                            $input_val = COM_checkHTML($input_val);
+                            $default_strip_tags = false;
+                            break;
+                            
+                        default:
+                            break;                                
+                    }
+                }
+            }
+            if ($default_strip_tags) {
+                $input_val = strip_tags($input_val);                    
+            }
+        }
+
+        return $input_val;
+    }    
 
     /**
      * Returns true if configuration field should be numeric.
@@ -1792,70 +1848,72 @@ class config {
             );
 
             foreach ($_CONF_VALIDATE[$group][$config] as $index => $validator) {
-                if (!is_array($validator)) {
-                    if ( $index == 'message' && is_string($validator) ) continue;
+                if ( $index != 'sanitize') {
+                    if (!is_array($validator)) {
+                        if ( $index == 'message' && is_string($validator) ) continue;
 
-                    $validator = array('rule' => $validator);
-                } else {
-                    if ( $index == 'rule' ) {
                         $validator = array('rule' => $validator);
+                    } else {
+                        if ( $index == 'rule' ) {
+                            $validator = array('rule' => $validator);
+                        }
                     }
-                }
-                if ( isset($_CONF_VALIDATE[$group][$config]['message']) &&
-                     is_string($_CONF_VALIDATE[$group][$config]['message']) )
-                {
-                    $validator['message'] = $_CONF_VALIDATE[$group][$config]['message'];
-                    unset($_CONF_VALIDATE[$group][$config]['message']);
-                }
-                $validator = array_merge($default, $validator);
+                    if ( isset($_CONF_VALIDATE[$group][$config]['message']) &&
+                         is_string($_CONF_VALIDATE[$group][$config]['message']) )
+                    {
+                        $validator['message'] = $_CONF_VALIDATE[$group][$config]['message'];
+                        unset($_CONF_VALIDATE[$group][$config]['message']);
+                    }
+                    $validator = array_merge($default, $validator);
 
-                if (isset($validator['message'])) {
-                    $message = $validator['message'];
-                } else if ( is_string($validator['rule']) && isset($LANG_VALIDATION[$validator['rule']]) ) {
-                    $message = $LANG_VALIDATION[$validator['rule']];
-                } else if ( is_array($validator['rule']) && isset($LANG_VALIDATION[$validator['rule'][0]]) ) {
-                    $message = $LANG_VALIDATION[$validator['rule'][0]];
-                } else {
-                    $message = $LANG_VALIDATION['default'];
-                }
-
-                if ( is_array($validator['rule']) ) {
-                    $rule = $validator['rule'][0];
-                    unset($validator['rule'][0]);
-                    $ruleParams = array_merge(array($value), array_values($validator['rule']));
-                } else {
-                    $rule = $validator['rule'];
-                    $ruleParams = array($value);
-                }
-
-                $valid = true;
-                $custom_function = 'custom_validation_' . strtolower($rule);
-                if ( function_exists($custom_function) ) {
-                    $ruleParams[] = $validator;
-                    $ruleParams[0] = array($config => $ruleParams[0]);
-
-                    if ( is_array($relatedValue) && !empty($relatedValue) ) {
-                        $ruleParams[] = $relatedValue;
+                    if (isset($validator['message'])) {
+                        $message = $validator['message'];
+                    } else if ( is_string($validator['rule']) && isset($LANG_VALIDATION[$validator['rule']]) ) {
+                        $message = $LANG_VALIDATION[$validator['rule']];
+                    } else if ( is_array($validator['rule']) && isset($LANG_VALIDATION[$validator['rule'][0]]) ) {
+                        $message = $LANG_VALIDATION[$validator['rule'][0]];
+                    } else {
+                        $message = $LANG_VALIDATION['default'];
                     }
 
-                    $valid = $custom_function($rule, $ruleParams);
-                } elseif (method_exists($_validator, $rule)) {
-                    $valid = $_validator->dispatchMethod($rule, $ruleParams);
-                } elseif (!is_array($validator['rule'])) {
-                    $valid = preg_match($rule, $value);
-                }
-
-                if (!$valid || (is_string($valid) && strlen($valid) > 0)) {
-                    if (is_string($valid) && strlen($valid) > 0) {
-                        $validator['message'] = $valid;
-                    } elseif (!isset($validator['message'])) {
-                        $validator['message'] = $message;
+                    if ( is_array($validator['rule']) ) {
+                        $rule = $validator['rule'][0];
+                        unset($validator['rule'][0]);
+                        $ruleParams = array_merge(array($value), array_values($validator['rule']));
+                    } else {
+                        $rule = $validator['rule'];
+                        $ruleParams = array($value);
                     }
 
-                    $this->validationErrors[$group][$config] = $validator['message'];
-                    $this->validationErrorValues[$group][$config] = $value;
+                    $valid = true;
+                    $custom_function = 'custom_validation_' . strtolower($rule);
+                    if ( function_exists($custom_function) ) {
+                        $ruleParams[] = $validator;
+                        $ruleParams[0] = array($config => $ruleParams[0]);
 
-                    return FALSE;
+                        if ( is_array($relatedValue) && !empty($relatedValue) ) {
+                            $ruleParams[] = $relatedValue;
+                        }
+
+                        $valid = $custom_function($rule, $ruleParams);
+                    } elseif (method_exists($_validator, $rule)) {
+                        $valid = $_validator->dispatchMethod($rule, $ruleParams);
+                    } elseif (!is_array($validator['rule'])) {
+                        $valid = preg_match($rule, $value);
+                    }
+
+                    if (!$valid || (is_string($valid) && strlen($valid) > 0)) {
+                        if (is_string($valid) && strlen($valid) > 0) {
+                            $validator['message'] = $valid;
+                        } elseif (!isset($validator['message'])) {
+                            $validator['message'] = $message;
+                        }
+
+                        $this->validationErrors[$group][$config] = $validator['message'];
+                        $this->validationErrorValues[$group][$config] = $value;
+
+                        return FALSE;
+                    }
                 }
             } // end foreach
             return $valid;

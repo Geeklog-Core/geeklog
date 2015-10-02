@@ -2398,6 +2398,7 @@ $LANG_VALIDATION = array(
     'rdf_limit' => 'This field must be numeric',
     'path' => 'Path does not exist',
     'file' => 'File does not exist',
+    'fileName' => 'This field must be a proper file name',
     'search_limits' => 'This field must be numeric and separated with a comma',
     'num_search_results' => "This field must be numeric and from the 'search_limits' field above",
     'theme' => 'Theme directory does not exist',

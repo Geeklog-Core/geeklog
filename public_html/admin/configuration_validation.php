@@ -41,7 +41,7 @@ $_CONF_VALIDATE['Core']['site_name'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['site_slogan'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['owner_name'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['microsummary_short'] = array('rule' => 'stringOrEmpty');
-$_CONF_VALIDATE['Core']['site_disabled_msg'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['site_disabled_msg'] = array('rule' => 'stringOrEmpty', 'sanitize' => 'approveHTML');
 $_CONF_VALIDATE['Core']['copyrightyear'] = array(
     'rule' => 'copyrightyear',
     'message' => isset($LANG_VALIDATION['yearOrRange']) ? $LANG_VALIDATION['yearOrRange'] : $LANG_VALIDATION['default']
@@ -92,12 +92,18 @@ $_CONF_VALIDATE['Core']['rdf_limit'] = array(
 $_CONF_VALIDATE['Core']['rdf_storytext'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['rdf_language'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['syndication_max_headlines'] = array('rule' => 'numeric');
-$_CONF_VALIDATE['Core']['comment_feeds_article_tag'] = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['Core']['comment_feeds_article_tag'] = array(
+    'sanitize' => 'approveHTML', 
+    'rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['comment_feeds_article_tag_position'] = array(
     'rule' => array('inList', array('start', 'end', 'none'), true)
 );
-$_CONF_VALIDATE['Core']['comment_feeds_article_author_tag'] = array('rule' => 'stringOrEmpty');
-$_CONF_VALIDATE['Core']['comment_feeds_comment_author_tag'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['comment_feeds_article_author_tag'] = array(
+    'sanitize' => 'approveHTML', 
+    'rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['comment_feeds_comment_author_tag'] = array(
+    'sanitize' => 'approveHTML', 
+    'rule' => 'stringOrEmpty');
 
 /* Subgroup Site, Tab Paths */
 $_CONF_VALIDATE['Core']['path_html'] = array(
@@ -169,7 +175,9 @@ $_CONF_VALIDATE['Core']['search_show_limit'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_show_sort'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_show_num'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_show_type'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['search_separator'] = array('rule' => 'string');
+$_CONF_VALIDATE['Core']['search_separator'] = array(
+    'sanitize' => 'approveHTML', 
+    'rule' => 'string');
 $_CONF_VALIDATE['Core']['search_def_keytype'] = array(
     'rule' => array('inList', array('all', 'any', 'phrase'), true)
 );
