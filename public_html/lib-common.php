@@ -4180,87 +4180,92 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
     global $_CONF;
 
     static $mailobj;
+    
+    // Emails should be validated already but double check
+    if (COM_isEmail($to)) {    
+        if (empty($from)) {
+            $from = COM_formatEmailAddress($_CONF['site_name'], $_CONF['site_mail']);
+        }
 
-    if (empty($from)) {
-        $from = COM_formatEmailAddress($_CONF['site_name'], $_CONF['site_mail']);
-    }
+        $to = substr($to, 0, strcspn($to, "\r\n"));
+        if (($optional != null) && !is_array($optional)) {
+            $optional = substr($optional, 0, strcspn($optional, "\r\n"));
+        }
+        $from = substr($from, 0, strcspn($from, "\r\n"));
+        $subject = substr($subject, 0, strcspn($subject, "\r\n"));
+        $subject = COM_emailEscape($subject);
 
-    $to = substr($to, 0, strcspn($to, "\r\n"));
-    if (($optional != null) && !is_array($optional)) {
-        $optional = substr($optional, 0, strcspn($optional, "\r\n"));
-    }
-    $from = substr($from, 0, strcspn($from, "\r\n"));
-    $subject = substr($subject, 0, strcspn($subject, "\r\n"));
-    $subject = COM_emailEscape($subject);
+        if (function_exists('CUSTOM_mail')) {
+            return CUSTOM_mail($to, $subject, $message, $from, $html, $priority,
+                               $optional);
+        }
 
-    if (function_exists('CUSTOM_mail')) {
-        return CUSTOM_mail($to, $subject, $message, $from, $html, $priority,
-                           $optional);
-    }
+        include_once 'Mail.php';
+        include_once 'Mail/RFC822.php';
 
-    include_once 'Mail.php';
-    include_once 'Mail/RFC822.php';
+        $method = $_CONF['mail_settings']['backend'];
 
-    $method = $_CONF['mail_settings']['backend'];
+        if (! isset($mailobj)) {
+            if (($method == 'sendmail') || ($method == 'smtp')) {
+                $mailobj =& Mail::factory($method, $_CONF['mail_settings']);
+            } else {
+                $method = 'mail';
+                $mailobj =& Mail::factory($method);
+            }
+        }
 
-    if (! isset($mailobj)) {
-        if (($method == 'sendmail') || ($method == 'smtp')) {
-            $mailobj =& Mail::factory($method, $_CONF['mail_settings']);
+        $charset = COM_getCharset();
+        $headers = array();
+
+        $headers['From'] = $from;
+        if ($method != 'mail') {
+            $headers['To'] = $to;
+        }
+        if (($optional != null) && !is_array($optional) && !empty($optional)) {
+            // assume old (optional) CC: header
+            $headers['Cc'] = $optional;
+        }
+        $headers['Date'] = date('r'); // RFC822 formatted date
+        if($method == 'smtp') {
+            list($usec, $sec) = explode(' ', microtime());
+            $m = substr($usec, 2, 5);
+            $headers['Message-Id'] = '<' .  date('YmdHis') . '.' . $m
+                                   . '@' . $_CONF['mail_settings']['host'] . '>';
+        }
+        if ($html) {
+            $headers['Content-Type'] = 'text/html; charset=' . $charset;
+            $headers['Content-Transfer-Encoding'] = '8bit';
         } else {
-            $method = 'mail';
-            $mailobj =& Mail::factory($method);
+            $headers['Content-Type'] = 'text/plain; charset=' . $charset;
         }
-    }
+        $headers['Subject'] = $subject;
+        if ($priority > 0) {
+            $headers['X-Priority'] = $priority;
+        }
+        $headers['X-Mailer'] = 'Geeklog ' . VERSION;
 
-    $charset = COM_getCharset();
-    $headers = array();
+        if (!empty($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['SERVER_ADDR']) &&
+                ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])) {
+            $url = COM_getCurrentURL();
+            if (substr($url, 0, strlen($_CONF['site_admin_url']))
+                    != $_CONF['site_admin_url']) {
+                $headers['X-Originating-IP'] = $_SERVER['REMOTE_ADDR'];
+            }
+        }
 
-    $headers['From'] = $from;
-    if ($method != 'mail') {
-        $headers['To'] = $to;
-    }
-    if (($optional != null) && !is_array($optional) && !empty($optional)) {
-        // assume old (optional) CC: header
-        $headers['Cc'] = $optional;
-    }
-    $headers['Date'] = date('r'); // RFC822 formatted date
-    if($method == 'smtp') {
-        list($usec, $sec) = explode(' ', microtime());
-        $m = substr($usec, 2, 5);
-        $headers['Message-Id'] = '<' .  date('YmdHis') . '.' . $m
-                               . '@' . $_CONF['mail_settings']['host'] . '>';
-    }
-    if ($html) {
-        $headers['Content-Type'] = 'text/html; charset=' . $charset;
-        $headers['Content-Transfer-Encoding'] = '8bit';
+        // add optional headers last
+        if (($optional != null) && is_array($optional)) {
+            foreach ($optional as $h => $v) {
+                $headers[$h] = $v;
+            }
+        }
+
+        $retval = $mailobj->send($to, $headers, $message);
+        if ($retval !== true) {
+            COM_errorLog($retval->toString(), 1);
+        }
     } else {
-        $headers['Content-Type'] = 'text/plain; charset=' . $charset;
-    }
-    $headers['Subject'] = $subject;
-    if ($priority > 0) {
-        $headers['X-Priority'] = $priority;
-    }
-    $headers['X-Mailer'] = 'Geeklog ' . VERSION;
-
-    if (!empty($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['SERVER_ADDR']) &&
-            ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])) {
-        $url = COM_getCurrentURL();
-        if (substr($url, 0, strlen($_CONF['site_admin_url']))
-                != $_CONF['site_admin_url']) {
-            $headers['X-Originating-IP'] = $_SERVER['REMOTE_ADDR'];
-        }
-    }
-
-    // add optional headers last
-    if (($optional != null) && is_array($optional)) {
-        foreach ($optional as $h => $v) {
-            $headers[$h] = $v;
-        }
-    }
-
-    $retval = $mailobj->send($to, $headers, $message);
-    if ($retval !== true) {
-        COM_errorLog($retval->toString(), 1);
+        COM_errorLog("Invalid To address '$To' sent to COM_Mail.", 1);
     }
 
     return($retval === true ? true : false);
