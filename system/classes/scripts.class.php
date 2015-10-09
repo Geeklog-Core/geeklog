@@ -118,7 +118,7 @@ class scripts {
 
         // jQuery (http://jquery.com/download/)
         // Find available jQuery library files
-        $version_jQuery = '1.11.2'; // '1.10.2'; // '1.9.1'; // '1.9.0'; // '1.7.2'; // '1.6.3';
+        $version_jQuery = '1.11.3'; // '1.11.2'; // '1.10.2'; // '1.9.1'; // '1.9.0'; // '1.7.2'; // '1.6.3';
         $this->jquery_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $version_jQuery . '/jquery.min.js';
         $name = 'jquery';
         // $this->library_files[$name]['file'] = 'javascript/jquery-' . $version_jQuery . '.min.js';
@@ -128,13 +128,13 @@ class scripts {
         // jQuery UI (http://plugins.jquery.com/ui.core/ and https://github.com/jquery/jquery-ui/releases)
         // When upgrading jQuery UI include the Redmond theme and all Core, Interactions and Widgets
         // Include minified version only of js
-        $version_jQuery_ui = '1.11.2'; // '1.10.3'; // '1.10.1'; // '1.10.0'; // '1.8.20'; // '1.8.11';
+        $version_jQuery_ui = '1.11.4'; // '1.11.2'; // '1.10.3'; // '1.10.1'; // '1.10.0'; // '1.8.20'; // '1.8.11';
         $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui .'/jquery-ui.min.js';
 
         // Set jQuery UI CSS
-        $this->setCSSFilePrivate('jquery.ui.all', $theme_path . '/jquery_ui/jquery.ui.all.css', false);
         $this->setCSSFilePrivate('jquery.ui', $theme_path . '/jquery_ui/jquery-ui.css', false);
-        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);
+        $this->setCSSFilePrivate('jquery.ui.theme', $theme_path . '/jquery_ui/jquery.ui.theme.css', false);
+        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);    
 
         // Set jQuery UI Core
         $names[] = 'jquery.ui.core';
@@ -164,8 +164,8 @@ class scripts {
         $names[] = 'jquery.ui.tabs';
         $names[] = 'jquery.ui.tooltip';
 
-        // jQuery Timepicker Addon (https://github.com/trentrichardson/jQuery-Timepicker-Addon)
-        // Version 1.5.0
+        // jQuery Timepicker Addon (https://github.com/trentrichardson/jQuery-Timepicker-Addon and http://trentrichardson.com/examples/timepicker/)
+        // Version 1.5.4
         $names[] = 'jquery-ui-timepicker-addon';
         $names[] = 'jquery-ui-timepicker-addon-i18n';
         $names[] = 'jquery-ui-slideraccess';
@@ -223,11 +223,12 @@ class scripts {
                     if (!file_exists($_CONF['path_html'] . $this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
 
-                        $this->css_files['jquery.ui']['load'] = true;
-                        $this->css_files['jquery.ui.all']['load'] = false;
+                        $this->css_files['jquery.ui.theme']['load'] = true;
+                        $this->css_files['jquery.ui']['load'] = false;
                     } else {
-                        $this->css_files['jquery.ui.all']['load'] = true;
+                        $this->css_files['jquery.ui']['load'] = true;
                     }
+                    // Geeklog specific css overrides for jQuery (includes timepicker-addon css)
                     $this->css_files['jquery.ui.geeklog']['load'] = true;
 
                     $this->library_files['jquery']['load'] = true;
