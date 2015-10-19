@@ -1,6 +1,45 @@
 Geeklog History/Changes:
 
-??? ??, 2013 (2.1.0)
+? ?, 2015 (2.1.1)
+------------
+
+- [Security] Log parameters for 404 errors & make filtering in 404.log work like in error.log [Dirk]
+- [Security] Removed the code used for File Manager demos and tests shipped with WideImage to prevent an XSS [Mystralkk]
+- [Security] Updated File Manager to version 2.2.0 (fixed security issue with file upload check) [Mystralkk]
+- [Security] Configuration string input sanitizing overhaul. Now can be config option specific by 
+  adding sanitize rule in config validation file. Default is now all strings are stripped of tags [Tom]
+- Updated CKEditor to version 4.5.4 [Dengen]
+- Updated jQuery to version 1.11.3 and jQuery UI to version 1.11.4. jQuery Timepicker Addon updated [Tom] [Dengen]
+- Updated OAuth class to version 1.141 [Tom]
+- Integrated the UIKit framework version 2.20.3 into Geeklog [Dengen]
+- Denim theme now uses UIKit [Dengen]
+- Plugins can now include default templates and css files along with ones for different themes. 
+  Plugins template and css files can be included with themes. Plugins template files can now have 
+  a function.php file to control what javascript is loaded [Tom]
+- Schema.org article, author, and Breadcrumb markup added to Denim and Modern Curve themes [Tom]
+- Poll plugin bar graphs now based on percentage and supports responsive themes [Tom]
+- [Bugs] Added email check to Com_mail to prevent plugins from sending email to users who don't have an address (Oauth users) [Tom]
+- 0001806: [Bugs] Cached Articles Sometimes do not Display on website [Tom]
+- 0001805: [Feature] useful feature template class [Tom]
+- 0001573: [Feature] Allow xmlSiteMap Plugin to Ping Search Engines when new content is Added [Mystralkk]
+- 0001757: [Feature] XMLSitemap Plugin - Add dedicated API [Mystralkk]
+- 0000826: [Bugs] current LDAP module doesn't work properly - new Simple_LDAP Authentication provided [Mystralkk]
+- 0001778: [Bugs] Duplicate Blocks [Mystralkk]
+- 0001797: [Feature] localization of message "Unfortunately, an error has occurred rendering this page." [Mystralkk]
+- 0001149: [Bugs] Remove hardcoded checks for TLD in domain names [Mystralkk]
+- 0001802: [Bugs] Geeklog Does Not Accept .website TLD [Mystralkk]
+- 0001800: [Bugs] Install script Migrate option needs to handle cookiesecure config value [Dirk]
+- 0001754: [Feature] Add Pagination with rel=“next” and rel=“prev” [Tom]
+- 0001567: [Bugs] Hidden config option 'search_use_fulltext' can be found using search in Configuration [Dengen]
+- 0001706: [Bugs] Errors while editing blocks reset all options [Dengen]
+- 0001730: [Feature] change default admin page to index.php from moderation.php [Dengen]
+- 0001783: [Feature] Search form part of the theme is not accessible. [Dengen]
+- 0001788: [Bugs] The administrator is forced to be an input of the user password in the Edit User screen [Dengen]
+- 0001787: [Bugs] Wrong permissions with articles submitted by guest users [Dengen]
+- 0001777: [Bugs] Declaration of dc: namespace missing from RSS and RDF feeds [Mystralkk]
+- 0001776: [Bugs] Missing blank in feed headers [Dirk]
+
+July 12, 2014 (2.1.0)
 ------------
 - Integrated Caching Template Library original developed by Joe Mucchiello [Tom]
 - Support for themes to specify a default theme. Default themes template and css 
@@ -4612,7 +4651,7 @@ June 29, 2003 (1.3.8rc1)
 - Added new block "Privacy Options" to the Preferences:
   + chose to receive email from admins and/or other users
   + chose to show up in Who's Online block
-  (Feature requests #609758 and #609759)
+  (Feature #609758 and #609759)
 - New config option $_CONF['hide_author_exclusion'] to hide the author
   exclusion list from the user's preferences (useful e.g. when it's a rather
   long list but hardly used by the users of your site).
