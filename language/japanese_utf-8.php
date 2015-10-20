@@ -2392,6 +2392,7 @@ $LANG_VALIDATION = array(
     'rdf_limit' => 'このフィールドには数値で入力してください',
     'path' => 'パスがありません',
     'file' => 'ファイルがありません',
+    'fileName' => 'This field must be a proper file name',
     'search_limits' => 'このフィールドにはコンマで区切られた数値を入力してください',
     'num_search_results' => 'このフィールドには下の\'search_limits\'の数値を入力してください',
     'theme' => 'テーマディレクトリがありません',
