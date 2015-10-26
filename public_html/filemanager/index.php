@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.1.1                                                             |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Filemanager browser                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014 by the following authors:                              |
+// | Copyright (C) 2014-2015 by the following authors:                         |
 // |                                                                           |
 // | Authors: Riaan Los       - mail AT riaanlos DOT nl                        |
 // |          Simon Georget   - simon AT linea21 DOT com                       |
@@ -34,7 +34,7 @@
 
 require_once dirname(__FILE__) . '/../lib-common.php';
 
-// First of all, checks if the current user has access to Filemanager
+// First of all, check if the current user has access to Filemanager
 if (!SEC_inGroup('Root') &&
         ($_CONF['filemanager_disabled'] ||
             (!SEC_inGroup('Filemanager Admin') && !SEC_hasRights('filemanager.admin')))) {
@@ -55,9 +55,11 @@ $_FM_CONF = array(
     'options' => array(
         'culture' => 'en',
         'lang' => 'php',
+        'theme' => 'flat-dark',             // No configuration as of GL-2.1.1
         'defaultViewMode' => 'grid',
         'autoload' => true,
         'showFullPath' => false,
+        'showTitleAttr' => false,           // No configuration as of GL-2.1.1
         'browseOnly' => false,
         'showConfirmation' => true,
         'showThumbs' => true,
@@ -69,15 +71,19 @@ $_FM_CONF = array(
         'dateFormat' => 'd M Y H:i',
         'serverRoot' => true,
         'fileRoot' => false,
-        'relPath' => false,
+        'baseUrl' => false,
         'logger' => false,
-        'capabilities' => array('select', 'download', 'rename', 'move', 'delete'),
+        'capabilities' => array('select', 'download', 'rename', 'delete', 'replace'),
         'plugins' => array()
     ),
     'security' => array(
+        'allowFolderDownload' => false,     // No configuration as of GL-2.1.1
+        'allowChangeExtensions' => false,   // No configuration as of GL-2.1.1
+        'allowNoExtension' => false,        // No configuration as of GL-2.1.1
         'uploadPolicy' => 'DISALLOW_ALL',
         'uploadRestrictions' => array(
             'jpg',
+            'jpe',                          // No configuration as of GL-2.1.1
             'jpeg',
             'gif',
             'png',
@@ -94,22 +100,29 @@ $_FM_CONF = array(
             'xlsx',
             'ppt',
             'pptx',
+            'csv',                          // No configuration as of GL-2.1.1
             'ogv',
             'mp4',
             'webm',
+            'm4v',
             'ogg',
             'mp3',
-            'wav'
+            'wav',
+            'zip',
+            'rar'
         )
     ),
     'upload' => array(
+        'multiple' => true,                 // No configuration as of GL-2.1.1
+        'number' => 5,                      // No configuration as of GL-2.1.1
         'overwrite' => false,
         'imagesOnly' => false,
         'fileSizeLimit' => 16
     ),
     'exclude' => array(
         'unallowed_files' => array(
-            '.htaccess'
+            '.htaccess',
+            'web.config'
         ),
         'unallowed_dirs' => array(
             '_thumbs',
@@ -122,10 +135,16 @@ $_FM_CONF = array(
     'images' => array(
         'imagesExt' => array(
             'jpg',
+            'jpe',                          // No configuration as of GL-2.1.1
             'jpeg',
             'gif',
             'png',
             'svg'
+        ),
+        'resize' => array(                  // No configuration as of GL-2.1.1
+            'enabled' => true,
+            'maxWidth' => 1280,
+            'maxHeight' => 1024
         )
     ),
     'videos' => array(
@@ -133,7 +152,8 @@ $_FM_CONF = array(
         'videosExt' => array(
             'ogv',
             'mp4',
-            'webm'
+            'webm',
+            'm4v'                           // No configuration as of GL-2.1.1
         ),
         'videosPlayerWidth' => 400,
         'videosPlayerHeight' => 222
@@ -146,6 +166,31 @@ $_FM_CONF = array(
             'wav'
         )
     ),
+    'pdfs' => array(                        // Disabled as of GL-2.1.1
+        'showPdfReader' => true,
+        'pdfsExt' => array(
+            'pdf',
+            'odp'
+        ),
+        'pdfsReaderWidth' => 640,
+        'pdfsReaderHeight' => 480
+    ),
+    'edit' => array(                        // Disabled as of GL-2.1.1
+        'enabled' => true,
+        'lineNumbers' => true,
+        'lineWrapping' => true,
+        'codeHighlight' => false,
+        'theme' => 'elegant',
+        'editExt' => array(
+            'txt',
+            'csv'
+        )
+    ),
+    'customScrollbar' => array(             // No configuration as of GL-2.1.1
+        'enabled' => true,
+        'theme' => 'inset-2-dark',
+        'button' => true
+    ),
     'extras' => array(
         'extra_js' => array(),
         'extra_js_async' => true
@@ -154,7 +199,9 @@ $_FM_CONF = array(
         'path' => 'images/fileicons/',
         'directory' => '_Open.png',
         'default' => 'default.png'
-    )
+    ),
+    'url' => 'https://github.com/simogeo/Filemanager',
+    'version' => '2.0.0-dev'
 );
 
 // Values to be overridden by Geeklog (system)
@@ -195,7 +242,7 @@ $_FM_CONF['options']['chars_only_latin']   = $_CONF['filemanager_chars_only_lati
 $_FM_CONF['options']['dateFormat']         = $_CONF['filemanager_date_format'];
 $_FM_CONF['options']['serverRoot']         = false;
 $_FM_CONF['options']['fileRoot']           = $fileRoot;
-$_FM_CONF['options']['relPath']            = $relPath;
+$_FM_CONF['options']['baseUrl']            = $relPath;
 $_FM_CONF['options']['logger']             = $_CONF['filemanager_logger'];
 
 if ($_CONF['filemanager_logger']) {
@@ -222,6 +269,10 @@ $_FM_CONF['videos']['videosPlayerHeight'] = $_CONF['filemanager_videos_player_he
 
 $_FM_CONF['audios']['showAudioPlayer'] = $_CONF['filemanager_show_audio_player'];
 $_FM_CONF['audios']['audiosExt']       = $_CONF['filemanager_audios_ext'];
+
+// Temporarily disable new features added since Filemanager v1.1.0
+$_FM_CONF['pdfs']['showPdfReader'] = false;
+$_FM_CONF['edit']['enabled']       = false;
 
 // Writes back into config file
 $path = $_CONF['path_html'] . 'filemanager/scripts/filemanager.config.js';
@@ -254,56 +305,73 @@ header('Content-Type: text/html; charset=utf-8');
 <link rel="stylesheet" type="text/css" href="styles/reset.css" />
 <link rel="stylesheet" type="text/css" href="scripts/jquery.filetree/jqueryFileTree.css" />
 <link rel="stylesheet" type="text/css" href="scripts/jquery.contextmenu/jquery.contextMenu-1.01.css" />
-<link rel="stylesheet" type="text/css" href="styles/filemanager.css" />
-<!--[if IE 9]>
-<link rel="stylesheet" type="text/css" href="styles/ie9.css" />
-<![endif]-->
-<!--[if lte IE 8]>
-<link rel="stylesheet" type="text/css" href="styles/ie8.css" />
-<![endif]-->
+<link rel="stylesheet" type="text/css" href="scripts/custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" />
+<style type="text/css">
+    #loading-wrap {
+        position:fixed;
+        height:100%;
+        width:100%;
+        overflow:hidden;
+        top:0;
+        left:0;
+        display:block;
+        background: white url(./images/wait30trans.gif) no-repeat center center;
+        z-index:999;
+    }
+</style>
+
+<!-- CSS dynamically added using 'config.options.theme' defined in config file -->
 </head>
 <body>
+<div id="loading-wrap"><!-- loading wrapper / removed when loaded --></div>
 <div>
 <form id="uploader" method="post">
-	<button id="home" name="home" type="button" value="Home">&nbsp;</button>
-	<h1></h1>
-	<div id="uploadresponse"></div>
-	<input id="mode" name="mode" type="hidden" value="add" /> 
-	<input id="currentpath" name="currentpath" type="hidden" />
-	<div id="file-input-container">
-		<div id="alt-fileinput">
-			<input id="filepath" name="filepath" type="text" /><button id="browse" name="browse" type="button" value="Browse"></button>
-		</div>
-		<input	id="newfile" name="newfile" type="file" />
-	</div>
-	<button id="upload" name="upload" type="submit" value="Upload"></button>
-	<button id="newfolder" name="newfolder" type="button" value="New Folder"></button>
-	<button id="grid" class="ON" type="button">&nbsp;</button>
-	<button id="list" type="button">&nbsp;</button>
+    <h1></h1>
+    <div id="uploadresponse"></div>
+    <button id="level-up" name="level-up" type="button" value="LevelUp">&nbsp;</button>
+    <button id="home" name="home" type="button" value="Home">&nbsp;</button>
+    <input id="mode" name="mode" type="hidden" value="add" /> 
+    <input id="currentpath" name="currentpath" type="hidden" />
+    <div id="file-input-container">
+        <div id="alt-fileinput">
+            <input id="filepath" name="filepath" type="text" /><button id="browse" name="browse" type="button" value="Browse"></button>
+        </div>
+        <input  id="newfile" name="newfile" type="file" />
+    </div>
+    <button id="upload" name="upload" type="submit" value="Upload" class="em"></button>
+    <button id="newfolder" name="newfolder" type="button" value="New Folder" class="em"></button>
+    <button id="grid" class="ON" type="button">&nbsp;</button>
+    <button id="list" type="button">&nbsp;</button>
 </form>
 <div id="splitter">
 <div id="filetree"></div>
-<div id="fileinfo">
-<h1></h1>
+    <div id="fileinfo">
+    <h1></h1>
+    </div>
 </div>
-</div>
+<div id="footer">
 <form name="search" id="search" method="get">
-		<div>
-			<input type="text" value="" name="q" id="q" />
-			<a id="reset" href="#" class="q-reset"></a>
-			<span class="q-inactive"></span>
-		</div> 
+    <div>
+        <input type="text" value="" name="q" id="q" />
+        <a id="reset" href="#" class="q-reset"></a>
+        <span class="q-inactive"></span>
+    </div>
 </form>
+<a href="" id="link-to-project"></a>
+<div id="folder-info"></div>
+</div>
 
 <ul id="itemOptions" class="contextMenu">
-	<li class="select"><a href="#select"></a></li>
-	<li class="download"><a href="#download"></a></li>
-	<li class="rename"><a href="#rename"></a></li>
-	<li class="move"><a href="#move"></a></li>
-	<li class="delete separator"><a href="#delete"></a></li>
+    <li class="select"><a href="#select"></a></li>
+    <li class="download"><a href="#download"></a></li>
+    <li class="rename"><a href="#rename"></a></li>
+    <li class="move"><a href="#move"></a></li>
+    <li class="replace"><a href="#replace"></a></li>
+    <li class="delete separator"><a href="#delete"></a></li>
 </ul>
 
-<script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-browser.js"></script>
 <script type="text/javascript" src="scripts/jquery.form-3.24.js"></script>
 <script type="text/javascript" src="scripts/jquery.splitter/jquery.splitter-1.5.1.js"></script>
 <script type="text/javascript" src="scripts/jquery.filetree/jqueryFileTree.js"></script>
