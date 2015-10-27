@@ -46,7 +46,7 @@ public_html/admin/autotags
 # test framework, if present
 public_html/tests
 
-config.php
+^config.php
 plugins/calendar/config.php
 plugins/links/config.php
 plugins/polls/config.php
