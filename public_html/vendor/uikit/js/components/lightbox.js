@@ -1,4 +1,4 @@
-/*! UIkit 2.20.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.23.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -67,7 +67,7 @@
 
         init: function() {
 
-            var $this = this, siblings = [];
+            var siblings = [];
 
             this.index    = 0;
             this.siblings = [];
@@ -353,7 +353,7 @@
 
                     if(!cache[id]) {
 
-                        var img = new Image();
+                        var img = new Image(), lowres = false;
 
                         img.onerror = function(){
                             cache[id] = {width:640, height:320};
@@ -361,11 +361,22 @@
                         };
 
                         img.onload = function(){
-                            cache[id] = {width:img.width, height:img.height};
-                            resolve(id, img.width, img.height);
+                            //youtube default 404 thumb, fall back to lowres
+                            if (img.width == 120 && img.height == 90) {
+                                if (!lowres) {
+                                    lowres = true;
+                                    img.src = '//img.youtube.com/vi/' + id + '/0.jpg';
+                                } else {
+                                    cache[id] = {width: 640, height: 320};
+                                    resolve(id, cache[id].width, cache[id].height);
+                                }
+                            } else {
+                                cache[id] = {width: img.width, height: img.height};
+                                resolve(id, img.width, img.height);
+                            }
                         };
 
-                        img.src = '//img.youtube.com/vi/'+id+'/0.jpg';
+                        img.src = '//img.youtube.com/vi/'+id+'/maxresdefault.jpg';
 
                     } else {
                         resolve(id, cache[id].width, cache[id].height);
@@ -433,6 +444,7 @@
 
             lightbox.on("showitem.uk.lightbox", function(e, data){
 
+
                 var resolve = function(source, width, height) {
 
                     data.meta = {
@@ -494,7 +506,7 @@
         modal.content = modal.find('.uk-lightbox-content:first');
         modal.loader  = modal.find('.uk-modal-spinner:first');
         modal.closer  = modal.find('.uk-close.uk-close-alt');
-        modal.modal   = UI.modal(modal);
+        modal.modal   = UI.modal(modal, {modal:false});
 
         // next / previous
         modal.on("swipeRight swipeLeft", function(e) {
@@ -509,8 +521,8 @@
             modal.content.html('');
         });
 
-        UI.$win.on('load resize orientationchange', UI.Utils.debounce(function(){
-            if (modal.is(':visible')) modal.lightbox.fitSize();
+        UI.$win.on('load resize orientationchange', UI.Utils.debounce(function(e){
+            if (modal.is(':visible') && !UI.Utils.isFullscreen()) modal.lightbox.fitSize();
         }.bind(this), 100));
 
         modal.lightbox = lightbox;

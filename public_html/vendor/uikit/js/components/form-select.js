@@ -1,4 +1,4 @@
-/*! UIkit 2.20.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.23.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -20,7 +20,8 @@
     UI.component('formSelect', {
 
         defaults: {
-            'target': '>span:first'
+            'target': '>span:first',
+            'activeClass': 'uk-active'
         },
 
         boot: function() {
@@ -32,7 +33,7 @@
                     var ele = UI.$(this);
 
                     if (!ele.data("formSelect")) {
-                        var obj = UI.formSelect(ele, UI.Utils.options(ele.attr("data-uk-form-select")));
+                        UI.formSelect(ele, UI.Utils.options(ele.attr("data-uk-form-select")));
                     }
                 });
             });
@@ -52,6 +53,8 @@
                     try {
                         $this.target.text(select.options[select.selectedIndex].text);
                     } catch(e) {}
+
+                    $this.element[$this.select.val() ? 'addClass':'removeClass']($this.options.activeClass);
 
                     return fn;
                 };

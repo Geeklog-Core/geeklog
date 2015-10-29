@@ -1,4 +1,4 @@
-/*! UIkit 2.20.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.23.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -22,10 +22,13 @@
     UI.component('slider', {
 
         defaults: {
-            center    : false,
-            threshold : 10,
-            infinite  : true,
-            activecls : 'uk-active'
+            center           : false,
+            threshold        : 10,
+            infinite         : true,
+            autoplay         : false,
+            autoplayInterval : 7000,
+            pauseOnHover     : true,
+            activecls        : 'uk-active'
         },
 
         boot:  function() {
@@ -67,65 +70,75 @@
 
                 if ($this.focus == item) return;
 
+                // stop autoplay
+                $this.stop();
+
                 switch(item) {
                     case 'next':
                     case 'previous':
                         $this[item=='next' ? 'next':'previous']();
                         break;
                     default:
-                        $this.updateFocus(parseInt(slide, 10));
+                        $this.updateFocus(parseInt(item, 10));
                 }
             });
 
-            this.container.on('touchstart mousedown', function(evt) {
+            this.container.on({
+                'touchstart mousedown': function(evt) {
 
-                if (evt.originalEvent && evt.originalEvent.touches) {
-                    evt = evt.originalEvent.touches[0];
-                }
-
-                // ignore right click button
-                if (evt.button && evt.button==2 || !$this.active) {
-                    return;
-                }
-
-                anchor  = UI.$(evt.target).is('a') ? UI.$(evt.target) : UI.$(evt.target).parents('a:first');
-                dragged = false;
-
-                if (anchor.length) {
-
-                    anchor.one('click', function(e){
-                        if (dragged) e.preventDefault();
-                    });
-                }
-
-                delayIdle = function(e) {
-
-                    dragged  = true;
-                    dragging = $this;
-                    store    = {
-                        touchx : parseInt(e.pageX, 10),
-                        dir    : 1,
-                        focus  : $this.focus,
-                        base   : $this.options.center ? 'center':'area'
-                    };
-
-                    if (e.originalEvent && e.originalEvent.touches) {
-                        e = e.originalEvent.touches[0];
+                    if (evt.originalEvent && evt.originalEvent.touches) {
+                        evt = evt.originalEvent.touches[0];
                     }
 
-                    dragging.element.data({
-                        'pointer-start': {x: parseInt(e.pageX, 10), y: parseInt(e.pageY, 10)},
-                        'pointer-pos-start': $this.pos
-                    });
+                    // ignore right click button
+                    if (evt.button && evt.button==2 || !$this.active) {
+                        return;
+                    }
 
-                    $this.container.addClass('uk-drag');
+                    // stop autoplay
+                    $this.stop();
 
-                    delayIdle = false;
-                };
+                    anchor  = UI.$(evt.target).is('a') ? UI.$(evt.target) : UI.$(evt.target).parents('a:first');
+                    dragged = false;
 
-                delayIdle.x         = parseInt(evt.pageX, 10);
-                delayIdle.threshold = $this.options.threshold;
+                    if (anchor.length) {
 
+                        anchor.one('click', function(e){
+                            if (dragged) e.preventDefault();
+                        });
+                    }
+
+                    delayIdle = function(e) {
+
+                        dragged  = true;
+                        dragging = $this;
+                        store    = {
+                            touchx : parseInt(e.pageX, 10),
+                            dir    : 1,
+                            focus  : $this.focus,
+                            base   : $this.options.center ? 'center':'area'
+                        };
+
+                        if (e.originalEvent && e.originalEvent.touches) {
+                            e = e.originalEvent.touches[0];
+                        }
+
+                        dragging.element.data({
+                            'pointer-start': {x: parseInt(e.pageX, 10), y: parseInt(e.pageY, 10)},
+                            'pointer-pos-start': $this.pos
+                        });
+
+                        $this.container.addClass('uk-drag');
+
+                        delayIdle = false;
+                    };
+
+                    delayIdle.x         = parseInt(evt.pageX, 10);
+                    delayIdle.threshold = $this.options.threshold;
+
+                },
+                mouseenter: function() { if ($this.options.pauseOnHover) $this.hovering = true;  },
+                mouseleave: function() { $this.hovering = false; }
             });
 
             this.resize(true);
@@ -138,6 +151,12 @@
 
             // prevent dragging links + images
             this.element.find('a,img').attr('draggable', 'false');
+
+            // Set autoplay
+            if (this.options.autoplay) {
+                this.start();
+            }
+
         },
 
         resize: function(focus) {
@@ -188,7 +207,7 @@
                 'transform': ''
             });
 
-            this.updateFocus(0);
+            if (focus) this.updateFocus(this.focus);
         },
 
         updatePos: function(pos) {
@@ -208,7 +227,7 @@
 
             dir = dir || (idx > this.focus ? 1:-1);
 
-            var $this = this, item = this.items.eq(idx), area, i;
+            var item = this.items.eq(idx), area, i;
 
             if (this.options.infinite) {
                 this.infinite(idx, dir);
@@ -250,13 +269,22 @@
 
                                 area += this.items.eq(i).data('width');
 
-                                if (area >= this.vp) {
+                                if (area == this.vp) {
                                     idx = i;
+                                    break;
+                                }
+
+                                if (area > this.vp) {
+                                    idx = (i < this.items.length-1) ? i+1 : i;
                                     break;
                                 }
                             }
 
-                            this.updatePos(this.items.eq(idx).data('left')*-1);
+                            if (area > this.vp) {
+                                this.updatePos((this.container.width() - this.vp) * -1);
+                            } else {
+                                this.updatePos(this.items.eq(idx).data('left')*-1);
+                            }
                         }
                     }
                 }
@@ -264,7 +292,7 @@
 
             this.focus = idx;
 
-            this.trigger('focus.uikit.slider', [idx,this.items.eq(idx), this]);
+            this.trigger('focusitem.uk.slider', [idx,this.items.eq(idx),this]);
         },
 
         next: function() {
@@ -281,9 +309,25 @@
             this.updateFocus(focus, -1);
         },
 
+        start: function() {
+
+            this.stop();
+
+            var $this = this;
+
+            this.interval = setInterval(function() {
+                if (!$this.hovering) $this.next();
+            }, this.options.autoplayInterval);
+
+        },
+
+        stop: function() {
+            if (this.interval) clearInterval(this.interval);
+        },
+
         infinite: function(baseidx, direction) {
 
-            var $this = this, item = this.items.eq(baseidx), i, z = baseidx, move = [], lastvisible, area = 0;
+            var $this = this, item = this.items.eq(baseidx), i, z = baseidx, move = [], area = 0;
 
             if (direction == 1) {
 
@@ -440,7 +484,10 @@
 
             dragging.container.removeClass('uk-drag');
 
-            var item  = dragging.items.eq(store.focus), itm, focus = false, i, z;
+            // TODO is this needed?
+            dragging.items.eq(store.focus);
+
+            var itm, focus = false, i, z;
 
             if (store.dir == 1) {
 
