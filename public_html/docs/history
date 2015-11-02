@@ -11,12 +11,12 @@ November ?, 2015 (2.1.1)
 - [Update] CKEditor to version 4.5.4 [Dengen]
 - [Update] jQuery to version 1.11.3 and jQuery UI to version 1.11.4. jQuery Timepicker Addon updated [Tom] [Dengen]
 - [Update] OAuth class to version 1.141 [Tom]
-- [Feature] Integrated the UIKit framework version 2.23.0 into Geeklog [Dengen]
-- [Feature] Denim theme now uses UIKit [Dengen]
+- [Feature] Integrated the UIkit framework version 2.23.0 into Geeklog [Dengen]
+- [Feature] Denim theme now uses UIkit [Dengen]
 - [Feature] Plugins can now include default templates and css files along with ones for different themes. 
   Plugins template and css files can be included with themes. Plugins template files can now have 
   a function.php file to control what javascript is loaded [Tom]
-- Schema.org article, author, and Breadcrumb markup added to Denim and Modern Curve themes [Tom]
+- [Feature] Schema.org article, author, and Breadcrumb markup added to Denim and Modern Curve themes [Tom]
 - [Feature] Poll plugin bar graphs now based on percentage and supports responsive themes [Tom]
 - [Feature] Useful feature template class [Tom]
 - [Feature] Allow xmlSiteMap Plugin to Ping Search Engines when new content is Added [Mystralkk]
