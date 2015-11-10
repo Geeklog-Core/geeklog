@@ -186,17 +186,48 @@ function contactform ($uid, $cc = false, $subject = '', $message = '')
                              ($_CONF['emailuserloginrequired'] == 1))) {
         $retval .= SEC_loginRequiredForm();
     } else {
-        $result = DB_query ("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
-        $P = DB_fetchArray ($result);
         if (SEC_inGroup ('Root') || SEC_hasRights ('user.mail')) {
             $isAdmin = true;
         } else {
             $isAdmin = false;
         }
 
+        // Check email address okay and user preference regarding email
+        $continue = false;
+        $msg_no_mail = $LANG08[35];
+
+        $result = DB_query ("SELECT email FROM {$_TABLES['users']} WHERE uid = '$uid'");
+        $nrows = DB_numRows($result);                                     
+        
+        if ($nrows == 1) {
+            $P = DB_fetchArray ($result);
+            if (!empty($P['email'])) {
+                if (COM_isEMail($P['email'])) {
+                    $continue = true;
+                } elseif ($isAdmin ) {
+                    $msg_no_mail = $LANG08[43]; // Email invalid
+                }
+            } elseif ($isAdmin ) {
+                $msg_no_mail = $LANG08[42]; // Email doesn't exist
+            }
+        } elseif ($isAdmin ) {
+            $msg_no_mail = $LANG08[41]; // User doesn't exist
+        }
+        
+        // Check if User wants mail from someone
+        if ($continue) {
+            $result = DB_query ("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
+            $P = DB_fetchArray ($result);
+            
+            if ($continue && ((($P['emailfromadmin'] == 1) && $isAdmin) || (($P['emailfromuser'] == 1) && !$isAdmin))) {
+                $continue = true;
+            } else {
+                $continue = false;
+            }
+        }
+        
         $displayname = COM_getDisplayName ($uid);
-        if ((($P['emailfromadmin'] == 1) && $isAdmin) ||
-            (($P['emailfromuser'] == 1) && !$isAdmin)) {
+        if ($continue) {
 
             if ($cc) {
                 $cc = ' checked="checked"';
@@ -252,7 +283,7 @@ function contactform ($uid, $cc = false, $subject = '', $message = '')
             $retval .= $mail_template->finish($mail_template->get_var('output'));
             $retval .= COM_endBlock();
         } else {
-            $retval = COM_showMessageText($LANG08[35], $LANG08[10] . ' ' . $displayname);
+            $retval = COM_showMessageText($msg_no_mail, $LANG08[10] . ' ' . $displayname);
         }
     }
 

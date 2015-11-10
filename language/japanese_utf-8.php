@@ -495,7 +495,10 @@ $LANG08 = array(
     37 => '自分宛にコピーを送信する',
     38 => "これはあなたが<{$_CONF['site_url']}>から %s へ送信したメールのコピーです:",
     39 => 'あなたはメッセージを ',
-    40 => " 秒前に送信しています。少なくとも{$_CONF['speedlimit']}秒待って、次のメッセージを送信してください。"
+    40 => " 秒前に送信しています。少なくとも{$_CONF['speedlimit']}秒待って、次のメッセージを送信してください。", 
+    41 => "This user doesn't exist.", 
+    42 => "This users email address doesn't exist. This most likely means is is an OAuth user account.",
+    43 => 'This users email address is invalid.'    
 );
 
 ###############################################################################
