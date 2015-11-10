@@ -4181,8 +4181,10 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
 
     static $mailobj;
     
-    // Emails should be validated already but double check
-    if (COM_isEmail($to)) {    
+    // Emails should be validated already but double check not empty (OAuth user most likely)
+    // Can't use COM_isEmail to validate as some mail forms (like profiles.php) uses COM_formatEmailAddress on to address which does not validate
+    // COM_isEmail should be fixed at some point to handle email address that have used COM_formatEmailAddress ...
+    if (!empty($to)) {    
         if (empty($from)) {
             $from = COM_formatEmailAddress($_CONF['site_name'], $_CONF['site_mail']);
         }
@@ -4265,7 +4267,7 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
             COM_errorLog($retval->toString(), 1);
         }
     } else {
-        COM_errorLog("Invalid To address '$To' sent to COM_Mail.", 1);
+        COM_errorLog("Invalid To address '$to' sent to COM_Mail.", 1);
     }
 
     return($retval === true ? true : false);
