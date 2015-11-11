@@ -489,7 +489,10 @@ $LANG08 = array(
     37 => 'Pošlji mi kopijo te e-pošte',
     38 => "To je kopija e-pošte, ki si jo poslal/a osebi %s s <{$_CONF['site_url']}>:",
     39 => 'Your last message was ',
-    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
+    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages",
+    41 => 'This user doesn\'t exist.',
+    42 => 'This users email address doesn\'t exist. This most likely means is is an OAuth user account.',
+    43 => 'This users email address is invalid.'
 );
 
 ###############################################################################

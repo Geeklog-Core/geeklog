@@ -491,7 +491,10 @@ $LANG08 = array(
     37 => 'Ich möchte eine Kopie der E-Mail bekommen',
     38 => "Dies ist eine Kopie der E-Mail, die Sie von <{$_CONF['site_url']}> an %s gesendet haben:",
     39 => 'Your last message was ',
-    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
+    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages",
+    41 => 'This user doesn\'t exist.',
+    42 => 'This users email address doesn\'t exist. This most likely means is is an OAuth user account.',
+    43 => 'This users email address is invalid.'
 );
 
 ###############################################################################

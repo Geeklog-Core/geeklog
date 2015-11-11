@@ -487,7 +487,10 @@ $LANG08 = array(
     37 => 'Saada mulle selle kirja koopia',
     38 => "See on koopia kirjast, mille saatsid %s-le lehelt aadressiga <{$_CONF['site_url']}>:",
     39 => 'Your last message was ',
-    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
+    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages",
+    41 => 'This user doesn\'t exist.',
+    42 => 'This users email address doesn\'t exist. This most likely means is is an OAuth user account.',
+    43 => 'This users email address is invalid.'
 );
 
 ###############################################################################

@@ -488,7 +488,10 @@ $LANG08 = array(
     37 => 'שילחו לי עותק מאימייל זה',
     38 => "זהו עותק של אימייל ששלחתם אל\n%s\nמ-\n<{$_CONF['site_url']}>:",
     39 => 'הודעתכם האחרונה הייתה לפני ',
-    40 => " שניות.  אתר זה דורש לפחות {$_CONF['speedlimit']} שניות בין שליחת הודעות"
+    40 => " שניות.  אתר זה דורש לפחות {$_CONF['speedlimit']} שניות בין שליחת הודעות",
+    41 => 'This user doesn\'t exist.',
+    42 => 'This users email address doesn\'t exist. This most likely means is is an OAuth user account.',
+    43 => 'This users email address is invalid.'
 );
 
 ###############################################################################
