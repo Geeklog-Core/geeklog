@@ -248,7 +248,11 @@ function dobackup()
             $curdatetime = date('Y_m_d_H_i_s');
             $filename_mask = "geeklog_db_backup_{$curdatetime}.sql";
         }
+
+        $filename_mask = basename($filename_mask);
+        $filename_mask = COM_sanitizeFilename($filename_mask, true);
         $backupfile = $_CONF['backup_path'] . $filename_mask;
+
         $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user";
         if (!empty($_DB_pass)) {
             $command .= " -p'$_DB_pass'";
@@ -256,7 +260,7 @@ function dobackup()
         if (!empty($_CONF['mysqldump_options'])) {
             $command .= ' ' . $_CONF['mysqldump_options'];
         }
-        $command .= " $_DB_name > \"$backupfile\"";
+        $command .= " $_DB_name > " . escapeshellarg($backupfile);
 
         $log_command = $command;
         if (!empty($_DB_pass)) {
@@ -335,6 +339,7 @@ function deletebackups()
     $failed = 0;
 
     foreach ($_POST['delitem'] as $delfile) {
+        $delfile = basename($delfile);
         $file = COM_sanitizeFilename($delfile, true);
         if (! empty($file)) {
             $files++;
@@ -711,7 +716,8 @@ if (isset($_POST['mode'])) {
 if ($mode == 'download') {
     $file = '';
     if (isset($_GET['file'])) {
-        $file = COM_sanitizeFilename($_GET['file'], true);
+        $file = basename($_GET['file']);
+        $file = COM_sanitizeFilename($file, true);
         if (! file_exists($_CONF['backup_path'] . $file)) {
             $file = '';
         }
