@@ -646,11 +646,11 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         PLG_templateSetVars($article_filevar, $article);
 
         if (!$_CONF['cache_templates']) {
-            // $article->set_var($article_filevar, $retval);
-            // Hack: Cannot set the template variable directly with set_var since
+            // Hack (see Geeklog Bug Tracker issue #0001817): Cannot set the template variable directly with set_var since
             // this template variable was set with set_file which uses the templatecode array (set_var uses varvals array)
             // so have to update the templatecode array directly. This array really shouldn't be accessed this way
             // and this hack should be changed in the future: either set_var or set_file functions need to allow update of the file template variable found in templatecode
+            // $article->set_var($article_filevar, $retval);
             $article->templateCode[$article_filevar] = $retval;
         }
     }

@@ -140,7 +140,8 @@ class Template
      * @var       array
      * @see       set_file
      */
-    private $templateCode = array();
+    // Hack (see Geeklog Bug Tracker issue #0001817): $templateCode should be private but cannot because of some lib-story code
+    public $templateCode = array();
 
     /**
      * A hash of strings forming a translation table which translates variable names
