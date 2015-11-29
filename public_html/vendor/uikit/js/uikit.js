@@ -1,4 +1,4 @@
-/*! UIkit 2.23.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.24.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(core) {
 
     if (typeof define == "function" && define.amd) { // AMD
@@ -44,7 +44,7 @@
 
     var UI = {}, _UI = global.UIkit ? Object.create(global.UIkit) : undefined;
 
-    UI.version = '2.23.0';
+    UI.version = '2.24.0';
 
     UI.noConflict = function() {
         // restore UIkit version
@@ -1404,7 +1404,7 @@
         init: function() {
 
             var ids     = [],
-                links   = this.find("a[href^='#']").each(function(){ ids.push(UI.$(this).attr("href")); }),
+                links   = this.find("a[href^='#']").each(function(){ if(this.getAttribute("href").trim()!=='#') ids.push(this.getAttribute("href")); }),
                 targets = UI.$(ids.join(",")),
 
                 clsActive  = this.options.cls,
@@ -1855,7 +1855,8 @@
            'boundary'        : UI.$win,
            'delay'           : 0,
            'dropdownSelector': '.uk-dropdown,.uk-dropdown-blank',
-           'hoverDelayIdle'  : 250
+           'hoverDelayIdle'  : 250,
+           'preventflip'     : false
         },
 
         remainIdle: false,
@@ -2100,11 +2101,11 @@
                 pos            = UI.$.extend({}, this.offsetParent.offset(), {width: this.offsetParent[0].offsetWidth, height: this.offsetParent[0].offsetHeight}),
                 posoffset      = this.options.offset,
                 dropdown       = this.dropdown,
-                offset         = dropdown.show().offset(),
+                offset         = dropdown.show().offset() || {left: 0, top: 0},
                 width          = dropdown.outerWidth(),
                 height         = dropdown.outerHeight(),
                 boundarywidth  = this.boundary.width(),
-                boundaryoffset = this.boundary.offset() ? this.boundary.offset(): {top:0, left:0},
+                boundaryoffset = this.boundary[0] !== window && this.boundary.offset() ? this.boundary.offset(): {top:0, left:0},
                 dpos           = this.options.pos;
 
             var variants =  {
@@ -2132,21 +2133,34 @@
                 justify(dropdown.css({left:0}), this.justified, boundarywidth);
             } else {
 
-                switch(this.checkBoundary(pos.left + css.left, pos.top + css.top, width, height, boundarywidth)) {
+                if (this.options.preventflip !== true) {
 
-                    case "x":
-                        dpos = flips['x'][dpos] || 'right-top';
-                        break;
-                    case "y":
-                        dpos = flips['y'][dpos] || 'top-left';
-                        break;
-                    case "xy":
-                        dpos = flips['xy'][dpos] || 'right-bottom';
-                        break;
+                    var fdpos;
+
+                    switch(this.checkBoundary(pos.left + css.left, pos.top + css.top, width, height, boundarywidth)) {
+                        case "x":
+                            if(this.options.preventflip !=='x') fdpos = flips['x'][dpos] || 'right-top';
+                            break;
+                        case "y":
+                            if(this.options.preventflip !=='y') fdpos = flips['y'][dpos] || 'top-left';
+                            break;
+                        case "xy":
+                            if(!this.options.preventflip) fdpos = flips['xy'][dpos] || 'right-bottom';
+                            break;
+                    }
+
+                    if (fdpos) {
+
+                        pp  = fdpos.split('-');
+                        css = variants[fdpos] ? variants[fdpos] : variants['bottom-left'];
+
+                        // check flipped
+                        if (this.checkBoundary(pos.left + css.left, pos.top + css.top, width, height, boundarywidth)) {
+                            pp  = dpos.split('-');
+                            css = variants[dpos] ? variants[dpos] : variants['bottom-left'];
+                        }
+                    }
                 }
-
-                pp = dpos.split('-');
-                css = variants[dpos] ? variants[dpos] : variants['bottom-left'];
             }
 
             if (width > boundarywidth) {
@@ -2165,7 +2179,7 @@
                axis += "x";
             }
 
-            if (top < 0 || ((top - UI.$win.scrollTop())+height) > window.innerHeight) {
+            if ((top - UI.$win.scrollTop()) < 0 || ((top - UI.$win.scrollTop())+height) > window.innerHeight) {
                axis += "y";
             }
 
@@ -3049,7 +3063,7 @@
                     try {
                         target = UI.$(href);
                     } catch (e){
-                        target = ""
+                        target = "";
                     }
 
                     if (!target.length) {
@@ -3185,7 +3199,7 @@
                             default:
                                 $this.show(parseInt(item, 10));
                         }
-                    })
+                    });
 
                     if (this.options.swiping) {
 

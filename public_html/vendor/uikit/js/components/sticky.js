@@ -1,4 +1,4 @@
-/*! UIkit 2.23.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.24.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -53,7 +53,7 @@
                 if (!sticked.length) return;
 
                 for (var i = 0; i < sticked.length; i++) {
-                    sticked[i].reset(true);
+                    //sticked[i].reset(true);
                     sticked[i].self.computeWrapper();
                 }
 
@@ -89,9 +89,9 @@
 
             if (boundary) {
 
-                if (boundary === true) {
+                if (boundary === true || boundary[0] === '!') {
 
-                    boundary      = this.wrapper.parent();
+                    boundary      = boundary === true ? this.wrapper.parent() : this.wrapper.closest(boundary.substr(1));
                     boundtoparent = true;
 
                 } else if (typeof boundary === "string") {
@@ -134,7 +134,8 @@
 
                     this.top = top;
                 },
-                reset         : function(force) {
+
+                reset: function(force) {
 
                     this.calcTop();
 
