@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-November ?, 2015 (2.1.1)
+December 9, 2015 (2.1.1)
 ------------
 
 - [Security] Log parameters for 404 errors & make filtering in 404.log work like in error.log [Dirk]
@@ -13,7 +13,8 @@ November ?, 2015 (2.1.1)
 - [Update] OAuth class to version 1.141 [Tom]
 - [Feature] Integrated the UIkit framework version 2.24.0 into Geeklog [Dengen]
 - [Feature] Denim theme now uses UIkit [Dengen]
-- [Feature] Plugins can now include default templates and css files along with ones for different themes. 
+- [Feature] Added first part of developer mode which adds extra error logging for any template errors
+- [Feature] Plugins can now include default templates and css files along with ones for different themes 
   Plugins template and css files can be included with themes. Plugins template files can now have 
   a function.php file to control what javascript is loaded [Tom]
 - [Feature] Schema.org article, author, and Breadcrumb markup added to Denim and Modern Curve themes [Tom]
