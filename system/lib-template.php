@@ -310,40 +310,58 @@ function CTL_plugin_setTemplatesFunctions($plugin)
 	$templateFuncutionsLocation = CTL_plugin_themeFindFile($plugin, 'templates', 'functions.php', false);
 	if (!empty($templateFuncutionsLocation) AND file_exists($templateFuncutionsLocation)) {
 		require_once $templateFuncutionsLocation;
-		
-		/* Include scripts on behalf of plugin template files that are theme specfic */
-		$func = $plugin . "_css_" . $_CONF['theme'];
-		if (function_exists($func)) {
-			foreach ($func() as $info) {
-				$file = (!empty($info['file'])) ? $info['file'] : '';
-				$name = (!empty($info['name'])) ? $info['name'] : md5(!empty($file) ? $file : strval(time()));
-				$constant   = (!empty($info['constant']))   ? $info['constant']   : true;
-				$attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
-				$priority = (!empty($info['priority']))   ? $info['priority']   : 100;
-				$_SCRIPTS->setCssFile($name, $file, $constant, $attributes, $priority, 'theme');
-			}
-		}
-		$func = $plugin . "_js_libs_" . $_CONF['theme'];
-		if (function_exists($func)) {
-			foreach ($func() as $info) {
-				$footer = true;
-				if (isset($info['footer']) && !$info['footer']) {
-					$footer = false;
-				}
-				$_SCRIPTS->setJavaScriptLibrary($info['library'], $footer);
-			}
-		}
-		$func = $plugin . "_js_files_" . $_CONF['theme'];
-		if (function_exists($func)) {
-			foreach ($func() as $info) {
-				$footer = true;
-				if (isset($info['footer']) && !$info['footer']) {
-					$footer = false;
-				}
-				$priority = (!empty($info['priority']))   ? $info['priority']   : 100;
-				$_SCRIPTS->setJavaScriptFile(md5($info['file']), $info['file'], $footer, $priority);
-			}
-		}    	
+
+        // Workaround since we don't know the theme name of the functions.php file we are using
+        // It would have been checked in the following order. When found then quit
+        $themes[] = $_CONF['theme'];
+        $themes[] = $_CONF['theme_default'];
+        $themes[] = 'default';
+        
+        $function_found = false;
+        foreach ($themes as $theme) {
+            /* Include scripts on behalf of plugin template files that are theme specific */
+            $func = $plugin . "_css_" . $theme;
+            if (function_exists($func)) {
+                $function_found = true;
+                foreach ($func() as $info) {
+                    $file = (!empty($info['file'])) ? $info['file'] : '';
+                    $name = (!empty($info['name'])) ? $info['name'] : md5(!empty($file) ? $file : strval(time()));
+                    $constant   = (!empty($info['constant']))   ? $info['constant']   : true;
+                    $attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
+                    $priority = (!empty($info['priority']))   ? $info['priority']   : 100;
+                    
+                    $_SCRIPTS->setCssFile($name, $file, $constant, $attributes, $priority, 'theme');
+                }
+            }
+            $func = $plugin . "_js_libs_" . $theme;
+            if (function_exists($func)) {
+                $function_found = true;
+                foreach ($func() as $info) {
+                    $footer = true;
+                    if (isset($info['footer']) && !$info['footer']) {
+                        $footer = false;
+                    }
+                    $_SCRIPTS->setJavaScriptLibrary($info['library'], $footer);
+                }
+            }
+            $func = $plugin . "_js_files_" . $theme;
+            if (function_exists($func)) {
+                $function_found = true;
+                foreach ($func() as $info) {
+                    $footer = true;
+                    if (isset($info['footer']) && !$info['footer']) {
+                        $footer = false;
+                    }
+                    $priority = (!empty($info['priority']))   ? $info['priority']   : 100;
+                    $_SCRIPTS->setJavaScriptFile(md5($info['file']), $info['file'], $footer, $priority);
+                }
+            }
+
+            if ($function_found) {
+                break;    
+            }
+            
+        }
 	}
 }
 
