@@ -48,7 +48,7 @@ if (!defined('LB')) {
   define('LB',"\n");
 }
 if (!defined('VERSION')) {
-  define('VERSION', '2.1.1');
+  define('VERSION', '2.1.2');
 }
 
 ?>
