@@ -8266,6 +8266,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
 
             header('HTTP/1.1 500 Internal Server Error');
             header('Status: 500 Internal Server Error');
+            header('Content-Type: text/html; charset=' . COM_getCharset());
 
             $title = 'An Error Occurred';
             if (!empty($_CONF['site_name'])) {
