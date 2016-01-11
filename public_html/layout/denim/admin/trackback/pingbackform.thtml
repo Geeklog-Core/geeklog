@@ -1,5 +1,4 @@
-
-<!-- admin/trackback/pingbackform.thtml { -->
+{# start {templatelocation} #}
 
 <form action="{site_admin_url}/trackback.php" method="post" id="pingbackform" class="compact uk-form">
   <fieldset>
@@ -20,4 +19,4 @@
   </fieldset>
 </form>
 
-<!-- } admin/trackback/pingbackform.thtml -->
+{# end {templatelocation} #}

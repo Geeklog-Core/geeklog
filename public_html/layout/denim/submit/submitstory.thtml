@@ -1,5 +1,4 @@
-
-<!-- submit/submitstory.thtml { -->
+{# start {templatelocation} #}
 
 <form action="{site_url}/submit.php" method="post" id="submitstory" class="compact uk-form">
 
@@ -14,19 +13,19 @@
       <dt><label>{lang_topic}</label></dt>
       <dd>{topic_selection}</dd>
 
-      <dt><label for="introtext">{lang_introtext}</label></dt>
-      <dd><textarea cols="45" rows="15" name="introtext" id="introtext" class="wide">{story_introtext}</textarea></dd>
-
-      <dt><label for="bodytext">{lang_bodytext}</label></dt>
-      <dd><textarea cols="45" rows="15" name="bodytext" id="bodytext" class="wide">{story_bodytext}</textarea></dd>
-
       <dt><label for="submitstory-postmode">{lang_postmode}</label></dt>
       <dd>
         <select name="postmode" id="submitstory-postmode">
           {story_postmode_options}
         </select>
       </dd>
-      <dd class="description">{allowed_html}</dd>
+      <dd class="description" id="submitstory-d1">{allowed_html}</dd>
+
+      <dt><label for="introtext">{lang_introtext}</label></dt>
+      <dd><textarea cols="45" rows="15" name="introtext" id="introtext" class="wide" aria-describedby="submitstory-d1">{story_introtext}</textarea></dd>
+
+      <dt><label for="bodytext">{lang_bodytext}</label></dt>
+      <dd><textarea cols="45" rows="15" name="bodytext" id="bodytext" class="wide" aria-describedby="submitstory-d1">{story_bodytext}</textarea></dd>
     </dl>
 
     {captcha}
@@ -42,4 +41,4 @@
   </div>
 </form>
 
-<!-- } submit/submitstory.thtml -->
+{# end {templatelocation} #}

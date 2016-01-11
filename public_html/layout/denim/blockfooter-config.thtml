@@ -1,6 +1,6 @@
-<!-- blockfooter-config.thtml { -->
+{# begin {templatelocation} #}
 
     </ul>
 </nav>
 
-<!-- } blockfooter-config.thtml -->
+{# end {templatelocation} #}

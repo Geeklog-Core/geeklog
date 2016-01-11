@@ -1,5 +1,4 @@
-
-<!-- comment/commentbar.thtml { -->
+{# start {templatelocation} #}
 
 <div class="commentbar_status">
   {start_storylink_anchortag}<strong>{story_title}</strong>{end_storylink_anchortag}
@@ -39,4 +38,4 @@
       <a class="uk-button" href="#commenteditform">{lang_reply}</a>
 <!-- END commenteditform_jumplink -->
 
-<!-- } comment/commentbar.thtml -->
+{# end {templatelocation} #}

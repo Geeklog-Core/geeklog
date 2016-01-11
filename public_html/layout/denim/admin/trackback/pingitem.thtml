@@ -1,5 +1,4 @@
-
-<!-- admin/trackback/pingitem.thtml { -->
+{# start {templatelocation} #}
 
 <tr class="pluginRow{cssid}">
   <td class="admin-list-field"><a href="{service_url}">{service_name}</a></td>
@@ -7,4 +6,4 @@
   <td class="admin-list-field">{resend}</td>
 </tr>
 
-<!-- } admin/trackback/pingitem.thtml -->
+{# end {templatelocation} #}

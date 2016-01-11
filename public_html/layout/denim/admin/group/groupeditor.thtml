@@ -1,5 +1,4 @@
-
-<!-- admin/group/groupeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_admin_url}/group.php" method="post" id="admin-groupeditor" class="uk-form">
 
@@ -15,16 +14,16 @@
 
     <dl class="form_block" {hide_adminoption}>
       <dt>{lang_admingroup}</dt>
-      <dd><input type="checkbox" name="chk_grpadmin" value="1" {chk_adminuse}{xhtml}>
-          <span class="fieldhelp">{lang_admingrp_msg}</span>
+      <dd><label><input type="checkbox" name="chk_grpadmin" value="1" {chk_adminuse}{xhtml}>
+          <span class="fieldhelp">{lang_admingrp_msg}</span></label>
       </dd>
     </dl>
 
     <dl class="form_block" {hide_defaultoption}>
       <dt>{lang_defaultgroup}</dt>
       <dd>
-          <input type="checkbox" name="chk_grpdefault" id="chk1" onclick="showHide('msg1')" value="1" {chk_defaultuse}{xhtml}>
-          <span class="fieldhelp">{lang_defaultgrp_msg}</span>
+          <label><input type="checkbox" name="chk_grpdefault" id="chk1" onclick="showHide('msg1')" value="1" {chk_defaultuse}{xhtml}>
+          <span class="fieldhelp">{lang_defaultgrp_msg}</span></label>
       </dd>
     </dl>
 
@@ -32,8 +31,8 @@
       <dt></dt>
       <dd>
         <div style="display:none" id="msg1">
-          <input type="checkbox" name="chk_applydefault" id="chk2" value="1"{xhtml}>
-          <span class="fieldhelp">{lang_applydefault_msg}</span>
+          <label><input type="checkbox" name="chk_applydefault" id="chk2" value="1"{xhtml}>
+          <span class="fieldhelp">{lang_applydefault_msg}</span></label>
         </div>
       </dd>
     </dl>
@@ -70,4 +69,4 @@
   </div>
 </form>
 
-<!-- } admin/group/groupeditor.thtml -->
+{# end {templatelocation} #}

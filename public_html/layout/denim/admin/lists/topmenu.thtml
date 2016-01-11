@@ -1,5 +1,4 @@
-
-<!-- admin/lists/topmenu.thtml { -->
+{# start {templatelocation} #}
 
 <div id="admin-topmenu" class="clearfix">
   {icon}
@@ -9,4 +8,4 @@
   <div id="instructions">{lang_instructions}</div>
 </div>
 
-<!-- } admin/lists/topmenu.thtml -->
+{# end {templatelocation} #}

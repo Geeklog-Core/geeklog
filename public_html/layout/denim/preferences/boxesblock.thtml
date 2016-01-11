@@ -1,5 +1,4 @@
-
-<!-- preferences/boxesblock.thtml { -->
+{# start {templatelocation} #}
 
 <fieldset>
   <legend>{lang_boxes_title}</legend>
@@ -16,4 +15,4 @@
   </div>
 </fieldset>
 
-<!-- } preferences/boxesblock.thtml -->
+{# end {templatelocation} #}

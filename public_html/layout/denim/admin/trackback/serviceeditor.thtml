@@ -1,5 +1,4 @@
-
-<!-- admin/trackback/serviceeditor.thtml { -->
+{# start {templatelocation} #}
 
 <form action="{site_admin_url}/trackback.php" method="post" id="admin-serviceeditor" class="compact uk-form">
 
@@ -21,12 +20,12 @@
       <dd>
         <ul class="compact">
           <li>
-            <input type="radio" value="standard" {standard_is_checked} name="method" id="admin-serviceeditor-method"{xhtml}>
-            {lang_method_standard} <code>weblogUpdates.ping</code>
+            <label><input type="radio" value="standard" {standard_is_checked} name="method" id="admin-serviceeditor-method"{xhtml}>
+            {lang_method_standard} <code>weblogUpdates.ping</code></label>
           </li>
           <li>
-            <input type="radio" value="extended" {extended_is_checked} name="method"{xhtml}>
-            {lang_method_extended} <code>weblogUpdates.extendedPing</code>
+            <label><input type="radio" value="extended" {extended_is_checked} name="method"{xhtml}>
+            {lang_method_extended} <code>weblogUpdates.extendedPing</code></label>
           </li>
         </ul>
       </dd>
@@ -42,4 +41,4 @@
   </div>
 </form>
 
-<!-- } admin/trackback/serviceeditor.thtml -->
+{# end {templatelocation} #}

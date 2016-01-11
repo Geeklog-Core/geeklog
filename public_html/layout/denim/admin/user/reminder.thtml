@@ -1,8 +1,7 @@
-
-<!-- admin/user/reminder.thtml { -->
+{# start {templatelocation} #}
 
 <div id="reminder-submit" class="submit">
-  <input type="submit" name="mode" value="{action_reminder}" class="submit"{xhtml}>&nbsp;{lang_reminder}
+  <input type="submit" name="mode" value="{action_reminder}" class="submit" aria-describedby="reminder-submit-d1"{xhtml}>&nbsp;<span id="reminder-submit-d1">{lang_reminder}</span>
 </div>
 
-<!-- } admin/user/reminder.thtml -->
+{# end {templatelocation} #}

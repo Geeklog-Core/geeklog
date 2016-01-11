@@ -1,5 +1,4 @@
-
-<!-- comment/reportcomment.thtml { -->
+{# start {templatelocation} #}
 
 <form action="{site_url}/comment.php" method="post" id="reportcomment" class="uk-form">
 
@@ -19,4 +18,4 @@
 
 </form>
 
-<!-- } comment/reportcomment.thtml -->
+{# end {templatelocation} #}

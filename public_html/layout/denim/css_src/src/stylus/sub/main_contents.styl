@@ -455,13 +455,15 @@ for num in (0..16)
 --------------------------------------*/
 
 .gl-pagenav
+    list-style: none
     text-align: center
     color: #CCC
     margin: 0 0 1.5em
     line-height: 1.4em
+    li
+        display: inline-block
     a,
     b
-        display: inline-block
         margin: 1px 2px
         padding: 2px 7px
         background: transparent
@@ -472,7 +474,6 @@ for num in (0..16)
         background: #EEE
         border: 1px solid #CCC
     span
-        display: inline-block
         color: #999
         a
             margin: 0
@@ -482,9 +483,16 @@ for num in (0..16)
             &:hover
                 background: transparent
                 border: none
-    .divider
-        padding: 0
+    .divider-previous,
+    .divider-next
         margin: 0 4px
+        .divider-previous:before,
+        .divider-next:after
+            content: "|"
+            width: 1px
+            height: 1px
+            padding: 0
+            margin: 0 4px
 
 /*!--------------------------------------
   Breadcrumbs Navigation

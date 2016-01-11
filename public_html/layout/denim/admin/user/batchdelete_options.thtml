@@ -1,8 +1,8 @@
+{# start {templatelocation} #}
 
-<!-- admin/user/batchdelete_options.thtml { -->
 <div class="clearfix">
   <div>
-  <input type="radio" name="usr_type" value="{sel_id}"{selector}{xhtml}> <strong>{lang_description}:</strong>
+  <label><input type="radio" name="usr_type" value="{sel_id}"{selector}{xhtml}> <strong>{lang_description}:</strong></label>
   </div>
 
   <div style="margin-bottom:1em;margin-left: 22px;">
@@ -10,4 +10,4 @@
   </div>
 </div>
 
-<!-- } admin/user/batchdelete_options.thtml -->
+{# end {templatelocation} #}

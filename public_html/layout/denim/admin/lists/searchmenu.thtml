@@ -1,5 +1,4 @@
-
-<!-- admin/lists/searchmenu.thtml { -->
+{# start {templatelocation} #}
 
 <form action="{form_url}" method="post" class="uk-form">
   <div class="admin-list-search">
@@ -7,11 +6,11 @@
       {filter}
     </div>
     <div class="search-part">
-      {lang_search}: <input type="text" size="20" name="q" value="{last_query}"{xhtml}>
+      <label for="admin-topmenu-q">{lang_search}:</label> <input type="text" size="20" name="q" id="admin-topmenu-q" value="{last_query}"{xhtml}>
     </div>
     <div class="search-part">
-      {lang_limit_results}:
-      <select name="query_limit">
+      <label for="admin-topmenu-query_limit">{lang_limit_results}:</label>
+      <select name="query_limit" id="admin-topmenu-query_limit">
         <option value="10" {10_selected}>10</option>
         <option value="20" {20_selected}>20</option>
         <option value="50" {50_selected}>50</option>
@@ -28,4 +27,4 @@
   </div>
 </form>
 
-<!-- } admin/lists/searchmenu.thtml -->
+{# end {templatelocation} #}

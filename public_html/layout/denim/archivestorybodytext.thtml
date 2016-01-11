@@ -1,5 +1,3 @@
+{# begin {templatelocation} #}
 
-<!-- archivestorybodytext.thtml { -->
-
-
-<!-- } archivestorybodytext.thtml -->
+{# end {templatelocation} #}

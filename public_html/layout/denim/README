@@ -51,7 +51,7 @@ Basic markup is following:
     <nav id="navigation">Navigation</nav>
     <div id="wrapper">
         <div id="centerblocks">
-            <div id="main-content">Main Content</div>
+            <main id="main-content">Main Content</main>
         </div>
         <div id="leftblocks">Left Blocks</div>
         <div id="rightblocks">Right Blocks</div>

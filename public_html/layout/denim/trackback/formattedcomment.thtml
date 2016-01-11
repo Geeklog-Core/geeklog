@@ -1,5 +1,4 @@
-
-<!-- trackback/formattedcomment.thtml { -->
+{# start {templatelocation} #}
 
 <div class="formattedcomment">
   <ul class="trackback_status">
@@ -12,4 +11,4 @@
   <div class="trackback_option">{delete_option}</div>
 </div>
 
-<!-- } trackback/formattedcomment.thtml -->
+{# end {templatelocation} #}

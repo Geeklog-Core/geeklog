@@ -1,5 +1,4 @@
-
-<!-- preferences/deleteaccount.thtml { -->
+{# start {templatelocation} #}
 
 <div class="linear">
   <dl class="profile_notes">
@@ -19,4 +18,4 @@
   </dl>
 </div>
 
-<!-- } preferences/deleteaccount.thtml -->
+{# end {templatelocation} #}

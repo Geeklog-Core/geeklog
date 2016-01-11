@@ -1,9 +1,8 @@
-
-<!-- admin/user/groupedit.thtml { -->
+{# start {templatelocation} #}
 
 <dd>
   <p class="groupinstructions">{lang_groupinstructions}</p>
   <div class="fieldset-table-wrapper">{group_options}</div>
 </dd>
 
-<!-- } admin/user/groupedit.thtml -->
+{# end {templatelocation} #}

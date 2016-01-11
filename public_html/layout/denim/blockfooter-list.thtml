@@ -1,8 +1,7 @@
-
-<!-- blockfooter-list.thtml { -->
+{# begin {templatelocation} #}
 
     </ul>
   </nav>
 </section>
 
-<!-- } blockfooter-list.thtml -->
+{# end {templatelocation} #}

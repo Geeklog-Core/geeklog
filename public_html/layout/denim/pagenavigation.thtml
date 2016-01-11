@@ -1,15 +1,15 @@
 {# begin {templatelocation} #}
 
-<div class="gl-pagenav">{message}<span>{start_first_anchortag}{lang_first}{end_first_anchortag}</span><span class="divider">|</span><span>{start_previous_anchortag}{lang_previous}{end_previous_anchortag}</span><span class="divider">|</span>{pages}</div>
+<ul class="gl-pagenav">{!if message}<li>{message}</li>{!endif}<li><span>{start_first_anchortag}{lang_first}{end_first_anchortag}</span></li><li class="divider-previous"><span>{start_previous_anchortag}{lang_previous}{end_previous_anchortag}</span></li>{pages}
 
 <!-- BEGIN message --><p>{message_text}</p><!-- END message -->
 
-<!-- BEGIN page -->{page_number}<!-- END page -->
+<!-- BEGIN page --><li>{page_number}</li><!-- END page -->
 
-<!-- BEGIN page-current --><b>{page_number}</b><!-- END page-current -->
+<!-- BEGIN page-current --><li><b>{page_number}</b></li><!-- END page-current -->
 
-<!-- BEGIN nav-end --><span class="divider">|</span><span>{start_next_anchortag}{lang_next}{end_next_anchortag}</span><span class="divider">|</span><span>{start_last_anchortag}{lang_last}{end_last_anchortag}</span><!-- END nav-end -->
+<!-- BEGIN nav-end --><li class="divider-next"><span>{start_next_anchortag}{lang_next}{end_next_anchortag}</span></li><li><span>{start_last_anchortag}{lang_last}{end_last_anchortag}</span></li></ul><!-- END nav-end -->
 
-<!-- BEGIN nav-open-ended --><span class="divider">|</span>{open_ended}<!-- END nav-open-ended -->
+<!-- BEGIN nav-open-ended -->{open_ended}<!-- END nav-open-ended -->
 
 {# end {templatelocation} #}

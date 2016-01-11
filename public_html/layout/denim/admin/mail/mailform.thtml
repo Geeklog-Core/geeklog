@@ -1,4 +1,4 @@
-<!-- admin/mail/mailform.thtml { -->
+{# start {templatelocation} #}
 
 <form action="{php_self}" method="post" id="admin-mailform" class="compact uk-form">
 
@@ -26,9 +26,9 @@
 
       <dt><label for="admin-mailform-html">{lang_options}</label></dt>
       <dd>
-        <input type="checkbox" name="html" id="admin-mailform-html"{html}{xhtml}>{lang_HTML}
-        <input type="checkbox" name="priority"{priority}{xhtml}>{lang_urgent}
-        <input type="checkbox" name="overstyr"{overstyr}{xhtml}>{lang_ignoreusersettings}
+        <label><input type="checkbox" name="html" id="admin-mailform-html"{html}{xhtml}>{lang_HTML}</label>
+        <label><input type="checkbox" name="priority"{priority}{xhtml}>{lang_urgent}</label>
+        <label><input type="checkbox" name="overstyr"{overstyr}{xhtml}>{lang_ignoreusersettings}</label>
       </dd>
     </dl>
 
@@ -40,4 +40,4 @@
   </div>
 </form>
 
-<!-- } admin/mail/mailform.thtml -->
+{# end {templatelocation} #}

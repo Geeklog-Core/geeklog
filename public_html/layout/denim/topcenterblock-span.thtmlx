@@ -1,4 +1,4 @@
-<!-- topcenterblock-span.thtmlx { -->
+{# begin {templatelocation} #}
 
 <style type="text/css">
     <!--.story-container-splash {padding-right: 9px; !important} .story-container {padding-right: 0px; !important}-->
@@ -7,4 +7,4 @@
     <tr>
         <td class="story-container-splash" colspan="0" width="100%" style="vertical-align:top;">
 
-<!-- } topcenterblock-span.thtmlx -->
+{# end {templatelocation} #}

@@ -1,5 +1,4 @@
-
-<!-- users/registrationform.thtml { -->
+{# start {templatelocation} #}
 
 {start_block}
   <form action="{site_url}/users.php" method="post" id="registrationform" class="compact uk-form">
@@ -30,4 +29,4 @@
   </form>
 {end_block}
 
-<!-- } users/registrationform.thtml -->
+{# end {templatelocation} #}

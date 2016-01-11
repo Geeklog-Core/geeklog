@@ -1,5 +1,5 @@
 
-        </div>
+        </main>
       </div>
 
       {left_blocks}
@@ -33,6 +33,8 @@
     FixHTML('leftblocks', 'centerblocks', 'rightblocks');
   -->
   </script>
+
+{# end {templatelocation} #}
 
 </body>
 

@@ -1,4 +1,4 @@
-<!-- preferences/privacyblock.thtml { -->
+{# start {templatelocation} #}
 
 <fieldset>
   <legend>{lang_privacy_title}</legend>
@@ -13,15 +13,15 @@
   <div class="compact">
     <dl class="form_block">
       <dt><label for="displayprefs-emailfromuser">{lang_emailfromuser}</label></dt>
-      <dd><input type="checkbox" {emailfromuser_checked} name="emailfromuser" id="displayprefs-emailfromuser"{xhtml}>{lang_emailfromuser_text}</dd>
+      <dd><label><input type="checkbox" {emailfromuser_checked} name="emailfromuser" id="displayprefs-emailfromuser"{xhtml}>{lang_emailfromuser_text}</label></dd>
 
       <dt><label for="displayprefs-emailfromadmin">{lang_emailfromadmin}</label></dt>
-      <dd><input type="checkbox" {emailfromadmin_checked} name="emailfromadmin" id="displayprefs-emailfromadmin"{xhtml}>{lang_emailfromadmin_text}</dd>
+      <dd><label><input type="checkbox" {emailfromadmin_checked} name="emailfromadmin" id="displayprefs-emailfromadmin"{xhtml}>{lang_emailfromadmin_text}</label></dd>
 
       <dt><label for="displayprefs-showonline">{lang_showonline}</label></dt>
-      <dd><input type="checkbox" {showonline_checked} name="showonline" id="displayprefs-showonline"{xhtml}>{lang_showonline_text}</dd>
+      <dd><label><input type="checkbox" {showonline_checked} name="showonline" id="displayprefs-showonline"{xhtml}>{lang_showonline_text}</label></dd>
     </dl>
   </div>
 </fieldset>
 
-<!-- } preferences/privacyblock.thtml -->
+{# end {templatelocation} #}

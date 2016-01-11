@@ -1,5 +1,4 @@
-
-<!-- loginform.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_url}/users.php" method="post" id="loginform" class="uk-form">
   <fieldset class="noborder_fieldset">
@@ -32,4 +31,4 @@
 {oauth_login}
 {openid_login}
 
-<!-- } loginform.thtml -->
+{# end {templatelocation} #}

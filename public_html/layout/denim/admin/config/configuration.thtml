@@ -10,8 +10,8 @@
 
     <div id="config_menu">
         <section id="search-configuration-container" class="uk-form" role="search">
-            <h2 class="block-title">{search_configuration_label}</h2>
-            <input name="search-configuration" id="search-configuration" type="text" value="{search_configuration_value}"{xhtml}>
+            <h2 class="block-title" id="config-menu-ttl">{search_configuration_label}</h2>
+            <input name="search-configuration" id="search-configuration" type="text" value="{search_configuration_value}" aria-describedby="config-menu-ttl"{xhtml}>
             <input name="tab-id" id="tab-id" type="hidden" value="{tab_id_value}"{xhtml}>
         </section>
         {config_menu}
@@ -42,7 +42,7 @@
 
                         <!-- BEGIN notes -->
                         <div class="notes">
-                            <h4>{tab_display}</h4>
+                            <h3>{tab_display}</h3>
                             <p class="last">{tab_help}</p>
                             <span class="warningsmall">{tab_warning}</span>
                         </div>

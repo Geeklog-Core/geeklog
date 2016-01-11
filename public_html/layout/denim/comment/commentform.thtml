@@ -1,5 +1,4 @@
-
-<!-- comment/commentform.thtml { -->
+{# start {templatelocation} #}
 
 {start_block_postacomment}
 <div id="commenteditform">
@@ -7,6 +6,19 @@
 <form action="{form_url}" method="post" id="commentform" class="compact uk-form">
 
   <div class="user_basic">
+    <dl class="importantstuff clearfix">
+      <dt>{lang_importantstuff}</dt>
+      <dd>
+        <ul class="ul-importantstuff">
+          <li class="li-importantstuff">{lang_instr_line1}</li>
+          <li class="li-importantstuff">{lang_instr_line2}</li>
+          <li class="li-importantstuff">{lang_instr_line3}</li>
+          <li class="li-importantstuff">{lang_instr_line4}</li>
+          <li class="li-importantstuff">{lang_instr_line5}</li>
+        </ul>
+      </dd>
+    </dl>
+
     <dl class="form_block">
       <dt class="dt-commentform-username">{lang_username}</dt>
       <dd class="dd-commentform-username">{cid}
@@ -20,35 +32,21 @@
          <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>{username}&nbsp;
          <span{hidewhenediting}>[<a href="{action_url}" rel="nofollow" class="logoutorcreateaccount">{lang_logoutorcreateaccount}</a>]</span>
       </dd>
+
       <dt class="title"><label for="commentform-title">{lang_title}</label></dt>
       <dd class="title"><input type="text" value="{title}" maxlength="96" name="title" id="commentform-title" class="size6"{xhtml}></dd>
-
-      <dt><label for="comment_text">{lang_comment}</label></dt>
-      <dd><div class="text_editor"><textarea rows="10" cols="45" name="comment" id="comment_text" class="wide">{comment}</textarea></div></dd>
-      <dd class="description">{allowed_html}</dd>
-
       <dt><label for="commentform-postmode">{lang_postmode}</label></dt>
       <dd>
         <select name="postmode" id="commentform-postmode">
           {postmode_options}
         </select>
       </dd>
+      <dt><label for="comment_text">{lang_comment}</label></dt>
+      <dd><div class="text_editor"><textarea rows="10" cols="45" name="comment" id="comment_text" class="wide" aria-describedby="commentform-d1">{comment}</textarea></div></dd>
+      <dd class="description" id="commentform-d1">{allowed_html}</dd>
     </dl>
 
     {captcha}
-
-    <dl class="importantstuff clearfix">
-      <dt>{lang_importantstuff}</dt>
-      <dd>
-        <ul class="ul-importantstuff">
-          <li class="li-importantstuff">{lang_instr_line1}</li>
-          <li class="li-importantstuff">{lang_instr_line2}</li>
-          <li class="li-importantstuff">{lang_instr_line3}</li>
-          <li class="li-importantstuff">{lang_instr_line4}</li>
-          <li class="li-importantstuff">{lang_instr_line5}</li>
-        </ul>
-      </dd>
-    </dl>
 
     <div class="submit">
       <input type="submit" name="{nprefix}mode" value="{lang_preview}" class="submit"{xhtml}>
@@ -64,4 +62,5 @@
 
 </div>
 {end_block}
-<!-- } comment/commentform.thtml -->
+
+{# end {templatelocation} #}

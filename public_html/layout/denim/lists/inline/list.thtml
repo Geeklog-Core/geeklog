@@ -1,18 +1,19 @@
-
-<!-- lists/inline/list.thtml { -->
+{# start {templatelocation} #}
 
                             {list_top}
                             <div class="admin-list-search">
                                  <form name="page_limit" style="display: inline;" class="uk-form">
-                                <select name="page_limit_links" style="{show_limit}" onchange="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value">
+                                <select name="page_limit_links" style="{show_limit}">
                                     {page_limit}
                                 </select>
+                                <input type="button" value="OK" onclick="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value"{xhtml}>
                                 </form>
 
                                  <form name="page_sort"  style="display: inline;" class="uk-form">
-                                <select name="page_sort_links" style="{show_sort}" onchange="window.location=document.page_sort.page_sort_links.options[document.page_sort.page_sort_links.selectedIndex].value">
+                                <select name="page_sort_links" style="{show_sort}">
                                     {page_sort}
                                 </select>
+                                <input type="button" value="OK" onclick="window.location=document.page_sort.page_sort_links.options[document.page_sort.page_sort_links.selectedIndex].value"{xhtml}>
                                 </form>
                             </div>
                             {item_row}
@@ -21,4 +22,4 @@
                             {google_paging}
                             {list_bottom}
 
-<!-- } lists/inline/list.thtml -->
+{# end {templatelocation} #}

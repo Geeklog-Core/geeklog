@@ -3426,15 +3426,19 @@ span.warning em {
 --------------------------------------*/
 
 .gl-pagenav {
+  list-style: none;
   text-align: center;
   color: #CCC;
   margin: 0 0 1.5em;
   line-height: 1.4em;
 }
 
+.gl-pagenav li {
+  display: inline-block;
+}
+
 .gl-pagenav a,
 .gl-pagenav b {
-  display: inline-block;
   margin: 1px 2px;
   padding: 2px 7px;
   background: transparent;
@@ -3451,7 +3455,6 @@ span.warning em {
 }
 
 .gl-pagenav span {
-  display: inline-block;
   color: #999;
 }
 
@@ -3467,7 +3470,16 @@ span.warning em {
   border: none;
 }
 
-.gl-pagenav .divider {
+.gl-pagenav .divider-previous,
+.gl-pagenav .divider-next {
+  margin: 0 4px;
+}
+
+.gl-pagenav .divider-previous:before,
+.gl-pagenav .divider-next:after {
+  content: "|";
+  width: 1px;
+  height: 1px;
   padding: 0;
   margin: 0 4px;
 }
@@ -3885,7 +3897,7 @@ dd#profile-user_photo {
 
 .table-wrapper {
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .table-wrapper-fit {

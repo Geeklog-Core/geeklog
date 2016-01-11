@@ -1,5 +1,4 @@
-
-<!-- users/loginform.thtml { -->
+{# start {templatelocation} #}
 
 {start_block_loginagain}
   <form action="{site_url}/users.php" method="post" id="userloginform" class="compact uk-form">
@@ -27,4 +26,4 @@
   {oauth_login}
 {end_block}
 
-<!-- } users/loginform.thtml -->
+{# end {templatelocation} #}
