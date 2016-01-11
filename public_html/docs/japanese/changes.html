@@ -16,6 +16,41 @@
 
 <p>このドキュメントでは最も重要な変更点や目につく変更点を簡潔に説明しています。変更履歴の詳細なリストは、<a href="history.html">変更詳細履歴</a>をご覧ください。<tt>docs/changed-files</tt>には、前回リリース以来変更されたファイルの一覧があります。</p>
 
+<h2><a name="changes211">Geeklog 2.1.1</a></h2>
+
+<p>Geeklog 2.1.1 の主な新機能はUIkitフレームワークを追加したことです。これは、 "スピーディーで強力なウェブインタフェース開発のための、軽量かつ構造的なフロントエンドフレームワーク"です。</p>
+
+<p>今回のGeeklogのリリースは、jQuery v1.11.3, jQuery UI v1.11.4, CKEditor v4.5.4, UIkit v2.24.0, Filemanager v2.2.0, そして OAuth class v1.411を同梱しています。</p>
+
+<h3>新機能と改善点</h3>
+
+<ul>
+<li>UIkit framework version 2.24.0 を Geeklog本体に追加しました。</li>
+<li>プラグインに、マルチプルテーマテンプレートをサポートしました。</li>
+<li>多数のバグやセキュリティフィックスを行いました。</li>
+</ul>
+
+<h2><a name="changes210">Geeklog 2.1.0</a></h2>
+
+<p>Geeklog 2.1.0 では機能アップしたテンプレートライブラリーと新たなアドバンストエディターシステムが追加されました。また、Geeklog 2.0.0にあった階層話題関係のバグを多数対応しました。</p>
+
+<p>今回のGeeklogにはjQuery 1.10.2とjQuery UI to 1.10.3を同梱しています。</p>
+
+<h3>新機能と改善点</h3>
+
+<ul>
+<li>Joe Mucchielloによって開発されたGeeklogオリジナルのCaching Template Libraryを追加。</li>
+<li>デフォルトテーマ機能をサポート。</li>
+<li>ブロック、静的ページ、記事に対してCache機能が追加されました。</li>
+<li>記事の階層構造のCache機能追加による高速化。</li>
+<li>OAuth ログインを追加 (Google, Microsoft, Yahoo)。</li>
+<li>アドバンストエディターを追加しやすいしくみを追加。</li>
+<li>CKEditor 4.3.2がデフォルトのアドバンストエディターに。</li>
+<li>多言語システムのデバッグ。</li>
+<li>ファイルマネージャーを追加。</li>
+</ul>
+
+
 <h2><a name="changes200">Geeklog 2.0.0</a></h2>
 
 <p><strong>注意:</strong> Geeklog 2.0.0は話題を異なる方法で管理しています。記事とブロックへの話題の割り当ては、データベースの専用のテーブルに保存するようになりました。これは記事とブロックのテーブルを少し変更したことを意味します。ブロックを直接変更したり、中央ブロックを持ったプラグインはGeeklog 2.0.0と互換性がないかもしれません。アップグレードする前に、インストールしているプラグインに互換性があるかどうか確認してください。もし互換性がなく、それでもアップグレードしたい場合はプラグインを無効にしてください。Geeklog 2.0.0のリリースの後、ほとんどのプラグインの作成者がすぐにGeeklog 2.0.0をサポートするようにプラグインをアップグレードするように期待しています。</p>
@@ -33,12 +68,12 @@
 <li>話題は子の話題を持てるようになりました。</li>
 <li>記事、ブロック、他のプラグインのオブジェクトを複数の話題と関係付けられるようになりました。</li>
 <li>話題はパンくずリストをサポートしました。</li>
-<li>Geeklogのインストールに緊急救助のツールを含めました。</li>
+<li>Geeklogのインストールにレスキューツールを含めました。</li>
 <li>MySQLiのサポートを追加しました。</li>
 <li>Spam-Xに掲示板のスパム防止とスパムリンク(数)検証のモジュールを追加しました。</li>
-<li>レスポンシブウェブデザインに基づいたDenimというテーマを追加しました。</li>
-<li>Modern Curveというテーマを追加しました。</li>
-<li>記事と同じページにコメント欄を設けました。</li>
+<li>レスポンシブWEBデザインテーマ「Denim」を追加しました。</li>
+<li>テーマ「Modern Curve」を追加しました。</li>
+<li>記事と同じページでコメントできるようになりました。</li>
 
 </ul>
 
@@ -110,7 +145,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <li>コンフィギュレーションは、入力チェック機能と検索機能を追加しました。これは
     2010 Google Summer of CodeプロジェクトにおけるAkeda Bagusさんの成果です。</li>
 <li>GeeklogサイトにFacebookやTwitter, LinkedInのアカウントを利用してログインできる
-    OAuthサポート機能を追加しました。これは、Geeklog Japaneseの
+    OAuthサポート機能を追加しました。これは、Geeklog Japanの
     Hiroshi Sakuramoto (Hiroron) さんの開発を元にしています。</li>
 <li>デフォルトテーマにアイコンが追加されました。(taken from the Tango, Gnome, and Humanity
     icon themes).</li>
@@ -287,7 +322,7 @@ href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2または�
 <li>Geeklogは現在PHP 4.3.0以降をサポートしていますが、PHP開発チームは2008年8月にはPHP 4のサポートを終了しています。PHP 4でGeeklogを活用しているユーザーは、できるだけはやくPHP 5へのアップグレードを検討してください。</li>
 <li><a href="http://www.fckeditor.net/">FCKeditor</a>を2.6.4.1を同梱しました。</li>
 <li>新しいプラグイン「<a href="http://wiki.geeklog.net/index.php/XMLSitemap_Plugin">XMLSitemap</a>」を同梱しました。このプラグインは、すべての主要な検索エンジンがサポートしている<a href="http://www.sitemaps.org/">XMLのサイトマップ・ファイル</a>を自動生成します。プラグインはmystral-kk氏※により開発されました。<br />
-（※訳者註：Geeklog Japaneseコア開発者です。）</li>
+（※訳者註：Geeklog Japanコア開発者です。）</li>
 <li>いくつかの<a href="http://wiki.geeklog.net/index.php/New_Plugin_API_Functions_in_Geeklog_1.6.0">新しいプラグインAPIの機能</a>が追加されて、既存のプラグインAPIも拡張されてました。</li>
 <li>他の言語に翻訳できるように、含めているドキュメントの場所を<tt>docs/english</tt>に移動しました。Geeklogの中のドキュメントへのリンクは自動的に、そのときに利用している言語に応じたリンクとなります。(適切な翻訳がみつからなければ、英語のドキュメントを表示します。）</li>
 <li>新しい機能のサポートとレイアウトの不整合を修正するために、様々な<a href="theme.html#changes">テーマの変更</a>を行いました。</li>

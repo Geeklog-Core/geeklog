@@ -108,6 +108,54 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>同じコードを <tt>featuredstorytext.thtml</tt> と <tt>archivestorytext.thtml</tt> テンプレートファイルに追加すれば、注目記事にもパーマネントリンクが表示されるようになります。</li>
 </ol>
 
+<h2><a name="changes211">Theme changes in Geeklog 2.1.1</a></h2>
+
+<p>新たなテーマ機能は、プラグインにテーマ別のテンプレートを用意できるようになったことです。
+テンプレートはプラグインそのものに持つことができ、あるいはテーマ、あるいはその両方にもつことができます。
+すべてのGeeklogs コアプラグインは、このあたらしい機能をサポートしています。より詳しい説明は Geeklog Wiki <a href="http://wiki.geeklog.net/index.php/Theme_Developers_Guide#Theme_Specific_Plugin_Templates">Theme Specific Plugin Templates</a>を参照してください。</p>
+
+<h3>General Changes</h3>
+<ul>
+<li>UIkit framework (v2.24.0) をテーマから、必要に応じて呼べるようにしました。</li>
+<li>breadcrumbsディレクトリから<tt>breadcrumbs.thtml</tt>をrootディレクトリに移動。ブロックナンバーをテンプレートに追加しました。</li>
+<li><tt>breadcrumb.thtml</tt>, <tt>breadcrumb_child.thtml</tt>, <tt>breadcrumb_nolink.thtml</tt>, and <tt>breadcrumb_root.thtml</tt>を削除しました。</li>
+<li><tt>breadcrumbs directory</tt>を削除しました。</li>
+</ul>
+
+<h2><a name="changes210">Theme changes in Geeklog 2.1.0</a></h2>
+
+<ul>
+<li>追加: テーマ変数{related_topics} <tt>featuredstorytext.thtml</tt>と<tt>storytext.thtml</tt></li>
+<li>追加: <tt>topicrelated.thtml</tt> は記事の関連話題で表示。</li>
+<li>削除: <tt>topicoption.thtml</tt> と <tt>topicoption_off.thtml</tt>.
+    追加: <tt>topicnavigation.thtml</tt> which uses blocks から reduce the number of template files.</li>
+<li>リネーム: <tt>page_navigation.thtml</tt> から <tt>pagenavigation.thtml</tt></li>
+<li>削除: <tt>menuitem.thtml</tt>, <tt>menuitem_last.thtml</tt> と <tt>menuitem_none.thtml</tt>.
+    追加: <tt>menunavigation.thtml</tt> which uses blocks から テンプレートの数を減らします。</li>
+<li>削除: <tt>adminoption.thtml</tt> と <tt>adminoption_off.thtml</tt>.<br>
+    追加: <tt>adminavigation.thtml</tt> which uses blocks から テンプレートの数を減らします。</li>    
+<li>削除: <tt>adminoption.thtml</tt> と <tt>adminoption_off.thtml</tt>.<br>
+    追加: <tt>adminavigation.thtml</tt> which uses blocks から テンプレートの数を減らします。</li>    
+<li>削除: <tt>useroption.thtml</tt> と <tt>useroption.thtml</tt>.<br>
+    追加: <tt>usernavigation.thtml</tt> which uses blocks から テンプレートの数を減らします。</li>
+<li>削除: <tt>listitem.thtml</tt>. <tt>list.thtml</tt> now uses blocks から  テンプレートの数を減らします。</li>
+<li>削除: <tt>admin/moderation/moderation.thtml</tt>, <tt>admin/moderation/ccitem.thtml</tt> と <tt>admin/moderation/ccrow.thtml</tt>.<br>
+    追加: <tt>admin/commandcontrol.thtml</tt> これは、テンプレートファイルの数を減らすためにブロックを使用します。</li>
+<li>追加: <tt>/images/icons/moderation.png</tt>管理画面用画像</li>
+<li>list id 変更: "admin-moderation" から "admin-commandcontrol". 対象は、Denim, Modern Curve テーマ</li>
+<li>画像移動: <tt>/tooltips/images/</tt> から <tt>/images/tooltips/</tt> tooltip テンプレートファイルを<tt>/tooltips/</tt>以下に移動。</li>
+<li>画像移動: <tt>/navbar/images/</tt> から <tt>/images/navbar/</tt> css files (different for each theme). <br>
+    削除: unused images for navbar from Denim と Modern Curve themes.</li>
+<li>更新: <tt>/admin/blocks/blockeditor.thtml</tt> と 追加: in cache_time labels と input for all themes.</li>
+<li>更新: <tt>/admin/common/edit_topics.thtml</tt> すべてのテーマでjQueryを利用。 (adding ids から a number of elements) </li>
+<li>追加: <tt>/admin/envcheck.thtml</tt> と 環境チェックのAdmin page関連 css </li>
+<li>更新: <tt>/admin/topic/storyeditor.thtml</tt>, <tt>/admin/topic/storyeditor_advanced.thtml</tt> と <tt>/admin/topic/topiceditor.thtml</tt>. ID の文字数を128桁まで増やしました。 (話題名も同様)。 <br>
+    追加: タイトル名から最適なIDに自動変換するjavascript topic_2_id.js </li>
+<li>追加: テーマ変数 {titletoid} を 記事編集、話題編集、静的ページ編集テンプレートファイルに追加。
+    自動変換javascriptの有効・無効はコンフィギュレーションで設定できます。</li>
+<li>テンプレートファイルの <tt>/comment/commentbar.thtml</tt> から、テーマ変数削除: {show_link_to_commenteditform}
+    追加: テンプレートブロック {commenteditform_jumplink} と テーマ変数 {jump_link_for_commenteditform}.</li>
+</ul>
 
 <h2><a name="changes200">Theme changes in Geeklog 2.0.0</a></h2>
 
