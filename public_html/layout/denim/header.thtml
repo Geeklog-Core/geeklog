@@ -23,13 +23,14 @@
 </head>
 
 <body dir="{direction}" class="{layout_columns}">
+{# start {templatelocation} #}
 
   <!-- #container { -->
   <div id="container">
 
     <header id="header" role="banner">
       <div id="header-content" class="type1">
-        <h1 class="site_name"><a href="{site_url}" title="{site_name}">{site_name}</a></h1>
+        <p class="site_name"><a href="{site_url}" title="{site_name}">{site_name}</a></p>
         <p class="site_slogan">{site_slogan}</p>
       </div>
     </header>
@@ -51,7 +52,7 @@
 
       <!-- Center Block Container -->
       <div id="centerblocks">
-        <div id="main-content" role="main">
+        <main id="main-content" role="main">
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
           {breadcrumb_trail}
 
