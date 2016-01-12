@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
                             <form action="{site_url}/calendar/event.php" method="post" class="uk-form">
                                 <input type="hidden" name="calendar_type" value="personal"{xhtml}>
                                 <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
@@ -122,3 +124,5 @@
                                     </tr>
                                 </table>
                             </form>
+
+{# end {templatelocation} #}

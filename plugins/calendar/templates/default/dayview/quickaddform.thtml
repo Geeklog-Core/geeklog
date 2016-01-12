@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
                             <form action="{site_url}/calendar/index.php" method="post" class="uk-form">
                                 <div>
                                     <input type="hidden" name="view" value="addentry"{xhtml}>
@@ -53,3 +55,5 @@
                                     </tr>
                                 </table>
                             </form>
+
+{# end {templatelocation} #}

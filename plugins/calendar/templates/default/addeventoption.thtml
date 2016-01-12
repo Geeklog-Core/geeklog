@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
                                             <form method="post" action="{site_url}{addevent_formurl}" class="uk-form">
                                                 <div>
                                                     <input type="submit" name="action" value="{lang_addevent}"{xhtml}>
@@ -7,3 +9,5 @@
                                                     <input type="hidden" name="view" value="addentry"{xhtml}>
                                                 </div>
                                             </form>
+
+{# end {templatelocation} #}

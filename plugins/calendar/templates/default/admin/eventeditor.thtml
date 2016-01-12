@@ -1,5 +1,4 @@
-
-<!-- plugins/calendar/templates/admin/eventeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="post" id="calendar-eventeditor" class="compact uk-form">
   <div class="admin_basic">
@@ -126,4 +125,4 @@
   </div>
 </form>
 
-<!-- } plugins/calendar/templates/admin/eventeditor.thtml -->
+{# end {templatelocation} #}

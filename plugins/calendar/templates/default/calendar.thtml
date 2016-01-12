@@ -1,5 +1,4 @@
-
-                                <!-- Begin Calendar -->
+{# begin {templatelocation} #}
 
                                 <table width="100%" cellpadding="5" cellspacing="0" border="0" class="cal-header">
                                     <tr align="center" class="dayview_times">
@@ -106,4 +105,4 @@
                                     </tr>
                                 </table>
 
-                                <!-- End Calendar -->
+{# end {templatelocation} #}
