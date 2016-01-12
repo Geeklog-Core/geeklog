@@ -4552,7 +4552,7 @@ function COM_showBlocks($side, $topic = '')
     // to COM_formatBlock
     foreach ($blocks as $A) {
         if (($A['type'] === 'dynamic') ||
-				SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) > 0) {
+                SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) > 0) {
            $retval .= COM_formatBlock($A, $_USER['noboxes']);
         }
     }
