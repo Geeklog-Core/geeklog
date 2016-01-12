@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
 <form action="{site_url}/links/index.php" method="post" class="uk-form">
 <div class="links-header clearfix" style="height:3em;line-height:3em;vertical-align:middle;margin-bottom:1em;">
   <div class="links-breadcrumbs" style="float:left;">{breadcrumbs}</div>
@@ -6,3 +8,5 @@
   </div>
 </div>
 </form>
+
+{# end {templatelocation} #}

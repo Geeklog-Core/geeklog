@@ -1,5 +1,4 @@
-
-<!-- plugins/links/templates/admin/categoryeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <p>{instructions}</p>
 <form action="{site_admin_url}/plugins/links/category.php" method="post" id="links-categoryeditor" class="compact uk-form">
@@ -51,4 +50,4 @@
   </div>
 </form>
 
-<!-- } plugins/links/templates/admin/categoryeditor.thtml -->
+{# end {templatelocation} #}

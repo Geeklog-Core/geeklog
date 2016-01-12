@@ -1,5 +1,4 @@
-
-<!-- links/submitlink.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_url}/submit.php" method="post" id="submitlink" class="compact uk-form">
   <div class="admin_basic">
@@ -25,4 +24,4 @@
   </div>
 </form>
 
-<!-- } links/submitlink.thtml -->
+{# end {templatelocation} #}

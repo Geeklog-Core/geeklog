@@ -1,5 +1,4 @@
-
-<!-- plugins/links/templates/admin/linkeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <p>{instructions}</p>
 <form action="{site_admin_url}/plugins/links/index.php" method="post" id="links-linkeditor" class="compact uk-form">
@@ -54,4 +53,4 @@
   </div>
 </form>
 
-<!-- } plugins/links/templates/admin/linkeditor.thtml -->
+{# end {templatelocation} #}
