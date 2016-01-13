@@ -8,6 +8,8 @@
   <link rel="canonical" href="{printable_url}"{xhtml}>
 </head>
 <body dir="{direction}">
+{# begin {templatelocation} #}
+
     <h1>{sp_title}</h1>
 
     <p>{sp_content}</p>
@@ -18,5 +20,8 @@
         <a href="{sp_url}">{sp_url}</a>
     </p>
 <p>{comments_text_in_brackets}</p>
+
+{# end {templatelocation} #}
+
 </body>
 </html>
