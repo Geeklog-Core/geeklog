@@ -1,6 +1,6 @@
 /*
-htmLawed_README.txt, 29 August 2013
-htmLawed 1.1.16, 29 August 2013
+htmLawed_README.txt, 9 June 2015
+htmLawed 1.1.20, 9 June 2015
 Copyright Santosh Patnaik
 Dual licensed with LGPL 3 and GPL 2+
 A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed
@@ -73,7 +73,7 @@ A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/intern
 == 1  About htmLawed ================================================
 
 
-  htmLawed is a PHP script to process text with HTML markup to make it more comliant with HTML standards  and administrative policies. It works by making HTML well-formed with balanced and properly nested tags, neutralizing code that may be used for cross-site scripting (XSS) attacks, allowing only specified HTML tags and attributes, and so on. Such `lawing in` of HTML in text used in (X)HTML or XML documents ensures that it is in accordance with the aesthetics, safety and usability requirements set by administrators.
+  htmLawed is a PHP script to process text with HTML markup to make it more compliant with HTML standards and administrative policies. It works by making HTML well-formed with balanced and properly nested tags, neutralizing code that may be used for cross-site scripting (XSS) attacks, allowing only specified HTML tags and attributes, and so on. Such `lawing in` of HTML in text used in (X)HTML or XML documents ensures that it is in accordance with the aesthetics, safety and usability requirements set by administrators.
   
   htmLawed is highly customizable, and fast with low memory usage. Its free and open-source code is in one small file, does not require extensions or libraries, and works in older versions of PHP as well. It is a good alternative to the HTML Tidy:- http://tidy.sourceforge.net application.
 
@@ -991,7 +991,7 @@ A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/intern
 -- 3.4  Attributes ------------------------------------------------oo
 
 
-  htmLawed will only permit attributes described in the HTML specs (including deprecated ones). It also permits some attributes for use with the 'embed' element (the non-standard 'embed' element is supported in htmLawed because of its widespread use), and the the 'xml:space' attribute (valid only in XHTML 1.1). A list of such 111 attributes and the elements they are allowed in is in section:- #5.2. Using the '$spec' argument, htmLawed can be forced to permit custom, non-standard attributes as well as custom rules for standard attributes (section:- #2.3).
+  htmLawed will only permit attributes described in the HTML specs (including deprecated ones). It also permits some attributes for use with the 'embed' element (the non-standard 'embed' element is supported in htmLawed because of its widespread use), and the 'allowfullscreen' (in 'iframe', because of its widespread use), 'bordercolor' (in 'table', 'td' and 'tr', because of its widespread use), and 'xml:space' (valid only in XHTML 1.1) attributes. A list of such 112 attributes and the elements they are allowed in is in section:- #5.2. Using the '$spec' argument, htmLawed can be forced to permit custom, non-standard attributes as well as custom rules for standard attributes (section:- #2.3).
 
   When '$config["deny_attribute"]' is not set, or set to '0', or empty ('""'), all the 111 attributes are permitted. Otherwise, '$config["deny_attribute"]' can be set as a list of comma-separated names of the denied attributes. 'on*' can be used to refer to the group of potentially dangerous, script-accepting attributes: 'onblur', 'onchange', 'onclick', 'ondblclick', 'onfocus', 'onkeydown', 'onkeypress', 'onkeyup', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onreset', 'onselect' and 'onsubmit'.
 
@@ -1343,8 +1343,17 @@ A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/intern
   (The release date for the downloadable package of files containing documentation, demo script, test-cases, etc., besides the 'htmLawed.php' file, may be updated without a change-log entry if the secondary files, but not htmLawed per se, are revised.)
 
   `Version number - Release date. Notes`
+
   
-  1.1.16 - 29 August 2013. Fix for a potential security vulnerability arising from specialy encoded space characters in URL schemes/protocols
+  1.1.20 - 9 June 2015. Fix for a potential security vulnerability arising from unescaped double-quote character in single-quoted attribute value of some deprecated elements when tag transformation is enabled; recognition for non-(HTML4) standard 'allowfullscreen' attribute of 'iframe.'
+  
+  1.1.19 - 19 January 2015. Fix for a bug in cleaning of soft-hyphens in URL values, etc.
+
+  1.1.18 - 2 August 2014. Fix for a potential security vulnerability arising from specially encoded text with serial opening tags
+  
+  1.1.17 - 11 March 2014. Removed use of PHP function preg_replace with 'e' modifier for compatibility with PHP 5.5
+  
+  1.1.16 - 29 August 2013. Fix for a potential security vulnerability arising from specially encoded space characters in URL schemes/protocols
     
   1.1.15 - 11 August 2013. Improved tidying/prettifying functionality
     
@@ -1354,9 +1363,9 @@ A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/intern
   
   1.1.12 - 5 July 2012. Fix for a bug in identifying an unquoted value of the 'face' attribute 
   
-  1.1.11 - 5 June 2012. Fix for possible problem with handling of multi-byte characters in attribute values in an mbstring.func_overload enviroment. '$config["hook_tag"]', if specified, now receives names of elements in closing tags.
+  1.1.11 - 5 June 2012. Fix for possible problem with handling of multi-byte characters in attribute values in an mbstring.func_overload environment. '$config["hook_tag"]', if specified, now receives names of elements in closing tags.
   
-  1.1.10 - 22 October 2011. Fix for a bug in the 'tidy' functionality that caused the entire input to be replaced with a single space; new parameter, '$config["direct_list_nest"]' to allow direct descendance of a list in a list. (5 April 2012. Dual licensing from LGPLv3 to LGPLv3 and GPLv2+.)
+  1.1.10 - 22 October 2011. Fix for a bug in the 'tidy' functionality that caused the entire input to be replaced with a single space; new parameter, '$config["direct_list_nest"]' to allow direct descendence of a list in a list. (5 April 2012. Dual licensing from LGPLv3 to LGPLv3 and GPLv2+.)
   
   1.1.9.5 - 6 July 2011. Minor correction of a rule for nesting of 'li' within 'dir'
   
@@ -1466,7 +1475,7 @@ A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/intern
 -- 4.10  Acknowledgements ------------------------------------------o
 
 
-  Nicholas Alipaz, Bryan Blakey, Pádraic Brady, Dac Chartrand, Ulf Harnhammer, Gareth Heyes, Klaus Leithoff, Lukasz Pilorz, Shelley Powers, Harro Verton, Edward Yang, and many anonymous users.
+  Nicholas Alipaz, Bryan Blakey, Pádraic Brady, Dac Chartrand, Ulf Harnhammer, Gareth Heyes, Hakre, Klaus Leithoff, Lukasz Pilorz, Shelley Powers, Psych0tr1a, Lincoln Russell, Tomas Sykorka, Harro Verton, Edward Yang, and many anonymous users.
 
   Thank you!
 
@@ -1487,7 +1496,7 @@ A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/intern
 
   Valid attribute-element combinations as per W3C:- http://www.w3c.org specs.
 
-  *  includes deprecated attributes (marked '^'), attributes for the non-standard 'embed' element (marked '*'), and the proprietary 'bordercolor' (marked '~')
+  *  includes deprecated attributes (marked '^'), attributes for the non-standard 'embed' element (marked '*'), and the non-standard 'allowfullscreen' and 'bordercolor' (marked '~')
   *  only non-frameset, HTML body elements
   *  'name' for 'a' and 'map', and 'lang' are invalid in XHTML 1.1
   *  'target' is valid for 'a' in XHTML 1.1 and higher
@@ -1499,6 +1508,7 @@ A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/intern
   accesskey - a, area, button, input, label, legend, textarea
   action - form
   align - caption^, embed, applet, iframe, img^, input^, object^, legend^, table^, hr^, div^, h1^, h2^, h3^, h4^, h5^, h6^, p^, col, colgroup, tbody, td, tfoot, th, thead, tr
+  allowfullscreen - iframe~
   alt - applet, area, img, input
   archive - applet, object
   axis - td, th
