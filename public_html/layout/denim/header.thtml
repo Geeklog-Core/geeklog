@@ -1,5 +1,5 @@
 {doctype}
-<html>
+<html{html_attribute}{xmlns}>
 
 <head>
 <meta charset="{charset}"{xhtml}>
@@ -30,7 +30,7 @@
 
     <header id="header" role="banner">
       <div id="header-content" class="type1">
-        <p class="site_name"><a href="{site_url}" title="{site_name}">{site_name}</a></p>
+        <h1 class="site_name"><a href="{site_url}" title="{site_name}">{site_name}</a></h1>
         <p class="site_slogan">{site_slogan}</p>
       </div>
     </header>

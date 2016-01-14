@@ -19,13 +19,13 @@
           {story_postmode_options}
         </select>
       </dd>
-      <dd class="description" id="submitstory-d1">{allowed_html}</dd>
 
       <dt><label for="introtext">{lang_introtext}</label></dt>
-      <dd><textarea cols="45" rows="15" name="introtext" id="introtext" class="wide" aria-describedby="submitstory-d1">{story_introtext}</textarea></dd>
+      <dd><textarea cols="45" rows="15" name="introtext" id="introtext" class="wide" aria-describedby="desc-submitstory">{story_introtext}</textarea></dd>
 
       <dt><label for="bodytext">{lang_bodytext}</label></dt>
-      <dd><textarea cols="45" rows="15" name="bodytext" id="bodytext" class="wide" aria-describedby="submitstory-d1">{story_bodytext}</textarea></dd>
+      <dd><textarea cols="45" rows="15" name="bodytext" id="bodytext" class="wide" aria-describedby="desc-submitstory">{story_bodytext}</textarea></dd>
+      <dd class="description" id="desc-submitstory">{allowed_html}</dd>
     </dl>
 
     {captcha}

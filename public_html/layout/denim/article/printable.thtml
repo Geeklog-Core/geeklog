@@ -13,7 +13,7 @@
 <body id="print" dir="{direction}">
   <div id="wrapper">
     <div id="header">
-      <h1>{story_title}</h1>
+      <h2>{story_title}</h2>
       <p>{lang_contributedby} {story_author} {story_date}</p>
     </div>
     <div id="story">

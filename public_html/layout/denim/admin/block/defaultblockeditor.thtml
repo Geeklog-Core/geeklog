@@ -11,8 +11,8 @@
       <dd><input type="checkbox" name="is_enabled" {is_enabled} id="admin-blockeditor-is_enabled"{xhtml}></dd>
 
       <dt><label for="admin-blockeditor-help">{lang_blockhelpurl}</label></dt>
-      <dd><input type="text" name="help" value="{block_help}" maxlength="{max_url_length}" id="admin-blockeditor-help" class="size5" aria-describedby="admin-defblockeditor-d1"{xhtml}></dd>
-      <dd id="admin-defblockeditor-d1" class="description">{lang_includehttp}<br{xhtml}>
+      <dd><input type="text" name="help" value="{block_help}" maxlength="{max_url_length}" id="admin-blockeditor-help" class="size5" aria-describedby="desc-admin-blockeditor-help"{xhtml}></dd>
+      <dd id="desc-admin-blockeditor-help" class="description">{lang_includehttp}<br{xhtml}>
                               {lang_explanation}</dd>
 
       <dt>{lang_blockname}</dt>
@@ -30,8 +30,8 @@
       </dd>
 
       <dt><label for="admin-blockeditor-blockorder">{lang_blockorder}</label></dt>
-      <dd><input type="text" name="blockorder" value="{block_order}" id="admin-blockeditor-blockorder" class="size1" aria-describedby="admin-defblockeditor-d2"{xhtml}>
-        <span id="admin-defblockeditor-d2">0 - 9999</span></dd>
+      <dd><input type="text" name="blockorder" value="{block_order}" id="admin-blockeditor-blockorder" class="size1" aria-describedby="desc-admin-blockeditor-blockorder"{xhtml}>
+        <span id="desc-admin-blockeditor-blockorder">0 - 9999</span></dd>
 
       <dt>{lang_blocktype}</dt>
       <dd>gldefault

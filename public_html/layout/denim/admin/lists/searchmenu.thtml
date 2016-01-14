@@ -6,11 +6,11 @@
       {filter}
     </div>
     <div class="search-part">
-      <label for="admin-topmenu-q">{lang_search}:</label> <input type="text" size="20" name="q" id="admin-topmenu-q" value="{last_query}"{xhtml}>
+      {lang_search}: <input type="text" size="20" name="q" value="{last_query}"{xhtml}>
     </div>
     <div class="search-part">
-      <label for="admin-topmenu-query_limit">{lang_limit_results}:</label>
-      <select name="query_limit" id="admin-topmenu-query_limit">
+      {lang_limit_results}:
+      <select name="query_limit">
         <option value="10" {10_selected}>10</option>
         <option value="20" {20_selected}>20</option>
         <option value="50" {50_selected}>50</option>

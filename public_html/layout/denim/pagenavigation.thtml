@@ -1,15 +1,33 @@
 {# begin {templatelocation} #}
 
-<ul class="gl-pagenav">{!if message}<li>{message}</li>{!endif}<li><span>{start_first_anchortag}{lang_first}{end_first_anchortag}</span></li><li class="divider-previous"><span>{start_previous_anchortag}{lang_previous}{end_previous_anchortag}</span></li>{pages}
-
-<!-- BEGIN message --><p>{message_text}</p><!-- END message -->
-
-<!-- BEGIN page --><li>{page_number}</li><!-- END page -->
-
-<!-- BEGIN page-current --><li><b>{page_number}</b></li><!-- END page-current -->
-
-<!-- BEGIN nav-end --><li class="divider-next"><span>{start_next_anchortag}{lang_next}{end_next_anchortag}</span></li><li><span>{start_last_anchortag}{lang_last}{end_last_anchortag}</span></li></ul><!-- END nav-end -->
-
-<!-- BEGIN nav-open-ended -->{open_ended}<!-- END nav-open-ended -->
+<div style="margin-bottom:15px; text-align:center">
+{message}
+<ul class="uk-pagination">
+<li class="{!if start_first_anchortag}{!else}uk-disabled{!endif}">{start_first_anchortag}<span><i class="uk-icon-angle-double-left"></i> {lang_first}</span>{end_first_anchortag}</li>
+<li class="{!if start_previous_anchortag}{!else}uk-disabled{!endif}">{start_previous_anchortag}<span><i class="uk-icon-angle-left"></i> {lang_previous}</span>{end_previous_anchortag}</li>
+{pages}
+</ul>
+</div>
 
 {# end {templatelocation} #}
+
+<!-- BEGIN message -->
+{!if message_text}<p>{message_text}</p>{!endif}
+<!-- END message -->
+
+<!-- BEGIN page -->
+<li>{page_number}</li>
+<!-- END page -->
+
+<!-- BEGIN page-current -->
+<li class="uk-active"><span>{page_number}</span></li>
+<!-- END page-current -->
+
+<!-- BEGIN nav-end -->
+<li class="{!if start_next_anchortag}{!else}uk-disabled{!endif}">{start_next_anchortag}<span>{lang_next} <i class="uk-icon-angle-right"></i></span>{end_next_anchortag}</li>
+<li class="{!if start_last_anchortag}{!else}uk-disabled{!endif}">{start_last_anchortag}<span>{lang_last} <i class="uk-icon-angle-double-right"></i></span>{end_last_anchortag}</li>
+<!-- END nav-end -->
+
+<!-- BEGIN nav-open-ended -->
+{open_ended}
+<!-- END nav-open-ended -->

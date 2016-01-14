@@ -19,8 +19,8 @@
       <dd><input type="text" maxlength="255" value="{title}" name="title" id="trackbackeditor-title" class="size6"{xhtml}></dd>
 
       <dt><label for="trackbackeditor-excerpt">{lang_excerpt}</label></dt>
-      <dd><textarea cols="45" rows="8" name="excerpt" id="trackbackeditor-excerpt" class="wide" aria-describedby="trackbackeditor-excerpt-d1">{excerpt}</textarea></dd>
-      <dd class="description" id="trackbackeditor-excerpt-d1">{lang_excerpt_truncated}</dd>
+      <dd><textarea cols="45" rows="8" name="excerpt" id="trackbackeditor-excerpt" class="wide" aria-describedby="desc-trackbackeditor-excerpt">{excerpt}</textarea></dd>
+      <dd class="description" id="desc-trackbackeditor-excerpt">{lang_excerpt_truncated}</dd>
     </dl>
 
     <div class="submit">

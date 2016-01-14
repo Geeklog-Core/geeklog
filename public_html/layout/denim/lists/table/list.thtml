@@ -2,18 +2,17 @@
 
                             {list_top}
                             <div class="admin-list-search">
-                                <form name="page_limit" style="display: inline;" class="uk-form">
-                                <select name="page_limit_links" style="{show_limit}">
-                                    {page_limit}
+                              <form name="page_limit" style="display: inline;" class="uk-form">
+                                <select name="page_limit_links" style="{show_limit}" onchange="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value">
+                                  {page_limit}
                                 </select>
-                                <input type="button" value="OK" onclick="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value"{xhtml}>
-                               </form>
+                              </form>
                             </div>
                             <table class="admin-list-table" style="{show_sort}">
-                                <tr style="background:#FFFFFF;">
-                                    {page_sort}
-                                </tr>
-                                {item_row}
+                              <tr style="background:#FFFFFF;">
+                                {page_sort}
+                              </tr>
+                              {item_row}
                             </table>
                             <p class="aligncenter" style="{show_message}"><strong>{message}</strong></p>
                             <br{xhtml}>

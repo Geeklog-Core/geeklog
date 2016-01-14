@@ -8,7 +8,7 @@
       <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-topiceditor-topic','admin-topiceditor-tid');" {!endif}value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="size5"{xhtml}></dd>
 
       <dt><label for="admin-topiceditor-tid">{lang_topicid}</label></dt>
-      <dd><input type="text" maxlength="128" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="size5" aria-describedby="admin-topiceditor-d1"{xhtml}> <span id="admin-topiceditor-d1">{lang_donotusespaces}</span></dd>
+      <dd><input type="text" maxlength="128" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="size5" aria-describedby="desc-admin-topiceditor-tid"{xhtml}> <span id="desc-admin-topiceditor-tid">{lang_donotusespaces}</span></dd>
 
       <dt><label for="admin-topiceditor-inherit">{lang_inherit}</label></dt>
       <dd><label><input type="checkbox" {inherit_checked} name="inherit" id="admin-topiceditor-inherit"{xhtml}><span class="fieldhelp">{lang_inherit_info}</span></label></dd>
@@ -27,13 +27,13 @@
       <dd>{sort_order}</dd>
 
       <dt><label for="admin-topiceditor-limitnews">{lang_storiesperpage}</label></dt>
-      <dd><input type="text" maxlength="3" value="{story_limit}" name="limitnews" id="admin-topiceditor-limitnews" class="size1" aria-describedby="admin-topiceditor-d2"{xhtml}> <span class="fieldhelp" id="admin-topiceditor-d2">{lang_defaultis}{default_limit}</span></dd>
+      <dd><input type="text" maxlength="3" value="{story_limit}" name="limitnews" id="admin-topiceditor-limitnews" class="size1" aria-describedby="desc-admin-topiceditor-limitnews"{xhtml}> <span class="fieldhelp" id="desc-admin-topiceditor-limitnews">{lang_defaultis}{default_limit}</span></dd>
 
       <dt><label for="admin-topiceditor-imageurl">{lang_topicimage}</label></dt>
       <dd><input type="text" dir="ltr" maxlength="{max_url_length}" value="{image_url}" name="imageurl" id="admin-topiceditor-imageurl" class="size5"{xhtml}></dd>
 
       <dt><label for="admin-topiceditor-newicon">{lang_uploadimage}</label></dt>
-      <dd><input type="file" name="newicon" id="admin-topiceditor-newicon" aria-describedby="admin-topiceditor-d3"{xhtml}><br{xhtml}><span id="admin-topiceditor-d3">{icon_max_dimensions}</span></dd>
+      <dd><input type="file" name="newicon" id="admin-topiceditor-newicon" aria-describedby="desc-admin-topiceditor-newicon"{xhtml}><br{xhtml}><span id="desc-admin-topiceditor-newicon">{icon_max_dimensions}</span></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
       <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" class="wide" cols="70" rows="2">{meta_description}</textarea></dd>

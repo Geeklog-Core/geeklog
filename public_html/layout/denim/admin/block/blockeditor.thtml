@@ -13,14 +13,14 @@
 
       <dt><label for="admin-blockeditor-help">{lang_blockhelpurl}</label></dt>
       <dd>
-        <input type="text" value="{block_help}" name="help" id="admin-blockeditor-help" class="size5" aria-describedby="admin-blockeditor-d1 admin-blockeditor-d2"{xhtml}>
+        <input type="text" value="{block_help}" name="help" id="admin-blockeditor-help" class="size5" aria-describedby="desc-admin-blockeditor-help1 desc-admin-blockeditor-help2"{xhtml}>
       </dd>
-      <dd id="admin-blockeditor-d1" class="description">{lang_includehttp}</dd>
-      <dd id="admin-blockeditor-d2" class="description">{lang_explanation}</dd>
+      <dd id="desc-admin-blockeditor-help1" class="description">{lang_includehttp}</dd>
+      <dd id="desc-admin-blockeditor-help2" class="description">{lang_explanation}</dd>
 
       <dt><label for="admin-blockeditor-name">{lang_blockname}</label></dt>
-      <dd><input type="text" value="{block_name}" name="name" id="admin-blockeditor-name" class="size5" aria-describedby="admin-blockeditor-d3"{xhtml}></dd>
-      <dd id="admin-blockeditor-d3" class="description">{lang_nospaces}</dd>
+      <dd><input type="text" value="{block_name}" name="name" id="admin-blockeditor-name" class="size5" aria-describedby="desc-admin-blockeditor-name"{xhtml}></dd>
+      <dd id="desc-admin-blockeditor-name" class="description">{lang_nospaces}</dd>
 
       <dt><label>{lang_topic}</label></dt>
       <dd>{topic_selection}</dd>
@@ -34,8 +34,8 @@
       </dd>
 
       <dt><label for="admin-blockeditor-blockorder">{lang_blockorder}</label></dt>
-      <dd><input type="text" value="{block_order}" name="blockorder" id="admin-blockeditor-blockorder" class="size1" aria-describedby="admin-blockeditor-d4"{xhtml}></dd>
-      <dd id="admin-blockeditor-d4" class="description">0-9999</dd>
+      <dd><input type="text" value="{block_order}" name="blockorder" id="admin-blockeditor-blockorder" class="size1" aria-describedby="desc-admin-blockeditor-blockorder"{xhtml}></dd>
+      <dd id="desc-admin-blockeditor-blockorder" class="description">0-9999</dd>
 
       <dt><label for="admin-blockeditor-type">{lang_blocktype}</label></dt>
       <dd>
@@ -47,8 +47,8 @@
       </dd>
 
       <dt><label for="admin-blockeditor-cachetime">{lang_cachetime}</label></dt>
-      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-blockeditor-cachetime" class="size1" aria-describedby="admin-blockeditor-d5"{xhtml}></dd>
-      <dd id="admin-blockeditor-d5" class="description">{lang_cachetime_desc}</dd>
+      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-blockeditor-cachetime" class="size1" aria-describedby="desc-admin-blockeditor-cachetime"{xhtml}></dd>
+      <dd id="desc-admin-blockeditor-cachetime" class="description">{lang_cachetime_desc}</dd>
     </dl>
 
     <fieldset id="fs-phpblock-options">
@@ -56,8 +56,8 @@
 
       <dl class="form_block">
         <dt><label for="admin-blockeditor-phpblockfn">{lang_blockfunction}</label></dt>
-        <dd><input type="text" maxlength="50" value="{block_phpblockfn}" name="phpblockfn" id="admin-blockeditor-phpblockfn" class="size5" aria-describedby="admin-blockeditor-d6"{xhtml}></dd>
-        <dd id="admin-blockeditor-d6" class="description">{lang_phpblockwarning}</dd>
+        <dd><input type="text" maxlength="50" value="{block_phpblockfn}" name="phpblockfn" id="admin-blockeditor-phpblockfn" class="size5" aria-describedby="desc-admin-blockeditor-phpblockfn"{xhtml}></dd>
+        <dd id="desc-admin-blockeditor-phpblockfn" class="description">{lang_phpblockwarning}</dd>
       </dl>
     </fieldset>
 
@@ -80,12 +80,12 @@
       <legend>{lang_normalblockoptions}</legend>
 
       <dl class="form_block">
-      <p id="admin-blockeditor-d7" class="description">{lang_allowed_html}</p>
-
-        <dt><label for="admin-use-autotags">{lang_autotags}</label></dt>
-        <dd><label><input type="checkbox" name="allow_autotags" id="admin-use-autotags" {allow_autotags}{xhtml}>({lang_use_autotags})</label></dd>
         <dt><label for="admin-blockeditor-content">{lang_blockcontent}</label></dt>
-        <dd><textarea cols="40" rows="12" name="content" id="admin-blockeditor-content" class="wide" aria-describedby="admin-blockeditor-d7">{block_content}</textarea></dd>
+        <dd><textarea cols="40" rows="12" name="content" id="admin-blockeditor-content" class="wide" aria-describedby="desc-admin-blockeditor-content">{block_content}</textarea></dd>
+        <dd class="description"><span id="desc-admin-blockeditor-content" class="warningsmall">{lang_allowed_html}</span></dd>
+
+        <dt><label for="admin-blockeditor-allow_autotags">{lang_autotags}</label></dt>
+        <dd><input type="checkbox" name="allow_autotags" id="admin-blockeditor-allow_autotags" {allow_autotags}{xhtml}>({lang_use_autotags})</dd>
       </dl>
     </fieldset>
 
@@ -99,7 +99,7 @@
         <dt><label for="group_id">{lang_group}</label></dt>
         <dd>{group_dropdown}</dd>
 
-        <dt><label>{lang_permissions}</label></dt>
+        <dt>{lang_permissions}</dt>
         <dd>{permissions_editor}</dd>
         <dd class="description">{lang_perm_key}</dd>
         <dd class="description">{lang_permissions_msg}</dd>

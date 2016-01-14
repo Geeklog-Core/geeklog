@@ -17,21 +17,21 @@
 
           <dt><label for="sel_editmode">{lang_postmode}</label></dt>
           <dd>
-            <select name="postmode" id="sel_editmode"{change_editormode}>
+            <select name="postmode" id="sel_editmode" {change_editormode}>
               {story_postmode_options}
             </select>
           </dd>
-          <dd class="description" id="sel_editmode-d1">{allowed_html}</dd>
 
           <dt><label for="introtext">{lang_story}</label></dt>
           <dd>
             <div id="text_editor" style="display: {show_texteditor};">
-              <textarea cols="45" rows="15" name="introtext" id="introtext" class="wide" aria-describedby="sel_editmode-d1">{story_introtext}</textarea>
+              <textarea cols="45" rows="15" name="introtext" id="introtext" class="wide" aria-describedby="desc-submitstory">{story_introtext}</textarea>
             </div>
             <div id="html_editor" style="display: {show_htmleditor};">
-              <textarea cols="45" rows="15" name="introhtml" id="introhtml" class="wide">{story_introtext}</textarea>
+              <textarea cols="45" rows="15" name="introhtml" id="introhtml" class="wide" aria-describedby="desc-submitstory">{story_introtext}</textarea>
             </div>
           </dd>
+          <dd class="description" id="desc-submitstory">{allowed_html}</dd>
         </dl>
 
         {captcha}

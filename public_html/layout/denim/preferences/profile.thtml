@@ -48,8 +48,8 @@
         <dd>{cooktime_selector}</dd>
 
         <dt><label for="profile-email">{lang_email}</label></dt>
-        <dd><input type="text" maxlength="96" value="{email_value}" name="email" id="profile-email" class="size6" aria-describedby="pe-profile-d1"{xhtml}></dd>
-        <dd class="description" id="pe-profile-d1">{lang_email_text}</dd>
+        <dd><input type="text" maxlength="96" value="{email_value}" name="email" id="profile-email" class="size6" aria-describedby="desc-profile-email"{xhtml}></dd>
+        <dd class="description" id="desc-profile-email">{lang_email_text}</dd>
 
         <dt><label for="profile-email_conf">{lang_email_conf}</label></dt>
         <dd><input type="text" maxlength="96" value="{email_value}" name="email_conf" id="profile-email_conf" class="size6"{xhtml}></dd>
@@ -75,26 +75,26 @@
     <div class="compact">
       <dl class="form_block">
         <dt><label for="profile-homepage">{lang_homepage}</label></dt>
-        <dd><input type="text" maxlength="96" value="{homepage_value}" name="homepage" id="profile-homepage" class="size7"  aria-describedby="pe-profile-d2"{xhtml}></dd>
-        <dd class="description" id="pe-profile-d2">{lang_homepage_text}</dd>
+        <dd><input type="text" maxlength="96" value="{homepage_value}" name="homepage" id="profile-homepage" class="size7"  aria-describedby="desc-profile-homepage"{xhtml}></dd>
+        <dd class="description" id="desc-profile-homepage">{lang_homepage_text}</dd>
 
         <dt><label for="profile-location">{lang_location}</label></dt>
-        <dd><input type="text" maxlength="96" value="{location_value}" name="location" id="profile-location" class="size7" aria-describedby="pe-profile-d3"{xhtml}></dd>
-        <dd class="description" id="pe-profile-d3">{lang_location_text}</dd>
+        <dd><input type="text" maxlength="96" value="{location_value}" name="location" id="profile-location" class="size7" aria-describedby="desc-profile-location"{xhtml}></dd>
+        <dd class="description" id="desc-profile-location">{lang_location_text}</dd>
 
         {userphoto_option}
 
         <dt><label for="profile-sig">{lang_signature}</label></dt>
-        <dd><textarea cols="45" rows="4" name="sig" id="profile-sig" class="wide" aria-describedby="pe-profile-d4">{signature_value}</textarea></dd>
-        <dd class="description" id="pe-profile-d4">{lang_signature_text}</dd>
+        <dd><textarea cols="45" rows="4" name="sig" id="profile-sig" class="wide" aria-describedby="desc-profile-sig">{signature_value}</textarea></dd>
+        <dd class="description" id="desc-profile-sig">{lang_signature_text}</dd>
 
         <dt><label for="profile-about">{lang_about}</label></dt>
-        <dd><textarea cols="45" rows="6" name="about" id="profile-about" class="wide" aria-describedby="pe-profile-d5">{about_value}</textarea></dd>
-        <dd class="description" id="pe-profile-d5">{lang_about_text}</dd>
+        <dd><textarea cols="45" rows="6" name="about" id="profile-about" class="wide" aria-describedby="desc-profile-about">{about_value}</textarea></dd>
+        <dd class="description" id="desc-profile-about">{lang_about_text}</dd>
 
         <dt><label for="profile-pgpkey">{lang_pgpkey}</label></dt>
-        <dd><textarea cols="45" rows="6" name="pgpkey" id="profile-pgpkey" class="wide" aria-describedby="pe-profile-d6">{pgpkey_value}</textarea></dd>
-        <dd class="description" id="pe-profile-d6">{lang_pgpkey_text}</dd>
+        <dd><textarea cols="45" rows="6" name="pgpkey" id="profile-pgpkey" class="wide" aria-describedby="desc-profile-pgpkey">{pgpkey_value}</textarea></dd>
+        <dd class="description" id="desc-profile-pgpkey">{lang_pgpkey_text}</dd>
       </dl>
     </div>
   </fieldset>

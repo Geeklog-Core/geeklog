@@ -27,15 +27,15 @@
       <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
       <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" style="width:95%" cols="70" rows="2">{meta_keywords}</textarea></dd>
 
-      <dt><label for="tid inherit_tid default_tid">{lang_topic}</label></dt>
+      <dt><label for="tid">{lang_topic}</label></dt>
       <dd>{topic_selection}</dd>
 
       <dt><label for="admin-storyeditor_advanced-show_topic_icon">{lang_show_topic_icon}</label></dt>
       <dd><input type="checkbox" {show_topic_icon_checked} name="show_topic_icon" id="admin-storyeditor_advanced-show_topic_icon"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor_advanced-cachetime">{lang_cachetime}</label></dt>
-      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor_advanced-cachetime" class="text" aria-describedby="admin-storyeditor-advanced-d1"{xhtml}></dd>
-      <dd class="description" id="admin-storyeditor-advanced-d1">{lang_cachetime_desc}</dd>
+      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor_advanced-cachetime" class="text" aria-describedby="desc-admin-storyeditor_advanced-cachetime"{xhtml}></dd>
+      <dd class="description" id="desc-admin-storyeditor_advanced-cachetime">{lang_cachetime_desc}</dd>
 
       <dt><label for="admin-storyeditor_advanced-draft_flag">{lang_draft}</label></dt>
       <dd><input type="checkbox" {is_checked} name="draft_flag" id="admin-storyeditor_advanced-draft_flag"{xhtml}></dd>
@@ -66,7 +66,7 @@
             <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');" alt="expand button"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');" alt="collapse button"{xhtml}>
           </div>
-          <textarea cols="45" rows="14" name="introtext" id="introtext" class="wide" aria-describedby="admin-storyeditor-advanced-d2">{story_introtext}</textarea>
+          <textarea cols="45" rows="14" name="introtext" id="introtext" class="wide" aria-describedby="desc-admin-storyeditor-text">{story_introtext}</textarea>
         </dd>
 
         <dt><label for="bodytext">{lang_bodytext}</label></dt>
@@ -75,9 +75,9 @@
             <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');" alt="expand button"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');" alt="collapse button"{xhtml}>
           </div>
-          <textarea cols="45" rows="14" name="bodytext" id="bodytext" class="wide">{story_bodytext}</textarea>
+          <textarea cols="45" rows="14" name="bodytext" id="bodytext" class="wide" aria-describedby="desc-admin-storyeditor-text">{story_bodytext}</textarea>
         </dd>
-        <dd class="description" id="admin-storyeditor-advanced-d2">{lang_allowed_html}</dd>
+        <dd class="description" id="desc-admin-storyeditor-text">{lang_allowed_html}</dd>
       </dl>
     </div>
 
@@ -121,7 +121,7 @@
     <dl class="form_block">
       <dt><label for="admin-storyeditor_advanced-publish_month">{lang_date}</label></dt>
       <dd>
-        <select name="publish_month" id="admin-storyeditor_advanced-publish_month" aria-describedby="admin-storyeditor-advanced-d3">
+        <select name="publish_month" id="admin-storyeditor_advanced-publish_month" aria-describedby="desc-admin-storyeditor-publish_month">
           {publish_month_options}
         </select>
         /
@@ -143,7 +143,7 @@
 
         {publishampm_selection}
       </dd>
-      <dd class="description" id="admin-storyeditor-advanced-d3">{publish_date_explanation}</dd>
+      <dd class="description" id="desc-admin-storyeditor-publish_month">{publish_date_explanation}</dd>
     </dl>
   </fieldset>
 
@@ -151,10 +151,10 @@
     <legend>{lang_publishoptions}</legend>
 
     <dl class="form_block">
-      <dt><label for="select_frontpage_option">{lang_mode}</label></dt>
+      <dt><label for="publish-options">{lang_mode}</label></dt>
       <dd>
         {featured_options}
-        <select name="frontpage" id="select_frontpage_option">
+        <select name="frontpage" id="publish-options">
           {frontpage_options}
         </select>
         <select name="commentcode">

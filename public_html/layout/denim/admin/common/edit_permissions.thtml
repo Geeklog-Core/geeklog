@@ -12,12 +12,12 @@
 
   <tbody>
     <tr class="pluginRow1">
-      <td><label for="permissions-r1">R</label><br{xhtml}><input type="checkbox" id="permissions-r1" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
-      <td><label for="permissions-e1">E</label><br{xhtml}><input type="checkbox" id="permissions-e1" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
-      <td><label for="permissions-r2">R</label><br{xhtml}><input type="checkbox" id="permissions-r2" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>
-      <td><label for="permissions-e2">E</label><br{xhtml}><input type="checkbox" id="permissions-e2" name="perm_group[]" value="1"{group_e_checked}{xhtml}></td>
-      <td><label for="permissions-r3">R</label><br{xhtml}><input type="checkbox" id="permissions-r3" name="perm_members[]" value="2"{members_checked}{xhtml}></td>
-      <td><label for="permissions-r4">R</label><br{xhtml}><input type="checkbox" id="permissions-r4" name="perm_anon[]" value="2"{anon_checked}{xhtml}></td>
+      <td><label for="permissions-or">R</label><br{xhtml}><input type="checkbox" id="permissions-or" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
+      <td><label for="permissions-oe">E</label><br{xhtml}><input type="checkbox" id="permissions-oe" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
+      <td><label for="permissions-gr">R</label><br{xhtml}><input type="checkbox" id="permissions-gr" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>
+      <td><label for="permissions-ge">E</label><br{xhtml}><input type="checkbox" id="permissions-ge" name="perm_group[]" value="1"{group_e_checked}{xhtml}></td>
+      <td><label for="permissions-mr">R</label><br{xhtml}><input type="checkbox" id="permissions-mr" name="perm_members[]" value="2"{members_checked}{xhtml}></td>
+      <td><label for="permissions-ar">R</label><br{xhtml}><input type="checkbox" id="permissions-ar" name="perm_anon[]" value="2"{anon_checked}{xhtml}></td>
     </tr>
   </tbody>
 </table>

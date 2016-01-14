@@ -16,8 +16,8 @@
       <dd><input type="text" maxlength="96" value="{subject}" name="subject" id="contactuserform-subject" class="size4"{xhtml}></dd>
 
       <dt><label for="contactuserform-message">{lang_message}</label></dt>
-      <dd><textarea rows="10" cols="50" name="message" id="contactuserform-message" class="wide" aria-describedby="contactuserform-cc-d1">{message}</textarea></dd>
-      <dd class="description" id="contactuserform-cc-d1">{lang_nohtml}</dd>
+      <dd><textarea rows="10" cols="50" name="message" id="contactuserform-message" class="wide" aria-describedby="desc-contactuserform-message">{message}</textarea></dd>
+      <dd class="description" id="desc-contactuserform-message">{lang_nohtml}</dd>
 
       <dt{cc_enabled}><label for="contactuserform-cc">{lang_cc}</label></dt>
       <dd{cc_enabled}><label><input type="checkbox" name="cc" id="contactuserform-cc"{cc}{xhtml}>&nbsp;{lang_cc_description}</label></dd>

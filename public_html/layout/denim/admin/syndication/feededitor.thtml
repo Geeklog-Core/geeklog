@@ -31,15 +31,15 @@
       <dd><input type="text" value="{feed_limits}" name="limits" id="admin-feededitor-limits" class="size1"{xhtml}> {feed_limits_what}</dd>
 
       <dt><label for="admin-feededitor-content_length">{lang_content_length}</label></dt>
-      <dd><input type="text" value="{feed_content_length}" name="content_length" id="admin-feededitor-content_length" class="size1" aria-describedby="admin-feededitor-d1"{xhtml}></dd>
-      <dd class="description" id="admin-feededitor-d1">{lang_clen_explain}</dd>
+      <dd><input type="text" value="{feed_content_length}" name="content_length" id="admin-feededitor-content_length" class="size1" aria-describedby="desc-admin-feededitor-content_length"{xhtml}></dd>
+      <dd class="description" id="desc-admin-feededitor-content_length">{lang_clen_explain}</dd>
 
       <dt><label for="admin-feededitor-description">{lang_description}</label></dt>
       <dd><textarea cols="45" rows="8" name="description" id="admin-feededitor-description" class="wide">{feed_description}</textarea></dd>
 
       <dt><label for="admin-feededitor-feedlogo">{lang_feedlogo}</label></dt>
-      <dd><input type="text" maxlength="255" value="{feed_logo}" name="feedlogo" id="admin-feededitor-feedlogo" class="size5" aria-describedby="admin-feededitor-d2"{xhtml}></dd>
-      <dd class="description" id="admin-feededitor-d2">{lang_feedlogo_explain}</dd>
+      <dd><input type="text" maxlength="255" value="{feed_logo}" name="feedlogo" id="admin-feededitor-feedlogo" class="size5" aria-describedby="desc-admin-feededitor-feedlogo"{xhtml}></dd>
+      <dd class="description" id="desc-admin-feededitor-feedlogo">{lang_feedlogo_explain}</dd>
 
       <dt><label for="admin-feededitor-filename">{lang_filename}</label></dt>
       <dd><input type="text" value="{feed_filename}" name="filename" id="admin-feededitor-filename" class="size5"{xhtml}></dd>

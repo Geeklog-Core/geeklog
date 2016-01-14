@@ -2,7 +2,7 @@
 
 <article itemscope itemtype="http://schema.org/Article" class="storytext archivestorytext">
   <header>
-    <h1 itemprop="name" class="story_title">{story_title_link}</h1>
+    <h2 itemprop="name" class="story_title">{story_title_link}</h2>
 
     <div class="story_icon">
       {email_icon}{print_icon}{edit_icon}
