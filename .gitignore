@@ -1,3 +1,4 @@
+system/pear/*.php
 system/pear/Archive
 system/pear/Auth
 system/pear/Console
