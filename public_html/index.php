@@ -83,6 +83,12 @@ function fixTopic(&$A, $tid_list)
     }
 }
 
+// If URL routing is enabled, then let the router handle the request
+if (isset($_CONF['url_routing']) && !empty($_CONF['url_routing'])) {
+    require_once $_CONF['path_system'] . 'classes/router.class.php';
+    Router::dispatch();
+}
+
 // See if user has access to view topic else display message.
 // This check has already been done in lib-common so re check to figure out if
 // 404 message needs to be displayed.
