@@ -241,7 +241,7 @@ class database
         }
 
         // Modifies "CREATE TABLE" SQL
-        if (preg_match('/create\s+table\s/i', $sql)) {
+        if (preg_match('/^\s*create\s\s*table\s/i', $sql)) {
             $p = strrpos($sql, ')');
 
             if ($p !== FALSE) {
