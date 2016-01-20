@@ -44,6 +44,11 @@ class Router
     {
         global $_CONF, $_TABLES;
 
+        // URL rewrite is disabled
+        if (!$_CONF['url_rewrite']) {
+            return false;
+        }
+
         // URL routing is not supported
         if (!isset($_CONF['url_routing'])) {
             return false;
@@ -184,6 +189,11 @@ class Router
     {
         global $_CONF, $_TABLES;
 
+        // URL rewrite is disabled
+        if (!$_CONF['url_rewrite']) {
+            return $url;
+        }
+
         // URL routing is not supported
         if (!isset($_CONF['url_routing'])) {
             return $url;
@@ -231,22 +241,26 @@ class Router
 
             // Try simple comparison without placeholders
             if (strcasecmp($route, $url) === 0) {
+                $retval = $rule;
+
                 if ($routingType === self::ROUTING_WITH_INDEX_PHP) {
-                    $rule = $_CONF['site_url'] . $rule;
+                    $retval = '/index.php' . $retval;
                 }
+
+                $retval = $_CONF['site_url'] . $retval;
 
                 if (self::$debug) {
-                    COM_errorLog(__METHOD__ . ': matched with simple comparison rule "' . $A['route'] . '"');
+                    COM_errorLog(__METHOD__ . ': matched with simple comparison route "' . $A['route'] . '"');
                 }
 
-                return $rule;
+                return $retval;
             }
 
             // Try comparison with placeholders
             if (preg_match_all(self::PATTERN_PLACEHOLDER, $route, $matches, PREG_SET_ORDER)) {
                 $placeHolders = array();
 
-                // Replace placeholders in a rule with ones for regular expressions
+                // Replace placeholders in a route with ones for regular expressions
                 foreach ($matches as $match) {
                     $placeHolders[] = $match[1];
                     $route = str_ireplace($match[1], '([^/]+)', $route);
@@ -269,18 +283,22 @@ class Router
                 foreach ($matches as $match) {
                     $match = urlencode($match);
                     $placeHolder = array_shift($placeHolders);
-                    $url = str_ireplace($placeHolder, $match, $url);
+                    $rule = str_ireplace($placeHolder, $match, $rule);
                 }
 
+                $retval = $rule;
+
                 if ($routingType === self::ROUTING_WITH_INDEX_PHP) {
-                    $url = $_CONF['site_url'] . $url;
+                    $retval = '/index.php' . $retval;
                 }
+
+                $retval = $_CONF['site_url'] . $retval;
 
                 if (self::$debug) {
                     COM_errorLog(__METHOD__ . ': matched with regular expression rule "' . $A['route'] . '"');
                 }
 
-                return $url;
+                return $retval;
             }
         }
 

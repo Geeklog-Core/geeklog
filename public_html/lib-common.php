@@ -199,8 +199,9 @@ $_PAGE_TIMER->startTimer();
 * This provides optional URL rewriting functionality.
 */
 
-require_once( $_CONF['path_system'] . 'classes/url.class.php' );
-$_URL = new url( $_CONF['url_rewrite'] );
+require_once $_CONF['path_system'] . 'classes/router.class.php';
+require_once $_CONF['path_system'] . 'classes/url.class.php';
+$_URL = new Url($_CONF['url_rewrite'], $_CONF['url_routing']);
 
 /**
 * This is our HTML template class.  It is the same one found in PHPLib and is
