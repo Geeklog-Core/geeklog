@@ -1,0 +1,48 @@
+{# begin {templatelocation} #}
+
+{start_router_editor}
+<form action="{site_admin_url}/router.php" method="post" id="admin-routereditor" class="compact">
+    <div class="admin_basic">
+        <dl>
+            <dt><label for="admin-routereditor-rid">{lang_router_rid}</label></dt>
+            <dd class="description">{rid}</dd>
+
+            <dt><label for="admin-routereditor-method">{lang_router_method}</label></dt>
+            <dd>
+                <select id="admin-routereditor-method" name="method">
+                    <option value="1"{get_selected}>GET</option>
+                    <option value="2"{post_selected}>POST</option>
+                    <option value="3"{put_selected}>PUT</option>
+                    <option value="4"{delete_selected}>DELETE</option>
+                    <option value="5"{head_selected}>HEAD</option>
+                </select>
+            </dd>
+
+            <dt><label for="admin-routereditor-rule">{lang_router_rule}</label></dt>
+            <dd><input type="text" size="40" value="{rule}" name="rule" id="admin-routereditor-rule" class="text"{xhtml}></dd>
+
+            <dt><label for="admin-routereditor-route">{lang_router_route}</label></dt>
+            <dd><input type="text" size="40" value="{route}" name="route" id="admin-routereditor-route" class="text"{xhtml}></dd>
+
+            <dt><label for="admin-routereditor-priority">{lang_router_priority}</label></dt>
+            <dd><input type="text" size="20" value="{priority}" name="priority" id="admin-routereditor-priority" class="text"{xhtml}></dd>
+        </dl>
+    </div>
+
+    <div>
+        {lang_router_notice}
+    </div>
+
+    <ul class="submit">
+        <li><input type="submit" value="{lang_save}" name="mode" class="submit" {xhtml}></li>
+        <li><input type="submit" value="{lang_cancel}" name="mode" class="submit" {xhtml}></li>
+        <li>
+            <input type="hidden" name="rid" value="{rid}" {xhtml}>
+            <input type="hidden" name="{gltoken_name}" value="{gltoken}" {xhtml}>
+            {delete_option}
+        </li>
+    </ul>
+</form>
+{end_block}
+
+{# end {templatelocation} #}

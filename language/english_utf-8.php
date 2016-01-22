@@ -1337,6 +1337,31 @@ $LANG33 = array(
 );
 
 ###############################################################################
+# admin/router.php
+
+$LANG_ROUTER = array(
+    1 => 'URL routing',
+    2 => 'Routing Manager',
+    3 => 'ID',
+    4 => 'method',
+    5 => 'rule',
+    6 => 'route',
+    7 => 'priority',
+    8 => 'Increase priority',
+    9 => 'Decrease priority',
+    10 => 'Edit routing',
+    11 => 'To modify or delete a route, click on the route\'s edit icon below. To create a new route, click on "Create New" above.  When you use placeholders (@), you must define the same placeholders in a rule and its route.',
+    12 => 'Bad request method',
+    13 => 'Rule is a mandatory item.',
+    14 => 'Route is a mandatory item.',
+    15 => 'Placeholders (@) in a rule and those in a route must be the same.',
+    16 => 'Route must not start with "index.php".',
+    17 => 'Database error occurred.',
+    18 => '<strong>To enable URL routing, you have to enable URL rewrite.</strong>',
+    19 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>',
+);
+
+###############################################################################
 # confirmation and error messages
 
 $MESSAGE = array(
@@ -1452,6 +1477,9 @@ $MESSAGE = array(
     118 => 'Click to select a date',
     119 => 'More..',
     120 => 'Send this?',
+    121 => 'Saved a URL routing item.',
+    122 => 'Could not save a URL routing item.',
+    123 => 'Deleted a URL routing item.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.'

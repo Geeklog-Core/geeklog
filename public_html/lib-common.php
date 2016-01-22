@@ -3371,7 +3371,7 @@ function COM_userMenu( $help='', $title='', $position='' )
 function COM_commandControl($adminMenu = false, $help = '', $title = '', $position = '')
 {
     global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW,
-        $LANG_ENVCHECK, $LANG_ADMIN, $_IMAGE_TYPE, $_DB_dbms, $config;;
+        $LANG_ENVCHECK, $LANG_ADMIN, $_IMAGE_TYPE, $LANG_ROUTER, $_DB_dbms, $config;;
 
     $retval = '';
 
@@ -3645,6 +3645,18 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                     }
                 }
 
+                $routeCount = '0';
+                if ($adminMenu && SEC_inGroup('Root')) {
+                    // Find num of URL routes
+                    $sql =  "SELECT COUNT(rid) AS cnt FROM {$_TABLES['routes']}";
+                    $result = DB_query($sql);
+
+                    if (!DB_error()) {
+                        $temp = DB_fetchArray($result, false);
+                        $routeCount = COM_numberFormat($temp['cnt']);
+                    }
+                }
+
                 $cc_arr = array(
                     array('condition' => SEC_hasRights($_CONF_FT, 'OR'),
                         'url' => $_CONF['site_admin_url'] . '/configuration.php',
@@ -3690,6 +3702,11 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'num' => '',
                         'image' => $_CONF['layout_url'] . '/images/icons/filemanager.' . $_IMAGE_TYPE,
                         'target' => '_blank'),
+                    array('condition' => SEC_inGroup('Root'),
+                          'url' => $_CONF['site_admin_url'] . '/router.php',
+                          'lang' => $LANG_ROUTER[1],
+                          'num' => $routeCount,
+                          'image' => $_CONF['layout_url'] . '/images/icons/router.' . $_IMAGE_TYPE),
                     array('condition' => true,
                         'url' =>$_CONF['site_url'] . '/users.php?mode=logout',
                         'lang' => $LANG01[35],

@@ -18,12 +18,15 @@ class Router
     const ROUTING_WITHOUT_INDEX_PHP = 2;
 
     // Placeholder pattern
-    const PATTERN_PLACEHOLDER = '|(@[a-zA-Z][0-9a-zA-Z_-]*)|';
+    const PATTERN_PLACEHOLDER = '|(@[a-zA-Z][0-9a-zA-Z_]*)|';
+
+    // Default priority
+    const DEFAULT_PRIORITY = 100;
 
     /**
      * @var bool
      */
-    private static $debug = false;
+    private static $debug = true;
 
     /**
      * Set debug mode
@@ -42,7 +45,7 @@ class Router
      */
     public static function dispatch()
     {
-        global $_CONF, $_TABLES;
+        global $_CONF, $_TABLES, $LANG_ROUTER;
 
         // URL rewrite is disabled
         if (!$_CONF['url_rewrite']) {
@@ -59,8 +62,6 @@ class Router
         // URL routing is disabled
         if ($routingType === self::ROUTING_DISABLED) {
             return false;
-        } elseif (self::$debug) {
-            COM_errorLog(__METHOD__ . ': routing type = ' . $routingType);
         }
 
         // $_SERVER['PATH_INFO'] is unavailable
@@ -116,58 +117,60 @@ class Router
             $rule = $A['rule'];
             $route = $A['route'];
 
-            if (self::$debug) {
-                COM_errorLog(__METHOD__ . ': rule = ' . $rule);
-                COM_errorLog(__METHOD__ . ': route = ' . $route);
-            }
-
             // Try simple comparison without placeholders
             if (strcasecmp($rule, $pathInfo) === 0) {
-                if ($routingType === self::ROUTING_WITH_INDEX_PHP) {
-                    $route = $_CONF['site_url'] . $route;
-                }
+                $route = $_CONF['site_url'] . $route;
 
                 if (self::$debug) {
-                    COM_errorLog(__METHOD__ . ': matched with simple comparison rule "' . $A['rule'] . '"');
+                    COM_errorLog(__METHOD__ . ': "' . $pathInfo . '"matched with simple comparison rule "' . $A['rule'] . '", converted into "' . $route . '"');
                 }
 
                 header('Location: ' . $route);
+
+                COM_errorLog(__METHOD__ . ': somehow could not redirect');
+                return false;
             }
 
             // Try comparison with placeholders
             if (preg_match_all(self::PATTERN_PLACEHOLDER, $rule, $matches, PREG_SET_ORDER)) {
+                // Escape a period and a question mark so that they can safely be used in a regular expression
+                $rule = str_replace(array('.', '?'), array('\.', '\?'), $rule);
                 $placeHolders = array();
 
                 // Replace placeholders in a rule with ones for regular expressions
                 foreach ($matches as $match) {
                     $placeHolders[] = $match[1];
-                    $rule = str_ireplace($match[1], '([^/]+)', $rule);
+                    $rule = str_replace($match[1], '([^/&=?#]+)', $rule);
                 }
 
-                $rule = '|' . $rule . '|i';
+                $rule = '|\A' . $rule . '\z|i';
 
-                if (!preg_match($rule, $pathInfo, $matches)) {
+                if (!preg_match($rule, $pathInfo, $values)) {
                     continue;
                 }
 
-                array_shift($matches);
+                array_shift($values);
 
-                if (count($placeHolders) !== count($matches)) {
-                    continue;
-                }
-
-                foreach ($matches as $match) {
-                    $match = urlencode($match);
+                foreach ($values as $value) {
+                    $value = urlencode($value);
                     $placeHolder = array_shift($placeHolders);
-                    $route = str_ireplace($placeHolder, $match, $route);
+                    $route = str_replace($placeHolder, $value, $route);
                 }
 
-                if ($routingType === self::ROUTING_WITH_INDEX_PHP) {
-                    $route = $_CONF['site_url'] . $route;
+                if ((strpos($route, '@') !== false) && self::$debug) {
+                    COM_errorLog(
+                        sprintf(
+                            '%s: %s. Rule (rid = %d) = %s, Route = %s',
+                            __METHOD__, @$LANG_ROUTER[15], $A['rid'], $A['rule'], $A['route']
+                        )
+                    );
+                    continue;
                 }
+
+                $route = $_CONF['site_url'] . $route;
 
                 if (self::$debug) {
-                    COM_errorLog(__METHOD__ . ': matched with regular expression rule "' . $A['rule'] . '"');
+                    COM_errorLog(__METHOD__ . ': "' . $pathInfo . '" matched with regular expression rule "' . $A['rule'] . '", converted into "' . $route . '"');
                 }
 
                 header('Location: ' . $route);
@@ -179,6 +182,7 @@ class Router
 
     /**
      * Convert a URL
+     *
      * e.g. [SITE_URL]/article.php?story=welcome -> [SITE_URL]/index.php/article/welcome or [SITE_URL]/article/welcome
      *
      * @param  string $url
@@ -187,29 +191,29 @@ class Router
      */
     public static function convertUrl($url, $requestMethod = self::HTTP_REQUEST_GET)
     {
-        global $_CONF, $_TABLES;
+        global $_CONF, $_TABLES, $LANG_ROUTER;
+
+        $originalUrl = $url;
 
         // URL rewrite is disabled
         if (!$_CONF['url_rewrite']) {
-            return $url;
+            return $originalUrl;
         }
 
         // URL routing is not supported
         if (!isset($_CONF['url_routing'])) {
-            return $url;
+            return $originalUrl;
         }
 
         $routingType = intval($_CONF['url_routing'], 10);
 
         // URL routing is disabled
         if ($routingType === self::ROUTING_DISABLED) {
-            return $url;
-        } elseif (self::$debug) {
-            COM_errorLog(__METHOD__ . ': routing type = ' . $routingType);
+            return $originalUrl;
         }
 
         // Strip $url of $_CONF['site_url']
-        $url = str_ireplace($_CONF['site_url'], '', $url);
+        $url = str_replace($_CONF['site_url'], '', $url);
 
         // Check for $requestMethod
         $requestMethod = intval($requestMethod, 10);
@@ -217,7 +221,7 @@ class Router
         if (($requestMethod < self::HTTP_REQUEST_GET) || ($requestMethod > self::HTTP_REQUEST_HEAD)) {
             COM_errorLog(__METHOD__ . ': unknown request method "' . $requestMethod . '" was given');
 
-            return $url;
+            return $originalUrl;
         }
 
         // Get routing rules and routes from database
@@ -227,21 +231,21 @@ class Router
         if (DB_error()) {
             COM_errorLog(__METHOD__ . ': ' . DB_error());
 
-            return $url;
+            return $originalUrl;
         }
 
+        $url = str_replace('&amp;', '&', $url);
+        $path = $url;
+
         while (($A = DB_fetchArray($result, false)) !== false) {
+            $url = $path;
             $rule = $A['rule'];
             $route = $A['route'];
-
-            if (self::$debug) {
-                COM_errorLog(__METHOD__ . ': rule = ' . $rule);
-                COM_errorLog(__METHOD__ . ': route = ' . $route);
-            }
 
             // Try simple comparison without placeholders
             if (strcasecmp($route, $url) === 0) {
                 $retval = $rule;
+                $retval = str_replace('&', '&amp;', $retval);
 
                 if ($routingType === self::ROUTING_WITH_INDEX_PHP) {
                     $retval = '/index.php' . $retval;
@@ -250,7 +254,7 @@ class Router
                 $retval = $_CONF['site_url'] . $retval;
 
                 if (self::$debug) {
-                    COM_errorLog(__METHOD__ . ': matched with simple comparison route "' . $A['route'] . '"');
+                    COM_errorLog(__METHOD__ . ': "' . $originalUrl . '" matched with simple comparison route "' . $A['route'] . '"');
                 }
 
                 return $retval;
@@ -263,30 +267,37 @@ class Router
                 // Replace placeholders in a route with ones for regular expressions
                 foreach ($matches as $match) {
                     $placeHolders[] = $match[1];
-                    $route = str_ireplace($match[1], '([^/]+)', $route);
+                    $route = str_replace($match[1], '([^/&=?#]+)', $route);
                 }
 
                 // Escape a period and a question mark so that they can safely be used in a regular expression
                 $route = str_replace(array('.', '?'), array('\.', '\?'), $route);
-                $route = '|' . $route . '|';
+                $route = '|\A' . $route . '\z|i';
 
-                if (!preg_match($route, $url, $matches)) {
+                if (!preg_match($route, $url, $values)) {
                     continue;
                 }
 
-                array_shift($matches);
+                array_shift($values);
 
-                if (count($placeHolders) !== count($matches)) {
-                    continue;
-                }
-
-                foreach ($matches as $match) {
-                    $match = urlencode($match);
+                foreach ($values as $value) {
+                    $value = urlencode($value);
                     $placeHolder = array_shift($placeHolders);
-                    $rule = str_ireplace($placeHolder, $match, $rule);
+                    $rule = str_replace($placeHolder, $value, $rule);
+                }
+
+                if ((strpos($rule, '@') !== false) && self::$debug) {
+                    COM_errorLog(
+                        sprintf(
+                            '%s: %s. Rule (rid = %d) = %s, Route = %s',
+                            __METHOD__, @$LANG_ROUTER[15], $A['rid'], $A['rule'], $A['route']
+                        )
+                    );
+                    continue;
                 }
 
                 $retval = $rule;
+                $retval = str_replace('&', '&amp;', $retval);
 
                 if ($routingType === self::ROUTING_WITH_INDEX_PHP) {
                     $retval = '/index.php' . $retval;
@@ -295,13 +306,13 @@ class Router
                 $retval = $_CONF['site_url'] . $retval;
 
                 if (self::$debug) {
-                    COM_errorLog(__METHOD__ . ': matched with regular expression rule "' . $A['route'] . '"');
+                    COM_errorLog(__METHOD__ . ': "' . $originalUrl . '" matched with regular expression rule "' . $A['route'] . '", converted into "' . $retval . '"');
                 }
 
                 return $retval;
             }
         }
 
-        return $url;
+        return $originalUrl;
     }
 }
