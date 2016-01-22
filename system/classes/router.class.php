@@ -26,7 +26,7 @@ class Router
     /**
      * @var bool
      */
-    private static $debug = true;
+    private static $debug = false;
 
     /**
      * Set debug mode

@@ -808,10 +808,9 @@ $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('plaintext','Plain Old Text') ";
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('html','HTML Formatted') ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route) VALUES (1, '/stats', '/stats.php')";
+$_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route) VALUES (1, '/article/@sid', '/article.php?story=@sid')";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route) VALUES (1, '/topic/@topic', '/index.php?topic=@topic')";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route) VALUES (1, '/page/@page', '/staticpages/index.php?page=@page')";
-$_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route) VALUES (1, '/article/@sid', '/article.php?story=@sid')";
 
 $_DATA[] = "INSERT INTO {$_TABLES['sortcodes']} (code, name) VALUES ('ASC','Oldest First') ";
 $_DATA[] = "INSERT INTO {$_TABLES['sortcodes']} (code, name) VALUES ('DESC','Newest First') ";
