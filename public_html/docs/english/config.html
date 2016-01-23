@@ -96,6 +96,11 @@ manually.</p>
   <td valign="top">Enable (true) or disable (false) URL rewriting.<br />
     Also see the section on <a href="#url-rewrite">URL Rewriting</a> below.</td></tr>
 <tr>
+    <td valign="top"><a name="desc_url_routing">url_routing</a></td>
+    <td valign="top">disabled(0)</td>
+    <td valign="top">Enable (true) or disable (false) URL routing.  <strong>Caution: This feature takes effect only when URL Rewriting is enabled.</strong><br />
+        Also see the section on <a href="#url-routing">URL Routing</a> below.</td></tr>
+<tr>
   <td valign="top"><a name="desc_cdn_hosted">cdn_hosted</a></td>
   <td valign="top">false</td>
   <td valign="top">Enable (true) or disable (false) Google CDN-hosted source for jQuery 
@@ -2086,6 +2091,111 @@ prefer the first format and often ignores the second format.</p>
 is known to work with Apache (all versions) and known <em>not</em> to work
 with IIS (at least some versions). Please try it out before you go public
 with your site.</p>
+
+
+<h2><a name="url-routing">URL Routing</a></h2>
+
+<p>This feature enhances the above <a href="#url-rewrite">URL Rewriting</a> feature and makes
+    public_html/index.php work like a front controller.  So, in order to use URL Routing feature,
+    you have to enable URL Rewriting beforehand.  Currently, the following rules are predefined.</p>
+<table border="1">
+    <thead>
+    <tr><th>Rule</th><th>Route</th><th>Priority</th></tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>http://yourdomain/article/[sid]/print</td>
+        <td>http://yourdomain/article.php?story=[sid]&mode=print</td>
+        <td>100</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/article/[sid]</td>
+        <td>http://yourdomain/article.php?story=[sid]</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/archives/@topic/@year/@month</td>
+        <td>http://yourdomain/directory.php?topic=@topic&year=@year&month=@month</td>
+        <td>120</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/page/@page</td>
+        <td>http://yourdomain/staticpages/index.php?page=@page</td>
+        <td>130</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/links/portal/@item</td>
+        <td>http://yourdomain/links/portal.php?what=link&item=@item</td>
+        <td>140</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/links/category/@cat</td>
+        <td>http://yourdomain/links/index.php?category=@cat</td>
+        <td>150</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/topic/@topic</td>
+        <td>http://yourdomain/index.php?topic=@topic</td>
+        <td>160</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>Look at the first row in the table.  This means if you access "http://yourdomain/index.php/article/[sid]/print",
+    then you will be redirected to "http://yourdomain/article.php?story=[sid]&mode=print".
+    [sid] is a story ID.</p>
+<p>Then, look at the third row.  You will see an at mark (@), followed by alphabetical
+    letters.  This is a placeholder.  For instance, when you access
+    "http://yourdomain/index.php/archives/all/2016/1", @topic matches "all", @year matches "2016",
+    and @month matches "1" in the rule.  Then, all placeholders in the route will be replaced with
+    the matched values.  And you will be redirected to "http://yourdomain/directory.php?topic=all&year=2016&month=1".</p>
+<p>You don't have to include "/index.php" in a rule.</p>
+<p>You must not start a route with "/index.php", since this will cause an infinite loop.</p>
+<p>A placeholder starts with @ and an alphabetical letter or letters follow it.
+    Placeholders are case-sensitive.</p>
+<p>URL Routing works in the reverse way as well.  When you output a URL in your plugin or custom
+    function, you can URL-route it by using COM_buildURL function and adding your own rule and
+    route in the URL Routing screen (admin/router.php).</p>
+<p><strong>Note:</strong> This feature may not work with all web servers. It uses PHP's
+    $_SERVER['PATH_INFO'] variable.  Please try it out before you go public with your site.</p>
+<p><strong>Advanced feature:</strong> If you use Apache as a Web server and want to remove "index.php"
+    from URLs you access, you have to do the following things.  <strong>Be warned!</strong>
+    Unless you are familiar with Web server configurations, you might as well not use this feature.</p>
+<ol>
+    <li>Enable the rewrite module of your web server.  In "httpd.conf", look for<br>
+    <code># LoadModule rewrite_module modules/mod_rewrite.so</code><br>
+    and uncomment the line by removing # at the top of the line.  Don't forget to
+        reboot your Web server.</li>
+    <li>Create a file named ".htaccess" in the top of the public directory of your
+        Geeklog installation (where lib-common.php is located) and add the following lines.<br>
+    <pre>
+        &lt;IfModule mod_rewrite.c&gt;
+            RewriteEngine On
+            # RewriteBase /
+            # Directs all Geeklog requests through the site index file
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule ^(.*)$ /index.php/$1 [L]
+        &lt;/IfModule&gt;
+    </pre><br>
+    If you have installed Geeklog in a subdirectory of the document root, you will
+        have to change the line<br>
+    <pre>
+            RewriteRule ^(.*)$ /index.php/$1 [L]
+    </pre>into<br>
+        <pre>
+            RewriteRule ^(.*)$ <strong>[sub_directory]</strong>/index.php/$1 [L]
+        </pre><br>
+        or<br>
+        <pre>
+            RewriteRule ^(.*)$ /<strong>[sub_directory]</strong>/index.php/$1 [L]
+        </pre>
+    </li>
+    <li>
+        Finally, log in as admin and go to the Configuration screen, and set URL Routing
+        to "Enabled (without index.php)".
+    </li>
+</ol>
 
 
 <h2><a name="Localization">Localization</a></h2>

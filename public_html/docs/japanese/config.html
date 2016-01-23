@@ -85,6 +85,11 @@
   <td valign="top">「はい」でURLリライトを行い、「いいえ」で行わないようになります。<br />
     下記の<a href="#url-rewrite">URLリライト</a>のセクションを参照してください。</td></tr>
 <tr>
+    <td valign="top"><a name="desc_url_routing">URLルーティング(url_routing)</a></td>
+    <td valign="top">いいえ</td>
+    <td valign="top">「はい」でURLルーティングを行い、「いいえ」で行わないようになります。<strong>注意: この機能を使うにはURLリライトを「はい」にしてください。</strong><br />
+        夏期の<a href="#url-routing">URLルーティング</a>のセクションを参照してください。</td></tr>
+<tr>
   <td valign="top"><a name="desc_cdn_hosted">CDNのjQueryを使う(cdn_hosted)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、jQueryとjQuery UIのソースファイルをGoogleの<acronym title="Contents Delivery Network">CDN</acronym>から読み込むようになります。
@@ -1783,6 +1788,110 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <p style="margin-left:4em;"><tt>http://www.geeklog.net/article.php/20021022234959146</tt></p>
 <p>となります。1番目の形式のURLを解釈する検索エンジンもありますが、Googleは2番目の形式を好み、1番目の形式を無視するようです。(訳注)この記述は現在では当てはまりません。</p>
 <p><strong>注意:</strong>この機能はすべてのWebサーバーで機能するとは限りません。Apache(全バージョン)では機能しますが、<acronym title="Internt Information Service">IIS</acronym>(の少なくとも一部のバージョン)では<em>動作しない</em> ことが知られています。サイトを公開する前に検証してください。</p>
+
+
+<h2><a name="url-routing">URLルーティング</a></h2>
+
+<p>この機能は上述の<a href="#url-rewrite">URLリライト</a>を拡張し、public_html/index.phpを
+    疑似フロントコントローラーして使用します。したがって、URLルーティング機能を使うには、
+    URLリライトを有効にする必要があります。現時点では以下のルールが定義されています。</p>
+
+<table border="1">
+    <thead>
+    <tr><th>ルール</th><th>ルート</th><th>優先順位</th></tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>http://yourdomain/article/[sid]/print</td>
+        <td>http://yourdomain/article.php?story=[sid]&mode=print</td>
+        <td>100</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/article/[sid]</td>
+        <td>http://yourdomain/article.php?story=[sid]</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/archives/@topic/@year/@month</td>
+        <td>http://yourdomain/directory.php?topic=@topic&year=@year&month=@month</td>
+        <td>120</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/page/@page</td>
+        <td>http://yourdomain/staticpages/index.php?page=@page</td>
+        <td>130</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/links/portal/@item</td>
+        <td>http://yourdomain/links/portal.php?what=link&item=@item</td>
+        <td>140</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/links/category/@cat</td>
+        <td>http://yourdomain/links/index.php?category=@cat</td>
+        <td>150</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/topic/@topic</td>
+        <td>http://yourdomain/index.php?topic=@topic</td>
+        <td>160</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>表の1行目をご覧ください。"http://yourdomain/index.php/article/[sid]/print"にアクセスすると、
+    "http://yourdomain/article.php?story=[sid]&mode=print"にリダイレクトされることを意味しています。
+    [sid]は記事のIDです。</p>
+<p>次に3行目をご覧ください。@の後にアルファベットが続くものがプレースホルダーです。たとえば、
+    "http://yourdomain/index.php/archives/all/2016/1" にアクセすると、ルールの中の
+    @topicが"all"に、@year が "2016" に、そして @month が "1" にマッチします。その後、ルートの中の
+    プレースホルダーがマッチした値に置き換えられ、"http://yourdomain/directory.php?topic=all&year=2016&month=1"
+    にリダイレクトされます。</p>
+<p>ルールの中に"/index.php"を含める必要はありません。</p>
+<p>無限ループになるので、ルートを "/index.php" で始めないようにしてください。</p>
+<p>プレースホルダーは@で始まり、アルファベットが続きます。プレースホルダーは大文字・小文字を区別します。</p>
+<p>URLルーティングは逆向きにも働きます。自作のプラグインやカスタム関数の中でURLを出力する時に、
+    COM_buildURL 関数を使い、URLルーティング(admin/router.php)で独自のルールとルートを設定する
+    ことでURLルーティングを行うことができます。</p>
+<p><strong>注意:</strong> この機能は全てのWebサーバーで使えるとは限りません。PHPの
+    $_SERVER['PATH_INFO'] 変数を使用します。サイトを公開する前に検証してください。</p>
+<p><strong>高度な機能:</strong> WebサーバーとしてApacheを使用し、ユーザーがアクセするURLから
+    "index.php" を取り除きたいなら、以下のことを行います。<strong>警告!</strong> Webサーバーの
+    設定を熟知していない場合は、この機能を使わない方が良いでしょう。</p>
+<ol>
+    <li>Webサーバーの rewrite モジュールを有効にします。"httpd.conf" の中で次の行を探します。<br>
+        <code># LoadModule rewrite_module modules/mod_rewrite.so</code><br>
+        そして行頭の#を取り除いてコメントを外します。Webサーバーを再起動するのを忘れないでください。</li>
+    <li>Geeklogをインストールしている公開領域のトップのディレクトリ(lib-common.phpがある場所)に
+        ".htaccess" という名前のファイルを設置し、次の行を追加します。
+    <pre>
+        &lt;IfModule mod_rewrite.c&gt;
+            RewriteEngine On
+            # RewriteBase /
+            # Directs all Geeklog requests through the site index file
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule ^(.*)$ /index.php/$1 [L]
+        &lt;/IfModule&gt;
+    </pre>
+        Geeklogをドキュメントルートのサブディレクトリにインストールしている場合は、
+    <pre>
+            RewriteRule ^(.*)$ /index.php/$1 [L]
+    </pre>を、
+        <pre>
+            RewriteRule ^(.*)$ <strong>[sub_directory]</strong>/index.php/$1 [L]
+        </pre>
+        や、
+        <pre>
+            RewriteRule ^(.*)$ /<strong>[sub_directory]</strong>/index.php/$1 [L]
+        </pre>
+        に変える必要があるでしょう。
+    </li>
+    <li>
+        最後に、管理者としてログインし、コンフィギュレーションでURLルーティングの設定を
+        「有効(index.phpあり)」に変えます。
+    </li>
+</ol>
 
 
 <h2><a name="Localization">ローカリゼーション(Localization)</a></h2>

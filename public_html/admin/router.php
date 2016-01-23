@@ -58,8 +58,7 @@ if (!SEC_inGroup('Root')) {
  */
 function getRouteEditor($rid = 0)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG21, $LANG_ACCESS, $LANG_ROUTER,
-           $LANG_ADMIN, $MESSAGE, $_FINPUT, $securityToken;
+    global $_CONF, $_TABLES, $LANG_ROUTER, $LANG_ADMIN, $MESSAGE, $securityToken;
 
     $retval = '';
 
@@ -212,7 +211,7 @@ function ADMIN_getListFieldRoutes($fieldName, $fieldValue, $A, $iconArray, $extr
  */
 function listRoutes()
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG21, $LANG_ROUTER, $_IMAGE_TYPE, $securityToken;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ROUTER, $_IMAGE_TYPE, $securityToken;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -327,21 +326,30 @@ function saveRoute($rid, $method, $rule, $route, $priority)
         $messageText = $LANG_ROUTER[14];
     } elseif (substr_count($rule, '@') !== substr_count($route, '@')) {
         $messageText = $LANG_ROUTER[15];
-    } elseif (stripos($route, '/index.php') === 0) {
-        $messageText = $LANG_ROUTER[16];
     }
 
-    // If rule doesn't begin with a slash, then fix it silently
+    // If a rule doesn't begin with a slash, then add one silently
     if (strpos($rule, '/') !== 0) {
         $rule = '/' . $rule;
     }
 
-    // If route doesn't begin with a slash, then fix it silently
+    // If a rule starts with "/index.php", then remove it silently
+    if (stripos($rule, '/index.php') === 0) {
+        $rule = preg_replace('|^/index\.php|i', '', $rule);
+    }
+
+    // If a route doesn't begin with a slash, then add one silently
     if (strpos($route, '/') !== 0) {
         $route = '/' . $route;
     }
 
-    // Replace &amp; with & silently
+    // If a route starts with "/index.php", then make it an error to prevent the script
+    // from going an infinite loop
+    if (stripos($route, '/index.php') === 0) {
+        $messageText = $LANG_ROUTER[16];
+    }
+
+    // Replace &amp; with &
     $rule = str_ireplace('&amp;', '&', $rule);
     $route = str_ireplace('&amp;', '&', $route);
 
@@ -456,7 +464,7 @@ function reorderRoutes()
  */
 function moveRoute($rid)
 {
-    global $_CONF, $_TABLES, $LANG_ROUTER, $_FINPUT;
+    global $_TABLES, $_FINPUT;
 
     $rid = intval($rid, 10);
     $direction = $_FINPUT->get('dir', '');
