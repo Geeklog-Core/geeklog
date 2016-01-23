@@ -354,8 +354,8 @@ function saveRoute($rid, $method, $rule, $route, $priority)
     $route = str_ireplace('&amp;', '&', $route);
 
     // Check if placeholders are the same
-    $numPlaceHoldersInRule = preg_match_all(Router::PATTERN_PLACEHOLDER, $rule, $matchesRule, PREG_SET_ORDER);
-    $numPlaceHoldersInRoute = preg_match_all(Router::PATTERN_PLACEHOLDER, $route, $matchesRoute, PREG_SET_ORDER);
+    $numPlaceHoldersInRule = preg_match_all(Router::PLACEHOLDER_MATCH, $rule, $matchesRule, PREG_SET_ORDER);
+    $numPlaceHoldersInRoute = preg_match_all(Router::PLACEHOLDER_MATCH, $route, $matchesRoute, PREG_SET_ORDER);
 
     if ($numPlaceHoldersInRule === $numPlaceHoldersInRoute) {
         if ($numPlaceHoldersInRule > 0) {

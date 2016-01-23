@@ -18,7 +18,11 @@ class Router
     const ROUTING_WITHOUT_INDEX_PHP = 2;
 
     // Placeholder pattern
-    const PATTERN_PLACEHOLDER = '|(@[a-zA-Z][0-9a-zA-Z_]*)|';
+    const PLACEHOLDER_MATCH = '|(@[a-zA-Z][0-9a-zA-Z_]*)|';
+    const PLACEHOLDER_REPLACE = '([^/&=?#]+)';
+
+    // Values to escape pattern
+    const VALUE_MATCH = '|[^0-9a-zA-Z_.-]|';
 
     // Default priority
     const DEFAULT_PRIORITY = 100;
@@ -39,7 +43,7 @@ class Router
     }
 
     /**
-     * Dispatch the client
+     * Dispatch the client based on $_SERVER['PATH_INFO']
      *
      * @return bool when not dispatched
      */
@@ -128,11 +132,12 @@ class Router
                 header('Location: ' . $route);
 
                 COM_errorLog(__METHOD__ . ': somehow could not redirect');
+
                 return false;
             }
 
             // Try comparison with placeholders
-            if (preg_match_all(self::PATTERN_PLACEHOLDER, $rule, $matches, PREG_SET_ORDER)) {
+            if (preg_match_all(self::PLACEHOLDER_MATCH, $rule, $matches, PREG_SET_ORDER)) {
                 // Escape a period and a question mark so that they can safely be used in a regular expression
                 $rule = str_replace(array('.', '?'), array('\.', '\?'), $rule);
                 $placeHolders = array();
@@ -140,7 +145,7 @@ class Router
                 // Replace placeholders in a rule with ones for regular expressions
                 foreach ($matches as $match) {
                     $placeHolders[] = $match[1];
-                    $rule = str_replace($match[1], '([^/&=?#]+)', $rule);
+                    $rule = str_replace($match[1], self::PLACEHOLDER_REPLACE, $rule);
                 }
 
                 $rule = '|\A' . $rule . '\z|i';
@@ -152,7 +157,10 @@ class Router
                 array_shift($values);
 
                 foreach ($values as $value) {
-                    $value = urlencode($value);
+                    if (preg_match(self::VALUE_MATCH, $value)) {
+                        $value = urlencode($value);
+                    }
+
                     $placeHolder = array_shift($placeHolders);
                     $route = str_replace($placeHolder, $value, $route);
                 }
@@ -183,7 +191,8 @@ class Router
     /**
      * Convert a URL
      *
-     * e.g. [SITE_URL]/article.php?story=welcome -> [SITE_URL]/index.php/article/welcome or [SITE_URL]/article/welcome
+     * e.g. [SITE_URL]/article.php?story=welcome
+     *   -> [SITE_URL]/index.php/article/welcome or [SITE_URL]/article/welcome
      *
      * @param  string $url
      * @param  int    $requestMethod
@@ -195,7 +204,7 @@ class Router
 
         $originalUrl = $url;
 
-        // URL rewrite is disabled
+        // URL rewriting is disabled
         if (!$_CONF['url_rewrite']) {
             return $originalUrl;
         }
@@ -213,7 +222,7 @@ class Router
         }
 
         // Strip $url of $_CONF['site_url']
-        $url = str_replace($_CONF['site_url'], '', $url);
+        $url = str_ireplace($_CONF['site_url'], '', $url);
 
         // Check for $requestMethod
         $requestMethod = intval($requestMethod, 10);
@@ -261,17 +270,18 @@ class Router
             }
 
             // Try comparison with placeholders
-            if (preg_match_all(self::PATTERN_PLACEHOLDER, $route, $matches, PREG_SET_ORDER)) {
+            if (preg_match_all(self::PLACEHOLDER_MATCH, $route, $matches, PREG_SET_ORDER)) {
                 $placeHolders = array();
+
+                // Escape '.', '?' and '+' in the route so that they can safely be used in a regular expression
+                $route = str_replace(array('.', '?', '+'), array('\.', '\?', '\+'), $route);
 
                 // Replace placeholders in a route with ones for regular expressions
                 foreach ($matches as $match) {
                     $placeHolders[] = $match[1];
-                    $route = str_replace($match[1], '([^/&=?#]+)', $route);
+                    $route = str_replace($match[1], self::PLACEHOLDER_REPLACE, $route);
                 }
 
-                // Escape a period and a question mark so that they can safely be used in a regular expression
-                $route = str_replace(array('.', '?'), array('\.', '\?'), $route);
                 $route = '|\A' . $route . '\z|i';
 
                 if (!preg_match($route, $url, $values)) {
@@ -281,7 +291,10 @@ class Router
                 array_shift($values);
 
                 foreach ($values as $value) {
-                    $value = urlencode($value);
+                    if (preg_match(self::VALUE_MATCH, $value)) {
+                        $value = urlencode($value);
+                    }
+
                     $placeHolder = array_shift($placeHolders);
                     $rule = str_replace($placeHolder, $value, $rule);
                 }
