@@ -343,9 +343,9 @@ function saveRoute($rid, $method, $rule, $route, $priority)
         $route = '/' . $route;
     }
 
-    // If a route starts with "/index.php", then make it an error to prevent the script
+    // If a route starts with "/index.php/", then make it an error to prevent the script
     // from going an infinite loop
-    if (stripos($route, '/index.php') === 0) {
+    if (stripos($route, '/index.php/') === 0) {
         $messageText = $LANG_ROUTER[16];
     }
 

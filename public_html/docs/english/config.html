@@ -2154,7 +2154,8 @@ with your site.</p>
     and @month matches "1" in the rule.  Then, all placeholders in the route will be replaced with
     the matched values.  And you will be redirected to "http://yourdomain/directory.php?topic=all&year=2016&month=1".</p>
 <p>You don't have to include "/index.php" in a rule.</p>
-<p>You must not start a route with "/index.php", since this will cause an infinite loop.</p>
+<p>You must not start a route with "/index.php/", since this will cause an infinite loop.  However, you can start
+    with a route with "/index.php?".</p>
 <p>A placeholder starts with @ and an alphabetical letter or letters follow it.
     Placeholders are case-sensitive.</p>
 <p>URL Routing works in the reverse way as well.  When you output a URL in your plugin or custom
