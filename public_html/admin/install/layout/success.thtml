@@ -1,0 +1,26 @@
+<div class="block-center">
+    <h2>{lang_success_1}{version}{lang_success_2}</h2>
+    <div class="block-center-content">
+        <p>{lang_success_3}{lang_message}{lang_success_4}</p>
+
+        {!if is_install}
+        <p>{lang_success_5}</p>
+        <p>{lang_success_6}<strong>{lang_success_7}</strong><br{xhtml}>
+        {lang_success_8}<strong>{lang_success_9}</strong></p><br{xhtml}>
+        {!endif!}
+
+        <h2>{lang_success_10}</h2>
+        <p>{lang_success_11}<strong>{!if is_install}3{!else!}2{!endif!}</strong>{lang_success_12}:</p>
+        <ul>
+            <li>{lang_success_13}<tt dir="ltr">{install_path}</tt>.</li>
+            {!if is_install}
+            <li><a href="{conf_site_url}/usersettings.php">{lang_success_14}<strong>{lang_success_7}</strong>{lang_success_15}</a></li>
+            {!endif!}
+            <li>{lang_success_16}<tt dir="ltr">{conf_path}db-config.php</tt>{lang_success_17}<tt dir="ltr">{conf_path_html}siteconfig.php</tt>{lang_success_18} 644.</li>
+        </ul>
+
+        {!if older_geeklog}
+        <p>{lang_success_19}</p>
+        {!endif!}
+    </div>
+</div>

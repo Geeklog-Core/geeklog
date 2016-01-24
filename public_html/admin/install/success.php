@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | success.php                                                               |
 // |                                                                           |
 // | Page that is displayed upon a successful Geeklog installation or upgrade  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2016 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -35,6 +35,7 @@
 // +---------------------------------------------------------------------------+
 
 require_once '../../lib-common.php';
+
 if (!defined('XHTML')) {
     define('XHTML', ' /');
 }
@@ -42,6 +43,7 @@ if (!defined('XHTML')) {
 /**
  * Helper function to figure out the actual names of the 'admin/install' dir
  *
+ * @return string the actual names of the 'admin/install' dir
  */
 function SUCCESS_getInstallPath()
 {
@@ -49,6 +51,7 @@ function SUCCESS_getInstallPath()
     $path = str_replace('//', '/', $path);
     $parts = explode('/', $path);
     $num_parts = count($parts);
+
     if (($num_parts < 3) || ($parts[$num_parts - 1] != 'success.php')) {
         return 'admin/install';
     }
@@ -56,61 +59,75 @@ function SUCCESS_getInstallPath()
     return $parts[$num_parts - 3] . '/' . $parts[$num_parts - 2];
 }
 
-$type = (isset($_GET['type']) && !empty($_GET['type']))
-      ? $_GET['type'] : 'install';
-$language = (isset($_GET['language']) && !empty($_GET['language']))
-          ? $_GET['language'] : 'english';
+$type = $_FINPUT->get('type', 'install');
+$language = $_FINPUT->get('language', 'english');
 $language = preg_replace('/[^a-z0-9\-_]/', '', $language);
-require_once 'language/' . $language . '.php';
+$languagePath = dirname(__FILE__) . '/language/' . $language . '.php';
+
+if (is_readable($languagePath)) {
+    require_once dirname(__FILE__) . '/language/' . $language . '.php';
+} else {
+    require_once dirname(__FILE__) . '/language/english.php';
+}
 
 // enable detailed error reporting
 $_CONF['rootdebug'] = true;
 
-$display = COM_siteHeader('menu', $LANG_SUCCESS[0]);
-$display .= COM_startBlock($LANG_SUCCESS[1] . VERSION . $LANG_SUCCESS[2]);
+// Prevent the template class from creating a cache file
+$_CONF['cache_templates'] = false;
 
-$display .= '<p>' . $LANG_SUCCESS[3];
+$T = COM_newTemplate(dirname(__FILE__) . '/layout');
+$T->set_file('success', 'success.thtml');
 
-switch ($type) {
-case 'install':
-    $display .= $LANG_SUCCESS[20];
-    break;
-case 'upgrade':
-    $display .= $LANG_SUCCESS[21];
-    break;
-case 'migrate':
-    $display .= $LANG_SUCCESS[22];
-    break;
+if ($type === 'install') {
+    $message = $LANG_SUCCESS[20];
+} elseif ($type === 'upgrade') {
+    $message = $LANG_SUCCESS[21];
+} else {
+    $message = $LANG_SUCCESS[22];
 }
 
-$display .= $LANG_SUCCESS[4] . '</p>' ;
+$T->set_var(array(
+    'conf_path'       => $_CONF['path'],
+    'conf_path_html'  => $_CONF['path_html'],
+    'conf_site_url'   => $_CONF['site_url'],
+    'is_install'      => ($type === 'install'),
+    'lang_message'    => $message,
+    'lang_success_1'  => $LANG_SUCCESS[1],
+    'lang_success_2'  => $LANG_SUCCESS[2],
+    'lang_success_3'  => $LANG_SUCCESS[3],
+    'lang_success_4'  => $LANG_SUCCESS[4],
+    'lang_success_5'  => $LANG_SUCCESS[5],
+    'lang_success_6'  => $LANG_SUCCESS[6],
+    'lang_success_7'  => $LANG_SUCCESS[7],
+    'lang_success_8'  => $LANG_SUCCESS[8],
+    'lang_success_9'  => $LANG_SUCCESS[9],
+    'lang_success_10' => $LANG_SUCCESS[10],
+    'lang_success_11' => $LANG_SUCCESS[11],
+    'lang_success_12' => $LANG_SUCCESS[12],
+    'lang_success_13' => $LANG_SUCCESS[13],
+    'lang_success_14' => $LANG_SUCCESS[14],
+    'lang_success_15' => $LANG_SUCCESS[15],
+    'lang_success_16' => $LANG_SUCCESS[16],
+    'lang_success_17' => $LANG_SUCCESS[17],
+    'lang_success_18' => $LANG_SUCCESS[18],
+    'lang_success_19' => $LANG_SUCCESS[19],
+    'lang_success_20' => $LANG_SUCCESS[20],
+    'lang_success_21' => $LANG_SUCCESS[21],
+    'lang_success_22' => $LANG_SUCCESS[22],
+    'install_path'    => $_CONF['path_html'] . SUCCESS_getInstallPath(),
+    'older_geeklog'   => (DB_count($_TABLES['users'], 'username', 'NewAdmin') > 0),
+    'type'            => $type,
+    'version'         => VERSION,
+));
 
-if ($type == 'install') {
-    $display .= '<p>' . $LANG_SUCCESS[5] . '</p>
-    <p>' . $LANG_SUCCESS[6] . ' <strong>' . $LANG_SUCCESS[7] . '</strong><br' . XHTML . '>
-    ' . $LANG_SUCCESS[8] . ' <strong>' . $LANG_SUCCESS[9] . '</strong></p> <br' . XHTML . '>';
-}
-
-$display .= '<h2>' . $LANG_SUCCESS[10] . '</h2>
-<p>' . $LANG_SUCCESS[11] . ' <strong>' . (($type == 'install') ? '3' : '2') . '</strong> ' . $LANG_SUCCESS[12] . ':</p>
-<ul>
-<li>' . $LANG_SUCCESS[13] . ' <tt dir="ltr">' . $_CONF['path_html'] . SUCCESS_getInstallPath() . '</tt>.</li>';
-
-if ($type == 'install') {
-    $display .= "<li><a href=\"{$_CONF['site_url']}/usersettings.php\">" . $LANG_SUCCESS[14] . ' <strong>' . $LANG_SUCCESS[7] . '</strong> ' . $LANG_SUCCESS[15] . '</a></li>';
-}
-
-$display .= '<li>' . $LANG_SUCCESS[16] . ' <tt dir="ltr">' . $_CONF['path'] . 'db-config.php</tt> ' . $LANG_SUCCESS[17] . ' <tt dir="ltr">' . $_CONF['path_html'] . 'siteconfig.php</tt> ' . $LANG_SUCCESS[18] . ' 644.</li>
-</ul>';
-
-// note for those upgrading from Geeklog 1.2.5-1 or older
-if (DB_count($_TABLES['users'], 'username', 'NewAdmin') > 0) {
-    $display .= '<p>' . $LANG_SUCCESS[19] . '</p>.';
-}
-
-$display .= COM_endBlock();
-$display .= COM_siteFooter();
-
-echo $display;
-
-?>
+$T->parse('output', 'success');
+$content = $T->finish($T->get_var('output'));
+$doc = COM_createHTMLDocument(
+    $content,
+    array(
+        'what'      => 'menu',
+        'pagetitle' => $LANG_SUCCESS[0],
+    )
+);
+COM_output($doc);
