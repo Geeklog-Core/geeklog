@@ -1,5 +1,5 @@
 {doctype}
-<html{html_attribute}{xmlns}>
+<html{lang_attribute}{xmlns}>
 
 <head>
 <meta charset="{charset}"{xhtml}>
