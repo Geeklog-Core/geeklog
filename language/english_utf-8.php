@@ -564,11 +564,13 @@ $LANG09 = array(
     65 => 'Story',
     66 => 'Comment',
     67 => 'Show %d Results',
-    68 => 'Sort By',
+    68 => 'Sort by',
     69 => 'Titles Only',
     70 => 'Not available ...',
-    71 => 'asc',
-    72 => 'desc'
+    71 => 'Asc',
+    72 => 'Desc',
+    73 => 'Submit',
+    74 => 'Limit Results'
 );
 
 ###############################################################################
