@@ -395,10 +395,12 @@ class config {
         $escaped_name = DB_escapeString($name);
         $escaped_grp = DB_escapeString($group);
 
-        if (empty($tab_id) && $tab_id !== '0') {
+        if (empty($tab_id) && ($tab_id !== '0')) {
             $tab_id = DB_getItem($_TABLES['conf_values'], 'tab',
                     "name = '$escaped_name' AND group_name = '$escaped_grp'");
-            if (empty($tab_id && $tab_id !== '0')) return false;
+            if (empty($tab_id) && ($tab_id !== '0')) {
+                return false;
+            }
         }
 
         // check if current user other than Root has access to
@@ -440,10 +442,12 @@ class config {
         $escaped_name = DB_escapeString($name);
         $escaped_grp = DB_escapeString($group);
 
-        if (empty($tab_id) && $tab_id !== '0') {
+        if (empty($tab_id) && ($tab_id !== '0')) {
             $tab_id = DB_getItem($_TABLES['conf_values'], 'tab',
                     "name = '$escaped_name' AND group_name = '$escaped_grp'");
-            if (empty($tab_id && $tab_id !== '0')) return false;
+            if (empty($tab_id) && ($tab_id !== '0')) {
+                return false;
+            }
         }
 
         // check if current user other than Root has access to
