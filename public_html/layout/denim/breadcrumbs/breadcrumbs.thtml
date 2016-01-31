@@ -1,5 +1,0 @@
-<!-- Start of Breadcrumbs Navigation -->
-<div {!if microdata}itemscope itemtype="http://data-vocabulary.org/Breadcrumb" {!endif}class="bc_navigation">
-    {breadcrumbs_list}
-</div>
-<!-- End of Breadcrumbs Navigation -->
