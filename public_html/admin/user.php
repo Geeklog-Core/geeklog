@@ -824,7 +824,7 @@ function batchdelete()
             $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[67], 'field' => 'phantom_date', 'sort' => true);
             $list_sql = ", UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) as phantom_date";
-            $filter_sql = "lastlogin = CAST(0 AS VARCHAR) AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
+            $filter_sql = "lastlogin = CAST(0 AS CHAR) AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
             $sort = 'regdate';
             break;
         case 'short':
@@ -833,7 +833,7 @@ function batchdelete()
             $header_arr[] = array('text' => $LANG28[68], 'field' => 'online_hours', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
             $list_sql = ", (lastlogin - UNIX_TIMESTAMP(regdate)) AS online_hours, (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
-            $filter_sql = "lastlogin > CAST(0 AS VARCHAR) AND lastlogin - UNIX_TIMESTAMP(regdate) < 86400 "
+            $filter_sql = "lastlogin > CAST(0 AS CHAR) AND lastlogin - UNIX_TIMESTAMP(regdate) < 86400 "
                          . "AND UNIX_TIMESTAMP() - lastlogin > " . ($usr_time * 2592000) . " AND";
             $sort = 'lastlogin';
             break;
@@ -841,7 +841,7 @@ function batchdelete()
             $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
             $list_sql = ", (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
-            $filter_sql = "lastlogin > CAST(0 AS VARCHAR) AND (UNIX_TIMESTAMP() - lastlogin) > " . ($usr_time * 2592000) . " AND";
+            $filter_sql = "lastlogin > CAST(0 AS CHAR) AND (UNIX_TIMESTAMP() - lastlogin) > " . ($usr_time * 2592000) . " AND";
             $sort = 'lastlogin';
             break;
         case 'recent':
