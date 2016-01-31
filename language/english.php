@@ -242,7 +242,7 @@ $LANG03 = array(
     42 => 'Unsubscribe',
     43 => 'Unsubscribe from reply notifications',
     44 => 'Your Name',
-    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment."
+    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment.",
 );
 
 ###############################################################################
@@ -1454,6 +1454,7 @@ $MESSAGE = array(
     118 => 'Click to select a date',
     119 => 'More..',
     120 => 'Send this?',
+    130 => 'Deleted comment(s).',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.'
@@ -1824,7 +1825,8 @@ $LANG_ADMIN = array (
     'token_expiry'  => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.',
     'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
     'reauth_msg'    => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
-    'authenticate'  => 'Authenticate'
+    'authenticate'  => 'Authenticate',
+    'approve'       => 'Approve',
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
