@@ -756,7 +756,7 @@ function deleteTopic ($tid)
     foreach ($object_tables as $object_table) {
         $sql = "SELECT {$object_tables_id[$object_table]}, ta.tdefault
             FROM $object_table, {$_TABLES['topic_assignments']} ta
-            WHERE ta.type = '{$object_type[$object_table]}' AND ta.id = CAST({$object_tables_id[$object_table]} AS VARCHAR) AND ta.tid = '$tid'";
+            WHERE ta.type = '{$object_type[$object_table]}' AND ta.id = CAST({$object_tables_id[$object_table]} AS CHAR) AND ta.tid = '$tid'";
         $result = DB_query ($sql);
         $numStories = DB_numRows($result);
         for ($i = 0; $i < $numStories; $i++) {
