@@ -86,7 +86,7 @@ function getCids() {
  */
 function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $extra = '')
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG01, $LANG03, $LANG_STATIC, $LANG_POLLS, $_IMAGE_TYPE, $securityToken;
+    global $_CONF, $LANG01, $LANG_STATIC, $LANG_POLLS;
     static $encoding = null;
 
     if ($encoding === null) {
@@ -98,9 +98,17 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $e
     }
 
     switch ($fieldName) {
-        case 'edit':
+        case 'selector':
             $cid = $A['cid'];
             $fieldValue = '<input type="checkbox" name="cids[]" value="' . $cid . '"' . XHTML . '>';
+            break;
+
+        case 'edit':
+            $cid = $A['cid'];
+            $fieldValue = '<a href="' . $_CONF['site_url']
+                . '/comment.php?mode=editsubmission&amp;cid='
+                . htmlspecialchars($cid, ENT_QUOTES, $encoding) . '" title="' . $LANG01[4] . '">'
+                . $iconArray['edit'] . '</a>';
             break;
 
         case 'type':
@@ -145,7 +153,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $e
             break;
 
         case 'comment':
-            $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
+//            $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
             break;
 
         case 'uid':
@@ -170,6 +178,22 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $e
     }
 
     return $fieldValue;
+}
+
+/**
+ * Field function
+ *
+ * @param  string $fieldName
+ * @param  string $fieldValue
+ * @param  array  $A
+ * @param  array  $iconArray
+ * @param  string $extra
+ * @return string
+ * @throws Exception
+ */
+function ADMIN_getListField_commentSubmissions($fieldName, $fieldValue, $A, $iconArray, $extra = '')
+{
+    return ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $extra);
 }
 
 /**
@@ -239,6 +263,11 @@ function listComments()
     $headerArray = array(      # display 'text' and use table field 'field'
         array(
             'text'  => '<input type="checkbox" name="select_all" id="select_all"' . XHTML . '>',
+            'field' => 'selector',
+            'sort'  => false,
+        ),
+        array(
+            'text'  => $LANG01[4],
             'field' => 'edit',
             'sort'  => false,
         ),
@@ -283,7 +312,7 @@ function listComments()
 
     $textArray = array(
         'has_extras' => true,
-        'title'      => $LANG03[100],
+        'title'      => $LANG03[101],
         'form_url'   => $_CONF['site_admin_url'] . '/comment.php',
     );
 
@@ -346,12 +375,32 @@ function listComments()
         'bottom' => $actionSelector . $securityTokenTag,
     );
 
-    $retval .= ADMIN_list(
+    $commentList = ADMIN_list(
         'comments', 'ADMIN_getListField_comments', $headerArray, $textArray,
         $queryArray, $defaultSortArray, $filter, $securityToken, $options, $formArray
     );
 
-    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+    // Comment submissions
+    $textArray = array(
+        'has_extras' => true,
+        'title'      => $LANG29[41],
+        'form_url'   => $_CONF['site_admin_url'] . '/comment.php',
+    );
+
+    $queryArray = array(
+        'table'          => 'commentsubmissions',
+        'sql'            => "SELECT * FROM {$_TABLES['commentsubmissions']} WHERE (1 = 1) ",
+        'query_fields'   => array('type', 'sid', 'date', 'title', 'comment', 'uid', 'ipaddress'),
+        'default_filter' => $sqlForType . COM_getPermSql('AND'),
+    );
+
+    $submissionList = ADMIN_list(
+        'comments', 'ADMIN_getListField_commentSubmissions', $headerArray, $textArray,
+        $queryArray, $defaultSortArray, $filter, $securityToken, $options, $formArray
+    );
+
+    $retval .= $submissionList . $commentList
+        . COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
     $_SCRIPTS->setJavaScriptFile('comment', '/javascript/comment.js', true);
 
     return $retval;
@@ -506,5 +555,5 @@ switch ($action) {
 }
 
 $content = COM_showMessageFromParameter() . listComments();
-$display = COM_createHTMLDocument($content, array('pagetitle' => $LANG21[19]));
+$display = COM_createHTMLDocument($content, array('pagetitle' => $LANG03[100]));
 COM_output($display);
