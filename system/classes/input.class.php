@@ -76,12 +76,20 @@ class GL_Input
     /**
      * Apply basic filter if necessary
      *
-     * @param     $value
-     * @return    string
+     * @param   string|array  $value
+     * @return  string|array
      */
     private function filter($value)
     {
-        return $this->applyFilter ? COM_applyBasicFilter($value) : $value;
+        if ($this->applyFilter) {
+            if (is_array($value)) {
+                $value = array_map(array($this, 'filter'), $value);
+            } else {
+                $value = COM_applyBasicFilter($value);
+            }
+        }
+
+        return $value;
     }
 
     /**
