@@ -57,6 +57,23 @@ if (!SEC_hasRights('comment.moderate')) {
 require_once $_CONF['path_system'] . 'lib-comment.php';
 
 /**
+ * Return comment IDs being selected in the list
+ *
+ * @return array of int
+ */
+function getCids() {
+    global $_FINPUT;
+
+    $cids = $_FINPUT->post('cids', array());
+
+    if (count($cids) > 0) {
+        $cids = array_map('intval', $cids);
+    }
+
+    return $cids;
+}
+
+/**
  * Field function
  *
  * @param  string $fieldName
@@ -65,15 +82,87 @@ require_once $_CONF['path_system'] . 'lib-comment.php';
  * @param  array  $iconArray
  * @param  string $extra
  * @return string
+ * @throws Exception
  */
 function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $extra = '')
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG03, $_IMAGE_TYPE, $securityToken;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG01, $LANG03, $LANG_STATIC, $LANG_POLLS, $_IMAGE_TYPE, $securityToken;
+    static $encoding = null;
+
+    if ($encoding === null) {
+        $encoding = COM_getEncodingt();
+    }
+
+    if (!in_array($A['type'], array('article', 'staticpages', 'polls'))) {
+        throw new Exception(__FUNCTION__ . ': unknown type "' . $A['type'] . '" was given');
+    }
 
     switch ($fieldName) {
         case 'edit':
             $cid = $A['cid'];
             $fieldValue = '<input type="checkbox" name="cids[]" value="' . $cid . '"' . XHTML . '>';
+            break;
+
+        case 'type':
+            switch ($fieldValue) {
+                case 'article':
+                    $fieldValue = $LANG01[11];
+                    break;
+
+                case 'staticpages':
+                    $fieldValue = $LANG_STATIC['staticpages'];
+                    break;
+
+                case 'polls':
+                    $fieldValue = $LANG_POLLS['poll'];
+                    break;
+            }
+            break;
+
+        case 'sid':
+            $what = 'title,url';
+
+            switch ($A['type']) {
+                case 'article':
+                    list($title, $url) = plugin_getiteminfo_story($fieldValue, $what);
+                    break;
+
+                case 'staticpages':
+                    list($title, $url) = plugin_getiteminfo_staticpages($fieldValue, $what);
+                    break;
+
+                case 'polls':
+                    list($title, $url) = plugin_getiteminfo_polls($fieldValue, $what);
+                    break;
+            }
+
+            $fieldValue = '<a href="' . $url . '">' . htmlspecialchars($title, ENT_QUOTES, $encoding) . '</a>';
+            break;
+
+        case 'title':
+            $fieldValue = '<a href="' . $_CONF['site_url'] . '/comment.php?mode=view&amp;cid=' . $A['cid'] . '">'
+                . htmlspecialchars($fieldValue, ENT_QUOTES, $encoding) . '</a>';
+            break;
+
+        case 'comment':
+            $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
+            break;
+
+        case 'uid':
+            $uid = intval($fieldValue, 10);
+            $userName = trim($A['name']);
+            $fieldValue = COM_getDisplayName($uid, $userName);
+            $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
+
+            if ($uid > 1) {
+                $fieldValue = '<a href="' . $_CONF['site_url']
+                    . '/users.php?mode=profile&amp;uid=' . $uid . '">' . $fieldValue . '</a>';
+            }
+
+            break;
+
+        case 'ipaddress':
+            $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
             break;
 
         default:
@@ -124,9 +213,10 @@ function getTypeSelector($itemType)
  */
 function listComments()
 {
-    global $_CONF, $_PLUGINS, $_SCRIPTS, $_TABLES, $_FINPUT, $LANG_ADMIN, $LANG03, $_IMAGE_TYPE, $securityToken;
+    global $_CONF, $_PLUGINS, $_SCRIPTS, $_TABLES, $_FINPUT, $LANG_ADMIN, $LANG01, $LANG03, $LANG28, $LANG29, $_IMAGE_TYPE, $securityToken;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
+    require_once $_CONF['path_system'] . 'lib-story.php';
 
     $securityToken = SEC_createToken();
 
@@ -142,20 +232,51 @@ function listComments()
         . ADMIN_createMenu(
             $menu_arr,
             $LANG03[100],
-            $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE
+            $_CONF['layout_url'] . '/images/icons/comment.' . $_IMAGE_TYPE
         );
 
     // Regular Comments
     $headerArray = array(      # display 'text' and use table field 'field'
-        array('text' => '<input type="checkbox" name="select_all" id="select_all"' . XHTML . '>', 'field' => 'edit', 'sort' => false),
-        array('text' => 'Type', 'field' => 'type', 'sort' => true),
-        array('text' => 'Sid', 'field' => 'sid', 'sort' => true),
-        array('text' => 'Date', 'field' => 'date', 'sort' => true),
-        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-        array('text' => 'Comment', 'field' => 'comment', 'sort' => true),
-        array('text' => 'Name', 'field' => 'name', 'sort' => true),
-        array('text' => 'Uid', 'field' => 'uid', 'sort' => true),
-        array('text' => 'IP Address', 'field' => 'ipaddress', 'sort' => true),
+        array(
+            'text'  => '<input type="checkbox" name="select_all" id="select_all"' . XHTML . '>',
+            'field' => 'edit',
+            'sort'  => false,
+        ),
+        array(
+            'text'  => $LANG_ADMIN['type'],
+            'field' => 'type',
+            'sort'  => true,
+        ),
+        array(
+            'text'  => $LANG29[36],
+            'field' => 'sid',
+            'sort'  => true,
+        ),
+        array(
+            'text'  => $LANG29[14],
+            'field' => 'date',
+            'sort'  => true,
+        ),
+        array(
+            'text'  => $LANG_ADMIN['title'],
+            'field' => 'title',
+            'sort'  => true,
+        ),
+        array(
+            'text'  => $LANG03[9],
+            'field' => 'comment',
+            'sort'  => true,
+        ),
+        array(
+            'text'  => $LANG28[3],
+            'field' => 'uid',
+            'sort'  => true,
+        ),
+        array(
+            'text'  => $LANG03[105],
+            'field' => 'ipaddress',
+            'sort'  => true,
+        ),
     );
 
     $defaultSortArray = array('field' => 'date', 'direction' => 'desc');
@@ -199,21 +320,30 @@ function listComments()
     $queryArray = array(
         'table'          => 'comments',
         'sql'            => "SELECT * FROM {$_TABLES['comments']} WHERE (1 = 1) ",
-        'query_fields'   => array('type', 'sid', 'date', 'title', 'comment', 'name', 'uid', 'ipaddress'),
+        'query_fields'   => array('type', 'sid', 'date', 'title', 'comment', 'uid', 'ipaddress'),
         'default_filter' => $sqlForType . COM_getPermSql('AND'),
     );
 
     $filter = getTypeSelector($itemType);
     $options = array();
-    $actionSelector = '<select name="bulk_action">' . LB
-        . '<option value="bulk_delete">Delete</option>' . LB
-        . '<option value="bulk_ban">Ban</option>' . LB
-        . '</select>' . LB
-        . '<input type="submit" name="submit" value="Execute"' . XHTML . '>';
+    $actionSelector = '<select name="bulk_action" id="bulk_action">' . LB
+        . '<option value="do_nothing">' . $LANG03[102] . '</option>' . LB
+        . '<option value="bulk_approve">' . $LANG29[1] . '</option>' . LB
+        . '<option value="bulk_delete">' . $LANG29[2] . '</option>' . LB
+        . '<option value="bulk_ban_user">' . $LANG03[103] . '</option>' . LB;
 
+    if (in_array('spamx', $_PLUGINS)) {
+        $actionSelector .= '<option value="bulk_ban_ip_address">' . $LANG03[104] . '</option>' . LB;
+    }
+
+    $actionSelector .= '</select>' . LB
+        . '<input type="submit" name="submit" id="bulk_action_submit" value="'
+        . $LANG_ADMIN['submit'] . '"' . XHTML . '>' . LB;
+    $securityTokenTag = '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+        . $securityToken . '"' . XHTML . '>' . LB;
     $formArray = array(
         'top'    => '',
-        'bottom' => $actionSelector,
+        'bottom' => $actionSelector . $securityTokenTag,
     );
 
     $retval .= ADMIN_list(
@@ -222,10 +352,8 @@ function listComments()
     );
 
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
-    $_SCRIPTS->setJavaScript('jQuery("#select_all").on("change", function (e) {
-        jQuery("input[name=cids\[\]]").checked = e.target.checked;
-    });
-    ');
+    $_SCRIPTS->setJavaScriptFile('comment', '/javascript/comment.js', true);
+
     return $retval;
 }
 
@@ -234,7 +362,7 @@ function listComments()
  *
  * @return   string          HTML redirect or error message
  */
-function deleteComment()
+function deleteComments()
 {
     global $_CONF, $_TABLES, $_USER, $_FINPUT, $LANG03;
 
@@ -269,42 +397,114 @@ function deleteComment()
 
 /**
  * Approve a comment
- *
- * @param    int $cid id of comment to delete
- * @return   string          HTML redirect or error message
  */
-function approveComment($cid = 0)
+function approveComments()
 {
-    $cid = intval($cid, 10);
-    CMT_approveModeration($cid);
+    $cids = getCids();
+
+    if (count($cids) > 0) {
+        foreach ($cids as $cid) {
+            CMT_approveModeration($cid);
+        }
+    }
+}
+
+/**
+ * Ban users
+ */
+function banUsers() {
+    global $_TABLES, $_USER;
+
+    $cids = getCids();
+
+    if (count($cids) > 0) {
+        $currentUid = $_USER['uid'];
+        $sql = "SELECT uid FROM {$_TABLES['comments']} "
+            . "WHERE (uid <> 1) AND (uid <> {$currentUid}) AND "
+            . " (cid IN (" . implode(',', $cids) . "))";
+        $result = DB_query($sql);
+        $uids = array();
+
+        while (($A = DB_fetchArray($result, false)) !== false) {
+            $uids[] = $A['uid'];
+        }
+
+        if (count($uids) > 0) {
+            $sql = "UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_DISABLED
+                . " WHERE (uid IN (" . implode(',', $uids) . "))";
+            DB_query($sql);
+        }
+    }
+}
+
+/**
+ * Ban IP Addresses being selected with the Spamx plugin
+ *
+ * @return bool  true = success, false = otherwise
+ */
+function banIpAddresses() {
+    global $_PLUGINS, $_TABLES;
+
+    $retval = false;
+
+    if (!in_array('spamx', $_PLUGINS)) {
+        COM_errorLog(__FUNCTION__ . ': Spmax plugin is not installed or disabled.');
+        return $retval;
+    }
+
+    $cids = getCids();
+
+    if (count($cids) > 0) {
+        $sql = "SELECT DISTINCT ipaddress FROM {$_TABLES['comments']} "
+            . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
+            . " (cid IN (" . implode(',', $cids) . "))";
+        $result = DB_query($sql);
+
+        if (!DB_error()) {
+            $ipAddresses = array();
+
+            while (($A = DB_fetchArray($result, false)) !== false) {
+                $ipAddresses[] = $A['ipaddress'];
+            }
+
+            foreach ($ipAddresses as $ipAddress) {
+                $sql = "INSERT INTO {$_TABLES['spamx']} (name, value) "
+                    . "VALUES ('IP', '" .  DB_escapeString($ipAddress) . "')";
+                DB_query($sql);
+            }
+
+            $retval = true;
+        }
+    }
+
+    return $retval;
 }
 
 // MAIN
-$mode = $_FINPUT->get('mode', $_INPUT->post('mode', ''));
-$cid = $_FINPUT->get('cid' . $_FINPUT->post('cid', 0));
-$cid = intval($cid, 10);
+$action = $_FINPUT->post('bulk_action', '');
 
-switch ($mode) {
-    case $LANG_ADMIN['delete']:
-        deleteComment();
+switch ($action) {
+    case 'bulk_approve':
+        approveComments();
         break;
 
-    case $LANG_ADMIN['approve']:
-        $content = '';
-
-        if (SEC_checkToken()) {
-            $content = approveComment($cid);
-        }
-
-        $content .= listComments();
-        $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG21[19]));
+    case 'bulk_delete':
+        deleteComments();
         break;
 
-    default:// 'cancel' or no mode at all
-        $content = COM_showMessageFromParameter()
-            . listComments();
-        $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG21[19]));
+    case 'bulk_ban_user':
+        banUsers();
+        break;
+
+    case 'bulk_ban_ip_address':
+        banIpAddresses();
+        break;
+
+    default:
+        // Do nothing here
         break;
 }
 
+$content = COM_showMessageFromParameter() . listComments();
+$display = COM_createHTMLDocument($content, array('pagetitle' => $LANG21[19]));
 COM_output($display);

@@ -243,6 +243,12 @@ $LANG03 = array(
     43 => 'Unsubscribe from reply notifications',
     44 => 'Your Name',
     45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment.",
+    100 => 'Comment Manager',
+    101 => 'Could not delete a comment,',
+    102 => 'Bulk Action',
+    103 => 'Ban this user',
+    104 => 'Ban this IP address with the Spamx plugin',
+    105 => 'IP Address',
 );
 
 ###############################################################################
