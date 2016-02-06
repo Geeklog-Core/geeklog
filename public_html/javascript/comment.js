@@ -1,9 +1,10 @@
-(function ($) {
-    var selectAll = $("#select_all"),
-        bulkActionSelector = $("#bulk_action")[0],
-        bulkActionSubmit = $("#bulk_action_submit")[0],
-        checkBoxes = $("input[name='cids\[\]']");
+var adminCommentList = function (SUFFIX) {
+    var selectAll = jQuery("#select_all" + SUFFIX),
+        bulkActionSelector = jQuery("#bulk_action" + SUFFIX)[0],
+        bulkActionSubmit = jQuery("#bulk_action_submit" + SUFFIX)[0],
+        checkBoxes = jQuery("input[name='cids" + SUFFIX + "\[\]']");
 
+    // Initialize
     bulkActionSelector.disabled = true;
     bulkActionSubmit.disabled = true;
 
@@ -17,7 +18,7 @@
     });
 
     checkBoxes.on("change", function () {
-        var i, len, elm, checked = false;
+        var i, len, checked = false;
 
         for (i = 0, len = checkBoxes.length; i < len; i++) {
             checked = checked || checkBoxes[i].checked;
@@ -31,4 +32,7 @@
         bulkActionSubmit.disabled = !checked;
         selectAll[0].checked = checked;
     });
-})(jQuery);
+};
+
+var adminCommentListComments = new adminCommentList("_comments"),
+    adminCommentListSubmissions = new adminCommentList("_submissions");

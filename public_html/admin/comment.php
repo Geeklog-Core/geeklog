@@ -39,6 +39,9 @@
  * Comment administration page: Moderate, edit, delete, comments for your Geeklog site.
  */
 
+define('SUFFIX_COMMENTS', '_comments');
+define('SUFFIX_COMMENT_SUBMISSIONS', '_submissions');
+
 // Geeklog common function library
 require_once '../lib-common.php';
 
@@ -53,24 +56,28 @@ if (!SEC_hasRights('comment.moderate')) {
     exit;
 }
 
-// Comment library
+// Include system libraries
+require_once $_CONF['path_system'] . 'lib-admin.php';
+require_once $_CONF['path_system'] . 'lib-story.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
 
 /**
  * Return comment IDs being selected in the list
  *
+ * @param  string $suffix
  * @return array of int
  */
-function getCids() {
+function getCommentIds($suffix)
+{
     global $_FINPUT;
 
-    $cids = $_FINPUT->post('cids', array());
+    $commentIds = $_FINPUT->post('cids' . $suffix, array());
 
-    if (count($cids) > 0) {
-        $cids = array_map('intval', $cids);
+    if (count($commentIds) > 0) {
+        $commentIds = array_map('intval', $commentIds);
     }
 
-    return $cids;
+    return $commentIds;
 }
 
 /**
@@ -80,11 +87,11 @@ function getCids() {
  * @param  string $fieldValue
  * @param  array  $A
  * @param  array  $iconArray
- * @param  string $extra
+ * @param  string $suffix
  * @return string
  * @throws Exception
  */
-function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $extra = '')
+function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $suffix)
 {
     global $_CONF, $LANG01, $LANG_STATIC, $LANG_POLLS;
     static $encoding = null;
@@ -97,17 +104,25 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $e
         throw new Exception(__FUNCTION__ . ': unknown type "' . $A['type'] . '" was given');
     }
 
+    $commentId = $A['cid'];
+
     switch ($fieldName) {
         case 'selector':
-            $cid = $A['cid'];
-            $fieldValue = '<input type="checkbox" name="cids[]" value="' . $cid . '"' . XHTML . '>';
+            $fieldValue = '<input type="checkbox" name="cids' . $suffix
+                . '[]" value="' . $commentId . '"' . XHTML . '>';
             break;
 
         case 'edit':
-            $cid = $A['cid'];
-            $fieldValue = '<a href="' . $_CONF['site_url']
-                . '/comment.php?mode=editsubmission&amp;cid='
-                . htmlspecialchars($cid, ENT_QUOTES, $encoding) . '" title="' . $LANG01[4] . '">'
+            if ($suffix === SUFFIX_COMMENTS) {
+                $link = $_CONF['site_url'] . '/comment.php?mode=edit&amp;cid='
+                    . htmlspecialchars($commentId, ENT_QUOTES, $encoding)
+                    . '&amp;sid=' . $A['sid'] . '&amp;type=' . $A['type'];
+            } else {
+                $link = $_CONF['site_url'] . '/comment.php?mode=editsubmission&amp;cid='
+                    . htmlspecialchars($commentId, ENT_QUOTES, $encoding);
+            }
+
+            $fieldValue = '<a href="' . $link . '" title="' . $LANG01[4] . '">'
                 . $iconArray['edit'] . '</a>';
             break;
 
@@ -144,27 +159,28 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $e
                     break;
             }
 
-            $fieldValue = '<a href="' . $url . '">' . htmlspecialchars($title, ENT_QUOTES, $encoding) . '</a>';
+            $fieldValue = '<a href="' . $url . '">'
+                . htmlspecialchars($title, ENT_QUOTES, $encoding) . '</a>';
             break;
 
         case 'title':
-            $fieldValue = '<a href="' . $_CONF['site_url'] . '/comment.php?mode=view&amp;cid=' . $A['cid'] . '">'
+            $fieldValue = '<a href="' . $_CONF['site_url'] . '/comment.php?mode=view&amp;cid='
+                . htmlspecialchars($commentId, ENT_QUOTES, $encoding) . '">'
                 . htmlspecialchars($fieldValue, ENT_QUOTES, $encoding) . '</a>';
             break;
 
         case 'comment':
-//            $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
             break;
 
         case 'uid':
-            $uid = intval($fieldValue, 10);
+            $userId = intval($fieldValue, 10);
             $userName = trim($A['name']);
-            $fieldValue = COM_getDisplayName($uid, $userName);
+            $fieldValue = COM_getDisplayName($userId, $userName);
             $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
 
-            if ($uid > 1) {
+            if ($userId > 1) {
                 $fieldValue = '<a href="' . $_CONF['site_url']
-                    . '/users.php?mode=profile&amp;uid=' . $uid . '">' . $fieldValue . '</a>';
+                    . '/users.php?mode=profile&amp;uid=' . $userId . '">' . $fieldValue . '</a>';
             }
 
             break;
@@ -181,22 +197,6 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $e
 }
 
 /**
- * Field function
- *
- * @param  string $fieldName
- * @param  string $fieldValue
- * @param  array  $A
- * @param  array  $iconArray
- * @param  string $extra
- * @return string
- * @throws Exception
- */
-function ADMIN_getListField_commentSubmissions($fieldName, $fieldValue, $A, $iconArray, $extra = '')
-{
-    return ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $extra);
-}
-
-/**
  * Return a selector to filter item type
  *
  * @param string $itemType
@@ -204,7 +204,7 @@ function ADMIN_getListField_commentSubmissions($fieldName, $fieldValue, $A, $ico
  */
 function getTypeSelector($itemType)
 {
-    global $_PLUGINS, $_FINPUT, $LANG_ADMIN, $LANG09, $LANG_STATIC, $LANG_POLLS;
+    global $_PLUGINS, $LANG_ADMIN, $LANG09, $LANG_STATIC, $LANG_POLLS;
 
     $retval = $LANG_ADMIN['type']
         . ': <select name="item_type" style="width: 125px;" onchange="this.form.submit()">' . LB;
@@ -231,38 +231,20 @@ function getTypeSelector($itemType)
 }
 
 /**
- * Display two lists of comments, ordinary comments and submissions
+ * Build a comment list
  *
- * @return   string  HTML for the two lists
+ * @param  string $suffix
+ * @param  string $tableName
+ * @param  string $securityToken
+ * @return string
  */
-function listComments()
+function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
 {
-    global $_CONF, $_PLUGINS, $_SCRIPTS, $_TABLES, $_FINPUT, $LANG_ADMIN, $LANG01, $LANG03, $LANG28, $LANG29, $_IMAGE_TYPE, $securityToken;
+    global $_CONF, $_PLUGINS, $_TABLES, $_FINPUT, $LANG_ADMIN, $LANG01, $LANG03, $LANG28, $LANG29;
 
-    require_once $_CONF['path_system'] . 'lib-admin.php';
-    require_once $_CONF['path_system'] . 'lib-story.php';
-
-    $securityToken = SEC_createToken();
-
-    // Writing the menu on top
-    $menu_arr = array(
+    $headerArray = array(
         array(
-            'url'  => $_CONF['site_admin_url'],
-            'text' => $LANG_ADMIN['admin_home'],
-        ),
-    );
-
-    $retval = COM_startBlock($LANG03[100], '', COM_getBlockTemplate('_admin_block', 'header'))
-        . ADMIN_createMenu(
-            $menu_arr,
-            $LANG03[100],
-            $_CONF['layout_url'] . '/images/icons/comment.' . $_IMAGE_TYPE
-        );
-
-    // Regular Comments
-    $headerArray = array(      # display 'text' and use table field 'field'
-        array(
-            'text'  => '<input type="checkbox" name="select_all" id="select_all"' . XHTML . '>',
+            'text'  => '<input type="checkbox" name="select_all' . $suffix . '" id="select_all' . $suffix . '"' . XHTML . '>',
             'field' => 'selector',
             'sort'  => false,
         ),
@@ -309,10 +291,9 @@ function listComments()
     );
 
     $defaultSortArray = array('field' => 'date', 'direction' => 'desc');
-
     $textArray = array(
         'has_extras' => true,
-        'title'      => $LANG03[101],
+        'title'      => ($suffix === SUFFIX_COMMENTS ? $LANG03[101] : $LANG29[41]),
         'form_url'   => $_CONF['site_admin_url'] . '/comment.php',
     );
 
@@ -347,18 +328,22 @@ function listComments()
     }
 
     $queryArray = array(
-        'table'          => 'comments',
-        'sql'            => "SELECT * FROM {$_TABLES['comments']} WHERE (1 = 1) ",
+        'table'          => $tableName,
+        'sql'            => "SELECT * FROM " . $_TABLES[$tableName] . " WHERE (1 = 1) ",
         'query_fields'   => array('type', 'sid', 'date', 'title', 'comment', 'uid', 'ipaddress'),
         'default_filter' => $sqlForType . COM_getPermSql('AND'),
     );
 
     $filter = getTypeSelector($itemType);
     $options = array();
-    $actionSelector = '<select name="bulk_action" id="bulk_action">' . LB
-        . '<option value="do_nothing">' . $LANG03[102] . '</option>' . LB
-        . '<option value="bulk_approve">' . $LANG29[1] . '</option>' . LB
-        . '<option value="bulk_delete">' . $LANG29[2] . '</option>' . LB
+    $actionSelector = '<select name="bulk_action' . $suffix . '" id="bulk_action' . $suffix . '">' . LB
+        . '<option value="do_nothing">' . $LANG03[102] . '</option>' . LB;
+
+    if ($suffix === SUFFIX_COMMENT_SUBMISSIONS) {
+        $actionSelector .= '<option value="bulk_approve">' . $LANG29[1] . '</option>' . LB;
+    }
+
+    $actionSelector .= '<option value="bulk_delete">' . $LANG29[2] . '</option>' . LB
         . '<option value="bulk_ban_user">' . $LANG03[103] . '</option>' . LB;
 
     if (in_array('spamx', $_PLUGINS)) {
@@ -366,8 +351,9 @@ function listComments()
     }
 
     $actionSelector .= '</select>' . LB
-        . '<input type="submit" name="submit" id="bulk_action_submit" value="'
-        . $LANG_ADMIN['submit'] . '"' . XHTML . '>' . LB;
+        . '<input type="submit" name="submit" id="bulk_action_submit' . $suffix . '" value="'
+        . $LANG_ADMIN['submit'] . '"' . XHTML . '>' . LB
+        . '<input type="hidden" name="list" value="' . $suffix . '"' . XHTML . '>' . LB;
     $securityTokenTag = '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
         . $securityToken . '"' . XHTML . '>' . LB;
     $formArray = array(
@@ -377,29 +363,39 @@ function listComments()
 
     $commentList = ADMIN_list(
         'comments', 'ADMIN_getListField_comments', $headerArray, $textArray,
-        $queryArray, $defaultSortArray, $filter, $securityToken, $options, $formArray
+        $queryArray, $defaultSortArray, $filter, $suffix, $options, $formArray
     );
 
-    // Comment submissions
-    $textArray = array(
-        'has_extras' => true,
-        'title'      => $LANG29[41],
-        'form_url'   => $_CONF['site_admin_url'] . '/comment.php',
-    );
+    return $commentList;
+}
 
-    $queryArray = array(
-        'table'          => 'commentsubmissions',
-        'sql'            => "SELECT * FROM {$_TABLES['commentsubmissions']} WHERE (1 = 1) ",
-        'query_fields'   => array('type', 'sid', 'date', 'title', 'comment', 'uid', 'ipaddress'),
-        'default_filter' => $sqlForType . COM_getPermSql('AND'),
-    );
+/**
+ * Display two lists of comments, ordinary comments and submissions
+ *
+ * @return   string  HTML for the two lists
+ */
+function listComments()
+{
+    global $_CONF, $_SCRIPTS, $LANG_ADMIN, $LANG03, $_IMAGE_TYPE;
 
-    $submissionList = ADMIN_list(
-        'comments', 'ADMIN_getListField_commentSubmissions', $headerArray, $textArray,
-        $queryArray, $defaultSortArray, $filter, $securityToken, $options, $formArray
-    );
+    // Create a security token to be used in both lists
+    $securityToken = SEC_createToken();
 
-    $retval .= $submissionList . $commentList
+    // Writing the menu on top
+    $menu_arr = array(
+        array(
+            'url'  => $_CONF['site_admin_url'],
+            'text' => $LANG_ADMIN['admin_home'],
+        ),
+    );
+    $retval = COM_startBlock($LANG03[100], '', COM_getBlockTemplate('_admin_block', 'header'))
+        . ADMIN_createMenu(
+            $menu_arr,
+            $LANG03[100],
+            $_CONF['layout_url'] . '/images/icons/comment.' . $_IMAGE_TYPE
+        )
+        . ADMIN_buildCommentList(SUFFIX_COMMENT_SUBMISSIONS, 'commentsubmissions', $securityToken)
+        . ADMIN_buildCommentList(SUFFIX_COMMENTS, 'comments', $securityToken)
         . COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
     $_SCRIPTS->setJavaScriptFile('comment', '/javascript/comment.js', true);
 
@@ -409,144 +405,196 @@ function listComments()
 /**
  * Delete a comment
  *
- * @return   string          HTML redirect or error message
+ * @param   string $suffix
  */
-function deleteComments()
+function deleteComments($suffix)
 {
-    global $_CONF, $_TABLES, $_USER, $_FINPUT, $LANG03;
+    global $_CONF, $_TABLES, $_USER;
 
-    $cid = $_FINPUT->get('cid', $_FINPUT->post('cid', 0));
-    $cid = intval($cid, 10);
-    $sid = $_FINPUT->post('sid', '');
-    $type = $_FINPUT->post('type', '');
+    $commentIds = getCommentIds($suffix);
 
-    $retval = '';
+    if (SEC_checkToken()) {
+        if (count($commentIds) > 0) {
+            foreach ($commentIds as $commentId) {
+                if ($commentId <= 0) {
+                    COM_errorLog("Attempted to delete a nonexistent comment (cid = {$commentId})");
+                } else {
+                    if ($suffix === SUFFIX_COMMENTS) {
+                        $sql = "SELECT sid, type FROM {$_TABLES['comments']} WHERE cid = " . DB_escapeString($commentId);
+                        $result = DB_query($sql);
 
-    if (($cid <= 0) || ($sid === '') || ($type === '')) {
-        COM_errorLog("Attempted to delete a nonexistent comment (cid = {$cid})");
-        $retval = COM_refresh($_CONF['site_admin_url'] . '/comment.php');
-    } elseif (!SEC_checkToken()) {
-        COM_accessLog("User {$_USER['username']} tried to delete comment (cid = {$cid}) and failed CSRF checks.");
-        $retval = COM_refresh($_CONF['site_admin_url'] . '/index.php');
-    } else {
-        if (DB_count($_TABLES['comments'], array('cid', 'sid', 'type'), array($cid, $sid, $type)) == 1) {
-            $result = CMT_deleteComment($cid, $sid, $type);
+                        if (!DB_error()) {
+                            $A = DB_fetchArray($result, false);
 
-            if ($result == 0) {
-                $retval = COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=130');
+                            if (is_array($A) && (count($A) > 0)) {
+                                $sid = $A['sid'];
+                                $type = $A['type'];
+
+                                if (CMT_deleteComment($commentId, $sid, $type) > 0) {
+                                    COM_errorLog("Attempted to delete a nonexistent comment (cid = {$commentId})");
+                                }
+                            }
+                        }
+                    } elseif ($suffix === SUFFIX_COMMENT_SUBMISSIONS) {
+                        $sql = "DELETE FROM {$_TABLES['commentsubmissions']} "
+                            . "WHERE cid = " . DB_escapeString($commentId);
+                        DB_query($sql);
+                    }
+                }
             }
-        } else {
-            // Failed to delete a comment
-            $retval = $LANG03[101];
-        }
-    }
 
-    return $retval;
+            echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=130');
+            exit;
+        }
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to delete comments (cid = " . implode(', ', $commentIds) . ") and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        exit;
+    }
 }
 
 /**
  * Approve a comment
+ *
+ * @param  string $suffix
  */
-function approveComments()
+function approveComments($suffix)
 {
-    $cids = getCids();
+    global $_CONF, $_USER;
 
-    if (count($cids) > 0) {
-        foreach ($cids as $cid) {
-            CMT_approveModeration($cid);
+    $commentIds = getCommentIds($suffix);
+
+    if (SEC_checkToken()) {
+        if (count($commentIds) > 0) {
+            foreach ($commentIds as $commentId) {
+                CMT_approveModeration($commentId);
+            }
         }
+
+        echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=132');
+        exit;
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to approve comments (cid = " . implode(', ', $commentIds) . ") and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        exit;
     }
 }
 
 /**
  * Ban users
+ *
+ * @param  string $suffix
  */
-function banUsers() {
-    global $_TABLES, $_USER;
+function banUsers($suffix)
+{
+    global $_CONF, $_TABLES, $_USER;
 
-    $cids = getCids();
+    $getCommentIds = getCommentIds($suffix);
 
-    if (count($cids) > 0) {
-        $currentUid = $_USER['uid'];
-        $sql = "SELECT uid FROM {$_TABLES['comments']} "
-            . "WHERE (uid <> 1) AND (uid <> {$currentUid}) AND "
-            . " (cid IN (" . implode(',', $cids) . "))";
-        $result = DB_query($sql);
-        $uids = array();
+    if (SEC_checkToken()) {
+        if (count($getCommentIds) > 0) {
+            $currentUserId = $_USER['uid'];
+            $sql = "SELECT DISTINCT uid FROM {$_TABLES['comments']} "
+                . "WHERE (uid <> 1) AND (uid <> {$currentUserId}) AND "
+                . " (cid IN (" . implode(',', $getCommentIds) . "))";
+            $result = DB_query($sql);
+            $userIds = array();
 
-        while (($A = DB_fetchArray($result, false)) !== false) {
-            $uids[] = $A['uid'];
+            while (($A = DB_fetchArray($result, false)) !== false) {
+                $userIds[] = $A['uid'];
+            }
+
+            if (count($userIds) > 0) {
+                $sql = "UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_DISABLED
+                    . " WHERE (uid IN (" . implode(',', $userIds) . "))";
+                DB_query($sql);
+                echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=133');
+                exit;
+            }
         }
-
-        if (count($uids) > 0) {
-            $sql = "UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_DISABLED
-                . " WHERE (uid IN (" . implode(',', $uids) . "))";
-            DB_query($sql);
-        }
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to ban users and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        exit;
     }
 }
 
 /**
  * Ban IP Addresses being selected with the Spamx plugin
  *
- * @return bool  true = success, false = otherwise
+ * @param  string $suffix
  */
-function banIpAddresses() {
-    global $_PLUGINS, $_TABLES;
+function banIpAddresses($suffix)
+{
+    global $_CONF, $_PLUGINS, $_TABLES, $_USER;
 
-    $retval = false;
-
-    if (!in_array('spamx', $_PLUGINS)) {
-        COM_errorLog(__FUNCTION__ . ': Spmax plugin is not installed or disabled.');
-        return $retval;
-    }
-
-    $cids = getCids();
-
-    if (count($cids) > 0) {
-        $sql = "SELECT DISTINCT ipaddress FROM {$_TABLES['comments']} "
-            . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
-            . " (cid IN (" . implode(',', $cids) . "))";
-        $result = DB_query($sql);
-
-        if (!DB_error()) {
-            $ipAddresses = array();
-
-            while (($A = DB_fetchArray($result, false)) !== false) {
-                $ipAddresses[] = $A['ipaddress'];
-            }
-
-            foreach ($ipAddresses as $ipAddress) {
-                $sql = "INSERT INTO {$_TABLES['spamx']} (name, value) "
-                    . "VALUES ('IP', '" .  DB_escapeString($ipAddress) . "')";
-                DB_query($sql);
-            }
-
-            $retval = true;
+    if (SEC_checkToken()) {
+        if (!in_array('spamx', $_PLUGINS)) {
+            COM_errorLog(__FUNCTION__ . ': Spmax plugin is not installed or disabled.');
+            echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+            exit;
         }
-    }
 
-    return $retval;
+        $getCommentIds = getCommentIds($suffix);
+
+        if (count($getCommentIds) > 0) {
+            $sql = "SELECT DISTINCT ipaddress FROM {$_TABLES['comments']} "
+                . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
+                . " (cid IN (" . implode(',', $getCommentIds) . "))";
+            $result = DB_query($sql);
+
+            if (!DB_error()) {
+                $ipAddresses = array();
+
+                while (($A = DB_fetchArray($result, false)) !== false) {
+                    $ipAddresses[] = $A['ipaddress'];
+                }
+
+                foreach ($ipAddresses as $ipAddress) {
+                    $sql = "INSERT INTO {$_TABLES['spamx']} (name, value) "
+                        . "VALUES ('IP', '" . DB_escapeString($ipAddress) . "')";
+                    DB_query($sql);
+                }
+            }
+
+            echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=134');
+            exit;
+        }
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to ban IP addresses and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        exit;
+    }
 }
 
 // MAIN
-$action = $_FINPUT->post('bulk_action', '');
+$list = $_FINPUT->post('list', '');
+
+if ($list === SUFFIX_COMMENTS) {
+    $suffix = SUFFIX_COMMENTS;
+} elseif ($list === SUFFIX_COMMENT_SUBMISSIONS) {
+    $suffix = SUFFIX_COMMENT_SUBMISSIONS;
+} else {
+    $suffix = '';
+}
+
+$action = $_FINPUT->post('bulk_action' . $suffix, '');
 
 switch ($action) {
     case 'bulk_approve':
-        approveComments();
+        approveComments($suffix);
         break;
 
     case 'bulk_delete':
-        deleteComments();
+        deleteComments($suffix);
         break;
 
     case 'bulk_ban_user':
-        banUsers();
+        banUsers($suffix);
         break;
 
     case 'bulk_ban_ip_address':
-        banIpAddresses();
+        banIpAddresses($suffix);
         break;
 
     default:
