@@ -133,7 +133,7 @@ abstract class FeedParserBase
     public function __construct()
     {
         $this->encoding     = 'iso-8859-1';
-        $this->title        = 'Killer Feed System Feed';
+        $this->title        = '';
         $this->lang         = 'en-gb';
         $this->namespaces   = array();
         $this->extensions   = array();
@@ -148,6 +148,7 @@ abstract class FeedParserBase
     *
     * @param    string     $string          the string to escape.
     * @param    boolean    $doubleEncode    whether to encode HTML entities
+     * @return  string
     */
     protected function _safeXML($string, $doubleEncode = true)
     {
@@ -180,6 +181,7 @@ abstract class FeedParserBase
     *
     * @param    string    $fileName    The fully qualified path to the file to create.
     * @param    int       $limit       (optional) max number of items to write.
+     * @return  bool
     */
     public function createFeed($fileName, $limit = '')
     {
