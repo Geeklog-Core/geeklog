@@ -205,12 +205,28 @@ $_FM_CONF = array(
 );
 
 // Values to be overridden by Geeklog (system)
+$rootPath = isset($_CONF_FCK['root']) ? $_CONF_FCK['root'] : '/images/';
+$rootPath = ltrim($rootPath, '/');
+$rootPath = rtrim($rootPath, '/') . '/';
+
+if (isset($_CONF_FCK['imgl'])) {
+    $libraryPath = $_CONF_FCK['imgl'];
+} elseif (isset($_CONF_FCK['imagelibrary'])) {
+    $libraryPath = $_CONF_FCK['imagelibrary'];
+} else {
+    $libraryPath = '/images/library/';
+}
+
+$libraryPath = ltrim($libraryPath, '/');
+$libraryPath = rtrim($libraryPath, '/') . '/';
+
+// $relPaths must not start with a '/' and must end with a '/'
 $relPaths = array(
-    'Image' => 'images/library/Image/',
-    'Flash' => 'images/library/Flash/',
-    'Media' => 'images/library/Media/',
-    'File'  => 'images/library/File/',
-    'Root'  => 'images/',
+    'Image' => $libraryPath . 'Image/',
+    'Flash' => $libraryPath . 'Flash/',
+    'Media' => $libraryPath . 'Media/',
+    'File'  => $libraryPath . 'File/',
+    'Root'  => $rootPath,
 );
 
 $type = isset($_GET['Type']) ? COM_applyFilter($_GET['Type']) : '';
