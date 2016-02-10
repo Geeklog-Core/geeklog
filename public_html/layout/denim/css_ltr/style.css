@@ -2854,12 +2854,21 @@ div.third-party-login {
 }
 
 /* Icon(email, print, pdf) */
+/*
 .story_icon {
   float: right;
 }
 
 .story_icon img {
   margin-left: 8px;
+}
+*/
+.story_icon {
+  float: right;
+  font-size: 18px;
+}
+.story_icon a {
+  margin-left: 5px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -4576,5 +4585,10 @@ body.center-right #config_content {
 .allowed_autotags {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.block-help-icon {
+    font-size: 18px;
+    margin-left: 8px;
 }
 
