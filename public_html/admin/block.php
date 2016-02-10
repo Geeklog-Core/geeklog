@@ -308,6 +308,10 @@ function editblock ($bid = '')
                                    sprintf ($delbutton, $jsconfirm));
         $block_templates->set_var ('delete_option_no_confirmation',
                                    sprintf ($delbutton, ''));
+
+        $block_templates->set_var('allow_delete', true);
+        $block_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $block_templates->set_var('confirm_message', $MESSAGE[76]);
     }
 
     $block_templates->set_var('block_bid', $A['bid']);

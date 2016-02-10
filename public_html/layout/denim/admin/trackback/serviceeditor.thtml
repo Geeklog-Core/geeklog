@@ -32,11 +32,13 @@
     </dl>
 
     <div class="submit">
-      <input type="submit" value="{lang_save}" name="servicemode[0]" class="submit"{xhtml}>
-      <input type="submit" value="{lang_cancel}" name="servicemode[1]" class="submit"{xhtml}>
-      <input type="hidden" value="{service_id}" name="service_id"{xhtml}>
+      <button type="submit" name="servicemode[0]" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" name="servicemode[1]" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
+      <input type="hidden" name="service_id" value="{service_id}"{xhtml}>
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-      {delete_option}
     </div>
   </div>
 </form>

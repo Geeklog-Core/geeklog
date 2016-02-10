@@ -413,6 +413,10 @@ function editpoll ($pid = '')
                                   sprintf ($delbutton, $jsconfirm));
         $poll_templates->set_var ('delete_option_no_confirmation',
                                   sprintf ($delbutton, ''));
+
+        $poll_templates->set_var('allow_delete', true);
+        $poll_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $poll_templates->set_var('confirm_message', $MESSAGE[76]);
     } else {
         $T['pid'] = COM_makeSid ();
         $T['topic'] = '';

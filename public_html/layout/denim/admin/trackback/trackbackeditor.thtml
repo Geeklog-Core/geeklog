@@ -24,8 +24,8 @@
     </dl>
 
     <div class="submit">
-      <input type="submit" value="{lang_send}" name="mode[0]" class="submit"{xhtml}>
-      <input type="submit" value="{lang_preview}" name="mode[1]" class="submit"{xhtml}>
+      <button type="submit" name="mode[0]" value="{lang_send}" class="uk-button uk-button-primary">{lang_send}</button>
+      <button type="submit" name="mode[1]" value="{lang_preview}" class="uk-button">{lang_preview}</button>
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     </div>
   </div>

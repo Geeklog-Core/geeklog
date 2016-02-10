@@ -9,7 +9,7 @@
       <select id="search-results-limit" name="results">
         {page_limit}
       </select>
-      <input type="submit" value="{lang_submit}"{xhtml}>
+      <button type="submit" value="{lang_submit}" class="uk-button">{lang_submit}</button>
     </div>
   </div>
 </form>

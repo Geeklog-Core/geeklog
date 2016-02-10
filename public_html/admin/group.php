@@ -153,6 +153,11 @@ function editgroup($grp_id = '')
                                       sprintf($delbutton, $jsconfirm));
             $group_templates->set_var('delete_option_no_confirmation',
                                       sprintf($delbutton, ''));
+
+            $group_templates->set_var('allow_delete', true);
+            $group_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+            $group_templates->set_var('confirm_message', $MESSAGE[76]);
+
             $group_templates->set_var('group_core', 0);
         } else {
             $group_templates->set_var('group_core', 1);

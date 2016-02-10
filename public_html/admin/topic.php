@@ -132,6 +132,11 @@ function edittopic ($tid = '')
                                   sprintf($delbutton, $jsconfirm));
         $topic_templates->set_var('delete_option_no_confirmation',
                                   sprintf($delbutton, ''));
+
+        $topic_templates->set_var('allow_delete', true);
+        $topic_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $topic_templates->set_var('confirm_message', $MESSAGE[76]);
+
         $topic_templates->set_var('warning_msg', $LANG27[6]);
     }
     if ($_CONF['titletoid']) {

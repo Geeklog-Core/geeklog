@@ -1,4 +1,5 @@
 /* Geeklog Denim Theme 1.1.0 | Copyright (C) 2012-2015 by dengen | http://www.trybese.com/~dengen/log/ | License:GPLv2 */
+/*
 p,
 ul,
 ol,
@@ -10,7 +11,10 @@ fieldset,
 figure {
   margin-top: 0;
 }
+*/
 
+
+/*
 h1,
 h2 {
   font-size: 20px;
@@ -23,6 +27,8 @@ h5,
 h6 {
   margin: .5em 0;
 }
+*/
+
 
 address {
   font-style: normal;
@@ -65,11 +71,13 @@ a:hover {
   text-decoration: underline;
 }
 
+/*
 ul,
 ol,
 dl {
   margin: 1em 0;
 }
+*/
 
 dt {
   font-weight: bold;
@@ -173,7 +181,7 @@ textarea:focus {
   -webkit-box-shadow: 0 0 3px rgba(0,0,0,.2);
   box-shadow: 0 0 3px rgba(0,0,0,.2);
 }
-
+/*
 input[type="submit"]::-moz-focus-inner,
 input[type="button"]::-moz-focus-inner,
 input[type="reset"]::-moz-focus-inner {
@@ -184,20 +192,13 @@ input[type="reset"]::-moz-focus-inner {
 input[type="submit"],
 input[type="button"],
 input[type="reset"] {
-  /* 1 */
   -webkit-appearance: none;
-  /* 2 */
   margin: 0;
-  /* 3 */
   border: none;
-  /* 4 */
   overflow: visible;
-  /* 5 */
   font: inherit;
   color: #444;
-  /* 6 */
   text-transform: none;
-  /* 7 */
   display: inline-block;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -206,13 +207,9 @@ input[type="reset"] {
   padding: 0 12px;
   background: #F7F7F7;
   vertical-align: middle;
-  /* 8 */
   line-height: 28px;
-  /* 9 */
   min-height: 30px;
-  /* 10 */
   font-size: 1rem;
-  /* 11 */
   text-decoration: none;
   text-align: center;
   border: 1px solid rgba(0,0,0,.2);
@@ -249,9 +246,7 @@ input[type="button"]:focus,
 input[type="reset"]:focus {
   background-color: #FAFAFA;
   color: #444;
-  /* 2 */
   outline: none;
-  /* 3 */
   text-decoration: none;
   background-image: none;
 }
@@ -346,6 +341,7 @@ input[type="reset"]:disabled {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+*/
 
 /* Modify UIkit */
 .uk-form input,
@@ -518,9 +514,21 @@ input[type="reset"]:disabled {
 .sysmessage img {
   border: none;
   float: left;
+/*
   margin-top: -4px;
+*/
+  margin-top: 0px;
   padding-bottom: 3px;
+/*
   padding-right: 5px;
+*/
+  padding-right: 8px;
+}
+.sysmessage {
+  margin: 0;
+}
+.sysmessage a {
+  text-decoration: underline;
 }
 
 /* Stats */
@@ -1953,6 +1961,7 @@ body.center-right #config_content {
   background-color: transparent;
   padding: 0;
   padding-bottom: 2em;
+  padding: 30px 0; /**********************************************/
 }
 
 @media only screen and (max-width: 767px) {
@@ -2845,12 +2854,21 @@ div.third-party-login {
 }
 
 /* Icon(email, print, pdf) */
+/*
 .story_icon {
   float: right;
 }
 
 .story_icon img {
   margin-left: 8px;
+}
+*/
+.story_icon {
+  float: right;
+  font-size: 18px;
+}
+.story_icon a {
+  margin-left: 5px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -3047,6 +3065,7 @@ span.warning em {
 }
 
 /* Article Related Block */
+/*
 .block-related {
   float: left;
   width: 50%;
@@ -3060,6 +3079,7 @@ span.warning em {
     width: auto;
   }
 }
+*/
 
 /*--------------------------------------
   Comment Block
@@ -4562,3 +4582,28 @@ body.center-right #config_content {
     padding: 5px 0;
   }
 }
+
+.allowed_html_tags,
+.allowed_autotags {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.totop-scroller {
+    position: fixed;
+    z-index: 99;
+    bottom: 20px;
+    right: 20px;
+    text-align: center;
+    font-size: 40px;
+    cursor: pointer;
+
+    color: rgba(128,128,128,0.6);
+
+}
+
+.block-help-icon {
+    font-size: 18px;
+    margin-left: 8px;
+}
+

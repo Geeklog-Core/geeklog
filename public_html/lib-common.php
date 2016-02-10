@@ -2375,6 +2375,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
         }
         $help = COM_createLink($help_content, $help_url, $help_attr);
         $block->set_var( 'block_help', $help );
+        $block->set_var( 'help_url', $help_url );
     }
 
     $block->parse( 'startHTML', 'block' );

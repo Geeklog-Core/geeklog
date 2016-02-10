@@ -5,7 +5,7 @@
         <input type="hidden" name="mode" value="batchdelete"{xhtml}>
         <input type="hidden" name="usr_time" value="{usr_time}"{xhtml}>
         {lang_text_start} <input class="aligncenter" type="text" name="usr_time" value="{usr_time}" size="3"{xhtml}>{lang_text_end}<br{xhtml}>
-        <input type="submit" name="submit" value="{lang_updatelist}"{xhtml}>
+        <button type="submit" name="submit" value="{lang_updatelist}" class="uk-button">{lang_updatelist}</button>
     </div>
 </form>
 
