@@ -106,8 +106,8 @@
   <input type="hidden" name="uid" value="{uid_value}"{xhtml}>
   <input type="hidden" name="mode" value="saveuser"{xhtml}>
   <input type="hidden" name="username" value="{username_value}"{xhtml}>
-  <input type="submit" name="btnsubmit" value="{lang_submit}" class="submit"{xhtml}>
-  <input type="submit" name="btncancel" value="{lang_cancel}"{xhtml}>
+  <button type="submit" name="btnsubmit" value="{lang_submit}" class="uk-button uk-button-primary">{lang_submit}</button>
+  <button type="submit" name="btncancel" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
 </div>
 
 </form>

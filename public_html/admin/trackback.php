@@ -586,6 +586,10 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
                             sprintf ($delbutton, $jsconfirm));
         $template->set_var('delete_option_no_confirmation',
                             sprintf ($delbutton, ''));
+
+        $template->set_var('allow_delete', true);
+        $template->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $template->set_var('confirm_message', $MESSAGE[76]);
     } else {
         $template->set_var('delete_option', '');
     }
@@ -1003,8 +1007,9 @@ if (($mode == 'delete') && SEC_checkToken()) {
                                 $LANG_TRB['pingback_button']);
             $template->set_var('lang_pingback_short',
                                 $LANG_TRB['pingback_short']);
-            $button = '<input type="submit" name="what[0]" value="'
-                    . $LANG_TRB['pingback_button'] . '"' . XHTML . '>';
+            $button = '<button type="submit" name="what[0]" value="'
+                    . $LANG_TRB['pingback_button'] . '" class="uk-form">'
+                    . $LANG_TRB['pingback_button'] . '</button>';
             $template->set_var('pingback_button', $button);
         }
     } else {
@@ -1014,8 +1019,9 @@ if (($mode == 'delete') && SEC_checkToken()) {
         if (!$ping_sent) {
             $template->set_var('lang_ping_button', $LANG_TRB['ping_button']);
             $template->set_var('lang_ping_short', $LANG_TRB['ping_short']);
-            $button = '<input type="submit" name="what[1]" value="'
-                    . $LANG_TRB['ping_button'] . '"' . XHTML . '>';
+            $button = '<button type="submit" name="what[1]" value="'
+                    . $LANG_TRB['ping_button'] . '" class="uk-form">'
+                    . $LANG_TRB['ping_button'] . '</button>';
             $template->set_var('ping_button', $button);
         }
     } else {
@@ -1027,8 +1033,9 @@ if (($mode == 'delete') && SEC_checkToken()) {
                                 $LANG_TRB['trackback_button']);
             $template->set_var('lang_trackback_short',
                                 $LANG_TRB['trackback_short']);
-            $button = '<input type="submit" name="what[2]" value="'
-                    . $LANG_TRB['trackback_button'] . '"' . XHTML . '>';
+            $button = '<button type="submit" name="what[2]" value="'
+                    . $LANG_TRB['trackback_button'] . '" class="uk-form">'
+                    . $LANG_TRB['trackback_button'] . '</button>';
             $template->set_var('trackback_button', $button);
         }
     } else {

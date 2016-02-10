@@ -50,7 +50,7 @@
 
     <div class="submit">
       <input type="hidden" name="mode" value="search"{xhtml}>
-      <input type="submit" value="{lang_search}" class="submit"{xhtml}>
+      <button type="submit" value="{lang_search}" class="uk-button uk-button-primary">{lang_search}</button>
     </div>
   </div>
 </form>

@@ -78,7 +78,7 @@ $display .= ADMIN_createMenu( $menu_arr,
                              $_CONF['layout_url'] . '/images/icons/log_viewer.'. $_IMAGE_TYPE
 );
 
-$display .= '<form method="post" action="'.$_CONF['site_admin_url'].'/logviewer.php"><div>';
+$display .= '<form method="post" action="'.$_CONF['site_admin_url'].'/logviewer.php" class="uk-form"><div>';
 $display .= $LANG_LOGVIEW['logs'].':&nbsp;&nbsp;&nbsp;';
 $files = array();
 if ($dir = @opendir($_CONF['path_log'])) {
@@ -100,9 +100,9 @@ for ($i = 0; $i < count($files); $i++) {
     next($files);
 }
 $display .= '</select>&nbsp;&nbsp;&nbsp;&nbsp;';
-$display .= '<input type="submit" name="viewlog" value="'.$LANG_LOGVIEW['view'].'"'.XHTML.'>';
+$display .= '<button type="submit" name="viewlog" value="' . $LANG_LOGVIEW['view'] . '" class="uk-button">' . $LANG_LOGVIEW['view'] . '</button>';
 $display .= '&nbsp;&nbsp;&nbsp;&nbsp;';
-$display .= '<input type="submit" name="clearlog" value="'.$LANG_LOGVIEW['clear'].'"'.XHTML.'>';
+$display .= '<button type="submit" name="clearlog" value="' . $LANG_LOGVIEW['clear'] . '" class="uk-button" onclick="return confirm(\'' . $MESSAGE[76] . '\');">' . $LANG_LOGVIEW['clear'] . '</button>';
 $display .= '</div></form>';
 
 if (isset($_POST['clearlog'])) {

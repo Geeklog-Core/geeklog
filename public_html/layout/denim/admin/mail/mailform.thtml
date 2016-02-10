@@ -34,7 +34,7 @@
 
     <div class="submit">
       <input type="hidden" name="mail" value="mail"{xhtml}>
-      <input type="submit" value="{lang_send}" onclick="return postconfirm()" class="submit"{xhtml}>
+      <button type="submit" value="{lang_send}" onclick="return postconfirm()" class="uk-button uk-button-primary">{lang_send}</button>
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     </div>
   </div>

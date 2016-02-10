@@ -46,7 +46,7 @@
                                                         </select>
                                                         {startampm_selection}
                                                       </span>
-                                                        <input type="submit" value="{lang_add}"{xhtml}>
+                                                        <button type="submit" value="{lang_add}" class="uk-button uk-button-primary">{lang_add}</button>
                                                         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                                     </td>
                                                 </tr>

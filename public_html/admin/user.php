@@ -161,6 +161,10 @@ function edituser($uid = '', $msg = '')
                                   sprintf ($delbutton, $jsconfirm));
         $user_templates->set_var ('delete_option_no_confirmation',
                                   sprintf ($delbutton, ''));
+
+        $user_templates->set_var('allow_delete', true);
+        $user_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $user_templates->set_var('confirm_message', $MESSAGE[76]);
     }
     $user_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 

@@ -13,8 +13,8 @@
     </div>
 
     <div class="movemembers">
-      <div class="movebutton"><input type="button" name="right" value="{LANG_add}"    onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)" class="submit"{xhtml}></div>
-      <div class="movebutton"><input type="button" name="left"  value="{LANG_remove}" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)" class="submit"{xhtml}></div>
+      <div class="movebutton"><button type="button" name="right" value="{LANG_add}"    onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)" class="uk-button">{LANG_add}</button></div>
+      <div class="movebutton"><button type="button" name="left"  value="{LANG_remove}" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)" class="uk-button">{LANG_remove}</button></div>
     </div>
 
     <div class="listmembers">
@@ -26,8 +26,8 @@
   </div>
 
   <div class="submit aligncenter">
-    <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)" class="submit"{xhtml}>
-    <input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)" class="submit"{xhtml}>
+    <button type="submit" value="{lang_save}" onclick="return setUsers(this.form)" class="uk-button uk-button-primary">{lang_save}</button>
+    <button type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)" class="uk-button">{lang_cancel}</button>
     <input type="hidden" name="mode" value="savegroupusers"{xhtml}>
     <input type="hidden" name="groupmembers"{xhtml}>
     <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>

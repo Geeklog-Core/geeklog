@@ -4,9 +4,9 @@
 <form action="{poll_vote_url}" name="Vote" method="post" class="uk-form">
     <div>
     <input type="hidden" name="pid" value="{poll_id}"{xhtml}>
-            {poll_questions}
+        {poll_questions}
         <span class="pluginTinyText">{poll_notification}</span><br{xhtml}>
-        <input type="submit" value="{lang_vote}"{xhtml}>
+        <button type="submit" value="{lang_vote}" class="uk-button">{lang_vote}</button>
         {poll_results}
     </div>
 </form>

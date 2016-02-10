@@ -20,7 +20,7 @@
       </select>
     </div>
     <div class="search-part">
-      <input type="submit" value="{lang_submit}"{xhtml}>
+      <button type="submit" value="{lang_submit}" class="uk-button">{lang_submit}</button>
     </div>
   </div>
 </form>

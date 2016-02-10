@@ -13,7 +13,7 @@
     <dd>
       <input type="hidden" name="mode" value="{delete_mode}"{xhtml}>
       <input type="hidden" name="account_id" value="{account_id}"{xhtml}>
-      <input type="submit" name="btnsubmit" value="{lang_button_delete}" id="deleteaccount-submit" class="submit"{xhtml}>
+      <button type="submit" name="btnsubmit" value="{lang_button_delete}" id="deleteaccount-submit" class="uk-button uk-button-primary">{lang_button_delete}</button>
     </dd>
   </dl>
 </div>

@@ -78,7 +78,7 @@
                                         <td>
                                             <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
                                                 <div>
-                                                    <input type="submit" value="&lt;&lt;"{xhtml}>
+                                                    <button type="submit" value="&lt;&lt;" class="uk-button">&lt;&lt;</button>
                                                     <input type="hidden" name="month" value="{cal_prevmo_num}"{xhtml}>
                                                     <input type="hidden" name="year" value="{cal_prevyr_num}"{xhtml}>
                                                     <input type="hidden" name="mode" value="{mode}"{xhtml}>
@@ -95,7 +95,7 @@
                                         <td>
                                             <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
                                                 <div>
-                                                    <input type="submit" value="&gt;&gt;"{xhtml}>
+                                                    <button type="submit" value="&gt;&gt;" class="uk-button">&gt;&gt;</button>
                                                     <input type="hidden" name="month" value="{cal_nextmo_num}"{xhtml}>
                                                     <input type="hidden" name="year" value="{cal_nextyr_num}"{xhtml}>
                                                     <input type="hidden" name="mode" value="{mode}"{xhtml}>

@@ -219,6 +219,10 @@ function staticpageeditor_form($A)
                               sprintf($delbutton, $jsconfirm));
         $sp_template->set_var('delete_option_no_confirmation',
                               sprintf($delbutton, ''));
+
+        $sp_template->set_var('allow_delete', true);
+        $sp_template->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $sp_template->set_var('confirm_message', $MESSAGE[76]);
     } else {
         $sp_template->set_var('delete_option', '');
     }

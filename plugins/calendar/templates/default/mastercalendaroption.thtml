@@ -2,7 +2,7 @@
 
                                             <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
                                                 <div>
-                                                    <input type="submit" name="action" value="{lang_mastercal}"{xhtml}>
+                                                    <button type="submit" name="action" value="{lang_mastercal}" class="uk-button">{lang_mastercal}</button>
                                                 </div>
                                             </form>
 

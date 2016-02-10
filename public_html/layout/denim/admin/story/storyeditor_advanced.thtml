@@ -279,10 +279,12 @@
 
   <div id="se_bottom" style="display:{show_submitoptions}">
     <div class="submit">
-      <input type="submit" value="{lang_save}" name="mode"{xhtml}>
-      <input type="submit" value="{lang_preview}" name="mode"{xhtml}>
-      <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
-      {delete_option}
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+      <button type="submit" name="mode" value="{lang_preview}" class="uk-button uk-button-success">{lang_preview}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" value="{lang_cancel}" name="mode" class="uk-button">{lang_cancel}</button>
       <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
       <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
       <input type="hidden" name="old_sid" value="{old_story_id}"{xhtml}>

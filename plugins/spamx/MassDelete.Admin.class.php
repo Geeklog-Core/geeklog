@@ -127,8 +127,9 @@ class MassDelete extends BaseAdmin
             $display .= $LANG_SX00['note4'];
             $display .= $LANG_SX00['note5'];
             $display .= $LANG_SX00['note6'] . LB;
-            $display .= '<input type="submit" name="action" value="'
-                     . $LANG_SX00['deletespam'] . '"' . XHTML . '>' . LB;
+            $display .= '<button type="submit" name="action" value="'
+                     . $LANG_SX00['deletespam'] . '" class="uk-button">'
+                     . $LANG_SX00['deletespam'] . '</button>' . LB;
             $display .= '<input type="hidden" name="' . CSRF_TOKEN
                  . "\" value=\"{$token}\"" . XHTML . '>' . LB;
             $display .= '</div></form>' . LB;
