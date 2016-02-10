@@ -3065,6 +3065,7 @@ span.warning em {
 }
 
 /* Article Related Block */
+/*
 .block-related {
   float: left;
   width: 50%;
@@ -3078,6 +3079,7 @@ span.warning em {
     width: auto;
   }
 }
+*/
 
 /*--------------------------------------
   Comment Block
