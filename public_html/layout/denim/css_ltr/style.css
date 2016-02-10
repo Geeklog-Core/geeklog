@@ -514,9 +514,21 @@ input[type="reset"]:disabled {
 .sysmessage img {
   border: none;
   float: left;
+/*
   margin-top: -4px;
+*/
+  margin-top: 0px;
   padding-bottom: 3px;
+/*
   padding-right: 5px;
+*/
+  padding-right: 8px;
+}
+.sysmessage {
+  margin: 0;
+}
+.sysmessage a {
+  text-decoration: underline;
 }
 
 /* Stats */
