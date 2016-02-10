@@ -1,0 +1,17 @@
+{# begin {templatelocation} #}
+
+<table class="uk-table uk-table-condensed uk-table-striped uk-width-1-1" style="background:#ffffff;">
+  <thead>
+    <tr>
+      <th>{item_label}</th>
+      <th>{stat_name}</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {stat_row}
+  </tbody>
+
+</table>
+
+{# end {templatelocation} #}

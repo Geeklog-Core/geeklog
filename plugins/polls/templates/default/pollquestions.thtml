@@ -1,10 +1,10 @@
 {# begin {templatelocation} #}
 
-<div class="poll-questions">
-    <p class="poll-question">{lang_question}{lang_question_number}{poll_question}</p>
-    <ul>
+<div class="uk-margin-large-bottom uk-margin-top">
+  <h1 class="uk-h1">{lang_question}{lang_question_number}{poll_question}</h1>
+  <ul class="uk-list">
     {poll_answers}
-    </ul>
+  </ul>
 </div>
 
 {# end {templatelocation} #}

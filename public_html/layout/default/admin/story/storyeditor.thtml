@@ -1,0 +1,231 @@
+{# begin {templatelocation} #}
+
+<form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="frmstory" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_author}</label>
+    <div class="uk-form-controls">{story_author}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-title">{lang_title}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-storyeditor-title','admin-storyeditor-sid');" {!endif}value="{story_title}" name="title" id="admin-storyeditor-title" class="uk-form-width-large" required{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-page_title">{lang_page_title}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="uk-form-width-large"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-sid">{lang_sid}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor-sid" class="uk-form-width-mediaum" required{xhtml}></div>
+  </div>
+  <div class="uk-form-row"{hide_meta}>
+    <label class="uk-form-label" for="admin-storyeditor-metadescription">{lang_metadescription}</label>
+    <div class="uk-form-controls"><textarea cols="70" rows="2" name="meta_description" id="admin-storyeditor-metadescription" class="uk-width-1-1">{meta_description}</textarea></div>
+  </div>
+  <div class="uk-form-row"{hide_meta}>
+    <label class="uk-form-label" for="admin-storyeditor-metakeywords">{lang_metakeywords}</label>
+    <div class="uk-form-controls"><textarea cols="70" rows="2" name="meta_keywords" id="admin-storyeditor-metakeywords" class="uk-width-1-1">{meta_keywords}</textarea></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-publish_month">{lang_date}</label>
+    <div class="uk-form-controls">
+        <select name="publish_month" id="admin-storyeditor-publish_month" aria-describedby="admin-storyeditor-j-d1">
+            {publish_month_options}
+        </select>
+        /
+        <select name="publish_day">
+            {publish_day_options}
+        </select>
+        /
+        <select name="publish_year">
+            {publish_year_options}
+        </select>&nbsp;&nbsp;
+
+        <select name="publish_hour">
+            {publish_hour_options}
+        </select>
+        :
+        <select name="publish_minute">
+            {publish_minute_options}
+        </select>
+
+        {publishampm_selection}
+    
+        <span class="uk-form-help-inline" id="admin-storyeditor-j-d1">{publish_date_explanation}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_topic}</label>
+    <div class="uk-form-controls">{topic_selection}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-show_topic_icon">{lang_show_topic_icon}</label>
+    <div class="uk-form-controls"><input type="checkbox" {show_topic_icon_checked} name="show_topic_icon" id="admin-storyeditor-show_topic_icon"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-cachetime">{lang_cachetime}</label>
+    <div class="uk-form-controls">
+      <input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor-cachetime" class="text" aria-describedby="admin-storyeditor-j-d2"{xhtml}>
+      <span class="uk-form-help-inline" id="admin-storyeditor-j-d2">{lang_cachetime_desc}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-draft_flag">{lang_draft}</label>
+    <div class="uk-form-controls"><input type="checkbox" {is_checked} name="draft_flag" id="admin-storyeditor-draft_flag"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_archivetitle}</label>
+    <div class="uk-form-controls">
+        <label>{lang_enabled}<input type="checkbox" value="1" {is_checked2} onclick="enablearchive(this);" name="archiveflag" id="admin-storyeditor-archiveflag"{xhtml}></label>
+        <label><input type="checkbox" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}>{lang_optionarchive}</label>
+        <label><input type="checkbox" name="statuscode" id="storycode11" value="11" {is_checked4}{xhtml}>{lang_optiondelete}</label>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-expire_month">{lang_archivetitle}({lang_date})</label>
+    <div class="uk-form-controls">
+      <select name="expire_month" id="admin-storyeditor-expire_month">
+          {expire_month_options}
+      </select>
+      /
+      <select name="expire_day">
+          {expire_day_options}
+      </select>
+      /
+      <select name="expire_year">
+          {expire_year_options}
+      </select>&nbsp;&nbsp;
+
+      <select name="expire_hour">
+          {expire_hour_options}
+      </select>
+      :
+      <select name="expire_minute">
+          {expire_minute_options}
+      </select>
+      {expireampm_selection}
+    </div>
+  </div>
+  <div class="uk-form-row uk-margin-large-top">
+    <label class="uk-form-label">{lang_mode}</label>
+    <div class="uk-form-controls">
+      {featured_options}
+      <select name="frontpage">{frontpage_options}</select>
+      <br{xhtml}>
+      <select name="commentcode">{comment_options}</select>
+      <select name="trackbackcode">{trackback_options}</select>
+    </div>
+  </div>
+  <div class="uk-form-row uk-margin-large-top">
+    <label id="admin-storyeditor-j-d3" class="uk-form-label" for="cmt_close_flag">{lang_cmt_disable}:</label>
+    <div class="uk-form-controls">
+        <label>{lang_enabled}<input type="checkbox" name="cmt_close_flag" id="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);" aria-describedby="admin-storyeditor-j-d3"{xhtml}></label>
+       <span dir="ltr">
+         <select name="cmt_close_month">
+                {cmt_close_month_options}
+         </select>
+         /
+         <select name="cmt_close_day">
+                {cmt_close_day_options}
+         </select>
+         /
+         <select name="cmt_close_year">
+                {cmt_close_year_options}
+         </select>&nbsp;&nbsp;
+
+         <select name="cmt_close_hour">
+                 {cmt_close_hour_options}
+         </select>
+         :
+         <select name="cmt_close_minute">
+                 {cmt_close_minute_options}
+         </select>
+                 {cmt_close_ampm_selection}
+         <input type="hidden" name="cmt_close_second" value="{cmt_close_second}"{xhtml}>
+       </span>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label for="admin-storyeditor-introtext">{lang_introtext}</label>
+    <div><textarea cols="70" rows="12" name="introtext" id="admin-storyeditor-introtext" class="uk-width-1-1" aria-describedby="admin-storyeditor-j-d4" required>{story_introtext}</textarea></div>
+  </div>
+  <div class="uk-form-row">
+    <label for="admin-storyeditor-bodytext">{lang_bodytext}</label>
+    <div><textarea cols="70" rows="20" name="bodytext" id="admin-storyeditor-bodytext" class="uk-width-1-1">{story_bodytext}</textarea></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-storyeditor-postmode">{lang_postmode}</label>
+    <div class="uk-form-controls">
+        <select name="postmode" id="admin-storyeditor-postmode">
+            {post_options}
+        </select>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <div class="uk-form-help-inline" id="admin-storyeditor-j-d4">{lang_allowed_html}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_images}</label>
+    <div class="uk-form-controls">
+        {saved_images}
+        {image_form_elements}
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_story_stats}</label>
+    <div class="uk-form-controls">
+       <ul class="uk-list uk-flex">
+         <li class="uk-margin-left">{lang_hits}: {story_hits}</li>
+         <li class="uk-margin-left">{lang_comments}: {story_comments}</li>
+         <li class="uk-margin-left">{lang_trackbacks}: {story_trackbacks}</li>
+         <li class="uk-margin-left">{lang_emails}: {story_emails}</li>
+       </ul>
+    </div>
+  </div>
+
+<fieldset class="uk-margin-large-top">
+  <legend>{lang_accessrights}</legend>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_owner}</label>
+    <div class="uk-form-controls">{owner_name}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="group_id">{lang_group}</label>
+    <div class="uk-form-controls">{group_dropdown}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_permissions}</label>
+    <div class="uk-form-controls">{permissions_editor}
+      <span class="uk-form-help-inline">{lang_perm_key}</span>
+      <span class="uk-form-help-inline">{lang_permissions_msg}</span>
+    </div>
+  </div>
+
+</fieldset>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="submit" value="{lang_save}" name="mode" class="uk-button uk-form-width-medium"{xhtml}>
+      <input type="submit" value="{lang_preview}" name="mode" class="uk-button"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode" class="uk-button"{xhtml}>
+      {delete_option}
+      <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
+      <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
+      <input type="hidden" name="old_sid" value="{old_story_id}"{xhtml}>
+      <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+      <input type="hidden" name="expire_second" value="{expire_second}"{xhtml}>
+      <input type="hidden" name="hits" value="{story_hits}"{xhtml}>
+      <input type="hidden" name="comments" value="{story_comments}"{xhtml}>
+      <input type="hidden" name="trackbacks" value="{story_trackbacks}"{xhtml}>
+      <input type="hidden" name="numemails" value="{story_emails}"{xhtml}>
+      <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+      {submission_option}
+    </div>
+  </div>
+
+</form>
+
+{# end {templatelocation} #}

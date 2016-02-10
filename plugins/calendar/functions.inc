@@ -199,11 +199,11 @@ function phpblock_calendar( $help='', $title='' )
                     if( !$headline ) {
                         if($z == 2) {
                             if( $numRows > 0 ) {
-                                $retval .= '<b>' . $LANG_CAL_1[23] . '</b><br' . XHTML . '>';
+                                $retval .= '<span class="uk-text-bold">' . $LANG_CAL_1[23] . '</span><br' . XHTML . '>';
                             }
                         } else {
                             if( $totalrows > 0 ) {
-                                $retval .= '<b>' . $LANG_CAL_1[24] . '</b><br' . XHTML . '>';
+                                $retval .= '<span class="uk-text-bold">' . $LANG_CAL_1[24] . '</span><br' . XHTML . '>';
                             }
                         }
                         $headline = true;
@@ -249,12 +249,12 @@ function phpblock_calendar( $help='', $title='' )
                             if( $todaysEvent ) {
                                 $retval .= '<span class="' . $todaysClassName . '">';
                             }
-                            $retval .= '<b>' . $dayName1 . '</b>&nbsp;<small>'
-                                    . $abbrDate1 . '</small>';
+                            $retval .= '<span class="uk-text-bold">' . $dayName1 . '</span>&nbsp;<span class="uk-text-small">'
+                                    . $abbrDate1 . '</span>';
 
                             // If different start and end dates, then display end date:
                             if( $abbrDate1 != $abbrDate2 ) {
-                                $retval .= ' - <br' . XHTML . '><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
+                                $retval .= ' - <br' . XHTML . '><span class="uk-text-bold">' . $dayName2 . '</span>&nbsp;<span class="uk-text-small">' . $abbrDate2 . '</span>';
                             }
                             if( $todaysEvent ) {
                                 $retval .= '</span>';

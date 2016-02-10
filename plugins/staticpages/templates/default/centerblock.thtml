@@ -1,7 +1,10 @@
 {# begin {templatelocation} #}
 
+<?php if(SEC_inGroup('Root')){ ?><div class="gl-edit"><?php } ?>
 {block_start}
+{!if edit_icon}<div class="uk-float-right">{edit_icon}</div>{!endif}
 {content}
 {block_end}
+<?php if(SEC_inGroup('Root')){ ?></div><?php } ?>
 
 {# end {templatelocation} #}

@@ -1,5 +1,5 @@
 {# begin {templatelocation} #}
 
-&nbsp;<span style="font-size:80%;">[{lang_addremovefromcal}]</span>
+&nbsp;<span class="uk-text-small">[{lang_addremovefromcal}]</span>
 
 {# end {templatelocation} #}

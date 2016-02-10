@@ -1,5 +1,5 @@
 {# begin {templatelocation} #}
 
- | <a href="{sp_comments_url}">{num_comments} {lang_comments}</a>
+<ul class="uk-subnav uk-subnav-line uk-flex-center"><li><a href="{sp_comments_url}">{num_comments} {lang_comments}</a></li></ul>
 
 {# end {templatelocation} #}

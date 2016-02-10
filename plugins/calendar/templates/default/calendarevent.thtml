@@ -1,5 +1,5 @@
 {# begin {templatelocation} #}
 
-                                            {event_anchortags}
+    {event_anchortags}
 
 {# end {templatelocation} #}

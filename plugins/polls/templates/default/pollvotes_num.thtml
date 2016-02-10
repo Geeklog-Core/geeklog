@@ -1,8 +1,6 @@
 {# begin {templatelocation} #}
 
-        <tr>
-            <td class="poll_answer_text">{answer_text}</td>
-            <td class="poll_answer_percent">{answer_percent}% </td>
-        </tr>
+  <dt>{answer_text}</dt>
+  <dd>{answer_percent}% </dd>
 
 {# end {templatelocation} #}

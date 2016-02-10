@@ -1,41 +1,24 @@
 {# begin {templatelocation} #}
 
-                            <table cellpadding="2" cellspacing="2">
-                                <tr>
-                                    <td colspan="2">{intro_msg}</td>
-                                </tr>
-                                <tr>
-                                    <td align="right"><b>{lang_event}:</b></td>
-                                    <td>{event_title}</td>
-                                </tr>
-                                <tr>
-                                    <td align="right"><b>{lang_starts}:</b></td>
-                                    <td>{event_start}</td>
-                                </tr>
-                                <tr>
-                                    <td align="right"><b>{lang_ends}:</b></td>
-                                    <td>{event_end}</td>
-                                </tr>
-                                <tr>
-                                    <td align="right" valign="top"><b>{lang_where}:</b></td>
-                                    <td>{event_location}</td>
-                                </tr>
-                                <tr>
-                                    <td align="right"><b>{lang_description}:</b></td>
-                                    <td>{event_description}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <form name="userevent" method="post" action="{site_url}/calendar/event.php" class="uk-form">
-                                            <div>
-                                                <input type="hidden" name="action" value="saveuserevent"{xhtml}>
-                                                <input type="hidden" name="eid" value="{event_id}"{xhtml}>
-                                                <input type="submit" value="{lang_addtomycalendar}"{xhtml}>
-                                                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
+<p>{intro_msg}</p>
+<dl class="uk-description-list-horizontal">
+  <dt>{lang_event}</dt>
+  <dd>{event_title}</dd>
+  <dt>{lang_starts}</dt>
+  <dd>{event_start}</dd>
+  <dt>{lang_ends}</dt>
+  <dd>{event_end}</dd>
+  <dt>{lang_where}</dt>
+  <dd>{event_location}</dd>
+  <dt>{lang_description}</dt>
+  <dd>{event_description}</dd>
+</dl>
+
+<form name="userevent" method="post" action="{site_url}/calendar/event.php" class="uk-form uk-form-horizontal">
+  <input type="hidden" name="action" value="saveuserevent"{xhtml}>
+  <input type="hidden" name="eid" value="{event_id}"{xhtml}>
+  <input type="submit" value="{lang_addtomycalendar}" class="uk-form-width-medium"{xhtml}>
+  <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+</form>
 
 {# end {templatelocation} #}

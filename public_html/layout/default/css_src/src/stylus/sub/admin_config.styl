@@ -1,0 +1,247 @@
+
+$stage = 'admin_config'
+
+/*!--------------------------------------
+  Admin Configration
+--------------------------------------*/
+
+#config_menu
+    float: left
+    //width: 280px
+    padding: 0 10px
+    //body.center-right &
+    //    width: 200px
+
+.block-config
+    margin: 0 0 0.5em
+    padding: 8px 0
+    text-align: left
+
+.block-config-title
+    margin: 0 0 0.5em 0
+    padding: 0 0 0.1em 0
+    display: block
+    border-bottom: 1px solid #CCC
+    font-size: 105%
+    font-weight: bold
+
+#search-configuration-container
+    @extend .block-config
+    label
+        @extend .block-config-title
+
+.block-config-content
+    padding-left: 5px
+
+.configoption
+    list-style: none outside
+    color: #999
+    margin: 0
+    padding: 0
+    a
+        display: block
+        color: #222
+        height: 1.8em
+        line-height: 1.8em
+        overflow: hidden
+        padding: 0 5px
+        white-space: nowrap
+        text-decoration: none
+        &:hover
+            background-color: #F1F1F1
+
+.configoption_off
+    list-style: none outside
+    color: #999
+    display: block
+    height: 1.8em
+    line-height: 1.8em
+    overflow: hidden
+    margin: 0
+    padding: 0 5px
+    white-space: nowrap
+
+#config_content
+    float: left
+    //width: 820px
+    padding: 10px
+    body.center-right &
+        width: 600px
+
+#geeklog_config_editor
+    clearfix()
+
+#config_main
+    width: 100%
+
+#search-configuration
+    width: 90%
+    margin: 10px 0 10px 5px
+
+.inputTable
+    width: 100%
+    margin: 0
+    padding: 0
+
+.config_label
+    float: left
+    width: 35%
+    padding: .5em 0
+
+.restore
+    padding: .5em 0
+
+.config_input
+    float: left
+    width: 53%
+
+.config_name
+    clear: left
+    margin: 5px 0
+    padding: 5px
+    input[type="text"],
+    textarea
+        width: 53%
+    select
+        width: 54.5%
+        max-width: none
+
+/*! Smaller than standard 1280 (devices and browsers) */
+/*
+@media only screen and (max-width: $breakpoint-large-max)
+
+    #config_menu
+        width: 210px
+        body.center-right &
+            width: 150px
+        body.center &
+            width: 25%
+
+    #config_content
+        width: 710px
+        body.center-right &
+            width: 470px
+
+        body.center &
+            float: left
+            width: 70%
+            padding: 10px 0
+
+*/
+
+@media only screen and (max-width: $breakpoint-medium-max)
+
+    body.center #config_menu
+        width: 100%
+        padding: 0
+
+    body.center #config_content
+        float: left
+        width: 100%
+        padding: 10px 0
+
+    .configoption
+        display: inline-block
+        border: 1px solid #666
+        border-color: #BEDAF3
+        border-radius: 2px 2px 2px 2px
+        background: #E4EDF5
+        color: #336699
+        margin: 0.2em 0
+        margin-right: 0.4em
+        a
+            overflow: visible
+            padding: 0 10px
+            height: 1.8em
+            line-height: 1.8em
+            color: #336699
+
+    .configoption_off
+        display: inline-block
+        border: 1px solid #666
+        border-color: #79B1E7
+        border-radius: 2px 2px 2px 2px
+        background: #A8C4E0
+        color: #2A527A
+        font-weight: bold
+        overflow: visible
+        margin: 0.2em 0
+        margin-right: 0.4em
+        padding: 0 10px
+        height: 1.8em
+        line-height: 1.8em
+
+    #text_editor dd.description
+        margin-left: 0
+
+/*! Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-medium-max)
+
+    #config_menu
+        float: left
+        width: 728px
+        padding: 0 10px
+        body.center-right &
+            width: 508px
+
+    #config_content
+        float: left
+        width: 728px
+        padding: 10px
+        body.center-right &
+            width: 508px
+
+    .block-config,
+    #search-configuration-container
+        margin: 0
+        padding: 5px 0
+
+/*! All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: $breakpoint-small-max)
+
+    #geeklog_config_editor
+        padding: 0
+
+    #config_menu
+        float: left
+        width: 100%
+        padding: 0
+        body.center-right &
+            width: 100%
+
+    #config_content
+        float: left
+        width: 100%
+        padding: 10px 0
+        body.center-right &
+            width: 100%
+
+    .config_label
+        float: left
+        width: 100%
+        padding: 0
+        font-weight: bold
+
+    .restore
+        padding: .5em 0
+
+    .config_input
+        float: left
+        width: 90%
+
+    .config_name
+        margin: 5px 0
+        padding: 5px
+        input[type="text"],
+        textarea
+            width: 95%
+        select
+            max-width: none
+            width: 98%
+
+    .block-config,
+    #search-configuration-container
+        margin: 0
+        padding: 5px 0
+
+hook-root($stage)

@@ -412,7 +412,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // this will hide HTML that should not be viewed in preview mode
         if( $preview || $hidefromanon ) {
-            $template->set_var( 'hide_if_preview', 'style="display:none"' );
+            $template->set_var( 'hide_if_preview', ' style="display:none"' );
         } else {
             $template->set_var( 'hide_if_preview', '' );
         }
@@ -432,7 +432,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                        . '&amp;order=' . $order . '&amp;cid=' . $A['pid']
                        . '&amp;format=threaded';
             }
-            $parent_link = COM_createLink($LANG01[44], $plink) . ' | ';
+            $parent_link = COM_createLink($LANG01[44], $plink) ;
             $template->set_var('parent_link', $parent_link);
         } else {
             $template->set_var('parent_link', '');
@@ -475,7 +475,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 $editlink = $_CONF['site_url'] . '/comment.php?mode=edit&amp;cid='
                     . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type;
             }
-            $edit = COM_createLink($LANG01[4], $editlink) . ' | ';
+            $edit = COM_createLink($LANG01[4], $editlink) ;
         }
 
         // unsubscribe link
@@ -495,7 +495,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 }
                 $unsubattr = array('title' => $LANG03[43]);
                 $unsubscribe = COM_createLink($LANG03[42], $unsublink,
-                                              $unsubattr) . ' | ';
+                                              $unsubattr) ;
             }
         }
 
@@ -505,7 +505,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
             // always place edit option first, if available
             if (! empty($edit)) {
-                $deloption .= $edit;
+                $deloption .= "<li>".$edit."</li>";
             }
 
             // actual delete option
@@ -519,15 +519,15 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                     . '&amp;' . CSRF_TOKEN . '=' . $token;
             }
             $delattr = array('onclick' => "return confirm('{$MESSAGE[76]}');");
-            $deloption .= COM_createLink($LANG01[28], $dellink, $delattr) . ' | ';
+            $deloption .= "<li>".COM_createLink($LANG01[28], $dellink, $delattr)."</li>" ;
 
             if (!empty($A['ipaddress'])) {
                 if (empty($_CONF['ip_lookup'])) {
-                    $deloption .= $A['ipaddress'] . '  | ';
+                    $deloption .= "<li>".$A['ipaddress']."</li>";
                 } else {
                     $iplookup = str_replace('*', $A['ipaddress'],
                                             $_CONF['ip_lookup']);
-                    $deloption .= COM_createLink($A['ipaddress'], $iplookup) . ' | ';
+                    $deloption .= "<li>".COM_createLink($A['ipaddress'], $iplookup)."</li>";
                 }
             }
 
@@ -551,7 +551,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 }
                 $report_attr = array('title' => $LANG01[110]);
                 $reportthis = COM_createLink($LANG01[109], $reportthis_link,
-                                             $report_attr) . ' | ';
+                                             $report_attr) ;
             }
             $template->set_var('delete_option', $reportthis . $unsubscribe);
         } else {
@@ -597,7 +597,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                             . '&amp;pid=' . $A['cid'] . '&amp;type=' . $A['type'];
             }
             $reply_option = COM_createLink($LANG01[43], $reply_link,
-                                           array('rel' => 'nofollow')) . ' | ';
+                                           array('rel' => 'nofollow'));
             $template->set_var('reply_option', $reply_option);
         } else {
             $template->set_var('reply_option', '');

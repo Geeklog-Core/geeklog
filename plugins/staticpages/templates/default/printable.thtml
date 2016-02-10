@@ -9,7 +9,6 @@
 </head>
 <body dir="{direction}">
 {# begin {templatelocation} #}
-
     <h1>{sp_title}</h1>
 
     <p>{sp_content}</p>
@@ -22,6 +21,5 @@
 <p>{comments_text_in_brackets}</p>
 
 {# end {templatelocation} #}
-
 </body>
 </html>

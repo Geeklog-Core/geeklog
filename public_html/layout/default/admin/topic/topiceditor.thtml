@@ -1,0 +1,133 @@
+{# begin {templatelocation} #}
+
+<form action="{site_admin_url}/topic.php" method="post" enctype="multipart/form-data" id="admin-topiceditor" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-topic">{lang_topicname}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-topiceditor-topic','admin-topiceditor-tid');" {!endif}value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="uk-form-width-medium" required{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-tid">{lang_topicid}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="128" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="uk-form-width-medium" aria-describedby="admin-topiceditor-d1" required{xhtml}><span class="uk-form-help-inline" id="admin-topiceditor-d1">{lang_donotusespaces}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-inherit">{lang_inherit}</label>
+    <div class="uk-form-controls"><input type="checkbox" {inherit_checked} name="inherit" id="admin-topiceditor-inherit"{xhtml}><span class="uk-form-help-inline">{lang_inherit_info}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-hidden">{lang_hidden}</label>
+    <div class="uk-form-controls"><input type="checkbox" {hidden_checked} name="hidden" id="admin-topiceditor-hidden"{xhtml}><span class="uk-form-help-inline">{lang_hidden_info}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-parent_id">{lang_parent_id}</label>
+    <div class="uk-form-controls">
+      <select name="parent_id" id="admin-topiceditor-parent_id">
+        {parent_id_options}
+      </select>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_sortorder}</label>
+    <div class="uk-form-controls">
+      {sort_order}
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-limitnews">{lang_storiesperpage}</label>
+    <div class="uk-form-controls">
+      <input type="text" maxlength="3" value="{story_limit}" name="limitnews" id="admin-topiceditor-limitnews" class="uk-form-width-mini" aria-describedby="admin-topiceditor-d2"{xhtml}><span class="uk-form-help-inline" id="admin-topiceditor-d2">{lang_defaultis}{default_limit}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-imageurl">{lang_topicimage}</label>
+    <div class="uk-form-controls">
+      <input type="text" dir="ltr" maxlength="{max_url_length}" value="{image_url}" name="imageurl" id="admin-topiceditor-imageurl" class="uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-newicon">{lang_uploadimage}</label>
+    <div class="uk-form-controls">
+      <input type="file" name="newicon" id="admin-topiceditor-newicon" aria-describedby="admin-topiceditor-d3"{xhtml}><span class="uk-form-help-inline" id="admin-topiceditor-d3">{icon_max_dimensions}</span>
+    </div>
+  </div>
+  <div class="uk-form-row"{hide_meta}>
+    <label class="uk-form-label" for="admin-storyeditor-metadescription">{lang_metadescription}</label>
+    <div class="uk-form-controls">
+      <textarea name="meta_description" id="admin-storyeditor-metadescription" class="uk-width-1-1" cols="70" rows="2">{meta_description}</textarea>
+    </div>
+  </div>
+  <div class="uk-form-row"{hide_meta}>
+    <label class="uk-form-label" for="admin-storyeditor-metakeywords">{lang_metakeywords}</label>
+    <div class="uk-form-controls">
+      <textarea name="meta_keywords" id="admin-storyeditor-metakeywords" class="uk-width-1-1" cols="70" rows="2">{meta_keywords}</textarea>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-is_default">{lang_defaulttopic}</label>
+    <div class="uk-form-controls">
+      <input type="checkbox" {default_checked} name="is_default" id="admin-topiceditor-is_default"{xhtml}><span class="uk-form-help-inline">{lang_defaulttext}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="admin-topiceditor-is_archive">{lang_archivetopic}</label>
+    <div class="uk-form-controls">
+      <input type="checkbox" {archive_checked} {archive_disabled} name="is_archive" id="admin-topiceditor-is_archive"{xhtml}><span class="uk-form-help-inline">{lang_archivetext}</span>
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_num_stories}</label>
+    <div class="uk-form-controls">
+      {num_stories}
+    </div>
+  </div>
+
+  <fieldset class="uk-margin-large-top">
+  <legend>{lang_accessrights}</legend>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_owner}</label>
+    <div class="uk-form-controls">
+      {owner_name}
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="group_id">{lang_group}</label>
+    <div class="uk-form-controls">
+      {group_dropdown}
+    </div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_permissions}</label>
+    <div class="uk-form-controls">
+        {permissions_editor}
+    </div>
+    <div class="uk-form-controls">
+        <span class="uk-form-help-inline">{lang_perm_key}</span>
+        <span class="uk-form-help-inline">{lang_permissions_msg}</span>
+    </div>
+  </div>
+  </fieldset>
+
+  <div class="uk-form-row uk-margin-large-top uk-margin-large-bottom">
+    <div class="uk-form-controls">
+      <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+      <input type="submit" value="{lang_save}" name="mode" class="uk-button uk-form-width-medium"{xhtml}>
+      <input type="hidden" name="old_tid" value="{topic_id}"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode" class="uk-button"{xhtml}>
+    </div>
+  </div>
+  <hr{xhtml}>
+  <div class="uk-form-row">
+    <div class="uk-form-controls">
+      {delete_option}<span class="uk-form-help-inline uk-text-danger uk-text-break">{warning_msg}</span>
+    </div>
+  </div>
+
+</form>
+
+{# end {templatelocation} #}
