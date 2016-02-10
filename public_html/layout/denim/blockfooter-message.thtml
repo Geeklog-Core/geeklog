@@ -1,7 +1,6 @@
 {# begin {templatelocation} #}
 
-    </dd>
-  </dl>
+  </div>
 </aside>
 
 {# end {templatelocation} #}

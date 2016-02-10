@@ -8,7 +8,7 @@
     <p class="form_message">{lang_report_this}</p>
 
     <div class="submit">
-      <input type="submit" name="sendit" value="{lang_send_report}" class="submit"{xhtml}>
+      <button type="submit" name="sendit" value="{lang_send_report}" class="uk-button uk-button-primary">{lang_send_report}</button>
       <input type="hidden" name="cid" value="{cid}"{xhtml}>
       <input type="hidden" name="type" value="{type}"{xhtml}>
       <input type="hidden" name="mode" value="sendreport"{xhtml}>

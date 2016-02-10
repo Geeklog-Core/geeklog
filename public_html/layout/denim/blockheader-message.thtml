@@ -1,8 +1,8 @@
 {# begin {templatelocation} #}
 
-<aside class="block-message">
-  <dl>
-    <dt class="title">{showhide}{block_title}{block_help}</dt>
-    <dd class="message">
+<aside class="uk-alert uk-alert-large" data-uk-alert>
+  <a class="uk-alert-close uk-close" href=""></a>
+  <h4 class="title">{showhide}{block_title}{block_help}</h4>
+  <div class="message">
 
 {# end {templatelocation} #}

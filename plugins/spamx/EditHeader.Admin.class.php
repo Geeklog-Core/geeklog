@@ -61,8 +61,9 @@ class EditHeader extends BaseAdmin
                  .  '<td><input type="text" size="40" name="header-value"'
                  .  XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB
                  .  '</table>' . LB
-                 .  '<p><input type="submit" name="paction" value="'
-                 .  $LANG_SX00['addentry'] . '"' . XHTML . '>'
+                 .  '<p><button type="submit" name="paction" value="'
+                 .  $LANG_SX00['addentry'] . '" class="uk-button">'
+                 .  $LANG_SX00['addentry'] . '</button>' . LB
                  .  '<input type="hidden" name="' . CSRF_TOKEN
                  .  '" value="' . $this->csrfToken . '"' . XHTML . '></p>' . LB
                  .  '</form>' . LB;

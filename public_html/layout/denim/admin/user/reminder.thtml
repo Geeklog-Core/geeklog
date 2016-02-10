@@ -1,7 +1,7 @@
 {# start {templatelocation} #}
 
 <div id="reminder-submit" class="submit">
-  <input type="submit" name="mode" value="{action_reminder}" class="submit" aria-describedby="desc-reminder-submit"{xhtml}>&nbsp;<span id="desc-reminder-submit">{lang_reminder}</span>
+  <button type="submit" name="mode" value="{action_reminder}" class="uk-button" aria-describedby="desc-reminder-submit">{action_reminder}</button>&nbsp;<span id="desc-reminder-submit">{lang_reminder}</span>
 </div>
 
 {# end {templatelocation} #}

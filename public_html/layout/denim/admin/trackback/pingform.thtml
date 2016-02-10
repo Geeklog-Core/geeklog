@@ -13,7 +13,7 @@
       <dt>{ping_button}</dt>
       <dd>{lang_ping_short}</dd>
 
-      <dt>{trackback_button}{hidden_input_fields}</dt>
+      <dt>{trackback_button}</dt>
       <dd>{lang_trackback_short}</dd>
     </dl>
 

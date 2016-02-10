@@ -19,7 +19,7 @@
         <option value="200" {200_selected}>200</option>
         <option value="500" {500_selected}>500</option>
       </select>
-      <input type="submit" value="{lang_submit}"{xhtml}>
+      <button type="submit" value="{lang_submit}" class="uk-button">{lang_submit}</button>
     </div>
     <div class="search-part">
       {lang_records_found}:&nbsp;{records_found}

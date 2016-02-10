@@ -248,8 +248,8 @@ function itemlist($type, $token)
                 . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"'. XHTML . '>' . LB
                 . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
                 . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
-                . '<p class="aligncenter"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"' . XHTML . '></p>' . LB;
+                . '<p class="aligncenter"><button type="submit" value="'
+                . $LANG_ADMIN['submit'] . '" class="uk-button">' . $LANG_ADMIN['submit'] . '</button></p>' . LB;
     }
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
@@ -313,8 +313,8 @@ function userlist($token)
                 . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"'. XHTML . '>' . LB
                 . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
                 . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
-                . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"' . XHTML . '></p>' . LB;
+                . '<p class="aligncenter"><button type="submit" value="'
+                . $LANG_ADMIN['submit'] . '" class="uk-button">' . $LANG_ADMIN['submit'] . '</button></p>' . LB;
     }
 
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,

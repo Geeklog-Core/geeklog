@@ -165,6 +165,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
                                    sprintf ($delbutton, $jsconfirm));
         $event_templates->set_var ('delete_option_no_confirmation',
                                    sprintf ($delbutton, ''));
+
+        $event_templates->set_var('allow_delete', true);
+        $event_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $event_templates->set_var('confirm_message', $MESSAGE[76]);
+
         if ($mode == 'editsubmission') {
             $event_templates->set_var('submission_option',
                 '<input type="hidden" name="type" value="submission"'

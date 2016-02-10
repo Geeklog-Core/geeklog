@@ -119,8 +119,8 @@ function plugin_info_installed($pi_name)
             ($pi_installed_version == $code_version)) {
         $plg_templates->set_var ('update_option', '');
     } else {
-        $plg_templates->set_var ('update_option', '<input type="submit" value="'
-                                 . $LANG32[34] . '" name="mode"' . XHTML . '>');
+        $plg_templates->set_var ('update_option', '<button type="submit" value="'
+                                 . $LANG32[34] . '" name="mode" class="uk-form">' . $LANG32[34] . '</button>');
     }
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
     $plg_templates->set_var('pi_name', $pi_name);
@@ -660,7 +660,7 @@ function plugin_show_uploadform($token)
                  . '/plugins.php" method="post" enctype="multipart/form-data">' . LB
                  . '<div>' . $LANG28[29] . ': '
                  . '<input type="file" dir="ltr" name="plugin" size="40"' . XHTML . '> ' . LB
-                 . '<input type="submit" name="upload" value="' . $LANG32[41] . '"' . XHTML . '>' . LB
+                 . '<button type="submit" name="upload" value="' . $LANG32[41] . '" class="uk-form">' . $LANG32[41] . '</button>' . LB
                  . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>'
                  . '</div>' . LB . '</form>' . LB;
     } else {

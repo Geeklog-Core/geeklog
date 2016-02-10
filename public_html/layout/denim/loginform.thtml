@@ -19,7 +19,7 @@
     </div>
 
     <div class="submit">
-      <input type="submit" value="{lang_login}" class="submit"{xhtml}>
+      <button type="submit" value="{lang_login}" class="uk-button">{lang_login}</button>
     </div>
 
     <div class="navi">

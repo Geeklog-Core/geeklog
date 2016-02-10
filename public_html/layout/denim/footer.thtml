@@ -21,6 +21,10 @@
       </div>
     </footer>
 
+    <div class="totop-scroller" data-uk-smooth-scroll>
+      <i class="uk-icon-chevron-circle-up"></i>
+    </div>
+
   </div>
   <!-- } #container -->
 

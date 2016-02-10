@@ -155,6 +155,11 @@ function editlink ($mode, $lid = '')
                                   sprintf ($delbutton, $jsconfirm));
         $link_templates->set_var ('delete_option_no_confirmation',
                                   sprintf ($delbutton, ''));
+
+        $link_templates->set_var('allow_delete', true);
+        $link_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $link_templates->set_var('confirm_message', $MESSAGE[76]);
+
         if ($mode == 'editsubmission') {
             $link_templates->set_var('submission_option',
                 '<input type="hidden" name="type" value="submission"'

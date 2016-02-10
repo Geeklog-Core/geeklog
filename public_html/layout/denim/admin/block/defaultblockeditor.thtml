@@ -57,8 +57,8 @@
     </fieldset>
 
     <div class="submit">
-      <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
-      <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+      <button type="submit" name="mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
       <input type="hidden" name="bid" value="{block_id}"{xhtml}>
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     </div>

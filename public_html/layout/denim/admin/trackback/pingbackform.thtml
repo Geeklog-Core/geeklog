@@ -13,7 +13,7 @@
     </dl>
 
     <div class="submit">
-      <input type="submit" value="{lang_send}" name="mode[2]" class="submit"{xhtml}>
+      <button type="submit" name="mode[2]" value="{lang_send}" class="uk-button uk-button-primary">{lang_send}</button>
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     </div>
   </fieldset>

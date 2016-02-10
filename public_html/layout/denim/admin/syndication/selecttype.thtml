@@ -8,7 +8,7 @@
 
     <div class="submit">
       {type_selection}
-      <input type="submit" value="{lang_go}" name="mode" class="submit"{xhtml}>
+      <button type="submit" name="mode" value="{lang_go}" class="uk-button uk-button-primary">{lang_go}</button>
     </div>
   </fieldset>
 </form>
