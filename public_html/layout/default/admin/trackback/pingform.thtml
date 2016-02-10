@@ -15,7 +15,7 @@
     <span class="uk-form-help-inline">{lang_ping_short}</span>
   </div>
   <div class="uk-form-row">
-    {trackback_button}{hidden_input_fields}
+    {trackback_button}
     <span class="uk-form-help-inline">{lang_trackback_short}</span>
   </div>
 
