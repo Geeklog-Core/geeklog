@@ -27,10 +27,10 @@ function FixHTML(leftblocksID, centerblocksID, rightblocksID) {
 
 
 function delconfirm() {
-    return confirm("削除しますか?");
+    return confirm("Delete this?");
 }
 
 function postconfirm() {
-    return confirm("送信しますか?");
+    return confirm("Send this?");
 }
 
