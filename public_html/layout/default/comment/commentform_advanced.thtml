@@ -3,7 +3,7 @@
 {noscript}
 <div id="advanced_editor" style="display:none;">
   {start_block_postacomment}
-  <div id="commenteditform">
+  <div class="uk-panel uk-panel-box">
     <form action="{form_url}" method="post" onsubmit='set_postcontent();' id="commentform_advanced" class="uk-form uk-form-horizontal">
       <div class="uk-form-row">
         <label class="uk-form-label">{lang_username}</label>
@@ -22,13 +22,13 @@
       <div class="uk-form-row">
         <label class="uk-form-label" for="commentform-title">{lang_title}</label>
         <div class="uk-form-controls">
-          <input type="text" value="{title}" maxlength="96" name="title" id="commentform-title" class="uk-width-1-1"{xhtml}>
+          <input type="text" value="{title}" maxlength="96" name="title" id="commentform-title" class="uk-width-1-1" required{xhtml}>
         </div>
       </div>
       <div class="uk-form-row">
         <label>{lang_comment}</label>
         <div id="text_editor" style="display: {show_texteditor};">
-          <textarea cols="45" rows="10" name="comment" id="comment_text" class="uk-width-1-1" aria-describedby="comment-html-d1">{comment}</textarea>
+          <textarea cols="45" rows="10" name="comment" id="comment_text" class="uk-width-1-1" aria-describedby="comment-html-d1" required>{comment}</textarea>
         </div>
         <div id="html_editor" style="display: {show_htmleditor};">
           <textarea cols="45" rows="10" name="comment_html" id="comment_html" class="uk-width-1-1">{comment}</textarea>

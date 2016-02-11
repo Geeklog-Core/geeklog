@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 
 {start_block_postacomment}
-<div id="commenteditform">
+<div class="uk-panel uk-panel-box">
 
   <form action="{form_url}" method="post" id="commentform" class="uk-form uk-form-horizontal">
 
@@ -22,13 +22,13 @@
     <div class="uk-form-row">
       <label class="uk-form-label" for="commentform-title">{lang_title}</label>
       <div class="uk-form-controls">
-        <input type="text" value="{title}" maxlength="96" name="title" id="commentform-title" class="uk-width-1-1"{xhtml}>
+        <input type="text" value="{title}" maxlength="96" name="title" id="commentform-title" class="uk-width-1-1" required{xhtml}>
       </div>
     </div>
     <div class="uk-form-row">
       <label for="comment_text">{lang_comment}</label>
       <div class="uk-form-controls text_editor">
-        <textarea rows="10" cols="45" name="comment" id="comment_text" class="uk-width-1-1" aria-describedby="commentform-d1">{comment}</textarea>
+        <textarea rows="10" cols="45" name="comment" id="comment_text" class="uk-width-1-1" aria-describedby="commentform-d1" required>{comment}</textarea>
         <span class="uk-form-help-inline" id="commentform-d1">{allowed_html}</span>
       </div>
     </div>
