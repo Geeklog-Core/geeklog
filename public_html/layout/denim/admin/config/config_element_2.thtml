@@ -1,5 +1,5 @@
 <!-- BEGIN validation_error_block -->
-<div class="validation_error_block"><span></span>{validation_error_message}</div>
+<div class="config_validation_error_block"><i class="uk-icon-exclamation-triangle"></i> {validation_error_message}</div>
 <!-- END validation_error_block -->
 
 

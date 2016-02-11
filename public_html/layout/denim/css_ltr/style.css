@@ -4607,3 +4607,7 @@ body.center-right #config_content {
     margin-left: 8px;
 }
 
+.config_validation_error_block {
+    color: #d14;
+    font-size: 12px;
+}

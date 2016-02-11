@@ -1,11 +1,11 @@
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
 // | javascript functions to support the online configuration manager          |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2016 by the following authors:                         |
+// | Copyright (C) 2005-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // |          Akeda Bagus       - admin AT gedex DOT web DOT id                |
@@ -26,6 +26,37 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
+
+var geeklog;
+
+geeklog = geeklog || {};
+
+// Since jQuery UI v1.10.0, tabs.length(), tabs.add(), tabs.remove(),
+// tabs.select(), tabs.show() methods and select event are removed.
+geeklog.admin = {
+    configuration: {
+        getTabLength: function (tabs) {
+            return $(tabs).find('li').length;
+        },
+
+        addTab: function (tabs, url, text, index) {
+            var newItem = $('<li><a href="' + url + '">' + text + '</a></li>');
+
+            if (index <= this.getTabLength(tabs) - 1) {
+                newItem.before($(tabs).find('li').eq(index));
+            } else {
+                newItem.insertAfter($(tabs).find('li').last());
+            }
+
+            tabs.tabs('refresh');
+        },
+
+        removeTab: function (tabs, index) {
+            $(tabs).find('li').eq(index).remove();
+            tabs.tabs('refresh');
+        }
+    }
+};
 
 // custom autocomplete with categories
 var minLength = 10;
@@ -61,6 +92,45 @@ $.widget("custom.search_config", $.ui.autocomplete, {
 // currently selected tab
 var selectedTab;
 $(function() {
+    // start bootstrap
+    var bootstrap = true;
+
+    // dropdown menu when tabs overflow
+    var dropDown = '';
+    // init tabs
+    var tabs = $("#tabs").tabs({
+        beforeActivate: function(e, ui) {
+            if (ui.newTab.children('a').attr('href') === '#tab-dropdown') {
+                var container = ui.newTab.parent();
+
+                if ($('#tabs-dropdown').length > 0) {
+                    $('#tabs-dropdown').toggle();
+                } else {
+                    ui.newTab.append(dropDown);
+                    container.removeClass('ui-tabs-active ui-state-active');
+
+                    // show it and the positioning!
+                    $('#tabs-dropdown').show().position({
+                        of: ui.newTab,
+                        my: 'right top',
+                        at: 'right bottom',
+                        offset: '0 ' + container.height()
+                    });
+                }
+
+                return false;
+            } else {
+                $('#tabs-dropdown').hide().parent().removeClass('ui-tabs-active ui-state-active');
+                $('.ui-tabs-panel').removeClass('ui-tabs-hide');
+            }
+            selectedTab = ui.newTab.children('a').attr('href');
+        }
+    });
+    // tabs were getting overflow
+    var hiddenTabs = {};
+    var dropDownShown = false;
+    var lastTabsWidth = 0;
+
     // init autocomplete
     $('#search-configuration').search_config({
         delay: 0,
@@ -102,6 +172,7 @@ $(function() {
     var tooltipHideTimer = null;
     var tooltipContainer = $(
         '<div id="tooltip-container">' +
+//            '<div id="tootip-loading"><img src="'+ imgSpinner +'" />' + geeklog.lang.tooltip_loading + '</div>' +
             '<div id="tooltip-header"></div>' +
             '<div id="tooltip-content"></div>' +
             '<div id="tooltip-tip"></div>' +
@@ -127,7 +198,9 @@ $(function() {
             width: ($('#tabs').width() - 12) + 'px'
         });
 
+//        $('#tootip-loading').show();
         $.get(attrHref, function(data) {
+            $('#tootip-loading').hide();
             if (data.indexOf(confVar) > 0) {
                 var a = $(data).find('a[name=' + confVar + ']');
                 var ths = a.parent().parent().parent().children("tr:first").children("th");
@@ -183,13 +256,48 @@ $(function() {
         tooltipContainer.hide();
     });
 
+    // check overflow on resize
+    $(window).resize(function() {
+        tabsOverflowHandler();
+    });
+
     // click event handler
     $(document.body).click(function(e) {
         var target = $(e.target);
+        var targetParent = target.parent();
+
+        if ($('#tabs-dropdown').length > 0) {
+            if ((target.attr('class') === 'ui-tabs-anchor') && (target.attr('href') !== '#tab-dropdown')) {
+                var idx = tabs.tabs('option', 'active');
+                var dummy = idx + ((idx == 0) ? 1 : -1); // dummy is any value not idx
+                tabs.tabs("option", "active", dummy);
+                tabs.tabs("option", "active", idx);
+
+                $("#tabs-dropdown > li").each(function() {
+                    var href = $('a', this).attr('href');
+                    $(href).addClass('ui-tabs-hide');
+                });
+                return false;
+            }
+
+            if ( target.is('a') && (target.attr('href') === '#tab-dropdown')) {
+//                $('#tabs-dropdown').toggle();
+                e.preventDefault();
+                return false;
+            }
+
+            if ((target.attr('id') === 'tabs-dropdown') ||
+                    (targetParent.attr('id') === 'tabs-dropdown') ||
+                    (targetParent.parent().attr('id') === 'tabs-dropdown' )) {
+                return dropDownHandler(e);
+            }
+        }
+
+        $('#tabs-dropdown').hide();
+        $('.config_name', tabs).removeClass('active-config');
 
         if ( target.is('input') || target.is('select') || target.is('textarea') ) {
-            //var tr = $(target, tabs).parent();
-            var tr = target.parent();
+            var tr = $(target, tabs).parent();
 
             // save changes
             if ( target.attr('id') == 'save_changes' || target.attr('id') == 'form_reset' ) {
@@ -197,11 +305,7 @@ $(function() {
             }
 
             // change class of currently active row
-            if ( tr.hasClass('config_name') ) {
-                $('.active-config').removeClass('active-config');
-                tr.addClass('active-config');
-                target.focus();
-            }
+            if ( tr.hasClass('config_name') ) tr.addClass('active-config');
         }
 
         // select config from message box
@@ -213,7 +317,8 @@ $(function() {
                 {
                     selectTab( '#tab-' + autocomplete_data[key].tab_id, target.attr('href') );
                     if ( selectedTab === undefined ) {
-                        selectedTab = getTabHref();
+                        var idx = tabs.tabs('option', 'selected');
+                        selectedTab = $("#tabs > ul > li:eq(" + idx + ") a").attr('href');
                     }
                     break;
                 }
@@ -222,7 +327,6 @@ $(function() {
 
         // unset action
         if ( target.hasClass('unset_param') ) {
-            selectedTab = getTabHref();
             unset(target, target.attr('href').substr(1) );
 
             e.preventDefault();
@@ -231,7 +335,6 @@ $(function() {
 
         // restore action
         if ( target.hasClass('restore_param') ) {
-            selectedTab = getTabHref();
             restore(target, target.attr('href').substr(1) );
 
             e.preventDefault();
@@ -239,38 +342,73 @@ $(function() {
         }
     });
 
-    /**
-     * Get href of active (current) tab
-     */
-    function getTabHref() {
-        var idx = $('#config-tabs > li').index($('.uk-active'));
-        return $("#config-tabs > li:eq(" + idx + ") a").attr('href');
-    }
+    // dropdown click
+    $(document).on('click', '#tabs-dropdown', function(e) {
+        dropDownHandler(e);
+    });
 
+    function dropDownHandler(e) {
+        var target = $(e.target);
+
+        if ( target.is('a') || target.is('li')  ) {
+            selectTabInHiddenTabs( target.attr('href') );
+        }
+
+        return false;
+    }
 
     /**
      * Select tab by href
      */
     function selectTab(href, conf) {
-        //var foundInTabs = false;
+        var foundInTabs = false;
 
         // first search in ordinary tabs
-        $("#config-tabs > li").each(function(idx) {
-        
+        $("#tabs > ul > li").each(function(idx) {
             var a = $('a', this);
 
             if (a.attr('href') == href) {
-                $('#config-tabs > li:eq(' + idx + ')').trigger('click');
+                tabs.tabs('option', 'active', idx);
                 if ( conf ) {
                     selectConf(conf);
                 }
                 selectedTab = href;
+                foundInTabs = true;
 
                 return true;
             }
         });
 
-        return false;
+        // maybe in hiddenTabs
+        if ( !foundInTabs ) {
+            for (htab in hiddenTabs) {
+                if ( htab == href ) {
+                    selectTabInHiddenTabs(htab);
+                    if ( conf ) {
+                        selectConf(conf);
+                    }
+                    foundInTabs = true;
+                }
+            }
+        }
+
+        return foundInTabs
+    }
+
+    /**
+     * Select tab that reside in drop down by href
+     */
+    function selectTabInHiddenTabs(href) {
+        $('.ui-tabs-nav li.ui-state-default').each(function() {
+            $(this).removeClass('ui-state-active ui-tabs-active');
+//            $(this).attr('aria-selected', false);
+//            $(this).attr('tabindex', -1);
+        });
+        $('.ui-tabs-panel', tabs).addClass('ui-tabs-hide');
+        href = href.substring(href.lastIndexOf('#'));
+        $( href ).removeClass('ui-tabs-hide');
+        $(href).show();
+        selectedTab = href;
     }
 
     function getSelectedConf() {
@@ -279,18 +417,130 @@ $(function() {
 
         selectTab(tab, conf);
         if ( selectedTab === undefined ) {
-            //var idx = tabs.tabs('option', 'active');
-            //selectedTab = $("#tabs > ul > li:eq(" + idx + ") a").attr('href');
-            selectedTab = getTabHref();
+            var idx = tabs.tabs('option', 'active');
+            selectedTab = $("#tabs > ul > li:eq(" + idx + ") a").attr('href');
         }
     }
 
     function selectConf(confName) {
         var conf = $("input[name='" + confName.substr(1) + "[nameholder]" + "']").parent();
 
-        $('.active-config').removeClass('active-config');
         conf.addClass('active-config');
-        $("[name='" + confName.substr(1) + "']").focus();
+    }
+
+    function tabsOverflowHandler() {
+        var total = getTotalTabsWidth();
+
+        //$('#tabs-dropdown').hide();
+        if ( total.overflowAt !== null ) {
+            createDropDownTab(total.overflowAt, total.width);
+            lastTabsWidth = tabs.width();
+        } else if ( !bootstrap && (tabs.width() > lastTabsWidth) ) {
+            var hidden_exists = false;
+            for (var k in hiddenTabs) {hidden_exists = true; break;}
+            if ( hidden_exists ) {
+                reinitDropDownTab();
+                lastTabsWidth = tabs.width();
+                tabsOverflowHandler();
+            }
+        }
+
+        // select the selected tab
+        if ( selectedTab ) {
+            selectTab( selectedTab, false );
+        }
+    }
+
+    function getTotalTabsWidth() {
+        var totalWidth = 10;
+        var tabsWidth = tabs.width();
+        var overflowAt = null;
+
+        $("#tabs > ul > li").each(function(idx) {
+            totalWidth += ($(this).width() + 5);
+
+            if (totalWidth >= tabsWidth && overflowAt === null) {
+                overflowAt = idx;
+            }
+        });
+
+        return {'width': totalWidth, 'overflowAt': overflowAt};
+    }
+
+    function createDropDownTab(idxAfter, totalWidth) {
+        var tabsLength = geeklog.admin.configuration.getTabLength(tabs);
+
+        dropDown = '';
+        if ( idxAfter > 0 ) {
+            idxAfter -= 1;
+
+            // remove tabs after the dropdown
+            for ( var i = tabsLength-1; i >= idxAfter; i-- ) {
+                var currenTab = $('li:eq('+i+') a', tabs);
+
+                if ( currenTab.length ) {
+                    var currenTabHref = currenTab.attr('href');
+
+                    // when there's a dropdown
+                    if ( currenTabHref == '#tab-dropdown' ) {
+                        geeklog.admin.configuration.removeTab(tabs, 1);
+                    } else {
+                        var currenTabContent = $( currenTabHref );
+
+                        hiddenTabs[currenTabHref] = {
+                            'tab_title': currenTab.text(),
+                            'tab_content': currenTabContent.html()
+                        };
+
+                        geeklog.admin.configuration.removeTab(tabs, i);
+                    }
+                }
+            }
+
+            if ( $('a[href=#tab-dropdown]', tabs).length ) {
+                geeklog.admin.configuration.removeTab(tabs, geeklog.admin.configuration.getTabLength(tabs) - 1);
+            }
+
+            for ( tab in hiddenTabs ) {
+                dropDown = '<li><a href="' + tab + '">' +
+                            hiddenTabs[tab]['tab_title'] + '</a></li>' + dropDown;
+
+                var tabs_content = '<div id="' + tab.substr(1) + '" ' +
+                                   'class="ui-tabs-panel ui-widget-content ' +
+                                   'ui-corner-bottom ui-tabs-hide">' +
+                                   hiddenTabs[tab]['tab_content'] +
+                                   '</div>';
+
+                // append the tab if not exists
+                if ( !$(tab).length ) {
+                    tabs.append( tabs_content );
+                }
+            }
+
+            if ( dropDown.length ) {
+                dropDown = '<ul id="tabs-dropdown" class="ui-widget-content">' +
+                            dropDown + '</ul>';
+            }
+        }
+
+        dropDownShown = true;
+        geeklog.admin.configuration.addTab(tabs, '#tab-dropdown', geeklog.lang.tabs_more, idxAfter);
+        dropDownTabIdx  = idxAfter;
+    }
+
+    function reinitDropDownTab() {
+        var tabsLength = geeklog.admin.configuration.getTabLength(tabs);
+
+        if ( dropDownShown ) {
+            geeklog.admin.configuration.removeTab(tabs, tabsLength - 1);
+            dropDownShown = false;
+        }
+
+        for ( tab in hiddenTabs ) {
+            geeklog.admin.configuration.addTab(tabs, tab, hiddenTabs[tab]['tab_title'], tabsLength - 1);
+            $( tab ).html( hiddenTabs[tab]['tab_content'] );
+        }
+        hiddenTabs = {}
     }
 
     function restore(el, param){
@@ -314,7 +564,6 @@ $(function() {
         document.group.appendChild(namev);
         document.group.appendChild(action);
         document.group.action = frmGroupAction + '?' + selectedTab.substr(1) + '#' + param;
-
         document.group.submit();
     }
 
@@ -349,10 +598,16 @@ $(function() {
     }
 
     // initialize selected tab
-    selectedTab = $("#config-tabs > li:eq(0) a").attr('href');
+    selectedTab = $("#tabs > ul > li:eq(0) a").attr('href');
+
+    // runs overflow handler once in bootstrap
+    tabsOverflowHandler();
 
     // get selected tab and config if passed on url
     getSelectedConf();
+
+    // end bootstrap
+    bootstrap = false;
 });
 
 /**

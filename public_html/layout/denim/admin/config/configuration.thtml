@@ -1,3 +1,5 @@
+{# start {templatelocation} #}
+
 {noscript}
 <div id="geeklog_config_editor" style="display:none;">
     <form method="post" action="{site_admin_url}/configuration.php" name="group" class="uk-form">
@@ -19,11 +21,14 @@
 
     <div id="config_content">
 
-        <div class="saved_message{error_validation_class}" style="display:{show_changeblock}">
+{!if has_message_box}
+        <div class="uk-alert {!if error_validation_class}uk-alert-danger{!else}uk-alert-success{!endif}" data-uk-alert>
+            <a href="" class="uk-alert-close uk-close"></a>
             {lang_changes_made}
             {lang_error_validation_occurs}
             {change_block}
         </div>
+{!endif}
 
         <div id="config_main">
             <form action="{site_admin_url}/configuration.php" method="post" name="subgroup" class="uk-form">
@@ -36,6 +41,8 @@
                 <div id="tabs">
 
                     {tab_li}
+
+                    <div id="config-contents" class="uk-switcher uk-margin">
 
                     <!-- BEGIN tab -->
                     <div id="{tab_id}">
@@ -53,12 +60,16 @@
                     </div>
                     <!-- END tab -->
 
+                    </div>
+
                 </div>
                 <div id="bottom_buttons" class="aligncenter">
-                    <input type="submit" id="save_changes" value="{lang_save_changes}"{xhtml}>
-                    <input type="submit" id="form_reset" name="form_reset" value="{lang_reset_form}"{xhtml}>
+                    <button type="submit" id="save_changes" value="{lang_save_changes}" class="uk-button uk-button-primary">{lang_save_changes}</button>
+                    <button type="submit" id="form_reset" name="form_reset" value="{lang_reset_form}" class="uk-button">{lang_reset_form}</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+{# end {templatelocation} #}

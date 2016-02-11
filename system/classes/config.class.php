@@ -69,6 +69,12 @@ class config {
     var $flag_version_2;
 
     /**
+     * Whether support new theme format for the later Geeklog 2.2 or not
+     * @var boolean
+     */
+    var $flag_version_2_2;
+
+    /**
      * List of validation rules. Append entries for validation as
      * ('field_name' => '/^perl_compat_regexp$/') that have to match
      * with preg_match(). Use these rules with config::_validates()
@@ -818,14 +824,16 @@ class config {
         $js .= "var frmGroupAction = '" . $_CONF['site_admin_url'] . "/configuration.php';";
         $_SCRIPTS->setJavaScript($js, true);
 
-        $this->flag_version_2 = version_compare($_CONF['supported_version_theme'], '2.0.0', '>=');
+        $this->flag_version_2   = version_compare($_CONF['supported_version_theme'], '2.0.0', '>=');
+        $this->flag_version_2_2 = version_compare($_CONF['supported_version_theme'], '2.2.0', '>=');
 
-        if ($this->flag_version_2 == true) {
+        if ($this->flag_version_2_2 == true) {
             $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/admin.configuration.js');
+        } elseif ($this->flag_version_2 == true) {
+            $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/ver.2.0/admin.configuration.js');
         } else {
             $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/ver.1.8/admin.configuration.js');
         }
-
 
         $t->set_var('search_configuration_label', $LANG_CONFIG['search_configuration_label']);
         if (isset($_POST['search-configuration-cached'])) {
@@ -896,7 +904,11 @@ class config {
         $t->set_block('tab', 'notes', 'tab_notes');
 
         $ext_info = $this->_get_extended($sg, $grp);
-        $tab_li = '<ul>';
+        $tab_li = '';
+        if ($this->flag_version_2_2 == true) {
+            $tab_li .= '<nav role="navigation">';
+        }
+        $tab_li .= '<ul id="config-tabs" class="uk-tab" data-uk-tab="{connect:' . "'#config-contents'" . '}">';
         foreach ($ext_info as $tab => $params) {
             $tab_contents = '';
             $current_fs = '';
@@ -972,18 +984,25 @@ class config {
             $tab_li .= '<li><a href="#tab-' . $tab . '">' . $tab_display . '</a></li>';
         }
         $tab_li .= '</ul>';
+        if ($this->flag_version_2_2 == true) {
+            $tab_li .= '</nav>';
+        }
         $t->set_var('tab_li', $tab_li);
 
         $_SCRIPTS->setJavaScriptLibrary('jquery.ui.autocomplete');
         $_SCRIPTS->setJavaScriptLibrary('jquery.ui.menu');  // Required by 'jquery.ui.autocomplete'
-        $_SCRIPTS->setJavaScriptLibrary('jquery.ui.tabs');
+        if ($this->flag_version_2_2 != true) {
+            $_SCRIPTS->setJavaScriptLibrary('jquery.ui.tabs');
+        }
 
         $t->set_var('config_menu',$this->_UI_configmanager_menu($grp,$sg));
 
         // message box
+        $has_message_box = false;
         if ($change_result != null AND $change_result !== array()) {
             $t->set_var('lang_changes_made', $LANG_CONFIG['changes_made'] . ':');
             $t->set_var('change_block',$this->_UI_get_change_block($change_result, $grp, $sg));
+            $has_message_box = true;
         } else {
             $t->set_var('show_changeblock','none');
         }
@@ -993,7 +1012,9 @@ class config {
             $t->set_var('change_block',$this->_UI_get_change_block(NULL, $grp, $sg));
             $t->set_var('lang_error_validation_occurs', $LANG_CONFIG['error_validation_occurs'] . ' :');
             $t->set_var('error_validation_class', ' error_validation');
+            $has_message_box = true;
         }
+        $t->set_var('has_message_box', $has_message_box);
 
         $display = $t->finish($t->parse("OUTPUT", "main"));
         $display = COM_createHTMLDocument($display, array('what' => 'none', 'pagetitle' => $LANG_CONFIG['title'], 'rightblock' => false));
