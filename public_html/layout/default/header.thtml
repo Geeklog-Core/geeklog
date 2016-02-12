@@ -68,8 +68,6 @@
     {# begin #wrapper #}
     <div id="wrapper">
 
-      {!!autotag assist:staticpage_content id:-top mode:home !!}
-
       {# begin Center Block Container #}
       <div id="centerblocks">
         <main id="main-content" role="main">
