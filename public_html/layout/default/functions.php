@@ -153,7 +153,7 @@ function theme_js_files_default()
         ),
        array(
             'file'      => '/layout/' . $_CONF['theme'] . '/javascript/theme.js',
-            'footer'    => true, // Not requred, default = true
+            'footer'    => false, // Not requred, default = true
             'priority'  => 220 // Not requred, default = 100
         ),
     );
