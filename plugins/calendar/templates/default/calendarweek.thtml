@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 
                                     <tr>
-                                        <td class="cal-weekpointers" valign="middle" align="center"><span style="font-weight:bold"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week&amp;month={wmonth}&amp;day={wday}&amp;year={wyear}">&gt;&gt;</a></b></td>
+                                        <td class="cal-weekpointers" valign="middle" align="center"><span style="font-weight:bold"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week&amp;month={wmonth}&amp;day={wday}&amp;year={wyear}">&gt;&gt;</a></span></td>
                                         {cal_days}
                                     </tr>
 

@@ -14,9 +14,9 @@
                                         <td>
                                             <table cellpadding="0" cellspacing="0" border="0" width="100%" class="cal-quickadd">
                                                 <tr>
-                                                    <td><span style="font-weight:bold">{lang_event}</b></td>
-                                                    <td><span style="font-weight:bold">{lang_date}</b></td>
-                                                    <td><span style="font-weight:bold">{lang_time}</b></td>
+                                                    <td><span style="font-weight:bold">{lang_event}</span></td>
+                                                    <td><span style="font-weight:bold">{lang_date}</span></td>
+                                                    <td><span style="font-weight:bold">{lang_time}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><input type="text" size="20" maxlength="96" name="title"{xhtml}></td>
