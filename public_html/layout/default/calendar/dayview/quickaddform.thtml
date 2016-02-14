@@ -1,0 +1,56 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/calendar/index.php" method="post" class="uk-form">
+  <input type="hidden" name="view" value="addentry"{xhtml}>
+  <input type="hidden" name="calendar_type" value="quickadd"{xhtml}>
+  <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+
+  <div class="uk-panel uk-panel-box uk-margin-top" style="padding:3px">
+    <h3 class="uk-panel-title">{lang_quickadd}</h3>
+    <div class="uk-grid uk-grid-collapse" style="margin-left:0">
+      <div class="uk-width-medium-1-3">
+        <h4 class="uk-margin-remove-bottom">{lang_event}</h4>
+        <div>
+          <input type="text" size="20" maxlength="96" name="title"{xhtml}>
+        </div>
+      </div>
+      <div class="uk-width-medium-1-3">
+        <h4 class="uk-margin-remove-bottom">{lang_date}</h4>
+        <div>
+          <span dir="ltr">
+            <select name="start_month">
+                {month_options}
+            </select>
+            /
+            <select name="start_day">
+                {day_options}
+            </select>
+            /
+            <select name="start_year">
+                {year_options}
+            </select>
+          </span>
+        </div>
+      </div>
+      <div class="uk-width-medium-1-3">
+        <h4 class="uk-margin-remove-bottom">{lang_time}</h4>
+        <div>
+          <span dir="ltr">
+            <select name="start_hour">
+                {hour_options}
+            </select>
+            :
+            <select name="start_minute">
+                {minute_options}
+            </select>
+            {startampm_selection}
+          </span>
+          <input type="submit" value="{lang_add}"{xhtml}>
+          <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+        <div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{# end {templatelocation} #}

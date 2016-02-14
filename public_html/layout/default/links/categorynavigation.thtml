@@ -1,0 +1,9 @@
+{# begin {templatelocation} #}
+
+<h2>{lang_categories}</h2>
+
+<div class="uk-grid">
+{category_row}
+</div>
+
+{# end {templatelocation} #}

@@ -1,0 +1,99 @@
+{# begin {templatelocation} #}
+
+<div class="uk-grid uk-panel uk-panel-box" style="margin-left:0">
+  <div class="uk-width-1-3 uk-text-center uk-text-bold"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day">{lang_day}</a></div>
+  <div class="uk-width-1-3 uk-text-center uk-text-bold"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week">{lang_week}</a></div>
+  <div class="uk-width-1-3 uk-text-center uk-text-bold">{lang_month}</div>
+</div>
+
+<table style="padding:5px; width:100%; border:none" class="cal-body">
+  <tr>
+    <td colspan="8" class="uk-table-middle">
+      <div class="uk-grid" style="margin-left:0">
+        <div class="uk-width-1-3 uk-hidden-small">
+            {previous_months_calendar}
+        </div>
+        <div class="uk-width-1-3 uk-height-1-1">
+          <div class="uk-margin-large-top uk-width-medium-1-2 uk-container-center">
+                  <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
+                    <div>
+                      <select name="month" onchange="this.form.submit()">
+                        <option value="1" {selected_jan}>{lang_january}</option>
+                        <option value="2" {selected_feb}>{lang_february}</option>
+                        <option value="3" {selected_mar}>{lang_march}</option>
+                        <option value="4" {selected_apr}>{lang_april}</option>
+                        <option value="5" {selected_may}>{lang_may}</option>
+                        <option value="6" {selected_jun}>{lang_june}</option>
+                        <option value="7" {selected_jul}>{lang_july}</option>
+                        <option value="8" {selected_aug}>{lang_august}</option>
+                        <option value="9" {selected_sep}>{lang_september}</option>
+                        <option value="10" {selected_oct}>{lang_october}</option>
+                        <option value="11" {selected_nov}>{lang_november}</option>
+                        <option value="12" {selected_dec}>{lang_december}</option>
+                      </select>&nbsp;
+                      <input type="hidden" name="mode" value="{mode}"{xhtml}>
+                      <select name="year" onchange="this.form.submit()">
+                        {year_options}
+                      </select>
+                    </div>
+                  </form>
+          </div>
+          <div class="uk-margin">
+                  <ul class="uk-subnav uk-flex-center">
+                    <li>{add_event_option}</li>
+                    <li>{personal_calendar_option}</li>
+                    <li>{master_calendar_option}</li>
+                  </ul>
+          </div>
+        </div>
+        <div class="uk-width-1-3 uk-hidden-small">
+              {next_months_calendar}
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="cal-day" style="width:15%">{lang_sunday}</td>
+    <td class="cal-day" style="width:14%">{lang_monday}</td>
+    <td class="cal-day" style="width:14%">{lang_tuesday}</td>
+    <td class="cal-day" style="width:14%">{lang_wednesday}</td>
+    <td class="cal-day" style="width:14%">{lang_thursday}</td>
+    <td class="cal-day" style="width:14%">{lang_friday}</td>
+    <td class="cal-day" style="width:15%">{lang_saturday}</td>
+  </tr>
+  {cal_week}
+</table>
+
+<div class="uk-subnav uk-flex-center uk-margin-large-top">
+  <div>
+      <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
+        <div>
+           <input type="submit" value="&lt;&lt;"{xhtml}>
+           <input type="hidden" name="month" value="{cal_prevmo_num}"{xhtml}>
+           <input type="hidden" name="year" value="{cal_prevyr_num}"{xhtml}>
+           <input type="hidden" name="mode" value="{mode}"{xhtml}>
+        </div>
+      </form>
+  </div>
+  <div>
+        {add_event_option}
+  </div>
+  <div>
+      {personal_calendar_option}
+      {master_calendar_option}
+  </div>
+  <div>
+      <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
+        <div>
+           <input type="submit" value="&gt;&gt;"{xhtml}>
+           <input type="hidden" name="month" value="{cal_nextmo_num}"{xhtml}>
+           <input type="hidden" name="year" value="{cal_nextyr_num}"{xhtml}>
+           <input type="hidden" name="mode" value="{mode}"{xhtml}>
+        </div>
+      </form>
+  </div>
+</div>
+
+
+{# end {templatelocation} #}
