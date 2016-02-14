@@ -2,23 +2,23 @@
 <form action="{site_url}/profiles.php" method="post" name="contact">
     <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
-            <td class="alignright"><b>{lang_username}</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_username}</span></td>
             <td><input type="text" name="author" size="40" maxlength="96" value="{username}"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_useremail}</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_useremail}</span></td>
             <td><input type="text" name="authoremail" size="40" maxlength="96" value="{useremail}"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_subject}</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_subject}</span></td>
             <td><input type="text" name="subject" size="40" maxlength="96" value="{subject}"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_message}</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_message}</span></td>
             <td><textarea name="message" rows="10" cols="50" style="width:100%">{message}</textarea></td>
         </tr>
         <tr{cc_enabled}>
-            <td class="alignright"><b>{lang_cc}</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_cc}</span></td>
             <td><input type="checkbox" name="cc"{cc}{xhtml}>&nbsp;{lang_cc_description}</td>
         </tr>
         {captcha}

@@ -15,7 +15,7 @@
 
 <h1>Geeklog Spam-Xプラグイン</h1>
 
-<p><small>(Hendrickson Software Componentsによる同名のEメールスパムフィルターをお探しでここに来られた方は、<a href="http://www.hendricom.com/spamcontrol.htm" rel="nofollow">ここをクリックしてください</a>。)</small></p>
+<p><span style="font-size:x-small">(Hendrickson Software Componentsによる同名のEメールスパムフィルターをお探しでここに来られた方は、<a href="http://www.hendricom.com/spamcontrol.htm" rel="nofollow">ここをクリックしてください</a>。)</span></p>
 
 <h2>概要</h2>
 
@@ -99,8 +99,8 @@ SLVを使用しているということは、自分のサイトから第三者�
 <p>HTTPヘッダーフィルターモジュールを使用すると、ある種のHTTPリクエストをブロックすることができます。たとえば、スパム送信者の中には、スパムを送信するのにPerlスクリプトを使用しているものがいます。Perlスクリプトが送信するユーザーエージェント(ブラウザー識別情報)は "libwww-perl/5.805" (バージョン番号はこれとは違う場合もある)のようなものが多いです。したがって、このユーザーエージェントが送信するスパムをブロックするには、次のように入力します。</p>
 
 <table border="0" style="width:15em">
-<tr><td><b>Header:</b></td><td align="left"><kbd>User-Agent</kbd></td></tr>
-<tr><td><b>Content:</b></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
+<tr><td><span style="font-weight:bold">Header:</span></td><td align="left"><kbd>User-Agent</kbd></td></tr>
+<tr><td><span style="font-weight:bold">Content:</span></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
 </table>
 <p>これで "libwww-perl" で始まるユーザーエージェントからのスパム投稿はすべてブロックされます。</p>
 
@@ -124,9 +124,9 @@ href="http://www.stopforumspam.com/">www.stopforumspam.com</a>で運営されて
 
 <h2><a name="action">アクションモジュール</a></h2>
 
-<p>いったん<a href="#examine">検出モジュール</a>がスパム投稿を検出すると、アクションモジュールがスパムをどう処理するかを判断します。たいていの場合、スパムを削除するだけでよいですが、これを行うのが<b>削除アクション(Delete Action)</b> モジュールです。</p>
+<p>いったん<a href="#examine">検出モジュール</a>がスパム投稿を検出すると、アクションモジュールがスパムをどう処理するかを判断します。たいていの場合、スパムを削除するだけでよいですが、これを行うのが<span style="font-weight:bold">削除アクション(Delete Action)</span> モジュールです。</p>
 
-<p>その名前が示すとおり、<b>管理者メールアクション(Mail Admin Action)</b> モジュールはスパムを検出したときに、サイト管理者にメールで通知します。多数の通知メールが送られる可能性があるため、デフォルトでは無効になっています。</p>
+<p>その名前が示すとおり、<span style="font-weight:bold">管理者メールアクション(Mail Admin Action)</span> モジュールはスパムを検出したときに、サイト管理者にメールで通知します。多数の通知メールが送られる可能性があるため、デフォルトでは無効になっています。</p>
 
 <p>アクションモジュールは使用する前に個別に有効にする必要があります(一方、検出モジュールはSpam-Xのディレクトリにファイルを入れるだけで有効になります。)。このため、すべてのアクションモジュールは独自の番号を持っています。有効にしたいすべてのモジュールの番号を足し合わせた数値を、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_spamx">Spam-X</a>」に入力します。</p>
 

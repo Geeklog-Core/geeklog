@@ -9,31 +9,31 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright"><b>{lang_pluginname}:</b></td>
+                                    <td class="alignright"><span style="font-weight:bold">{lang_pluginname}:</span></td>
                                     <td>{pi_display_name}</td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright"><b>{lang_pluginhomepage}:</b></td>
+                                    <td class="alignright"><span style="font-weight:bold">{lang_pluginhomepage}:</span></td>
                                     <td><a href="{pi_homepage}">{pi_homepage}</a></td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright"><b>{lang_pluginversion}:</b></td>
+                                    <td class="alignright"><span style="font-weight:bold">{lang_pluginversion}:</span></td>
                                     <td>{pi_version}</td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright"><b>{lang_plugincodeversion}:</b></td>
+                                    <td class="alignright"><span style="font-weight:bold">{lang_plugincodeversion}:</span></td>
                                     <td>{pi_codeversion}</td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright" style="vertical-align: top;"><b>{lang_dependencies}:</b></td>
+                                    <td class="alignright" style="vertical-align: top;"><span style="font-weight:bold">{lang_dependencies}:</span></td>
                                     <td>{pi_dependencies}</td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright"><b>{lang_load}:</b></td>
+                                    <td class="alignright"><span style="font-weight:bold">{lang_load}:</span></td>
                                     <td>{pi_load}</td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright"><b>{lang_enabled}:</b></td>
+                                    <td class="alignright"><span style="font-weight:bold">{lang_enabled}:</span></td>
                                     <td>{pi_enabled}</td>
                                 </tr>
                                 <tr>

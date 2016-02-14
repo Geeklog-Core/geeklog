@@ -12,7 +12,7 @@
 {page_number}
 <!-- END page -->
 <!-- BEGIN page-current -->
-<b>{page_number}</b>
+<span style="font-weight:bold">{page_number}</span>
 <!-- END page-current -->
 <!-- BEGIN nav-end -->
 | <span>{start_next_anchortag}{lang_next}{end_next_anchortag}</span>

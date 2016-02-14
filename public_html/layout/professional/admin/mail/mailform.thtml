@@ -1,7 +1,7 @@
 <form action="{php_self}" method="post">
     <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
-            <td class="alignright"><b>{lang_to}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_to}:</span></td>
             <td>
                 <select name="to_group">
                     <option value="">{lang_selectgroup}</option>
@@ -10,23 +10,23 @@
             </td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_from}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_from}:</span></td>
             <td><input type="text" name="fra" value="{site_name}" size="40"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_replyto}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_replyto}:</span></td>
             <td><input type="text" name="fraepost" value="{site_mail}" size="40"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_subject}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_subject}:</span></td>
             <td><input type="text" name="subject" value="{subject}" size="40"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_body}:</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_body}:</span></td>
             <td><textarea name="message" cols="45" rows="10" style="width:100%">{message}</textarea></td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_options}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_options}:</span></td>
             <td><input type="checkbox" name="html"{html}{xhtml}> {lang_HTML}</td>
         </tr>
         <tr>

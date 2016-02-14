@@ -2,7 +2,7 @@
     <p>{lang_explain}</p>
     <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
-            <td class="alignright"><b>{lang_pingback_url}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_pingback_url}:</span></td>
             <td>
                 <input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="target" value="{target_url}"{xhtml}>
             </td>
@@ -10,7 +10,7 @@
         <tr>
             <td class="alignright">{lang_site_url}:</td>
             <td>
-                <b>{site_url}</b>
+                <span style="font-weight:bold">{site_url}</span>
             </td>
         </tr>
         <tr>

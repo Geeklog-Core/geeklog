@@ -54,10 +54,10 @@ class EditHeader extends BaseAdmin
                  .  '<form method="post" class="uk-form" action="' . $_CONF['site_admin_url']
                  . '/plugins/spamx/index.php?command=EditHeader">' . LB
                  .  '<table border="0" width="100%">' . LB
-                 .  '<tr><td align="right"><b>Header:</b></td>' . LB
+                 .  '<tr><td align="right"><span style="font-weight:bold">Header:</span></td>' . LB
                  .  '<td><input type="text" size="40" name="header-name"'
                  .  XHTML . '> e.g. <tt>User-Agent</tt></td></tr>' . LB
-                 .  '<tr><td align="right"><b>Content:</b></td>' . LB
+                 .  '<tr><td align="right"><span style="font-weight:bold">Content:</span></td>' . LB
                  .  '<td><input type="text" size="40" name="header-value"'
                  .  XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB
                  .  '</table>' . LB

@@ -898,8 +898,8 @@ class database {
     function isVerbose()
     {
         if ($this->_verbose && (empty($this->_errorlog_fn) || !function_exists($this->_errorlog_fn))) {
-            print "\n<br" . XHTML . "><b>Can't run pgsql.class.php verbosely because the errorlog "
-                . "function wasn't set or doesn't exist</b><br" . XHTML . ">\n";
+            print "\n<br" . XHTML . "><span style=\"font-weight:bold\">Can't run pgsql.class.php verbosely because the errorlog "
+                . "function wasn't set or doesn't exist</span><br" . XHTML . ">\n";
             return false;
         }
 

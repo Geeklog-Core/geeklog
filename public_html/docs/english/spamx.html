@@ -13,7 +13,7 @@
 
 <h1>Geeklog Spam-X Plugin</h1>
 
-<p><small>(If you came here looking for Hendrickson Software Components' email spam filter of the same name, please <a href="http://www.hendricom.com/spamcontrol.htm" rel="nofollow">click here</a>.)</small></p>
+<p><span style="font-size:x-small">(If you came here looking for Hendrickson Software Components' email spam filter of the same name, please <a href="http://www.hendricom.com/spamcontrol.htm" rel="nofollow">click here</a>.)</span></p>
 
 <h2>Introduction</h2>
 
@@ -154,8 +154,8 @@ something like "libwww-perl/5.805" (the version number may vary). So to block
 posts made by this user agent, you would enter:</p>
 
 <table border="0" style="width:15em">
-<tr><td><b>Header:</b></td><td align="left"><kbd>User-Agent</kbd></td></tr>
-<tr><td><b>Content:</b></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
+<tr><td><span style="font-weight:bold">Header:</span></td><td align="left"><kbd>User-Agent</kbd></td></tr>
+<tr><td><span style="font-weight:bold">Content:</span></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
 </table>
 <p>This would block all posts from user agents beginning with "libwww-perl".</p>
 
@@ -187,10 +187,10 @@ user field.</p>
 
 <p>Once one of the <a href="#examine">examine modules</a> detects a spam post,
 the action modules will decide what to do with the spam. Most of the time, you
-will simply want to delete the post then, so this is what the <b>Delete
-Action</b> module does.</p>
+will simply want to delete the post then, so this is what the <span style="font-weight:bold">Delete
+Action</span> module does.</p>
 
-<p>As the name implies, the <b>Mail Admin Action</b> module sends an email to
+<p>As the name implies, the <span style="font-weight:bold">Mail Admin Action</span> module sends an email to
 the site admin when a spam post is encountered. Since this can cause quite a
 lot of emails being sent, it is disabled by default.</p>
 

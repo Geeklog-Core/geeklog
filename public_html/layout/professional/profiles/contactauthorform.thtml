@@ -2,31 +2,31 @@
 <form action="{site_url}/profiles.php" method="post" name="contact">
     <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
-            <td class="alignright"><b>{lang_title}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_title}:</span></td>
             <td>{story_link}</td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_fromname}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_fromname}:</span></td>
             <td><input type="text" name="from" size="40" maxlength="96" value="{name}"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_fromemailaddress}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_fromemailaddress}:</span></td>
             <td><input type="text" name="fromemail" size="40" maxlength="96" value="{email}"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_toname}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_toname}:</span></td>
             <td><input type="text" name="to" size="40" maxlength="96" value="{toname}"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright"><b>{lang_toemailaddress}:</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_toemailaddress}:</span></td>
             <td><input type="text" name="toemail" size="40" maxlength="96" value="{toemail}"{xhtml}></td>
         </tr>
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_shortmessage}:</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_shortmessage}:</span></td>
             <td><textarea name="shortmsg" rows="10" cols="50" style="width:100%">{shortmsg}</textarea></td>
         </tr>
         <tr{cc_enabled}>
-            <td class="alignright"><b>{lang_cc}</b></td>
+            <td class="alignright"><span style="font-weight:bold">{lang_cc}</span></td>
             <td><input type="checkbox" name="cc"{cc}{xhtml}>&nbsp;{lang_cc_description}</td>
         </tr>
         {captcha}

@@ -1,6 +1,6 @@
                             <table cellpadding="0" cellspacing="1" width="99%">
                                 <tr>
-                                    <td width="100%"><b>{item_label}</b></td><td class="alignright"><b>{stat_name}</b></td>
+                                    <td width="100%"><span style="font-weight:bold">{item_label}</span></td><td class="alignright"><span style="font-weight:bold">{stat_name}</span></td>
                                 </tr>
                                 {stat_row}
                             </table>

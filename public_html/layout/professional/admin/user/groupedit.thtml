@@ -1,5 +1,5 @@
                                     <tr>
-                                        <td colspan="2"><b>{lang_securitygroups}</b></td>
+                                        <td colspan="2"><span style="font-weight:bold">{lang_securitygroups}</span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><p>{lang_groupinstructions}</p>

@@ -445,7 +445,7 @@ if (INST_phpOutOfDate()) {
                                 . '<input type="hidden" name="plugins[' . $plugin . '][name]" value="' . $plugin . '"' . XHTML . '>'
                                 . '<input type="hidden" name="plugins[' . $plugin . '][pi_url]" value="' . $pi_url . '"' . XHTML . '>'
                                 . $pi_display_name . LB
-                                . ($missing_autoinstall ? '<p><small><b>' . $LANG_PLUGINS[17] . ':</b> ' . $LANG_PLUGINS[18] . '</small></p>' : '')
+                                . ($missing_autoinstall ? '<p><span style="font-size:x-small"><span style="font-weight:bold">' . $LANG_PLUGINS[17] . ':</span> ' . $LANG_PLUGINS[18] . '</span></p>' : '')
                             . '</td>' . LB
                             . '<td align="center"><input type="hidden" name="plugins[' . $plugin . '][version]" value="' . $pi_version . '"' . XHTML . '>'
                                 . $pi_version

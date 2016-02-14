@@ -3,15 +3,15 @@
                             <h3 class="cal-event-title">{event_title}</h3>
                             <table cellspacing="0" cellpadding="3" border="0" width="100%">
                                 <tr valign="top">
-                                    <td align="right" style="width:8em"><b>{lang_when}:</b></td>
+                                    <td align="right" style="width:8em"><span style="font-weight:bold">{lang_when}:</b></td>
                                     <td>{event_start} - {event_end}</td>
                                 </tr>
                                 <tr valign="top">
-                                    <td align="right"><b>{lang_event_type}:</b></td>
+                                    <td align="right"><span style="font-weight:bold">{lang_event_type}:</b></td>
                                     <td>{event_type}</td>
                                 </tr>
                                 <tr valign="top">
-                                    <td align="right"><b>{lang_where}:</b></td>
+                                    <td align="right"><span style="font-weight:bold">{lang_where}:</b></td>
                                     <td class="location">
                                         {event_location}{br0}
                                         {event_address1}{br1}
@@ -20,7 +20,7 @@
                                     </td>
                                 </tr>
                                 <tr valign="top">
-                                    <td align="right"><b>{lang_description}:</b></td>
+                                    <td align="right"><span style="font-weight:bold">{lang_description}:</b></td>
                                     <td class="description">{event_description}</td>
                                 </tr>
                                 <tr><td colspan="2">{addremove_event} {edit_icon}</td></tr>

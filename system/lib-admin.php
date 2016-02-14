@@ -1177,7 +1177,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
         } else {
             $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
             if ($A['pi_enabled'] == 1) {
-                $retval .= " <b>{$LANG32[38]}</b>";
+                $retval .= " <span style=\"font-weight:bold\">{$LANG32[38]}</span>";
                 $csrftok = '&amp;' . CSRF_TOKEN . '=' . $token;
                 $style = 'style="vertical-align: middle;"';
                 $img = $_CONF['layout_url'] . '/images/update.png';
@@ -1193,7 +1193,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
                 $retval = COM_getTooltip($LANG32[51], PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
             } else {
                 $style = "display: inline; color: #a00; border-bottom: 1px dotted #a00;";
-                $retval = COM_getTooltip("<b class='notbold' style='$style'>{$LANG32[52]}</b>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
+                $retval = COM_getTooltip("<b class='notbold' style='$style'>{$LANG32[52]}</span>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
             }
         break;
 
@@ -1481,7 +1481,7 @@ function ADMIN_getListField_newplugins($fieldname, $fieldvalue, $A, $icon_arr, $
             $retval = COM_getTooltip($LANG32[51], PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
         } else {
             $style = "display: inline; color: #a00; border-bottom: 1px dotted #a00;";
-            $retval = COM_getTooltip("<b class='notbold' style='$style'>{$LANG32[52]}</b>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
+            $retval = COM_getTooltip("<b class='notbold' style='$style'>{$LANG32[52]}</span>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
         }
         break;
 

@@ -242,7 +242,7 @@ function sendPingbacks ($type, $id)
             $result = PNB_sendPingback ($url, $URLtoPing);
             $resend = '';
             if (empty ($result)) {
-                $result = '<b>' . $LANG_TRB['pingback_success'] . '</b>';
+                $result = '<span style="font-weight:bold">' . $LANG_TRB['pingback_success'] . '</span>';
             } else if ($result != $LANG_TRB['no_pingback_url']) {
                 $result = '<span class="warningsmall">' . $result . '</span>';
                 // TBD: $resend = '...';
@@ -338,7 +338,7 @@ function sendPings ($type, $id)
                 $pinged = $LANG_TRB['unknown_method'] . ': ' . $A['method'];
             }
             if (empty ($pinged)) {
-                $pinged = '<b>' . $LANG_TRB['ping_success'] . '</b>';
+                $pinged = '<span style="font-weight:bold">' . $LANG_TRB['ping_success'] . '</span>';
             } else {
                 $pinged = '<span class="warningsmall">' . $pinged . '</span>';
             }

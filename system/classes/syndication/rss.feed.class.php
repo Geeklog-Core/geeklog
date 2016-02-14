@@ -32,7 +32,7 @@
 * Provides feed handlers for RSS 0.9x and RSS 2.0
 *
 * This library file provides multiple class definitions for dealing with
-* variants of the RSS syndication format. We will <b>not</b> handle RSS 1.0
+* variants of the RSS syndication format. We will <span style="font-weight:bold">not</span> handle RSS 1.0
 * however, that is RDF and handled in a seperate case. This is purely for
 * the original RSS and the 2.0 that was created to deal with the fact
 * that RDF was overkill for the original purpose of RSS.

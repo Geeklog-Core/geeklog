@@ -721,7 +721,7 @@ function INST_permissionWarning($files)
                 <p>' . $LANG_INSTALL[82] . '</p>
 
                 <br' . XHTML . '>
-                <p><label class="' . $form_label_dir . '"><b>' . $LANG_INSTALL[10] . '</b></label> <b>' . $LANG_INSTALL[11] . '</b></p>
+                <p><label class="' . $form_label_dir . '"><span style="font-weight:bold">' . $LANG_INSTALL[10] . '</span></label> <span style="font-weight:bold">' . $LANG_INSTALL[11] . '</span></p>
         ' . LB;
 
     foreach ($files as $file) {
@@ -1122,8 +1122,8 @@ if (INST_phpOutOfDate()) {
 
             $gl_path = str_replace('db-config.php', '', $_PATH['db-config.php']);
             $num_wrong = 0; // number of files with wrong permissions
-            $display_permissions = '<p><label class="' . $perms_label_dir . '"><b>' . $LANG_INSTALL[10] . '</b></label> ' . LB
-                                 . '<b>' . $LANG_INSTALL[11] . '</b></p>' . LB;
+            $display_permissions = '<p><label class="' . $perms_label_dir . '"><span style="font-weight:bold">' . $LANG_INSTALL[10] . '</span></label> ' . LB
+                                 . '<span style="font-weight:bold">' . $LANG_INSTALL[11] . '</span></p>' . LB;
             $chmod_string = 'chmod -R 777 ';
             // Files to check if writable
             $file_list = array( $_PATH['db-config.php'],

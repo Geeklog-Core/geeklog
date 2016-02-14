@@ -3,19 +3,19 @@
     <form action="{site_url}/submit.php" method="post" onsubmit="set_postcontent();">
         <table cellspacing="0" cellpadding="3">
             <tr>
-                <td class="alignright"><b>{lang_username}:</b></td>
+                <td class="alignright"><span style="font-weight:bold">{lang_username}:</span></td>
                 <td>{story_username} [ <a href="{status_url}" rel="nofollow">{lang_loginout}</a>{separator}{create_account} ]</td>
             </tr>
             <tr>
-                <td class="alignright"><b>{lang_title}:</b></td>
+                <td class="alignright"><span style="font-weight:bold">{lang_title}:</span></td>
                 <td><input type="text" size="36" maxlength="96" name="title" value="{story_title}"{xhtml}></td>
             </tr>
             <tr>
-                <td class="alignright" style="vertical-align:top;"><b>{lang_topic}:</b></td>
+                <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_topic}:</span></td>
                 <td>{topic_selection}</td>
             </tr>
             <tr>
-                <td class="alignright" style="vertical-align:top;"><b>{lang_story}:</b></td>
+                <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_story}:</span></td>
                 <td style="vertical-align:top;">
                     <div id="text_editor" style="display:{show_texteditor};">
                         <textarea id="introtext" name="introtext" cols="45" rows="15">{story_introtext}</textarea>
@@ -26,7 +26,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="alignright" style="vertical-align:top;"><b>{lang_postmode}:</b></td>
+                <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_postmode}:</span></td>
                 <td style="vertical-align:top;">
                     <select id="sel_editmode" name="postmode" {change_editormode}>
                         {story_postmode_options}

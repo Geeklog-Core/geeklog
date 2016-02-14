@@ -4338,8 +4338,8 @@ function COM_olderStoriesBlock( $help = '', $title = '', $position = '' )
                     }
 
                     $day2 = strftime( $dateonly, $A['day'] );
-                    $string .= '<h3>' . $daycheck . ' <small>' . $day2
-                            . '</small></h3>' . LB;
+                    $string .= '<h3>' . $daycheck . ' <span style="font-size:x-small">' . $day2
+                            . '</span></h3>' . LB;
                     $oldnews = array();
                     $day = $daycheck;
                 }
@@ -5316,10 +5316,10 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         }
 
         // Any late breaking news stories?
-        $retval .= '<h3>' . $LANG01[99] . ' <small>'
+        $retval .= '<h3>' . $LANG01[99] . ' <span style="font-size:x-small">'
                 . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newstoriesinterval'] )
-                . '</small></h3>';
+                . '</span></h3>';
 
         if ($nrows > 0) {
             $newarticles = array();
@@ -5359,10 +5359,10 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
     if( $_CONF['hidenewcomments'] == 0 )
     {
         // Go get the newest comments
-        $retval .= '<h3>' . $LANG01[83] . ' <small>'
+        $retval .= '<h3>' . $LANG01[83] . ' <span style="font-size:x-small">'
                 . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newcommentsinterval'] )
-                . '</small></h3>';
+                . '</span></h3>';
 
         $new_plugin_comments = array();
         $new_plugin_comments = PLG_getWhatsNewComment();
@@ -5430,10 +5430,10 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 
     if( $_CONF['trackback_enabled'] && ( $_CONF['hidenewtrackbacks'] == 0 ))
     {
-        $retval .= '<h3>' . $LANG01[114] . ' <small>'
+        $retval .= '<h3>' . $LANG01[114] . ' <span style="font-size:x-small">'
                 . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newtrackbackinterval'] )
-                . '</small></h3>';
+                . '</span></h3>';
 
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
@@ -5506,8 +5506,8 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         {
             for( $i = 0; $i < $plugins; $i++ )
             {
-                $retval .= '<h3>' . $headlines[$i] . ' <small>'
-                        . $smallheadlines[$i] . '</small></h3>';
+                $retval .= '<h3>' . $headlines[$i] . ' <span style="font-size:x-small">'
+                        . $smallheadlines[$i] . '</span></h3>';
                 if( is_array( $content[$i] ))
                 {
                     $retval .= COM_makeList( $content[$i], 'list-new-plugins' );

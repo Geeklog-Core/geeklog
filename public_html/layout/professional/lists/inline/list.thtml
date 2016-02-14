@@ -12,7 +12,7 @@
                                 </div></form>
                             </div>
                             {item_row}
-                            <p class="aligncenter" style="{show_message}"><b>{message}</b></p>
+                            <p class="aligncenter" style="{show_message}"><span style="font-weight:bold">{message}</span></p>
                             <br{xhtml}>
                             {google_paging}
                             {list_bottom}

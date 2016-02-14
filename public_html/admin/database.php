@@ -165,7 +165,7 @@ function listbackups()
                     array('title' => $LANG_DB_BACKUP['download']));
             $backupfile = $_CONF['backup_path'] . $backups[$i];
             $backupfilesize = COM_numberFormat(filesizeHelper($backupfile))
-                            . ' <b>' . $LANG_DB_BACKUP['bytes'] . '</b>';
+                            . ' <span style="font-weight:bold">' . $LANG_DB_BACKUP['bytes'] . '</span>';
             $data_arr[$i] = array('file' => $downloadLink,
                                   'size' => $backupfilesize,
                                   'filename' => $backups[$i]);
