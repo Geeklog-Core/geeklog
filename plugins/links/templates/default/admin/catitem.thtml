@@ -1,3 +1,4 @@
+{# begin {templatelocation} #}
 
     <tr{rowcolor}>
         <td width="20" class="box">{edit_text}</td>
@@ -7,3 +8,4 @@
         <td width="20" class="box">{delete_text}</td>
     </tr>
 
+{# end {templatelocation} #}

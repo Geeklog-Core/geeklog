@@ -1,3 +1,4 @@
+{# begin {templatelocation} #}
 
                             <h3 class="cal-event-title">{event_title}</h3>
                             <table cellspacing="0" cellpadding="3" border="0" width="100%">
@@ -24,3 +25,5 @@
                                 </tr>
                                 <tr><td colspan="2">{addremove_event} {edit_icon}</td></tr>
                             </table><br{xhtml}>
+
+{# end {templatelocation} #}

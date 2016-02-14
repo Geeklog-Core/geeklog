@@ -1,5 +1,4 @@
-
-<!-- links/submitlink.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_url}/submit.php" method="post" id="submitlink" class="compact uk-form">
   <div class="admin_basic">
@@ -20,9 +19,9 @@
     <div class="submit">
       <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
       <input type="hidden" name="type" value="links"{xhtml}>
-      <input type="submit" value="{lang_submit}" class="submit"{xhtml}>
+      <button type="submit" value="{lang_submit}" class="uk-button">{lang_submit}</button>
     </div>
   </div>
 </form>
 
-<!-- } links/submitlink.thtml -->
+{# end {templatelocation} #}

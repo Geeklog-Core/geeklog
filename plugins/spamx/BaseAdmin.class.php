@@ -289,8 +289,9 @@ abstract class BaseAdmin
                  . '/plugins/spamx/index.php?command=' . $this->command . '">' . LB
                  . '<div><input type="text" size="31" name="pentry"' . XHTML
                  . '>&nbsp;&nbsp;&nbsp;'
-                 . '<input type="submit" name="paction" value="'
-                 . $LANG_SX00['addentry'] . '"' . XHTML . '>' . LB
+                 . '<button type="submit" name="paction" value="'
+                 . $LANG_SX00['addentry'] . '" class="uk-button">'
+                 . $LANG_SX00['addentry'] . '</button>' . LB
                  . '<input type="hidden" name="' . CSRF_TOKEN
                  . '" value="' . $this->csrfToken . '"' . XHTML . '>' . LB
                  . '</div></form>' . LB;

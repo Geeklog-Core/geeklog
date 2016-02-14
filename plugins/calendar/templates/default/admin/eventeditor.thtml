@@ -1,5 +1,4 @@
-
-<!-- plugins/calendar/templates/admin/eventeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="post" id="calendar-eventeditor" class="compact uk-form">
   <div class="admin_basic">
@@ -115,15 +114,18 @@
     </fieldset>
 
     <div class="submit">
-      <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
-      <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" name="mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
+
       <input type="hidden" name="eid" value="{event_id}"{xhtml}>
       <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
-      {delete_option}
       {submission_option}
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     </div>
   </div>
 </form>
 
-<!-- } plugins/calendar/templates/admin/eventeditor.thtml -->
+{# end {templatelocation} #}

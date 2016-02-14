@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
                             <table cellpadding="2" cellspacing="2">
                                 <tr>
                                     <td colspan="2">{intro_msg}</td>
@@ -28,10 +30,12 @@
                                             <div>
                                                 <input type="hidden" name="action" value="saveuserevent"{xhtml}>
                                                 <input type="hidden" name="eid" value="{event_id}"{xhtml}>
-                                                <input type="submit" value="{lang_addtomycalendar}"{xhtml}>
+                                                <button type="submit" value="{lang_addtomycalendar}" class="uk-button uk-button-primary">{lang_addtomycalendar}</button>
                                                 <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                             </div>
                                         </form>
                                     </td>
                                 </tr>
                             </table>
+
+{# end {templatelocation} #}
