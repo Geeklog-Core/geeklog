@@ -1,0 +1,41 @@
+
+// Variables
+$layout-site-width =            1140px
+$layout-left-block-width =      180px
+$layout-right-block-width =     280px
+$layout-side-padding =          10px
+//
+@import "layout/layout_3cols_LRbar";
+
+
+@media only screen and (min-width: $breakpoint-large) and (max-width: $breakpoint-large-max)
+    // Variables
+    $layout-site-width =            960px
+    $layout-left-block-width =      280px
+    $layout-right-block-width =     280px
+    $layout-side-padding =          10px
+    //
+    @import "layout/layout_2cols_Rbar_fixed";
+
+
+/*! Smaller than standard 1280 (devices and browsers) */
+@media only screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-medium-max)
+    // Variables
+    $layout-site-width =            auto
+    $layout-left-block-width =      230px
+    $layout-right-block-width =     230px
+    $layout-side-padding =          10px
+    //
+    @import "layout/layout_2cols_Rbar_liquid";
+
+
+/*! All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: $breakpoint-small-max)
+    // Variables
+    $layout-site-width =            auto
+    $layout-site-max-width =        none
+    $layout-left-block-width =      100%
+    $layout-right-block-width =     100%
+    $layout-side-padding =          10px
+    //
+    @import "layout/layout_1cols_mobile";

@@ -1,0 +1,10 @@
+{# begin {templatelocation} #}
+
+ <div id="gl-message" class="uk-modal">
+  <div class="uk-modal-dialog"> 
+   <a class="uk-modal-close uk-close"></a>
+
+<aside>
+    <h2 class="uk-panel-title">{showhide}{block_title}{block_help}</h2>
+
+{# end {templatelocation} #}

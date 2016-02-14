@@ -1,0 +1,11 @@
+{# begin {templatelocation} #}
+
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="profile-new_username">{lang_username}</label>
+            <div class="uk-form-controls">
+                <input type="text" maxlength="16" value="{new_username_value}" name="new_username" id="profile-new_username" class="uk-form-width-medium"{xhtml}>
+                <span class="uk-form-help-inline">{lang_username_text}</span>
+            </div>
+        </div>
+
+{# end {templatelocation} #}

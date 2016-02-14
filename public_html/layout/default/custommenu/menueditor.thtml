@@ -1,0 +1,136 @@
+{# begin {templatelocation} #}
+
+<form action="{site_admin_url}/plugins/custommenu/index.php" method="post" class="uk-form uk-form-horizontal">
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-mmode">{lang_mode}</label>
+        <div class="uk-form-controls">
+            <select name="mmode" id="cmeditor-mmode" aria-describedby="cmeditor-d1">
+                <option value="fixation" {val_mode_fixation}>{lang_mode_fixation}</option>
+                <option value="variable" {val_mode_variable}>{lang_mode_variable}</option>
+                <option value="php" {val_mode_php}>{lang_mode_php}</option>
+            </select>
+            <span class="uk-form-help-inline" id="cmeditor-d1">{lang_mode_info}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-title_fixation">{lang_title_fixation}</label>
+        <div class="uk-form-controls">
+            <input type="text" name="title_fixation" id="cmeditor-title_fixation" value="{val_title_fixation}" size="48" class="uk-form-width-large" aria-describedby="cmeditor-d2"{xhtml}>
+            <span class="uk-form-help-inline" id="cmeditor-d2">{lang_title_fixation_info}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-title_variable">{lang_title_variable}</label>
+        <div class="uk-form-controls">
+            <input type="text" name="title_variable" id="cmeditor-title_variable" value="{val_title_variable}" size="48" class="uk-form-width-large" aria-describedby="cmeditor-d3"{xhtml}>
+            <span class="uk-form-help-inline" id="cmeditor-d3">{lang_title_variable_info}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-php_function">{lang_php_function}</label>
+        <div class="uk-form-controls"><input type="text" name="php_function" id="cmeditor-php_function" value="{val_php_function}" size="48" class="uk-form-width-large" aria-describedby="cmeditor-d4"{xhtml}>
+        <span class="uk-form-help-inline" id="cmeditor-d4">{lang_php_function_info}</span>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-is_enabled">{lang_is_enabled}</label>
+        <div class="uk-form-controls">
+            <input type="checkbox" class="uk-margin-small-top" name="is_enabled" id="cmeditor-is_enabled" {val_is_enabled}{xhtml}>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-url">{lang_menuitemurl}</label>
+        <div class="uk-form-controls">
+            <input type="text" name="url" id="cmeditor-url" value="{val_menuitemurl}" size="48" class="uk-form-width-large" aria-describedby="cmeditor-d5"{xhtml}>
+            <span class="uk-form-help-inline" id="cmeditor-d5">{lang_includehttp}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-mid">{lang_menuitemid}</label>
+        <div class="uk-form-controls">
+            <input type="text" name="mid" id="cmeditor-mid" value="{val_mid}" size="48" class="uk-form-width-large" aria-describedby="cmeditor-d6"{mid_readonly}{xhtml}>
+            <span class="uk-form-help-inline" id="cmeditor-d6">{lang_nospaces}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label">{lang_parentitemid}</label>
+        <div class="uk-form-controls">{selpmid}</div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-class_name">{lang_class_name}</label>
+        <div class="uk-form-controls">
+            <input type="text" name="class_name" id="cmeditor-class_name" value="{val_class_name}" size="48" class="uk-form-width-large" aria-describedby="cmeditor-d7"{xhtml}>
+            <span class="uk-form-help-inline" id="cmeditor-d7">{lang_class_name_info}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-tid">{lang_topic}</label>
+        <div class="uk-form-controls">
+            <select name="tid" id="cmeditor-tid">
+                <option value="all" {all_selected}>{lang_all}</option>
+                <option value="homeonly" {homeonly_selected}>{lang_homeonly}</option>
+                {topic_options}
+            </select>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-menuorder">{lang_menuitemorder}</label>
+        <div class="uk-form-controls">
+            <input type="text" name="menuorder" id="cmeditor-menuorder" value="{val_menuorder}" size="4" aria-describedby="cmeditor-d8"{xhtml}>
+            <span class="uk-form-help-inline" id="cmeditor-d8"> 0 - 9999</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label">{lang_menuitemtype}</label>
+        <div class="uk-form-controls">{lang_type}</div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-icon_url">{lang_icon_url}</label>
+        <div class="uk-form-controls">
+            <input type="text" name="icon_url" id="cmeditor-icon_url" value="{val_icon_url}" size="48" class="uk-form-width-large" aria-describedby="cmeditor-d9"{xhtml}>
+            <span class="uk-form-help-inline" id="cmeditor-d9">{lang_icon_url_info}</span>
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="cmeditor-pattern">{lang_pattern}</label>
+        <div class="uk-form-controls">
+            <input type="text" name="pattern" id="cmeditor-pattern" value="{val_pattern}" size="48" class="uk-form-width-medium"{xhtml}>
+        	<label>{lang_is_preg}:</label>
+            <input type="checkbox" class="uk-margin-small-top" name="is_preg" aria-describedby="cmeditor-d10"{val_is_preg}{xhtml}>
+            <span class="uk-form-help-inline" id="cmeditor-d10">{lang_pattern_info}</span>
+        </div>
+    </div>
+
+    <fieldset class="uk-margin-large-top">
+      <legend>{lang_accessrights}</legend>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label">{lang_owner}</label>
+        <div class="uk-form-controls">{owner_name}</div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label">{lang_group}</label>
+        <div class="uk-form-controls">{group_dropdown}</div>
+    </div>
+    <div class="uk-form-row">
+        <label class="uk-form-label" for="admin-permissions">{lang_permissions}</label>
+        <div class="uk-form-controls">{permissions_editor}
+            <span class="uk-form-help-inline">{lang_perm_key}</span>
+            <span class="uk-form-help-inline">{lang_permissions_msg}</span>
+        </div>
+    </div>
+    </fieldset>
+
+        <div class="uk-form-row uk-margin-large-top">
+            <div class="uk-form-controls">
+                <input type="submit" name="mode" value="{lang_save}" class="submit"{xhtml}>
+                <input type="submit" name="mode" value="{lang_cancel}" class="submit"{xhtml}>
+                <input type="submit" name="mode" value="{lang_delete}" class="submit" onclick="return confirm('{lang_confirm}');" {delete_disabled}{xhtml}>
+                <input type="hidden" name="type" value="{val_type}"{xhtml}>
+                <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+                <input type="hidden" name="old_mid" value="{val_old_mid}"{xhtml}>
+                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+            </div>
+        </div>
+</form>
+
+{# end {templatelocation} #}

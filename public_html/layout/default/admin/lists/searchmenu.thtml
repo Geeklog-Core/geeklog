@@ -1,0 +1,33 @@
+{# begin {templatelocation} #}
+
+<form action="{form_url}" method="post" class="uk-form uk-margin-bottom">
+  <fieldset>
+    {# <legend>{lang_search}</legend> #}
+
+    <div class="uk-flex uk-flex-center uk-margin-top uk-margin-bottom">
+      <div class="uk-text-nowrap uk-text-bold uk-margin-left">{filter}</div>
+      <div class="uk-text-nowrap uk-text-bold uk-margin-left">{lang_search}</div>
+      <div class="uk-text-nowrap"><input type="text" size="20" value="{last_query}" name="q"{xhtml}></div>
+      <div class="uk-text-nowrap uk-text-bold uk-margin-left">{lang_limit_results}</div>
+      <div class="uk-text-nowrap">
+        <select name="query_limit">
+          <option value="10" {10_selected}>10</option>
+          <option value="20" {20_selected}>20</option>
+          <option value="50" {50_selected}>50</option>
+          <option value="75" {75_selected}>75</option>
+          <option value="100" {100_selected}>100</option>
+          <option value="200" {200_selected}>200</option>
+          <option value="500" {500_selected}>500</option>
+        </select>
+      </div>
+      <div class="uk-text-nowrap uk-text-bold uk-margin-left">{lang_records_found}</div>
+      <div class="uk-text-nowrap">{records_found}</div>
+      <div class="uk-text-nowrap uk-margin-left">
+        <input type="submit" value="{lang_submit}" class="uk-button uk-form-width-medium"{xhtml}>
+      </div>
+    </div>
+
+  </fieldset>
+</form>
+
+{# end {templatelocation} #}

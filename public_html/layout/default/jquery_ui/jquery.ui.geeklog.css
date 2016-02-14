@@ -1,0 +1,306 @@
+/* Geeklog JQuery UI custom CSS */
+
+/* Tabs
+----------------------------------*/
+.ui-tabs { position: relative; padding: .2em; zoom: 1; margin-bottom: 10px;} /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+.ui-tabs .ui-tabs-nav { margin: 0; padding: .2em .2em 0; }
+.ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }
+.ui-tabs .ui-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; outline-style: none; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
+.ui-tabs .ui-tabs-hide { display: none !important; }
+/* drop down */
+#tabs-dropdown { position: absolute; display: none; list-style: none; padding: 10px 0 5px 0; }
+#tabs-dropdown li, #tabs-dropdown li a { display: block; float: none; }
+#tabs-dropdown li { margin: 0; }
+#tabs-dropdown li a:hover { background-color: #2E6E9E; color: #FFF; }
+
+/* Autocomplete */
+.ui-autocomplete-category {
+    font-weight:bold;
+    padding:.2em .4em;
+    margin:.8em 0 .2em;
+    line-height:1.5;
+}
+
+/* Selected Conf Row */
+.active-config { background: yellow; }
+
+/* Tooltip Balloon */
+#tooltip-container {
+    border:1px solid #83B3D8;
+    -moz-box-shadow:#47708F 0 2px 6px;-webkit-box-shadow:#47708F 0 2px 6px;
+    background:#fff;
+    position:absolute;
+    left:0;
+    top:0;
+    display:none;
+    z-index: 20000;
+}
+
+#tooltip-content {
+    background-color: #FFF;
+    min-width: 175px;
+    min-height: 50px;
+}
+
+.tooltip-block {
+    border-bottom:1px solid #83B3D8;
+    width: 100%;
+}
+.tooltip-title {
+    font-weight: bold;
+    background: #E7E7E7;
+    margin: 0;
+    padding: 2px;
+    
+}
+.tooltip-doc {
+    min-height: 1em;
+    padding: 4px 2px;
+}
+#tooltip-close {
+    display: none;
+}
+
+/* Validation */
+.input_error { border: solid 1px red; }
+.validation_error_block {
+    color: red;
+    font-size: 10px;
+}
+.validation_error_block span {
+    display:block;
+    overflow:hidden;
+    text-indent:-99999px;
+    width: 16px;
+    height: 16px;
+    float:left;
+    margin:0 4px;
+    background: url("images/ui-icons_cd0a0a_256x240.png") 0 -144px;
+}
+.saved_message {
+    margin-bottom:5px;
+    padding:10px 5px 8px 36px;
+    background: #C6F9C9 url("../images/success.png") 10px 50% no-repeat;
+    border: 2px solid #9BD39E;
+    overflow: auto;
+    font-weight: bold;
+    color: #333;
+}
+.error_validation {
+    background: #CF3333 url("../images/error.png") no-repeat 10px 50%;
+    border: 2px solid #990000;
+    color: #FFF;
+}
+.saved_message a {
+    color: #E17009;
+}
+.error_validation a {
+    color: #FFFFBB;
+}
+
+/* jQuery Timepicker Addon (http://trentrichardson.com/examples/timepicker/) */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 40%; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+.ui-timepicker-div .ui_tpicker_unit_hide{ display: none; }
+
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
+.ui-timepicker-rtl dl dt{ float: right; clear: right; }
+.ui-timepicker-rtl dl dd { margin: 0 40% 10px 10px; }
+
+/* modify for Denim */
+.ui-timepicker-div dl { margin: 0; }
+.ui-timepicker-div dt { font-weight: normal; margin: 0; }
+.ui-timepicker-rtl dl { margin: 0; }
+.ui-timepicker-rtl dt { font-weight: normal; margin: 0; }
+
+
+/*
+* Customize for Geeklog Denim Theme
+*
+*/
+
+/* Component containers
+----------------------------------*/
+
+.ui-widget-header {
+    border: 1px solid #cccccc;
+}
+
+/* Interaction states
+----------------------------------*/
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    border: 1px solid #dddddd;
+    font-weight: normal;
+    color: #555555;
+}
+.ui-state-default a,
+.ui-state-default a:link,
+.ui-state-default a:visited {
+    color: #555555;
+}
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+    border: 1px solid #dddddd;
+    font-weight: normal;
+    color: #555555;
+}
+.ui-state-hover a,
+.ui-state-hover a:hover {
+    color: #555555;
+}
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active {
+    border: 1px solid #dddddd;
+    font-weight: normal;
+    color: #111111;
+}
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+    color: #111111;
+}
+
+.ui-widget :active {
+    outline: none;
+}
+
+/* Tabs
+----------------------------------*/
+
+.ui-tabs {
+    margin-bottom: 0;
+}
+
+/* Datepicker
+----------------------------------*/
+
+.ui-datepicker {
+    font-size: 1em;
+}
+.ui-datepicker th {
+    background: none;
+    padding: .6em .3em;
+}
+.ui-datepicker-trigger {
+    vertical-align: middle;
+}
+
+/* Autocomplete
+----------------------------------*/
+
+.ui-autocomplete {
+    background: #FFF;
+    border: 1px solid #DDD;
+}
+
+/* Configuration UI
+----------------------------------*/
+
+#geeklog_config_editor .ui-widget-content {
+    border: none;
+    background: none;
+}
+#geeklog_config_editor .ui-widget-header {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #DDD;
+}
+#geeklog_config_editor .ui-tabs .ui-tabs-panel {
+    background: none;
+    border: none;
+    padding: 1em 0 0;
+}
+#geeklog_config_editor #tabs-dropdown .ui-widget-content {
+    background: #FCFDFD;
+    border: 1px solid #A6C9E2;
+}
+#geeklog_config_editor #tabs-dropdown {
+    background: #FFF;
+    border: 1px solid #DDD;
+}
+#geeklog_config_editor .ui-state-default, 
+#geeklog_config_editor .ui-widget-content .ui-state-default, 
+#geeklog_config_editor .ui-widget-header .ui-state-default {
+    background: #F5F5F5;
+}
+#geeklog_config_editor .ui-state-hover, 
+#geeklog_config_editor .ui-widget-content .ui-state-hover, 
+#geeklog_config_editor .ui-widget-header .ui-state-hover, 
+#geeklog_config_editor .ui-state-focus, 
+#geeklog_config_editor .ui-widget-content .ui-state-focus, 
+#geeklog_config_editor .ui-widget-header .ui-state-focus {
+    background: #F5F5F5;
+}
+#geeklog_config_editor .ui-state-active, 
+#geeklog_config_editor .ui-widget-content .ui-state-active, 
+#geeklog_config_editor .ui-widget-header .ui-state-active {
+    background: #FFF;
+}
+
+/* Selected Conf Row */
+.active-config {
+    background: #EEE;
+    border-radius: 4px 4px 4px 4px;
+}
+
+/* Tooltip Balloon */
+#tooltip-container {
+    border:2px solid #83B3D8;
+}
+#tooltip-close {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    z-index: 20010;
+    display: block;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+}
+#tooltip-close:link,
+#tooltip-close:hover {
+    text-decoration: none;
+}
+
+/* Validation */
+.saved_message {
+    margin-top: 5px;
+}
+
+/*
+* Support for Right-To-Left Languages
+*
+*/
+body[dir="rtl"] .ui-tabs .ui-tabs-nav li {
+    float: right;
+}
+body[dir="rtl"] .ui-tabs .ui-tabs-nav li a {
+    float: right;
+}
+body[dir="rtl"] #tooltip-close {
+    top: 1px;
+    right: auto;
+    left: 1px;
+}
+

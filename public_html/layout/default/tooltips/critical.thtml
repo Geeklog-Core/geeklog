@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<a class="{class}" style="cursor: {cursor}; " href="{link}">{hoverover}<span class="custom critical"><i class="uk-icon-stop-circle uk-icon-large"></i <em>{title}</em>{text}</span></a>
+
+{# end {templatelocation} #}

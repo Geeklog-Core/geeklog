@@ -1,0 +1,21 @@
+{# begin {templatelocation} #}
+
+    <fieldset class="uk-margin-large-top">
+        <legend>{lang_exclude_title}</legend>
+
+        <div class="uk-form-row uk-panel-box">
+            <p class="uk-text-bold">{lang_excluded_items_title}</p>
+            <div class="uk-margin-left">{lang_excluded_items}</div>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label">{lang_topics}</label>
+            <div class="uk-form-controls"><div id="exclude_topic">{exclude_topic_checklist}</div>
+        </div>
+        <div class="uk-form-row uk-margin-large-top">
+            <label class="uk-form-label">{lang_authors}</label>
+            <div class="uk-form-controls">{exclude_author_checklist}</dd>
+        </div>
+
+    </fieldset>
+
+{# end {templatelocation} #}

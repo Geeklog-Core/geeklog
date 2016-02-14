@@ -1,0 +1,19 @@
+{# begin {templatelocation} #}
+
+{cc_groups}
+
+<!-- BEGIN ccgroup -->
+<h2>{lang_group}</h2>
+
+<ul class="admin-commandcontrol uk-clearfix">
+{cc_rows}
+</ul>
+<!-- END ccgroup -->
+<!-- BEGIN ccrow -->
+{cc_main_options}
+<!-- END ccrow -->
+<!-- BEGIN ccitem -->
+<li><a href="{page_url}" style="text-align:center"{target}><img src="{page_image}" style="display:block;margin:5px auto" alt=""{xhtml}>{option_label}</a></li>
+<!-- END ccitem -->
+
+{# end {templatelocation} #}

@@ -1,0 +1,374 @@
+
+$stage = 'compatible'
+
+/*!--------------------------------------
+  professional Compatible Style
+--------------------------------------*/
+
+/*! Menus in blocks */
+
+.blocklist ul
+    list-style: none
+    padding: 0
+    margin: 0
+
+/*! general alignment classes */
+
+.alignleft
+    text-align: left
+
+.alignright
+    text-align: right
+
+.aligncenter
+    text-align: center
+
+.aligntop
+    vertical-align: top
+
+.floatright
+    float: right
+
+.floatleft
+    float: left
+
+.clearboth
+    clear: both
+
+/*! clear floats by applying the clearfix class to float-encasing block! */
+
+.clearfix:after
+    content: "."
+    display: block
+    height: 1px
+    clear: both
+    overflow: hidden
+    visibility: hidden
+
+/*! general formatting classes */
+
+.b
+    font-weight: bold
+
+.ext-link
+    background-color: transparent
+    background: url(../images/external.png) center right no-repeat
+    background-attachment: scroll
+    padding-right: 13px
+
+.feed-link
+    background-color: transparent
+    background: url(../images/feed.png) center right no-repeat
+    background-attachment: scroll
+    padding: 2px 16px 2px 0px
+
+.strike
+    text-decoration: line-through
+
+.url,
+.break-word
+    white-space: pre-wrap
+    word-wrap: break-word
+    word-break: break-all
+    overflow: auto
+
+.fieldhelp
+    font-size: 0.85em
+    color: #666
+    padding-left: 0.8em
+    padding-right: 0.8em
+
+/*! Forms */
+
+.form-description
+    /*! used with calendar plugin */
+    font-weight: bold
+    float: left
+    width: 100px
+    text-align: right
+    padding-right: 5px
+    display: block
+
+.form-field
+    /*! used with calendar plugin */
+    padding-bottom: 5px
+    margin-left: 105px
+
+.checkboxes-list
+    /*! this is used for example by COM_checkList */
+    list-style: none
+    padding: 0
+    margin: 0
+
+.checkboxes-list span
+    /*! space between the text and the checkbox */
+    padding-left: 5px
+
+.checkboxes-list .gldefault
+    /*! default blocks in the user settings block list */
+    font-weight: bold
+
+.highlight
+    color: #000
+    background-color: yellow
+    text-decoration: none
+
+.inputTable td
+    padding: 4px
+    vertical-align: top
+
+.inputTable label
+    font-weight: bold
+    float: right
+    white-space: nowrap
+
+.nowrap
+    white-space: nowrap
+
+.pagenav
+    text-align: center
+    line-height: 1.5
+
+.row_center td
+    text-align: center
+
+.searchresult-byline
+    color: green
+
+.sysmessage img
+    border: none
+    float: left
+    margin-top: -4px
+    padding-bottom: 3px
+    padding-right: 5px
+
+/*! Stats */
+
+.stats-list-count
+    text-align: right
+    padding-left: 5px
+    padding-right: 5px
+
+.stats-header-title
+    text-align: left
+    width: 90%
+    padding-left: 5px
+    padding-right: 5px
+
+.stats-header-count
+    text-align: left
+    width: 10%
+    padding-left: 5px
+    padding-right: 5px
+
+#token-expirynotice
+    padding: 1em
+    border: 1px solid #CCC
+    background: #F7F7F7
+
+#token-expirytime
+    font-weight: bold
+
+.warning
+    background: transparent
+    color: #D14
+    font-weight: bold
+
+.warningsmall
+    background: transparent
+    color: #D14
+
+/*! Default Plugin CSS Declarations */
+/*! Recommended CSS to be used by Plugin Authors - allows easier site themeing */
+
+.plugin
+    color: #000
+    background-color: #EFEFEF
+    font-weight: normal
+    border:1px solid #CCC
+    th
+        color: #000
+        background-color: #B7C1DC
+        padding: 5px
+        text-align: left
+    tr
+        vertical-align: top
+    td
+        padding: 2px 5px
+
+.pluginBG
+    color: #FEFEFE
+    background-color: #7398BA
+
+.pluginAltBG
+    background-color: #7398BA
+
+.pluginAltBG td
+    color: #FFF
+
+.pluginCellTitle
+    color: #666
+    font-weight: bold
+    background-color: #E6E6E6
+    padding: 5px
+
+.pluginCellFill
+    background-color: #F8FAFD
+
+.pluginCellText
+    color: #636363
+    font-weight: normal
+
+.pluginHeader
+    color: #204275
+    font-weight: bolder
+    padding-top: 3px
+    padding-bottom: 3px
+
+.pluginFooter,
+.pluginFooter td
+    background-color: #507AA1
+    color: #FFF
+
+.pluginAlert
+    padding: 5px 15px
+    color: #D8010E
+    background-color: #FEF1B4
+    font-weight: bold
+    margin-bottom: 1em
+
+.pluginInfo
+    padding: 5px 15px
+    color: #707070
+    background-color: #FEF1B4
+    font-weight: normal
+
+.pluginSubTable
+    color: #000
+    background-color: #CCC
+    font-weight: normal
+    border:1px solid #CCC
+
+.pluginSubTable th
+    color: #000
+    background-color: #C9D1E4
+    padding: 5px
+    text-align: left
+
+.pluginSubTable tr
+    vertical-align: top
+
+.pluginSolidOutline
+    background-color: #CCC
+
+.pluginSolidFill
+    background-color: #1A3955
+
+.pluginTitle
+    background-color: #507AA1
+    color: #F5F9FF
+    padding: 4px 6px
+
+.pluginCellSubTitle
+    background-color: #F7F7F7
+    color: #000
+    padding: 4px 6px
+
+.pluginTinyText
+    font-size: 0.70em
+
+.pluginSmallText
+    font-size: 0.8em
+
+.pluginMediumText
+    font-size: 1em
+
+.pluginLargeText
+    font-size: 1.25em
+
+.pluginAltText
+    color: #FFF
+
+.pluginRow1,
+.pluginRow1 td
+    color: $admin-list-table-td-color
+    background-color: $admin-list-table-td1-background // #F7F7F7
+    line-height: 120%
+
+.pluginRow2,
+.pluginRow2 td
+    color: $admin-list-table-td-color
+    background-color: $admin-list-table-td2-background // #E7E7E7
+    line-height: 120%
+
+.pluginRow1 .pluginRollOver,
+.pluginRow2 .pluginRollOver,
+.pluginRollOver
+    color: $admin-list-table-td-color
+    background-color: $admin-list-table-rollover-background // #FFFF8F
+    line-height: 120%
+
+.pluginRow1 .pluginRollOut,
+.pluginRow2 .pluginRollOut,
+.pluginRollOut
+    color: $admin-list-table-td-color
+    background-color: $admin-list-table-td1-background // #F7F7F7
+    line-height: 120%
+
+.pluginLinks a:link
+    color: #000
+    font-style: normal
+    font-weight: normal
+    text-decoration: none
+
+.pluginLinks a:visited
+    color: #000
+    font-style: normal
+    font-weight: normal
+    text-decoration: none
+
+.pluginLinks a:hover
+    color: #000
+    font-style: normal
+    font-weight: normal
+    text-decoration: underline
+
+.pluginBreadCrumbs,
+.pluginBreadCrumbs a:link
+    color: #FFF
+    font-style: normal
+    font-weight: normal
+    text-decoration: none
+
+.pluginBreadCrumbs a:visited
+    color: #FFF
+    font-style: normal
+    font-weight: normal
+    text-decoration: none
+
+.pluginBreadCrumbs a:hover
+    color: #FFF
+    font-style: normal
+    font-weight: normal
+    text-decoration: none
+
+a.pluginButton:link,
+a.pluginButton:visited
+    color: #000
+    text-align: center
+    padding-top: 2px
+    display: block
+    height: 19px
+    text-decoration: none
+    background-color: transparent
+
+a.pluginButton:hover
+    color: blue
+    text-align: center
+    padding-top: 2px
+    background:center url(../images/navbar/button_over.gif)
+    background-repeat: repeat-x
+    display: block
+    height: 19px
+    text-decoration: none
+    background-color: transparent
