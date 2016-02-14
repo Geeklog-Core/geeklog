@@ -1,8 +1,4 @@
-{# begin {templatelocation} #}
-
 <h3>{link_category}</h3>
 <ul>
   {link_details}
 </ul>
-
-{# end {templatelocation} #}

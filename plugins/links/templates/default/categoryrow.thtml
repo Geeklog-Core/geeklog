@@ -1,5 +1,1 @@
-{# begin {templatelocation} #}
-
-{category_col}
-
-{# end {templatelocation} #}
+<tr>{category_col}</tr>

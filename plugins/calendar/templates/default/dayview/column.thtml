@@ -1,5 +1,1 @@
-{# begin {templatelocation} #}
-
 <td class="cal-dayx-times2">{event_entry}</td>
-
-{# end {templatelocation} #}
