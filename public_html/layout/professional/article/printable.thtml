@@ -10,7 +10,7 @@
 <body dir="{direction}">
     <h1>{story_title}</h1>
     <h3>{story_date}</h3>
-    <p><b>{lang_contributedby} {story_author}</b></p>
+    <p><span style="font-weight:bold">{lang_contributedby} {story_author}</span></p>
 
     {story_text_no_br}
 

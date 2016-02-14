@@ -27,7 +27,7 @@
             {left_blocks}
             <td class="story-container">
                 <p class="header-welcomeanddate-text">
-                    <b>{welcome_msg}</b><br{xhtml}>{datetime}
+                    <span style="font-weight:bold">{welcome_msg}</span><br{xhtml}>{datetime}
                 </p>
 
                 <!-- START OF CONTENT AREA -->

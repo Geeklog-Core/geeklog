@@ -27,7 +27,7 @@
                                     <select name="start_year">
                                         {year_options}
                                     </select>&nbsp;&nbsp;
-                                    <b>{lang_starttime}: </b>
+                                    <span style="font-weight:bold">{lang_starttime}: </span>
                                     <select name="start_hour">
                                         {hour_options}
                                     </select>
@@ -53,7 +53,7 @@
                                     <select name="end_year">
                                         {year_options}
                                     </select>&nbsp;&nbsp;
-                                    <b>{lang_endtime}: </b>
+                                    <span style="font-weight:bold">{lang_endtime}: </span>
                                     <select name="end_hour">
                                         {hour_options}
                                     </select>

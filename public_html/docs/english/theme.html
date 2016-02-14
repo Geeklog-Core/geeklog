@@ -10,8 +10,8 @@
 <p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Theme How-To</div>
 
-<p><small>(see below for a list of <a href="#changes">theme changes</a> in
-recent Geeklog versions)</small></p>
+<p><span style="font-size:x-small">(see below for a list of <a href="#changes">theme changes</a> in
+recent Geeklog versions)</span></p>
 
 
 <h1>Creating a Theme for Geeklog</h1>
@@ -390,7 +390,7 @@ The 1.8.1 theme engine will eventually be removed from Geeklog so if you are dev
     block.</li>
 <li>A new option in My Account allows users to enable/disable the Advanced
     Editor. Requires a new template variable <tt>{advanced_editor_option}</tt>
-    in <tt>preferences/displayblock.thtml</tt> and a <b>new template file</b>
+    in <tt>preferences/displayblock.thtml</tt> and a <span style="font-weight:bold">new template file</span>
     <tt>preferences/editor.thtml</tt> for the actual option (the option remains
     hidden unless Advanced Editor is enabled globally in the Configuration).</li>
 <li>Added some padding to the <code>&lt;li&gt;</code> element in
@@ -1406,10 +1406,10 @@ this shouldn't be too much of a hassle ...</p>
 <h3>CSS changes</h3>
 <ul>
 <li>The underscore '_' is not a valid character in CSS. Therefore, some class names used by the Geeklog calendar have been changed to use the dash '-' instead. You may need to change your stylesheet accordingly.<br />
-Names that changed: <b>cal-oldday</b>, <b>cal-today</b>,
-<b>cal-futureday</b>, <b>cal-nullday</b>, <b>weekview-curday</b>,
-<b>weekview-offday</b></li>
-<li>A new class named <b>pagenav</b> can be used to format the paged
+Names that changed: <span style="font-weight:bold">cal-oldday</span>, <span style="font-weight:bold">cal-today</span>,
+<span style="font-weight:bold">cal-futureday</span>, <span style="font-weight:bold">cal-nullday</span>, <span style="font-weight:bold">weekview-curday</span>,
+<span style="font-weight:bold">weekview-offday</span></li>
+<li>A new class named <span style="font-weight:bold">pagenav</span> can be used to format the paged
   navigation.<br />
   Please note that this change was made <em>after</em> the release of Geeklog
   1.3.6rc1 and affects the use of the paged navigation in

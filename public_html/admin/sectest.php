@@ -238,7 +238,7 @@ function checkInstallDir()
 
     if (is_dir($installdir)) {
         $retval .= '<li>' . sprintf($LANG_SECTEST['remove_inst'],
-                           '<b>' . $installdir . '</b>') . ' '
+                           '<span style="font-weight:bold">' . $installdir . '</span>') . ' '
                 . $LANG_SECTEST['remove_inst2'] . '</li>';
         $failed_tests++;
     } else {

@@ -1491,7 +1491,7 @@ function links_breadcrumbs($root, $cid)
                 $breadcrumb = COM_createLink($content, $url) . $separator
                             . $breadcrumb;
             } else {
-                $breadcrumb = '<b>' . $A['category'] . '</b>' . $breadcrumb;
+                $breadcrumb = '<span style="font-weight:bold">' . $A['category'] . '</span>' . $breadcrumb;
             }
             $pid = $A['pid'];
             $c = $A['pid'];
@@ -1501,7 +1501,7 @@ function links_breadcrumbs($root, $cid)
 
     $url = $_CONF['site_url'] . '/links/index.php';
     if (empty($breadcrumb)) {
-        $breadcrumb = '<b>' . $LANG_LINKS['root'] . '</b>';
+        $breadcrumb = '<span style="font-weight:bold">' . $LANG_LINKS['root'] . '</span>';
     } else {
         $breadcrumb = COM_createLink($LANG_LINKS['root'], $url) . $separator . $breadcrumb;
     }

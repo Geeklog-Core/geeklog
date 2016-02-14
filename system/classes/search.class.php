@@ -467,8 +467,8 @@ class Search
         {
             $obj->setStyle('table');
             //             Title        Name            Display     Sort   Format
-            $obj->setField($LANG09[62], LF_ROW_NUMBER,  $show_num,  false, '<b>%d.</b>');
-            $obj->setField($LANG09[5],  LF_SOURCE_TITLE,$show_type, true,  '<b>%s</b>');
+            $obj->setField($LANG09[62], LF_ROW_NUMBER,  $show_num,  false, '<b>%d.</span>');
+            $obj->setField($LANG09[5],  LF_SOURCE_TITLE,$show_type, true,  '<b>%s</span>');
             $obj->setField($LANG09[16], 'title',        true,       true);
             $obj->setField($LANG09[63], 'description',  true,       false);
             $obj->setField($LANG09[17], 'date',         true,       true);
@@ -482,7 +482,7 @@ class Search
             $sort_date = empty($this->_dateStart) || empty($this->_dateEnd) || $this->_dateStart != $this->_dateEnd ? true : false;
             $sort_type = $this->_type == 'all' ? true : false;
             $obj->setStyle('inline');
-            $obj->setField('',          LF_ROW_NUMBER,  $show_num,  false, '<b>%d.</b>');
+            $obj->setField('',          LF_ROW_NUMBER,  $show_num,  false, '<b>%d.</span>');
             $obj->setField($LANG09[16], 'title',        true,       true,  '%s<br' . XHTML . '>');
             $obj->setField('',          'description',  true,       false, '%s<br' . XHTML . '>');
             $obj->setField('',          '_html',        true,       false, '<span class="searchresult-byline">');
@@ -639,17 +639,17 @@ class Search
                                 $escquery);
         if ($this->_keyType == 'any')
         {
-            $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>", $escquery);
-            $searchQuery = "<b>'$searchQuery'</b>";
+            $searchQuery = str_replace(' ', "</span>' " . $LANG09[57] . " '<b>", $escquery);
+            $searchQuery = "<span style=\"font-weight:bold\">'$searchQuery'</span>";
         }
         else if ($this->_keyType == 'all')
         {
-            $searchQuery = str_replace(' ', "</b>' " . $LANG09[56] . " '<b>", $escquery);
-            $searchQuery = "<b>'$searchQuery'</b>";
+            $searchQuery = str_replace(' ', "</span>' " . $LANG09[56] . " '<b>", $escquery);
+            $searchQuery = "<span style=\"font-weight:bold\">'$searchQuery'</span>";
         }
         else
         {
-            $searchQuery = $LANG09[55] . " '<b>$escquery</b>'";
+            $searchQuery = $LANG09[55] . " '<span style=\"font-weight:bold\">$escquery</span>'";
         }
 
         // Clean the query string so that sprintf works as expected
@@ -819,7 +819,7 @@ class Search
                 $key = $word_count - 1;
                 $start = 0 - $num_words;
                 $end = 0;
-                $rt = '<b>...</b> ';
+                $rt = '<b>...</span> ';
             }
             else
             {
@@ -850,7 +850,7 @@ class Search
                     if ($abs_length < $num_words) {
                         $start -= ($num_words - $abs_length);
                     }
-                    $rt = '<b>...</b> ';
+                    $rt = '<b>...</span> ';
                 }
             }
         }
@@ -865,7 +865,7 @@ class Search
             $rt .= $words[$key + $i] . ' ';
         }
         if ($key + $i != $word_count) {
-            $rt .= ' <b>...</b>';
+            $rt .= ' <b>...</span>';
         }
 
         return COM_highlightQuery($rt, $keyword, 'b');

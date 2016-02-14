@@ -1,28 +1,28 @@
 {start_block_userprofile}
     <table cellspacing="0" cellpadding="3">
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_username}:</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_username}:</span></td>
             <td style="vertical-align:top;">{username} ({user_fullname}) {edit_link}<br{xhtml}> {user_photo}</td>
         </tr>
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_membersince}:</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_membersince}:</span></td>
             <td style="vertical-align:top;">{user_regdate}</td>
         </tr>
         {email_option}
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_homepage}:</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_homepage}:</span></td>
             <td style="vertical-align:top;"><a href="{user_homepage}">{user_homepage}</a></td>
         </tr>
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_location}:</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_location}:</span></td>
             <td style="vertical-align:top;">{user_location}</td>
         </tr>
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_bio}:</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_bio}:</span></td>
             <td style="vertical-align:top;">{user_bio}</td>
         </tr>
         <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_pgpkey}:</b></td>
+            <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_pgpkey}:</span></td>
             <td style="vertical-align:top;">{user_pgp}</td>
         </tr>
     </table>

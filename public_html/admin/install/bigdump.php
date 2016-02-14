@@ -185,7 +185,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
   if (!$error) {
     $_REQUEST["start"]   = floor($_REQUEST["start"]);
     $_REQUEST["foffset"] = floor($_REQUEST["foffset"]);
-    echo '<p>' . $LANG_BIGDUMP[8] . ' <b>' . $curfilename . '</b></p>' . LB;
+    echo '<p>' . $LANG_BIGDUMP[8] . ' <span style="font-weight:bold">' . $curfilename . '</span></p>' . LB;
   }
 
   // Check $_REQUEST["foffset"] upon $filesize (can't do it on gzipped files)
@@ -368,7 +368,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
     } else {
 
         if ($delaypersession != 0) {
-            echo '<p><b>' . $LANG_BIGDUMP[24] . $delaypersession . $LANG_BIGDUMP[25] . LB;
+            echo '<p><span style="font-weight:bold">' . $LANG_BIGDUMP[24] . $delaypersession . $LANG_BIGDUMP[25] . LB;
         }
 
         // Go to the next step
@@ -378,7 +378,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
             . '<noscript>' . LB
             . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $linenumber . '&amp;fn=' . urlencode($curfilename) . '&amp;foffset=' . $foffset . '&amp;totalqueries=' . $totalqueries . '&amp;db_connection_charset=' . $db_connection_charset . '&amp;language=' . $language . '&amp;site_url=' . $site_url . '&amp;site_admin_url=' . $site_admin_url . '">Continue from the line ' . $linenumber . '</a></p>' . LB
             . '</noscript>' . LB
-            . '<p><b><a href="' . $_SERVER['PHP_SELF'] . '">' . $LANG_BIGDUMP[26] . '</a></b> ' . $LANG_BIGDUMP[27] . ' <b>' . $LANG_BIGDUMP[28] . '</b></p>' . LB;
+            . '<p><span style="font-weight:bold"><a href="' . $_SERVER['PHP_SELF'] . '">' . $LANG_BIGDUMP[26] . '</a></span> ' . $LANG_BIGDUMP[27] . ' <span style="font-weight:bold">' . $LANG_BIGDUMP[28] . '</span></p>' . LB;
     }
   } else {
     echo INST_getAlertMsg($LANG_BIGDUMP[29]);

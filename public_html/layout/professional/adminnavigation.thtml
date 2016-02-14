@@ -1,7 +1,7 @@
 {# {templatelocation} - The Admin Navigation uses template blocks which is built into this file #}
 
 <!-- BEGIN group -->
-<li><b>{group_label}</b></li>
+<li><span style="font-weight:bold">{group_label}</span></li>
 <!-- END group -->
 <!-- BEGIN option -->
 <li>{branch_spaces}<a href="{option_url}"{target}>{option_label}</a>{display_count}</li>

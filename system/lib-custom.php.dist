@@ -246,7 +246,7 @@ function CUSTOM_userDisplay($uid)
 
     $var = "Value from custom table";
     $retval .= '<tr>
-        <td align="right"><b>Custom Fields:</b></td>
+        <td align="right"><span style="font-weight:bold">Custom Fields:</span></td>
         <td>' . $var .'</td>
      </tr>';
 
@@ -281,7 +281,7 @@ function CUSTOM_userEdit($uid)
         <td>' . $selection .'</td>
      </tr>';
     $retval .= '<tr>
-        <td align="right"><b>Custom Fields:</b></td>
+        <td align="right"><span style="font-weight:bold">Custom Fields:</span></td>
         <td><input type="text" name="custom1" size="50" value="' . $var .'"' . XHTML . '></td>
      </tr>';
     $retval .= '<tr><td colspan="2"><hr' . XHTML . '></td></tr>';
@@ -331,7 +331,7 @@ function CUSTOM_userForm ($msg = '')
     $postmode = 'create';
     $value = 'Register Now!';
     $submitbutton = '<button type="submit" value=" ' . $value . '" class="uk-button">' . $value . '</button>';
-    $message = "<blockquote style=\"padding-top:10px;\"><b>Please complete the application below. Once you have completed the application, click the Register Now! button and the application will be processed immediately.</b></blockquote>";
+    $message = "<blockquote style=\"padding-top:10px;\"><span style=\"font-weight:bold\">Please complete the application below. Once you have completed the application, click the Register Now! button and the application will be processed immediately.</span></blockquote>";
 
     $user_templates = COM_newTemplate($_CONF['path_layout'] . 'custom');
     $user_templates->set_file('memberdetail', 'memberdetail.thtml');

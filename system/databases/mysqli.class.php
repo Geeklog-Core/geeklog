@@ -203,8 +203,8 @@ class database
     {
         if ($this->_verbose
          AND (empty($this->_errorlog_fn) OR !function_exists($this->_errorlog_fn))) {
-            echo "\n<br" . XHTML . "><b>Can't run mysqli.class.php verbosely because the errorlog "
-                . "function wasn't set or doesn't exist</b><br" . XHTML . ">\n";
+            echo "\n<br" . XHTML . "><span style=\"font-weight:bold\">Can't run mysqli.class.php verbosely because the errorlog "
+                . "function wasn't set or doesn't exist</span><br" . XHTML . ">\n";
             return FALSE;
         }
 

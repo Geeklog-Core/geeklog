@@ -1116,7 +1116,7 @@ function importusers()
         $email = COM_applyFilter ($email);
 
         if ($verbose_import) {
-            $retval .="<br" . XHTML . "><b>Working on username=$u_name, fullname=$full_name, and email=$email</b><br" . XHTML . ">\n";
+            $retval .="<br" . XHTML . "><span style="font-weight:bold">Working on username=$u_name, fullname=$full_name, and email=$email</span><br" . XHTML . ">\n";
             COM_errorLog ("Working on username=$u_name, fullname=$full_name, and email=$email",1);
         }
 
@@ -1142,24 +1142,24 @@ function importusers()
                 if ($result) {
                     $successes++;
                     if ($verbose_import) {
-                        $retval .= "<br" . XHTML . "> Account for <b>$u_name</b> created successfully.<br" . XHTML . ">\n";
+                        $retval .= "<br" . XHTML . "> Account for <span style="font-weight:bold">$u_name</span> created successfully.<br" . XHTML . ">\n";
                         COM_errorLog("Account for $u_name created successfully",1);
                     }
                 } else {
                     // user creation failed
-                    $retval .= "<br" . XHTML . ">ERROR: There was a problem creating the account for <b>$u_name</b>.<br" . XHTML . ">\n";
+                    $retval .= "<br" . XHTML . ">ERROR: There was a problem creating the account for <span style="font-weight:bold">$u_name</span>.<br" . XHTML . ">\n";
                     COM_errorLog("ERROR: here was a problem creating the account for $u_name.",1);
                 }
             } else {
                 if ($verbose_import) {
-                    $retval .= "<br" . XHTML . "><b>$u_name</b> or <b>$email</b> already exists, account not created.<br" . XHTML . ">\n"; // user already exists
+                    $retval .= "<br" . XHTML . "><span style="font-weight:bold">$u_name</span> or <span style="font-weight:bold">$email</span> already exists, account not created.<br" . XHTML . ">\n"; // user already exists
                     COM_errorLog("$u_name,$email: username or email already exists, account not created",1);
                 }
                 $failures++;
             } // end if $ucount == 0 && ecount == 0
         } else {
             if ($verbose_import) {
-                $retval .= "<br" . XHTML . "><b>$email</b> is not a valid email address, account not created<br" . XHTML . ">\n"; // malformed email
+                $retval .= "<br" . XHTML . "><span style="font-weight:bold">$email</span> is not a valid email address, account not created<br" . XHTML . ">\n"; // malformed email
                 COM_errorLog("$email is not a valid email address, account not created",1);
             }
             $failures++;

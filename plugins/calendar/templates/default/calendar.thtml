@@ -4,7 +4,7 @@
                                     <tr align="center" class="dayview_times">
                                         <td align="center" style="width:33%"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day">{lang_day}</a></td>
                                         <td align="center" style="width:33%"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week">{lang_week}</a></td>
-                                        <td align="center" style="width:33%"><b>{lang_month}</b></td>
+                                        <td align="center" style="width:33%"><span style="font-weight:bold">{lang_month}</span></td>
                                     </tr>
                                 </table><br{xhtml}>
                                 <table width="100%" cellpadding="5" cellspacing="1" border="0" class="cal-body">

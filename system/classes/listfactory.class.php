@@ -53,9 +53,9 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'listfactory.class.php') !== false)
                         //   <string>   - SQL column name
         true,           // Enables the field
         true,           // The field can be sorted
-        '<b>%d.</b>'    // Formats the data
+        '<span style="font-weight:bold">%d.</span>'    // Formats the data
     );
-    $obj->setField('Type', LF_SOURCE_TITLE, true, true, '<b>%s</b>');
+    $obj->setField('Type', LF_SOURCE_TITLE, true, true, '<span style="font-weight:bold">%s</span>');
     $obj->setField('Title', 'title');
     $obj->setField('Text', 'text');
     $obj->setField('Date', 'date');
@@ -86,7 +86,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'listfactory.class.php') !== false)
         'id' => -1,
         LF_SOURCE_TITLE => 'Extra Row',
         'title' => 'An extra row example',
-        'text' => 'With some really really really long text.....<b>and HTML</b>',
+        'text' => 'With some really really really long text.....<span style="font-weight:bold">and HTML</span>',
         'date' => '2008-07-08 03:00:00'
     );
     // Add the extra row, notice it is not automatically passed to the row function

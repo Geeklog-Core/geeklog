@@ -5,7 +5,7 @@
                                             <form action="{form_url}" method="post" onsubmit='set_postcontent();'>
                                                 <table cellspacing="0" cellpadding="3" width="100%">
                                                     <tr>
-                                                        <td class="alignright" style="width:7em"><b>{lang_username}:</b></td>
+                                                        <td class="alignright" style="width:7em"><span style="font-weight:bold">{lang_username}:</span></td>
                                                         <td>
                                                             <input type="hidden" name="order" value="{order}"{xhtml}>
                                                             <input type="hidden" name="format" value="{format}"{xhtml}>
@@ -20,11 +20,11 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="alignright"><b>{lang_title}:</b></td>
+                                                        <td class="alignright"><span style="font-weight:bold">{lang_title}:</span></td>
                                                         <td><input type="text" name="title" size="32" value="{title}" maxlength="96"{xhtml}></td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="alignright" style="vertical-align:top;"><b>{lang_comment}:</b></td>
+                                                        <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_comment}:</span></td>
                                                         <td>
                                                             <div id="text_editor" style="display:{show_texteditor};">
                                                                 <textarea id="comment_text" name="comment" cols="60" rows="10">{comment}</textarea>
@@ -35,7 +35,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="alignright" style="vertical-align:top;"><b>{lang_postmode}:</b></td>
+                                                        <td class="alignright" style="vertical-align:top;"><span style="font-weight:bold">{lang_postmode}:</span></td>
                                                         <td style="vertical-align:top;">
                                                             <select id="sel_editmode" name="postmode" onchange="change_editmode(this);">
                                                                 {postmode_options}
@@ -48,7 +48,7 @@
                                                         <td colspan="2"><hr{xhtml}></td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="2"><b>{lang_importantstuff}</b><ul>
+                                                        <td colspan="2"><span style="font-weight:bold">{lang_importantstuff}</span><ul>
                                                             <li>{lang_instr_line1}</li>
                                                             <li>{lang_instr_line2}</li>
                                                             <li>{lang_instr_line3}</li>

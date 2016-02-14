@@ -57,7 +57,7 @@
                                             <td colspan="2">
                                                 <table id="fs-phpblock-options">
                                                     <tr>
-                                                        <td colspan="2"><b>{lang_phpblockoptions}</b></td>
+                                                        <td colspan="2"><span style="font-weight:bold">{lang_phpblockoptions}</span></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="alignright">{lang_blockfunction}:</td>
@@ -76,7 +76,7 @@
                                             <td colspan="2">
                                                 <table id="fs-portal-options">
                                                     <tr>
-                                                        <td colspan="2"><b>{lang_portalblockoptions}</b></td>
+                                                        <td colspan="2"><span style="font-weight:bold">{lang_portalblockoptions}</span></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="alignright">{lang_rdfurl}:</td>
@@ -100,7 +100,7 @@
                                             <td colspan="2">
                                                 <table id="fs-normal-options">
                                                     <tr>
-                                                        <td colspan="2"><b>{lang_normalblockoptions}</b></td>
+                                                        <td colspan="2"><span style="font-weight:bold">{lang_normalblockoptions}</span></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="alignright" style="vertical-align:top">{lang_blockcontent}:</td>
@@ -118,7 +118,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2"><b>{lang_accessrights}</b></td>
+                                            <td colspan="2"><span style="font-weight:bold">{lang_accessrights}</span></td>
                                         </tr>
                                         <tr>
                                             <td class="alignright">{lang_owner}:</td>
@@ -132,7 +132,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2"><b>{lang_permissions}:</b></td>
+                                            <td colspan="2"><span style="font-weight:bold">{lang_permissions}:</span></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">{lang_perm_key}</td>

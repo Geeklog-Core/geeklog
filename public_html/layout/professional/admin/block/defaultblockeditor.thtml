@@ -41,7 +41,7 @@
                                         <td colspan="2"><hr{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><b>{lang_accessrights}</b></td>
+                                        <td colspan="2"><span style="font-weight:bold">{lang_accessrights}</span></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_owner}:</td>
@@ -52,7 +52,7 @@
                                         <td>{group_dropdown}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><b>{lang_permissions}</b>:</td>
+                                        <td colspan="2"><span style="font-weight:bold">{lang_permissions}</span>:</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"></td>

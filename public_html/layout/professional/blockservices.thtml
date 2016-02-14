@@ -1,2 +1,2 @@
-<b><label for="service">{lang_service}</label>:</b><br{xhtml}>
+<span style="font-weight:bold"><label for="service">{lang_service}</label>:</span><br{xhtml}>
 {select_service}<br{xhtml}>

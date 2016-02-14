@@ -3131,17 +3131,17 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
                 $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">$name $op $ver ";
                 $status = PLG_checkAvailable($name, $ver, $op);
                 if (!$status) {
-                    $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
+                    $retval .= "<b class='status_red'>{$LANG32[54]}</span>";
                 } else if ($status == 'wrong_version') {
-                    $retval .= "<b class='status_red'>{$LANG32[56]}</b>";
+                    $retval .= "<b class='status_red'>{$LANG32[56]}</span>";
                 } else if ($status == 'disabled') {
-                    $retval .= "<b class='status_orange'>{$LANG32[53]}</b>";
+                    $retval .= "<b class='status_orange'>{$LANG32[53]}</span>";
                 } else if ($status == 'uninstalled') {
-                    $retval .= "<b class='status_orange'>{$LANG32[55]}</b>";
+                    $retval .= "<b class='status_orange'>{$LANG32[55]}</span>";
                 } else if ($status == 'ok') {
-                    $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
+                    $retval .= "<b class='status_green'>{$LANG32[51]}</span>";
                 }
-                $retval .= "</b>";
+                $retval .= "</span>";
             } else if (isset($value['db'])){ // check for a database requirement
                 $dbAvailable[] = array($value['db'], $op, $ver); // cache the database types
                 if ($_DB_dbms == $value['db']) { // this db requirement matches the database that the site is run on
@@ -3149,11 +3149,11 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
                     $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">$name $op $ver ";
                     if (PLG_checkAvailableDb($name, $pi_name, $ver, $op)) {
                         $dbSupported = true; // the reuirement for the database is fullfilled
-                        $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
+                        $retval .= "<b class='status_green'>{$LANG32[51]}</span>";
                     } else { // unsupported version
-                        $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
+                        $retval .= "<b class='status_red'>{$LANG32[54]}</span>";
                     }
-                    $retval .= "</b>";
+                    $retval .= "</span>";
                 }
             }
         }
@@ -3161,19 +3161,19 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
             // the plugin requires a database, but this requirement is not fullfilled
             foreach ($dbAvailable as $key => $value) { // print every database that would satisfy this requirement
                 $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">{$value[0]} {$value[1]} {$value[2]} ";
-                $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
-                $retval .= "</b>";
+                $retval .= "<b class='status_red'>{$LANG32[54]}</span>";
+                $retval .= "</span>";
             }
         }
     } else if (!empty($pi_gl_version)) { // old plugin install
         $retval .= "geeklog >= $pi_gl_version ";
         if (PLG_checkAvailable('geeklog', $pi_gl_version)) {
-            $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
+            $retval .= "<b class='status_green'>{$LANG32[51]}</span>";
         } else {
-            $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
+            $retval .= "<b class='status_red'>{$LANG32[54]}</span>";
         }
     } else { // we're not too sure right now....
-        $retval .= "<b class='status_black'>{$LANG32[57]}</b>";
+        $retval .= "<b class='status_black'>{$LANG32[57]}</span>";
     }
     return $retval;
 }

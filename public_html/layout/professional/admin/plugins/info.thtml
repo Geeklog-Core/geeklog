@@ -8,16 +8,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright"><b>{lang_pluginname}:</b></td>
+                                    <td class="alignright"><span style="font-weight:bold">{lang_pluginname}:</span></td>
                                     <td>{pi_display_name}</td>
                                 </tr>
                                 {homepage}
                                 <tr>
-                                    <td class="alignright"><b>{lang_pluginversion}:</b></td>
+                                    <td class="alignright"><span style="font-weight:bold">{lang_pluginversion}:</span></td>
                                     <td>{pi_version}</td>
                                 </tr>
                                 <tr>
-                                    <td class="alignright" style="vertical-align: top;"><b>{lang_dependencies}:</b></td>
+                                    <td class="alignright" style="vertical-align: top;"><span style="font-weight:bold">{lang_dependencies}:</span></td>
                                     <td>{pi_dependencies}</td>
                                 </tr>
                                     <tr>

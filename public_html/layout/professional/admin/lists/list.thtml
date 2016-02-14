@@ -12,5 +12,5 @@
                                     {formfields_bottom}
                                 </div>
                             </form>
-                            <p class="aligncenter" style="{show_message}"><b>{message}</b></p>
+                            <p class="aligncenter" style="{show_message}"><span style="font-weight:bold">{message}</span></p>
                             {google_paging}

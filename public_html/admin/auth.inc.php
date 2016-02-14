@@ -105,11 +105,11 @@ if ($status == USER_ACCOUNT_ACTIVE) {
 
         $display .= '<form action="' . $_CONF['site_admin_url'] . '/index.php" method="post">'
             .'<table cellspacing="0" cellpadding="3" border="0" width="100%">'.LB
-            .'<tr><td class="alignright"><b><label for="loginname">'.$LANG20[4].'</label></b></td>'.LB
+            .'<tr><td class="alignright"><span style="font-weight:bold"><label for="loginname">'.$LANG20[4].'</label></span></td>'.LB
             .'<td><input type="text" name="loginname" id="loginname" size="16" maxlength="16"' . XHTML . '></td>'.LB
             .'</tr>'.LB
             .'<tr>'.LB
-            .'<td class="alignright"><b><label for="passwd">'.$LANG20[5].'</label></b></td>'.LB
+            .'<td class="alignright"><span style="font-weight:bold"><label for="passwd">'.$LANG20[5].'</label></span></td>'.LB
             .'<td><input type="password" name="passwd" id="passwd" size="16"' . XHTML . '></td>'
             .'</tr>'.LB
             .'<tr>'.LB
