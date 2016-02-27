@@ -1,29 +1,4 @@
 /* Geeklog Denim Theme 1.1.0 | Copyright (C) 2012-2015 by dengen | http://www.trybese.com/~dengen/log/ | License:GPLv2 */
-p,
-ul,
-ol,
-dl,
-blockquote,
-pre,
-address,
-fieldset,
-figure {
-  margin-top: 0;
-}
-
-h1,
-h2 {
-  font-size: 20px;
-  margin: .3em 0;
-}
-
-h3,
-h4,
-h5,
-h6 {
-  margin: .5em 0;
-}
-
 address {
   font-style: normal;
   font-weight: normal;
@@ -63,12 +38,6 @@ a {
 a:hover {
   color: #2664A2;
   text-decoration: underline;
-}
-
-ul,
-ol,
-dl {
-  margin: 1em 0;
 }
 
 dt {
@@ -515,12 +484,18 @@ input[type="reset"]:disabled {
   color: #008000;
 }
 
+.sysmessage {
+  margin: 0;
+}
+
+.sysmessage a {
+  text-decoration: underline;
+}
+
 .sysmessage img {
   border: none;
   float: right;
-  margin-top: -4px;
-  padding-bottom: 3px;
-  padding-left: 5px;
+  padding: 0 0 8px 8px;
 }
 
 /* Stats */
@@ -1164,7 +1139,7 @@ ul.compact li {
 }
 
 /*--------------------------------------
-  Gloval Navigation Container
+  Global Navigation Container
 --------------------------------------*/
 
 #navigation {
@@ -1298,7 +1273,7 @@ body.js_off #rightblocks {
 }
 
 /*--------------------------------------
-  Admin Configration Container
+  Admin Configuration Container
 --------------------------------------*/
 
 #config_menu {
@@ -1370,7 +1345,7 @@ body.center-right #config_content {
   }
 
   /*--------------------------------------
-    Gloval Navigation Container
+    Global Navigation Container
   --------------------------------------*/
 
   #navigation {
@@ -1506,7 +1481,7 @@ body.center-right #config_content {
   }
 
   /*--------------------------------------
-    Admin Configration Container
+    Admin Configuration Container
   --------------------------------------*/
 
   #config_menu {
@@ -1580,7 +1555,7 @@ body.center-right #config_content {
   }
 
   /*--------------------------------------
-    Gloval Navigation Container
+    Global Navigation Container
   --------------------------------------*/
 
   #navigation {
@@ -1781,7 +1756,7 @@ body.center-right #config_content {
   }
 
   /*--------------------------------------
-    Gloval Navigation Container
+    Global Navigation Container
   --------------------------------------*/
 
   #navigation {
@@ -1951,8 +1926,7 @@ body.center-right #config_content {
   /* Adjust floating element */
   overflow: visible;
   background-color: transparent;
-  padding: 0;
-  padding-bottom: 2em;
+  padding: 30px 0;
 }
 
 @media only screen and (max-width: 767px) {
@@ -2048,7 +2022,7 @@ body.center-right #config_content {
 }
 
 /*--------------------------------------
-  Gloval Navigation Content
+  Global Navigation Content
 --------------------------------------*/
 
 /* Navigation Menu List */
@@ -2847,10 +2821,11 @@ div.third-party-login {
 /* Icon(email, print, pdf) */
 .story_icon {
   float: left;
+  font-size: 18px;
 }
 
-.story_icon img {
-  margin-right: 8px;
+.story_icon a {
+  margin-right: 5px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -3044,21 +3019,6 @@ span.warning em {
   line-height: 1.7em;
   margin: 0 20px 0 0;
   padding: 0;
-}
-
-/* Article Related Block */
-.block-related {
-  float: right;
-  width: 50%;
-  margin: 0 0 1.5em 0;
-}
-
-@media only screen and (max-width: 767px) {
-
-  .block-related {
-    float: none;
-    width: auto;
-  }
 }
 
 /*--------------------------------------
@@ -4277,6 +4237,32 @@ b.status_black {
 #panel_phpinfo {
   padding: 50px;
   display: none;
+}
+
+/*--------------------------------------
+  Others
+--------------------------------------*/
+
+.allowed_html_tags,
+.allowed_autotags {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.totop-scroller {
+  position: fixed;
+  z-index: 99;
+  bottom: 20px;
+  left: 20px;
+  text-align: center;
+  font-size: 40px;
+  cursor: pointer;
+  color: rgba(128,128,128,.6);
+}
+
+.block-help-icon {
+  font-size: 18px;
+  margin-right: 8px;
 }
 
 /*--------------------------------------
