@@ -1,35 +1,4 @@
 /* Geeklog Denim Theme 1.1.0 | Copyright (C) 2012-2015 by dengen | http://www.trybese.com/~dengen/log/ | License:GPLv2 */
-/*
-p,
-ul,
-ol,
-dl,
-blockquote,
-pre,
-address,
-fieldset,
-figure {
-  margin-top: 0;
-}
-*/
-
-
-/*
-h1,
-h2 {
-  font-size: 20px;
-  margin: .3em 0;
-}
-
-h3,
-h4,
-h5,
-h6 {
-  margin: .5em 0;
-}
-*/
-
-
 address {
   font-style: normal;
   font-weight: normal;
@@ -70,14 +39,6 @@ a:hover {
   color: #2664A2;
   text-decoration: underline;
 }
-
-/*
-ul,
-ol,
-dl {
-  margin: 1em 0;
-}
-*/
 
 dt {
   font-weight: bold;
@@ -181,7 +142,7 @@ textarea:focus {
   -webkit-box-shadow: 0 0 3px rgba(0,0,0,.2);
   box-shadow: 0 0 3px rgba(0,0,0,.2);
 }
-/*
+
 input[type="submit"]::-moz-focus-inner,
 input[type="button"]::-moz-focus-inner,
 input[type="reset"]::-moz-focus-inner {
@@ -192,13 +153,20 @@ input[type="reset"]::-moz-focus-inner {
 input[type="submit"],
 input[type="button"],
 input[type="reset"] {
+  /* 1 */
   -webkit-appearance: none;
+  /* 2 */
   margin: 0;
+  /* 3 */
   border: none;
+  /* 4 */
   overflow: visible;
+  /* 5 */
   font: inherit;
   color: #444;
+  /* 6 */
   text-transform: none;
+  /* 7 */
   display: inline-block;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -207,9 +175,13 @@ input[type="reset"] {
   padding: 0 12px;
   background: #F7F7F7;
   vertical-align: middle;
+  /* 8 */
   line-height: 28px;
+  /* 9 */
   min-height: 30px;
+  /* 10 */
   font-size: 1rem;
+  /* 11 */
   text-decoration: none;
   text-align: center;
   border: 1px solid rgba(0,0,0,.2);
@@ -246,7 +218,9 @@ input[type="button"]:focus,
 input[type="reset"]:focus {
   background-color: #FAFAFA;
   color: #444;
+  /* 2 */
   outline: none;
+  /* 3 */
   text-decoration: none;
   background-image: none;
 }
@@ -341,7 +315,6 @@ input[type="reset"]:disabled {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-*/
 
 /* Modify UIkit */
 .uk-form input,
@@ -511,24 +484,18 @@ input[type="reset"]:disabled {
   color: #008000;
 }
 
-.sysmessage img {
-  border: none;
-  float: left;
-/*
-  margin-top: -4px;
-*/
-  margin-top: 0px;
-  padding-bottom: 3px;
-/*
-  padding-right: 5px;
-*/
-  padding-right: 8px;
-}
 .sysmessage {
   margin: 0;
 }
+
 .sysmessage a {
   text-decoration: underline;
+}
+
+.sysmessage img {
+  border: none;
+  float: left;
+  padding: 0 8px 8px 0;
 }
 
 /* Stats */
@@ -1172,7 +1139,7 @@ ul.compact li {
 }
 
 /*--------------------------------------
-  Gloval Navigation Container
+  Global Navigation Container
 --------------------------------------*/
 
 #navigation {
@@ -1306,7 +1273,7 @@ body.js_off #rightblocks {
 }
 
 /*--------------------------------------
-  Admin Configration Container
+  Admin Configuration Container
 --------------------------------------*/
 
 #config_menu {
@@ -1378,7 +1345,7 @@ body.center-right #config_content {
   }
 
   /*--------------------------------------
-    Gloval Navigation Container
+    Global Navigation Container
   --------------------------------------*/
 
   #navigation {
@@ -1514,7 +1481,7 @@ body.center-right #config_content {
   }
 
   /*--------------------------------------
-    Admin Configration Container
+    Admin Configuration Container
   --------------------------------------*/
 
   #config_menu {
@@ -1588,7 +1555,7 @@ body.center-right #config_content {
   }
 
   /*--------------------------------------
-    Gloval Navigation Container
+    Global Navigation Container
   --------------------------------------*/
 
   #navigation {
@@ -1789,7 +1756,7 @@ body.center-right #config_content {
   }
 
   /*--------------------------------------
-    Gloval Navigation Container
+    Global Navigation Container
   --------------------------------------*/
 
   #navigation {
@@ -1959,9 +1926,7 @@ body.center-right #config_content {
   /* Adjust floating element */
   overflow: visible;
   background-color: transparent;
-  padding: 0;
-  padding-bottom: 2em;
-  padding: 30px 0; /**********************************************/
+  padding: 30px 0;
 }
 
 @media only screen and (max-width: 767px) {
@@ -2057,7 +2022,7 @@ body.center-right #config_content {
 }
 
 /*--------------------------------------
-  Gloval Navigation Content
+  Global Navigation Content
 --------------------------------------*/
 
 /* Navigation Menu List */
@@ -2854,19 +2819,11 @@ div.third-party-login {
 }
 
 /* Icon(email, print, pdf) */
-/*
-.story_icon {
-  float: right;
-}
-
-.story_icon img {
-  margin-left: 8px;
-}
-*/
 .story_icon {
   float: right;
   font-size: 18px;
 }
+
 .story_icon a {
   margin-left: 5px;
 }
@@ -3063,23 +3020,6 @@ span.warning em {
   margin: 0 0 0 20px;
   padding: 0;
 }
-
-/* Article Related Block */
-/*
-.block-related {
-  float: left;
-  width: 50%;
-  margin: 0 0 1.5em 0;
-}
-
-@media only screen and (max-width: 767px) {
-
-  .block-related {
-    float: none;
-    width: auto;
-  }
-}
-*/
 
 /*--------------------------------------
   Comment Block
@@ -4300,6 +4240,32 @@ b.status_black {
 }
 
 /*--------------------------------------
+  Others
+--------------------------------------*/
+
+.allowed_html_tags,
+.allowed_autotags {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.totop-scroller {
+  position: fixed;
+  z-index: 99;
+  bottom: 20px;
+  right: 20px;
+  text-align: center;
+  font-size: 40px;
+  cursor: pointer;
+  color: rgba(128,128,128,.6);
+}
+
+.block-help-icon {
+  font-size: 18px;
+  margin-left: 8px;
+}
+
+/*--------------------------------------
   Admin Configration
 --------------------------------------*/
 
@@ -4582,28 +4548,3 @@ body.center-right #config_content {
     padding: 5px 0;
   }
 }
-
-.allowed_html_tags,
-.allowed_autotags {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.totop-scroller {
-    position: fixed;
-    z-index: 99;
-    bottom: 20px;
-    right: 20px;
-    text-align: center;
-    font-size: 40px;
-    cursor: pointer;
-
-    color: rgba(128,128,128,0.6);
-
-}
-
-.block-help-icon {
-    font-size: 18px;
-    margin-left: 8px;
-}
-
