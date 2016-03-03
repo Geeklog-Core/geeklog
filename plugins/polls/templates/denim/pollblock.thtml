@@ -1,0 +1,18 @@
+{# begin {templatelocation} #}
+
+<span class="floatright">{edit_icon}</span><div class="poll-topic">{poll_topic}</div>
+<form action="{poll_vote_url}" name="Vote" method="post" class="uk-form">
+    <div>
+    <input type="hidden" name="pid" value="{poll_id}"{xhtml}>
+        {poll_questions}
+        <span class="pluginTinyText">{poll_notification}</span><br{xhtml}>
+        <button type="submit" value="{lang_vote}" class="uk-button">{lang_vote}</button>
+        {poll_results}
+    </div>
+</form>
+
+<span class="pluginTinyText">
+    <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters} {poll_comments}
+</span>
+
+{# end {templatelocation} #}

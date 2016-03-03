@@ -1,0 +1,108 @@
+{# begin {templatelocation} #}
+
+                                <table width="100%" cellpadding="5" cellspacing="0" border="0" class="cal-header">
+                                    <tr align="center" class="dayview_times">
+                                        <td align="center" style="width:33%"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day">{lang_day}</a></td>
+                                        <td align="center" style="width:33%"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week">{lang_week}</a></td>
+                                        <td align="center" style="width:33%"><b>{lang_month}</b></td>
+                                    </tr>
+                                </table><br{xhtml}>
+                                <table width="100%" cellpadding="5" cellspacing="1" border="0" class="cal-body">
+                                    <tr align="center">
+                                        <td colspan="8">
+                                            <table border="0" width="100%">
+                                                <tr>
+                                                    <td class="cal-month" valign="top">
+                                                        {previous_months_calendar}
+                                                    </td>
+                                                    <td align="center" style="width:100%">
+                                                        <table border="0" cellpadding="5" cellspacing="0">
+                                                            <tr>
+                                                                <td colspan="2" align="center">
+                                                                    <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
+                                                                        <div>
+                                                                            <input type="hidden" name="mode" value="{mode}"{xhtml}>
+                                                                            <select name="month" onchange="this.form.submit()">
+                                                                                <option value="1" {selected_jan}>{lang_january}</option>
+                                                                                <option value="2" {selected_feb}>{lang_february}</option>
+                                                                                <option value="3" {selected_mar}>{lang_march}</option>
+                                                                                <option value="4" {selected_apr}>{lang_april}</option>
+                                                                                <option value="5" {selected_may}>{lang_may}</option>
+                                                                                <option value="6" {selected_jun}>{lang_june}</option>
+                                                                                <option value="7" {selected_jul}>{lang_july}</option>
+                                                                                <option value="8" {selected_aug}>{lang_august}</option>
+                                                                                <option value="9" {selected_sep}>{lang_september}</option>
+                                                                                <option value="10" {selected_oct}>{lang_october}</option>
+                                                                                <option value="11" {selected_nov}>{lang_november}</option>
+                                                                                <option value="12" {selected_dec}>{lang_december}</option>
+                                                                            </select>&nbsp;
+                                                                            <select name="year" onchange="this.form.submit()">
+                                                                                {year_options}
+                                                                            </select>
+                                                                        </div>
+                                                                    </form><br{xhtml}>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right">
+                                                                    {add_event_option}
+                                                                </td>
+                                                                <td>
+                                                                    {personal_calendar_option}
+                                                                    {master_calendar_option}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td class="cal-month" valign="top">
+                                                        {next_months_calendar}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td class="cal-day" style="width:15%">{lang_sunday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_monday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_tuesday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_wednesday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_thursday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_friday}</td>
+                                        <td class="cal-day" style="width:15%">{lang_saturday}</td>
+                                    </tr>
+                                    {cal_week}
+                                </table>
+                                <table style="margin-left:auto; margin-right:auto">
+                                    <tr>
+                                        <td>
+                                            <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
+                                                <div>
+                                                    <button type="submit" value="&lt;&lt;" class="uk-button">&lt;&lt;</button>
+                                                    <input type="hidden" name="month" value="{cal_prevmo_num}"{xhtml}>
+                                                    <input type="hidden" name="year" value="{cal_prevyr_num}"{xhtml}>
+                                                    <input type="hidden" name="mode" value="{mode}"{xhtml}>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            {add_event_option}
+                                        </td>
+                                        <td>
+                                        {personal_calendar_option}
+                                        {master_calendar_option}
+                                        </td>
+                                        <td>
+                                            <form method="post" action="{site_url}/calendar/index.php" class="uk-form">
+                                                <div>
+                                                    <button type="submit" value="&gt;&gt;" class="uk-button">&gt;&gt;</button>
+                                                    <input type="hidden" name="month" value="{cal_nextmo_num}"{xhtml}>
+                                                    <input type="hidden" name="year" value="{cal_nextyr_num}"{xhtml}>
+                                                    <input type="hidden" name="mode" value="{mode}"{xhtml}>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </table>
+
+{# end {templatelocation} #}

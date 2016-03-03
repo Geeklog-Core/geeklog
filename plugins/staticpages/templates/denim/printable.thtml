@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html{lang_attribute}{xmlns}>
+<head>
+  <title>{page_title}</title>
+  <meta name="robots" content="NOINDEX"{xhtml}>
+  <link rel="stylesheet" type="text/css" href="{layout_url}/print.css"{xhtml}>
+  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/print.css"{xhtml}>
+  <link rel="canonical" href="{printable_url}"{xhtml}>
+</head>
+<body dir="{direction}">
+{# begin {templatelocation} #}
+
+    <h1>{sp_title}</h1>
+
+    <p>{sp_content}</p>
+
+    <hr{xhtml}>
+
+    <p>{site_name}<br{xhtml}>
+        <a href="{sp_url}">{sp_url}</a>
+    </p>
+<p>{comments_text_in_brackets}</p>
+
+{# end {templatelocation} #}
+
+</body>
+</html>
