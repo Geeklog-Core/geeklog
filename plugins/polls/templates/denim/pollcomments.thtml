@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+| <a href="{poll_comments_url}">{num_comments} {lang_comments}</a>
+
+{# end {templatelocation} #}

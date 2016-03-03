@@ -1,0 +1,10 @@
+{# begin {templatelocation} #}
+
+{breadcrumb_trail}
+{block_start}
+{content}
+{block_end}
+<p class="aligncenter">{lastupdate}<span style="padding-left:5px;padding-right:5px;visibility:{info_separator}">|</span>{hits} {print_icon}{edit_icon}</p>
+{commentbar}
+
+{# end {templatelocation} #}
