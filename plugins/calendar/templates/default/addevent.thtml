@@ -30,7 +30,7 @@
                                             <div>
                                                 <input type="hidden" name="action" value="saveuserevent"{xhtml}>
                                                 <input type="hidden" name="eid" value="{event_id}"{xhtml}>
-                                                <button type="submit" value="{lang_addtomycalendar}" class="uk-button uk-button-primary">{lang_addtomycalendar}</button>
+                                                <input type="submit" value="{lang_addtomycalendar}"{xhtml}>
                                                 <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                             </div>
                                         </form>
