@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+{block_start}
+{content}
+{block_end}
+
+{# end {templatelocation} #}
