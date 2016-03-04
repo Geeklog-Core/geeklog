@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<td style="width:{width}%"><strong>{category_name} {category_count}</strong></td>
+
+{# end {templatelocation} #}

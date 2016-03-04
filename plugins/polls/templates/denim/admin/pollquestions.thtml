@@ -1,0 +1,15 @@
+{# begin {templatelocation} #}
+
+<div id="po_{question_id}" {style} class="wide">
+  <dl class="form_block">
+    <dt><label>{lang_question}</label></dt>
+    <dd><input type="text" dir="ltr" name="question[]" value="{question_text}" maxlength="255" class="size5"{xhtml}></dd>
+
+    <dt><label>{lang_answersvotes}</label></dt>
+    <dd>{answer_option}</dd>
+  </dl>
+</div>
+
+<hr class="separator"{xhtml}>
+
+{# end {templatelocation} #}

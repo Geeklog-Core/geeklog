@@ -5,13 +5,13 @@
   <div class="admin_basic compact">
     <dl class="form_block">
       <dt>{lang_userid}</dt>
-      <dd>{user_id}</dd>
+      <dd class="controls_text">{user_id}</dd>
 
       <dt>{lang_regdate}</dt>
-      <dd>{user_regdate}</dd>
+      <dd class="controls_text">{user_regdate}</dd>
 
       <dt>{lang_lastlogin}</dt>
-      <dd>{user_lastlogin}</dd>
+      <dd class="controls_text">{user_lastlogin}</dd>
 
       <dt><label for="admin-edituser-username">{lang_username}</label></dt>
       <dd><div><input type="text" maxlength="16" value="{username}" name="username" id="admin-edituser-username" class="size2"{xhtml}> {remoteservice}</div>

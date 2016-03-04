@@ -99,7 +99,7 @@
                                     <input type="hidden" name="type" value="calendar"{xhtml}>
                                     <input type="hidden" name="calendar_type" value="{mode}"{xhtml}>
                                     <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
-                                    <button type="submit" value="{lang_submit}" class="uk-button uk-button-primary">{lang_submit}</button>
+                                    <input type="submit" value="{lang_submit}"{xhtml}>
                                     {hidden_fields}
                                 </div>
                                 <div class="clear-left"></div>

@@ -16,10 +16,10 @@
       {theme_selection}
 
       <dt><label for="displayprefs-noicons">{lang_noicons}</label></dt>
-      <dd><input type="checkbox" {noicons_checked} name="noicons" id="displayprefs-noicons"{xhtml}>{lang_noicons_text}</dd>
+      <dd class="controls_text"><input type="checkbox" {noicons_checked} name="noicons" id="displayprefs-noicons"{xhtml}>{lang_noicons_text}</dd>
 
       <dt><label for="displayprefs-noboxes">{lang_noboxes}</label></dt>
-      <dd><input type="checkbox" {noboxes_checked} name="noboxes" id="displayprefs-noboxes"{xhtml}>{lang_noboxes_text}</dd>
+      <dd class="controls_text"><input type="checkbox" {noboxes_checked} name="noboxes" id="displayprefs-noboxes"{xhtml}>{lang_noboxes_text}</dd>
 
       <dt><label for="displayprefs-maxstories">{lang_maxstories}</label></dt>
       <dd><input type="text" maxlength="3" value="{maxstories_value}" name="maxstories" id="displayprefs-maxstories" class="size1"{xhtml}></dd>

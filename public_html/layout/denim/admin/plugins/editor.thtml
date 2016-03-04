@@ -8,25 +8,25 @@
       <dd><img src="{pi_icon}" alt=""{xhtml}></dd>
 
       <dt>{lang_pluginname}</dt>
-      <dd>{pi_display_name}</dd>
+      <dd class="controls_text">{pi_display_name}</dd>
 
       <dt>{lang_pluginhomepage}</dt>
-      <dd><a href="{pi_homepage}" class="break-word">{pi_homepage}</a></dd>
+      <dd class="controls_text"><a href="{pi_homepage}" class="break-word">{pi_homepage}</a></dd>
 
       <dt>{lang_pluginversion}</dt>
-      <dd>{pi_version}</dd>
+      <dd class="controls_text">{pi_version}</dd>
 
       <dt>{lang_plugincodeversion}</dt>
-      <dd>{pi_codeversion}</dd>
+      <dd class="controls_text">{pi_codeversion}</dd>
 
       <dt>{lang_dependencies}</dt>
-      <dd>{pi_dependencies}</dd>
+      <dd class="controls_text">{pi_dependencies}</dd>
 
       <dt>{lang_load}</dt>
-      <dd>{pi_load}</dd>
+      <dd class="controls_text">{pi_load}</dd>
 
       <dt>{lang_enabled}</dt>
-      <dd>{pi_enabled}</dd>
+      <dd class="controls_text">{pi_enabled}</dd>
     </dl>
     <div class="submit">
       <button id="close" type="submit" value="{back}" class="uk-button uk-button-primary">{back}</button>

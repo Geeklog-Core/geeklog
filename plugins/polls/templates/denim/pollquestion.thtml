@@ -1,0 +1,10 @@
+{# begin {templatelocation} #}
+
+<div class="poll-questions">
+    <p class="poll-question">{lang_question}{lang_question_number}{poll_question}</p>
+    <table style="width:100%;">
+        {poll_votes}
+    </table>
+</div>
+
+{# end {templatelocation} #}
