@@ -9,10 +9,10 @@
       <dd><input type="text" value="{feed_title}" name="title" id="admin-feededitor-title" class="size5"{xhtml}></dd>
 
       <dt><label for="admin-feededitor-is_enabled">{lang_enabled}</label></dt>
-      <dd><input type="checkbox" {is_enabled} name="is_enabled" id="admin-feededitor-is_enabled"{xhtml}></dd>
+      <dd class="controls_text"><input type="checkbox" {is_enabled} name="is_enabled" id="admin-feededitor-is_enabled"{xhtml}></dd>
 
       <dt>{lang_type}</dt>
-      <dd>{feed_type_display}</dd>
+      <dd class="controls_text">{feed_type_display}</dd>
 
       <dt><label>{lang_topic}</label></dt>
       <dd>{feed_topic}</dd>
@@ -51,7 +51,7 @@
       <dd><input type="text" value="{feed_language}" name="language" id="admin-feededitor-language" class="size3"{xhtml}></dd>
 
       <dt>{lang_updated}</dt>
-      <dd>{feed_updated}</dd>
+      <dd class="controls_text">{feed_updated}</dd>
     </dl>
 
     <div class="submit">

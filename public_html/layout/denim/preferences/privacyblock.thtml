@@ -13,13 +13,13 @@
   <div class="compact">
     <dl class="form_block">
       <dt><label for="displayprefs-emailfromuser">{lang_emailfromuser}</label></dt>
-      <dd><label><input type="checkbox" {emailfromuser_checked} name="emailfromuser" id="displayprefs-emailfromuser"{xhtml}>{lang_emailfromuser_text}</label></dd>
+      <dd class="controls_text"><label><input type="checkbox" {emailfromuser_checked} name="emailfromuser" id="displayprefs-emailfromuser"{xhtml}>{lang_emailfromuser_text}</label></dd>
 
       <dt><label for="displayprefs-emailfromadmin">{lang_emailfromadmin}</label></dt>
-      <dd><label><input type="checkbox" {emailfromadmin_checked} name="emailfromadmin" id="displayprefs-emailfromadmin"{xhtml}>{lang_emailfromadmin_text}</label></dd>
+      <dd class="controls_text"><label><input type="checkbox" {emailfromadmin_checked} name="emailfromadmin" id="displayprefs-emailfromadmin"{xhtml}>{lang_emailfromadmin_text}</label></dd>
 
       <dt><label for="displayprefs-showonline">{lang_showonline}</label></dt>
-      <dd><label><input type="checkbox" {showonline_checked} name="showonline" id="displayprefs-showonline"{xhtml}>{lang_showonline_text}</label></dd>
+      <dd class="controls_text"><label><input type="checkbox" {showonline_checked} name="showonline" id="displayprefs-showonline"{xhtml}>{lang_showonline_text}</label></dd>
     </dl>
   </div>
 </fieldset>
