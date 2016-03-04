@@ -9,7 +9,7 @@
       <dd><input type="text" value="{block_title}" name="title" id="admin-blockeditor-title" class="size5"{xhtml}></dd>
 
       <dt><label for="admin-blockeditor-is_enabled">{lang_enabled}</label></dt>
-      <dd><input type="checkbox" {is_enabled} name="is_enabled" id="admin-blockeditor-is_enabled"{xhtml}></dd>
+      <dd class="controls_text"><input type="checkbox" {is_enabled} name="is_enabled" id="admin-blockeditor-is_enabled"{xhtml}></dd>
 
       <dt><label for="admin-blockeditor-help">{lang_blockhelpurl}</label></dt>
       <dd>
@@ -23,7 +23,7 @@
       <dd id="desc-admin-blockeditor-name" class="description">{lang_nospaces}</dd>
 
       <dt><label>{lang_topic}</label></dt>
-      <dd>{topic_selection}</dd>
+      <dd class="controls_text">{topic_selection}</dd>
 
       <dt><label for="admin-blockeditor-onleft">{lang_side}</label></dt>
       <dd>
@@ -85,7 +85,7 @@
         <dd class="description"><span id="desc-admin-blockeditor-content" class="warningsmall">{lang_allowed_html}</span></dd>
 
         <dt><label for="admin-blockeditor-allow_autotags">{lang_autotags}</label></dt>
-        <dd><input type="checkbox" name="allow_autotags" id="admin-blockeditor-allow_autotags" {allow_autotags}{xhtml}>({lang_use_autotags})</dd>
+        <dd class="controls_text"><input type="checkbox" name="allow_autotags" id="admin-blockeditor-allow_autotags" {allow_autotags}{xhtml}>({lang_use_autotags})</dd>
       </dl>
     </fieldset>
 
@@ -94,7 +94,7 @@
 
       <dl class="form_block">
         <dt>{lang_owner}</dt>
-        <dd>{owner_username}</dd>
+        <dd class="controls_text">{owner_username}</dd>
 
         <dt><label for="group_id">{lang_group}</label></dt>
         <dd>{group_dropdown}</dd>

@@ -8,7 +8,7 @@
       <dd><input type="text" name="title" value="{block_title}" id="admin-blockeditor-title" class="size5"{xhtml}></dd>
 
       <dt><label for="admin-blockeditor-is_enabled">{lang_enabled}</label></dt>
-      <dd><input type="checkbox" name="is_enabled" {is_enabled} id="admin-blockeditor-is_enabled"{xhtml}></dd>
+      <dd class="controls_text"><input type="checkbox" name="is_enabled" {is_enabled} id="admin-blockeditor-is_enabled"{xhtml}></dd>
 
       <dt><label for="admin-blockeditor-help">{lang_blockhelpurl}</label></dt>
       <dd><input type="text" name="help" value="{block_help}" maxlength="{max_url_length}" id="admin-blockeditor-help" class="size5" aria-describedby="desc-admin-blockeditor-help"{xhtml}></dd>
@@ -16,11 +16,11 @@
                               {lang_explanation}</dd>
 
       <dt>{lang_blockname}</dt>
-      <dd>{block_name}
+      <dd class="controls_text">{block_name}
         <input type="hidden" name="name" value="{block_name}" class="size5"{xhtml}></dd>
 
       <dt><label>{lang_topic}</label></dt>
-      <dd>{topic_selection}</dd>
+      <dd class="controls_text">{topic_selection}</dd>
 
       <dt><label for="admin-blockeditor-onleft">{lang_side}</label></dt>
       <dd><select name="onleft" id="admin-blockeditor-onleft">
@@ -34,7 +34,7 @@
         <span id="desc-admin-blockeditor-blockorder">0 - 9999</span></dd>
 
       <dt>{lang_blocktype}</dt>
-      <dd>gldefault
+      <dd class="controls_text">gldefault
         <input type="hidden" name="type" value="gldefault"{xhtml}></dd>
     </dl>
 
@@ -43,7 +43,7 @@
 
       <dl class="form_block">
         <dt>{lang_owner}</dt>
-        <dd>{owner_name}
+        <dd class="controls_text">{owner_name}
           <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
 
         <dt><label for="group_id">{lang_group}</label></dt>

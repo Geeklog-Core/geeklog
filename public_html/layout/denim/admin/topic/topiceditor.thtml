@@ -11,10 +11,10 @@
       <dd><input type="text" maxlength="128" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="size5" aria-describedby="desc-admin-topiceditor-tid"{xhtml}> <span id="desc-admin-topiceditor-tid">{lang_donotusespaces}</span></dd>
 
       <dt><label for="admin-topiceditor-inherit">{lang_inherit}</label></dt>
-      <dd><label><input type="checkbox" {inherit_checked} name="inherit" id="admin-topiceditor-inherit"{xhtml}><span class="fieldhelp">{lang_inherit_info}</span></label></dd>
+      <dd class="controls_text"><label><input type="checkbox" {inherit_checked} name="inherit" id="admin-topiceditor-inherit"{xhtml}><span class="fieldhelp">{lang_inherit_info}</span></label></dd>
 
       <dt><label for="admin-topiceditor-hidden">{lang_hidden}</label></dt>
-      <dd><label><input type="checkbox" {hidden_checked} name="hidden" id="admin-topiceditor-hidden"{xhtml}><span class="fieldhelp">{lang_hidden_info}</span></label></dd>
+      <dd class="controls_text"><label><input type="checkbox" {hidden_checked} name="hidden" id="admin-topiceditor-hidden"{xhtml}><span class="fieldhelp">{lang_hidden_info}</span></label></dd>
 
       <dt><label for="admin-topiceditor-parent_id">{lang_parent_id}</label></dt>
       <dd>
@@ -24,7 +24,7 @@
       </dd>
 
       <dt><label>{lang_sortorder}</label></dt>
-      <dd>{sort_order}</dd>
+      <dd class="controls_text">{sort_order}</dd>
 
       <dt><label for="admin-topiceditor-limitnews">{lang_storiesperpage}</label></dt>
       <dd><input type="text" maxlength="3" value="{story_limit}" name="limitnews" id="admin-topiceditor-limitnews" class="size1" aria-describedby="desc-admin-topiceditor-limitnews"{xhtml}> <span class="fieldhelp" id="desc-admin-topiceditor-limitnews">{lang_defaultis}{default_limit}</span></dd>
@@ -42,13 +42,13 @@
       <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" class="wide" cols="70" rows="2">{meta_keywords}</textarea></dd>
 
       <dt><label for="admin-topiceditor-is_default">{lang_defaulttopic}</label></dt>
-      <dd><label><input type="checkbox" {default_checked} name="is_default" id="admin-topiceditor-is_default"{xhtml}><span class="fieldhelp">{lang_defaulttext}</span></label></dd>
+      <dd class="controls_text"><label><input type="checkbox" {default_checked} name="is_default" id="admin-topiceditor-is_default"{xhtml}><span class="fieldhelp">{lang_defaulttext}</span></label></dd>
 
       <dt><label for="admin-topiceditor-is_archive">{lang_archivetopic}</label></dt>
-      <dd><label><input type="checkbox" {archive_checked} {archive_disabled} name="is_archive" id="admin-topiceditor-is_archive"{xhtml}><span class="fieldhelp">{lang_archivetext}</span></label></dd>
+      <dd class="controls_text"><label><input type="checkbox" {archive_checked} {archive_disabled} name="is_archive" id="admin-topiceditor-is_archive"{xhtml}><span class="fieldhelp">{lang_archivetext}</span></label></dd>
 
       <dt><label>{lang_num_stories}</label></dt>
-      <dd>{num_stories}</dd>
+      <dd class="controls_text">{num_stories}</dd>
 
     </dl>
 
@@ -57,7 +57,7 @@
 
       <dl class="form_block">
         <dt>{lang_owner}</dt>
-        <dd>{owner_name}</dd>
+        <dd class="controls_text">{owner_name}</dd>
 
         <dt><label for="group_id">{lang_group}</label></dt>
         <dd>{group_dropdown}</dd>
