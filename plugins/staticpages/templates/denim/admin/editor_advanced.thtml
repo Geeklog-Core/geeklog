@@ -13,19 +13,19 @@
         <dd><input type="text" dir="ltr" name="sp_id" maxlength="128" value="{sp_id}" id="sp-advanced_editor-sp_id" class="size5"{xhtml}></dd>
 
         <dt><label>{lang_url}</label></dt>
-        <dd><span class="break-word">{example_url}</span></dd>
+        <dd class="controls_text"><span class="break-word">{example_url}</span></dd>
 
         <dt><label for="sp-advanced_editor-sp_page_title">{lang_page_title}</label></dt>
         <dd><input type="text" maxlength="128" name="sp_page_title" value="{sp_page_title}" id="sp-advanced_editor-sp_page_title" class="size5"{xhtml}></dd>
 
         <dt><label for="sp-advanced_editor-sp_onmenu">{lang_addtomenu}</label></dt>
-        <dd><input type="checkbox" name="sp_onmenu" id="sp-advanced_editor-sp_onmenu" {onmenu_checked}{xhtml}></dd>
+        <dd class="controls_text"><input type="checkbox" name="sp_onmenu" id="sp-advanced_editor-sp_onmenu" {onmenu_checked}{xhtml}></dd>
 
         <dt><label for="sp-advanced_editor-sp_label">{lang_label}</label></dt>
         <dd><input type="text" name="sp_label" maxlength="64" value="{sp_label}" id="sp-advanced_editor-sp_label" class="size5"{xhtml}></dd>
 
         <dt><label>{lang_topic}</label></dt>
-        <dd>{topic_selection}</dd>
+        <dd class="controls_text">{topic_selection}</dd>
 
         <dt><label for="sp-advanced_editor-sp_format">{lang_pageformat}</label></dt>
         <dd><select name="sp_format" id="sp-advanced_editor-sp_format">
@@ -81,26 +81,26 @@
 
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-draft_flag">{lang_draft}</label></dt>
-        <dd><input type="checkbox" name="draft_flag" id="sp-advanced_editor-draft_flag" {draft_flag_checked}{xhtml}></dd>
+        <dd class="controls_text"><input type="checkbox" name="draft_flag" id="sp-advanced_editor-draft_flag" {draft_flag_checked}{xhtml}></dd>
 
         <dt><label for="sp-advanced_editor-cache_time">{lang_cache_time}</label></dt>
         <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="sp-advanced_editor-cachetime" class="text"{xhtml}></dd>
         <dd class="description">{lang_cache_time_desc}</dd>
 
         <dt><label>{lang_lastupdated}</label></dt>
-        <dd>{sp_formateddate}</dd>
+        <dd class="controls_text">{sp_formateddate}</dd>
 
         <dt><label>{lang_hits}</label></dt>
-        <dd><input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}</dd>
+        <dd class="controls_text"><input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}</dd>
 
         <dt><label>{lang_comments}</label></dt>
-        <dd>{sp_comments}</dd>
+        <dd class="controls_text">{sp_comments}</dd>
       </dl>
 
       <hr style="margin-bottom: 15px;"{xhtml}>
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-template_flag">{lang_template}</label></dt>
-        <dd><input type="checkbox" name="template_flag" id="sp-advanced_editor-template_flag" {template_flag_checked}{xhtml}>&nbsp;&nbsp;{lang_template_flag_msg}</dd>
+        <dd class="controls_text"><input type="checkbox" name="template_flag" id="sp-advanced_editor-template_flag" {template_flag_checked}{xhtml}>&nbsp;&nbsp;{lang_template_flag_msg}</dd>
 
         <dt><label>{lang_use_template}</label></dt>
         <dd>{use_template_selection}&nbsp;&nbsp;&nbsp;{lang_use_template_msg}</dd>
@@ -109,7 +109,7 @@
       <hr style="margin-bottom: 15px;"{xhtml}>
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-sp_centerblock">{lang_centerblock}</label></dt>
-        <dd><input type="checkbox" name="sp_centerblock" id="sp-advanced_editor-sp_centerblock" {centerblock_checked}{xhtml}>&nbsp;&nbsp;{lang_centerblock_msg}</dd>
+        <dd class="controls_text"><input type="checkbox" name="sp_centerblock" id="sp-advanced_editor-sp_centerblock" {centerblock_checked}{xhtml}>&nbsp;&nbsp;{lang_centerblock_msg}</dd>
 
         <dt><label>{lang_position}</label></dt>
         <dd>{pos_selection}</dd>
@@ -118,17 +118,17 @@
       <hr style="margin-bottom: 15px;"{xhtml}>
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-sp_inblock">{inblock_msg}</label></dt>
-        <dd><input type="checkbox" name="sp_inblock" id="sp-advanced_editor-sp_inblock" {inblock_checked}{xhtml}>&nbsp;&nbsp;{inblock_info}</dd>
+        <dd class="controls_text"><input type="checkbox" name="sp_inblock" id="sp-advanced_editor-sp_inblock" {inblock_checked}{xhtml}>&nbsp;&nbsp;{inblock_info}</dd>
 
         <dt><label for="sp-advanced_editor-sp_help">{lang_centerblock_help}</label></dt>
         <dd><input type="text" name="sp_help" value="{centerblock_help}" id="sp-advanced_editor-sp_help" class="size5"{xhtml}>&nbsp;{lang_centerblock_include}
             <br{xhtml}>{lang_centerblock_desc}</dd>
 
         <dt><label>{php_msg}</label></dt>
-        <dd>{php_selector}&nbsp;&nbsp;{php_warn}</dd>
+        <dd class="controls_text">{php_selector}&nbsp;&nbsp;{php_warn}</dd>
 
         <dt><label for="sp-advanced_editor-sp_nf">{exit_msg}</label></dt>
-        <dd><input type="checkbox" name="sp_nf" id="sp-advanced_editor-sp_nf" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</dd>
+        <dd class="controls_text"><input type="checkbox" name="sp_nf" id="sp-advanced_editor-sp_nf" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</dd>
       </dl>
 
       <fieldset>
@@ -136,7 +136,7 @@
 
         <dl class="form_block">
           <dt>{lang_owner}</dt>
-          <dd>{owner_link} {camera_icon}
+          <dd class="controls_text">{owner_link} {camera_icon}
               <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
 
           <dt><label for="group_id">{lang_group}</label></dt>

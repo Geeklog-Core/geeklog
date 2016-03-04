@@ -21,13 +21,13 @@
         <dd><select name="commentcode" id="polls-polleditor-commentcode">{comment_options}</select></dd>
 
         <dt><label for="polls-polleditor-mainpage">{lang_appearsonhomepage}</label></dt>
-        <dd><input type="checkbox" name="mainpage" id="polls-polleditor-mainpage" {poll_display}{xhtml}></dd>
+        <dd class="controls_text"><input type="checkbox" name="mainpage" id="polls-polleditor-mainpage" {poll_display}{xhtml}></dd>
 
         <dt><label for="polls-polleditor-open">{lang_openforvoting}</label></dt>
-        <dd><input type="checkbox" name="open" id="polls-polleditor-open" {poll_open}{xhtml}></dd>
+        <dd class="controls_text"><input type="checkbox" name="open" id="polls-polleditor-open" {poll_open}{xhtml}></dd>
 
         <dt><label for="polls-polleditor-hideresults">{lang_hideresults}</label></dt>
-        <dd><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</dd>
+        <dd class="controls_text"><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</dd>
       </dl>
 
       <div id="po_navbar" class="jsenabled_show">
@@ -40,7 +40,7 @@
 
         <dl class="form_block">
           <dt>{lang_owner}</dt>
-          <dd>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
+          <dd class="controls_text">{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
 
           <dt><label for="group_id">{lang_group}</label></dt>
           <dd>{group_dropdown}</dd>

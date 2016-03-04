@@ -792,6 +792,10 @@ a.pluginButton:hover {
   overflow: hidden;
 }
 
+fieldset.form_block {
+  margin: 15px 0;
+}
+
 /* Message */
 .form_message {
   margin: 0 0 1em 0;
@@ -951,6 +955,7 @@ a.pluginButton:hover {
   clear: left;
   width: 24%;
   margin: 0 0 1em 0;
+  margin-top: 5px;
   padding: 0 1% 0 0;
   font-weight: normal;
 }
@@ -971,6 +976,12 @@ a.pluginButton:hover {
   margin: 0 0 1em 0;
   padding: 0;
 }
+
+
+.compact .controls_text {
+  margin-top: 5px;
+}
+
 
 @media only screen and (max-width: 962px) {
 
@@ -997,6 +1008,10 @@ a.pluginButton:hover {
   .compact p.description {
     margin: 0 0 1em 0;
     padding: 0;
+  }
+
+  .compact .controls_text {
+    margin-top: 0;
   }
 }
 
