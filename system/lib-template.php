@@ -145,6 +145,19 @@ function CTL_plugin_templatePath($plugin, $path = '')
         $retval[] = $layout_path;
     }
 
+    // Check to see if compatible theme templates stored with plugin
+    if (!empty($_CONF['theme_plugins'])) {
+        if (empty($path)) {
+            $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme_plugins']}";
+        } else {
+            $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme_plugins']}/$path";
+        }
+
+        if (is_dir($layout_path)) {
+            $retval[] = $layout_path;
+        }
+    }
+
     // Now Check to see if default theme exists for templates stored with plugin
     if (!empty($_CONF['theme_default'])) {
         if (empty($path)) {
