@@ -176,4 +176,16 @@ $(function() {
     });
 
     $('form').addClass('uk-form');
+
+    if (geeklog.theme_options.block_left_search == 0) {
+        $('#block-left-search').remove();
+    }
+
+    if (geeklog.theme_options.welcome_msg == 0) {
+        $('.welcome_msg').remove();
+    }
+
+    if (geeklog.theme_options.topic_image == 0) {
+        $('.story_image').remove();
+    }
 });

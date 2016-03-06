@@ -49,6 +49,11 @@ function theme_config_denim()
         'doctype'    => 'xhtml5',
         'supported_version_theme' => '2.0.0', // support new theme format for the later Geeklog 2.0.0
         'theme_plugins' => 'denim' // Not requred, you can specify compatible theme of template stored with plugins
+        'options'    => array(     // Not requred, show or hide switcher of some of the parts
+            'block_left_search' => 1, // 1:show or 0:hide left block searchbox
+            'welcome_msg'       => 1, // 1:show or 0:hide welcome message
+            'topic_image'       => 1, // 1:show or 0:hide topic images
+        )
     );
 }
 

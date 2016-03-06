@@ -612,6 +612,7 @@ class scripts {
             'layout_url'     => $_CONF['layout_url'],
             'xhtml'          => XHTML,
             'lang'           => $lang,
+            'theme_options'  => $_CONF['theme_options']
         );
         $str = $this->_array_to_jsobj($src);
         // Strip '{' and '}' from both ends of $str
