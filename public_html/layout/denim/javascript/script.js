@@ -188,4 +188,13 @@ $(function() {
     if (geeklog.theme_options.topic_image == 0) {
         $('.story_image').remove();
     }
+
+    if (geeklog.theme_options.trademark_msg == 0) {
+        $('#trademark').remove();
+    }
+
+    if (geeklog.theme_options.execution_time == 0) {
+        $('#execution_textandtime').remove();
+    }
+
 });

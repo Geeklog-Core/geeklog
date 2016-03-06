@@ -53,6 +53,8 @@ function theme_config_denim()
             'block_left_search' => 1, // 1:show or 0:hide left block searchbox
             'welcome_msg'       => 1, // 1:show or 0:hide welcome message
             'topic_image'       => 1, // 1:show or 0:hide topic images
+            'trademark_msg'     => 1, // 1:show or 0:hide trademark message on footer
+            'execution_time'    => 1, // 1:show or 0:hide execution time on footer
         )
     );
 }

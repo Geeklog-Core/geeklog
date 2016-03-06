@@ -1913,6 +1913,7 @@ body.center-right #config_content {
   #footer-content {
     width: auto;
     margin: 0 auto;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
   }
 }
 
@@ -2180,6 +2181,7 @@ body.center-right #config_content {
 }
 
 /* Copyright */
+/*
 .copyright {
   float: left;
   margin: 0;
@@ -2197,8 +2199,10 @@ body.center-right #config_content {
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
   }
 }
+*/
 
 /* Powered by & Page Execution Time */
+/*
 .site_info {
   float: right;
   margin: 0;
@@ -2218,6 +2222,7 @@ body.center-right #config_content {
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
   }
 }
+*/
 
 /*--------------------------------------
   Common Block Style
