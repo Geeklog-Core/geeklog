@@ -37,6 +37,7 @@ function postconfirm() {
 
 /* http://tinynav.viljamis.com v1.03 by @viljamis */
 /* Modified by dengen */
+/*
 (function ($, window, i) {
     $.fn.tinyNav = function (options) {
         // Default settings
@@ -100,19 +101,22 @@ function postconfirm() {
         });
     };
 })(jQuery, this, 0);
+*/
 
 $(function() {
+/*
     $('#navigation_ul').tinyNav({
         active: 'selected',
         string: 'Jump to...'
     });
-
+*/
     var istouch = ('ontouchstart' in window);
+    var istablet = false;
 
     if (istouch) {
         var ua = navigator.userAgent;
-        var istablet = (ua.indexOf('Android') > 0 && ua.indexOf('Mobile') == -1) ||
-                       (ua.indexOf('iPad') > 0) || (ua.indexOf('SC-01C') > 0);
+        istablet = (ua.indexOf('Android') > 0 && ua.indexOf('Mobile') == -1) ||
+                   (ua.indexOf('iPad') > 0) || (ua.indexOf('SC-01C') > 0);
 
         if (!istablet) {
             var obj = $('.block-title');
@@ -139,7 +143,7 @@ $(function() {
             });
         }
     }
-
+/*
     var iswide = false;
     var classname1 = 'table-wrapper';
     var classname2 = 'table-wrapper-fit';
@@ -174,8 +178,13 @@ $(function() {
 
         iswide = !iswide;
     });
+*/
 
     $('form').addClass('uk-form');
+
+    if (geeklog.theme_options.header_search == 0) {
+        $('#header-search').remove();
+    }
 
     if (geeklog.theme_options.block_left_search == 0) {
         $('#block-left-search').remove();
@@ -197,4 +206,18 @@ $(function() {
         $('#execution_textandtime').remove();
     }
 
+    if (geeklog.theme_options.pagenavi_string == 0) {
+        $('.uk-icon-angle-double-left').parent().empty().append('<i class="uk-icon-angle-double-left"></i>');
+        $('.uk-icon-angle-left').parent().empty().append('<i class="uk-icon-angle-left"></i>');
+        $('.uk-icon-angle-right').parent().empty().append('<i class="uk-icon-angle-right"></i>');
+        $('.uk-icon-angle-double-right').parent().empty().append('<i class="uk-icon-angle-double-right"></i>');
+    }
+
+    if (!istouch || istablet) {
+        $('.table-wrapper').attr('class', '.table-wrapper-fit');
+    } else {
+        if (geeklog.theme_options.table_overflow == 0) {
+            $('.table-wrapper').attr('class', '.table-wrapper-visible');
+        }
+    }
 });
