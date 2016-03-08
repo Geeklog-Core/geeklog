@@ -6,15 +6,15 @@
 
     <div class="loginform">
       <div class="form_part">
-        <label for="loginform-loginname">{lang_username}</label>
-        <input type="text" value="" name="loginname" id="loginform-loginname" class="size3"{xhtml}>
+        <label for="loginform-loginname" style="display:none">{lang_username}</label>
+        <input type="text" value="" name="loginname" id="loginform-loginname" class="size2" placeholder="{lang_username}"{xhtml}>
       </div>
 
       {services}
 
       <div class="form_part">
-        <label for="loginform-passwd">{lang_password}</label>
-        <input type="password" name="passwd" id="loginform-passwd" class="size3"{xhtml}>
+        <label for="loginform-passwd" style="display:none">{lang_password}</label>
+        <input type="password" name="passwd" id="loginform-passwd" class="size2" placeholder="{lang_password}"{xhtml}>
       </div>
     </div>
 
