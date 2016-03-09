@@ -214,10 +214,10 @@ $(function() {
     }
 
     if (!istouch || istablet) {
-        $('.table-wrapper').attr('class', '.table-wrapper-fit');
+        $('.table-wrapper').attr('class', 'table-wrapper-fit');
     } else {
         if (geeklog.theme_options.table_overflow == 0) {
-            $('.table-wrapper').attr('class', '.table-wrapper-visible');
+            $('.table-wrapper').attr('class', 'table-wrapper-visible');
         }
     }
 });
