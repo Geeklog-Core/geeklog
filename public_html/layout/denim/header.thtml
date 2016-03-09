@@ -56,7 +56,7 @@
         </ul>
 
         <div id="header-search">
-          <form action="{site_url}/search.php" method="get" id="searchform" class="uk-form uk-display-inline-block uk-navbar-flip">
+          <form action="{site_url}/search.php" method="get" id="header-searchform" class="uk-form uk-display-inline-block uk-navbar-flip">
             <div class="uk-form-icon">
               <i class="uk-icon-search" aria-hidden="true"></i>
               <input type="text" id="header-search-box" size="15" maxlength="255" value="" name="query" placeholder="{button_search}" class="uk-form-small"{xhtml}>
