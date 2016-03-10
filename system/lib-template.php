@@ -118,51 +118,39 @@ function CTL_plugin_templatePath($plugin, $path = '')
 
     $retval = array();
 
+    $subdir = !empty($path) ? '/' . $path : '';
+
     // See if plugin templates exist in current theme
-    if (empty($path)) {
-        $retval[] = "{$_CONF['path_layout']}$plugin";
-    } else {
-        $retval[] = "{$_CONF['path_layout']}$plugin/$path";
-    }
+    $retval[] = "{$_CONF['path_layout']}$plugin$subdir";
+
 
     // Now Check to see if default theme exists, if so add it to the mix
-    if (!empty($_CONF['theme_default'])) {
-        if (empty($path)) {
-            $retval[] = "{$_CONF['path_layout_default']}$plugin";
-        } else {
-            $retval[] = "{$_CONF['path_layout_default']}$plugin/$path";
-        }
-    }
+    $retval[] = "{$_CONF['path_layout_default']}$plugin$subdir";
 
     // See if current theme templates stored with plugin
-    if (empty($path)) {
-        $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme']}";
-    } else {
-        $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme']}/$path";
-    }
-
+    $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme']}$subdir";
     if (is_dir($layout_path)) {
         $retval[] = $layout_path;
     }
 
+    // Check to see if compatible theme templates specified in theme's functions.php
+    if (!empty($_CONF['theme_plugins'])) {
+        $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme_plugins']}$subdir";
+        if (is_dir($layout_path)) {
+            $retval[] = $layout_path;
+        }
+    }
+
     // Now Check to see if default theme exists for templates stored with plugin
     if (!empty($_CONF['theme_default'])) {
-        if (empty($path)) {
-            $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme_default']}";
-        } else {
-            $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme_default']}/$path";
-        }
-
+        $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme_default']}$subdir";
         if (is_dir($layout_path)) {
             $retval[] = $layout_path;
         }
     }
 
     // Use default templates then
-    $layout_path = "{$_CONF['path']}plugins/$plugin/templates/default";
-    if (!empty($path)) {
-        $layout_path .= '/' . $path;
-    }
+    $layout_path = "{$_CONF['path']}plugins/$plugin/templates/default$subdir";
 
     $retval[] = $layout_path;
 

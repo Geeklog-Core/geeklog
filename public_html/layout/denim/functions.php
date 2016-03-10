@@ -47,7 +47,18 @@ function theme_config_denim()
     return array(
         'image_type' => 'png',
         'doctype'    => 'xhtml5',
-        'supported_version_theme' => '2.0.0' // support new theme format for the later Geeklog 2.0.0
+        'supported_version_theme' => '2.0.0', // support new theme format for the later Geeklog 2.0.0
+        'theme_plugins' => 'denim', // Not requred, you can specify compatible theme of template stored with plugins
+        'options'    => array(      // Not requred, show or hide switcher of some of the parts
+            'header_search'     => 1, // 1:show or 0:hide header searchbox
+            'block_left_search' => 0, // 1:show or 0:hide left block searchbox
+            'welcome_msg'       => 0, // 1:show or 0:hide welcome message
+            'topic_image'       => 1, // 1:show or 0:hide topic images
+            'trademark_msg'     => 0, // 1:show or 0:hide trademark message on footer
+            'execution_time'    => 0, // 1:show or 0:hide execution time on footer
+            'pagenavi_string'   => 1, // 1:show or 0:hide string of page navigation
+            'table_overflow'    => 1, // 1:scroll or 0:visible overflow style of admin tables
+        )
     );
 }
 
