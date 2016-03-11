@@ -359,6 +359,8 @@ $_CONF['theme_default'] = ''; // Default is none
 $_CONF['path_layout_default'] = ''; // Default is none
 $_CONF['supported_version_theme'] = '1.8.1'; // if the themes supported version of the theme engine not found assume lowest version
 $_CONF['theme_etag'] = false;
+$_CONF['theme_plugins'] = ''; // Default is none
+$_CONF['theme_options'] = array(); // Default is empty array
 $func = "theme_config_" . $_CONF['theme'];
 if (function_exists($func)) {
     $theme_config = $func();
@@ -368,11 +370,19 @@ if (function_exists($func)) {
         $_CONF['theme_default'] = $theme_config['theme_default'];
         $_CONF['path_layout_default'] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/';
     }
-    $_CONF['supported_version_theme'] = (!isset($theme_config['supported_version_theme']))   ? $_CONF['supported_version_theme']   : $theme_config['supported_version_theme'];
-    $_CONF['theme_etag'] = (!isset($theme_config['etag']))   ? $_CONF['theme_etag']   : $theme_config['etag'];
+    $_CONF['supported_version_theme'] = (!isset($theme_config['supported_version_theme']))
+        ? $_CONF['supported_version_theme'] : $theme_config['supported_version_theme'];
+    $_CONF['theme_etag'] = (!isset($theme_config['etag']))
+        ? $_CONF['theme_etag'] : $theme_config['etag'];
     if ($_CONF['theme_etag'] AND !file_exists($_CONF['path_layout'] . 'style.css.php')) {
         // See if style.css.php file exists that is required
         $_CONF['theme_etag'] = false;
+    }
+    if (isset($theme_config['theme_plugins'])) {
+        $_CONF['theme_plugins'] = $theme_config['theme_plugins'];
+    }
+    if (isset($theme_config['options']) && is_array($theme_config['options'])) {
+        $_CONF['theme_options'] = $theme_config['options'];
     }
 }
 /**

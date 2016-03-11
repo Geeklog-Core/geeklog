@@ -12,16 +12,15 @@
     <hr class="separator"{xhtml}>
 
     <footer id="footer" role="contentinfo" class="clearfix">
-      <div id="footer-content">
-        <p class="copyright">{copyright_notice}</p>
-        <p class="site_info">
-          <span class="powered_by">{powered_by}&nbsp;<a href="http://www.geeklog.net/">Geeklog</a></span><br{xhtml}>
-          <span class="execution_textandtime">{execution_textandtime}</span>
-        </p>
+      <div id="footer-content" style="text-align:center">
+        <div id="copyright">{copyright_msg}</div>
+        <div id="trademark">{trademark_msg}</div>
+        <div id="powered_by">{powered_by}&nbsp;<a href="http://www.geeklog.net/">Geeklog</a></div>
+        <div id="execution_textandtime">{execution_textandtime}</div>
       </div>
     </footer>
 
-    <div class="totop-scroller" data-uk-smooth-scroll>
+    <div id="totop-scroller" data-uk-smooth-scroll>
       <i class="uk-icon-chevron-circle-up"></i>
     </div>
 

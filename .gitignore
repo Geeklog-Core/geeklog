@@ -59,5 +59,12 @@ backups/*.tar.gz
 backups/*.tgz
 backups/*.zip
 
-#ignore thumbnails created by windows
+# denim theme or uikit
+dest/
+node_modules/
+
+# ignore thumbnails created by windows
 **/Thumbs.db
+
+# ignore thumbnails created by osx
+.DS_Store
