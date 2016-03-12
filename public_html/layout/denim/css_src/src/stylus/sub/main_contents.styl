@@ -85,6 +85,16 @@ $stage = 'main_contents'
     width: 48px
     height: 48px
     margin: 15px
+    & + p,
+    & + ul,
+    & + ol,
+    & + dl,
+    & + blockquote,
+    & + pre,
+    & + address,
+    & + fieldset,
+    & + figure
+        margin-top: 0
     hook-selector($stage, "" + selector())
 
 /*! Navigation */
@@ -482,7 +492,7 @@ for num in (0..16)
 --------------------------------------*/
 
 .bc_navigation
-    margin: -1em 0 1em
+    margin: 0 0 15px
 
 /*!--------------------------------------
   My Account Page

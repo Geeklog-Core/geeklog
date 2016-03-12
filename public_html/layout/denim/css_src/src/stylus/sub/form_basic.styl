@@ -11,6 +11,9 @@ $stage = 'form_basic'
     &:after
         denim-clearfix()
 
+fieldset.form_block
+    margin: 15px 0
+
 /*! Message */
 .form_message
     margin: 0 0 1em 0
@@ -93,7 +96,7 @@ for num in (1..10)
         float: left
         clear: left
         width: 24%
-        margin: 0 0 1em 0
+        margin: 5px 0 1em 0
         padding: 0 1% 0 0
         font-weight: normal
     dd
@@ -109,6 +112,8 @@ for num in (1..10)
     p.description
         margin: 0 0 1em 0
         padding: 0
+    .controls_text
+        margin-top: 5px
 
 @media only screen and (max-width: $breakpoint-medium-max)
 
@@ -136,6 +141,8 @@ for num in (1..10)
         p.description
             margin: 0 0 1em 0
             padding: 0
+        .controls_text
+            margin-top: 0
 
 /*!--------------------------------------
   1 Column Form

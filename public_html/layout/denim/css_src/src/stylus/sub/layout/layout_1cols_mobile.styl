@@ -86,7 +86,7 @@ $layout-footer-content-width =      $layout-site-width
 #header {
   width: $layout-header-width;
   layout-align-center();
-  height: 60px;
+  height: 80px;
   &:before {
     width: $layout-header-width;
   }
@@ -97,6 +97,7 @@ $layout-footer-content-width =      $layout-site-width
   width: $layout-header-content-width;
   layout-site-max-width($layout-site-max-width)
   layout-align-center();
+  height: 100%;
   padding: 0;
   hook-selector($stage, "" + selector())
 }
@@ -178,7 +179,7 @@ body.js_off #main-content {
   float: none;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 10px 0 0 0;
 }
 
 /*! 2 Column ( left-center ) */
@@ -186,7 +187,7 @@ body.left-center #main-content {
   float: none;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 10px 0 0 0;
 }
 
 /*! 2 Column ( center-right ) */
@@ -194,12 +195,13 @@ body.center-right #main-content {
   float: none;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 10px 0 0 0;
 }
 
 /*! 1 Column ( center ) */
 body.center #main-content {
   width: 100%;
+  padding-top: 10px; 
 }
 
 body.center #centerblocks {
