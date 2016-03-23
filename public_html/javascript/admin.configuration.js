@@ -58,8 +58,10 @@ $.widget("custom.search_config", $.ui.autocomplete, {
     }
 });
 
-// currently selected tab
-var selectedTab;
+
+var selectedTab; // currently selected tab
+var currentTooltip = ''; // currently displayed tooltip
+var toggleTooltip = 0; // 0:hidden, 1:display
 $(function() {
     // init autocomplete
     $('#search-configuration').search_config({
@@ -84,7 +86,7 @@ $(function() {
                 $(document.group['tab-id-cached']).val(ui.item.tab_id);
             } else {
                 search_label = '<input type="hidden" name="search-configuration-cached" value="'+ui.item.label+'">';
-                tab_id = '<input type="hidden" name="tab-id-cached" value="'+ui.item.label+'">';
+                tab_id = '<input type="hidden" name="tab-id-cached" value="'+ui.item.tab_id+'">';
                 $(document.group).append( search_label);
                 $(document.group).append( tab_id );
             }
@@ -99,32 +101,38 @@ $(function() {
     // init help tooltip
     var tooltipCachedPage = '';
     var tooltipHideDelay = 300;
-    var tooltipHideTimer = null;
     var tooltipContainer = $(
-        '<div id="tooltip-container">' +
-            '<div id="tooltip-header"></div>' +
+        '<div id="tooltip-container" class="uk-alert">' +
             '<div id="tooltip-content"></div>' +
-            '<div id="tooltip-tip"></div>' +
         '</div>'
     );
     $('body').append(tooltipContainer);
 
-    $(document).on('mouseover touchend', '.tooltip', function() {
+    $(document).on('click', '.tooltip', function() {
         var attrHref = glConfigDocUrl;
         var jqobj = $(this);
 
         var confVar = jqobj.attr('id');
 
-        if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
+        if (confVar == currentTooltip) {
+            if (toggleTooltip == 1) {
+                tooltipContainer.hide();
+                toggleTooltip = 0;
+            } else {
+                tooltipContainer.show();
+                toggleTooltip = 1;
+            }
+            return false;
+        }
 
         var pos = jqobj.parent().offset();
         var tabs_pos = $('#tabs').offset();
         var height = jqobj.height();
 
         tooltipContainer.css({
-            left: (tabs_pos.left + 8) + 'px',
-            top: (pos.top + height + 5) + 'px',
-            width: ($('#tabs').width() - 12) + 'px'
+            left: (tabs_pos.left + 0) + 'px',
+            top: (pos.top + height + 4) + 'px',
+            width: ($('#tabs').width() - 22) + 'px'
         });
 
         $.get(attrHref, function(data) {
@@ -150,7 +158,7 @@ $(function() {
                     '<div id="tooltip-default" class="tooltip-doc">'         + tds.eq(1).html() + '</div></div>' +
                     '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(2).html() + '</div>' +
                     '<div id="tooltip-description" class="tooltip-doc">'     + desc + '</div></div>' +
-                    '<a href="javascript:void(0);" id="tooltip-close">X</a>'
+                    '<a href="javascript:void(0);" id="tooltip-close"><i class="uk-icon-close"></i></a>'
                 );
             } else {
                 $('#tooltip-content').html(
@@ -159,28 +167,16 @@ $(function() {
             }
         });
 
+        currentTooltip = confVar;
         tooltipContainer.show();
+        toggleTooltip = 1;
+        return false;
     });
-    $(document).on('mouseout', '.tooltip', function() {
-        if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
 
-        tooltipHideTimer = setTimeout(function() {
-            tooltipContainer.hide();
-        }, tooltipHideDelay);
-    });
-    $('#tooltip-container').mouseover(function() {
-        if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
-    });
-    $('#tooltip-container').mouseout(function() {
-        if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
-
-        tooltipHideTimer = setTimeout(function() {
-            tooltipContainer.hide();
-        }, tooltipHideDelay);
-    });
-    $(document).on('click touchout', '#tooltip-close', function() {
-        if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
+    $(document).on('click', '#tooltip-close', function() {
         tooltipContainer.hide();
+        toggleTooltip = 0;
+        return false;
     });
 
     // click event handler
@@ -204,6 +200,15 @@ $(function() {
             }
         }
 
+        if ( target.hasClass('config_label') ) {
+            $('.active-config').removeClass('active-config');
+            var pa = target.parent();
+            if ( pa.hasClass('config_name') ) {
+                pa.addClass('active-config');
+            }
+            pa.children('.opt').eq(0).focus();
+        }
+
         // select config from message box
         if ( target.hasClass('select_config') ) {
             for (key in autocomplete_data ) {
@@ -211,7 +216,7 @@ $(function() {
                      autocomplete_data[key].group == target.attr('group') &&
                      autocomplete_data[key].subgroup == target.attr('subgroup'))
                 {
-                    selectTab( '#tab-' + autocomplete_data[key].tab_id, target.attr('href') );
+                    selectTab( autocomplete_data[key].tab_id, target.attr('href') );
                     if ( selectedTab === undefined ) {
                         selectedTab = getTabHref();
                     }
@@ -226,6 +231,17 @@ $(function() {
             unset(target, target.attr('href').substr(1) );
 
             e.preventDefault();
+
+            return false;
+        }
+
+        // unset action
+        if ( target.hasClass('unset-link') ) {
+            selectedTab = getTabHref();
+            unset(target, target.attr('name') );
+
+            e.preventDefault();
+
             return false;
         }
 
@@ -247,40 +263,27 @@ $(function() {
         return $("#config-tabs > li:eq(" + idx + ") a").attr('href');
     }
 
-
     /**
      * Select tab by href
      */
-    function selectTab(href, conf) {
-        //var foundInTabs = false;
-
-        // first search in ordinary tabs
-        $("#config-tabs > li").each(function(idx) {
-        
-            var a = $('a', this);
-
-            if (a.attr('href') == href) {
-                $('#config-tabs > li:eq(' + idx + ')').trigger('click');
-                if ( conf ) {
-                    selectConf(conf);
-                }
-                selectedTab = href;
-
-                return true;
-            }
-        });
+    function selectTab(tabid, conf) {
+        if (tabid) {
+            $('#tab-link-' + tabid).parent().addClass('uk-active');
+        }
+        if (conf) {
+            selectConf(conf);
+        }
+        selectedTab = '#tab-' + tabid;
 
         return false;
     }
 
     function getSelectedConf() {
-        var tab = '#' + window.location.search.substr(1);
+        var tabid = window.location.search.substr(5);
         var conf = window.location.hash;
 
-        selectTab(tab, conf);
+        selectTab(tabid, conf);
         if ( selectedTab === undefined ) {
-            //var idx = tabs.tabs('option', 'active');
-            //selectedTab = $("#tabs > ul > li:eq(" + idx + ") a").attr('href');
             selectedTab = getTabHref();
         }
     }
@@ -314,7 +317,6 @@ $(function() {
         document.group.appendChild(namev);
         document.group.appendChild(action);
         document.group.action = frmGroupAction + '?' + selectedTab.substr(1) + '#' + param;
-
         document.group.submit();
     }
 
@@ -335,12 +337,6 @@ $(function() {
         tab.setAttribute("type", "hidden");
         tab.setAttribute("name", "tab");
 
-        // get tr id
-        /*
-        var tr = $(this).parent().parent();
-        var id = '';
-        if ( tr.is('tr') ) id = '#' + tr.attr('id');
-        */
         document.group.appendChild(tab);
         document.group.appendChild(namev);
         document.group.appendChild(action);
@@ -379,7 +375,7 @@ function add_array(arr_name, index, arr_type) {
     new_obj.children("div:first").text(index);
     new_id = "arr_" + arr_name + "_" + index;
     sub_id = arr_name + "[" + index + "]";
-    new_obj.children("input.toggle_hidden")
+    new_obj.children("button.toggle_hidden")
            .attr("onclick", "toggleHidden('" + new_id + "', this);");
     new_obj.children("input[type='hidden']")
            .attr("name", sub_id + "[nameholder]");
@@ -456,8 +452,12 @@ function gl_cfg_remove(self) {
 }
 
 function toggleHidden(id, button) {
-    $("#" + id).toggle(button.value == '+');
-    button.value = (button.value != '+' ? '+' : '-');
+    var plus = "uk-icon-chevron-down",
+        minus = "uk-icon-chevron-up",
+        obj = $(button).children('i'),
+        flg = (obj.attr('class') == plus);
+    $("#" + id).toggle(flg);
+    obj.attr("class", flg ? minus : plus);
 }
 
 function open_group(group_var) {

@@ -4390,7 +4390,7 @@ body.center-right #config_content {
 
 .config_name input[type="text"],
 .config_name textarea {
-  width: 53%;
+  width: 54.5%;
 }
 
 .config_name select {
@@ -4539,12 +4539,12 @@ body.center-right #config_content {
 
   .config_name input[type="text"],
   .config_name textarea {
-    width: 95%;
+    width: 75%;
   }
 
   .config_name select {
     max-width: none;
-    width: 98%;
+    width: 75%;
   }
 
   .block-config,
@@ -4552,4 +4552,26 @@ body.center-right #config_content {
     margin: 0;
     padding: 5px 0;
   }
+}
+
+.config_doc_link {
+  float: right;
+}
+
+.config-help-icon {
+  font-size: 18px;
+  margin-top: 6px;
+  margin-right: 5px;
+}
+
+.restore {
+  float: left;
+  width: 54.5%;
+}
+
+.toggle_hidden,
+.del-link,
+.unset-link {
+  width: 30px;
+  padding: 0;
 }

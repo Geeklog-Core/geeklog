@@ -63,7 +63,7 @@
                     </div>
 
                 </div>
-                <div id="bottom_buttons" class="aligncenter">
+                <div id="bottom_buttons">
                     <button type="submit" id="save_changes" value="{lang_save_changes}" class="uk-button uk-button-primary">{lang_save_changes}</button>
                     <button type="submit" id="form_reset" name="form_reset" value="{lang_reset_form}" class="uk-button">{lang_reset_form}</button>
                 </div>

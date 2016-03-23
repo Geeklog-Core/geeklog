@@ -4,24 +4,24 @@
 
 
 <!-- BEGIN delete-button -->
-<input type="button" class="del-link" value="x" onclick="gl_cfg_remove(this);"{xhtml}>
+<button type="button" class="del-link uk-button" onclick="gl_cfg_remove(this);"><i class="uk-icon-close"></i></button>
 <!-- END delete-button -->
 
 
 <!-- BEGIN text-element -->
-<div{hide_row} class="config_name"><div class="config_label">{display_name} {doc_link} {unset_link}</div>
+<div{hide_row} class="config_name"><div class="config_label">{display_name}</div>
 <input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
 <input type="text" class="opt{error_class}" name="{name}" value="{value}"{xhtml}>
-{delete}{error_block}
+{delete}{error_block}{unset_link}{doc_link}
 </div>
 <!-- END text-element -->
 
 
 <!-- BEGIN text-area -->
-<div class="config_name"><div class="config_label">{display_name} {doc_link} {unset_link}</div>
+<div class="config_name"><div class="config_label">{display_name}</div>
 <input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
 <textarea class="opt{error_class}" name="{name}" cols="3" rows="3">{value}</textarea>
-{delete}{error_block}
+{delete}{error_block}{unset_link}{doc_link}
 </div>
 <!-- END text-area -->
 
@@ -36,29 +36,30 @@
 
 
 <!-- BEGIN select-element -->
-<div{hide_row} class="config_name"><div class="config_label">{display_name} {doc_link} {unset_link}</div>
+<div{hide_row} class="config_name"><div class="config_label">{display_name}</div>
 <input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
 <select name="{name}" class="opt{error_class}">
   <!-- BEGIN select-options -->
     <option {selected} value="{opt_value}">{opt_name}</option>
   <!-- END select-options -->
 </select>
-{delete}{error_block}
+{delete}{error_block}{unset_link}{doc_link}
 </div>
 <!-- END select-element -->
 
 
 <!-- BEGIN unset-param -->
-<div class="config_name"><div class="config_label">{display_name} {doc_link}</div>
+<div class="config_name clearfix"><div class="config_label">{display_name}</div>
 <div class="restore"><a href="#{name}" class="restore_param">{lang_enable}</a></div>
+{doc_link}
 </div>
 <!-- END unset-param -->
 
 
 <!-- BEGIN list-element -->
-<div{hide_row} class="config_name"><div class="config_label" style="vertical-align:top">{display_name} {doc_link} {unset_link}</div>
-<input type="button" value="+" class="toggle_hidden" onclick="toggleHidden('arr_{id_name}', this);"{xhtml}>
-{delete}
+<div{hide_row} class="config_name"><div class="config_label" style="vertical-align:top">{display_name}</div>
+<button type="button" class="toggle_hidden uk-button" onclick="toggleHidden('arr_{id_name}', this);"><i class="uk-icon-chevron-down"></i></button>
+{delete}{unset_link}{doc_link}
 <input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
 <div style="display:none" id="arr_{id_name}" class="{arr_class_list}">
 {my_elements}
@@ -81,3 +82,15 @@
 <input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}>
 </div>
 <!-- END unkeyed-add-button -->
+
+
+<!-- BEGIN document-link -->
+<div class="config_doc_link">
+<a id="desc_{id_name}" class="{tooltip}" href="javascript:void(0);"><i class="config-help-icon uk-icon-hover uk-icon-question-circle"></i></a>
+</div>
+<!-- END document-link -->
+
+
+<!-- BEGIN unset-link -->
+<button type="button" name="{name}" class="unset-link uk-button"><i class="uk-icon-close"></i></button>
+<!-- END unset-link -->
