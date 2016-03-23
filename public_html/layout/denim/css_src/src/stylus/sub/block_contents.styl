@@ -66,7 +66,7 @@ $header-height-mobile = 80px
         height: $header-height
         // All Mobile Sizes
         @media only screen and (max-width: $breakpoint-small-max)
-            background-size: 256px auto
+            //background-size: 256px auto
             height: $header-height-mobile
             margin-top: 0
 
@@ -340,6 +340,7 @@ first-child-border-left(mode, bl) // mixin
     hook-selector($stage, "" + selector())
 
 #footer-content
+    text-align: center
     // All Mobile Sizes
     @media only screen and (max-width: $breakpoint-small-max)
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)

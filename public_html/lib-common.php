@@ -4583,9 +4583,9 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 * @param    string  $permissions        comma-separated list of rights which identify the current user as an "Admin"
 * @param    boolean $list_only          true = return only the list of HTML tags
 * @param    int     $filter_html_flag   0 = returns allowed all html tags,
-                                        1 = returns allowed HTML tags only,
-                                        2 = returns No HTML Tags Allowed (this is used by plugins if they have a config
-                                               that overrides Geeklogs filter html settings or do not have a post mode)
+*                                       1 = returns allowed HTML tags only,
+*                                       2 = returns No HTML Tags Allowed (this is used by plugins if they have a config
+*                                              that overrides Geeklogs filter html settings or do not have a post mode)
 * @param    string   $post_mode         Indicates if text is html, adveditor, wikitext or plaintext
 * @return   string                      HTML <div>/<span> enclosed string
 * @see      function COM_checkHTML
