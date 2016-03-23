@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | switchlang.php                                                            |
 // |                                                                           |
@@ -50,7 +50,7 @@ function switch_language($url, $newlang, $oldlang)
     $retval = '';
 
     if (empty($newlang) || empty($oldlang) ||
-            (strlen($newlang) != strlen($oldlang))) {
+            (strlen($newlang) !== strlen($oldlang))) {
         return $url;
     }
 
@@ -63,17 +63,13 @@ function switch_language($url, $newlang, $oldlang)
         $q = strpos($url, '?');
         if ($q === false) {
             $url_rewrite = true;
-        } elseif (substr($url, $q - 4, 4) != '.php') {
+        } elseif (substr($url, $q - 4, 4) !== '.php') {
             $url_rewrite = true;
         }
     }
 
     if ($url_rewrite) {
-        if ($q === false) {
-            $the_url = $url;
-        } else {
-            $the_url = substr($url, 0, $q);
-        }
+        $the_url = ($q === false) ? $url : substr($url, 0, $q);
 
         // for "rewritten" URLs we assume that the first parameter after
         // the script name is the ID, e.g. /article.php/story-id-here_en
@@ -81,10 +77,10 @@ function switch_language($url, $newlang, $oldlang)
         $p = explode('/', $the_url);
         $parts = count($p);
         for ($i = 0; $i < $parts; $i++) {
-            if (substr($p[$i], -4) == '.php') {
+            if (substr($p[$i], -4) === '.php') {
                 // found the script name - assume next parameter is the ID
                 if (isset($p[$i + 1])) {
-                    if (substr($p[$i + 1], -($lang_len + 1)) == '_' . $oldlang) {
+                    if (substr($p[$i + 1], -($lang_len + 1)) === '_' . $oldlang) {
                         $p[$i + 1] = substr_replace($p[$i + 1], $newlang,
                                                     -$lang_len);
                         $changed = true;
@@ -114,7 +110,7 @@ function switch_language($url, $newlang, $oldlang)
             $extra_vars = '';
         }
 
-        if (substr($urlpart, -($lang_len + 1)) == '_' . $oldlang) {
+        if (substr($urlpart, -($lang_len + 1)) === '_' . $oldlang) {
             $urlpart = substr_replace($urlpart, $newlang, -$lang_len);
         }
 
@@ -123,7 +119,6 @@ function switch_language($url, $newlang, $oldlang)
 
     return $retval;
 }
-
 
 // MAIN
 $ret_url = '';
@@ -135,7 +130,6 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 
 // if not allowed, just ignore and return
 if ($_CONF['allow_user_language'] == 1) {
-
     COM_setArgNames(array('lang'));
 
     $lang = strtolower(COM_applyFilter(COM_getArgument('lang')));
@@ -144,11 +138,9 @@ if ($_CONF['allow_user_language'] == 1) {
 
     // do we really have a new language to switch to?
     if (!empty($lang) && array_key_exists($lang, $_CONF['language_files'])) {
-
         // does such a language file exist?
         $langfile = $_CONF['language_files'][$lang];
         if (is_file($_CONF['path_language'] . $langfile . '.php')) {
-
             // Set the language cookie.
             // Mainly used for anonymous users so the rest of their session
             // will remain in the selected language
@@ -175,5 +167,3 @@ if (empty($ret_url)) {
 }
 
 header("Location: $ret_url");
-
-?>

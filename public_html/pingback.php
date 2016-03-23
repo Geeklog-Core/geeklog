@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | pingback.php                                                              |
 // |                                                                           |
@@ -41,7 +41,7 @@ require_once 'XML/RPC/Server.php';
 
 // Note: Error messages are hard-coded in English since there is no way of
 // knowing which language the sender of the pingback may prefer.
-$PNB_ERROR = array (
+$PNB_ERROR = array(
     'success'     => 'Thank you.', // success message; not an error ...
     'skipped'     => '(skipped)',  // not an error
     'spam'        => 'Spam detected.',
@@ -51,7 +51,6 @@ $PNB_ERROR = array (
     'no_access'   => 'Access denied.',
     'multiple'    => 'Multiple posts not allowed.'
 );
-
 
 /**
 * Handle a pingback for an entry.
@@ -66,26 +65,26 @@ $PNB_ERROR = array (
 * @return   object          XML-RPC response
 *
 */
-function PNB_handlePingback ($id, $type, $url, $oururl)
+function PNB_handlePingback($id, $type, $url, $oururl)
 {
     global $_CONF, $_TABLES, $PNB_ERROR;
 
     require_once 'HTTP/Request.php';
 
-    if (!isset ($_CONF['check_trackback_link'])) {
+    if (!isset($_CONF['check_trackback_link'])) {
         $_CONF['check_trackback_link'] = 2;
     }
 
     // handle pingbacks to articles on our own site
     $skip_speedlimit = false;
     if ($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR']) {
-        if (!isset ($_CONF['pingback_self'])) {
+        if (!isset($_CONF['pingback_self'])) {
             $_CONF['pingback_self'] = 0; // default: skip self-pingbacks
         }
 
         if ($_CONF['pingback_self'] == 0) {
-            return new XML_RPC_Response (new XML_RPC_Value ($PNB_ERROR['skipped']));
-        } else if ($_CONF['pingback_self'] == 2) {
+            return new XML_RPC_Response(new XML_RPC_Value($PNB_ERROR['skipped']));
+        } elseif ($_CONF['pingback_self'] == 2) {
             $skip_speedlimit = true;
         }
     }
@@ -94,26 +93,26 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
     if (!$skip_speedlimit) {
         $last = COM_checkSpeedlimit ('pingback');
         if ($last > 0) {
-            return new XML_RPC_Response (0, 49,
-                    sprintf ($PNB_ERROR['speedlimit'], $last,
+            return new XML_RPC_Response(0, 49,
+                    sprintf($PNB_ERROR['speedlimit'], $last,
                              $_CONF['commentspeedlimit']));
         }
     }
 
     // update speed limit in any case
-    COM_updateSpeedlimit ('pingback');
+    COM_updateSpeedlimit('pingback');
 
     if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR']) {
         if ($_CONF['check_trackback_link'] & 4) {
             $parts = parse_url ($url);
-            if (empty ($parts['host'])) {
-                TRB_logRejected ('Pingback: No valid URL', $url);
-                return new XML_RPC_Response (0, 33, $PNB_ERROR['uri_invalid']);
+            if (empty($parts['host'])) {
+                TRB_logRejected('Pingback: No valid URL', $url);
+                return new XML_RPC_Response(0, 33, $PNB_ERROR['uri_invalid']);
             } else {
-                $ip = gethostbyname ($parts['host']);
+                $ip = gethostbyname($parts['host']);
                 if ($ip != $_SERVER['REMOTE_ADDR']) {
-                    TRB_logRejected ('Pingback: IP address mismatch', $url);
-                    return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
+                    TRB_logRejected('Pingback: IP address mismatch', $url);
+                    return new XML_RPC_Response(0, 49, $PNB_ERROR['spam']);
                 }
             }
         }
@@ -124,14 +123,14 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
     $title = '';
     $excerpt = '';
     $req = new HTTP_Request ($url);
-    $req->addHeader ('User-Agent', 'Geeklog/' . VERSION);
-    $response = $req->sendRequest ();
-    if (PEAR::isError ($response)) {
+    $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
+    $response = $req->sendRequest();
+    if (PEAR::isError($response)) {
         if ($_CONF['check_trackback_link'] & 3) {
             // we were supposed to check for backlinks but didn't get the page
-            COM_errorLog ("Pingback verification: " . $response->getMessage()
+            COM_errorLog("Pingback verification: " . $response->getMessage()
                           . " when requesting $url");
-            return new XML_RPC_Response (0, 33, $PNB_ERROR['uri_invalid']);
+            return new XML_RPC_Response(0, 33, $PNB_ERROR['uri_invalid']);
         }
         // else: silently ignore errors - we'll simply do without the title
     } else {
@@ -139,24 +138,23 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
             $body = $req->getResponseBody ();
 
             if ($_CONF['check_trackback_link'] & 3) {
-                if (!TRB_containsBacklink ($body, $oururl)) {
-                    TRB_logRejected ('Pingback: No link to us', $url);
-                    $comment = TRB_formatComment ($url);
-                    PLG_spamAction ($comment, $_CONF['spamx']);
+                if (!TRB_containsBacklink($body, $oururl)) {
+                    TRB_logRejected('Pingback: No link to us', $url);
+                    $comment = TRB_formatComment($url);
+                    PLG_spamAction($comment, $_CONF['spamx']);
 
-                    return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
+                    return new XML_RPC_Response(0, 49, $PNB_ERROR['spam']);
                 }
             }
 
             preg_match (':<title>(.*)</title>:i', $body, $content);
-            if (empty ($content[1])) {
+            if (empty($content[1])) {
                 $title = ''; // no title found
             } else {
                 $title = trim (COM_undoSpecialChars ($content[1]));
             }
 
             if ($_CONF['pingback_excerpt']) {
-
                 // Check which character set the site that sent the Pingback
                 // is using
                 $charset = 'ISO-8859-1'; // default, see RFC 2616, 3.7.1
@@ -166,8 +164,8 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
                     $c = explode(';', $ctype);
                     foreach ($c as $ct) {
                         $ch = explode('=', trim($ct));
-                        if (count($ch) == 2) {
-                            if(trim($ch[0]) == 'charset') {
+                        if (count($ch) === 2) {
+                            if(trim($ch[0]) === 'charset') {
                                 $charset = trim($ch[1]);
                                 break;
                             }
@@ -176,8 +174,7 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
                 }
 
                 if (!empty($charset) &&
-                        (strcasecmp($charset, COM_getCharset()) != 0)) {
-
+                        (strcasecmp($charset, COM_getCharset()) !== 0)) {
                     if (function_exists('mb_convert_encoding')) {
                         $body = @mb_convert_encoding($body, COM_getCharset(),
                                                      $charset);
@@ -192,35 +189,35 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
 
             // we could also run the rest of the other site's page
             // through the spam filter here ...
-        } else if ($_CONF['check_trackback_link'] & 3) {
-            COM_errorLog ("Pingback verification: Got HTTP response code "
+        } elseif ($_CONF['check_trackback_link'] & 3) {
+            COM_errorLog("Pingback verification: Got HTTP response code "
                           . $req->getResponseCode ()
                           . " when requesting $url");
-            return new XML_RPC_Response (0, 33, $PNB_ERROR['uri_invalid']);
+            return new XML_RPC_Response(0, 33, $PNB_ERROR['uri_invalid']);
         }
         // else: silently ignore errors - we'll simply do without the title
     }
 
     // check for spam first
-    $saved = TRB_checkForSpam ($url, $title, '', $excerpt);
+    $saved = TRB_checkForSpam($url, $title, '', $excerpt);
 
     if ($saved == TRB_SAVE_SPAM) {
-        return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
+        return new XML_RPC_Response(0, 49, $PNB_ERROR['spam']);
     }
 
     // save as a trackback comment
-    $saved = TRB_saveTrackbackComment ($id, $type, $url, $title, '', $excerpt);
+    $saved = TRB_saveTrackbackComment($id, $type, $url, $title, '', $excerpt);
 
     if ($saved == TRB_SAVE_REJECT) {
-        return new XML_RPC_Response (0, 49, $PNB_ERROR['multiple']);
+        return new XML_RPC_Response(0, 49, $PNB_ERROR['multiple']);
     }
 
-    if (isset ($_CONF['notification']) &&
-            in_array ('pingback', $_CONF['notification'])) {
-        TRB_sendNotificationEmail ($saved, 'pingback');
+    if (isset($_CONF['notification']) &&
+            in_array('pingback', $_CONF['notification'])) {
+        TRB_sendNotificationEmail($saved, 'pingback');
     }
 
-    return new XML_RPC_Response (new XML_RPC_Value ($PNB_ERROR['success']));
+    return new XML_RPC_Response(new XML_RPC_Value($PNB_ERROR['success']));
 }
 
 /**
@@ -230,13 +227,13 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
 * @return   boolean         true = is a URL on our site
 *
 */
-function PNB_validURL ($url)
+function PNB_validURL($url)
 {
     global $_CONF;
 
     $retval = false;
 
-    if (substr ($url, 0, strlen ($_CONF['site_url'])) == $_CONF['site_url']) {
+    if (substr($url, 0, strlen($_CONF['site_url'])) == $_CONF['site_url']) {
         $retval = true;
     }
 
@@ -253,20 +250,20 @@ function PNB_validURL ($url)
 * @return   string          'article' or plugin name or empty string for error
 *
 */
-function PNB_getType ($url)
+function PNB_getType($url)
 {
     global $_CONF, $_TABLES;
 
     $retval = '';
 
-    $part = substr ($url, strlen ($_CONF['site_url']) + 1);
-    if (substr ($part, 0, strlen ('article.php')) == 'article.php') {
+    $part = substr($url, strlen($_CONF['site_url']) + 1);
+    if (substr($part, 0, strlen('article.php')) === 'article.php') {
         $retval = 'article';
     } else {
-        $parts = explode ('/', $part);
-        if (strpos ($parts[0], '?') === false) {
+        $parts = explode('/', $part);
+        if (strpos($parts[0], '?') === false) {
             $plugin = DB_escapeString($parts[0]);
-            if (DB_getItem ($_TABLES['plugins'], 'pi_enabled',
+            if (DB_getItem($_TABLES['plugins'], 'pi_enabled',
                             "pi_name = '$plugin'") == 1) {
                 $retval = $parts[0];
             }
@@ -285,36 +282,36 @@ function PNB_getType ($url)
 * @return   string          story ID or empty string for error
 *
 */
-function PNB_getSid ($url)
+function PNB_getSid($url)
 {
     global $_CONF, $_TABLES;
 
     $retval = '';
 
     $sid = '';
-    $params = substr ($url, strlen ($_CONF['site_url'] . '/article.php'));
-    if (substr ($params, 0, 1) == '?') { // old-style URL
-        $pos = strpos ($params, 'story=');
+    $params = substr($url, strlen($_CONF['site_url'] . '/article.php'));
+    if (substr($params, 0, 1) === '?') { // old-style URL
+        $pos = strpos($params, 'story=');
         if ($pos !== false) {
-            $part = substr ($params, $pos + strlen ('story='));
-            $parts = explode ('&', $part);
+            $part = substr($params, $pos + strlen('story='));
+            $parts = explode('&', $part);
             $sid = $parts[0];
         }
-    } else if (substr ($params, 0, 1) == '/') { // rewritten URL
-        $parts = explode ('/', substr ($params, 1));
+    } elseif (substr($params, 0, 1) == '/') { // rewritten URL
+        $parts = explode('/', substr($params, 1));
         $sid = $parts[0];
     }
-    if (!empty ($sid)) {
-        $parts = explode ('#', $sid);
+    if (!empty($sid)) {
+        $parts = explode('#', $sid);
         $sid = $parts[0];
     }
 
     // okay, so we have a SID - but are they allowed to access the story?
-    if (!empty ($sid)) {
+    if (!empty($sid)) {
         $testsid = DB_escapeString($sid);
-        $result = DB_query ("SELECT trackbackcode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND sid = '$testsid'" . COM_getPermSql ('AND') . COM_getTopicSql ('AND', 0, ta));
-        if (DB_numRows ($result) == 1) {
-            $A = DB_fetchArray ($result);
+        $result = DB_query("SELECT trackbackcode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND sid = '$testsid'" . COM_getPermSql ('AND') . COM_getTopicSql ('AND', 0, ta));
+        if (DB_numRows($result) == 1) {
+            $A = DB_fetchArray($result);
             if ($A['trackbackcode'] == 0) {
                 $retval = $sid;
             }
@@ -331,55 +328,56 @@ function PNB_getSid ($url)
 * @return   object              XML-RPC response
 *
 */
-function PNB_receivePing ($params)
+function PNB_receivePing($params)
 {
     global $_CONF, $_TABLES, $PNB_ERROR;
 
     if (!$_CONF['pingback_enabled']) {
-        return new XML_RPC_Response (0, 33, $PNB_ERROR['disabled']);
+        return new XML_RPC_Response(0, 33, $PNB_ERROR['disabled']);
     }
 
-    $s = $params->getParam (0);
-    $p1 = $s->scalarval (); // the page linking to us
+    $s = $params->getParam(0);
+    $p1 = $s->scalarval(); // the page linking to us
 
     if (is_array ($p1)) {
         // WordPress sends the 2 URIs as an array ...
-        $sourceURI = $p1[0]->scalarval ();
-        $targetURI = $p1[1]->scalarval ();
+        $sourceURI = $p1[0]->scalarval();
+        $targetURI = $p1[1]->scalarval();
     } else {
         $sourceURI = $p1;
 
-        $s = $params->getParam (1);
-        $targetURI = $s->scalarval (); // the page being linked to (on our site)
+        $s = $params->getParam(1);
+        $targetURI = $s->scalarval(); // the page being linked to (on our site)
     }
 
-    if (!PNB_validURL ($targetURI)) {
-        return new XML_RPC_Response (0, 33, $PNB_ERROR['uri_invalid']);
+    if (!PNB_validURL($targetURI)) {
+        return new XML_RPC_Response(0, 33, $PNB_ERROR['uri_invalid']);
     }
 
-    $type = PNB_getType ($targetURI);
-    if (empty ($type)) {
-        return new XML_RPC_Response (0, 33, $PNB_ERROR['uri_invalid']);
+    $type = PNB_getType($targetURI);
+    if (empty($type)) {
+        return new XML_RPC_Response(0, 33, $PNB_ERROR['uri_invalid']);
     }
 
-    if ($type == 'article') {
-        $id = PNB_getSid ($targetURI);
+    if ($type === 'article') {
+        $id = PNB_getSid($targetURI);
     } else {
-        $id = PLG_handlePingComment ($type, $targetURI, 'acceptByURI');
+        $id = PLG_handlePingComment($type, $targetURI, 'acceptByURI');
     }
-    if (empty ($id)) {
-        return new XML_RPC_Response (0, 49, $PNB_ERROR['no_access']);
+    if (empty($id)) {
+        return new XML_RPC_Response(0, 49, $PNB_ERROR['no_access']);
     }
 
-    return PNB_handlePingback ($id, $type, $sourceURI, $targetURI);
+    return PNB_handlePingback($id, $type, $sourceURI, $targetURI);
 }
-
 
 // MAIN
 
 // fire up the XML-RPC server - it does all the work for us
-$s = new XML_RPC_Server ( array (
-        'pingback.ping' => array ('function'  => 'PNB_receivePing')
-     ));
-
-?>
+$s = new XML_RPC_Server(
+    array(
+        'pingback.ping' => array (
+            'function'  => 'PNB_receivePing'
+        )
+    )
+);

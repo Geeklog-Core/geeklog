@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | getimage.php                                                              |
 // |                                                                           |
@@ -43,18 +43,17 @@ require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'classes/downloader.class.php';
 
 $downloader = new downloader();
-
 $downloader->setLogFile($_CONF['path_log'] . 'error.log');
-
 $downloader->setLogging(true);
-
-$downloader->setAllowedExtensions(array('gif'  => 'image/gif',
-                                        'jpg'  => 'image/jpeg',
-                                        'jpeg' => 'image/jpeg',
-                                        'png'  => 'image/png',
-                                        'png'  => 'image/x-png'
-                                       )
-                                 );
+$downloader->setAllowedExtensions(
+    array(
+        'gif'  => 'image/gif',
+        'jpg'  => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'png'  => 'image/png',
+        'png'  => 'image/x-png'
+    )
+);
 
 COM_setArgNames(array('mode', 'image'));
 $mode  = COM_applyFilter(COM_getArgument('mode'));
@@ -73,12 +72,15 @@ switch ($mode) {
     case 'articles':
         $downloader->setPath($_CONF['path_images'] . 'articles/');
         break;
+
     case 'topics':
         $downloader->setPath($_CONF['path_images'] . 'topics/');
         break;
+
     case 'userphotos':
         $downloader->setPath($_CONF['path_images'] . 'userphotos/');
         break;
+
     default:
         // Hrm, got a bad path, just die
         exit;
@@ -87,7 +89,6 @@ switch ($mode) {
 // Let's see if we don't have a legit file.  If not bail
 $pathToImage = $downloader->getPath() . $image;
 if (is_file($pathToImage)) {
-
     // support conditional GET, if possible
     $st = @stat($pathToImage);
     if (is_array($st)) {
@@ -115,7 +116,7 @@ if (is_file($pathToImage)) {
         header('ETag: ' . $etag);
     }
 
-    if ($mode == 'show') {
+    if ($mode === 'show') {
         echo '<html><body><img src="' . $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $image . '" alt=""' . XHTML . '></body></html>';
     } else {
         $downloader->downloadFile($image);
@@ -127,9 +128,7 @@ if (is_file($pathToImage)) {
     header('HTTP/1.1 404 Not Found');
     header('Status: 404 Not Found');
 
-    if ($mode == 'show') {
+    if ($mode === 'show') {
         echo COM_createHTMLDocument($display);
     }
 }
-
-?>
