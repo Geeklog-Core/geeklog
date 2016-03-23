@@ -2180,6 +2180,10 @@ body.center-right #config_content {
   }
 }
 
+#footer-content {
+  text-align: center;
+}
+
 @media only screen and (max-width: 767px) {
 
   #footer-content {
