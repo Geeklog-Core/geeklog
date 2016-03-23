@@ -981,7 +981,7 @@ class config {
             $tab_display = $this->_UI_get_tab($grp, $tab_contents, $tab, $t);
 
             // tab list
-            $tab_li .= '<li><a href="#tab-' . $tab . '">' . $tab_display . '</a></li>';
+            $tab_li .= '<li><a id="tab-link-' . $tab . '" href="#tab-' . $tab . '">' . $tab_display . '</a></li>';
         }
         $tab_li .= '</ul>';
         if ($this->flag_version_2_2 == true) {
@@ -1368,13 +1368,14 @@ class config {
         $blocks = array('delete-button', 'text-element', 'placeholder-element',
                         'select-element', 'list-element', 'unset-param',
                         'keyed-add-button', 'unkeyed-add-button', 'text-area',
-                        'validation_error_block');
+                        'validation_error_block', 'document-link', 'unset-link');
         foreach ($blocks as $block) {
             $t->set_block('element', $block);
         }
 
         $t->set_var('lang_restore', $LANG_CONFIG['restore']);
         $t->set_var('lang_enable', $LANG_CONFIG['enable']);
+        $t->set_var('lang_disable', $LANG_CONFIG['disable']);
         $t->set_var('lang_add_element', $LANG_CONFIG['add_element']);
 
         $t->set_var('name', $name);
@@ -1414,9 +1415,13 @@ class config {
             $t->set_var('delete', $t->parse('output', 'delete-button'));
         } else {
             if ($allow_reset) {
-                $t->set_var('unset_link',
-                        "(<a href=\"#{$name}\" class=\"unset_param\" title='"
-                        . $LANG_CONFIG['disable'] . "'>X</a>)");
+                if ($this->flag_version_2_2 == true) {
+                    $t->set_var('unset_link', $t->parse('output', 'unset-link'));
+                } else {
+                    $t->set_var('unset_link',
+                            "(<a href=\"#{$name}\" class=\"unset_param\" title='"
+                            . $LANG_CONFIG['disable'] . "'>X</a>)");
+                }
             }
             if (($a = strrchr($name, '[')) !== FALSE) {
                 $on = substr($a, 1, -1);
@@ -2176,7 +2181,10 @@ class config {
 
                 $t->set_var('doc_url', $descUrl);
 
-                if ($this->flag_version_2 == true) {
+                if ($this->flag_version_2_2 == true) {
+                    $t->set_var('tooltip', (gettype($configtext) == "NULL") ? 'tooltip' : '');
+                    $t->set_var('doc_link', $t->parse('output', 'document-link'));
+                } elseif ($this->flag_version_2 == true) {
                     // Does hack need to be used?
                     if (gettype($configtext) == "NULL") {
                         $t->set_var('doc_link',
