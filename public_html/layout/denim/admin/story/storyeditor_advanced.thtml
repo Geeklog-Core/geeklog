@@ -62,18 +62,18 @@
       <dl class="form_block">
         <dt><label for="introtext">{lang_introtext}</label></dt>
         <dd>
-          <div class="navi">
-            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');" alt="expand button"{xhtml}>
-            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');" alt="collapse button"{xhtml}>
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-mini" type="button" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');" alt="expand button"><i class="uk-icon-plus"></i></button>
+            <button class="uk-button uk-button-mini" type="button" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');" alt="collapse button"><i class="uk-icon-minus"></i></button>
           </div>
           <textarea cols="45" rows="14" name="introtext" id="introtext" class="wide" aria-describedby="desc-admin-storyeditor-text">{story_introtext}</textarea>
         </dd>
 
         <dt><label for="bodytext">{lang_bodytext}</label></dt>
         <dd>
-          <div class="navi">
-            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');" alt="expand button"{xhtml}>
-            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');" alt="collapse button"{xhtml}>
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-mini" type="button" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');" alt="expand button"><i class="uk-icon-plus"></i></button>
+            <button class="uk-button uk-button-mini" type="button" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');" alt="collapse button"><i class="uk-icon-minus"></i></button>
           </div>
           <textarea cols="45" rows="14" name="bodytext" id="bodytext" class="wide" aria-describedby="desc-admin-storyeditor-text">{story_bodytext}</textarea>
         </dd>
@@ -93,18 +93,18 @@
 
         <dt><label for="introhtml">{lang_introtext}</label></dt>
         <dd>
-          <div class="navi">
-            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');" alt="expand button"{xhtml}>
-            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');" alt="collapse button"{xhtml}>
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-mini" type="button" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');" alt="expand button"><i class="uk-icon-plus"></i></button>
+            <button class="uk-button uk-button-mini" type="button" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');" alt="collapse button"><i class="uk-icon-minus"></i></button>
           </div>
           <textarea cols="45" rows="12" name="introhtml" id="introhtml" class="wide">{story_introtext}</textarea>
         </dd>
 
         <dt><label for="bodyhtml">{lang_bodytext}</label></dt>
         <dd>
-          <div class="navi">
-            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('bodyhtml','larger');" alt=""{xhtml}>
-            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');" alt=""{xhtml}>
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-mini" type="button" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('bodyhtml','larger');" alt="expand button"><i class="uk-icon-plus"></i></button>
+            <button class="uk-button uk-button-mini" type="button" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');" alt="collapse button"><i class="uk-icon-minus"></i></button>
           </div>
           <textarea cols="45" rows="20" name="bodyhtml" id="bodyhtml" class="wide">{story_bodytext}</textarea>
           <div id="editor_mode">{lang_allowed_html}</div>
