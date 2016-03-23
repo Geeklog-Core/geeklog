@@ -1982,9 +1982,6 @@ body.center-right #config_content {
 @media only screen and (max-width: 767px) {
 
   #header {
-    -webkit-background-size: 256px auto;
-    -moz-background-size: 256px auto;
-    background-size: 256px auto;
     height: 80px;
     margin-top: 0;
   }
