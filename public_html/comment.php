@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | comment.php                                                               |
 // |                                                                           |
@@ -65,17 +65,15 @@ CMT_updateCommentcodes();
 $display = '';
 
 // If reply specified, force comment submission form
-if (isset ($_REQUEST['reply'])) {
+if (isset($_REQUEST['reply'])) {
     $_REQUEST['mode'] = '';
 }
 
 $mode = '';
-if (!empty ($_REQUEST['mode'])) {
-    $mode = COM_applyFilter ($_REQUEST['mode']);
+if (!empty($_REQUEST['mode'])) {
+    $mode = COM_applyFilter($_REQUEST['mode']);
 }
 
 $display .= CMT_handleComment($mode);
 
 COM_output($display);
-
-?>

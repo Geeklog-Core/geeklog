@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -38,8 +38,8 @@ require_once $_CONF['path_system'] . 'lib-story.php';
 /**
 * Update array if need be with correct topic.
 *
-* @param    array   A           Array of articles from db
-* @param    string  tid_list    List of child topics of current topic
+* @param    array   $A           Array of articles from db
+* @param    string  $tid_list    List of child topics of current topic
 *
 */
 function fixTopic(&$A, $tid_list)
@@ -103,20 +103,19 @@ if ($topic_check != '') {
     }
 }
 
-
 $displayall = false;
-if (isset ($_GET['display'])) {
-    if (($_GET['display'] == 'all') && (empty ($topic))) {
+if (isset($_GET['display'])) {
+    if (($_GET['display'] == 'all') && (empty($topic))) {
         $displayall = true;
     }
 }
 
 // Retrieve the archive topic - currently only one supported
-$archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
+$archivetid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
 
 $page = 1;
-if (isset ($_GET['page'])) {
-    $page = COM_applyFilter ($_GET['page'], true);
+if (isset($_GET['page'])) {
+    $page = COM_applyFilter($_GET['page'], true);
     if ($page == 0) {
         $page = 1;
     }
@@ -126,19 +125,19 @@ $display = '';
 
 if (!$displayall) {
     // give plugins a chance to replace this page entirely
-    $newcontent = PLG_showCenterblock (0, $page, $topic);
-    if (!empty ($newcontent)) {
+    $newcontent = PLG_showCenterblock(0, $page, $topic);
+    if (!empty($newcontent)) {
         COM_output($newcontent);
         exit;
     }
 }
 
-if (isset ($_GET['msg'])) {
+if (isset($_GET['msg'])) {
     $plugin = '';
-    if (isset ($_GET['plugin'])) {
-        $plugin = COM_applyFilter ($_GET['plugin']);
+    if (isset($_GET['plugin'])) {
+        $plugin = COM_applyFilter($_GET['plugin']);
     }
-    $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true), $plugin);
+    $display .= COM_showMessage(COM_applyFilter($_GET['msg'], true), $plugin);
 }
 
 if (SEC_inGroup('Root') && ($page == 1)) {
@@ -173,16 +172,16 @@ if (SEC_inGroup('Root') && ($page == 1)) {
 
 // Show any Plugin formatted blocks
 // Requires a plugin to have a function called plugin_centerblock_<plugin_name>
-$displayBlock = PLG_showCenterblock (1, $page, $topic); // top blocks
-if (!empty ($displayBlock)) {
+$displayBlock = PLG_showCenterblock(1, $page, $topic); // top blocks
+if (!empty($displayBlock)) {
     $display .= $displayBlock;
     // Check if theme has added the template which allows the centerblock
     // to span the top over the rightblocks
     if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
             $topspan = COM_newTemplate($_CONF['path_layout']);
-            $topspan->set_file (array ('topspan'=>'topcenterblock-span.thtml'));
-            $topspan->parse ('output', 'topspan');
-            $display .= $topspan->finish ($topspan->get_var('output'));
+            $topspan->set_file(array('topspan'=>'topcenterblock-span.thtml'));
+            $topspan->parse('output', 'topspan');
+            $display .= $topspan->finish($topspan->get_var('output'));
             $GLOBALS['centerspan'] = true;
     }
 }
@@ -198,8 +197,8 @@ $maxstories = 0;
 if ($U['maxstories'] >= $_CONF['minnews']) {
     $maxstories = $U['maxstories'];
 }
-if ((!empty ($topic)) && ($maxstories == 0)) {
-    $topiclimit = DB_getItem ($_TABLES['topics'], 'limitnews',
+if ((!empty($topic)) && ($maxstories == 0)) {
+    $topiclimit = DB_getItem($_TABLES['topics'], 'limitnews',
                               "tid = '{$topic}'");
     if ($topiclimit >= $_CONF['minnews']) {
         $maxstories = $topiclimit;
@@ -217,29 +216,29 @@ if ($limit < 1) {
 // Scan for any stories that have expired and should be archived or deleted
 $asql = "SELECT sid,ta.tid,title,expire,statuscode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta ";
 $asql .= "WHERE (expire <= NOW()) AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (statuscode = " . STORY_DELETE_ON_EXPIRE;
-if (empty ($archivetid)) {
+if (empty($archivetid)) {
     $asql .= ')';
 } else {
     $asql .= ' OR statuscode = ' . STORY_ARCHIVE_ON_EXPIRE . ") AND ta.tid != '$archivetid'";
 }
 $expiresql = DB_query($asql);
-while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray ($expiresql)) {
+while (list($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetcharray($expiresql)) {
     if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
-        if (!empty ($archivetid) ) {
+        if (!empty($archivetid) ) {
             COM_errorLog("Archive Story: $sid, Topic: $archivetid, Title: $title, Expired: $expire");
 
             // Delete all topic references to story except topic default
             $asql = "DELETE FROM {$_TABLES['topic_assignments']} WHERE type = 'article' AND id = '{$sid}' AND tdefault = 0";
-            DB_query ($asql);
+            DB_query($asql);
 
             // Now move over story to archive topic
             $asql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
                     SET ta.tid = '$archivetid', s.frontpage = '0', s.featured = '0'
                     WHERE s.sid='{$sid}' AND ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1";
-            DB_query ($asql);
+            DB_query($asql);
 
         }
-    } else if ($statuscode == STORY_DELETE_ON_EXPIRE) {
+    } elseif ($statuscode == STORY_DELETE_ON_EXPIRE) {
         COM_errorLog("Delete Story and comments: $sid, Topic: $expiretopic, Title: $title, Expired: $expire");
         STORY_doDeleteThisStoryNow($sid);
     }
@@ -248,8 +247,8 @@ while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray (
 // Figure out different settings to display stories in a topic
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
-if (empty ($topic)) {
-    $sql .= COM_getLangSQL ('tid', 'AND', 'ta');
+if (empty($topic)) {
+    $sql .= COM_getLangSQL('tid', 'AND', 'ta');
 }
 
 // if a topic was provided only select those stories.
@@ -271,7 +270,7 @@ if (strtolower($topic) != strtolower($archivetid)) {
     $sql .= " AND ta.tid != '{$archivetid}' ";
 }
 
-$sql .= COM_getPermSQL ('AND', 0, 2, 's');
+$sql .= COM_getPermSQL('AND', 0, 2, 's');
 
 if (!empty($U['aids'])) {
     $sql .= " AND s.uid NOT IN (" . str_replace( ' ', ",", $U['aids'] ) . ") ";
@@ -281,7 +280,7 @@ if (!empty($U['tids'])) {
     $sql .= " AND ta.tid NOT IN ('" . str_replace( ' ', "','", $U['tids'] ) . "') ";
 }
 
-$sql .= COM_getTopicSQL ('AND', 0, 'ta') . ' ';
+$sql .= COM_getTopicSQL('AND', 0, 'ta') . ' ';
 
 $offset = ($page - 1) * $limit;
 $userfields = 'u.uid, u.username, u.fullname';
@@ -321,71 +320,70 @@ $msql['pgsql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
             ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
             {$sql} GROUP BY s.sid, ta.tid, expireunix, {$userfields}, t.topic, t.imageurl ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";
 
-$result = DB_query ($msql);
+$result = DB_query($msql);
 
 //Figure out number of total pages
-$data = DB_query ("SELECT s.sid FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta WHERE ta.type = 'article' AND ta.id = s.sid AND $sql GROUP BY s.sid");
-$nrows = DB_numRows ($data);
-$num_pages = ceil ($nrows / $limit);
+$data = DB_query("SELECT s.sid FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta WHERE ta.type = 'article' AND ta.id = s.sid AND $sql GROUP BY s.sid");
+$nrows = DB_numRows($data);
+$num_pages = ceil($nrows / $limit);
 
 $breadcrumbs = '';
 
-if ( $A = DB_fetchArray( $result ) ) {
+if ($A = DB_fetchArray($result)) {
     fixTopic($A, $tid_list);
     $story = new Story();
     $story->loadFromArray($A);
-    if ( $_CONF['showfirstasfeatured'] == 1 ) {
+    if ($_CONF['showfirstasfeatured'] == 1) {
         $story->_featured = 1;
     }
-
 
     // Display breadcrumb trail
     if (!empty($topic)) {
         $breadcrumbs = TOPIC_breadcrumbs('topic', $topic);
-        if ($_CONF['supported_version_theme'] == '1.8.1') {
+        if ($_CONF['supported_version_theme'] === '1.8.1') {
             $display .= $breadcrumbs;
         }
     }
 
     // display first article
-    $display .= STORY_renderArticle ($story, 'y');
+    $display .= STORY_renderArticle($story, 'y');
 
     // get plugin center blocks after featured article
     if ($story->DisplayElements('featured') == 1) {
-        $display .= PLG_showCenterblock (2, $page, $topic);
+        $display .= PLG_showCenterblock(2, $page, $topic);
     }
 
     // get remaining stories
-    while ($A = DB_fetchArray ($result)) {
+    while ($A = DB_fetcharray($result)) {
         fixTopic($A, $tid_list);
         $story = new Story();
         $story->loadFromArray($A);
-        $display .= STORY_renderArticle ($story, 'y');
+        $display .= STORY_renderArticle($story, 'y');
     }
 
     // get plugin center blocks that follow articles
-    $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
+    $display .= PLG_showCenterblock(3, $page, $topic); // bottom blocks
 
     // Print Google-like paging navigation
-    if (!isset ($_CONF['hide_main_page_navigation']) ||
+    if (!isset($_CONF['hide_main_page_navigation']) ||
             ($_CONF['hide_main_page_navigation'] == 0)) {
-        if (empty ($topic)) {
+        if (empty($topic)) {
             $base_url = $_CONF['site_url'] . '/index.php';
         } else {
             $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
         }
-        $display .= COM_printPageNavigation ($base_url, $page, $num_pages);
+        $display .= COM_printPageNavigation($base_url, $page, $num_pages);
     }
 } else { // no stories to display
     if ($page == 1) {
-        if (!isset ($_CONF['hide_no_news_msg']) ||
+        if (!isset($_CONF['hide_no_news_msg']) ||
                 ($_CONF['hide_no_news_msg'] == 0)) {
-            $display .= COM_startBlock ($LANG05[1], '',
-                        COM_getBlockTemplate ('_msg_block', 'header')) . $LANG05[2];
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $display .= COM_startBlock($LANG05[1], '',
+                        COM_getBlockTemplate('_msg_block', 'header')) . $LANG05[2];
+            $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
         }
 
-        $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
+        $display .= PLG_showCenterblock(3, $page, $topic); // bottom blocks
     } else {
         $topic_url = '';
         if (!empty($topic)) {
@@ -397,12 +395,11 @@ if ( $A = DB_fetchArray( $result ) ) {
 
 $header = '';
 
-if ($topic)
-{
+if ($topic) {
     // Meta Tags
     if ($_CONF['meta_tags'] > 0) {
-        $result = DB_query ("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
-        $A = DB_fetchArray ($result);
+        $result = DB_query("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
+        $A = DB_fetcharray($result);
         $header .= LB . PLG_getMetaTags(
             'homepage', '',
             array(
@@ -419,9 +416,14 @@ if ($topic)
     }
 }
 
-$display = COM_createHTMLDocument($display, array('breadcrumbs' => $breadcrumbs, 'headercode' => $header, 'rightblock' => true));
+$display = COM_createHTMLDocument(
+    $display,
+    array(
+        'breadcrumbs' => $breadcrumbs,
+        'headercode'  => $header,
+        'rightblock'  => true
+    )
+);
 
 // Output page
 COM_output($display);
-
-?>

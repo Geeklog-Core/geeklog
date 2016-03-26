@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | submit.php                                                                |
 // |                                                                           |
@@ -58,9 +58,8 @@ function submissionform($type = 'story', $mode = '')
 
     $retval = '';
 
-    COM_clearSpeedlimit ($_CONF['speedlimit'], 'submit');
-
-    $last = COM_checkSpeedlimit ('submit');
+    COM_clearSpeedlimit($_CONF['speedlimit'], 'submit');
+    $last = COM_checkSpeedlimit('submit');
 
     if ($last > 0) {
         $retval .= COM_showMessageText($LANG12[30] . $last . $LANG12[31], $LANG12[26]);
@@ -74,11 +73,11 @@ function submissionform($type = 'story', $mode = '')
                     . $LANG12[9]
                     . COM_endBlock();
 
-            if ((strlen($type) > 0) && ($type <> 'story')) {
+            if ((strlen($type) > 0) && ($type !== 'story')) {
                 $formresult = PLG_showSubmitForm($type);
                 if ($formresult == false) {
-                    COM_errorLog("Someone tried to submit an item to the $type-plugin, which cannot be found.", 1);
-                    COM_displayMessageAndAbort (79, '', 410, 'Gone');
+                    COM_errorLog("Someone tried to submit an item to the {$type}-plugin, which cannot be found.", 1);
+                    COM_displayMessageAndAbort(79, '', 410, 'Gone');
                 } else {
                     $retval .= $formresult;
                 }
@@ -106,12 +105,11 @@ function submitstory()
 
     $story = new Story();
 
-    if( isset( $_POST['mode'] ) && ( $_POST['mode'] == $LANG12[32] ) )
-    {
+    if (isset($_POST['mode']) && ($_POST['mode'] == $LANG12[32])) {
         // preview
         $story->loadSubmission();
         $retval .= COM_startBlock($LANG12[32])
-                . STORY_renderArticle ($story, 'p')
+                . STORY_renderArticle($story, 'p')
                 . COM_endBlock();
     } else {
         $story->initSubmission();
@@ -120,42 +118,37 @@ function submitstory()
     $storyform = COM_newTemplate($_CONF['path_layout'] . 'submit');
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $storyform->set_file('storyform','submitstory_advanced.thtml');
-        $storyform->set_var ('change_editormode', 'onchange="change_editmode(this);"');
-        $storyform->set_var ('lang_expandhelp', $LANG24[67]);
-        $storyform->set_var ('lang_reducehelp', $LANG24[68]);
-
-        if (COM_isAnonUser()) {
-            $link_message = "";
-        } else {
-            $link_message = $LANG01[138];
-        }
+        $storyform->set_var('change_editormode', 'onchange="change_editmode(this);"');
+        $storyform->set_var('lang_expandhelp', $LANG24[67]);
+        $storyform->set_var('lang_reducehelp', $LANG24[68]);
+        $link_message = COM_isAnonUser() ? '' : $LANG01[138];
         $storyform->set_var('noscript', COM_getNoScript(false, '', $link_message));
 
         // Setup Advanced Editor
         COM_setupAdvancedEditor('/javascript/submitstory_adveditor.js');
 
-        if ($story->EditElements('postmode') == 'html') {
-            $storyform->set_var ('show_texteditor', 'none');
-            $storyform->set_var ('show_htmleditor', '');
+        if ($story->EditElements('postmode') === 'html') {
+            $storyform->set_var('show_texteditor', 'none');
+            $storyform->set_var('show_htmleditor', '');
         } else {
-            $storyform->set_var ('show_texteditor', '');
-            $storyform->set_var ('show_htmleditor', 'none');
+            $storyform->set_var('show_texteditor', '');
+            $storyform->set_var('show_htmleditor', 'none');
         }
     } else {
         $storyform->set_file('storyform','submitstory.thtml');
-        if ($story->EditElements('postmode') == 'html') {
-            $storyform->set_var ('show_texteditor', 'none');
-            $storyform->set_var ('show_htmleditor', '');
+        if ($story->EditElements('postmode') === 'html') {
+            $storyform->set_var('show_texteditor', 'none');
+            $storyform->set_var('show_htmleditor', '');
         } else {
-            $storyform->set_var ('show_texteditor', '');
-            $storyform->set_var ('show_htmleditor', 'none');
+            $storyform->set_var('show_texteditor', '');
+            $storyform->set_var('show_htmleditor', 'none');
         }
     }
-    $storyform->set_var ('lang_username', $LANG12[27]);
+    $storyform->set_var('lang_username', $LANG12[27]);
 
     if (! COM_isAnonUser()) {
         $storyform->set_var('story_username', $_USER['username']);
-        $storyform->set_var('author', COM_getDisplayName ());
+        $storyform->set_var('author', COM_getDisplayName());
         $storyform->set_var('status_url', $_CONF['site_url']
                                           . '/users.php?mode=logout');
         $storyform->set_var('lang_loginout', $LANG12[34]);
@@ -170,7 +163,7 @@ function submitstory()
                 COM_createLink(
                     $LANG12[53],
                     $_CONF['site_url'] . '/users.php?mode=new',
-                    array('rel'=>"nofollow")
+                    array('rel' => 'nofollow')
                 )
             );
         }
@@ -195,8 +188,10 @@ function submitstory()
     $storyform->set_var('story_bodytext', $story->EditElements('bodytext'));
     $storyform->set_var('lang_postmode', $LANG12[36]);
     $postmode = $story->EditElements('postmode');
-    $storyform->set_var('story_postmode_options',
-        COM_optionList($_TABLES['postmodes'], 'code,name', $postmode));
+    $storyform->set_var(
+        'story_postmode_options',
+        COM_optionList($_TABLES['postmodes'], 'code,name', $postmode)
+    );
     $allowed_html = '';
     foreach (array('plaintext', 'html') as $pm) {
         $allowed_html .= COM_allowedHTML('story.edit', false, 1, $pm);
@@ -211,9 +206,10 @@ function submitstory()
     PLG_templateSetVars('story', $storyform);
     if (($_CONF['skip_preview'] == 1) ||
             (isset($_POST['mode']) && ($_POST['mode'] == $LANG12[32]))) {
-        $storyform->set_var('save_button',
-                            '<input name="mode" type="submit" value="'
-                            . $LANG12[8] . '"' . XHTML . '>');
+        $storyform->set_var(
+            'save_button',
+            '<input name="mode" type="submit" value="' . $LANG12[8] . '"' . XHTML . '>'
+        );
     }
 
     $retval .= COM_startBlock($LANG12[6],'submitstory.html');
@@ -235,14 +231,14 @@ function sendNotification ($table, $story)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG24, $LANG29, $LANG_ADMIN;
 
-    $title = COM_undoSpecialChars( $story->displayElements('title') );
-    $introtext = COM_undoSpecialChars( $story->displayElements('introtext') . "\n" . $story->displayElements('bodytext') );
-    if ($story->_postmode == 'html') {
+    $title = COM_undoSpecialChars($story->displayElements('title'));
+    $introtext = COM_undoSpecialChars($story->displayElements('introtext') . "\n" . $story->displayElements('bodytext'));
+    if ($story->_postmode === 'html') {
         $introtext = strip_tags($introtext);
     } else {
         $introtext = str_replace('<br' . XHTML . '>', "\n", $introtext);
     }
-    $storyauthor = COM_getDisplayName( $story->displayelements('uid') );
+    $storyauthor = COM_getDisplayName($story->displayelements('uid') );
     $topic = TOPIC_getTopicAdminColumn('article', $story->getSid());
     $mailbody = "$LANG08[31]: {$title}\n"
               . "$LANG24[7]: {$storyauthor}\n"
@@ -251,7 +247,7 @@ function sendNotification ($table, $story)
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $introtext = MBYTE_substr ($introtext, 0,
+            $introtext = MBYTE_substr($introtext, 0,
                     $_CONF['emailstorieslength']) . '...';
         }
         $mailbody .= $introtext . "\n\n";
@@ -259,8 +255,9 @@ function sendNotification ($table, $story)
     if ($table == $_TABLES['storysubmission']) {
         $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
-        $articleUrl = COM_buildUrl ($_CONF['site_url']
-                                . '/article.php?story=' . $story->getSid() );
+        $articleUrl = COM_buildUrl($_CONF['site_url']
+                                . '/article.php?story=' . $story->getSid()
+        );
         $mailbody .= $LANG08[33] . ' <' . $articleUrl . ">\n\n";
     }
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
@@ -268,7 +265,7 @@ function sendNotification ($table, $story)
     $mailbody .= "\n$LANG08[34]\n";
     $mailbody .= "\n------------------------------\n";
 
-    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
+    COM_mail($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 /**
@@ -288,33 +285,28 @@ function savestory ($A)
     $story->loadSubmission();
 
     // pseudo-formatted story text for the spam check
-    $result = PLG_checkforSpam ($story->GetSpamCheckFormat(), $_CONF['spamx']);
-    if ($result > 0)
-    {
-        COM_updateSpeedlimit ('submit');
-        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+    $result = PLG_checkforSpam($story->GetSpamCheckFormat(), $_CONF['spamx']);
+    if ($result > 0) {
+        COM_updateSpeedlimit('submit');
+        COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }
 
-    COM_updateSpeedlimit ('submit');
+    COM_updateSpeedlimit('submit');
 
     $result = $story->saveSubmission();
-    if( $result == STORY_NO_ACCESS_TOPIC )
-    {
+    if ($result == STORY_NO_ACCESS_TOPIC) {
         // user doesn't have access to this topic - bail
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php');
-    } elseif( ( $result == STORY_SAVED ) || ( $result == STORY_SAVED_SUBMISSION ) ) {
-        if (isset ($_CONF['notification']) &&
-                in_array ('story', $_CONF['notification']))
-        {
+        $retval = COM_refresh($_CONF['site_url'] . '/index.php');
+    } elseif (($result == STORY_SAVED ) || ( $result == STORY_SAVED_SUBMISSION )) {
+        if (isset($_CONF['notification']) && in_array('story', $_CONF['notification'])) {
             sendNotification ($_TABLES['storysubmission'], $story);
         }
 
-        if( $result == STORY_SAVED )
-        {
-            $retval = COM_refresh( COM_buildUrl( $_CONF['site_url']
+        if ($result == STORY_SAVED) {
+            $retval = COM_refresh(COM_buildUrl( $_CONF['site_url']
                                . '/article.php?story=' . $story->getSid() ) );
         } else {
-            $retval = COM_refresh( $_CONF['site_url'] . '/index.php?msg=2' );
+            $retval = COM_refresh($_CONF['site_url'] . '/index.php?msg=2' );
         }
     }
 
@@ -332,9 +324,8 @@ function savesubmission($type, $A)
 {
     global $_CONF, $_TABLES, $LANG12;
 
-    COM_clearSpeedlimit ($_CONF['speedlimit'], 'submit');
-
-    $last = COM_checkSpeedlimit ('submit');
+    COM_clearSpeedlimit($_CONF['speedlimit'], 'submit');
+    $last = COM_checkSpeedlimit('submit');
 
     if ($last > 0) {
         $retval = COM_showMessageText($LANG12[30] . $last . $LANG12[31], $LANG12[26]);
@@ -343,23 +334,23 @@ function savesubmission($type, $A)
         return $retval;
     }
 
-    if (!empty ($type) && ($type != 'story')) {
+    if (!empty($type) && ($type !== 'story')) {
         // Update the submitspeedlimit for user - assuming Plugin approves
         // submission record
-        COM_updateSpeedlimit ('submit');
+        COM_updateSpeedlimit('submit');
 
         // see if this is a submission that needs to be handled by a plugin
         // and should include its own redirect
-        $retval = PLG_saveSubmission ($type, $A);
+        $retval = PLG_saveSubmission($type, $A);
 
         if ($retval === false) {
-            COM_errorLog ("Could not save your submission. Bad type: $type");
-        } elseif (empty ($retval)) {
+            COM_errorLog("Could not save your submission. Bad type: $type");
+        } elseif (empty($retval)) {
             // plugin should include its own redirect - but in case handle
             // it here and redirect to the main page
             PLG_submissionSaved($type);
 
-            return COM_refresh ($_CONF['site_url'] . '/index.php');
+            return COM_refresh($_CONF['site_url'] . '/index.php');
         } else {
             PLG_submissionSaved($type);
 
@@ -370,7 +361,6 @@ function savesubmission($type, $A)
 
     if (!empty($A['title']) && !empty($A['introtext']) && TOPIC_checkTopicSelectionControl()) {
         $retval = savestory ($A);
-
         PLG_submissionSaved($type);
     } else {
         $retval = COM_showMessageText($LANG12[23], $LANG12[22]) // return missing fields error
@@ -395,40 +385,40 @@ if (isset($_POST['type'])) {
 }
 
 $mode = '';
-if (isset ($_REQUEST['mode'])) {
-    $mode = COM_applyFilter ($_REQUEST['mode']);
+if (isset($_REQUEST['mode'])) {
+    $mode = COM_applyFilter($_REQUEST['mode']);
 }
 
 // Get last topic
 TOPIC_getTopic();
 
-if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
+if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
     if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
-        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        $display = COM_refresh($_CONF['site_url'] . '/index.php');
     } else {
-        if ($type == 'story') {
-            $msg = PLG_itemPreSave ($type, $_POST);
-            if (!empty ($msg)) {
+        if ($type === 'story') {
+            $msg = PLG_itemPreSave($type, $_POST);
+            if (!empty($msg)) {
                 $_POST['mode'] =  $LANG12[32];
-                $display = COM_errorLog ($msg, 2) . submitstory();
+                $display = COM_errorLog($msg, 2) . submitstory();
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
                 COM_output($display);
                 exit;
             }
         }
-        $display .= savesubmission ($type, $_POST);
+        $display .= savesubmission($type, $_POST);
     }
 } else {
-    if ((strlen ($type) > 0) && ($type <> 'story')) {
-        if (SEC_hasRights ("$type.edit") ||
-            SEC_hasRights ("$type.admin"))  {
-            echo COM_refresh ($_CONF['site_admin_url']
+    if ((strlen($type) > 0) && ($type !== 'story')) {
+        if (SEC_hasRights("$type.edit") ||
+            SEC_hasRights("$type.admin"))  {
+            echo COM_refresh($_CONF['site_admin_url']
                     . "/plugins/$type/index.php?mode=edit");
             exit;
         }
-    } elseif (SEC_hasRights ('story.edit')) {
-        echo COM_refresh ($_CONF['site_admin_url']
+    } elseif (SEC_hasRights('story.edit')) {
+        echo COM_refresh($_CONF['site_admin_url']
                 . '/story.php?mode=edit');
         exit;
     }
@@ -437,15 +427,22 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
         case 'story':
             $pagetitle = $LANG12[6];
             break;
+
         default:
             $pagetitle = '';
             break;
     }
+
     $noindex = '<meta name="robots" content="noindex"' . XHTML . '>' . LB;
     $display .= submissionform($type, $mode);
-    $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle, 'headercode' => $noindex));
+    $display = COM_createHTMLDocument(
+        $display,
+        array(
+            'pagetitle'  => $pagetitle,
+            'headercode' => $noindex
+        )
+    );
 }
 
 COM_output($display);
 
-?>
