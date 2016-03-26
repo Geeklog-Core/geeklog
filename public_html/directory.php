@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | directory.php                                                             |
 // |                                                                           |
@@ -40,14 +40,17 @@ require_once 'lib-common.php';
 $conf_list_current_month = false;
 
 // name of this script
-define ('THIS_SCRIPT', 'directory.php');
+define('THIS_SCRIPT', 'directory.php');
 
 $display = '';
 
 if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
                          ($_CONF['directoryloginrequired'] == 1))) {
-    $display = COM_createHTMLDocument(SEC_loginRequiredForm(),
-        array('pagetitle' => $LANG_DIR['title']));
+    $display = COM_createHTMLDocument(
+        SEC_loginRequiredForm(),
+        array('pagetitle' => $LANG_DIR['title']
+        )
+    );
     COM_output($display);
     exit;
 }
@@ -124,7 +127,7 @@ function DIR_monthLink($dir_topic, $year, $month, $count)
 {
     global $_CONF, $LANG_MONTH;
 
-    $retval = $LANG_MONTH[$month] . ' (' . COM_numberFormat ($count) . ')' . LB;
+    $retval = $LANG_MONTH[$month] . ' (' . COM_numberFormat($count) . ')' . LB;
 
     if ($count > 0) {
         $month_url = COM_buildUrl($_CONF['site_url'] . '/'
@@ -203,7 +206,7 @@ function DIR_navBar($dir_topic, $year, $month = 0)
     $retval .= ' | ';
 
     $url = $_CONF['site_url'] . '/' . THIS_SCRIPT;
-    if ($dir_topic != 'all') {
+    if ($dir_topic !== 'all') {
         $url = COM_buildUrl($url . '?topic=' . urlencode($dir_topic));
     }
 
@@ -228,14 +231,14 @@ function DIR_navBar($dir_topic, $year, $month = 0)
 /**
 * Display month view
 *
-* @param    ref    &$template   reference of the template
-* @param    string  $dir_topic  current topic
-* @param    int     $year   year to display
-* @param    int     $month  month to display
-* @return   string          list of articles for the given month
+* @param    Template  $template   reference of the template
+* @param    string    $dir_topic  current topic
+* @param    int       $year       year to display
+* @param    int       $month      month to display
+* @return   string                list of articles for the given month
 *
 */
-function DIR_displayMonth(&$template, $dir_topic, $year, $month)
+function DIR_displayMonth($template, $dir_topic, $year, $month)
 {
     global $_CONF, $_TABLES, $LANG_MONTH, $LANG_DIR;
 
@@ -258,7 +261,7 @@ function DIR_displayMonth(&$template, $dir_topic, $year, $month)
         WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())
         AND ta.type = 'article' AND ta.id = sid ";
 
-    if ($dir_topic != 'all') {
+    if ($dir_topic !== 'all') {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($dir_topic);
         $sql['mysql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
@@ -326,13 +329,13 @@ function DIR_displayMonth(&$template, $dir_topic, $year, $month)
 /**
 * Display year view
 *
-* @param    ref    &$template   reference of the template
-* @param    string  $dir_topic  current topic
-* @param    int     $year   year to display
-* @return   string          list of months (+ number of stories) for given year
+* @param    Template  $template   reference of the template
+* @param    string    $dir_topic  current topic
+* @param    int       $year       year to display
+* @return   string                list of months (+ number of stories) for given year
 *
 */
-function DIR_displayYear(&$template, $dir_topic, $year)
+function DIR_displayYear($template, $dir_topic, $year)
 {
     global $_CONF, $_TABLES, $LANG_MONTH, $LANG_DIR;
 
@@ -361,7 +364,7 @@ function DIR_displayYear(&$template, $dir_topic, $year)
         WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())
         AND ta.type = 'article' AND ta.id = sid ";
 
-    if ($dir_topic != 'all') {
+    if ($dir_topic !== 'all') {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($dir_topic);
         $monthsql['mysql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
@@ -425,12 +428,12 @@ function DIR_displayYear(&$template, $dir_topic, $year)
 * year for which a story has been posted. Can optionally display a list of
 * the stories for the current month at the top of the page.
 *
-* @param    ref    &$template  reference of the template
-* @param    string  $dir_topic current topic
-* @return   string             list of all the years in the db
+* @param    Template  $template   reference of the template
+* @param    string    $dir_topic  current topic
+* @return   string                list of all the years in the db
 *
 */
-function DIR_displayAll(&$template, $dir_topic)
+function DIR_displayAll($template, $dir_topic)
 {
     global $_TABLES, $LANG_DIR;
 
@@ -507,7 +510,7 @@ function DIR_canonicalLink($dir_topic, $year = 0, $month = 0)
         $parts .= "&amp;year=$year&amp;month=$month";
     } elseif ($year != 0) {
         $parts .= "&amp;year=$year";
-    } elseif ($dir_topic == 'all') {
+    } elseif ($dir_topic === 'all') {
         $tp = '';
     }
     $url = COM_buildUrl($script . $tp . $parts);
@@ -536,7 +539,7 @@ if (empty($dir_topic)) {
 
 // Topic stuff already set in lib-common but need to double check if URL_Write is_a enabled
 //Set topic for rest of site
-if ($dir_topic == 'all') {
+if ($dir_topic === 'all') {
     $topic = '';
 } else {
     $topic = $dir_topic;
@@ -544,7 +547,7 @@ if ($dir_topic == 'all') {
 // See if user has access to view topic.
 if ($topic != '') {
     $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'));
-    if (strtolower($topic) != strtolower($test_topic)) {
+    if (strtolower($topic) !== strtolower($test_topic)) {
         $topic = '';
         $dir_topic = 'all';
     } else {
@@ -563,7 +566,7 @@ if (($month < 1) || ($month > 12)) {
 }
 
 $dir_topicName = '';
-if ($dir_topic != 'all') {
+if ($dir_topic !== 'all') {
     $dir_topicName = DB_getItem($_TABLES['topics'], 'topic',
                             "tid = '" . DB_escapeString($dir_topic) . "'");
 }
@@ -580,7 +583,7 @@ if (TEMPLATE_EXISTS) {
 if (($year != 0) && ($month != 0)) {
     $title = sprintf ($LANG_DIR['title_month_year'],
                       $LANG_MONTH[$month], $year);
-    if ($dir_topic != 'all') {
+    if ($dir_topic !== 'all') {
         $title .= ': ' . $dir_topicName;
     }
     $headercode = DIR_canonicalLink($dir_topic, $year, $month);
@@ -590,9 +593,9 @@ if (($year != 0) && ($month != 0)) {
     $val_year = $year;
     $val_month = $month;
 
-} else if ($year != 0) {
+} elseif ($year != 0) {
     $title = sprintf($LANG_DIR['title_year'], $year);
-    if ($dir_topic != 'all') {
+    if ($dir_topic !== 'all') {
         $title .= ': ' . $dir_topicName;
     }
     $headercode = DIR_canonicalLink($dir_topic, $year);
@@ -604,7 +607,7 @@ if (($year != 0) && ($month != 0)) {
 
 } else {
     $title = $LANG_DIR['title'];
-    if ($dir_topic != 'all') {
+    if ($dir_topic !== 'all') {
         $title .= ': ' . $dir_topicName;
     }
     $headercode = DIR_canonicalLink($dir_topic);
@@ -652,8 +655,11 @@ if (TEMPLATE_EXISTS) {
     $display .= COM_endBlock();
 }
 
-$display = COM_createHTMLDocument($display, array('pagetitle' => $title,
-    'headercode' => $headercode));
+$display = COM_createHTMLDocument(
+    $display,
+    array(
+        'pagetitle'  => $title,
+        'headercode' => $headercode
+    )
+);
 COM_output($display);
-
-?>

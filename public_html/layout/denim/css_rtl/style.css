@@ -324,6 +324,20 @@ input[type="reset"]:disabled {
   margin: 0 1px 2px;
 }
 
+.uk-form .uk-button-group input,
+.uk-form .uk-button-group button,
+.uk-form .uk-button-group select,
+.uk-form .uk-button-group textarea {
+  margin: 0 0 2px;
+}
+
+.uk-form input[type="checkbox"],
+.uk-form input[type="radio"] {
+  margin-right: 3px;
+  margin-left: 3px;
+  vertical-align: middle;
+}
+
 .uk-form > .admin-list-search {
   margin-bottom: .5em;
 }
@@ -792,6 +806,10 @@ a.pluginButton:hover {
   overflow: hidden;
 }
 
+fieldset.form_block {
+  margin: 15px 0;
+}
+
 /* Message */
 .form_message {
   margin: 0 0 1em 0;
@@ -950,7 +968,7 @@ a.pluginButton:hover {
   float: right;
   clear: right;
   width: 24%;
-  margin: 0 0 1em 0;
+  margin: 5px 0 1em 0;
   padding: 0 0 0 1%;
   font-weight: normal;
 }
@@ -970,6 +988,10 @@ a.pluginButton:hover {
 .compact p.description {
   margin: 0 0 1em 0;
   padding: 0;
+}
+
+.compact .controls_text {
+  margin-top: 5px;
 }
 
 @media only screen and (max-width: 962px) {
@@ -997,6 +1019,10 @@ a.pluginButton:hover {
   .compact p.description {
     margin: 0 0 1em 0;
     padding: 0;
+  }
+
+  .compact .controls_text {
+    margin-top: 0;
   }
 }
 
@@ -1132,7 +1158,6 @@ ul.compact li {
 
 #header-content {
   width: auto;
-  max-width: $layout-site-max-width;
   margin: 0 auto;
   padding: 0;
   width: 1140px;
@@ -1158,7 +1183,6 @@ ul.compact li {
 
 .navigation_content {
   width: 1124px;
-  max-width: $layout-site-max-width;
   margin: 0 auto;
 }
 
@@ -1170,7 +1194,6 @@ ul.compact li {
 
 #wrapper {
   width: 1140px;
-  max-width: $layout-site-max-width;
   margin: 0 auto;
 }
 
@@ -1267,7 +1290,6 @@ body.js_off #rightblocks {
 
 #footer-content {
   width: auto;
-  max-width: $layout-site-max-width;
   margin: 0 auto;
   width: 1140px;
 }
@@ -1549,7 +1571,6 @@ body.center-right #config_content {
 
   #header-content {
     width: auto;
-    max-width: $layout-site-max-width;
     margin: 0 auto;
     padding: 0;
   }
@@ -1574,7 +1595,6 @@ body.center-right #config_content {
 
   .navigation_content {
     width: auto;
-    max-width: $layout-site-max-width;
     margin: 0 auto;
   }
 
@@ -1586,7 +1606,6 @@ body.center-right #config_content {
 
   #wrapper {
     width: auto;
-    max-width: $layout-site-max-width;
     margin: 0 auto;
   }
 
@@ -1696,7 +1715,6 @@ body.center-right #config_content {
 
   #footer-content {
     width: auto;
-    max-width: $layout-site-max-width;
     margin: 0 auto;
   }
 }
@@ -1742,7 +1760,7 @@ body.center-right #config_content {
   #header {
     width: auto;
     margin: 0 auto;
-    height: 60px;
+    height: 80px;
   }
 
   #header:before {
@@ -1752,6 +1770,7 @@ body.center-right #config_content {
   #header-content {
     width: auto;
     margin: 0 auto;
+    height: 100%;
     padding: 0;
   }
 
@@ -1838,7 +1857,7 @@ body.center-right #config_content {
     float: none;
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 10px 0 0 0;
   }
 
   /* 2 Column ( left-center ) */
@@ -1846,7 +1865,7 @@ body.center-right #config_content {
     float: none;
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 10px 0 0 0;
   }
 
   /* 2 Column ( center-right ) */
@@ -1854,12 +1873,13 @@ body.center-right #config_content {
     float: none;
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 10px 0 0 0;
   }
 
   /* 1 Column ( center ) */
   body.center #main-content {
     width: 100%;
+    padding-top: 10px;
   }
 
   body.center #centerblocks {
@@ -1962,10 +1982,7 @@ body.center-right #config_content {
 @media only screen and (max-width: 767px) {
 
   #header {
-    -webkit-background-size: 256px auto;
-    -moz-background-size: 256px auto;
-    background-size: 256px auto;
-    height: 60px;
+    height: 80px;
     margin-top: 0;
   }
 }
@@ -1992,9 +2009,12 @@ body.center-right #config_content {
 @media only screen and (max-width: 767px) {
 
   .site_name {
-    margin: 6px 8px 0 0;
+    float: none;
     font-size: 1.6em;
-    line-height: 1.6em;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 auto;
+    text-align: center;
   }
 }
 
@@ -2013,11 +2033,22 @@ body.center-right #config_content {
 
   .site_slogan {
     font-size: 75%;
-    clear: both;
     float: none;
-    padding: 0 10px 0;
-    text-align: right;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
     line-height: 1.2em;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+
+  .nameplate {
+    float: none;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 230px;
+    text-align: center;
   }
 }
 
@@ -2028,13 +2059,20 @@ body.center-right #config_content {
 /* Navigation Menu List */
 #navigation {
   padding: 0;
-  background: #E7E7E7;
-  border-top: 1px solid #EEE;
-  border-bottom: 1px solid #C7C7C7;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
-  box-shadow: 0 1px 2px rgba(0,0,0,.1);
   text-align: right;
   text-shadow: 0 1px 0 #FFF;
+  background: #F7F7F7;
+  color: #444;
+  background-image: -webkit-linear-gradient(top, #FFF, #EEE);
+  background-image: -moz-linear-gradient(top, #FFF, #EEE);
+  background-image: -o-linear-gradient(top, #FFF, #EEE);
+  background-image: -ms-linear-gradient(top, #FFF, #EEE);
+  background-image: linear-gradient(to bottom, #FFF, #EEE);
+  border: 1px solid rgba(0,0,0,.1);
+  border-bottom-color: rgba(0,0,0,.3);
+  -webkit-background-origin: border;
+  -moz-background-origin: border;
+  background-origin: border-box;
 }
 
 @media only screen and (max-width: 767px) {
@@ -2069,33 +2107,20 @@ body.center-right #config_content {
   border-right: 1px solid #D7D7D7;
 }
 
-/* Navigation Menu */
-.menuitem a,
-.menuitem a:link,
-.menuitem a:visited {
-  color: #666;
+#navigation .uk-navbar {
+  border: none;
 }
 
-.menuitem a:hover,
-.menuitem a:focus,
-.menuitem a:active {
-  color: #2664A2;
-  text-decoration: none;
-  background: #DFDFDF;
+#navigation .uk-navbar-nav > li > a {
+  height: 31px;
 }
 
-.tinynav {
-  display: none;
+#header-content > .uk-navbar-toggle {
+  height: 80px;
 }
 
-@media only screen and (max-width: 767px) {
-
-  .tinynav {
-    display: block;
-    width: 95%;
-    max-width: none;
-    margin: auto;
-  }
+#header-search {
+  padding: 3px;
 }
 
 /*--------------------------------------
@@ -2164,42 +2189,13 @@ body.center-right #config_content {
   }
 }
 
-/* Copyright */
-.copyright {
-  float: right;
-  margin: 0;
-  padding-right: 8px;
-  line-height: 1.4em;
+#footer-content {
+  text-align: center;
 }
 
 @media only screen and (max-width: 767px) {
 
-  .copyright {
-    float: none;
-    margin: 0 0 1em 0;
-    padding-right: 0;
-    padding-left: 8px;
-    text-shadow: 0 1px 1px rgba(0,0,0,.3);
-  }
-}
-
-/* Powered by & Page Execution Time */
-.site_info {
-  float: left;
-  margin: 0;
-  padding-left: 15px;
-  text-align: left;
-  line-height: 1.4em;
-}
-
-@media only screen and (max-width: 767px) {
-
-  .site_info {
-    float: none;
-    text-align: right;
-    margin: 0;
-    padding-right: 4px;
-    padding-left: 8px;
+  #footer-content {
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
   }
 }
@@ -2402,7 +2398,7 @@ body.center-right #config_content {
 
 #loginform-loginname,
 #loginform-passwd {
-  width: 50%;
+  width: 75%;
 }
 
 /* Help Icon */
@@ -2870,6 +2866,18 @@ div.third-party-login {
   width: 48px;
   height: 48px;
   margin: 15px;
+}
+
+.story_image + p,
+.story_image + ul,
+.story_image + ol,
+.story_image + dl,
+.story_image + blockquote,
+.story_image + pre,
+.story_image + address,
+.story_image + fieldset,
+.story_image + figure {
+  margin-top: 0;
 }
 
 /* Navigation */
@@ -3437,7 +3445,7 @@ span.warning em {
 --------------------------------------*/
 
 .bc_navigation {
-  margin: -1em 0 1em;
+  margin: 0 0 15px;
 }
 
 /*--------------------------------------
@@ -3857,6 +3865,11 @@ dd#profile-user_photo {
   width: 100%;
 }
 
+.table-wrapper-visible {
+  width: 100%;
+  overflow: visible;
+}
+
 /* Navigation */
 .admin-list-navi {
   margin-top: .5em;
@@ -4249,7 +4262,7 @@ b.status_black {
   margin-bottom: 15px;
 }
 
-.totop-scroller {
+#totop-scroller {
   position: fixed;
   z-index: 99;
   bottom: 20px;
@@ -4396,6 +4409,11 @@ body.center-right #config_content {
 .config_name select {
   width: 54.5%;
   max-width: none;
+}
+
+.config_validation_error_block {
+  color: #D14;
+  font-size: 12px;
 }
 
 /* Smaller than standard 1280 (devices and browsers) */

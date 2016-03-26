@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | trackback.php                                                             |
 // |                                                                           |
@@ -31,44 +31,44 @@
 //
 // $Id: trackback.php,v 1.9 2005/12/17 16:34:28 dhaun Exp $
 
-require_once ('lib-common.php');
-require_once ($_CONF['path_system'] . 'lib-trackback.php');
+require_once 'lib-common.php';
+require_once $_CONF['path_system'] . 'lib-trackback.php';
 
 // Note: Error messages are hard-coded in English since there is no way of
 // knowing which language the sender of the trackback ping may prefer.
-$TRB_ERROR = array (
-    'not_enabled'       => 'Trackback not enabled.',
-    'illegal_request'   => 'Illegal request.',
-    'no_access'         => 'You do not have access to this entry.'
+$TRB_ERROR = array(
+    'not_enabled'     => 'Trackback not enabled.',
+    'illegal_request' => 'Illegal request.',
+    'no_access'       => 'You do not have access to this entry.'
 );
 
 if (!$_CONF['trackback_enabled']) {
-    TRB_sendTrackbackResponse (1, $TRB_ERROR['not_enabled']);
+    TRB_sendTrackbackResponse(1, $TRB_ERROR['not_enabled']);
     exit;
 }
 
-if (isset ($_SERVER['REQUEST_METHOD'])) {
+if (isset($_SERVER['REQUEST_METHOD'])) {
     // Trackbacks are only allowed as POST requests
-    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        header ('Allow: POST');
-        COM_displayMessageAndAbort (75, '', 405, 'Method Not Allowed');
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Allow: POST');
+        COM_displayMessageAndAbort(75, '', 405, 'Method Not Allowed');
     }
 }
 
-COM_setArgNames (array ('id', 'type'));
-$id = COM_applyFilter (COM_getArgument ('id'));
-$type = COM_applyFilter (COM_getArgument ('type'));
+COM_setArgNames(array('id', 'type'));
+$id = COM_applyFilter(COM_getArgument('id'));
+$type = COM_applyFilter(COM_getArgument('type'));
 
-if (empty ($id)) {
-    TRB_sendTrackbackResponse (1, $TRB_ERROR['illegal_request']);
+if (empty($id)) {
+    TRB_sendTrackbackResponse(1, $TRB_ERROR['illegal_request']);
     exit;
 }
 
-if (empty ($type)) {
+if (empty($type)) {
     $type = 'article';
 }
 
-if ($type == 'article') {
+if ($type === 'article') {
     // check if they have access to this story
     $sid = DB_escapeString($id);
 
@@ -77,22 +77,20 @@ if ($type == 'article') {
             . COM_getPermSql('AND') . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', 0 , 'ta');
 
     $result = DB_query($sql);
-    if (DB_numRows ($result) == 1) {
-        $A = DB_fetchArray ($result);
+    if (DB_numRows($result) == 1) {
+        $A = DB_fetcharray($result);
         if ($A['trackbackcode'] == 0) {
-            TRB_handleTrackbackPing ($id, $type);
+            TRB_handleTrackbackPing($id, $type);
         } else {
-            TRB_sendTrackbackResponse (1, $TRB_ERROR['no_access']);
+            TRB_sendTrackbackResponse(1, $TRB_ERROR['no_access']);
         }
     } else {
-        TRB_sendTrackbackResponse (1, $TRB_ERROR['no_access']);
+        TRB_sendTrackbackResponse(1, $TRB_ERROR['no_access']);
     }
-} else if (PLG_handlePingComment ($type, $id, 'acceptByID') === true) {
-    TRB_handleTrackbackPing ($id, $type);
+} elseif (PLG_handlePingComment ($type, $id, 'acceptByID') === true) {
+    TRB_handleTrackbackPing($id, $type);
 } else {
-    TRB_sendTrackbackResponse (1, $TRB_ERROR['no_access']);
+    TRB_sendTrackbackResponse(1, $TRB_ERROR['no_access']);
 }
 
 // no output here
-
-?>

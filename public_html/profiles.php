@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | profiles.php                                                              |
 // |                                                                           |
@@ -49,7 +49,7 @@ require_once 'lib-common.php';
 * @param    string  $message        Text of message to send
 * @return   string                  Meta redirect or HTML for the contact form
 */
-function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
+function contactemail($uid, $cc, $author, $authoremail, $subject, $message)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04, $LANG08, $LANG12;
 
@@ -63,21 +63,17 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
     }
 
     // check for correct 'to' user preferences
-    $result = DB_query ("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
-    $P = DB_fetchArray ($result);
-    if (SEC_inGroup ('Root') || SEC_hasRights ('user.mail')) {
-        $isAdmin = true;
-    } else {
-        $isAdmin = false;
-    }
+    $result = DB_query("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
+    $P = DB_fetchArray($result);
+    $isAdmin = SEC_inGroup('Root') || SEC_hasRights('user.mail');
     if ((($P['emailfromadmin'] != 1) && $isAdmin) ||
         (($P['emailfromuser'] != 1) && !$isAdmin)) {
-        return COM_refresh ($_CONF['site_url'] . '/index.php?msg=85');
+        return COM_refresh($_CONF['site_url'] . '/index.php?msg=85');
     }
 
     // check mail speedlimit
-    COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
-    $last = COM_checkSpeedlimit ('mail');
+    COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
+    $last = COM_checkSpeedlimit('mail');
     if ($last > 0) {
         $retval = COM_showMessageText($LANG08[39] . $last . $LANG08[40], $LANG12[26]);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
@@ -95,45 +91,45 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
             if (!COM_isAnonUser()) {
                 $sig = DB_getItem($_TABLES['users'], 'sig',
                                   "uid={$_USER['uid']}");
-                if (!empty ($sig)) {
-                    $sig = strip_tags (COM_stripslashes ($sig));
+                if (!empty($sig)) {
+                    $sig = strip_tags(COM_stripslashes($sig));
                     $sig = "\n\n-- \n" . $sig;
                 }
             }
 
-            $subject = COM_stripslashes ($subject);
-            $message = COM_stripslashes ($message);
+            $subject = COM_stripslashes($subject);
+            $message = COM_stripslashes($message);
 
             // do a spam check with the unfiltered message text and subject
             $mailtext = $subject . "\n" . $message . $sig;
-            $result = PLG_checkforSpam ($mailtext, $_CONF['spamx']);
+            $result = PLG_checkforSpam($mailtext, $_CONF['spamx']);
             if ($result > 0) {
-                COM_updateSpeedlimit ('mail');
-                COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+                COM_updateSpeedlimit('mail');
+                COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
             }
 
-            $msg = PLG_itemPreSave ('contact', $message);
-            if (!empty ($msg)) {
-                $retval = COM_errorLog ($msg, 2)
-                        . contactform ($uid, $cc, $subject, $message);
+            $msg = PLG_itemPreSave('contact', $message);
+            if (!empty($msg)) {
+                $retval = COM_errorLog($msg, 2)
+                        . contactform($uid, $cc, $subject, $message);
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
 
                 return $retval;
             }
 
-            $subject = strip_tags ($subject);
-            $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
-            $message = strip_tags ($message) . $sig;
-            if (!empty ($A['fullname'])) {
-                $to = COM_formatEmailAddress ($A['fullname'], $A['email']);
+            $subject = strip_tags($subject);
+            $subject = substr($subject, 0, strcspn($subject, "\r\n"));
+            $message = strip_tags($message) . $sig;
+            if (!empty($A['fullname'])) {
+                $to = COM_formatEmailAddress($A['fullname'], $A['email']);
             } else {
-                $to = COM_formatEmailAddress ($A['username'], $A['email']);
+                $to = COM_formatEmailAddress($A['username'], $A['email']);
             }
-            $from = COM_formatEmailAddress ($author, $authoremail);
+            $from = COM_formatEmailAddress($author, $authoremail);
 
             $sent = COM_mail($to, $subject, $message, $from);
 
-            if ($sent && $_CONF['mail_cc_enabled'] && isset($_POST['cc']) && ($_POST['cc'] == 'on')) {
+            if ($sent && $_CONF['mail_cc_enabled'] && isset($_POST['cc']) && ($_POST['cc'] === 'on')) {
                 $ccmessage = sprintf($LANG08[38], COM_getDisplayName($uid,
                                             $A['username'], $A['fullname']));
                 $ccmessage .= "\n------------------------------------------------------------\n\n" . $message;
@@ -147,19 +143,19 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
                                    . '/users.php?mode=profile&amp;uid=' . $uid
                                    . '&amp;msg=' . ($sent ? '27' : '85'));
         } else {
-            $subject = strip_tags ($subject);
-            $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
-            $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
-            $retval = COM_errorLog ($LANG08[3], 2)
-                    . contactform ($uid, $cc, $subject, $message);
+            $subject = strip_tags($subject);
+            $subject = substr($subject, 0, strcspn($subject, "\r\n"));
+            $subject = htmlspecialchars(trim($subject), ENT_QUOTES);
+            $retval = COM_errorLog($LANG08[3], 2)
+                    . contactform($uid, $cc, $subject, $message);
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
         }
     } else {
-        $subject = strip_tags ($subject);
-        $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
-        $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
-        $retval = COM_errorLog ($LANG08[4], 2)
-                . contactform ($uid, $cc, $subject, $message);
+        $subject = strip_tags($subject);
+        $subject = substr($subject, 0, strcspn($subject, "\r\n"));
+        $subject = htmlspecialchars(trim($subject), ENT_QUOTES);
+        $retval = COM_errorLog($LANG08[4], 2)
+                . contactform($uid, $cc, $subject, $message);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
     }
 
@@ -176,7 +172,7 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
 * @return   string              HTML for the contact form
 *
 */
-function contactform ($uid, $cc = false, $subject = '', $message = '')
+function contactform($uid, $cc = false, $subject = '', $message = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG08;
 
@@ -186,38 +182,34 @@ function contactform ($uid, $cc = false, $subject = '', $message = '')
                              ($_CONF['emailuserloginrequired'] == 1))) {
         $retval .= SEC_loginRequiredForm();
     } else {
-        if (SEC_inGroup ('Root') || SEC_hasRights ('user.mail')) {
-            $isAdmin = true;
-        } else {
-            $isAdmin = false;
-        }
+        $isAdmin = SEC_inGroup('Root') || SEC_hasRights('user.mail');
 
         // Check email address okay and user preference regarding email
         $continue = false;
         $msg_no_mail = $LANG08[35];
 
-        $result = DB_query ("SELECT email FROM {$_TABLES['users']} WHERE uid = '$uid'");
+        $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE uid = '$uid'");
         $nrows = DB_numRows($result);                                     
         
         if ($nrows == 1) {
-            $P = DB_fetchArray ($result);
+            $P = DB_fetchArray($result);
             if (!empty($P['email'])) {
                 if (COM_isEMail($P['email'])) {
                     $continue = true;
-                } elseif ($isAdmin ) {
+                } elseif ($isAdmin) {
                     $msg_no_mail = $LANG08[43]; // Email invalid
                 }
-            } elseif ($isAdmin ) {
+            } elseif ($isAdmin) {
                 $msg_no_mail = $LANG08[42]; // Email doesn't exist
             }
-        } elseif ($isAdmin ) {
+        } elseif ($isAdmin) {
             $msg_no_mail = $LANG08[41]; // User doesn't exist
         }
         
         // Check if User wants mail from someone
         if ($continue) {
-            $result = DB_query ("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
-            $P = DB_fetchArray ($result);
+            $result = DB_query("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
+            $P = DB_fetchArray($result);
             
             if ($continue && ((($P['emailfromadmin'] == 1) && $isAdmin) || (($P['emailfromuser'] == 1) && !$isAdmin))) {
                 $continue = true;
@@ -226,9 +218,8 @@ function contactform ($uid, $cc = false, $subject = '', $message = '')
             }
         }
         
-        $displayname = COM_getDisplayName ($uid);
+        $displayname = COM_getDisplayName($uid);
         if ($continue) {
-
             if ($cc) {
                 $cc = ' checked="checked"';
             } else {
@@ -241,28 +232,28 @@ function contactform ($uid, $cc = false, $subject = '', $message = '')
             $mail_template->set_var('lang_username', $LANG08[11]);
             if (COM_isAnonUser()) {
                 $sender = '';
-                if (isset ($_POST['author'])) {
-                    $sender = strip_tags ($_POST['author']);
-                    $sender = substr ($sender, 0, strcspn ($sender, "\r\n"));
-                    $sender = htmlspecialchars (trim ($sender), ENT_QUOTES);
+                if (isset($_POST['author'])) {
+                    $sender = strip_tags($_POST['author']);
+                    $sender = substr($sender, 0, strcspn($sender, "\r\n"));
+                    $sender = htmlspecialchars(trim($sender), ENT_QUOTES);
                 }
-                $mail_template->set_var ('username', $sender);
+                $mail_template->set_var('username', $sender);
             } else {
-                $mail_template->set_var ('username',
-                        COM_getDisplayName ($_USER['uid'], $_USER['username'],
+                $mail_template->set_var('username',
+                        COM_getDisplayName($_USER['uid'], $_USER['username'],
                                             $_USER['fullname']));
             }
-            $mail_template->set_var ('lang_useremail', $LANG08[12]);
+            $mail_template->set_var('lang_useremail', $LANG08[12]);
             if (COM_isAnonUser()) {
                 $email = '';
-                if (isset ($_POST['authoremail'])) {
-                    $email = strip_tags ($_POST['authoremail']);
-                    $email = substr ($email, 0, strcspn ($email, "\r\n"));
-                    $email = htmlspecialchars (trim ($email), ENT_QUOTES);
+                if (isset($_POST['authoremail'])) {
+                    $email = strip_tags($_POST['authoremail']);
+                    $email = substr($email, 0, strcspn($email, "\r\n"));
+                    $email = htmlspecialchars(trim($email), ENT_QUOTES);
                 }
-                $mail_template->set_var ('useremail', $email);
+                $mail_template->set_var('useremail', $email);
             } else {
-                $mail_template->set_var ('useremail', $_USER['email']);
+                $mail_template->set_var('useremail', $_USER['email']);
             }
             if (!$_CONF['mail_cc_enabled']) {
                 $mail_template->set_var('cc_enabled', ' style="display: none"');
@@ -348,23 +339,23 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
 
-    $shortmsg = COM_stripslashes ($shortmsg);
-    $mailtext = sprintf ($LANG08[23], $from, $fromemail) . LB;
+    $shortmsg = COM_stripslashes($shortmsg);
+    $mailtext = sprintf($LANG08[23], $from, $fromemail) . LB;
     if (strlen ($shortmsg) > 0) {
-        $mailtext .= LB . sprintf ($LANG08[28], $from) . $shortmsg . LB;
+        $mailtext .= LB . sprintf($LANG08[28], $from) . $shortmsg . LB;
     }
 
     // just to make sure this isn't an attempt at spamming users ...
-    $result = PLG_checkforSpam ($mailtext, $_CONF['spamx']);
+    $result = PLG_checkforSpam($mailtext, $_CONF['spamx']);
     if ($result > 0) {
-        COM_updateSpeedlimit ('mail');
-        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_updateSpeedlimit('mail');
+        COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }
 
     $mailtext .= '------------------------------------------------------------'
               . LB . LB
               . COM_undoSpecialChars($story->displayElements('title')) . LB
-              . strftime ($_CONF['date'], $story->DisplayElements('unixdate')) . LB;
+              . strftime($_CONF['date'], $story->DisplayElements('unixdate')) . LB;
 
     if ($_CONF['contributedbyline'] == 1) {
         $author = COM_getDisplayName($story->displayElements('uid'));
@@ -388,11 +379,11 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     if ($story->DisplayElements('commentcode') == 0) { // comments allowed
         $mailtext .= $LANG08[24] . LB
-                  . COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                  . COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                                   . $sid . '#comments');
     } else { // comments not allowed - just add the story's URL
         $mailtext .= $LANG08[33] . LB
-                  . COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                  . COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                                   . $sid);
     }
 
@@ -402,17 +393,17 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $sent = COM_mail($mailto, $subject, $mailtext, $mailfrom);
 
-    if ($sent && $_CONF['mail_cc_enabled'] && isset($_POST['cc']) && ($_POST['cc'] == 'on')) {
+    if ($sent && $_CONF['mail_cc_enabled'] && isset($_POST['cc']) && ($_POST['cc'] === 'on')) {
         $ccmessage = sprintf($LANG08[38], $to);
         $ccmessage .= "\n------------------------------------------------------------\n\n" . $mailtext;
 
         $sent = COM_mail($mailfrom, $subject, $ccmessage, $mailfrom);
     }
 
-    COM_updateSpeedlimit ('mail');
+    COM_updateSpeedlimit('mail');
 
     // Increment numemails counter for story
-    DB_query ("UPDATE {$_TABLES['stories']} SET numemails = numemails + 1 WHERE sid = '$sid'");
+    DB_query("UPDATE {$_TABLES['stories']} SET numemails = numemails + 1 WHERE sid = '$sid'");
 
     if ($_CONF['url_rewrite']) {
         $retval = COM_refresh($storyurl . '?msg=' . ($sent ? '27' : '85'));
@@ -437,7 +428,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 * @return   string              HTML for email story form
 *
 */
-function mailstoryform ($sid, $cc=false, $to = '', $toemail = '', $from = '',
+function mailstoryform($sid, $cc = false, $to = '', $toemail = '', $from = '',
                         $fromemail = '', $shortmsg = '', $msg = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG08;
@@ -464,20 +455,16 @@ function mailstoryform ($sid, $cc=false, $to = '', $toemail = '', $from = '',
         $retval .= COM_showMessage ($msg);
     }
 
-    if (empty ($from) && empty ($fromemail)) {
+    if (empty($from) && empty($fromemail)) {
         if (!COM_isAnonUser()) {
-            $from = COM_getDisplayName ($_USER['uid'], $_USER['username'],
+            $from = COM_getDisplayName($_USER['uid'], $_USER['username'],
                                         $_USER['fullname']);
             $fromemail = DB_getItem ($_TABLES['users'], 'email',
                                      "uid = {$_USER['uid']}");
         }
     }
 
-    if ($cc) {
-        $cc = ' checked="checked"';
-    } else {
-        $cc = '';
-    }
+    $cc = $cc ? ' checked="checked"' : '';
 
     $mail_template = COM_newTemplate($_CONF['path_layout'] . 'profiles');
     $mail_template->set_file('form', 'contactauthorform.thtml');
@@ -517,14 +504,13 @@ function mailstoryform ($sid, $cc=false, $to = '', $toemail = '', $from = '',
     return $retval;
 }
 
-
 // MAIN
 $display = '';
 
-if (isset ($_POST['what'])) {
-    $what = COM_applyFilter ($_POST['what']);
-} else if (isset ($_GET['what'])) {
-    $what = COM_applyFilter ($_GET['what']);
+if (isset($_POST['what'])) {
+    $what = COM_applyFilter($_POST['what']);
+} else if (isset($_GET['what'])) {
+    $what = COM_applyFilter($_GET['what']);
 } else {
     $what = '';
 }
@@ -537,25 +523,25 @@ if (isset($_POST['cc'])) { // Remember if user wants to get a copy of the messag
 
 switch ($what) {
     case 'contact':
-        $uid = COM_applyFilter ($_POST['uid'], true);
+        $uid = COM_applyFilter($_POST['uid'], true);
         if ($uid > 1) {
-            $display .= contactemail ($uid, $cc, $_POST['author'],
+            $display .= contactemail($uid, $cc, $_POST['author'],
                     $_POST['authoremail'], $_POST['subject'],
                     $_POST['message']);
         } else {
-            $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
         }
         break;
 
     case 'emailstory':
-        $sid = COM_applyFilter ($_GET['sid']);
-        if (empty ($sid)) {
-            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
-        } else if ($_CONF['hideemailicon'] == 1) {
-            $display = COM_refresh (COM_buildUrl ($_CONF['site_url']
+        $sid = COM_applyFilter($_GET['sid']);
+        if (empty($sid)) {
+            $display = COM_refresh($_CONF['site_url'] . '/index.php');
+        } elseif ($_CONF['hideemailicon'] == 1) {
+            $display = COM_refresh(COM_buildUrl($_CONF['site_url']
                                     . '/article.php?story=' . $sid));
         } else {
-            $display = mailstoryform ($sid, $_CONF['mail_cc_default']);
+            $display = mailstoryform($sid, $_CONF['mail_cc_default']);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
         }
         break;
@@ -570,14 +556,13 @@ switch ($what) {
                     !COM_isEmail($_POST['fromemail']) ||
                     (strpos($_POST['to'], '@') !== false) ||
                     (strpos($_POST['from'], '@') !== false)) {
-                $display = mailstoryform ($sid, $cc, COM_applyFilter($_POST['to']),
+                $display = mailstoryform($sid, $cc, COM_applyFilter($_POST['to']),
                                 COM_applyFilter($_POST['toemail']),
                                 COM_applyFilter($_POST['from']),
                                 COM_applyFilter($_POST['fromemail']),
                                 $_POST['shortmsg'], 52);
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
-
-            } else if (empty($_POST['to']) || empty($_POST['from']) ||
+            } elseif (empty($_POST['to']) || empty($_POST['from']) ||
                     empty($_POST['shortmsg'])) {
                 $display = COM_showMessageText($LANG08[22])
                          . mailstoryform($sid, $cc, COM_applyFilter($_POST['to']),
@@ -605,26 +590,24 @@ switch ($what) {
         break;
 
     default:
-        if (isset ($_GET['uid'])) {
-            $uid = COM_applyFilter ($_GET['uid'], true);
+        if (isset($_GET['uid'])) {
+            $uid = COM_applyFilter($_GET['uid'], true);
         } else {
             $uid = 0;
         }
         if ($uid > 1) {
             $subject = '';
-            if (isset ($_GET['subject'])) {
-                $subject = strip_tags ($_GET['subject']);
-                $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
-                $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
+            if (isset($_GET['subject'])) {
+                $subject = strip_tags($_GET['subject']);
+                $subject = substr($subject, 0, strcspn($subject, "\r\n"));
+                $subject = htmlspecialchars(trim($subject), ENT_QUOTES);
             }
-            $display = contactform ($uid, $_CONF['mail_cc_default'], $subject);
+            $display = contactform($uid, $_CONF['mail_cc_default'], $subject);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[81]));
         } else {
-            $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
         }
         break;
 }
 
 COM_output($display);
-
-?>

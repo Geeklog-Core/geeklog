@@ -324,6 +324,13 @@ input[type="reset"]:disabled {
   margin: 0 1px 2px;
 }
 
+.uk-form .uk-button-group input,
+.uk-form .uk-button-group button,
+.uk-form .uk-button-group select,
+.uk-form .uk-button-group textarea {
+  margin: 0 0 2px;
+}
+
 .uk-form input[type="checkbox"],
 .uk-form input[type="radio"] {
   margin-left: 3px;
@@ -1975,9 +1982,6 @@ body.center-right #config_content {
 @media only screen and (max-width: 767px) {
 
   #header {
-    -webkit-background-size: 256px auto;
-    -moz-background-size: 256px auto;
-    background-size: 256px auto;
     height: 80px;
     margin-top: 0;
   }
@@ -2060,9 +2064,14 @@ body.center-right #config_content {
   background: #F7F7F7;
   color: #444;
   background-image: -webkit-linear-gradient(top, #FFF, #EEE);
+  background-image: -moz-linear-gradient(top, #FFF, #EEE);
+  background-image: -o-linear-gradient(top, #FFF, #EEE);
+  background-image: -ms-linear-gradient(top, #FFF, #EEE);
   background-image: linear-gradient(to bottom, #FFF, #EEE);
   border: 1px solid rgba(0,0,0,.1);
   border-bottom-color: rgba(0,0,0,.3);
+  -webkit-background-origin: border;
+  -moz-background-origin: border;
   background-origin: border-box;
 }
 
@@ -2178,6 +2187,10 @@ body.center-right #config_content {
     color: #999;
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
   }
+}
+
+#footer-content {
+  text-align: center;
 }
 
 @media only screen and (max-width: 767px) {
