@@ -328,7 +328,7 @@ input[type="reset"]:disabled {
 .uk-form .uk-button-group button,
 .uk-form .uk-button-group select,
 .uk-form .uk-button-group textarea {
-  margin: 0 0px 2px;
+  margin: 0 0 2px;
 }
 
 .uk-form input[type="checkbox"],
@@ -2064,9 +2064,14 @@ body.center-right #config_content {
   background: #F7F7F7;
   color: #444;
   background-image: -webkit-linear-gradient(top, #FFF, #EEE);
+  background-image: -moz-linear-gradient(top, #FFF, #EEE);
+  background-image: -o-linear-gradient(top, #FFF, #EEE);
+  background-image: -ms-linear-gradient(top, #FFF, #EEE);
   background-image: linear-gradient(to bottom, #FFF, #EEE);
   border: 1px solid rgba(0,0,0,.1);
   border-bottom-color: rgba(0,0,0,.3);
+  -webkit-background-origin: border;
+  -moz-background-origin: border;
   background-origin: border-box;
 }
 

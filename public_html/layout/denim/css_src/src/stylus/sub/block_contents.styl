@@ -131,19 +131,18 @@ $header-height-mobile = 80px
             background: url($denim_logo) 0 0 no-repeat
             text-indent: -3000px
             display: block
-            //width: 151px
-            //height: 56px
             width: 100%
             height: 100%
         // All Mobile Sizes
         @media only screen and (max-width: $breakpoint-small-max)
-            $percentage = ($header-height-mobile - 10px) / $logo-height
-            $h = $header-height-mobile - 10px
+            $height = 55px
+            $vmargin = 10px
+            $percentage = ($height - ($vmargin * 2)) / $logo-height
+            $h = $height - ($vmargin * 2)
             $w = $logo-width * $percentage
-            //margin: 9px 0 0 7px
-            margin: 5px 0 0 7px
-            padding: 0
-            float: left
+            margin: 0 auto
+            padding: $vmargin 0
+            float: none
             width: $w
             height: $h
             a
@@ -170,11 +169,25 @@ $header-height-mobile = 80px
             text-align: center
             line-height: 1.2em
 
+        if $var-sitename-style == 'image'
+            float: none
+            margin: 0 auto
+            padding: 0
+            text-align: center
+            line-height: 1.2em
+
     hook-selector($stage, "" + selector())
 
 .nameplate
     @media only screen and (max-width: $breakpoint-small-max)
         if $var-sitename-style == 'text'
+            float: none
+            height: 100%  
+            margin: 0 auto
+            max-width: 230px
+            text-align: center
+
+        if $var-sitename-style == 'image'
             float: none
             height: 100%  
             margin: 0 auto
