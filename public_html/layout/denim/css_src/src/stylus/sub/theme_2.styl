@@ -68,4 +68,7 @@ hook-selector($stage = '', $selector = '')
     if $stage == 'layout_2cols_Rbar_fixed'
 
         if $selector == '#navigation'
-            width: (@width - 20px)
+            width: (@width - 2px)
+
+        if $selector == '.navigation_content'
+            width: (@width - 2px)
