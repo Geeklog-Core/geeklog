@@ -7,7 +7,7 @@ var pkg         = require('./package.json'),
     runSequence = require('run-sequence').use(gulp),
     shell       = require('gulp-shell'),
     rename      = require('gulp-rename'),
-    minifycss   = require('gulp-minify-css'),
+    cleancss    = require('gulp-clean-css'),
     csscomb     = require('gulp-csscomb'),
     //cmq         = require('gulp-combine-media-queries'),
     //csso        = require('gulp-csso'),
@@ -19,7 +19,7 @@ var pkg         = require('./package.json'),
 
 //var site_url  = 'http://localhost:8000/your_site'; // set the same value as the $_CONF['site_url']
 
-var banner = "<%= pkg.title %> <%= pkg.version %> | Copyright (C) 2012-2015 by <%= pkg.author %> | <%= pkg.homepage %> | License:<%= pkg.license %>";
+var banner = "<%= pkg.title %> <%= pkg.version %> | Copyright (C) 2012-2016 by <%= pkg.author %> | <%= pkg.homepage %> | License:<%= pkg.license %>";
 
 gulp.task('default', ['build'], function() {
 
@@ -63,7 +63,7 @@ gulp.task('minify', function() {
         .pipe(rename({ suffix: '.min' }))
         //.pipe(cmq())
         //.pipe(csso())
-        .pipe(minifycss())
+        .pipe(cleancss())
         .pipe(header("/* " + banner + " */\n", { 'pkg' : pkg } ))
         .pipe(gulp.dest('./dest/'));
 });

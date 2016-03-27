@@ -66,10 +66,10 @@ build-border(prefix)
 initvar(var, type, default_value)
     if var is defined
         $t = typeof(var)
-        if ($t == "literal" or $t == "string") and (var == "default")
+        if ($t == "literal" or $t == "string" or $t == "ident") and (var == "default")
             default_value
 
-        else if (type == "string") and ($t == "literal" or $t == "string")
+        else if (type == "string") and ($t == "literal" or $t == "string" or $t == "ident")
             var
 
         else if (type == "literal")
@@ -91,7 +91,7 @@ initvar(var, type, default_value)
                     return false
                 else
                     default_value
-            else if ($t == "literal" or $t == "string")
+            else if ($t == "literal" or $t == "string" or $t == "ident")
                 if (var == "true")
                     return true
                 else if (var == "false")
