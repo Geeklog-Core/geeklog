@@ -1,4 +1,4 @@
-/* Geeklog Denim Theme 1.1.0 | Copyright (C) 2012-2015 by dengen | http://www.trybese.com/~dengen/log/ | License:GPLv2 */
+/* Geeklog Denim Theme 1.1.0 | Copyright (C) 2012-2016 by dengen | http://www.trybese.com/~dengen/log/ | License:GPL-2.0+ */
 address {
   font-style: normal;
   font-weight: normal;
@@ -130,7 +130,7 @@ select[multiple="multiple"] {
 }
 
 option {
-  padding-left: 4px;
+  padding-left: 4px ;
 }
 
 input[type="text"]:focus,
@@ -189,11 +189,6 @@ input[type="reset"] {
   -webkit-background-origin: border;
   -moz-background-origin: border;
   background-origin: border-box;
-  background-image: -webkit--webkit-linear-gradient(top, #FFF, #EEE);
-  background-image: -webkit--moz-linear-gradient(top, #FFF, #EEE);
-  background-image: -webkit--o-linear-gradient(top, #FFF, #EEE);
-  background-image: -webkit--ms-linear-gradient(top, #FFF, #EEE);
-  background-image: -webkit-linear-gradient(to bottom, #FFF, #EEE);
   background-image: -webkit-linear-gradient(top, #FFF, #EEE);
   background-image: -moz-linear-gradient(top, #FFF, #EEE);
   background-image: -o-linear-gradient(top, #FFF, #EEE);
@@ -980,6 +975,7 @@ fieldset.form_block {
   padding: 0;
 }
 
+/* Description */
 .compact dd.description {
   margin: -.5em 25% 1em 0;
   padding: 0;
@@ -1011,6 +1007,7 @@ fieldset.form_block {
     padding: 0;
   }
 
+  /* Description */
   .compact dd.description {
     margin: -.5em 0 1em 0;
     padding: 0;
@@ -1041,6 +1038,7 @@ fieldset.form_block {
   padding: 0;
 }
 
+/* Description */
 .linear dd.description {
   margin: -.5em 0 1em 0;
   padding: 0;
@@ -1639,7 +1637,7 @@ body.center-right #config_content {
     overflow: visible;
     float: right;
     width: 100%;
-    margin-right: -230px;
+    margin-right: -230px ;
   }
 
   body.js_off #centerblocks {
@@ -2420,8 +2418,6 @@ h4 img {
   border-radius: 6px;
   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
   box-shadow: 0 1px 2px rgba(0,0,0,.1);
-  /* Title */
-  /* Message */
 }
 
 .block-message dl {
@@ -2916,7 +2912,7 @@ div.third-party-login {
 --------------------------------------*/
 
 .gl-tooltip span {
-  margin-left: -999em;
+  margin-right: -999em;
   position: absolute;
   text-align: right;
   width: 250px;
@@ -2943,7 +2939,7 @@ div.third-party-login {
   right: 2.2em;
   top: 2.2em;
   z-index: 99;
-  margin-left: 0;
+  margin-right: 0;
   width: 250px;
 }
 
@@ -3455,7 +3451,7 @@ span.warning em {
 #exclude_topic > .checkboxes-list > li,
 #boxesblock > .checkboxes-list > li {
   /* display: inline */
-  margin-left: .5em;
+  margin-right: .5em;
 }
 
 /*--------------------------------------
@@ -3544,7 +3540,7 @@ span.warning em {
 
 /* Account Information */
 #profile-userprofile {
-  overflow: hidden;
+  overflow: hidden ;
   margin: 0;
   padding: 0;
   zoom: 1;
@@ -3674,7 +3670,7 @@ dd#profile-user_photo {
 .admin-menu-icon {
   float: right;
   padding: 5px;
-  margin-left: 10px;
+  margin-right: 10px;
   width: 48px;
   height: 48px;
 }
