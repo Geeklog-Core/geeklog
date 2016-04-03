@@ -700,7 +700,8 @@ class upload
                     $image_dest = @imagecreatefromjpeg ($filename);
                     unlink ($filename);
                 }
-
+								imagealphablending( $image_dest, false );
+								imagesavealpha( $image_dest, true );
                 imagecopyresampled($image_dest, $image_source, 0, 0, 0, 0,
                                    $newwidth, $newheight, $imageInfo['width'],
                                    $imageInfo['height']);
