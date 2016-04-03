@@ -701,6 +701,12 @@ class upload
                     unlink ($filename);
                 }
 
+                // Prevent transparent area of a JPEG image from being painted black
+                if (is_callable('imagealphablending') && is_callable('imagesavealpha')) {
+                    imagealphablending($image_dest, false);
+                    imagesavealpha($image_dest, true);
+                }
+
                 imagecopyresampled($image_dest, $image_source, 0, 0, 0, 0,
                                    $newwidth, $newheight, $imageInfo['width'],
                                    $imageInfo['height']);
@@ -1343,5 +1349,3 @@ class upload
         }
     }
 }
-
-?>
