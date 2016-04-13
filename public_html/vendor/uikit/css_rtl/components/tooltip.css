@@ -1,13 +1,16 @@
-/*! UIkit 2.25.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+
 /* ========================================================================
    Component: Tooltip
  ========================================================================== */
+
 /*
  * 1. Hide by default
  * 2. Set fixed position
  * 3. Set dimensions
  * 4. Set style
  */
+
 .uk-tooltip {
   /* 1 */
   display: none;
@@ -24,11 +27,14 @@
   font-size: 12px;
   line-height: 18px;
 }
+
 /* Triangle
  ========================================================================== */
+
 /*
  * 1. Dashed is less antialised than solid
  */
+
 .uk-tooltip:after {
   content: "";
   display: block;
@@ -38,11 +44,14 @@
   /* 1 */
   border: 5px dashed #333333;
 }
+
 /* Direction modifiers
  ========================================================================== */
+
 /*
  * Top
  */
+
 .uk-tooltip-top:after,
 .uk-tooltip-top-left:after,
 .uk-tooltip-top-right:after {
@@ -53,9 +62,11 @@
   border-left-color: transparent;
   border-top-color: #333333;
 }
+
 /*
  * Bottom
  */
+
 .uk-tooltip-bottom:after,
 .uk-tooltip-bottom-left:after,
 .uk-tooltip-bottom-right:after {
@@ -66,31 +77,39 @@
   border-left-color: transparent;
   border-bottom-color: #333333;
 }
+
 /*
  * Top/Bottom center
  */
+
 .uk-tooltip-top:after,
 .uk-tooltip-bottom:after {
   right: 50%;
   margin-right: -5px;
 }
+
 /*
  * Top/Bottom left
  */
+
 .uk-tooltip-top-left:after,
 .uk-tooltip-bottom-left:after {
   right: 10px;
 }
+
 /*
  * Top/Bottom right
  */
+
 .uk-tooltip-top-right:after,
 .uk-tooltip-bottom-right:after {
   left: 10px;
 }
+
 /*
  * Left
  */
+
 .uk-tooltip-left:after {
   left: -5px;
   top: 50%;
@@ -101,9 +120,11 @@
   border-bottom-color: transparent;
   border-right-color: #333333;
 }
+
 /*
  * Right
  */
+
 .uk-tooltip-right:after {
   right: -5px;
   top: 50%;
