@@ -428,6 +428,27 @@ if (setlocale(LC_ALL, $_CONF['locale']) === false ) {
     setlocale(LC_TIME, $_CONF['locale']);
 }
 
+
+/**
+* Global array of groups current user belongs to
+*
+* @global array $_GROUPS
+*
+*/
+if (!COM_isAnonUser()) {
+    $_GROUPS = SEC_getUserGroups($_USER['uid']);
+} else {
+    $_GROUPS = SEC_getUserGroups(1);
+}
+
+/**
+* Global array of current user permissions [read,edit]
+*
+* @global array $_RIGHTS
+*
+*/
+$_RIGHTS = explode(',', SEC_getUserPermissions());
+
 // Include scripts on behalf of the theme
 $func = 'theme_css_' . $_CONF['theme'];
 if (function_exists($func)) {
@@ -474,26 +495,6 @@ unset(
 DB_lockTable($_TABLES['sessions']);
 DB_query("UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . (time() - $_CONF['whosonline_threshold']));
 DB_unlockTable($_TABLES['sessions']);
-
-/**
-* Global array of groups current user belongs to
-*
-* @global array $_GROUPS
-*
-*/
-if (!COM_isAnonUser()) {
-    $_GROUPS = SEC_getUserGroups($_USER['uid']);
-} else {
-    $_GROUPS = SEC_getUserGroups(1);
-}
-
-/**
-* Global array of current user permissions [read,edit]
-*
-* @global array $_RIGHTS
-*
-*/
-$_RIGHTS = explode(',', SEC_getUserPermissions());
 
 /**
 * Build global array of Link Tags used by the header of a page. This is a stop
