@@ -7,7 +7,7 @@ var pkg         = require('./package.json'),
     shell       = require('gulp-shell'),
     rename      = require('gulp-rename'),
     replace     = require('gulp-replace'),
-    minifycss   = require('gulp-minify-css');
+    cleancss    = require('gulp-clean-css');
 
 gulp.task('default', ['build'], function() {
 });
@@ -16,8 +16,8 @@ gulp.task('build', function(done) {
     runSequence('clean', 'copy_LR', 'swap_LR', 'modify', 'fix_issue', 'minifycss', 'modify2', done);
 });
 
-gulp.task('clean', function(cb) {
-    del(['./components', './*.css'], cb);
+gulp.task('clean', function() {
+    return del(['./components', './*.css']);
 });
 
 gulp.task('copy_LR', function() {
@@ -72,7 +72,7 @@ gulp.task('fix_issue', function(done) {
 gulp.task('minifycss', function() {
     return gulp.src(['!./node_modules/**/*.css', '!./**/*.min.css', './**/*.css'])
         .pipe(rename({ suffix: '.min' }))
-        .pipe(minifycss())
+        .pipe(cleancss({ advanced: false }))
         .pipe(gulp.dest('./'));
 });
 

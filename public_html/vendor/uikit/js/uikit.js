@@ -1,4 +1,4 @@
-/*! UIkit 2.25.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(core) {
 
     if (typeof define == "function" && define.amd) { // AMD
@@ -44,7 +44,7 @@
 
     var UI = {}, _UI = global.UIkit ? Object.create(global.UIkit) : undefined;
 
-    UI.version = '2.25.0';
+    UI.version = '2.26.2';
 
     UI.noConflict = function() {
         // restore UIkit version
@@ -594,7 +594,7 @@
                 var observer = new UI.support.mutationobserver(UI.Utils.debounce(function(mutations) {
                     fn.apply(element, []);
                     $element.trigger('changed.uk.dom');
-                }, 50));
+                }, 50), {childList: true, subtree: true});
 
                 // pass in the target node, as well as the observer options
                 observer.observe(element, { childList: true, subtree: true });
@@ -626,15 +626,6 @@
         var domReady = function() {
 
             UI.$body = UI.$('body');
-
-            UI.ready(function(context){
-                UI.domObserve('[data-uk-observe]');
-            });
-
-            UI.on('changed.uk.dom', function(e) {
-                UI.init(e.target);
-                UI.Utils.checkDisplay(e.target);
-            });
 
             UI.trigger('beforeready.uk.dom');
 
@@ -709,6 +700,37 @@
 
             // mark that domready is left behind
             UI.domready = true;
+
+            // auto init js components
+            if (UI.support.mutationobserver) {
+
+                var initFn = UI.Utils.debounce(function(){
+                    requestAnimationFrame(function(){ UI.init(document.body);});
+                }, 10);
+
+                (new UI.support.mutationobserver(function(mutations) {
+
+                    var init = false;
+
+                    mutations.every(function(mutation){
+
+                        if (mutation.type != 'childList') return true;
+
+                        for (var i = 0, node; i < mutation.addedNodes.length; ++i) {
+
+                            node = mutation.addedNodes[i];
+
+                            if (node.outerHTML && node.outerHTML.indexOf('data-uk-') !== -1) {
+                                return (init = true) && false;
+                            }
+                        }
+                        return true;
+                    });
+
+                    if (init) initFn();
+
+                })).observe(document.body, {childList: true, subtree: true});
+            }
         };
 
         if (document.readyState == 'complete' || document.readyState == 'interactive') {
@@ -934,7 +956,8 @@
 
         defaults: {
             cls: 'uk-margin-small-top',
-            rowfirst: false
+            rowfirst: false,
+            observe: false
         },
 
         boot: function() {
@@ -971,13 +994,16 @@
                 return UI.Utils.debounce(fn, 20);
             })());
 
-            UI.$html.on("changed.uk.dom", function(e) {
-                $this.process();
-            });
-
             this.on("display.uk.check", function(e) {
                 if (this.element.is(":visible")) this.process();
             }.bind(this));
+
+            if (this.options.observe) {
+
+                UI.domObserve(this.element, function(e) {
+                    if ($this.element.is(":visible")) $this.process();
+                });
+            }
 
             stacks.push(this);
         },
@@ -988,18 +1014,25 @@
 
             UI.Utils.stackMargin(columns, this.options);
 
-            if (!this.options.rowfirst) {
+            if (!this.options.rowfirst || !columns.length) {
                 return this;
             }
 
             // Mark first column elements
-            var pos_cache = columns.removeClass(this.options.rowfirst).filter(':visible').first().position();
+            var group = {}, minleft = false;
 
-            if (pos_cache) {
-                columns.each(function() {
-                    UI.$(this)[UI.$(this).position().left == pos_cache.left ? 'addClass':'removeClass']($this.options.rowfirst);
-                });
-            }
+            columns.removeClass(this.options.rowfirst).each(function(offset, $ele){
+
+                $ele = UI.$(this);
+
+                if (this.style.display != 'none') {
+                    offset = $ele.offset().left;
+                    ((group[offset] = group[offset] || []) && group[offset]).push(this);
+                    minleft = minleft === false ? offset : Math.min(minleft, offset);
+                }
+            });
+
+            UI.$(group[minleft]).addClass(this.options.rowfirst);
 
             return this;
         }
@@ -1085,30 +1118,41 @@
             'cls': 'uk-margin-small-top'
         }, options);
 
-        options.cls = options.cls;
-
         elements = UI.$(elements).removeClass(options.cls);
 
-        var skip         = false,
-            firstvisible = elements.filter(":visible:first"),
-            offset       = firstvisible.length ? (firstvisible.position().top + firstvisible.outerHeight()) - 1 : false; // (-1): weird firefox bug when parent container is display:flex
+        var min = false;
 
-        if (offset === false || elements.length == 1) return;
+        elements.each(function(offset, height, pos, $ele){
 
-        elements.each(function() {
+            $ele   = UI.$(this);
 
-            var column = UI.$(this);
+            if ($ele.css('display') != 'none') {
 
-            if (column.is(":visible")) {
+                offset = $ele.offset();
+                height = $ele.outerHeight();
+                pos    = offset.top + height;
 
-                if (skip) {
-                    column.addClass(options.cls);
-                } else {
+                $ele.data({
+                    'ukMarginPos': pos,
+                    'ukMarginTop': offset.top
+                });
 
-                    if (column.position().top >= offset) {
-                        skip = column.addClass(options.cls);
-                    }
+                if (min === false || (offset.top < min.top) ) {
+
+                    min = {
+                        top  : offset.top,
+                        left : offset.left,
+                        pos  : pos
+                    };
                 }
+            }
+
+        }).each(function($ele) {
+
+            $ele   = UI.$(this);
+
+            if ($ele.css('display') != 'none' && $ele.data('ukMarginTop') > min.top && $ele.data('ukMarginPos') > min.pos) {
+                $ele.addClass(options.cls);
             }
         });
     };
@@ -2371,7 +2415,8 @@
         defaults: {
             "target"        : false,
             "row"           : true,
-            "ignorestacked" : false
+            "ignorestacked" : false,
+            "observe"       : false
         },
 
         boot: function() {
@@ -2401,7 +2446,7 @@
             UI.$win.on('load resize orientationchange', (function() {
 
                 var fn = function() {
-                    $this.match();
+                    if ($this.element.is(":visible")) $this.match();
                 };
 
                 UI.$(function() { fn(); });
@@ -2409,11 +2454,12 @@
                 return UI.Utils.debounce(fn, 50);
             })());
 
-            UI.$html.on("changed.uk.dom", function(e) {
-                $this.columns  = $this.element.children();
-                $this.elements = $this.options.target ? $this.find($this.options.target) : $this.columns;
-                $this.match();
-            });
+            if (this.options.observe) {
+
+                UI.domObserve(this.element, function(e) {
+                    if ($this.element.is(":visible")) $this.match();
+                });
+            }
 
             this.on("display.uk.check", function(e) {
                 if(this.element.is(":visible")) this.match();
@@ -2481,6 +2527,12 @@
 
     var active = false, activeCount = 0, $html = UI.$html, body;
 
+    UI.$win.on("resize orientationchange", UI.Utils.debounce(function(){
+        UI.$('.uk-modal.uk-open').each(function(){
+            UI.$(this).data('modal').resize();
+        });
+    }, 150));
+
     UI.component('modal', {
 
         defaults: {
@@ -2521,6 +2573,10 @@
                 if (target[0] == $this.element[0] && $this.options.bgclose) {
                     $this.hide();
                 }
+            });
+
+            UI.domObserve(this.element, function(e) {
+                $this.resize();
             });
         },
 
@@ -2693,10 +2749,6 @@
                     active.hide();
                 }
             });
-
-            UI.$win.on("resize orientationchange", UI.Utils.debounce(function(){
-                if (active) active.resize();
-            }, 150));
         },
 
         init: function() {
@@ -3225,7 +3277,7 @@
 
                 this.connect = UI.$(this.options.connect);
 
-                this.connect.find(".uk-active").removeClass(".uk-active");
+                this.connect.children().removeClass("uk-active");
 
                 // delegate switch commands within container content
                 if (this.connect.length) {
@@ -3278,10 +3330,6 @@
                 // Init ARIA for toggles
                 toggles.not(active).attr('aria-expanded', 'false');
                 active.attr('aria-expanded', 'true');
-
-                this.on('changed.uk.dom', function() {
-                    $this.connect = UI.$($this.options.connect);
-                });
             }
 
         },
