@@ -214,7 +214,9 @@ $_CONF_VALIDATE['Core']['show_topic_icon'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['draft_flag'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['frontpage'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['hide_no_news_msg'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['hide_main_page_navigation'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['hide_main_page_navigation'] = array(
+    'rule' => array('inList', array('false', 'frontpage', 'frontpage_topics'), true)
+);
 $_CONF_VALIDATE['Core']['onlyrootfeatures'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['aftersave_story'] = array(
     'rule' => array('inList', array('admin', 'home', 'list', 'item'), true)
