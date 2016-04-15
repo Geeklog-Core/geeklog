@@ -141,7 +141,7 @@ function install_config()
     $c->add('draft_flag',0,'select',1,7,0,1280,TRUE, $me, 7);
     $c->add('frontpage',1,'select',1,7,0,1290,TRUE, $me, 7);
     $c->add('hide_no_news_msg',0,'select',1,7,0,1300,TRUE, $me, 7);
-    $c->add('hide_main_page_navigation',0,'select',1,7,0,1310,TRUE, $me, 7);
+    $c->add('hide_main_page_navigation','false','select',1,7,36,1310,TRUE, $me, 7);
     $c->add('onlyrootfeatures',0,'select',1,7,0,1320,TRUE, $me, 7);
     $c->add('aftersave_story','list','select',1,7,9,1330,TRUE, $me, 7);
     $c->add('related_topics',1,'select',1,7,32,1340,TRUE, $me, 7);
