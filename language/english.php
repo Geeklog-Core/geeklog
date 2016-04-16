@@ -2365,7 +2365,8 @@ $LANG_configselects['Core'] = array(
     32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
     33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3),
     34 => array('grid' => 'grid', 'list' => 'list'),
-    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
+    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),  
+    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics')
 );
 
 ################################################################################

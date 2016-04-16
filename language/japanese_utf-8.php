@@ -2359,7 +2359,8 @@ $LANG_configselects['Core'] = array(
     32 => array('表示しない' => 0, '記事のページにのみ表示する' => 1, '記事と話題の両方で表示する' => 2),
     33 => array('無効にする' => 0, '有効にする' => 1, '有効にする(リンクなし)' => 2, '有効にする(外部リンクなし)' => 3),
     34 => array('グリッド' => 'grid', 'リスト' => 'list'),
-    35 => array('デフォルト' => 'default', '名前(昇順)' => 'NAME_ASC', '名前(降順)' => 'NAME_DESC', '種類(昇順)' => 'TYPE_ASC', '種類(降順)' => 'TYPE_DESC', '変更日時(昇順)' => 'MODIFIED_ASC', '変更日時(降順)' => 'MODIFIED_DESC')
+    35 => array('デフォルト' => 'default', '名前(昇順)' => 'NAME_ASC', '名前(降順)' => 'NAME_DESC', '種類(昇順)' => 'TYPE_ASC', '種類(降順)' => 'TYPE_DESC', '変更日時(昇順)' => 'MODIFIED_ASC', '変更日時(降順)' => 'MODIFIED_DESC'), 
+    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics')
 );
 
 ###############################################################################

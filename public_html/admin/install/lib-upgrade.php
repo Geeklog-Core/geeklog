@@ -507,6 +507,16 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $current_gl_version = '2.1.0';
             $_SQL = '';
             break;
+            
+        case '2.1.1':
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.1.1_to_2.1.2.php';
+            INST_updateDB($_SQL);
+
+            update_ConfValuesFor212();
+
+            $current_gl_version = '2.1.2';
+            $_SQL = '';
+            break;            
 
         default:
             $done = true;
