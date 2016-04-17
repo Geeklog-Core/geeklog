@@ -1,15 +1,12 @@
 /*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
-
 /* ========================================================================
    Component: Form select
  ========================================================================== */
-
 /*
  * 1. Behave like form elements
  * 2. Create position context for dropdowns
  * 3. Clip content
  */
-
 .uk-form-select {
   /* 1 */
   display: inline-block;
@@ -19,12 +16,10 @@
   /* 3 */
   overflow: hidden;
 }
-
 /*
  * 1. Required for Firefox
  * 1. Required for Webkit to make `height` work
  */
-
 .uk-form-select select {
   position: absolute;
   top: 0;
