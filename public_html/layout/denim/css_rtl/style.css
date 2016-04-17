@@ -130,7 +130,7 @@ select[multiple="multiple"] {
 }
 
 option {
-  padding-left: 4px ;
+  padding-left: 4px /* for Firefox */;
 }
 
 input[type="text"]:focus,
@@ -1637,7 +1637,7 @@ body.center-right #config_content {
     overflow: visible;
     float: right;
     width: 100%;
-    margin-right: -230px ;
+    margin-right: -230px /* -[R] */;
   }
 
   body.js_off #centerblocks {
@@ -2535,56 +2535,56 @@ input[type="text"].search {
   right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 0;
+  background-position: 100% 0;
 }
 
 #login_twitter {
   right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -23px;
+  background-position: 100% -23px;
 }
 
 #login_linkedin {
   right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -44px;
+  background-position: 100% -44px;
 }
 
 #login_google {
   right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -66px;
+  background-position: 100% -66px;
 }
 
 #login_yahoo {
   right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -88px;
+  background-position: 100% -88px;
 }
 
 #login_microsoft {
   right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -110px;
+  background-position: 100% -110px;
 }
 
 #login_github {
   right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -132px;
+  background-position: 100% -132px;
 }
 
 #login_openid {
   right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -154px;
+  background-position: 100% -154px;
 }
 
 #loginform fieldset {
@@ -2912,9 +2912,9 @@ div.third-party-login {
 --------------------------------------*/
 
 .gl-tooltip span {
-  margin-right: -999em;
+  margin-left: -999em;
   position: absolute;
-  text-align: right;
+  text-align: left;
   width: 250px;
 }
 
@@ -2929,8 +2929,8 @@ div.third-party-login {
 .gl-tooltip:hover span {
   -webkit-border-radius: 8px;
   border-radius: 8px;
-  -webkit-box-shadow: 2px 2px 8px #666;
-  box-shadow: 2px 2px 8px #666;
+  -webkit-box-shadow: -2px 2px 8px #666;
+  box-shadow: -2px 2px 8px #666;
   font-size: 1em;
   text-align: right;
   white-space: normal;
@@ -2939,7 +2939,7 @@ div.third-party-login {
   right: 2.2em;
   top: 2.2em;
   z-index: 99;
-  margin-right: 0;
+  margin-left: 0;
   width: 250px;
 }
 
@@ -3047,7 +3047,7 @@ span.warning em {
 
 #commentbar {
   padding: 3px;
-  background: none repeat scroll 0 0 #EEE;
+  background: none repeat scroll 100% 0 #EEE;
   -webkit-border-radius: 4px;
   border-radius: 4px;
   zoom: 1;
@@ -3451,7 +3451,7 @@ span.warning em {
 #exclude_topic > .checkboxes-list > li,
 #boxesblock > .checkboxes-list > li {
   /* display: inline */
-  margin-right: .5em;
+  margin-left: .5em;
 }
 
 /*--------------------------------------
@@ -3540,7 +3540,7 @@ span.warning em {
 
 /* Account Information */
 #profile-userprofile {
-  overflow: hidden ;
+  overflow: hidden /* Adjust floating element */;
   margin: 0;
   padding: 0;
   zoom: 1;
@@ -3670,7 +3670,7 @@ dd#profile-user_photo {
 .admin-menu-icon {
   float: right;
   padding: 5px;
-  margin-right: 10px;
+  margin-left: 10px;
   width: 48px;
   height: 48px;
 }
