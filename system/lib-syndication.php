@@ -38,6 +38,8 @@ if ($_CONF['trackback_enabled']) {
     require_once $_CONF['path_system'] . 'lib-trackback.php';
 }
 
+require_once $_CONF['path_system'] . 'lib-story.php';
+
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
 
@@ -285,13 +287,14 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
         {
             $row = DB_fetchArray( $result );
             $sids[] = $row['sid'];
+            
+            // Need to load story this way for intro and body text to insure things like [imageX] and autotags are processed properly
+            $story = new Story();
+            $story->loadFromArray($row);
 
             $storytitle = stripslashes( $row['title'] );
-            $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
-            $fulltext = PLG_replaceTags( $fulltext );
+            $fulltext = stripslashes( $story->DisplayElements('introtext')."\n".$story->DisplayElements('bodytext') );            
             $storytext = ($contentLength == 1) ? $fulltext : COM_truncateHTML ($fulltext, $contentLength, ' ...');
-
-
             $fulltext = trim( $fulltext );
             $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
@@ -426,11 +429,14 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
     {
         $row = DB_fetchArray( $result );
         $sids[] = $row['sid'];
+        
+        // Need to load story this way for intro and body text to insure things like [imageX] and autotags are processed properly
+        $story = new Story();
+        $story->loadFromArray($row);
 
         $storytitle = stripslashes( $row['title'] );
 
-        $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
-        $fulltext = PLG_replaceTags( $fulltext );
+        $fulltext = stripslashes( $story->DisplayElements('introtext')."\n".$story->DisplayElements('bodytext') );
         $storytext = ($contentLength == 1) ? $fulltext : COM_truncateHTML ($fulltext, $contentLength, ' ...');
         $fulltext = trim( $fulltext );
         $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
