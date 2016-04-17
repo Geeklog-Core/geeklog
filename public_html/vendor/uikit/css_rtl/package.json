@@ -13,14 +13,12 @@
     "url": "https://github.com/Geeklog-Core/geeklog.git"
   },
   "devDependencies": {
-    "R2": "^1.4.3",
     "del": "^2.2.0",
-    "glob": "^7.0.3",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.0.6",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
-    "gulp-shell": "^0.5.2",
+    "gulp-rtlcss": "^1.0.0",
     "run-sequence": "^1.1.5"
   }
 }
