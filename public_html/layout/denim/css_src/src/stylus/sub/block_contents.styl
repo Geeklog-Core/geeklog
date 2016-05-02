@@ -364,22 +364,37 @@ first-child-border-left(mode, bl) // mixin
 
 #leftblocks,
 #rightblocks
+    p,
+    ul,
+    ol,
+    dl,
+    blockquote,
+    pre,
+    address,
+    fieldset,
+    figure
+        margin: 0 0 9px 0
+    * + p,
+    * + ul,
+    * + ol,
+    * + dl,
+    * + blockquote,
+    * + pre,
+    * + address,
+    * + fieldset,
+    * + figure
+        margin-top: 9px
     p
         line-height: 1.25
-        margin: 0.7em 0
     ul
         list-style-position: inside
-        margin: 0.7em 0
         padding-left: 0.5em
     ol
         list-style-position: inside
-        margin: 0.7em 0
         padding-left: 0.9em
     li
         margin: 0 0 0.25em 0
         padding: 0
-    dl
-        margin: 0.7em 0
     input
         font-size: 95%
         margin-left: 0
@@ -456,9 +471,31 @@ first-child-border-left(mode, bl) // mixin
     .sideoption_off.branch_level4
         padding-left: 35px
 
-    /* Block Title */
-    h3, h4
-        font-size: 100%
+    /* Block Heading */
+    $mv = 9px
+    h1, h2, h3, h4, h5, h6
+        margin: 0 0 $mv 0
+    * +
+        h1, h2, h3, h4, h5, h6
+            margin-top: $mv
+    h1
+        font-size: 17px
+        line-height: @font-size + 6px
+    h2
+        font-size: 16px
+        line-height: @font-size + 6px
+    h3
+        font-size: 15px
+        line-height: @font-size + 6px
+    h4
+        font-size: 14px
+        line-height: @font-size + 6px
+    h5
+        font-size: 13px
+        line-height: @font-size + 6px
+    h6
+        font-size: 12px
+        line-height: @font-size + 6px
 
     // All Mobile Sizes
     @media only screen and (max-width: $breakpoint-small-max)
@@ -486,6 +523,32 @@ first-child-border-left(mode, bl) // mixin
 
         .sideoption_off
             color: #999
+
+        // Block Heading
+        $mv = 15px
+        h1, h2, h3, h4, h5, h6
+            margin: 0 0 $mv 0
+        * +
+            h1, h2, h3, h4, h5, h6
+                margin-top: $mv
+        h1
+            font-size: 22px
+            line-height: @font-size + 6px
+        h2
+            font-size: 20px
+            line-height: @font-size + 6px
+        h3
+            font-size: 18px
+            line-height: @font-size + 6px
+        h4
+            font-size: 16px
+            line-height: @font-size + 6px
+        h5
+            font-size: 14px
+            line-height: @font-size + 6px
+        h6
+            font-size: 12px
+            line-height: @font-size + 6px
 
 #leftblocks
     hook-selector($stage, "" + selector())
@@ -567,7 +630,8 @@ h4 img
 
 
 /*! Block Title */
-.block-title
+#leftblocks .block-title,
+#rightblocks .block-title
     margin: 0 0 0.5em 0
     padding: 0 0 0.1em 0
     border-bottom: 1px solid #CCC
@@ -685,7 +749,8 @@ div.third-party-login
 
     $hue = hue($mobile-block-title-background)
 
-    .block-title,
+    #leftblocks .block-title,
+    #rightblocks .block-title,
     #block-left-search > h2
         background: $mobile-block-title-background
         color: #EEEEEC
@@ -711,7 +776,8 @@ div.third-party-login
         background-size: 36px auto
         background-position: right 50%
 
-    h2.block-title
+    #leftblocks .block-title,
+    #rightblocks .block-title
         margin-top: 0
         margin-bottom: 0
 
