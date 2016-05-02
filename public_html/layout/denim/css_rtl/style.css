@@ -2482,9 +2482,31 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  #leftblocks,
-  #rightblocks {
-    background: #F7F7F7;
+  #leftblocks nav > ul,
+  #rightblocks nav > ul,
+  #leftblocks nav > ol,
+  #rightblocks nav > ol {
+    margin: 0;
+  }
+
+  #leftblocks p,
+  #rightblocks p {
+    line-height: 1.625;
+  }
+
+  #leftblocks .sideoption_group_label,
+  #rightblocks .sideoption_group_label {
+    color: #630;
+    font-size: 103%;
+    font-weight: bold;
+    height: 1.6em;
+    line-height: 1.6em;
+    overflow: hidden;
+    margin: 0;
+    padding: 0 5px;
+    white-space: nowrap;
+    border-top: 1px solid #E7E7E7;
+    border-bottom: 1px solid #E7E7E7;
   }
 
   #leftblocks input,
@@ -2503,21 +2525,11 @@ body.center-right #config_content {
   #rightblocks .sideoption a:hover,
   #leftblocks .sideoption_off,
   #rightblocks .sideoption_off {
-    background: url("../images/arrow-right.png") no-repeat #F7F7F7;
-    -webkit-background-size: 24px auto;
-    -moz-background-size: 24px auto;
-    background-size: 24px auto;
-    background-position: left 50%;
-    border: 1px solid #CACACA;
     color: #222;
     display: block;
     font-size: 16px;
-    font-weight: bold;
-    margin-bottom: -1px;
-    padding: 4px 10px;
     text-decoration: none;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
-    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    padding: 10px 15px;
   }
 
   #leftblocks .sideoption_off,
@@ -2859,8 +2871,7 @@ div.third-party-login {
     margin-right: -10px;
     margin-left: -10px;
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
-    border-top: 1px solid #6F9BC7;
-    border-bottom: 1px solid #1F374F;
+    border: none;
   }
 
   h2.show,
@@ -2925,7 +2936,6 @@ div.third-party-login {
   }
 
   #block-left-search > .block-left-content {
-    background: #F7F7F7;
     padding: 10px;
     margin: 0;
   }
@@ -2936,16 +2946,18 @@ div.third-party-login {
     margin: 0;
   }
 
-  .sideoption:first-child a,
-  .sideoption_off:first-child {
-    -webkit-border-top-right-radius: 8px;
-    -webkit-border-top-left-radius: 8px;
+  .block-list-content {
+    margin-right: -10px;
+    margin-left: -10px;
+    padding: 0;
   }
 
-  .sideoption:last-child a,
-  .sideoption_off:last-child {
-    -webkit-border-bottom-right-radius: 8px;
-    -webkit-border-bottom-left-radius: 8px;
+  .block-list-content li {
+    border-bottom: 1px solid #E7E7E7;
+  }
+
+  .block-list-content li:last-child {
+    border-bottom: none;
   }
 }
 

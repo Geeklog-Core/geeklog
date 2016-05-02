@@ -362,6 +362,8 @@ first-child-border-left(mode, bl) // mixin
   Common Block Style
 --------------------------------------*/
 
+$mobile-list-type ?= 'flat' // 'iphone_like' or 'flat'
+
 #leftblocks,
 #rightblocks
     p,
@@ -499,7 +501,29 @@ first-child-border-left(mode, bl) // mixin
 
     // All Mobile Sizes
     @media only screen and (max-width: $breakpoint-small-max)
-        background: $mobile-blocks-background //#E7E7E7
+
+        if $mobile-list-type == 'iphone_like'
+            background: $mobile-blocks-background //#E7E7E7
+
+        if $mobile-list-type == 'flat'
+            nav > ul,
+            nav > ol
+                margin: 0
+            p
+                line-height: 1.625
+            .sideoption_group_label
+                color: #630
+                font-size: 103%
+                font-weight: bold
+                height: 1.6em
+                line-height: 1.6em
+                overflow: hidden
+                margin: 0
+                padding: 0 5px
+                white-space: nowrap
+                border-top: 1px solid #e7e7e7
+                border-bottom: 1px solid #e7e7e7
+
         input
             font-size: 16px
         input[type="submit"]
@@ -508,18 +532,23 @@ first-child-border-left(mode, bl) // mixin
         .sideoption a,
         .sideoption a:hover,
         .sideoption_off
-            background: url(../images/arrow-right.png) no-repeat #F7F7F7
-            background-size: 24px auto
-            background-position: right 50%
-            border: 1px solid #CACACA
             color: #222
             display: block
             font-size: 16px
-            font-weight: bold
-            margin-bottom: -1px
-            padding: 4px 10px
             text-decoration: none
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+
+            if $mobile-list-type == 'iphone_like'
+                background: url(../images/arrow-right.png) no-repeat #F7F7F7
+                background-size: 24px auto
+                background-position: right 50%
+                border: 1px solid #CACACA
+                font-weight: bold
+                margin-bottom: -1px
+                padding: 4px 10px
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+
+            if $mobile-list-type == 'flat'
+                padding: 10px 15px
 
         .sideoption_off
             color: #999
@@ -761,8 +790,13 @@ div.third-party-login
         margin-left: -10px
         margin-right: -10px
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
-        border-top: 1px solid hue(#6F99C7, $hue)
-        border-bottom: 1px solid hue(#1F364F, $hue)
+
+        if $mobile-list-type == 'iphone_like'
+            border-top: 1px solid hue(#6F99C7, $hue)
+            border-bottom: 1px solid hue(#1F364F, $hue)
+
+        if $mobile-list-type == 'flat'
+            border: none
 
     h2.show,
     #block-left-search > h2.show
@@ -813,25 +847,37 @@ div.third-party-login
         padding: 10px 0
         text-shadow: 0 1px 0 #FFF
 
-
     #block-left-search > .block-left-content
-        background: $mobile-blocks-background // #E7E7E7
         padding: 10px
         margin: 0px
+        if $mobile-list-type == 'iphone_like'
+            background: $mobile-blocks-background // #E7E7E7
 
     .noliststyle
         list-style: none
         padding: 0px
         margin: 0px
 
-    .sideoption:first-child a,
-    .sideoption_off:first-child
-        -webkit-border-top-left-radius: 8px
-        -webkit-border-top-right-radius: 8px
+    if $mobile-list-type == 'iphone_like'
+        .sideoption:first-child a,
+        .sideoption_off:first-child
+            -webkit-border-top-left-radius: 8px
+            -webkit-border-top-right-radius: 8px
 
-    .sideoption:last-child a,
-    .sideoption_off:last-child
-        -webkit-border-bottom-left-radius: 8px
-        -webkit-border-bottom-right-radius: 8px
+        .sideoption:last-child a,
+        .sideoption_off:last-child
+            -webkit-border-bottom-left-radius: 8px
+            -webkit-border-bottom-right-radius: 8px
+
+    if $mobile-list-type == 'flat'
+        .block-list-content
+            margin-left: -10px
+            margin-right: -10px
+            padding: 0
+            li
+                border-bottom: 1px solid #e7e7e7
+                &:last-child
+                    border-bottom: none
+
 
 hook-root($stage)
