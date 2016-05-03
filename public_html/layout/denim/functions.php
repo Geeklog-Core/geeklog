@@ -58,6 +58,7 @@ function theme_config_denim()
             'execution_time'    => 0, // 1:show or 0:hide execution time on footer
             'pagenavi_string'   => 1, // 1:show or 0:hide string of page navigation
             'table_overflow'    => 1, // 1:scroll or 0:visible overflow style of admin tables
+            'toggle_showblock'  => 0, // 1:enable or 0:disable toggle showing block contents on mobile view
         )
     );
 }

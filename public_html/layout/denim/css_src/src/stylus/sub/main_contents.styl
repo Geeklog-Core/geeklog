@@ -36,8 +36,8 @@ $stage = 'main_contents'
 /*! Story Title */
 .story_title
     float: left
-    margin: 0 0 0.5em 0
-    font-size: 140%
+    margin: 0 0 10px 0
+    font-size: 20px
     text-decoration: none
     color: $story-title-color
     a:link,
@@ -65,7 +65,7 @@ $stage = 'main_contents'
     list-style-position: outside
     list-style-type: none
     clear: both
-    margin: 0 0 1em 0
+    margin: 0 0 10px 0
     padding-left: 1em
     color: $story-status-color
     font-size: 85%
@@ -130,6 +130,7 @@ $stage = 'main_contents'
 
 .gl-tooltip
     span
+        /*rtl:ignore*/
         margin-left: -999em
         position: absolute
         text-align: left
@@ -152,6 +153,7 @@ $stage = 'main_contents'
             left: 2.2em
             top: 2.2em
             z-index: 99
+            /*rtl:ignore*/
             margin-left: 0
             width: 250px
         img.icon
