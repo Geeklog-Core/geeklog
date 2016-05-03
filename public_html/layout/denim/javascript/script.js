@@ -38,7 +38,7 @@ $(function() {
     var istouch = ('ontouchstart' in window);
     var istablet = false;
 
-    if (istouch) {
+    if (geeklog.theme_options.toggle_showblock == 1 && istouch) {
         var ua = navigator.userAgent;
         istablet = (ua.indexOf('Android') > 0 && ua.indexOf('Mobile') == -1) ||
                    (ua.indexOf('iPad') > 0) || (ua.indexOf('SC-01C') > 0);
