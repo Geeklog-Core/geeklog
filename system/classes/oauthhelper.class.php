@@ -37,13 +37,15 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'oauthhelper.class.php') !== false)
 }
 
 // http://www.phpclasses.org/package/3-PHP-HTTP-client-to-access-Web-site-pages.html
+// httpclient 1.0.5 - Updated 2016-05-12
 // httpclient 1.0.2 - Updated 2014-08-14
 // No changes to file required to upgrade
 require_once 'http/http.php';
 // http://www.phpclasses.org/package/7700-PHP-Authorize-and-access-APIs-using-OAuth.html
+// oauth-api 1.0.80 - Updated 2016-05-12
 // oauth-api 1.0.39 - Updated 2014-12-22
 // To upgrade need to update Initialize function in oauth_client.php. Replace upper case with lower case letters in case statement
-// facebook, google, microsoft, twitter, linkedin, yahoo
+// facebook, github, google, microsoft, twitter, linkedin, yahoo
 require_once 'oauth/oauth_client.php';
 
 // Enable to show debug info for OAuth
@@ -82,12 +84,17 @@ class OAuthConsumer {
             }
         }
 
-        switch ( $this->client->server ) {
+        switch ( strtolower($this->client->server) ) {
             case 'facebook' :
                 $api_url = 'https://graph.facebook.com/me';
                 $scope   = 'email,user_website,user_location,user_about_me,user_photos';
                 $q_api   = array();
                 break;
+            case 'github' :
+                $api_url = 'https://api.github.com/user';
+                $scope   = 'user:email';
+                $q_api   = array();
+                break;                
             case 'google' :
                 $api_url = 'https://www.googleapis.com/oauth2/v1/userinfo';
                 $scope   = 'https://www.googleapis.com/auth/userinfo.email '.'https://www.googleapis.com/auth/userinfo.profile';

@@ -2,7 +2,7 @@
 /*
  * http.php
  *
- * @(#) $Header: /opt2/ena/metal/http/http.php,v 1.93 2015/08/22 18:53:37 mlemos Exp $
+ * @(#) $Header: /opt2/ena/metal/http/http.php,v 1.94 2016/05/03 02:07:04 mlemos Exp $
  *
  */
 
@@ -27,7 +27,7 @@ class http_class
 
 	var $protocol="http";
 	var $request_method="GET";
-	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.93 $)';
+	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.94 $)';
 	var $accept='';
 	var $authentication_mechanism="";
 	var $user;
@@ -177,7 +177,12 @@ class http_class
 	Function OutputDebug($message)
 	{
 		if($this->log_debug)
-			error_log($message);
+		{
+			if(strlen($this->log_file_name))
+				error_log($message."\n", 3, $this->log_file_name);
+			else
+				error_log($message);
+		}
 		else
 		{
 			$message.="\n";
