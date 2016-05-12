@@ -2021,7 +2021,7 @@ function SEC_collectRemoteOAuthModules()
 {
     global $_CONF;
 
-    $available_modules = array('facebook','google','twitter','microsoft','linkedin','yahoo');
+    $available_modules = array('facebook','google','twitter','microsoft','linkedin','yahoo','github');
 
     $modules = array();
 

@@ -335,6 +335,9 @@ $_CONF_VALIDATE['Core']['microsoft_consumer_secret'] = array('rule' => 'stringOr
 $_CONF_VALIDATE['Core']['yahoo_login'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['yahoo_consumer_key'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['yahoo_consumer_secret'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['github_login'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['github_consumer_key'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['github_consumer_secret'] = array('rule' => 'stringOrEmpty');
 
 $_CONF_VALIDATE['Core']['aftersave_user'] = array(
     'rule' => array('inList', array('admin', 'home', 'list', 'item'), true)

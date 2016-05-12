@@ -198,6 +198,7 @@ $LANG01 = array(
     'google' => 'Googleでログイン',
     'microsoft' => 'Microsoftでログイン',
     'yahoo' => 'Yahooでログイン',
+    'github' => 'GitHubでログイン',
     'ctl' => 'キャッシュ一括削除',
     'filemanager' => 'ファイルマネージャー'
 );
@@ -1971,6 +1972,9 @@ $LANG_confignames['Core'] = array(
     'yahoo_login' => 'YahooのOAuthをを有効にする',
     'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
     'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
+    'github_login' => "Enable OAuth Login Method GitHub",
+    'github_consumer_key' => "GitHub OAuth Consumer Key",
+    'github_consumer_secret' => "GitHub OAuth Consumer Secret",      
     'spamx' => 'Spam-X',
     'sort_admin' => 'リンクを並べ替える',
     'language' => '言語',

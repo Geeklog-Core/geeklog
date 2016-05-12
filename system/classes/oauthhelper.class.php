@@ -268,6 +268,8 @@ class OAuthConsumer {
                     $userinfo['location'] = $info->location->name;
                 }
                 break;
+            case 'github' :
+                break;                
             case 'google' :
                 break;
             case 'microsoft' :
@@ -306,6 +308,19 @@ class OAuthConsumer {
                     'remotephoto'    => 'http://graph.facebook.com/'.$info->id.'/picture',
                 );
                 break;
+            case 'github' :
+                $users = array(
+                    'loginname'      => (isset($info->{'login'}) ? $info->{'login'} : $info->id),
+                    'email'          => $info->{'email'},
+                    'passwd'         => '',
+                    'passwd2'        => '',
+                    'fullname'       => $info->{'name'},
+                    'homepage'       => $info->{'html_url'},
+                    'remoteusername' => DB_escapeString($info->id),
+                    'remoteservice'  => 'oauth.github',
+                    'remotephoto'    => $info->{'avatar_url'},
+                );
+                break;                
             case 'google' :
                 $users = array(
                     'loginname'      => (isset($info->given_name) ? $info->given_name : $info->id),
