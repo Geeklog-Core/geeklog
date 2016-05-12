@@ -1982,12 +1982,18 @@ function SEC_loginForm($use_config = array())
             $loginform->set_var('oauth_login', '');
         } else {
             $html_oauth = '';
+            // Grab oauth icons from theme
+            if ($_CONF['theme_oauth_icons']) {
+                $icon_path = $_CONF['layout_url'] . '/images/';
+            } else {
+                $icon_path = $_CONF['site_url'] . '/images/';
+            }            
             foreach ($modules as $service) {
                 $loginform->set_file('oauth_login', '../loginform_oauth.thtml');
                 $loginform->set_var('oauth_service', $service);
                 $loginform->set_var('lang_oauth_service', $LANG01[$service]);
                 // for sign in image
-                $loginform->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/' . $service . '-login-icon.png');
+                $loginform->set_var('oauth_sign_in_image', $icon_path . $service . '-login-icon.png');
                 $loginform->parse('output', 'oauth_login');
                 $html_oauth .= $loginform->finish($loginform->get_var('output'));
             }
