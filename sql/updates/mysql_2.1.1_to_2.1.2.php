@@ -21,6 +21,11 @@ function update_ConfValuesFor212()
     // Add extra setting to hide_main_page_navigation
     $c->del('hide_main_page_navigation', $me);
     $c->add('hide_main_page_navigation','false','select',1,7,36,1310,TRUE, $me, 7);
+    
+    // New OAuth Service
+    $c->add('github_login',0,'select',4,16,1,368,TRUE, $me, 16);
+    $c->add('github_consumer_key','','text',4,16,NULL,369,TRUE, $me, 16);
+    $c->add('github_consumer_secret','','text',4,16,NULL,370,TRUE, $me, 16);    
 
     return true;
 }
