@@ -190,6 +190,7 @@ $LANG01 = array(
     'google' => 'Login with Google',
     'microsoft' => 'Login with Microsoft',
     'yahoo' => 'Login with Yahoo',
+    'github' => 'Login with GitHub',
     'ctl' => 'Clear Cache',
     'filemanager' => 'File Manager'
 );
@@ -1970,6 +1971,9 @@ $LANG_confignames['Core'] = array(
     'yahoo_login' => "Enable OAuth Login Method Yahoo",
     'yahoo_consumer_key' => "Yahoo OAuth Consumer Key",
     'yahoo_consumer_secret' => "Yahoo OAuth Consumer Secret",
+    'github_login' => "Enable OAuth Login Method GitHub",
+    'github_consumer_key' => "GitHub OAuth Consumer Key",
+    'github_consumer_secret' => "GitHub OAuth Consumer Secret",    
     'spamx' => "Spam-X Actions",
     'sort_admin' => "Sort Links",
     'language' => "Default Language",

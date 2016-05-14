@@ -235,6 +235,7 @@ require_once $_CONF['path_system'] . 'lib-block.php';
  */
 $_CONF['left_blocks_in_footer'] = 0;  // use left blocks in header
 $_CONF['right_blocks_in_footer'] = 1;  // use right blocks in footer
+$_CONF['theme_oauth_icons'] = 0; // 0 - Use Geeklogs OAuth icons. 1 - Use theme OAuth icons
 
 /**
 * This is the custom library.
@@ -3053,12 +3054,18 @@ function COM_userMenu($help = '', $title = '', $position = '')
                 $login->set_var('oauth_login', '');
             } else {
                 $html_oauth = '';
+                // Grab oauth icons from theme
+                if ($_CONF['theme_oauth_icons']) {
+                    $icon_path = $_CONF['layout_url'] . '/images/';
+                } else {
+                    $icon_path = $_CONF['site_url'] . '/images/';
+                }
                 foreach ($modules as $service) {
                     $login->set_file('oauth_login', 'loginform_oauth.thtml');
                     $login->set_var('oauth_service', $service);
                     $login->set_var('lang_oauth_service', $LANG01[$service]);
                     // for sign in image
-                    $login->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/' . $service . '-login-icon.png'); // For use with oauth icon on regular buttons
+                    $login->set_var('oauth_sign_in_image', $icon_path . $service . '-login-icon.png'); // For use with oauth icon on regular buttons
                     $login->parse('output', 'oauth_login');
                     $html_oauth .= $login->finish($login->get_var('output'));
                 }

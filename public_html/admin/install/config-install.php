@@ -251,6 +251,10 @@ function install_config()
     $c->add('yahoo_login',0,'select',4,16,1,365,TRUE, $me, 16);
     $c->add('yahoo_consumer_key','','text',4,16,NULL,366,TRUE, $me, 16);
     $c->add('yahoo_consumer_secret','','text',4,16,NULL,367,TRUE, $me, 16);
+    $c->add('github_login',0,'select',4,16,1,368,TRUE, $me, 16);
+    $c->add('github_consumer_key','','text',4,16,NULL,369,TRUE, $me, 16);
+    $c->add('github_consumer_secret','','text',4,16,NULL,370,TRUE, $me, 16);    
+    
     $c->add('aftersave_user','item','select',4,16,9,1340,TRUE, $me, 16);
 
     $c->add('tab_spamx', NULL, 'tab', 4, 17, NULL, 0, TRUE, $me, 17);
