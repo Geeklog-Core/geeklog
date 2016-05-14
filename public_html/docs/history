@@ -1,5 +1,12 @@
 Geeklog History/Changes:
 
+
+Not Released (2.1.2)
+------------
+
+- [Feature] Added GitHub OAuth Login [Tom]
+- [Feature] Added $_CONF['theme_oauth_icons'] option to allow theme to use own OAuth icons [Tom]
+
 December 9, 2015 (2.1.1)
 ------------
 

@@ -93,7 +93,9 @@ function theme_js_files_professional()
  */
 function theme_init_professional()
 {
-    global $_BLOCK_TEMPLATE;
+    global $_BLOCK_TEMPLATE, $_CONF;
+    
+    $_CONF['theme_oauth_icons'] = 0; // Default is false (not required). Will use Geeklogs own OAuth icons for login form else use icons in theme images directory
 
     /*
      * For left/right block support there is no longer any need for the theme to

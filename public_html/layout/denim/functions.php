@@ -96,7 +96,7 @@ function theme_js_libs_denim()
     return array(
        array(
             'library' => 'jquery',
-            'footer'  => false // Not requred, default = true
+            'footer'  => false // Not required, default = true
         )
     );
 }
@@ -112,14 +112,14 @@ function theme_js_files_denim()
 
        array(
             'file'      => '/vendor/uikit/js/uikit.js',
-            'footer'    => false, // Not requred, default = true
-            'priority'  => 100 // Not requred, default = 100
+            'footer'    => false, // Not required, default = true
+            'priority'  => 100 // Not required, default = 100
         ),
 
        array(
             'file'      => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
-            'footer'    => true, // Not requred, default = true
-            'priority'  => 100 // Not requred, default = 100
+            'footer'    => true, // Not required, default = true
+            'priority'  => 100 // Not required, default = 100
         )
     );
 }
@@ -132,6 +132,8 @@ function theme_init_denim()
     global $_BLOCK_TEMPLATE, $_CONF;
 
     $_CONF['left_blocks_in_footer'] = 1;
+    
+    $_CONF['theme_oauth_icons'] = 0; // Default is false (not required). Will use Geeklogs own OAuth icons for login form else use icons in theme images directory
 
     /*
      * For left/right block support there is no longer any need for the theme to
