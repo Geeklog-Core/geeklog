@@ -400,6 +400,7 @@ $LANG04 = array(
     148 => 'User Information',
     149 => 'Modify your user information that will be shown to other users.<ul><li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li></ul>',
     150 => '',
+    151 => 'Blocks',
     156 => 'Delete Account',
     157 => 'Delete Option',
     158 => 'Time Zone',
