@@ -10,8 +10,11 @@
     </dl>
   </div>
 
-  <div id="boxesblock">
-    {boxes_checklist}
+  <div class="compact">
+    <dl class="form_block">
+      <dt><label>{lang_blocks}</label></dt>
+      <dd>{boxes_checklist}</dd>
+    </dl>
   </div>
 </fieldset>
 

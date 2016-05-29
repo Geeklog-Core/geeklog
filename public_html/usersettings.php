@@ -427,6 +427,7 @@ function editpreferences()
     $preferences->set_var('lang_boxes_title', $LANG04[144]);
     $preferences->set_var('lang_boxes_help_title', $LANG04[143]);
     $preferences->set_var('lang_boxes', $LANG04[55]);
+    $preferences->set_var('lang_blocks', $LANG04[151]);
     $preferences->set_var('lang_displaymode', $LANG04[57]);
     $preferences->set_var('lang_displaymode_text', $LANG04[60]);
     $preferences->set_var('lang_sortorder', $LANG04[58]);

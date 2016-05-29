@@ -11,9 +11,10 @@
   </div>
 
   <div class="compact">
-    <p class="checklist">
-      {email_topic_checklist}
-    </p>
+    <dl class="form_block">
+      <dt><label>{lang_topics}</label></dt>
+      <dd>{email_topic_checklist}</dd>
+    </dl>
   </div>
 </fieldset>
 
