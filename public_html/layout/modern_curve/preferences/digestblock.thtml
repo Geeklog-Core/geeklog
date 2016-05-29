@@ -8,9 +8,10 @@
     <dd>{lang_emailedtopics}</dd>
   </dl>
 
-  <p class="checklist">
-    {email_topic_checklist}
-  </p>
+  <dl>
+    <dt>{lang_topics}</dt>
+    <dd>{email_topic_checklist}</dd>
+  </dl>
 </fieldset>
 
 {# end {templatelocation} #}
