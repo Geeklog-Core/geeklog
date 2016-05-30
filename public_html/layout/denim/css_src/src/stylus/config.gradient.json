@@ -8,7 +8,7 @@
         "adjust-hue": "true",
         "global-navigation-style": "default",
         "flip-horizontal": "false",
-        "uikit-theme": "default"
+        "uikit-theme": "gradient"
     },
     "$base": {
         "text-color": "#222",

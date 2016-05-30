@@ -8,7 +8,10 @@
     <dd>{lang_boxes}</dd>
   </dl>
 
-    {boxes_checklist}
+  <dl>
+    <dt>{lang_blocks}</dt>
+    <dd>{boxes_checklist}</dd>
+  </dl>
 </fieldset>
 
 {# end {templatelocation} #}

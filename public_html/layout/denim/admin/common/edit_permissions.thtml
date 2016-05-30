@@ -1,6 +1,6 @@
 {# begin {templatelocation} #}
 
-<table id="admin-permissions">
+<table id="admin-permissions" class="uk-table">
   <thead>
     <tr>
       <th colspan="2">{lang_owner}</th>
@@ -11,7 +11,7 @@
   </thead>
 
   <tbody>
-    <tr class="pluginRow1">
+    <tr>
       <td><label for="permissions-or">R</label><br{xhtml}><input type="checkbox" id="permissions-or" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
       <td><label for="permissions-oe">E</label><br{xhtml}><input type="checkbox" id="permissions-oe" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
       <td><label for="permissions-gr">R</label><br{xhtml}><input type="checkbox" id="permissions-gr" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>

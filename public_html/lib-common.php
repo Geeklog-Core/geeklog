@@ -2411,7 +2411,7 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldna
         }
 
         if ($access) {
-            $retval .= '<li><input type="checkbox" name="' . $fieldname . '[]" value="' . $A[0] . '"';
+            $retval .= '<li><label><input type="checkbox" name="' . $fieldname . '[]" value="' . $A[0] . '"';
 
             $sizeS = count($S);
             for ($x = 0; $x < $sizeS; $x++) {
@@ -2422,9 +2422,9 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldna
             }
 
             if (($table == $_TABLES['blocks']) && isset($A[2]) && ($A[2] === 'gldefault')) {
-                $retval .= XHTML . '><span class="gldefault">' . stripslashes( $A[1] ) . '</span></li>' . LB;
+                $retval .= XHTML . '><span class="gldefault">' . stripslashes( $A[1] ) . '</span></label></li>' . LB;
             } else {
-                $retval .= XHTML . '><span>' . stripslashes($A[1]) . '</span></li>' . LB;
+                $retval .= XHTML . '><span>' . stripslashes($A[1]) . '</span></label></li>' . LB;
             }
         }
     }

@@ -9,7 +9,7 @@
 </div>
 
 <div class="table-wrapper">
-<table class="admin-list-table">
+<table class="admin-list-table uk-table uk-table-hover uk-table-striped">
 <tr>
 {header_row}</tr>
 {item_row}

@@ -62,7 +62,13 @@ $header-height-mobile = 80px
         border: none
 
     if $var-header-style == 'normal'
-        background: linear-gradient(top, $header-background-dark, 50% $header-background, 90% $header-background, $header-background-dark)
+        if $var-uikit-theme == 'default'
+            background-color: $header-background
+        if $var-uikit-theme == 'gradient'
+            background: linear-gradient(top, $header-background-dark, 50% $header-background, 90% $header-background, $header-background-dark)
+        if $var-uikit-theme == 'almost-flat'
+            background-color: $header-background
+
         height: $header-height
         // All Mobile Sizes
         @media only screen and (max-width: $breakpoint-small-max)
@@ -224,37 +230,32 @@ first-child-border-left(mode, bl) // mixin
         //box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
         text-align: left
         text-shadow: 0 1px 0 #FFF
-
-        background: #F7F7F7
         color: #444
-        background-image: linear-gradient(to bottom, #FFF, #EEE)
-        border: 1px solid rgba(0, 0, 0, 0.1)
-        border-bottom-color: rgba(0, 0, 0, 0.3)
-        background-origin: border-box
-        ul
-            list-style: none
-            margin: 0
-            padding: 0
-            //font-weight: bold
-        li
-            float: left
-            margin: 0
-            padding: 0
-            a
-                font-size: 13px
-                display: block
-                line-height: 30px
-                margin: 0
-                padding: 0 7px
-                border-right: 1px solid $navigation-border-right
-            &:first-child a
-                first-child-border-left($var-style-mode, $navigation-border-right)
+
+        if $var-uikit-theme == 'default'
+            background-color: #EEE
+            border-top: 1px solid #EEE
+            border-bottom: 1px solid #EEE
+        if $var-uikit-theme == 'gradient'
+            background-color: #EEE
+            background-image: linear-gradient(to bottom, #FFF, #EEE)
+            background-origin: border-box
+            border-top: 1px solid rgba(0, 0, 0, 0.1)
+            border-bottom: 1px solid rgba(0, 0, 0, 0.3)
+        if $var-uikit-theme == 'almost-flat'
+            background-color: #f5f5f5
+            border-top: 1px solid rgba(0, 0, 0, 0.1)
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1)
 
         .uk-navbar
             border: none
 
-        .uk-navbar-nav > li > a
-            height: 31px
+        .gl-navbar-small
+            .uk-navbar-nav > li > a // UIkit modifier
+                height: 31px
+                font-size: 13px
+                line-height: 30px
+                padding: 0 10px
 
     if $var-global-navigation-style == 'frame'
         build-border("$navigation")
@@ -294,8 +295,17 @@ first-child-border-left(mode, bl) // mixin
             height: 80px // same height with #header
     hook-selector($stage, "" + selector())
 
-#header-search
-    padding: 3px
+if $var-global-navigation-style == 'normal'
+    #header-search
+        padding: 5px
+
+    .gl-navbar-small #header-search
+        padding: 2.5px
+
+    .gl-navbar-small #header-search-box
+        font-size: 12px;
+        height: 25px;
+        padding: 3px;
 
 /*!--------------------------------------
   Center Block Content

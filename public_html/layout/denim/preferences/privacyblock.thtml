@@ -4,10 +4,13 @@
   <legend>{lang_privacy_title}</legend>
 
   <div class="linear">
-    <dl class="profile_notes">
-      <dt>{lang_privacy_help_title}</dt>
-      <dd>{lang_privacy_help}</dd>
-    </dl>
+    <div class="profile_notes uk-panel uk-panel-box">
+      <div class="uk-panel-title">
+        <i class="uk-icon-info-circle uk-text-primary"></i>
+        <span>{lang_privacy_help_title}</span>
+      </div>
+      <div>{lang_privacy_help}</div>
+    </div>
   </div>
 
   <div class="compact">
