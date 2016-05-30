@@ -4,10 +4,13 @@
   <legend>{lang_comment_title}</legend>
 
   <div class="linear">
-    <dl class="profile_notes">
-      <dt>{lang_comment_help_title}</dt>
-      <dd><ul>{lang_comment_help}</ul></dd>
-    </dl>
+    <div class="profile_notes uk-panel uk-panel-box">
+      <div class="uk-panel-title">
+        <i class="uk-icon-info-circle uk-text-primary"></i>
+        <span>{lang_comment_help_title}</span>
+      </div>
+      <div><ul>{lang_comment_help}</ul></div>
+    </div>
   </div>
 
   <div class="compact">

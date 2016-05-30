@@ -4,10 +4,13 @@
   <legend>{lang_misc_title}</legend>
 
   <div class="linear">
-    <dl class="profile_notes">
-      <dt>{lang_misc_help_title}</dt>
-      <dd><ul>{lang_misc_help}</ul></dd>
-    </dl>
+    <div class="profile_notes uk-panel uk-panel-box">
+      <div class="uk-panel-title">
+        <i class="uk-icon-info-circle uk-text-primary"></i>
+        <span>{lang_misc_help_title}</span>
+      </div>
+      <div><ul>{lang_misc_help}</ul></div>
+    </div>
   </div>
 
   <div class="compact">

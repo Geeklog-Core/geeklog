@@ -31,11 +31,14 @@
     <legend>{lang_password_email_legend}</legend>
 
     <div class="linear">
-      <dl class="profile_notes">
-        <dt>{lang_password_help_title}</dt>
-        <dd>{lang_password_help}</dd>
-        <dd><span class="warningsmall"><strong>{lang_enter_current_password}</strong></span></dd>
-      </dl>
+      <div class="profile_notes uk-panel uk-panel-box">
+        <div class="uk-panel-title">
+          <i class="uk-icon-info-circle uk-text-primary"></i>
+          <span>{lang_password_help_title}</span>
+        </div>
+        <div>{lang_password_help}</div>
+        <div><span class="warningsmall"><strong>{lang_enter_current_password}</strong></span></div>
+      </div>
     </div>
 
     <div class="compact">
@@ -66,10 +69,13 @@
     <legend>{lang_personal_info_legend}</legend>
 
     <div class="linear">
-      <dl class="profile_notes">
-        <dt>{lang_userinfo_help_title}</dt>
-        <dd>{lang_userinfo_help}</dd>
-      </dl>
+      <div class="profile_notes uk-panel uk-panel-box">
+        <div class="uk-panel-title">
+          <i class="uk-icon-info-circle uk-text-primary"></i>
+          <span>{lang_userinfo_help_title}</span>
+        </div>
+        <div>{lang_userinfo_help}</div>
+      </div>
     </div>
 
     <div class="compact">
