@@ -7525,7 +7525,9 @@ function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $t
     $tooltip->set_var('class', $class);
     $tooltip->set_var('hoverover', $hoverover);
     $tooltip->set_var('text', $text);
+    $tooltip->set_var('plaintext', strip_tags($text));
     $tooltip->set_var('title', $title);
+    $tooltip->set_var('plaintitle', strip_tags($title));
     if ($link == '') {
         $link = 'javascript:void(0);';
         $cursor = 'help';
