@@ -48,6 +48,29 @@ function theme_config_denim()
 
     $theme_var_denim = array(
         'uikit_theme' => 'default', // you can set this variable to 'default' or 'gradient' or 'almost-flat'
+        'uikit_components'  => array(
+            'accordion'     => 0,
+            'autocomplete'  => 0,
+            'datepicker'    => 0,
+            'dotnav'        => 0,
+            'form_advanced' => 0,
+            'form_file'     => 0,
+            'form_password' => 0,
+            'form_select'   => 0,
+            'htmleditor'    => 0,
+            'nestable'      => 0,
+            'notify'        => 0,
+            'placeholder'   => 0,
+            'progress'      => 0,
+            'search'        => 0,
+            'slidenav'      => 0,
+            'slider'        => 0,
+            'slideshow'     => 0,
+            'sortable'      => 0,
+            'sticky'        => 0,
+            'tooltip'       => 1,
+            'upload'        => 0,
+        ),
         'use_minified_css'  => 0,   // 1:use  or 0:no_use minified css
         'header_search'     => 1,   // 1:show or 0:hide header searchbox
         'block_left_search' => 1,   // 1:show or 0:hide left block searchbox
@@ -83,20 +106,35 @@ function theme_css_denim()
     }
     $min = ($theme_var_denim['use_minified_css'] === 1) ? '.min' : '';
 
-    return array(
-        array(
-            'name'       => 'uikit',
-            'file'       => '/vendor/uikit/css' . $direction . '/uikit' . $ui_theme . $min . '.css',
-            'attributes' => array('media' => 'all'),
-            'priority'   => 80
-        ),
-
-        array(
-            'name'       => 'main', // don't use the name 'theme' to control the priority
-            'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style' . $ui_theme . $min . '.css',
-            'attributes' => array('media' => 'all')
-        )
+    $result = array();
+    $result[] = array(
+        'name'       => 'uikit',
+        'file'       => '/vendor/uikit/css' . $direction . '/uikit' . $ui_theme . $min . '.css',
+        'attributes' => array('media' => 'all'),
+        'priority'   => 80
     );
+
+    $result[] = array(
+        'name'       => 'main', // don't use the name 'theme' to control the priority
+        'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style' . $ui_theme . $min . '.css',
+        'attributes' => array('media' => 'all')
+    );
+
+    if (!empty($theme_var_denim['uikit_components'])) {
+        $uikit_components = array_unique($theme_var_denim['uikit_components']);
+        foreach ($uikit_components as $component => $value) {
+            if ($value === 1) {
+                $componame = str_replace('_', '-', $component);
+                $result[] = array(
+                    'name'     => 'uk_' . $component,
+                    'file'     => '/vendor/uikit/css' . $direction . '/components/' . $componame . $ui_theme . $min . '.css',
+                    'priority' => 81
+                );
+            }
+        }
+    }
+
+    return $result;
 }
 
 /**
@@ -117,22 +155,36 @@ function theme_js_libs_denim()
  */
 function theme_js_files_denim()
 {
-    global $_CONF;
+    global $_CONF, $theme_var_denim;
 
-    return array(
-
-       array(
-            'file'      => '/vendor/uikit/js/uikit.js',
-            'footer'    => false, // Not required, default = true
-            'priority'  => 100 // Not required, default = 100
-        ),
-
-       array(
-            'file'      => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
-            'footer'    => true, // Not required, default = true
-            'priority'  => 100 // Not required, default = 100
-        )
+    $result = array();
+    $result[] = array(
+        'file'     => '/vendor/uikit/js/uikit.js',
+        'footer'   => false, // Not required, default = true
+        'priority' => 100 // Not required, default = 100
     );
+
+    $result[] = array(
+        'file'     => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
+        'footer'   => true, // Not required, default = true
+        'priority' => 100 // Not required, default = 100
+    );
+
+    if (!empty($theme_var_denim['uikit_components'])) {
+        $uikit_components = array_unique($theme_var_denim['uikit_components']);
+        foreach ($uikit_components as $component => $value) {
+            if ($value === 1) {
+                $componame = str_replace('_', '-', $component);
+                $result[] = array(
+                    'file'     => '/vendor/uikit/js/components/' . $componame . '.js',
+                    'footer'   => false,
+                    'priority' => 110
+                );
+            }
+        }
+    }
+
+    return $result;
 }
 
 /**
