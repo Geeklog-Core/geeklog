@@ -196,6 +196,13 @@ require_once $_CONF['path_system'] . 'classes/url.class.php';
 $_URL = new url($_CONF['url_rewrite']);
 
 /**
+* Include Device Detect class
+*
+*/
+require_once $_CONF['path_system'] . 'classes/device.class.php';
+$_DEVICE = new device();
+
+/**
 * This is our HTML template class.  It is the same one found in PHPLib and is
 * licensed under the LGPL.  See that file for details.
 *

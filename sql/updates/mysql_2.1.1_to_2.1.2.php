@@ -25,7 +25,10 @@ function update_ConfValuesFor212()
     // New OAuth Service
     $c->add('github_login',0,'select',4,16,1,368,TRUE, $me, 16);
     $c->add('github_consumer_key','','text',4,16,NULL,369,TRUE, $me, 16);
-    $c->add('github_consumer_secret','','text',4,16,NULL,370,TRUE, $me, 16);    
+    $c->add('github_consumer_secret','','text',4,16,NULL,370,TRUE, $me, 16);
+
+    // New mobile cache
+    $c->add('cache_templates',TRUE,'select',2,10,1,220,TRUE, $me, 10);    
 
     return true;
 }

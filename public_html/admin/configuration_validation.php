@@ -270,6 +270,7 @@ $_CONF_VALIDATE['Core']['path_themes'] = array(
                  $LANG_VALIDATION['path_themes'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['cache_templates'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['cache_mobile'] = array('rule' => 'boolean');
 
 /* Subgroup Theme, Tab Advanced Settings */
 $_CONF_VALIDATE['Core']['show_right_blocks'] = array('rule' => 'boolean');
