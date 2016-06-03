@@ -270,6 +270,7 @@ $_CONF_VALIDATE['Core']['path_themes'] = array(
                  $LANG_VALIDATION['path_themes'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['cache_templates'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['cache_mobile'] = array('rule' => 'boolean');
 
 /* Subgroup Theme, Tab Advanced Settings */
 $_CONF_VALIDATE['Core']['show_right_blocks'] = array('rule' => 'boolean');
@@ -606,6 +607,58 @@ $_CONF_VALIDATE['Core']['autotag_permissions_user[2]'] = array(
     'rule' => array('inList', array(0, 2), true)
 );
 $_CONF_VALIDATE['Core']['autotag_permissions_user[3]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+
+$_CONF_VALIDATE['Core']['autotag_permissions_topic[0]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_topic[1]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_topic[2]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_topic[3]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+
+$_CONF_VALIDATE['Core']['autotag_permissions_related_topics[0]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_topics[1]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_topics[2]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_topics[3]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+
+$_CONF_VALIDATE['Core']['autotag_permissions_related_items[0]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_items[1]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_items[2]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_items[3]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+
+$_CONF_VALIDATE['Core']['autotag_permissions_block[0]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_block[1]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_block[2]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_block[3]'] = array(
     'rule' => array('inList', array(0, 2), true)
 );
 

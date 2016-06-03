@@ -550,7 +550,15 @@
   <td valign="top">「はい」にすると、すべてのテンプレートをキャッシュし、サイトの速度向上に役立ちます。しかし、場合によってはキャッシュすることで
 速度が遅くなることもあります。Webサーバーのディスクアクセス速度が遅い場合や
 Windowsで共有ドライブにアクセスしている場合です。
-このような場合には「いいえ」にするとサイトの速度が向上するでしょう。</td></tr>    
+このような場合には「いいえ」にするとサイトの速度が向上するでしょう。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cache_mobile">cache_mobile</a></td>
+  <td valign="top">true</td>
+  <td valign="top">If set to <tt>true</tt>, mobile devices (phones and tablets) will be cached
+  separately from computers. This includes the template files, blocks, articles and other plugins which may use 
+  Geeklog's template cache system. You should only set this to false if you do not plan to display different information 
+  depending on if a mobile device is detected being used by the user. Performance will be improved slightly if set to false since 
+  less cached files will be created.</td></tr>    
 </table>
 
 <h3><a name="theme_advanced">テーマ: テーマの拡張設定</a></h3>
