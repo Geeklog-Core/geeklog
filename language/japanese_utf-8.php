@@ -862,6 +862,7 @@ $LANG21 = array(
     67 => '自動タグの使用を許可',
     68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
     69 => 'プラグイン名',
+    'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)'
 );
@@ -2182,6 +2183,7 @@ $LANG_confignames['Core'] = array(
     'autotag_permissions_topic' => '[topic: ] パーミッション',
     'autotag_permissions_related_topics' => '[related_topics: ] パーミッション',
     'autotag_permissions_related_items' => '[related_items: ] パーミッション',
+    'autotag_permissions_block' => '[block: ] パーミッション',
     'multiple_breadcrumbs' => 'パンくずリストの複数表示を許可する',
     'disable_breadcrumbs_topics' => '話題のパンくずリストを無効にする',
     'disable_breadcrumbs_articles' => '記事のパンくずリストを無効にする',

@@ -610,6 +610,58 @@ $_CONF_VALIDATE['Core']['autotag_permissions_user[3]'] = array(
     'rule' => array('inList', array(0, 2), true)
 );
 
+$_CONF_VALIDATE['Core']['autotag_permissions_topic[0]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_topic[1]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_topic[2]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_topic[3]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+
+$_CONF_VALIDATE['Core']['autotag_permissions_related_topics[0]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_topics[1]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_topics[2]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_topics[3]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+
+$_CONF_VALIDATE['Core']['autotag_permissions_related_items[0]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_items[1]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_items[2]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_related_items[3]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+
+$_CONF_VALIDATE['Core']['autotag_permissions_block[0]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_block[1]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_block[2]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+$_CONF_VALIDATE['Core']['autotag_permissions_block[3]'] = array(
+    'rule' => array('inList', array(0, 2), true)
+);
+
 /* Subgroup Misc, Tab Story Webservices */
 $_CONF_VALIDATE['Core']['disable_webservices'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['restrict_webservices'] = array('rule' => 'boolean');

@@ -29,6 +29,9 @@ function update_ConfValuesFor212()
 
     // New mobile cache
     $c->add('cache_templates',TRUE,'select',2,10,1,220,TRUE, $me, 10);      
+    
+    // New Block Autotag permissions
+    $c->add('autotag_permissions_block', array(2, 2, 0, 0), '@select', 7, 41, 28, 1920, TRUE, $me, 37);    
 
     return true;
 }
