@@ -108,7 +108,11 @@ function plugin_autotags_block($op, $content = '', $autotag = '')
         }
         $owner_id = SEC_getDefaultRootUser();
 
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_block'][0], $_CONF['autotag_permissions_block'][1], $_CONF['autotag_permissions_block'][2], $_CONF['autotag_permissions_poll_vote'][3]) == $flag) {
+        if (COM_getPermTag($owner_id, $group_id,
+            $_CONF['autotag_permissions_block'][0],
+            $_CONF['autotag_permissions_block'][1],
+            $_CONF['autotag_permissions_block'][2],
+            $_CONF['autotag_permissions_block'][3]) == $flag) {
             $tagnames[] = 'block';
         }
 
@@ -127,31 +131,29 @@ function plugin_autotags_block($op, $content = '', $autotag = '')
                 . "WHERE name = '$name'");
             $A = DB_fetchArray($result);
             if (DB_numRows($result) > 0) {
-                
+
                 switch ($autotag['tag']) {
                 case 'block':
                     $px = explode(' ', trim($autotag['parm2']));
-                    $css_class = '';
+                    $css_class = "block-autotag";
 
                     if (is_array($px)) {
                         foreach ($px as $part) {
                             if (substr($part, 0, 6) == 'class:') {
                                 $a = explode(':', $part);
-                                
-                                $css_class = "block-autotag";
-                                $css_class .= $a[1];
+                                // append a class
+                                $css_class .= ' ' . $a[1];
                             } else {
                                 break;
                             }
                         }
-                    }                
-                                    
-                    $retval = COM_formatBlock($A, false, true);
-                    
-                    if (!empty($css_class)) {
-                        $retval = '<div class="' . $css_class . '">' . $retval . '</div>';
                     }
-                
+
+                    $retval = COM_formatBlock($A, false, true);
+
+                    // the class block-autotag will always be included with the div
+                    $retval = '<div class="' . $css_class . '">' . $retval . '</div>';
+
                     break;
                 }
 
@@ -162,5 +164,3 @@ function plugin_autotags_block($op, $content = '', $autotag = '')
 
     return $content;
 }
-
-?>
