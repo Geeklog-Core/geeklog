@@ -4,10 +4,13 @@
   <legend>{lang_exclude_title}</legend>
 
   <div class="linear">
-    <dl class="profile_notes">
-      <dt>{lang_excluded_items_title}</dt>
-      <dd>{lang_excluded_items}</dd>
-    </dl>
+    <div class="profile_notes uk-panel uk-panel-box">
+      <div class="uk-panel-title">
+        <i class="uk-icon-info-circle uk-text-primary"></i>
+        <span>{lang_excluded_items_title}</span>
+      </div>
+      <div>{lang_excluded_items}</div>
+    </div>
   </div>
 
   <div class="compact">

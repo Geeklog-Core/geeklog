@@ -42,11 +42,11 @@ a:hover {
 
 dt {
   font-weight: bold;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 dd {
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 ins {
@@ -178,7 +178,7 @@ select[multiple="multiple"] {
 }
 
 option {
-  padding-right: 4px /* for Firefox */;
+  padding-left: 4px /* for Firefox */;
 }
 
 input[type="text"]:focus,
@@ -221,7 +221,7 @@ input[type="reset"] {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 0 12px;
-  background: #EEE;
+  background: #F7F7F7;
   vertical-align: middle;
   /* 8 */
   line-height: 28px;
@@ -232,6 +232,19 @@ input[type="reset"] {
   /* 11 */
   text-decoration: none;
   text-align: center;
+  border: 1px solid rgba(0,0,0,.2);
+  border-bottom-color: rgba(0,0,0,.3);
+  -webkit-background-origin: border;
+  -moz-background-origin: border;
+  background-origin: border-box;
+  background-image: -webkit-linear-gradient(top, #FFF, #EEE);
+  background-image: -moz-linear-gradient(top, #FFF, #EEE);
+  background-image: -o-linear-gradient(top, #FFF, #EEE);
+  background-image: -ms-linear-gradient(top, #FFF, #EEE);
+  background-image: linear-gradient(to bottom, #FFF, #EEE);
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  text-shadow: 0 1px 0 #FFF;
 }
 
 input[type="submit"]:not(:disabled),
@@ -246,12 +259,13 @@ input[type="reset"]:hover,
 input[type="submit"]:focus,
 input[type="button"]:focus,
 input[type="reset"]:focus {
-  background-color: #F5F5F5;
+  background-color: #FAFAFA;
   color: #444;
   /* 2 */
   outline: none;
   /* 3 */
   text-decoration: none;
+  background-image: none;
 }
 
 input[type="submit"]:active,
@@ -260,15 +274,25 @@ input[type="reset"]:active,
 input[type="submit"].uk-active,
 input[type="button"].uk-active,
 input[type="reset"].uk-active {
-  background-color: #DDD;
+  background-color: #F5F5F5;
   color: #444;
+  border-color: rgba(0,0,0,.2);
+  border-top-color: rgba(0,0,0,.3);
+  background-image: none;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
 }
 
 input[type="submit"]:disabled,
 input[type="button"]:disabled,
 input[type="reset"]:disabled {
-  background-color: #F5F5F5;
+  background-color: #FAFAFA;
   color: #999;
+  border-color: rgba(0,0,0,.2);
+  background-image: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  text-shadow: 0 1px 0 #FFF;
 }
 
 .uk-button-group input[type="submit"],
@@ -277,11 +301,39 @@ input[type="reset"]:disabled {
   vertical-align: top;
 }
 
+.uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"],
+.uk-button-group > div:not(:first-child):not(:last-child) input[type="button"],
+.uk-button-group > div:not(:first-child):not(:last-child) input[type="reset"] {
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+
+.uk-button-group > div:first-child input[type="submit"],
+.uk-button-group > div:first-child input[type="button"],
+.uk-button-group > div:first-child input[type="reset"] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.uk-button-group > div:last-child input[type="submit"],
+.uk-button-group > div:last-child input[type="button"],
+.uk-button-group > div:last-child input[type="reset"] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.uk-button-group > div:nth-child(n+2) input[type="submit"],
+.uk-button-group > div:nth-child(n+2) input[type="button"],
+.uk-button-group > div:nth-child(n+2) input[type="reset"] {
+  margin-right: -1px;
+}
+
 .uk-contrast input[type="submit"],
 .uk-contrast input[type="button"],
 .uk-contrast input[type="reset"] {
   color: #444;
   background: #FFF;
+  border-color: transparent;
 }
 
 .uk-contrast input[type="submit"]:hover,
@@ -292,6 +344,7 @@ input[type="reset"]:disabled {
 .uk-contrast input[type="reset"]:focus {
   background-color: rgba(255,255,255,.8);
   color: #444;
+  border-color: transparent;
 }
 
 .uk-contrast input[type="submit"]:active,
@@ -302,6 +355,8 @@ input[type="reset"]:disabled {
 .uk-contrast input[type="reset"].uk-active {
   background-color: rgba(255,255,255,.7);
   color: #444;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 /* Modify UIkit */
@@ -321,8 +376,8 @@ input[type="reset"]:disabled {
 
 .uk-form input[type="checkbox"],
 .uk-form input[type="radio"] {
-  margin-left: 3px;
   margin-right: 3px;
+  margin-left: 3px;
   vertical-align: middle;
 }
 
@@ -343,11 +398,11 @@ input[type="reset"]:disabled {
 
 /* general alignment classes */
 .alignleft {
-  text-align: left;
+  text-align: right;
 }
 
 .alignright {
-  text-align: right;
+  text-align: left;
 }
 
 .aligncenter {
@@ -359,11 +414,11 @@ input[type="reset"]:disabled {
 }
 
 .floatright {
-  float: right;
+  float: left;
 }
 
 .floatleft {
-  float: left;
+  float: right;
 }
 
 .clearboth {
@@ -389,14 +444,14 @@ input[type="reset"]:disabled {
   background-color: transparent;
   background: url("../images/external.png") center right no-repeat;
   background-attachment: scroll;
-  padding-right: 13px;
+  padding-left: 13px;
 }
 
 .feed-link {
   background-color: transparent;
   background: url("../images/feed.png") center right no-repeat;
   background-attachment: scroll;
-  padding: 2px 16px 2px 0;
+  padding: 2px 0 2px 16px;
 }
 
 .strike {
@@ -414,25 +469,25 @@ input[type="reset"]:disabled {
 .fieldhelp {
   font-size: .85em;
   color: #666;
-  padding-left: .8em;
   padding-right: .8em;
+  padding-left: .8em;
 }
 
 /* Forms */
 .form-description {
   /* used with calendar plugin */
   font-weight: bold;
-  float: left;
+  float: right;
   width: 100px;
-  text-align: right;
-  padding-right: 5px;
+  text-align: left;
+  padding-left: 5px;
   display: block;
 }
 
 .form-field {
   /* used with calendar plugin */
   padding-bottom: 5px;
-  margin-left: 105px;
+  margin-right: 105px;
 }
 
 .checkboxes-list {
@@ -444,7 +499,7 @@ input[type="reset"]:disabled {
 
 .checkboxes-list span {
   /* space between the text and the checkbox */
-  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .checkboxes-list .gldefault {
@@ -465,7 +520,7 @@ input[type="reset"]:disabled {
 
 .inputTable label {
   font-weight: bold;
-  float: right;
+  float: left;
   white-space: nowrap;
 }
 
@@ -496,29 +551,29 @@ input[type="reset"]:disabled {
 
 .sysmessage img {
   border: none;
-  float: left;
-  padding: 0 8px 8px 0;
+  float: right;
+  padding: 0 0 8px 8px;
 }
 
 /* Stats */
 .stats-list-count {
-  text-align: right;
-  padding-left: 5px;
+  text-align: left;
   padding-right: 5px;
+  padding-left: 5px;
 }
 
 .stats-header-title {
-  text-align: left;
+  text-align: right;
   width: 90%;
-  padding-left: 5px;
   padding-right: 5px;
+  padding-left: 5px;
 }
 
 .stats-header-count {
-  text-align: left;
+  text-align: right;
   width: 10%;
-  padding-left: 5px;
   padding-right: 5px;
+  padding-left: 5px;
 }
 
 #token-expirynotice {
@@ -555,7 +610,7 @@ input[type="reset"]:disabled {
   color: #000;
   background-color: #B7C1DC;
   padding: 5px;
-  text-align: left;
+  text-align: right;
 }
 
 .plugin tr {
@@ -634,7 +689,7 @@ input[type="reset"]:disabled {
   color: #000;
   background-color: #C9D1E4;
   padding: 5px;
-  text-align: left;
+  text-align: right;
 }
 
 .pluginSubTable tr {
@@ -837,7 +892,7 @@ fieldset.form_block {
 .speech {
   overflow: hidden;
   position: absolute;
-  left: -999px;
+  right: -999px;
   width: 0;
   height: 0;
 }
@@ -953,16 +1008,16 @@ fieldset.form_block {
 --------------------------------------*/
 
 .compact dt {
-  float: left;
-  clear: left;
+  float: right;
+  clear: right;
   width: 24%;
   margin: 5px 0 1em 0;
-  padding: 0 1% 0 0;
+  padding: 0 0 0 1%;
   font-weight: normal;
 }
 
 .compact dd {
-  float: left;
+  float: right;
   width: 75%;
   margin: 0 0 1em 0;
   padding: 0;
@@ -970,7 +1025,7 @@ fieldset.form_block {
 
 /* Description */
 .compact dd.description {
-  margin: -.5em 0 1em 25%;
+  margin: -.5em 25% 1em 0;
   padding: 0;
 }
 
@@ -1063,7 +1118,7 @@ fieldset.form_block {
 }
 
 .profile_notes li {
-  margin: 0 0 0 5px;
+  margin: 0 5px 0 0;
   padding: 0;
 }
 
@@ -1184,10 +1239,10 @@ ul.compact li {
 #leftblocks,
 body.js_off #leftblocks {
   overflow: visible;
-  float: left;
+  float: right;
   width: 180px;
   /* Left Margin = -[W] */
-  margin: 0 0 0 -1140px;
+  margin: 0 -1140px 0 0;
   padding: 0;
 }
 
@@ -1197,7 +1252,7 @@ body.js_off #leftblocks {
 
 #centerblocks {
   overflow: visible;
-  float: left;
+  float: right;
   width: 100%;
 }
 
@@ -1207,7 +1262,7 @@ body.js_off #main-content {
   /* Main Content Width = [W] - [L] - [R] - Right Padding 10px - Left Padding 10px */
   width: 660px;
   /* Right Margin = [R] , Left Margin = [L] */
-  margin: 0 280px 0 180px;
+  margin: 0 180px 0 280px;
   padding: 0 10px;
 }
 
@@ -1216,7 +1271,7 @@ body.left-center #main-content {
   /* Main Content Width = [W] - [L] - Right Padding 10px - Left Padding 10px */
   width: 940px;
   /* Left Margin = [L] */
-  margin: 0 0 0 180px;
+  margin: 0 180px 0 0;
   padding: 0 10px;
 }
 
@@ -1225,7 +1280,7 @@ body.center-right #main-content {
   /* Main Content Width = [W] - [R] - Right Padding 10px - Left Padding 10px */
   width: 840px;
   /* Right Margin = [R] */
-  margin: 0 280px 0 0;
+  margin: 0 0 0 280px;
   padding: 0 10px;
 }
 
@@ -1242,10 +1297,10 @@ body.center #main-content {
 #rightblocks,
 body.js_off #rightblocks {
   overflow: visible;
-  float: left;
+  float: right;
   width: 280px;
   /* Right Margin = -[R] */
-  margin: 0 0 0 -280px;
+  margin: 0 -280px 0 0;
 }
 
 /*--------------------------------------
@@ -1253,7 +1308,7 @@ body.js_off #rightblocks {
 --------------------------------------*/
 
 #footer {
-  clear: left;
+  clear: right;
   width: auto;
   margin: 0 auto;
   padding: 16px 0;
@@ -1270,7 +1325,7 @@ body.js_off #rightblocks {
 --------------------------------------*/
 
 #config_menu {
-  float: left;
+  float: right;
   width: 280px;
   padding: 0 10px;
 }
@@ -1280,7 +1335,7 @@ body.center-right #config_menu {
 }
 
 #config_content {
-  float: left;
+  float: right;
   width: 820px;
   padding: 10px;
 }
@@ -1387,7 +1442,7 @@ body.center-right #config_content {
   #leftblocks,
   body.js_off #leftblocks {
     overflow: visible;
-    float: right;
+    float: left;
     width: 280px;
     margin: 0;
     padding: 0;
@@ -1412,7 +1467,7 @@ body.center-right #config_content {
   /* 3 Column ( left-center-right ) */
   body.left-center-right #main-content,
   body.js_off #main-content {
-    float: left;
+    float: right;
     /* Center Block Width = [W] - [R] - Right Padding - Left Padding - Right Border - Light Border */
     width: 660px;
     margin: 0;
@@ -1421,7 +1476,7 @@ body.center-right #config_content {
 
   /* 2 Column ( left-center ) */
   body.left-center #main-content {
-    float: left;
+    float: right;
     /* Center Block Width = [W] - [R] - Right Padding - Left Padding - Right Border - Light Border */
     width: 660px;
     margin: 0;
@@ -1430,7 +1485,7 @@ body.center-right #config_content {
 
   /* 2 Column ( center-right ) */
   body.center-right #main-content {
-    float: left;
+    float: right;
     /* Center Block Width = [W] - [R] - Right Padding - Left Padding - Right Border - Light Border */
     width: 660px;
     margin: 0;
@@ -1450,8 +1505,8 @@ body.center-right #config_content {
   #rightblocks,
   body.js_off #rightblocks {
     overflow: visible;
-    clear: right;
-    float: right;
+    clear: left;
+    float: left;
     width: 280px;
     margin: 0;
   }
@@ -1461,7 +1516,7 @@ body.center-right #config_content {
   --------------------------------------*/
 
   #footer {
-    clear: left;
+    clear: right;
     width: auto;
     margin: 0 auto;
     padding: 16px 0;
@@ -1478,7 +1533,7 @@ body.center-right #config_content {
   --------------------------------------*/
 
   #config_menu {
-    float: left;
+    float: right;
     width: 210px;
     padding: 0 10px;
   }
@@ -1488,7 +1543,7 @@ body.center-right #config_content {
   }
 
   #config_content {
-    float: left;
+    float: right;
     width: 710px;
     padding: 10px;
   }
@@ -1596,7 +1651,7 @@ body.center-right #config_content {
   #leftblocks,
   body.js_off #leftblocks {
     overflow: visible;
-    float: right;
+    float: left;
     width: 230px;
     margin: 0;
     padding: 0;
@@ -1608,9 +1663,9 @@ body.center-right #config_content {
 
   #centerblocks {
     overflow: visible;
-    float: left;
+    float: right;
     width: 100%;
-    margin-left: -230px /* -[R] */;
+    margin-right: -230px /* -[R] */;
   }
 
   body.js_off #centerblocks {
@@ -1625,7 +1680,7 @@ body.center-right #config_content {
     float: none;
     width: auto;
     margin: 0;
-    margin-left: 230px;
+    margin-right: 230px;
     padding: 0 10px;
   }
 
@@ -1634,7 +1689,7 @@ body.center-right #config_content {
     float: none;
     width: auto;
     margin: 0;
-    margin-left: 230px;
+    margin-right: 230px;
     padding: 0 10px;
   }
 
@@ -1643,7 +1698,7 @@ body.center-right #config_content {
     float: none;
     width: auto;
     margin: 0;
-    margin-left: 230px;
+    margin-right: 230px;
     padding: 0 10px;
   }
 
@@ -1653,7 +1708,7 @@ body.center-right #config_content {
   }
 
   body.center #centerblocks {
-    float: left;
+    float: right;
     width: auto;
     padding: 0 10px;
     margin: 0;
@@ -1667,8 +1722,8 @@ body.center-right #config_content {
   #rightblocks,
   body.js_off #rightblocks {
     overflow: visible;
-    clear: right;
-    float: right;
+    clear: left;
+    float: left;
     width: 230px;
     margin: 0;
   }
@@ -1678,7 +1733,7 @@ body.center-right #config_content {
   --------------------------------------*/
 
   #footer {
-    clear: left;
+    clear: right;
     width: 100%;
     margin: 0 auto;
     padding: 16px 0;
@@ -1797,7 +1852,7 @@ body.center-right #config_content {
   body.js_off #leftblocks {
     overflow: visible;
     clear: both;
-    float: left;
+    float: right;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -1854,7 +1909,7 @@ body.center-right #config_content {
   }
 
   body.center #centerblocks {
-    float: left;
+    float: right;
     width: auto;
     margin: 0;
     padding: 0 10px;
@@ -1869,7 +1924,7 @@ body.center-right #config_content {
   body.js_off #rightblocks {
     overflow: visible;
     clear: both;
-    float: left;
+    float: right;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -1880,7 +1935,7 @@ body.center-right #config_content {
   --------------------------------------*/
 
   #footer {
-    clear: left;
+    clear: right;
     width: auto;
     margin-top: -1px;
     padding: 16px;
@@ -1934,7 +1989,11 @@ body.center-right #config_content {
 
 #header {
   padding: 0;
-  background-color: #426F9C;
+  background: -webkit-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  background: -moz-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  background: -o-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  background: -ms-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  background: linear-gradient(to bottom, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
   height: 80px;
 }
 
@@ -1957,12 +2016,12 @@ body.center-right #config_content {
 /* Site Name */
 .site_name {
   position: relative;
-  float: left;
+  float: right;
   font-size: 30px;
   font-weight: bold;
   text-shadow: 0 2px 2px rgba(0,0,0,.5);
   line-height: 36px;
-  margin: 22px 0 0 20px;
+  margin: 22px 20px 0 0;
   padding: 0;
 }
 
@@ -1990,9 +2049,9 @@ body.center-right #config_content {
   position: relative;
   margin: 0;
   padding: 16px 16px 0 16px;
-  float: right;
+  float: left;
   color: #FFF;
-  text-align: right;
+  text-align: left;
   text-shadow: 0 1px 1px rgba(0,0,0,.3);
 }
 
@@ -2026,12 +2085,20 @@ body.center-right #config_content {
 /* Navigation Menu List */
 #navigation {
   padding: 0;
-  text-align: left;
+  text-align: right;
   text-shadow: 0 1px 0 #FFF;
   color: #444;
   background-color: #EEE;
-  border-top: 1px solid #EEE;
-  border-bottom: 1px solid #EEE;
+  background-image: -webkit-linear-gradient(top, #FFF, #EEE);
+  background-image: -moz-linear-gradient(top, #FFF, #EEE);
+  background-image: -o-linear-gradient(top, #FFF, #EEE);
+  background-image: -ms-linear-gradient(top, #FFF, #EEE);
+  background-image: linear-gradient(to bottom, #FFF, #EEE);
+  -webkit-background-origin: border;
+  -moz-background-origin: border;
+  background-origin: border-box;
+  border-top: 1px solid rgba(0,0,0,.1);
+  border-bottom: 1px solid rgba(0,0,0,.3);
 }
 
 @media only screen and (max-width: 767px) {
@@ -2197,13 +2264,13 @@ body.center-right #config_content {
 #leftblocks ul,
 #rightblocks ul {
   list-style-position: inside;
-  padding-left: .5em;
+  padding-right: .5em;
 }
 
 #leftblocks ol,
 #rightblocks ol {
   list-style-position: inside;
-  padding-left: .9em;
+  padding-right: .9em;
 }
 
 #leftblocks li,
@@ -2215,8 +2282,8 @@ body.center-right #config_content {
 #leftblocks input,
 #rightblocks input {
   font-size: 95%;
-  margin-left: 0;
   margin-right: 0;
+  margin-left: 0;
 }
 
 #leftblocks .sideoption,
@@ -2248,7 +2315,7 @@ body.center-right #config_content {
 #rightblocks .sideoption span {
   color: #999;
   text-decoration: none;
-  margin-left: 3px;
+  margin-right: 3px;
 }
 
 #leftblocks .sideoption_off,
@@ -2268,7 +2335,7 @@ body.center-right #config_content {
 #rightblocks .sideoption_off span {
   color: #999;
   text-decoration: none;
-  margin-left: 3px;
+  margin-right: 3px;
 }
 
 #leftblocks .sideoption_group_label,
@@ -2287,37 +2354,37 @@ body.center-right #config_content {
 
 #leftblocks .noliststyle,
 #rightblocks .noliststyle {
-  padding-left: 0;
+  padding-right: 0;
 }
 
 #leftblocks .branch_level2 a,
 #rightblocks .branch_level2 a {
-  padding-left: 15px;
+  padding-right: 15px;
 }
 
 #leftblocks .branch_level3 a,
 #rightblocks .branch_level3 a {
-  padding-left: 25px;
+  padding-right: 25px;
 }
 
 #leftblocks .branch_level4 a,
 #rightblocks .branch_level4 a {
-  padding-left: 35px;
+  padding-right: 35px;
 }
 
 #leftblocks .sideoption_off.branch_level2,
 #rightblocks .sideoption_off.branch_level2 {
-  padding-left: 15px;
+  padding-right: 15px;
 }
 
 #leftblocks .sideoption_off.branch_level3,
 #rightblocks .sideoption_off.branch_level3 {
-  padding-left: 25px;
+  padding-right: 25px;
 }
 
 #leftblocks .sideoption_off.branch_level4,
 #rightblocks .sideoption_off.branch_level4 {
-  padding-left: 35px;
+  padding-right: 35px;
 }
 
 #leftblocks h1,
@@ -2638,7 +2705,7 @@ h4 img {
 
 input[type="text"].search {
   background: url("../images/search.png") left center no-repeat #FFF;
-  padding-left: 24px;
+  padding-right: 24px;
   width: 120px;
   color: #999;
 }
@@ -2649,59 +2716,59 @@ input[type="text"].search {
 
 /* authentication buttons */
 #login_facebook {
-  left: 0;
+  right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 0;
+  background-position: 100% 0;
 }
 
 #login_twitter {
-  left: 0;
+  right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -23px;
+  background-position: 100% -23px;
 }
 
 #login_linkedin {
-  left: 0;
+  right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -44px;
+  background-position: 100% -44px;
 }
 
 #login_google {
-  left: 0;
+  right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -66px;
+  background-position: 100% -66px;
 }
 
 #login_yahoo {
-  left: 0;
+  right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -88px;
+  background-position: 100% -88px;
 }
 
 #login_microsoft {
-  left: 0;
+  right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -110px;
+  background-position: 100% -110px;
 }
 
 #login_github {
-  left: 0;
+  right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -132px;
+  background-position: 100% -132px;
 }
 
 #login_openid {
-  left: 0;
+  right: 0;
   width: 141px;
   background: url("/images/oauth-login-with-sprite.png") no-repeat;
-  background-position: 0 -154px;
+  background-position: 100% -154px;
 }
 
 #loginform fieldset {
@@ -2738,7 +2805,7 @@ form.third-party-login div {
 
 form.third-party-login div img {
   position: absolute;
-  left: 6px;
+  right: 6px;
   top: 6px;
 }
 
@@ -2772,10 +2839,10 @@ div.third-party-login {
     color: #EEEEEC;
     font-weight: bold;
     padding: 8px 5px;
-    text-align: left;
+    text-align: right;
     font-size: 16px;
-    margin-left: -10px;
     margin-right: -10px;
+    margin-left: -10px;
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
     border: none;
   }
@@ -2786,7 +2853,7 @@ div.third-party-login {
     -webkit-background-size: 36px auto;
     -moz-background-size: 36px auto;
     background-size: 36px auto;
-    background-position: right 50%;
+    background-position: left 50%;
   }
 
   h2.hide,
@@ -2795,7 +2862,7 @@ div.third-party-login {
     -webkit-background-size: 36px auto;
     -moz-background-size: 36px auto;
     background-size: 36px auto;
-    background-position: right 50%;
+    background-position: left 50%;
   }
 
   #leftblocks .block-title,
@@ -2810,8 +2877,8 @@ div.third-party-login {
   }
 
   #config_menu .block-title {
-    margin-left: -10px;
     margin-right: -10px;
+    margin-left: -10px;
   }
 
   #search-configuration-container label {
@@ -2823,10 +2890,10 @@ div.third-party-login {
     color: #EEEEEC;
     font-weight: bold;
     padding: 8px 5px;
-    text-align: left;
+    text-align: right;
     font-size: 16px;
-    margin-left: -10px;
     margin-right: -10px;
+    margin-left: -10px;
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
   }
 
@@ -2853,8 +2920,8 @@ div.third-party-login {
   }
 
   .block-list-content {
-    margin-left: -10px;
     margin-right: -10px;
+    margin-left: -10px;
     padding: 0;
   }
 
@@ -2879,7 +2946,7 @@ div.third-party-login {
 }
 
 .storytext table {
-  text-align: left;
+  text-align: right;
   border-collapse: collapse;
   margin: 1em .5em;
 }
@@ -2911,7 +2978,7 @@ div.third-party-login {
 
 /* Story Title */
 .story_title {
-  float: left;
+  float: right;
   margin: 0 0 10px 0;
   font-size: 20px;
   text-decoration: none;
@@ -2931,12 +2998,12 @@ div.third-party-login {
 
 /* Icon(email, print, pdf) */
 .story_icon {
-  float: right;
+  float: left;
   font-size: 18px;
 }
 
 .story_icon a {
-  margin-left: 5px;
+  margin-right: 5px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -2952,7 +3019,7 @@ div.third-party-login {
   list-style-type: none;
   clear: both;
   margin: 0 0 10px 0;
-  padding-left: 1em;
+  padding-right: 1em;
   color: #999;
   font-size: 85%;
   line-height: 1.25;
@@ -2977,7 +3044,7 @@ div.third-party-login {
 
 /* Topic Icon */
 .story_image {
-  float: right;
+  float: left;
   width: 48px;
   height: 48px;
   margin: 15px;
@@ -3000,7 +3067,7 @@ div.third-party-login {
   list-style-type: none;
   clear: both;
   margin: 0;
-  padding-left: 0;
+  padding-right: 0;
   text-align: center;
 }
 
@@ -3013,7 +3080,7 @@ div.third-party-login {
 .feedback {
   list-style-type: none;
   margin: 0 0 .5em 0;
-  padding-left: 0;
+  padding-right: 0;
   text-align: center;
 }
 
@@ -3048,14 +3115,14 @@ div.third-party-login {
 .gl-tooltip:hover span {
   -webkit-border-radius: 8px;
   border-radius: 8px;
-  -webkit-box-shadow: 2px 2px 8px #666;
-  box-shadow: 2px 2px 8px #666;
+  -webkit-box-shadow: -2px 2px 8px #666;
+  box-shadow: -2px 2px 8px #666;
   font-size: 1em;
-  text-align: left;
+  text-align: right;
   white-space: normal;
   font-family: Calibri, Tahoma, Geneva, sans, sans-serif;
   position: absolute;
-  left: 2.2em;
+  right: 2.2em;
   top: 2.2em;
   z-index: 99;
   margin-left: 0;
@@ -3064,8 +3131,8 @@ div.third-party-login {
 
 .gl-tooltip:hover img.icon {
   border: 0;
-  margin: -15px 0 0 -51px;
-  float: left;
+  margin: -15px -51px 0 0;
+  float: right;
   position: absolute;
 }
 
@@ -3074,7 +3141,7 @@ div.third-party-login {
   font-size: 1.2em;
   font-weight: bold;
   display: block;
-  padding: .2em 0 .6em .4em;
+  padding: .2em .4em .6em 0;
 }
 
 #gl-tooltip-icon {
@@ -3086,7 +3153,7 @@ span.classic {
 }
 
 span.custom {
-  padding: .5em .8em .8em 2em;
+  padding: .5em 2em .8em .8em;
 }
 
 span.classic {
@@ -3140,7 +3207,7 @@ span.warning em {
 .list-whats-related,
 .list-story-options {
   line-height: 1.7em;
-  margin: 0 0 0 20px;
+  margin: 0 20px 0 0;
   padding: 0;
 }
 
@@ -3159,14 +3226,14 @@ span.warning em {
 }
 
 .bar_separator {
-  padding-left: 5px;
   padding-right: 5px;
+  padding-left: 5px;
   color: #CCC;
 }
 
 #commentbar {
   padding: 3px;
-  background: none repeat scroll 0 0 #EEE;
+  background: none repeat scroll 100% 0 #EEE;
   -webkit-border-radius: 4px;
   border-radius: 4px;
   zoom: 1;
@@ -3184,12 +3251,12 @@ span.warning em {
 
 /* Comment Submit Form */
 #commentbar-comment {
-  float: left;
+  float: right;
   padding: .3em;
 }
 
 #commentbar-selector {
-  float: right;
+  float: left;
   padding: .3em;
 }
 
@@ -3224,7 +3291,7 @@ span.warning em {
   list-style-type: none;
   margin: 0 0 .5em 0;
   padding: 0;
-  text-align: left;
+  text-align: right;
 }
 
 /* Individual Comment (Tree) Title */
@@ -3237,7 +3304,7 @@ span.warning em {
 /* Individual Comment (Tree) Auther */
 .thread_author {
   display: inline;
-  margin: 0 0 0 8px;
+  margin: 0 8px 0 0;
   padding: 0;
 }
 
@@ -3249,76 +3316,76 @@ span.warning em {
 .block-comment-content {
   margin: 0;
   padding: 0;
-  text-align: left;
+  text-align: right;
 }
 
 /* Individual Comment Level(Nested | Tree) */
 .level-0 {
-  margin-left: 0;
+  margin-right: 0;
 }
 
 .level-25 {
-  margin-left: 16px;
+  margin-right: 16px;
 }
 
 .level-50 {
-  margin-left: 32px;
+  margin-right: 32px;
 }
 
 .level-75 {
-  margin-left: 48px;
+  margin-right: 48px;
 }
 
 .level-100 {
-  margin-left: 64px;
+  margin-right: 64px;
 }
 
 .level-125 {
-  margin-left: 80px;
+  margin-right: 80px;
 }
 
 .level-150 {
-  margin-left: 96px;
+  margin-right: 96px;
 }
 
 .level-175 {
-  margin-left: 112px;
+  margin-right: 112px;
 }
 
 .level-200 {
-  margin-left: 128px;
+  margin-right: 128px;
 }
 
 .level-225 {
-  margin-left: 144px;
+  margin-right: 144px;
 }
 
 .level-250 {
-  margin-left: 160px;
+  margin-right: 160px;
 }
 
 .level-275 {
-  margin-left: 176px;
+  margin-right: 176px;
 }
 
 .level-300 {
-  margin-left: 192px;
+  margin-right: 192px;
 }
 
 .level-325 {
-  margin-left: 208px;
+  margin-right: 208px;
 }
 
 .level-350 {
-  margin-left: 224px;
+  margin-right: 224px;
 }
 
 .level-375 {
-  margin-left: 240px;
+  margin-right: 240px;
 }
 
 .level-400 {
-  margin-left: 256px;
+  margin-right: 256px;
 }
 
 /* Comment Information */
@@ -3388,12 +3455,12 @@ span.warning em {
 }
 
 .ul-importantstuff {
-  margin: 0 0 0 1em;
+  margin: 0 1em 0 0;
   padding: 0;
 }
 
 .li-importantstuff {
-  margin: 0 0 0 8px;
+  margin: 0 8px 0 0;
   padding: 0;
 }
 
@@ -3457,8 +3524,8 @@ span.warning em {
   width: auto;
   height: 30px;
   padding: 0;
-  float: left;
-  margin: 2px -1px 0 0;
+  float: right;
+  margin: 2px 0 0 -1px;
 }
 
 .li-navlist #current {
@@ -3467,21 +3534,21 @@ span.warning em {
   position: relative;
   top: -5px;
   padding-top: 5px;
-  border-left-width: 1px;
+  border-right-width: 1px;
   margin: 0;
   color: #111;
-  border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
   border-bottom-color: #FFF;
 }
 
 .li-navlist #current:first-child a {
   border-width: 1px;
-  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .li-navlist #current:last-child a {
-  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 
 .a-navlist {
@@ -3570,7 +3637,7 @@ span.warning em {
 #exclude_topic > .checkboxes-list > li,
 #boxesblock > .checkboxes-list > li {
   /* display: inline */
-  margin-right: .5em;
+  margin-left: .5em;
 }
 
 /*--------------------------------------
@@ -3587,7 +3654,7 @@ span.warning em {
 .itemstatistics th {
   margin: 0;
   padding: 2px;
-  text-align: left;
+  text-align: right;
 }
 
 .itemstatistics td {
@@ -3676,15 +3743,15 @@ span.warning em {
 }
 
 #profile-userprofile dt {
-  float: left;
-  clear: left;
+  float: right;
+  clear: right;
   width: 25%;
   margin: 0 0 .5em 0;
   padding: 0;
 }
 
 #profile-userprofile dd {
-  float: left;
+  float: right;
   width: 75%;
   margin: 0 0 .5em 0;
   padding: 0;
@@ -3694,14 +3761,14 @@ span.warning em {
 dd#profile-user_photo {
   float: none;
   width: auto;
-  margin-left: 25%;
+  margin-right: 25%;
   margin-bottom: 1em;
 }
 
 @media only screen and (max-width: 767px) {
 
   dd#profile-user_photo {
-    margin-left: 50%;
+    margin-right: 50%;
   }
 }
 
@@ -3714,7 +3781,7 @@ dd#profile-user_photo {
 
 .storyrow a,
 .commentrow a {
-  margin: 0 8px 0 0;
+  margin: 0 0 0 8px;
   padding: 0;
 }
 
@@ -3725,15 +3792,15 @@ dd#profile-user_photo {
 }
 
 #profile-postingstats dt {
-  float: left;
-  clear: left;
+  float: right;
+  clear: right;
   width: 25%;
   margin: 0 0 .5em 0;
   padding: 0;
 }
 
 #profile-postingstats dd {
-  float: left;
+  float: right;
   width: 75%;
   margin: 0 0 .5em 0;
   padding: 0;
@@ -3751,7 +3818,7 @@ dd#profile-user_photo {
 
 /* User All Submit Search Link */
 #profile-all_postings_by {
-  clear: left;
+  clear: right;
   padding-top: 1em;
 }
 
@@ -3787,9 +3854,9 @@ dd#profile-user_photo {
 }
 
 .admin-menu-icon {
-  float: left;
+  float: right;
   padding: 5px;
-  margin-right: 10px;
+  margin-left: 10px;
   width: 48px;
   height: 48px;
 }
@@ -3808,7 +3875,7 @@ dd#profile-user_photo {
 }
 
 .admin-topic-image {
-  margin: 0 5px 0 0;
+  margin: 0 0 0 5px;
   vertical-align: middle;
 }
 
@@ -3826,7 +3893,7 @@ dd#profile-user_photo {
 --------------------------------------*/
 
 .listmembers {
-  float: left;
+  float: right;
   width: 35%;
   height: 15em;
 }
@@ -3838,7 +3905,7 @@ dd#profile-user_photo {
 }
 
 .movemembers {
-  float: left;
+  float: right;
   width: 30%;
   padding-top: 5em;
   text-align: center;
@@ -3953,7 +4020,7 @@ dd#profile-user_photo {
 @media only screen and (max-width: 767px) {
 
   .admin-list-search {
-    text-align: left;
+    text-align: right;
   }
 }
 
@@ -3966,7 +4033,7 @@ dd#profile-user_photo {
 
 .search-part {
   display: inline-block;
-  margin-right: 5px;
+  margin-left: 5px;
   white-space: nowrap;
 }
 
@@ -4000,7 +4067,7 @@ dd#profile-user_photo {
   text-align: center;
   vertical-align: middle;
   border-bottom: 1px solid rgba(0,0,0,.2);
-  border-right: 1px solid rgba(0,0,0,.2);
+  border-left: 1px solid rgba(0,0,0,.2);
 }
 
 /*--------------------------------------
@@ -4015,7 +4082,7 @@ dd#profile-user_photo {
 }
 
 .admin-commandcontrol li {
-  float: left;
+  float: right;
   width: 12.5%;
   height: 8em;
   margin: 0;
@@ -4127,7 +4194,7 @@ b.status_black {
 }
 
 #text_editor dd.description {
-  margin-left: 15%;
+  margin-right: 15%;
 }
 
 #admin-storyeditor-introtext,
@@ -4146,8 +4213,8 @@ b.status_black {
 /* Story Stats */
 .story_stats {
   display: inline-block;
-  float: left;
-  margin-right: 2em;
+  float: right;
+  margin-left: 2em;
 }
 
 /*--------------------------------------
@@ -4163,7 +4230,7 @@ b.status_black {
 }
 
 #admin-topiclist li {
-  float: left;
+  float: right;
   width: 20%;
   height: 8em;
   margin: 0;
@@ -4190,7 +4257,7 @@ b.status_black {
 
 /* User Images */
 .userphoto {
-  margin: .5em .5em 0 0;
+  margin: .5em 0 0 .5em;
 }
 
 /* Security Group Instructions */
@@ -4216,7 +4283,7 @@ b.status_black {
 }
 
 .pathtext-status {
-  text-align: right;
+  text-align: left;
   white-space: nowrap;
 }
 
@@ -4268,7 +4335,7 @@ b.status_black {
   position: fixed;
   z-index: 99;
   bottom: 20px;
-  right: 20px;
+  left: 20px;
   text-align: center;
   font-size: 40px;
   cursor: pointer;
@@ -4277,7 +4344,7 @@ b.status_black {
 
 .block-help-icon {
   font-size: 18px;
-  margin-left: 8px;
+  margin-right: 8px;
 }
 
 /*--------------------------------------
@@ -4285,7 +4352,7 @@ b.status_black {
 --------------------------------------*/
 
 #config_menu {
-  float: left;
+  float: right;
   padding: 0 10px;
 }
 
@@ -4293,7 +4360,7 @@ b.status_black {
 #search-configuration-container {
   margin: 0 0 .5em;
   padding: 8px 0;
-  text-align: left;
+  text-align: right;
 }
 
 .block-config-title,
@@ -4307,7 +4374,7 @@ b.status_black {
 }
 
 .block-config-content {
-  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .configoption {
@@ -4345,7 +4412,7 @@ b.status_black {
 }
 
 #config_content {
-  float: left;
+  float: right;
   padding: 10px;
 }
 
@@ -4373,7 +4440,7 @@ body.center-right #config_content {
 
 #search-configuration {
   width: 90%;
-  margin: 10px 0 10px 5px;
+  margin: 10px 5px 10px 0;
 }
 
 .inputTable {
@@ -4383,7 +4450,7 @@ body.center-right #config_content {
 }
 
 .config_label {
-  float: left;
+  float: right;
   width: 35%;
   padding: .5em 0;
 }
@@ -4393,12 +4460,12 @@ body.center-right #config_content {
 }
 
 .config_input {
-  float: left;
+  float: right;
   width: 53%;
 }
 
 .config_name {
-  clear: left;
+  clear: right;
   margin: 5px 0;
   padding: 5px;
 }
@@ -4427,7 +4494,7 @@ body.center-right #config_content {
   }
 
   body.center #config_content {
-    float: left;
+    float: right;
     width: 100%;
     padding: 10px 0;
   }
@@ -4441,7 +4508,7 @@ body.center-right #config_content {
     background: #E4EDF5;
     color: #369;
     margin: .2em 0;
-    margin-right: .4em;
+    margin-left: .4em;
   }
 
   .configoption a {
@@ -4463,14 +4530,14 @@ body.center-right #config_content {
     font-weight: bold;
     overflow: visible;
     margin: .2em 0;
-    margin-right: .4em;
+    margin-left: .4em;
     padding: 0 10px;
     height: 1.8em;
     line-height: 1.8em;
   }
 
   #text_editor dd.description {
-    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -4478,7 +4545,7 @@ body.center-right #config_content {
 @media only screen and (min-width: 768px) and (max-width: 962px) {
 
   #config_menu {
-    float: left;
+    float: right;
     width: 728px;
     padding: 0 10px;
   }
@@ -4488,7 +4555,7 @@ body.center-right #config_content {
   }
 
   #config_content {
-    float: left;
+    float: right;
     width: 728px;
     padding: 10px;
   }
@@ -4512,7 +4579,7 @@ body.center-right #config_content {
   }
 
   #config_menu {
-    float: left;
+    float: right;
     width: 100%;
     padding: 0;
   }
@@ -4522,7 +4589,7 @@ body.center-right #config_content {
   }
 
   #config_content {
-    float: left;
+    float: right;
     width: 100%;
     padding: 10px 0;
   }
@@ -4532,7 +4599,7 @@ body.center-right #config_content {
   }
 
   .config_label {
-    float: left;
+    float: right;
     width: 100%;
     padding: 0;
     font-weight: bold;
@@ -4543,7 +4610,7 @@ body.center-right #config_content {
   }
 
   .config_input {
-    float: left;
+    float: right;
     width: 90%;
   }
 

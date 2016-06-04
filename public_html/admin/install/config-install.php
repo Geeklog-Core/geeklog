@@ -176,6 +176,7 @@ function install_config()
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%select',2,10,24,200,TRUE, $me, 10);
     $c->add('path_themes','','text',2,10,NULL,210,TRUE, $me, 10);
     $c->add('cache_templates',TRUE,'select',2,10,1,220,TRUE, $me, 10);
+    $c->add('cache_mobile',TRUE,'select',2,10,1,230,TRUE, $me, 10);
 
     $c->add('tab_theme_advanced', NULL, 'tab', 2, 11, NULL, 0, TRUE, $me, 11);
     $c->add('fs_theme_advanced', NULL, 'fieldset', 2, 11, NULL, 0, TRUE, $me, 11);
@@ -457,6 +458,7 @@ function install_config()
     $c->add('autotag_permissions_topic', array(2, 2, 2, 2), '@select', 7, 41, 28, 1890, TRUE, $me, 37);
     $c->add('autotag_permissions_related_topics', array(2, 2, 0, 0), '@select', 7, 41, 28, 1900, TRUE, $me, 37);
     $c->add('autotag_permissions_related_items', array(2, 2, 0, 0), '@select', 7, 41, 28, 1910, TRUE, $me, 37);
+    $c->add('autotag_permissions_block', array(2, 2, 0, 0), '@select', 7, 41, 28, 1920, TRUE, $me, 37);
 
     $c->add('tab_webservices', NULL, 'tab', 7, 40, NULL, 0, TRUE, $me, 40);
     $c->add('fs_webservices', NULL, 'fieldset', 7, 40, NULL, 0, TRUE, $me, 40);
