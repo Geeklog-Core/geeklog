@@ -88,42 +88,29 @@ $stage = 'admin'
         width: 900px
     .fieldset-table-wrapper > &
         width: 100%
-    text-align: left
-    // border-collapse: separate
-    // border-spacing: 1px
-    // border: none
-    font-size: 90%
-    tr
-        margin: 0
-        padding: 0
-        vertical-align: middle
+    font-size: 13px
+    border-collapse: collapse
+    border-spacing: 0
     th,
     td
         vertical-align: middle
-        line-height: 1.1em
-        height: 2.3em
-        padding-top: 2px
-        padding-bottom: 2px
-        // border: none
+        height: 24px
+        padding: 4px 8px
+        border-bottom: 1px solid #e5e5e5
     th
-        color: $admin-list-table-th-color
         background-color: $admin-list-table-th-background
     img
         vertical-align: middle
-    admin-table()
 
-.admin-table-changer
-    display: none
-    @media only screen and (max-width: $breakpoint-large-max)
-        display: block
-    text-align: right
-    margin-right: 2px
-    margin-bottom: 2px
-    a
-        width: 60px
-        text-align: center
-        font-size: 85%
-        padding: 2px 6px
+/*! UIkit Modifier */
+.uk-table tbody tr.uk-active > td
+    background: #f0f0f0
+
+.uk-table-striped tbody tr:nth-of-type(odd)
+    background: #fafafa
+
+.uk-table-hover tbody tr:hover > td
+    background: #f0f0f0
 
 .table-wrapper
     width: 100%
@@ -163,14 +150,6 @@ $stage = 'admin'
     border-spacing: 1px
     font-size: 13px
 
-.admin-list-headerfield
-    padding: 4px
-
-.admin-list-field
-    padding: 4px
-    a
-        padding: 4px 6px
-
 .search-part
     display: inline-block
     margin-right: 5px
@@ -184,13 +163,21 @@ $stage = 'admin'
 --------------------------------------*/
 
 #admin-permissions
-    admin-table()
+    $bordercolor = rgba(0, 0, 0, 0.2)
     margin: 0 0 0.5em 0
+    width: auto
     font-size: 13px
+    border-collapse: collapse
+    border-spacing: 0
+    border: 1px solid $bordercolor
+    th
+        background-color: $admin-list-table-th-background
     th, td
         font-weight: bold
         text-align: center
-        padding: 4px
+        vertical-align: middle
+        border-bottom: 1px solid $bordercolor
+        border-right: 1px solid $bordercolor
 
 /*!--------------------------------------
   Command and Control Page

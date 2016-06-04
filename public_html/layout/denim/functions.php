@@ -44,22 +44,51 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
  */
 function theme_config_denim()
 {
+    global $theme_var_denim;
+
+    $theme_var_denim = array(
+        'uikit_theme' => 'default', // you can set this variable to 'default' or 'gradient' or 'almost-flat'
+        'uikit_components'  => array(
+            'accordion'     => 0,
+            'autocomplete'  => 0,
+            'datepicker'    => 0,
+            'dotnav'        => 0,
+            'form_advanced' => 0,
+            'form_file'     => 0,
+            'form_password' => 0,
+            'form_select'   => 0,
+            'htmleditor'    => 0,
+            'nestable'      => 0,
+            'notify'        => 0,
+            'placeholder'   => 0,
+            'progress'      => 0,
+            'search'        => 0,
+            'slidenav'      => 0,
+            'slider'        => 0,
+            'slideshow'     => 0,
+            'sortable'      => 0,
+            'sticky'        => 0,
+            'tooltip'       => 1,
+            'upload'        => 0,
+        ),
+        'use_minified_css'  => 0,   // 1:use  or 0:no_use minified css
+        'header_search'     => 1,   // 1:show or 0:hide header searchbox
+        'block_left_search' => 1,   // 1:show or 0:hide left block searchbox
+        'welcome_msg'       => 1,   // 1:show or 0:hide welcome message
+        'topic_image'       => 1,   // 1:show or 0:hide topic images
+        'trademark_msg'     => 0,   // 1:show or 0:hide trademark message on footer
+        'execution_time'    => 0,   // 1:show or 0:hide execution time on footer
+        'pagenavi_string'   => 1,   // 1:show or 0:hide text string of page navigation
+        'table_overflow'    => 1,   // 1:scroll or 0:visible overflow style of admin tables on mobile view
+        'toggle_showblock'  => 0,   // 1:enable or 0:disable toggle showing block contents on mobile view
+    );
+
     return array(
         'image_type' => 'png',
         'doctype'    => 'xhtml5',
         'supported_version_theme' => '2.0.0', // support new theme format for the later Geeklog 2.0.0
-        'theme_plugins' => 'denim', // Not requred, you can specify compatible theme of template stored with plugins
-        'options'    => array(      // Not requred, show or hide switcher of some of the parts
-            'header_search'     => 1, // 1:show or 0:hide header searchbox
-            'block_left_search' => 0, // 1:show or 0:hide left block searchbox
-            'welcome_msg'       => 0, // 1:show or 0:hide welcome message
-            'topic_image'       => 1, // 1:show or 0:hide topic images
-            'trademark_msg'     => 0, // 1:show or 0:hide trademark message on footer
-            'execution_time'    => 0, // 1:show or 0:hide execution time on footer
-            'pagenavi_string'   => 1, // 1:show or 0:hide string of page navigation
-            'table_overflow'    => 1, // 1:scroll or 0:visible overflow style of admin tables
-            'toggle_showblock'  => 0, // 1:enable or 0:disable toggle showing block contents on mobile view
-        )
+        'theme_plugins' => 'denim', // Not requred, you can specify compatible theme of template stored with some plugins
+        'options'    => $theme_var_denim // Not requred, some options of this theme
     );
 }
 
@@ -68,24 +97,44 @@ function theme_config_denim()
  */
 function theme_css_denim()
 {
-    global $_CONF, $LANG_DIRECTION;
+    global $_CONF, $LANG_DIRECTION, $theme_var_denim;
 
-    $direction = ($LANG_DIRECTION == 'rtl') ? '_rtl' : '';
+    $direction = ($LANG_DIRECTION === 'rtl') ? '_rtl' : '';
+    $ui_theme = '';
+    if (in_array($theme_var_denim['uikit_theme'], array('gradient', 'almost-flat'))) {
+        $ui_theme = '.' . $theme_var_denim['uikit_theme'];
+    }
+    $min = ($theme_var_denim['use_minified_css'] === 1) ? '.min' : '';
 
-    return array(
-        array(
-            'name'       => 'uikit',
-            'file'       => '/vendor/uikit/css' . $direction . '/uikit.gradient.min.css',
-            'attributes' => array('media' => 'all'),
-            'priority'   => 80
-        ),
-
-        array(
-            'name'       => 'main', // don't use the name 'theme' to control the priority
-            'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style.css', // change '/style.css' during debugging
-            'attributes' => array('media' => 'all')
-        )
+    $result = array();
+    $result[] = array(
+        'name'       => 'uikit',
+        'file'       => '/vendor/uikit/css' . $direction . '/uikit' . $ui_theme . $min . '.css',
+        'attributes' => array('media' => 'all'),
+        'priority'   => 80
     );
+
+    $result[] = array(
+        'name'       => 'main', // don't use the name 'theme' to control the priority
+        'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style' . $ui_theme . $min . '.css',
+        'attributes' => array('media' => 'all')
+    );
+
+    if (!empty($theme_var_denim['uikit_components'])) {
+        $uikit_components = array_unique($theme_var_denim['uikit_components']);
+        foreach ($uikit_components as $component => $value) {
+            if ($value === 1) {
+                $componame = str_replace('_', '-', $component);
+                $result[] = array(
+                    'name'     => 'uk_' . $component,
+                    'file'     => '/vendor/uikit/css' . $direction . '/components/' . $componame . $ui_theme . $min . '.css',
+                    'priority' => 81
+                );
+            }
+        }
+    }
+
+    return $result;
 }
 
 /**
@@ -106,22 +155,36 @@ function theme_js_libs_denim()
  */
 function theme_js_files_denim()
 {
-    global $_CONF;
+    global $_CONF, $theme_var_denim;
 
-    return array(
-
-       array(
-            'file'      => '/vendor/uikit/js/uikit.js',
-            'footer'    => false, // Not required, default = true
-            'priority'  => 100 // Not required, default = 100
-        ),
-
-       array(
-            'file'      => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
-            'footer'    => true, // Not required, default = true
-            'priority'  => 100 // Not required, default = 100
-        )
+    $result = array();
+    $result[] = array(
+        'file'     => '/vendor/uikit/js/uikit.js',
+        'footer'   => false, // Not required, default = true
+        'priority' => 100 // Not required, default = 100
     );
+
+    $result[] = array(
+        'file'     => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
+        'footer'   => true, // Not required, default = true
+        'priority' => 100 // Not required, default = 100
+    );
+
+    if (!empty($theme_var_denim['uikit_components'])) {
+        $uikit_components = array_unique($theme_var_denim['uikit_components']);
+        foreach ($uikit_components as $component => $value) {
+            if ($value === 1) {
+                $componame = str_replace('_', '-', $component);
+                $result[] = array(
+                    'file'     => '/vendor/uikit/js/components/' . $componame . '.js',
+                    'footer'   => false,
+                    'priority' => 110
+                );
+            }
+        }
+    }
+
+    return $result;
 }
 
 /**
@@ -159,5 +222,3 @@ function theme_init_denim()
         $_BLOCK_TEMPLATE['user_block'] = 'blockheader-list.thtml,blockfooter-list.thtml';
     }
 }
-
-?>

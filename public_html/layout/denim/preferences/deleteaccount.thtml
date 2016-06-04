@@ -1,10 +1,13 @@
 {# start {templatelocation} #}
 
 <div class="linear">
-  <dl class="profile_notes">
-    <dt>{lang_deleteaccount}</dt>
-    <dd>{delete_text}</dd>
-  </dl>
+  <div class="profile_notes uk-panel uk-panel-box">
+    <div class="uk-panel-title">
+      <i class="uk-icon-info-circle uk-text-primary"></i>
+      <span>{lang_deleteaccount}</span>
+    </div>
+    <div>{delete_text}</div>
+  </div>
 </div>
 
 <div class="compact">

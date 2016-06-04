@@ -198,6 +198,13 @@ require_once $_CONF['path_system'] . 'classes/url.class.php';
 $_URL = new Url($_CONF['url_rewrite'], $_CONF['url_routing']);
 
 /**
+* Include Device Detect class
+*
+*/
+require_once $_CONF['path_system'] . 'classes/device.class.php';
+$_DEVICE = new device();
+
+/**
 * This is our HTML template class.  It is the same one found in PHPLib and is
 * licensed under the LGPL.  See that file for details.
 *
@@ -4320,10 +4327,11 @@ function COM_showBlocks($side, $topic = '')
 *
 * @param        array     $A          Block Record
 * @param        boolean   $noboxes    Set to true if userpref is no blocks
+* @param        boolean   $noposition Set to true if you don't want to use the left or right side footer and header of block
 * @return       string    HTML Formated block
 *
 */
-function COM_formatBlock($A, $noboxes = false)
+function COM_formatBlock($A, $noboxes = false, $noposition = false)
 {
     global $_CONF, $_TABLES, $LANG21;
 
@@ -4352,7 +4360,7 @@ function COM_formatBlock($A, $noboxes = false)
         }
     }
 
-    if (array_key_exists('onleft', $A)) {
+    if (array_key_exists('onleft', $A) && !$noposition) {
         if ($A['onleft'] == 1) {
             $position = 'left';
         } else {
@@ -7539,7 +7547,9 @@ function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $t
     $tooltip->set_var('class', $class);
     $tooltip->set_var('hoverover', $hoverover);
     $tooltip->set_var('text', $text);
+    $tooltip->set_var('plaintext', strip_tags($text));
     $tooltip->set_var('title', $title);
+    $tooltip->set_var('plaintitle', strip_tags($title));
     if ($link == '') {
         $link = 'javascript:void(0);';
         $cursor = 'help';

@@ -1,1 +1,5 @@
-<a class="{class}" style="cursor: {cursor}; " href="{link}">{hoverover}<span class="classic">{text}</span></a>
+{# begin {templatelocation} #}
+
+<span class="{class} gl-tooltip-classic" data-uk-tooltip title="{plaintext}">{hoverover}</span>
+
+{# end {templatelocation} #}

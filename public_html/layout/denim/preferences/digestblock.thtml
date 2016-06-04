@@ -4,10 +4,13 @@
   <legend>{lang_digest_top_header}</legend>
 
   <div class="linear">
-    <dl class="profile_notes">
-      <dt>{lang_digest_help_header}</dt>
-      <dd>{lang_emailedtopics}</dd>
-    </dl>
+    <div class="profile_notes uk-panel uk-panel-box">
+      <div class="uk-panel-title">
+        <i class="uk-icon-info-circle uk-text-primary"></i>
+        <span>{lang_digest_help_header}</span>
+      </div>
+      <div>{lang_emailedtopics}</div>
+    </div>
   </div>
 
   <div class="compact">
