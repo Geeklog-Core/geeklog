@@ -589,26 +589,12 @@ function COM_getBlockTemplate($blockname, $which, $position = '')
         COM_errorLog("_BLOCK_TEMPLATE[$blockname] = " . $_BLOCK_TEMPLATE[$blockname], 1);
     }
 
+    $template = ($which === 'header') ? 'blockheader.thtml' : 'blockfooter.thtml';
     if (!empty($_BLOCK_TEMPLATE[$blockname])) {
+        $i = ($which === 'header') ? 0 : 1;
         $templates = explode(',', $_BLOCK_TEMPLATE[$blockname]);
-        if ($which === 'header') {
-            if (!empty($templates[0])) {
-                $template = $templates[0];
-            } else {
-                $template = 'blockheader.thtml';
-            }
-        } else {
-            if (!empty($templates[1])) {
-                $template = $templates[1];
-            } else {
-                $template = 'blockfooter.thtml';
-            }
-        }
-    } else {
-        if ($which === 'header') {
-            $template = 'blockheader.thtml';
-        } else {
-            $template = 'blockfooter.thtml';
+        if (count($templates) === 2 && !empty($templates[$i])) {
+            $template = $templates[$i];
         }
     }
 
