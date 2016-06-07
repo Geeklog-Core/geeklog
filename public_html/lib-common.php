@@ -4305,13 +4305,13 @@ function COM_showBlocks($side, $topic = '')
 */
 function COM_formatBlock($A, $noboxes = false, $noposition = false)
 {
-    global $_CONF, $_TABLES, $LANG21;
+    global $_CONF, $_TABLES, $LANG21, $_DEVICE;
 
     $retval = '';
 
     $lang = COM_getLanguageId();
     if (!empty($lang)) {
-        $blocksql['mssql']  = "SELECT bid, is_enabled, name, type, title, tid, blockorder, cast(content as text) as content, ";
+        $blocksql['mssql']  = "SELECT bid, is_enabled, name, type, title, tid, blockorder, device, cast(content as text) as content, ";
         $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
         $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
@@ -4331,105 +4331,108 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
             $A = DB_fetchArray($result);
         }
     }
-
-    if (array_key_exists('onleft', $A) && !$noposition) {
-        if ($A['onleft'] == 1) {
-            $position = 'left';
+    
+    // Make sure block can be used by specific device
+    if ($_DEVICE->compare($A['device'])) {
+        if (array_key_exists('onleft', $A) && !$noposition) {
+            if ($A['onleft'] == 1) {
+                $position = 'left';
+            } else {
+                $position = 'right';
+            }
         } else {
-            $position = 'right';
+            $position = '';
         }
-    } else {
-        $position = '';
-    }
 
-    if ($A['type'] === 'portal') {
-        if (COM_rdfCheck($A['bid'], $A['rdfurl'], $A['date'], $A['rdflimit'])) {
-            $A['content'] = DB_getItem($_TABLES['blocks'], 'content',
-                                        "bid = '{$A['bid']}'");
+        if ($A['type'] === 'portal') {
+            if (COM_rdfCheck($A['bid'], $A['rdfurl'], $A['date'], $A['rdflimit'])) {
+                $A['content'] = DB_getItem($_TABLES['blocks'], 'content',
+                                            "bid = '{$A['bid']}'");
+            }
         }
-    }
 
-    if ($A['type'] === 'gldefault') {
-        $retval .= COM_showBlock($A['name'], $A['help'], $A['title'], $position);
-    } else {
-        // The only time cache_time would not be set if for dynamic blocks (they can handle their own caching if needed)
-        // Don't Cache default blocks either
-        if (isset($A['cache_time']) && (($A['cache_time'] > 0) || ($A['cache_time'] == -1))) {
-            $cacheInstance = 'block__' . $A['bid'] . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-            $retval = CACHE_check_instance($cacheInstance);
-            if ($retval && ($A['cache_time'] == -1)) {
-                return $retval;
-            } elseif ($retval && ($A['cache_time'] > 0)) {
-                $lu = CACHE_get_instance_update($cacheInstance);
-                $now = time();
-                if (($now - $lu) < $A['cache_time']) {
+        if ($A['type'] === 'gldefault') {
+            $retval .= COM_showBlock($A['name'], $A['help'], $A['title'], $position);
+        } else {
+            // The only time cache_time would not be set if for dynamic blocks (they can handle their own caching if needed)
+            // Don't Cache default blocks either
+            if (isset($A['cache_time']) && (($A['cache_time'] > 0) || ($A['cache_time'] == -1))) {
+                $cacheInstance = 'block__' . $A['bid'] . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+                $retval = CACHE_check_instance($cacheInstance);
+                if ($retval && ($A['cache_time'] == -1)) {
                     return $retval;
-                } else {
-                    $retval = '';
+                } elseif ($retval && ($A['cache_time'] > 0)) {
+                    $lu = CACHE_get_instance_update($cacheInstance);
+                    $now = time();
+                    if (($now - $lu) < $A['cache_time']) {
+                        return $retval;
+                    } else {
+                        $retval = '';
+                    }
                 }
             }
         }
-    }
 
-    if (($A['type'] === 'phpblock') && !$noboxes) {
-        if (!(($A['name'] === 'whosonline_block') && (DB_getItem($_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0))) {
-            $function = $A['phpblockfn'];
-            $matches = array();
-            if (preg_match('/^(phpblock_\w*)\\((.*)\\)$/', $function, $matches) == 1) {
-                $function = $matches[1];
-                $args = $matches[2];
-            }
-            $blkheader = COM_startBlock($A['title'], $A['help'],
-                    COM_getBlockTemplate($A['name'], 'header', $position));
-            $blkfooter = COM_endBlock(COM_getBlockTemplate($A['name'],
-                    'footer', $position));
+        if (($A['type'] === 'phpblock') && !$noboxes) {
+            if (!(($A['name'] === 'whosonline_block') && (DB_getItem($_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0))) {
+                $function = $A['phpblockfn'];
+                $matches = array();
+                if (preg_match('/^(phpblock_\w*)\\((.*)\\)$/', $function, $matches) == 1) {
+                    $function = $matches[1];
+                    $args = $matches[2];
+                }
+                $blkheader = COM_startBlock($A['title'], $A['help'],
+                        COM_getBlockTemplate($A['name'], 'header', $position));
+                $blkfooter = COM_endBlock(COM_getBlockTemplate($A['name'],
+                        'footer', $position));
 
-            if (function_exists($function)) {
-               if (isset($args)) {
-                    $fretval = $function($A, $args);
-               } else {
-                    $fretval = $function();
-               }
-               if (!empty($fretval)) {
+                if (function_exists($function)) {
+                   if (isset($args)) {
+                        $fretval = $function($A, $args);
+                   } else {
+                        $fretval = $function();
+                   }
+                   if (!empty($fretval)) {
+                        $retval .= $blkheader;
+                        $retval .= $fretval;
+                        $retval .= $blkfooter;
+                   }
+                } else {
+                    // show error message
                     $retval .= $blkheader;
-                    $retval .= $fretval;
+                    $retval .= sprintf( $LANG21[31], $function );
                     $retval .= $blkfooter;
-               }
-            } else {
-                // show error message
-                $retval .= $blkheader;
-                $retval .= sprintf( $LANG21[31], $function );
-                $retval .= $blkfooter;
+                }
             }
         }
-    }
 
-    if (!empty($A['content']) && (trim($A['content']) != '') && !$noboxes) {
-        $blockcontent = stripslashes($A['content']);
+        if (!empty($A['content']) && (trim($A['content']) != '') && !$noboxes) {
+            $blockcontent = stripslashes($A['content']);
 
-        // Hack: If the block content starts with a '<' assume it
-        // contains HTML and do not call COM_nl2br() which would only add
-        // unwanted <br> tags.
-        if (substr(trim($blockcontent), 0, 1) != '<') {
-            $blockcontent = COM_nl2br($blockcontent);
+            // Hack: If the block content starts with a '<' assume it
+            // contains HTML and do not call COM_nl2br() which would only add
+            // unwanted <br> tags.
+            if (substr(trim($blockcontent), 0, 1) != '<') {
+                $blockcontent = COM_nl2br($blockcontent);
+            }
+
+            // autotags are only(!) allowed in normal blocks
+            if (($A['allow_autotags'] == 1) && ($A['type'] === 'normal')) {
+                $blockcontent = PLG_replaceTags($blockcontent);
+            }
+            $blockcontent = str_replace(array('<?', '?>'), '', $blockcontent);
+
+            $retval .= COM_startBlock($A['title'], $A['help'],
+                           COM_getBlockTemplate($A['name'], 'header', $position))
+                    . $blockcontent . LB
+                    . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
         }
-
-        // autotags are only(!) allowed in normal blocks
-        if (($A['allow_autotags'] == 1) && ($A['type'] === 'normal')) {
-            $blockcontent = PLG_replaceTags($blockcontent);
+        // Cache only if enabled and not gldefault or dynamic
+        if (isset($A['cache_time']) &&
+            (($A['cache_time'] > 0) || ($A['cache_time'] == -1)) &&
+            ($A['type'] !== 'gldefault')) {
+            CACHE_create_instance($cacheInstance, $retval);
         }
-        $blockcontent = str_replace(array('<?', '?>'), '', $blockcontent);
-
-        $retval .= COM_startBlock($A['title'], $A['help'],
-                       COM_getBlockTemplate($A['name'], 'header', $position))
-                . $blockcontent . LB
-                . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
-    }
-    // Cache only if enabled and not gldefault or dynamic
-    if (isset($A['cache_time']) &&
-        (($A['cache_time'] > 0) || ($A['cache_time'] == -1)) &&
-        ($A['type'] !== 'gldefault')) {
-        CACHE_create_instance($cacheInstance, $retval);
     }
 
     return $retval;

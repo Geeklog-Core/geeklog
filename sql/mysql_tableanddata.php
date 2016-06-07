@@ -25,6 +25,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   type varchar(20) NOT NULL default 'normal',
   title varchar(48) default NULL,
   blockorder smallint(5) unsigned NOT NULL default '1',
+  device varchar(15) NOT NULL default 'all',
   content text,
   allow_autotags tinyint(1) unsigned NOT NULL DEFAULT '0',
   cache_time INT NOT NULL DEFAULT '0',
