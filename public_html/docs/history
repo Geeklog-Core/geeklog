@@ -6,6 +6,10 @@ Not Released (2.1.2)
 
 - [Feature] Added GitHub OAuth Login [Tom]
 - [Feature] Added $_CONF['theme_oauth_icons'] option to allow theme to use own OAuth icons [Tom]
+- [Feature] Added autotag to display blocks [Tom]
+- [Feature] Reduced block lists in Block Manager [Tom]
+- [Feature] Added ability for Geeklog to detect device type (mobile or computer) of visitor [Tom]
+- [Feature] Blocks can display based on visitor device type [Tom]
 
 December 9, 2015 (2.1.1)
 ------------
