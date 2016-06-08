@@ -21,9 +21,10 @@
                                         <td>{topic_selection}</td>
                                     </tr>
                                     <tr>
-                                        <td class="alignright">{lang_side}:</td>
+                                        <td class="alignright">{lang_position}:</td>
                                         <td>
                                             <select name="onleft">
+                                                <option value="2" {none_selected}>{lang_none}</option>
                                                 <option value="1" {left_selected}>{lang_left}</option>
                                                 <option value="0" {right_selected}>{lang_right}</option>
                                             </select>
@@ -33,6 +34,14 @@
                                         <td class="alignright">{lang_blockorder}:</td>
                                         <td><input type="text" size="4" name="blockorder" value="{block_order}"{xhtml}> 0 - 9999</td>
                                     </tr>
+                                    <tr>
+                                        <td class="alignright" style="vertical-align:top">{lang_device}:</td>
+                                        <td><input type="radio" name="device" value="all" id="admin-blockeditor-device-all" {for_all}{xhtml}>{lang_all} 
+                                            <input type="radio" name="device" value="computer" id="admin-blockeditor-device-computer"{for_computer}{xhtml}>{lang_for_computer} 
+                                            <input type="radio" name="device" value="mobile" id="admin-blockeditor-device-mobile" {for_mobile}{xhtml}>{lang_for_mobile} 
+                                            <div class="pluginMediumText">{lang_device_desc}</div>
+                                        </td>
+                                    </tr>                                        
                                     <tr>
                                         <td class="alignright">{lang_blocktype}:</td>
                                         <td>gldefault<input type="hidden" name="type" value="gldefault"{xhtml}></td>

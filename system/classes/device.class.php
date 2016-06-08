@@ -41,6 +41,8 @@
 define("DEVICE_PHONE", 'phone');
 define("DEVICE_TABLET", 'tablet');
 define("DEVICE_COMPUTER", 'computer');
+define("DEVICE_MOBILE", 'mobile');
+define("DEVICE_ALL", 'all');
 
 class device {
 
@@ -80,11 +82,38 @@ class device {
     */
     public function is_mobile() {
 
-        return  $this->is_mobile;
+        return $this->is_mobile;
         
     }
 
-        /**
+    /**
+    * Does current device accessing Geeklog equal passed device?
+    *
+    * @access   public
+    * @param    constant    $device Device to compare current device accessing site
+    * @return   boolean
+    *
+    */
+    public function compare($device) {
+        
+        $retval = false;
+        if ($device == DEVICE_ALL) {
+            $retval = true;
+        } elseif ($device == DEVICE_MOBILE) {
+            if ($this->type == DEVICE_TABLET OR $this->type == DEVICE_PHONE) {
+                $retval = true;
+            }
+        } else {
+            if ($device == $this->type) {
+                $retval = true;
+            }
+        }
+
+        return $retval;
+        
+    }
+    
+    /**
     * What type of device is the user using?
     *
     * @access   public
@@ -93,9 +122,9 @@ class device {
     */
     public function type() {
 
-        return  $this->type;
+        return $this->type;
         
-    }
+    }    
 }
 
 ?>

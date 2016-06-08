@@ -869,8 +869,9 @@ $LANG21 = array(
     68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
     69 => 'プラグイン名',
     'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
-    'cache_time' => 'キャッシュ期間',
-    'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)'
+    'position'              => 'Position', 
+    'cache_time'            => 'キャッシュ期間',
+    'cache_time_desc'       => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)'
 );
 
 ###############################################################################
@@ -1842,6 +1843,14 @@ $LANG_ADMIN = array(
     'reauth_msg' => 'この操作のセキュリティトークンは期限切れになりました。続けるには下の認証を行ってください。そうすれば今回の編集作業を失うことはありません。',
     'authenticate' => '認証する',
     'approve' => '承認する',
+    'device'        => 'デバイス',
+    'device_desc'   => 'このアイテムを表示するデバイス',
+    'for_all'       => '全て',
+    'for_mobile'    => 'モバイル用',
+    'for_computer'  => 'コンピューター用',
+    'all'           => '全て',
+    'mobile'        => 'モバイル',
+    'computer'      => 'コンピューター'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually

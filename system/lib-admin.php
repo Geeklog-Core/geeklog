@@ -348,7 +348,13 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $order_var_link = "&amp;order=$order_var"; # keep the variable for the google paging
         $order = $header_arr[$order_var]['field'];  # current order field name
     }
-    $order_for_query = $order;
+    if (isset($header_arr[$order_var]['sort_field'])) {
+        // See if specific sort fields are set for the current field
+        $order_for_query = $header_arr[$order_var]['sort_field'];
+    } else {
+        $order_for_query = $order;
+    }
+    
     // this code sorts only by the field if its in table.field style.
     // removing this however makes match for arrow-display impossible, so removed it.
     // maybe now for more fields the table has to be added to the sortfield?
@@ -662,8 +668,46 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
             }
             break;
 
+        case 'device':
+            switch ($A['device']) {
+                case DEVICE_ALL:
+                    $retval = $LANG_ADMIN['all'];
+                    break;
+                case DEVICE_MOBILE:
+                    $retval = $LANG_ADMIN['mobile'];
+                    break;
+                case DEVICE_COMPUTER:
+                    $retval = $LANG_ADMIN['computer'];
+                    break;
+                default:
+                    $retval = '';
+                    break;
+            }        
+            break;
+            
+        case 'onleft':
+            switch ($A['onleft']) {
+                case BLOCK_NONE_POSITION:
+                    $retval = $LANG21[47];
+                    break;
+                case BLOCK_LEFT_POSITION:
+                    $retval = $LANG21[40];
+                    break;
+                case BLOCK_RIGHT_POSITION:
+                    $retval = $LANG21[41];
+                    break;
+                default:
+                    $retval = '';
+                    break;
+            }        
+            break;
+            
         case 'blockorder':
-            $retval .= $A['blockorder'];
+            if ($A['onleft'] == BLOCK_NONE_POSITION) {
+                $retval .= '';
+            } else {
+                $retval .= $A['blockorder'];    
+            }
             break;
 
         case 'is_enabled':
@@ -683,23 +727,25 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
 
         case 'move':
             if ($access == 3) {
-                if ($A['onleft'] == 1) {
-                    $side = $LANG21[40];
-                    $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
-                    $moveTitleMsg = $LANG21[59];
-                    $switchside = '1';
-                } else {
-                    $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
-                    $moveTitleMsg = $LANG21[60];
-                    $switchside = '0';
+                if ($A['onleft'] != BLOCK_NONE_POSITION) {
+                    if ($A['onleft'] == 1) {
+                        $side = $LANG21[40];
+                        $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
+                        $moveTitleMsg = $LANG21[59];
+                        $switchside = '1';
+                    } else {
+                        $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
+                        $moveTitleMsg = $LANG21[60];
+                        $switchside = '0';
+                    }
+                    $csrftoken = '&amp;' . CSRF_TOKEN . '=' . $token;
+                    $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" usemap=\"#arrow{$A['bid']}\" alt=\"\"" . XHTML . ">"
+                            ."<map id=\"arrow{$A['bid']}\" name=\"arrow{$A['bid']}\">"
+                            ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up{$csrftoken}\" alt=\"{$LANG21[58]}\"" . XHTML . ">"
+                            ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside{$csrftoken}\" alt=\"$moveTitleMsg\"" . XHTML . ">"
+                            ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn${csrftoken}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
+                            ."</map>";
                 }
-                $csrftoken = '&amp;' . CSRF_TOKEN . '=' . $token;
-                $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" usemap=\"#arrow{$A['bid']}\" alt=\"\"" . XHTML . ">"
-                        ."<map id=\"arrow{$A['bid']}\" name=\"arrow{$A['bid']}\">"
-                        ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up{$csrftoken}\" alt=\"{$LANG21[58]}\"" . XHTML . ">"
-                        ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside{$csrftoken}\" alt=\"$moveTitleMsg\"" . XHTML . ">"
-                        ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn${csrftoken}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
-                        ."</map>";
             }
             break;
 
@@ -727,6 +773,22 @@ function ADMIN_getListField_dynamicblocks($fieldname, $fieldvalue, $A, $icon_arr
     $retval = false;
 
     switch ($fieldname) {
+        case 'onleft':
+            switch ($A['onleft']) {
+                case BLOCK_NONE_POSITION:
+                    $retval = $LANG21[47];
+                    break;
+                case BLOCK_LEFT_POSITION:
+                    $retval = $LANG21[40];
+                    break;
+                case BLOCK_RIGHT_POSITION:
+                    $retval = $LANG21[41];
+                    break;
+                default:
+                    $retval = '';
+                    break;
+            }        
+            break;        
     case 'title':
         $retval = stripslashes($A['title']);
         if (empty($retval)) {
