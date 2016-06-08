@@ -115,9 +115,10 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('topic_selection',
                           TOPIC_getTopicSelectionControl ('block', $A['bid'], true, true));
 
-    $block_templates->set_var('lang_side', $LANG21[39]);
+    $block_templates->set_var('lang_position', $LANG21['position']);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
+    $block_templates->set_var('lang_right', $LANG21[47]);
 
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
@@ -126,6 +127,28 @@ function editdefaultblock ($A, $access)
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
     $block_templates->set_var('block_order', $A['blockorder']);
+    
+    $block_templates->set_var('lang_device', $LANG_ADMIN['device']);
+    $block_templates->set_var('lang_all', $LANG_ADMIN['for_all']);
+    if ($A['device'] == DEVICE_ALL) {
+        $block_templates->set_var ('for_all', 'checked="checked"');
+    } else {
+        $block_templates->set_var ('for_all', '');
+    }    
+    $block_templates->set_var('lang_for_mobile', $LANG_ADMIN['for_mobile']);
+    if ($A['device'] == DEVICE_MOBILE) {
+        $block_templates->set_var ('for_mobile', 'checked="checked"');
+    } else {
+        $block_templates->set_var ('for_mobile', '');
+    }    
+    $block_templates->set_var('lang_for_computer', $LANG_ADMIN['for_computer']);
+    if ($A['device'] == DEVICE_COMPUTER) {
+        $block_templates->set_var ('for_computer', 'checked="checked"');
+    } else {
+        $block_templates->set_var ('for_computer', '');
+    }    
+    $block_templates->set_var('lang_device_desc', $LANG_ADMIN['device_desc']);    
+    
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $ownername = COM_getDisplayName ($A['owner_id']);
@@ -182,6 +205,9 @@ function overridePostdata(&$A)
     if (isset($_POST['blockorder'])) {
         $A['blockorder'] = COM_applyFilter($_POST['blockorder'], true);
     }
+    if (isset($_POST['device'])) {
+        $A['device'] = COM_applyFilter($_POST['device']);
+    }    
     if (isset($_POST['content'])) {
         $A['content'] = $_POST['content']; // to be sanitized when saving
     }
@@ -269,6 +295,7 @@ function editblock ($bid = '')
         $A['title'] = '';
         $A['tid'] = '';
         $A['blockorder'] = 0;
+        $A['device'] = DEVICE_ALL;
         $A['cache_time'] = $_CONF['default_cache_time_block'];
         $A['content'] = '';
         $A['allow_autotags'] = 0;
@@ -342,16 +369,41 @@ function editblock ($bid = '')
     $block_templates->set_var('topic_selection',
                           TOPIC_getTopicSelectionControl ('block', $A['bid'], true, true));
 
-    $block_templates->set_var('lang_side', $LANG21[39]);
+    $block_templates->set_var('lang_position', $LANG21['position']);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
+    $block_templates->set_var('lang_none', $LANG21[47]);
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
     } elseif ($A['onleft'] == 0) {
         $block_templates->set_var('right_selected', 'selected="selected"');
+    } else {
+        $block_templates->set_var('none_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
     $block_templates->set_var('block_order', $A['blockorder']);
+    
+    $block_templates->set_var('lang_device', $LANG_ADMIN['device']);
+    $block_templates->set_var('lang_all', $LANG_ADMIN['for_all']);
+    if ($A['device'] == DEVICE_ALL) {
+        $block_templates->set_var ('for_all', 'checked="checked"');
+    } else {
+        $block_templates->set_var ('for_all', '');
+    }    
+    $block_templates->set_var('lang_for_mobile', $LANG_ADMIN['for_mobile']);
+    if ($A['device'] == DEVICE_MOBILE) {
+        $block_templates->set_var ('for_mobile', 'checked="checked"');
+    } else {
+        $block_templates->set_var ('for_mobile', '');
+    }    
+    $block_templates->set_var('lang_for_computer', $LANG_ADMIN['for_computer']);
+    if ($A['device'] == DEVICE_COMPUTER) {
+        $block_templates->set_var ('for_computer', 'checked="checked"');
+    } else {
+        $block_templates->set_var ('for_computer', '');
+    }    
+    $block_templates->set_var('lang_device_desc', $LANG_ADMIN['device_desc']);
+    
     $block_templates->set_var('lang_normalblock', $LANG21[12]);
     $block_templates->set_var('lang_phpblock', $LANG21[27]);
     $block_templates->set_var('lang_portalblock', $LANG21[11]);
@@ -447,7 +499,7 @@ jQuery(function () {
 * @return   string  HTML for the two lists
 *
 */
-function listblocks()
+function listblocks($position = BLOCK_ALL_POSITIONS)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
 
@@ -474,12 +526,52 @@ function listblocks()
 
     reorderblocks();
 
-    // Left
     // Regular Blocks
+    switch ($position) {
+        case BLOCK_NONE_POSITION:
+        case BLOCK_LEFT_POSITION:
+        case BLOCK_RIGHT_POSITION:
+            break;
+        default:
+            $position = BLOCK_ALL_POSITIONS;
+            break;
+    }
+    
+    $show_position = '';
+    $position_filter = '<option value="' . BLOCK_ALL_POSITIONS . '" title="' . $LANG21[7] . '"';
+    if ($position == BLOCK_ALL_POSITIONS) {
+        $position_filter .= ' selected="selected"';
+    } else {
+        $show_position = ' AND onleft = ' . $position;
+    }
+    $position_filter .= '>' . $LANG21[7] . '</option>';    
+    $position_filter .= '<option value="' . BLOCK_LEFT_POSITION . '" title="' . $LANG21[40] . '"';
+    if ($position == BLOCK_LEFT_POSITION) {
+        $position_filter .= ' selected="selected"';
+    }
+    $position_filter .= '>' . $LANG21[40] . '</option>';    
+    $position_filter .= '<option value="' . BLOCK_RIGHT_POSITION . '" title="' . $LANG21[41] . '"';
+    if ($position == BLOCK_RIGHT_POSITION) {
+        $position_filter .= ' selected="selected"';
+    }
+    $position_filter .= '>' . $LANG21[41] . '</option>';    
+    $position_filter .= '<option value="' . BLOCK_NONE_POSITION . '" title="' . $LANG21[47] . '"';
+    if ($position == BLOCK_NONE_POSITION) {
+        $position_filter .= ' selected="selected"';
+    }
+    $position_filter .= '>' . $LANG21[47] . '</option>';    
+   
+    $filter = $LANG21['position']
+        . ': <select name="position" style="width: 125px" onchange="this.form.submit()">'
+        . $position_filter . '</select>';    
+    
+    
     $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-        array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
+        array('text' => $LANG21['position'], 'field' => 'onleft', 'sort' => false),
+        array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true, 'sort_field' => 'onleft DESC, blockorder'),
         array('text' => $LANG21[46], 'field' => 'move', 'sort' => false),
+        array('text' => $LANG_ADMIN['device'], 'field' => 'device', 'sort' => true),
         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
         array('text' => $LANG21[48], 'field' => 'name', 'sort' => true),
         array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
@@ -487,19 +579,21 @@ function listblocks()
         array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
     );
 
-    $defsort_arr = array('field' => 'blockorder', 'direction' => 'asc');
+    // Sort by position and then order for default
+    $defsort_arr = array('field' => 'onleft DESC, blockorder', 'direction' => 'asc');
 
     $text_arr = array(
         'has_extras' => true,
-        'title'      => "$LANG21[20] ($LANG21[40])",
+        'title'      => $LANG21[20],
         'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 
+    
     $query_arr = array(
         'table' => 'blocks',
-        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 1",
+        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE 1=1 ",
         'query_fields' => array('title', 'content'),
-        'default_filter' => COM_getPermSql ('AND')
+        'default_filter' => $show_position . COM_getPermSql('AND')
     );
 
     // this is a dummy variable so we know the form has been used if all blocks
@@ -511,81 +605,48 @@ function listblocks()
         'bottom' => '<input type="hidden" name="blockenabler" value="1"'
                     . XHTML . '>'
     );
+    
+    // Add in position filter so it is remembered with paging
+    $pagenavurl = '&amp;position=' . $position;    
 
     $retval .= ADMIN_list(
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
-        $query_arr, $defsort_arr, '', $token, '', $form_arr
+        $query_arr, $defsort_arr, $filter, $token, '', $form_arr, true, $pagenavurl
     );
 
 
     // Dynamic blocks
     $dyn_header_arr = array(      # display 'text' and use table field 'field'
-        array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
-        array('text' => $LANG21[69], 'field' => 'plugin', 'sort' => true),
-        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-        array('text' => $LANG21[48], 'field' => 'name', 'sort' => true),
-        array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
-        array('text' => $LANG_ADMIN['topic'], 'field' => 'topic', 'sort' => true),
-        array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
+        array('text' => $LANG21['position'], 'field' => 'onleft'),
+        array('text' => $LANG21[65], 'field' => 'blockorder'),
+        array('text' => $LANG21[69], 'field' => 'plugin'),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title'),
+        array('text' => $LANG21[48], 'field' => 'name'),
+        array('text' => $LANG_ADMIN['type'], 'field' => 'type'),
+        array('text' => $LANG_ADMIN['topic'], 'field' => 'topic'),
+        array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled')
     );
 
 
     $dyn_text_arr = array(
-        'title'      => "$LANG21[22] ($LANG21[40])",
+        'title'      => $LANG21[22],
         'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 
     $leftblocks = PLG_getBlocksConfig('left', '');
-
     // Sort Dynamic Blocks on Block Order
     usort($leftblocks, "cmpDynamicBlocks");
 
-    $retval .= ADMIN_simpleList('ADMIN_getListField_dynamicblocks', $dyn_header_arr, $dyn_text_arr,
-                    $leftblocks, '', $form_arr);
-
-
-    // Right
-    // Regular Blocks
-    $query_arr = array(
-        'table' => 'blocks',
-        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 0",
-        'query_fields' => array('title', 'content'),
-        'default_filter' => COM_getPermSql ('AND')
-    );
-
-    $text_arr = array(
-        'has_extras' => true,
-        'title'      => "$LANG21[20] ($LANG21[41])",
-        'form_url'   => $_CONF['site_admin_url'] . '/block.php'
-    );
-
-    // this is a dummy-variable so we know the form has been used if all blocks should be disabled
-    // on one side in order to disable the last one. The value is the onleft var
-    $form_arr = array(
-        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
-                    . $token . '"' . XHTML . '>',
-        'bottom' => '<input type="hidden" name="blockenabler" value="0"'
-                    . XHTML . '>'
-    );
-
-    $retval .= ADMIN_list (
-        'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
-        $query_arr, $defsort_arr, '', $token, '', $form_arr
-    );
-
-    // Dynamic blocks
-    $dyn_text_arr = array(
-        'title'      => "$LANG21[22] ($LANG21[41])",
-        'form_url'   => $_CONF['site_admin_url'] . '/block.php'
-    );
-
     $rightblocks = PLG_getBlocksConfig('right', '');
-
     // Sort Dynamic Blocks on Block Order
     usort($rightblocks, "cmpDynamicBlocks");
+    
+    $dynamicblocks = array_merge($leftblocks, $rightblocks);
 
     $retval .= ADMIN_simpleList('ADMIN_getListField_dynamicblocks', $dyn_header_arr, $dyn_text_arr,
-                    $rightblocks, '', $form_arr);
+                    $dynamicblocks, '', $form_arr);
+
+
 
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
@@ -628,7 +689,7 @@ function cmpDynamicBlocks($a, $b)
 * @return   string                  HTML redirect or error message
 *
 */
-function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags, $cache_time)
+function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $content, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags, $cache_time)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE, $_USER;
 
@@ -674,6 +735,11 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
         } else {
             $is_enabled = 0;
         }
+        
+        if ($device != DEVICE_MOBILE AND $device != DEVICE_COMPUTER) {
+            $device = DEVICE_ALL;
+        }
+        
         if ($allow_autotags == 'on') {
             $allow_autotags = 1;
         } else {
@@ -746,16 +812,16 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
         }
 
         if ($bid > 0) {
-            DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,rdf_last_modified,rdf_etag',"$bid,'$name','$title','$help','$type','$blockorder','$content','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,NULL,NULL");
+            DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,rdf_last_modified,rdf_etag',"$bid,'$name','$title','$help','$type','$blockorder','$device','$content','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,NULL,NULL");
         } else {
             $sql = array();
             $sql['mysql'] = $sql['mssql'] = "INSERT INTO {$_TABLES['blocks']} "
-             .'(name,title,help,type,blockorder,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-             ."VALUES ('$name','$title','$help','$type','$blockorder','$content','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+             .'(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
+             ."VALUES ('$name','$title','$help','$type','$blockorder','$device','$content','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
 
              $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
-             .'(bid,name,title,help,type,blockorder,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-             ."VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockorder','$content','$rdfurl','1970-01-01','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+             .'(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
+             ."VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockorder','$device','$content','$rdfurl','1970-01-01','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
 
              DB_query($sql);
              $bid = DB_insertId();
@@ -936,6 +1002,11 @@ if (!empty($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
+$position = BLOCK_ALL_POSITIONS;
+if (isset($_REQUEST['position'])) {
+    $position = COM_applyFilter($_REQUEST['position'], true);
+}
+
 $bid = '';
 if (!empty($_REQUEST['bid'])) {
     $bid = COM_applyFilter ($_REQUEST['bid']);
@@ -976,6 +1047,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_POST['blockorder'])) {
         $blockorder = COM_applyFilter ($_POST['blockorder'], true);
     }
+    $device = DEVICE_ALL;
+    if (isset ($_POST['device'])) {
+        $device = COM_applyFilter ($_POST['device']);
+    }    
     $content = '';
     if (isset ($_POST['content'])) {
         $content = $_POST['content'];
@@ -1009,7 +1084,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $cache_time = COM_applyFilter ($_POST['cache_time'], true);
     }
     $display .= saveblock ($bid, $name, $_POST['title'],
-                    $help, $_POST['type'], $blockorder, $content,
+                    $help, $_POST['type'], $blockorder, $device, $content,
                     $rdfurl, $rdfupdated,
                     $rdflimit, $phpblockfn, $_POST['onleft'],
                     COM_applyFilter ($_POST['owner_id'], true),
@@ -1024,11 +1099,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if(SEC_checkToken()) {
         $display .= moveBlock();
     }
-    $display .= listblocks();
+    $display .= listblocks($position);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG21[19]));
 } else {  // 'cancel' or no mode at all
     $display .= COM_showMessageFromParameter();
-    $display .= listblocks();
+    $display .= listblocks($position);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG21[19]));
 }
 

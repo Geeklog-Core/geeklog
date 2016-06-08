@@ -36,6 +36,15 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-block.php') !== false) {
 // set to true to enable debug output in error.log
 $_BLOCK_DEBUG = false;
 
+// These constants are used by block position (onleft column in blocks table)
+// a topic option.
+// The global variable $topic should never be one of these. It should be set to
+// either a topic id the user has access to or empty (which means all topics).
+define("BLOCK_ALL_POSITIONS", -1);
+define("BLOCK_NONE_POSITION", 2);
+define("BLOCK_LEFT_POSITION", 1);
+define("BLOCK_RIGHT_POSITION", 0);
+
 /*
  * Implement *some* of the Plugin API functions for blocks. While blocks
  * aren't a plugin (and likely never will be), implementing some of the API
@@ -128,7 +137,7 @@ function plugin_autotags_block($op, $content = '', $autotag = '')
         if (!empty($name)) {
             $result = DB_query("SELECT * "
                 . "FROM {$_TABLES['blocks']} "
-                . "WHERE name = '$name'");
+                . "WHERE name = '$name' AND is_enabled = 1");
             $A = DB_fetchArray($result);
             if (DB_numRows($result) > 0) {
 
@@ -136,6 +145,7 @@ function plugin_autotags_block($op, $content = '', $autotag = '')
                 case 'block':
                     $px = explode(' ', trim($autotag['parm2']));
                     $css_class = "block-autotag";
+                    $css_style = "";
 
                     if (is_array($px)) {
                         foreach ($px as $part) {
@@ -143,6 +153,10 @@ function plugin_autotags_block($op, $content = '', $autotag = '')
                                 $a = explode(':', $part);
                                 // append a class
                                 $css_class .= ' ' . $a[1];
+                            } elseif (substr($part, 0, 6) == 'width:') {
+                                $a = explode(':', $part);
+                                // add width style
+                                $css_style = ' style="width:' . $a[1] . '"';
                             } else {
                                 break;
                             }
@@ -151,8 +165,11 @@ function plugin_autotags_block($op, $content = '', $autotag = '')
 
                     $retval = COM_formatBlock($A, false, true);
 
-                    // the class block-autotag will always be included with the div
-                    $retval = '<div class="' . $css_class . '">' . $retval . '</div>';
+                    // COM_formatBlock could return '' if wrong device, etc...
+                    if ($retval != '') {
+                        // the class block-autotag will always be included with the div
+                        $retval = '<div class="' . $css_class . '"' . $css_style . '>' . $retval . '</div>';
+                    }
 
                     break;
                 }
