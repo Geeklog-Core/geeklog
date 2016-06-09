@@ -914,7 +914,7 @@ function moveBlock()
 
         switch ($where) {
 
-            case ("up"): $q = "UPDATE " . $_TABLES['blocks'] . " SET blockorder = blockorder-11 WHERE bid = '" . $bid . "'";
+            case ("up"): $q = "UPDATE " . $_TABLES['blocks'] . " SET blockorder = blockorder-11 WHERE bid = '" . $bid . "' AND blockorder > 10";
                          DB_query($q);
                          break;
 
