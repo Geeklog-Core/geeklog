@@ -118,12 +118,14 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_position', $LANG21['position']);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
-    $block_templates->set_var('lang_right', $LANG21[47]);
+    $block_templates->set_var('lang_none', $LANG21[47]);
 
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
     } elseif ($A['onleft'] == 0) {
         $block_templates->set_var('right_selected', 'selected="selected"');
+    } else {
+        $block_templates->set_var('none_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
     $block_templates->set_var('block_order', $A['blockorder']);
