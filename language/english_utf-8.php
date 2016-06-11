@@ -858,6 +858,7 @@ $LANG21 = array(
     68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.',
     69 => 'Plugin Name',
     'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
+    'position'              => 'Position', 
     'cache_time'            => 'Cache Time',
     'cache_time_desc'       => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1827,7 +1828,15 @@ $LANG_ADMIN = array (
     'token_expiry'  => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.',
     'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
     'reauth_msg'    => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
-    'authenticate'  => 'Authenticate'
+    'authenticate'  => 'Authenticate',
+    'device'        => 'Device',
+    'device_desc'   => 'For what device do you want this item to display for?',
+    'for_all'           => 'All',
+    'for_mobile'    => 'For Mobile',
+    'for_computer'  => 'For Computer',
+    'all'           => 'All',
+    'mobile'        => 'Mobile',
+    'computer'      => 'Computer'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually

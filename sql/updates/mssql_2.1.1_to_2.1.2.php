@@ -1,6 +1,7 @@
 <?php
-// No Geeklog tables to change or add yet
-//$_SQL[] = "";
+
+// Add device type to blocks table
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `device` VARCHAR( 15 ) NOT NULL DEFAULT 'all' AFTER `blockorder`";
 
 
 /**
