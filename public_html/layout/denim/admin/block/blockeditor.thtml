@@ -38,11 +38,11 @@
       <dd><input type="text" value="{block_order}" name="blockorder" id="admin-blockeditor-blockorder" class="size1" aria-describedby="desc-admin-blockeditor-blockorder"{xhtml}></dd>
       <dd id="desc-admin-blockeditor-blockorder" class="description">0-9999</dd>
 
-      <dt><label for="admin-blockeditor-device">{lang_device}</label></dt>
+      <dt><label>{lang_device}</label></dt>
       <dd class="controls_text">
-        <label for="admin-blockeditor-device-mobile"><input type="radio" name="device" value="all" id="admin-blockeditor-device-all" {for_all}{xhtml}>{lang_all}</label>
-        <label for="admin-blockeditor-device-computer"><input type="radio" name="device" value="computer" id="admin-blockeditor-device-computer"{for_computer}{xhtml}>{lang_for_computer}</label>
-        <label for="admin-blockeditor-device-mobile"><input type="radio" name="device" value="mobile" id="admin-blockeditor-device-mobile" {for_mobile}{xhtml}>{lang_for_mobile}</label>
+        <label><input type="radio" name="device" value="all" id="admin-blockeditor-device-all" {for_all}{xhtml}>{lang_all}</label>
+        <label><input type="radio" name="device" value="computer" id="admin-blockeditor-device-computer"{for_computer}{xhtml}>{lang_for_computer}</label>
+        <label><input type="radio" name="device" value="mobile" id="admin-blockeditor-device-mobile" {for_mobile}{xhtml}>{lang_for_mobile}</label>
       </dd>
       <dd id="desc-admin-blockeditor-device" class="description">{lang_device_desc}</dd>
       
