@@ -35,11 +35,11 @@
       <dd><input type="text" size="4" name="blockorder" value="{block_order}" id="admin-blockeditor-blockorder" class="text"{xhtml}>
         0 - 9999</dd>
         
-      <dt><label for="admin-blockeditor-device">{lang_device}</label></dt>
+      <dt>{lang_device}</dt>
       <dd class="controls_text">
-        <label for="admin-blockeditor-device-mobile"><input type="radio" name="device" value="all" id="admin-blockeditor-device-all" {for_all}{xhtml}>{lang_all}</label>
-        <label for="admin-blockeditor-device-computer"><input type="radio" name="device" value="computer" id="admin-blockeditor-device-computer"{for_computer}{xhtml}>{lang_for_computer}</label>
-        <label for="admin-blockeditor-device-mobile"><input type="radio" name="device" value="mobile" id="admin-blockeditor-device-mobile" {for_mobile}{xhtml}>{lang_for_mobile}</label>
+        <label><input type="radio" name="device" value="all" id="admin-blockeditor-device-all" {for_all}{xhtml}>{lang_all}</label>
+        <label><input type="radio" name="device" value="computer" id="admin-blockeditor-device-computer"{for_computer}{xhtml}>{lang_for_computer}</label>
+        <label><input type="radio" name="device" value="mobile" id="admin-blockeditor-device-mobile" {for_mobile}{xhtml}>{lang_for_mobile}</label>
       </dd>
       <dd id="desc-admin-blockeditor-device" class="description">{lang_device_desc}</dd>        
 
