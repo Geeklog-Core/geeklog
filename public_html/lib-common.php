@@ -3852,7 +3852,12 @@ function COM_emailEscape($string)
 
     $charset = COM_getCharset();
     if (($charset === 'utf-8' ) && ($string !== utf8_decode($string))) {
-        if (function_exists('iconv_mime_encode')) {
+        // Current hack to bypass the use of iconv_mime_encode until proper fix found
+        // In some cases emails being sent fail when using COM_Mail when the email subject contain certain characters in another language (like Japanese)
+        // This bug usually happens when the Geeklog forum sends out a notification email of a reply to a topic. 
+        // For more info see https://github.com/Geeklog-Core/geeklog/issues/684
+        if (false) {
+        //if (function_exists('iconv_mime_encode')) {
             $mime_parameters = array(
                 'input-charset'  => 'utf-8',
                 'output-charset' => 'utf-8',
