@@ -4333,7 +4333,8 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
     }
     
     // Make sure block can be used by specific device
-    if ($_DEVICE->compare($A['device'])) {
+    // If no device column found then bypass compare check (could happen with dynamic blocks that do not pass device)
+    if (!isset($A['device']) OR $_DEVICE->compare($A['device'])) {
         if (array_key_exists('onleft', $A) && !$noposition) {
             if ($A['onleft'] == 1) {
                 $position = 'left';
