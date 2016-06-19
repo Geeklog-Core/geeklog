@@ -3852,7 +3852,12 @@ function COM_emailEscape($string)
 
     $charset = COM_getCharset();
     if (($charset === 'utf-8' ) && ($string !== utf8_decode($string))) {
-        if (function_exists('iconv_mime_encode')) {
+        // Current hack to bypass the use of iconv_mime_encode until proper fix found
+        // In some cases emails being sent fail when using COM_Mail when the email subject contain certain characters in another language (like Japanese)
+        // This bug usually happens when the Geeklog forum sends out a notification email of a reply to a topic. 
+        // For more info see https://github.com/Geeklog-Core/geeklog/issues/684
+        if (false) {
+        //if (function_exists('iconv_mime_encode')) {
             $mime_parameters = array(
                 'input-charset'  => 'utf-8',
                 'output-charset' => 'utf-8',
@@ -4333,7 +4338,8 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
     }
     
     // Make sure block can be used by specific device
-    if ($_DEVICE->compare($A['device'])) {
+    // If no device column found then bypass compare check (could happen with dynamic blocks that do not pass device)
+    if (!isset($A['device']) OR $_DEVICE->compare($A['device'])) {
         if (array_key_exists('onleft', $A) && !$noposition) {
             if ($A['onleft'] == 1) {
                 $position = 'left';
