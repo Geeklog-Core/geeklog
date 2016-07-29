@@ -2542,7 +2542,6 @@ function COM_featuredCheck()
             $B = DB_fetchArray($resultB);
             $sql = array();
             $sql['mysql'] = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta SET s.featured = 0 WHERE s.featured = 1 AND s.draft_flag = 0 AND ta.tid = '{$A['tid']}' AND ta.type = 'article' AND ta.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
-            $sql['mssql'] = $sql['mysql']; // I hope ...
             $sql['pgsql'] = "UPDATE {$_TABLES['stories']} AS s SET featured = 0 FROM {$_TABLES['topic_assignments']} WHERE s.featured = 1 AND s.draft_flag = 0 AND {$_TABLES['topic_assignments']}.tid = '{$A['tid']}' AND {$_TABLES['topic_assignments']}.type = 'article' AND {$_TABLES['topic_assignments']}.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
             DB_query($sql);
         }
@@ -4049,8 +4048,6 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
             GROUP BY sid
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
-        $sql['mssql'] = $sql['mysql'];
-
         $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
@@ -4202,15 +4199,10 @@ function COM_showBlocks($side, $topic = '')
         }
     }
 
-    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, cache_time, ";
-    $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
-    $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
-
     $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
     $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
 
     $blocksql['mysql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
-    $blocksql['mssql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
     $blocksql['pgsql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id::integer = bid AND is_enabled = 1";
 
     $commonsql = '';
@@ -4253,7 +4245,6 @@ function COM_showBlocks($side, $topic = '')
     $commonsql .= ' ORDER BY blockorder,title ASC';
 
     $blocksql['mysql'] .= $commonsql;
-    $blocksql['mssql'] .= $commonsql;
     $blocksql['pgsql'] .= $commonsql;
 
     $result = DB_query($blocksql);
@@ -4316,10 +4307,6 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
 
     $lang = COM_getLanguageId();
     if (!empty($lang)) {
-        $blocksql['mssql']  = "SELECT bid, is_enabled, name, type, title, tid, blockorder, device, cast(content as text) as content, ";
-        $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
-        $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
-
         $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
         $blocksql['pgsql'] =  'SELECT *, date_part(\'epoch\', rdfupdated) AS date ';
 
@@ -4327,7 +4314,6 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
                    . $A['name'] . '_' . $lang . "'";
 
         $blocksql['mysql'] .= $commonsql;
-        $blocksql['mssql'] .= $commonsql;
         $blocksql['pgsql'] .= $commonsql;
         $result = DB_query($blocksql);
 
@@ -4807,7 +4793,6 @@ function COM_hit()
 
     $sql = array();
     $sql['mysql'] = "UPDATE {$_TABLES['vars']} SET value=value+1 WHERE name = 'totalhits'";
-    $sql['mssql'] = "UPDATE {$_TABLES['vars']} SET value=value+1 WHERE name = 'totalhits'";
     $sql['pgsql'] = "UPDATE {$_TABLES['vars']} SET value=value::int4+1 WHERE name = 'totalhits'";
     DB_query($sql);
 }
@@ -4851,7 +4836,6 @@ function COM_emailUserTopics()
         $storysql = array();
         $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
         $storysql['pgsql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
-        $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,CAST(bodytext AS text) AS introtext";
 
         $commonsql = " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'
@@ -4888,7 +4872,6 @@ function COM_emailUserTopics()
             ORDER BY featured DESC, date DESC';
 
         $storysql['mysql'] .= $commonsql;
-        $storysql['mssql'] .= $commonsql;
         $storysql['pgsql'] .= $commonsql;
 
         $stories = DB_query($storysql);
@@ -5004,10 +4987,6 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
         }
 
         // Find the newest stories
-        $sql['mssql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
-            WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' ) . "
-            GROUP BY sid, title ORDER BY date DESC";
-
         $sql['mysql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' ) . "
             GROUP BY sid, title ORDER BY date DESC";
@@ -5147,8 +5126,6 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
             WHERE ta.type = 'article' AND ta.id = s.sid AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicsql . COM_getLangSQL('sid', 'AND', 's') . "
             GROUP BY t.sid, s.title
             ORDER BY lastdate DESC LIMIT 15";
-
-        $sql['mssql'] =  $sql['mysql'];
 
         $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta

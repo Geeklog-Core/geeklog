@@ -427,7 +427,7 @@ function INST_writeConfig($config_file, $db)
     $dbconfig_data = str_replace("\$_DB_user = '" . $_DB_user . "';", "\$_DB_user = '" . $db['user'] . "';", $dbconfig_data); // Username
     $dbconfig_data = str_replace("\$_DB_pass = '" . $_DB_pass . "';", "\$_DB_pass = '" . $db['pass'] . "';", $dbconfig_data); // Password
     $dbconfig_data = str_replace("\$_DB_table_prefix = '" . $_DB_table_prefix . "';", "\$_DB_table_prefix = '" . $db['table_prefix'] . "';", $dbconfig_data); // Table prefix
-    $dbconfig_data = str_replace("\$_DB_dbms = '" . $_DB_dbms . "';", "\$_DB_dbms = '" . $db['type'] . "';", $dbconfig_data); // Database type ('mysql' or 'mssql')
+    $dbconfig_data = str_replace("\$_DB_dbms = '" . $_DB_dbms . "';", "\$_DB_dbms = '" . $db['type'] . "';", $dbconfig_data); // Database type ('mysql' or 'pgsql')
 
     // Write our changes to db-config.php
     $dbconfig_file = fopen($config_file, 'wb');
@@ -470,17 +470,14 @@ function INST_dbConnect($db)
             return $db_handle;
         }
         break;
-    case 'mssql':
-        if ($db_handle = @mssql_connect($db['host'], $db['user'], $db['pass'])) {
-            return $db_handle;
-        }
-        break;
+
     case 'pgsql':
         if ($db_handle = @pg_connect('host='.$db['host'].' dbname='.$db['name'].' user='.$db['user'].' password='.$db['pass'])) {
             return $db_handle;
         }
         break;
     }
+
     return $db_handle;
 }
 
@@ -503,16 +500,13 @@ function INST_dbExists($db)
             return true;
         }
         break;
-    case 'mssql':
-        if (@mssql_select_db($db['name'], $db_handle)) {
-            return true;
-        }
-        break;
+
     case 'pgsql':
         $result = @pg_query('select count(*) from pg_catalog.pg_database where datname = \''.$db['name'].'\' ;');
         $ifExists = pg_fetch_row($result);
         return $ifExists[0]?true:false;
     }
+
     return false;
 }
 
@@ -674,13 +668,6 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
         }
         break;
 
-    case 'mssql':
-        $db_handle = @mssql_connect($_DB_host, $_DB_user, $_DB_pass);
-        if ($db_handle) {
-            $connected = @mssql_select_db($_DB_name, $db_handle);
-        }
-        break;
-
     default:
         $connected = false;
         break;
@@ -692,13 +679,10 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
         $version = INST_identifyGeeklogVersion();
 
         switch ($_DB_dbms) {
-        case 'mysql':
-            @mysql_close($db_handle);
-            break;
+            case 'mysql':
+                @mysql_close($db_handle);
+                break;
 
-        case 'mssql':
-            @mssql_close($db_handle);
-            break;
         }
 
         if (!empty($version) && ($version != VERSION) &&
@@ -1261,9 +1245,6 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
         'mysql-innodb' => array('file'  => 'mysql',
                                 'fn'    => 'mysql_connect',
                                 'label' => $LANG_INSTALL[36]),
-        'mssql'        => array('file'  => 'mssql',
-                                'fn'    => 'mssql_connect',
-                                'label' => $LANG_INSTALL[37]),
         'pgsql'        => array('file'  => 'pgsql',
                                 'fn'    => 'pg_connect',
                                 'label' => $LANG_INSTALL[106])

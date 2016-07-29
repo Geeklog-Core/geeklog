@@ -36,12 +36,11 @@ require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-story.php';
 
 /**
-* Update array if need be with correct topic.
-*
-* @param    array   $A           Array of articles from db
-* @param    string  $tid_list    List of child topics of current topic
-*
-*/
+ * Update array if need be with correct topic.
+ *
+ * @param    array  $A        Array of articles from db
+ * @param    string $tid_list List of child topics of current topic
+ */
 function fixTopic(&$A, $tid_list)
 {
     global $_TABLES, $topic;
@@ -141,6 +140,7 @@ if (SEC_inGroup('Root') && ($page == 1)) {
         /**
          * we don't have the path to the admin directory, so try to figure it
          * out from $_CONF['site_admin_url']
+         *
          * @todo FIXME: this duplicates some code from admin/sectest.php
          */
         $adminurl = $_CONF['site_admin_url'];
@@ -153,13 +153,13 @@ if (SEC_inGroup('Root') && ($page == 1)) {
             $installdir = $_CONF['path_html'] . 'admin/install';
         } else {
             $installdir = $_CONF['path_html'] . substr($adminurl, $pos + 1)
-                        . '/install';
+                . '/install';
         }
 
         if (is_dir($installdir)) {
             // deliberatly NOT print the actual path to the install dir
             $secmsg = sprintf($LANG_SECTEST['remove_inst'], '')
-                    . ' ' . $MESSAGE[92];
+                . ' ' . $MESSAGE[92];
             $display .= COM_showMessageText($secmsg);
         }
     }
@@ -173,11 +173,11 @@ if (!empty($displayBlock)) {
     // Check if theme has added the template which allows the centerblock
     // to span the top over the rightblocks
     if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
-            $topspan = COM_newTemplate($_CONF['path_layout']);
-            $topspan->set_file(array('topspan'=>'topcenterblock-span.thtml'));
-            $topspan->parse('output', 'topspan');
-            $display .= $topspan->finish($topspan->get_var('output'));
-            $GLOBALS['centerspan'] = true;
+        $topspan = COM_newTemplate($_CONF['path_layout']);
+        $topspan->set_file(array('topspan' => 'topcenterblock-span.thtml'));
+        $topspan->parse('output', 'topspan');
+        $display .= $topspan->finish($topspan->get_var('output'));
+        $GLOBALS['centerspan'] = true;
     }
 }
 
@@ -194,7 +194,7 @@ if ($U['maxstories'] >= $_CONF['minnews']) {
 }
 if ((!empty($topic)) && ($maxstories == 0)) {
     $topiclimit = DB_getItem($_TABLES['topics'], 'limitnews',
-                              "tid = '{$topic}'");
+        "tid = '{$topic}'");
     if ($topiclimit >= $_CONF['minnews']) {
         $maxstories = $topiclimit;
     }
@@ -219,7 +219,7 @@ if (empty($archivetid)) {
 $expiresql = DB_query($asql);
 while (list($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetcharray($expiresql)) {
     if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
-        if (!empty($archivetid) ) {
+        if (!empty($archivetid)) {
             COM_errorLog("Archive Story: $sid, Topic: $archivetid, Title: $title, Expired: $expire");
 
             // Delete all topic references to story except topic default
@@ -268,11 +268,11 @@ if (strtolower($topic) != strtolower($archivetid)) {
 $sql .= COM_getPermSQL('AND', 0, 2, 's');
 
 if (!empty($U['aids'])) {
-    $sql .= " AND s.uid NOT IN (" . str_replace( ' ', ",", $U['aids'] ) . ") ";
+    $sql .= " AND s.uid NOT IN (" . str_replace(' ', ",", $U['aids']) . ") ";
 }
 
 if (!empty($U['tids'])) {
-    $sql .= " AND ta.tid NOT IN ('" . str_replace( ' ', "','", $U['tids'] ) . "') ";
+    $sql .= " AND ta.tid NOT IN ('" . str_replace(' ', "','", $U['tids']) . "') ";
 }
 
 $sql .= COM_getTopicSQL('AND', 0, 'ta') . ' ';
@@ -291,21 +291,12 @@ $msql = array();
 // The incorrect t.topic, t.imageurl will most likely be return ... will fix later in fixtopic function.
 // Could not fix in sql since 2 many variables to contend with plus speed of sql statement probably an issue
 $msql['mysql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate, "
-         . 'UNIX_TIMESTAMP(s.expire) as expireunix, '
-         . $userfields . ", t.topic, t.imageurl "
-         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta,{$_TABLES['users']} AS u, "
-         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
-         . " ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND "
-         . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
-
-$msql['mssql'] = "SELECT s.sid, s.uid, s.draft_flag, ta.tid, s.date, s.title, cast(s.introtext as text) as introtext, cast(s.bodytext as text) as bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
-         . " UNIX_TIMESTAMP(s.date) AS unixdate, "
-         . 'UNIX_TIMESTAMP(s.expire) as expireunix, '
-         . $userfields . ", t.topic, t.imageurl "
-         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u, "
-         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
-         . " ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND "
-         . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
+    . 'UNIX_TIMESTAMP(s.expire) as expireunix, '
+    . $userfields . ", t.topic, t.imageurl "
+    . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta,{$_TABLES['users']} AS u, "
+    . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
+    . " ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND "
+    . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 
 $msql['pgsql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
@@ -361,7 +352,8 @@ if ($A = DB_fetchArray($result)) {
 
     // Print Google-like paging navigation
     if (!isset($_CONF['hide_main_page_navigation']) ||
-            ($_CONF['hide_main_page_navigation'] == 'false')) {
+        ($_CONF['hide_main_page_navigation'] == 'false')
+    ) {
         if (empty($topic)) {
             $base_url = $_CONF['site_url'] . '/index.php';
         } else {
@@ -369,17 +361,18 @@ if ($A = DB_fetchArray($result)) {
         }
         $display .= COM_printPageNavigation($base_url, $page, $num_pages);
     } else {
-        if ($_CONF['hide_main_page_navigation'] == 'frontpage' AND !empty($topic)) {
+        if ($_CONF['hide_main_page_navigation'] == 'frontpage' && !empty($topic)) {
             $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
             $display .= COM_printPageNavigation($base_url, $page, $num_pages);
         }
-    }    
+    }
 } else { // no stories to display
     if ($page == 1) {
         if (!isset($_CONF['hide_no_news_msg']) ||
-                ($_CONF['hide_no_news_msg'] == 0)) {
+            ($_CONF['hide_no_news_msg'] == 0)
+        ) {
             $display .= COM_startBlock($LANG05[1], '',
-                        COM_getBlockTemplate('_msg_block', 'header')) . $LANG05[2];
+                    COM_getBlockTemplate('_msg_block', 'header')) . $LANG05[2];
             $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
         }
 
@@ -401,18 +394,18 @@ if ($topic) {
         $result = DB_query("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
         $A = DB_fetcharray($result);
         $header .= LB . PLG_getMetaTags(
-            'homepage', '',
-            array(
+                'homepage', '',
                 array(
-                    'name'    => 'description',
-                    'content' => stripslashes($A['meta_description'])
-                ),
-                array(
-                    'name'    => 'keywords',
-                    'content' => stripslashes($A['meta_keywords'])
+                    array(
+                        'name'    => 'description',
+                        'content' => stripslashes($A['meta_description']),
+                    ),
+                    array(
+                        'name'    => 'keywords',
+                        'content' => stripslashes($A['meta_keywords']),
+                    ),
                 )
-            )
-        );
+            );
     }
 }
 
@@ -421,7 +414,7 @@ $display = COM_createHTMLDocument(
     array(
         'breadcrumbs' => $breadcrumbs,
         'headercode'  => $header,
-        'rightblock'  => true
+        'rightblock'  => true,
     )
 );
 

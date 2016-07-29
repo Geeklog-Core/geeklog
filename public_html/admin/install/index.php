@@ -83,24 +83,21 @@ function INST_installEngine($install_type, $install_step)
                 case 'mysql-innodb':
                     $db_selected = 'mysql-innodb';
                     break;
-                case 'mssql':
-                    $db_selected = 'mssql';
-                    break;
+
                 case 'pgsql':
                     $db_selected = 'pgsql';
                     break;
+
                 default:
                     $db_selected = 'mysql';
                     break;
             }
         } else {
             switch ($_DB_dbms) {
-                case 'mssql':
-                    $db_selected = 'mssql';
-                    break;
                 case 'pgsql':
                     $db_selected = 'pgsql';
                     break;
+
                 default:
                     $db_selected = 'mysql';
                     break;
@@ -815,12 +812,6 @@ function INST_createDatabaseStructures()
         }
         break;
 
-    case 'mssql':
-        foreach ($_SQL as $sql) {
-            $_DB->dbQuery($sql, 0, 1);
-        }
-        break;
-
     case 'pgsql':
         foreach ($_SQL as $sql) {
             $_DB->dbQuery($sql, 0, 1);
@@ -853,7 +844,7 @@ function INST_personalizeAdminAccount($site_mail, $site_url)
 {
     global $_TABLES, $_DB_dbms;
 
-    if (($_DB_dbms == 'mysql') || ($_DB_dbms == 'mssql') || ($_DB_dbms== 'pgsql')) {
+    if (($_DB_dbms == 'mysql') || ($_DB_dbms== 'pgsql')) {
 
         // let's try and personalize the Admin account a bit ...
 

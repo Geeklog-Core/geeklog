@@ -3,17 +3,15 @@
 /**
  * File: DeleteComment.Action.class.php
  * This is the Delete Comment Action  for the Geeklog Spam-X plugin
- *
  * Copyright (C) 2004-2005 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
- *
  * Licensed under GNU General Public License
  *
- * @package Spam-X
+ * @package    Spam-X
  * @subpackage Modules
  */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'deletecomment.action.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'deletecomment.action.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -25,9 +23,8 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 /**
  * Action Class which just discards comment
  *
- * @author Tom Willett  tomw@pigstye.net
+ * @author  Tom Willett  tomw@pigstye.net
  * @package Spam-X
- *
  */
 class DeleteComment extends BaseCommand
 {
@@ -48,17 +45,14 @@ class DeleteComment extends BaseCommand
 
         // update count of deleted spam posts
         $sql['mysql'] = "UPDATE {$_TABLES['vars']} "
-                      . "SET value = value + 1 "
-                      . "WHERE name = 'spamx.counter' ";
-        $sql['mssql'] = $sql['mysql'];
+            . "SET value = value + 1 "
+            . "WHERE name = 'spamx.counter' ";
         $sql['pgsql'] = "UPDATE {$_TABLES['vars']} "
-                      . "SET value = CAST(value AS int) + 1 "
-                      . "WHERE name = 'spamx.counter' ";
+            . "SET value = CAST(value AS int) + 1 "
+            . "WHERE name = 'spamx.counter' ";
         DB_query($sql);
         SPAMX_log($LANG_SX00['spamdeleted']);
 
         return PLG_SPAM_FOUND;
     }
 }
-
-?>
