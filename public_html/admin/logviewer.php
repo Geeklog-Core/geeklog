@@ -1,6 +1,6 @@
 <?php
 // +--------------------------------------------------------------------------+
-// | Geeklog 2.0                                                              |
+// | Geeklog 2.1                                                              |
 // +--------------------------------------------------------------------------+
 // | logviewer.php                                                            |
 // |                                                                          |
@@ -32,16 +32,11 @@
 // |                                                                          |
 // +--------------------------------------------------------------------------+
 
-/**
-* Geeklog common function library
-*/
+// Geeklog common function library
 require_once '../lib-common.php';
 
-/**
-* Security check to ensure user even belongs on this page
-*/
+// Security check to ensure user even belongs on this page
 require_once 'auth.inc.php';
-
 require_once $_CONF['path_system'] . 'lib-admin.php';
 
 if (!SEC_inGroup('Root')) {
@@ -54,7 +49,7 @@ if (!SEC_inGroup('Root')) {
 
 if (isset($_GET['log'])) {
     $log = COM_applyFilter($_GET['log']);
-} else if (isset($_POST['log'])) {
+} elseif (isset($_POST['log'])) {
     $log = COM_applyFilter($_POST['log']);
 } else {
     $log = '';
@@ -67,66 +62,56 @@ if (empty($log)) {
 
 $display = '';
 
-$menu_arr = array (
-    array('url' => $_CONF['site_admin_url'],
-          'text' => $LANG_ADMIN['admin_home'])
+$menu_arr = array(
+    array(
+        'url'  => $_CONF['site_admin_url'],
+        'text' => $LANG_ADMIN['admin_home'],
+    ),
 );
 
-$display  = COM_startBlock ($LANG_LOGVIEW['log_viewer'],'', COM_getBlockTemplate ('_admin_block', 'header'));
-$display .= ADMIN_createMenu( $menu_arr,
-                             $LANG_LOGVIEW['info'],
-                             $_CONF['layout_url'] . '/images/icons/log_viewer.'. $_IMAGE_TYPE
-);
+$display = COM_startBlock($LANG_LOGVIEW['log_viewer'], '', COM_getBlockTemplate('_admin_block', 'header'))
+    . ADMIN_createMenu($menu_arr,
+        $LANG_LOGVIEW['info'],
+        $_CONF['layout_url'] . '/images/icons/log_viewer.' . $_IMAGE_TYPE
+    );
 
-$display .= '<form method="post" action="'.$_CONF['site_admin_url'].'/logviewer.php" class="uk-form"><div>';
-$display .= $LANG_LOGVIEW['logs'].':&nbsp;&nbsp;&nbsp;';
-$files = array();
-if ($dir = @opendir($_CONF['path_log'])) {
-    while (($file = readdir($dir)) !== false) {
-        if (is_file($_CONF['path_log'] . $file) && preg_match('/\.log$/i', $file)) {
-            array_push($files,$file);
-        }
-    }
-    closedir($dir);
-}
-$display .= '<select name="log">';
+$display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/logviewer.php" class="uk-form"><div>'
+    . $LANG_LOGVIEW['logs'] . ':&nbsp;&nbsp;&nbsp;'
+    . '<select name="log">';
 
-for ($i = 0; $i < count($files); $i++) {
-    $display .= '<option value="' . $files[$i] . '"';
-    if ($log == $files[$i]) {
+foreach (glob($_CONF['path_log'] . '*.log') as $file) {
+    $file = basename($file);
+    $display .= '<option value="' . $file . '"';
+
+    if ($log === $file) {
         $display .= ' selected="selected"';
     }
-    $display .= '>' . $files[$i] . '</option>';
-    next($files);
+
+    $display .= '>' . $file . '</option>';
 }
-$display .= '</select>&nbsp;&nbsp;&nbsp;&nbsp;';
-$display .= '<button type="submit" name="viewlog" value="' . $LANG_LOGVIEW['view'] . '" class="uk-button">' . $LANG_LOGVIEW['view'] . '</button>';
-$display .= '&nbsp;&nbsp;&nbsp;&nbsp;';
-$display .= '<button type="submit" name="clearlog" value="' . $LANG_LOGVIEW['clear'] . '" class="uk-button" onclick="return confirm(\'' . $MESSAGE[76] . '\');">' . $LANG_LOGVIEW['clear'] . '</button>';
-$display .= '</div></form>';
+
+$display .= '</select>&nbsp;&nbsp;&nbsp;&nbsp;'
+    . '<button type="submit" name="viewlog" value="' . $LANG_LOGVIEW['view'] . '" class="uk-button">' . $LANG_LOGVIEW['view'] . '</button>'
+    . '&nbsp;&nbsp;&nbsp;&nbsp;'
+    . '<button type="submit" name="clearlog" value="' . $LANG_LOGVIEW['clear'] . '" class="uk-button" onclick="return confirm(\'' . $MESSAGE[76] . '\');">' . $LANG_LOGVIEW['clear'] . '</button>'
+    . '</div></form>';
 
 if (isset($_POST['clearlog'])) {
     if (@unlink($_CONF['path_log'] . $log)) {
-        if ($fd = @fopen($_CONF['path_log'] . $log, 'a')) {
-            $timestamp = strftime("%c");
-            fputs($fd, "$timestamp - Log File Cleared \n");
-            fclose($fd);
-            $_POST['viewlog'] = 1;
-        }
+        $timestamp = strftime("%c");
+        @file_put_contents($_CONF['path_log'] . $log, "$timestamp - Log File Cleared " . PHP_EOL, FILE_APPEND);
+        $_POST['viewlog'] = 1;
     }
 }
 if (isset($_POST['viewlog'])) {
-    $display .= '<p><strong>'.$LANG_LOGVIEW['log_file'].': ' . $log . '</strong></p>';
-    $display .= '<div style="margin:10px 0 5px;border-bottom:1px solid #cccccc;"></div>';
-    $display .= '<pre style="overflow:scroll; height:500px;">';
-    $display .= htmlentities(implode('', file($_CONF['path_log'] . $log)), ENT_NOQUOTES, COM_getEncodingt());
-    $display .= '</pre>';
+    $display .= '<p><strong>' . $LANG_LOGVIEW['log_file'] . ': ' . $log . '</strong></p>'
+        . '<div style="margin:10px 0 5px;border-bottom:1px solid #cccccc;"></div>'
+        . '<pre style="overflow:scroll; height:500px;">'
+        . htmlentities(file_get_contents($_CONF['path_log'] . $log), ENT_NOQUOTES, COM_getEncodingt())
+        . '</pre>';
 }
 
 $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
-
-$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LOGVIEW['log_viewer']));
-
-COM_output($display);
-exit;
-?>
+$output = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LOGVIEW['log_viewer']));
+header('Content-Type: text/html; charset=' . COM_getEncodingt());
+COM_output($output);
