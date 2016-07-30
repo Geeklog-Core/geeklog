@@ -4069,34 +4069,34 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
 
             $day = 'noday';
             $string = '';
+            $oldNews = array();
 
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray($result);
+                $dayCheck = strftime('%A', $A['day']);
 
-                $daycheck = strftime('%A', $A['day']);
-                if ($day != $daycheck) {
+                if ($day != $dayCheck) {
                     if ($day !== 'noday') {
-                        $daylist = COM_makeList($oldnews, 'list-older-stories');
+                        $daylist = COM_makeList($oldNews, 'list-older-stories');
                         $daylist = preg_replace("/(\015\012)|(\015)|(\012)/",
                                                  '', $daylist);
                         $string .= $daylist . '<div class="divider-older-stories"></div>';
                     }
 
                     $day2 = strftime($dateonly, $A['day']);
-                    $string .= '<h3>' . $daycheck . ' <small>' . $day2
+                    $string .= '<h3>' . $dayCheck . ' <small>' . $day2
                             . '</small></h3>' . LB;
-                    $oldnews = array();
-                    $day = $daycheck;
+                    $day = $dayCheck;
                 }
 
-                $oldnews_url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                $oldNewsUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                     . $A['sid']);
-                $oldnews[] = COM_createLink($A['title'], $oldnews_url)
+                $oldNews[] = COM_createLink($A['title'], $oldNewsUrl)
                     .' (' . COM_numberFormat($A['comments']) . ')';
             }
 
-            if (!empty($oldnews)) {
-                $daylist = COM_makeList($oldnews, 'list-older-stories');
+            if (!empty($oldNews)) {
+                $daylist = COM_makeList($oldNews, 'list-older-stories');
                 $daylist = preg_replace("/(\015\012)|(\015)|(\012)/", '', $daylist);
                 $string .= $daylist;
 
@@ -6538,16 +6538,6 @@ function COM_makeClickableLinks($text)
     $replace = create_function(
         '$match',
         'return COM_makeClickableLinksCallback(\'\', $match[1]);'
-    );
-
-    $text = preg_replace_callback($regex, $replace, $text);
-
-    // Matches anything containing a top level domain: xxx.com or xxx.yyy.net/stuff.php or xxx.yyy.zz
-    // list taken from: http://en.wikipedia.org/wiki/List_of_Internet_TLDs
-    $regex = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:[a-z0-9]+\.)*[a-z0-9-]+\.(?:[a-z]{2,}|xn--[0-9a-z]+)(?:[\/?#](?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)*)?)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/i';
-    $replace = create_function(
-        '$match',
-        'return COM_makeClickableLinksCallback(\'http://\', $match[1]);'
     );
 
     $text = preg_replace_callback($regex, $replace, $text);
