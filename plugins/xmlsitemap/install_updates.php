@@ -39,5 +39,3 @@ function xmlsitemap_update_ConfValues_1_0_1()
     $c->add('ping_bing', $_XMLSMAP_DEFAULT['ping_bing'], 'select', 0,
         3, 1, 110, true, $me, 3);
 }
-
-?>

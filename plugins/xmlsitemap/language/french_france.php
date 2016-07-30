@@ -46,8 +46,8 @@ $LANG_confignames['xmlsitemap'] = array(
     'types' => 'Contenu du sitemap',
     'exclude' => 'Plugins à exclure du sitemap',
     'lastmod' => 'Content Types to include lastmod element',
-    'priorities' => '',
-    'frequencies' => '',
+    'priorities' => 'Priority',
+    'frequencies' => 'Frequency',
     'ping_google' => 'Send ping to Google',
     'ping_bing' => 'Send ping to Bing'
 );
@@ -78,5 +78,3 @@ $LANG_configselects['xmlsitemap'] = array(
     12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture Ecriture' => 3),
     20 => array('toujours' => 'always', 'Toutes les heures' => 'hourly', 'Quotidienne' => 'daily', 'Hebdomadaire' => 'weekly', 'mensuelle' => 'monthly', 'annuelle' => 'yearly', 'jamais' => 'never', 'hidden' => 'hidden')
 );
-
-?>

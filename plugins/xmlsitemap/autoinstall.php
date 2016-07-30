@@ -142,5 +142,3 @@ function plugin_postinstall_xmlsitemap($pi_name)
     // Create an XML sitemap for the first time
     return XMLSMAP_update();
 }
-
-?>
