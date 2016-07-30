@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-webservices.php                                                       |
 // |                                                                           |
@@ -1019,5 +1019,3 @@ function WS_makeId($slug = '', $max_length = 40)
 
     return substr(COM_sanitizeID($id), 0, $max_length);
 }
-
-?>

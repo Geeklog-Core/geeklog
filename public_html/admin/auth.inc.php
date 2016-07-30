@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | auth.inc.php                                                              |
 // |                                                                           |
@@ -124,5 +124,3 @@ if ($status == USER_ACCOUNT_ACTIVE) {
     COM_output($display);
     exit;
 }
-
-?>

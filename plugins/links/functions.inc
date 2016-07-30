@@ -1889,5 +1889,3 @@ function plugin_group_changed_links($grp_id, $mode)
         $result = DB_query($sql);
    }
 }
-
-?>

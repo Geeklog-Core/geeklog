@@ -167,9 +167,13 @@ if ($A['count'] > 0) {
         $story_template->set_var('story_title',
                                  $story->DisplayElements('title'));
         header('Content-Type: text/html; charset=' . COM_getCharset());
+        header('X-XSS-Protection: 1; mode=block');
+        header('X-Content-Type-Options: nosniff');
+
         if (! empty($_CONF['frame_options'])) {
             header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
         }
+
         $story_template->set_var('story_date', $story->displayElements('date'));
 
         if ($_CONF['contributedbyline'] == 1) {

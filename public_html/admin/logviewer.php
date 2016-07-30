@@ -114,4 +114,6 @@ if (isset($_POST['viewlog'])) {
 $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 $output = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LOGVIEW['log_viewer']));
 header('Content-Type: text/html; charset=' . COM_getEncodingt());
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
 COM_output($output);

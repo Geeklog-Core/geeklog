@@ -957,6 +957,8 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
 
     // send out the charset header
     header('Content-Type: text/html; charset=' . COM_getCharset());
+    header('X-XSS-Protection: 1; mode=block');
+    header('X-Content-Type-Options: nosniff');
 
     if (!empty($_CONF['frame_options'])) {
         header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
@@ -1580,6 +1582,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // send out the charset header
     header('Content-Type: text/html; charset=' . COM_getCharset());
+    header('X-XSS-Protection: 1; mode=block');
+    header('X-Content-Type-Options: nosniff');
 
     if (!empty($_CONF['frame_options'])) {
         header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);

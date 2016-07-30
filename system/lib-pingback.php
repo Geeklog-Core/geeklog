@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-pingback.php                                                          |
 // |                                                                           |
@@ -353,5 +353,3 @@ function PNB_makeExcerpt($html, $url, $xlen = 255)
 
     return $retval;
 }
-
-?>
