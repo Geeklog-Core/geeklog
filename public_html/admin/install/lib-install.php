@@ -933,7 +933,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
         }
 
         require_once $_CONF['path'] . 'system/classes/config.class.php';
-        $config =& config::get_instance();
+        $config = config::get_instance();
         $config->initConfig(); // force re-reading, including new plugin conf
     }
 

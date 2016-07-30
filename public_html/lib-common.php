@@ -2990,11 +2990,11 @@ function COM_userMenu($help = '', $title = '', $position = '')
             $login->set_var('lang_signup', $LANG01[59]);
         }
 
-        // 3rd party remote authentification.
+        // 3rd party remote authentication.
         if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
             $modules = SEC_collectRemoteAuthenticationModules();
             if (count($modules) === 0) {
-                $user_templates->set_var('services', '');
+                $login->set_var('services', '');
             } else {
                 if (!$_CONF['user_login_method']['standard'] &&
                         (count($modules) == 1)) {
@@ -3040,7 +3040,6 @@ function COM_userMenu($help = '', $title = '', $position = '')
         } else {
             $login->set_var('openid_login', '');
         }
-
 
         // OAuth remote authentification.
         if ($_CONF['user_login_method']['oauth'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
@@ -3960,10 +3959,10 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
 
         if (! isset($mailobj)) {
             if (($method === 'sendmail') || ($method === 'smtp')) {
-                $mailobj =& Mail::factory($method, $_CONF['mail_settings']);
+                $mailobj = Mail::factory($method, $_CONF['mail_settings']);
             } else {
                 $method = 'mail';
-                $mailobj =& Mail::factory($method);
+                $mailobj = Mail::factory($method);
             }
         }
 
