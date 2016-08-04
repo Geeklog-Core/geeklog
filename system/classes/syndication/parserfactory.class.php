@@ -28,7 +28,7 @@
 /*     distribution.                                                        */
 /****************************************************************************/
 
-require_once 'HTTP/Request.php';
+require_once 'HTTP/Request2.php';
 
 /**
 * FeedParserFactory provides generic access to syndication feed formats.
@@ -169,31 +169,36 @@ class FeedParserFactory
     */
     protected function _getFeed($url)
     {
-        $req = new HTTP_Request($url, array('allowRedirects' => true));
+        $req = new HTTP_Request2(
+            $url,
+            HTTP_Request2::METHOD_GET,
+            array('follow_redirects' => true)
+        );
 
         if ($this->userAgent != '') {
-            $req->addHeader('User-Agent', $this->userAgent);
+            $req->setHeader('User-Agent', $this->userAgent);
         }
 
         if (!empty($this->lastModified) && !empty($this->eTag)) {
-            $req->addHeader('If-Modified-Since', $this->lastModified);
-            $req->addHeader('If-None-Match', $this->eTag);
+            $req->setHeader('If-Modified-Since', $this->lastModified);
+            $req->setHeader('If-None-Match', $this->eTag);
         }
 
-        $response = $req->sendRequest();
+        try {
+            $response = $req->send();
+            $status = $response->getStatus();
 
-        if (!PEAR::isError($response)) {
-            if ($req->getResponseCode() == 304) {
+            if ($status == 304) {
                 $this->errorStatus = false; // indicate no error, just unchanged
                 return false;
             } else {
-                $this->lastModified = $req->getResponseHeader('Last-Modified');
-                $this->eTag         = $req->getResponseHeader('ETag');
-                return $req->getResponseBody();
+                $this->lastModified = $response->getHeader('Last-Modified');
+                $this->eTag         = $response->getHeader('ETag');
+                return $response->getBody();
             }
-        } else {
+        } catch (HTTP_Request2_Exception $e) {
             $this->errorStatus = array(
-                'HTTP Fetch Failed', $response->getCode(), $response->getMessage()
+                'HTTP Fetch Failed', '', $e->getMessage()
             );
             return false;
         }

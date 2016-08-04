@@ -37,53 +37,55 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-pingback.php') !== false) {
 require_once 'XML/RPC.php';
 
 /**
-* Get the Pingback URL for a given URL
-*
-* @param    string  $url    URL to get the Pingback URL for
-* @return   string          Pingback URL or empty string
-*
-*/
+ * Get the Pingback URL for a given URL
+ *
+ * @param    string $url URL to get the Pingback URL for
+ * @return   string          Pingback URL or empty string
+ */
 function PNB_getPingbackUrl($url)
 {
-    require_once 'HTTP/Request.php';
+    require_once 'HTTP/Request2.php';
 
     $retval = '';
 
-    $req = new HTTP_Request($url);
-    $req->setMethod(HTTP_REQUEST_METHOD_HEAD);
-    $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
+    $req = new HTTP_Request2($url, HTTP_Request2::MEHOD_HEAD);
+    $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
+    try {
+        $response = $req->send();
+        $retval = $response->getHeader('x-pingback');
+    } catch (HTTP_Request2_Exception $e) {
+        COM_errorLog('Pingback (HEAD): ' . $e->getMessage());
 
-    $response = $req->sendRequest();
-    if (PEAR::isError($response)) {
-        COM_errorLog('Pingback (HEAD): ' . $response->getMessage());
         return false;
-    } else {
-        $retval = $req->getResponseHeader('X-Pingback');
     }
 
     if (empty($retval)) {
         // search for <link rel="pingback">
-        $req = new HTTP_Request($url);
-        $req->setMethod(HTTP_REQUEST_METHOD_GET);
-        $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
+        $req = new HTTP_Request2($url, HTTP_Request2::METHOD_GET);
+        $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
 
-        $response = $req->sendRequest();
-        if (PEAR::isError($response)) {
-            COM_errorLog('Pingback (GET): ' . $response->getMessage());
-            return false;
-        } elseif ($req->getResponseCode() == 200) {
-            $body = $req->getResponseBody();
+        try {
+            $response = $req->send();
+            $status = $response->getStatus();
 
-            // only search for the first match - it doesn't make sense to have
-            // more than one pingback URL
-            $found = preg_match("/<link rel=\"pingback\"[^>]*href=[\"']([^\"']*)[\"'][^>]*>/i", $body, $matches);
-            if (($found === 1) && !empty($matches[1])) {
-                $url = str_replace('&amp;', '&', $matches[1]);
-                $retval = urldecode($url);
+            if ($status == 200) {
+                $body = $response->getBody();
+
+                // only search for the first match - it doesn't make sense to have
+                // more than one pingback URL
+                $found = preg_match("/<link rel=\"pingback\"[^>]*href=[\"']([^\"']*)[\"'][^>]*>/i", $body, $matches);
+                if (($found === 1) && !empty($matches[1])) {
+                    $url = str_replace('&amp;', '&', $matches[1]);
+                    $retval = urldecode($url);
+                }
+            } else {
+                COM_errorLog("Pingback (GET): Got HTTP response code {$status} when requesting {$url}");
+
+                return false;
             }
-        } else {
-            COM_errorLog('Pingback (GET): Got HTTP response code '
-                         . $req->getResponseCode() . " when requesting $url");
+        } catch (HTTP_Request2_Exception $e) {
+            COM_errorLog('Pingback (GET): ' . $e->getMessage());
+
             return false;
         }
     }
@@ -92,27 +94,26 @@ function PNB_getPingbackUrl($url)
 }
 
 /**
-* Send a Pingback
-*
-* @param    string  $sourceURI  URL of an entry on our site
-* @param    string  $targetURI  an entry on someone else's site
-* @return   string              empty string on success or error message
-*
-*/
-function PNB_sendPingback ($sourceURI, $targetURI)
+ * Send a Pingback
+ *
+ * @param    string $sourceURI URL of an entry on our site
+ * @param    string $targetURI an entry on someone else's site
+ * @return   string              empty string on success or error message
+ */
+function PNB_sendPingback($sourceURI, $targetURI)
 {
     global $LANG_TRB;
 
     $retval = '';
 
-    $pingback = PNB_getPingbackUrl ($targetURI);
+    $pingback = PNB_getPingbackUrl($targetURI);
     if (empty ($pingback)) {
         return $LANG_TRB['no_pingback_url'];
     }
 
-    $parts = parse_url ($pingback);
+    $parts = parse_url($pingback);
     if (empty ($parts['port'])) {
-        if (strcasecmp ($parts['scheme'], 'https') == 0) {
+        if (strcasecmp($parts['scheme'], 'https') == 0) {
             $parts['port'] = 443;
         } else {
             $parts['port'] = 80;
@@ -125,38 +126,36 @@ function PNB_sendPingback ($sourceURI, $targetURI)
     //$client->setDebug (1);
 
     $msg = new XML_RPC_Message ('pingback.ping',
-            array (new XML_RPC_Value ($sourceURI, 'string'),
-                   new XML_RPC_Value ($targetURI, 'string')));
+        array(new XML_RPC_Value ($sourceURI, 'string'),
+            new XML_RPC_Value ($targetURI, 'string')));
 
-    $response = $client->send ($msg, 0, $parts['scheme']);
+    $response = $client->send($msg, 0, $parts['scheme']);
     if (!is_object($response) && ($response == 0)) {
         $retval = $client->errstring;
-    } else if ($response->faultCode () != 0) {
-        $retval = $response->faultString ();
+    } else if ($response->faultCode() != 0) {
+        $retval = $response->faultString();
     }
 
     return $retval;
 }
 
 /**
-* Send a standard ping to a weblog directory service
-*
-* The "classic" ping, originally invented for weblogs.com
-*
-* @param    string  $url            URL to ping
-* @param    string  $blogname       name of our site
-* @param    string  $blogurl        URL of our site
-* @param    string  $changedurl     URL of the changed / new entry
-* @return   string                  empty string on success of error message
-*
-*/
-function PNB_sendPing ($url, $blogname, $blogurl, $changedurl)
+ * Send a standard ping to a weblog directory service
+ * The "classic" ping, originally invented for weblogs.com
+ *
+ * @param    string $url        URL to ping
+ * @param    string $blogname   name of our site
+ * @param    string $blogurl    URL of our site
+ * @param    string $changedurl URL of the changed / new entry
+ * @return   string                  empty string on success of error message
+ */
+function PNB_sendPing($url, $blogname, $blogurl, $changedurl)
 {
     $retval = '';
 
-    $parts = parse_url ($url);
+    $parts = parse_url($url);
     if (empty ($parts['port'])) {
-        if (strcasecmp ($parts['scheme'], 'https') == 0) {
+        if (strcasecmp($parts['scheme'], 'https') == 0) {
             $parts['port'] = 443;
         } else {
             $parts['port'] = 80;
@@ -166,38 +165,36 @@ function PNB_sendPing ($url, $blogname, $blogurl, $changedurl)
     //$client->setDebug (1);
 
     $msg = new XML_RPC_Message ('weblogUpdates.ping',
-            array (new XML_RPC_Value ($blogname, 'string'),
-                   new XML_RPC_Value ($blogurl, 'string'),
-                   new XML_RPC_Value ($changedurl, 'string')));
+        array(new XML_RPC_Value ($blogname, 'string'),
+            new XML_RPC_Value ($blogurl, 'string'),
+            new XML_RPC_Value ($changedurl, 'string')));
 
-    $response = $client->send ($msg, 0, $parts['scheme']);
+    $response = $client->send($msg, 0, $parts['scheme']);
     if (!is_object($response) && ($response == 0)) {
         $retval = $client->errstring;
-    } else if ($response->faultCode () != 0) {
-        $retval = $response->faultString ();
+    } else if ($response->faultCode() != 0) {
+        $retval = $response->faultString();
     }
 
     return $retval;
 }
 
 /**
-* Send an extended ping to a weblog directory service
-*
-* Supported e.g. by blo.gs
-*
-* @param    string  $url            URL to ping
-* @param    string  $blogname       name of our site
-* @param    string  $blogurl        URL of our site
-* @param    string  $changedurl     URL of the changed / new entry
-* @param    string  $feedurl        URL of a feed for our site
-* @return   string                  empty string on success of error message
-*
-*/
-function PNB_sendExtendedPing ($url, $blogname, $blogurl, $changedurl, $feedurl)
+ * Send an extended ping to a weblog directory service
+ * Supported e.g. by blo.gs
+ *
+ * @param    string $url        URL to ping
+ * @param    string $blogname   name of our site
+ * @param    string $blogurl    URL of our site
+ * @param    string $changedurl URL of the changed / new entry
+ * @param    string $feedurl    URL of a feed for our site
+ * @return   string                  empty string on success of error message
+ */
+function PNB_sendExtendedPing($url, $blogname, $blogurl, $changedurl, $feedurl)
 {
-    $parts = parse_url ($url);
+    $parts = parse_url($url);
     if (empty ($parts['port'])) {
-        if (strcasecmp ($parts['scheme'], 'https') == 0) {
+        if (strcasecmp($parts['scheme'], 'https') == 0) {
             $parts['port'] = 443;
         } else {
             $parts['port'] = 80;
@@ -207,36 +204,33 @@ function PNB_sendExtendedPing ($url, $blogname, $blogurl, $changedurl, $feedurl)
     //$client->setDebug (1);
 
     $msg = new XML_RPC_Message ('weblogUpdates.extendedPing',
-            array (new XML_RPC_Value ($blogname, 'string'),
-                   new XML_RPC_Value ($blogurl, 'string'),
-                   new XML_RPC_Value ($changedurl, 'string'),
-                   new XML_RPC_Value ($feedurl, 'string')));
+        array(new XML_RPC_Value ($blogname, 'string'),
+            new XML_RPC_Value ($blogurl, 'string'),
+            new XML_RPC_Value ($changedurl, 'string'),
+            new XML_RPC_Value ($feedurl, 'string')));
 
-    $response = $client->send ($msg, 0, $parts['scheme']);
+    $response = $client->send($msg, 0, $parts['scheme']);
     if (!is_object($response) && ($response == 0)) {
         $retval = $client->errstring;
-    } else if ($response->faultCode () != 0) {
-        $retval = $response->faultString ();
+    } else if ($response->faultCode() != 0) {
+        $retval = $response->faultString();
     }
 
     return $retval;
 }
 
 /**
-* Create an excerpt from some piece of HTML containing a given URL
-*
-* This somewhat convoluted piece of code will extract the text around a
-* given link located somewhere in the given piece of HTML. It returns
-* the actual link text plus some of the text before and after the link.
-*
-* NOTE:     Returns an empty string when $url is not found in $html.
-*
-* @param    string  $html   The piece of HTML to search through
-* @param    string  $url    URL that should be contained in $html somewhere
-* @param    int     $xlen   Max. length of excerpt (default: 255 characters)
-* @return   string          Extract: The link text and some surrounding text
-*
-*/
+ * Create an excerpt from some piece of HTML containing a given URL
+ * This somewhat convoluted piece of code will extract the text around a
+ * given link located somewhere in the given piece of HTML. It returns
+ * the actual link text plus some of the text before and after the link.
+ * NOTE:     Returns an empty string when $url is not found in $html.
+ *
+ * @param    string $html The piece of HTML to search through
+ * @param    string $url  URL that should be contained in $html somewhere
+ * @param    int    $xlen Max. length of excerpt (default: 255 characters)
+ * @return   string          Extract: The link text and some surrounding text
+ */
 function PNB_makeExcerpt($html, $url, $xlen = 255)
 {
     $retval = '';
@@ -244,14 +238,14 @@ function PNB_makeExcerpt($html, $url, $xlen = 255)
     // the excerpt will come out as
     // [...] before linktext after [...]
     $fill_start = '[...] ';
-    $fill_end   = ' [...]';
+    $fill_end = ' [...]';
 
     $f1len = MBYTE_strlen($fill_start);
     $f2len = MBYTE_strlen($fill_end);
 
     // extract all links
     preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i",
-                   $html, $matches);
+        $html, $matches);
 
     $before = '';
     $after = '';

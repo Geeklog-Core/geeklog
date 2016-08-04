@@ -592,7 +592,7 @@ class SitemapXML
         $sitemapUrl = $_CONF['site_url'] . '/' . basename($sitemap);
         $sitemapUrl = urlencode($sitemapUrl);
 
-        require_once 'HTTP/Request.php';
+        require_once 'HTTP/Request2.php';
 
         foreach ($destinations as $dest) {
             $dest = strtolower($dest);
@@ -620,18 +620,24 @@ class SitemapXML
 
             // Sends a ping to the endpoint of a search engine
             if ($url !== '') {
-                $req = new HTTP_Request($url);
-                $req->setMethod(HTTP_REQUEST_METHOD_GET);
-                $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
-                $response = $req->sendRequest();
+                $req = new HTTP_Request2(
+                    $url,
+                    HTTP_Request2::METHOD_GET
+                );
+                $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
 
-                if (PEAR::isError($response)) {
-                    COM_errorLog(__METHOD__ . ': HTTP error: ' . $response->getMessage());
-                } else if ($req->getResponseCode() != 200) {
-                    COM_errorLog(__METHOD__ . ': HTTP error code: ' . $req->getResponseCode());
-                } else {
-                    $success++;
-                    $records[$dest] = time();
+                try {
+                    $response = $req->send();
+                    $status = $response->getStatus();
+
+                    if ($status == 200) {
+                        $success++;
+                        $records[$dest] = time();
+                    } else {
+                        COM_errorLog(__METHOD__ . ': HTTP status ' . $$status);
+                    }
+                } catch (HTTP_Request2_Exception $e) {
+                    COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
                 }
             }
         }
