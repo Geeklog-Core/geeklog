@@ -124,7 +124,6 @@ $_TABLES['userevent'] = $_DB_table_prefix . 'userevent';
 
 /**
  * Include appropriate DBMS object
-
  */
 if (($_DB_dbms === 'mysql') && class_exists('MySQLi')) {
     require_once $_CONF['path_system'] . 'databases/mysqli.class.php';
@@ -133,7 +132,7 @@ if (($_DB_dbms === 'mysql') && class_exists('MySQLi')) {
 }
 
 // Instantiate the database object
-$_DB = new database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, 'COM_errorLog',
+$_DB = new Database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, 'COM_errorLog',
     $_CONF['default_charset']);
 if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
     DB_displayError(true);
@@ -337,96 +336,96 @@ function DB_copy($table, $fields, $values, $tablefrom, $id, $value, $return_page
  * Retrieves the number of rows in a recordset
  * This returns the number of rows in a recordset
  *
- * @param        object $recordset The recordset to operate one
+ * @param        mixed $recordSet The recordset to operate one
  * @return       int         Returns number of rows returned by a previously executed query
  */
-function DB_numRows($recordset)
+function DB_numRows($recordSet)
 {
     global $_DB;
 
-    return $_DB->dbNumRows($recordset);
+    return $_DB->dbNumRows($recordSet);
 }
 
 /**
  * Retrieves the contents of a field
  * This returns the contents of a field from a result set
  *
- * @param        object $recordset The recordset to operate on
+ * @param        mixed  $recordSet The recordset to operate on
  * @param        int    $row       row to get data from
  * @param        string $field     field to return
- * @return       (depends on the contents of the field)
+ * @return       mixed (depends on the contents of the field)
  */
-function DB_result($recordset, $row, $field)
+function DB_result($recordSet, $row, $field)
 {
     global $_DB;
 
-    return $_DB->dbResult($recordset, $row, $field);
+    return $_DB->dbResult($recordSet, $row, $field);
 }
 
 /**
- * Retrieves the number of fields in a recordset
- * This returns the number of fields in a recordset
+ * Retrieves the number of fields in a record set
+ * This returns the number of fields in a record set
  *
- * @param        object $recordset The recordset to operate on
+ * @param        mixed $recordSet The recordset to operate on
  * @return       int         Returns the number fields in a result set
  */
-function DB_numFields($recordset)
+function DB_numFields($recordSet)
 {
     global $_DB;
 
-    return $_DB->dbNumFields($recordset);
+    return $_DB->dbNumFields($recordSet);
 }
 
 /**
  * Retrieves returns the field name for a field
  * Returns the field name for a given field number
  *
- * @param        object $recordset The recordset to operate on
- * @param        int    $fnumber   field number to return the name of
+ * @param        mixed $recordSet   The recordset to operate on
+ * @param        int   $fieldNumber field number to return the name of
  * @return       string      Returns name of specified field
  */
-function DB_fieldName($recordset, $fnumber)
+function DB_fieldName($recordSet, $fieldNumber)
 {
     global $_DB;
 
-    return $_DB->dbFieldName($recordset, $fnumber);
+    return $_DB->dbFieldName($recordSet, $fieldNumber);
 }
 
 /**
  * Retrieves returns the number of effected rows for last query
  * Retrieves returns the number of effected rows for last query
  *
- * @param        object $recordset The recordset to operate on
- * @return       int         returns numbe of rows affected by previously executed query
+ * @param        mixed $recordSet The record set to operate on
+ * @return       int         returns number of rows affected by previously executed query
  */
-function DB_affectedRows($recordset)
+function DB_affectedRows($recordSet)
 {
     global $_DB;
 
-    return $_DB->dbAffectedRows($recordset);
+    return $_DB->dbAffectedRows($recordSet);
 }
 
 /**
- * Retrieves record from a recordset
- * Gets the next record in a recordset and returns in array
+ * Retrieves record from a record set
+ * Gets the next record in a record set and returns in array
  *
- * @param        object  $recordset The recordset to operate on
+ * @param        mixed   $recordSet The record set to operate on
  * @param        boolean $both      get both assoc and numeric indices
- * @return       Array      Returns data for a record in an array
+ * @return       array      Returns data for a record in an array
  */
-function DB_fetchArray($recordset, $both = true)
+function DB_fetchArray($recordSet, $both = true)
 {
     global $_DB;
 
-    return $_DB->dbFetchArray($recordset, $both);
+    return $_DB->dbFetchArray($recordSet, $both);
 }
 
 /**
  * Returns the last ID inserted
  * Returns the last auto_increment ID generated
  *
- * @param    resources $link_identifier identifier for opened link
- * @return   int                             Returns the last ID auto-generated
+ * @param    resource $link_identifier identifier for opened link
+ * @return   mixed                     Returns the last ID auto-generated
  */
 function DB_insertId($link_identifier = '', $sequence = '')
 {
@@ -479,7 +478,6 @@ function DB_doDatabaseUpgrade($current_gl_version)
  * Locks a table for write operations
  *
  * @param    string $table Table to lock
- * @return   void
  * @see DB_unlockTable
  */
 function DB_lockTable($table)
@@ -494,7 +492,6 @@ function DB_lockTable($table)
  * Unlocks a table after DB_lockTable
  *
  * @param    string $table Table to unlock
- * @return   void
  * @see DB_lockTable
  */
 function DB_unlockTable($table)
@@ -512,24 +509,9 @@ function DB_unlockTable($table)
  */
 function DB_checkTableExists($table)
 {
-    global $_TABLES, $_DB_dbms;
+    global $_DB;
 
-    $exists = false;
-
-    if ($_DB_dbms == 'mysql') {
-        $result = DB_query("SHOW TABLES LIKE '{$_TABLES[$table]}'");
-        if (DB_numRows($result) > 0) {
-            $exists = true;
-        }
-    } elseif ($_DB_dbms == 'pgsql') {
-        $result = DB_query("select check_table('{$_TABLES[$table]}', 'public');");
-        $row = DB_fetchArray($result);
-        if (!empty($row[0])) {
-            $exists = true;
-        }
-    }
-
-    return $exists;
+    return $_DB->dbTableExists($table);
 }
 
 /**
@@ -552,6 +534,7 @@ function DBINT_parseCsvSqlString($csv)
     $mode = 0;  // mode=0 for non string, mode=1 for string
     $retArray = array();
     $thisValue = '';
+
     for ($x = 0; $x < $len; $x++) {
         // loop thru the string
         if ($csv[$x] == "'") {

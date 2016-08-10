@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'config-install.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -37,11 +37,8 @@ function install_config()
 {
     global $_CONF, $_TABLES;
 
-
     // Parameters for add function:  $param_name, $default_value, $type, $subgroup, $fieldset=null, $selection_array=null, $sort=0, $set=true, $group='Core', $tab=null
-
     $me = 'Core';
-
     $c = config::get_instance();
 
     // Subgroup: Site
@@ -571,5 +568,3 @@ function install_config()
     $c->add('filemanager_audios_ext', array('ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
     $so += 10;
 }
-
-?>
