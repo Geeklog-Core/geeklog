@@ -634,7 +634,7 @@ class SitemapXML
                         $success++;
                         $records[$dest] = time();
                     } else {
-                        COM_errorLog(__METHOD__ . ': HTTP status ' . $$status);
+                        COM_errorLog(__METHOD__ . ': HTTP status ' . $status);
                     }
                 } catch (HTTP_Request2_Exception $e) {
                     COM_errorLog(__METHOD__ . ': ' . $e->getMessage());

@@ -53,9 +53,9 @@ if (!defined('LB')) {
 }
 if (!defined('VERSION')) {
     /**
-    * This constant defines Geeklog's version number. It will be written to
-    * siteconfig.php and the database (in the latter case minus any suffix).
-    */
+     * This constant defines Geeklog's version number. It will be written to
+     * siteconfig.php and the database (in the latter case minus any suffix).
+     */
     define('VERSION', '2.1.2');
 }
 if (!defined('XHTML')) {
@@ -87,19 +87,19 @@ if ($LANG_DIRECTION == 'rtl') {
 // date_default_timezone_get() (introduced as of PHP-5.1.0)
 if (version_compare(PHP_VERSION, '5.1.0', '<')) {
     $output = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
-            . '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . LB
-            . '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' . LB
-            . '<head>' . LB
-            . '  <meta http-equiv="Content-Type" content="text/html;charset='
-            . $LANG_CHARSET . '" />' . LB
-            . '  <title>Geeklog - The secure CMS.</title>' . LB
-            . '</head>' . LB
-            . '<body dir="' . $LANG_DIRECTION . '">' . LB
-            . '<h1>' . $LANG_INSTALL[3] . '</h1>' . LB
-            . '<p>' . sprintf($LANG_INSTALL[5], '<strong>' . SUPPORTED_PHP_VER . '</strong>')
-            . '<strong>' . PHP_VERSION . '</strong>' . $LANG_INSTALL[6] . '</p>' . LB
-            . '</body>' . LB
-            . '</html>' . LB;
+        . '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . LB
+        . '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' . LB
+        . '<head>' . LB
+        . '  <meta http-equiv="Content-Type" content="text/html;charset='
+        . $LANG_CHARSET . '" />' . LB
+        . '  <title>Geeklog - The secure CMS.</title>' . LB
+        . '</head>' . LB
+        . '<body dir="' . $LANG_DIRECTION . '">' . LB
+        . '<h1>' . $LANG_INSTALL[3] . '</h1>' . LB
+        . '<p>' . sprintf($LANG_INSTALL[5], '<strong>' . SUPPORTED_PHP_VER . '</strong>')
+        . '<strong>' . PHP_VERSION . '</strong>' . $LANG_INSTALL[6] . '</p>' . LB
+        . '</body>' . LB
+        . '</html>' . LB;
     header('Content-Type: text/html; charset=' . $LANG_CHARSET);
     echo $output;
     die(1);
@@ -118,14 +118,14 @@ if (isset($_SERVER['CONTENT_LENGTH'])) {
     $POST_MAX_SIZE = ini_get('post_max_size');
     $mul = substr($POST_MAX_SIZE, -1);
     $mul = ($mul == 'M'
-            ? 1048576
-            : ( $mul == 'K'
-                ? 1024
-                : ( $mul == 'G'
-                    ? 1073741824
-                    : 1 ) ) );
+        ? 1048576
+        : ($mul == 'K'
+            ? 1024
+            : ($mul == 'G'
+                ? 1073741824
+                : 1)));
 
-    if (($_SERVER['CONTENT_LENGTH'] > ($mul*((int)$POST_MAX_SIZE))) && $POST_MAX_SIZE) {
+    if (($_SERVER['CONTENT_LENGTH'] > ($mul * ((int) $POST_MAX_SIZE))) && $POST_MAX_SIZE) {
 
         // If it does, display an error message
         $display = INST_getHeader($LANG_ERROR[8])
@@ -138,7 +138,6 @@ if (isset($_SERVER['CONTENT_LENGTH'])) {
 }
 
 
-
 // +---------------------------------------------------------------------------+
 // | Functions                                                                 |
 // +---------------------------------------------------------------------------+
@@ -148,18 +147,17 @@ if (isset($_SERVER['CONTENT_LENGTH'])) {
  *
  * @param   $mHeading   Heading
  * @return  string      Header HTML code
- *
  */
 function INST_getHeader($mHeading)
 {
     global $LANG_CHARSET, $LANG_INSTALL, $LANG_DIRECTION;
 
     return (defined('XHTML')
-            ? '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
-                . '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">'
-            : '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'
-                . '<html>' )
-        . '<head>
+        ? '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
+        . '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">'
+        : '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'
+        . '<html>')
+    . '<head>
 <meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '"' . XHTML . '>
 <meta name="robots" content="noindex,nofollow"' . XHTML . '>
 <meta http-equiv="Cache-Control" content="no-cache/"/>
@@ -218,24 +216,21 @@ function INST_selectMigrationType()
  * Returns the ending HTML for the installer theme.
  *
  * @return string Footer HTML code
- *
  */
 function INST_getFooter()
 {
     return '<br' . XHTML . '><br' . XHTML . '>' . LB
-        . '</div>' . LB
-        . '</div>' . LB
-        . '</body>' . LB
-        . '</html>';
+    . '</div>' . LB
+    . '</div>' . LB
+    . '</body>' . LB
+    . '</html>';
 }
 
 /**
  * Returns the PHP version
- *
  * Note: Removes appendices like 'rc1', etc.
  *
  * @return array the 3 separate parts of the PHP version number
- *
  */
 function php_v()
 {
@@ -248,16 +243,16 @@ function php_v()
  * Check if the user's PHP version is supported by Geeklog
  *
  * @return boolean True if supported, falsed if not supported
- *
  */
 function INST_phpOutOfDate()
 {
     $minv = explode('.', SUPPORTED_PHP_VER);
 
     $phpv = php_v();
-    if (($phpv[0] <  $minv[0]) ||
-       (($phpv[0] == $minv[0]) && ($phpv[1] <  $minv[1])) ||
-       (($phpv[0] == $minv[0]) && ($phpv[1] == $minv[1]) && ($phpv[2] < $minv[2]))) {
+    if (($phpv[0] < $minv[0]) ||
+        (($phpv[0] == $minv[0]) && ($phpv[1] < $minv[1])) ||
+        (($phpv[0] == $minv[0]) && ($phpv[1] == $minv[1]) && ($phpv[2] < $minv[2]))
+    ) {
         return true;
     }
 
@@ -268,38 +263,45 @@ function INST_phpOutOfDate()
  * Returns the MySQL version
  *
  * @return  mixed   array[0..2] of the parts of the version number or false
- *
  */
 function mysql_v($_DB_host, $_DB_user, $_DB_pass)
 {
-    $db_handle = @mysql_connect($_DB_host, $_DB_user, $_DB_pass);
-    if ($db_handle === false) {
+    if (is_callable('mysqli_connect')) {
+        $db_handle = new mysqli($_DB_host, $_DB_user, $_DB_pass);
+
+        if ($db_handle instanceof mysqli) {
+            $mysqlv = $db_handle->server_info;
+            $db_handle->close();
+        } else {
+            return false;
+        }
+    } elseif (is_callable('mysql_connect')) {
+        $db_handle = @mysql_connect($_DB_host, $_DB_user, $_DB_pass);
+
+        if (is_resource($db_handle)) {
+            $mysqlv = @mysql_get_server_info($db_handle);
+            @mysql_close($db_handle);
+        } else {
+            return false;
+        }
+    } else {
         return false;
     }
 
-    $mysqlv = @mysql_get_server_info($db_handle);
-
     if (!empty($mysqlv)) {
         preg_match('/^([0-9]+).([0-9]+).([0-9]+)/', $mysqlv, $match);
-        $mysqlmajorv = $match[1];
-        $mysqlminorv = $match[2];
-        $mysqlrev = $match[3];
-    } else {
-        $mysqlmajorv = 0;
-        $mysqlminorv = 0;
-        $mysqlrev = 0;
-    }
-    @mysql_close($db_handle);
 
-    return array($mysqlmajorv, $mysqlminorv, $mysqlrev);
+        return array($match[1], $match[2], $match[3]);
+    } else {
+        return array(0, 0, 0);
+    }
 }
 
 /**
  * Check if the user's MySQL version is supported by Geeklog
  *
- * @param   array   $db     Database information
+ * @param   array $db Database information
  * @return  boolean True if supported, falsed if not supported
- *
  */
 function INST_mysqlOutOfDate($db)
 {
@@ -308,9 +310,10 @@ function INST_mysqlOutOfDate($db)
     if ($db['type'] == 'mysql' || $db['type'] == 'mysql-innodb') {
         $myv = mysql_v($db['host'], $db['user'], $db['pass']);
 
-        if (($myv[0] <  $minv[0]) ||
-           (($myv[0] == $minv[0]) && ($myv[1] <  $minv[1])) ||
-           (($myv[0] == $minv[0]) && ($myv[1] == $minv[1]) && ($myv[2] < $minv[2]))) {
+        if (($myv[0] < $minv[0]) ||
+            (($myv[0] == $minv[0]) && ($myv[1] < $minv[1])) ||
+            (($myv[0] == $minv[0]) && ($myv[1] == $minv[1]) && ($myv[2] < $minv[2]))
+        ) {
 
             return true;
         }
@@ -321,46 +324,42 @@ function INST_mysqlOutOfDate($db)
 
 /**
  * Written to aid in install script development
- *
  * NOTE:    This code is a modified copy from PHP.net
  *
  * @param   int $size       Filesize
  * @param   int $dec_places Number of decimal places
  * @return  string          Filesize string
- *
  */
 function INST_formatSize($size, $dec_places = 0)
 {
     $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-    for ($i=0; ($size > 1024 && isset($sizes[$i+1])) ; $i++) {
+    for ($i = 0; ($size > 1024 && isset($sizes[$i + 1])); $i++) {
         $size /= 1024;
     }
-    return  round($size, $dec_places) . " " . $sizes[$i];
+
+    return round($size, $dec_places) . " " . $sizes[$i];
 }
 
 /**
  * Provide a link to the help page for an option
  *
- * @param   string  $var    key of the label, used as an anchor on the help page
+ * @param   string $var key of the label, used as an anchor on the help page
  * @return  string          HTML for the link
- *
  */
 function INST_helpLink($var)
 {
     global $language;
 
     return '(<a href="help.php?language=' . $language . '&amp;label=' . $var
-           . '#' . $var . '" target="_blank">?</a>)';
+    . '#' . $var . '" target="_blank">?</a>)';
 }
 
 /**
  * Make a nice display name from the language filename
- *
  * NOTE:     This code is a straight copy from MBYTE_languageList()
  *
- * @param    string  $file   filename without the extension
+ * @param    string $file filename without the extension
  * @return   string          language name to display to the user
- *
  */
 function INST_prettifyLanguageName($filename)
 {
@@ -391,10 +390,9 @@ function INST_prettifyLanguageName($filename)
 /**
  * Modify db-config.php
  *
- * @param   string  $config_file    Full path to db-config.php
- * @param   array   $db             Database information to save
+ * @param   string $config_file Full path to db-config.php
+ * @param   array  $db          Database information to save
  * @return  boolean True if successful, false if not
- *
  */
 function INST_writeConfig($config_file, $db)
 {
@@ -405,12 +403,12 @@ function INST_writeConfig($config_file, $db)
 
     require_once $config_file; // Grab the current DB values
 
-    $db = array('host' => (isset($db['host']) ? $db['host'] : $_DB_host),
-                'name' => (isset($db['name']) ? $db['name'] : $_DB_name),
-                'user' => (isset($db['user']) ? $db['user'] : $_DB_user),
-                'pass' => (isset($db['pass']) ? $db['pass'] : $_DB_pass),
+    $db = array('host'         => (isset($db['host']) ? $db['host'] : $_DB_host),
+                'name'         => (isset($db['name']) ? $db['name'] : $_DB_name),
+                'user'         => (isset($db['user']) ? $db['user'] : $_DB_user),
+                'pass'         => (isset($db['pass']) ? $db['pass'] : $_DB_pass),
                 'table_prefix' => (isset($db['table_prefix']) ? $db['table_prefix'] : $_DB_table_prefix),
-                'type' => (isset($db['type']) ? $db['type'] : $_DB_dbms) );
+                'type'         => (isset($db['type']) ? $db['type'] : $_DB_dbms));
     if ($db['type'] == 'mysql-innodb') {
         $db['type'] = 'mysql';
     }
@@ -435,17 +433,16 @@ function INST_writeConfig($config_file, $db)
         return false;
     }
     fclose($dbconfig_file);
+
     return true;
 }
 
 /**
  * Check if a table exists
+ *
  * @see DB_checkTableExists
- *
- *
- * @param   string $table   Table name
+ * @param   string $table Table name
  * @return  boolean         True if table exists, false if it does not
- *
  */
 function INST_checkTableExists($table)
 {
@@ -455,27 +452,35 @@ function INST_checkTableExists($table)
 /**
  * Can the install script connect to the database?
  *
- * @param   array   $db Database information
+ * @param   array $db Database information
  * @return  mixed       Returns the DB handle if true, false if not
- *
  */
 function INST_dbConnect($db)
 {
-    $db_handle = false;
     switch ($db['type']) {
-    case 'mysql-innodb':
-        // deliberate fallthrough - no "break"
-    case 'mysql':
-        if ($db_handle = @mysql_connect($db['host'], $db['user'], $db['pass'])) {
-            return $db_handle;
-        }
-        break;
+        case 'mysql-innodb':
+            // deliberate fallthrough - no "break"
+        case 'mysql':
+            if (is_callable('mysqli_connect')) {
+                $db_handle = new mysqli($db['host'], $db['user'], $db['pass']);
 
-    case 'pgsql':
-        if ($db_handle = @pg_connect('host='.$db['host'].' dbname='.$db['name'].' user='.$db['user'].' password='.$db['pass'])) {
-            return $db_handle;
-        }
-        break;
+                if (!$db_handle instanceof mysqli) {
+                    $db_handle = false;
+                }
+            } elseif (is_callable('mysql_connect')) {
+                $db_handle = @mysql_connect($db['host'], $db['user'], $db['pass']);
+            } else {
+                $db_handle = false;
+            }
+
+            break;
+
+        case 'pgsql':
+            $db_handle = @pg_connect('host=' . $db['host'] . ' dbname=' . $db['name'] . ' user=' . $db['user'] . ' password=' . $db['pass']);
+            break;
+
+        default:
+            $db_handle = false;
     }
 
     return $db_handle;
@@ -484,27 +489,27 @@ function INST_dbConnect($db)
 /**
  * Check if a Geeklog database exists
  *
- * @param   array   $db Array containing connection info
+ * @param   array $db Array containing connection info
  * @return  boolean     True if a database exists, false if not
- *
  */
 function INST_dbExists($db)
 {
     $db_handle = INST_dbConnect($db);
     $db_exists = false;
     switch ($db['type']) {
-    case 'mysql':
-        // deliberate fallthrough - no "break"
-    case 'mysql-innodb':
-        if (@mysql_select_db($db['name'], $db_handle)) {
-            return true;
-        }
-        break;
+        case 'mysql':
+            // deliberate fallthrough - no "break"
+        case 'mysql-innodb':
+            if (@mysql_select_db($db['name'], $db_handle)) {
+                return true;
+            }
+            break;
 
-    case 'pgsql':
-        $result = @pg_query('select count(*) from pg_catalog.pg_database where datname = \''.$db['name'].'\' ;');
-        $ifExists = pg_fetch_row($result);
-        return $ifExists[0]?true:false;
+        case 'pgsql':
+            $result = @pg_query('select count(*) from pg_catalog.pg_database where datname = \'' . $db['name'] . '\' ;');
+            $ifExists = pg_fetch_row($result);
+
+            return $ifExists[0] ? true : false;
     }
 
     return false;
@@ -512,38 +517,36 @@ function INST_dbExists($db)
 
 /**
  * Check if URL exists
- *
  * NOTE:    This code is a modified copy from marufit at gmail dot com
  *
- * @param   string  $url    URL
+ * @param   string $url URL
  * @return  boolean         True if URL exists, false if not
- *
  */
 function INST_urlExists($url)
 {
-/*
-    $handle = curl_init($url);
-    if ($handle === false) {
-        return false;
-    }
-    curl_setopt($handle, CURLOPT_HEADER, false);
-    curl_setopt($handle, CURLOPT_FAILONERROR, true);  // this works
-    curl_setopt($handle, CURLOPT_NOBODY, true);
-    curl_setopt($handle, CURLOPT_RETURNTRANSFER, false);
-    $response = curl_exec($handle);
-    curl_close($handle);
-    return $response;
-*/
+    /*
+        $handle = curl_init($url);
+        if ($handle === false) {
+            return false;
+        }
+        curl_setopt($handle, CURLOPT_HEADER, false);
+        curl_setopt($handle, CURLOPT_FAILONERROR, true);  // this works
+        curl_setopt($handle, CURLOPT_NOBODY, true);
+        curl_setopt($handle, CURLOPT_RETURNTRANSFER, false);
+        $response = curl_exec($handle);
+        curl_close($handle);
+        return $response;
+    */
     return true;
 }
 
 /**
  * Check if an error occured while uploading a file
  *
- * @param   array   $mFile  $_FILE['uploaded_file']
+ * @param   array $mFile    $_FILE['uploaded_file']
  * @return  mixed           Returns the error string if an error occured,
  *                          returns false if no error occured
- *
+
  */
 function INST_getUploadError($mFile)
 {
@@ -551,13 +554,13 @@ function INST_getUploadError($mFile)
 
     $mRetval = '';
     $mErrors = array(
-        UPLOAD_ERR_INI_SIZE => $LANG_ERROR[0],
-        UPLOAD_ERR_FORM_SIZE => $LANG_ERROR[1],
-        UPLOAD_ERR_PARTIAL => $LANG_ERROR[2],
-        UPLOAD_ERR_NO_FILE => $LANG_ERROR[3],
+        UPLOAD_ERR_INI_SIZE   => $LANG_ERROR[0],
+        UPLOAD_ERR_FORM_SIZE  => $LANG_ERROR[1],
+        UPLOAD_ERR_PARTIAL    => $LANG_ERROR[2],
+        UPLOAD_ERR_NO_FILE    => $LANG_ERROR[3],
         UPLOAD_ERR_NO_TMP_DIR => $LANG_ERROR[4],
         UPLOAD_ERR_CANT_WRITE => $LANG_ERROR[5],
-        UPLOAD_ERR_EXTENSION => $LANG_ERROR[6]);
+        UPLOAD_ERR_EXTENSION  => $LANG_ERROR[6]);
 
     if ($mFile['error'] !== UPLOAD_ERR_OK) { // If an error occured while uploading the file.
 
@@ -584,7 +587,6 @@ function INST_getUploadError($mFile)
  * Check which plugins are actually installed and disable them if needed
  *
  * @return   int     number of plugins that were disabled
- *
  */
 function INST_checkPlugins()
 {
@@ -612,7 +614,6 @@ function INST_checkPlugins()
  * @param    $mMessage   Message string
  * @param    $mType      'error', 'warning', 'success', or 'notice'
  * @return   string      HTML formatted dialog message
- *
  */
 function INST_getAlertMsg($mMessage, $mType = 'notice')
 {
@@ -621,33 +622,34 @@ function INST_getAlertMsg($mMessage, $mType = 'notice')
     $mStyle = ($mType == 'success') ? 'success' : 'error';
 
     switch (strtolower($mType)) {
-    case 'error':
-        $mType = $LANG_INSTALL[38]; break;
-    case 'warning':
-        $mType = $LANG_INSTALL[20]; break;
-    case 'success':
-        $mType = $LANG_INSTALL[93]; break;
-    default:
-        $mType = $LANG_INSTALL[59]; break;
+        case 'error':
+            $mType = $LANG_INSTALL[38];
+            break;
+        case 'warning':
+            $mType = $LANG_INSTALL[20];
+            break;
+        case 'success':
+            $mType = $LANG_INSTALL[93];
+            break;
+        default:
+            $mType = $LANG_INSTALL[59];
+            break;
     }
 
-    return '<div class="notice"><span class="' . $mStyle . '">' . $mType .':</span> '
-        . $mMessage . '</div>' . LB;
+    return '<div class="notice"><span class="' . $mStyle . '">' . $mType . ':</span> '
+    . $mMessage . '</div>' . LB;
 
 }
 
 /**
  * Check if we can skip upgrade steps (post-1.5.0)
- *
  * If we're doing an upgrade from 1.5.0 or later and we have the necessary
  * DB credentials, skip the forms and upgrade directly.
- *
  * NOTE:    Will not return if upgrading from 1.5.0 or later.
  *
- * @param   string  $dbconfig_path      path to db-config.php
- * @param   string  $siteconfig_path    path to siteconfig.php
+ * @param   string $dbconfig_path   path to db-config.php
+ * @param   string $siteconfig_path path to siteconfig.php
  * @return  string                      database version, if possible
- *
  */
 function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
 {
@@ -661,16 +663,26 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
     $version = '';
 
     switch ($_DB_dbms) {
-    case 'mysql':
-        $db_handle = @mysql_connect($_DB_host, $_DB_user, $_DB_pass);
-        if ($db_handle) {
-            $connected = @mysql_select_db($_DB_name, $db_handle);
-        }
-        break;
+        case 'mysql':
+            if (is_callable('mysqli_connect')) {
+                $db_handle = new mysqli($_DB_host, $_DB_user, $_DB_pass);
 
-    default:
-        $connected = false;
-        break;
+                if ($db_handle instanceof mysqli) {
+                    $connected = $db_handle->select_db($_DB_name);
+                }
+            } elseif (is_callable('mysql_connect')) {
+                $db_handle = @mysql_connect($_DB_host, $_DB_user, $_DB_pass);
+
+                if ($db_handle) {
+                    $connected = @mysql_select_db($_DB_name, $db_handle);
+                }
+            }
+
+            break;
+
+        default:
+            $connected = false;
+            break;
     }
 
     if ($connected) {
@@ -680,19 +692,24 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
 
         switch ($_DB_dbms) {
             case 'mysql':
-                @mysql_close($db_handle);
-                break;
+                if ($db_handle instanceof mysqli) {
+                    $db_handle->close();
+                } else {
+                    @mysql_close($db_handle);
+                }
 
+                break;
         }
 
         if (!empty($version) && ($version != VERSION) &&
-                (version_compare($version, '1.5.0') >= 0)) {
+            (version_compare($version, '1.5.0') >= 0)
+        ) {
 
             // current version is at least 1.5.0, so upgrade directly
             $req_string = 'index.php?mode=upgrade&step=3'
-                        . '&dbconfig_path=' . $dbconfig_path
-                        . '&language=' . $language
-                        . '&version=' . $version;
+                . '&dbconfig_path=' . $dbconfig_path
+                . '&language=' . $language
+                . '&version=' . $version;
 
             header('Location: ' . $req_string);
             exit;
@@ -704,14 +721,12 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
 
 
 /**
-* Get information about a plugin
-*
-* Only works for plugins that have a autoinstall.php file
-*
-* @param    string  $plugin     plugin's directory name
-* @return   mixed               array of plugin info or false: error
-*
-*/
+ * Get information about a plugin
+ * Only works for plugins that have a autoinstall.php file
+ *
+ * @param    string $plugin plugin's directory name
+ * @return   mixed               array of plugin info or false: error
+ */
 function INST_getPluginInfo($plugin)
 {
     global $_CONF, $_TABLES, $_DB_dbms, $_DB_table_prefix;
@@ -719,7 +734,7 @@ function INST_getPluginInfo($plugin)
     $info = false;
 
     $autoinstall = $_CONF['path'] . 'plugins/' . $plugin . '/autoinstall.php';
-    if (! file_exists($autoinstall)) {
+    if (!file_exists($autoinstall)) {
         return false;
     }
 
@@ -729,7 +744,8 @@ function INST_getPluginInfo($plugin)
     if (function_exists($fn)) {
         $inst_info = $fn($plugin);
         if (isset($inst_info['info']) &&
-                !empty($inst_info['info']['pi_name'])) {
+            !empty($inst_info['info']['pi_name'])
+        ) {
             $info = $inst_info['info'];
         }
     }
@@ -738,14 +754,13 @@ function INST_getPluginInfo($plugin)
 }
 
 /**
-* Do the actual plugin auto install
-*
-* @param    string  $plugin     Plugin name
-* @param    array   $inst_parm  Installation parameters for the plugin
-* @param    boolean $verbose    true: enable verbose logging
-* @return   boolean             true on success, false otherwise
-*
-*/
+ * Do the actual plugin auto install
+ *
+ * @param    string  $plugin    Plugin name
+ * @param    array   $inst_parm Installation parameters for the plugin
+ * @param    boolean $verbose   true: enable verbose logging
+ * @return   boolean             true on success, false otherwise
+ */
 function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 {
     global $_CONF, $_TABLES, $_USER, $_DB_dbms, $_DB_table_prefix;
@@ -764,20 +779,21 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 
     // sanity checks for $inst_parms
     if (isset($inst_parms['info'])) {
-        $pi_name       = $inst_parms['info']['pi_name'];
-        $pi_version    = $inst_parms['info']['pi_version'];
+        $pi_name = $inst_parms['info']['pi_name'];
+        $pi_version = $inst_parms['info']['pi_version'];
         $pi_gl_version = $inst_parms['info']['pi_gl_version'];
-        $pi_homepage   = $inst_parms['info']['pi_homepage'];
+        $pi_homepage = $inst_parms['info']['pi_homepage'];
     }
     if (empty($pi_name) || ($pi_name != $plugin) || empty($pi_version) ||
-            empty($pi_gl_version) || empty($pi_homepage)) {
+        empty($pi_gl_version) || empty($pi_homepage)
+    ) {
         COM_errorLog('Incomplete plugin info', 1);
 
         return false;
     }
 
     // add plugin tables, if any
-    if (! empty($inst_parms['tables'])) {
+    if (!empty($inst_parms['tables'])) {
         $tables = $inst_parms['tables'];
         foreach ($tables as $table) {
             $_TABLES[$table] = $_DB_table_prefix . $table;
@@ -787,7 +803,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
     // Create the plugin's group(s), if any
     $groups = array();
     $admin_group_id = 0;
-    if (! empty($inst_parms['groups'])) {
+    if (!empty($inst_parms['groups'])) {
         $groups = $inst_parms['groups'];
         foreach ($groups as $name => $desc) {
             if ($verbose) {
@@ -825,7 +841,8 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
         $use_innodb = false;
         if (($_DB_dbms == 'mysql') &&
             (DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'")
-                == 'InnoDB')) {
+                == 'InnoDB')
+        ) {
             $use_innodb = true;
         }
 
@@ -858,7 +875,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
             $ft_name = DB_escapeString($feature);
             $ft_desc = DB_escapeString($desc);
             DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
-                     . "VALUES ('$ft_name', '$ft_desc')", 1);
+                . "VALUES ('$ft_name', '$ft_desc')", 1);
             if (DB_error()) {
                 COM_errorLog('Error adding plugin feature', 1);
                 PLG_uninstall($plugin);
@@ -895,7 +912,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 
         foreach ($groups as $key => $value) {
             DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES "
-                     . "($admin_group_id, NULL, 1)");
+                . "($admin_group_id, NULL, 1)");
             if (DB_error()) {
                 COM_errorLog('Error adding plugin admin group to Root group', 1);
                 PLG_uninstall($plugin);
@@ -925,7 +942,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
     // Load the online configuration records
     $load_config = 'plugin_load_configuration_' . $plugin;
     if (function_exists($load_config)) {
-        if (! $load_config($plugin)) {
+        if (!$load_config($plugin)) {
             COM_errorLog('Error loading plugin configuration', 1);
             PLG_uninstall($plugin);
 
@@ -958,7 +975,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
     // give the plugin a chance to perform any post-install operations
     $post_install = 'plugin_postinstall_' . $plugin;
     if (function_exists($post_install)) {
-        if (! $post_install($plugin)) {
+        if (!$post_install($plugin)) {
             COM_errorLog('Plugin postinstall failed', 1);
             PLG_uninstall($plugin);
 
@@ -979,17 +996,15 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 
 
 /**
-* Do a sanity check on the paths and URLs
-*
-* This is somewhat speculative but should provide the user with a working
-* site even if, for example, a site backup was installed elsewhere.
-*
-* @param    string  $path           proper /path/to/Geeklog
-* @param    string  $path_html      path to public_html
-* @param    string  $site_url       The site's URL
-* @param    string  $site_admin_url URL to the admin directory
-*
-*/
+ * Do a sanity check on the paths and URLs
+ * This is somewhat speculative but should provide the user with a working
+ * site even if, for example, a site backup was installed elsewhere.
+ *
+ * @param    string $path           proper /path/to/Geeklog
+ * @param    string $path_html      path to public_html
+ * @param    string $site_url       The site's URL
+ * @param    string $site_admin_url URL to the admin directory
+ */
 function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
 {
     // no "global $_CONF" here!
@@ -1002,39 +1017,42 @@ function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
     $config->initConfig();
     $_CONF = $config->get_config('Core');
 
-    if (! file_exists($_CONF['path_log'] . 'error.log')) {
+    if (!file_exists($_CONF['path_log'] . 'error.log')) {
         $config->set('path_log', $path . 'logs/');
     }
-    if (! file_exists($_CONF['path_language'] . $_CONF['language'] . '.php')) {
+    if (!file_exists($_CONF['path_language'] . $_CONF['language'] . '.php')) {
         $config->set('path_language', $path . 'language/');
     }
-    if (! file_exists($_CONF['backup_path'])) {
+    if (!file_exists($_CONF['backup_path'])) {
         $config->set('backup_path', $path . 'backups/');
     }
-    if (! file_exists($_CONF['path_data'])) {
+    if (!file_exists($_CONF['path_data'])) {
         $config->set('path_data', $path . 'data/');
     }
-    if ((! $_CONF['have_pear']) &&
-            (! file_exists($_CONF['path_pear'] . 'PEAR.php'))) {
+    if ((!$_CONF['have_pear']) &&
+        (!file_exists($_CONF['path_pear'] . 'PEAR.php'))
+    ) {
         $config->set('path_pear', $path . 'system/pear/');
     }
 
-    if (! file_exists($_CONF['path_html'] . 'lib-common.php')) {
+    if (!file_exists($_CONF['path_html'] . 'lib-common.php')) {
         $config->set('path_html', $path_html);
     }
-    if (! file_exists($_CONF['path_themes'] . $_CONF['theme']
-                                            . '/header.thtml')) {
+    if (!file_exists($_CONF['path_themes'] . $_CONF['theme']
+        . '/header.thtml')
+    ) {
         $config->set('path_themes', $path_html . 'layout/');
 
-        if (! file_exists($path_html . 'layout/' . $_CONF['theme']
-                                                 . '/header.thtml')) {
+        if (!file_exists($path_html . 'layout/' . $_CONF['theme']
+            . '/header.thtml')
+        ) {
             $config->set('theme', 'professional');
         }
     }
-    if (! file_exists($_CONF['path_images'] . 'articles')) {
+    if (!file_exists($_CONF['path_images'] . 'articles')) {
         $config->set('path_images', $path_html . 'images/');
     }
-    if (! file_exists($_CONF['path_editors'] . 'ckeditor')) {
+    if (!file_exists($_CONF['path_editors'] . 'ckeditor')) {
         $config->set('path_editors', $path_html . 'editors/');
     }
     if (substr($_CONF['rdf_file'], strlen($path_html)) != $path_html) {
@@ -1042,7 +1060,7 @@ function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
         $config->set('rdf_file', $path_html . 'backend/geeklog.rss');
     }
 
-    if (! empty($site_url) && ($_CONF['site_url'] != $site_url)) {
+    if (!empty($site_url) && ($_CONF['site_url'] != $site_url)) {
         $config->set('site_url', $site_url);
 
         // if we had to fix the site's URL, chances are that cookie domain
@@ -1050,15 +1068,16 @@ function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
         $config->set('cookiedomain', '');
         $config->set('cookie_path', INST_guessCookiePath($site_url));
     }
-    if (! empty($site_admin_url) &&
-            ($_CONF['site_admin_url'] != $site_admin_url)) {
+    if (!empty($site_admin_url) &&
+        ($_CONF['site_admin_url'] != $site_admin_url)
+    ) {
         $config->set('site_admin_url', $site_admin_url);
     }
 }
 
 /**
  * Helper function: Derive 'path_html' from __FILE__
- *
+
  */
 function INST_getHtmlPath()
 {
@@ -1075,7 +1094,7 @@ function INST_getHtmlPath()
 
 /**
  * Helper function: Derive path of the 'admin' directory from __FILE__
- *
+
  */
 function INST_getAdminPath()
 {
@@ -1092,7 +1111,7 @@ function INST_getAdminPath()
 
 /**
  * Helper function: Derive 'site_url' from PHP_SELF
- *
+
  */
 function INST_getSiteUrl()
 {
@@ -1110,7 +1129,7 @@ function INST_getSiteUrl()
 
 /**
  * Helper function: Derive 'site_admin_url' from PHP_SELF
- *
+
  */
 function INST_getSiteAdminUrl()
 {
@@ -1130,7 +1149,6 @@ function INST_getSiteAdminUrl()
  * Get name of the install language file to use
  *
  * @return  string      language file name (without the extension)
- *
  */
 function INST_getLanguage()
 {
@@ -1157,12 +1175,11 @@ function INST_getLanguage()
 }
 
 /**
-* Set Geeklog version number in siteconfig.php and in the database
-*
-* @param   string  $siteconfig_path    path to siteconfig.php
-* @return  void
-*
-*/
+ * Set Geeklog version number in siteconfig.php and in the database
+ *
+ * @param   string $siteconfig_path path to siteconfig.php
+ * @return  void
+ */
 function INST_setVersion($siteconfig_path)
 {
     global $_TABLES, $LANG_INSTALL;
@@ -1173,14 +1190,14 @@ function INST_setVersion($siteconfig_path)
     fclose($siteconfig_file);
 
     $siteconfig_data = preg_replace
-            (
-             '/define\s*\(\'VERSION\',[^;]*;/',
-             "define('VERSION', '" . VERSION . "');",
-             $siteconfig_data
-            );
+    (
+        '/define\s*\(\'VERSION\',[^;]*;/',
+        "define('VERSION', '" . VERSION . "');",
+        $siteconfig_data
+    );
 
     $siteconfig_file = @fopen($siteconfig_path, 'wb');
-    if (! fwrite($siteconfig_file, $siteconfig_data)) {
+    if (!fwrite($siteconfig_file, $siteconfig_data)) {
         exit($LANG_INSTALL[26] . ' ' . $LANG_INSTALL[28]);
     }
     fclose($siteconfig_file);
@@ -1198,12 +1215,11 @@ function INST_setVersion($siteconfig_path)
 }
 
 /**
-* Filter path value for junk and injections
-*
-* @param    string  $path   a path on the file system
-* @return   string          filtered path value
-*
-*/
+ * Filter path value for junk and injections
+ *
+ * @param    string $path a path on the file system
+ * @return   string          filtered path value
+ */
 function INST_sanitizePath($path)
 {
     $path = strip_tags($path);
@@ -1214,20 +1230,17 @@ function INST_sanitizePath($path)
 }
 
 /**
-* Prepare a dropdown list of all available databases
-*
-* Checks which driver classes and "tableanddata" files are actually present,
-* so that unwanted dbs can be removed (still requires special code all over the
-* place so you can't simply drop in new files to add support for new dbs).
-*
-* If support for a database has not been compiled into PHP, the option will be
-* listed as disabled.
-*
-* @param    string  $gl_path            base Geeklog install path
-* @param    string  $selected_dbtype    currently selected db type
-* @param    boolean $list_innodb        whether to list InnoDB option
-*
-*/
+ * Prepare a dropdown list of all available databases
+ * Checks which driver classes and "tableanddata" files are actually present,
+ * so that unwanted dbs can be removed (still requires special code all over the
+ * place so you can't simply drop in new files to add support for new dbs).
+ * If support for a database has not been compiled into PHP, the option will be
+ * listed as disabled.
+ *
+ * @param    string  $gl_path         base Geeklog install path
+ * @param    string  $selected_dbtype currently selected db type
+ * @param    boolean $list_innodb     whether to list InnoDB option
+ */
 function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = false)
 {
     global $LANG_INSTALL;
@@ -1247,34 +1260,40 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
                                 'label' => $LANG_INSTALL[36]),
         'pgsql'        => array('file'  => 'pgsql',
                                 'fn'    => 'pg_connect',
-                                'label' => $LANG_INSTALL[106])
+                                'label' => $LANG_INSTALL[106]),
     );
 
     // may not be needed as a separate option, e.g. for upgrades
-    if (! $list_innodb) {
+    if (!$list_innodb) {
         unset($dbs['mysql-innodb']);
     }
 
     foreach ($dbs as $dbname => $info) {
         $prefix = $info['file'];
         if (file_exists($gl_path . '/sql/' . $prefix . '_tableanddata.php') &&
-                file_exists($gl_path . '/system/databases/' . $prefix
-                                     . '.class.php')) {
+            file_exists($gl_path . '/system/databases/' . $prefix
+                . '.class.php')
+        ) {
             if ($prefix == 'mysql') {
                 // check that the MySQLi driver file is also there so we
                 // don't have to check for it every time at runtime
-                if (! file_exists($gl_path . '/system/databases/'
-                                           . 'mysqli.class.php')) {
+                if (!file_exists($gl_path . '/system/databases/'
+                    . 'mysqli.class.php')
+                ) {
                     continue;
                 }
             }
+
             $retval .= '<option value="' . $dbname . '"';
-            if (! function_exists($info['fn'])) {
+
+            if ((($prefix === 'mysql') && !is_callable('mysqli_connect') && !is_callable('mysql_connect')) ||
+                (($prefix !== 'mysql') && !is_callable($info['fn']))) {
                 $retval .= ' disabled="disabled"';
                 unset($dbs[$dbname]);
             } elseif ($dbname == $selected_dbtype) {
                 $retval .= ' selected="selected"';
             }
+
             $retval .= '>' . $info['label'] . '</option>' . LB;
         } else {
             unset($dbs[$dbname]);
@@ -1287,8 +1306,8 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
     } elseif ($num_dbs == 1) {
         $remaining = array_keys($dbs);
         $retval = $dbs[$remaining[0]]['label']
-                . ' <input type="hidden" name="db_type" value="'
-                . $remaining[0] . '"' . XHTML . '>' . LB;
+            . ' <input type="hidden" name="db_type" value="'
+            . $remaining[0] . '"' . XHTML . '>' . LB;
     } else {
         $retval = '<select name="db_type">' . LB . $retval . '</select>' . LB;
     }
@@ -1297,16 +1316,15 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
 }
 
 /**
-* Check for blank database password in production environment
-*
-* @param   array   $db Database    information
-* @param   string  $site_url       The site's URL
-* @return  boolean                 True if password is set or it is a local server
-*
-*/
+ * Check for blank database password in production environment
+ *
+ * @param   array  $db       Database    information
+ * @param   string $site_url The site's URL
+ * @return  boolean                 True if password is set or it is a local server
+ */
 function INST_dbPasswordCheck($site_url, $db)
 {
-    if (!empty($db['pass']) || (isset($site_url)  && (strpos($site_url, '127.0.0.1') !== false)  || (strpos($site_url, 'localhost') !== false))) {
+    if (!empty($db['pass']) || (isset($site_url) && (strpos($site_url, '127.0.0.1') !== false) || (strpos($site_url, 'localhost') !== false))) {
         return true;
     } else {
         return false;
@@ -1314,11 +1332,11 @@ function INST_dbPasswordCheck($site_url, $db)
 }
 
 /**
-* Returns a cookie path for a site URL
-*
-* @param   string  $site_url    site URL
-* @return  string               a cookie path
-*/
+ * Returns a cookie path for a site URL
+ *
+ * @param   string $site_url site URL
+ * @return  string               a cookie path
+ */
 function INST_guessCookiePath($site_url)
 {
     $retval = '/';
@@ -1326,7 +1344,7 @@ function INST_guessCookiePath($site_url)
     if (preg_match('|(^https?://[^/]+)|i', $site_url, $match)) {
         $path = substr($site_url, strlen($match[1]));
 
-        if (($path !== '') AND ($path !== FALSE)) {
+        if (($path !== '') AND ($path !== false)) {
             $retval = $path;
 
             if (substr($retval, -1) !== '/') {
@@ -1339,11 +1357,11 @@ function INST_guessCookiePath($site_url)
 }
 
 /**
-* Returns a cleaned string
-*
-* @param   string  $str
-* @return  string
-*/
+ * Returns a cleaned string
+ *
+ * @param   string $str
+ * @return  string
+ */
 function INST_cleanString($str)
 {
     $str = preg_replace('/[[:cntrl:]]/', '', $str);
@@ -1354,7 +1372,7 @@ function INST_cleanString($str)
 
 function INST_clearCacheDirectories($path, $needle = '')
 {
-    if ( $path[strlen($path)-1] != '/' ) {
+    if ($path[strlen($path) - 1] != '/') {
         $path .= '/';
     }
     if ($dir = @opendir($path)) {
@@ -1373,7 +1391,7 @@ function INST_clearCacheDirectories($path, $needle = '')
 }
 
 
-function INST_clearCache($plugin='')
+function INST_clearCache($plugin = '')
 {
     global $_CONF;
 
@@ -1385,30 +1403,30 @@ function INST_clearCache($plugin='')
     INST_clearCacheDirectories($_CONF['path'] . 'data/layout_css/', $plugin);
 }
 
-function INST_checkCacheDir($path,$template,$classCounter)
+function INST_checkCacheDir($path, $template, $classCounter)
 {
     $permError = 0;
 
     // special test to see if existing cache files exist and are writable...
-    if ( $dh = @opendir($path) ) {
-        while (($file = readdir($dh)) !== false ) {
-            if ( $file == '.' || $file == '..' || $file == '.svn') {
+    if ($dh = @opendir($path)) {
+        while (($file = readdir($dh)) !== false) {
+            if ($file == '.' || $file == '..' || $file == '.svn') {
                 continue;
             }
-            if ( is_dir($path.$file) ) {
-                $rc = INST_checkCacheDir($path.$file.'/',$template,$classCounter);
-                if ( $rc > 0 ) {
+            if (is_dir($path . $file)) {
+                $rc = INST_checkCacheDir($path . $file . '/', $template, $classCounter);
+                if ($rc > 0) {
                     $permError = 1;
                 }
             } else {
-                $ok = INST_isWritable($path.$file);
-                if ( !$ok ) {
-                    $template->set_var('location',$path.$file);
+                $ok = INST_isWritable($path . $file);
+                if (!$ok) {
+                    $template->set_var('location', $path . $file);
                     $template->set_var('status', $ok ? '<span class="yes">OK</span>' : '<span class="Unwriteable">NOT WRITABLE</span>');
-                    $template->set_var('rowclass',($classCounter % 2)+1);
+                    $template->set_var('rowclass', ($classCounter % 2) + 1);
                     $classCounter++;
-                    $template->parse('perm','perms',true);
-                    if  ( !$ok ) {
+                    $template->parse('perm', 'perms', true);
+                    if (!$ok) {
                         $permError = 1;
                     }
                 }
@@ -1416,6 +1434,7 @@ function INST_checkCacheDir($path,$template,$classCounter)
         }
         closedir($dh);
     }
+
     return $permError;
 }
 
@@ -1423,17 +1442,18 @@ function INST_checkCacheDir($path,$template,$classCounter)
  * Replaces all newlines in a string with <br> or <br />,
  * depending on the detected setting.  Ported from "lib-common.php"
  *
- * @param    string    $string  The string to modify
+ * @param    string $string The string to modify
  * @return   string             The modified string
  */
 function INST_nl2br($string)
 {
-    if (! defined('XHTML')) {
+    if (!defined('XHTML')) {
         define('XHTML', '');
     }
 
     $replace = '<br' . XHTML . '>';
     $find = array("\r\n", "\n\r", "\r", "\n");
+
     return str_replace($find, $replace, $string);
 }
 

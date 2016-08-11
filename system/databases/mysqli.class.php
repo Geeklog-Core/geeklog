@@ -125,7 +125,12 @@ class Database
         }
 
         // Connect to MySQL server
-        $this->_db = new MySQLi($this->_host, $this->_user, $this->_pass) || die('Cannot connect to DB server');
+        $this->_db = new mysqli($this->_host, $this->_user, $this->_pass);
+
+        if (!$this->_db instanceof mysqli) {
+            die('Cannot connect to DB server');
+        }
+
         $this->_mysql_version = $this->_db->server_version;
 
         // Set the database
@@ -334,7 +339,11 @@ class Database
         if ($ignore_errors) {
             $result = @$this->_db->query($sql);
         } else {
-            $result = @$this->_db->query($sql) || trigger_error($this->dbError($sql), E_USER_ERROR);
+            $result = @$this->_db->query($sql);
+
+            if ($result === false) {
+                trigger_error($this->dbError($sql), E_USER_ERROR);
+            }
         }
 
         // If OK, return otherwise echo error

@@ -193,7 +193,7 @@ $_PAGE_TIMER->startTimer();
 * This provides optional URL rewriting functionality.
 */
 require_once $_CONF['path_system'] . 'classes/url.class.php';
-$_URL = new url($_CONF['url_rewrite']);
+Url::getInstance($_CONF['url_rewrite']);
 
 /**
 * Include Device Detect class
@@ -6047,9 +6047,7 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
 */
 function COM_buildURL($url)
 {
-    global $_URL;
-
-    return $_URL->buildURL($url);
+    return Url::getInstance()->buildURL($url);
 }
 
 /**
@@ -6062,9 +6060,7 @@ function COM_buildURL($url)
 */
 function COM_setArgNames($names)
 {
-    global $_URL;
-
-    return $_URL->setArgNames($names);
+    return Url::getInstance()->setArgNames($names);
 }
 
 /**
@@ -6077,9 +6073,7 @@ function COM_setArgNames($names)
 */
 function COM_getArgument($name)
 {
-    global $_URL;
-
-    return $_URL->getArgument($name);
+    return Url::getInstance()->getArgument($name);
 }
 
 /**
