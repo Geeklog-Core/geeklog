@@ -71,13 +71,17 @@ $_REQUEST = array_merge($_GET, $_POST);
 * Must make sure that the function hasn't been disabled before calling it.
 *
 */
-if (function_exists('set_error_handler')) {
+if (is_callable('set_error_handler')) {
     /* Tell the error handler to use the default error reporting options.
      * You may like to change this to use it in more/less cases, if so,
      * just use the syntax used in the call to error_reporting() above.
      */
     $defaultErrorHandler = set_error_handler('COM_handleError',
                                              error_reporting());
+}
+
+if (is_callable('set_exception_handler')) {
+    set_exception_handler('COM_handleException');
 }
 
 /**
@@ -910,13 +914,16 @@ function COM_renderMenu(&$header, $plugin_menu)
 * @param    string  $headercode optional code to go into the page's <head>
 * @return   string              Formatted HTML containing the site header
 * @see function COM_siteFooter
-*
+* @deprecated since v2.1.2
 */
 function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
            $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $relLinks;
     global $_GLOBAL_WHAT;
+
+    COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
+
     $_GLOBAL_WHAT = $what;
 
     // If the theme implemented this for us then call their version instead.
@@ -1303,12 +1310,14 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
 * @param   array       $custom         An array defining custom function to be used to format Rightblocks
 * @see function COM_siteHeader
 * @return   string  Formated HTML containing site footer and optionally right blocks
-*
+* @deprecated since v2.1.2
 */
 function COM_siteFooter($rightblock = -1, $custom = '')
 {
     global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS, $_SCRIPTS;
     global $_GLOBAL_WHAT;
+
+    COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
 
     // If the theme implemented this for us then call their version instead.
     $function = $_CONF['theme'] . '_siteFooter';
@@ -8542,6 +8551,17 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myeditor
     $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', $footer, $priority + 1);
     $_SCRIPTS->setJavaScriptFile("adveditor_api_$name", "/$dir/$name/functions.js",  $footer, $priority + 2);
     $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom,                        $footer, $priority + 3);
+}
+
+/**
+ * Default exception handler
+ *
+ * @param  Throwable|Exception $exception
+ */
+function COM_handleException($exception) {
+    $errorMessage = $exception->getMessage();
+    trigger_error($errorMessage, E_USER_ERROR);
+    die(1);
 }
 
 // Now include all plugin functions

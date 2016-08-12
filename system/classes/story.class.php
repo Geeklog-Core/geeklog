@@ -176,8 +176,7 @@ class Story
      * database result array, and generate saving of a story, from the same
      * magic array.
      */
-    var $_dbFields = array
-    (
+    var $_dbFields = array(
         'sid'                  => 1,
         'uid'                  => 1,
         'draft_flag'           => 1,
@@ -223,10 +222,8 @@ class Story
      * postfield -> numeric, target, used with COM_applyFilter. Some fields
      * have exceptions applied
      */
-    var $_postFields = array
-    (
-        'uid'              => array
-        (
+    var $_postFields = array(
+        'uid'              => array(
             STORY_AL_NUMERIC,
             '_uid',
         ),
@@ -235,113 +232,91 @@ class Story
         //     STORY_AL_ALPHANUM,
         //     '_tid'
         //   ),
-        'page_title'       => array
-        (
+        'page_title'       => array(
             STORY_AL_ANYTHING,
             '_page_title',
         ),
-        'meta_description' => array
-        (
+        'meta_description' => array(
             STORY_AL_ANYTHING,
             '_meta_description',
         ),
-        'meta_keywords'    => array
-        (
+        'meta_keywords'    => array(
             STORY_AL_ANYTHING,
             '_meta_keywords',
         ),
-        'show_topic_icon'  => array
-        (
+        'show_topic_icon'  => array(
             STORY_AL_CHECKBOX,
             '_show_topic_icon',
         ),
-        'draft_flag'       => array
-        (
+        'draft_flag'       => array(
             STORY_AL_CHECKBOX,
             '_draft_flag',
         ),
-        'statuscode'       => array
-        (
+        'statuscode'       => array(
             STORY_AL_NUMERIC,
             '_statuscode',
         ),
-        'featured'         => array
-        (
+        'featured'         => array(
             STORY_AL_NUMERIC,
             '_featured',
         ),
-        'frontpage'        => array
-        (
+        'frontpage'        => array(
             STORY_AL_NUMERIC,
             '_frontpage',
         ),
-        'commentcode'      => array
-        (
+        'commentcode'      => array(
             STORY_AL_NUMERIC,
             '_commentcode',
         ),
-        'trackbackcode'    => array
-        (
+        'trackbackcode'    => array(
             STORY_AL_NUMERIC,
             '_trackbackcode',
         ),
-        'postmode'         => array
-        (
+        'postmode'         => array(
             STORY_AL_ALPHANUM,
             '_postmode',
         ),
-        'story_hits'       => array
-        (
+        'story_hits'       => array(
             STORY_AL_NUMERIC,
             '_hits',
         ),
-        'story_comments'   => array
-        (
+        'story_comments'   => array(
             STORY_AL_NUMERIC,
             '_comments',
         ),
-        'story_emails'     => array
-        (
+        'story_emails'     => array(
             STORY_AL_NUMERIC,
             '_numemails',
         ),
-        'story_trackbacks' => array
-        (
+        'story_trackbacks' => array(
             STORY_AL_NUMERIC,
             '_trackbacks',
         ),
-        'cache_time'       => array
-        (
+        'cache_time'       => array(
             STORY_AL_NUMERIC,
             '_cache_time',
         ),
-        'owner_id'         => array
-        (
+        'owner_id'         => array(
             STORY_AL_NUMERIC,
             '_owner_id',
         ),
-        'group_id'         => array
-        (
+        'group_id'         => array(
             STORY_AL_NUMERIC,
             '_group_id',
         ),
-        'type'             => array
-        (
+        'type'             => array(
             STORY_AL_ALPHANUM,
             'type',
         ),
-        'hits'             => array
-        (
+        'hits'             => array(
             STORY_AL_NUMERIC,
             '_hits',
         ),
-        'comments'         => array
-        (
+        'comments'         => array(
             STORY_AL_NUMERIC,
             '_comments',
         ),
-        'trackbacks'       => array
-        (
+        'trackbacks'       => array(
             STORY_AL_NUMERIC,
             '_trackbacks',
         ),

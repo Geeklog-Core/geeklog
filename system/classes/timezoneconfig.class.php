@@ -41,8 +41,8 @@
 * @author Dirk Haun, dirk AT haun-online DOT de
 *
 */
-class TimeZoneConfig {
-
+class TimeZoneConfig
+{
     /**
     * Set the system's timezone
     *
@@ -195,8 +195,8 @@ class TimeZoneConfig {
         }
 
         if ($useDateTimeZone) {
-
             $T = DateTimeZone::listAbbreviations();
+
             foreach ($T as $tzid => $entries) {
                 $shortname = strtoupper($tzid);
                 foreach ($entries as $data) {
@@ -294,7 +294,4 @@ class TimeZoneConfig {
 
         return strcmp($tz1, $tz2);
     }
-
 }
-
-?>

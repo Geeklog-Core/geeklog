@@ -42,7 +42,6 @@
  */
 class validator
 {
-
     /**
      * Set the the value of methods $check param.
      *
@@ -861,7 +860,6 @@ class validator
 
     /**
      * Reset internal variables for another validation run.
-
      */
     private function __reset()
     {

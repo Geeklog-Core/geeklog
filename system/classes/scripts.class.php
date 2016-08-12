@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | scripts.class.php                                                         |
 // |                                                                           |
@@ -30,14 +30,13 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* This class is used to set JavaScript, JavaScript Files, jQuery JavaScript Libraries
-* and CSS files that need to be loaded either in the header of the footer.
-*
-* @author Tom Homer
-*
-*/
-class scripts {
-
+ * This class is used to set JavaScript, JavaScript Files, jQuery JavaScript Libraries
+ * and CSS files that need to be loaded either in the header of the footer.
+ *
+ * @author Tom Homer
+ */
+class scripts
+{
     private $library_files; // Array of available jQuery library files that can be loaded
     private $library_files_footer; // Location of loading library files
 
@@ -62,13 +61,11 @@ class scripts {
     private $lang; // Array of language variables used in JavaScript
 
     /**
-    * Constructor
-    *
-    * This initializes the scriptsobject
-    *
-    */
-    function __construct() {
-
+     * Constructor
+     * This initializes the scriptsobject
+     */
+    public function __construct()
+    {
         global $_CONF, $_USER;
 
         $this->library_files = array();
@@ -99,14 +96,13 @@ class scripts {
     }
 
     /**
-    * Build a list of available JavaScript Libraries
-    *
-    * @access    private
-    * @return    boolean
-    *
-    */
-    private function findJavaScriptLibraries() {
-
+     * Build a list of available JavaScript Libraries
+     *
+     * @access    private
+     * @return    boolean
+     */
+    private function findJavaScriptLibraries()
+    {
         global $_CONF;
 
         $theme_path = '/layout/' . $_CONF['theme'];
@@ -129,12 +125,12 @@ class scripts {
         // When upgrading jQuery UI include the Redmond theme and all Core, Interactions and Widgets
         // Include minified version only of js
         $version_jQuery_ui = '1.11.4'; // '1.11.2'; // '1.10.3'; // '1.10.1'; // '1.10.0'; // '1.8.20'; // '1.8.11';
-        $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui .'/jquery-ui.min.js';
+        $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui . '/jquery-ui.min.js';
 
         // Set jQuery UI CSS
         $this->setCSSFilePrivate('jquery.ui', $theme_path . '/jquery_ui/jquery-ui.css', false);
         $this->setCSSFilePrivate('jquery.ui.theme', $theme_path . '/jquery_ui/jquery.ui.theme.css', false);
-        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);    
+        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);
 
         // Set jQuery UI Core
         $names[] = 'jquery.ui.core';
@@ -195,16 +191,15 @@ class scripts {
     }
 
     /**
-    * Set JavaScript Libraries to load
-    *
-    * @param    $name       name of JavaScript library to flag for loading
-    * @param    $footer     set to true to include script in footer, else script placed in header
-    * @access   public
-    * @return   boolean
-    *
-    */
-    public function setJavaScriptLibrary($name, $footer = true) {
-
+     * Set JavaScript Libraries to load
+     *
+     * @param    $name       name of JavaScript library to flag for loading
+     * @param    $footer     set to true to include script in footer, else script placed in header
+     * @access   public
+     * @return   boolean
+     */
+    public function setJavaScriptLibrary($name, $footer = true)
+    {
         global $_CONF;
 
         $name = strtolower($name);
@@ -255,14 +250,13 @@ class scripts {
     }
 
     /**
-    * Set Libraries file to load. Used only by class.
-    *
-    * @access   private
-    * @return   boolean
-    *
-    */
-    private function setJavaScriptLibraries() {
-
+     * Set Libraries file to load. Used only by class.
+     *
+     * @access   private
+     * @return   boolean
+     */
+    private function setJavaScriptLibraries()
+    {
         global $_CONF;
 
         $librarycode = '';
@@ -302,17 +296,16 @@ class scripts {
     }
 
     /**
-    * Set JavaScript to load
-    *
-    * @param    $script     script to include in page
-    * @param    $wrap       set to true to place script tags around contents of $script
-    * @param    $footer     set to true to include script in footer, else script placed in header
-    * @access   public
-    * @return   boolean
-    *
-    */
-    public function setJavaScript($script, $wrap = false, $footer = true) {
-
+     * Set JavaScript to load
+     *
+     * @param    $script     script to include in page
+     * @param    $wrap       set to true to place script tags around contents of $script
+     * @param    $footer     set to true to include script in footer, else script placed in header
+     * @access   public
+     * @return   boolean
+     */
+    public function setJavaScript($script, $wrap = false, $footer = true)
+    {
         // If header code make sure header not already set
         if ($this->header_set && !$footer) {
             return false;
@@ -336,18 +329,17 @@ class scripts {
     }
 
     /**
-    * Set JavaScript file to load
-    *
-    * @param    $name       name of JavaScript file
-    * @param    $file       location of file relative to public_html directory. Include '/' at beginning
-    * @param    $footer     set to true to include script in footer, else script placed in header
-    * @param    $priority   In what order the script should be loaded in
-    * @access   public
-    * @return   boolean
-    *
-    */
-    public function setJavaScriptFile($name, $file, $footer = true, $priority = 100) {
-
+     * Set JavaScript file to load
+     *
+     * @param    $name       name of JavaScript file
+     * @param    $file       location of file relative to public_html directory. Include '/' at beginning
+     * @param    $footer     set to true to include script in footer, else script placed in header
+     * @param    $priority   In what order the script should be loaded in
+     * @access   public
+     * @return   boolean
+     */
+    public function setJavaScriptFile($name, $file, $footer = true, $priority = 100)
+    {
         global $_CONF;
 
         // If header code make sure header not already set
@@ -366,7 +358,7 @@ class scripts {
         if (strrpos($path, '?') !== false) {
             $path = substr($path, 0, strrpos($path, '?'));
         }
-        if (! is_file($path) || ! is_readable($path)) {
+        if (!is_file($path) || !is_readable($path)) {
             return false;
         }
 
@@ -380,19 +372,17 @@ class scripts {
     }
 
     /**
-    * Set CSS file to load. Used only by class.
-    *
-    * This function is used to include any CSS needed by the JavaScript Libraries
-    *
-    * @param    $name       name of CSS file
-    * @param    $file       location of file relative to public_html directory. Include '/' at beginning
-    * @param    $load       set to true to load script right away. Should only be loaded when related script is loaded
-    * @access   private
-    * @return   boolean
-    *
-    */
-    private function setCSSFilePrivate($name, $file, $load = true) {
-
+     * Set CSS file to load. Used only by class.
+     * This function is used to include any CSS needed by the JavaScript Libraries
+     *
+     * @param    $name       name of CSS file
+     * @param    $file       location of file relative to public_html directory. Include '/' at beginning
+     * @param    $load       set to true to load script right away. Should only be loaded when related script is loaded
+     * @access   private
+     * @return   boolean
+     */
+    private function setCSSFilePrivate($name, $file, $load = true)
+    {
         global $_CONF;
 
         // If header code make sure header not already set
@@ -407,7 +397,7 @@ class scripts {
 
         // Make sure file exists and is readable. We don't want any 403 or 404, right?
         $path = substr($_CONF['path_html'], 0, -1) . $file;
-        if (! is_file($path) || ! is_readable($path)) {
+        if (!is_file($path) || !is_readable($path)) {
             return false;
         }
 
@@ -421,35 +411,33 @@ class scripts {
     }
 
     /**
-    * Set language variables used in JavaScript.
-    *
-    * @param    $lang_array   array of language variables
-    * @access   public
-    * @return   boolean
-    *
-    */
-    public function setLang($lang_array) {
-
+     * Set language variables used in JavaScript.
+     *
+     * @param    $lang_array   array of language variables
+     * @access   public
+     * @return   boolean
+     */
+    public function setLang($lang_array)
+    {
         $this->lang = array_merge($this->lang, $lang_array);
 
         return true;
     }
 
     /**
-    * Set CSS file to load
-    *
-    * @param    $name       name of CSS file
-    * @param    $file       location of file relative to public_html directory. Include '/' at beginning
-    * @param    $constant   Future use. Set to true if file is planned to be loaded all the time (Caching/Compression)
-    * @param    $attributes (optional) array of extra attributes
-    * @param    $priority   In what order the script should be loaded in
-    * @param    $type       Type of css file  (current possible choices are theme or other)
-    * @access   public
-    * @return   boolean
-    *
-    */
-    public function setCSSFile($name, $file, $constant = true, $attributes = array(), $priority = 100, $type = '') {
-
+     * Set CSS file to load
+     *
+     * @param    $name       name of CSS file
+     * @param    $file       location of file relative to public_html directory. Include '/' at beginning
+     * @param    $constant   Future use. Set to true if file is planned to be loaded all the time (Caching/Compression)
+     * @param    $attributes (optional) array of extra attributes
+     * @param    $priority   In what order the script should be loaded in
+     * @param    $type       Type of css file  (current possible choices are theme or other)
+     * @access   public
+     * @return   boolean
+     */
+    public function setCSSFile($name, $file, $constant = true, $attributes = array(), $priority = 100, $type = '')
+    {
         global $_CONF;
 
         // If header code make sure header not already set
@@ -468,7 +456,7 @@ class scripts {
         if (strrpos($path, '?') !== false) {
             $path = substr($path, 0, strrpos($path, '?'));
         }
-        if (! is_file($path) || ! is_readable($path)) {
+        if (!is_file($path) || !is_readable($path)) {
             return false;
         }
 
@@ -496,17 +484,15 @@ class scripts {
         return true;
     }
 
-
     /**
-    * Set CSS in header using style tag
-    *
-    * @param    $css        css to include in head
-    * @access   public
-    * @return   boolean
-    *
-    */
-    public function setCSS($css) {
-
+     * Set CSS in header using style tag
+     *
+     * @param    $css        css to include in head
+     * @access   public
+     * @return   boolean
+     */
+    public function setCSS($css)
+    {
         // If header code make sure header not already set
         if ($this->header_set) {
             return false;
@@ -520,14 +506,13 @@ class scripts {
     }
 
     /**
-    * Returns header code (JavaScript and CSS) to include in the Head of the webpage
-    *
-    * @access   public
-    * @return   string
-    *
-    */
-    public function getHeader() {
-
+     * Returns header code (JavaScript and CSS) to include in the Head of the webpage
+     *
+     * @access   public
+     * @return   string
+     */
+    public function getHeader()
+    {
         global $_CONF, $MESSAGE, $LANG_DIRECTION;
 
         $this->header_set = true;
@@ -536,15 +521,15 @@ class scripts {
 
         // Sort CSS Files based on priority
         $priority = array();
-        foreach($this->css_files as $k => $d) {
-          $priority[$k] = $d['priority'];
+        foreach ($this->css_files as $k => $d) {
+            $priority[$k] = $d['priority'];
         }
         array_multisort($priority, SORT_ASC, $this->css_files);
 
         // See if theme uses ETag, if so load first
         if ($_CONF['theme_etag']) {
             $csslink = '<link rel="stylesheet" type="text/css" href="'
-                     . $_CONF['layout_url'] . '/style.css.php?theme=' . $_CONF['theme'] . '&amp;dir=' . $LANG_DIRECTION . '" media="all"' . XHTML . '>' . LB;
+                . $_CONF['layout_url'] . '/style.css.php?theme=' . $_CONF['theme'] . '&amp;dir=' . $LANG_DIRECTION . '" media="all"' . XHTML . '>' . LB;
             $headercode = $csslink . $headercode;
         }
         // Set CSS Files
@@ -567,9 +552,9 @@ class scripts {
 
             if ($file['load'] && !empty($href)) {
                 $csslink = '<link rel="' . $rel
-                         . '" type="' . $type
-                         . '" href="' . $href
-                         . '"' . $file['extra'] . XHTML . '>' . LB;
+                    . '" type="' . $type
+                    . '" href="' . $href
+                    . '"' . $file['extra'] . XHTML . '>' . LB;
 
                 if (isset($file['name']) && $file['name'] == 'theme') { // load theme css first
                     $headercode = $csslink . $headercode;
@@ -601,7 +586,7 @@ class scripts {
             'tooltip_select_date' => $MESSAGE[118],
             'tabs_more'           => $MESSAGE[119],
             'confirm_delete'      => $MESSAGE[76],
-            'confirm_send'        => $MESSAGE[120]
+            'confirm_send'        => $MESSAGE[120],
         );
         if (!empty($this->lang)) {
             $lang = array_merge($lang, $this->lang);
@@ -612,7 +597,7 @@ class scripts {
             'layout_url'     => $_CONF['layout_url'],
             'xhtml'          => XHTML,
             'lang'           => $lang,
-            'theme_options'  => $_CONF['theme_options']
+            'theme_options'  => $_CONF['theme_options'],
         );
         $str = $this->_array_to_jsobj($src);
         // Strip '{' and '}' from both ends of $str
@@ -640,8 +625,8 @@ EOD;
 
         // Sort JavaScript Files based on priority (this is for both header and footer)
         $priority = array();
-        foreach($this->script_files as $k => $d) {
-          $priority[$k] = $d['priority'];
+        foreach ($this->script_files as $k => $d) {
+            $priority[$k] = $d['priority'];
         }
         array_multisort($priority, SORT_ASC, $this->script_files);
 
@@ -656,10 +641,10 @@ EOD;
     }
 
     /**
-    * Convert from array to JavaScript object format string
-    *
-    */
-    private function _array_to_jsobj($src) {
+     * Convert from array to JavaScript object format string
+     */
+    private function _array_to_jsobj($src)
+    {
         $retval = '{';
         foreach ($src as $key => $val) {
             $retval .= "$key:";
@@ -670,18 +655,18 @@ EOD;
             }
         }
         $retval = rtrim($retval, ',') . '}';
+
         return $retval;
     }
 
     /**
-    * Returns JavaScript footer code to be placed just before </body>
-    *
-    * @access   public
-    * @return   string
-    *
-    */
-    public function getFooter() {
-
+     * Returns JavaScript footer code to be placed just before </body>
+     *
+     * @access   public
+     * @return   string
+     */
+    public function getFooter()
+    {
         global $_CONF, $_USER;
 
         $footercode = '';
@@ -710,7 +695,4 @@ EOD;
 
         return $footercode;
     }
-
 }
-
-?>

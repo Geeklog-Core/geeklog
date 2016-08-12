@@ -124,7 +124,7 @@ class config
     /**
      * Constructor
      */
-    function __construct()
+    private function __construct()
     {
         $this->config_array = array();
 
