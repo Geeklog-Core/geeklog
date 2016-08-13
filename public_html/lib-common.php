@@ -4810,6 +4810,27 @@ function COM_hit()
 }
 
 /**
+ * Convert a relative URL to an absolute one
+ *
+ * @param  array $matches
+ * @return string
+ */
+function COM_emailUserTopicsUrlRewriter(array $matches)
+{
+    global $_CONF;
+
+    $tag = $matches[0];
+    $url = $matches[1];
+
+    if (!preg_match('/\A(http|https|ftp|ftps|javascript):/i', $url)) {
+        $absUrl = rtrim($_CONF['site_url'], '/') . '/' . ltrim($url, '/');
+        $tag = str_replace($url, $absUrl, $tag);
+    }
+
+    return $tag;
+}
+
+/**
 * This will email new stories in the topics that the user is interested in
 *
 * In account information the user can specify which topics for which they
@@ -4927,10 +4948,12 @@ function COM_emailUserTopics()
                                     $_CONF['emailstorieslength'], '...');
                 }
 
+                $storytext = preg_replace_callback('/<a\s+.*?href="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $storytext);
+                $storytext = preg_replace_callback('/<img\s+.*?src="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $storytext);
                 $mailtext .= $storytext . "\n\n";
             }
 
-            $mailtext .= $LANG08[33] . ' ' . COM_buildUrl($_CONF['site_url']
+            $mailtext .= $LANG08[33] . ' ' . COM_buildURL($_CONF['site_url']
                       . '/article.php?story=' . $S['sid']) . "\n";
         }
 
