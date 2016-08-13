@@ -331,7 +331,7 @@ $TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
 * This provides the ability to set css and javascript.
 */
 require_once $_CONF['path_system'] . 'classes/scripts.class.php';
-$_SCRIPTS = new scripts();
+$_SCRIPTS = new Scripts();
 
 /**
 * Include theme functions file which may/may not do anything
