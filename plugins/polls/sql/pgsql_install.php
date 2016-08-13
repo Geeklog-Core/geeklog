@@ -48,6 +48,7 @@ CREATE TABLE {$_TABLES['pollquestions']} (
   qid int NOT NULL DEFAULT '0',
   pid varchar(128) NOT NULL default '',
   question varchar(255) NOT NULL,
+  allow_multipleanswers INT NULL DEFAULT NULL,
   PRIMARY KEY (qid, pid))
 ";
 
@@ -72,6 +73,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   perm_group int  NOT NULL default '2',
   perm_members int  NOT NULL default '2',
   perm_anon int  NOT NULL default '2',
+  description TEXT NULL,
   PRIMARY KEY  (pid));
   CREATE INDEX {$_TABLES['polltopics']}_pid ON {$_TABLES['polltopics']}(pid);
   CREATE INDEX {$_TABLES['polltopics']}_created ON {$_TABLES['polltopics']}(created);
@@ -108,5 +110,3 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, vo
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES ('geeklogfeaturepoll', 1, 3, 'Focus on Security', 0, '');";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES ('geeklogfeaturepoll', 1, 4, 'Plugin Availability', 0, '');";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES ('geeklogfeaturepoll', 1, 5, 'The Community', 0, '');";
-
-?>

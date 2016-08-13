@@ -105,7 +105,10 @@ $LANG25 = array(
     37 => 'Hide results while poll is open',
     38 => 'While the poll is open, only the owner &amp; root can see the results',
     39 => 'The topic will only be displayed if there is more than 1 question.',
-    40 => 'See all answers to this poll'
+    40 => 'See all answers to this poll',
+    1001 => 'Allow multipleanswers',
+    1002 => 'Description',
+    1003 => 'Description',
 );
 
 $PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
@@ -183,5 +186,3 @@ $LANG_configselects['polls'] = array(
     14 => array('No access' => 0, 'Read-Only' => 2),
     15 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION)
 );
-
-?>

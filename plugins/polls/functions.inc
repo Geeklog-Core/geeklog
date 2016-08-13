@@ -77,10 +77,9 @@ if (!isset($_PO_CONF['pollsloginrequired'])) {
  */
 function plugin_getmenuitems_polls()
 {
-    global $_CONF, $_USER, $_PO_CONF, $LANG_POLLS;
+    global $_CONF, $_PO_CONF, $LANG_POLLS;
 
-    $anon = empty($_USER['uid']) || ($_USER['uid'] <= 1);
-    if (($_PO_CONF['hidepollsmenu'] == 1) || ($anon &&
+    if (($_PO_CONF['hidepollsmenu'] == 1) || (COM_isAnonUser() &&
             ($_CONF['loginrequired'] || $_PO_CONF['pollsloginrequired']))
     ) {
         return false;
@@ -94,7 +93,6 @@ function plugin_getmenuitems_polls()
 /**
  * Poll saves a comment
  *
- * @param   string $type     Plugin to save comment
  * @param   string $title    comment title
  * @param   string $comment  comment text
  * @param   string $id       Item id to which $cid belongs
@@ -104,7 +102,7 @@ function plugin_getmenuitems_polls()
  */
 function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
 {
-    global $_CONF, $_TABLES, $LANG03, $_USER;
+    global $_CONF, $_TABLES, $LANG03;
 
     $retval = '';
 
@@ -148,7 +146,10 @@ function plugin_deletecomment_polls($cid, $id)
     $retval = '';
 
     $has_editPermissions = SEC_hasRights('polls.edit');
-    $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} WHERE pid = '{$id}'");
+    $result = DB_query(
+        "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon "
+        . " FROM {$_TABLES['polltopics']} WHERE pid = '{$id}'"
+    );
     $A = DB_fetchArray($result);
 
     if ($has_editPermissions && SEC_hasAccess($A['owner_id'],
@@ -176,7 +177,6 @@ function POLLS_countPollsAndVotes()
 {
     global $_TABLES;
 
-    $total_polls = 0;
     $total_answers = 0;
 
     $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['polltopics']}" . COM_getPermSQL());
@@ -207,7 +207,8 @@ function POLLS_countPollsAndVotes()
  * If $showsitestats is 1 then we are to only print the overall stats in the
  * 'site statistics box' otherwise we show the detailed stats
  *
- * @param    int     showsitestate   Flag to let us know which stats to get
+ * @param    int     $showsitestats   Flag to let us know which stats to get
+ * @return   string
  */
 function plugin_showstats_polls($showsitestats)
 {
@@ -222,27 +223,30 @@ function plugin_showstats_polls($showsitestats)
 
     if ($nrows > 0) {
         $header_arr = array(
-            array('text'         => $LANG_POLLS['stats_topics'],
-                  'field'        => 'pid',
-                  'header_class' => 'stats-header-title',
+            array(
+                'text'         => $LANG_POLLS['stats_topics'],
+                'field'        => 'pid',
+                'header_class' => 'stats-header-title',
             ),
-            array('text'         => $LANG_POLLS['stats_votes'],
-                  'field'        => 'voters',
-                  'header_class' => 'stats-header-count',
-                  'field_class'  => 'stats-list-count',
+            array(
+                'text'         => $LANG_POLLS['stats_votes'],
+                'field'        => 'voters',
+                'header_class' => 'stats-header-count',
+                'field_class'  => 'stats-list-count',
             ),
         );
         $data_arr = array();
-        $text_arr = array('has_menu' => false,
-                          'title'    => $LANG_POLLS['stats_top10'],
-                          'form_url' => $_CONF['site_url'] . '/stats.php',
+        $text_arr = array(
+            'has_menu' => false,
+            'title'    => $LANG_POLLS['stats_top10'],
+            'form_url' => $_CONF['site_url'] . '/stats.php',
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             $url = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid']
                 . '&amp;aid=-1';
             $pid = COM_createLink($A['topic'], $url);
-            $voters = COM_NumberFormat($A['voters']);
+            $voters = COM_numberFormat($A['voters']);
             $data_arr[] = array('pid' => $pid, 'voters' => $voters);
         }
         $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
@@ -275,6 +279,8 @@ function plugin_statssummary_polls()
 /**
  * This will put an option for polls in the command and control block on
  * moderation.php
+ *
+ * @return array
  */
 function plugin_cclabel_polls()
 {
@@ -286,11 +292,13 @@ function plugin_cclabel_polls()
             plugin_geticon_polls());
     }
 
-    return false;
+    return array();
 }
 
 /**
  * returns the administrative option for this plugin
+ *
+ * @return array
  */
 function plugin_getadminoption_polls()
 {
@@ -304,6 +312,8 @@ function plugin_getadminoption_polls()
         return array($LANG_POLLS['polls'],
             $_CONF['site_admin_url'] . '/plugins/polls/index.php',
             $total_pages);
+    } else {
+        return array();
     }
 }
 
@@ -311,7 +321,7 @@ function plugin_getadminoption_polls()
  * A user is about to be deleted. Update ownership of any polls owned
  * by that user or delete them.
  *
- * @param   uid   int   User id of deleted user
+ * @param   int   $uid   User id of deleted user
  */
 function plugin_user_delete_polls($uid)
 {
@@ -348,6 +358,8 @@ function plugin_user_delete_polls($uid)
 /**
  * Return the current version of code.
  * Used in the Plugin Editor to show the registered version and code version
+ *
+ * @return string
  */
 function plugin_chkVersion_polls()
 {
@@ -385,6 +397,8 @@ function plugin_enablestatechange_polls($enable)
  * tables, groups, features and php blocks from the tables.
  * Additionally, this code can perform special actions that cannot be
  * foreseen by the core code (interactions with other plugins for example)
+ *
+ * @return array
  */
 function plugin_autouninstall_polls()
 {
@@ -415,10 +429,13 @@ function plugin_autouninstall_polls()
  *
  * @param      string  $pid         ID for poll topic
  * @param      boolean $showall     Show only the first question in the poll or all?
- * @param        int   $displaytype Possible values 0 = Normal, 1 = In Block, 2 = autotag
+ * @param      int     $displaytype Possible values 0 = Normal, 1 = In Block, 2 = autotag
+ * @param      string  $order
+ * @param      string  $mode
+ * @param      int     $page
+ * @return     string  HTML Formatted Poll
  * @see function COM_pollResults
  * @see function COM_showPoll
- * @return       string  HTML Formatted Poll
  */
 function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $mode = '', $page = 1)
 {
@@ -428,8 +445,8 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
     $retval = '';
 
     $result = DB_query("SELECT topic,voters,commentcode,is_open,hideresults,owner_id "
-        . ",group_id,perm_owner,perm_group,perm_anon,perm_members "
-        . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql('AND'));
+        . ",group_id,perm_owner,perm_group,perm_anon,perm_members,description "
+        . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSQL('AND'));
     $ntopics = DB_numRows($result);
 
     if ($ntopics == 0) {
@@ -440,7 +457,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
 
     if ((!isset($_COOKIE[$pid]) && !POLLS_ipAlreadyVoted($pid)) || ($P['is_open'] == 1)) {
         if ($ntopics == 1) {
-            $questions_sql = "SELECT question,qid "
+            $questions_sql = "SELECT question,qid,allow_multipleanswers,description "
                 . "FROM {$_TABLES['pollquestions']} "
                 . "WHERE pid='$pid' ORDER BY qid";
 
@@ -455,7 +472,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                                       'comments'   => 'pollcomments.thtml'));
                 $poll->set_var('poll_id', $pid);
                 $poll->set_var('poll_topic', $P['topic']);
-                $poll->set_var('num_votes', COM_numberFormat($P['voters']));
+                $poll->set_var('poll_topic_description', $P['description']);                $poll->set_var('num_votes', COM_numberFormat($P['voters']));
                 $poll->set_var('poll_vote_url', $_CONF['site_url']
                     . '/polls/index.php');
                 if (($nquestions == 1) || $showall) {
@@ -505,6 +522,15 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                     $Q = DB_fetchArray($questions);
                     $poll->set_var('poll_question', $Q['question']);
                     $poll->set_var('question_id', $j);
+                    $poll->set_var('poll_description', $Q['description']);
+
+                    if ($Q['allow_multipleanswers'] == 1) {
+                        $poll->set_var('input_type', 'checkbox');
+                        $checked = ' checked';
+                    } else {
+                        $poll->set_var('input_type', 'radio');
+                        $checked = ' checked="checked"' ;
+                    }
 
                     $notification = '';
                     $filter = '';
@@ -594,7 +620,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
  */
 function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
 {
-    global $_CONF, $_TABLES, $_PO_CONF, $LANG_POLLS;
+    global $_TABLES, $_PO_CONF, $LANG_POLLS;
 
     $retval = '';
 
@@ -615,9 +641,12 @@ function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
             $retval .= POLLS_pollResults($pid, $size, '', '', 1, $displaytype);
         }
     } else {
-        $result = DB_query("SELECT pid,topic,is_open FROM {$_TABLES['polltopics']} WHERE display = 1" . COM_getPermSql('AND') . " ORDER BY created DESC");
+        $result = DB_query(
+            "SELECT pid,topic,is_open FROM {$_TABLES['polltopics']} "
+            . " WHERE display = 1" . COM_getPermSQL('AND')
+            . " ORDER BY created DESC"
+        );
         $nrows = DB_numRows($result);
-
         $title = DB_getItem($_TABLES['blocks'], 'title', "name='poll_block'");
 
         if ($nrows > 0) {
@@ -675,17 +704,20 @@ function POLLS_pollsave($pid, $aid)
 
     DB_change($_TABLES['polltopics'], 'voters', "voters + 1", 'pid', $pid, '', true);
     // This call to DB-change will properly supress the insertion of quotes around $value in the sql
-    $answers = count($aid);
-    for ($i = 0; $i < $answers; $i++) {
-        DB_change(
-            $_TABLES['pollanswers'],
-            'votes',
-            "votes + 1",
-            array('pid', 'qid', 'aid'),
-            array($pid, $i, COM_applyFilter($aid[$i], true)),
-            '',
-            true
-        );
+
+    foreach ($aid as $qid => $avalueary) {
+        foreach ($avalueary as $j => $avalue) {
+            $avalue = COM_applyFilter($avalue, true);
+            DB_change(
+                $_TABLES['pollanswers'],
+                'votes',
+                "votes + 1",
+                array('pid', 'qid', 'aid'),
+                array($pid,  $qid,    $avalue),
+                '',
+                true
+            );
+        }
     }
 
     // This always does an insert so no need to provide key_field and key_value args
@@ -721,7 +753,7 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
     $retval = '';
 
     $topic_sql = "SELECT topic,voters,is_open,hideresults,commentcode,owner_id,group_id,"
-        . "perm_owner,perm_group,perm_members,perm_anon "
+        . "perm_owner,perm_group,perm_members,perm_anon,description "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'";
     $result = DB_query($topic_sql);
     $P = DB_fetchArray($result);
@@ -752,7 +784,7 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
 
     $ntopic = DB_numRows($result);
     if ($ntopic == 1) {
-        $questions_sql = "SELECT qid,pid,question "
+        $questions_sql = "SELECT qid,pid,question,description "
             . "FROM {$_TABLES['pollquestions']} "
             . "WHERE pid='$pid' "
             . "ORDER BY qid";
@@ -765,18 +797,22 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
 
         if ($nquestions > 0) {
             $poll = COM_newTemplate(CTL_plugin_templatePath('polls'));
-            $poll->set_file(array('result'    => 'pollresult.thtml',
-                                  'question'  => 'pollquestion.thtml',
-                                  'comments'  => 'pollcomments.thtml',
-                                  'votes_bar' => 'pollvotes_bar.thtml',
-                                  'votes_num' => 'pollvotes_num.thtml'));
+            $poll->set_file(array(
+                'result'    => 'pollresult.thtml',
+                'question'  => 'pollquestion.thtml',
+                'comments'  => 'pollcomments.thtml',
+                'votes_bar' => 'pollvotes_bar.thtml',
+                'votes_num' => 'pollvotes_num.thtml',
+            ));
             $poll->set_var('poll_topic', $P['topic']);
+            $poll->set_var('poll_topic_description', $P['description']);
             $poll->set_var('poll_id', $pid);
             $poll->set_var('num_votes', COM_numberFormat($P['voters']));
             $poll->set_var('lang_voters', $LANG_POLLS['voters']);
             $access = SEC_hasAccess($P['owner_id'], $P['group_id'],
                 $P['perm_owner'], $P['perm_group'],
-                $P['perm_members'], $P['perm_anon']);
+                $P['perm_members'], $P['perm_anon']
+            );
             if (($access == 3) && SEC_hasRights('polls.edit')) {
                 $editlink = COM_createLink($LANG25[27], $_CONF['site_admin_url']
                     . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid);
@@ -795,12 +831,14 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
             }
 
             for ($j = 0; $j < $nquestions; $j++) {
+                $poll->set_var('question_id', $j);
                 $Q = DB_fetchArray($questions);
 
                 if ($nquestions >= 1) {
                     $counter = ($j + 1) . "/$nquestions: ";
                 }
                 $poll->set_var('poll_question', $counter . $Q['question']);
+                $poll->set_var('poll_description', $counter . $Q['description']);
 
                 $answer_sql = "SELECT votes,answer,remark "
                     . "FROM {$_TABLES['pollanswers']} "
@@ -877,7 +915,8 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
                 require_once $_CONF['path_system'] . 'lib-comment.php';
                 $retval .= CMT_userComments($pid, $P['topic'], 'polls',
                     $order, $mode, 0, $page, false,
-                    $delete_option, $P['commentcode']);
+                    $delete_option, $P['commentcode']
+                );
             }
         }
     }
@@ -1053,20 +1092,20 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
 /**
  * Set template variables
  *
- * @param    string $templatename name of template, e.g. 'header'
- * @param    ref    $template     reference of actual template
+ * @param    string   $templatename name of template, e.g. 'header'
+ * @param    Template $template     reference of actual template
  * @return   void
- *                                Note: A plugin should use its name as a prefix for the names of its
- *                                template variables, e.g. 'polls_xxx' and 'lang_polls_xxx'.
- *                                'button_polls' is an exception, as such a variable existed for header.thtml
- *                                in Geeklog 1.3.11 and earlier, where the Polls were an integral part
- *                                of Geeklog. It is added here for backward-compatibility.
+ *                     Note: A plugin should use its name as a prefix for the names of its
+ *                     template variables, e.g. 'polls_xxx' and 'lang_polls_xxx'.
+ *                     'button_polls' is an exception, as such a variable existed for header.thtml
+ *                     in Geeklog 1.3.11 and earlier, where the Polls were an integral part
+ *                     of Geeklog. It is added here for backward-compatibility.
  */
 function plugin_templatesetvars_polls($templatename, &$template)
 {
     global $LANG_POLLS;
 
-    if (($templatename == 'header') || ($templatename == 'footer')) {
+    if (($templatename === 'header') || ($templatename === 'footer')) {
         $template->set_var('button_polls', $LANG_POLLS['polls']);
     }
 }
@@ -1240,6 +1279,17 @@ function plugin_upgrade_polls()
                 $current_version = '2.1.6';
                 break;
 
+            case '2.1.6':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+
+                $current_version = '2.1.7';
+                break;
+
             default:
                 $done = true;
         }
@@ -1254,7 +1304,7 @@ function plugin_upgrade_polls()
  * Called during site migration - handle changed URLs or paths
  *
  * @param    array $old_conf contents of the $_CONF array on the old site
- * @return          boolean             true on success, otherwise false
+ * @return   boolean             true on success, otherwise false
  */
 function plugin_migrate_polls($old_conf)
 {
@@ -1289,6 +1339,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
     // parse $what to see what we need to pull from the database
     $properties = explode(',', $what);
     $fields = array();
+
     foreach ($properties as $p) {
         switch ($p) {
             case 'date-modified':
@@ -1319,7 +1370,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
 
     $fields = array_unique($fields);
 
-    if (count($fields) == 0) {
+    if (count($fields) === 0) {
         $retval = array();
 
         return $retval;
@@ -1334,9 +1385,9 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
         $permOp = 'AND';
     }
     if ($uid > 0) {
-        $permSql = COM_getPermSql($permOp, $uid);
+        $permSql = COM_getPermSQL($permOp, $uid);
     } else {
-        $permSql = COM_getPermSql($permOp);
+        $permSql = COM_getPermSQL($permOp);
     }
     $sql = "SELECT " . implode(',', $fields)
         . " FROM {$_TABLES['polltopics']}" . $where . $permSql;
@@ -1494,14 +1545,19 @@ function plugin_getcommenturlid_polls()
  * [poll_vote: pid pid class:poll-autotag showall:1] - Class and showall not required. Class specifies the css class
  * and Showall if set to 1, shows all questions
  * [poll_result: pid class:poll-autotag] - Class not required. Class specifies the css class
+ *
+ * @param  string $op
+ * @param  string $content
+ * @param  string $autotag
+ * @return mixed
  */
 function plugin_autotags_polls($op, $content = '', $autotag = '')
 {
     global $_CONF, $_PO_CONF, $_TABLES, $LANG_POLLS, $_GROUPS;
 
-    if ($op == 'tagname') {
+    if ($op === 'tagname') {
         return array('poll_vote', 'poll_result', 'poll');
-    } elseif ($op == 'permission' || $op == 'nopermission') {
+    } elseif ($op === 'permission' || $op === 'nopermission') {
         if ($op == 'permission') {
             $flag = true;
         } else {
@@ -1692,9 +1748,9 @@ function plugin_getwhatsnew_polls()
 /**
  * Return new Polls comments for the What's New block
  *
- * @param    string $numreturn   If 0 will return results for What's New Block.
- *                               If > 0 will return last X new comments for User Profile.
- * @param    string $uid         ID of the user to return results for. 0 = all users.
+ * @param    int    $numreturn   If 0 will return results for What's New Block.
+ *                                If > 0 will return last X new comments for User Profile.
+ * @param    int|string $uid     ID of the user to return results for. 0 = all users.
  * @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
  */
 function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
@@ -1743,7 +1799,7 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
  */
 function plugin_getBlocks_polls($side, $topic = '')
 {
-    global $_TABLES, $_CONF, $_PO_CONF, $LANG_POLLS;
+    global $_PO_CONF, $LANG_POLLS;
 
     $retval = array();
 
@@ -1786,7 +1842,7 @@ function plugin_getBlocks_polls($side, $topic = '')
  */
 function plugin_getBlocksConfig_polls($side, $topic = '')
 {
-    global $_TABLES, $_CONF, $_PO_CONF, $LANG_POLLS;
+    global $_PO_CONF, $LANG_POLLS;
 
     $retval = array();
 
@@ -1821,7 +1877,6 @@ function plugin_getBlocksConfig_polls($side, $topic = '')
  *
  * @param    int    $grp_id Group ID
  * @param    string $mode   type of change: 'new', 'edit', or 'delete'
- * @return   void
  */
 function plugin_group_changed_polls($grp_id, $mode)
 {
@@ -1845,14 +1900,13 @@ function plugin_group_changed_polls($grp_id, $mode)
 
         // Update Polls with new group id
         $sql = "UPDATE {$_TABLES['polltopics']} SET group_id = $new_group_id WHERE group_id = $grp_id";
-        $result = DB_query($sql);
+        DB_query($sql);
 
         // Update Polls Block group if need be
         if ($_PO_CONF['block_group_id'] == $grp_id) {
             // Now save it to the configuration
             $c = config::get_instance();
             $c->set('block_group_id', $new_group_id, 'polls');
-
         }
     }
 }
@@ -1883,12 +1937,11 @@ function plugin_configmanager_select_block_topic_polls()
  * @param    string $id     (unused) ID of item being saved
  * @param    string $type   type of item ('article', 'staticpages', ...)
  * @param    string $old_id (unused) previous ID of item, if != $id
- * @return   void
  * @see      PLG_itemSaved
  */
 function plugin_itemsaved_polls($id, $type, $old_id)
 {
-    global $_TABLES, $_PO_CONF;
+    global $_PO_CONF;
 
     // we're really only interested in Topic ID changes
     if (($type == 'topic') && !empty($old_id) && ($id != $old_id)) {
@@ -1910,12 +1963,11 @@ function plugin_itemsaved_polls($id, $type, $old_id)
  *
  * @param    string $id   ID of item being deleted
  * @param    string $type type of item ('article', 'staticpages', ...)
- * @return   void
  * @see      PLG_itemDeleted
  */
 function plugin_itemdeleted_polls($id, $type)
 {
-    global $_TABLES, $_PO_CONF;
+    global $_PO_CONF;
 
     // we're really only interested in Topic Deletes
     if ($type == 'topic') {
