@@ -1,0 +1,6 @@
+{# begin {templatelocation} #}
+
+    <dt>{lang_email}</dt>
+    <dd><a href="{site_url}/profiles.php?uid={user_id}">{lang_sendemail}</a></dd>
+
+{# end {templatelocation} #}

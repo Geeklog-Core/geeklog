@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="service">{lang_service}</label>
+            <div class="uk-form-controls">{select_service}</div>
+        </div>
+
+{# end {templatelocation} #}

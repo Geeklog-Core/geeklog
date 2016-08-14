@@ -1,0 +1,18 @@
+{# begin {templatelocation} #}
+
+<fieldset class="uk-margin-large-top">
+  <legend>{lang_digest_top_header}</legend>
+
+    <div class="uk-form-row uk-panel-box">
+        <p class="uk-text-bold">{lang_digest_help_header}</p>
+        <div class="uk-margin-left">{lang_emailedtopics}</div>
+    </div>
+
+  <div class="compact">
+    <p class="checklist">
+      {email_topic_checklist}
+    </p>
+  </div>
+</fieldset>
+
+{# end {templatelocation} #}

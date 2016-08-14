@@ -1,0 +1,39 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/users.php" method="post" id="loginform" class="uk-form uk-form-stacked">
+  <fieldset class="noborder_fieldset">
+    <legend class="hidden_legend">{lang_login}</legend>
+
+    <div class="uk-form-row">
+      <div class="uk-form-controls"><input class="uk-width-1-1" type="text" value="" name="loginname" placeholder="{lang_username}" required{xhtml}></div>
+    </div>
+
+    {services}
+
+    <div class="uk-form-row">
+      <input class="uk-width-1-1" type="password" name="passwd" placeholder="{lang_password}" required{xhtml}>
+    </div>
+
+    <div class="uk-form-row">
+      <input type="submit" value="{lang_login}" class="uk-width-1-1 uk-button uk-button-primary uk-button-large"{xhtml}>
+    </div>
+
+    <div class="uk-form-row uk-text-small">
+      <div class="uk-form-controls">
+      {!if lang_signup}<i class="uk-icon-plus-circle"></i> {lang_signup}{!endif}
+      {!if lang_forgetpassword}<i class="uk-icon-exclamation-triangle"></i> {lang_forgetpassword}{!endif}
+      </div>
+    </div>
+
+  </fieldset>
+</form>
+
+{!if openid_login}<div class="uk-margin-top"><ul class="uk-subnav uk-flex-center uk-margin-top">{!endif}
+{openid_login}
+{!if openid_login}</ul></div>{!endif}
+
+{!if oauth_login}<div class="uk-margin-top"><ul class="uk-subnav uk-flex-center uk-margin-top">{!endif}
+{oauth_login}
+{!if oauth_login}</ul></div>{!endif}
+
+{# end {templatelocation} #}

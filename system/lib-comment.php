@@ -2013,10 +2013,6 @@ function CMT_approveModeration($cid)
         // get indent+1 of parent
         $indent = DB_getItem($_TABLES['comments'], 'indent+1',
                              "cid = '{$A['pid']}'");
-
-        if (empty($indent)) {
-            $indent = 0;
-        }
     } else {
         $indent = 0;
     }

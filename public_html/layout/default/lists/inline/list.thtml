@@ -1,0 +1,22 @@
+{# begin {templatelocation} #}
+
+                            {list_top}
+                            <div class="admin-list-search">
+                                 <form name="page_limit" style="display: inline;" class="uk-form">
+                                <select name="page_limit_links" style="{show_limit}" onchange="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value">
+                                    {page_limit}
+                                </select>
+                                </form>
+
+                                 <form name="page_sort"  style="display: inline;" class="uk-form">
+                                <select name="page_sort_links" style="{show_sort}" onchange="window.location=document.page_sort.page_sort_links.options[document.page_sort.page_sort_links.selectedIndex].value">
+                                    {page_sort}
+                                </select>
+                                </form>
+                            </div>
+                            {item_row}
+                            <p class="uk-text-center uk-text-bold" style="{show_message}">{message}</p>
+                            {google_paging}
+                            {list_bottom}
+
+{# end {templatelocation} #}

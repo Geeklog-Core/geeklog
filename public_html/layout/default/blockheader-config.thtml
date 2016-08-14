@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<nav class="block-config" role="navigation">
+    <h2 class="uk-h2 block-title">{block_title}{block_help}</h2>
+    <ul class="block-config-content">
+
+{# end {templatelocation} #}

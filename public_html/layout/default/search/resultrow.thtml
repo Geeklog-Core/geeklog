@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<tr>
+  {data_cols}
+</tr>
+
+{# end {templatelocation} #}

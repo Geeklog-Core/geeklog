@@ -1,0 +1,22 @@
+{# begin {templatelocation} #}
+
+                            {list_top}
+                            <div>
+                                <form name="page_limit" style="display: inline;" class="uk-form">
+                                <select name="page_limit_links" style="{show_limit}" onchange="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value">
+                                    {page_limit}
+                                </select>
+                               </form>
+                            </div>
+                            <table class="uk-table uk-table-condensed uk-table-striped uk-width-1-1" style="background:#ffffff; {show_sort}">
+                                <tr>
+                                    {page_sort}
+                                </tr>
+                                {item_row}
+                            </table>
+                            <p class="uk-text-center uk-text-bold" style="{show_message}">{message}</p>
+                            <br{xhtml}>
+                            {google_paging}
+                            {list_bottom}
+
+{# end {templatelocation} #}

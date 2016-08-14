@@ -1,0 +1,36 @@
+{# begin {templatelocation} #}
+
+<fieldset class="uk-margin-large-top">
+  <legend>{lang_misc_title}</legend>
+
+        <div class="uk-form-row uk-panel-box">
+            <p class="uk-text-bold">{lang_misc_help_title}</label>
+            <div class="uk-margin-left"><ul>{lang_misc_help}</ul></div>
+        </div>
+          {language_selection}
+          {theme_selection}
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="displayprefs-noicons">{lang_noicons}</label>
+            <div class="uk-form-controls"><input type="checkbox" {noicons_checked} name="noicons" id="displayprefs-noicons"{xhtml}>{lang_noicons_text}</div>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="displayprefs-noboxes">{lang_noboxes}</label>
+            <div class="uk-form-controls"><input type="checkbox" {noboxes_checked} name="noboxes" id="displayprefs-noboxes"{xhtml}>{lang_noboxes_text}</div>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="displayprefs-maxstories">{lang_maxstories}</label>
+            <div class="uk-form-controls"><input type="text" maxlength="3" value="{maxstories_value}" name="maxstories" id="displayprefs-maxstories" class="uk-form-width-small"{xhtml}></div>
+        </div>
+        {advanced_editor_option}
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="tzid">{lang_timezone}</label>
+            <div class="uk-form-controls">{timezone_selector}</div>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="dfid">{lang_dateformat}</label>
+            <div class="uk-form-controls">{dateformat_selector}</div>
+        </div>
+
+</fieldset>
+
+{# end {templatelocation} #}

@@ -1,0 +1,155 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/calendar/event.php" method="post" class="uk-form uk-form-horizontal">
+  <input type="hidden" name="calendar_type" value="personal"{xhtml}>
+  <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+  <input type="hidden" name="eid" value="{eid}"{xhtml}>
+  <input type="hidden" name="uid" value="{uid}"{xhtml}>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_title}</label>
+    <div class="uk-form-controls">
+      <input type="text" size="36" maxlength="96" name="title" value="{event_title}" required{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_eventtype}</label>
+    <div class="uk-form-controls">
+      <select name="event_type">
+          <option value="">--</option>
+          {type_options}
+      </select>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_startdate}</label>
+    <div class="uk-form-controls">
+        <span dir="ltr">
+          <select name="start_month">
+                {startmonth_options}
+          </select>
+          /
+          <select name="start_day">
+                {startday_options}
+          </select>
+          /
+          <select name="start_year">
+                {startyear_options}
+          </select>&nbsp;&nbsp;
+          <b>{lang_starttime}: </b>
+          <select name="start_hour">
+                {starthour_options}
+          </select>
+          :
+          <select name="start_minute">
+                {startminute_options}
+          </select>
+            {startampm_selection}
+        </span>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_enddate}</label>
+    <div class="uk-form-controls">
+      <span dir="ltr">
+        <select name="end_month">
+            {endmonth_options}
+        </select>
+        /
+        <select name="end_day">
+            {endday_options}
+        </select>
+        /
+        <select name="end_year">
+            {endyear_options}
+        </select>&nbsp;&nbsp;
+        <b>{lang_endtime}: </b>
+        <select name="end_hour">
+            {endhour_options}
+        </select>
+        :
+        <select name="end_minute">
+            {endminute_options}
+        </select>
+        {endampm_selection}
+      </span>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_alldayevent}</label>
+    <div class="uk-form-controls">
+      <input type="checkbox" name="allday" {allday_checked}{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_location}</label>
+    <div class="uk-form-controls">
+      <textarea name="location" cols="45" rows="2">{event_location}</textarea>
+    </div>
+  </div>
+            
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_addressline1}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="address1" size="36" value="{event_address1}"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_addressline2}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="address2" size="36" value="{event_address2}"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_city}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="city" size="36" value="{event_city}"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_state}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="state" size="36" value="{event_state}"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_zipcode}</label>
+    <div class="uk-form-controls">
+      <input type="text" name="zipcode" size="16" maxlength="16" value="{event_zipcode}"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_link}</label>
+    <div class="uk-form-controls">
+      <input type="text" size="36" maxlength="128" name="url" value="{event_url}"{xhtml}>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="">{lang_description}</label>
+    <div class="uk-form-controls">
+      <textarea name="description" style="width:100%" cols="50" rows="20" required>{event_description}</textarea><span class="uk-form-help-inline">{lang_htmlnotallowed}</span>
+    </div>
+  </div>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+        <input type="hidden" name="type" value="event"{xhtml}>
+        <input type="submit" name="action" value="{lang_submit}" class="uk-form-width-medium"{xhtml}>
+        <input type="submit" name="action" value="{lang_delete}"{xhtml}>
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+</form>
+
+{# end {templatelocation} #}

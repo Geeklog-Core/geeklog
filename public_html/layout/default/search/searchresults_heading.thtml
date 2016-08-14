@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<tr>
+  {heading_columns}
+</tr>
+
+{# end {templatelocation} #}

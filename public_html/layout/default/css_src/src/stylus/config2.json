@@ -1,0 +1,63 @@
+{
+    "$var": {
+        "name": "2",
+        "style-mode": "2",
+        "header-style": "normal",
+        "sitename-style": "image",
+        "base-color": "#426F9C",
+        "adjust-hue": "true",
+        "global-navigation-style": "default",
+        "flip-horizontal": "false",
+        "uikit-theme": "gradient"
+    },
+    "$base": {
+        "text-color": "#222",
+        "anker-color": "#2664A2"
+    },
+    "$container": {
+        "background": "#FFF",
+        "margin": {
+            "top": "12px",
+            "bottom": "12px"
+        },
+        "padding": "10px",
+        "border": {
+            "size": "1px",
+            "color": "#555",
+            "style": "solid"
+        }
+    },
+    "$wrapper": {
+        "background": "#FFF",
+        "padding": "0",
+        "border": {
+            "size": "0",
+            "color": "#000",
+            "style": "solid"
+        }
+    },
+    "$header": {
+        "background": "#426F9C",
+        "background-design-type": "gradation",
+        "height": "160px",
+        "padding": "0",
+        "border": {
+            "size": "0",
+            "color": "#000",
+            "style": "solid"
+        }
+    },
+    "$footer": {
+        "background": "transparent",
+        "padding": "0",
+        "border": {
+            "size": "0",
+            "color": "#000",
+            "style": "solid"
+        }
+    },
+    "$story": {
+        "title-color": "default",
+        "status-color": "default"
+    }
+}

@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<p align="uk-text-center">{begin_backlink}{lang_back}{end_backlink}&nbsp;[{lang_page_of}]&nbsp;{begin_nextlink}{lang_next}{end_nextlink}</p>
+
+{# end {templatelocation} #}

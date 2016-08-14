@@ -1,0 +1,37 @@
+{# begin {templatelocation} #}
+
+<h2>{lang_pagetitle}</h2>
+
+<div class="admin-list-icon">
+  <img src="http://localhost/dev/public_html/links/images/links.png" alt=""{xhtml}>
+</div>
+
+<a href="{site_admin_url}/plugins/links/index.php">{lang_link_list}</a> |
+<a href="{site_admin_url}/plugins/links/index.php?mode=edit">{lang_new_link}</a> |
+<a href="{site_admin_url}/plugins/links/category.php">{lang_list_categories}</a> |
+<a href="{site_admin_url}/plugins/links/category.php?mode=edit">{lang_new_category}</a> |
+<a href="{site_admin_url}/moderation.php">{lang_admin_home}</a>
+
+<br style="clear:both"{xhtml}>
+
+<h3>{lang_sitecategories}</h3>
+
+<table class="uk-table uk-table-condensed uk-table-striped uk-width-1-1" style="background:#ffffff;">
+  <tr>
+    <th class="admin-list-headerfield">{edit_text}</th>
+    <th class="admin-list-headerfield">{add_text}</th>
+    <th class="admin-list-headerfield" nowrap="nowrap">{lang_category}</th>
+    <th class="admin-list-headerfield">{lang_topic}</th>
+    <th class="admin-list-headerfield">{delete_text}</th>
+  </tr>
+  <tr>
+    <td width="20" class="box">-</td>
+    <td width="20" class="box"><a href="{site_admin_url}/plugins/links/category.php?mode=edit&amp;pid={root_cid}" title="{add_text}"><img src="{layout_url}/images/addchild.png" alt="{add_text}"{xhtml}></a></td>
+    <td class="box" width="200">{lang_root}</td>
+    <td class="box"></td>
+    <td width="20" class="box"></td>
+  </tr>
+  {sitelist}
+</table>
+
+{# end {templatelocation} #}
