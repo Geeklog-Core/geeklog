@@ -392,7 +392,11 @@ class Story
         }
 
         // Overwrite the date with the timestamp.
-        $this->_date = $story['unixdate'];
+        if (!empty($story['unixdate'])) {
+            $this->_date = $story['unixdate'];
+        } else {
+            $this->_date = time();
+        }
 
         if (!empty($story['expireunix'])) {
             $this->_expire = $story['expireunix'];

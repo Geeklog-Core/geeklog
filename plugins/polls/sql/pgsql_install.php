@@ -49,6 +49,7 @@ CREATE TABLE {$_TABLES['pollquestions']} (
   pid varchar(128) NOT NULL default '',
   question varchar(255) NOT NULL,
   allow_multipleanswers INT NULL DEFAULT NULL,
+  description TEXT NULL,
   PRIMARY KEY (qid, pid))
 ";
 

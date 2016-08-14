@@ -133,8 +133,8 @@ class Database
         global $_TABLES;
 
         $result = $this->dbQuery("SELECT check_table('{$_TABLES[$tableName]}', 'public');", $ignoreErrors);
-        $row = $this->dbFetchArray($result, true);
-        $retval = !empty($row[0]);
+        $row = $this->dbFetchArray($result);
+        $retval = !empty($row['check_table']);
 
         return $retval;
     }
@@ -356,7 +356,11 @@ class Database
         if ($ignore_errors) {
             $result = pg_query($this->_db, $sql);
         } else {
-            $result = pg_query($this->_db, $sql) || trigger_error($this->dbError($sql), E_USER_ERROR);
+            $result = pg_query($this->_db, $sql);
+
+            if ($result === false) {
+                trigger_error($this->dbError($sql), E_USER_ERROR);
+            }
         }
 
         // If OK, return otherwise echo error

@@ -457,9 +457,11 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
 
     if ((!isset($_COOKIE[$pid]) && !POLLS_ipAlreadyVoted($pid)) || ($P['is_open'] == 1)) {
         if ($ntopics == 1) {
-            $questions_sql = "SELECT question,qid,allow_multipleanswers,description "
+            $questions_sql = "SELECT question, qid, allow_multipleanswers, description "
                 . "FROM {$_TABLES['pollquestions']} "
-                . "WHERE pid='$pid' ORDER BY qid";
+                . "WHERE pid='$pid' "
+                . " GROUP BY question, qid, allow_multipleanswers, description "
+                . " ORDER BY qid ";
 
             $questions = DB_query($questions_sql);
             $nquestions = DB_numRows($questions);
