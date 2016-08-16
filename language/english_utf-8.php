@@ -2186,6 +2186,7 @@ $LANG_confignames['Core'] = array(
     'search_separator' => "Group Separator",
     'search_def_keytype' => "Default Search Method",
     'search_def_sort' => "Default Sort Order",
+    'search_use_topic' => "Use Current Topic",
     'autotag_permissions_story' => '[story: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',

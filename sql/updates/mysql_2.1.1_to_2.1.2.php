@@ -32,6 +32,9 @@ function update_ConfValuesFor212()
 
     // New Block Autotag permissions
     $c->add('autotag_permissions_block', array(2, 2, 0, 0), '@select', 7, 41, 28, 1920, TRUE, $me, 37);
+    
+    // New search config option
+    $c->add('search_use_topic',FALSE,'select',0,6,1,677,TRUE, $me, 6);
 
     return true;
 }

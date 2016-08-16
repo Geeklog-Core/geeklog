@@ -194,6 +194,7 @@ $_CONF_VALIDATE['Core']['search_def_sort'] = array(
         'hits|desc', 'title|asc', 'title|desc'
     ), true)
 );
+$_CONF_VALIDATE['Core']['search_use_topic'] = array('rule' => 'boolean');
 
 /* Subgroup Stories and Trackback, Tab Story */
 $_CONF_VALIDATE['Core']['maximagesperarticle'] = array('rule' => 'numeric');
