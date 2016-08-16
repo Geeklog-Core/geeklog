@@ -1,4 +1,4 @@
-/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.4 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(core) {
 
     if (typeof define == "function" && define.amd) { // AMD
@@ -44,7 +44,7 @@
 
     var UI = {}, _UI = global.UIkit ? Object.create(global.UIkit) : undefined;
 
-    UI.version = '2.26.2';
+    UI.version = '2.26.4';
 
     UI.noConflict = function() {
         // restore UIkit version
@@ -181,6 +181,19 @@
         };
     };
 
+    UI.Utils.throttle = function (func, limit) {
+        var wait = false;
+        return function () {
+            if (!wait) {
+                func.call();
+                wait = true;
+                setTimeout(function () {
+                    wait = false;
+                }, limit);
+            }
+        }
+    };
+
     UI.Utils.removeCssRules = function(selectorRegEx) {
         var idx, idxs, stylesheet, _i, _j, _k, _len, _len1, _len2, _ref;
 
@@ -247,7 +260,7 @@
 
                 var ele  = UI.$(this),
                     cls  = ele.attr('class'),
-                    anim = cls.match(/uk\-animation\-(.+)/);
+                    anim = cls.match(/uk-animation-(.+)/);
 
                 ele.removeClass(anim[0]).width();
 
@@ -632,7 +645,7 @@
             UI.component.bootComponents();
 
             // custom scroll observer
-            requestAnimationFrame((function(){
+            var rafToken = requestAnimationFrame((function(){
 
                 var memory = {dir: {x:0, y:0}, x: window.pageXOffset, y:window.pageYOffset};
 
@@ -659,7 +672,8 @@
                         }]);
                     }
 
-                    requestAnimationFrame(fn);
+                    cancelAnimationFrame(rafToken);
+                    rafToken = requestAnimationFrame(fn);
                 };
 
                 if (UI.support.touch) {
@@ -1499,7 +1513,7 @@
                         scrollTop = $win.scrollTop(),
                         target = (function(){
                             for(var i=0; i< inviews.length;i++){
-                                if(inviews[i].offset().top >= scrollTop){
+                                if (inviews[i].offset().top - $this.options.topoffset >= scrollTop){
                                     return inviews[i];
                                 }
                             }
@@ -2575,9 +2589,7 @@
                 }
             });
 
-            UI.domObserve(this.element, function(e) {
-                $this.resize();
-            });
+            UI.domObserve(this.element, function(e) { $this.resize(); });
         },
 
         toggle: function() {
@@ -2597,7 +2609,7 @@
             }
 
             this.element.removeClass("uk-open").show();
-            this.resize();
+            this.resize(true);
 
             if (this.options.modal) {
                 active = this;
@@ -2646,7 +2658,9 @@
             return this;
         },
 
-        resize: function() {
+        resize: function(force) {
+
+            if (!this.isActive() && !force) return;
 
             var bodywidth  = body.width();
 
@@ -2710,13 +2724,13 @@
                 body.css(this.paddingdir, "");
             }
 
-            if(active===this) active = false;
+            if (active===this) active = false;
 
             this.trigger('hide.uk.modal');
         },
 
         isActive: function() {
-            return this.active;
+            return this.element.hasClass('uk-open');
         }
 
     });
@@ -3504,7 +3518,9 @@
 
             next.addClass(clsIn).one(UI.support.animation.end, function() {
 
-                next.removeClass(''+clsIn+'').css({opacity:'', display:''});
+                setTimeout(function () {
+                    next.removeClass(''+clsIn+'').css({opacity:'', display:''});
+                }, 0);
 
                 d.resolve();
 

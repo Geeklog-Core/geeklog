@@ -1,4 +1,4 @@
-/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.4 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -22,9 +22,10 @@
     UI.component('lightbox', {
 
         defaults: {
-            "group"      : false,
-            "duration"   : 400,
-            "keyboard"   : true
+            "allowfullscreen" : true,
+            "duration"        : 400,
+            "group"           : false,
+            "keyboard"        : true
         },
 
         index : 0,
@@ -331,7 +332,7 @@
                 var id, matches, resolve = function(id, width, height) {
 
                     data.meta = {
-                        'content': '<iframe src="//www.youtube.com/embed/'+id+'" width="'+width+'" height="'+height+'" style="max-width:100%;"></iframe>',
+                        'content': '<iframe src="//www.youtube.com/embed/'+id+'" width="'+width+'" height="'+height+'" style="max-width:100%;"'+(modal.lightbox.options.allowfullscreen?' allowfullscreen':'')+'></iframe>',
                         'width': width,
                         'height': height
                     };
@@ -401,7 +402,7 @@
                 var id, resolve = function(id, width, height) {
 
                     data.meta = {
-                        'content': '<iframe src="//player.vimeo.com/video/'+id+'" width="'+width+'" height="'+height+'" style="width:100%;box-sizing:border-box;"></iframe>',
+                        'content': '<iframe src="//player.vimeo.com/video/'+id+'" width="'+width+'" height="'+height+'" style="width:100%;box-sizing:border-box;"'+(modal.lightbox.options.allowfullscreen?' allowfullscreen':'')+'></iframe>',
                         'width': width,
                         'height': height
                     };
@@ -493,7 +494,7 @@
                 var resolve = function (source, width, height) {
 
                     data.meta = {
-                        'content': '<iframe class="uk-responsive-width" src="' + source + '" width="' + width + '" height="' + height + '"></iframe>',
+                        'content': '<iframe class="uk-responsive-width" src="' + source + '" width="' + width + '" height="' + height + '"'+(modal.lightbox.options.allowfullscreen?' allowfullscreen':'')+'></iframe>',
                         'width': width,
                         'height': height
                     };
@@ -510,7 +511,7 @@
 
         }
     });
-    
+
     function getModal(lightbox) {
 
         if (modal) {
@@ -548,9 +549,17 @@
             modal.content.html('');
         });
 
+        var resizeCache = {w: window.innerWidth, h:window.innerHeight};
+
         UI.$win.on('load resize orientationchange', UI.Utils.debounce(function(e){
-            if (modal.is(':visible') && !UI.Utils.isFullscreen()) modal.lightbox.fitSize();
-        }.bind(this), 100));
+
+            if (resizeCache.w !== window.innerWidth && modal.is(':visible') && !UI.Utils.isFullscreen()) {
+                modal.lightbox.fitSize();
+            }
+
+            resizeCache = {w: window.innerWidth, h:window.innerHeight};
+
+        }, 100));
 
         modal.lightbox = lightbox;
 

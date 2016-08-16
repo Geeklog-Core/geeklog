@@ -1,4 +1,4 @@
-/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.4 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -303,7 +303,7 @@
     * MIT license
     * https://github.com/desandro/get-size
     */
-    var _getSize = (function(){
+    function _getSize() {
 
         var prefixes = 'Webkit Moz ms Ms O'.split(' ');
         var docElemStyle = document.documentElement.style;
@@ -519,9 +519,9 @@
 
         return getSize;
 
-    })();
+    }
 
     function getElementSize(ele) {
-        return _getSize(ele);
+        return _getSize()(ele);
     }
 });
