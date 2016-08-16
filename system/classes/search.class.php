@@ -610,13 +610,18 @@ class Search
         $searchtime = $searchtimer->stopTimer();
 
         $escquery = htmlspecialchars($this->_query);
-        $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'),
-            $escquery);
-        if ($this->_keyType == 'any') {
-            $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>", $escquery);
-            $searchQuery = "<b>'$searchQuery'</b>";
-        } elseif ($this->_keyType == 'all') {
-            $searchQuery = str_replace(' ', "</b>' " . $LANG09[56] . " '<b>", $escquery);
+        $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'), $escquery);
+
+        if ($this->_keyType == 'any' OR $this->_keyType == 'all') {
+            $words = array_unique(explode(' ', $escquery));
+            $words = array_filter($words); // filter out empty strings            
+            $escquery = implode(' ', $words);
+            if ($this->_keyType == 'any') {
+                $lang_search_op = $LANG09[57];
+            } elseif ($this->_keyType == 'all') {
+                $lang_search_op = $LANG09[56];
+            }
+            $searchQuery = str_replace(' ', "</b>' " . $lang_search_op . " '<b>", $escquery);
             $searchQuery = "<b>'$searchQuery'</b>";
         } else {
             $searchQuery = $LANG09[55] . " '<b>$escquery</b>'";

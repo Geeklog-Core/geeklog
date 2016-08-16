@@ -159,14 +159,16 @@ class SearchCriteria
     {
         if ($keyType === 'all') {
             // must contain ALL of the keywords
-            $words = explode(' ', $query);
+            $words = array_unique(explode(' ', $query));
+            $words = array_filter($words); // filter out empty strings
             $sep = 'AND';
 
             $ftwords['mysql'] = '+' . str_replace(' ', ' +', $query);
             $ftwords['pgsql'] = '"' . str_replace(' ', '" AND "', $query) . '"';
         } elseif ($keyType === 'any') {
             // must contain ANY of the keywords
-            $words = explode(' ', $query);
+            $words = array_unique(explode(' ', $query));
+            $words = array_filter($words); // filter out empty strings
             $sep = 'OR ';
             $ftwords['mysql'] = $query;
             $ftwords['pgsql'] = $query;
