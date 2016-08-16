@@ -1,4 +1,4 @@
-/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.4 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(UI) {
 
     "use strict";
@@ -273,7 +273,9 @@
 
             next.addClass(clsIn).one(UI.support.animation.end, function() {
 
-                next.removeClass(''+clsIn+'').css({opacity:'', display:''});
+                setTimeout(function () {
+                    next.removeClass(''+clsIn+'').css({opacity:'', display:''});
+                }, 0);
 
                 d.resolve();
 
