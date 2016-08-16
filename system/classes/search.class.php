@@ -77,6 +77,7 @@ class Search
         if (isset($_GET['query'])) {
             $this->_query = strip_tags(COM_stripslashes($_GET['query']));
         }
+        
         if (isset($_GET['topic'])) {
             // see if topic exists
             $tid = COM_applyFilter($_GET['topic']);
@@ -86,9 +87,11 @@ class Search
 
             $this->_topic = $tid;
         } else {
-            $last_topic = SESS_getVariable('topic');
-            if ($last_topic != '') {
-                $this->_topic = $last_topic;
+            if ($_CONF['search_use_topic']) {
+                $last_topic = SESS_getVariable('topic');
+                if ($last_topic != '') {
+                    $this->_topic = $last_topic;
+                }
             }
         }
         if (isset($_GET['datestart'])) {

@@ -118,6 +118,7 @@ function install_config()
     $c->add('search_def_keytype','phrase','select',0,6,20,672,TRUE, $me, 6);
     $c->add('search_use_fulltext', FALSE, 'hidden', 0, 6, NULL, 0, TRUE, $me, 6); // 675
     $c->add('search_def_sort','hits|desc','select',0,6,27,676,TRUE, $me, 6);
+    $c->add('search_use_topic',FALSE,'select',0,6,1,677,TRUE, $me, 6);
 
     // Subgroup: Stories and Trackback
     $c->add('sg_stories', NULL, 'subgroup', 1, 0, NULL, 0, TRUE, $me, 0);

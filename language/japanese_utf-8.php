@@ -2187,6 +2187,7 @@ $LANG_confignames['Core'] = array(
     'search_separator' => 'グループのセパレータ',
     'search_def_keytype' => '検索条件のデフォルト',
     'search_def_sort' => '並べ替え基準のデフォルト',
+    'search_use_topic' => "Use Current Topic",
     'autotag_permissions_story' => '[story: ] パーミッション',
     'autotag_permissions_user' => '[user: ] パーミッション',
     'autotag_permissions_topic' => '[topic: ] パーミッション',
