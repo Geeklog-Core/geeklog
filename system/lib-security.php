@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-security.php                                                          |
 // |                                                                           |
@@ -34,35 +34,31 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* This is the security library for Geeklog.  This is used to implement Geeklog's
-* *nix-style security system.
-*
-* Programming notes:  For items you need security on you need the following for
-* each record in your database:
-* owner_id        | mediumint(8)
-* group_id        | mediumint(8)
-* perm_owner      | tinyint(1) unsigned
-* perm_group      | tinyint(1) unsigned
-* perm_members    | tinyint(1) unsigned
-* perm_anon       | tinyint(1) unsigned
-*
-* For display one function can handle most needs:
-* function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon)
-* A call to this function will allow you to determine if the current user should see the item.
-*
-* For the admin screen several functions will make life easier:
-* function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
-* This function displays the permissions widget with arrays for each permission
-* function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon)
-* This function takes the permissions from the previous function and converts them into
-* an integer for saving back to the database.
-*
-*/
+ * This is the security library for Geeklog.  This is used to implement Geeklog's
+ * *nix-style security system.
+ * Programming notes:  For items you need security on you need the following for
+ * each record in your database:
+ * owner_id        | mediumint(8)
+ * group_id        | mediumint(8)
+ * perm_owner      | tinyint(1) unsigned
+ * perm_group      | tinyint(1) unsigned
+ * perm_members    | tinyint(1) unsigned
+ * perm_anon       | tinyint(1) unsigned
+ * For display one function can handle most needs:
+ * function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon)
+ * A call to this function will allow you to determine if the current user should see the item.
+ * For the admin screen several functions will make life easier:
+ * function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
+ * This function displays the permissions widget with arrays for each permission
+ * function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon)
+ * This function takes the permissions from the previous function and converts them into
+ * an integer for saving back to the database.
+ */
 
 // Turn this on to get various debug messages from the code in this library
 $_SEC_VERBOSE = false;
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-security.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'lib-security.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -78,26 +74,23 @@ if (!defined('CSRF_TOKEN')) {
 }
 
 /**
-* Returns the groups a user belongs to
-*
-* This is part of the GL security implementation.  This function returns
-* all the groups a user belongs to.  This function is called recursively
-* as groups can belong to other groups
-*
-* Note: this is an expensive function -- if you are concerned about speed it should only
-*       be used once at the beginning of a page.  The resulting array $_GROUPS can then be
-*       used through out the page.
-*
-* @param        int     $uid            User ID to get information for. If empty current user.
-* @return   array   Associative Array grp_name -> ug_main_grp_id of group ID's user belongs to
-*
-*/
-function SEC_getUserGroups($uid='')
+ * Returns the groups a user belongs to
+ * This is part of the GL security implementation.  This function returns
+ * all the groups a user belongs to.  This function is called recursively
+ * as groups can belong to other groups
+ * Note: this is an expensive function -- if you are concerned about speed it should only
+ *       be used once at the beginning of a page.  The resulting array $_GROUPS can then be
+ *       used through out the page.
+ *
+ * @param        int $uid User ID to get information for. If empty current user.
+ * @return   array   Associative Array grp_name -> ug_main_grp_id of group ID's user belongs to
+ */
+function SEC_getUserGroups($uid = '')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE;
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("****************in getusergroups(uid=$uid,usergroups=$usergroups,cur_grp_id=$cur_grp_id)***************",1);
+        COM_errorLog("****************in getusergroups(uid=$uid)***************", 1);
     }
 
     $groups = array();
@@ -111,7 +104,7 @@ function SEC_getUserGroups($uid='')
     }
 
     $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-            . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid",1);
+        . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid", 1);
 
     if ($result === false) {
         return $groups;
@@ -120,7 +113,7 @@ function SEC_getUserGroups($uid='')
     $nrows = DB_numRows($result);
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("got $nrows rows",1);
+        COM_errorLog("got $nrows rows", 1);
     }
 
     while ($nrows > 0) {
@@ -130,7 +123,7 @@ function SEC_getUserGroups($uid='')
             $A = DB_fetchArray($result);
 
             if ($_SEC_VERBOSE) {
-                COM_errorLog('user is in group ' . $A['grp_name'],1);
+                COM_errorLog('user is in group ' . $A['grp_name'], 1);
             }
             if (!in_array($A['ug_main_grp_id'], $groups)) {
                 array_push($cgroups, $A['ug_main_grp_id']);
@@ -141,7 +134,7 @@ function SEC_getUserGroups($uid='')
         if (count($cgroups) > 0) {
             $glist = implode(',', $cgroups);
             $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-                    . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)",1);
+                . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)", 1);
             $nrows = DB_numRows($result);
         } else {
             $nrows = 0;
@@ -151,42 +144,38 @@ function SEC_getUserGroups($uid='')
     uksort($groups, 'strcasecmp');
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("****************leaving getusergroups(uid=$uid)***************",1);
+        COM_errorLog("****************leaving getusergroups(uid=$uid)***************", 1);
     }
 
     return $groups;
 }
 
 /**
-  * Checks to see if a user has admin access to the "Remote Users" group
-  * Admin users will probably not be members, but, User Admin, Root, and
-  * group admin will have access to it. However, we can not be sure what
-  * the group id for "Remote User" group is, because it's a later static
-  * group, and upgraded systems could have it in any id slot.
-  *
-  * @param      groupid     int     The id of a group, which might be the remote users group
-  * @param      groups      array   Array of group ids the user has access to.
-  * @return     boolean
-  */
+ * Checks to see if a user has admin access to the "Remote Users" group
+ * Admin users will probably not be members, but, User Admin, Root, and
+ * group admin will have access to it. However, we can not be sure what
+ * the group id for "Remote User" group is, because it's a later static
+ * group, and upgraded systems could have it in any id slot.
+ *
+ * @param      groupid     int     The id of a group, which might be the remote users group
+ * @param      groups      array   Array of group ids the user has access to.
+ * @return     boolean
+ */
 function SEC_groupIsRemoteUserAndHaveAccess($groupid, $groups)
 {
     global $_TABLES, $_CONF;
-    if(!isset($_CONF['remote_users_group_id']))
-    {
+    if (!isset($_CONF['remote_users_group_id'])) {
         $result = DB_query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name='Remote Users'");
-        if( $result )
-        {
-            $row = DB_fetchArray( $result );
+        if ($result) {
+            $row = DB_fetchArray($result);
             $_CONF['remote_users_group_id'] = $row['grp_id'];
         }
     }
-    if( $groupid == $_CONF['remote_users_group_id'] )
-    {
-        if( in_array( 1, $groups ) || // root
-            in_array( 9, $groups ) || // user admin
-            in_array( 11, $groups ) // Group admin
-          )
-        {
+    if ($groupid == $_CONF['remote_users_group_id']) {
+        if (in_array(1, $groups) || // root
+            in_array(9, $groups) || // user admin
+            in_array(11, $groups) // Group admin
+        ) {
             return true;
         } else {
             return false;
@@ -197,23 +186,21 @@ function SEC_groupIsRemoteUserAndHaveAccess($groupid, $groups)
 }
 
 /**
-* Determines if user belongs to specified group
-*
-* This is part of the Geeklog security implementation. This function
-* looks up whether a user belongs to a specified group
-*
-* @param        string      $grp_to_verify      Group we want to see if user belongs to
-* @param        int         $uid                ID for user to check. If empty current user.
-* @param        string      $cur_grp_id         NOT USED Current group we are working with in hierarchy
-* @return       boolean     true if user is in group, otherwise false
-*
-*/
-function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
+ * Determines if user belongs to specified group
+ * This is part of the Geeklog security implementation. This function
+ * looks up whether a user belongs to a specified group
+ *
+ * @param        string $grp_to_verify Group we want to see if user belongs to
+ * @param        int    $uid           ID for user to check. If empty current user.
+ * @param        string $cur_grp_id    NOT USED Current group we are working with in hierarchy
+ * @return       boolean     true if user is in group, otherwise false
+ */
+function SEC_inGroup($grp_to_verify, $uid = '', $cur_grp_id = '')
 {
-    global $_TABLES, $_USER, $_SEC_VERBOSE, $_GROUPS;
+    global $_USER, $_GROUPS;
 
-    if (empty ($uid)) {
-        if (empty ($_USER['uid'])) {
+    if (empty($uid)) {
+        if (empty($_USER['uid'])) {
             $uid = 1;
         } else {
             $uid = $_USER['uid'];
@@ -221,7 +208,8 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
     }
 
     if ((empty($_USER['uid']) && ($uid == 1)) ||
-            (isset($_USER['uid']) && ($uid == $_USER['uid']))) {
+        (isset($_USER['uid']) && ($uid == $_USER['uid']))
+    ) {
         if (empty($_GROUPS)) {
             $_GROUPS = SEC_getUserGroups($uid);
         }
@@ -231,36 +219,26 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
     }
 
     if (is_numeric($grp_to_verify)) {
-        if (in_array($grp_to_verify, $groups)) {
-           return true;
-        } else {
-           return false;
-        }
+        return in_array($grp_to_verify, $groups);
     } else {
-        if (!empty($groups[$grp_to_verify])) {
-            return true;
-        } else {
-            return false;
-        }
-   }
+        return !empty($groups[$grp_to_verify]);
+    }
 }
 
 /**
-* Determines if current user is a moderator of any kind
-*
-* Checks to see if this user is a moderator for any of the GL features OR
-* GL plugins
-*
-* @return   boolean     returns if user has any .moderate rights
-*
-*/
+ * Determines if current user is a moderator of any kind
+ * Checks to see if this user is a moderator for any of the GL features OR
+ * GL plugins
+ *
+ * @return   boolean     returns if user has any .moderate rights
+ */
 function SEC_isModerator()
 {
-    global $_USER,$_RIGHTS;
+    global $_RIGHTS;
 
     // Loop through GL core rights.
     for ($i = 0; $i < count($_RIGHTS); $i++) {
-        if (stristr($_RIGHTS[$i],'.moderate')) {
+        if (stristr($_RIGHTS[$i], '.moderate')) {
             return true;
         }
     }
@@ -272,10 +250,10 @@ function SEC_isModerator()
 }
 
 /**
-* Checks to see if current user has access to a configuration
-*
-* @return   boolean     returns if user has any config. rights
-*/
+ * Checks to see if current user has access to a configuration
+ *
+ * @return   boolean     returns if user has any config. rights
+ */
 function SEC_hasConfigAccess()
 {
     global $_CONF_FT;
@@ -288,22 +266,21 @@ function SEC_hasConfigAccess()
 }
 
 /**
-* Deprecated - use SEC_hasConfigAccess instead
-*
-* @deprecated since Geeklog 2.0.0
-* @see SEC_hasConfigAccess
-*/
+ * Deprecated - use SEC_hasConfigAccess instead
+ *
+ * @deprecated since Geeklog 2.0.0
+ * @see        SEC_hasConfigAccess
+ */
 function SEC_hasConfigAcess()
 {
     return SEC_hasConfigAccess();
 }
 
 /**
-* Checks to see if current user has access to a admin moderation page
-*
-* @return       boolean
-*
-*/
+ * Checks to see if current user has access to a admin moderation page
+ *
+ * @return       boolean
+ */
 function SEC_hasModerationAccess()
 {
     global $_CONF;
@@ -340,12 +317,11 @@ function SEC_hasModerationAccess()
 }
 
 /**
-* Checks to see if current user has access to a topic
-*
-* @param        string      $tid        ID for topic to check on
-* @return       int     returns 3 for read/edit 2 for read only 0 for no access
-*
-*/
+ * Checks to see if current user has access to a topic
+ *
+ * @param        string $tid ID for topic to check on
+ * @return       int     returns 3 for read/edit 2 for read only 0 for no access
+ */
 function SEC_hasTopicAccess($tid)
 {
     global $_TABLES;
@@ -357,28 +333,26 @@ function SEC_hasTopicAccess($tid)
     $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '$tid'");
     $A = DB_fetchArray($result);
 
-    return SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+    return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
 }
 
 /**
-* Checks if current user has access to the given object
-*
-* This function takes the access info from a Geeklog object
-* and let's us know if they have access to the object
-* returns 3 for read/edit, 2 for read only and 0 for no
-* access
-*
-* @param        int     $owner_id       ID of the owner of object
-* @param        int     $group_id       ID of group object belongs to
-* @param        int     $perm_owner     Permissions the owner has
-* @param        int     $perm_group     Permissions the gorup has
-* @param        int     $perm_members   Permissions logged in members have
-* @param        int     $perm_anon      Permissions anonymous users have
-* @param        int     $uid            User id or 0 = current user
-* @return       int     returns 3 for read/edit 2 for read only 0 for no access
-*
-*/
-function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon, $uid = 0)
+ * Checks if current user has access to the given object
+ * This function takes the access info from a Geeklog object
+ * and let's us know if they have access to the object
+ * returns 3 for read/edit, 2 for read only and 0 for no
+ * access
+ *
+ * @param        int $owner_id     ID of the owner of object
+ * @param        int $group_id     ID of group object belongs to
+ * @param        int $perm_owner   Permissions the owner has
+ * @param        int $perm_group   Permissions the gorup has
+ * @param        int $perm_members Permissions logged in members have
+ * @param        int $perm_anon    Permissions anonymous users have
+ * @param        int $uid          User id or 0 = current user
+ * @return       int     returns 3 for read/edit 2 for read only 0 for no access
+ */
+function SEC_hasAccess($owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $uid = 0)
 {
     global $_USER;
 
@@ -397,7 +371,9 @@ function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members
     }
 
     // If user is owner then return 1 now
-    if ($uid == $owner_id) return $perm_owner;
+    if ($uid == $owner_id) {
+        return $perm_owner;
+    }
 
     // Not private, if user is in group then give access
     if (SEC_inGroup($group_id, $uid)) {
@@ -414,22 +390,20 @@ function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members
 }
 
 /**
-* Checks if current user has rights to a feature
-*
-* Takes either a single feature or an array of features and returns
-* an array of whether the user has those rights
-*
-* @param        string|array        $features       Features to check
-* @param        string              $operator       Either 'and' or 'or'. Default is 'and'.  Used if checking more than one feature.
-* @return       boolean     Return true if current user has access to feature(s), otherwise false.
-*
-*/
-function SEC_hasRights($features,$operator='AND')
+ * Checks if current user has rights to a feature
+ * Takes either a single feature or an array of features and returns
+ * an array of whether the user has those rights
+ *
+ * @param        string|array $features Features to check
+ * @param        string       $operator Either 'and' or 'or'. Default is 'and'.  Used if checking more than one feature.
+ * @return       boolean     Return true if current user has access to feature(s), otherwise false.
+ */
+function SEC_hasRights($features, $operator = 'AND')
 {
-    global $_USER, $_RIGHTS, $_SEC_VERBOSE;
+    global $_RIGHTS, $_SEC_VERBOSE;
 
-    if (is_string($features) && strstr($features,',')) {
-        $features = explode(',',$features);
+    if (is_string($features) && strstr($features, ',')) {
+        $features = explode(',', $features);
     }
 
     if (is_array($features)) {
@@ -437,18 +411,20 @@ function SEC_hasRights($features,$operator='AND')
         for ($i = 0; $i < count($features); $i++) {
             if ($operator == 'OR') {
                 // OR operator, return as soon as we find a true one
-                if (in_array($features[$i],$_RIGHTS)) {
+                if (in_array($features[$i], $_RIGHTS)) {
                     if ($_SEC_VERBOSE) {
-                        COM_errorLog('SECURITY: user has access to ' . $features[$i],1);
+                        COM_errorLog('SECURITY: user has access to ' . $features[$i], 1);
                     }
+
                     return true;
                 }
             } else {
                 // this is an "AND" operator, bail if we find a false one
-                if (!in_array($features[$i],$_RIGHTS)) {
+                if (!in_array($features[$i], $_RIGHTS)) {
                     if ($_SEC_VERBOSE) {
-                        COM_errorLog('SECURITY: user does not have access to ' . $features[$i],1);
+                        COM_errorLog('SECURITY: user does not have access to ' . $features[$i], 1);
                     }
+
                     return false;
                 }
             }
@@ -456,41 +432,43 @@ function SEC_hasRights($features,$operator='AND')
 
         if ($operator == 'OR') {
             if ($_SEC_VERBOSE) {
-                COM_errorLog('SECURITY: user does not have access to ' . $features[$i],1);
+                COM_errorLog('SECURITY: user does not have access to ' . $features[$i], 1);
             }
+
             return false;
-                } else {
+        } else {
             if ($_SEC_VERBOSE) {
-                COM_errorLog('SECURITY: user has access to ' . $features[$i],1);
+                COM_errorLog('SECURITY: user has access to ' . $features[$i], 1);
             }
+
             return true;
         }
     } else {
         // Check the one value
         if ($_SEC_VERBOSE) {
-            if (in_array($features,$_RIGHTS)) {
-                COM_errorLog('SECURITY: user has access to ' . $features,1);
+            if (in_array($features, $_RIGHTS)) {
+                COM_errorLog('SECURITY: user has access to ' . $features, 1);
             } else {
-                COM_errorLog('SECURITY: user does not have access to ' . $features,1);
+                COM_errorLog('SECURITY: user does not have access to ' . $features, 1);
             }
         }
-        return in_array($features,$_RIGHTS);
+
+        return in_array($features, $_RIGHTS);
     }
 }
 
 /**
-* Shows security control for an object
-*
-* This will return the HTML needed to create the security control seen on the
-* admin screen for GL objects (i.e. stories, etc)
-*
-* @param        int     $perm_owner     Permissions the owner has 1 = edit 2 = read 3 = read/edit
-* @param        int     $perm_group     Permission the group has
-* @param        int     $perm_members   Permissions logged in members have
-* @param        int     $perm_anon      Permissions anonymous users have
-* @return       string  needed HTML (table) in HTML $perm_owner = array of permissions [edit,read], etc edit = 1 if permission, read = 2 if permission
-*
-*/
+ * Shows security control for an object
+ * This will return the HTML needed to create the security control seen on the
+ * admin screen for GL objects (i.e. stories, etc)
+ *
+ * @param        int $perm_owner   Permissions the owner has 1 = edit 2 = read 3 = read/edit
+ * @param        int $perm_group   Permission the group has
+ * @param        int $perm_members Permissions logged in members have
+ * @param        int $perm_anon    Permissions anonymous users have
+ * @return       string  needed HTML (table) in HTML $perm_owner = array of permissions [edit,read], etc edit = 1 if
+ *                                 permission, read = 2 if permission
+ */
 function SEC_getPermissionsHTML($perm_owner, $perm_group, $perm_members, $perm_anon)
 {
     global $_CONF, $LANG_ACCESS;
@@ -511,25 +489,25 @@ function SEC_getPermissionsHTML($perm_owner, $perm_group, $perm_members, $perm_a
 
     // Owner Permissions
     if ($perm_owner >= 2) {
-        $perm_templates->set_var('owner_r_checked',' checked="checked"');
+        $perm_templates->set_var('owner_r_checked', ' checked="checked"');
     }
     if ($perm_owner == 3) {
-        $perm_templates->set_var('owner_e_checked',' checked="checked"');
+        $perm_templates->set_var('owner_e_checked', ' checked="checked"');
     }
     // Group Permissions
     if ($perm_group >= 2) {
-        $perm_templates->set_var('group_r_checked',' checked="checked"');
+        $perm_templates->set_var('group_r_checked', ' checked="checked"');
     }
     if ($perm_group == 3) {
-        $perm_templates->set_var('group_e_checked',' checked="checked"');
+        $perm_templates->set_var('group_e_checked', ' checked="checked"');
     }
     // Member Permissions
     if ($perm_members == 2) {
-        $perm_templates->set_var('members_checked',' checked="checked"');
+        $perm_templates->set_var('members_checked', ' checked="checked"');
     }
     // Anonymous Permissions
     if ($perm_anon == 2) {
-        $perm_templates->set_var('anon_checked',' checked="checked"');
+        $perm_templates->set_var('anon_checked', ' checked="checked"');
     }
 
     $perm_templates->parse('output', 'editor');
@@ -539,42 +517,40 @@ function SEC_getPermissionsHTML($perm_owner, $perm_group, $perm_members, $perm_a
 }
 
 /**
-* Gets everything a user has permissions to within the system
-*
-* This is part of the Geeklog security implementation.  This function
-* will get all the permissions the current user has. Calls itself recursively.
-*
-* @param    int     $grp_id     DO NOT USE (Used for recursion) Current group function is working on
-* @param    int     $uid        User to check, if empty current user.
-* @return   string  returns comma delimited list of features the user has access to
-*
-*/
-function SEC_getUserPermissions($grp_id='', $uid='')
+ * Gets everything a user has permissions to within the system
+ * This is part of the Geeklog security implementation.  This function
+ * will get all the permissions the current user has. Calls itself recursively.
+ *
+ * @param    int $grp_id DO NOT USE (Used for recursion) Current group function is working on
+ * @param    int $uid    User to check, if empty current user.
+ * @return   string  returns comma delimited list of features the user has access to
+ */
+function SEC_getUserPermissions($grp_id = '', $uid = '')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE, $_GROUPS;
 
     $retval = '';
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("**********inside SEC_getUserPermissions(grp_id=$grp_id)**********",1);
+        COM_errorLog("**********inside SEC_getUserPermissions(grp_id=$grp_id)**********", 1);
     }
 
     // Get user ID if we don't already have it
-    if (empty ($uid)) {
-        if (empty ($_USER['uid'])) {
+    if (empty($uid)) {
+        if (empty($_USER['uid'])) {
             $uid = 1;
         } else {
             $uid = $_USER['uid'];
         }
     }
 
-    if ((empty ($_USER['uid']) && ($uid == 1)) || (!empty ($_USER['uid']) && ($uid == $_USER['uid']))) {
-        if (empty ($_GROUPS)) {
-            $_GROUPS = SEC_getUserGroups ($uid);
+    if ((empty($_USER['uid']) && ($uid == 1)) || (!empty($_USER['uid']) && ($uid == $_USER['uid']))) {
+        if (empty($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups($uid);
         }
         $groups = $_GROUPS;
     } else {
-        $groups = SEC_getUserGroups ($uid);
+        $groups = SEC_getUserGroups($uid);
     }
 
     if (empty($groups)) {
@@ -584,13 +560,13 @@ function SEC_getUserPermissions($grp_id='', $uid='')
 
     $glist = implode(',', $groups);
     $result = DB_query("SELECT DISTINCT ft_name FROM {$_TABLES["access"]},{$_TABLES["features"]} "
-                     . "WHERE ft_id = acc_ft_id AND acc_grp_id IN ($glist)");
+        . "WHERE ft_id = acc_ft_id AND acc_grp_id IN ($glist)");
 
     $nrows = DB_numrows($result);
     for ($j = 1; $j <= $nrows; $j++) {
         $A = DB_fetchArray($result);
         if ($_SEC_VERBOSE) {
-            COM_errorLog('Adding right ' . $A['ft_name'] . ' in SEC_getUserPermissions',1);
+            COM_errorLog('Adding right ' . $A['ft_name'] . ' in SEC_getUserPermissions', 1);
         }
         $retval .= $A['ft_name'];
         if ($j < $nrows) {
@@ -602,21 +578,19 @@ function SEC_getUserPermissions($grp_id='', $uid='')
 }
 
 /**
-* Converts permissions to numeric values
-*
-* This function will take all permissions for an object and get the numeric value
-* that can then be used to save the database.
-*
-* @param        array       $perm_owner     Array of owner permissions  These arrays are set up by SEC_getPermissionsHTML
-* @param        array       $perm_group     Array of group permissions
-* @param        array       $perm_members   Array of member permissions
-* @param        array       $perm_anon      Array of anonymous user permissions
-* @return       array       returns numeric equivalent for each permissions array (2 = read, 3=edit/read)
-* @see  SEC_getPermissionsHTML
-* @see  SEC_getPermissionValue
-*
-*/
-function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon)
+ * Converts permissions to numeric values
+ * This function will take all permissions for an object and get the numeric value
+ * that can then be used to save the database.
+ *
+ * @param        array $perm_owner   Array of owner permissions  These arrays are set up by SEC_getPermissionsHTML
+ * @param        array $perm_group   Array of group permissions
+ * @param        array $perm_members Array of member permissions
+ * @param        array $perm_anon    Array of anonymous user permissions
+ * @return       array       returns numeric equivalent for each permissions array (2 = read, 3=edit/read)
+ * @see  SEC_getPermissionsHTML
+ * @see  SEC_getPermissionValue
+ */
+function SEC_getPermissionValues($perm_owner, $perm_group, $perm_members, $perm_anon)
 {
     global $_SEC_VERBOSE;
 
@@ -656,22 +630,20 @@ function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_ano
         COM_errorLog('**** Leaving SEC_getPermissionValues ****', 1);
     }
 
-    return array($perm_owner,$perm_group,$perm_members,$perm_anon);
+    return array($perm_owner, $perm_group, $perm_members, $perm_anon);
 }
 
 /**
-* Converts permission array into numeric value
-*
-* This function converts an array of permissions for either
-* the owner/group/members/anon and returns the numeric
-* equivalent.  This is typically called by the admin screens
-* to prepare the permissions to be save to the database
-*
-* @param        array       $perm_x     Array of permission values
-* @return       int         int representation of a permission array 2 = read 3 = edit/read
-* @see SEC_getPermissionValues
-*
-*/
+ * Converts permission array into numeric value
+ * This function converts an array of permissions for either
+ * the owner/group/members/anon and returns the numeric
+ * equivalent.  This is typically called by the admin screens
+ * to prepare the permissions to be save to the database
+ *
+ * @param        array $perm_x Array of permission values
+ * @return       int         int representation of a permission array 2 = read 3 = edit/read
+ * @see SEC_getPermissionValues
+ */
 function SEC_getPermissionValue($perm_x)
 {
     global $_SEC_VERBOSE;
@@ -704,48 +676,46 @@ function SEC_getPermissionValue($perm_x)
 }
 
 /**
-* Return the group to a given feature.
-*
-* Scenario: We have a feature and we want to know from which group the user
-* got this feature. Always returns the lowest group ID, in case the feature
-* has been inherited from more than one group.
-*
-* @param    string  $feature    the feature, e.g 'story.edit'
-* @param    int     $uid        (optional) user ID
-* @return   int                 group ID or 0
-*
-*/
-function SEC_getFeatureGroup ($feature, $uid = '')
+ * Return the group to a given feature.
+ * Scenario: We have a feature and we want to know from which group the user
+ * got this feature. Always returns the lowest group ID, in case the feature
+ * has been inherited from more than one group.
+ *
+ * @param    string $feature the feature, e.g 'story.edit'
+ * @param    int    $uid     (optional) user ID
+ * @return   int                 group ID or 0
+ */
+function SEC_getFeatureGroup($feature, $uid = '')
 {
     global $_GROUPS, $_TABLES, $_USER;
 
-    $ugroups = array ();
+    $ugroups = array();
 
-    if (empty ($uid)) {
-        if (empty ($_USER['uid'])) {
+    if (empty($uid)) {
+        if (empty($_USER['uid'])) {
             $uid = 1;
         } else {
             $uid = $_USER['uid'];
         }
     }
 
-    if ((empty ($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
-        if (empty ($_GROUPS)) {
-            $_GROUPS = SEC_getUserGroups ($uid);
+    if ((empty($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
+        if (empty($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups($uid);
         }
         $ugroups = $_GROUPS;
     } else {
-        $ugroups = SEC_getUserGroups ($uid);
+        $ugroups = SEC_getUserGroups($uid);
     }
 
     $group = 0;
 
-    $ft_id = DB_getItem ($_TABLES['features'], 'ft_id', "ft_name = '$feature'");
+    $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$feature'");
     if (($ft_id > 0) && (count($ugroups) > 0)) {
-        $grouplist = implode (',', $ugroups);
-        $result = DB_query ("SELECT acc_grp_id FROM {$_TABLES['access']} WHERE (acc_ft_id = $ft_id) AND (acc_grp_id IN ($grouplist)) ORDER BY acc_grp_id LIMIT 1");
-        $A = DB_fetchArray ($result);
-        if (isset ($A['acc_grp_id'])) {
+        $grouplist = implode(',', $ugroups);
+        $result = DB_query("SELECT acc_grp_id FROM {$_TABLES['access']} WHERE (acc_ft_id = $ft_id) AND (acc_grp_id IN ($grouplist)) ORDER BY acc_grp_id LIMIT 1");
+        $A = DB_fetchArray($result);
+        if (isset($A['acc_grp_id'])) {
             $group = $A['acc_grp_id'];
         }
     }
@@ -754,18 +724,16 @@ function SEC_getFeatureGroup ($feature, $uid = '')
 }
 
 /**
-* Attempt to login a user.
-*
-* Checks a users username and password against the database. Returns
-* users status.
-*
-* @param    string  $username   who is logging in?
-* @param    string  $password   what they claim is their password
-* @param    int     $uid        This is an OUTPUT param, pass by ref,
-*                               sends back UID inside it.
-* @return   int                 user status, -1 for fail.
-*
-*/
+ * Attempt to login a user.
+ * Checks a users username and password against the database. Returns
+ * users status.
+ *
+ * @param    string $username    who is logging in?
+ * @param    string $password    what they claim is their password
+ * @param    int    $uid         This is an OUTPUT param, pass by ref,
+ *                               sends back UID inside it.
+ * @return   int                 user status, -1 for fail.
+ */
 function SEC_authenticate($username, $password, &$uid)
 {
     global $_CONF, $_TABLES, $LANG01;
@@ -789,7 +757,8 @@ function SEC_authenticate($username, $password, &$uid)
         } elseif ($U['status'] == USER_ACCOUNT_AWAITING_ACTIVATION) {
             // Awaiting user activation, activate:
             DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE,
-                      'username', $username);
+                'username', $username);
+
             return USER_ACCOUNT_ACTIVE;
         } else {
             return $U['status']; // just return their status
@@ -797,19 +766,18 @@ function SEC_authenticate($username, $password, &$uid)
     } else {
         $tmp = $LANG01[32] . ": '" . $username . "'";
         COM_accessLog($tmp);
+
         return -1;
     }
 }
 
 /**
-* Return the current user status for a user.
-*
-* NOTE:     May not return for banned/non-approved users.
-*
-* @param    int  $userid   Valid uid value.
-* @return   int            user status, 0-3
-*
-*/
+ * Return the current user status for a user.
+ * NOTE:     May not return for banned/non-approved users.
+ *
+ * @param    int $userid Valid uid value.
+ * @return   int            user status, 0-3
+ */
 function SEC_checkUserStatus($userid)
 {
     global $_CONF, $_TABLES;
@@ -849,22 +817,21 @@ function SEC_checkUserStatus($userid)
 }
 
 /**
-  * Check to see if we can authenticate this user with a remote server
-  *
-  * A user has not managed to login localy, but has an @ in their user
-  * name and we have enabled distributed authentication. Firstly, try to
-  * see if we have cached the module that we used to authenticate them
-  * when they signed up (i.e. they've actualy changed their password
-  * elsewhere and we need to synch.) If not, then try to authenticate
-  * them with /every/ authentication module. If this suceeds, create
-  * a user for them.
-  *
-  * @param  string  $loginname Their username
-  * @param  string  $passwd The password entered
-  * @param  string  $service The service portion of $username
-  * @param  string  $uid OUTPUT parameter, pass it by ref to get uid back.
-  * @return int     user status, -1 for fail.
-  */
+ * Check to see if we can authenticate this user with a remote server
+ * A user has not managed to login localy, but has an @ in their user
+ * name and we have enabled distributed authentication. Firstly, try to
+ * see if we have cached the module that we used to authenticate them
+ * when they signed up (i.e. they've actualy changed their password
+ * elsewhere and we need to synch.) If not, then try to authenticate
+ * them with /every/ authentication module. If this suceeds, create
+ * a user for them.
+ *
+ * @param  string $loginname Their username
+ * @param  string $passwd    The password entered
+ * @param  string $service   The service portion of $username
+ * @param  string $uid       OUTPUT parameter, pass it by ref to get uid back.
+ * @return int     user status, -1 for fail.
+ */
 function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
 {
     global $_CONF, $_TABLES;
@@ -887,7 +854,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
 
     $service = COM_sanitizeFilename($service);
     $servicefile = $_CONF['path_system'] . 'classes/authentication/' . $service
-                 . '.auth.class.php';
+        . '.auth.class.php';
     if (file_exists($servicefile)) {
         require_once $servicefile;
 
@@ -899,12 +866,12 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
 
                 // Check to see if their remoteusername is unique locally
                 $checkName = DB_getItem($_TABLES['users'], 'username',
-                                        "username='$remoteusername'");
+                    "username='$remoteusername'");
                 if (!empty($checkName)) {
                     // no, call custom function.
                     if (function_exists('CUSTOM_uniqueRemoteUsername')) {
                         $loginname = CUSTOM_uniqueRemoteUsername($loginname,
-                                                                 $service);
+                            $service);
                     }
                 }
                 USER_createAccount($loginname, $authmodule->email, $passwd, $authmodule->fullname, $authmodule->homepage, $remoteusername, $remoteservice);
@@ -913,13 +880,15 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
                 DB_query("UPDATE {$_TABLES['users']} SET remoteusername='$remoteusername', remoteservice='$remoteservice', status=3 WHERE uid='$uid'");
                 // Add to remote users:
                 $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id',
-                                         "grp_name='Remote Users'");
+                    "grp_name='Remote Users'");
                 DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
+
                 return 3; // Remote auth precludes usersubmission,
-                          // and integrates user activation, see?
+                // and integrates user activation, see?
             } else {
                 // user existed, update local password:
-                DB_change($_TABLES['users'], 'passwd', SEC_encryptPassword($passwd), array('remoteusername','remoteservice'), array($remoteusername,$remoteservice));
+                DB_change($_TABLES['users'], 'passwd', SEC_encryptPassword($passwd), array('remoteusername', 'remoteservice'), array($remoteusername, $remoteservice));
+
                 // and return their status
                 return DB_getItem($_TABLES['users'], 'status', "remoteusername='$remoteusername' AND remoteservice='$remoteservice'");
             }
@@ -932,11 +901,10 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
 }
 
 /**
-* Return available modules for Remote Authentication
-*
-* @return   array   Names of available remote authentication modules
-*
-*/
+ * Return available modules for Remote Authentication
+ *
+ * @return   array   Names of available remote authentication modules
+ */
 function SEC_collectRemoteAuthenticationModules()
 {
     global $_CONF;
@@ -958,47 +926,45 @@ function SEC_collectRemoteAuthenticationModules()
 }
 
 /**
-  * Add user to a group
-  *
-  * work in progress
-  *
-  * Rather self explanitory shortcut function
-  * Is this the right place for this, Dirk?
-  *
-  * @author Trinity L Bays, trinity93 AT gmail DOT com
-  *
-  * @param  string  $uid Their user id
-  * @param  string  $gname The group name
-  * @return boolean status, true or false.
-  */
+ * Add user to a group
+ * work in progress
+ * Rather self explanitory shortcut function
+ * Is this the right place for this, Dirk?
+ *
+ * @author Trinity L Bays, trinity93 AT gmail DOT com
+ * @param  string $uid   Their user id
+ * @param  string $gname The group name
+ * @return boolean status, true or false.
+ */
 function SEC_addUserToGroup($uid, $gname)
 {
     global $_TABLES, $_CONF;
 
-    $remote_grp = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name='". $gname ."'");
-    DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
+    $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name='" . $gname . "'");
+    DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
 }
 
 /**
-* Set default permissions for an object
-*
-* @param    array   $A                  target array
-* @param    array   $use_permissions    permissions to set
-*
-*/
-function SEC_setDefaultPermissions (&$A, $use_permissions = array ())
+ * Set default permissions for an object
+ *
+ * @param    array $A               target array
+ * @param    array $use_permissions permissions to set
+ */
+function SEC_setDefaultPermissions(&$A, $use_permissions = array())
 {
-    if (!is_array ($use_permissions) || (count ($use_permissions) != 4)) {
-        $use_permissions = array (3, 2, 2, 2);
+    if (!is_array($use_permissions) || (count($use_permissions) != 4)) {
+        $use_permissions = array(3, 2, 2, 2);
     }
 
     // sanity checks
     if (($use_permissions[0] > 3) || ($use_permissions[0] < 0) ||
-            ($use_permissions[0] == 1)) {
+        ($use_permissions[0] == 1)
+    ) {
         $use_permissions[0] = 3;
     }
     if (($use_permissions[1] > 3) || ($use_permissions[1] < 0) ||
-            ($use_permissions[1] == 1)) {
+        ($use_permissions[1] == 1)
+    ) {
         $use_permissions[1] = 2;
     }
     if (($use_permissions[2] != 2) && ($use_permissions[2] != 0)) {
@@ -1008,20 +974,20 @@ function SEC_setDefaultPermissions (&$A, $use_permissions = array ())
         $use_permissions[3] = 2;
     }
 
-    $A['perm_owner']   = $use_permissions[0];
-    $A['perm_group']   = $use_permissions[1];
+    $A['perm_owner'] = $use_permissions[0];
+    $A['perm_group'] = $use_permissions[1];
     $A['perm_members'] = $use_permissions[2];
-    $A['perm_anon']    = $use_permissions[3];
+    $A['perm_anon'] = $use_permissions[3];
 }
 
 
 /**
-* Common function used to build group access SQL
-*
-* @param   string  $clause    Optional parm 'WHERE' - default is 'AND'
-* @return  string  $groupsql  Formatted SQL string to be appended in calling script SQL statement
-*/
-function SEC_buildAccessSql ($clause = 'AND')
+ * Common function used to build group access SQL
+ *
+ * @param   string $clause Optional parm 'WHERE' - default is 'AND'
+ * @return  string  $groupsql  Formatted SQL string to be appended in calling script SQL statement
+ */
+function SEC_buildAccessSql($clause = 'AND')
 {
     global $_TABLES, $_USER;
 
@@ -1034,73 +1000,69 @@ function SEC_buildAccessSql ($clause = 'AND')
     $_GROUPS = SEC_getUserGroups($uid);
     $groupsql = '';
     if (count($_GROUPS) == 1) {
-        $groupsql .= " $clause grp_access = '" . current($_GROUPS) ."'";
+        $groupsql .= " $clause grp_access = '" . current($_GROUPS) . "'";
     } else {
-        $groupsql .= " $clause grp_access IN (" . implode(',',array_values($_GROUPS)) .")";
+        $groupsql .= " $clause grp_access IN (" . implode(',', array_values($_GROUPS)) . ")";
     }
 
     return $groupsql;
 }
 
 /**
-* Remove a feature from the database entirely.
-*
-* This function can be used by plugins during uninstall.
-*
-* @param    string  $feature_name   name of the feature, e.g. 'foo.edit'
-* @param    boolean $logging        whether to log progress in error.log
-* @return   void
-*
-*/
-function SEC_removeFeatureFromDB ($feature_name, $logging = false)
+ * Remove a feature from the database entirely.
+ * This function can be used by plugins during uninstall.
+ *
+ * @param    string  $feature_name name of the feature, e.g. 'foo.edit'
+ * @param    boolean $logging      whether to log progress in error.log
+ * @return   void
+ */
+function SEC_removeFeatureFromDB($feature_name, $logging = false)
 {
     global $_TABLES;
 
-    if (!empty ($feature_name)) {
-        $feat_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                               "ft_name = '$feature_name'");
-        if (!empty ($feat_id)) {
+    if (!empty($feature_name)) {
+        $feat_id = DB_getItem($_TABLES['features'], 'ft_id',
+            "ft_name = '$feature_name'");
+        if (!empty($feat_id)) {
             // Before removing the feature itself, remove it from all groups
             if ($logging) {
-                COM_errorLog ("Attempting to remove '$feature_name' rights from all groups", 1);
+                COM_errorLog("Attempting to remove '$feature_name' rights from all groups", 1);
             }
-            DB_delete ($_TABLES['access'], 'acc_ft_id', $feat_id);
+            DB_delete($_TABLES['access'], 'acc_ft_id', $feat_id);
             if ($logging) {
-                COM_errorLog ('...success', 1);
+                COM_errorLog('...success', 1);
             }
 
             // now remove the feature itself
             if ($logging) {
-                COM_errorLog ("Attempting to remove the '$feature_name' feature", 1);
+                COM_errorLog("Attempting to remove the '$feature_name' feature", 1);
             }
-            DB_delete ($_TABLES['features'], 'ft_id', $feat_id);
+            DB_delete($_TABLES['features'], 'ft_id', $feat_id);
             if ($logging) {
-                COM_errorLog ('...success', 1);
+                COM_errorLog('...success', 1);
             }
         } else if ($logging) {
-            COM_errorLog ("SEC_removeFeatureFromDB: Feature '$feature_name' not found.");
+            COM_errorLog("SEC_removeFeatureFromDB: Feature '$feature_name' not found.");
         }
     }
 }
 
 /**
-* Create a group dropdown
-*
-* Creates the group dropdown menu that's used on pretty much every admin page
-*
-* @param    int     $group_id   current group id (to be selected)
-* @param    int     $access     access permission
-* @return   string              HTML for the dropdown
-*
-*/
-function SEC_getGroupDropdown ($group_id, $access)
+ * Create a group dropdown
+ * Creates the group dropdown menu that's used on pretty much every admin page
+ *
+ * @param    int $group_id current group id (to be selected)
+ * @param    int $access   access permission
+ * @return   string              HTML for the dropdown
+ */
+function SEC_getGroupDropdown($group_id, $access)
 {
     global $_TABLES;
 
     $groupdd = '';
 
     if ($access == 3) {
-        $usergroups = SEC_getUserGroups ();
+        $usergroups = SEC_getUserGroups();
 
         $groupdd .= '<select id="group_id" name="group_id">' . LB;
         foreach ($usergroups as $ug_name => $ug_id) {
@@ -1113,10 +1075,10 @@ function SEC_getGroupDropdown ($group_id, $access)
         $groupdd .= '</select>' . LB;
     } else {
         // They can't set the group then
-        $groupdd .= DB_getItem ($_TABLES['groups'], 'grp_name',
-                                "grp_id = '$group_id'")
-                 . '<input type="hidden" id="group_id" name="group_id" value="' . $group_id
-                 . '"' . XHTML . '>';
+        $groupdd .= DB_getItem($_TABLES['groups'], 'grp_name',
+                "grp_id = '$group_id'")
+            . '<input type="hidden" id="group_id" name="group_id" value="' . $group_id
+            . '"' . XHTML . '>';
     }
 
     return $groupdd;
@@ -1127,37 +1089,36 @@ function SEC_getGroupDropdown ($group_id, $access)
  * in the user database to indicate the hash function the user's password is
  * encrypted with.
  */
-class HashFunction {
-    const md5      = 0;
-    const sha1     = 1;
-    const sha256   = 2;
-    const sha512   = 3;
+class HashFunction
+{
+    const md5 = 0;
+    const sha1 = 1;
+    const sha256 = 2;
+    const sha512 = 3;
     const blowfish = 4;
 }
 
 /**
-* Encrypt password
-*
-* Encrypts $password using the specified salt, hash algorithm, and stretch
-* count.
-*
-* @param    string  $password   the password to encrypt, in clear text
-* @param    string  $salt       salt to prepend to the password prior to hashing
-* @param    int     $algorithm  hash algorithm to use to encrypt the password
-* @param    int     $stretch    number of times hash function should be applied
-*                               to the password.
-* @return   string              encrypted password
-*
-*/
+ * Encrypt password
+ * Encrypts $password using the specified salt, hash algorithm, and stretch
+ * count.
+ *
+ * @param    string $password    the password to encrypt, in clear text
+ * @param    string $salt        salt to prepend to the password prior to hashing
+ * @param    int    $algorithm   hash algorithm to use to encrypt the password
+ * @param    int    $stretch     number of times hash function should be applied
+ *                               to the password.
+ * @return   string              encrypted password
+ */
 function SEC_encryptPassword($password, $salt = '', $algorithm = null, $stretch = null)
 {
     global $_CONF;
 
     /* grab defaults if not specified, default salt is empty */
-    if ( is_null($algorithm) ) {
+    if (is_null($algorithm)) {
         $algorithm = $_CONF['pass_alg'];
     }
-    if ( is_null($stretch) ) {
+    if (is_null($stretch)) {
         $stretch = $_CONF['pass_stretch'];
     }
 
@@ -1168,42 +1129,42 @@ function SEC_encryptPassword($password, $salt = '', $algorithm = null, $stretch 
 
     /* encrypt password based on algorithm */
     switch ($algorithm) {
-    case HashFunction::md5:
-        $hash = $password;
-        for ($i = 0; $i < $stretch; $i++) {
-            $hash = md5($hash . $salt, false);
-        }
-        break;
+        case HashFunction::md5:
+            $hash = $password;
+            for ($i = 0; $i < $stretch; $i++) {
+                $hash = md5($hash . $salt, false);
+            }
+            break;
 
-    case HashFunction::sha1:
-        $hash = $password;
-        for ($i = 0; $i < $stretch; $i++) {
-            $hash = sha1($hash . $salt, false);
-        }
-        break;
+        case HashFunction::sha1:
+            $hash = $password;
+            for ($i = 0; $i < $stretch; $i++) {
+                $hash = sha1($hash . $salt, false);
+            }
+            break;
 
-    case HashFunction::sha256:
-        if ($stretch < 1000) $stretch = 1000;
-        $salt = '$5$rounds=' . $stretch . '$' . $salt . '$';
-        $hash = crypt($password, $salt);
-        break;
+        case HashFunction::sha256:
+            if ($stretch < 1000) $stretch = 1000;
+            $salt = '$5$rounds=' . $stretch . '$' . $salt . '$';
+            $hash = crypt($password, $salt);
+            break;
 
-    case HashFunction::sha512:
-        if ($stretch < 1000) $stretch = 1000;
-        $salt = '$6$rounds=' . $stretch . '$' . $salt . '$';
-        $hash = crypt($password, $salt);
-        break;
+        case HashFunction::sha512:
+            if ($stretch < 1000) $stretch = 1000;
+            $salt = '$6$rounds=' . $stretch . '$' . $salt . '$';
+            $hash = crypt($password, $salt);
+            break;
 
-    case HashFunction::blowfish:
-        $stretch = log($stretch, 2);       /* blow fish crypt uses a log 2 number for cost */
-        if ($stretch < 4) $stretch = 4;    /* crypt defined minimum */
-        if ($stretch > 31) $stretch = 31;  /* crypt defined maximum */
-        $salt = '$2a$' . sprintf('%02d', $stretch) . '$' . $salt . '$';
-        $hash = crypt($password, $salt);
-        break;
+        case HashFunction::blowfish:
+            $stretch = log($stretch, 2);       /* blow fish crypt uses a log 2 number for cost */
+            if ($stretch < 4) $stretch = 4;    /* crypt defined minimum */
+            if ($stretch > 31) $stretch = 31;  /* crypt defined maximum */
+            $salt = '$2a$' . sprintf('%02d', $stretch) . '$' . $salt . '$';
+            $hash = crypt($password, $salt);
+            break;
 
-    default:  /* unrecognized algorithm error */
-        return -1;
+        default:  /* unrecognized algorithm error */
+            return -1;
     }
 
     return $hash;
@@ -1211,19 +1172,19 @@ function SEC_encryptPassword($password, $salt = '', $algorithm = null, $stretch 
 
 /**
  * Generate password salt
- *
  * This function produces a random string of 22 characters from a 64 character set.
  * The size is needed for password salting, but is useful any function that needs a
  * random set of human readable characters.
  *
  * @return  string  generated salt
  */
-function SEC_generateSalt() {
+function SEC_generateSalt()
+{
     static $charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
 
     $salt = '';
     for ($i = 0; $i < 22; $i++) {
-        $salt .= $charset[mt_rand(0,61)];
+        $salt .= $charset[mt_rand(0, 61)];
     }
 
     return $salt;
@@ -1231,12 +1192,11 @@ function SEC_generateSalt() {
 
 /**
  * Encrypt User Password
- *
  * Verify that the provided password authenticates the specified user (defualts
  * to the current user).
  *
- * @param  string  $password  password to verify
- * @param  int     $uid       user id to authenticate
+ * @param  string $password password to verify
+ * @param  int    $uid      user id to authenticate
  * @return int     0 for success, non-zero for failure or error
  */
 function SEC_encryptUserPassword($password, $uid = '')
@@ -1256,15 +1216,16 @@ function SEC_encryptUserPassword($password, $uid = '')
     /* get passwd, algorithm, stretch, and salt from $_USER if possible, else
      * get them from the DB
      */
-    if ( ( isset($_USER['uid']) && ($uid == $_USER['uid']) && isset($_USER['passwd']) &&
-           isset($_USER['algorithm']) && isset($_USER['stretch']) && isset($_USER['salt']) ) ) {
-        $passwd    = $_USER['passwd'];
+    if ((isset($_USER['uid']) && ($uid == $_USER['uid']) && isset($_USER['passwd']) &&
+        isset($_USER['algorithm']) && isset($_USER['stretch']) && isset($_USER['salt']))
+    ) {
+        $passwd = $_USER['passwd'];
         $algorithm = $_USER['algorithm'];
-        $stretch   = $_USER['stretch'];
-        $salt      = $_USER['salt'];
+        $stretch = $_USER['stretch'];
+        $salt = $_USER['salt'];
     } else {
         $query = "SELECT passwd, salt, algorithm, stretch FROM " . $_TABLES['users']
-               . " WHERE uid = $uid";
+            . " WHERE uid = $uid";
         $result = DB_query($query);
         list($passwd, $salt, $algorithm, $stretch) = DB_fetchArray($result);
     }
@@ -1282,6 +1243,7 @@ function SEC_encryptUserPassword($password, $uid = '')
         if ($algorithm != $_CONF['pass_alg'] || $stretch != $_CONF['pass_stretch'] || empty($salt)) {
             SEC_updateUserPassword($password, $uid);
         }
+
         return 0;
     } else {
         return -255;
@@ -1290,27 +1252,27 @@ function SEC_encryptUserPassword($password, $uid = '')
 
 /**
  * Generate Random Password
- *
  * Generates a random string of human readable characters.
  *
  * @return  string  generated random password
  */
-function SEC_generateRandomPassword() {
+function SEC_generateRandomPassword()
+{
     // SEC_generateSalt is used here as it creates a random string using readable characters
     return substr(SEC_generateSalt(), 0, 12);
 }
 
 /**
  * Update User Password
- *
  * Updates the users password for current hash algorithm and stretch site settings.
  * If not password is specified, a random password will be generated.
  *
- * @param  string  $password  Password to encrypt
- * @param  int     $uid       User id to update
+ * @param  string $password Password to encrypt
+ * @param  int    $uid      User id to update
  * @return int     0 for success, non-zero indicates error.
  */
-function SEC_updateUserPassword(&$password = '', $uid = '') {
+function SEC_updateUserPassword(&$password = '', $uid = '')
+{
     global $_TABLES, $_CONF, $_USER;
 
     // if no password is specified, generate a random one
@@ -1341,17 +1303,15 @@ function SEC_updateUserPassword(&$password = '', $uid = '') {
 }
 
 /**
-* Generate a security token.
-*
-* This generates and stores a one time security token. Security tokens are
-* added to forms and urls in the admin section as a non-cookie double-check
-* that the admin user really wanted to do that...
-*
-* @param  int  $ttl  Time to live for token in seconds. Default is 20 minutes.
-* @return string  Generated token, it'll be an MD5 hash (32chars)
-* @see SEC_checkToken
-*
-*/
+ * Generate a security token.
+ * This generates and stores a one time security token. Security tokens are
+ * added to forms and urls in the admin section as a non-cookie double-check
+ * that the admin user really wanted to do that...
+ *
+ * @param  int $ttl Time to live for token in seconds. Default is 20 minutes.
+ * @return string  Generated token, it'll be an MD5 hash (32chars)
+ * @see SEC_checkToken
+ */
 function SEC_createToken($ttl = 1200)
 {
     global $_TABLES, $_USER;
@@ -1368,48 +1328,45 @@ function SEC_createToken($ttl = 1200)
     $pageURL = COM_getCurrentURL();
 
     /* Generate the token */
-    $token = md5($uid.$pageURL.uniqid (rand (), 1));
+    $token = md5($uid . $pageURL . uniqid(rand(), 1));
     $pageURL = DB_escapeString($pageURL);
 
     /* Destroy exired tokens: */
-    $sql['mssql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATEADD(ss, ttl, created) < NOW())"
-           . " AND (ttl > 0)";
     $sql['mysql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
-           . " AND (ttl > 0)";
+        . " AND (ttl > 0)";
     $sql['pgsql'] = "DELETE FROM {$_TABLES['tokens']} WHERE ROUND(EXTRACT(EPOCH FROM ABSTIME(created)))::int4 + (SELECT ttl from {$_TABLES['tokens']} LIMIT 1) < ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW())))::int4"
-           . " AND (ttl > 0)";
+        . " AND (ttl > 0)";
     DB_query($sql);
 
     /* Destroy tokens for this user/url combination. Since annonymous user share same id do not delete */
     if ($uid != 1) {
-         $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id = '{$uid}' AND urlfor= '$pageURL'";
-         DB_query($sql);
-     }
+        $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id = '{$uid}' AND urlfor= '$pageURL'";
+        DB_query($sql);
+    }
 
     /* Create a token for this user/url combination */
     /* NOTE: TTL mapping for PageURL not yet implemented */
     $sql = "INSERT INTO {$_TABLES['tokens']} (token, created, owner_id, urlfor, ttl) "
-           . "VALUES ('$token', NOW(), $uid, '$pageURL', $ttl)";
+        . "VALUES ('$token', NOW(), $uid, '$pageURL', $ttl)";
     DB_query($sql);
 
     $last_token = $token;
 
     /* And return the token to the user */
+
     return $token;
 }
 
 /**
-* Check a security token.
-*
-* Checks the POST and GET data for a security token, if one exists, validates
-* that it's for this user and URL. If the token is not valid, it asks the user
-* to re-authenticate and resends the request if authentication was successful.
-*
-* @return   boolean     true if the token is valid; does not return if not!
-* @see      SECINT_checkToken
-* @link http://wiki.geeklog.net/index.php/Re-Authentication_for_expired_Tokens
-*
-*/
+ * Check a security token.
+ * Checks the POST and GET data for a security token, if one exists, validates
+ * that it's for this user and URL. If the token is not valid, it asks the user
+ * to re-authenticate and resends the request if authentication was successful.
+ *
+ * @return   boolean     true if the token is valid; does not return if not!
+ * @see      SECINT_checkToken
+ * @link     http://wiki.geeklog.net/index.php/Re-Authentication_for_expired_Tokens
+ */
 function SEC_checkToken()
 {
     global $_CONF, $LANG20, $LANG_ADMIN;
@@ -1423,20 +1380,20 @@ function SEC_checkToken()
     }
 
     /**
-    * Token not valid (probably expired): Ask user to authenticate again
-    */
+     * Token not valid (probably expired): Ask user to authenticate again
+     */
     $returnurl = COM_getCurrentUrl();
     $method = strtoupper($_SERVER['REQUEST_METHOD']);
     $postdata = serialize($_POST);
     $getdata = serialize($_GET);
     $files = '';
-    if (! empty($_FILES)) {
+    if (!empty($_FILES)) {
         // rescue uploaded files
         foreach ($_FILES as $key => $f) {
-            if (! empty($f['name'])) {
+            if (!empty($f['name'])) {
                 $filename = basename($f['tmp_name']);
                 move_uploaded_file($f['tmp_name'],
-                                   $_CONF['path_data'] . $filename);
+                    $_CONF['path_data'] . $filename);
                 $_FILES[$key]['tmp_name'] = $filename; // drop temp. dir
             }
         }
@@ -1444,7 +1401,7 @@ function SEC_checkToken()
     }
 
     $display = COM_showMessageText($LANG_ADMIN['token_expired'])
-             . SECINT_authform($returnurl, $method, $postdata, $getdata, $files);
+        . SECINT_authform($returnurl, $method, $postdata, $getdata, $files);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG20[1]));
 
     COM_output($display);
@@ -1454,13 +1411,12 @@ function SEC_checkToken()
 }
 
 /**
-* Helper function: Actual check of the security token
-*
-* @return   boolean     true if the token is valid and for this user.
-* @access   private
-* @see      SEC_checkToken
-*
-*/
+ * Helper function: Actual check of the security token
+ *
+ * @return   boolean     true if the token is valid and for this user.
+ * @access   private
+ * @see      SEC_checkToken
+ */
 function SECINT_checkToken()
 {
     global $_TABLES, $_USER, $_DB_dbms;
@@ -1474,24 +1430,14 @@ function SECINT_checkToken()
         $token = COM_applyFilter($_POST[CSRF_TOKEN]);
     }
 
-    if(trim($token) != '') {
-        if($_DB_dbms != 'mssql') {
-            $sql['mysql'] = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
-               . "{$_TABLES['tokens']} WHERE token='$token'";
-            $sql['pgsql'] = "SELECT ((UNIX_TIMESTAMP(created) + ttl) < UNIX_TIMESTAMP() AND ttl > 0)::int4 as expired, owner_id, urlfor FROM "
-               . "{$_TABLES['tokens']} WHERE token='$token'";
-        } else {
-            $sql['mssql'] = "SELECT owner_id, urlfor, expired =
-                      CASE
-                         WHEN (DATEADD(s,ttl,created) < getUTCDate()) AND (ttl>0) THEN 1
-
-                         ELSE 0
-                      END
-                    FROM {$_TABLES['tokens']} WHERE token='$token'";
-        }
+    if (trim($token) != '') {
+        $sql['mysql'] = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
+            . "{$_TABLES['tokens']} WHERE token='$token'";
+        $sql['pgsql'] = "SELECT ((UNIX_TIMESTAMP(created) + ttl) < UNIX_TIMESTAMP() AND ttl > 0)::int4 as expired, owner_id, urlfor FROM "
+            . "{$_TABLES['tokens']} WHERE token='$token'";
         $tokens = DB_query($sql);
         $numberOfTokens = DB_numRows($tokens);
-        if($numberOfTokens != 1) {
+        if ($numberOfTokens != 1) {
             $return = false; // none, or multiple tokens. Both are invalid. (token is unique key...)
         } else {
             $tokendata = DB_fetchArray($tokens);
@@ -1503,9 +1449,9 @@ function SECINT_checkToken()
             $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
             if ($uid != $tokendata['owner_id']) {
                 $return = false;
-            } else if($tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
+            } else if ($tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
                 $return = false;
-            } else if($tokendata['expired']) {
+            } else if ($tokendata['expired']) {
                 $return = false;
             } else {
                 $return = true; // Everything is AOK in only one condition...
@@ -1522,35 +1468,34 @@ function SECINT_checkToken()
 }
 
 /**
-* Helper function: Display loginform and ask user to authenticate again
-*
-* @param    string  $returnurl  URL to return to after authentication
-* @param    string  $method     original request method: POST or GET
-* @param    string  $postdata   serialized POST data
-* @param    string  $getdata    serialized GET data
-* @return   string              HTML for the authentication form
-* @access   private
-*
-*/
+ * Helper function: Display loginform and ask user to authenticate again
+ *
+ * @param    string $returnurl URL to return to after authentication
+ * @param    string $method    original request method: POST or GET
+ * @param    string $postdata  serialized POST data
+ * @param    string $getdata   serialized GET data
+ * @return   string              HTML for the authentication form
+ * @access   private
+ */
 function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $files = '')
 {
     global $LANG20, $LANG_ADMIN;
 
     // stick postdata etc. into hidden input fields
     $hidden = '<input type="hidden" name="mode" value="tokenexpired"'
-            . XHTML . '>' . LB;
+        . XHTML . '>' . LB;
     $hidden .= '<input type="hidden" name="token_returnurl" value="'
-            . urlencode($returnurl) . '"' . XHTML . '>' . LB;
+        . urlencode($returnurl) . '"' . XHTML . '>' . LB;
     $hidden .= '<input type="hidden" name="token_postdata" value="'
-            . urlencode($postdata) . '"' . XHTML . '>' . LB;
+        . urlencode($postdata) . '"' . XHTML . '>' . LB;
     $hidden .= '<input type="hidden" name="token_getdata" value="'
-            . urlencode($getdata) . '"' . XHTML . '>' . LB;
+        . urlencode($getdata) . '"' . XHTML . '>' . LB;
     $hidden .= '<input type="hidden" name="token_files" value="'
-            . urlencode($files) . '"' . XHTML . '>' . LB;
+        . urlencode($files) . '"' . XHTML . '>' . LB;
     $hidden .= '<input type="hidden" name="token_requestmethod" value="'
-            . $method . '"' . XHTML . '>' . LB;
+        . $method . '"' . XHTML . '>' . LB;
     $hidden .= '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
-            . SEC_createToken() . '"'. XHTML . '>' . LB;
+        . SEC_createToken() . '"' . XHTML . '>' . LB;
 
     $cfg = array(
         'hide_forgotpw_link' => true,
@@ -1562,7 +1507,7 @@ function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $fi
         'message'     => $LANG_ADMIN['reauth_msg'],
         'button_text' => $LANG_ADMIN['authenticate'],
 
-        'hidden_fields' => $hidden
+        'hidden_fields' => $hidden,
     );
 
     return SEC_loginForm($cfg);
@@ -1570,12 +1515,11 @@ function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $fi
 
 
 /**
-* Helper function: Recreate $_FILES array after token re-authentication
-*
-* @return void
-* @access private
-*
-*/
+ * Helper function: Recreate $_FILES array after token re-authentication
+ *
+ * @return void
+ * @access private
+ */
 function SECINT_recreateFilesArray()
 {
     global $_CONF;
@@ -1595,7 +1539,7 @@ function SECINT_recreateFilesArray()
                     }
                     $_FILES[$file][$kk] = $kv;
                 }
-                if (! file_exists($_FILES[$file]['tmp_name'])) {
+                if (!file_exists($_FILES[$file]['tmp_name'])) {
                     // whoops!?
                     COM_errorLog("Uploaded file {$_FILES[$file]['name']} not found when recreating \$_FILES array");
                     unset($_FILES[$file]);
@@ -1607,23 +1551,21 @@ function SECINT_recreateFilesArray()
 }
 
 /**
-* Helper function: Clean up any leftover files on failed re-authentication
-*
-* When re-authentication fails, we need to clean up any files that may have
-* been rescued during the original POST request with the expired token. Note
-* that the uploaded files are now in the site's 'data' directory.
-*
-* @param    mixed   $files  original or recreated $_FILES array
-* @return   void
-* @access   private
-*
-*/
+ * Helper function: Clean up any leftover files on failed re-authentication
+ * When re-authentication fails, we need to clean up any files that may have
+ * been rescued during the original POST request with the expired token. Note
+ * that the uploaded files are now in the site's 'data' directory.
+ *
+ * @param    mixed $files original or recreated $_FILES array
+ * @return   void
+ * @access   private
+ */
 function SECINT_cleanupFiles($files)
 {
     global $_CONF;
 
     // first, some sanity checks
-    if (! is_array($files)) {
+    if (!is_array($files)) {
         if (empty($files)) {
             return; // nothing to do
         } else {
@@ -1635,12 +1577,12 @@ function SECINT_cleanupFiles($files)
     }
 
     foreach ($files as $key => $value) {
-        if (! empty($value['tmp_name'])) {
+        if (!empty($value['tmp_name'])) {
             // ignore path - file is in $_CONF['path_data']
             $filename = COM_sanitizeFilename(basename($value['tmp_name']), true);
             $orphan = $_CONF['path_data'] . $filename;
             if (file_exists($orphan)) {
-                if (! @unlink($orphan)) {
+                if (!@unlink($orphan)) {
                     COM_errorLog("SECINT_cleanupFile: Unable to remove file $filename from 'data' directory");
                 }
             }
@@ -1649,12 +1591,11 @@ function SECINT_cleanupFiles($files)
 }
 
 /**
-* Get a token's expiry time
-*
-* @param    string  $token  the token we're looking for
-* @return   int             UNIX timestamp of the expiry time or 0
-*
-*/
+ * Get a token's expiry time
+ *
+ * @param    string $token the token we're looking for
+ * @return   int             UNIX timestamp of the expiry time or 0
+ */
 function SEC_getTokenExpiryTime($token)
 {
     global $_TABLES, $_USER;
@@ -1662,9 +1603,7 @@ function SEC_getTokenExpiryTime($token)
     $retval = 0;
 
     if (!COM_isAnonUser()) {
-
         $sql['mysql'] = "SELECT UNIX_TIMESTAMP(DATE_ADD(created, INTERVAL ttl SECOND)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
-        $sql['mssql'] = "SELECT UNIX_TIMESTAMP(DATEADD(ss, ttl, created)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
         $sql['pgsql'] = "SELECT UNIX_TIMESTAMP(created) + ttl AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
 
         $result = DB_query($sql);
@@ -1677,17 +1616,15 @@ function SEC_getTokenExpiryTime($token)
 }
 
 /**
-* Create a message informing the user when the security token is about to expire
-*
-* This message is only created for Remote Users who logged in using OpenID,
-* since the re-authentication does not work with OpenID.
-*
-* @param    string  $token      the token
-* @param    string  $extra_msg  (optional) additional text to include in notice
-* @return   string              formatted HTML of message
-* @see      SEC_checkToken
-*
-*/
+ * Create a message informing the user when the security token is about to expire
+ * This message is only created for Remote Users who logged in using OpenID,
+ * since the re-authentication does not work with OpenID.
+ *
+ * @param    string $token     the token
+ * @param    string $extra_msg (optional) additional text to include in notice
+ * @return   string              formatted HTML of message
+ * @see      SEC_checkToken
+ */
 function SEC_getTokenExpiryNotice($token, $extra_msg = '')
 {
     global $_CONF, $_USER, $LANG_ADMIN;
@@ -1695,42 +1632,39 @@ function SEC_getTokenExpiryNotice($token, $extra_msg = '')
     $retval = '';
 
     if (isset($_USER['remoteservice']) &&
-            ($_USER['remoteservice'] == 'openid')) {
-
+        ($_USER['remoteservice'] == 'openid')
+    ) {
         $expirytime = SEC_getTokenExpiryTime($token);
         if ($expirytime > 0) {
             $exptime = '<span id="token-expirytime">'
-                     . strftime($_CONF['timeonly'], $expirytime) . '</span>';
+                . strftime($_CONF['timeonly'], $expirytime) . '</span>';
             $retval .= '<p id="token-expirynotice">'
-                    . sprintf($LANG_ADMIN['token_expiry'], $exptime);
-            if (! empty($extra_msg)) {
+                . sprintf($LANG_ADMIN['token_expiry'], $exptime);
+            if (!empty($extra_msg)) {
                 $retval .= ' ' . $extra_msg;
             }
 
             $retval .= '</p>' . LB;
         }
-
     }
 
     return $retval;
 }
 
 /**
-* Set a cookie using the HttpOnly flag
-*
-* Use this function to set "important" cookies (session, password, ...).
-* Browsers that support the HttpOnly flag will not allow JavaScript access
-* to such a cookie.
-*
-* @param    string  $name       cookie name
-* @param    string  $value      cookie value
-* @param    int     $expire     expire time
-* @param    string  $path       path on the server or $_CONF['cookie_path']
-* @param    string  $domain     domain or $_CONF['cookiedomain']
-* @param    boolean $secure     whether to use HTTPS or $_CONF['cookiesecure']
-* @link http://blog.mattmecham.com/2006/09/12/http-only-cookies-without-php-52/
-*
-*/
+ * Set a cookie using the HttpOnly flag
+ * Use this function to set "important" cookies (session, password, ...).
+ * Browsers that support the HttpOnly flag will not allow JavaScript access
+ * to such a cookie.
+ *
+ * @param    string  $name   cookie name
+ * @param    string  $value  cookie value
+ * @param    int     $expire expire time
+ * @param    string  $path   path on the server or $_CONF['cookie_path']
+ * @param    string  $domain domain or $_CONF['cookiedomain']
+ * @param    boolean $secure whether to use HTTPS or $_CONF['cookiesecure']
+ * @link http://blog.mattmecham.com/2006/09/12/http-only-cookies-without-php-52/
+ */
 function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null, $secure = null)
 {
     global $_CONF;
@@ -1753,24 +1687,21 @@ function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null,
 }
 
 /**
-* Prepare an array of the standard permission values
-*
-* This helper functions does the following:
-* 1) filter permission values, e.g. after a POST request
-* 2) translates the permission checkbox arrays into numerical values
-* 3) ensures that all the standard permission entries are set, so you don't
-*    have to check with isset() all the time
-*
-* <code>
-* $PERM = SEC_filterPermissions($_POST);
-* if ($PERM['perm_anon'] != 0) { ...
-* </code>
-*
-* @param    array   $A  array to filter on, e.g. $_POST
-* @return   array       array of only the 6 standard permission values
-* @see      SEC_getPermissionValues
-*
-*/
+ * Prepare an array of the standard permission values
+ * This helper functions does the following:
+ * 1) filter permission values, e.g. after a POST request
+ * 2) translates the permission checkbox arrays into numerical values
+ * 3) ensures that all the standard permission entries are set, so you don't
+ *    have to check with isset() all the time
+ * <code>
+ * $PERM = SEC_filterPermissions($_POST);
+ * if ($PERM['perm_anon'] != 0) { ...
+ * </code>
+ *
+ * @param    array $A array to filter on, e.g. $_POST
+ * @return   array       array of only the 6 standard permission values
+ * @see      SEC_getPermissionValues
+ */
 function SEC_filterPermissions($A)
 {
     $retval = array();
@@ -1799,7 +1730,7 @@ function SEC_filterPermissions($A)
     }
 
     $B = SEC_getPermissionValues($B['perm_owner'], $B['perm_group'],
-                                 $B['perm_members'], $B['perm_anon']);
+        $B['perm_members'], $B['perm_anon']);
     for ($i = 0; $i < 4; $i++) {
         $retval[$perms[$i]] = $B[$i];
     }
@@ -1808,50 +1739,46 @@ function SEC_filterPermissions($A)
 }
 
 /**
-* Helper function for when you want to call SEC_hasAccess and have all the
-* values to check in an array.
-*
-* @param    array   $A  array with the standard permission values
-* @return   int         returns 3 for read/edit 2 for read only 0 for no access
-* @see      SEC_hasAccess
-*
-*/
+ * Helper function for when you want to call SEC_hasAccess and have all the
+ * values to check in an array.
+ *
+ * @param    array $A array with the standard permission values
+ * @return   int         returns 3 for read/edit 2 for read only 0 for no access
+ * @see      SEC_hasAccess
+ */
 function SEC_hasAccess2($A)
 {
     return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
-                         $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+        $A['perm_group'], $A['perm_members'], $A['perm_anon']);
 }
 
 /**
-* Display a "to access this area you need to be logged in" message
-*
-* @return   string      HTML for the message
-*
-*/
+ * Display a "to access this area you need to be logged in" message
+ *
+ * @return   string      HTML for the message
+ */
 function SEC_loginRequiredForm()
 {
     global $_CONF, $LANG_LOGIN;
 
     $cfg = array(
         'title'   => $LANG_LOGIN[1],
-        'message' => $LANG_LOGIN[2]
+        'message' => $LANG_LOGIN[2],
     );
 
     return SEC_loginForm($cfg);
 }
 
 /**
-* Displays a login form
-*
-* This is the version of the login form displayed in the content area of the
-* page (not the side bar). It will present all options (remote authentication
-* - including OpenID, new registration link, etc.) according to the current
-* configuration settings.
-*
-* @param    array   $use_config     options to override some of the defaults
-* @return   string                  HTML of the login form
-*
-*/
+ * Displays a login form
+ * This is the version of the login form displayed in the content area of the
+ * page (not the side bar). It will present all options (remote authentication
+ * - including OpenID, new registration link, etc.) according to the current
+ * configuration settings.
+ *
+ * @param    array $use_config options to override some of the defaults
+ * @return   string                  HTML of the login form
+ */
 function SEC_loginForm($use_config = array())
 {
     global $_CONF, $LANG01, $LANG04, $_SCRIPTS;
@@ -1864,19 +1791,19 @@ function SEC_loginForm($use_config = array())
         'hide_forgotpw_link' => false,
 
         // for hidden fields to be included in the form
-        'hidden_fields'     => '',
+        'hidden_fields'      => '',
 
         // options to locally override some specific $_CONF options
-        'no_oauth_login'    => false, // $_CONF['user_login_method']['oauth']
-        'no_3rdparty_login' => false, // $_CONF['user_login_method']['3rdparty']
-        'no_openid_login'   => false, // $_CONF['user_login_method']['openid']
-        'no_newreg_link'    => false, // $_CONF['disable_new_user_registration']
-        'no_plugin_vars'    => false, // call PLG_templateSetVars?
+        'no_oauth_login'     => false, // $_CONF['user_login_method']['oauth']
+        'no_3rdparty_login'  => false, // $_CONF['user_login_method']['3rdparty']
+        'no_openid_login'    => false, // $_CONF['user_login_method']['openid']
+        'no_newreg_link'     => false, // $_CONF['disable_new_user_registration']
+        'no_plugin_vars'     => false, // call PLG_templateSetVars?
 
         // default texts
-        'title'       => $LANG04[65], // Try Logging in Again
-        'message'     => $LANG04[66], // You may have mistyped ...
-        'button_text' => $LANG04[80]  // Login
+        'title'              => $LANG04[65], // Try Logging in Again
+        'message'            => $LANG04[66], // You may have mistyped ...
+        'button_text'        => $LANG04[80]  // Login
     );
 
     $config = array_merge($default_config, $use_config);
@@ -1885,7 +1812,7 @@ function SEC_loginForm($use_config = array())
     $loginform->set_file('login', 'loginform.thtml');
 
     $loginform->set_var('start_block_loginagain',
-                        COM_startBlock($config['title']));
+        COM_startBlock($config['title']));
     $loginform->set_var('lang_message', $config['message']);
     if ($config['no_newreg_link'] || $_CONF['disable_new_user_registration']) {
         $loginform->set_var('lang_newreglink', '');
@@ -1901,8 +1828,8 @@ function SEC_loginForm($use_config = array())
     } else {
         $loginform->set_var('lang_forgetpassword', $LANG04[25]);
         $forget = COM_createLink($LANG04[25], $_CONF['site_url']
-                                              . '/users.php?mode=getpassword',
-                                 array('rel' => 'nofollow'));
+            . '/users.php?mode=getpassword',
+            array('rel' => 'nofollow'));
         $loginform->set_var('forgetpassword_link', $forget);
     }
     $loginform->set_var('lang_login', $config['button_text']);
@@ -1913,24 +1840,26 @@ function SEC_loginForm($use_config = array())
     // 3rd party remote authentification.
     $services = '';
     if (!$config['no_3rdparty_login'] &&
-            $_CONF['user_login_method']['3rdparty'] &&
-            ($_CONF['usersubmission'] == 0)) {
+        $_CONF['user_login_method']['3rdparty'] &&
+        ($_CONF['usersubmission'] == 0)
+    ) {
         $modules = SEC_collectRemoteAuthenticationModules();
         if (count($modules) > 0) {
             if (!$_CONF['user_login_method']['standard'] &&
-                    (count($modules) == 1)) {
+                (count($modules) == 1)
+            ) {
                 $select = '<input type="hidden" name="service" value="'
-                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
+                    . $modules[0] . '"' . XHTML . '>' . $modules[0];
             } else {
                 // Build select
                 $select = '<select name="service">';
                 if ($_CONF['user_login_method']['standard']) {
-                    $select .= '<option value="">' .  $_CONF['site_name']
-                            . '</option>';
+                    $select .= '<option value="">' . $_CONF['site_name']
+                        . '</option>';
                 }
                 foreach ($modules as $service) {
                     $select .= '<option value="' . $service . '">' . $service
-                            . '</option>';
+                        . '</option>';
                 }
                 $select .= '</select>';
             }
@@ -1942,7 +1871,7 @@ function SEC_loginForm($use_config = array())
             $services .= $loginform->finish($loginform->get_var('output'));
         }
     }
-    if (! empty($config['hidden_fields'])) {
+    if (!empty($config['hidden_fields'])) {
         // allow caller to (ab)use {services} for hidden fields
         $services .= $config['hidden_fields'];
     }
@@ -1950,8 +1879,9 @@ function SEC_loginForm($use_config = array())
 
     // OpenID remote authentification.
     if (!$config['no_openid_login'] && $_CONF['user_login_method']['openid'] &&
-            ($_CONF['usersubmission'] == 0) &&
-            !$_CONF['disable_new_user_registration']) {
+        ($_CONF['usersubmission'] == 0) &&
+        !$_CONF['disable_new_user_registration']
+    ) {
         $have_remote_login = true;
         $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
         $loginform->set_file('openid_login', '../loginform_openid.thtml');
@@ -1960,8 +1890,8 @@ function SEC_loginForm($use_config = array())
 
         // for backward compatibility - not used any more
         $app_url = isset($_SERVER['SCRIPT_URI'])
-                 ? $_SERVER['SCRIPT_URI']
-                 : 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+            ? $_SERVER['SCRIPT_URI']
+            : 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
         $loginform->set_var('app_url', $app_url);
 
         $loginform->parse('output', 'openid_login');
@@ -1973,8 +1903,9 @@ function SEC_loginForm($use_config = array())
 
     // OAuth remote authentification.
     if (!$config['no_oauth_login'] && $_CONF['user_login_method']['oauth'] &&
-            ($_CONF['usersubmission'] == 0) &&
-            !$_CONF['disable_new_user_registration']) {
+        ($_CONF['usersubmission'] == 0) &&
+        !$_CONF['disable_new_user_registration']
+    ) {
         $have_remote_login = true;
         $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
         $modules = SEC_collectRemoteOAuthModules();
@@ -1987,7 +1918,7 @@ function SEC_loginForm($use_config = array())
                 $icon_path = $_CONF['layout_url'] . '/images/';
             } else {
                 $icon_path = $_CONF['site_url'] . '/images/';
-            }            
+            }
             foreach ($modules as $service) {
                 $loginform->set_file('oauth_login', '../loginform_oauth.thtml');
                 $loginform->set_var('oauth_service', $service);
@@ -2007,7 +1938,7 @@ function SEC_loginForm($use_config = array())
         $loginform->set_var('remote_login_class', 'remote-login-enabled');
     }
 
-    if (! $config['no_plugin_vars']) {
+    if (!$config['no_plugin_vars']) {
         PLG_templateSetVars('loginform', $loginform);
     }
     $loginform->parse('output', 'login');
@@ -2018,16 +1949,15 @@ function SEC_loginForm($use_config = array())
 }
 
 /**
-* Return available modules for Remote OAuth
-*
-* @return   array   Names of available remote OAuth modules
-*
-*/
+ * Return available modules for Remote OAuth
+ *
+ * @return   array   Names of available remote OAuth modules
+ */
 function SEC_collectRemoteOAuthModules()
 {
     global $_CONF;
 
-    $available_modules = array('facebook','google','twitter','microsoft','linkedin','yahoo','github');
+    $available_modules = array('facebook', 'google', 'twitter', 'microsoft', 'linkedin', 'yahoo', 'github');
 
     $modules = array();
 
@@ -2049,30 +1979,28 @@ function SEC_collectRemoteOAuthModules()
             }
         }
     }
+
     return $modules;
 }
 
 /**
-* Returns the default Root user id
-*
-* @return   int   The id of the default Root user
-*
-*/
+ * Returns the default Root user id
+ *
+ * @return   int   The id of the default Root user
+ */
 function SEC_getDefaultRootUser()
 {
     global $_TABLES;
 
-    $rootgrp = DB_getItem ($_TABLES['groups'], 'grp_id',
-                           "grp_name = 'Root'");
+    $rootgrp = DB_getItem($_TABLES['groups'], 'grp_id',
+        "grp_name = 'Root'");
 
     $sql = "SELECT u.uid FROM {$_TABLES['users']} u,{$_TABLES['group_assignments']} ga
             WHERE u.uid > 1 AND u.uid = ga.ug_uid AND (ga.ug_main_grp_id = $rootgrp)
             GROUP BY u.uid ORDER BY u.uid ASC LIMIT 1";
 
-    $result = DB_query ($sql);
-    $A = DB_fetchArray ($result);
+    $result = DB_query($sql);
+    $A = DB_fetchArray($result);
 
     return $A['uid'];
 }
-
-?>

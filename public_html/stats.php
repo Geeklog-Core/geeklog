@@ -38,7 +38,8 @@ require_once $_CONF['path_system'] . 'lib-admin.php';
 $display = '';
 
 if (COM_isAnonUser() &&
-    (($_CONF['loginrequired'] == 1) || ($_CONF['statsloginrequired'] == 1))) {
+    (($_CONF['loginrequired'] == 1) || ($_CONF['statsloginrequired'] == 1))
+) {
     $display = COM_createHTMLDocument(SEC_loginRequiredForm(), array('pagetitle' => $LANG10[1]));
     COM_output($display);
     exit;
@@ -52,20 +53,20 @@ $header_arr = array(
     array(
         'text'         => $LANG10[1],
         'field'        => 'title',
-        'header_class' => 'stats-header-title'
+        'header_class' => 'stats-header-title',
     ),
     array(
         'text'         => '',
         'field'        => 'stats',
         'header_class' => 'stats-header-count',
-        'field_class'  => 'stats-list-count'
+        'field_class'  => 'stats-list-count',
     ),
 );
 $data_arr = array();
 $text_arr = array(
-    'has_menu' =>  false,
+    'has_menu' => false,
     'title'    => $LANG10[1],
-    'form_url' => $_CONF['site_url'] . '/stats.php'
+    'form_url' => $_CONF['site_url'] . '/stats.php',
 );
 
 $totalhits = DB_getItem($_TABLES['vars'], 'value', "name = 'totalhits'");
@@ -77,7 +78,6 @@ if ($_CONF['lastlogin']) {
     $sql = array();
     $sql['pgsql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin::int4 >= date_part('epoch', INTERVAL '28 DAY'))";
     $sql['mysql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 28 DAY)))";
-    $sql['mssql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 28 DAY)))";
     $result = DB_query($sql);
     list($active_users) = DB_fetchArray($result);
 } else {
@@ -105,11 +105,11 @@ if (empty ($A['ccount'])) {
 }
 $data_arr[] = array(
     'title' => $LANG10[3],
-    'stats' => COM_NumberFormat($A['count']) . " (". COM_NumberFormat($A['ccount']) . ")"
+    'stats' => COM_NumberFormat($A['count']) . " (" . COM_NumberFormat($A['ccount']) . ")",
 );
 
 // new stats plugin API call
-$plg_stats = PLG_getPluginStats (3);
+$plg_stats = PLG_getPluginStats(3);
 if (count($plg_stats) > 0) {
     foreach ($plg_stats as $pstats) {
         if (is_array($pstats[0])) {
@@ -125,7 +125,7 @@ if (count($plg_stats) > 0) {
 $display .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
 
 // old stats plugin API call, for backward compatibilty
-$display .= PLG_getPluginStats (1);
+$display .= PLG_getPluginStats(1);
 
 // Detailed story statistics
 
@@ -135,34 +135,34 @@ $sql = "SELECT sid,title,hits
     AND (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL('AND') . $topicsql . " GROUP BY sid ORDER BY hits DESC LIMIT 10";
 
 $result = DB_query($sql);
-$nrows  = DB_numRows($result);
+$nrows = DB_numRows($result);
 
 if ($nrows > 0) {
     $header_arr = array(
         array(
             'text'         => $LANG10[8],
             'field'        => 'sid',
-            'header_class' => 'stats-header-title'
+            'header_class' => 'stats-header-title',
         ),
         array(
             'text'         => $LANG10[9],
             'field'        => 'hits',
             'header_class' => 'stats-header-count',
-            'field_class'  => 'stats-list-count'
+            'field_class'  => 'stats-list-count',
         ),
     );
     $data_arr = array();
     $text_arr = array(
-        'has_menu' =>  false,
+        'has_menu' => false,
         'title'    => $LANG10[7],
-        'form_url' => $_CONF['site_url'] . '/stats.php'
+        'form_url' => $_CONF['site_url'] . '/stats.php',
     );
 
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+        $A['title'] = stripslashes(str_replace('$', '&#36;', $A['title']));
         $A['sid'] = COM_createLink($A['title'], COM_buildUrl($_CONF['site_url']
-                  . "/article.php?story={$A['sid']}"));
+            . "/article.php?story={$A['sid']}"));
         $A['hits'] = COM_NumberFormat($A['hits']);
         $data_arr[$i] = $A;
 
@@ -181,37 +181,36 @@ $sql = "SELECT sid,title,comments
     AND (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10";
 
 $result = DB_query($sql);
-$nrows  = DB_numRows($result);
+$nrows = DB_numRows($result);
 if ($nrows > 0) {
     $header_arr = array(
         array(
             'text'         => $LANG10[8],
             'field'        => 'sid',
-            'header_class' => 'stats-header-title'
+            'header_class' => 'stats-header-title',
         ),
         array(
             'text'         => $LANG10[12],
             'field'        => 'comments',
             'header_class' => 'stats-header-count',
-            'field_class'  => 'stats-list-count'
+            'field_class'  => 'stats-list-count',
         ),
     );
     $data_arr = array();
     $text_arr = array(
-        'has_menu' =>  false,
+        'has_menu' => false,
         'title'    => $LANG10[11],
-        'form_url' => $_CONF['site_url'] . '/stats.php'
+        'form_url' => $_CONF['site_url'] . '/stats.php',
     );
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-        $A['sid'] = COM_createLink($A['title'], COM_buildUrl ($_CONF['site_url']
-                  . "/article.php?story={$A['sid']}"));
+        $A['title'] = stripslashes(str_replace('$', '&#36;', $A['title']));
+        $A['sid'] = COM_createLink($A['title'], COM_buildUrl($_CONF['site_url']
+            . "/article.php?story={$A['sid']}"));
         $A['comments'] = COM_NumberFormat($A['comments']);
         $data_arr[$i] = $A;
     }
     $display .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
-
 } else {
     $display .= COM_startBlock($LANG10[11]);
     $display .= $LANG10[13];
@@ -232,26 +231,26 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
             array(
                 'text'         => $LANG10[8],
                 'field'        => 'sid',
-                'header_class' => 'stats-header-title'
+                'header_class' => 'stats-header-title',
             ),
             array(
                 'text'         => $LANG10[12],
                 'field'        => 'count',
                 'header_class' => 'stats-header-count',
-                'field_class'  => 'stats-list-count'
+                'field_class'  => 'stats-list-count',
             ),
         );
         $data_arr = array();
         $text_arr = array(
-            'has_menu' =>  false,
+            'has_menu' => false,
             'title'    => $LANG10[25],
-            'form_url' => $_CONF['site_url'] . '/stats.php'
+            'form_url' => $_CONF['site_url'] . '/stats.php',
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
-            $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-            $A['sid'] = COM_createLink($A['title'], COM_buildUrl ($_CONF['site_url']
-                      . "/article.php?story={$A['sid']}"));
+            $A['title'] = stripslashes(str_replace('$', '&#36;', $A['title']));
+            $A['sid'] = COM_createLink($A['title'], COM_buildUrl($_CONF['site_url']
+                . "/article.php?story={$A['sid']}"));
             $A['count'] = COM_NumberFormat($A['count']);
             $data_arr[$i] = $A;
         }
@@ -278,26 +277,26 @@ if ($nrows > 0) {
         array(
             'text'         => $LANG10[8],
             'field'        => 'sid',
-            'header_class' => 'stats-header-title'
+            'header_class' => 'stats-header-title',
         ),
         array(
             'text'         => $LANG10[23],
             'field'        => 'numemails',
             'header_class' => 'stats-header-count',
-            'field_class'  => 'stats-list-count'
+            'field_class'  => 'stats-list-count',
         ),
     );
     $data_arr = array();
     $text_arr = array(
-        'has_menu' =>  false,
+        'has_menu' => false,
         'title'    => $LANG10[22],
-        'form_url' => $_CONF['site_url'] . '/stats.php'
+        'form_url' => $_CONF['site_url'] . '/stats.php',
     );
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-        $A['sid'] = COM_createLink($A['title'], COM_buildUrl ($_CONF['site_url']
-                  . "/article.php?story={$A['sid']}"));
+        $A['title'] = stripslashes(str_replace('$', '&#36;', $A['title']));
+        $A['sid'] = COM_createLink($A['title'], COM_buildUrl($_CONF['site_url']
+            . "/article.php?story={$A['sid']}"));
         $A['numemails'] = COM_NumberFormat($A['numemails']);
         $data_arr[$i] = $A;
 

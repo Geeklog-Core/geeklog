@@ -1,0 +1,23 @@
+<h1 class="heading">{{ LANG.INSTALL.3 }}</h1>
+
+<h2>{{ LANG.INSTALL.7 }}</h2>
+
+<p>{{ LANG.INSTALL.8 }}</p>
+<form action="index.php" method="post">
+    <input type="hidden" name="language" value="{{ language }}">
+    <input type="hidden" name="mode" value="check_permissions">
+    <p>
+        <label class="{{ form_label_dir }}" for="dbconfig_path"><code>db-config.php</code></label>
+        <input type="text" id="dbconfig_path" name="dbconfig_path" value="/path/to/db-config.php" size="50">
+    </p>
+    <input type="submit" name="submit" class="submit button big-button" value="{{ LANG.INSTALL.62 }} &gt;&gt;">
+</form>
+<p>{{ LANG.INSTALL.94 }}</p>
+<ul>
+    <li>{{ LANG.INSTALL.95 }}<br>
+        <code>{! base_file !}</code>
+    </li>
+    <li>{{ search_here }}<br>
+        <code>{! gl_path !}</code>
+    </li>
+</ul>

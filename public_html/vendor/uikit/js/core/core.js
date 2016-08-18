@@ -1,4 +1,4 @@
-/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.4 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(core) {
 
     if (typeof define == "function" && define.amd) { // AMD
@@ -44,7 +44,7 @@
 
     var UI = {}, _UI = global.UIkit ? Object.create(global.UIkit) : undefined;
 
-    UI.version = '2.26.2';
+    UI.version = '2.26.4';
 
     UI.noConflict = function() {
         // restore UIkit version
@@ -181,6 +181,19 @@
         };
     };
 
+    UI.Utils.throttle = function (func, limit) {
+        var wait = false;
+        return function () {
+            if (!wait) {
+                func.call();
+                wait = true;
+                setTimeout(function () {
+                    wait = false;
+                }, limit);
+            }
+        }
+    };
+
     UI.Utils.removeCssRules = function(selectorRegEx) {
         var idx, idxs, stylesheet, _i, _j, _k, _len, _len1, _len2, _ref;
 
@@ -247,7 +260,7 @@
 
                 var ele  = UI.$(this),
                     cls  = ele.attr('class'),
-                    anim = cls.match(/uk\-animation\-(.+)/);
+                    anim = cls.match(/uk-animation-(.+)/);
 
                 ele.removeClass(anim[0]).width();
 
@@ -632,7 +645,7 @@
             UI.component.bootComponents();
 
             // custom scroll observer
-            requestAnimationFrame((function(){
+            var rafToken = requestAnimationFrame((function(){
 
                 var memory = {dir: {x:0, y:0}, x: window.pageXOffset, y:window.pageYOffset};
 
@@ -659,7 +672,8 @@
                         }]);
                     }
 
-                    requestAnimationFrame(fn);
+                    cancelAnimationFrame(rafToken);
+                    rafToken = requestAnimationFrame(fn);
                 };
 
                 if (UI.support.touch) {

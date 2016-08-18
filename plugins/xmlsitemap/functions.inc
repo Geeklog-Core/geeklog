@@ -696,5 +696,3 @@ function XMLSITEMAP_removeSitemapFiles()
         }
     }
 }
-
-?>

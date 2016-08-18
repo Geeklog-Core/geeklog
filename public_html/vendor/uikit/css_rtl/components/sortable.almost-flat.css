@@ -1,4 +1,4 @@
-/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.4 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 /* ========================================================================
    Component: Sortable
  ========================================================================== */
@@ -59,4 +59,8 @@
 .uk-sortable-moving,
 .uk-sortable-moving * {
   cursor: move;
+}
+/* Fixes dragging items over iframes */
+.uk-sortable-moving iframe {
+  pointer-events: none;
 }

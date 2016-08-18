@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'config-install.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -37,11 +37,8 @@ function install_config()
 {
     global $_CONF, $_TABLES;
 
-
     // Parameters for add function:  $param_name, $default_value, $type, $subgroup, $fieldset=null, $selection_array=null, $sort=0, $set=true, $group='Core', $tab=null
-
     $me = 'Core';
-
     $c = config::get_instance();
 
     // Subgroup: Site
@@ -122,6 +119,7 @@ function install_config()
     $c->add('search_def_keytype','phrase','select',0,6,20,672,TRUE, $me, 6);
     $c->add('search_use_fulltext', FALSE, 'hidden', 0, 6, NULL, 0, TRUE, $me, 6); // 675
     $c->add('search_def_sort','hits|desc','select',0,6,27,676,TRUE, $me, 6);
+    $c->add('search_use_topic',FALSE,'select',0,6,1,677,TRUE, $me, 6);
 
     // Subgroup: Stories and Trackback
     $c->add('sg_stories', NULL, 'subgroup', 1, 0, NULL, 0, TRUE, $me, 0);
@@ -572,5 +570,3 @@ function install_config()
     $c->add('filemanager_audios_ext', array('ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
     $so += 10;
 }
-
-?>

@@ -44,29 +44,29 @@ $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file' => 'Nom du fichier Sitemap',
     'mobile_sitemap_file' => 'Nom du fichier Sitemap Mobile',
     'types' => 'Contenu du sitemap',
-    'exclude' => 'Plugins à exclure du sitemap',
+    'exclude' => 'Plugins Ã  exclure du sitemap',
     'lastmod' => 'Content Types to include lastmod element',
-    'priorities' => '',
-    'frequencies' => '',
+    'priorities' => 'Priority',
+    'frequencies' => 'Frequency',
     'ping_google' => 'Send ping to Google',
     'ping_bing' => 'Send ping to Bing'
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
-    'sg_main' => 'Paramètres principaux'
+    'sg_main' => 'ParamÃ¨tres principaux'
 );
 
 $LANG_tab['xmlsitemap'] = array(
-    'tab_main' => 'Paramètres principaux XMLSitemap',
-    'tab_pri' => 'Priorité',
-    'tab_freq' => 'Fréquence de mise à jour',
+    'tab_main' => 'ParamÃ¨tres principaux XMLSitemap',
+    'tab_pri' => 'PrioritÃ©',
+    'tab_freq' => 'FrÃ©quence de mise Ã  jour',
     'tab_ping' => 'Ping'
 );
 
 $LANG_fs['xmlsitemap'] = array(
-    'fs_main' => 'XMLSitemap paramètres principaux',
-    'fs_pri' => 'Priorité (defaut = 0.5, basse = 0.0, haute = 1.0)',
-    'fs_freq' => 'Fréquence de mise à jour',
+    'fs_main' => 'XMLSitemap paramÃ¨tres principaux',
+    'fs_pri' => 'PrioritÃ© (defaut = 0.5, basse = 0.0, haute = 1.0)',
+    'fs_freq' => 'FrÃ©quence de mise Ã  jour',
     'fs_ping' => 'Send ping on updating sitemap'
 );
 
@@ -74,9 +74,7 @@ $LANG_fs['xmlsitemap'] = array(
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('Vrai' => 1, 'Faux' => 0),
     1 => array('Vrai' => true, 'Faux' => false),
-    9 => array('Tranférer à la page' => 'item', 'Afficher la liste' => 'list', 'Afficher page d\'accueil' => 'home', 'Afficher page d\'administration' => 'admin'),
-    12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture Ecriture' => 3),
+    9 => array('TranfÃ©rer Ã  la page' => 'item', 'Afficher la liste' => 'list', 'Afficher page d\'accueil' => 'home', 'Afficher page d\'administration' => 'admin'),
+    12 => array('Pas d\'accÃ¨s' => 0, 'Lecture seule' => 2, 'Lecture Ecriture' => 3),
     20 => array('toujours' => 'always', 'Toutes les heures' => 'hourly', 'Quotidienne' => 'daily', 'Hebdomadaire' => 'weekly', 'mensuelle' => 'monthly', 'annuelle' => 'yearly', 'jamais' => 'never', 'hidden' => 'hidden')
 );
-
-?>

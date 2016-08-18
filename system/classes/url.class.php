@@ -52,6 +52,15 @@ class Url
      */
     private $urlRewrite = true;
 
+    public static function getInstance($enabled = true)
+    {
+        if (self::$instance === null) {
+            self::$instance = new Url($enabled);
+        }
+
+        return self::$instance;
+    }
+
     /**
      * @var int
      */
@@ -104,6 +113,7 @@ class Url
             print "URL Class: number of names passed to setArgNames must be equal or greater than number of arguments found in URL";
             exit;
         }
+
         if (is_array($names)) {
             $newArray = array();
             for ($i = 1; $i <= count($this->arguments); $i++) {
@@ -183,15 +193,19 @@ class Url
                 next($keyValuePairs);
                 $finalList[$argName] = current($keyValuePairs);
             }
+
             next($paramList);
         }
 
         $newArgs = '/';
+
         for ($i = 1; $i <= count($finalList); $i++) {
             $newArgs .= current($finalList);
-            if ($i <> count($finalList)) {
+
+            if ($i !== count($finalList)) {
                 $newArgs .= '/';
             }
+
             next($finalList);
         }
 

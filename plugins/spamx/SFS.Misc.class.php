@@ -93,10 +93,11 @@ class SFS extends BaseCommand
             $query .= "&ip=$ip";
         }
 
-        require_once 'HTTP/Request.php';
+        require_once 'HTTP/Request2.php';
 
-        $req = new HTTP_Request(
+        $req = new HTTP_Request2(
             $query,
+            HTTP_Request2::METHOD_GET,
             array(
                 'timeout' => $_SPX_CONF['timeout'],
             )
@@ -106,32 +107,39 @@ class SFS extends BaseCommand
             SPAMX_log('Sending to SFS: ' . $query);
         }
 
-        if ($req->sendRequest() === TRUE) {
-            $result = $req->getResponseBody();
+        try {
+            $response = $req->send();
 
-            if ($result === FALSE) {
-                return PLG_SPAM_NOT_FOUND;  // Response body is not set, assume ok
-            }
+            if ($response->getStatus() == 200) {
+                $result = $response->getBody();
 
-            $result = unserialize($result);
-
-            if (!$result) {
-                if ($this->_verbose) {
-                    SPAMX_log ("SFS: no spam detected");
+                if (strlen($result) === 0) {
+                    return PLG_SPAM_NOT_FOUND;  // Response body is not set, assume ok
                 }
 
-                return PLG_SPAM_NOT_FOUND;  // Invalid data, assume ok
-            }
-        } else {
-            return PLG_SPAM_NOT_FOUND;  // PEAR Error, assume ok
-        }
+                $result = @unserialize($result);
 
-        if (!$result) return PLG_SPAM_NOT_FOUND;     // invalid data, assume ok
+                if ($result === false) {
+                    if ($this->_verbose) {
+                        SPAMX_log ("SFS: no spam detected");
+                    }
+
+                    return PLG_SPAM_NOT_FOUND;  // Invalid data, assume ok
+                }
+            } else {
+                return PLG_SPAM_NOT_FOUND;  // PEAR Error, assume ok
+            }
+        } catch (HTTP_Request2_Exception $e) {
+            COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
+
+            return PLG_SPAM_NOT_FOUND;  // assumes OK
+        }
 
         if (
            (isset($result['email']) && $result['email']['appears'] == 1 && $result['email']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) ||
            ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] )
            ) {
+            $value_arr = array();
             $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
             if (isset($result['email']) && $result['email']['appears'] == 1 && $result['email']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) {
                 $value_arr[] = "('email', '$db_email', '$timestamp')";

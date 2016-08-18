@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | help.php                                                                  |
 // |                                                                           |
@@ -111,5 +111,3 @@ $display .= '
 
 header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 echo $display;
-
-?>

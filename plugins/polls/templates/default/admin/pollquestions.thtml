@@ -3,8 +3,14 @@
 <div id="po_{question_id}" {style} class="wide">
   <dl class="form_block">
     <dt><label>{lang_question}</label></dt>
-    <dd><input type="text" dir="ltr" name="question[]" value="{question_text}" maxlength="255" class="size5"{xhtml}></dd>
-
+    <dd><input type="text" dir="ltr" name="question[{q_idx}]" value="{question_text}" maxlength="255" class="size5"{xhtml}></dd>
+    <dt><label>{lang_allow_multipleanswers}</label></dt>
+    <dd><input type="checkbox" name="allow_multipleanswers[{q_idx}]" {poll_allow_multipleanswers}{xhtml}></dd>
+    <dt><label>{lang_questions_description}</label></dt>
+    <dd><textarea name="description[{q_idx}]" style="width:95%" rows="2" 
+        onKeyup="var n=1677215-this.value.length;var s=document.getElementById('description_cnt{q_idx}');s.innerHTML='('+n+')';">{description}</textarea>
+        <br{xhtml}><strong><span id='description_cnt{q_idx}'></span></strong>
+    </dd>
     <dt><label>{lang_answersvotes}</label></dt>
     <dd>{answer_option}</dd>
   </dl>

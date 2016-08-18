@@ -67,5 +67,3 @@ $display = COM_showMessageFromParameter()
 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG29[34]));
 
 COM_output($display);
-
-?>

@@ -117,11 +117,11 @@ if (isset ($_POST['reply']) && ($_POST['reply'] == $LANG01[25])) {
 //var_dump($_POST);die();
 $pid = 0;
 $aid = 0;
-if (isset ($_REQUEST['pid'])) {
+if (isset($_REQUEST['pid'])) {
     $pid = COM_applyFilter ($_REQUEST['pid']);
-    if (isset ($_GET['aid'])) {
+    if (isset($_GET['aid'])) {
         $aid = -1; // only for showing results instead of questions
-    } else if (isset ($_POST['aid'])) {
+    } elseif (isset($_POST['aid'])) {
         $aid = $_POST['aid'];
     }
 }
@@ -154,8 +154,8 @@ if (empty($pid)) {
     }
     $display .= polllist ();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_POLLS['pollstitle']));
-} else if ((isset($_POST['aid']) && (count($_POST['aid']) == $nquestions)) && !isset ($_COOKIE['poll-'.$pid])) {
-    setcookie ('poll-'.$pid, implode('-',$aid), time() + $_PO_CONF['pollcookietime'],
+} elseif ((isset($_POST['aid']) && is_array($_POST['aid']) && (count($_POST['aid']) == $nquestions)) && !isset($_COOKIE['poll-' . $pid])) {
+    setcookie('poll-' . $pid, implode('-', $_POST['aid']), time() + $_PO_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
     $display .= POLLS_pollsave($pid, $aid);

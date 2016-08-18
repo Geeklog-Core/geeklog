@@ -99,7 +99,7 @@ class Atom10 extends FeedParserBase
         return $tag;
     }
 
-    private function _RFC3339Date($timestamp = '')
+    protected function _RFC3339Date($timestamp = '')
     {
         if (empty($timestamp)) {
             $timestamp = time();

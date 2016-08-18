@@ -53,6 +53,8 @@ CREATE TABLE {$_TABLES['pollquestions']} (
   qid mediumint(9) NOT NULL DEFAULT '0',
   pid varchar(128) NOT NULL default '',
   question varchar(255) NOT NULL,
+  allow_multipleanswers TINYINT(1) NULL DEFAULT NULL,
+  description MEDIUMTEXT NULL,
   PRIMARY KEY (qid, pid)
 ) ENGINE=MyISAM
 ";
@@ -78,6 +80,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   perm_group tinyint(1) unsigned NOT NULL default '2',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
+  description MEDIUMTEXT NULL,
   INDEX pollquestions_qid(pid),
   INDEX pollquestions_created(created),
   INDEX pollquestions_display(display),
@@ -116,5 +119,3 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, vo
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES ('geeklogfeaturepoll', 1, 3, 'Focus on Security', 0, '');";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES ('geeklogfeaturepoll', 1, 4, 'Plugin Availability', 0, '');";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES ('geeklogfeaturepoll', 1, 5, 'The Community', 0, '');";
-
-?>

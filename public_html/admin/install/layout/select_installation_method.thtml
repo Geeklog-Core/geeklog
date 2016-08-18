@@ -1,0 +1,13 @@
+<h1 class="heading">{{ LANG.INSTALL.101 }} {! retval_step !} - {{ LANG.INSTALL.23 }}</h1>
+<div>
+    <form action="index.php" method="get">
+        <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+        <input type="hidden" name="mode" value="{! mode !}">
+        <input type="hidden" name="language" value="{! language !}">
+        <input type="hidden" name="display_step" value="{! display_step !}">
+        <input type="submit" name="install_type" class="button big-button" value="{{ LANG.INSTALL.24 }}">
+        <input type="submit" name="install_type" class="button big-button" value="{{ LANG.INSTALL.25 }}">
+        <input type="submit" name="install_type" class="button big-button" value="{{ LANG.INSTALL.16 }}">
+    </form>
+</div>
+<br>
