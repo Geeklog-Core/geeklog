@@ -138,7 +138,7 @@ function staticpageeditor_form($A)
     }
 
     // Add JavaScript
-    if ($_CONF['titletoid']) {
+    if ($_CONF['titletoid'] && empty($sp_id)) {
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
         $sp_template->set_var('titletoid', true);
     }

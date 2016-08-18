@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | timer.class.php                                                           |
 // |                                                                           |
@@ -53,39 +53,31 @@
 * @author Tony Bibbs
 *
 */
-class timerobject {
-
+class timerobject
+{
     // PRIVATE PROPERTIES
 
     /**
     * @access private
     */
-    var $_starttime = '';
+    private $_starttime = '';
+
     /**
     * @access private
     */
-    var $_endtime = '';
+    private $_endtime = '';
+
     /**
     * @access private
     */
-    var $_elapsedtime = '';
+    private $_elapsedtime = '';
+
     /**
     * @access private
     */
-    var $_precision = 2;
+    private $_precision = 2;
 
     // PUBLIC METHODS
-
-    /**
-    * Constructor
-    *
-    * This initializes the timerobject and sets the default
-    * precision of results to two decimal places
-    *
-    */
-    function timerobject()
-    {
-    }
 
     /**
     * Set precision on timer results
@@ -96,7 +88,7 @@ class timerobject {
     * @param    int     $num_dec_places     Number of significant digits
     *
     */
-    function setPrecision($num_dec_places)
+    public function setPrecision($num_dec_places)
     {
         $this->_precision = $num_dec_places;
     }
@@ -107,7 +99,7 @@ class timerobject {
     * @deprecated since Geeklog 1.6.0
     * @see setPrecision
     */
-    function setPercision($num_dec_places)
+    public function setPercision($num_dec_places)
     {
         return $this->setPrecision($num_dec_places);
     }
@@ -117,7 +109,7 @@ class timerobject {
     * Starts the timer
     *
     */
-    function startTimer()
+    public function startTimer()
     {
         $mtime = microtime();
         $mtime = explode(' ', $mtime);
@@ -131,7 +123,7 @@ class timerobject {
     * @return   float   elapsed time to degree of precision specified
     *
     */
-    function stopTimer()
+    public function stopTimer()
     {
         $mtime = microtime();
         $mtime = explode(' ',$mtime);
@@ -150,7 +142,7 @@ class timerobject {
     * Same as startTimer excepts this clears everything out first
     *
     */
-    function restart()
+    public function restart()
     {
         $this->_endtime = '';
         $this->_elapsedtime = '';
@@ -164,10 +156,10 @@ class timerobject {
     * This returns the elapsed time with the proper number of
     * significant digits
     *
-    * @return   float   Elasped time in seconds formatted to degree of precision specified
+    * @return   string   Elapsed time in seconds formatted to degree of precision specified
     *
     */
-    function getElapsedTime()
+    public function getElapsedTime()
     {
         return sprintf("%.{$this->_precision}f", $this->_elapsedtime);
     }
@@ -182,11 +174,8 @@ class timerobject {
     *
     * @access private
     */
-    function _setElapsedTime()
+    private function _setElapsedTime()
     {
         $this->_elapsedtime = $this->_endtime - $this->_starttime;
     }
-
 }
-
-?>

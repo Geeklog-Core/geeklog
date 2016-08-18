@@ -27,7 +27,14 @@
         <dd class="controls_text"><input type="checkbox" name="open" id="polls-polleditor-open" {poll_open}{xhtml}></dd>
 
         <dt><label for="polls-polleditor-hideresults">{lang_hideresults}</label></dt>
-        <dd class="controls_text"><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</dd>
+        <dd><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</dd>
+
+        <dt><label for="polls-polleditor-topic_description">{lang_topic_description}</label></dt>
+        <dd><textarea name="topic_description" style="width:95%" rows="2" 
+        onKeyup="var n=1677215-this.value.length;var s=document.getElementById('topic_description_cnt');s.innerHTML='('+n+')';">{topic_description}</textarea>
+        <br{xhtml}><strong><span id='topic_description_cnt'></span></strong>
+        </dd>
+
       </dl>
 
       <div id="po_navbar" class="jsenabled_show">

@@ -912,11 +912,11 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
                     $good_array = true;
                     for ($n = 0; $n < $num_var_names; $n++) {
                         if (isset($val[$n])) {
-                            $plugin->$var_names[$n] = $val[$n];
+                            $plugin->{$var_names[$n]} = $val[$n];
                         } else {
-                            $plugin->$var_names[$n] = '';
+                            $plugin->{$var_names[$n]} = '';
                         }
-                        if (empty($plugin->$var_names[$n]) && $required_names[$n]) {
+                        if (empty($plugin->{$var_names[$n]}) && $required_names[$n]) {
                             $good_array = false;
                         }
                     }

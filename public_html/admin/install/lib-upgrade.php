@@ -596,23 +596,6 @@ function INST_identifyGeeklogVersion()
             return 'empty';
         }
         break;
-
-    case 'mssql':
-        $test = array(
-            // as of 1.5.1, we should have the 'database_version' entry
-            '1.5.0'  => array("SELECT c.name FROM syscolumns c JOIN sysobjects o ON o.id = c.id WHERE c.name='bodytext' AND o.name='{$_TABLES['storysubmission']}'",'bodytext'),
-            '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit')
-            // 1.4.1 was the first version with MS SQL support
-            );
-        $firstCheck = "SELECT 1 FROM sysobjects WHERE name='{$_TABLES['access']}'";
-        $result = DB_query($firstCheck, 1);
-        if (($result === false) || (DB_numRows($result) < 1)) {
-            // a check for the first table returned nothing.
-            // empty database?
-            return 'empty';
-        }
-        break;
-
     }
 
     foreach ($test as $v => $qarray) {
@@ -760,11 +743,7 @@ function INST_updateDB($_SQL)
 
     foreach ($_SQL as $sql) {
         $progress .= "executing " . $sql . "<br" . XHTML . ">\n";
-        if ($_DB_dbms == 'mssql') {
-            $_DB->dbQuery($sql, 0, 1);
-        } else {
-            DB_query($sql);
-        }
+        DB_query($sql);
     }
 }
 

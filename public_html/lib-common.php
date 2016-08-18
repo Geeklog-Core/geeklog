@@ -71,13 +71,17 @@ $_REQUEST = array_merge($_GET, $_POST);
 * Must make sure that the function hasn't been disabled before calling it.
 *
 */
-if (function_exists('set_error_handler')) {
+if (is_callable('set_error_handler')) {
     /* Tell the error handler to use the default error reporting options.
      * You may like to change this to use it in more/less cases, if so,
      * just use the syntax used in the call to error_reporting() above.
      */
     $defaultErrorHandler = set_error_handler('COM_handleError',
                                              error_reporting());
+}
+
+if (is_callable('set_exception_handler')) {
+    set_exception_handler('COM_handleException');
 }
 
 /**
@@ -193,7 +197,7 @@ $_PAGE_TIMER->startTimer();
 * This provides optional URL rewriting functionality.
 */
 require_once $_CONF['path_system'] . 'classes/url.class.php';
-$_URL = new url($_CONF['url_rewrite']);
+Url::getInstance($_CONF['url_rewrite']);
 
 /**
 * Include Device Detect class
@@ -327,7 +331,7 @@ $TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
 * This provides the ability to set css and javascript.
 */
 require_once $_CONF['path_system'] . 'classes/scripts.class.php';
-$_SCRIPTS = new scripts();
+$_SCRIPTS = new Scripts();
 
 /**
 * Include theme functions file which may/may not do anything
@@ -910,13 +914,16 @@ function COM_renderMenu(&$header, $plugin_menu)
 * @param    string  $headercode optional code to go into the page's <head>
 * @return   string              Formatted HTML containing the site header
 * @see function COM_siteFooter
-*
+* @deprecated since v2.1.2
 */
 function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
            $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $relLinks;
     global $_GLOBAL_WHAT;
+
+    COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
+
     $_GLOBAL_WHAT = $what;
 
     // If the theme implemented this for us then call their version instead.
@@ -957,6 +964,8 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
 
     // send out the charset header
     header('Content-Type: text/html; charset=' . COM_getCharset());
+    header('X-XSS-Protection: 1; mode=block');
+    header('X-Content-Type-Options: nosniff');
 
     if (!empty($_CONF['frame_options'])) {
         header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
@@ -1301,12 +1310,14 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
 * @param   array       $custom         An array defining custom function to be used to format Rightblocks
 * @see function COM_siteHeader
 * @return   string  Formated HTML containing site footer and optionally right blocks
-*
+* @deprecated since v2.1.2
 */
 function COM_siteFooter($rightblock = -1, $custom = '')
 {
     global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS, $_SCRIPTS;
     global $_GLOBAL_WHAT;
+
+    COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
 
     // If the theme implemented this for us then call their version instead.
     $function = $_CONF['theme'] . '_siteFooter';
@@ -1580,6 +1591,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // send out the charset header
     header('Content-Type: text/html; charset=' . COM_getCharset());
+    header('X-XSS-Protection: 1; mode=block');
+    header('X-Content-Type-Options: nosniff');
 
     if (!empty($_CONF['frame_options'])) {
         header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
@@ -2542,7 +2555,6 @@ function COM_featuredCheck()
             $B = DB_fetchArray($resultB);
             $sql = array();
             $sql['mysql'] = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta SET s.featured = 0 WHERE s.featured = 1 AND s.draft_flag = 0 AND ta.tid = '{$A['tid']}' AND ta.type = 'article' AND ta.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
-            $sql['mssql'] = $sql['mysql']; // I hope ...
             $sql['pgsql'] = "UPDATE {$_TABLES['stories']} AS s SET featured = 0 FROM {$_TABLES['topic_assignments']} WHERE s.featured = 1 AND s.draft_flag = 0 AND {$_TABLES['topic_assignments']}.tid = '{$A['tid']}' AND {$_TABLES['topic_assignments']}.type = 'article' AND {$_TABLES['topic_assignments']}.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
             DB_query($sql);
         }
@@ -2987,11 +2999,11 @@ function COM_userMenu($help = '', $title = '', $position = '')
             $login->set_var('lang_signup', $LANG01[59]);
         }
 
-        // 3rd party remote authentification.
+        // 3rd party remote authentication.
         if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
             $modules = SEC_collectRemoteAuthenticationModules();
             if (count($modules) === 0) {
-                $user_templates->set_var('services', '');
+                $login->set_var('services', '');
             } else {
                 if (!$_CONF['user_login_method']['standard'] &&
                         (count($modules) == 1)) {
@@ -3037,7 +3049,6 @@ function COM_userMenu($help = '', $title = '', $position = '')
         } else {
             $login->set_var('openid_login', '');
         }
-
 
         // OAuth remote authentification.
         if ($_CONF['user_login_method']['oauth'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
@@ -3960,10 +3971,10 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
 
         if (! isset($mailobj)) {
             if (($method === 'sendmail') || ($method === 'smtp')) {
-                $mailobj =& Mail::factory($method, $_CONF['mail_settings']);
+                $mailobj = Mail::factory($method, $_CONF['mail_settings']);
             } else {
                 $method = 'mail';
-                $mailobj =& Mail::factory($method);
+                $mailobj = Mail::factory($method);
             }
         }
 
@@ -4052,8 +4063,6 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
             GROUP BY sid
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
-        $sql['mssql'] = $sql['mysql'];
-
         $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
@@ -4072,34 +4081,34 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
 
             $day = 'noday';
             $string = '';
+            $oldNews = array();
 
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray($result);
+                $dayCheck = strftime('%A', $A['day']);
 
-                $daycheck = strftime('%A', $A['day']);
-                if ($day != $daycheck) {
+                if ($day != $dayCheck) {
                     if ($day !== 'noday') {
-                        $daylist = COM_makeList($oldnews, 'list-older-stories');
+                        $daylist = COM_makeList($oldNews, 'list-older-stories');
                         $daylist = preg_replace("/(\015\012)|(\015)|(\012)/",
                                                  '', $daylist);
                         $string .= $daylist . '<div class="divider-older-stories"></div>';
                     }
 
                     $day2 = strftime($dateonly, $A['day']);
-                    $string .= '<h3>' . $daycheck . ' <small>' . $day2
+                    $string .= '<h3>' . $dayCheck . ' <small>' . $day2
                             . '</small></h3>' . LB;
-                    $oldnews = array();
-                    $day = $daycheck;
+                    $day = $dayCheck;
                 }
 
-                $oldnews_url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                $oldNewsUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                     . $A['sid']);
-                $oldnews[] = COM_createLink($A['title'], $oldnews_url)
+                $oldNews[] = COM_createLink($A['title'], $oldNewsUrl)
                     .' (' . COM_numberFormat($A['comments']) . ')';
             }
 
-            if (!empty($oldnews)) {
-                $daylist = COM_makeList($oldnews, 'list-older-stories');
+            if (!empty($oldNews)) {
+                $daylist = COM_makeList($oldNews, 'list-older-stories');
                 $daylist = preg_replace("/(\015\012)|(\015)|(\012)/", '', $daylist);
                 $string .= $daylist;
 
@@ -4205,15 +4214,10 @@ function COM_showBlocks($side, $topic = '')
         }
     }
 
-    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, cache_time, ";
-    $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
-    $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
-
     $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
     $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
 
     $blocksql['mysql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
-    $blocksql['mssql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
     $blocksql['pgsql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id::integer = bid AND is_enabled = 1";
 
     $commonsql = '';
@@ -4256,7 +4260,6 @@ function COM_showBlocks($side, $topic = '')
     $commonsql .= ' ORDER BY blockorder,title ASC';
 
     $blocksql['mysql'] .= $commonsql;
-    $blocksql['mssql'] .= $commonsql;
     $blocksql['pgsql'] .= $commonsql;
 
     $result = DB_query($blocksql);
@@ -4319,10 +4322,6 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
 
     $lang = COM_getLanguageId();
     if (!empty($lang)) {
-        $blocksql['mssql']  = "SELECT bid, is_enabled, name, type, title, tid, blockorder, device, cast(content as text) as content, ";
-        $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
-        $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
-
         $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
         $blocksql['pgsql'] =  'SELECT *, date_part(\'epoch\', rdfupdated) AS date ';
 
@@ -4330,7 +4329,6 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
                    . $A['name'] . '_' . $lang . "'";
 
         $blocksql['mysql'] .= $commonsql;
-        $blocksql['mssql'] .= $commonsql;
         $blocksql['pgsql'] .= $commonsql;
         $result = DB_query($blocksql);
 
@@ -4810,9 +4808,29 @@ function COM_hit()
 
     $sql = array();
     $sql['mysql'] = "UPDATE {$_TABLES['vars']} SET value=value+1 WHERE name = 'totalhits'";
-    $sql['mssql'] = "UPDATE {$_TABLES['vars']} SET value=value+1 WHERE name = 'totalhits'";
     $sql['pgsql'] = "UPDATE {$_TABLES['vars']} SET value=value::int4+1 WHERE name = 'totalhits'";
     DB_query($sql);
+}
+
+/**
+ * Convert a relative URL to an absolute one
+ *
+ * @param  array $matches
+ * @return string
+ */
+function COM_emailUserTopicsUrlRewriter(array $matches)
+{
+    global $_CONF;
+
+    $tag = $matches[0];
+    $url = $matches[1];
+
+    if (!preg_match('/\A(http|https|ftp|ftps|javascript):/i', $url)) {
+        $absUrl = rtrim($_CONF['site_url'], '/') . '/' . ltrim($url, '/');
+        $tag = str_replace($url, $absUrl, $tag);
+    }
+
+    return $tag;
 }
 
 /**
@@ -4854,7 +4872,6 @@ function COM_emailUserTopics()
         $storysql = array();
         $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
         $storysql['pgsql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
-        $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,CAST(bodytext AS text) AS introtext";
 
         $commonsql = " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'
@@ -4891,7 +4908,6 @@ function COM_emailUserTopics()
             ORDER BY featured DESC, date DESC';
 
         $storysql['mysql'] .= $commonsql;
-        $storysql['mssql'] .= $commonsql;
         $storysql['pgsql'] .= $commonsql;
 
         $stories = DB_query($storysql);
@@ -4935,10 +4951,12 @@ function COM_emailUserTopics()
                                     $_CONF['emailstorieslength'], '...');
                 }
 
+                $storytext = preg_replace_callback('/<a\s+.*?href="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $storytext);
+                $storytext = preg_replace_callback('/<img\s+.*?src="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $storytext);
                 $mailtext .= $storytext . "\n\n";
             }
 
-            $mailtext .= $LANG08[33] . ' ' . COM_buildUrl($_CONF['site_url']
+            $mailtext .= $LANG08[33] . ' ' . COM_buildURL($_CONF['site_url']
                       . '/article.php?story=' . $S['sid']) . "\n";
         }
 
@@ -5007,10 +5025,6 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
         }
 
         // Find the newest stories
-        $sql['mssql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
-            WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' ) . "
-            GROUP BY sid, title ORDER BY date DESC";
-
         $sql['mysql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' ) . "
             GROUP BY sid, title ORDER BY date DESC";
@@ -5150,8 +5164,6 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
             WHERE ta.type = 'article' AND ta.id = s.sid AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicsql . COM_getLangSQL('sid', 'AND', 's') . "
             GROUP BY t.sid, s.title
             ORDER BY lastdate DESC LIMIT 15";
-
-        $sql['mssql'] =  $sql['mysql'];
 
         $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
@@ -6070,9 +6082,7 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
 */
 function COM_buildURL($url)
 {
-    global $_URL;
-
-    return $_URL->buildURL($url);
+    return Url::getInstance()->buildURL($url);
 }
 
 /**
@@ -6085,9 +6095,7 @@ function COM_buildURL($url)
 */
 function COM_setArgNames($names)
 {
-    global $_URL;
-
-    return $_URL->setArgNames($names);
+    return Url::getInstance()->setArgNames($names);
 }
 
 /**
@@ -6100,9 +6108,7 @@ function COM_setArgNames($names)
 */
 function COM_getArgument($name)
 {
-    global $_URL;
-
-    return $_URL->getArgument($name);
+    return Url::getInstance()->getArgument($name);
 }
 
 /**
@@ -6561,16 +6567,6 @@ function COM_makeClickableLinks($text)
     $replace = create_function(
         '$match',
         'return COM_makeClickableLinksCallback(\'\', $match[1]);'
-    );
-
-    $text = preg_replace_callback($regex, $replace, $text);
-
-    // Matches anything containing a top level domain: xxx.com or xxx.yyy.net/stuff.php or xxx.yyy.zz
-    // list taken from: http://en.wikipedia.org/wiki/List_of_Internet_TLDs
-    $regex = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:[a-z0-9]+\.)*[a-z0-9-]+\.(?:[a-z]{2,}|xn--[0-9a-z]+)(?:[\/?#](?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)*)?)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/i';
-    $replace = create_function(
-        '$match',
-        'return COM_makeClickableLinksCallback(\'http://\', $match[1]);'
     );
 
     $text = preg_replace_callback($regex, $replace, $text);
@@ -8581,6 +8577,17 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myeditor
     $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', $footer, $priority + 1);
     $_SCRIPTS->setJavaScriptFile("adveditor_api_$name", "/$dir/$name/functions.js",  $footer, $priority + 2);
     $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom,                        $footer, $priority + 3);
+}
+
+/**
+ * Default exception handler
+ *
+ * @param  Throwable|Exception $exception
+ */
+function COM_handleException($exception) {
+    $errorMessage = $exception->getMessage();
+    trigger_error($errorMessage, E_USER_ERROR);
+    die(1);
 }
 
 // Now include all plugin functions

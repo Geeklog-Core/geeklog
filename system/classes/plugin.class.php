@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | plugin.class.php                                                          |
 // |                                                                           |
@@ -36,8 +36,8 @@
 * @author   Tony Bibbs, tony AT tonybibbs DOT com
 *
 */
-class Plugin {
-
+class Plugin
+{
     // PRIVATE PROPERTIES
 
     // PUBLIC PROPERTIES
@@ -74,9 +74,8 @@ class Plugin {
     * Constructor
     *
     * This initializes the plugin
-    *
     */
-    function Plugin()
+    public function __construct()
     {
         $this->reset();
     }
@@ -174,5 +173,3 @@ class Plugin {
         return $this->_expandedSearchSupport;
     }
 }
-
-?>

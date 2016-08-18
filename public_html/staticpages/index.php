@@ -113,11 +113,12 @@ $retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mod
 
 if ($display_mode == 'print') {
     header('Content-Type: text/html; charset=' . COM_getCharset());
+    header('X-XSS-Protection: 1; mode=block');
+    header('X-Content-Type-Options: nosniff');
+
     if (! empty($_CONF['frame_options'])) {
         header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
     }
 }
 
 COM_output($retval);
-
-?>

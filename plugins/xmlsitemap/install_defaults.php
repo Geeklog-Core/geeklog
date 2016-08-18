@@ -141,5 +141,3 @@ function plugin_initconfig_xmlsitemap()
 
     return true;
 }
-
-?>

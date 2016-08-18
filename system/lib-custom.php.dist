@@ -573,4 +573,3 @@ function CUSTOM_handleError($errno, $errstr, $errfile, $errline, $errcontext)
     exit;
 }
 */
-?>

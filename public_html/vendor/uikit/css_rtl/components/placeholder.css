@@ -1,13 +1,13 @@
-/*! UIkit 2.26.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.26.4 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 /* ========================================================================
    Component: Placeholder
  ========================================================================== */
 .uk-placeholder {
   margin-bottom: 15px;
   padding: 15px;
-  border: 1px dashed #dddddd;
+  border: 1px dashed #ddd;
   background: #fafafa;
-  color: #444444;
+  color: #444;
 }
 /*
  * Add margin if adjacent element

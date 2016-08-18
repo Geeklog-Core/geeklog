@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Polls Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
-// | mssql_updates.php                                                         |
+// | pgsql_updates.php                                                         |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2008-2010 by the following authors:                         |
 // |                                                                           |
@@ -55,6 +55,12 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['pollvoters']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL"
     )
 
+    '2.1.6' => array(
+		// Added description and allow_multipleanswers fields
+        "ALTER TABLE {$_TABLES['pollquestions']} ADD `allow_multipleanswers` INT NULL DEFAULT NULL",
+        "ALTER TABLE {$_TABLES['pollquestions']} ADD `description` TEXT NULL",
+        "ALTER TABLE {$_TABLES['polltopics']} ADD `description` TEXT NULL",
+    ),
 );
 
 /**
@@ -105,5 +111,3 @@ function polls_update_ConfigSecurity_2_1_3()
     }
 
 }
-
-?>

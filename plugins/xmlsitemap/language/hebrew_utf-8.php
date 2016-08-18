@@ -46,8 +46,8 @@ $LANG_confignames['xmlsitemap'] = array(
     'types' => 'תוכן ה-sitemap',
     'exclude' => 'Plugins שלא יכללו ב-sitemap',
     'lastmod' => 'Content Types to include lastmod element',
-    'priorities' => '',
-    'frequencies' => '',
+    'priorities' => 'Priority',
+    'frequencies' => 'Frequency',
     'ping_google' => 'Send ping to Google',
     'ping_bing' => 'Send ping to Bing'
 );
@@ -78,5 +78,3 @@ $LANG_configselects['xmlsitemap'] = array(
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
     20 => array('תמיד' => 'always', 'כל שעה' => 'hourly', 'יומי' => 'daily', 'שבועי' => 'weekly', 'חודשי' => 'monthly', 'שנתי' => 'yearly', 'אף פעם' => 'never', 'hidden' => 'hidden')
 );
-
-?>

@@ -139,7 +139,7 @@ function edittopic ($tid = '')
 
         $topic_templates->set_var('warning_msg', $LANG27[6]);
     }
-    if ($_CONF['titletoid']) {
+    if ($_CONF['titletoid'] && empty($tid)) {
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
         $topic_templates->set_var('titletoid', true);
     }

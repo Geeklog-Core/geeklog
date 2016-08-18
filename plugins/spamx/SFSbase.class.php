@@ -69,10 +69,11 @@ class SFSbase
         $ip = $_SERVER['REMOTE_ADDR'];
         $query = "http://www.stopforumspam.com/api?f=serial&ip=$ip";
 
-        require_once 'HTTP/Request.php';
+        require_once 'HTTP/Request2.php';
 
-        $req = new HTTP_Request(
+        $req = new HTTP_Request2(
             $query,
+            HTTP_Request2::METHOD_GET,
             array(
                 'timeout' => $_SPX_CONF['timeout'],
             )
@@ -82,28 +83,34 @@ class SFSbase
             SPAMX_log('Sending to SFS: ' . $query);
         }
 
-        if ($req->sendRequest() === TRUE) {
-            $result = $req->getResponseBody();
+        try {
+            $response = $req->send();
+            
+            if ($response->getStatus() == 200) {
+                $result = $response->getBody();
 
-            if ($result === FALSE) {
-                return PLG_SPAM_NOT_FOUND;  // Response body is not set, assume ok
-            }
-
-            $result = unserialize($result);
-
-            if (!$result) {
-                if ($this->_verbose) {
-                    SPAMX_log ("SFS: no spam detected");
+                if (strlen($result) === 0) {
+                    return PLG_SPAM_NOT_FOUND;  // Response body is not set, assume ok
                 }
 
-                return PLG_SPAM_NOT_FOUND;  // Invalid data, assume ok
+                $result = @unserialize($result);
+
+                if ($result === false) {
+                    if ($this->_verbose) {
+                        SPAMX_log ("SFS: no spam detected");
+                    }
+
+                    return PLG_SPAM_NOT_FOUND;  // Invalid data, assume ok
+                }
+            } else {
+                return PLG_SPAM_NOT_FOUND;  // PEAR Error, assume ok
             }
-        } else {
-            return PLG_SPAM_NOT_FOUND;  // PEAR Error, assume ok
+        } catch (HTTP_Request2_Exception $e) {
+            COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
+
+            return PLG_SPAM_NOT_FOUND;  // assumes OK
         }
-
-        if (!$result) return PLG_SPAM_NOT_FOUND;     // invalid data, assume ok
-
+        
         if ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) {
             $retval = PLG_SPAM_FOUND;
             SPAMX_log ("SFS: spammer IP detected: " . $ip);
@@ -119,12 +126,11 @@ class SFSbase
                         VALUES ('IP', '$db_ip', '$timestamp')";
                 DB_query($sql);
             }
-        } else if ($this->_verbose) {
+        } elseif ($this->_verbose) {
+            $retval = PLG_SPAM_NOT_FOUND;
             SPAMX_log ("SFS: spammer IP not detected: " . $ip);
         }
 
         return $retval;
     }
 }
-
-?>

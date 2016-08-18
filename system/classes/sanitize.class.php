@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | sanitize.class.php                                                        |
 // |                                                                           |
@@ -85,17 +85,16 @@
 */
 
 
-if (strpos ($_SERVER['PHP_SELF'], 'sanitize.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'sanitize.class.php') !== false) {
     die ('This file can not be used on its own.');
 }
 
-
-class sanitizer {
-
+class sanitizer
+{
     var $_dirtydata = array();      // Data to be filtered
     var $_cleandata = array();      // Sanitized Data after filtering
     var $_makeglobal = false;       // Set to true to also create a global matching variable name if passed in
-    var $_logmode    = false;       // Set true to log to error.log
+    var $_logmode = false;       // Set true to log to error.log
     var $_checkwords = true;        // Set true to enable word censor filter
     var $_checkhtml = true;         // Set true to enable HTML filtering
     var $_prepfordb = false;        // Set true to place filter class into DB mode -- will DB_escapeString around quotes
@@ -105,10 +104,10 @@ class sanitizer {
     /* Filter modes allows this class to be extended.
      * Need to have matching class method _cleanType
      */
-    var $_filtermodes = array('int','char','text');
+    var $_filtermodes = array('int', 'char', 'text');
 
-
-    public function setLogging($state) {
+    public function setLogging($state)
+    {
         if ($state === true or $state == 'on') {
             $this->_logmode = true;
         } elseif ($state === false or $state == 'off') {
@@ -116,7 +115,8 @@ class sanitizer {
         }
     }
 
-    public function setGlobals($state) {
+    public function setGlobals($state)
+    {
         if ($state === true or $state == 'on') {
             $this->_makeglobal = true;
         } elseif ($state === false or $state == 'off') {
@@ -124,7 +124,8 @@ class sanitizer {
         }
     }
 
-    public function setCheckwords($state) {
+    public function setCheckwords($state)
+    {
         if ($state === true or $state == 'on') {
             $this->_checkwords = true;
         } elseif ($state === false or $state == 'off') {
@@ -132,7 +133,8 @@ class sanitizer {
         }
     }
 
-    public function setPrepfordb($state) {
+    public function setPrepfordb($state)
+    {
         if ($state === true or $state == 'on') {
             $this->_prepfordb = true;
             $this->_prepforweb = false;
@@ -141,7 +143,8 @@ class sanitizer {
         }
     }
 
-    public function setPrepforweb($state) {
+    public function setPrepforweb($state)
+    {
         if ($state === true or $state == 'on') {
             $this->_prepforweb = true;
             $this->_prepfordb = false;
@@ -150,7 +153,8 @@ class sanitizer {
         }
     }
 
-    public function setMaxlength($length) {
+    public function setMaxlength($length)
+    {
         if ($length > 0) {
             $this->_maxlength = $length;
         } else {
@@ -158,13 +162,15 @@ class sanitizer {
         }
     }
 
-    public function initFilter() {
+    public function initFilter()
+    {
         $this->_dirtydata = array();
         $this->_cleandata = array();
     }
 
     /* apply the free webtext filter to input which may need to contain quote's or other special characters */
-    private function _filterText( $var ) {
+    private function _filterText($var)
+    {
         // Need to call DB_escapeString again as COM_checkHTML strips it out
         if ($this->_checkhtml) $var = COM_checkHTML($var);
         if ($this->_checkwords) $var = COM_checkWords($var);
@@ -177,28 +183,30 @@ class sanitizer {
         } elseif ($this->_prepforweb) {
             $var = stripslashes($var);
         }
+
         return $var;
     }
 
     /* Default filter for character and numeric data */
-    private function _applyFilter( $parameter, $isnumeric = false ) {
-        $p = COM_stripslashes( $parameter );
-        $p = strip_tags( $p );
-        $p = COM_killJS( $p ); // doesn't help a lot right now, but still ...
-        if( $isnumeric ) {
+    private function _applyFilter($parameter, $isnumeric = false)
+    {
+        $p = COM_stripslashes($parameter);
+        $p = strip_tags($p);
+        $p = COM_killJS($p); // doesn't help a lot right now, but still ...
+        if ($isnumeric) {
             // Note: PHP's is_numeric() accepts values like 4e4 as numeric
-            if( !is_numeric( $p ) || ( preg_match( '/^-?\d+$/', $p ) == 0 )) {
+            if (!is_numeric($p) || (preg_match('/^-?\d+$/', $p) == 0)) {
                 $p = 0;
             }
         } else {
             if ($this->_checkwords) $p = COM_checkWords($p);
-            $p = preg_replace( '/\/\*.*/', '', $p );
-            $pa = explode( "'", $p );
-            $pa = explode( '"', $pa[0] );
-            $pa = explode( '`', $pa[0] );
-            $pa = explode( ';', $pa[0] );
+            $p = preg_replace('/\/\*.*/', '', $p);
+            $pa = explode("'", $p);
+            $pa = explode('"', $pa[0]);
+            $pa = explode('`', $pa[0]);
+            $pa = explode(';', $pa[0]);
             //$pa = explode( ',', $pa[0] );
-            $pa = explode( '\\', $pa[0] );
+            $pa = explode('\\', $pa[0]);
             $p = $pa[0];
 
             if ($this->_prepfordb) {
@@ -212,18 +220,17 @@ class sanitizer {
             $p = substr($p, 0, $this->_maxlength);
         }
 
-        if( $this->_logmode ) {
-            if( strcmp( $p, $parameter ) != 0 ) {
-                COM_errorLog( "Filter applied: >> $parameter << filtered to $p [IP {$_SERVER['REMOTE_ADDR']}]", 1);
+        if ($this->_logmode) {
+            if (strcmp($p, $parameter) != 0) {
+                COM_errorLog("Filter applied: >> $parameter << filtered to $p [IP {$_SERVER['REMOTE_ADDR']}]", 1);
             }
         }
 
         return $p;
     }
 
-
-    private function _makeGlobal() {
-
+    private function _makeGlobal()
+    {
         if ($this->_makeglobal) {
             foreach ($this->_cleandata as $var) {
                 if (is_array($var)) {
@@ -237,9 +244,8 @@ class sanitizer {
 
     }
 
-
-    private function _cleanText() {
-
+    private function _cleanText()
+    {
         foreach ($this->_dirtydata['text'] as $var => $value) {
             // Check if this variable is an array - maybe a checkbox or multiple select
             if (is_array($value)) {
@@ -255,8 +261,8 @@ class sanitizer {
 
     }
 
-
-    private function _cleanChar() {
+    private function _cleanChar()
+    {
 
         foreach ($this->_dirtydata['char'] as $var => $value) {
             // Check if this variable is an array - maybe a checkbox or multiple select
@@ -273,33 +279,33 @@ class sanitizer {
 
     }
 
-    private function _cleanInt() {
-
+    private function _cleanInt()
+    {
         foreach ($this->_dirtydata['int'] as $var => $value) {
             // Check if this variable is an array - maybe a checkbox or multiple select
             if (is_array($value)) {
                 $subvalues_array = array();
                 foreach ($value as $subvalue) {
-                    $subvalues_array[] = $this->_applyFilter($subvalue,true);
+                    $subvalues_array[] = $this->_applyFilter($subvalue, true);
                 }
                 $this->_cleandata['int'][$var] = $subvalues_array;
             } else {
-                $this->_cleandata['int'][$var] = $this->_applyFilter($value,true);
+                $this->_cleandata['int'][$var] = $this->_applyFilter($value, true);
             }
         }
 
     }
 
-    private function _santizeData($type='',$data='') {
-
+    private function _santizeData($type = '', $data = '')
+    {
         if (!empty($data)) {
-            $this->cleanData($type,$data);
+            $this->cleanData($type, $data);
         }
 
         /* Check if we need to return just one type of filtered data */
-        if ($type != '' AND in_array($type,$this->_filtermodes)) {
+        if ($type != '' AND in_array($type, $this->_filtermodes)) {
             $filterFunction = '_clean' . ucfirst($type);
-            if (method_exists($this,$filterFunction)) {
+            if (method_exists($this, $filterFunction)) {
                 $this->$filterFunction();
                 // If just one variable in clean data, then no need to return an array of values
                 if (count($this->_cleandata[$type]) == 1) {
@@ -308,12 +314,11 @@ class sanitizer {
                     $retval = $this->_cleandata[$type];
                 }
             }
-
         } else {
             /* Filter and return an associative array of filtered data - per filter type */
-            foreach($this->_dirtydata as $type => $data)  {
+            foreach ($this->_dirtydata as $type => $data) {
                 $filterFunction = '_clean' . ucfirst($type);
-                if (method_exists($this,$filterFunction)) {
+                if (method_exists($this, $filterFunction)) {
                     $this->$filterFunction();
                 }
             }
@@ -321,18 +326,18 @@ class sanitizer {
         }
 
         return $retval;
-
     }
 
 
     /* Used to load the data that you want cleaned
     *  Call the getCleanData or getDbData or getWebData() methods to return filtered data
     */
-    public function cleanData($mode,$data) {
-        if (in_array($mode,$this->_filtermodes)) {
+    public function cleanData($mode, $data)
+    {
+        if (in_array($mode, $this->_filtermodes)) {
             if (is_array($data)) {
-                foreach ($data as $var => $value ) {
-                  $this->_dirtydata[$mode][$var] = $value;
+                foreach ($data as $var => $value) {
+                    $this->_dirtydata[$mode][$var] = $value;
                 }
             } else {
                 $this->_dirtydata[$mode][] = $data;
@@ -347,15 +352,16 @@ class sanitizer {
     */
 
     /* Expect an array of $_GET variables as per above array format to filter and return sanitized values  */
-    public function cleanGetData($data) {
+    public function cleanGetData($data)
+    {
         if (!is_array($data)) {
-            return FALSE;
+            return false;
         }
         $cleandata = array();
         foreach ($data as $varname => $type) {
             if (isset($_GET[$varname]) AND !empty($_GET[$varname])) {
                 $data = $_GET[$varname];
-                $cleandata[$varname] = $this->getCleanData($type,$data);
+                $cleandata[$varname] = $this->getCleanData($type, $data);
             } else {
                 if ($type = 'int') {
                     $cleandata[$varname] = 0;
@@ -364,20 +370,21 @@ class sanitizer {
                 }
             }
         }
-        return $cleandata;
 
+        return $cleandata;
     }
 
     /* Expect an array of $_POST variables to filter and return sanitized values  */
-    public function cleanPostData($data) {
+    public function cleanPostData($data)
+    {
         if (!is_array($data)) {
-            return FALSE;
+            return false;
         }
         $cleandata = array();
         foreach ($data as $varname => $type) {
             if (isset($_POST[$varname]) AND !empty($_POST[$varname])) {
                 $data = $_POST[$varname];
-                $cleandata[$varname] = $this->getCleanData($type,$data);
+                $cleandata[$varname] = $this->getCleanData($type, $data);
             } else {
                 if ($type = 'int') {
                     $cleandata[$varname] = 0;
@@ -386,20 +393,21 @@ class sanitizer {
                 }
             }
         }
-        return $cleandata;
 
+        return $cleandata;
     }
 
     /* Expect an array of $_REQUEST variables to filter and return sanitized values  */
-    public function cleanRequestData($data) {
+    public function cleanRequestData($data)
+    {
         if (!is_array($data)) {
-            return FALSE;
+            return false;
         }
         $cleandata = array();
         foreach ($data as $varname => $type) {
             if (isset($_REQUEST[$varname]) AND !empty($_REQUEST[$varname])) {
                 $data = $_REQUEST[$varname];
-                $cleandata[$varname] = $this->getCleanData($type,$data);
+                $cleandata[$varname] = $this->getCleanData($type, $data);
             } else {
                 if ($type = 'int') {
                     $cleandata[$varname] = 0;
@@ -408,21 +416,21 @@ class sanitizer {
                 }
             }
         }
-        return $cleandata;
 
+        return $cleandata;
     }
 
-
     /* Expect an array of $_COOKIE variables to filter and return sanitized values  */
-    public function cleanCookieData($data) {
+    public function cleanCookieData($data)
+    {
         if (!is_array($data)) {
-            return FALSE;
+            return false;
         }
         $cleandata = array();
         foreach ($data as $varname => $type) {
             if (isset($_COOKIE[$varname]) AND !empty($_COOKIE[$varname])) {
                 $data = $_COOKIE[$varname];
-                $cleandata[$varname] = $this->getCleanData($type,$data);
+                $cleandata[$varname] = $this->getCleanData($type, $data);
             } else {
                 if ($type = 'int') {
                     $cleandata[$varname] = 0;
@@ -431,20 +439,17 @@ class sanitizer {
                 }
             }
         }
+
         return $cleandata;
-
     }
-
-
-
 
     /* Main public functions to filter data
        Return the cleaned data loaded using the cleanData method
      * Or optionally pass in the data to be cleaned as well for a direct one-function call use
     */
-    public function getCleanData($type='',$data='') {
-
-        $retval = $this->_santizeData($type,$data);
+    public function getCleanData($type = '', $data = '')
+    {
+        $retval = $this->_santizeData($type, $data);
         $this->_makeGlobal();
         // Reset the filter class data now that we have processed the filtering
         $this->initFilter();
@@ -452,14 +457,14 @@ class sanitizer {
         return $retval;
     }
 
-    public function getWebData($type='',$data='') {
-
+    public function getWebData($type = '', $data = '')
+    {
         $retval = '';
         $currentWebState = $this->_prepforweb;
         $currentDbState = $this->_prepfordb;
         $this->setPrepforweb(true);
 
-        $retval = $this->_santizeData($type,$data);
+        $retval = $this->_santizeData($type, $data);
 
         // Reset filter options
         $this->setPrepforweb($currentWebState);
@@ -468,14 +473,14 @@ class sanitizer {
         return $retval;
     }
 
-    public function getDbData($type='',$data='') {
-
+    public function getDbData($type = '', $data = '')
+    {
         $retval = '';
         $currentWebState = $this->_prepforweb;
         $currentDbState = $this->_prepfordb;
         $this->setPrepfordb(true);
 
-        $retval = $this->_santizeData($type,$data);
+        $retval = $this->_santizeData($type, $data);
 
         // Reset filter options
         $this->setPrepforweb($currentWebState);
@@ -483,10 +488,4 @@ class sanitizer {
 
         return $retval;
     }
-
-
-} // End of class
-
-
-
-?>
+}

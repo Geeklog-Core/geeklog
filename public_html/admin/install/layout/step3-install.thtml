@@ -1,0 +1,28 @@
+<p>{{ LANG.INSTALL.63 }}</p>
+<ol>
+    <li>{{ LANG.INSTALL.64 }}</li>
+    <li>{{ LANG.INSTALL.65 }}</li>
+</ol>
+
+<div style="margin-left: auto; margin-right: auto; width: 175px;">
+    <div style="position: absolute">
+        <form action="index.php" method="post">
+            <input type="hidden" name="mode" value="install">
+            <input type="hidden" name="step" value="3">
+            <input type="hidden" value="{! language !}">
+            <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+            <input type="hidden" name="innodb" value="{{ use_innodb_string }}">
+            <input type="hidden" name="install_plugins" value="{! installPlugins !}">
+            <input type="submit" class="button big-button" value="{{ LANG.INSTALL.66 }}">
+        </form>
+    </div>
+
+    <div style="position: relative; left: 105px; top: 5px;">
+        <form action="index.php" method="post">
+            <input type="hidden" name="mode" value="upgrade">
+            <input type="hidden" name="language" value="{! language !}">
+            <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+            <input type="submit" class="button big-button" value="{{ LANG.INSTALL.25 }}">
+        </form>
+    </div>
+</div>

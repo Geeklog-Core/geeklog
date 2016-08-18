@@ -46,8 +46,8 @@ $LANG_confignames['xmlsitemap'] = array(
     'types' => 'Saidikaardi sisu',
     'exclude' => 'Saidikaardilt väljajäätavad pluginad',
     'lastmod' => 'Content Types to include lastmod element',
-    'priorities' => '',
-    'frequencies' => '',
+    'priorities' => 'Priority',
+    'frequencies' => 'Frequency',
     'ping_google' => 'Send ping to Google',
     'ping_bing' => 'Send ping to Bing'
 );
@@ -78,5 +78,3 @@ $LANG_configselects['xmlsitemap'] = array(
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
     20 => array('Alati' => 'always', 'Tunni tagant' => 'hourly', 'päeva tagant' => 'daily', 'nädala tagant' => 'weekly', 'kuu tagant' => 'monthly', 'aasta tagant' => 'yearly', 'mitte kunagi' => 'never', 'hidden' => 'hidden')
 );
-
-?>
