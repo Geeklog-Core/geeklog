@@ -80,7 +80,6 @@ include_once $plugin_path . 'services.inc.php';
  * Returns the items for this plugin that should appear on the main menu
  * NOTE: this MUST return the url/value pairs in the following format
  * $<arrayname>[<label>] = <url>
-
  */
 function plugin_getmenuitems_staticpages()
 {
@@ -191,7 +190,7 @@ function plugin_displaycomment_staticpages($id, $cid, $title, $order, $format, $
  * @param   string $id       Item id to which $cid belongs
  * @param   int    $pid      comment parent
  * @param   string $postmode 'html' or 'text'
- * @return  mixed   false for failure, HTML string (redirect?) for success
+ * @return  mixed  false for failure, HTML string (redirect?) for success
  */
 function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
 {
@@ -219,7 +218,7 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
             }
         }
     } else { // success
-        $url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
+        $url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page='
             . $id);
         // if the comment ends up in the submission queue, say so
         if (($_CONF['commentsubmission'] == 1) &&
@@ -323,7 +322,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $retval = $content;
     } else {
         // The format is not "blank page", we need to do some more processing
-        $sp_url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
+        $sp_url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page='
             . $page);
         $headercode = '<link rel="canonical" href="' . $sp_url . '"' . XHTML . '>';
 
@@ -344,12 +343,12 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
                 );
         }
 
-        $page_title = $A['sp_page_title'];
+        $page_title = stripslashes($A['sp_page_title']);
         if (empty($page_title)) {
-            $page_title = $A['sp_title'];
+            $page_title = stripslashes($A['sp_title']);
         }
 
-        if ($A['sp_format'] == 'allblocks' || $A['sp_format'] == 'leftblocks') {
+        if ($A['sp_format'] === 'allblocks' || $A['sp_format'] === 'leftblocks') {
             $what = 'menu';
         } else {
             $what = 'none';
@@ -553,7 +552,7 @@ function SP_printPage($page, $A)
     COM_setLangIdAndAttribute($print);
     $print->set_var('page_title', $_CONF['site_name'] . ' - '
         . stripslashes($A['sp_title']));
-    $sp_url = COM_buildUrl($_CONF['site_url']
+    $sp_url = COM_buildURL($_CONF['site_url']
         . '/staticpages/index.php?page=' . $page);
     $print->set_var('sp_url', $sp_url);
     $print->set_var('sp_title', stripslashes($A['sp_title']));
@@ -714,7 +713,8 @@ function SP_returnStaticpage($page = '', $mode = '', $comment_order = 'ASC', $co
  * If $showsitestats is 1 then we are to only print the overall stats in the
  * 'site statistics box' otherwise we show the detailed stats
  *
- * @param    int     showsitestate   Flag to let us know which stats to get
+ * @param    int     $showsitestats   Flag to let us know which stats to get
+ * @return   string
  */
 function plugin_showstats_staticpages($showsitestats)
 {
@@ -788,7 +788,8 @@ function plugin_statssummary_staticpages()
 /**
  * Geeklog is asking us to provide any new items that show up in the type
  * drop-down on search.php.  Let's let users search static pages!
-
+ *
+ * @return string
  */
 function plugin_searchtypes_staticpages()
 {
@@ -798,6 +799,8 @@ function plugin_searchtypes_staticpages()
         $tmp['staticpages'] = $LANG_STATIC['staticpages'];
 
         return $tmp;
+    } else {
+        return '';
     }
 }
 
@@ -906,7 +909,8 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 /**
  * This will put an option for static pages in the command and control block on
  * moderation.php
-
+ *
+ * @return array|false
  */
 function plugin_cclabel_staticpages()
 {
@@ -923,7 +927,8 @@ function plugin_cclabel_staticpages()
 
 /**
  * returns the administrative option for this plugin
-
+ *
+ * @return array
  */
 function plugin_getadminoption_staticpages()
 {
@@ -935,6 +940,8 @@ function plugin_getadminoption_staticpages()
         $total_pages = $A['cnt'];
 
         return array($LANG_STATIC['staticpages'], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', $total_pages);
+    } else {
+        return array();
     }
 }
 
@@ -995,9 +1002,9 @@ function SP_getPerms($table = '', $access = '2', $u_id = '')
 /**
  * Display static pages in the center block.
  *
- * @param   where   int      where the static page will be displayed (0..3)
- * @param   page    int      page number
- * @param   topic   string   topic ID
+ * @param   int     $where   where the static page will be displayed (0..3)
+ * @param   int     $page    page number
+ * @param   string  $topic   topic ID
  * @return          string   HTML for the static page (can be empty)
  */
 function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
@@ -1188,7 +1195,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
  * A user is about to be deleted. Update ownership of any static pages owned
  * by that user or delete them.
  *
- * @param   uid   int   User id of deleted user
+ * @param  int  $uid  User id of deleted user
  */
 function plugin_user_delete_staticpages($uid)
 {
@@ -1230,7 +1237,11 @@ function plugin_chkVersion_staticpages()
 
 /**
  * Implements the [staticpage:] autotag.
-
+ *
+ * @param  string $op
+ * @param  string $content
+ * @param  string
+ * @return string
  */
 function plugin_autotags_staticpages($op, $content = '', $autotag = '')
 {
@@ -1284,7 +1295,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
                     . "WHERE sp_id = '$sp_id'");
                 $A = DB_fetchArray($result);
                 if ($A['count'] > 0) {
-                    $url = COM_buildUrl($_CONF['site_url']
+                    $url = COM_buildURL($_CONF['site_url']
                         . '/staticpages/index.php?page=' . $sp_id);
                     if (empty($autotag['parm2'])) {
                         $linktext = stripslashes(DB_getItem($_TABLES['staticpage'],
@@ -1523,8 +1534,8 @@ function plugin_upgrade_staticpages()
 /**
  * Called during site migration - handle changed URLs or paths
  *
- * @param    array $old_conf           contents of the $_CONF array on the old site
- * @param          boolean             true on success, otherwise false
+ * @param    array $old_conf     contents of the $_CONF array on the old site
+ * @return   boolean             true on success, otherwise false
  */
 function plugin_migrate_staticpages($old_conf)
 {
@@ -1550,7 +1561,6 @@ function plugin_migrate_staticpages($old_conf)
  * tables, groups, features and php blocks from the tables.
  * Additionally, this code can perform special actions that cannot be
  * foreseen by the core code (interactions with other plugins for example)
-
  */
 function plugin_autouninstall_staticpages()
 {
@@ -1581,7 +1591,7 @@ function plugin_autouninstall_staticpages()
 
 function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_ADMIN, $LANG_STATIC;
+    global $_CONF, $LANG_ACCESS, $LANG_STATIC;
 
     switch ($fieldname) {
         case 'edit':
@@ -1622,7 +1632,7 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
                 }
                 $sp_title = '(' . $sp_title . ')';
             }
-            $url = COM_buildUrl($_CONF['site_url'] .
+            $url = COM_buildURL($_CONF['site_url'] .
                 '/staticpages/index.php?page=' . $A['sp_id']);
             $attr = array();
             if (!empty($A['sp_page_title'])) {
@@ -1847,7 +1857,7 @@ function plugin_getrelateditems_staticpages($tids, $max, $trim)
         for ($x = 0; $x < $nrows; $x++) {
             $A = DB_fetchArray($result);
 
-            $url = COM_buildUrl($_CONF['site_url']
+            $url = COM_buildURL($_CONF['site_url']
                 . '/staticpages/index.php?page=' . $A['sp_id']);
 
             $title = COM_undoSpecialChars(stripslashes($A['sp_title']));
@@ -1917,7 +1927,7 @@ function plugin_getwhatsnew_staticpages()
         for ($x = 0; $x < $nrows; $x++) {
             $A = DB_fetchArray($result);
 
-            $url = COM_buildUrl($_CONF['site_url']
+            $url = COM_buildURL($_CONF['site_url']
                 . '/staticpages/index.php?page=' . $A['sp_id']);
 
             $title = COM_undoSpecialChars(stripslashes($A['sp_title']));
@@ -1945,9 +1955,9 @@ function plugin_getwhatsnew_staticpages()
 /**
  * Return new Static Page comments for the What's New block
  *
- * @param    string $numreturn   If 0 will return results for What's New Block.
+ * @param    int    $numreturn   If 0 will return results for What's New Block.
  *                               If > 0 will return last X new comments for User Profile.
- * @param    string $uid         ID of the user to return results for. 0 = all users.
+ * @param    int    $uid         ID of the user to return results for. 0 = all users.
  * @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
  */
 function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
@@ -2048,9 +2058,9 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
         $where .= " AND (sp_id = '" . DB_escapeString($sp_id) . "')";
     }
     if ($uid > 0) {
-        $permSql = COM_getPermSql('AND', $uid);
+        $permSql = COM_getPermSQL('AND', $uid);
     } else {
-        $permSql = COM_getPermSql('AND');
+        $permSql = COM_getPermSQL('AND');
     }
     $sql = "SELECT " . implode(',', $fields)
         . " FROM {$_TABLES['staticpage']}" . $where . $permSql;
@@ -2101,10 +2111,10 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
 
                 case 'url':
                     if (empty($A['sp_id'])) {
-                        $props['url'] = COM_buildUrl($_CONF['site_url']
+                        $props['url'] = COM_buildURL($_CONF['site_url']
                             . '/staticpages/index.php?page=' . $sp_id);
                     } else {
-                        $props['url'] = COM_buildUrl($_CONF['site_url']
+                        $props['url'] = COM_buildURL($_CONF['site_url']
                             . '/staticpages/index.php?page=' . $A['sp_id']);
                     }
                     break;
@@ -2281,7 +2291,7 @@ function plugin_itemdeleted_staticpages($id, $type)
  */
 function plugin_group_changed_staticpages($grp_id, $mode)
 {
-    global $_TABLES, $_GROUPS, $_PO_CONF;
+    global $_TABLES, $_GROUPS;
 
     if ($mode == 'delete') {
         // Change any deleted group ids to Static Page Admin if exist, if does not change to root group
