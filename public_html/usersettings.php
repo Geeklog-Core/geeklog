@@ -45,9 +45,10 @@ $_US_VERBOSE = false;
 // echo COM_debug($_POST);
 
 /**
-* Shows the user's current settings
-*
-*/
+ * Shows the user's current settings
+ *
+ * @return string
+ */
 function edituser()
 {
     global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN, $_SCRIPTS;
@@ -63,14 +64,14 @@ function edituser()
         'password'         => 'password.thtml',
         'current_password' => 'current_password.thtml',
         'resynch'          => 'resynch.thtml',
-        'deleteaccount'    => 'deleteaccount.thtml'
+        'deleteaccount'    => 'deleteaccount.thtml',
     ));
 
     include $_CONF['path_system'] . 'classes/navbar.class.php';
     $navbar = new navbar;
     $cnt = 0;
     foreach ($LANG_MYACCOUNT as $id => $label) {
-        $navbar->add_menuitem($label,'showhideProfileEditorDiv("'.$id.'",'.$cnt.');return false;',true);
+        $navbar->add_menuitem($label, 'showhideProfileEditorDiv("' . $id . '",' . $cnt . ');return false;', true);
         $cnt++;
     }
     $navbar->set_selected($LANG_MYACCOUNT['pe_namepass']);
@@ -118,10 +119,10 @@ function edituser()
 
     // some trickery to ensure alternating colors with the available options ...
     if ($_CONF['allow_username_change'] == 1) {
-        $first  = 1;
+        $first = 1;
         $second = 2;
     } else {
-        $first  = 2;
+        $first = 2;
         $second = 1;
     }
     $preferences->set_var('cssid1u', $first);
@@ -168,7 +169,7 @@ function edituser()
     $preferences->set_var('lang_pgpkey', $LANG04[8]);
     $preferences->set_var('lang_pgpkey_text', $LANG04[39]);
     $preferences->set_var('lang_submit', $LANG04[9]);
-    $preferences->set_var('lang_cancel',$LANG_ADMIN['cancel']);
+    $preferences->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $preferences->set_var('lang_preview_title', $LANG04[145]);
     $preferences->set_var('lang_enter_current_password', $LANG04[127]);
     $preferences->set_var('lang_name_legend', $LANG04[128]);
@@ -183,7 +184,7 @@ function edituser()
     //$preferences->set_var('end_block', COM_endBlock());
 
     $preferences->set_var('profile_headline',
-                           $LANG04[1] . ' ' . $display_name);
+        $LANG04[1] . ' ' . $display_name);
 
     if ($_CONF['allow_user_photo'] == 1) {
         $preferences->set_var('enctype', 'enctype="multipart/form-data"');
@@ -217,15 +218,15 @@ function edituser()
 
     $selection = '<select id="cooktime" name="cooktime">' . LB;
     $selection .= COM_optionList($_TABLES['cookiecodes'], 'cc_value,cc_descr',
-                                  $A['cookietimeout'], 0);
+        $A['cookietimeout'], 0);
     $selection .= '</select>';
     $preferences->set_var('cooktime_selector', $selection);
 
     $preferences->set_var('email_value', htmlspecialchars($A['email']));
     $preferences->set_var('homepage_value',
-                           htmlspecialchars(COM_killJS ($A['homepage'])));
+        htmlspecialchars(COM_killJS($A['homepage'])));
     $preferences->set_var('location_value',
-                           htmlspecialchars(strip_tags($A['location'])));
+        htmlspecialchars(strip_tags($A['location'])));
     $preferences->set_var('signature_value', htmlspecialchars($A['sig']));
 
     if ($_CONF['allow_user_photo'] == 1) {
@@ -237,8 +238,8 @@ function edituser()
                 $photo = '<br' . XHTML . '>' . $photo;
             } else { // uploaded photo - add delete option
                 $photo = '<br' . XHTML . '>' . $photo . '<br' . XHTML . '>' . $LANG04[79]
-                       . '&nbsp;<input type="checkbox" name="delete_photo"' . XHTML . '>'
-                       . LB;
+                    . '&nbsp;<input type="checkbox" name="delete_photo"' . XHTML . '>'
+                    . LB;
             }
             $preferences->set_var('display_photo', $photo);
         }
@@ -249,8 +250,8 @@ function edituser()
         }
         $preferences->set_var('photo_max_dimensions',
             sprintf($LANG04[160],
-                    $_CONF['max_photo_width'], $_CONF['max_photo_height'],
-                    $_CONF['max_photo_size'], $scaling));
+                $_CONF['max_photo_width'], $_CONF['max_photo_height'],
+                $_CONF['max_photo_size'], $scaling));
         $preferences->parse('userphoto_option', 'photo', true);
     } else {
         $preferences->set_var('userphoto_option', '');
@@ -259,7 +260,7 @@ function edituser()
     $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
-    $reqid = substr(md5(uniqid(rand (), 1)), 1, 16);
+    $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
     DB_change($_TABLES['users'], 'pwrequestid', $reqid, 'uid', $_USER['uid']);
 
     $preferences->set_var('about_value', htmlspecialchars($A['about']));
@@ -285,7 +286,7 @@ function edituser()
 
     // Call custom account form and edit function if enabled and exists
     if ($_CONF['custom_registration'] && (function_exists('CUSTOM_userEdit'))) {
-        $preferences->set_var('customfields', CUSTOM_userEdit($_USER['uid']) );
+        $preferences->set_var('customfields', CUSTOM_userEdit($_USER['uid']));
     }
 
     PLG_profileVariablesEdit($_USER['uid'], $preferences);
@@ -297,12 +298,11 @@ function edituser()
 }
 
 /**
-* Ask user for confirmation to delete his/her account.
-*
-* @param    string   $form_reqid   request id
-* @return   string   confirmation form
-*
-*/
+ * Ask user for confirmation to delete his/her account.
+ *
+ * @param    string $form_reqid request id
+ * @return   string   confirmation form
+ */
 function confirmAccountDelete($form_reqid)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04;
@@ -316,22 +316,23 @@ function confirmAccountDelete($form_reqid)
     if ($_USER['remoteservice'] == '') {
         // verify the password
         if (empty($_POST['old_passwd']) ||
-                (SEC_encryptUserPassword($_POST['old_passwd'], $_USER['uid']) < 0)) {
-             return COM_refresh($_CONF['site_url']
-                                . '/usersettings.php?msg=84');
+            (SEC_encryptUserPassword($_POST['old_passwd'], $_USER['uid']) < 0)
+        ) {
+            return COM_refresh($_CONF['site_url']
+                . '/usersettings.php?msg=84');
         }
     }
 
-    $reqid = substr(md5(uniqid(rand (), 1)), 1, 16);
+    $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
     DB_change($_TABLES['users'], 'pwrequestid', "$reqid",
-                                  'uid', $_USER['uid']);
+        'uid', $_USER['uid']);
     $msg = '<p>' . $LANG04[98] . '</p>' . LB . '<form action="' . $_CONF['site_url']
-         . '/usersettings.php" method="post"><div>' . LB
-         . '<p align="center"><input type="submit" name="btnsubmit" value="'
-         . $LANG04[96] . '"' . XHTML . '></p>' . LB
-         . '<input type="hidden" name="mode" value="deleteconfirmed"' . XHTML . '>' . LB
-         . '<input type="hidden" name="account_id" value="' . $reqid . '"' . XHTML . '>' . LB
-         . '</div></form>' . LB;
+        . '/usersettings.php" method="post"><div>' . LB
+        . '<p align="center"><input type="submit" name="btnsubmit" value="'
+        . $LANG04[96] . '"' . XHTML . '></p>' . LB
+        . '<input type="hidden" name="mode" value="deleteconfirmed"' . XHTML . '>' . LB
+        . '<input type="hidden" name="account_id" value="' . $reqid . '"' . XHTML . '>' . LB
+        . '</div></form>' . LB;
     $retval = COM_showMessageText($msg, $LANG04[97]);
     $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[97]));
 
@@ -339,18 +340,18 @@ function confirmAccountDelete($form_reqid)
 }
 
 /**
-* Delete an account
-*
-* @param    string   $form_reqid   request id
-* @return   string   redirection to main page (+ success msg)
-*
-*/
+ * Delete an account
+ *
+ * @param    string $form_reqid request id
+ * @return   string   redirection to main page (+ success msg)
+ */
 function deleteUserAccount($form_reqid)
 {
     global $_CONF, $_TABLES, $_USER;
 
     if (DB_count($_TABLES['users'], array('pwrequestid', 'uid'),
-                  array($form_reqid, $_USER['uid'])) != 1) {
+            array($form_reqid, $_USER['uid'])) != 1
+    ) {
         // not found - abort
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
@@ -363,9 +364,10 @@ function deleteUserAccount($form_reqid)
 }
 
 /**
-* Displays user preferences
-*
-*/
+ * Displays user preferences
+ *
+ * @return string
+ */
 function editpreferences()
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG04;
@@ -395,7 +397,7 @@ function editpreferences()
         'language' => 'language.thtml',
         'theme'    => 'theme.thtml',
         'privacy'  => 'privacyblock.thtml',
-        'editor'   => 'editor.thtml'
+        'editor'   => 'editor.thtml',
     ));
     $preferences->set_var('user_name', $_USER['username']);
 
@@ -454,27 +456,27 @@ function editpreferences()
     $preferences->set_var('lang_boxes_exclude', $LANG04[47]);
 
     $preferences->set_var('start_block_display',
-            COM_startBlock($LANG04[45] . ' ' . $display_name));
+        COM_startBlock($LANG04[45] . ' ' . $display_name));
     $preferences->set_var('start_block_digest',
-            COM_startBlock($LANG04[75] . ' ' . $display_name));
+        COM_startBlock($LANG04[75] . ' ' . $display_name));
     $preferences->set_var('start_block_comment',
-            COM_startBlock($LANG04[64] . ' ' . $display_name));
+        COM_startBlock($LANG04[64] . ' ' . $display_name));
     $preferences->set_var('start_block_privacy',
-            COM_startBlock($LANG04[99] . ' ' . $display_name));
+        COM_startBlock($LANG04[99] . ' ' . $display_name));
     $preferences->set_var('end_block', COM_endBlock());
 
     $preferences->set_var('display_headline',
-                           $LANG04[45] . ' ' . $display_name);
+        $LANG04[45] . ' ' . $display_name);
     $preferences->set_var('exclude_headline',
-                           $LANG04[46] . ' ' . $display_name);
+        $LANG04[46] . ' ' . $display_name);
     $preferences->set_var('digest_headline',
-                           $LANG04[75] . ' ' . $display_name);
+        $LANG04[75] . ' ' . $display_name);
     $preferences->set_var('boxes_headline',
-                           $LANG04[47] . ' ' . $display_name);
+        $LANG04[47] . ' ' . $display_name);
     $preferences->set_var('comment_headline',
-                           $LANG04[64] . ' ' . $display_name);
+        $LANG04[64] . ' ' . $display_name);
     $preferences->set_var('privacy_headline',
-                           $LANG04[99] . ' ' . $display_name);
+        $LANG04[99] . ' ' . $display_name);
 
     // display preferences block
     if ($_CONF['allow_user_language'] == 1) {
@@ -509,7 +511,8 @@ function editpreferences()
         foreach ($language as $langFile => $langName) {
             $selection .= '<option value="' . $langFile . '"';
             if (($langFile == $userlang) || (($has_valid_language == 0) &&
-                    (strpos($langFile, $similarLang) === 0))) {
+                    (strpos($langFile, $similarLang) === 0))
+            ) {
                 $selection .= ' selected="selected"';
                 $has_valid_language = 1;
             } elseif ($userlang == $langFile) {
@@ -546,7 +549,8 @@ function editpreferences()
             $bwords = array();
             foreach ($words as $th) {
                 if ((strtolower($th[0]) == $th[0]) &&
-                    (strtolower($th[1]) == $th[1])) {
+                    (strtolower($th[1]) == $th[1])
+                ) {
                     $bwords[] = ucfirst($th);
                 } else {
                     $bwords[] = $th;
@@ -578,7 +582,8 @@ function editpreferences()
             $bwords = array();
             foreach ($words as $th) {
                 if ((strtolower($th[0]) == $th[0]) &&
-                    (strtolower($th[1]) == $th[1])) {
+                    (strtolower($th[1]) == $th[1])
+                ) {
                     $bwords[] = ucfirst($th);
                 } else {
                     $bwords[] = $th;
@@ -602,7 +607,7 @@ function editpreferences()
 
     $timezone = TimeZoneConfig::getUserTimeZone();
     $selection = TimeZoneConfig::getTimeZoneDropDown($timezone,
-            array('id' => 'tzid', 'name' => 'tzid'));
+        array('id' => 'tzid', 'name' => 'tzid'));
 
     $preferences->set_var('timezone_selector', $selection);
     $preferences->set_var('lang_timezone', $LANG04[158]);
@@ -621,8 +626,8 @@ function editpreferences()
 
     $preferences->set_var('maxstories_value', $A['maxstories']);
     $selection = '<select id="dfid" name="dfid">' . LB
-               . COM_optionList($_TABLES['dateformats'], 'dfid,description',
-                                 $A['dfid']) . '</select>';
+        . COM_optionList($_TABLES['dateformats'], 'dfid,description',
+            $A['dfid']) . '</select>';
     $preferences->set_var('dateformat_selector', $selection);
     $preferences->parse('display_block', 'display', true);
 
@@ -649,7 +654,8 @@ function editpreferences()
     $preferences->set_var('exclude_topic_checklist', TOPIC_checkList($A['tids'], 'topics'));
 
     if (($_CONF['contributedbyline'] == 1) &&
-        ($_CONF['hide_author_exclusion'] == 0)) {
+        ($_CONF['hide_author_exclusion'] == 0)
+    ) {
         $preferences->set_var('lang_authors', $LANG04[56]);
         $sql = "SELECT DISTINCT story.uid, users.username,users.fullname FROM {$_TABLES['stories']} story, {$_TABLES['users']} users WHERE story.uid = users.uid";
         if ($_CONF['show_fullname'] == 1) {
@@ -658,19 +664,19 @@ function editpreferences()
             $sql .= ' ORDER BY users.username';
         }
         $query = DB_query($sql);
-        $nrows = DB_numRows($query );
+        $nrows = DB_numRows($query);
         $authors = explode(' ', $A['aids']);
 
         $selauthors = '';
-        for ( $i = 0; $i < $nrows; $i++) {
+        for ($i = 0; $i < $nrows; $i++) {
             $B = DB_fetchArray($query);
             $selauthors .= '<option value="' . $B['uid'] . '"';
             if (in_array(sprintf('%d', $B['uid']), $authors)) {
-               $selauthors .= ' selected="selected"';
+                $selauthors .= ' selected="selected"';
             }
             $selauthors .= '>' . COM_getDisplayName($B['uid'], $B['username'],
-                                                     $B['fullname'])
-                        . '</option>' . LB;
+                    $B['fullname'])
+                . '</option>' . LB;
         }
 
         if (DB_count($_TABLES['topics']) > 10) {
@@ -678,7 +684,7 @@ function editpreferences()
         } else {
             $Selboxsize = 15;
         }
-        $preferences->set_var('exclude_author_checklist', '<select name="selauthors[]" multiple="multiple" size="'. $Selboxsize. '">' . $selauthors . '</select>');
+        $preferences->set_var('exclude_author_checklist', '<select name="selauthors[]" multiple="multiple" size="' . $Selboxsize . '">' . $selauthors . '</select>');
     } else {
         $preferences->set_var('lang_authors', '');
         $preferences->set_var('exclude_author_checklist', '');
@@ -688,7 +694,7 @@ function editpreferences()
     // daily digest block
     if ($_CONF['emailstories'] == 1) {
         $user_etids = DB_getItem($_TABLES['userindex'], 'etids',
-                                  "uid = {$_USER['uid']}");
+            "uid = {$_USER['uid']}");
         if (empty($user_etids)) { // an empty string now means "all topics"
             $etids = USER_getAllowedTopics();
             $user_etids = implode(' ', $etids);
@@ -705,7 +711,7 @@ function editpreferences()
     // boxes block
     $selectedblocks = '';
     if (strlen($A['boxes']) > 0) {
-        $blockresult = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE bid NOT IN (" . str_replace(' ',',',$A['boxes']) . ")");
+        $blockresult = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE bid NOT IN (" . str_replace(' ', ',', $A['boxes']) . ")");
         for ($x = 1; $x <= DB_numRows($blockresult); $x++) {
             $row = DB_fetchArray($blockresult);
             $selectedblocks .= $row['bid'];
@@ -719,10 +725,10 @@ function editpreferences()
         $whereblock .= $permissions . ' AND ';
     }
     $whereblock .= "((type != 'gldefault' AND is_enabled = 1) OR "
-                 . "(type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','older_stories'))) "
-                 . "ORDER BY onleft desc,blockorder,title";
-    $preferences->set_var('boxes_checklist', COM_checkList ($_TABLES['blocks'],
-            'bid,title,type', $whereblock, $selectedblocks, 'blocks'));
+        . "(type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','older_stories'))) "
+        . "ORDER BY onleft desc,blockorder,title";
+    $preferences->set_var('boxes_checklist', COM_checkList($_TABLES['blocks'],
+        'bid,title,type', $whereblock, $selectedblocks, 'blocks'));
     $preferences->parse('boxes_block', 'boxes', true);
 
     // comment preferences block
@@ -741,13 +747,13 @@ function editpreferences()
 
     $selection = '<select id="commentmode" name="commentmode">';
     $selection .= COM_optionList($_TABLES['commentmodes'], 'mode,name',
-                                  $A['commentmode']);
+        $A['commentmode']);
     $selection .= '</select>';
     $preferences->set_var('displaymode_selector', $selection);
 
     $selection = '<select id="commentorder" name="commentorder">';
     $selection .= COM_optionList($_TABLES['sortcodes'], 'code,name',
-                                  $A['commentorder']);
+        $A['commentorder']);
     $selection .= '</select>';
     $preferences->set_var('sortorder_selector', $selection);
     $preferences->set_var('commentlimit_value', $A['commentlimit']);
@@ -757,16 +763,14 @@ function editpreferences()
 }
 
 /**
-* Check if an email address already exists in the database
-*
-* NOTE:    Allows remote accounts to have duplicate email addresses
-*
-* @param   email   string   email address to check
-* @param   uid     int      user id of current user
-* @return          boolean  true = exists, false = does not exist
-*
-*/
-function emailAddressExists ($email, $uid)
+ * Check if an email address already exists in the database
+ * NOTE:    Allows remote accounts to have duplicate email addresses
+ *
+ * @param   string  $email   email address to check
+ * @param   int     $uid     user id of current user
+ * @return          boolean  true = exists, false = does not exist
+ */
+function emailAddressExists($email, $uid)
 {
     global $_TABLES;
 
@@ -787,13 +791,12 @@ function emailAddressExists ($email, $uid)
 }
 
 /**
-* Upload new photo, delete old photo
-*
-* @param    string  $delete_photo   'on': delete old photo
-* @return   string                  filename of new photo (empty = no new photo)
-*
-*/
-function handlePhotoUpload ($delete_photo = '')
+ * Upload new photo, delete old photo
+ *
+ * @param    string $delete_photo 'on': delete old photo
+ * @return   string                  filename of new photo (empty = no new photo)
+ */
+function handlePhotoUpload($delete_photo = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG24;
 
@@ -813,7 +816,8 @@ function handlePhotoUpload ($delete_photo = '')
         }
         $upload->setAutomaticResize(true);
         if (isset($_CONF['debug_image_upload']) &&
-                $_CONF['debug_image_upload']) {
+            $_CONF['debug_image_upload']
+        ) {
             $upload->setLogFile($_CONF['path'] . 'logs/error.log');
             $upload->setDebug(true);
         }
@@ -826,11 +830,11 @@ function handlePhotoUpload ($delete_photo = '')
         'image/jpeg'  => '.jpg,.jpeg',
         'image/pjpeg' => '.jpg,.jpeg',
         'image/x-png' => '.png',
-        'image/png'   => '.png'
+        'image/png'   => '.png',
     ));
     if (!$upload->setPath($_CONF['path_images'] . 'userphotos')) {
-        $display .= COM_showMessageText($upload->printErrors(false), $LANG24[30]);
-        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[30]));
+        $display = COM_showMessageText($upload->printErrors(false), $LANG24[30])
+            . COM_createHTMLDocument($display, array('pagetitle' => $LANG24[30]));
         COM_output($display);
         exit; // don't return
     }
@@ -843,7 +847,7 @@ function handlePhotoUpload ($delete_photo = '')
     }
 
     $curphoto = DB_getItem($_TABLES['users'], 'photo',
-                            "uid = {$_USER['uid']}");
+        "uid = {$_USER['uid']}");
     if (empty($curphoto)) {
         $delete_photo = false;
     }
@@ -851,7 +855,7 @@ function handlePhotoUpload ($delete_photo = '')
     // see if user wants to upload a (new) photo
     $newphoto = $_FILES['photo'];
     if (!empty($newphoto['name'])) {
-        $pos = strrpos ($newphoto['name'], '.') + 1;
+        $pos = strrpos($newphoto['name'], '.') + 1;
         $fextension = substr($newphoto['name'], $pos);
         $filename = $_USER['username'] . '.' . $fextension;
 
@@ -872,22 +876,23 @@ function handlePhotoUpload ($delete_photo = '')
         $upload->setFileNames($filename);
         $upload->setPerms('0644');
         if (($_CONF['max_photo_width'] > 0) &&
-            ($_CONF['max_photo_height'] > 0)) {
-            $upload->setMaxDimensions ($_CONF['max_photo_width'],
-                                       $_CONF['max_photo_height']);
+            ($_CONF['max_photo_height'] > 0)
+        ) {
+            $upload->setMaxDimensions($_CONF['max_photo_width'],
+                $_CONF['max_photo_height']);
         } else {
-            $upload->setMaxDimensions ($_CONF['max_image_width'],
-                                       $_CONF['max_image_height']);
+            $upload->setMaxDimensions($_CONF['max_image_width'],
+                $_CONF['max_image_height']);
         }
         if ($_CONF['max_photo_size'] > 0) {
             $upload->setMaxFileSize($_CONF['max_photo_size']);
         } else {
             $upload->setMaxFileSize($_CONF['max_image_size']);
         }
-        $upload->uploadFiles ();
+        $upload->uploadFiles();
 
-        if ($upload->areErrors ()) {
-            $display = COM_showMessageText($upload->printErrors (false), $LANG24[30]);
+        if ($upload->areErrors()) {
+            $display = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[30]));
             COM_output($display);
             exit; // don't return
@@ -900,31 +905,30 @@ function handlePhotoUpload ($delete_photo = '')
 }
 
 /**
-* Saves the user's information back to the database
-*
-* @param    array   $A  User's data
-* @return   string      HTML error message or meta redirect
-*
-*/
-function saveuser($A)
+ * Saves the user's information back to the database
+ *
+ * @param    array   $A  User's data
+ * @return   string      HTML error message or meta redirect
+ */
+function saveuser(array $A)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG24, $_US_VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG24, $_US_VERBOSE, $MESSAGE;
 
     if ($_US_VERBOSE) {
         COM_errorLog('**** Inside saveuser in usersettings.php ****', 1);
     }
 
     $reqid = DB_getItem($_TABLES['users'], 'pwrequestid',
-                         "uid = {$_USER['uid']}");
+        "uid = {$_USER['uid']}");
     if ($reqid != $A['uid']) {
         DB_change($_TABLES['users'], 'pwrequestid', "NULL",
-                   'uid', $_USER['uid']);
+            'uid', $_USER['uid']);
         COM_accessLog("An attempt was made to illegally change the account information of user {$_USER['uid']}.");
 
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
 
-    if (! isset($A['cooktime'])) {
+    if (!isset($A['cooktime'])) {
         // If not set or possibly removed from template - set to default
         $A['cooktime'] = $_CONF['default_perm_cookie_timeout'];
     } else {
@@ -941,14 +945,17 @@ function saveuser($A)
     $service = DB_getItem($_TABLES['users'], 'remoteservice', "uid = {$_USER['uid']}");
     if ($service == '') {
         if (!empty($A['passwd']) || ($A['email'] != $_USER['email']) ||
-                ($A['cooktime'] != $_USER['cookietimeout'])) {
+            ($A['cooktime'] != $_USER['cookietimeout'])
+        ) {
             // verify password
             if (empty($A['old_passwd']) ||
-                    (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0)) {
+                (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0)
+            ) {
                 return COM_refresh($_CONF['site_url']
-                                    . '/usersettings.php?msg=83');
+                    . '/usersettings.php?msg=83');
             } elseif ($_CONF['custom_registration'] &&
-                        function_exists('CUSTOM_userCheck')) {
+                function_exists('CUSTOM_userCheck')
+            ) {
                 $ret = CUSTOM_userCheck($A['username'], $A['email']);
                 if (!empty($ret)) {
                     // Need a numeric return for the default message handler
@@ -956,11 +963,13 @@ function saveuser($A)
                     if (!is_numeric($ret['number'])) {
                         $ret['number'] = 400;
                     }
+
                     return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
                 }
             }
         } elseif ($_CONF['custom_registration'] &&
-                    function_exists('CUSTOM_userCheck')) {
+            function_exists('CUSTOM_userCheck')
+        ) {
             $ret = CUSTOM_userCheck($A['username'], $A['email']);
             if (!empty($ret)) {
                 // Need a numeric return for the default message handler
@@ -968,47 +977,50 @@ function saveuser($A)
                 if (!is_numeric($ret['number'])) {
                     $ret['number'] = 400;
                 }
+
                 return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
             }
         }
     } else {
-         if (($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
-             // re athenticate remote user again for these changes to take place
+        if (($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
+            // re athenticate remote user again for these changes to take place
 
-             // Can't just be done here since user may have to relogin to his service which then sends us back here and we lose his changes
-         }
+            // Can't just be done here since user may have to relogin to his service which then sends us back here and we lose his changes
+        }
     }
     // no need to filter the password as it's encoded anyway
     if ($_CONF['allow_username_change'] == 1) {
         $A['new_username'] = COM_applyFilter($A['new_username']);
         if (!empty($A['new_username']) &&
-                ($A['new_username'] != $_USER['username'])) {
+            ($A['new_username'] != $_USER['username'])
+        ) {
             $A['new_username'] = DB_escapeString($A['new_username']);
             if (DB_count($_TABLES['users'], 'username', $A['new_username']) == 0) {
                 if ($_CONF['allow_user_photo'] == 1) {
                     $photo = DB_getItem($_TABLES['users'], 'photo',
-                                         "uid = {$_USER['uid']}");
+                        "uid = {$_USER['uid']}");
                     if (!empty($photo)) {
-                        $newphoto = preg_replace ('/' . $_USER['username'] . '/',
-                                    $A['new_username'], $photo, 1);
+                        $newphoto = preg_replace('/' . $_USER['username'] . '/',
+                            $A['new_username'], $photo, 1);
                         $imgpath = $_CONF['path_images'] . 'userphotos/';
                         if (rename($imgpath . $photo,
-                                    $imgpath . $newphoto) === false) {
-                            $display = COM_errorLog ('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
+                                $imgpath . $newphoto) === false
+                        ) {
+                            $display = COM_errorLog('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
                             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[21]));
 
                             return $display;
                         }
                         DB_change($_TABLES['users'], 'photo',
-                               DB_escapeString($newphoto), "uid", $_USER['uid']);
+                            DB_escapeString($newphoto), "uid", $_USER['uid']);
                     }
                 }
 
                 DB_change($_TABLES['users'], 'username', $A['new_username'],
-                           "uid", $_USER['uid']);
+                    "uid", $_USER['uid']);
             } else {
                 return COM_refresh($_CONF['site_url']
-                        . '/usersettings.php?msg=51');
+                    . '/usersettings.php?msg=51');
             }
         }
     }
@@ -1020,7 +1032,7 @@ function saveuser($A)
         $profile .= COM_createLink($A['homepage'], $A['homepage']) . '<br' . XHTML . '>';
     }
     $profile .= $A['location'] . '<br' . XHTML . '>' . $A['sig'] . '<br' . XHTML . '>'
-                . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
+        . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
     $result = PLG_checkforSpam($profile, $_CONF['spamx']);
     if ($result > 0) {
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
@@ -1039,19 +1051,20 @@ function saveuser($A)
 
     if (!COM_isEmail($A['email'])) {
         return COM_refresh($_CONF['site_url']
-                . '/usersettings.php?msg=52');
+            . '/usersettings.php?msg=52');
     } elseif ($A['email'] !== $A['email_conf']) {
         return COM_refresh($_CONF['site_url']
-                . '/usersettings.php?msg=78');
-    } elseif (emailAddressExists ($A['email'], $_USER['uid'])) {
+            . '/usersettings.php?msg=78');
+    } elseif (emailAddressExists($A['email'], $_USER['uid'])) {
         return COM_refresh($_CONF['site_url']
-                . '/usersettings.php?msg=56');
+            . '/usersettings.php?msg=56');
     } else {
         $passwd = '';
         if ($service == '') {
             if (!empty($A['passwd'])) {
                 if (($A['passwd'] == $A['passwd_conf']) &&
-                        (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) == 0)) {
+                    (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) == 0)
+                ) {
                     SEC_updateUserPassword($A['passwd'], $_USER['uid']);
                     if ($A['cooktime'] > 0) {
                         $cooktime = $A['cooktime'];
@@ -1059,13 +1072,13 @@ function saveuser($A)
                         $cooktime = -1000;
                     }
                     SEC_setCookie($_CONF['cookie_password'], $passwd,
-                                  time() + $cooktime);
+                        time() + $cooktime);
                 } elseif (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0) {
                     return COM_refresh($_CONF['site_url']
-                                        . '/usersettings.php?msg=68');
+                        . '/usersettings.php?msg=68');
                 } elseif ($A['passwd'] != $A['passwd_conf']) {
                     return COM_refresh($_CONF['site_url']
-                                        . '/usersettings.php?msg=67');
+                        . '/usersettings.php?msg=67');
                 }
             }
         } else {
@@ -1078,18 +1091,17 @@ function saveuser($A)
             SEC_setCookie($_CONF['cookie_password'], $passwd, time() + $cooktime);
         }
 
-
         if ($_US_VERBOSE) {
-            COM_errorLog('cooktime = ' . $A['cooktime'],1);
+            COM_errorLog('cooktime = ' . $A['cooktime'], 1);
         }
 
         if ($A['cooktime'] <= 0) {
             $cooktime = 1000;
             SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
-                          time() - $cooktime);
+                time() - $cooktime);
         } else {
             SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
-                          time() + $A['cooktime']);
+                time() + $A['cooktime']);
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
@@ -1097,15 +1109,14 @@ function saveuser($A)
             if (isset($A['delete_photo'])) {
                 $delete_photo = $A['delete_photo'];
             }
-            $filename = handlePhotoUpload ($delete_photo);
+            $filename = handlePhotoUpload($delete_photo);
         }
 
         if (!empty($A['homepage'])) {
             $pos = MBYTE_strpos($A['homepage'], ':');
             if ($pos === false) {
                 $A['homepage'] = 'http://' . $A['homepage'];
-            }
-            else {
+            } else {
                 $prot = substr($A['homepage'], 0, $pos + 1);
                 if (($prot !== 'http:') && ($prot !== 'https:')) {
                     $A['homepage'] = 'http:' . substr($A['homepage'], $pos + 1);
@@ -1122,7 +1133,7 @@ function saveuser($A)
         $A['pgpkey'] = DB_escapeString($A['pgpkey']);
 
         if (!empty($filename)) {
-            if (!file_exists ($_CONF['path_images'] . 'userphotos/' . $filename)) {
+            if (!file_exists($_CONF['path_images'] . 'userphotos/' . $filename)) {
                 $filename = '';
             }
         }
@@ -1140,7 +1151,7 @@ function saveuser($A)
         // at this point, the user information has been saved, but now we're going to check to see if
         // the user has requested resynchronization with their remoteservice account
         $msg = 5; // default msg = Your account information has been successfully saved
-        if (isset($A['resynch']) ) {
+        if (isset($A['resynch'])) {
             if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)) {
                 $modules = SEC_collectRemoteOAuthModules();
                 $active_service = (count($modules) === 0) ? false : in_array(substr($_USER['remoteservice'], 6), $modules);
@@ -1170,17 +1181,16 @@ function saveuser($A)
 
 
         return COM_refresh($_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-                            . $_USER['uid'] . '&amp;msg=' . $msg);
+            . $_USER['uid'] . '&amp;msg=' . $msg);
     }
 }
 
 /**
-* Saves user's preferences back to the database
-*
-* @param    array   $A  User's data to save
-* @return   void
-*
-*/
+ * Saves user's preferences back to the database
+ *
+ * @param    array $A User's data to save
+ * @return   void
+ */
 function savepreferences($A)
 {
     global $_CONF, $_TABLES, $_USER;
@@ -1225,7 +1235,7 @@ function savepreferences($A)
         // when Advanced Editor is not enabled, make sure we don't overwrite
         // the user's current setting
         $A['advanced_editor'] = DB_getItem($_TABLES['userprefs'],
-                                    'advanced_editor', "uid = {$_USER['uid']}");
+            'advanced_editor', "uid = {$_USER['uid']}");
     }
 
     $A['maxstories'] = COM_applyFilter($A['maxstories'], true);
@@ -1237,8 +1247,8 @@ function savepreferences($A)
         }
     }
 
-    $TIDS  = @array_values($A['topics']);       // array of strings
-    $AIDS  = @array_values($A['selauthors']);   // array of integers
+    $TIDS = @array_values($A['topics']);       // array of strings
+    $AIDS = @array_values($A['selauthors']);   // array of integers
     $BOXES = @array_values($A['blocks']);       // array of integers
     $ETIDS = @array_values($A['etids']);        // array of strings
     $AETIDS = USER_getAllowedTopics();          // array of strings (fetched, needed to "clean" $TIDS and $ETIDS)
@@ -1246,7 +1256,7 @@ function savepreferences($A)
     $tids = '';
     if (count($TIDS) > 0) {
         // the array_intersect mitigates the need to scrub the TIDS input
-        $tids = DB_escapeString(implode(' ', array_intersect ($AETIDS, $TIDS)));
+        $tids = DB_escapeString(implode(' ', array_intersect($AETIDS, $TIDS)));
     }
 
     $aids = '';
@@ -1271,7 +1281,8 @@ function savepreferences($A)
         for ($x = 1; $x <= $numRows; $x++) {
             $row = DB_fetchArray($blockresult);
             if (($row['name'] !== 'user_block') && ($row['name'] !== 'admin_block') &&
-                ($row['name'] !== 'section_block')) {
+                ($row['name'] !== 'section_block')
+            ) {
                 $selectedblocks .= $row['bid'];
                 if ($x != $numRows) {
                     $selectedblocks .= ' ';
@@ -1284,7 +1295,7 @@ function savepreferences($A)
     $etids = '';
     if (($_CONF['emailstories'] == 1) && (count($ETIDS) > 0)) {
         // the array_intersect mitigates the need to scrub the ETIDS input
-        $etids = DB_escapeString(implode(' ', array_intersect ($AETIDS, $ETIDS)));
+        $etids = DB_escapeString(implode(' ', array_intersect($AETIDS, $ETIDS)));
     }
 
     if (isset($A['tzid'])) {
@@ -1313,14 +1324,14 @@ function savepreferences($A)
     $language = DB_escapeString($A['language']);
     DB_query("UPDATE {$_TABLES['users']} SET theme='$theme',language='$language' WHERE uid = '{$_USER['uid']}'");
     setcookie($_CONF['cookie_theme'], $A['theme'], time() + 31536000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
+        $_CONF['cookie_path'], $_CONF['cookiedomain'],
+        $_CONF['cookiesecure']);
     setcookie($_CONF['cookie_language'], $A['language'], time() + 31536000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
+        $_CONF['cookie_path'], $_CONF['cookiedomain'],
+        $_CONF['cookiesecure']);
     setcookie($_CONF['cookie_tzid'], $A['tzid'], time() + 31536000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
+        $_CONF['cookie_path'], $_CONF['cookiedomain'],
+        $_CONF['cookiesecure']);
 
     $A['dfid'] = COM_applyFilter($A['dfid'], true);
 
@@ -1329,11 +1340,25 @@ function savepreferences($A)
     if (empty($etids)) {
         $etids = '-';
     }
-    DB_save(
-        $_TABLES['userindex'], "uid,tids,aids,boxes,noboxes,maxstories,etids",
-        "{$_USER['uid']}, '$tids', '$aids', '$selectedblocks', '{$A['noboxes']}',
-        {$A['maxstories']}, '$etids'"
-    );
+
+    $tids = DB_escapeString($tids);
+    $etids = DB_escapeString($etids);
+    $aids = DB_escapeString($aids);
+    $boxes = DB_escapeString($selectedblocks);
+
+    if (DB_count($_TABLES['userindex'], 'uid', $_USER['uid']) > 0) {
+        $sql = "UPDATE {$_TABLES['userindex']} SET tids = '{$tids}', etids = '{$etids}', "
+            . "aids = '{$aids}', boxes = '{$boxes}', noboxes = {$A['noboxes']}, "
+            . "maxstories = {$A['maxstories']} "
+            . "WHERE uid = {$_USER['uid']} ";
+    } else {
+        $sql = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) "
+            . "VALUES ({$_USER['uid']}, '{$tids}', '{$etids}', '{$aids}', '{$boxes}', "
+            . "{$A['noboxes']}, {$A['maxstories']})";
+    }
+
+    DB_query($sql);
+
     $A['commentmode'] = COM_applyFilter($A['commentmode']);
     if (empty($A['commentmode'])) {
         $A['commentmode'] = $_CONF['comment_mode'];
@@ -1351,10 +1376,19 @@ function savepreferences($A)
         $A['commentlimit'] = $_CONF['comment_limit'];
     }
 
-    DB_save(
-        $_TABLES['usercomment'], 'uid,commentmode,commentorder,commentlimit', "{$_USER['uid']},
-        '{$A['commentmode']}', '{$A['commentorder']}', '{$A['commentlimit']}'"
-    );
+    $commentMode = DB_escapeString($A['commentmode']);
+    $commentOrder = DB_escapeString($A['commentorder']);
+
+    if (DB_count($_TABLES['usercomment'], 'uid', $_USER['uid']) > 0) {
+        $sql = "UPDATE {$_TABLES['usercomment']} SET commentmode = '{$commentMode}', "
+            . "commentorder = '{$commentOrder}', commentlimit = {$A['commentlimit']} "
+            . "WHERE uid = {$_USER['uid']} ";
+    } else {
+        $sql = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) "
+            . "VALUES ({$_USER['uid']}, '{$commentMode}', '{$commentOrder}', {$A['commentlimit']})";
+    }
+
+    DB_query($sql);
     PLG_userInfoChanged($_USER['uid']);
 }
 
@@ -1364,7 +1398,8 @@ if (isset($_POST['btncancel']) && $_POST['btncancel'] == $LANG_ADMIN['cancel']) 
     echo COM_refresh($_CONF['site_url']);
     exit;
 } elseif (isset($_POST['btnsubmit']) && ($_POST['btnsubmit'] === $LANG04[96]) &&
-    ($_POST['mode'] !== 'deleteconfirmed')) {
+    ($_POST['mode'] !== 'deleteconfirmed')
+) {
     $mode = 'confirmdelete';
 } elseif (isset($_POST['mode'])) {
     $mode = COM_applyFilter($_POST['mode']);
@@ -1374,7 +1409,7 @@ if (isset($_POST['btncancel']) && $_POST['btncancel'] == $LANG_ADMIN['cancel']) 
 
 $display = '';
 
-if (! COM_isAnonUser()) {
+if (!COM_isAnonUser()) {
     switch ($mode) {
         case 'saveuser':
             savepreferences($_POST);
@@ -1385,7 +1420,7 @@ if (! COM_isAnonUser()) {
         case 'savepreferences':
             savepreferences($_POST);
             $display .= COM_refresh($_CONF['site_url']
-                                     . '/usersettings.php?mode=preferences&amp;msg=6');
+                . '/usersettings.php?mode=preferences&amp;msg=6');
             break;
 
         case 'confirmdelete':
@@ -1417,14 +1452,15 @@ if (! COM_isAnonUser()) {
         case 'plugin':
             PLG_profileExtrasSave($_POST['plugin']);
             $display = COM_refresh($_CONF['site_url']
-                                    . '/usersettings.php?msg=5');
+                . '/usersettings.php?msg=5');
             break;
 
         case 'synch':
             // This case is the result of a callback from an OAuth service.
             // The user has made a request to resynch their glFusion user account with the remote OAuth service
             if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)
-                && isset($_GET['oauth_login'])) {
+                && isset($_GET['oauth_login'])
+            ) {
                 $msg = 5;
 
                 $modules = SEC_collectRemoteOAuthModules();
@@ -1466,9 +1502,10 @@ if (! COM_isAnonUser()) {
 
                         // authenticate with the remote service
                         if (!isset($query[$callback_query_string]) &&
-                            (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
+                            (empty($cancel_query_string) || !isset($query[$cancel_query_string]))
+                        ) {
                             $msg = 114; // Resynch with remote account has failed but other account information has been successfully saved
-                        // elseif the callback query string is set, then we have successfully authenticated
+                            // elseif the callback query string is set, then we have successfully authenticated
                         } elseif (isset($query[$callback_query_string])) {
                             // COM_errorLog("authenticated with remote service, retrieve userinfo");
                             // foreach($query as $key=>$value) {
@@ -1501,75 +1538,75 @@ if (! COM_isAnonUser()) {
                 break;
             }
 
-            // If OAuth is disabled, drop into default case
-    /*
-        case 'synch':
-            // This mode is the result of a callback from an OAuth service. The user has made a request to resynch their Geeklog user account with the OAuth service they used to login with.
-            if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0) && isset($_GET['oauth_login'])) {
-                $msg = 5;
-                $query[] = '';
+        // If OAuth is disabled, drop into default case
+        /*
+            case 'synch':
+                // This mode is the result of a callback from an OAuth service. The user has made a request to resynch their Geeklog user account with the OAuth service they used to login with.
+                if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0) && isset($_GET['oauth_login'])) {
+                    $msg = 5;
+                    $query[] = '';
 
-                // Here we go with the handling of OAuth authentification
-                $modules = SEC_collectRemoteOAuthModules();
-                $active_service = (count($modules) == 0) ? false : in_array(substr($_GET['oauth_login'], 6), $modules);
-                if (!$active_service) {
-                    $status = -1;
-                    $msg = 114; // Your re-synch with your remote account has failed but your other account information has been successfully saved.
-                } else {
-                    $query = array_merge($_GET, $_POST);
-                    $service = $query['oauth_login'];
-
-                    require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
-
-                    $consumer = new OAuthConsumer($service);
-
-                    if ($service == 'oauth.facebook') {
-                        // facebook resynchronizations are easier to perform
-                        // we'll use a FB consumer-specific hack/method
-                        $oauth_userinfo = $consumer->refresh_userinfo();
-                        if (empty($oauth_userinfo)) {
-                            $msg = 114; // account information saved but resynch failed
-                            COM_errorLog($MESSAGE[$msg]);
-                        } else {
-                            $consumer->doSynch($oauth_userinfo);
-                        }
+                    // Here we go with the handling of OAuth authentification
+                    $modules = SEC_collectRemoteOAuthModules();
+                    $active_service = (count($modules) == 0) ? false : in_array(substr($_GET['oauth_login'], 6), $modules);
+                    if (!$active_service) {
+                        $status = -1;
+                        $msg = 114; // Your re-synch with your remote account has failed but your other account information has been successfully saved.
                     } else {
-                        // standard OAuth services utilize multiple callback method
-                        $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
-                        $callback_query_string = $consumer->getCallback_query_string();
-                        $cancel_query_string = $consumer->getCancel_query_string();
+                        $query = array_merge($_GET, $_POST);
+                        $service = $query['oauth_login'];
 
-                        if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
-                            $msg = 114; // Your re-synch with your remote account has failed but your other account information has been successfully saved.
-                        } elseif (isset($query[$callback_query_string])) {
-                            $oauth_userinfo = $consumer->sreq_userinfo_response($query);
+                        require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
+
+                        $consumer = new OAuthConsumer($service);
+
+                        if ($service == 'oauth.facebook') {
+                            // facebook resynchronizations are easier to perform
+                            // we'll use a FB consumer-specific hack/method
+                            $oauth_userinfo = $consumer->refresh_userinfo();
                             if (empty($oauth_userinfo)) {
-                                $msg = 111; // Authentication error.
+                                $msg = 114; // account information saved but resynch failed
+                                COM_errorLog($MESSAGE[$msg]);
                             } else {
                                 $consumer->doSynch($oauth_userinfo);
                             }
-                        } elseif (!empty($cancel_query_string) && isset($query[$cancel_query_string])) {
-                                $msg = 112; // Certification has been canceled.
                         } else {
-                            $msg = 91; // You specified an invalid identity URL.
+                            // standard OAuth services utilize multiple callback method
+                            $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
+                            $callback_query_string = $consumer->getCallback_query_string();
+                            $cancel_query_string = $consumer->getCancel_query_string();
+
+                            if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
+                                $msg = 114; // Your re-synch with your remote account has failed but your other account information has been successfully saved.
+                            } elseif (isset($query[$callback_query_string])) {
+                                $oauth_userinfo = $consumer->sreq_userinfo_response($query);
+                                if (empty($oauth_userinfo)) {
+                                    $msg = 111; // Authentication error.
+                                } else {
+                                    $consumer->doSynch($oauth_userinfo);
+                                }
+                            } elseif (!empty($cancel_query_string) && isset($query[$cancel_query_string])) {
+                                    $msg = 112; // Certification has been canceled.
+                            } else {
+                                $msg = 91; // You specified an invalid identity URL.
+                            }
                         }
                     }
+
+                    if ($_US_VERBOSE) {
+                        COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
+                    }
+
+                    if ($msg == 5) {
+                        $display = COM_refresh($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=5');
+                    } else {
+                        $display = COM_refresh($_CONF['site_url'] . '/usersettings.php?msg=' . $msg);
+                    }
+                    break;
                 }
 
-                if ($_US_VERBOSE) {
-                    COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
-                }
-
-                if ($msg == 5) {
-                    $display = COM_refresh($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=5');
-                } else {
-                    $display = COM_refresh($_CONF['site_url'] . '/usersettings.php?msg=' . $msg);
-                }
-                break;
-            }
-
-            // Go right into default
-    */
+                // Go right into default
+        */
         default: // also if $mode == 'edit', 'preferences', or 'comments'
             $display .= COM_showMessageFromParameter();
             $display .= edituser();
@@ -1584,4 +1621,3 @@ if (! COM_isAnonUser()) {
 }
 
 COM_output($display);
-
