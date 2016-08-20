@@ -767,7 +767,7 @@ class Database
             if (strpos($sequence, $this->_tablePrefix) !== 0) {
                 $sequence = $this->_tablePrefix . $sequence;
             }
-            
+
             $result = @pg_query('SELECT CURRVAL(\'' . $sequence . '\'); ');
             if ($result === false) {
                 $result = @pg_query('SELECT NEXTVAL(\'' . $sequence . '\'); ');

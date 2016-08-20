@@ -4064,7 +4064,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid, ta.tid, title, comments, day
+            GROUP BY sid, featured, date, ta.tid, title, comments, day
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
         $result = DB_query($sql);
@@ -4253,7 +4253,9 @@ function COM_showBlocks($side, $topic = '')
         $commonsql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
 
-    $commonsql .= " GROUP BY bid ";
+    $commonsql .= " GROUP BY bid, is_enabled, name, b.type, title, blockorder, device, content, "
+        . "allow_autotags, cache_time, rdfurl, rdfupdated, rdf_last_modified, rdf_etag, rdflimit, "
+        . "onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon ";
     $commonsql .= ' ORDER BY blockorder,title ASC';
 
     $blocksql['mysql'] .= $commonsql;
@@ -5028,7 +5030,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
 
         $sql['pgsql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' ) . "
-            GROUP BY sid, title ORDER BY date DESC";
+            GROUP BY sid, title, date ORDER BY date DESC";
 
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
@@ -6023,17 +6025,19 @@ function COM_updateSpeedlimit($type = 'submit', $property = '')
     if (empty($property)) {
         $property = $_SERVER['REMOTE_ADDR'];
     }
-    $property = DB_escapeString($property);
 
-    DB_save($_TABLES['speedlimit'], 'ipaddress,date,type',
-            "'$property',UNIX_TIMESTAMP(),'$type'");
+    $property = DB_escapeString($property);
+    $type = DB_escapeString($type);
+    $sql = "INSERT INTO {$_TABLES['speedlimit']} (ipaddress, date, type) "
+        . "VALUES ('{$property}', UNIX_TIMESTAMP(), '{$type}') ";
+    DB_query($sql);
 }
 
 /**
 * Clear out expired speed limits, i.e. entries older than 'x' seconds
 *
-* @param speedlimit   int      number of seconds
-* @param type         string   type of speed limit, e.g. 'submit', 'comment'
+* @param  int    $speedlimit   number of seconds
+* @param  string $type         type of speed limit, e.g. 'submit', 'comment'
 *
 */
 function COM_clearSpeedlimit($speedlimit = 60, $type = '')

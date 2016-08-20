@@ -1973,11 +1973,11 @@ function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, sp_title title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
             . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) {$stwhere} GROUP BY sid, type, sp_title, sid ORDER BY 5 DESC LIMIT 15";
-        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, sp_title title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
+        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, sp_title AS title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
             . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . " AND (date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) {$stwhere}  GROUP BY sid, type, sp_title, sid ORDER BY 5 DESC LIMIT 15";
     } else {
-        $sql = "SELECT {$_TABLES['comments']}.sid, {$_TABLES['comments']}.title title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
+        $sql = "SELECT {$_TABLES['comments']}.sid, {$_TABLES['comments']}.title AS title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
             . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . "{$stwhere} ORDER BY unixdate DESC LIMIT $numreturn";
     }
