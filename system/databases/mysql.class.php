@@ -60,6 +60,11 @@ class Database
     private $_pass = '';
 
     /**
+     * @var string
+     */
+    private $_tablePrefix = '';
+
+    /**
      * @var resource|false
      */
     private $_db = '';
@@ -202,19 +207,21 @@ class Database
      * constructor for database
      * This initializes an instance of the database object
      *
-     * @param        string $dbhost     Database host
-     * @param        string $dbname     Name of database
-     * @param        string $dbuser     User to make connection as
-     * @param        string $dbpass     Password for dbuser
-     * @param        string $errorlogfn Name of the errorlog function
-     * @param        string $charset    character set to use
+     * @param        string $dbhost      Database host
+     * @param        string $dbname      Name of database
+     * @param        string $dbuser      User to make connection as
+     * @param        string $dbpass      Password for dbuser
+     * @param        string $tablePrefix Table prefix
+     * @param        string $errorlogfn  Name of the errorlog function
+     * @param        string $charset     Character set to use
      */
-    public function __construct($dbhost, $dbname, $dbuser, $dbpass, $errorlogfn = '', $charset = '')
+    public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix, $errorlogfn = '', $charset = '')
     {
         $this->_host = $dbhost;
         $this->_name = $dbname;
         $this->_user = $dbuser;
         $this->_pass = $dbpass;
+        $this->_tablePrefix = $tablePrefix;
         $this->_verbose = false;
         $this->_errorlog_fn = $errorlogfn;
         $this->_charset = strtolower($charset);

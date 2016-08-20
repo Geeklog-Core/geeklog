@@ -132,8 +132,8 @@ if (($_DB_dbms === 'mysql') && class_exists('MySQLi')) {
 }
 
 // Instantiate the database object
-$_DB = new Database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, 'COM_errorLog',
-    $_CONF['default_charset']);
+$_DB = new Database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
+    'COM_errorLog', $_CONF['default_charset']);
 if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
     DB_displayError(true);
 }

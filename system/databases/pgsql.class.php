@@ -60,6 +60,11 @@ class Database
     private $_pass = '';
 
     /**
+     * @var string
+     */
+    private $_tablePrefix = '';
+
+    /**
      * @var resource|false
      */
     private $_db = false;
@@ -187,19 +192,21 @@ class Database
      * constructor for database
      * This initializes an instance of the database object
      *
-     * @param        string $dbhost     Database host
-     * @param        string $dbname     Name of database
-     * @param        string $dbuser     User to make connection as
-     * @param        string $dbpass     Password for dbuser
-     * @param        string $errorlogfn Name of the errorlog function
-     * @param        string $charset    character set to use
+     * @param        string $dbhost      Database host
+     * @param        string $dbname      Name of database
+     * @param        string $dbuser      User to make connection as
+     * @param        string $dbpass      Password for dbuser
+     * @param        string $tablePrefix Table prefix
+     * @param        string $errorlogfn  Name of the errorlog function
+     * @param        string $charset     Character set to use
      */
-    public function __construct($dbhost, $dbname, $dbuser, $dbpass, $errorlogfn = '', $charset = '')
+    public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix, $errorlogfn = '', $charset = '')
     {
         $this->_host = $dbhost;
         $this->_name = $dbname;
         $this->_user = $dbuser;
         $this->_pass = $dbpass;
+        $this->_tablePrefix = $tablePrefix;
         $this->_verbose = false;
         $this->_errorlog_fn = $errorlogfn;
         $this->_charset = strtolower($charset);
@@ -272,7 +279,7 @@ class Database
      * @param    int      $fieldNumber field number to return the name of
      * @return   string   Returns name of specified field
      */
-    function dbFieldName($recordSet, $fieldNumber)
+    public function dbFieldName($recordSet, $fieldNumber)
     {
         return @pg_field_name($recordSet, $fieldNumber);
     }
@@ -754,9 +761,13 @@ class Database
      * @param    string   $sequence        sequence name the sequence to get the value last insert ID from
      * @return   int      Returns last auto-generated ID
      */
-    function dbInsertId($link_identifier = null, $sequence = '')
+    public function dbInsertId($link_identifier = null, $sequence = '')
     {
         if (!empty($sequence)) {
+            if (strpos($sequence, $this->_tablePrefix) !== 0) {
+                $sequence = $this->_tablePrefix . $sequence;
+            }
+            
             $result = @pg_query('SELECT CURRVAL(\'' . $sequence . '\'); ');
             if ($result === false) {
                 $result = @pg_query('SELECT NEXTVAL(\'' . $sequence . '\'); ');
