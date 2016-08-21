@@ -5985,6 +5985,19 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
 
     $last = 0;
 
+    // Allow some admins to bypass speed check
+    if (SEC_inGroup('Root')) {
+        return $last;
+    }
+
+    if (($type === 'comment') && SEC_inGroup('Comment Admin')) {
+        return $last;
+    }
+
+    if (($type === 'submit') && SEC_inGroup('Story Admin')) {
+        return $last;
+    }
+
     if (empty($property)) {
         $property = $_SERVER['REMOTE_ADDR'];
     }
