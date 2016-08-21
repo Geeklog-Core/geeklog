@@ -8199,6 +8199,31 @@ function COM_output($display)
 */
 function COM_getTextContent($text)
 {
+    // remove everything before <body> tag
+    if (($pos = stripos($text, '<body')) !== false) {
+        $text = substr($text, $pos);
+    }
+
+    // remove everything after </body> tag
+    if (($pos = stripos($text, '</body>')) !== false) {
+        $text = substr($text, 0, $pos + strlen('</body>'));
+    }
+
+    // remove <script> tags
+    if (stripos($text, '<script') !== false) {
+        $text = preg_replace('@<script.*?>.*?</script>@i', ' ', $text);
+
+        if (($pos = stripos($text, '<script')) !== false) {
+            // </script> tag is missing
+            $text = substr($text, 0, $pos);
+        }
+
+        if (($pos = stripos($text, '</script>')) !== false) {
+            // <script> tag is missing
+            $text = substr($text, $pos + strlen('</script>'));
+        }
+    }
+
     // replace <br> with spaces so that Text<br>Text becomes two words
     $text = preg_replace('/\<br(\s*)?\/?\>/i', ' ', $text);
 
