@@ -1614,10 +1614,13 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     $header->set_var('doctype', $doctype . LB);
 
+    COM_setLangIdAndAttribute($header);
+    $langId = $header->get_var('lang_id');
+
     if (XHTML == '') {
         $header->set_var('xmlns', '');
     } else {
-        $header->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
+        $header->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $langId . '"');
     }
 
     $feed_url = array();
@@ -1715,9 +1718,6 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $title_and_name .= $_CONF['site_name'];
     }
     $header->set_var('page_title_and_site_name', $title_and_name);
-
-    COM_setLangIdAndAttribute($header);
-
     $header->set_var('background_image', $_CONF['layout_url']
                                           . '/images/bg.' . $_IMAGE_TYPE);
 
@@ -8102,15 +8102,13 @@ function COM_renderWikiText($wikitext)
 /**
 * Set the {lang_id} and {lang_attribute} variables for a template
 *
-* NOTE:     {lang_attribute} is only set in multi-language environments.
-*
-* @param    ref     &$template  template to use
+* @param    object     &$template  template to use
 * @return   void
 *
 */
 function COM_setLangIdAndAttribute(&$template)
 {
-    global $_CONF;
+    global $_CONF, $LANG_ISO639_1;
 
     $langAttr = '';
     $langId   = '';
@@ -8118,11 +8116,7 @@ function COM_setLangIdAndAttribute(&$template)
     if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
         $langId = COM_getLanguageId();
     } else {
-        // try to derive the language id from the locale
-        $l = explode('.', $_CONF['locale']); // get rid of character set
-        $langId = $l[0];
-        $l = explode('@', $langId); // get rid of '@euro', etc.
-        $langId = $l[0];
+        $langId = $LANG_ISO639_1;
     }
 
     if (!empty($langId)) {
@@ -8147,7 +8141,7 @@ function COM_setLangIdAndAttribute(&$template)
     if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
         $template->set_var('lang_attribute', ' ' . $langAttr);
     } else {
-        $template->set_var('lang_attribute', '');
+        $template->set_var('lang_attribute', ' lang="' . $LANG_ISO639_1 . '"');
     }
 }
 

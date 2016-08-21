@@ -35,6 +35,8 @@
 
 $LANG_CHARSET = 'utf-8';
 
+$LANG_ISO639_1 = 'ja';
+
 ###############################################################################
 # Array Format:
 # $LANGXX[YY]:  $LANG - variable name
@@ -2430,6 +2432,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-
-
-?>
