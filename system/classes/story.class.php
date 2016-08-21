@@ -1876,6 +1876,107 @@ class Story
             $this->_perm_members, $this->_perm_anon);
     }
 
+    /**
+     * Sort criterion
+     *
+     * @param  array $a
+     * @param  array $b
+     * @return int
+     */
+    private static function getRelatedArticlesSort(array $a, array $b)
+    {
+        return $b['score'] - $a['score'];
+    }
+
+    /**
+     * Return a list of articles that have some relation with the article ID given
+     *
+     * @param  string $articleId
+     * @param  string $keywordList a comma-separated list of keywords
+     * @param  int    $limit       max number od related articles
+     * @return array
+     * @link   http://www.enkeladress.com/article/20110315104621317
+     */
+    public static function getRelatedArticlesByKeywords($articleId, $keywordList, $limit = 5)
+    {
+        global $_CONF, $LANG24, $_TABLES;
+
+        $work = array();
+
+        $articleId = trim($articleId);
+        $keywords = explode(',', $keywordList);
+
+        if (($articleId === '') || (count($keywords) === 0)) {
+            return $work;
+        }
+
+        $escapedArticleId = DB_escapeString($articleId);
+
+        foreach ($keywords as $keyword) {
+            $keyword = trim($keyword);
+
+            if ($keyword === '') {
+                continue;
+            } else {
+                $escapedKeyword = DB_escapeString($keyword);
+            }
+
+            $sql = "SELECT sid, title FROM {$_TABLES['stories']} "
+                . "WHERE (sid  <> '{$escapedArticleId}') "
+                . "AND (draft_flag = 0) AND (date <= NOW()) "
+                . "AND meta_keywords LIKE '%{$escapedKeyword}%' "
+                . "LIMIT 5 ";
+            $resultSet = DB_query($sql);
+
+            while (($A = DB_fetchArray($resultSet, false)) !== false) {
+                $sid = $A['sid'];
+                $title = stripslashes($A['title']);
+                $found = false;
+
+                foreach ($work as &$item) {
+                    if ($item['sid'] === $sid) {
+                        $item['score']++;
+                        $found = true;
+                        break;
+                    }
+                }
+
+                unset($item);
+
+                if (!$found) {
+                    $work[] = array(
+                        'sid' => $sid,
+                        'title' => $title,
+                        'score' => 1,
+                    );
+                }
+            }
+        }
+
+        if (count($work) > 1) {
+            usort($work, array(__CLASS__, 'getRelatedArticlesSort'));
+        }
+
+        if (count($work) > $limit) {
+            $work = array_slice($work, 0, $limit);
+        }
+
+        $encoding = COM_getEncodingt();
+        $retval = array();
+
+        foreach ($work as $item) {
+            $retval[] = '<li>'
+                . '<a href="' . COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $item['sid'])
+                . '">' . htmlspecialchars($item['title'], ENT_QUOTES, $encoding) . '</a>'
+                . '</li>' . PHP_EOL;
+        }
+
+        $retval = '<h3>' . $LANG24[92] . '</h3>' . PHP_EOL
+            . '<ul>' . PHP_EOL . implode('', $retval) . '</ul>' . PHP_EOL;
+
+        return $retval;
+    }
+
     // End Public Methods.
 
     // Private Methods:

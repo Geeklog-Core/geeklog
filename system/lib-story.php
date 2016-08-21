@@ -144,7 +144,7 @@ function STORY_renderArticle(&$story, $index = '', $storytpl = 'storytext.thtml'
         }
     }
 
-    $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+    $articleUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story='
         . $story->getSid());
     $article->set_var('article_url', $articleUrl);
     $article->set_var('story_title', $story->DisplayElements('title'));
@@ -610,6 +610,17 @@ function STORY_renderArticle(&$story, $index = '', $storytpl = 'storytext.thtml'
         } else {
             $article->parse('story_bodyhtml', 'bodytext', true);
             PLG_templateSetVars('storytext', $article);
+        }
+
+        // Add related articles
+        if ($index === 'n') {
+            $article->set_var(
+                'related_articles_by_keyword',
+                Story::getRelatedArticlesByKeywords(
+                    $story->getSid(),
+                    $story->DisplayElements('meta_keywords')
+                )
+            );
         }
 
         PLG_templateSetVars($article_filevar, $article);
