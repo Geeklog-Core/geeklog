@@ -142,7 +142,7 @@ class GLText
 //              $text = self::_htmLawed($text, 'story.edit');
             }
 
-            $text = COM_checkWords($text);
+            $text = COM_checkWords($text, 'story');
         }
 
         $text = PLG_replaceTags(self::_displayEscape($text));

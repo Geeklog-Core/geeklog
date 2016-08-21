@@ -2187,7 +2187,7 @@ class Story
 
     function _applyTitleFilter($title)
     {
-        return htmlspecialchars(strip_tags(COM_checkWords($title)),
+        return htmlspecialchars(strip_tags(COM_checkWords($title, 'story')),
             ENT_QUOTES, COM_getEncodingt());
     }
 
@@ -2199,7 +2199,7 @@ class Story
 
             // Remove any autotags the user doesn't have permission to use
             $text = PLG_replaceTags($text, '', true);
-            $text = COM_checkWords($text);
+            $text = COM_checkWords($text, 'story');
 
             if (in_array($postmode, array('html', 'adveditor', 'wikitext'))) {
                 // html or wikitext

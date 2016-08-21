@@ -3681,16 +3681,30 @@ function COM_userComments($sid, $title, $type = 'article', $order = '', $mode = 
 *
 * This will replace 'bad words' with something more appropriate
 *
-* @param        string      $Message        String to check
+* @param        string      $message        String to check
+* @param        string      $type           e.g. 'story', 'comment'
 * @see function COM_checkHTML
 * @return   string  Edited $Message
 *
 */
-function COM_checkWords($Message)
+function COM_checkWords($message, $type = '')
 {
     global $_CONF;
 
-    $EditedMessage = $Message;
+    $editedMessage = $message;
+
+    // Allow some admins to bypass bad word check
+    if (SEC_inGroup('Root')) {
+        return $editedMessage;
+    }
+
+    if (($type === 'comment') && SEC_inGroup('Comment Admin')) {
+        return $editedMessage;
+    }
+
+    if (($type === 'story') && SEC_inGroup('Story Admin')) {
+        return $editedMessage;
+    }
 
     if ($_CONF['censormode'] != 0) {
         if (is_array($_CONF['censorlist'])) {
@@ -3698,6 +3712,8 @@ function COM_checkWords($Message)
 
             switch ($_CONF['censormode']) {
                 case 1: // Exact match
+                    // Intentional fall-through
+                default:
                     $RegExPrefix = '(\s)';
                     $RegExSuffix = '(\W)';
                     break;
@@ -3715,14 +3731,14 @@ function COM_checkWords($Message)
 
             foreach ($_CONF['censorlist'] as $c) {
                 if (!empty($c)) {
-                    $EditedMessage = MBYTE_eregi_replace($RegExPrefix . $c
-                        . $RegExSuffix, "\\1$Replacement\\2", $EditedMessage);
+                    $editedMessage = MBYTE_eregi_replace($RegExPrefix . $c
+                        . $RegExSuffix, "\\1$Replacement\\2", $editedMessage);
                 }
             }
         }
     }
 
-    return $EditedMessage;
+    return $editedMessage;
 }
 
 /**

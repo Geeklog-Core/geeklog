@@ -736,7 +736,7 @@ function STORY_whatsRelated($related, $uid, $sid)
                                 $urls[] = $matches[1];
                                 // Now Check Words
                                 $value = '<a href="' . $matches[1] . '">'
-                                    . COM_checkWords($matches[2]) . '</a>';
+                                    . COM_checkWords($matches[2], 'story') . '</a>';
                             }
                         } else {
                             // remove it from the array
@@ -747,7 +747,7 @@ function STORY_whatsRelated($related, $uid, $sid)
                         unset($rel[$key]);
                     }
                 } else {
-                    $value = COM_checkWords($value);
+                    $value = COM_checkWords($value, 'story');
                 }
             }
         }
