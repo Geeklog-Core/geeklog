@@ -231,11 +231,11 @@ function USER_sendActivationEmail ($username, $useremail)
 * @param    string  $passwd      password (optional, see above)
 * @param    string  $fullname    user's full name (optional)
 * @param    string  $homepage    user's home page (optional)
-* @param    boolean $batchimport set to true when called from importuser() in admin/users.php (optional)
+* @param    boolean $batchImport set to true when called from importuser() in admin/users.php (optional)
 * @return   int                  new user's ID
 *
 */
-function USER_createAccount($username, $email, $passwd = '', $fullname = '', $homepage = '', $remoteusername = '', $service = '', $batchimport = false)
+function USER_createAccount($username, $email, $passwd = '', $fullname = '', $homepage = '', $remoteusername = '', $service = '', $batchImport = false)
 {
     global $_CONF, $_TABLES;
 
@@ -322,7 +322,7 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
 
     // call custom registration function and plugins
     if ($_CONF['custom_registration'] && function_exists('CUSTOM_userCreate')) {
-        CUSTOM_userCreate($uid,$batchimport);
+        CUSTOM_userCreate($uid, $batchImport);
     }
     PLG_createUser($uid);
 
