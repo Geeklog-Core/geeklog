@@ -56,6 +56,11 @@ if (file_exists($langfile)) {
     require_once $plugin_path . 'language/english.php';
 }
 
+Language::override(array(
+    'LANG_STATIC', 'PLG_staticpages_MESSAGE15', 'PLG_staticpages_MESSAGE19',
+    'PLG_staticpages_MESSAGE20', 'PLG_staticpages_MESSAGE21',
+));
+
 /**
  * Check and see if we need to load the plugin configuration
  */

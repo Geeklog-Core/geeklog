@@ -3,6 +3,17 @@
 // Add device type to blocks table
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `device` VARCHAR( 15 ) NOT NULL DEFAULT 'all' AFTER `blockorder`";
 
+// Add `language_items` table
+$_SQL[] ="
+CREATE TABLE {$_TABLES['language_items']} (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  var_name VARCHAR(30) NOT NULL,
+  language VARCHAR(30) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  value VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (id)
+) ENGINE=MyUSAM
+";
 
 /**
  * Add new config options
@@ -38,5 +49,3 @@ function update_ConfValuesFor212()
 
     return true;
 }
-
-?>

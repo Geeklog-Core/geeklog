@@ -1342,6 +1342,18 @@ $LANG33 = array(
     55 => 'Articles'
 );
 
+// admin/language.php (since v2.1.2)
+$LANG_LANG = array(
+    'language_manager' => 'Language Manager',
+    'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
+    'language_editor'  => 'Language Editor',
+    'id'               => 'ID',
+    'language'         => 'Language',
+    'name'             => 'Name',
+    'var_name'         => 'Var Name',
+    'value'            => 'Value',
+);
+
 ###############################################################################
 # confirmation and error messages
 
@@ -1458,6 +1470,8 @@ $MESSAGE = array(
     118 => 'Click to select a date',
     119 => 'More..',
     120 => 'Send this?',
+    130 => 'Your language item has been successfully deleted.',
+    131 => 'Your language item has been successfully saved.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.'

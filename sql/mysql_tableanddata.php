@@ -209,6 +209,17 @@ CREATE TABLE {$_TABLES['groups']} (
 ) ENGINE=MyISAM
 ";
 
+$_SQL[] ="
+CREATE TABLE {$_TABLES['language_items']} (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  var_name VARCHAR(30) NOT NULL,
+  language VARCHAR(30) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  value VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (id)
+) ENGINE=MyUSAM
+";
+
 $_SQL[] = "
 CREATE TABLE {$_TABLES['maillist']} (
   code int(1) NOT NULL default '0',
@@ -852,5 +863,3 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_versi
 
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (-1,'Trackback Disabled') ";
-
-?>

@@ -53,6 +53,12 @@ if (file_exists($langfile)) {
     require_once $plugin_path . 'language/english.php';
 }
 
+Language::override(array(
+    'LANG_CAL_1', '_LANG_CAL_SEARCH', 'LANG_CAL_2', 'LANG_CAL_ADMIN', 'LANG_CAL_MESSAGE',
+    'PLG_calendar_MESSAGE4', 'PLG_calendar_MESSAGE17', 'PLG_calendar_MESSAGE18',
+    'PLG_calendar_MESSAGE24', 'PLG_calendar_MESSAGE26',
+));
+
 /*
 * Check and see if we need to load the plugin configuration
 */

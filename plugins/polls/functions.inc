@@ -56,6 +56,10 @@ if (file_exists($langfile)) {
     require_once $plugin_path . 'language/english.php';
 }
 
+Language::override(array(
+    'LANG_POLLS', 'LANG25', 'PLG_polls_MESSAGE15', 'PLG_polls_MESSAGE19', 'PLG_polls_MESSAGE20',
+));
+
 /**
  * Check and see if we need to load the plugin configuration
  */
