@@ -52,6 +52,10 @@ if (file_exists($langfile)) {
     include_once $_CONF['path'] . 'plugins/xmlsitemap/language/english.php';
 }
 
+Language::override(array(
+    'LANG_XMLSMAP',
+));
+
 // Load the plugin configuration
 $_XMLSMAP_CONF = XMLSMAP_loadConfig();
 

@@ -29,6 +29,10 @@ if (file_exists($langfile)) {
     include_once $plugin_path . 'language/english.php';
 }
 
+Language::override(array(
+    'LANG_SX00', 'PLG_spamx_MESSAGE128', 'PLG_spamx_MESSAGE8',
+));
+
 /**
 * Check and see if we need to load the plugin configuration
 */
@@ -38,7 +42,6 @@ if (!isset($_SPX_CONF['timeout'])) {
     $spx_config = config::get_instance();
     $_SPX_CONF = $spx_config->get_config('spamx');
 }
-
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -638,5 +641,3 @@ function plugin_itemPreSave_spamx($type, $username)
 
     return '';
 }
-
-?>

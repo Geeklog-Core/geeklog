@@ -132,7 +132,9 @@ $display .= PLG_getPluginStats(1);
 $sql = "SELECT sid,title,hits
     FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
     WHERE ta.type = 'article' AND ta.id = sid
-    AND (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL('AND') . $topicsql . " GROUP BY sid ORDER BY hits DESC LIMIT 10";
+    AND (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL('AND') . $topicsql
+    . " GROUP BY sid, title, hits "
+    . " ORDER BY hits DESC LIMIT 10";
 
 $result = DB_query($sql);
 $nrows = DB_numRows($result);

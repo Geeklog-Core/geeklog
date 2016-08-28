@@ -19,6 +19,11 @@
 
     {related_topics}
 
+    {!if related_articles_by_keyword}
+        <hr{xhtml}>
+        {related_articles_by_keyword}
+    {!endif}
+
     <div class="story-footer">
         <p>{page_selector}</p>
         <p>{readmore_link} {post_comment_link}</p>

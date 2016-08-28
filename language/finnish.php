@@ -27,6 +27,8 @@
 
 $LANG_CHARSET = 'iso-8859-1';
 
+$LANG_ISO639_1 = 'fi';
+
 ###############################################################################
 # Array Format:
 # $LANGXX[YY]:  $LANG - variable name
@@ -2400,6 +2402,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
-
-
-?>

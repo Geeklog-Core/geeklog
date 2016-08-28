@@ -29,6 +29,11 @@
 
     {related_topics}
 
+    {!if related_articles_by_keyword}
+      <hr{xhtml}>
+      {related_articles_by_keyword}
+    {!endif}
+
 {!if navi_list}
     <ul class="story_navi">
       {!if page_selector}<li>{page_selector}</li>{!endif}

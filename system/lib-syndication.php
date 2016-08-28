@@ -89,7 +89,7 @@ function SYND_feedUpdateCheckAll($frontpage_only, $update_info, $limit, $updated
             $where .= ' AND frontpage = 1';
         }
 
-        $result = DB_query("SELECT sid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 GROUP BY sid ORDER BY date DESC $limitsql");
+        $result = DB_query("SELECT sid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 GROUP BY sid, date ORDER BY date DESC $limitsql");
         $nrows = DB_numRows($result);
 
         for ($i = 0; $i < $nrows; $i++) {
@@ -373,8 +373,8 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
     $sql = "SELECT sid,ta.tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
         WHERE draft_flag = 0 AND date <= NOW() AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 $where AND perm_anon > 0
-        GROUP BY sid,ta.tid
-        ORDER BY date DESC $limitsql";
+        GROUP BY sid,ta.tid,uid,title,introtext,bodytext,postmode,date,modified,commentcode,trackbackcode
+        ORDER BY date DESC {$limitsql}";
 
     $result = DB_query($sql);
 
