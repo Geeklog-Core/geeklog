@@ -217,7 +217,7 @@ CREATE TABLE {$_TABLES['language_items']} (
   name VARCHAR(30) NOT NULL,
   value VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (id)
-) ENGINE=MyUSAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
