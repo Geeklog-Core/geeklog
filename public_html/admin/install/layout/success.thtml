@@ -22,5 +22,13 @@
         {!if older_geeklog}
         <p>{lang_success_19}</p>
         {!endif!}
+
+        <form action="" method="post">
+            <div>
+                <p><strong>{lang_success_23}</strong></p>
+                <input type="submit" name="submit" value="{lang_success_24}" onclick="return confirm('{lang_confirm_delete}');"{xhtml}>
+                <input type="submit" name="submit" value="{lang_success_25}"{xhtml}>
+            </div>
+        </form>
     </div>
 </div>

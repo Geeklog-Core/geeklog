@@ -59,7 +59,40 @@ function SUCCESS_getInstallPath()
     return $parts[$num_parts - 3] . '/' . $parts[$num_parts - 2];
 }
 
+/**
+ * Delete all files and directories under the $baseDir
+ *
+ * @param  string $baseDir
+ * @return array of files and directories that the script couldn't delete
+ */
+function SUCCESS_deleteAll($baseDir)
+{
+    static $failures = array();
+
+    foreach (scandir($baseDir) as $item) {
+        if (($item !== '.') && ($item !== '..')) {
+            $path = $baseDir . DIRECTORY_SEPARATOR . $item;
+
+            if (is_dir($path)) {
+                SUCCESS_deleteAll($path);
+            } elseif (!@is_link($path)) {
+                if (!@unlink($path)) {
+                    $failures[] = $path;
+                }
+            }
+        }
+    }
+
+    if (!@rmdir($baseDir)) {
+        $failures[] = $baseDir;
+    }
+
+    return $failures;
+}
+
+// Main
 $type = $_FINPUT->get('type', 'install');
+$submit = $_INPUT->post('submit', '');
 $language = $_FINPUT->get('language', 'english');
 $language = preg_replace('/[^a-z0-9\-_]/', '', $language);
 $languagePath = dirname(__FILE__) . '/language/' . $language . '.php';
@@ -76,6 +109,23 @@ $_CONF['rootdebug'] = true;
 // Prevent the template class from creating a cache file
 $_CONF['cache_templates'] = false;
 
+switch ($submit) {
+    case $LANG_SUCCESS[24]:  // Delete all the fies and directories
+        $failures = SUCCESS_deleteAll(dirname(__FILE__));
+        $redirect = $_CONF['site_url'] . '/index.php?msg='
+            . ((count($failures) === 0) ? 150 : 151);
+        header('Location: ' . $redirect);
+        break;
+
+    case $LANG_SUCCESS[25]: // Don't delete any files and directories
+        header('Location: ' . $_CONF['site_url'] . '/index.php?msg=152');
+        break;
+
+    default:
+        // do nothing
+        break;
+}
+
 $T = COM_newTemplate(dirname(__FILE__) . '/layout');
 $T->set_file('success', 'success.thtml');
 
@@ -88,37 +138,41 @@ if ($type === 'install') {
 }
 
 $T->set_var(array(
-    'conf_path'       => $_CONF['path'],
-    'conf_path_html'  => $_CONF['path_html'],
-    'conf_site_url'   => $_CONF['site_url'],
-    'is_install'      => ($type === 'install'),
-    'lang_message'    => $message,
-    'lang_success_1'  => $LANG_SUCCESS[1],
-    'lang_success_2'  => $LANG_SUCCESS[2],
-    'lang_success_3'  => $LANG_SUCCESS[3],
-    'lang_success_4'  => $LANG_SUCCESS[4],
-    'lang_success_5'  => $LANG_SUCCESS[5],
-    'lang_success_6'  => $LANG_SUCCESS[6],
-    'lang_success_7'  => $LANG_SUCCESS[7],
-    'lang_success_8'  => $LANG_SUCCESS[8],
-    'lang_success_9'  => $LANG_SUCCESS[9],
-    'lang_success_10' => $LANG_SUCCESS[10],
-    'lang_success_11' => $LANG_SUCCESS[11],
-    'lang_success_12' => $LANG_SUCCESS[12],
-    'lang_success_13' => $LANG_SUCCESS[13],
-    'lang_success_14' => $LANG_SUCCESS[14],
-    'lang_success_15' => $LANG_SUCCESS[15],
-    'lang_success_16' => $LANG_SUCCESS[16],
-    'lang_success_17' => $LANG_SUCCESS[17],
-    'lang_success_18' => $LANG_SUCCESS[18],
-    'lang_success_19' => $LANG_SUCCESS[19],
-    'lang_success_20' => $LANG_SUCCESS[20],
-    'lang_success_21' => $LANG_SUCCESS[21],
-    'lang_success_22' => $LANG_SUCCESS[22],
-    'install_path'    => $_CONF['path_html'] . SUCCESS_getInstallPath(),
-    'older_geeklog'   => (DB_count($_TABLES['users'], 'username', 'NewAdmin') > 0),
-    'type'            => $type,
-    'version'         => VERSION,
+    'conf_path'           => $_CONF['path'],
+    'conf_path_html'      => $_CONF['path_html'],
+    'conf_site_url'       => $_CONF['site_url'],
+    'is_install'          => ($type === 'install'),
+    'lang_message'        => $message,
+    'lang_success_1'      => $LANG_SUCCESS[1],
+    'lang_success_2'      => $LANG_SUCCESS[2],
+    'lang_success_3'      => $LANG_SUCCESS[3],
+    'lang_success_4'      => $LANG_SUCCESS[4],
+    'lang_success_5'      => $LANG_SUCCESS[5],
+    'lang_success_6'      => $LANG_SUCCESS[6],
+    'lang_success_7'      => $LANG_SUCCESS[7],
+    'lang_success_8'      => $LANG_SUCCESS[8],
+    'lang_success_9'      => $LANG_SUCCESS[9],
+    'lang_success_10'     => $LANG_SUCCESS[10],
+    'lang_success_11'     => $LANG_SUCCESS[11],
+    'lang_success_12'     => $LANG_SUCCESS[12],
+    'lang_success_13'     => $LANG_SUCCESS[13],
+    'lang_success_14'     => $LANG_SUCCESS[14],
+    'lang_success_15'     => $LANG_SUCCESS[15],
+    'lang_success_16'     => $LANG_SUCCESS[16],
+    'lang_success_17'     => $LANG_SUCCESS[17],
+    'lang_success_18'     => $LANG_SUCCESS[18],
+    'lang_success_19'     => $LANG_SUCCESS[19],
+    'lang_success_20'     => $LANG_SUCCESS[20],
+    'lang_success_21'     => $LANG_SUCCESS[21],
+    'lang_success_22'     => $LANG_SUCCESS[22],
+    'lang_success_23'     => $LANG_SUCCESS[23],
+    'lang_success_24'     => $LANG_SUCCESS[24],
+    'lang_success_25'     => $LANG_SUCCESS[25],
+    'lang_confirm_delete' => $MESSAGE[76],
+    'install_path'        => $_CONF['path_html'] . SUCCESS_getInstallPath(),
+    'older_geeklog'       => (DB_count($_TABLES['users'], 'username', 'NewAdmin') > 0),
+    'type'                => $type,
+    'version'             => VERSION,
 ));
 
 $T->parse('output', 'success');
