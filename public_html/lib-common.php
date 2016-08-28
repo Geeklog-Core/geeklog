@@ -3290,7 +3290,9 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                     }
 
                     // Find num of comments
-                    $commentCount = DB_count($_TABLES['comments']) + DB_count($_TABLES['commentsubmissions']);
+                    $commentCount = COM_numberFormat(DB_count($_TABLES['comments']))
+                        . '/'
+                        .  COM_numberFormat(DB_count($_TABLES['commentsubmissions']));
                 }
 
                 $cc_arr = array(
@@ -3335,6 +3337,13 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'lang'      => $LANG01[116],
                         'num'       => $trackbackcount,
                         'image'     => $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE,
+                    ),
+                    array(
+                        'condition' => SEC_hasRights('comment.moderate'),
+                        'url'       => $_CONF['site_admin_url'] . '/comment.php',
+                        'lang'      => $LANG01[83],
+                        'num'       => $commentCount,
+                        'image'     => $_CONF['layout_url'] . '/images/icons/comment.' . $_IMAGE_TYPE,
                     ),
                 );
 
