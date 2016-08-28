@@ -15,6 +15,18 @@ CREATE TABLE {$_TABLES['language_items']} (
 ) ENGINE=MyISAM
 ";
 
+// Add `Language Admin` group
+$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (18, 'Language Admin', 'Has full access to language', 1);";
+
+// Add `language.edit` feature
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (68, 'language.edit', 'Can manage Language Settings', 1)";
+
+// Give `language.edit` feature to `Language Admin` group
+$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (68,18) ";
+
+// Add Root users to `Language Admin`
+$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (18,NULL,1) ";
+
 /**
  * Add new config options
  *
