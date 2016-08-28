@@ -3639,17 +3639,42 @@ function COM_adminMenu($help = '', $title = '', $position = '')
 
 /**
  * Redirects user to a given URL
+ *
+ * @param   string $url URL to send user to
+ * @return  string      HTML meta redirect
+ * @since   since v2.1.2
+ */
+function COM_redirect($url)
+{
+    header('Location: ' . $url);
+
+    // Send out HTML meta tags in case header('Location: some_url') fails
+    header('Content-Type: text/html; charset=' . COM_getCharset());
+    echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . PHP_EOL;
+    die();
+}
+
+/**
+ * Redirects user to a given URL
  * This function does a redirect using a meta refresh. This is (or at least
  * used to be) more compatible than using a HTTP Location: header.
  * NOTE:     This does not need to be XHTML compliant. It may also be used
  *           in situations where the XHTML constant is not defined yet ...
  *
- * @param    string $url URL to send user to
- * @return   string          HTML meta redirect
+ * @param        string $url URL to send user to
+ * @return       string      HTML meta redirect
+ * @deprecated  since v2.1.2
+ * @see          COM_redirect
  */
 function COM_refresh($url)
 {
-    return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+//    COM_errorLog('Warning!  COM_refresh has been deprecated since v2.1.2.  Use COM_redirect instead.');
+
+    if (is_callable('CUSTOM_refresh')) {
+        return CUSTOM_refresh($url);
+    } else {
+        return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+    }
 }
 
 /**
