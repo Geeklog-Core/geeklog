@@ -443,7 +443,7 @@ function deleteComments($suffix)
                 }
             }
 
-            echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=130');
+            echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=140');
             exit;
         }
     } else {
@@ -471,7 +471,7 @@ function approveComments($suffix)
             }
         }
 
-        echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=132');
+        echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=142');
         exit;
     } else {
         COM_accessLog("User {$_USER['username']} tried to approve comments (cid = " . implode(', ', $commentIds) . ") and failed CSRF checks.");
@@ -508,7 +508,7 @@ function banUsers($suffix)
                 $sql = "UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_DISABLED
                     . " WHERE (uid IN (" . implode(',', $userIds) . "))";
                 DB_query($sql);
-                echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=133');
+                echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=143');
                 exit;
             }
         }
@@ -557,7 +557,7 @@ function banIpAddresses($suffix)
                 }
             }
 
-            echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=134');
+            echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=144');
             exit;
         }
     } else {

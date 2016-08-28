@@ -956,7 +956,7 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
             $commenttext = str_replace('[','&#91;',$commenttext);
             $commenttext = str_replace(']','&#93;',$commenttext);
 
-            $title = COM_checkWords (strip_tags (COM_stripslashes ($title)));
+            $title = COM_checkWords(strip_tags(COM_stripslashes ($title)), 'comment');
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
 
             $_POST['title'] = $title;
@@ -986,8 +986,9 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                         // these have already been filtered above
                         $A[$key] = $_POST[$key];
                     } else if ($key == CMT_USERNAME) {
-                        $A[$key] = htmlspecialchars(COM_checkWords(strip_tags(
-                                    COM_stripslashes($_POST[$key]))));
+                        $A[$key] = htmlspecialchars(
+                            COM_checkWords(strip_tags(COM_stripslashes($_POST[$key])), 'comment')
+                        );
                     } else {
                         $A[$key] = COM_applyFilter ($_POST[$key]);
                     }
@@ -1115,8 +1116,12 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                     $name = $A[CMT_USERNAME]; // for preview
                 } elseif (isset($_COOKIE[$_CONF['cookie_anon_name']])) {
                     // stored as cookie, name used before
-                    $name = htmlspecialchars(COM_checkWords(strip_tags(
-                        COM_stripslashes($_COOKIE[$_CONF['cookie_anon_name']]))));
+                    $name = htmlspecialchars(
+                        COM_checkWords(
+                            strip_tags(COM_stripslashes($_COOKIE[$_CONF['cookie_anon_name']])),
+                            'comment'
+                        )
+                    );
                 } else {
                     $name = COM_getDisplayName(1); // anonymous user
                 }
@@ -1324,14 +1329,20 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     // Store unescaped comment and title for use in notification.
     $comment0 = CMT_prepareText($comment, $postmode, $type);
-    $title0 = COM_checkWords(strip_tags($title));
+    $title0 = COM_checkWords(
+        strip_tags($title),
+        'comment'
+    );
 
     $comment = DB_escapeString($comment0);
     $title = DB_escapeString($title0);
     if (($uid == 1) && isset($_POST[CMT_USERNAME])) {
         $anon = COM_getDisplayName(1);
         if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
-            $username = COM_checkWords(strip_tags(COM_stripslashes($_POST[CMT_USERNAME])));
+            $username = COM_checkWords(
+                strip_tags(COM_stripslashes($_POST[CMT_USERNAME])),
+                'comment'
+            );
             setcookie($_CONF['cookie_anon_name'], $username, time() + 31536000,
                       $_CONF['cookie_path'], $_CONF['cookiedomain'],
                       $_CONF['cookiesecure']);
@@ -1817,7 +1828,10 @@ function CMT_handleEditSubmit($mode = null)
     }
 
     $comment = CMT_prepareText($_POST['comment'], $postmode, $type);
-    $title = COM_checkWords (strip_tags (COM_stripslashes ($_POST['title'])));
+    $title = COM_checkWords(
+        strip_tags(COM_stripslashes ($_POST['title'])),
+        'comment'
+    );
 
     if ($mode == $LANG03[35]) {
         $table = $_TABLES['commentsubmissions'];
@@ -1888,11 +1902,20 @@ function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
 
     if ($postmode == 'html') {
         $html_perm = ($type == 'article') ? 'story.edit' : "$type.edit";
-        $comment = COM_checkWords(COM_checkHTML(COM_stripslashes($comment),
-                                                $html_perm));
+        $comment = COM_checkWords(
+            COM_checkHTML(
+                COM_stripslashes($comment), $html_perm
+            ),
+            'comment'
+        );
     } else {
         // plaintext
-        $comment = htmlspecialchars(COM_checkWords(COM_stripslashes($comment)));
+        $comment = htmlspecialchars(
+            COM_checkWords(
+                COM_stripslashes($comment),
+                'comment'
+            )
+        );
         $newcomment = COM_makeClickableLinks ($comment);
         if (strcmp ($comment, $newcomment) != 0) {
             $comment = COM_nl2br($newcomment);

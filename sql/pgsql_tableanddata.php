@@ -208,6 +208,17 @@ CREATE TABLE {$_TABLES['groups']} (
   CREATE UNIQUE INDEX {$_TABLES['groups']}_grp_name ON {$_TABLES['groups']}(grp_name);
 ";
 
+$_SQL = "
+CREATE TABLE {$_TABLES['language_items']} (
+  id SERIAL NOT NULL,
+  var_name VARCHAR(30) NOT NULL,
+  language VARCHAR(30) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  value VARCHAR(255) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+)
+";
+
 $_SQL[] = "
 CREATE TABLE {$_TABLES['maillist']} (
   code SERIAL,

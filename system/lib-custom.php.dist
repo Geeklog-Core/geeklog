@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-custom.php                                                            |
 // |                                                                           |
@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-custom.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -133,26 +133,30 @@ function CUSTOM_loginErrorHandler($msg='') {
 * addition to the templates listed here, it may also be called from plugins.
 *
 * @param    string  $templatename   name of the template, e.g. 'header'
-* @param    ref    &$template       reference to the template
+* @param    object  $template       the template class object
 * @return   void
 * @see      PLG_templateSetVars
 *
 */
-function CUSTOM_templateSetVars($templatename, &$template)
+function CUSTOM_templateSetVars($templatename, $template)
 {
     // define a {hello_world} variable available in header.thtml and
     // a {hello_again} variable available in the story templates
 
     switch ($templatename) {
-    case 'header':
-        $template->set_var('hello_world', 'Hello, world!');
-        break;
+        case 'header':
+            $template->set_var('hello_world', 'Hello, world!');
+            break;
 
-    case 'storytext':
-    case 'featuredstorytext':
-    case 'archivestorytext':
-        $template->set_var('hello_again', 'Hello (again)!');
-        break;
+        case 'storytext':
+        case 'featuredstorytext':
+        case 'archivestorytext':
+            $template->set_var('hello_again', 'Hello (again)!');
+            break;
+
+        default:
+            // do nothing
+            break;
     }
 }
 
@@ -166,7 +170,7 @@ function CUSTOM_templateSetVars($templatename, &$template)
     located under the theme_dir/custom directory.
     Sample is provided under /system with the distribution.
 
-    Note3: Optional parm $bulkimport added so that if your using the [Batch Add] feature,
+    Note3: Optional parm $batchImport added so that if your using the [Batch Add] feature,
     you can execute different logic if required.
 
     Functions have been provided that are called from the Core Geeklog user and admin functions
@@ -182,17 +186,17 @@ function CUSTOM_templateSetVars($templatename, &$template)
 * Create any new records in additional tables you may have added
 * Update any fields in the core GL tables for this user as needed
 *
-* @param    int     $uid        user id - record already exists at this point
-* @param    boolean $bulkimport true during Batch User Import (admin/user.php)
-* @return   boolean             true on success, otherwise false
+* @param    int     $uid         user id - record already exists at this point
+* @param    boolean $batchImport true during Batch User Import (admin/user.php)
+* @return   boolean              true on success, otherwise false
 *
 */
-function CUSTOM_userCreate($uid, $bulkimport = false)
+function CUSTOM_userCreate($uid, $batchImport = false)
 {
     global $_CONF, $_TABLES;
 
-    if ($bulkimport) {
-        // the sample code in this function is written for the normal signup
+    if ($batchImport) {
+        // the sample code in this function is written for the normal sign up
         // process; the $_POST variables are not set during bulk import
         return true;
     }
@@ -200,19 +204,19 @@ function CUSTOM_userCreate($uid, $bulkimport = false)
     // Ensure all data is prepared correctly before inserts, quotes may need to
     // be escaped with DB_escapeString()
     $email = '';
-    if (isset ($_POST['email'])) {
+    if (isset($_POST['email'])) {
         $email = COM_applyFilter ($_POST['email']);
         $email = DB_escapeString ($email);
     }
 
     $homepage = '';
-    if (isset ($_POST['homepage'])) {
+    if (isset($_POST['homepage'])) {
         $homepage = COM_applyFilter ($_POST['homepage']);
         $homepage = DB_escapeString($homepage);
     }
 
     $fullname = '';
-    if (isset ($_POST['fullname'])) {
+    if (isset($_POST['fullname'])) {
         // COM_applyFilter would strip special characters, e.g. quotes, so
         // we only strip HTML
         $fullname = strip_tags ($_POST['fullname']);
@@ -296,7 +300,7 @@ function CUSTOM_userSave($uid)
     global $_CONF, $_TABLES;
 
     $cooktime = 0;
-    if (isset ($_POST['cooktime'])) {
+    if (isset($_POST['cooktime'])) {
         $cooktime = COM_applyFilter ($_POST['cooktime'], true);
         if ($cooktime < 0) {
             $cooktime = 0;
@@ -342,7 +346,7 @@ function CUSTOM_userForm ($msg = '')
     $user_templates->set_var('USERNAME', $LANG04[2]);
     $user_templates->set_var('USERNAME_HELP', "Name to be used when accessing this site");
     $username = '';
-    if (isset ($_POST['username'])) {
+    if (isset($_POST['username'])) {
         $username = COM_applyFilter ($_POST['username']);
     }
     $user_templates->set_var('username', $username);
@@ -350,7 +354,7 @@ function CUSTOM_userForm ($msg = '')
     $user_templates->set_var('EMAIL', $LANG04[5]);
     $user_templates->set_var('EMAIL_HELP', $LANG04[33]);
     $email = '';
-    if (isset ($_POST['email'])) {
+    if (isset($_POST['email'])) {
         $email = COM_applyFilter ($_POST['email']);
     }
     $user_templates->set_var('email', $email);
@@ -358,7 +362,7 @@ function CUSTOM_userForm ($msg = '')
     $user_templates->set_var('EMAIL_CONF', $LANG04[124]);
     $user_templates->set_var('EMAIL_CONF_HELP', $LANG04[126]);
     $email_conf = '';
-    if (isset ($_POST['email_conf'])) {
+    if (isset($_POST['email_conf'])) {
         $email_conf = COM_applyFilter ($_POST['email_conf']);
     }
     $user_templates->set_var('email_conf', $email_conf);
@@ -366,7 +370,7 @@ function CUSTOM_userForm ($msg = '')
     $user_templates->set_var('FULLNAME', $LANG04[3]);
     $user_templates->set_var('FULLNAME_HELP', $LANG04[34]);
     $fullname = '';
-    if (isset ($_POST['fullname'])) {
+    if (isset($_POST['fullname'])) {
         $fullname = strip_tags ($_POST['fullname']);
     }
     $user_templates->set_var('fullname', $fullname);

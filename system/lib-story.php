@@ -144,7 +144,7 @@ function STORY_renderArticle(&$story, $index = '', $storytpl = 'storytext.thtml'
         }
     }
 
-    $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+    $articleUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story='
         . $story->getSid());
     $article->set_var('article_url', $articleUrl);
     $article->set_var('story_title', $story->DisplayElements('title'));
@@ -612,6 +612,17 @@ function STORY_renderArticle(&$story, $index = '', $storytpl = 'storytext.thtml'
             PLG_templateSetVars('storytext', $article);
         }
 
+        // Add related articles
+        if ($index === 'n') {
+            $article->set_var(
+                'related_articles_by_keyword',
+                Story::getRelatedArticlesByKeywords(
+                    $story->getSid(),
+                    $story->DisplayElements('meta_keywords')
+                )
+            );
+        }
+
         PLG_templateSetVars($article_filevar, $article);
 
         if ($index != 'p' && ($cache_time > 0 || $cache_time == -1)) {
@@ -725,7 +736,7 @@ function STORY_whatsRelated($related, $uid, $sid)
                                 $urls[] = $matches[1];
                                 // Now Check Words
                                 $value = '<a href="' . $matches[1] . '">'
-                                    . COM_checkWords($matches[2]) . '</a>';
+                                    . COM_checkWords($matches[2], 'story') . '</a>';
                             }
                         } else {
                             // remove it from the array
@@ -736,7 +747,7 @@ function STORY_whatsRelated($related, $uid, $sid)
                         unset($rel[$key]);
                     }
                 } else {
-                    $value = COM_checkWords($value);
+                    $value = COM_checkWords($value, 'story');
                 }
             }
         }

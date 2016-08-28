@@ -27,6 +27,8 @@
 
 $LANG_CHARSET = 'iso-8859-1';
 
+$LANG_ISO639_1 = 'en';
+
 ###############################################################################
 # Array Format:
 # $LANGXX[YY]:  $LANG - variable name
@@ -961,6 +963,7 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'You can always hit "Preview" to extend the expiry time.',
+    92 => 'You might also like',
     'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
     'cache_time'        => 'Cache Time',
     'cache_time_desc'   => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
@@ -1345,6 +1348,18 @@ $LANG33 = array(
     55 => 'Articles'
 );
 
+// admin/language.php (since v2.1.2)
+$LANG_LANG = array(
+    'language_manager' => 'Language Manager',
+    'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
+    'language_editor'  => 'Language Editor',
+    'id'               => 'ID',
+    'language'         => 'Language',
+    'name'             => 'Name',
+    'var_name'         => 'Var Name',
+    'value'            => 'Value',
+);
+
 ###############################################################################
 # confirmation and error messages
 
@@ -1461,11 +1476,13 @@ $MESSAGE = array(
     118 => 'Click to select a date',
     119 => 'More..',
     120 => 'Send this?',
-    130 => 'Deleted comment(s).',
-    131 => 'Failed to delete a comment.',
-    132 => 'Approved comment(s).',
-    133 => 'Banned user(s).',
-    134 => 'Banned IP addresses with the Spamx plugin.',
+    130 => 'Your language item has been successfully deleted.',
+    131 => 'Your language item has been successfully saved.',
+    140 => 'Deleted comment(s).',
+    141 => 'Failed to delete a comment.',
+    142 => 'Approved comment(s).',
+    143 => 'Banned user(s).',
+    144 => 'Banned IP addresses with the Spamx plugin.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.'
@@ -2434,5 +2451,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
-
-?>
