@@ -35,7 +35,7 @@
 class Language
 {
     // The lifespan of a security token in seconds
-    const SEC_TOKEN_LIFESPAN = 20 * 60;
+    const SEC_TOKEN_LIFESPAN = 1200; // 20 * 60
 
     /**
      * Apply overrides to the given language arrays
