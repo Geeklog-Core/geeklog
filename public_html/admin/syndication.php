@@ -253,7 +253,7 @@ function editfeed ($fid = 0, $type = '')
             $A['update_info'] = '';
             $A['date'] = time();
         } else {
-            return COM_refresh ($_CONF['site_admin_url'] . '/syndication.php');
+            COM_redirect($_CONF['site_admin_url'] . '/syndication.php');
         }
     }
 
@@ -366,8 +366,7 @@ function editfeed ($fid = 0, $type = '')
         if ($result) {
             $P = DB_fetchArray($result);
             if($P['pi_enabled'] == 0) {
-                echo COM_refresh($_CONF['site_admin_url'].'/syndication.php?msg=80');
-                exit;
+                COM_redirect($_CONF['site_admin_url'].'/syndication.php?msg=80');
             }
         }
     }
@@ -567,7 +566,7 @@ function savefeed ($A)
         deleteFeedFile($A['filename']);
     }
 
-    return COM_refresh($_CONF['site_admin_url'] . '/syndication.php?msg=58');
+    COM_redirect($_CONF['site_admin_url'] . '/syndication.php?msg=58');
 }
 
 /**
@@ -586,14 +585,11 @@ function deletefeed($fid)
                                "fid = $fid");
         deleteFeedFile($feedfile);
         DB_delete($_TABLES['syndication'], 'fid', $fid);
-
-        return COM_refresh($_CONF['site_admin_url']
-                           . '/syndication.php?msg=59');
+        COM_redirect($_CONF['site_admin_url'] . '/syndication.php?msg=59');
     }
 
-    return COM_refresh($_CONF['site_admin_url'] . '/syndication.php');
+    COM_redirect($_CONF['site_admin_url'] . '/syndication.php');
 }
-
 
 // MAIN
 $display = '';

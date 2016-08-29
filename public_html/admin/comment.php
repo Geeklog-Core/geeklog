@@ -443,13 +443,11 @@ function deleteComments($suffix)
                 }
             }
 
-            echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=140');
-            exit;
+            COM_redirect($_CONF['site_admin_url'] . '/comment.php?msg=140');
         }
     } else {
         COM_accessLog("User {$_USER['username']} tried to delete comments (cid = " . implode(', ', $commentIds) . ") and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 }
 
@@ -471,12 +469,10 @@ function approveComments($suffix)
             }
         }
 
-        echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=142');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/comment.php?msg=142');
     } else {
         COM_accessLog("User {$_USER['username']} tried to approve comments (cid = " . implode(', ', $commentIds) . ") and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 }
 
@@ -508,14 +504,12 @@ function banUsers($suffix)
                 $sql = "UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_DISABLED
                     . " WHERE (uid IN (" . implode(',', $userIds) . "))";
                 DB_query($sql);
-                echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=143');
-                exit;
+                COM_redirect($_CONF['site_admin_url'] . '/comment.php?msg=143');
             }
         }
     } else {
         COM_accessLog("User {$_USER['username']} tried to ban users and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 }
 
@@ -531,8 +525,7 @@ function banIpAddresses($suffix)
     if (SEC_checkToken()) {
         if (!in_array('spamx', $_PLUGINS)) {
             COM_errorLog(__FUNCTION__ . ': Spmax plugin is not installed or disabled.');
-            echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-            exit;
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
 
         $getCommentIds = getCommentIds($suffix);
@@ -557,13 +550,11 @@ function banIpAddresses($suffix)
                 }
             }
 
-            echo COM_refresh($_CONF['site_admin_url'] . '/comment.php?msg=144');
-            exit;
+            COM_redirect($_CONF['site_admin_url'] . '/comment.php?msg=144');
         }
     } else {
         COM_accessLog("User {$_USER['username']} tried to ban IP addresses and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 }
 

@@ -296,17 +296,17 @@ function savestory ($A)
     $result = $story->saveSubmission();
     if ($result == STORY_NO_ACCESS_TOPIC) {
         // user doesn't have access to this topic - bail
-        $retval = COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     } elseif (($result == STORY_SAVED ) || ( $result == STORY_SAVED_SUBMISSION )) {
         if (isset($_CONF['notification']) && in_array('story', $_CONF['notification'])) {
             sendNotification ($_TABLES['storysubmission'], $story);
         }
 
         if ($result == STORY_SAVED) {
-            $retval = COM_refresh(COM_buildUrl( $_CONF['site_url']
-                               . '/article.php?story=' . $story->getSid() ) );
+            COM_redirect(COM_buildUrl($_CONF['site_url']
+                               . '/article.php?story=' . $story->getSid()));
         } else {
-            $retval = COM_refresh($_CONF['site_url'] . '/index.php?msg=2' );
+            COM_redirect($_CONF['site_url'] . '/index.php?msg=2');
         }
     }
 
@@ -349,8 +349,7 @@ function savesubmission($type, $A)
             // plugin should include its own redirect - but in case handle
             // it here and redirect to the main page
             PLG_submissionSaved($type);
-
-            return COM_refresh($_CONF['site_url'] . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         } else {
             PLG_submissionSaved($type);
 
@@ -395,7 +394,7 @@ TOPIC_getTopic();
 if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
     if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
-        $display = COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     } else {
         if ($type === 'story') {
             $msg = PLG_itemPreSave($type, $_POST);
@@ -413,14 +412,10 @@ if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
     if ((strlen($type) > 0) && ($type !== 'story')) {
         if (SEC_hasRights("$type.edit") ||
             SEC_hasRights("$type.admin"))  {
-            echo COM_refresh($_CONF['site_admin_url']
-                    . "/plugins/$type/index.php?mode=edit");
-            exit;
+            COM_redirect($_CONF['site_admin_url'] . "/plugins/$type/index.php?mode=edit");
         }
     } elseif (SEC_hasRights('story.edit')) {
-        echo COM_refresh($_CONF['site_admin_url']
-                . '/story.php?mode=edit');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/story.php?mode=edit');
     }
 
     switch ($type) {

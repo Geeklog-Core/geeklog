@@ -1532,14 +1532,14 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         "(sid = '$id') AND (draft_flag = 0) AND (date <= NOW())"
         . COM_getPermSQL('AND'));
     if (!isset($commentcode) || ($commentcode != 0 || TOPIC_hasMultiTopicAccess('article', $id) < 2)) { // Need read access of topics to post comment
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     $ret = CMT_saveComment($title, $comment, $id, $pid, 'article', $postmode);
     if ($ret == -1) {
         $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $id);
         $url .= (strpos($url, '?') ? '&' : '?') . 'msg=15';
-        $retval = COM_refresh($url);
+        COM_redirect($url);
     } elseif ($ret > 0) { // failure
         // FIXME: some failures should not return to comment form
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'article',
@@ -1559,9 +1559,7 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         // Comment count in Older Stories block may have changed so delete cache
         $cacheInstance = 'olderarticles__'; // remove all olderarticles instances
         CACHE_remove_instance($cacheInstance);
-
-        $retval = COM_refresh(COM_buildUrl($_CONF['site_url']
-            . "/article.php?story=$id"));
+        COM_redirect(COM_buildUrl($_CONF['site_url'] . "/article.php?story=$id"));
     }
 
     return $retval;
@@ -1596,13 +1594,11 @@ function plugin_deletecomment_article($cid, $id)
         // Comment count in Older Stories block may have changed so delete cache
         $cacheInstance = 'olderstories__'; // remove all olderstories instances
         CACHE_remove_instance($cacheInstance);
-
-        $retval .= COM_refresh(COM_buildUrl($_CONF['site_url']
-                . "/article.php?story=$id") . '#comments');
+        COM_redirect(COM_buildUrl($_CONF['site_url'] . "/article.php?story=$id") . '#comments');
     } else {
         COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
             . "tried to illegally delete comment $cid from $id");
-        $retval .= COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     return $retval;

@@ -102,7 +102,7 @@ function edituser($uid = '', $msg = '')
         $result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = '$uid'");
         $A = DB_fetchArray($result);
         if (empty ($A['uid'])) {
-            return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
+            COM_redirect($_CONF['site_admin_url'] . '/user.php');
         }
 
         if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
@@ -645,8 +645,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                                       "grp_name = 'Root'");
                 if (in_array($rootgrp, $groups)) {
                     COM_accessLog("User {$_USER['username']} ({$_USER['uid']}) just tried to give Root permissions to user $username.");
-                    echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-                    exit;
+                    COM_redirect($_CONF['site_admin_url'] . '/index.php');
                 }
             }
 
@@ -1083,9 +1082,7 @@ function importusers()
         $thefile = current($_FILES);
         $filename = $_CONF['path_data'] . 'user_import_file.txt';
         if (!file_exists($filename)) { // empty upload form
-            $retval = COM_refresh($_CONF['site_admin_url']
-                                  . '/user.php?mode=importform');
-            return $retval;
+            COM_redirect($_CONF['site_admin_url'] . '/user.php?mode=importform');
         }
     } else {
         // A problem occurred, print debug information
@@ -1235,10 +1232,10 @@ function deleteUser ($uid)
     global $_CONF;
 
     if (!USER_deleteAccount ($uid)) {
-        return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
+        COM_redirect($_CONF['site_admin_url'] . '/user.php');
     }
 
-    return COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=22');
+    COM_redirect($_CONF['site_admin_url'] . '/user.php?msg=22');
 }
 
 // MAIN
@@ -1263,13 +1260,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // del
     $uid = COM_applyFilter($_POST['uid'], true);
     if ($uid <= 1) {
         COM_errorLog('Attempted to delete user uid=' . $uid);
-        $display = COM_refresh($_CONF['site_admin_url'] . '/user.php');
+        COM_redirect($_CONF['site_admin_url'] . '/user.php');
     } elseif (SEC_checkToken()) {
         $display .= deleteUser($uid);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete user $uid and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) { // save
     $delphoto = '';
@@ -1284,8 +1280,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // del
     }
     $uid = COM_applyFilter($_POST['uid'], true);
     if ($uid == 1) {
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     } else {
         $passwd = '';
         if (isset($_POST['passwd'])) {
@@ -1313,8 +1308,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // del
         $uid = COM_applyFilter($_GET['uid'], true);
     }
     if ($uid == 1) {
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
     $display .= edituser($uid, $msg);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[1]));

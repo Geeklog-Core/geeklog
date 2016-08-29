@@ -223,8 +223,6 @@ class SimpleActionHandler extends ActionHandler
     {
         global $_CONF;
 
-        echo COM_refresh($_CONF['site_url'] . '/users.php?msg=' . $msg);
-        exit;
+        COM_redirect($_CONF['site_url'] . '/users.php?msg=' . $msg);
     }
-
 }

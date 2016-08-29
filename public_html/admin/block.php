@@ -820,8 +820,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
 
         $cacheInstance = 'block__' . $bid . '__';  // remove any of this blocks instances if exists
         CACHE_remove_instance($cacheInstance);
-
-        return COM_refresh($_CONF['site_admin_url'] . '/block.php?msg=11');
+        COM_redirect($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
         if (empty($name)) {
             // empty block name
@@ -922,8 +921,8 @@ function moveBlock()
     } else {
         COM_errorLog("block admin error: Attempt to move an non existing block id: $bid");
     }
-    echo COM_refresh($_CONF['site_admin_url'] . '/block.php');
-    exit;
+
+    COM_redirect($_CONF['site_admin_url'] . '/block.php');
 }
 
 /**
@@ -970,8 +969,7 @@ function deleteBlock($bid)
         $A['perm_group'], $A['perm_members'], $A['perm_anon']);
     if (($access < 3) || (TOPIC_hasMultiTopicAccess('block', $bid) < 3)) {
         COM_accessLog("User {$_USER['username']} tried to illegally delete block $bid.");
-
-        return COM_refresh($_CONF['site_admin_url'] . '/block.php');
+        COM_redirect($_CONF['site_admin_url'] . '/block.php');
     }
 
     TOPIC_deleteTopicAssignments('block', $bid);
@@ -980,8 +978,7 @@ function deleteBlock($bid)
 
     $cacheInstance = 'block__' . $bid . '__';  // remove any of this blocks instances if exists
     CACHE_remove_instance($cacheInstance);
-
-    return COM_refresh($_CONF['site_admin_url'] . '/block.php?msg=12');
+    COM_redirect($_CONF['site_admin_url'] . '/block.php?msg=12');
 }
 
 // MAIN
@@ -1015,12 +1012,12 @@ if (isset($_POST['blockenabler']) && SEC_checkToken()) {
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
         COM_errorLog('Attempted to delete block, bid empty or null, value =' . $bid);
-        $display .= COM_refresh($_CONF['site_admin_url'] . '/block.php');
+        COM_redirect($_CONF['site_admin_url'] . '/block.php');
     } elseif (SEC_checkToken()) {
         $display .= deleteBlock($bid);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete block $bid and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $name = '';

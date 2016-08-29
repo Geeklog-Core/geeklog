@@ -113,7 +113,7 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
     $commentcode = DB_getItem($_TABLES['polltopics'], 'commentcode',
         "pid = '$id'");
     if ($commentcode != 0) {
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     $ret = CMT_saveComment($title, $comment, $id, $pid, 'polls', $postmode);
@@ -129,8 +129,7 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
             }
         }
     } else { // success
-        $retval = COM_refresh($_CONF['site_url']
-            . "/polls/index.php?pid=$id");
+         COM_redirect($_CONF['site_url'] . "/polls/index.php?pid=$id");
     }
 
     return $retval;
@@ -161,12 +160,11 @@ function plugin_deletecomment_polls($cid, $id)
             $A['perm_members'], $A['perm_anon']) == 3
     ) {
         CMT_deleteComment($cid, $id, 'polls');
-        $retval .= COM_refresh($_CONF['site_url']
-            . "/polls/index.php?pid=$id&amp;aid=-1");
+        COM_redirect($_CONF['site_url'] . "/polls/index.php?pid=$id&amp;aid=-1");
     } else {
         COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
             . "tried to illegally delete comment $cid from poll $id");
-        $retval .= COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     return $retval;

@@ -2890,7 +2890,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
         break;
     }
 
-    return COM_refresh($url);
+    COM_redirect($url);
 }
 
 /**

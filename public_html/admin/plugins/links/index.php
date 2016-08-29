@@ -320,7 +320,7 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         if ($categorydd != $LANG_LINKS_ADMIN[7] && !empty($categorydd)) {
             $cid = DB_escapeString($categorydd);
         } else if ($categorydd != $LANG_LINKS_ADMIN[7]) {
-            echo COM_refresh($_CONF['site_admin_url'] . '/plugins/links/index.php');
+            COM_redirect($_CONF['site_admin_url'] . '/plugins/links/index.php');
         }
 
         DB_delete ($_TABLES['linksubmission'], 'lid', $old_lid);
@@ -454,8 +454,6 @@ function listlinks ()
 *
 * @param    string  $lid    id of link to delete
 * @param    string  $type   'submission' when attempting to delete a submission
-* @return   string          HTML redirect
-*
 */
 function deleteLink($lid, $type = '')
 {
@@ -469,22 +467,16 @@ function deleteLink($lid, $type = '')
                     $A['perm_anon']);
         if ($access < 3) {
             COM_accessLog("User {$_USER['username']} tried to illegally delete link $lid.");
-            return COM_refresh($_CONF['site_admin_url']
-                               . '/plugins/links/index.php');
+            COM_redirect($_CONF['site_admin_url'] . '/plugins/links/index.php');
         }
 
         DB_delete($_TABLES['links'], 'lid', $lid);
-
         PLG_itemDeleted($lid, 'links');
-
-        return COM_refresh($_CONF['site_admin_url']
-                           . '/plugins/links/index.php?msg=3');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=3');
     } elseif ($type == 'submission') {
         if (plugin_ismoderator_links()) {
             DB_delete($_TABLES['linksubmission'], 'lid', $lid);
-
-            return COM_refresh($_CONF['site_admin_url']
-                               . '/plugins/links/index.php?msg=3');
+            COM_redirect($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=3');
         } else {
             COM_accessLog("User {$_USER['username']} tried to illegally delete link submission $lid.");
         }
@@ -492,7 +484,7 @@ function deleteLink($lid, $type = '')
         COM_accessLog("User {$_USER['username']} tried to illegally delete link $lid of type $type.");
     }
 
-    return COM_refresh($_CONF['site_admin_url'] . '/plugins/links/index.php');
+    COM_redirect($_CONF['site_admin_url'] . '/plugins/links/index.php');
 }
 
 // MAIN
@@ -505,7 +497,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $lid = COM_applyFilter ($_POST['lid']);
     if (!isset ($lid) || empty ($lid)) {  // || ($lid == 0)
         COM_errorLog ('Attempted to delete link lid=' . $lid );
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/links/index.php');
     } elseif (SEC_checkToken()) {
         $type = '';
         if (isset($_POST['type'])) {
@@ -514,7 +506,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= deleteLink($lid, $type);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete link $lid and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $cid = '';

@@ -599,8 +599,7 @@ function plugin_savesubmission_calendar($A)
                 CALENDAR_sendNotification($_TABLES['eventsubmission'], $A);
             }
 
-            $retval = COM_refresh($_CONF['site_url']
-                . '/calendar/index.php?msg=4');
+            COM_redirect($_CONF['site_url'] . '/calendar/index.php?msg=4');
         } else {
             if (COM_isAnonUser()) {
                 $owner_id = 1; // anonymous user
@@ -627,27 +626,24 @@ function plugin_savesubmission_calendar($A)
             ) {
                 CALENDAR_sendNotification($_TABLES['events'], $A);
             }
-            COM_rdfUpToDateCheck('calendar', $A['event_type'], $A['eid']);
 
-            $retval = COM_refresh($_CONF['site_url']
-                . '/calendar/index.php?msg=17');
+            COM_rdfUpToDateCheck('calendar', $A['event_type'], $A['eid']);
+            COM_redirect($_CONF['site_url'] . '/calendar/index.php?msg=17');
         }
 
     } elseif ($_CA_CONF['personalcalendars'] == 1) { // add to personal calendar
         if (COM_isAnonUser()) {
             // anonymous users don't have personal calendars - bail
             COM_accessLog("Attempt to write to the personal calendar of user '{$A['uid']}'.");
-
-            $retval = COM_refresh($_CONF['site_url'] . '/calendar/index.php');
+            COM_redirect($_CONF['site_url'] . '/calendar/index.php');
         } else {
             DB_save($_TABLES['personal_events'],
                 'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',
                 "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
-            $retval = COM_refresh($_CONF['site_url']
-                . '/calendar/index.php?mode=personal&amp;msg=17');
+            COM_redirect($_CONF['site_url'] . '/calendar/index.php?mode=personal&amp;msg=17');
         }
     } else { // personal calendars are disabled
-        $retval = COM_refresh($_CONF['site_url'] . '/calendar/index.php');
+        COM_redirect($_CONF['site_url'] . '/calendar/index.php');
     }
 
     return $retval;
@@ -715,9 +711,7 @@ function plugin_submit_calendar($mode = 'master')
                     $hour));
         }
 
-        echo COM_refresh($_CONF['site_admin_url']
-            . '/plugins/calendar/index.php?mode=edit' . $startat);
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/calendar/index.php?mode=edit' . $startat);
     }
     // otherwise non-admin or admin-personal. do personal form or public submission.
 
@@ -866,9 +860,7 @@ function CALENDAR_deleteEvent($eid, $type = '')
             $A['perm_anon']);
         if ($access < 3) {
             COM_accessLog("User {$_USER['username']} tried to illegally delete event $eid.");
-
-            return COM_refresh($_CONF['site_admin_url']
-                . '/plugins/calendar/index.php');
+            COM_redirect($_CONF['site_admin_url'] . '/plugins/calendar/index.php');
         }
 
         DB_delete($_TABLES['events'], 'eid', $eid);
@@ -877,7 +869,7 @@ function CALENDAR_deleteEvent($eid, $type = '')
         PLG_itemDeleted($eid, 'calendar');
         COM_rdfUpToDateCheck('calendar');
 
-        return COM_refresh($_CONF['site_admin_url'] . '/plugins/calendar/index.php?msg=18');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/calendar/index.php?msg=18');
     } elseif ($type == 'submission') {
         if (plugin_ismoderator_calendar()) {
             DB_delete($_TABLES['eventsubmission'], 'eid', $eid);
@@ -888,8 +880,7 @@ function CALENDAR_deleteEvent($eid, $type = '')
         COM_accessLog("User {$_USER['username']} tried to illegally delete event $eid of type $type.");
     }
 
-    return COM_refresh($_CONF['site_admin_url']
-        . '/plugins/calendar/index.php');
+    COM_redirect($_CONF['site_admin_url'] . '/plugins/calendar/index.php');
 }
 
 function CALENDAR_listOld()

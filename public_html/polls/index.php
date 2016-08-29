@@ -108,11 +108,10 @@ function polllist()
 $display = '';
 
 if (isset ($_POST['reply']) && ($_POST['reply'] == $LANG01[25])) {
-    $display .= COM_refresh ($_CONF['site_url'] . '/comment.php?sid='
-             . $_POST['pid'] . '&pid=' . $_POST['pid']
-             . '&type=' . $_POST['type']);
-    echo $display;
-    exit;
+    COM_redirect(
+        $_CONF['site_url'] . '/comment.php?sid=' . $_POST['pid'] . '&pid=' . $_POST['pid']
+             . '&type=' . $_POST['type']
+    );
 }
 //var_dump($_POST);die();
 $pid = 0;

@@ -113,7 +113,7 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
     } else {
         // if the msg starts with http: assume it's a URL we should redirect to
         if (preg_match("/^(https?):/", $_CONF['site_disabled_msg']) === 1) {
-            echo COM_refresh($_CONF['site_disabled_msg']);
+            COM_redirect($_CONF['site_disabled_msg']);
         } else {
             header("HTTP/1.1 503 Service Unavailable");
             header("Status: 503 Service Unavailable");
@@ -127,8 +127,7 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
 
 // this file can't be used on its own - redirect to index.php
 if (stripos($_SERVER['PHP_SELF'], 'lib-common.php') !== false) {
-    echo COM_refresh($_CONF['site_url'] . '/index.php');
-    exit;
+    COM_redirect($_CONF['site_url'] . '/index.php');
 }
 
 // +---------------------------------------------------------------------------+
@@ -3649,9 +3648,10 @@ function COM_redirect($url)
     header('Location: ' . $url);
 
     // Send out HTML meta tags in case header('Location: some_url') fails
+    COM_errorLog(__FUNCTION__ . ' failed.  The URL given is "' . $url . '".');
     header('Content-Type: text/html; charset=' . COM_getCharset());
     echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . PHP_EOL;
-    die();
+    die(1);
 }
 
 /**
@@ -3668,11 +3668,12 @@ function COM_redirect($url)
  */
 function COM_refresh($url)
 {
-//    COM_errorLog('Warning!  COM_refresh has been deprecated since v2.1.2.  Use COM_redirect instead.');
+    COM_errorLog('Warning!  COM_refresh has been deprecated since v2.1.2.  Use COM_redirect instead.');
 
     if (is_callable('CUSTOM_refresh')) {
         return CUSTOM_refresh($url);
     } else {
+        header('Content-Type: text/html; charset=' . COM_getCharset());
         return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
     }
 }
