@@ -263,13 +263,14 @@ CREATE TABLE {$_TABLES['postmodes']} (
 ";
 
 $_SQL[] = "CREATE TABLE {$_TABLES['routes']} (
-    `rid` int(11) NOT NULL AUTO_INCREMENT,
-    `method` int(11) NOT NULL DEFAULT '1',
-    `rule` varchar(255) NOT NULL DEFAULT '',
-    `route` varchar(255) NOT NULL DEFAULT '',
-    `priority` int(11) NOT NULL DEFAULT '100',
-    PRIMARY KEY (`rid`)
-)";
+    rid int(11) NOT NULL AUTO_INCREMENT,
+    method int(11) NOT NULL DEFAULT 1,
+    rule varchar(255) NOT NULL DEFAULT '',
+    route varchar(255) NOT NULL DEFAULT '',
+    priority int(11) NOT NULL DEFAULT 100,
+    PRIMARY KEY (rid)
+) ENGINE=MyISAM
+";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
@@ -824,7 +825,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('plaintext','Plain Old Text') ";
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('html','HTML Formatted') ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid', '/article.php?story=@sid&mode=print', 100)";
+$_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/print', '/article.php?story=@sid&mode=print', 100)";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid', '/article.php?story=@sid', 110)";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/archives/@topic/@year/@month', '/directory.php?topic=@topic&year=@year&month=@month', 120)";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/page/@page', '/staticpages/index.php?page=@page', 130)";

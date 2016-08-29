@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | configuration_validation.php                                              |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'configuration_validation.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -50,6 +50,7 @@ $_CONF_VALIDATE['Core']['copyrightyear'] = array(
     'message' => isset($LANG_VALIDATION['yearOrRange']) ? $LANG_VALIDATION['yearOrRange'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['url_rewrite'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['url_routing'] = array('rule' => array('inList', array(0, 1, 2), false));
 $_CONF_VALIDATE['Core']['cdn_hosted'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['meta_tags'] = array('rule' => array('inList', array(0, 1, 2), false));
 $_CONF_VALIDATE['Core']['meta_description'] = array('rule' => 'stringOrEmpty');
@@ -719,5 +720,3 @@ $_CONF_VALIDATE['Core']['filemanager_videos_player_height'] = array('rule' => 'n
 // Subgroup Filemanager, Tab Audios
 $_CONF_VALIDATE['Core']['filemanager_show_audio_player'] = array('rule' => 'boolean');
 //$_CONF_VALIDATE['Core']['filemanager_audios_ext'] = array('rule' => 'boolean');
-
-?>

@@ -40,8 +40,9 @@ require_once '../lib-common.php';
 require_once './auth.inc.php';
 
 if (!SEC_inGroup('Root')) {
+    $content = COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
     $display = COM_createHTMLDocument(
-        COM_showMessageText($MESSAGE[29], $MESSAGE[30]),
+        $content,
         array('pagetitle' => $MESSAGE[30])
     );
     COM_accessLog("User {$_USER['username']} tried to illegally access the URL routing administration screen");
@@ -114,7 +115,7 @@ function getRouteEditor($rid = 0)
         'lang_router_rule'     => $LANG_ROUTER[5],
         'lang_router_route'    => $LANG_ROUTER[6],
         'lang_router_priority' => $LANG_ROUTER[7],
-        'lang_router_notice'   => $LANG_ROUTER[19],
+        'lang_router_notice'   => $LANG_ROUTER[20],
         'lang_save'            => $LANG_ADMIN['save'],
         'lang_cancel'          => $LANG_ADMIN['cancel'],
     ));
@@ -231,6 +232,10 @@ function listRoutes()
 
     if (!isset($_CONF['url_rewrite']) || empty($_CONF['url_rewrite'])) {
         $notice .= ' ' . $LANG_ROUTER[18];
+    }
+
+    if (!isset($_CONF['url_routing']) || ($_CONF['url_routing'] == Router::ROUTING_DISABLED)) {
+        $notice .= ' ' . $LANG_ROUTER[19];
     }
 
     $retval = COM_startBlock($LANG_ROUTER[2], '', COM_getBlockTemplate('_admin_block', 'header'))

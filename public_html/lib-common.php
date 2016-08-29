@@ -3425,6 +3425,13 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                     ),
                     array(
                         'condition' => SEC_inGroup('Root'),
+                        'url'       => $_CONF['site_admin_url'] . '/router.php',
+                        'lang'      => $LANG_ROUTER[1],
+                        'num'       => $routeCount,
+                        'image'     => $_CONF['layout_url'] . '/images/icons/route.' . $_IMAGE_TYPE,
+                    ),
+                    array(
+                        'condition' => SEC_inGroup('Root'),
                         'url'       => $_CONF['site_admin_url'] . '/clearctl.php',
                         'lang'      => $LANG01['ctl'],
                         'num'       => '',

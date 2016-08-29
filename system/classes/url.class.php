@@ -43,6 +43,11 @@
 class Url
 {
     /**
+     * @var Url
+     */
+    private static $instance;
+
+    /**
      * @var array
      */
     private $arguments = array();  // Array of argument names
