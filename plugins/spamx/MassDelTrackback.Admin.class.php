@@ -1,36 +1,29 @@
 <?php
 
 /**
-* File:  MassDelTrackback.Admin.class.php
-*
-* Mass delete trackback spam
-*
-* Copyright (C) 2004-2008 by the following authors:
-*
-* @author   Tom Willett     tomw AT pigstye DOT net
-* @author   Dirk Haun       dirk AT haun-online DOT de
-*
-* Licensed under GNU General Public License
-*
-* @package Spam-X
-* @subpackage Modules
-*/
+ * File:  MassDelTrackback.Admin.class.php
+ * Mass delete trackback spam
+ * Copyright (C) 2004-2008 by the following authors:
+ *
+ * @author     Tom Willett     tomw AT pigstye DOT net
+ * @author     Dirk Haun       dirk AT haun-online DOT de
+ *             Licensed under GNU General Public License
+ * @package    Spam-X
+ * @subpackage Modules
+ */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'massdeltrackback.admin.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'massdeltrackback.admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-/**
-* Include Abstract Base Class
-*/
+// Include Abstract Base Class
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
 /**
-* MassDelTrackback class: Mass-delete trackbacks
-*
-* @package Spam-X
-*
-*/
+ * MassDelTrackback class: Mass-delete trackbacks
+ *
+ * @package Spam-X
+ */
 class MassDelTrackback extends BaseAdmin
 {
     public function __construct()
@@ -38,11 +31,16 @@ class MassDelTrackback extends BaseAdmin
         global $LANG_SX00;
 
         $this->moduleName = '';
-        $this->command    = 'MassDelTrackback';
-        $this->titleText  = '';
-        $this->linkText   = $LANG_SX00['mass_delete_trackback_spam'];
+        $this->command = 'MassDelTrackback';
+        $this->titleText = '';
+        $this->linkText = $LANG_SX00['mass_delete_trackback_spam'];
     }
 
+    /**
+     * Return HTML widget
+     *
+     * @return string
+     */
     public function display()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
@@ -62,7 +60,8 @@ class MassDelTrackback extends BaseAdmin
         }
 
         if (($act == $LANG_SX00['deletespam']) && ($lmt > 0) &&
-                SEC_checkToken()) {
+            SEC_checkToken()
+        ) {
             $numc = 0;
             $spamx_path = $_CONF['path'] . 'plugins/spamx/';
 
@@ -84,12 +83,12 @@ class MassDelTrackback extends BaseAdmin
             require_once $_CONF['path_system'] . 'lib-trackback.php';
 
             $result = DB_query("SELECT cid,sid,type,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) AS date FROM {$_TABLES['trackback']} ORDER BY date DESC LIMIT $lmt");
-            $nrows = DB_numRows($result);
+            $numRows = DB_numRows($result);
 
-            for ($i = 0; $i < $nrows; $i++) {
+            for ($i = 0; $i < $numRows; $i++) {
                 $A = DB_fetchArray($result);
                 $comment = TRB_formatComment($A['url'], $A['title'],
-                                             $A['blog'], $A['excerpt']);
+                    $A['blog'], $A['excerpt']);
 
                 foreach ($Spamx_Examine as $Examine) {
                     $EX = new $Examine;
@@ -115,16 +114,16 @@ class MassDelTrackback extends BaseAdmin
         } else {
             $token = SEC_createToken();
             $display .= '<form method="post" class="uk-form" action="'
-                     . $_CONF['site_admin_url']
-                     . '/plugins/spamx/index.php?command=MassDelTrackback"><div>';
+                . $_CONF['site_admin_url']
+                . '/plugins/spamx/index.php?command=MassDelTrackback"><div>';
             $display .= $LANG_SX00['numtocheck'] . '&nbsp;&nbsp;&nbsp;'
-                     . ' <select name="limit">' . LB;
+                . ' <select name="limit">' . LB;
             $display .= '<option value="10">10</option>'
-                     .  '<option value="50">50</option>'
-                     .  '<option value="100" selected="selected">100</option>'
-                     .  '<option value="200">200</option>'
-                     .  '<option value="300">300</option>'
-                     .  '<option value="400">400</option>';
+                . '<option value="50">50</option>'
+                . '<option value="100" selected="selected">100</option>'
+                . '<option value="200">200</option>'
+                . '<option value="300">300</option>'
+                . '<option value="400">400</option>';
             $display .= '</select>' . LB;
             $display .= $LANG_SX00['note1'];
             $display .= $LANG_SX00['note2'];
@@ -133,10 +132,10 @@ class MassDelTrackback extends BaseAdmin
             $display .= $LANG_SX00['note5'];
             $display .= $LANG_SX00['note6'] . LB;
             $display .= '<button type="submit" name="action" value="'
-                     . $LANG_SX00['deletespam'] . '" class="uk-button">'
-                     . $LANG_SX00['deletespam'] . '</button>' . LB;
+                . $LANG_SX00['deletespam'] . '" class="uk-button">'
+                . $LANG_SX00['deletespam'] . '</button>' . LB;
             $display .= '<input type="hidden" name="' . CSRF_TOKEN
-                     . "\" value=\"{$token}\"" . XHTML . '>' . LB;
+                . "\" value=\"{$token}\"" . XHTML . '>' . LB;
             $display .= '</div></form>' . LB;
         }
 
@@ -144,14 +143,13 @@ class MassDelTrackback extends BaseAdmin
     }
 
     /**
-    * Deletes a given trackback comment
-    *
-    * @param    int         $cid    Comment ID
-    * @param    string      $sid    ID of object comment belongs to
-    * @param    string      $type   Comment type (e.g. article, poll, etc)
-    * @return   void
-    *
-    */
+     * Deletes a given trackback comment
+     *
+     * @param    int    $cid  Comment ID
+     * @param    string $sid  ID of object comment belongs to
+     * @param    string $type Comment type (e.g. article, poll, etc)
+     * @return   void
+     */
     public function deltrackback($cid, $sid, $type)
     {
         global $_TABLES, $LANG_SX00;
@@ -161,8 +159,8 @@ class MassDelTrackback extends BaseAdmin
 
             if ($type === 'article') {
                 $tbcount = DB_count($_TABLES['trackback'],
-                                    array('type', 'sid'),
-                                    array('article', $sid));
+                    array('type', 'sid'),
+                    array('article', $sid));
                 DB_query("UPDATE {$_TABLES['stories']} SET trackbacks = $tbcount WHERE sid = '$sid'");
             }
 
@@ -170,5 +168,3 @@ class MassDelTrackback extends BaseAdmin
         }
     }
 }
-
-?>

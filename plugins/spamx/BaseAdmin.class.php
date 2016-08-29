@@ -3,12 +3,10 @@
 /**
  * Abstract class for Admin Duties for Spam comments
  *
- * @author Tom Willett  tomw AT pigstye DOT net
- *
- * @package Spam-X
+ * @author     Tom Willett  tomw AT pigstye DOT net
+ * @package    Spam-X
  * @subpackage Modules
  * @abstract
- *
  */
 abstract class BaseAdmin
 {
@@ -19,11 +17,11 @@ abstract class BaseAdmin
     protected $csrfToken;
 
     /**
-    * Getter method for protected properties
-    *
-    * @param    string    $name
-    * @return   string
-    */
+     * Getter method for protected properties
+     *
+     * @param    string $name
+     * @return   string
+     */
     public function __get($name)
     {
         if (in_array($name, array('moduleName', 'command', 'titleText', 'linkText'))) {
@@ -34,10 +32,10 @@ abstract class BaseAdmin
     }
 
     /**
-    * Returns the action the user posted
-    *
-    * @return    string
-    */
+     * Returns the action the user posted
+     *
+     * @return    string
+     */
     protected function getAction()
     {
         $action = '';
@@ -54,10 +52,10 @@ abstract class BaseAdmin
     }
 
     /**
-    * Returns the entry the user posted
-    *
-    * @return    string
-    */
+     * Returns the entry the user posted
+     *
+     * @return    string
+     */
     protected function getEntry()
     {
         $entry = '';
@@ -72,10 +70,10 @@ abstract class BaseAdmin
     }
 
     /**
-    * Removes an entry from database
-    *
-    * @return    boolean    true = success, false = otherwise
-    */
+     * Removes an entry from database
+     *
+     * @return    boolean    true = success, false = otherwise
+     */
     protected function deleteEntry($entry)
     {
         global $_TABLES;
@@ -91,10 +89,10 @@ abstract class BaseAdmin
     }
 
     /**
-    * Removes all entries the user selected from database
-    *
-    * @return    boolean    true = success, false = otherwise
-    */
+     * Removes all entries the user selected from database
+     *
+     * @return    boolean    true = success, false = otherwise
+     */
     protected function deleteSelectedEntries(array $entries)
     {
         $retval = true;
@@ -109,12 +107,12 @@ abstract class BaseAdmin
     }
 
     /**
-    * Adds an entry to database
-    *
-    * @param    string    $entry
-    * @param    string    $spaces
-    * @return   boolean   true = success, false = otherwise
-    */
+     * Adds an entry to database
+     *
+     * @param    string $entry
+     * @param    bool   $spaces
+     * @return   boolean   true = success, false = otherwise
+     */
     protected function addEntry($entry, $spaces = false)
     {
         global $_TABLES;
@@ -130,7 +128,7 @@ abstract class BaseAdmin
                 $_TABLES['spamx'],
                 "COUNT(*)",
                 "name ='" . DB_escapeString($this->moduleName)
-                    . "' AND value = '" . $entry . "'"
+                . "' AND value = '" . $entry . "'"
             );
 
             // Lets the user add a unique record only
@@ -144,11 +142,11 @@ abstract class BaseAdmin
     }
 
     /**
-    * Escapes a string so as to be safely displayed
-    *
-    * @param    string    $str
-    * @return   string
-    */
+     * Escapes a string so as to be safely displayed
+     *
+     * @param    string $str
+     * @return   string
+     */
     public function escape($str)
     {
         static $charset = null;
@@ -161,14 +159,14 @@ abstract class BaseAdmin
     }
 
     /**
-    * Callback function for ADMIN_list
-    *
-    * @param    string    $fieldName
-    * @param    string    $fieldValue
-    * @param    array     $A
-    * @param    array     $iconArr
-    * @return   string
-    */
+     * Callback function for ADMIN_list
+     *
+     * @param    string $fieldName
+     * @param    string $fieldValue
+     * @param    array  $A
+     * @param    array  $iconArr
+     * @return   string
+     */
     public function fieldFunction($fieldName, $fieldValue, $A, $iconArr)
     {
         global $_CONF;
@@ -177,7 +175,7 @@ abstract class BaseAdmin
 
         if ($fieldName === 'id') {
             $retval = '<input type="checkbox" name="delitem[]" value="'
-                    . $this->escape($fieldValue) . '"' . XHTML . '>';
+                . $this->escape($fieldValue) . '"' . XHTML . '>';
         } else if ($fieldName === 'value') {
             $retval = COM_createLink(
                 $this->escape($fieldValue),
@@ -186,7 +184,7 @@ abstract class BaseAdmin
                     'command'  => $this->command,
                     'action'   => 'delete',
                     'entry'    => $fieldValue,
-                    CSRF_TOKEN => $this->csrfToken
+                    CSRF_TOKEN => $this->csrfToken,
                 ))
             );
 
@@ -198,10 +196,10 @@ abstract class BaseAdmin
     }
 
     /**
-    * Returns a list of data
-    *
-    * @return   string
-    */
+     * Returns a list of data
+     *
+     * @return   string
+     */
     protected function getList()
     {
         global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG01, $LANG33, $LANG_SX00;
@@ -234,7 +232,7 @@ abstract class BaseAdmin
             'form_url'   => $_CONF['site_admin_url'] . '/plugins/spamx/index.php?'
                 . http_build_query(array(
                     'command'  => $this->command,
-                    CSRF_TOKEN => $this->csrfToken
+                    CSRF_TOKEN => $this->csrfToken,
                 )),
             'has_extras' => true,
             'title'      => $this->titleText,
@@ -250,15 +248,15 @@ abstract class BaseAdmin
             'direction' => 'DESC',
         );
 
-        $filter  = '';
-        $extra   = '';
+        $filter = '';
+        $extra = '';
         $options = '';
 
         $form_arr = array(
             'bottom' => '<input type="image" name="delbutton" alt="delbutton" src="'
                 . $_CONF['layout_url'] . '/images/deleteitem.' . $_IMAGE_TYPE
                 . '" title="' . $LANG01[124] . '" onclick="return confirm(\''
-                . $LANG01[125] . '\');"' . XHTML . '>'
+                . $LANG01[125] . '\');"' . XHTML . '>',
         );
 
         $showsearch = true;
@@ -270,46 +268,46 @@ abstract class BaseAdmin
     }
 
     /**
-    * Returns a widget to be displayed for each command
-    *
-    * @return   string
-    * @note     this method is overriden in EditHeader class, since it requires
-    *           two input fields.
-    */
+     * Returns a widget to be displayed for each command
+     *
+     * @return   string
+     * @note     this method is overriden in EditHeader class, since it requires
+     *           two input fields.
+     */
     protected function getWidget()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
 
         $this->csrfToken = SEC_createToken();
         $display = '<hr' . XHTML . '>' . LB
-                 . '<p>' . $LANG_SX00['e1'] . '</p>' . LB
-                 . $this->getList()
-                 . '<p>' . $LANG_SX00['e2'] . '</p>' . LB
-                 . '<form method="post" class="uk-form" action="' . $_CONF['site_admin_url']
-                 . '/plugins/spamx/index.php?command=' . $this->command . '">' . LB
-                 . '<div><input type="text" size="31" name="pentry"' . XHTML
-                 . '>&nbsp;&nbsp;&nbsp;'
-                 . '<button type="submit" name="paction" value="'
-                 . $LANG_SX00['addentry'] . '" class="uk-button">'
-                 . $LANG_SX00['addentry'] . '</button>' . LB
-                 . '<input type="hidden" name="' . CSRF_TOKEN
-                 . '" value="' . $this->csrfToken . '"' . XHTML . '>' . LB
-                 . '</div></form>' . LB;
+            . '<p>' . $LANG_SX00['e1'] . '</p>' . LB
+            . $this->getList()
+            . '<p>' . $LANG_SX00['e2'] . '</p>' . LB
+            . '<form method="post" class="uk-form" action="' . $_CONF['site_admin_url']
+            . '/plugins/spamx/index.php?command=' . $this->command . '">' . LB
+            . '<div><input type="text" size="31" name="pentry"' . XHTML
+            . '>&nbsp;&nbsp;&nbsp;'
+            . '<button type="submit" name="paction" value="'
+            . $LANG_SX00['addentry'] . '" class="uk-button">'
+            . $LANG_SX00['addentry'] . '</button>' . LB
+            . '<input type="hidden" name="' . CSRF_TOKEN
+            . '" value="' . $this->csrfToken . '"' . XHTML . '>' . LB
+            . '</div></form>' . LB;
 
         return $display;
     }
 
     /**
-    * Public interface for executing a command and showing data
-    *
-    * @return   string
-    */
+     * Public interface for executing a command and showing data
+     *
+     * @return   string
+     */
     public function display()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
 
         $action = $this->getAction();
-        $entry  = $this->getEntry();
+        $entry = $this->getEntry();
 
         if (!empty($action) && SEC_checkToken()) {
             switch ($action) {
@@ -333,5 +331,3 @@ abstract class BaseAdmin
         return $this->getWidget();
     }
 }
-
-?>

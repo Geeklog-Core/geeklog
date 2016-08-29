@@ -1,35 +1,29 @@
 <?php
 
 /**
-* File:  MassDelete.Admin.class.php
-* Mass delete comment spam
-*
-* Copyright (C) 2004-2008 by the following authors:
-*
-* Author        Tom Willett        tomw AT pigstye DOT net
-*
-* Licensed under GNU General Public License
-*
-* @package Spam-X
-* @subpackage Modules
-*/
+ * File:  MassDelete.Admin.class.php
+ * Mass delete comment spam
+ * Copyright (C) 2004-2008 by the following authors:
+ * Author        Tom Willett        tomw AT pigstye DOT net
+ * Licensed under GNU General Public License
+ *
+ * @package    Spam-X
+ * @subpackage Modules
+ */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'massdelete.admin.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'massdelete.admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-/**
-* Include Abstract Base Class and comment library
-*/
+// Include Abstract Base Class and comment library
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
 
 /**
-* MassDelete class: Mass-delete comments
-*
-* @package Spam-X
-*
-*/
+ * MassDelete class: Mass-delete comments
+ *
+ * @package Spam-X
+ */
 class MassDelete extends BaseAdmin
 {
     public function __construct()
@@ -37,11 +31,16 @@ class MassDelete extends BaseAdmin
         global $LANG_SX00;
 
         $this->moduleName = '';
-        $this->command    = 'MassDelete';
-        $this->titleText  = '';
-        $this->linkText   = $LANG_SX00['mass_delete_spam_comments'];
+        $this->command = 'MassDelete';
+        $this->titleText = '';
+        $this->linkText = $LANG_SX00['mass_delete_spam_comments'];
     }
 
+    /**
+     * Return HTML widget
+     *
+     * @return string
+     */
     public function display()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
@@ -60,7 +59,8 @@ class MassDelete extends BaseAdmin
         }
 
         if (($act === $LANG_SX00['deletespam']) && ($lmt > 0) &&
-                SEC_checkToken()) {
+            SEC_checkToken()
+        ) {
             $numc = 0;
             $spamx_path = $_CONF['path'] . 'plugins/spamx/';
 
@@ -80,9 +80,9 @@ class MassDelete extends BaseAdmin
             }
 
             $result = DB_query("SELECT comment,cid,sid,type,UNIX_TIMESTAMP(date) as date,ipaddress FROM {$_TABLES['comments']} ORDER BY date DESC LIMIT $lmt");
-            $nrows = DB_numRows($result);
+            $numRows = DB_numRows($result);
 
-            for ($i = 0; $i < $nrows; $i++) {
+            for ($i = 0; $i < $numRows; $i++) {
                 $A = DB_fetchArray($result);
 
                 foreach ($Spamx_Examine as $Examine) {
@@ -109,17 +109,17 @@ class MassDelete extends BaseAdmin
         } else {
             $token = SEC_createToken();
             $display .= '<form class="uk-form" method="post" action="'
-                     .  $_CONF['site_admin_url']
-                     .  '/plugins/spamx/index.php?command=MassDelete"><div>';
+                . $_CONF['site_admin_url']
+                . '/plugins/spamx/index.php?command=MassDelete"><div>';
             $display .= $LANG_SX00['numtocheck'] . '&nbsp;&nbsp;&nbsp;'
-                     .  ' <select name="limit">' . LB;
+                . ' <select name="limit">' . LB;
             $display .= '<option value="10">10</option>' . LB
-                     .  '<option value="50">50</option>' . LB
-                     .  '<option value="100" selected="selected">100</option>'
-                     .  LB
-                     .  '<option value="200">200</option>' . LB
-                     .  '<option value="300">300</option>' . LB
-                     .  '<option value="400">400</option>' . LB;
+                . '<option value="50">50</option>' . LB
+                . '<option value="100" selected="selected">100</option>'
+                . LB
+                . '<option value="200">200</option>' . LB
+                . '<option value="300">300</option>' . LB
+                . '<option value="400">400</option>' . LB;
             $display .= '</select>' . LB;
             $display .= $LANG_SX00['note1'];
             $display .= $LANG_SX00['note2'];
@@ -128,10 +128,10 @@ class MassDelete extends BaseAdmin
             $display .= $LANG_SX00['note5'];
             $display .= $LANG_SX00['note6'] . LB;
             $display .= '<button type="submit" name="action" value="'
-                     . $LANG_SX00['deletespam'] . '" class="uk-button">'
-                     . $LANG_SX00['deletespam'] . '</button>' . LB;
+                . $LANG_SX00['deletespam'] . '" class="uk-button">'
+                . $LANG_SX00['deletespam'] . '</button>' . LB;
             $display .= '<input type="hidden" name="' . CSRF_TOKEN
-                 . "\" value=\"{$token}\"" . XHTML . '>' . LB;
+                . "\" value=\"{$token}\"" . XHTML . '>' . LB;
             $display .= '</div></form>' . LB;
         }
 
@@ -139,20 +139,20 @@ class MassDelete extends BaseAdmin
     }
 
     /**
-    * Deletes a given comment
-    * (lifted from comment.php)
-    * @param    int         $cid    Comment ID
-    * @param    string      $sid    ID of object comment belongs to
-    * @param    string      $type   Comment type (e.g. article, poll, etc)
-    * @return   string      Returns string needed to redirect page to right place
-    *
-    */
+     * Deletes a given comment
+     * (lifted from comment.php)
+     *
+     * @param    int    $cid  Comment ID
+     * @param    string $sid  ID of object comment belongs to
+     * @param    string $type Comment type (e.g. article, poll, etc)
+     * @return   string      Returns string needed to redirect page to right place
+     */
     public function delcomment($cid, $sid, $type)
     {
-        global $_CONF, $_TABLES, $LANG_SX00;
+        global $_TABLES, $LANG_SX00, $_USER;
 
         $type = COM_applyFilter($type);
-        $sid  = COM_applyFilter($sid);
+        $sid = COM_applyFilter($sid);
 
         switch ($type) {
             case 'article':
@@ -162,10 +162,11 @@ class MassDelete extends BaseAdmin
 
                 if ($has_editPermissions && SEC_hasAccess($A['owner_id'],
                         $A['group_id'], $A['perm_owner'], $A['perm_group'],
-                        $A['perm_members'], $A['perm_anon']) == 3) {
+                        $A['perm_members'], $A['perm_anon']) == 3
+                ) {
                     CMT_deleteComment(COM_applyFilter($cid, true), $sid, 'article');
                     $comments = DB_count($_TABLES['comments'],
-                            array('sid', 'type'), array($sid, 'article'));
+                        array('sid', 'type'), array($sid, 'article'));
                     DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
                 } else {
                     COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) tried to illegally delete comment $cid from $type $sid");
@@ -181,5 +182,3 @@ class MassDelete extends BaseAdmin
         SPAMX_log($LANG_SX00['spamdeleted']);
     }
 }
-
-?>

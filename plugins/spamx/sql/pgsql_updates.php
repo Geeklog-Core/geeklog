@@ -97,5 +97,3 @@ function spamx_update_ConfigSecurity_1_2_2()
         }
     }
 }
-
-?>

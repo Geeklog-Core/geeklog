@@ -37,6 +37,12 @@ class DeleteComment extends BaseCommand
         $this->actionCode = PLG_SPAM_ACTION_DELETE;
     }
 
+    /**
+     * Execute
+     *
+     * @param  $comment
+     * @return int
+     */
     public function execute($comment)
     {
         global $_CONF, $_TABLES, $LANG_SX00;

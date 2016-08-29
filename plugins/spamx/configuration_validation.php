@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'configuration_validation.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -45,5 +45,3 @@ $_CONF_VALIDATE['spamx']['sfs_enabled'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['spamx']['sfs_confidence'] = array('rule' => array('range', 0, 101));
 $_CONF_VALIDATE['spamx']['snl_enabled'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['spamx']['snl_num_links'] = array('rule' => 'numeric');
-
-?>

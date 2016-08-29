@@ -1,51 +1,46 @@
 <?php
 
 /**
-* File: SFSbase.class.php
-* Stop Forum Spam (SFS) Base Class
-*
-* Copyright  (C) 2014 Tom Homer  - WebSiteMaster AT cogeco DOT com
-*
-* Licensed under the GNU General Public License
-*
-*
-*/
+ * File: SFSbase.class.php
+ * Stop Forum Spam (SFS) Base Class
+ * Copyright  (C) 2014 Tom Homer  - WebSiteMaster AT cogeco DOT com
+ * Licensed under the GNU General Public License
 
-if (strpos ($_SERVER['PHP_SELF'], 'SFSbase.class.php') !== false) {
+
+ */
+
+if (stripos($_SERVER['PHP_SELF'], 'SFSbase.class.php') !== false) {
     die ('This file can not be used on its own!');
 }
 
 /**
-* Checks number of links in post.
-*
-* based in large part on the works of Dirk Haun, Tom Willet (Spam-X) and Russ Jones (SLV)
-*/
-
+ * Checks number of links in post.
+ * based in large part on the works of Dirk Haun, Tom Willet (Spam-X) and Russ Jones (SLV)
+ */
 class SFSbase
 {
-    private $_debug   = false;
+    private $_debug = false;
     private $_verbose = false;
 
     /**
-    * Constructor
-    */
+     * Constructor
+     */
     public function __construct()
     {
-        $this->_debug   = false;
+        $this->_debug = false;
         $this->_verbose = false;
     }
 
     /**
-    * Check if spam IP
-    *
-    * @param    string  $post   post to check for spam
-    * @return   boolean         true = spam found, false = no spam
-    *
-    * Note: Also returns 'false' in case of problems communicating with SFS.
-    *       Error messages are logged in Geeklog's error.log
-    *
-    */
-    function CheckForSpam ($post)
+     * Check if spam IP
+     *
+     * @param    string $post post to check for spam
+     * @return   boolean         true = spam found, false = no spam
+     *                        Note: Also returns 'false' in case of problems communicating with SFS.
+     *                        Error messages are logged in Geeklog's error.log
+
+     */
+    function CheckForSpam($post)
     {
         global $_SPX_CONF, $_TABLES;
 
@@ -85,7 +80,7 @@ class SFSbase
 
         try {
             $response = $req->send();
-            
+
             if ($response->getStatus() == 200) {
                 $result = $response->getBody();
 
@@ -97,7 +92,7 @@ class SFSbase
 
                 if ($result === false) {
                     if ($this->_verbose) {
-                        SPAMX_log ("SFS: no spam detected");
+                        SPAMX_log("SFS: no spam detected");
                     }
 
                     return PLG_SPAM_NOT_FOUND;  // Invalid data, assume ok
@@ -110,10 +105,10 @@ class SFSbase
 
             return PLG_SPAM_NOT_FOUND;  // assumes OK
         }
-        
-        if ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) {
+
+        if ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence']) {
             $retval = PLG_SPAM_FOUND;
-            SPAMX_log ("SFS: spammer IP detected: " . $ip);
+            SPAMX_log("SFS: spammer IP detected: " . $ip);
 
             // Add IP to SFS IP list... assuming sfs runs after ip check so no dups
             // Double Check for IP address just in case
@@ -128,7 +123,7 @@ class SFSbase
             }
         } elseif ($this->_verbose) {
             $retval = PLG_SPAM_NOT_FOUND;
-            SPAMX_log ("SFS: spammer IP not detected: " . $ip);
+            SPAMX_log("SFS: spammer IP not detected: " . $ip);
         }
 
         return $retval;

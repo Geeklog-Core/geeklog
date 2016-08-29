@@ -1,47 +1,44 @@
 <?php
 /**
-*   SFS.Misc.class.php
-*   Special examiner to check email and IP addresses during registration.
-*   Checks stopforumspam.com and, if the result is positive, addes the
-*   email and/or IP address to the spamx table.
-*
-*   @author     Lee Garner <lee@leegarner.com>
-*   @copyright  Copyright (c) 2010 Lee Garner <lee@leegarner.com>
-*   @package    spamx
-*   @subpackage Modules
-*   @version    1.0.0
-*   @license    http://opensource.org/licenses/gpl-2.0.php
-*               GNU Public License v2 or later
-*/
+ *   SFS.Misc.class.php
+ *   Special examiner to check email and IP addresses during registration.
+ *   Checks stopforumspam.com and, if the result is positive, addes the
+ *   email and/or IP address to the spamx table.
+ *
+ * @author       Lee Garner <lee@leegarner.com>
+ * @copyright    Copyright (c) 2010 Lee Garner <lee@leegarner.com>
+ * @package      spamx
+ * @subpackage   Modules
+ * @version      1.0.0
+ * @license      http://opensource.org/licenses/gpl-2.0.php
+ *               GNU Public License v2 or later
+ */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'sfs.misc.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'sfs.misc.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-/**
-* Include Abstract Examine Class
-*/
+// Include Abstract Examine Class
 require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
-* Examines Email and IP
-*
-* @author Tom Willett, tomw AT pigstye DOT net
-*
-* @package Spam-X
-*
-*/
+ * Examines Email and IP
+ *
+ * @author  Tom Willett, tomw AT pigstye DOT net
+ * @package Spam-X
+ */
 class SFS extends BaseCommand
 {
     /**
      * The execute method examines the Email address
      *
-     * @param   string  $email      Email text to examine
+     * @param   string $email Email text to examine
      * @return  int                 0: no spam, else: spam detected
      */
     public function execute($email)
     {
         $this->result = $this->_process($email, $_SERVER['REMOTE_ADDR']);
+
         return $this->result;
     }
 
@@ -49,8 +46,8 @@ class SFS extends BaseCommand
     /**
      * Private internal method,
      *
-     * @param   string  $email  Email address of user
-     * @param   string  $ip     IP address of user
+     * @param   string $email Email address of user
+     * @param   string $ip    IP address of user
      * @return  int             0: no spam, else: spam detected
      */
     private function _process($email, $ip)
@@ -74,7 +71,7 @@ class SFS extends BaseCommand
         }
 
         $db_email = DB_escapeString($email);
-        $db_ip    = DB_escapeString($ip);
+        $db_ip = DB_escapeString($ip);
         //  Include Blacklist Data
         //  Check for IP address
         $result = DB_query("SELECT name, value FROM {$_TABLES['spamx']}
@@ -84,6 +81,7 @@ class SFS extends BaseCommand
             list ($name, $value) = DB_fetchArray($result);
             $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
             DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1, regdate = '$timestamp' WHERE name='" . DB_escapeString($name) . "' AND value='" . DB_escapeString($value) . "'", 1);
+
             return PLG_SPAM_FOUND;
         }
 
@@ -121,7 +119,7 @@ class SFS extends BaseCommand
 
                 if ($result === false) {
                     if ($this->_verbose) {
-                        SPAMX_log ("SFS: no spam detected");
+                        SPAMX_log("SFS: no spam detected");
                     }
 
                     return PLG_SPAM_NOT_FOUND;  // Invalid data, assume ok
@@ -136,15 +134,15 @@ class SFS extends BaseCommand
         }
 
         if (
-           (isset($result['email']) && $result['email']['appears'] == 1 && $result['email']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) ||
-           ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] )
-           ) {
+            (isset($result['email']) && $result['email']['appears'] == 1 && $result['email']['confidence'] > (float) $_SPX_CONF['sfs_confidence']) ||
+            ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence'])
+        ) {
             $value_arr = array();
             $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
-            if (isset($result['email']) && $result['email']['appears'] == 1 && $result['email']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) {
+            if (isset($result['email']) && $result['email']['appears'] == 1 && $result['email']['confidence'] > (float) $_SPX_CONF['sfs_confidence']) {
                 $value_arr[] = "('email', '$db_email', '$timestamp')";
             }
-            if ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence'] ) {
+            if ($result['ip']['appears'] == 1 && $result['ip']['confidence'] > (float) $_SPX_CONF['sfs_confidence']) {
                 $value_arr[] = "('IP', '$db_ip', '$timestamp')";
             }
             $values = implode(',', $value_arr);
@@ -158,7 +156,7 @@ class SFS extends BaseCommand
             return PLG_SPAM_FOUND;
         } else {
             if ($this->_verbose) {
-                SPAMX_log ("SFS: spammer IP not detected: " . $ip . " Spammer email not detected: " . $email);
+                SPAMX_log("SFS: spammer IP not detected: " . $ip . " Spammer email not detected: " . $email);
             }
         }
 
@@ -166,5 +164,3 @@ class SFS extends BaseCommand
         return PLG_SPAM_NOT_FOUND;
     }
 }
-
-?>

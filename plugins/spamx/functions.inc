@@ -13,13 +13,11 @@
  * @package Spam-X
  */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
 }
 
-/**
- * Language file include
- */
+// Language file include
 $plugin_path = $_CONF['path'] . 'plugins/spamx/';
 $langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 

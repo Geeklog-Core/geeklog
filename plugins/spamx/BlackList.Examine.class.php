@@ -3,13 +3,11 @@
 /**
  * File: BlackList.Examine.class.php
  * This is the Personal BlackList Examine class for the Geeklog Spam-X plugin
- *
  * Copyright (C) 2004-2006 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
- *
  * Licensed under GNU General Public License
  *
- * @package Spam-X
+ * @package    Spam-X
  * @subpackage Modules
  */
 
@@ -25,9 +23,8 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 /**
  * Examines Comment according to Personal BLacklist
  *
- * @author Tom Willett tomw AT pigstye DOT net
+ * @author  Tom Willett tomw AT pigstye DOT net
  * @package Spam-X
- *
  */
 class BlackList extends BaseCommand
 {
@@ -44,6 +41,9 @@ class BlackList extends BaseCommand
 
     /**
      * Here we do the work
+     *
+     * @param  string
+     * @return int
      */
     public function execute($comment)
     {
@@ -66,16 +66,16 @@ class BlackList extends BaseCommand
         $ans = PLG_SPAM_NOT_FOUND;
 
         for ($i = 1; $i <= $nrows; $i++) {
-            list ($val) = DB_fetchArray ($result);
+            list($val) = DB_fetchArray($result);
             $originalVal = $val;
-            $val = str_replace ('#', '\\#', $val);
+            $val = str_replace('#', '\\#', $val);
 
-            if (preg_match ("#$val#i", $comment)) {
+            if (preg_match("#$val#i", $comment)) {
                 $ans = PLG_SPAM_FOUND;  // quit on first positive match
                 $this->updateStat('Personal', $originalVal);
-                SPAMX_log ($LANG_SX00['foundspam'] . $val .
-                           $LANG_SX00['foundspam2'] . $uid .
-                           $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                SPAMX_log($LANG_SX00['foundspam'] . $val .
+                    $LANG_SX00['foundspam2'] . $uid .
+                    $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
                 break;
             }
         }
@@ -83,5 +83,3 @@ class BlackList extends BaseCommand
         return $ans;
     }
 }
-
-?>
