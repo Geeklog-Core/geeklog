@@ -74,17 +74,17 @@ function emailpassword($username, $msg = 0)
     if ($nrows == 1) {
         $A = DB_fetchArray($result);
         if (($_CONF['usersubmission'] == 1) && ($A['status'] == USER_ACCOUNT_AWAITING_APPROVAL)) {
-            return COM_refresh($_CONF['site_url'] . '/index.php?msg=48');
+            COM_redirect($_CONF['site_url'] . '/index.php?msg=48');
         }
 
         $mailresult = USER_createAndSendPassword($username, $A['email'], $A['uid']);
 
         if ($mailresult == false) {
-            $retval = COM_refresh("{$_CONF['site_url']}/index.php?msg=85");
+            COM_redirect("{$_CONF['site_url']}/index.php?msg=85");
         } elseif ($msg) {
-            $retval = COM_refresh("{$_CONF['site_url']}/index.php?msg=$msg");
+            COM_redirect("{$_CONF['site_url']}/index.php?msg=$msg");
         } else {
-            $retval = COM_refresh("{$_CONF['site_url']}/index.php?msg=1");
+            COM_redirect("{$_CONF['site_url']}/index.php?msg=1");
         }
     } else {
         $retval = COM_createHTMLDocument(defaultform($LANG04[17]), array('pagetitle' => $LANG04[17]));
@@ -111,7 +111,7 @@ function requestpassword($username)
     if ($nrows == 1) {
         $A = DB_fetchArray($result);
         if (($_CONF['usersubmission'] == 1) && ($A['status'] == USER_ACCOUNT_AWAITING_APPROVAL)) {
-            return COM_refresh($_CONF['site_url'] . '/index.php?msg=48');
+            COM_redirect($_CONF['site_url'] . '/index.php?msg=48');
         }
         $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
         DB_change($_TABLES['users'], 'pwrequestid', "$reqid",
@@ -136,8 +136,9 @@ function requestpassword($username)
             $msg = 85; // problem sending the email
         }
 
-        $retval .= COM_refresh($_CONF['site_url'] . "/index.php?msg=$msg");
+        $redirect = $_CONF['site_url'] . "/index.php?msg=$msg";
         COM_updateSpeedlimit('password');
+        COM_redirect($redirect);
     } else {
         $retval = COM_createHTMLDocument(defaultform($LANG04[17]), array('pagetitle' => $LANG04[17]));
     }
@@ -242,8 +243,7 @@ function createuser($username, $email, $email_conf)
                 if (DB_getItem($_TABLES['users'], 'status', "uid = $uid")
                     == USER_ACCOUNT_AWAITING_APPROVAL
                 ) {
-                    $retval = COM_refresh($_CONF['site_url']
-                        . '/index.php?msg=48');
+                    COM_redirect($_CONF['site_url'] . '/index.php?msg=48');
                 } else {
                     $retval = emailpassword($username, 1);
                 }
@@ -591,7 +591,7 @@ function resend_request()
         if (!empty($files)) {
             SECINT_cleanupFiles($files);
         }
-        echo COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     // don't return
@@ -616,7 +616,7 @@ switch ($mode) {
         SEC_setCookie($_CONF['cookie_session'], '', time() - 10000);
         SEC_setCookie($_CONF['cookie_password'], '', time() - 10000);
         SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
-        $display = COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
+        COM_redirect($_CONF['site_url'] . '/index.php?msg=8');
         break;
 
     case 'profile':
@@ -644,10 +644,10 @@ switch ($mode) {
             if ($uid > 1) {
                 $display .= USER_showProfile($uid);
             } else {
-                $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
         } else {
-            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
         break;
 
@@ -697,7 +697,7 @@ switch ($mode) {
             }
         } else {
             // this request doesn't make sense - ignore it
-            $display = COM_refresh($_CONF['site_url']);
+            COM_redirect($_CONF['site_url']  . '/index.php');
         }
         break;
 
@@ -705,9 +705,10 @@ switch ($mode) {
         if ((empty($_POST['passwd']))
             || ($_POST['passwd'] != $_POST['passwd_conf'])
         ) {
-            $display = COM_refresh($_CONF['site_url']
-                . '/users.php?mode=newpwd&amp;uid=' . $_POST['uid']
-                . '&amp;rid=' . $_POST['rid']);
+            COM_redirect(
+                $_CONF['site_url'] . '/users.php?mode=newpwd&amp;uid=' . $_POST['uid']
+                . '&amp;rid=' . $_POST['rid']
+            );
         } else {
             $uid = COM_applyFilter($_POST['uid'], true);
             $reqid = COM_applyFilter($_POST['rid']);
@@ -722,7 +723,7 @@ switch ($mode) {
                     DB_delete($_TABLES['sessions'], 'uid', $uid);
                     DB_change($_TABLES['users'], 'pwrequestid', "NULL",
                         'uid', $uid);
-                    $display = COM_refresh($_CONF['site_url'] . '/users.php?msg=53');
+                    COM_redirect($_CONF['site_url'] . '/users.php?msg=53');
                 } else { // request invalid or expired
                     $display .= COM_showMessage(54);
                     $display .= getpasswordform();
@@ -730,7 +731,7 @@ switch ($mode) {
                 }
             } else {
                 // this request doesn't make sense - ignore it
-                $display = COM_refresh($_CONF['site_url']);
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
         }
         break;
@@ -757,8 +758,7 @@ switch ($mode) {
             if (!empty($username)) {
                 $display .= requestpassword($username);
             } else {
-                $display = COM_refresh($_CONF['site_url']
-                    . '/users.php?mode=getpassword');
+                COM_redirect($_CONF['site_url'] . '/users.php?mode=getpassword');
             }
         }
         break;
@@ -847,7 +847,7 @@ switch ($mode) {
                     $property = sprintf('%x', crc32($query['identity_url']));
                     COM_updateSpeedlimit('openid', $property);
                     COM_errorLog('Unable to find an OpenID server for the identity URL ' . $identity_url);
-                    echo COM_refresh($_CONF['site_url'] . '/users.php?msg=89');
+                    COM_redirect($_CONF['site_url'] . '/users.php?msg=89');
                     exit;
                 } else {
                     // Found identity server info.
@@ -874,8 +874,7 @@ switch ($mode) {
                 }
                 if ($openid_mode === 'cancel') {
                     COM_updateSpeedlimit('login');
-                    echo COM_refresh($_CONF['site_url'] . '/users.php?msg=90');
-                    exit;
+                    COM_redirect($_CONF['site_url'] . '/users.php?msg=90');
                 } else {
                     $openid = $handler->getOpenID();
                     $req = new ConsumerRequest($openid, $query, 'GET');
@@ -884,8 +883,7 @@ switch ($mode) {
                 }
             } else {
                 COM_updateSpeedlimit('login');
-                echo COM_refresh($_CONF['site_url'] . '/users.php?msg=91');
-                exit;
+                COM_redirect($_CONF['site_url'] . '/users.php?msg=91');
             }
 
         } elseif ($_CONF['user_login_method']['oauth'] &&
@@ -919,8 +917,7 @@ switch ($mode) {
                 if ($oauth_userinfo === false) {
                     COM_updateSpeedlimit('login');
                     COM_errorLog("OAuth Error: " . $consumer->error);
-                    echo COM_refresh($_CONF['site_url'] . '/users.php?msg=110'); // OAuth authentication error
-                    exit;
+                    COM_redirect($_CONF['site_url'] . '/users.php?msg=110'); // OAuth authentication error
                 }
 
                 $consumer->doAction($oauth_userinfo);
@@ -993,17 +990,17 @@ switch ($mode) {
             ) {
                 $indexMsg = $_CONF['site_url'] . '/index.php?msg=';
                 if (substr($_SERVER['HTTP_REFERER'], 0, strlen($indexMsg)) == $indexMsg) {
-                    $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+                    COM_redirect($_CONF['site_url'] . '/index.php');
                 } else {
                     // If user is trying to login - force redirect to index.php
                     if (strstr($_SERVER['HTTP_REFERER'], 'mode=login') === false) {
-                        $display .= COM_refresh($_SERVER['HTTP_REFERER']);
+                        COM_redirect($_SERVER['HTTP_REFERER']);
                     } else {
-                        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+                        COM_redirect($_CONF['site_url'] . '/index.php');
                     }
                 }
             } else {
-                $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
         } else {
             // On failed login attempt, update speed limit
@@ -1078,8 +1075,8 @@ switch ($mode) {
                             if (!empty($files)) {
                                 SECINT_cleanupFiles($files);
                             }
-                            echo COM_refresh($_CONF['site_url'] . '/index.php');
-                            exit;
+
+                            COM_redirect($_CONF['site_url'] . '/index.php');
                         }
                     }
                     break;

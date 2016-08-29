@@ -802,14 +802,12 @@ function SEC_checkUserStatus($userid)
         // If we aren't on users.php with a default action then go to it
         if ($redirect) {
             COM_accessLog("SECURITY: Attempted Cookie Session login from user awaiting approval $userid.");
-            echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
-            exit;
+            COM_redirect($_CONF['site_url'] . '/users.php?msg=70');
         }
     } elseif ($status == USER_ACCOUNT_DISABLED) {
         if ($redirect) {
             COM_accessLog("SECURITY: Attempted Cookie Session login from banned user $userid.");
-            echo COM_refresh($_CONF['site_url'] . '/users.php?msg=69');
-            exit;
+            COM_redirect($_CONF['site_url'] . '/users.php?msg=69');
         }
     }
 

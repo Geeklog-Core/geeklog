@@ -309,7 +309,7 @@ function confirmAccountDelete($form_reqid)
 
     if (DB_count($_TABLES['users'], array('pwrequestid', 'uid'), array($form_reqid, $_USER['uid'])) != 1) {
         // not found - abort
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     // Do not check current password for remote users. At some point we should reauthenticate with the service when deleting the account
@@ -318,8 +318,7 @@ function confirmAccountDelete($form_reqid)
         if (empty($_POST['old_passwd']) ||
             (SEC_encryptUserPassword($_POST['old_passwd'], $_USER['uid']) < 0)
         ) {
-            return COM_refresh($_CONF['site_url']
-                . '/usersettings.php?msg=84');
+            COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=84');
         }
     }
 
@@ -353,14 +352,14 @@ function deleteUserAccount($form_reqid)
             array($form_reqid, $_USER['uid'])) != 1
     ) {
         // not found - abort
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     if (!USER_deleteAccount($_USER['uid'])) {
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
-    return COM_refresh($_CONF['site_url'] . '/index.php?msg=57');
+    COM_redirect($_CONF['site_url'] . '/index.php?msg=57');
 }
 
 /**
@@ -924,8 +923,7 @@ function saveuser(array $A)
         DB_change($_TABLES['users'], 'pwrequestid', "NULL",
             'uid', $_USER['uid']);
         COM_accessLog("An attempt was made to illegally change the account information of user {$_USER['uid']}.");
-
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     if (!isset($A['cooktime'])) {
@@ -951,8 +949,7 @@ function saveuser(array $A)
             if (empty($A['old_passwd']) ||
                 (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0)
             ) {
-                return COM_refresh($_CONF['site_url']
-                    . '/usersettings.php?msg=83');
+                COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=83');
             } elseif ($_CONF['custom_registration'] &&
                 function_exists('CUSTOM_userCheck')
             ) {
@@ -964,7 +961,7 @@ function saveuser(array $A)
                         $ret['number'] = 400;
                     }
 
-                    return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
+                    COM_redirect("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
                 }
             }
         } elseif ($_CONF['custom_registration'] &&
@@ -978,7 +975,7 @@ function saveuser(array $A)
                     $ret['number'] = 400;
                 }
 
-                return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
+                COM_redirect("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
             }
         }
     } else {
@@ -1019,8 +1016,7 @@ function saveuser(array $A)
                 DB_change($_TABLES['users'], 'username', $A['new_username'],
                     "uid", $_USER['uid']);
             } else {
-                return COM_refresh($_CONF['site_url']
-                    . '/usersettings.php?msg=51');
+                COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=51');
             }
         }
     }
@@ -1050,14 +1046,11 @@ function saveuser(array $A)
     $A['pgpkey'] = strip_tags(COM_stripslashes($A['pgpkey']));
 
     if (!COM_isEmail($A['email'])) {
-        return COM_refresh($_CONF['site_url']
-            . '/usersettings.php?msg=52');
+        COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=52');
     } elseif ($A['email'] !== $A['email_conf']) {
-        return COM_refresh($_CONF['site_url']
-            . '/usersettings.php?msg=78');
+        COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=78');
     } elseif (emailAddressExists($A['email'], $_USER['uid'])) {
-        return COM_refresh($_CONF['site_url']
-            . '/usersettings.php?msg=56');
+        COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=56');
     } else {
         $passwd = '';
         if ($service == '') {
@@ -1074,11 +1067,9 @@ function saveuser(array $A)
                     SEC_setCookie($_CONF['cookie_password'], $passwd,
                         time() + $cooktime);
                 } elseif (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0) {
-                    return COM_refresh($_CONF['site_url']
-                        . '/usersettings.php?msg=68');
+                    COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=68');
                 } elseif ($A['passwd'] != $A['passwd_conf']) {
-                    return COM_refresh($_CONF['site_url']
-                        . '/usersettings.php?msg=67');
+                    COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=67');
                 }
             }
         } else {
@@ -1180,7 +1171,7 @@ function saveuser(array $A)
         }
 
 
-        return COM_refresh($_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+        COM_redirect($_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
             . $_USER['uid'] . '&amp;msg=' . $msg);
     }
 }
@@ -1395,8 +1386,7 @@ function savepreferences($A)
 // MAIN
 $mode = '';
 if (isset($_POST['btncancel']) && $_POST['btncancel'] == $LANG_ADMIN['cancel']) {
-    echo COM_refresh($_CONF['site_url']);
-    exit;
+    COM_redirect($_CONF['site_url']);
 } elseif (isset($_POST['btnsubmit']) && ($_POST['btnsubmit'] === $LANG04[96]) &&
     ($_POST['mode'] !== 'deleteconfirmed')
 ) {
@@ -1419,8 +1409,7 @@ if (!COM_isAnonUser()) {
 
         case 'savepreferences':
             savepreferences($_POST);
-            $display .= COM_refresh($_CONF['site_url']
-                . '/usersettings.php?mode=preferences&amp;msg=6');
+            COM_redirect($_CONF['site_url'] . '/usersettings.php?mode=preferences&amp;msg=6');
             break;
 
         case 'confirmdelete':
@@ -1429,10 +1418,10 @@ if (!COM_isAnonUser()) {
                 if (!empty($accountId)) {
                     $display .= confirmAccountDelete($accountId);
                 } else {
-                    $display = COM_refresh($_CONF['site_url'] . '/index.php');
+                    COM_redirect($_CONF['site_url'] . '/index.php');
                 }
             } else {
-                $display = COM_refresh($_CONF['site_url'] . '/index.php');
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
             break;
 
@@ -1442,17 +1431,16 @@ if (!COM_isAnonUser()) {
                 if (!empty($accountId)) {
                     $display .= deleteUserAccount($accountId);
                 } else {
-                    $display = COM_refresh($_CONF['site_url'] . '/index.php');
+                    COM_redirect($_CONF['site_url'] . '/index.php');
                 }
             } else {
-                $display = COM_refresh($_CONF['site_url'] . '/index.php');
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
             break;
 
         case 'plugin':
             PLG_profileExtrasSave($_POST['plugin']);
-            $display = COM_refresh($_CONF['site_url']
-                . '/usersettings.php?msg=5');
+            COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=5');
             break;
 
         case 'synch':
@@ -1530,10 +1518,10 @@ if (!COM_isAnonUser()) {
                 }
 
                 if ($msg == 5) {
-                    $display = COM_refresh($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=5');
+                    COM_redirect($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=5');
                 } else {
                     COM_errorLog($MESSAGE[$msg]);
-                    $display = COM_refresh($_CONF['site_url'] . '/usersettings.php?msg=' . $msg);
+                    COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=' . $msg);
                 }
                 break;
             }

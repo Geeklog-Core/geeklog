@@ -1129,11 +1129,8 @@ function plugin_save_submit_links($A)
             LINKS_sendNotification($_TABLES['linksubmission'], $A);
         }
 
-        $retval = COM_refresh($_CONF['site_url']
-                              . '/index.php?msg=1&amp;plugin=links');
-
+        COM_redirect($_CONF['site_url'] . '/index.php?msg=1&amp;plugin=links');
     } else { // add link directly
-
         if (SEC_hasRights('links.submit')) {
             $A['group_id'] = SEC_getFeatureGroup('links.submit');
         } else {
@@ -1152,9 +1149,7 @@ function plugin_save_submit_links($A)
             LINKS_sendNotification($_TABLES['links'], $A);
         }
         COM_rdfUpToDateCheck('links', $A['cid'], $A['lid']);
-
-        $retval = COM_refresh($_CONF['site_url']
-                              . '/index.php?msg=4&amp;plugin=links');
+        COM_redirect($_CONF['site_url'] . '/index.php?msg=4&amp;plugin=links');
     }
 
     return $retval;

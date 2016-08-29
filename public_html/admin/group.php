@@ -549,14 +549,12 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             !in_array ($grp_id, $GroupAdminGroups) &&
             !SEC_groupIsRemoteUserAndHaveAccess($grp_id, $GroupAdminGroups)) {
             COM_accessLog ("User {$_USER['username']} tried to edit group '$grp_name' ($grp_id) with insufficient privileges.");
-
-            return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
+            COM_redirect($_CONF['site_admin_url'] . '/group.php');
         }
 
         if ($grp_gl_core == 1 AND !is_array ($features)) {
             COM_errorLog ("Sorry, no valid features were passed to this core group ($grp_id) and saving could cause problem...bailing.");
-
-            return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
+            COM_redirect($_CONF['site_admin_url'] . '/group.php');
         }
 
         // group names have to be unique, so check if this one exists already
@@ -681,9 +679,9 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             PLG_groupChanged($grp_id, 'edit');
         }
         if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
-            return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
+            COM_redirect($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
         } else {
-            return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
+            COM_redirect($_CONF['site_admin_url'] . '/group.php?msg=49');
         }
     } else {
         $retval .= COM_showMessageText($LANG_ACCESS['missingfieldsmsg'],
@@ -1073,8 +1071,6 @@ function editusers($group)
 *
 * @param    int     $groupid        id of the group being changed
 * @param    string  $groupmembers   list of group members
-* @return   string                  HTML redirect
-*
 */
 function savegroupusers($groupid, $groupmembers)
 {
@@ -1123,12 +1119,10 @@ function savegroupusers($groupid, $groupmembers)
     }
 
     if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
-        $retval = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
+        COM_redirect($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
     } else {
-        $retval = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
+        COM_redirect($_CONF['site_admin_url'] . '/group.php?msg=49');
     }
-
-    return $retval;
 }
 
 /**
@@ -1145,15 +1139,13 @@ function deleteGroup ($grp_id)
     if (!SEC_inGroup ('Root') && (DB_getItem ($_TABLES['groups'], 'grp_name',
             "grp_id = $grp_id") == 'Root')) {
         COM_accessLog ("User {$_USER['username']} tried to delete the Root group with insufficient privileges.");
-
-        return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
+        COM_redirect($_CONF['site_admin_url'] . '/group.php');
     }
 
     $GroupAdminGroups = SEC_getUserGroups ();
     if (!in_array ($grp_id, $GroupAdminGroups) && !SEC_groupIsRemoteUserAndHaveAccess($grp_id, $GroupAdminGroups)) {
         COM_accessLog ("User {$_USER['username']} tried to delete group $grp_id with insufficient privileges.");
-
-        return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
+        COM_redirect($_CONF['site_admin_url'] . '/group.php');
     }
 
     DB_delete ($_TABLES['access'], 'acc_grp_id', $grp_id);
@@ -1163,9 +1155,9 @@ function deleteGroup ($grp_id)
 
     PLG_groupChanged ($grp_id, 'delete');
     if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
-        return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50&chk_showall=1');
+        COM_redirect($_CONF['site_admin_url'] . '/group.php?msg=50&chk_showall=1');
     } else {
-        return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50');
+        COM_redirect($_CONF['site_admin_url'] . '/group.php?msg=50');
     }
 }
 
@@ -1179,12 +1171,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     if (!isset ($grp_id) || empty ($grp_id) || ($grp_id == 0)) {
         COM_errorLog ('Attempted to delete group grp_id=' . $grp_id);
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/group.php');
+        COM_redirect($_CONF['site_admin_url'] . '/group.php');
     } elseif (SEC_checkToken()) {
         $display .= deleteGroup ($grp_id);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete group $grp_id and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $grp_gl_core = COM_applyFilter($_POST['grp_gl_core'], true);

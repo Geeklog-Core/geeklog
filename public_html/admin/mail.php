@@ -200,10 +200,10 @@ function send_messages($vars)
         $group_name = DB_getItem($_TABLES['groups'], 'grp_name',
                                  "grp_id = $to_group");
         if (! SEC_inGroup($group_name)) {
-            return COM_refresh($_CONF['site_admin_url'] . '/mail.php');
+            COM_redirect($_CONF['site_admin_url'] . '/mail.php');
         }
     } else {
-        return COM_refresh($_CONF['site_admin_url'] . '/mail.php');
+        COM_redirect($_CONF['site_admin_url'] . '/mail.php');
     }
 
     // Urgent message!

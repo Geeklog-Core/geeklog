@@ -316,9 +316,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         if ($mode == 'editsubmission') {
             // that submission doesn't seem to be there any more (may have been
             // handled by another Admin) - take us back to the moderation page
-            return COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
+            COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
         } else {
-            return COM_refresh($_CONF['site_admin_url'] . '/story.php');
+            COM_redirect($_CONF['site_admin_url'] . '/story.php');
         }
     } elseif ($result == STORY_DUPLICATE_SID) {
         $display .= COM_showMessageText($LANG24[24]);
@@ -906,12 +906,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     }
     if (!isset($sid) || empty($sid)) {
         COM_errorLog('Attempted to delete story sid=' . $sid);
-        echo COM_refresh($_CONF['site_admin_url'] . '/story.php');
-    } else if ($type == 'submission') {
+        COM_redirect($_CONF['site_admin_url'] . '/story.php');
+    } elseif ($type == 'submission') {
         if (TOPIC_hasMultiTopicAccess('article', $sid) < 3) {
             COM_accessLog("User {$_USER['username']} tried to illegally delete story submission $sid.");
-            echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-        } else if (SEC_checkToken()) {
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
+        } elseif (SEC_checkToken()) {
             // Delete Topic Assignments for this submission
             TOPIC_deleteTopicAssignments('article', $sid);
 
@@ -919,15 +919,15 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
                 $_CONF['site_admin_url'] . '/moderation.php');
         } else {
             COM_accessLog("User {$_USER['username']} tried to illegally delete story submission $sid and failed CSRF checks.");
-            echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
-    } else if (SEC_checkToken()) {
+    } elseif (SEC_checkToken()) {
         echo STORY_deleteStory($sid);
     } else {
         COM_accessLog("User {$_USER['username']} tried to delete story and failed CSRF checks $sid.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} else if (($mode == $LANG_ADMIN['preview']) && !empty($LANG_ADMIN['preview'])) {
+} elseif (($mode == $LANG_ADMIN['preview']) && !empty($LANG_ADMIN['preview'])) {
     $display .= storyeditor(COM_applyFilter($_POST['sid']), 'preview', '', '');
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[5]));
     COM_output($display);
@@ -953,7 +953,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     if (($mode == $LANG24[10]) && !empty($LANG24[10]) &&
         ($type == 'submission')
     ) {
-        $display = COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
+        COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $current_topic = '';
         if (empty($mode)) {

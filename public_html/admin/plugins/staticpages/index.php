@@ -817,7 +817,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         $display .= staticpageeditor($sp_id,$mode);
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_STATIC['staticpageeditor']));
     } else {
-        $display = COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     if (!empty($sp_id)) {
@@ -867,7 +867,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
             COM_applyFilter($_POST['postmode']), $_POST['meta_description'],
             $_POST['meta_keywords'], $_POST['draft_flag'], $_POST['template_flag'], $_POST['template_id'], COM_applyFilter($_POST['cache_time'], true));
     } else {
-        $display = COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } else {
     if (isset($_REQUEST['msg'])) {

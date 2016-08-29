@@ -892,7 +892,7 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
             $cid = COM_applyFilter ($_REQUEST[CMT_CID], true);
         }
         if ($cid <= 0) {
-            return COM_refresh($_CONF['site_url'] . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
         $commentuid = DB_getItem ($table, 'uid', "cid = '$cid'");
     }
@@ -1717,7 +1717,7 @@ function CMT_sendReport($cid, $type)
 
     COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
     if (COM_checkSpeedlimit ('mail') > 0) {
-        return COM_refresh ($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     $username = DB_getItem ($_TABLES['users'], 'username',
@@ -1770,9 +1770,9 @@ function CMT_sendReport($cid, $type)
     } else {
         $msg = 85; // problem sending the email
     }
-    COM_updateSpeedlimit ('mail');
 
-    return COM_refresh ($_CONF['site_url'] . "/index.php?msg=$msg");
+    COM_updateSpeedlimit ('mail');
+    COM_redirect($_CONF['site_url'] . "/index.php?msg=$msg");
 }
 
 /**
@@ -1811,7 +1811,7 @@ function CMT_handleEditSubmit($mode = null)
             ($cid <= 0) || empty($type) || empty($postmode)) {
         COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to edit a comment with one or more missing values.');
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     $commentuid = DB_getItem($_TABLES['comments'], 'uid', "cid = '$cid'");
@@ -1824,7 +1824,7 @@ function CMT_handleEditSubmit($mode = null)
     if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
         COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to edit a comment without proper permission.');
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     $comment = CMT_prepareText($_POST['comment'], $postmode, $type);
@@ -1851,7 +1851,7 @@ function CMT_handleEditSubmit($mode = null)
         if (DB_error() ) { //saving to non-existent comment or comment in wrong article
             COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                        . 'to edit to a non-existent comment or the cid/sid did not match');
-            return COM_refresh($_CONF['site_url'] . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
         //save edit information for published comment
         // Update any feeds
@@ -1866,19 +1866,18 @@ function CMT_handleEditSubmit($mode = null)
                 CACHE_remove_instance($cacheInstance);
             }
         } else {
-            return COM_refresh (COM_buildUrl ($_CONF['site_admin_url'] . "/moderation.php"));
+            COM_redirect(COM_buildUrl ($_CONF['site_admin_url'] . "/moderation.php"));
         }
 
     } else {
         COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to submit a comment with invalid $title and/or $comment.');
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     list($plgurl, $plgid) = CMT_getCommentUrlId($type);
     $formurl = "$plgurl?$plgid=$sid";
-
-    return COM_refresh($formurl);
+    COM_redirect($formurl);
 }
 
 /**
@@ -2144,20 +2143,20 @@ function CMT_handleCancel()
         $type = COM_applyFilter($_POST[CMT_TYPE]);
     }
     if (empty($type)) {
-        $display = COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     } else {
         list($plgurl, $plgid) = CMT_getCommentUrlId($type);
         if (empty($plgurl) || empty($plgid)) {
-            $display = COM_refresh($_CONF['site_url'] . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         } else {
             $sid = '';
             if (isset($_POST[CMT_SID])) {
                 $sid = COM_applyFilter($_POST[CMT_SID]);
             }
             if (empty($sid)) {
-                $display = COM_refresh($_CONF['site_url'] . '/index.php');
+                COM_redirect($_CONF['site_url'] . '/index.php');
             } else {
-                $display = COM_refresh("$plgurl?$plgid=$sid");
+                COM_redirect("$plgurl?$plgid=$sid");
             }
         }
     }
@@ -2176,12 +2175,9 @@ function CMT_handleSubmit($title, $sid, $pid, $type, $postmode, $uid)
 {
     global $_CONF, $_TABLES, $LANG03;
 
-    $display = '';
-
-    $display = PLG_commentSave($type, $title, $_POST['comment'],
-                               $sid, $pid, $postmode);
+    $display = PLG_commentSave($type, $title, $_POST['comment'], $sid, $pid, $postmode);
     if (!$display) {
-        $display = COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     return $display;
@@ -2205,16 +2201,16 @@ function CMT_handleDelete($sid, $type, $formtype)
         $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
     }
     if ($cid <= 0) {
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     if ($formtype == 'editsubmission') {
         DB_delete($_TABLES['commentsubmissions'], 'cid', $cid);
-        $display = COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
+        COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $display = PLG_commentDelete($type, $cid, $sid);
         if (!$display) {
-            $display = COM_refresh($_CONF['site_url'] . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
     }
 
@@ -2293,7 +2289,7 @@ function CMT_handleEdit($mode='', $postmode='', $format, $order, $page)
     if ($cid <= 0) {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                . 'to edit a comment with one or more missing/bad values.');
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     $type = '';
@@ -2324,7 +2320,7 @@ function CMT_handleEdit($mode='', $postmode='', $format, $order, $page)
     if (empty($sid) || empty($type)) {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                . 'to edit a comment with one or more missing/bad values.');
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     // Filemgmt plugin is doing special processing.
@@ -2357,7 +2353,7 @@ function CMT_handleEdit($mode='', $postmode='', $format, $order, $page)
     } else {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                . 'to edit a comment that doesn\'t exist as described.');
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     return CMT_commentForm($title, $commenttext, $sid, $cid, $type, $mode, $postmode,
@@ -2471,7 +2467,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             if ($cid <= 0) {
                 COM_errorLog("CMT_handleComment(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                        . 'to edit a comment with one or more missing/bad values.');
-                return COM_refresh($_CONF['site_url'] . '/index.php');
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
             $pid = $cid;
         }
@@ -2510,8 +2506,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             if (SEC_checkToken()) {
                 $retval .= CMT_handleEditSubmit($commentmode);
             } else {
-                echo COM_refresh($_CONF['site_url'] . '/index.php');
-                exit;
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
             break;
 
@@ -2524,8 +2519,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             if (SEC_checkToken()) {
                 $retval .= CMT_handleDelete($sid, $type, $formtype);
             } else {
-                echo COM_refresh($_CONF['site_url'] . '/index.php');
-                exit;
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
             break;
 
@@ -2548,8 +2542,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                     $type = COM_applyFilter($_GET[CMT_TYPE]);
                 }
                 if (($cid <= 0) || empty($type)) {
-                    echo COM_refresh($_CONF['site_url'] . '/index.php');
-                    exit;
+                    COM_redirect($_CONF['site_url'] . '/index.php');
                 }
                 $retval .= CMT_reportAbusiveComment($cid, $type);
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[27]));
@@ -2567,20 +2560,17 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                     $type = COM_applyFilter($_POST[CMT_TYPE]);
                 }
                 if (($cid <= 0) || empty($type)) {
-                    echo COM_refresh($_CONF['site_url'] . '/index.php');
-                    exit;
+                    COM_redirect($_CONF['site_url'] . '/index.php');
                 }
                 $retval .= CMT_sendReport($cid, $type);
             } else {
-                echo COM_refresh($_CONF['site_url'] . '/index.php');
-                exit;
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
             break;
 
         case 'editsubmission':
             if (!SEC_hasRights('comment.moderate')) {
-                echo COM_refresh($_CONF['site_url'] . '/index.php');
-                exit;
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
             // deliberate fall-through
         case 'edit':
@@ -2607,14 +2597,13 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                     exit;
                 }
             }
-            echo COM_refresh($_CONF['site_url'] . '/index.php');
-            exit;
+
+            COM_redirect($_CONF['site_url'] . '/index.php');
             break;
 
         case $LANG_ADMIN['cancel']:
             if ($formtype == 'editsubmission') {
-                echo COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
-                exit;
+                COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
             } else {
                 $retval .= CMT_handleCancel();  // moved to function for readibility
             }
@@ -2652,8 +2641,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
 
                     // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so return to homepage
                     if (is_array($title) || empty($title) || ($title == false)) {
-                        echo COM_refresh($_CONF['site_url'] . '/index.php');
-                        exit;
+                        COM_redirect($_CONF['site_url'] . '/index.php');
                     }
                     $title = str_replace ( '$', '&#36;', $title );
                     // CMT_commentForm expects non-htmlspecial chars for title...
@@ -2669,8 +2657,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                     // Do nothing and do not show comment form (happens most likely when admin viewing draft article)
                 } else {
                     // For comments not displayed on same page (probably owner pushed the post comment button on a draft article)
-                    echo COM_refresh($_CONF['site_url'] . '/index.php');
-                    exit;
+                    COM_redirect($_CONF['site_url'] . '/index.php');
                 }
             }
             if ($is_comment_page) {

@@ -534,8 +534,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
 
             // update feed(s)
             COM_rdfUpToDateCheck('article', $tid);
-
-            $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
+            COM_redirect($_CONF['site_admin_url'] . '/topic.php?msg=13');
         } elseif ($restricted_tid) {
             $retval .= COM_errorLog($LANG27[31], 2);
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
@@ -736,7 +735,7 @@ function deleteTopic ($tid)
             $A['perm_group'], $A['perm_members'], $A['perm_anon']);
     if ($access < 3) {
         COM_accessLog ("User {$_USER['username']} tried to illegally delete topic $tid.");
-        return COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
+        COM_redirect($_CONF['site_admin_url'] . '/topic.php');
     }
 
     // Update any child topics to root and un hide them
@@ -815,8 +814,7 @@ function deleteTopic ($tid)
 
     // update feed(s)
     COM_rdfUpToDateCheck('article');
-
-    return COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=14');
+    COM_redirect($_CONF['site_admin_url'] . '/topic.php?msg=14');
 }
 
 /**
@@ -941,15 +939,14 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $tid = COM_applyFilter ($_POST['tid']);
     if (!isset ($tid) || empty ($tid)) {
         COM_errorLog ('Attempted to delete topic tid=' . $tid);
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
+        COM_redirect($_CONF['site_admin_url'] . '/topic.php');
     } elseif (SEC_checkToken()) {
         $display .= deleteTopic($tid);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete topic $tid and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
-
     if (empty ($_FILES['newicon']['name'])){
         $imageurl = COM_applyFilter ($_POST['imageurl']);
     } else {

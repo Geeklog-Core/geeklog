@@ -82,13 +82,11 @@ if ($status == USER_ACCOUNT_ACTIVE) {
         }
     }
     if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,syndication.edit','OR')) {
-        $display .= COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     } else {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
-    echo $display;
-    exit;
-} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit','OR') && (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAccess()) {
+} elseif (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit','OR') && (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAccess()) {
     COM_updateSpeedlimit('login');
 
     $display .= COM_startBlock($LANG20[1]);

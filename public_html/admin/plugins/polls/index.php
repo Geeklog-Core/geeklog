@@ -146,8 +146,6 @@ function listpolls()
 * @param    int     $perm_grup      Permissions the group has on poll
 * @param    int     $perm_members   Permissions logged in members have on poll
 * @param    int     $perm_anon      Permissions anonymous users have on poll
-* @return   string                  HTML redirect or error message
-*
 */
 function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $meta_keywords, $statuscode, $open,
                   $hideresults, $commentcode, $A, $V, $R, $owner_id, $group_id,
@@ -188,8 +186,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
 
     if (!SEC_checkToken()) {
         COM_accessLog("User {$_USER['username']} tried to save poll $pid and failed CSRF checks.");
-        return COM_refresh($_CONF['site_admin_url']
-                           . '/plugins/polls/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     }
 
     // check for poll id change
@@ -357,7 +354,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
         19
     );
 
-    return COM_refresh($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=19');
+    COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=19');
 }
 
 /**
@@ -596,8 +593,6 @@ function editpoll ($pid = '')
 * Delete a poll
 *
 * @param    string  $pid    ID of poll to delete
-* @return   string          HTML redirect
-*
 */
 function deletePoll ($pid)
 {
@@ -610,7 +605,7 @@ function deletePoll ($pid)
             $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']);
     if ($access < 3) {
         COM_accessLog ("User {$_USER['username']} tried to illegally delete poll $pid.");
-        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/polls/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     }
 
     DB_delete($_TABLES['polltopics'], 'pid', $pid);
@@ -619,10 +614,8 @@ function deletePoll ($pid)
     DB_delete($_TABLES['pollvoters'], 'pid', $pid);
     DB_delete($_TABLES['comments'], array('sid', 'type'),
                                     array($pid,  'polls'));
-
     PLG_itemDeleted($pid, 'polls');
-
-    return COM_refresh ($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=20');
+    COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=20');
 }
 
 // MAIN
@@ -695,15 +688,14 @@ if ($mode == 'edit') {
     }
     if (empty ($pid)) {
         COM_errorLog ('Ignored possibly manipulated request to delete a poll.');
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/polls/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     } elseif (SEC_checkToken()) {
         $display .= deletePoll ($pid);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete poll $pid and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } else { // 'cancel' or no mode at all
-
     if (isset ($_REQUEST['msg'])) {
         $msg = COM_applyFilter ($_REQUEST['msg'], true);
         if ($msg > 0) {

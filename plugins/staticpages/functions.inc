@@ -206,7 +206,7 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
     $commentcode = DB_getItem($_TABLES['staticpage'], 'commentcode',
         "(sp_id = '$id') AND (draft_flag = 0) AND (template_flag = 0)");
     if ($commentcode != 0) {
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
 
     $ret = CMT_saveComment($title, $comment, $id, $pid, 'staticpages',
@@ -231,7 +231,7 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
         ) {
             $url .= ($_CONF['url_rewrite'] ? '?' : '&') . 'msg=15';
         }
-        $retval = COM_refresh($url);
+        COM_redirect($url);
     }
 
     return $retval;
@@ -242,7 +242,6 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
  *
  * @param   int    $cid Comment to be deleted
  * @param   string $id  Item id to which $cid belongs
- * @return  mixed   false for failure, HTML string (redirect?) for success
  */
 function plugin_deletecomment_staticpages($cid, $id)
 {
@@ -261,14 +260,12 @@ function plugin_deletecomment_staticpages($cid, $id)
         CMT_deleteComment($cid, $id, 'staticpages');
         $url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
             . $id);
-        $retval .= COM_refresh($url);
+        COM_redirect($url);
     } else {
         COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
             . "tried to illegally delete comment $cid from staticpage $id");
-        $retval .= COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
-
-    return $retval;
 }
 
 /**

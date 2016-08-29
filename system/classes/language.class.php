@@ -98,8 +98,7 @@ class Language
         if (!SEC_checkToken()) {
             $uid = $_USER['uid'];
             COM_accessLog("User {$_USER['username']} tried to illegally delete user {$uid} and failed CSRF checks.");
-            echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-            exit;
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
     }
 

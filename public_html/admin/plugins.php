@@ -358,15 +358,13 @@ function do_update($pi_name)
         if ($result > 0) {
             if ($result === true) { // Catch returns that are just true/false
                 PLG_pluginStateChange($pi_name, 'upgraded');
-                $retval = COM_refresh($_CONF['site_admin_url']
-                    . '/plugins.php?msg=60');
+                COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=60');
             } else {    // Plugin returned a message number
-                $retval = COM_refresh($_CONF['site_admin_url']
+                COM_redirect($_CONF['site_admin_url']
                     . '/plugins.php?msg=' . $result . '&amp;plugin='
-                    . $pi_name);
+                    . $pi_name
+                );
             }
-
-            return $retval;
         } else {  // Plugin function returned a false
             $retval = COM_showMessage(95);
         }
@@ -701,7 +699,7 @@ function plugin_upload()
         $dirname = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
 
         if (empty($dirname)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
-            $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=100');
+            COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=100');
         } else {
             $pi_did_exist = false; // plugin directory already existed
             $pi_had_entry = false; // plugin had an entry in the database
@@ -874,8 +872,7 @@ function plugin_upload()
                             . '&amp;codeversion=' . urlencode($code_version)
                             . '&amp;piversion=' . urlencode($pi_version)
                             . '&amp;plugin=' . urlencode($dirname);
-                        echo COM_refresh($url);
-                        exit;
+                        COM_redirect($url);
                     } else {
                         $msg = 98; // successfully uploaded
                     }
@@ -898,7 +895,7 @@ function plugin_upload()
             if ($msg_with_plugin_name) {
                 $url .= '&amp;plugin=' . $dirname;
             }
-            $retval = COM_refresh($url);
+            COM_redirect($url);
         }
     }
 
@@ -952,9 +949,8 @@ function continue_upgrade($plugin, $pi_version, $code_version)
     if ($msg_with_plugin_name) {
         $url .= '&amp;plugin=' . $plugin;
     }
-    $retval = COM_refresh($url);
 
-    return $retval;
+    COM_redirect($url);
 }
 
 /**
@@ -1340,12 +1336,10 @@ if ($mode === 'delete') {
         if (($_GET['confirmed'] == 1) && SEC_checkToken()) {
             $msg = do_uninstall($pi_name);
             if ($msg === false) {
-                echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
+                COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
             } else {
-                echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg='
-                    . $msg);
+                COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=' . $msg);
             }
-            exit;
         } else { // ask user for confirmation
             $token = SEC_CreateToken();
             $message = $LANG32[31];
@@ -1359,7 +1353,7 @@ if ($mode === 'delete') {
             $display = plugin_main($message, $token);
         }
     } else {
-        $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
     }
 
 } elseif (($mode === 'updatethisplugin') && SEC_checkToken()) { // update
@@ -1388,12 +1382,10 @@ if ($mode === 'delete') {
         $old = trim($_GET['prevorder']);
         $sorting = "?order=$ord&amp;direction=$dir&amp;prevorder=$old";
     }
-    $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php' . $sorting);
-
+    COM_redirect($_CONF['site_admin_url'] . '/plugins.php' . $sorting);
 } elseif (($mode === 'change_load_order') && SEC_checkToken()) {
     change_load_order(COM_applyFilter($_GET['pi_name']), COM_applyFilter($_GET['where']));
-    $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
-
+    COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
 } elseif (($mode === 'autoinstall') && SEC_checkToken()) {
     if (SEC_hasRights('plugin.install')) {
         $plugin = '';
@@ -1402,16 +1394,13 @@ if ($mode === 'delete') {
         }
         if (plugin_autoinstall($plugin)) {
             PLG_pluginStateChange($plugin, 'installed');
-            $display .= COM_refresh($_CONF['site_admin_url']
-                . '/plugins.php?msg=44');
+            COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=44');
         } else {
-            $display .= COM_refresh($_CONF['site_admin_url']
-                . '/plugins.php?msg=72');
+            COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=72');
         }
     } else {
-        $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
     }
-
 } elseif ($mode === 'continue_upgrade') {
     $display .= continue_upgrade(COM_sanitizeFilename($_GET['plugin']),
         $_GET['piversion'], $_GET['codeversion']);
