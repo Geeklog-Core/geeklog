@@ -632,7 +632,8 @@ switch ($mode) {
             }
             $display .= USER_showProfile($uid, false, $msg, $plugin);
         } else {
-            COM_handle404();
+            // Redirect crawlers and the like to the site's homepage (feature request #520)
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
         break;
 
