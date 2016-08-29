@@ -16,8 +16,8 @@
 
 <h2>コンフィギュレーション用ファイル</h2>
 
-<p>旧バージョンのGeeklogでは、主要な設定を網羅した<tt>config.php</tt>
-という巨大なファイルを使用していました。Geeklog 1.5.0では、設定の大部分をデータベースに記録し、ユーザーは管理者機能の<b>コンフィギュレーション(Configuration)</b>からアクセスできるようになりました。</p>
+<p>旧バージョンのGeeklogでは、主要な設定を網羅した<span class="tt">config.php</span>
+という巨大なファイルを使用していました。Geeklog 1.5.0では、設定の大部分をデータベースに記録し、ユーザーは管理者機能の<strong>コンフィギュレーション(Configuration)</strong>からアクセスできるようになりました。</p>
 
 <p>技術上の理由で、ファイルに保存しなければならない設定もあります。次の2つです:</p>
 <ul>
@@ -57,7 +57,7 @@
 <tr>
   <td valign="top"><a name="desc_site_admin_url">管理画面のURL(site_admin_url)</a></td>
   <td valign="top">http://www.example.com/admin</td>
-  <td valign="top">サイトの管理画面のURLを指定します(最後にスラッシュ '/' をつけないでください。)。手動で設定する必要はありませんが、一部のWebホスティングサービスでは(Geeklog以外の用途で)"admin"ディレクトリの場所が決められている場合があります。このような場合には、Geeklogの<tt>admin</tt>ディレクトリの名前を変更して、それに応じて管理画面のURLを変えることで、ディレクトリ名の衝突を防ぐことができます。</td></tr>
+  <td valign="top">サイトの管理画面のURLを指定します(最後にスラッシュ '/' をつけないでください。)。手動で設定する必要はありませんが、一部のWebホスティングサービスでは(Geeklog以外の用途で)"admin"ディレクトリの場所が決められている場合があります。このような場合には、Geeklogの<span class="tt">admin</span>ディレクトリの名前を変更して、それに応じて管理画面のURLを変えることで、ディレクトリ名の衝突を防ぐことができます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_name">サイト名(site_name)</a></td>
   <td valign="top">Geeklog Site</td>
@@ -70,20 +70,25 @@
   <td valign="top"><a name="desc_site_disabled_msg">サイト閉鎖用メッセージ(site_disabled_msg)</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
   <td valign="top">Geeklogのサイトを一時的に閉鎖するときに表示するメッセージを指定します。メッセージが"http:"で始まる場合、サイトの訪問者はそのURLへリダイレクトされます。<br />
-    <strong>注:</strong>実際にサイトを閉鎖するかどうかを決める設定は、<tt>siteconfig.php</tt>ファイルの中にあります。</td></tr>
+    <strong>注:</strong>実際にサイトを閉鎖するかどうかを決める設定は、<span class="tt">siteconfig.php</span>ファイルの中にあります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_owner_name">管理者名(owner_name)</a></td>
   <td valign="top"></td>
   <td valign="top">このサイトの管理者の名前を入力します。これはcopyright表示がセットされた場合に表示されます。設定しない場合は、サイト名が使用されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_copyrightyear">Copyrightの年数設定(copyrightyear)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">サイトのフッターに表示するcopyrightの年を設定します。設定しない場合、現在の年が使われます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_url_rewrite">URLリライト(url_rewrite)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">「はい」でURLリライトを行い、「いいえ」で行わないようになります。<br />
     下記の<a href="#url-rewrite">URLリライト</a>のセクションを参照してください。</td></tr>
+<tr>
+    <td valign="top"><a name="desc_url_routing">URLルーティング(url_routing)</a></td>
+    <td valign="top">無効</td>
+    <td valign="top">「有効」でURLルーティングを行い、「無効」で行わないようになります。<strong>注意: この機能を使うにはURLリライトを「はい」にしてください。</strong><br />
+        下記の<a href="#url-routing">URLルーティング</a>のセクションを参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cdn_hosted">CDNのjQueryを使う(cdn_hosted)</a></td>
   <td valign="top">いいえ</td>
@@ -94,7 +99,7 @@
   <td valign="top">無効にする</td>
   <td valign="top"><ul><li>「有効にする」 - 記事と話題用のメタタグが出力されます。メタタグが見つからない場合、デフォルトが使用されます。メタタグがない他のすべてのページでデフォルトが使用されます。</li>
       <li>「有効にする(トップページにのみデフォルトを使用する)」 - トップページに対してだけデフォルトを使用するという点を除いて、「はい」と同じです。</li>
-    <li>「無効にする」 - メタタグを出力しません。</li><ul></td></tr>
+    <li>「無効にする」 - メタタグを出力しません。</li></ul></td></tr>
 <tr>
   <td valign="top">サイトの<a name="desc_meta_description">説明文のメタタグ(meta_description)</a></td>
   <td valign="top">'Geeklog, the open source content management system designed with security in mind.'</td>
@@ -123,10 +128,10 @@
     <td valign="top">mail</td>
     <td valign="top">メールの送信方法を選択します。'smtp'(SMTPプロトコルでメールサーバーと直接交信), 'sendmail'(オペレーティングシステムにインストールされているsendmailプログラム経由), 'mail'(PHPのmail()関数使用)のどれかを指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_sendmail_path">メール設定(sendmail_path)</a></td>
-    <td valign="top"><tt>/usr/bin/sendmail</tt></td>
+    <td valign="top"><span class="tt">/usr/bin/sendmail</span></td>
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailバイナリへの完全なパスを指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_sendmail_args">メール設定(sendmail_args)</a></td>
-    <td valign="top"><tt>''</tt> <i>(空白)</i></td>
+    <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailに与える引数を指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_host">メール設定(host)</a></td>
     <td valign="top">smtp.example.com</td>
@@ -243,7 +248,7 @@
     <td valign="top">いいえ(<code>false</code>)</td>
     <td valign="top"><a href="http://pear.php.net/">PEAR</a>を独自にサーバーにインストールしているかどうかを指定します。「いいえ」にすると、Geeklogは<code>$_CONF['path_pear']</code>(下記参照)に同梱されているPEARパッケージを使用します。</td></tr>
 <tr><td valign="top"><a name="desc_path_pear">PEARのパス(path_pear)</a></td>
-    <td valign="top"><tt>/path/to/geeklog/system/pear/</tt></td>
+    <td valign="top"><span class="tt">/path/to/geeklog/system/pear/</span></td>
     <td valign="top">上記の「PEARをインストールしている」が「いいえ」のとき、Geeklogが必要とする<a href="http://pear.php.net/">PEAR</a>パッケージ(メール送信時のPEAR::Mailなど)を探すパスを指定します。</td></tr>
 </table>
 
@@ -533,16 +538,16 @@
 <tr>
   <td valign="top"><a name="desc_doctype">DOCTYPE宣言(doctype)</a></td>
   <td valign="top">HTML 4.01 Strict</td>
-  <td valign="top">サイトのすべてのテーマの<tt>header.thtml</tt>で<a
-    href="http://en.wikipedia.org/wiki/Document_Type_Declaration">DOCTYPE宣言</a>(別名 DOCTYPE、DTD)を指定するテーマ変数<tt>{doctype}</tt>を指定できます。</td></tr>
+  <td valign="top">サイトのすべてのテーマの<span class="tt">header.thtml</span>で<a
+    href="http://en.wikipedia.org/wiki/Document_Type_Declaration">DOCTYPE宣言</a>(別名 DOCTYPE、DTD)を指定するテーマ変数<span class="tt">{doctype}</span>を指定できます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_menu_elements">メニュー項目(menu_elements)</a></td>
   <td valign="top"><code>contribute, search, stats, directory,
     plugins</code></td>
-  <td valign="top">どのメニュー項目をサイトのメニューバー(グローバルメニュー)に表示するかを指定します(使用するテーマにメニューバーを表示するための<code>{menu_elements}</code>テンプレート変数が使用されている場合)。<tt>home</tt>(トップページ),
-    <tt>contribute</tt>(記事投稿), <tt>search</tt>(検索), <tt>stats</tt>,
-    <tt>directory</tt>(記事一覧) , <tt>login</tt>, <tt>prefs</tt>(マイアカウント), <tt>plugins</tt>(プラグイン),
-    <tt>custom</tt>(カスタム)を好きな数だけ好きな順序で組み合わせることができます。<tt>plugins</tt>(プラグイン)は<code>{plg_menu_elements}</code>テンプレート変数と同じで、各プラグインが提供するメニュー項目です。<tt>custom</tt>(カスタム)は<code>CUSTOM_menuEntries</code>カスタム関数が返すメニュー項目です(詳細は<tt>lib-custom.php</tt>を参照してください。)。</td></tr>
+  <td valign="top">どのメニュー項目をサイトのメニューバー(グローバルメニュー)に表示するかを指定します(使用するテーマにメニューバーを表示するための<code>{menu_elements}</code>テンプレート変数が使用されている場合)。<span class="tt">home</span>(トップページ),
+    <span class="tt">contribute</span>(記事投稿), <span class="tt">search</span>(検索), <span class="tt">stats</span>,
+    <span class="tt">directory</span>(記事一覧) , <span class="tt">login</span>, <span class="tt">prefs</span>(マイアカウント), <span class="tt">plugins</span>(プラグイン),
+    <span class="tt">custom</span>(カスタム)を好きな数だけ好きな順序で組み合わせることができます。<span class="tt">plugins</span>(プラグイン)は<code>{plg_menu_elements}</code>テンプレート変数と同じで、各プラグインが提供するメニュー項目です。<span class="tt">custom</span>(カスタム)は<code>CUSTOM_menuEntries</code>カスタム関数が返すメニュー項目です(詳細は<span class="tt">lib-custom.php</span>を参照してください。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_themes">テーマのパス(path_themes)</a></td>
   <td valign="top"><code>path/to/path_themes</code></td>
@@ -557,7 +562,7 @@ Windowsで共有ドライブにアクセスしている場合です。
 <tr>
   <td valign="top"><a name="desc_cache_mobile">cache_mobile</a></td>
   <td valign="top">true</td>
-  <td valign="top">If set to <tt>true</tt>, mobile devices (phones and tablets) will be cached
+  <td valign="top">If set to <span class="tt">true</span>, mobile devices (phones and tablets) will be cached
   separately from computers. This includes the template files, blocks, articles and other plugins which may use 
   Geeklog's template cache system. You should only set this to false if you do not plan to display different information 
   depending on if a mobile device is detected being used by the user. Performance will be improved slightly if set to false since 
@@ -602,7 +607,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_sort_admin">リンクを並べ替える(sort_admin)</a></td>
   <td valign="top">いいえ</td>
-  <td valign="top">「はい」にすると、管理者ブロック中の項目と管理画面(<tt>moderation.php</tt>)のアイコンがアルファベット順に並べ替えられます。</td></tr>
+  <td valign="top">「はい」にすると、管理者ブロック中の項目と管理画面(<span class="tt">moderation.php</span>)のアイコンがアルファベット順に並べ替えられます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_link_documentation">ドキュメントのリンクを表示する(link_documentation)</a></td>
   <td valign="top">はい</td>
@@ -750,7 +755,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_custom_registration">カスタム登録を有効にする(custom_registration)</a></td>
   <td valign="top"><code>いいえ</code></td>
-  <td valign="top">「はい」にすると、新規ユーザー登録の際、管理者が用意した独自のフォームが表示されます。フォームの具体例は、Geeklogに同梱されている<tt>lib-custom.php</tt>を参照してください。</td></tr>
+  <td valign="top">「はい」にすると、新規ユーザー登録の際、管理者が用意した独自のフォームが表示されます。フォームの具体例は、Geeklogに同梱されている<span class="tt">lib-custom.php</span>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_standard">ログイン方法[standard](user_login_method_standard)</a></td>
   <td valign="top"><code>はい</code></td>
@@ -764,12 +769,12 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_user_login_method_3rdparty">ログイン方法[3rdparty](user_login_method_3rdparty)</a></td>
   <td valign="top"><code>いいえ</code></td>
   <td valign="top">「はい」にすると、外部サービスに既にアカウントを持っているユーザーがそのアカウント使ってGeeklogにログインできるようになります。現在サポートされているのは、LDAPとLiveJournalです。<br />
-    特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<tt>system/classes/authentication</tt>に必要です。したがって、LDAPを用いたログインは許可するがLiveJournalを用いたログインは禁止したいという場合、単に不要なサービスの認証クラスを削除するだけでよいのです。詳細は、<a href="http://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
+    特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<span class="tt">system/classes/authentication</span>に必要です。したがって、LDAPを用いたログインは許可するがLiveJournalを用いたログインは禁止したいという場合、単に不要なサービスの認証クラスを削除するだけでよいのです。詳細は、<a href="http://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">ログイン方法[oauth](user_login_method_oauth)</a></td>
   <td valign="top"><code>いいえ</code></td>
   <td valign="top"><a href="http://oauth.net/">OAuth</a>によるログインを許可するかどうかを設定します。「はい」にすると、通常のログインフォームの下にOAuthログインが表示されます。<br />
-    <strong>注:</strong>現在はOAuth 1.0, 2.0をサポートしています。現在サポートしているのは、Facebook、Twitter、LinkedIn, Google, Microsoft, Yahooです。<br />特定のログイン方法を有効にするには、<tt>system/classes/oauth</tt>に認証のクラスが必要です。あなたがもしFacebookのみで、Twitterだけにしたければ(逆もまた同様)、単に
+    <strong>注:</strong>現在はOAuth 1.0, 2.0をサポートしています。現在サポートしているのは、Facebook、Twitter、LinkedIn, Google, Microsoft, Yahooです。<br />特定のログイン方法を有効にするには、<span class="tt">system/classes/oauth</span>に認証のクラスが必要です。あなたがもしFacebookのみで、Twitterだけにしたければ(逆もまた同様)、単に
     欲しくないクラスのファイルを削除するか、以下の設定オプションを使用してください。また、以下の設定オプションで正しいCosumer KeyとConsumer Secretも設定しなければなりません。PHPのOpenSSL拡張を有効にする必要があります。<br />
     さらに詳しい情報は<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
@@ -862,7 +867,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_github_login">github_login</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with GitHub to log into Geeklog with said account using OAuth. You must set the GitHub client id and client secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_github_consumer_key">github_consumer_key</a></td>
@@ -983,12 +988,12 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_allow_domains">自動的に許可するドメイン(allow_domains)</a></td>
   <td valign="top"></td>
   <td valign="top">上記の「ユーザーの登録を審査する」を有効にした場合でも、このドメインリスト(コンマで区切る)から登録申請したときには承認待ちの状態にならず、即座に承認されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong> mycompany.com と myothercompany.com を許可します。
-    <tt>mycompany.com,myothercompany.com</tt></td></tr>
+    <span class="tt">mycompany.com,myothercompany.com</span></td></tr>
 <tr>
   <td valign="top"><a name="desc_disallow_domains">自動的に拒否するドメイン(disallow_domains)</a></td>
   <td valign="top"></td>
   <td valign="top">上記の「自動的に許可するドメイン」の逆で、このリストに含まれるドメインのユーザーは、上記の「ユーザーの登録を審査する」の設定にかかわらず、自動的に拒否されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong> somebaddomain.com と .edu ドメインのすべてを拒否します。
-    <tt>somebaddomain.com,\.edu$</tt></td></tr>
+    <span class="tt">somebaddomain.com,\.edu$</span></td></tr>
 </table>
 
 <h3><a name="users_submission">ユーザーと投稿: 投稿設定</a></h3>
@@ -1004,7 +1009,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_listdraftstories">ドラフト記事の一覧を表示する(listdraftstories)</a></td>
   <td valign="top">いいえ</td>
-  <td valign="top">「はい」にすると、管理者画面(<tt>moderation.php</tt>)にドラフト記事の一覧が表示します。</td></tr>
+  <td valign="top">「はい」にすると、管理者画面(<span class="tt">moderation.php</span>)にドラフト記事の一覧が表示します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_postmode">投稿モードのデフォルト(postmode)</a></td>
   <td valign="top">テキスト</td>
@@ -1111,11 +1116,11 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">画像ライブラリを「ImageMagick」、「Netpbm」、「GDライブラリ」から選びます。画像アップロード時にリサイズしたくない場合や、画像ライブラリを使えない場合は「なし」にします。</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_to_mogrify">mogrifyのパス(path_to_mogrify)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">上記の「画像ライブラリ」にimagemagickを選んだ場合、<a href="http://www.imagemagick.org/">ImageMagick</a>パッケージ中のmogrifyバイナリへの<strong>完全なパス</strong>を '/usr/bin/mogrify' のように指定します(バージョン5.4.9以降を推奨します。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_to_netpbm">netpbmへのパス(path_to_netpbm)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">上記の「画像ライブラリ」にnetpbmを選んだ場合、Netpbmのバイナリがある<em>ディレクトリ</em>の完全なパスを <code>/usr/bin/netpbm/</code> のように指定します。パスの最後はスラッシュ / でなければなりません。<br />様々なプラットフォーム用にコンパイルされたバイナリのパッケージは、<a href="http://netpbm.sourceforge.net/">Netpbm homepage</a>からダウンロードできます。</td></tr>
 </table>
 
@@ -1132,16 +1137,16 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_allow_user_scaling">ユーザーに画像のサイズ変更を許可する(allow_user_scaling)</a></td>
   <td valign="top">はい</td>
-  <td valign="top">「はい」にすると、上記のように元画像を保存する場合、記事の中でリサイズされた画像を使えるようになります。言い換えると、記事の中で(<code>[image<i>X</i>]</code> に加えて)<code>[unscaled<i>X</i>]</code> タグを使えるようになります。</td></tr>
+  <td valign="top">「はい」にすると、上記のように元画像を保存する場合、記事の中でリサイズされた画像を使えるようになります。言い換えると、記事の中で(<code>[image<em>X</em>]</code> に加えて)<code>[unscaled<em>X</em>]</code> タグを使えるようになります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_jpeg_quality">JPEGの画質(jpeg_quality)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">JPEG画像をリサイズする際の画質を指定します。Geeklogでサポートされているすべての画像ライブラリはIJG JPEGライブラリをベースにしており、0から100の範囲で画質を指定します(これはパーセント値ではないことに注意してください。)。値を設定しない場合は、デフォルトは75で、これはほとんどの場合、適切な数値です。場合によっては、より大きな数値の方が画質が良くなります。<br />
     経験則: 90以上を指定しても画質は良くならず、画像サイズばかりが大きくなります。50以下では画質が悪くなります。25以下では画像が歪んでしまいます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_debug_image_upload">画像のアップロードをデバッグする(debug_image_upload)</a></td>
   <td valign="top"><code>いいえ</code></td>
-  <td valign="top">「はい」にすると、画像のアップロード・リサイズ中にデバッグ情報をGeeklogの<tt>error.log</tt>に書き込みます。画像アップロード時の問題を解明する際に役立ちます。</td></tr>
+  <td valign="top">「はい」にすると、画像のアップロード・リサイズ中にデバッグ情報をGeeklogの<span class="tt">error.log</span>に書き込みます。画像アップロード時の問題を解明する際に役立ちます。</td></tr>
 </table>
 
 <h3><a name="images_articles">画像: 記事の画像</a></h3>
@@ -1160,7 +1165,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">画像の高さの最大値をピクセル単位で指定します。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_image_size">ファイルサイズの最大値(max_image_size)</a></td>
-  <td valign="top">1048576</i></td>
+  <td valign="top"><em>1048576</em></td>
   <td valign="top">ファイルサイズの最大値をバイト単位で指定します。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
 </table>
 
@@ -1204,11 +1209,11 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">ファイルサイズの最大値をバイト単位で指定します。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_force_photo_width">幅を固定する(force_photo_width)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">この設定を有効にしても、ユーザーの写真を<em>表示する</em>ときにしか適用されません。写真表示用の <code>&lt;img&gt;</code>タグがここで指定されたサイズで出力されます。つまり、実際の写真のサイズはより大きくても、小さな(ここで指定された)サイズでしか表示されません。(掲示板などで)奇妙な形をしたユーザーの写真がページのレイアウトを台無しにするのを防ぎたい場合に役に立つでしょう。</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_photo">写真のデフォルト(default_photo)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">有効にする場合には、画像ファイルの完全なURLを指定します。写真のないユーザーの場合、この既定の写真が表示されます。この設定が無効で、ユーザーが写真も<a href="#images_gravatar">アバター</a>も持っていない場合、何も表示されません。</td></tr>
 </table>
 
@@ -1225,7 +1230,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     このオプションを有効にすると、(掲示板のスレッドなどの)複数ユーザーの多数の写真を表示するページでは、スピードダウンする可能性があることに注意してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_gravatar_rating">Gravatarの評価(gravatar_rating)</a></td>
-  <td valign="top"><i>無効(disabled)</i></td>
+  <td valign="top"><em>無効(disabled)</em></td>
   <td valign="top">gravatar.comへ投稿されたアバターは、(米国で)映画鑑賞用に使われている評価システム
         <ul>
             <li>G = General Audiences：一般向け</li>
@@ -1251,11 +1256,11 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">言語ファイル名を指定します。追加の言語ファイルは<a href="http://www.geeklog.net/">http://www.geeklog.net</a>でダウンロードできます。言語ファイルを翻訳した場合は送ってください。下記の<a href="#Localization">ローカリゼーション</a>も参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_language_files">言語ファイル[多言語モード](language_files)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語ファイルの対応関係を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_languages">言語名[多言語モード](languages)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語名("English"、"Deutsch"、"Japanese"など)の対応関係を指定します。</td></tr>
 </table>
 
@@ -1313,7 +1318,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">小数点以下で表示する桁数を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_timezone">タイムゾーン(timezone)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">サーバーが異なるタイムゾーンに配置されている場合、時刻が正しく表示されるようにローカルのタイムゾーンを設定します。この設定は、<a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=21232">タイムゾーンハック(timezone hack)</a>という名前で知られており、サーバーによっては機能しない場合があります。</td></tr>
 </table>
 
@@ -1391,20 +1396,20 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_notification">通知(notification)</a></td>
   <td valign="top"></td>
-  <td valign="top">新規の記事・コメントが投稿された場合、トラックバック・ピングバックを受信した場合、新規ユーザーが登録された場合に、サイトのメールアドレス<tt>$_CONF['site_email']</tt>に通知メールを送信するリストを指定します。この<tt>リスト</tt>に登録できるのは、
+  <td valign="top">新規の記事・コメントが投稿された場合、トラックバック・ピングバックを受信した場合、新規ユーザーが登録された場合に、サイトのメールアドレス<span class="tt">$_CONF['site_email']</span>に通知メールを送信するリストを指定します。この<span class="tt">リスト</span>に登録できるのは、
         <ul>
-            <li><tt>story</tt></li>
-            <li><tt>comment</tt></li>
-            <li><tt>trackback</tt></li>
-            <li><tt>pingback</tt></li>
-            <li><tt>user</tt></li>
+            <li><span class="tt">story</span></li>
+            <li><span class="tt">comment</span></li>
+            <li><span class="tt">trackback</span></li>
+            <li><span class="tt">pingback</span></li>
+            <li><span class="tt">user</span></li>
         </ul>
         です。必要なものを組み合わせて登録します。<br />
     <strong>例:</strong> <code>story と user</code> とすると、新規記事が投稿された場合とユーザーが登録された場合に通知されます。たとえば、新規コメントが投稿された場合には、通知は来ません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cron_schedule_interval">Cronのスケジュール間隔(cron_schedule_interval)</a></td>
   <td valign="top">0</td>
-  <td valign="top">Geeklogは<a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>、つまり、一定の間隔で行う作業を擬似的に行うことができます。実行されるPHPのコードは、プラグインか<tt>lib-custom.php</tt>中の<code>CUSTOM_runScheduledTask</code> 関数で指定します。ここで設定する値は、作業が行われる間隔を秒単位で指定します。デフォルトは0です。 例) 86400秒 = 24時間<br />
+  <td valign="top">Geeklogは<a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>、つまり、一定の間隔で行う作業を擬似的に行うことができます。実行されるPHPのコードは、プラグインか<span class="tt">lib-custom.php</span>中の<code>CUSTOM_runScheduledTask</code> 関数で指定します。ここで設定する値は、作業が行われる間隔を秒単位で指定します。デフォルトは0です。 例) 86400秒 = 24時間<br />
     この作業が行われるには、予定の時刻付近で誰かがサイトを訪問する必要があることに注意してください。訪問者がほとんどいないサイトでは、作業の開始がかなり遅れる可能性があります。<br />0 を指定すると、この機能は無効になります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_disable_autolinks">自動タグを無効にする(disable_autolinks)</a></td>
@@ -1428,7 +1433,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_frame_options">"クリックジャッキング"を防止する(frame_options) </a></td>
   <td valign="top">フレーム内表示を許可しない</td>
-  <td valign="top"><a href="http://en.wikipedia.org/wiki/Clickjacking">クリックジャッキング</a>を防止します。HTTPレスポンスヘッダーであるX-FRAME-OPTIONSにより、フレーム内での表示を許可しなくなります。ただし、ブラウザーが<tt>X-FRAME-OPTIONS</tt>に対応する場合のみ有効です。「フレーム内表示を一切許可しない」、「同一オリジンのみフレーム内表示を許可する」、「フレーム内表示を制限しない」の中から選びます。「フレーム内表示を一切許可しない」にすることを強く推奨します。</td></tr>
+  <td valign="top"><a href="http://en.wikipedia.org/wiki/Clickjacking">クリックジャッキング</a>を防止します。HTTPレスポンスヘッダーであるX-FRAME-OPTIONSにより、フレーム内での表示を許可しなくなります。ただし、ブラウザーが<span class="tt">X-FRAME-OPTIONS</span>に対応する場合のみ有効です。「フレーム内表示を一切許可しない」、「同一オリジンのみフレーム内表示を許可する」、「フレーム内表示を制限しない」の中から選びます。「フレーム内表示を一切許可しない」にすることを強く推奨します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_page_navigation_max_pages">ページナビゲーションの最大ページ数(page_navigation_max_pages)</a></td>
   <td valign="top">7</td>
@@ -1459,7 +1464,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_rootdebug">Rootデバッグ(rootdebug)</a></td>
   <td valign="top"><code>いいえ</code></td>
   <td valign="top">PHPのエラーが発生したとき、(重要な情報の漏洩を防ぐため)GeeklogのエラーハンドラはRootグループに属するメンバーにしか実際のエラー情報を表示しません。「はい」にすると、この情報が<em>すべての</em> ユーザーに表示されるようになります。<strong>デバッグ目的にのみ使用してください。</strong><br />
-    ヒント: エラーのためにサイトにログインできない場合は、<a href="#desc_rootdebug_siteconfig">このオプションを<tt>siteconfig.php</tt></a>の中で有効にすることができます。</td></tr>
+    ヒント: エラーのためにサイトにログインできない場合は、<a href="#desc_rootdebug_siteconfig">このオプションを<span class="tt">siteconfig.php</span></a>の中で有効にすることができます。</td></tr>
 </table>
 
 <h3><a name="misc_digest">その他: デイリーダイジェスト</a></h3>
@@ -1538,7 +1543,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_ip_lookup">IPアドレス検索(ip_lookup)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">コメントを投稿した人のIPアドレスは記録され、管理者には表示されます。IPアドレス検索サービスを設定した場合、表示されたIPアドレスをクリックするとそのIPの所有者を調べることが可能になり、不正使用をインターネットサービスプロバイダーに通報しやすくなります。<br />設定値には、IP検索サービスの完全なURLを指定します。IPアドレスが入る部分は '<code>*</code>' にします。Tom Willetの<a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a>パッケージを使うこともできます。この場合は、<code>/nettools/whois.php?domain=*</code> <br />と指定します。</td></tr>
 </table>
 
@@ -1555,7 +1560,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_restrict_webservices">Webサービスを制限する(restrict_webservices)</a></td>
   <td valign="top">いいえ</td>
-  <td valign="top">「はい」にすると、<tt>webservices.atompub</tt>権限を持ったユーザー(たとえば、"Webservices Users"グループなど)しかWebサービスを使用できなくなります。</td></tr>
+  <td valign="top">「はい」にすると、<span class="tt">webservices.atompub</span>権限を持ったユーザー(たとえば、"Webservices Users"グループなど)しかWebサービスを使用できなくなります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_atom_max_stories">フィードの最大記事数(atom_max_stories)</a></td>
   <td valign="top">10</td>
@@ -1743,7 +1748,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 
 <h2><a name="db-config.php">db-config.php</a></h2>
 
-<p>その名が示すように、<tt>db-config.php</tt>ファイルには、データベースの設定が記述されています。この情報はインストール時に書き込まれるので、ふつう、手動で編集する必要はありません。</p>
+<p>その名が示すように、<span class="tt">db-config.php</span>ファイルには、データベースの設定が記述されています。この情報はインストール時に書き込まれるので、ふつう、手動で編集する必要はありません。</p>
 
 <table>
 <tr><th style="width:25%">項目(変数)</th>
@@ -1751,7 +1756,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <th style="width:50%">説明</th></tr>
 <tr><td valign="top">$_DB_host</td>
     <td valign="top">localhost</td>
-    <td valign="top">データベースサーバー(<i>ホスト名:ポート番号:Unixソケット</i> の形式で入力します。)。ほとんどの場合、デフォルトを変更する必要はないでしょう。</td></tr>
+    <td valign="top">データベースサーバー(<em>ホスト名:ポート番号:Unixソケット</em> の形式で入力します。)。ほとんどの場合、デフォルトを変更する必要はないでしょう。</td></tr>
 <tr><td valign="top">$_DB_name</td>
     <td valign="top">geeklog</td>
     <td valign="top">データベース名を指定します。</td></tr>
@@ -1777,7 +1782,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 
 <h2><a name="siteconfig.php">siteconfig.php</a></h2>
 
-<p><tt>siteconfig.php</tt>ファイルには、データベースに保存できない設定が記述されています。設定の大半はインストール時に書き込まれるので、ふつう、このファイルを手動で編集する必要はありません。</p>
+<p><span class="tt">siteconfig.php</span>ファイルには、データベースに保存できない設定が記述されています。設定の大半はインストール時に書き込まれるので、ふつう、このファイルを手動で編集する必要はありません。</p>
 
 <table>
 <tr><th style="width:25%">項目(変数)</th>
@@ -1801,9 +1806,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">多言語サポート(multi-language)</a>を行うサイトの場合、 <code>utf-8</code> をデフォルトとして使用することが推奨されています。</td></tr>
 <tr>
   <td valign="top"><a name="desc_rootdebug_siteconfig">rootdebug</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">コンフィギュレーションの'<a href="#desc_rootdebug">rootdebug</a>'オプションと同じです。しかしながら、時にはエラーが発生するため、サイトにログインして'rootdebug'オプションを有効にできないときがあります。このような場合には、この行のコメントを外し、この箇所でオプションを有効にできます。<br />
-    true と false 以外に、'force'(<tt>siteconfig.php</tt>の中でのみ有効)を指定できます。これを指定すると、パスワードやクッキーなどの重要な情報も表示できます。<br />
+    true と false 以外に、'force'(<span class="tt">siteconfig.php</span>の中でのみ有効)を指定できます。これを指定すると、パスワードやクッキーなどの重要な情報も表示できます。<br />
     いずれにせよ、<a href="#desc_rootdebug">上述</a>と同様な警告をしておきます。<strong>実際にインターネット上で運営しているサイトでこのオプションを有効なままにしておかないでください!</strong></td></tr>
 </table>
 
@@ -1812,11 +1817,115 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 
 <p>Geeklogには、単純でありながら役に立つURLリライト機能が含まれており、クローラーに適した(つまり、検索エンジンのインデックス作成用ボットがサイトを訪問しやすくなる)URLを出力できます。この機能は、記事・静的ページ・記事一覧・リンクプラグインのURLでサポートされています。</p>
 <p>URL書き換えにより、たとえば</p>
-<p style="margin-left:4em;"><tt>http://www.geeklog.net/article.php?story=20021022234959146</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://www.geeklog.net/article.php?story=20021022234959146</span></p>
 <p>というURLは、</p>
-<p style="margin-left:4em;"><tt>http://www.geeklog.net/article.php/20021022234959146</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://www.geeklog.net/article.php/20021022234959146</span></p>
 <p>となります。1番目の形式のURLを解釈する検索エンジンもありますが、Googleは2番目の形式を好み、1番目の形式を無視するようです。(訳注)この記述は現在では当てはまりません。</p>
 <p><strong>注意:</strong>この機能はすべてのWebサーバーで機能するとは限りません。Apache(全バージョン)では機能しますが、<acronym title="Internt Information Service">IIS</acronym>(の少なくとも一部のバージョン)では<em>動作しない</em> ことが知られています。サイトを公開する前に検証してください。</p>
+
+
+<h2><a name="url-routing">URLルーティング</a></h2>
+
+<p>この機能は上述の<a href="#url-rewrite">URLリライト</a>を拡張し、public_html/index.phpを
+    疑似フロントコントローラーとして使用します。したがって、URLルーティング機能を使うには、
+    URLリライトを有効にする必要があります。現時点では以下のルールが定義されています。</p>
+
+<table border="1">
+    <thead>
+    <tr><th>ルール</th><th>ルート</th><th>優先順位</th></tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>http://yourdomain/article/@sid/print</td>
+        <td>http://yourdomain/article.php?story=@sid&mode=print</td>
+        <td>100</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/article/@sid</td>
+        <td>http://yourdomain/article.php?story=@sid</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/archives/@topic/@year/@month</td>
+        <td>http://yourdomain/directory.php?topic=@topic&year=@year&month=@month</td>
+        <td>120</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/page/@page</td>
+        <td>http://yourdomain/staticpages/index.php?page=@page</td>
+        <td>130</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/links/portal/@item</td>
+        <td>http://yourdomain/links/portal.php?what=link&item=@item</td>
+        <td>140</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/links/category/@cat</td>
+        <td>http://yourdomain/links/index.php?category=@cat</td>
+        <td>150</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/topic/@topic</td>
+        <td>http://yourdomain/index.php?topic=@topic</td>
+        <td>160</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>表の1行目をご覧ください。"http://yourdomain/index.php/article/@sid/print"にアクセスすると、
+    "http://yourdomain/article.php?story=@sid&mode=print"にリダイレクトされることを意味しています。
+    @sidは記事のIDです。</p>
+<p>次に3行目をご覧ください。@の後にアルファベットが続くものがプレースホルダーです。たとえば、
+    "http://yourdomain/index.php/archives/all/2016/1" にアクセすると、ルールの中の
+    @topicが"all"に、@year が "2016" に、そして @month が "1" にマッチします。その後、ルートの中の
+    プレースホルダーがマッチした値に置き換えられ、"http://yourdomain/directory.php?topic=all&year=2016&month=1"
+    にリダイレクトされます。</p>
+<p>ルールの中に"/index.php"を含める必要はありません。</p>
+<p>無限ループになるので、ルートの先頭は "/index.php/" にしないでください("/index.php?" は大丈夫です)。</p>
+<p>プレースホルダーは@で始まり、アルファベットが続きます。プレースホルダーは<strong>大文字・小文字を区別します</strong>。</p>
+<p>URLルーティングは逆向きにも働きます。自作のプラグインやカスタム関数の中でURLを出力する時に、
+    COM_buildURL 関数を使い、URLルーティング(admin/router.php)で独自のルールとルートを設定する
+    ことでURLルーティングを行うことができます。</p>
+<p><strong>注意:</strong> この機能は全てのWebサーバーで使えるとは限りません。PHPの
+    $_SERVER['PATH_INFO'] 変数を使用します。サイトを公開する前に検証してください。</p>
+<p><strong>高度な機能:</strong> WebサーバーとしてApacheを使用し、ユーザーがアクセするURLから
+    "index.php" を取り除きたいなら、以下のことを行います。<strong>警告!</strong> Webサーバーの
+    設定を熟知していない場合は、この機能を使わない方が良いでしょう。</p>
+<ol>
+    <li>Webサーバーの rewrite モジュールを有効にします。"httpd.conf" の中で次の行を探します。<br>
+        <code># LoadModule rewrite_module modules/mod_rewrite.so</code><br>
+        そして行頭の#を取り除いてコメントを外します。Webサーバーを再起動するのを忘れないでください。</li>
+    <li>Geeklogをインストールしている公開領域のトップのディレクトリ(lib-common.phpがある場所)に
+        ".htaccess" という名前のファイルを設置し、次の行を追加します。
+    <pre>
+        &lt;IfModule mod_rewrite.c&gt;
+            RewriteEngine On
+            # RewriteBase /
+            # Directs all Geeklog requests through the site index file
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule ^(.*)$ /index.php/$1 [L]
+        &lt;/IfModule&gt;
+    </pre>
+        Geeklogをドキュメントルートのサブディレクトリにインストールしている場合は、
+    <pre>
+            RewriteRule ^(.*)$ /index.php/$1 [L]
+    </pre>を、
+        <pre>
+            RewriteRule ^(.*)$ <strong>[sub_directory]</strong>/index.php/$1 [L]
+        </pre>
+        や、
+        <pre>
+            RewriteRule ^(.*)$ /<strong>[sub_directory]</strong>/index.php/$1 [L]
+        </pre>
+        に変える必要があるでしょう。
+    </li>
+    <li>
+        最後に、管理者としてログインし、コンフィギュレーションでURLルーティングの設定を
+        「有効(index.php<strong>あり</strong>)」に変えます。
+    </li>
+</ol>
 
 
 <h2><a name="Localization">ローカリゼーション(Localization)</a></h2>
@@ -1825,7 +1934,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 
 <h3><a name="date_formats">ロケールと日時のフォーマット</a></h3>
 
-<p>ロケールと日時のフォーマットの設定はコンフィギュレーションで行えます。ロケールを設定するには、適切な文字列を設定するか空白のままにしておきます。後者の場合は、オペレーティングシステムのロケールの既定値が使用されます。日時のフォーマットはロケールによって処理が決まります。ロケール名はオペレーティングシステムに依存します。ほとんどのUNIX系のホストでは、ロケールコードは<i>/usr/share/locale/locale.alias</i> ファイルに記述されており、<i>locale -a</i> コマンドで利用可能なロケールすべてを表示できるシステムもあります。ロケールが存在しない場合は、<i>localedef</i> コマンドで作成できます。</p>
+<p>ロケールと日時のフォーマットの設定はコンフィギュレーションで行えます。ロケールを設定するには、適切な文字列を設定するか空白のままにしておきます。後者の場合は、オペレーティングシステムのロケールの既定値が使用されます。日時のフォーマットはロケールによって処理が決まります。ロケール名はオペレーティングシステムに依存します。ほとんどのUNIX系のホストでは、ロケールコードは<em>/usr/share/locale/locale.alias</em> ファイルに記述されており、<em>locale -a</em> コマンドで利用可能なロケールすべてを表示できるシステムもあります。ロケールが存在しない場合は、<em>localedef</em> コマンドで作成できます。</p>
 
 <p>ロケールに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>、<br />
 <code>localdef</code> コマンドに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a><br />を参照してください。</p>
@@ -1834,39 +1943,39 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <p>(訳注：以下の表現は、<a href="http://jp.php.net/manual/ja/function.strftime.php">PHPマニュアル</a>の表現を参考に、一部を修正しています。)</p>
 
 <ul>
-  <li><tt>%a - 短縮された曜日の現在のロケールに基づいた名前</tt></li>
-  <li><tt>%A - 完全な曜日の現在のロケールに基づいた名前</tt></li>
-  <li><tt>%b - 短縮された月の現在のロケールに基づいた名前</tt></li>
-  <li><tt>%B - 完全な月の現在のロケールに基づいた名前</tt></li>
-  <li><tt>%c - 日付と時刻の現在のロケールに基づいた表現</tt></li>
-  <li><tt>%C - (年を100で割って整数とした)世紀(00から99)</tt></li>
-  <li><tt>%d - 10進数で表現した日付(01から31)</tt></li>
-  <li><tt>%D - "%m/%d/%y"の形式で表現した日付</tt></li>
-  <li><tt>%e - 1桁となる場合は前に半角スペースを1つ置いた、10進数で表現した日付(' 1'から'31')</tt></li>
-  <li><tt>%h - "%b"と同じ</tt></li>
-  <li><tt>%H - 10進数で表現した24時間表示の時間(00から23まで)</tt></li>
-  <li><tt>%I - 10進数で表現した12時間表示の時間(01から12まで)</tt></li>
-  <li><tt>%j - 10進数で表現した年間の通し番号の日付(001から366)</tt></li>
-  <li><tt>%m - 10進数で表現した月(01から12)</tt></li>
-  <li><tt>%M - 10進数で表現した分(00から59)</tt></li>
-  <li><tt>%n - 改行文字</tt></li>
-  <li><tt>%p - `AM'または`PM'の現在のロケールに基づいた表現</tt></li>
-  <li><tt>%r - `AM'または`PM'を含んだ12時間表示の時刻の、現在のロケールに基づいた表現</tt></li>
-  <li><tt>%R - "%H:%M"の形式で表現した時刻</tt></li>
-  <li><tt>%S - 10進数で表現した秒(00から61、閏秒を表現できるため59ではなく61まで)</tt></li>
-  <li><tt>%t - タブ文字</tt></li>
-  <li><tt>%T - "%H:%M:%S"で表現した時刻</tt></li>
-  <li><tt>%u - (月曜日を開始日として)10進数で表現した曜日(1から7)</tt></li>
-  <li><tt>%U - (日曜日を開始日として)10進数で表現した年間を通した週の番号(00から53)</tt></li>
-  <li><tt>%V - (月曜日を開始日として)10進数で表現した年間を通した週の番号(01から53。ISO 8601の規定によると1月1日を含む週は、その4日以上が新しい年に含まれていると1番目の週となり、そうでない場合は前年の53番目の週となります。)</tt></li>
-  <li><tt>%W - (月曜日を開始日として)10進数で表現した週の年間を通した番号(00から53)</tt></li>
-  <li><tt>%w - (日曜日を開始日として)10進数で表現した曜日(0から6)</tt></li>
-  <li><tt>%x - 時刻を除いた日付の現在のロケールに基づいた表現</tt></li>
-  <li><tt>%X - 日付を除いた時刻の現在のロケールに基づいた表現</tt></li>
-  <li><tt>%y - 下2桁を10進数として表現した年(00から99)</tt></li>
-  <li><tt>%Y - 4桁の10進数で表現した年</tt></li>
-  <li><tt>%Z - タイムゾーンの時間差、名前、短縮名</tt></li>
-  <li><tt>%% - `%'の文字そのもの</tt></li>
+  <li><span class="tt">%a - 短縮された曜日の現在のロケールに基づいた名前</span></li>
+  <li><span class="tt">%A - 完全な曜日の現在のロケールに基づいた名前</span></li>
+  <li><span class="tt">%b - 短縮された月の現在のロケールに基づいた名前</span></li>
+  <li><span class="tt">%B - 完全な月の現在のロケールに基づいた名前</span></li>
+  <li><span class="tt">%c - 日付と時刻の現在のロケールに基づいた表現</span></li>
+  <li><span class="tt">%C - (年を100で割って整数とした)世紀(00から99)</span></li>
+  <li><span class="tt">%d - 10進数で表現した日付(01から31)</span></li>
+  <li><span class="tt">%D - "%m/%d/%y"の形式で表現した日付</span></li>
+  <li><span class="tt">%e - 1桁となる場合は前に半角スペースを1つ置いた、10進数で表現した日付(' 1'から'31')</span></li>
+  <li><span class="tt">%h - "%b"と同じ</span></li>
+  <li><span class="tt">%H - 10進数で表現した24時間表示の時間(00から23まで)</span></li>
+  <li><span class="tt">%I - 10進数で表現した12時間表示の時間(01から12まで)</span></li>
+  <li><span class="tt">%j - 10進数で表現した年間の通し番号の日付(001から366)</span></li>
+  <li><span class="tt">%m - 10進数で表現した月(01から12)</span></li>
+  <li><span class="tt">%M - 10進数で表現した分(00から59)</span></li>
+  <li><span class="tt">%n - 改行文字</span></li>
+  <li><span class="tt">%p - `AM'または`PM'の現在のロケールに基づいた表現</span></li>
+  <li><span class="tt">%r - `AM'または`PM'を含んだ12時間表示の時刻の、現在のロケールに基づいた表現</span></li>
+  <li><span class="tt">%R - "%H:%M"の形式で表現した時刻</span></li>
+  <li><span class="tt">%S - 10進数で表現した秒(00から61、閏秒を表現できるため59ではなく61まで)</span></li>
+  <li><span class="tt">%t - タブ文字</span></li>
+  <li><span class="tt">%T - "%H:%M:%S"で表現した時刻</span></li>
+  <li><span class="tt">%u - (月曜日を開始日として)10進数で表現した曜日(1から7)</span></li>
+  <li><span class="tt">%U - (日曜日を開始日として)10進数で表現した年間を通した週の番号(00から53)</span></li>
+  <li><span class="tt">%V - (月曜日を開始日として)10進数で表現した年間を通した週の番号(01から53。ISO 8601の規定によると1月1日を含む週は、その4日以上が新しい年に含まれていると1番目の週となり、そうでない場合は前年の53番目の週となります。)</span></li>
+  <li><span class="tt">%W - (月曜日を開始日として)10進数で表現した週の年間を通した番号(00から53)</span></li>
+  <li><span class="tt">%w - (日曜日を開始日として)10進数で表現した曜日(0から6)</span></li>
+  <li><span class="tt">%x - 時刻を除いた日付の現在のロケールに基づいた表現</span></li>
+  <li><span class="tt">%X - 日付を除いた時刻の現在のロケールに基づいた表現</span></li>
+  <li><span class="tt">%y - 下2桁を10進数として表現した年(00から99)</span></li>
+  <li><span class="tt">%Y - 4桁の10進数で表現した年</span></li>
+  <li><span class="tt">%Z - タイムゾーンの時間差、名前、短縮名</span></li>
+  <li><span class="tt">%% - `%'の文字そのもの</span></li>
 </ul>
 
 <div class="footer">

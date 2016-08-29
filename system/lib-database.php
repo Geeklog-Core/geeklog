@@ -69,6 +69,7 @@ $_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
 $_TABLES['pingservice'] = $_DB_table_prefix . 'pingservice';
 $_TABLES['plugins'] = $_DB_table_prefix . 'plugins';
 $_TABLES['postmodes'] = $_DB_table_prefix . 'postmodes';
+$_TABLES['routes'] = $_DB_table_prefix . 'routes';
 $_TABLES['sessions'] = $_DB_table_prefix . 'sessions';
 $_TABLES['sortcodes'] = $_DB_table_prefix . 'sortcodes';
 $_TABLES['speedlimit'] = $_DB_table_prefix . 'speedlimit';

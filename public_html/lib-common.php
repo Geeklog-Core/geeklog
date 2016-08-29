@@ -184,11 +184,13 @@ $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
 /**
- * Include URL class
- * This provides optional URL rewriting functionality.
- */
+* Include URL class
+*
+* This provides optional URL rewriting functionality.
+*/
+require_once $_CONF['path_system'] . 'classes/router.class.php';
 require_once $_CONF['path_system'] . 'classes/url.class.php';
-Url::getInstance($_CONF['url_rewrite']);
+$_URL = new Url($_CONF['url_rewrite'], $_CONF['url_routing']);
 
 /**
  * Include Device Detect class
@@ -3077,7 +3079,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
 function COM_commandControl($adminMenu = false, $help = '', $title = '', $position = '')
 {
     global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW,
-           $LANG_ENVCHECK, $LANG_ADMIN, $LANG_LANG, $_IMAGE_TYPE, $_DB_dbms, $config;;
+        $LANG_ENVCHECK, $LANG_ADMIN, $LANG_LANG, $_IMAGE_TYPE, $LANG_ROUTER, $_DB_dbms, $config;
 
     $retval = '';
 
@@ -3375,6 +3377,18 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                     }
                 }
 
+                $routeCount = '0';
+                if ($adminMenu && SEC_inGroup('Root')) {
+                    // Find num of URL routes
+                    $sql =  "SELECT COUNT(rid) AS cnt FROM {$_TABLES['routes']}";
+                    $result = DB_query($sql);
+
+                    if (!DB_error()) {
+                        $temp = DB_fetchArray($result, false);
+                        $routeCount = COM_numberFormat($temp['cnt']);
+                    }
+                }
+
                 $cc_arr = array(
                     array(
                         'condition' => SEC_hasRights($_CONF_FT, 'OR'),
@@ -3408,6 +3422,13 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'lang'      => $LANG01[103],
                         'num'       => '',
                         'image'     => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE,
+                    ),
+                    array(
+                        'condition' => SEC_inGroup('Root'),
+                        'url'       => $_CONF['site_admin_url'] . '/router.php',
+                        'lang'      => $LANG_ROUTER[1],
+                        'num'       => $routeCount,
+                        'image'     => $_CONF['layout_url'] . '/images/icons/route.' . $_IMAGE_TYPE,
                     ),
                     array(
                         'condition' => SEC_inGroup('Root'),

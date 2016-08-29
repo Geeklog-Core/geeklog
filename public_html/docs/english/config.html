@@ -14,10 +14,10 @@
 
 <h2>Configuration files</h2>
 
-<p>Previous versions of Geeklog used one huge file called <tt>config.php</tt>
+<p>Previous versions of Geeklog used one huge file called <span class="tt">config.php</span>
 that held all the core configuration options. As of Geeklog 1.5.0, most of
 the configuration options have been moved to the database and can now be
-reached from the <b>Configuration</b> admin panel within Geeklog.</p>
+reached from the <strong>Configuration</strong> admin panel within Geeklog.</p>
 
 <p>For technical reasons, some configuration options still have to be
 stored in files. There are two such configuration files now:</p>
@@ -63,7 +63,7 @@ manually.</p>
   <td valign="top">Base URL of the admin area of your site (no trailing slash).
     You won't have to change this normally, but some hosting services use a
     predefined "admin" directory for other purposes. In this case, you can
-    rename Geeklog's <tt>admin</tt> directory and adjust the URL accordingly to
+    rename Geeklog's <span class="tt">admin</span> directory and adjust the URL accordingly to
     avoid conflicts.</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_name">site_name</a></td>
@@ -80,14 +80,14 @@ manually.</p>
     disabled. If the text begins with "http:" then visitors are redirected to
     that URL.<br />
     <strong>Note:</strong> The option which actually disables the site can be found
-    in the <tt>siteconfig.php</tt> file.</td></tr>
+    in the <span class="tt">siteconfig.php</span> file.</td></tr>
 <tr>
   <td valign="top"><a name="desc_owner_name">owner_name</a></td>
   <td valign="top"></td>
   <td valign="top">The name of the owner of the site. This is used in the copyright notice if set, else the site name is used.</td></tr>     
 <tr>
   <td valign="top"><a name="desc_copyrightyear">copyrightyear</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">Set this to the year you want to appear in the copyright notice of your
     site's footer. If not set, Geeklog will use the current year.</td></tr>
 <tr>
@@ -95,6 +95,11 @@ manually.</p>
   <td valign="top">false</td>
   <td valign="top">Enable (true) or disable (false) URL rewriting.<br />
     Also see the section on <a href="#url-rewrite">URL Rewriting</a> below.</td></tr>
+<tr>
+    <td valign="top"><a name="desc_url_routing">url_routing</a></td>
+    <td valign="top">Disabled</td>
+    <td valign="top">Enable or disable URL routing.  <strong>Caution: This feature takes effect only when URL Rewriting is enabled.</strong><br />
+        Also see the section on <a href="#url-routing">URL Routing</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cdn_hosted">cdn_hosted</a></td>
   <td valign="top">false</td>
@@ -139,11 +144,11 @@ manually.</p>
     <td valign="top">Used to select how to send email. Can be one of 'smtp',
         'sendmail', or 'mail'.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_sendmail_path">sendmail_path</a></td>
-    <td valign="top"><tt>/usr/bin/sendmail</tt></td>
+    <td valign="top"><span class="tt">/usr/bin/sendmail</span></td>
     <td valign="top">If you chose 'sendmail' for the backend setting, this
         specifies the complete path to the sendmail binary.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_sendmail_args">sendmail_args</a></td>
-    <td valign="top"><tt>''</tt> <i>(empty)</i></td>
+    <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
     <td valign="top">If you chose 'sendmail' for the backend setting, this
         variable can be used to pass additional parameters to the sendmail
         binary.</td></tr>
@@ -274,7 +279,7 @@ the admin panel.</p>
         use the PEAR packages installed in <code>$_CONF['path_pear']</code>
         (see below)</td></tr>
 <tr><td valign="top"><a name="desc_path_pear">path_pear</a></td>
-    <td valign="top"><tt>/path/to/geeklog/system/pear/</tt></td>
+    <td valign="top"><span class="tt">/path/to/geeklog/system/pear/</span></td>
     <td valign="top">When <code>$_CONF['have_pear']</code> (see above) is set
         to <code>false</code>, this is the path where Geeklog expects to find
         the <a href="http://pear.php.net/">PEAR</a> packages it requires (e.g.
@@ -324,7 +329,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_search_limits">search_limits</a></td>
   <td valign="top">10,15,25,30</td>
-  <td valign="top">The result limits a user can select. Each value <b>must</b> be separated with a comma.</td></tr>
+  <td valign="top">The result limits a user can select. Each value <strong>must</strong> be separated with a comma.</td></tr>
 <tr>
   <td valign="top"><a name="desc_num_search_results">num_search_results</a></td>
   <td valign="top">30</td>
@@ -525,7 +530,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     check (but using option 1 <em>and</em> 2 doesn't make sense and will be
     treated as if you requested option 2).<br />
     Options are: 0 = don't perform any checks, 1 = check only for your site's main URL (<code>$_CONF['site_url']</code>), 2 = check for the exact URL of the entry (e.g. an article) on your site, 4 = check IP address of the sender of the trackback against the site referred to in the trackback URL.<br />
-    <b>Example:</b> <code>$_CONF['check_trackback_link'] = 6; // check for the exact URL (2) and proper IP address (4)</code></td></tr>
+    <strong>Example:</strong> <code>$_CONF['check_trackback_link'] = 6; // check for the exact URL (2) and proper IP address (4)</code></td></tr>
 <tr>
   <td valign="top"><a name="desc_multiple_trackbacks">multiple_trackbacks</a></td>
   <td valign="top">0</td>
@@ -587,22 +592,22 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a
     href="http://en.wikipedia.org/wiki/Document_Type_Declaration">Document Type
     Declaration</a> (aka DOCTYPE aka DTD) to use for all the themes on your
-    site, assuming they use the <tt>{doctype}</tt> variable instead of a
-    hard-coded DOCTYPE in their <tt>header.thtml</tt>.</td></tr>
+    site, assuming they use the <span class="tt">{doctype}</span> variable instead of a
+    hard-coded DOCTYPE in their <span class="tt">header.thtml</span>.</td></tr>
 <tr>
   <td valign="top"><a name="desc_menu_elements">menu_elements</a></td>
   <td valign="top"><code>array('contribute', 'search', 'stats', 'directory',
     'plugins')</code></td>
   <td valign="top">Specifies which entries are displayed in the site's menu bar
     (if your theme uses the <code>{menu_elements}</code> variable to display
-    the menu bar). Can be any combination of <tt>'home'</tt>,
-    <tt>'contribute'</tt>, <tt>'search'</tt>, <tt>'stats'</tt>,
-    <tt>'directory'</tt>, <tt>'login'</tt>, <tt>'prefs'</tt>, <tt>'plugins'</tt>, and
-    <tt>'custom'</tt> where <tt>'plugins'</tt> is the same as the
+    the menu bar). Can be any combination of <span class="tt">'home'</span>,
+    <span class="tt">'contribute'</span>, <span class="tt">'search'</span>, <span class="tt">'stats'</span>,
+    <span class="tt">'directory'</span>, <span class="tt">'login'</span>, <span class="tt">'prefs'</span>, <span class="tt">'plugins'</span>, and
+    <span class="tt">'custom'</span> where <span class="tt">'plugins'</span> is the same as the
     <code>{plg_menu_elements}</code> variable, i.e. a list of the menu entries
-    provided by plugins, and <tt>'custom'</tt> displays the entries returned by
+    provided by plugins, and <span class="tt">'custom'</span> displays the entries returned by
     a custom function <code>CUSTOM_menuEntries</code> (see
-    <tt>lib-custom.php</tt> for details).</td></tr>
+    <span class="tt">lib-custom.php</span> for details).</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_themes">path_themes</a></td>
   <td valign="top"><code>path/to/path_themes</code></td>
@@ -610,7 +615,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_cache_templates">cache_templates</a></td>
   <td valign="top">true</td>
-  <td valign="top">If set to <tt>true</tt>, all templates will be cached, which 
+  <td valign="top">If set to <span class="tt">true</span>, all templates will be cached, which 
   should improve performance of the web site.  In some cases, caching could 
   slow performance down.  For example, if the disk access is slow on the web 
   server or if the web server is accessing Windows shared drives, setting this 
@@ -618,7 +623,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_cache_mobile">cache_mobile</a></td>
   <td valign="top">true</td>
-  <td valign="top">If set to <tt>true</tt>, mobile devices (phones and tablets) will be cached
+  <td valign="top">If set to <span class="tt">true</span>, mobile devices (phones and tablets) will be cached
   separately from computers. This includes the template files, blocks, articles and other plugins which may use 
   Geeklog's template cache system. You should only set this to false if you do not plan to display different information 
   depending on if a mobile device is detected being used by the user. Performance will be improved slightly if set to false since 
@@ -634,7 +639,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_show_right_blocks">show_right_blocks</a></td>
   <td valign="top">false</td>
-  <td valign="top">If set to <tt>true</tt>, the right-side column of blocks
+  <td valign="top">If set to <span class="tt">true</span>, the right-side column of blocks
     will be displayed on <em>all</em> pages (instead of only on the index
     page).</td></tr>
 <tr>
@@ -670,7 +675,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_sort_admin">sort_admin</a></td>
   <td valign="top">false</td>
-  <td valign="top">If set to <tt>true</tt> will sort the entries in the Admin's
+  <td valign="top">If set to <span class="tt">true</span> will sort the entries in the Admin's
     block and the icons on the Command and Control page alphabetically.</td></tr>
 <tr>
   <td valign="top"><a name="desc_link_documentation">link_documentation</a></td>
@@ -790,7 +795,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_disable_new_user_registration">disable_new_user_registration</a></td>
   <td valign="top">false</td>
-  <td valign="top">When set to <tt>true</tt> completely disables all options
+  <td valign="top">When set to <span class="tt">true</span> completely disables all options
     to sign up as a new user.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_user_themes">allow_user_themes</a></td>
@@ -826,13 +831,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">If you allow users to log in with accounts on remote services
     (like LDAP or LiveJournal), this option will at the service's name to
     the username to avoid confusion with local users of the same name. Set to
-    <tt>false</tt> to disable.</td></tr>
+    <span class="tt">false</span> to disable.</td></tr>
 <tr>
   <td valign="top"><a name="desc_custom_registration">custom_registration</a></td>
   <td valign="top"><code>false</code></td>
   <td valign="top">When set to <code>true</code>, Geeklog will let you use
       your own signup form for new user registrations. Please see the file
-      <tt>lib-custom.php</tt> that ships with Geeklog for an example.</td></tr>
+      <span class="tt">lib-custom.php</span> that ships with Geeklog for an example.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_standard">standard</a></td>
   <td valign="top"><code>true</code></td>
@@ -846,11 +851,11 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_user_login_method_3rdparty">3rdparty</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with some other service to log into your Geeklog site with the
     login for that service. Currently supported: LDAP and LiveJournal.<br />
     Please note that to enable login for a specific service, you need an
-    authorization class in <tt>system/classes/authentication</tt>. If you only
+    authorization class in <span class="tt">system/classes/authentication</span>. If you only
     want to allow LDAP but not LiveJournal users (or vice versa), simply
     remove the class file for the unwanted service(s).<br />
     See <a href="http://www.geeklog.net/article.php/remote-authentication">Remote Authentication in Geeklog</a> for more information.</td></tr>
@@ -865,7 +870,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_facebook_login">facebook_login</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Facebook to log into Geeklog with said account using OAuth. You must set the Facebook application ID and secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_key">facebook_consumer_key</a></td>
@@ -882,7 +887,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_linkedin_login">linkedin_login</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with LinkedIn to log into Geeklog with said account using OAuth. You must set the LinkedIn API and secret key.</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_key">linkedin_consumer_key</a></td>
@@ -899,7 +904,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_twitter_login">twitter_login</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Twitter to log into Geeklog with said account using OAuth. You must set the Twitter consumer key and secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_key">twitter_consumer_key</a></td>
@@ -916,7 +921,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_google_login">google_login</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Google to log into Geeklog with said account using OAuth. You must set the Google client id and client secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_consumer_key">google_consumer_key</a></td>
@@ -933,7 +938,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_microsoft_login">microsoft_login</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Microsoft to log into Geeklog with said account using OAuth. You must set the Microsoft client id and client secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_key">microsoft_consumer_key</a></td>
@@ -950,7 +955,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_yahoo_login">yahoo_login</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Yahoo to log into Geeklog with said account using OAuth. You must set the Yahoo consumer key and consumer secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_consumer_key">yahoo_consumer_key</a></td>
@@ -967,7 +972,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_github_login">github_login</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with GitHub to log into Geeklog with said account using OAuth. You must set the GitHub client id and client secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_github_consumer_key">github_consumer_key</a></td>
@@ -1108,7 +1113,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     comma-separated list of domain names from which user submissions will not
     be queued (but approved automatically). Regular expressions are also allowed
     and interpreted.<br /><strong>Example:</strong>
-    <tt>'mycompany.com,myothercompany.com'</tt></td></tr>
+    <span class="tt">'mycompany.com,myothercompany.com'</span></td></tr>
 <tr>
   <td valign="top"><a name="desc_disallow_domains">disallow_domains</a></td>
   <td valign="top">''</td>
@@ -1118,7 +1123,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     when the user submission queue has been switched off. Again, regular
     expression can be used.<br /><strong>Example</strong> disallow email addresses
     with a certain domain name and from any ".edu" domain:
-    <tt>'somebaddomain.com,\.edu$'</tt></td></tr>
+    <span class="tt">'somebaddomain.com,\.edu$'</span></td></tr>
 </table>
 
 <h3><a name="users_submission">Users and Submissions: Submission Settings</a></h3>
@@ -1135,7 +1140,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_listdraftstories">listdraftstories</a></td>
   <td valign="top">0</td>
   <td valign="top">When set to 1, this will display an additional block on the
-    submissions page (<tt>moderation.php</tt>) that lists all the stories that
+    submissions page (<span class="tt">moderation.php</span>) that lists all the stories that
     have the 'draft' flag set.</td></tr>
 <tr>
   <td valign="top"><a name="desc_postmode">postmode</a></td>
@@ -1263,15 +1268,15 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     images to be resized or if you don't have those packages available.</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_to_mogrify">path_to_mogrify</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">If you chose 'imagemagick' for
     <code>$_CONF['image_lib']</code> above, then this should hold the
     <strong>complete path</strong> to the mogrify executable (from the
     <a href="http://www.imagemagick.org/">ImageMagick</a> package), e.g.
-    '<tt>/usr/bin/mogrify</tt>' (ImageMagick 5.4.9 or newer recommended).</td></tr>
+    '<span class="tt">/usr/bin/mogrify</span>' (ImageMagick 5.4.9 or newer recommended).</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_to_netpbm">path_to_netpbm</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">If you chose 'netpbm' for <code>$_CONF['image_lib']</code>
     above, then this should hold the complete path to the <em>directory</em>
     where the binaries from the Netpbm package are kept, e.g.
@@ -1295,11 +1300,11 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">1</td>
   <td valign="top">When unscaled images are kept (see above), this option lets
     the user chose between using the scaled or unscaled image in the story, i.e.
-    enables the <code>[unscaled<i>X</i>]</code> image tag (in addition to the
-    <code>[image<i>X</i>]</code> tag).</td></tr>
+    enables the <code>[unscaled<em>X</em>]</code> image tag (in addition to the
+    <code>[image<em>X</em>]</code> tag).</td></tr>
 <tr>
   <td valign="top"><a name="desc_jpeg_quality">jpeg_quality</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">Control the image quality when resizing JPEGs. All the image
     libraries supported by Geeklog are based on the IJG JPEG library which uses
     an arbitrary range of 0-100 to specify the "quality" (note that this is
@@ -1314,7 +1319,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_debug_image_upload">debug_image_upload</a></td>
   <td valign="top"><code>false</code></td>
   <td valign="top">When set to <code>true</code>, this option enables debugging
-    output to be written into Geeklog's <tt>error.log</tt> file during the
+    output to be written into Geeklog's <span class="tt">error.log</span> file during the
     upload of an image. This is useful to track down problems with the image
     upload and resizing.</td></tr>
 </table>
@@ -1339,7 +1344,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <code>$_CONF['image_lib']</code> above).</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_image_size">max_image_size</a></td>
-  <td valign="top">1048576 <i>(equals 1 MB)</i></td>
+  <td valign="top">1048576 <em>(equals 1 MB)</em></td>
   <td valign="top">Max. size of an image in bytes. If it exceeds this, it is
     is rejected (even if you're using a graphics package to resize images).</td></tr>
 </table>
@@ -1364,7 +1369,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <code>$_CONF['image_lib']</code> above).</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_topicicon_size">max_topicicon_size</a></td>
-  <td valign="top">65536 <i>(equals 64 KB)</i></td>
+  <td valign="top">65536 <em>(equals 64 KB)</em></td>
   <td valign="top">Max. size of a topic icon in bytes. If it exceeds this, it
     is rejected (even if you're using a graphics package to resize images).</td></tr>
 </table>
@@ -1389,12 +1394,12 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <code>$_CONF['image_lib']</code> above).</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_size">max_photo_size</a></td>
-  <td valign="top">65536 <i>(equals 64 KB)</i></td>
+  <td valign="top">65536 <em>(equals 64 KB)</em></td>
   <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
     is rejected (even if you're using a graphics package to resize images).</td></tr>
 <tr>
   <td valign="top"><a name="desc_force_photo_width">force_photo_width</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">This option, when enabled, will only apply when
     <em>displaying</em> a user photo. The <code>&lt;img&gt;</code> tag for the
     user photo will be emitted with a max. width, as specified by this option.
@@ -1403,7 +1408,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     shaped user photos to break your page's layout (e.g. in a forum).</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_photo">default_photo</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">When enabled, this option should point to an image (full URL
     required!) that should be displayed for users without a user photo. When
     this option is not set and a user does not have a user photo (or an <a 
@@ -1420,7 +1425,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_use_gravatar">use_gravatar</a></td>
   <td valign="top">false</td>
-  <td valign="top">If enabled (set to <tt>true</tt>), a user's avatar image will
+  <td valign="top">If enabled (set to <span class="tt">true</span>), a user's avatar image will
     be requested from <a href="http://gravatar.com/">gravatar.com</a> if the
     user didn't upload a user photo (i.e. an uploaded photo always takes
     precedence).<br />
@@ -1428,7 +1433,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     a lot of userphotos for different users (e.g. forum threads).</td></tr>
 <tr>
   <td valign="top"><a name="desc_gravatar_rating">gravatar_rating</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">Avatars submitted to gravatar.com are rated with the rating
     system used for movies (in the U.S.), i.e. the letters G, PG, R, or X. This
     option will let you chose the <em>maximum</em> allowed rating for an avatar.
@@ -1459,7 +1464,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">If set to 1, users can select the language for the site labels from My Account.</td></tr>    
 <tr>
   <td valign="top"><a name="desc_language_files">language_files</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the Geeklog language files to use. These shortcuts must each contain the same number of characters and 
     the language file must exist in the Geeklog languages directory.<br />
@@ -1470,7 +1475,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 <tr>
   <td valign="top"><a name="desc_languages">languages</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the language's native name ("English",
     "Deutsch", etc.). These shortcuts must match the shortcuts set in the "Language Files" configuration option.<br /> 
@@ -1522,7 +1527,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_week_start">week_start</a></td>
   <td valign="top">Sun</td>
-  <td valign="top">First day of the week in the calendar. Can be either <tt>'Sun'</tt> (Sunday) or <tt>'Mon'</tt> (Monday).</td></tr>
+  <td valign="top">First day of the week in the calendar. Can be either <span class="tt">'Sun'</span> (Sunday) or <span class="tt">'Mon'</span> (Monday).</td></tr>
 <tr>
   <td valign="top"><a name="desc_hour_mode">hour_mode</a></td>
   <td valign="top">12</td>
@@ -1543,7 +1548,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">How many decimal places to display.</td></tr>
 <tr>
   <td valign="top"><a name="desc_timezone">timezone</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">If your server is located in a different timezone, use this
     option to set your local (i.e. your own) timezone, so that the time and
     date on the site match your own.<br />
@@ -1609,7 +1614,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">Cookie path (see the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details).</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookiedomain">cookiedomain</a></td>
-  <td valign="top"><i>(empty)</i></td>
+  <td valign="top"><em>(empty)</em></td>
   <td valign="top">The domain that the cookie is available. Geeklog will attempt to guess the correct value for this setting (based on the 'site_url' variable). See the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookiesecure">cookiesecure</a></td>
@@ -1626,11 +1631,11 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_notification">notification</a></td>
   <td valign="top">array()</td>
-  <td valign="top">Send an email notification to <tt>$_CONF['site_email']</tt>
+  <td valign="top">Send an email notification to <span class="tt">$_CONF['site_email']</span>
     when a new story, comment, trackback or pingback has been submitted
-    or a new user has registered with the site. The <tt>array()</tt> can hold
-    any combination of  the strings <tt>'story'</tt>, <tt>'comment'</tt>,
-    <tt>'trackback'</tt>, <tt>'pingback'</tt>, and <tt>'user'</tt> (separated
+    or a new user has registered with the site. The <span class="tt">array()</span> can hold
+    any combination of  the strings <span class="tt">'story'</span>, <span class="tt">'comment'</span>,
+    <span class="tt">'trackback'</span>, <span class="tt">'pingback'</span>, and <span class="tt">'user'</span> (separated
     by commas), depending on which notification(s) you want.<br />
     <strong>Example:</strong> <code>array('story','user');</code> would
     send notifications when a new story has been submitted or a new user has
@@ -1642,7 +1647,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">Geeklog can emulate a <a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>, i.e. trigger a certain action at a given time. The code
     to be executed can be provided by a plugin or through the
     <code>CUSTOM_runScheduledTask</code> function in your
-    <tt>lib-custom.php</tt>. The value given is in seconds and specifies the
+    <span class="tt">lib-custom.php</span>. The value given is in seconds and specifies the
     interval in which the code should be executed (e.g. 86400 for daily
     activation).<br />
     Please note that to trigger this action, you will need to have someone
@@ -1682,7 +1687,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     href="http://en.wikipedia.org/wiki/Clickjacking">Clickjacking</a>: This
     option indicates that the site's content should not be displayed in a frame.
     This only works, however, when the visitor's browser respects the
-    <tt>X-FRAME-OPTIONS</tt> HTTP header. Options are to disallow all framing
+    <span class="tt">X-FRAME-OPTIONS</span> HTTP header. Options are to disallow all framing
     (Strict), only allow framing from within the same site (Same Origin), or to
     allow all framing (disabled). We strongly suggest <em>not</em> to disable
     this option.</td></tr>
@@ -1722,7 +1727,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     for debugging purposes!</strong><br />
     Tip: If an error prevents you from logging into your site to enable that
     option, you can also <a href="#desc_rootdebug_siteconfig">enable it in your
-    <tt>siteconfig.php</tt></a> file.</td></tr>
+    <span class="tt">siteconfig.php</span></a> file.</td></tr>
 </table>
 
 <h3><a name="misc_digest">Miscellaneous: Daily Digest</a></h3>
@@ -1741,7 +1746,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">1</td>
   <td valign="top">When emailstories (above) is enabled, send only the title and the
     link to the new stories (0), or send the entire introtext (1) or send
-    the first <i>n</i> characters from the introtext (where <i>n</i> = any other number)</td></tr>
+    the first <em>n</em> characters from the introtext (where <em>n</em> = any other number)</td></tr>
 <tr>
   <td valign="top"><a name="desc_emailstoriesperdefault">emailstoriesperdefault</a></td>
   <td valign="top">0</td>
@@ -1801,7 +1806,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">Text to replace a censored word with</td></tr>
 <tr>
   <td valign="top"><a name="desc_censorlist">censorlist</a></td>
-  <td valign="top">array(<i>a list of "bad" words goes here ...</i>)</td>
+  <td valign="top">array(<em>a list of "bad" words goes here ...</em>)</td>
   <td valign="top">An array of censored words</td></tr>
 </table>
 
@@ -1813,7 +1818,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <th style="width:63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
-  <td valign="top"><i>not set</i></td>
+  <td valign="top"><em>not set</em></td>
   <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br />
 <code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
 </table>
@@ -1832,7 +1837,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_restrict_webservices">restrict_webservices</a></td>
   <td valign="top">false</td>
   <td valign="top">Set this to <code>true</code> to restrict webservices usage
-    to users with the <tt>webservices.atompub</tt> permission (e.g. those in
+    to users with the <span class="tt">webservices.atompub</span> permission (e.g. those in
     the predefined "Webservices Users" group).</td></tr>
 <tr>
   <td valign="top"><a name="desc_atom_max_stories">atom_max_stories</a></td>
@@ -2022,7 +2027,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 
 <h2><a name="db-config.php">db-config.php</a></h2>
 
-<p>As the name implies, the file <tt>db-config.php</tt> contains the database
+<p>As the name implies, the file <span class="tt">db-config.php</span> contains the database
 configuration. This information is put there during the initial install and
 you should not normally have to edit this file.</p>
 
@@ -2032,7 +2037,7 @@ you should not normally have to edit this file.</p>
     <th style="width:63%">Description</th></tr>
 <tr><td valign="top">_DB_host</td>
     <td valign="top">localhost</td>
-    <td valign="top">Database Server (to be entered in the form: <i>hostname:port:unixsocket</i>). In most cases you won't need to change the default value.</td></tr>
+    <td valign="top">Database Server (to be entered in the form: <em>hostname:port:unixsocket</em>). In most cases you won't need to change the default value.</td></tr>
 <tr><td valign="top">_DB_name</td>
     <td valign="top">geeklog</td>
     <td valign="top">Database Name</td></tr>
@@ -2056,7 +2061,7 @@ you should not normally have to edit this file.</p>
 
 <h2><a name="siteconfig.php">siteconfig.php</a></h2>
 
-<p>The <tt>siteconfig.php</tt> file holds configuration data that can not be
+<p>The <span class="tt">siteconfig.php</span> file holds configuration data that can not be
 stored in the database. Again, most of this information is put there during
 the installation and you should not normally have to edit this file.</p> 
 
@@ -2087,13 +2092,13 @@ the installation and you should not normally have to edit this file.</p>
     set is recommended.</td></tr>
 <tr>
   <td valign="top"><a name="desc_rootdebug_siteconfig">rootdebug</a></td>
-  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">Same as the '<a href="#desc_rootdebug">rootdebug</a>' option
     in the Configuration. However, sometimes an error may occur that prevents
     you from logging into your site and enabling the 'rootdebug' option. In
     such a case, you can uncomment this line and enable the option here.<br />
     In addition to 'true' and 'false', you can also set this option to 'force'
-    (only in <tt>siteconfig.php</tt>). This will enable displaying of sensitive
+    (only in <span class="tt">siteconfig.php</span>). This will enable displaying of sensitive
     information like passwords and cookies.<br />
     In any case, the same strong warning as <a href="#desc_rootdebug">above</a>
     applies here, too: <strong>Do not leave this option enabled on a "live"
@@ -2109,15 +2114,121 @@ likely to be picked up by the search engine's indexing bots). This feature is
 supported for URLs to stories, static pages, the article directory, and links.
 </p>
 <p>URL rewriting means that your URLs will look like this</p>
-<p style="margin-left:4em;"><tt>http://www.geeklog.net/article.php/20021022234959146</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://www.geeklog.net/article.php/20021022234959146</span></p>
 <p>instead of like this</p>
-<p style="margin-left:4em;"><tt>http://www.geeklog.net/article.php?story=20021022234959146</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://www.geeklog.net/article.php?story=20021022234959146</span></p>
 <p>While some search engines will pick up the second form, Google seems to
 prefer the first format and often ignores the second format.</p>
 <p><strong>Note:</strong> This feature may not work with all web servers. It
 is known to work with Apache (all versions) and known <em>not</em> to work
 with IIS (at least some versions). Please try it out before you go public
 with your site.</p>
+
+
+<h2><a name="url-routing">URL Routing</a></h2>
+
+<p>This feature enhances the above <a href="#url-rewrite">URL Rewriting</a> feature and makes
+    public_html/index.php work like a front controller.  So, in order to use URL Routing feature,
+    you have to enable URL Rewriting beforehand.  Currently, the following rules are predefined.</p>
+<table border="1">
+    <thead>
+    <tr><th>Rule</th><th>Route</th><th>Priority</th></tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>http://yourdomain/article/@sid/print</td>
+        <td>http://yourdomain/article.php?story=@sid&mode=print</td>
+        <td>100</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/article/@sid</td>
+        <td>http://yourdomain/article.php?story=@sid</td>
+        <td>110</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/archives/@topic/@year/@month</td>
+        <td>http://yourdomain/directory.php?topic=@topic&year=@year&month=@month</td>
+        <td>120</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/page/@page</td>
+        <td>http://yourdomain/staticpages/index.php?page=@page</td>
+        <td>130</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/links/portal/@item</td>
+        <td>http://yourdomain/links/portal.php?what=link&item=@item</td>
+        <td>140</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/links/category/@cat</td>
+        <td>http://yourdomain/links/index.php?category=@cat</td>
+        <td>150</td>
+    </tr>
+    <tr>
+        <td>http://yourdomain/topic/@topic</td>
+        <td>http://yourdomain/index.php?topic=@topic</td>
+        <td>160</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>Look at the first row in the table.  This means if you access "http://yourdomain/index.php/article/@sid/print",
+    then you will be redirected to "http://yourdomain/article.php?story=@sid&mode=print".
+    @sid is a story ID.</p>
+<p>Then, look at the third row.  You will see an at mark (@), followed by alphabetical
+    letters.  This is a placeholder.  For instance, when you access
+    "http://yourdomain/index.php/archives/all/2016/1", @topic matches "all", @year matches "2016",
+    and @month matches "1" in the rule.  Then, all placeholders in the route will be replaced with
+    the matched values.  And you will be redirected to "http://yourdomain/directory.php?topic=all&year=2016&month=1".</p>
+<p>You don't have to include "/index.php" in a rule.</p>
+<p>You must NOT start a route with "/index.php/", since this will cause an infinite loop.  However, you can start
+    with a route with "/index.php?".</p>
+<p>A placeholder starts with @ and an alphabetical letter or letters follow it.
+    Placeholders are <strong>case-sensitive</strong>.</p>
+<p>URL Routing works in the reverse way as well.  When you output a URL in your plugin or custom
+    function, you can URL-route it by using COM_buildURL function and adding your own rule and
+    route in the URL Routing screen (admin/router.php).</p>
+<p><strong>Note:</strong> This feature may not work with all web servers. It uses PHP's
+    $_SERVER['PATH_INFO'] variable.  Please try it out before you go public with your site.</p>
+<p><strong>Advanced feature:</strong> If you use Apache as a Web server and want to remove "index.php"
+    from URLs you access, you have to do the following things.  <strong>Be warned!</strong>
+    Unless you are familiar with Web server configurations, you might as well not use this feature.</p>
+<ol>
+    <li>Enable the rewrite module of your web server.  In "httpd.conf", look for<br>
+    <code># LoadModule rewrite_module modules/mod_rewrite.so</code><br>
+    and uncomment the line by removing # at the top of the line.  Don't forget to
+        reboot your Web server.</li>
+    <li>Create a file named ".htaccess" in the top of the public directory of your
+        Geeklog installation (where lib-common.php is located) and add the following lines.<br>
+    <pre>
+        &lt;IfModule mod_rewrite.c&gt;
+            RewriteEngine On
+            # RewriteBase /
+            # Directs all Geeklog requests through the site index file
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule ^(.*)$ /index.php/$1 [L]
+        &lt;/IfModule&gt;
+    </pre><br>
+    If you have installed Geeklog in a subdirectory of the document root, you will
+        have to change the line<br>
+    <pre>
+            RewriteRule ^(.*)$ /index.php/$1 [L]
+    </pre>into<br>
+        <pre>
+            RewriteRule ^(.*)$ <strong>[sub_directory]</strong>/index.php/$1 [L]
+        </pre><br>
+        or<br>
+        <pre>
+            RewriteRule ^(.*)$ /<strong>[sub_directory]</strong>/index.php/$1 [L]
+        </pre>
+    </li>
+    <li>
+        Finally, log in as admin and go to the Configuration screen, and set URL Routing
+        to 'Enabled (<strong>without</strong> "index.php")'.
+    </li>
+</ol>
 
 
 <h2><a name="Localization">Localization</a></h2>
@@ -2137,9 +2248,9 @@ locale, set the variable to the proper string or if you leave it blank it
 will pull the default locale from the operating system. The date formats
 are handled by your locale. Isn't that smart? Locale names are OS
 dependent. On most UNIX hosts, you can find locale codes in the
-<i>/usr/share/locale/locale.alias</i> file and on some systems the command
-<i>locale -a</i> will display all available locales on a system. If a
-locale doesn't exist you can create it using the <i>localedef</i> command.</p>
+<em>/usr/share/locale/locale.alias</em> file and on some systems the command
+<em>locale -a</em> will display all available locales on a system. If a
+locale doesn't exist you can create it using the <em>localedef</em> command.</p>
 
 <p>More info on locale: <a
 href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a><br />
@@ -2149,39 +2260,39 @@ href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www
 <h3>Date Format Syntax</h3>
 
 <ul>
-  <li><tt>%a - abbreviated weekday name according to the current locale</tt></li>
-  <li><tt>%A - full weekday name according to the current locale</tt></li>
-  <li><tt>%b - abbreviated month name according to the current locale</tt></li>
-  <li><tt>%B - full month name according to the current locale</tt></li>
-  <li><tt>%c - preferred date and time representation for the current locale</tt></li>
-  <li><tt>%C - century number (the year divided by 100 and truncated to           an integer, range 00 to 99)</tt></li>
-  <li><tt>%d - day of the month as a decimal number (range 00 to 31)</tt></li>
-  <li><tt>%D - same as %m/%d/%y</tt></li>
-  <li><tt>%e - day of the month as a decimal number, a single digit is preceded by a space (range ' 1' to '31')</tt></li>
-  <li><tt>%h - same as %b</tt></li>
-  <li><tt>%H - hour as a decimal number using a 24-hour clock (range 00 to 23)</tt></li>
-  <li><tt>%I - hour as a decimal number using a 12-hour clock (range 01 to 12)</tt></li>
-  <li><tt>%j - day of the year as a decimal number (range 001 to 366)</tt></li>
-  <li><tt>%m - month as a decimal number (range 1 to 12)</tt></li>
-  <li><tt>%M - minute as a decimal number</tt></li>
-  <li><tt>%n - newline character</tt></li>
-  <li><tt>%p - either `am' or `pm' according to the given time value, or the corresponding strings for the current locale</tt></li>
-  <li><tt>%r - time in a.m. and p.m. notation</tt></li>
-  <li><tt>%R - time in 24 hour notation</tt></li>
-  <li><tt>%S - second as a decimal number</tt></li>
-  <li><tt>%t - tab character</tt></li>
-  <li><tt>%T - current time, equal to %H:%M:%S</tt></li>
-  <li><tt>%u - weekday as a decimal number [1,7], with 1 representing Monday</tt></li>
-  <li><tt>%U - week number of the current year as a decimal number, starting with the first Sunday as the first day of the first week</tt></li>
-  <li><tt>%V - The ISO 8601:1988 week number of the current year as a decimal number, range 01 to 53, where week 1 is the first week that has at least 4 days in the current year, and with Monday as the first day of the week.</tt></li>
-  <li><tt>%W - week number of the current year as a decimal number, starting with the first Monday as the first day of the first week</tt></li>
-  <li><tt>%w - day of the week as a decimal, Sunday being 0</tt></li>
-  <li><tt>%x - preferred date representation for the current locale without the time</tt></li>
-  <li><tt>%X - preferred time representation for the current locale without the date</tt></li>
-  <li><tt>%y - year as a decimal number without a century (range 00 to 99)</tt></li>
-  <li><tt>%Y - year as a decimal number including the century</tt></li>
-  <li><tt>%Z - time zone or name or abbreviation</tt></li>
-  <li><tt>%% - a literal `%' character</tt></li>
+  <li><span class="tt">%a - abbreviated weekday name according to the current locale</span></li>
+  <li><span class="tt">%A - full weekday name according to the current locale</span></li>
+  <li><span class="tt">%b - abbreviated month name according to the current locale</span></li>
+  <li><span class="tt">%B - full month name according to the current locale</span></li>
+  <li><span class="tt">%c - preferred date and time representation for the current locale</span></li>
+  <li><span class="tt">%C - century number (the year divided by 100 and truncated to           an integer, range 00 to 99)</span></li>
+  <li><span class="tt">%d - day of the month as a decimal number (range 00 to 31)</span></li>
+  <li><span class="tt">%D - same as %m/%d/%y</span></li>
+  <li><span class="tt">%e - day of the month as a decimal number, a single digit is preceded by a space (range ' 1' to '31')</span></li>
+  <li><span class="tt">%h - same as %b</span></li>
+  <li><span class="tt">%H - hour as a decimal number using a 24-hour clock (range 00 to 23)</span></li>
+  <li><span class="tt">%I - hour as a decimal number using a 12-hour clock (range 01 to 12)</span></li>
+  <li><span class="tt">%j - day of the year as a decimal number (range 001 to 366)</span></li>
+  <li><span class="tt">%m - month as a decimal number (range 1 to 12)</span></li>
+  <li><span class="tt">%M - minute as a decimal number</span></li>
+  <li><span class="tt">%n - newline character</span></li>
+  <li><span class="tt">%p - either `am' or `pm' according to the given time value, or the corresponding strings for the current locale</span></li>
+  <li><span class="tt">%r - time in a.m. and p.m. notation</span></li>
+  <li><span class="tt">%R - time in 24 hour notation</span></li>
+  <li><span class="tt">%S - second as a decimal number</span></li>
+  <li><span class="tt">%t - tab character</span></li>
+  <li><span class="tt">%T - current time, equal to %H:%M:%S</span></li>
+  <li><span class="tt">%u - weekday as a decimal number [1,7], with 1 representing Monday</span></li>
+  <li><span class="tt">%U - week number of the current year as a decimal number, starting with the first Sunday as the first day of the first week</span></li>
+  <li><span class="tt">%V - The ISO 8601:1988 week number of the current year as a decimal number, range 01 to 53, where week 1 is the first week that has at least 4 days in the current year, and with Monday as the first day of the week.</span></li>
+  <li><span class="tt">%W - week number of the current year as a decimal number, starting with the first Monday as the first day of the first week</span></li>
+  <li><span class="tt">%w - day of the week as a decimal, Sunday being 0</span></li>
+  <li><span class="tt">%x - preferred date representation for the current locale without the time</span></li>
+  <li><span class="tt">%X - preferred time representation for the current locale without the date</span></li>
+  <li><span class="tt">%y - year as a decimal number without a century (range 00 to 99)</span></li>
+  <li><span class="tt">%Y - year as a decimal number including the century</span></li>
+  <li><span class="tt">%Z - time zone or name or abbreviation</span></li>
+  <li><span class="tt">%% - a literal `%' character</span></li>
 </ul>
 
 <div class="footer">

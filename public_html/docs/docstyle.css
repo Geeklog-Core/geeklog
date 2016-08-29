@@ -123,3 +123,6 @@ a.wikipedia {
   border-bottom: 1px dotted black;
 }
 
+span.tt {
+  font-family:'Lucida Console', monospace;
+}
