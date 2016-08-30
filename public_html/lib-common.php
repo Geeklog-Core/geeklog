@@ -3427,7 +3427,7 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'url'       => $_CONF['site_admin_url'] . '/router.php',
                         'lang'      => $LANG_ROUTER[1],
                         'num'       => $routeCount,
-                        'image'     => $_CONF['layout_url'] . '/images/icons/route.' . $_IMAGE_TYPE,
+                        'image'     => $_CONF['layout_url'] . '/images/icons/router.' . $_IMAGE_TYPE,
                     ),
                     array(
                         'condition' => SEC_inGroup('Root'),
