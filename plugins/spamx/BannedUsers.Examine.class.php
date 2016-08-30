@@ -49,10 +49,10 @@ class BannedUsers extends BaseCommand
         $comment = html_entity_decode($comment);
 
         // decimal notation
-        $comment = preg_replace('/&#(\d+);/me', "chr(\\1)", $comment);
+        $comment = preg_replace_callback('/&#(\d+);/m', array($this, 'callbackDecimal'), $comment);
 
         // hex notation
-        $comment = preg_replace('/&#x([a-f0-9]+);/mei', "chr(0x\\1)", $comment);
+        $comment = preg_replace_callback('/&#x([a-f0-9]+);/mi', array($this, 'callbackHex'), $comment);
 
         $ans = 0;
 

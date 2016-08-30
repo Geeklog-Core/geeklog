@@ -12,6 +12,28 @@ abstract class BaseCommand
     protected $result = PLG_SPAM_ACTION_NONE;   // Result of execute command
     protected $actionCode = PLG_SPAM_ACTION_NONE;   // Action code
 
+    /**
+     * Callback function to change a string of decimals into a character
+     *
+     * @param  string $str
+     * @return string
+     */
+    protected function callbackDecimal($str)
+    {
+        return chr($str);
+    }
+
+    /**
+     * Callback function to change a string of hexes into a character
+     *
+     * @param  string $str
+     * @return string
+     */
+    protected function callbackHex($str)
+    {
+        return chr('0x' . $str);
+    }
+
     abstract public function execute($comment);
 
     /**

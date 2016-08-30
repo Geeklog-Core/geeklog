@@ -28,17 +28,6 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
  */
 class BlackList extends BaseCommand
 {
-    // Callback functions for preg_replace_callback()
-    protected function callbackDecimal($str)
-    {
-        return chr($str);
-    }
-
-    protected function callbackHex($str)
-    {
-        return chr('0x' . $str);
-    }
-
     /**
      * Here we do the work
      *
@@ -59,10 +48,13 @@ class BlackList extends BaseCommand
 
         // named entities
         $comment = html_entity_decode($comment);
+
         // decimal notation
         $comment = preg_replace_callback('/&#(\d+);/m', array($this, 'callbackDecimal'), $comment);
+
         // hex notation
         $comment = preg_replace_callback('/&#x([a-f0-9]+);/mi', array($this, 'callbackHex'), $comment);
+
         $ans = PLG_SPAM_NOT_FOUND;
 
         for ($i = 1; $i <= $nrows; $i++) {
