@@ -14,7 +14,7 @@
 
 <p>This document is intended to give a quick overview over the most important
 and / or obvious changes. For a detailed list of changes, please consult the
-<a href="../history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a
+<a href="../history">ChangeLog</a>. The file <span class="tt">docs/changed-files</span> has a
 list of files that have been changed since the last release.</p>
 
 <h2><a name="changes212">Geeklog 2.1.2</a></h2>
@@ -33,6 +33,7 @@ list of files that have been changed since the last release.</p>
     <li>Now install files are (optionally) deleted on successful install or upgrade (feature request #635)</li>
     <li>Added URL-routing feature which enables you to use public_html/index.php as a pseudo-front controller (feature requests #211, #326)</li>
     <li>Added new modules for the Spam-X plugin (feature request #585, files provided by Dirk Haun)</li>
+    <li>Added an ability to change article template file with the topic (feature request #275, code provided by @hostellerie)</li>
     <li></li>
 </ul>
 
@@ -184,7 +185,7 @@ suggest that you switch to PHP 5.2 or later as soon as possible.</p>
 </ul>
 
 
-<h2><a name="changes172">Geeklog 1.7.2</a></h2>
+<h2><a id="changes172" name="changes172">Geeklog 1.7.2</a></h2>
 
 <p><strong>Note:</strong> Geeklog 1.7.2 is the last Geeklog version to work on
 PHP 4. We will be providing security fixes, if required, for this version until
@@ -266,7 +267,7 @@ Aung Khant of the YGN Ethical Hacker Group.</p>
 <h3>Other changes</h3>
 
 <ul>
-<li><b>Security:</b> Fixed a vulnerability to dictionary attacks in the
+<li><strong>Security:</strong> Fixed a vulnerability to dictionary attacks in the
     autologin, originally reported by Bookoo of the Nine Situations Group.</li>
 <li>The minimum requirements for Geeklog are now <strong>PHP 4.4.0</strong>
     and <strong>MySQL 4.0.18</strong>.</li>
@@ -399,7 +400,7 @@ looking into upgrading to PHP 5 anyway.</li>
     major search engines. Plugin written and provided by mystral-kk.</li>
 <li>Several <a href="http://wiki.geeklog.net/index.php/New_Plugin_API_Functions_in_Geeklog_1.6.0">new plugin API functions</a> have been added and existing
     functions have been extended.</li>
-<li>The included documentation has been moved to <tt>docs/english</tt> to allow
+<li>The included documentation has been moved to <span class="tt">docs/english</span> to allow
     for translations. Links to the documentation from within Geeklog will link
     to existing translations for the current language automatically (or fall
     back to the English documentation if no suitable translation can be found).</li>
@@ -511,7 +512,7 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
 <li>It was possible to post comments on unpublished stories if you knew their
     story ID.</li>
 <li>When a database backup fails, the database password is no longer logged to
-    <tt>error.log</tt>.</li>
+    <span class="tt">error.log</span>.</li>
 </ul>
 
 <h4>Other Bugfixes</h4>
@@ -533,7 +534,7 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
     current day (really this time ...).</li>
 <li>Links: Fixed SQL error when trying to change a category and fixed new
     categories silently overwriting existing categories with the same ID.</li>
-<li>Static Pages: Fixed printer friendly version when <tt>url_rewrite</tt> is
+<li>Static Pages: Fixed printer friendly version when <span class="tt">url_rewrite</span> is
     enabled.</li>
 </ul>
 
@@ -548,10 +549,10 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
     the "Show only in topic" option set).</li>
 <li>Allow to unset Configuration options again after they have been "restored",
     e.g. after accidental activation.</li>
-<li>Configuration options can now be overwritten in <tt>siteconfig.php</tt>.
+<li>Configuration options can now be overwritten in <span class="tt">siteconfig.php</span>.
     This is mostly useful for the <code>$_CONF['rootdebug']</code> option.</li>
 <li>Remotely authenticated users can now use the webservices (they need to use
-    <tt>username@servicename</tt> for their username).<br />
+    <span class="tt">username@servicename</span> for their username).<br />
     <strong>Note:</strong> OpenID users can <em>not</em> use the webservices,
     due to technical issues with the authentication method.</li>
 <li>Improved compatibility of the webservices (i.e. AtomPub).</li>
@@ -560,7 +561,7 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
 <h3>Theme Changes</h3>
 
 <p>There was one mandatory theme change: The template file for configuration
-   items, <tt>admin/config/config_element.thtml</tt> has to be updated (copy
+   items, <span class="tt">admin/config/config_element.thtml</span> has to be updated (copy
    from the Professional theme). All other theme changes in this release are
    optional - see the <a href="theme.html#changes">theme documentation</a> for
    details.</p>
@@ -717,11 +718,11 @@ lib-trackback.php</a> for better protection against Trackback spam.</p>
 
 <p>This release addresses the following security issues:</p>
 <ol>
-<li>Possible SQL injection and authentication bypass in <tt>auth.inc.php</tt>
+<li>Possible SQL injection and authentication bypass in <span class="tt">auth.inc.php</span>
     (reported by the Security Science Researchers Institute Of Iran).</li>
-<li>Possible XSS in <tt>getimage.php</tt>
+<li>Possible XSS in <span class="tt">getimage.php</span>
     (reported by the Security Science Researchers Institute Of Iran).</li>
-<li>Path disclosure in <tt>getimage.php</tt> and the <tt>functions.php</tt> of
+<li>Path disclosure in <span class="tt">getimage.php</span> and the <span class="tt">functions.php</span> of
     some themes, e.g. the Professional theme
     (reported by the Security Science Researchers Institute Of Iran).</li>
 <li>Possible SQL injection in story submissions.</li>
@@ -765,7 +766,7 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
     href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> comments. Both
     are supported for stories, but there is also a new plugin API so that
     plugins can use this feature, too.  Trackback and Pingback can be disabled
-    in <tt>config.php</tt>.</li>
+    in <span class="tt">config.php</span>.</li>
 <li>Added the ability to "ping" weblog directory services to advertise site
     updates (preconfigured to ping <a
     href="http://pingomatic.com">Ping-o-Matic</a>). As with Trackback and
@@ -781,17 +782,17 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
     without having to directly register on your site. (Remote accounts can be
     banned as normal accounts).</li>
 <li>The Admin sections have been revamped to provide a more consistent look and
-    sortable lists. "Command and Control" (<tt>moderation.php</tt>) now also
+    sortable lists. "Command and Control" (<span class="tt">moderation.php</span>) now also
     comes with a new set of icons and has one icon for every Admin section.
     Furthermore, the Admin block and Command and Control can be <a
     href="config.html#desc_sort_admin">sorted</a> alphabetically.</li>
 <li>Ships with <a href="http://www.fckeditor.net/">FCKeditor</a> (WYSIWYG
     editor). To <a href="config.html#desc_advanced_editor">enable</a>, set
     <code>$_CONF['advanced_editor'] = true;</code> in your
-    <tt>config.php</tt>.</li>
+    <span class="tt">config.php</span>.</li>
 <li>The search now only displays a specified amount of results per page to
     avoid running into timeouts when searching through large databases.<br />
-    <b>Note:</b> Plugins will have to be updated to support the "paged" search.
+    <strong>Note:</strong> Plugins will have to be updated to support the "paged" search.
     Until then, Geeklog fakes the paged results for plugin searches, which
     means that a plugin that hasn't been updated will still search through the
     entire database, but Geeklog will only display the results for the current
@@ -833,11 +834,11 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
 
 <p>This release addresses the following security issues:</p>
 <ol>
-<li>Possible SQL injection and authentication bypass in <tt>auth.inc.php</tt>
+<li>Possible SQL injection and authentication bypass in <span class="tt">auth.inc.php</span>
     (reported by the Security Science Researchers Institute Of Iran).</li>
-<li>Possible XSS in <tt>getimage.php</tt>
+<li>Possible XSS in <span class="tt">getimage.php</span>
     (reported by the Security Science Researchers Institute Of Iran).</li>
-<li>Path disclosure in <tt>getimage.php</tt> and the <tt>functions.php</tt> of
+<li>Path disclosure in <span class="tt">getimage.php</span> and the <span class="tt">functions.php</span> of
     some themes, e.g. the Professional theme
     (reported by the Security Science Researchers Institute Of Iran).</li>
 <li>Possible SQL injection in story submissions.</li>
@@ -894,11 +895,11 @@ will have to wait for the 1.3.12 release).</p>
 <li>There is now a speed limit for login attempts, defaulting to three tries
     in a five minute period (<a
     href="config.html#desc_login_attempts">configurable</a> in
-    <tt>config.php</tt>).</li>
+    <span class="tt">config.php</span>).</li>
 <li>Linefeeds are filtered from the To:, From:, and Subject: fields of any
     email sent through <code>COM_mail</code>.</li>
 <li>When a new user account is created and the user submission queue is enabled
-    in <tt>config.php</tt>, Geeklog now ensures that the new account is properly
+    in <span class="tt">config.php</span>, Geeklog now ensures that the new account is properly
     queued even in the unlikely event that the account creation fails halfway
     through.</li>
 <li>When a post is identified as spam, it now also triggers the speed limit
@@ -932,9 +933,9 @@ of the blacklist from geeklog.net, but there will be no more updates.</p>
 <h3>Improvements</h3>
 <ul>
 <li>Added support for a <code>custom_usercheck</code> function (for the
-    custom registration code). See the included <tt>lib-custom.php</tt> for
+    custom registration code). See the included <span class="tt">lib-custom.php</span> for
     details.</li>
-<li>Improved handling of the auto-archive option in <tt>index.php</tt>, which
+<li>Improved handling of the auto-archive option in <span class="tt">index.php</span>, which
     should slightly improve page load times.</li>
 <li>Includes several new and updated language files.</li>
 <li>Includes updated PEAR classes.</li>
@@ -955,9 +956,9 @@ be exploited to extract user data such as the user's password hash.</li>
 <h3>Security issues</h3>
 <ol>
 <li>It was possible to submit stories anonymously even if anonymous submissions
-    were turned off in <tt>config.php</tt> (reported by Barry Wong).<br />
+    were turned off in <span class="tt">config.php</span> (reported by Barry Wong).<br />
     These stories still ended up in the submission queue, though, unless you
-    disabled it in <tt>config.php</tt>.</li>
+    disabled it in <span class="tt">config.php</span>.</li>
 <li>Some of the parameters in link and event submissions weren't filtered,
     leaving them open to potential SQL injections.</li>
 <li>The links for the What's Related block were created from the unfiltered
@@ -978,9 +979,9 @@ be exploited to extract user data such as the user's password hash.</li>
 <li>Fixes several bugs in the calendar and improves overall handling of both
     the site calendar and the personal calendars (bugs #268, #336, #338, and
     others).</li>
-<li>Fixes "More by <i>author</i>" and "More from <i>topic</i>" links in
+<li>Fixes "More by <em>author</em>" and "More from <em>topic</em>" links in
     articles.</li>
-<li>Various other fixes, see <tt>docs/history</tt> for details.</li>
+<li>Various other fixes, see <span class="tt">docs/history</span> for details.</li>
 </ul>
 
 <p>We strongly advise users of Geeklog 1.3.10 to upgrade to 1.3.11 ASAP. Upgrading should be relatively painless, as there weren't any changes in the themes, language files, or config.php over 1.3.10.</p>
@@ -1019,12 +1020,12 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
     URL rewriting).</li>
 <li>Autolinks are a new form of links that can be used in stories and comments.
     An autolink takes the form
-    <code>[<i>name</i>:<i>id</i> <i>link text</i>]</code> where <i>name</i> is
-    the tag name, <i>id</i> is the ID of an object the link should be pointing
-    to, and <i>link text</i> is used as the text of the link.<br />
+    <code>[<em>name</em>:<em>id</em> <em>link text</em>]</code> where <em>name</em> is
+    the tag name, <em>id</em> is the ID of an object the link should be pointing
+    to, and <em>link text</em> is used as the text of the link.<br />
     Example: <code>[story:email-bug About the email bug]</code> would be
     translated into <code>&lt;a href="http://example.com/article.php/email-bug"&gt;About the email bug&lt;/a&gt;</code><br />
-    For the built-in autotags, the <i>link text</i> is optional and Geeklog
+    For the built-in autotags, the <em>link text</em> is optional and Geeklog
     will use the title of the object (story / event / static page) if it is not
     given.<br />
     Predefined autotags are <code>[story:]</code> to link to stories and
@@ -1047,7 +1048,7 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
 <li>On fresh installs, there is now an option to use InnoDB tables (instead of
     MyISAM) if your MySQL version supports them (as of MySQL 4.0, or 3.x "Max"
     builds). Existing databases can be converted to InnoDB by using the script
-    <tt>admin/install/toinnodb.php</tt>.<br />
+    <span class="tt">admin/install/toinnodb.php</span>.<br />
     <strong>Warning:</strong> Using InnoDB tables makes database backups
     somewhat more complicated. Small and medium-sized sites should work just
     fine with MyISAM tables, so if in doubt <em>don't</em> use InnoDB
@@ -1126,16 +1127,16 @@ changes</a>, some of which are important to make the new features work (e.g.
 the editable story IDs and the story archive options)!</p>
 
 <p>This release contains various improvements provided by the Geeklog community
-(see the <tt>docs/history</tt> file for proper credits). Thank you!</p>
+(see the <span class="tt">docs/history</span> file for proper credits). Thank you!</p>
 
 <h2><a name="changes139sr3">Geeklog 1.3.9sr3</a></h2>
 <p>This release addresses the following security issues:</p>
 
 <ol>
 <li>It was possible to submit stories anonymously even if anonymous submissions
-    were turned off in <tt>config.php</tt> (reported by Barry Wong).<br />
+    were turned off in <span class="tt">config.php</span> (reported by Barry Wong).<br />
     These stories still ended up in the submission queue, though, unless you
-    disabled it in <tt>config.php</tt>.</li>
+    disabled it in <span class="tt">config.php</span>.</li>
 <li>Some of the parameters in link and event submissions weren't filtered,
     leaving them open to potential SQL injections.</li>
 </ol>
@@ -1153,7 +1154,7 @@ the editable story IDs and the story archive options)!</p>
 
 <h3>Other fixes</h3>
 <ul>
-<li>Fixed <tt>lib-plugins.php</tt> to work properly with PHP 5.</li>
+<li>Fixed <span class="tt">lib-plugins.php</span> to work properly with PHP 5.</li>
 <li>The complete tarball also includes updated PEAR packaged that fix
     some of the reported email problems.</li>
 </ul>
@@ -1187,7 +1188,7 @@ the editable story IDs and the story archive options)!</p>
 <li>Fixed sporadic "Duplicate entry '...' for key 1." messages in error.log,
     caused by the handling of pseudo-session ids for anonymous users.</li>
 <li>Fixed incorrect author names in Daily Digest (bug #207).</li>
-<li>The <code>plugin_profileblocksedit_<i>plugin-name</i></code> Plugin API
+<li>The <code>plugin_profileblocksedit_<em>plugin-name</em></code> Plugin API
     function wasn't working due to a missing piece of code in
     usersettings.php.</li>
 <li><code>COM_extractLinks</code> will now ignore anchor tags that do not
@@ -1222,7 +1223,7 @@ the editable story IDs and the story archive options)!</p>
     <code>$_CONF['path_images']</code> to point to a directory outside of your
     webtree where article images and user profile pictures will be saved.</li>
 <li>Geeklog now supports URL rewriting for story URLs, i.e. you can have URLs
-    like <tt>http://www.geeklog.net/article.php/20031229225326631</tt> which
+    like <span class="tt">http://www.geeklog.net/article.php/20031229225326631</span> which
     are known to be picked up by Google.</li>
 <li>Plugins can add their own section to Geeklog's What's New block.</li>
 <li>All URL fields can now hold up to 255 characters (requires theme updates).</li>
@@ -1346,7 +1347,7 @@ against SQL injections.</p>
 
 <h3>Other fixes</h3>
 <ul>
-<li>Fixed the auto-detection of the value for the <code>$_CONF['cookiedomain']</code> variable if the URL included a port number (such as <tt>example.com:8080</tt>). This will fix the login problems some users were reporting.</li>
+<li>Fixed the auto-detection of the value for the <code>$_CONF['cookiedomain']</code> variable if the URL included a port number (such as <span class="tt">example.com:8080</span>). This will fix the login problems some users were reporting.</li>
 <li>The full 1.3.8-1sr1 tarball also includes updated French (Canada) and Turkish language files.</li>
 </ul>
 
@@ -1361,7 +1362,7 @@ variety of (mostly minor) bugfixes. None of those fixes are security-related.</p
 <ul>
 <li>Fixes to the new search to restore pre-1.3.8 behavior (display search form
     again if no results are returned, handling of
-    <tt>$_CONF['searchloginrequired']</tt>, etc.). Also fixed the search by
+    <span class="tt">$_CONF['searchloginrequired']</span>, etc.). Also fixed the search by
     date.</li>
 <li>Fixed problems in the install script when trying to identify the MySQL
     version. The install script failed silently on PHP 4.0.4 and earlier
@@ -1409,7 +1410,7 @@ href="staticpages.html">Static Pages documentation</a> for details.</p>
     center area, add their own information to the user profile, and add
     information to the site's header (<code>&lt;head&gt;</code> section).</li>
   <li>There's a new API for custom registration forms (see
-    <tt>lib-custom.php</tt> for sample code).</li>
+    <span class="tt">lib-custom.php</span> for sample code).</li>
   <li>There have been quite a few theme changes in order to move most larger
     portions of hard-coded HTML to template files and to give theme designers
     more control over the layout. Please consult the <a
@@ -1507,9 +1508,9 @@ All users are <em>strongly</em> encouraged to upgrade to this version ASAP.</p>
     PHP code and execute it (reported by SCAN Associates).</li>
 <li>Story permissions could override topic permissions, resulting in the display
     of stories to users who shouldn't have access to them (reported by Andrew
-    Lawlor). This was already fixed with the new <tt>index.php</tt>, released
+    Lawlor). This was already fixed with the new <span class="tt">index.php</span>, released
     2003-05-15.</li>
-<li>Added a warning in <tt>config.php</tt> that adding any of the following
+<li>Added a warning in <span class="tt">config.php</span> that adding any of the following
     tags to the list of allowable HTML can make the site vulnerable to
     scripting attacks:<br />
     <code>&lt;img&gt; &lt;span&gt; &lt;marquee&gt; &lt;script&gt;
@@ -1568,7 +1569,7 @@ All users are strongly recommended to upgrade to this version.</p>
   <li>User photos are now resized, just like images in stories (if the use
     of an image library is configured). The max. dimensions for user photos
     can be set with a separate set of config variables in
-    <tt>config.php</tt>.</li>
+    <span class="tt">config.php</span>.</li>
   <li>The plugin menu now lists all plugins which exist in the file system
     but haven't been installed yet. It also provides a link to the install
     script of those plugins for easy installation.</li>
@@ -1609,7 +1610,7 @@ have contributed to this release. Thank you!</p>
 <h3><a name="addindex">Speeding up Geeklog (a bit)</a></h3>
 
 <p>If you're upgrading from 1.3.6 or older versions, you may want to run the
-script called <tt>addindex.php</tt> that you will find in the <tt>install</tt>
+script called <span class="tt">addindex.php</span> that you will find in the <span class="tt">install</span>
 directory. This script adds index fields to some of Geeklog's database tables
 which should improve overall access times a bit.</p>
 
@@ -1638,11 +1639,11 @@ already has the new index fields.</p>
     before the first story on the front page of a Geeklog site. If the static
     page additionally carries the label "nonews", then it will completely
     replace the news on the front page.</li>
-  <li>User submission queue: When activated (in <tt><a
-    href="config.html#submission">config.php</a></tt>), new users will need to
+  <li>User submission queue: When activated (in <span class="tt"><a
+    href="config.html#submission">config.php</a></span>), new users will need to
     be approved by an admin before they receive their password.</li>
   <li>The submission queues can be switched off separately, either completely
-    (in <tt><a href="config.html#submission">config.php</a></tt>) or only for
+    (in <span class="tt"><a href="config.html#submission">config.php</a></span>) or only for
     certain groups of users (by using the new features story.submit,
     links.submit, and event.submit).</li>
   <li>When posting source code (e.g. PHP, HTML, ...), you can now use the
@@ -1655,7 +1656,7 @@ already has the new index fields.</p>
     almost every part of the site (e.g. links section, site stats, ...), if
     needed.</li>
   <li>A Geeklog site can now be disabled easily (e.g. for maintenance) by
-    setting a flag in <tt><a href="config.html#site">config.php</a></tt>.</li>
+    setting a flag in <span class="tt"><a href="config.html#site">config.php</a></span>.</li>
   <li>Theme changes: Please consult the <a href="theme.html#changes136">themes
     documentation</a> for a list of changes.</li>
 </ul>
@@ -1671,7 +1672,7 @@ already has the new index fields.</p>
     and have chosen the proper <a href="config.html#languages_locale">locale
     settings</a> for your country and language).</li>
   <li>The variable $_CONF['site_admin_url'] is now used properly so that you
-    can rename Geeklog's <tt>admin</tt> directory if needed.</li>
+    can rename Geeklog's <span class="tt">admin</span> directory if needed.</li>
   <li>New RDF parser will now import most (if not all) RDF news feeds
     properly</li>
 </ul>
@@ -1679,9 +1680,9 @@ already has the new index fields.</p>
 <h3>Notes</h3>
 
 <ul>
-  <li>Since there are a lot of new variables in <tt>config.php</tt>, it is
+  <li>Since there are a lot of new variables in <span class="tt">config.php</span>, it is
     recommended you start with a fresh copy of that file instead of copying
-    over your old <tt>config.php</tt> from your previous installation.</li>
+    over your old <span class="tt">config.php</span> from your previous installation.</li>
   <li>Please note that currently only the English, German, Italian, Polish,
     and Japanese language files are up to date. Using one of the other
     language files may result in your Geeklog site not working properly.</li>

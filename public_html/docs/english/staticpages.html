@@ -59,7 +59,7 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>When selecting the second of the above PHP execution options ("execute PHP") you can, however, switch back and forth between PHP and plain HTML like this:</p>
 <pre style="padding-left: 2em"><code>echo "Hello"; ?&gt;, &lt;b&gt;world&lt;/b&gt;, &lt;?php echo "how are you?";</code></pre>
-<p>The above example would print out "Hello, <b>world</b>, how are you?".</p>
+<p>The above example would print out "Hello, <strong>world</strong>, how are you?".</p>
 
 
 <h2><a name="id">Page ID</a></h2>
@@ -68,7 +68,7 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>The static pages editor will let you change the page ID. For example, you may want to rename the ID for your "about" page from "20030313100131123" to "about", thus creating a URL like</p>
 
-<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php?page=about</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php?page=about</span></p>
 
 <p>which looks much nicer when quoted (and is easier to remember). You could further improve this by making use of Geeklog's <a href="#url">URL rewrite feature</a>.</p>
 
@@ -97,7 +97,7 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 </ul>
 <p>Please note that this order will only apply to centerblocks from static pages. All other plugins creating centerblocks will not be in that order. Also note that the centerblock is not necessarily looking like a standard Geeklog block. To achieve that, please check the field "Wrapping Static Pages in a block" below.</p>
 
-<p><strong>Menu entries:</strong> It's also possible to sort the static pages that are displayed in the site's menu (if you're using a theme that uses the <code>{plg_menu_elements}</code> variables in its <tt>header.thtml</tt>). This sort order can also be changed in the Configuration admin panel for the static pages plugin:</p>
+<p><strong>Menu entries:</strong> It's also possible to sort the static pages that are displayed in the site's menu (if you're using a theme that uses the <code>{plg_menu_elements}</code> variables in its <span class="tt">header.thtml</span>). This sort order can also be changed in the Configuration admin panel for the static pages plugin:</p>
 <ul>
 <li>Date (sort by last changed date)</li>
 <li>Label (sort by the menu label text; default)</li>
@@ -124,15 +124,15 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>Geeklog supports a form of URL rewriting, i.e. change the look of URLs such that they are more search engine friendly. For example, instead of</p>
 
-<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php?page=20030313100131123</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php?page=20030313100131123</span></p>
 
 <p>the URL could look like this</p>
 
-<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php/20030313100131123</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php/20030313100131123</span></p>
 
 <p>Some search engines are known not to index pages when the URL includes characters like '?' and '='. You could further improve the chances of this page being indexed by <a href="#id">replacing the numeric page ID</a> with a word or expression (preferrably something that corresponds to the page's content), e.g.</p>
 
-<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php/about</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php/about</span></p>
 
 <p>To make use of URL rewriting, you will need to set the option "Enable URL Rewriting" to True in Geeklog's Configuration admin panel.</p>
 

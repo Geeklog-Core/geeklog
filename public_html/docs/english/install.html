@@ -42,7 +42,7 @@
 
         <p>To install and use Geeklog you will need to have a server running Apache or Microsoft IIS with PHP 5.2.0 or higher installed. You will also need either <a href="http://dev.mysql.com/downloads/">MySQL</a> 4.1.2 or later (<a href="http://mariadb.org/">MariaDB</a> 5.1 or later will also work), or <a href="http://www.postgresql.org/download/">PostgreSQL</a> 9.1.7 or greater.</p>
 
-        <p><strong>Note for PostgreSQL users:</strong> Geeklog currently requires that the Postgres option <tt>standard_conforming_strings</tt> is set to <tt>off</tt> (it is <tt>on</tt> by default as of PostgreSQL 9.1).</p>
+        <p><strong>Note for PostgreSQL users:</strong> Geeklog currently requires that the Postgres option <span class="tt">standard_conforming_strings</span> is set to <span class="tt">off</span> (it is <span class="tt">on</span> by default as of PostgreSQL 9.1).</p>
 
     <h3><a name="things_you_should_know">Things You Should Know</a></h3>
 
@@ -120,8 +120,8 @@
         </li>
         <li>Depending on the version you're upgrading from:
             <ul>
-                <li><p><strong>When upgrading from Geeklog 1.4.1 or earlier</strong>: Put the <tt>config.php</tt> files from your old install back into their place now (the main <tt>config.php</tt> and those for the plugins). The install script will read these files during the upgrade to pre-populate the new Configuration admin panel with your settings. If you skip this step, you will end up with default settings for Geeklog and the pre-installed plugins.</p></li>
-                <li><p><strong>When upgrading from Geeklog 1.5.0 or later</strong>: Put the <tt>db-config.php</tt> and <tt>siteconfig.php</tt> from your old install back into their place now, overwriting the files of the same name that came in the tarball. Otherwise, you would have to enter your database credentials and other information during the upgrade process again.</p></li>
+                <li><p><strong>When upgrading from Geeklog 1.4.1 or earlier</strong>: Put the <span class="tt">config.php</span> files from your old install back into their place now (the main <span class="tt">config.php</span> and those for the plugins). The install script will read these files during the upgrade to pre-populate the new Configuration admin panel with your settings. If you skip this step, you will end up with default settings for Geeklog and the pre-installed plugins.</p></li>
+                <li><p><strong>When upgrading from Geeklog 1.5.0 or later</strong>: Put the <span class="tt">db-config.php</span> and <span class="tt">siteconfig.php</span> from your old install back into their place now, overwriting the files of the same name that came in the tarball. Otherwise, you would have to enter your database credentials and other information during the upgrade process again.</p></li>
             </ul>
         </li>
         <li>
@@ -142,7 +142,7 @@
 
 <p>After clicking on "Migrate", you will have to enter the database credentials for your (new) database server, as usual. Note that you don't need to enter a table prefix, as the Migrate option will detect it automatically.</p>
 
-<p>You then have the option to upload a database backup from your computer, to import from a backup that's already on the server (in Geeklog's <tt>backups</tt> directory), or you can use the current content of the database, in case you already imported it through other means.</p>
+<p>You then have the option to upload a database backup from your computer, to import from a backup that's already on the server (in Geeklog's <span class="tt">backups</span> directory), or you can use the current content of the database, in case you already imported it through other means.</p>
 
 <p><strong>Note:</strong> Uploading a backup file from your computer will only work as long as the size of the backup file is below the server's max. upload limit. The max. allowed size will be displayed when you select this option. If your backup file is over that limit, try compressing it (zip or gzip should work) or use one of the other two options.</p>
 

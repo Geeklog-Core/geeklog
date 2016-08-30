@@ -67,7 +67,7 @@
 <p><strong><a name="slvprivacy">プライバシーポリシーの表示</a></strong><br />
 SLVを使用しているということは、自分のサイトから第三者のサイトに情報を送信していることになるということを強調しておいた方がよいでしょう。法体系によっては、ユーザーにこの事実を告知する必要があるかもしれません。ご自分の地域のプライバシーに関する法律を確認してください。</p>
 
-<p>運用している状況によっては（たとえば、企業のイントラネットなど）、情報を外部のサイトに送信することが望ましくない場合もあるでしょう。その場合は、 <tt>SLV.Examine.class.php</tt>, <tt>SLVbase.class.php</tt>, <tt>SLVreport.Action.class.php</tt>, <tt>SLVwhitelist.Admin.class.php</tt> の4つのファイルをSpam-Xのディレクトリ(<tt>/path/to/geeklog/plugins/spamx</tt>)から削除すれば、SLVを無効にできます。単にSpam-Xプラグインを無効にする（または、アンインストールする）だけでもよいです。</p>
+<p>運用している状況によっては（たとえば、企業のイントラネットなど）、情報を外部のサイトに送信することが望ましくない場合もあるでしょう。その場合は、 <span class="tt">SLV.Examine.class.php</span>, <span class="tt">SLVbase.class.php</span>, <span class="tt">SLVreport.Action.class.php</span>, <span class="tt">SLVwhitelist.Admin.class.php</span> の4つのファイルをSpam-Xのディレクトリ(<span class="tt">/path/to/geeklog/plugins/spamx</span>)から削除すれば、SLVを無効にできます。単にSpam-Xプラグインを無効にする（または、アンインストールする）だけでもよいです。</p>
 
 <p>SLV検証モジュールとアクションモジュールは、投稿されたデータからすべてのURLを抽出し、SLVへ送信するだけです(つまり、投稿されたデータのURL以外の部分は送信されません。)。また、自分のGeeklogサイトのURLを含むリンクはすべて除外します。投稿されたデータに外部リンクが含まれていない場合、これらのモジュールはSLVと通信を行いません。</p>
 
@@ -84,7 +84,7 @@ SLVを使用しているということは、自分のサイトから第三者�
 
 <p>1つないし少数のIPアドレスから送信されるスパムに出くわすこともあります。IPフィルターモジュールを追加することで、これらのIPアドレスから送信されるスパムを自動的にブロックできます。</p>
 
-<p>単一のIPアドレスだけでなく、<a href="http://en.wikipedia.org/wiki/CIDR" title="Classless Inter-Domain Routing">CIDR</a>表記や<i>開始アドレス</i>-<i>終了アドレス</i> という形式で、IPアドレスの範囲を指定することもできます。</p>
+<p>単一のIPアドレスだけでなく、<a href="http://en.wikipedia.org/wiki/CIDR" title="Classless Inter-Domain Routing">CIDR</a>表記や<em>開始アドレス</em>-<em>終了アドレス</em> という形式で、IPアドレスの範囲を指定することもできます。</p>
 
 <p>IPアドレスが実際にはあまりよい判断基準にはならないということに注意してください。インターネットサービスプロバイダやホスティングサービスの中にはスパムの温床として知られているものもありますが、それらのIPアドレスをブロックしてもあまり役には立たないでしょう。スパム送信者はインターネットへ接続し直すときに新しいIPアドレスを取得するのに対し、ブロックされたIPアドレスは他の罪もないユーザーが使用することがよくあるからです。</p>
 
@@ -99,8 +99,8 @@ SLVを使用しているということは、自分のサイトから第三者�
 <p>HTTPヘッダーフィルターモジュールを使用すると、ある種のHTTPリクエストをブロックすることができます。たとえば、スパム送信者の中には、スパムを送信するのにPerlスクリプトを使用しているものがいます。Perlスクリプトが送信するユーザーエージェント(ブラウザー識別情報)は "libwww-perl/5.805" (バージョン番号はこれとは違う場合もある)のようなものが多いです。したがって、このユーザーエージェントが送信するスパムをブロックするには、次のように入力します。</p>
 
 <table border="0" style="width:15em">
-<tr><td><b>Header:</b></td><td align="left"><kbd>User-Agent</kbd></td></tr>
-<tr><td><b>Content:</b></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
+<tr><td><strong>Header:</strong></td><td align="left"><kbd>User-Agent</kbd></td></tr>
+<tr><td><strong>Content:</strong></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
 </table>
 <p>これで "libwww-perl" で始まるユーザーエージェントからのスパム投稿はすべてブロックされます。</p>
 
@@ -124,9 +124,9 @@ href="http://www.stopforumspam.com/">www.stopforumspam.com</a>で運営されて
 
 <h2><a name="action">アクションモジュール</a></h2>
 
-<p>いったん<a href="#examine">検出モジュール</a>がスパム投稿を検出すると、アクションモジュールがスパムをどう処理するかを判断します。たいていの場合、スパムを削除するだけでよいですが、これを行うのが<b>削除アクション(Delete Action)</b> モジュールです。</p>
+<p>いったん<a href="#examine">検出モジュール</a>がスパム投稿を検出すると、アクションモジュールがスパムをどう処理するかを判断します。たいていの場合、スパムを削除するだけでよいですが、これを行うのが<strong>削除アクション(Delete Action)</strong> モジュールです。</p>
 
-<p>その名前が示すとおり、<b>管理者メールアクション(Mail Admin Action)</b> モジュールはスパムを検出したときに、サイト管理者にメールで通知します。多数の通知メールが送られる可能性があるため、デフォルトでは無効になっています。</p>
+<p>その名前が示すとおり、<strong>管理者メールアクション(Mail Admin Action)</strong> モジュールはスパムを検出したときに、サイト管理者にメールで通知します。多数の通知メールが送られる可能性があるため、デフォルトでは無効になっています。</p>
 
 <p>アクションモジュールは使用する前に個別に有効にする必要があります(一方、検出モジュールはSpam-Xのディレクトリにファイルを入れるだけで有効になります。)。このため、すべてのアクションモジュールは独自の番号を持っています。有効にしたいすべてのモジュールの番号を足し合わせた数値を、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_spamx">Spam-X</a>」に入力します。</p>
 
@@ -173,7 +173,7 @@ href="http://www.stopforumspam.com/">www.stopforumspam.com</a>で運営されて
 <tr>
   <td><a name="desc_logging">ログを有効にする(logging)</a></td>
   <td><code>はい(true)</code></td>
-  <td>はい(true)にすると、スパムと認識された投稿がログファイル(<tt>spamx.log</tt>)に記録されます。</td>
+  <td>はい(true)にすると、スパムと認識された投稿がログファイル(<span class="tt">spamx.log</span>)に記録されます。</td>
 </tr>
 <tr>
   <td><a name="desc_timeout">タイムアウト(timeout)</a></td>

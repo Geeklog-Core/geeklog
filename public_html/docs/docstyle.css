@@ -126,3 +126,11 @@ a.wikipedia {
 span.tt {
   font-family:'Lucida Console', monospace;
 }
+
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;;
+}

@@ -87,9 +87,9 @@ laws.</p>
 
 <p>Sending information to an external site may also be undesirable on some
 setups, e.g. on a company intranet. You can disable SLV support by removing the
-four files <tt>SLV.Examine.class.php</tt>, <tt>SLVbase.class.php</tt>,
-<tt>SLVreport.Action.class.php</tt>, and <tt>SLVwhitelist.Admin.class.php</tt>
- from your Spam-X directory (<tt>/path/to/geeklog/plugins/spamx</tt>). Or you
+four files <span class="tt">SLV.Examine.class.php</span>, <span class="tt">SLVbase.class.php</span>,
+<span class="tt">SLVreport.Action.class.php</span>, and <span class="tt">SLVwhitelist.Admin.class.php</span>
+ from your Spam-X directory (<span class="tt">/path/to/geeklog/plugins/spamx</span>). Or you
 can simply disable the Spam-X plugin entirely (or uninstall it).</p>
 
 <p>The SLV Examine and Action modules will extract all URLs from a post and
@@ -123,7 +123,7 @@ addresses. By simply adding those IP addresses to the IP Filter module, any
 posts from these IPs will be blocked automatically.</p>
 
 <p>In addition to single IP addresses, you can also add IP address ranges,
-either in <a href="http://en.wikipedia.org/wiki/CIDR" title="Classless Inter-Domain Routing">CIDR</a> notation or as simple <i>from</i>-<i>to</i> ranges.</p>
+either in <a href="http://en.wikipedia.org/wiki/CIDR" title="Classless Inter-Domain Routing">CIDR</a> notation or as simple <em>from</em>-<em>to</em> ranges.</p>
 
 <p>Please note that IP addresses aren't really a good filter criterion. While
 some ISPs and hosting services are known to host spammers, it won't help much
@@ -154,8 +154,8 @@ something like "libwww-perl/5.805" (the version number may vary). So to block
 posts made by this user agent, you would enter:</p>
 
 <table border="0" style="width:15em">
-<tr><td><b>Header:</b></td><td align="left"><kbd>User-Agent</kbd></td></tr>
-<tr><td><b>Content:</b></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
+<tr><td><strong>Header:</strong></td><td align="left"><kbd>User-Agent</kbd></td></tr>
+<tr><td><strong>Content:</strong></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
 </table>
 <p>This would block all posts from user agents beginning with "libwww-perl".</p>
 
@@ -187,10 +187,10 @@ user field.</p>
 
 <p>Once one of the <a href="#examine">examine modules</a> detects a spam post,
 the action modules will decide what to do with the spam. Most of the time, you
-will simply want to delete the post then, so this is what the <b>Delete
-Action</b> module does.</p>
+will simply want to delete the post then, so this is what the <strong>Delete
+Action</strong> module does.</p>
 
-<p>As the name implies, the <b>Mail Admin Action</b> module sends an email to
+<p>As the name implies, the <strong>Mail Admin Action</strong> module sends an email to
 the site admin when a spam post is encountered. Since this can cause quite a
 lot of emails being sent, it is disabled by default.</p>
 
@@ -282,7 +282,7 @@ panel:</p>
 <tr>
   <td><a name="desc_logging">logging</a></td>
   <td><code>true</code></td>
-  <td>Whether to log recognized spam posts in the <tt>spamx.log</tt> logfile
+  <td>Whether to log recognized spam posts in the <span class="tt">spamx.log</span> logfile
     (if set to <code>true</code>) or not (<code>false</code>).</td>
 </tr>
 <tr>
