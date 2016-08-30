@@ -153,7 +153,7 @@ class Language
         }
 
         // Get UI language options
-        $languageOptions = array();
+        $languageOptions = '';
         $currentLanguage = COM_getLanguage();
 
         foreach (glob($_CONF['path_language'] . '*.php') as $language) {
@@ -167,9 +167,11 @@ class Language
 
         if ($isNew) {
             $deleteOption = '';
+            $allow_delete = false;
         } else {
             $deleteOption = '<li><input type="submit" value="' . $LANG_ADMIN['delete']
                 . '" name="mode" class="submit" onclick="return confirm(\'' . $MESSAGE[76] . '\');"' . XHTML . '</li>';
+            $allow_delete = true;
         }
 
         $token = SEC_createToken(self::SEC_TOKEN_LIFESPAN);
@@ -190,6 +192,7 @@ class Language
             'value'                => $A['value'],
             'site_admin_url'       => $_CONF['site_admin_url'],
             'delete_option'        => $deleteOption,
+            'allow_delete'         => $allow_delete,
             'lang_language_editor' => $LANG_LANG['language_editor'],
             'lang_id'              => $LANG_LANG['id'],
             'lang_var_name'        => $LANG_LANG['var_name'],
@@ -199,6 +202,7 @@ class Language
             'lang_save'            => $LANG_ADMIN['save'],
             'lang_delete'          => $LANG_ADMIN['delete'],
             'lang_cancel'          => $LANG_ADMIN['cancel'],
+            'confirm_message'      => $MESSAGE[76],
             'token_name'           => CSRF_TOKEN,
             'token_value'          => $token,
         ));

@@ -8,7 +8,7 @@
     </div>
 
     <dl class="form_block">
-      <dt><label for="admin-routereditor-rid">{lang_router_rid}</label></dt>
+      <dt><label>{lang_router_rid}</label></dt>
       <dd class="controls_text">{rid}</dd>
 
       <dt><label for="admin-routereditor-method">{lang_router_method}</label></dt>
