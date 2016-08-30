@@ -97,6 +97,7 @@ function getRouteEditor($rid = 0)
         $T->set_var(array(
             'delete_option'                 => sprintf($deleteButton, $jsConfirm),
             'delete_option_no_confirmation' => sprintf($deleteButton, ''),
+            'allow_delete'                  => true,
         ));
     }
 
@@ -118,6 +119,8 @@ function getRouteEditor($rid = 0)
         'lang_router_notice'   => $LANG_ROUTER[20],
         'lang_save'            => $LANG_ADMIN['save'],
         'lang_cancel'          => $LANG_ADMIN['cancel'],
+        'lang_delete'          => $LANG_ADMIN['delete'],
+        'confirm_message'      => $MESSAGE[76],
     ));
 
     $T->set_var(
