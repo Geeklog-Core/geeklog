@@ -1988,3 +1988,57 @@ function plugin_itemdeleted_polls($id, $type)
         // Note: All topics could get deleted from array which would mean the block would not display untill user adds more in config
     }
 }
+
+/**
+ * This searches for polls comments matching the user query and returns an array of
+ * for the header and table rows back to search.php where it will be formatted and
+ * printed.
+ *
+ * @param    string $query     Keywords user is looking for
+ * @param    string $dateStart Start date to get results for
+ * @param    string $dateEnd   End date to get results for
+ * @param    string $topic     The topic they were searching in
+ * @param    string $type      Type of items they are searching, or 'all' (deprecated)
+ * @param    int    $author    Get all results by this author
+ * @param    string $keyType   search key type: 'all', 'phrase', 'any'
+ * @param    int    $page      page number of current search (deprecated)
+ * @param    int    $perpage   number of results per page (deprecated)
+ * @return   SearchCriteria
+ * @since    Geeklog-2.1.2
+ */
+function plugin_dopluginsearch_polls($query, $dateStart, $dateEnd, $topic, $type, $author, $keyType, $page, $perpage)
+{
+    global $_TABLES, $_DB_dbms, $LANG09, $LANG_POLLS, $_USER;
+
+    // Make sure the query is SQL safe
+    $query = trim(DB_escapeString($query));
+    $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
+
+    // Search polls comments
+    $sql = "SELECT c.cid AS id, c.title AS title, c.comment AS description, UNIX_TIMESTAMP(c.date) AS date, "
+        . " c.uid AS uid, '0' AS hits, CONCAT('/comment.php?mode=view&amp;cid=',c.cid) AS url "
+        . " FROM {$_TABLES['users']} AS u, {$_TABLES['comments']} AS c "
+        . " LEFT JOIN {$_TABLES['polltopics']} AS p ON p.pid = c.sid "
+        . " WHERE (u.uid = c.uid) AND (p.commentcode >= 0) AND (p.created <= NOW()) "
+        . COM_getPermSQL('AND', 0, 2, 'p');
+
+    if (!SEC_inGroup('Root', $uid)) {
+        $sql .= " AND ((p.hideresults = 0) OR (p.owner_id = {$uid})) ";
+    }
+
+    if (!empty($author)) {
+        $sql .= "AND (c.uid = '$author') ";
+    }
+
+    $search = new SearchCriteria('comments', array($LANG_POLLS['polls'], $LANG09[66]));
+
+    $columns = array('title' => 'c.title', 'comment');
+    $sql .= $search->getDateRangeSQL('AND', 'c.date', $dateStart, $dateEnd);
+    list($sql, $ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
+
+    $search->setSQL($sql);
+    $search->setFTSQL($ftsql);
+    $search->setRank(2);
+
+    return $search;
+}
