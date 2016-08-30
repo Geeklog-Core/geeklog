@@ -58,19 +58,19 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
  * Formats the given article into HTML. Called by index.php, article.php,
  * submit.php and admin/story.php (Preview mode for the last two).
  *
- * @param   object $story    The story to display, an instance of the Story class.
+ * @param   Story  $story    The story to display, an instance of the Story class.
  * @param   string $index    n = Full display of article. p = 'Preview' mode. Else introtext only.
- * @param   string $storytpl The template to use to render the story.
+ * @param   string $storyTpl The template to use to render the story.
  * @param   string $query    A search query, if one was specified.
- * @return  string  Article as formated HTML.
- *                           Note: Formerly named COM_Article, and re-written totally since then.
+ * @return  string           Article as formatted HTML.
+ *                            Note: Formerly named COM_Article, and re-written totally since then.
  */
-function STORY_renderArticle(&$story, $index = '', $storytpl = 'storytext.thtml', $query = '')
+function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml', $query = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
            $_IMAGE_TYPE, $mode;
 
-    static $storycounter = 0;
+    static $storyCounter = 0;
 
     if ($story->DisplayElements('featured') == 1) {
         $article_filevar = 'featuredarticle';
@@ -80,13 +80,21 @@ function STORY_renderArticle(&$story, $index = '', $storytpl = 'storytext.thtml'
         $article_filevar = 'article';
     }
 
-    if (empty($storytpl)) {
-        $storytpl = 'storytext.thtml';
+    if (empty($storyTpl)) {
+        $storyTpl = 'storytext.thtml';
     }
 
-    $article = COM_newTemplate($_CONF['path_layout']);
+    // Change article template file with the topic (feature request #275)
+    $templateDir = $_CONF['path_layout'];
+    $topicDir = $templateDir . 'topics/' . $story->DisplayElements('tid') . '/';
+
+    if (is_dir($topicDir) && file_exists($topicDir . $storyTpl)) {
+        $templateDir = $topicDir;
+    }
+
+    $article = COM_newTemplate($templateDir);
     $article->set_file(array(
-        'article'          => $storytpl,
+        'article'          => $storyTpl,
         'bodytext'         => 'storybodytext.thtml',
         'featuredarticle'  => 'featuredstorytext.thtml',
         'featuredbodytext' => 'featuredstorybodytext.thtml',
@@ -126,7 +134,7 @@ function STORY_renderArticle(&$story, $index = '', $storytpl = 'storytext.thtml'
                     CACHE_remove_instance($cacheInstance);
                     $article = COM_newTemplate($_CONF['path_layout']);
                     $article->set_file(array(
-                        'article'          => $storytpl,
+                        'article'          => $storyTpl,
                         'bodytext'         => 'storybodytext.thtml',
                         'featuredarticle'  => 'featuredstorytext.thtml',
                         'featuredbodytext' => 'featuredstorybodytext.thtml',
@@ -556,8 +564,8 @@ function STORY_renderArticle(&$story, $index = '', $storytpl = 'storytext.thtml'
             }
             $article->set_var('story_display', 'index');
 
-            $storycounter++;
-            $article->set_var('story_counter', $storycounter);
+            $storyCounter++;
+            $article->set_var('story_counter', $storyCounter);
         }
 
         $article->set_var('recent_post_anchortag', $recent_post_anchortag);
