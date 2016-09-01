@@ -3936,9 +3936,10 @@ function COM_emailEscape($string)
  * Takes a name and an email address and returns a string that vaguely
  * resembles an email address specification conforming to RFC(2)822 ...
  *
- * @param    string $name    name, e.g. John Doe
- * @param    string $address email address only, e.g. john.doe@example.com
- * @return   string              formatted email address
+ * @param      string $name    name, e.g. John Doe
+ * @param      string $address email address only, e.g. john.doe@example.com
+ * @return     string                formatted email address
+ * @deprecated since v2.1.2
  */
 function COM_formatEmailAddress($name, $address)
 {
@@ -3966,15 +3967,15 @@ function COM_formatEmailAddress($name, $address)
  * NOTE: Please note that using CC: will expose the email addresses of
  *       all recipients. Use with care.
  *
- * @param    string  $to          recipients name and email address
- * @param    string  $subject     subject of the email
- * @param    string  $message     the text of the email
- * @param    string  $from        (optional) sender of the the email
- * @param    boolean $html        (optional) true if to be sent as HTML email
- * @param    int     $priority    (optional) add X-Priority header, if > 0
- * @param    mixed   $optional    (optional) other headers or CC:
- * @param    array   $attachments (optional) an array of file names to attach
- * @return   boolean              true if successful,  otherwise false
+ * @param    string|array $to          recipient's email address | array(email address => recipient's name)
+ * @param    string       $subject     subject of the email
+ * @param    string       $message     the text of the email
+ * @param    string|array $from        (optional) sender's email address | array(email address > sender's name)
+ * @param    bool         $html        (optional) true if to be sent as HTML email
+ * @param    int          $priority    (optional) add X-Priority header, if > 0
+ * @param    mixed        $optional    (optional) other headers or CC:
+ * @param    array        $attachments (optional) array of file names to attach
+ * @return   bool                      true if successful,  otherwise false
  */
 function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
@@ -4900,7 +4901,7 @@ function COM_emailUserTopics()
         $mailtext .= "\n$LANG08[34]\n";
         $mailtext .= "\n------------------------------\n";
 
-        $mailto = $U['username'] . ' <' . $U['email'] . '>';
+        $mailto = array($U['email'] => $U['username']);
 
         if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
             $mailfrom = $_CONF['noreply_mail'];

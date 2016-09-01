@@ -14,12 +14,22 @@ class Mail
     /**
      * Strip a new line
      *
-     * @param  string $string
-     * @return string
+     * @param  string|array $string
+     * @return string|array
      */
     private static function stripNewLine($string)
     {
-        return substr($string, 0, strcspn($string, self::NEW_LINE));
+        if (is_array($string)) {
+            foreach ($string as $key => &$value) {
+                $value = substr($value, 0, strcspn($value, self::NEW_LINE));
+            }
+
+            unset($value);
+        } else {
+            $string = substr($string, 0, strcspn($string, self::NEW_LINE));
+        }
+
+        return $string;
     }
 
     /**

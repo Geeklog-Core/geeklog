@@ -79,5 +79,8 @@ function update_ConfValuesFor212()
     // New search config option
     $c->add('search_use_topic',FALSE,'select',0,6,1,677,TRUE, $me, 6);
 
+    // Add mail charset
+    $c->add('mail_charset', '', 'text', 0, 1, NULL, 195, TRUE, $me, 1);
+
     return true;
 }

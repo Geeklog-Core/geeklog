@@ -48,7 +48,7 @@ class Autoload
     {
         if (!self::$initialized) {
             require_once __DIR__ . '/../vendor/autoload.php';
-            self::register('Geeklog\\Autoload::load', true, true);
+            spl_autoload_register('Geeklog\\Autoload::load', true, true);
             self::$initialized = true;
         }
     }

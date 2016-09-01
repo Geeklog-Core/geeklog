@@ -1993,6 +1993,7 @@ $LANG_confignames['Core'] = array(
     'noreply_mail' => 'No-Replyメールアドレス',
     'mail_cc_enabled' => 'CC(カーボンコピー)を許可',
     'mail_cc_default' => 'CC(カーボンコピー)をデフォルトで使用',
+    'mail_charset' => 'メールの文字セット',
     'site_name' => 'サイト名',
     'site_slogan' => 'スローガン',
     'owner_name' => '管理者名',

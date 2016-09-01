@@ -121,11 +121,11 @@ function contactemail($uid, $cc, $author, $authoremail, $subject, $message)
             $subject = substr($subject, 0, strcspn($subject, "\r\n"));
             $message = strip_tags($message) . $sig;
             if (!empty($A['fullname'])) {
-                $to = COM_formatEmailAddress($A['fullname'], $A['email']);
+                $to = array($A['email'] => $A['fullname']);
             } else {
-                $to = COM_formatEmailAddress($A['username'], $A['email']);
+                $to = array($A['email'] => $A['username']);
             }
-            $from = COM_formatEmailAddress($author, $authoremail);
+            $from = array($authoremail => $author);
 
             $sent = COM_mail($to, $subject, $message, $from);
 
@@ -388,8 +388,8 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
                                   . $sid);
     }
 
-    $mailto = COM_formatEmailAddress($to, $toemail);
-    $mailfrom = COM_formatEmailAddress($from, $fromemail);
+    $mailto = array($toemail => $to);
+    $mailfrom = array($fromemail => $from);
     $subject = 'Re: ' . COM_undoSpecialChars(strip_tags($story->DisplayElements('title')));
 
     $sent = COM_mail($mailto, $subject, $mailtext, $mailfrom);
