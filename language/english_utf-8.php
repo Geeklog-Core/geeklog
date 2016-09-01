@@ -1351,6 +1351,18 @@ $LANG33 = array(
     55 => 'Articles'
 );
 
+// admin/language.php (since v2.1.2)
+$LANG_LANG = array(
+    'language_manager' => 'Language Manager',
+    'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
+    'language_editor'  => 'Language Editor',
+    'id'               => 'ID',
+    'language'         => 'Language',
+    'name'             => 'Name',
+    'var_name'         => 'Var Name',
+    'value'            => 'Value',
+);
+
 ###############################################################################
 # admin/router.php
 
@@ -1372,8 +1384,9 @@ $LANG_ROUTER = array(
     15 => 'Placeholders (@) in a rule and those in a route must be the same.',
     16 => 'Route must not start with "/index.php/".',
     17 => 'Database error occurred.',
-    18 => '<strong>To enable URL routing, you have to enable URL rewrite.</strong>',
-    19 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>',
+    18 => '<strong>To enable URL routing, you have to enable URL rewrite in the Configuration.</strong>',
+    19 => '<strong>To enable URL routing, you have to enable URL routing in the Configuration.</strong>',
+    20 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>',
 );
 
 ###############################################################################
@@ -1495,11 +1508,16 @@ $MESSAGE = array(
     121 => 'Saved a URL routing item.',
     122 => 'Could not save a URL routing item.',
     123 => 'Deleted a URL routing item.',
-    130 => 'Deleted comment(s).',
-    131 => 'Failed to delete a comment.',
-    132 => 'Approved comment(s).',
-    133 => 'Banned user(s).',
-    134 => 'Banned IP addresses with the Spamx plugin.',
+    130 => 'Your language item has been successfully deleted.',
+    131 => 'Your language item has been successfully saved.',
+    140 => 'Deleted comment(s).',
+    141 => 'Failed to delete a comment.',
+    142 => 'Approved comment(s).',
+    143 => 'Banned user(s).',
+    144 => 'Banned IP addresses with the Spamx plugin.',
+    150 => 'Successfully deleted all the files and directories used during the installation.',
+    151 => 'Failed to delete some files and directories used during the installation.  Please remove them manually.',
+    152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.'
@@ -1874,7 +1892,7 @@ $LANG_ADMIN = array (
     'approve'       => 'Approve',
     'device'        => 'Device',
     'device_desc'   => 'For what device do you want this item to display for?',
-    'for_all'           => 'All',
+    'for_all'       => 'All',
     'for_mobile'    => 'For Mobile',
     'for_computer'  => 'For Computer',
     'all'           => 'All',
@@ -2428,7 +2446,8 @@ $LANG_configselects['Core'] = array(
     33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3),
     34 => array('grid' => 'grid', 'list' => 'list'),
     35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
-    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics')
+    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
+    37 => array('Disabled' => 0, 'Enabled(with "index.php")' => 1, 'Enabled(without "index.php")' => 2),
 );
 
 ################################################################################

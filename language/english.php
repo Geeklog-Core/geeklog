@@ -192,6 +192,7 @@ $LANG01 = array(
     'google' => 'Login with Google',
     'microsoft' => 'Login with Microsoft',
     'yahoo' => 'Login with Yahoo',
+    'github' => 'Login with GitHub',
     'ctl' => 'Clear Cache',
     'filemanager' => 'File Manager'
 );
@@ -864,8 +865,10 @@ $LANG21 = array(
     67 => 'Check to allow autotags',
     68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.',
     69 => 'Plugin Name',
-    'cache_time'        => 'Cache Time',
-    'cache_time_desc'   => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
+    'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
+    'position'              => 'Position', 
+    'cache_time'            => 'Cache Time',
+    'cache_time_desc'       => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -1887,6 +1890,14 @@ $LANG_ADMIN = array (
     'reauth_msg'    => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
     'authenticate'  => 'Authenticate',
     'approve'       => 'Approve',
+    'device'        => 'Device',
+    'device_desc'   => 'For what device do you want this item to display for?',
+    'for_all'       => 'All',
+    'for_mobile'    => 'For Mobile',
+    'for_computer'  => 'For Computer',
+    'all'           => 'All',
+    'mobile'        => 'Mobile',
+    'computer'      => 'Computer'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -2004,6 +2015,7 @@ $LANG_confignames['Core'] = array(
     'menu_elements' => "Menu Elements",
     'path_themes' => "Themes Path",
     'cache_templates' => "Cache Templates?",
+    'cache_mobile' => "Cache Mobile Devices Separately?",
     'disable_new_user_registration' => "Disable New Registrations",
     'allow_user_themes' => "Allow User Themes",
     'allow_user_language' => "Allow User Language",
@@ -2033,6 +2045,9 @@ $LANG_confignames['Core'] = array(
     'yahoo_login' => "Enable OAuth Login Method Yahoo",
     'yahoo_consumer_key' => "Yahoo OAuth Consumer Key",
     'yahoo_consumer_secret' => "Yahoo OAuth Consumer Secret",
+    'github_login' => "Enable OAuth Login Method GitHub",
+    'github_consumer_key' => "GitHub OAuth Consumer Key",
+    'github_consumer_secret' => "GitHub OAuth Consumer Secret",    
     'spamx' => "Spam-X Actions",
     'sort_admin' => "Sort Links",
     'language' => "Default Language",
@@ -2240,6 +2255,7 @@ $LANG_confignames['Core'] = array(
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
     'autotag_permissions_related_items' => '[related_items: ] Permissions',
+    'autotag_permissions_block' => '[block: ] Permissions',
     'multiple_breadcrumbs' => "Multiple Breadcrumbs",
     'disable_breadcrumbs_topics' => "Disable Topic Breadcrumbs",
     'disable_breadcrumbs_articles' => "Disable Article Breadcrumbs",
@@ -2430,7 +2446,7 @@ $LANG_configselects['Core'] = array(
     32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
     33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3),
     34 => array('grid' => 'grid', 'list' => 'list'),
-    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),  
+    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
     36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
     37 => array('Disabled' => 0, 'Enabled(with "index.php")' => 1, 'Enabled(without "index.php")' => 2),
 );
