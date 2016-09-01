@@ -30,73 +30,71 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Autoinstall API functions for the Spam-X plugin
-*
-* @package Spam-X
-*/
+ * Autoinstall API functions for the Spam-X plugin
+ *
+ * @package Spam-X
+ */
 
 /**
-* Plugin autoinstall function
-*
-* @param    string  $pi_name    Plugin name
-* @return   array               Plugin information
-*
-*/
+ * Plugin autoinstall function
+ *
+ * @param    string $pi_name Plugin name
+ * @return   array               Plugin information
+ */
 function plugin_autoinstall_spamx($pi_name)
 {
-    $pi_name         = 'spamx';
+    $pi_name = 'spamx';
     $pi_display_name = 'Spam-X';
-    $pi_admin        = $pi_name . ' Admin';
+    $pi_admin = $pi_name . ' Admin';
 
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '1.3.2',
         'pi_gl_version'   => '2.1.0',
-        'pi_homepage'     => 'http://www.geeklog.net/'
+        'pi_homepage'     => 'http://www.geeklog.net/',
     );
 
     $groups = array(
         $pi_admin => 'Users in this group can administer the '
-                     . $pi_display_name . ' plugin'
+            . $pi_display_name . ' plugin',
     );
 
     $features = array(
-        $pi_name . '.admin'                 => 'Full access to ' . $pi_display_name . ' plugin',
-        $pi_name . '.skip'                  =>  'Skip checking posts for Spam',
-        'config.' . $pi_name . '.tab_main'  => 'Access to configure Spam-x main settings',
-        'config.' . $pi_name . '.tab_modules'  => 'Access to configure Spam-x modules'
+        $pi_name . '.admin'                   => 'Full access to ' . $pi_display_name . ' plugin',
+        $pi_name . '.skip'                    => 'Skip checking posts for Spam',
+        'config.' . $pi_name . '.tab_main'    => 'Access to configure Spam-x main settings',
+        'config.' . $pi_name . '.tab_modules' => 'Access to configure Spam-x modules',
     );
 
     $mappings = array(
-        $pi_name . '.admin'                 => array($pi_admin),
-        'config.' . $pi_name . '.tab_main'  => array($pi_admin),
-        'config.' . $pi_name . '.tab_modules'  => array($pi_admin)
+        $pi_name . '.admin'                   => array($pi_admin),
+        'config.' . $pi_name . '.tab_main'    => array($pi_admin),
+        'config.' . $pi_name . '.tab_modules' => array($pi_admin),
     );
 
     $tables = array(
-        'spamx'
+        'spamx',
     );
 
     $inst_parms = array(
-        'info'      => $info,
-        'groups'    => $groups,
-        'features'  => $features,
-        'mappings'  => $mappings,
-        'tables'    => $tables
+        'info'     => $info,
+        'groups'   => $groups,
+        'features' => $features,
+        'mappings' => $mappings,
+        'tables'   => $tables,
     );
 
     return $inst_parms;
 }
 
 /**
-* Load plugin configuration from database
-*
-* @param    string  $pi_name    Plugin name
-* @return   boolean             true on success, otherwise false
-* @see      plugin_initconfig_spamx
-*
-*/
+ * Load plugin configuration from database
+ *
+ * @param    string $pi_name Plugin name
+ * @return   boolean             true on success, otherwise false
+ * @see      plugin_initconfig_spamx
+ */
 function plugin_load_configuration_spamx($pi_name)
 {
     global $_CONF;
@@ -110,36 +108,33 @@ function plugin_load_configuration_spamx($pi_name)
 }
 
 /**
-* Check if the plugin is compatible with this Geeklog version
-*
-* @param    string  $pi_name    Plugin name
-* @return   boolean             true: plugin compatible; false: not compatible
-*
-*/
+ * Check if the plugin is compatible with this Geeklog version
+ *
+ * @param    string $pi_name Plugin name
+ * @return   boolean             true: plugin compatible; false: not compatible
+ */
 function plugin_compatible_with_this_version_spamx($pi_name)
 {
     global $_CONF, $_DB_dbms;
 
     // check if we support the DBMS the site is running on
     $dbFile = $_CONF['path'] . 'plugins/' . $pi_name . '/sql/'
-            . $_DB_dbms . '_install.php';
-    if (! file_exists($dbFile)) {
+        . $_DB_dbms . '_install.php';
+    if (!file_exists($dbFile)) {
         return false;
     }
 
-    if (! function_exists('PLG_spamAction')) {
+    if (!function_exists('PLG_spamAction')) {
         return false;
     }
 
-    if (! function_exists('SEC_createToken')) {
+    if (!function_exists('SEC_createToken')) {
         return false;
     }
 
-    if (! function_exists('COM_showMessageText')) {
+    if (!function_exists('COM_showMessageText')) {
         return false;
     }
 
     return true;
 }
-
-?>

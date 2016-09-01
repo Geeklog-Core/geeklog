@@ -146,12 +146,11 @@ function listpolls()
 * @param    int     $perm_grup      Permissions the group has on poll
 * @param    int     $perm_members   Permissions logged in members have on poll
 * @param    int     $perm_anon      Permissions anonymous users have on poll
-* @return   string                  HTML redirect or error message
-*
 */
 function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $meta_keywords, $statuscode, $open,
                   $hideresults, $commentcode, $A, $V, $R, $owner_id, $group_id,
-                  $perm_owner, $perm_group, $perm_members, $perm_anon)
+                  $perm_owner, $perm_group, $perm_members, $perm_anon,
+                  $allow_multipleanswers, $topic_description, $description)
 
 {
     global $_CONF, $_TABLES, $_USER, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE,
@@ -164,6 +163,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
 
     $topic = COM_stripslashes($topic);
     $topic = COM_checkHTML($topic);
+    $topic_description = strip_tags(COM_stripslashes($topic_description));
     $meta_description = strip_tags(COM_stripslashes($meta_description));
     $meta_keywords = strip_tags(COM_stripslashes($meta_keywords));
     $pid = COM_sanitizeID($pid);
@@ -186,8 +186,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
 
     if (!SEC_checkToken()) {
         COM_accessLog("User {$_USER['username']} tried to save poll $pid and failed CSRF checks.");
-        return COM_refresh($_CONF['site_admin_url']
-                           . '/plugins/polls/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     }
 
     // check for poll id change
@@ -247,6 +246,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     DB_delete($_TABLES['pollquestions'], 'pid', $del_pid);
 
     $topic = DB_escapeString($topic);
+    $topic_description = DB_escapeString($topic_description);
     $meta_description = DB_escapeString($meta_description);
     $meta_keywords = DB_escapeString($meta_keywords);
 
@@ -258,13 +258,21 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     for ($i = 0; $i < $num_questions; $i++) {
         $Q[$i] = COM_stripslashes($Q[$i]);
         $Q[$i] = COM_checkHTML($Q[$i]);
+        $allow_multipleanswers[$i] = COM_stripslashes($allow_multipleanswers[$i]);
+		$description[$i] = COM_checkHTML(COM_stripslashes($description[$i]));
+        if ($allow_multipleanswers[$i] == 'on') {
+            $allow_multipleanswers[$i] = 1;
+        } else {
+            $allow_multipleanswers[$i] = 0;
+        }
+		
 
         if (strlen($Q[$i]) > 0) { // only insert questions that exist
             $num_questions_exist++;
 
             $Q[$i] = DB_escapeString($Q[$i]);
-            DB_save($_TABLES['pollquestions'], 'qid, pid, question',
-                                               "'$k', '$pid', '$Q[$i]'");
+            DB_save($_TABLES['pollquestions'], 'qid, pid, question,allow_multipleanswers,description',
+                                               "'$k', '$pid', '$Q[$i]','$allow_multipleanswers[$i]','$description[$i]'");
             // within the questions, we have another dimensions with answers,
             // votes and remarks
             $num_answers = count($A[$i]);
@@ -318,10 +326,10 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
         $sql .= ",0";
     }
 
-    $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
+    $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$topic_description'";
 
     // Save poll topic
-    DB_save($_TABLES['polltopics'], "pid, topic, meta_description, meta_keywords, voters, questions, created, modified, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon", $sql);
+    DB_save($_TABLES['polltopics'], "pid, topic, meta_description, meta_keywords, voters, questions, created, modified, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon,description", $sql);
 
     if (empty($old_pid) || ($old_pid == $pid)) {
         PLG_itemSaved($pid, 'polls');
@@ -346,7 +354,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
         19
     );
 
-    return COM_refresh($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=19');
+    COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=19');
 }
 
 /**
@@ -420,6 +428,7 @@ function editpoll ($pid = '')
     } else {
         $T['pid'] = COM_makeSid ();
         $T['topic'] = '';
+        $T['description'] = '';
         $T['meta_description'] = '';
         $T['meta_keywords'] = '';
         $T['voters'] = 0;
@@ -452,7 +461,8 @@ function editpoll ($pid = '')
     $poll_templates->set_var('lang_topic', $LANG25[9]);
     $poll_templates->set_var('poll_topic', htmlspecialchars ($T['topic']));
     $poll_templates->set_var('lang_mode', $LANG25[1]);
-
+    $poll_templates->set_var('lang_topic_description',$LANG25[1003]);
+    $poll_templates->set_var('topic_description', $T['description']);
     $poll_templates->set_var('lang_metadescription',
                              $LANG_ADMIN['meta_description']);
     $poll_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
@@ -510,7 +520,7 @@ function editpoll ($pid = '')
 
     // repeat for several questions
 
-    $question_sql = "SELECT question,qid "
+    $question_sql = "SELECT question,qid ,allow_multipleanswers ,description "
         . "FROM {$_TABLES['pollquestions']} WHERE pid='$pid' ORDER BY qid;";
     $questions = DB_query($question_sql);
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
@@ -531,7 +541,17 @@ function editpoll ($pid = '')
         $poll_templates->set_var('question_text', $Q['question']);
         $poll_templates->set_var('question_id', $j);
         $poll_templates->set_var('lang_question', $LANG25[31] . " $display_id");
-        $poll_templates->set_var('lang_saveaddnew', $LANG25[32]);
+		$poll_templates->set_var('lang_saveaddnew', $LANG25[32]);
+        $poll_templates->set_var('q_idx', $j);
+		$poll_templates->set_var('lang_allow_multipleanswers', $LANG25[1001]);
+        if ($Q['allow_multipleanswers'] == 1) {
+            $poll_templates->set_var('poll_allow_multipleanswers', 'checked="checked"');
+        } else {
+            $poll_templates->set_var('poll_allow_multipleanswers', '');
+        }
+		
+		$poll_templates->set_var('lang_questions_description', $LANG25[1002]);
+        $poll_templates->set_var('description', $Q['description']);
 
         // answers
         $answer_sql = "SELECT answer,aid,votes,remark "
@@ -573,8 +593,6 @@ function editpoll ($pid = '')
 * Delete a poll
 *
 * @param    string  $pid    ID of poll to delete
-* @return   string          HTML redirect
-*
 */
 function deletePoll ($pid)
 {
@@ -587,7 +605,7 @@ function deletePoll ($pid)
             $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']);
     if ($access < 3) {
         COM_accessLog ("User {$_USER['username']} tried to illegally delete poll $pid.");
-        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/polls/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     }
 
     DB_delete($_TABLES['polltopics'], 'pid', $pid);
@@ -596,10 +614,8 @@ function deletePoll ($pid)
     DB_delete($_TABLES['pollvoters'], 'pid', $pid);
     DB_delete($_TABLES['comments'], array('sid', 'type'),
                                     array($pid,  'polls'));
-
     PLG_itemDeleted($pid, 'polls');
-
-    return COM_refresh ($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=20');
+    COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=20');
 }
 
 // MAIN
@@ -656,8 +672,11 @@ if ($mode == 'edit') {
                         COM_applyFilter ($_POST['owner_id'], true),
                         COM_applyFilter ($_POST['group_id'], true),
                         $_POST['perm_owner'], $_POST['perm_group'],
-                        $_POST['perm_members'], $_POST['perm_anon']);
-    } else {
+                        $_POST['perm_members'], $_POST['perm_anon'],
+                        $_POST['allow_multipleanswers'],
+                        COM_applyFilter($_POST['topic_description']),
+                        $_POST['description']);
+	} else {
         $display .= COM_showMessageText($LANG25[17], $LANG21[32])
                  .  editpoll();
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[5]));
@@ -669,15 +688,14 @@ if ($mode == 'edit') {
     }
     if (empty ($pid)) {
         COM_errorLog ('Ignored possibly manipulated request to delete a poll.');
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/polls/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     } elseif (SEC_checkToken()) {
         $display .= deletePoll ($pid);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete poll $pid and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } else { // 'cancel' or no mode at all
-
     if (isset ($_REQUEST['msg'])) {
         $msg = COM_applyFilter ($_REQUEST['msg'], true);
         if ($msg > 0) {

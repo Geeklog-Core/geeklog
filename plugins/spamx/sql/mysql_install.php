@@ -42,5 +42,3 @@ CREATE TABLE {$_TABLES['spamx']} (
 ";
 
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter', '0')";
-
-?>

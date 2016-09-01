@@ -48,8 +48,7 @@ require_once 'auth.inc.php';
 
 if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled'] &&
         !$_CONF['ping_enabled']) {
-    echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
-    exit;
+    COM_redirect($_CONF['site_admin_url'] . '/index.php');
 }
 
 $display = '';
@@ -187,7 +186,7 @@ function deleteTrackbackComment ($id)
         $url .= '&amp;msg=' . $msg;
     }
 
-    return COM_refresh ($url);
+    COM_redirect($url);
 }
 
 /**
@@ -395,13 +394,13 @@ function prepareAutodetect ($type, $id, $text)
         // skip the link selection when there's only one link in the story
         $url = urlencode ($matches[1][0]);
         $link = $baseurl .= '&amp;url=' . $url;
-
-        echo COM_refresh ($link);
-        exit;
-    } else if ($numlinks > 0) {
+        COM_redirect($link);
+    } elseif ($numlinks > 0) {
         $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
-        $template->set_file (array ('list' => 'autodetectlist.thtml',
-                                    'item' => 'autodetectitem.thtml'));
+        $template->set_file(array(
+            'list' => 'autodetectlist.thtml',
+            'item' => 'autodetectitem.thtml'
+        ));
 
         $url = $_CONF['site_admin_url'] . '/trackback.php?mode=new&amp;id=' . $id;
         if ($type != 'article') {
@@ -695,13 +694,12 @@ function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
                  'pid,name,site_url,ping_url,method,is_enabled',
                  "'$pid','$name','$site_url','$ping_url','$method','$enabled'");
     } else {
-        DB_save ($_TABLES['pingservice'],
+        DB_save($_TABLES['pingservice'],
                  'name,site_url,ping_url,method,is_enabled',
                  "'$name','$site_url','$ping_url','$method','$enabled'");
     }
 
-    return COM_refresh ($_CONF['site_admin_url']
-                        . '/trackback.php?mode=listservice&amp;msg=65');
+    COM_redirect($_CONF['site_admin_url'] . '/trackback.php?mode=listservice&amp;msg=65');
 }
 
 /**
@@ -879,9 +877,9 @@ if (($mode == 'delete') && SEC_checkToken()) {
     if ($cid > 0) {
         $display = deleteTrackbackComment($cid);
     } else {
-        $display = COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} else if ($mode == 'send') {
+} elseif ($mode == 'send') {
     $target = COM_applyFilter ($_POST['target']);
     $url = COM_applyFilter ($_POST['url']);
     $title = COM_stripslashes ($_POST['title']);
@@ -934,9 +932,9 @@ if (($mode == 'delete') && SEC_checkToken()) {
         $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
     } else {
-        $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} else if ($mode == 'pingback') {
+} elseif ($mode == 'pingback') {
     $type = COM_applyFilter ($_REQUEST['type']);
     if (empty ($type)) {
         $type = 'article';
@@ -948,13 +946,12 @@ if (($mode == 'delete') && SEC_checkToken()) {
                   . COM_endBlock ();
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['pingback']));
     } else {
-        $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} else if ($mode == 'sendall') {
+} elseif ($mode == 'sendall') {
     $id = COM_applyFilter ($_REQUEST['id']);
     if (empty ($id)) {
-        echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
     $type = '';
     if (isset ($_REQUEST['type'])) {
@@ -983,8 +980,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
             if ($type != 'article') {
                 $url .= '&amp;type=' . $type;
             }
-            echo COM_refresh ($url);
-            exit;
+            COM_redirect($url);
         }
     }
 
@@ -1065,8 +1061,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
 } else if ($mode == 'pretrackback') {
     $id = COM_applyFilter ($_REQUEST['id']);
     if (empty ($id)) {
-        echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
     $type = '';
     if (isset ($_REQUEST['type'])) {
@@ -1087,8 +1082,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
     $id = COM_applyFilter ($_REQUEST['id']);
     $url = $_REQUEST['url'];
     if (empty ($id) || empty ($url)) {
-        echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
-        exit;
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
     $type = '';
     if (isset ($_REQUEST['type'])) {
@@ -1170,11 +1164,10 @@ if (($mode == 'delete') && SEC_checkToken()) {
 } elseif (($mode == 'deleteservice') && SEC_checkToken()) {
     $pid = COM_applyFilter ($_POST['service_id'], true);
     if ($pid > 0) {
-        DB_delete ($_TABLES['pingservice'], 'pid', $pid);
-        $display = COM_refresh ($_CONF['site_admin_url']
-                 . '/trackback.php?mode=listservice&amp;msg=66');
+        DB_delete($_TABLES['pingservice'], 'pid', $pid);
+        COM_redirect($_CONF['site_admin_url'] . '/trackback.php?mode=listservice&amp;msg=66');
     } else {
-        $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == 'saveservice') && SEC_checkToken()) {
     $is_enabled = '';
@@ -1221,9 +1214,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
     $display .= pingbackForm ($target);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['pingback']));
 } else {
-    $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+    COM_redirect($_CONF['site_admin_url'] . '/index.php');
 }
 
 COM_output($display);
-
-?>

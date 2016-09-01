@@ -171,7 +171,7 @@ class upload
     * Constructor
     *
     */
-    function upload()
+    public function __construct()
     {
         $this->_setAvailableMimeTypes();
     }

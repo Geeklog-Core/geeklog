@@ -20,33 +20,33 @@
 
 <p>Geeklogでは、<a href="http://phplib.sf.net/">PHP Base Library</a>（別名、PHPlib）のテンプレートエンジンを使用しています。このライブラリでは、テンプレートの中でいわゆる変数を使用できます。変数とは、 <code>{variable}</code> のように、カギ括弧{}で囲まれた単語のことです。GeeklogがWebページを表示するとき、テンプレートに含まれる変数をある値で置き換えます。変数には静的な文字列（つまり、いつも同じ文字列に置き換えられます）や動的なコンテンツ（たとえば、記事に寄せられたコメントの数や記事の全文）、別のテンプレートファイルの中身（たとえば、リスト用に使用されます）を保持することができます。</p>
 
-<p>すべてのテンプレートですべての変数が利用できるわけではないことに注意してください。サイトのURLを保持する <code>{site_url}</code> 変数はほとんどのテンプレートファイルで利用できますが、多くの変数は1つのテンプレートファイルの中でしか利用できません（たとえば、 <code>{formatted_article}</code> 変数は、 <tt>article.thtml</tt> テンプレートファイルの中でしか利用できません）。現在のテンプレートに対して定義されていない変数は自動的に削除されます（つまり、空白で置き換えられます）。未定義の変数を使用しても、エラーや警告は発生しません。</p>
+<p>すべてのテンプレートですべての変数が利用できるわけではないことに注意してください。サイトのURLを保持する <code>{site_url}</code> 変数はほとんどのテンプレートファイルで利用できますが、多くの変数は1つのテンプレートファイルの中でしか利用できません（たとえば、 <code>{formatted_article}</code> 変数は、 <span class="tt">article.thtml</span> テンプレートファイルの中でしか利用できません）。現在のテンプレートに対して定義されていない変数は自動的に削除されます（つまり、空白で置き換えられます）。未定義の変数を使用しても、エラーや警告は発生しません。</p>
 <p><strong>訳注</strong>：テンプレートクラスのオブジェクトを作成するときに、</p><p><code>$template = new Template($root, "keep");</code></p>
 <p>のように、コンストラクタの第2引数に "keep" を指定すると、未定義の変数はそのまま残されます。デバッグ用に使えるかもしれません。</p>
 
 
 <h2><a name="site-header">サイトのヘッダー</a></h2>
 
-<p>以下の変数はサイトのヘッダー、つまり、<tt>header.thtml</tt>テンプレートファイルで使用できる変数です。</p>
+<p>以下の変数はサイトのヘッダー、つまり、<span class="tt">header.thtml</span>テンプレートファイルで使用できる変数です。</p>
 
 <table>
 <tr><th style="width:25%">変数名</th>
     <th style="width:25%">例</th>
     <th style="width:50%">説明</th></tr>
 <tr><td><code>site_url</code></td>
-    <td><tt>http://www.example.com</tt></td>
+    <td><span class="tt">http://www.example.com</span></td>
     <td>自分のGeeklogサイトのURLです（コンフィギュレーションの<code>$_CONF['site_url']</code>で設定したものと同じ）。</td></tr>
 <tr><td><code>layout_url</code></td>
-    <td><tt>http://www.example.com/layout/professional</tt></td>
+    <td><span class="tt">http://www.example.com/layout/professional</span></td>
     <td>ユーザーが現在使用しているテーマディレクトリのURLです。</td></tr>
 <tr><td><code>page_title</code></td>
     <td>Geeklog Site - Another Nifty Geeklog Site</td>
     <td>サイト名及びスローガンと、現在の記事のタイトルです。</td></tr>
 <tr><td><code>background_image</code></td>
-    <td><tt>http://www.example.com/layout/<br />XSilver/images/bg.gif</tt></td>
-    <td>現在のテーマの <tt>images</tt> ディレクトリ内の <tt>bg.gif</tt> を指しています。背景画像として使用することを想定しています。</td></tr>
+    <td><span class="tt">http://www.example.com/layout/<br />XSilver/images/bg.gif</span></td>
+    <td>現在のテーマの <span class="tt">images</span> ディレクトリ内の <span class="tt">bg.gif</span> を指しています。背景画像として使用することを想定しています。</td></tr>
 <tr><td><code>site_mail</code></td>
-    <td><tt>admin@example.com</tt></td>
+    <td><span class="tt">admin@example.com</span></td>
     <td>ユーザーがサイトの管理者と連絡を取るときに使用するEメールアドレスです。スパムの問題があるため、サイトでこのアドレスを表示する代わりに、管理者にメールを送信するフォームへのリンクを提示することをお勧めします。つまり、<code>{site_url}/profiles.php?uid=2</code> （2 はこのEメールを受け取るユーザーのIDで、ふつう、サイト管理者である）のようにします。</td></tr>
 <tr><td><code>site_name</code></td>
     <td>Geeklog Site</td>
@@ -61,8 +61,8 @@
     <td>Thursday, November 28 2002 @ 11:43 AM PST</td>
     <td>現在の日付と時刻で、<code>$_CONF['date']</code>に従ってフォーマットされます。</td></tr>
 <tr><td><code>site_logo</code></td>
-    <td><tt>http://www.example.com/layout/<br />professional/images/logo.png</tt></td>
-    <td>現在のテーマの<tt>images</tt>ディレクトリ内にあるロゴ画像を指し、ロゴとして表示されることを想定しています。ふつう、GIF画像(<tt>logo.gif</tt>)ですが、画像タイプはテーマごとに変更することができます（たとえば、Professionalテーマでは、PNG画像を使用しているので、ロゴは <tt>logo.png</tt> になっています。）。<br /><strong>訳注：</strong>画像タイプを変更するには、テーマの <tt>functions.php</tt> 内で、<br /><code>$_IMAGE_TYPE = 'png';</code><br />のように定義します。もちろん、画像は自分で差し替えてください。</td></tr>
+    <td><span class="tt">http://www.example.com/layout/<br />professional/images/logo.png</span></td>
+    <td>現在のテーマの<span class="tt">images</span>ディレクトリ内にあるロゴ画像を指し、ロゴとして表示されることを想定しています。ふつう、GIF画像(<span class="tt">logo.gif</span>)ですが、画像タイプはテーマごとに変更することができます（たとえば、Professionalテーマでは、PNG画像を使用しているので、ロゴは <span class="tt">logo.png</span> になっています。）。<br /><strong>訳注：</strong>画像タイプを変更するには、テーマの <span class="tt">functions.php</span> 内で、<br /><code>$_IMAGE_TYPE = 'png';</code><br />のように定義します。もちろん、画像は自分で差し替えてください。</td></tr>
 <tr><td><code>theme</code></td>
     <td>professional</td>
     <td>現在のテーマ名です。</td></tr>
@@ -70,47 +70,47 @@
     <td>iso-8859-1</td>
     <td>現在の言語ファイルの文字セットです。</td></tr>
 <tr><td><code>lang_id</code></td>
-    <td><tt>en-GB</tt></td>
+    <td><span class="tt">en-GB</span></td>
     <td>サイトで使用されている言語を表すIDです。理想を言えば、これはISOの国/言語コードで、たとえば、イギリス英語なら en-GB となるべきでしょう。多言語サポートが有効になっている場合、この変数の値は<code>$_CONF['languages']</code>配列で使用されている言語ショートカット(ID)の値になります。それ以外の場合は、<code>$_CONF['locale']</code>から導き出されますが、ある程度の推測が含まれます。後者の場合、サイトのOSがUnix系でなければ（有効なISOコードではないので）、結果として、Germanのような値になることもあります。</td></tr>
 <tr><td><code>lang_attribute</code></td>
-    <td><tt>lang="en-GB"</tt></td>
+    <td><span class="tt">lang="en-GB"</span></td>
     <td>サイトないし現在のページの言語を示すため、HTMLヘッダー内で <pre>&lt;html {lang_attribute}&gt;</pre> のような形で使用される<a href="http://www.w3.org/TR/html4/struct/dirlang.html#adef-lang">HTML言語属性(HTML lang attribute)</a>とその値です。サイトの言語IDが<a href="http://www.w3.org/TR/html4/struct/dirlang.html#langcodes">有効な言語コード</a>でないように思える場合（上述の <code>{lang_id}</code> 変数の説明をご覧ください。）、この変数は<strong>空</strong>、つまり、セットされないことに注意してください。</td></tr>
 <tr><td><code>feed_url</code></td>
-    <td><tt>&lt;link rel="alternate" type="application/rss+xml" hreflang="en-gb" href="http://www.example.com/backend/geeklog.rss" title="RSS Feed: Geeklog"&gt;</tt></td>
+    <td><span class="tt">&lt;link rel="alternate" type="application/rss+xml" hreflang="en-gb" href="http://www.example.com/backend/geeklog.rss" title="RSS Feed: Geeklog"&gt;</span></td>
     <td>現在のページと関連するすべてのRSSフィードへのリンクです（フィードエディターの「RSSフィードに含める話題」の設定にもよります。）。</td></tr>
 <tr><td><code>rss_url</code></td>
-    <td><tt>http://www.example.com/backend/geeklog.rdf</tt></td>
-    <td>サイトのRSSフィードのURL（ <code>{rdf_file}</code> 変数と同じです。この変数はサイトのフッター( <tt>footer.thtml</tt> )でも利用できます。
+    <td><span class="tt">http://www.example.com/backend/geeklog.rdf</span></td>
+    <td>サイトのRSSフィードのURL（ <code>{rdf_file}</code> 変数と同じです。この変数はサイトのフッター( <span class="tt">footer.thtml</span> )でも利用できます。
         <strong>非推奨:</strong> この変数の代わりに<code>{feed_url}</code>変数を使用してください。</td></tr>
 <tr><td><code>rdf_file</code></td>
-    <td><tt>http://www.example.com/backend/geeklog.rdf</tt></td>
-    <td>サイトのRSSフィードのURL（<code>{rss_url}</code>変数と同じです。この変数はサイトのフッター( <tt>footer.thtml</tt> )でも利用できます。
+    <td><span class="tt">http://www.example.com/backend/geeklog.rdf</span></td>
+    <td>サイトのRSSフィードのURL（<code>{rss_url}</code>変数と同じです。この変数はサイトのフッター( <span class="tt">footer.thtml</span> )でも利用できます。
         <strong>非推奨:</strong> この変数の代わりに<code>{feed_url}</code>変数を使用してください。</td></tr>
 <tr><td><code>rel_links</code></td>
-    <td><tt>&lt;link rel="home" href="http://www.example.com/" title="Home"&gt;</tt></td>
+    <td><span class="tt">&lt;link rel="home" href="http://www.example.com/" title="Home"&gt;</span></td>
     <td>定義済みの <a href="http://www.w3.org/TR/html4/struct/links.html#edef-LINK">リンクタグ</a>で、ナビゲーション用のリンクとページ間の関係情報を提供します。</td></tr>
 <tr><td><code>page_title_and_site_name</code></td>
-    <td><tt>Geeklog Site - Another Nifty Geeklog Site</tt></td>
+    <td><span class="tt">Geeklog Site - Another Nifty Geeklog Site</span></td>
     <td>名前が示すように、この変数はサイト名と現在のページタイトルを保持します。表示順はWebサイト内の位置で決まり、トップページでは「サイト名 - ページタイトル」、他のページでは「ページタイトル - サイト名」の順序になります。</td></tr>
 <tr><td><code>page_site_splitter</code></td>
-    <td><tt> - </tt> (半角スペース 半角マイナス記号 半角スペース)</td>
+    <td><span class="tt"> - </span> (半角スペース 半角マイナス記号 半角スペース)</td>
     <td>独自のページタイトルを作成する際にこの変数は便利です。<code>{page_title}</code> 変数が空になるとき、この変数も空になります。<code>{page_title}</code>と<code>{site_name}</code>と併せて使用してください（上記参照）。</td></tr>
 </table>
 
 
 <h2><a name="story">記事</a></h2>
 
-<p>以下の変数は、<tt>storytext.thtml</tt>、<tt>storybodytext.thtml</tt>、<tt>featuredstorytext.thtml</tt>、<tt>featuredstorybodytext.thtml</tt>、<tt>archivestorytext.thtml</tt>、<tt>archivestorybodytext.thtml</tt>テンプレートファイルで使用できます。これらのファイルは、インデックスページだけでなく、<tt>article/article.thtml</tt>テンプレートファイル（このファイルは記事を個別に表示するために使用されます）中の<code>{formatted_article}</code>変数の内容となる記事をレンダリングするためにも使用されます。</p>
+<p>以下の変数は、<span class="tt">storytext.thtml</span>、<span class="tt">storybodytext.thtml</span>、<span class="tt">featuredstorytext.thtml</span>、<span class="tt">featuredstorybodytext.thtml</span>、<span class="tt">archivestorytext.thtml</span>、<span class="tt">archivestorybodytext.thtml</span>テンプレートファイルで使用できます。これらのファイルは、インデックスページだけでなく、<span class="tt">article/article.thtml</span>テンプレートファイル（このファイルは記事を個別に表示するために使用されます）中の<code>{formatted_article}</code>変数の内容となる記事をレンダリングするためにも使用されます。</p>
 
 <table>
 <tr><th style="width:25%">変数名</th>
     <th style="width:25%">例</th>
     <th style="width:50%">説明</th></tr>
 <tr><td><code>site_url</code></td>
-    <td><tt>http://www.example.com</tt></td>
+    <td><span class="tt">http://www.example.com</span></td>
     <td>自分のGeeklogサイトのURLです（コンフィギュレーションの <code>$_CONF['site_url']</code> で設定したものと同じです。）。</td></tr>
 <tr><td><code>layout_url</code></td>
-    <td><tt>http://www.example.com/layout/professional</tt></td>
+    <td><span class="tt">http://www.example.com/layout/professional</span></td>
     <td>ユーザーが現在使用しているテーマディレクトリのURLです。</td></tr>
 <tr><td><code>story_date</code></td>
     <td>Tuesday, October 22 2002 @ 11:50 PM PDT</td>
@@ -141,13 +141,13 @@
     <td>インデックスページを表示しているときは、この変数の値は記事の冒頭文になります。しかしながら、個々のページに表示しているときには、記事の冒頭文と本文の<strong>両方</strong>を含みます。</td></tr>
 <tr><td><code>story_text_no_br</code></td>
     <td>Welcome and let me be the first to congratulate you on installing Geeklog ...</td>
-    <td>トップページを表示する場合、この変数は記事の冒頭文を保持します。しかしながら、記事を個別に表示しているときには、冒頭文と本文の<em>両方</em>を保持します。<tt>story_introtext</tt>と<tt>story_text_no_br</tt>の違いは、<tt>story_introtext</tt>では、冒頭文と本文の間に<tt>&lt;br&gt;</tt>タグが2個挿入されるが、<tt>story_text_no_br</tt>では挿入されないという点です。</td></tr>
+    <td>トップページを表示する場合、この変数は記事の冒頭文を保持します。しかしながら、記事を個別に表示しているときには、冒頭文と本文の<em>両方</em>を保持します。<span class="tt">story_introtext</span>と<span class="tt">story_text_no_br</span>の違いは、<span class="tt">story_introtext</span>では、冒頭文と本文の間に<span class="tt">&lt;br&gt;</span>タグが2個挿入されるが、<span class="tt">story_text_no_br</span>では挿入されないという点です。</td></tr>
 <tr><td><code>lang_todays_featured_article</code></td>
     <td>Today's Featured Article</td>
     <td>ユーザーが現在使用している言語の「今日の注目記事(Today's Featured Article)」に相当する語句です。<strong>注目記事の場合にしか利用できません。</strong></td></tr>
 <tr><td><code>story_counter</code></td>
     <td>1</td>
-    <td>サイトのインデックスページ(<tt>index.php</tt>)では、この変数は最初の記事の場合は 1 、2番目の記事の場合は 2 、以下同様となります。最初の記事が注目記事かどうかとは無関係です。ページが変わる（たとえば、<tt>index.php?page=2</tt> など）ごとにカウンタはリセットされます。<br />記事を個々に表示しているとき(<tt>article.php</tt>)やプレビューでは 0 になります。</td></tr>
+    <td>サイトのインデックスページ(<span class="tt">index.php</span>)では、この変数は最初の記事の場合は 1 、2番目の記事の場合は 2 、以下同様となります。最初の記事が注目記事かどうかとは無関係です。ページが変わる（たとえば、<span class="tt">index.php?page=2</span> など）ごとにカウンタはリセットされます。<br />記事を個々に表示しているとき(<span class="tt">article.php</span>)やプレビューでは 0 になります。</td></tr>
 </table>
 
 <p><a name="readmore">以下の変数</a>は、記事がインデックスページに表示され、<strong>かつ</strong>、記事の本文が空白でないときに限って使用できます。</p>
@@ -195,7 +195,7 @@
     <th style="width:25%">例</th>
     <th style="width:50%">説明</th></tr>
 <tr><td><code>comments_url</code></td>
-    <td><tt>http://www.example.com/article.php<br />?story=20021022234959146#comments</tt></td>
+    <td><span class="tt">http://www.example.com/article.php<br />?story=20021022234959146#comments</span></td>
     <td>コメントセクションのURLです（記事が個別に表示されている場合）。</td></tr>
 <tr><td><code>comments_text</code></td>
     <td>2 comments</td>
@@ -239,10 +239,10 @@
     <td><code>&lt;/a&gt;</code></td>
     <td>記事所有者のプロフィールへのリンクの閉じタグです（ゲストユーザーの場合は、空白）。</td></tr>
 <tr><td><code>contributedby_url</code></td>
-    <td><tt>http://www.example.com/<br />users.php?mode=profile&amp;uid=7</tt></td>
+    <td><span class="tt">http://www.example.com/<br />users.php?mode=profile&amp;uid=7</span></td>
     <td>記事所有者のプロフィールへのリンク（ゲストユーザーの場合は空白）。</td></tr>
 <tr><td><code>contributedby_photo</code></td>
-    <td><tt>&lt;img src=".../images/userphotos/Tony.gif" alt="Tony Bibbs"&gt;</tt></td>
+    <td><span class="tt">&lt;img src=".../images/userphotos/Tony.gif" alt="Tony Bibbs"&gt;</span></td>
     <td>もしある場合は、記事所有者の写真です（ゲストユーザーの場合は常に空白）。</td></tr>
 <tr><td><code>camera_icon</code></td>
     <td>small camera icon and link to the author's user profile</td>
@@ -294,7 +294,7 @@
     <td><code>&lt;a href=".../admin/story.php<br />?mode=edit&amp;sid=20021022234959146"&gt;&lt;img src=".../images/edit.gif"&gt;&lt;/a&gt;</code></td>
     <td>記事を編集するための管理者の記事エディターへリンクしているアイコンです。</td></tr>
 <tr><td><code>edit_url</code></td>
-    <td><tt>http://www.example.com/admin/story.php<br />?mode=edit&amp;sid=20021022234959146</tt></td>
+    <td><span class="tt">http://www.example.com/admin/story.php<br />?mode=edit&amp;sid=20021022234959146</span></td>
     <td>管理者の記事エディターで記事を編集するためのURLです。</td></tr>
 <tr><td><code>lang_edit_text</code></td>
     <td>edit</td>

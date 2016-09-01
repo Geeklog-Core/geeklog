@@ -1,42 +1,36 @@
 <?php
 
 /**
-* File: IP.Examine.class.php
-* This is the IP BlackList Examine class for the Geeklog Spam-X plugin
-*
-* Copyright (C) 2004-2010 by the following authors:
-* Author        Tom Willett        tomw AT pigstye DOT net
-*
-* Licensed under GNU General Public License
-*
-* @package Spam-X
-* @subpackage Modules
-*/
+ * File: IP.Examine.class.php
+ * This is the IP BlackList Examine class for the Geeklog Spam-X plugin
+ * Copyright (C) 2004-2010 by the following authors:
+ * Author        Tom Willett        tomw AT pigstye DOT net
+ * Licensed under GNU General Public License
+ *
+ * @package    Spam-X
+ * @subpackage Modules
+ */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'ip.examine.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'ip.examine.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-/**
-* Include Abstract Examine Class
-*/
+// Include Abstract Examine Class
 require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
-* Examines Comment according to Personal IP Blacklist
-*
-* @author Tom Willett, tomw AT pigstye DOT net
-*
-* @package Spam-X
-*
-*/
+ * Examines Comment according to Personal IP Blacklist
+ *
+ * @author  Tom Willett, tomw AT pigstye DOT net
+ * @package Spam-X
+ */
 class IP extends BaseCommand
 {
     /**
      * The execute method examines the IP address a comment is coming from,
      * comparing it against a blacklist of banned IP addresses.
      *
-     * @param   string  $comment    Comment text to examine
+     * @param   string $comment Comment text to examine
      * @return  int                 0: no spam, else: spam detected
      */
     public function execute($comment)
@@ -51,10 +45,10 @@ class IP extends BaseCommand
      * at the time of posting. To do that, it uses the IP address logged
      * when the comment was saved.
      *
-     * @param   string  $comment    Comment text to examine
-     * @param   int     $date       Date/time the comment was posted
-     * @param   string  $ip         IPAddress comment posted from
-     * @param   string  $type       Type of comment ('article', etc)
+     * @param   string $comment Comment text to examine
+     * @param   int    $date    Date/time the comment was posted
+     * @param   string $ip      IPAddress comment posted from
+     * @param   string $type    Type of comment ('article', etc)
      * @return  int                 0: no spam, else: spam detected
      */
     public function reexecute($comment, $date, $ip, $type)
@@ -65,14 +59,12 @@ class IP extends BaseCommand
     /**
      * Private internal method to match an IP address against a CIDR
      *
-     * @param   string  $iptocheck  IP address to check
-     * @param   string  $CIDR       IP address range to check against
+     * @param   string $iptocheck IP address to check
+     * @param   string $CIDR      IP address range to check against
      * @return  boolean             true if IP falls into the CIDR, else false
      * @todo    CIDR support for IPv6 addresses
-     *
-     * Original author: Ian B, taken from
-     * @link http://www.php.net/manual/en/function.ip2long.php#71939
-     *
+     *                            Original author: Ian B, taken from
+     * @link    http://www.php.net/manual/en/function.ip2long.php#71939
      */
     private function _matchCIDR($iptocheck, $CIDR)
     {
@@ -123,14 +115,12 @@ class IP extends BaseCommand
 
     /**
      * Private internal method to match an IP address against an address range
-     *
      * Original authors: dh06 and Stephane, taken from
+     *
      * @link http://www.php.net/manual/en/function.ip2long.php#70707
-     *
-     * @param   string  $ip     IP address to check
-     * @param   string  $range  IP address range to check against
+     * @param   string $ip    IP address to check
+     * @param   string $range IP address range to check against
      * @return  boolean         true if IP falls into the IP range, else false
-     *
      */
     private function _matchRange($ip, $range)
     {
@@ -145,6 +135,7 @@ class IP extends BaseCommand
             $to = ip2long(trim(substr($range, $d + 1)));
 
             $ip = ip2long($ip);
+
             return (($ip >= $from) && ($ip <= $to));
         }
 
@@ -155,12 +146,12 @@ class IP extends BaseCommand
      * Private internal method, this actually processes a given ip
      * address against a blacklist of IP regular expressions.
      *
-     * @param   strint  $ip     IP address of comment poster
-     * @return  int             0: no spam, else: spam detected
+     * @param   string $ip IP address of comment poster
+     * @return  int        0: no spam, else: spam detected
      */
     private function _process($ip)
     {
-        global $_CONF, $_TABLES, $LANG_SX00;
+        global $_TABLES, $LANG_SX00;
 
         $uid = $this->getUid();
 
@@ -168,14 +159,13 @@ class IP extends BaseCommand
          * Include Blacklist Data
          */
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='IP'", 1);
-        $nrows = DB_numRows($result);
+        $numRows = DB_numRows($result);
 
         $ans = PLG_SPAM_NOT_FOUND;
 
-        for ($i = 0; $i < $nrows; $i++) {
+        for ($i = 0; $i < $numRows; $i++) {
             list($val) = DB_fetchArray($result);
 
-            $matches = false;
             if (strpos($val, '/') !== false) {
                 $matches = $this->_matchCIDR($ip, $val);
             } elseif (strpos($val, '-') !== false) {
@@ -188,8 +178,8 @@ class IP extends BaseCommand
                 $ans = PLG_SPAM_FOUND;  // quit on first positive match
                 $this->updateStat('IP', $val);
                 SPAMX_log($LANG_SX00['foundspam'] . $val .
-                          $LANG_SX00['foundspam2'] . $uid .
-                          $LANG_SX00['foundspam3'] . $ip);
+                    $LANG_SX00['foundspam2'] . $uid .
+                    $LANG_SX00['foundspam3'] . $ip);
                 break;
             }
         }
@@ -197,5 +187,3 @@ class IP extends BaseCommand
         return $ans;
     }
 }
-
-?>

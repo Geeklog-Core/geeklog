@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | config-install.php                                                        |
 // |                                                                           |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'config-install.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -37,11 +37,8 @@ function install_config()
 {
     global $_CONF, $_TABLES;
 
-
     // Parameters for add function:  $param_name, $default_value, $type, $subgroup, $fieldset=null, $selection_array=null, $sort=0, $set=true, $group='Core', $tab=null
-
     $me = 'Core';
-
     $c = config::get_instance();
 
     // Subgroup: Site
@@ -57,6 +54,7 @@ function install_config()
     $c->add('owner_name','','text',0,0,NULL,1000,TRUE, $me, 0);
     $c->add('copyrightyear',date('Y'),'text',0,0,NULL,1440,FALSE, $me, 0);
     $c->add('url_rewrite',FALSE,'select',0,0,1,1800,TRUE, $me, 0);
+    $c->add('url_routing',0,'select',0,0,37,1850,TRUE, $me, 0);
     $c->add('cdn_hosted',FALSE,'select',0,0,1,1900,TRUE, $me, 0);
     $c->add('meta_tags',0,'select',0,0,23,2000,TRUE, $me, 0);
     $c->add('meta_description','Geeklog - The secure Content Management System.','textarea',0,0,NULL,2010,TRUE, $me, 0);
@@ -121,6 +119,7 @@ function install_config()
     $c->add('search_def_keytype','phrase','select',0,6,20,672,TRUE, $me, 6);
     $c->add('search_use_fulltext', FALSE, 'hidden', 0, 6, NULL, 0, TRUE, $me, 6); // 675
     $c->add('search_def_sort','hits|desc','select',0,6,27,676,TRUE, $me, 6);
+    $c->add('search_use_topic',FALSE,'select',0,6,1,677,TRUE, $me, 6);
 
     // Subgroup: Stories and Trackback
     $c->add('sg_stories', NULL, 'subgroup', 1, 0, NULL, 0, TRUE, $me, 0);
@@ -571,5 +570,3 @@ function install_config()
     $c->add('filemanager_audios_ext', array('ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
     $so += 10;
 }
-
-?>

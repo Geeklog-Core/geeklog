@@ -44,6 +44,4 @@ if (!SEC_inGroup ('Root')) {
  */
 
 CTL_clearCache();
-
-echo COM_refresh($_CONF['site_admin_url'] . '/index.php?msg=500');
-?>
+COM_redirect($_CONF['site_admin_url'] . '/index.php?msg=500');

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | openidhelper.class.php                                                    |
 // |                                                                           |
@@ -38,8 +38,8 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'openidhelper.class.php') !== false
 
 require_once $_CONF['path_system'] . 'classes/openid/consumer.php';
 
-class SimpleConsumer extends OpenIDConsumer {
-
+class SimpleConsumer extends OpenIDConsumer
+{
     function verify_return_to($return_to)
     {
         $parts = parse_url($return_to);
@@ -58,9 +58,9 @@ class SimpleConsumer extends OpenIDConsumer {
 }
 
 
-class SimpleActionHandler extends ActionHandler {
-
-    function SimpleActionHandler($query, $consumer)
+class SimpleActionHandler extends ActionHandler
+{
+    public function __construct($query, $consumer)
     {
         $this->query = $query;
         $this->consumer = $consumer;
@@ -223,10 +223,6 @@ class SimpleActionHandler extends ActionHandler {
     {
         global $_CONF;
 
-        echo COM_refresh($_CONF['site_url'] . '/users.php?msg=' . $msg);
-        exit;
+        COM_redirect($_CONF['site_url'] . '/users.php?msg=' . $msg);
     }
-
 }
-
-?>

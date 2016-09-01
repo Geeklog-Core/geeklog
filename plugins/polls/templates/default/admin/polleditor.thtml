@@ -28,6 +28,9 @@
 
         <dt><label for="polls-polleditor-hideresults">{lang_hideresults}</label></dt>
         <dd><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</dd>
+
+        <dt><label for="polls-polleditor-topic_description">{lang_topic_description}</label></dt>
+        <dd><textarea name="topic_description" rows="2" id="polls-polleditor-topic_description" class="wide">{topic_description}</textarea></dd>
       </dl>
 
       <div id="po_navbar" class="jsenabled_show">

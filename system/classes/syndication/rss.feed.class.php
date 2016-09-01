@@ -443,5 +443,3 @@ class RSS0x extends FeedParserBase
         }
     }
 }
-
-?>

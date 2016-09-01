@@ -1,0 +1,34 @@
+{# start {templatelocation} #}
+
+<form action="{site_admin_url}/language.php" method="post" id="admin-language-editor" class="compact uk-form">
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label>{lang_id}</label></dt>
+      <dd class="controls_text"><span>{id_to_display}</span></dd>
+
+      <dt><label for="admin-language-editor-var_name">{lang_var_name}</label></dt>
+      <dd><input type="text" size="30" maxlength="30" value="{var_name}" name="var_name" id="admin-language-editor-var_name" class="size5"{xhtml}></dd>
+
+      <dt><label for="admin-language-editor-language">{lang_language}</label></dt>
+      <dd><select name="language" id="admin-language-editor-language">{language_options}</select></dd>
+
+      <dt><label for="admin-language-editor-name">{lang_name}</label></dt>
+      <dd><input type="text" size="30" maxlength="30" value="{name}" name="name" id="admin-language-editor-name" class="size5"{xhtml}></dd>
+
+      <dt><label for="admin-language-editor-value">{lang_value}</label></dt>
+      <dd><input type="text" size="50" maxlength="255" value="{value}" name="value" id="admin-language-editor-value" class="size8"{xhtml}></dd>
+    </dl>
+
+    <div class="submit">
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" name="mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
+      <input type="hidden" name="{token_name}" value="{token_value}"{xhtml}>
+      <input type="hidden" name="id" value="{id}"{xhtml}>
+    </div>
+  </div>
+</form>
+
+{# end {templatelocation} #}

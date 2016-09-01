@@ -204,5 +204,3 @@ class RDF extends FeedParserBase
         }
     }
 }
-
-?>

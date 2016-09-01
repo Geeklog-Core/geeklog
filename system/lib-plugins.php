@@ -912,11 +912,11 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
                     $good_array = true;
                     for ($n = 0; $n < $num_var_names; $n++) {
                         if (isset($val[$n])) {
-                            $plugin->$var_names[$n] = $val[$n];
+                            $plugin->{$var_names[$n]} = $val[$n];
                         } else {
-                            $plugin->$var_names[$n] = '';
+                            $plugin->{$var_names[$n]} = '';
                         }
-                        if (empty($plugin->$var_names[$n]) && $required_names[$n]) {
+                        if (empty($plugin->{$var_names[$n]}) && $required_names[$n]) {
                             $good_array = false;
                         }
                     }
@@ -1193,9 +1193,11 @@ function PLG_createUser($uid)
         }
     }
 
-    $function = 'CUSTOM_user_create';
-    if (function_exists($function)) {
-        $function($uid);
+    if (is_callable('CUSTOM_userCreate')) {
+        CUSTOM_userCreate($uid, false);
+    } elseif (is_callable('CUSTOM_user_create')) {
+        COM_errorLog(__FUNCTION__ . ': CUSTOM_user_create is deprecated as of Geeklog 2.1.2.  Please use CUSTOM_userCreate instead.');
+        CUSTOM_user_create($uid);
     }
 }
 
@@ -2888,7 +2890,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
         break;
     }
 
-    return COM_refresh($url);
+    COM_redirect($url);
 }
 
 /**

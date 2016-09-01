@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.0                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | gltext.class.php                                                          |
 // |                                                                           |
@@ -142,7 +142,7 @@ class GLText
 //              $text = self::_htmLawed($text, 'story.edit');
             }
 
-            $text = COM_checkWords($text);
+            $text = COM_checkWords($text, 'story');
         }
 
         $text = PLG_replaceTags(self::_displayEscape($text));
@@ -532,5 +532,3 @@ class GLText
         return $out;
     }
 }
-
-?>

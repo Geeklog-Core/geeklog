@@ -532,8 +532,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
     if (!empty ($eid) AND !empty ($description) AND !empty ($title)) {
         if (!SEC_checkToken()) {
             COM_accessLog("User {$_USER['username']} tried to save event $eid and failed CSRF checks.");
-            return COM_refresh($_CONF['site_admin_url']
-                               . '/plugins/calendar/index.php');
+            COM_redirect($_CONF['site_admin_url'] . '/plugins/calendar/index.php');
         }
 
         $hits = DB_getItem($_TABLES['events'], 'hits', "eid = '$eid'");
@@ -602,8 +601,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $eid = COM_applyFilter ($_REQUEST['eid']);
     if (!isset ($eid) || empty ($eid) || ($eid == 0)) {
         COM_errorLog ('Attempted to delete event eid=\'' . $eid . "'");
-        $display .= COM_refresh($_CONF['site_admin_url']
-                                . '/plugins/calendar/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/calendar/index.php');
     } elseif (SEC_checkToken()) {
         $type = '';
         if (isset($_POST['type'])) {
@@ -612,7 +610,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= CALENDAR_deleteEvent($eid, $type);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete event $eid and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) {
     if (!isset ($_POST['allday'])) {

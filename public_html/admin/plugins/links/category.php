@@ -527,8 +527,7 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
     }
     if (empty($cid)) {
         COM_errorLog('Attempted to delete empty category');
-        $display .= COM_refresh($_CONF['site_admin_url']
-                                . '/plugins/links/category.php');
+        COM_redirect($_CONF['site_admin_url'] . '/plugins/links/category.php');
     } elseif (SEC_checkToken()) {
         $msg = links_delete_category($cid);
 
@@ -537,7 +536,7 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[11]));
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete link category $cid and failed CSRF checks.");
-        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 
 // save category

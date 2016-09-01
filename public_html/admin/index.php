@@ -33,8 +33,8 @@ require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
 // MAIN
-if (isset ($_GET['mode']) && ($_GET['mode'] == 'logout')) {
-    print COM_refresh($_CONF['site_url'] . '/users.php?mode=logout');
+if (isset($_GET['mode']) && ($_GET['mode'] == 'logout')) {
+    COM_redirect($_CONF['site_url'] . '/users.php?mode=logout');
 }
 
 /**
@@ -67,5 +67,3 @@ $display = COM_showMessageFromParameter()
 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG29[34]));
 
 COM_output($display);
-
-?>

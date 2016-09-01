@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls plugin 2.0                                                          |
+// | Polls plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | install_defaults.php                                                      |
 // |                                                                           |
@@ -222,5 +222,3 @@ function plugin_initconfig_polls()
 
     return true;
 }
-
-?>

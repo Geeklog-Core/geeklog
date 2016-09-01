@@ -60,7 +60,7 @@
 
 <p>上述の「PHPを実行する」（returnなしの方）を選択する場合は、コードの中でPHPとHTMLを次のように行き来することができます。</p>
 <pre style="padding-left: 2em"><code>echo "Hello"; ?&gt;, &lt;b&gt;world&lt;/b&gt;, &lt;?php echo "how are you?";</code></pre>
-<p>この例では、"Hello, <b>world</b>, how are you?"と表示されます。</p>
+<p>この例では、"Hello, <strong>world</strong>, how are you?"と表示されます。</p>
 
 
 <h2><a name="id">ページID</a></h2>
@@ -69,7 +69,7 @@
 
 <p>「静的ページの編集」では、ページIDを変えることもできます。たとえば、「当サイトに関して」のページのIDを"20030313100131123"から"about"に変えて、次のURLにできます。</p>
 
-<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php?page=about</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php?page=about</span></p>
 
 <p>こちらの方が遙かに引用しやすいし、覚えやすいです。Geeklogの<a href="#url">URLリライト機能</a>を活用してさらに改善することもできるでしょう。</p>
 
@@ -98,7 +98,7 @@
 </ul>
 <p>この順序が適用されるのは、センターブロック内の静的ページだけです。センターブロックを出力する他のプラグインはこの順序には含まれません。また、センターブロックは普通のGeeklogのブロックのような外見をしているとは限りません。この目的のためには、下にある「ページをブロックで囲む」を「はい」にします。</p>
 
-<p><strong>メニューでの並べ替え項目:</strong> サイトのメニューに表示される静的ページを並べ換えることもできます(<tt>header.thtml</tt> テンプレートファイル内で、 <code>{plg_menu_elements}</code> 変数を使用している場合)。この項目も「管理者用メニュー - コンフィギュレーション - 静的ページ」で表示順を選ぶことができます。選択肢は、次の通りです。</p>
+<p><strong>メニューでの並べ替え項目:</strong> サイトのメニューに表示される静的ページを並べ換えることもできます(<span class="tt">header.thtml</span> テンプレートファイル内で、 <code>{plg_menu_elements}</code> 変数を使用している場合)。この項目も「管理者用メニュー - コンフィギュレーション - 静的ページ」で表示順を選ぶことができます。選択肢は、次の通りです。</p>
 <ul>
 <li>日付（更新日時の新しい順に並べ換え）</li>
 <li>ラベル（メニューに表示される文字列：デフォルト）</li>
@@ -125,15 +125,15 @@
 
 <p>Geeklogはある種のURL書き換え、つまり、URLの外観を検索エンジンに拾われやすいものにする機能を持っています。たとえば、</p>
 
-<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php?page=20030313100131123</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php?page=20030313100131123</span></p>
 
 <p>の代わりに、次のような外観にすることができます。</p>
 
-<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php/20030313100131123</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php/20030313100131123</span></p>
 
 <p>検索エンジンの中には、URLに '?' や '=' などの文字が含まれていると、そのページをインデックスに登録しないものがあるということが知られています。これをさらに推し進めて、<a href="#id">数字で構成されたページID</a>を（できれば、ページの内容と関連する）単語や表現に置き換えることで、検索エンジンにさらに登録されやすくすることもできるでしょう。</p>
 
-<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php/about</tt></p>
+<p style="margin-left:4em;"><span class="tt">http://yoursite/staticpages/index.php/about</span></p>
 
 <p>URL書き換えを行うには、「管理者用メニュー - コンフィギュレーション - Geeklog - サイト」で「URLリライト」を「はい」にする必要があります。</p>
 
@@ -161,12 +161,12 @@
 </tr>
 <tr class="r2">
   <td><a name="desc_sort_by">センターブロックの並べ替え(sort_by)</a></td>
-  <td><tt>ページID</tt></td>
+  <td><span class="tt">ページID</span></td>
   <td>センターブロックに静的ページが複数表示される場合の順番を設定します。ページID、ページタイトル、最後に編集した日付から選べます。</td>
 </tr>
 <tr>
   <td><a name="desc_sort_menu_by">メニューの並べ替え(sort_menu_by)</a></td>
-  <td><tt>ラベル</tt></td>
+  <td><span class="tt">ラベル</span></td>
   <td>サイトメニューの順番を設定します。ページラベル、ページID, ページタイトル、最後に編集した日付から選べます。</td>
 </tr>
 <tr class="r2">
@@ -177,38 +177,38 @@
 </tr>
 <tr>
   <td><a name="desc_delete_pages">所有者の削除と共に削除する(delete_pages)</a></td>
-  <td><tt>いいえ</tt></td>
+  <td><span class="tt">いいえ</span></td>
   <td>ページの所有者のアカウントが削除された場合、つまりその静的ページを最初に作成したユーザーが居なくなった場合、そのページを'True'なら削除、'False'なら"Root"グループのユーザー(通常は最も小さい値のIDのRootユーザー)に変更します。</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_in_block">ページをブロックで囲む(in_block)</a></td>
-  <td><tt>はい</tt></td>
+  <td><span class="tt">はい</span></td>
   <td>静的ページを作成する際、ページをブロックで囲むモードのデフォルトを設定します。</td>
 </tr>
 <tr>
   <td><a name="desc_show_hits">閲覧数を表示する(show_hits)</a></td>
-  <td><tt>いいえ</tt></td>
+  <td><span class="tt">いいえ</span></td>
   <td>閲覧回数を表示するかどうかを設定します。</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_show_date">日時を表示する(show_date)</a></td>
-  <td><tt>はい</tt></td>
+  <td><span class="tt">はい</span></td>
   <td>最後に編集した日時を表示するかどうかを設定します。</td>
 </tr>
 <tr>
   <td><a name="desc_filter_html">HTMLフィルターを適用する(filter_html)</a></td>
-  <td><tt>いいえ</tt></td>
+  <td><span class="tt">いいえ</span></td>
   <td>GeeklogのHTMLフィルターを静的ページの編集時に適用させるかどうかを設定します。</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_censor">コンテンツを検閲する(censor)</a></td>
-  <td><tt>いいえ</tt></td>
+  <td><span class="tt">いいえ</span></td>
   <td>Geeklogの"バッドワード"フィルターを静的ページの編集時に適用させるかどうかを設定します。
   </td>
 </tr>
 <tr>
   <td><a name="desc_aftersave">ページ保存後の画面遷移(aftersave)</a></td>
-  <td><tt>静的ページ管理を表示する</tt></td>
+  <td><span class="tt">静的ページ管理を表示する</span></td>
   <td>静的ページ保存後の画面遷移を設定します:
     <ul>
     <li>編集した静的ページを表示します。</li>

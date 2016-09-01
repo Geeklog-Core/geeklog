@@ -557,7 +557,7 @@ function custom_validation_hash_function($rule, $ruleParams) {
 // MAIN
 $display = '';
 
-$config =& config::get_instance();
+$config = config::get_instance();
 
 $default_conf_group = 'Core';
 if (!SEC_inGroup('Root')) {

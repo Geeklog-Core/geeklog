@@ -32,6 +32,8 @@
 
 $LANG_CHARSET = 'iso-8859-1';
 
+$LANG_ISO639_1 = 'nl';
+
 ###############################################################################
 # Array Format:
 # $LANGXX[YY]:  $LANG - variable name
@@ -329,7 +331,7 @@ $LANG04 = array(
     73 => 'Taal',
     74 => 'Pas het portaal aan uw wensen aan!',
     75 => 'Email thema\'s voor',
-    76 => 'Indien u een thema uit de onderstaande lijst selecteert, ontvang u alle artikelen die hierin wordt geplaatst aan het eind van de dag thuis. Kies alleen de thema\'s waarin u bent geÃ¯nteresseerd!',
+    76 => 'Indien u een thema uit de onderstaande lijst selecteert, ontvang u alle artikelen die hierin wordt geplaatst aan het eind van de dag thuis. Kies alleen de thema\'s waarin u bent geïnteresseerd!',
     77 => 'Foto',
     78 => 'Voeg een afbeelding toe van u zelf!',
     79 => 'Aanvinken om uw afbeelding te verwijderen',
@@ -2405,6 +2407,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
-
-
-?>

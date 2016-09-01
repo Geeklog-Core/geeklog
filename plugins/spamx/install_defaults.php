@@ -32,10 +32,10 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Install data and defaults for the Spam-X plugin configuration
-*
-* @package Spam-X
-*/
+ * Install data and defaults for the Spam-X plugin configuration
+ *
+ * @package Spam-X
+ */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -43,11 +43,10 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'install_defaults.php') !== false) 
 
 /**
  * Spam-X default settings
- *
  * Initial Installation Defaults used when loading the online configuration
  * records. These settings are only used during the initial installation
  * and not referenced any more once the plugin is installed
- *
+
  */
 global $_SPX_DEFAULT;
 $_SPX_DEFAULT = array();
@@ -72,7 +71,7 @@ $_SPX_DEFAULT['timeout'] = 5; // in seconds
 $_SPX_DEFAULT['max_age'] = 0;
 
 // The record types to delete when max age is reached
-$_SPX_DEFAULT['records_delete'] = array('email','IP');
+$_SPX_DEFAULT['records_delete'] = array('email', 'IP');
 
 // If the module Stop Forum Spam is enabled
 $_SPX_DEFAULT['sfs_enabled'] = false;
@@ -87,16 +86,14 @@ $_SPX_DEFAULT['snl_enabled'] = false;
 $_SPX_DEFAULT['snl_num_links'] = 5;
 
 /**
-* Initialize Spam-X plugin configuration
-*
-* Creates the database entries for the configuation if they don't already
-* exist. Initial values will be taken from $_SPX_CONF if available (e.g. from
-* an old config.php), uses $_SPX_DEFAULT otherwise.
-*
-* @return   boolean     true: success; false: an error occurred
-* @see      plugin_load_configuration_spamx
-*
-*/
+ * Initialize Spam-X plugin configuration
+ * Creates the database entries for the configuation if they don't already
+ * exist. Initial values will be taken from $_SPX_CONF if available (e.g. from
+ * an old config.php), uses $_SPX_DEFAULT otherwise.
+ *
+ * @return   boolean     true: success; false: an error occurred
+ * @see      plugin_load_configuration_spamx
+ */
 function plugin_initconfig_spamx()
 {
     global $_CONF, $_SPX_CONF, $_SPX_DEFAULT;
@@ -113,37 +110,35 @@ function plugin_initconfig_spamx()
             $enable_email = false;
         }
 
-        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'spamx', 0);
-        $c->add('tab_main', NULL, 'tab', 0, 0, NULL, 0, true, 'spamx', 0);
-        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx', 0);
+        $c->add('sg_main', null, 'subgroup', 0, 0, null, 0, true, 'spamx', 0);
+        $c->add('tab_main', null, 'tab', 0, 0, null, 0, true, 'spamx', 0);
+        $c->add('fs_main', null, 'fieldset', 0, 0, null, 0, true, 'spamx', 0);
         $c->add('logging', $_SPX_DEFAULT['logging'], 'select',
-                0, 0, 1, 10, true, 'spamx', 0);
+            0, 0, 1, 10, true, 'spamx', 0);
         $c->add('timeout', $_SPX_DEFAULT['timeout'], 'text',
-                0, 0, null, 30, true, 'spamx', 0);
+            0, 0, null, 30, true, 'spamx', 0);
         $c->add('notification_email', $_SPX_DEFAULT['notification_email'],
-                'text', 0, 0, null, 40, $enable_email, 'spamx', 0);
+            'text', 0, 0, null, 40, $enable_email, 'spamx', 0);
         $c->add('spamx_action', $_SPX_DEFAULT['action'], 'text',
-                0, 0, null, 50, false, 'spamx', 0);
+            0, 0, null, 50, false, 'spamx', 0);
         $c->add('max_age', $_SPX_DEFAULT['max_age'], 'text',
-                        0, 0, null, 60, true, 'spamx', 0);
-        $c->add('records_delete', $_SPX_DEFAULT['records_delete'], '%text', 0, 0, NULL, 70, TRUE, 'spamx', 0);
+            0, 0, null, 60, true, 'spamx', 0);
+        $c->add('records_delete', $_SPX_DEFAULT['records_delete'], '%text', 0, 0, null, 70, true, 'spamx', 0);
 
-        $c->add('tab_modules', NULL, 'tab', 0, 0, NULL, 0, true, 'spamx', 10);
-        $c->add('fs_sfs', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx', 10);
+        $c->add('tab_modules', null, 'tab', 0, 0, null, 0, true, 'spamx', 10);
+        $c->add('fs_sfs', null, 'fieldset', 0, 0, null, 0, true, 'spamx', 10);
         $c->add('sfs_enabled', $_SPX_DEFAULT['sfs_enabled'], 'select',
-                0, 0, 1, 10, true, 'spamx', 10);
+            0, 0, 1, 10, true, 'spamx', 10);
         $c->add('sfs_confidence', $_SPX_DEFAULT['sfs_confidence'], 'text',
-                        0, 0, null, 20, true, 'spamx', 10);
+            0, 0, null, 20, true, 'spamx', 10);
 
-        $c->add('fs_snl', NULL, 'fieldset', 0, 10, NULL, 0, true, 'spamx', 10);
+        $c->add('fs_snl', null, 'fieldset', 0, 10, null, 0, true, 'spamx', 10);
         $c->add('snl_enabled', $_SPX_DEFAULT['snl_enabled'], 'select',
-                0, 10, 1, 10, true, 'spamx', 10);
+            0, 10, 1, 10, true, 'spamx', 10);
         $c->add('snl_num_links', $_SPX_DEFAULT['snl_num_links'], 'text',
-                0, 10, NULL, 20, true, 'spamx', 10);
+            0, 10, null, 20, true, 'spamx', 10);
 
     }
 
     return true;
 }
-
-?>

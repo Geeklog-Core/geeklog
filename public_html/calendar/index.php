@@ -794,7 +794,7 @@ case 'savepersonal':
     if (SEC_checkToken()) {
         $display = plugin_savesubmission_calendar($_POST);
     } else {
-        $display = COM_refresh($_CONF['site_url'] . '/calendar/index.php');
+        COM_redirect($_CONF['site_url'] . '/calendar/index.php');
     }
     break;
 

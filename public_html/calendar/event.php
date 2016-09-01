@@ -133,8 +133,6 @@ function adduserevent ($eid)
 * add this event to their calendar.  Actually save it now.
 *
 * @param    string  $eid    ID of event to save
-* @return   string          HTML refresh
-*
 */
 function saveuserevent ($eid)
 {
@@ -156,13 +154,11 @@ function saveuserevent ($eid)
              . "{$_TABLES['events']} WHERE eid = '{$eid}'";
 
             DB_query ($savesql);
-
-            return COM_refresh ($_CONF['site_url']
-                                . '/calendar/index.php?mode=personal&amp;msg=24');
+            COM_redirect($_CONF['site_url'] . '/calendar/index.php?mode=personal&amp;msg=24');
         }
     }
 
-    return COM_refresh ($_CONF['site_url'] . '/index.php');
+    COM_redirect($_CONF['site_url'] . '/index.php');
 }
 
 /**
@@ -361,7 +357,7 @@ case 'addevent':
         }
         $display = COM_createHTMLDocument($display);
     } else {
-        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
     break;
 
@@ -375,7 +371,7 @@ case 'saveuserevent':
             $display = COM_createHTMLDocument($display);
         }
     } else {
-        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
     break;
 
@@ -386,7 +382,7 @@ case $LANG_CAL_1[45]: // save edited personal event
              ($_POST['calendar_type'] == 'personal')) && SEC_checkToken()) {
         $display = plugin_savesubmission_calendar ($_POST);
     } else {
-        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
     break;
 
@@ -395,14 +391,13 @@ case $LANG_CAL_1[51]:
     if (($_CA_CONF['personalcalendars'] == 1) && SEC_checkToken()) {
         $eid = COM_applyFilter ($_REQUEST['eid']);
         if (!empty($eid) && !COM_isAnonUser()) {
-            DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
-            $display .= COM_refresh ($_CONF['site_url']
-                     . '/calendar/index.php?mode=personal&amp;msg=26');
+            DB_query("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
+            COM_redirect($_CONF['site_url'] . '/calendar/index.php?mode=personal&amp;msg=26');
         } else {
-            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
     } else {
-        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
     break;
 
@@ -418,13 +413,13 @@ case 'edit':
                          . COM_endBlock ();
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_2[38]));
             } else {
-                $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+                COM_redirect($_CONF['site_url'] . '/index.php');
             }
         } else {
-            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
     } else {
-        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        COM_redirect($_CONF['site_url'] . '/index.php');
     }
     break;
 

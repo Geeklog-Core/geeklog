@@ -292,5 +292,3 @@ abstract class FeedParserBase
     */
     abstract public function charData($parser, $data);
 }
-
-?>

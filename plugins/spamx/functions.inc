@@ -13,13 +13,11 @@
  * @package Spam-X
  */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
 }
 
-/**
- * Language file include
- */
+// Language file include
 $plugin_path = $_CONF['path'] . 'plugins/spamx/';
 $langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 
@@ -28,6 +26,10 @@ if (file_exists($langfile)) {
 } else {
     include_once $plugin_path . 'language/english.php';
 }
+
+Language::override(array(
+    'LANG_SX00', 'PLG_spamx_MESSAGE128', 'PLG_spamx_MESSAGE8',
+));
 
 /**
 * Check and see if we need to load the plugin configuration
@@ -38,7 +40,6 @@ if (!isset($_SPX_CONF['timeout'])) {
     $spx_config = config::get_instance();
     $_SPX_CONF = $spx_config->get_config('spamx');
 }
-
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -638,5 +639,3 @@ function plugin_itemPreSave_spamx($type, $username)
 
     return '';
 }
-
-?>

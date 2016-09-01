@@ -27,6 +27,8 @@
 
 $LANG_CHARSET = 'iso-8859-1';
 
+$LANG_ISO639_1 = 'en';
+
 ###############################################################################
 # Array Format:
 # $LANGXX[YY]:  $LANG - variable name
@@ -190,6 +192,7 @@ $LANG01 = array(
     'google' => 'Login with Google',
     'microsoft' => 'Login with Microsoft',
     'yahoo' => 'Login with Yahoo',
+    'github' => 'Login with GitHub',
     'ctl' => 'Clear Cache',
     'filemanager' => 'File Manager'
 );
@@ -242,7 +245,13 @@ $LANG03 = array(
     42 => 'Unsubscribe',
     43 => 'Unsubscribe from reply notifications',
     44 => 'Your Name',
-    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment."
+    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment.",
+    100 => 'Comment Manager',
+    101 => 'Existing Comments',
+    102 => 'Bulk Action',
+    103 => 'Ban this user',
+    104 => 'Ban this IP address with the Spamx plugin',
+    105 => 'IP Address',
 );
 
 ###############################################################################
@@ -856,8 +865,10 @@ $LANG21 = array(
     67 => 'Check to allow autotags',
     68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.',
     69 => 'Plugin Name',
-    'cache_time'        => 'Cache Time',
-    'cache_time_desc'   => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
+    'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
+    'position'              => 'Position', 
+    'cache_time'            => 'Cache Time',
+    'cache_time_desc'       => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -955,6 +966,7 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'You can always hit "Preview" to extend the expiry time.',
+    92 => 'You might also like',
     'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
     'cache_time'        => 'Cache Time',
     'cache_time_desc'   => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
@@ -1339,6 +1351,44 @@ $LANG33 = array(
     55 => 'Articles'
 );
 
+// admin/language.php (since v2.1.2)
+$LANG_LANG = array(
+    'language_manager' => 'Language Manager',
+    'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
+    'language_editor'  => 'Language Editor',
+    'id'               => 'ID',
+    'language'         => 'Language',
+    'name'             => 'Name',
+    'var_name'         => 'Var Name',
+    'value'            => 'Value',
+);
+
+###############################################################################
+# admin/router.php
+
+$LANG_ROUTER = array(
+    1 => 'URL routing',
+    2 => 'Routing Manager',
+    3 => 'ID',
+    4 => 'method',
+    5 => 'rule',
+    6 => 'route',
+    7 => 'priority',
+    8 => 'Increase priority',
+    9 => 'Decrease priority',
+    10 => 'Edit routing',
+    11 => 'To modify or delete a route, click on the route\'s edit icon below. To create a new route, click on "Create New" above.  When you use placeholders (@), you must define the same placeholders in a rule and its route.',
+    12 => 'Bad request method',
+    13 => 'Rule is a mandatory item.',
+    14 => 'Route is a mandatory item.',
+    15 => 'Placeholders (@) in a rule and those in a route must be the same.',
+    16 => 'Route must not start with "/index.php/".',
+    17 => 'Database error occurred.',
+    18 => '<strong>To enable URL routing, you have to enable URL rewrite in the Configuration.</strong>',
+    19 => '<strong>To enable URL routing, you have to enable URL routing in the Configuration.</strong>',
+    20 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>',
+);
+
 ###############################################################################
 # confirmation and error messages
 
@@ -1455,6 +1505,19 @@ $MESSAGE = array(
     118 => 'Click to select a date',
     119 => 'More..',
     120 => 'Send this?',
+    121 => 'Saved a URL routing item.',
+    122 => 'Could not save a URL routing item.',
+    123 => 'Deleted a URL routing item.',
+    130 => 'Your language item has been successfully deleted.',
+    131 => 'Your language item has been successfully saved.',
+    140 => 'Deleted comment(s).',
+    141 => 'Failed to delete a comment.',
+    142 => 'Approved comment(s).',
+    143 => 'Banned user(s).',
+    144 => 'Banned IP addresses with the Spamx plugin.',
+    150 => 'Successfully deleted all the files and directories used during the installation.',
+    151 => 'Failed to delete some files and directories used during the installation.  Please remove them manually.',
+    152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
     500 => 'The Template Cache has been successfully cleared.'
@@ -1825,7 +1888,16 @@ $LANG_ADMIN = array (
     'token_expiry'  => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.',
     'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
     'reauth_msg'    => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
-    'authenticate'  => 'Authenticate'
+    'authenticate'  => 'Authenticate',
+    'approve'       => 'Approve',
+    'device'        => 'Device',
+    'device_desc'   => 'For what device do you want this item to display for?',
+    'for_all'       => 'All',
+    'for_mobile'    => 'For Mobile',
+    'for_computer'  => 'For Computer',
+    'all'           => 'All',
+    'mobile'        => 'Mobile',
+    'computer'      => 'Computer'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1942,6 +2014,7 @@ $LANG_confignames['Core'] = array(
     'menu_elements' => "Menu Elements",
     'path_themes' => "Themes Path",
     'cache_templates' => "Cache Templates?",
+    'cache_mobile' => "Cache Mobile Devices Separately?",
     'disable_new_user_registration' => "Disable New Registrations",
     'allow_user_themes' => "Allow User Themes",
     'allow_user_language' => "Allow User Language",
@@ -1971,6 +2044,9 @@ $LANG_confignames['Core'] = array(
     'yahoo_login' => "Enable OAuth Login Method Yahoo",
     'yahoo_consumer_key' => "Yahoo OAuth Consumer Key",
     'yahoo_consumer_secret' => "Yahoo OAuth Consumer Secret",
+    'github_login' => "Enable OAuth Login Method GitHub",
+    'github_consumer_key' => "GitHub OAuth Consumer Key",
+    'github_consumer_secret' => "GitHub OAuth Consumer Secret",    
     'spamx' => "Spam-X Actions",
     'sort_admin' => "Sort Links",
     'language' => "Default Language",
@@ -2146,6 +2222,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => "Censor List",
     'ip_lookup' => "IP Lookup",
     'url_rewrite' => "Enable URL Rewrite",
+    'url_routing' => 'Enable URL routing',
     'cdn_hosted' => "Use CDN-hosted copy of jQuery",
     'meta_tags' => "Meta Tags",
     'meta_description' => "Default Meta Description",
@@ -2171,11 +2248,13 @@ $LANG_confignames['Core'] = array(
     'search_separator' => "Group Separator",
     'search_def_keytype' => "Default Search Method",
     'search_def_sort' => "Default Sort Order",
+    'search_use_topic' => "Use Current Topic",
     'autotag_permissions_story' => '[story: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
     'autotag_permissions_related_items' => '[related_items: ] Permissions',
+    'autotag_permissions_block' => '[block: ] Permissions',
     'multiple_breadcrumbs' => "Multiple Breadcrumbs",
     'disable_breadcrumbs_topics' => "Disable Topic Breadcrumbs",
     'disable_breadcrumbs_articles' => "Disable Article Breadcrumbs",
@@ -2366,8 +2445,9 @@ $LANG_configselects['Core'] = array(
     32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
     33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3),
     34 => array('grid' => 'grid', 'list' => 'list'),
-    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),  
-    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics')
+    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
+    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
+    37 => array('Disabled' => 0, 'Enabled(with "index.php")' => 1, 'Enabled(without "index.php")' => 2),
 );
 
 ################################################################################
@@ -2421,5 +2501,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
-
-?>

@@ -58,6 +58,14 @@ if (file_exists($langfile)) {
     require_once $plugin_path . 'language/english.php';
 }
 
+Language::override(array(
+    'LANG_LINKS', 'LANG_LINKS_STATS', 'LANG_LINKS_SEARCH', 'LANG_LINKS_SUBMIT',
+    'PLG_links_MESSAGE1', 'PLG_links_MESSAGE2', 'PLG_links_MESSAGE3', 'PLG_links_MESSAGE4',
+    'PLG_links_MESSAGE5', 'PLG_links_MESSAGE6', 'PLG_links_MESSAGE7', 'PLG_links_MESSAGE10',
+    'PLG_links_MESSAGE11', 'PLG_links_MESSAGE12', 'PLG_links_MESSAGE13', 'PLG_links_MESSAGE14',
+    'PLG_links_MESSAGE15', 'PLG_links_MESSAGE16', 'PLG_links_MESSAGE17',
+));
+
 /**
 * Check and see if we need to load the plugin configuration
 */
@@ -1121,11 +1129,8 @@ function plugin_save_submit_links($A)
             LINKS_sendNotification($_TABLES['linksubmission'], $A);
         }
 
-        $retval = COM_refresh($_CONF['site_url']
-                              . '/index.php?msg=1&amp;plugin=links');
-
+        COM_redirect($_CONF['site_url'] . '/index.php?msg=1&amp;plugin=links');
     } else { // add link directly
-
         if (SEC_hasRights('links.submit')) {
             $A['group_id'] = SEC_getFeatureGroup('links.submit');
         } else {
@@ -1144,9 +1149,7 @@ function plugin_save_submit_links($A)
             LINKS_sendNotification($_TABLES['links'], $A);
         }
         COM_rdfUpToDateCheck('links', $A['cid'], $A['lid']);
-
-        $retval = COM_refresh($_CONF['site_url']
-                              . '/index.php?msg=4&amp;plugin=links');
+        COM_redirect($_CONF['site_url'] . '/index.php?msg=4&amp;plugin=links');
     }
 
     return $retval;
@@ -1889,5 +1892,3 @@ function plugin_group_changed_links($grp_id, $mode)
         $result = DB_query($sql);
    }
 }
-
-?>

@@ -51,12 +51,14 @@ require_once 'oauth/oauth_client.php';
 // Enable to show debug info for OAuth
 $_SYSTEM['debug_oauth'] = false;
 
-class OAuthConsumer {
+class OAuthConsumer
+{
     protected $consumer = NULL;
     protected $client = NULL;
     var $error = '';
 
-    public function OAuthConsumer($service) {
+    public function __construct($service)
+    {
         global $_CONF,$_SYSTEM;
 
         if (strpos($service, 'oauth.') === 0) {
@@ -127,7 +129,8 @@ class OAuthConsumer {
         $this->q_api   = $q_api;
     }
 
-    public function authenticate_user() {
+    public function authenticate_user()
+    {
         global $_SYSTEM;
         if ( ($success = $this->client->Initialize() ) ) {
             if ( ($success = $this->client->Process() ) ) {
@@ -151,8 +154,8 @@ class OAuthConsumer {
         return $success;
     }
 
-    public function get_userinfo() {
-
+    public function get_userinfo()
+    {
          if (strlen($this->client->access_token)) {
             $success = $this->client->CallAPI(
                 $this->api_url,
@@ -168,11 +171,13 @@ class OAuthConsumer {
         }
     }
 
-    public function setRedirectURL($url) {
+    public function setRedirectURL($url)
+    {
             $this->client->redirect_uri  = $url;
     }
 
-    public function doAction($info) {
+    public function doAction($info)
+    {
         global $_TABLES, $status, $uid, $_CONF;
 
         // remote auth precludes usersubmission, and integrates user activation
@@ -218,7 +223,8 @@ class OAuthConsumer {
         }
     }
 
-    public function doSynch($info) {
+    public function doSynch($info)
+    {
         global $_TABLES, $_USER, $status, $uid, $_CONF;
 
         // remote auth precludes usersubmission and integrates user activation
@@ -257,7 +263,8 @@ class OAuthConsumer {
 
     }
 
-    protected function _getUpdateUserInfo($info) {
+    protected function _getUpdateUserInfo($info)
+    {
         $userinfo = array();
         switch ( $this->client->server ) {
             case 'facebook' :
@@ -291,9 +298,8 @@ class OAuthConsumer {
         return $userinfo;
     }
 
-
-    protected function _getCreateUserInfo($info) {
-
+    protected function _getCreateUserInfo($info)
+    {
         switch ( $this->client->server ) {
             case 'facebook' :
                 $users = array(
@@ -391,7 +397,8 @@ class OAuthConsumer {
         return $users;
     }
 
-    protected function _DBupdate_userinfo($uid, $userinfo) {
+    protected function _DBupdate_userinfo($uid, $userinfo)
+    {
         global $_TABLES;
         if (!empty($userinfo['about']) || !empty($userinfo['location'])) {
             $sql = "UPDATE {$_TABLES['userinfo']} SET";
@@ -403,7 +410,8 @@ class OAuthConsumer {
         }
     }
 
-    protected function _DBupdate_users($uid, $users) {
+    protected function _DBupdate_users($uid, $users)
+    {
         global $_TABLES, $_CONF;
 
         $photo = '';
@@ -440,7 +448,8 @@ class OAuthConsumer {
         DB_query($sql);
     }
 
-    protected function _saveUserPhoto($from, $to) {
+    protected function _saveUserPhoto($from, $to)
+    {
         // Use Pear HTTP Request 2 since first Facebook url to profile picture redirects to a new location
         $ret = '';
         require_once 'HTTP/Request2.php';
@@ -464,7 +473,8 @@ class OAuthConsumer {
         return $ret;
     }
 
-    protected function _getImageExt($img, $dot = true) {
+    protected function _getImageExt($img, $dot = true)
+    {
         $size = @getimagesize($img);
         switch ($size['mime']) {
             case 'image/gif':
@@ -483,7 +493,8 @@ class OAuthConsumer {
         return ($dot ? '.' : '') . $ext;
     }
 
-    protected function _handleImageResize($to_path) {
+    protected function _handleImageResize($to_path)
+    {
         global $_CONF;
 
         require_once ($_CONF['path_system'] . 'classes/upload.class.php');
@@ -574,5 +585,3 @@ class OAuthConsumer {
         return $path; // return new path and filename
     }
 }
-
-?>
