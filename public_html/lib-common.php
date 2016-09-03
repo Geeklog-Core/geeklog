@@ -6887,17 +6887,43 @@ function COM_convertDate2Timestamp($date, $time = '')
  */
 function COM_getImgSizeAttributes($file)
 {
-    $sizeattributes = '';
+    $sizeAttributes = '';
 
     if (file_exists($file)) {
-        $dimensions = getimagesize($file);
-        if (!empty($dimensions[0]) && !empty($dimensions[1])) {
-            $sizeattributes = 'width="' . $dimensions[0]
-                . '" height="' . $dimensions[1] . '" ';
+        if (preg_match('/\.svgz?$/i', $file)) {
+            // SVG file
+            $content = @file_get_contents($file);
+            $content = str_replace(array("\n", "\r"), ' ', $content);
+
+            if (preg_match('/<svg[^>]+>/', $content, $m)) {
+                $line = $m[0];
+                $width = '?';
+
+                if (preg_match('/width="([^"]*)"/', $line, $match)) {
+                    $width = $match[1];
+                }
+
+                $height = '?';
+
+                if (preg_match('/height="([^"]*)"/', $line, $match)) {
+                    $height = $match[1];
+                }
+
+                if (($width !== '?') && ($height !== '?')) {
+                    $sizeAttributes = 'width="' . $width . '" height="' . $height . '" ';
+                }
+            }
+        } else {
+            // Other file type
+            $dimensions = getimagesize($file);
+            if (!empty($dimensions[0]) && !empty($dimensions[1])) {
+                $sizeAttributes = 'width="' . $dimensions[0]
+                    . '" height="' . $dimensions[1] . '" ';
+            }
         }
     }
 
-    return $sizeattributes;
+    return $sizeAttributes;
 }
 
 /**
