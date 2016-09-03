@@ -208,7 +208,7 @@ CREATE TABLE {$_TABLES['groups']} (
   CREATE UNIQUE INDEX {$_TABLES['groups']}_grp_name ON {$_TABLES['groups']}(grp_name);
 ";
 
-$_SQL = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['language_items']} (
   id SERIAL NOT NULL,
   var_name VARCHAR(30) NOT NULL,
