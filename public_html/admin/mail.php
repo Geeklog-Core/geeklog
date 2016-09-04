@@ -157,6 +157,7 @@ function display_mailform($vars = array())
     $mail_templates->set_var('lang_urgent', $LANG31[11]);
     $mail_templates->set_var('lang_ignoreusersettings', $LANG31[14]);
     $mail_templates->set_var('lang_send', $LANG31[12]);
+    $mail_templates->set_var('lang_mail_templatevars', $LANG31[27]);
     $mail_templates->set_var('end_block',
             COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
     $mail_templates->set_var('gltoken_name', CSRF_TOKEN);

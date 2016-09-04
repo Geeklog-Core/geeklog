@@ -1206,7 +1206,8 @@ $LANG31 = array(
     23 => '失敗した送信先はありません',
     24 => '成功した送信先はありません',
     25 => '-- グループを選択 --',
-    26 => 'すべてのフィールドに入力してください。また、グループはドロップダウンメニューから選択してください。'
+    26 => 'すべてのフィールドに入力してください。また、グループはドロップダウンメニューから選択してください。',
+    27 => '次のテンプレート変数が<strong>件名</strong>と<strong>内容</strong>で使用できます: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}',
 );
 
 ###############################################################################
@@ -1783,7 +1784,7 @@ $LANG_SECTEST = array(
     'remove_inst' => 'いったんサイトが立ち上って正常に動き始めたら、必ずinstallディレクトリ%sを削除してください。',
     'remove_inst2' => 'そのままにしておくとインストールしたGeeklogを破壊、サイトの乗っ取っとり、重要な情報を読み出すといったことを悪意のあるユーザーに許してしまいます。',
     'inst_removed' => 'Good! あなたは既にinstallディレクトリを削除しています。',
-    'fix_password' => 'あなたはまだ %s の Rootユーザーアカウントの<strong>パスワード</strong>をデフォルトの"password"から変更していません。',
+    'fix_password' => 'あなたはまだRootユーザーアカウントの<strong>パスワード</strong>を初期値のままで使用しています。',
     'password_okay' => 'Good! Rootユーザーアカウントのパスワードをデフォルトから変更しています。'
 );
 
