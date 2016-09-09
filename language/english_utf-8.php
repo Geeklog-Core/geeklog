@@ -1368,7 +1368,7 @@ $LANG_LANG = array(
 # admin/router.php
 
 $LANG_ROUTER = array(
-    1 => 'URL routing',
+    1 => 'URL Routing',
     2 => 'Routing Manager',
     3 => 'ID',
     4 => 'method',
@@ -2223,7 +2223,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => "Censor List",
     'ip_lookup' => "IP Lookup",
     'url_rewrite' => "Enable URL Rewrite",
-    'url_routing' => 'Enable URL routing',
+    'url_routing' => 'Enable URL Routing',
     'cdn_hosted' => "Use CDN-hosted copy of jQuery",
     'meta_tags' => "Meta Tags",
     'meta_description' => "Default Meta Description",
