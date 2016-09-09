@@ -1717,6 +1717,7 @@ function plugin_configchange_article($group, $changes = array())
             in_array('allow_page_breaks', $changes) ||
             in_array('page_break_comments', $changes) ||
             in_array('url_rewrite', $changes) ||
+            in_array('url_routing', $changes) ||
             in_array('hideviewscount', $changes) ||
             in_array('hideemailicon', $changes) ||
             in_array('loginrequired', $changes) ||
