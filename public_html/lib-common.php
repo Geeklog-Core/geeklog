@@ -88,6 +88,10 @@ require_once 'siteconfig.php';
 
 COM_checkInstalled();
 
+// Register autoloader
+require_once $_CONF['path_system'] . 'classes/Autoload.php';
+Geeklog\Autoload::initialize();
+
 /**
  * Configuration class
  */
@@ -3932,9 +3936,10 @@ function COM_emailEscape($string)
  * Takes a name and an email address and returns a string that vaguely
  * resembles an email address specification conforming to RFC(2)822 ...
  *
- * @param    string $name    name, e.g. John Doe
- * @param    string $address email address only, e.g. john.doe@example.com
- * @return   string              formatted email address
+ * @param      string $name    name, e.g. John Doe
+ * @param      string $address email address only, e.g. john.doe@example.com
+ * @return     string                formatted email address
+ * @deprecated since v2.1.2
  */
 function COM_formatEmailAddress($name, $address)
 {
@@ -3962,113 +3967,19 @@ function COM_formatEmailAddress($name, $address)
  * NOTE: Please note that using CC: will expose the email addresses of
  *       all recipients. Use with care.
  *
- * @param    string  $to       recipients name and email address
- * @param    string  $subject  subject of the email
- * @param    string  $message  the text of the email
- * @param    string  $from     (optional) sender of the the email
- * @param    boolean $html     (optional) true if to be sent as HTML email
- * @param    int     $priority (optional) add X-Priority header, if > 0
- * @param    mixed   $optional (optional) other headers or CC:
- * @return   boolean                 true if successful,  otherwise false
+ * @param    string|array $to          recipient's email address | array(email address => recipient's name)
+ * @param    string       $subject     subject of the email
+ * @param    string       $message     the text of the email
+ * @param    string|array $from        (optional) sender's email address | array(email address > sender's name)
+ * @param    bool         $html        (optional) true if to be sent as HTML email
+ * @param    int          $priority    (optional) add X-Priority header, if > 0
+ * @param    mixed        $optional    (optional) other headers or CC:
+ * @param    array        $attachments (optional) array of file names to attach
+ * @return   bool                      true if successful,  otherwise false
  */
-function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null)
+function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
-    global $_CONF;
-
-    static $mailobj;
-
-    // Emails should be validated already but double check not empty (OAuth user most likely)
-    // Can't use COM_isEmail to validate as some mail forms (like profiles.php) uses COM_formatEmailAddress on to address which does not validate
-    // COM_isEmail should be fixed at some point to handle email address that have used COM_formatEmailAddress ...
-    if (!empty($to)) {
-        if (empty($from)) {
-            $from = COM_formatEmailAddress($_CONF['site_name'], $_CONF['site_mail']);
-        }
-
-        $to = substr($to, 0, strcspn($to, "\r\n"));
-        if (($optional != null) && !is_array($optional)) {
-            $optional = substr($optional, 0, strcspn($optional, "\r\n"));
-        }
-        $from = substr($from, 0, strcspn($from, "\r\n"));
-        $subject = substr($subject, 0, strcspn($subject, "\r\n"));
-        $subject = COM_emailEscape($subject);
-
-        if (function_exists('CUSTOM_mail')) {
-            return CUSTOM_mail($to, $subject, $message, $from, $html, $priority,
-                $optional);
-        }
-
-        include_once 'Mail.php';
-        include_once 'Mail/RFC822.php';
-
-        $method = $_CONF['mail_settings']['backend'];
-
-        if (!isset($mailobj)) {
-            if (($method === 'sendmail') || ($method === 'smtp')) {
-                $mailobj = Mail::factory($method, $_CONF['mail_settings']);
-            } else {
-                $method = 'mail';
-                $mailobj = Mail::factory($method);
-            }
-        }
-
-        $charset = COM_getCharset();
-        $headers = array();
-
-        $headers['From'] = $from;
-        if ($method !== 'mail') {
-            $headers['To'] = $to;
-        }
-        if (($optional != null) && !is_array($optional) && !empty($optional)) {
-            // assume old (optional) CC: header
-            $headers['Cc'] = $optional;
-        }
-        $headers['Date'] = date('r'); // RFC822 formatted date
-        if ($method === 'smtp') {
-            list($usec, $sec) = explode(' ', microtime());
-            $m = substr($usec, 2, 5);
-            $headers['Message-Id'] = '<' . date('YmdHis') . '.' . $m
-                . '@' . $_CONF['mail_settings']['host'] . '>';
-        }
-        if ($html) {
-            $headers['Content-Type'] = 'text/html; charset=' . $charset;
-            $headers['Content-Transfer-Encoding'] = '8bit';
-        } else {
-            $headers['Content-Type'] = 'text/plain; charset=' . $charset;
-        }
-        $headers['Subject'] = $subject;
-        if ($priority > 0) {
-            $headers['X-Priority'] = $priority;
-        }
-        $headers['X-Mailer'] = 'Geeklog ' . VERSION;
-
-        if (!empty($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['SERVER_ADDR']) &&
-            ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])
-        ) {
-            $url = COM_getCurrentURL();
-            if (substr($url, 0, strlen($_CONF['site_admin_url']))
-                != $_CONF['site_admin_url']
-            ) {
-                $headers['X-Originating-IP'] = $_SERVER['REMOTE_ADDR'];
-            }
-        }
-
-        // add optional headers last
-        if (($optional != null) && is_array($optional)) {
-            foreach ($optional as $h => $v) {
-                $headers[$h] = $v;
-            }
-        }
-
-        $retval = $mailobj->send($to, $headers, $message);
-        if ($retval !== true) {
-            COM_errorLog($retval->toString(), 1);
-        }
-    } else {
-        COM_errorLog("Invalid To address '$to' sent to COM_Mail.", 1);
-    }
-
-    return ($retval === true);
+    return \Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
 }
 
 /**
@@ -4990,7 +4901,7 @@ function COM_emailUserTopics()
         $mailtext .= "\n$LANG08[34]\n";
         $mailtext .= "\n------------------------------\n";
 
-        $mailto = $U['username'] . ' <' . $U['email'] . '>';
+        $mailto = array($U['email'] => $U['username']);
 
         if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
             $mailfrom = $_CONF['noreply_mail'];

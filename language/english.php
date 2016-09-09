@@ -1203,7 +1203,8 @@ $LANG31 = array(
     23 => 'No failures',
     24 => 'No successes',
     25 => '-- Select Group --',
-    26 => 'Please fill in all the fields on the form and select a group of users from the drop down.'
+    26 => 'Please fill in all the fields on the form and select a group of users from the drop down.',
+    27 => 'The following template variables are available in <strong>Subject</strong> and <strong>Message</strong>: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}',
 );
 
 ###############################################################################
@@ -1992,6 +1993,7 @@ $LANG_confignames['Core'] = array(
     'noreply_mail' => "No-Reply E-Mail",
     'mail_cc_enabled' => 'Allow to Send Carbon Copies',
     'mail_cc_default' => '"Carbon Copy" on by Default',
+    'mail_charset' => 'Email Character Set',
     'site_name' => "Site Name",
     'site_slogan' => "Slogan",
     'owner_name' => "Owner Name",

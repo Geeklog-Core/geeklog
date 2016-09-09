@@ -82,5 +82,8 @@ function update_ConfValuesFor212()
     // New url routing option
     $c->add('url_routing',0,'select',0,0,37,1850,TRUE, $me, 0);
 
+    // Add mail charset
+    $c->add('mail_charset', '', 'text', 0, 1, NULL, 195, TRUE, $me, 1);
+
     return true;
 }
