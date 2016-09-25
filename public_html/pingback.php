@@ -123,7 +123,6 @@ function PNB_handlePingback($id, $type, $url, $oururl)
     $title = '';
     $excerpt = '';
 
-    require_once 'HTTP/Request2.php';
     $req = new HTTP_Request2($url, HTTP_Request2::METHOD_GET);
     $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
 

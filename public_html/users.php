@@ -491,8 +491,6 @@ function resend_request()
 {
     global $_CONF;
 
-    require_once 'HTTP/Request2.php';
-
     $method = '';
     if (isset($_POST['token_requestmethod'])) {
         $method = COM_applyFilter($_POST['token_requestmethod']);

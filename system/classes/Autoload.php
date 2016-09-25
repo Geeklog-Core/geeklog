@@ -26,6 +26,7 @@ class Autoload
         }
 
         if (strpos($className, 'Geeklog\\') === 0) {
+            // New classes under \Geeklog namespace
             $className = str_replace('Geeklog\\', '', $className);
             $className = ucfirst($className);
             $path = __DIR__ . DIRECTORY_SEPARATOR . $className . '.php';
@@ -37,6 +38,14 @@ class Autoload
                 if (method_exists($className, 'init')) {
                     $className::init();
                 }
+            }
+        } else {
+            // Legacy Geeklog classes
+            $path = __DIR__ . DIRECTORY_SEPARATOR . strtolower($className) . '.class.php';
+
+            if (file_exists($path)) {
+                /** @noinspection PhpIncludeInspection */
+                include $path;
             }
         }
     }

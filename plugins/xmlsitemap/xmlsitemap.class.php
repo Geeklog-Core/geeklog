@@ -592,8 +592,6 @@ class SitemapXML
         $sitemapUrl = $_CONF['site_url'] . '/' . basename($sitemap);
         $sitemapUrl = urlencode($sitemapUrl);
 
-        require_once 'HTTP/Request2.php';
-
         foreach ($destinations as $dest) {
             $dest = strtolower($dest);
 

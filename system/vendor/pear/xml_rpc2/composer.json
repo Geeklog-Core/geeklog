@@ -1,0 +1,44 @@
+{
+    "name": "pear/xml_rpc2",
+    "description": "More info available on: http://pear.php.net/package/XML_RPC2",
+    "type": "library",
+    "license": "LGPL-2.1",
+    "support": {
+        "docs": "http://pear.php.net/package/XML_RPC2",
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=XML_RPC2",
+        "source": "https://github.com/pear/XML_RPC2"
+    },
+    "authors": [
+        {
+            "email": "sergiosgc@php.net",
+            "name": "Sergio Carvalho",
+            "role": "Lead"
+        },
+        {
+            "email": "fab@php.net",
+            "name": "Fabien MARTY",
+            "role": "Developer"
+        },
+        {
+            "email": "jal@ambitonline.com",
+            "name": "Alan Langford",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0",
+        "pear/pear_exception": "^1.0.0",
+        "pear/http_request2": "^2.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "XML_RPC2": ""
+        }
+    },
+    "include-path": [
+        "./"
+    ]
+}

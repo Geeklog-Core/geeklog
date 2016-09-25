@@ -44,11 +44,7 @@ require_once 'XML/RPC.php';
  */
 function PNB_getPingbackUrl($url)
 {
-    require_once 'HTTP/Request2.php';
-
-    $retval = '';
-
-    $req = new HTTP_Request2($url, HTTP_Request2::MEHOD_HEAD);
+    $req = new HTTP_Request2($url, HTTP_Request2::METHOD_HEAD);
     $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
     try {
         $response = $req->send();
