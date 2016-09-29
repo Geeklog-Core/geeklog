@@ -121,7 +121,7 @@ function theme_css_denim()
     );
 
     if (!empty($theme_var_denim['uikit_components'])) {
-        $uikit_components = array_unique($theme_var_denim['uikit_components']);
+        $uikit_components = array_merge($theme_var_denim['uikit_components']);
         foreach ($uikit_components as $component => $value) {
             if ($value === 1) {
                 $componame = str_replace('_', '-', $component);
@@ -171,7 +171,7 @@ function theme_js_files_denim()
     );
 
     if (!empty($theme_var_denim['uikit_components'])) {
-        $uikit_components = array_unique($theme_var_denim['uikit_components']);
+        $uikit_components = array_merge($theme_var_denim['uikit_components']);
         foreach ($uikit_components as $component => $value) {
             if ($value === 1) {
                 $componame = str_replace('_', '-', $component);
