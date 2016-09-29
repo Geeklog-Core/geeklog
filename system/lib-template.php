@@ -369,11 +369,16 @@ function plugin_configchange_template($group, $changes = array())
 {
     global $_TABLES, $_CONF;
 
-    if ($group == 'Core' AND (in_array('cache_templates', $changes) OR in_array('template_comments', $changes)
-                               OR in_array('language', $changes) OR in_array('language_files', $changes) OR in_array('languages', $changes))) {
-        // If template comments disabled or enabled clear all cached templates
+    if ($group == 'Core' AND (in_array('cache_templates', $changes) 
+                                OR in_array('template_comments', $changes)
+                                OR in_array('language', $changes) 
+                                OR in_array('language_files', $changes) OR in_array('languages', $changes)
+                                OR in_array('url_rewrite', $changes) OR in_array('url_routing', $changes)
+                            )) {
         // To be safe clear cache on enabling and disabling of cache
-        // Also clear on config language chages since some cache instances may get messed up going from a single language to multi lanugage setup
+        // If template comments disabled or enabled clear all cached templates
+        // Also clear on config language changes since some cache instances may get messed up going from a single language to multi language setup
+        // Clear cache on change of URL Rewrite and URL Rewriting
         CTL_clearCache();
     } elseif ($group == 'Core' AND (in_array('sortmethod', $changes) OR
                               in_array('showstorycount', $changes) OR

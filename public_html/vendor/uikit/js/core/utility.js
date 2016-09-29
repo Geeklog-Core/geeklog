@@ -1,4 +1,4 @@
-/*! UIkit 2.26.4 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.27.1 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(UI) {
 
     "use strict";
@@ -168,7 +168,7 @@
     UI.Utils.stackMargin = function(elements, options) {
 
         options = UI.$.extend({
-            'cls': 'uk-margin-small-top'
+            cls: 'uk-margin-small-top'
         }, options);
 
         elements = UI.$(elements).removeClass(options.cls);
@@ -315,5 +315,24 @@
         });
 
     })({});
+
+    UI.Utils.getCssVar = function(name) {
+
+        /* usage in css:  .var-name:before { content:"xyz" } */
+
+        var val, doc = document.documentElement, element = doc.appendChild(document.createElement('div'));
+
+        element.classList.add('var-'+name);
+
+        try {
+            val = JSON.parse(val = getComputedStyle(element, ':before').content.replace(/^["'](.*)["']$/, '$1'));
+        } catch (e) {
+            val = undefined;
+        }
+
+        doc.removeChild(element);
+
+        return val;
+    }
 
 })(UIkit);

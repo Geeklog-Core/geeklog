@@ -26,9 +26,10 @@
 
       <dt><label for="admin-mailform-html">{lang_options}</label></dt>
       <dd>
-        <input type="checkbox" name="html" id="admin-mailform-html"{html}{xhtml}>{lang_HTML}
-        <input type="checkbox" name="priority"{priority}{xhtml}>{lang_urgent}
-        <input type="checkbox" name="overstyr"{overstyr}{xhtml}>{lang_ignoreusersettings}
+        <input type="checkbox" name="html" id="admin-mailform-html"{html}{xhtml}><label for="admin-mailform-html">{lang_HTML}</label>
+        <input type="checkbox" name="priority" id="admin-mailform-priority"{priority}{xhtml}><label for="admin-mailform-priority">{lang_urgent}</label>
+        <input type="checkbox" name="overstyr" id="admin-mailform-overstyr"{overstyr}{xhtml}><label for="admin-mailform-overstyr">{lang_ignoreusersettings}</label>
+        <p>{lang_mail_templatevars}</p>
       </dd>
     </dl>
 

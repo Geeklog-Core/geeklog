@@ -84,6 +84,7 @@ $_CONF_VALIDATE['Core']['mail_settings[username]'] = array('rule' => 'notEmpty')
 $_CONF_VALIDATE['Core']['mail_settings[password]'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['cc_enabled'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['cc_default'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['mail_charset'] = array('rule' => 'stringOrEmpty');
 
 /* Subgroup Site, Tab Syndication */
 $_CONF_VALIDATE['Core']['backend'] = array('rule' => 'boolean');

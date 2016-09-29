@@ -1203,7 +1203,8 @@ $LANG31 = array(
     23 => 'No failures',
     24 => 'No successes',
     25 => '-- Select Group --',
-    26 => 'Please fill in all the fields on the form and select a group of users from the drop down.'
+    26 => 'Please fill in all the fields on the form and select a group of users from the drop down.',
+    27 => 'The following template variables are available in <strong>Subject</strong> and <strong>Message</strong>: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}',
 );
 
 ###############################################################################
@@ -1367,7 +1368,7 @@ $LANG_LANG = array(
 # admin/router.php
 
 $LANG_ROUTER = array(
-    1 => 'URL routing',
+    1 => 'URL Routing',
     2 => 'Routing Manager',
     3 => 'ID',
     4 => 'method',
@@ -2222,7 +2223,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => "Censor List",
     'ip_lookup' => "IP Lookup",
     'url_rewrite' => "Enable URL Rewrite",
-    'url_routing' => 'Enable URL routing',
+    'url_routing' => 'Enable URL Routing',
     'cdn_hosted' => "Use CDN-hosted copy of jQuery",
     'meta_tags' => "Meta Tags",
     'meta_description' => "Default Meta Description",
