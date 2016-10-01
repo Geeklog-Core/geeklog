@@ -47,6 +47,12 @@ class Autoload
                 /** @noinspection PhpIncludeInspection */
                 include $path;
             }
+
+            if (stripos($className, 'XML_RPC_Server') === 0) {
+                include __DIR__ . DIRECTORY_SEPARATOR . 'XML/RPC/Server.php';
+            } elseif (stripos($className, 'XML_RPC_') === 0) {
+                include __DIR__ . DIRECTORY_SEPARATOR . 'XML/RPC.php';
+            }
         }
     }
 

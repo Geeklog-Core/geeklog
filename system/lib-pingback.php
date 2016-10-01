@@ -33,9 +33,6 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-pingback.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-// PEAR class to handle XML-RPC
-require_once 'XML/RPC.php';
-
 /**
  * Get the Pingback URL for a given URL
  *
@@ -121,14 +118,14 @@ function PNB_sendPingback($sourceURI, $targetURI)
     $client = new XML_RPC_Client ($parts['path'], $parts['host'], $parts['port']);
     //$client->setDebug (1);
 
-    $msg = new XML_RPC_Message ('pingback.ping',
-        array(new XML_RPC_Value ($sourceURI, 'string'),
-            new XML_RPC_Value ($targetURI, 'string')));
+    $msg = new XML_RPC_Message('pingback.ping',
+        array(new XML_RPC_Value($sourceURI, 'string'),
+            new XML_RPC_Value($targetURI, 'string')));
 
     $response = $client->send($msg, 0, $parts['scheme']);
     if (!is_object($response) && ($response == 0)) {
-        $retval = $client->errstring;
-    } else if ($response->faultCode() != 0) {
+        $retval = $client->getErrorString();
+    } elseif ($response->faultCode() != 0) {
         $retval = $response->faultString();
     }
 
