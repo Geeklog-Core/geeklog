@@ -18,12 +18,6 @@
 
 
 /**
- * Pull in the XML_RPC class
- */
-require_once 'XML/RPC.php';
-
-
-/**
  * Generates the dump of the XML_RPC_Value and echoes it
  *
  * @param object $value  the XML_RPC_Value object to dump

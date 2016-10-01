@@ -48,8 +48,6 @@ class SLVbase
     {
         global $_SPX_CONF;
 
-        require_once 'XML/RPC.php';
-
         $retval = false;
 
         if (empty($post)) {
