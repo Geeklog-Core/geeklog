@@ -298,7 +298,6 @@ class SitemapXML
         if ($retval === null) {
             if (isset($_CONF['timezone'])) {
                 $timezone = $_CONF['timezone'];
-                require_once 'Date/TimeZone.php';
 
                 if (array_key_exists($timezone, $GLOBALS['_DATE_TIMEZONE_DATA'])) {
                     $offset = $GLOBALS['_DATE_TIMEZONE_DATA'][$timezone]['offset'];

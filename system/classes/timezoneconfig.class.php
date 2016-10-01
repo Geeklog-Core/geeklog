@@ -129,8 +129,6 @@ class TimeZoneConfig
         } elseif (function_exists('date_default_timezone_get')) {
             $timezone = @date_default_timezone_get();
         } else {
-            require_once 'Date/TimeZone.php';
-
             $tz_obj = Date_TimeZone::getDefault();
             $timezone = $tz_obj->id;
         }
@@ -219,9 +217,6 @@ class TimeZoneConfig
             }
 
         } else { // DateTimeZone not available - use PEAR Date class
-
-            require_once 'Date/TimeZone.php';
-
             $T = $GLOBALS['_DATE_TIMEZONE_DATA'];
 
             foreach ($T as $tzid => $tDetails) {

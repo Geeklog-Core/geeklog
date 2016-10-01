@@ -52,6 +52,8 @@ class Autoload
                 include __DIR__ . DIRECTORY_SEPARATOR . 'XML/RPC/Server.php';
             } elseif (stripos($className, 'XML_RPC_') === 0) {
                 include __DIR__ . DIRECTORY_SEPARATOR . 'XML/RPC.php';
+            } elseif (stripos($className, 'Date_TimeZone') === 0) {
+                include __DIR__ . DIRECTORY_SEPARATOR . 'Date/TimeZone.php';
             }
         }
     }
