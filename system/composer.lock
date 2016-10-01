@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d09dffb68c6f90b85ea4ba6d68725b8",
-    "content-hash": "e2eafa8e9b397400570146e8f795cd78",
+    "hash": "a0e3f7b594dcd38ae90bc2a9eaa91aad",
+    "content-hash": "6b467b67cc112d1b4304a47f92e20b10",
     "packages": [
         {
             "name": "pear/console_getopt",
@@ -316,61 +316,6 @@
                 "exception"
             ],
             "time": "2015-02-10 20:07:52"
-        },
-        {
-            "name": "pear/xml_rpc2",
-            "version": "1.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pear/XML_RPC2.git",
-                "reference": "085e9da0896e2bd4fb7479dc0d5e40f0731582f0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pear/XML_RPC2/zipball/085e9da0896e2bd4fb7479dc0d5e40f0731582f0",
-                "reference": "085e9da0896e2bd4fb7479dc0d5e40f0731582f0",
-                "shasum": ""
-            },
-            "require": {
-                "pear/http_request2": "^2.3.0",
-                "pear/pear_exception": "^1.0.0",
-                "php": ">=5.2.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "XML_RPC2": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "./"
-            ],
-            "license": [
-                "LGPL-2.1"
-            ],
-            "authors": [
-                {
-                    "name": "Sergio Carvalho",
-                    "email": "sergiosgc@php.net",
-                    "role": "Lead"
-                },
-                {
-                    "name": "Fabien MARTY",
-                    "email": "fab@php.net",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Alan Langford",
-                    "email": "jal@ambitonline.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "More info available on: http://pear.php.net/package/XML_RPC2",
-            "time": "2016-06-21 19:29:17"
         },
         {
             "name": "splitbrain/php-archive",

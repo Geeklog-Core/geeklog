@@ -25,13 +25,6 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
     );
 
     public static $prefixesPsr0 = array (
-        'X' => 
-        array (
-            'XML_RPC2' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/xml_rpc2',
-            ),
-        ),
         'P' => 
         array (
             'PEAR' => 

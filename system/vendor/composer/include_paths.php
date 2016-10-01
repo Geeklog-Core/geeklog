@@ -10,5 +10,4 @@ return array(
     $vendorDir . '/pear/console_getopt',
     $vendorDir . '/pear/pear-core-minimal/src',
     $vendorDir . '/pear/http_request2',
-    $vendorDir . '/pear/xml_rpc2',
 );
