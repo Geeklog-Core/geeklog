@@ -275,9 +275,7 @@ class GLText
             return $wikitext;
         }
 
-        require_once 'Text/Wiki.php';
-
-        $wiki = new Text_Wiki();
+        $wiki = new Geeklog\Text\Wiki();
         $wiki->setFormatConf('Xhtml', 'translate', HTML_SPECIALCHARS);
         $wiki->setRenderConf('Xhtml', 'charset', COM_getCharset());
         $wiki->disableRule('wikilink');
