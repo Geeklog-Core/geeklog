@@ -69,8 +69,6 @@ $failed_tests = 0;
  */
 function doHeadRequest($url, &$errmsg)
 {
-    require_once 'HTTP/Request2.php';
-
     $req = new HTTP_Request2($url, HTTP_Request2::METHOD_HEAD);
     $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
 

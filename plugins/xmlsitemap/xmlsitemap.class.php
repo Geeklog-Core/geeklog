@@ -298,7 +298,6 @@ class SitemapXML
         if ($retval === null) {
             if (isset($_CONF['timezone'])) {
                 $timezone = $_CONF['timezone'];
-                require_once 'Date/TimeZone.php';
 
                 if (array_key_exists($timezone, $GLOBALS['_DATE_TIMEZONE_DATA'])) {
                     $offset = $GLOBALS['_DATE_TIMEZONE_DATA'][$timezone]['offset'];
@@ -591,8 +590,6 @@ class SitemapXML
         $success = 0;
         $sitemapUrl = $_CONF['site_url'] . '/' . basename($sitemap);
         $sitemapUrl = urlencode($sitemapUrl);
-
-        require_once 'HTTP/Request2.php';
 
         foreach ($destinations as $dest) {
             $dest = strtolower($dest);

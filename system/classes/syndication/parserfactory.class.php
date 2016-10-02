@@ -28,8 +28,6 @@
 /*     distribution.                                                        */
 /****************************************************************************/
 
-require_once 'HTTP/Request2.php';
-
 /**
 * FeedParserFactory provides generic access to syndication feed formats.
 *

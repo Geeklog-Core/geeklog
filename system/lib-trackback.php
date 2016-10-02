@@ -464,8 +464,6 @@ function TRB_linksToUs($sid, $type, $urlToGet)
         return true;
     }
 
-    require_once('HTTP/Request2.php');
-
     $retval = false;
 
     if ($_CONF['check_trackback_link'] & 2) {
@@ -792,8 +790,6 @@ function TRB_sendTrackbackPing($targeturl, $url, $title, $excerpt, $blog = '')
  */
 function TRB_detectTrackbackUrl($url)
 {
-    require_once('HTTP/Request2.php');
-
     $retval = false;
 
     $req = new HTTP_Request2($url, HTTP_Request2::METHOD_GET);

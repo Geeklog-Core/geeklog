@@ -91,8 +91,6 @@ class SFS extends BaseCommand
             $query .= "&ip=$ip";
         }
 
-        require_once 'HTTP/Request2.php';
-
         $req = new HTTP_Request2(
             $query,
             HTTP_Request2::METHOD_GET,
