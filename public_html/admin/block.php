@@ -797,7 +797,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
             $rdfurl = DB_escapeString($rdfurl);
         }
         if (empty ($rdfupdated)) {
-            $rdfupdated = '0000-00-00 00:00:00';
+            $rdfupdated = 'NOW()';
         }
 
         if ($bid > 0) {
@@ -806,7 +806,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
             $sql = array();
             $sql['mysql'] = "INSERT INTO {$_TABLES['blocks']} "
                 . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-                . "VALUES ('$name','$title','$help','$type','$blockorder','$device','$content','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+                . "VALUES ('$name','$title','$help','$type','$blockorder','$device','$content','$rdfurl',{$rdfupdated},'$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
 
             $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
                 . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '

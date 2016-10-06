@@ -70,7 +70,6 @@ define('TEMPLATE_EXISTS', file_exists($_CONF['path_themes']
  * @todo     Bug: Will fail from 2038 onwards ...
  *                      "The last day of any given month can be expressed as the "0" day
  *                      of the next month", http://www.php.net/manual/en/function.mktime.php
-
  */
 function DIR_lastDayOfMonth($month, $year)
 {
@@ -355,8 +354,8 @@ function DIR_displayYear($template, $dir_topic, $year)
         $monthsql['mysql'] .= COM_getTopicSql('AND', 0, 'ta');
         $monthsql['pgsql'] .= COM_getTopicSql('AND', 0, 'ta');
     }
-    $monthsql['mysql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY MONTH(date) ORDER BY date ASC";
-    $monthsql['pgsql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY month,date ORDER BY DATE ASC";
+    $monthsql['mysql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY month, date ORDER BY date ASC";
+    $monthsql['pgsql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY month, date ORDER BY DATE ASC";
 
     $mresult = DB_query($monthsql);
     $nummonths = DB_numRows($mresult);
@@ -417,21 +416,21 @@ function DIR_displayAll($template, $dir_topic)
     $retval = '';
 
     $yearsql = array();
-    $yearsql['mysql'] = "SELECT DISTINCT YEAR(date) AS year,date
+    $yearsql['mysql'] = "SELECT DISTINCT YEAR(date) AS year, date
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
         WHERE (draft_flag = 0) AND (date <= NOW())
         AND ta.type = 'article' AND ta.id = sid
         " . COM_getTopicSql('AND', 0, 'ta') . COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND');
 
-    $yearsql['pgsql'] = "SELECT EXTRACT( YEAR from date) AS year
+    $yearsql['pgsql'] = "SELECT EXTRACT(YEAR from date) AS year
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
         WHERE (draft_flag = 0) AND (date <= NOW())
         AND ta.type = 'article' AND ta.id = sid
         " . COM_getTopicSql('AND', 0, 'ta') . COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND');
 
     $ysql = array();
-    $ysql['mysql'] = $yearsql['mysql'] . " GROUP BY YEAR(date) ORDER BY date DESC";
-    $ysql['pgsql'] = $yearsql['pgsql'] . " GROUP BY year,date ORDER BY year DESC";
+    $ysql['mysql'] = $yearsql['mysql'] . " GROUP BY year, date ORDER BY date DESC";
+    $ysql['pgsql'] = $yearsql['pgsql'] . " GROUP BY year, date ORDER BY year DESC";
 
     $yresult = DB_query($ysql);
     $numyears = DB_numRows($yresult);
