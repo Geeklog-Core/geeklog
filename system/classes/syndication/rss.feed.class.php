@@ -29,55 +29,55 @@
 /****************************************************************************/
 
 /**
-* Provides feed handlers for RSS 0.9x and RSS 2.0
-*
-* This library file provides multiple class definitions for dealing with
-* variants of the RSS syndication format. We will <b>not</b> handle RSS 1.0
-* however, that is RDF and handled in a seperate case. This is purely for
-* the original RSS and the 2.0 that was created to deal with the fact
-* that RDF was overkill for the original purpose of RSS.
-*
-* @author Michael Jervis (mike@fuckingbrit.com)
-* @version 1.0
-*/
+ * Provides feed handlers for RSS 0.9x and RSS 2.0
+ * This library file provides multiple class definitions for dealing with
+ * variants of the RSS syndication format. We will <b>not</b> handle RSS 1.0
+ * however, that is RDF and handled in a seperate case. This is purely for
+ * the original RSS and the 2.0 that was created to deal with the fact
+ * that RDF was overkill for the original purpose of RSS.
+ *
+ * @author  Michael Jervis (mike@fuckingbrit.com)
+ * @version 1.0
+ */
 
 /**
-* rss20 provides reading and writing of RSS 2.0 format syndication feeds.
-*
-* @author Michael Jervis (mike@fuckingbrit.com)
-* @copyright Michael Jervis 2004
-* @abstract
-*/
+ * rss20 provides reading and writing of RSS 2.0 format syndication feeds.
+ *
+ * @author    Michael Jervis (mike@fuckingbrit.com)
+ * @copyright Michael Jervis 2004
+ * @abstract
+ */
 class RSS20 extends FeedParserBase
 {
     /**
-    * Date of feed, for reading only
-    */
+     * Date of feed, for reading only
+     */
     private $date;
 
     /**
-    * is the guid element a permalink?
-    */
+     * is the guid element a permalink?
+     */
     private $_permaLink;
 
     /**
-    * Have we used GUID for link?
-    */
+     * Have we used GUID for link?
+     */
     private $_linkGUID;
 
     public function __construct()
     {
         parent::__construct();
         $this->namespaces = array('xmlns:dc="http://purl.org/dc/elements/1.1/"');
-        $this->_linkGUID  = false;
+        $this->_linkGUID = false;
     }
 
     /**
-    * Generate an RFC-822 compliant date-time stamp.
-    *
-    * @param timestamp $timestamp Date time to format.
-    */
-    private function _RFC822DateFormat($timestamp = '')
+     * Generate an RFC-822 compliant date-time stamp.
+     *
+     * @param  int $timestamp Date time to format.
+     * @return string
+     */
+    private function _RFC822DateFormat($timestamp = null)
     {
         // format the date
         if (empty($timestamp)) {
@@ -88,35 +88,35 @@ class RSS20 extends FeedParserBase
     }
 
     /**
-    * Format an article into an RSS 2.0 <item> tag.
-    *
-    * Takes an associative article array and turns it into an XML definition
-    * of an article. Uses merely title, link and summary.
-    *
-    * @param array $article Associative array describing an article.
-    */
+     * Format an article into an RSS 2.0 <item> tag.
+     * Takes an associative article array and turns it into an XML definition
+     * of an article. Uses merely title, link and summary.
+     *
+     * @param  array $article Associative array describing an article.
+     * @return string
+     */
     protected function _formatArticle(array $article)
     {
         $xml = '<item>' . self::LB
-             . '<title>' . $this->_safeXML($article['title']) . '</title>' . self::LB
-             . '<link>' . $this->_safeXML($article['link'], false) . '</link>' . self::LB
-             . '<guid isPermaLink="true">'
-             . $this->_safeXML($article['link'], false)
-             . '</guid>' . self::LB
-             . '<pubDate>'
-             . $this->_RFC822DateFormat($article['date'])
-             . '</pubDate>' . self::LB;
+            . '<title>' . $this->_safeXML($article['title']) . '</title>' . self::LB
+            . '<link>' . $this->_safeXML($article['link'], false) . '</link>' . self::LB
+            . '<guid isPermaLink="true">'
+            . $this->_safeXML($article['link'], false)
+            . '</guid>' . self::LB
+            . '<pubDate>'
+            . $this->_RFC822DateFormat($article['date'])
+            . '</pubDate>' . self::LB;
 
         if (array_key_exists('commenturl', $article)) {
             $xml .= '<comments>'
-                 .  $this->_safeXML($article['commenturl'], false)
-                 .  '</comments>' . self::LB;
+                . $this->_safeXML($article['commenturl'], false)
+                . '</comments>' . self::LB;
         }
 
         if (array_key_exists('summary', $article) && (strlen($article['summary']) > 0)) {
             $xml .= '<description>'
-                 . $this->_safeXML($article['summary'])
-                 . '</description>' . self::LB;
+                . $this->_safeXML($article['summary'])
+                . '</description>' . self::LB;
         }
 
         if (isset($article['extensions']) && is_array($article['extensions'])) {
@@ -129,59 +129,60 @@ class RSS20 extends FeedParserBase
     }
 
     /**
-    * Return the formatted start of a feed.
-    *
-    * This will start the xml and create header information about the feed
-    * itself.
-    */
+     * Return the formatted start of a feed.
+     * This will start the xml and create header information about the feed
+     * itself.
+     *
+     * @return string
+     */
     protected function _feedHeader()
     {
         global $_CONF;
 
         $xml = parent::_feedHeader()
-             . '<rss version="2.0"' . $this->_injectNamespaces() . '>' . self::LB
-             . '<channel>' . self::LB
-             . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
-             . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB;
+            . '<rss version="2.0"' . $this->_injectNamespaces() . '>' . self::LB
+            . '<channel>' . self::LB
+            . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
+            . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB;
 
         if (strlen($this->description) > 0) {
             $xml .= '<description>'
-                 .  $this->_safeXML($this->description)
-                 .  '</description>' . self::LB;
+                . $this->_safeXML($this->description)
+                . '</description>' . self::LB;
         }
 
         if (strlen($this->sitecontact) > 0) {
-             $xml .= '<managingEditor>'
-                  . $this->_safeXML($this->sitecontact)
-                  . ' (' . $_CONF['site_name'] . ')'
-                  . '</managingEditor>' . self::LB
-                  . '<webMaster>'
-                  . $this->_safeXML($this->sitecontact)
-                  . ' (' . $_CONF['site_name'] . ')'
-                  . '</webMaster>' . self::LB;
-         }
+            $xml .= '<managingEditor>'
+                . $this->_safeXML($this->sitecontact)
+                . ' (' . $_CONF['site_name'] . ')'
+                . '</managingEditor>' . self::LB
+                . '<webMaster>'
+                . $this->_safeXML($this->sitecontact)
+                . ' (' . $_CONF['site_name'] . ')'
+                . '</webMaster>' . self::LB;
+        }
 
         if (strlen($this->copyright) > 0) {
             $xml .= '<copyright>'
-                 .  $this->_safeXML($this->copyright)
-                 .  '</copyright>' . self::LB;
+                . $this->_safeXML($this->copyright)
+                . '</copyright>' . self::LB;
         }
 
         if (strlen($this->system) > 0) {
             $xml .= '<generator>'
-                 .  $this->_safeXML($this->system)
-                 .  '</generator>' . self::LB;
+                . $this->_safeXML($this->system)
+                . '</generator>' . self::LB;
         }
 
         $xml .= '<pubDate>' . $this->_RFC822DateFormat() . '</pubDate>' . self::LB
-             .  '<language>' . $this->lang . '</language>' . self::LB;
+            . '<language>' . $this->lang . '</language>' . self::LB;
 
         if (strlen($this->feedlogo) > 0) {
             $xml .= '<image>' . self::LB
-                 .  '<url>' . $this->_safeXML($this->feedlogo, false) . '</url>' . self::LB
-                 .  '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
-                 .  '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB
-                 .  '</image>' . self::LB;
+                . '<url>' . $this->_safeXML($this->feedlogo, false) . '</url>' . self::LB
+                . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
+                . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB
+                . '</image>' . self::LB;
         }
 
         $xml .= $this->_injectExtendingTags();
@@ -190,40 +191,43 @@ class RSS20 extends FeedParserBase
     }
 
     /**
-    * Return the formatted end of a feed.
-    *
-    * just closes things off nicely.
-    */
+     * Return the formatted end of a feed.
+     * just closes things off nicely.
+     *
+     * @return string
+     */
     protected function _feedFooter()
     {
         return '</channel>' . self::LB . '</rss>' . self::LB;
     }
 
     /**
-    * Handle the begining of an XML element
-    *
-    * This is called from the parserfactory once the type of data has been
-    * determined. Standard XML_PARSER element handler.
-    *
-    * @author Michael Jervis (mike@fuckingbrit.com)
-    * @copyright Michael Jervis 2004
-    */
+     * Handle the begining of an XML element
+     * This is called from the parserfactory once the type of data has been
+     * determined. Standard XML_PARSER element handler.
+     *
+     * @author    Michael Jervis (mike@fuckingbrit.com)
+     * @copyright Michael Jervis 2004
+     * @param  resource $parser
+     * @param  string   $name
+     * @param  array    $attributes
+     */
     public function startElement($parser, $name, $attributes)
     {
         $this->_currentTag = $name;
 
         if ($name === 'ITEM') {
-            $this->_inItem      = true;
+            $this->_inItem = true;
             $this->_currentItem = array(
                 'title'   => '',
                 'link'    => '',
                 'summary' => '',
                 'guid'    => '',
             );
-            $this->_permaLink   = false;
-        } else if (($name === 'GUID') && array_key_exists('ISPERMALINK', $attributes)) {
+            $this->_permaLink = false;
+        } elseif (($name === 'GUID') && array_key_exists('ISPERMALINK', $attributes)) {
             $this->_permaLink = ($attributes['ISPERMALINK'] === 'true');
-        } else if (($name === 'ENCLOSURE') && array_key_exists('URL', $attributes)) {
+        } elseif (($name === 'ENCLOSURE') && array_key_exists('URL', $attributes)) {
             // If we have an enclosure with a URL, remember it because this is a podcast
             $this->_currentItem['enclosureurl'] = $attributes['URL'];
         } else {
@@ -232,22 +236,25 @@ class RSS20 extends FeedParserBase
     }
 
     /**
-    * Handle the close of an XML element
-    *
-    * Called by the parserfactory during parsing.
-    */
+     * Handle the close of an XML element
+     * Called by the parser factory during parsing.
+     *
+     * @param  resource $parser
+     * @param  string   $name
+     */
     public function endElement($parser, $name)
     {
         if ($name === 'ITEM') {
             $this->_inItem = false;
             $this->articles[] = $this->_currentItem;
-        } else if ($name === 'GUID') {
+        } elseif ($name === 'GUID') {
             if ($this->_permaLink) {
                 // if we have a guid that is ALSO a permalink, override link with it
                 $this->_currentItem['link'] = $this->_currentItem['guid'];
                 $this->_linkGUID = true;
-            } else if (empty($this->_currentItem['link']) &&
-                    substr($this->_currentItem['guid'], 0, 4) === 'http') {
+            } elseif (empty($this->_currentItem['link']) &&
+                substr($this->_currentItem['guid'], 0, 4) === 'http'
+            ) {
                 // this is NOT according to spec: if we don't have a link but the
                 // guid, despite being non-permanent, starts with http, use it instead
                 $this->_currentItem['link'] = $this->_currentItem['guid'];
@@ -259,38 +266,40 @@ class RSS20 extends FeedParserBase
     }
 
     /**
-    * Handles character data.
-    *
-    * Called by the parserfactory during parsing.
-    */
+     * Handles character data.
+     * Called by the parser factory during parsing.
+     *
+     * @param  resource $parser
+     * @param  string   $data
+     */
     public function charData($parser, $data)
     {
         if ($this->_inItem) {
             if ($this->_currentTag === 'TITLE') {
                 $this->_currentItem['title'] .= $data;
-            } else if($this->_currentTag === 'LINK') {
+            } elseif ($this->_currentTag === 'LINK') {
                 if (!$this->_linkGUID) {
                     $this->_currentItem['link'] .= $data;
                 }
-            } else if ($this->_currentTag === 'DESCRIPTION') {
+            } elseif ($this->_currentTag === 'DESCRIPTION') {
                 $this->_currentItem['summary'] .= $data;
-            } else if ($this->_currentTag === 'PUBDATE') {
+            } elseif ($this->_currentTag === 'PUBDATE') {
                 $this->_currentItem['date'] = $data;
-            } else if ($this->_currentTag === 'GUID') {
+            } elseif ($this->_currentTag === 'GUID') {
                 $this->_currentItem['guid'] .= $data;
             }
         } else {
             if ($this->_currentTag === 'TITLE') {
                 $this->title .= $data;
-            } else if ($this->_currentTag === 'LINK') {
+            } elseif ($this->_currentTag === 'LINK') {
                 $this->sitelink .= $data;
-            } else if ($this->_currentTag === 'DESCRIPTION') {
+            } elseif ($this->_currentTag === 'DESCRIPTION') {
                 $this->description .= $data;
-            } else if ($this->_currentTag === 'MANAGINGEDITOR') {
+            } elseif ($this->_currentTag === 'MANAGINGEDITOR') {
                 $this->sitecontact .= $data;
-            } else if ($this->_currentTag === 'COPYRIGHT') {
+            } elseif ($this->_currentTag === 'COPYRIGHT') {
                 $this->copyright .= $data;
-            } else if ($this->_currentTag === 'PUBDATE') {
+            } elseif ($this->_currentTag === 'PUBDATE') {
                 $this->date .= $data;
             }
         }
@@ -298,33 +307,33 @@ class RSS20 extends FeedParserBase
 }
 
 /**
-* rss0x provides reading and writing of RSS 0.91 format syndication feeds.
-*
-* @author Michael Jervis (mike@fuckingbrit.com)
-* @copyright Michael Jervis 2004
-* @abstract
-*/
+ * rss0x provides reading and writing of RSS 0.91 format syndication feeds.
+ *
+ * @author    Michael Jervis (mike@fuckingbrit.com)
+ * @copyright Michael Jervis 2004
+ * @abstract
+ */
 class RSS0x extends FeedParserBase
 {
     /**
-    * Format an article into an RSS 0.91 <item> tag.
-    *
-    * Takes an associative article array and turns it into an XML definition
-    * of an article. Uses merely title, link and summary.
-    *
-    * @param array $article Associative array describing an article.
-    */
+     * Format an article into an RSS 0.91 <item> tag.
+     * Takes an associative article array and turns it into an XML definition
+     * of an article. Uses merely title, link and summary.
+     *
+     * @param  array $article Associative array describing an article.
+     * @return string
+     */
     protected function _formatArticle(array $article)
     {
         $xml = '<item>' . self::LB
-             . '<title>' . $this->_safeXML($article['title']) . '</title>' . self::LB
-             . '<link>' . $this->_safeXML($article['link'], false) . '</link>' . self::LB;
+            . '<title>' . $this->_safeXML($article['title']) . '</title>' . self::LB
+            . '<link>' . $this->_safeXML($article['link'], false) . '</link>' . self::LB;
 
         if (array_key_exists('summary', $article) && (strlen($article['summary']) > 0)) {
             $xml .= '<description>'
-                 . $this->_safeXML($article['summary'])
-                 . '</description>' . self::LB;
-         }
+                . $this->_safeXML($article['summary'])
+                . '</description>' . self::LB;
+        }
 
         if (is_array($article['extensions'])) {
             $xml .= implode(self::LB, $article['extensions']) . self::LB;
@@ -336,32 +345,33 @@ class RSS0x extends FeedParserBase
     }
 
     /**
-    * Return the formatted start of a feed.
-    *
-    * This will start the xml and create header information about the feed
-    * itself.
-    */
+     * Return the formatted start of a feed.
+     * This will start the xml and create header information about the feed
+     * itself.
+     *
+     * @return string
+     */
     protected function _feedHeader()
     {
         $xml = '<?xml version="1.0" encoding="' . $this->encoding . '"?>' . self::LB2
-             . '<rss version="0.91"' . $this->_injectNamespaces() . '>' . self::LB . '<channel>' . self::LB
-             . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
-             . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB;
+            . '<rss version="0.91"' . $this->_injectNamespaces() . '>' . self::LB . '<channel>' . self::LB
+            . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
+            . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB;
 
         if (strlen($this->description) > 0) {
             $xml .= '<description>'
-                 .  $this->_safeXML($this->description)
-                 .  '</description>' . self::LB;
+                . $this->_safeXML($this->description)
+                . '</description>' . self::LB;
         }
 
         $xml .= '<language>' . $this->lang . '</language>' . self::LB;
 
         if (strlen($this->feedlogo) > 0) {
             $xml .= '<image>' . self::LB
-                 .  '<url>' . $this->_safeXML($this->feedlogo, false) . '</url>' . self::LB
-                 .  '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
-                 .  '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB
-                 .  '</image>' . self::LB;
+                . '<url>' . $this->_safeXML($this->feedlogo, false) . '</url>' . self::LB
+                . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
+                . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB
+                . '</image>' . self::LB;
         }
 
         $xml .= $this->_injectExtendingTags();
@@ -370,24 +380,27 @@ class RSS0x extends FeedParserBase
     }
 
     /**
-    * Return the formatted end of a feed.
-    *
-    * just closes things off nicely.
-    */
+     * Return the formatted end of a feed.
+     * just closes things off nicely.
+     *
+     * @return string
+     */
     protected function _feedFooter()
     {
         return '</channel>' . self::LB . '</rss>' . self::LB;
     }
 
     /**
-    * Handle the begining of an XML element
-    *
-    * This is called from the parserfactory once the type of data has been
-    * determined. Standard XML_PARSER element handler.
-    *
-    * @author Michael Jervis (mike@fuckingbrit.com)
-    * @copyright Michael Jervis 2004
-    */
+     * Handle the begining of an XML element
+     * This is called from the parser factory once the type of data has been
+     * determined. Standard XML_PARSER element handler.
+     *
+     * @author    Michael Jervis (mike@fuckingbrit.com)
+     * @copyright Michael Jervis 2004
+     * @param  resource $parser
+     * @param  string   $name
+     * @param  array    $attributes
+     */
     public function startElement($parser, $name, $attributes)
     {
         if ($name === 'ITEM') {
@@ -403,10 +416,12 @@ class RSS0x extends FeedParserBase
     }
 
     /**
-    * Handle the close of an XML element
-    *
-    * Called by the parserfactory during parsing.
-    */
+     * Handle the close of an XML element
+     * Called by the parser factory during parsing.
+     *
+     * @param  resource $parser
+     * @param  string   $name
+     */
     public function endElement($parser, $name)
     {
         if ($name === 'ITEM') {
@@ -418,26 +433,28 @@ class RSS0x extends FeedParserBase
     }
 
     /**
-    * Handles character data.
-    *
-    * Called by the parserfactory during parsing.
-    */
+     * Handles character data.
+     * Called by the parser factory during parsing.
+     *
+     * @param  resource $parser
+     * @param  string   $data
+     */
     public function charData($parser, $data)
     {
         if ($this->_inItem) {
             if ($this->_currentTag === 'TITLE') {
                 $this->_currentItem['title'] .= $data;
-            } else if ($this->_currentTag === 'LINK') {
+            } elseif ($this->_currentTag === 'LINK') {
                 $this->_currentItem['link'] .= $data;
-            } else if ($this->_currentTag === 'DESCRIPTION') {
+            } elseif ($this->_currentTag === 'DESCRIPTION') {
                 $this->_currentItem['summary'] .= $data;
             }
         } else {
             if ($this->_currentTag === 'TITLE') {
                 $this->title .= $data;
-            } else if ($this->_currentTag === 'LINK') {
+            } elseif ($this->_currentTag === 'LINK') {
                 $this->sitelink .= $data;
-            } else if ($this->_currentTag === 'DESCRIPTION') {
+            } elseif ($this->_currentTag === 'DESCRIPTION') {
                 $this->description .= $data;
             }
         }

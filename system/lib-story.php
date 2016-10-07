@@ -2032,7 +2032,7 @@ function service_submit_story($args, &$output, &$svc_msg)
 
         if (count($_FILES) > 0 && $_CONF['maximagesperarticle'] > 0) {
             require_once($_CONF['path_system'] . 'classes/upload.class.php');
-            $upload = new upload();
+            $upload = new Upload();
 
             if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
                 $upload->setLogFile($_CONF['path'] . 'logs/error.log');

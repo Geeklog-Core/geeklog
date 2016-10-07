@@ -30,29 +30,28 @@
 abstract class RemoteAuthAbstract
 {
     /**
-     * @var    string    $fullname
+     * @var    string $fullname
      */
     public $fullname;
-    
+
     /**
-     * @var    string    $email
+     * @var    string $email
      */
     public $email;
 
     /**
-     * @var    string    $homepage
+     * @var    string $homepage
      */
     public $homepage;
-    
+
     /**
      * Authenticate the current user with the user name and password given
-     *
      * When the user is successfully authenticated, $this->fullname, $this->email,
      * $this->homepage variables should be filled with the information provided
-	 * by the authenticating server.
+     * by the authenticating server.
      *
-     * @param    string    $username
-     * @param    string    $password
+     * @param    string $username
+     * @param    string $password
      * @return   boolean                true = authentication success, false otherwise
      */
     abstract public function authenticate($username, $password);

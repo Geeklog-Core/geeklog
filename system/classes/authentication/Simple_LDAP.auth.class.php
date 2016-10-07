@@ -31,22 +31,23 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-require_once dirname(__FILE__) . '/RemoteAuthAbstract.class.php';
+require_once __DIR__ . '/RemoteAuthAbstract.class.php';
 
 /**
  * Simple_LDAP Remote Authentication class
- *
  * BE SURE TO EDIT system/classes/authentication/simple_ldap/config.php first!
- *
  */
 class Simple_LDAP extends RemoteAuthAbstract
 {
     public function authenticate($username, $password)
     {
-        require_once dirname(__FILE__) . '/simple_ldap/config.php';
+        global $_SIMPLE_LDAP_CONF;
+
+        require_once __DIR__ . '/simple_ldap/config.php';
 
         if (!is_callable('ldap_connect')) {
             COM_errorLog('Simple_LDAP Error: LDAP extension is disabled');
+
             return false;
         }
 
@@ -54,11 +55,13 @@ class Simple_LDAP extends RemoteAuthAbstract
 
         if ($ldap_connection === false) {
             COM_errorLog("Simple_LDAP Error: Cannot connect to LDAP server " . $_SIMPLE_LDAP_CONF['ldap_host']);
+
             return false;
         }
 
         if (!ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, 3)) {
             COM_errorLog("Simple_LDAP Error: Cannot set LDAP protocol version to 3");
+
             return false;
         }
 
@@ -66,6 +69,7 @@ class Simple_LDAP extends RemoteAuthAbstract
 
         if ($ldap_result === false) {
             COM_errorLog('Simple_LDAP Error: Search for user ' . $username . ' failed');
+
             return false;
         }
 
@@ -73,6 +77,7 @@ class Simple_LDAP extends RemoteAuthAbstract
 
         if (($A === false) || ($A['count'] == 0)) {
             COM_errorLog('Simple_LDAP Error: User ' . $username . ' does not exist.');
+
             return false;
         }
 
@@ -82,18 +87,20 @@ class Simple_LDAP extends RemoteAuthAbstract
 
         if ($ldap_bind === false) {
             COM_errorLog('Simple_LDAP Error: Cannot bind to LDAP directory: ' . ldap_error($ldap_connection));
+
             return false;
         }
 
         // Bind successful, get some more infos from LDAP
         $this->fullname = $A[0]['cn'][0];
-        $this->email    = $A[0]['mail'][0];
+        $this->email = $A[0]['mail'][0];
         $this->homepage = $A[0]['labeleduri'][0];
 
         if (ldap_unbind($ldap_connection)) {
             return true;
         } else {
             COM_errorLog('Simple_LDAP Error: Could not unbind from LDAP directory');
+
             return false;
         }
     }

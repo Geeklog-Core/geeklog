@@ -29,35 +29,56 @@
 /****************************************************************************/
 
 /**
-* FeedParserFactory provides generic access to syndication feed formats.
-*
-* <p>This library provides abstraction of feed formats. It provides a factory
-* pattern interface to constructing feed handlers to parse incoming
-* syndication files, and write outgoing syndication files. The interface is
-* not tied to any system implementation, however, I plan to provide interface
-* to geeklog.</p>
-*
-* @author Michael Jervis (mike@Fuckingbrit.com)
-* @copyright Michael Jervis 2004
-* @see FeedParserBase
-*/
+ * FeedParserFactory provides generic access to syndication feed formats.
+ * <p>This library provides abstraction of feed formats. It provides a factory
+ * pattern interface to constructing feed handlers to parse incoming
+ * syndication files, and write outgoing syndication files. The interface is
+ * not tied to any system implementation, however, I plan to provide interface
+ * to geeklog.</p>
+ *
+ * @author    Michael Jervis (mike@Fuckingbrit.com)
+ * @copyright Michael Jervis 2004
+ * @see       FeedParserBase
+ */
 class FeedParserFactory
 {
+    /**
+     * @var string
+     */
     public $readerName;
+
+    /**
+     * @var FeedParserBase
+     */
     public $reader;
+
+    /**
+     * @var string
+     */
     public $userAgent;
+
+    /**
+     * @var array
+     */
     public $errorStatus;
+
+    /**
+     * @var string
+     */
     public $lastModified;
+
+    /**
+     * @var string
+     */
     public $eTag;
 
     /**
-    * Constructor, loads feedparser classes into memory.
-    *
-    * This takes a path on which the supporting feed classes exist, and then
-    * tries to find all *.feed.class.php and brings them into scope.
-    *
-    * @param string $path path to include files from.
-    */
+     * Constructor, loads feedparser classes into memory.
+     * This takes a path on which the supporting feed classes exist, and then
+     * tries to find all *.feed.class.php and brings them into scope.
+     *
+     * @param string $path path to include files from.
+     */
     public function __construct($path = '')
     {
         if ($path != '') {
@@ -73,19 +94,19 @@ class FeedParserFactory
         }
 
         $this->lastModified = '';
-        $this->eTag         = '';
+        $this->eTag = '';
     }
 
     /**
-    * Method to get a feed handler class.
-    *
-    * This function takes a url, fetches it, parses it, and thus figures out
-    * what type of feed parser to return, with the contents all parsed for
-    * your viewing pleasure.
-    *
-    * @access   public
-    * @param    string    $url    The url to a feed type to syndicate.
-    */
+     * Method to get a feed handler class.
+     * This function takes a url, fetches it, parses it, and thus figures out
+     * what type of feed parser to return, with the contents all parsed for
+     * your viewing pleasure.
+     *
+     * @param   string $url The url to a feed type to syndicate.
+     * @param  string  $targetFormat
+     * @return FeedParserBase|false
+     */
     public function reader($url, $targetFormat = '')
     {
         if ($data = $this->_getFeed($url)) {
@@ -96,20 +117,19 @@ class FeedParserFactory
     }
 
     /**
-    * Method to get a feed handler class.
-    *
-    * this function assumes you know what you want, and gets you a blank feed
-    * handler to write that data.
-    *
-    * @access public
-    * @param string $feedtype the type of feed to get
-    * @param float $version the version
-    */
-    public function writer($feedtype, $version = 2.0)
+     * Method to get a feed handler class.
+     * this function assumes you know what you want, and gets you a blank feed
+     * handler to write that data.
+     *
+     * @param  string $feedType the type of feed to get
+     * @param  float  $version  the version
+     * @return FeedParserBase|false
+     */
+    public function writer($feedType, $version = 2.0)
     {
-        $feedtype = strtolower($feedtype);
+        $feedType = strtolower($feedType);
 
-        switch ($feedtype) {
+        switch ($feedType) {
             case 'rss':
                 if ($version == '') {
                     return new RSS0x();
@@ -139,19 +159,18 @@ class FeedParserFactory
     }
 
     /**
-    * Provides an array of feed types understood.
-    *
-    * Provides an array of feed types understood. Yeah it's manual, but, the
-    * feed reader has to be edited to support new inbounds anyway.
-    *
-    * @access public
-    */
+     * Provides an array of feed types understood.
+     * Provides an array of feed types understood. Yeah it's manual, but, the
+     * feed reader has to be edited to support new inbounds anyway.
+     *
+     * @return array
+     */
     public function getFeedTypes()
     {
         $types = array(
-            array('name' =>  'RSS', 'version' => '0.9x'),
-            array('name' =>  'RSS', 'version' => '2.0'),
-            array('name' =>  'RDF', 'version' => '1.0'),
+            array('name' => 'RSS', 'version' => '0.9x'),
+            array('name' => 'RSS', 'version' => '2.0'),
+            array('name' => 'RDF', 'version' => '1.0'),
             array('name' => 'Atom', 'version' => '0.3'),
             array('name' => 'Atom', 'version' => '1.0'),
         );
@@ -160,11 +179,11 @@ class FeedParserFactory
     }
 
     /**
-    * Opens a url in a file pointer
-    *
-    * @param    string     $url    The URL to open.
-    * @return   mixed              HTTP response body or boolean false
-    */
+     * Opens a url in a file pointer
+     *
+     * @param    string $url The URL to open.
+     * @return   mixed              HTTP response body or boolean false
+     */
     protected function _getFeed($url)
     {
         $req = new HTTP_Request2(
@@ -191,20 +210,26 @@ class FeedParserFactory
                 return false;
             } else {
                 $this->lastModified = $response->getHeader('Last-Modified');
-                $this->eTag         = $response->getHeader('ETag');
+                $this->eTag = $response->getHeader('ETag');
+
                 return $response->getBody();
             }
         } catch (HTTP_Request2_Exception $e) {
             $this->errorStatus = array(
-                'HTTP Fetch Failed', '', $e->getMessage()
+                'HTTP Fetch Failed', '', $e->getMessage(),
             );
+
             return false;
         }
     }
 
     /**
-    * Find out what format a feed is in.
-    */
+     * Find out what format a feed is in.
+     *
+     * @param  string $data
+     * @param  string $format
+     * @return FeedParserBase|false
+     */
     protected function _findFeed($data, $format = '')
     {
         $xml_parser = xml_parser_create();
@@ -223,7 +248,7 @@ class FeedParserFactory
             $this->errorStatus = array(
                 'Unable to parse XML',
                 'Error Code: ' . xml_get_error_code($xml_parser),
-                'Error Message: ' . xml_error_string(xml_get_error_code($xml_parser))
+                'Error Message: ' . xml_error_string(xml_get_error_code($xml_parser)),
             );
             xml_parser_free($xml_parser);
 
@@ -236,22 +261,28 @@ class FeedParserFactory
             return $this->reader;
         } else {
             $this->errorStatus = array('Unidentified feed type.', '', '');
+
             return false;
         }
     }
 
+    /**
+     * @param  resource $parser
+     * @param  string   $name
+     * @param  array    $attributes
+     */
     protected function _startElement($parser, $name, $attributes)
     {
         if (!$this->readerName) {
             // Check for atom
             if ($name === 'FEED') {
                 $this->readerName = array_key_exists('VERSION', $attributes)
-                                  ? 'Atom03'
-                                  : 'Atom10';
+                    ? 'Atom03'
+                    : 'Atom10';
             } else if ($name === 'RSS') {
                 $version = array_key_exists('VERSION', $attributes)
-                         ? $attributes['VERSION']
-                         : 0.91;
+                    ? $attributes['VERSION']
+                    : 0.91;
                 $this->readerName = ($version < 1) ? 'RSS0x' : 'RSS20';
             } else if ($name === 'RDF:RDF') {
                 $this->readerName = 'RDF';
@@ -268,6 +299,10 @@ class FeedParserFactory
         }
     }
 
+    /**
+     * @param  resource $parser
+     * @param  string   $name
+     */
     protected function _endElement($parser, $name)
     {
         if ($this->reader) {
@@ -275,6 +310,10 @@ class FeedParserFactory
         }
     }
 
+    /**
+     * @param  resource $parser
+     * @param  string   $data
+     */
     protected function _charData($parser, $data)
     {
         if ($this->reader) {

@@ -133,6 +133,7 @@ class ListFactory
     private $_fields = array();
     private $_sources_arr = array();
     private $_total_rank = 0;
+    private $_total_found = 0;
     private $_sort_arr = array();
     private $_def_sort_arr = array();
     private $_page = 1;
@@ -150,7 +151,7 @@ class ListFactory
      *
      * @access public
      * @param string $url      The URL of the page the table appears on
-     * @param array  $limits   The avaliable page limits
+     * @param array|string  $limits   The avaliable page limits
      * @param int    $per_page The default number or rows per page
      */
     public function __construct($url, $limits = '10,15,20,25,30,35', $per_page = 20)
@@ -174,12 +175,11 @@ class ListFactory
     }
 
     /**
-     * Determins which set of templates to load when formatting the output
+     * Determine which set of templates to load when formatting the output
      *
-     * @access public
      * @param string $style Either 'table' or 'inline'
      */
-    function setStyle($style)
+    public function setStyle($style)
     {
         $this->_style = $style;
     }
@@ -188,14 +188,13 @@ class ListFactory
      * Sets a field in the list.
      * Note: LF_ROW_NUMBER cannot be sorted
      *
-     * @access public
      * @param string  $title   The title of the field which is displayed to the user
      * @param string  $name    The local name given to the field
      * @param boolean $display True if the field is to be displayed to the user otherwise false
      * @param boolean $sort    True if the field can be sorted otherwise false
      * @param string  $format  The format string with one type specifier
      */
-    function setField($title, $name, $display = true, $sort = true, $format = '%s')
+    public function setField($title, $name, $display = true, $sort = true, $format = '%s')
     {
         if ($name === LF_ROW_NUMBER) {
             $sort = false;
@@ -212,13 +211,12 @@ class ListFactory
     /**
      * Sets the SQL query that will generate rows
      *
-     * @access public
      * @param string $title The text that's displayed to the user
      * @param string $name  The local name given to the query
      * @param string $sql   The SQL string without the ORDER BY or LIMIT clauses
      * @param int    $rank  The rating that determins how many results will be returned
      */
-    function setQuery($title, $name, $sql, $rank)
+    public function setQuery($title, $name, $sql, $rank)
     {
         $this->_sources_arr[] = array(
             'type'  => 'sql',
@@ -238,14 +236,13 @@ class ListFactory
      * the results. This provides an alternative to the setQuery()
      * function as results can be sourced from anywhere.
      *
-     * @access public
      * @param string $title    The text that's displayed to the user
      * @param string $name     The local name given to the query
-     * @param string $function Any callable function, method or lambda
+     * @param string $callback Any callable function, method or lambda
      * @param int    $rank     The rating that determins how many results will be returned
      * @param int    $total    The total number of results that are avaliable
      */
-    function setCallback($title, $name, $callback, $rank, $total)
+    public function setCallback($title, $name, $callback, $rank, $total)
     {
         $this->_sources_arr[] = array(
             'type'  => 'callback',
@@ -262,10 +259,9 @@ class ListFactory
      * Sets the callback function thats called on every row for styling
      * or formatting.
      *
-     * @access public
-     * @param callback $function Any callable function, method or lambda
+     * @param callback $callback Any callable function, method or lambda
      */
-    function setRowFunction($callback)
+    public function setRowFunction($callback)
     {
         $this->_function = $callback;
     }
@@ -273,11 +269,10 @@ class ListFactory
     /**
      * Sets the default sort field
      *
-     * @access public
      * @param string $field     The field name to sort
      * @param string $direction 'asc' for ascending order and 'desc' for descending order
      */
-    function setDefaultSort($field, $direction = 'desc')
+    public function setDefaultSort($field, $direction = 'desc')
     {
         $this->_def_sort_arr = array('field' => $field, 'direction' => $direction);
     }
@@ -285,10 +280,9 @@ class ListFactory
     /**
      * Appends a single result to the list
      *
-     * @access public
      * @param array $result A single result that will be appended to the rest
      */
-    function addResult($result)
+    public function addResult($result)
     {
         $this->_preset_rows[] = $result;
     }
@@ -296,10 +290,9 @@ class ListFactory
     /**
      * Appends several results to the list
      *
-     * @access public
-     * @param array $result An array of result that will be appended to the rest
+     * @param array $arr An array of result that will be appended to the rest
      */
-    function addResultArray($arr)
+    public function addResultArray($arr)
     {
         $this->_preset_rows = array_merge($this->_preset_rows, $arr);
     }
@@ -308,11 +301,10 @@ class ListFactory
      * Gets the total number of results from source item, either an sql
      * query or a callback function.
      *
-     * @access private
      * @param array $source The source we are currently working with
      * @return int Total number of rows
      */
-    function _getTotal($source)
+    private function _getTotal($source)
     {
         if ($source['type'] == 'callback') {
             return $source['total'];
@@ -340,11 +332,10 @@ class ListFactory
      * Calculates the offset and limits for each query based on
      * the number of rows to be displayed per query per page.
      *
-     * @access private
-     * @param array $totals The total number of results per query
+     * @param  array $totals The total number of results per query
      * @return array The offsets and limits for a given page
      */
-    function _getLimits($totals)
+    private function _getLimits($totals)
     {
         $order = range(0, count($totals) - 1);
         array_multisort($totals, $order);
@@ -381,12 +372,11 @@ class ListFactory
      * Applies styling to each row and adds extra meta details that are
      * used else where in the ListFactory.
      *
-     * @access private
-     * @param array $row_arr A single results row
-     * @param array $source  The source we are currently working with
+     * @param  array $row_arr A single results row
+     * @param  array $source  The source we are currently working with
      * @return array The row with styling applied and extra meta details
      */
-    function _fillrow($row_arr, $source)
+    private function _fillrow($row_arr, $source)
     {
         $col = array();
         $col[LF_SOURCE_TITLE] = $source['title'];
@@ -414,10 +404,9 @@ class ListFactory
     /**
      * Executes pre set queries
      *
-     * @access public
      * @return array The results found
      */
-    function ExecuteQueries()
+    public function ExecuteQueries()
     {
         // Set to default sort, we will check the passed param in the next bit
         $this->_sort_arr['field'] = $this->_def_sort_arr['field'];
@@ -536,16 +525,15 @@ class ListFactory
     /**
      * Generates the HTML code based on the preset style
      *
-     * @access public
-     * @param array   $rows_arr    The rows to display in the list
-     * @param string  $title       The title of the list
-     * @param string  $list_top    HTML that will appear before the list is printed
-     * @param string  $list_bottom HTML that will appear after the list is printed
-     * @param boolean $show_sort   True to enable column sorting, false to disable
-     * @param boolean $show_limit  True to show page limits, false to hide
+     * @param  array   $rows_arr    The rows to display in the list
+     * @param  string  $title       The title of the list
+     * @param  string  $list_top    HTML that will appear before the list is printed
+     * @param  string  $list_bottom HTML that will appear after the list is printed
+     * @param  boolean $show_sort   True to enable column sorting, false to disable
+     * @param  boolean $show_limit  True to show page limits, false to hide
      * @return string HTML output
      */
-    function getFormattedOutput($rows_arr, $title, $list_top = '', $list_bottom = '', $show_sort = true, $show_limit = true)
+    public function getFormattedOutput($rows_arr, $title, $list_top = '', $list_bottom = '', $show_sort = true, $show_limit = true)
     {
         global $_CONF, $_IMAGE_TYPE, $LANG_ADMIN, $LANG09;
 
@@ -764,17 +752,16 @@ class ListFactory
     /**
      * Generates the HTML code based on the preset style
      *
-     * @access public
-     * @param array   $rows_arr    The rows to display in the list
-     * @param string  $title       The title of the list
-     * @param string  $list_top    HTML that will appear before the list is printed
-     * @param string  $list_bottom HTML that will appear after the list is printed
-     * @param boolean $show_sort   True to enable column sorting, false to disable
-     * @param boolean $show_limit  True to show page limits, false to hide
-     * @param array   $params_arr  GET params array
+     * @param  array   $rows_arr    The rows to display in the list
+     * @param  string  $title       The title of the list
+     * @param  string  $list_top    HTML that will appear before the list is printed
+     * @param  string  $list_bottom HTML that will appear after the list is printed
+     * @param  boolean $show_sort   True to enable column sorting, false to disable
+     * @param  boolean $show_limit  True to show page limits, false to hide
+     * @param  array   $params_arr  GET params array
      * @return string HTML output
      */
-    function getFormattedOutput2($rows_arr, $title, $list_top = '', $list_bottom = '', $show_sort = true, $show_limit = true,
+    public function getFormattedOutput2($rows_arr, $title, $list_top = '', $list_bottom = '', $show_sort = true, $show_limit = true,
                                  $params_arr = null)
     {
         global $_CONF, $_IMAGE_TYPE, $LANG_ADMIN, $LANG09;

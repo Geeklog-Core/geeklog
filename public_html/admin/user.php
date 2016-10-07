@@ -1073,7 +1073,7 @@ function importusers()
     // First, upload the file
     require_once $_CONF['path_system'] . 'classes/upload.class.php';
 
-    $upload = new upload ();
+    $upload = new Upload ();
     $upload->setPath ($_CONF['path_data']);
     $upload->setAllowedMimeTypes (array ('text/plain' => '.txt'));
     $upload->setFileNames ('user_import_file.txt');
