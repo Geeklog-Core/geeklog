@@ -181,7 +181,7 @@ $_PAGE_TIMER->startTimer();
 $_URL = new Url($_CONF['url_rewrite'], $_CONF['url_routing']);
 
 // Include Device Detect class
-$_DEVICE = new device();
+$_DEVICE = new Device();
 
 /**
  * This is our HTML template class.  It is the same one found in PHPLib and is

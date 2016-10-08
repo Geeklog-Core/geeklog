@@ -36,7 +36,6 @@
 /**
  * Block administration page: Create, edit, delete, move, enable/disable blocks
  * for the left and right sidebars of your Geeklog site.
-
  */
 
 /**
@@ -76,7 +75,7 @@ if (!SEC_hasRights('block.edit')) {
  */
 function editdefaultblock($A, $access)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $LANG_ACCESS, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $LANG21, $LANG_ACCESS, $LANG_ADMIN;
 
     $retval = COM_startBlock($LANG21[3], '', COM_getBlockTemplate('_admin_block', 'header'));
     $token = SEC_createToken();
@@ -126,19 +125,19 @@ function editdefaultblock($A, $access)
 
     $block_templates->set_var('lang_device', $LANG_ADMIN['device']);
     $block_templates->set_var('lang_all', $LANG_ADMIN['for_all']);
-    if ($A['device'] == DEVICE_ALL) {
+    if ($A['device'] == Device::ALL) {
         $block_templates->set_var('for_all', 'checked="checked"');
     } else {
         $block_templates->set_var('for_all', '');
     }
     $block_templates->set_var('lang_for_mobile', $LANG_ADMIN['for_mobile']);
-    if ($A['device'] == DEVICE_MOBILE) {
+    if ($A['device'] == Device::MOBILE) {
         $block_templates->set_var('for_mobile', 'checked="checked"');
     } else {
         $block_templates->set_var('for_mobile', '');
     }
     $block_templates->set_var('lang_for_computer', $LANG_ADMIN['for_computer']);
-    if ($A['device'] == DEVICE_COMPUTER) {
+    if ($A['device'] == Device::COMPUTER) {
         $block_templates->set_var('for_computer', 'checked="checked"');
     } else {
         $block_templates->set_var('for_computer', '');
@@ -181,7 +180,7 @@ function editdefaultblock($A, $access)
  * This is helper function for editblock function
  *
  * @param    array $A Array of data by reference
- * @return   nothing
+ * @return   void
  */
 function overridePostdata(&$A)
 {
@@ -285,7 +284,7 @@ function editblock($bid = '')
         $A['title'] = '';
         $A['tid'] = '';
         $A['blockorder'] = 0;
-        $A['device'] = DEVICE_ALL;
+        $A['device'] = Device::ALL;
         $A['cache_time'] = $_CONF['default_cache_time_block'];
         $A['content'] = '';
         $A['allow_autotags'] = 0;
@@ -317,7 +316,7 @@ function editblock($bid = '')
     $block_start .= LB . SEC_getTokenExpiryNotice($token);
     $block_templates->set_var('start_block_editor', $block_start);
 
-    if (!empty($bid) && SEC_hasrights('block.delete')) {
+    if (!empty($bid) && SEC_hasRights('block.delete')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
             . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
@@ -375,19 +374,19 @@ function editblock($bid = '')
 
     $block_templates->set_var('lang_device', $LANG_ADMIN['device']);
     $block_templates->set_var('lang_all', $LANG_ADMIN['for_all']);
-    if ($A['device'] == DEVICE_ALL) {
+    if ($A['device'] == Device::ALL) {
         $block_templates->set_var('for_all', 'checked="checked"');
     } else {
         $block_templates->set_var('for_all', '');
     }
     $block_templates->set_var('lang_for_mobile', $LANG_ADMIN['for_mobile']);
-    if ($A['device'] == DEVICE_MOBILE) {
+    if ($A['device'] == Device::MOBILE) {
         $block_templates->set_var('for_mobile', 'checked="checked"');
     } else {
         $block_templates->set_var('for_mobile', '');
     }
     $block_templates->set_var('lang_for_computer', $LANG_ADMIN['for_computer']);
-    if ($A['device'] == DEVICE_COMPUTER) {
+    if ($A['device'] == Device::COMPUTER) {
         $block_templates->set_var('for_computer', 'checked="checked"');
     } else {
         $block_templates->set_var('for_computer', '');
@@ -586,7 +585,7 @@ function listblocks($position = BLOCK_ALL_POSITIONS)
         'table'          => 'blocks',
         'sql'            => "SELECT * FROM {$_TABLES['blocks']} WHERE 1=1 ",
         'query_fields'   => array('title', 'content'),
-        'default_filter' => $show_position . COM_getPermSql('AND'),
+        'default_filter' => $show_position . COM_getPermSQL('AND'),
     );
 
     // this is a dummy variable so we know the form has been used if all blocks
@@ -657,33 +656,35 @@ function cmpDynamicBlocks($a, $b)
  * Saves a block
  *
  * @param    string $bid          Block ID
+ * @param    string $name         Block name
  * @param    string $title        Block title
+ * @param    string $help         Block help
  * @param    string $type         Type of block
- * @param    int    $blockorder   Order block appears relative to the others
+ * @param    int    $blockOrder   Order block appears relative to the others
+ * @param    string $device       Device type
  * @param    string $content      Content of block
- * @param    string $tid          Ids of topics block is assigned to
- * @param    string $rdfurl       URL to headline feed for portal blocks
- * @param    string $rdfupdated   Date RSS/RDF feed was last updated
- * @param    string $rdflimit     max. number of entries to import from feed
- * @param    string $phpblockfn   Name of php function to call to get content
- * @param    int    $onleft       Flag indicates if block shows up on left or right
+ * @param    string $rdfUrl       URL to headline feed for portal blocks
+ * @param    string $rdfUpdated   Date RSS/RDF feed was last updated
+ * @param    string $rdfLimit     max. number of entries to import from feed
+ * @param    string $phpBlockFn   Name of php function to call to get content
+ * @param    int    $onLeft       Flag indicates if block shows up on left or right
  * @param    int    $owner_id     ID of owner
  * @param    int    $group_id     ID of group block belongs to
  * @param    array  $perm_owner   Permissions the owner has on the object
  * @param    array  $perm_group   Permissions the group has on the object
  * @param    array  $perm_members Permissions the logged in members have
- * @param    array  $perm_anon    Permissinos anonymous users have
+ * @param    array  $perm_anon    Permissions anonymous users have
  * @param    int    $is_enabled   Flag, indicates if block is enabled or not
- * @return   string                  HTML redirect or error message
+ * @return   string               HTML redirect or error message
  */
-function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $content, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags, $cache_time)
+function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $content, $rdfUrl, $rdfUpdated, $rdfLimit, $phpBlockFn, $onLeft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags, $cache_time)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE, $_USER;
+    global $_CONF, $_TABLES, $LANG21, $MESSAGE, $_USER;
 
     $retval = '';
 
     $title = DB_escapeString(COM_stripslashes(strip_tags($title)));
-    $phpblockfn = DB_escapeString(COM_stripslashes(trim($phpblockfn)));
+    $phpBlockFn = DB_escapeString(COM_stripslashes(trim($phpBlockFn)));
     if (empty($title) || !TOPIC_checkTopicSelectionControl()) {
         $retval .= COM_showMessageText($LANG21[64], $LANG21[63])
             . editblock($bid);
@@ -695,16 +696,15 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
     // Convert array values to numeric permission values
     list($perm_owner, $perm_group, $perm_members, $perm_anon) = SEC_getPermissionValues($perm_owner, $perm_group, $perm_members, $perm_anon);
 
-    $access = 0;
     if (($bid > 0) && DB_count($_TABLES['blocks'], 'bid', $bid) > 0) {
         $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['blocks']} WHERE bid = '{$bid}'");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'], $A['group_id'],
             $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-            $A['perm_anon']);
+            $A['perm_anon']
+        );
     } else {
-        $access = SEC_hasAccess($owner_id, $group_id, $perm_owner, $perm_group,
-            $perm_members, $perm_anon);
+        $access = SEC_hasAccess($owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon);
     }
 
     if (($access < 3) || !TOPIC_hasMultiTopicAccess('topic') || !SEC_inGroup($group_id)) {
@@ -715,9 +715,9 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
         return $retval;
     } elseif (!empty($name) &&
         (($type == 'normal' && !empty($title) && !empty($content))
-            || ($type == 'portal' && !empty($title) && !empty($rdfurl))
-            || ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))
-            || ($type == 'gldefault' && (strlen($blockorder) > 0)))
+            || ($type == 'portal' && !empty($title) && !empty($rdfUrl))
+            || ($type == 'phpblock' && !empty($phpBlockFn) && !empty($title))
+            || ($type == 'gldefault' && (strlen($blockOrder) > 0)))
     ) {
         if ($is_enabled == 'on') {
             $is_enabled = 1;
@@ -725,8 +725,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
             $is_enabled = 0;
         }
 
-        if ($device != DEVICE_MOBILE && $device != DEVICE_COMPUTER) {
-            $device = DEVICE_ALL;
+        if ($device != Device::MOBILE && $device != Device::COMPUTER) {
+            $device = Device::ALL;
         }
 
         if ($allow_autotags == 'on') {
@@ -741,32 +741,32 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
 
         if ($type == 'portal') {
             $content = '';
-            $rdfupdated = '';
-            $phpblockfn = '';
+            $rdfUpdated = '';
+            $phpBlockFn = '';
 
             // get rid of possible extra prefixes (e.g. "feed://http://...")
-            if (substr($rdfurl, 0, 4) == 'rss:') {
-                $rdfurl = substr($rdfurl, 4);
-            } elseif (substr($rdfurl, 0, 5) == 'feed:') {
-                $rdfurl = substr($rdfurl, 5);
+            if (substr($rdfUrl, 0, 4) == 'rss:') {
+                $rdfUrl = substr($rdfUrl, 4);
+            } elseif (substr($rdfUrl, 0, 5) == 'feed:') {
+                $rdfUrl = substr($rdfUrl, 5);
             }
-            if (substr($rdfurl, 0, 2) == '//') {
-                $rdfurl = substr($rdfurl, 2);
+            if (substr($rdfUrl, 0, 2) == '//') {
+                $rdfUrl = substr($rdfUrl, 2);
             }
-            $rdfurl = COM_sanitizeUrl($rdfurl, array('http', 'https'));
+            $rdfUrl = COM_sanitizeUrl($rdfUrl, array('http', 'https'));
         }
         if ($type == 'gldefault') {
             $content = '';
-            $rdfurl = '';
-            $rdfupdated = '';
-            $rdflimit = 0;
-            $phpblockfn = '';
+            $rdfUrl = '';
+            $rdfUpdated = '';
+            $rdfLimit = 0;
+            $phpBlockFn = '';
         }
         if ($type == 'phpblock') {
             // NOTE: PHP Blocks must be within a function and the function
             // must start with phpblock_ as the prefix.  This will prevent
             // the arbitrary execution of code
-            if (!(stristr($phpblockfn, 'phpblock_'))) {
+            if (!(stristr($phpBlockFn, 'phpblock_'))) {
                 $retval .= COM_showMessageText($LANG21[38], $LANG21[37])
                     . editblock($bid);
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG21[37]));
@@ -774,15 +774,15 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
                 return $retval;
             }
             $content = '';
-            $rdfurl = '';
-            $rdfupdated = '';
-            $rdflimit = 0;
+            $rdfUrl = '';
+            $rdfUpdated = '';
+            $rdfLimit = 0;
         }
         if ($type == 'normal') {
-            $rdfurl = '';
-            $rdfupdated = '';
-            $rdflimit = 0;
-            $phpblockfn = '';
+            $rdfUrl = '';
+            $rdfUpdated = '';
+            $rdfLimit = 0;
+            $phpBlockFn = '';
 
             if ($allow_autotags == 1) {
                 // Remove any autotags the user doesn't have permission to use
@@ -790,27 +790,27 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
             }
             $content = DB_escapeString($content);
         }
-        if ($rdflimit < 0) {
-            $rdflimit = 0;
+        if ($rdfLimit < 0) {
+            $rdfLimit = 0;
         }
-        if (!empty ($rdfurl)) {
-            $rdfurl = DB_escapeString($rdfurl);
+        if (!empty ($rdfUrl)) {
+            $rdfUrl = DB_escapeString($rdfUrl);
         }
-        if (empty ($rdfupdated)) {
-            $rdfupdated = 'NOW()';
+        if (empty ($rdfUpdated)) {
+            $rdfUpdated = 'NOW()';
         }
 
         if ($bid > 0) {
-            DB_save($_TABLES['blocks'], 'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,rdf_last_modified,rdf_etag', "$bid,'$name','$title','$help','$type','$blockorder','$device','$content','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,NULL,NULL");
+            DB_save($_TABLES['blocks'], 'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,rdf_last_modified,rdf_etag', "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl','$rdfUpdated','$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,NULL,NULL");
         } else {
             $sql = array();
             $sql['mysql'] = "INSERT INTO {$_TABLES['blocks']} "
                 . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-                . "VALUES ('$name','$title','$help','$type','$blockorder','$device','$content','$rdfurl',{$rdfupdated},'$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',{$rdfUpdated},'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
 
             $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
                 . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockorder','$device','$content','$rdfurl','1970-01-01','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl','1970-01-01','$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
 
             DB_query($sql);
             $bid = DB_insertId();
@@ -851,7 +851,6 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $device, $con
 
 /**
  * Re-orders all blocks in increments of 10
-
  */
 function reorderblocks()
 {
@@ -884,18 +883,16 @@ function reorderblocks()
 /**
  * Move blocks UP, Down and Switch Sides - Left and Right
  * NOTE: Does not return.
-
  */
 function moveBlock()
 {
-    global $_CONF, $_TABLES, $LANG21;
+    global $_CONF, $_TABLES;
 
     $bid = COM_applyFilter($_GET['bid']);
     $where = COM_applyFilter($_GET['where']);
 
     // if the block id exists
     if (DB_count($_TABLES['blocks'], "bid", $bid) == 1) {
-
         switch ($where) {
             case ("up"):
                 $q = "UPDATE " . $_TABLES['blocks'] . " SET blockorder = blockorder-11 WHERE bid = '" . $bid . "' AND blockorder > 10";
@@ -928,15 +925,15 @@ function moveBlock()
 /**
  * Enable and Disable blocks
  *
- * @param    array $enabledblocks array containing ids of enabled blocks
- * @param    array $visibleblocks array containing ids of visible blocks
+ * @param    array $enabledBlocks array containing ids of enabled blocks
+ * @param    array $visibleBlocks array containing ids of visible blocks
  * @return   void
  */
-function changeBlockStatus($enabledblocks, $visibleblocks)
+function changeBlockStatus($enabledBlocks, $visibleBlocks)
 {
-    global $_CONF, $_TABLES;
+    global $_TABLES;
 
-    $disabled = array_diff($visibleblocks, $enabledblocks);
+    $disabled = array_diff($visibleBlocks, $enabledBlocks);
 
     // disable blocks
     $in = implode(',', $disabled);
@@ -946,7 +943,7 @@ function changeBlockStatus($enabledblocks, $visibleblocks)
     }
 
     // enable blocks
-    $in = implode(',', $enabledblocks);
+    $in = implode(',', $enabledBlocks);
     if (!empty($in)) {
         $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 1 WHERE bid IN ($in)";
         DB_query($sql);
@@ -1009,7 +1006,7 @@ if (isset($_POST['blockenabler']) && SEC_checkToken()) {
     changeBlockStatus($enabledblocks, $visibleblocks);
 }
 
-if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
+if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
         COM_errorLog('Attempted to delete block, bid empty or null, value =' . $bid);
         COM_redirect($_CONF['site_admin_url'] . '/block.php');
@@ -1032,7 +1029,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_POST['blockorder'])) {
         $blockorder = COM_applyFilter($_POST['blockorder'], true);
     }
-    $device = DEVICE_ALL;
+    $device = Device::ALL;
     if (isset ($_POST['device'])) {
         $device = COM_applyFilter($_POST['device']);
     }
