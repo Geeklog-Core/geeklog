@@ -33,6 +33,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+global $_CONF, $_TABLES;
+
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 
@@ -92,11 +94,7 @@ COM_checkInstalled();
 require_once $_CONF['path_system'] . 'classes/Autoload.php';
 Geeklog\Autoload::initialize();
 
-/**
- * Configuration class
- */
-require_once $_CONF['path_system'] . 'classes/config.class.php';
-
+// Load configuration
 $config = config::get_instance();
 $config->set_configfile($_CONF['path'] . 'db-config.php');
 $config->load_baseconfig();
@@ -116,7 +114,7 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
         echo $_CONF['site_name'] . ' is temporarily down.  Please check back soon.' . LB;
     } else {
         // if the msg starts with http: assume it's a URL we should redirect to
-        if (preg_match("/^(https?):/", $_CONF['site_disabled_msg']) === 1) {
+        if (preg_match("/^(https?):/", $_CONF['site_disabled_msg'])) {
             COM_redirect($_CONF['site_disabled_msg']);
         } else {
             header("HTTP/1.1 503 Service Unavailable");
@@ -139,14 +137,10 @@ if (stripos($_SERVER['PHP_SELF'], 'lib-common.php') !== false) {
 // +---------------------------------------------------------------------------+
 
 // Input class (since Geeklog-2.1.1)
-require_once $_CONF['path_system'] . 'classes/input.class.php';
-$_INPUT = new GL_Input(false); // request variables with magic_quotes_gpc handled
-$_FINPUT = new GL_Input(true);  // request variables with magic_quotes_gpc handled
-// and COM_applyBasicFilter applied
+$_INPUT = new Geeklog\Input(false); // request variables with magic_quotes_gpc handled
+$_FINPUT = new Geeklog\Input(true);  // request variables with magic_quotes_gpc handled and COM_applyBasicFilter applied
 
-/**
- * If needed, add our PEAR path to the list of include paths
- */
+// If needed, add our PEAR path to the list of include paths
 if (!$_CONF['have_pear']) {
     $curPHPIncludePath = get_include_path();
     if (empty($curPHPIncludePath)) {
@@ -161,15 +155,10 @@ if (!$_CONF['have_pear']) {
     }
 }
 
-/**
- * Set the webserver's timezone
- */
-require_once $_CONF['path_system'] . 'classes/timezoneconfig.class.php';
-TimeZoneConfig::setSystemTimeZone();
+// Set the web server's timezone
+ TimeZoneConfig::setSystemTimeZone();
 
-/**
- * Include multibyte functions
- */
+// Include multibyte functions
 require_once $_CONF['path_system'] . 'lib-mbyte.php';
 
 /**
@@ -177,6 +166,8 @@ require_once $_CONF['path_system'] . 'lib-mbyte.php';
  * This is a poorly implemented class that was not very well thought out.
  * Still very necessary
  */
+global $_PLUGINS;
+
 require_once $_CONF['path_system'] . 'lib-plugins.php';
 
 /**
@@ -186,19 +177,10 @@ require_once $_CONF['path_system'] . 'classes/timer.class.php';
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
-/**
-* Include URL class
-*
-* This provides optional URL rewriting functionality.
-*/
-require_once $_CONF['path_system'] . 'classes/router.class.php';
-require_once $_CONF['path_system'] . 'classes/url.class.php';
+// This provides optional URL rewriting functionality.
 $_URL = new Url($_CONF['url_rewrite'], $_CONF['url_routing']);
 
-/**
- * Include Device Detect class
- */
-require_once $_CONF['path_system'] . 'classes/device.class.php';
+// Include Device Detect class
 $_DEVICE = new device();
 
 /**
@@ -208,24 +190,16 @@ $_DEVICE = new device();
 require_once $_CONF['path_system'] . 'classes/template.class.php';
 require_once $_CONF['path_system'] . 'lib-template.php';
 
-/**
- * This is the security library used for application security
- */
+// This is the security library used for application security
 require_once $_CONF['path_system'] . 'lib-security.php';
 
-/**
- * This is the syndication library used to offer (RSS) feeds.
- */
+// This is the syndication library used to offer (RSS) feeds.
 require_once $_CONF['path_system'] . 'lib-syndication.php';
 
-/**
- * This is the topic library used to manage topics.
- */
-require_once $_CONF['path_system'] . 'lib-topic.php';
+// This is the topic library used to manage topics.
+ require_once $_CONF['path_system'] . 'lib-topic.php';
 
-/**
- * This is the block library used to manage blocks.
- */
+// This is the block library used to manage blocks.
 require_once $_CONF['path_system'] . 'lib-block.php';
 
 /**
@@ -247,9 +221,7 @@ $_CONF['theme_oauth_icons'] = 0; // 0 - Use Geeklogs OAuth icons. 1 - Use theme 
  */
 require_once $_CONF['path_system'] . 'lib-custom.php';
 
-/**
- * Session management library
- */
+// Session management library
 require_once $_CONF['path_system'] . 'lib-sessions.php';
 SESS_sessionCheck(); // Load user data
 TimeZoneConfig::setUserTimeZone();
@@ -258,9 +230,7 @@ if (COM_isAnonUser()) {
     $_USER['advanced_editor'] = $_CONF['advanced_editor'];
 }
 
-/**
- * Retrieve new topic if found
- */
+// Retrieve new topic if found
 if (isset($_GET['topic'])) {
     $topic = COM_applyFilter($_GET['topic']);
 } elseif (isset($_POST['topic'])) {
@@ -280,12 +250,12 @@ if ($topic != '') {
 }
 
 // Set theme
-$usetheme = '';
+$useTheme = '';
 if (isset($_POST['usetheme'])) {
-    $usetheme = COM_sanitizeFilename($_POST['usetheme'], true);
+    $useTheme = COM_sanitizeFilename($_POST['usetheme'], true);
 }
-if (!empty($usetheme) && is_dir($_CONF['path_themes'] . $usetheme)) {
-    $_CONF['theme'] = $usetheme;
+if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
+    $_CONF['theme'] = $useTheme;
     $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
     $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 } elseif ($_CONF['allow_user_themes'] == 1) {
@@ -311,23 +281,15 @@ if (!empty($usetheme) && is_dir($_CONF['path_themes'] . $usetheme)) {
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
 $TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
 
-/**
- * Include the Scripts class
- * This provides the ability to set css and javascript.
- */
-require_once $_CONF['path_system'] . 'classes/scripts.class.php';
+// This provides the ability to set css and javascript.
 $_SCRIPTS = new Scripts();
 
-/**
- * Include theme functions file which may/may not do anything
- */
+// Include theme functions file which may/may not do anything
 if (file_exists($_CONF['path_layout'] . 'functions.php')) {
     require_once $_CONF['path_layout'] . 'functions.php';
 }
 
-/**
- * Get the configuration values from the theme
- */
+// Get the configuration values from the theme
 $_CONF['theme_default'] = ''; // Default is none
 $_CONF['path_layout_default'] = ''; // Default is none
 $_CONF['supported_version_theme'] = '1.8.1'; // if the themes supported version of the theme engine not found assume lowest version
@@ -409,12 +371,7 @@ if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
     $_CONF['language'] = COM_getLanguage();
 }
 
-// Include a class for language overrides
-require_once $_CONF['path_system'] . 'classes/language.class.php';
-
-/**
- * Language include
- */
+// Include a language file
 require_once $_CONF['path_language'] . $_CONF['language'] . '.php';
 
 if (empty($LANG_DIRECTION)) {
@@ -446,11 +403,7 @@ Language::override(array(
  *
  * @global array $_GROUPS
  */
-if (!COM_isAnonUser()) {
-    $_GROUPS = SEC_getUserGroups($_USER['uid']);
-} else {
-    $_GROUPS = SEC_getUserGroups(1);
-}
+$_GROUPS = COM_isAnonUser() ? SEC_getUserGroups(1) : SEC_getUserGroups($_USER['uid']);
 
 /**
  * Global array of current user permissions [read,edit]
@@ -468,7 +421,7 @@ if (function_exists($func)) {
         $constant = (!empty($info['constant'])) ? $info['constant'] : true;
         $attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
         $priority = (!empty($info['priority'])) ? $info['priority'] : 100;
-        $_SCRIPTS->setCssFile($name, $file, $constant, $attributes, $priority, 'theme');
+        $_SCRIPTS->setCSSFile($name, $file, $constant, $attributes, $priority, 'theme');
     }
 }
 $func = 'theme_js_libs_' . $_CONF['theme'];
@@ -496,10 +449,7 @@ $func = 'theme_init_' . $_CONF['theme'];
 if (function_exists($func)) {
     $func();
 }
-unset(
-    $theme_config,
-    $func
-);
+unset($theme_config, $func);
 
 // Clear out any expired sessions
 DB_lockTable($_TABLES['sessions']);
@@ -574,7 +524,7 @@ if (DB_getItem($_TABLES['vars'], 'value', "name='last_article_publish'") != $A['
  * @param        string $blockname corresponds to name field in block table
  * @param        string $which     can be either 'header' or 'footer' for corresponding template
  * @param        string $position  can be 'left', 'right' or blank. If set, will be used to find a side specific
- *                                 override template.
+ *                                  override template.
  * @see function COM_startBlock
  * @see function COM_endBlock
  * @see function COM_showBlocks
@@ -637,7 +587,6 @@ function COM_getThemes($all = false)
     global $_CONF;
 
     $index = 1;
-
     $themes = array();
 
     // If users aren't allowed to change their theme then only return the default theme
@@ -665,10 +614,10 @@ function COM_getThemes($all = false)
  * Create the menu, i.e. replace {menu_elements} in the site header with the
  * actual menu entries.
  *
- * @param    Template &$header     reference to the header template
+ * @param    Template $header     reference to the header template
  * @param    array    $plugin_menu array of plugin menu entries, if any
  */
-function COM_renderMenu(&$header, $plugin_menu)
+function COM_renderMenu($header, $plugin_menu)
 {
     global $_CONF, $LANG01, $topic;
 
@@ -682,6 +631,7 @@ function COM_renderMenu(&$header, $plugin_menu)
     $menuCounter = 0;
     $allowedCounter = 0;
     $counter = 0;
+    $custom_entries = array();
 
     $num_plugins = count($plugin_menu);
     if (($num_plugins === 0) && in_array('plugins', $_CONF['menu_elements'])) {
@@ -690,7 +640,6 @@ function COM_renderMenu(&$header, $plugin_menu)
     }
 
     if (in_array('custom', $_CONF['menu_elements'])) {
-        $custom_entries = array();
         if (function_exists('CUSTOM_menuEntries')) {
             $custom_entries = CUSTOM_menuEntries();
         }
@@ -752,13 +701,10 @@ function COM_renderMenu(&$header, $plugin_menu)
             case 'directory':
                 $url = $_CONF['site_url'] . '/directory.php';
                 if (!empty($topic)) {
-                    $url = COM_buildUrl($url . '?topic='
-                        . urlencode($topic));
+                    $url = COM_buildURL($url . '?topic=' . urlencode($topic));
                 }
                 $label = $LANG01[117];
-                if ($anon && ($_CONF['loginrequired'] ||
-                        $_CONF['directoryloginrequired'])
-                ) {
+                if ($anon && ($_CONF['loginrequired'] || $_CONF['directoryloginrequired'])) {
                     $allowed = false;
                 }
                 break;
@@ -811,9 +757,7 @@ function COM_renderMenu(&$header, $plugin_menu)
             case 'search':
                 $url = $_CONF['site_url'] . '/search.php';
                 $label = $LANG01[75];
-                if ($anon && ($_CONF['loginrequired'] ||
-                        $_CONF['searchloginrequired'])
-                ) {
+                if ($anon && ($_CONF['loginrequired'] || $_CONF['searchloginrequired'])) {
                     $allowed = false;
                 }
                 break;
@@ -986,7 +930,7 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
 
     $feed_url = array();
     if ($_CONF['backend'] == 1) { // add feed-link to header if applicable
-        $baseurl = SYND_getFeedUrl();
+        $baseUrl = SYND_getFeedUrl();
 
         $sql = 'SELECT format, filename, title, language FROM '
             . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";
@@ -1004,7 +948,7 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
 
                 $feed_url[] = '<link rel="alternate" type="' . $format_type
                     . '" hreflang="' . $A['language'] . '" href="'
-                    . $baseurl . $A['filename'] . '" title="'
+                    . $baseUrl . $A['filename'] . '" title="'
                     . htmlspecialchars($feed_title) . '"' . XHTML . '>';
             }
         }
@@ -1299,16 +1243,15 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
  * This loads the proper templates, does variable substitution and returns the
  * HTML for the site footer.
  *
- * @param   boolean $rightblock Whether or not to show blocks on right hand side default is no
+ * @param   boolean $rightBlock Whether or not to show blocks on right hand side default is no
  * @param   array   $custom     An array defining custom function to be used to format Rightblocks
  * @see        function COM_siteHeader
- * @return   string  Formated HTML containing site footer and optionally right blocks
+ * @return   string  Formatted HTML containing site footer and optionally right blocks
  * @deprecated since v2.1.2
  */
-function COM_siteFooter($rightblock = -1, $custom = '')
+function COM_siteFooter($rightBlock = -1, $custom = '')
 {
-    global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS, $_SCRIPTS;
-    global $_GLOBAL_WHAT;
+    global $_CONF, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS, $_SCRIPTS, $_GLOBAL_WHAT;
 
     COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
 
@@ -1316,7 +1259,7 @@ function COM_siteFooter($rightblock = -1, $custom = '')
     $function = $_CONF['theme'] . '_siteFooter';
 
     if (function_exists($function)) {
-        return $function($rightblock, $custom);
+        return $function($rightBlock, $custom);
     }
 
     COM_hit();
@@ -1383,9 +1326,8 @@ function COM_siteFooter($rightblock = -1, $custom = '')
      * [1] - if it isn't, they'll be in the header already.
      *
      */
-    $displayRightBlocks = true;
     if ($_CONF['right_blocks_in_footer'] == 1) {
-        if (($rightblock < 0) || !$rightblock) {
+        if (($rightBlock < 0) || !$rightBlock) {
             if (isset($_CONF['show_right_blocks'])) {
                 $displayRightBlocks = $_CONF['show_right_blocks'];
             } else {
@@ -1501,7 +1443,7 @@ function COM_siteFooter($rightblock = -1, $custom = '')
  *                               Rightblocks
  * @see      function COM_siteHeader
  * @see      function COM_siteFooter
- * @return   string              Formated HTML document
+ * @return   string              Formatted HTML document
  */
 function COM_createHTMLDocument(&$content = '', $information = array())
 {
@@ -1520,9 +1462,9 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $pagetitle = '';
     }
     if (isset($information['headercode'])) {
-        $headercode = $information['headercode'];
+        $headerCode = $information['headercode'];
     } else {
-        $headercode = '';
+        $headerCode = '';
     }
     if (isset($information['breadcrumbs'])) {
         $breadcrumbs = $information['breadcrumbs'];
@@ -1530,9 +1472,9 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $breadcrumbs = '';
     }
     if (isset($information['rightblock'])) {
-        $rightblock = $information['rightblock'];
+        $rightBlock = $information['rightblock'];
     } else {
-        $rightblock = -1;
+        $rightBlock = -1;
     }
     if (isset($information['custom'])) {
         $custom = $information['custom'];
@@ -1542,8 +1484,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // If the theme does not support the CSS layout then call the legacy functions (Geeklog 1.8.1 and older).
     if ($_CONF['supported_version_theme'] == '1.8.1') {
-        return COM_siteHeader($what, $pagetitle, $headercode) . $content
-        . COM_siteFooter($rightblock, $custom);
+        return COM_siteHeader($what, $pagetitle, $headerCode) . $content
+        . COM_siteFooter($rightBlock, $custom);
     }
 
     // If the theme implemented this for us then call their version instead.
@@ -1856,7 +1798,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // Call any plugin that may want to include extra Meta tags
     // or Javascript functions
-    $headercode .= PLG_getHeaderCode();
+    $headerCode .= PLG_getHeaderCode();
 
     // Meta Tags
     // 0 = Disabled, 1 = Enabled, 2 = Enabled but default just for homepage
@@ -1867,9 +1809,9 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $no_meta_keywords = 1;
 
         //Find out if the meta tag description or keywords already exist in the headercode
-        if ($headercode != '') {
+        if ($headerCode != '') {
             $pattern = '/<meta ([^>]*)name="([^"\'>]*)"([^>]*)/im';
-            if (preg_match_all($pattern, $headercode, $matches, PREG_SET_ORDER)) {
+            if (preg_match_all($pattern, $headerCode, $matches, PREG_SET_ORDER)) {
                 // Loop through all meta tags looking for description and keywords
                 for ($i = 0; $i < count($matches) && (($no_meta_description == 1) || ($no_meta_keywords == 1)); $i++) {
                     $str_matches = strtolower($matches[$i][0]);
@@ -1913,7 +1855,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         }
 
         if ($no_meta_description || $no_meta_keywords) {
-            $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
+            $headerCode .= COM_createMetaTags($meta_description, $meta_keywords);
         }
     }
 
@@ -1965,11 +1907,9 @@ function COM_createHTMLDocument(&$content = '', $information = array())
      * the right blocks (and left).
      *
      * [1] - if it isn't, they'll be in the header already.
-     *
      */
-    $displayRightBlocks = true;
     if ($_CONF['right_blocks_in_footer'] == 1) {
-        if (($rightblock < 0) || !$rightblock) {
+        if (($rightBlock < 0) || !$rightBlock) {
             if (isset($_CONF['show_right_blocks'])) {
                 $displayRightBlocks = $_CONF['show_right_blocks'];
             } else {
@@ -2044,30 +1984,30 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $footer->set_var('centerblockfooter-span', '</td></tr></table>');
     }
 
-    $exectime = $_PAGE_TIMER->stopTimer();
-    $exectext = $LANG01[91] . ' ' . $exectime . ' ' . $LANG01[92];
+    $execTime = $_PAGE_TIMER->stopTimer();
+    $execText = $LANG01[91] . ' ' . $execTime . ' ' . $LANG01[92];
 
-    $footer->set_var('execution_time', $exectime);
-    $footer->set_var('execution_textandtime', $exectext);
+    $footer->set_var('execution_time', $execTime);
+    $footer->set_var('execution_textandtime', $execText);
 
     // Check leftblocks and rightblocks
     $layout_columns = 'left-center-right';
-    $emptylblocks = empty($lblocks);
-    $emptyrblocks = empty($rblocks);
-    if (!$emptylblocks && $emptyrblocks) {
+    $emptyLeftBlocks = empty($lblocks);
+    $emptyRightBlocks = empty($rblocks);
+    if (!$emptyLeftBlocks && $emptyRightBlocks) {
         $layout_columns = 'left-center';
     }
-    if ($emptylblocks && !$emptyrblocks) {
+    if ($emptyLeftBlocks && !$emptyRightBlocks) {
         $layout_columns = 'center-right';
     }
-    if ($emptylblocks && $emptyrblocks) {
+    if ($emptyLeftBlocks && $emptyRightBlocks) {
         $layout_columns = 'center';
     }
     $header->set_var('layout_columns', $layout_columns);
 
     // All blocks, autotags, template files, etc, now have been rendered (since can be done in footer) so all scripts and css should be set now
-    $headercode = $_SCRIPTS->getHeader() . $headercode;
-    $header->set_var('plg_headercode', $headercode);
+    $headerCode = $_SCRIPTS->getHeader() . $headerCode;
+    $header->set_var('plg_headercode', $headerCode);
 
     $retval_header = $header->finish($header->parse('index_header', 'header'));
 
@@ -2075,15 +2015,15 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     PLG_templateSetVars('footer', $footer);
 
     // Call any plugin that may want to include extra JavaScript functions
-    $plugin_footercode = PLG_getFooterCode();
+    $pluginFooterCode = PLG_getFooterCode();
 
     // Retrieve any JavaScript libraries, variables and functions
-    $footercode = $_SCRIPTS->getFooter();
+    $footerCode = $_SCRIPTS->getFooter();
 
     // $_SCRIPTS code should be placed before plugin_footer_code but plugin_footer_code should still be allowed to set $_SCRIPTS
-    $footercode .= $plugin_footercode;
+    $footerCode .= $pluginFooterCode;
 
-    $footer->set_var('plg_footercode', $footercode);
+    $footer->set_var('plg_footercode', $footerCode);
 
     // Actually parse the template and make variable substitutions
     $footer->parse('index_footer', 'footer');
@@ -2101,20 +2041,20 @@ function COM_createHTMLDocument(&$content = '', $information = array())
  * COM_siteHeader and COM_siteFooter but for internal page elements.
  *
  * @param    string $title    Value to set block title to
- * @param    string $helpfile Help file, if one exists
+ * @param    string $helpFile Help file, if one exists
  * @param    string $template HTML template file to use to format the block
  * @return   string              Formatted HTML containing block header
  * @see COM_endBlock
  * @see COM_siteHeader
  */
-function COM_startBlock($title = '', $helpfile = '', $template = 'blockheader.thtml')
+function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.thtml')
 {
-    global $_CONF, $LANG01, $LANG32, $_IMAGE_TYPE, $_SCRIPTS;
+    global $_CONF, $LANG32, $_IMAGE_TYPE, $_SCRIPTS;
 
     // If the theme implemented this for us then call their version instead.
     $function = $_CONF['theme'] . '_startBlock';
     if (function_exists($function)) {
-        return $function($title, $helpfile, $template);
+        return $function($title, $helpFile, $template);
     }
 
     $block = COM_newTemplate($_CONF['path_layout']);
@@ -2122,10 +2062,10 @@ function COM_startBlock($title = '', $helpfile = '', $template = 'blockheader.th
 
     $block->set_var('block_title', stripslashes($title));
 
-    if (!empty($helpfile)) {
+    if (!empty($helpFile)) {
         // Only works when header generated all at once
         // Make sure not a full link. Needs to follow help file format (correct location and divs)
-        if (($_CONF['supported_version_theme'] !== '1.8.1') && !stristr($helpfile, 'http://')) {
+        if (($_CONF['supported_version_theme'] !== '1.8.1') && !stristr($helpFile, 'http://')) {
             // Only need to set it once
             if (!defined('GL-HELP-SET')) {
                 define('GL-HELP-SET', true);
@@ -2145,15 +2085,15 @@ function COM_startBlock($title = '', $helpfile = '', $template = 'blockheader.th
             }
         }
 
-        $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
-        $help_content = '<img src="' . $helpimg . '" alt="?"' . XHTML . '>';
-        $help_attr = array('class' => 'blocktitle', 'title' => "$title");
-        if (!stristr($helpfile, 'http://')) {
-            $help_url = $_CONF['site_url'] . "/help/$helpfile";
+        $helpImage = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
+        $helpContent = '<img src="' . $helpImage . '" alt="?"' . XHTML . '>';
+        $helpAttr = array('class' => 'blocktitle', 'title' => "$title");
+        if (!stristr($helpFile, 'http://')) {
+            $help_url = $_CONF['site_url'] . "/help/$helpFile";
         } else {
-            $help_url = $helpfile;
+            $help_url = $helpFile;
         }
-        $help = COM_createLink($help_content, $help_url, $help_attr);
+        $help = COM_createLink($helpContent, $help_url, $helpAttr);
         $block->set_var('block_help', $help);
         $block->set_var('help_url', $help_url);
     }
@@ -2200,7 +2140,7 @@ function COM_endBlock($template = 'blockfooter.thtml')
  * @param        int    $sortcol   Which field to sort option list by 0 (value) or 1 (label)
  * @param        string $where     Optional WHERE clause to use in the SQL Selection
  * @see function COM_checkList
- * @return   string  Formated HTML of option values
+ * @return   string  Formatted HTML of option values
  */
 function COM_optionList($table, $selection, $selected = '', $sortcol = 1, $where = '')
 {
@@ -2208,7 +2148,6 @@ function COM_optionList($table, $selection, $selected = '', $sortcol = 1, $where
 
     $retval = '';
 
-    $LangTableName = '';
     if (substr($table, 0, strlen($_DB_table_prefix)) == $_DB_table_prefix) {
         $LangTableName = 'LANG_' . substr($table, strlen($_DB_table_prefix));
     } else {
@@ -2217,24 +2156,19 @@ function COM_optionList($table, $selection, $selected = '', $sortcol = 1, $where
 
     global $$LangTableName;
 
-    if (isset($$LangTableName)) {
-        $LangTable = $$LangTableName;
-    } else {
-        $LangTable = array();
-    }
-
+    $LangTable = isset($$LangTableName) ? $$LangTableName : array();
     $tmp = str_replace('DISTINCT ', '', $selection);
     $select_set = explode(',', $tmp);
 
     $sql = "SELECT $selection FROM $table";
     if ($where !== '') {
-        $sql .= " WHERE $where";
+        $sql .= " WHERE {$where}";
     }
     $sql .= " ORDER BY {$select_set[$sortcol]}";
     $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $numRows = DB_numRows($result);
 
-    for ($i = 0; $i < $nrows; $i++) {
+    for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result, true);
         $retval .= '<option value="' . $A[0] . '"';
 
@@ -2270,19 +2204,17 @@ function COM_optionList($table, $selection, $selected = '', $sortcol = 1, $where
  *                                   option and the second is the label to be displayed.  This is used in a SQL
  *                                   statement and can include DISTINCT to start.
  * @param        string  $selected   Value (from $selection) to set to SELECTED or default
- * @param        int     $sortcol    Which field to sort option list by 0 (value) or 1 (label)
- * @param        boolean $ignorelang Whether to return all topics (true) or only the ones for the current language
+ * @param        int     $sortCol    Which field to sort option list by 0 (value) or 1 (label)
+ * @param        boolean $ignoreLang Whether to return all topics (true) or only the ones for the current language
  *                                   (false)
  * @see function COM_optionList
- * @return   string  Formated HTML of option values
+ * @return   string  Formatted HTML of option values
  */
-function COM_topicList($selection, $selected = '', $sortcol = 1, $ignorelang = false)
+function COM_topicList($selection, $selected = '', $sortCol = 1, $ignoreLang = false)
 {
-    global $_TABLES;
-
     $retval = '';
 
-    $topics = COM_topicArray($selection, $sortcol, $ignorelang);
+    $topics = COM_topicArray($selection, $sortCol, $ignoreLang);
     foreach ($topics as $tid => $topic) {
         $retval .= '<option value="' . $tid . '"';
         if (is_array($selected)) {
@@ -2310,12 +2242,12 @@ function COM_topicList($selection, $selected = '', $sortcol = 1, $ignorelang = f
  * @param    string  $selection  Comma delimited string of fields to pull The first field is the value of the option
  *                               and the second is the label to be displayed.  This is used in a SQL statement and can
  *                               include DISTINCT to start.
- * @param    int     $sortcol    Which field to sort option list by 0 (value) or 1 (label)
- * @param    boolean $ignorelang Whether to return all topics (true) or only the ones for the current language (false)
+ * @param    int     $sortCol    Which field to sort option list by 0 (value) or 1 (label)
+ * @param    boolean $ignoreLang Whether to return all topics (true) or only the ones for the current language (false)
  * @return   array               Array of topics
  * @see function COM_topicList
  */
-function COM_topicArray($selection, $sortcol = 0, $ignorelang = false)
+function COM_topicArray($selection, $sortCol = 0, $ignoreLang = false)
 {
     global $_TABLES;
 
@@ -2324,29 +2256,29 @@ function COM_topicArray($selection, $sortcol = 0, $ignorelang = false)
     $tmp = str_replace('DISTINCT ', '', $selection);
     $select_set = explode(',', $tmp);
 
-    $sql = "SELECT $selection FROM {$_TABLES['topics']}";
-    if ($ignorelang) {
+    $sql = "SELECT {$selection} FROM {$_TABLES['topics']}";
+    if ($ignoreLang) {
         $sql .= COM_getPermSQL();
     } else {
-        $permsql = COM_getPermSQL();
-        if (empty($permsql)) {
+        $permSql = COM_getPermSQL();
+        if (empty($permSql)) {
             $sql .= COM_getLangSQL('tid');
         } else {
-            $sql .= $permsql . COM_getLangSQL('tid', 'AND');
+            $sql .= $permSql . COM_getLangSQL('tid', 'AND');
         }
     }
-    $sql .= " ORDER BY $select_set[$sortcol]";
+    $sql .= " ORDER BY $select_set[$sortCol]";
 
     $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $numRows = DB_numRows($result);
 
     if (count($select_set) > 1) {
-        for ($i = 0; $i < $nrows; $i++) {
+        for ($i = 0; $i < $numRows; $i++) {
             $A = DB_fetchArray($result, true);
             $retval[$A[0]] = stripslashes($A[1]);
         }
     } else {
-        for ($i = 0; $i < $nrows; $i++) {
+        for ($i = 0; $i < $numRows; $i++) {
             $A = DB_fetchArray($result, true);
             $retval[] = $A[0];
         }
@@ -2363,22 +2295,22 @@ function COM_topicArray($selection, $sortcol = 0, $ignorelang = false)
  * @param    string $selection Comma delimited list of fields to pull from table
  * @param    string $where     Where clause of SQL statement
  * @param    string $selected  Value to set to CHECKED
- * @param    string $fieldname Name to use for the checkbox array
+ * @param    string $fieldName Name to use for the checkbox array
  * @return   string              HTML with Checkbox code
  * @see      COM_optionList
  */
-function COM_checkList($table, $selection, $where = '', $selected = '', $fieldname = '')
+function COM_checkList($table, $selection, $where = '', $selected = '', $fieldName = '')
 {
     global $_TABLES, $_COM_VERBOSE;
 
-    $sql = "SELECT $selection FROM $table";
+    $sql = "SELECT {$selection} FROM {$table}";
 
     if (!empty($where)) {
-        $sql .= " WHERE $where";
+        $sql .= " WHERE {$where}";
     }
 
     $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $numRows = DB_numRows($result);
 
     if (!empty($selected)) {
         if ($_COM_VERBOSE) {
@@ -2394,7 +2326,7 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldna
         $S = array();
     }
     $retval = '<ul class="checkboxes-list">' . LB;
-    for ($i = 0; $i < $nrows; $i++) {
+    for ($i = 0; $i < $numRows; $i++) {
         $access = true;
         $A = DB_fetchArray($result, true);
 
@@ -2402,14 +2334,14 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldna
             $access = false;
         }
 
-        if (empty($fieldname)) {
+        if (empty($fieldName)) {
             // Not a good idea, as that will expose our table name and prefix!
             // Make sure you pass a distinct field name!
-            $fieldname = $table;
+            $fieldName = $table;
         }
 
         if ($access) {
-            $retval .= '<li><label><input type="checkbox" name="' . $fieldname . '[]" value="' . $A[0] . '"';
+            $retval .= '<li><label><input type="checkbox" name="' . $fieldName . '[]" value="' . $A[0] . '"';
 
             $sizeS = count($S);
             for ($x = 0; $x < $sizeS; $x++) {
@@ -2486,7 +2418,6 @@ function COM_rdfUpToDateCheck($updated_type = '', $updated_topic = '', $updated_
         for ($i = 0; $i < $num; $i++) {
             $A = DB_fetchArray($result);
 
-            $is_current = true;
             if ($A['type'] === 'article') {
                 $is_current = SYND_feedUpdateCheck($A['topic'],
                     $A['update_info'], $A['limits'],
@@ -2496,6 +2427,7 @@ function COM_rdfUpToDateCheck($updated_type = '', $updated_topic = '', $updated_
                     $A['topic'], $A['update_info'], $A['limits'],
                     $updated_type, $updated_topic, $updated_id);
             }
+
             if (!$is_current) {
                 SYND_updateFeed($A['fid']);
             }
@@ -2509,7 +2441,6 @@ function COM_rdfUpToDateCheck($updated_type = '', $updated_topic = '', $updated_
  * published and, if so, will see if they are featured.  If they are featured,
  * this will set old featured article (if there is one) to normal
  */
-
 function COM_featuredCheck()
 {
     global $_TABLES;
@@ -2551,59 +2482,58 @@ function COM_featuredCheck()
  * Prints a well formatted message to either the web page, error log
  * or both.
  *
- * @param        string $logentry Text to log to error log
- * @param        int    $actionid where 1 = write to log file, 2 = write to screen (default) both
+ * @param        string $logEntry Text to log to error log
+ * @param        int    $actionId where 1 = write to log file, 2 = write to screen (default) both
  * @see function COM_accessLog
- * @return   string  If $actionid = 2 or '' then HTML formatted string (wrapped in block) else nothing
+ * @return   string  If $actionId = 2 or '' then HTML formatted string (wrapped in block) else nothing
  */
-function COM_errorLog($logentry, $actionid = '')
+function COM_errorLog($logEntry, $actionId = 2)
 {
     global $_CONF, $LANG01;
 
     $retval = '';
 
-    if (!empty($logentry)) {
-        $logentry = str_replace(array('<?', '?>'), array('(@', '@)'),
-            $logentry);
+    if (!empty($logEntry)) {
+        $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
 
         $timestamp = @strftime('%c');
-        $remoteaddress = $_SERVER['REMOTE_ADDR'];
+        $remoteAddress = $_SERVER['REMOTE_ADDR'];
 
         if (!isset($_CONF['path_layout']) &&
-            (($actionid == 2) || empty($actionid))
+            (($actionId == 2) || empty($actionId))
         ) {
-            $actionid = 1;
+            $actionId = 1;
         }
-        if ((($actionid == 2) || empty($actionid)) &&
+        if ((($actionId == 2) || empty($actionId)) &&
             !class_exists('Template')
         ) {
-            $actionid = 1;
+            $actionId = 1;
         }
-        if (!isset($_CONF['path_log']) && ($actionid != 2)) {
-            $actionid = 3;
+        if (!isset($_CONF['path_log']) && ($actionId != 2)) {
+            $actionId = 3;
         }
 
-        switch ($actionid) {
+        switch ($actionId) {
             case 1:
                 $logfile = $_CONF['path_log'] . 'error.log';
 
                 if (!$file = fopen($logfile, 'a')) {
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
                 } else {
-                    fputs($file, "$timestamp - $remoteaddress - $logentry \n");
+                    fputs($file, "$timestamp - $remoteAddress - $logEntry \n");
                 }
                 break;
 
             case 2:
                 $retval .= COM_startBlock($LANG01[55] . ' ' . $timestamp, '',
                         COM_getBlockTemplate('_msg_block', 'header'))
-                    . COM_nl2br($logentry)
+                    . COM_nl2br($logEntry)
                     . COM_endBlock(COM_getBlockTemplate('_msg_block',
                         'footer'));
                 break;
 
             case 3:
-                $retval = COM_nl2br($logentry);
+                $retval = COM_nl2br($logEntry);
                 break;
 
             default:
@@ -2612,11 +2542,11 @@ function COM_errorLog($logentry, $actionid = '')
                 if (!$file = fopen($logfile, 'a')) {
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
                 } else {
-                    fputs($file, "$timestamp - $remoteaddress - $logentry \n");
+                    fputs($file, "$timestamp - $remoteAddress - $logEntry \n");
                     $retval .= COM_startBlock($LANG01[34] . ' - ' . $timestamp,
                             '', COM_getBlockTemplate('_msg_block',
                                 'header'))
-                        . COM_nl2br($logentry)
+                        . COM_nl2br($logEntry)
                         . COM_endBlock(COM_getBlockTemplate('_msg_block',
                             'footer'));
                 }
@@ -2631,36 +2561,31 @@ function COM_errorLog($logentry, $actionid = '')
  * Logs message to access.log
  * This will print a message to the Geeklog access log
  *
- * @param        string $logentry Message to write to access log
+ * @param  string $logEntry Message to write to access log
+ * @return string
  * @see COM_errorLog
  */
-function COM_accessLog($logentry)
+function COM_accessLog($logEntry)
 {
     global $_CONF, $_USER, $LANG01;
 
-    $retval = '';
-
-    if (!empty($logentry)) {
-        $logentry = str_replace(array('<?', '?>'), array('(@', '@)'),
-            $logentry);
-
-        $timestamp = @strftime('%c');
-        $logfile = $_CONF['path_log'] . 'access.log';
-
-        if (!$file = fopen($logfile, 'a')) {
-            return $LANG01[33] . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
-        }
-
-        if (isset($_USER['uid'])) {
-            $byuser = $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR'];
-        } else {
-            $byuser = 'anon@' . $_SERVER['REMOTE_ADDR'];
-        }
-
-        fputs($file, "$timestamp ($byuser) - $logentry\n");
+    if (empty($logEntry)) {
+        return '';
     }
 
-    return $retval;
+    $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
+    $timestamp = @strftime('%c');
+    $byUser = isset($_USER['uid'])
+        ? $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR']
+        : 'anon@' . $_SERVER['REMOTE_ADDR'];
+    $entry = "{$timestamp} ({$byUser}) - {$logEntry}\n";
+    $logFile = $_CONF['path_log'] . 'access.log';
+
+    if (@file_put_contents($logFile, $entry, FILE_APPEND) === false) {
+        return $LANG01[33] . $logFile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
+    } else {
+        return '';
+    }
 }
 
 /**
@@ -2669,13 +2594,11 @@ function COM_accessLog($logentry)
  * This function is used to show the topics in the topics block.
  *
  * @param    string $topic ID of currently selected topic
- * @return   string                HTML formatted topic list
+ * @return   string        HTML formatted topic list
  */
 function COM_showTopics($topic = '')
 {
-    global $_CONF, $_TABLES, $_TOPICS, $_USER, $LANG01, $_BLOCK_TEMPLATE, $page;
-
-    $retval = '';
+    global $_CONF, $_TABLES, $_TOPICS, $LANG01, $_BLOCK_TEMPLATE, $page;
 
     // See if topic block cache is there for specified topic (since topics can be hidden here depending on what topic is clicked)
     $cacheInstance = 'topicsblock__' . $topic . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
@@ -2684,21 +2607,21 @@ function COM_showTopics($topic = '')
         return $retval;
     }
 
-    $topicnavigation = COM_newTemplate($_CONF['path_layout']);
+    $topicNavigation = COM_newTemplate($_CONF['path_layout']);
     if (isset($_BLOCK_TEMPLATE['topicnavigation'])) {
-        $topicnavigation->set_file('topicnavigation', $_BLOCK_TEMPLATE['topicnavigation']);
+        $topicNavigation->set_file('topicnavigation', $_BLOCK_TEMPLATE['topicnavigation']);
     } else {
-        $topicnavigation->set_file('topicnavigation', 'topicnavigation.thtml');
+        $topicNavigation->set_file('topicnavigation', 'topicnavigation.thtml');
     }
     $blocks = array('option', 'option-with-hidden', 'option-off');
     foreach ($blocks as $block) {
-        $topicnavigation->set_block('topicnavigation', $block);
+        $topicNavigation->set_block('topicnavigation', $block);
     }
 
-    $topicnavigation->set_var('block_name', str_replace('_', '-', 'section_block'));
+    $topicNavigation->set_var('block_name', str_replace('_', '-', 'section_block'));
 
     // Allow anything not in the blocks but in the rest of the template file to be displayed
-    $retval .= $topicnavigation->parse('item', 'topicnavigation', true);
+    $retval .= $topicNavigation->parse('item', 'topicnavigation', true);
 
     if ($_CONF['hide_home_link'] == 0) {
         // Give a link to the homepage here since a lot of people use this for
@@ -2707,19 +2630,19 @@ function COM_showTopics($topic = '')
         $start_branch = 1; // Sets indentation level for topics
 
         if (COM_onFrontpage()) {
-            $topicnavigation->set_var('option_url', '');
-            $topicnavigation->set_var('option_label', $LANG01[90]);
-            $topicnavigation->set_var('option_count', '');
-            $topicnavigation->set_var('option_attributes', '');
-            $topicnavigation->set_var('topic_image', '');
-            $retval .= $topicnavigation->parse('item', 'option-off');
+            $topicNavigation->set_var('option_url', '');
+            $topicNavigation->set_var('option_label', $LANG01[90]);
+            $topicNavigation->set_var('option_count', '');
+            $topicNavigation->set_var('option_attributes', '');
+            $topicNavigation->set_var('topic_image', '');
+            $retval .= $topicNavigation->parse('item', 'option-off');
         } else {
-            $topicnavigation->set_var('option_url', $_CONF['site_url'] . '/');
-            $topicnavigation->set_var('option_label', $LANG01[90]);
-            $topicnavigation->set_var('option_count', '');
-            $topicnavigation->set_var('option_attributes', ' rel="home"');
-            $topicnavigation->set_var('topic_image', '');
-            $retval .= $topicnavigation->parse('item', 'option');
+            $topicNavigation->set_var('option_url', $_CONF['site_url'] . '/');
+            $topicNavigation->set_var('option_label', $LANG01[90]);
+            $topicNavigation->set_var('option_count', '');
+            $topicNavigation->set_var('option_attributes', ' rel="home"');
+            $topicNavigation->set_var('topic_image', '');
+            $retval .= $topicNavigation->parse('item', 'option');
         }
     } else {
         $start_branch = 2;
@@ -2774,17 +2697,17 @@ function COM_showTopics($topic = '')
                         $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
                         $level++;
                     }
-                    $topicnavigation->set_var('branch_spaces', $branch_spaces);
-                    $topicnavigation->set_var('branch_level', $level);
+                    $topicNavigation->set_var('branch_spaces', $branch_spaces);
+                    $topicNavigation->set_var('branch_level', $level);
 
-                    $topicname = stripslashes($_TOPICS[$count_topic]['title']);
-                    $topicnavigation->set_var('option_url', $_CONF['site_url']
+                    $topicName = stripslashes($_TOPICS[$count_topic]['title']);
+                    $topicNavigation->set_var('option_url', $_CONF['site_url']
                         . '/index.php?topic=' . $_TOPICS[$count_topic]['id']);
-                    $topicnavigation->set_var('option_label', $topicname);
+                    $topicNavigation->set_var('option_label', $topicName);
 
-                    $countstring = '';
+                    $countString = '';
                     if ($_CONF['showstorycount'] || $_CONF['showsubmissioncount']) {
-                        $countstring .= '(';
+                        $countString .= '(';
 
                         // Retrieve list of inherited topics
                         $tid_list = TOPIC_getChildList($_TOPICS[$count_topic]['id']);
@@ -2799,13 +2722,13 @@ function COM_showTopics($topic = '')
                                 . ' GROUP BY sid';
 
                             $resultD = DB_query($sql);
-                            $nrows = DB_numRows($resultD);
-                            $countstring .= COM_numberFormat($nrows);
+                            $numRows = DB_numRows($resultD);
+                            $countString .= COM_numberFormat($numRows);
                         }
 
                         if ($_CONF['showsubmissioncount']) {
                             if ($_CONF['showstorycount']) {
-                                $countstring .= '/';
+                                $countString .= '/';
                             }
                             // Calculate number of story submissions in topic, includes any inherited ones
                             $sql = "SELECT sid FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta "
@@ -2814,53 +2737,53 @@ function COM_showTopics($topic = '')
                                 . ' GROUP BY sid';
 
                             $resultD = DB_query($sql);
-                            $nrows = DB_numRows($resultD);
-                            $countstring .= COM_numberFormat($nrows);
+                            $numRows = DB_numRows($resultD);
+                            $countString .= COM_numberFormat($numRows);
                         }
 
-                        $countstring .= ')';
+                        $countString .= ')';
                     }
-                    $topicnavigation->set_var('option_count', $countstring);
-                    $topicnavigation->set_var('option_attributes', '');
+                    $topicNavigation->set_var('option_count', $countString);
+                    $topicNavigation->set_var('option_attributes', '');
 
                     $sql = "SELECT imageurl, meta_description FROM {$_TABLES['topics']} WHERE tid = '{$_TOPICS[$count_topic]['id']}'";
                     $result = DB_query($sql);
                     $A = DB_fetchArray($result);
 
-                    $topicimage = '';
+                    $topicImage = '';
                     if (!empty($A['imageurl'])) {
-                        $imageurl = COM_getTopicImageUrl($A['imageurl']);
-                        $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
-                            . '" title="' . $topicname . '"' . XHTML . '>';
+                        $imageUrl = COM_getTopicImageUrl($A['imageurl']);
+                        $topicImage = '<img src="' . $imageUrl . '" alt="' . $topicName
+                            . '" title="' . $topicName . '"' . XHTML . '>';
                     }
-                    $topicnavigation->set_var('topic_image', $topicimage);
+                    $topicNavigation->set_var('topic_image', $topicImage);
 
                     $desc = trim($A['meta_description']);
-                    $topicnavigation->set_var('topic_description', $desc);
+                    $topicNavigation->set_var('topic_description', $desc);
                     $desc_escaped = htmlspecialchars($desc);
-                    $topicnavigation->set_var('topic_description_escaped', $desc_escaped);
+                    $topicNavigation->set_var('topic_description_escaped', $desc_escaped);
                     if (!empty($desc)) {
-                        $topicnavigation->set_var('topic_title_attribute',
+                        $topicNavigation->set_var('topic_title_attribute',
                             'title="' . $desc_escaped . '"');
                     } else {
-                        $topicnavigation->set_var('topic_title_attribute', '');
+                        $topicNavigation->set_var('topic_title_attribute', '');
                     }
 
                     if (($_TOPICS[$count_topic]['id'] == $topic) && ($page == 1)) {
-                        $retval .= $topicnavigation->parse('item', 'option-off');
+                        $retval .= $topicNavigation->parse('item', 'option-off');
                     } else {
                         // See if we need to display hidden child topic sign
                         $sql = "SELECT tid FROM {$_TABLES['topics']}
                                 WHERE parent_id = '{$_TOPICS[$count_topic]['id']}' AND hidden = 1" . COM_getPermSQL('AND', 0, 2);
                         $result = DB_query($sql);
-                        $nrows = DB_numRows($result);
+                        $numRows = DB_numRows($result);
                         $A = DB_fetchArray($result);
-                        if (($topic_in_path && ($nrows > 1)) || (!$topic_in_path && ($nrows > 0)) ||
-                            ($topic_in_path && ($nrows == 1) && !TOPIC_inPath($A['tid']))
+                        if (($topic_in_path && ($numRows > 1)) || (!$topic_in_path && ($numRows > 0)) ||
+                            ($topic_in_path && ($numRows == 1) && !TOPIC_inPath($A['tid']))
                         ) {
-                            $retval .= $topicnavigation->parse('item', 'option-with-hidden');
+                            $retval .= $topicNavigation->parse('item', 'option-with-hidden');
                         } else {
-                            $retval .= $topicnavigation->parse('item', 'option');
+                            $retval .= $topicNavigation->parse('item', 'option');
                         }
                     }
                 } else {
@@ -2884,9 +2807,10 @@ function COM_showTopics($topic = '')
  * Shows the user their menu options
  * This shows the average Joe User their menu options. This is the user block on the left side
  *
- * @param        string $help     Help file to show
- * @param        string $title    Title of Menu
- * @param        string $position Side being shown on 'left', 'right'. Though blank works not likely.
+ * @param  string $help     Help file to show
+ * @param  string $title    Title of Menu
+ * @param  string $position Side being shown on 'left', 'right'. Though blank works not likely.
+ * @return string
  * @see function COM_adminMenu
  */
 function COM_userMenu($help = '', $title = '', $position = '')
@@ -2896,18 +2820,18 @@ function COM_userMenu($help = '', $title = '', $position = '')
     $retval = '';
 
     if (!COM_isAnonUser()) {
-        $usermenu = COM_newTemplate($_CONF['path_layout']);
+        $userMenu = COM_newTemplate($_CONF['path_layout']);
         if (isset($_BLOCK_TEMPLATE['usernavigation'])) {
-            $usermenu->set_file('usernavigation', $_BLOCK_TEMPLATE['usernavigation']);
+            $userMenu->set_file('usernavigation', $_BLOCK_TEMPLATE['usernavigation']);
         } else {
-            $usermenu->set_file('usernavigation', 'usernavigation.thtml');
+            $userMenu->set_file('usernavigation', 'usernavigation.thtml');
         }
         $blocks = array('option', 'current');
         foreach ($blocks as $block) {
-            $usermenu->set_block('usernavigation', $block);
+            $userMenu->set_block('usernavigation', $block);
         }
 
-        $usermenu->set_var('block_name', str_replace('_', '-', 'user_block'));
+        $userMenu->set_var('block_name', str_replace('_', '-', 'user_block'));
 
         if (empty($title)) {
             $title = DB_getItem($_TABLES['blocks'], 'title', "name='user_block'");
@@ -2920,49 +2844,49 @@ function COM_userMenu($help = '', $title = '', $position = '')
             COM_getBlockTemplate('user_block', 'header', $position));
 
         // Allow anything not in the blocks but in the rest of the template file to be displayed
-        $retval .= $usermenu->parse('item', 'usernavigation', true);
+        $retval .= $userMenu->parse('item', 'usernavigation', true);
 
         // This function will show the user options for all installed plugins
         // (if any)
 
         $plugin_options = PLG_getUserOptions();
-        $nrows = count($plugin_options);
+        $numRows = count($plugin_options);
 
-        for ($i = 0; $i < $nrows; $i++) {
+        for ($i = 0; $i < $numRows; $i++) {
             $plg = current($plugin_options);
-            $usermenu->set_var('option_label', $plg->adminlabel);
+            $userMenu->set_var('option_label', $plg->adminlabel);
 
             if (!empty($plg->numsubmissions)) {
-                $usermenu->set_var('option_count', '(' . $plg->numsubmissions . ')');
+                $userMenu->set_var('option_count', '(' . $plg->numsubmissions . ')');
             } else {
-                $usermenu->set_var('option_count', '');
+                $userMenu->set_var('option_count', '');
             }
 
-            $usermenu->set_var('option_url', $plg->adminurl);
+            $userMenu->set_var('option_url', $plg->adminurl);
             if ($thisUrl == $plg->adminurl) {
-                $retval .= $usermenu->parse('item', 'current');
+                $retval .= $userMenu->parse('item', 'current');
             } else {
-                $retval .= $usermenu->parse('item', 'option');
+                $retval .= $userMenu->parse('item', 'option');
             }
 
             next($plugin_options);
         }
 
         $url = $_CONF['site_url'] . '/usersettings.php';
-        $usermenu->set_var('option_label', $LANG01[48]);
-        $usermenu->set_var('option_count', '');
-        $usermenu->set_var('option_url', $url);
+        $userMenu->set_var('option_label', $LANG01[48]);
+        $userMenu->set_var('option_count', '');
+        $userMenu->set_var('option_url', $url);
         if ($thisUrl == $url) {
-            $retval .= $usermenu->parse('item', 'current');
+            $retval .= $userMenu->parse('item', 'current');
         } else {
-            $retval .= $usermenu->parse('item', 'option');
+            $retval .= $userMenu->parse('item', 'option');
         }
 
         $url = $_CONF['site_url'] . '/users.php?mode=logout';
-        $usermenu->set_var('option_label', $LANG01[19]);
-        $usermenu->set_var('option_count', '');
-        $usermenu->set_var('option_url', $url);
-        $retval .= $usermenu->finish($usermenu->parse('item', 'option'));
+        $userMenu->set_var('option_label', $LANG01[19]);
+        $userMenu->set_var('option_count', '');
+        $userMenu->set_var('option_url', $url);
+        $retval .= $userMenu->finish($userMenu->parse('item', 'option'));
         $retval .= COM_endBlock(COM_getBlockTemplate('user_block', 'footer', $position));
     } else {
         $retval .= COM_startBlock($LANG01[47], $help,
@@ -3015,9 +2939,9 @@ function COM_userMenu($help = '', $title = '', $position = '')
             $login->set_var('services', '');
         }
 
-        // OpenID remote authentification.
+        // OpenID remote authentication
         if ($_CONF['user_login_method']['openid'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
-            $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
+            $_SCRIPTS->setJavaScriptFile('login', '/javascript/login.js');
             $login->set_file('openid_login', 'loginform_openid.thtml');
             $login->set_var('lang_openid_login', $LANG01[128]);
             $login->set_var('input_field_size', 18);
@@ -3033,7 +2957,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
 
         // OAuth remote authentification.
         if ($_CONF['user_login_method']['oauth'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
-            $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
+            $_SCRIPTS->setJavaScriptFile('login', '/javascript/login.js');
             $modules = SEC_collectRemoteOAuthModules();
             if (count($modules) === 0) {
                 $login->set_var('oauth_login', '');
@@ -3073,54 +2997,54 @@ function COM_userMenu($help = '', $title = '', $position = '')
  * This will return the command and control items or administration menu items that
  * the user has sufficient rights to -- Admin Block on the left side.
  *
- * @param        string $adminMenu True if admin menu, false if command and control page
- * @param        string $help      Help file to show (admin menu only)
- * @param        string $title     Menu Title (admin menu only)
- * @param        string $position  Side being shown on 'left', 'right' or blank. (admin menu only)
+ * @param  bool   $isAdminMenu True if admin menu, false if command and control page
+ * @param  string $help        Help file to show (admin menu only)
+ * @param  string $title       Menu Title (admin menu only)
+ * @param  string $position    Side being shown on 'left', 'right' or blank. (admin menu only)
+ * @return string
  * @see function COM_adminMenu
  */
-function COM_commandControl($adminMenu = false, $help = '', $title = '', $position = '')
+function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $position = '')
 {
     global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW,
         $LANG_ENVCHECK, $LANG_ADMIN, $LANG_LANG, $_IMAGE_TYPE, $LANG_ROUTER, $_DB_dbms, $config;
 
     $retval = '';
 
-    if ($adminMenu) {
+    if ($isAdminMenu) {
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
 
         // Figure out topics sql since used in a few places
-        $topicsql = '';
+        $topicSql = '';
         if (SEC_isModerator() || SEC_hasRights('story.edit')) {
-            $tresult = DB_query("SELECT tid FROM {$_TABLES['topics']}"
-                . COM_getPermSQL());
-            $trows = DB_numRows($tresult);
+            $tResult = DB_query("SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL());
+            $trows = DB_numRows($tResult);
             if ($trows > 0) {
                 $tids = array();
                 for ($i = 0; $i < $trows; $i++) {
-                    $T = DB_fetchArray($tresult);
+                    $T = DB_fetchArray($tResult);
                     $tids[] = $T['tid'];
                 }
                 if (count($tids) > 0) {
-                    $topicsql = " AND (ta.tid IN ('" . implode("','", $tids) . "'))";
+                    $topicSql = " AND (ta.tid IN ('" . implode("','", $tids) . "'))";
                 }
             }
         }
 
         // Template Stuff
-        $adminmenu = COM_newTemplate($_CONF['path_layout']);
+        $adminMenu = COM_newTemplate($_CONF['path_layout']);
         if (isset($_BLOCK_TEMPLATE['adminnavigation'])) {
-            $adminmenu->set_file('adminnavigation', $_BLOCK_TEMPLATE['adminnavigation']);
+            $adminMenu->set_file('adminnavigation', $_BLOCK_TEMPLATE['adminnavigation']);
         } else {
-            $adminmenu->set_file('adminnavigation', 'adminnavigation.thtml');
+            $adminMenu->set_file('adminnavigation', 'adminnavigation.thtml');
         }
         $blocks = array('option', 'current', 'group', 'count');
         foreach ($blocks as $block) {
-            $adminmenu->set_block('adminnavigation', $block);
+            $adminMenu->set_block('adminnavigation', $block);
         }
 
-        $adminmenu->set_var('block_name', str_replace('_', '-', 'admin_block'));
+        $adminMenu->set_var('block_name', str_replace('_', '-', 'admin_block'));
 
         if (empty($title)) {
             $title = DB_getItem($_TABLES['blocks'], 'title', "name = 'admin_block'");
@@ -3129,14 +3053,14 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
         $retval .= COM_startBlock($title, $help, COM_getBlockTemplate('admin_block', 'header', $position));
 
         // Allow anything not in the blocks but in the rest of the template file to be displayed
-        $retval .= $adminmenu->parse('item', 'adminnavigation', true);
+        $retval .= $adminMenu->parse('item', 'adminnavigation', true);
 
         // Add Command and Control Link
         $url = $_CONF['site_admin_url'] . '/index.php';
-        $adminmenu->set_var('option_url', $url);
-        $adminmenu->set_var('option_label', $LANG01[14]);
-        $adminmenu->set_var('option_count', $LANG_ADMIN['na']);
-        $retval .= $adminmenu->finish($adminmenu->parse('item',
+        $adminMenu->set_var('option_url', $url);
+        $adminMenu->set_var('option_label', $LANG01[14]);
+        $adminMenu->set_var('option_count', $LANG_ADMIN['na']);
+        $retval .= $adminMenu->finish($adminMenu->parse('item',
             ($thisUrl == $url) ? 'current' : 'option'));
 
         // Get any plugin items
@@ -3167,7 +3091,7 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
     for ($i = 0; $i < count($plugins); $i++) {
         $cur_plugin = current($plugins);
 
-        if ($adminMenu) {
+        if ($isAdminMenu) {
             $item = array(
                 'condition' => SEC_hasRights('story.edit'),
                 'url'       => $cur_plugin->adminurl,
@@ -3204,45 +3128,45 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
     }
 
     // Command & Control Group Layout
-    $ccgroups = array('core', 'plugins', 'tools', 'users');
-    foreach ($ccgroups as $ccgroup) {
+    $ccGroups = array('core', 'plugins', 'tools', 'users');
+    foreach ($ccGroups as $ccGroup) {
         // Clear a few things before starting group
         $cc_arr = array();
         $items = array();
-        if (!$adminMenu) {
+        if (!$isAdminMenu) {
             $admin_templates->clear_var('cc_rows');
             $admin_templates->set_var('cc_icon_width', floor(100 / ICONS_PER_ROW));
         }
 
-        switch ($ccgroup) {
+        switch ($ccGroup) {
             // Core - Blocks, Content Syndication, Stories, Topics, Submissions, Trackbacks
             case 'core':
-                $showTrackbackIcon = (($_CONF['trackback_enabled'] ||
+                $showTrackBackIcon = (($_CONF['trackback_enabled'] ||
                         $_CONF['pingback_enabled'] || $_CONF['ping_enabled'])
                     && SEC_hasRights('story.ping'));
 
                 // Count stuff for admin menu
-                $blockcount = 0;
-                $topiccount = 0;
-                $storycount = 0;
-                $submissioncount = 0;
-                $syndicationcount = 0;
-                $trackbackcount = $LANG_ADMIN['na'];
-                if ($adminMenu) {
+                $blockCount = 0;
+                $topicCount = 0;
+                $storyCount = 0;
+                $submissionCount = 0;
+                $syndicationCount = 0;
+                $trackBackCount = $LANG_ADMIN['na'];
+                if ($isAdminMenu) {
                     // Find num of blocks
-                    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['blocks']}" . COM_getPermSql());
-                    list($blockcount) = DB_fetchArray($result);
+                    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['blocks']}" . COM_getPermSQL());
+                    list($blockCount) = DB_fetchArray($result);
                     // Find num of topics
-                    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['topics']}" . COM_getPermSql());
-                    list($topiccount) = DB_fetchArray($result);
+                    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['topics']}" . COM_getPermSQL());
+                    list($topicCount) = DB_fetchArray($result);
                     // Find num of stories
                     if (SEC_hasRights('story.edit')) {
-                        if (empty($topicsql)) {
-                            $storycount = DB_count($_TABLES['stories']);
+                        if (empty($topicSql)) {
+                            $storyCount = DB_count($_TABLES['stories']);
                         } else {
-                            $nresult = DB_query("SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicsql . COM_getPermSql('AND'));
-                            $N = DB_fetchArray($nresult);
-                            $storycount = $N['count'];
+                            $nResult = DB_query("SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicSql . COM_getPermSQL('AND'));
+                            $N = DB_fetchArray($nResult);
+                            $storyCount = $N['count'];
                         }
                     }
                     // Find num of submissions
@@ -3253,45 +3177,45 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                             SEC_hasRights('user.edit,user.delete'))
                     ) {
                         if (SEC_hasRights('story.moderate')) {
-                            if (empty($topicsql)) {
-                                $submissioncount += DB_count($_TABLES['storysubmission']);
+                            if (empty($topicSql)) {
+                                $submissionCount += DB_count($_TABLES['storysubmission']);
                             } else {
-                                $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicsql;
+                                $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicSql;
                                 $sresult = DB_query($sql);
                                 $S = DB_fetchArray($sresult);
-                                $submissioncount += $S['count'];
+                                $submissionCount += $S['count'];
                             }
                         }
 
                         if (($_CONF['listdraftstories'] == 1) && SEC_hasRights('story.edit')) {
                             $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND draft_flag = 1";
-                            if (!empty($topicsql)) {
-                                $sql .= $topicsql;
+                            if (!empty($topicSql)) {
+                                $sql .= $topicSql;
                             }
                             $result = DB_query($sql . COM_getPermSQL('AND', 0, 3));
                             $A = DB_fetchArray($result);
-                            $submissioncount += $A['count'];
+                            $submissionCount += $A['count'];
                         }
 
                         if (($_CONF['commentsubmission'] == 1) && SEC_hasRights('comment.moderate')) {
-                            $submissioncount += DB_count($_TABLES['commentsubmissions']);
+                            $submissionCount += DB_count($_TABLES['commentsubmissions']);
                         }
 
                         if ($_CONF['usersubmission'] == 1) {
                             if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
-                                $submissioncount += DB_count($_TABLES['users'], 'status', '2');
+                                $submissionCount += DB_count($_TABLES['users'], 'status', '2');
                             }
                         }
                     }
                     // now handle submissions for plugins
-                    $submissioncount += PLG_getSubmissionCount();
+                    $submissionCount += PLG_getSubmissionCount();
                     // Find num of syndication
                     if (($_CONF['backend'] == 1) && SEC_hasRights('syndication.edit')) {
-                        $syndicationcount = COM_numberFormat(DB_count($_TABLES['syndication']));
+                        $syndicationCount = COM_numberFormat(DB_count($_TABLES['syndication']));
                     }
                     // Find num of trackback
                     if ($_CONF['ping_enabled'] && SEC_hasRights('story.ping')) {
-                        $trackbackcount = COM_numberFormat(DB_count($_TABLES['pingservice']));
+                        $trackBackCount = COM_numberFormat(DB_count($_TABLES['pingservice']));
                     }
 
                     // Find num of comments
@@ -3305,42 +3229,42 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'condition' => SEC_hasRights('topic.edit'),
                         'url'       => $_CONF['site_admin_url'] . '/topic.php',
                         'lang'      => $LANG01[13],
-                        'num'       => COM_numberFormat($topiccount),
+                        'num'       => COM_numberFormat($topicCount),
                         'image'     => $_CONF['layout_url'] . '/images/icons/topic.' . $_IMAGE_TYPE,
                     ),
                     array(
                         'condition' => SEC_hasRights('block.edit'),
                         'url'       => $_CONF['site_admin_url'] . '/block.php',
                         'lang'      => $LANG01[12],
-                        'num'       => COM_numberFormat($blockcount),
+                        'num'       => COM_numberFormat($blockCount),
                         'image'     => $_CONF['layout_url'] . '/images/icons/block.' . $_IMAGE_TYPE,
                     ),
                     array(
                         'condition' => SEC_hasRights('story.edit'),
                         'url'       => $_CONF['site_admin_url'] . '/story.php',
                         'lang'      => $LANG01[11],
-                        'num'       => COM_numberFormat($storycount),
+                        'num'       => COM_numberFormat($storyCount),
                         'image'     => $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
                     ),
                     array(
                         'condition' => SEC_hasModerationAccess(),
                         'url'       => $_CONF['site_admin_url'] . '/moderation.php',
                         'lang'      => $LANG01[10],
-                        'num'       => COM_numberFormat($submissioncount),
+                        'num'       => COM_numberFormat($submissionCount),
                         'image'     => $_CONF['layout_url'] . '/images/icons/moderation.' . $_IMAGE_TYPE,
                     ),
                     array(
                         'condition' => SEC_hasRights('syndication.edit'),
                         'url'       => $_CONF['site_admin_url'] . '/syndication.php',
                         'lang'      => $LANG01[38],
-                        'num'       => $syndicationcount,
+                        'num'       => $syndicationCount,
                         'image'     => $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE,
                     ),
                     array(
-                        'condition' => $showTrackbackIcon,
+                        'condition' => $showTrackBackIcon,
                         'url'       => $_CONF['site_admin_url'] . '/trackback.php',
                         'lang'      => $LANG01[116],
-                        'num'       => $trackbackcount,
+                        'num'       => $trackBackCount,
                         'image'     => $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE,
                     ),
                     array(
@@ -3365,23 +3289,23 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
             case 'tools':
                 $docsUrl = $_CONF['site_url'] . '/docs/english/index.html';
                 if ($_CONF['link_documentation'] == 1) {
-                    $doclang = COM_getLanguageName();
-                    $docs = 'docs/' . $doclang . '/index.html';
+                    $docLang = COM_getLanguageName();
+                    $docs = 'docs/' . $docLang . '/index.html';
                     if (file_exists($_CONF['path_html'] . $docs)) {
                         $docsUrl = $_CONF['site_url'] . '/' . $docs;
                     }
                 }
 
-                $pluginscount = 0;
-                if ($adminMenu) {
+                $pluginsCount = 0;
+                if ($isAdminMenu) {
                     // Find num of plugins
                     if (SEC_hasRights('plugin.edit')) {
-                        $pluginscount = COM_numberFormat(DB_count($_TABLES['plugins'], 'pi_enabled', 1));
+                        $pluginsCount = COM_numberFormat(DB_count($_TABLES['plugins'], 'pi_enabled', 1));
                     }
                 }
 
                 $routeCount = '0';
-                if ($adminMenu && SEC_inGroup('Root')) {
+                if ($isAdminMenu && SEC_inGroup('Root')) {
                     // Find num of URL routes
                     $sql =  "SELECT COUNT(rid) AS cnt FROM {$_TABLES['routes']}";
                     $result = DB_query($sql);
@@ -3416,7 +3340,7 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'condition' => SEC_hasRights('plugin.edit'),
                         'url'       => $_CONF['site_admin_url'] . '/plugins.php',
                         'lang'      => $LANG01[98],
-                        'num'       => $pluginscount,
+                        'num'       => $pluginsCount,
                         'image'     => $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE,
                     ),
                     array(
@@ -3484,9 +3408,9 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
 
             // Users - Groups, Users, Mail Users
             case 'users':
-                $groupcount = 0;
-                $usercount = 0;
-                if ($adminMenu) {
+                $groupCount = 0;
+                $userCount = 0;
+                if ($isAdminMenu) {
                     // Find num of groups
                     if (SEC_inGroup('Root')) {
                         $grpFilter = '';
@@ -3496,9 +3420,9 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                     }
                     $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['groups']} $grpFilter;");
                     $A = DB_fetchArray($result);
-                    $groupcount = $A['count'];
+                    $groupCount = $A['count'];
                     // Find num of users
-                    $usercount = (DB_count($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE) - 1);
+                    $userCount = (DB_count($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE) - 1);
                 }
 
                 $cc_arr = array(
@@ -3506,14 +3430,14 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                         'condition' => SEC_hasRights('group.edit'),
                         'url'       => $_CONF['site_admin_url'] . '/group.php',
                         'lang'      => $LANG01[96],
-                        'num'       => COM_numberFormat($groupcount),
+                        'num'       => COM_numberFormat($groupCount),
                         'image'     => $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE,
                     ),
                     array(
                         'condition' => SEC_hasRights('user.edit'),
                         'url'       => $_CONF['site_admin_url'] . '/user.php',
                         'lang'      => $LANG01[17],
-                        'num'       => COM_numberFormat($usercount),
+                        'num'       => COM_numberFormat($userCount),
                         'image'     => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
                     ),
                     array(
@@ -3532,26 +3456,26 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
 
         for ($i = 0; $i < count($cc_arr); $i++) {
             if ($cc_arr[$i]['condition']) {
-                if ($adminMenu) {
+                if ($isAdminMenu) {
                     // Add Command and Control Link
-                    $adminmenu->set_var('option_url', $cc_arr[$i]['url']);
-                    $adminmenu->set_var('option_label', $cc_arr[$i]['lang']);
+                    $adminMenu->set_var('option_url', $cc_arr[$i]['url']);
+                    $adminMenu->set_var('option_label', $cc_arr[$i]['lang']);
                     if (!empty($cc_arr[$i]['num'])) {
-                        $adminmenu->set_var('option_count', $cc_arr[$i]['num']);
-                        $adminmenu->set_var('display_count', $adminmenu->parse('item', 'count'));
+                        $adminMenu->set_var('option_count', $cc_arr[$i]['num']);
+                        $adminMenu->set_var('display_count', $adminMenu->parse('item', 'count'));
                     }
-                    $adminmenu->set_var('branch_spaces', '&nbsp;&nbsp;&nbsp;');
+                    $adminMenu->set_var('branch_spaces', '&nbsp;&nbsp;&nbsp;');
 
                     if (isset($cc_arr[$i]['target'])) {
-                        $adminmenu->set_var('target', ' target="' . $cc_arr[$i]['target'] . '"');
+                        $adminMenu->set_var('target', ' target="' . $cc_arr[$i]['target'] . '"');
                     } else {
-                        $adminmenu->set_var('target', '');
+                        $adminMenu->set_var('target', '');
                     }
 
-                    $item = $adminmenu->finish($adminmenu->parse('item',
+                    $item = $adminMenu->finish($adminMenu->parse('item',
                         ($thisUrl == $cc_arr[$i]['url']) ? 'current' : 'option'));
 
-                    $adminmenu->clear_var('display_count'); // incase set before
+                    $adminMenu->clear_var('display_count'); // incase set before
                 } else {
                     if (!empty($cc_arr[$i]['url'])) {
                         $admin_templates->set_var('page_url', $cc_arr[$i]['url']);
@@ -3579,11 +3503,11 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
 
         if (!empty($items)) {
             // Add Group Label now
-            if ($adminMenu) {
-                $adminmenu->set_var('group_label', $LANG29[$ccgroup]);
-                $retval .= $adminmenu->finish($adminmenu->parse('item', 'group'));
+            if ($isAdminMenu) {
+                $adminMenu->set_var('group_label', $LANG29[$ccGroup]);
+                $retval .= $adminMenu->finish($adminMenu->parse('item', 'group'));
             } else {
-                $admin_templates->set_var('lang_group', $LANG29[$ccgroup]);
+                $admin_templates->set_var('lang_group', $LANG29[$ccGroup]);
             }
 
             // Add items now
@@ -3591,7 +3515,7 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
             $cols = 0;
             $cc_main_options = '';
             foreach ($items as $key => $val) {
-                if ($adminMenu) {
+                if ($isAdminMenu) {
                     $retval .= $val;
                 } else {
                     $cc_main_options .= $val . LB;
@@ -3606,7 +3530,7 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
                 }
             }
 
-            if (!$adminMenu) {
+            if (!$isAdminMenu) {
                 if ($cols > 0) {
                     // "flush out" any unrendered entries
                     $admin_templates->set_var('cc_main_options', $cc_main_options);
@@ -3619,7 +3543,7 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
         }
     }
 
-    if ($adminMenu) {
+    if ($isAdminMenu) {
         $retval .= COM_endBlock(COM_getBlockTemplate('admin_block', 'footer', $position));
     } else {
         $retval .= $admin_templates->finish($admin_templates->parse('output', 'cc'));
@@ -3634,9 +3558,10 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
  * This will return the administration menu items that the user has
  * sufficient rights to -- Admin Block on the left side.
  *
- * @param        string $help     Help file to show
- * @param        string $title    Menu Title
- * @param        string $position Side being shown on 'left', 'right' or blank.
+ * @param  string $help     Help file to show
+ * @param  string $title    Menu Title
+ * @param  string $position Side being shown on 'left', 'right' or blank.
+ * @return string
  * @see function COM_userMenu
  */
 function COM_adminMenu($help = '', $title = '', $position = '')
@@ -3722,10 +3647,10 @@ function COM_userComments($sid, $title, $type = 'article', $order = '', $mode = 
  * This censors inappropriate content
  * This will replace 'bad words' with something more appropriate
  *
- * @param        string $message String to check
- * @param        string $type    e.g. 'story', 'comment'
+ * @param  string $message String to check
+ * @param  string $type    e.g. 'story', 'comment'
  * @see function COM_checkHTML
- * @return   string  Edited $Message
+ * @return string  Edited $Message
  */
 function COM_checkWords($message, $type = '')
 {
@@ -3810,7 +3735,6 @@ function COM_handleCode($str)
 {
     $search = array('&', '<', '>', '[', ']');
     $replace = array('&amp;', '&lt;', '&gt;', '&#91;', '&#93;');
-
     $str = str_replace($search, $replace, $str);
 
     return $str;
@@ -3823,14 +3747,10 @@ function COM_handleCode($str)
  *
  * @param    string $str         HTML to check
  * @param    string $permissions comma-separated list of rights which identify the current user as an "Admin"
- * @return   string                  Filtered HTML
+ * @return   string              Filtered HTML
  */
 function COM_checkHTML($str, $permissions = 'story.edit')
 {
-    global $_CONF;
-
-    require_once $_CONF['path_system'] . 'classes/gltext.class.php';
-
     return GLText::checkHTML($str, $permissions);
 }
 
@@ -3839,8 +3759,8 @@ function COM_checkHTML($str, $permissions = 'story.edit')
  * This function translates HTML entities created by htmlspecialchars() back
  * into their ASCII equivalents. Also handles the entities for $, {, and }.
  *
- * @param    string $string The string to convert.
- * @return   string   The converted string.
+ * @param  string $string The string to convert.
+ * @return string         The converted string.
  */
 function COM_undoSpecialChars($string)
 {
@@ -3900,8 +3820,6 @@ function COM_isEmail($email)
  */
 function COM_emailEscape($string)
 {
-    global $_CONF;
-
     if (function_exists('CUSTOM_emailEscape')) {
         return CUSTOM_emailEscape($string);
     }
@@ -3920,8 +3838,7 @@ function COM_emailEscape($string)
                 // 'Q' encoding is more readable than 'B'
                 'scheme'         => 'Q',
             );
-            $string = substr(iconv_mime_encode('', $string,
-                $mime_parameters), 2);
+            $string = substr(iconv_mime_encode('', $string, $mime_parameters), 2);
         } else {
             $string = '=?' . $charset . '?B?' . base64_encode($string) . '?=';
         }
@@ -4016,47 +3933,44 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
         $result = DB_query($sql);
-        $nrows = DB_numRows($result);
+        $numRows = DB_numRows($result);
 
-        if ($nrows > 0) {
-            $dateonly = $_CONF['dateonly'];
-            if (empty($dateonly)) {
-                $dateonly = '%d-%b'; // fallback: day - abbrev. month name
+        if ($numRows > 0) {
+            $dateOnly = $_CONF['dateonly'];
+            if (empty($dateOnly)) {
+                $dateOnly = '%d-%b'; // fallback: day - abbrev. month name
             }
 
             $day = 'noday';
             $string = '';
             $oldNews = array();
 
-            for ($i = 0; $i < $nrows; $i++) {
+            for ($i = 0; $i < $numRows; $i++) {
                 $A = DB_fetchArray($result);
                 $dayCheck = strftime('%A', $A['day']);
 
                 if ($day != $dayCheck) {
                     if ($day !== 'noday') {
-                        $daylist = COM_makeList($oldNews, 'list-older-stories');
-                        $daylist = preg_replace("/(\015\012)|(\015)|(\012)/",
-                            '', $daylist);
-                        $string .= $daylist . '<div class="divider-older-stories"></div>';
+                        $dayList = COM_makeList($oldNews, 'list-older-stories');
+                        $dayList = preg_replace("/(\015\012)|(\015)|(\012)/",
+                            '', $dayList);
+                        $string .= $dayList . '<div class="divider-older-stories"></div>';
                     }
 
-                    $day2 = strftime($dateonly, $A['day']);
-                    $string .= '<h3>' . $dayCheck . ' <small>' . $day2
-                        . '</small></h3>' . LB;
+                    $day2 = strftime($dateOnly, $A['day']);
+                    $string .= '<h3>' . $dayCheck . ' <small>' . $day2 . '</small></h3>' . LB;
                     $day = $dayCheck;
                 }
 
-                $oldNewsUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
-                    . $A['sid']);
+                $oldNewsUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $A['sid']);
                 $oldNews[] = COM_createLink($A['title'], $oldNewsUrl)
                     . ' (' . COM_numberFormat($A['comments']) . ')';
             }
 
             if (!empty($oldNews)) {
-                $daylist = COM_makeList($oldNews, 'list-older-stories');
-                $daylist = preg_replace("/(\015\012)|(\015)|(\012)/", '', $daylist);
-                $string .= $daylist;
-
+                $dayList = COM_makeList($oldNews, 'list-older-stories');
+                $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
+                $string .= $dayList;
                 $retval .= $string;
             }
         }
@@ -4079,21 +3993,18 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
  * @param        string $title    Title shown in block header
  * @param        string $position Side, 'left', 'right' or empty.
  * @see function COM_showBlocks
- * @return   string  HTML Formated block
+ * @return   string  HTML Formatted block
  */
 function COM_showBlock($name, $help = '', $title = '', $position = '')
 {
-    global $_CONF, $topic, $_TABLES, $_USER;
+    global $topic, $_TABLES, $_USER;
 
     $retval = '';
 
     if (!isset($_USER['noboxes'])) {
-        if (!COM_isAnonUser()) {
-            $_USER['noboxes'] = DB_getItem($_TABLES['userindex'], 'noboxes',
-                "uid = {$_USER['uid']}");
-        } else {
-            $_USER['noboxes'] = 0;
-        }
+        $_USER['noboxes'] = COM_isAnonUser()
+            ? 0
+            : DB_getItem($_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}");
     }
 
     switch ($name) {
@@ -4133,14 +4044,14 @@ function COM_showBlock($name, $help = '', $title = '', $position = '')
  * Returns HTML for blocks on a given side and, potentially, for
  * a given topic. Currently only used by static pages.
  *
- * @param        string $side  Side to get blocks for (right or left for now)
- * @param        string $topic Only get blocks for this topic
+ * @param  string $side  Side to get blocks for (right or left for now)
+ * @param  string $topic Only get blocks for this topic
  * @see function COM_showBlock
- * @return   string  HTML Formated blocks
+ * @return string        HTML Formatted blocks
  */
 function COM_showBlocks($side, $topic = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $_TOPICS;
+    global $_TABLES, $_USER, $topic, $_TOPICS;
 
     $retval = '';
 
@@ -4156,17 +4067,17 @@ function COM_showBlocks($side, $topic = '')
         }
     }
 
-    $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
-    $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
+    $blockSql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
+    $blockSql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
 
-    $blocksql['mysql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
-    $blocksql['pgsql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id::integer = bid AND is_enabled = 1";
+    $blockSql['mysql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
+    $blockSql['pgsql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id::integer = bid AND is_enabled = 1";
 
-    $commonsql = '';
+    $commonSql = '';
     if ($side === 'left') {
-        $commonsql .= " AND onleft = 1";
+        $commonSql .= " AND onleft = 1";
     } else {
-        $commonsql .= " AND onleft = 0";
+        $commonSql .= " AND onleft = 0";
     }
 
     // Figure out topic access
@@ -4185,34 +4096,34 @@ function COM_showBlocks($side, $topic = '')
         $tid_list = TOPIC_getChildList($topic);
         // Get list of blocks to display (except for dynamic). This includes blocks
         // for all topics, and child blocks that are inherited
-        $commonsql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')) OR ta.tid = 'all')";
+        $commonSql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')) OR ta.tid = 'all')";
     } else {
         if (COM_onFrontpage()) {
-            $commonsql .= " AND (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
+            $commonSql .= " AND (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
         } else {
-            $commonsql .= " AND (ta.tid = '" . TOPIC_ALL_OPTION . "')";
+            $commonSql .= " AND (ta.tid = '" . TOPIC_ALL_OPTION . "')";
         }
     }
 
     if (!empty($_USER['boxes'])) {
         $BOXES = str_replace(' ', ',', $_USER['boxes']);
-        $commonsql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
+        $commonSql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
 
-    $commonsql .= " GROUP BY bid, is_enabled, name, b.type, title, blockorder, device, content, "
+    $commonSql .= " GROUP BY bid, is_enabled, name, b.type, title, blockorder, device, content, "
         . "allow_autotags, cache_time, rdfurl, rdfupdated, rdf_last_modified, rdf_etag, rdflimit, "
         . "onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon ";
-    $commonsql .= ' ORDER BY blockorder,title ASC';
+    $commonSql .= ' ORDER BY blockorder,title ASC';
 
-    $blocksql['mysql'] .= $commonsql;
-    $blocksql['pgsql'] .= $commonsql;
+    $blockSql['mysql'] .= $commonSql;
+    $blockSql['pgsql'] .= $commonSql;
 
-    $result = DB_query($blocksql);
-    $nrows = DB_numRows($result);
+    $result = DB_query($blockSql);
+    $numRows = DB_numRows($result);
 
     // convert result set to an array of associated arrays
     $blocks = array();
-    for ($i = 0; $i < $nrows; $i++) {
+    for ($i = 0; $i < $numRows; $i++) {
         $blocks[] = DB_fetchArray($result);
     }
 
@@ -4254,12 +4165,12 @@ function COM_showBlocks($side, $topic = '')
  * COM_showBlocks OR from plugin code
  *
  * @param        array   $A          Block Record
- * @param        boolean $noboxes    Set to true if userpref is no blocks
- * @param        boolean $noposition Set to true if you don't want to use the left or right side footer and header of
+ * @param        boolean $noBoxes    Set to true if userpref is no blocks
+ * @param        boolean $noPosition Set to true if you don't want to use the left or right side footer and header of
  *                                   block
- * @return       string    HTML Formated block
+ * @return       string    HTML Formatted block
  */
-function COM_formatBlock($A, $noboxes = false, $noposition = false)
+function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
 {
     global $_CONF, $_TABLES, $LANG21, $_DEVICE;
 
@@ -4267,15 +4178,14 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
 
     $lang = COM_getLanguageId();
     if (!empty($lang)) {
-        $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
-        $blocksql['pgsql'] = 'SELECT *, date_part(\'epoch\', rdfupdated) AS date ';
+        $blockSql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
+        $blockSql['pgsql'] = "SELECT *, date_part('epoch', rdfupdated) AS date ";
 
-        $commonsql = "FROM {$_TABLES['blocks']} WHERE name = '"
-            . $A['name'] . '_' . $lang . "'";
+        $commonSql = "FROM {$_TABLES['blocks']} WHERE name = '" . $A['name'] . '_' . $lang . "'";
 
-        $blocksql['mysql'] .= $commonsql;
-        $blocksql['pgsql'] .= $commonsql;
-        $result = DB_query($blocksql);
+        $blockSql['mysql'] .= $commonSql;
+        $blockSql['pgsql'] .= $commonSql;
+        $result = DB_query($blockSql);
 
         if (DB_numRows($result) == 1) {
             // overwrite with data for language-specific block
@@ -4285,21 +4195,16 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
 
     // Make sure block can be used by specific device
     // If no device column found then bypass compare check (could happen with dynamic blocks that do not pass device)
-    if (!isset($A['device']) OR $_DEVICE->compare($A['device'])) {
-        if (array_key_exists('onleft', $A) && !$noposition) {
-            if ($A['onleft'] == 1) {
-                $position = 'left';
-            } else {
-                $position = 'right';
-            }
+    if (!isset($A['device']) || $_DEVICE->compare($A['device'])) {
+        if (array_key_exists('onleft', $A) && !$noPosition) {
+            $position = ($A['onleft'] == 1) ? 'left' : 'right';
         } else {
             $position = '';
         }
 
         if ($A['type'] === 'portal') {
             if (COM_rdfCheck($A['bid'], $A['rdfurl'], $A['date'], $A['rdflimit'])) {
-                $A['content'] = DB_getItem($_TABLES['blocks'], 'content',
-                    "bid = '{$A['bid']}'");
+                $A['content'] = DB_getItem($_TABLES['blocks'], 'content', "bid = '{$A['bid']}'");
             }
         }
 
@@ -4325,7 +4230,7 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
             }
         }
 
-        if (($A['type'] === 'phpblock') && !$noboxes) {
+        if (($A['type'] === 'phpblock') && !$noBoxes) {
             if (!(($A['name'] === 'whosonline_block') && (DB_getItem($_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0))) {
                 $function = $A['phpblockfn'];
                 $matches = array();
@@ -4333,50 +4238,48 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
                     $function = $matches[1];
                     $args = $matches[2];
                 }
-                $blkheader = COM_startBlock($A['title'], $A['help'],
-                    COM_getBlockTemplate($A['name'], 'header', $position));
-                $blkfooter = COM_endBlock(COM_getBlockTemplate($A['name'],
-                    'footer', $position));
+                $blockHeader = COM_startBlock($A['title'], $A['help'], COM_getBlockTemplate($A['name'], 'header', $position));
+                $blockFooter = COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
 
                 if (function_exists($function)) {
                     if (isset($args)) {
-                        $fretval = $function($A, $args);
+                        $fRetval = $function($A, $args);
                     } else {
-                        $fretval = $function();
+                        $fRetval = $function();
                     }
-                    if (!empty($fretval)) {
-                        $retval .= $blkheader;
-                        $retval .= $fretval;
-                        $retval .= $blkfooter;
+                    if (!empty($fRetval)) {
+                        $retval .= $blockHeader;
+                        $retval .= $fRetval;
+                        $retval .= $blockFooter;
                     }
                 } else {
                     // show error message
-                    $retval .= $blkheader;
+                    $retval .= $blockHeader;
                     $retval .= sprintf($LANG21[31], $function);
-                    $retval .= $blkfooter;
+                    $retval .= $blockFooter;
                 }
             }
         }
 
-        if (!empty($A['content']) && (trim($A['content']) != '') && !$noboxes) {
-            $blockcontent = stripslashes($A['content']);
+        if (!empty($A['content']) && (trim($A['content']) != '') && !$noBoxes) {
+            $blockContent = stripslashes($A['content']);
 
             // Hack: If the block content starts with a '<' assume it
             // contains HTML and do not call COM_nl2br() which would only add
             // unwanted <br> tags.
-            if (substr(trim($blockcontent), 0, 1) != '<') {
-                $blockcontent = COM_nl2br($blockcontent);
+            if (substr(trim($blockContent), 0, 1) != '<') {
+                $blockContent = COM_nl2br($blockContent);
             }
 
             // autotags are only(!) allowed in normal blocks
             if (($A['allow_autotags'] == 1) && ($A['type'] === 'normal')) {
-                $blockcontent = PLG_replaceTags($blockcontent);
+                $blockContent = PLG_replaceTags($blockContent);
             }
-            $blockcontent = str_replace(array('<?', '?>'), '', $blockcontent);
+            $blockContent = str_replace(array('<?', '?>'), '', $blockContent);
 
             $retval .= COM_startBlock($A['title'], $A['help'],
                     COM_getBlockTemplate($A['name'], 'header', $position))
-                . $blockcontent . LB
+                . $blockContent . LB
                 . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
         }
         // Cache only if enabled and not gldefault or dynamic
@@ -4396,19 +4299,19 @@ function COM_formatBlock($A, $noboxes = false, $noposition = false)
  * Updates RDF/RSS block if needed
  *
  * @param    string $bid          Block ID
- * @param    string $rdfurl       URL to get headlines from
- * @param    string $date         Last time the headlines were imported
- * @param    string $maxheadlines max. number of headlines to import
- * @return   boolean                 true = feed was updated, false = otherwise
+ * @param    string $rdfUrl       URL to get headlines from
+ * @param    int    $date         Last time the headlines were imported
+ * @param    int    $maxHeadlines max. number of headlines to import
+ * @return   boolean              true = feed was updated, false = otherwise
  * @see function COM_rdfImport
  */
-function COM_rdfCheck($bid, $rdfurl, $date, $maxheadlines = 0)
+function COM_rdfCheck($bid, $rdfUrl, $date, $maxHeadlines = 0)
 {
     $retval = false;
-    $nextupdate = $date + 3600;
+    $nextUpdate = $date + 3600;
 
-    if ($nextupdate < time()) {
-        COM_rdfImport($bid, $rdfurl, $maxheadlines);
+    if ($nextUpdate < time()) {
+        COM_rdfImport($bid, $rdfUrl, $maxHeadlines);
         $retval = true;
     }
 
@@ -4422,46 +4325,44 @@ function COM_rdfCheck($bid, $rdfurl, $date, $maxheadlines = 0)
  * object populated with feed data. Then import it into the portal block.
  *
  * @param    string $bid          Block ID
- * @param    string $rdfurl       URL to get content from
- * @param    int    $maxheadlines Maximum number of headlines to display
+ * @param    string $rdfUrl       URL to get content from
+ * @param    int    $maxHeadlines Maximum number of headlines to display
  * @return   void
  * @see function COM_rdfCheck
  */
-function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
+function COM_rdfImport($bid, $rdfUrl, $maxHeadlines = 0)
 {
     global $_CONF, $_TABLES, $LANG21;
 
     // Import the feed handling classes:
-    require_once $_CONF['path_system']
-        . '/classes/syndication/parserfactory.class.php';
-    require_once $_CONF['path_system']
-        . '/classes/syndication/feedparserbase.class.php';
+    require_once $_CONF['path_system'] . '/classes/syndication/parserfactory.class.php';
+    require_once $_CONF['path_system'] . '/classes/syndication/feedparserbase.class.php';
 
     $result = DB_query("SELECT rdf_last_modified, rdf_etag FROM {$_TABLES['blocks']} WHERE bid = $bid");
-    list($last_modified, $etag) = DB_fetchArray($result);
+    list($last_modified, $eTag) = DB_fetchArray($result);
 
     // Load the actual feed handlers:
     $factory = new FeedParserFactory($_CONF['path_system']
         . '/classes/syndication/');
     $factory->userAgent = 'Geeklog/' . VERSION;
-    if (!empty($last_modified) && !empty($etag)) {
+    if (!empty($last_modified) && !empty($eTag)) {
         $factory->lastModified = $last_modified;
-        $factory->eTag = $etag;
+        $factory->eTag = $eTag;
     }
 
     // Acquire a reader:
-    $feed = $factory->reader($rdfurl, $_CONF['default_charset']);
+    $feed = $factory->reader($rdfUrl, $_CONF['default_charset']);
 
     if ($feed) {
         /* We have located a reader, and populated it with the information from
          * the syndication file. Now we will sort out our display, and update
          * the block.
          */
-        if ($maxheadlines == 0) {
+        if ($maxHeadlines == 0) {
             if (!empty($_CONF['syndication_max_headlines'])) {
-                $maxheadlines = $_CONF['syndication_max_headlines'];
+                $maxHeadlines = $_CONF['syndication_max_headlines'];
             } else {
-                $maxheadlines = count($feed->articles);
+                $maxHeadlines = count($feed->articles);
             }
         }
 
@@ -4470,22 +4371,23 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
         if (!empty($factory->lastModified)) {
             $last_modified = DB_escapeString($factory->lastModified);
         }
-        $etag = '';
+        $eTag = '';
         if (!empty($factory->eTag)) {
-            $etag = DB_escapeString($factory->eTag);
+            $eTag = DB_escapeString($factory->eTag);
         }
 
-        if (empty($last_modified) || empty($etag)) {
+        if (empty($last_modified) || empty($eTag)) {
             DB_query("UPDATE {$_TABLES['blocks']} SET rdfupdated = '$update', rdf_last_modified = NULL, rdf_etag = NULL WHERE bid = '$bid'");
         } else {
-            DB_query("UPDATE {$_TABLES['blocks']} SET rdfupdated = '$update', rdf_last_modified = '$last_modified', rdf_etag = '$etag' WHERE bid = '$bid'");
+            DB_query("UPDATE {$_TABLES['blocks']} SET rdfupdated = '$update', rdf_last_modified = '$last_modified', rdf_etag = '$eTag' WHERE bid = '$bid'");
         }
 
+        $articles = array();
         $charset = COM_getCharset();
 
         // format articles for display
-        $readmax = min($maxheadlines, count($feed->articles));
-        for ($i = 0; $i < $readmax; $i++) {
+        $readMax = min($maxHeadlines, count($feed->articles));
+        for ($i = 0; $i < $readMax; $i++) {
             if (empty($feed->articles[$i]['title'])) {
                 $feed->articles[$i]['title'] = $LANG21[61];
             }
@@ -4514,16 +4416,15 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
         }
 
         // Standard theme based function to put it in the block
-        $result = DB_change($_TABLES['blocks'], 'content',
-            DB_escapeString($content), 'bid', $bid);
+        DB_change($_TABLES['blocks'], 'content', DB_escapeString($content), 'bid', $bid);
     } elseif ($factory->errorStatus !== false) {
-        // failed to aquire info, 0 out the block and log an error
-        COM_errorLog("Unable to aquire feed reader for $rdfurl", 1);
+        // failed to acquire info, 0 out the block and log an error
+        COM_errorLog("Unable to acquire feed reader for $rdfUrl", 1);
         COM_errorLog($factory->errorStatus[0] . ' ' .
             $factory->errorStatus[1] . ' ' .
             $factory->errorStatus[2]);
         $content = DB_escapeString($LANG21[4]);
-        DB_query("UPDATE {$_TABLES['blocks']} SET content = '$content', rdf_last_modified = NULL, rdf_etag = NULL WHERE bid = $bid");
+        DB_query("UPDATE {$_TABLES['blocks']} SET content = '{$content}', rdf_last_modified = NULL, rdf_etag = NULL WHERE bid = {$bid}");
     }
 }
 
@@ -4616,7 +4517,7 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
  * @return   string                      HTML <div>/<span> enclosed string
  * @see      function COM_checkHTML
  */
-function COM_allowedAutotags($list_only = false, $allowed_tags = '')
+function COM_allowedAutotags($list_only = false, $allowed_tags = array())
 {
     global $LANG01;
 
@@ -4628,7 +4529,7 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = '')
     }
 
     $list = '';
-    if (is_array($allowed_tags)) {
+    if (count($allowed_tags) > 0) {
         foreach ($allowed_tags as $tag) {
             $list .= '&#91;' . $tag . '&#93;&nbsp;, ';
         }
@@ -4660,23 +4561,24 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = '')
  * Return the password for the given username
  * Fetches a password for the given user
  *
- * @param    string $loginname username to get password for
+ * @param    string $loginName username to get password for
  * @return   string              Password or ''
  */
-function COM_getPassword($loginname)
+function COM_getPassword($loginName)
 {
     global $_TABLES, $LANG01;
 
-    $result = DB_query("SELECT passwd FROM {$_TABLES['users']} WHERE username='$loginname'");
+    $loginName = DB_escapeString($loginName);
+    $result = DB_query("SELECT passwd FROM {$_TABLES['users']} WHERE username='{$loginName}'");
     $tmp = DB_error();
-    $nrows = DB_numRows($result);
+    $numRows = DB_numRows($result);
 
-    if (($tmp == 0) && ($nrows == 1)) {
+    if (($tmp == 0) && ($numRows == 1)) {
         $U = DB_fetchArray($result);
 
         return $U['passwd'];
     } else {
-        $tmp = $LANG01[40] . ": '" . $loginname . "'";
+        $tmp = $LANG01[40] . ": '" . $loginName . "'";
         COM_accessLog($tmp);
     }
 
@@ -4691,20 +4593,16 @@ function COM_getPassword($loginname)
  * @param    int    $uid            site member id
  * @param    string $username       Username, if this is set no lookup is done.
  * @param    string $fullname       Users full name.
- * @param    string $remoteusername Username on remote service
- * @param    string $remoteservice  Remote login service.
+ * @param    string $remoteUserName Username on remote service
+ * @param    string $remoteService  Remote login service.
  * @return   string  Username, fullname or username@Service
  */
-function COM_getDisplayName($uid = '', $username = '', $fullname = '', $remoteusername = '', $remoteservice = '')
+function COM_getDisplayName($uid = 0, $username = '', $fullname = '', $remoteUserName = '', $remoteService = '')
 {
     global $_CONF, $_TABLES, $_USER;
 
-    if ($uid == '') {
-        if (COM_isAnonUser()) {
-            $uid = 1;
-        } else {
-            $uid = $_USER['uid'];
-        }
+    if (empty($uid)) {
+        $uid = COM_isAnonUser() ? 1 : $_USER['uid'];
     }
 
     // "this shouldn't happen"
@@ -4714,20 +4612,20 @@ function COM_getDisplayName($uid = '', $username = '', $fullname = '', $remoteus
 
     if (empty($username)) {
         $query = DB_query("SELECT username, fullname, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid='$uid'");
-        list($username, $fullname, $remoteusername, $remoteservice) = DB_fetchArray($query);
+        list($username, $fullname, $remoteUserName, $remoteService) = DB_fetchArray($query);
     }
 
     if (!empty($fullname) && ($_CONF['show_fullname'] == 1)) {
         return $fullname;
-    } elseif (($_CONF['user_login_method']['3rdparty'] || $_CONF['user_login_method']['openid']) && !empty($remoteusername)) {
+    } elseif (($_CONF['user_login_method']['3rdparty'] || $_CONF['user_login_method']['openid']) && !empty($remoteUserName)) {
         if (!empty($username)) {
-            $remoteusername = $username;
+            $remoteUserName = $username;
         }
 
         if ($_CONF['show_servicename']) {
-            return "$remoteusername@$remoteservice";
+            return "$remoteUserName@$remoteService";
         } else {
-            return $remoteusername;
+            return $remoteUserName;
         }
     }
 
@@ -4787,46 +4685,44 @@ function COM_emailUserTopics()
     }
 
     $subject = strip_tags($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d', time()));
-
     $authors = array();
 
     // Get users who want stories emailed to them
-    $usersql = "SELECT username,email,etids,{$_TABLES['users']}.uid AS uuid "
+    $userSql = "SELECT username,email,etids,{$_TABLES['users']}.uid AS uuid "
         . "FROM {$_TABLES['users']}, {$_TABLES['userindex']} "
         . "WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND "
         . "(etids <> '-' OR etids IS NULL) "
         . "ORDER BY {$_TABLES['users']}.uid";
 
-    $users = DB_query($usersql);
-    $nrows = DB_numRows($users);
-
-    $lastrun = DB_getItem($_TABLES['vars'], 'value', "name = 'lastemailedstories'");
+    $users = DB_query($userSql);
+    $numRows = DB_numRows($users);
+    $lastRun = DB_getItem($_TABLES['vars'], 'value', "name = 'lastemailedstories'");
 
     // For each user, pull the stories they want and email it to them
-    for ($x = 0; $x < $nrows; $x++) {
+    for ($x = 0; $x < $numRows; $x++) {
         $U = DB_fetchArray($users);
 
-        $storysql = array();
-        $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
-        $storysql['pgsql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
+        $storySql = array();
+        $storySql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
+        $storySql['pgsql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
 
-        $commonsql = " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
-            WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'
+        $commonSql = " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+            WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastRun}'
             AND ta.type = 'article' AND ta.id = sid ";
 
-        $topicsql = "SELECT tid FROM {$_TABLES['topics']}"
+        $topicSql = "SELECT tid FROM {$_TABLES['topics']}"
             . COM_getPermSQL('WHERE', $U['uuid']);
-        $tresult = DB_query($topicsql);
-        $trows = DB_numRows($tresult);
+        $topicResult = DB_query($topicSql);
+        $numTopics = DB_numRows($topicResult);
 
-        if ($trows == 0) {
+        if ($numTopics == 0) {
             // this user doesn't seem to have access to any topics ...
             continue;
         }
 
         $TIDS = array();
-        for ($i = 0; $i < $trows; $i++) {
-            $T = DB_fetchArray($tresult);
+        for ($i = 0; $i < $numTopics; $i++) {
+            $T = DB_fetchArray($topicResult);
             $TIDS[] = $T['tid'];
         }
 
@@ -4837,79 +4733,78 @@ function COM_emailUserTopics()
 
         if (count($TIDS) > 0) {
             // We have list of Daily Digest topic ids that user has access too and that the user wants a report on
-            $commonsql .= " AND (ta.tid IN ('" . implode("','", $TIDS) . "'))";
+            $commonSql .= " AND (ta.tid IN ('" . implode("','", $TIDS) . "'))";
         }
 
-        $commonsql .= COM_getPermSQL('AND', $U['uuid']);
-        $commonsql .= ' GROUP BY sid
+        $commonSql .= COM_getPermSQL('AND', $U['uuid']);
+        $commonSql .= ' GROUP BY sid
             ORDER BY featured DESC, date DESC';
 
-        $storysql['mysql'] .= $commonsql;
-        $storysql['pgsql'] .= $commonsql;
+        $storySql['mysql'] .= $commonSql;
+        $storySql['pgsql'] .= $commonSql;
 
-        $stories = DB_query($storysql);
-        $nsrows = DB_numRows($stories);
+        $stories = DB_query($storySql);
+        $numArticles = DB_numRows($stories);
 
-        if ($nsrows == 0) {
-            // If no new stories where pulled for this user, continue with next
+        if ($numArticles == 0) {
+            // If no new articles where pulled for this user, continue with next
             continue;
         }
 
-        $mailtext = $LANG08[29] . strftime($_CONF['shortdate'], time()) . "\n";
+        $mailText = $LANG08[29] . strftime($_CONF['shortdate'], time()) . "\n";
 
-        for ($y = 0; $y < $nsrows; $y++) {
+        for ($y = 0; $y < $numArticles; $y++) {
             // Loop through stories building the requested email message
             $S = DB_fetchArray($stories);
 
-            $mailtext .= "\n------------------------------\n\n";
-            $mailtext .= "$LANG08[31]: "
+            $mailText .= "\n------------------------------\n\n";
+            $mailText .= "$LANG08[31]: "
                 . COM_undoSpecialChars(stripslashes($S['title'])) . "\n";
             if ($_CONF['contributedbyline'] == 1) {
                 if (empty($authors[$S['uid']])) {
-                    $storyauthor = COM_getDisplayName($S['uid']);
-                    $authors[$S['uid']] = $storyauthor;
+                    $articleAuthor = COM_getDisplayName($S['uid']);
+                    $authors[$S['uid']] = $articleAuthor;
                 } else {
-                    $storyauthor = $authors[$S['uid']];
+                    $articleAuthor = $authors[$S['uid']];
                 }
-                $mailtext .= "$LANG24[7]: " . $storyauthor . "\n";
+                $mailText .= "$LANG24[7]: " . $articleAuthor . "\n";
             }
 
-            $mailtext .= "$LANG08[32]: " . strftime($_CONF['date'], strtotime($S['day'])) . "\n\n";
+            $mailText .= "$LANG08[32]: " . strftime($_CONF['date'], strtotime($S['day'])) . "\n\n";
 
             if ($_CONF['emailstorieslength'] > 0) {
                 if ($S['postmode'] === 'wikitext') {
-                    $storytext = COM_undoSpecialChars(strip_tags(COM_renderWikiText(stripslashes($S['introtext']))));
+                    $articleText = COM_undoSpecialChars(strip_tags(COM_renderWikiText(stripslashes($S['introtext']))));
                 } else {
-                    $storytext = COM_undoSpecialChars(strip_tags(PLG_replaceTags(stripslashes($S['introtext']))));
+                    $articleText = COM_undoSpecialChars(strip_tags(PLG_replaceTags(stripslashes($S['introtext']))));
                 }
 
                 if ($_CONF['emailstorieslength'] > 1) {
-                    $storytext = COM_truncate($storytext,
-                        $_CONF['emailstorieslength'], '...');
+                    $articleText = COM_truncate($articleText, $_CONF['emailstorieslength'], '...');
                 }
 
-                $storytext = preg_replace_callback('/<a\s+.*?href="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $storytext);
-                $storytext = preg_replace_callback('/<img\s+.*?src="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $storytext);
-                $mailtext .= $storytext . "\n\n";
+                $articleText = preg_replace_callback('/<a\s+.*?href="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $articleText);
+                $articleText = preg_replace_callback('/<img\s+.*?src="(.*?)".*?>/i', 'COM_emailUserTopicsUrlRewriter', $articleText);
+                $mailText .= $articleText . "\n\n";
             }
 
-            $mailtext .= $LANG08[33] . ' ' . COM_buildURL($_CONF['site_url']
+            $mailText .= $LANG08[33] . ' ' . COM_buildURL($_CONF['site_url']
                     . '/article.php?story=' . $S['sid']) . "\n";
         }
 
-        $mailtext .= "\n------------------------------\n";
-        $mailtext .= "\n$LANG08[34]\n";
-        $mailtext .= "\n------------------------------\n";
+        $mailText .= "\n------------------------------\n";
+        $mailText .= "\n$LANG08[34]\n";
+        $mailText .= "\n------------------------------\n";
 
-        $mailto = array($U['email'] => $U['username']);
+        $mailTo = array($U['email'] => $U['username']);
 
         if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-            $mailfrom = $_CONF['noreply_mail'];
-            $mailtext .= LB . LB . $LANG04[159];
+            $mailFrom = $_CONF['noreply_mail'];
+            $mailText .= LB . LB . $LANG04[159];
         } else {
-            $mailfrom = $_CONF['site_mail'];
+            $mailFrom = $_CONF['site_mail'];
         }
-        COM_mail($mailto, $subject, $mailtext, $mailfrom);
+        COM_mail($mailTo, $subject, $mailText, $mailFrom);
     }
 
     DB_query("UPDATE {$_TABLES['vars']} SET value = NOW() WHERE name = 'lastemailedstories'");
@@ -4922,11 +4817,11 @@ function COM_emailUserTopics()
  * @param    string $help     Help file for block
  * @param    string $title    Title used in block header
  * @param    string $position Position in which block is being rendered 'left', 'right' or blank (for centre)
- * @return   string  Return the HTML that shows any new stories, comments, etc
+ * @return   string           Return the HTML that shows any new stories, comments, etc
  */
 function COM_whatsNewBlock($help = '', $title = '', $position = '')
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW, $page, $_USER;
+    global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW;
 
     if ($_CONF['whatsnew_cache_time'] > 0) {
         $cacheInstance = 'whatsnew__' . CACHE_security_hash() . '__' . $_CONF['theme'];
@@ -4943,34 +4838,33 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
     $retval = COM_startBlock($title, $help,
         COM_getBlockTemplate('whats_new_block', 'header', $position));
 
-    $topicsql = '';
+    $topicSql = '';
     if (($_CONF['hidenewstories'] == 0) || ($_CONF['hidenewcomments'] == 0)
         || ($_CONF['trackback_enabled']
             && ($_CONF['hidenewtrackbacks'] == 0))
     ) {
-        $topicsql = COM_getTopicSql('AND', 0, 'ta');
+        $topicSql = COM_getTopicSQL('AND', 0, 'ta');
     }
 
     if ($_CONF['hidenewstories'] == 0) {
         $where_sql = " AND ta.type = 'article' AND ta.id = sid";
 
-        $archsql = '';
-        $archivetid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
-        if (!empty($archivetid)) {
-            $where_sql .= " AND (ta.tid <> '$archivetid')";
+        $archiveTid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
+        if (!empty($archiveTid)) {
+            $where_sql .= " AND (ta.tid <> '$archiveTid')";
         }
 
         // Find the newest stories
         $sql['mysql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
-            WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL('AND') . $topicsql . COM_getLangSQL('sid', 'AND') . "
+            WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL('AND') . $topicSql . COM_getLangSQL('sid', 'AND') . "
             GROUP BY sid, title, date ORDER BY date DESC";
 
         $sql['pgsql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
-            WHERE (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL('AND') . $topicsql . COM_getLangSQL('sid', 'AND') . "
+            WHERE (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL('AND') . $topicSql . COM_getLangSQL('sid', 'AND') . "
             GROUP BY sid, title, date ORDER BY date DESC";
 
         $result = DB_query($sql);
-        $nrows = DB_numRows($result);
+        $numRows = DB_numRows($result);
 
         if (empty($title)) {
             $title = DB_getItem($_TABLES['blocks'], 'title', "name='whats_new_block'");
@@ -4982,29 +4876,28 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
                 $_CONF['newstoriesinterval'])
             . '</small></h3>';
 
-        if ($nrows > 0) {
-            $newarticles = array();
+        if ($numRows > 0) {
+            $newArticles = array();
 
-            for ($x = 0; $x < $nrows; $x++) {
+            for ($x = 0; $x < $numRows; $x++) {
                 $A = DB_fetchArray($result);
 
-                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $A['sid']);
+                $url = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $A['sid']);
 
                 $title = COM_undoSpecialChars(stripslashes($A['title']));
-                $titletouse = COM_truncate($title, $_CONF['title_trim_length'],
-                    '...');
-                if ($title != $titletouse) {
+                $titleToUse = COM_truncate($title, $_CONF['title_trim_length'], '...');
+                if ($title != $titleToUse) {
                     $attr = array('title' => htmlspecialchars($title));
                 } else {
                     $attr = array();
                 }
-                $aarticle = str_replace('$', '&#36;', $titletouse);
-                $aarticle = str_replace(' ', '&nbsp;', $aarticle);
+                $anchorText = str_replace('$', '&#36;', $titleToUse);
+                $anchorText = str_replace(' ', '&nbsp;', $anchorText);
 
-                $newarticles[] = COM_createLink($aarticle, $url, $attr);
+                $newArticles[] = COM_createLink($anchorText, $url, $attr);
             }
 
-            $retval .= COM_makeList($newarticles, 'list-new-plugins');
+            $retval .= COM_makeList($newArticles, 'list-new-plugins');
         } else {
             $retval .= $LANG01[100] . '<br' . XHTML . '>' . LB; // No new stories
         }
@@ -5024,7 +4917,6 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
                 $_CONF['newcommentsinterval'])
             . '</small></h3>';
 
-        $new_plugin_comments = array();
         $new_plugin_comments = PLG_getWhatsNewComment();
 
         if (!empty($new_plugin_comments)) {
@@ -5041,7 +4933,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
             }
             $new_plugin_comments = $temp;
 
-            $newcomments = array();
+            $newComments = array();
             $count = 0;
             foreach ($new_plugin_comments as $A) {
                 $count .= +1;
@@ -5055,21 +4947,21 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
                 // Check to see if url (plugin may not support PLG_getItemInfo
                 if (!(empty($url))) {
                     $title = COM_undoSpecialChars(stripslashes($A['title']));
-                    $titletouse = COM_truncate($title, $_CONF['title_trim_length'],
+                    $titleToUse = COM_truncate($title, $_CONF['title_trim_length'],
                         '...');
-                    if ($title != $titletouse) {
+                    if ($title != $titleToUse) {
                         $attr = array('title' => htmlspecialchars($title));
                     } else {
                         $attr = array();
                     }
-                    $acomment = str_replace('$', '&#36;', $titletouse);
-                    $acomment = str_replace(' ', '&nbsp;', $acomment);
+                    $anchorComment = str_replace('$', '&#36;', $titleToUse);
+                    $anchorComment = str_replace(' ', '&nbsp;', $anchorComment);
 
                     if ($A['dups'] > 1) {
-                        $acomment .= ' [+' . $A['dups'] . ']';
+                        $anchorComment .= ' [+' . $A['dups'] . ']';
                     }
 
-                    $newcomments[] = COM_createLink($acomment, $url, $attr);
+                    $newComments[] = COM_createLink($anchorComment, $url, $attr);
 
                     if ($count == 15) {
                         break;
@@ -5078,7 +4970,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
 
             }
 
-            $retval .= COM_makeList($newcomments, 'list-new-comments');
+            $retval .= COM_makeList($newComments, 'list-new-comments');
         } else {
             $retval .= $LANG01[86] . '<br' . XHTML . '>' . LB;
         }
@@ -5099,48 +4991,45 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
 
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
-            WHERE ta.type = 'article' AND ta.id = s.sid AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicsql . COM_getLangSQL('sid', 'AND', 's') . "
+            WHERE ta.type = 'article' AND ta.id = s.sid AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicSql . COM_getLangSQL('sid', 'AND', 's') . "
             GROUP BY t.sid, s.title
             ORDER BY lastdate DESC LIMIT 15";
 
         $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
-            WHERE ta.type = 'article' AND ta.id = s.sid AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (NOW()+ INTERVAL '{$_CONF['newtrackbackinterval']} SECOND'))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicsql . COM_getLangSQL('sid', 'AND', 's') . "
+            WHERE ta.type = 'article' AND ta.id = s.sid AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (NOW()+ INTERVAL '{$_CONF['newtrackbackinterval']} SECOND'))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicSql . COM_getLangSQL('sid', 'AND', 's') . "
             GROUP BY t.sid, s.title
             ORDER BY lastdate DESC LIMIT 15";
 
         $result = DB_query($sql);
-        $nrows = DB_numRows($result);
+        $numRows = DB_numRows($result);
 
-        if ($nrows > 0) {
-            $newcomments = array();
+        if ($numRows > 0) {
+            $newComments = array();
 
-            for ($i = 0; $i < $nrows; $i++) {
+            for ($i = 0; $i < $numRows; $i++) {
                 $A = DB_fetchArray($result);
-
-                $url = COM_buildUrl($_CONF['site_url']
-                        . '/article.php?story=' . $A['sid']) . '#trackback';
-
+                $url = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $A['sid'])
+                    . '#trackback';
                 $title = COM_undoSpecialChars(stripslashes($A['title']));
-                $titletouse = COM_truncate($title, $_CONF['title_trim_length'],
-                    '...');
+                $titleToUse = COM_truncate($title, $_CONF['title_trim_length'], '...');
 
-                if ($title != $titletouse) {
+                if ($title != $titleToUse) {
                     $attr = array('title' => htmlspecialchars($title));
                 } else {
                     $attr = array();
                 }
-                $acomment = str_replace('$', '&#36;', $titletouse);
-                $acomment = str_replace(' ', '&nbsp;', $acomment);
+                $anchorComment = str_replace('$', '&#36;', $titleToUse);
+                $anchorComment = str_replace(' ', '&nbsp;', $anchorComment);
 
                 if ($A['count'] > 1) {
-                    $acomment .= ' [+' . $A['count'] . ']';
+                    $anchorComment .= ' [+' . $A['count'] . ']';
                 }
 
-                $newcomments[] = COM_createLink($acomment, $url, $attr);
+                $newComments[] = COM_createLink($anchorComment, $url, $attr);
             }
 
-            $retval .= COM_makeList($newcomments, 'list-new-trackbacks');
+            $retval .= COM_makeList($newComments, 'list-new-trackbacks');
         } else {
             $retval .= $LANG01[115] . '<br' . XHTML . '>' . LB;
         }
@@ -5150,12 +5039,12 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
     }
 
     if ($_CONF['hidenewplugins'] == 0) {
-        list($headlines, $smallheadlines, $content) = PLG_getWhatsNew();
+        list($headlines, $smallHeadlines, $content) = PLG_getWhatsNew();
         $plugins = count($headlines);
         if ($plugins > 0) {
             for ($i = 0; $i < $plugins; $i++) {
                 $retval .= '<h3>' . $headlines[$i] . ' <small>'
-                    . $smallheadlines[$i] . '</small></h3>';
+                    . $smallHeadlines[$i] . '</small></h3>';
                 if (is_array($content[$i])) {
                     $retval .= COM_makeList($content[$i], 'list-new-plugins');
                 } else {
@@ -5180,10 +5069,11 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
 /**
  * Creates the string that indicates the timespan in which new items were found
  *
- * @param    string $time_string template string
- * @param    int    $time        number of seconds in which results are found
- * @param    string $type        type (translated string) of new item
- * @param    int    $amount      amount of things that have been found.
+ * @param  string $time_string template string
+ * @param  int    $time        number of seconds in which results are found
+ * @param  string $type        type (translated string) of new item
+ * @param  int    $amount      amount of things that have been found.
+ * @return string
  */
 function COM_formatTimeString($time_string, $time, $type = '', $amount = 0)
 {
@@ -5328,31 +5218,30 @@ function COM_showMessageFromParameter()
 /**
  * Prints Google(tm)-like paging navigation
  *
- * @param        string  $base_url   base url to use for all generated links. If an array, then the current parameter
- *                                   as the first part of the url, and the end is the last part of the url
- * @param        int     $curpage    current page we are on
- * @param        int     $num_pages  Total number of pages
- * @param        string  $page_str   page-variable name AND '='
- * @param        boolean $do_rewrite if true, url-rewriting is respected
- * @param        string  $msg        to be displayed with the navigation
- * @param        string  $open_ended replace next/last links with this
- * @return   string   HTML formatted widget
+ * @param  string  $base_url    base url to use for all generated links. If an array, then the current parameter
+ *                               as the first part of the url, and the end is the last part of the url
+ * @param  int     $currentPage current page we are on
+ * @param  int     $num_pages   Total number of pages
+ * @param  string  $page_str    page-variable name AND '='
+ * @param  boolean $do_rewrite  if true, url-rewriting is respected
+ * @param  string  $msg         to be displayed with the navigation
+ * @param  string  $open_ended  replace next/last links with this
+ * @return string               HTML formatted widget
  */
-function COM_printPageNavigation($base_url, $curpage, $num_pages,
+function COM_printPageNavigation($base_url, $currentPage, $num_pages,
                                  $page_str = 'page=', $do_rewrite = false, $msg = '',
                                  $open_ended = '')
 {
     global $_CONF, $LANG05, $relLinks;
 
     if (function_exists('CUSTOM_printPageNavigation')) {
-        return CUSTOM_printPageNavigation($base_url, $curpage, $num_pages, $page_str, $do_rewrite, $msg, $open_ended);
+        return CUSTOM_printPageNavigation($base_url, $currentPage, $num_pages, $page_str, $do_rewrite, $msg, $open_ended);
     }
 
     if ($num_pages < 2) {
         return '';
     }
 
-    $first_url = '';
     $last_url = '';
     if (is_array($base_url)) {
         $first_url = current($base_url);
@@ -5380,10 +5269,10 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages,
     $page_navigation->set_var('lang_next', $LANG05[5]);
     $page_navigation->set_var('lang_last', $LANG05[8]);
 
-    if ($curpage > 1) {
+    if ($currentPage > 1) {
         $pg = '';
-        if (($curpage - 1) > 1) {
-            $pg = $sep . $page_str . ($curpage - 1);
+        if (($currentPage - 1) > 1) {
+            $pg = $sep . $page_str . ($currentPage - 1);
         }
         $page_navigation->set_var('start_first_anchortag', '<a href="' . $first_url . $last_url . '">');
         $page_navigation->set_var('end_first_anchortag', '</a>');
@@ -5400,13 +5289,13 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages,
 
     $page_nav_left = intval($_CONF['page_navigation_max_pages'] / 2);
     $page_nav_right = $_CONF['page_navigation_max_pages'] - $page_nav_left - 1;
-    $page_start = $curpage - $page_nav_left;
+    $page_start = $currentPage - $page_nav_left;
     $odd = 0;
     if ($page_start < 1) {
         $odd = 1 - $page_start;
         $page_start = 1;
     }
-    $page_end = $curpage + $page_nav_right + $odd;
+    $page_end = $currentPage + $page_nav_right + $odd;
     if ($page_end > $num_pages) {
         $odd = $page_end - $num_pages;
         $page_end = $num_pages;
@@ -5415,17 +5304,17 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages,
             $page_start = 1;
         }
     }
-    for ($pgcount = $page_start; $pgcount <= $page_end; $pgcount++) {
-        if ($pgcount == $curpage) {
-            $page_navigation->set_var('page_number', $pgcount);
+    for ($pageCount = $page_start; $pageCount <= $page_end; $pageCount++) {
+        if ($pageCount == $currentPage) {
+            $page_navigation->set_var('page_number', $pageCount);
             $page_navigation->parse('pages', 'page-current', true);
             continue;
         }
         $pg = '';
-        if ($pgcount > 1) {
-            $pg = $sep . $page_str . $pgcount;
+        if ($pageCount > 1) {
+            $pg = $sep . $page_str . $pageCount;
         }
-        $page_navigation->set_var('page_number', COM_createLink($pgcount, $first_url . $pg . $last_url));
+        $page_navigation->set_var('page_number', COM_createLink($pageCount, $first_url . $pg . $last_url));
         $page_navigation->parse('pages', 'page', true);
     }
     $page_navigation->set_var('page', '');
@@ -5435,18 +5324,18 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages,
         $page_navigation->set_var('open_ended', $open_ended);
         $page_navigation->parse('pages', 'nav-open-ended', true);
     } else {
-        if ($curpage == $num_pages) {
+        if ($currentPage == $num_pages) {
             $page_navigation->set_var('start_next_anchortag', '');
             $page_navigation->set_var('end_next_anchortag', '');
             $page_navigation->set_var('start_last_anchortag', '');
             $page_navigation->set_var('end_last_anchortag', '');
         } else {
-            $page_navigation->set_var('start_next_anchortag', '<a href="' . $first_url . $sep . $page_str . ($curpage + 1) . $last_url . '">');
+            $page_navigation->set_var('start_next_anchortag', '<a href="' . $first_url . $sep . $page_str . ($currentPage + 1) . $last_url . '">');
             $page_navigation->set_var('end_next_anchortag', '</a>');
             $page_navigation->set_var('start_last_anchortag', '<a href="' . $first_url . $sep . $page_str . $num_pages . $last_url . '">');
             $page_navigation->set_var('end_last_anchortag', '</a>');
             // Add in Pagination for previous page
-            $relLinks['next'] = '<link rel="next" href="' . $first_url . $sep . $page_str . ($curpage + 1) . $last_url . '"' . XHTML . '>';
+            $relLinks['next'] = '<link rel="next" href="' . $first_url . $sep . $page_str . ($currentPage + 1) . $last_url . '"' . XHTML . '>';
         }
         $page_navigation->parse('pages', 'nav-end', true);
     }
@@ -5468,22 +5357,18 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages,
  * the format in the config file is used.  This returns an array where array[0]
  * is the formatted date and array[1] is the unixtimestamp
  *
- * @param        string $date date to format, otherwise we format current date/time
- * @return   array   array[0] is the formatted date and array[1] is the unixtimestamp.
+ * @param  string $date date to format, otherwise we format current date/time
+ * @return array        array[0] is the formatted date and array[1] is the unixtimestamp.
  */
 function COM_getUserDateTimeFormat($date = '')
 {
-    global $_TABLES, $_USER, $_CONF;
+    global $_USER, $_CONF;
 
     // Get display format for time
     if (!COM_isAnonUser()) {
-        if (empty($_USER['format'])) {
-            $dateformat = $_CONF['date'];
-        } else {
-            $dateformat = $_USER['format'];
-        }
+        $dateFormat = empty($_USER['format']) ? $_CONF['date'] : $_USER['format'];
     } else {
-        $dateformat = $_CONF['date'];
+        $dateFormat = $_CONF['date'];
     }
 
     if (empty($date)) {
@@ -5498,7 +5383,7 @@ function COM_getUserDateTimeFormat($date = '')
     }
 
     // Format the date
-    $date = strftime($dateformat, $stamp);
+    $date = strftime($dateFormat, $stamp);
 
     return array($date, $stamp);
 }
@@ -5512,19 +5397,19 @@ function COM_getUserDateTimeFormat($date = '')
  */
 function COM_getUserCookieTimeout()
 {
-    global $_TABLES, $_USER, $_CONF;
+    global $_TABLES, $_USER;
 
     if (COM_isAnonUser()) {
-        return;
+        return 0;
     }
 
-    $timeoutvalue = DB_getItem($_TABLES['users'], 'cookietimeout', "uid = {$_USER['uid']}");
+    $timeoutValue = DB_getItem($_TABLES['users'], 'cookietimeout', "uid = {$_USER['uid']}");
 
-    if (empty($timeoutvalue)) {
-        $timeoutvalue = 0;
+    if (empty($timeoutValue)) {
+        $timeoutValue = 0;
     }
 
-    return $timeoutvalue;
+    return $timeoutValue;
 }
 
 /**
@@ -5539,29 +5424,29 @@ function phpblock_whosonline()
     $retval = '';
 
     $expire_time = time() - $_CONF['whosonline_threshold'];
+    $byName = 'username';
 
-    $byname = 'username';
     if ($_CONF['show_fullname'] == 1) {
-        $byname .= ',fullname';
+        $byName .= ',fullname';
     }
     if ($_CONF['user_login_method']['openid'] || $_CONF['user_login_method']['3rdparty']) {
-        $byname .= ',remoteusername,remoteservice';
+        $byName .= ',remoteusername,remoteservice';
     }
 
-    $sql = "SELECT DISTINCT {$_TABLES['sessions']}.uid,{$byname},photo,showonline
+    $sql = "SELECT DISTINCT {$_TABLES['sessions']}.uid,{$byName},photo,showonline
             FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['userprefs']}
             WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid
             AND {$_TABLES['sessions']}.whos_online = 1
             AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND start_time >= $expire_time
-            AND {$_TABLES['sessions']}.uid <> 1 ORDER BY {$byname}";
+            AND {$_TABLES['sessions']}.uid <> 1 ORDER BY {$byName}";
 
     $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $numRows = DB_numRows($result);
 
     $num_anon = 0;
     $num_reg = 0;
 
-    for ($i = 0; $i < $nrows; $i++) {
+    for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result);
 
         if ($A['showonline'] == 1) {
@@ -5580,16 +5465,16 @@ function phpblock_whosonline()
 
             if (!empty($A['photo']) && ($_CONF['allow_user_photo'] == 1)) {
                 if ($_CONF['whosonline_photo'] == true) {
-                    $usrimg = '<img src="' . $_CONF['site_url']
+                    $userImage = '<img src="' . $_CONF['site_url']
                         . '/images/userphotos/' . $A['photo']
                         . '" alt="" height="30" width="30"' . XHTML . '>';
                 } else {
-                    $usrimg = '<img src="' . $_CONF['layout_url']
+                    $userImage = '<img src="' . $_CONF['layout_url']
                         . '/images/smallcamera.' . $_IMAGE_TYPE
                         . '" alt=""' . XHTML . '>';
                 }
 
-                $retval .= '&nbsp;' . COM_createLink($usrimg, $url);
+                $retval .= '&nbsp;' . COM_createLink($userImage, $url);
             }
             $retval .= '<br' . XHTML . '>';
             $num_reg++;
@@ -5826,7 +5711,11 @@ function COM_getMinuteFormOptions($selected = '', $step = 1)
  * For backward compatibility only.
  * This function should always have been called COM_getMinuteFormOptions
  *
+ * @param  string $selected
+ * @param  int    $step
+ * @return string
  * @see COM_getMinuteFormOptions
+ * @deprecated Use COM_getMinuteFormOptions instead
  */
 function COM_getMinuteOptions($selected = '', $step = 1)
 {
@@ -5872,11 +5761,11 @@ function COM_getAmPmFormSelection($name, $selected = '')
  * Creates an HTML unordered list from the given array.
  * It formats one list item per array element, using the list.thtml template
  *
- * @param    array  $listofitems Items to list out
- * @param    string $classname   optional CSS class name for the list
- * @return   string                  HTML unordered list of array items
+ * @param    array  $listOfItems Items to list out
+ * @param    string $className   optional CSS class name for the list
+ * @return   string              HTML unordered list of array items
  */
-function COM_makeList($listofitems, $classname = '')
+function COM_makeList($listOfItems, $className = '')
 {
     global $_CONF;
 
@@ -5884,16 +5773,16 @@ function COM_makeList($listofitems, $classname = '')
     $list->set_file(array('list' => 'list.thtml'));
     $list->set_block('list', 'listitem');
 
-    if (empty($classname)) {
+    if (empty($className)) {
         $list->set_var('list_class', '');
         $list->set_var('list_class_name', '');
     } else {
-        $list->set_var('list_class', 'class="' . $classname . '"');
-        $list->set_var('list_class_name', $classname);
+        $list->set_var('list_class', 'class="' . $className . '"');
+        $list->set_var('list_class_name', $className);
     }
 
-    if (is_array($listofitems)) {
-        foreach ($listofitems as $oneitem) {
+    if (is_array($listOfItems)) {
+        foreach ($listOfItems as $oneitem) {
             $list->set_var('list_item', $oneitem);
             $list->parse('list_items', 'listitem', true);
         }
@@ -5910,7 +5799,7 @@ function COM_makeList($listofitems, $classname = '')
  * @param    string $type     type of speed limit, e.g. 'submit', 'comment'
  * @param    int    $max      max number of allowed tries within speed limit
  * @param    string $property IP address or other identifiable property
- * @return   int                 0: does not apply, else: seconds since last post
+ * @return   int              0: does not apply, else: seconds since last post
  */
 function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
 {
@@ -5981,10 +5870,10 @@ function COM_updateSpeedlimit($type = 'submit', $property = '')
 /**
  * Clear out expired speed limits, i.e. entries older than 'x' seconds
  *
- * @param  int    $speedlimit number of seconds
+ * @param  int    $speedLimit number of seconds
  * @param  string $type       type of speed limit, e.g. 'submit', 'comment'
  */
-function COM_clearSpeedlimit($speedlimit = 60, $type = '')
+function COM_clearSpeedlimit($speedLimit = 60, $type = '')
 {
     global $_TABLES;
 
@@ -5992,7 +5881,7 @@ function COM_clearSpeedlimit($speedlimit = 60, $type = '')
     if (!empty($type)) {
         $sql .= "(type = '$type') AND ";
     }
-    $sql .= "(date < UNIX_TIMESTAMP() - $speedlimit)";
+    $sql .= "(date < UNIX_TIMESTAMP() - {$speedLimit})";
     DB_query($sql);
 }
 
@@ -6033,7 +5922,7 @@ function COM_buildURL($url)
  * This function sets the name of the arguments found in url
  *
  * @param    array $names Names of arguments in query string to assign to values
- * @return   boolean         True if successful
+ * @return   boolean      True if successful
  */
 function COM_setArgNames($names)
 {
@@ -6044,8 +5933,8 @@ function COM_setArgNames($names)
  * Wrapper function for URL class
  * returns value for specified argument
  *
- * @param        string $name argument to get value for
- * @return   string     Argument value
+ * @param    string $name argument to get value for
+ * @return   string       Argument value
  */
 function COM_getArgument($name)
 {
@@ -6058,30 +5947,28 @@ function COM_getArgument($name)
  * the smallest #/time interval
  *
  * @param    int $occurrences how many occurrences during time interval
- * @param    int $timespan    time interval in seconds
- * @return   int Seconds per interval
+ * @param    int $timeSpan    time interval in seconds
+ * @return   int              Seconds per interval
  */
-function COM_getRate($occurrences, $timespan)
+function COM_getRate($occurrences, $timeSpan)
 {
     // want to define some common time words (yes, dirk, i need to put this in LANG)
     // time words and their value in seconds
     // week is 7 * day, month is 30 * day, year is 365.25 * day
     $common_time = array(
-        "second" => 1,
-        "minute" => 60,
-        "hour"   => 3600,
-        "day"    => 86400,
-        "week"   => 604800,
-        "month"  => 2592000,
-        "year"   => 31557600,
+        'second' => 1,
+        'minute' => 60,
+        'hour'   => 3600,
+        'day'    => 86400,
+        'week'   => 604800,
+        'month'  => 2592000,
+        'year'   => 31557600,
     );
 
     if ($occurrences != 0) {
-        $rate = (int) ($timespan / $occurrences);
+        $rate = (int) ($timeSpan / $occurrences);
         $adjustedRate = $occurrences + 1;
         $time_unit = 'second';
-
-        $found_one = false;
 
         foreach ($common_time as $unit => $seconds) {
             if ($rate > $seconds) {
@@ -6117,8 +6004,8 @@ function COM_getRate($occurrences, $timespan)
  * @param        int $perm_group   Permissions the gorup has
  * @param        int $perm_members Permissions logged in members have
  * @param        int $perm_anon    Permissions anonymous users have
- * @param        int $uid          User ID to get information for. If empty current user.
- * @return       int     returns true if user has access
+ * @param        int $u_id         User ID to get information for. If empty current user.
+ * @return       int               returns true if user has access
  */
 function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $u_id = 0)
 {
@@ -6128,16 +6015,11 @@ function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_me
     $access = 2;
 
     if ($u_id <= 0) {
-        if (COM_isAnonUser()) {
-            $uid = 1;
-        } else {
-            $uid = $_USER['uid'];
-        }
+        $uid = COM_isAnonUser() ? 1 : $_USER['uid'];
     } else {
         $uid = $u_id;
     }
 
-    $UserGroups = array();
     if ((empty($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
         if (empty($_GROUPS)) {
             $_GROUPS = SEC_getUserGroups($uid);
@@ -6206,7 +6088,6 @@ function COM_getPermSQL($type = 'WHERE', $u_id = 0, $access = 2, $table = '')
         $uid = $u_id;
     }
 
-    $UserGroups = array();
     if ((empty($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
         if (empty($_GROUPS)) {
             $_GROUPS = SEC_getUserGroups($uid);
@@ -6230,7 +6111,6 @@ function COM_getPermSQL($type = 'WHERE', $u_id = 0, $access = 2, $table = '')
 
     if ($uid > 1) {
         $sql .= "(({$table}owner_id = '{$uid}') AND ({$table}perm_owner >= $access)) OR ";
-
         $sql .= "(({$table}group_id IN (" . implode(',', $UserGroups)
             . ")) AND ({$table}perm_group >= $access)) OR ";
         $sql .= "({$table}perm_members >= $access)";
@@ -6253,19 +6133,18 @@ function COM_getPermSQL($type = 'WHERE', $u_id = 0, $access = 2, $table = '')
  * @param    string $type  part of the SQL expr. e.g. 'WHERE', 'AND'
  * @param    int    $u_id  user id or 0 = current user
  * @param    string $table table name if ambiguous (e.g. in JOINs)
- * @return   string          SQL expression string (may be empty)
+ * @return   string        SQL expression string (may be empty)
  */
 function COM_getTopicSQL($type = 'WHERE', $u_id = 0, $table = '')
 {
     global $_TABLES, $_USER, $_GROUPS;
 
-    $topicsql = ' ' . $type . ' ';
+    $topicSql = ' ' . $type . ' ';
 
     if (!empty($table)) {
         $table .= '.';
     }
 
-    $UserGroups = array();
     if (($u_id <= 0) || (isset($_USER['uid']) && ($u_id == $_USER['uid']))) {
         if (!COM_isAnonUser()) {
             $uid = $_USER['uid'];
@@ -6296,12 +6175,12 @@ function COM_getTopicSQL($type = 'WHERE', $u_id = 0, $table = '')
     }
 
     if (count($tids) > 0) {
-        $topicsql .= "({$table}tid IN ('" . implode("','", $tids) . "'))";
+        $topicSql .= "({$table}tid IN ('" . implode("','", $tids) . "'))";
     } else {
-        $topicsql .= '0';
+        $topicSql .= '0';
     }
 
-    return $topicsql;
+    return $topicSql;
 }
 
 /**
@@ -6327,15 +6206,15 @@ function COM_stripslashes($text)
  * Filter parameters passed per GET (URL) or POST.
  *
  * @param    string  $parameter the parameter to test
- * @param    boolean $isnumeric true if $parameter is supposed to be numeric
- * @return   string    the filtered parameter (may now be empty or 0)
+ * @param    boolean $isNumeric true if $parameter is supposed to be numeric
+ * @return   string             the filtered parameter (may now be empty or 0)
  * @see COM_applyBasicFilter
  */
-function COM_applyFilter($parameter, $isnumeric = false)
+function COM_applyFilter($parameter, $isNumeric = false)
 {
     $p = COM_stripslashes($parameter);
 
-    return COM_applyBasicFilter($p, $isnumeric);
+    return COM_applyBasicFilter($p, $isNumeric);
 }
 
 /**
@@ -6344,18 +6223,18 @@ function COM_applyFilter($parameter, $isnumeric = false)
  *           _not_ coming in through a GET or POST request.
  *
  * @param    string  $parameter the parameter to test
- * @param    boolean $isnumeric true if $parameter is supposed to be numeric
+ * @param    boolean $isNumeric true if $parameter is supposed to be numeric
  * @return   string    the filtered parameter (may now be empty or 0)
  * @see COM_applyFilter
  */
-function COM_applyBasicFilter($parameter, $isnumeric = false)
+function COM_applyBasicFilter($parameter, $isNumeric = false)
 {
     $log_manipulation = false; // set to true to log when the filter applied
 
     $p = strip_tags($parameter);
     $p = COM_killJS($p); // doesn't help a lot right now, but still ...
 
-    if ($isnumeric) {
+    if ($isNumeric) {
         // Note: PHP's is_numeric() accepts values like 4e4 as numeric
         if (!is_numeric($p) || (preg_match('/^-?\d+$/', $p) == 0)) {
             $p = 0;
@@ -6373,7 +6252,7 @@ function COM_applyBasicFilter($parameter, $isnumeric = false)
 
     if ($log_manipulation) {
         if (strcmp($p, $parameter) != 0) {
-            COM_errorLog("Filter applied: >> $parameter << filtered to $p [IP {$_SERVER['REMOTE_ADDR']}]", 1);
+            COM_errorLog("Filter applied: >> {$parameter} << filtered to {$p} [IP {$_SERVER['REMOTE_ADDR']}]", 1);
         }
     }
 
@@ -6383,10 +6262,10 @@ function COM_applyBasicFilter($parameter, $isnumeric = false)
 /**
  * Sanitize a URL
  *
- * @param    string $url               URL to sanitized
- * @param    array  $allowed_protocols array of allowed protocols
- * @param    string $default_protocol  replacement protocol (default: http)
- * @return   string                      sanitized URL
+ * @param    string        $url               URL to sanitized
+ * @param    array|string  $allowed_protocols array of allowed protocols
+ * @param    string        $default_protocol  replacement protocol (default: http)
+ * @return   string                           sanitized URL
  */
 function COM_sanitizeUrl($url, $allowed_protocols = '', $default_protocol = '')
 {
@@ -6542,7 +6421,7 @@ function COM_makeClickableLinksCallback($http, $link)
  * e.g. so that we can present the user with the post as they entered them.
  *
  * @param    string $text story text
- * @return   string          story text without links
+ * @return   string       story text without links
  */
 function COM_undoClickableLinks($text)
 {
@@ -6565,12 +6444,12 @@ function COM_highlightQuery($text, $query, $class = 'highlight')
         // escape PCRE special characters
         $query = preg_quote($query, '/');
 
-        $mywords = explode(' ', $query);
-        foreach ($mywords as $searchword) {
-            if (!empty($searchword)) {
+        $myWords = explode(' ', $query);
+        foreach ($myWords as $myWord) {
+            if (!empty($myWord)) {
                 $before = "/(?!(?:[^<]+>|[^>]+<\/a>))\b";
                 $after = "\b/i";
-                if ($searchword !== utf8_encode($searchword)) {
+                if ($myWord !== utf8_encode($myWord)) {
                     if (@preg_match('/^\pL$/u', urldecode('%C3%B1'))) {
                         // Unicode property support
                         $before = "/(?<!\p{L})";
@@ -6580,7 +6459,7 @@ function COM_highlightQuery($text, $query, $class = 'highlight')
                         $after = "/u";
                     }
                 }
-                $text = preg_replace($before . $searchword . $after,
+                $text = preg_replace($before . $myWord . $after,
                     "<span class=\"$class\">\\0</span>",
                     '<!-- x -->' . $text . '<!-- x -->');
             }
@@ -6710,17 +6589,17 @@ function COM_getCurrentURL()
     if (empty($_SERVER['SCRIPT_URI'])) {
         if (!empty($_SERVER['DOCUMENT_URI'])) {
             $document_uri = $_SERVER['DOCUMENT_URI'];
-            $firstslash = strpos($_CONF['site_url'], '/');
+            $firstSlash = strpos($_CONF['site_url'], '/');
 
-            if ($firstslash === false) {
+            if ($firstSlash === false) {
                 // special case - assume it's okay
                 $thisUrl = $_CONF['site_url'] . $document_uri;
-            } elseif ($firstslash + 1 == strrpos($_CONF['site_url'], '/')) {
+            } elseif ($firstSlash + 1 == strrpos($_CONF['site_url'], '/')) {
                 // site is in the document root
                 $thisUrl = $_CONF['site_url'] . $document_uri;
             } else {
                 // extract server name first
-                $pos = strpos($_CONF['site_url'], '/', $firstslash + 2);
+                $pos = strpos($_CONF['site_url'], '/', $firstSlash + 2);
                 $thisUrl = substr($_CONF['site_url'], 0, $pos) . $document_uri;
             }
         }
@@ -6746,17 +6625,17 @@ function COM_getCurrentURL()
             }
         }
 
-        $firstslash = strpos($_CONF['site_url'], '/');
+        $firstSlash = strpos($_CONF['site_url'], '/');
 
-        if ($firstslash === false) {
+        if ($firstSlash === false) {
             // special case - assume it's okay
             $thisUrl = $_CONF['site_url'] . $requestUri;
-        } elseif ($firstslash + 1 == strrpos($_CONF['site_url'], '/')) {
+        } elseif ($firstSlash + 1 == strrpos($_CONF['site_url'], '/')) {
             // site is in the document root
             $thisUrl = $_CONF['site_url'] . $requestUri;
         } else {
             // extract server name first
-            $pos = strpos($_CONF['site_url'], '/', $firstslash + 2);
+            $pos = strpos($_CONF['site_url'], '/', $firstSlash + 2);
             $thisUrl = substr($_CONF['site_url'], 0, $pos) . $requestUri;
         }
     }
@@ -6774,24 +6653,18 @@ function COM_onFrontpage()
 {
     global $_CONF, $topic, $page;
 
-    // Note: We can't use $PHP_SELF here since the site may not be in the
-    // DocumentRoot
-    $onFrontpage = false;
+    // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
+    $onFrontPage = false;
 
-    if (empty($_SERVER['PATH_INFO'])) {
-        $scriptName = $_SERVER['SCRIPT_NAME'];
-    } else {
-        $scriptName = $_SERVER['PATH_INFO'];
-    }
-
+    $scriptName = empty($_SERVER['PATH_INFO']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PATH_INFO'];
     preg_match('/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly);
     if (($scriptName == $pathonly[1] . '/index.php') &&
         empty($topic) && (empty($page) || ($page == 1))
     ) {
-        $onFrontpage = true;
+        $onFrontPage = true;
     }
 
-    return $onFrontpage;
+    return $onFrontPage;
 }
 
 /**
@@ -6800,6 +6673,7 @@ function COM_onFrontpage()
  * the inverted return values, it has been deprecated and is only provided for
  * backward compatibility - use COM_onFrontpage() instead.
  *
+ * @return bool
  * @deprecated since Geeklog 1.4.1
  * @see        COM_onFrontpage
  */
@@ -6813,7 +6687,7 @@ function COM_isFrontpage()
  * separator, comma-separator and fixed decimals if necessary
  *
  * @param        float $number Number that will be formatted
- * @return        string                        formatted number
+ * @return       string        formatted number
  */
 function COM_numberFormat($number)
 {
@@ -6839,41 +6713,41 @@ function COM_numberFormat($number)
  */
 function COM_convertDate2Timestamp($date, $time = '')
 {
-    $atoks = array();
-    $btoks = array();
+    $aTokens = array();
+    $bTokens = array();
 
     // Breakup the string using either a space, fwd slash, dash, bkwd slash or
     // colon as a delimiter
-    $atok = strtok($date, ' /-\\:');
-    while ($atok !== false) {
-        $atoks[] = $atok;
-        $atok = strtok(' /-\\:');  // get the next token
+    $aToken = strtok($date, ' /-\\:');
+    while ($aToken !== false) {
+        $aTokens[] = $aToken;
+        $aToken = strtok(' /-\\:');  // get the next token
     }
 
     for ($i = 0; $i < 3; $i++) {
-        if (!isset($atoks[$i]) || !is_numeric($atoks[$i])) {
-            $atoks[$i] = 0;
+        if (!isset($aTokens[$i]) || !is_numeric($aTokens[$i])) {
+            $aTokens[$i] = 0;
         }
     }
 
     if ($time == '') {
-        $timestamp = mktime(0, 0, 0, $atoks[1], $atoks[2], $atoks[0]);
+        $timestamp = mktime(0, 0, 0, $aTokens[1], $aTokens[2], $aTokens[0]);
     } else {
-        $btok = strtok($time, ' /-\\:');
+        $bToken = strtok($time, ' /-\\:');
 
-        while ($btok !== false) {
-            $btoks[] = $btok;
-            $btok = strtok(' /-\\:');
+        while ($bToken !== false) {
+            $bTokens[] = $bToken;
+            $bToken = strtok(' /-\\:');
         }
 
         for ($i = 0; $i < 3; $i++) {
-            if (!isset($btoks[$i]) || !is_numeric($btoks[$i])) {
-                $btoks[$i] = 0;
+            if (!isset($bTokens[$i]) || !is_numeric($bTokens[$i])) {
+                $bTokens[$i] = 0;
             }
         }
 
-        $timestamp = mktime($btoks[0], $btoks[1], $btoks[2],
-            $atoks[1], $atoks[2], $atoks[0]);
+        $timestamp = mktime($bTokens[0], $bTokens[1], $bTokens[2],
+            $aTokens[1], $aTokens[2], $aTokens[0]);
     }
 
     return $timestamp;
@@ -6985,18 +6859,18 @@ function COM_displayMessageAndAbort($msg, $plugin = '', $http_status = 200, $htt
 /**
  * Return full URL of a topic icon
  *
- * @param    string $imageurl (relative) topic icon URL
+ * @param    string $imageUrl (relative) topic icon URL
  * @return   string              Full URL
  */
-function COM_getTopicImageUrl($imageurl)
+function COM_getTopicImageUrl($imageUrl)
 {
     global $_CONF, $_THEME_URL;
 
-    $iconurl = '';
+    $iconUrl = '';
 
-    if (!empty($imageurl)) {
+    if (!empty($imageUrl)) {
         if (isset($_THEME_URL)) {
-            $iconurl = $_THEME_URL . $imageurl;
+            $iconUrl = $_THEME_URL . $imageUrl;
         } else {
             $stdImageLoc = true;
             if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
@@ -7004,17 +6878,16 @@ function COM_getTopicImageUrl($imageurl)
             }
 
             if ($stdImageLoc) {
-                $iconurl = $_CONF['site_url'] . $imageurl;
+                $iconUrl = $_CONF['site_url'] . $imageUrl;
             } else {
-                $t = explode('/', $imageurl);
-                $topicicon = $t[count($t) - 1];
-                $iconurl = $_CONF['site_url']
-                    . '/getimage.php?mode=topics&amp;image=' . $topicicon;
+                $t = explode('/', $imageUrl);
+                $topicIcon = $t[count($t) - 1];
+                $iconUrl = $_CONF['site_url'] . '/getimage.php?mode=topics&amp;image=' . $topicIcon;
             }
         }
     }
 
-    return $iconurl;
+    return $iconUrl;
 }
 
 /**
@@ -7034,7 +6907,7 @@ function COM_createLink($content, $url, $attr = array())
     foreach ($attr as $key => $value) {
         $attr_str .= " $key=\"$value\"";
     }
-    $retval .= "<a $attr_str>$content</a>";
+    $retval .= "<a {$attr_str}>{$content}</a>";
 
     return $retval;
 }
@@ -7053,8 +6926,6 @@ function COM_createImage($url, $alt = '', $attr = array())
 {
     global $_CONF;
 
-    $retval = '';
-
     if (preg_match("/^(https?):/", $url) !== 1) {
         $url = $_CONF['layout_url'] . $url;
     }
@@ -7064,7 +6935,7 @@ function COM_createImage($url, $alt = '', $attr = array())
         $attr_str .= " $key=\"$value\"";
     }
 
-    $retval = "<img $attr_str alt=\"$alt\"" . XHTML . ">";
+    $retval = "<img {$attr_str} alt=\"{$alt}\"" . XHTML . ">";
 
     return $retval;
 }
@@ -7115,40 +6986,40 @@ function COM_getLanguageFromBrowser()
 function COM_getLanguage()
 {
     global $_CONF, $_USER;
-    static $langfile;
+    static $langFile;
 
-    if ($langfile !== null) {
-        return $langfile;
+    if ($langFile !== null) {
+        return $langFile;
     }
 
-    $langfile = '';
+    $langFile = '';
 
     if (!empty($_USER['language'])) {
-        $langfile = $_USER['language'];
+        $langFile = $_USER['language'];
     } elseif (!empty($_COOKIE[$_CONF['cookie_language']])) {
-        $langfile = $_COOKIE[$_CONF['cookie_language']];
+        $langFile = $_COOKIE[$_CONF['cookie_language']];
     } elseif (isset($_CONF['languages'])) {
-        $langfile = COM_getLanguageFromBrowser();
+        $langFile = COM_getLanguageFromBrowser();
     }
 
-    $langfile = COM_sanitizeFilename($langfile);
-    if (!empty($langfile)) {
-        if (is_file($_CONF['path_language'] . $langfile . '.php')) {
-            return $langfile;
+    $langFile = COM_sanitizeFilename($langFile);
+    if (!empty($langFile)) {
+        if (is_file($_CONF['path_language'] . $langFile . '.php')) {
+            return $langFile;
         }
     }
 
     // if all else fails, return the default language
-    $langfile = $_CONF['language'];
+    $langFile = $_CONF['language'];
 
-    return $langfile;
+    return $langFile;
 }
 
 /**
  * Determine the language of the object from the id
  *
  * @param    string $id id of object to retrieve language id from
- * @return   string              language ID, e.g 'en'; empty string on error
+ * @return   string     language ID, e.g 'en'; empty string on error
  */
 function COM_getLanguageIdForObject($id)
 {
@@ -7175,7 +7046,6 @@ function COM_getLanguageIdForObject($id)
     }
 
     return $lang_id;
-
 }
 
 /**
@@ -7185,7 +7055,7 @@ function COM_getLanguageIdForObject($id)
  * used in language-dependent URLs.
  *
  * @param    string $language current language file name (optional)
- * @return   string              language ID, e.g 'en'; empty string on error
+ * @return   string           language ID, e.g 'en'; empty string on error
  */
 function COM_getLanguageId($language = '')
 {
@@ -7268,6 +7138,8 @@ function phpblock_switch_language()
 
     $lang = COM_getLanguage();
     $langId = COM_getLanguageId($lang);
+    $newLang = '';
+    $newLangId = '';
 
     if (count($_CONF['languages']) === 2) {
         foreach ($_CONF['languages'] as $key => $value) {
@@ -7278,8 +7150,7 @@ function phpblock_switch_language()
             }
         }
 
-        $switchUrl = COM_buildUrl($_CONF['site_url'] . '/switchlang.php?lang='
-            . $newLangId);
+        $switchUrl = COM_buildURL($_CONF['site_url'] . '/switchlang.php?lang=' . $newLangId);
         $retval .= COM_createLink($newLang, $switchUrl);
     } else {
         $retval .= '<form name="change" action="' . $_CONF['site_url']
@@ -7337,7 +7208,7 @@ function COM_switchLocaleSettings()
  * Switch the language ID of the object id
  *
  * @param    string $id object id that the language ID is attached to the end
- * @return   string       id that is overwritten with the current language ID
+ * @return   string     id that is overwritten with the current language ID
  */
 function COM_switchLanguageIdForObject($id)
 {
@@ -7364,8 +7235,6 @@ function COM_getLanguageName()
 {
     global $_CONF;
 
-    $retval = '';
-
     $charset = '_' . strtolower(COM_getCharset());
     if (substr($_CONF['language'], -strlen($charset)) == $charset) {
         $retval = substr($_CONF['language'], 0, -strlen($charset));
@@ -7381,37 +7250,37 @@ function COM_getLanguageName()
  *
  * @param    boolean $warning            If true displays default JavaScript recommended warning message
  *                                       If false displays default JavaScript Required message
- * @param    string  $noscript_message   Used instead of default message
+ * @param    string  $noScriptMessage   Used instead of default message
  * @param    string  $link_message       Secondary message that may contain a link
  * @return   string                      noscript html tag with message(s)
  */
-function COM_getNoScript($warning = true, $noscript_message = '', $link_message = '')
+function COM_getNoScript($warning = true, $noScriptMessage = '', $link_message = '')
 {
     global $_CONF, $LANG01;
 
-    $noscript = COM_newTemplate($_CONF['path_layout']);
-    $noscript->set_file(array('noscript' => 'noscript.thtml'));
+    $noScript = COM_newTemplate($_CONF['path_layout']);
+    $noScript->set_file(array('noscript' => 'noscript.thtml'));
 
     if ($warning) {
-        if (empty($noscript_message)) {
-            $noscript_message = $LANG01[136];
+        if (empty($noScriptMessage)) {
+            $noScriptMessage = $LANG01[136];
         }
     } else {
-        if (empty($noscript_message)) {
-            $noscript_message = $LANG01[137];
+        if (empty($noScriptMessage)) {
+            $noScriptMessage = $LANG01[137];
         }
     }
-    $noscript->set_var('lang_nojavascript', $noscript_message);
+    $noScript->set_var('lang_nojavascript', $noScriptMessage);
 
     if (!empty($link_message)) {
-        $noscript->set_var('hide_link', '');
-        $noscript->set_var('no_javascript_return_link', $link_message);
+        $noScript->set_var('hide_link', '');
+        $noScript->set_var('no_javascript_return_link', $link_message);
     } else {
-        $noscript->set_var('hide_link', ' style="display:none;"');
-        $noscript->set_var('no_javascript_return_link', '');
+        $noScript->set_var('hide_link', ' style="display:none;"');
+        $noScript->set_var('no_javascript_return_link', '');
     }
 
-    $retval = $noscript->finish($noscript->parse('output', 'noscript'));
+    $retval = $noScript->finish($noScript->parse('output', 'noscript'));
 
     return $retval;
 }
@@ -7420,7 +7289,7 @@ function COM_getNoScript($warning = true, $noscript_message = '', $link_message 
  * Returns an text/image that will display a tooltip
  * This tooltip is based on an example from http://downloads.sixrevisions.com/css-tooltips/index.html
  *
- * @param    string $hoverover Text or image to display for the user to hover their mouse cursor over.
+ * @param    string $hoverOver Text or image to display for the user to hover their mouse cursor over.
  * @param    string $text      Text for the actual tooltip. Can include HTML.
  * @param    string $link      Link for the tooltip. If passed, then the hoverover text becomes a link.
  * @param    string $title     Text for the tooltip title (if there is one). Can include HTML.
@@ -7428,7 +7297,7 @@ function COM_getNoScript($warning = true, $noscript_message = '', $link_message 
  * @param    string $class     Specify a different tooltip class to use.
  * @return   string              HTML tooltip
  */
-function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $template = 'classic', $class = 'gl-tooltip')
+function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $template = 'classic', $class = 'gl-tooltip')
 {
     global $_CONF, $_IMAGE_TYPE, $_SCRIPTS;
 
@@ -7438,8 +7307,8 @@ function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $t
         $_SCRIPTS->setJavaScriptFile('fix_tooltips', '/javascript/fix_tooltips.js');
     }
 
-    if ($hoverover == '') {
-        $hoverover = '<img alt="?" id="gl-tooltip-icon" src="' . $_CONF['layout_url']
+    if ($hoverOver == '') {
+        $hoverOver = '<img alt="?" id="gl-tooltip-icon" src="' . $_CONF['layout_url']
             . '/images/tooltips/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';
     }
 
@@ -7447,7 +7316,7 @@ function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $t
     $tooltip->set_file(array('tooltip' => $template . '.thtml'));
 
     $tooltip->set_var('class', $class);
-    $tooltip->set_var('hoverover', $hoverover);
+    $tooltip->set_var('hoverover', $hoverOver);
     $tooltip->set_var('text', $text);
     $tooltip->set_var('plaintext', strip_tags($text));
     $tooltip->set_var('title', $title);
@@ -7477,54 +7346,54 @@ function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $t
  * The $filler string is also taken into account but any html tags that are added
  * by this function to close open html tags are not.
  *
- * @param    string $htmltext the text string which contains HTML tags to truncate
- * @param    int    $maxlen   max. number of characters in the truncated string
+ * @param    string $htmlText the text string which contains HTML tags to truncate
+ * @param    int    $maxLen   max. number of characters in the truncated string
  * @param    string $filler   optional filler string, e.g. '...'
- * @param    int    $endchars number of characters to show after the filler
+ * @param    int    $endChars number of characters to show after the filler
  * @return   string              truncated string
  */
-function COM_truncateHTML($htmltext, $maxlen, $filler = '', $endchars = 0)
+function COM_truncateHTML($htmlText, $maxLen, $filler = '', $endChars = 0)
 {
-    $newlen = $maxlen - MBYTE_strlen($filler);
-    $len = MBYTE_strlen($htmltext);
-    if ($len > $maxlen) {
-        $htmltext = MBYTE_substr($htmltext, 0, $newlen - $endchars);
+    $newLen = $maxLen - MBYTE_strlen($filler);
+    $len = MBYTE_strlen($htmlText);
+    if ($len > $maxLen) {
+        $htmlText = MBYTE_substr($htmlText, 0, $newLen - $endChars);
 
         // Strip any mangled tags off the end
-        if (MBYTE_strrpos($htmltext, '<') > MBYTE_strrpos($htmltext, '>')) {
-            $htmltext = MBYTE_substr($htmltext, 0, MBYTE_strrpos($htmltext, '<'));
+        if (MBYTE_strrpos($htmlText, '<') > MBYTE_strrpos($htmlText, '>')) {
+            $htmlText = MBYTE_substr($htmlText, 0, MBYTE_strrpos($htmlText, '<'));
         }
 
-        $htmltext = $htmltext . $filler . MBYTE_substr($htmltext, $len - $endchars, $endchars);
+        $htmlText = $htmlText . $filler . MBYTE_substr($htmlText, $len - $endChars, $endChars);
 
         // put all opened tags into an array
-        preg_match_all("#<([a-z]+)( .*)?(?!/)>#iU", $htmltext, $result);
-        $openedtags = $result[1];
-        $openedtags = array_diff($openedtags, array('img', 'hr', 'br'));
-        $openedtags = array_values($openedtags);
+        preg_match_all("#<([a-z]+)( .*)?(?!/)>#iU", $htmlText, $result);
+        $openedTags = $result[1];
+        $openedTags = array_diff($openedTags, array('img', 'hr', 'br'));
+        $openedTags = array_values($openedTags);
 
         // put all closed tags into an array
-        preg_match_all("#</([a-z]+)>#iU", $htmltext, $result);
-        $closedtags = $result[1];
-        $len_opened = count($openedtags);
+        preg_match_all("#</([a-z]+)>#iU", $htmlText, $result);
+        $closedTags = $result[1];
+        $len_opened = count($openedTags);
 
         // all tags are closed
-        if (count($closedtags) == $len_opened) {
-            return $htmltext;
+        if (count($closedTags) == $len_opened) {
+            return $htmlText;
         }
-        $openedtags = array_reverse($openedtags);
+        $openedTags = array_reverse($openedTags);
 
         // close tags
         for ($i = 0; $i < $len_opened; $i++) {
-            if (!in_array($openedtags[$i], $closedtags)) {
-                $htmltext .= "</" . $openedtags[$i] . ">";
+            if (!in_array($openedTags[$i], $closedTags)) {
+                $htmlText .= "</" . $openedTags[$i] . ">";
             } else {
-                unset($closedtags[array_search($openedtags[$i], $closedtags)]);
+                unset($closedTags[array_search($openedTags[$i], $closedTags)]);
             }
         }
     }
 
-    return $htmltext;
+    return $htmlText;
 }
 
 /**
@@ -7536,26 +7405,26 @@ function COM_truncateHTML($htmltext, $maxlen, $filler = '', $endchars = 0)
  *       $maxlen characters, i.e. the $filler string is taken into account.
  *
  * @param    string $text     the text string to truncate
- * @param    int    $maxlen   max. number of characters in the truncated string
+ * @param    int    $maxLen   max. number of characters in the truncated string
  * @param    string $filler   optional filler string, e.g. '...'
- * @param    int    $endchars number of characters to show after the filler
+ * @param    int    $endChars number of characters to show after the filler
  * @return   string              truncated string
  */
-function COM_truncate($text, $maxlen, $filler = '', $endchars = 0)
+function COM_truncate($text, $maxLen, $filler = '', $endChars = 0)
 {
-    $newlen = $maxlen - MBYTE_strlen($filler);
+    $newLen = $maxLen - MBYTE_strlen($filler);
 
-    if ($newlen <= 0) {
-        $text = MBYTE_substr($text, 0, $maxlen);
+    if ($newLen <= 0) {
+        $text = MBYTE_substr($text, 0, $maxLen);
     }
     $len = MBYTE_strlen($text);
-    if ($len > $maxlen) {
-        $startchars = $newlen - $endchars;
-        if ($startchars < $endchars) {
-            $text = MBYTE_substr($text, 0, $newlen) . $filler;
+    if ($len > $maxLen) {
+        $startChars = $newLen - $endChars;
+        if ($startChars < $endChars) {
+            $text = MBYTE_substr($text, 0, $newLen) . $filler;
         } else {
-            $text = MBYTE_substr($text, 0, $newlen - $endchars) . $filler
-                . MBYTE_substr($text, $len - $endchars, $endchars);
+            $text = MBYTE_substr($text, 0, $newLen - $endChars) . $filler
+                . MBYTE_substr($text, $len - $endChars, $endChars);
         }
     }
 
@@ -7608,21 +7477,21 @@ function COM_handle404($alternate_url = '')
     // Add log stuff
     $url = COM_getCurrentURL();
     if (isset($_USER['uid'])) {
-        $byuser = $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR'];
+        $byUser = $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR'];
     } else {
-        $byuser = 'anon@' . $_SERVER['REMOTE_ADDR'];
+        $byUser = 'anon@' . $_SERVER['REMOTE_ADDR'];
     }
-    $refurl = $_SERVER['HTTP_REFERER'];
+    $refUrl = $_SERVER['HTTP_REFERER'];
     $timestamp = @strftime('%c');
-    $logentry = "404 Error generated by $byuser for url: $url";
-    if (!empty($refurl)) {
-        $logentry .= " - Referring url: $refurl";
+    $logEntry = "404 Error generated by $byUser for url: $url";
+    if (!empty($refUrl)) {
+        $logEntry .= " - Referring url: $refUrl";
     }
-    $logentry = str_replace(array('<?', '?>'), array('(@', '@)'), $logentry);
+    $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
 
     $logfile = $_CONF['path_log'] . '404.log';
     if ($file = fopen($logfile, 'a')) {
-        fputs($file, "$timestamp - $logentry \n");
+        fputs($file, "$timestamp - $logEntry \n");
     }
 
     $display = COM_startBlock($LANG_404[1]);
@@ -7633,8 +7502,7 @@ function COM_handle404($alternate_url = '')
         $display .= $LANG_404[3];
     }
     $display .= COM_endBlock();
-    $display = COM_createHTMLDocument($display,
-        array('pagetitle' => $LANG_404[1]));
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_404[1]));
 
     COM_output($display);
     exit; // Do not want to go any further
@@ -7651,13 +7519,13 @@ function COM_handle404($alternate_url = '')
  * The PHP feature that allows us to do so is documented here:
  * http://uk2.php.net/manual/en/function.set-error-handler.php
  *
- * @param  int    $errno      Error Number.
- * @param  string $errstr     Error Message.
- * @param  string $errfile    The file the error was raised in.
- * @param  int    $errline    The line of the file that the error was raised at.
- * @param  array  $errcontext An array that points to the active symbol table at the point the error occurred.
+ * @param  int    $errNo      Error Number.
+ * @param  string $errStr     Error Message.
+ * @param  string $errFile    The file the error was raised in.
+ * @param  int    $errLine    The line of the file that the error was raised at.
+ * @param  array  $errContext An array that points to the active symbol table at the point the error occurred.
  */
-function COM_handleError($errno, $errstr, $errfile = '', $errline = 0, $errcontext = '')
+function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errContext = array())
 {
     global $_CONF, $_USER, $LANG01;
 
@@ -7712,11 +7580,11 @@ function COM_handleError($errno, $errstr, $errfile = '', $errline = 0, $errconte
             } else {
                 echo '<p>(This text is only displayed to users in the group \'Root\')</p>';
             }
-            echo "<p>$errorTypes[$errno]($errno) - $errstr @ $errfile line $errline</p>";
+            echo "<p>$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine</p>";
 
             if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
                 if ('force' != '' . $_CONF['rootdebug']) {
-                    $errcontext = COM_rootDebugClean($errcontext);
+                    $errContext = COM_rootDebugClean($errContext);
                 } else {
                     echo '<h2 style="color: red">Root Debug is set to "force", this
                     means that passwords and session cookies are exposed in this
@@ -7725,10 +7593,9 @@ function COM_handleError($errno, $errstr, $errfile = '', $errline = 0, $errconte
             }
             if (@ini_get('xdebug.default_enable') == 1) {
                 ob_start();
-                var_dump($errcontext);
-                $errcontext = ob_get_contents();
-                ob_end_clean();
-                echo "$errcontext</body></html>";
+                var_dump($errContext);
+                $errContext = ob_get_clean();
+                echo "$errContext</body></html>";
             } else {
                 $btr = debug_backtrace();
                 if (count($btr) > 0) {
@@ -7761,10 +7628,9 @@ function COM_handleError($errno, $errstr, $errfile = '', $errline = 0, $errconte
                 }
                 echo '<pre>';
                 ob_start();
-                var_dump($errcontext);
-                $errcontext = htmlspecialchars(ob_get_contents());
-                ob_end_clean();
-                echo "$errcontext</pre></body></html>";
+                var_dump($errContext);
+                $errContext = htmlspecialchars(ob_get_clean());
+                echo "$errContext</pre></body></html>";
             }
             exit;
         }
@@ -7773,20 +7639,20 @@ function COM_handleError($errno, $errstr, $errfile = '', $errline = 0, $errconte
     /* If there is a custom error handler, fail over to that, but only
      * if the error wasn't in lib-custom.php
      */
-    if (is_array($_CONF) && !(strstr($errfile, 'lib-custom.php'))) {
+    if (is_array($_CONF) && !(strstr($errFile, 'lib-custom.php'))) {
         if (array_key_exists('path_system', $_CONF)) {
             if (file_exists($_CONF['path_system'] . 'lib-custom.php')) {
                 require_once $_CONF['path_system'] . 'lib-custom.php';
             }
             if (function_exists('CUSTOM_handleError')) {
-                CUSTOM_handleError($errno, $errstr, $errfile, $errline, $errcontext);
+                CUSTOM_handleError($errNo, $errStr, $errFile, $errLine, $errContext);
                 exit;
             }
         }
     }
 
     // if we do not throw the error back to an admin, still log it in the error.log
-    COM_errorLog("$errorTypes[$errno]($errno) - $errstr @ $errfile line $errline", 1);
+    COM_errorLog("$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine", 1);
 
     header('HTTP/1.1 500 Internal Server Error');
     header('Status: 500 Internal Server Error');
@@ -7838,17 +7704,14 @@ function COM_handleError($errno, $errstr, $errfile = '', $errline = 0, $errconte
  *
  * @param  array   $array Array of state info (Recursive array).
  * @param  boolean $blank override (wouldn't that blank out everything?)
- * @return array            Cleaned array
+ * @return array          Cleaned array
  */
 function COM_rootDebugClean($array, $blank = false)
 {
-    $blankField = false;
-
     while (list($key, $value) = each($array)) {
-        $lkey = strtolower($key);
-        if ((strpos($lkey, 'pass') !== false) || (strpos($lkey, 'cookie') !== false) ||
-            (strpos($lkey, '_consumer_key') !== false) ||
-            (strpos($lkey, '_consumer_secret') !== false)
+        if ((stripos($key, 'pass') !== false) || (stripos($key, 'cookie') !== false) ||
+            (stripos($key, '_consumer_key') !== false) ||
+            (stripos($key, '_consumer_secret') !== false)
         ) {
             $blankField = true;
         } else {
@@ -7870,9 +7733,9 @@ function COM_rootDebugClean($array, $blank = false)
  * is the anonymous user.
  *
  * @param  int $uid ID of the user to check, or none for the current user.
- * @return boolean     true if the user is the anonymous user.
+ * @return boolean  true if the user is the anonymous user.
  */
-function COM_isAnonUser($uid = '')
+function COM_isAnonUser($uid = 0)
 {
     global $_USER;
 
@@ -7936,51 +7799,49 @@ function COM_createMetaTags($meta_description, $meta_keywords)
 {
     global $_CONF;
 
-    $headercode = '';
+    $headerCode = '';
 
     if ($_CONF['meta_tags'] > 0) {
         if (is_array($meta_description)) {  // Since GL-2.1.0
             foreach ($meta_description as $name => $content) {
                 $name = COM_escapeMetaTagValue($name);
                 $content = COM_escapeMetaTagValue($content);
-                $headercode .= LB . '<meta name="' . $name . '" content="'
+                $headerCode .= LB . '<meta name="' . $name . '" content="'
                     . $content . '"' . XHTML . '>';
             }
         } else {
             if ($meta_description != '') {
-                $headercode .= LB . '<meta name="description" content="'
+                $headerCode .= LB . '<meta name="description" content="'
                     . COM_escapeMetaTagValue($meta_description)
                     . '"' . XHTML . '>';
             }
 
             if ($meta_keywords != '') {
-                $headercode .= LB . '<meta name="keywords" content="'
+                $headerCode .= LB . '<meta name="keywords" content="'
                     . COM_escapeMetaTagValue($meta_keywords)
                     . '"' . XHTML . '>';
             }
         }
     }
 
-    return $headercode;
+    return $headerCode;
 }
 
 /**
  * Convert wiki-formatted text to (X)HTML
  *
- * @param    string $wikitext wiki-formatted text
+ * @param    string $wikiText wiki-formatted text
  * @return   string              XHTML formatted text
  */
-function COM_renderWikiText($wikitext)
+function COM_renderWikiText($wikiText)
 {
     global $_CONF;
 
     if (!$_CONF['wikitext_editor']) {
-        return $wikitext;
+        return $wikiText;
     }
 
-    require_once $_CONF['path_system'] . 'classes/gltext.class.php';
-
-    return GLText::renderWikiText($wikitext);
+    return GLText::renderWikiText($wikiText);
 }
 
 /**
@@ -7994,7 +7855,6 @@ function COM_setLangIdAndAttribute(&$template)
     global $_CONF, $LANG_ISO639_1;
 
     $langAttr = '';
-    $langId = '';
 
     if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
         $langId = COM_getLanguageId();
@@ -8231,7 +8091,7 @@ function COM_checkInstalled()
 
     // this is the only thing we check for now ...
     if (empty($_CONF) || !isset($_CONF['path']) ||
-        ($_CONF['path'] == '/path/to/Geeklog/')
+        ($_CONF['path'] === '/path/to/Geeklog/')
     ) {
         $not_installed = true;
     }
@@ -8282,12 +8142,10 @@ function COM_checkInstalled()
  *
  * @param    string $root    Path to template root
  * @param    array  $options List of options to pass to constructor
- * @return   object           An ITemplate derved object
+ * @return   Template        An ITemplate derived object
  */
 function COM_newTemplate($root, $options = Array())
 {
-    global $_CONF;
-
     if (function_exists('OVERRIDE_newTemplate')) {
         if (is_string($options)) {
             $options = array('unknowns', $options);
@@ -8420,10 +8278,10 @@ function COM_getLangIso639Code($langName = null)
  * @param   string $custom         location of custom script file relative to
  *                                 public_html directory. Include '/' at beginning
  * @param   string $permissions    comma-separated list of rights which identify the current user as an "Admin"
- * @param   string $myeditor
+ * @param   string $myEditor
  * @return  void
  */
-function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myeditor = '')
+function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor = '')
 {
     global $_CONF, $_USER, $_SCRIPTS;
 
@@ -8435,13 +8293,13 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myeditor
     $js = 'ckeditor.js';
 
     $dir = str_replace($_CONF['path_html'], '', $_CONF['path_editors']);
-    $dir = trim($dir, '/'); // defalt : 'editors'
+    $dir = trim($dir, '/'); // default : 'editors'
 
     if (!empty($_CONF['advanced_editor_name'])) {
         $name = $_CONF['advanced_editor_name'];
     }
-    if (!empty($myeditor)) {
-        $name = $myeditor;
+    if (!empty($myEditor)) {
+        $name = $myEditor;
     }
 
     if (!file_exists($_CONF['path_editors'] . $name . '/functions.php')) {
@@ -8479,10 +8337,13 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myeditor
     }
 
     // Add core JavaScript global variables
-    $script = '<script type="text/javascript">' . LB
-        . 'var geeklogEditorName = "' . $name . '";' . LB
-        . 'var geeklogAllowedHtml = ' . json_encode($html) . ';' . LB
-        . '</script>' . LB;
+    $html = json_encode($html);
+    $script = <<<HTML
+<script type="text/javascript">
+    var geeklogEditorName = "{$name}";
+    var geeklogAllowedHtml = {$html};
+</script>
+HTML;
     $_SCRIPTS->setJavaScript($script);
 
     $function = 'adveditor_init_' . $name;

@@ -29,11 +29,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
-    die('This file can not be used on its own!');
-}
+namespace Geeklog;
 
-class GL_Input
+class Input
 {
     /**
      * @var    boolean    the current value of magic_quotes_gpc
@@ -182,12 +180,12 @@ class GL_Input
      * @param    string          $name            an index of $_SESSION
      * @param    string|array    $defaultValue
      * @return   array|null|string
-     * @throws   Exception
+     * @throws   \Exception
      */
     public function session($name, $defaultValue = null)
     {
         if (session_id() === '') {
-            throw new Exception('Session has not started yet');
+            throw new \Exception('Session has not started yet');
         }
 
         return isset($_SESSION[$name]) ? $this->filter($_SESSION[$name]) : $defaultValue;
