@@ -2135,7 +2135,7 @@ class Installer
                     $filename = substr($_CONF['rdf_file'], $pos + 1);
                     $siteName = DB_escapeString($_CONF['site_name']);
                     $siteSlogan = DB_escapeString($_CONF['site_slogan']);
-                    DB_query("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$siteName}', '{$siteSlogan}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
+                    DB_query("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$siteName}', '{$siteSlogan}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, CURRENT_TIMESTAMP, NULL)");
 
                     // upgrade static pages plugin
                     $spVersion = $this->getStaticPagesVersion();

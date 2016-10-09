@@ -434,7 +434,7 @@ function editblock($bid = '')
     $block_templates->set_var('lang_rdflimit', $LANG21[62]);
     $block_templates->set_var('block_rdflimit', $A['rdflimit']);
     $block_templates->set_var('lang_lastrdfupdate', $LANG21[15]);
-    if ($A['rdfupdated'] == '0000-00-00 00:00:00') {
+    if (empty($A['rdfupdated'])) {
         $block_templates->set_var('block_rdfupdated', '');
     } else {
         $block_templates->set_var('block_rdfupdated', $A['rdfupdated']);
@@ -793,11 +793,11 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         if ($rdfLimit < 0) {
             $rdfLimit = 0;
         }
-        if (!empty ($rdfUrl)) {
+        if (!empty($rdfUrl)) {
             $rdfUrl = DB_escapeString($rdfUrl);
         }
-        if (empty ($rdfUpdated)) {
-            $rdfUpdated = 'NOW()';
+        if (empty($rdfUpdated)) {
+            $rdfUpdated = 'CURRENT_TIMESTAMP';
         }
 
         if ($bid > 0) {
@@ -810,7 +810,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
 
             $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
                 . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl','1970-01-01','$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',CURRENT_TIMESTAMP,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
 
             DB_query($sql);
             $bid = DB_insertId();
@@ -1007,7 +1007,7 @@ if (isset($_POST['blockenabler']) && SEC_checkToken()) {
 }
 
 if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
-    if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
+    if (!isset ($bid) || empty($bid) || ($bid == 0)) {
         COM_errorLog('Attempted to delete block, bid empty or null, value =' . $bid);
         COM_redirect($_CONF['site_admin_url'] . '/block.php');
     } elseif (SEC_checkToken()) {

@@ -42,8 +42,8 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_page_title varchar(128) NOT NULL default '',
   sp_content text NOT NULL,
   sp_hits mediumint(8) unsigned NOT NULL default '0',
-  `created` datetime NOT NULL default '0000-00-00 00:00:00',
-  modified datetime NOT NULL default '0000-00-00 00:00:00',
+  `created` datetime default NULL,
+  modified datetime default NULL,
   sp_format varchar(20) NOT NULL default '',
   sp_onmenu tinyint(1) unsigned NOT NULL default '0',
   sp_label varchar(64) default NULL,
@@ -74,5 +74,3 @@ CREATE TABLE {$_TABLES['staticpage']} (
   KEY staticpage_sp_where (sp_where)
 ) ENGINE=MyISAM
 ";
-
-?>
