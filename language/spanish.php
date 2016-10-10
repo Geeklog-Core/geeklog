@@ -1189,7 +1189,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'La instalación de Plug-in(s) puede dañar tu instalación de Geeklog y, posiblemente, tu sistema. Es importante que sólo instales Plug-in(s) obtenidos de <a href="http://www.geeklog.net" target="_blank">Geeklog</a> ya que han sido comprobados en varios entornos. Es también importante que entiendas que la instalación del Plug-in requiere la ejecución de instrucciones del sistema que pueden traer problemas de seguridad. Aún con esta advertencia, no garantizamos el éxito de la instalación del Plug-in ni nos hacemos responsables por cualquier daño causado durante la instalación (o posterior a la misma). En otras palabras, instala el Plug-in a tu propio riesgo. Las instrucciones particulares de instalación vienen dentro de cada Plug-in.',
+    1 => 'La instalación de Plug-in(s) puede dañar tu instalación de Geeklog y, posiblemente, tu sistema. Es importante que sólo instales Plug-in(s) obtenidos de <a href="https://www.geeklog.net" target="_blank">Geeklog</a> ya que han sido comprobados en varios entornos. Es también importante que entiendas que la instalación del Plug-in requiere la ejecución de instrucciones del sistema que pueden traer problemas de seguridad. Aún con esta advertencia, no garantizamos el éxito de la instalación del Plug-in ni nos hacemos responsables por cualquier daño causado durante la instalación (o posterior a la misma). En otras palabras, instala el Plug-in a tu propio riesgo. Las instrucciones particulares de instalación vienen dentro de cada Plug-in.',
     2 => 'Advertencia de la instalación del Plug-in',
     3 => 'Formulario de instalación del Plug-in',
     4 => 'Archivo del Plug-in',
@@ -1197,7 +1197,7 @@ $LANG32 = array(
     6 => 'Advertencia: ¡El Plug-in ya está instalado!',
     7 => 'El Plug-in que intentas instalar ya existe. Por favor borra el Plug-in antes de reinstalarlo.',
     8 => 'Falló la comprobación de compatibilidad del Plug-in',
-    9 => 'Este Plug-in requiere una versión más nueva de Geeklog. Puedes obtener una copia actualizada de <a href=http://www.geeklog.net>Geeklog</a> o instalar otra versión del Plug-in.',
+    9 => 'Este Plug-in requiere una versión más nueva de Geeklog. Puedes obtener una copia actualizada de <a href="https://www.geeklog.net">Geeklog</a> o instalar otra versión del Plug-in.',
     10 => '<br' . XHTML . '><b>No hay Plug-in(s) instalados.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Para modificar o borrar un Plug-in selecciona el número a la izquierda del mismo. Para acceder a la página de sus creadores seleccione en el título del Plug-in. Para instalar un nuevo Plug-in selecciona \'Nuevo Plug-in\' más arriba.',
     12 => 'no se ha dado un nombre de plugin a la función plugineditor()',

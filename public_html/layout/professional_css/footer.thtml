@@ -19,7 +19,7 @@
           <li class="copyright_notice"><address>{copyright_notice}</address></li>
         </ul>
         <ul class="site_info">
-          <li class="powered_by">{powered_by}&nbsp;<a href="http://www.geeklog.net/">Geeklog</a></li>
+          <li class="powered_by">{powered_by}&nbsp;<a href="https://www.geeklog.net/">Geeklog</a></li>
           <!-- Theme by Fumito Arakawa as Phize (http://phize.net/) -->
           <li class="execution_textandtime">{execution_textandtime}</li>
         </ul>

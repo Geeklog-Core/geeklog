@@ -15,7 +15,7 @@
       <div id="footer-content">
         <div id="copyright">{copyright_msg}</div>
         <div id="trademark">{trademark_msg}</div>
-        <div id="powered_by">{powered_by}&nbsp;<a href="http://www.geeklog.net/">Geeklog</a></div>
+        <div id="powered_by">{powered_by}&nbsp;<a href="https://www.geeklog.net/">Geeklog</a></div>
         <div id="execution_textandtime">{execution_textandtime}</div>
       </div>
     </footer>

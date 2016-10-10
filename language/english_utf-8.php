@@ -1211,7 +1211,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href="http://www.geeklog.net">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.',
+    1 => 'Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href="https://www.geeklog.net">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.',
     2 => 'Plugin Installation Disclaimer',
     3 => 'Plugin Installation Form',
     4 => 'Plugin File',
@@ -1219,7 +1219,7 @@ $LANG32 = array(
     6 => 'Warning: Plugin Already Installed!',
     7 => 'The plugin you are trying to install already exists.  Please delete the plugin before re-installing it',
     8 => 'Plugin Compatibility Check Failed',
-    9 => 'This plugin requires a newer version of Geeklog. Please upgrade your copy of <a href="http://www.geeklog.net">Geeklog</a>.',
+    9 => 'This plugin requires a newer version of Geeklog. Please upgrade your copy of <a href="https://www.geeklog.net">Geeklog</a>.',
     10 => '<br' . XHTML . '><b>There are no plugins currently installed.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'To modify or delete a plugin, click on that plugin\'s edit icon below. This will show the plugin details including the authors\'s website. Both the installed version and the version returned from the plugin\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plugin please consult its documentation.',
     12 => 'no plugin name provided to plugineditor()',

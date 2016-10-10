@@ -1191,7 +1191,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Instalowanie pluginów może spowodować uszkodzenie twojej instalacji Geekloga jak również systemu.  Ważne jest aby instalować pluginy ściągnięte z <a href="http://www.geeklog.net" target="_blank">Geeklog Homepage</a> ponieważ są one szczegółowo przez nas testowane na różnych systemach operacyjnych.  Ważne abyś miał świadomość, że instalacja pluginu wymaga wykonania kilku komend filesystemu, co wiąże się z bezpieczeństwem systemu, zwłaszcza gdy pluginy pochodzą od osób trzecich.  Pomimo tego ostrzeżenia, nie gwarantujemy sukcesu instalacyjnego ani nie możemy być pociągnięci do odpowiedzialności za jakiekolwiek szkody wynikłe z instalacji jakiegokolwiek pluginu.  Instalacja na własne ryzyko.  Instrukcje dotyczące ręcznej instalacji pluginu znajdują się w każdym pakiecie z pluginem.',
+    1 => 'Instalowanie pluginów może spowodować uszkodzenie twojej instalacji Geekloga jak również systemu.  Ważne jest aby instalować pluginy ściągnięte z <a href="https://www.geeklog.net" target="_blank">Geeklog Homepage</a> ponieważ są one szczegółowo przez nas testowane na różnych systemach operacyjnych.  Ważne abyś miał świadomość, że instalacja pluginu wymaga wykonania kilku komend filesystemu, co wiąże się z bezpieczeństwem systemu, zwłaszcza gdy pluginy pochodzą od osób trzecich.  Pomimo tego ostrzeżenia, nie gwarantujemy sukcesu instalacyjnego ani nie możemy być pociągnięci do odpowiedzialności za jakiekolwiek szkody wynikłe z instalacji jakiegokolwiek pluginu.  Instalacja na własne ryzyko.  Instrukcje dotyczące ręcznej instalacji pluginu znajdują się w każdym pakiecie z pluginem.',
     2 => 'Umowa Instalacyjna Pluginów',
     3 => 'Plugin Formularz Instalacyjny',
     4 => 'Plugin Plik',
@@ -1199,7 +1199,7 @@ $LANG32 = array(
     6 => 'Ostrzeżenie: Plugin Już Zainstalowany!',
     7 => 'Plugin, który próbujesz zainstalować już istnieje.  Proszę wykasować istniejący plugin i zainstalować go ponownie',
     8 => 'Sprawdzanie Kompatybilności Pluginu Zakończone Niepowodzeniem',
-    9 => 'Ten plugin wymaga nowszej wersji Geekloga. Albo uaktualnij swoją kopię <a href=http://www.geeklog.net>Geekloga</a> albo ściągnij nowszą wersję tego pluginu.',
+    9 => 'Ten plugin wymaga nowszej wersji Geekloga. Albo uaktualnij swoją kopię <a href="https://www.geeklog.net">Geekloga</a> albo ściągnij nowszą wersję tego pluginu.',
     10 => '<br' . XHTML . '><b>Brak zainstalowanych pluginów.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Aby zmodyfikować lub wykasować plugin, kliknij na nazwę pluginu. Zobaczysz więcej informacji włącznie z adresem strony autora. Widoczne są wersje zainstalowana i wersja kodu. To pomoże stwierdzić czy dany plugin wymaga aktualizacji. Aby zainstalować lub uaktualnić dany plugin proszę zapoznać się z dołączoną do niego instrukcją.',
     12 => 'brak nazwy pluginu dla plugineditor()',

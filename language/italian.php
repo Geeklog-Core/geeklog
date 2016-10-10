@@ -1193,7 +1193,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'L\'Installazione di plug-in potrebbe provocare danni alla tua installazione di Geeklog ed eventualmente anche il tuo sistema. É importante che tu installi solo i plug-in scaricati dalla <a href="http://www.geeklog.net" target="_blank">Homepage di Geeklog</a> in quanto questi plug-in vengono regolarmente testati da noi su numerosi sistemi operativi. E\' altresí importante che tu capisca che il processo di installazione richiede l\'esecuzione di alcuni comandi di sistema che potrebbero intaccare la sicurezza del sistema stesso (in particolare se utilizzi plug-in di terze parti). Anche con questo avvertenza che ti diamo, noi non garantiamo il successo della installazione e non siamo responsabili di eventuali danni causati dall\'installazione di plug-in. In altre parole, installa a tuo rischio!. Per gli amanti del rischio,  indicazioni su come installare manualmente un plug-in sono incluse in ogni pacchetto plug-in.',
+    1 => 'L\'Installazione di plug-in potrebbe provocare danni alla tua installazione di Geeklog ed eventualmente anche il tuo sistema. É importante che tu installi solo i plug-in scaricati dalla <a href="https://www.geeklog.net" target="_blank">Homepage di Geeklog</a> in quanto questi plug-in vengono regolarmente testati da noi su numerosi sistemi operativi. E\' altresí importante che tu capisca che il processo di installazione richiede l\'esecuzione di alcuni comandi di sistema che potrebbero intaccare la sicurezza del sistema stesso (in particolare se utilizzi plug-in di terze parti). Anche con questo avvertenza che ti diamo, noi non garantiamo il successo della installazione e non siamo responsabili di eventuali danni causati dall\'installazione di plug-in. In altre parole, installa a tuo rischio!. Per gli amanti del rischio,  indicazioni su come installare manualmente un plug-in sono incluse in ogni pacchetto plug-in.',
     2 => 'Note di Installazione Plug-in',
     3 => 'Form Installazione Plug-in',
     4 => 'Plug-in File',
@@ -1201,7 +1201,7 @@ $LANG32 = array(
     6 => 'Attenzione: Plug-in giá installato!',
     7 => 'Il plug-in che vuoi installare é gia installato nel sistema. Elimina il plug-in esistente prima di reinstallare la nuova versione',
     8 => 'Controllo Compatibilitá Plug-in Fallita',
-    9 => 'Questo plug-in richiede una nuova versione di Geeklog. Puoi aggiornare la tua copia di <a href=http://www.geeklog.net>Geeklog</a> o prendere una nuova versione del plug-in.',
+    9 => 'Questo plug-in richiede una nuova versione di Geeklog. Puoi aggiornare la tua copia di <a href="https://www.geeklog.net">Geeklog</a> o prendere una nuova versione del plug-in.',
     10 => '<br' . XHTML . '><b>Al momento nessun plug-in risulta installato.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Per modificare o eliminare un plug-in, fai clic sul numero del plug-in dalla lista sottostante. <br' . XHTML . '>Per apprendere su come usare il plug-in, fai clic sul nome del plug-in e sarai redirezionato direttamente al sito del plug-in. <br' . XHTML . '>Per installare o aggiornare un plug-in fai clic su nuovo-plug-in sopra.',
     12 => 'nessun nome di plug-in fornito da plugineditor()',

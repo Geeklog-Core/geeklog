@@ -1301,7 +1301,7 @@ function COM_siteFooter($rightBlock = -1, $custom = '')
     $footer->set_var('lang_copyright', $LANG01[93]);
     $footer->set_var('trademark_msg', $LANG01[94]);
     $footer->set_var('powered_by', $LANG01[95]);
-    $footer->set_var('geeklog_url', 'http://www.geeklog.net/');
+    $footer->set_var('geeklog_url', 'https://www.geeklog.net/');
     $footer->set_var('geeklog_version', VERSION);
     // Now add variables for buttons like e.g. those used by the Yahoo theme
     $footer->set_var('button_home', $LANG_BUTTONS[1]);
@@ -1891,7 +1891,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $footer->set_var('lang_copyright', $LANG01[93]);
     $footer->set_var('trademark_msg', $LANG01[94]);
     $footer->set_var('powered_by', $LANG01[95]);
-    $footer->set_var('geeklog_url', 'http://www.geeklog.net/');
+    $footer->set_var('geeklog_url', 'https://www.geeklog.net/');
     $footer->set_var('geeklog_version', VERSION);
 
     $footer->set_var($template_vars);
@@ -3331,7 +3331,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                     ),
                     array(
                         'condition' => (SEC_inGroup('Root') && ($_CONF['link_versionchecker'] == 1)),
-                        'url'       => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
+                        'url'       => 'https://www.geeklog.net/versionchecker.php?version=' . VERSION,
                         'lang'      => $LANG01[107],
                         'num'       => VERSION,
                         'image'     => $_CONF['layout_url'] . '/images/icons/versioncheck.' . $_IMAGE_TYPE,

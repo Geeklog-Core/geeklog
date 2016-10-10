@@ -36,7 +36,7 @@
 * A collection of static (for now) methods dealing with time zone handling.
 *
 * For the original "Timezone Hack" discussion, see
-* @link http://www.geeklog.net/forum/viewtopic.php?showtopic=21232
+* @link https://www.geeklog.net/forum/viewtopic.php?showtopic=21232
 *
 * @author Dirk Haun, dirk AT haun-online DOT de
 *

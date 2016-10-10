@@ -110,7 +110,7 @@ if (stripos($_SERVER['PHP_SELF'], 'listfactory.class.php') !== false) {
         else
         {
             // Create a link from the title and id
-            $row['title'] = '<a href="http://www.geeklog.net/list_test.php?id='.$row['id'].'">'.$row['title'].'</a>';
+            $row['title'] = '<a href="https://www.geeklog.net/list_test.php?id='.$row['id'].'">'.$row['title'].'</a>';
 
             // Shorten the text and strip any HTML tags
             $row['text'] = substr(strip_tags($row['text']), 0, 20);

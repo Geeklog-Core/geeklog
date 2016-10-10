@@ -200,7 +200,7 @@ function INST_selectMigrationType()
         </div>
     </div>
     <div class="header-logobg-container-inner">
-        <a class="header-logo" href="http://www.geeklog.net/">
+        <a class="header-logo" href="https://www.geeklog.net/">
             <img src="layout/logo.png"  width="151" height="56" alt="Geeklog"' . XHTML . '>
         </a>
         <div class="header-slogan">' . $LANG_INSTALL[2] . ' <br' . XHTML . '><br' . XHTML . '>

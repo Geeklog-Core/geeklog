@@ -1194,7 +1194,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Namestitev vtičnikov (plugins) lahko Geeklogu in tvojemu sistemu povzroči škodo. Pomembno je, da namestiš samo vtičnike, ki jih preneseš z <a href="http://www.geeklog.net" target="_blank">Geeklogove domače strani</a>, saj smo samo te dodobra preizkusili na različnih operacijskih sistemih. Pomembno je razumeti, da je namestitev vtičnikov postopek, ki zahteva izvajanje nekaterih ukazov na ravni datotečnega sistema. Ti lahko vodijo do varnostnih lukenj, posebej če uporabljaš vtičnik s spletnih mest tretjih oseb. Kljub temu opozorilu ne jamčimo za uspeh nobene namestitve niti nismo odgovorni za škodo, povzročeno z namestitvijo vtičnika za Geeklog. Z drugimi besedami – nameščaš na lastno odgovornost. V paket vsakega vtičnika so vključena navodila za njegovo ročno namestitev.',
+    1 => 'Namestitev vtičnikov (plugins) lahko Geeklogu in tvojemu sistemu povzroči škodo. Pomembno je, da namestiš samo vtičnike, ki jih preneseš z <a href="https://www.geeklog.net" target="_blank">Geeklogove domače strani</a>, saj smo samo te dodobra preizkusili na različnih operacijskih sistemih. Pomembno je razumeti, da je namestitev vtičnikov postopek, ki zahteva izvajanje nekaterih ukazov na ravni datotečnega sistema. Ti lahko vodijo do varnostnih lukenj, posebej če uporabljaš vtičnik s spletnih mest tretjih oseb. Kljub temu opozorilu ne jamčimo za uspeh nobene namestitve niti nismo odgovorni za škodo, povzročeno z namestitvijo vtičnika za Geeklog. Z drugimi besedami – nameščaš na lastno odgovornost. V paket vsakega vtičnika so vključena navodila za njegovo ročno namestitev.',
     2 => 'Zavrnitev namestitve vtičnika',
     3 => 'Obrazec za namestitev vtičnika',
     4 => 'Datoteka vtičnika',
@@ -1202,7 +1202,7 @@ $LANG32 = array(
     6 => 'Opozorilo: Vtičnik je že nameščen.',
     7 => 'Vtičnik, ki ga skušaš namestiti, je že nameščen. Pred ponovno namestitvijo prosim izbriši stari vtičnik.',
     8 => 'Test združljivost vtičnika ni uspel',
-    9 => 'Ta vtičnik zahteva novejšo verzijo Geekloga. Namesti novo različico <a href="http://www.geeklog.net">Geekloga</a> ali najdi novejšo različico vtičnika.',
+    9 => 'Ta vtičnik zahteva novejšo verzijo Geekloga. Namesti novo različico <a href="https://www.geeklog.net">Geekloga</a> ali najdi novejšo različico vtičnika.',
     10 => '<br' . XHTML . '><b>Trenutno ni nameščenih nobenih vtičnikov.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Za spremembo ali izbris vtičnika klikni njegovo ikono za urejanje spodaj. Prikazale se bodo podrobnosti o vtičniku, vključno z avtorjevo spletno stranjo. Prikazani sta nameščena in iz vtičnikove kode vrnjena različica. Tako bo lažje vedeti, ali je treba vtičnik nadgraditi ali ne. Za namestitev ali nadgradnjo vtičnika poglej v njegovo dokumentacijo.',
     12 => 'nobeno ime vtičnika ni bilo poslano v urejevalnik vtičnikov ()',

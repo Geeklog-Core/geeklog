@@ -1191,7 +1191,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Die installasie van proppe kan moontlik skade aan u Geeklog installasie verrig en dalk selfs aan u stelsel.  Dit is daarom belangrik dat u slegs proppe installeer wat afgelaai is vanaf die <a href="http://www.geeklog.net">Geeklog Tuisblad</a> aangesien ons alle proppe wat aaan ons gestuur word deeglik toets op \'n verkseidenheid bedryfstelsels.  Dit is belangrik dat u daarop let dat die prop installasieproses die uitvoer van \'n l&ecirc;erstelsel bevele vereis wat kan aanleiding gee tot sekuriteitsprobleme veral as u proppe vanaf derdeparty werwe gebruik.  Selfs met die waarskuwing kan ons nie die sukses aldan mislukking van enige installasie waarborg nie en aanvaar ons nie verantwoordelikheid vir skade wat veroorsaak word deur die installasie van \'n Geeklog prop nie.  Met ander woorde, u installeer op eie verantwoordelikheid.  Vir die versigtiges is aanwysings ingesluit oor hoe om \'n prop handmatig te installeer ook by elke proppakket ingesluit.',
+    1 => 'Die installasie van proppe kan moontlik skade aan u Geeklog installasie verrig en dalk selfs aan u stelsel.  Dit is daarom belangrik dat u slegs proppe installeer wat afgelaai is vanaf die <a href="https://www.geeklog.net">Geeklog Tuisblad</a> aangesien ons alle proppe wat aaan ons gestuur word deeglik toets op \'n verkseidenheid bedryfstelsels.  Dit is belangrik dat u daarop let dat die prop installasieproses die uitvoer van \'n l&ecirc;erstelsel bevele vereis wat kan aanleiding gee tot sekuriteitsprobleme veral as u proppe vanaf derdeparty werwe gebruik.  Selfs met die waarskuwing kan ons nie die sukses aldan mislukking van enige installasie waarborg nie en aanvaar ons nie verantwoordelikheid vir skade wat veroorsaak word deur die installasie van \'n Geeklog prop nie.  Met ander woorde, u installeer op eie verantwoordelikheid.  Vir die versigtiges is aanwysings ingesluit oor hoe om \'n prop handmatig te installeer ook by elke proppakket ingesluit.',
     2 => 'Prop Installasie Vrywaring',
     3 => 'Prop Installasie Vorm',
     4 => 'Propl&ecirc;er',
@@ -1199,7 +1199,7 @@ $LANG32 = array(
     6 => 'Waarskuwing: Prop reeds ge&iuml;nstalleer!',
     7 => 'Die prop wat u probeer installeer bestaan reeds.  Verwyder asseblief die prop alvorens u dit herinstalleer',
     8 => 'Prop Versoenbaarheidstoets het Misluk',
-    9 => 'Hierdie prop vereis \'n nuwer weergawe van Geeklog. Gradeer of u kopie van <a href="http://www.geeklog.net">Geeklog</a> op of kry \'n nuwer weergawe van die prop.',
+    9 => 'Hierdie prop vereis \'n nuwer weergawe van Geeklog. Gradeer of u kopie van <a href="https://www.geeklog.net">Geeklog</a> op of kry \'n nuwer weergawe van die prop.',
     10 => '<br' . XHTML . '><b>Daar is tans geen proppe ge&iuml;nstalleer nie.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Om \'n prop te wysig of te verwyder,  kliek op daardie prop se ikoon hieronder. Dit sal die prop se besonderhede vertoon, insluitend die samesteller se webwerf.  Beide die ge&iuml;nstalleerde weergawe en die weergawe wat vanaf die prop se eie kode teruggestuur is, word vertoon.  Dit sal u in staat stel om vas te stel of die prop opgegradeer moet word.  Vir aanwysings oor hoe om \'n prop te installeer of op te gradeer raadpleeg daardie prop se dokumentasie.',
     12 => 'geen propnaam is aan plugineditor() verskaf nie',

@@ -7,7 +7,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VA
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Syndication Admin', 'Can create and modify web feeds for the site',1) ";
 
 // Calendar plugin
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.0', '1.4.1', 1, 'http://www.geeklog.net/')";
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.0', '1.4.1', 1, 'https://www.geeklog.net/')";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'calendar.edit', ft_gl_core = '0' WHERE ft_name = 'event.edit'";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'calendar.moderate', ft_gl_core = '0' WHERE ft_name = 'event.moderate'";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'calendar.submit', ft_gl_core = '0' WHERE ft_name = 'event.submit'";

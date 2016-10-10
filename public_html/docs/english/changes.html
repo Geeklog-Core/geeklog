@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<p><a href="http://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
+<p><a href="https://www.geeklog.net/" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog" width="243" height="90" /></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Changes</div>
 
 <h1><a name="changes">Changes</a></h1>
@@ -165,7 +165,7 @@ or later. We will provide legacy PHP 4 support for <a
 href="#changes1.7.2">Geeklog 1.7.2</a> for a limited time, but would strongly
 suggest that you switch to PHP 5.2 or later as soon as possible.</p>
 
-<p>For details, please see the <a href="http://www.geeklog.net/article.php/end-of-php4-support">announcement</a> on the Geeklog homepage.</p>
+<p>For details, please see the <a href="https://www.geeklog.net/article.php/end-of-php4-support">announcement</a> on the Geeklog homepage.</p>
 
 <h3>New Features and Improvements</h3>
 
@@ -191,7 +191,7 @@ suggest that you switch to PHP 5.2 or later as soon as possible.</p>
 <p><strong>Note:</strong> Geeklog 1.7.2 is the last Geeklog version to work on
 PHP 4. We will be providing security fixes, if required, for this version until
 2012. New features will only be added to Geeklog 1.8.0 and later versions,
-which will require at least PHP 5.2.0 to run. Please see <a href="http://www.geeklog.net/article.php/end-of-php4-support">the announcement</a> on geeklog.net
+which will require at least PHP 5.2.0 to run. Please see <a href="https://www.geeklog.net/article.php/end-of-php4-support">the announcement</a> on geeklog.net
 for details.</p>
 
 <h3>Bugfixes</h3>
@@ -316,7 +316,7 @@ originally reported by Bookoo of the Nine Situations Group.</p>
         <li>"Important" cookies (like the session cookies) are now created with
             the HttpOnly flag set. This will help avoid some XSS attacks,
             provided your browser supports this flag.</li>
-        <li>Template errors will now trigger the <a href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=65">standard error handler</a> instead of
+        <li>Template errors will now trigger the <a href="https://www.geeklog.net/faqman/index.php?op=view&amp;t=65">standard error handler</a> instead of
             exposing the template path.</li>
         <li>Fixed inclusion protection for some of the Spam-X class files.</li>
     </ul></li>
@@ -502,7 +502,7 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
 
 <ul>
 <li>The upload script for FCKeditor could be <a
-    href="http://www.geeklog.net/article.php/file-uploads">called directly</a>
+    href="https://www.geeklog.net/article.php/file-uploads">called directly</a>
     to upload various media files (but not executable scripts), as reported
     by t0pP8uZz.</li>
 <li>The protection in various include files against direct execution did not
@@ -610,8 +610,8 @@ the 2007 Google Summer of Code:</p>
 <h3>Security</h3>
 
 <ul>
-<li>Geeklog now includes protection against <a href="http://www.geeklog.net/article.php/csrf">cross-site request forgery</a> attacks.</li>
-<li>Lukasz Pilorz reported <a href="http://www.geeklog.net/article.php/kses">security issues in kses</a>, the HTML filter we're using in Geeklog.</li>
+<li>Geeklog now includes protection against <a href="https://www.geeklog.net/article.php/csrf">cross-site request forgery</a> attacks.</li>
+<li>Lukasz Pilorz reported <a href="https://www.geeklog.net/article.php/kses">security issues in kses</a>, the HTML filter we're using in Geeklog.</li>
 </ul>
 
 
@@ -655,7 +655,7 @@ release.</p>
 
 <h3>Spam Protection</h3>
 
-<p>With this release we are finally removing support for the <a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">discontinued</a> MT-Blacklist. In its place, we are now using a system called Spam Link Verification (SLV) run by Russ Jones at <a href="http://www.linksleeve.org/">www.linksleeve.org</a>. SLV could be described as a community-driven, automatically updated blacklist. See the documentation of the <a href="spamx.html" rel="nofollow">Spam-X plugin</a> for details.</p>
+<p>With this release we are finally removing support for the <a href="https://www.geeklog.net/article.php/mt-blacklist-discontinued">discontinued</a> MT-Blacklist. In its place, we are now using a system called Spam Link Verification (SLV) run by Russ Jones at <a href="http://www.linksleeve.org/">www.linksleeve.org</a>. SLV could be described as a community-driven, automatically updated blacklist. See the documentation of the <a href="spamx.html" rel="nofollow">Spam-X plugin</a> for details.</p>
 
 
 <h2><a name="changes140sr6">Geeklog 1.4.0sr6</a></h2>
@@ -686,14 +686,14 @@ introduced in Geeklog 1.4.0sr5.</p>
     execute malicious code from a remote server.
     <br /><br />
     More information: <a
-    href="http://www.geeklog.net/article.php/so-called-exploit">So-called
+    href="https://www.geeklog.net/article.php/so-called-exploit">So-called
     Geeklog "exploit" posted</a>
     <br /><br />
     In this release, we've added the missing execution prevention for all files
     outside of public_html. We would still, however, suggest that you fix your
     Geeklog install if the files outside of public_html are accessible from a
     URL (see our <a
-    href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=56">FAQ</a> for
+    href="https://www.geeklog.net/faqman/index.php?op=view&amp;t=56">FAQ</a> for
     details).
 </li>
 <li>The "mcpuk" file manager that we've integrated into FCKeditor allowed the
@@ -701,7 +701,7 @@ introduced in Geeklog 1.4.0sr5.</p>
     config.php). Depending on your webserver's configuration, it was then
     possible to execute that uploaded code.
     <br /><br />
-    More information: <a href="http://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">Exploit for FCKeditor's mcpuk file manager</a>
+    More information: <a href="https://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">Exploit for FCKeditor's mcpuk file manager</a>
     <br /><br />
     The file manager has been removed from this release. You will therefore no
     longer be able to upload files, e.g. images, through FCKeditor. Future
@@ -711,7 +711,7 @@ introduced in Geeklog 1.4.0sr5.</p>
 </ul>
 
 <p>Note: This release also includes the <a
-href="http://www.geeklog.net/article.php/fighting-trackback-spam">updated
+href="https://www.geeklog.net/article.php/fighting-trackback-spam">updated
 lib-trackback.php</a> for better protection against Trackback spam.</p>
 
 
@@ -818,11 +818,11 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
 
 <p>We have posted a series of stories on the Geeklog homepage that highlight and explain some of the new features:</p>
 <ul>
-<li><a href="http://www.geeklog.net/article.php/advanced-editor">Geeklog's Advanced Editor</a></li>
-<li><a href="http://www.geeklog.net/article.php/remote-authentication">Remote Authentication</a></li>
-<li><a href="http://www.geeklog.net/article.php/trackback-pingback">Trackback and Pingback</a></li>
-<li><a href="http://www.geeklog.net/article.php/ping">Sending a Ping</a></li>
-<li><a href="http://www.geeklog.net/article.php/comment-plugin-api">New Comment Plugin API</a></li>
+<li><a href="https://www.geeklog.net/article.php/advanced-editor">Geeklog's Advanced Editor</a></li>
+<li><a href="https://www.geeklog.net/article.php/remote-authentication">Remote Authentication</a></li>
+<li><a href="https://www.geeklog.net/article.php/trackback-pingback">Trackback and Pingback</a></li>
+<li><a href="https://www.geeklog.net/article.php/ping">Sending a Ping</a></li>
+<li><a href="https://www.geeklog.net/article.php/comment-plugin-api">New Comment Plugin API</a></li>
 </ul>
 
 
@@ -910,11 +910,11 @@ will have to wait for the 1.3.12 release).</p>
 <li>Spam checks are now done for comments, story, link, and event submissions,
     the message sent with the "email story to a friend" option, and for the
     contents of the user profile.</li>
-<li><a href="http://www.geeklog.net/article.php/spam-x-1.0.2"
+<li><a href="https://www.geeklog.net/article.php/spam-x-1.0.2"
     rel="nofollow">Spam-X plugin 1.0.2</a> included.</li>
 </ul>
 
-<p>Please note that MT-Blacklist (used by Spam-X) has recently been <a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">discontinued</a>. The
+<p>Please note that MT-Blacklist (used by Spam-X) has recently been <a href="https://www.geeklog.net/article.php/mt-blacklist-discontinued">discontinued</a>. The
 Spam-X plugin as included in this release is configured to get the last version
 of the blacklist from geeklog.net, but there will be no more updates.</p>
 
@@ -1037,7 +1037,7 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
     registering with your site is now fully customizable by providing the
     text in a text file (/path/to/geeklog/data/welcome_email.txt).</li>
 <li>Timezone hack: The popular "<a
-    href="http://www.geeklog.net/forum/viewtopic.php?showtopic=40196">timezone
+    href="https://www.geeklog.net/forum/viewtopic.php?showtopic=40196">timezone
     hack</a>" is now included. It lets you set the site's timezone for when
     your server is located in another timezone.</li>
 </ul>
@@ -1224,7 +1224,7 @@ the editable story IDs and the story archive options)!</p>
     <code>$_CONF['path_images']</code> to point to a directory outside of your
     webtree where article images and user profile pictures will be saved.</li>
 <li>Geeklog now supports URL rewriting for story URLs, i.e. you can have URLs
-    like <span class="tt">http://www.geeklog.net/article.php/20031229225326631</span> which
+    like <span class="tt">https://www.geeklog.net/article.php/20031229225326631</span> which
     are known to be picked up by Google.</li>
 <li>Plugins can add their own section to Geeklog's What's New block.</li>
 <li>All URL fields can now hold up to 255 characters (requires theme updates).</li>
@@ -1551,7 +1551,7 @@ All users are strongly recommended to upgrade to this version.</p>
 <li>The default for the daily digest is now back to "off", i.e. new users will not receive it automatically. To enable the daily digest for new users again, set $_CONF['emailstoriesperdefault'] = 1 in config.php.</li>
 </ul>
 
-<p>Documentation and hard-coded links (version check, link to Geeklog in a site's footer) have been updated to point to <a href="http://www.geeklog.net/">www.geeklog.net</a>.</p>
+<p>Documentation and hard-coded links (version check, link to Geeklog in a site's footer) have been updated to point to <a href="https://www.geeklog.net/">www.geeklog.net</a>.</p>
 
 
 <h2><a name="changes137">Geeklog 1.3.7</a></h2>

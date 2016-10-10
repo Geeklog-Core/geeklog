@@ -2144,7 +2144,7 @@ class config
                             $url = $baseUrl . '/docs/english/config.html';
                         }
                     } else {
-                        $url = 'http://www.geeklog.net/docs/english/config.html';
+                        $url = 'https://www.geeklog.net/docs/english/config.html';
                     }
                     $docUrl['Core'] = $url;
                 } else { // plugin

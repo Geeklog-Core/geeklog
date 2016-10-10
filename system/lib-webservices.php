@@ -45,7 +45,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-webservices.php') !== false) {
 define('WS_ATOM_NS', 'http://www.w3.org/2005/Atom');
 define('WS_APP_NS',  'http://www.w3.org/2007/app');
 define('WS_APP_NS2', 'http://purl.org/atom/app#');
-define('WS_EXTN_NS', 'http://www.geeklog.net/xmlns/app/gl');
+define('WS_EXTN_NS', 'https://www.geeklog.net/xmlns/app/gl');
 
 $WS_PLUGIN    = '';
 $WS_INTROSPECTION = false;

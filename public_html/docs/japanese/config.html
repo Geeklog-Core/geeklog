@@ -772,7 +772,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_user_login_method_3rdparty">ログイン方法[3rdparty](user_login_method_3rdparty)</a></td>
   <td valign="top"><code>いいえ</code></td>
   <td valign="top">「はい」にすると、外部サービスに既にアカウントを持っているユーザーがそのアカウント使ってGeeklogにログインできるようになります。現在サポートされているのは、LDAPとLiveJournalです。<br />
-    特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<span class="tt">system/classes/authentication</span>に必要です。したがって、LDAPを用いたログインは許可するがLiveJournalを用いたログインは禁止したいという場合、単に不要なサービスの認証クラスを削除するだけでよいのです。詳細は、<a href="http://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
+    特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<span class="tt">system/classes/authentication</span>に必要です。したがって、LDAPを用いたログインは許可するがLiveJournalを用いたログインは禁止したいという場合、単に不要なサービスの認証クラスを削除するだけでよいのです。詳細は、<a href="https://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">ログイン方法[oauth](user_login_method_oauth)</a></td>
   <td valign="top"><code>いいえ</code></td>
@@ -1256,7 +1256,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_language">言語(language)</a></td>
   <td valign="top">english</td>
-  <td valign="top">言語ファイル名を指定します。追加の言語ファイルは<a href="http://www.geeklog.net/">http://www.geeklog.net</a>でダウンロードできます。言語ファイルを翻訳した場合は送ってください。下記の<a href="#Localization">ローカリゼーション</a>も参照してください。</td></tr>
+  <td valign="top">言語ファイル名を指定します。追加の言語ファイルは<a href="https://www.geeklog.net/">https://www.geeklog.net</a>でダウンロードできます。言語ファイルを翻訳した場合は送ってください。下記の<a href="#Localization">ローカリゼーション</a>も参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_language_files">言語ファイル[多言語モード](language_files)</a></td>
   <td valign="top"><em>(無効)</em></td>
@@ -1322,7 +1322,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_timezone">タイムゾーン(timezone)</a></td>
   <td valign="top"><em>(無効)</em></td>
-  <td valign="top">サーバーが異なるタイムゾーンに配置されている場合、時刻が正しく表示されるようにローカルのタイムゾーンを設定します。この設定は、<a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=21232">タイムゾーンハック(timezone hack)</a>という名前で知られており、サーバーによっては機能しない場合があります。</td></tr>
+  <td valign="top">サーバーが異なるタイムゾーンに配置されている場合、時刻が正しく表示されるようにローカルのタイムゾーンを設定します。この設定は、<a href="https://www.geeklog.net/forum/viewtopic.php?showtopic=21232">タイムゾーンハック(timezone hack)</a>という名前で知られており、サーバーによっては機能しない場合があります。</td></tr>
 </table>
 
 
@@ -1418,7 +1418,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_disable_autolinks">自動タグを無効にする(disable_autolinks)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、<a
-    href="http://www.geeklog.net/article.php/autolinks">自動タグ</a>、
+    href="https://www.geeklog.net/article.php/autolinks">自動タグ</a>、
     つまり、([story:]といった)角括弧による特殊タグ形式の自動タグがすべて無効になります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_clickable_links">URLをクリッカブルにする(clickable_links)</a></td>
@@ -1820,9 +1820,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 
 <p>Geeklogには、単純でありながら役に立つURLリライト機能が含まれており、クローラーに適した(つまり、検索エンジンのインデックス作成用ボットがサイトを訪問しやすくなる)URLを出力できます。この機能は、記事・静的ページ・記事一覧・リンクプラグインのURLでサポートされています。</p>
 <p>URL書き換えにより、たとえば</p>
-<p style="margin-left:4em;"><span class="tt">http://www.geeklog.net/article.php?story=20021022234959146</span></p>
+<p style="margin-left:4em;"><span class="tt">https://www.geeklog.net/article.php?story=20021022234959146</span></p>
 <p>というURLは、</p>
-<p style="margin-left:4em;"><span class="tt">http://www.geeklog.net/article.php/20021022234959146</span></p>
+<p style="margin-left:4em;"><span class="tt">https://www.geeklog.net/article.php/20021022234959146</span></p>
 <p>となります。1番目の形式のURLを解釈する検索エンジンもありますが、Googleは2番目の形式を好み、1番目の形式を無視するようです。(訳注)この記述は現在では当てはまりません。</p>
 <p><strong>注意:</strong>この機能はすべてのWebサーバーで機能するとは限りません。Apache(全バージョン)では機能しますが、<acronym title="Internt Information Service">IIS</acronym>(の少なくとも一部のバージョン)では<em>動作しない</em> ことが知られています。サイトを公開する前に検証してください。</p>
 

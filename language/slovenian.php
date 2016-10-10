@@ -1194,7 +1194,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Namestitev vtiènikov (plugins) lahko Geeklogu in tvojemu sistemu povzroèi škodo. Pomembno je, da namestiš samo vtiènike, ki jih preneseš z <a href="http://www.geeklog.net" target="_blank">Geeklogove domaèe strani</a>, saj smo samo te dodobra preizkusili na razliènih operacijskih sistemih. Pomembno je razumeti, da je namestitev vtiènikov postopek, ki zahteva izvajanje nekaterih ukazov na ravni datoteènega sistema. Ti lahko vodijo do varnostnih lukenj, posebej èe uporabljaš vtiènik s spletnih mest tretjih oseb. Kljub temu opozorilu ne jamèimo za uspeh nobene namestitve niti nismo odgovorni za škodo, povzroèeno z namestitvijo vtiènika za Geeklog. Z drugimi besedami – namešèaš na lastno odgovornost. V paket vsakega vtiènika so vkljuèena navodila za njegovo roèno namestitev.',
+    1 => 'Namestitev vtiènikov (plugins) lahko Geeklogu in tvojemu sistemu povzroèi škodo. Pomembno je, da namestiš samo vtiènike, ki jih preneseš z <a href="https://www.geeklog.net" target="_blank">Geeklogove domaèe strani</a>, saj smo samo te dodobra preizkusili na razliènih operacijskih sistemih. Pomembno je razumeti, da je namestitev vtiènikov postopek, ki zahteva izvajanje nekaterih ukazov na ravni datoteènega sistema. Ti lahko vodijo do varnostnih lukenj, posebej èe uporabljaš vtiènik s spletnih mest tretjih oseb. Kljub temu opozorilu ne jamèimo za uspeh nobene namestitve niti nismo odgovorni za škodo, povzroèeno z namestitvijo vtiènika za Geeklog. Z drugimi besedami – namešèaš na lastno odgovornost. V paket vsakega vtiènika so vkljuèena navodila za njegovo roèno namestitev.',
     2 => 'Zavrnitev namestitve vtiènika',
     3 => 'Obrazec za namestitev vtiènika',
     4 => 'Datoteka vtiènika',
@@ -1202,7 +1202,7 @@ $LANG32 = array(
     6 => 'Opozorilo: Vtiènik je že namešèen.',
     7 => 'Vtiènik, ki ga skušaš namestiti, je že namešèen. Pred ponovno namestitvijo prosim izbriši stari vtiènik.',
     8 => 'Test združljivost vtiènika ni uspel',
-    9 => 'Ta vtiènik zahteva novejšo verzijo Geekloga. Namesti novo razlièico <a href="http://www.geeklog.net">Geekloga</a> ali najdi novejšo razlièico vtiènika.',
+    9 => 'Ta vtiènik zahteva novejšo verzijo Geekloga. Namesti novo razlièico <a href="https://www.geeklog.net">Geekloga</a> ali najdi novejšo razlièico vtiènika.',
     10 => '<br' . XHTML . '><b>Trenutno ni namešèenih nobenih vtiènikov.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Za spremembo ali izbris vtiènika klikni njegovo ikono za urejanje spodaj. Prikazale se bodo podrobnosti o vtièniku, vkljuèno z avtorjevo spletno stranjo. Prikazani sta namešèena in iz vtiènikove kode vrnjena razlièica. Tako bo lažje vedeti, ali je treba vtiènik nadgraditi ali ne. Za namestitev ali nadgradnjo vtiènika poglej v njegovo dokumentacijo.',
     12 => 'nobeno ime vtiènika ni bilo poslano v urejevalnik vtiènikov ()',

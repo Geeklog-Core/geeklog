@@ -1192,7 +1192,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Pluginate installeerimine võib kahjustada sinu Geeklogi installatsiooni ja lisaks kahjustada ka sinu süsteemi. On oluline, et sa installeeriksid vaid <a href="http://www.geeklog.net">Geeklogi kodulehelt</a> laetud pluginaid, sest me kontrollime hoolikalt meie lehele laetud pluginaid erinevates operatsioonisüsteemides. On oluline mõista, et plugina installeerimine nõuab mitmete süsteemikäskude kasutamist, mis võib kaasa tuua turvalisusprobleeme, eriti siis, kui sa kasutad kolmandatelt lehtedelt laetud pluginaid. Sellest hoiatusest hoolimata ei taga me plugina installeerimise edukust ega vastuta selle installeerimise tagajärjena põhjustatud kahju eest. Teiste sõnadega - installeeri oma vastutusel. Lisaks on iga plugina paketi juures juhend, kuidas installeerida plugin käsitsi.',
+    1 => 'Pluginate installeerimine võib kahjustada sinu Geeklogi installatsiooni ja lisaks kahjustada ka sinu süsteemi. On oluline, et sa installeeriksid vaid <a href="https://www.geeklog.net">Geeklogi kodulehelt</a> laetud pluginaid, sest me kontrollime hoolikalt meie lehele laetud pluginaid erinevates operatsioonisüsteemides. On oluline mõista, et plugina installeerimine nõuab mitmete süsteemikäskude kasutamist, mis võib kaasa tuua turvalisusprobleeme, eriti siis, kui sa kasutad kolmandatelt lehtedelt laetud pluginaid. Sellest hoiatusest hoolimata ei taga me plugina installeerimise edukust ega vastuta selle installeerimise tagajärjena põhjustatud kahju eest. Teiste sõnadega - installeeri oma vastutusel. Lisaks on iga plugina paketi juures juhend, kuidas installeerida plugin käsitsi.',
     2 => 'Plug-ina installeerimise disklaimer',
     3 => 'Plugina installeerimisvorm',
     4 => 'Plugina fail',
@@ -1200,7 +1200,7 @@ $LANG32 = array(
     6 => 'Hoiatus, plugin on juba installeeritud!',
     7 => 'Plugin, mida sa soovid installeerida, on juba installeeritud. Palun kustuta see plugin enne taasinstalleerimist.',
     8 => 'Plugina sobivuse kontroll  ebaõnnestus',
-    9 => 'See plugin vajab uuemat Geeklogi versiooni. Kas uuenda <a href="http://www.geeklog.net">Geeklog</a> või hangi plugina sobiv versioon.',
+    9 => 'See plugin vajab uuemat Geeklogi versiooni. Kas uuenda <a href="https://www.geeklog.net">Geeklog</a> või hangi plugina sobiv versioon.',
     10 => "<br" . XHTML . "><b>Hetkel pole installeeritud ühtegi pluginat.</b>\n    <br" . XHTML . "><br" . XHTML . ">",
     11 => 'Plugina muutmiseks või kustutamiseks klõpsa allpool selle nimel. Sulle näidatakse plugina kohta täpsemat infot koos autori veebilehe aadressiga. Näidatakse nii installeeritud versiooni numbrit kui ka plugina koodist saadud plugina versioon. Selle põhjal saad otsustada, kas plugin vajab uuendamist või mitte. Plugina installeerimise või uuendamise kohta loe täpsemalt plugina dokumentatsioonist.',
     12 => 'pluginitor () ei saanud plugina nime',

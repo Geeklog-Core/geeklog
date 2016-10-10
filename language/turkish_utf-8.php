@@ -1191,7 +1191,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Sisteme eklenti (plug-in) yükleyerek Geeklog\'un çalýþmasýný ve belki sisteminizi bozabilirsiniz. Sadece <a href="http://www.geeklog.net" target="_blank">Geeklog Ana Sayfasý</a>\'ndan yüklediðiniz eklentileri yüklemeniz tavsiye edilir, çünkü bize ulaþan tüm eklentileri çeþitli iþletim sistemleriyle ayrýntýlý testlere sokuyoruz. Özellikle üçüncü firmalardan yüklediðiniz eklentilerin yüklenirken sisteminize zarar verebilecek programlar çalýþtýrabileceðini ve bunlarýn güvenlik açýklarýna neden olabileceðini anlamanýz önemlidir. Bu uyarýya raðmen, biz bu eklentinin yüklenmesinin baþarýyla tamamlanacaðýný garanti etmiyoruz, ve sisteminizde doðacak herhangi bir hasardan dolayý sorumluluk kabul etmiyoruz. Baþka bir deyiþle eklentiyi yüklerken doðacak tüm riskler size aittir.  Ayrýntýlarý öðrenmek isteyenler için her eklenti paketinde yüklemenin el ile yapýlabilmesi için ayrýntýlar ve adýmlar mevcuttur.',
+    1 => 'Sisteme eklenti (plug-in) yükleyerek Geeklog\'un çalýþmasýný ve belki sisteminizi bozabilirsiniz. Sadece <a href="https://www.geeklog.net" target="_blank">Geeklog Ana Sayfasý</a>\'ndan yüklediðiniz eklentileri yüklemeniz tavsiye edilir, çünkü bize ulaþan tüm eklentileri çeþitli iþletim sistemleriyle ayrýntýlý testlere sokuyoruz. Özellikle üçüncü firmalardan yüklediðiniz eklentilerin yüklenirken sisteminize zarar verebilecek programlar çalýþtýrabileceðini ve bunlarýn güvenlik açýklarýna neden olabileceðini anlamanýz önemlidir. Bu uyarýya raðmen, biz bu eklentinin yüklenmesinin baþarýyla tamamlanacaðýný garanti etmiyoruz, ve sisteminizde doðacak herhangi bir hasardan dolayý sorumluluk kabul etmiyoruz. Baþka bir deyiþle eklentiyi yüklerken doðacak tüm riskler size aittir.  Ayrýntýlarý öðrenmek isteyenler için her eklenti paketinde yüklemenin el ile yapýlabilmesi için ayrýntýlar ve adýmlar mevcuttur.',
     2 => 'Eklenti Yükleme ile Ýlgili Yükümler',
     3 => 'Eklenti Yükleme Formu',
     4 => 'Eklenti Dosyasý',
@@ -1199,7 +1199,7 @@ $LANG32 = array(
     6 => 'Uyarý: Eklenti zaten yüklenmiþ!',
     7 => 'Yüklemeye çalýþtýðýnýz eklenti zaten yüklenmiþ. Eðer yeniden yüklemek istiyorsanýz, eklentiyi önce silin.',
     8 => 'Eklenti uyumluluk kontrolü baþarýsýz.',
-    9 => 'Bu eklenti Geeklog\'un yeni bir versiyonun istemekte. Elinizdeki kopyayý ya <a href="http://www.geeklog.net">Geeklog</a> adresinden yenileyin ya da eklentinin yeni bir versiyonunu bulmalýsýnýz.',
+    9 => 'Bu eklenti Geeklog\'un yeni bir versiyonun istemekte. Elinizdeki kopyayý ya <a href="https://www.geeklog.net">Geeklog</a> adresinden yenileyin ya da eklentinin yeni bir versiyonunu bulmalýsýnýz.',
     10 => '<br' . XHTML . '><b>Þu anda hiç bir eklenti yüklenmemiþ.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Bir eklentiyi deðiþtirmek veya silmek istiyorsanýz eklentinin numarasýna basýn. Eklenti hakkýnda daha fazla bilgi edinmek için eklentinin adýna basýn. Bu eklentinin web sitesini açar. Bir eklenti yüklemek veya sürümünü yenilemek için dokümantasyonuna baþvurun.',
     12 => 'plugineditor()\'e hiç bir eklenti adý saðlanmadý',

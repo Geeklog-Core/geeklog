@@ -1191,7 +1191,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Menginstall plugins dapat menyebabkan kegagalan dalam penginstalan Geeklog dan mungki juga system ada.  Penting bagi anda untuk menginstall plugin yang hanya didownload dari <a href="http://www.geeklog.net">Geeklog Homepage</a> yang dimana plug ini tersebut telah kami uji dengan menggunakan berbagai macam system.  Singkatnya kami tidak bertanggung jawab atas kerusakan yang terjadi pada saat anda menginstall plugin maka sebaiknya ikuti instruksi penginstallan yang disertakan dalam plugin yang anda download.',
+    1 => 'Menginstall plugins dapat menyebabkan kegagalan dalam penginstalan Geeklog dan mungki juga system ada.  Penting bagi anda untuk menginstall plugin yang hanya didownload dari <a href="https://www.geeklog.net">Geeklog Homepage</a> yang dimana plug ini tersebut telah kami uji dengan menggunakan berbagai macam system.  Singkatnya kami tidak bertanggung jawab atas kerusakan yang terjadi pada saat anda menginstall plugin maka sebaiknya ikuti instruksi penginstallan yang disertakan dalam plugin yang anda download.',
     2 => 'Disclaimer Penginstallan Plug-in',
     3 => 'Formulir Penginstallan Plug-in',
     4 => 'File Plug-in',
@@ -1199,7 +1199,7 @@ $LANG32 = array(
     6 => 'Perhatian: Plug-in telah diinstall!',
     7 => 'The plug-in yang ada install sudah ada.  Silahkan hapus dulu sebelum anda menginstall lagi',
     8 => 'Pengecekan kompatibelitas Plugin gagal',
-    9 => 'Plugin ini membutuhkan Geeklog versi terbaru. maka upgradelah <a href="http://www.geeklog.net">Geeklog</a> anda dan plugin yg ingin anda install.',
+    9 => 'Plugin ini membutuhkan Geeklog versi terbaru. maka upgradelah <a href="https://www.geeklog.net">Geeklog</a> anda dan plugin yg ingin anda install.',
     10 => '<br' . XHTML . '><b>Belum ada plugin yang terinstall.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Untuk memodifikasi dan menghapus plugin selahkan klik nomer yang bersangkutan di bawah ini. Untuk mengetahui lebih jauh, klik nama plugin tersebut. Untuk menginstall atau upgrade silahkan baca dokumentasi.',
     12 => 'tidak ada plugin yang disediakan oleh plugineditor()',

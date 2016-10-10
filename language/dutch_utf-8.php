@@ -1197,7 +1197,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Het installeren van plugins kan het portaal als geheel beschadigen en, mogelijk ook, de achterliggende databases. Het is zeer belangrijk dat u alleen plugins van <a href="http://www.geeklog.net">Geeklog Homepage</a> instaleerd, omdat deze degelijk getest zijn. Het is ook belangrijk dat u inziet dat de installatie enige \'onveilige\' commando\'s bevat die kunnen leiden tot beveiligingsproblemen. Dit vergt bijzondere aandacht voor plugins van derden. Zelfs indien u deze waarschuwing ter harte neemt, kan de veiligheid en correctheid van de installatieprocedure niet gegarandeerd worden. De verantwoordelijkheid ligt exclusief bij U! Anders gezegd: installeer op eigen risico. Wees voorzichtig en lees de installatievoorschriften die bij elke plugin meekomen. Tenslotte: volg deze op.',
+    1 => 'Het installeren van plugins kan het portaal als geheel beschadigen en, mogelijk ook, de achterliggende databases. Het is zeer belangrijk dat u alleen plugins van <a href="https://www.geeklog.net">Geeklog Homepage</a> instaleerd, omdat deze degelijk getest zijn. Het is ook belangrijk dat u inziet dat de installatie enige \'onveilige\' commando\'s bevat die kunnen leiden tot beveiligingsproblemen. Dit vergt bijzondere aandacht voor plugins van derden. Zelfs indien u deze waarschuwing ter harte neemt, kan de veiligheid en correctheid van de installatieprocedure niet gegarandeerd worden. De verantwoordelijkheid ligt exclusief bij U! Anders gezegd: installeer op eigen risico. Wees voorzichtig en lees de installatievoorschriften die bij elke plugin meekomen. Tenslotte: volg deze op.',
     2 => 'plugin Installatie Disclaimer',
     3 => 'plugin Installatie Formulier',
     4 => 'plugin File',
@@ -1205,7 +1205,7 @@ $LANG32 = array(
     6 => 'Waarschuwing: Deze plugin is al Actief!',
     7 => 'De plugin die u probeert te installeren is er al. gelieve eerst deze plugin te verwijderen voordat u de installatie opnieuw probeert.',
     8 => 'Plugin Compatibility Check Failed',
-    9 => 'Deze plugin vereist een latere versie van Geeklog. Gelieve deze versie van <a href=http://www.geeklog.net>Geeklog</a> te upgraden of een nieuwere versie op te halen van deze plugin.',
+    9 => 'Deze plugin vereist een latere versie van Geeklog. Gelieve deze versie van <a href="https://www.geeklog.net">Geeklog</a> te upgraden of een nieuwere versie op te halen van deze plugin.',
     10 => '<br' . XHTML . '><strong>Er zijn geen plugins actief op dit moment.</strong><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Om een plugin te wijzigen of te verwijderen, klik op het nummer van deze plugin\'s hieronder. Dit laat u de detailles zien, inclusief de website van de auteur. Tevens worden de versies van de plugins getoond. Dit helpt u bij de vraag of plugin\'s ge-upgrade moeten worden. Raadpleeg de documentatie voordat u een plugin installeert of upgrade. Om een introductie over deze plugin op te vragen, klik op de naam van de plugin, dit brengt u naar de website van de plugin.',
     12 => 'geen Naam voor de plugin gevonden door de plugineditor()',

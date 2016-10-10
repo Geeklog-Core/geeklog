@@ -136,7 +136,7 @@ $LANG_INSTALL = array(
     84 => '¦cie¿ka "',
     85 => '" jest b³êdna. Wróæ i srpóbuj ponownie.',
     86 => 'Jêzyk',
-    87 => 'http://www.geeklog.net/forum/index.php?forum=1',
+    87 => 'https://www.geeklog.net/forum/index.php?forum=1',
     88 => 'Change directory and containing files to',
     89 => 'Wersja Obecna:',
     90 => 'Opró¿niæ bazê danych?',

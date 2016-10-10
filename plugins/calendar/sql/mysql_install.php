@@ -117,6 +117,6 @@ CREATE TABLE {$_TABLES['personal_events']} (
 ) ENGINE=MyISAM
 ";
 
-$_SQL[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend, owner_id) VALUES ('2008050110130162','Installed the Calendar plugin','Today, you successfully installed the Calendar plugin.','Your webserver',CURDATE(),CURDATE(),'http://www.geeklog.net/',1,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,1)";
+$_SQL[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend, owner_id) VALUES ('2008050110130162','Installed the Calendar plugin','Today, you successfully installed the Calendar plugin.','Your webserver',CURDATE(),CURDATE(),'https://www.geeklog.net/',1,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,1)";
 
 ?>

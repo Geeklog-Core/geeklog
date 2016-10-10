@@ -131,7 +131,7 @@ $LANG_INSTALL = array(
     84 => 'הנתיב ',
     85 => '" נראה שאינו נכון. אנא חיזרו ונסו שוב.',
     86 => 'שפה',
-    87 => 'http://www.geeklog.net/forum/index.php?forum=1',
+    87 => 'https://www.geeklog.net/forum/index.php?forum=1',
     88 => 'שינוי הספרייה והקבצים שבה ל',
     89 => 'גירסה נוכחית:',
     90 => 'מאגר מידע ריק?',
