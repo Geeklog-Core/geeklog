@@ -156,7 +156,7 @@ if (!$_CONF['have_pear']) {
 }
 
 // Set the web server's timezone
- TimeZoneConfig::setSystemTimeZone();
+TimeZoneConfig::setSystemTimeZone();
 
 // Include multibyte functions
 require_once $_CONF['path_system'] . 'lib-mbyte.php';
@@ -170,9 +170,7 @@ global $_PLUGINS;
 
 require_once $_CONF['path_system'] . 'lib-plugins.php';
 
-/**
- * Include page time -- used to time how fast each page was created
- */
+// Include page time -- used to time how fast each page was created
 require_once $_CONF['path_system'] . 'classes/timer.class.php';
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
@@ -329,9 +327,7 @@ if (empty($_IMAGE_TYPE)) {
     $_IMAGE_TYPE = 'gif';
 }
 
-/**
- * ensure XHTML constant is defined to avoid problems elsewhere
- */
+// Ensure XHTML constant is defined to avoid problems elsewhere
 if (!defined('XHTML')) {
     switch ($_CONF['doctype']) {
         case 'xhtml10transitional':
@@ -521,7 +517,7 @@ if (DB_getItem($_TABLES['vars'], 'value', "name='last_article_publish'") != $A['
  * templates for the block are specified, the default blockheader.html and
  * blockfooter.html will be used.
  *
- * @param        string $blockname corresponds to name field in block table
+ * @param        string $blockName corresponds to name field in block table
  * @param        string $which     can be either 'header' or 'footer' for corresponding template
  * @param        string $position  can be 'left', 'right' or blank. If set, will be used to find a side specific
  *                                  override template.
@@ -531,18 +527,18 @@ if (DB_getItem($_TABLES['vars'], 'value', "name='last_article_publish'") != $A['
  * @see function COM_showBlock
  * @return   string  template name
  */
-function COM_getBlockTemplate($blockname, $which, $position = '')
+function COM_getBlockTemplate($blockName, $which, $position = '')
 {
     global $_BLOCK_TEMPLATE, $_COM_VERBOSE, $_CONF;
 
     if ($_COM_VERBOSE) {
-        COM_errorLog("_BLOCK_TEMPLATE[$blockname] = " . $_BLOCK_TEMPLATE[$blockname], 1);
+        COM_errorLog("_BLOCK_TEMPLATE[$blockName] = " . $_BLOCK_TEMPLATE[$blockName], 1);
     }
 
     $template = ($which === 'header') ? 'blockheader.thtml' : 'blockfooter.thtml';
-    if (!empty($_BLOCK_TEMPLATE[$blockname])) {
+    if (!empty($_BLOCK_TEMPLATE[$blockName])) {
         $i = ($which === 'header') ? 0 : 1;
-        $templates = explode(',', $_BLOCK_TEMPLATE[$blockname]);
+        $templates = explode(',', $_BLOCK_TEMPLATE[$blockName]);
         if (count($templates) === 2 && !empty($templates[$i])) {
             $template = $templates[$i];
         }
@@ -568,7 +564,7 @@ function COM_getBlockTemplate($blockname, $which, $position = '')
     }
 
     if ($_COM_VERBOSE) {
-        COM_errorLog("Block template for the $which of $blockname is: $template", 1);
+        COM_errorLog("Block template for the $which of $blockName is: $template", 1);
     }
 
     return $template;
@@ -580,7 +576,7 @@ function COM_getBlockTemplate($blockname, $which, $position = '')
  * a list of all the theme names.
  *
  * @param    boolean $all if true, return all themes even if users aren't allowed to change their default themes
- * @return   array           All installed themes
+ * @return   array        All installed themes
  */
 function COM_getThemes($all = false)
 {
@@ -614,7 +610,7 @@ function COM_getThemes($all = false)
  * Create the menu, i.e. replace {menu_elements} in the site header with the
  * actual menu entries.
  *
- * @param    Template $header     reference to the header template
+ * @param    Template $header      reference to the header template
  * @param    array    $plugin_menu array of plugin menu entries, if any
  */
 function COM_renderMenu($header, $plugin_menu)
@@ -1444,6 +1440,7 @@ function COM_siteFooter($rightBlock = -1, $custom = '')
  * @see      function COM_siteHeader
  * @see      function COM_siteFooter
  * @return   string              Formatted HTML document
+ * @throws   Exception
  */
 function COM_createHTMLDocument(&$content = '', $information = array())
 {
@@ -1451,41 +1448,21 @@ function COM_createHTMLDocument(&$content = '', $information = array())
            $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_PAGE_TIMER, $relLinks;
 
     // Retrieve required variables from information array
-    if (isset($information['what'])) {
-        $what = $information['what'];
-    } else {
-        $what = 'menu';
-    }
-    if (isset($information['pagetitle'])) {
-        $pagetitle = $information['pagetitle'];
-    } else {
-        $pagetitle = '';
-    }
-    if (isset($information['headercode'])) {
-        $headerCode = $information['headercode'];
-    } else {
-        $headerCode = '';
-    }
-    if (isset($information['breadcrumbs'])) {
-        $breadcrumbs = $information['breadcrumbs'];
-    } else {
-        $breadcrumbs = '';
-    }
-    if (isset($information['rightblock'])) {
-        $rightBlock = $information['rightblock'];
-    } else {
-        $rightBlock = -1;
-    }
-    if (isset($information['custom'])) {
-        $custom = $information['custom'];
-    } else {
-        $custom = '';
-    }
+    $what = isset($information['what']) ? $information['what'] : 'menu';
+    $pageTitle = isset($information['pagetitle']) ? $information['pagetitle'] : '';
+    $headerCode = isset($information['headercode']) ? $information['headercode'] : '';
+    $breadcrumbs = isset($information['breadcrumbs']) ? $information['breadcrumbs'] : '';
+    $rightBlock = isset($information['rightblock']) ? $information['rightblock'] : -1;
+    $custom = isset($information['custom']) ? $information['custom'] : '';
 
     // If the theme does not support the CSS layout then call the legacy functions (Geeklog 1.8.1 and older).
-    if ($_CONF['supported_version_theme'] == '1.8.1') {
-        return COM_siteHeader($what, $pagetitle, $headerCode) . $content
-        . COM_siteFooter($rightBlock, $custom);
+    if ($_CONF['supported_version_theme'] === '1.8.1') {
+        if (is_callable('COM_siteHeader') && is_callable('COM_siteFooter')) {
+            return COM_siteHeader($what, $pageTitle, $headerCode) . $content
+                . COM_siteFooter($rightBlock, $custom);
+        } else {
+            throw new Exception('COM_siteHeader and COM_siteFooter are removed. Please use COM_createHTMLDocument instead.');
+        }
     }
 
     // If the theme implemented this for us then call their version instead.
@@ -1499,28 +1476,28 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     // the current theme only needs the default variable substitutions
     switch ($_CONF['doctype']) {
         case 'html401transitional':
-            $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+            $docType = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
             break;
 
         case 'html401strict':
-            $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+            $docType = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
             break;
 
         case 'xhtml10transitional':
-            $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+            $docType = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
             break;
 
         case 'xhtml10strict':
-            $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+            $docType = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
             break;
 
         case 'html5':
         case 'xhtml5':
-            $doctype = '<!DOCTYPE html>';
+            $docType = '<!DOCTYPE html>';
             break;
 
         default: // fallback: HTML 4.01 Transitional w/o system identifier
-            $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
+            $docType = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
             break;
     }
 
@@ -1547,7 +1524,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     $header->parse('menu_elements', 'menunavigation', true);
 
-    $header->set_var('doctype', $doctype . LB);
+    $header->set_var('doctype', $docType . LB);
 
     COM_setLangIdAndAttribute($header);
     $langId = $header->get_var('lang_id');
@@ -1560,7 +1537,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     $feed_url = array();
     if ($_CONF['backend'] == 1) { // add feed-link to header if applicable
-        $baseurl = SYND_getFeedUrl();
+        $baseUrl = SYND_getFeedUrl();
 
         $sql = 'SELECT format, filename, title, language FROM '
             . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";
@@ -1578,7 +1555,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
                 $feed_url[] = '<link rel="alternate" type="' . $format_type
                     . '" hreflang="' . $A['language'] . '" href="'
-                    . $baseurl . $A['filename'] . '" title="'
+                    . $baseUrl . $A['filename'] . '" title="'
                     . htmlspecialchars($feed_title) . '"' . XHTML . '>';
             }
         }
@@ -1589,27 +1566,19 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $feed = SYND_getDefaultFeedUrl();
 
     if (COM_onFrontpage()) {
-        $relLinks['canonical'] = '<link rel="canonical" href="'
-            . $_CONF['site_url'] . '/"' . XHTML . '>';
+        $relLinks['canonical'] = '<link rel="canonical" href="' . $_CONF['site_url'] . '/"' . XHTML . '>';
     } else {
-        $relLinks['home'] = '<link rel="home" href="' . $_CONF['site_url']
-            . '/" title="' . $LANG01[90] . '"' . XHTML . '>';
+        $relLinks['home'] = '<link rel="home" href="' . $_CONF['site_url'] . '/" title="' . $LANG01[90] . '"' . XHTML . '>';
     }
     $loggedInUser = !COM_isAnonUser();
-    if ($loggedInUser || (($_CONF['loginrequired'] == 0) &&
-            ($_CONF['searchloginrequired'] == 0))
-    ) {
-        if ((substr($_SERVER['PHP_SELF'], -strlen('/search.php'))
-                != '/search.php') || isset($_GET['mode'])
-        ) {
+    if ($loggedInUser || (($_CONF['loginrequired'] == 0) && ($_CONF['searchloginrequired'] == 0))) {
+        if ((substr($_SERVER['PHP_SELF'], -strlen('/search.php')) !== '/search.php') || isset($_GET['mode'])) {
             $relLinks['search'] = '<link rel="search" href="'
                 . $_CONF['site_url'] . '/search.php" title="'
                 . $LANG01[75] . '"' . XHTML . '>';
         }
     }
-    if ($loggedInUser || (($_CONF['loginrequired'] == 0) &&
-            ($_CONF['directoryloginrequired'] == 0))
-    ) {
+    if ($loggedInUser || (($_CONF['loginrequired'] == 0) && ($_CONF['directoryloginrequired'] == 0))) {
         if (strpos($_SERVER['PHP_SELF'], '/article.php') !== false) {
             $relLinks['contents'] = '<link rel="contents" href="'
                 . $_CONF['site_url'] . '/directory.php" title="'
@@ -1625,55 +1594,51 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     // TBD: add a plugin API and a lib-custom.php function
     $header->set_var('rel_links', implode(LB, $relLinks));
 
-    $pagetitle_siteslogan = false;
-    if (empty($pagetitle)) {
+    $pageTitle_siteSlogan = false;
+    if (empty($pageTitle)) {
         if (empty($topic)) {
-            $pagetitle = $_CONF['site_slogan'];
-            $pagetitle_siteslogan = true;
+            $pageTitle = $_CONF['site_slogan'];
+            $pageTitle_siteSlogan = true;
         } else {
-            $pagetitle = stripslashes(DB_getItem($_TABLES['topics'], 'topic',
-                "tid = '$topic'"));
+            $pageTitle = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '$topic'"));
         }
     }
-    if (!empty($pagetitle)) {
+    if (!empty($pageTitle)) {
         $header->set_var('page_site_splitter', ' - ');
     } else {
         $header->set_var('page_site_splitter', '');
     }
-    $header->set_var('page_title', $pagetitle);
+    $header->set_var('page_title', $pageTitle);
     $header->set_var('site_name', $_CONF['site_name']);
 
-    if (COM_onFrontpage() || $pagetitle_siteslogan) {
+    if (COM_onFrontpage() || $pageTitle_siteSlogan) {
         $title_and_name = $_CONF['site_name'];
-        if (!empty($pagetitle)) {
-            $title_and_name .= ' - ' . $pagetitle;
+        if (!empty($pageTitle)) {
+            $title_and_name .= ' - ' . $pageTitle;
         }
     } else {
         $title_and_name = '';
-        if (!empty($pagetitle)) {
-            $title_and_name = $pagetitle . ' - ';
+        if (!empty($pageTitle)) {
+            $title_and_name = $pageTitle . ' - ';
         }
         $title_and_name .= $_CONF['site_name'];
     }
     $header->set_var('page_title_and_site_name', $title_and_name);
-    $header->set_var('background_image', $_CONF['layout_url']
-        . '/images/bg.' . $_IMAGE_TYPE);
+    $header->set_var('background_image', $_CONF['layout_url'] . '/images/bg.' . $_IMAGE_TYPE);
 
     $msg = rtrim($LANG01[67]) . ' ' . $_CONF['site_name'];
 
     if (!empty($_USER['username'])) {
-        $msg .= ', ' . COM_getDisplayName($_USER['uid'], $_USER['username'],
-                $_USER['fullname']);
+        $msg .= ', ' . COM_getDisplayName($_USER['uid'], $_USER['username'], $_USER['fullname']);
     }
 
-    $curtime = COM_getUserDateTimeFormat();
+    $currentTime = COM_getUserDateTimeFormat();
 
     $header->set_var('welcome_msg', $msg);
-    $header->set_var('datetime', $curtime[0]);
-    $header->set_var('site_logo', $_CONF['layout_url']
-        . '/images/logo.' . $_IMAGE_TYPE);
+    $header->set_var('datetime', $currentTime[0]);
+    $header->set_var('site_logo', $_CONF['layout_url'] . '/images/logo.' . $_IMAGE_TYPE);
     $header->set_var('theme', $_CONF['theme']);
-    $header->set_var('datetime_html5', strftime('%FT%T', $curtime[1]));
+    $header->set_var('datetime_html5', strftime('%FT%T', $currentTime[1]));
 
     $header->set_var('charset', COM_getCharset());
     $header->set_var('direction', $LANG_DIRECTION);
@@ -1731,7 +1696,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $header->set_var('left_blocks', '');
         $header->set_var('geeklog_blocks', '');
     } else {
-        $lblocks = '';
+        $lBlocks = '';
 
         /* Check if an array has been passed that includes the name of a plugin
          * function or custom function
@@ -1740,20 +1705,20 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         if (is_array($what)) {
             $function = $what[0];
             if (function_exists($function)) {
-                $lblocks = $function($what[1], 'left');
+                $lBlocks = $function($what[1], 'left');
             } else {
-                $lblocks = COM_showBlocks('left', $topic);
+                $lBlocks = COM_showBlocks('left', $topic);
             }
         } elseif ($what !== 'none') {
             // Now show any blocks -- need to get the topic if not on home page
-            $lblocks = COM_showBlocks('left', $topic);
+            $lBlocks = COM_showBlocks('left', $topic);
         }
 
-        if (empty($lblocks)) {
+        if (empty($lBlocks)) {
             $header->set_var('left_blocks', '');
             $header->set_var('geeklog_blocks', '');
         } else {
-            $header->set_var('geeklog_blocks', $lblocks);
+            $header->set_var('geeklog_blocks', $lBlocks);
             $header->parse('left_blocks', 'leftblocks', true);
             $header->set_var('geeklog_blocks', '');
         }
@@ -1763,7 +1728,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $header->set_var('right_blocks', '');
         $header->set_var('geeklog_blocks', '');
     } else {
-        $rblocks = '';
+        $rBlocks = '';
 
         /* Check if an array has been passed that includes the name of a plugin
          * function or custom function
@@ -1772,20 +1737,20 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         if (is_array($what)) {
             $function = $what[0];
             if (function_exists($function)) {
-                $rblocks = $function($what[1], 'right');
+                $rBlocks = $function($what[1], 'right');
             } else {
-                $rblocks = COM_showBlocks('right', $topic);
+                $rBlocks = COM_showBlocks('right', $topic);
             }
         } elseif ($what !== 'none') {
             // Now show any blocks -- need to get the topic if not on home page
-            $rblocks = COM_showBlocks('right', $topic);
+            $rBlocks = COM_showBlocks('right', $topic);
         }
 
-        if (empty($rblocks)) {
+        if (empty($rBlocks)) {
             $header->set_var('right_blocks', '');
             $header->set_var('geeklog_blocks', '');
         } else {
-            $header->set_var('geeklog_blocks', $rblocks, true);
+            $header->set_var('geeklog_blocks', $rBlocks, true);
             $header->parse('right_blocks', 'rightblocks', true);
         }
     }
@@ -1873,20 +1838,20 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     ));
 
     $year = date('Y');
-    $copyrightyear = $year;
+    $copyrightYear = $year;
     if (!empty($_CONF['copyrightyear'])) {
-        $copyrightyear = $_CONF['copyrightyear'];
+        $copyrightYear = $_CONF['copyrightyear'];
     }
     if (!empty($_CONF['owner_name'])) {
-        $copyrightname = $_CONF['owner_name'];
+        $copyrightName = $_CONF['owner_name'];
     } else {
-        $copyrightname = $_CONF['site_name'];
+        $copyrightName = $_CONF['site_name'];
     }
     $footer->set_var('copyright_notice', '&nbsp;' . $LANG01[93] . ' &copy; '
-        . $copyrightyear . ' ' . $copyrightname . '<br' . XHTML . '>&nbsp;'
+        . $copyrightYear . ' ' . $copyrightName . '<br' . XHTML . '>&nbsp;'
         . $LANG01[94]);
     $footer->set_var('copyright_msg', $LANG01[93] . ' &copy; '
-        . $copyrightyear . ' ' . $_CONF['site_name']);
+        . $copyrightYear . ' ' . $_CONF['site_name']);
     $footer->set_var('current_year', $year);
     $footer->set_var('lang_copyright', $LANG01[93]);
     $footer->set_var('trademark_msg', $LANG01[94]);
@@ -1930,19 +1895,19 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         if (is_array($custom)) {
             $function = $custom['0'];
             if (function_exists($function)) {
-                $rblocks = $function($custom['1'], 'right');
+                $rBlocks = $function($custom['1'], 'right');
             } else {
-                $rblocks = COM_showBlocks('right', $topic);
+                $rBlocks = COM_showBlocks('right', $topic);
             }
         } else {
-            $rblocks = COM_showBlocks('right', $topic);
+            $rBlocks = COM_showBlocks('right', $topic);
         }
 
-        if (empty($rblocks)) {
+        if (empty($rBlocks)) {
             $footer->set_var('geeklog_blocks', '');
             $footer->set_var('right_blocks', '');
         } else {
-            $footer->set_var('geeklog_blocks', $rblocks);
+            $footer->set_var('geeklog_blocks', $rBlocks);
             $footer->parse('right_blocks', 'rightblocks', true);
             $footer->set_var('geeklog_blocks', '');
         }
@@ -1952,7 +1917,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     }
 
     if ($_CONF['left_blocks_in_footer'] == 1) {
-        $lblocks = '';
+        $lBlocks = '';
 
         /* Check if an array has been passed that includes the name of a plugin
          * function or custom function
@@ -1961,19 +1926,19 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         if (is_array($custom)) {
             $function = $custom[0];
             if (function_exists($function)) {
-                $lblocks = $function($custom[1], 'left');
+                $lBlocks = $function($custom[1], 'left');
             }
         } else {
             if ($what !== 'none') {
-                $lblocks = COM_showBlocks('left', $topic);
+                $lBlocks = COM_showBlocks('left', $topic);
             }
         }
 
-        if (empty($lblocks)) {
+        if (empty($lBlocks)) {
             $footer->set_var('left_blocks', '');
             $footer->set_var('geeklog_blocks', '');
         } else {
-            $footer->set_var('geeklog_blocks', $lblocks);
+            $footer->set_var('geeklog_blocks', $lBlocks);
             $footer->parse('left_blocks', 'leftblocks', true);
             $footer->set_var('geeklog_blocks', '');
         }
@@ -1992,8 +1957,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // Check leftblocks and rightblocks
     $layout_columns = 'left-center-right';
-    $emptyLeftBlocks = empty($lblocks);
-    $emptyRightBlocks = empty($rblocks);
+    $emptyLeftBlocks = empty($lBlocks);
+    $emptyRightBlocks = empty($rBlocks);
     if (!$emptyLeftBlocks && $emptyRightBlocks) {
         $layout_columns = 'left-center';
     }
@@ -2043,7 +2008,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
  * @param    string $title    Value to set block title to
  * @param    string $helpFile Help file, if one exists
  * @param    string $template HTML template file to use to format the block
- * @return   string              Formatted HTML containing block header
+ * @return   string           Formatted HTML containing block header
  * @see COM_endBlock
  * @see COM_siteHeader
  */
@@ -2077,7 +2042,7 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
                 $_SCRIPTS->setJavaScriptLibrary('jquery.ui.resizable');
                 $_SCRIPTS->setJavaScriptLibrary('jquery.ui.button');
 
-                // Add Language valiables
+                // Add Language variables
                 $_SCRIPTS->setLang(array('close' => $LANG32[60]));
 
                 // Add JavaScript
@@ -2089,7 +2054,7 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
         $helpContent = '<img src="' . $helpImage . '" alt="?"' . XHTML . '>';
         $helpAttr = array('class' => 'blocktitle', 'title' => "$title");
         if (!stristr($helpFile, 'http://')) {
-            $help_url = $_CONF['site_url'] . "/help/$helpFile";
+            $help_url = $_CONF['site_url'] . "/help/{$helpFile}";
         } else {
             $help_url = $helpFile;
         }
@@ -2106,8 +2071,8 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
 /**
  * Closes out COM_startBlock
  *
- * @param        string $template HTML template file used to format block footer
- * @return   string  Formatted HTML to close block
+ * @param    string $template HTML template file used to format block footer
+ * @return   string           Formatted HTML to close block
  * @see function COM_startBlock
  */
 function COM_endBlock($template = 'blockfooter.thtml')
@@ -2137,12 +2102,12 @@ function COM_endBlock($template = 'blockfooter.thtml')
  *                                 and the second is the label to be displayed.  This is used in a SQL statement and
  *                                 can include DISTINCT to start.
  * @param               string     /array      $selected   Value (from $selection) to set to SELECTED or default
- * @param        int    $sortcol   Which field to sort option list by 0 (value) or 1 (label)
+ * @param        int    $sortCol   Which field to sort option list by 0 (value) or 1 (label)
  * @param        string $where     Optional WHERE clause to use in the SQL Selection
  * @see function COM_checkList
  * @return   string  Formatted HTML of option values
  */
-function COM_optionList($table, $selection, $selected = '', $sortcol = 1, $where = '')
+function COM_optionList($table, $selection, $selected = '', $sortCol = 1, $where = '')
 {
     global $_DB_table_prefix;
 
@@ -2164,7 +2129,7 @@ function COM_optionList($table, $selection, $selected = '', $sortcol = 1, $where
     if ($where !== '') {
         $sql .= " WHERE {$where}";
     }
-    $sql .= " ORDER BY {$select_set[$sortcol]}";
+    $sql .= " ORDER BY {$select_set[$sortCol]}";
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
 
@@ -2218,8 +2183,8 @@ function COM_topicList($selection, $selected = '', $sortCol = 1, $ignoreLang = f
     foreach ($topics as $tid => $topic) {
         $retval .= '<option value="' . $tid . '"';
         if (is_array($selected)) {
-            foreach ($selected as $multiselect_tid) {
-                if ($tid == $multiselect_tid) {
+            foreach ($selected as $multiSelectTid) {
+                if ($tid == $multiSelectTid) {
                     $retval .= ' selected="selected"';
                     break;
                 }
@@ -2296,7 +2261,7 @@ function COM_topicArray($selection, $sortCol = 0, $ignoreLang = false)
  * @param    string $where     Where clause of SQL statement
  * @param    string $selected  Value to set to CHECKED
  * @param    string $fieldName Name to use for the checkbox array
- * @return   string              HTML with Checkbox code
+ * @return   string            HTML with Checkbox code
  * @see      COM_optionList
  */
 function COM_checkList($table, $selection, $where = '', $selected = '', $fieldName = '')
@@ -2482,9 +2447,9 @@ function COM_featuredCheck()
  * Prints a well formatted message to either the web page, error log
  * or both.
  *
- * @param        string $logEntry Text to log to error log
- * @param        int    $actionId where 1 = write to log file, 2 = write to screen (default) both
- * @see function COM_accessLog
+ * @param    string $logEntry Text to log to error log
+ * @param    int    $actionId where 1 = write to log file, 2 = write to screen (default) both
+ * @see      function COM_accessLog
  * @return   string  If $actionId = 2 or '' then HTML formatted string (wrapped in block) else nothing
  */
 function COM_errorLog($logEntry, $actionId = 2)
@@ -2495,18 +2460,13 @@ function COM_errorLog($logEntry, $actionId = 2)
 
     if (!empty($logEntry)) {
         $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
-
         $timestamp = @strftime('%c');
         $remoteAddress = $_SERVER['REMOTE_ADDR'];
 
-        if (!isset($_CONF['path_layout']) &&
-            (($actionId == 2) || empty($actionId))
-        ) {
+        if (!isset($_CONF['path_layout']) && (($actionId == 2) || empty($actionId))) {
             $actionId = 1;
         }
-        if ((($actionId == 2) || empty($actionId)) &&
-            !class_exists('Template')
-        ) {
+        if ((($actionId == 2) || empty($actionId)) && !class_exists('Template')) {
             $actionId = 1;
         }
         if (!isset($_CONF['path_log']) && ($actionId != 2)) {
@@ -2563,7 +2523,7 @@ function COM_errorLog($logEntry, $actionId = 2)
  *
  * @param  string $logEntry Message to write to access log
  * @return string
- * @see COM_errorLog
+ * @see    COM_errorLog
  */
 function COM_accessLog($logEntry)
 {
@@ -2811,7 +2771,7 @@ function COM_showTopics($topic = '')
  * @param  string $title    Title of Menu
  * @param  string $position Side being shown on 'left', 'right'. Though blank works not likely.
  * @return string
- * @see function COM_adminMenu
+ * @see     function COM_adminMenu
  */
 function COM_userMenu($help = '', $title = '', $position = '')
 {
@@ -3002,7 +2962,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
  * @param  string $title       Menu Title (admin menu only)
  * @param  string $position    Side being shown on 'left', 'right' or blank. (admin menu only)
  * @return string
- * @see function COM_adminMenu
+ * @see     function COM_adminMenu
  */
 function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $position = '')
 {
@@ -3562,7 +3522,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
  * @param  string $title    Menu Title
  * @param  string $position Side being shown on 'left', 'right' or blank.
  * @return string
- * @see function COM_userMenu
+ * @see     function COM_userMenu
  */
 function COM_adminMenu($help = '', $title = '', $position = '')
 {
@@ -3649,8 +3609,8 @@ function COM_userComments($sid, $title, $type = 'article', $order = '', $mode = 
  *
  * @param  string $message String to check
  * @param  string $type    e.g. 'story', 'comment'
- * @see function COM_checkHTML
- * @return string  Edited $Message
+ * @see    function COM_checkHTML
+ * @return string          Edited $Message
  */
 function COM_checkWords($message, $type = '')
 {
@@ -3715,8 +3675,8 @@ function COM_checkWords($message, $type = '')
  *
  * @param    string $Message Text to filter
  * @return   string  $Message with javascript filtered
- * @see  COM_checkWords
- * @see  COM_checkHTML
+ * @see       COM_checkWords
+ * @see       COM_checkHTML
  */
 function COM_killJS($Message)
 {
@@ -3801,7 +3761,7 @@ function COM_makesid()
  * This function checks to see if an email address is in the correct from.
  *
  * @param    string $email Email address to verify
- * @return   boolean            True if valid otherwise false
+ * @return   boolean       True if valid otherwise false
  */
 function COM_isEmail($email)
 {
@@ -3816,7 +3776,7 @@ function COM_isEmail($email)
  * Encode a string such that it can be used in an email header
  *
  * @param    string $string the text to be encoded
- * @return   string              encoded text
+ * @return   string         encoded text
  */
 function COM_emailEscape($string)
 {
@@ -3855,7 +3815,7 @@ function COM_emailEscape($string)
  *
  * @param      string $name    name, e.g. John Doe
  * @param      string $address email address only, e.g. john.doe@example.com
- * @return     string                formatted email address
+ * @return     string          formatted email address
  * @deprecated since v2.1.2
  */
 function COM_formatEmailAddress($name, $address)
@@ -3906,7 +3866,7 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
  * @param    string $help     Help file for block
  * @param    string $title    Title used in block header
  * @param    string $position Position in which block is being rendered 'left', 'right' or blank (for centre)
- * @return   string  Return the HTML that shows any new stories, comments, etc
+ * @return   string           Return the HTML that shows any new stories, comments, etc
  */
 function COM_olderStoriesBlock($help = '', $title = '', $position = '')
 {
@@ -3992,8 +3952,8 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
  * @param        string $help     Help file location
  * @param        string $title    Title shown in block header
  * @param        string $position Side, 'left', 'right' or empty.
- * @see function COM_showBlocks
- * @return   string  HTML Formatted block
+ * @see          function COM_showBlocks
+ * @return       string           HTML Formatted block
  */
 function COM_showBlock($name, $help = '', $title = '', $position = '')
 {
@@ -4046,7 +4006,7 @@ function COM_showBlock($name, $help = '', $title = '', $position = '')
  *
  * @param  string $side  Side to get blocks for (right or left for now)
  * @param  string $topic Only get blocks for this topic
- * @see function COM_showBlock
+ * @see    function COM_showBlock
  * @return string        HTML Formatted blocks
  */
 function COM_showBlocks($side, $topic = '')
@@ -4166,9 +4126,8 @@ function COM_showBlocks($side, $topic = '')
  *
  * @param        array   $A          Block Record
  * @param        boolean $noBoxes    Set to true if userpref is no blocks
- * @param        boolean $noPosition Set to true if you don't want to use the left or right side footer and header of
- *                                   block
- * @return       string    HTML Formatted block
+ * @param        boolean $noPosition Set to true if you don't want to use the left or right side footer and header of block
+ * @return       string              HTML Formatted block
  */
 function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
 {
@@ -4303,7 +4262,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
  * @param    int    $date         Last time the headlines were imported
  * @param    int    $maxHeadlines max. number of headlines to import
  * @return   boolean              true = feed was updated, false = otherwise
- * @see function COM_rdfImport
+ * @see      function COM_rdfImport
  */
 function COM_rdfCheck($bid, $rdfUrl, $date, $maxHeadlines = 0)
 {
@@ -4328,7 +4287,7 @@ function COM_rdfCheck($bid, $rdfUrl, $date, $maxHeadlines = 0)
  * @param    string $rdfUrl       URL to get content from
  * @param    int    $maxHeadlines Maximum number of headlines to display
  * @return   void
- * @see function COM_rdfCheck
+ * @see      function COM_rdfCheck
  */
 function COM_rdfImport($bid, $rdfUrl, $maxHeadlines = 0)
 {
@@ -4434,16 +4393,15 @@ function COM_rdfImport($bid, $rdfUrl, $maxHeadlines = 0)
  * You can modify this by changing $_CONF['user_html'] in the configuration
  * (for admins, see also $_CONF['admin_html']).
  *
- * @param    string  $permissions               comma-separated list of rights which identify the current user as an
- *                                              "Admin"
- * @param    boolean $list_only                 true = return only the list of HTML tags
- * @param    int     $filter_html_flag          0 = returns allowed all html tags,
- *                                              1 = returns allowed HTML tags only,
- *                                              2 = returns No HTML Tags Allowed (this is used by plugins if they have
- *                                              a config that overrides Geeklogs filter html settings or do not have a
- *                                              post mode)
- * @param    string  $post_mode                 Indicates if text is html, adveditor, wikitext or plaintext
- * @return   string                      HTML <div>/<span> enclosed string
+ * @param    string  $permissions         comma-separated list of rights which identify the current user as an "Admin"
+ * @param    boolean $list_only           true = return only the list of HTML tags
+ * @param    int     $filter_html_flag    0 = returns allowed all html tags,
+ *                                         1 = returns allowed HTML tags only,
+ *                                         2 = returns No HTML Tags Allowed (this is used by plugins if they have
+ *                                         a config that overrides Geeklogs filter html settings or do not have a
+ *                                         post mode)
+ * @param    string  $post_mode           Indicates if text is html, adveditor, wikitext or plaintext
+ * @return   string                       HTML <div>/<span> enclosed string
  * @see      function COM_checkHTML
  */
 function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filter_html_flag = 1, $post_mode = '')
@@ -4514,7 +4472,7 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
  *
  * @param    boolean $list_only    true = return only the list of HTML tags
  * @param    array   $allowed_tags Array of allowed special tags ('code', 'raw', 'page_break' ...)
- * @return   string                      HTML <div>/<span> enclosed string
+ * @return   string                HTML <div>/<span> enclosed string
  * @see      function COM_checkHTML
  */
 function COM_allowedAutotags($list_only = false, $allowed_tags = array())
@@ -4562,7 +4520,7 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = array())
  * Fetches a password for the given user
  *
  * @param    string $loginName username to get password for
- * @return   string              Password or ''
+ * @return   string            Password or ''
  */
 function COM_getPassword($loginName)
 {
@@ -4595,7 +4553,7 @@ function COM_getPassword($loginName)
  * @param    string $fullname       Users full name.
  * @param    string $remoteUserName Username on remote service
  * @param    string $remoteService  Remote login service.
- * @return   string  Username, fullname or username@Service
+ * @return   string                 Username, fullname or username@Service
  */
 function COM_getDisplayName($uid = 0, $username = '', $fullname = '', $remoteUserName = '', $remoteService = '')
 {
@@ -4623,7 +4581,7 @@ function COM_getDisplayName($uid = 0, $username = '', $fullname = '', $remoteUse
         }
 
         if ($_CONF['show_servicename']) {
-            return "$remoteUserName@$remoteService";
+            return "{$remoteUserName}@{$remoteService}";
         } else {
             return $remoteUserName;
         }
@@ -4651,7 +4609,7 @@ function COM_hit()
 /**
  * Convert a relative URL to an absolute one
  *
- * @param  array $matches
+ * @param  array  $matches
  * @return string
  */
 function COM_emailUserTopicsUrlRewriter(array $matches)
@@ -5507,12 +5465,12 @@ function phpblock_whosonline()
 /**
  * Gets the <option> values for calendar months
  *
- * @param        string $selected Selected month
- * @see function COM_getDayFormOptions
- * @see function COM_getYearFormOptions
- * @see function COM_getHourFormOptions
- * @see function COM_getMinuteFormOptions
- * @return   string  HTML Months as option values
+ * @param  string $selected Selected month
+ * @see    function COM_getDayFormOptions
+ * @see    function COM_getYearFormOptions
+ * @see    function COM_getHourFormOptions
+ * @see    function COM_getMinuteFormOptions
+ * @return string HTML Months as option values
  */
 function COM_getMonthFormOptions($selected = '')
 {
@@ -5537,11 +5495,11 @@ function COM_getMonthFormOptions($selected = '')
 /**
  * Gets the <option> values for calendar days
  *
- * @param        string $selected Selected day
- * @see function COM_getMonthFormOptions
- * @see function COM_getYearFormOptions
- * @see function COM_getHourFormOptions
- * @see function COM_getMinuteFormOptions
+ * @param  string $selected Selected day
+ * @see    function COM_getMonthFormOptions
+ * @see    function COM_getYearFormOptions
+ * @see    function COM_getHourFormOptions
+ * @see    function COM_getMinuteFormOptions
  * @return string HTML days as option values
  */
 function COM_getDayFormOptions($selected = '')
@@ -5572,21 +5530,21 @@ function COM_getDayFormOptions($selected = '')
  * Returns Option list Containing 5 years starting with current
  * unless @selected is < current year then starts with @selected
  *
- * @param        string $selected    Selected year
- * @param        int    $startoffset Optional (can be +/-) Used to determine start year for range of years
- * @param        int    $endoffset   Optional (can be +/-) Used to determine end year for range of years
- * @see function COM_getMonthFormOptions
- * @see function COM_getDayFormOptions
- * @see function COM_getHourFormOptions
- * @see function COM_getMinuteFormOptions
+ * @param  string  $selected    Selected year
+ * @param  int     $startOffset Optional (can be +/-) Used to determine start year for range of years
+ * @param  int     $endOffset   Optional (can be +/-) Used to determine end year for range of years
+ * @see    function COM_getMonthFormOptions
+ * @see    function COM_getDayFormOptions
+ * @see    function COM_getHourFormOptions
+ * @see    function COM_getMinuteFormOptions
  * @return string  HTML years as option values
  */
-function COM_getYearFormOptions($selected = '', $startoffset = -1, $endoffset = 5)
+function COM_getYearFormOptions($selected = '', $startOffset = -1, $endOffset = 5)
 {
     $year_options = '';
-    $start_year = date('Y') + $startoffset;
+    $start_year = date('Y') + $startOffset;
     $cur_year = date('Y', time());
-    $finish_year = $cur_year + $endoffset;
+    $finish_year = $cur_year + $endOffset;
 
     if (!empty($selected)) {
         if ($selected < $cur_year) {
@@ -5613,10 +5571,10 @@ function COM_getYearFormOptions($selected = '', $startoffset = -1, $endoffset = 
  * @param    string $selected Selected hour
  * @param    int    $mode     12 or 24 hour mode
  * @return   string              HTML string of options
- * @see function COM_getMonthFormOptions
- * @see function COM_getDayFormOptions
- * @see function COM_getYearFormOptions
- * @see function COM_getMinuteFormOptions
+ * @see      function COM_getMonthFormOptions
+ * @see      function COM_getDayFormOptions
+ * @see      function COM_getYearFormOptions
+ * @see      function COM_getMinuteFormOptions
  */
 function COM_getHourFormOptions($selected = '', $mode = 12)
 {
@@ -5674,11 +5632,11 @@ function COM_getHourFormOptions($selected = '', $mode = 12)
  *
  * @param    string $selected Selected minutes
  * @param    int    $step     number of minutes between options, e.g. 15
- * @see function COM_getMonthFormOptions
- * @see function COM_getDayFormOptions
- * @see function COM_getHourFormOptions
- * @see function COM_getYearFormOptions
- * @return string  HTML of option minutes
+ * @see      function COM_getMonthFormOptions
+ * @see      function COM_getDayFormOptions
+ * @see      function COM_getHourFormOptions
+ * @see      function COM_getYearFormOptions
+ * @return   string HTML of option minutes
  */
 function COM_getMinuteFormOptions($selected = '', $step = 1)
 {
@@ -5714,7 +5672,7 @@ function COM_getMinuteFormOptions($selected = '', $step = 1)
  * @param  string $selected
  * @param  int    $step
  * @return string
- * @see COM_getMinuteFormOptions
+ * @see     COM_getMinuteFormOptions
  * @deprecated Use COM_getMinuteFormOptions instead
  */
 function COM_getMinuteOptions($selected = '', $step = 1)
@@ -6069,7 +6027,7 @@ function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_me
  * @param        int    $u_id   user id or 0 = current user
  * @param        int    $access access to check for (2=read, 3=r&write)
  * @param        string $table  table name if ambiguous (e.g. in JOINs)
- * @return       string      SQL expression string (may be empty)
+ * @return       string         SQL expression string (may be empty)
  */
 function COM_getPermSQL($type = 'WHERE', $u_id = 0, $access = 2, $table = '')
 {
@@ -6187,7 +6145,7 @@ function COM_getTopicSQL($type = 'WHERE', $u_id = 0, $table = '')
  * Strip slashes from a string only when magic_quotes_gpc = on.
  *
  * @param   string $text The text
- * @return  string  The text, possibly without slashes.
+ * @return  string       The text, possibly without slashes.
  */
 function COM_stripslashes($text)
 {
@@ -6208,7 +6166,7 @@ function COM_stripslashes($text)
  * @param    string  $parameter the parameter to test
  * @param    boolean $isNumeric true if $parameter is supposed to be numeric
  * @return   string             the filtered parameter (may now be empty or 0)
- * @see COM_applyBasicFilter
+ * @see      COM_applyBasicFilter
  */
 function COM_applyFilter($parameter, $isNumeric = false)
 {
@@ -6225,7 +6183,7 @@ function COM_applyFilter($parameter, $isNumeric = false)
  * @param    string  $parameter the parameter to test
  * @param    boolean $isNumeric true if $parameter is supposed to be numeric
  * @return   string    the filtered parameter (may now be empty or 0)
- * @see COM_applyFilter
+ * @see      COM_applyFilter
  */
 function COM_applyBasicFilter($parameter, $isNumeric = false)
 {
@@ -6355,7 +6313,7 @@ function COM_sanitizeFilename($filename, $allow_dots = false)
  * Will detect links starting with "http:", "https:", "ftp:", and "www.".
  *
  * @param    string $text the (plain-ascii) text string
- * @return   string    the same string, with links enclosed in <a>...</a> tags
+ * @return   string       the same string, with links enclosed in <a>...</a> tags
  */
 function COM_makeClickableLinks($text)
 {
@@ -6385,7 +6343,7 @@ function COM_makeClickableLinks($text)
  *
  * @param    string $http set to 'http://' when not already in the url
  * @param    string $link the url
- * @return   string          link enclosed in <a>...</a> tags
+ * @return   string       link enclosed in <a>...</a> tags
  */
 function COM_makeClickableLinksCallback($http, $link)
 {
@@ -6436,7 +6394,7 @@ function COM_undoClickableLinks($text)
  * @param    string $text  the text
  * @param    string $query the search query
  * @param    string $class html class to use to highlight
- * @return   string          the text with highlighted search words
+ * @return   string        the text with highlighted search words
  */
 function COM_highlightQuery($text, $query, $class = 'highlight')
 {
@@ -6484,9 +6442,9 @@ function COM_highlightQuery($text, $query, $class = 'highlight')
  *                             h = hours
  *                             i = minutes
  *                             s = seconds
- * @param string|int $date1    English date (e.g. 10 Dec 2004) or unixtimestamp
- * @param string|int $date2    English date (e.g. 10 Dec 2004) or unixtimestamp
- * @return int Difference of the two dates in the unit of time indicated by the interval
+ * @param  string|int $date1    English date (e.g. 10 Dec 2004) or unixtimestamp
+ * @param  string|int $date2    English date (e.g. 10 Dec 2004) or unixtimestamp
+ * @return int                  Difference of the two dates in the unit of time indicated by the interval
  */
 function COM_dateDiff($interval, $date1, $date2)
 {
@@ -6673,9 +6631,9 @@ function COM_onFrontpage()
  * the inverted return values, it has been deprecated and is only provided for
  * backward compatibility - use COM_onFrontpage() instead.
  *
- * @return bool
+ * @return      bool
  * @deprecated since Geeklog 1.4.1
- * @see        COM_onFrontpage
+ * @see         COM_onFrontpage
  */
 function COM_isFrontpage()
 {
@@ -6709,7 +6667,7 @@ function COM_numberFormat($number)
  *
  * @param    string $date Date in the format YYYY-MM-DD
  * @param    string $time Option time in the format HH:MM::SS
- * @return   int             UNIX Timestamp
+ * @return   int          UNIX Timestamp
  */
 function COM_convertDate2Timestamp($date, $time = '')
 {
@@ -6860,7 +6818,7 @@ function COM_displayMessageAndAbort($msg, $plugin = '', $http_status = 200, $htt
  * Return full URL of a topic icon
  *
  * @param    string $imageUrl (relative) topic icon URL
- * @return   string              Full URL
+ * @return   string           Full URL
  */
 function COM_getTopicImageUrl($imageUrl)
 {
@@ -6897,7 +6855,7 @@ function COM_getTopicImageUrl($imageUrl)
  * @param   string $url         the URL the link will point to
  * @param   array  $attr        an array of optional attributes for the link
  *                              for example array('title' => 'whatever');
- * @return  string              the HTML link
+ * @return  string             the HTML link
  */
 function COM_createLink($content, $url, $attr = array())
 {
@@ -7088,7 +7046,7 @@ function COM_getLanguageId($language = '')
  * @param    string $field name of the "id" field, e.g. 'sid' for stories
  * @param    string $type  part of the SQL expression, e.g. 'WHERE', 'AND'
  * @param    string $table table name if ambiguous, e.g. in JOINs
- * @return   string          SQL expression string (may be empty)
+ * @return   string        SQL expression string (may be empty)
  */
 function COM_getLangSQL($field, $type = 'WHERE', $table = '')
 {
@@ -7248,11 +7206,11 @@ function COM_getLanguageName()
 /**
  * Returns text that will display if JavaScript is not enabled in the browser
  *
- * @param    boolean $warning            If true displays default JavaScript recommended warning message
+ * @param    boolean $warning           If true displays default JavaScript recommended warning message
  *                                       If false displays default JavaScript Required message
  * @param    string  $noScriptMessage   Used instead of default message
- * @param    string  $link_message       Secondary message that may contain a link
- * @return   string                      noscript html tag with message(s)
+ * @param    string  $link_message      Secondary message that may contain a link
+ * @return   string                     noscript html tag with message(s)
  */
 function COM_getNoScript($warning = true, $noScriptMessage = '', $link_message = '')
 {
@@ -7295,7 +7253,7 @@ function COM_getNoScript($warning = true, $noScriptMessage = '', $link_message =
  * @param    string $title     Text for the tooltip title (if there is one). Can include HTML.
  * @param    string $template  Specify a different template to use (classic, critical, help, information, warning).
  * @param    string $class     Specify a different tooltip class to use.
- * @return   string              HTML tooltip
+ * @return   string            HTML tooltip
  */
 function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $template = 'classic', $class = 'gl-tooltip')
 {
@@ -7350,7 +7308,7 @@ function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $t
  * @param    int    $maxLen   max. number of characters in the truncated string
  * @param    string $filler   optional filler string, e.g. '...'
  * @param    int    $endChars number of characters to show after the filler
- * @return   string              truncated string
+ * @return   string           truncated string
  */
 function COM_truncateHTML($htmlText, $maxLen, $filler = '', $endChars = 0)
 {
@@ -7402,13 +7360,13 @@ function COM_truncateHTML($htmlText, $maxLen, $filler = '', $endChars = 0)
  * e.g. '...', to indicate the truncation.
  * This function is multi-byte string aware, based on a patch by Yusuke Sakata.
  * NOTE: The truncated string may be shorter but will never be longer than
- *       $maxlen characters, i.e. the $filler string is taken into account.
+ *       $maxLen characters, i.e. the $filler string is taken into account.
  *
  * @param    string $text     the text string to truncate
  * @param    int    $maxLen   max. number of characters in the truncated string
  * @param    string $filler   optional filler string, e.g. '...'
  * @param    int    $endChars number of characters to show after the filler
- * @return   string              truncated string
+ * @return   string           truncated string
  */
 function COM_truncate($text, $maxLen, $filler = '', $endChars = 0)
 {
@@ -7847,10 +7805,10 @@ function COM_renderWikiText($wikiText)
 /**
  * Set the {lang_id} and {lang_attribute} variables for a template
  *
- * @param    object &$template template to use
+ * @param    Template $template template to use
  * @return   void
  */
-function COM_setLangIdAndAttribute(&$template)
+function COM_setLangIdAndAttribute($template)
 {
     global $_CONF, $LANG_ISO639_1;
 
@@ -7935,7 +7893,7 @@ function COM_output($display)
  * and for text excerpts.
  *
  * @param    string $text original text, including HTML and line breaks
- * @return   string          continuous plain text
+ * @return   string       continuous plain text
  */
 function COM_getTextContent($text)
 {
@@ -7973,7 +7931,7 @@ function COM_getTextContent($text)
     // only now remove all HTML tags
     $text = strip_tags($text);
 
-    // replace all tabs, newlines, and carrriage returns with spaces
+    // replace all tabs, newlines, and carriage returns with spaces
     $text = str_replace(array("\011", "\012", "\015"), ' ', $text);
 
     // replace entities with plain spaces
@@ -7990,7 +7948,7 @@ function COM_getTextContent($text)
  * a version number that can be parsed by PHP's "version_compare()"
  *
  * @param    string $version Geeklog version number
- * @return   string                  Generic version number that can be correctly handled by PHP
+ * @return   string          Generic version number that can be correctly handled by PHP
  */
 function COM_versionConvert($version)
 {
@@ -8140,9 +8098,9 @@ function COM_checkInstalled()
 /**
  * Provide support for drop-in replacable template engines
  *
- * @param    string $root    Path to template root
- * @param    array  $options List of options to pass to constructor
- * @return   Template        An ITemplate derived object
+ * @param    string   $root    Path to template root
+ * @param    array    $options List of options to pass to constructor
+ * @return   Template          An ITemplate derived object
  */
 function COM_newTemplate($root, $options = Array())
 {
@@ -8182,7 +8140,8 @@ function COM_getEncodingt()
         $valid_charsets = array(
             'iso-8859-1', 'iso-8859-15', 'utf-8', 'cp866', 'cp1251',
             'cp1252', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs',
-            'shift_jis', 'sjis', 'euc-jp');
+            'shift_jis', 'sjis', 'euc-jp'
+        );
         if (!in_array($encoding, $valid_charsets)) {
             $encoding = 'iso-8859-1';
         }
@@ -8196,7 +8155,7 @@ function COM_getEncodingt()
  * depending on the detected setting.
  *
  * @param    string $string The string to modify
- * @return   string             The modified string
+ * @return   string         The modified string
  */
 function COM_nl2br($string)
 {
@@ -8275,9 +8234,9 @@ function COM_getLangIso639Code($langName = null)
 /**
  * Setup Advanced Editor
  *
- * @param   string $custom         location of custom script file relative to
+ * @param   string $custom        location of custom script file relative to
  *                                 public_html directory. Include '/' at beginning
- * @param   string $permissions    comma-separated list of rights which identify the current user as an "Admin"
+ * @param   string $permissions   comma-separated list of rights which identify the current user as an "Admin"
  * @param   string $myEditor
  * @return  void
  */
