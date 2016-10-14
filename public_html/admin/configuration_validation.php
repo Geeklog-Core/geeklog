@@ -159,13 +159,9 @@ $_CONF_VALIDATE['Core']['path_pear'] = array(
 );
 
 /* Subgroup Site, Tab MySQL */
-$_CONF_VALIDATE['Core']['allow_mysqldump'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['mysqldump_path'] = array(
-    'rule' => 'file',
-    'message' => isset($LANG_VALIDATION['file']) ?
-                 $LANG_VALIDATION['file'] : $LANG_VALIDATION['default']
-);
-$_CONF_VALIDATE['Core']['mysqldump_filename_mask'] = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['Core']['dbdump_tables_only'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['dbdump_gzip'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['dbdump_filename_prefix'] = array('rule' => 'stringOrEmpty');
 
 /* Subgroup Site, Tab Search */
 $_CONF_VALIDATE['Core']['search_style'] = array('rule' => array('inList', array('google', 'table'), true));

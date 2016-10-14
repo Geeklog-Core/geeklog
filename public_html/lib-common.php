@@ -105,6 +105,12 @@ $_CONF = $config->get_config('Core');
 // Get features that has ft_name like 'config%'
 $_CONF_FT = $config->_get_config_features();
 
+// Load in Geeklog Variables Table
+$result = DB_query("SELECT * FROM {$_TABLES['vars']}");
+while ($row = DB_fetchArray($result) ) {
+    $_VARS[$row['name']] = $row['value'];
+}
+
 // Before we do anything else, check to ensure site is enabled
 if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
     if (empty($_CONF['site_disabled_msg'])) {
@@ -488,7 +494,7 @@ if (empty($serialized_topic_tree)) {
 $sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
 $result = DB_query($sql);
 $A = DB_fetchArray($result);
-if (DB_getItem($_TABLES['vars'], 'value', "name='last_article_publish'") != $A['date']) {
+if ($_VARS['last_article_publish'] != $A['date']) {
     //Set new latest article published
     DB_query("UPDATE {$_TABLES['vars']} SET value='{$A['date']}' WHERE name='last_article_publish'");
 
@@ -1444,7 +1450,7 @@ function COM_siteFooter($rightBlock = -1, $custom = '')
  */
 function COM_createHTMLDocument(&$content = '', $information = array())
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
+    global $_CONF, $_VARS, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
            $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_PAGE_TIMER, $relLinks;
 
     // Retrieve required variables from information array
@@ -3304,7 +3310,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                         'image'     => $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE,
                     ),
                     array(
-                        'condition' => ($_CONF['allow_mysqldump'] == 1) && ($_DB_dbms == 'mysql') && SEC_inGroup('Root'),
+                        'condition' => SEC_inGroup('Root'),
                         'url'       => $_CONF['site_admin_url'] . '/database.php',
                         'lang'      => $LANG01[103],
                         'num'       => '',
@@ -4636,7 +4642,7 @@ function COM_emailUserTopicsUrlRewriter(array $matches)
  */
 function COM_emailUserTopics()
 {
-    global $_CONF, $_TABLES, $LANG04, $LANG08, $LANG24;
+    global $_CONF, $_VARS, $_TABLES, $LANG04, $LANG08, $LANG24;
 
     if ($_CONF['emailstories'] == 0) {
         return;
@@ -4654,7 +4660,7 @@ function COM_emailUserTopics()
 
     $users = DB_query($userSql);
     $numRows = DB_numRows($users);
-    $lastRun = DB_getItem($_TABLES['vars'], 'value', "name = 'lastemailedstories'");
+    $lastRun = $_VARS['lastemailedstories'];
 
     // For each user, pull the stories they want and email it to them
     for ($x = 0; $x < $numRows; $x++) {
@@ -6524,6 +6530,14 @@ function COM_dateDiff($interval, $date1, $date2)
     return $diff;
 }
 
+/*
+ * Determine if running via AJAX call - return true if AJAX or false otherwise
+ */
+
+function COM_isAjax() {
+	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+}
+
 /**
  * Try to figure out our current URL, including all parameters.
  * This is an ugly hack since there's no single variable that returns what
@@ -8347,11 +8361,13 @@ foreach ($_PLUGINS as $pi_name) {
 
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
-if ($_CONF['cron_schedule_interval'] > 0) {
-    if ((DB_getItem($_TABLES['vars'], 'value', "name='last_scheduled_run'")
-            + $_CONF['cron_schedule_interval']) <= time()
-    ) {
-        DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
+if ( !isset($_VARS['last_scheduled_run'] ) ) {
+    $_VARS['last_scheduled_run'] = 0;
+}
+if ( $_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage() ) {
+    if (( $_VARS['last_scheduled_run']
+            + $_CONF['cron_schedule_interval'] ) <= time()) {
+        DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
         PLG_runScheduledTask();
     }
 }

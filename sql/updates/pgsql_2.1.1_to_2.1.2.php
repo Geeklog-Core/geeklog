@@ -84,6 +84,22 @@ function update_ConfValuesFor212()
 
     // Add mail charset
     $c->add('mail_charset', '', 'text', 0, 1, NULL, 195, TRUE, $me, 1);
+    
+    // Delete MYSQL Dump Tab, section, and config options
+    $c->del('tab_mysql', $me);
+    $c->del('fs_mysql', $me);
+    $c->del('allow_mysqldump', $me);
+    $c->del('mysqldump_path', $me);
+    $c->del('mysqldump_options', $me);
+    $c->del('mysqldump_filename_mask', $me);
+    
+    // Add Database Backup config options
+    $c->add('tab_database', NULL, 'tab', 0, 5, NULL, 0, TRUE, $me, 5);
+    $c->add('fs_database_backup', NULL, 'fieldset', 0, 5, NULL, 0, TRUE, $me, 5);
+    $c->add('dbdump_filename_prefix','geeklog_db_backup','text',0,5,NULL,170,TRUE, $me, 5);    
+    $c->add('dbdump_tables_only',0,'select',0,5,0,175,TRUE, $me, 5);
+    $c->add('dbdump_gzip',1,'select',0,5,0,180,TRUE, $me, 5); 
+    $c->add('dbdump_max_files',10,'text',0,5,NULL,185,TRUE, $me, 5);
 
     return true;
 }

@@ -255,7 +255,7 @@ the admin panel.</p>
     <td valign="top">location of the Geeklog language files</td></tr>
 <tr><td valign="top"><a name="desc_backup_path">backup_path</a></td>
     <td valign="top">/path/to/geeklog/backups/</td>
-    <td valign="top">location where mysqldump (see above) will store database backups</td></tr>
+    <td valign="top">location where database backups are stored</td></tr>
 <tr><td valign="top"><a name="desc_path_data">path_data</a></td>
     <td valign="top">/path/to/geeklog/data/</td>
     <td valign="top">File system path for the data directory, used e.g. for the user batch add feature</td></tr>
@@ -289,34 +289,25 @@ the admin panel.</p>
         PEAR::Mail for sending emails).</td></tr>
 </table>
 
-<h3><a name="site_mysql">Site: MySQL</a></h3>
-
-<p>As the name implies, these options are only relevant when your site is
-running on a MySQL database. They are ignored when using MS SQL.</p>
+<h3><a name="site_database">Site: Database</a></h3>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
     <th style="width:29%">Default Value</th>
     <th style="width:63%">Description</th></tr>
-<tr><td valign="top"><a name="desc_allow_mysqldump">allow_mysqldump</a></td>
-    <td valign="top">1</td>
-    <td valign="top">Enable or disable the backup functionality (1 = on,
+<tr><td valign="top"><a name="desc_dbdump_filename_prefix">dbdump_filename_prefix</a></td>
+    <td valign="top">geeklog_db_backup</td>
+    <td valign="top">Prefix to use for the names of the backup files. Default file name will be "geeklog_db_backup_date_time.sql".</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_tables_only">dbdump_tables_only</a></td>
+    <td valign="top">0</td>
+    <td valign="top">Enable or disable dumping of table structure only, else dump both table and table data (1 = on,
         0 = off).</td></tr>
-<tr><td valign="top"><a name="desc_mysqldump_path">_DB_mysqldump_path</a></td>
-    <td valign="top">/usr/bin/mysqldump</td>
-    <td valign="top">Complete path to the <a
-        href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> utility
-        (part of MySQL) for making backups of your Geeklog database.</td></tr>
-<tr><td valign="top"><a name="desc_mysqldump_options">mysqldump_options</a></td>
-    <td valign="top">-Q</td>
-    <td valign="top">Here you can include additional options for the <a
-        href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> call
-        that Geeklog uses to create a backup from your database.</td></tr>
-<tr><td valign="top"><a name="desc_mysqldump_filename_mask">mysqldump_filename_mask</a></td>
-    <td valign="top">geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql</td>
-    <td valign="top">Mask to use for the names of the backup files. See <a
-        href="#date_formats">date formats</a> below for details of the date and
-        time in the file name.</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_gzip">dbdump_gzip</a></td>
+    <td valign="top">1</td>
+    <td valign="top">Compress database dump if gzip is available.</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_max_files">dbdump_max_files</a></td>
+    <td valign="top">10</td>
+    <td valign="top">Limit the number of backup files to keep. Use "0" to disable purging.</td></tr>
 </table>
 
 <h3><a name="site_search">Site: Search</a></h3>

@@ -1,0 +1,23 @@
+{start_block}
+
+{admin_menu}
+
+<h2>{lang_title}</h2>
+
+<p>{lang_conversion_instructions}</p>
+
+<p>{lang_conversion_status}</p>
+
+<div id="dbconfig">
+	<form id="dbcvtform" class="uk-form" action="{site_admin_url}/database.php" method="post" style="display:inline;">
+		<input type="hidden" name="{action}" value="{action}">
+		<input type="hidden" name="toengine" value="{to_engine}">
+		<input type="hidden" name="{security_token_name}" value="{security_token}">
+		<div style="margin:10px;">
+			<input id="dbconvertbutton" type="submit" value="{lang_convert}">&nbsp;&nbsp;
+			<input id="dbcancelbutton" name="dbcancelbutton" type="submit" value="{lang_cancel}">
+		</div>
+	</form>
+</div>
+
+{end_block}

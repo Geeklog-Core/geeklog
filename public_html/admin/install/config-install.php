@@ -99,12 +99,20 @@ function install_config()
     $c->add('have_pear',FALSE,'select',0,4,1,135,TRUE, $me, 4);
     $c->add('path_pear','','text',0,4,NULL,140,TRUE, $me, 4);
 
+    /*
     $c->add('tab_mysql', NULL, 'tab', 0, 5, NULL, 0, TRUE, $me, 5);
     $c->add('fs_mysql', NULL, 'fieldset', 0, 5, NULL, 0, TRUE, $me, 5);
     $c->add('allow_mysqldump',1,'select',0,5,0,170,TRUE, $me, 5);
     $c->add('mysqldump_path','/usr/bin/mysqldump','text',0,5,NULL,175,TRUE, $me, 5);
     $c->add('mysqldump_options','-Q','text',0,5,NULL,180,TRUE, $me, 5);
     $c->add('mysqldump_filename_mask','geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql','text',0,5,NULL,185,TRUE, $me, 5);
+    */
+    $c->add('tab_database', NULL, 'tab', 0, 5, NULL, 0, TRUE, $me, 5);
+    $c->add('fs_database_backup', NULL, 'fieldset', 0, 5, NULL, 0, TRUE, $me, 5);
+    $c->add('dbdump_filename_prefix','geeklog_db_backup','text',0,5,NULL,170,TRUE, $me, 5);    
+    $c->add('dbdump_tables_only',1,'select',0,5,0,175,TRUE, $me, 5);
+    $c->add('dbdump_gzip',1,'select',0,5,0,180,TRUE, $me, 5);
+    $c->add('dbdump_max_files',10,'text',0,5,NULL,185,TRUE, $me, 5);
 
     // squeeze search options between 640 (lastlogin) and 680 (loginrequired)
     $c->add('tab_search', NULL, 'tab', 0, 6, NULL, 0, TRUE, $me, 6);

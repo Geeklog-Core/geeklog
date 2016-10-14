@@ -255,29 +255,25 @@
     <td valign="top">上記の「PEARをインストールしている」が「いいえ」のとき、Geeklogが必要とする<a href="http://pear.php.net/">PEAR</a>パッケージ(メール送信時のPEAR::Mailなど)を探すパスを指定します。</td></tr>
 </table>
 
-<h3><a name="site_mysql">サイト: MySQL</a></h3>
+<h3><a name="site_database">Site: Database</a></h3>
 
-<p>名前が示すように、以下の設定が意味を持つのはサイトをMySQLで運用しているときだけです。PostgreSQLやMicrosoft SQL Serverで運用しているときには無視されます。</p>
-
-<table>
-<tr><th style="width:25%">項目(変数)</th>
-    <th style="width:25%">デフォルト</th>
-    <th style="width:50%">説明</th></tr>
-<tr><td valign="top"><a name="desc_allow_mysqldump">MySQLのダンプを許可する(allow_mysqldump)</a></td>
-    <td valign="top">はい</td>
-    <td valign="top">「はい」にすると、管理者によるバックアップを有効にします。</td></tr>
-<tr><td valign="top"><a name="desc_mysqldump_path">mysqldump のパス(_DB_mysqldump_path)</a></td>
-    <td valign="top">/usr/bin/mysqldump</td>
-    <td valign="top">データベースのバックアップを取るための<a href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump(.exe)</a>ユーティリティ(MySQLに含まれている)の完全なパスを指定します。Microsoft Windowsの場合は、<code>c:/mysql/bin/mysqldump.exe</code>のように、パスに.exeを含める必要があります。</td></tr>
-<tr>
-  <td valign="top"><a name="desc_mysqldump_options">mysqldump のオプション(mysqldump_options)</a></td>
-    <td valign="top">-Q</td>
-    <td valign="top">データベースのバックアップを取るために、<a href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> を呼び出すときのオプションの引数を指定します。</td>
-</tr>
-<tr><td valign="top"><a name="desc_mysqldump_filename_mask">バックアップファイル名(mysqldump_filename_mask</a>)</td>
-    <td valign="top">geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql</td>
-    <td valign="top">バックアップファイル名のひな形です。<a
-        href="#date_formats">date formats</a>を参照してファイル名を作成します。</td></tr>
+<table border="1" width="100%">
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Default Value</th>
+    <th style="width:63%">Description</th></tr>
+<tr><td valign="top"><a name="desc_dbdump_filename_prefix">dbdump_filename_prefix</a></td>
+    <td valign="top">geeklog_db_backup</td>
+    <td valign="top">Prefix to use for the names of the backup files. Default file name will be "geeklog_db_backup_date_time.sql".</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_tables_only">dbdump_tables_only</a></td>
+    <td valign="top">0</td>
+    <td valign="top">Enable or disable dumping of table structure only, else dump both table and table data (1 = on,
+        0 = off).</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_gzip">dbdump_gzip</a></td>
+    <td valign="top">1</td>
+    <td valign="top">Compress database dump if gzip is available.</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_max_files">dbdump_max_files</a></td>
+    <td valign="top">10</td>
+    <td valign="top">Limit the number of backup files to keep. Use "0" to disable purging.</td></tr>
 </table>
 
 <h3><a name="site_search">サイト: 検索</a></h3>

@@ -1,0 +1,22 @@
+{start_block}
+
+{admin_menu}
+
+<h2>{lang_title}</h2>
+
+<p>{lang_backup_instructions}</p>
+
+{!if lang_last_backup}
+<p>{lang_last_lastbackup} : {last_lastbackup}</p>
+{!endif}
+
+<div id="dbbackup">
+	<form id="dbbackupform" class="uk-form" action="{site_admin_url}/database.php" method="post" style="display:inline;">
+		<input type="hidden" name="{action}" value="{action}">
+		<input type="hidden" name="{security_token_name}" value="{security_token}">
+		<button id="dbbackupbutton" class="uk-button uk-button-primary" type="submit" >{lang_backup}</button>
+		<button id="dbcancelbutton" name="dbcancelbutton" class="uk-button uk-button-danger" type="submit" >{lang_cancel}</button>
+	</form>
+</div>
+
+{end_block}
