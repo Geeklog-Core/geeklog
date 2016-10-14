@@ -1,5 +1,6 @@
 <?php
 /**
+*   Geeklog Database Backup Class.
 *   Based on the Wordpress wp-db-backup plugin by Austin Matzko
 *   http://www.ilfilosofo.com/
 *
@@ -50,6 +51,7 @@ class dbBackup
     */
     public function __construct($fromCron = false)
     {
+        global $_CONF, $_TABLES;
 
         $this->setGZip(true);
         $this->fromCron = $fromCron ? true : false;
@@ -78,8 +80,11 @@ class dbBackup
     */
     public function getBackupFilename()
     {
+        global $_CONF;
 
         // Create the backup filename
+        $table_prefix = empty($_CONF['dbdump_filename_prefix']) ?
+            'geeklog_db_backup_' : $_CONF['dbdump_filename_prefix'] . '_';
         $datum = date("Y_m_d_H_i_s");
         $this->backup_filename = $table_prefix . $datum . '.sql';
         if ($this->gzip) $this->backup_filename .= '.gz';
@@ -418,6 +423,7 @@ class dbBackup
         }
 
         //Begin new backup of MySql
+        $this->stow("# Geeklog MySQL database backup\n");
         $this->stow("#\n");
         $this->stow('# Generated: ' . date('l j. F Y H:i T') .  "\n");
         $this->stow("# Hostname: $_DB_host\n");
@@ -439,12 +445,14 @@ class dbBackup
     */
     private function backupDB()
     {
+        global $_TABLES, $_CONF;
 
         if ( $this->initBackup() === false ) {
             return false;
         }
 
         foreach ($this->tablenames as $key=>$table) {
+            if (isset($_CONF['dbdump_tables_only']) && $_CONF['dbdump_tables_only']) {
                 $this->backupTable($table,true);
             } else {
                 $this->backupTable($table);
@@ -601,6 +609,7 @@ class dbBackup
 
     /**
     *   Deliver a backup file.
+    *   Originally had the option of "http" or "smtp", but for Geeklog
     *   only "smtp" is needed.  Files can be downloaded at any time via
     *   the backup admin interface.
     */
@@ -656,12 +665,14 @@ class dbBackup
     */
     function setGZip($val=true)
     {
+        global $_CONF;
 
         switch ($val) {
         case false:
             $this->gzip = false;
             break;
         case true:
+            if (isset($_CONF['dbdump_gzip']) && $_CONF['dbdump_gzip']) {
                 $this->gzip = function_exists('gzopen') ? true : false;
             } else {
                 $this->gzip = false;
@@ -679,9 +690,12 @@ class dbBackup
     */
     public function Purge($files = 0)
     {
+        global $_CONF;
 
+        if ( !isset($_CONF['dbdump_max_files'])) $_CONF['dbdump_max_files'] = 5;
 
         if ($files == 0) {
+            $files = (int)$_CONF['dbdump_max_files'];
         }
         if ($files == 0) return;
 
