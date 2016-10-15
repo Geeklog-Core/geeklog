@@ -294,17 +294,6 @@ class config
         $retval = false;
 
         if (array_key_exists($group, $this->config_array)) {
-            // an ugly little hack to ensure backward compatibility ...
-            if ($group === 'Core') {
-                global $_DB_mysqldump_path;
-
-                if (isset($this->config_array[$group]['mysqldump_path'])) {
-                    $_DB_mysqldump_path = $this->config_array[$group]['mysqldump_path'];
-                } else {
-                    $_DB_mysqldump_path = '';
-                }
-            }
-
             return $this->config_array[$group];
         }
 

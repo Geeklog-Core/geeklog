@@ -3064,7 +3064,6 @@ class Installer
                                      */
 
                                     // Hack: not needed here - avoid notice
-                                    $_DB_mysqldump_path = '';
                                     require_once  dirname(__FILE__) . '/../../../lib-common.php';
                                     $this->defaultPluginInstall();
                                 }
