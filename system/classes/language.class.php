@@ -295,7 +295,7 @@ class Language
         );
         $textArray = array(
             'has_extras' => true,
-            'title'      => $LANG_LANG['editor_title'],
+            'title'      => $LANG_LANG['language_editor'],
         );
         $queryArray = array(
             'sql'         => "SELECT * FROM {$_TABLES['language_items']} ",
@@ -303,6 +303,7 @@ class Language
         );
         $defaultSortArray = array(
             'direction' => 'ASC',
+            'field'     => 'id',
         );
         $filter = '';
         $extra = '';

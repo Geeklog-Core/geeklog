@@ -3119,7 +3119,9 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                 $storyCount = 0;
                 $submissionCount = 0;
                 $syndicationCount = 0;
+                $commentCount = 0;
                 $trackBackCount = $LANG_ADMIN['na'];
+
                 if ($isAdminMenu) {
                     // Find num of blocks
                     $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['blocks']}" . COM_getPermSQL());
