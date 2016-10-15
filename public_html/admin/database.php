@@ -1087,7 +1087,7 @@ function DBADMIN_validateEngine( $engine )
 */
 function DBADMIN_configBackup()
 {
-    global $_CONF, $_TABLES, $_VARS, $LANG_DB_BACKUP, $LANG_ADMIN, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $_VARS, $LANG_DB_BACKUP, $LANG_ADMIN, $_IMAGE_TYPE, $_SCRIPTS;
 
     $tablenames = $_TABLES;
     $included = '';
@@ -1106,9 +1106,11 @@ function DBADMIN_configBackup()
               'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $T = new Template($_CONF['path_layout'] . 'admin/dbadmin');
+    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
     
     $T->set_file('page','dbbackupcfg.thtml');
+    
+    $_SCRIPTS->setJavaScriptFile('move_users', '/javascript/moveusers.js');
 
     $T->set_var('start_block', COM_startBlock($LANG_DB_BACKUP['database_admin'], '',
                         COM_getBlockTemplate('_admin_block', 'header')));
