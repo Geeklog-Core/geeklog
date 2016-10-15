@@ -115,7 +115,7 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
     if (is_array($options) && isset($options['chkminimum'])) {
         $min_data = $options['chkminimum'];
     }
-    if (count($data_arr) > $min_data && is_array($options) && $options['chkdelete']) {
+    if (count($data_arr) > $min_data && is_array($options) && isset($options['chkdelete']) && $options['chkdelete']) {
         $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="' . $LANG01[126] . '" onclick="caItems(this.form);"' . XHTML . '>');
         $admin_templates->set_var('class', "admin-list-field");
         $admin_templates->set_var('show_deleteimage', '');
@@ -149,7 +149,7 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
         $admin_templates->set_var('show_message', 'display:none;');
         $useFieldFunction = is_callable($fieldFunction);
         for ($i = 0; $i < count($data_arr); $i++) {
-            if (count($data_arr) > $min_data && is_array($options) && $options['chkdelete']) {
+            if (count($data_arr) > $min_data && is_array($options) && isset($options['chkdelete']) && $options['chkdelete']) {
                 $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']] . '"' . XHTML . '>');
                 $admin_templates->set_var('class', "admin-list-field");
                 $admin_templates->parse('item_field', 'field', true);
