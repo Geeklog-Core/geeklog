@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
 {start_block}
 
 {admin_menu}
@@ -21,3 +23,5 @@
 </div>
 
 {end_block}
+
+{# end {templatelocation} #}

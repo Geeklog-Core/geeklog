@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
 <script>
 	var engine = "{to_engine}";
 	var mode   = "{mode}";
@@ -48,3 +50,5 @@
 </div>
 
 {end_block}
+
+{# end {templatelocation} #}

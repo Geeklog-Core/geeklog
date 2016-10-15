@@ -1,4 +1,5 @@
 {# begin {templatelocation} #}
+
 <script type="text/JavaScript" src="{site_url}/javascript/moveusers.js"></script>
 
 {start_block}
@@ -41,4 +42,5 @@
 	onclick="return setUsers(this.form)" />
 </form>
 {end_block}
+
 {# end {templatelocation} #}

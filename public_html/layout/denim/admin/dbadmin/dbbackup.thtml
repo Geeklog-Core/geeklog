@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
 <script>
 	var lang_backingup = "{lang_backingup}";
 	var lang_backup = "{lang_backup}";
@@ -40,3 +42,5 @@
 
 
 {end_block}
+
+{# end {templatelocation} #}
