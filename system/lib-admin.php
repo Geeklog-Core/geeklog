@@ -302,7 +302,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     }
 
     // Check if the delete checkbox and support for the delete all feature should be displayed
-    if (is_array($options) AND $options['chkdelete']) {
+    if (is_array($options) && isset($options['chkdelete']) && $options['chkdelete']) {
         $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="' . $LANG01[126] . '" onclick="caItems(this.form);"' . XHTML . '>');
         $admin_templates->set_var('class', "admin-list-field");
         $admin_templates->set_var('show_deleteimage', '');
@@ -514,7 +514,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     for ($i = 0; $i < $numRows; $i++) { # now go through actual data
         $A = DB_fetchArray($result);
         $this_row = false; # as long as no fields are returned, dont print row
-        if (is_array($options) && $options['chkdelete']) {
+        if (is_array($options) && isset($options['chkdelete']) && $options['chkdelete']) {
             $admin_templates->set_var('class', "admin-list-field");
             $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $A[$options['chkfield']] . '"' . XHTML . '>');
             $admin_templates->parse('item_field', 'field', true);
