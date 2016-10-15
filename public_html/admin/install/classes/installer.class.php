@@ -522,7 +522,7 @@ class Installer
             $paths['public_html/'] . 'images/articles/',
             $paths['public_html/'] . 'images/topics/',
             $paths['public_html/'] . 'images/userphotos',
-            $paths['public_html/'] . 'filemanager/scripts/filemanager.config.js',
+            $paths['public_html/'] . 'filemanager/scripts/filemanager.config.json',
             $paths['public_html/'] . 'images/library/File/',
             $paths['public_html/'] . 'images/library/Flash/',
             $paths['public_html/'] . 'images/library/Image/',

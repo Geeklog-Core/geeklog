@@ -16,12 +16,11 @@
  *	@copyright	Authors
  */
 
-require_once dirname(__FILE__) . '/../../../lib-common.php';
+require_once __DIR__ . '/../../../lib-common.php';
 
 /**
  *	Check if user is authorized
  *	
- *
  *	@return boolean true if access granted, false if no access
  */
 function auth() {
@@ -46,5 +45,3 @@ function auth() {
 
 // we instantiate the Filemanager
 $fm = new Filemanager();
-
-?>
