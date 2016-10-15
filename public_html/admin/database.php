@@ -326,7 +326,7 @@ function DBADMIN_backupPrompt()
 
     if (is_writable($_CONF['backup_path'])) {
 
-        $T = new Template($_CONF['path_layout'] . 'admin/dbadmin');
+        $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
         $T->set_file('page','dbbackup.thtml');
 
         $lastrun = DB_getItem($_TABLES['vars'], 'UNIX_TIMESTAMP(value)',
@@ -554,8 +554,9 @@ function DBADMIN_innodb()
     global $_CONF, $LANG01, $LANG_ADMIN, $LANG_DB_BACKUP, $_IMAGE_TYPE;
 
     $retval = '';
-
-    $T = new Template($_CONF['path_layout'] . 'admin/dbadmin');
+    
+    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
+    
     $T->set_file('page','dbconvert.thtml');
 
     $menu_arr = array(
@@ -608,7 +609,8 @@ function DBADMIN_myisam()
 
     $retval = '';
 
-    $T = new Template($_CONF['path_layout'] . 'admin/dbadmin');
+    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
+    
     $T->set_file('page','dbconvert.thtml');
 
     $menu_arr = array(
@@ -836,7 +838,8 @@ function DBADMIN_optimize()
                           "name = 'lastoptimizeddb'");
 
 
-    $T = new Template($_CONF['path_layout'] . 'admin/dbadmin');
+    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
+
     $T->set_file('page','dbconvert.thtml');
 
     $menu_arr = array(
@@ -1104,6 +1107,7 @@ function DBADMIN_configBackup()
     );
 
     $T = new Template($_CONF['path_layout'] . 'admin/dbadmin');
+    
     $T->set_file('page','dbbackupcfg.thtml');
 
     $T->set_var('start_block', COM_startBlock($LANG_DB_BACKUP['database_admin'], '',
