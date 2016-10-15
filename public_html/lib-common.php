@@ -106,8 +106,10 @@ $_CONF = $config->get_config('Core');
 $_CONF_FT = $config->_get_config_features();
 
 // Load in Geeklog Variables Table
+$_VARS = array();
 $result = DB_query("SELECT * FROM {$_TABLES['vars']}");
-while ($row = DB_fetchArray($result) ) {
+
+while ($row = DB_fetchArray($result)) {
     $_VARS[$row['name']] = $row['value'];
 }
 
@@ -201,7 +203,7 @@ require_once $_CONF['path_system'] . 'lib-security.php';
 require_once $_CONF['path_system'] . 'lib-syndication.php';
 
 // This is the topic library used to manage topics.
- require_once $_CONF['path_system'] . 'lib-topic.php';
+require_once $_CONF['path_system'] . 'lib-topic.php';
 
 // This is the block library used to manage blocks.
 require_once $_CONF['path_system'] . 'lib-block.php';
@@ -523,9 +525,9 @@ if ($_VARS['last_article_publish'] != $A['date']) {
  * templates for the block are specified, the default blockheader.html and
  * blockfooter.html will be used.
  *
- * @param        string $blockName corresponds to name field in block table
- * @param        string $which     can be either 'header' or 'footer' for corresponding template
- * @param        string $position  can be 'left', 'right' or blank. If set, will be used to find a side specific
+ * @param        string $blockName  corresponds to name field in block table
+ * @param        string $which      can be either 'header' or 'footer' for corresponding template
+ * @param        string $position   can be 'left', 'right' or blank. If set, will be used to find a side specific
  *                                  override template.
  * @see function COM_startBlock
  * @see function COM_endBlock
@@ -1465,7 +1467,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     if ($_CONF['supported_version_theme'] === '1.8.1') {
         if (is_callable('COM_siteHeader') && is_callable('COM_siteFooter')) {
             return COM_siteHeader($what, $pageTitle, $headerCode) . $content
-                . COM_siteFooter($rightBlock, $custom);
+            . COM_siteFooter($rightBlock, $custom);
         } else {
             throw new Exception('COM_siteHeader and COM_siteFooter are removed. Please use COM_createHTMLDocument instead.');
         }
@@ -2973,7 +2975,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
 function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $position = '')
 {
     global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW,
-        $LANG_ENVCHECK, $LANG_ADMIN, $LANG_LANG, $_IMAGE_TYPE, $LANG_ROUTER, $_DB_dbms, $config;
+           $LANG_ENVCHECK, $LANG_ADMIN, $LANG_LANG, $_IMAGE_TYPE, $LANG_ROUTER, $_DB_dbms, $config;
 
     $retval = '';
 
@@ -3187,7 +3189,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                     // Find num of comments
                     $commentCount = COM_numberFormat(DB_count($_TABLES['comments']))
                         . '/'
-                        .  COM_numberFormat(DB_count($_TABLES['commentsubmissions']));
+                        . COM_numberFormat(DB_count($_TABLES['commentsubmissions']));
                 }
 
                 $cc_arr = array(
@@ -3273,7 +3275,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                 $routeCount = '0';
                 if ($isAdminMenu && SEC_inGroup('Root')) {
                     // Find num of URL routes
-                    $sql =  "SELECT COUNT(rid) AS cnt FROM {$_TABLES['routes']}";
+                    $sql = "SELECT COUNT(rid) AS cnt FROM {$_TABLES['routes']}";
                     $result = DB_query($sql);
 
                     if (!DB_error()) {
@@ -3579,7 +3581,7 @@ function COM_redirect($url)
  *
  * @param        string $url URL to send user to
  * @return       string      HTML meta redirect
- * @deprecated  since v2.1.2
+ * @deprecated   since v2.1.2
  * @see          COM_redirect
  */
 function COM_refresh($url)
@@ -3590,6 +3592,7 @@ function COM_refresh($url)
         return CUSTOM_refresh($url);
     } else {
         header('Content-Type: text/html; charset=' . COM_getCharset());
+
         return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
     }
 }
@@ -4132,7 +4135,8 @@ function COM_showBlocks($side, $topic = '')
  *
  * @param        array   $A          Block Record
  * @param        boolean $noBoxes    Set to true if userpref is no blocks
- * @param        boolean $noPosition Set to true if you don't want to use the left or right side footer and header of block
+ * @param        boolean $noPosition Set to true if you don't want to use the left or right side footer and header of
+ *                                   block
  * @return       string              HTML Formatted block
  */
 function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
@@ -4399,14 +4403,14 @@ function COM_rdfImport($bid, $rdfUrl, $maxHeadlines = 0)
  * You can modify this by changing $_CONF['user_html'] in the configuration
  * (for admins, see also $_CONF['admin_html']).
  *
- * @param    string  $permissions         comma-separated list of rights which identify the current user as an "Admin"
- * @param    boolean $list_only           true = return only the list of HTML tags
- * @param    int     $filter_html_flag    0 = returns allowed all html tags,
+ * @param    string  $permissions          comma-separated list of rights which identify the current user as an "Admin"
+ * @param    boolean $list_only            true = return only the list of HTML tags
+ * @param    int     $filter_html_flag     0 = returns allowed all html tags,
  *                                         1 = returns allowed HTML tags only,
  *                                         2 = returns No HTML Tags Allowed (this is used by plugins if they have
  *                                         a config that overrides Geeklogs filter html settings or do not have a
  *                                         post mode)
- * @param    string  $post_mode           Indicates if text is html, adveditor, wikitext or plaintext
+ * @param    string  $post_mode            Indicates if text is html, adveditor, wikitext or plaintext
  * @return   string                       HTML <div>/<span> enclosed string
  * @see      function COM_checkHTML
  */
@@ -4615,7 +4619,7 @@ function COM_hit()
 /**
  * Convert a relative URL to an absolute one
  *
- * @param  array  $matches
+ * @param  array $matches
  * @return string
  */
 function COM_emailUserTopicsUrlRewriter(array $matches)
@@ -5182,14 +5186,14 @@ function COM_showMessageFromParameter()
 /**
  * Prints Google(tm)-like paging navigation
  *
- * @param  string  $base_url    base url to use for all generated links. If an array, then the current parameter
+ * @param  string  $base_url     base url to use for all generated links. If an array, then the current parameter
  *                               as the first part of the url, and the end is the last part of the url
- * @param  int     $currentPage current page we are on
- * @param  int     $num_pages   Total number of pages
- * @param  string  $page_str    page-variable name AND '='
- * @param  boolean $do_rewrite  if true, url-rewriting is respected
- * @param  string  $msg         to be displayed with the navigation
- * @param  string  $open_ended  replace next/last links with this
+ * @param  int     $currentPage  current page we are on
+ * @param  int     $num_pages    Total number of pages
+ * @param  string  $page_str     page-variable name AND '='
+ * @param  boolean $do_rewrite   if true, url-rewriting is respected
+ * @param  string  $msg          to be displayed with the navigation
+ * @param  string  $open_ended   replace next/last links with this
  * @return string               HTML formatted widget
  */
 function COM_printPageNavigation($base_url, $currentPage, $num_pages,
@@ -5536,9 +5540,9 @@ function COM_getDayFormOptions($selected = '')
  * Returns Option list Containing 5 years starting with current
  * unless @selected is < current year then starts with @selected
  *
- * @param  string  $selected    Selected year
- * @param  int     $startOffset Optional (can be +/-) Used to determine start year for range of years
- * @param  int     $endOffset   Optional (can be +/-) Used to determine end year for range of years
+ * @param  string $selected    Selected year
+ * @param  int    $startOffset Optional (can be +/-) Used to determine start year for range of years
+ * @param  int    $endOffset   Optional (can be +/-) Used to determine end year for range of years
  * @see    function COM_getMonthFormOptions
  * @see    function COM_getDayFormOptions
  * @see    function COM_getHourFormOptions
@@ -5678,7 +5682,7 @@ function COM_getMinuteFormOptions($selected = '', $step = 1)
  * @param  string $selected
  * @param  int    $step
  * @return string
- * @see     COM_getMinuteFormOptions
+ * @see        COM_getMinuteFormOptions
  * @deprecated Use COM_getMinuteFormOptions instead
  */
 function COM_getMinuteOptions($selected = '', $step = 1)
@@ -6226,9 +6230,9 @@ function COM_applyBasicFilter($parameter, $isNumeric = false)
 /**
  * Sanitize a URL
  *
- * @param    string        $url               URL to sanitized
- * @param    array|string  $allowed_protocols array of allowed protocols
- * @param    string        $default_protocol  replacement protocol (default: http)
+ * @param    string       $url               URL to sanitized
+ * @param    array|string $allowed_protocols array of allowed protocols
+ * @param    string       $default_protocol  replacement protocol (default: http)
  * @return   string                           sanitized URL
  */
 function COM_sanitizeUrl($url, $allowed_protocols = '', $default_protocol = '')
@@ -6441,13 +6445,13 @@ function COM_highlightQuery($text, $query, $class = 'highlight')
  *
  * @author Tony Bibbs, tony DOT bibbs AT iowa DOT gov
  * @access public
- * @param string     $interval Can be:
- *                             y = year
- *                             m = month
- *                             w = week
- *                             h = hours
- *                             i = minutes
- *                             s = seconds
+ * @param string      $interval Can be:
+ *                              y = year
+ *                              m = month
+ *                              w = week
+ *                              h = hours
+ *                              i = minutes
+ *                              s = seconds
  * @param  string|int $date1    English date (e.g. 10 Dec 2004) or unixtimestamp
  * @param  string|int $date2    English date (e.g. 10 Dec 2004) or unixtimestamp
  * @return int                  Difference of the two dates in the unit of time indicated by the interval
@@ -6530,12 +6534,15 @@ function COM_dateDiff($interval, $date1, $date2)
     return $diff;
 }
 
-/*
- * Determine if running via AJAX call - return true if AJAX or false otherwise
+/**
+ * Determine if running via AJAX call
+ *
+ * @since  Geeklog-2.1.2
+ * @return bool   true if AJAX or false otherwise
  */
-
-function COM_isAjax() {
-	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+function COM_isAjax()
+{
+    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 }
 
 /**
@@ -6646,7 +6653,7 @@ function COM_onFrontpage()
  * backward compatibility - use COM_onFrontpage() instead.
  *
  * @return      bool
- * @deprecated since Geeklog 1.4.1
+ * @deprecated  since Geeklog 1.4.1
  * @see         COM_onFrontpage
  */
 function COM_isFrontpage()
@@ -7220,10 +7227,10 @@ function COM_getLanguageName()
 /**
  * Returns text that will display if JavaScript is not enabled in the browser
  *
- * @param    boolean $warning           If true displays default JavaScript recommended warning message
+ * @param    boolean $warning            If true displays default JavaScript recommended warning message
  *                                       If false displays default JavaScript Required message
- * @param    string  $noScriptMessage   Used instead of default message
- * @param    string  $link_message      Secondary message that may contain a link
+ * @param    string  $noScriptMessage    Used instead of default message
+ * @param    string  $link_message       Secondary message that may contain a link
  * @return   string                     noscript html tag with message(s)
  */
 function COM_getNoScript($warning = true, $noScriptMessage = '', $link_message = '')
@@ -8112,8 +8119,8 @@ function COM_checkInstalled()
 /**
  * Provide support for drop-in replacable template engines
  *
- * @param    string   $root    Path to template root
- * @param    array    $options List of options to pass to constructor
+ * @param    string $root    Path to template root
+ * @param    array  $options List of options to pass to constructor
  * @return   Template          An ITemplate derived object
  */
 function COM_newTemplate($root, $options = Array())
@@ -8154,7 +8161,7 @@ function COM_getEncodingt()
         $valid_charsets = array(
             'iso-8859-1', 'iso-8859-15', 'utf-8', 'cp866', 'cp1251',
             'cp1252', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs',
-            'shift_jis', 'sjis', 'euc-jp'
+            'shift_jis', 'sjis', 'euc-jp',
         );
         if (!in_array($encoding, $valid_charsets)) {
             $encoding = 'iso-8859-1';
@@ -8248,9 +8255,9 @@ function COM_getLangIso639Code($langName = null)
 /**
  * Setup Advanced Editor
  *
- * @param   string $custom        location of custom script file relative to
+ * @param   string $custom         location of custom script file relative to
  *                                 public_html directory. Include '/' at beginning
- * @param   string $permissions   comma-separated list of rights which identify the current user as an "Admin"
+ * @param   string $permissions    comma-separated list of rights which identify the current user as an "Admin"
  * @param   string $myEditor
  * @return  void
  */
@@ -8361,13 +8368,14 @@ foreach ($_PLUGINS as $pi_name) {
 
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
-if ( !isset($_VARS['last_scheduled_run'] ) ) {
+if (!isset($_VARS['last_scheduled_run'])) {
     $_VARS['last_scheduled_run'] = 0;
 }
-if ( $_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage() ) {
-    if (( $_VARS['last_scheduled_run']
-            + $_CONF['cron_schedule_interval'] ) <= time()) {
-        DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
+if ($_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage()) {
+    if (($_VARS['last_scheduled_run']
+            + $_CONF['cron_schedule_interval']) <= time()
+    ) {
+        DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
         PLG_runScheduledTask();
     }
 }
