@@ -7,6 +7,7 @@
     "pear/net_url2": "~2.2",
     "pear/http_request2": "~2.3.0",
     "splitbrain/php-archive": "~1.0",
+    "htmlawed/htmlawed": "~1.0",
     "swiftmailer/swiftmailer": "~5.4"
   }
 }

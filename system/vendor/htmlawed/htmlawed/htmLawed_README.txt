@@ -1492,7 +1492,7 @@ A PHP Labware internal utility - http://www.bioinformatics.org/phplabware/intern
 -- 5.1  Characters discouraged in XHTML -----------------------------
 
 
-  Characters represented by the following hexadecimal code-points are `not` invalid, even though some rules may issue messages stating otherwise.
+  Characters represented by the following hexadecimal code-points are `not` invalid, even though some validators may issue messages stating otherwise.
 
   '7f' to '84', '86' to '9f', 'fdd0' to 'fddf', '1fffe', '1ffff', '2fffe', '2ffff', '3fffe', '3ffff', '4fffe', '4ffff', '5fffe', '5ffff', '6fffe', '6ffff', '7fffe', '7ffff', '8fffe', '8ffff', '9fffe', '9ffff', 'afffe', 'affff', 'bfffe', 'bffff', 'cfffe', 'cffff', 'dfffe', 'dffff', 'efffe', 'effff', 'ffffe', 'fffff', '10fffe' and '10ffff'
 

@@ -299,6 +299,9 @@ class SitemapXML
             if (isset($_CONF['timezone'])) {
                 $timezone = $_CONF['timezone'];
 
+                // Load Date_TimeZone class
+                Date_TimeZone::getDefault();
+
                 if (array_key_exists($timezone, $GLOBALS['_DATE_TIMEZONE_DATA'])) {
                     $offset = $GLOBALS['_DATE_TIMEZONE_DATA'][$timezone]['offset'];
 

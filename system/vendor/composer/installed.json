@@ -424,5 +424,53 @@
             "unzip",
             "zip"
         ]
+    },
+    {
+        "name": "htmlawed/htmlawed",
+        "version": "1.1.22",
+        "version_normalized": "1.1.22.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kesar/HTMLawed.git",
+            "reference": "b270453ba016ee4c6dae585f047d1e4f3cc456a1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kesar/HTMLawed/zipball/b270453ba016ee4c6dae585f047d1e4f3cc456a1",
+            "reference": "b270453ba016ee4c6dae585f047d1e4f3cc456a1",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">4.4.0"
+        },
+        "time": "2016-08-27 18:53:27",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "htmLawed.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+",
+            "LGPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Santosh Patnaik",
+                "homepage": "http://www.bioinformatics.org/people/index.php?user_hash=558b661f92d0ff7b",
+                "role": "Developer"
+            }
+        ],
+        "description": "htmLawed - Process text with HTML markup to make it more compliant with HTML standards and administrative policies",
+        "homepage": "http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/",
+        "keywords": [
+            "HTMLtidy",
+            "html",
+            "sanitize",
+            "strip",
+            "tags"
+        ]
     }
 ]
