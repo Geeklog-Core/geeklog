@@ -15,6 +15,11 @@ system/pear/XML
 system/pear/scripts
 system/pear/LICENSE
 
+
+public_html/.htaccess
+public_html/web.config
+aspnet_client/
+
 db-config.php
 public_html/siteconfig.php
 system/lib-custom.php
@@ -23,9 +28,11 @@ public_html/.htaccess
 public_html/sitemap.xml
 public_html/filemanager/scripts/filemanager.config.js
 
+# cache files
 data/layout_cache/**
 data/layout_css/**
 
+# image and logs
 logs/*.log
 public_html/images/articles
 public_html/images/userphotos
@@ -34,15 +41,19 @@ public_html/images/topics
 # popular plugins, if present
 plugins/forum
 public_html/forum
-public_html/admin/forum
+public_html/admin/plugins/forum
 plugins/gus
 public_html/gus
-public_html/admin/gus
-plugins/ban
-public_html/admin/ban
+public_html/admin/plugins/gus
 plugins/autotags
 public_html/autotags
-public_html/admin/autotags
+public_html/admin/plugins/autotags
+plugins/ban
+public_html/ban
+public_html/admin/plugins/ban
+plugins/dokuwiki
+public_html/dokuwiki
+public_html/admin/plugins/dokuwiki
 
 # test framework, if present
 public_html/tests
@@ -56,6 +67,7 @@ plugins/staticpages/config.php
 
 backups/*.sql
 backups/*.tar.gz
+backups/*.gz
 backups/*.tgz
 backups/*.zip
 
@@ -63,8 +75,8 @@ backups/*.zip
 dest/
 node_modules/
 
-# ignore thumbnails created by windows
+# ignore thumbnails created by Windows
 **/Thumbs.db
 
-# ignore thumbnails created by osx
+# ignore thumbnails created by OSX
 .DS_Store
