@@ -62,7 +62,7 @@ if (!defined('XHTML')) {
     define('XHTML', ' /');
 }
 if (!defined('SUPPORTED_PHP_VER')) {
-    define('SUPPORTED_PHP_VER', '5.2.0');
+    define('SUPPORTED_PHP_VER', '5.3.3');
 }
 if (!defined('SUPPORTED_MYSQL_VER')) {
     define('SUPPORTED_MYSQL_VER', '4.1.3');
@@ -649,7 +649,7 @@ function INST_getAlertMsg($mMessage, $mType = 'notice')
  *
  * @param   string $dbconfig_path   path to db-config.php
  * @param   string $siteconfig_path path to siteconfig.php
- * @return  string                      database version, if possible
+ * @return  string                  database version, if possible
  */
 function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
 {
@@ -1189,8 +1189,7 @@ function INST_setVersion($siteconfig_path)
     $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
     fclose($siteconfig_file);
 
-    $siteconfig_data = preg_replace
-    (
+    $siteconfig_data = preg_replace(
         '/define\s*\(\'VERSION\',[^;]*;/',
         "define('VERSION', '" . VERSION . "');",
         $siteconfig_data

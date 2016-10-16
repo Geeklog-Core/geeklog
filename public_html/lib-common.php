@@ -51,7 +51,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR |
 /**
  * Turn this on to get various debug messages from the code in this library
  *
- * @global Boolean $_COM_VERBOSE
+ * @global bool $_COM_VERBOSE
  */
 $_COM_VERBOSE = false;
 
@@ -74,8 +74,7 @@ if (is_callable('set_error_handler')) {
      * You may like to change this to use it in more/less cases, if so,
      * just use the syntax used in the call to error_reporting() above.
      */
-    $defaultErrorHandler = set_error_handler('COM_handleError',
-        error_reporting());
+    $defaultErrorHandler = set_error_handler('COM_handleError', error_reporting());
 }
 
 if (is_callable('set_exception_handler')) {
@@ -86,7 +85,7 @@ if (is_callable('set_exception_handler')) {
  * Configuration Include:
  * You do NOT need to modify anything here any more!
  */
-require_once 'siteconfig.php';
+require_once __DIR__ . '/siteconfig.php';
 
 COM_checkInstalled();
 
@@ -106,6 +105,10 @@ $_CONF = $config->get_config('Core');
 $_CONF_FT = $config->_get_config_features();
 
 // Load in Geeklog Variables Table
+
+/**
+ * @global $_VARS array
+ */
 $_VARS = array();
 $result = DB_query("SELECT * FROM {$_TABLES['vars']}");
 
@@ -136,7 +139,7 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
 }
 
 // this file can't be used on its own - redirect to index.php
-if (stripos($_SERVER['PHP_SELF'], 'lib-common.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     COM_redirect($_CONF['site_url'] . '/index.php');
 }
 
@@ -144,7 +147,11 @@ if (stripos($_SERVER['PHP_SELF'], 'lib-common.php') !== false) {
 // | Library Includes: You shouldn't have to touch anything below here         |
 // +---------------------------------------------------------------------------+
 
-// Input class (since Geeklog-2.1.1)
+// Input class (since v2.1.1)
+/**
+ * @global $_INPUT array
+ * @global $_FINPUT array
+ */
 $_INPUT = new Geeklog\Input(false); // request variables with magic_quotes_gpc handled
 $_FINPUT = new Geeklog\Input(true);  // request variables with magic_quotes_gpc handled and COM_applyBasicFilter applied
 
@@ -173,20 +180,34 @@ require_once $_CONF['path_system'] . 'lib-mbyte.php';
  * Include plugin class.
  * This is a poorly implemented class that was not very well thought out.
  * Still very necessary
+ *
+ * @global $_PLUGINS array of the names of active plugins
  */
 global $_PLUGINS;
 
 require_once $_CONF['path_system'] . 'lib-plugins.php';
 
-// Include page time -- used to time how fast each page was created
+/**
+ * Include page time -- used to time how fast each page was created
+ *
+ * @global $_PAGE_TIMER timerobject
+ */
 require_once $_CONF['path_system'] . 'classes/timer.class.php';
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
-// This provides optional URL rewriting functionality.
+/**
+ * This provides optional URL rewriting functionality.
+ *
+ * @global $_URL Url
+ */
 $_URL = new Url($_CONF['url_rewrite'], $_CONF['url_routing']);
 
-// Include Device Detect class
+/**
+ * Include Device Detect class
+ *
+ * @global $_DEVICE Device
+ */
 $_DEVICE = new Device();
 
 /**
@@ -225,7 +246,9 @@ $_CONF['theme_oauth_icons'] = 0; // 0 - Use Geeklogs OAuth icons. 1 - Use theme 
  * so it's safe to always use your own copy.
  * This should hold all custom hacks to make upgrading easier.
  */
-require_once $_CONF['path_system'] . 'lib-custom.php';
+if (file_exists($_CONF['path_system'] . 'lib-custom.php')) {
+    require_once $_CONF['path_system'] . 'lib-custom.php';
+}
 
 // Session management library
 require_once $_CONF['path_system'] . 'lib-sessions.php';
@@ -237,18 +260,12 @@ if (COM_isAnonUser()) {
 }
 
 // Retrieve new topic if found
-if (isset($_GET['topic'])) {
-    $topic = COM_applyFilter($_GET['topic']);
-} elseif (isset($_POST['topic'])) {
-    $topic = COM_applyFilter($_POST['topic']);
-} else {
-    $topic = '';
-}
+$topic = $_FINPUT->get('topic', $_FINPUT->post('topic', ''));
 
 // See if user has access to view topic
 if ($topic != '') {
     $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'));
-    if (strtolower($topic) != strtolower($test_topic)) {
+    if (strtolower($topic) !== strtolower($test_topic)) {
         $topic = '';
     } else { // Make it equal to the db version since case maybe different
         $topic = $test_topic;
@@ -287,7 +304,11 @@ if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
 $TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
 
-// This provides the ability to set css and javascript.
+/**
+ * This provides the ability to set css and javascript.
+ *
+ * @global $_SCRIPTS Scripts
+ */
 $_SCRIPTS = new Scripts();
 
 // Include theme functions file which may/may not do anything
@@ -330,6 +351,8 @@ if (function_exists($func)) {
 /**
  * themes can specify the default image type
  * fall back to 'gif' if they don't
+ *
+ * @global $_IMAGE_TYPE string
  */
 if (empty($_IMAGE_TYPE)) {
     $_IMAGE_TYPE = 'gif';
@@ -345,9 +368,6 @@ if (!defined('XHTML')) {
             break;
 
         default:
-            /**
-             * @ignore
-             */
             define('XHTML', '');
             break;
     }
@@ -405,14 +425,14 @@ Language::override(array(
 /**
  * Global array of groups current user belongs to
  *
- * @global array $_GROUPS
+ * @global $_GROUPS array
  */
 $_GROUPS = COM_isAnonUser() ? SEC_getUserGroups(1) : SEC_getUserGroups($_USER['uid']);
 
 /**
  * Global array of current user permissions [read,edit]
  *
- * @global array $_RIGHTS
+ * @global $_RIGHTS array
  */
 $_RIGHTS = explode(',', SEC_getUserPermissions());
 
@@ -471,7 +491,7 @@ $relLinks = array();
 /**
  * Build global array of Topics current user has access to
  *
- * @global array $_TOPICS
+ * @global $_TOPICS array
  */
 
 // Figure out if we need to update topic tree or retrieve it from the cache
@@ -8068,16 +8088,11 @@ function COM_checkInstalled()
 {
     global $_CONF;
 
-    $not_installed = false;
-
     // this is the only thing we check for now ...
-    if (empty($_CONF) || !isset($_CONF['path']) ||
-        ($_CONF['path'] === '/path/to/Geeklog/')
-    ) {
-        $not_installed = true;
-    }
+    $isInstalled = !empty($_CONF) && is_array($_CONF) &&
+        isset($_CONF['path']) && ($_CONF['path'] !== '/path/to/Geeklog/') && @file_exists($_CONF['path']);
 
-    if ($not_installed) {
+    if (!$isInstalled) {
         $rel = '';
         $cd = getcwd();
         if (!file_exists($cd . '/admin/install/index.php')) {
@@ -8085,41 +8100,41 @@ function COM_checkInstalled()
             $rel = '../';
         }
 
-        $display =
-            '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        $version = VERSION;
+        $display = <<<HTML
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Welcome to Geeklog</title>
-<meta name="robots" content="noindex,nofollow" />
-<style type="text/css">
-  html, body {
-    color:#000;
-    background-color:#fff;
-    font-family:sans-serif;
-    text-align:center;
-  }
-</style>
+  <title>Welcome to Geeklog</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <style type="text/css">
+    html, body {
+      color: #000;
+      background-color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
-<img src="' . $rel . 'docs/images/newlogo.gif" alt="" />
+<img src="{$rel}docs/images/newlogo.gif" alt="" />
 
-<h1>Geeklog ' . VERSION . '</h1>
-<p>Please run the <a href="' . $rel . 'admin/install/index.php" rel="nofollow">install script</a> first.</p>
-<p>For more information, please refer to the <a href="' . $rel . 'docs/english/install.html" rel="nofollow">installation instructions</a>.</p>
+<h1>Geeklog {$version}</h1>
+  <p>Please run the <a href="{$rel}admin/install/index.php" rel="nofollow">install script</a> first.</p>
+  <p>For more information, please refer to the <a href="{$rel}docs/english/install.html" rel="nofollow">installation instructions</a>.</p>
 </body>
 </html>
-';
-
+HTML;
         header("HTTP/1.1 503 Service Unavailable");
         header("Status: 503 Service Unavailable");
-        header('Content-Type: text/html; charset=' . $_CONF['default_charset']);
+        header('Content-Type: text/html; charset=utf-8');
         die($display);
     }
 }
 
 /**
- * Provide support for drop-in replacable template engines
+ * Provide support for drop-in replaceable template engines
  *
  * @param    string $root    Path to template root
  * @param    array  $options List of options to pass to constructor
