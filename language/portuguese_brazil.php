@@ -1195,7 +1195,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'A instalação de plugins pode causar danos à sua instalação padrão do Geeklog e, possivelmente, até para seu sistema.  Por isso é importante que você só instale plugins que foram baixados de <a href="http://www.geeklog.net" target="_blank">Geeklog Homepage</a>, uma vez que nós testamos todos os plugins enviados para o site em uma variedade de sistemas operacionais.  É importante que você compreenda que o processo de instalação de um plugin irá requerer a execução de alguns comandos de arquivos de sistema - que podem causar problemas de segurança especialmente se você utilizar plugins de outros sites. Mesmo que você tome todos os cuidados que estamos propondo, nós não podemos garantir o sucesso de qualquer instalação e nem podemos nos responsabilizar por quaisquer danos causados na instalação de um Plugin Geeklog.  Em outras palavras, todo o risco de qualquer instalação é seu. Sempre siga as indicações de como instalar manualmente um plugin. Estas instruções sempre vem no pacote de cada instalação.',
+    1 => 'A instalação de plugins pode causar danos à sua instalação padrão do Geeklog e, possivelmente, até para seu sistema.  Por isso é importante que você só instale plugins que foram baixados de <a href="https://www.geeklog.net" target="_blank">Geeklog Homepage</a>, uma vez que nós testamos todos os plugins enviados para o site em uma variedade de sistemas operacionais.  É importante que você compreenda que o processo de instalação de um plugin irá requerer a execução de alguns comandos de arquivos de sistema - que podem causar problemas de segurança especialmente se você utilizar plugins de outros sites. Mesmo que você tome todos os cuidados que estamos propondo, nós não podemos garantir o sucesso de qualquer instalação e nem podemos nos responsabilizar por quaisquer danos causados na instalação de um Plugin Geeklog.  Em outras palavras, todo o risco de qualquer instalação é seu. Sempre siga as indicações de como instalar manualmente um plugin. Estas instruções sempre vem no pacote de cada instalação.',
     2 => 'Plug-in Disclaimer de Instalação',
     3 => 'Plug-in Formulário de Instalação',
     4 => 'Arquivo Plug-in',
@@ -1203,7 +1203,7 @@ $LANG32 = array(
     6 => 'Atenção: Plug-in já instalado!',
     7 => 'O plug-in que você está tentando instalar já existe. Remova-o antes de reinstalá-lo',
     8 => 'Houve uma falha durante a verificação de compatibilidade do Plugin',
-    9 => 'Este plugin requer uma nova versão do Geeklog. Procure fazer uma atualização da sua cópia do<a href=http://www.geeklog.net>Geeklog</a>  e ou busque uma nova versão do plugin.',
+    9 => 'Este plugin requer uma nova versão do Geeklog. Procure fazer uma atualização da sua cópia do<a href="https://www.geeklog.net">Geeklog</a>  e ou busque uma nova versão do plugin.',
     10 => '<br' . XHTML . '><b>Não há plugins instalados atualmente.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Para modificar ou apagar um plug-in, clique no número do plug-in abaixo. Para aprender mais sobre o plug-in, clique no nome do plug-in e você será direcionado para o site do plug-in. Para instalar ou atualizar um plug-in , clique em Novo Plug-in acima.',
     12 => 'nenhum nome de plugin foi fornecido para o plugineditor()',

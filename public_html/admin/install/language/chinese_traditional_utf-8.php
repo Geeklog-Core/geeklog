@@ -137,7 +137,7 @@ $LANG_INSTALL = array(
     84 => '路徑 "',
     85 => '" 好像不對. 請回去重試.',
     86 => '語言',
-    87 => 'http://www.geeklog.net/forum/index.php?forum=1',
+    87 => 'https://www.geeklog.net/forum/index.php?forum=1',
     88 => '更改目錄和所屬檔案為',
     89 => '目前版本:',
     90 => '空的資料庫?',

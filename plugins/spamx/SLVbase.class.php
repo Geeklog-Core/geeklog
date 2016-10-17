@@ -48,8 +48,6 @@ class SLVbase
     {
         global $_SPX_CONF;
 
-        require_once 'XML/RPC.php';
-
         $retval = false;
 
         if (empty($post)) {
@@ -79,7 +77,7 @@ class SLVbase
 
         $resp = $cli->send($msg, $_SPX_CONF['timeout']);
         if (!$resp) {
-            COM_errorLog('Error communicating with SLV: ' . $cli->errstr
+            COM_errorLog('Error communicating with SLV: ' . $cli->getErrorString()
                 . '; Message was ' . $msg->serialize());
         } else if ($resp->faultCode()) {
             COM_errorLog('Error communicating with SLV. Fault code: '

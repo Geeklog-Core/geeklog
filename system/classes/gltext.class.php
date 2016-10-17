@@ -275,9 +275,7 @@ class GLText
             return $wikitext;
         }
 
-        require_once 'Text/Wiki.php';
-
-        $wiki = new Text_Wiki();
+        $wiki = new Geeklog\Text\Wiki();
         $wiki->setFormatConf('Xhtml', 'translate', HTML_SPECIALCHARS);
         $wiki->setRenderConf('Xhtml', 'charset', COM_getCharset());
         $wiki->disableRule('wikilink');
@@ -292,8 +290,6 @@ class GLText
     private static function _htmLawed($str, $permissions)
     {
         global $_CONF, $_USER;
-
-        require_once $_CONF['path_system'] . 'classes/htmlawed/htmLawed.php';
 
         // Sets config options for htmLawed.  See http://www.bioinformatics.org/
         // phplabware/internal_utilities/htmLawed/htmLawed_README.htm

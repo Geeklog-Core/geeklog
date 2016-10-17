@@ -10,6 +10,7 @@ Not Released (2.1.2)
 - [Feature] Reduced block lists in Block Manager [Tom]
 - [Feature] Added ability for Geeklog to detect device type (mobile or computer) of visitor [Tom]
 - [Feature] Blocks can display based on visitor device type [Tom]
+- [Feature] Geeklog Database Backup now works without using a external program to backup. [Tom]
 - [Update] Dropped MSSQL support [Mystralkk]
 
 December 9, 2015 (2.1.1)

@@ -1194,7 +1194,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'L\'installation de plugins peut endommager le syst&egrave;me.  Il est important de n\'installer que des plugins approuv&eacute;s par <a href=\'http://www.geeklog.net\' target=\'_blank\'>Geeklog</a> car nous les testons sur plusieurs syst&egrave;mes. Installer des plugins requiert l\'ex&eacute;cution de plusieurs commandes syst&egrave;mes qui peuvent poser des probl&egrave;mes de s&eacute;curit&eacute;, particuli&egrave;rement si vous utilisez des plugins de provenances inconnues. Vous êtes averti des domages que peut causer l\'installation d\'un plugin. En d\'autres termes, vous installez des plugins &agrave; vos propres risques. Les instructions d\'installation des plugins sont incluses dans chaque plugin.',
+    1 => 'L\'installation de plugins peut endommager le syst&egrave;me.  Il est important de n\'installer que des plugins approuv&eacute;s par <a href=\'https://www.geeklog.net\' target=\'_blank\'>Geeklog</a> car nous les testons sur plusieurs syst&egrave;mes. Installer des plugins requiert l\'ex&eacute;cution de plusieurs commandes syst&egrave;mes qui peuvent poser des probl&egrave;mes de s&eacute;curit&eacute;, particuli&egrave;rement si vous utilisez des plugins de provenances inconnues. Vous êtes averti des domages que peut causer l\'installation d\'un plugin. En d\'autres termes, vous installez des plugins &agrave; vos propres risques. Les instructions d\'installation des plugins sont incluses dans chaque plugin.',
     2 => 'Instructions d\'installation d\'un plugin',
     3 => 'Formulaire d\'installation d\'un plugin',
     4 => 'Fichier du plugin',
@@ -1202,7 +1202,7 @@ $LANG32 = array(
     6 => 'Attention: plugin d&eacute;j&agrave; install&eacute;!',
     7 => 'Le plugin que vous essayez d\'installer existe d&eacute;j&agrave;.  Veuillez supprimer le plugin avant de le r&eacute;installer.',
     8 => 'Test de compatibilit&eacute; du plugin &eacute;chou&eacute;',
-    9 => 'Ce plugin requiert une version plus r&eacute;cente du syst&egrave;me. Vous pouvez mettre &agrave; jour votre <a href=\'http://www.geeklog.net\'>Geeklog</a> ou obtenir une autre version du plugin.',
+    9 => 'Ce plugin requiert une version plus r&eacute;cente du syst&egrave;me. Vous pouvez mettre &agrave; jour votre <a href=\'https://www.geeklog.net\'>Geeklog</a> ou obtenir une autre version du plugin.',
     10 => '<br' . XHTML . '><b>Aucun plugin n\'est actuellement install&eacute;.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Cliquez sur le num&eacute;ro du plugin pour le modifier ou le supprimer. Pour en savoir d\'avantage sur les plugins, cliquez sur le nom du plugin et vous serez redirig&eacute; vers le site web du plugin. Pour installer ou mettre &agrave; jour un plugin veuillez vous r&eacute;f&eacute;rer &agrave; la documentation du plugin.',
     12 => 'Aucun nom de plugin n\'a &eacute;t&eacute; pass&eacute; &agrave; plugineditor()',

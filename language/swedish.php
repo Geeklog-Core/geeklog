@@ -1195,7 +1195,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Att installera en insticksmodul kan skada din Geeklog-installation och möjligtvis även ditt system.  Det är viktigt att du bara installerar instickmoduler som du laddat hem från <a href="http://www.geeklog.net" target="_blank">Geeklog:s hemsida</a> eftersom vi testar alla våra insticksmoduler på ett flertal operativsystem.  Det är viktigt att du förstår att installationsprocessen kräver att ett fåtal filsystemskommandon kommer att exekveras.  Detta <EM>kan</EM> leda till säkerhetsproblem -- särskilt om insticksmodulen kommer från en tredje part.  Trots denna varning kan vi inte garantera någon installation.  Vi kan inte heller hållas skadeståndsskyldiga för eventuell skada som installationen av insticksmodulen kan orsaka.  Med andra ord: installera på egen risk!  För den försiktige finns det manuella installationsinstruktioner med varje insticksmodul.',
+    1 => 'Att installera en insticksmodul kan skada din Geeklog-installation och möjligtvis även ditt system.  Det är viktigt att du bara installerar instickmoduler som du laddat hem från <a href="https://www.geeklog.net" target="_blank">Geeklog:s hemsida</a> eftersom vi testar alla våra insticksmoduler på ett flertal operativsystem.  Det är viktigt att du förstår att installationsprocessen kräver att ett fåtal filsystemskommandon kommer att exekveras.  Detta <EM>kan</EM> leda till säkerhetsproblem -- särskilt om insticksmodulen kommer från en tredje part.  Trots denna varning kan vi inte garantera någon installation.  Vi kan inte heller hållas skadeståndsskyldiga för eventuell skada som installationen av insticksmodulen kan orsaka.  Med andra ord: installera på egen risk!  För den försiktige finns det manuella installationsinstruktioner med varje insticksmodul.',
     2 => 'Insticksmodul installationsvarning',
     3 => 'Insticksmodul installationsformulär',
     4 => 'Insticksmodulsfil',
@@ -1203,7 +1203,7 @@ $LANG32 = array(
     6 => 'Varning:  insticksmodul redan installerad!',
     7 => 'Insticksmodulen du försöker installera existerar redan.  Radera insticksmodulen innan du försöker installera den igen',
     8 => 'Kompatibilitetstest för insticksmodul misslyckades',
-    9 => 'Denna insticksmodul kräver en nyare version av Geeklog.  Du måste antingen uppgradera din <a href="http://www.geeklog.net">Geeklog-installation</a> eller hämta en nyare version av insticksmodulen.',
+    9 => 'Denna insticksmodul kräver en nyare version av Geeklog.  Du måste antingen uppgradera din <a href="https://www.geeklog.net">Geeklog-installation</a> eller hämta en nyare version av insticksmodulen.',
     10 => '<br' . XHTML . '><b>Inga insticksmoduler är installerade.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Klicka på insticksmodulens namn för att få information om den modulen, inklusive en länk till insticksmodulens webbsajt.  Både den installerade versionen och versionen som insticksmodulen själv rapporterar kommer att visas.  Detta hjälper dig att se om en insticksmodul behöver uppgraderas.  Läs insticksmodulens manual om du vill ha information om hur man installerar eller uppgraderar den.',
     12 => 'inget namn på insticksmodul skickades till plugineditor()',

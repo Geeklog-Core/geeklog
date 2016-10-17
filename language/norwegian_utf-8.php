@@ -1204,7 +1204,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Installasjon av plugins medfører en mulighet for skade påGeeklog installasjonen din og, muligens også systemet ditt. Det er viktig at du kun installerer plugins hentet fra <a href="http://www.geeklog.net" target="_blank">Geeklogs nettsted</a>. Vi tester alle plugins vi mottar grundig på mange forskjellige operativsystemer. Viktig: installasjon av en plugin krever utførelse av noen få systemkommandoer som kan medføre sikkerhetsproblemer særlig hvis du bruker plugins fra andre nettsteder. NB! Denne advarselen medfører ingen garanti for at installasjonen av en plugin vil gå smertefritt, ei heller tar vi ansvar for eventuell skade som følge av en installasjon. Med andre ord, installer på egen risiko. For den forsiktige så følger det instruksjoner for manuell installasjon med hver plugin.',
+    1 => 'Installasjon av plugins medfører en mulighet for skade påGeeklog installasjonen din og, muligens også systemet ditt. Det er viktig at du kun installerer plugins hentet fra <a href="https://www.geeklog.net" target="_blank">Geeklogs nettsted</a>. Vi tester alle plugins vi mottar grundig på mange forskjellige operativsystemer. Viktig: installasjon av en plugin krever utførelse av noen få systemkommandoer som kan medføre sikkerhetsproblemer særlig hvis du bruker plugins fra andre nettsteder. NB! Denne advarselen medfører ingen garanti for at installasjonen av en plugin vil gå smertefritt, ei heller tar vi ansvar for eventuell skade som følge av en installasjon. Med andre ord, installer på egen risiko. For den forsiktige så følger det instruksjoner for manuell installasjon med hver plugin.',
     2 => 'Advarsel for Plug-in Installasjon',
     3 => 'Plug-in Installasjonsskjema',
     4 => 'Plug-in Fil',
@@ -1212,7 +1212,7 @@ $LANG32 = array(
     6 => 'Advarsel: Plug-in er allerede installert!',
     7 => 'Den plug-in du forsøker å installere finnes allerede. Vennligst slett plug-in før du reinstallerer den',
     8 => 'Plugin kompatibilitetssjekk feilet',
-    9 => 'Denne plug-in krever en nyere versjon av Geeklog. Du må enten oppgradere <a href="http://www.geeklog.net">Geeklog</a> eller bruke en nyere versjon av denne plug-in.',
+    9 => 'Denne plug-in krever en nyere versjon av Geeklog. Du må enten oppgradere <a href="https://www.geeklog.net">Geeklog</a> eller bruke en nyere versjon av denne plug-in.',
     10 => '<br' . XHTML . '><b>Ingen plug-in er installert.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'For å redigere eller slette en plug-in, klikk på tallet til plug-in under. For å lære mer om en plug-in, klikk på plug-in navnet og du går til websiden til den plug-in. For å installere eller oppgradere en plug-in vennligst les dokumentasjonen for den aktuelle plug-in.',
     12 => 'plugineditor() kalt uten et plugin navn',

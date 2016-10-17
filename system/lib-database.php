@@ -219,7 +219,7 @@ function DB_query($sql, $ignore_errors = 0)
  */
 function DB_save($table, $fields, $values, $return_page = '')
 {
-    global $_DB, $_TABLES, $_CONF;
+    global $_DB;
 
     $_DB->dbSave($table, $fields, $values);
 
@@ -239,7 +239,7 @@ function DB_save($table, $fields, $values, $return_page = '')
  */
 function DB_delete($table, $id, $value, $return_page = '')
 {
-    global $_DB, $_TABLES, $_CONF;
+    global $_DB;
 
     $_DB->dbDelete($table, $id, $value);
 
@@ -273,19 +273,19 @@ function DB_getItem($table, $what, $selection = '')
  * This will change the data in the given table that meet the given criteria and will
  * redirect user to another page if told to do so
  *
- * @param        string       $table          Table to perform change on
- * @param        string       $item_to_set    field name to set
- * @param        string       $value_to_set   Value to set abovle field to
- * @param        array|string $id             field name(s) to use in where clause
- * @param        array|string $value          Value(s) to use in where clause
- * @param        string       $return_page    page to send user to when done with change
- * @param        boolean      $supress_quotes whether or not to use single quotes in where clause
+ * @param        string       $table           Table to perform change on
+ * @param        string       $item_to_set     field name to set
+ * @param        string       $value_to_set    Value to set above field to
+ * @param        array|string $id              field name(s) to use in where clause
+ * @param        array|string $value           Value(s) to use in where clause
+ * @param        string       $return_page     page to send user to when done with change
+ * @param        boolean      $suppress_quotes whether or not to use single quotes in where clause
  */
-function DB_change($table, $item_to_set, $value_to_set, $id = '', $value = '', $return_page = '', $supress_quotes = false)
+function DB_change($table, $item_to_set, $value_to_set, $id = '', $value = '', $return_page = '', $suppress_quotes = false)
 {
-    global $_DB, $_TABLES, $_CONF;
+    global $_DB;
 
-    $_DB->dbChange($table, $item_to_set, $value_to_set, $id, $value, $supress_quotes);
+    $_DB->dbChange($table, $item_to_set, $value_to_set, $id, $value, $suppress_quotes);
 
     if (!empty($return_page)) {
         COM_redirect("$return_page");
@@ -317,16 +317,16 @@ function DB_count($table, $id = '', $value = '')
  * @param        string       $table       Table to insert record into
  * @param        string       $fields      Comma delmited list of fields to copy over
  * @param        string       $values      Values to store in database field
- * @param        string       $tablefrom   Table to get record from
+ * @param        string       $tableFrom   Table to get record from
  * @param        array|string $id          Field name(s) to use in where clause
  * @param        array|string $value       Value(s) to use in where clause
  * @param        string       $return_page Page to send user to when done
  */
-function DB_copy($table, $fields, $values, $tablefrom, $id, $value, $return_page = '')
+function DB_copy($table, $fields, $values, $tableFrom, $id, $value, $return_page = '')
 {
-    global $_DB, $_TABLES, $_CONF;
+    global $_DB;
 
-    $_DB->dbCopy($table, $fields, $values, $tablefrom, $id, $value);
+    $_DB->dbCopy($table, $fields, $values, $tableFrom, $id, $value);
 
     if (!empty($return_page)) {
         COM_redirect("$return_page");
@@ -426,9 +426,10 @@ function DB_fetchArray($recordSet, $both = true)
  * Returns the last auto_increment ID generated
  *
  * @param    resource $link_identifier identifier for opened link
+ * @param    string   $sequence        sequence for PostgreSQL
  * @return   mixed                     Returns the last ID auto-generated
  */
-function DB_insertId($link_identifier = '', $sequence = '')
+function DB_insertId($link_identifier = null, $sequence = '')
 {
     global $_DB;
 

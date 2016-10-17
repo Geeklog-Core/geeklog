@@ -689,66 +689,61 @@ function plugin_upload()
     if (!empty($error_msg)) {
         $retval .= plugin_main($error_msg);
     } else {
-        require_once $_CONF['path_system'] . 'classes/unpacker.class.php';
-
         $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file
 
-        $archive = new unpacker($_FILES['plugin']['tmp_name'],
-            $_FILES['plugin']['type']);
-        $tmp = $archive->getlist(); // Grab the contents of the tarball to see what the plugin name is
-        $dirname = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
+        $archive = new Unpacker($_FILES['plugin']['tmp_name'], $_FILES['plugin']['type']);
+        $tmp = $archive->getList(); // Grab the contents of the tarball to see what the plugin name is
+        $dirName = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
 
-        if (empty($dirname)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
+        if (empty($dirName)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
             COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=100');
         } else {
             $pi_did_exist = false; // plugin directory already existed
             $pi_had_entry = false; // plugin had an entry in the database
             $pi_was_enabled = false; // plugin was enabled
 
-            if (file_exists($_CONF['path'] . 'plugins/' . $dirname)) {
+            if (file_exists($_CONF['path'] . 'plugins/' . $dirName)) {
                 $pi_did_exist = true;
 
                 // plugin directory already exists
-                $pstatus = DB_query("SELECT pi_name, pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name = '$dirname'");
+                $pstatus = DB_query("SELECT pi_name, pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name = '$dirName'");
                 $A = DB_fetchArray($pstatus);
                 if (isset($A['pi_name'])) {
                     $pi_had_entry = true;
                     $pi_was_enabled = ($A['pi_enabled'] == 1);
                 }
 
-                $callback = 'plugin_enablestatechange_' . $dirname;
+                $callback = 'plugin_enablestatechange_' . $dirName;
 
                 if ($pi_was_enabled) {
                     // disable temporarily while we move the files around
                     if (is_callable($callback)) {
-                        changePluginStatus($dirname);
+                        changePluginStatus($dirName);
                     } else {
                         DB_change($_TABLES['plugins'], 'pi_enabled', 0,
-                            'pi_name', $dirname);
+                            'pi_name', $dirName);
                     }
                 }
 
-                require_once 'System.php';
-
-                $plugin_dir = $_CONF['path'] . 'plugins/' . $dirname;
+                $plugin_dir = $_CONF['path'] . 'plugins/' . $dirName;
                 if (file_exists($plugin_dir . '.previous')) {
-                    @System::rm('-rf ' . $plugin_dir . '.previous');
+                    Geeklog\FileSystem::remove($plugin_dir . '.previous');
                 }
                 if (file_exists($plugin_dir)) {
                     rename($plugin_dir, $plugin_dir . '.previous');
                 }
 
-                $public_dir = $_CONF['path_html'] . $dirname;
+                $public_dir = $_CONF['path_html'] . $dirName;
                 if (file_exists($public_dir . '.previous')) {
-                    @System::rm('-rf ' . $public_dir . '.previous');
+                    Geeklog\FileSystem::remove($public_dir . '.previous');
                 }
                 if (file_exists($public_dir)) {
                     rename($public_dir, $public_dir . '.previous');
                 }
 
-                $admin_dir = $path_admin . 'plugins/' . $dirname;
+                $admin_dir = $path_admin . 'plugins/' . $dirName;
                 if (file_exists($admin_dir . '.previous')) {
-                    @System::rm('-rf ' . $admin_dir . '.previous');
+                    Geeklog\FileSystem::remove($admin_dir . '.previous');
                 }
                 if (file_exists($admin_dir)) {
                     rename($admin_dir, $admin_dir . '.previous');
@@ -761,19 +756,12 @@ function plugin_upload()
              */
 
             // Extract the tarball to data so we can get the $pi_name name from admin/install.php
-            $archive->unpack($_CONF['path'] . 'data/',
-                array($dirname . '/admin/install.php'));
-            $plugin_inst = $_CONF['path'] . 'data/' . $dirname . '/admin/install.php';
-            $fdata = '';
-            $fhandle = @fopen($plugin_inst, 'r');
-            if ($fhandle) {
-                $fdata = fread($fhandle, filesize($plugin_inst));
-                fclose($fhandle);
-            }
+            $archive->unpack($_CONF['path'] . 'data/', array($dirName . '/admin/install.php'));
+            $plugin_inst = $_CONF['path'] . 'data/' . $dirName . '/admin/install.php';
+            $fileData = @file_get_contents($plugin_inst);
             /*
                         // Remove the plugin from data/
-                        require_once 'System.php';
-                        @System::rm('-rf ' . $_CONF['path'] . 'data/' . $dirname);
+                        Geeklog\FileSystem::remove($_CONF['path'] . 'data/' . $dirname);
             */
             // Some plugins seem to expect files under the data directory to
             // be unchanged while they are disabled.  Let's leave the files untouched.
@@ -789,17 +777,14 @@ function plugin_upload()
              * one size at a time to the size of the muffler's input.
              * It's kind of like this regular expression:
              */
-            $fdata = preg_replace('/\n/', '', $fdata);
-            $fdata = preg_replace('/ /', '', $fdata);
-            $pi_name = preg_replace('/^.*\$pi\_name=\'/', '', $fdata);
+            $fileData = str_replace(array("\n", ' '), '', $fileData);
+            $pi_name = preg_replace('/^.*\$pi\_name=\'/', '', $fileData);
             $pi_name = preg_replace('/\'.*$/', '', $pi_name);
 
             // Some plugins don't have $pi_name set in their install.php file,
             // This means our regex won't work and we should just use $dirname
-            if (preg_match('/\<\?php/', $pi_name) || preg_match('/--/', $pi_name)) {
-                $pi_name = $dirname;
-            } elseif (empty($pi_name)) {
-                $pi_name = $dirname;
+            if (empty($pi_name) || preg_match('/\<\?php/', $pi_name) || preg_match('/--/', $pi_name)) {
+                $pi_name = $dirName;
             }
 
             // Extract the uploaded archive to the plugins directory
@@ -808,43 +793,38 @@ function plugin_upload()
             $plg_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
             if ($upload_success) {
                 if (file_exists($plg_path . 'public_html')) {
-                    rename($plg_path . 'public_html',
-                        $_CONF['path_html'] . $pi_name);
+                    rename($plg_path . 'public_html', $_CONF['path_html'] . $pi_name);
                 }
                 if (file_exists($plg_path . 'admin')) {
-                    rename($plg_path . 'admin',
-                        $path_admin . 'plugins/' . $pi_name);
+                    rename($plg_path . 'admin', $path_admin . 'plugins/' . $pi_name);
                 }
             }
 
             unset($archive); // Collect some garbage
 
             // cleanup when uploading a new version
-            require_once 'System.php';
-
             if ($pi_did_exist) {
-                $plugin_dir = $_CONF['path'] . 'plugins/' . $dirname;
+                $plugin_dir = $_CONF['path'] . 'plugins/' . $dirName;
                 if (file_exists($plugin_dir . '.previous')) {
-                    @System::rm('-rf ' . $plugin_dir . '.previous');
+                    Geeklog\FileSystem::remove($plugin_dir . '.previous');
                 }
 
-                $public_dir = $_CONF['path_html'] . $dirname;
+                $public_dir = $_CONF['path_html'] . $dirName;
                 if (file_exists($public_dir . '.previous')) {
-                    @System::rm('-rf ' . $public_dir . '.previous');
+                    Geeklog\FileSystem::remove($public_dir . '.previous');
                 }
 
-                $admin_dir = $path_admin . 'plugins/' . $dirname;
+                $admin_dir = $path_admin . 'plugins/' . $dirName;
                 if (file_exists($admin_dir . '.previous')) {
-                    @System::rm('-rf ' . $admin_dir . '.previous');
+                    Geeklog\FileSystem::remove($admin_dir . '.previous');
                 }
 
                 if ($pi_was_enabled) {
                     // Enable the plugin again
                     if (is_callable($callback)) {
-                        changePluginStatus($dirname);
+                        changePluginStatus($dirName);
                     } else {
-                        DB_change($_TABLES['plugins'], 'pi_enabled', 1,
-                            'pi_name', $dirname);
+                        DB_change($_TABLES['plugins'], 'pi_enabled', 1, 'pi_name', $dirName);
                     }
                 }
             }
@@ -854,8 +834,8 @@ function plugin_upload()
                 if ($pi_was_enabled) {
                     // check if we have to perform an update
                     $pi_version = DB_getItem($_TABLES['plugins'], 'pi_version',
-                        "pi_name = '$dirname'");
-                    $code_version = PLG_chkVersion($dirname);
+                        "pi_name = '$dirName'");
+                    $code_version = PLG_chkVersion($dirName);
                     if (!empty($code_version) &&
                         ($code_version != $pi_version)
                     ) {
@@ -871,7 +851,7 @@ function plugin_upload()
                             . '?mode=continue_upgrade'
                             . '&amp;codeversion=' . urlencode($code_version)
                             . '&amp;piversion=' . urlencode($pi_version)
-                            . '&amp;plugin=' . urlencode($dirname);
+                            . '&amp;plugin=' . urlencode($dirName);
                         COM_redirect($url);
                     } else {
                         $msg = 98; // successfully uploaded
@@ -893,7 +873,7 @@ function plugin_upload()
 
             $url = $_CONF['site_admin_url'] . '/plugins.php?msg=' . $msg;
             if ($msg_with_plugin_name) {
-                $url .= '&amp;plugin=' . $dirname;
+                $url .= '&amp;plugin=' . $dirName;
             }
             COM_redirect($url);
         }
@@ -1405,14 +1385,11 @@ if ($mode === 'delete') {
     $display .= continue_upgrade(COM_sanitizeFilename($_GET['plugin']),
         $_GET['piversion'], $_GET['codeversion']);
 
-} elseif (isset($_FILES['plugin']) && SEC_checkToken() &&
-    SEC_hasRights('plugin.install,plugin.upload')
-) {
+} elseif (isset($_FILES['plugin']) && SEC_checkToken() && SEC_hasRights('plugin.install,plugin.upload')) {
     $display .= plugin_upload();
 
 } else { // 'cancel' or no mode at all
     $display .= plugin_main();
-
 }
 
 COM_output($display);

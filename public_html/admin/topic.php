@@ -830,7 +830,7 @@ function handleIconUpload($tid)
 
     require_once ($_CONF['path_system'] . 'classes/upload.class.php');
 
-    $upload = new upload();
+    $upload = new Upload();
     if (!empty ($_CONF['image_lib'])) {
         if ($_CONF['image_lib'] == 'imagemagick') {
             // Using imagemagick

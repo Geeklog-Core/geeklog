@@ -355,7 +355,7 @@ class Search
         $sql .= $search_s->getDateRangeSQL('AND', 'date', $this->_dateStart, $this->_dateEnd);
         list($sql, $ftsql) = $search_s->buildSearchSQL($this->_keyType, $query, $columns, $sql);
 
-        $sql .= " GROUP BY s.sid";
+        $sql .= " GROUP BY s.sid, s.title, s.introtext, date, s.uid, s.hits ";
 
         $search_s->setSQL($sql);
         $search_s->setFTSQL($ftsql);

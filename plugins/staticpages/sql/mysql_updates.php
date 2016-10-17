@@ -33,7 +33,6 @@
 */
 
 $_UPDATES = array(
-
     '1.4.3' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label",
         // disable comments on all existing static pages
@@ -72,6 +71,11 @@ $_UPDATES = array(
     '1.6.5' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `template_id`",
         "ALTER TABLE {$_TABLES['staticpage']} CHANGE `sp_id` `sp_id` VARCHAR(128) NOT NULL DEFAULT ''"
+    ),
+
+    '1.6.7' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} MODIFY COLUMN `created` DATETIME DEFAULT NULL",
+        "ALTER TABLE {$_TABLES['staticpage']} MODIFY COLUMN `modified` DATETIME DEFAULT NULL"
     )
 );
 
@@ -187,5 +191,3 @@ function SP_update_ConfValues_1_6_1()
 
     return true;
 }
-
-?>

@@ -53,7 +53,7 @@ function plugin_autoinstall_links($pi_name)
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '2.1.4',
         'pi_gl_version'   => '2.1.1',
-        'pi_homepage'     => 'http://www.geeklog.net/'
+        'pi_homepage'     => 'https://www.geeklog.net/'
     );
 
     $groups = array(
@@ -150,7 +150,7 @@ function plugin_postinstall_links($pi_name)
 
     $L_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog-sites', '{$_LI_CONF['root']}', 'Geeklog Sites', 'Sites using or related to the Geeklog CMS', NULL, NOW(), NOW(), #group#, 2, 3, 3, 2, 2)";
 
-    $L_SQL[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', 'geeklog-sites', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 123, NOW(), 1, #group#, 3, 3, 2, 2);";
+    $L_SQL[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', 'geeklog-sites', 'https://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 123, NOW(), 1, #group#, 3, 3, 2, 2);";
 
     foreach ($L_SQL as $sql) {
         $sql = str_replace('#group#', $admin_group_id, $sql);

@@ -89,12 +89,12 @@ $_SQL[] = "UPDATE {$_TABLES['syndication']} SET format='RSS-0.9x' WHERE format='
 $_SQL[] = "UPDATE {$_TABLES['syndication']} SET format='RSS-2.0' WHERE format='rss2'";
 
 // add links plugin
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.4.0', 1, 'http://www.geeklog.net/')";
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.4.0', 1, 'https://www.geeklog.net/')";
 // update links feeds to links plugin
 $_SQL[] = "UPDATE {$_TABLES['syndication']} SET type = 'links', topic = 'all' WHERE topic = '::links';";
 
 // add polls plugin
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.4.0', '1', 'http://www.geeklog.net/')";
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.4.0', '1', 'https://www.geeklog.net/')";
 
 // updates core -> plugin
 $_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'phpblock', phpblockfn ='phpblock_polls' WHERE name = 'poll_block';";
@@ -112,7 +112,7 @@ $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.submit', ft_gl_cor
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.3', pi_gl_version = '1.4.0' WHERE pi_name = 'spamx'";
 
 // Static Pages plugin is version 1.4.2 now
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.2', pi_gl_version = '1.4.0', pi_homepage = 'http://www.geeklog.net/' WHERE pi_name = 'staticpages'";
+$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.2', pi_gl_version = '1.4.0', pi_homepage = 'https://www.geeklog.net/' WHERE pi_name = 'staticpages'";
 
 // update poll(s) comments
 $_SQL[] = "UPDATE {$_TABLES['comments']} SET type = 'polls' WHERE type = 'poll'";

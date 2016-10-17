@@ -9,7 +9,7 @@ class Installer
     const GL_VERSION = '2.1.2';
 
     // System requirements
-    const SUPPORTED_PHP_VER = '5.2.0';
+    const SUPPORTED_PHP_VER = '5.3.3';
     const SUPPORTED_MYSQL_VER = '4.1.3';
 
     // Default UI language
@@ -522,7 +522,7 @@ class Installer
             $paths['public_html/'] . 'images/articles/',
             $paths['public_html/'] . 'images/topics/',
             $paths['public_html/'] . 'images/userphotos',
-            $paths['public_html/'] . 'filemanager/scripts/filemanager.config.js',
+            $paths['public_html/'] . 'filemanager/scripts/filemanager.config.json',
             $paths['public_html/'] . 'images/library/File/',
             $paths['public_html/'] . 'images/library/Flash/',
             $paths['public_html/'] . 'images/library/Image/',
@@ -654,6 +654,32 @@ class Installer
     }
 
     /**
+     * Return if the current HTTP protocol is HTTPS
+     *
+     * @return bool
+     */
+    private function isHttps()
+    {
+        if (isset($_SERVER['HTTPS']) === true) {
+            // Apache
+            return ($_SERVER['HTTPS'] === 'on') || ($_SERVER['HTTPS'] === '1');
+        } elseif (isset($_SERVER['SSL']) === true) {
+            // IIS
+            return ($_SERVER['SSL'] === 'on');
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) === true) {
+            // Reverse proxy
+            return (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_PORT']) === true) {
+            // Reverse proxy
+            return ($_SERVER['HTTP_X_FORWARDED_PORT'] === '443');
+        } elseif (isset($_SERVER['SERVER_PORT']) === true) {
+            return ($_SERVER['SERVER_PORT'] === '443');
+        }
+
+        return false;
+    }
+
+    /**
      * Helper function: Derive 'site_url' from PHP_SELF
      *
      * @return string
@@ -669,7 +695,7 @@ class Installer
         }
 
         $url = implode('/', array_slice($parts, 0, $numParts - 3));
-        $protocol = ($this->server('HTTPS', null) === null) ? 'http://' : 'https://';
+        $protocol = $this->isHttps() ? 'https://' : 'http://';
         $url = $protocol . $this->server('HTTP_HOST') . $url;
 
         return $url;
@@ -691,7 +717,7 @@ class Installer
         }
 
         $url = implode('/', array_slice($parts, 0, $numParts - 2));
-        $protocol = ($this->server('HTTPS', null) === null) ? 'http://' : 'https://';
+        $protocol = $this->isHttps() ? 'https://' : 'http://';
         $url = $protocol . $this->server('HTTP_HOST') . $url;
 
         return $url;
@@ -1976,8 +2002,8 @@ class Installer
 
                     for ($i = 1; $i <= $numRows; $i++) {
                         $row = DB_fetchArray($result);
-                        $ublocks = str_replace(' ', ',', $row['boxes']);
-                        $result2 = DB_query("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($ublocks)");
+                        $uBlocks = str_replace(' ', ',', $row['boxes']);
+                        $result2 = DB_query("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($uBlocks)");
                         $newBlocks = '';
 
                         for ($x = 1; $x <= DB_numRows($result2); $x++) {
@@ -2135,7 +2161,7 @@ class Installer
                     $filename = substr($_CONF['rdf_file'], $pos + 1);
                     $siteName = DB_escapeString($_CONF['site_name']);
                     $siteSlogan = DB_escapeString($_CONF['site_slogan']);
-                    DB_query("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$siteName}', '{$siteSlogan}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
+                    DB_query("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$siteName}', '{$siteSlogan}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, CURRENT_TIMESTAMP, NULL)");
 
                     // upgrade static pages plugin
                     $spVersion = $this->getStaticPagesVersion();
@@ -3064,8 +3090,7 @@ class Installer
                                      */
 
                                     // Hack: not needed here - avoid notice
-                                    $_DB_mysqldump_path = '';
-                                    require_once  dirname(__FILE__) . '/../../../lib-common.php';
+                                    require_once dirname(__FILE__) . '/../../../lib-common.php';
                                     $this->defaultPluginInstall();
                                 }
 

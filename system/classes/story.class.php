@@ -1925,6 +1925,7 @@ class Story
                 . "WHERE (sid  <> '{$escapedArticleId}') "
                 . "AND (draft_flag = 0) AND (date <= NOW()) "
                 . "AND meta_keywords LIKE '%{$escapedKeyword}%' "
+                . "GROUP BY sid, title "
                 . "LIMIT 5 ";
             $resultSet = DB_query($sql);
 

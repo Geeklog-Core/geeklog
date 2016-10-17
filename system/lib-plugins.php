@@ -1484,25 +1484,25 @@ function PLG_profileExtrasSave($plugin = '')
 * - 'loginform' (login form in the content area)
 * - 'search' (advanced search form; simple search is usually part of 'header')
 *
-* @param    string   $templatename  Name of calling template
-* @param    ref     &$template      reference for the Template
+* @param    string   $templateName  Name of calling template
+* @param    Template $template      reference for the Template
 * @return   void
 * @see      CUSTOM_templateSetVars
 *
 */
-function PLG_templateSetVars($templatename, &$template)
+function PLG_templateSetVars($templateName, $template)
 {
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_templatesetvars_' . $pi_name;
         if (function_exists($function)) {
-            $function ($templatename, $template);
+            $function ($templateName, $template);
         }
     }
 
     if (function_exists('CUSTOM_templateSetVars')) {
-        CUSTOM_templatesetvars($templatename, $template);
+        CUSTOM_templatesetvars($templateName, $template);
     }
 }
 

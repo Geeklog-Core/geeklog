@@ -1196,7 +1196,7 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Instaliranje pluginova moze izazvati ostecena kod vase Geeklog instalacije i teoretski kod vaseg sistema. Vazno je napomenuti da treba da instalirate samo one pluginove koje ste preuzeli sa <a href="http://www.geeklog.net">Geeklog Zvanicne Strane</a> zato sto mi detaljno testiramo sve poslate pluginove na gotovo svim operativnim sistemima. Treba da znate da ce proces instalacije plugina traziti izvrsenje nekoliko komandi fajlsistema sto moze dovesti do sigurnosnih problema ako koristite pluginove sa nekih drugih sajtova.  Cak i sa ovim upozorenjem koje ste dobili, mi nemozemo garantovati uspeh niti jedne instalacije niti smo odgovorni za eventualnu stetu koja je prouzrokovana instalacijom Geeklog plugina.  Drugim recima, instalirate na sopstvenu odgovornost.  Radi opreza, uputstva kako da manuelno instalirate plugin nalaze se u samom plugin paketu.',
+    1 => 'Instaliranje pluginova moze izazvati ostecena kod vase Geeklog instalacije i teoretski kod vaseg sistema. Vazno je napomenuti da treba da instalirate samo one pluginove koje ste preuzeli sa <a href="https://www.geeklog.net">Geeklog Zvanicne Strane</a> zato sto mi detaljno testiramo sve poslate pluginove na gotovo svim operativnim sistemima. Treba da znate da ce proces instalacije plugina traziti izvrsenje nekoliko komandi fajlsistema sto moze dovesti do sigurnosnih problema ako koristite pluginove sa nekih drugih sajtova.  Cak i sa ovim upozorenjem koje ste dobili, mi nemozemo garantovati uspeh niti jedne instalacije niti smo odgovorni za eventualnu stetu koja je prouzrokovana instalacijom Geeklog plugina.  Drugim recima, instalirate na sopstvenu odgovornost.  Radi opreza, uputstva kako da manuelno instalirate plugin nalaze se u samom plugin paketu.',
     2 => 'Plugin Instalacioni Disclaimer',
     3 => 'Plugin Instalaciona Forma',
     4 => 'Plugin Fajl',
@@ -1204,7 +1204,7 @@ $LANG32 = array(
     6 => 'Upozorenje: Plugin Je Vec Instaliran!',
     7 => 'Plug-in koji pokusavate da instalirate vec postoji.  Molimo obrisite plugin pre nego ga re-instalirate',
     8 => 'Test Kompatibilnosti Plugina Nije Prosao',
-    9 => 'Ovaj plugin zahteva noviju verziju Geeklog-a. Ili azurirajte vasu kopiju <a href="http://www.geeklog.net">Geeklog-a</a> ili nabavite odgovarajucu verziju plugina.',
+    9 => 'Ovaj plugin zahteva noviju verziju Geeklog-a. Ili azurirajte vasu kopiju <a href="https://www.geeklog.net">Geeklog-a</a> ili nabavite odgovarajucu verziju plugina.',
     10 => '<br' . XHTML . '><b>Trenutno nema instaliranih plugina.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Da izmenite ili obrisete plugin, kliknite na pluginovu ikonicu izmeni prikazanu ispod. Za detaljne informacije o pluginu, kliknite na ime plugina i bicete preusmereni na njegovu web prezentaciju. Da instalirate ili azurirate plugin procitajte njegovu dokumentaciju.',
     12 => 'ime plugina nije poslano za plugineditor()',

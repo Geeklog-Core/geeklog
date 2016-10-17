@@ -136,7 +136,7 @@ $LANG_INSTALL = array(
     84 => 'The path ',
     85 => ' does not appear to be correct. Please go back and try again.',
     86 => 'Language',
-    87 => 'http://www.geeklog.net/forum/index.php?forum=1',
+    87 => 'https://www.geeklog.net/forum/index.php?forum=1',
     88 => 'Change directory and containing files to',
     89 => 'Current Version:',
     90 => 'Empty database?',

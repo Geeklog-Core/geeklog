@@ -30,77 +30,83 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* This class is used to detect the type of device accessing the Geeklog website.
-* It is a wrapper class for http://mobiledetect.net/ 
-* https://github.com/serbanghita/Mobile-Detect/.
-*
-* @author Tom Homer
-*
-*/
+ * This class is used to detect the type of device accessing the Geeklog website.
+ * It is a wrapper class for http://mobiledetect.net/
+ * https://github.com/serbanghita/Mobile-Detect/.
+ *
+ * @author Tom Homer
+ */
+class Device
+{
+    // Constants for device types
+    const PHONE = 'phone';
+    const TABLET = 'tablet';
+    const COMPUTER = 'computer';
+    const MOBILE = 'mobile';
+    const ALL = 'all';
 
-define("DEVICE_PHONE", 'phone');
-define("DEVICE_TABLET", 'tablet');
-define("DEVICE_COMPUTER", 'computer');
-define("DEVICE_MOBILE", 'mobile');
-define("DEVICE_ALL", 'all');
+    /**
+     * device type if already checked before
+     *
+     * @var string one of self::PHONE, self::TABLET, or self::COMPUTER
+     */
+    private $type;
 
-class device {
+    /**
+     * Store if mobile device (includes phones and tablets) if already checked before
+     *
+     * @var bool
+     */
+    private $is_mobile;
 
-    private $type; // To store device type if already checked before
-    
-    private $is_mobile; // To store if mobile device (includes phones and tablets) if already checked before
-
-    function __construct() {
-
-        global $_CONF, $_USER;
-
+    /**
+     * Device constructor.
+     */
+    public function __construct()
+    {
         // Include and instantiate the class.
-        require_once 'mobiledetect/Mobile_Detect.php';
+        require_once __DIR__ . '/mobiledetect/Mobile_Detect.php';
         $detect = new Mobile_Detect;
-         
+
         // Any mobile device (phones or tablets).
-        if ( $detect->isMobile() ) {
+        if ($detect->isMobile()) {
             $this->is_mobile = true;
-            if( $detect->isTablet() ){
-                $this->type = DEVICE_TABLET;
+
+            if ($detect->isTablet()) {
+                $this->type = self::TABLET;
             } else {
-                $this->type = DEVICE_PHONE;
+                $this->type = self::PHONE;
             }
         } else {
-            $this->is_mobile = false;            
-            $this->type = DEVICE_COMPUTER;
+            $this->is_mobile = false;
+            $this->type = self::COMPUTER;
         }
-
     }
 
     /**
-    * Is user device a mobile device?
-    *
-    * @access   public
-    * @return   boolean
-    *
-    */
-    public function is_mobile() {
-
+     * Is user device a mobile device?
+     *
+     * @return   boolean
+     */
+    public function is_mobile()
+    {
         return $this->is_mobile;
-        
     }
 
     /**
-    * Does current device accessing Geeklog equal passed device?
-    *
-    * @access   public
-    * @param    constant    $device Device to compare current device accessing site
-    * @return   boolean
-    *
-    */
-    public function compare($device) {
-        
+     * Does current device accessing Geeklog equal passed device?
+     *
+     * @param    string $device Device to compare current device accessing site
+     * @return   boolean
+     */
+    public function compare($device)
+    {
         $retval = false;
-        if ($device == DEVICE_ALL) {
+
+        if ($device == self::ALL) {
             $retval = true;
-        } elseif ($device == DEVICE_MOBILE) {
-            if ($this->type == DEVICE_TABLET OR $this->type == DEVICE_PHONE) {
+        } elseif ($device == self::MOBILE) {
+            if ($this->type == self::TABLET || $this->type == self::PHONE) {
                 $retval = true;
             }
         } else {
@@ -110,21 +116,15 @@ class device {
         }
 
         return $retval;
-        
     }
-    
+
     /**
-    * What type of device is the user using?
-    *
-    * @access   public
-    * @return   constant (DEVICE_PHONE, DEVICE_TABLET, DEVICE_COMPUTER)
-    *
-    */
-    public function type() {
-
+     * What type of device is the user using?
+     *
+     * @return   string (self::PHONE, self::TABLET, self::COMPUTER)
+     */
+    public function type()
+    {
         return $this->type;
-        
-    }    
+    }
 }
-
-?>

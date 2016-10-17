@@ -566,7 +566,7 @@ if (!SEC_inGroup('Root')) {
         $default_conf_group = array_values($default_conf_group);
         $default_conf_group = $default_conf_group[0];
     } else {
-        COM_output($config->_UI_perm_denied());
+        COM_output(config::UI_perm_denied());
         exit;
     }
 }

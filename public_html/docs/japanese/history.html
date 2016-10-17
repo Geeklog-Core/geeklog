@@ -513,7 +513,7 @@
 
 <h2>Feb 20, 2011 (1.7.2)</h2>
 
-<p><strong>注意:</strong> Geeklog 1.7.2はPHP 4で動作する最後のGeeklogのバージョンです。必要な場合は、このバージョンのセキュリティ修正を2012年まで提供します。新しい機能はPHP 5.2.0以上を要求するGeeklog 1.8.0以降のバージョンのみに追加します。詳細はgeeklog.netの<a href="http://www.geeklog.net/article.php/end-of-php4-support">アナウンス</a>を参照してください。</p>
+<p><strong>注意:</strong> Geeklog 1.7.2はPHP 4で動作する最後のGeeklogのバージョンです。必要な場合は、このバージョンのセキュリティ修正を2012年まで提供します。新しい機能はPHP 5.2.0以上を要求するGeeklog 1.8.0以降のバージョンのみに追加します。詳細はgeeklog.netの<a href="https://www.geeklog.net/article.php/end-of-php4-support">アナウンス</a>を参照してください。</p>
 
 <ul>
 <li>PostgreSQLサポートの修正:
@@ -2275,14 +2275,14 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
 
 <ul>
     <li>Some of the files outside of the public_html directory were not protected against direct execution. If Geeklog was installed such that those files were accessible from a URL (which has always been strongly discouraged in the installation instructions) then those files could be used to load and execute malicious code from a remote server.<br />
-  <p>More information: http://www.geeklog.net/article.php/so-called-exploit</p>
+  <p>More information: https://www.geeklog.net/article.php/so-called-exploit</p>
 
   <p>In this release, we've added the missing execution prevention for all files outside of public_html. We would still, however, suggest that you fix your Geeklog install if the files outside of public_html are accessible from a URL.</p></li>
 
     <li>The "mcpuk" file manager that we've integrated into FCKeditor allowed the upload of arbitrary PHP code (even if FCKeditor was disabled in Geeklog's config.php). Depending on your webserver's configuration, it was then possible to execute that uploaded code.<br />
 
   <p>More information:<br />
-  <a href="http://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">http://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager</a><br />
+  <a href="https://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">https://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager</a><br />
   The file manager has been removed from this release. You will therefore no longer be able to upload files, e.g. images, through FCKeditor. Future versions of Geeklog will ship with an updated version of FCKeditor and its included file manager.</p></li>
 </ul>
 
@@ -2633,7 +2633,7 @@ Bugfixes:</p>
     <li>This release also includes the Spam-X plugin version 1.0.2</li>
 </ul>
 
-<p>Please note that MT-Blacklist (used by Spam-X) has recently been discontinued. For the time being, we provide the last version of the blacklist for download from geeklog.net (the Spam-X plugin as included in this release is configured to get it from there for the initial import). There will, however, be no updates the blacklist. For details, please see <a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">http://www.geeklog.net/article.php/mt-blacklist-discontinued</a></p>
+<p>Please note that MT-Blacklist (used by Spam-X) has recently been discontinued. For the time being, we provide the last version of the blacklist for download from geeklog.net (the Spam-X plugin as included in this release is configured to get it from there for the initial import). There will, however, be no updates the blacklist. For details, please see <a href="https://www.geeklog.net/article.php/mt-blacklist-discontinued">https://www.geeklog.net/article.php/mt-blacklist-discontinued</a></p>
 
 <p>Bugfixes:</p>
 <ul>
@@ -3705,7 +3705,7 @@ Bugfixes:</p>
     <li>The filter to disable Javascript onXXX events also changed certain links in HTML postings. This should be fixed now.</li>
     <li>The poll uses a POST instead of a GET request now to at least prevent primitive manipulation attempts ...</li>
     <li>Events on the same day were displayed in the order they were entered, not in the order they were scheduled (occured in day, week, and month view).</li>
-    <li>The user function and admin blocks weren't using the proper templates when the theme was using the $_BLOCK_TEMPLATE trick, as outlined in <a href="http://www.geeklog.net/article.php?story=20020429092841722">http://www.geeklog.net/article.php?story=20020429092841722</a>.</li>
+    <li>The user function and admin blocks weren't using the proper templates when the theme was using the $_BLOCK_TEMPLATE trick, as outlined in <a href="https://www.geeklog.net/article.php?story=20020429092841722">https://www.geeklog.net/article.php?story=20020429092841722</a>.</li>
     <li>When the first character of the content of a block is a '&lt;' it is now assumed that the block contains HTML and nl2br() is not applied to the block content. This allows proper HTML usage and even the use of Javascript in blocks.</li>
     <li>Sanity checks have been added to the admin editors (including the editor for static pages) to prevent possible damage to the database in case of incomplete translations (language files) or invalid IDs.</li>
     <li>The delete button in the plugin editor, which was unused since the removal of the automated plugin install (in Geeklog 1.3.4), will now cause a function plugin_uninstall_&lt;plugin name&gt; to be called. This allows plugins to uninstall themselves (if possible).</li>

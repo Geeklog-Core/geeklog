@@ -452,7 +452,6 @@ class OAuthConsumer
     {
         // Use Pear HTTP Request 2 since first Facebook url to profile picture redirects to a new location
         $ret = '';
-        require_once 'HTTP/Request2.php';
         $request = new HTTP_Request2($from, HTTP_Request2::METHOD_GET);
         $request->setConfig(array(
             'adapter' => 'HTTP_Request2_Adapter_Socket',
@@ -503,7 +502,7 @@ class OAuthConsumer
         $path_parts = pathinfo($to_path);
         $filename = $path_parts['basename'];
 
-        $upload = new upload();
+        $upload = new Upload();
         if (!empty ($_CONF['image_lib'])) {
             if ($_CONF['image_lib'] == 'imagemagick') {
                 // Using imagemagick

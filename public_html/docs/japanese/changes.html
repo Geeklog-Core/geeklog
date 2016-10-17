@@ -159,7 +159,7 @@
 あるいはそれ以降のバージョンを要求します。わたしたちは一定期間、PHP 4をサポートする<a
 href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそれ以降にできるだけはやく切り替えてください。</p>
 
-<p>詳細は、Geeklogホームページの<a href="http://www.geeklog.net/article.php/end-of-php4-support">アナウンス</a>を参照してください。</p>
+<p>詳細は、Geeklogホームページの<a href="https://www.geeklog.net/article.php/end-of-php4-support">アナウンス</a>を参照してください。</p>
 
 <h3>新機能と改善点</h3>
 
@@ -180,7 +180,7 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
 
 <h2><a id="changes172" name="changes172">Geeklog 1.7.2</a></h2>
 
-<p><strong>注意:</strong> Geeklog 1.7.2はPHP 4で動作する最後のGeeklogのバージョンです。必要な場合は、このバージョンのセキュリティ修正を2012年まで提供します。新しい機能はGeeklog 1.8.0とそれ以降にだけ追加し、これらの新しいリリースは最低でもPHP 5.2.0が動作に必要です。詳細はgeeklog.netの<a href="http://www.geeklog.net/article.php/end-of-php4-support">アナウンス</a>を参照してください。</p>
+<p><strong>注意:</strong> Geeklog 1.7.2はPHP 4で動作する最後のGeeklogのバージョンです。必要な場合は、このバージョンのセキュリティ修正を2012年まで提供します。新しい機能はGeeklog 1.8.0とそれ以降にだけ追加し、これらの新しいリリースは最低でもPHP 5.2.0が動作に必要です。詳細はgeeklog.netの<a href="https://www.geeklog.net/article.php/end-of-php4-support">アナウンス</a>を参照してください。</p>
 
 <h3>バグ修正</h3>
 
@@ -272,7 +272,7 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
 <li>小規模なセキュリティの強化:
     <ul>
         <li>(セッションのクッキーのような)「重要な」クッキーは、今後はHttpOnlyフラグをセットして作成されるようになりました。これにより、このフラグをサポートしたブラウザーで、ある種のXSS(クロスサイト・スクリプティング)攻撃の防止できるでしょう。</li>
-        <li>テンプレートのエラーは、そのテンプレートのパスを見せてしまう代わりに、<a href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=65">標準のエラーハンドラ</a>を呼び出すようになりました。</li>
+        <li>テンプレートのエラーは、そのテンプレートのパスを見せてしまう代わりに、<a href="https://www.geeklog.net/faqman/index.php?op=view&amp;t=65">標準のエラーハンドラ</a>を呼び出すようになりました。</li>
         <li>Spam-Xのいくつかのクラスのファイルで、直接アクセスする(訳注: 実際に動作していなかった)防止の処理を修正しました。</li>
     </ul></li>
 </ul>
@@ -425,7 +425,7 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
 <h4>セキュリティ関連</h4>
 
 <ul>
-<li>t0pP8uZzによると、FCKeditor用のアップロードスクリプトを<a href="http://www.geeklog.net/article.php/file-uploads">直接呼び出すことで</a>様々なメディアファイル(ただし、実行可能なスクリプトを除く)をアップロードすることが可能になっていました。</li>
+<li>t0pP8uZzによると、FCKeditor用のアップロードスクリプトを<a href="https://www.geeklog.net/article.php/file-uploads">直接呼び出すことで</a>様々なメディアファイル(ただし、実行可能なスクリプトを除く)をアップロードすることが可能になっていました。</li>
 <li>Mark Evansによると、様々なインクルードファイルに施してある直接実行を防止する対策が、Microsoft Windowsなどの大文字・小文字を区別しないファイルシステムでは不十分でした。</li>
 <li>ドラフトフラグをセットしており公開日が未来の記事でも、記事IDを知っていれば、記事を閲覧することが可能になっていました。</li>
 <li>記事IDを知っていれば、公開されていない記事でもコメントをつけることが可能になっていました。</li>
@@ -497,8 +497,8 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
 <h3>セキュリティ</h3>
 
 <ul>
-<li>Geeklogは、<a href="http://www.geeklog.net/article.php/csrf">クロスサイト・リクエスト・フォージェリ(cross-site request forgery)</a>攻撃に対する防御を備えています。</li>
-<li>Lukasz Pilorzが、Geeklogで使用しているHTMLフィルターのksesに関して、<a href="http://www.geeklog.net/article.php/kses">ksesのセキュリティ上の問題点(security issues in kses)</a>を報告してくれました。</li>
+<li>Geeklogは、<a href="https://www.geeklog.net/article.php/csrf">クロスサイト・リクエスト・フォージェリ(cross-site request forgery)</a>攻撃に対する防御を備えています。</li>
+<li>Lukasz Pilorzが、Geeklogで使用しているHTMLフィルターのksesに関して、<a href="https://www.geeklog.net/article.php/kses">ksesのセキュリティ上の問題点(security issues in kses)</a>を報告してくれました。</li>
 </ul>
 
 
@@ -521,7 +521,7 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
 
 <h3>スパム防御</h3>
 
-<p>今回のリリースで、<a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">更新されていない</a>MT-Blacklistのサポートを完全に廃止しました。代わりに、Russ Jonesが<a href="http://www.linksleeve.org/">www.linksleeve.org</a>で運営している Spam Link Verification (SLV)という手法を採用しています。SLVとは、いわばコミュニティが運営する、自動的に更新されるブラックリストです。詳細は、<a href="spamx.html" rel="nofollow">Spam-Xプラグイン</a>をご覧ください。</p>
+<p>今回のリリースで、<a href="https://www.geeklog.net/article.php/mt-blacklist-discontinued">更新されていない</a>MT-Blacklistのサポートを完全に廃止しました。代わりに、Russ Jonesが<a href="http://www.linksleeve.org/">www.linksleeve.org</a>で運営している Spam Link Verification (SLV)という手法を採用しています。SLVとは、いわばコミュニティが運営する、自動的に更新されるブラックリストです。詳細は、<a href="spamx.html" rel="nofollow">Spam-Xプラグイン</a>をご覧ください。</p>
 
 
 <h2><a name="changes140sr6">Geeklog 1.4.0sr6</a></h2>
@@ -546,19 +546,19 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
 <ul>
 <li>public_htmlディレクトリの外にあるファイルの一部が直接実行される可能性がありました。これらのファイルがURL経由でアクセス可能なようにGeeklogがインストールされている場合(これは、インストール方法では全然お勧めしていない方法です)、リモートサーバから悪意のあるコードをアップロードして、実行するために利用される可能性がありました。
     <br /><br />
-    詳細は、<a href="http://www.geeklog.net/article.php/so-called-exploit">いわゆるGeeklogの脆弱性投稿(So-called Geeklog "exploit" posted)</a>をご覧ください。
+    詳細は、<a href="https://www.geeklog.net/article.php/so-called-exploit">いわゆるGeeklogの脆弱性投稿(So-called Geeklog "exploit" posted)</a>をご覧ください。
     <br /><br />
-    今回のリリースでは、public_htmlディレクトリの外にあるファイルが直接実行されるのを防ぐ機能を追加しました。とはいえ、public_htmlディレクトリの外にあるファイルがURL経由でアクセス可能なようにGeeklogをインストールしているなら、修正することをお勧めします(詳細は、<a href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=56">FAQ</a>をご覧くださいdetails)。
+    今回のリリースでは、public_htmlディレクトリの外にあるファイルが直接実行されるのを防ぐ機能を追加しました。とはいえ、public_htmlディレクトリの外にあるファイルがURL経由でアクセス可能なようにGeeklogをインストールしているなら、修正することをお勧めします(詳細は、<a href="https://www.geeklog.net/faqman/index.php?op=view&amp;t=56">FAQ</a>をご覧くださいdetails)。
 </li>
 <li>(Geeklogのconfig.phpでFCKeditorを無効にしていても)、FCKeditorに統合されている"mcpuk"ファイルマネージャを使えば、任意のPHPコードをアップロードすることが可能になっていました。Webサーバの設定しだいでは、アップロードしたコードを実行することも可能でした。
     <br /><br />
-    詳細は、<a href="http://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">FCKeditorのmcpukファイルマネージャの脆弱性(Exploit for FCKeditor's mcpuk file manager)</a>をご覧ください。
+    詳細は、<a href="https://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">FCKeditorのmcpukファイルマネージャの脆弱性(Exploit for FCKeditor's mcpuk file manager)</a>をご覧ください。
     <br /><br />
     今回のリリースでは、該当ファイルマネージャは取り除かれています。したがって、FCKeditor経由で画像などのファイルをアップロードすることはできなくなっています。Geeklogの将来のバージョンでは、更新されたFCKeditorとファイルマネージャを同梱することになるでしょう。
 </li>
 </ul>
 
-<p>注: 今回のリリースには、トラックバックスパムを防ぐために<a href="http://www.geeklog.net/article.php/fighting-trackback-spam">更新されたlib-trackback.php</a>も含まれています。</p>
+<p>注: 今回のリリースには、トラックバックスパムを防ぐために<a href="https://www.geeklog.net/article.php/fighting-trackback-spam">更新されたlib-trackback.php</a>も含まれています。</p>
 
 
 <h2><a name="changes140sr3">Geeklog 1.4.0sr3</a></h2>
@@ -621,9 +621,9 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
     <li>メールがスパムと確認されると、速度制限が生じます。 (例えば、新たに投稿を行う前に、送信者は速度制限が終了となるのを待つ必要があります。)</li>
     <li>スパムメールは、403&ldquo;禁止&rdquo; HTTP結果コードを取得します。</li>
     <li>スパムチェックは、コメント、記事、リンク、イベントの投稿や「友だちに記事を送信する」オプションで送信されたメッセージや、ユーザープロフィールのコンテンツに対して行います。</li>
-    <li><a href="http://www.geeklog.net/article.php/spam-x-1.0.2">Spam-Xプラグイン1.0.2</a>が含まれています。</li>
+    <li><a href="https://www.geeklog.net/article.php/spam-x-1.0.2">Spam-Xプラグイン1.0.2</a>が含まれています。</li>
 </ul>
-<p>最近、(Spam-Xで使用されている)MT-Blacklistが<a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">中止</a>されたことにご注意ください。本リリースに含まれるSpam-Xプラグインは、geeklog.netからブラックリストの最新バージョンを取得するように設定されていますが、アップデートはされません。</p>
+<p>最近、(Spam-Xで使用されている)MT-Blacklistが<a href="https://www.geeklog.net/article.php/mt-blacklist-discontinued">中止</a>されたことにご注意ください。本リリースに含まれるSpam-Xプラグインは、geeklog.netからブラックリストの最新バージョンを取得するように設定されていますが、アップデートはされません。</p>
 <h3>バグ修正</h3>
 <ul>
     <li>記事ページを閲覧する場合、PHP5.0.5以降で送られるエラーメッセージを修正します(bug #483)。</li>
@@ -679,7 +679,7 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
     <li>編集可能記事ID: 記事のID (静的ページのIDのような)は変更でき、読み取り可能なURLにできます。(検索エンジンによって、特にURLの書き換えをして利用する場合、検出されるチャンスがずっと増えます。) </li>
     <li>自動リンクは記事やコメント内で利用できる新しいフォームのリンクです。自動リンクは名前がタグネームになっていて、IDがリンク先のオブジェクトのIDで、リンクテキストがリンクのテキストとして使われている[<em>name</em>:<em>id</em><em>link text</em>]フォームを取っています。<br />例: [story:email-bug About the email bug]は&lt;a href=&quot;http://example.com/article.php/email-bug&quot;&gt;About the email bug&lt;/a&gt;となります。<br />搭載自動タグに関しては、リンクテキストはオプションで、所定のものがない場合、Geeklogはオブジェクトのタイトル(story, event, static page)を利用します。<br />記事にリンクする[story:]とイベントにリンクする[event:]が、あらかじめ定義された自動タグです。プラグインは自分自身の自動タグを定義して、自分のコントロール下でオブジェクトにリンクすることができます。静的ページのプラグインは、すでに[staticpage:]という自動タグを提供しています。</li>
     <li>カスタマイズ可能のEメール: あなたのサイトに登録しているユーザーに送信されたEメールは、テキストファイル(/path/to/geeklog/data/welcome_email.txt)のテキストを利用することで、完全にカスタマイズできます。</li>
-    <li>タイムゾーンハック: 一般的な &quot;<a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=40196">タイムゾーンハック</a>&quot; が含まれています。あなたのサーバが別のタイムゾーンにある場合、サイトのタイムゾーンを設定できます。</li>
+    <li>タイムゾーンハック: 一般的な &quot;<a href="https://www.geeklog.net/forum/viewtopic.php?showtopic=40196">タイムゾーンハック</a>&quot; が含まれています。あなたのサーバが別のタイムゾーンにある場合、サイトのタイムゾーンを設定できます。</li>
 </ul>
 <h3>その他の改良点</h3>
 <ul>
@@ -763,7 +763,7 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
     <li>画像のアップロードも、画像をリサイズするためにGDライブラリを使うことができます。</li>
     <li>コメントはテンプレートを使用します。</li>
     <li>ファイルのアップロードを許さない厳しいウェブホストを、標準の画像ディレクトリに適応させるために、新しい設定用変数 <code>$_CONF['path_images']</code> を設定して、記事画像とユーザープロフィールが保存されるウェブツリー外部のディレクトリに進むことができます。</li>
-    <li>Geeklogは、記事のURL用のURLリライトをサポートしています。たとえば、Googleのクローラーが訪問しやすい http://www.geeklog.net/article.php/20031229225326631 のようなURLを持つことができます。</li>
+    <li>Geeklogは、記事のURL用のURLリライトをサポートしています。たとえば、Googleのクローラーが訪問しやすい https://www.geeklog.net/article.php/20031229225326631 のようなURLを持つことができます。</li>
     <li>プラグインは、Geeklogの新しいブロックに独自のセクションを追加できます。</li>
     <li>すべてのURLフィールドは、255文字まで保存ができます(テーマのアップデートが必要です)。</li>
 </ul>
@@ -915,7 +915,7 @@ href="#changes172">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそ�
     <li>管理メニューは、管理機能のコアの一部ではなくプラグインのみに対して管理者アクセスしているユーザーに表示されています。</li>
     <li>デイリーダイジェスト用のデフォルトは、 <code>off</code> に戻ります。たとえば、新しいユーザーは自動的にダイジェストを受け取りません。新しいユーザー向けのデイリーダイジェストを再び可能にするには、config.phpに <code>$_CONF['emailstoriesperdefault'] = 1</code> を設定してください。</li>
 </ul>
-<p>ドキュメント及びハードコードされたリンク(バージョンチェック、サイトのフッターのGeeklogへのリンク)は、<a href="http://www.geeklog.net/">http://www.geeklog.net/</a> へ行くようにアップデートされました。</p>
+<p>ドキュメント及びハードコードされたリンク(バージョンチェック、サイトのフッターのGeeklogへのリンク)は、<a href="https://www.geeklog.net/">https://www.geeklog.net/</a> へ行くようにアップデートされました。</p>
 <h2><a name="changes137" id="changes137">Geeklog 1.3.7</a></h2>
 <h3>新機能</h3>
 <ul>

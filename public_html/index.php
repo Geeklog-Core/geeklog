@@ -291,19 +291,9 @@ if ($_CONF['allow_user_photo'] == 1) {
     }
 }
 
-$msql = array();
-
 // The incorrect t.topic, t.imageurl will most likely be return ... will fix later in fixtopic function.
 // Could not fix in sql since 2 many variables to contend with plus speed of sql statement probably an issue
-$msql['mysql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate, "
-    . 'UNIX_TIMESTAMP(s.expire) as expireunix, '
-    . $userfields . ", t.topic, t.imageurl "
-    . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta,{$_TABLES['users']} AS u, "
-    . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
-    . " ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND "
-    . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
-
-$msql['pgsql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
+$msql = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
             {$userfields}, t.topic, t.imageurl
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,

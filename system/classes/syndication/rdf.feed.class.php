@@ -29,25 +29,25 @@
 /****************************************************************************/
 
 /**
-* Provides feed handlers for RDF 1.0
-*
-* @author Michael Jervis (mike@fuckingbrit.com)
-* @version 1.0
-*/
+ * Provides feed handlers for RDF 1.0
+ *
+ * @author  Michael Jervis (mike@fuckingbrit.com)
+ * @version 1.0
+ */
 
 /**
-* RDF provides reading and writing of RDF 1.0 format syndication feeds.
-*
-* @author Michael Jervis (mike@fuckingbrit.com)
-* @copyright Michael Jervis 2004
-* @abstract
-*/
+ * RDF provides reading and writing of RDF 1.0 format syndication feeds.
+ *
+ * @author    Michael Jervis (mike@fuckingbrit.com)
+ * @copyright Michael Jervis 2004
+ * @abstract
+ */
 class RDF extends FeedParserBase
 {
     public function __construct()
     {
         parent::__construct();
-        $this->namespaces= array(
+        $this->namespaces = array(
             'xmlns:dc="http://purl.org/dc/elements/1.1/"',
             'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"',
             'xmlns="http://purl.org/rss/1.0/"',
@@ -56,27 +56,27 @@ class RDF extends FeedParserBase
     }
 
     /**
-    * Format an article into an Atom 0.3 <entry> tag.
-    *
-    * Takes an associative article array and turns it into an XML definition
-    * of an article. Uses merely title, link and summary.
-    *
-    * @param    array    $article    Associative array describing an article.
-    */
+     * Format an article into an Atom 0.3 <entry> tag.
+     * Takes an associative article array and turns it into an XML definition
+     * of an article. Uses merely title, link and summary.
+     *
+     * @param  array $article Associative array describing an article.
+     * @return string
+     */
     protected function _formatArticle(array $article)
     {
         $xml = '<item rdf:about="' . $this->_safeXML($article['link'], false) . '">' . self::LB
-             . '<title>' . $this->_safeXML($article['title']) . '</title>' . self::LB
-             . '<link>' . $this->_safeXML($article['link'], false) . '</link>' . self::LB;
+            . '<title>' . $this->_safeXML($article['title']) . '</title>' . self::LB
+            . '<link>' . $this->_safeXML($article['link'], false) . '</link>' . self::LB;
 
         if (array_key_exists('author', $article)) {
             $xml .= '<dc:creator>' . $this->_safeXML($article['author']) . '</dc:creator>' . self::LB;
         }
 
-        if (array_key_exists('summary', $article) && (strlen( $article['summary']) > 0)) {
+        if (array_key_exists('summary', $article) && (strlen($article['summary']) > 0)) {
             $xml .= '<content:encoded>'
-                 .  $this->_safeXML($article['summary'])
-                 .  '</content:encoded>' . self::LB;
+                . $this->_safeXML($article['summary'])
+                . '</content:encoded>' . self::LB;
         }
 
         if (is_array($article['extensions'])) {
@@ -89,22 +89,23 @@ class RDF extends FeedParserBase
     }
 
     /**
-    * Return the formatted start of a feed.
-    *
-    * This will start the xml and create header information about the feed
-    * itself.
-    */
+     * Return the formatted start of a feed.
+     * This will start the xml and create header information about the feed
+     * itself.
+     *
+     * @return string
+     */
     protected function _feedHeader()
     {
         $xml = parent::_feedHeader()
-             . '<rdf:RDF' . $this->_injectNamespaces() . '>' . self::LB
-             . '<channel rdf:about="' . $this->feedlogo . '">' . self::LB
-             . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
-             . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB
-             . '<description>'
-             . $this->_safeXML($this->description)
-             . '</description>' . self::LB
-             . '<dc:language>' . $this->lang . '</dc:language>' . self::LB;
+            . '<rdf:RDF' . $this->_injectNamespaces() . '>' . self::LB
+            . '<channel rdf:about="' . $this->feedlogo . '">' . self::LB
+            . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
+            . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB
+            . '<description>'
+            . $this->_safeXML($this->description)
+            . '</description>' . self::LB
+            . '<dc:language>' . $this->lang . '</dc:language>' . self::LB;
 
         if (strlen($this->feedlogo) > 0) {
             $xml .= '<image rdf:resource="' . $this->_safeXML($this->feedlogo) . '"/>' . self::LB;
@@ -118,37 +119,40 @@ class RDF extends FeedParserBase
 
         if (strlen($this->feedlogo) > 0) {
             $xml .= '<image rdf:about="' . $this->feedlogo . '">' . self::LB
-                 .  '<url>' . $this->_safeXML($this->feedlogo, false) . '</url>' . self::LB
-                 .  '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
-                 .  '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB
-                 .  '</image>' . self::LB;
+                . '<url>' . $this->_safeXML($this->feedlogo, false) . '</url>' . self::LB
+                . '<title>' . $this->_safeXML($this->title) . '</title>' . self::LB
+                . '<link>' . $this->_safeXML($this->sitelink, false) . '</link>' . self::LB
+                . '</image>' . self::LB;
         }
 
         $xml .= $this->_injectExtendingTags()
-             .  '</channel>' . self::LB;
+            . '</channel>' . self::LB;
 
         return $xml;
     }
 
     /**
-    * Return the formatted end of a feed.
-    *
-    * just closes things off nicely.
-    */
+     * Return the formatted end of a feed.
+     * just closes things off nicely.
+     *
+     * @return string
+     */
     protected function _feedFooter()
     {
         return '</rdf:RDF>' . self::LB;
     }
 
     /**
-    * Handle the begining of an XML element
-    *
-    * This is called from the parserfactory once the type of data has been
-    * determined. Standard XML_PARSER element handler.
-    *
-    * @author Michael Jervis (mike@fuckingbrit.com)
-    * @copyright Michael Jervis 2004
-    */
+     * Handle the begining of an XML element
+     * This is called from the parserfactory once the type of data has been
+     * determined. Standard XML_PARSER element handler.
+     *
+     * @author    Michael Jervis (mike@fuckingbrit.com)
+     * @copyright Michael Jervis 2004
+     * @param  resource $parser
+     * @param  string   $name
+     * @param  array    $attributes
+     */
     public function startElement($parser, $name, $attributes)
     {
         if ($name === 'ITEM') {
@@ -164,10 +168,12 @@ class RDF extends FeedParserBase
     }
 
     /**
-    * Handle the close of an XML element
-    *
-    * Called by the parserfactory during parsing.
-    */
+     * Handle the close of an XML element
+     * Called by the parser factory during parsing.
+     *
+     * @param  resource $parser
+     * @param  string   $name
+     */
     public function endElement($parser, $name)
     {
         if ($name === 'ITEM') {
@@ -179,10 +185,12 @@ class RDF extends FeedParserBase
     }
 
     /**
-    * Handles character data.
-    *
-    * Called by the parserfactory during parsing.
-    */
+     * Handles character data.
+     * Called by the parser factory during parsing.
+     *
+     * @param  resource $parser
+     * @param  string   $data
+     */
     public function charData($parser, $data)
     {
         if ($this->_inItem) {

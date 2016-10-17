@@ -61,7 +61,7 @@ function theme_config_denim()
             'nestable'      => 0,
             'notify'        => 0,
             'placeholder'   => 0,
-            'progress'      => 0,
+            'progress'      => 1,
             'search'        => 0,
             'slidenav'      => 0,
             'slider'        => 0,

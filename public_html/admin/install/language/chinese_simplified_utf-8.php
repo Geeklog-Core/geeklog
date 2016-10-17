@@ -137,7 +137,7 @@ $LANG_INSTALL = array(
     84 => '路径 "',
     85 => '" 好像不对. 请回去重试.',
     86 => '语言',
-    87 => 'http://www.geeklog.net/forum/index.php?forum=1',
+    87 => 'https://www.geeklog.net/forum/index.php?forum=1',
     88 => '更改目录和所属档案为',
     89 => '目前版本:',
     90 => '空的数据库?',
