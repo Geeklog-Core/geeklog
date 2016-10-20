@@ -527,6 +527,64 @@ class config
     }
 
     /**
+     * Updates a configuration variable in the db and array
+     *
+     * @param string  $param_name        name of the parameter to add
+     * @param mixed   $default_value     the default value of the parameter
+     *                                   (also will be the initial value)
+     * @param string  $type              the type of the configuration variable
+     *                                   If the configuration variable is an array, prefix this string with
+     *                                   '@' if the administrator should NOT be able to add or remove keys
+     *                                   '*' if the administrator should be able to add named keys
+     *                                   '%' if the administrator should be able to add numbered keys
+     *                                   These symbols can be repeated like such: @@text if the configuration
+     *                                   variable is an array of arrays of text.
+     *                                   The base variable types are:
+     *                                   'text'    textbox displayed     string  value stored
+     *                                   'select'  selectbox displayed   string  value stored
+     *                                   'hidden'  no display            string  value stored
+     * @param string  $subgroup          subgroup of the variable
+     *                                   (the second row of tabs on the user interface)
+     * @param string  $fieldset          the fieldset to display the variable under
+     * @param array   $selection_array   possible selections for the 'select' type
+     *                                   this MUST be passed if you use the 'select'
+     *                                   type
+     * @param int     $sort              sort rank on the user interface (ascending)
+     * @param boolean $set               whether or not this parameter is set to config_array property
+     * @param string  $group             group of the variable
+     * @param string  $tab               the tab to display the variable under
+     */
+    function update($param_name, $default_value, $type, $subgroup, $fieldset,
+         $selection_array=null, $sort=0, $set=true, $group='Core', $tab = null)
+    {
+        global $_TABLES;
+
+        $Qargs = array($param_name,
+                       $set ? serialize($default_value) : 'unset',
+                       $type,
+                       $subgroup,
+                       $group,
+                       ($selection_array === null ?
+                        -1 : $selection_array),
+                       $sort,
+                       $fieldset,
+                       serialize($default_value));
+                       
+        // special handling of $tab for backward compatibility
+        if ($tab !== null) {
+            $columns .= ', tab';
+            $Qargs[9] = $tab;
+        }                       
+                       
+        $Qargs = array_map('DB_escapeString', $Qargs);
+
+        $sql = "UPDATE {$_TABLES['conf_values']} SET sort_order={$Qargs[6]},fieldset={$Qargs[7]}".
+               " WHERE group_name='{$Qargs[4]}' AND name='{$Qargs[0]}'";
+
+        $this->_DB_escapedQuery($sql,1);
+    }
+    
+    /**
      * Permanently deletes a parameter
      *
      * @param string $param_name This is the name of the parameter to delete
