@@ -463,6 +463,10 @@ function reorderRoutes()
         DB_query($sql);
         $priority += $step;
     }
+    
+    // Clear the cache once reordered so any updated urls can be refreshed
+    // reorderRoutes is called by save and delete so it covers those instances as well
+    CTL_clearCache();    
 }
 
 /**
