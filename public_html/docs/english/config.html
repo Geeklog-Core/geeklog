@@ -2188,6 +2188,33 @@ with your site.</p>
     $_SERVER['PATH_INFO'] variable.  Please try it out before you go public with your site.</p>
 <p><strong>Advanced feature:</strong> If you use IIS as a Web server and want to remove "index.php"
     from URLs you access, you will have to create the appropriate web.config file in the same directory as lib-common.php, with the proper redirects defined.</p>
+<ol>
+    <li>Install the rewrite module on your web server if it has not been already (use the Microsoft Web Platform Installer for this).</li>
+    <li>Create a file named "web.config" in the top of the public directory of your
+        Geeklog installation (where lib-common.php is located) and add the following lines. If you have installed Geeklog in a subdirectory of the document root, you may need to modify the code below.<br>
+    <pre>
+        &lt;configuration&gt;
+            &lt;system.webServer&gt;
+                &lt;rewrite&gt;
+                    &lt;rules&gt;
+                        &lt;rule name="Imported Rule 1" stopProcessing="true"&gt;
+                            &lt;match url="^(.*)$" ignoreCase="false" /&gt;
+                            &lt;conditions&gt;
+                                &lt;add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" /&gt;
+                                &lt;add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" /&gt;
+                            &lt;/conditions&gt;
+                            &lt;action type="Rewrite" url="/index.php/{R:1}" /&gt;
+                        &lt;/rule&gt;
+                    &lt;/rules&gt;
+                &lt;/rewrite&gt;
+            &lt;/system.webServer&gt;
+        &lt;/configuration&gt;
+    </pre>
+    <li>
+        Finally, log in as admin and go to the Configuration screen, and set URL Routing
+        to 'Enabled (<strong>without</strong> "index.php")'.
+    </li>    
+</ol>    
 <p><strong>Advanced feature:</strong> If you use Apache as a Web server and want to remove "index.php"
     from URLs you access, you have to do the following things.  <strong>Be warned!</strong>
     Unless you are familiar with Web server configurations, you might as well not use this feature.</p>
