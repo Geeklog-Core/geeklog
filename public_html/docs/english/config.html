@@ -99,7 +99,8 @@ manually.</p>
     <td valign="top"><a name="desc_url_routing">url_routing</a></td>
     <td valign="top">Disabled</td>
     <td valign="top">Enable or disable URL routing.  <strong>Caution: This feature takes effect only when URL Rewriting is enabled.</strong><br />
-        Also see the section on <a href="#url-routing">URL Routing</a> below.</td></tr>
+        The setting 'Enabled (without "index.php")' requires additional settings for your web server to work properly. 
+        See the section on <a href="#url-routing">URL Routing</a> below for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cdn_hosted">cdn_hosted</a></td>
   <td valign="top">false</td>
@@ -2185,6 +2186,8 @@ with your site.</p>
     route in the URL Routing screen (admin/router.php).</p>
 <p><strong>Note:</strong> This feature may not work with all web servers. It uses PHP's
     $_SERVER['PATH_INFO'] variable.  Please try it out before you go public with your site.</p>
+<p><strong>Advanced feature:</strong> If you use IIS as a Web server and want to remove "index.php"
+    from URLs you access, you will have to create the appropriate web.config file in the same directory as lib-common.php, with the proper redirects defined.</p>
 <p><strong>Advanced feature:</strong> If you use Apache as a Web server and want to remove "index.php"
     from URLs you access, you have to do the following things.  <strong>Be warned!</strong>
     Unless you are familiar with Web server configurations, you might as well not use this feature.</p>
