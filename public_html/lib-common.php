@@ -5904,7 +5904,9 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
  */
 function COM_buildURL($url)
 {
-    return Url::getInstance()->buildURL($url);
+    global $_URL;
+
+    return $_URL->buildURL($url);
 }
 
 /**
@@ -5916,7 +5918,9 @@ function COM_buildURL($url)
  */
 function COM_setArgNames($names)
 {
-    return Url::getInstance()->setArgNames($names);
+    global $_URL;
+
+    return $_URL->setArgNames($names);
 }
 
 /**
@@ -5928,7 +5932,9 @@ function COM_setArgNames($names)
  */
 function COM_getArgument($name)
 {
-    return Url::getInstance()->getArgument($name);
+    global $_URL;
+
+    return $_URL->getArgument($name);
 }
 
 /**

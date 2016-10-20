@@ -43,11 +43,6 @@
 class Url
 {
     /**
-     * @var Url
-     */
-    private static $instance;
-
-    /**
      * @var array
      */
     private $arguments = array();  // Array of argument names
@@ -56,15 +51,6 @@ class Url
      * @var bool
      */
     private $urlRewrite = true;
-
-    public static function getInstance($enabled = true)
-    {
-        if (self::$instance === null) {
-            self::$instance = new Url($enabled);
-        }
-
-        return self::$instance;
-    }
 
     /**
      * @var int
