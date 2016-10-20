@@ -1396,6 +1396,7 @@ function TOPIC_breadcrumbs($type, $id)
                     $url = $_CONF['site_url'] . '/';
                     if ($value['tid'] != TOPIC_ROOT) {
                         $url .= 'index.php?topic=' . $value['tid'];
+                        $url = COM_buildURL($url);
                     }
                     $use_block = 'breadcrumb_item';
                 }
@@ -1523,7 +1524,7 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
         $topicrelated->set_var('lang_filed_under', $LANG27['filed_under:']);
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
-            $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
+            $url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $A['tid']);
 
             $topicrelated->set_var('topic_url', $url);
             $topicrelated->set_var('topic', $A['topic']);

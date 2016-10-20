@@ -2689,8 +2689,8 @@ function COM_showTopics($topic = '')
                     $topicNavigation->set_var('branch_level', $level);
 
                     $topicName = stripslashes($_TOPICS[$count_topic]['title']);
-                    $topicNavigation->set_var('option_url', $_CONF['site_url']
-                        . '/index.php?topic=' . $_TOPICS[$count_topic]['id']);
+                    $topicNavigation->set_var('option_url', COM_buildURL($_CONF['site_url']
+                        . '/index.php?topic=' . $_TOPICS[$count_topic]['id']));
                     $topicNavigation->set_var('option_label', $topicName);
 
                     $countString = '';
