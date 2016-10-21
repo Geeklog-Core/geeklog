@@ -88,7 +88,7 @@
     <td valign="top"><a name="desc_url_routing">URLルーティング(url_routing)</a></td>
     <td valign="top">無効</td>
     <td valign="top">「有効」でURLルーティングを行い、「無効」で行わないようになります。<strong>注意: この機能を使うにはURLリライトを「はい」にしてください。</strong><br />
-        下記の<a href="#url-routing">URLルーティング</a>のセクションを参照してください。</td></tr>
+        「有効(index.phpなし)」を使うには、Webサーバーで追加の設定を行う必要があります。詳しくは、下記の<a href="#url-routing">URLルーティング</a>のセクションを参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cdn_hosted">CDNのjQueryを使う(cdn_hosted)</a></td>
   <td valign="top">いいえ</td>
@@ -559,13 +559,13 @@
 Windowsで共有ドライブにアクセスしている場合です。
 このような場合には「いいえ」にするとサイトの速度が向上するでしょう。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_cache_mobile">cache_mobile</a></td>
-  <td valign="top">true</td>
-  <td valign="top">If set to <span class="tt">true</span>, mobile devices (phones and tablets) will be cached
-  separately from computers. This includes the template files, blocks, articles and other plugins which may use 
-  Geeklog's template cache system. You should only set this to false if you do not plan to display different information 
-  depending on if a mobile device is detected being used by the user. Performance will be improved slightly if set to false since 
-  less cached files will be created.</td></tr>    
+  <td valign="top"><a name="desc_cache_mobile">モバイル用のコンテンツを別にキャッシュする(cache_mobile)</a></td>
+  <td valign="top">はい</td>
+  <td valign="top"><span class="tt">「はい」</span>に設定すると、モバイル機器(携帯電話とタブレット)用のコンテンツを
+  コンピューター用のコンテンツとは別々にキャッシュします。キャッシュされるのは、テンプレートファイル、ブロック、記事と
+  Geeklogのテンプレートキャッシュシステムを利用するプラグインです。ユーザーがモバイルデバイスを使用しているかどうかを
+  検出して異なる情報を表示する予定がない場合に限り、「いいえ」に設定した方がよいでしょう。「いいえ」にすると、
+  作成するキャッシュファイルの数が減るので、パフォーマンスが少し向上します。</td></tr>
 </table>
 
 <h3><a name="theme_advanced">テーマ: テーマの拡張設定</a></h3>
@@ -1888,6 +1888,35 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     ことでURLルーティングを行うことができます。</p>
 <p><strong>注意:</strong> この機能は全てのWebサーバーで使えるとは限りません。PHPの
     $_SERVER['PATH_INFO'] 変数を使用します。サイトを公開する前に検証してください。</p>
+<p><strong>高度な機能:</strong> Webサーバーとして IIS を使用し、ユーザーがアクセスするURLから
+  "index.php" を取り除きたいなら、適切なリダイレクトを設定した web.config ファイルを lib-common.php と同じディレクトリに作成する必要があります。</p>
+<ol>
+  <li>まだ設定していないなら、リライトモジュールをwebサーバーにインストールしてください(Microsoft Web Platform Installer を使用してください)。</li>
+  <li>Geeklogをインストールした公開領域のディレクトリ(lib-common.phpのあるディレクトリ)に "web.config" という名前の
+    ファイルを作成し、以下の行を追加します。Geeklogをドキュメントルートのサブディレクトリにインストールしている場合には、少し変更する必要があるでしょう。<br>
+    <pre>
+        &lt;configuration&gt;
+            &lt;system.webServer&gt;
+                &lt;rewrite&gt;
+                    &lt;rules&gt;
+                        &lt;rule name="Imported Rule 1" stopProcessing="true"&gt;
+                            &lt;match url="^(.*)$" ignoreCase="false" /&gt;
+                            &lt;conditions&gt;
+                                &lt;add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" /&gt;
+                                &lt;add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" /&gt;
+                            &lt;/conditions&gt;
+                            &lt;action type="Rewrite" url="/index.php/{R:1}" /&gt;
+                        &lt;/rule&gt;
+                    &lt;/rules&gt;
+                &lt;/rewrite&gt;
+            &lt;/system.webServer&gt;
+        &lt;/configuration&gt;
+    </pre>
+  <li>
+  最後に、管理者としてログインし、コンフィギュレーションでURLルーティングの設定を
+  「有効(index.php<strong>なし</strong>)」に変えます。
+  </li>
+</ol>
 <p><strong>高度な機能:</strong> WebサーバーとしてApacheを使用し、ユーザーがアクセするURLから
     "index.php" を取り除きたいなら、以下のことを行います。<strong>警告!</strong> Webサーバーの
     設定を熟知していない場合は、この機能を使わない方が良いでしょう。</p>
@@ -1922,7 +1951,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     </li>
     <li>
         最後に、管理者としてログインし、コンフィギュレーションでURLルーティングの設定を
-        「有効(index.php<strong>あり</strong>)」に変えます。
+        「有効(index.php<strong>なし</strong>)」に変えます。
     </li>
 </ol>
 
