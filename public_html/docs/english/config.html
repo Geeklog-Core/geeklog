@@ -2187,7 +2187,9 @@ with your site.</p>
 <p><strong>Note:</strong> This feature may not work with all web servers. It uses PHP's
     $_SERVER['PATH_INFO'] variable.  Please try it out before you go public with your site.</p>
 <p><strong>Advanced feature:</strong> If you use IIS as a Web server and want to remove "index.php"
-    from URLs you access, you will have to create the appropriate web.config file in the same directory as lib-common.php, with the proper redirects defined.</p>
+    from URLs you access, you will have to create the appropriate web.config file in the same directory as lib-common.php, with the proper redirects defined. 
+    An example file called "web.config.txt" is included with Geeklog which you can rename to "web.config". It includes the proper rewrite rule along with some 
+    other security and optimizing enhancements for your IIS web server.</p>
 <ol>
     <li>Install the rewrite module on your web server if it has not been already (use the Microsoft Web Platform Installer for this).</li>
     <li>Create a file named "web.config" in the top of the public directory of your
@@ -2217,7 +2219,9 @@ with your site.</p>
 </ol>    
 <p><strong>Advanced feature:</strong> If you use Apache as a Web server and want to remove "index.php"
     from URLs you access, you have to do the following things.  <strong>Be warned!</strong>
-    Unless you are familiar with Web server configurations, you might as well not use this feature.</p>
+    Unless you are familiar with Web server configurations, you might as well not use this feature. An example file called ".htaccess.txt" 
+    is included with Geeklog which you can rename to ".htaccess". It includes the proper rewrite rule along with some other security and 
+    optimizing enhancements for your Apache web server.</p>
 <ol>
     <li>Enable the rewrite module of your web server.  In "httpd.conf", look for<br>
     <code># LoadModule rewrite_module modules/mod_rewrite.so</code><br>
