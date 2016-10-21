@@ -295,7 +295,7 @@ class Language
         );
         $textArray = array(
             'has_extras' => true,
-            'title'      => $LANG_LANG['language_editor'],
+            'form_url'   => $_CONF['site_admin_url'] . '/language.php',
         );
         $queryArray = array(
             'sql'         => "SELECT * FROM {$_TABLES['language_items']} ",
@@ -320,6 +320,7 @@ class Language
             'language_items', __CLASS__ . '::fieldFunction', $headerArray, $textArray,
             $queryArray, $defaultSortArray, $filter, $extra, $options, $formArray, true, $pageNavUrl
         );
+        $content .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
         $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG_LANG['language_editor']));
         COM_output($display);
     }
