@@ -169,7 +169,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
 
     // Topic Icon is user configurable so do not cache
     $topicname = $story->DisplayElements('topic');
-    $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $story->DisplayElements('tid');
+    $topicurl = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $story->DisplayElements('tid'));
     if ((!isset($_USER['noicons']) || ($_USER['noicons'] != 1)) && $story->DisplayElements('show_topic_icon') == 1) {
         $imageurl = $story->DisplayElements('imageurl');
         if (!empty($imageurl)) {

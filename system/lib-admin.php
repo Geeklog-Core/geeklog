@@ -1708,7 +1708,7 @@ function ADMIN_getListField_topics($fieldName, $fieldValue, $A, $icon_arr, $toke
                 $image_tag = '<img src="' . $imageUrl
                     . '" width="24" height="24" id="topic-' . $A['tid']
                     . '" class="admin-topic-image" alt=""' . XHTML . '>';
-                $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
+                $url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $A['tid']);
                 $retval = COM_createLink($image_tag, $url);
             }
             break;
@@ -1725,7 +1725,7 @@ function ADMIN_getListField_topics($fieldName, $fieldValue, $A, $icon_arr, $toke
             $level *= 15;
 
             $content = '<span style="margin-left:' . $level . 'px">' . $fieldValue . '</span>';
-            $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
+            $url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $A['tid']);
             $retval = COM_createLink($content, $url) . $default;
             break;
 

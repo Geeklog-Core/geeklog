@@ -204,8 +204,10 @@ function links_list($message)
                 } else {
                     $linklist->set_var ('category_description', '');
                 }
-                $linklist->set_var ('category_link', $_CONF['site_url'] .
-                    '/links/index.php?category=' . rawurlencode ($C['cid']));
+                $linklist->set_var (
+                    'category_link',
+                    COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode ($C['cid']))
+                );
                 $linklist->set_var ('category_count', $display_count);
                 $linklist->set_var ('width', floor (100 / $_LI_CONF['linkcols']));
                 if (!empty($cid) && ($cid == $C['cid'])) {

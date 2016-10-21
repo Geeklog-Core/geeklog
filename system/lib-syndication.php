@@ -303,7 +303,7 @@ function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLen
         }
     }
 
-    $link = $_CONF['site_url'] . '/index.php?topic=' . $tid;
+    $link = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $tid);
     $update = implode(',', $sids);
 
     return $content;

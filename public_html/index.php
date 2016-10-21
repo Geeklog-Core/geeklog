@@ -358,12 +358,12 @@ if ($A = DB_fetchArray($result)) {
         if (empty($topic)) {
             $base_url = $_CONF['site_url'] . '/index.php';
         } else {
-            $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
+            $base_url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $topic);
         }
         $display .= COM_printPageNavigation($base_url, $page, $num_pages);
     } else {
         if ($_CONF['hide_main_page_navigation'] == 'frontpage' && !empty($topic)) {
-            $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
+            $base_url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $topic);
             $display .= COM_printPageNavigation($base_url, $page, $num_pages);
         }
     }
@@ -381,7 +381,7 @@ if ($A = DB_fetchArray($result)) {
     } else {
         $topic_url = '';
         if (!empty($topic)) {
-            $topic_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
+            $topic_url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $topic);
         }
         COM_handle404($topic_url);
     }

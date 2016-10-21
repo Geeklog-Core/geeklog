@@ -1176,7 +1176,7 @@ function LINKS_sendNotification ($table, $A)
     if ($table == $_TABLES['linksubmission']) {
         $mailbody .= "$LANG_LINKS[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
-        $mailbody .= "$LANG_LINKS[114] <{$_CONF['site_url']}/links/index.php?category=" . rawurlencode ($A['category']) . ">\n\n";
+        $mailbody .= "{$LANG_LINKS[114]} <" . COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['category'])) . ">\n\n";
     }
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG_LINKS_SUBMIT[11];
 
@@ -1240,8 +1240,8 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
                     $indent = 0;
                 }
                 $cat = COM_createLink($A['category'],
-                        "{$_CONF['site_url']}/links/index.php?category="
-                        . rawurlencode($A['cid']));
+                    COM_buildURL("{$_CONF['site_url']}/links/index.php?category=" . rawurlencode($A['cid']))
+                );
                 $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
                 break;
                 break;
@@ -1281,8 +1281,8 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
             case 'category':
                 $indent = ($A['indent'] - 1) * 20;
                 $cat = COM_createLink($A['category'],
-                        "{$_CONF['site_url']}/links/index.php?category="
-                        . rawurlencode($A['cid']));
+                    COM_buildURL("{$_CONF['site_url']}/links/index.php?category=" . rawurlencode($A['cid']))
+                );
                 $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
                 break;
             case 'addchild';
@@ -1489,10 +1489,8 @@ function links_breadcrumbs($root, $cid)
             $A = DB_fetchArray($parent);
             if ($cid != $c) {
                 $content = stripslashes($A['category']);
-                $url = $_CONF['site_url'] . '/links/index.php?category='
-                                          . rawurlencode($A['cid']);
-                $breadcrumb = COM_createLink($content, $url) . $separator
-                            . $breadcrumb;
+                $url = COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['cid']));
+                $breadcrumb = COM_createLink($content, $url) . $separator . $breadcrumb;
             } else {
                 $breadcrumb = '<b>' . $A['category'] . '</b>' . $breadcrumb;
             }
@@ -1583,8 +1581,7 @@ function phpblock_topic_categories()
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             $content = stripslashes($A['category']);
-            $url = $_CONF['site_url'] . '/links/index.php?category='
-                                      . rawurlencode($A['cid']);
+            $url = COM_buildURL($_CONF['site_url'] . '/links/index.php?category=' . rawurlencode($A['cid']));
             $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
         }
     }
