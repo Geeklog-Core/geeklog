@@ -1,0 +1,25 @@
+##
+# Geeklog .htaccess file for Apache Web Servers
+#     
+# - URL Routing Rule
+# - Security and Optimizing Rules
+# 
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!                                                                       !!
+# !!  If you get an Internal Server Error 500 or a blank page when trying  !!
+# !!  to access your site, remove this file.                               !!
+# !!                                                                       !!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+## No directory listings
+IndexIgnore *
+
+## URL Routing
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # RewriteBase /
+    # Directs all Geeklog requests through the site index file
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+</IfModule>
