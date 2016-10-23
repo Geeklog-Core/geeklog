@@ -1,0 +1,67 @@
+lm.php v1.0.6
+
+This script merges a Geeklog (foreign) language file with the english.php
+language file, so that new strings added to english.php are automatically added
+to the other language file.
+
+The result is a fully working language file (no more missing texts), only that
+some texts will appear in English. This will also make it easier for
+translators since they will only have to translate the newly added strings.
+
+Usage:
+
+    php lm.php langfile.php [module] > new-langfile.php
+
+Where "module" is the name of the plugin to update (or empty for a Core
+language file).
+
+If the filename of the language file contains 'utf-8', lm.php assumes it to
+be in UTF-8 encoding. It then requires a PHP version with multi-byte string
+support built in (--enable-mbstring option).
+
+This script, while written in PHP, is supposed to be run from the command
+line and thus requires the CLI version of PHP to be installed on your
+computer. It also displays the merged language file on the screen, so you
+should redirect the output to a new file. It also expects to find the
+english.php language file in the current directory.
+
+What it can do:
+
+- add new individual strings and string arrays to the language file
+- do some pretty printing
+- remove obsoleted strings
+- update plugin language files
+
+What it can not do:
+
+- detect changed strings
+
+For changes in existing strings, it is recommended that you subscribe to
+the geeklog-translations mailing list, where such information will be posted
+when a new version of Geeklog is about to be released.
+
+You can subscribe to the geeklog-translations mailing list at
+
+    http://lists.geeklog.net/mailman/listinfo/geeklog-translations
+
+Copyright (C) 2004-2013 by Dirk Haun, <dirk AT haun-online DOT de>,
+and released under the GNU General Public License v2.
+
+
+History
+
+0.1   first public release
+0.2   make sure lines containing \n are enclosed in double quotes
+0.3   added support for $LANG_PDF (Geeklog 1.3.10), introduced multibyte version
+0.5   updated for Geeklog 1.4.0
+0.6   updated for Geeklog 1.4.1
+0.7   updated for Geeklog 1.5.0
+0.8   merged lm.php and mblm.php into one script; added XHTML support
+0.9   moved updating code into includes; now supports plugins
+1.0   now supports core language files and all 5 default plugins
+1.0.1 fixed handling of <br> tags and fixed accidentally created <brXHTML> tags
+1.0.2 added support for install script language files
+1.0.3 added $LANG_SECTEST and the XMLSitemap plugin
+1.0.4 added $LANG_LOGVIEW
+1.0.5 added quick'n'dirty support for constants in the configselect arrays
+1.0.6 can now detect changes (new/removed options) in the configselect arrays

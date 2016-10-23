@@ -8,7 +8,35 @@
     <!-- Target: help                   -->
     <!-- ============================== -->
     <target name="help">
-        <echo msg="USAGE: phing dist"/>
+        <echo msg="Geeklog building tools"/>
+        <echo msg="----------------------"/>
+        <echo msg="To show help"/>
+        <echo msg="phing[ENTER]"/>
+        <echo msg=""/>
+        <echo msg="To create a tarball"/>
+        <echo msg="phing dist[ENTER]"/>
+        <echo msg=""/>
+        <echo msg="To synchronize language files"/>
+        <echo msg="phing lang[ENTER]"/>
+    </target>
+
+    <!-- ============================== -->
+    <!-- Target: lang                   -->
+    <!-- ============================== -->
+    <target name="lang">
+        <echo msg="Synchronizing language files..."/>
+
+        <if>
+            <os family="windows"/>
+            <then>
+                <exec command="${srcDir}/system/build/lm/uplang.bat" dir="${srcDir}/system/build/lm"/>
+            </then>
+            <else>
+                <exec command="${srcDir}/system/build/lm/uplang.sh" dir="${srcDir}/system/build/lm"/>
+            </else>
+        </if>
+
+        <echo msg="Done."/>
     </target>
 
     <!-- ============================== -->
