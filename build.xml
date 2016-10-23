@@ -10,14 +10,16 @@
     <target name="help">
         <echo msg="Geeklog building tools"/>
         <echo msg="----------------------"/>
-        <echo msg="To show help"/>
-        <echo msg="phing[ENTER]"/>
+        <echo msg="In the following description, please replace 'path/to/phing' with the real path to phing."/>
         <echo msg=""/>
-        <echo msg="To create a tarball"/>
-        <echo msg="phing dist[ENTER]"/>
+        <echo msg="To show help, enter:"/>
+        <echo msg="path/to/phing[ENTER]"/>
         <echo msg=""/>
-        <echo msg="To synchronize language files"/>
-        <echo msg="phing lang[ENTER]"/>
+        <echo msg="To create a tarball, enter:"/>
+        <echo msg="path/to/phing dist[ENTER]"/>
+        <echo msg=""/>
+        <echo msg="To synchronize language files, enter:"/>
+        <echo msg="path/to/phing lang[ENTER]"/>
     </target>
 
     <!-- ============================== -->
