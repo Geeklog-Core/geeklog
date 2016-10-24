@@ -3798,6 +3798,18 @@ dd#profile-user_photo {
 }
 
 /*--------------------------------------
+  Batch Processing Styles
+--------------------------------------*/
+
+.tm-updating {
+  background-image: url("../images/throbber.gif");
+  background-repeat: no-repeat;
+  background-position: 5px 4px;
+  border-width: 1px;
+  padding-left: 3px;
+}
+
+/*--------------------------------------
   Admin Common Style
 --------------------------------------*/
 
