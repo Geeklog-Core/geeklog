@@ -203,7 +203,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
             return PLG_RET_ERROR;
         }
-
+        
         if (empty($args['sp_content'])) {
             $svc_msg['error_desc'] = 'No content';
 
@@ -257,6 +257,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $sp_hits = $args['sp_hits'];
     $sp_format = $args['sp_format'];
     $sp_onmenu = $args['sp_onmenu'];
+    $sp_onhits = $args['sp_onhits'];
+    $sp_onlastupdate = $args['sp_onlastupdate'];
     $sp_label = '';
     if (!empty($args['sp_label'])) {
         $sp_label = $args['sp_label'];
@@ -345,6 +347,16 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         } else {
             $sp_onmenu = 0;
         }
+        if ($sp_onhits == 'on') {
+            $sp_onhits = 1;
+        } else {
+            $sp_onhits = 0;
+        }
+        if ($sp_onlastupdate == 'on') {
+            $sp_onlastupdate = 1;
+        } else {
+            $sp_onlastupdate = 0;
+        }        
         if ($sp_nf == 'on') {
             $sp_nf = 1;
         } else {
@@ -414,6 +426,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $template_id = '';
 
             $sp_onmenu = 0;
+            $sp_onhits = $_SP_CONF['show_hits'];
+            $sp_onlastupdate = $_SP_CONF['show_date'];
             $sp_label = "";
             $sp_centerblock = 0;
             $sp_php = 0;
@@ -490,9 +504,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $datecreated = date('Y-m-d H:i:s');
         }
 
-        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time,owner_id,group_id,'
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_onhits,sp_onlastupdate,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time,owner_id,group_id,'
             . 'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode',
-            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
+            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
             . "$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help',$sp_where,"
             . "'$sp_inblock','$postmode'");
 
@@ -646,6 +660,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
     $svc_msg['output_fields'] = array(
         'sp_hits',
+        'sp_onhits',
+        'sp_onlastupdate',
         'sp_format',
         'draft_flag',
         'cache_time',
@@ -723,14 +739,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $topic_perms .= " GROUP BY sp_id";
 
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_onhits,sp_onlastupdate,sp_hits,created,modified,sp_format,"
             . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
             . "owner_id,group_id,perm_owner,perm_group,"
             . "perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time "
             . "FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta "
             . "WHERE (sp_id = '$page')" . $perms
             . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
-        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,"
+        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_onhits,sp_onlastupdate,sp_hits,"
             . "created,modified,sp_format,"
             . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
             . "owner_id,group_id,perm_owner,perm_group,"

@@ -473,8 +473,8 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
         $spage->set_var('content', $content);
 
-        $spage->set_var('info_separator', 'hidden');
-        if ($_SP_CONF['show_date'] == 1) {
+        $spage->set_var('lastupdate', '');
+        if ($_SP_CONF['show_date'] == 1  && $A['sp_onlastupdate'] == 1) {
             $curtime = COM_getUserDateTimeFormat($A['modified']);
             $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
             $spage->set_var('lang_updated', $LANG_STATIC['lastupdated']);
@@ -482,10 +482,8 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $spage->set_var('lastupdate', $lastupdate);
         }
 
-        if ($_SP_CONF['show_hits'] == 1) {
-            if ($_SP_CONF['show_date'] == 1) {
-                $spage->set_var('info_separator', 'visible');
-            }
+        $spage->set_var('hits', '');
+        if ($_SP_CONF['show_hits'] == 1 && $A['sp_onhits'] == 1) {
             $num_hits = COM_numberFormat($A['sp_hits']);
             $hits = $LANG_STATIC['hits'] . ': ' . $num_hits;
             $spage->set_var('lang_hits', $LANG_STATIC['hits']);
@@ -1055,7 +1053,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
     if (!empty($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,created,modified,sp_hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help
+    $spsql = "SELECT sp_id,sp_title,sp_content,sp_onhits,sp_onlastupdate,sp_format,created,modified,sp_hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help
         FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta
         WHERE (sp_centerblock = 1) AND (draft_flag = 0) AND (template_flag = 0)
         AND ta.type = 'staticpages' AND ta.id = sp_id
@@ -1130,19 +1128,18 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
                 $spage->set_var('edit_icon', $icon);
             }
 
-            $spage->set_var('info_separator', 'hidden');
-            if ($_SP_CONF['show_date'] == 1) {
+            $spage->set_var('lastupdate', '');
+            if ($_SP_CONF['show_date'] == 1  && $S['sp_onlastupdate'] == 1) {
                 $curtime = COM_getUserDateTimeFormat($S['modified']);
                 $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
                 $spage->set_var('lang_updated', $LANG_STATIC['lastupdated']);
                 $spage->set_var('updated_date', $curtime[0]);
                 $spage->set_var('lastupdate', $lastupdate);
+                
             }
 
-            if ($_SP_CONF['show_hits'] == 1) {
-                if ($_SP_CONF['show_date'] == 1) {
-                    $spage->set_var('info_separator', 'visible');
-                }
+            $spage->set_var('hits', '');
+            if ($_SP_CONF['show_hits'] == 1 && $S['sp_onhits'] == 1) {
                 $num_hits = COM_numberFormat($S['sp_hits']);
                 $hits = $LANG_STATIC['hits'] . ': ' . $num_hits;
                 $spage->set_var('lang_hits', $LANG_STATIC['hits']);
@@ -1522,6 +1519,17 @@ function plugin_upgrade_staticpages()
             case '1.6.6':
                 $current_version = '1.6.7';
                 break;
+                
+            case '1.6.7':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+                
+                $current_version = '1.6.8';
+                break;                
 
             default:
                 $done = true;

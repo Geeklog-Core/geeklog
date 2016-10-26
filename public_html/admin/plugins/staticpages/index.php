@@ -410,6 +410,17 @@ function staticpageeditor_form($A)
     } else {
         $sp_template->set_var('onmenu_checked', '');
     }
+    if (isset($A['sp_onhits']) && ($A['sp_onhits'] == 1)) {
+        $sp_template->set_var('onhits_checked', 'checked="checked"');
+    } else {
+        $sp_template->set_var('onhits_checked', '');
+    }
+    if (isset($A['sp_onlastupdate']) && ($A['sp_onlastupdate'] == 1)) {
+        $sp_template->set_var('onlastupdate_checked', 'checked="checked"');
+    } else {
+        $sp_template->set_var('onlastupdate_checked', '');
+    }
+    
     $sp_template->set_var('lang_label', $LANG_STATIC['label']);
     if (isset($A['sp_label'])) {
         $sp_template->set_var('sp_label', $A['sp_label']);
@@ -458,6 +469,7 @@ function staticpageeditor_form($A)
              . COM_allowedAutotags();
     $sp_template->set_var('lang_allowedhtml', $allowed);
     $sp_template->set_var('lang_allowed_html', $allowed);
+    $sp_template->set_var('lang_show_on_page', $LANG_STATIC['show_on_page']);
     $sp_template->set_var('lang_hits', $LANG_STATIC['hits']);
     if (empty($A['sp_hits'])) {
         $sp_template->set_var('sp_hits', '0');
@@ -709,6 +721,8 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 * @param int    sp_hits          Number of page views
 * @param string sp_format        HTML or plain text
 * @param string sp_onmenu        Flag to place entry on menu
+* @param string sp_onhits        Flag to shot hits
+* @param string sp_onlastupdate  Flag to show last update
 * @param string sp_label         Menu Entry
 * @param int    commentcode      Comment Code
 * @param int    owner_id         Permission bits
@@ -731,7 +745,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 *
 */
 function submitstaticpage($sp_id, $sp_title,$sp_page_title, $sp_content, $sp_hits,
-                          $sp_format, $sp_onmenu, $sp_label, $commentcode,
+                          $sp_format, $sp_onmenu, $sp_onhits, $sp_onlastupdate, $sp_label, $commentcode,
                           $owner_id, $group_id, $perm_owner, $perm_group,
                           $perm_members, $perm_anon, $sp_php, $sp_nf,
                           $sp_old_id, $sp_centerblock, $sp_help,
@@ -748,6 +762,8 @@ function submitstaticpage($sp_id, $sp_title,$sp_page_title, $sp_content, $sp_hit
                 'sp_hits' => $sp_hits,
                 'sp_format' => $sp_format,
                 'sp_onmenu' => $sp_onmenu,
+                'sp_onhits' => $sp_onhits,
+                'sp_onlastupdate' => $sp_onlastupdate,
                 'sp_label' => $sp_label,
                 'commentcode' => $commentcode,
                 'meta_description' => $meta_description,
@@ -824,6 +840,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         if (!isset($_POST['sp_onmenu'])) {
             $_POST['sp_onmenu'] = '';
         }
+        if (!isset($_POST['sp_onhits'])) {
+            $_POST['sp_onhits'] = '';
+        }
+        if (!isset($_POST['sp_onlastupdate'])) {
+            $_POST['sp_onlastupdate'] = '';
+        }        
         if (!isset($_POST['sp_php'])) {
             $_POST['sp_php'] = '';
         }
@@ -855,7 +877,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
 
         $display .= submitstaticpage($sp_id, $_POST['sp_title'], $_POST['sp_page_title'],
             $_POST['sp_content'], COM_applyFilter($_POST['sp_hits'], true),
-            COM_applyFilter($_POST['sp_format']), $_POST['sp_onmenu'],
+            COM_applyFilter($_POST['sp_format']), $_POST['sp_onmenu'], $_POST['sp_onhits'], $_POST['sp_onlastupdate'],
             $_POST['sp_label'], COM_applyFilter($_POST['commentcode'], true),
             COM_applyFilter($_POST['owner_id'], true),
             COM_applyFilter($_POST['group_id'], true), $_POST['perm_owner'],

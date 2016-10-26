@@ -50,6 +50,10 @@ $_UPDATES = array(
     '1.6.5' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `template_id`",
         "ALTER TABLE {$_TABLES['staticpage']} CHANGE `sp_id` `sp_id` VARCHAR(128) NOT NULL DEFAULT ''"
+    ),
+    
+    '1.6.7' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onmenu`, ADD `sp_onlastupdate` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onhits`"
     )
 );
 
