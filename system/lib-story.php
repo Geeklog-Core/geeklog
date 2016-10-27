@@ -247,6 +247,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
             $article->set_var('contributedby_author', $authorname);
             $article->set_var('author', $authorname);
 
+            $profileUrl = '';
             if ($story->DisplayElements('uid') > 1) {
                 $profileUrl = $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid='
