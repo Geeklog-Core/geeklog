@@ -180,7 +180,9 @@ if ($nrows > 0) {
 $sql = "SELECT sid,title,comments
     FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
     WHERE ta.type = 'article' AND ta.id = sid
-    AND (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10";
+    AND (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL('AND') . $topicsql 
+    . " GROUP BY sid, title, comments "
+    . " ORDER BY comments DESC LIMIT 10";
 
 $result = DB_query($sql);
 $nrows = DB_numRows($result);
