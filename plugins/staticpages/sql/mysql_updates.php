@@ -76,7 +76,8 @@ $_UPDATES = array(
     '1.6.7' => array(
         "ALTER TABLE {$_TABLES['staticpage']} MODIFY COLUMN `created` DATETIME DEFAULT NULL",
         "ALTER TABLE {$_TABLES['staticpage']} MODIFY COLUMN `modified` DATETIME DEFAULT NULL",
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onmenu`, ADD `sp_onlastupdate` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onhits`"
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onmenu`", 
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onlastupdate` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onhits`"
     )
 );
 
