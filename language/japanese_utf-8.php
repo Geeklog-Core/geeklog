@@ -2469,6 +2469,7 @@ $LANG_configselects['Core'] = array(
     35 => array('デフォルト' => 'default', '名前(昇順)' => 'NAME_ASC', '名前(降順)' => 'NAME_DESC', '種類(昇順)' => 'TYPE_ASC', '種類(降順)' => 'TYPE_DESC', '変更日時(昇順)' => 'MODIFIED_ASC', '変更日時(降順)' => 'MODIFIED_DESC'), 
     36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
     37 => array('無効' => 0, '有効(index.phpあり)' => 1, '有効(index.phpなし)' => 2),
+    38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
 );
 
 ###############################################################################

@@ -452,6 +452,9 @@ $_CONF_VALIDATE['Core']['use_gravatar'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['gravatar_rating'] = array(
     'rule' => array('inList', array('G', 'PG', 'R', 'X'), true)
 );
+$_CONF_VALIDATE['Core']['gravatar_identicon'] = array(
+    'rule' => array('inList', array('mm', 'identicon', 'monsterid', 'wavatar', 'retro'), true)
+);
 
 /* Subgroup Language, Tab Language */
 $_CONF_VALIDATE['Core']['language'] = array(

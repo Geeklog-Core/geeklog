@@ -101,5 +101,8 @@ function update_ConfValuesFor212()
     $c->add('dbdump_gzip',1,'select',0,5,0,180,TRUE, $me, 5); 
     $c->add('dbdump_max_files',10,'text',0,5,NULL,185,TRUE, $me, 5);
 
+    // Add gravatar_identicon
+    $c->add('gravatar_identicon','identicon','select',5,27,38,1620,FALSE, $me, 27);
+
     return true;
 }
