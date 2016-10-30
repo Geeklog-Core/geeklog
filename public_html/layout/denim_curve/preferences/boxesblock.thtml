@@ -1,0 +1,24 @@
+{# start {templatelocation} #}
+
+<fieldset>
+  <legend>{lang_boxes_title}</legend>
+
+  <div class="linear">
+    <div class="profile_notes uk-panel uk-panel-box">
+      <div class="uk-panel-title">
+        <i class="uk-icon-info-circle uk-text-primary"></i>
+        <span>{lang_boxes_help_title}</span>
+      </div>
+      <div>{lang_boxes}</div>
+    </div>
+  </div>
+
+  <div class="compact">
+    <dl class="form_block">
+      <dt><label>{lang_blocks}</label></dt>
+      <dd>{boxes_checklist}</dd>
+    </dl>
+  </div>
+</fieldset>
+
+{# end {templatelocation} #}

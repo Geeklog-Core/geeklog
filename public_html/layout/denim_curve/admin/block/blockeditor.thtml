@@ -1,0 +1,133 @@
+{# begin {templatelocation} #}
+
+{start_block_editor}
+<form action="{site_admin_url}/block.php" method="post" id="admin-blockeditor" class="compact uk-form">
+
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="admin-blockeditor-title">{lang_blocktitle}</label></dt>
+      <dd><input type="text" value="{block_title}" name="title" id="admin-blockeditor-title" class="size5"{xhtml}></dd>
+
+      <dt><label for="admin-blockeditor-is_enabled">{lang_enabled}</label></dt>
+      <dd class="controls_text"><input type="checkbox" {is_enabled} name="is_enabled" id="admin-blockeditor-is_enabled"{xhtml}></dd>
+
+      <dt><label for="admin-blockeditor-help">{lang_blockhelpurl}</label></dt>
+      <dd>
+        <input type="text" value="{block_help}" name="help" id="admin-blockeditor-help" class="size5" aria-describedby="desc-admin-blockeditor-help1 desc-admin-blockeditor-help2"{xhtml}>
+      </dd>
+      <dd id="desc-admin-blockeditor-help1" class="description">{lang_includehttp}</dd>
+      <dd id="desc-admin-blockeditor-help2" class="description">{lang_explanation}</dd>
+
+      <dt><label for="admin-blockeditor-name">{lang_blockname}</label></dt>
+      <dd><input type="text" value="{block_name}" name="name" id="admin-blockeditor-name" class="size5" aria-describedby="desc-admin-blockeditor-name"{xhtml}></dd>
+      <dd id="desc-admin-blockeditor-name" class="description">{lang_nospaces}</dd>
+
+      <dt><label>{lang_topic}</label></dt>
+      <dd class="controls_text">{topic_selection}</dd>
+
+      <dt><label for="admin-blockeditor-onleft">{lang_position}</label></dt>
+      <dd>
+        <select name="onleft" id="admin-blockeditor-onleft">
+          <option value="2" {none_selected}>{lang_none}</option>
+          <option value="1" {left_selected}>{lang_left}</option>
+          <option value="0" {right_selected}>{lang_right}</option>
+        </select>
+      </dd>
+
+      <dt><label for="admin-blockeditor-blockorder">{lang_blockorder}</label></dt>
+      <dd><input type="text" value="{block_order}" name="blockorder" id="admin-blockeditor-blockorder" class="size1" aria-describedby="desc-admin-blockeditor-blockorder"{xhtml}></dd>
+      <dd id="desc-admin-blockeditor-blockorder" class="description">0-9999</dd>
+
+      <dt><label>{lang_device}</label></dt>
+      <dd class="controls_text">
+        <label><input type="radio" name="device" value="all" id="admin-blockeditor-device-all" {for_all}{xhtml}>{lang_all}</label>
+        <label><input type="radio" name="device" value="computer" id="admin-blockeditor-device-computer"{for_computer}{xhtml}>{lang_for_computer}</label>
+        <label><input type="radio" name="device" value="mobile" id="admin-blockeditor-device-mobile" {for_mobile}{xhtml}>{lang_for_mobile}</label>
+      </dd>
+      <dd id="desc-admin-blockeditor-device" class="description">{lang_device_desc}</dd>
+      
+      <dt><label for="admin-blockeditor-type">{lang_blocktype}</label></dt>
+      <dd>
+        <select name="type" id="admin-blockeditor-type">
+          <option value="normal" {normal_selected}>{lang_normalblock}</option>
+          <option value="phpblock" {php_selected}>{lang_phpblock}</option>
+          <option value="portal" {portal_selected}>{lang_portalblock}</option>
+        </select>
+      </dd>
+
+      <dt><label for="admin-blockeditor-cachetime">{lang_cachetime}</label></dt>
+      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-blockeditor-cachetime" class="size1" aria-describedby="desc-admin-blockeditor-cachetime"{xhtml}></dd>
+      <dd id="desc-admin-blockeditor-cachetime" class="description">{lang_cachetime_desc}</dd>
+    </dl>
+
+    <fieldset id="fs-phpblock-options">
+      <legend>{lang_phpblockoptions}</legend>
+
+      <dl class="form_block">
+        <dt><label for="admin-blockeditor-phpblockfn">{lang_blockfunction}</label></dt>
+        <dd><input type="text" maxlength="50" value="{block_phpblockfn}" name="phpblockfn" id="admin-blockeditor-phpblockfn" class="size5" aria-describedby="desc-admin-blockeditor-phpblockfn"{xhtml}></dd>
+        <dd id="desc-admin-blockeditor-phpblockfn" class="description">{lang_phpblockwarning}</dd>
+      </dl>
+    </fieldset>
+
+    <fieldset id="fs-portal-options">
+      <legend>{lang_portalblockoptions}</legend>
+
+      <dl class="form_block">
+        <dt><label for="admin-blockeditor-rdfurl">{lang_rdfurl}</label></dt>
+        <dd><input type="text" maxlength="{max_url_length}" value="{block_rdfurl}" name="rdfurl" id="admin-blockeditor-rdfurl" class="size5"{xhtml}></dd>
+
+        <dt><label for="admin-blockeditor-rdflimit">{lang_rdflimit}</label></dt>
+        <dd><input type="text" maxlength="3" value="{block_rdflimit}" name="rdflimit" id="admin-blockeditor-rdflimit" class="size1"{xhtml}></dd>
+
+        <dt><label for="admin-blockeditor-rdfupdated">{lang_lastrdfupdate}</label></dt>
+        <dd><input type="text" value="{block_rdfupdated}" name="rdfupdated" id="admin-blockeditor-rdfupdated" class="size3"{xhtml}></dd>
+      </dl>
+    </fieldset>
+
+    <fieldset id="fs-normal-options">
+      <legend>{lang_normalblockoptions}</legend>
+
+      <dl class="form_block">
+        <dt><label for="admin-blockeditor-content">{lang_blockcontent}</label></dt>
+        <dd><textarea cols="40" rows="12" name="content" id="admin-blockeditor-content" class="wide" aria-describedby="desc-admin-blockeditor-content">{block_content}</textarea></dd>
+        <dd class="description"><span id="desc-admin-blockeditor-content" class="warningsmall">{lang_allowed_html}</span></dd>
+
+        <dt><label for="admin-blockeditor-allow_autotags">{lang_autotags}</label></dt>
+        <dd class="controls_text"><input type="checkbox" name="allow_autotags" id="admin-blockeditor-allow_autotags" {allow_autotags}{xhtml}>({lang_use_autotags})</dd>
+      </dl>
+    </fieldset>
+
+    <fieldset>
+      <legend>{lang_accessrights}</legend>
+
+      <dl class="form_block">
+        <dt>{lang_owner}</dt>
+        <dd class="controls_text">{owner_username}</dd>
+
+        <dt><label for="group_id">{lang_group}</label></dt>
+        <dd>{group_dropdown}</dd>
+
+        <dt>{lang_permissions}</dt>
+        <dd>{permissions_editor}</dd>
+        <dd class="description">{lang_perm_key}</dd>
+        <dd class="description">{lang_permissions_msg}</dd>
+      </dl>
+    </fieldset>
+
+    <div class="submit">
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" name="mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
+      <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+      <input type="hidden" name="bid" value="{block_bid}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+
+</form>
+{end_block}
+
+{# end {templatelocation} #}

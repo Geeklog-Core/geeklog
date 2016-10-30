@@ -1,0 +1,13 @@
+{# start {templatelocation} #}
+
+<aside id="{area_id}">
+  <div id="comments">
+    {commentbar}
+    {comments}
+
+    <p class="pagenav">{pagenav}</p>
+  </div>
+  {commenteditor}
+</aside>
+
+{# end {templatelocation} #}

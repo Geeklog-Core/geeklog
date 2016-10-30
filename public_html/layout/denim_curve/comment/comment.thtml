@@ -1,0 +1,16 @@
+{# start {templatelocation} #}
+
+<div class="block-comment-content level-{indent}">
+  <ul class="comment_status">
+    <li class="comment_title">{title}</li>
+    <li class="comment_author">{lang_authoredby}&nbsp;{author_link}&nbsp;{lang_on}&nbsp;{date}</li>
+  </ul>
+
+  <div class="comment_content">{comments}</div>
+
+  <div class="comment_navi" role="navigation" {hide_if_preview}>[
+   <span>{reply_option} {parent_link} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark" title="{lang_permlink}">#</a></span>
+  ]</div>
+</div>
+
+{# end {templatelocation} #}

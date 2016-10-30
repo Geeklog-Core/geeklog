@@ -1,0 +1,27 @@
+
+    <hr class="separator"{xhtml}>
+
+    <div id="leftblocks" role="complementary">
+      <section class="block-left" role="search" id="block-left-search">
+        <h2 class="block-title">{button_search}</h2>
+        <div class="block-left-content">
+          <form action="{site_url}/search.php" method="get" id="searchform" class="uk-form">
+            <fieldset class="noborder_fieldset">
+              <legend class="hidden_legend">{button_search}</legend>
+              <div class="uk-form-icon">
+                <i class="uk-icon-search" aria-hidden="true"></i>
+                <input type="text" size="15" maxlength="255" value="" name="query" placeholder="{button_search}"{xhtml}>
+                <input type="hidden" value="all" name="type"{xhtml}>
+                <input type="hidden" value="all" name="keyType"{xhtml}>
+                <input type="hidden" value="search" name="mode"{xhtml}>
+              </div>
+              <div class="navi">
+                <a href="{site_url}/search.php">{button_advsearch}</a>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </section>
+
+      {geeklog_blocks}
+    </div>

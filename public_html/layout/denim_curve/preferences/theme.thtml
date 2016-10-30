@@ -1,0 +1,6 @@
+{# start {templatelocation} #}
+
+<dt><label for="theme">{lang_theme}</label></dt>
+<dd>{theme_selector}</dd>
+
+{# end {templatelocation} #}

@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+<aside class="uk-alert uk-alert-large" data-uk-alert>
+  <a class="uk-alert-close uk-close" href=""></a>
+  <h4 class="title">{showhide}{block_title}{block_help}</h4>
+  <div class="message">
+
+{# end {templatelocation} #}

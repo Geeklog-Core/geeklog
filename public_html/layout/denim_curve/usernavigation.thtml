@@ -1,0 +1,8 @@
+{# {templatelocation} - The User Navigation uses template blocks which is built into this file #}
+
+<!-- BEGIN option -->
+<li class="useroption sideoption"><a href="{option_url}"{option_attributes}>{option_label}{!if option_count}<span>{option_count}</span>{!endif}</a></li>
+<!-- END option -->
+<!-- BEGIN current -->
+<li class="useroption_off sideoption_off">{option_label}&nbsp;{option_count}</li>
+<!-- END current -->

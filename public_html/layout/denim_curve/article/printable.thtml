@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html{lang_attribute}>
+<head>
+  <meta name="robots" content="NOINDEX">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>{page_title}</title>
+  <link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/print.css">
+  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/css/print.css">
+  <link rel="shortcut icon" href="{layout_url}/images/favicon.ico">
+  <link rel="canonical" href="{article_url}">
+</head>
+<body id="print" dir="{direction}">
+  <div id="wrapper">
+    <div id="header">
+      <h2>{story_title}</h2>
+      <p>{lang_contributedby} {story_author} {story_date}</p>
+    </div>
+    <div id="story">
+      {story_text_no_br}
+    </div>
+    <p>{comments_with_count}</p>
+    <hr class="hidden">
+    <div id="footer">
+      <p>{page_title} - {site_name}<br>{article_url}</p>
+    </div>
+  </div>
+</body>
+</html>

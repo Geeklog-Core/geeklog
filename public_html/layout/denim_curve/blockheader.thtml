@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<section class="block-center">
+  <h2>{block_title}{!if block_help}<a class="blocktitle block-help-icon uk-icon-hover uk-icon-question-circle" href="{help_url}" title="Help"></a>{!endif}</h2>
+  <div class="block-center-content">
+
+{# end {templatelocation} #}

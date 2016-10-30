@@ -1,0 +1,30 @@
+{# start {templatelocation} #}
+
+<fieldset>
+  <legend>{lang_privacy_title}</legend>
+
+  <div class="linear">
+    <div class="profile_notes uk-panel uk-panel-box">
+      <div class="uk-panel-title">
+        <i class="uk-icon-info-circle uk-text-primary"></i>
+        <span>{lang_privacy_help_title}</span>
+      </div>
+      <div>{lang_privacy_help}</div>
+    </div>
+  </div>
+
+  <div class="compact">
+    <dl class="form_block">
+      <dt><label for="displayprefs-emailfromuser">{lang_emailfromuser}</label></dt>
+      <dd class="controls_text"><label><input type="checkbox" {emailfromuser_checked} name="emailfromuser" id="displayprefs-emailfromuser"{xhtml}>{lang_emailfromuser_text}</label></dd>
+
+      <dt><label for="displayprefs-emailfromadmin">{lang_emailfromadmin}</label></dt>
+      <dd class="controls_text"><label><input type="checkbox" {emailfromadmin_checked} name="emailfromadmin" id="displayprefs-emailfromadmin"{xhtml}>{lang_emailfromadmin_text}</label></dd>
+
+      <dt><label for="displayprefs-showonline">{lang_showonline}</label></dt>
+      <dd class="controls_text"><label><input type="checkbox" {showonline_checked} name="showonline" id="displayprefs-showonline"{xhtml}>{lang_showonline_text}</label></dd>
+    </dl>
+  </div>
+</fieldset>
+
+{# end {templatelocation} #}

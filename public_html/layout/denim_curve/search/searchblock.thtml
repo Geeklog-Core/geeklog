@@ -1,0 +1,20 @@
+
+<!-- search/searchblock.thtml { -->
+
+{start_block_results}
+
+<table class="searchblock">
+  <thead>
+    <tr>
+      {headings}
+    </tr>
+  </thead>
+
+  <tbody>
+    {results}
+  </tbody>
+</table>
+
+{end_block}
+
+<!-- search/searchblock.thtml { -->

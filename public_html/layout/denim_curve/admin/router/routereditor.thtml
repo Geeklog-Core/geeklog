@@ -1,0 +1,48 @@
+{# start {templatelocation} #}
+
+{start_router_editor}
+<form action="{site_admin_url}/router.php" method="post" id="admin-routereditor" class="compact uk-form">
+  <div class="admin_basic">
+    <div class="profile_notes uk-panel uk-panel-box">
+      {lang_router_notice}
+    </div>
+
+    <dl class="form_block">
+      <dt><label>{lang_router_rid}</label></dt>
+      <dd class="controls_text">{rid}</dd>
+
+      <dt><label for="admin-routereditor-method">{lang_router_method}</label></dt>
+      <dd>
+        <select id="admin-routereditor-method" name="method">
+          <option value="1"{get_selected}>GET</option>
+          <option value="2"{post_selected}>POST</option>
+          <option value="3"{put_selected}>PUT</option>
+          <option value="4"{delete_selected}>DELETE</option>
+          <option value="5"{head_selected}>HEAD</option>
+        </select>
+      </dd>
+
+      <dt><label for="admin-routereditor-rule">{lang_router_rule}</label></dt>
+      <dd><input type="text" size="40" value="{rule}" name="rule" id="admin-routereditor-rule" class="size7"{xhtml}></dd>
+
+      <dt><label for="admin-routereditor-route">{lang_router_route}</label></dt>
+      <dd><input type="text" size="40" value="{route}" name="route" id="admin-routereditor-route" class="size7"{xhtml}></dd>
+
+      <dt><label for="admin-routereditor-priority">{lang_router_priority}</label></dt>
+      <dd><input type="text" size="20" value="{priority}" name="priority" id="admin-routereditor-priority" class="size1"{xhtml}></dd>
+    </dl>
+
+    <div class="submit">
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" name="mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
+      <input type="hidden" name="rid" value="{rid}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+</form>
+{end_block}
+
+{# end {templatelocation} #}
