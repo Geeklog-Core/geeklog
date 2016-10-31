@@ -3796,18 +3796,18 @@ function COM_makesid()
  */
 function COM_isEmail($email)
 {
-    require_once 'Mail/RFC822.php';
+    // This regular expression was taken from Pear's Mail/RFC822.php
+    $isMatch = preg_match('/^([*+!.&#$|\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i', trim($email));
 
-    $rfc822 = new Mail_RFC822;
-
-    return $rfc822->isValidInetAddress($email);
+    return ($isMatch === 1);
 }
 
 /**
  * Encode a string such that it can be used in an email header
  *
- * @param    string $string the text to be encoded
- * @return   string         encoded text
+ * @param       string $string the text to be encoded
+ * @return      string         encoded text
+ * @deprecated since Geeklog-2.1.2
  */
 function COM_emailEscape($string)
 {
@@ -3887,7 +3887,7 @@ function COM_formatEmailAddress($name, $address)
  */
 function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
-    return \Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+    return Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
 }
 
 /**
