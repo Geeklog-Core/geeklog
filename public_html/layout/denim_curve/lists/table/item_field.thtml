@@ -1,5 +1,0 @@
-{# start {templatelocation} #}
-
-                                    <td>{field_text}</td>
-
-{# end {templatelocation} #}

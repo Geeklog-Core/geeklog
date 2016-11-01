@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.0                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | functions.php                                                             |
 // |                                                                           |
@@ -44,9 +44,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
  */
 function theme_config_denim_curve()
 {
-    global $theme_var_denim_curve;
-
-    $theme_var_denim_curve = array(
+    $options = array(
         'uikit_theme' => 'gradient',
         'uikit_components'  => array(
             'accordion'     => 0,
@@ -88,7 +86,8 @@ function theme_config_denim_curve()
         'doctype'    => 'xhtml5',
         'supported_version_theme' => '2.0.0', // support new theme format for the later Geeklog 2.0.0
         'theme_plugins' => 'denim', // Not requred, you can specify compatible theme of template stored with some plugins
-        'options'    => $theme_var_denim_curve // Not requred, some options of this theme
+        'theme_default' => 'denim',
+        'options'    => $options // Not requred, some options of this theme
     );
 }
 
@@ -97,14 +96,16 @@ function theme_config_denim_curve()
  */
 function theme_css_denim_curve()
 {
-    global $_CONF, $LANG_DIRECTION, $theme_var_denim_curve;
+    global $_CONF, $LANG_DIRECTION;
+
+    $theme_var = theme_config_denim_curve();
 
     $direction = ($LANG_DIRECTION === 'rtl') ? '_rtl' : '';
     $ui_theme = '';
-    if (in_array($theme_var_denim_curve['uikit_theme'], array('gradient', 'almost-flat'))) {
-        $ui_theme = '.' . $theme_var_denim_curve['uikit_theme'];
+    if (in_array($theme_var['options']['uikit_theme'], array('gradient', 'almost-flat'))) {
+        $ui_theme = '.' . $theme_var['options']['uikit_theme'];
     }
-    $min = ($theme_var_denim_curve['use_minified_css'] === 1) ? '.min' : '';
+    $min = ($theme_var['options']['use_minified_css'] === 1) ? '.min' : '';
 
     $result = array();
     $result[] = array(
@@ -120,17 +121,16 @@ function theme_css_denim_curve()
         'attributes' => array('media' => 'all')
     );
 
-    if (!empty($theme_var_denim_curve['uikit_components'])) {
-        $uikit_components = array_merge($theme_var_denim_curve['uikit_components']);
+    if (!empty($theme_var['options']['uikit_components'])) {
+        $uikit_components = array_merge($theme_var['options']['uikit_components']);
         foreach ($uikit_components as $component => $value) {
-            if ($value === 1) {
-                $componame = str_replace('_', '-', $component);
-                $result[] = array(
-                    'name'     => 'uk_' . $component,
-                    'file'     => '/vendor/uikit/css' . $direction . '/components/' . $componame . $ui_theme . $min . '.css',
-                    'priority' => 81
-                );
-            }
+            if ($value !== 1) continue;
+            $componame = str_replace('_', '-', $component);
+            $result[] = array(
+                'name'     => 'uk_' . $component,
+                'file'     => '/vendor/uikit/css' . $direction . '/components/' . $componame . $ui_theme . $min . '.css',
+                'priority' => 81
+            );
         }
     }
 
@@ -155,7 +155,9 @@ function theme_js_libs_denim_curve()
  */
 function theme_js_files_denim_curve()
 {
-    global $_CONF, $theme_var_denim_curve;
+    global $_CONF;
+
+    $theme_var = theme_config_denim_curve();
 
     $result = array();
     $result[] = array(
@@ -165,22 +167,21 @@ function theme_js_files_denim_curve()
     );
 
     $result[] = array(
-        'file'     => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
+        'file'     => '/layout/' . $theme_var['theme_default'] . '/javascript/script.js',
         'footer'   => true, // Not required, default = true
         'priority' => 100 // Not required, default = 100
     );
 
-    if (!empty($theme_var_denim_curve['uikit_components'])) {
-        $uikit_components = array_merge($theme_var_denim_curve['uikit_components']);
+    if (!empty($theme_var['options']['uikit_components'])) {
+        $uikit_components = array_merge($theme_var['options']['uikit_components']);
         foreach ($uikit_components as $component => $value) {
-            if ($value === 1) {
-                $componame = str_replace('_', '-', $component);
-                $result[] = array(
-                    'file'     => '/vendor/uikit/js/components/' . $componame . '.js',
-                    'footer'   => false,
-                    'priority' => 110
-                );
-            }
+            if ($value !== 1) continue;
+            $componame = str_replace('_', '-', $component);
+            $result[] = array(
+                'file'     => '/vendor/uikit/js/components/' . $componame . '.js',
+                'footer'   => false,
+                'priority' => 110
+            );
         }
     }
 

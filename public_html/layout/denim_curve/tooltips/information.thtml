@@ -1,5 +1,0 @@
-{# begin {templatelocation} #}
-
-<span class="{class} gl-tooltip-info" data-uk-tooltip title="{plaintext}">{hoverover}</span>
-
-{# end {templatelocation} #}

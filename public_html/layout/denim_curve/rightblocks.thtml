@@ -1,7 +1,0 @@
-
-    <hr class="separator"{xhtml}>
-
-    <div id="rightblocks" role="complementary">
-      {geeklog_blocks}
-    </div>
-
