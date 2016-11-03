@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.0                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | functions.php                                                             |
 // |                                                                           |
@@ -44,9 +44,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
  */
 function theme_config_denim()
 {
-    global $theme_var_denim;
-
-    $theme_var_denim = array(
+    $options = array(
         'uikit_theme' => 'default', // you can set this variable to 'default' or 'gradient' or 'almost-flat'
         'uikit_components'  => array(
             'accordion'     => 0,
@@ -75,12 +73,9 @@ function theme_config_denim()
         'header_search'     => 1,   // 1:show or 0:hide header searchbox
         'block_left_search' => 1,   // 1:show or 0:hide left block searchbox
         'welcome_msg'       => 1,   // 1:show or 0:hide welcome message
-        'topic_image'       => 1,   // 1:show or 0:hide topic images
         'trademark_msg'     => 0,   // 1:show or 0:hide trademark message on footer
         'execution_time'    => 0,   // 1:show or 0:hide execution time on footer
         'pagenavi_string'   => 1,   // 1:show or 0:hide text string of page navigation
-        'table_overflow'    => 1,   // 1:scroll or 0:visible overflow style of admin tables on mobile view
-        'toggle_showblock'  => 0,   // 1:enable or 0:disable toggle showing block contents on mobile view
     );
 
     return array(
@@ -88,7 +83,7 @@ function theme_config_denim()
         'doctype'    => 'xhtml5',
         'supported_version_theme' => '2.0.0', // support new theme format for the later Geeklog 2.0.0
         'theme_plugins' => 'denim', // Not requred, you can specify compatible theme of template stored with some plugins
-        'options'    => $theme_var_denim // Not requred, some options of this theme
+        'options'    => $options // Not requred, some options of this theme
     );
 }
 
@@ -97,14 +92,16 @@ function theme_config_denim()
  */
 function theme_css_denim()
 {
-    global $_CONF, $LANG_DIRECTION, $theme_var_denim;
+    global $_CONF, $LANG_DIRECTION;
+
+    $theme_var = theme_config_denim();
 
     $direction = ($LANG_DIRECTION === 'rtl') ? '_rtl' : '';
     $ui_theme = '';
-    if (in_array($theme_var_denim['uikit_theme'], array('gradient', 'almost-flat'))) {
-        $ui_theme = '.' . $theme_var_denim['uikit_theme'];
+    if (in_array($theme_var['options']['uikit_theme'], array('gradient', 'almost-flat'))) {
+        $ui_theme = '.' . $theme_var['options']['uikit_theme'];
     }
-    $min = ($theme_var_denim['use_minified_css'] === 1) ? '.min' : '';
+    $min = ($theme_var['options']['use_minified_css'] === 1) ? '.min' : '';
 
     $result = array();
     $result[] = array(
@@ -120,17 +117,16 @@ function theme_css_denim()
         'attributes' => array('media' => 'all')
     );
 
-    if (!empty($theme_var_denim['uikit_components'])) {
-        $uikit_components = array_merge($theme_var_denim['uikit_components']);
+    if (!empty($theme_var['options']['uikit_components'])) {
+        $uikit_components = array_merge($theme_var['options']['uikit_components']);
         foreach ($uikit_components as $component => $value) {
-            if ($value === 1) {
-                $componame = str_replace('_', '-', $component);
-                $result[] = array(
-                    'name'     => 'uk_' . $component,
-                    'file'     => '/vendor/uikit/css' . $direction . '/components/' . $componame . $ui_theme . $min . '.css',
-                    'priority' => 81
-                );
-            }
+            if ($value !== 1) continue;
+            $componame = str_replace('_', '-', $component);
+            $result[] = array(
+                'name'     => 'uk_' . $component,
+                'file'     => '/vendor/uikit/css' . $direction . '/components/' . $componame . $ui_theme . $min . '.css',
+                'priority' => 81
+            );
         }
     }
 
@@ -155,7 +151,9 @@ function theme_js_libs_denim()
  */
 function theme_js_files_denim()
 {
-    global $_CONF, $theme_var_denim;
+    global $_CONF;
+
+    $theme_var = theme_config_denim();
 
     $result = array();
     $result[] = array(
@@ -170,17 +168,16 @@ function theme_js_files_denim()
         'priority' => 100 // Not required, default = 100
     );
 
-    if (!empty($theme_var_denim['uikit_components'])) {
-        $uikit_components = array_merge($theme_var_denim['uikit_components']);
+    if (!empty($theme_var['options']['uikit_components'])) {
+        $uikit_components = array_merge($theme_var['options']['uikit_components']);
         foreach ($uikit_components as $component => $value) {
-            if ($value === 1) {
-                $componame = str_replace('_', '-', $component);
-                $result[] = array(
-                    'file'     => '/vendor/uikit/js/components/' . $componame . '.js',
-                    'footer'   => false,
-                    'priority' => 110
-                );
-            }
+            if ($value !== 1) continue;
+            $componame = str_replace('_', '-', $component);
+            $result[] = array(
+                'file'     => '/vendor/uikit/js/components/' . $componame . '.js',
+                'footer'   => false,
+                'priority' => 110
+            );
         }
     }
 

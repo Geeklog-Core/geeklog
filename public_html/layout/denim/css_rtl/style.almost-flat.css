@@ -3957,25 +3957,6 @@ dd#profile-user_photo {
   background: #F0F0F0;
 }
 
-.table-wrapper {
-  width: 100%;
-  overflow: scroll;
-}
-
-.table-wrapper-fit {
-  width: 100%;
-  overflow: visible;
-}
-
-.table-wrapper-fit > .admin-list-table {
-  width: 100%;
-}
-
-.table-wrapper-visible {
-  width: 100%;
-  overflow: visible;
-}
-
 /* Navigation */
 .admin-list-navi {
   margin-top: .5em;
