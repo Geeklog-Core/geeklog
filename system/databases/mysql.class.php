@@ -119,9 +119,6 @@ class Database
     /**
      * Connects to the MySQL database server
      * This function connects to the MySQL server and returns the connection object
-     *
-     * @return   object      Returns connection object
-     * @access   private
      */
     private function _connect()
     {
@@ -158,9 +155,15 @@ class Database
             if (($this->_mysql_version >= 50007) &&
                 function_exists('mysql_set_charset')
             ) {
-                @mysql_set_charset('utf8', $this->_db);
+                $result = @mysql_set_charset('utf8mb4', $this->_db);
+
+                if (!$result) {
+                    @mysql_set_charset('utf8', $this->_db);
+                }
             } else {
-                @mysql_query("SET NAMES 'utf8'", $this->_db);
+                if (!@mysql_query("SET NAMES 'utf8mb4'", $this->_db)) {
+                    @mysql_query("SET NAMES 'utf8'", $this->_db);
+                }
             }
         }
 
@@ -347,9 +350,8 @@ class Database
             }
 
             return $result;
-
         } else {
-            // callee may want to supress printing of errors
+            // callee may want to suppress printing of errors
             if ($ignore_errors) {
                 return false;
             }
@@ -452,7 +454,7 @@ class Database
      * @param    array|string $id              additional field name used in where clause
      * @param    array|string $value           additional values used in where clause
      * @param    bool         $suppress_quotes if false it will not use '<value>' in where clause
-     * @return   bool     Returns true on success otherwise false
+     * @return   bool                          Returns true on success otherwise false
      */
     public function dbChange($table, $item_to_set, $value_to_set, $id, $value, $suppress_quotes = false)
     {
@@ -482,8 +484,7 @@ class Database
                     next($value);
                 }
             } else {
-                // error, they both have to be arrays and of the
-                // same size
+                // error, they both have to be arrays and of the same size
                 return false;
             }
         } else {
@@ -497,11 +498,13 @@ class Database
             $this->_errorlog("dbChange sql = $sql");
         }
 
-        $this->dbQuery($sql);
+        $result = $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbChange ***");
         }
+
+        return $result;
     }
 
     /**
@@ -573,7 +576,7 @@ class Database
      * @param    string       $tableFrom Table to get record from
      * @param    array|string $id        field name(s) to use in where clause
      * @param    array|string $value     Value(s) to use in where clause
-     * @return   bool     Returns true on success otherwise false
+     * @return   bool                    Returns true on success otherwise false
      */
     public function dbCopy($table, $fields, $values, $tableFrom, $id, $value)
     {
@@ -600,8 +603,7 @@ class Database
                     next($value);
                 }
             } else {
-                // error, they both have to be arrays and of the
-                // same size
+                // error, they both have to be arrays and of the same size
                 return false;
             }
         } else {
@@ -610,12 +612,14 @@ class Database
             }
         }
 
-        $this->dbQuery($sql);
+        $result = $this->dbQuery($sql);
         $this->dbDelete($tableFrom, $id, $value);
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbCopy ***");
         }
+
+        return $result;
     }
 
     /**
