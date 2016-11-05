@@ -49,7 +49,7 @@ class Database
     private $_name = '';
 
     /**
-     * @var sring|string
+     * @var string
      */
     private $_user = '';
 
@@ -118,12 +118,13 @@ class Database
      * Connects to the MySQL database server
      * This function connects to the MySQL server and returns the connection object
      *
-     * @return   object      Returns connection object
-     * @access   private
+     * @return   bool Returns connection object
      */
     private function _connect()
     {
         global $_TABLES, $use_innodb;
+
+        $result = true;
 
         if ($this->_verbose) {
             $this->_errorlog("\n*** Inside database->_connect ***");
@@ -139,15 +140,18 @@ class Database
         $this->_mysql_version = $this->_db->server_version;
 
         // Set the database
-        $this->_db->select_db($this->_name) || die('error selecting database');
+        if (!$this->_db->select_db($this->_name)) {
+            die('error selecting database');
+        }
 
-        if (!($this->_db)) {
+        if (!$this->_db) {
             if ($this->_verbose) {
                 $this->_errorlog("\n*** Error in database->_connect ***");
             }
 
             // damn, got an error.
             $this->dbError();
+            $result = false;
         }
 
         if ($this->_mysql_version >= 40100) {
@@ -155,11 +159,19 @@ class Database
                 $result = false;
 
                 if (method_exists($this->_db, 'set_charset')) {
-                    $result = $this->_db->set_charset('utf8');
-                }
+                    $result = $this->_db->set_charset('utf8mb4');
 
-                if (!$result) {
-                    @$this->_db->query("SET NAMES 'utf8'");
+                    if (!$result) {
+                        $result = $this->_db->set_charset('utf8');
+                    }
+                } else {
+                    if (!$result) {
+                        $result = @$this->_db->query("SET NAMES 'utf8mb4'");
+
+                        if (!$result) {
+                            $result = @$this->_db->query("SET NAMES 'utf8'");
+                        }
+                    }
                 }
             }
         }
@@ -182,6 +194,8 @@ class Database
         if ($this->_verbose) {
             $this->_errorlog("\n***leaving database->_connect***");
         }
+
+        return $result;
     }
 
     /**
@@ -213,8 +227,7 @@ class Database
      * @param        string $errorlogfn  Name of the errorlog function
      * @param        string $charset     Character set to use
      */
-    public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix, $errorlogfn = '',
-                                $charset = '')
+    public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix, $errorlogfn = '', $charset = '')
     {
         $this->_host = $dbhost;
         $this->_name = $dbname;
@@ -714,7 +727,7 @@ class Database
      *
      * @param    mysqli_result $recordSet The record set to operate on
      * @param    bool          $both      get both assoc and numeric indices
-     * @return   array       Returns data array of current row from record set
+     * @return   array|false              Returns data array of current row from record set
      */
     public function dbFetchArray($recordSet, $both = false)
     {
