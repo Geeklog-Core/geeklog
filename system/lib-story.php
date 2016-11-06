@@ -1782,7 +1782,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         }
     }
 
-    /* Store the first CATEGORY as the Topic ID */
+    // Store the first CATEGORY as the Topic ID
     if (!empty($args['category'][0])) {
         $args['tid'] = $args['category'][0];
     }
@@ -1804,8 +1804,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         }
     }
 
-    /* Apply filters to the parameters passed by the webservice */
-
+    // Apply filters to the parameters passed by the webservice
     if ($args['gl_svc']) {
         if (isset($args['mode'])) {
             $args['mode'] = COM_applyBasicFilter($args['mode']);
@@ -1815,7 +1814,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         }
     }
 
-    /* - START: Set all the defaults - */
+    // - START: Set all the defaults -
     /*
     if (empty($args['tid'])) {
         // see if we have a default topic
@@ -1867,8 +1866,7 @@ function service_submit_story($args, &$output, &$svc_msg)
     }
 
     if ($args['gl_svc']) {
-
-        /* Permissions */
+        // Permissions
         if (!isset($args['perm_owner'])) {
             $args['perm_owner'] = $_CONF['default_permissions_story'][0];
         } else {
@@ -1902,7 +1900,7 @@ function service_submit_story($args, &$output, &$svc_msg)
             $args['show_topic_icon'] = $_CONF['show_topic_icon'];
         }
     }
-    /* - END: Set all the defaults - */
+    // - END: Set all the defaults -
 
     // TEST CODE
     /* foreach ($args as $k => $v) {
@@ -1942,7 +1940,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         $gl_edit = $args['gl_edit'];
     }
     if ($gl_edit && !empty($args['gl_etag'])) {
-        /* First load the original story to check if it has been modified */
+        // First load the original story to check if it has been modified
         $result = $story->loadFromDatabase($args['sid']);
         if ($result == STORY_LOADED_OK) {
             if ($args['gl_etag'] != date('c', $story->_date)) {
@@ -1957,7 +1955,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         }
     }
 
-    /* This function is also doing the security checks */
+    // This function is also doing the security checks
     $result = $story->loadFromArgsArray($args);
 
     $sid = $story->getSid();
@@ -2366,7 +2364,7 @@ function service_get_story($args, &$output, &$svc_msg)
                 continue;
             }
 
-            $story->_sanitizeData();
+            $story->sanitizeData();
 
             reset($story->_dbFields);
 

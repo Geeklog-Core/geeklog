@@ -33,23 +33,16 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Topic administration page: Create, edit, delete topics.
-*
-*/
+ * Topic administration page: Create, edit, delete topics.
+ */
 
-/**
-* Geeklog common function library
-*/
+// Geeklog common function library
 require_once '../lib-common.php';
 
-/**
-* Security check to ensure user even belongs on this page
-*/
+// Security check to ensure user even belongs on this page
 require_once 'auth.inc.php';
 
-/**
-* Geeklog story function library
-*/
+// Geeklog story function library
 require_once $_CONF['path_system'] . 'lib-story.php';
 
 $display = '';
@@ -68,13 +61,12 @@ if (!SEC_hasRights('topic.edit')) {
 // echo COM_debug($_POST);
 
 /**
-* Show topic administration form
-*
-* @param    string  tid     ID of topic to edit
-* @return   string          HTML for the topic editor
-*
-*/
-function edittopic ($tid = '')
+ * Show topic administration form
+ *
+ * @param    string  tid     ID of topic to edit
+ * @return   string          HTML for the topic editor
+ */
+function edittopic($tid = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG04, $LANG27, $LANG_ACCESS,
            $LANG_ADMIN, $MESSAGE, $_SCRIPTS;
@@ -83,55 +75,57 @@ function edittopic ($tid = '')
 
     if (empty($tid)) {
         // new topic - set defaults
-        $A = array();
-        $A['tid'] = '';
-        $A['topic'] = '';
-        $A['sortnum'] = 0;
-        $A['parent_id'] = TOPIC_ROOT;
-        $A['inherit'] = 1;
-        $A['hidden'] = 0;
-        $A['limitnews'] = ''; // leave empty!
-        $A['is_default'] = 0;
-        $A['archive_flag'] = 0;
+        $A = array(
+            'tid'          => '',
+            'topic'        => '',
+            'sortnum'      => 0,
+            'parent_id'    => TOPIC_ROOT,
+            'inherit'      => 1,
+            'hidden'       => 0,
+            'limitnews'    => '', // leave empty!
+            'is_default'   => 0,
+            'archive_flag' => 0,
+        );
     } else {
         $result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid ='$tid'");
         $A = DB_fetchArray($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access == 0 OR $access == 2) {
+        $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+        if ($access == 0 || $access == 2) {
             $retval .= COM_showMessageText($LANG27[13], $LANG27[12]);
             COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
+
             return $retval;
         }
     }
 
     $token = SEC_createToken();
 
-    $retval .= COM_startBlock ($LANG27[1], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG27[1], '',
+        COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= SEC_getTokenExpiryNotice($token);
-    if (!is_array ($A) || empty ($A['owner_id'])) {
+    if (!is_array($A) || empty($A['owner_id'])) {
         $A['owner_id'] = $_USER['uid'];
 
         // this is the one instance where we default the group
         // most topics should belong to the Topic Admin group
-        if (isset ($_GROUPS['Topic Admin'])) {
+        if (isset($_GROUPS['Topic Admin'])) {
             $A['group_id'] = $_GROUPS['Topic Admin'];
         } else {
-            $A['group_id'] = SEC_getFeatureGroup ('topic.edit');
+            $A['group_id'] = SEC_getFeatureGroup('topic.edit');
         }
-        SEC_setDefaultPermissions ($A, $_CONF['default_permissions_topic']);
+        SEC_setDefaultPermissions($A, $_CONF['default_permissions_topic']);
         $access = 3;
     }
     $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/topic');
-    $topic_templates->set_file('editor','topiceditor.thtml');
+    $topic_templates->set_file('editor', 'topiceditor.thtml');
     if (!empty($tid) && SEC_hasRights('topic.edit')) {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
+        $delButton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+            . '" name="mode"%s' . XHTML . '>';
+        $jsConfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $topic_templates->set_var('delete_option',
-                                  sprintf($delbutton, $jsconfirm));
+            sprintf($delButton, $jsConfirm));
         $topic_templates->set_var('delete_option_no_confirmation',
-                                  sprintf($delbutton, ''));
+            sprintf($delButton, ''));
 
         $topic_templates->set_var('allow_delete', true);
         $topic_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
@@ -148,30 +142,30 @@ function edittopic ($tid = '')
 
     $topic_templates->set_var('lang_parent_id', $LANG27[32]);
     $topic_templates->set_var('parent_id_options',
-                              TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true));
+        TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true));
 
     $topic_templates->set_var('lang_inherit', $LANG27[33]);
     $topic_templates->set_var('lang_inherit_info', $LANG27[34]);
     if ($A['inherit'] == 1) {
-        $topic_templates->set_var ('inherit_checked', 'checked="checked"');
+        $topic_templates->set_var('inherit_checked', 'checked="checked"');
     } else {
-        $topic_templates->set_var ('inherit_checked', '');
+        $topic_templates->set_var('inherit_checked', '');
     }
 
     $topic_templates->set_var('lang_hidden', $LANG27[35]);
     $topic_templates->set_var('lang_hidden_info', $LANG27[36]);
     if ($A['hidden'] == 1) {
-        $topic_templates->set_var ('hidden_checked', 'checked="checked"');
+        $topic_templates->set_var('hidden_checked', 'checked="checked"');
     } else {
-        $topic_templates->set_var ('hidden_checked', '');
+        $topic_templates->set_var('hidden_checked', '');
     }
 
     $topic_templates->set_var('lang_donotusespaces', $LANG27[5]);
-    $topic_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
+    $topic_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $topic_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $ownername = COM_getDisplayName ($A['owner_id']);
-    $topic_templates->set_var('owner_username', DB_getItem ($_TABLES['users'],
-                              'username', "uid = {$A['owner_id']}"));
+    $ownername = COM_getDisplayName($A['owner_id']);
+    $topic_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
+        'username', "uid = {$A['owner_id']}"));
     $topic_templates->set_var('owner_name', $ownername);
     $topic_templates->set_var('owner', $ownername);
     $topic_templates->set_var('owner_id', $A['owner_id']);
@@ -179,16 +173,16 @@ function edittopic ($tid = '')
     $topic_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $topic_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $topic_templates->set_var('group_dropdown',
-                              SEC_getGroupDropdown ($A['group_id'], $access));
+        SEC_getGroupDropdown($A['group_id'], $access));
     $topic_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $topic_templates->set_var('lang_permissions_key', $LANG_ACCESS['permissionskey']);
     $topic_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $topic_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
     $topic_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
-    $topic_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
+    $topic_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']));
 
     // show sort order only if they specified sortnum as the sort method
-    if ($_CONF['sortmethod'] <> 'alpha') {
+    if ($_CONF['sortmethod'] !== 'alpha') {
         $topic_templates->set_var('lang_sortorder', $LANG27[10]);
         if ($A['sortnum'] == 0) {
             $A['sortnum'] = '';
@@ -224,19 +218,22 @@ function edittopic ($tid = '')
     } else {
         $scaling = $LANG04[161];
     }
-    $topic_templates->set_var('icon_max_dimensions',
+    $topic_templates->set_var(
+        'icon_max_dimensions',
         sprintf($LANG04[160], $_CONF['max_topicicon_width'],
-                              $_CONF['max_topicicon_height'],
-                              $_CONF['max_topicicon_size'], $scaling));
+            $_CONF['max_topicicon_height'],
+            $_CONF['max_topicicon_size'], $scaling
+        )
+    );
 
     $topic_templates->set_var('lang_metadescription',
-                              $LANG_ADMIN['meta_description']);
+        $LANG_ADMIN['meta_description']);
     $topic_templates->set_var('lang_metakeywords',
-                              $LANG_ADMIN['meta_keywords']);
-    if (! empty($A['meta_description'])) {
+        $LANG_ADMIN['meta_keywords']);
+    if (!empty($A['meta_description'])) {
         $topic_templates->set_var('meta_description', $A['meta_description']);
     }
-    if (! empty($A['meta_keywords'])) {
+    if (!empty($A['meta_keywords'])) {
         $topic_templates->set_var('meta_keywords', $A['meta_keywords']);
     }
     if ($_CONF['meta_tags'] > 0) {
@@ -245,32 +242,32 @@ function edittopic ($tid = '')
         $topic_templates->set_var('hide_meta', ' style="display:none;"');
     }
 
-    $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
-    $topic_templates->set_var ('lang_defaulttext', $LANG27[23]);
+    $topic_templates->set_var('lang_defaulttopic', $LANG27[22]);
+    $topic_templates->set_var('lang_defaulttext', $LANG27[23]);
     if ($A['is_default'] == 1) {
-        $topic_templates->set_var ('default_checked', 'checked="checked"');
+        $topic_templates->set_var('default_checked', 'checked="checked"');
     } else {
-        $topic_templates->set_var ('default_checked', '');
+        $topic_templates->set_var('default_checked', '');
     }
 
-    $topic_templates->set_var ('lang_archivetopic', $LANG27[25]);
-    $topic_templates->set_var ('lang_archivetext', $LANG27[26]);
-    $topic_templates->set_var ('archive_disabled', '');
+    $topic_templates->set_var('lang_archivetopic', $LANG27[25]);
+    $topic_templates->set_var('lang_archivetext', $LANG27[26]);
+    $topic_templates->set_var('archive_disabled', '');
     if ($A['archive_flag'] == 1) {
-        $topic_templates->set_var ('archive_checked', 'checked="checked"');
+        $topic_templates->set_var('archive_checked', 'checked="checked"');
     } else {
-        $topic_templates->set_var ('archive_checked', '');
+        $topic_templates->set_var('archive_checked', '');
         // Only 1 topic can be the archive topic - so check if there already is one
         if (DB_count($_TABLES['topics'], 'archive_flag', '1') > 0) {
-            $topic_templates->set_var ('archive_disabled', 'disabled');
+            $topic_templates->set_var('archive_disabled', 'disabled');
         }
     }
 
     if (empty($tid)) {
         $num_stories = $LANG_ADMIN['na'];
     } else {
-        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tid = '" . DB_escapeString($tid) . "'" . COM_getPermSql('AND'));
-        $N = DB_fetchArray( $nresult );
+        $nResult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tid = '" . DB_escapeString($tid) . "'" . COM_getPermSql('AND'));
+        $N = DB_fetchArray($nResult);
         $num_stories = COM_numberFormat($N['count']);
     }
 
@@ -280,27 +277,25 @@ function edittopic ($tid = '')
     $topic_templates->set_var('gltoken', $token);
     $topic_templates->parse('output', 'editor');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
 
 /**
-* Change a topic's ID in various places
-*
-* @param    string  $tid        new Topic ID
-* @parem    string  $old_tid    current Topic ID
-* @return   void
-*
-*/
+ * Change a topic's ID in various places
+ *
+ * @param    string $tid new Topic ID
+ * @parem    string $old_tid current Topic ID
+ * @return   void
+ */
 function changetopicid($tid, $old_tid)
 {
     global $_TABLES;
 
     DB_change($_TABLES['topic_assignments'], 'tid', $tid, 'tid', $old_tid);
     DB_change($_TABLES['topics'], 'parent_id', $tid, 'parent_id', $old_tid);
-    DB_change($_TABLES['syndication'], 'header_tid', $tid,
-                                       'header_tid', $old_tid);
+    DB_change($_TABLES['syndication'], 'header_tid', $tid, 'header_tid', $old_tid);
 
     $result = DB_query("SELECT uid,tids,etids FROM {$_TABLES['userindex']} WHERE tids LIKE '%{$old_tid}%' OR etids LIKE '%{$old_tid}%'");
     $num_users = DB_numRows($result);
@@ -319,7 +314,7 @@ function changetopicid($tid, $old_tid)
         }
 
         // check topics for the Daily Digest
-        if (! empty($etids) && ($etids != '-')) {
+        if (!empty($etids) && ($etids !== '-')) {
             $e = explode(' ', $etids);
             if (count($e) > 0) {
                 $found = array_search($old_tid, $e);
@@ -343,33 +338,38 @@ function changetopicid($tid, $old_tid)
 }
 
 /**
-* Save topic to the database
-*
-* @param    string  $tid            Topic ID
-* @param    string  $topic          Name of topic (what the user sees)
-* @param    string  $imageurl       (partial) URL to topic image
-* @param    string  $meta_description    Topic meta description
-* @param    string  $meta_keywords       Topic meta keywords
-* @param    int     $sortnum        number for sort order in "Topics" block
-* @param    int     $limitnews      number of stories per page for this topic
-* @param    int     $owner_id       ID of owner
-* @param    int     $group_id       ID of group topic belongs to
-* @param    int     $perm_owner     Permissions the owner has
-* @param    int     $perm_group     Permissions the group has
-* @param    int     $perm_member    Permissions members have
-* @param    int     $perm_anon      Permissions anonymous users have
-* @param    string  $is_default     'on' if this is the default topic
-* @param    string  $is_archive     'on' if this is the archive topic
-* @return   string                  HTML redirect or error message
-*/
-function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_description,$meta_keywords,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
+ * Save topic to the database
+ *
+ * @param    string $tid              Topic ID
+ * @param    string $topic            Name of topic (what the user sees)
+ * @param    int    $inherit          whether to inherit
+ * @param    int    $hidden           whether to hide
+ * @param    string $parent_id        Parent ID
+ * @param    string $imageUrl         (partial) URL to topic image
+ * @param    string $meta_description Topic meta description
+ * @param    string $meta_keywords    Topic meta keywords
+ * @param    int    $sortNum          number for sort order in "Topics" block
+ * @param    int    $limitNews        number of stories per page for this topic
+ * @param    int    $owner_id         ID of owner
+ * @param    int    $group_id         ID of group topic belongs to
+ * @param    int    $perm_owner       Permissions the owner has
+ * @param    int    $perm_group       Permissions the group has
+ * @param    int    $perm_members     Permissions members have
+ * @param    int    $perm_anon        Permissions anonymous users have
+ * @param    string $is_default       'on' if this is the default topic
+ * @param    string $is_archive       'on' if this is the archive topic
+ * @return   string                   HTML redirect or error message
+ */
+function savetopic(
+    $tid, $topic, $inherit, $hidden, $parent_id, $imageUrl, $meta_description, $meta_keywords, $sortNum, $limitNews,
+    $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_default, $is_archive)
 {
-    global $_CONF, $_TABLES, $LANG27, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG27, $MESSAGE;
 
     $retval = '';
 
     // Convert array values to numeric permission values
-    list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+    list($perm_owner, $perm_group, $perm_members, $perm_anon) = SEC_getPermissionValues($perm_owner, $perm_group, $perm_members, $perm_anon);
 
     $tid = COM_sanitizeID($tid);
 
@@ -423,16 +423,16 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
     }
 
 
-    $access = 0;
-    if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
-        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$tid}'");
-        $A = DB_fetchArray ($result);
-        $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
-                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                $A['perm_anon']);
+    if (DB_count($_TABLES['topics'], 'tid', $tid) > 0) {
+        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$tid}'");
+        $A = DB_fetchArray($result);
+        $access = SEC_hasAccess(
+            $A['owner_id'], $A['group_id'],
+            $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+            $A['perm_anon']
+        );
     } else {
-        $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
-                $perm_members, $perm_anon);
+        $access = SEC_hasAccess($owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup($group_id)) {
         $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
@@ -441,12 +441,14 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
     } else {
         // Now check access to parent topic
         if ($parent_id != TOPIC_ROOT) {
-            if (DB_count ($_TABLES['topics'], 'tid', $parent_id) > 0) {
-                $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$parent_id}'");
-                $A = DB_fetchArray ($result);
-                $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
-                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                        $A['perm_anon']);
+            if (DB_count($_TABLES['topics'], 'tid', $parent_id) > 0) {
+                $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$parent_id}'");
+                $A = DB_fetchArray($result);
+                $access = SEC_hasAccess(
+                    $A['owner_id'], $A['group_id'],
+                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                    $A['perm_anon']
+                );
             }
             $in_Group = SEC_inGroup($A['group_id']);
         } else {
@@ -458,17 +460,20 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $MESSAGE[30]));
             COM_accessLog("User {$_USER['username']} tried to illegally assign topic $tid to $parent_id.");
         } elseif (!empty($tid) && !empty($topic) && !$restricted_tid && !$duplicate_tid && !$archive_parent && !$archive_child && $parent_id_found) {
-            if ($imageurl == '/images/topics/') {
-                $imageurl = '';
+            if ($imageUrl === '/images/topics/') {
+                $imageUrl = '';
             }
 
-            $topic = DB_escapeString(strip_tags($topic));
-            $meta_description = DB_escapeString(strip_tags($meta_description));
-            $meta_keywords = DB_escapeString(strip_tags($meta_keywords));
+            $topic = GLText::removeUtf8Icons(strip_tags($topic));
+            $topic = DB_escapeString($topic);
+            $meta_description = GLText::removeUtf8Icons(strip_tags($meta_description));
+            $meta_description = DB_escapeString($meta_description);
+            $meta_keywords = GLText::removeUtf8Icons(strip_tags($meta_keywords));
+            $meta_keywords = DB_escapeString($meta_keywords);
 
             if ($is_default == 'on') {
                 $is_default = 1;
-                DB_query ("UPDATE {$_TABLES['topics']} SET is_default = 0 WHERE is_default = 1");
+                DB_query("UPDATE {$_TABLES['topics']} SET is_default = 0 WHERE is_default = 1");
             } else {
                 $is_default = 0;
             }
@@ -521,7 +526,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                 }
             }
 
-            DB_save($_TABLES['topics'],'tid, topic, inherit, hidden, parent_id, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', $inherit, $hidden, '$parent_id', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+            DB_save($_TABLES['topics'], 'tid, topic, inherit, hidden, parent_id, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon', "'$tid', '$topic', $inherit, $hidden, '$parent_id', '$imageUrl', '$meta_description', '$meta_keywords','$sortNum','$limitNews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
 
             if ($old_tid != $tid) {
                 PLG_itemSaved($tid, 'topic', $old_tid);
@@ -555,18 +560,17 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
         }
     }
+
     return $retval;
 }
 
 /**
-* Displays a list of topics
-*
-* Lists all the topics and their icons.
-*
-* @param    string      $token  Security token to use in list
-* @return   string      HTML for the topic list
-*
-*/
+ * Displays a list of topics
+ * Lists all the topics and their icons.
+ *
+ * @param    string $token Security token to use in list
+ * @return   string      HTML for the topic list
+ */
 function listTopics($token)
 {
     global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN, $_SCRIPTS;
@@ -578,42 +582,42 @@ function listTopics($token)
     $retval = '';
 
     $retval .= COM_startBlock($LANG27[8], '',
-                              COM_getBlockTemplate ('_admin_block', 'header'));
+        COM_getBlockTemplate('_admin_block', 'header'));
 
     $menu_arr = array(
         array('url'  => $_CONF['site_admin_url'] . '/topic.php?mode=edit',
               'text' => $LANG_ADMIN['create_new']),
         array('url'  => $_CONF['site_admin_url'],
-              'text' => $LANG_ADMIN['admin_home'])
+              'text' => $LANG_ADMIN['admin_home']),
     );
 
     $retval .= ADMIN_createMenu($menu_arr, $LANG27[9],
-                              $_CONF['layout_url'] . "/images/icons/topic.png");
+        $_CONF['layout_url'] . "/images/icons/topic.png");
 
-    $header_arr[] = array('text' => $LANG_ADMIN['edit'],    'field' => 'edit',    'sort' => false);
-    $header_arr[] = array('text' => $LANG27[10],            'field' => 'sortnum', 'sort' => true);
-    $header_arr[] = array('text' => $LANG27[53],            'field' => 'image',   'sort' => false);
-    $header_arr[] = array('text' => $LANG27[3],             'field' => 'topic',   'sort' => false);
-    $header_arr[] = array('text' => $LANG27[2],             'field' => 'tid',     'sort' => true);
-    $header_arr[] = array('text' => $LANG27[52],            'field' => 'story',   'sort' => false);
-    $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access',  'sort' => false);
-    $header_arr[] = array('text' => $LANG27[33],            'field' => 'inherit', 'sort' => false);
-    $header_arr[] = array('text' => $LANG27[35],            'field' => 'hidden',  'sort' => false);
+    $header_arr[] = array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false);
+    $header_arr[] = array('text' => $LANG27[10], 'field' => 'sortnum', 'sort' => true);
+    $header_arr[] = array('text' => $LANG27[53], 'field' => 'image', 'sort' => false);
+    $header_arr[] = array('text' => $LANG27[3], 'field' => 'topic', 'sort' => false);
+    $header_arr[] = array('text' => $LANG27[2], 'field' => 'tid', 'sort' => true);
+    $header_arr[] = array('text' => $LANG27[52], 'field' => 'story', 'sort' => false);
+    $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false);
+    $header_arr[] = array('text' => $LANG27[33], 'field' => 'inherit', 'sort' => false);
+    $header_arr[] = array('text' => $LANG27[35], 'field' => 'hidden', 'sort' => false);
 
     $defsort_arr = array('field' => 'sortnum', 'direction' => 'asc');
 
-    $text_arr    = array('has_extras' => true,
-                         'form_url'   => $_CONF['site_admin_url'] . '/topic.php'
+    $text_arr = array('has_extras' => true,
+                      'form_url'   => $_CONF['site_admin_url'] . '/topic.php',
     );
 
-    $query_arr   = array('table'          => 'topics',
-                         'sql'            => "SELECT * FROM {$_TABLES['topics']} WHERE 1=1 ",
-                         'query_fields'   => array('topic'),
-                         'default_filter' => COM_getPermSql('AND')
+    $query_arr = array('table'          => 'topics',
+                       'sql'            => "SELECT * FROM {$_TABLES['topics']} WHERE 1=1 ",
+                       'query_fields'   => array('topic'),
+                       'default_filter' => COM_getPermSQL('AND'),
     );
 
     $retval .= ADMIN_list('topics', 'ADMIN_getListField_topics', $header_arr,
-                           $text_arr, $query_arr, $defsort_arr, '', $token);
+        $text_arr, $query_arr, $defsort_arr, '', $token);
 
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
@@ -621,18 +625,17 @@ function listTopics($token)
 }
 
 /**
-* Get topic child tree array
-*
-* @return   array  Topic array
-*
-*/
+ * Get topic child tree array
+ *
+ * @return   array  Topic array
+ */
 function getTopicChildTreeArray($sel_id = TOPIC_ROOT, $tarray = array(), $orderby = "ASC")
 {
     global $_CONF, $_TABLES;
 
     $field = ($_CONF['sortmethod'] == 'sortnum') ? 'sortnum' : 'topic';
     $sql = "SELECT * FROM {$_TABLES['topics']} "
-         . "WHERE parent_id = '$sel_id' ORDER BY $field $orderby";
+        . "WHERE parent_id = '$sel_id' ORDER BY $field $orderby";
     $result = DB_query($sql);
     if (DB_numRows($result) == 0) return $tarray;
     while ($A = DB_fetchArray($result)) {
@@ -644,11 +647,10 @@ function getTopicChildTreeArray($sel_id = TOPIC_ROOT, $tarray = array(), $orderb
 }
 
 /**
-* Re-order all topics in steps of 10
-*
-* @return   void
-*
-*/
+ * Re-order all topics in steps of 10
+ *
+ * @return   void
+ */
 function reorderTopics()
 {
     global $_TABLES, $_TOPICS;
@@ -675,22 +677,21 @@ function reorderTopics()
 }
 
 /**
-* Move topic UP and Down
-*
-* @param    string  $tid        Topic ID
-* @param    string  $where      Where to move the topic specified by $tid.
-*                               Valid values are "up" and "dn", which stand for
-*                               move 'Up' or 'Down' through the sort number.
-* @return   void
-*
-*/
+ * Move topic UP and Down
+ *
+ * @param    string $tid         Topic ID
+ * @param    string $where       Where to move the topic specified by $tid.
+ *                               Valid values are "up" and "dn", which stand for
+ *                               move 'Up' or 'Down' through the sort number.
+ * @return   void
+ */
 function moveTopics($tid, $where)
 {
     global $_TABLES;
 
     if (empty($tid) || empty($where)) return;
 
-    $sortnum   = DB_getItem($_TABLES['topics'], 'sortnum',   "tid = '$tid'");
+    $sortnum = DB_getItem($_TABLES['topics'], 'sortnum', "tid = '$tid'");
     $parent_id = DB_getItem($_TABLES['topics'], 'parent_id', "tid = '$tid'");
 
     if (empty($sortnum) || empty($parent_id)) return;
@@ -709,7 +710,7 @@ function moveTopics($tid, $where)
         }
     }
 
-    DB_query("UPDATE {$_TABLES['topics']} SET sortnum = $order WHERE tid = '$tid'");
+    DB_query("UPDATE {$_TABLES['topics']} SET sortnum = {$order} WHERE tid = '$tid'");
 
     PLG_itemSaved($tid, 'topic');
 
@@ -719,30 +720,29 @@ function moveTopics($tid, $where)
 }
 
 /**
-* Delete a topic
-*
-* @param    string  $tid    Topic ID
-* @return   string          HTML redirect
-*
-*/
-function deleteTopic ($tid)
+ * Delete a topic
+ *
+ * @param    string $tid Topic ID
+ * @return   string          HTML redirect
+ */
+function deleteTopic($tid)
 {
     global $_CONF, $_TABLES, $_USER, $_TOPICS;
 
-    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid ='$tid'");
-    $A = DB_fetchArray ($result);
-    $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-            $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+    $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid ='$tid'");
+    $A = DB_fetchArray($result);
+    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
+        $A['perm_group'], $A['perm_members'], $A['perm_anon']);
     if ($access < 3) {
-        COM_accessLog ("User {$_USER['username']} tried to illegally delete topic $tid.");
+        COM_accessLog("User {$_USER['username']} tried to illegally delete topic $tid.");
         COM_redirect($_CONF['site_admin_url'] . '/topic.php');
     }
 
     // Update any child topics to root and un hide them
-    DB_query ("UPDATE {$_TABLES['topics']} SET parent_id = '" . TOPIC_ROOT. "', hidden = 0 WHERE parent_id = '$tid'");
+    DB_query("UPDATE {$_TABLES['topics']} SET parent_id = '" . TOPIC_ROOT . "', hidden = 0 WHERE parent_id = '$tid'");
 
     // same with feeds
-    DB_query ("UPDATE {$_TABLES['syndication']} SET topic = '::all', is_enabled = 0 WHERE topic = '$tid'");
+    DB_query("UPDATE {$_TABLES['syndication']} SET topic = '::all', is_enabled = 0 WHERE topic = '$tid'");
 
     // Need to cycle through stories from topic
     // Only delete story if only this one topic
@@ -761,7 +761,7 @@ function deleteTopic ($tid)
         $sql = "SELECT {$object_tables_id[$object_table]}, ta.tdefault
             FROM $object_table, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = '{$object_type[$object_table]}' AND ta.id = CAST({$object_tables_id[$object_table]} AS CHAR) AND ta.tid = '$tid'";
-        $result = DB_query ($sql);
+        $result = DB_query($sql);
         $numStories = DB_numRows($result);
         for ($i = 0; $i < $numStories; $i++) {
             $A = DB_fetchArray($result);
@@ -778,9 +778,9 @@ function deleteTopic ($tid)
                 if ($object_table == $_TABLES['stories'] || $object_table == $_TABLES['storysubmission']) {
                     STORY_deleteImages($A['sid']);
                     DB_delete($_TABLES['comments'], array('sid', 'type'),
-                                                    array($A['sid'], 'article'));
+                        array($A['sid'], 'article'));
                     DB_delete($_TABLES['trackback'], array('sid', 'type'),
-                                                     array($A['sid'], 'article'));
+                        array($A['sid'], 'article'));
 
                     if ($object_table == $_TABLES['stories']) {
                         PLG_itemDeleted($A['sid'], 'article');
@@ -818,47 +818,46 @@ function deleteTopic ($tid)
 }
 
 /**
-* Upload new topic icon, replaces previous icon if one exists
-*
-* @param    string  tid     ID of topic to prepend to filename
-* @return   string          filename of new photo (empty = no new photo)
-*
-*/
+ * Upload new topic icon, replaces previous icon if one exists
+ *
+ * @param    string $tid ID of topic to prepend to filename
+ * @return   string          filename of new photo (empty = no new photo)
+ */
 function handleIconUpload($tid)
 {
     global $_CONF, $_TABLES, $LANG27;
 
-    require_once ($_CONF['path_system'] . 'classes/upload.class.php');
-
     $upload = new Upload();
-    if (!empty ($_CONF['image_lib'])) {
+    if (!empty($_CONF['image_lib'])) {
         if ($_CONF['image_lib'] == 'imagemagick') {
             // Using imagemagick
-            $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
+            $upload->setMogrifyPath($_CONF['path_to_mogrify']);
         } elseif ($_CONF['image_lib'] == 'netpbm') {
             // using netPBM
-            $upload->setNetPBM ($_CONF['path_to_netpbm']);
+            $upload->setNetPBM($_CONF['path_to_netpbm']);
         } elseif ($_CONF['image_lib'] == 'gdlib') {
             // using the GD library
-            $upload->setGDLib ();
+            $upload->setGDLib();
         }
-        $upload->setAutomaticResize (true);
-        if (isset ($_CONF['debug_image_upload']) &&
-                $_CONF['debug_image_upload']) {
-            $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
-            $upload->setDebug (true);
+        $upload->setAutomaticResize(true);
+        if (isset($_CONF['debug_image_upload']) &&
+            $_CONF['debug_image_upload']
+        ) {
+            $upload->setLogFile($_CONF['path'] . 'logs/error.log');
+            $upload->setDebug(true);
         }
         if (isset($_CONF['jpeg_quality'])) {
             $upload->setJpegQuality($_CONF['jpeg_quality']);
         }
     }
-    $upload->setAllowedMimeTypes (array ('image/gif'   => '.gif',
-                                         'image/jpeg'  => '.jpg,.jpeg',
-                                         'image/pjpeg' => '.jpg,.jpeg',
-                                         'image/x-png' => '.png',
-                                         'image/png'   => '.png'
-                                 )      );
-    if (!$upload->setPath ($_CONF['path_images'] . 'topics')) {
+    $upload->setAllowedMimeTypes(array(
+        'image/gif'   => '.gif',
+        'image/jpeg'  => '.jpg,.jpeg',
+        'image/pjpeg' => '.jpg,.jpeg',
+        'image/x-png' => '.png',
+        'image/png'   => '.png',
+    ));
+    if (!$upload->setPath($_CONF['path_images'] . 'topics')) {
         $display = COM_showMessageText($upload->printErrors(false), $LANG27[29]);
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[29]));
         COM_output($display);
@@ -868,48 +867,43 @@ function handleIconUpload($tid)
     $filename = '';
 
     // see if user wants to upload a (new) icon
-    $newicon = $_FILES['newicon'];
-    if (!empty ($newicon['name'])) {
-        $pos = strrpos ($newicon['name'], '.') + 1;
-        $fextension = substr ($newicon['name'], $pos);
-        $filename = 'topic_' . $tid . '.' . $fextension;
+    $newIcon = $_FILES['newicon'];
+    if (!empty($newIcon['name'])) {
+        $pos = strrpos($newIcon['name'], '.') + 1;
+        $fExtension = substr($newIcon['name'], $pos);
+        $filename = 'topic_' . $tid . '.' . $fExtension;
     }
 
     // do the upload
-    if (!empty ($filename)) {
-        $upload->setFileNames ($filename);
-        $upload->setPerms ('0644');
-        if (($_CONF['max_topicicon_width'] > 0) &&
-            ($_CONF['max_topicicon_height'] > 0)) {
-            $upload->setMaxDimensions ($_CONF['max_topicicon_width'],
-                                       $_CONF['max_topicicon_height']);
+    if (!empty($filename)) {
+        $upload->setFileNames($filename);
+        $upload->setPerms('0644');
+        if (($_CONF['max_topicicon_width'] > 0) && ($_CONF['max_topicicon_height'] > 0)) {
+            $upload->setMaxDimensions($_CONF['max_topicicon_width'], $_CONF['max_topicicon_height']);
         } else {
-            $upload->setMaxDimensions ($_CONF['max_image_width'],
-                                       $_CONF['max_image_height']);
+            $upload->setMaxDimensions($_CONF['max_image_width'], $_CONF['max_image_height']);
         }
         if ($_CONF['max_topicicon_size'] > 0) {
             $upload->setMaxFileSize($_CONF['max_topicicon_size']);
         } else {
             $upload->setMaxFileSize($_CONF['max_image_size']);
         }
-        $upload->uploadFiles ();
+        $upload->uploadFiles();
 
-        if ($upload->areErrors ()) {
+        if ($upload->areErrors()) {
             $display = COM_showMessageText($upload->printErrors(false),
-                                           $LANG27[29]);
+                $LANG27[29]);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[29]));
             COM_output($display);
             exit; // don't return
         }
         if (strpos($_CONF['path_images'], $_CONF['path_html']) === 0) {
-            $filename = substr($_CONF['path_images'],
-                               strlen($_CONF['path_html']) - 1)
-                      . 'topics/' . $filename;
+            $filename = substr($_CONF['path_images'], strlen($_CONF['path_html']) - 1) . 'topics/' . $filename;
         } else {
             /**
-            * Not really used when the 'path_images' is outside of the webroot.
-            * Let's at least extract the name of the images directory then.
-            */
+             * Not really used when the 'path_images' is outside of the webroot.
+             * Let's at least extract the name of the images directory then.
+             */
             $images = 'images';
             $parts = explode('/', $_CONF['path_images']);
             if (count($parts) > 1) {
@@ -926,19 +920,18 @@ function handleIconUpload($tid)
     return $filename;
 }
 
-
 // MAIN
 $display = '';
 
 $mode = '';
-if (isset ($_REQUEST['mode'])) {
+if (isset($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
-if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
-    $tid = COM_applyFilter ($_POST['tid']);
-    if (!isset ($tid) || empty ($tid)) {
-        COM_errorLog ('Attempted to delete topic tid=' . $tid);
+if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
+    $tid = COM_applyFilter($_POST['tid']);
+    if (!isset($tid) || empty($tid)) {
+        COM_errorLog('Attempted to delete topic tid=' . $tid);
         COM_redirect($_CONF['site_admin_url'] . '/topic.php');
     } elseif (SEC_checkToken()) {
         $display .= deleteTopic($tid);
@@ -947,11 +940,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
-    if (empty ($_FILES['newicon']['name'])){
-        $imageurl = COM_applyFilter ($_POST['imageurl']);
+    if (empty($_FILES['newicon']['name'])) {
+        $imageurl = COM_applyFilter($_POST['imageurl']);
     } else {
         $imageurl = handleIconUpload($_POST['tid']);
-        $imageurl = COM_applyFilter ($imageurl);
+        $imageurl = COM_applyFilter($imageurl);
     }
     $is_default = '';
     if (isset($_POST['is_default'])) {
@@ -979,15 +972,15 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $sortnum = COM_applyFilter($_POST['sortnum'], true);
     }
     $display .= savetopic(COM_applyFilter($_POST['tid']), $_POST['topic_name'],
-                          $inherit, $hidden, $parent_id,
-                          $imageurl, $_POST['meta_description'],
-                          $_POST['meta_keywords'], $sortnum,
-                          COM_applyFilter($_POST['limitnews'], true),
-                          COM_applyFilter($_POST['owner_id'], true),
-                          COM_applyFilter($_POST['group_id'], true),
-                          $_POST['perm_owner'], $_POST['perm_group'],
-                          $_POST['perm_members'], $_POST['perm_anon'],
-                          $is_default, $is_archive);
+        $inherit, $hidden, $parent_id,
+        $imageurl, $_POST['meta_description'],
+        $_POST['meta_keywords'], $sortnum,
+        COM_applyFilter($_POST['limitnews'], true),
+        COM_applyFilter($_POST['owner_id'], true),
+        COM_applyFilter($_POST['group_id'], true),
+        $_POST['perm_owner'], $_POST['perm_group'],
+        $_POST['perm_members'], $_POST['perm_anon'],
+        $is_default, $is_archive);
 } elseif ($mode == 'edit') {
     $tid = '';
     if (isset($_GET['tid'])) {
@@ -1012,5 +1005,3 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 }
 
 COM_output($display);
-
-?>

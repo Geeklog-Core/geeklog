@@ -50,9 +50,9 @@
  *
  */
 
-/**
-* Geeklog common function library
-*/
+global $_CONF, $_PLUGINS, $_TABLES;
+
+// Geeklog common function library
 require_once '../lib-common.php';
 
 if (!in_array('links', $_PLUGINS)) {
@@ -60,16 +60,13 @@ if (!in_array('links', $_PLUGINS)) {
     exit;
 }
 
-
 // MAIN
-
 $url = '';
 
 COM_setArgNames(array('what', 'item'));
 $what = COM_getArgument('what');
 
-if ($what == 'link') {
-
+if ($what === 'link') {
     $item = COM_applyFilter(COM_getArgument('item'));
     if (!empty($item)) {
         // Hack: due to PLG_afterSaveSwitch settings, we may get
@@ -90,8 +87,7 @@ if ($what == 'link') {
 if (empty($url)) {
     $url = $_CONF['site_url'];
 }
+
 header('HTTP/1.1 301 Moved');
 header('Location: ' . $url);
 header('Connection: close');
-
-?>

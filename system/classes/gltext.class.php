@@ -33,7 +33,7 @@
  * Constants for GLText
  * Version of GLText engine
  */
-define('GLTEXT_FIRST_VERSION',  1);
+define('GLTEXT_FIRST_VERSION', 1);
 define('GLTEXT_LATEST_VERSION', 2);
 
 class GLText
@@ -41,46 +41,37 @@ class GLText
     /**
      * Returns text ready for the edit fields.
      *
-     * @param   string  $text      Text to prepare for editing
-     * @param   string  $postmode  Indicates if text is html, wikitext or plaintext
-     * @param   int     $version   version of GLText engine
+     * @param   string $text     Text to prepare for editing
+     * @param   string $postMode Indicates if text is html, wikitext or plaintext
+     * @param   int    $version  version of GLText engine
      * @return  string  Escaped String
      * @access  public
-     *
      */
-    public static function getEditText($text, $postmode, $version)
+    public static function getEditText($text, $postMode, $version)
     {
         if ($version == GLTEXT_FIRST_VERSION) {
-
             // first version
 
             // Remove any autotags the user doesn't have permission to use
             $text = PLG_replaceTags($text, '', true);
 
-            if ($postmode == 'plaintext') {
-
+            if ($postMode === 'plaintext') {
                 $text = COM_undoClickableLinks($text);
-
-            } elseif ($postmode == 'wikitext') {
-
-                $text = self::_editUnescape($text, $postmode);
-
+            } elseif ($postMode === 'wikitext') {
+                $text = self::_editUnescape($text, $postMode);
             } else {
                 // html
-                $text = str_replace('<pre><code>',   '[code]',  $text);
+                $text = str_replace('<pre><code>', '[code]', $text);
                 $text = str_replace('</code></pre>', '[/code]', $text);
-                $text = str_replace('<!--raw--><span class="raw">', '[raw]',  $text);
-                $text = str_replace('</span><!--/raw-->',           '[/raw]', $text);
-                $text = self::_editUnescape($text, $postmode);
+                $text = str_replace('<!--raw--><span class="raw">', '[raw]', $text);
+                $text = str_replace('</span><!--/raw-->', '[/raw]', $text);
+                $text = self::_editUnescape($text, $postMode);
                 $text = htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt());
             }
 
             $text = self::_displayEscape($text);
-
         } else {
-
             // latest version
-
             $text = htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt());
         }
 
@@ -90,56 +81,53 @@ class GLText
     /**
      * Returns text ready for display.
      *
-     * @param   string  $text         Text to prepare for display
-     * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
-     * @param   int     $version      version of GLText engine
+     * @param   string $text     Text to prepare for display
+     * @param   string $postMode Indicates if text is html, adveditor, wikitext or plaintext
+     * @param   int    $version  version of GLText engine
      * @return  string  Escaped String
      * @access  public
-     *
      */
-    public static function getDisplayText($text, $postmode, $version)
+    public static function getDisplayText($text, $postMode, $version)
     {
         if ($version == GLTEXT_FIRST_VERSION) {
-
             // first version
-
-            if ($postmode == 'plaintext') {
+            if ($postMode === 'plaintext') {
                 $text = COM_nl2br($text);
             }
 
-            if ($postmode == 'wikitext') {
-                $text = self::_editUnescape($text, $postmode);
+            if ($postMode === 'wikitext') {
+                $text = self::_editUnescape($text, $postMode);
                 $text = self::renderWikiText($text);
             }
-
         } else {
-
             // latest version
-
-            if ($postmode == 'html' || $postmode == 'adveditor') {
-
+            if ($postMode === 'html' || $postMode === 'adveditor') {
                 // Get rid of any newline characters
                 $text = str_replace("\n", '', $text);
 
-                $text = self::_handleSpecialTag_callback($text,
+                $text = self::_handleSpecialTag_callback(
+                    $text,
                     array('[code]', '[/code]', '<pre><code>', '</code></pre>'),
-                    '_escapeSPChars');
+                    '_escapeSPChars'
+                );
 
-                $text = self::_handleSpecialTag_callback($text,
+                $text = self::_handleSpecialTag_callback(
+                    $text,
                     array('[raw]', '[/raw]', '<!--raw--><span class="raw">', '</span><!--/raw-->'),
-                    '_escapeSPChars');
+                    '_escapeSPChars'
+                );
             }
 
-            if ($postmode == 'plaintext') {
+            if ($postMode === 'plaintext') {
                 $text = htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt());
                 $text = COM_makeClickableLinks($text);
                 $text = COM_nl2br($text);
             }
 
-            if ($postmode == 'wikitext') {
-                $text = self::_editUnescape($text, $postmode);
+            if ($postMode === 'wikitext') {
+                $text = self::_editUnescape($text, $postMode);
                 $text = self::renderWikiText($text);
-//              $text = self::_htmLawed($text, 'story.edit');
+                //              $text = self::_htmLawed($text, 'story.edit');
             }
 
             $text = COM_checkWords($text, 'story');
@@ -153,39 +141,46 @@ class GLText
     /**
      * Apply HTML filter to the text
      *
-     * @param   string  $text         Text to prepare for store to databese
-     * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
-     * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
-     * @param   int     $version      version of GLText engine
+     * @param   string $text        Text to prepare for store to databese
+     * @param   string $postMode    Indicates if text is html, adveditor, wikitext or plaintext
+     * @param   string $permissions comma-separated list of rights which identify the current user as an "Admin"
+     * @param   int    $version     version of GLText engine
      * @return  string  Escaped String
      * @access  public
-     *
      */
-    public static function applyHTMLFilter($text, $postmode, $permissions, $version)
+    public static function applyHTMLFilter($text, $postMode, $permissions, $version)
     {
         global $_CONF;
 
         if (($version != GLTEXT_FIRST_VERSION) &&
-            ($postmode == 'html' || $postmode == 'adveditor')) {
-
+            ($postMode === 'html' || $postMode === 'adveditor')
+        ) {
             if (!SEC_hasRights('htmlfilter.skip') &&
-                (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))) {
-
-                $text = self::_handleSpecialTag_callback($text,
+                (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))
+            ) {
+                $text = self::_handleSpecialTag_callback(
+                    $text,
                     array('[code]', '[/code]', '[code2]', '[/code2]'),
-                    '_maskCode');
-                $text = self::_handleSpecialTag_callback($text,
+                    '_maskCode'
+                );
+                $text = self::_handleSpecialTag_callback(
+                    $text,
                     array('[raw]', '[/raw]', '[raw2]', '[/raw2]'),
-                    '_maskCode');
+                    '_maskCode'
+                );
 
                 $text = self::_htmLawed($text, $permissions);
 
-                $text = self::_handleSpecialTag_callback($text,
+                $text = self::_handleSpecialTag_callback(
+                    $text,
                     array('[code2]', '[/code2]', '[code]', '[/code]'),
-                    '_unmaskCode');
-                $text = self::_handleSpecialTag_callback($text,
+                    '_unmaskCode'
+                );
+                $text = self::_handleSpecialTag_callback(
+                    $text,
                     array('[raw2]', '[/raw2]', '[raw]', '[/raw]'),
-                    '_unmaskCode');
+                    '_unmaskCode'
+                );
             }
         }
 
@@ -195,49 +190,50 @@ class GLText
     /**
      * Returns text ready for preview.
      *
-     * @param   string  $text         Text to prepare for store to databese
-     * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
-     * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
-     * @param   int     $version      version of GLText engine
+     * @param   string $text        Text to prepare for store to databese
+     * @param   string $postMode    Indicates if text is html, adveditor, wikitext or plaintext
+     * @param   string $permissions comma-separated list of rights which identify the current user as an "Admin"
+     * @param   int    $version     version of GLText engine
      * @return  string  Escaped String
      * @access  public
-     *
      */
-    public static function getPreviewText($text, $postmode, $permissions, $version)
+    public static function getPreviewText($text, $postMode, $permissions, $version)
     {
-        $text = self::applyHTMLFilter($text, $postmode, $permissions, $version);
-        $text = self::getDisplayText($text, $postmode, $version);
+        $text = self::applyHTMLFilter($text, $postMode, $permissions, $version);
+        $text = self::getDisplayText($text, $postMode, $version);
 
         return $text;
     }
 
     /**
      * This function checks html tags.
-     *
      * Checks to see that the HTML tags are on the approved list and
      * removes them if not.
      *
-     * @param   string  $str          HTML to check
-     * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
+     * @param   string $str         HTML to check
+     * @param   string $permissions comma-separated list of rights which identify the current user as an "Admin"
      * @return  string  Filtered HTML
      * @access  public
-     *
      */
     public static function checkHTML($str, $permissions = 'story.edit')
     {
         global $_CONF, $_USER;
 
-//        $str = COM_stripslashes($str); // it should not be here
+        //        $str = COM_stripslashes($str); // it should not be here
 
         // Get rid of any newline characters
         $str = str_replace("\n", '', $str);
 
-        $str = self::_handleSpecialTag_callback($str,
+        $str = self::_handleSpecialTag_callback(
+            $str,
             array('[code]', '[/code]', '<pre><code>', '</code></pre>'),
-            '_escapeSPChars');
-        $str = self::_handleSpecialTag_callback($str,
+            '_escapeSPChars'
+        );
+        $str = self::_handleSpecialTag_callback(
+            $str,
             array('[raw]', '[/raw]', '[raw2]', '[/raw2]'),
-            '_escapeSPChars');
+            '_escapeSPChars'
+        );
 
         // To begin with, why handle '$' and '\' as the special character?
         //
@@ -248,7 +244,8 @@ class GLText
         // $str = str_replace( '$', '&#36;', $str);
 
         if (!SEC_hasRights('htmlfilter.skip') &&
-            (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))) {
+            (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))
+        ) {
             $str = self::_htmLawed($str, $permissions);
         }
 
@@ -261,18 +258,17 @@ class GLText
     }
 
     /**
-    * Convert wiki-formatted text to (X)HTML
-    *
-    * @param    string  $wikitext   wiki-formatted text
-    * @return   string              XHTML formatted text
-    *
-    */
-    public static function renderWikiText($wikitext)
+     * Convert wiki-formatted text to (X)HTML
+     *
+     * @param    string $wikiText wiki-formatted text
+     * @return   string              XHTML formatted text
+     */
+    public static function renderWikiText($wikiText)
     {
         global $_CONF;
 
         if (!$_CONF['wikitext_editor']) {
-            return $wikitext;
+            return $wikiText;
         }
 
         $wiki = new Geeklog\Text\Wiki();
@@ -282,10 +278,8 @@ class GLText
         $wiki->disableRule('freelink');
         $wiki->disableRule('interwiki');
 
-        return $wiki->transform($wikitext, 'Xhtml');
+        return $wiki->transform($wikiText, 'Xhtml');
     }
-
-    // Private Methods:
 
     private static function _htmLawed($str, $permissions)
     {
@@ -297,7 +291,7 @@ class GLText
             'balance'        => 1, // Balance tags for well-formedness and proper nesting
             'comment'        => 3, // Allow HTML comment
             'css_expression' => 1, // Allow dynamic CSS expression in "style" attributes
-//            'keep_bad'       => 1, // Neutralize both tags and element content
+            //            'keep_bad'       => 1, // Neutralize both tags and element content
             'keep_bad'       => 0, // Neutralize both tags and element content
             'tidy'           => 0, // Don't beautify or compact HTML code
             'unique_ids'     => 1, // Remove duplicate and/or invalid ids
@@ -305,8 +299,9 @@ class GLText
         );
 
         if (isset($_CONF['allowed_protocols']) &&
-                is_array($_CONF['allowed_protocols']) &&
-                (count($_CONF['allowed_protocols']) > 0)) {
+            is_array($_CONF['allowed_protocols']) &&
+            (count($_CONF['allowed_protocols']) > 0)
+        ) {
             $schemes = $_CONF['allowed_protocols'];
         } else {
             $schemes = array('http:', 'https:', 'ftp:');
@@ -316,18 +311,22 @@ class GLText
         $config['schemes'] = 'href: ' . $schemes . '; *: ' . $schemes;
 
         if (empty($permissions) || !SEC_hasRights($permissions) ||
-                empty($_CONF['admin_html'])) {
+            empty($_CONF['admin_html'])
+        ) {
             $html = $_CONF['user_html'];
         } else {
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $html = array_merge_recursive($_CONF['user_html'],
-                                              $_CONF['admin_html'],
-                                              $_CONF['advanced_html']);
+                    $_CONF['admin_html'],
+                    $_CONF['advanced_html']);
             } else {
                 $html = array_merge_recursive($_CONF['user_html'],
-                                              $_CONF['admin_html']);
+                    $_CONF['admin_html']);
             }
         }
+
+        $spec = array();
+        $elements = array();
 
         foreach ($html as $tag => $attr) {
             if (is_array($attr) && (count($attr) > 0)) {
@@ -349,30 +348,30 @@ class GLText
     /**
      * Escapes certain HTML for nicely encoded HTML.
      *
-     * @param   string  $text  Text to escpae
+     * @param   string $text Text to escape
      * @return  string  Escaped string
      * @access  private
-     *
      */
     private static function _displayEscape($text)
     {
         return str_replace(
-            array('$',     '{',      '}',      '\\'),
-            array('&#36;', '&#123;', '&#125;', '&#92;'), $text);
+            array('$', '{', '}', '\\'),
+            array('&#36;', '&#123;', '&#125;', '&#92;'),
+            $text
+        );
     }
 
     /**
-     * Unescapes certain HTML for editing again.
+     * Unescape certain HTML for editing again.
      *
-     * @param   string  $in        Text escaped to unescape for editing
-     * @param   string  $postmode  Indicates if text is html, wikitext or plaintext
+     * @param   string $in       Text escaped to unescape for editing
+     * @param   string $postMode Indicates if text is html, wikitext or plaintext
      * @return  string  Unescaped string
      * @access  private
-     *
      */
-    private static function _editUnescape($in, $postmode)
+    private static function _editUnescape($in, $postMode)
     {
-        if (!in_array($postmode, array('html', 'wikitext'))) {
+        if (!in_array($postMode, array('html', 'wikitext'))) {
             // advanced editor or plaintext can handle themselves...
             return $in;
         }
@@ -391,7 +390,7 @@ class GLText
         // in rewrite phase 1.
         //
         // First, raw
-        $in = self::_unescapeSpecialTag($in, array('[raw]',  '[/raw]'));
+        $in = self::_unescapeSpecialTag($in, array('[raw]', '[/raw]'));
         // Then, code
         $in = self::_unescapeSpecialTag($in, array('[code]', '[/code]'));
 
@@ -399,17 +398,16 @@ class GLText
     }
 
     /**
-     * Callback funtion for escapes all special characters within a
+     * Callback function for escapes all special characters within a
      * [code] ... [/code] section.
      *
-     * @param   string  $str  the code section to encode
+     * @param   string $str the code section to encode
      * @return  string  String with the special characters encoded
      * @access  private
-     *
      */
     private static function _escapeSPChars($str)
     {
-        $search  = array('&',     '<',    '>',    '[',     ']'    );
+        $search = array('&', '<', '>', '[', ']');
         $replace = array('&amp;', '&lt;', '&gt;', '&#91;', '&#93;');
         $str = str_replace($search, $replace, $str);
 
@@ -417,12 +415,11 @@ class GLText
     }
 
     /**
-     * Callback funtion for mask text within a [code] ... [/code] section.
+     * Callback function for mask text within a [code] ... [/code] section.
      *
-     * @param   string  $str  the code section to mask
+     * @param   string $str the code section to mask
      * @return  string  String with characters encoded
      * @access  private
-     *
      */
     private static function _maskCode($str)
     {
@@ -430,12 +427,11 @@ class GLText
     }
 
     /**
-     * Callback funtion for unmask text within a [code] ... [/code] section.
+     * Callback function for unmask text within a [code] ... [/code] section.
      *
-     * @param   string  $str  the code section to unmask
+     * @param   string $str the code section to unmask
      * @return  string  String with characters decoded
      * @access  private
-     *
      */
     private static function _unmaskCode($str)
     {
@@ -469,10 +465,8 @@ class GLText
 
                     $encoded = $tags[2] . $encoded . $tags[3];
                     $str = MBYTE_substr($str, 0, $start_pos) . $encoded
-                         . MBYTE_substr($str, $end_pos + $len_end);
-
+                        . MBYTE_substr($str, $end_pos + $len_end);
                 } else { // missing [/code] or [/raw]
-
                     $part = MBYTE_substr($str, $start_pos + $len_start);
                     if (is_array($args)) {
                         $encoded = self::$function($part, $args);
@@ -491,34 +485,41 @@ class GLText
 
     private static function _unescapeSpecialTag($in, $tags)
     {
-        $inlower = MBYTE_strtolower($in);
-        $start_pos = MBYTE_strpos($inlower, $tags[0]);
-        if ($start_pos === false) return $in;
+        $inLower = MBYTE_strtolower($in);
+        $start_pos = MBYTE_strpos($inLower, $tags[0]);
+
+        if ($start_pos === false) {
+            return $in;
+        }
+
         $buffer = $in;
         $out = '';
+
         while ($start_pos !== false) {
             // Copy in to start to out
             $out .= MBYTE_substr($buffer, 0, $start_pos);
             // Find end
-            $end_pos = MBYTE_strpos($inlower, $tags[1]);
+            $end_pos = MBYTE_strpos($inLower, $tags[1]);
             if ($end_pos !== false) {
                 // Encode body and append to out
                 $encoded = html_entity_decode(
-                    MBYTE_substr($buffer, $start_pos, $end_pos - $start_pos));
+                    MBYTE_substr($buffer, $start_pos, $end_pos - $start_pos)
+                );
                 $out .= $encoded . $tags[1];
                 $len_end = strlen($tags[1]);
                 // Nibble in
-                $inlower = MBYTE_substr($inlower, $end_pos + $len_end);
-                $buffer  = MBYTE_substr($buffer,  $end_pos + $len_end);
+                $inLower = MBYTE_substr($inLower, $end_pos + $len_end);
+                $buffer = MBYTE_substr($buffer, $end_pos + $len_end);
             } else { // missing end
                 $len_start = strlen($tags[0]);
                 // Treat the remainder as code, but this should have been
                 // checked prior to calling:
                 $out .= html_entity_decode(
-                    MBYTE_substr($buffer, $start_pos + $len_start));
-                $inlower = '';
+                    MBYTE_substr($buffer, $start_pos + $len_start)
+                );
+                $inLower = '';
             }
-            $start_pos = MBYTE_strpos($inlower, $tags[0]);
+            $start_pos = MBYTE_strpos($inLower, $tags[0]);
         }
         // Append remainder:
         if ($buffer != '') {
@@ -526,5 +527,36 @@ class GLText
         }
 
         return $out;
+    }
+
+    /**
+     * Remove 4-6 byte UTF-8 characters, including emoji icons
+     *
+     * @param  string $text
+     * @param  string $replace
+     * @return string
+     */
+    public static function removeUtf8Icons($text, $replace = '')
+    {
+        global $_CONF, $_DB_dbms;
+        static $isRemove = null;
+
+        if ($isRemove === null) {
+            if ($_DB_dbms === 'mysql') {
+                if (strcasecmp($_CONF['default_charset'], 'utf-8') === 0) {
+                    $isRemove = version_compare(DB_getVersion(), '5.5.3', '<');
+                } else {
+                    $isRemove = true;
+                }
+            } else {
+                $isRemove = false;
+            }
+        }
+
+        if ($isRemove) {
+            $text = preg_replace('/[\xf0-\xfd][\x80-\xbf]{2}[\x80-\xbf]{1,3}/', $replace, $text);
+        }
+
+        return $text;
     }
 }

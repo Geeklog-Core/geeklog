@@ -285,7 +285,7 @@ function savestory ($A)
     $story->loadSubmission();
 
     // pseudo-formatted story text for the spam check
-    $result = PLG_checkforSpam($story->GetSpamCheckFormat(), $_CONF['spamx']);
+    $result = PLG_checkforSpam($story->getSpamCheckFormat(), $_CONF['spamx']);
     if ($result > 0) {
         COM_updateSpeedlimit('submit');
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
