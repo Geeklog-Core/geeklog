@@ -58,7 +58,7 @@ class langConfValidation extends PHPUnit_Framework_TestCase
         $system_timezone = @date_default_timezone_get();
         date_default_timezone_set($system_timezone);
 
-        $this->c = mockConfig::get_instance();
+        $this->c = config::get_instance();
 
         include Tst::$root . 'language/english.php';
         include Tst::$public . 'admin/configuration_validation.php';
@@ -257,7 +257,7 @@ class langConfValidation extends PHPUnit_Framework_TestCase
  *
  * This class is a dummy for testing the langConfValidation class
  */
-class mockConfig
+class config
 {
     private $cfg;
 

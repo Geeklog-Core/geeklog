@@ -3,11 +3,18 @@
 /**
  * Tests for lib-common
  */
-class libcommonTest extends PHPUnit_Framework_TestCase
+class libCommonTest extends PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
+        Tst::createSiteConfigFile();
         require_once Tst::$public . 'lib-common.php';
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+        Tst::removeSiteConfigFile();
     }
 
     public function testGetBlockTemplateEmptyBlocknameWithHeader()

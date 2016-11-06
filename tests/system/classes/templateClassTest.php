@@ -12,6 +12,17 @@ class templateClass extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        global $_CONF, $TEMPLATE_OPTIONS;
+
+        $_CONF['theme'] = Tst::THEME;
+        $_CONF['path_data'] = Tst::$root . 'data/';
+        $_CONF['path_themes'] = Tst::$public . 'layout/';
+        $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+        $_CONF['cache_mobile'] = true;
+        $_CONF['site_url'] = 'http://www.example.com';
+        $_CONF['site_admin_url'] = $_CONF['site_url'] . '/admin';
+        $_CONF['layout_url'] = $_CONF['site_url'] . '/layout';
+
         // Reset Template Options so they do not include default vars
         $TEMPLATE_OPTIONS = array('default_vars' => array());
 
@@ -208,7 +219,7 @@ class templateClass extends PHPUnit_Framework_TestCase
     public function testSetRootInConstructors()
     {
         $tp2 = new Template(Tst::$tests . 'files/templates');
-        $this->assertEquals(Tst::$tests . 'files/templates', $tp2->root[0]);
+        $this->assertEquals(Tst::$tests . 'files/templates', $tp2->getRoot()[0]);
     }
 
     public function testSetFile()
@@ -647,14 +658,14 @@ class templateClass extends PHPUnit_Framework_TestCase
         $tp2 = new Template;
         $tp2->set_unknowns('keep');
         // there should be a getter method for this ...
-        $this->assertEquals('keep', $tp2->unknowns);
+        $this->assertEquals('keep', $tp2->getUnknowns());
     }
 
     function testSetUnknownsDefault()
     {
         $tp2 = new Template;
         // default is 'remove'
-        $this->assertEquals('remove', $tp2->unknowns);
+        $this->assertEquals('remove', $tp2->getUnknowns());
     }
 
     // tests for private methods ----------------------------------------------
@@ -678,7 +689,7 @@ class templateClass extends PHPUnit_Framework_TestCase
         // silly halt() test, for completeness
         $tp2 = new Template;
         $tp2->halt_on_error = 'no';
-        $this->assertFalse($tp2->halt("This won't stop me!"));
+        $this->assertEquals(null, $tp2->halt("This won't stop me!"));
         $this->assertEquals("This won't stop me!", $tp2->last_error);
     }
 }

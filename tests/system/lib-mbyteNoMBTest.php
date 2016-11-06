@@ -5,16 +5,17 @@
  */
 class libmbyteNoMB extends PHPUnit_Framework_TestCase
 {
-
     public static function setUpBeforeClass()
     {
+        Tst::loadLibrary('mbyte');
         MBYTE_checkEnabled('test-reset');
     }
 
     protected function setUp()
     {
-        $this->x = new Xmldb;
-        $_CONF = $this->x->get_CONF();
+        global $_CONF;
+
+        $_CONF['path_language'] = Tst::$root . 'language/';
     }
 
     public function testMBYTE_languageListDefault()

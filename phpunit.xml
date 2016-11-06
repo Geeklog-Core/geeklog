@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="tests/bootstrap.php">
     <testsuites>
-        <testsuite name="system">
+        <testsuite name="System">
             <directory>tests/system</directory>
         </testsuite>
-        <testsuite name="public_html">
+        <testsuite name="Language">
+            <directory>tests/language</directory>
+        </testsuite>
+        <testsuite name="Public_Html">
             <directory>tests/public_html</directory>
         </testsuite>
     </testsuites>

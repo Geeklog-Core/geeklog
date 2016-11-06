@@ -108,6 +108,6 @@ class timerobjectClass extends PHPUnit_Framework_TestCase
     {
         $this->t->setStartTime(.56);
         $this->t->setEndTime(.66);
-        $this->assertEquals(.10, $this->t->getElapsedTime() , '', $this->prec);
+        $this->assertEquals(.10, $this->t->getElapsedTime(), '', $this->prec);
     }
 }

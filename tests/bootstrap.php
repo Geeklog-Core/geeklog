@@ -2,6 +2,8 @@
 
 global $_CONF;
 
+require_once __DIR__ . '/tst.class.php';
+
 // To disable your site quickly, simply set this flag to false
 $_CONF['site_enabled'] = true;
 
@@ -22,7 +24,7 @@ $_CONF['site_enabled'] = true;
  */
 // $_CONF['developer_mode'] = true;
 
-$_CONF['path'] = dirname(__DIR__) . '/';
+$_CONF['path'] = Tst::$root;
 $_CONF['path_system'] = $_CONF['path'] . 'system/';
 $_CONF['default_charset'] = 'utf-8';
 $_CONF_FCK['imagelibrary'] = '/images/library';
@@ -35,6 +37,5 @@ if (!defined('VERSION')) {
     define('VERSION', '2.1.2');
 }
 
-require_once __DIR__ . '/../system/classes/Autoload.php';
+require_once $_CONF['path_system'] . 'classes/Autoload.php';
 \Geeklog\Autoload::initialize();
-
