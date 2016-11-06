@@ -1,0 +1,34 @@
+                            <form action="{site_url}/submit.php" method="post">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                    <tr>
+                                        <td align="right"><b>{lang_title}:</b></td>
+                                        <td><input type="text" size="48" maxlength="96" name="title"{xhtml}></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right"><b>{lang_link}:</b></td>
+                                        <td><input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="http://"{xhtml}></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right"><b>{lang_category}:</b></td>
+                                        <td>
+                                            <select name="categorydd">
+                                                {link_category_options}
+                                            </select> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" valign="top"><b>{lang_description}:</b></td>
+                                        <td><textarea name="description" rows="8" cols="30" style="width:100%"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" colspan="2">{lang_htmlnotallowed}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" colspan="2">
+                                            <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
+                                            <input type="hidden" name="type" value="links"{xhtml}>
+                                            <input type="submit" value="{lang_submit}"{xhtml}>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>

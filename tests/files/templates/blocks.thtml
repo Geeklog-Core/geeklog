@@ -1,0 +1,7 @@
+<!-- BEGIN header -->
+<html><head><title>{title}</title></head><body><h1>{title}</h1>
+<!-- END header -->
+
+<!-- BEGIN footer -->
+<p>(C) {year} me</p></body></html>
+<!-- END footer -->

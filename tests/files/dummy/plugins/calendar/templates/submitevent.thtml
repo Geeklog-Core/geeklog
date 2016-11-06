@@ -1,0 +1,103 @@
+                            {explanation}
+                            <form class="form-theme" action="{site_url}{submit_url}" method="post">
+                                <div class="form-description">{lang_title}:</div>
+                                <div class="form-field"><input type="text" size="48" maxlength="128" name="title"{xhtml}></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_eventtype}:</div>
+                                <div class="form-field">
+                                    <select name="event_type">
+                                        <option value="">--</option>
+                                        {type_options}
+                                    </select>
+                                </div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_startdate}:</div>
+                                <div class="form-field">
+                                  <span dir="ltr">
+                                    <select name="start_month">
+                                        {month_options}
+                                    </select>
+                                    /
+                                    <select name="start_day">
+                                        {day_options}
+                                    </select>
+                                    /
+                                    <select name="start_year">
+                                        {year_options}
+                                    </select>&nbsp;&nbsp;
+                                    <b>{lang_starttime}: </b>
+                                    <select name="start_hour">
+                                        {hour_options}
+                                    </select>
+                                    :
+                                    <select name="start_minute">
+                                        {minute_options}
+                                    </select>
+                                    {startampm_selection}
+                                  </span>
+                                </div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_enddate}:</div>
+                                <div class="form-field">
+                                  <span dir="ltr">
+                                    <select name="end_month">
+                                        {month_options}
+                                    </select>
+                                    /
+                                    <select name="end_day">
+                                        {day_options}
+                                    </select>
+                                    /
+                                    <select name="end_year">
+                                        {year_options}
+                                    </select>&nbsp;&nbsp;
+                                    <b>{lang_endtime}: </b>
+                                    <select name="end_hour">
+                                        {hour_options}
+                                    </select>
+                                    :
+                                    <select name="end_minute">
+                                        {minute_options}
+                                    </select>
+                                    {startampm_selection}
+                                  </span>
+                                </div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_alldayevent}:</div>
+                                <div class="form-field"><input type="checkbox" name="allday"{xhtml}></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_location}:</div>
+                                <div class="form-field"><textarea name="location" cols="45" rows="2"></textarea></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_addressline1}:</div>
+                                <div class="form-field"><input type="text" name="address1" size="40"{xhtml}></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_addressline2}:</div>
+                                <div class="form-field"><input type="text" name="address2" size="40"{xhtml}></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_city}:</div>
+                                <div class="form-field"><input type="text" name="city" size="40" maxlength="60"{xhtml}></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_state}:</div>
+                                <div class="form-field"><input type="text" name="state" size="40"{xhtml}></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_zipcode}:</div>
+                                <div class="form-field"><input type="text" name="zipcode" size="5" maxlength="5"{xhtml}></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_link}:</div>
+                                <div class="form-field"><input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="http://"{xhtml}></div>
+                                <div class="clear-left"></div>
+                                <div class="form-description">{lang_description}:</div>
+                                <div class="form-field"><textarea name="description" style="width:100%" cols="45" rows="8"></textarea></div>
+                                <div class="clear-left"></div>
+                                <div class="form-field">{lang_htmnotallowed}</div>
+                                <div class="form-field">
+                                    <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
+                                    <input type="hidden" name="type" value="calendar"{xhtml}>
+                                    <input type="hidden" name="calendar_type" value="{mode}"{xhtml}>
+                                    <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+                                    <input type="submit" value="{lang_submit}"{xhtml}>
+                                    {hidden_fields}
+                                </div>
+                                <div class="clear-left"></div>
+                            </form>
