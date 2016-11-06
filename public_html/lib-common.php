@@ -3780,7 +3780,7 @@ function COM_undoSpecialChars($string)
  *
  * @return   string  $sid  Story ID
  */
-function COM_makesid()
+function COM_makeSid()
 {
     $sid = date('YmdHis');
     $sid .= rand(0, 999);

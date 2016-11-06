@@ -35,10 +35,6 @@ if (stripos($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die('This file can not be used on its own.');
 }
 
-require_once $_CONF['path_system'] . 'classes/plugin.class.php';
-require_once $_CONF['path_system'] . 'classes/searchcriteria.class.php';
-require_once $_CONF['path_system'] . 'classes/listfactory.class.php';
-
 /**
  * Geeklog Search Class
  *
@@ -75,7 +71,9 @@ class Search
 
         // Set search criteria
         if (isset($_GET['query'])) {
-            $this->_query = strip_tags(COM_stripslashes($_GET['query']));
+            $query = COM_stripslashes($_GET['query']);
+            $query = GLText::removeUtf8Icons($query);
+            $this->_query = strip_tags($query);
         }
         
         if (isset($_GET['topic'])) {
@@ -318,7 +316,7 @@ class Search
     /**
      * Performs search on all stories
      *
-     * @return object plugin object
+     * @return array of object plugin object
      */
     private function _searchStories()
     {
@@ -390,7 +388,7 @@ class Search
         $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $this->_dateStart, $this->_dateEnd);
         list($sql, $ftsql) = $search_c->buildSearchSQL($this->_keyType, $query, $columns, $sql);
 
-        $sql .= " GROUP BY id";
+        $sql .= " GROUP BY c.cid, c.title, c.comment, c.date, c.uid ";
 
         $search_c->setSQL($sql);
         $search_c->setFTSQL($ftsql);
@@ -486,9 +484,9 @@ class Search
         $obj->setRowFunction(array($this, 'searchFormatCallback'));
 
         // Start search timer
-        $searchtimer = new timerobject();
-        $searchtimer->setPrecision(4);
-        $searchtimer->startTimer();
+        $searchTimer = new timerobject();
+        $searchTimer->setPrecision(4);
+        $searchTimer->startTimer();
 
         // Have plugins do their searches
         $page = isset($_GET['page']) ? COM_applyFilter($_GET['page'], true) : 1;
@@ -607,7 +605,7 @@ class Search
         $results = $obj->ExecuteQueries();
 
         // Searches are done, stop timer
-        $searchtime = $searchtimer->stopTimer();
+        $searchtime = $searchTimer->stopTimer();
 
         $escquery = htmlspecialchars($this->_query);
         $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'), $escquery);

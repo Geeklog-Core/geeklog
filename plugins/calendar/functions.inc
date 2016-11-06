@@ -419,11 +419,12 @@ function plugin_savesubmission_calendar($A)
     $retval = '';
 
     $A['title'] = strip_tags(COM_checkWords($A['title']));
+    $A['title'] = GLText::removeUtf8Icons($A['title']);
     $A['start_year'] = COM_applyFilter($A['start_year'], true);
     $A['start_month'] = COM_applyFilter($A['start_month'], true);
     $A['start_day'] = COM_applyFilter($A['start_day'], true);
 
-    // check for missing textfields
+    // check for missing text fields
     if (empty($A['title']) || empty($A['start_month']) || empty($A['start_day']) || empty($A['start_year'])) {
         $retval .= COM_showMessageText($LANG12[23], $LANG12[22])
             . plugin_submit_calendar($A['calendar_type']);
@@ -472,23 +473,23 @@ function plugin_savesubmission_calendar($A)
     $A['description'] = (isset($A['description']) ? $A['description'] : '');
     $A['event_type'] = (isset($A['event_type']) ? $A['event_type'] : '');
 
-    if ($A['url'] == 'http://') {
+    if ($A['url'] === 'http://' || $A['url'] === 'https://') {
         // remove default entry now to avoid false spam reports
         $A['url'] = '';
     }
 
     // pseudo-formatted event description for the spam check
-    $spamcheck = '';
+    $spamCheck = '';
     if (empty($A['url'])) {
-        $spamcheck .= $A['title'];
+        $spamCheck .= $A['title'];
     } else {
-        $spamcheck .= COM_createLink($A['title'], $A['url']);
+        $spamCheck .= COM_createLink($A['title'], $A['url']);
     }
-    $spamcheck .= '<br' . XHTML . '>' . $A['location'] . '<br' . XHTML . '>'
+    $spamCheck .= '<br' . XHTML . '>' . $A['location'] . '<br' . XHTML . '>'
         . $A['address1'] . '<br' . XHTML . '>' . $A['address2']
         . '<br' . XHTML . '>' . $A['city'] . ', ' . $A['zipcode']
         . '<br' . XHTML . '>' . $A['description'] . '</p>';
-    $result = PLG_checkforSpam($spamcheck, $_CONF['spamx']);
+    $result = PLG_checkforSpam($spamCheck, $_CONF['spamx']);
     if ($result > 0) {
         COM_updateSpeedlimit('submit');
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
@@ -505,15 +506,15 @@ function plugin_savesubmission_calendar($A)
 
     // Remove any autotags the user doesn't have permission to use
     $A['description'] = PLG_replaceTags($A['description'], '', true);
-    $A['description'] = DB_escapeString(htmlspecialchars(COM_checkWords($A['description'])));
-    $A['address1'] = DB_escapeString(strip_tags(COM_checkWords($A['address1'])));
-    $A['address2'] = DB_escapeString(strip_tags(COM_checkWords($A['address2'])));
-    $A['city'] = DB_escapeString(strip_tags(COM_checkWords($A['city'])));
-    $A['zipcode'] = DB_escapeString(strip_tags(COM_checkWords($A['zipcode'])));
-    $A['state'] = DB_escapeString(strip_tags(COM_checkWords($A['state'])));
-    $A['location'] = DB_escapeString(strip_tags(COM_checkWords($A['location'])));
-    $A['event_type'] = DB_escapeString(strip_tags(COM_checkWords($A['event_type'])));
-    $A['title'] = DB_escapeString($A['title']);
+    $A['description'] = DB_escapeString(htmlspecialchars(GLText::removeUtf8Icons(COM_checkWords($A['description']))));
+    $A['address1'] = DB_escapeString(GLText::removeUtf8Icons(strip_tags(COM_checkWords($A['address1']))));
+    $A['address2'] = DB_escapeString(GLText::removeUtf8Icons(strip_tags(COM_checkWords($A['address2']))));
+    $A['city'] = DB_escapeString(GLText::removeUtf8Icons(strip_tags(COM_checkWords($A['city']))));
+    $A['zipcode'] = DB_escapeString(GLText::removeUtf8Icons(strip_tags(COM_checkWords($A['zipcode']))));
+    $A['state'] = DB_escapeString(GLText::removeUtf8Icons(strip_tags(COM_checkWords($A['state']))));
+    $A['location'] = DB_escapeString(GLText::removeUtf8Icons(strip_tags(COM_checkWords($A['location']))));
+    $A['event_type'] = DB_escapeString(GLText::removeUtf8Icons(strip_tags(COM_checkWords($A['event_type']))));
+    $A['title'] = DB_escapeString(GLText::removeUtf8Icons($A['title']));
 
     $A['url'] = DB_escapeString(COM_sanitizeUrl($A['url']));
 

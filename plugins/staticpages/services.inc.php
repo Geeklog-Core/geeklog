@@ -52,9 +52,9 @@ define('STATICPAGE_MAX_ID_LENGTH', 128);
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
  *
- * @param   array   args     Contains all the data provided by the client
- * @param   string  &output  OUTPUT parameter containing the returned text
- * @param   string  &svc_msg OUTPUT parameter containing any service messages
+ * @param   array  $args    Contains all the data provided by the client
+ * @param   string $output  OUTPUT parameter containing the returned text
+ * @param   string $svc_msg OUTPUT parameter containing any service messages
  * @return  int          Response code as defined in lib-plugins.php
  */
 function service_submit_staticpages($args, &$output, &$svc_msg)
@@ -203,7 +203,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
             return PLG_RET_ERROR;
         }
-        
+
         if (empty($args['sp_content'])) {
             $svc_msg['error_desc'] = 'No content';
 
@@ -356,7 +356,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $sp_onlastupdate = 1;
         } else {
             $sp_onlastupdate = 0;
-        }        
+        }
         if ($sp_nf == 'on') {
             $sp_nf = 1;
         } else {
@@ -393,12 +393,20 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if ($_SP_CONF['filter_html'] == 1) {
             $sp_content = COM_checkHTML($sp_content, 'staticpages.edit');
         }
+        $sp_content = GLText::removeUtf8Icons($sp_content);
+
         $sp_title = strip_tags($sp_title);
+        $sp_title = GLText::removeUtf8Icons($sp_title);
         $sp_page_title = strip_tags($sp_page_title);
+        $sp_page_title = GLText::removeUtf8Icons($sp_page_title);
         $sp_label = strip_tags($sp_label);
+        $sp_label = GLText::removeUtf8Icons($sp_label);
 
         $meta_description = strip_tags($meta_description);
+        $meta_description = GLText::removeUtf8Icons($meta_description);
         $meta_keywords = strip_tags($meta_keywords);
+        $meta_keywords = GLText::removeUtf8Icons($meta_keywords);
+        $sp_help = GLText::removeUtf8Icons($sp_help);
 
         $sp_content = DB_escapeString($sp_content);
         $sp_title = DB_escapeString($sp_title);
@@ -406,6 +414,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $sp_label = DB_escapeString($sp_label);
         $meta_description = DB_escapeString($meta_description);
         $meta_keywords = DB_escapeString($meta_keywords);
+        $sp_help = DB_escapeString($sp_help);
 
         // If user does not have php edit perms, then set php flag to 0.
         if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights('staticpages.PHP')) {
@@ -499,14 +508,14 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
 
         // Retrieve created date
-        $datecreated = DB_getItem($_TABLES['staticpage'], 'created', "sp_id = '$sp_id'");
-        if ($datecreated == '') {
-            $datecreated = date('Y-m-d H:i:s');
+        $dateCreated = DB_getItem($_TABLES['staticpage'], 'created', "sp_id = '$sp_id'");
+        if ($dateCreated == '') {
+            $dateCreated = date('Y-m-d H:i:s');
         }
 
         DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_onhits,sp_onlastupdate,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time,owner_id,group_id,'
             . 'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode',
-            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
+            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$dateCreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
             . "$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help',$sp_where,"
             . "'$sp_inblock','$postmode'");
 
