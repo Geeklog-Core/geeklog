@@ -535,7 +535,7 @@ class Installer
             $paths['public_html/'] . 'images/_thumbs/userphotos/',
         );
 
-        if (!isset($_CONF['allow_mysqldump']) && $_DB_dbms === 'mysql') {
+        if ($_DB_dbms === 'mysql') {
             array_splice($fileList, 1, 0, $this->env['gl_path'] . 'backups/');
         }
 
