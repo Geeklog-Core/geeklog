@@ -1,21 +1,3 @@
-system/pear/*.php
-system/pear/Archive
-system/pear/Auth
-system/pear/Console
-system/pear/Date
-system/pear/HTTP
-system/pear/Mail
-system/pear/Net
-system/pear/OS
-system/pear/PEAR
-system/pear/PHP
-system/pear/System.php
-system/pear/Text
-system/pear/XML
-system/pear/scripts
-system/pear/LICENSE
-
-
 public_html/.htaccess
 public_html/web.config
 aspnet_client/
@@ -24,7 +6,6 @@ db-config.php
 public_html/siteconfig.php
 system/lib-custom.php
 
-public_html/.htaccess
 public_html/sitemap.xml
 public_html/filemanager/scripts/filemanager.config.js
 
