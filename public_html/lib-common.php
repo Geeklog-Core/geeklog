@@ -155,21 +155,6 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 $_INPUT = new Geeklog\Input(false); // request variables with magic_quotes_gpc handled
 $_FINPUT = new Geeklog\Input(true);  // request variables with magic_quotes_gpc handled and COM_applyBasicFilter applied
 
-// If needed, add our PEAR path to the list of include paths
-if (!$_CONF['have_pear']) {
-    $curPHPIncludePath = get_include_path();
-    if (empty($curPHPIncludePath)) {
-        $curPHPIncludePath = $_CONF['path_pear'];
-    } else {
-        $curPHPIncludePath = $_CONF['path_pear'] . PATH_SEPARATOR
-            . $curPHPIncludePath;
-    }
-
-    if (set_include_path($curPHPIncludePath) === false) {
-        COM_errorLog('set_include_path failed - there may be problems using the PEAR classes.', 1);
-    }
-}
-
 // Set the web server's timezone
 TimeZoneConfig::setSystemTimeZone();
 
