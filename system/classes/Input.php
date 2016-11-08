@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file deals with input variables.                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2015 by the following authors:                              |
+// | Copyright (C) 2015-2016 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO        - mystralkk AT gmail DOT com                    |
 // +---------------------------------------------------------------------------+
@@ -31,40 +31,94 @@
 
 namespace Geeklog;
 
+/**
+ * Class Input
+ *
+ * @package Geeklog
+ * @since   v2.1.1
+ */
 class Input
 {
     /**
-     * @var    boolean    the current value of magic_quotes_gpc
+     * @var bool
      */
-    private $magicQuotes = false;
+    private static $initialized = false;
 
     /**
-     * @var    boolean    whether to apply basic filter
+     * @var bool the current value of magic_quotes_gpc
      */
-    private $applyFilter = false;
+    private static $magicQuotes = false;
 
-    /**
-     * Constructor
-     *
-     * Check the current value of magic_quotes_gpc
-     *
-     * @param    boolean    $useFilter    whether to apply basic filter to a returned value
-     */
-    public function __construct($useFilter = false)
+    private function __constructor()
     {
-        $this->magicQuotes = (boolean) get_magic_quotes_gpc();
-        $this->applyFilter = (boolean) $useFilter && is_callable('COM_applyBasicFilter');
+    }
+
+    /**
+     * Initialize the Input class
+     */
+    public static function init()
+    {
+        if (!self::$initialized) {
+            self::$magicQuotes = (bool) get_magic_quotes_gpc();
+            self::$initialized = true;
+        }
+    }
+
+    /**
+     * Apply a basic filter
+     *
+     * @param  string|array $var
+     * @param  bool         $isNumeric
+     * @return string|array
+     */
+    public static function applyFilter($var, $isNumeric = false)
+    {
+        if (is_array($var)) {
+            return array_map(__METHOD__, $var);
+        }
+
+        if (is_callable('COM_applyBasicFilter')) {
+            $var = COM_applyBasicFilter($var);
+        } else {
+            // Simulate COM_applyBasicFilter
+            $var = \GLText::removeUtf8Icons($var);
+            $var = strip_tags($var);
+
+            if (is_callable('COM_killJS')) {
+                $var = COM_killJS($var); // doesn't help a lot right now, but still ...
+            } else {
+                $var = preg_replace('/(\s)+[oO][nN](\w*) ?=/', '\1in\2=', $var);
+            }
+
+            if ($isNumeric) {
+                // Note: PHP's is_numeric() accepts values like 4e4 as numeric
+                if (!is_numeric($var) || (preg_match('/^-?\d+$/', $var) == 0)) {
+                    $var = 0;
+                }
+            } else {
+                $var = preg_replace('/\/\*.*/', '', $var);
+                $var = explode("'", $var);
+                $var = explode('"', $var[0]);
+                $var = explode('`', $var[0]);
+                $var = explode(';', $var[0]);
+                $var = explode(',', $var[0]);
+                $var = explode('\\', $var[0]);
+                $var = $var[0];
+            }
+        }
+
+        return $var;
     }
 
     /**
      * Remove an added slash if necessary
      *
-     * @param     array|string    $value
+     * @param     array|string $value
      * @return    array|string
      */
-    private function common($value)
+    private static function undoMagicQuotes($value)
     {
-        if ($this->magicQuotes) {
+        if (self::$magicQuotes) {
             return is_array($value) ? array_map(__METHOD__, $value) : stripslashes($value);
         } else {
             return $value;
@@ -72,136 +126,232 @@ class Input
     }
 
     /**
-     * Apply basic filter if necessary
-     *
-     * @param   string|array  $value
-     * @return  string|array
-     */
-    private function filter($value)
-    {
-        if ($this->applyFilter) {
-            if (is_array($value)) {
-                $value = array_map(array($this, 'filter'), $value);
-            } else {
-                $value = COM_applyBasicFilter($value);
-            }
-        }
-
-        return $value;
-    }
-
-    /**
      * Return the value of $_GET variable
      *
-     * @param    string          $name            an index of $_GET
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_GET
+     * @param    string|array $defaultValue
      * @return   array|null|string
      */
-    public function get($name, $defaultValue = null)
+    public static function get($name, $defaultValue = null)
     {
-        return isset($_GET[$name]) ? $this->filter($this->common($_GET[$name])) : $defaultValue;
+        return isset($_GET[$name]) ? self::undoMagicQuotes($_GET[$name]) : $defaultValue;
     }
 
     /**
      * Return the value of $_POST variable
      *
-     * @param    string          $name            an index of $_POST
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_POST
+     * @param    string|array $defaultValue
      * @return   array|null|string
      */
-    public function post($name, $defaultValue = null)
+    public static function post($name, $defaultValue = null)
     {
-        return isset($_POST[$name]) ? $this->filter($this->common($_POST[$name])) : $defaultValue;
+        return isset($_POST[$name]) ? self::undoMagicQuotes($_POST[$name]) : $defaultValue;
     }
 
     /**
      * Return the value of $_COOKIE variable
      *
-     * @param    string          $name            an index of $_COOKIE
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_COOKIE
+     * @param    string|array $defaultValue
      * @return   array|null|string
      */
-    public function cookie($name, $defaultValue = null)
+    public static function cookie($name, $defaultValue = null)
     {
-        return isset($_COOKIE[$name]) ? $this->filter($this->common($_COOKIE[$name])) : $defaultValue;
+        return isset($_COOKIE[$name]) ? self::undoMagicQuotes($_COOKIE[$name]) : $defaultValue;
     }
 
     /**
      * Return the value of $_SERVER variable
      *
-     * @param    string          $name            an index of $_SERVER
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_SERVER
+     * @param    string|array $defaultValue
      * @return   array|null|string
      */
-    public function server($name, $defaultValue = null)
+    public static function server($name, $defaultValue = null)
     {
-        return isset($_SERVER[$name]) ? $this->filter($_SERVER[$name]) : $defaultValue;
+        return isset($_SERVER[$name]) ? $_SERVER[$name] : $defaultValue;
     }
 
     /**
      * Return the value of $_FILES variable
      *
-     * @param    string          $name            an index of $_FILES
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_FILES
+     * @param    string|array $defaultValue
      * @return   array|null|string
      */
-    public function files($name, $defaultValue = null)
+    public static function files($name, $defaultValue = null)
     {
-        return isset($_FILES[$name]) ? $this->filter($_FILES[$name]) : $defaultValue;
+        return isset($_FILES[$name]) ? $_FILES[$name] : $defaultValue;
     }
 
     /**
      * Return the value of $_ENV variable
      *
-     * @param    string          $name            an index of $_ENV
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_ENV
+     * @param    string|array $defaultValue
      * @return   array|null|string
      */
-    public function env($name, $defaultValue = null)
+    public static function env($name, $defaultValue = null)
     {
-        return isset($_ENV[$name]) ? $this->filter($_ENV[$name]) : $defaultValue;
+        return isset($_ENV[$name]) ? $_ENV[$name] : $defaultValue;
     }
 
     /**
      * Return the value of $_REQUEST variable
      *
-     * @param    string          $name            an index of $_REQUEST
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_REQUEST
+     * @param    string|array $defaultValue
      * @return   array|null|string
      */
-    public function request($name, $defaultValue = null)
+    public static function request($name, $defaultValue = null)
     {
-        return isset($_REQUEST[$name]) ? $this->filter($this->common($_REQUEST[$name])) : $defaultValue;
+        return isset($_REQUEST[$name]) ? self::undoMagicQuotes($_REQUEST[$name]) : $defaultValue;
     }
 
     /**
      * Return the value of $_SESSION variable
      *
-     * @param    string          $name            an index of $_SESSION
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_SESSION
+     * @param    string|array $defaultValue
      * @return   array|null|string
      * @throws   \Exception
      */
-    public function session($name, $defaultValue = null)
+    public static function session($name, $defaultValue = null)
     {
         if (session_id() === '') {
             throw new \Exception('Session has not started yet');
         }
 
-        return isset($_SESSION[$name]) ? $this->filter($_SESSION[$name]) : $defaultValue;
+        return isset($_SESSION[$name]) ? $_SESSION[$name] : $defaultValue;
     }
 
     /**
      * Return the value of $_GET or $_POST variable depending on the current request method
      *
-     * @param    string          $name            an index of $_GET or $_POST
-     * @param    string|array    $defaultValue
+     * @param    string       $name an index of $_GET or $_POST
+     * @param    string|array $defaultValue
      * @return   array|null|string
      */
-    public function req($name, $defaultValue = null)
+    public static function req($name, $defaultValue = null)
     {
-        return ($this->server('REQUEST_METHOD', 'GET') === 'POST')
-            ? $this->post($name, $defaultValue)
-            : $this->get($name, $defaultValue);
+        return (self::server('REQUEST_METHOD', 'GET') === 'POST')
+            ? self::post($name, $defaultValue)
+            : self::get($name, $defaultValue);
+    }
+
+    /**
+     * Return the value of $_GET variable
+     *
+     * @param    string       $name an index of $_GET
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fGet($name, $defaultValue = null)
+    {
+        return isset($_GET[$name]) ? self::applyFilter(self::get($name)) : $defaultValue;
+    }
+
+    /**
+     * Return the value of $_POST variable
+     *
+     * @param    string       $name an index of $_POST
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fPost($name, $defaultValue = null)
+    {
+        return isset($_POST[$name]) ? self::applyFilter(self::post($name)) : $defaultValue;
+    }
+
+    /**
+     * Return the value of $_COOKIE variable
+     *
+     * @param    string       $name an index of $_COOKIE
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fCookie($name, $defaultValue = null)
+    {
+        return isset($_COOKIE[$name]) ? self::applyFilter(self::cookie($name)) : $defaultValue;
+    }
+
+    /**
+     * Return the value of $_SERVER variable
+     *
+     * @param    string       $name an index of $_SERVER
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fServer($name, $defaultValue = null)
+    {
+        return isset($_SERVER[$name]) ? self::applyFilter(self::server($name)) : $defaultValue;
+    }
+
+    /**
+     * Return the value of $_FILES variable
+     *
+     * @param    string       $name an index of $_FILES
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fFiles($name, $defaultValue = null)
+    {
+        return isset($_FILES[$name]) ? self::applyFilter(self::files($name)) : $defaultValue;
+    }
+
+    /**
+     * Return the value of $_ENV variable
+     *
+     * @param    string       $name an index of $_ENV
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fEnv($name, $defaultValue = null)
+    {
+        return isset($_ENV[$name]) ? self::applyFilter(self::env($name)) : $defaultValue;
+    }
+
+    /**
+     * Return the value of $_REQUEST variable
+     *
+     * @param    string       $name an index of $_REQUEST
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fRequest($name, $defaultValue = null)
+    {
+        return isset($_REQUEST[$name]) ? self::applyFilter(self::request($name)) : $defaultValue;
+    }
+
+    /**
+     * Return the value of $_SESSION variable
+     *
+     * @param    string       $name an index of $_SESSION
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     * @throws   \Exception
+     */
+    public static function fSession($name, $defaultValue = null)
+    {
+        if (session_id() === '') {
+            throw new \Exception('Session has not started yet');
+        }
+
+        return isset($_SESSION[$name]) ? self::applyFilter(self::session($name)) : $defaultValue;
+    }
+
+    /**
+     * Return the value of $_GET or $_POST variable depending on the current request method
+     *
+     * @param    string       $name an index of $_GET or $_POST
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fReq($name, $defaultValue = null)
+    {
+        return (self::server('REQUEST_METHOD', 'GET') === 'POST')
+            ? self::applyFilter(self::post($name, $defaultValue))
+            : self::applyFilter(self::get($name, $defaultValue));
     }
 }

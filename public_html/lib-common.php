@@ -147,14 +147,6 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 // | Library Includes: You shouldn't have to touch anything below here         |
 // +---------------------------------------------------------------------------+
 
-// Input class (since v2.1.1)
-/**
- * @global $_INPUT array
- * @global $_FINPUT array
- */
-$_INPUT = new Geeklog\Input(false); // request variables with magic_quotes_gpc handled
-$_FINPUT = new Geeklog\Input(true);  // request variables with magic_quotes_gpc handled and COM_applyBasicFilter applied
-
 // Set the web server's timezone
 TimeZoneConfig::setSystemTimeZone();
 
@@ -245,7 +237,7 @@ if (COM_isAnonUser()) {
 }
 
 // Retrieve new topic if found
-$topic = $_FINPUT->get('topic', $_FINPUT->post('topic', ''));
+$topic = \Geeklog\Input::fGet('topic', \Geeklog\Input::fPost('topic', ''));
 
 // See if user has access to view topic
 if ($topic != '') {
@@ -6213,7 +6205,8 @@ function COM_applyBasicFilter($parameter, $isNumeric = false)
 {
     $log_manipulation = false; // set to true to log when the filter applied
 
-    $p = strip_tags($parameter);
+    $p = GLText::removeUtf8Icons($parameter);
+    $p = strip_tags($p);
     $p = COM_killJS($p); // doesn't help a lot right now, but still ...
 
     if ($isNumeric) {

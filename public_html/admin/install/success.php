@@ -91,9 +91,9 @@ function SUCCESS_deleteAll($baseDir)
 }
 
 // Main
-$type = $_FINPUT->get('type', 'install');
-$submit = $_INPUT->post('submit', '');
-$language = $_FINPUT->get('language', 'english');
+$type = \Geeklog\Input::fGet('type', 'install');
+$submit = \Geeklog\Input::post('submit', '');
+$language = \Geeklog\Input::fGet('language', 'english');
 $language = preg_replace('/[^a-z0-9\-_]/', '', $language);
 $languagePath = dirname(__FILE__) . '/language/' . $language . '.php';
 

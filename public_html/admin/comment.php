@@ -69,9 +69,7 @@ require_once $_CONF['path_system'] . 'lib-comment.php';
  */
 function getCommentIds($suffix)
 {
-    global $_FINPUT;
-
-    $commentIds = $_FINPUT->post('cids' . $suffix, array());
+    $commentIds = \Geeklog\Input::fPost('cids' . $suffix, array());
 
     if (count($commentIds) > 0) {
         $commentIds = array_map('intval', $commentIds);
@@ -240,7 +238,7 @@ function getTypeSelector($itemType)
  */
 function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
 {
-    global $_CONF, $_PLUGINS, $_TABLES, $_FINPUT, $LANG_ADMIN, $LANG01, $LANG03, $LANG28, $LANG29;
+    global $_CONF, $_PLUGINS, $_TABLES, $LANG_ADMIN, $LANG01, $LANG03, $LANG28, $LANG29;
 
     $headerArray = array(
         array(
@@ -297,7 +295,7 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
         'form_url'   => $_CONF['site_admin_url'] . '/comment.php',
     );
 
-    $itemType = $_FINPUT->post('item_type', '');
+    $itemType = \Geeklog\Input::fPost('item_type', '');
 
     switch ($itemType) {
         case 'article':
@@ -559,7 +557,7 @@ function banIpAddresses($suffix)
 }
 
 // MAIN
-$list = $_FINPUT->post('list', '');
+$list = \Geeklog\Input::fPost('list', '');
 
 if ($list === SUFFIX_COMMENTS) {
     $suffix = SUFFIX_COMMENTS;
@@ -569,7 +567,7 @@ if ($list === SUFFIX_COMMENTS) {
     $suffix = '';
 }
 
-$action = $_FINPUT->post('bulk_action' . $suffix, '');
+$action = \Geeklog\Input::fPost('bulk_action' . $suffix, '');
 
 switch ($action) {
     case 'bulk_approve':
