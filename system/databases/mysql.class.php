@@ -94,11 +94,15 @@ class Database
      */
     private $_mysql_version = 0;
 
-    // PRIVATE METHODS
     /**
      * @var bool
      */
     private $_use_innodb = false;
+
+    /**
+     * @var bool
+     */
+    private $isUtf8Mb4 = false;
 
     /**
      * Logs messages
@@ -152,16 +156,28 @@ class Database
         }
 
         if ($this->_charset == 'utf-8') {
-            if (($this->_mysql_version >= 50007) &&
-                function_exists('mysql_set_charset')
-            ) {
-                $result = @mysql_set_charset('utf8mb4', $this->_db);
+            if (($this->_mysql_version >= 50007) && function_exists('mysql_set_charset')) {
+                $result = false;
 
-                if (!$result) {
+                if ($this->_mysql_version >= 50503) {
+                    $result = @mysql_set_charset('utf8mb4', $this->_db);
+                }
+
+                if ($result) {
+                    $this->isUtf8Mb4 = true;
+                } else {
                     @mysql_set_charset('utf8', $this->_db);
                 }
             } else {
-                if (!@mysql_query("SET NAMES 'utf8mb4'", $this->_db)) {
+                $result = false;
+
+                if ($this->_mysql_version >= 50503) {
+                    $result = @mysql_query("SET NAMES 'utf8mb4'", $this->_db);
+                }
+
+                if ($result) {
+                    $this->isUtf8Mb4 = true;
+                } else {
                     @mysql_query("SET NAMES 'utf8'", $this->_db);
                 }
             }
@@ -230,6 +246,7 @@ class Database
         $this->_charset = strtolower($charset);
         $this->_mysql_version = 0;
         $this->_use_innodb = false;
+        $this->isUtf8Mb4 = false;
 
         $this->_connect();
     }
@@ -328,7 +345,11 @@ class Database
                 if (($this->_charset === 'utf-8') &&
                     !preg_match('/DEFAULT\s+(CHARSET|CHARACTER\s+SET)/i', $option)
                 ) {
-                    $option .= ' DEFAULT CHARSET=utf8';
+                    if ($this->isUtf8Mb4) {
+                        $option .= ' DEFAULT CHARSET=utf8mb4';
+                    } else {
+                        $option .= ' DEFAULT CHARSET=utf8';
+                    }
                 }
 
                 $sql .= $option;
@@ -369,7 +390,7 @@ class Database
      * database
      *
      * @param    string $table  The table to save to
-     * @param    string $fields string  Comma demlimited list of fields to save
+     * @param    string $fields string  Comma delimited list of fields to save
      * @param    string $values Values to save to the database table
      */
     public function dbSave($table, $fields, $values)

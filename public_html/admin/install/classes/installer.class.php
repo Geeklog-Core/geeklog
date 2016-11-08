@@ -1275,7 +1275,7 @@ class Installer
      * Can the install script connect to the database?
      *
      * @param   array $db Database information
-     * @return  mixed       Returns the DB handle if true, false if not
+     * @return  mixed     Returns the DB handle if true, false if not
      */
     private function dbConnect($db)
     {
@@ -1364,7 +1364,6 @@ class Installer
                 (($myVersion[0] == $minVersion[0]) && ($myVersion[1] < $minVersion[1])) ||
                 (($myVersion[0] == $minVersion[0]) && ($myVersion[1] == $minVersion[1]) && ($myVersion[2] < $minVersion[2]))
             ) {
-
                 return true;
             }
         }
@@ -1376,9 +1375,9 @@ class Installer
      * Check if a Geeklog database exists
      *
      * @param   array $db Array containing connection info
-     * @return  bool     True if a database exists, false if not
+     * @return  bool      True if a database exists, false if not
      */
-    private function dbExists($db)
+    private function dbExists(array $db)
     {
         $dbHandle = $this->dbConnect($db);
         $retval = false;
@@ -2589,8 +2588,8 @@ class Installer
     {
         global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass, $_DB_name;
 
-        require $dbConfigFilePath;
-        require $siteConfigFilePath;
+        require_once $dbConfigFilePath;
+        require_once $siteConfigFilePath;
 
         $dbHandle = null;
         $connected = false;
@@ -2619,7 +2618,7 @@ class Installer
         }
 
         if ($connected) {
-            require $_CONF['path_system'] . 'lib-database.php';
+            require_once $_CONF['path_system'] . 'lib-database.php';
             $version = $this->identifyGeeklogVersion();
 
             switch ($_DB_dbms) {
@@ -2648,7 +2647,6 @@ class Installer
 
         return $version;
     }
-
 
     /**
      * Installer engine
@@ -2882,7 +2880,7 @@ class Installer
                         }
                     }
 
-                    require $this->env['dbconfig_path'];
+                    require_once $this->env['dbconfig_path'];
                     require_once $this->env['siteconfig_path'];
                     require_once $_CONF['path_system'] . 'lib-database.php';
 

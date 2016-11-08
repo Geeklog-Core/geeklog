@@ -452,7 +452,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['trackback']} (
   cid int(10) unsigned NOT NULL auto_increment,
   sid varchar(128) NOT NULL,
-  url varchar(255) default NULL,
+  url varchar(250) default NULL,
   title varchar(128) default NULL,
   blog varchar(80) default NULL,
   excerpt text,
