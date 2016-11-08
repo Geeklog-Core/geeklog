@@ -12,7 +12,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['users']} MODIFY COLUMN `regdate` DATETIME DEFA
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `device` VARCHAR( 15 ) NOT NULL DEFAULT 'all' AFTER `blockorder`";
 
 // Add `language_items` table
-$_SQL[] ="
+$_SQL[] = "
 CREATE TABLE {$_TABLES['language_items']} (
   id INT(11) NOT NULL AUTO_INCREMENT,
   var_name VARCHAR(30) NOT NULL,
@@ -68,7 +68,6 @@ $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE `url` `url` VARCHAR(250) D
 
 /**
  * Add new config options
- *
  */
 function update_ConfValuesFor212()
 {
@@ -82,28 +81,28 @@ function update_ConfValuesFor212()
 
     // Add extra setting to hide_main_page_navigation
     $c->del('hide_main_page_navigation', $me);
-    $c->add('hide_main_page_navigation','false','select',1,7,36,1310,TRUE, $me, 7);
-    
+    $c->add('hide_main_page_navigation', 'false', 'select', 1, 7, 36, 1310, true, $me, 7);
+
     // New OAuth Service
-    $c->add('github_login',0,'select',4,16,1,368,TRUE, $me, 16);
-    $c->add('github_consumer_key','','text',4,16,NULL,369,TRUE, $me, 16);
-    $c->add('github_consumer_secret','','text',4,16,NULL,370,TRUE, $me, 16);
+    $c->add('github_login', 0, 'select', 4, 16, 1, 368, true, $me, 16);
+    $c->add('github_consumer_key', '', 'text', 4, 16, null, 369, true, $me, 16);
+    $c->add('github_consumer_secret', '', 'text', 4, 16, null, 370, true, $me, 16);
 
     // New mobile cache
-    $c->add('cache_templates',TRUE,'select',2,10,1,220,TRUE, $me, 10);
+    $c->add('cache_templates', true, 'select', 2, 10, 1, 220, true, $me, 10);
 
     // New Block Autotag permissions
-    $c->add('autotag_permissions_block', array(2, 2, 0, 0), '@select', 7, 41, 28, 1920, TRUE, $me, 37);
-    
+    $c->add('autotag_permissions_block', array(2, 2, 0, 0), '@select', 7, 41, 28, 1920, true, $me, 37);
+
     // New search config option
-    $c->add('search_use_topic',FALSE,'select',0,6,1,677,TRUE, $me, 6);
+    $c->add('search_use_topic', false, 'select', 0, 6, 1, 677, true, $me, 6);
 
     // New url routing option
-    $c->add('url_routing',0,'select',0,0,37,1850,TRUE, $me, 0);
-    
+    $c->add('url_routing', 0, 'select', 0, 0, 37, 1850, true, $me, 0);
+
     // Add mail charset
-    $c->add('mail_charset', '', 'text', 0, 1, NULL, 195, TRUE, $me, 1);
-    
+    $c->add('mail_charset', '', 'text', 0, 1, null, 195, true, $me, 1);
+
     // Delete MYSQL Dump Tab, section, and config options
     $c->del('tab_mysql', $me);
     $c->del('fs_mysql', $me);
@@ -111,17 +110,23 @@ function update_ConfValuesFor212()
     $c->del('mysqldump_path', $me);
     $c->del('mysqldump_options', $me);
     $c->del('mysqldump_filename_mask', $me);
-    
+
     // Add Database Backup config options
-    $c->add('tab_database', NULL, 'tab', 0, 5, NULL, 0, TRUE, $me, 5);
-    $c->add('fs_database_backup', NULL, 'fieldset', 0, 5, NULL, 0, TRUE, $me, 5);
-    $c->add('dbdump_filename_prefix','geeklog_db_backup','text',0,5,NULL,170,TRUE, $me, 5);    
-    $c->add('dbdump_tables_only',0,'select',0,5,0,175,TRUE, $me, 5);
-    $c->add('dbdump_gzip',1,'select',0,5,0,180,TRUE, $me, 5); 
-    $c->add('dbdump_max_files',10,'text',0,5,NULL,185,TRUE, $me, 5);
+    $c->add('tab_database', null, 'tab', 0, 5, null, 0, true, $me, 5);
+    $c->add('fs_database_backup', null, 'fieldset', 0, 5, null, 0, true, $me, 5);
+    $c->add('dbdump_filename_prefix', 'geeklog_db_backup', 'text', 0, 5, null, 170, true, $me, 5);
+    $c->add('dbdump_tables_only', 0, 'select', 0, 5, 0, 175, true, $me, 5);
+    $c->add('dbdump_gzip', 1, 'select', 0, 5, 0, 180, true, $me, 5);
+    $c->add('dbdump_max_files', 10, 'text', 0, 5, null, 185, true, $me, 5);
 
     // Add gravatar_identicon
-    $c->add('gravatar_identicon','identicon','select',5,27,38,1620,FALSE, $me, 27);
+    $c->add('gravatar_identicon', 'identicon', 'select', 5, 27, 38, 1620, false, $me, 27);
+
+    // Delete PEAR Tab, section and config options
+    $c->del('tab_pear', $me);
+    $c->del('fs_pear', $me);
+    $c->del('have_pear', $me);
+    $c->del('path_pear', $me);
 
     return true;
 }

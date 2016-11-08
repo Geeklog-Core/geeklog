@@ -94,11 +94,6 @@ function install_config()
     $c->add('path_images','','text',0,3,NULL,130,TRUE, $me, 3);
     $c->add('path_editors','','text',0,3,NULL,132,TRUE, $me, 3);
 
-    $c->add('tab_pear', NULL, 'tab', 0, 4, NULL, 0, TRUE, $me, 4);
-    $c->add('fs_pear', NULL, 'fieldset', 0, 4, NULL, 0, TRUE, $me, 4);
-    $c->add('have_pear',FALSE,'select',0,4,1,135,TRUE, $me, 4);
-    $c->add('path_pear','','text',0,4,NULL,140,TRUE, $me, 4);
-
     $c->add('tab_database', NULL, 'tab', 0, 5, NULL, 0, TRUE, $me, 5);
     $c->add('fs_database_backup', NULL, 'fieldset', 0, 5, NULL, 0, TRUE, $me, 5);
     $c->add('dbdump_filename_prefix','geeklog_db_backup','text',0,5,NULL,170,TRUE, $me, 5);    
