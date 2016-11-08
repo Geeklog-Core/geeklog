@@ -52,7 +52,10 @@ $_UPDATES = array(
     ),
 
     '1.3.2' => array(
-        "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN regdate DATETIME DEFAULT NULL"
+        "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN regdate DATETIME DEFAULT NULL",
+        "DROP INDEX `primary` ON {$_TABLES['spamx']}",
+        "DROP INDEX `spamx_name` ON {$_TABLES['spamx']}",
+        "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name)"
     )
 );
 
