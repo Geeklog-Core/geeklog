@@ -2122,6 +2122,7 @@ $LANG_confignames['Core'] = array(
     'advanced_editor' => "Advanced Editor?",
     'advanced_editor_name' => "Advanced Editor Name?",
     'wikitext_editor' => "Wikitext Editor?",
+    'remove_4byte_chars' => 'Remove 4-byte utf-8 characters?',
     'cron_schedule_interval' => "Cron Schedule Interval",
     'sortmethod' => "Sort Topics",
     'showstorycount' => "Show Story Count?",

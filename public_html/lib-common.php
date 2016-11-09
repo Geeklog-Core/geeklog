@@ -6205,7 +6205,7 @@ function COM_applyBasicFilter($parameter, $isNumeric = false)
 {
     $log_manipulation = false; // set to true to log when the filter applied
 
-    $p = GLText::removeUtf8Icons($parameter);
+    $p = GLText::remove4byteUtf8Chars($parameter);
     $p = strip_tags($p);
     $p = COM_killJS($p); // doesn't help a lot right now, but still ...
 

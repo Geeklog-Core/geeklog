@@ -464,11 +464,11 @@ function savetopic(
                 $imageUrl = '';
             }
 
-            $topic = GLText::removeUtf8Icons(strip_tags($topic));
+            $topic = GLText::remove4byteUtf8Chars(strip_tags($topic));
             $topic = DB_escapeString($topic);
-            $meta_description = GLText::removeUtf8Icons(strip_tags($meta_description));
+            $meta_description = GLText::remove4byteUtf8Chars(strip_tags($meta_description));
             $meta_description = DB_escapeString($meta_description);
-            $meta_keywords = GLText::removeUtf8Icons(strip_tags($meta_keywords));
+            $meta_keywords = GLText::remove4byteUtf8Chars(strip_tags($meta_keywords));
             $meta_keywords = DB_escapeString($meta_keywords);
 
             if ($is_default == 'on') {

@@ -72,7 +72,7 @@ class Search
         // Set search criteria
         if (isset($_GET['query'])) {
             $query = COM_stripslashes($_GET['query']);
-            $query = GLText::removeUtf8Icons($query);
+            $query = GLText::remove4byteUtf8Chars($query);
             $this->_query = strip_tags($query);
         }
         

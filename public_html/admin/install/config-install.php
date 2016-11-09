@@ -294,6 +294,7 @@ function install_config()
     $c->add('advanced_editor',FALSE,'select',4,20,1,840,TRUE, $me, 20);
     $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
     $c->add('wikitext_editor',FALSE,'select',4,20,1,850,TRUE, $me, 20);
+    $c->add('remove_4byte_chars',TRUE,'select',4,20,1,855,TRUE, $me, 20);
 
     $c->add('tab_comments', NULL, 'tab', 4, 21, NULL, 0, TRUE, $me, 21);
     $c->add('fs_comments', NULL, 'fieldset', 4, 21, NULL, 0, TRUE, $me, 21);

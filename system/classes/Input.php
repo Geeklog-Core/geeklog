@@ -81,7 +81,7 @@ class Input
             $var = COM_applyBasicFilter($var);
         } else {
             // Simulate COM_applyBasicFilter
-            $var = \GLText::removeUtf8Icons($var);
+            $var = \GLText::remove4byteUtf8Chars($var);
             $var = strip_tags($var);
 
             if (is_callable('COM_killJS')) {

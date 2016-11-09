@@ -245,12 +245,12 @@ function savelink($lid, $old_lid, $cid, $categoryDd, $url, $description, $title,
 
     // clean 'em up
     $description = COM_checkHTML(COM_checkWords($description), 'links.edit');
-    $description = GLText::removeUtf8Icons($description);
+    $description = GLText::remove4byteUtf8Chars($description);
     $description = DB_escapeString($description);
     $title = strip_tags(COM_checkWords($title));
-    $title = GLText::removeUtf8Icons($title);
+    $title = GLText::remove4byteUtf8Chars($title);
     $title = DB_escapeString($title);
-    $cid = GLText::removeUtf8Icons($cid);
+    $cid = GLText::remove4byteUtf8Chars($cid);
     $cid = DB_escapeString($cid);
 
     if (empty ($owner_id)) {

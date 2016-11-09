@@ -128,5 +128,8 @@ function update_ConfValuesFor212()
     $c->del('have_pear', $me);
     $c->del('path_pear', $me);
 
+    // Add a flag whether to filter utf-8 4-byte character
+    $c->add('remove_4byte_chars', true, 'select', 4, 20, 1, 855, true, $me, 20);
+
     return true;
 }
