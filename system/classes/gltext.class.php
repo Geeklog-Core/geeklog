@@ -530,26 +530,27 @@ class GLText
     }
 
     /**
-     * Remove 4-6 byte UTF-8 characters, including emoji icons
+     * Remove 4-6 byte UTF-8 characters, including emoji icons used on mobile phones
      *
      * @param  string $text
      * @param  string $replace
      * @return string
      */
-    public static function removeUtf8Icons($text, $replace = '')
+    public static function remove4byteUtf8Chars($text, $replace = '')
     {
         global $_CONF, $_DB_dbms;
         static $isRemove = null;
 
         if ($isRemove === null) {
-            if ($_DB_dbms === 'mysql') {
-                if (strcasecmp($_CONF['default_charset'], 'utf-8') === 0) {
-                    $isRemove = version_compare(DB_getVersion(), '5.5.3', '<');
-                } else {
-                    $isRemove = true;
-                }
+            if (!isset($_CONF['remove_4byte_chars']) || $_CONF['remove_4byte_chars']) {
+                $isRemove = true;
             } else {
-                $isRemove = false;
+                // in case $_CONF['remove_4byte_chars'] is set to false
+                if (strcasecmp($_DB_dbms, 'mysql') === 0) {
+                    $isRemove = version_compare('5.5.3', DB_getVersion(), '>');
+                } else {
+                    $isRemove = false;
+                }
             }
         }
 

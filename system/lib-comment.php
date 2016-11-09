@@ -931,7 +931,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             // <textarea> -> don't strip HTML
 
             $commentText = COM_stripslashes($comment);
-            $commentText = GLText::removeUtf8Icons($commentText);
+            $commentText = GLText::remove4byteUtf8Chars($commentText);
             $commentText = htmlspecialchars($commentText);
 
             // Replace $, {, and } with special HTML equivalents
@@ -1893,7 +1893,7 @@ function CMT_prepareText($comment, $postMode, $type, $edit = false, $cid = null)
 
     // Remove any autotags the user doesn't have permission to use
     $comment = PLG_replaceTags($comment, '', true);
-    $comment = GLText::removeUtf8Icons($comment);
+    $comment = GLText::remove4byteUtf8Chars($comment);
 
     if ($postMode === 'html') {
         $html_perm = ($type == 'article') ? 'story.edit' : "$type.edit";

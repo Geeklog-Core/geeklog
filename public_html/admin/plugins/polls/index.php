@@ -251,13 +251,13 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
     DB_delete($_TABLES['pollanswers'], 'pid', $del_pid);
     DB_delete($_TABLES['pollquestions'], 'pid', $del_pid);
 
-    $topic = GLText::removeUtf8Icons($topic);
+    $topic = GLText::remove4byteUtf8Chars($topic);
     $topic = DB_escapeString($topic);
-    $topic_description = GLText::removeUtf8Icons($topic_description);
+    $topic_description = GLText::remove4byteUtf8Chars($topic_description);
     $topic_description = DB_escapeString($topic_description);
-    $meta_description = GLText::removeUtf8Icons($meta_description);
+    $meta_description = GLText::remove4byteUtf8Chars($meta_description);
     $meta_description = DB_escapeString($meta_description);
-    $meta_keywords = GLText::removeUtf8Icons($meta_keywords);
+    $meta_keywords = GLText::remove4byteUtf8Chars($meta_keywords);
     $meta_keywords = DB_escapeString($meta_keywords);
 
     $k = 0; // set up a counter to make sure we do assign a straight line of question id's
@@ -268,9 +268,9 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
     for ($i = 0; $i < $num_questions; $i++) {
         $Q[$i] = COM_stripslashes($Q[$i]);
         $Q[$i] = COM_checkHTML($Q[$i]);
-        $Q[$i] = GLText::removeUtf8Icons($Q[$i]);
-        $allow_multipleanswers[$i] = GLText::removeUtf8Icons(COM_stripslashes($allow_multipleanswers[$i]));
-        $description[$i] = GLText::removeUtf8Icons(COM_checkHTML(COM_stripslashes($description[$i])));
+        $Q[$i] = GLText::remove4byteUtf8Chars($Q[$i]);
+        $allow_multipleanswers[$i] = GLText::remove4byteUtf8Chars(COM_stripslashes($allow_multipleanswers[$i]));
+        $description[$i] = GLText::remove4byteUtf8Chars(COM_checkHTML(COM_stripslashes($description[$i])));
         if ($allow_multipleanswers[$i] == 'on') {
             $allow_multipleanswers[$i] = 1;
         } else {
@@ -290,10 +290,10 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
             for ($j = 0; $j < $num_answers; $j++) {
                 $A[$i][$j] = COM_stripslashes($A[$i][$j]);
                 $A[$i][$j] = COM_checkHTML($A[$i][$j]);
-                $A[$i][$j] = GLText::removeUtf8Icons($A[$i][$j]);
+                $A[$i][$j] = GLText::remove4byteUtf8Chars($A[$i][$j]);
                 $R[$i][$j] = COM_stripslashes($R[$i][$j]);
                 $R[$i][$j] = COM_checkHTML($R[$i][$j]);
-                $R[$i][$j] = GLText::removeUtf8Icons($R[$i][$j]);
+                $R[$i][$j] = GLText::remove4byteUtf8Chars($R[$i][$j]);
 
                 if (strlen($A[$i][$j]) > 0) { // only insert answers etc that exist
                     if (!is_numeric($V[$i][$j])) {

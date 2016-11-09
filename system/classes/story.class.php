@@ -2184,7 +2184,7 @@ class Story
     private function _applyTitleFilter($title)
     {
         $retval = strip_tags(COM_checkWords($title, 'story'));
-        $retval = GLText::removeUtf8Icons($retval);
+        $retval = GLText::remove4byteUtf8Chars($retval);
         $retval = htmlspecialchars($retval, ENT_QUOTES, COM_getEncodingt());
 
         return $retval;
@@ -2199,7 +2199,7 @@ class Story
      */
     private function _applyTextFilter($text, $postMode)
     {
-        $text = GLText::removeUtf8Icons($text);
+        $text = GLText::remove4byteUtf8Chars($text);
 
         if ($this->_text_version == GLTEXT_FIRST_VERSION) {
             // first version

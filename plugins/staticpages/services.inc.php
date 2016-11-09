@@ -393,20 +393,20 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if ($_SP_CONF['filter_html'] == 1) {
             $sp_content = COM_checkHTML($sp_content, 'staticpages.edit');
         }
-        $sp_content = GLText::removeUtf8Icons($sp_content);
+        $sp_content = GLText::remove4byteUtf8Chars($sp_content);
 
         $sp_title = strip_tags($sp_title);
-        $sp_title = GLText::removeUtf8Icons($sp_title);
+        $sp_title = GLText::remove4byteUtf8Chars($sp_title);
         $sp_page_title = strip_tags($sp_page_title);
-        $sp_page_title = GLText::removeUtf8Icons($sp_page_title);
+        $sp_page_title = GLText::remove4byteUtf8Chars($sp_page_title);
         $sp_label = strip_tags($sp_label);
-        $sp_label = GLText::removeUtf8Icons($sp_label);
+        $sp_label = GLText::remove4byteUtf8Chars($sp_label);
 
         $meta_description = strip_tags($meta_description);
-        $meta_description = GLText::removeUtf8Icons($meta_description);
+        $meta_description = GLText::remove4byteUtf8Chars($meta_description);
         $meta_keywords = strip_tags($meta_keywords);
-        $meta_keywords = GLText::removeUtf8Icons($meta_keywords);
-        $sp_help = GLText::removeUtf8Icons($sp_help);
+        $meta_keywords = GLText::remove4byteUtf8Chars($meta_keywords);
+        $sp_help = GLText::remove4byteUtf8Chars($sp_help);
 
         $sp_content = DB_escapeString($sp_content);
         $sp_title = DB_escapeString($sp_title);

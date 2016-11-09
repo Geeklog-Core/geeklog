@@ -348,10 +348,10 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
 
     // clean 'em up
     $description = COM_checkHTML(COM_checkWords($description), 'links.edit');
-    $description = GLText::removeUtf8Icons($description);
+    $description = GLText::remove4byteUtf8Chars($description);
     $description = DB_escapeString($description);
     $category = COM_checkHTML(COM_checkWords($category), 'links.edit');
-    $category = GLText::removeUtf8Icons($category);
+    $category = GLText::remove4byteUtf8Chars($category);
     $category = DB_escapeString($category);
     $pid = DB_escapeString(strip_tags($pid));
     $cid = DB_escapeString(strip_tags($cid));

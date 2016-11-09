@@ -476,10 +476,10 @@ function reorderRoutes()
  */
 function moveRoute($rid)
 {
-    global $_TABLES, $_FINPUT;
+    global $_TABLES;
 
     $rid = intval($rid, 10);
-    $direction = $_FINPUT->get('dir', '');
+    $direction = \Geeklog\Input::fGet('dir', '');
 
     // if the router id exists
     if (DB_count($_TABLES['routes'], 'rid', $rid)) {
@@ -519,8 +519,8 @@ function deleteRoute($rid)
 // MAIN
 $display = '';
 
-$mode = $_FINPUT->get('mode', $_FINPUT->post('mode', ''));
-$rid = $_FINPUT->get('rid', $_FINPUT->post('rid', 0));
+$mode = \Geeklog\Input::fGet('mode', \Geeklog\Input::fPost('mode', ''));
+$rid = \Geeklog\Input::fGet('rid', \Geeklog\Input::fPost('rid', 0));
 $rid = intval($rid, 10);
 $securityToken = SEC_createToken();
 
@@ -547,10 +547,10 @@ switch ($mode) {
             die();
         }
 
-        $method = $_FINPUT->post('method', '');
-        $rule = $_INPUT->post('rule', '');
-        $route = $_INPUT->post('route', '');
-        $priority = $_FINPUT->post('priority', Router::DEFAULT_PRIORITY);
+        $method = \Geeklog\Input::fPost('method', '');
+        $rule = \Geeklog\Input::post('rule', '');
+        $route = \Geeklog\Input::post('route', '');
+        $priority = \Geeklog\Input::fPost('priority', Router::DEFAULT_PRIORITY);
         $display = saveRoute($rid, $method, $rule, $route, $priority);
         break;
 

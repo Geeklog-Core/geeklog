@@ -47,7 +47,7 @@ require_once $_CONF['path_system'] . 'classes/language.class.php';
 Language::checkAccessRights();
 
 // Main
-$mode = $_INPUT->post('mode', $_INPUT->get('mode', ''));
+$mode = \Geeklog\Input::post('mode', \Geeklog\Input::get('mode', ''));
 
 switch ($mode) {
     case 'list':

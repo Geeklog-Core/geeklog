@@ -2126,6 +2126,7 @@ $LANG_confignames['Core'] = array(
     'advanced_editor' => 'アドバンストエディターを使用する',
     'advanced_editor_name' => 'アドバンストエディター名',
     'wikitext_editor' => 'Wikiテキストエディターを使用する',
+    'remove_4byte_chars' => '4バイトのutf-8文字を除去する',
     'cron_schedule_interval' => 'Cronのスケジュール間隔',
     'sortmethod' => '話題の並べ替え',
     'showstorycount' => '記事数を表示する',
