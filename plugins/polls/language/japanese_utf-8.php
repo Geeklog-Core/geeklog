@@ -120,7 +120,7 @@ $LANG25 = array(
     40 => 'アンケートの結果を見る',
     1001 => '複数回答を許可する',
     1002 => '説明',
-    1003 => '説明',
+    1003 => '説明'
 );
 
 $PLG_polls_MESSAGE15 = 'あなたのコメントはスタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
@@ -195,7 +195,7 @@ $LANG_configselects['polls'] = array(
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('アクセス不可' => 0, '利用する' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('すべて' => TOPIC_ALL_OPTION, 'ホームページのみ' => TOPIC_HOMEONLY_OPTION, '話題を選択する' => TOPIC_SELECTED_OPTION)
+    15 => array('すべて' => 'all', 'ホームページのみ' => 'homeonly', '話題を選択する' => 'selectedtopics')
 );
 
 ?>

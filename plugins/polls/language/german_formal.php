@@ -111,7 +111,10 @@ $LANG25 = array(
     37 => 'Ergebnisse ausblenden wenn Umfrage läuft',
     38 => 'Während diese Umfrage läuft, können nur der Eigentümer &amp; Root die Ergebnisse sehen.',
     39 => 'Die Kategorie wird nur angezeigt, wenn sie mehr als eine Frage enthält.',
-    40 => 'Alle Antworten zu dieser Umfrage ansehen'
+    40 => 'Alle Antworten zu dieser Umfrage ansehen',
+    1001 => 'Allow multiple answers',
+    1002 => 'Description',
+    1003 => 'Description'
 );
 
 $PLG_polls_MESSAGE15 = 'Der Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.';
@@ -186,7 +189,7 @@ $LANG_configselects['polls'] = array(
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION)
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
 );
 
 ?>

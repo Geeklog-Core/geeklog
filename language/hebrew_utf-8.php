@@ -26,6 +26,7 @@
 ###############################################################################
 
 $LANG_CHARSET = 'utf-8';
+
 $LANG_ISO639_1 = 'he';
 $LANG_DIRECTION = 'rtl';
 
@@ -192,7 +193,9 @@ $LANG01 = array(
     'google' => 'Login with Google',
     'microsoft' => 'Login with Microsoft',
     'yahoo' => 'Login with Yahoo',
+    'github' => 'Login with GitHub',
     'ctl' => 'Clear Cache',
+    'ok' => 'OK',
     'filemanager' => 'File Manager'
 );
 
@@ -244,7 +247,13 @@ $LANG03 = array(
     42 => 'ביטול הרשמה',
     43 => 'ביטול הרשמה מהודעות על תגובות',
     44 => 'שמכם',
-    45 => "תודה על תגובתכם. עליכם לחכות {$_CONF['commentspeedlimit']} שניות לפי שתוכלו לפרסם תגובה חדשה."
+    45 => "תודה על תגובתכם. עליכם לחכות {$_CONF['commentspeedlimit']} שניות לפי שתוכלו לפרסם תגובה חדשה.",
+    100 => 'Comment Manager',
+    101 => 'Existing Comments',
+    102 => 'Bulk Action',
+    103 => 'Ban this user',
+    104 => 'Ban this IP address with the Spamx plugin',
+    105 => 'IP Address'
 );
 
 ###############################################################################
@@ -401,6 +410,7 @@ $LANG04 = array(
     148 => 'מידע משתמש',
     149 => "שנו את מידע המשתמש שלכם שיוצג למשתמשים אחרים.<ul><li>החתימה שלכם תתווסף לכל תגובה או הודעה בפורום שתכתבו\n</li><li>הביוגרפיה שלכם היא תקציר מסכם של עצמכם בשביל לחלוק בו</li><li>\nחלקו את מפתח ה-PHP שלכם</li></ul>",
     150 => '',
+    151 => 'Blocks',
     156 => 'מחיקת החשבון',
     157 => 'אפשרות מחיקה',
     158 => 'איזור זמן',
@@ -570,7 +580,9 @@ $LANG09 = array(
     69 => 'כותרות בלבד',
     70 => 'לא זמין ...',
     71 => 'סדר עולה',
-    72 => 'סדר יורד'
+    72 => 'סדר יורד',
+    73 => 'Submit',
+    74 => 'Limit Results'
 );
 
 ###############################################################################
@@ -852,6 +864,8 @@ $LANG21 = array(
     67 => 'סמנו כדי לאפשר autotags',
     68 => 'הזנה זו לקוביית מידע זו של פורטל היא ארוכה מדי להצגה. אנא הגדירו מספר מקסימלי של מאמרים כדי לייבא לקוביית המידע במסך ההגדרות של קוביות המידע, או מקסימום גלובלי במסך הכיוון של Geeklog.',
     69 => 'שם ה-plugin',
+    'autotag_desc_block' => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
+    'position' => 'Position',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -951,6 +965,7 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'הנכם יכולים תמיד ללחוץ על "תצוגה מקדימה" כדי להאריך את תוקף התפוגה.',
+    92 => 'You might also like',
     'autotag_desc_story' => '[story: id alternate title] - מציג קישור למאמר תוך שימוש בכותרת המאמר בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
@@ -1185,7 +1200,8 @@ $LANG31 = array(
     23 => 'אין כשלונות',
     24 => 'אין הצלחות',
     25 => '-- ביחרו קבוצה --',
-    26 => 'אנא מלאו את כל השדות בטופס וביחרו קבוצת משתמשים מתיבת הבחירה.'
+    26 => 'אנא מלאו את כל השדות בטופס וביחרו קבוצת משתמשים מתיבת הבחירה.',
+    27 => 'The following template variables are available in <strong>Subject</strong> and <strong>Message</strong>: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}'
 );
 
 ###############################################################################
@@ -1330,6 +1346,46 @@ $LANG33 = array(
 );
 
 ###############################################################################
+# admin/language.php
+
+$LANG_LANG = array(
+    'language_manager' => 'Language Manager',
+    'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
+    'language_editor' => 'Language Editor',
+    'id' => 'ID',
+    'language' => 'Language',
+    'name' => 'Name',
+    'var_name' => 'Var Name',
+    'value' => 'Value'
+);
+
+###############################################################################
+# admin/router.php
+
+$LANG_ROUTER = array(
+    1 => 'URL routing',
+    2 => 'Routing Manager',
+    3 => 'ID',
+    4 => 'method',
+    5 => 'rule',
+    6 => 'route',
+    7 => 'priority',
+    8 => 'Increase priority',
+    9 => 'Decrease priority',
+    10 => 'Edit routing',
+    11 => 'To modify or delete a route, click on the route\'s edit icon below. To create a new route, click on "Create New" above.  When you use placeholders (@), you must define the same placeholders in a rule and its route.',
+    12 => 'Bad request method',
+    13 => 'Rule is a mandatory item.',
+    14 => 'Route is a mandatory item.',
+    15 => 'Placeholders (@) in a rule and those in a route must be the same.',
+    16 => 'Route must not start with "/index.php/".',
+    17 => 'Database error occurred.',
+    18 => '<strong>To enable URL routing, you have to enable URL rewrite in the Configuration.</strong>',
+    19 => '<strong>To enable URL routing, you have to enable URL routing in the Configuration.</strong>',
+    20 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>'
+);
+
+###############################################################################
 # confirmation and error messages
 
 $MESSAGE = array(
@@ -1445,6 +1501,19 @@ $MESSAGE = array(
     118 => 'Click to select a date',
     119 => 'More..',
     120 => 'Send this?',
+    121 => 'Saved a URL routing item.',
+    122 => 'Could not save a URL routing item.',
+    123 => 'Deleted a URL routing item.',
+    130 => 'Your language item has been successfully deleted.',
+    131 => 'Your language item has been successfully saved.',
+    140 => 'Deleted comment(s).',
+    141 => 'Failed to delete a comment.',
+    142 => 'Approved comment(s).',
+    143 => 'Banned user(s).',
+    144 => 'Banned IP addresses with the Spamx plugin.',
+    150 => 'Successfully deleted all the files and directories used during the installation.',
+    151 => 'Failed to delete some files and directories used during the installation.  Please remove them manually.',
+    152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
     400 => 'לא כל השדות הנדרשים עברו וידוא',
     401 => 'אנא הכניסו שם מלא',
     500 => 'The Template Cache has been successfully cleared.'
@@ -1522,11 +1591,13 @@ $LANG_ACCESS = array(
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
+    'database_admin' => 'Database Administration',
     'last_ten_backups' => 'גיבויי מאגר מידע',
+    'create_backup' => 'Backup Database',
     'do_backup' => 'צרו גיבוי',
     'backup_successful' => 'גיבוי מאגר המידע עבר בהצלחה.',
     'db_explanation' => 'כדי ליצור גיבוי חדש של המערכת, ליחצו על הכפתור שלעיל. ליחצו על שם הקובץ כדי להוריד את הגיבוי.',
-    'not_found' => "מיקום שגוי או שה-mysqldump utility הוא לא executable.<br" . XHTML . "> בידקו את ההגדרה של <strong>mysqldump_path</strong> בהגדרות.<br" . XHTML . "> בידקו את ההגדרה של <a href=\"http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir\">open_basedir</a> בהגדרות של PHP.<br" . XHTML . "> הנתיב כרגע מוגדר כ: <var>{$_DB_mysqldump_path}</var>",
+    'backup_instructions' => 'To create a new backup of your site database, select the "Do Backup" button below. This will backup all current Geeklog tables. You can download a copy of the backup from the main Database Administration Screen.',
     'zero_size' => 'הגיבוי נכשל. גודל הקובץ היה 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} לא קיים או שזו לא ספרייה",
     'no_access' => "שגיאה: הספרייה {$_CONF['backup_path']} חסומה.",
@@ -1535,25 +1606,47 @@ $LANG_DB_BACKUP = array(
     'bytes' => 'Bytes',
     'total_number' => 'סך הכל גיבויים: %d',
     'download' => 'ליחצו כדי להוריד קובץ זה',
-    'new_backup' => 'גיבוי חדש',
-    'delete_failure' => 'קובץ גיבוי אחד או יותר לא הצליח להימחק.',
-    'delete_success' => 'קובץ/קבצי גיבוי נמחק/ו בהצלחה.',
     'convert_menu' => 'המרה ל-InnoDB',
     'convert_title' => 'המרה לטבלאות InnoDB',
+    'convert_myisam_menu' => 'Convert to MyISAM',
+    'convert_myisam_title' => 'Convert to MyISAM tables',
     'convert_button' => 'המרה',
-    'sorry_no_innodb' => 'מצטערים, גרסת ה-MySQL שלכם לא תומכת בטבלאות InnoDB.',
-    'innodb_explain' => 'טבלאות InnoDB מאפשרות ביצועים טובים יותר במאגרים <em>מאוד</em> גדולים אבל הופכים את תהליך הגיבוי ליותר מסובך. אנא <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">קיראו</a> על היתרונות והחסרונות של טבלאות InnoDB לפני שתבצעו פעולה זו.',
+    'converting' => 'Converting',
+    'no_innodb' => 'Your version of MySQL does not support InnoDB tables.',
+    'no_myisam' => 'Your version of MySQL does not support MyISAM tables.',
+    'innodb_instructions' => 'InnoDB tables can provide better performance on large databases. Please <a href="http://dev.mysql.com/doc/refman/5.7/en/converting-tables-to-innodb.html" target="_blank">read up</a> on the benefits and drawbacks of InnoDB tables before you perform a conversion.',
+    'myisam_instructions' => 'MyISAM tables can provide better performance on smaller databases.',
     'already_converted' => 'שימו לב: נראה שכל הטבלאות כבר הומרו ל-InnoDB.',
-    'conversion_patience' => 'שימו לב: ההמרה עשויה להיות ממושכת - אנא התאזרו בסבלנות.',
+    'already_converted_myisam' => 'It appears that all of the tables have already been converted to MyISAM.',
+    'conversion_message' => 'Note: Conversion may take some time - please be patient.',
     'innodb_success' => 'הטבלאות הומרו בהצלחה ל-InnoDB.',
+    'myisam_success' => 'Successfully converted tables to MyISAM.',
     'table_issues' => 'עם זאת, ייתכן שהיו בעיות עם חלק מהטבלאות. אנא בידקו את error.log בשביל פרטים.',
     'optimize_menu' => 'ייעול טבלאות',
     'optimize_title' => 'ייעול טבלאות',
     'optimize_button' => 'ייעול',
+    'optimizing' => 'Optimizing',
     'optimize_explain' => 'ייעול של טבלאות עשוי להגביר את ביצועי אתרכם. העוצמה הממשית תלויה בשימוש בכל טבלה כאשר חלק מהטבלאות עשויות להרוויח מכך יותר מהאחרות. אל תצפו לראות שינוי עצום בביצועים.<a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">מדריך -MySQL</a> מצהיר: <q>לא סביר שעליכם לעשות זאת יותר מפעם בשבוע או בחודש</q>.',
     'last_optimization' => 'ההתייעלות האחרונה',
-    'optimization_patience' => 'שימו לב: הייעול עשוי להיות ממושך - אנא התאזרו בסבלנות.',
-    'optimize_success' => 'טבלאות מאגר המידע התייעלו בהצלחה.'
+    'optimization_message' => 'Optimization may take some time - please be patient.',
+    'optimize_success' => 'טבלאות מאגר המידע התייעלו בהצלחה.',
+    'conversion_status' => 'Conversion Status',
+    'optimization_status' => 'Optimization Status',
+    'backup_status' => 'Backup Status',
+    'backingup' => 'Performing Backup',
+    'backup_title' => 'Backup the Geeklog Database',
+    'backup_warning' => 'Note: The configuration is set to only backup database structures. No data will be backed up.',
+    'latest_backup' => 'Latest Backup',
+    'tables_to_backup' => 'Tables to Backup',
+    'include' => 'Include',
+    'exclude' => 'Exclude',
+    'options' => 'Options',
+    'struct_only' => 'Only Backup Table Structure (no data)',
+    'max_files' => 'Maximum Backup Files to Keep',
+    'disable_purge' => '("0" to disable purging.)',
+    'use_gzip' => 'Use GZip if available',
+    'configure' => 'Configure',
+    'config_instructions' => 'Select any tables you wish to exclude from the backup. Other options can be found in the Geeklog Configuration under the Database tab.'
 );
 
 ###############################################################################
@@ -1818,7 +1911,16 @@ $LANG_ADMIN = array(
     'token_expiry' => 'יש לכם עד %s לערוך שינויים. אחרי זמן זה, כרטיס הביטחון שמוטמע בעמוד זה יאבד את תוקפו ואתם תאבדו את השינויים שלכם.',
     'token_expired' => 'כרטיס הביטחון לפעולה זו פג. נא אמתו מחדש כדי להמשיך.',
     'reauth_msg' => 'כרטיס הביטחון לפעולה זו פג. אם ברצונכם להמשיך בפעולה זו, נא אמתו מחדש להלן. כך יובטח ששינויים שהרגע ביצעתם לא יאבדו.',
-    'authenticate' => 'אימות'
+    'authenticate' => 'אימות',
+    'approve' => 'Approve',
+    'device' => 'Device',
+    'device_desc' => 'For what device do you want this item to display for?',
+    'for_all' => 'All',
+    'for_mobile' => 'For Mobile',
+    'for_computer' => 'For Computer',
+    'all' => 'All',
+    'mobile' => 'Mobile',
+    'computer' => 'Computer'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1912,6 +2014,7 @@ $LANG_confignames['Core'] = array(
     'noreply_mail' => 'כתובת ה-No-Reply',
     'mail_cc_enabled' => 'אפשרו לשלוח עותקים',
     'mail_cc_default' => '"CC" מופעל כברירת מחדל',
+    'mail_charset' => 'Email Character Set',
     'site_name' => 'שם האתר',
     'site_slogan' => 'סלוגן',
     'owner_name' => 'שם הבעלים',
@@ -1922,18 +2025,17 @@ $LANG_confignames['Core'] = array(
     'path_data' => 'נתונים',
     'path_images' => 'תמונות',
     'path_editors' => 'Advanced Editors',
-    'path_pear' => 'נתיב ל-Pear',
-    'have_pear' => 'יש Pear?',
     'mail_settings' => 'הגדרות דואר',
-    'allow_mysqldump' => 'איפשור השלכת MySQL',
-    'mysqldump_path' => 'נתיב לקובץ המבצע',
-    'mysqldump_options' => 'אפשרויות השלכת MySQL',
-    'mysqldump_filename_mask' => 'מיסוך שם קובץ גיבוי',
+    'dbdump_filename_prefix' => 'Backup File Name Prefix',
+    'dbdump_tables_only' => 'Only Backup Table Structure',
+    'dbdump_gzip' => 'Use GZip if available',
+    'dbdump_max_files' => 'Maximum Backup Files to Keep',
     'theme' => 'נושא עיצובי',
     'doctype' => 'הצהרת DOCTYPE',
     'menu_elements' => 'פריטי תפריט',
     'path_themes' => 'נתיב לנושאים עיצוביים',
     'cache_templates' => 'Cache Templates?',
+    'cache_mobile' => 'Cache Mobile Devices Separately?',
     'disable_new_user_registration' => 'ביטול הרשמות חדשות',
     'allow_user_themes' => 'איפשור בחירת נושאים עיצוביים למשתמשים',
     'allow_user_language' => 'איפשור בחירת שפה למשתמשים',
@@ -1963,6 +2065,9 @@ $LANG_confignames['Core'] = array(
     'yahoo_login' => 'Enable OAuth Login Method Yahoo',
     'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
     'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
+    'github_login' => 'Enable OAuth Login Method GitHub',
+    'github_consumer_key' => 'GitHub OAuth Consumer Key',
+    'github_consumer_secret' => 'GitHub OAuth Consumer Secret',
     'spamx' => 'פעולות Spam-X',
     'sort_admin' => 'מיון קישורים',
     'language' => 'שפה',
@@ -2016,6 +2121,7 @@ $LANG_confignames['Core'] = array(
     'advanced_editor' => 'עורך מתקדם?',
     'advanced_editor_name' => 'Advanced Editor Name?',
     'wikitext_editor' => 'עורך טקסט וויקי?',
+    'remove_4byte_chars' => 'Remove 4-byte utf-8 characters?',
     'cron_schedule_interval' => 'מרווח תזמון cron',
     'sortmethod' => 'מיון נושאים',
     'showstorycount' => 'הצגת כמות צפיות במאמרים?',
@@ -2138,6 +2244,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'רשימת צנזורה',
     'ip_lookup' => 'בדיקת IP',
     'url_rewrite' => 'איפשור URL Rewrite',
+    'url_Routing' => 'Enable URL Routing',
     'cdn_hosted' => 'השתמשו בעותק מאורח ב-CDN של jQuery',
     'meta_tags' => 'תגיות Meta',
     'meta_description' => 'ברירת המחדל של Meta Description',
@@ -2163,11 +2270,13 @@ $LANG_confignames['Core'] = array(
     'search_separator' => 'מפריד קבוצות',
     'search_def_keytype' => 'שיטת חיפוש ברירת המחדל',
     'search_def_sort' => 'ברירת המחדל של סדר מיון',
+    'search_use_topic' => 'Use Current Topic',
     'autotag_permissions_story' => '[story: ] הרשאות',
     'autotag_permissions_user' => '[user: ] הרשאות',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
     'autotag_permissions_related_items' => '[related_items: ] Permissions',
+    'autotag_permissions_block' => '[block: ] Permissions',
     'multiple_breadcrumbs' => 'הצגת מיקומים מרובים',
     'disable_breadcrumbs_topics' => 'ניטרול הצגת מיקום של נושאים',
     'disable_breadcrumbs_articles' => 'ניטרול הצגת מיקום של מאמרים',
@@ -2218,8 +2327,7 @@ $LANG_fs['Core'] = array(
     'fs_paths' => 'נתיבים',
     'fs_theme' => 'נושא עיצובי',
     'fs_mail' => 'דואר',
-    'fs_pear' => 'Pear',
-    'fs_mysql' => 'MySQL',
+    'fs_database_backup' => 'Database Backup',
     'fs_users' => 'משתמשים',
     'fs_misc' => 'שונות',
     'fs_spamx' => 'Spam-X',
@@ -2272,8 +2380,7 @@ $LANG_tab['Core'] = array(
     'tab_paths' => 'נתיבים',
     'tab_theme' => 'נושא עיצובי',
     'tab_mail' => 'דואר',
-    'tab_pear' => 'Pear',
-    'tab_mysql' => 'MySQL',
+    'tab_database' => 'Database',
     'tab_users' => 'משתמשים',
     'tab_misc' => 'אחר',
     'tab_spamx' => 'Spam-X',
@@ -2351,7 +2458,10 @@ $LANG_configselects['Core'] = array(
     32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
     33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3),
     34 => array('grid' => 'grid', 'list' => 'list'),
-    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC')
+    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
+    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
+    37 => array('Disabled' => 0, 'Enabled (with "index.php")' => 1, 'Enabled (without "index.php")' => 2),
+    38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro')
 );
 
 ###############################################################################
@@ -2402,3 +2512,6 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'שדה זה חייב להיות בטווח 2 - 21',
     'hash' => 'שדה זה להיות בפונקציית קידוד הנתמכת על ידי גרסת ה-PHP שלכם'
 );
+
+
+?>

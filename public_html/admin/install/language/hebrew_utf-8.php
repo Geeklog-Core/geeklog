@@ -183,7 +183,10 @@ $LANG_SUCCESS = array(
     19 => '<strong>שימו לב:</strong> עקב כך ששונה מודל האבטחה, יצרנו חשבון חדש עם ההרשאות שהנכם זקוקים להן כדי לנהל את אתרכם החדש.  שם המשתמש של חשבון חדש זה הוא <b>NewAdmin</b> והסיסמה היא <b>password</b>',
     20 => 'להתקין את',
     21 => 'לשדרג את',
-    22 => 'נדדה'
+    22 => 'נדדה',
+    23 => 'Would you like to delete all the files and directories used during the installation?',
+    24 => 'Yes, please.',
+    25 => 'No, thanks.  I will manually delete them afterwards.'
 );
 
 // +---------------------------------------------------------------------------+

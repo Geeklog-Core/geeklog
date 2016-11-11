@@ -193,7 +193,9 @@ $LANG01 = array(
     'google' => 'Login with Google',
     'microsoft' => 'Login with Microsoft',
     'yahoo' => 'Login with Yahoo',
+    'github' => 'Login with GitHub',
     'ctl' => 'Clear Cache',
+    'ok' => 'OK',
     'filemanager' => 'File Manager'
 );
 
@@ -245,7 +247,13 @@ $LANG03 = array(
     42 => 'Annullare l\'Iscrizione',
     43 => 'Annullare l\'Iscrizione dalle notifiche di reisposte',
     44 => 'Il tuo nome',
-    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment."
+    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment.",
+    100 => 'Comment Manager',
+    101 => 'Existing Comments',
+    102 => 'Bulk Action',
+    103 => 'Ban this user',
+    104 => 'Ban this IP address with the Spamx plugin',
+    105 => 'IP Address'
 );
 
 ###############################################################################
@@ -402,6 +410,7 @@ $LANG04 = array(
     148 => 'Informazioni Utente',
     149 => 'Modifica la tua inforazione utente pubblica.<li>La firma verrá inclusa con i commenti o post nei forum che fai.</li><li>La BIO é un piccolo riassunto su di té da condividere.</li><li>Condividi la tua chiave PGP</li>',
     150 => '',
+    151 => 'Blocks',
     156 => 'Cancella Account',
     157 => 'Cancella Opzione',
     158 => 'Fuso Orario',
@@ -571,7 +580,9 @@ $LANG09 = array(
     69 => 'Solo titoli',
     70 => 'Non disponibile ...',
     71 => 'asc',
-    72 => 'desc'
+    72 => 'desc',
+    73 => 'Submit',
+    74 => 'Limit Results'
 );
 
 ###############################################################################
@@ -853,6 +864,8 @@ $LANG21 = array(
     67 => 'Seleziona per consentire "autotag"',
     68 => 'Il flusso per questo portale é troppo lungo per mostrarlo. Scegli il numero massimo per articoli da importare nel blocco nella configurazione dei blocchi, o un numero massimo globale nella configurazione di Geeklog.',
     69 => 'Plugin Name',
+    'autotag_desc_block' => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
+    'position' => 'Position',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -952,6 +965,7 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'É possibile estendere il tempo scadenza.',
+    92 => 'You might also like',
     'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
@@ -1186,7 +1200,8 @@ $LANG31 = array(
     23 => 'Nessun errore',
     24 => 'Nessuna esecuzione',
     25 => '-- Seleziona Gruppo --',
-    26 => 'Prego compila tutti i campi del form e seleziona un gruppo dal menú a tendina.'
+    26 => 'Prego compila tutti i campi del form e seleziona un gruppo dal menú a tendina.',
+    27 => 'The following template variables are available in <strong>Subject</strong> and <strong>Message</strong>: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}'
 );
 
 ###############################################################################
@@ -1331,6 +1346,46 @@ $LANG33 = array(
 );
 
 ###############################################################################
+# admin/language.php
+
+$LANG_LANG = array(
+    'language_manager' => 'Language Manager',
+    'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
+    'language_editor' => 'Language Editor',
+    'id' => 'ID',
+    'language' => 'Language',
+    'name' => 'Name',
+    'var_name' => 'Var Name',
+    'value' => 'Value'
+);
+
+###############################################################################
+# admin/router.php
+
+$LANG_ROUTER = array(
+    1 => 'URL routing',
+    2 => 'Routing Manager',
+    3 => 'ID',
+    4 => 'method',
+    5 => 'rule',
+    6 => 'route',
+    7 => 'priority',
+    8 => 'Increase priority',
+    9 => 'Decrease priority',
+    10 => 'Edit routing',
+    11 => 'To modify or delete a route, click on the route\'s edit icon below. To create a new route, click on "Create New" above.  When you use placeholders (@), you must define the same placeholders in a rule and its route.',
+    12 => 'Bad request method',
+    13 => 'Rule is a mandatory item.',
+    14 => 'Route is a mandatory item.',
+    15 => 'Placeholders (@) in a rule and those in a route must be the same.',
+    16 => 'Route must not start with "/index.php/".',
+    17 => 'Database error occurred.',
+    18 => '<strong>To enable URL routing, you have to enable URL rewrite in the Configuration.</strong>',
+    19 => '<strong>To enable URL routing, you have to enable URL routing in the Configuration.</strong>',
+    20 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>'
+);
+
+###############################################################################
 # confirmation and error messages
 
 $MESSAGE = array(
@@ -1446,6 +1501,19 @@ $MESSAGE = array(
     118 => 'Click to select a date',
     119 => 'More..',
     120 => 'Send this?',
+    121 => 'Saved a URL routing item.',
+    122 => 'Could not save a URL routing item.',
+    123 => 'Deleted a URL routing item.',
+    130 => 'Your language item has been successfully deleted.',
+    131 => 'Your language item has been successfully saved.',
+    140 => 'Deleted comment(s).',
+    141 => 'Failed to delete a comment.',
+    142 => 'Approved comment(s).',
+    143 => 'Banned user(s).',
+    144 => 'Banned IP addresses with the Spamx plugin.',
+    150 => 'Successfully deleted all the files and directories used during the installation.',
+    151 => 'Failed to delete some files and directories used during the installation.  Please remove them manually.',
+    152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
     400 => 'Non tutti i campi sono stati validati con successo.',
     401 => 'Inserisci il tuo nome completo',
     500 => 'The Template Cache has been successfully cleared.'
@@ -1523,11 +1591,13 @@ $LANG_ACCESS = array(
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
+    'database_admin' => 'Database Administration',
     'last_ten_backups' => 'Ultimi 10 Backup',
+    'create_backup' => 'Backup Database',
     'do_backup' => 'Esegui il Backup',
     'backup_successful' => 'Il Backup é stato eseguito correttamente.',
     'db_explanation' => 'Per creare un nuovo Backup del tuo sistema Geeklog, fai clic sul bottone sottostante',
-    'not_found' => "Percorso non corretto o utility mysqldump non eseguibile.<br" . XHTML . ">Controlla il percorso <strong>\$_DB_mysqldump_path</strong> in config.php.<br" . XHTML . ">La variabile attualmente é definitá come: <var>{$_DB_mysqldump_path}</var>",
+    'backup_instructions' => 'To create a new backup of your site database, select the "Do Backup" button below. This will backup all current Geeklog tables. You can download a copy of the backup from the main Database Administration Screen.',
     'zero_size' => 'Backup Fallito: La dimensione del File era di 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} non esiste o non é una directory",
     'no_access' => "ERRORE: La cartella {$_CONF['backup_path']} non é accessibile.",
@@ -1536,25 +1606,47 @@ $LANG_DB_BACKUP = array(
     'bytes' => 'Byte',
     'total_number' => 'Numero Totale di backup: %d',
     'download' => 'Click to download this file',
-    'new_backup' => 'Nuovo Backup',
-    'delete_failure' => 'Non é stato possibile eliminare uno o piú file.',
-    'delete_success' => 'File di backup eliminati con successo.',
     'convert_menu' => 'Converti a InnoDB',
     'convert_title' => 'Converti a tabelle InnoDB',
+    'convert_myisam_menu' => 'Convert to MyISAM',
+    'convert_myisam_title' => 'Convert to MyISAM tables',
     'convert_button' => 'Converti',
-    'sorry_no_innodb' => 'Scusa, ma la tua versione di MySQL non supporta tabelle InnoDB.',
-    'innodb_explain' => 'Tabelle del tipo InnoDB offrono migliori prestazioni per databasi <em>molto</em> grandi, ma complicano il processo del backup.  <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">Leggi</a> a proposito degli pro ed i contro di queste tabelle prima di proseguire.',
+    'converting' => 'Converting',
+    'no_innodb' => 'Your version of MySQL does not support InnoDB tables.',
+    'no_myisam' => 'Your version of MySQL does not support MyISAM tables.',
+    'innodb_instructions' => 'InnoDB tables can provide better performance on large databases. Please <a href="http://dev.mysql.com/doc/refman/5.7/en/converting-tables-to-innodb.html" target="_blank">read up</a> on the benefits and drawbacks of InnoDB tables before you perform a conversion.',
+    'myisam_instructions' => 'MyISAM tables can provide better performance on smaller databases.',
     'already_converted' => 'Nota: Sembra che tutte le tabelle sono giá del tipo InnoDB.',
-    'conversion_patience' => 'Nota: La conversione potrebbe richiedere del tempo - si prega di attendere.',
+    'already_converted_myisam' => 'It appears that all of the tables have already been converted to MyISAM.',
+    'conversion_message' => 'Note: Conversion may take some time - please be patient.',
     'innodb_success' => 'Le tabelle sono state convertite a InnoDB con successo.',
+    'myisam_success' => 'Successfully converted tables to MyISAM.',
     'table_issues' => 'Ci potrebbero essere stati degli errori. Vedi error.log per dettagli.',
     'optimize_menu' => 'Ottimizza Tabelle',
     'optimize_title' => 'Ottimizza Tabelle',
     'optimize_button' => 'Ottimizza',
+    'optimizing' => 'Optimizing',
     'optimize_explain' => 'Ottimizare le tabbele potrebbe migliorare le prestazioni del tuo sito. Effettivamente dipende dall\'utilizzo delle tabbelle, certe tabbelle potrebbero usufrirne piú di altre. Non aspettarti un grande miglioramento. Il <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">manuale di MySQL</a> dice: <q>non è probabile che avrai bisogno di eseguire l\'ottimizzazione piú di a volta a settimana o al mese</q>.',
     'last_optimization' => 'Ultima ottimizzazione',
-    'optimization_patience' => 'Nota: L\'ottimizzazione potrebbe richiedere del tempo - si prega di attendere.',
-    'optimize_success' => 'Ottimizzazione completata con successo.'
+    'optimization_message' => 'Optimization may take some time - please be patient.',
+    'optimize_success' => 'Ottimizzazione completata con successo.',
+    'conversion_status' => 'Conversion Status',
+    'optimization_status' => 'Optimization Status',
+    'backup_status' => 'Backup Status',
+    'backingup' => 'Performing Backup',
+    'backup_title' => 'Backup the Geeklog Database',
+    'backup_warning' => 'Note: The configuration is set to only backup database structures. No data will be backed up.',
+    'latest_backup' => 'Latest Backup',
+    'tables_to_backup' => 'Tables to Backup',
+    'include' => 'Include',
+    'exclude' => 'Exclude',
+    'options' => 'Options',
+    'struct_only' => 'Only Backup Table Structure (no data)',
+    'max_files' => 'Maximum Backup Files to Keep',
+    'disable_purge' => '("0" to disable purging.)',
+    'use_gzip' => 'Use GZip if available',
+    'configure' => 'Configure',
+    'config_instructions' => 'Select any tables you wish to exclude from the backup. Other options can be found in the Geeklog Configuration under the Database tab.'
 );
 
 ###############################################################################
@@ -1819,7 +1911,16 @@ $LANG_ADMIN = array(
     'token_expiry' => 'Puoi modificare fino a %s. Dopo di che il codice di sicurezza impresso in questa pagina scadrá e tutte le modifiche verrano perse.',
     'token_expired' => 'Il codice di sicurezza per questa azione é scaduto. Si prega di autenticarsi di nuovo per procedere.',
     'reauth_msg' => 'Il codice di sicurezza per questa azione é scaduto. Se vuoi proseguire con quest\'azione, ti devi autenticare di nuovo. Questo permetterá di salvare le tue recenti modifiche.',
-    'authenticate' => 'Autenticati'
+    'authenticate' => 'Autenticati',
+    'approve' => 'Approve',
+    'device' => 'Device',
+    'device_desc' => 'For what device do you want this item to display for?',
+    'for_all' => 'All',
+    'for_mobile' => 'For Mobile',
+    'for_computer' => 'For Computer',
+    'all' => 'All',
+    'mobile' => 'Mobile',
+    'computer' => 'Computer'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1913,6 +2014,7 @@ $LANG_confignames['Core'] = array(
     'noreply_mail' => 'E-Mail di No-Reply',
     'mail_cc_enabled' => 'Allow to Send Carbon Copies',
     'mail_cc_default' => '"Carbon Copy" on by Default',
+    'mail_charset' => 'Email Character Set',
     'site_name' => 'Nome del sito',
     'site_slogan' => 'Slogan',
     'owner_name' => 'Owner Name',
@@ -1923,18 +2025,17 @@ $LANG_confignames['Core'] = array(
     'path_data' => 'Data',
     'path_images' => 'Immagini',
     'path_editors' => 'Advanced Editors',
-    'path_pear' => 'Percorso per PEAR',
-    'have_pear' => 'Hai installato PEAR?',
     'mail_settings' => 'Impostazioni Posta ',
-    'allow_mysqldump' => 'Allow MySQL Dump',
-    'mysqldump_path' => 'Path of Executable',
-    'mysqldump_options' => 'MySQL Dump Options',
-    'mysqldump_filename_mask' => 'Backup File Name Mask',
+    'dbdump_filename_prefix' => 'Backup File Name Prefix',
+    'dbdump_tables_only' => 'Only Backup Table Structure',
+    'dbdump_gzip' => 'Use GZip if available',
+    'dbdump_max_files' => 'Maximum Backup Files to Keep',
     'theme' => 'Stile',
     'doctype' => 'Declarazione DOCTYPE',
     'menu_elements' => 'Elementi del Menu',
     'path_themes' => 'Percorse dei Stili',
     'cache_templates' => 'Cache Templates?',
+    'cache_mobile' => 'Cache Mobile Devices Separately?',
     'disable_new_user_registration' => 'Disabilita Nuove Registrazioni',
     'allow_user_themes' => 'Permetti Stili Personali',
     'allow_user_language' => 'Permetti Lingue Personali',
@@ -1964,6 +2065,9 @@ $LANG_confignames['Core'] = array(
     'yahoo_login' => 'Enable OAuth Login Method Yahoo',
     'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
     'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
+    'github_login' => 'Enable OAuth Login Method GitHub',
+    'github_consumer_key' => 'GitHub OAuth Consumer Key',
+    'github_consumer_secret' => 'GitHub OAuth Consumer Secret',
     'spamx' => 'Azioni Spam-X',
     'sort_admin' => 'Ordina Collegamenti',
     'language' => 'Lingua',
@@ -2017,6 +2121,7 @@ $LANG_confignames['Core'] = array(
     'advanced_editor' => 'Editor Avanzato?',
     'advanced_editor_name' => 'Advanced Editor Name?',
     'wikitext_editor' => 'Editor Wikitext?',
+    'remove_4byte_chars' => 'Remove 4-byte utf-8 characters?',
     'cron_schedule_interval' => 'Intervallo per Cron',
     'sortmethod' => 'Ordina Argomenti',
     'showstorycount' => 'Mostra Numero di Articoli?',
@@ -2139,6 +2244,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'Lista di Parole Censurate',
     'ip_lookup' => 'Risoluzione IP',
     'url_rewrite' => 'Abilitare il Riscrivemento di Percorsi (URL Rewrite)',
+    'url_Routing' => 'Enable URL Routing',
     'cdn_hosted' => 'Use CDN-hosted copy of jQuery',
     'meta_tags' => 'Meta Tag',
     'meta_description' => 'Meta Description Predefinito',
@@ -2164,11 +2270,13 @@ $LANG_confignames['Core'] = array(
     'search_separator' => 'Separatore di Gruppi',
     'search_def_keytype' => 'Metodo di Ricerca Predefinito',
     'search_def_sort' => 'Ordine Predefinito',
+    'search_use_topic' => 'Use Current Topic',
     'autotag_permissions_story' => '[story: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
     'autotag_permissions_related_items' => '[related_items: ] Permissions',
+    'autotag_permissions_block' => '[block: ] Permissions',
     'multiple_breadcrumbs' => 'Multiple Breadcrumbs',
     'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
     'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
@@ -2219,8 +2327,7 @@ $LANG_fs['Core'] = array(
     'fs_paths' => 'Percorsi',
     'fs_theme' => 'Stile',
     'fs_mail' => 'Mail',
-    'fs_pear' => 'Pear',
-    'fs_mysql' => 'MySQL',
+    'fs_database_backup' => 'Database Backup',
     'fs_users' => 'Utenti',
     'fs_misc' => 'Varie',
     'fs_spamx' => 'Spam-X',
@@ -2273,8 +2380,7 @@ $LANG_tab['Core'] = array(
     'tab_paths' => 'Paths',
     'tab_theme' => 'Theme',
     'tab_mail' => 'Mail',
-    'tab_pear' => 'Pear',
-    'tab_mysql' => 'MySQL',
+    'tab_database' => 'Database',
     'tab_users' => 'Users',
     'tab_misc' => 'Miscellaneous',
     'tab_spamx' => 'Spam-X',
@@ -2352,7 +2458,10 @@ $LANG_configselects['Core'] = array(
     32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
     33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3),
     34 => array('grid' => 'grid', 'list' => 'list'),
-    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC')
+    35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
+    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
+    37 => array('Disabled' => 0, 'Enabled (with "index.php")' => 1, 'Enabled (without "index.php")' => 2),
+    38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro')
 );
 
 ###############################################################################
@@ -2403,3 +2512,6 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
+
+
+?>
