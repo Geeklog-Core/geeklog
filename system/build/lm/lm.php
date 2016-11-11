@@ -3,7 +3,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1.0                                                             |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | lm.php                                                                    |
 // |                                                                           |
@@ -31,9 +31,11 @@
 // +---------------------------------------------------------------------------+
 
 $VERSION = '1.0.7';
+define('ROOT', dirname(dirname(dirname(__DIR__))) . '/');
 
 // Prevent PHP from reporting uninitialized variables
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
+//error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
+error_reporting(-1);
 
 // name of the language file should be passed on the command line
 $langfile = $GLOBALS['argv'][1];
@@ -96,20 +98,12 @@ $config_constants = array(
 
 // load the English language file
 if (empty($module)) {
-    require_once 'language/english.php';
+    require_once ROOT . 'language/english.php';
 } elseif ($module == 'install') {
-    require_once 'public_html/admin/install/language/english.php';
+    require_once ROOT . 'public_html/admin/install/language/english.php';
 } else {
-    require_once 'plugins/' . $module . '/language/english.php';
+    require_once ROOT . 'plugins/' . $module . '/language/english.php';
 }
-
-$lastP = strrpos($_SERVER['PHP_SELF'], DIRECTORY_SEPARATOR);
-if ($lastP === false) {
-    $incPath = '.' . DIRECTORY_SEPARATOR;
-} else {
-    $incPath = substr($_SERVER['PHP_SELF'], 0, $lastP + 1);
-}
-$incPath .= 'include' . DIRECTORY_SEPARATOR;
 
 function separator()
 {
@@ -344,12 +338,12 @@ function mergeString($eng, $other, $name)
  * Read the credits / copyright from the other language file.
  * Assumes that it starts and ends with a separator line of # signs.
  */
-function readCredits($langFile)
+function readCredits($langfile)
 {
     $credits = array();
     $firstComment = false;
 
-    $fh = fopen($langFile, 'r');
+    $fh = fopen($langfile, 'r');
     if ($fh !== false) {
         while (true) {
             $line = fgets($fh);
@@ -411,9 +405,9 @@ foreach ($credits as $c) {
 
 // load the module file which does the rest
 if (empty($module)) {
-    require_once $incPath . 'core.inc';
+    require_once __DIR__ . '/include/core.inc';
 } else {
-    require_once $incPath . $module . '.inc';
+    require_once __DIR__ . '/include/' . $module . '.inc';
 }
 
 echo "\n?>\n";
