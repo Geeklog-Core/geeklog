@@ -1987,7 +1987,7 @@ body.center-right #config_content {
   Header Content
 --------------------------------------*/
 
-#header {
+#header.brand-text {
   padding: 0;
   background: -webkit-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
   background: -moz-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
@@ -1999,7 +1999,7 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  #header {
+  #header.brand-text {
     padding: 0;
     border: none;
   }
@@ -2007,14 +2007,14 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  #header {
+  #header.brand-text {
     height: 80px;
     margin-top: 0;
   }
 }
 
 /* Site Name */
-.site_name {
+.brand-text .site_name {
   position: relative;
   float: left;
   font-size: 30px;
@@ -2025,16 +2025,16 @@ body.center-right #config_content {
   padding: 0;
 }
 
-.site_name a:link,
-.site_name a:visited,
-.site_name a:hover {
+.brand-text .site_name a:link,
+.brand-text .site_name a:visited,
+.brand-text .site_name a:hover {
   color: #EEE;
   text-decoration: none;
 }
 
 @media only screen and (max-width: 767px) {
 
-  .site_name {
+  .brand-text .site_name {
     float: none;
     font-size: 1.6em;
     height: 50px;
@@ -2045,7 +2045,7 @@ body.center-right #config_content {
 }
 
 /* Slogan */
-.site_slogan {
+.brand-text .site_slogan {
   position: relative;
   margin: 0;
   padding: 16px 16px 0 16px;
@@ -2057,7 +2057,7 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  .site_slogan {
+  .brand-text .site_slogan {
     font-size: 75%;
     float: none;
     margin: 0 auto;
@@ -2069,7 +2069,102 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  .nameplate {
+  .brand-text .nameplate {
+    float: none;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 230px;
+    text-align: center;
+  }
+}
+
+#header.brand-image {
+  padding: 0;
+  background: -webkit-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  background: -moz-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  background: -o-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  background: -ms-linear-gradient(top, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  background: linear-gradient(to bottom, #224F7C, #426F9C 50%, #426F9C 90%, #224F7C);
+  height: 120px;
+}
+
+@media only screen and (max-width: 767px) {
+
+  #header.brand-image {
+    padding: 0;
+    border: none;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+
+  #header.brand-image {
+    height: 80px;
+    margin-top: 0;
+  }
+}
+
+/* Site Name */
+.brand-image .site_name {
+  position: relative;
+  margin: 20px 0 0 16px;
+  padding: 0;
+  float: left;
+  width: 226px;
+  height: 80px;
+}
+
+.brand-image .site_name a {
+  background: url("../images/logo2.png") 0 0 no-repeat;
+  text-indent: -3000px;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+
+  .brand-image .site_name {
+    margin: 0 auto;
+    padding: 10px 0;
+    float: none;
+    width: 98.875px;
+    height: 35px;
+  }
+
+  .brand-image .site_name a {
+    -webkit-background-size: 98.875px auto;
+    -moz-background-size: 98.875px auto;
+    background-size: 98.875px auto;
+  }
+}
+
+/* Slogan */
+.brand-image .site_slogan {
+  position: relative;
+  margin: 0;
+  padding: 16px 16px 0 16px;
+  float: right;
+  color: #FFF;
+  text-align: right;
+  text-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+
+@media only screen and (max-width: 767px) {
+
+  .brand-image .site_slogan {
+    font-size: 75%;
+    float: none;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    line-height: 1.2em;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+
+  .brand-image .nameplate {
     float: none;
     height: 100%;
     margin: 0 auto;

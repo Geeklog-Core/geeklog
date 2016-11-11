@@ -76,6 +76,8 @@ function theme_config_denim()
         'trademark_msg'     => 0,   // 1:show or 0:hide trademark message on footer
         'execution_time'    => 0,   // 1:show or 0:hide execution time on footer
         'pagenavi_string'   => 1,   // 1:show or 0:hide text string of page navigation
+        'header_brand_type' => 1,   // 1:text or 0:image type of header brand (site name)
+        'off_canvas_mode'   => 2,   // 0:push 1:slide 2:reveal or 3:none mode of UIkit off-canvas animation
     );
 
     return array(
