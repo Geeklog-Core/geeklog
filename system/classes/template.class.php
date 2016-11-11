@@ -66,16 +66,16 @@ $TEMPLATE_OPTIONS = array(
         $_CONF['path'],
         '/'                     // this entry must always exist and must always be last
     ),
-    'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's docroot.
-    'cache_by_language'   => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
-    'cache_for_mobile'    => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
-    'default_vars'        => array(                                // list of vars found in all templates.
-        'xhtml'          => $xhtml, // Will be reset by lib-common
-        'site_url'       => $_CONF['site_url'],
-        'site_admin_url' => $_CONF['site_admin_url'],
-        'layout_url'     => $_CONF['layout_url'], // Can be set by lib-common on theme change
-        'anonymous_user' => true, // Set to false in lib-common if current visitor is logged in
-
+    'incl_phpself_header'   => true,          // set this to true if your template cache exists within your web server's docroot.
+    'cache_by_language'     => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
+    'cache_for_mobile'      => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
+    'default_vars'          => array(                                // list of vars found in all templates.
+        'xhtml'             => $xhtml, // Will be reset by lib-common
+        'site_url'          => $_CONF['site_url'],
+        'site_admin_url'    => $_CONF['site_admin_url'],
+        'layout_url'        => $_CONF['layout_url'], // Can be set by lib-common on theme change
+        'anonymous_user'    => true, // Set to false in lib-common if current visitor is logged in
+        'device_mobile'     => false // Set to true in lib-common if device found to be considered mobile
     ),
     'hook'                => array(),
 );

@@ -189,7 +189,10 @@ $LANG_SUCCESS = array(
     19 => '<strong>注意:</strong> 因为安全模式已改变, 我们已建立了新的账户让你管理你的新网站.  这新的账户名是 <b>NewAdmin</b> 和密码是 <b>password</b>',
     20 => '安装',
     21 => '升级',
-    22 => 'migrated'
+    22 => 'migrated',
+    23 => 'Would you like to delete all the files and directories used during the installation?',
+    24 => 'Yes, please.',
+    25 => 'No, thanks.  I will manually delete them afterwards.'
 );
 
 // +---------------------------------------------------------------------------+

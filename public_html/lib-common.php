@@ -147,29 +147,6 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 // | Library Includes: You shouldn't have to touch anything below here         |
 // +---------------------------------------------------------------------------+
 
-// Input class (since v2.1.1)
-/**
- * @global $_INPUT array
- * @global $_FINPUT array
- */
-$_INPUT = new Geeklog\Input(false); // request variables with magic_quotes_gpc handled
-$_FINPUT = new Geeklog\Input(true);  // request variables with magic_quotes_gpc handled and COM_applyBasicFilter applied
-
-// If needed, add our PEAR path to the list of include paths
-if (!$_CONF['have_pear']) {
-    $curPHPIncludePath = get_include_path();
-    if (empty($curPHPIncludePath)) {
-        $curPHPIncludePath = $_CONF['path_pear'];
-    } else {
-        $curPHPIncludePath = $_CONF['path_pear'] . PATH_SEPARATOR
-            . $curPHPIncludePath;
-    }
-
-    if (set_include_path($curPHPIncludePath) === false) {
-        COM_errorLog('set_include_path failed - there may be problems using the PEAR classes.', 1);
-    }
-}
-
 // Set the web server's timezone
 TimeZoneConfig::setSystemTimeZone();
 
@@ -260,7 +237,7 @@ if (COM_isAnonUser()) {
 }
 
 // Retrieve new topic if found
-$topic = $_FINPUT->get('topic', $_FINPUT->post('topic', ''));
+$topic = \Geeklog\Input::fGet('topic', \Geeklog\Input::fPost('topic', ''));
 
 // See if user has access to view topic
 if ($topic != '') {
@@ -303,6 +280,7 @@ if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
 // Set template class default template variables option
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
 $TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
+$TEMPLATE_OPTIONS['default_vars']['device_mobile'] = $_DEVICE->is_mobile();
 
 /**
  * This provides the ability to set css and javascript.
@@ -3779,7 +3757,7 @@ function COM_undoSpecialChars($string)
  *
  * @return   string  $sid  Story ID
  */
-function COM_makesid()
+function COM_makeSid()
 {
     $sid = date('YmdHis');
     $sid .= rand(0, 999);
@@ -6227,7 +6205,8 @@ function COM_applyBasicFilter($parameter, $isNumeric = false)
 {
     $log_manipulation = false; // set to true to log when the filter applied
 
-    $p = strip_tags($parameter);
+    $p = GLText::remove4byteUtf8Chars($parameter);
+    $p = strip_tags($p);
     $p = COM_killJS($p); // doesn't help a lot right now, but still ...
 
     if ($isNumeric) {

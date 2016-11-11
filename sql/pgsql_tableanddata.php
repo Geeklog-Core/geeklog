@@ -279,7 +279,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   uid smallint NOT NULL default '1',
   md5_sess_id varchar(128) default NULL,
   whos_online smallint NOT NULL default '1',
-  topic varchar(128) NOT NULL default '',
+  topic varchar(75) NOT NULL default '',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
@@ -379,8 +379,8 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['syndication']} (
   fid SERIAL,
   type varchar(30) NOT NULL default 'article',
-  topic varchar(128) NOT NULL default '::all',
-  header_tid varchar(128) NOT NULL default 'none',
+  topic varchar(75) NOT NULL default '::all',
+  header_tid varchar(75) NOT NULL default 'none',
   format varchar(20) NOT NULL default 'RSS-2.0',
   limits varchar(5) NOT NULL default '10',
   content_length smallint NOT NULL default '0',
@@ -414,7 +414,7 @@ CREATE TABLE {$_TABLES['tokens']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['topic_assignments']} (
-  tid varchar(128) NOT NULL,
+  tid varchar(75) NOT NULL,
   type varchar(30) NOT NULL,
   id varchar(128) NOT NULL,
   inherit smallint NOT NULL default '1',
@@ -425,8 +425,8 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['topics']} (
-  tid varchar(128) NOT NULL default '',
-  topic varchar(128) default NULL,
+  tid varchar(75) NOT NULL default '',
+  topic varchar(75) default NULL,
   imageurl varchar(255) default NULL,
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,

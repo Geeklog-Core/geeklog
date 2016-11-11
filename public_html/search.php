@@ -31,8 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-require_once 'lib-common.php';
-require_once $_CONF['path_system'] . 'classes/search.class.php';
+require_once __DIR__ . '/lib-common.php';
 
 $searchObj = new Search();
 

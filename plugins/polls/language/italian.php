@@ -109,7 +109,10 @@ $LANG25 = array(
     37 => 'Nascondi risultati mentre il sondaggio é aperto',
     38 => 'Mentre il sondaggio é aperto solo il proprietario e l\'utente root possono vedere i risultati',
     39 => 'Il tema verrá visualizzato se ci sará piú di una domanda.',
-    40 => 'Visualizza tutte le risposte a questo sondaggio'
+    40 => 'Visualizza tutte le risposte a questo sondaggio',
+    1001 => 'Allow multiple answers',
+    1002 => 'Description',
+    1003 => 'Description'
 );
 
 $PLG_polls_MESSAGE15 = 'Il tuo commento é stato salvato e verrá pubblicato appena approvato da un moderatore.';
@@ -184,7 +187,7 @@ $LANG_configselects['polls'] = array(
     12 => array('Nessun Accesso' => 0, 'Sola Lettura' => 2, 'Lettura e Scrittura' => 3),
     13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION)
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
 );
 
 ?>

@@ -25,7 +25,6 @@ function FixHTML(leftblocksID, centerblocksID, rightblocksID) {
     document.body.setAttribute(classattr, classValue);
 }
 
-
 function delconfirm() {
     return confirm("Delete this?");
 }
@@ -35,44 +34,21 @@ function postconfirm() {
 }
 
 $(function() {
-    var istouch = ('ontouchstart' in window);
-    var istablet = false;
-
-    if (geeklog.theme_options.toggle_showblock == 1 && istouch) {
-        var ua = navigator.userAgent;
-        istablet = (ua.indexOf('Android') > 0 && ua.indexOf('Mobile') == -1) ||
-                   (ua.indexOf('iPad') > 0) || (ua.indexOf('SC-01C') > 0);
-
-        if (!istablet) {
-            var obj = $('.block-title');
-
-            obj.addClass("show");
-            $(".block-left-content").css("display", "none");
-            $(".block-right-content").css("display", "none");
-            $(".block-list-content").css("display", "none");
-            $(document).on('touchstart', '.block-title', function () {
-                this.touched = true;
-            });
-            $(document).on('touchmove', '.block-title', function () {
-                this.touchmoved = true;
-            });
-            $(document).on('touchend', '.block-title', function () {
-                if (this.touched && !this.touchmoved) {
-                    $(this).next().toggle();
-                    $(this).toggleClass("show");
-                    $(this).toggleClass("hide");
-                }
-
-                this.touched = false;
-                this.touchmoved = false;
-            });
-        }
-    }
-
     $('form').addClass('uk-form');
 
     if (geeklog.theme_options.header_search == 0) {
         $('#header-search').remove();
+    }
+
+    var oheader = $('#header');
+    if (geeklog.theme_options.header_brand_type == 1) {
+        if (oheader.hasClass("brand-image")) {
+            oheader.removeClass("brand-image").addClass("brand-text");
+        }
+    } else {
+        if (oheader.hasClass("brand-text")) {
+            oheader.removeClass("brand-text").addClass("brand-image");
+        }
     }
 
     if (geeklog.theme_options.block_left_search == 0) {
@@ -81,10 +57,6 @@ $(function() {
 
     if (geeklog.theme_options.welcome_msg == 0) {
         $('.welcome_msg').remove();
-    }
-
-    if (geeklog.theme_options.topic_image == 0) {
-        $('.story_image').remove();
     }
 
     if (geeklog.theme_options.trademark_msg == 0) {
@@ -102,11 +74,20 @@ $(function() {
         $('.uk-icon-angle-double-right').parent().empty().append('<i class="uk-icon-angle-double-right"></i>');
     }
 
-    if (!istouch || istablet) {
-        $('.table-wrapper').attr('class', 'table-wrapper-fit');
-    } else {
-        if (geeklog.theme_options.table_overflow == 0) {
-            $('.table-wrapper').attr('class', 'table-wrapper-visible');
-        }
+    var oc_mode;
+    switch (geeklog.theme_options.off_canvas_mode) {
+        case 1:
+            oc_mode = 'slide';
+            break;
+        case 2:
+            oc_mode = 'reveal';
+            break;
+        case 3:
+            oc_mode = 'none';
+            break;
+        default:
+            oc_mode = 'push';
+            break;
     }
+    $('#header-content > a.tm-toggle').attr('data-uk-offcanvas', "{mode:'" + oc_mode + "'}");
 });

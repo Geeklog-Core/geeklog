@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X Plugin 1.2                                                         |
+// | Spam-X Plugin 1.3                                                         |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
@@ -36,8 +36,7 @@ CREATE TABLE {$_TABLES['spamx']} (
   value varchar(255) NOT NULL default '',
   counter int(11) NOT NULL default '0',
   regdate datetime default NULL,
-  INDEX spamx_name(name),
-  PRIMARY KEY (name, value)
+  PRIMARY KEY (name)
 ) ENGINE=MyISAM
 ";
 

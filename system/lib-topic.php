@@ -393,13 +393,13 @@ function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific
 /**
 * This function creates html options for Topics, for a single or multi select box
 *
-* @param    string/array    $selected_ids       Topics Ids to mark as selected
+* @param    string|array    $selected_ids       Topics Ids to mark as selected
 * @param    int             $include_root_all   Include Nothing (0) or Root (1) or All (2) or None (4) in list.
 * @param    boolean         $language_specific  If false include all topics for every language
 * @param    string          $remove_id          Id of topic to not include (includes any children) (used for selection of parent id)
 * @param    boolean         $remove_archive     Remove archive topic from list if any
 * @param    int             $uid                User id or 0 = current user
-* @return   HTML string
+* @return   string                              HTML
 *
 */
 function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1, $language_specific = false, $remove_id = '', $remove_archive = false, $uid = 0)
