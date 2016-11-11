@@ -77,6 +77,10 @@ $ENG31 = $LANG31;
 $ENG32 = $LANG32;
 $ENG33 = $LANG33;
 
+// $LANG_LANG and $LANG_ROUTER since Geeklog 2.1.2
+$ENG_LANG = $LANG_LANG;
+$ENG_ROUTER = $LANG_ROUTER;
+
 $ENGMS = $MESSAGE;
 $ENGAC = $LANG_ACCESS;
 $ENGDB = $LANG_DB_BACKUP;
@@ -135,6 +139,7 @@ if (!isset ($LANG_MONTH[1]) && isset ($LANG30[13])) {
 }
 
 echo "\n\$LANG_CHARSET = '$LANG_CHARSET';\n";
+echo "\n\$LANG_ISO639_1 = '$LANG_ISO639_1';\n";
 if (isset ($LANG_DIRECTION)) {
     echo "\$LANG_DIRECTION = '$LANG_DIRECTION';\n\n";
 } else {
@@ -184,6 +189,9 @@ mergeArrays($ENG29, $LANG29, 'LANG29', 'admin/moderation.php');
 mergeArrays($ENG31, $LANG31, 'LANG31', 'admin/mail.php');
 mergeArrays($ENG32, $LANG32, 'LANG32', 'admin/plugins.php');
 mergeArrays($ENG33, $LANG33, 'LANG33', 'admin/syndication.php');
+
+mergeArrays($ENG_LANG, $LANG_LANG, 'LANG_LANG', 'admin/language.php');
+mergeArrays($ENG_ROUTER, $LANG_ROUTER, 'LANG_ROUTER', 'admin/router.php');
 
 mergeArrays($ENGMS,  $MESSAGE, 'MESSAGE', 'confirmation and error messages');
 Core_fix_some_urls($LANG_ACCESS);

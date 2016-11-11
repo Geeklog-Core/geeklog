@@ -260,7 +260,7 @@ $LANG03 = array(
     102 => '一括操作',
     103 => 'このユーザーを禁止する',
     104 => 'このIPアドレスをSpamxプラグインで禁止する',
-    105 => 'IPアドレス',
+    105 => 'IPアドレス'
 );
 
 ###############################################################################
@@ -871,10 +871,10 @@ $LANG21 = array(
     67 => '自動タグの使用を許可',
     68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
     69 => 'プラグイン名',
-    'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
-    'position'              => 'Position', 
-    'cache_time'            => 'キャッシュ期間',
-    'cache_time_desc'       => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)'
+    'autotag_desc_block' => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
+    'position' => 'Position',
+    'cache_time' => 'キャッシュ期間',
+    'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)'
 );
 
 ###############################################################################
@@ -1208,7 +1208,7 @@ $LANG31 = array(
     24 => '成功した送信先はありません',
     25 => '-- グループを選択 --',
     26 => 'すべてのフィールドに入力してください。また、グループはドロップダウンメニューから選択してください。',
-    27 => '次のテンプレート変数が<strong>件名</strong>と<strong>内容</strong>で使用できます: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}',
+    27 => '次のテンプレート変数が<strong>件名</strong>と<strong>内容</strong>で使用できます: {uid}, {username}, {fullname}, {email}, {homepage}, {theme}, {language}, {location}, {lastgranted}, {lastlogin}, {site_url}, {site_name}, {site_slogan}, {owner_name}, {copyrightyear}, {site_mail}, {noreply_mail}'
 );
 
 ###############################################################################
@@ -1352,16 +1352,18 @@ $LANG33 = array(
     55 => '記事'
 );
 
-// admin/language.php (since v2.1.2)
+###############################################################################
+# admin/language.php
+
 $LANG_LANG = array(
     'language_manager' => '言語管理',
     'new_language_msg' => '言語の編集や削除は下の編集アイコンをクリックしてください。新しい言語の作成は上の「新規作成」をクリックしてください。',
-    'language_editor'  => '言語の編集',
-    'id'               => 'ID',
-    'language'         => '言語',
-    'name'             => '名前',
-    'var_name'         => '変数名',
-    'value'            => '値',
+    'language_editor' => '言語の編集',
+    'id' => 'ID',
+    'language' => '言語',
+    'name' => '名前',
+    'var_name' => '変数名',
+    'value' => '値'
 );
 
 ###############################################################################
@@ -1387,7 +1389,7 @@ $LANG_ROUTER = array(
     17 => 'データベース操作でエラーが発生しました。',
     18 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLリライトを有効にしてください。</strong>',
     19 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLルーティングを有効にしてください。</strong>',
-    20 => '<ul><li>プレースホルダー(@)はルールとルートで同じものを定義してください。</li><li>プレースホルダーは@で始まり、1文字目は英字、2文字目以降は英数字を使えます。</li><li>プレースホルダーは大文字・小文字を区別します。</li></ul>',
+    20 => '<ul><li>プレースホルダー(@)はルールとルートで同じものを定義してください。</li><li>プレースホルダーは@で始まり、1文字目は英字、2文字目以降は英数字を使えます。</li><li>プレースホルダーは大文字・小文字を区別します。</li></ul>'
 );
 
 ###############################################################################
@@ -1596,62 +1598,62 @@ $LANG_ACCESS = array(
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
-    'database_admin'      => 'データベース管理',
-    'last_ten_backups'    => 'バックアップしたファイル',
-    'create_backup'       => 'データベースのバックアップ',
-    'do_backup'           => 'バックアップの実行',
-    'backup_successful'   => 'データベースのバックアップを完了しました。',
-    'db_explanation'      => 'サイトのデータベースのバックアップを新しく作成するには「バックアップの実行」をクリックしてください。バックアップファイルをダウンロードするには、下記の一覧でファイル名をクリックしてください。',
+    'database_admin' => 'データベース管理',
+    'last_ten_backups' => 'バックアップしたファイル',
+    'create_backup' => 'データベースのバックアップ',
+    'do_backup' => 'バックアップの実行',
+    'backup_successful' => 'データベースのバックアップを完了しました。',
+    'db_explanation' => 'サイトのデータベースのバックアップを新しく作成するには「バックアップの実行」をクリックしてください。バックアップファイルをダウンロードするには、下記の一覧でファイル名をクリックしてください。',
     'backup_instructions' => 'サイトのデータベースのバックアップを新しく作成するには下の「バックアップの実行」を選択してください。現在のGeeklogテーブルをバックアップします。データベース管理画面からバックアップしたファイルをダウンロードすることができます。',
-    'zero_size'           => 'バックアップ失敗: ファイルの大きさが0バイトです。',
-    'path_not_found'      => "{$_CONF['backup_path']} は存在しないか、ディレクトリではありません。",
-    'no_access'           => "エラー: {$_CONF['backup_path']} にアクセスできません。",
-    'backup_file'         => 'バックアップファイル',
-    'size'                => 'サイズ',
-    'bytes'               => 'バイト',
-    'total_number'        => 'バックアップファイルの総数: %d',
-    'download'            => 'クリックしてこのファイルをダウンロード',
-    'convert_menu'        => 'InnoDBへの変換',
-    'convert_title'       => 'InnoDBテーブルへの変換',
+    'zero_size' => 'バックアップ失敗: ファイルの大きさが0バイトです。',
+    'path_not_found' => "{$_CONF['backup_path']} は存在しないか、ディレクトリではありません。",
+    'no_access' => "エラー: {$_CONF['backup_path']} にアクセスできません。",
+    'backup_file' => 'バックアップファイル',
+    'size' => 'サイズ',
+    'bytes' => 'バイト',
+    'total_number' => 'バックアップファイルの総数: %d',
+    'download' => 'クリックしてこのファイルをダウンロード',
+    'convert_menu' => 'InnoDBへの変換',
+    'convert_title' => 'InnoDBテーブルへの変換',
     'convert_myisam_menu' => 'MyISAMへの変換',
-    'convert_myisam_title'=> 'MyISAMテーブルへの変換',
-    'convert_button'      => '変換',
-    'converting'          => '変換中',
-    'no_innodb'           => 'あなたのMySQLのバージョンはInnoDBテーブルをサポートしていません。',
-    'no_myisam'           => 'あなたのMySQLのバージョンはMyISAMテーブルをサポートしていません。',
+    'convert_myisam_title' => 'MyISAMテーブルへの変換',
+    'convert_button' => '変換',
+    'converting' => '変換中',
+    'no_innodb' => 'あなたのMySQLのバージョンはInnoDBテーブルをサポートしていません。',
+    'no_myisam' => 'あなたのMySQLのバージョンはMyISAMテーブルをサポートしていません。',
     'innodb_instructions' => 'InnoDBテーブルは大きなデータベースではより良い性能を発揮します。変換を実行する前に、変換の利点と欠点を <a href="http://dev.mysql.com/doc/refman/5.6/ja/converting-tables-to-innodb.html" target="_blank">こちらをご覧ください</a>。',
     'myisam_instructions' => 'MyISAMテーブルはより小さなデータベースではより良い性能を発揮します。',
-    'already_converted'   => 'すべてのテーブルは既にInnoDBに変換してあるようです。',
-    'already_converted_myisam'   => 'すべてのテーブルは既にMyISAMに変換してあるようです。',
-    'conversion_message'  => '注意: 変換には少々の時間が必要です。今しばらく、お待ちください。',
-    'innodb_success'      => 'InnoDBテーブルへの変換を完了しました。',
-    'myisam_success'      => 'MyISAMテーブルへの変換を完了しました。',
-    'table_issues'        => 'いくつかのテーブルで問題が発生した可能性があります。詳細については、error.logを確認してください。',
-    'optimize_menu'       => 'テーブルの最適化',
-    'optimize_title'      => 'テーブルの最適化',
-    'optimize_button'     => '最適化',
-    'optimizing'          => '最適化中',
-    'optimize_explain'    => 'テーブルの最適化はサイトの性能改善に役立つかもしれません。実際の効果はテーブルの利用状況に左右され、テーブルによっては比較的大きな効果が得られるかもしれません。性能に非常に大きな差が出ると期待しないでください。<a href="http://dev.mysql.com/doc/refman/5.6/ja/optimize-table.html">MySQLマニュアル</a>サイトは次のように述べています: <q>1週間または1ヶ月のうちに何回もこれを行う必要はないでしょう。</q>',
-    'last_optimization'   => '前回の最適化',
-    'optimization_message'=> '注意: 最適化には少々の時間を必要とします。今しばらく、お待ちください。',
-    'optimize_success'    => 'データベースのテーブルの最適化を完了しました。',
-    'conversion_status'   => '変換の状態',
+    'already_converted' => 'すべてのテーブルは既にInnoDBに変換してあるようです。',
+    'already_converted_myisam' => 'すべてのテーブルは既にMyISAMに変換してあるようです。',
+    'conversion_message' => '注意: 変換には少々の時間が必要です。今しばらく、お待ちください。',
+    'innodb_success' => 'InnoDBテーブルへの変換を完了しました。',
+    'myisam_success' => 'MyISAMテーブルへの変換を完了しました。',
+    'table_issues' => 'いくつかのテーブルで問題が発生した可能性があります。詳細については、error.logを確認してください。',
+    'optimize_menu' => 'テーブルの最適化',
+    'optimize_title' => 'テーブルの最適化',
+    'optimize_button' => '最適化',
+    'optimizing' => '最適化中',
+    'optimize_explain' => 'テーブルの最適化はサイトの性能改善に役立つかもしれません。実際の効果はテーブルの利用状況に左右され、テーブルによっては比較的大きな効果が得られるかもしれません。性能に非常に大きな差が出ると期待しないでください。<a href="http://dev.mysql.com/doc/refman/5.6/ja/optimize-table.html">MySQLマニュアル</a>サイトは次のように述べています: <q>1週間または1ヶ月のうちに何回もこれを行う必要はないでしょう。</q>',
+    'last_optimization' => '前回の最適化',
+    'optimization_message' => '注意: 最適化には少々の時間を必要とします。今しばらく、お待ちください。',
+    'optimize_success' => 'データベースのテーブルの最適化を完了しました。',
+    'conversion_status' => '変換の状態',
     'optimization_status' => '最適化の状態',
-    'backup_status'       => 'バックアップの状態',
-    'backingup'           => 'バックアップを実行する',
-    'backup_title'        => 'Geeklogのデータベースをバックアップする',
-    'backup_warning'      => '注: データベースのテーブル構造のバックアップのみを行うよう、コンフィギュレーションで設定されています。データはバックアップされません。',
-    'latest_backup'       => '最新のバックアップ',
-    'tables_to_backup'    => 'バックアップするテーブル',
-    'include'             => '含まれるテーブル',
-    'exclude'             => '含まれないテーブル',
-    'options'             => 'オプション',
-    'struct_only'         => 'テーブル構造のみバックアップ(データなし)',
-    'max_files'           => '保持するバックアップファイルの最大数',
-    'disable_purge'       => '(無制限に保持するには"0"を指定)',
-    'use_gzip'            => '可能なら圧縮する(GZip)',
-    'configure'           => 'コンフィギュレーション',
-    'config_instructions' => 'バックアップしたくないテーブルを選択してください。その他のオプションはコンフィギュレーションのGeeklog - データベースタブにあります。',
+    'backup_status' => 'バックアップの状態',
+    'backingup' => 'バックアップを実行する',
+    'backup_title' => 'Geeklogのデータベースをバックアップする',
+    'backup_warning' => '注: データベースのテーブル構造のバックアップのみを行うよう、コンフィギュレーションで設定されています。データはバックアップされません。',
+    'latest_backup' => '最新のバックアップ',
+    'tables_to_backup' => 'バックアップするテーブル',
+    'include' => '含まれるテーブル',
+    'exclude' => '含まれないテーブル',
+    'options' => 'オプション',
+    'struct_only' => 'テーブル構造のみバックアップ(データなし)',
+    'max_files' => '保持するバックアップファイルの最大数',
+    'disable_purge' => '(無制限に保持するには"0"を指定)',
+    'use_gzip' => '可能なら圧縮する(GZip)',
+    'configure' => 'コンフィギュレーション',
+    'config_instructions' => 'バックアップしたくないテーブルを選択してください。その他のオプションはコンフィギュレーションのGeeklog - データベースタブにあります。'
 );
 
 ###############################################################################
@@ -1918,14 +1920,14 @@ $LANG_ADMIN = array(
     'reauth_msg' => 'この操作のセキュリティトークンは期限切れになりました。続けるには下の認証を行ってください。そうすれば今回の編集作業を失うことはありません。',
     'authenticate' => '認証する',
     'approve' => '承認する',
-    'device'        => 'デバイス',
-    'device_desc'   => 'このアイテムを表示するデバイス',
-    'for_all'       => '全て',
-    'for_mobile'    => 'モバイル用',
-    'for_computer'  => 'コンピューター用',
-    'all'           => '全て',
-    'mobile'        => 'モバイル',
-    'computer'      => 'コンピューター'
+    'device' => 'デバイス',
+    'device_desc' => 'このアイテムを表示するデバイス',
+    'for_all' => '全て',
+    'for_mobile' => 'モバイル用',
+    'for_computer' => 'コンピューター用',
+    'all' => '全て',
+    'mobile' => 'モバイル',
+    'computer' => 'コンピューター'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -2033,14 +2035,14 @@ $LANG_confignames['Core'] = array(
     'mail_settings' => 'メール設定',
     'dbdump_filename_prefix' => 'バックアップファイル名の接頭子',
     'dbdump_tables_only' => 'テーブル構造のバックアップのみを行う',
-    'dbdump_gzip' => "可能なら圧縮ファイル(GZip)を使用する",
-    'dbdump_max_files' => "バックアップファイルの最大保持数",
+    'dbdump_gzip' => '可能なら圧縮ファイル(GZip)を使用する',
+    'dbdump_max_files' => 'バックアップファイルの最大保持数',
     'theme' => 'テーマ',
     'doctype' => 'DOCTYPE宣言',
     'menu_elements' => 'メニュー項目',
     'path_themes' => 'テーマのパス',
     'cache_templates' => 'テンプレートをキャッシュする',
-    'cache_mobile' => "モバイル用のコンテンツを別にキャッシュする",
+    'cache_mobile' => 'モバイル用のコンテンツを別にキャッシュする',
     'disable_new_user_registration' => '新規ユーザー登録を停止する',
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
@@ -2070,9 +2072,9 @@ $LANG_confignames['Core'] = array(
     'yahoo_login' => 'YahooのOAuthをを有効にする',
     'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
     'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
-    'github_login' => "GitHubのOAuthログインを有効にする",
-    'github_consumer_key' => "GitHub OAuth Consumer Key",
-    'github_consumer_secret' => "GitHub OAuth Consumer Secret",      
+    'github_login' => 'GitHubのOAuthログインを有効にする',
+    'github_consumer_key' => 'GitHub OAuth Consumer Key',
+    'github_consumer_secret' => 'GitHub OAuth Consumer Secret',
     'spamx' => 'Spam-X',
     'sort_admin' => 'リンクを並べ替える',
     'language' => '言語',
@@ -2249,7 +2251,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'バッドワード',
     'ip_lookup' => 'IPアドレス検索',
     'url_rewrite' => 'URLリライト',
-    'url_routing' => 'URLルーティング',
+    'url_Routing' => 'Enable URL Routing',
     'cdn_hosted' => 'CDNのjQueryを使用する',
     'meta_tags' => 'メタタグ',
     'meta_description' => 'サイトの説明文のメタタグ',
@@ -2275,7 +2277,7 @@ $LANG_confignames['Core'] = array(
     'search_separator' => 'グループのセパレータ',
     'search_def_keytype' => '検索条件のデフォルト',
     'search_def_sort' => '並べ替え基準のデフォルト',
-    'search_use_topic' => "Use Current Topic",
+    'search_use_topic' => 'Use Current Topic',
     'autotag_permissions_story' => '[story: ] パーミッション',
     'autotag_permissions_user' => '[user: ] パーミッション',
     'autotag_permissions_topic' => '[topic: ] パーミッション',
@@ -2463,10 +2465,10 @@ $LANG_configselects['Core'] = array(
     32 => array('表示しない' => 0, '記事のページにのみ表示する' => 1, '記事と話題の両方で表示する' => 2),
     33 => array('無効にする' => 0, '有効にする' => 1, '有効にする(リンクなし)' => 2, '有効にする(外部リンクなし)' => 3),
     34 => array('グリッド' => 'grid', 'リスト' => 'list'),
-    35 => array('デフォルト' => 'default', '名前(昇順)' => 'NAME_ASC', '名前(降順)' => 'NAME_DESC', '種類(昇順)' => 'TYPE_ASC', '種類(降順)' => 'TYPE_DESC', '変更日時(昇順)' => 'MODIFIED_ASC', '変更日時(降順)' => 'MODIFIED_DESC'), 
+    35 => array('デフォルト' => 'default', '名前(昇順)' => 'NAME_ASC', '名前(降順)' => 'NAME_DESC', '種類(昇順)' => 'TYPE_ASC', '種類(降順)' => 'TYPE_DESC', '変更日時(昇順)' => 'MODIFIED_ASC', '変更日時(降順)' => 'MODIFIED_DESC'),
     36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
     37 => array('無効' => 0, '有効(index.phpあり)' => 1, '有効(index.phpなし)' => 2),
-    38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
+    38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro')
 );
 
 ###############################################################################
@@ -2517,3 +2519,6 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
+
+
+?>

@@ -10,16 +10,17 @@
     <target name="help">
         <echo msg="Geeklog building tools"/>
         <echo msg="----------------------"/>
-        <echo msg="In the following description, please replace 'path/to/phing' with the real path to phing."/>
+        <echo msg="First of all, change the directory to the root directory of the repository, where 'build.xml' resides."/>
+        <echo msg="For Unixy users, please use 'phing' instead of 'phing.bat' in the descriptions below."/>
         <echo msg=""/>
-        <echo msg="To show help, enter:"/>
-        <echo msg="path/to/phing[ENTER]"/>
+        <echo msg="To show help [this screen], enter:"/>
+        <echo msg="./system/build/vendor/phing/phing/bin/phing.bat[ENTER]"/>
         <echo msg=""/>
         <echo msg="To create a tarball, enter:"/>
-        <echo msg="path/to/phing dist[ENTER]"/>
+        <echo msg="./system/build/vendor/phing/phing/bin/phing.bat dist[ENTER]"/>
         <echo msg=""/>
         <echo msg="To synchronize language files, enter:"/>
-        <echo msg="path/to/phing lang[ENTER]"/>
+        <echo msg="./system/build/vendor/phing/phing/bin/phing.bat lang[ENTER]"/>
     </target>
 
     <!-- ============================== -->
@@ -31,10 +32,10 @@
         <if>
             <os family="windows"/>
             <then>
-                <exec command="${srcDir}/system/build/lm/uplang.bat" dir="${srcDir}/system/build/lm"/>
+                <exec command="uplng.bat" dir="${srcDir}/system/build/lm"/>
             </then>
             <else>
-                <exec command="${srcDir}/system/build/lm/uplang.sh" dir="${srcDir}/system/build/lm"/>
+                <exec command="uplng.sh" dir="${srcDir}/system/build/lm"/>
             </else>
         </if>
 
@@ -54,6 +55,7 @@
     <!-- ============================== -->
     <target name="build" depends="prepare">
         <!-- Copy files -->
+        <echo msg="Copying files..."/>
         <copy todir="${dstDir}">
             <fileset dir="${srcDir}">
                 <exclude name=".git"/>
@@ -82,6 +84,7 @@
         <copy file="${srcDir}/public_html/siteconfig.php.dist" tofile="${dstDir}/public_html/siteconfig.php"/>
 
         <!-- Change permissions -->
+        <echo msg="Changing directory and file permissions..."/>
         <chmod file="${dstDir}/emailgeeklogstories" mode="0755"/>
         <chmod file="${dstDir}/backups" mode="0775"/>
         <chmod file="${dstDir}/data" mode="0775"/>
@@ -130,7 +133,7 @@
     <!-- Target: dist                   -->
     <!-- ============================== -->
     <target name="dist" depends="build">
-        <echo msg="Creating archive..."/>
+        <echo msg="Creating an archive..."/>
         <tar destfile="${project.basedir}/geeklog-${version}.tar.gz" compression="gzip">
             <fileset dir="${dstDir}">
                 <include name="*"/>

@@ -188,7 +188,10 @@ $LANG_SUCCESS = array(
     19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
     20 => 'installiert',
     21 => 'aktualisiert',
-    22 => 'migriert'
+    22 => 'migriert',
+    23 => 'Would you like to delete all the files and directories used during the installation?',
+    24 => 'Yes, please.',
+    25 => 'No, thanks.  I will manually delete them afterwards.'
 );
 
 // +---------------------------------------------------------------------------+

@@ -8,7 +8,7 @@ rem |                                                                           
 rem | Helper script to update the Geeklog language files,                       |
 rem | using the lm.php script.                                                  |
 rem +---------------------------------------------------------------------------+
-rem | Copyright (C) 2004-2014 by the following authors:                         |
+rem | Copyright (C) 2004-2016 by the following authors:                         |
 rem |                                                                           |
 rem | Author:  Dirk Haun         - dirk AT haun-online DOT de                   |
 rem |          Kenji ITO         - mystralkk AT gmail DOT com                   |
@@ -51,7 +51,6 @@ call :doConvert %root% xmlsitemap
 call :doConvert %root% install
 
 echo Done.
-pause
 exit /b
 
 :doConvert
