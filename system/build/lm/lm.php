@@ -71,6 +71,11 @@ if (strpos($langfile, '_utf-8') !== false) {
 }
 
 define('XHTML', '');
+define('TOPIC_ALL_OPTION', 'all');
+define('TOPIC_NONE_OPTION', 'none');
+define('TOPIC_HOMEONLY_OPTION', 'homeonly');
+define('TOPIC_SELECTED_OPTION', 'selectedtopics');
+define('TOPIC_ROOT', 'root');
 
 // list of all variables accessed in the language file
 $_DB_mysqldump_path = '{$_DB_mysqldump_path}';
