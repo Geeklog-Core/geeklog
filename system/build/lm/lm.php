@@ -55,7 +55,7 @@ if (!empty($GLOBALS['argv'][2])) {
 
 $mb = false;
 
-if (strpos($filename, '_utf-8') !== false) {
+if (strpos($langfile, '_utf-8') !== false) {
     $mb = true;
 
     if (!function_exists('mb_strpos')) {
