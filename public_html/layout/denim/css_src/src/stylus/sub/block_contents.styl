@@ -33,28 +33,18 @@ $stage = 'block_contents'
   Header Content
 --------------------------------------*/
 
-$denim_logo ?= "../images/logo2.png"
-
-$logo-height = 0
-$logo-width  = 0
-if $var-sitename-style == 'image'
-    $logo-height = img-height("../../../" + $denim_logo)
-    $logo-width  = img-width( "../../../" + $denim_logo)
-
-$logo-top ?= 12px
-if ($logo-height + 24px) > $header-height
-    $header-height = $logo-height + 24px
-else
-    $logo-top = ($header-height - $logo-height) / 2
-
-
 $header_texture ?= "../images/texture.jpg"
 $texture-height = img-height("../../../" + $header_texture)
 $texture-width  = img-width( "../../../" + $header_texture)
 
 $header-height-mobile = 80px
 
-#header
+// Brand (Site Name) style : text
+
+if 55px > $header-height
+    $header-height = 55px
+
+#header.brand-text
     padding: $header-padding
     build-border("$header")
     @media only screen and (max-width: $breakpoint-small-max)
@@ -101,63 +91,33 @@ $header-height-mobile = 80px
     hook-selector($stage, "" + selector())
 
 /*! Site Name */
-.site_name
-    if $var-sitename-style == 'text'
-        position: relative
-        float: left
-        font-size: 30px
-        font-weight: bold
-        text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5)
-        line-height: @font-size + 6px
-        margin: (($header-height - @line-height) / 2) 0 0 20px
-        padding: 0
-        a:link,
-        a:visited,
-        a:hover
-            color: #EEEEEE
-            text-decoration: none
-        // All Mobile Sizes
-        @media only screen and (max-width: $breakpoint-small-max)
-            float: none
-            font-size: 1.6em
-            height: 50px
-            line-height: 50px
-            margin: 0 auto
-            text-align: center
-
-    if $var-sitename-style == 'image'
-        position: relative
-        //margin: 12px 0 0 16px
-        margin: $logo-top 0 0 16px
-        padding: 0
-        float: left
-        width: $logo-width
-        height: $logo-height
-        a
-            background: url($denim_logo) 0 0 no-repeat
-            text-indent: -3000px
-            display: block
-            width: 100%
-            height: 100%
-        // All Mobile Sizes
-        @media only screen and (max-width: $breakpoint-small-max)
-            $height = 55px
-            $vmargin = 10px
-            $percentage = ($height - ($vmargin * 2)) / $logo-height
-            $h = $height - ($vmargin * 2)
-            $w = $logo-width * $percentage
-            margin: 0 auto
-            padding: $vmargin 0
-            float: none
-            width: $w
-            height: $h
-            a
-                background-size: $w auto
+.brand-text .site_name
+    position: relative
+    float: left
+    font-size: 30px
+    font-weight: bold
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5)
+    line-height: @font-size + 6px
+    margin: (($header-height - @line-height) / 2) 0 0 20px
+    padding: 0
+    a:link,
+    a:visited,
+    a:hover
+        color: #EEEEEE
+        text-decoration: none
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        float: none
+        font-size: 1.6em
+        height: 50px
+        line-height: 50px
+        margin: 0 auto
+        text-align: center
 
     hook-selector($stage, "" + selector())
 
 /*! Slogan */
-.site_slogan
+.brand-text .site_slogan
     position: relative
     margin: 0
     padding: 16px 16px 0 16px
@@ -168,37 +128,141 @@ $header-height-mobile = 80px
     // All Mobile Sizes
     @media only screen and (max-width: $breakpoint-small-max)
         font-size: 75%
-        if $var-sitename-style == 'text'
-            float: none
-            margin: 0 auto
-            padding: 0
-            text-align: center
-            line-height: 1.2em
-
-        if $var-sitename-style == 'image'
-            float: none
-            margin: 0 auto
-            padding: 0
-            text-align: center
-            line-height: 1.2em
+        float: none
+        margin: 0 auto
+        padding: 0
+        text-align: center
+        line-height: 1.2em
 
     hook-selector($stage, "" + selector())
 
-.nameplate
+.brand-text .nameplate
     @media only screen and (max-width: $breakpoint-small-max)
-        if $var-sitename-style == 'text'
-            float: none
-            height: 100%  
-            margin: 0 auto
-            max-width: 230px
-            text-align: center
+        float: none
+        height: 100%  
+        margin: 0 auto
+        max-width: 230px
+        text-align: center
 
-        if $var-sitename-style == 'image'
-            float: none
-            height: 100%  
-            margin: 0 auto
-            max-width: 230px
-            text-align: center
+    hook-selector($stage, "" + selector())
+
+// Brand (Site Name) style : logo image
+
+$denim_logo ?= "../images/logo2.png"
+$logo-height = img-height("../../../" + $denim_logo)
+$logo-width  = img-width( "../../../" + $denim_logo)
+
+$logo-top = 20px
+if ($logo-height + $logo-top * 2) > $header-height
+    $header-height = $logo-height + $logo-top * 2
+else
+    $logo-top = ($header-height - $logo-height) / 2
+
+#header.brand-image
+    padding: $header-padding
+    build-border("$header")
+    @media only screen and (max-width: $breakpoint-small-max)
+        padding: 0
+        border: none
+
+    if $var-header-style == 'normal'
+        if $var-uikit-theme == 'default'
+            background-color: $header-background
+        if $var-uikit-theme == 'gradient'
+            background: linear-gradient(top, $header-background-dark, 50% $header-background, 90% $header-background, $header-background-dark)
+        if $var-uikit-theme == 'almost-flat'
+            background-color: $header-background
+
+        height: $header-height
+        // All Mobile Sizes
+        @media only screen and (max-width: $breakpoint-small-max)
+            //background-size: 256px auto
+            height: $header-height-mobile
+            margin-top: 0
+
+    if $var-header-style == 'texture'
+        position: relative
+        background-color: $header-background
+        background-image: url($header_texture)
+        background-position: center
+        background-repeat: repeat-x
+        height: $header-height
+        &:before
+            position: absolute
+            content: ""
+            height: $header-height
+            //background: linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.2) 100%)
+            background: linear-gradient(top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.4) 100%)
+            top: 0px
+        // All Mobile Sizes
+        @media only screen and (max-width: $breakpoint-small-max)
+            background-size: ($texture-width / 2) auto
+            height: $header-height-mobile
+            margin-top: 0
+            &:before
+                height: $header-height-mobile
+
+    hook-selector($stage, "" + selector())
+
+/*! Site Name */
+.brand-image .site_name
+    position: relative
+    //margin: 12px 0 0 16px
+    margin: $logo-top 0 0 16px
+    padding: 0
+    float: left
+    width: $logo-width
+    height: $logo-height
+    a
+        background: url($denim_logo) 0 0 no-repeat
+        text-indent: -3000px
+        display: block
+        width: 100%
+        height: 100%
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        $height = 55px
+        $vmargin = 10px
+        $percentage = ($height - ($vmargin * 2)) / $logo-height
+        $h = $height - ($vmargin * 2)
+        $w = $logo-width * $percentage
+        margin: 0 auto
+        padding: $vmargin 0
+        float: none
+        width: $w
+        height: $h
+        a
+            background-size: $w auto
+
+    hook-selector($stage, "" + selector())
+
+/*! Slogan */
+.brand-image .site_slogan
+    position: relative
+    margin: 0
+    padding: 16px 16px 0 16px
+    float: right
+    color: #FFF
+    text-align: right
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        font-size: 75%
+        float: none
+        margin: 0 auto
+        padding: 0
+        text-align: center
+        line-height: 1.2em
+
+    hook-selector($stage, "" + selector())
+
+.brand-image .nameplate
+    @media only screen and (max-width: $breakpoint-small-max)
+        float: none
+        height: 100%  
+        margin: 0 auto
+        max-width: 230px
+        text-align: center
 
     hook-selector($stage, "" + selector())
 

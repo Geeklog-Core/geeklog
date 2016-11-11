@@ -40,6 +40,17 @@ $(function() {
         $('#header-search').remove();
     }
 
+    var oheader = $('#header');
+    if (geeklog.theme_options.header_brand_type == 1) {
+        if (oheader.hasClass("brand-image")) {
+            oheader.removeClass("brand-image").addClass("brand-text");
+        }
+    } else {
+        if (oheader.hasClass("brand-text")) {
+            oheader.removeClass("brand-text").addClass("brand-image");
+        }
+    }
+
     if (geeklog.theme_options.block_left_search == 0) {
         $('#block-left-search').remove();
     }
@@ -62,4 +73,21 @@ $(function() {
         $('.uk-icon-angle-right').parent().empty().append('<i class="uk-icon-angle-right"></i>');
         $('.uk-icon-angle-double-right').parent().empty().append('<i class="uk-icon-angle-double-right"></i>');
     }
+
+    var oc_mode;
+    switch (geeklog.theme_options.off_canvas_mode) {
+        case 1:
+            oc_mode = 'slide';
+            break;
+        case 2:
+            oc_mode = 'reveal';
+            break;
+        case 3:
+            oc_mode = 'none';
+            break;
+        default:
+            oc_mode = 'push';
+            break;
+    }
+    $('#header-content > a.tm-toggle').attr('data-uk-offcanvas', "{mode:'" + oc_mode + "'}");
 });
