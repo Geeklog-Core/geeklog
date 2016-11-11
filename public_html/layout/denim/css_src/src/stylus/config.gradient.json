@@ -3,7 +3,6 @@
         "name": "default",
         "style-mode": "1",
         "header-style": "normal",
-        "sitename-style": "text",
         "base-color": "#426F9C",
         "adjust-hue": "true",
         "global-navigation-style": "default",
