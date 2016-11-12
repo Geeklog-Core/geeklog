@@ -2586,7 +2586,7 @@ class Installer
      */
     private function checkPost150Upgrade($dbConfigFilePath, $siteConfigFilePath)
     {
-        global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass, $_DB_name;
+        global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass, $_DB_name, $_DB_table_prefix;
 
         require_once $dbConfigFilePath;
         require_once $siteConfigFilePath;
