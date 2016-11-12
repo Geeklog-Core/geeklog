@@ -1998,7 +1998,7 @@ body.center-right #config_content {
   Header Content
 --------------------------------------*/
 
-#header {
+#header.brand-text {
   padding: 0;
   border: 1 solid #000;
   background-color: #426F9C;
@@ -2012,7 +2012,7 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  #header {
+  #header.brand-text {
     padding: 0;
     border: none;
   }
@@ -2020,7 +2020,7 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  #header {
+  #header.brand-text {
     border: none;
     border-radius: 0;
     -webkit-box-shadow: none;
@@ -2031,42 +2031,38 @@ body.center-right #config_content {
 }
 
 /* Site Name */
-.site_name {
+.brand-text .site_name {
   position: relative;
-  margin: 20px 0 0 16px;
-  padding: 0;
   float: left;
-  width: 226px;
-  height: 80px;
+  font-size: 30px;
+  font-weight: bold;
+  text-shadow: 0 2px 2px rgba(0,0,0,.5);
+  line-height: 36px;
+  margin: 42px 0 0 20px;
+  padding: 0;
 }
 
-.site_name a {
-  background: url("../images/logo2.png") 0 0 no-repeat;
-  text-indent: -3000px;
-  display: block;
-  width: 100%;
-  height: 100%;
+.brand-text .site_name a:link,
+.brand-text .site_name a:visited,
+.brand-text .site_name a:hover {
+  color: #EEE;
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 767px) {
 
-  .site_name {
-    margin: 0 auto;
-    padding: 10px 0;
+  .brand-text .site_name {
     float: none;
-    width: 98.875px;
-    height: 35px;
-  }
-
-  .site_name a {
-    -webkit-background-size: 98.875px auto;
-    -moz-background-size: 98.875px auto;
-    background-size: 98.875px auto;
+    font-size: 1.6em;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 auto;
+    text-align: center;
   }
 }
 
 /* Slogan */
-.site_slogan {
+.brand-text .site_slogan {
   position: relative;
   margin: 0;
   padding: 16px 16px 0 16px;
@@ -2078,7 +2074,7 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  .site_slogan {
+  .brand-text .site_slogan {
     font-size: 75%;
     float: none;
     margin: 0 auto;
@@ -2090,7 +2086,108 @@ body.center-right #config_content {
 
 @media only screen and (max-width: 767px) {
 
-  .nameplate {
+  .brand-text .nameplate {
+    float: none;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 230px;
+    text-align: center;
+  }
+}
+
+#header.brand-image {
+  padding: 0;
+  border: 1 solid #000;
+  background-color: #426F9C;
+  height: 120px;
+  border: 1px solid #656663;
+  background: transparent url("../images/css/bg_header.png") repeat-x 0 0;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 0 2px 1px #888;
+  box-shadow: 0 0 2px 1px #888;
+}
+
+@media only screen and (max-width: 767px) {
+
+  #header.brand-image {
+    padding: 0;
+    border: none;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+
+  #header.brand-image {
+    border: none;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    height: 80px;
+    margin-top: 0;
+  }
+}
+
+/* Site Name */
+.brand-image .site_name {
+  position: relative;
+  margin: 20px 0 0 16px;
+  padding: 0;
+  float: left;
+  width: 226px;
+  height: 80px;
+}
+
+.brand-image .site_name a {
+  background: url("../images/logo2.png") 0 0 no-repeat;
+  text-indent: -3000px;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+
+  .brand-image .site_name {
+    margin: 0 auto;
+    padding: 10px 0;
+    float: none;
+    width: 98.875px;
+    height: 35px;
+  }
+
+  .brand-image .site_name a {
+    -webkit-background-size: 98.875px auto;
+    -moz-background-size: 98.875px auto;
+    background-size: 98.875px auto;
+  }
+}
+
+/* Slogan */
+.brand-image .site_slogan {
+  position: relative;
+  margin: 0;
+  padding: 16px 16px 0 16px;
+  float: right;
+  color: #FFF;
+  text-align: right;
+  text-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+
+@media only screen and (max-width: 767px) {
+
+  .brand-image .site_slogan {
+    font-size: 75%;
+    float: none;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    line-height: 1.2em;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+
+  .brand-image .nameplate {
     float: none;
     height: 100%;
     margin: 0 auto;
@@ -4147,25 +4244,6 @@ dd#profile-user_photo {
 
 .uk-table-hover tbody tr:hover > td {
   background: #F0F0F0;
-}
-
-.table-wrapper {
-  width: 100%;
-  overflow: scroll;
-}
-
-.table-wrapper-fit {
-  width: 100%;
-  overflow: visible;
-}
-
-.table-wrapper-fit > .admin-list-table {
-  width: 100%;
-}
-
-.table-wrapper-visible {
-  width: 100%;
-  overflow: visible;
 }
 
 /* Navigation */

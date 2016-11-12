@@ -73,12 +73,11 @@ function theme_config_denim_curve()
         'header_search'     => 1,   // 1:show or 0:hide header searchbox
         'block_left_search' => 0,   // 1:show or 0:hide left block searchbox
         'welcome_msg'       => 1,   // 1:show or 0:hide welcome message
-        'topic_image'       => 1,   // 1:show or 0:hide topic images
         'trademark_msg'     => 0,   // 1:show or 0:hide trademark message on footer
         'execution_time'    => 0,   // 1:show or 0:hide execution time on footer
         'pagenavi_string'   => 1,   // 1:show or 0:hide text string of page navigation
-        'table_overflow'    => 1,   // 1:scroll or 0:visible overflow style of admin tables on mobile view
-        'toggle_showblock'  => 0,   // 1:enable or 0:disable toggle showing block contents on mobile view
+        'header_brand_type' => 0,   // 1:text or 0:image type of header brand (site name)
+        'off_canvas_mode'   => 2,   // 0:push 1:slide 2:reveal or 3:none mode of UIkit off-canvas animation
     );
 
     return array(
