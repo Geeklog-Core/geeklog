@@ -332,6 +332,7 @@ class Story
      */
     public function __construct($mode = 'admin')
     {
+        \Geeklog\Autoload::load('gltext');
         $this->mode = $mode;
     }
 

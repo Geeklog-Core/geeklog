@@ -25,6 +25,10 @@ class Autoload
             self::initialize();
         }
 
+        if (class_exists($className, false)) {
+            return;
+        }
+
         if (strpos($className, 'Geeklog\\') === 0) {
             // New classes under \Geeklog namespace
             $className = str_replace('Geeklog\\', '', $className);
