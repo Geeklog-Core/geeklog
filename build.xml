@@ -66,6 +66,7 @@
                 <exclude name="build"/>
                 <exclude name="build/**"/>
                 <exclude name="build.xml"/>
+                <exclude name="phpunit.xml"/>
                 <exclude name="**/buildpackage.php"/>
                 <exclude name="public_html/layout/professional_css"/>
                 <exclude name="public_html/layout/professional_css/**"/>

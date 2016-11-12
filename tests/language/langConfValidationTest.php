@@ -155,6 +155,9 @@ class langConfValidation extends PHPUnit_Framework_TestCase
             $this->checkForMissingEntries('links', 'english.php');
         }
     */
+    /**
+     * @group slow
+     */
     public function testCoreLanguages()
     {
         global $_CONF, $_CONF_VALIDATE, $_DB_mysqldump_path, $LANG_configselects;

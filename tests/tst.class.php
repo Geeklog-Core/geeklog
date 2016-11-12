@@ -48,7 +48,7 @@ class Tst
     /**
      * path/to/tests
      */
-    public static $tests = __DIR__ . '/../tests/';
+    public static $tests = __DIR__ . '/';
 
     /**
      * Return true if access level matches parameter provided, else returns false

@@ -12,21 +12,37 @@ class templateClass extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        global $_CONF, $TEMPLATE_OPTIONS;
+        global $_CONF, $TEMPLATE_OPTIONS, $_DEVICE;
 
+        $_CONF['language'] = Tst::LANGUAGE;
         $_CONF['theme'] = Tst::THEME;
         $_CONF['path_data'] = Tst::$root . 'data/';
         $_CONF['path_themes'] = Tst::$public . 'layout/';
         $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+        $_CONF['cache_templates'] = true;
         $_CONF['cache_mobile'] = true;
         $_CONF['site_url'] = 'http://www.example.com';
         $_CONF['site_admin_url'] = $_CONF['site_url'] . '/admin';
         $_CONF['layout_url'] = $_CONF['site_url'] . '/layout';
 
-        // Reset Template Options so they do not include default vars
-        $TEMPLATE_OPTIONS = array('default_vars' => array());
+        require_once $_CONF['path_system'] . 'classes/mobiledetect/Mobile_Detect.php';
+        $_DEVICE = new Mobile_Detect();
 
-        // Assign default values
+        // Reset Template Options so they do not include default vars
+        $TEMPLATE_OPTIONS = array(
+            'path_cache'          => $_CONF['path_data'] . 'layout_cache/',   // location of template cache
+            'path_prefixes'       => array(                               // used to strip directories off file names. Order is important here.
+                $_CONF['path_themes'],  // this is not path_layout. When stripping directories, you want files in different themes to end up in different directories.
+                $_CONF['path'],
+                '/'                     // this entry must always exist and must always be last
+            ),
+            'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's docroot.
+            'cache_by_language'   => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
+            'cache_for_mobile'    => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
+            'default_vars'        => array(),
+            'hook'                => array(),
+        );
+
         $this->tp = new Template(Tst::$tests . 'files/templates');
     }
 
@@ -377,7 +393,7 @@ class templateClass extends PHPUnit_Framework_TestCase
         global $TEMPLATE_OPTIONS;
 
         // Reset Template Options so they do not include default vars
-        $TEMPLATE_OPTIONS = array('default_vars' => array());
+        $TEMPLATE_OPTIONS['default_vars'] = array();
 
         $tp2 = new Template(Tst::$tests . 'files/templates');
         $tp2->set_unknowns('keep');

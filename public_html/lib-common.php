@@ -169,7 +169,6 @@ require_once $_CONF['path_system'] . 'lib-plugins.php';
  *
  * @global $_PAGE_TIMER timerobject
  */
-require_once $_CONF['path_system'] . 'classes/timer.class.php';
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
@@ -191,7 +190,6 @@ $_DEVICE = new Device();
  * This is our HTML template class.  It is the same one found in PHPLib and is
  * licensed under the LGPL.  See that file for details.
  */
-require_once $_CONF['path_system'] . 'classes/template.class.php';
 require_once $_CONF['path_system'] . 'lib-template.php';
 
 // This is the security library used for application security
@@ -277,12 +275,6 @@ if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
     }
 }
 
-// Set template class default template variables option
-\Geeklog\Autoload::load('template');
-$TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
-$TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
-$TEMPLATE_OPTIONS['default_vars']['device_mobile'] = $_DEVICE->is_mobile();
-
 /**
  * This provides the ability to set css and javascript.
  *
@@ -353,7 +345,30 @@ if (!defined('XHTML')) {
 }
 
 // Set template class default template variables option
-$TEMPLATE_OPTIONS['default_vars']['xhtml'] = XHTML;
+/**
+ * @global $TEMPLATE_OPTIONS array
+ */
+$TEMPLATE_OPTIONS = array(
+    'path_cache'          => $_CONF['path_data'] . 'layout_cache/',   // location of template cache
+    'path_prefixes'       => array(                               // used to strip directories off file names. Order is important here.
+        $_CONF['path_themes'],  // this is not path_layout. When stripping directories, you want files in different themes to end up in different directories.
+        $_CONF['path'],
+        '/'                     // this entry must always exist and must always be last
+    ),
+    'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's docroot.
+    'cache_by_language'   => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
+    'cache_for_mobile'    => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
+    'default_vars'        => array(                                // list of vars found in all templates.
+        'xhtml'          => XHTML,
+        'site_url'       => $_CONF['site_url'],
+        'site_admin_url' => $_CONF['site_admin_url'],
+        'layout_url'     => $_CONF['layout_url'], // Can be set by lib-common on theme change
+        'anonymous_user' => COM_isAnonUser(),
+        'device_mobile'  => $_DEVICE->is_mobile(),
+    ),
+    'hook'                => array(),
+);
+\Geeklog\Autoload::load('template');
 
 // Set language
 if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
@@ -8359,8 +8374,7 @@ HTML;
  */
 function COM_handleException($exception)
 {
-    $errorMessage = $exception->getMessage();
-    trigger_error($errorMessage, E_USER_ERROR);
+    COM_handleError((int) $exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace());
     die(1);
 }
 
