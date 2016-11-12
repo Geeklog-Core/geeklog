@@ -56,6 +56,8 @@
  * These options are global to all templates.
  */
 
+global $_CONF;
+
 // Usually not defined yet but will be later
 $xhtml = defined('XHTML') ? XHTML : '';
 
@@ -373,6 +375,26 @@ class Template
             $this->halt("set_root: at least on existing directory must be set as root.");
         }
         return false;
+    }
+
+    /**
+     * Return the root directory of the templates
+     *
+     * @return array|string
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    /**
+     * Return unknowns
+     *
+     * @return string
+     */
+    public function getUnknowns()
+    {
+        return $this->unknowns;
     }
 
     /******************************************************************************
@@ -1137,7 +1159,7 @@ class Template
      * @return    string
      * @see       set_root
      */
-    private function filename($fileName)
+    public function filename($fileName)
     {
         if ($this->debug & 4) {
             echo "<p><b>filename:</b> filename = $fileName</p>\n";
@@ -1244,7 +1266,7 @@ class Template
      * @return    void
      * @see       $halt_on_error
      */
-    private function halt($msg)
+    public function halt($msg)
     {
         $this->last_error = $msg;
 
@@ -1462,7 +1484,7 @@ class Template
     {
         global $TEMPLATE_OPTIONS;
 
-        if ($TEMPLATE_OPTIONS['cache_by_language']) {
+        if (isset($TEMPLATE_OPTIONS['cache_by_language']) && $TEMPLATE_OPTIONS['cache_by_language']) {
             if ($in_php) {
                 $tmplt = preg_replace_callback(
                     '/\{\$(LANG[\w\d_]+)\[(\')?([\w\d_]+)(?(2)\')\]\}/',

@@ -278,6 +278,7 @@ if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
 }
 
 // Set template class default template variables option
+\Geeklog\Autoload::load('template');
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
 $TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
 $TEMPLATE_OPTIONS['default_vars']['device_mobile'] = $_DEVICE->is_mobile();

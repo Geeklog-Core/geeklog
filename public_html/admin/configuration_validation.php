@@ -34,6 +34,8 @@ if (stripos($_SERVER['PHP_SELF'], 'configuration_validation.php') !== false) {
     die('This file can not be used on its own!');
 }
 
+global $_CONF_VALIDATE;
+
 /* Subgroup Site, Tab Site */
 $_CONF_VALIDATE['Core']['site_url'] = array('rule' => 'url');
 $_CONF_VALIDATE['Core']['site_admin_url'] = array('rule' => 'url');
@@ -685,12 +687,14 @@ $_CONF_VALIDATE['Core']['filemanager_default_view_mode']   = array(
 $_CONF_VALIDATE['Core']['filemanager_show_confirmation']   = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['filemanager_search_box']          = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['filemanager_file_sorting']        = array(
-    'inList',
-    array(
-        'default', 'NAME_ASC', 'NAME_DESC', 'TYPE_ASC', 'TYPE_DESC',
-        'MODIFIED_ASC', 'MODIFIED_DESC'
-    ),
-    true
+    'rule' => array(
+        'inList',
+        array(
+            'default', 'NAME_ASC', 'NAME_DESC', 'TYPE_ASC', 'TYPE_DESC',
+            'MODIFIED_ASC', 'MODIFIED_DESC'
+        ),
+        true
+    )
 );
 $_CONF_VALIDATE['Core']['filemanager_chars_only_latin']    = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['filemanager_date_format']         = array('rule' => 'notEmpty');

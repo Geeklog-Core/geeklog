@@ -62,6 +62,11 @@ class CalendarDay
     */
     public function __construct()
     {
+        $this->reset();
+    }
+
+    public function reset()
+    {
         $this->weekendflag = false;
         $this->holidayflag = false;
         $this->selectedflag = false;
@@ -159,6 +164,11 @@ class Calendar
     *
     */
     public function __construct()
+    {
+        $this->reset();
+    }
+
+    public function reset()
     {
         $this->setRollingMode(false);
         $dateArray = getdate(time());

@@ -234,4 +234,24 @@ class Url
             $this->arguments = array();
         }
     }
+
+    /**
+     * Return if URL rewrite feature is enabled
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->urlRewrite;
+    }
+
+    /**
+     * Enable/Disable URL rewrite feature
+     *
+     * @param  bool $switch
+     */
+    public function setEnabled($switch)
+    {
+        $this->urlRewrite = (bool) $switch;
+    }
 }
