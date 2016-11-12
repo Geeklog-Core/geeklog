@@ -1,0 +1,4 @@
+<li>
+  <strong>{link_html}</strong> ({link_hits}) {edit_icon} {link_broken}<br{xhtml}>
+  {link_description}
+</li>

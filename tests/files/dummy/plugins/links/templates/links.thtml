@@ -1,0 +1,12 @@
+{blockheader}
+
+{category_dropdown}
+{category_navigation}
+<br{xhtml}>
+<br{xhtml}>
+
+<div class="aligncenter" style="padding-bottom:10px;">[ <a href="{site_url}/submit.php?type=links&amp;cid={cid_encoded}">{lang_addalink}</a> ]</div>
+{category_links}
+{page_navigation}
+
+{blockfooter}

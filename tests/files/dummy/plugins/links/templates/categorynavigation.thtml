@@ -1,0 +1,5 @@
+<h2>{lang_categories}</h2>
+
+<table width="100%">
+{category_row}
+</table>

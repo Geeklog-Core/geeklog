@@ -1,0 +1,7 @@
+This directory contains the language files for the polls plugin. The
+plugin will pick the appropriate language file automatically based on the
+language settings in your user settings or the default language.
+
+If there is no language file for your language, then the plugin will revert
+to english.php.
+

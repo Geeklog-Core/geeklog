@@ -34,6 +34,8 @@ if (stripos($_SERVER['PHP_SELF'], 'configuration_validation.php') !== false) {
     die('This file can not be used on its own!');
 }
 
+global $_CONF_VALIDATE;
+
 /* Subgroup Site, Tab Site */
 $_CONF_VALIDATE['Core']['site_url'] = array('rule' => 'url');
 $_CONF_VALIDATE['Core']['site_admin_url'] = array('rule' => 'url');

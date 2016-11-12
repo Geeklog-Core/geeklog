@@ -1,0 +1,140 @@
+  {start_block_editor}
+  <form action="{site_admin_url}/plugins/staticpages/index.php" method="post">
+      <table border="0" cellspacing="0" cellpadding="3" width="100%">
+          <tr>
+              <td align="right">{lang_title}:</td>
+              <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"{xhtml}></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_addtomenu}:</td>
+              <td>
+                  <input type="checkbox" name="sp_onmenu" {onmenu_checked}{xhtml}>&nbsp;&nbsp;{lang_label}:
+                  <input type="text" name="sp_label" size="48" maxlength="64" value="{sp_label}"{xhtml}>
+              </td>
+          </tr>
+          <tr>
+              <td align="right">{lang_pageformat}:</td>
+              <td>
+                  <select name="sp_format">
+                      <option value="blankpage" {blankpage_selected}>{lang_blankpage}</option>
+                      <option value="noblocks" {noblock_selected}>{lang_noblocks}</option>
+                      <option value="leftblocks" {leftblocks_selected}>{lang_leftblocks}</option>
+                      <option value="allblocks" {allblocks_selected}>{lang_leftrightblocks}</option>
+                  </select>
+              </td>
+          </tr>
+          <tr>
+              <td align="right">{lang_mode}:</td>
+              <td>
+                  <select name="commentcode">
+                      {comment_options}
+                  </select>
+              </td>
+          </tr>
+          <tr>
+            <td align="right">{lang_id}:</td>
+            <td><input type="text" dir="ltr" name="sp_id" size="40" maxlength="40" value="{sp_id}"{xhtml}></td>
+          </tr>
+          <tr>
+            <td align="right">{lang_url}:</td>
+            <td>{example_url}</td>
+          </tr>
+          <tr>
+              <td valign="top" align="right">{lang_content}:</td>
+              <td>
+                  <textarea name="sp_content" style="width:100%" cols="45" rows="24">{sp_content}</textarea>
+                  <br{xhtml}><span class="warningsmall">{lang_allowedhtml}</span><br{xhtml}><br{xhtml}>
+              </td>
+          </tr>
+          <tr>
+              <td align="right">{lang_writtenby}:</td>
+              <td>{name}<input type="hidden" name="sp_uid" value="{sp_uid}"{xhtml}></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_lastupdated}:</td>
+              <td>{sp_formateddate}</td>
+          </tr>
+          <tr>
+              <td colspan="2"><hr{xhtml}></td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{lang_centerblock}</td>
+              <td valign="top"><input type="checkbox" name="sp_centerblock" {centerblock_checked}{xhtml}>&nbsp;&nbsp;{lang_centerblock_msg}</td>
+          </tr>
+          <tr>
+              <td align="right">{lang_position}</td>
+              <td>{pos_selection}&nbsp;&nbsp;&nbsp;{lang_topic}&nbsp;&nbsp;{topic_selection}</td>
+          </tr>
+          <tr>
+              <td colspan="2"><hr{xhtml}></td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{inblock_msg}</td>
+              <td valign="top"><input type="checkbox" name="sp_inblock" {inblock_checked}{xhtml}>&nbsp;&nbsp;{inblock_info}</td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{lang_centerblock_help}</td>
+              <td valign="top"><input type="text" name="sp_help" value="{centerblock_help}" size="50"{xhtml}>&nbsp;{lang_centerblock_include}<br{xhtml}>
+              {lang_centerblock_desc}</td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{php_msg}</td>
+              <td valign="top">{php_selector}&nbsp;&nbsp;{php_warn}</td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{exit_msg}</td>
+              <td valign="top"><input type="checkbox" name="sp_nf" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</td>
+          </tr>
+          <tr>
+              <td colspan="2"><hr{xhtml}></td>
+          </tr>
+          <tr>
+              <td colspan="2"><b>{lang_accessrights}</b></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_owner}:</td>
+              <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_group}:</td>
+              <td>
+                  {group_dropdown}
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2"><b>{lang_permissions}</b>:</td>
+          </tr>
+          <tr>
+              <td colspan="2"></td>
+          </tr>
+          <tr>
+              <td colspan="2">{lang_perm_key}</td>
+          </tr>
+          <tr>
+              <td colspan="2">
+              {permissions_editor}
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2">{lang_permissions_msg}</td>
+          </tr>
+          <tr>
+              <td colspan="2"><hr{xhtml}></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_hits}:</td>
+              <td><input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}</td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
+          <tr>
+              <td colspan="2">
+                  <input type="submit" value="{lang_save}" name="mode"{xhtml}>
+                  <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
+                  {delete_option}
+                  <input type="hidden" name="sp_old_id" value="{sp_old_id}"{xhtml}>
+                  <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+              </td>
+          </tr>
+      </table>
+  </form>
+  {end_block}

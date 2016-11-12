@@ -1,0 +1,2 @@
+<td style="width:{width}%"><a href="{category_link}">{category_name}</a> {category_count}<br{xhtml}>
+{category_description}</td>
