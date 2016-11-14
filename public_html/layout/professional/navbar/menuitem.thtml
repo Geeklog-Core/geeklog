@@ -1,1 +1,0 @@
-        <li><a {csscurrent} href="{link}{parms}"{onclick}><span style="padding-top:5px;">{label}</span></a></li>

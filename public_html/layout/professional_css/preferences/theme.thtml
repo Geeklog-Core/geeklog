@@ -1,7 +1,0 @@
-
-<!-- preferences/theme.thtml { -->
-
-<dt><label for="theme">{lang_theme}</label></dt>
-<dd>{theme_selector}</dd>
-
-<!-- } preferences/theme.thtml -->

@@ -1,8 +1,0 @@
-
-<!-- search/searchresults_rows.thtml { -->
-
-<tr>
-  {results_columns}
-</tr>
-
-<!-- } search/searchresults_rows.thtml -->

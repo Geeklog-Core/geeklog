@@ -1,6 +1,0 @@
-
-<!-- navbar/breadcrumbs_link.thtml { -->
-
-<li>{link_separator}<a href="{link_url}" title="{link_title}">{link_label}</a></li>
-
-<!-- } navbar/breadcrumbs_link.thtml -->

@@ -1,6 +1,0 @@
-
-<!-- navbar/menuitem.thtml { -->
-
-<li><a {csscurrent} href="{link}{parms}"{onclick}><span class="label">{label}</span></a></li>
-
-<!-- } navbar/menuitem.thtml -->

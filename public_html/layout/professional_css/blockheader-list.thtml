@@ -1,9 +1,0 @@
-
-<!-- blockheader-list.thtml { -->
-
-<div class="block-list">
-    <h2>{block_title}{block_help}</h2>
-      <div class="block-list-content">
-      <ul>
-
-<!-- } blockheader-list.thtml -->

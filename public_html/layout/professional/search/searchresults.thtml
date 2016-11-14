@@ -1,3 +1,0 @@
-                            <p class="basic"> {lang_matchesfor} {lang_found} <b>{num_matches}</b> ({search_time} {lang_seconds}). {refine_search}</p>
-                            {search_blocks}
-                            {search_pager}

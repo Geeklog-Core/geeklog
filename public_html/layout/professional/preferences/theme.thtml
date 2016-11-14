@@ -1,4 +1,0 @@
-   <tr>
-        <td style="width:100px;"><label for="theme">{lang_theme}:</label></td>
-        <td>{theme_selector}</td>
-   </tr>

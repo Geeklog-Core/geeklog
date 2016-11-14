@@ -1,4 +1,0 @@
-    <tr class="pluginRow{cssid}">
-        <td class="admin-list-field"><a href="{autodetect_link}">{link_text}</a></td>
-        <td class="admin-list-field">{link_url}</td>
-    </tr>

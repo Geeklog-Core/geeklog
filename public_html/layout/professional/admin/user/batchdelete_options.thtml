@@ -1,1 +1,0 @@
-<input type="radio" name="usr_type" value="{sel_id}"{selector}{xhtml}> <strong>{lang_description}:</strong>&nbsp;{lang_text_start} <input class="aligncenter" type="text" name="usr_time[{sel_id}]" value="{id_value}" size="3"{selector}{xhtml}>{lang_text_end}<br{xhtml}>

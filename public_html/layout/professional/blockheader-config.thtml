@@ -1,5 +1,0 @@
-<div class="block-box">
-    <span class="block-helpicon">
-        {block_help}
-    </span>
-    <h2>{block_title}</h2>

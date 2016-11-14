@@ -1,7 +1,0 @@
-                            <table cellpadding="0" cellspacing="1" width="99%">
-                                <tr>
-                                    <td width="100%"><b>{item_label}</b></td><td class="alignright"><b>{stat_name}</b></td>
-                                </tr>
-                                {stat_row}
-                            </table>
-

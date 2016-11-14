@@ -1,7 +1,0 @@
-<div style="font-weight:bold;width:95%;margin:10px;border:1px solid black;">
-    <div style="padding:5px;color:#FFFFFF;background:url({layout_url}/images/header-bg.png) #1A3955;">
-        <span class="floatright">{block_help}</span>
-        {showhide}
-        {block_title}
-    </div>
-    <div style="padding:5px 15px 5px 15px;border-top:3px solid black;background:#E7E7E7;">

@@ -1,9 +1,0 @@
-
-<!-- admin/user/groupedit.thtml { -->
-
-<dd>
-  <p class="groupinstructions">{lang_groupinstructions}</p>
-  {group_options}
-</dd>
-
-<!-- } admin/user/groupedit.thtml -->
