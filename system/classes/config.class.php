@@ -502,6 +502,10 @@ class config
             $Qargs[9] = $tab;
         }
         $Qargs = array_map('DB_escapeString', $Qargs);
+        
+        // Delete old config value if exists (incase re-adding it for developer db update script)
+        $sql = "DELETE FROM {$_TABLES['conf_values']} WHERE name = '{$Qargs[0]}' AND group_name = '{$Qargs[4]}' AND subgroup={$Qargs[3]}";
+        $this->_DB_escapedQuery($sql);
 
         // Now add in config item
         $sql = "INSERT INTO {$_TABLES['conf_values']} ($columns) VALUES ("
