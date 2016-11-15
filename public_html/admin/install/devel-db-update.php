@@ -189,26 +189,27 @@ $display .= "<p>Update is for Geeklog Core and Core Plugins. Can include changes
 
 // ***************************************             
 // Geeklog Core Updates
-$display .= '<p>Performing Geeklog Core configuration upgrades if necessary...</p>';
+$display .= '<ul><li>Performing Geeklog Core configuration upgrades if necessary...<ul><li>';
 
 require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_' . $gl_old_version . '_to_' . $gl_devel_version . '.php');
 $function = 'update_ConfValuesFor' . $short_version;
 if (function_exists($function)) {
     if ($function()) {;
-        $display .= '<p>Configuration settings updated successfully.</p>';
+        $display .= 'Configuration settings updated successfully.';
     } else {
-        $display .= '<p>There was problems updating the configuration settings.</p>';
+        $display .= 'There was problems updating the configuration settings.';
     }
 } else {
-    $display .= '<p>No configuration settings found to updated.</p>';
+    $display .= 'No configuration settings found to updated.';
 }
+$display .= '</li></ul>';
 
 // Reset rest of config
 //resetConfig();
 
 // ***************************************
 // Geeklog Core Plugins
-$display .= '<p>Performing Geeklog Core Plugin configuration upgrades if necessary...</p>';
+$display .= '<li>Performing Geeklog Core Plugin configuration upgrades if necessary...<ul>';
 // Loop through core plugin config updates
 $corePlugins = array('staticpages','spamx','links','polls','calendar', 'xmlsitemap');
 foreach ($corePlugins AS $pi_name) {
@@ -216,47 +217,50 @@ foreach ($corePlugins AS $pi_name) {
     switch ($pi_name) {
         case 'staticpages':
             $new_plugin_version = true;
-            $plugin_version = '1_6_8';
+            $plugin_version = '1.6.8';
             break;
         case 'spamx':
             $new_plugin_version = true;
-            $plugin_version = '1_3_3';
+            $plugin_version = '1.3.3';
             break;
         case 'links':
-            $plugin_version = '2_1_4';
+            $plugin_version = '2.1.4';
             break;
         case 'polls':
             $new_plugin_version = true;
-            $plugin_version = '2_1_7';
+            $plugin_version = '2.1.7';
             break;
         case 'calendar':
-            $plugin_version = '1_1_5';
+            $plugin_version = '1.1.5';
             break;
         case 'xmlsitemap':
-            $plugin_version = '2_0_0';
+            $plugin_version = '2.0.0';
             break;
     }
     
+    $display .= "<li>";
     if ($new_plugin_version) {
         require_once $_CONF['path'] . 'plugins/' . $pi_name . '/install_updates.php';
 
-        $function = $pi_name . '_update_ConfValues_' . $plugin_version;
+        $function = $pi_name . '_update_ConfValues_' . str_replace(".","_", $plugin_version);
         
         if (function_exists($function)) {
             if ($function()) {;
-                $display .= "<p>Configuration settings updated successfully for $pi_name.</p>";
+                $display .= "Configuration settings updated successfully for $pi_name plugin.";
             } else {
-                $display .= "<p>There was problems updating the configuration settings for $pi_name.</p>";
+                $display .= "There was problems updating the configuration settings for $pi_name plugin.";
             }
         } else {
-            $display .= "<p>No configuration settings found to updated for $pi_name.</p>";
+            $display .= "No configuration settings found for updating $pi_name plugin.";
         }
     } else {
-        $display .= "<p>No new version found for $pi_name</p>";    
+        $display .= "No new version found for $pi_name plugin.";    
     }
+    $display .= "</li>";
 }
+$display .= "</ul></li>";
 
-$display .= '<p>Performing Geeklog Core and Geeklog Core Plugin database upgrades if necessary...</p>';
+$display .= '<li>Performing Geeklog Core and Geeklog Core Plugin database upgrades if necessary...<ul><li>';
 
 // InnoDB?
 $use_innodb = false;
@@ -267,14 +271,14 @@ if (($_DB_dbms == 'mysql') && (DB_getItem($_TABLES['vars'], 'value', "name = 'da
 $function = 'update_DatabaseFor' . $short_version;
 if (function_exists($function)) {
     if ($function()) {;
-        $display .= '<p>Database updated successfully.</p>';
+        $display .= 'Database updated successfully.';
     } else {
-        $display .= '<p>There was problems updating the database settings.</p>';
+        $display .= 'There was problems updating the database settings.';
     }
 } else {
-    $display .= '<p>No database settings found to updated.</p>';
+    $display .= 'No database settings found to updated.';
 }
-
+$display .= "</li></ul></li></ul>";
 
 foreach ($corePlugins AS $pi_name) {
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='".$pi_name."'",1);
