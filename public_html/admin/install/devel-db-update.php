@@ -6,13 +6,13 @@
 // +---------------------------------------------------------------------------+
 // | devel-db-update.php                                                       |
 // |                                                                           |
-// | Geeklog developer database update page.                                   |
+// | Geeklog Developer Database update page.                                   |
 // | Based in part on the glFusion Development SQL Updates.                    |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 20016 by the following authors:                             |
 // |                                                                           |
 // | Authors: Tom Homer        - tomhomer AT esilverstrike DOT com             |
-// |          Mark R. Evans          mark AT glfusion DOT org                  |
+// |          Mark R. Evans    - mark AT glfusion DOT org                      |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -125,6 +125,40 @@ function update_DatabaseFor212()
     // Change Url from 255 to 250 since the field has too many bytes for tables with a utf8mb4 collation
     $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE `url` `url` VARCHAR(250) DEFAULT NULL";
 
+    
+    // ***************************************     
+    // Core Plugin Updates Here
+    
+    // Staticpages
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} MODIFY COLUMN `created` DATETIME DEFAULT NULL";
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} MODIFY COLUMN `modified` DATETIME DEFAULT NULL";
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onmenu`"; 
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onlastupdate` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onhits`";
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.6.8', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='staticpages'";
+    
+    // SpamX
+    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN regdate DATETIME DEFAULT NULL";
+    $_SQL[] = "DROP INDEX `primary` ON {$_TABLES['spamx']}";
+    $_SQL[] = "DROP INDEX `spamx_name` ON {$_TABLES['spamx']}";
+    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name)";    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.3', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='spamx'";
+    
+    // Links
+    // $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.4', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='links'";
+    
+    // Polls
+    $_SQL[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD `allow_multipleanswers` TINYINT(1) NULL DEFAULT NULL";
+    $_SQL[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD `description` MEDIUMTEXT NULL";
+    $_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD `description` MEDIUMTEXT NULL";    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.7', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='polls'";
+    
+    // Calendar
+    // $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.5', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
+    
+    // XMLSiteMap
+    // $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.0', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
+
+
     if ($use_innodb) {
         $statements = count($_SQL);
         for ($i = 0; $i < $statements; $i++) {
@@ -136,13 +170,9 @@ function update_DatabaseFor212()
         DB_query($sql,1);
     }
 
-    // update version number
+    // update Geeklog version number
     DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='geeklog'",1);
     DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='geeklog'",1);
-    
-    
-    // ***************************************     
-    // Core Plugin Updates Here
     
     return true;
 }
@@ -152,9 +182,8 @@ $display = '<h2>Development Database Update</h2>';
 $gl_old_version = "2.1.1";
 $gl_devel_version = "2.1.2";
 $short_version = str_replace(".","", $gl_devel_version);
-$corePlugins = array('staticpages','spamx','links','polls','calendar', 'xmlsitemap');
 
-$display .= "<p>Update is for Geeklog Core and can include changes to database structure and data, along with configuration options.</p> 
+$display .= "<p>Update is for Geeklog Core and Core Plugins. Can include changes to database structure and data, along with configuration options.</p> 
              <p>Update works for Geeklog $gl_old_version up to latest Geeklog development version for $gl_devel_version.</p>";
 
 
@@ -179,12 +208,55 @@ if (function_exists($function)) {
 
 // ***************************************
 // Geeklog Core Plugins
-$display .= '<p><strong>Geeklog Core Plugin Updates Not Supported Yet</strong></p>';
+$display .= '<p>Performing Geeklog Core Plugin configuration upgrades if necessary...</p>';
 // Loop through core plugin config updates
+$corePlugins = array('staticpages','spamx','links','polls','calendar', 'xmlsitemap');
+foreach ($corePlugins AS $pi_name) {
+    $new_plugin_version = false;
+    switch ($pi_name) {
+        case 'staticpages':
+            $new_plugin_version = true;
+            $plugin_version = '1_6_8';
+            break;
+        case 'spamx':
+            $new_plugin_version = true;
+            $plugin_version = '1_3_3';
+            break;
+        case 'links':
+            $plugin_version = '2_1_4';
+            break;
+        case 'polls':
+            $new_plugin_version = true;
+            $plugin_version = '2_1_7';
+            break;
+        case 'calendar':
+            $plugin_version = '1_1_5';
+            break;
+        case 'xmlsitemap':
+            $plugin_version = '2_0_0';
+            break;
+    }
+    
+    if ($new_plugin_version) {
+        require_once $_CONF['path'] . 'plugins/' . $pi_name . '/install_updates.php';
 
+        $function = $pi_name . '_update_ConfValues_' . $plugin_version;
+        
+        if (function_exists($function)) {
+            if ($function()) {;
+                $display .= "<p>Configuration settings updated successfully for $pi_name.</p>";
+            } else {
+                $display .= "<p>There was problems updating the configuration settings for $pi_name.</p>";
+            }
+        } else {
+            $display .= "<p>No configuration settings found to updated for $pi_name.</p>";
+        }
+    } else {
+        $display .= "<p>No new version found for $pi_name</p>";    
+    }
+}
 
-
-$display .= '<p>Performing Geeklog Core and Geeklog Core Plugin  database upgrades if necessary...</p>';
+$display .= '<p>Performing Geeklog Core and Geeklog Core Plugin database upgrades if necessary...</p>';
 
 // InnoDB?
 $use_innodb = false;
@@ -213,9 +285,9 @@ foreach ($corePlugins AS $pi_name) {
 CTL_clearCache();
 
 $display .= '<p>The Geeklog Core Development Database Update has completed.</p>
-             <p>Please visit the <a href="' . $_CONF['site_admin_url'] . '/plugins.php">Plugin Admin page</a> and validate if any plugins needs to be updated.</p>';
+             <p>Please visit the <a href="' . $_CONF['site_admin_url'] . '/plugins.php">Plugin Admin page</a> and validate if any other plugins needs to be updated.</p>';
 
-$display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
+$display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[40]));
 COM_output($display);
 
 exit;
