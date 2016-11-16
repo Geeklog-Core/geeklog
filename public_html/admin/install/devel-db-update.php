@@ -31,6 +31,23 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/*
+Notes:
+
+- Update variables $gl_prev_version and  $gl_devel_version to proper version numbers
+- Add new function for database changes (used by core and core plugins) following format of function name "update_DatabaseFor212"
+    - Remember to add checks to the script to see if the db change has already happen. We don't want to attempt to do it again as it could cause a SQL error
+- New config options are taken automatically from appropriate update file, for example: \sql\updates\mysql_x.x.x_to_x.x.x.php file
+- remove any $new_plugin_version = true for Core plugins
+
+- Update version number for plugin with the new version found in switch statement for Core plugins below
+- Add $new_plugin_version = true to plugin with new version
+- Add appropriate database changes including updated version number to update_DatabaseForXXX function
+    - Remember to add checks to the script to see if the db change has already happen. We don't want to attempt to do it again as it could cause a SQL error
+- New config options are taken automatically from appropriate update file, for example: \plugins\plugin_name\sql\mysql_updates.php
+
+*/
+
 require_once '../../lib-common.php';
 
 // For Root users only
@@ -179,19 +196,20 @@ function update_DatabaseFor212()
 
 $display = '<h2>Development Database Update</h2>';
 
-$gl_old_version = "2.1.1";
+$gl_prev_version = "2.1.1";
 $gl_devel_version = "2.1.2";
-$short_version = str_replace(".","", $gl_devel_version);
 
-$display .= "<p>Update is for Geeklog Core and Core Plugins. Can include changes to database structure and data, along with configuration options.</p> 
-             <p>Update works for Geeklog $gl_old_version up to latest Geeklog development version for $gl_devel_version.</p>";
+$display .= "<p>This update is for Geeklog Core and Core Plugins. Can include changes to database structure and data, along with configuration options.</p> 
+             <p>Update works for Geeklog $gl_prev_version up to latest Geeklog development version for $gl_devel_version.</p>";
 
 
 // ***************************************             
 // Geeklog Core Updates
 $display .= '<ul><li>Performing Geeklog Core configuration upgrades if necessary...<ul><li>';
 
-require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_' . $gl_old_version . '_to_' . $gl_devel_version . '.php');
+require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_' . $gl_prev_version . '_to_' . $gl_devel_version . '.php');
+
+$short_version = str_replace(".","", $gl_devel_version);
 $function = 'update_ConfValuesFor' . $short_version;
 if (function_exists($function)) {
     if ($function()) {;
