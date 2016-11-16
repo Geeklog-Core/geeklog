@@ -34,12 +34,14 @@
 /*
 Notes:
 
+For New Version Of Geeklog in Development
 - Update variables $gl_prev_version and  $gl_devel_version to proper version numbers
 - Add new function for database changes (used by core and core plugins) following format of function name "update_DatabaseFor212"
     - Remember to add checks to the script to see if the db change has already happen. We don't want to attempt to do it again as it could cause a SQL error
 - New config options are taken automatically from appropriate update file, for example: \sql\updates\mysql_x.x.x_to_x.x.x.php file
 - remove any $new_plugin_version = true for Core plugins
 
+For New Version of Geeklog Core Plugin in Development
 - Update version number for plugin with the new version found in switch statement for Core plugins below
 - Add $new_plugin_version = true to plugin with new version
 - Add appropriate database changes including updated version number to update_DatabaseForXXX function
