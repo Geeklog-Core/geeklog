@@ -366,7 +366,7 @@ $TEMPLATE_OPTIONS = array(
         'anonymous_user' => COM_isAnonUser(),
         'device_mobile'  => $_DEVICE->is_mobile(),
     ),
-    'hook'                => array(),
+    'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes
 );
 \Geeklog\Autoload::load('template');
 
