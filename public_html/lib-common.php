@@ -186,12 +186,6 @@ $_URL = new Url($_CONF['url_rewrite'], $_CONF['url_routing']);
  */
 $_DEVICE = new Device();
 
-/**
- * This is our HTML template class.  It is the same one found in PHPLib and is
- * licensed under the LGPL.  See that file for details.
- */
-require_once $_CONF['path_system'] . 'lib-template.php';
-
 // This is the security library used for application security
 require_once $_CONF['path_system'] . 'lib-security.php';
 
@@ -369,6 +363,9 @@ $TEMPLATE_OPTIONS = array(
     'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes
 );
 \Geeklog\Autoload::load('template');
+// Template library contains helper functions for template class
+require_once $_CONF['path_system'] . 'lib-template.php';
+
 
 // Set language
 if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
