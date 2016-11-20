@@ -91,6 +91,8 @@ function SUCCESS_deleteAll($baseDir)
 }
 
 // Main
+global $_TABLES, $LANG_SUCCESS, $MESSAGE;
+
 $type = \Geeklog\Input::fGet('type', 'install');
 $submit = \Geeklog\Input::post('submit', '');
 $language = \Geeklog\Input::fGet('language', 'english');

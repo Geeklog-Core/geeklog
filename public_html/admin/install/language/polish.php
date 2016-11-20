@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | polish.php                                                                |
 // |                                                                           |
@@ -193,9 +193,6 @@ $LANG_SUCCESS = array(
     24 => 'Yes, please.',
     25 => 'No, thanks.  I will manually delete them afterwards.'
 );
-
-// +---------------------------------------------------------------------------+
-// migrate.php
 
 $LANG_MIGRATE = array(
     0 => 'The migration process will overwrite any existing database information.',
@@ -420,5 +417,3 @@ $LANG_LABEL = array(
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
 );
-
-?>

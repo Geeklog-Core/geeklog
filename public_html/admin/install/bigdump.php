@@ -45,22 +45,32 @@
 // THIS SCRIPT IS PROVIDED AS IS, WITHOUT ANY WARRANTY OR GUARANTEE OF ANY KIND
 //
 
-require_once '../../siteconfig.php';
+define('PATH_INSTALL', __DIR__ . '/');
+define('PATH_LAYOUT', PATH_INSTALL . 'layout');
+define('BASE_FILE', str_replace('\\', '/', __FILE__));
+
+global $_CONF, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_charset,
+       $LANG_BIGDUMP, $LANG_CHARSET, $LANG_DIRECTION, $LANG_ERROR, $LANG_HELP, $LANG_INSTALL,
+       $LANG_LABEL, $LANG_MIGRATE, $LANG_PLUGINS, $LANG_RESCUE, $LANG_SUCCESS;
+
+require_once __DIR__ . '/classes/installer.class.php';
+require_once __DIR__ . '/classes/db.class.php';
+require_once __DIR__ . '/../../siteconfig.php';
 require_once $_CONF['path'] . 'db-config.php';
-require_once 'lib-install.php';
+$installer = new Installer();
 
 $db_server = $_DB_host;
 $db_name = $_DB_name;
 $db_username = $_DB_user;
 $db_password = $_DB_pass;
 
-$site_url = (isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : '');
-$site_admin_url = (isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : '');
+$site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : '';
+$site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : '';
 
 // Other settings (optional)
 $filename = '';     // Specify the dump filename to suppress the file selection dialog
-$linespersession = 3000;   // Lines to be executed per one import session
-$delaypersession = 0;      // You can specify a sleep time in milliseconds after each session
+$linesPerSession = 3000;   // Lines to be executed per one import session
+$delayPerSession = 0;      // You can specify a sleep time in milliseconds after each session
 // Works only if JavaScript is activated. Use to reduce server overrun
 
 // Allowed comment delimiters: lines starting with these strings will be dropped by BigDump
@@ -95,73 +105,51 @@ if (function_exists("date_default_timezone_set") && function_exists("date_defaul
 }
 
 header('Content-Type: text/html; charset=' . $LANG_CHARSET);
-echo INST_getHeader($LANG_MIGRATE[17]);
+echo Installer::getHeader($LANG_MIGRATE[17]);
 
 $error = false;
 $file = false;
 
 // Check if mysql extension is available
-if (!$error && !is_callable('mysqli_connect') && !is_callable('mysql_connect')) {
-    echo '<p>' . $LANG_BIGDUMP[11] . '</p>' . LB;
+$availableDrivers = Geeklog\Db::getDrivers();
+
+if (!$error && (count($availableDrivers) === 0)) {
+    echo '<p>' . $LANG_BIGDUMP[11] . '</p>' . PHP_EOL;
     $error = true;
 }
 
 // Get the current directory
-if (isset($_SERVER["CGIA"])) {
-    $upload_dir = dirname($_SERVER["CGIA"]);
-} elseif (isset($_SERVER["ORIG_PATH_TRANSLATED"])) {
-    $upload_dir = dirname($_SERVER["ORIG_PATH_TRANSLATED"]);
-} elseif (isset($_SERVER["ORIG_SCRIPT_FILENAME"])) {
-    $upload_dir = dirname($_SERVER["ORIG_SCRIPT_FILENAME"]);
-} elseif (isset($_SERVER["PATH_TRANSLATED"])) {
-    $upload_dir = dirname($_SERVER["PATH_TRANSLATED"]);
-} else {
-    $upload_dir = dirname($_SERVER["SCRIPT_FILENAME"]);
-}
+$upload_dir = __DIR__;
 
 // Connect to the database
 $db = false;
 $dbConnection = false;
+$errorMessage = '';
+$args = array(
+    'host'    => $_DB_host,
+    'user'    => $_DB_user,
+    'pass'    => $_DB_pass,
+    'name'    => $_DB_name,
+    'charset' => $db_connection_charset,
+);
 
 if (!$error && !TESTMODE) {
-    if (is_callable('mysqli_connect')) {
-        $dbConnection = new mysqli($db_server, $db_username, $db_password, $db_name);
-
-        if ($dbConnection instanceof mysqli) {
+    try {
+        $dbConnection = Geeklog\Db::connect(Geeklog\Db::DB_MYSQLI, $args);
+        $db = true;
+    } catch (\Exception $e) {
+        try {
+            $dbConnection = Geeklog\Db::connect(Geeklog\Db::DB_MYSQL, $args);
             $db = true;
-        }
-    } elseif (is_callable('mysql_connect')) {
-        $dbConnection = @mysql_connect($db_server, $db_username, $db_password);
-
-        if (is_resource($dbConnection)) {
-            $db = mysql_select_db($db_name);
+        } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
+            $dbConnection = false;
         }
     }
 
     if (empty($dbConnection) || !$db) {
-        if (is_callable('mysqli_connect')) {
-            echo INST_getAlertMsg($LANG_ERROR[9] . mysqli_error() . '<br' . XHTML . '>' . $LANG_ERROR[10]);
-        } else {
-            echo INST_getAlertMsg($LANG_ERROR[9] . mysql_error() . '<br' . XHTML . '>' . $LANG_ERROR[10]);
-        }
-
+        echo $installer->getAlertMsg($LANG_ERROR[9] . $errorMessage . '<br>' . $LANG_ERROR[10]);
         $error = true;
-    }
-
-    if (!$error && $db_connection_charset !== '') {
-        if (is_callable('mysqli_connect')) {
-            if (method_exists($dbConnection, 'set_charset')) {
-                $dbConnection->set_charset($db_connection_charset);
-            } else {
-                $dbConnection->query("SET NAMES {$db_connection_charset}");
-            }
-        } else {
-            if (is_callable('mysql_set_charset')) {
-                mysql_set_charset($db_connection_charset, $dbConnection);
-            } else {
-                @mysql_query("SET NAMES {$db_connection_charset}", $dbConnection);
-            }
-        }
     }
 } else {
     $dbConnection = false;
@@ -169,39 +157,39 @@ if (!$error && !TESTMODE) {
 
 // Single file mode
 if (!$error && !isset($_REQUEST["fn"]) && $filename != "") {
-    echo '<p><a href="' . $_SERVER['PHP_SELF'] . '?start=1&amp;fn=' . urlencode($filename) . '&amp;foffset=0&amp;totalqueries=0\">' . $LANG_BIGDUMP[0] . '</a>' . $LANG_BIGDUMP[1] . $filename . $LANG_BIGDUMP[2] . $db_name . $LANG_BIGDUMP[3] . $db_server . LB;
+    echo '<p><a href="' . $_SERVER['PHP_SELF'] . '?start=1&amp;fn=' . urlencode($filename) . '&amp;foffset=0&amp;totalqueries=0\">' . $LANG_BIGDUMP[0] . '</a>' . $LANG_BIGDUMP[1] . $filename . $LANG_BIGDUMP[2] . $db_name . $LANG_BIGDUMP[3] . $db_server . PHP_EOL;
 }
 
 // Open the file
 if (!$error && isset($_REQUEST["start"])) {
     // Set current filename ($filename overrides $_REQUEST["fn"] if set)
-    if ($filename != "") {
-        $curfilename = $filename;
+    if ($filename != '') {
+        $currentFileName = $filename;
     } elseif (isset($_REQUEST["fn"])) {
-        $curfilename = urldecode($_REQUEST["fn"]);
+        $currentFileName = urldecode($_REQUEST["fn"]);
     } else {
-        $curfilename = "";
+        $currentFileName = '';
     }
 
     // Recognize GZip filename
-    if (preg_match("/\.gz$/i", $curfilename)) {
-        $gzipmode = true;
+    if (preg_match('/\.gz$/i', $currentFileName)) {
+        $gzipMode = true;
     } else {
-        $gzipmode = false;
+        $gzipMode = false;
     }
 
-    if ((!$gzipmode && !$file = @fopen($curfilename, "r")) || ($gzipmode && !$file = @gzopen($curfilename, "r"))) {
-        echo INST_getAlertMsg($LANG_BIGDUMP[5] . $curfilename . $LANG_BIGDUMP[6]);
+    if ((!$gzipMode && !$file = @fopen($currentFileName, "r")) || ($gzipMode && !$file = @gzopen($currentFileName, "r"))) {
+        echo $installer->getAlertMsg($LANG_BIGDUMP[5] . $currentFileName . $LANG_BIGDUMP[6]);
         $error = true;
-    } // Get the file size (can't do it fast on gzipped files, no idea how)
-    elseif ((!$gzipmode && @fseek($file, 0, SEEK_END) == 0) || ($gzipmode && @gzseek($file, 0) == 0)) {
-        if (!$gzipmode) {
-            $filesize = ftell($file);
+    } elseif ((!$gzipMode && @fseek($file, 0, SEEK_END) == 0) || ($gzipMode && @gzseek($file, 0) == 0)) {
+        // Get the file size (can't do it fast on gzipped files, no idea how)
+        if (!$gzipMode) {
+            $fileSize = ftell($file);
         } else {
-            $filesize = gztell($file);  // Always zero, ignore
+            $fileSize = gztell($file);  // Always zero, ignore
         }
     } else {
-        echo INST_getAlertMsg($LANG_BIGDUMP[4] . $curfilename);
+        echo $installer->getAlertMsg($LANG_BIGDUMP[4] . $currentFileName);
         $error = true;
     }
 }
@@ -210,28 +198,28 @@ if (!$error && isset($_REQUEST["start"])) {
 // START IMPORT SESSION HERE
 // *******************************************************************************************
 
-if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_match("/(\.(sql|gz))$/i", $curfilename)) {
+if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_match('/(\.(sql|gz))$/i', $currentFileName)) {
     // Check start and foffset are numeric values
     if (!is_numeric($_REQUEST["start"]) || !is_numeric($_REQUEST["foffset"])) {
-        echo INST_getAlertMsg($LANG_BIGDUMP[7]);
+        echo $installer->getAlertMsg($LANG_BIGDUMP[7]);
         $error = true;
     }
 
     if (!$error) {
         $_REQUEST["start"] = floor($_REQUEST["start"]);
         $_REQUEST["foffset"] = floor($_REQUEST["foffset"]);
-        echo '<p>' . $LANG_BIGDUMP[8] . ' <b>' . $curfilename . '</b></p>' . LB;
+        echo '<p>' . $LANG_BIGDUMP[8] . ' <b>' . $currentFileName . '</b></p>' . PHP_EOL;
     }
 
-    // Check $_REQUEST["foffset"] upon $filesize (can't do it on gzipped files)
-    if (!$error && !$gzipmode && $_REQUEST["foffset"] > $filesize) {
-        echo INST_getAlertMsg($LANG_BIGDUMP[9]);
+    // Check $_REQUEST["foffset"] upon $fileSize (can't do it on gzipped files)
+    if (!$error && !$gzipMode && $_REQUEST["foffset"] > $fileSize) {
+        echo $installer->getAlertMsg($LANG_BIGDUMP[9]);
         $error = true;
     }
 
     // Set file pointer to $_REQUEST["foffset"]
-    if (!$error && ((!$gzipmode && fseek($file, $_REQUEST["foffset"]) != 0) || ($gzipmode && gzseek($file, $_REQUEST["foffset"]) != 0))) {
-        echo INST_getAlertMsg($LANG_BIGDUMP[10] . $_REQUEST["foffset"]);
+    if (!$error && ((!$gzipMode && fseek($file, $_REQUEST["foffset"]) != 0) || ($gzipMode && gzseek($file, $_REQUEST["foffset"]) != 0))) {
+        echo $installer->getAlertMsg($LANG_BIGDUMP[10] . $_REQUEST["foffset"]);
         $error = true;
     }
 
@@ -239,110 +227,108 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
     if (!$error) {
         $query = "";
         $queries = 0;
-        $totalqueries = $_REQUEST["totalqueries"];
-        $linenumber = $_REQUEST["start"];
-        $querylines = 0;
-        $inparents = false;
+        $totalQueries = $_REQUEST["totalqueries"];
+        $lineNumber = $_REQUEST["start"];
+        $queryLines = 0;
+        $inParents = false;
 
-        // Stay processing as long as the $linespersession is not reached or the query is still incomplete
-        while ($linenumber < $_REQUEST["start"] + $linespersession || $query != "") {
+        // Stay processing as long as the $linesPerSession is not reached or the query is still incomplete
+        while ($lineNumber < $_REQUEST["start"] + $linesPerSession || $query != "") {
             // Read the whole next line
-            $dumpline = "";
+            $dumpLine = "";
 
-            while (!feof($file) && substr($dumpline, -1) != "\n") {
-                if (!$gzipmode) {
-                    $dumpline .= fgets($file, DATA_CHUNK_LENGTH);
+            while (!feof($file) && substr($dumpLine, -1) != "\n") {
+                if (!$gzipMode) {
+                    $dumpLine .= fgets($file, DATA_CHUNK_LENGTH);
                 } else {
-                    $dumpline .= gzgets($file, DATA_CHUNK_LENGTH);
+                    $dumpLine .= gzgets($file, DATA_CHUNK_LENGTH);
                 }
             }
 
-            if ($dumpline === "") {
+            if ($dumpLine === "") {
                 break;
             }
 
             // Handle DOS and Mac encoded linebreaks (I don't know if it will work on Win32 or Mac Servers)
-            $dumpline = str_replace("\r\n", "\n", $dumpline);
-            $dumpline = str_replace("\r", "\n", $dumpline);
+            $dumpLine = str_replace("\r\n", "\n", $dumpLine);
+            $dumpLine = str_replace("\r", "\n", $dumpLine);
 
             // Skip comments and blank lines only if NOT in parents
-            if (!$inparents) {
-                $skipline = false;
+            if (!$inParents) {
+                $skipLine = false;
                 reset($comment);
 
                 foreach ($comment as $comment_value) {
-                    if (!$inparents && (trim($dumpline) == "" || strpos($dumpline, $comment_value) === 0)) {
-                        $skipline = true;
+                    if (!$inParents && (trim($dumpLine) == "" || strpos($dumpLine, $comment_value) === 0)) {
+                        $skipLine = true;
                         break;
                     }
                 }
 
-                if ($skipline) {
-                    $linenumber++;
+                if ($skipLine) {
+                    $lineNumber++;
                     continue;
                 }
             }
 
             // Remove double back-slashes from the dumpline prior to count the quotes ('\\' can only be within strings)
-            $dumpline_deslashed = str_replace("\\\\", "", $dumpline);
+            $dumpLine_deslashed = str_replace("\\\\", "", $dumpLine);
 
             // Count ' and \' in the dumpline to avoid query break within a text field ending by ;
             // Please don't use double quotes ('"')to surround strings, it wont work
-            $parents = substr_count($dumpline_deslashed, "'") - substr_count($dumpline_deslashed, "\\'");
+            $parents = substr_count($dumpLine_deslashed, "'") - substr_count($dumpLine_deslashed, "\\'");
             if ($parents % 2 != 0) {
-                $inparents = !$inparents;
+                $inParents = !$inParents;
             }
 
             // Add the line to query
-            $query .= $dumpline;
+            $query .= $dumpLine;
 
             // Don't count the line if in parents (text fields may include unlimited linebreaks)
-            if (!$inparents) {
-                $querylines++;
+            if (!$inParents) {
+                $queryLines++;
             }
 
             // Stop if query contains more lines as defined by MAX_QUERY_LINES
-            if ($querylines > MAX_QUERY_LINES) {
-                echo INST_getAlertMsg($LANG_BIGDUMP[14] . $linenumber . $LANG_BIGDUMP[15] . MAX_QUERY_LINES . $LANG_BIGDUMP[16]);
+            if ($queryLines > MAX_QUERY_LINES) {
+                echo $installer->getAlertMsg($LANG_BIGDUMP[14] . $lineNumber . $LANG_BIGDUMP[15] . MAX_QUERY_LINES . $LANG_BIGDUMP[16]);
                 $error = true;
                 break;
             }
 
             // Execute query if end of query detected (; as last character) AND NOT in parents
-            if (preg_match("/;$/", trim($dumpline)) && !$inparents) {
+            if (preg_match("/;$/", trim($dumpLine)) && !$inParents) {
                 if (!TESTMODE) {
-                    if ((($dbConnection instanceof mysqli) && !$dbConnection->query(trim($query))) ||
-                        !mysql_query(trim($query), $dbConnection)
-                    ) {
-                        echo INST_getAlertMsg(
-                            $LANG_BIGDUMP[17] . $linenumber . ': ' . trim($dumpline) . '.<br ' . XHTML . '>'
-                            . $LANG_BIGDUMP[18] . trim(INST_nl2br(htmlentities($query))) . '<br ' . XHTML . '>'
-                            . $LANG_BIGDUMP[19] . (($dbConnection instanceof mysqli) ? $dbConnection->error : mysql_error())
+                    if ($dbConnection->query(trim($query)) === false) {
+                        echo $installer->getAlertMsg(
+                            $LANG_BIGDUMP[17] . $lineNumber . ': ' . trim($dumpLine) . '.<br ' . PHP_EOL . '>'
+                            . $LANG_BIGDUMP[18] . trim(Installer::nl2br(htmlentities($query))) . '<br ' . PHP_EOL . '>'
+                            . $LANG_BIGDUMP[19] . $dbConnection->error()
                         );
                         $error = true;
                         break;
                     }
 
-                    $totalqueries++;
+                    $totalQueries++;
                     $queries++;
                     $query = "";
-                    $querylines = 0;
+                    $queryLines = 0;
                 }
 
-                $linenumber++;
+                $lineNumber++;
             }
         }
 
         // Get the current file position
         if (!$error) {
-            if (!$gzipmode) {
-                $foffset = ftell($file);
+            if (!$gzipMode) {
+                $fOffset = ftell($file);
             } else {
-                $foffset = gztell($file);
+                $fOffset = gztell($file);
             }
 
-            if (!$foffset) {
-                echo INST_getAlertMsg($LANG_BIGDUMP[20]);
+            if (!$fOffset) {
+                echo $installer->getAlertMsg($LANG_BIGDUMP[20]);
                 $error = true;
             }
         }
@@ -350,41 +336,41 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
         // Print statistics
 
         if (!$error) {
-            $lines_this = $linenumber - $_REQUEST["start"];
-            $lines_done = $linenumber - 1;
+            $lines_this = $lineNumber - $_REQUEST["start"];
+            $lines_done = $lineNumber - 1;
             $lines_togo = ' ? ';
             $lines_tota = ' ? ';
 
             $queries_this = $queries;
-            $queries_done = $totalqueries;
+            $queries_done = $totalQueries;
             $queries_togo = ' ? ';
             $queries_tota = ' ? ';
 
-            $bytes_this = $foffset - $_REQUEST["foffset"];
-            $bytes_done = $foffset;
+            $bytes_this = $fOffset - $_REQUEST["foffset"];
+            $bytes_done = $fOffset;
             $kbytes_this = round($bytes_this / 1024, 2);
             $kbytes_done = round($bytes_done / 1024, 2);
             $mbytes_this = round($kbytes_this / 1024, 2);
             $mbytes_done = round($kbytes_done / 1024, 2);
 
-            if (!$gzipmode) {
-                $bytes_togo = $filesize - $foffset;
-                $bytes_tota = $filesize;
+            if (!$gzipMode) {
+                $bytes_togo = $fileSize - $fOffset;
+                $bytes_tota = $fileSize;
                 $kbytes_togo = round($bytes_togo / 1024, 2);
                 $kbytes_tota = round($bytes_tota / 1024, 2);
                 $mbytes_togo = round($kbytes_togo / 1024, 2);
                 $mbytes_tota = round($kbytes_tota / 1024, 2);
 
-                $pct_this = ceil($bytes_this / $filesize * 100);
-                $pct_done = ceil($foffset / $filesize * 100);
+                $pct_this = ceil($bytes_this / $fileSize * 100);
+                $pct_done = ceil($fOffset / $fileSize * 100);
                 $pct_togo = 100 - $pct_done;
                 $pct_tota = 100;
 
                 if ($bytes_togo == 0) {
                     $lines_togo = '0';
-                    $lines_tota = $linenumber - 1;
+                    $lines_tota = $lineNumber - 1;
                     $queries_togo = '0';
-                    $queries_tota = $totalqueries;
+                    $queries_tota = $totalQueries;
                 }
 
                 $pct_bar = '<div style="height: 15px; width: ' . $pct_done . '% ;background-color: #000080; margin: 0;"></div>';
@@ -406,56 +392,58 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
             echo '
         <table width="650" border="0" cellpadding="3" cellspacing="1">
         <tr><th align="left" width="125">' . $LANG_BIGDUMP[22] . ': ' . $pct_done . '%</th><td colspan="4">' . $pct_bar . '</td></tr>
-        </table><br' . XHTML . '>' . LB;
+        </table><br>' . PHP_EOL;
 
             // Finish message and restart the script
-            if ($linenumber < $_REQUEST["start"] + $linespersession) {
-                echo INST_getAlertMsg($LANG_BIGDUMP[23], 'success');
+            if ($lineNumber < $_REQUEST["start"] + $linesPerSession) {
+                echo $installer->getAlertMsg($LANG_BIGDUMP[23], 'success');
                 /*** Go back to Geeklog installer ***/
                 echo("<script language=\"JavaScript\" type=\"text/javascript\">window.setTimeout('location.href=\""
-                    . 'migrate.php?step=4'
-                    . '&language=' . $language
+                    . 'index.php?mode=migrate&step=4'
+                    . '&language=' . $installer->getLanguage()
                     . '&site_url=' . $_REQUEST['site_url']
                     . '&site_admin_url=' . $_REQUEST['site_admin_url'] . "\";',3000);</script>\n");
             } else {
-                if ($delaypersession != 0) {
-                    echo '<p><b>' . $LANG_BIGDUMP[24] . $delaypersession . $LANG_BIGDUMP[25] . LB;
+                if ($delayPerSession != 0) {
+                    echo '<p><b>' . $LANG_BIGDUMP[24] . $delayPerSession . $LANG_BIGDUMP[25] . PHP_EOL;
                 }
 
                 // Go to the next step
                 echo '<script language="JavaScript" type="text/javascript">window.setTimeout(\'location.href="'
-                    . $_SERVER['PHP_SELF'] . '?start=' . $linenumber . '&fn='
-                    . urlencode($curfilename) . '&foffset=' . $foffset . '&totalqueries=' . $totalqueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $language . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delaypersession . ');</script>' . LB
-                    . '<noscript>' . LB
-                    . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $linenumber . '&amp;fn=' . urlencode($curfilename) . '&amp;foffset=' . $foffset . '&amp;totalqueries=' . $totalqueries . '&amp;db_connection_charset=' . $db_connection_charset . '&amp;language=' . $language . '&amp;site_url=' . $site_url . '&amp;site_admin_url=' . $site_admin_url . '">Continue from the line ' . $linenumber . '</a></p>' . LB
-                    . '</noscript>' . LB
-                    . '<p><b><a href="' . $_SERVER['PHP_SELF'] . '">' . $LANG_BIGDUMP[26] . '</a></b> ' . $LANG_BIGDUMP[27] . ' <b>' . $LANG_BIGDUMP[28] . '</b></p>' . LB;
+                    . $_SERVER['PHP_SELF'] . '?start=' . $lineNumber . '&fn='
+                    . urlencode($currentFileName) . '&foffset=' . $fOffset . '&totalqueries=' . $totalQueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $installer->getLanguage() . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delayPerSession . ');</script>' . PHP_EOL
+                    . '<noscript>' . PHP_EOL
+                    . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $lineNumber . '&amp;fn=' . urlencode($currentFileName) . '&amp;foffset=' . $fOffset . '&amp;totalqueries=' . $totalQueries . '&amp;db_connection_charset=' . $db_connection_charset . '&amp;language=' . $installer->getLanguage() . '&amp;site_url=' . $site_url . '&amp;site_admin_url=' . $site_admin_url . '">Continue from the line ' . $lineNumber . '</a></p>' . PHP_EOL
+                    . '</noscript>' . PHP_EOL
+                    . '<p><b><a href="' . $_SERVER['PHP_SELF'] . '">' . $LANG_BIGDUMP[26] . '</a></b> ' . $LANG_BIGDUMP[27] . ' <b>' . $LANG_BIGDUMP[28] . '</b></p>' . PHP_EOL;
             }
         } else {
-            echo INST_getAlertMsg($LANG_BIGDUMP[29]);
+            echo $installer->getAlertMsg($LANG_BIGDUMP[29]);
         }
     }
 }
 
 if ($error) {
-    $backurl = 'migrate.php';
+    $backUrl = 'index.php?mode=migrate';
+    $language = $installer->getLanguage();
 
     if (!empty($language)) {
-        $backurl .= '?language=' . $language;
+        $backUrl .= '&language=' . $language;
     }
 
-    echo '<p><a href="' . $backurl . '">' . $LANG_BIGDUMP[30] . '</a> '
-        . $LANG_BIGDUMP[31] . '</p>' . LB;
+    echo '<p><a href="' . $backUrl . '">' . $LANG_BIGDUMP[30] . '</a> '
+        . $LANG_BIGDUMP[31] . '</p>' . PHP_EOL;
 }
 
 if ($dbConnection) {
-    ($dbConnection instanceof mysqli) ? $dbConnection->close() : mysql_close($dbConnection);
+    Geeklog\Db::disconnect();
+    $dbConnection = null;
 }
 
-if ($file && !$gzipmode) {
+if ($file && !$gzipMode) {
     fclose($file);
-} elseif ($file && $gzipmode) {
+} elseif ($file && $gzipMode) {
     gzclose($file);
 }
 
-echo INST_getFooter();
+echo Installer::getFooter();

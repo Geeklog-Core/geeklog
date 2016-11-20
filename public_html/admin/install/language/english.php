@@ -128,7 +128,7 @@ $LANG_INSTALL = array(
     76 => 'Select Your Current Geeklog Version',
     77 => 'The installer was unable to determine your current version of Geeklog, please select it from the list below:',
     78 => 'Upgrade Error',
-    79 => 'An error occured while upgrading your Geeklog installation.',
+    79 => 'An error occurred while upgrading your Geeklog installation.',
     80 => 'Change',
     81 => 'Stop!',
     82 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
@@ -194,12 +194,9 @@ $LANG_SUCCESS = array(
     25 => 'No, thanks.  I will manually delete them afterwards.',
 );
 
-// +---------------------------------------------------------------------------+
-// migrate.php
-
 $LANG_MIGRATE = array(
     0 => 'The migration process will overwrite any existing database information.',
-    1 => 'Before Proceding',
+    1 => 'Before Proceeding',
     2 => 'Be sure any previously installed plugins have been copied to your new server.',
     3 => 'Be sure any images from <code>public_html/images/articles/</code>, <code>public_html/images/topics/</code>, and <code>public_html/images/userphotos/</code>, have been copied to your new server.',
     4 => 'If you\'re upgrading from a Geeklog version older than <strong>1.5.0</strong>, then make sure to copy over all your old <tt>config.php</tt> files so that the migration can pick up your settings.',

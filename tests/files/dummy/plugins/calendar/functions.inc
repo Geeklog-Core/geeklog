@@ -1474,7 +1474,7 @@ function plugin_migrate_calendar($old_conf)
     );
 
     if ($old_conf['site_url'] != $_CONF['site_url']) {
-        INST_updateSiteUrl($old_conf['site_url'], $_CONF['site_url'], $tables);
+        Installer::updateSiteUrl($old_conf['site_url'], $_CONF['site_url'], $tables);
     }
 
     return true;

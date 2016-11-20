@@ -70,7 +70,7 @@ mergeArrays($ENG_SUCCESS, $LANG_SUCCESS, 'LANG_SUCCESS', false);
 echo "\n";
 
 separatorThin();
-echo "// migrate.php\n";
+echo "// migration\n";
 mergeArrays($ENG_MIGRATE, $LANG_MIGRATE, 'LANG_MIGRATE', false);
 echo "\n";
 

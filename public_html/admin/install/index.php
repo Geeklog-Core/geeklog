@@ -33,12 +33,12 @@
 // | docs/english/install.html which describes how to install Geeklog.         |
 // +---------------------------------------------------------------------------+
 
-define('PATH_INSTALL', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+define('PATH_INSTALL', __DIR__ . '/');
 define('PATH_LAYOUT', PATH_INSTALL . 'layout');
 define('BASE_FILE', str_replace('\\', '/', __FILE__));
 
-require_once './classes/micro_template.class.php';
-require_once './classes/installer.class.php';
+require_once __DIR__ . '/classes/micro_template.class.php';
+require_once __DIR__ . '/classes/installer.class.php';
 
 $installer = new Installer();
 $installer->run();

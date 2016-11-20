@@ -15,6 +15,9 @@ class Installer
     // Default UI language
     const DEFAULT_LANGUAGE = 'english';
 
+    // Default theme
+    const DEFAULT_THEME = 'denim';
+
     // Database configuration file
     const DB_CONFIG_FILE = 'db-config.php';
 
@@ -34,10 +37,121 @@ class Installer
     private $LANG = array();
 
     /**
+     * Replaces all newlines in a string with <br> or <br />,
+     * depending on the detected setting.  Ported from "lib-common.php"
+     *
+     * @param   string $string The string to modify
+     * @return  string         The modified string
+     */
+    public static function nl2br($string)
+    {
+        $replace = '<br>';
+        $find = array("\r\n", "\n\r", "\r", "\n");
+
+        return str_replace($find, $replace, $string);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->env['language'];
+    }
+
+    /**
+     * Returns the beginning HTML for the installer theme.
+     *
+     * @param  string $mHeading Heading
+     * @return string           Header HTML code
+     */
+    public static function getHeader($mHeading)
+    {
+        global $LANG_CHARSET, $LANG_INSTALL, $LANG_DIRECTION;
+
+        return <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="stylesheet" type="text/css" href="layout/style.css">
+    <script type="text/javascript">
+    function INST_selectMigrationType() {
+        var myType = document.migrate.migration_type.value;
+        var migrationSelect = document.getElementById("migration-select");
+        var migrationUpload = document.getElementById("migration-upload");
+        var migrationUploadWarning = document.getElementById("migration-upload-warning");
+    
+        switch (myType) {
+            case "select":
+              migrationSelect.style.display = "inline";
+              migrationUpload.style.display = "none";
+              migrationUploadWarning.style.display = "none";
+              break;l
+              
+            case "upload":
+              migrationSelect.style.display = "none";
+              migrationUpload.style.display = "inline";
+              migrationUploadWarning.style.display = "block";
+              break;
+              
+            default:
+              migrationSelect.style.display = "none";
+              migrationUpload.style.display = "none";
+              migrationUploadWarning.style.display = "none";
+              break;
+        }
+    }
+    </script>
+  <title>{$LANG_INSTALL[0]}</title>
+</head>
+
+<body dir="{$LANG_DIRECTION}">
+    <div class="header-navigation-container">
+        <div class="header-navigation-line">
+            <a href="{$LANG_INSTALL[87]}" class="header-navigation">{$LANG_INSTALL[1]}</a>&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="header-logobg-container-inner">
+        <a class="header-logo" href="https://www.geeklog.net/">
+            <img src="layout/logo.png"  width="151" height="56" alt="Geeklog">
+        </a>
+        <div class="header-slogan">{$LANG_INSTALL[2]}<br><br>
+        </div>
+    </div>
+    <div class="installation-container">
+        <div class="installation-body-container">
+            <h1 class="heading">{$mHeading}</h1>
+HTML;
+    }
+
+    /**
+     * Return the ending HTML for the installer theme.
+     *
+     * @return string Footer HTML code
+     */
+    public static function getFooter()
+    {
+        return <<<HTML
+        <br><br>
+    </div>
+</div>
+</body>
+</html>
+HTML;
+    }
+
+    /**
      * Installer constructor.
      */
     public function __construct()
     {
+        global $LANG_BIGDUMP, $LANG_CHARSET, $LANG_DIRECTION, $LANG_ERROR, $LANG_HELP, $LANG_INSTALL,
+               $LANG_LABEL, $LANG_MIGRATE, $LANG_PLUGINS, $LANG_RESCUE, $LANG_SUCCESS;
+
         // Set error reporting
         if (is_callable('ini_set')) {
             @ini_set('display_errors', '1');
@@ -125,7 +239,7 @@ class Installer
      * @param    string $type    'error', 'warning', 'success', or 'notice'
      * @return   string          HTML formatted dialog message
      */
-    private function getAlertMessage($message, $type = 'notice')
+    public function getAlertMessage($message, $type = 'notice')
     {
         $style = ($type === 'success') ? 'success' : 'error';
 
@@ -196,7 +310,7 @@ class Installer
      * @param  array|string $defaultValue
      * @return array|null|string
      */
-    private function get($name, $defaultValue = null)
+    public function get($name, $defaultValue = null)
     {
         return array_key_exists($name, $_GET) ? $this->processRequestVar($_GET[$name]) : $defaultValue;
     }
@@ -208,7 +322,7 @@ class Installer
      * @param  array|string $defaultValue
      * @return array|null|string
      */
-    private function post($name, $defaultValue = null)
+    public function post($name, $defaultValue = null)
     {
         return array_key_exists($name, $_POST) ? $this->processRequestVar($_POST[$name]) : $defaultValue;
     }
@@ -220,7 +334,7 @@ class Installer
      * @param  array|string $defaultValue
      * @return array|null|string
      */
-    private function request($name, $defaultValue = null)
+    public function request($name, $defaultValue = null)
     {
         return array_key_exists($name, $_REQUEST) ? $this->processRequestVar($_REQUEST[$name]) : $defaultValue;
     }
@@ -253,7 +367,7 @@ class Installer
     /**
      * Check PHP version and exit if the environment is too pld
      */
-    private function checkPhpVersion()
+    public function checkPhpVersion()
     {
         if (version_compare(PHP_VERSION, self::SUPPORTED_PHP_VER) >= 0) {
             return;
@@ -350,7 +464,7 @@ class Installer
      *
      * @return string
      */
-    private function getHtmlPath()
+    public function getHtmlPath()
     {
         $path = str_replace('\\', '/', BASE_FILE);
         $path = str_replace('//', '/', $path);
@@ -365,12 +479,31 @@ class Installer
     }
 
     /**
+     * Helper function: Derive path of the 'admin' directory from index.php
+     *
+     * @return string
+     */
+    public function getAdminPath()
+    {
+        $path = str_replace('\\', '/', BASE_FILE);
+        $path = str_replace('//', '/', $path);
+        $parts = explode('/', $path);
+        $num_parts = count($parts);
+
+        if (($num_parts < 3) || ($parts[$num_parts - 1] !== 'index.php')) {
+            die('Fatal error - can not figure out my own path');
+        }
+
+        return implode('/', array_slice($parts, 0, $num_parts - 2)) . '/';
+    }
+
+    /**
      * Filter path value for junk and injections
      *
      * @param   string $path a path on the file system
      * @return  string          filtered path value
      */
-    private function sanitizePath($path)
+    public function sanitizePath($path)
     {
         $path = strip_tags($path);
         $path = str_replace(array('"', "'"), '', $path);
@@ -448,8 +581,8 @@ class Installer
         // Continue onto the install, upgrade, or migration
         switch ($this->get('op')) {
             case 'migrate':
-                header('Location: migrate.php?'
-                    . 'dbconfig_path=' . urlencode($paths['db-config.php'])
+                header('Location: index.php?mode=migrate'
+                    . '&dbconfig_path=' . urlencode($paths['db-config.php'])
                     . '&public_html_path=' . urlencode($paths['public_html/'])
                     . '&language=' . $this->env['language']);
                 break;
@@ -729,7 +862,7 @@ class Installer
      * @param   string $var key of the label, used as an anchor on the help page
      * @return  string          HTML for the link
      */
-    private function getHelpLink($var)
+    public function getHelpLink($var)
     {
         return '(<a href="help.php?language=' . $this->env['language'] . '&amp;label=' . $var
         . '#' . $var . '" target="_blank">?</a>)';
@@ -1159,6 +1292,247 @@ class Installer
     }
 
     /**
+     * Do the actual plugin auto install
+     *
+     * @param    string  $plugin      Plugin name
+     * @param    array   $inst_params Installation parameters for the plugin
+     * @param    boolean $verbose     true: enable verbose logging
+     * @return   boolean              true on success, false otherwise
+     */
+    public function pluginAutoInstall($plugin, $inst_params, $verbose = true)
+    {
+        global $_CONF, $_TABLES, $_USER, $_DB_dbms, $_DB_table_prefix;
+
+        $fake_uid = false;
+        if (!isset($_USER['uid'])) {
+            $_USER['uid'] = 1;
+            $fake_uid = false;
+        }
+
+        $base_path = $_CONF['path'] . 'plugins/' . $plugin . '/';
+
+        if ($verbose) {
+            COM_errorLog("Attempting to install the '$plugin' plugin", 1);
+        }
+
+        // sanity checks for $inst_params
+        if (isset($inst_params['info'])) {
+            $pi_name = $inst_params['info']['pi_name'];
+            $pi_version = $inst_params['info']['pi_version'];
+            $pi_gl_version = $inst_params['info']['pi_gl_version'];
+            $pi_homepage = $inst_params['info']['pi_homepage'];
+        }
+        if (empty($pi_name) || ($pi_name != $plugin) || empty($pi_version) ||
+            empty($pi_gl_version) || empty($pi_homepage)
+        ) {
+            COM_errorLog('Incomplete plugin info', 1);
+
+            return false;
+        }
+
+        // add plugin tables, if any
+        if (!empty($inst_params['tables'])) {
+            $tables = $inst_params['tables'];
+            foreach ($tables as $table) {
+                $_TABLES[$table] = $_DB_table_prefix . $table;
+            }
+        }
+
+        // Create the plugin's group(s), if any
+        $groups = array();
+        $admin_group_id = 0;
+        if (!empty($inst_params['groups'])) {
+            $groups = $inst_params['groups'];
+            foreach ($groups as $name => $desc) {
+                if ($verbose) {
+                    COM_errorLog("Attempting to create '$name' group", 1);
+                }
+
+                $grp_name = DB_escapeString($name);
+                $grp_desc = DB_escapeString($desc);
+                DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
+                if (DB_error()) {
+                    COM_errorLog('Error creating plugin group', 1);
+                    PLG_uninstall($plugin);
+
+                    return false;
+                }
+
+                // keep the new group's ID for use in the mappings section (below)
+                $groups[$name] = DB_insertId();
+
+                // assume that the first group is the plugin's Admin group
+                if ($admin_group_id == 0) {
+                    $admin_group_id = $groups[$name];
+                }
+            }
+        }
+
+        // Create the plugin's table(s)
+        $_SQL = array();
+        $DEFVALUES = array();
+        if (file_exists($base_path . 'sql/' . $_DB_dbms . '_install.php')) {
+            require_once $base_path . 'sql/' . $_DB_dbms . '_install.php';
+        }
+
+        if (count($_SQL) > 0) {
+            $use_innodb = false;
+            if (($_DB_dbms == 'mysql') &&
+                (DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'")
+                    == 'InnoDB')
+            ) {
+                $use_innodb = true;
+            }
+
+            foreach ($_SQL as $sql) {
+                $sql = str_replace('#group#', $admin_group_id, $sql);
+                DB_query($sql);
+                if (DB_error()) {
+                    COM_errorLog('Error creating plugin table', 1);
+                    PLG_uninstall($plugin);
+
+                    return false;
+                }
+            }
+        }
+
+        // Add the plugin's features
+        if ($verbose) {
+            COM_errorLog("Attempting to add '$plugin' features", 1);
+        }
+
+        $features = array();
+        $mappings = array();
+        if (!empty($inst_params['features'])) {
+            $features = $inst_params['features'];
+            if (!empty($inst_params['mappings'])) {
+                $mappings = $inst_params['mappings'];
+            }
+
+            foreach ($features as $feature => $desc) {
+                $ft_name = DB_escapeString($feature);
+                $ft_desc = DB_escapeString($desc);
+                DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
+                    . "VALUES ('$ft_name', '$ft_desc')", 1);
+                if (DB_error()) {
+                    COM_errorLog('Error adding plugin feature', 1);
+                    PLG_uninstall($plugin);
+
+                    return false;
+                }
+
+                $feat_id = DB_insertId();
+
+                if (isset($mappings[$feature])) {
+                    foreach ($mappings[$feature] as $group) {
+                        if ($verbose) {
+                            COM_errorLog("Adding '$feature' feature to the '$group' group", 1);
+                        }
+
+                        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$groups[$group]})");
+                        if (DB_error()) {
+                            COM_errorLog('Error mapping plugin feature', 1);
+                            PLG_uninstall($plugin);
+
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add plugin's Admin group to the Root user group
+        // (assumes that the Root group's ID is always 1)
+        if (count($groups) > 0) {
+            if ($verbose) {
+                COM_errorLog("Attempting to give all users in the Root group access to the '$plugin' Admin group", 1);
+            }
+
+            foreach ($groups as $key => $value) {
+                DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES "
+                    . "($admin_group_id, NULL, 1)");
+                if (DB_error()) {
+                    COM_errorLog('Error adding plugin admin group to Root group', 1);
+                    PLG_uninstall($plugin);
+
+                    return false;
+                }
+            }
+        }
+
+        // Pre-populate tables or run any other SQL queries
+        if (count($DEFVALUES) > 0) {
+            if ($verbose) {
+                COM_errorLog('Inserting default data', 1);
+            }
+            foreach ($DEFVALUES as $sql) {
+                $sql = str_replace('#group#', $admin_group_id, $sql);
+                DB_query($sql, 1);
+                if (DB_error()) {
+                    COM_errorLog('Error adding plugin default data', 1);
+                    PLG_uninstall($plugin);
+
+                    return false;
+                }
+            }
+        }
+
+        // Load the online configuration records
+        $load_config = 'plugin_load_configuration_' . $plugin;
+        if (function_exists($load_config)) {
+            if (!$load_config($plugin)) {
+                COM_errorLog('Error loading plugin configuration', 1);
+                PLG_uninstall($plugin);
+
+                return false;
+            }
+
+            require_once $_CONF['path'] . 'system/classes/config.class.php';
+            $config = config::get_instance();
+            $config->initConfig(); // force re-reading, including new plugin conf
+        }
+
+        // Finally, register the plugin with Geeklog
+        if ($verbose) {
+            COM_errorLog("Registering '$plugin' plugin", 1);
+        }
+
+        // silently delete an existing entry
+        DB_delete($_TABLES['plugins'], 'pi_name', $plugin);
+
+        DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) VALUES "
+            . "('$plugin', '$pi_version', '$pi_gl_version', '$pi_homepage', 1)");
+
+        if (DB_error()) {
+            COM_errorLog('Failed to register plugin', 1);
+            PLG_uninstall($plugin);
+
+            return false;
+        }
+
+        // give the plugin a chance to perform any post-install operations
+        $post_install = 'plugin_postinstall_' . $plugin;
+        if (function_exists($post_install)) {
+            if (!$post_install($plugin)) {
+                COM_errorLog('Plugin postinstall failed', 1);
+                PLG_uninstall($plugin);
+
+                return false;
+            }
+        }
+
+        if ($verbose) {
+            COM_errorLog("Successfully installed the '$plugin' plugin!", 1);
+        }
+
+        if ($fake_uid) {
+            unset($_USER['uid']);
+        }
+
+        return true;
+    }
+
+    /**
      * Pick up and install any new plugins
      * Search for plugins that exist in the filesystem but are not registered with
      * Geeklog. If they support auto install, install them now.
@@ -1354,7 +1728,7 @@ class Installer
      * @param   array $db Database information
      * @return  bool True if supported, false if not supported
      */
-    private function isMysqlOutOfDate($db)
+    private function isMysqlOutOfDate(array $db)
     {
         if ($db['type'] === 'mysql' || $db['type'] === 'mysql-innodb') {
             $minVersion = explode('.', self::SUPPORTED_MYSQL_VER);
@@ -1423,9 +1797,17 @@ class Installer
         // We may have included db-config.php elsewhere already, in which case
         // all of these variables need to be imported from the global namespace
         global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
-               $_DB_dbms;
+               $_DB_dbms, $_DB_charset;
 
         require_once $dbConfigFilePath; // Grab the current DB values
+
+        $isUtf8 = false;
+
+        if (!empty($_DB_charset)) {
+            $isUtf8 = ($_DB_charset === 'utf8') || ($_DB_charset === 'utf8mb4');
+        } elseif (isset($db['utf8'])) {
+            $isUtf8 = $db['utf8'];
+        }
 
         $db = array(
             'host'         => (isset($db['host']) ? $db['host'] : $_DB_host),
@@ -1452,12 +1834,31 @@ class Installer
         $dbConfigData = str_replace("\$_DB_table_prefix = '" . $_DB_table_prefix . "';", "\$_DB_table_prefix = '" . $db['table_prefix'] . "';", $dbConfigData); // Table prefix
         $dbConfigData = str_replace("\$_DB_dbms = '" . $_DB_dbms . "';", "\$_DB_dbms = '" . $db['type'] . "';", $dbConfigData); // Database type ('mysql' or 'pgsql')
 
-        // Write our changes to db-config.php
-        if (@file_put_contents($dbConfigFilePath, $dbConfigData) === false) {
-            return false;
+        if (($db['type'] === 'mysql') && $isUtf8 && version_compare(self::GL_VERSION, '2.1.2', '>=') &&
+            (!empty($_DB_charset) || ($this->env['mode'] === 'install'))
+        ) {
+            if (!empty($_DB_charset)) {
+                $db['charset'] = $_DB_charset;
+            } else {
+                require_once __DIR__ . '/db.class.php';
+                $dbTypes = Geeklog\Db::getDrivers();
+
+                if (in_array(Geeklog\Db::DB_MYSQLI, $dbTypes)) {
+                    $driver = Geeklog\Db::connect(Geeklog\Db::DB_MYSQLI, $db);
+                } else {
+                    $driver = Geeklog\Db::connect(Geeklog\Db::DB_MYSQL, $db);
+                }
+
+                $db['charset'] = ($driver->getVersion() >= 50503) ? 'utf8mb4' : 'utf8';
+            }
+
+            $dbConfigData = str_replace("\$_DB_charset = '" . $_DB_charset . "';", "\$_DB_charset = '" . $db['charset'] . "';", $dbConfigData); // Charset
         }
 
-        return true;
+        // Write our changes to db-config.php
+        $result = (@file_put_contents($dbConfigFilePath, $dbConfigData) !== false);
+
+        return $result;
     }
 
     /**
@@ -1466,7 +1867,7 @@ class Installer
      *
      * @param   string $siteConfigFilePath complete path to siteconfig.php
      * @param   string $charset            default character set to use
-     * @return  bool                    true: success; false: an error occured
+     * @return  bool                       true: success; false: an error occurred
      */
     private function setDefaultCharset($siteConfigFilePath, $charset)
     {
@@ -1477,12 +1878,7 @@ class Installer
             "\$_CONF['default_charset'] = '" . $charset . "';",
             $siteConfigData
         );
-
-        if (@file_put_contents($siteConfigFilePath, $siteConfigData) === false) {
-            $result = false;
-        } else {
-            $result = true;
-        }
+        $result = (@file_put_contents($siteConfigFilePath, $siteConfigData) !== false);
 
         return $result;
     }
@@ -1849,6 +2245,38 @@ class Installer
         }
 
         $this->autoInstallNewPlugins();
+    }
+
+    /**
+     * Get information about a plugin
+     * Only works for plugins that have a autoinstall.php file
+     *
+     * @param  string $plugin plugin's directory name
+     * @return array|false         array of plugin info or false: error
+     */
+    public function getPluginInfo($plugin)
+    {
+        global $_CONF, $_TABLES, $_DB_dbms, $_DB_table_prefix;
+
+        $info = false;
+
+        $autoInstall = $_CONF['path'] . 'plugins/' . $plugin . '/autoinstall.php';
+        if (!file_exists($autoInstall)) {
+            return false;
+        }
+
+        include_once $autoInstall;
+
+        $fn = 'plugin_autoinstall_' . $plugin;
+
+        if (function_exists($fn)) {
+            $inst_info = $fn($plugin);
+            if (isset($inst_info['info']) && !empty($inst_info['info']['pi_name'])) {
+                $info = $inst_info['info'];
+            }
+        }
+
+        return $info;
     }
 
     /**
@@ -2398,9 +2826,13 @@ class Installer
                     $_SQL = array();
                     break;
 
+                case '2.1.0':
+                    // there were no database changes in 2.1.0
                 case '2.1.1':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.1.1_to_2.1.2.php';
                     $this->updateDB($_SQL, $progress);
+                    update_addLanguage();
+                    update_addRouting();
                     update_ConfValuesFor212();
                     $currentGlVersion = '2.1.2';
                     $_SQL = array();
@@ -2408,6 +2840,7 @@ class Installer
 
                 default:
                     $done = true;
+                    break;
             }
         }
 
@@ -2457,10 +2890,12 @@ class Installer
             $config->set('path_data', $path . 'data/');
         }
 
-        if ((!$_CONF['have_pear']) &&
-            (!file_exists($_CONF['path_pear'] . 'PEAR.php'))
-        ) {
-            $config->set('path_pear', $path . 'system/pear/');
+        if (version_compare(self::GL_VERSION, '2.1.2', '<')) {
+            if ((!$_CONF['have_pear']) &&
+                (!file_exists($_CONF['path_pear'] . 'PEAR.php'))
+            ) {
+                $config->set('path_pear', $path . 'system/pear/');
+            }
         }
 
         if (!file_exists($_CONF['path_html'] . 'lib-common.php')) {
@@ -2649,6 +3084,1078 @@ class Installer
     }
 
     /**
+     * Written to aid in install script development
+     * NOTE:    This code is a modified copy from PHP.net
+     *
+     * @param   int $size       file size
+     * @param   int $dec_places Number of decimal places
+     * @return  string             file size string
+     */
+    private function formatSize($size, $dec_places = 0)
+    {
+        $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+        for ($i = 0; ($size > 1024 && isset($sizes[$i + 1])); $i++) {
+            $size /= 1024;
+        }
+
+        return round($size, $dec_places) . ' ' . $sizes[$i];
+    }
+
+    /**
+     * Check if an error occurred while uploading a file
+     *
+     * @param   array $mFile    $_FILE['uploaded_file']
+     * @return  mixed           Returns the error string if an error occurred,
+     *                          returns false if no error occurred
+     */
+    public function getUploadError($mFile)
+    {
+        global $LANG_ERROR;
+
+        $mErrors = array(
+            UPLOAD_ERR_INI_SIZE   => $LANG_ERROR[0],
+            UPLOAD_ERR_FORM_SIZE  => $LANG_ERROR[1],
+            UPLOAD_ERR_PARTIAL    => $LANG_ERROR[2],
+            UPLOAD_ERR_NO_FILE    => $LANG_ERROR[3],
+            UPLOAD_ERR_NO_TMP_DIR => $LANG_ERROR[4],
+            UPLOAD_ERR_CANT_WRITE => $LANG_ERROR[5],
+            UPLOAD_ERR_EXTENSION  => $LANG_ERROR[6],
+        );
+
+        if ($mFile['error'] != UPLOAD_ERR_OK) { // If an error occurred while uploading the file.
+            if ($mFile['error'] > count($mErrors)) { // If the error code isn't listed in $mErrors
+                $mRetval = 'An unknown error occurred'; // Unknown error
+            } else {
+                $mRetval = $mErrors[$mFile['error']]; // Print the error
+            }
+        } else { // If no upload error occurred
+            $mRetval = false;
+        }
+
+        return $mRetval;
+    }
+
+    /**
+     * Nicely formats the alert messages
+     *
+     * @param  string $mMessage Message string
+     * @param  string $mType    'error', 'warning', 'success', or 'notice'
+     * @return string           HTML formatted dialog message
+     */
+    public function getAlertMsg($mMessage, $mType = 'notice')
+    {
+        global $LANG_INSTALL;
+
+        $mStyle = ($mType === 'success') ? 'success' : 'error';
+
+        switch (strtolower($mType)) {
+            case 'error':
+                $mType = $LANG_INSTALL[38];
+                break;
+
+            case 'warning':
+                $mType = $LANG_INSTALL[20];
+                break;
+
+            case 'success':
+                $mType = $LANG_INSTALL[93];
+                break;
+
+            default:
+                $mType = $LANG_INSTALL[59];
+                break;
+        }
+
+        return '<div class="notice"><span class="' . $mStyle . '">' . $mType . ':</span> ' . $mMessage . '</div>' . PHP_EOL;
+    }
+
+    /**
+     * Unpack a db backup file, if necessary
+     * Note: This requires a minimal PEAR setup (incl. Tar and Zip classes) and a
+     *       way to set the PEAR include path. But if that doesn't work on your
+     *       setup, then chances are you won't get Geeklog up and running anyway ...
+     *
+     * @param    string $backupPath path to the "backups" directory
+     * @param    string $backupFile backup file name
+     * @param    string $display    reference to HTML string (for error msg)
+     * @return   mixed                  file name of unpacked file or false: error
+     */
+    private function unpackFile($backupPath, $backupFile, &$display)
+    {
+        global $_CONF, $LANG_MIGRATE;
+
+        if (!preg_match('/\.(zip|tar\.gz|tgz)$/i', $backupFile)) {
+            // not packed
+            return $backupFile;
+        }
+
+        require_once $_CONF['path'] . 'systems/classes/Autoload.php';
+        Geeklog\Autoload::initialize();
+        $archive = new Unpacker($backupPath . $backupFile);
+
+        // we're going to extract the first .sql file we find in the archive
+        $dirName = '';
+        $foundSqlFile = false;
+        $file = '';
+        $files = $archive->getList();
+
+        foreach ($files as $file) {
+            if (!isset($file['folder']) || !$file['folder']) {
+                if (preg_match('/\.sql$/', $file['filename'])) {
+                    $dirName = preg_replace('/\/.*$/', '', $file['filename']);
+                    $foundSqlFile = true;
+                    break;
+                }
+            }
+        }
+
+        if (!$foundSqlFile) {
+            // no .sql file found in archive
+            $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[40], $backupFile));
+
+            return false;
+        }
+
+        if (isset($file) && ($dirName === $file['filename'])) {
+            $dirName = ''; // no directory
+        }
+
+        if (empty($dirName)) {
+            $unpacked_file = $file['filename'];
+        } else {
+            $unpacked_file = substr($file['filename'], strlen($dirName) + 1);
+        }
+
+        $success = $archive->unpack($backupPath, array($file['filename']));
+
+        if (!$success || !file_exists($backupPath . $unpacked_file)) {
+            // error unpacking file
+            $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[41], $unpacked_file));
+
+            return false;
+        }
+
+        unset($archive);
+
+        return $unpacked_file;
+    }
+
+    /**
+     * Check for InnoDB table support (usually as of MySQL 4.0, but may be
+     * available in earlier versions, e.g. "Max" or custom builds).
+     *
+     * @return  bool     true = InnoDB tables supported, false = not supported
+     */
+    private function innodbSupported()
+    {
+        $retval = false;
+
+        $result = DB_query("SHOW ENGINES");
+        $numEngines = DB_numRows($result);
+
+        for ($i = 0; $i < $numEngines; $i++) {
+            $A = DB_fetchArray($result);
+
+            if (strcasecmp($A['Engine'], 'InnoDB') == 0) {
+                if ((strcasecmp($A['Support'], 'yes') == 0) ||
+                    (strcasecmp($A['Support'], 'default') == 0)
+                ) {
+                    $retval = true;
+                }
+                break;
+            }
+        }
+
+        return $retval;
+    }
+
+    /**
+     * Upgrade any enabled plugins
+     * NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
+     *       process!
+     *
+     * @param    boolean $migration whether the upgrade is part of a site migration
+     * @param    array   $old_conf  old $_CONF values before the migration
+     * @return   int     number of failed plugin updates (0 = everything's fine)
+     * @see      PLG_upgrade
+     * @see      PLG_migrate
+     */
+    private function pluginUpgrades($migration = false, $old_conf = array())
+    {
+        global $_CONF, $_TABLES;
+
+        $failed = 0;
+
+        $result = DB_query("SELECT pi_name, pi_version FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+        $numPlugins = DB_numRows($result);
+
+        for ($i = 0; $i < $numPlugins; $i++) {
+            list($pi_name, $pi_version) = DB_fetchArray($result);
+
+            $success = true;
+            if ($migration) {
+                $success = PLG_migrate($pi_name, $old_conf);
+            }
+
+            if ($success === true) {
+                $code_version = PLG_chkVersion($pi_name);
+                if (!empty($code_version) && ($code_version != $pi_version)) {
+                    $success = PLG_upgrade($pi_name);
+                }
+            }
+
+            if ($success !== true) {
+                // migration or upgrade failed - disable plugin
+                DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                    'pi_name', $pi_name);
+                COM_errorLog("Migration or upgrade for '$pi_name' plugin failed - plugin disabled");
+                $failed++;
+            }
+        }
+
+        return $failed;
+    }
+
+    /**
+     * Fix site_url in content
+     * If the site's URL changed due to the migration, this function will replace
+     * the old URL with the new one in text content of the given tables.
+     *
+     * @param    string $oldUrl    the site's previous URL
+     * @param    string $newUrl    the site's new URL after the migration
+     * @param    array  $tableSpec (optional) list of tables to patch
+     *                             The $tablespec is an array of tablename => fieldlist pairs, where the field
+     *                             list contains the text fields to be searched and the table's index field
+     *                             as the first(!) entry.
+     *                             NOTE: This function may be used by plugins during PLG_migrate. Changes should
+     *                             ensure backward compatibility.
+     */
+    public static function updateSiteUrl($oldUrl, $newUrl, array $tableSpec = array())
+    {
+        global $_TABLES;
+
+        // standard tables to update if no $tablespec given
+        $tables = array(
+            'stories'         => 'sid, introtext, bodytext, related',
+            'storysubmission' => 'sid, introtext, bodytext',
+            'comments'        => 'cid, comment',
+            'trackback'       => 'cid, excerpt, url',
+            'blocks'          => 'bid, content',
+        );
+
+        if (count($tableSpec) === 0) {
+            $tableSpec = $tables;
+        }
+
+        if (empty($oldUrl) || empty($newUrl) || ($oldUrl === $newUrl)) {
+            return;
+        }
+
+        foreach ($tableSpec as $table => $fieldList) {
+            $fields = explode(',', str_replace(' ', '', $fieldList));
+            $index = array_shift($fields);
+
+            if (empty($_TABLES[$table]) || !DB_checkTableExists($table)) {
+                COM_errorLog("Table {$table} does not exist - skipping migration");
+                continue;
+            }
+
+            $result = DB_query("SELECT {$fieldList} FROM {$_TABLES[$table]}");
+            $numRows = DB_numRows($result);
+
+            for ($i = 0; $i < $numRows; $i++) {
+                $A = DB_fetchArray($result);
+                $changed = false;
+
+                foreach ($fields as $field) {
+                    $newText = str_replace($oldUrl, $newUrl, $A[$field]);
+
+                    if ($newText != $A[$field]) {
+                        $A[$field] = $newText;
+                        $changed = true;
+                    }
+                }
+
+                if ($changed) {
+                    $sql = "UPDATE {$_TABLES[$table]} SET ";
+
+                    foreach ($fields as $field) {
+                        $sql .= "$field = '" . DB_escapeString($A[$field]) . "', ";
+                    }
+
+                    $sql = substr($sql, 0, -2);
+                    DB_query($sql . " WHERE $index = '" . DB_escapeString($A[$index]) . "'");
+                }
+            }
+        }
+    }
+
+    /**
+     * Migrate page 1 - Form for user to enter their database and path information
+     * and to select a database backup file from the backups directory
+     * or upload a backup from their computer.
+     *
+     * @return string
+     */
+    private function migrateStep1()
+    {
+        global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
+               $LANG_INSTALL, $LANG_MIGRATE;
+
+        $display = $this->getAlertMessage($LANG_MIGRATE[0], 'warning') . PHP_EOL
+            . '<h2>' . $LANG_MIGRATE[1] . '</h2>' . PHP_EOL
+            . '<ul>' . PHP_EOL
+            . '<li>' . $LANG_MIGRATE[2] . '</li>' . PHP_EOL
+            . '<li>' . $LANG_MIGRATE[3] . '</li>' . PHP_EOL
+            . '<li>' . $LANG_MIGRATE[5] . '</li>' . PHP_EOL
+            . '<li>' . $LANG_MIGRATE[4] . '</li>' . PHP_EOL
+            . '</ul>' . PHP_EOL . PHP_EOL;
+
+        // Default form values
+        $_FORM = array(
+            'host'   => 'localhost',
+            'name'   => 'geeklog',
+            'user'   => 'username',
+            'pass'   => '',
+            'prefix' => 'gl_',
+        );
+
+        if (file_exists($this->env['dbconfig_path'])) {
+            require_once $this->env['dbconfig_path'];
+
+            if (($_DB_host !== 'localhost') || ($_DB_name !== 'geeklog')
+                || ($_DB_user !== 'username') || ($_DB_pass != 'password')
+            ) {
+                // only display those if they all have their default values
+                $_DB_host = '';
+                $_DB_name = '';
+                $_DB_user = '';
+                $_DB_pass = '';
+            }
+
+            $_FORM['host'] = ($_DB_host !== 'localhost') ? '' : $_DB_host;
+            $_FORM['name'] = ($_DB_name !== 'geeklog') ? '' : $_DB_name;
+            $_FORM['user'] = ($_DB_user !== 'username)') ? '' : $_DB_user;
+            $_FORM['prefix'] = $_DB_table_prefix;
+        }
+
+        // Set up the URL and admin URL paths.
+        $site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : $this->getSiteUrl();
+        $site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : $this->getSiteAdminUrl();
+
+        $display .= '<h2>' . $LANG_INSTALL[31] . '</h2>' . PHP_EOL
+            . '<form action="index.php" method="post" name="migrate" enctype="multipart/form-data">' . PHP_EOL
+            . '<input type="hidden" name="step" value="2">' . PHP_EOL
+            . '<input type="hidden" name="language" value="' . $this->env['language'] . '">' . PHP_EOL
+            . '<input type="hidden" name="mode" value="migrate">'
+            . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($this->env['dbconfig_path']) . '">' . PHP_EOL
+            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[34] . ' ' . $this->getHelpLink('db_type') . '</label> <select name="db[type]">' . PHP_EOL
+            . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . PHP_EOL
+            . '</select></p>' . PHP_EOL
+            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[39] . ' ' . $this->getHelpLink('db_host') . '</label> <input type="text" name="db[host]" value="' . $_FORM['host'] . '" size="20"></p>' . PHP_EOL
+            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[40] . ' ' . $this->getHelpLink('db_name') . '</label> <input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"></p>' . PHP_EOL
+            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[41] . ' ' . $this->getHelpLink('db_user') . '</label> <input type="text" name="db[user]" value="' . $_FORM['user'] . '" size="20"></p>' . PHP_EOL
+            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[42] . ' ' . $this->getHelpLink('db_pass') . '</label> <input type="password" name="db[pass]" value="' . $_FORM['pass'] . '" size="20"></p>' . PHP_EOL
+            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[45] . ' ' . $this->getHelpLink('site_url') . '</label> <input type="text" name="site_url" value="' . htmlspecialchars($site_url) . '" size="50">  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . PHP_EOL
+            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[47] . ' ' . $this->getHelpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50">  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . PHP_EOL;
+
+        // Identify the backup files in backups/ and order them newest to oldest
+        $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
+        $backup_dir = $gl_path . 'backups/';
+        $backupFiles = array();
+
+        foreach (array('*.sql', '*.tar.gz', '*.tgz', '*.zip') as $pattern) {
+            $files = glob($backup_dir . $pattern);
+
+            if (is_array($files)) {
+                $backupFiles = array_merge($backupFiles, $files);
+            }
+        }
+
+        rsort($backupFiles);
+
+        $display .= '<p><label class="' . $this->env['form_label_dir'] . '">'
+            . $LANG_MIGRATE[6] . ' ' . $this->getHelpLink('migrate_file')
+            . '</label>' . PHP_EOL
+            . '<select name="migration_type" onchange="INST_selectMigrationType()">' . PHP_EOL
+            . '<option value="">' . $LANG_MIGRATE[7] . '</option>' . PHP_EOL
+            . '<option value="select">' . $LANG_MIGRATE[8] . '</option>' . PHP_EOL
+            . '<option value="upload">' . $LANG_MIGRATE[9] . '</option>' . PHP_EOL
+            . '<option value="dbcontent">' . $LANG_MIGRATE[49] . '</option>' . PHP_EOL
+            . '</select> ' . PHP_EOL
+            . '<span id="migration-select">' . PHP_EOL;
+
+        // Check if there are any files in the backups directory
+        if (count($backupFiles) > 0) {
+            $display .= '<select name="backup_file">' . PHP_EOL
+                . '<option value="">' . $LANG_MIGRATE[10] . '</option>' . PHP_EOL;
+
+            // List each of the backup files in the backups directory
+            foreach ($backupFiles as $filePath) {
+                $filePath = str_replace('../../../backups/', '', $filePath);
+                $filename = str_replace($backup_dir, '', $filePath);
+                $backupFile = str_replace($backup_dir, '', $filePath);
+
+                $display .= '<option value="' . $filename . '">' . $backupFile
+                    . ' (' . $this->formatSize(@filesize($filePath))
+                    . ')</option>' . PHP_EOL;
+            }
+
+            $display .= '</select>' . PHP_EOL;
+        } else {
+            $display .= $LANG_MIGRATE[11] . PHP_EOL;
+        }
+
+        $display .= '</span>' . PHP_EOL
+            . '<span id="migration-upload">' . PHP_EOL;
+
+        // Check if the user's PHP configuration has 'file_uploads' enabled
+        $fileUploads = (bool) ini_get('file_uploads');
+
+        // Check if the plugins directory is writable by the web server before we even bother uploading anything
+        $isWritable = is_writable($backup_dir);
+
+        if ($fileUploads && $isWritable) {
+            $display .= '<input class="input_file" type="file" name="backup_file"><br>' . PHP_EOL;
+        }
+
+        $display .= '</span>' . PHP_EOL
+            . '</p>' . PHP_EOL
+            . '<div id="migration-upload-warning">' . PHP_EOL;
+
+        if ($fileUploads) {
+            if ($isWritable) {
+                $display .= $this->getAlertMessage($LANG_MIGRATE[12] . ini_get('upload_max_filesize') . $LANG_MIGRATE[13] . ini_get('upload_max_filesize') . $LANG_MIGRATE[14], 'notice');
+            } else {
+                $display .= $this->getAlertMessage($LANG_MIGRATE[15]);
+            }
+        }
+
+        $display .= '</div><br>' . PHP_EOL
+            . '<p>'
+            // Todo: Add "Refresh" button to refresh the list of files in the backups directory
+            // . '<input type="button" name="refresh" class="submit" value="' . 'Refresh' . '" onclick="INST_refreshBackupList()"' . XHTML . '>'
+            . '<input type="submit" name="submit" class="submit button" value="' . $LANG_MIGRATE[16] . ' &gt;&gt;"></p>' . PHP_EOL
+            . '</form>' . PHP_EOL;
+
+        return $display;
+    }
+
+    /**
+     * Migrate page 2 - Check database credentials and write db-config.php using the form data
+     */
+    private function migrateStep2()
+    {
+        global $_CONF, $LANG_INSTALL, $LANG_CHARSET, $LANG_MIGRATE;
+
+        // Check a few things before beginning the import process
+        $importErrors = 0;
+        $display = '';
+
+        // Get the backup_file
+        switch ($_REQUEST['migration_type']) {
+            case 'select': // Select a backup file from the backups directory
+                if (isset($_REQUEST['backup_file']) && !empty($_REQUEST['backup_file'])) {
+                    $backupFile = array('name' => $_REQUEST['backup_file']);
+                } else { // No backup file was selected
+                    $display .= $this->getAlertMessage($LANG_MIGRATE[18]);
+                    $backupFile = false;
+                    $importErrors++;
+                }
+
+                break;
+
+            case 'upload': // Upload a new backup file
+                if ($upload_error = $this->getUploadError($_FILES['backup_file'])) { // If an error occurred while uploading the file
+                    // or if no backup file was selected
+                    $display .= $this->getAlertMsg($upload_error);
+                    $backupFile = false;
+                    $importErrors++;
+                } else {
+                    $backupFile = $_FILES['backup_file'];
+                }
+
+                break;
+
+            case 'dbcontent': // No upload / import required - use db as is
+                $backupFile = false;
+                $importErrors = 0;
+                break;
+
+            default:
+                $display .= $this->getAlertMsg($LANG_MIGRATE[18]);
+                $backupFile = false;
+                $importErrors++;
+        } // End switch ($_REQUEST['migration_type'])
+
+        // Check if we can't connect to the database
+        $DB = $_REQUEST['db'];
+
+        if (!$this->dbConnect($DB)) {
+            $display .= $this->getAlertMsg($LANG_INSTALL[54]);
+            $importErrors++;
+        } else {
+            // Check if the user's version of MySQL is out of date
+            // (needs to connect to MySQL in order to check)
+            if ($this->isMysqlOutOfDate($DB)) {
+                $display .= $this->getAlertMsg(sprintf($LANG_INSTALL[51], self::SUPPORTED_MYSQL_VER));
+                $importErrors++;
+            }
+        }
+
+        // Check if the database doesn't exist
+        if (!$this->dbExists($DB)) {
+            $display .= $this->getAlertMsg($LANG_INSTALL[56]);
+            $importErrors++;
+        }
+
+        // Continue with the import if there were no previous errors
+        if ($importErrors == 0) {
+            // Check if the form was received from Step 1
+            if (isset($_REQUEST['db'])) {
+                // Write the database info to db-config.php
+                if (!$this->writeConfig($this->sanitizePath($this->env['dbconfig_path']), $DB)) {
+                    exit($LANG_INSTALL[26] . ' ' . $this->env['dbconfig_path'] . $LANG_INSTALL[58]);
+                }
+            }
+
+            require_once $this->env['dbconfig_path']; // Not sure if this needs to be included..
+
+            switch ($_REQUEST['migration_type']) {
+                case 'select':
+                    header('Location: index.php?mode=migrate&step=3&dbconfig_path=' . $this->env['dbconfig_path']
+                        . '&language=' . $this->env['language']
+                        . '&backup_file=' . urlencode($backupFile['name'])
+                        . '&site_url=' . urlencode($_REQUEST['site_url'])
+                        . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
+                    break;
+
+                case 'upload':
+                    $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
+                    $backup_dir = $gl_path . 'backups/';
+                    $backupFile = $_FILES['backup_file'];
+
+                    if (file_exists($backup_dir . $backupFile['name'])) { // If file already exists.
+                        // Ask the user if they want to overwrite the original
+                        // but for now save the file as a copy so it won't need
+                        // to be uploaded again.
+                        $backup_file_copy = str_replace('.sql', '_uploaded.sql', $backupFile['name']);
+
+                        if (!move_uploaded_file($backupFile['tmp_name'], $backup_dir . $backup_file_copy)) { // If able to save the file
+                            $display .= $LANG_MIGRATE[19] . $backup_file_copy . $LANG_MIGRATE[20] . $backup_dir . '.' . PHP_EOL;
+                        } else {
+                            $display .= '<p>' . $LANG_MIGRATE[21] . ' <code>' . $backupFile['name'] . '</code> ' . $LANG_MIGRATE[22] . '</p><br>' . PHP_EOL
+                                . '<form action="index.php" method="post"><p align="center">' . PHP_EOL
+                                . '<input type="hidden" name="mode" value="migrate">' . PHP_EOL
+                                . '<input type="hidden" name="step" value="3">' . PHP_EOL
+                                . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($this->env['dbconfig_path']) . '">' . PHP_EOL
+                                . '<input type="hidden" name="site_url" value="' . urlencode($_REQUEST['site_url']) . '">' . PHP_EOL
+                                . '<input type="hidden" name="site_admin_url" value="' . urlencode($_REQUEST['site_admin_url']) . '">' . PHP_EOL
+                                . '<input type="hidden" name="backup_file" value="' . $backupFile['name'] . '">' . PHP_EOL
+                                . '<input type="hidden" name="language" value="' . $this->env['language'] . '">' . PHP_EOL
+                                . '<input type="submit" class="button big-button" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '">' . PHP_EOL
+                                . '<input type="submit" class="button big-button" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'index.php\'">' . PHP_EOL
+                                . '</p></form>' . PHP_EOL;
+                        }
+                    } else {
+                        if (!move_uploaded_file($backupFile['tmp_name'], $backup_dir . $backupFile['name'])) { // If able to save the uploaded file
+                            $display .= $LANG_MIGRATE[19] . $backupFile['name'] . $LANG_MIGRATE[20] . $backup_dir . '.' . PHP_EOL;
+                        } else {
+                            header('Location: index.php?mode=migrate&step=3&dbconfig_path=' . $this->env['dbconfig_path']
+                                . '&language=' . $this->env['language']
+                                . '&backup_file=' . urlencode($backupFile['name'])
+                                . '&site_url=' . urlencode($_REQUEST['site_url'])
+                                . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
+                        }
+                    }
+
+                    break;
+
+                case 'dbcontent':
+                    require_once $_CONF['path_system'] . 'lib-database.php';
+
+                    // we need the following information
+                    $has_config = false;
+                    $db_connection_charset = '';
+                    $DB['table_prefix'] = '';
+
+                    // get table prefix and check for conf_values table
+                    $result = DB_query("SHOW TABLES");
+                    $num_tables = DB_numRows($result);
+
+                    for ($i = 0; $i < $num_tables; $i++) {
+                        list($table) = DB_fetchArray($result);
+
+                        if (substr($table, -6) == 'access') {
+                            $DB['table_prefix'] = substr($table, 0, -6);
+                        } elseif (strpos($table, 'conf_values') !== false) {
+                            $has_config = true;
+                            break;
+                        }
+                    }
+
+                    // try to figure out the charset
+                    $result = DB_query("SHOW CREATE TABLE " . $DB['table_prefix'] . "access");
+                    list(, $create) = DB_fetchArray($result);
+
+                    if (strpos($create, 'DEFAULT CHARSET=utf8mb4') !== false) {
+                        $db_connection_charset = 'utf8mb4';
+                    } elseif (strpos($create, 'DEFAULT CHARSET=utf8') !== false) {
+                        $db_connection_charset = 'utf8';
+                    }
+
+                    // Update db-config.php with the table prefix from the db
+                    if (!$this->writeConfig($this->env['dbconfig_path'], $DB)) {
+                        exit($LANG_INSTALL[26] . ' ' . $this->env['dbconfig_path'] . $LANG_INSTALL[58]);
+                    }
+
+                    // In case of migration, we don't use either 'utf8' or 'utf8mb4'
+                    if (($db_connection_charset === 'utf8') || ($db_connection_charset === 'utf8mb4')) {
+                        $defaultCharset = 'utf-8';
+                    } else {
+                        $defaultCharset = $LANG_CHARSET;
+                    }
+
+                    if (!$this->setDefaultCharset($this->env['siteconfig_path'], $defaultCharset)) {
+                        exit($LANG_INSTALL[26] . ' ' . $this->env['siteconfig_path'] . $LANG_INSTALL[58]);
+                    }
+
+                    // skip step 3 since we don't need to import anything
+                    header('Location: index.php?mode=migrate&step=4&language=' . $this->env['language']
+                        . '&site_url=' . urlencode($_REQUEST['site_url'])
+                        . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
+                    break;
+            } // End switch ($_REQUEST['migration_type']
+        }
+
+        return $display;
+    }
+
+    /**
+     * Migrate page 3 - Gets the database table prefix from the database file.
+     * Overwrites an existing database file if requested by the user.
+     * Sends the database filename (and a few other variables)
+     * to bigdump.php, which performs the import.
+     */
+    private function migrateStep3()
+    {
+        global $LANG_INSTALL, $LANG_MIGRATE, $LANG_CHARSET;
+
+        $display = '';
+
+        $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
+        $backup_dir = $gl_path . 'backups/';
+        // Get the backup filename
+        $backupFile = $_REQUEST['backup_file'];
+
+        // If the user chose to overwrite an existing backup file
+        if (isset($_REQUEST['overwrite_file'])) {
+            // Overwrite the old file with the new file.
+            rename($backup_dir . str_replace('.sql', '_uploaded.sql', $backupFile), $backup_dir . $backupFile);
+        }
+
+        $unpacked_file = $this->unpackFile($backup_dir, $backupFile, $display);
+
+        if ($unpacked_file !== false) {
+            $backupFile = $unpacked_file;
+
+            // Parse the .sql file to grab the table prefix
+            $has_config = false;
+            $num_create = 0;
+            $db_connection_charset = '';
+            $DB['table_prefix'] = '';
+
+            $sql_file = @fopen($backup_dir . $backupFile, 'r');
+
+            if (!$sql_file) {
+                // "This shouldn't happen" - just unpacked and now it's gone?
+                exit(sprintf($LANG_MIGRATE[42], $backup_dir . $backupFile));
+            }
+
+            while (!feof($sql_file)) {
+                $line = @fgets($sql_file);
+
+                if (!empty($line)) {
+                    if (preg_match('/CREATE TABLE/i', $line)) {
+                        $num_create++;
+                        $line = trim($line);
+
+                        if (strpos($line, 'access') !== false) {
+                            $line = str_replace('IF NOT EXISTS ', '', $line);
+                            $words = explode(' ', $line);
+
+                            if (count($words) >= 3) {
+                                $table = str_replace('`', '', $words[2]);
+
+                                if (substr($table, -6) == 'access') {
+                                    $DB['table_prefix'] = substr($table, 0, -6);
+                                }
+                            }
+                        } elseif (strpos($line, 'conf_values') !== false) {
+                            $has_config = true;
+                            break;
+                        } elseif (strpos($line, 'featurecodes') !== false) {
+                            // assume there's no conf_values table in here
+                            break;
+                        }
+                    } elseif (substr($line, 0, 3) === '/*!') {
+                        if ((strpos($line, 'SET NAMES utf8mb4') !== false) || (strpos($line, 'SET NAMES utf8') !== false)) {
+                            $db_connection_charset = 'utf-8';
+                        }
+                    } elseif (empty($db_connection_charset) && strpos($line, 'ENGINE=') !== false) {
+                        if ((strpos($line, 'DEFAULT CHARSET=utf8mb4') !== false) || (strpos($line, 'DEFAULT CHARSET=utf8') !== false)) {
+                            $db_connection_charset = 'utf-8';
+                        }
+                    }
+                }
+            }
+
+            fclose($sql_file);
+
+            if ($num_create <= 1) {
+                // this doesn't look like an SQL dump ...
+                $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[43], $backupFile));
+            } else {
+                // Update db-config.php with the table prefix from the backup file.
+                if (!$this->writeConfig($this->env['dbconfig_path'], $DB)) {
+                    exit($LANG_INSTALL[26] . ' ' . $this->env['dbconfig_path'] . $LANG_INSTALL[58]);
+                }
+
+                // In case of $_CONF['default_charset'], we don't use either 'utf8' or 'utf8mb4'
+                if ($db_connection_charset === 'utf-8') {
+                    $defaultCharset = 'utf-8';
+                } else {
+                    $defaultCharset = $LANG_CHARSET;
+                }
+
+                if (!$this->setDefaultCharset($this->env['siteconfig_path'], $defaultCharset)) {
+                    exit($LANG_INSTALL[26] . ' ' . $this->env['siteconfig_path'] . $LANG_INSTALL[58]);
+                }
+
+                // Send file to bigdump.php script to do the import.
+                header('Location: bigdump.php?start=1&foffset=0&totalqueries=0'
+                    . '&db_connection_charset=' . $db_connection_charset
+                    . '&language=' . $this->env['language']
+                    . '&fn=' . urlencode($backup_dir . $backupFile)
+                    . '&site_url=' . urlencode($_REQUEST['site_url'])
+                    . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
+            }
+        }
+    }
+
+    /**
+     * Page 4 - Post-import operations
+     * Update the database, if necessary. Then check for missing plugins,
+     * incorrect paths, and other required Geeklog files
+     */
+    private function migrateStep4()
+    {
+        global $_CONF, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
+               $_TABLES, $LANG_INSTALL, $LANG_MIGRATE;
+
+        if (empty($this->env['dbconfig_path'])) {
+            require_once $this->env['siteconfig_path'];
+            $this->env['dbconfig_path'] = $_CONF['path'] . 'db-config.php';
+        }
+
+        require_once $this->env['dbconfig_path'];
+        require_once $_CONF['path_system'] . 'lib-database.php';
+        require_once $_CONF['path_system'] . 'classes/Autoload.php';
+        Geeklog\Autoload::initialize();
+
+        $display = '';
+        $upgrade_error = false;
+        $version = $this->identifyGeeklogVersion();
+
+        if ($version === 'empty') {
+            // "This shouldn't happen"
+            $display .= $this->getAlertMsg($LANG_MIGRATE[44]);
+            $upgrade_error = true;
+        } elseif (empty($version)) {
+            $display .= $this->getAlertMsg($LANG_MIGRATE[45]);
+            // TBD: add a link back to the install script, preferably a direct link to the upgrade screen
+            $upgrade_error = true;
+        } elseif ($version != self::GL_VERSION) {
+            $use_innodb = false;
+            $db_engine = DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'");
+
+            if ($db_engine === 'InnoDB') {
+                // we've migrated, probably to a different server
+                // - so check InnoDB support again
+                if ($this->innodbSupported()) {
+                    $use_innodb = true;
+                } else {
+                    // no InnoDB support on this server
+                    DB_delete($_TABLES['vars'], 'name', 'database_engine');
+                }
+            }
+
+            if (!$this->doDatabaseUpgrades($version)) {
+                $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[47], $version, self::GL_VERSION));
+                $upgrade_error = true;
+            }
+        }
+
+        if ($upgrade_error) {
+            $display .= <<<HTML
+                <br><br>
+                </div>
+                </div>
+                </body>
+                </html>
+HTML;
+            echo $display;
+            exit;
+        }
+
+        /**
+         * Let's assume that the paths that were imported from the backup are
+         * incorrect and update them with the current paths.
+         * Note: When updating the config settings in the database, we also
+         *       need to fix the $_CONF values. We can _not_ simply reload
+         *       them via get_config('Core') here yet.
+         */
+        $gl_path = $this->env['gl_path'];
+        $gl_path = rtrim($gl_path, '/\\') . '/';
+        $backup_dir = $gl_path . 'backups/';
+        $backup_dir = rtrim($backup_dir, '/\\') . '/';
+        $html_path = $this->env['html_path'];
+        $html_path = rtrim($html_path, '/\\') . '/';
+
+        $config = config::get_instance();
+        $config->initConfig();
+
+        // save a copy of the old config
+        $_OLD_CONF = $config->get_config('Core');
+
+        $config->set('site_url', urldecode($_REQUEST['site_url']));
+        $_CONF['site_url'] = urldecode($_REQUEST['site_url']);
+        $config->set('site_admin_url', urldecode($_REQUEST['site_admin_url']));
+        $_CONF['site_admin_url'] = urldecode($_REQUEST['site_admin_url']);
+        $config->set('path_html', $html_path);
+        $_CONF['path_html'] = $html_path;
+        $config->set('path_log', $gl_path . 'logs/');
+        $_CONF['path_log'] = $gl_path . 'logs/';
+        $config->set('path_language', $gl_path . 'language/');
+        $_CONF['path_language'] = $gl_path . 'language/';
+        $config->set('backup_path', $backup_dir);
+        $_CONF['backup_path'] = $backup_dir;
+        $config->set('path_data', $gl_path . 'data/');
+        $_CONF['path_data'] = $gl_path . 'data/';
+        $config->set('path_images', $html_path . 'images/');
+        $_CONF['path_images'] = $html_path . 'images/';
+        $config->set('path_themes', $html_path . 'layout/');
+        $_CONF['path_themes'] = $html_path . 'layout/';
+        $config->set('path_editors', $html_path . 'editors/');
+        $_CONF['path_editors'] = $html_path . 'editors/';
+        $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
+        $_CONF['rdf_file'] = $html_path . 'backend/geeklog.rss';
+        $config->set('path_pear', $_CONF['path_system'] . 'pear/');
+        $_CONF['path_pear'] = $_CONF['path_system'] . 'pear/';
+
+        // reset cookie domain and path as wrong values may prevent login
+        $config->set('cookiedomain', '');
+        $_CONF['cookiedomain'] = '';
+        $config->set('cookie_path', $this->guessCookiePath($_CONF['site_url']));
+        $_CONF['cookie_path'] = $this->guessCookiePath($_CONF['site_url']);
+
+        if (substr($_CONF['site_url'], 0, 6) == 'https:') {
+            $config->set('cookiesecure', true);
+            $_CONF['cookiesecure'] = 1;
+        } else {
+            $config->set('cookiesecure', false);
+            $_CONF['cookiesecure'] = 0;
+        }
+
+        // check the default theme
+        $theme = '';
+
+        if (empty($_CONF['theme'])) {
+            // try old conf value
+            $theme = $_OLD_CONF['theme'];
+        } else {
+            $theme = $_CONF['theme'];
+        }
+
+        if (!file_exists($_CONF['path_themes'] . $theme . '/header.thtml')) {
+            $config->set('theme', self::DEFAULT_THEME);
+            $_CONF['theme'] = self::DEFAULT_THEME;
+        }
+
+        // set noreply_mail when updating from an old version
+        if (empty($_CONF['noreply_mail']) && (!empty($_CONF['site_mail']))) {
+            $_CONF['noreply_mail'] = $_CONF['site_mail'];
+            $config->set('noreply_mail', $_CONF['noreply_mail']);
+        }
+
+        if (!empty($_OLD_CONF['ip_lookup'])) {
+            $_CONF['ip_lookup'] = str_replace($_OLD_CONF['site_url'],
+                $_CONF['site_url'], $_OLD_CONF['ip_lookup']);
+            $config->set('ip_lookup', $_CONF['ip_lookup']);
+        }
+
+        /**
+         * Check for missing plugins
+         */
+
+        // We want to add a log entry for any plugins that have been disabled
+        // but we can't actually call lib-common.php until all missing plugins
+        // have been disabled. So we keep track of missing plugins in the
+        // $_MISSING_PLUGINS array then call lib-common.php and log them after
+        // they've been disabled.
+        $_MISSING_PLUGINS = array();
+
+        // Query {$_TABLES['plugins']} to get a list of installed plugins
+        $missing_plugins = 0;
+        $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+        $num_plugins = DB_numRows($result);
+
+        for ($i = 0; $i < $num_plugins; $i++) { // Look in the plugins directories to ensure that those plugins exist.
+            $plugin = DB_fetchArray($result);
+
+            if (!file_exists($_CONF['path'] . 'plugins/' . $plugin['pi_name'])) { // If plugin does not exist
+                // Deactivate the plugin
+                DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled='0' WHERE pi_name='{$plugin['pi_name']}'");
+                $_MISSING_PLUGINS[] = $plugin['pi_name'];
+                $missing_plugins++;
+            }
+        }
+
+        // Any missing plugins have been disabled, now we can get lib-common.php
+        // so we can call COM_errorLog().
+        require_once $html_path . 'lib-common.php';
+
+        // including lib-common.php overwrites our $language variable
+        $language = $this->env['language'];
+
+        // Log any missing plugins
+        if (count($_MISSING_PLUGINS) > 0) {
+            foreach ($_MISSING_PLUGINS as $m_p) {
+                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[27] . $m_p . $LANG_MIGRATE[28]);
+            }
+        }
+
+        $disabled_plugins = 0;
+
+        if ($version != self::GL_VERSION) {
+            // We did a database upgrade above. Now that any missing plugins
+            // have been disabled and we've loaded lib-common.php, perform
+            // upgrades for the remaining plugins.
+            $disabled_plugins = $this->pluginUpgrades(true, $_OLD_CONF);
+        }
+
+        // finally, check for any new plugins and install them
+        //        $this->autoInstallNewPlugins();
+
+        /**
+         * Check for other missing files
+         * e.g. images/articles, images/topics, images/userphotos
+         */
+        $missing_images = false;
+
+        // Article images
+        $missing_article_images = false;
+        $result = DB_query("SELECT `ai_filename` FROM {$_TABLES['article_images']}");
+        $num_article_images = DB_numRows($result);
+
+        for ($i = 0; $i < $num_article_images; $i++) {
+            $article_image = DB_fetchArray($result, false); //
+
+            if (!file_exists($html_path . 'images/articles/' . $article_image['ai_filename'])) { // If article image does not exist
+                // Log the error
+                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $article_image['ai_filename'] . $LANG_MIGRATE[30] . $_TABLES['article_images'] . $LANG_MIGRATE[31] . $html_path . 'images/articles/');
+                $missing_article_images = true;
+                $missing_images = true;
+            }
+        }
+
+        // Topic images
+        $missing_topic_images = false;
+        $result = DB_query("SELECT `imageurl` FROM {$_TABLES['topics']}");
+        $num_topic_images = DB_numRows($result);
+
+        for ($i = 0; $i < $num_topic_images; $i++) {
+            $topic_image = DB_fetchArray($result, false);
+
+            if (!file_exists($html_path . $topic_image['imageurl'])) { // If topic image does not exist
+                // Log the error
+                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $topic_image['imageurl'] . $LANG_MIGRATE[30] . $_TABLES['topics'] . $LANG_MIGRATE[31] . $html_path . 'images/topics/');
+                $missing_topic_images = true;
+                $missing_images = true;
+            }
+        }
+
+        // Userphoto images
+        $missing_userphoto_images = false;
+        $result = DB_query("SELECT `photo` FROM {$_TABLES['users']} WHERE `photo` IS NOT NULL AND `photo` <> ''");
+        $num_userphoto_images = DB_numRows($result);
+
+        for ($i = 0; $i < $num_userphoto_images; $i++) {
+            $userphoto_image = DB_fetchArray($result, false);
+
+            if (!file_exists($html_path . 'images/userphotos/' . $userphoto_image['photo'])) { // If userphoto image does not exist
+                // Log the error
+                COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $userphoto_image['photo'] . $LANG_MIGRATE[30] . $_TABLES['users'] . $LANG_MIGRATE[31] . $html_path . 'images/userphotos/');
+                $missing_userphoto_images = true;
+                $missing_images = true;
+            }
+        }
+
+        // did the site URL change?
+        if ((!empty($_OLD_CONF['site_url'])) & (!empty($_CONF['site_url'])) && ($_OLD_CONF['site_url'] != $_CONF['site_url'])) {
+            self::updateSiteUrl($_OLD_CONF['site_url'], $_CONF['site_url']);
+        }
+
+        // Clear the Geeklog Cache in case paths etc. in cache files
+        $this->clearCache();
+
+        /**
+         * Import complete.
+         */
+
+        // Check if there are any missing files or plugins
+        if ($missing_images || ($missing_plugins > 0) || ($disabled_plugins > 0)) {
+            $display .= '<h2>' . $LANG_MIGRATE[37] . '</h2>' . LB
+                . '<p>' . $LANG_MIGRATE[38] . '</p>' . LB;
+            // Plugins
+            if ($missing_plugins > 0) {
+                $display .= $this->getAlertMsg($LANG_MIGRATE[32] . ' <code>' . $_CONF['path'] . 'plugins/</code> ' . $LANG_MIGRATE[33], 'notice');
+            }
+
+            if ($disabled_plugins > 0) {
+                $display .= $this->getAlertMsg($LANG_MIGRATE[48]);
+            }
+
+            // Article images
+            if ($missing_article_images) {
+                $display .= $this->getAlertMsg($LANG_MIGRATE[34] . ' <code>' . $html_path . 'images/articles/</code> ' . $LANG_MIGRATE[35], 'notice');
+            }
+
+            // Topic images
+            if ($missing_topic_images) {
+                $display .= $this->getAlertMsg($LANG_MIGRATE[34] . ' <code>' . $html_path . 'images/topics/</code> ' . $LANG_MIGRATE[35], 'notice');
+            }
+
+            // Userphoto images
+            if ($missing_userphoto_images) {
+                $display .= $this->getAlertMsg($LANG_MIGRATE[34] . ' <code>' . $html_path . 'images/userphotos/</code> ' . $LANG_MIGRATE[35], 'notice');
+            }
+
+            $display .= '<p>' . $LANG_MIGRATE[36] . '</p>' . PHP_EOL
+                . '<form action="success.php" method="get">' . PHP_EOL
+                . '<input type="hidden" name="type" value="migrate">' . PHP_EOL
+                . '<input type="hidden" name="language" value="' . $language . '">' . PHP_EOL
+                . '<input type="hidden" name="" value="">' . PHP_EOL
+                . '<p><input type="submit" class="button big-button" name="" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"></p>' . PHP_EOL
+                . '</form>';
+        } else {
+            header('Location: success.php?type=migrate&language=' . $language);
+        }
+
+        return $display;
+    }
+
+    /**
      * Installer engine
      * The guts of the installation and upgrade package.
      *
@@ -2665,6 +4172,11 @@ class Installer
         switch ($installStep) {
             // Page 1 - Enter Geeklog config information
             case 1:
+                if ($installType === 'migrate') {
+                    $retval = $this->migrateStep1();
+                    break;
+                }
+
                 require_once $this->env['dbconfig_path']; // Get the current DB info
 
                 if ($installType === 'upgrade') {
@@ -2818,6 +4330,11 @@ class Installer
 
             // Page 2 - Enter information into db-config.php and ask about InnoDB tables (if supported)
             case 2:
+                if ($installType === 'migrate') {
+                    $retval = $this->migrateStep2();
+                    break;
+                }
+
                 // Set all the variables from the received POST data.
                 $site_name = $this->post('site_name');
                 $site_slogan = $this->post('site_slogan');
@@ -2834,6 +4351,7 @@ class Installer
                     'user'         => $this->post('db_user'),
                     'pass'         => $this->post('db_pass'),
                     'table_prefix' => $this->post('db_prefix'),
+                    'utf8'         => $utf8,
                 );
 
                 // Check if $site_admin_url is correct
@@ -2974,6 +4492,11 @@ class Installer
 
             // Page 3 - Install
             case 3:
+                if ($installType === 'migrate') {
+                    $this->migrateStep3();  // Go on to bigdump.php so will not return here
+                    break;
+                }
+
                 $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
                 $installPlugins = ($this->request('install_plugins') !== null);
                 $nextLink = $installPlugins
@@ -3181,6 +4704,11 @@ class Installer
 
             // Extra Step 4 - Upgrade plugins
             case 4:
+                if ($installType === 'migrate') {
+                    $retval = $this->migrateStep4();
+                    break;
+                }
+
                 $this->upgradePlugins();
                 $installPlugins = ($this->get('install_plugins', null) !== null);
 
@@ -3253,10 +4781,11 @@ class Installer
             // Start the install/upgrade process
             case 'install': // Deliberate fall-through, no "break"
             case 'upgrade':
-                if ($this->env['step'] == 4) {
+            case 'migrate':
+                if (($this->env['step'] == 4) && ($this->env['mode'] !== 'migrate')) {
                     // for the plugin install and upgrade,
                     // we need lib-common.php in the global(!) namespace
-                    require_once './../../../lib-common.php';
+                    require_once dirname(dirname(dirname(__DIR__))) . '/lib-common.php';
                 }
 
                 // Run the installation function

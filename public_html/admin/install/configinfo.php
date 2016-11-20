@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | configinfo.php                                                            |
 // |                                                                           |
@@ -48,8 +48,7 @@ if (file_exists('../../lib-common.php')) {
 $highlight_on     = '#EFEFEF';
 $highlight_off    = '#D9D9D9';
 
-if (isset($_CONF['site_url']) &&
-        strpos($_CONF['site_url'], 'example.com') === false) {
+if (isset($_CONF['site_url']) && (strpos($_CONF['site_url'], 'example.com') === false)) {
     $docs = $_CONF['site_url'] . '/docs/english/config.html#desc_';
 } else {
     $docs = '../../docs/english/config.html#desc_';
@@ -75,8 +74,7 @@ foreach ($_CONF as $option => $value) {
     if (is_array($value)) {
         ob_start();
         print_r($value);
-        $value = COM_nl2br(ob_get_contents());
-        ob_end_clean();
+        $value = COM_nl2br(ob_get_clean());
     } elseif (is_bool($value)) {
         $value = ($value === false) ? 'false' : 'true';
     } elseif (MBYTE_eregi('[a-z]+html', $option)) {
@@ -91,5 +89,3 @@ foreach ($_CONF as $option => $value) {
 $display .= "</table>\n</body>\n</html>";
 
 echo $display;
-
-?>

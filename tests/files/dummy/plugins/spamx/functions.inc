@@ -202,7 +202,7 @@ function plugin_migrate_spamx($old_conf)
 {
     global $_CONF, $_TABLES;
 
-    // only update the SLV whitelist, so we don't use INST_updateSiteUrl
+    // only update the SLV whitelist, so we don't use Installer::updateSiteUrl
     $old_url = addslashes($old_conf['site_url']);
     $result = DB_query("SELECT name, value FROM {$_TABLES['spamx']} WHERE name = 'SLVwhitelist' AND value LIKE '{$old_url}%'");
     $num = DB_numRows($result);

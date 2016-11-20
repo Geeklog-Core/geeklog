@@ -37,8 +37,6 @@
  */
 class Database
 {
-    // PRIVATE PROPERTIES
-
     /**
      * @var string
      */
@@ -100,11 +98,6 @@ class Database
     private $_use_innodb = false;
 
     /**
-     * @var bool
-     */
-    private $isUtf8Mb4 = false;
-
-    /**
      * Logs messages
      * Logs messages by calling the function held in $_errorlog_fn
      *
@@ -155,33 +148,8 @@ class Database
             $this->dbError();
         }
 
-        if ($this->_charset == 'utf-8') {
-            if (($this->_mysql_version >= 50007) && function_exists('mysql_set_charset')) {
-                $result = false;
-
-                if ($this->_mysql_version >= 50503) {
-                    $result = @mysql_set_charset('utf8mb4', $this->_db);
-                }
-
-                if ($result) {
-                    $this->isUtf8Mb4 = true;
-                } else {
-                    @mysql_set_charset('utf8', $this->_db);
-                }
-            } else {
-                $result = false;
-
-                if ($this->_mysql_version >= 50503) {
-                    $result = @mysql_query("SET NAMES 'utf8mb4'", $this->_db);
-                }
-
-                if ($result) {
-                    $this->isUtf8Mb4 = true;
-                } else {
-                    @mysql_query("SET NAMES 'utf8'", $this->_db);
-                }
-            }
-        }
+        // Set character set
+        $this->setCharset();
 
         // Checks if db engine is InnoDB.  During the installation
         // $_TABLES['vars'] is not yet created, so we use $use_innodb instead.
@@ -201,6 +169,42 @@ class Database
         if ($this->isVerbose()) {
             $this->_errorlog("\n***leaving database->_connect***");
         }
+    }
+
+    /**
+     * Set character set
+     *
+     * @return bool true on success, false otherwise
+     */
+    private function setCharset()
+    {
+        $charset = strtolower($this->_charset);
+
+        if (!in_array($charset, array('utf-8', 'utf8', 'utf8mb4'))) {
+            return true;
+        }
+
+        if ($charset === 'utf-8') {          // before GL-2.1.2
+            $charset = 'utf8';
+        } elseif ($charset === 'utf8mb4') { // since GL-2.1.2
+            if ($this->_mysql_version < 50503) {
+                $charset = 'utf8';
+            }
+        }
+
+        $this->_charset = $charset;
+
+        if (($this->_mysql_version >= 50007) && function_exists('mysql_set_charset')) {
+            $retval = @mysql_set_charset($charset, $this->_db);
+
+            if (!$retval) {
+                $retval = @mysql_query("SET NAMES '{$charset}''");
+            }
+        } else {
+            $retval = @mysql_query("SET NAMES '{$charset}''");
+        }
+
+        return $retval;
     }
 
     /**
@@ -246,7 +250,6 @@ class Database
         $this->_charset = strtolower($charset);
         $this->_mysql_version = 0;
         $this->_use_innodb = false;
-        $this->isUtf8Mb4 = false;
 
         $this->_connect();
     }
@@ -309,7 +312,7 @@ class Database
      * This executes the passed SQL and returns the recordset or errors out
      *
      * @param    string $sql           SQL to be executed
-     * @param    int    $ignore_errors If 1 this function supresses any error messages
+     * @param    int    $ignore_errors If 1 this function suppresses any error messages
      * @return   resource|bool Returns results of query
      */
     public function dbQuery($sql, $ignore_errors = 0)
@@ -342,14 +345,10 @@ class Database
                 }
 
                 // Appends default charset if necessary
-                if (($this->_charset === 'utf-8') &&
+                if ((($this->_charset === 'utf8') || ($this->_charset === 'utf8mb4')) &&
                     !preg_match('/DEFAULT\s+(CHARSET|CHARACTER\s+SET)/i', $option)
                 ) {
-                    if ($this->isUtf8Mb4) {
-                        $option .= ' DEFAULT CHARSET=utf8mb4';
-                    } else {
-                        $option .= ' DEFAULT CHARSET=utf8';
-                    }
+                    $option .= " DEFAULT CHARSET={$this->_charset}";
                 }
 
                 $sql .= $option;

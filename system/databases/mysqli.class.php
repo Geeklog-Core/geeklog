@@ -99,11 +99,6 @@ class Database
     private $_use_innodb = false;
 
     /**
-     * @var bool
-     */
-    private $isUtf8Mb4 = false;
-
-    /**
      * Logs messages
      * Logs messages by calling the function held in $_errorlog_fn
      *
@@ -159,39 +154,8 @@ class Database
             $result = false;
         }
 
-        if ($this->_mysql_version >= 40100) {
-            if ($this->_charset === 'utf-8') {
-                $result = false;
-
-                if (method_exists($this->_db, 'set_charset')) {
-                    $result = false;
-
-                    if ($this->_mysql_version >= 50503) {
-                        $result = @$this->_db->set_charset('utf8mb4');
-                    }
-
-                    if ($result) {
-                        $this->isUtf8Mb4 = true;
-                    } else {
-                        @$this->_db->set_charset('utf8');
-                    }
-                } else {
-                    if (!$result) {
-                        $result = false;
-
-                        if ($this->_mysql_version >= 50503) {
-                            $result = @$this->_db->query("SET NAMES 'utf8mb4'");
-                        }
-
-                        if ($result) {
-                            $this->isUtf8Mb4 = true;
-                        } else {
-                             @$this->_db->query("SET NAMES 'utf8'");
-                        }
-                    }
-                }
-            }
-        }
+        // Set the character set
+        $this->setCharset();
 
         // Checks if db engine is InnoDB.  During the installation
         // $_TABLES['vars'] is not yet created, so we use $use_innodb instead.
@@ -213,6 +177,41 @@ class Database
         }
 
         return $result;
+    }
+
+    /**
+     * Set character set
+     *
+     * @return bool true on success, false otherwise
+     */
+    private function setCharset()
+    {
+        $charset = strtolower($this->_charset);
+
+        if (!in_array($charset, array('utf-8', 'utf8', 'utf8mb4'))) {
+            return true;
+        }
+
+        if ($charset === 'utf-8') {          // before GL-2.1.2
+            $charset = 'utf8';
+        } elseif ($charset === 'utf8mb4') { // since GL-2.1.2
+            if ($this->_mysql_version < 50503) {
+                $charset = 'utf8';
+            }
+        }
+
+        $this->_charset = $charset;
+        $retval = false;
+
+        if (method_exists($this->_db, 'set_charset')) {
+            $retval = @$this->_db->set_charset($charset);
+        }
+
+        if (!$retval) {
+            $retval = @$this->_db->query("SET NAMES '{$this->_charset}'");
+        }
+
+        return $retval;
     }
 
     /**
@@ -256,7 +255,6 @@ class Database
         $this->_charset = strtolower($charset);
         $this->_mysql_version = 0;
         $this->_use_innodb = false;
-        $this->isUtf8Mb4 = false;
 
         $this->_connect();
     }
@@ -363,12 +361,10 @@ class Database
                 }
 
                 // Appends default charset if necessary
-                if (($this->_charset === 'utf-8') && !preg_match('/DEFAULT\s+(CHARSET|CHARACTER\s+SET)/i', $option)) {
-                    if ($this->isUtf8Mb4) {
-                        $option .= ' DEFAULT CHARSET=utf8mb4';
-                    } else {
-                        $option .= ' DEFAULT CHARSET=utf8';
-                    }
+                if ((($this->_charset === 'utf8') || ($this->_charset === 'utf8mb4')) &&
+                    !preg_match('/DEFAULT\s+(CHARSET|CHARACTER\s+SET)/i', $option)
+                ) {
+                    $option .= " DEFAULT CHARSET={$this->_charset}";
                 }
 
                 $sql .= $option;
@@ -742,8 +738,8 @@ class Database
     }
 
     /**
-     * Retrieves record from a recordset
-     * Gets the next record in a recordset and returns in array
+     * Retrieves record from a record set
+     * Gets the next record in a record set and returns in array
      *
      * @param    mysqli_result $recordSet The record set to operate on
      * @param    bool          $both      get both assoc and numeric indices
