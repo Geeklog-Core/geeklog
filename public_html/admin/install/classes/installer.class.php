@@ -3184,7 +3184,7 @@ HTML;
     {
         global $_CONF, $LANG_MIGRATE;
 
-        if (!preg_match('/\.(zip|tar\.gz|tgz)$/i', $backupFile)) {
+        if (!preg_match('/\.(zip|tar\.gz|tgz|gz)$/i', $backupFile)) {
             // not packed
             return $backupFile;
         }
@@ -3464,7 +3464,7 @@ HTML;
         $backup_dir = $gl_path . 'backups/';
         $backupFiles = array();
 
-        foreach (array('*.sql', '*.tar.gz', '*.tgz', '*.zip') as $pattern) {
+        foreach (array('*.sql', '*.gz', '*.tar.gz', '*.tgz', '*.zip') as $pattern) {
             $files = glob($backup_dir . $pattern);
 
             if (is_array($files)) {
