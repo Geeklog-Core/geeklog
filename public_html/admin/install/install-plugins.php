@@ -145,7 +145,7 @@ switch ($step) {
                      */
 
                     // Extract the archive to data so we can get the $pi_name name from admin/install.php
-                    $archive->unpack($_CONF['path'] . 'data/', array($dirName . '/admin/install.php'));
+                    $archive->unpack($_CONF['path'] . 'data/', '|' . preg_quote($dirName . '/admin/install.php', '|') . '|');
                     $plugin_inst = $_CONF['path'] . 'data/' . $dirName . '/admin/install.php';
                     $fileData = @file_get_contents($plugin_inst);
 
