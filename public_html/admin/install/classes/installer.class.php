@@ -3178,7 +3178,7 @@ HTML;
      * @param    string $backupPath path to the "backups" directory
      * @param    string $backupFile backup file name
      * @param    string $display    reference to HTML string (for error msg)
-     * @return   mixed                  file name of unpacked file or false: error
+     * @return   mixed              file name of unpacked file or false: error
      */
     private function unpackFile($backupPath, $backupFile, &$display)
     {
@@ -3189,7 +3189,9 @@ HTML;
             return $backupFile;
         }
 
-        require_once $_CONF['path'] . 'systems/classes/Autoload.php';
+        $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
+
+        require_once $gl_path . 'system/classes/Autoload.php';
         Geeklog\Autoload::initialize();
         $archive = new Unpacker($backupPath . $backupFile);
 
@@ -3226,7 +3228,7 @@ HTML;
             $unpacked_file = substr($file['filename'], strlen($dirName) + 1);
         }
 
-        $success = $archive->unpack($backupPath, array($file['filename']));
+        $success = $archive->unpack($backupPath, '|' . preg_quote($file['filename'], '|') . '|');
 
         if (!$success || !file_exists($backupPath . $unpacked_file)) {
             // error unpacking file
