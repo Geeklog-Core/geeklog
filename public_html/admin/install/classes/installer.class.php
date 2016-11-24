@@ -35,6 +35,11 @@ class Installer
      * @var array
      */
     private $LANG = array();
+    
+    /**
+     * @var array
+     */
+    private $upgradeMessages = array();        
 
     /**
      * Replaces all newlines in a string with <br> or <br />,
@@ -287,6 +292,43 @@ HTML;
             }
         }
     }
+    
+    /**
+     * Check if any message for upgrades,  exit the installer
+     */
+    private function checkUpgradeMessage($version)
+    {
+        $retval = '';
+        
+        if (($this->doDatabaseUpgrades($version, true)) && (!empty($this->upgradeMessages))) {
+            $prompt = 'information';
+            $retval = '<h1 class="heading">' . $this->LANG['ERROR'][14] . '</h1>' . PHP_EOL; // Upgrade Notice
+
+            foreach ($this->upgradeMessages as $version => $message) {
+                $retval .= '<h2>' . $this->LANG['INSTALL'][111] . ' ' . $version . '</h2>' . PHP_EOL;
+                foreach ($message as $type => $message_id) {
+                    $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type);
+                    
+                    // record what type of prompt we need
+                    if ($type == 'information' || $type == 'warning' || $type == 'error') {
+                        if ($prompt != 'error') {
+                            if ($prompt == 'information') {
+                                $prompt = $type;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Add prompt
+            if ($prompt == 'error') {
+                $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_error', $this->env);
+            } else {
+                $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_warning', $this->env);            }
+            }
+        
+        return $retval;
+    }     
 
     /**
      * Return a request variable undoing magic_quotes
@@ -2355,10 +2397,15 @@ HTML;
      * @param   string $currentGlVersion Current Geeklog version
      * @return  bool                     True if successful
      */
-    private function doDatabaseUpgrades($currentGlVersion)
+    private function doDatabaseUpgrades($currentGlVersion, $checkForMessage = false)
     {
         global $_TABLES, $_CONF, $_SP_CONF, $_DB, $_DB_dbms, $_DB_table_prefix;
 
+        // Upgrade messages only supported for Geeklog 2.1.2 and higher
+        if (($checkForMessage) && (version_compare($currentGlVersion, '2.1.1') < 0)) {
+            $currentGlVersion = "2.1.1";
+        }
+        
         $_DB->setDisplayError(true);
 
         // Because the upgrade sql syntax can vary from dbms-to-dbms we are
@@ -2830,13 +2877,20 @@ HTML;
                     // there were no database changes in 2.1.0
                 case '2.1.1':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.1.1_to_2.1.2.php';
-                    $this->updateDB($_SQL, $progress);
-                    update_addLanguage();
-                    update_addRouting();
-                    update_ConfValuesFor212();
+                    if ($checkForMessage) {
+                        $retval = upgrade_message211();
+                        if (is_array($retval)) {
+                            $this->upgradeMessages = array_merge($this->upgradeMessages, $retval);    
+                        }                        
+                    } else {
+                        $this->updateDB($_SQL, $progress);
+                        update_addLanguage();
+                        update_addRouting();
+                        update_ConfValuesFor212();
+                    }
                     $currentGlVersion = '2.1.2';
                     $_SQL = array();
-                    break;
+                    break;                
 
                 default:
                     $done = true;
@@ -2844,11 +2898,13 @@ HTML;
             }
         }
 
-        $this->setVersion($this->env['siteconfig_path']);
+        if (!$checkForMessage) {
+            $this->setVersion($this->env['siteconfig_path']);
 
-        // delete the security check flag on every update to force the user
-        // to run admin/sectest.php again
-        DB_delete($_TABLES['vars'], 'name', 'security_check');
+            // delete the security check flag on every update to force the user
+            // to run admin/sectest.php again
+            DB_delete($_TABLES['vars'], 'name', 'security_check');
+        }
 
         return true;
     }
@@ -4331,7 +4387,7 @@ HTML;
                 break;
 
             // Page 2 - Enter information into db-config.php and ask about InnoDB tables (if supported)
-            case 2:
+            case 2: 
                 if ($installType === 'migrate') {
                     $retval = $this->migrateStep2();
                     break;
@@ -4445,6 +4501,7 @@ HTML;
                             break;
 
                         case 'upgrade':
+                        
                             // Try and find out what the current version of GL is
                             $currentVersion = $this->identifyGeeklogVersion();
 
@@ -4637,6 +4694,14 @@ HTML;
                         require_once $this->env['dbconfig_path'];
                         require_once $this->env['siteconfig_path'];
                         require_once $_CONF['path_system'] . 'lib-database.php';
+                        
+                        // Check for any upgrade info and/or warning messages for specific upgrade path. Skip if continued has been clicked already
+                        if ($this->post('upgrade_check') != 'continue') {
+                            $retval = $this->checkUpgradeMessage($version);
+                            if (!empty($retval)) {
+                                return $retval;
+                            }                         
+                        }
 
                         // If this is a MySQL database check to see if it was
                         // installed with InnoDB support

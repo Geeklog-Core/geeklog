@@ -161,7 +161,8 @@ $LANG_INSTALL = array(
     107 => 'データベースのパスワードが必要です。',
     108 => 'データベースドライバーがありません!',
     109 => 'Emergency Rescue Tool',
-    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:'
+    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:',
+    111 => 'Geeklog Version'
 );
 
 // +---------------------------------------------------------------------------+
@@ -325,7 +326,13 @@ $LANG_ERROR = array(
     7 => 'アップロードするファイルはphp.iniで指定されたpost_max_sizeを超えています。データベースをFTPなどでアップロードしてください。',
     8 => 'エラー',
     9 => 'データベース接続エラー:',
-    10 => 'データベースの設定をチェックしてください。'
+    10 => 'データベースの設定をチェックしてください。',
+    11 => 'Warning', 
+    12 => 'Information',
+    14 => 'Upgrade Notices',
+    15 => 'Topic IDs and Names max length have changed from 128 to 75. This may cause issues when topic ids are truncated (if id is larger than 75 characters) during the upgrade. Please double check your topic ids that are larger than 75 characters will be unique when the max length is changed.',
+    16 => 'Topic IDs and Names have changed from 128 to 75. It has been detected you need to modify 1 or more topic ids before this upgrade can proceed.',
+    17 => 'Professional Theme support has been dropped from Geeklog. If you are currently using the Professional theme or Professional_css theme from Geeklog 2.1.1 or older your website may not function properly.'
 );
 
 // +---------------------------------------------------------------------------+

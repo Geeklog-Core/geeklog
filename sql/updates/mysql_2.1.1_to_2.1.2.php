@@ -23,6 +23,33 @@ $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} CHANGE `header_tid` `header_tid
 $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE `url` `url` VARCHAR(250) DEFAULT NULL";
 
 /**
+ * Upgrade Messages
+ */
+function upgrade_message211()
+{
+    global $_TABLES;
+    
+    // 3 upgrade message types exist 'information', 'warning', 'error'
+    // error type means the user cannot continue upgrade until fixed
+    
+    /*
+    // INCOMPLETE should check if user needs to change topic ids if changle length to 75 produces duplicate ids
+    // Topic IDs and Names have changed from 128 to 75 
+    if (Check if shortening ids creates duplicate ids) {
+        $upgradeMessages['2.1.1'] = array('error' => 16);
+    } else {
+        $upgradeMessages['2.1.1'] = array('warning' => 15);
+    }
+    */
+    
+    // Dropped Support for Professional theme
+    $upgradeMessages['2.1.1'] = array('information' => 17, // Dropped Support for Professional theme
+                                      'warning' => 15); // Topic IDs and Names have changed from 128 to 75 
+
+    return $upgradeMessages;
+}
+
+/**
  * Add Language feature
  */
 function update_addLanguage()
