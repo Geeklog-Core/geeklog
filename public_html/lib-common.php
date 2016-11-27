@@ -33,8 +33,6 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-global $_CONF, $_TABLES;
-
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 
@@ -160,8 +158,6 @@ require_once $_CONF['path_system'] . 'lib-mbyte.php';
  *
  * @global $_PLUGINS array of the names of active plugins
  */
-global $_PLUGINS;
-
 require_once $_CONF['path_system'] . 'lib-plugins.php';
 
 /**

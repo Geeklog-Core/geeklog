@@ -295,12 +295,15 @@ HTML;
     
     /**
      * Check if any message for upgrades,  exit the installer
+     *
+     * @param  string $version
+     * @return string
      */
     private function checkUpgradeMessage($version)
     {
         $retval = '';
         
-        if (($this->doDatabaseUpgrades($version, true)) && (!empty($this->upgradeMessages))) {
+        if ($this->doDatabaseUpgrades($version, true) && !empty($this->upgradeMessages)) {
             $prompt = 'information';
             $retval = '<h1 class="heading">' . $this->LANG['ERROR'][14] . '</h1>' . PHP_EOL; // Upgrade Notice
 
@@ -310,8 +313,8 @@ HTML;
                     $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type);
                     
                     // record what type of prompt we need
-                    if ($type == 'information' || $type == 'warning' || $type == 'error') {
-                        if ($prompt != 'error') {
+                    if ($type === 'information' || $type === 'warning' || $type === 'error') {
+                        if ($prompt !== 'error') {
                             if ($prompt == 'information') {
                                 $prompt = $type;
                             }
@@ -321,7 +324,7 @@ HTML;
             }
             
             // Add prompt
-            if ($prompt == 'error') {
+            if ($prompt === 'error') {
                 $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_error', $this->env);
             } else {
                 $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_warning', $this->env);            }
@@ -4223,7 +4226,7 @@ HTML;
      */
     private function installEngine($installType, $installStep)
     {
-        global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix;
+        global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, $_DEVICE, $_URL;
 
         $retval = '';
 
@@ -4235,7 +4238,7 @@ HTML;
                     break;
                 }
 
-                require_once $this->env['dbconfig_path']; // Get the current DB info
+                include $this->env['dbconfig_path']; // Get the current DB info
 
                 if ($installType === 'upgrade') {
                     $v = $this->checkPost150Upgrade($this->env['dbconfig_path'], $this->env['siteconfig_path']);
@@ -4456,7 +4459,7 @@ HTML;
                         }
                     }
 
-                    require_once $this->env['dbconfig_path'];
+                    require $this->env['dbconfig_path'];
                     require_once $this->env['siteconfig_path'];
                     require_once $_CONF['path_system'] . 'lib-database.php';
 
@@ -4464,7 +4467,7 @@ HTML;
                         'mode'            => $installType,
                         'step'            => 3,
                         'dbconfig_path'   => $this->env['dbconfig_path'],
-                        'install_plugins' => $installPlugins,
+                        'install_plugins' => ($installPlugins ? 'true' : 'false'),
                         'language'        => $this->env['language'],
                         'site_name'       => $site_name,
                         'site_slogan'     => $site_slogan,
@@ -4472,6 +4475,7 @@ HTML;
                         'site_admin_url'  => $site_admin_url,
                         'site_mail'       => $site_mail,
                         'noreply_mail'    => $noreply_mail,
+                        'upgrade_check'   => $this->post('upgrade_check', 'continue'),
                     );
 
                     if ($utf8) {
@@ -4501,7 +4505,6 @@ HTML;
                             break;
 
                         case 'upgrade':
-                        
                             // Try and find out what the current version of GL is
                             $currentVersion = $this->identifyGeeklogVersion();
 
@@ -4521,7 +4524,6 @@ HTML;
 
                                 // If we were unable to determine the current GL
                                 // version is then ask the user what it is
-
                                 $this->env['old_versions'] = array();
                                 $old_versions = array(
                                     '1.2.5-1', '1.3', '1.3.1', '1.3.2', '1.3.2-1', '1.3.3', '1.3.4',
@@ -4558,7 +4560,7 @@ HTML;
                 }
 
                 $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
-                $installPlugins = ($this->request('install_plugins') !== null);
+                $installPlugins = ($this->request('install_plugins') === 'true');
                 $nextLink = $installPlugins
                     ? 'install-plugins.php?language=' . $this->env['language']
                     : 'success.php?type=' . $installType . '&language=' . $this->env['language'];
@@ -4647,7 +4649,6 @@ HTML;
                                 $config->set('path_themes', $this->env['html_path'] . 'layout/');
                                 $config->set('path_editors', $this->env['html_path'] . 'editors/');
                                 $config->set('rdf_file', $this->env['html_path'] . 'backend/geeklog.rss');
-                                $config->set('path_pear', $_CONF['path_system'] . 'pear/');
                                 $config->set('cookie_path', $this->guessCookiePath(urldecode($site_url)));
                                 $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
 
@@ -4669,9 +4670,7 @@ HTML;
                                      * things and rely on a few global declarations
                                      * (see beginning of function).
                                      */
-
-                                    // Hack: not needed here - avoid notice
-                                    require_once dirname(__FILE__) . '/../../../lib-common.php';
+                                    require str_replace('siteconfig.php', 'lib-common.php', $this->env['siteconfig_path']);
                                     $this->defaultPluginInstall();
                                 }
 
@@ -4778,7 +4777,7 @@ HTML;
                 }
 
                 $this->upgradePlugins();
-                $installPlugins = ($this->get('install_plugins', null) !== null);
+                $installPlugins = ($this->get('install_plugins') === 'true');
 
                 if (!$installPlugins) {
                     // if we don't do the manual selection, install all new plugins now
