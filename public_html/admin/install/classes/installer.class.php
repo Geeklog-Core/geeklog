@@ -171,6 +171,9 @@ HTML;
         $this->env['step'] = intval($this->get('step', $this->post('step', 1)), 10);
         $this->env['language_selector'] = '';
         $language = $this->post('language', $this->get('language', self::DEFAULT_LANGUAGE));
+        
+        // Upgrade Message check flag for if continue button clicked if any messages present
+        $this->env['upgrade_check'] = $this->get('upgrade_check', $this->post('upgrade_check', ''));
 
         // Include language file
         if (!file_exists(PATH_INSTALL . 'language/' . $language . '.php')) {
@@ -461,7 +464,7 @@ HTML;
 
         return $langName;
     }
-
+ 
     /**
      * Return a UI language selector
      *
@@ -4475,7 +4478,7 @@ HTML;
                         'site_admin_url'  => $site_admin_url,
                         'site_mail'       => $site_mail,
                         'noreply_mail'    => $noreply_mail,
-                        'upgrade_check'   => $this->post('upgrade_check', 'continue'),
+                        //'upgrade_check'   => $this->post('upgrade_check', 'confirmed'),
                     );
 
                     if ($utf8) {
@@ -4693,9 +4696,10 @@ HTML;
                         require_once $this->env['dbconfig_path'];
                         require_once $this->env['siteconfig_path'];
                         require_once $_CONF['path_system'] . 'lib-database.php';
-                        
+ 
+        
                         // Check for any upgrade info and/or warning messages for specific upgrade path. Skip if continued has been clicked already
-                        if ($this->post('upgrade_check') != 'continue') {
+                        if ($this->post('upgrade_check') != 'confirmed') {
                             $retval = $this->checkUpgradeMessage($version);
                             if (!empty($retval)) {
                                 return $retval;
@@ -4822,7 +4826,7 @@ HTML;
         $this->env['language_selector'] = (empty($this->env['mode']) || ($this->env['mode'] === 'check_permissions'))
             ? $this->getLanguageSelector()
             : '';
-
+            
         // Render content
         switch ($this->env['mode']) {
             // The script first checks the location of the db-config.php file. By default

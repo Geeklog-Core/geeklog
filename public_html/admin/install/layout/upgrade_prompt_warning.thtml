@@ -8,7 +8,8 @@
     <div style="position: relative; left: 105px; top: 5px;">        
         <form action="index.php" method="post">
             <input type="hidden" name="mode" value="upgrade">
-            <input type="hidden" name="upgrade_check" value="continue">
+            <input type="hidden" name="step" value="3">
+            <input type="hidden" name="upgrade_check" value="confirmed">
             <input type="hidden" name="language" value="{! language !}">
             <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">        
             <input type="submit" class="button big-button" value="{{ LANG.INSTALL.62 }}">
