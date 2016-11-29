@@ -3739,8 +3739,7 @@ HTML;
                     break;
 
                 case 'dbcontent':
-                    //require_once $_CONF['path_system'] . 'lib-database.php';
-                    require_once 'C:\inetpub\GitHub\geeklog\system\lib-database.php';
+                    require_once $_CONF['path_system'] . 'lib-database.php';
 
                     // we need the following information
                     $has_config = false;
