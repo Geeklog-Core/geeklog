@@ -299,14 +299,14 @@ HTML;
     /**
      * Check if any message for upgrades,  exit the installer
      *
-     * @param  string $version
+     * @param  string $currentVersion
      * @return string
      */
-    private function checkUpgradeMessage($version)
+    private function checkUpgradeMessage($currentVersion)
     {
         $retval = '';
         
-        if ($this->doDatabaseUpgrades($version, true) && !empty($this->upgradeMessages)) {
+        if ($this->doDatabaseUpgrades($currentVersion, true) && !empty($this->upgradeMessages)) {
             $prompt = 'information';
             $retval = '<h1 class="heading">' . $this->LANG['ERROR'][14] . '</h1>' . PHP_EOL; // Upgrade Notice
 
@@ -330,6 +330,9 @@ HTML;
             if ($prompt === 'error') {
                 $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_error', $this->env);
             } else {
+                // add current version to array so set in template
+                $this->env['currentVersion'] = $currentVersion;
+                
                 $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_warning', $this->env);            }
             }
         
@@ -3736,7 +3739,8 @@ HTML;
                     break;
 
                 case 'dbcontent':
-                    require_once $_CONF['path_system'] . 'lib-database.php';
+                    //require_once $_CONF['path_system'] . 'lib-database.php';
+                    require_once 'C:\inetpub\GitHub\geeklog\system\lib-database.php';
 
                     // we need the following information
                     $has_config = false;
@@ -4803,6 +4807,8 @@ HTML;
      */
     public function run()
     {
+        global $_TABLES;
+        
         // Prepare some hints about what /path/to/geeklog might be ...
         $this->env['gl_path'] = BASE_FILE;
 
