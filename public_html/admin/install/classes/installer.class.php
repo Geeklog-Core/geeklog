@@ -3961,7 +3961,6 @@ HTML;
                 }
             }
             
-            /* Commented out for now as Upgrade Messages for migrate does not work yet due to lib-database not found by this function once continue pressed
             // Check for any upgrade info and/or warning messages for specific upgrade path. Skip if continued has been clicked already
             if ($this->post('upgrade_check') != 'confirmed') {
                 $retval = $this->checkUpgradeMessage($version);
@@ -3969,7 +3968,7 @@ HTML;
                     return $retval;
                 }                         
             }
-            */
+            
 
             if (!$this->doDatabaseUpgrades($version)) {
                 $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[47], $version, self::GL_VERSION));
@@ -4872,6 +4871,10 @@ HTML;
             case 'install': // Deliberate fall-through, no "break"
             case 'upgrade':
             case 'migrate':
+                if ($this->env['mode'] == 'migrate') {
+                    // Need conf paths etc for migration
+                    require_once $this->env['siteconfig_path'];
+                }
                 if (($this->env['step'] == 4) && ($this->env['mode'] !== 'migrate')) {
                     // for the plugin install and upgrade,
                     // we need lib-common.php in the global(!) namespace
