@@ -2415,7 +2415,10 @@ HTML;
             $currentGlVersion = "2.1.1";
         }
         
-        $_DB->setDisplayError(true);
+        // Don't do this if just checking for upgrade messages
+        if (!$checkForMessage) {
+            $_DB->setDisplayError(true);
+        }
 
         // Because the upgrade sql syntax can vary from dbms-to-dbms we are
         // leaving that up to each Geeklog database driver
@@ -2907,6 +2910,7 @@ HTML;
             }
         }
 
+        // Don't do this if just checking for upgrade messages
         if (!$checkForMessage) {
             $this->setVersion($this->env['siteconfig_path']);
 
@@ -3956,6 +3960,16 @@ HTML;
                     DB_delete($_TABLES['vars'], 'name', 'database_engine');
                 }
             }
+            
+            /* Commented out for now as Upgrade Messages for migrate does not work yet due to lib-database not found by this function once continue pressed
+            // Check for any upgrade info and/or warning messages for specific upgrade path. Skip if continued has been clicked already
+            if ($this->post('upgrade_check') != 'confirmed') {
+                $retval = $this->checkUpgradeMessage($version);
+                if (!empty($retval)) {
+                    return $retval;
+                }                         
+            }
+            */
 
             if (!$this->doDatabaseUpgrades($version)) {
                 $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[47], $version, self::GL_VERSION));
