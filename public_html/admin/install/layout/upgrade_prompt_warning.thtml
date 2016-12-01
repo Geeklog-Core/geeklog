@@ -12,7 +12,9 @@
             <input type="hidden" name="step" value="{! step !}">
             <input type="hidden" name="upgrade_check" value="confirmed">
             <input type="hidden" name="language" value="{! language !}">
-            <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">        
+            <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+            <input type="hidden" name="site_url" value="{! site_url !}">
+            <input type="hidden" name="site_admin_url" value="{! site_admin_url !}">
             <input type="submit" class="button big-button" value="{{ LANG.INSTALL.62 }}">
         </form>
     </div>

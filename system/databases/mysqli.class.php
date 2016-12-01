@@ -259,12 +259,6 @@ class Database
         $this->_connect();
     }
 
-    public function __destruct()
-    {
-        @$this->_db->close();
-        $this->_db = null;
-    }
-
     /**
      * Turns debug mode on
      * Set this to TRUE to see debug messages

@@ -105,22 +105,6 @@ abstract class Db
     }
 
     /**
-     * Close database connection
-     *
-     * @return void
-     */
-    abstract public function close();
-
-    /**
-     * Disconnect from database
-     */
-    public static function disconnect()
-    {
-        self::$engine->close();
-        self::$engine = null;
-    }
-
-    /**
      * Perform a query
      *
      * @param  string $sql

@@ -35,11 +35,11 @@ class Installer
      * @var array
      */
     private $LANG = array();
-    
+
     /**
      * @var array
      */
-    private $upgradeMessages = array();        
+    private $upgradeMessages = array();
 
     /**
      * Replaces all newlines in a string with <br> or <br />,
@@ -171,7 +171,7 @@ HTML;
         $this->env['step'] = intval($this->get('step', $this->post('step', 1)), 10);
         $this->env['language_selector'] = '';
         $language = $this->post('language', $this->get('language', self::DEFAULT_LANGUAGE));
-        
+
         // Upgrade Message check flag for if continue button clicked if any messages present
         $this->env['upgrade_check'] = $this->get('upgrade_check', $this->post('upgrade_check', ''));
 
@@ -270,7 +270,7 @@ HTML;
         }
 
         return '<div class="notice"><span class="' . $style . '">' . $type . ':</span> '
-        . $message . '</div>' . PHP_EOL;
+            . $message . '</div>' . PHP_EOL;
     }
 
     /**
@@ -295,7 +295,7 @@ HTML;
             }
         }
     }
-    
+
     /**
      * Check if any message for upgrades,  exit the installer
      *
@@ -305,16 +305,18 @@ HTML;
     private function checkUpgradeMessage($currentVersion)
     {
         $retval = '';
-        
+
         if ($this->doDatabaseUpgrades($currentVersion, true) && !empty($this->upgradeMessages)) {
             $prompt = 'information';
             $retval = '<h1 class="heading">' . $this->LANG['ERROR'][14] . '</h1>' . PHP_EOL; // Upgrade Notice
+            $this->env['site_url'] = $this->get('site_url', $this->post('site_url', $this->getSiteUrl()));
+            $this->env['site_admin_url'] = $this->get('site_admin_url', $this->post('site_admin_url', $this->getSiteAdminUrl()));
 
             foreach ($this->upgradeMessages as $version => $message) {
                 $retval .= '<h2>' . $this->LANG['INSTALL'][111] . ' ' . $version . '</h2>' . PHP_EOL;
                 foreach ($message as $type => $message_id) {
                     $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type);
-                    
+
                     // record what type of prompt we need
                     if ($type === 'information' || $type === 'warning' || $type === 'error') {
                         if ($prompt !== 'error') {
@@ -325,19 +327,20 @@ HTML;
                     }
                 }
             }
-            
+
             // Add prompt
             if ($prompt === 'error') {
                 $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_error', $this->env);
             } else {
                 // add current version to array so set in template
                 $this->env['currentVersion'] = $currentVersion;
-                
-                $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_warning', $this->env);            }
+
+                $retval .= MicroTemplate::quick(PATH_LAYOUT, 'upgrade_prompt_warning', $this->env);
             }
-        
+        }
+
         return $retval;
-    }     
+    }
 
     /**
      * Return a request variable undoing magic_quotes
@@ -437,7 +440,7 @@ HTML;
      * Make a nice display name from the language filename
      *
      * @param   string $filename filename without the extension
-     * @return  string          language name to display to the user
+     * @return  string           language name to display to the user
      */
     private function prettifyLanguageName($filename)
     {
@@ -467,7 +470,7 @@ HTML;
 
         return $langName;
     }
- 
+
     /**
      * Return a UI language selector
      *
@@ -916,7 +919,7 @@ HTML;
     public function getHelpLink($var)
     {
         return '(<a href="help.php?language=' . $this->env['language'] . '&amp;label=' . $var
-        . '#' . $var . '" target="_blank">?</a>)';
+            . '#' . $var . '" target="_blank">?</a>)';
     }
 
     /**
@@ -1981,16 +1984,18 @@ HTML;
          * it's the correct version. Else, try some heuristics (below).
          * Note: Need to handle 'sr1' etc. appendices.
          */
-        $dbVersion = DB_getItem($_TABLES['vars'], 'value', "name = 'database_version'");
+        if (DB_checkTableExists('vars')) {
+            $dbVersion = DB_getItem($_TABLES['vars'], 'value', "name = 'database_version'");
 
-        if (!empty($dbVersion)) {
-            $v = explode('.', $dbVersion);
+            if (!empty($dbVersion)) {
+                $v = explode('.', $dbVersion);
 
-            if (count($v) === 3) {
-                $v[2] = (int) $v[2];
-                $version = implode('.', $v);
+                if (count($v) === 3) {
+                    $v[2] = (int) $v[2];
+                    $version = implode('.', $v);
 
-                return $version;
+                    return $version;
+                }
             }
         }
 
@@ -2403,18 +2408,19 @@ HTML;
     /**
      * Perform database upgrades
      *
-     * @param   string $currentGlVersion Current Geeklog version
-     * @return  bool                     True if successful
+     * @param  string $currentGlVersion Current Geeklog version
+     * @param  bool   $checkForMessage
+     * @return bool                     True if successful
      */
     private function doDatabaseUpgrades($currentGlVersion, $checkForMessage = false)
     {
         global $_TABLES, $_CONF, $_SP_CONF, $_DB, $_DB_dbms, $_DB_table_prefix;
 
         // Upgrade messages only supported for Geeklog 2.1.2 and higher
-        if (($checkForMessage) && (version_compare($currentGlVersion, '2.1.1') < 0)) {
-            $currentGlVersion = "2.1.1";
+        if ($checkForMessage && (version_compare($currentGlVersion, '2.1.1') < 0)) {
+            $currentGlVersion = '2.1.1';
         }
-        
+
         // Don't do this if just checking for upgrade messages
         if (!$checkForMessage) {
             $_DB->setDisplayError(true);
@@ -2892,8 +2898,8 @@ HTML;
                     if ($checkForMessage) {
                         $retval = upgrade_message211();
                         if (is_array($retval)) {
-                            $this->upgradeMessages = array_merge($this->upgradeMessages, $retval);    
-                        }                        
+                            $this->upgradeMessages = array_merge($this->upgradeMessages, $retval);
+                        }
                     } else {
                         $this->updateDB($_SQL, $progress);
                         update_addLanguage();
@@ -2902,7 +2908,7 @@ HTML;
                     }
                     $currentGlVersion = '2.1.2';
                     $_SQL = array();
-                    break;                
+                    break;
 
                 default:
                     $done = true;
@@ -3002,7 +3008,7 @@ HTML;
             // if we had to fix the site's URL, chances are that cookie domain
             // and path are also wrong and the user won't be able to log in
             $config->set('cookiedomain', '');
-            $config->set('cookie_path', INST_guessCookiePath($site_url));
+            $config->set('cookie_path', $this->guessCookiePath($site_url));
         }
 
         if (!empty($site_admin_url) &&
@@ -3948,7 +3954,12 @@ HTML;
             $upgrade_error = true;
         } elseif ($version != self::GL_VERSION) {
             $use_innodb = false;
-            $db_engine = DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'");
+
+            if (DB_checkTableExists('vars')) {
+                $db_engine = DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'");
+            } else {
+                $db_engine = '';
+            }
 
             if ($db_engine === 'InnoDB') {
                 // we've migrated, probably to a different server
@@ -3960,15 +3971,15 @@ HTML;
                     DB_delete($_TABLES['vars'], 'name', 'database_engine');
                 }
             }
-            
+
             // Check for any upgrade info and/or warning messages for specific upgrade path. Skip if continued has been clicked already
             if ($this->post('upgrade_check') != 'confirmed') {
                 $retval = $this->checkUpgradeMessage($version);
                 if (!empty($retval)) {
                     return $retval;
-                }                         
+                }
             }
-            
+
 
             if (!$this->doDatabaseUpgrades($version)) {
                 $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[47], $version, self::GL_VERSION));
@@ -4008,38 +4019,36 @@ HTML;
         // save a copy of the old config
         $_OLD_CONF = $config->get_config('Core');
 
-        $config->set('site_url', urldecode($_REQUEST['site_url']));
-        $_CONF['site_url'] = urldecode($_REQUEST['site_url']);
-        $config->set('site_admin_url', urldecode($_REQUEST['site_admin_url']));
-        $_CONF['site_admin_url'] = urldecode($_REQUEST['site_admin_url']);
-        $config->set('path_html', $html_path);
+        $_CONF['site_url'] = urldecode(urldecode(Geeklog\Input::get('site_url', Geeklog\Input::post('site_url', ''))));
+        $config->set('site_url', $_CONF['site_url']);
+        $_CONF['site_admin_url'] = urldecode(Geeklog\Input::get('site_admin_url', Geeklog\Input::post('site_admin_url', '')));
+        $config->set('site_admin_url', $_CONF['site_admin_url']);
         $_CONF['path_html'] = $html_path;
-        $config->set('path_log', $gl_path . 'logs/');
+        $config->set('path_html', $html_path);
         $_CONF['path_log'] = $gl_path . 'logs/';
-        $config->set('path_language', $gl_path . 'language/');
+        $config->set('path_log', $_CONF['path_log']);
         $_CONF['path_language'] = $gl_path . 'language/';
-        $config->set('backup_path', $backup_dir);
+        $config->set('path_language', $_CONF['path_language']);
         $_CONF['backup_path'] = $backup_dir;
-        $config->set('path_data', $gl_path . 'data/');
+        $config->set('backup_path', $_CONF['backup_path']);
         $_CONF['path_data'] = $gl_path . 'data/';
-        $config->set('path_images', $html_path . 'images/');
+        $config->set('path_data', $_CONF['path_data']);
         $_CONF['path_images'] = $html_path . 'images/';
-        $config->set('path_themes', $html_path . 'layout/');
+        $config->set('path_images', $_CONF['path_images']);
         $_CONF['path_themes'] = $html_path . 'layout/';
-        $config->set('path_editors', $html_path . 'editors/');
+        $config->set('path_themes', $_CONF['path_themes']);
         $_CONF['path_editors'] = $html_path . 'editors/';
-        $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
+        $config->set('path_editors', $_CONF['path_editors']);
         $_CONF['rdf_file'] = $html_path . 'backend/geeklog.rss';
-        $config->set('path_pear', $_CONF['path_system'] . 'pear/');
-        $_CONF['path_pear'] = $_CONF['path_system'] . 'pear/';
+        $config->set('rdf_file', $html_path . $_CONF['rdf_file']);
 
         // reset cookie domain and path as wrong values may prevent login
-        $config->set('cookiedomain', '');
         $_CONF['cookiedomain'] = '';
-        $config->set('cookie_path', $this->guessCookiePath($_CONF['site_url']));
+        $config->set('cookiedomain', $_CONF['cookiedomain']);
         $_CONF['cookie_path'] = $this->guessCookiePath($_CONF['site_url']);
+        $config->set('cookie_path', $_CONF['cookie_path']);
 
-        if (substr($_CONF['site_url'], 0, 6) == 'https:') {
+        if (substr($_CONF['site_url'], 0, 6) === 'https:') {
             $config->set('cookiesecure', true);
             $_CONF['cookiesecure'] = 1;
         } else {
@@ -4063,7 +4072,7 @@ HTML;
         }
 
         // set noreply_mail when updating from an old version
-        if (empty($_CONF['noreply_mail']) && (!empty($_CONF['site_mail']))) {
+        if (empty($_CONF['noreply_mail']) && !empty($_CONF['site_mail'])) {
             $_CONF['noreply_mail'] = $_CONF['site_mail'];
             $config->set('noreply_mail', $_CONF['noreply_mail']);
         }
@@ -4409,7 +4418,7 @@ HTML;
                 break;
 
             // Page 2 - Enter information into db-config.php and ask about InnoDB tables (if supported)
-            case 2: 
+            case 2:
                 if ($installType === 'migrate') {
                     $retval = $this->migrateStep2();
                     break;
@@ -4548,8 +4557,8 @@ HTML;
                                     '1.2.5-1', '1.3', '1.3.1', '1.3.2', '1.3.2-1', '1.3.3', '1.3.4',
                                     '1.3.5', '1.3.6', '1.3.7', '1.3.8', '1.3.9', '1.3.10', '1.3.11',
                                     '1.4.0', '1.4.1', '1.5.0', '1.5.1', '1.5.2', '1.6.0', '1.6.1',
-                                    '1.7.0', '1.7.1', '1.7.2', '1.8.0', '1.8.1', '1.8.2', '2.0.0', 
-                                    '2.1.0', '2.1.1'
+                                    '1.7.0', '1.7.1', '1.7.2', '1.8.0', '1.8.1', '1.8.2', '2.0.0',
+                                    '2.1.0', '2.1.1',
                                 );
                                 $tempCounter = 0;
 
@@ -4712,14 +4721,13 @@ HTML;
                         require_once $this->env['dbconfig_path'];
                         require_once $this->env['siteconfig_path'];
                         require_once $_CONF['path_system'] . 'lib-database.php';
- 
-        
+
                         // Check for any upgrade info and/or warning messages for specific upgrade path. Skip if continued has been clicked already
-                        if ($this->post('upgrade_check') != 'confirmed') {
+                        if ($this->post('upgrade_check') !== 'confirmed') {
                             $retval = $this->checkUpgradeMessage($version);
                             if (!empty($retval)) {
                                 return $retval;
-                            }                         
+                            }
                         }
 
                         // If this is a MySQL database check to see if it was
@@ -4819,8 +4827,8 @@ HTML;
      */
     public function run()
     {
-        global $_TABLES;
-        
+        global $_CONF, $_TABLES, $_VARS, $_URL, $_DEVICE, $_SCRIPTS, $_IMAGE_TYPE, $TEMPLATE_OPTIONS, $_GROUPS, $_RIGHTS;
+
         // Prepare some hints about what /path/to/geeklog might be ...
         $this->env['gl_path'] = BASE_FILE;
 
@@ -4844,7 +4852,7 @@ HTML;
         $this->env['language_selector'] = (empty($this->env['mode']) || ($this->env['mode'] === 'check_permissions'))
             ? $this->getLanguageSelector()
             : '';
-            
+
         // Render content
         switch ($this->env['mode']) {
             // The script first checks the location of the db-config.php file. By default
