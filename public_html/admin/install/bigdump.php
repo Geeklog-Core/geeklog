@@ -198,6 +198,14 @@ if (!$error && isset($_REQUEST["start"])) {
 // START IMPORT SESSION HERE
 // *******************************************************************************************
 
+// Figure out back url for any errors
+// $backUrl = 'index.php?mode=migrate'; // doesn't work so return them to main install page
+$error_gobackUrl = 'index.php';
+$language = $installer->getLanguage();
+if (!empty($language)) {
+    $error_gobackUrl .= '?language=' . $language;
+}
+
 if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_match('/(\.(sql|gz))$/i', $currentFileName)) {
     // Check start and foffset are numeric values
     if (!is_numeric($_REQUEST["start"]) || !is_numeric($_REQUEST["foffset"])) {
@@ -415,7 +423,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                     . '<noscript>' . PHP_EOL
                     . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $lineNumber . '&fn=' . urlencode($currentFileName) . '&foffset=' . $fOffset . '&totalqueries=' . $totalQueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $installer->getLanguage() . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '">Continue from the line ' . $lineNumber . '</a></p>' . PHP_EOL
                     . '</noscript>' . PHP_EOL
-                    . '<p><strong><a href="' . $_SERVER['PHP_SELF'] . '">' . $LANG_BIGDUMP[26] . '</a></strong> ' . $LANG_BIGDUMP[27] . ' <strong>' . $LANG_BIGDUMP[28] . '</strong></p>' . PHP_EOL;
+                    . '<p><strong><a href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[26] . '</a></strong> ' . $LANG_BIGDUMP[27] . ' <strong>' . $LANG_BIGDUMP[28] . '</strong></p>' . PHP_EOL;
             }
         } else {
             echo $installer->getAlertMsg($LANG_BIGDUMP[29]);
@@ -424,14 +432,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
 }
 
 if ($error) {
-    $backUrl = 'index.php?mode=migrate';
-    $language = $installer->getLanguage();
-
-    if (!empty($language)) {
-        $backUrl .= '&language=' . $language;
-    }
-
-    echo '<p><a href="' . $backUrl . '">' . $LANG_BIGDUMP[30] . '</a> '
+    echo '<p><a href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[30] . '</a> '
         . $LANG_BIGDUMP[31] . '</p>' . PHP_EOL;
 }
 
