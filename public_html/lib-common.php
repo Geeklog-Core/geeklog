@@ -2944,12 +2944,23 @@ function COM_userMenu($help = '', $title = '', $position = '')
                 } else {
                     $icon_path = $_CONF['site_url'] . '/images/';
                 }
+                // UIkit icon font names
+                $icon_font_names = array(
+                    'facebook'  => 'facebook',
+                    'google'    => 'google',
+                    'twitter'   => 'twitter',
+                    'microsoft' => 'windows',
+                    'linkedin'  => 'linkedin',
+                    'yahoo'     => 'yahoo',
+                    'github'    => 'github'
+                );
                 foreach ($modules as $service) {
                     $login->set_file('oauth_login', 'loginform_oauth.thtml');
                     $login->set_var('oauth_service', $service);
                     $login->set_var('lang_oauth_service', $LANG01[$service]);
                     // for sign in image
                     $login->set_var('oauth_sign_in_image', $icon_path . $service . '-login-icon.png'); // For use with oauth icon on regular buttons
+                    $login->set_var('oauth_icon_font_name', $icon_font_names[$service]);
                     $login->parse('output', 'oauth_login');
                     $html_oauth .= $login->finish($login->get_var('output'));
                 }
