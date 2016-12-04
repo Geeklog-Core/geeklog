@@ -64,9 +64,6 @@ $db_name = $_DB_name;
 $db_username = $_DB_user;
 $db_password = $_DB_pass;
 
-$site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : '';
-$site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : '';
-
 // Other settings (optional)
 $filename = '';     // Specify the dump filename to suppress the file selection dialog
 $linesPerSession = 3000;   // Lines to be executed per one import session
@@ -201,7 +198,10 @@ if (!$error && isset($_REQUEST["start"])) {
 // Figure out back url for any errors
 // $backUrl = 'index.php?mode=migrate'; // doesn't work so return them to main install page
 $error_gobackUrl = 'index.php';
+$site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : '';
+$site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : '';
 $language = $installer->getLanguage();
+
 if (!empty($language)) {
     $error_gobackUrl .= '?language=' . $language;
 }
@@ -253,7 +253,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                 }
             }
 
-            if ($dumpLine === "") {
+            if ($dumpLine === '') {
                 break;
             }
 
@@ -342,7 +342,6 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
         }
 
         // Print statistics
-
         if (!$error) {
             $lines_this = $lineNumber - $_REQUEST["start"];
             $lines_done = $lineNumber - 1;
@@ -419,9 +418,9 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                 // Go to the next step
                 echo '<script language="JavaScript" type="text/javascript">window.setTimeout(\'location.href="'
                     . $_SERVER['PHP_SELF'] . '?start=' . $lineNumber . '&fn='
-                    . urlencode($currentFileName) . '&foffset=' . $fOffset . '&totalqueries=' . $totalQueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $installer->getLanguage() . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delayPerSession . ');</script>' . PHP_EOL
+                    . urlencode($currentFileName) . '&foffset=' . $fOffset . '&totalqueries=' . $totalQueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $language . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delayPerSession . ');</script>' . PHP_EOL
                     . '<noscript>' . PHP_EOL
-                    . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $lineNumber . '&fn=' . urlencode($currentFileName) . '&foffset=' . $fOffset . '&totalqueries=' . $totalQueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $installer->getLanguage() . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '">Continue from the line ' . $lineNumber . '</a></p>' . PHP_EOL
+                    . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $lineNumber . '&fn=' . urlencode($currentFileName) . '&foffset=' . $fOffset . '&totalqueries=' . $totalQueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $language . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '">Continue from the line ' . $lineNumber . '</a></p>' . PHP_EOL
                     . '</noscript>' . PHP_EOL
                     . '<p><strong><a href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[26] . '</a></strong> ' . $LANG_BIGDUMP[27] . ' <strong>' . $LANG_BIGDUMP[28] . '</strong></p>' . PHP_EOL;
             }
@@ -431,7 +430,9 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
     }
 }
 
+// If there was an error, we offer a link to retry migration
 if ($error) {
+    $error_gobackUrl .= '&site_url=' . urlencode($site_url) . '&site_admin_url=' . urlencode($site_admin_url);
     echo '<p><a href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[30] . '</a> '
         . $LANG_BIGDUMP[31] . '</p>' . PHP_EOL;
 }
