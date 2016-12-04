@@ -586,7 +586,7 @@ HTML;
 
             // If the script was able to locate all the system files/directories move onto the next step
             $args = array(
-                'mode' => 'check_permissions',
+                'mode'          => 'check_permissions',
                 'dbconfig_path' => $this->env['dbconfig_path'],
             );
 
@@ -3286,20 +3286,20 @@ HTML;
         $file = '';
         $files = $archive->getList();
 
-        foreach ($files as $file) {
-            if (!isset($file['folder']) || !$file['folder']) {
-                if (preg_match('/\.sql$/', $file['filename'])) {
-                    $dirName = preg_replace('/\/.*$/', '', $file['filename']);
-                    $foundSqlFile = true;
-                    break;
+        if (is_array($files) && (count($files) > 0)) {
+            foreach ($files as $file) {
+                if (!isset($file['folder']) || !$file['folder']) {
+                    if (preg_match('/\.sql$/', $file['filename'])) {
+                        $dirName = preg_replace('/\/.*$/', '', $file['filename']);
+                        $foundSqlFile = true;
+                        break;
+                    }
                 }
             }
         }
 
         if (!$foundSqlFile) {
             // no .sql file found in archive
-            $display .= $this->getAlertMsg(sprintf($LANG_MIGRATE[40], $backupFile));
-
             return false;
         }
 
@@ -3927,6 +3927,14 @@ HTML;
                     . '&site_url=' . urlencode($_REQUEST['site_url'])
                     . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
             }
+        } else {
+            // No SQL file found
+            $backLink = 'index.php?'
+                . http_build_query(array(
+                    'mode'           => 'migrate',
+                    'language'       => $this->getLanguage(),
+                ));
+            exit($this->getAlertMsg(sprintf($LANG_MIGRATE[40], $backupFile, $backLink)));
         }
     }
 

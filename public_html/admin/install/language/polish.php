@@ -236,7 +236,7 @@ $LANG_MIGRATE = array(
     37 => 'Migration Complete',
     38 => 'The migration process has completed. However, the installation script found the following issues:',
     39 => 'Failed to set PEAR include path. Sorry, can\'t handle compressed database backups without PEAR.',
-    40 => 'The archive \'%s\' does not appear to contain any SQL files.',
+    40 => 'The archive "%1$s" does not appear to contain any SQL files.  To retry, click on <a href="%2$s\">this</a>',
     41 => 'Error extracting database backup \'%s\' from compressed backup file.',
     42 => 'Backup file \'%s\' just vanished ...',
     43 => 'Import aborted: The file \'%s\' does not appear to be an SQL dump.',
