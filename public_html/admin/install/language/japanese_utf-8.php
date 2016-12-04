@@ -66,9 +66,9 @@ $LANG_INSTALL = array(
     12 => '推奨値',
     13 => '現在',
     14 => '',
-    15 => 'Geeklogのヘッドライン(RSS)が無効になっています。<code>backend</code>ディレクトリのテストを行いませんでした。',
+    15 => 'Geeklogのフィード(RSS)が無効になっています。<code>backend</code>ディレクトリのテストを行いませんでした。',
     16 => '移行',
-    17 => 'ユーザ写真が無効になっています。<code>userphotos</code>ディレクトリのテストを行いませんでした。',
+    17 => 'ユーザー写真が無効になっています。<code>userphotos</code>ディレクトリのテストを行いませんでした。',
     18 => '記事に画像を添付する機能が無効になっています。<code>articles</code>ディレクトリのテストを行いませんでした。',
     19 => 'Geeklogでは、いくつかのファイルとディレクトリがWebサーバーから書き込める必要があります。以下は、変更する必要のあるファイルとディレクトリの一覧です。',
     20 => '警告!',
@@ -161,8 +161,8 @@ $LANG_INSTALL = array(
     107 => 'データベースのパスワードが必要です。',
     108 => 'データベースドライバーがありません!',
     109 => 'Emergency Rescue Tool',
-    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:',
-    111 => 'Geeklog Version'
+    110 => 'パーミッションは正しいようですが、インストールスクリプトはGeeklogのディレクトリに書き込むことができません。SELinuxを使っているなら、httpd プロセスに書き込み権限を与えてください。次のコマンドを試してみてください:',
+    111 => 'Geeklog のバージョン'
 );
 
 // +---------------------------------------------------------------------------+
@@ -291,8 +291,8 @@ $LANG_BIGDUMP = array(
     8 => '作業中 ファイル:',
     9 => 'ファイルの末尾にファイルポインタを移動できません。',
     10 => 'ファイルポインタ移動不可:',
-    11 => 'There is no MySQL extension available in your PHP installation.',
-    14 => '中止した行版:',
+    11 => 'PHPのMySQLエクステンションが利用できません。',
+    14 => '中止した行番号:',
     15 => '。このクエリには',
     16 => '行以上が含まれています。各クエリの末尾にセミコロンを付けないツールでダンプファイルを生成した場合や、ダンプファイルの中に複数行INSERT文が含まれる場合に発生する可能性があります。',
     17 => 'エラーの発生した行番号:',
@@ -327,12 +327,12 @@ $LANG_ERROR = array(
     8 => 'エラー',
     9 => 'データベース接続エラー:',
     10 => 'データベースの設定をチェックしてください。',
-    11 => 'Warning', 
-    12 => 'Information',
-    14 => 'Upgrade Notices',
-    15 => 'Topic IDs and Names max length have changed from 128 to 75. This may cause issues when topic ids are truncated (if id is larger than 75 characters) during the upgrade. Please double check your topic ids that are larger than 75 characters will be unique when the max length is changed.',
-    16 => 'Topic IDs and Names have changed from 128 to 75. It has been detected you need to modify 1 or more topic ids before this upgrade can proceed.',
-    17 => 'Professional Theme support has been dropped from Geeklog. If you are currently using the Professional theme or Professional_css theme from Geeklog 2.1.1 or older your website may not function properly.'
+    11 => '警告',
+    12 => '情報',
+    14 => 'アップグレードの注意点',
+    15 => '話題IDと話題の最大長が128文字から75文字へ変更されました。このため、アップグレードの際に話題IDが強制的に切り詰められ、問題が発生するかもしれません(話題IDが75文字を超える場合)。75文字を超える話題IDを75文字に切り詰めたものが他の話題IDと重複しないか確認してください。',
+    16 => '話題IDと話題の最大長が128文字から75文字へ変更されました。アップグレードを進める前に修正する必要のある話題IDを検出しました。',
+    17 => 'Professionalテーマはサポートされなくなりました。Geeklog 2.1.1以前からProfessionalテーマやProfessional_cssテーマを使っている場合はサイトが正常に機能しなくなる可能性があります。'
 );
 
 // +---------------------------------------------------------------------------+
