@@ -197,6 +197,9 @@ $LANG_SUCCESS = array(
     25 => 'いいえ、後で自分で削除します。'
 );
 
+// +---------------------------------------------------------------------------+
+// migration
+
 $LANG_MIGRATE = array(
     0 => 'バックアップファイルに"DROP TABLE"が追加されている場合、同じ名前のテーブルがあれば上書きされます。',
     1 => '実行する前に',
@@ -426,3 +429,5 @@ $LANG_LABEL = array(
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
 );
+
+?>

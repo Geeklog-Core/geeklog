@@ -195,6 +195,9 @@ $LANG_SUCCESS = array(
     25 => 'No, thanks.  I will manually delete them afterwards.'
 );
 
+// +---------------------------------------------------------------------------+
+// migration
+
 $LANG_MIGRATE = array(
     0 => 'Bei der Migration werden ggfs. Datenbank-Eintr&auml;ge &uuml;berschrieben.',
     1 => 'Vorbereitende Schritte',
@@ -325,7 +328,7 @@ $LANG_ERROR = array(
     8 => 'Fehler',
     9 => 'Konnte keine Verbindung zur Datenbank herstellen. Fehler: ',
     10 => '&Uuml;berpr&uuml;fe die Datenbank-Einstellungen bzw. Zugangsdaten',
-    11 => 'Warning', 
+    11 => 'Warning',
     12 => 'Information',
     14 => 'Upgrade Notices',
     15 => 'Topic IDs and Names max length have changed from 128 to 75. This may cause issues when topic ids are truncated (if id is larger than 75 characters) during the upgrade. Please double check your topic ids that are larger than 75 characters will be unique when the max length is changed.',
@@ -424,3 +427,5 @@ $LANG_LABEL = array(
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
 );
+
+?>
