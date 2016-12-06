@@ -1319,4 +1319,132 @@ class Upload
         // This function returns false if any errors were encountered
         return !$this->areErrors();
     }
+
+    /**
+     * @return string
+     */
+    public function getMogrifyPath()
+    {
+        return $this->_pathToMogrify;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNetPBMPath()
+    {
+        return $this->_pathToNetPBM;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoResize()
+    {
+        return $this->_autoResize;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxFileSize()
+    {
+        return $this->_maxFileSize;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxImageWidth()
+    {
+        return $this->_maxImageWidth;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxImageHeight()
+    {
+        return $this->_maxImageHeight;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxFileUploadsPerForm()
+    {
+        return $this->_maxFileUploadsPerForm;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isKeepOriginalImage()
+    {
+        return $this->_keepOriginalImage;
+    }
+
+    /**
+     * @return int
+     */
+    public function getJpegQuality()
+    {
+        return $this->_jpegQuality;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isContinueOnError()
+    {
+        return $this->_continueOnError;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogFile()
+    {
+        return $this->_logFile;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDebug()
+    {
+        return $this->_debug;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIgnoreMimeTest()
+    {
+        return $this->_ignoreMimeTest;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPermissions()
+    {
+        return $this->_permissions;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileNames()
+    {
+        return $this->_fileNames;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageLib()
+    {
+        return $this->_imageLib;
+    }
 }

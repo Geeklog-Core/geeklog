@@ -1,8 +1,0 @@
-
-<!-- search/resultsummary.thtml { -->
-
-<tr>
-  <td colspan="3">{data}</td>
-</tr>
-
-<!-- } search/resultsummary.thtml -->

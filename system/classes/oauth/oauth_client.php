@@ -2,7 +2,7 @@
 /*
  * oauth_client.php
  *
- * @(#) $Id: oauth_client.php,v 1.149 2016/05/03 02:06:12 mlemos Exp $
+ * @(#) $Id: oauth_client.php,v 1.152 2016/10/14 23:14:49 mlemos Exp $
  *
  */
 
@@ -28,7 +28,7 @@ class oauth_session_value_class
 
 	<package>net.manuellemos.oauth</package>
 
-	<version>@(#) $Id: oauth_client.php,v 1.149 2016/05/03 02:06:12 mlemos Exp $</version>
+	<version>@(#) $Id: oauth_client.php,v 1.152 2016/10/14 23:14:49 mlemos Exp $</version>
 	<copyright>Copyright © (C) Manuel Lemos 2012</copyright>
 	<title>OAuth client</title>
 	<author>Manuel Lemos</author>
@@ -1127,7 +1127,7 @@ class oauth_client_class
 {/metadocument}
 */
 	var $http_arguments = array();
-	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.149 $)';
+	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.152 $)';
 
 	var $response_time = 0;
 	var $session = '';
@@ -1250,6 +1250,13 @@ class oauth_client_class
 
 	Function GetRequestState(&$state)
 	{
+		if(IsSet($_GET['error']))
+		{
+			if($this->debug)
+				$this->OutputDebug('it was returned the request state error '.$_GET['error']);
+			$state = null;
+			return false;
+		}
 		$check = (strlen($this->append_state_to_redirect_uri) ? $this->append_state_to_redirect_uri : 'state');
 		$state = (IsSet($_GET[$check]) ? $_GET[$check] : null);
 		return(true);
@@ -1285,7 +1292,7 @@ class oauth_client_class
 		if(strlen($this->redirect_uri))
 			$redirect_uri = $this->redirect_uri;
 		else
-			$redirect_uri = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$redirect_uri = (IsSet($_SERVER['HTTPS']) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		return true;
 	}
 

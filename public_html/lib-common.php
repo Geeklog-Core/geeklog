@@ -33,8 +33,6 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-global $_CONF, $_TABLES;
-
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 
@@ -147,29 +145,6 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 // | Library Includes: You shouldn't have to touch anything below here         |
 // +---------------------------------------------------------------------------+
 
-// Input class (since v2.1.1)
-/**
- * @global $_INPUT array
- * @global $_FINPUT array
- */
-$_INPUT = new Geeklog\Input(false); // request variables with magic_quotes_gpc handled
-$_FINPUT = new Geeklog\Input(true);  // request variables with magic_quotes_gpc handled and COM_applyBasicFilter applied
-
-// If needed, add our PEAR path to the list of include paths
-if (!$_CONF['have_pear']) {
-    $curPHPIncludePath = get_include_path();
-    if (empty($curPHPIncludePath)) {
-        $curPHPIncludePath = $_CONF['path_pear'];
-    } else {
-        $curPHPIncludePath = $_CONF['path_pear'] . PATH_SEPARATOR
-            . $curPHPIncludePath;
-    }
-
-    if (set_include_path($curPHPIncludePath) === false) {
-        COM_errorLog('set_include_path failed - there may be problems using the PEAR classes.', 1);
-    }
-}
-
 // Set the web server's timezone
 TimeZoneConfig::setSystemTimeZone();
 
@@ -183,8 +158,6 @@ require_once $_CONF['path_system'] . 'lib-mbyte.php';
  *
  * @global $_PLUGINS array of the names of active plugins
  */
-global $_PLUGINS;
-
 require_once $_CONF['path_system'] . 'lib-plugins.php';
 
 /**
@@ -192,7 +165,6 @@ require_once $_CONF['path_system'] . 'lib-plugins.php';
  *
  * @global $_PAGE_TIMER timerobject
  */
-require_once $_CONF['path_system'] . 'classes/timer.class.php';
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
@@ -209,13 +181,6 @@ $_URL = new Url($_CONF['url_rewrite'], $_CONF['url_routing']);
  * @global $_DEVICE Device
  */
 $_DEVICE = new Device();
-
-/**
- * This is our HTML template class.  It is the same one found in PHPLib and is
- * licensed under the LGPL.  See that file for details.
- */
-require_once $_CONF['path_system'] . 'classes/template.class.php';
-require_once $_CONF['path_system'] . 'lib-template.php';
 
 // This is the security library used for application security
 require_once $_CONF['path_system'] . 'lib-security.php';
@@ -260,7 +225,7 @@ if (COM_isAnonUser()) {
 }
 
 // Retrieve new topic if found
-$topic = $_FINPUT->get('topic', $_FINPUT->post('topic', ''));
+$topic = \Geeklog\Input::fGet('topic', \Geeklog\Input::fPost('topic', ''));
 
 // See if user has access to view topic
 if ($topic != '') {
@@ -299,10 +264,6 @@ if (!empty($useTheme) && is_dir($_CONF['path_themes'] . $useTheme)) {
         }
     }
 }
-
-// Set template class default template variables option
-$TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
-$TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
 
 /**
  * This provides the ability to set css and javascript.
@@ -374,7 +335,33 @@ if (!defined('XHTML')) {
 }
 
 // Set template class default template variables option
-$TEMPLATE_OPTIONS['default_vars']['xhtml'] = XHTML;
+/**
+ * @global $TEMPLATE_OPTIONS array
+ */
+$TEMPLATE_OPTIONS = array(
+    'path_cache'          => $_CONF['path_data'] . 'layout_cache/',   // location of template cache
+    'path_prefixes'       => array(                               // used to strip directories off file names. Order is important here.
+        $_CONF['path_themes'],  // this is not path_layout. When stripping directories, you want files in different themes to end up in different directories.
+        $_CONF['path'],
+        '/'                     // this entry must always exist and must always be last
+    ),
+    'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's docroot.
+    'cache_by_language'   => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
+    'cache_for_mobile'    => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
+    'default_vars'        => array(                                // list of vars found in all templates.
+        'xhtml'          => XHTML,
+        'site_url'       => $_CONF['site_url'],
+        'site_admin_url' => $_CONF['site_admin_url'],
+        'layout_url'     => $_CONF['layout_url'], // Can be set by lib-common on theme change
+        'anonymous_user' => COM_isAnonUser(),
+        'device_mobile'  => $_DEVICE->is_mobile(),
+    ),
+    'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes
+);
+\Geeklog\Autoload::load('template');
+// Template library contains helper functions for template class
+require_once $_CONF['path_system'] . 'lib-template.php';
+
 
 // Set language
 if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
@@ -2957,12 +2944,23 @@ function COM_userMenu($help = '', $title = '', $position = '')
                 } else {
                     $icon_path = $_CONF['site_url'] . '/images/';
                 }
+                // UIkit icon font names
+                $icon_font_names = array(
+                    'facebook'  => 'facebook',
+                    'google'    => 'google',
+                    'twitter'   => 'twitter',
+                    'microsoft' => 'windows',
+                    'linkedin'  => 'linkedin',
+                    'yahoo'     => 'yahoo',
+                    'github'    => 'github'
+                );
                 foreach ($modules as $service) {
                     $login->set_file('oauth_login', 'loginform_oauth.thtml');
                     $login->set_var('oauth_service', $service);
                     $login->set_var('lang_oauth_service', $LANG01[$service]);
                     // for sign in image
                     $login->set_var('oauth_sign_in_image', $icon_path . $service . '-login-icon.png'); // For use with oauth icon on regular buttons
+                    $login->set_var('oauth_icon_font_name', $icon_font_names[$service]);
                     $login->parse('output', 'oauth_login');
                     $html_oauth .= $login->finish($login->get_var('output'));
                 }
@@ -3779,7 +3777,7 @@ function COM_undoSpecialChars($string)
  *
  * @return   string  $sid  Story ID
  */
-function COM_makesid()
+function COM_makeSid()
 {
     $sid = date('YmdHis');
     $sid .= rand(0, 999);
@@ -3796,18 +3794,18 @@ function COM_makesid()
  */
 function COM_isEmail($email)
 {
-    require_once 'Mail/RFC822.php';
+    // This regular expression was taken from Pear's Mail/RFC822.php
+    $isMatch = preg_match('/^([*+!.&#$|\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i', trim($email));
 
-    $rfc822 = new Mail_RFC822;
-
-    return $rfc822->isValidInetAddress($email);
+    return ($isMatch === 1);
 }
 
 /**
  * Encode a string such that it can be used in an email header
  *
- * @param    string $string the text to be encoded
- * @return   string         encoded text
+ * @param       string $string the text to be encoded
+ * @return      string         encoded text
+ * @deprecated since Geeklog-2.1.2
  */
 function COM_emailEscape($string)
 {
@@ -3887,7 +3885,7 @@ function COM_formatEmailAddress($name, $address)
  */
 function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
-    return \Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+    return Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
 }
 
 /**
@@ -6227,7 +6225,8 @@ function COM_applyBasicFilter($parameter, $isNumeric = false)
 {
     $log_manipulation = false; // set to true to log when the filter applied
 
-    $p = strip_tags($parameter);
+    $p = GLText::remove4byteUtf8Chars($parameter);
+    $p = strip_tags($p);
     $p = COM_killJS($p); // doesn't help a lot right now, but still ...
 
     if ($isNumeric) {
@@ -8379,8 +8378,7 @@ HTML;
  */
 function COM_handleException($exception)
 {
-    $errorMessage = $exception->getMessage();
-    trigger_error($errorMessage, E_USER_ERROR);
+    COM_handleError((int) $exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace());
     die(1);
 }
 

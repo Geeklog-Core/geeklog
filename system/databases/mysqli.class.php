@@ -49,7 +49,7 @@ class Database
     private $_name = '';
 
     /**
-     * @var sring|string
+     * @var string
      */
     private $_user = '';
 
@@ -118,12 +118,13 @@ class Database
      * Connects to the MySQL database server
      * This function connects to the MySQL server and returns the connection object
      *
-     * @return   object      Returns connection object
-     * @access   private
+     * @return   bool Returns connection object
      */
     private function _connect()
     {
         global $_TABLES, $use_innodb;
+
+        $result = true;
 
         if ($this->_verbose) {
             $this->_errorlog("\n*** Inside database->_connect ***");
@@ -139,30 +140,22 @@ class Database
         $this->_mysql_version = $this->_db->server_version;
 
         // Set the database
-        $this->_db->select_db($this->_name) || die('error selecting database');
+        if (!$this->_db->select_db($this->_name)) {
+            die('error selecting database');
+        }
 
-        if (!($this->_db)) {
+        if (!$this->_db) {
             if ($this->_verbose) {
                 $this->_errorlog("\n*** Error in database->_connect ***");
             }
 
             // damn, got an error.
             $this->dbError();
+            $result = false;
         }
 
-        if ($this->_mysql_version >= 40100) {
-            if ($this->_charset === 'utf-8') {
-                $result = false;
-
-                if (method_exists($this->_db, 'set_charset')) {
-                    $result = $this->_db->set_charset('utf8');
-                }
-
-                if (!$result) {
-                    @$this->_db->query("SET NAMES 'utf8'");
-                }
-            }
-        }
+        // Set the character set
+        $this->setCharset();
 
         // Checks if db engine is InnoDB.  During the installation
         // $_TABLES['vars'] is not yet created, so we use $use_innodb instead.
@@ -182,6 +175,43 @@ class Database
         if ($this->_verbose) {
             $this->_errorlog("\n***leaving database->_connect***");
         }
+
+        return $result;
+    }
+
+    /**
+     * Set character set
+     *
+     * @return bool true on success, false otherwise
+     */
+    private function setCharset()
+    {
+        $charset = strtolower($this->_charset);
+
+        if (!in_array($charset, array('utf-8', 'utf8', 'utf8mb4'))) {
+            return true;
+        }
+
+        if ($charset === 'utf-8') {          // before GL-2.1.2
+            $charset = 'utf8';
+        } elseif ($charset === 'utf8mb4') { // since GL-2.1.2
+            if ($this->_mysql_version < 50503) {
+                $charset = 'utf8';
+            }
+        }
+
+        $this->_charset = $charset;
+        $retval = false;
+
+        if (method_exists($this->_db, 'set_charset')) {
+            $retval = @$this->_db->set_charset($charset);
+        }
+
+        if (!$retval) {
+            $retval = @$this->_db->query("SET NAMES '{$this->_charset}'");
+        }
+
+        return $retval;
     }
 
     /**
@@ -213,8 +243,7 @@ class Database
      * @param        string $errorlogfn  Name of the errorlog function
      * @param        string $charset     Character set to use
      */
-    public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix, $errorlogfn = '',
-                                $charset = '')
+    public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix, $errorlogfn = '', $charset = '')
     {
         $this->_host = $dbhost;
         $this->_name = $dbname;
@@ -228,12 +257,6 @@ class Database
         $this->_use_innodb = false;
 
         $this->_connect();
-    }
-
-    public function __destruct()
-    {
-        @$this->_db->close();
-        $this->_db = null;
     }
 
     /**
@@ -332,10 +355,10 @@ class Database
                 }
 
                 // Appends default charset if necessary
-                if (($this->_charset === 'utf-8') &&
+                if ((($this->_charset === 'utf8') || ($this->_charset === 'utf8mb4')) &&
                     !preg_match('/DEFAULT\s+(CHARSET|CHARACTER\s+SET)/i', $option)
                 ) {
-                    $option .= ' DEFAULT CHARSET=utf8';
+                    $option .= " DEFAULT CHARSET={$this->_charset}";
                 }
 
                 $sql .= $option;
@@ -709,12 +732,12 @@ class Database
     }
 
     /**
-     * Retrieves record from a recordset
-     * Gets the next record in a recordset and returns in array
+     * Retrieves record from a record set
+     * Gets the next record in a record set and returns in array
      *
      * @param    mysqli_result $recordSet The record set to operate on
      * @param    bool          $both      get both assoc and numeric indices
-     * @return   array       Returns data array of current row from record set
+     * @return   array|false              Returns data array of current row from record set
      */
     public function dbFetchArray($recordSet, $both = false)
     {

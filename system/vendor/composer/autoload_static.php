@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
 {
     public static $files = array (
-        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'ef836782e1b8d747e78815386b148139' => __DIR__ . '/..' . '/htmlawed/htmlawed/htmLawed.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
     );
 
     public static $prefixLengthsPsr4 = array (

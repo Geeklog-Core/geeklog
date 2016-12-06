@@ -25,6 +25,10 @@ class Autoload
             self::initialize();
         }
 
+        if (class_exists($className, false)) {
+            return;
+        }
+
         if (strpos($className, 'Geeklog\\') === 0) {
             // New classes under \Geeklog namespace
             $className = str_replace('Geeklog\\', '', $className);
@@ -46,14 +50,16 @@ class Autoload
             if (file_exists($path)) {
                 /** @noinspection PhpIncludeInspection */
                 include $path;
-            }
-
-            if (stripos($className, 'XML_RPC_Server') === 0) {
-                include __DIR__ . DIRECTORY_SEPARATOR . 'XML/RPC/Server.php';
-            } elseif (stripos($className, 'XML_RPC_') === 0) {
-                include __DIR__ . DIRECTORY_SEPARATOR . 'XML/RPC.php';
-            } elseif (stripos($className, 'Date_TimeZone') === 0) {
-                include __DIR__ . DIRECTORY_SEPARATOR . 'Date/TimeZone.php';
+            } else {
+                if (stripos($className, 'timerobject') === 0) {
+                    include __DIR__ . '/timer.class.php';
+                } elseif (stripos($className, 'XML_RPC_Server') === 0) {
+                    include __DIR__ . '/XML/RPC/Server.php';
+                } elseif (stripos($className, 'XML_RPC_') === 0) {
+                    include __DIR__ . '/XML/RPC.php';
+                } elseif (stripos($className, 'Date_TimeZone') === 0) {
+                    include __DIR__ . '/Date/TimeZone.php';
+                }
             }
         }
     }

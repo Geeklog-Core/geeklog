@@ -1,6 +1,0 @@
-                                <tr>
-                                    <td>
-                                        <a href="{item_url}">{item_text}</a>
-                                    </td>
-                                    <td class="alignright">{item_stat}</td>
-                                </tr>

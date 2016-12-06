@@ -1,9 +1,0 @@
-<fieldset style="margin-top:10px;">
-    <legend>{lang_digest_top_header}</legend>
-      <div class="notes">
-        <h4>{lang_digest_help_header}</h4>
-        {lang_emailedtopics}
-       </div>
-    <div>{email_topic_checklist}</div>
-</fieldset>
-

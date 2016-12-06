@@ -35,9 +35,11 @@
  * NOTE: As of Geeklog 1.3.5 you should not have to edit this file any more.
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'lib-database.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
+
+global $_CONF, $_DB, $_TABLES, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, $_DB_charset;
 
 // +---------------------------------------------------------------------------+
 // | Table definitions, these are used by the install program to create the    |
@@ -134,8 +136,16 @@ if (($_DB_dbms === 'mysql') && class_exists('MySQLi')) {
 }
 
 // Instantiate the database object
-$_DB = new Database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
-    'COM_errorLog', $_CONF['default_charset']);
+if (!empty($_DB_charset)) {
+    $_DB = new Database(
+        $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_DB_charset
+    );
+} else {
+    $_DB = new Database(
+        $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, 'COM_errorLog', $_CONF['default_charset']
+    );
+}
+
 if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
     DB_displayError(true);
 }
@@ -194,9 +204,9 @@ function DB_query($sql, $ignore_errors = 0)
         if (isset ($sql[$_DB_dbms])) {
             $sql = $sql[$_DB_dbms];
         } else {
-            $errmsg = "No SQL request given for DB '$_DB_dbms', only got these:";
+            $errmsg = "No SQL request given for DB '{$_DB_dbms}', only got these:";
             foreach ($sql as $db => $request) {
-                $errmsg .= LB . $db . ': ' . $request;
+                $errmsg .= PHP_EOL . $db . ': ' . $request;
             }
             $result = COM_errorLog($errmsg, 3);
             die ($result);
@@ -213,7 +223,7 @@ function DB_query($sql, $ignore_errors = 0)
  * to remove dependency of REPLACE INTO. Please use DB_query if you can
  *
  * @param        string $table       The table to save to
- * @param        string $fields      Comma demlimited list of fields to save
+ * @param        string $fields      Comma delimited list of fields to save
  * @param        string $values      Values to save to the database table
  * @param        string $return_page URL to send user to when done
  */
@@ -259,9 +269,9 @@ function DB_delete($table, $id, $value, $return_page = '')
 function DB_getItem($table, $what, $selection = '')
 {
     if (!empty($selection)) {
-        $result = DB_query("SELECT $what FROM $table WHERE $selection");
+        $result = DB_query("SELECT {$what} FROM {$table} WHERE {$selection}");
     } else {
-        $result = DB_query("SELECT $what FROM $table");
+        $result = DB_query("SELECT {$what} FROM {$table}");
     }
     $ITEM = DB_fetchArray($result, true);
 
@@ -288,7 +298,7 @@ function DB_change($table, $item_to_set, $value_to_set, $id = '', $value = '', $
     $_DB->dbChange($table, $item_to_set, $value_to_set, $id, $value, $suppress_quotes);
 
     if (!empty($return_page)) {
-        COM_redirect("$return_page");
+        COM_redirect($return_page);
     }
 }
 
@@ -315,7 +325,7 @@ function DB_count($table, $id = '', $value = '')
  * to another table.  They can be the same table.
  *
  * @param        string       $table       Table to insert record into
- * @param        string       $fields      Comma delmited list of fields to copy over
+ * @param        string       $fields      Comma delimited list of fields to copy over
  * @param        string       $values      Values to store in database field
  * @param        string       $tableFrom   Table to get record from
  * @param        array|string $id          Field name(s) to use in where clause
@@ -334,10 +344,10 @@ function DB_copy($table, $fields, $values, $tableFrom, $id, $value, $return_page
 }
 
 /**
- * Retrieves the number of rows in a recordset
- * This returns the number of rows in a recordset
+ * Retrieves the number of rows in a record set
+ * This returns the number of rows in a record set
  *
- * @param        mixed $recordSet The recordset to operate one
+ * @param        mixed $recordSet The record set to operate one
  * @return       int         Returns number of rows returned by a previously executed query
  */
 function DB_numRows($recordSet)
@@ -351,7 +361,7 @@ function DB_numRows($recordSet)
  * Retrieves the contents of a field
  * This returns the contents of a field from a result set
  *
- * @param        mixed  $recordSet The recordset to operate on
+ * @param        mixed  $recordSet The record set to operate on
  * @param        int    $row       row to get data from
  * @param        string $field     field to return
  * @return       mixed (depends on the contents of the field)
@@ -367,7 +377,7 @@ function DB_result($recordSet, $row, $field)
  * Retrieves the number of fields in a record set
  * This returns the number of fields in a record set
  *
- * @param        mixed $recordSet The recordset to operate on
+ * @param        mixed $recordSet The record set to operate on
  * @return       int         Returns the number fields in a result set
  */
 function DB_numFields($recordSet)
@@ -381,7 +391,7 @@ function DB_numFields($recordSet)
  * Retrieves returns the field name for a field
  * Returns the field name for a given field number
  *
- * @param        mixed $recordSet   The recordset to operate on
+ * @param        mixed $recordSet   The record set to operate on
  * @param        int   $fieldNumber field number to return the name of
  * @return       string      Returns name of specified field
  */
@@ -543,7 +553,7 @@ function DBINT_parseCsvSqlString($csv)
             if ($x != 0) {
                 if ($csv[$x - 1] != "\\") {
                     /**
-                     * this means that the preceeding char is not escape..
+                     * this means that the preceding char is not escape..
                      * thus this is either the end of a mode 1 or the beginning
                      * of a mode 1
                      */
@@ -563,13 +573,13 @@ function DBINT_parseCsvSqlString($csv)
                 // x==0
                 $mode = 1;
             }
-        } elseif ($csv[$x] == ",") {
+        } elseif ($csv[$x] == ',') {
             if ($mode == 1) {
                 // this means that the comma falls INSIDE of a string.
                 // its a keeper
                 $thisValue = $thisValue . $csv[$x];
             } else {
-                // this is the dilineation between fields.. pop this value
+                // this is the delineation between fields.. pop this value
                 array_push($retArray, $thisValue);
                 $thisValue = '';
                 $mode = 0;
@@ -585,9 +595,10 @@ function DBINT_parseCsvSqlString($csv)
 }
 
 /**
- * @return     string     the version of the database server
+ * Return database version
+ *
+ * @return  string the version of the database server
  */
-
 function DB_getVersion()
 {
     global $_DB;

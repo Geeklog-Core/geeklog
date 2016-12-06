@@ -345,7 +345,7 @@ function plugin_migrate_spamx($old_conf)
 {
     global $_CONF, $_TABLES;
 
-    // only update the SLV whitelist, so we don't use INST_updateSiteUrl
+    // only update the SLV whitelist, so we don't use Installer::updateSiteUrl
     $old_url = DB_escapeString($old_conf['site_url']);
     $result = DB_query("SELECT name, value FROM {$_TABLES['spamx']} WHERE name = 'SLVwhitelist' AND value LIKE '{$old_url}%'");
     $num = DB_numRows($result);
@@ -358,6 +358,8 @@ function plugin_migrate_spamx($old_conf)
 
         DB_query("UPDATE {$_TABLES['spamx']} SET value = '$new_value' WHERE name = 'SLVwhitelist' AND value = '$old_value'");
     }
+
+    COM_errorLog('Successfully migrated the "spamx" plugin');
 
     return true;
 }

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | german.php                                                                |
 // |                                                                           |
@@ -159,7 +159,8 @@ $LANG_INSTALL = array(
     107 => 'F&uuml;r den produktiven Einsatz wird ein Datenbank-Passwort ben&ouml;tigt!',
     108 => 'Keine Datenbank-Treiber gefunden!',
     109 => 'Emergency Rescue Tool',
-    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:'
+    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:',
+    111 => 'Geeklog Version'
 );
 
 // +---------------------------------------------------------------------------+
@@ -188,11 +189,14 @@ $LANG_SUCCESS = array(
     19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
     20 => 'installiert',
     21 => 'aktualisiert',
-    22 => 'migriert'
+    22 => 'migriert',
+    23 => 'Would you like to delete all the files and directories used during the installation?',
+    24 => 'Yes, please.',
+    25 => 'No, thanks.  I will manually delete them afterwards.'
 );
 
 // +---------------------------------------------------------------------------+
-// migrate.php
+// migration
 
 $LANG_MIGRATE = array(
     0 => 'Bei der Migration werden ggfs. Datenbank-Eintr&auml;ge &uuml;berschrieben.',
@@ -235,7 +239,7 @@ $LANG_MIGRATE = array(
     37 => 'Migration abgeschlossen',
     38 => 'Die Datenbank-Migration wurde erfolgreich abgeschlossen. Es wurden allerdings die folgenden Probleme gefunden:',
     39 => 'Der Pfad f&uuml;r PEAR konnte nicht gesetzt werden. Ohne PEAR k&ouml;nnen leider keine komprimierten Datenbank-Backups importiert werden.',
-    40 => 'Das Archiv \'%s\' scheint keine SQL-Dateien zu enthalten.',
+    40 => 'Das Archiv "%1$s" scheint keine SQL-Dateien zu enthalten. Um es erneut zu versuchen, klicken Sie auf <a href="%2$s\"> hier.</a> ',
     41 => 'Fehler beim extrahieren des Datenbank-Backups \'%s\' aus dem Archiv.',
     42 => 'Backup-Datei \'%s\' nicht (mehr) auffindbar ...',
     43 => 'Import abgebrochen: Die Datei \'%s\' scheint kein Datenbank-Backup zu sein.',
@@ -323,7 +327,13 @@ $LANG_ERROR = array(
     7 => 'Die hochgeladene Datei ist gr&ouml;&szlig;er als der max. erlaubte Wert (siehe post_max_size in der php.ini). Lade die Datei stattdessen auf einem anderen Weg hoch, z.B. per FTP.',
     8 => 'Fehler',
     9 => 'Konnte keine Verbindung zur Datenbank herstellen. Fehler: ',
-    10 => '&Uuml;berpr&uuml;fe die Datenbank-Einstellungen bzw. Zugangsdaten'
+    10 => '&Uuml;berpr&uuml;fe die Datenbank-Einstellungen bzw. Zugangsdaten',
+    11 => 'Warning',
+    12 => 'Information',
+    14 => 'Upgrade Notices',
+    15 => 'Topic IDs and Names max length have changed from 128 to 75. This may cause issues when topic ids are truncated (if id is larger than 75 characters) during the upgrade. Please double check your topic ids that are larger than 75 characters will be unique when the max length is changed.',
+    16 => 'Topic IDs and Names have changed from 128 to 75. It has been detected you need to modify 1 or more topic ids before this upgrade can proceed.',
+    17 => 'Professional Theme support has been dropped from Geeklog. If you are currently using the Professional theme or Professional_css theme from Geeklog 2.1.1 or older your website may not function properly.'
 );
 
 // +---------------------------------------------------------------------------+

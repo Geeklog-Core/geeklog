@@ -1,8 +1,0 @@
-
-<!-- blockheader-related.thtml { -->
-
-<div class="block-related">
-  <h3>{block_title}{block_help}</h3>
-  <div class="block-related-content">
-
-<!-- } blockheader-related.thtml -->

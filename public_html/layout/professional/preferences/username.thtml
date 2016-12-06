@@ -1,4 +1,0 @@
-    <tr>
-        <td><label for="new_username">{lang_username}:</label></td>
-        <td><input type="text" id="new_username" name="new_username" size="16" maxlength="16" value="{new_username_value}"{xhtml}></td>
-    </tr>

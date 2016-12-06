@@ -1,7 +1,0 @@
-
-<!-- preferences/language.thtml { -->
-
-<dt><label for="language">{lang_language}</label></dt>
-<dd>{language_selector}</dd>
-
-<!-- } preferences/language.thtml -->

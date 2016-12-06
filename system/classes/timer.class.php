@@ -87,6 +87,16 @@ class timerobject
     }
 
     /**
+     * Return the precision
+     *
+     * @return float
+     */
+    public function getPrecision()
+    {
+        return $this->_precision;
+    }
+
+    /**
      * Deprecated - use setPrecision instead
      *
      * @param  int $num_dec_places
@@ -131,6 +141,40 @@ class timerobject
         $this->_elapsedtime = 0.0;
 
         $this->startTimer();
+    }
+
+    /**
+     * @param  float $time
+     */
+    public function setStartTime($time)
+    {
+        $this->_starttime = $time;
+    }
+
+    /**
+     * @return float
+     */
+    public function getStartTime()
+    {
+        return $this->_starttime;
+    }
+
+
+    /**
+     * @param  float $time
+     */
+    public function setEndTime($time)
+    {
+        $this->_endtime = $time;
+        $this->_setElapsedTime();
+    }
+
+    /**
+     * @return float
+     */
+    public function getEndTime()
+    {
+        return $this->_endtime;
     }
 
     /**

@@ -1,9 +1,0 @@
-
-<!-- stats/singlesummary.thtml { -->
-
-    <tr>
-      <th>{item_text}</th>
-      <td>{item_stat}</td>
-    </tr>
-
-<!-- } stats/singlesummary.thtml -->

@@ -1,14 +1,32 @@
 {# begin {templatelocation} #}
 
-<form class="third-party-login uk-form" action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
+{# OAuth Button Style 1: Large Image icons #}
+<div style="display: inline-block;">
+  <form class="third-party-login uk-form" action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
     <div>
-        {# OAuth Button Style 1: Image buttons (uncomment line below) #}
-        {# <input style="border:0;height:22px;width:141px;padding:0;margin:0;" type="submit" value="" id="login_{oauth_service}"{xhtml}> #}
-
-        {# OAuth Button Style 2: Login buttons with icons (uncomment line below) #}
-        <img alt="" src="{oauth_sign_in_image}"{xhtml}><input value="{lang_oauth_service}" type="submit" class="submit"{xhtml}>
+      <input type="submit" value="" style="background: url({oauth_sign_in_image}) left top no-repeat; background-size: contain; border: none; width:34px; height:34px; margin-right: 4px; margin-bottom: 6px;"{xhtml}>
     </div>
-</form>
+  </form>
+</div>
+
+{# OAuth Button Style 2: Buttons with small icons (uncomment line below) #}
+{#
+  <form class="third-party-login uk-form" action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
+    <div>
+      <img alt="" src="{oauth_sign_in_image}" style="width:17px; height: 17px"{xhtml}><input value="{lang_oauth_service}" type="submit" class="submit"{xhtml}>
+    </div>
+  </form>
+#}
+
+{# OAuth Button Style 3: Buttons with UIkit icon fonts (uncomment line below) #}
+{#
+  <form class="third-party-login uk-form" action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
+    <div>
+      <button class="uk-button" type="submit" value="{lang_oauth_service}" style="min-width: 160px; min-height: 25px; line-height: 24px; text-align: left; margin-bottom: 5px; padding:0 5px">
+        <span style="display: inline-block; text-align: center; width: 24px"><i class="uk-icon-{oauth_icon_font_name}" style="font-size: 15px; margin-right: 5px"></i></span><span style="display: inline-block; text-align: center; font-size: 12px; width: 124px">{lang_oauth_service}</span>
+      </button>
+    </div>
+  </form>
+#}
 
 {# end {templatelocation} #}
-

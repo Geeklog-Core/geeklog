@@ -1,5 +1,0 @@
-<p>
-<a href="{trackback_url}">{trackback_title}</a> {trackback_from_blog_name}<br{xhtml}>
-{trackback_excerpt_readmore}{excerpt_br}
-{lang_tracked_on} {trackback_date} {delete_option}
-</p>

@@ -1,0 +1,37 @@
+                            <table cellpadding="2" cellspacing="2">
+                                <tr>
+                                    <td colspan="2">{intro_msg}</td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><b>{lang_event}:</b></td>
+                                    <td>{event_title}</td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><b>{lang_starts}:</b></td>
+                                    <td>{event_start}</td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><b>{lang_ends}:</b></td>
+                                    <td>{event_end}</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" valign="top"><b>{lang_where}:</b></td>
+                                    <td>{event_location}</td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><b>{lang_description}:</b></td>
+                                    <td>{event_description}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <form name="userevent" method="post" action="{site_url}/calendar/event.php">
+                                            <div>
+                                                <input type="hidden" name="action" value="saveuserevent"{xhtml}>
+                                                <input type="hidden" name="eid" value="{event_id}"{xhtml}>
+                                                <input type="submit" value="{lang_addtomycalendar}"{xhtml}>
+                                                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>

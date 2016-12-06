@@ -576,12 +576,21 @@ class Scripts
         if (!empty($this->lang)) {
             $lang = array_merge($lang, $this->lang);
         }
+
+        require_once __DIR__ . '/mobiledetect/Mobile_Detect.php';
+        $detect = new Mobile_Detect;
+        $device = array(
+            'isMobile' => $detect->isMobile(),
+            'isTablet' => $detect->isTablet(),
+        );
+
         $src = array(
             'site_url'       => $_CONF['site_url'],
             'site_admin_url' => $_CONF['site_admin_url'],
             'layout_url'     => $_CONF['layout_url'],
             'xhtml'          => XHTML,
             'lang'           => $lang,
+            'device'         => $device,
             'theme_options'  => $_CONF['theme_options'],
         );
         $str = $this->_array_to_jsobj($src);
@@ -636,10 +645,27 @@ EOD;
         $retval = '{';
         foreach ($src as $key => $val) {
             $retval .= "$key:";
-            if (is_array($val)) {
-                $retval .= $this->_array_to_jsobj($val) . ',';
-            } else {
-                $retval .= '"' . $val . '",';
+            switch (gettype($val)) {
+                case 'array':
+                    $retval .= $this->_array_to_jsobj($val) . ',';
+                    break;
+
+                case 'boolean':
+                    $retval .= $val ? 'true,' : 'false,';
+                    break;
+
+                case 'NULL':
+                    $retval .= 'null,';
+                    break;
+
+                case 'integer':
+                case 'double':
+                    $retval .= $val . ',';
+                    break;
+
+                default:
+                    $retval .= '"' . $val . '",';
+                    break;
             }
         }
         $retval = rtrim($retval, ',') . '}';

@@ -1,4 +1,0 @@
-           <tr>
-                <td style="width:100px;"><label for="photo">{lang_userphoto}:</label></td>
-                <td><input type="file" dir="ltr" id="photo" name="photo" size="30"{xhtml}><br{xhtml}>{display_photo}<br{xhtml}>{photo_max_dimensions}</td>
-           </tr>

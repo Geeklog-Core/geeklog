@@ -1,4 +1,0 @@
-<h2><a name="trackback">{lang_trackback}</a></h2>
-<p>{lang_trackback_url} {trackback_url}</p>
-{lang_trackback_comments_no_link}
-{trackback_comments}

@@ -113,7 +113,10 @@ $LANG25 = array(
     37 => 'Peida tulemused kuni küsitlus on avatud',
     38 => 'Kuni küsitlus on avatud, näevad  &tulemusi ainult omanik amp; root ',
     39 => 'Rubriiki näidatakse vaid siis, kui selles on üle ühe küsimuse.',
-    40 => 'Vaata kõiki sellele küsitlusele antud vastuseid'
+    40 => 'Vaata kõiki sellele küsitlusele antud vastuseid',
+    1001 => 'Allow multiple answers',
+    1002 => 'Description',
+    1003 => 'Description'
 );
 
 $PLG_polls_MESSAGE15 = 'Sinu kommentaar on suunatud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset kinnitamist.';
@@ -188,7 +191,7 @@ $LANG_configselects['polls'] = array(
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION)
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
 );
 
 ?>

@@ -1,0 +1,53 @@
+                            <form action="{site_url}/calendar/index.php" method="post">
+                                <input type="hidden" name="view" value="addentry"{xhtml}>
+                                <input type="hidden" name="calendar_type" value="quickadd"{xhtml}>
+                                <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+                                <table cellpadding="0" cellspacing="1" border="0" width="100%">
+                                    <tr>
+                                        <td>{lang_quickadd}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table cellpadding="0" cellspacing="0" border="0" width="100%" class="cal-quickadd">
+                                                <tr>
+                                                    <td><b>{lang_event}</b></td>
+                                                    <td><b>{lang_date}</b></td>
+                                                    <td><b>{lang_time}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="text" size="20" maxlength="96" name="title"{xhtml}></td>
+                                                    <td>
+                                                      <span dir="ltr">
+                                                        <select name="start_month">
+                                                            {month_options}
+                                                        </select>
+                                                        /
+                                                        <select name="start_day">
+                                                            {day_options}
+                                                        </select>
+                                                        /
+                                                        <select name="start_year">
+                                                            {year_options}
+                                                        </select>
+                                                      </span>
+                                                    </td>
+                                                    <td>
+                                                      <span dir="ltr">
+                                                        <select name="start_hour">
+                                                            {hour_options}
+                                                        </select>
+                                                        :
+                                                        <select name="start_minute">
+                                                            {minute_options}
+                                                        </select>
+                                                        {startampm_selection}
+                                                      </span>
+                                                        <input type="submit" value="{lang_add}"{xhtml}>
+                                                        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>

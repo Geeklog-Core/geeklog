@@ -45,14 +45,12 @@
 *
 */
 
-/**
-* Geeklog common function library
-*/
+global $_CONF;
+
+// Geeklog common function library
 require_once 'lib-common.php';
 
-/**
- * Geeklog comment function library
- */
+// Geeklog comment function library
 require_once $_CONF['path_system'] . 'lib-comment.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -75,5 +73,4 @@ if (!empty($_REQUEST['mode'])) {
 }
 
 $display .= CMT_handleComment($mode);
-
 COM_output($display);

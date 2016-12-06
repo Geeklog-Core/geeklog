@@ -506,104 +506,13 @@ class dbBackup
         $altBody = '',
         $attachments = array()
     ) {
-        global $_CONF;
+        $options = array();
 
-        $subject = substr($subject, 0, strcspn($subject, "\r\n"));
-        $subject = COM_emailEscape($subject);
-
-        require_once $_CONF['path'] . 'lib/phpmailer/class.phpmailer.php';
-
-        $mail = new PHPMailer();
-        $mail->SetLanguage('en',$_CONF['path'].'lib/phpmailer/language/');
-        $mail->CharSet = COM_getCharset();
-        if ($_CONF['mail_backend'] == 'smtp') {
-            $mail->IsSMTP();
-            $mail->Host     = $_CONF['mail_smtp_host'];
-            $mail->Port     = $_CONF['mail_smtp_port'];
-            if ($_CONF['mail_smtp_secure'] != 'none') {
-                $mail->SMTPSecure = $_CONF['mail_smtp_secure'];
-            }
-            if ($_CONF['mail_smtp_auth']) {
-                $mail->SMTPAuth   = true;
-                $mail->Username = $_CONF['mail_smtp_username'];
-                $mail->Password = $_CONF['mail_smtp_password'];
-            }
-            $mail->Mailer = "smtp";
-
-        } elseif ($_CONF['mail_backend'] == 'sendmail') {
-            $mail->Mailer = "sendmail";
-            $mail->Sendmail = $_CONF['mail_sendmail_path'];
-        } else {
-            $mail->Mailer = "mail";
-        }
-        $mail->WordWrap = 76;
-        $mail->IsHTML($html);
-        if ($html) {
-            $mail->Body = COM_filterHTML($message);
-        } else {
-            $mail->Body = $message;
+        if (!empty($cc)) {
+            $options['cc'] = $cc;
         }
 
-        if ($altBody != '') {
-            $mail->AltBody = $altBody;
-        }
-
-        $mail->Subject = $subject;
-
-        if (is_array($from) && isset($from[0]) && $from[0] != '') {
-            if ($_CONF['use_from_site_mail'] == 1) {
-                $mail->From = $_CONF['site_mail'];
-                $mail->AddReplyTo($from[0]);
-            } else {
-                $mail->From = $from[0];
-            }
-        } else {
-            $mail->From = $_CONF['site_mail'];
-        }
-
-        if (is_array($from) && isset($from[1]) && $from[1] != '') {
-            $mail->FromName = $from[1];
-        } else {
-            $mail->FromName = $_CONF['site_name'];
-        }
-        if (is_array($to) && isset($to[0]) && $to[0] != '') {
-            if (isset($to[1]) && $to[1] != '') {
-                $mail->AddAddress($to[0],$to[1]);
-            } else {
-                $mail->AddAddress($to[0]);
-            }
-        } else {
-            // assume old style....
-            $mail->AddAddress($to);
-        }
-
-        if (isset($cc[0]) && $cc[0] != '') {
-            if (isset($cc[1]) && $cc[1] != '') {
-                $mail->AddCC($cc[0],$cc[1]);
-            } else {
-                $mail->AddCC($cc[0]);
-            }
-        } else {
-            // assume old style....
-            if (isset($cc) && $cc != '') {
-                $mail->AddCC($cc);
-            }
-        }
-
-        if ($priority) {
-            $mail->Priority = 1;
-        }
-
-        // Add attachments
-        foreach($attachments as $key => $value) {
-            $mail->AddAttachment($value);
-        }
-
-        if(!$mail->Send()) {
-            COM_errorLog("Email Error: " . $mail->ErrorInfo);
-            return false;
-        }
-        return true;
+        return COM_mail($to, $subject, $message, $from, $html, $priority, $options, $attachments);
     }
 
 
@@ -722,6 +631,3 @@ class dbBackup
     }
 
 }   // class dbBackup
-
-
-?>

@@ -44,6 +44,8 @@ CREATE TABLE {$_TABLES['staticpage']} (
   modified timestamp NOT NULL default NULL,
   sp_format varchar(20) NOT NULL default '',
   sp_onmenu int NOT NULL default '0',
+  sp_onhits int NOT NULL default '1',
+  sp_onlastupdate int NOT NULL default '1',
   sp_label varchar(64) default NULL,
   commentcode int NOT NULL default '0',
   meta_description TEXT NULL,

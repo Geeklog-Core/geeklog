@@ -1,0 +1,26 @@
+README for Links plugin
+
+1) viewing children of private categories
+
+If you have a category tree as follows:
+
+Root           viewable by anonymous
+-- Sub1        not viewable by anonymous
+---- Sub2      viewable by anonymous
+
+The "jump to" selectbox on the links index.php page will not show anything below "Root" for anonymous users. If the user tries to enter the category id for Sub1 directly, they will be refused access. If they enter the category id for Sub2 directly, they will  be given access.
+
+I think this needs a solution, but checking all parents back to root (or until the user does not have access) may be expensive.
+
+2) Removed INDEX links_lid (lid) from table links as lid is already PRIMARY.
+
+3) Colouring of rows in the category edit view does not appear to work correctly in all cases. Not sure how to fix this.
+
+4) There is a top level "root" directory in the database, but this cannot be directly edited. The "Root" name is taken from the language file to help multilingual sites. In the future, a new set of categories with a parent id of "user" can be created for private link trees. Consequently, users are not allowed to save categories with a cid of "site" or "user".
+
+5) added "category" type of new autotag
+
+6) added simple multilingual support
+
+7) Even if a user does not have read access to a category, if he has read access on any links in that category, they will show up in the top ten links listing. This needs to be fixed by either (i) when a category is saved, modify access rights on links contained in that category to match or (ii) by doing some nifty JOINing when calling the top ten links.
+

@@ -298,7 +298,7 @@ if (!empty($url)) {
     }
 
     // Note: We're not testing the 'sql' and 'language' directories.
-    if (isset($_CONF['allow_mysqldump']) && ($_CONF['allow_mysqldump'] == 1) && ($_DB_dbms === 'mysql')) {
+    if ($_DB_dbms === 'mysql') {
         if (makeTempFile($_CONF['backup_path'] . 'test.txt')) {
             $display .= doTest($url, 'backups/test.txt',
                 'backups ' . $LANG_SECTEST['directory']);

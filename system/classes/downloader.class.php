@@ -272,6 +272,16 @@ class downloader
     }
 
     /**
+     * Return the log file
+     *
+     * @return string
+     */
+    public function getLogFile()
+    {
+        return $this->_logFile;
+    }
+
+    /**
      * Enables/disables logging of errors and warnings
      *
      * @param    boolean $switch flag, true or false
@@ -313,6 +323,16 @@ class downloader
         } else {
             $this->_debug = false;
         }
+    }
+
+    /**
+     * Return the debug mode
+     *
+     * @return bool
+     */
+    public function isDebug()
+    {
+        return $this->_debug;
     }
 
     /**

@@ -1,7 +1,0 @@
-
-<!-- blockservices.thtml { -->
-
-<dt><label for="service">{lang_service}</label></dt>
-<dd>{select_service}</dd>
-
-<!-- } blockservices.thtml -->

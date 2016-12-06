@@ -1,0 +1,9 @@
+
+    <tr{rowcolor}>
+        <td width="20" class="box">{edit_text}</td>
+        <td width="20" class="box">{add_text}</td>
+        <td class="box" width="200">{indent}{category}</td>
+        <td width="50" class="box">{topic_text}</td>
+        <td width="20" class="box">{delete_text}</td>
+    </tr>
+

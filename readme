@@ -1,5 +1,5 @@
                                 Geeklog Readme
-                                January 11, 2016
+                                October 24, 2016
 
 Table of Contents
 ================
@@ -10,14 +10,17 @@ Table of Contents
         2.3) Security Features
         2.4) Developer Features
     3) Support
-        3.1) Mailing Lists
-        3.2) Known Issues
+        3.1) Website
+        3.2) Online Chat
+        3.3) Mailing Lists
+        3.4) Known Issues
     4) System Requirements and Installation
     5) Security Issues
     6) License
     7) Special Thanks
     8) Further Documentation
 
+    
 1) What is Geeklog?
 ================
 Geeklog is a PHP/MySQL based application for managing dynamic web content.
@@ -60,9 +63,9 @@ participate in Geeklog discussions, visit the Geeklog site:
 
 http://www.geeklog.net
 
+
 2) Features
 ===========
-
 Geeklog is an extremely extensible system, however a summary of Geeklog's
 features are as follows:
 
@@ -110,20 +113,35 @@ features are as follows:
     - Thin database abstraction layer allowing Geeklog to be ported to DBMS's
       other than the defaults (MySQL and PostgreSQL supported directly).
 
+      
 3) Support
 ==========
 
-3.1) Mailing Lists
+3.1) Website
 ==================
-The best support channel is a mailing list located at:
-
-http://lists.geeklog.net/mailman/listinfo/geeklog-users
-
-Additionally the Geeklog home page is a good source of information at:
+The Geeklog website is a good source of information at:
 
 http://www.geeklog.net
 
-3.2) Known Issues
+Where you can find the Geeklog FAQ, Wiki, and the Forums.
+
+3.2) Online Chat
+==================
+Another option for support is visiting the Geeklog Gitter room found at:
+
+https://gitter.im/Geeklog-Core/geeklog
+
+Here you can ask questions of the developers and other people interested in 
+Geeklog.
+
+3.3) Mailing Lists
+==================
+Another good support channel is the mailing list located at:
+
+http://lists.geeklog.net/mailman/listinfo/geeklog-users
+
+
+3.3) Known Issues
 =================
 All known issues are tracked in our bug tracker. If you identify a bug please
 let us know by filling out a bug report at:
@@ -134,7 +152,9 @@ https://github.com/Geeklog-Core/geeklog/issues
 4) System Requirements and Installation
 =======================================
 See public_html/docs/english/install.html or the Geeklog.net site:
+
 http://www.geeklog.net/docs/english/install.html
+
 
 5) Security Issues
 ==================
@@ -170,9 +190,9 @@ http://www.geeklog.net
 There is also a button that is in the release that we would appreciate you use
 (in public_html/images/buttons).
 
+
 7) Special Thanks
 =================
-
 I want to send out thanks to:
 
 Jason Whittenburg - He is the original Geeklog developer!
@@ -194,9 +214,10 @@ See also:
     - Wiki: http://wiki.geeklog.net/
     - Plugin Developers Guide: http://gplugs.sourceforge.net/pluginman/
 
+    
 Appendix A - readme history
 ===========================
-
+2016-10-24 - Added Gitter information. Formatting (tom)
 2016-01-11 - URL changes, minor updates (tom)
 2009-04-18 - docs URL changed (dhaun)
 2007-09-15 - readme re-write (mjervis)

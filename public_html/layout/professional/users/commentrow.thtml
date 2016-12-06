@@ -1,4 +1,0 @@
-                                            <tr>
-                                                <td>{row_number} {comment_title}</td>
-                                                <td>{comment_date}</td>
-                                            </tr>

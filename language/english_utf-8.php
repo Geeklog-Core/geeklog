@@ -2025,8 +2025,6 @@ $LANG_confignames['Core'] = array(
     'path_data' => "Data",
     'path_images' => "Images",
     'path_editors' => "Advanced Editors",
-    'path_pear' => "Path Pear",
-    'have_pear' => "Have Pear?",
     'mail_settings' => "Mail Settings",
     'dbdump_filename_prefix' => 'Backup File Name Prefix',
     'dbdump_tables_only' => 'Only Backup Table Structure',
@@ -2123,6 +2121,7 @@ $LANG_confignames['Core'] = array(
     'advanced_editor' => "Advanced Editor?",
     'advanced_editor_name' => "Advanced Editor Name?",
     'wikitext_editor' => "Wikitext Editor?",
+    'remove_4byte_chars' => 'Remove 4-byte utf-8 characters?',
     'cron_schedule_interval' => "Cron Schedule Interval",
     'sortmethod' => "Sort Topics",
     'showstorycount' => "Show Story Count?",
@@ -2328,7 +2327,6 @@ $LANG_fs['Core'] = array(
     'fs_paths' => 'Paths',
     'fs_theme' => 'Theme',
     'fs_mail' => 'Mail',
-    'fs_pear' => 'Pear',
     'fs_database_backup' => 'Database Backup',
     'fs_users' => 'Users',
     'fs_misc' => 'Miscellaneous',
@@ -2382,7 +2380,6 @@ $LANG_tab['Core'] = array(
     'tab_paths' => 'Paths',
     'tab_theme' => 'Theme',
     'tab_mail' => 'Mail',
-    'tab_pear' => 'Pear',
     'tab_database' => 'Database',
     'tab_users' => 'Users',
     'tab_misc' => 'Miscellaneous',
@@ -2471,6 +2468,7 @@ $LANG_configselects['Core'] = array(
     35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
     36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
     37 => array('Disabled' => 0, 'Enabled (with "index.php")' => 1, 'Enabled (without "index.php")' => 2),
+    38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
 );
 
 ################################################################################

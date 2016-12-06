@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.0.0#1                                                           |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | hebrew_utf-8.php                                                          |
 // |                                                                           |
@@ -154,7 +154,8 @@ $LANG_INSTALL = array(
     107 => 'נחוצה סיסמת מאגר מידע לאתרים שבאוויר.',
     108 => 'לא נבחרו מנועי מאגר מידע!',
     109 => 'כלי סיוע חירום',
-    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:'
+    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:',
+    111 => 'Geeklog Version'
 );
 
 // +---------------------------------------------------------------------------+
@@ -183,11 +184,14 @@ $LANG_SUCCESS = array(
     19 => '<strong>שימו לב:</strong> עקב כך ששונה מודל האבטחה, יצרנו חשבון חדש עם ההרשאות שהנכם זקוקים להן כדי לנהל את אתרכם החדש.  שם המשתמש של חשבון חדש זה הוא <b>NewAdmin</b> והסיסמה היא <b>password</b>',
     20 => 'להתקין את',
     21 => 'לשדרג את',
-    22 => 'נדדה'
+    22 => 'נדדה',
+    23 => 'Would you like to delete all the files and directories used during the installation?',
+    24 => 'Yes, please.',
+    25 => 'No, thanks.  I will manually delete them afterwards.'
 );
 
 // +---------------------------------------------------------------------------+
-// migrate.php
+// migration
 
 $LANG_MIGRATE = array(
     0 => 'תהליך הנדידה ישכתב כל מידע קיים במאגר המידע.',
@@ -230,7 +234,7 @@ $LANG_MIGRATE = array(
     37 => 'הנדידה הושלמה',
     38 => 'תהליך הנדידה הושלם. עם זאת, סקריפט ההתקנה מצא את הדברים הבאים:',
     39 => 'נכשלה הגדרת נתיב PEAR include. מצטערים, אין דרך לטפל בגיבויי מאגר מידע מכווצים בלי PEAR.',
-    40 => 'הארכיון \'%s\' לא נראה שמכיל קבצי SQL.',
+    40 => 'הארכיון "s$1%" לא נראה שהוא הכיל קבצי SQL. כדי לנסות שוב, לחץ על <a href="s$2%\"> </a> זה ',
     41 => 'שגיאה בהוצאת גיבוי מאגר המידע \'%s\' מתוך קובץ הגיבוי המכווץ.',
     42 => 'קובץ הגיבוי \'%s\' פשוט נעלם ...',
     43 => 'היבוא בוטל. הקובץ  \'%s\' לא נראה כמו SQL dump.',
@@ -318,7 +322,13 @@ $LANG_ERROR = array(
     7 => 'הקובץ שהועלה עובר את הוראת post_max_size ב-php.ini. אנא העלו את קובץ מאגר המידע שלכם בשיטה אחרת, למשל FTP.',
     8 => 'שגיאה',
     9 => 'כשל בחיבור למאגר המידע שלכם עם השגיאה: ',
-    10 => 'בידקו את הגדרות מאגר המידע שלכם'
+    10 => 'בידקו את הגדרות מאגר המידע שלכם',
+    11 => 'Warning',
+    12 => 'Information',
+    14 => 'Upgrade Notices',
+    15 => 'Topic IDs and Names max length have changed from 128 to 75. This may cause issues when topic ids are truncated (if id is larger than 75 characters) during the upgrade. Please double check your topic ids that are larger than 75 characters will be unique when the max length is changed.',
+    16 => 'Topic IDs and Names have changed from 128 to 75. It has been detected you need to modify 1 or more topic ids before this upgrade can proceed.',
+    17 => 'Professional Theme support has been dropped from Geeklog. If you are currently using the Professional theme or Professional_css theme from Geeklog 2.1.1 or older your website may not function properly.'
 );
 
 // +---------------------------------------------------------------------------+

@@ -52,9 +52,9 @@ define('STATICPAGE_MAX_ID_LENGTH', 128);
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
  *
- * @param   array   args     Contains all the data provided by the client
- * @param   string  &output  OUTPUT parameter containing the returned text
- * @param   string  &svc_msg OUTPUT parameter containing any service messages
+ * @param   array  $args    Contains all the data provided by the client
+ * @param   string $output  OUTPUT parameter containing the returned text
+ * @param   string $svc_msg OUTPUT parameter containing any service messages
  * @return  int          Response code as defined in lib-plugins.php
  */
 function service_submit_staticpages($args, &$output, &$svc_msg)
@@ -257,6 +257,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $sp_hits = $args['sp_hits'];
     $sp_format = $args['sp_format'];
     $sp_onmenu = $args['sp_onmenu'];
+    $sp_onhits = $args['sp_onhits'];
+    $sp_onlastupdate = $args['sp_onlastupdate'];
     $sp_label = '';
     if (!empty($args['sp_label'])) {
         $sp_label = $args['sp_label'];
@@ -345,6 +347,16 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         } else {
             $sp_onmenu = 0;
         }
+        if ($sp_onhits == 'on') {
+            $sp_onhits = 1;
+        } else {
+            $sp_onhits = 0;
+        }
+        if ($sp_onlastupdate == 'on') {
+            $sp_onlastupdate = 1;
+        } else {
+            $sp_onlastupdate = 0;
+        }
         if ($sp_nf == 'on') {
             $sp_nf = 1;
         } else {
@@ -381,12 +393,20 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if ($_SP_CONF['filter_html'] == 1) {
             $sp_content = COM_checkHTML($sp_content, 'staticpages.edit');
         }
+        $sp_content = GLText::remove4byteUtf8Chars($sp_content);
+
         $sp_title = strip_tags($sp_title);
+        $sp_title = GLText::remove4byteUtf8Chars($sp_title);
         $sp_page_title = strip_tags($sp_page_title);
+        $sp_page_title = GLText::remove4byteUtf8Chars($sp_page_title);
         $sp_label = strip_tags($sp_label);
+        $sp_label = GLText::remove4byteUtf8Chars($sp_label);
 
         $meta_description = strip_tags($meta_description);
+        $meta_description = GLText::remove4byteUtf8Chars($meta_description);
         $meta_keywords = strip_tags($meta_keywords);
+        $meta_keywords = GLText::remove4byteUtf8Chars($meta_keywords);
+        $sp_help = GLText::remove4byteUtf8Chars($sp_help);
 
         $sp_content = DB_escapeString($sp_content);
         $sp_title = DB_escapeString($sp_title);
@@ -394,6 +414,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $sp_label = DB_escapeString($sp_label);
         $meta_description = DB_escapeString($meta_description);
         $meta_keywords = DB_escapeString($meta_keywords);
+        $sp_help = DB_escapeString($sp_help);
 
         // If user does not have php edit perms, then set php flag to 0.
         if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights('staticpages.PHP')) {
@@ -414,6 +435,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $template_id = '';
 
             $sp_onmenu = 0;
+            $sp_onhits = $_SP_CONF['show_hits'];
+            $sp_onlastupdate = $_SP_CONF['show_date'];
             $sp_label = "";
             $sp_centerblock = 0;
             $sp_php = 0;
@@ -485,14 +508,14 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
 
         // Retrieve created date
-        $datecreated = DB_getItem($_TABLES['staticpage'], 'created', "sp_id = '$sp_id'");
-        if ($datecreated == '') {
-            $datecreated = date('Y-m-d H:i:s');
+        $dateCreated = DB_getItem($_TABLES['staticpage'], 'created', "sp_id = '$sp_id'");
+        if ($dateCreated == '') {
+            $dateCreated = date('Y-m-d H:i:s');
         }
 
-        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time,owner_id,group_id,'
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_onhits,sp_onlastupdate,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time,owner_id,group_id,'
             . 'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode',
-            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
+            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$dateCreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
             . "$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help',$sp_where,"
             . "'$sp_inblock','$postmode'");
 
@@ -646,6 +669,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
     $svc_msg['output_fields'] = array(
         'sp_hits',
+        'sp_onhits',
+        'sp_onlastupdate',
         'sp_format',
         'draft_flag',
         'cache_time',
@@ -723,14 +748,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $topic_perms .= " GROUP BY sp_id";
 
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_onhits,sp_onlastupdate,sp_hits,created,modified,sp_format,"
             . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
             . "owner_id,group_id,perm_owner,perm_group,"
             . "perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time "
             . "FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta "
             . "WHERE (sp_id = '$page')" . $perms
             . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
-        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,"
+        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_onhits,sp_onlastupdate,sp_hits,"
             . "created,modified,sp_format,"
             . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
             . "owner_id,group_id,perm_owner,perm_group,"

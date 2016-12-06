@@ -113,7 +113,10 @@ $LANG25 = array(
     37 => 'Skrij rezultate, ko je anketa odprta',
     38 => 'Ko je anketa odprta, lahko vidita rezultate le lastnik in tisti z dostopom do korena (root)',
     39 => 'Tema bo prikazana le, èe ima anketa veè kot eno vprašanje.',
-    40 => 'Poglej vse odgovore'
+    40 => 'Poglej vse odgovore',
+    1001 => 'Allow multiple answers',
+    1002 => 'Description',
+    1003 => 'Description'
 );
 
 $PLG_polls_MESSAGE15 = 'Tvoj komentar je odposlan v pregled in bo objavljen, ko ga odobri urednik.';
@@ -188,7 +191,7 @@ $LANG_configselects['polls'] = array(
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION)
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
 );
 
 ?>

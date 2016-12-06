@@ -27,9 +27,9 @@
 
   <!-- #container { -->
   <div id="container">
-    <header id="header" role="banner">
-      <div id="header-content" class="type1">
-        <a class="tm-toggle uk-navbar-toggle uk-visible-small" href="#offcanvas" data-uk-offcanvas></a>
+    <header id="header" role="banner" class="brand-text">
+      <div id="header-content">
+        <a class="tm-toggle uk-navbar-toggle uk-visible-small" href="#offcanvas" data-uk-offcanvas="{mode:'reveal'}"></a>
         <div class="nameplate">
           <h1 class="site_name"><a href="{site_url}" title="{site_name}">{site_name}</a></h1>
           <p class="site_slogan">{site_slogan}</p>

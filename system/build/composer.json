@@ -1,0 +1,7 @@
+{
+  "require": {
+    "tedivm/jshrink": "~1.0",
+    "phing/phing": "~2.0",
+    "pear/archive_tar": "~1.0"
+  }
+}

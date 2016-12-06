@@ -1917,12 +1917,23 @@ function SEC_loginForm($use_config = array())
             } else {
                 $icon_path = $_CONF['site_url'] . '/images/';
             }
+            // UIkit icon font names
+            $icon_font_names = array(
+                'facebook'  => 'facebook',
+                'google'    => 'google',
+                'twitter'   => 'twitter',
+                'microsoft' => 'windows',
+                'linkedin'  => 'linkedin',
+                'yahoo'     => 'yahoo',
+                'github'    => 'github'
+            );
             foreach ($modules as $service) {
                 $loginform->set_file('oauth_login', '../loginform_oauth.thtml');
                 $loginform->set_var('oauth_service', $service);
                 $loginform->set_var('lang_oauth_service', $LANG01[$service]);
                 // for sign in image
                 $loginform->set_var('oauth_sign_in_image', $icon_path . $service . '-login-icon.png');
+                $loginform->set_var('oauth_icon_font_name', $icon_font_names[$service]);
                 $loginform->parse('output', 'oauth_login');
                 $html_oauth .= $loginform->finish($loginform->get_var('output'));
             }

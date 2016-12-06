@@ -1,5 +1,0 @@
-        {formatted_article}
-        <div class="floatleft" style="width:50%;">{whats_related}</div>
-        <div class="floatleft" style="width:50%;">{story_options}</div>
-        <div class="clearboth">{trackback}</div>
-        {commentbar}

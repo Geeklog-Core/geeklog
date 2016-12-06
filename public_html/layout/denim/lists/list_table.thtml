@@ -13,7 +13,7 @@
     </div>
   </div>
 </form>
-<div class="table-wrapper">
+<div class="uk-overflow-container">
   <table class="admin-list-table uk-table uk-table-hover uk-table-striped" style="{show_sort}">
     <tr>
       {page_sort}

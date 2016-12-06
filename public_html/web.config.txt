@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Geeklog web.config file for Microsoft IIS 7.0 and higher Web Servers
+    
+    - URL Routing Rule
+    - Security and Optimizing Rules
+    - Cache and Compression Settings
+    - 404 Error mapping to Geeklog 404 Error Page
+
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	!!                                                                       !!
+	!!  If you get an Internal Server Error 500 or a blank page when trying  !!
+	!!  to access your site, remove this file.                               !!
+	!!                                                                       !!
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-->
+<configuration>
+    <system.webServer>
+        <rewrite>    
+            <rules>        
+                <rule name="URL Routing rewrite" stopProcessing="true">
+                    <match url="^(.*)$" ignoreCase="false" />
+                    <conditions>
+                        <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+                        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+                    </conditions>
+                    <action type="Rewrite" url="/index.php/{R:1}" />
+                </rule>
+                <!-- Supported in IIS 8 + Only
+                <rule name="Block out some common exploits">
+                    <match url=".*" ignoreCase="false" />
+                    <conditions logicalGrouping="MatchAny" trackAllCaptures="false">
+                        <add input="{QUERY_STRING}" pattern="proc/self/environ" ignoreCase="false" />
+                        <add input="{QUERY_STRING}" pattern="mosConfig_[a-zA-Z_]{1,21}(=|\%3D)" ignoreCase="false" />
+                        <add input="{QUERY_STRING}" pattern="base64_(en|de)code\(.*\)" ignoreCase="false" />
+                        <add input="{QUERY_STRING}" pattern="(&lt;|%3C).*script.*(>|%3E)" />
+                        <add input="{QUERY_STRING}" pattern="GLOBALS(=|\[|\%[0-9A-Z]{0,2})" ignoreCase="false" />
+                        <add input="{QUERY_STRING}" pattern="_REQUEST(=|\[|\%[0-9A-Z]{0,2})" ignoreCase="false" />
+                    </conditions>
+                    <action type="CustomResponse" url="index.php" statusCode="403" statusReason="Forbidden" statusDescription="Forbidden" />
+                </rule>
+                <rule name="File injection protection" stopProcessing="true">
+                    <match url=".*" ignoreCase="false" />
+                    <conditions logicalGrouping="MatchAny" trackAllCaptures="false">
+                        <add input="{QUERY_STRING}" pattern="[a-zA-Z0-9_]=http://" ignoreCase="false" />
+                        <add input="{QUERY_STRING}" pattern="[a-zA-Z0-9_]=(\.\.//?)+" ignoreCase="false" />
+                        <add input="{QUERY_STRING}" pattern="[a-zA-Z0-9_]=/([a-z0-9_.]//?)+" />
+                    </conditions>
+                    <action type="CustomResponse" statusCode="403" statusReason="Forbidden" statusDescription="Forbidden" />
+                </rule>
+                <rule name="PHP Easter Egg protection">
+                    <match url=".*" ignoreCase="false" />
+                    <conditions logicalGrouping="MatchAll" trackAllCaptures="false">
+                        <add input="{QUERY_STRING}" pattern="\=PHP[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" />
+                    </conditions>
+                    <action type="CustomResponse" statusCode="403" statusReason="Forbidden" statusDescription="Forbidden" />
+                </rule>
+                -->
+            </rules>    
+        </rewrite>
+        <staticContent>
+            <clientCache cacheControlMode="UseMaxAge" cacheControlMaxAge="10.00:00:00" />
+        </staticContent>    
+        <security>
+            <requestFiltering>
+                <requestLimits maxQueryString="4096" />
+            </requestFiltering>
+        </security>
+        <urlCompression doStaticCompression="true" doDynamicCompression="true" />
+        <httpErrors>
+            <remove statusCode="404" subStatusCode="-1" />
+            <error statusCode="404" prefixLanguageFilePath="" path="/404.php" responseMode="ExecuteURL" />
+        </httpErrors>
+    </system.webServer>
+</configuration>

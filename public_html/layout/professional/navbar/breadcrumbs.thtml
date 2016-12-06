@@ -1,3 +1,0 @@
-<p class="breadcrumbs">
-    {breadcrumb_links}{last_label}
-</p>

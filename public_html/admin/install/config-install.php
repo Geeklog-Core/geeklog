@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (stripos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -94,19 +94,6 @@ function install_config()
     $c->add('path_images','','text',0,3,NULL,130,TRUE, $me, 3);
     $c->add('path_editors','','text',0,3,NULL,132,TRUE, $me, 3);
 
-    $c->add('tab_pear', NULL, 'tab', 0, 4, NULL, 0, TRUE, $me, 4);
-    $c->add('fs_pear', NULL, 'fieldset', 0, 4, NULL, 0, TRUE, $me, 4);
-    $c->add('have_pear',FALSE,'select',0,4,1,135,TRUE, $me, 4);
-    $c->add('path_pear','','text',0,4,NULL,140,TRUE, $me, 4);
-
-    /*
-    $c->add('tab_mysql', NULL, 'tab', 0, 5, NULL, 0, TRUE, $me, 5);
-    $c->add('fs_mysql', NULL, 'fieldset', 0, 5, NULL, 0, TRUE, $me, 5);
-    $c->add('allow_mysqldump',1,'select',0,5,0,170,TRUE, $me, 5);
-    $c->add('mysqldump_path','/usr/bin/mysqldump','text',0,5,NULL,175,TRUE, $me, 5);
-    $c->add('mysqldump_options','-Q','text',0,5,NULL,180,TRUE, $me, 5);
-    $c->add('mysqldump_filename_mask','geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql','text',0,5,NULL,185,TRUE, $me, 5);
-    */
     $c->add('tab_database', NULL, 'tab', 0, 5, NULL, 0, TRUE, $me, 5);
     $c->add('fs_database_backup', NULL, 'fieldset', 0, 5, NULL, 0, TRUE, $me, 5);
     $c->add('dbdump_filename_prefix','geeklog_db_backup','text',0,5,NULL,170,TRUE, $me, 5);    
@@ -179,7 +166,7 @@ function install_config()
 
     $c->add('tab_theme', NULL, 'tab', 2, 10, NULL, 0, TRUE, $me, 10);
     $c->add('fs_theme', NULL, 'fieldset', 2, 10, NULL, 0, TRUE, $me, 10);
-    $c->add('theme','modern_curve','select',2,10,NULL,190,TRUE, $me, 10);
+    $c->add('theme','denim','select',2,10,NULL,190,TRUE, $me, 10);
     $c->add('doctype','html401strict','select',2,10,21,195,TRUE, $me, 10);
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%select',2,10,24,200,TRUE, $me, 10);
     $c->add('path_themes','','text',2,10,NULL,210,TRUE, $me, 10);
@@ -307,6 +294,7 @@ function install_config()
     $c->add('advanced_editor',FALSE,'select',4,20,1,840,TRUE, $me, 20);
     $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
     $c->add('wikitext_editor',FALSE,'select',4,20,1,850,TRUE, $me, 20);
+    $c->add('remove_4byte_chars',TRUE,'select',4,20,1,855,TRUE, $me, 20);
 
     $c->add('tab_comments', NULL, 'tab', 4, 21, NULL, 0, TRUE, $me, 21);
     $c->add('fs_comments', NULL, 'fieldset', 4, 21, NULL, 0, TRUE, $me, 21);
@@ -365,6 +353,7 @@ function install_config()
     $c->add('fs_gravatar', NULL, 'fieldset', 5, 27, NULL, 0, TRUE, $me, 27);
     $c->add('use_gravatar',FALSE,'select',5,27,1,1600,TRUE, $me, 27);
     $c->add('gravatar_rating','R','select',5,27,26,1610,FALSE, $me, 27);
+    $c->add('gravatar_identicon','identicon','select',5,27,38,1620,FALSE, $me, 27);
 
     // Subgroup: Languages and Locale
     $c->add('sg_locale', NULL, 'subgroup', 6, 0, NULL, 0, TRUE, $me, 0);

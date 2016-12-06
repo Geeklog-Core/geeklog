@@ -1,7 +1,0 @@
-<form action="{site_admin_url}/syndication.php" method="post">
-    <p>{lang_explain}</p>
-    <p class="aligncenter">
-        {type_selection}&nbsp;&nbsp;&nbsp;
-        <input type="submit" value="{lang_go}" name="mode"{xhtml}>
-    </p>
-</form>

@@ -1,6 +1,0 @@
-        <div id="navcontainer">
-            <ul id="navlist" style="padding-left:15px;">
-                {menuitems}
-            </ul>
-        </div>
-        <div class="clearboth"></div>

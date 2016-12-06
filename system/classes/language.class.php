@@ -125,11 +125,11 @@ class Language
      */
     public static function adminShowEditor(array $A = array())
     {
-        global $_CONF, $_FINPUT, $LANG_ADMIN, $LANG_LANG, $MESSAGE, $_TABLES;
+        global $_CONF, $LANG_ADMIN, $LANG_LANG, $MESSAGE, $_TABLES;
 
         self::checkAccessRights();
 
-        $id = $_FINPUT->get('id', $_FINPUT->post('id', 0));
+        $id = \Geeklog\Input::fGet('id', \Geeklog\Input::fPost('id', 0));
         $id = intval($id, 10);
 
         if ($id < 1) {
@@ -330,17 +330,17 @@ class Language
      */
     public static function adminSave()
     {
-        global $_CONF, $_FINPUT, $_INPUT, $_TABLES;
+        global $_CONF, $_TABLES;
 
         self::checkAccessRights();
         self::checkSecurityToken();
 
-        $id = $_FINPUT->post('id', 0);
+        $id = \Geeklog\Input::fPost('id', 0);
         $id = intval($id, 10);
-        $varName = $_FINPUT->post('var_name', '');
-        $language = $_FINPUT->post('language', '');
-        $name = $_FINPUT->post('name', '');
-        $value = $_INPUT->post('value', '');
+        $varName = \Geeklog\Input::fPost('var_name', '');
+        $language = \Geeklog\Input::fPost('language', '');
+        $name = \Geeklog\Input::fPost('name', '');
+        $value = \Geeklog\Input::post('value', '');
 
         if (($id >= 0) && !empty($varName) && !empty($language) && !empty($name)) {
             $varName = DB_escapeString($varName);
@@ -379,12 +379,12 @@ class Language
      */
     public static function adminDelete()
     {
-        global $_CONF, $_FINPUT, $_TABLES;
+        global $_CONF, $_TABLES;
 
         self::checkAccessRights();
         self::checkSecurityToken();
 
-        $id = $_FINPUT->post('id', 0);
+        $id = \Geeklog\Input::fPost('id', 0);
         $id = intval($id, 10);
         $redirect = $_CONF['site_admin_url'] . '/language.php';
 
@@ -402,12 +402,12 @@ class Language
      */
     public static function adminMassDelete()
     {
-        global $_CONF, $_FINPUT, $_TABLES;
+        global $_CONF, $_TABLES;
 
         self::checkAccessRights();
         self::checkSecurityToken();
 
-        $ids = $_FINPUT->post('delitem', array());
+        $ids = \Geeklog\Input::fPost('delitem', array());
 
         if (!is_array($ids)) {
             $ids = (array) $ids;

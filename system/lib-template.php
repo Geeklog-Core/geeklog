@@ -32,7 +32,6 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-template.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-$TEMPLATE_OPTIONS['hook']['set_root'] = 'CTL_setTemplateRoot';
 
 /**
 * Returns possible theme template directories.

@@ -1,0 +1,21 @@
+<div style="margin-left: auto; margin-right: auto; width: 175px;">
+    <div style="position: absolute">
+        <form action="index.php" method="post">
+            <input type="submit" class="button big-button" value="&lt;&lt; {{ LANG.INSTALL.61 }}">
+        </form>
+    </div>
+
+    <div style="position: relative; left: 105px; top: 5px;">        
+        <form action="index.php" method="post">
+            <input type="hidden" name="version" value="{! currentVersion !}">
+            <input type="hidden" name="mode" value="{! mode !}">
+            <input type="hidden" name="step" value="{! step !}">
+            <input type="hidden" name="upgrade_check" value="confirmed">
+            <input type="hidden" name="language" value="{! language !}">
+            <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+            <input type="hidden" name="site_url" value="{! site_url !}">
+            <input type="hidden" name="site_admin_url" value="{! site_admin_url !}">
+            <input type="submit" class="button big-button" value="{{ LANG.INSTALL.62 }}">
+        </form>
+    </div>
+</div>

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | polish.php                                                                |
 // |                                                                           |
@@ -159,7 +159,8 @@ $LANG_INSTALL = array(
     107 => 'Database Password is required for production environments.',
     108 => 'No Database Drivers found!',
     109 => 'Emergency Rescue Tool',
-    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:'
+    110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:',
+    111 => 'Geeklog Version'
 );
 
 // +---------------------------------------------------------------------------+
@@ -188,11 +189,14 @@ $LANG_SUCCESS = array(
     19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
     20 => 'zainstalowano',
     21 => 'aktualizowano',
-    22 => 'migrated'
+    22 => 'migrated',
+    23 => 'Would you like to delete all the files and directories used during the installation?',
+    24 => 'Yes, please.',
+    25 => 'No, thanks.  I will manually delete them afterwards.'
 );
 
 // +---------------------------------------------------------------------------+
-// migrate.php
+// migration
 
 $LANG_MIGRATE = array(
     0 => 'The migration process will overwrite any existing database information.',
@@ -235,7 +239,7 @@ $LANG_MIGRATE = array(
     37 => 'Migration Complete',
     38 => 'The migration process has completed. However, the installation script found the following issues:',
     39 => 'Failed to set PEAR include path. Sorry, can\'t handle compressed database backups without PEAR.',
-    40 => 'The archive \'%s\' does not appear to contain any SQL files.',
+    40 => 'The archive "%1$s" does not appear to contain any SQL files.  To retry, click on <a href="%2$s\">this</a>',
     41 => 'Error extracting database backup \'%s\' from compressed backup file.',
     42 => 'Backup file \'%s\' just vanished ...',
     43 => 'Import aborted: The file \'%s\' does not appear to be an SQL dump.',
@@ -323,7 +327,13 @@ $LANG_ERROR = array(
     7 => 'The uploaded file exceeds the post_max_size directive in your php.ini. Please upload your database file using another method, such as FTP.',
     8 => 'Error',
     9 => 'Failed to connect to the database with the error: ',
-    10 => 'Check your database settings'
+    10 => 'Check your database settings',
+    11 => 'Warning',
+    12 => 'Information',
+    14 => 'Upgrade Notices',
+    15 => 'Topic IDs and Names max length have changed from 128 to 75. This may cause issues when topic ids are truncated (if id is larger than 75 characters) during the upgrade. Please double check your topic ids that are larger than 75 characters will be unique when the max length is changed.',
+    16 => 'Topic IDs and Names have changed from 128 to 75. It has been detected you need to modify 1 or more topic ids before this upgrade can proceed.',
+    17 => 'Professional Theme support has been dropped from Geeklog. If you are currently using the Professional theme or Professional_css theme from Geeklog 2.1.1 or older your website may not function properly.'
 );
 
 // +---------------------------------------------------------------------------+

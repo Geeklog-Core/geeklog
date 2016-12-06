@@ -10,13 +10,13 @@
         {!endif!}
 
         <h2>{lang_success_10}</h2>
-        <p>{lang_success_11}<strong>{!if is_install}3{!else!}2{!endif!}</strong>{lang_success_12}:</p>
+        <p>{lang_success_11} <strong>{!if is_install}3{!else!}2{!endif!}</strong> {lang_success_12}:</p>
         <ul>
-            <li>{lang_success_13}<tt dir="ltr">{install_path}</tt>.</li>
+            <li>{lang_success_13} <tt dir="ltr">{install_path}</tt>.</li>
             {!if is_install}
-            <li><a href="{conf_site_url}/usersettings.php">{lang_success_14}<strong>{lang_success_7}</strong>{lang_success_15}</a></li>
+            <li><a href="{conf_site_url}/usersettings.php">{lang_success_14} <strong>{lang_success_7}</strong> {lang_success_15}</a></li>
             {!endif!}
-            <li>{lang_success_16}<tt dir="ltr">{conf_path}db-config.php</tt>{lang_success_17}<tt dir="ltr">{conf_path_html}siteconfig.php</tt>{lang_success_18} 644.</li>
+            <li>{lang_success_16} <tt dir="ltr">{conf_path}db-config.php</tt> {lang_success_17} <tt dir="ltr">{conf_path_html}siteconfig.php</tt> {lang_success_18} 644.</li>
         </ul>
 
         {!if older_geeklog}

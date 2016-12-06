@@ -30,5 +30,32 @@
         <br><br>
     </div>
 </div>
+<script type="text/javascript">
+    function INST_selectMigrationType() {
+        var myType = document.migrate.migration_type.value;
+        var migrationSelect = document.getElementById("migration-select");
+        var migrationUpload = document.getElementById("migration-upload");
+        var migrationUploadWarning = document.getElementById("migration-upload-warning");
+
+        switch (myType) {
+            case "select":
+                migrationSelect.style.display = "inline";
+                migrationUpload.style.display = "none";
+                migrationUploadWarning.style.display = "none";
+                break;
+
+            case "upload":
+                migrationSelect.style.display = "none";
+                migrationUpload.style.display = "inline";
+                migrationUploadWarning.style.display = "block";
+                break;
+
+            default:
+                migrationSelect.style.display = "none";
+                migrationUpload.style.display = "none";
+                migrationUploadWarning.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>
