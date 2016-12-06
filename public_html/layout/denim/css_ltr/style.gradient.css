@@ -86,7 +86,6 @@ fieldset {
   margin: 0 0 1em 0;
   padding: 8px 12px;
   border: 1px solid #CCC;
-  -webkit-border-radius: 4px;
   border-radius: 4px;
 }
 
@@ -242,7 +241,6 @@ input[type="reset"] {
   background-image: -o-linear-gradient(top, #FFF, #EEE);
   background-image: -ms-linear-gradient(top, #FFF, #EEE);
   background-image: linear-gradient(to bottom, #FFF, #EEE);
-  -webkit-border-radius: 4px;
   border-radius: 4px;
   text-shadow: 0 1px 0 #FFF;
 }
@@ -304,7 +302,6 @@ input[type="reset"]:disabled {
 .uk-button-group > div:not(:first-child):not(:last-child) input[type="submit"],
 .uk-button-group > div:not(:first-child):not(:last-child) input[type="button"],
 .uk-button-group > div:not(:first-child):not(:last-child) input[type="reset"] {
-  -webkit-border-radius: 0;
   border-radius: 0;
 }
 
@@ -2692,7 +2689,6 @@ h4 img {
 .block-message {
   margin: 1.5em 0;
   padding: 0;
-  -webkit-border-radius: 6px;
   border-radius: 6px;
   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
   box-shadow: 0 1px 2px rgba(0,0,0,.1);
@@ -2711,7 +2707,6 @@ h4 img {
   text-shadow: 0 1px 1px rgba(0,0,0,.3);
   font-weight: bold;
   border: 1px solid rgba(0,0,0,.2);
-  -webkit-border-radius: 6px 6px 0 0;
   border-radius: 6px 6px 0 0;
 }
 
@@ -2722,7 +2717,6 @@ h4 img {
   color: #404040;
   text-shadow: 0 1px 0 rgba(255,255,255,.5);
   border: 1px solid rgba(0,0,0,.2);
-  -webkit-border-radius: 0 0 6px 6px;
   border-radius: 0 0 6px 6px;
 }
 
@@ -3208,7 +3202,6 @@ div.third-party-login {
 }
 
 .gl-tooltip:hover span {
-  -webkit-border-radius: 8px;
   border-radius: 8px;
   -webkit-box-shadow: 2px 2px 8px #666;
   box-shadow: 2px 2px 8px #666;
@@ -3329,7 +3322,6 @@ span.warning em {
 #commentbar {
   padding: 3px;
   background: none repeat scroll 0 0 #EEE;
-  -webkit-border-radius: 4px;
   border-radius: 4px;
   zoom: 1;
 }
@@ -3954,7 +3946,6 @@ dd#profile-user_photo {
   border: 1px solid rgba(0,0,0,.2);
   padding: 10px 5px;
   line-height: 1.25;
-  -webkit-border-radius: 4px;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
   box-shadow: 0 1px 2px rgba(0,0,0,.1);
@@ -4610,7 +4601,6 @@ body.center-right #config_content {
     display: inline-block;
     border: 1px solid #666;
     border-color: #BEDAF3;
-    -webkit-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
     background: #E4EDF5;
     color: #369;
@@ -4630,7 +4620,6 @@ body.center-right #config_content {
     display: inline-block;
     border: 1px solid #666;
     border-color: #79B1E7;
-    -webkit-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
     background: #A8C4E0;
     color: #2A527A;
