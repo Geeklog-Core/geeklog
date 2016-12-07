@@ -4843,7 +4843,7 @@ HTML;
      */
     public function run()
     {
-        global $_CONF, $_TABLES, $_VARS, $_URL, $_DEVICE, $_SCRIPTS, $_IMAGE_TYPE, $TEMPLATE_OPTIONS, $_GROUPS, $_RIGHTS;
+        global $_CONF, $_TABLES, $_VARS, $_URL, $_DEVICE, $_SCRIPTS, $_IMAGE_TYPE, $TEMPLATE_OPTIONS, $_GROUPS, $_RIGHTS, $_USER, $_DB_dbms, $_DB_table_prefix;
 
         // Prepare some hints about what /path/to/geeklog might be ...
         $this->env['gl_path'] = BASE_FILE;
