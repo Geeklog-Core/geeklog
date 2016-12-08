@@ -20,26 +20,41 @@
 
 <p>Geeklog 2.1.2の主要な新機能</p>
 
-<p>今回からMicrosoft SQL Server (mssql)をサポートしなくなりました。.</p>
+<p>Geeklog 2.1.2 major new features include a number of new administration tools along with the support of URL Routing and detecting a mobile user.</p>
+
+<p>The Geeklog minimum requirements have changed slightly since, Geeklog now supports PHP 7 and the default settings for MySQL 5.7. The minimum requirements are:</p>
+
+<ul>
+<li>PHP 5.3.0 or higher</li>
+<li>MySQL 4.1.2 or higher (MySQL 5 recommended)</li> 
+<li>Postgresql 9.1.7 or later</li>
+</ul>
+
+<p>今回からMicrosoft SQL Server (mssql)をサポートしなくなりました。. The Professional and Professional CSS themes also have been removed.</p>
 
 <h3>主要な新機能と改善点</h3>
 
 <ul>
-  <li>Added description, multiple answers per question to the Poll Plugin (code provided by Ivy, feature request #629)</li>
-  <li>Added "Related Articles Section" to the article view (code provided by Andreas, feature request #444)</li>
-  <li>Added Language override feature (feature request #669)</li>
-  <li>Added an admin page for comments (feature request #586)</li>
-  <li>Now install files are (optionally) deleted on successful install or upgrade (feature request #635)</li>
-  <li>Added URL-routing feature which enables you to use public_html/index.php as a pseudo-front controller (feature requests #211, #326)</li>
-  <li>Added new modules for the Spam-X plugin (feature request #585, files provided by Dirk Haun)</li>
-  <li>Added an ability to change article template file with the topic (feature request #275, code provided by @hostellerie)</li>
-  <li>Added the ability to search poll comments (feature request #394)</li>
-  <li>Added a new config option $_CONF['gravatar_identicon'] to specify a default gravatar icon type (bug #579)</li>
-  <li>Added ability for Geeklog to detect device type (mobile or computer) of visitor. This can be used by blocks to display only for a certain device type</li>
-  <li>Blocks can display based on visitor device type</li>
-  <li>Template variable {device_movile} added which returns true if viewing device is considered mobile (phone and tablet)</li>
-  <li>Remove PEAR settings.  PEAR libraries are now managed by way of composer</li>
-  <li>Numerous bug and security fixes.</li>
+    <li>Added description, multiple answers per question to the Poll Plugin (code provided by Ivy, feature request #629)</li>
+    <li>Added "Related Articles Section" to the article view (code provided by Andreas, feature request #444)</li>
+    <li>Added Language override feature (feature request #669)</li>
+    <li>Added an admin page for comments (feature request #586)</li>
+    <li>Now install files are (optionally) deleted on successful install or upgrade (feature request #635)</li>
+    <li>Added URL-routing feature which enables you to use public_html/index.php as a pseudo-front controller (feature requests #211, #326)</li>
+    <li>Added new modules for the Spam-X plugin (feature request #585, files provided by Dirk Haun)</li>
+    <li>Added an ability to change article template file with the topic (feature request #275, code provided by @hostellerie)</li>
+    <li>Added the ability to search poll comments (feature request #394)</li>
+    <li>Added a new config option $_CONF['gravatar_identicon'] to specify a default gravatar icon type (bug #579)</li>
+    <li>Added ability for Geeklog to detect device type (mobile or computer) of visitor. This can be used by blocks to display only for a certain device type</li>
+    <li>Blocks can display based on visitor device type</li>
+    <li>Template variable {device_movile} added which returns true if viewing device is considered mobile (phone and tablet)</li>
+    <li>Remove PEAR settings. PEAR libraries are now managed by way of composer</li>
+    <li>New Denim Curve theme which is a child theme of Denim and based on the look of the Modern Curve theme</li>
+    <li>New Geeklog Database backup which now works without using an external program</li>
+    <li>Improved Geeklog Install process which now includes upgrade messages</li>
+    <li>Support for MySQL databases which use a 4 byte character set (utf8mb4_xxx_ci)</li>
+    <li>Updates to a number of libraries including Pear, Uikit, OAuth, jQuery, and jQuery UI</li>
+    <li>Numerous bug and security fixes.</li>
 </ul>
 
 
