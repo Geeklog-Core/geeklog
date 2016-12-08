@@ -4,6 +4,13 @@ Geeklog History/Changes:
 Not Released (2.1.2)
 ------------
 
+- [Feature] Added description, multiple answers per question to the Poll Plugin [Mystralkk]
+- [Feature] New "Related Articles Section" to the article view [Mystralkk]
+- [Feature] Added Language override feature [Mystralkk]
+- [Feature] Added an Admin page for comments maintenance [Mystralkk]
+- [Feature] Added URL-routing feature which enables you to use public_html/index.php as a pseudo-front controller [Mystralkk]
+- [Feature] Added new modules for the Spam-X plugin Dirk
+- [Feature] Added an ability to change article template file with the topic [Mystralkk]
 - [Feature] Added GitHub OAuth Login [Tom]
 - [Feature] Added $_CONF['theme_oauth_icons'] option to allow theme to use own OAuth icons [Tom]
 - [Feature] Added autotag to display blocks [Tom]
@@ -13,7 +20,22 @@ Not Released (2.1.2)
 - [Feature] Template variable {device_movile} added which returns true if viewing device is considered mobile (phone and tablet) [Tom]
 - [Feature] Geeklog Database Backup now works without using a external program to backup. [Tom]
 - [Feature] Individual static pages can now have hits and last update date not displayed. [Tom]
+- [Feature] Re-factored Geeklog install. [Mystralkk]
+- [Feature] Upgrade Messages added to Geeklog install. [Tom]
+- [Feature] Geeklog Install files can now be deleted on successful install or upgrade. [Mystralkk]
+- [Feature] Support PHP 7. [Mystralkk]
+- [Feature] Support default settings of MySQL 5.7. [Mystralkk]
+- [Feature] Further integration of UIkit into the Denim theme. [Dengen]
+- [Feature] New Denim Curve them which replicates the older Modern Curve theme. The Denim Curve theme is a child theme of the Denim theme. [Dengen]
 - [Update] Dropped MSSQL support [Mystralkk]
+- [Update] Removed Professional and Professional CSS themes [Tom]
+- [Update] UIkit framework to version 2.27.2 [Dengen]
+- [Update] jQuery to version 1.11.3 and jQuery UI to version 1.11.4. [Dengen] ** FIX
+- [Update] CKEditor to version 4.5.4 [Dengen] ** FIX
+- [Update] OAuth class to version 1.152 [Tom]
+- [Bug] Geeklog can now handle emoji icons and 4-byte characters. They can either be removed from the input or saved (depending on website setup) [Mystralkk]
+- [Bug] Daily Digest URLs in articles are converted into absolute URLs. [Mystralkk]
+- [Bug] Topic Ids and Names reduced to 75 characters to support utf8mb4_xxx_ci MySQL character sets. [Tom]
 
 December 9, 2015 (2.1.1)
 ------------
