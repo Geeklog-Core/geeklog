@@ -31,7 +31,7 @@ Not Released (2.1.2)
 - [Update] Removed Professional and Professional CSS themes [Tom]
 - [Update] UIkit framework to version 2.27.2 [Dengen]
 - [Update] jQuery to version 1.11.3 and jQuery UI to version 1.11.4. [Dengen] ** FIX
-- [Update] CKEditor to version 4.5.4 [Dengen] ** FIX
+- [Update] CKEditor to version 4.6.1 [Tom]
 - [Update] OAuth class to version 1.152 [Tom]
 - [Bug] Geeklog can now handle emoji icons and 4-byte characters. They can either be removed from the input or saved (depending on website setup) [Mystralkk]
 - [Bug] Daily Digest URLs in articles are converted into absolute URLs. [Mystralkk]
