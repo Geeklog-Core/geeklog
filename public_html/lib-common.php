@@ -3583,6 +3583,7 @@ function COM_adminMenu($help = '', $title = '', $position = '')
  */
 function COM_redirect($url)
 {
+    $url = str_ireplace('&amp;', '&', $url);
     header('Location: ' . $url);
 
     // Send out HTML meta tags in case header('Location: some_url') fails
