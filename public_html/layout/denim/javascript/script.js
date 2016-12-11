@@ -90,4 +90,13 @@ $(function() {
             break;
     }
     $('#header-content > a.tm-toggle').attr('data-uk-offcanvas', "{mode:'" + oc_mode + "'}");
+
+    var totop = $('#totop-scroller');
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 400) {
+            totop.fadeIn();
+        } else {
+            totop.fadeOut();
+        }
+    });
 });

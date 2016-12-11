@@ -20,7 +20,7 @@
       </div>
     </footer>
 
-    <div id="totop-scroller" data-uk-smooth-scroll>
+    <div id="totop-scroller" style="display: none;" data-uk-smooth-scroll>
       <i class="uk-icon-chevron-circle-up"></i>
     </div>
 
