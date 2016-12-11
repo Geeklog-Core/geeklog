@@ -2770,13 +2770,13 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 
     $retval = PLG_RET_ERROR;
 
-    if ($type == 'story') {
+    if ($type === 'story') {
         // ensure we can see the service_XXX_story functions
         require_once $_CONF['path_system'] . 'lib-story.php';
     }
 
-    $output  = '';
-    $svc_msg = '';
+    $output  = array();
+    $svc_msg = array();
 
     // Check if the plugin type and action are valid
     $function = 'service_' . $action . '_' . $type;

@@ -58,10 +58,10 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
  * Formats the given article into HTML. Called by index.php, article.php,
  * submit.php and admin/story.php (Preview mode for the last two).
  *
- * @param   Story  $story    The story to display, an instance of the Story class.
- * @param   string $index    n = Full display of article. p = 'Preview' mode. Else introtext only.
- * @param   string $storyTpl The template to use to render the story.
- * @param   string $query    A search query, if one was specified.
+ * @param   Story  $story     The story to display, an instance of the Story class.
+ * @param   string $index     n = Full display of article. p = 'Preview' mode. Else introtext only.
+ * @param   string $storyTpl  The template to use to render the story.
+ * @param   string $query     A search query, if one was specified.
  * @return  string           Article as formatted HTML.
  *                            Note: Formerly named COM_Article, and re-written totally since then.
  */
@@ -894,8 +894,8 @@ function STORY_deleteStory($sid)
         'sid' => $sid,
     );
 
-    $output = '';
-
+    $output = array();
+    $svc_msg = array();
     PLG_invokeService('story', 'delete', $args, $output, $svc_msg);
 
     return $output;
@@ -1458,26 +1458,25 @@ function plugin_group_changed_story($grp_id, $mode)
 /**
  * Implements the [story:] autotag.
  *
- * @param    string $op                 operation to perform
- * @param    string $content            item (e.g. story text), including the autotag
- * @param    array  $autotag            parameters used in the autotag
- * @param           mixed               tag names (for $op='tagname') or formatted content
+ * @param   string $op      operation to perform
+ * @param   string $content item (e.g. story text), including the autotag
+ * @param   array  $autotag parameters used in the autotag
+ * @return  mixed           tag names (for $op='tagname') or formatted content
  */
-function plugin_autotags_story($op, $content = '', $autotag = '')
+function plugin_autotags_story($op, $content = '', $autotag = array())
 {
     global $_CONF, $_TABLES, $LANG24, $_GROUPS;
 
-    if ($op == 'tagname') {
+    if ($op === 'tagname') {
         return 'story';
-    } elseif ($op == 'permission' || $op == 'nopermission') {
+    } elseif ($op === 'permission' || $op === 'nopermission') {
         $flag = ($op == 'permission');
         $tagnames = array();
 
         if (isset($_GROUPS['Story Admin'])) {
             $group_id = $_GROUPS['Story Admin'];
         } else {
-            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                "grp_name = 'Story Admin'");
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin'");
         }
         $owner_id = SEC_getDefaultRootUser();
         $p = 'autotag_permissions_story';
@@ -1739,9 +1738,9 @@ function plugin_configchange_article($group, $changes = array())
 /**
  * Submit a new or updated story. The story is updated if it exists, or a new one is created
  *
- * @param   array   args    Contains all the data provided by the client
- * @param   string  &output OUTPUT parameter containing the returned text
- * @return  int         Response code as defined in lib-plugins.php
+ * @param   array  $args   Contains all the data provided by the client
+ * @param   string $output OUTPUT parameter containing the returned text
+ * @return  int             Response code as defined in lib-plugins.php
  */
 function service_submit_story($args, &$output, &$svc_msg)
 {
@@ -2030,7 +2029,6 @@ function service_submit_story($args, &$output, &$svc_msg)
         }
 
         if (count($_FILES) > 0 && $_CONF['maximagesperarticle'] > 0) {
-            require_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new Upload();
 
             if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
@@ -2166,9 +2164,10 @@ function service_submit_story($args, &$output, &$svc_msg)
 /**
  * Delete an existing story
  *
- * @param   array   args    Contains all the data provided by the client
- * @param   string  &output OUTPUT parameter containing the returned text
- * @return  int         Response code as defined in lib-plugins.php
+ * @param   array  $args   Contains all the data provided by the client
+ * @param   string $output OUTPUT parameter containing the returned text
+ * @param   array  $svc_msg
+ * @return  int             Response code as defined in lib-plugins.php
  */
 function service_delete_story($args, &$output, &$svc_msg)
 {
@@ -2209,19 +2208,19 @@ function service_delete_story($args, &$output, &$svc_msg)
 /**
  * Get an existing story
  *
- * @param   array   args    Contains all the data provided by the client
- * @param   string  &output OUTPUT parameter containing the returned text
- * @return  int         Response code as defined in lib-plugins.php
+ * @param   array $args   Contains all the data provided by the client
+ * @param   array $output OUTPUT parameter containing the returned text
+ * @param   array $svc_msg
+ * @return  int            Response code as defined in lib-plugins.php
  */
 function service_get_story($args, &$output, &$svc_msg)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    $output = array();
-    $retval = '';
+    $retval = 0;
 
     if (!isset($_CONF['atom_max_stories'])) {
-        $_CONF['atom_max_stories'] = 10; // set a resonable default
+        $_CONF['atom_max_stories'] = 10; // set a reasonable default
     }
 
     $svc_msg['output_fields'] = array(
@@ -2409,9 +2408,10 @@ function service_get_story($args, &$output, &$svc_msg)
 /**
  * Get all the topics available
  *
- * @param   array   args    Contains all the data provided by the client
- * @param   string  &output OUTPUT parameter containing the returned text
- * @return  int         Response code as defined in lib-plugins.php
+ * @param  array $args   Contains all the data provided by the client
+ * @param  array $output OUTPUT parameter containing the returned text
+ * @param  array $svc_msg
+ * @return int             Response code as defined in lib-plugins.php
  */
 function service_getTopicList_story($args, &$output, &$svc_msg)
 {

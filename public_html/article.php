@@ -133,6 +133,8 @@ if ($A['count'] > 0) {
     );
 
     $output = STORY_LOADED_OK;
+    $svc_msg = array();
+    $output = array();
     $result = PLG_invokeService('story', 'get', $args, $output, $svc_msg);
 
     if ($result == PLG_RET_OK) {
