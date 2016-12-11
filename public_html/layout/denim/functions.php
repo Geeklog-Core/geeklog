@@ -116,7 +116,15 @@ function theme_css_denim()
     $result[] = array(
         'name'       => 'main', // don't use the name 'theme' to control the priority
         'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style' . $ui_theme . $min . '.css',
-        'attributes' => array('media' => 'all')
+        'attributes' => array('media' => 'all'),
+        'priority'   => 100
+    );
+
+    $result[] = array(
+        'name'       => 'custom',
+        'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/custom.css',
+        'attributes' => array('media' => 'all'),
+        'priority'   => 101
     );
 
     if (!empty($theme_var['options']['uikit_components'])) {

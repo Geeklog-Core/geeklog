@@ -22,9 +22,8 @@
 {#
   <form class="third-party-login uk-form" action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
     <div>
-      <button class="uk-button" type="submit" value="{lang_oauth_service}" style="min-width: 160px; min-height: 25px; line-height: 24px; text-align: left; margin-bottom: 5px; padding:0 5px">
-        <span style="display: inline-block; text-align: center; width: 24px"><i class="uk-icon-{oauth_icon_font_name}" style="font-size: 15px; margin-right: 5px"></i></span><span style="display: inline-block; text-align: center; font-size: 12px; width: 124px">{lang_oauth_service}</span>
-      </button>
+      <span style="position: absolute; top: 5px; left: 5px; text-align: center; width: 18px; font-size: 15px;"><i class="uk-icon-{oauth_icon_font_name}"></i></span>
+      <input value="{lang_oauth_service}" type="submit" class="submit" style="min-width: 164px;"{xhtml}>
     </div>
   </form>
 #}

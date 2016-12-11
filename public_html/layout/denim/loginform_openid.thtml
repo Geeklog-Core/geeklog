@@ -5,7 +5,7 @@
     <div style="display: none;">
       <!-- this is revealed by login.js -->
       <img alt="" src="{site_url}/images/openid_login_icon.png"{xhtml}>
-      <input value="{lang_openid_login}" type="submit" class="submit"{xhtml}>
+      <input value="{lang_openid_login}" type="submit" class="submit" style="min-width: 164px;"{xhtml}>
     </div>
     <noscript>
       <label for="identity_url">{lang_openid_login}</label><br{xhtml}>
