@@ -73,13 +73,13 @@ var onTopicChange = function () {
     select_default_tid.val('');
 
     // If the option is only one, set to that value
-    if (options_default.size() == 1) {
+    if (options_default.length == 1) {
         options_default.eq(0).attr('selected', true);
         select_default_tid.val(options_default.eq(0).val());
     } else {
         // Set Selection as before if still exist
         var last_option = options_default.filter('[value="' + prev_default_tid + '"]');
-        if (last_option.size() == 1) {
+        if (last_option.length == 1) {
             last_option.attr('selected', true);
             select_default_tid.val(prev_default_tid);
         }
@@ -105,7 +105,7 @@ function changeTopicControlDisplay() {
         $('#panel_topic_options').css('display', $display);
     }
 
-    $display = ($('#tid option:selected').size() == 0)
+    $display = ($('#tid option:selected').length == 0)
         ? 'none' : 'inline-block';
     if ($('#panel_radio_options').is(':visible') && !$('#topic_option_selectedtopics').is(':checked')) {
         $display = 'none';
