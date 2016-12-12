@@ -111,7 +111,7 @@ class Scripts
 
         // jQuery (http://jquery.com/download/)
         // Find available jQuery library files
-        $version_jQuery = '1.11.3'; // '1.11.2'; // '1.10.2'; // '1.9.1'; // '1.9.0'; // '1.7.2'; // '1.6.3';
+        $version_jQuery = '3.1.1'; // '1.11.3'; // '1.11.2'; // '1.10.2'; // '1.9.1'; // '1.9.0'; // '1.7.2'; // '1.6.3';
         $this->jquery_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $version_jQuery . '/jquery.min.js';
         $name = 'jquery';
         // $this->library_files[$name]['file'] = 'javascript/jquery-' . $version_jQuery . '.min.js';
@@ -121,65 +121,27 @@ class Scripts
         // jQuery UI (http://plugins.jquery.com/ui.core/ and https://github.com/jquery/jquery-ui/releases)
         // When upgrading jQuery UI include the Redmond theme and all Core, Interactions and Widgets
         // Include minified version only of js
-        $version_jQuery_ui = '1.11.4'; // '1.11.2'; // '1.10.3'; // '1.10.1'; // '1.10.0'; // '1.8.20'; // '1.8.11';
+        // After Upgrade Test: Story Editor Topic Control, Story Editor Date & Time Picker, Submissions Help Pop up box, Admin Configuration Search and Tabs, Etc..
+        $version_jQuery_ui = '1.12.1'; // '1.11.4'; // '1.11.2'; // '1.10.3'; // '1.10.1'; // '1.10.0'; // '1.8.20'; // '1.8.11';
         $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui . '/jquery-ui.min.js';
 
         // Set jQuery UI CSS
-        $this->setCSSFilePrivate('jquery.ui', $theme_path . '/jquery_ui/jquery-ui.css', false);
-        $this->setCSSFilePrivate('jquery.ui.theme', $theme_path . '/jquery_ui/jquery.ui.theme.css', false);
-        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);
+        $this->setCSSFilePrivate('jquery-ui', $theme_path . '/jquery_ui/jquery-ui.min.css', false);
+        $this->setCSSFilePrivate('jquery-ui.structure', $theme_path . '/jquery_ui/jquery-ui.structure.min.css', false);
+        $this->setCSSFilePrivate('jquery-ui.theme', $theme_path . '/jquery_ui/jquery-ui.theme.min.css', false);
+        $this->setCSSFilePrivate('jquery-ui.geeklog', $theme_path . '/jquery_ui/jquery-ui.geeklog.css', false);
 
-        // Set jQuery UI Core
-        $names[] = 'jquery.ui.core';
-        $names[] = 'jquery.ui.widget';
-        $names[] = 'jquery.ui.position';
-        $names[] = 'jquery.ui.mouse';
+        // Set jQuery UI 
+        $names[] = 'jquery-ui';
 
-        // Set jQuery UI Interactions
-        $names[] = 'jquery.ui.draggable';
-        $names[] = 'jquery.ui.droppable';
-        $names[] = 'jquery.ui.resizable';
-        $names[] = 'jquery.ui.selectable';
-        $names[] = 'jquery.ui.sortable';
-
-        // Set jQuery UI Widgets
-        $names[] = 'jquery.ui.accordion';
-        $names[] = 'jquery.ui.autocomplete';
-        $names[] = 'jquery.ui.button';
-        $names[] = 'jquery.ui.datepicker';
+        // Set jQuery UI Widgets (not included with core)
         $names[] = 'jquery-ui-i18n'; // extra included in core plugin under i18n directory (used by calendar and article dates)
-        $names[] = 'jquery.ui.dialog';
-        $names[] = 'jquery.ui.menu';
-        $names[] = 'jquery.ui.progressbar';
-        $names[] = 'jquery.ui.selectmenu';
-        $names[] = 'jquery.ui.slider';
-        $names[] = 'jquery.ui.spinner';
-        $names[] = 'jquery.ui.tabs';
-        $names[] = 'jquery.ui.tooltip';
 
         // jQuery Timepicker Addon (https://github.com/trentrichardson/jQuery-Timepicker-Addon and http://trentrichardson.com/examples/timepicker/)
         // Version 1.5.4
         $names[] = 'jquery-ui-timepicker-addon';
         $names[] = 'jquery-ui-timepicker-addon-i18n';
         $names[] = 'jquery-ui-slideraccess';
-
-        // Set jQuery UI Effects
-        $names[] = 'jquery.ui.effect';
-        $names[] = 'jquery.ui.effect-blind';
-        $names[] = 'jquery.ui.effect-bounce';
-        $names[] = 'jquery.ui.effect-clip';
-        $names[] = 'jquery.ui.effect-drop';
-        $names[] = 'jquery.ui.effect-explode';
-        $names[] = 'jquery.ui.effect-fade';
-        $names[] = 'jquery.ui.effect-fold';
-        $names[] = 'jquery.ui.effect-highlight';
-        $names[] = 'jquery.ui.effect-puff';
-        $names[] = 'jquery.ui.effect-pulsate';
-        $names[] = 'jquery.ui.effect-scale';
-        $names[] = 'jquery.ui.effect-shake';
-        $names[] = 'jquery.ui.effect-size';
-        $names[] = 'jquery.ui.effect-slide';
-        $names[] = 'jquery.ui.effect-transfer';
 
         foreach ($names as $name) {
             $this->library_files[$name]['file'] = 'javascript/jquery_ui/' . $name . '.min.js';
@@ -204,29 +166,33 @@ class Scripts
             // If something wants a library in the header then all in the header
             $this->library_files_footer = false;
         }
+        
+        // For backwards compatible (Geeklog v2.1.1 and lower plugins)with jquery ui library when we specified individual widgets, effects, etc...
+        if (substr($name, 0, 10) == 'jquery.ui.') {
+            $name = 'jquery-ui'; // Instead we now load entire library
+        }
 
         if (isset($this->library_files[$name])) {
             if (!$this->library_files[$name]['load']) {
                 $this->library_files[$name]['load'] = true;
-                // If name is subset of jQuery. make sure all Core UI libraries are loaded
-                if (substr($name, 0, 7) == 'jquery.' && !$this->jquery_ui_cdn) {
+                // If name is subset of jQuery (. or - can be used) make sure all Core UI libraries are loaded
+                if ((substr($name, 0, 7) == 'jquery-' || substr($name, 0, 7) == 'jquery.') && !$this->jquery_ui_cdn) {
                     // Check that file exists, if not use Google version
                     if (!file_exists($_CONF['path_html'] . $this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
 
-                        $this->css_files['jquery.ui.theme']['load'] = true;
-                        $this->css_files['jquery.ui']['load'] = false;
+                        $this->css_files['jquery-ui.theme']['load'] = true;
+                        $this->css_files['jquery-ui']['load'] = false;
                     } else {
-                        $this->css_files['jquery.ui']['load'] = true;
+                        $this->css_files['jquery-ui']['load'] = true;
                     }
+                    $this->css_files['jquery-ui.structure']['load'] = true;
+
                     // Geeklog specific css overrides for jQuery (includes timepicker-addon css)
-                    $this->css_files['jquery.ui.geeklog']['load'] = true;
+                    $this->css_files['jquery-ui.geeklog']['load'] = true;
 
                     $this->library_files['jquery']['load'] = true;
-                    $this->library_files['jquery.ui.core']['load'] = true;
-                    $this->library_files['jquery.ui.widget']['load'] = true;
-                    $this->library_files['jquery.ui.position']['load'] = true;
-                    $this->library_files['jquery.ui.mouse']['load'] = true;
+                    $this->library_files['jquery-ui']['load'] = true;
 
                     if ($_CONF['cdn_hosted']) {
                         $this->jquery_cdn = true;
