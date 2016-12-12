@@ -329,7 +329,10 @@ form#commentform dl.importantstuff dd ul li {
   padding: 0;
 }
 
-
+form#commentform #comment_text {
+  width: 98%;
+  padding: 4px 6px;
+}
 
 /*--------------------------------------
   Comment Submit Form (Advanced Editor)

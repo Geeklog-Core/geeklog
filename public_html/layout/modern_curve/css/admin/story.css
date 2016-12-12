@@ -82,6 +82,7 @@ form#admin-storyeditor_advanced div#html_editor {
 form#admin-storyeditor_advanced div#text_editor textarea,
 form#admin-storyeditor_advanced div#html_editor textarea {
   width: 98%;
+  padding: 4px 6px;
 }
 
 form#admin-storyeditor_advanced fieldset legend {
@@ -143,4 +144,10 @@ span.story_stats {
   display: inline-block;
   float: {left};
   margin-{right}: 2em;
+}
+
+#admin-storyeditor-introtext,
+#admin-storyeditor-bodytext {
+  width: 98%;
+  padding: 4px 6px;
 }

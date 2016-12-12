@@ -91,18 +91,27 @@ table.admin-list tr.admin-listitem_rollover {
 }
 
 table.admin-list tr th {
+  height: 20px;
   margin: 0;
-  padding: 2px;
+  padding: 3px 5px;
+  vertical-align: middle;
   text-align: {left};
 }
 
 table.admin-list tr td {
+  height: 20px;
   margin: 0;
-  padding: 2px;
+  padding: 3px 5px;
+  vertical-align: middle;
+  text-align: {left};
 }
 
 table.admin-list tr td img {
   border: none;
+}
+
+table.admin-list img {
+  vertical-align: middle;
 }
 
 /* Navigation */
