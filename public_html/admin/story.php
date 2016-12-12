@@ -769,13 +769,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');
 
     // Loads jQuery UI datepicker and timepicker-addon
-    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.slider');
-    //    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.button');
-    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
+    $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Require slider and date picker
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon-i18n');
-    //    $_SCRIPTS->setJavaScriptLibrary('jquery-ui-slideraccess');
     $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');
 
     $langCode = COM_getLangIso639Code();

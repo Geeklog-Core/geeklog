@@ -79,12 +79,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
            $MESSAGE, $_SCRIPTS;
 
     // Loads jQuery UI datepicker and timepicker-addon
-    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.slider');
-    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
+    $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Require slider and date picker
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon-i18n');
-    $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');
+    $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');           
 
     // Add JavaScript
     $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');

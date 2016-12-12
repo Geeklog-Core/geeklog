@@ -717,12 +717,11 @@ function plugin_submit_calendar($mode = 'master')
     // otherwise non-admin or admin-personal. do personal form or public submission.
 
     // Loads jQuery UI datepicker and timepicker-addon
-    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.slider');
-    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
+    $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Require slider and date picker
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon-i18n');
-    $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');
+    $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');    
 
     $langCode = COM_getLangIso639Code();
     $toolTip = $MESSAGE[118];

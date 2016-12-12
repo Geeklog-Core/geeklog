@@ -2050,12 +2050,8 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
             if (!defined('GL-HELP-SET')) {
                 define('GL-HELP-SET', true);
 
-                // Add in Query dialog for help file
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.dialog');
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.draggable');
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.droppable');
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.resizable');
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.button');
+                // Add in jQuery dialog for help file
+                $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Requires dialog, draggable, droppable, resizable, and button
 
                 // Add Language variables
                 $_SCRIPTS->setLang(array('close' => $LANG32[60]));

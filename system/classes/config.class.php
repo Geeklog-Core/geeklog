@@ -1013,9 +1013,7 @@ class config
         $tab_li .= '</ul>';
         $t->set_var('tab_li', $tab_li);
 
-        $_SCRIPTS->setJavaScriptLibrary('jquery.ui.autocomplete');
-        $_SCRIPTS->setJavaScriptLibrary('jquery.ui.menu');  // Required by 'jquery.ui.autocomplete'
-        $_SCRIPTS->setJavaScriptLibrary('jquery.ui.tabs');
+        $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Require autocomplete, menu, and tabs
 
         $t->set_var('config_menu', $this->_UI_configmanager_menu($grp, $sg));
 
