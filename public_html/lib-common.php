@@ -7196,6 +7196,8 @@ function COM_switchLocaleSettings()
             'date', 'daytime', 'shortdate', 'dateonly', 'timeonly',
             'week_start', 'hour_mode',
             'thousand_separator', 'decimal_separator',
+            // Since GL-2.1.2
+            'meta_description','meta_keywords', 'site_name', 'owner_name', 'site_slogan',
         );
 
         $langId = COM_getLanguageId();
