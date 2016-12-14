@@ -39,6 +39,11 @@
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
+// Currently, database feature is supported with MySQL only
+if ($_DB_dbms !== 'mysql') {
+    COM_redirect($_CONF['site_url']);
+}
+
 require_once $_CONF['path'].'system/classes/dbbackup.class.php';
 
 $display = '';

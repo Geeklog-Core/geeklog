@@ -3328,7 +3328,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                         'image'     => $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE,
                     ),
                     array(
-                        'condition' => SEC_inGroup('Root'),
+                        'condition' => ($_DB_dbms === 'mysql') && SEC_inGroup('Root'),
                         'url'       => $_CONF['site_admin_url'] . '/database.php',
                         'lang'      => $LANG01[103],
                         'num'       => '',
