@@ -120,5 +120,3 @@ $LANG_LABEL = array(
 );';
 
 echo "$label\n";
-
-?>

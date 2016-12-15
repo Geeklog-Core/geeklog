@@ -119,5 +119,3 @@ mergeArrays($ENG_fs['links'], $LANG_fs['links'], "LANG_fs['links']", false);
 echo "\n";
 echo "// Note: entries 0, 1, and 12 are the same as in \$LANG_configselects['Core']";
 mergeArrays($ENG_configselects['links'], $LANG_configselects['links'], "LANG_configselects['links']", false);
-
-?>

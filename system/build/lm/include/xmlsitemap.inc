@@ -57,5 +57,3 @@ mergeArrays($ENG_fs['xmlsitemap'], $LANG_fs['xmlsitemap'], "LANG_fs['xmlsitemap'
 echo "\n";
 echo "// Note: entries 0, 1, 9, and 12 are the same as in \$LANG_configselects['Core']";
 mergeArrays($ENG_configselects['xmlsitemap'], $LANG_configselects['xmlsitemap'], "LANG_configselects['xmlsitemap']", false);
-
-?>

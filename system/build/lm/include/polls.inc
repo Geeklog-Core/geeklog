@@ -82,5 +82,3 @@ mergeArrays($ENG_fs['polls'], $LANG_fs['polls'], "LANG_fs['polls']", false);
 echo "\n";
 echo "// Note: entries 0, 1, and 12 are the same as in \$LANG_configselects['Core']";
 mergeArrays($ENG_configselects['polls'], $LANG_configselects['polls'], "LANG_configselects['polls']", false);
-
-?>

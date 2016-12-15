@@ -81,5 +81,3 @@ mergeArrays($ENG_fs['staticpages'], $LANG_fs['staticpages'], "LANG_fs['staticpag
 echo "\n";
 echo "// Note: entries 0, 1, 9, 12, 17 are the same as in \$LANG_configselects['Core']";
 mergeArrays($ENG_configselects['staticpages'], $LANG_configselects['staticpages'], "LANG_configselects['staticpages']", false);
-
-?>
