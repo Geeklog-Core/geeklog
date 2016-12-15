@@ -209,4 +209,3 @@ $LANG_configselects['staticpages'] = array(
     17 => array('Commentaires activés' => 0, 'Commentaires désactivés' => -1)
 );
 
-?>

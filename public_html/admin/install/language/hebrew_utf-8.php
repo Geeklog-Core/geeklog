@@ -423,4 +423,3 @@ $LANG_LABEL = array(
     'plugin_upload'  => $LANG_PLUGINS[10]
 );
 
-?>

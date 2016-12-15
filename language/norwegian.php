@@ -2527,4 +2527,3 @@ $LANG_VALIDATION = array(
 );
 
 
-?>

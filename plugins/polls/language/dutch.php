@@ -192,4 +192,3 @@ $LANG_configselects['polls'] = array(
     15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
 );
 
-?>

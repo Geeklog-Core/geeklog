@@ -208,4 +208,3 @@ $LANG_configselects['staticpages'] = array(
     17 => array('איפשור תגובות' => 0, 'ניטרול תגובות' => -1)
 );
 
-?>

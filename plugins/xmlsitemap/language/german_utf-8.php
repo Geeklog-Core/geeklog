@@ -79,4 +79,3 @@ $LANG_configselects['xmlsitemap'] = array(
     20 => array('immer' => 'always', 'stündlich' => 'hourly', 'täglich' => 'daily', 'wöchentlich' => 'weekly', 'monatlich' => 'monthly', 'jährlich' => 'yearly', 'nie' => 'never', 'hidden' => 'hidden')
 );
 
-?>

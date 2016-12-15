@@ -272,4 +272,3 @@ $LANG_configselects['links'] = array(
     13 => array('אין גישה' => 0, 'מותר לשימוש' => 2)
 );
 
-?>

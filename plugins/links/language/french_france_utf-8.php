@@ -273,4 +273,3 @@ $LANG_configselects['links'] = array(
     13 => array('Pas d\'accès' => 0, 'Utiliser' => 2)
 );
 
-?>

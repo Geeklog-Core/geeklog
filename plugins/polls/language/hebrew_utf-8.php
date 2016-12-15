@@ -192,4 +192,3 @@ $LANG_configselects['polls'] = array(
     15 => array('כולם' => 'all', 'דף הבית בלבד' => 'homeonly', 'בחירת נושאים' => 'selectedtopics')
 );
 
-?>

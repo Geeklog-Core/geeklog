@@ -189,4 +189,3 @@ $LANG_configselects['spamx'] = array(
     1 => array('כן' => true, 'לא' => false)
 );
 
-?>

@@ -212,4 +212,3 @@ $LANG_configselects['staticpages'] = array(
     17 => array('コメント有効' => 0, 'コメント無効' => -1)
 );
 
-?>

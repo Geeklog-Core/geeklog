@@ -79,4 +79,3 @@ $LANG_configselects['xmlsitemap'] = array(
     20 => array('תמיד' => 'always', 'כל שעה' => 'hourly', 'יומי' => 'daily', 'שבועי' => 'weekly', 'חודשי' => 'monthly', 'שנתי' => 'yearly', 'אף פעם' => 'never', 'hidden' => 'hidden')
 );
 
-?>

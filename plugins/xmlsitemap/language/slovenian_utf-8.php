@@ -79,4 +79,3 @@ $LANG_configselects['xmlsitemap'] = array(
     20 => array('vedno' => 'always', 'ob uri' => 'hourly', 'dnevno' => 'daily', 'tedensko' => 'weekly', 'meseèno' => 'monthly', 'letno' => 'yearly', 'nikoli' => 'never', 'hidden' => 'hidden')
 );
 
-?>
