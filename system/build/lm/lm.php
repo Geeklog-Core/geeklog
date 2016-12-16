@@ -414,5 +414,3 @@ if (empty($module)) {
 } else {
     require_once __DIR__ . '/include/' . $module . '.inc';
 }
-
-echo "\n";
