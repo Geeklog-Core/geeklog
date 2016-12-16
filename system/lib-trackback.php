@@ -45,7 +45,7 @@ $_TRB_LOG_REJECTS = false;
 /**
  * Send a trackback response message
  *
- * @param    int    $error       0 = OK, 1 = an error occured
+ * @param    int    $error       0 = OK, 1 = an error occurred
  * @param    string $errormsg    the error message (ignored for $error == 0)
  * @param    int    $http_status optional HTTP status code
  * @param    string $http_text   optional HTTP status code text
@@ -505,7 +505,7 @@ function TRB_linksToUs($sid, $type, $urlToGet)
  *
  * @param    string $sid  ID of entry that got pinged
  * @param    string $type type of that entry ('article' for stories, etc.)
- * @return   boolean         true = success, false = an error occured
+ * @return   boolean         true = success, false = an error occurred
  *                        P.S. "Critical" errors are rejected with a HTTP 403 Forbidden status code.
  *                        According to RFC2616, this status code means
  *                        "The server understood the request, but is refusing to fulfill it.

@@ -566,11 +566,11 @@ function change_load_order($pi_name = '', $where = '')
 }
 
 /**
- * Check if an error occured while uploading a file
+ * Check if an error occurred while uploading a file
  *
  * @param   array $mFile    $_FILE['uploaded_file']
- * @return  mixed           Returns the error string if an error occured,
- *                          returns false if no error occured
+ * @return  mixed           Returns the error string if an error occurred,
+ *                          returns false if no error occurred
  */
 function plugin_getUploadError($mFile)
 {
@@ -578,7 +578,7 @@ function plugin_getUploadError($mFile)
 
     $retval = '';
 
-    if (isset($mFile['error']) && ($mFile['error'] !== UPLOAD_ERR_OK)) { // If an error occured while uploading the file.
+    if (isset($mFile['error']) && ($mFile['error'] !== UPLOAD_ERR_OK)) { // If an error occurred while uploading the file.
         if ($mFile['error'] > UPLOAD_ERR_EXTENSION) { // If the error code isn't known
             $retval = $LANG32[99]; // Unknown error
         } else {
@@ -684,7 +684,7 @@ function plugin_upload()
 
     $upload_success = false;
 
-    // If an error occured while uploading the file.
+    // If an error occurred while uploading the file.
     $error_msg = plugin_getUploadError($_FILES['plugin']);
     if (!empty($error_msg)) {
         $retval .= plugin_main($error_msg);
@@ -865,7 +865,7 @@ function plugin_upload()
                     PLG_pluginStateChange($pi_name, 'installed');
                     $msg = 44; // successfully installed
                 } else {
-                    $msg = 72; // an error occured while installing the plugin
+                    $msg = 72; // an error occurred while installing the plugin
                 }
             } else {
                 $msg = 98; // successfully uploaded

@@ -362,7 +362,6 @@ $TEMPLATE_OPTIONS = array(
 // Template library contains helper functions for template class
 require_once $_CONF['path_system'] . 'lib-template.php';
 
-
 // Set language
 if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
     $language = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_language']]);
@@ -499,7 +498,7 @@ if (empty($serialized_topic_tree)) {
     $_TOPICS = unserialize($serialized_topic_tree);
 }
 
-// Figure out if we need to update article feeds. Check last article date punlished in feed
+// Figure out if we need to update article feeds. Check last article date published in feed
 $sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
 $result = DB_query($sql);
 $A = DB_fetchArray($result);
@@ -1474,7 +1473,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     if ($_CONF['supported_version_theme'] === '1.8.1') {
         if (is_callable('COM_siteHeader') && is_callable('COM_siteFooter')) {
             return COM_siteHeader($what, $pageTitle, $headerCode) . $content
-            . COM_siteFooter($rightBlock, $custom);
+                . COM_siteFooter($rightBlock, $custom);
         } else {
             throw new Exception('COM_siteHeader and COM_siteFooter are removed. Please use COM_createHTMLDocument instead.');
         }
@@ -2926,7 +2925,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
             $login->set_var('openid_login', '');
         }
 
-        // OAuth remote authentification.
+        // OAuth remote authentication.
         if ($_CONF['user_login_method']['oauth'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
             $_SCRIPTS->setJavaScriptFile('login', '/javascript/login.js');
             $modules = SEC_collectRemoteOAuthModules();
@@ -2948,7 +2947,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
                     'microsoft' => 'windows',
                     'linkedin'  => 'linkedin',
                     'yahoo'     => 'yahoo',
-                    'github'    => 'github'
+                    'github'    => 'github',
                 );
                 foreach ($modules as $service) {
                     $login->set_file('oauth_login', 'loginform_oauth.thtml');
@@ -6840,7 +6839,7 @@ function COM_displayMessageAndAbort($msg, $plugin = '', $http_status = 200, $htt
                 }
             }
 
-            if (isset($MESSAGE) && isset($MESSAGE[$msg])) {
+            if (isset($MESSAGE, $MESSAGE[$msg])) {
                 $display = $MESSAGE[$msg];
             }
         }
@@ -7197,7 +7196,7 @@ function COM_switchLocaleSettings()
             'week_start', 'hour_mode',
             'thousand_separator', 'decimal_separator',
             // Since GL-2.1.2
-            'meta_description','meta_keywords', 'site_name', 'owner_name', 'site_slogan',
+            'meta_description', 'meta_keywords', 'site_name', 'owner_name', 'site_slogan',
         );
 
         $langId = COM_getLanguageId();

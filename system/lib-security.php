@@ -1835,7 +1835,7 @@ function SEC_loginForm($use_config = array())
     $loginform->set_var('lang_remote_login_desc', $LANG04[168]);
     $loginform->set_var('end_block', COM_endBlock());
 
-    // 3rd party remote authentification.
+    // 3rd party remote authentication.
     $services = '';
     if (!$config['no_3rdparty_login'] &&
         $_CONF['user_login_method']['3rdparty'] &&
@@ -1875,7 +1875,7 @@ function SEC_loginForm($use_config = array())
     }
     $loginform->set_var('services', $services);
 
-    // OpenID remote authentification.
+    // OpenID remote authentication.
     if (!$config['no_openid_login'] && $_CONF['user_login_method']['openid'] &&
         ($_CONF['usersubmission'] == 0) &&
         !$_CONF['disable_new_user_registration']
@@ -1899,7 +1899,7 @@ function SEC_loginForm($use_config = array())
         $loginform->set_var('openid_login', '');
     }
 
-    // OAuth remote authentification.
+    // OAuth remote authentication.
     if (!$config['no_oauth_login'] && $_CONF['user_login_method']['oauth'] &&
         ($_CONF['usersubmission'] == 0) &&
         !$_CONF['disable_new_user_registration']

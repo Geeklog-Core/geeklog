@@ -579,7 +579,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
             // WE ASSUME $output doesn't have any confidential fields 
 
-        } else { // an error occured (page not found, access denied, ...)
+        } else { // an error occurred (page not found, access denied, ...)
             if (empty ($page)) {
                 $failflg = 0;
             } else {

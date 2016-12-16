@@ -817,7 +817,7 @@ switch ($mode) {
             !$_CONF['disable_new_user_registration'] &&
             (isset($_GET['openid_login']) && ($_GET['openid_login'] == '1'))
         ) {
-            // Here we go with the handling of OpenID authentification.
+            // Here we go with the handling of OpenID authentication.
 
             $query = array_merge($_GET, $_POST);
 
@@ -890,7 +890,7 @@ switch ($mode) {
             !$_CONF['disable_new_user_registration'] &&
             isset($_GET['oauth_login'])
         ) {
-            // Here we go with the handling of OAuth authentification.
+            // Here we go with the handling of OAuth authentication.
             $modules = SEC_collectRemoteOAuthModules();
             $active_service = (count($modules) == 0) ? false : in_array($_GET['oauth_login'], $modules);
             if (!$active_service) {

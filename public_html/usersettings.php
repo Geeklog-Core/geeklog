@@ -1534,7 +1534,7 @@ if (!COM_isAnonUser()) {
                     $msg = 5;
                     $query[] = '';
 
-                    // Here we go with the handling of OAuth authentification
+                    // Here we go with the handling of OAuth authentication
                     $modules = SEC_collectRemoteOAuthModules();
                     $active_service = (count($modules) == 0) ? false : in_array(substr($_GET['oauth_login'], 6), $modules);
                     if (!$active_service) {

@@ -90,7 +90,7 @@ function edituser($uid = '', $msg = '')
     }
 
     if (!empty ($msg) && !empty ($uid) && ($uid > 1)) {
-        // an error occured while editing a user - if it was a new account,
+        // an error occurred while editing a user - if it was a new account,
         // don't bother trying to read the user's data from the database ...
         $cnt = DB_count ($_TABLES['users'], 'uid', $uid);
         if ($cnt == 0) {

@@ -779,7 +779,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             if (!isset($args['template'])) {
                 $output['sp_content'] = SP_render_content($page, $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id']);
             }
-        } else { // an error occured (page not found, access denied, ...)
+        } else { // an error occurred (page not found, access denied, ...)
             /**
              * if the user has edit permissions and the page does not exist,
              * send them to the editor so they can create it "wiki style"
