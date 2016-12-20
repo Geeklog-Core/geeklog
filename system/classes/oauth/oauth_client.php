@@ -2424,7 +2424,7 @@ class oauth_client_class
 		$this->grant_type = 'authorization_code';
 		switch($this->server)
 		{
-			case 'Facebook':
+			case 'facebook':
 				$this->oauth_version = '2.0';
 				$this->dialog_url = 'https://www.facebook.com/v2.3/dialog/oauth?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope={SCOPE}&state={STATE}';
 				$this->reauthenticate_dialog_url = 'https://www.facebook.com/v2.3/dialog/oauth?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope={SCOPE}&state={STATE}&auth_type=reauthenticate';
@@ -2437,14 +2437,14 @@ class oauth_client_class
 				$this->access_token_url = 'https://github.com/login/oauth/access_token';
 				break;
 
-			case 'Google':
+			case 'google':
 				$this->oauth_version = '2.0';
 				$this->dialog_url = 'https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope={SCOPE}&state={STATE}';
 				$this->offline_dialog_url = 'https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope={SCOPE}&state={STATE}&access_type=offline&approval_prompt=force';
 				$this->access_token_url = 'https://accounts.google.com/o/oauth2/token';
 				break;
 
-			case 'LinkedIn':
+			case 'linkedin':
 				$this->oauth_version = '1.0a';
 				$this->request_token_url = 'https://api.linkedin.com/uas/oauth/requestToken?scope={SCOPE}';
 				$this->dialog_url = 'https://api.linkedin.com/uas/oauth/authenticate';
@@ -2452,13 +2452,13 @@ class oauth_client_class
 				$this->url_parameters = true;
 				break;
 
-			case 'Microsoft':
+			case 'microsoft':
 				$this->oauth_version = '2.0';
 				$this->dialog_url = 'https://login.live.com/oauth20_authorize.srf?client_id={CLIENT_ID}&scope={SCOPE}&response_type=code&redirect_uri={REDIRECT_URI}&state={STATE}';
 				$this->access_token_url = 'https://login.live.com/oauth20_token.srf';
 				break;
 
-			case 'Twitter':
+			case 'twitter':
 				$this->oauth_version = '1.0a';
 				$this->request_token_url = 'https://api.twitter.com/oauth/request_token';
 				$this->dialog_url = 'https://api.twitter.com/oauth/authenticate';
@@ -2466,7 +2466,7 @@ class oauth_client_class
 				$this->url_parameters = false;
 				break;
 
-			case 'Yahoo':
+			case 'yahoo':
 				$this->oauth_version = '1.0a';
 				$this->request_token_url = 'https://api.login.yahoo.com/oauth/v2/get_request_token';
 				$this->dialog_url = 'https://api.login.yahoo.com/oauth/v2/request_auth';

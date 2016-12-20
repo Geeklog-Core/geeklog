@@ -69,6 +69,8 @@ class OAuthConsumer
     {
         global $_CONF, $_SYSTEM;
 
+        $service = strtolower($service); // always deal in lower case since that is how it is stored in the config 
+        
         if (strpos($service, 'oauth.') === 0) {
             $service = str_replace('oauth.', '', $service);
         }
@@ -94,7 +96,7 @@ class OAuthConsumer
             }
         }
 
-        switch (strtolower($this->client->server)) {
+        switch ($this->client->server) {
             case 'facebook' :
                 $api_url = 'https://graph.facebook.com/me';
                 $scope = 'email,user_website,user_location,user_about_me,user_photos';
@@ -348,7 +350,7 @@ class OAuthConsumer
 
     protected function _getCreateUserInfo($info)
     {
-        switch (strtolower($this->client->server)) {
+        switch ($this->client->server) {
             case 'facebook' :
                 $users = array(
                     'loginname'      => (isset($info->first_name) ? $info->first_name : $info->id),
@@ -448,7 +450,7 @@ class OAuthConsumer
                 break;
 
             default:
-                throw new InvalidArgumentException(__METHOD__ . ': Unknown server "' . strtolower($this->client->server) . '" was given');
+                throw new InvalidArgumentException(__METHOD__ . ': Unknown server "' . $this->client->server . '" was given');
         }
 
         return $users;
