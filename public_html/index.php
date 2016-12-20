@@ -299,12 +299,7 @@ $msql = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND
             ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
-            {$sql} GROUP BY s.sid, s.uid, s.draft_flag, s.date, s.title, s.page_title, s.introtext, 
-            s.bodytext, s.text_version, s.hits, s.numemails, s.comments, s.comment_expire, s.trackbacks,
-            s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire,
-            s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, s.meta_keywords, 
-            s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, 
-            ta.tid, expireunix, {$userfields}, t.topic, t.imageurl 
+            {$sql} GROUP BY s.sid 
             ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";
 
 $result = DB_query($msql);
