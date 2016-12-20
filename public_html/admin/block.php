@@ -801,7 +801,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         }
 
         if ($bid > 0) {
-            DB_save($_TABLES['blocks'], 'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,rdf_last_modified,rdf_etag', "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl','$rdfUpdated','$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,NULL,NULL");
+            DB_save($_TABLES['blocks'], 'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,rdf_last_modified,rdf_etag', "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,NULL,NULL");
         } else {
             $sql = array();
             $sql['mysql'] = "INSERT INTO {$_TABLES['blocks']} "
