@@ -3907,14 +3907,12 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid, featured, date, ta.tid, title, comments, day
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
         $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid, featured, date, ta.tid, title, comments, day
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
         $result = DB_query($sql);
@@ -3937,6 +3935,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
                 if ($day != $dayCheck) {
                     if ($day !== 'noday') {
                         $dayList = COM_makeList($oldNews, 'list-older-stories');
+                        $oldNews = array(); // Reset old news array
                         $dayList = preg_replace("/(\015\012)|(\015)|(\012)/",
                             '', $dayList);
                         $string .= $dayList . '<div class="divider-older-stories"></div>';
