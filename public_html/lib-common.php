@@ -3907,12 +3907,14 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
+            GROUP BY sid 
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
         $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
+            GROUP BY sid 
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
         $result = DB_query($sql);
