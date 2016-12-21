@@ -45,7 +45,6 @@ function fixTopic(&$A, $tid_list)
 {
     global $_TABLES, $topic;
 
-    
     // This case may happen if a article belongs to the current topic but the default topic for the article is a child  of the current topic.
     $sql = "SELECT t.topic, t.imageurl
         FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
@@ -315,7 +314,7 @@ $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, 
             s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, s.meta_keywords,  
             s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon,  
-            expireunix, {$userfields} 
+            expireunix, {$userfields}, date, t.topic, t.imageurl 
             ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";
 
 $result = DB_query($msql);
