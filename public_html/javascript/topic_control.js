@@ -17,11 +17,6 @@ $('input[name="topic_option"]').change(function () {
 });
 
 var onTopicChange = function () {
-    if ($('#panel_radio_options').is(':visible')) {
-        // On selecting a tid make sure selecttopics radio option is selected
-        $('#topic_option_selectedtopics').click();
-    }
-
     changeTopicControlDisplay();
 
     // *********************************************
