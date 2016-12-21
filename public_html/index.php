@@ -305,7 +305,7 @@ if ($_CONF['allow_user_photo'] == 1) {
 // Could not fix in sql since 2 many variables to contend with plus speed of sql statement probably an issue
 $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
-            {$userfields}, t.topic, t.imageurl
+            {$userfields}
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND
             ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
@@ -314,7 +314,7 @@ $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, 
             s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, s.meta_keywords,  
             s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon,  
-            expireunix, {$userfields}, date, t.topic, t.imageurl 
+            expireunix, {$userfields}, date 
             ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";
 
 $result = DB_query($msql);
