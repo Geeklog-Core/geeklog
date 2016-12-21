@@ -3903,18 +3903,18 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
         $retval = COM_startBlock($title, $help,
             COM_getBlockTemplate('older_stories_block', 'header', $position));
 
-        $sql['mysql'] = "SELECT sid,ta.tid,title,comments,UNIX_TIMESTAMP(date) AS day
+        $sql['mysql'] = "SELECT sid,title,comments,UNIX_TIMESTAMP(date) AS day
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid 
+            GROUP BY sid, featured, date, title, comments, day 
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
-        $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day
+        $sql['pgsql'] = "SELECT sid,title,comments,date_part('epoch',date) AS day
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid 
+            GROUP BY sid, featured, date, title, comments, day  
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
         $result = DB_query($sql);
