@@ -45,23 +45,29 @@ function fixTopic(&$A, $tid_list)
 {
     global $_TABLES, $topic;
 
+    
+    // This case may happen if a article belongs to the current topic but the default topic for the article is a child  of the current topic.
+    $sql = "SELECT t.topic, t.imageurl
+        FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
+        WHERE t.tid = ta.tid";
+    // If all topics (blank) then find default topic
     if (!empty($topic)) {
-        // This case may happen if a article belongs to the current topic but the default topic for the article is a child  of the current topic.
-        $sql = "SELECT t.topic, t.imageurl
-            FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
-            WHERE t.tid = ta.tid
-            AND ta.type = 'article' AND ta.id = '{$A['sid']}' AND ta.tid = '$topic'
-            " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
+        $sql .= " AND ta.type = 'article' AND ta.id = '{$A['sid']}' AND ta.tid = '$topic'";
+    } else {
+        $sql .= " AND ta.type = 'article' AND ta.id = '{$A['sid']}'";
+    }
+    $sql .= COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
+    $sql .= " ORDER BY ta.tdefault DESC"; // Do this just in case story doesn't have a default (it always should) and the current topic is all
 
-        $result = DB_query($sql);
-        $nrows = DB_numRows($result);
-        if ($nrows > 0) {
-            $B = DB_fetchArray($result);
-            $A['topic'] = $B['topic'];
-            $A['imageurl'] = $B['imageurl'];
-        } else {
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        $B = DB_fetchArray($result);
+        $A['topic'] = $B['topic'];
+        $A['imageurl'] = $B['imageurl'];
+    } else {
+        if (!empty($topic)) {
             // Does not belong to current topic so check inherited
-
             // Make sure sort order the same as in TOPIC_getTopic or articles with multiple topics might not display in the right topic when clicked
             $sql = "SELECT t.topic, t.imageurl
                 FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
@@ -78,7 +84,12 @@ function fixTopic(&$A, $tid_list)
                 $A['topic'] = $B['topic'];
                 $A['imageurl'] = $B['imageurl'];
             }
+        } else {
+            // This should not happen as every article should have at least 1 default topic
+            $A['topic'] = '';
+            $A['imageurl'] = '';
         }
+
     }
 }
 
@@ -293,13 +304,18 @@ if ($_CONF['allow_user_photo'] == 1) {
 
 // The incorrect t.topic, t.imageurl will most likely be return ... will fix later in fixtopic function.
 // Could not fix in sql since 2 many variables to contend with plus speed of sql statement probably an issue
-$msql = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
+$msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
             {$userfields}, t.topic, t.imageurl
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND
             ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
-            {$sql} GROUP BY s.sid 
+            {$sql} GROUP BY s.sid, s.uid, s.draft_flag, s.date, s.title, s.page_title, s.introtext,  
+            s.bodytext, s.text_version, s.hits, s.numemails, s.comments, s.comment_expire, s.trackbacks, 
+            s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, 
+            s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, s.meta_keywords,  
+            s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon,  
+            expireunix, {$userfields} 
             ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";
 
 $result = DB_query($msql);
