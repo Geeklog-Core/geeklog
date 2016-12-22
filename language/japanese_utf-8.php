@@ -755,7 +755,7 @@ $LANG_ENVCHECK = array(
     'ok' => 'OK',
     'on' => 'On',
     'open_basedir' => '<strong>open_basedir</strong> の制限がこのサイトで有効な場合、インストールの際にパーミッションで問題が起きるかもしれません。以下のファイルシステムチェックを行ってください。',
-    'php_req_version' => 'GeeklogにはPHP version 5.2.0以降が必要です。',
+    'php_req_version' => 'GeeklogにはPHP version 5.3.3以降が必要です。',
     'php_settings' => 'PHPの設定',
     'php_version' => 'PHPのバージョン',
     'php_warning' => '以下のリストで<span class="no">赤文字の箇所</span>があれば、あなたのGeeklogサイトで問題が発生するかもしれません。これらのPHP設定をホスティングプロバイダーの情報に照らし合わせてチェックしてください。',

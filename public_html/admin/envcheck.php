@@ -101,7 +101,7 @@ function _checkEnvironment()
     }
     $data_arr[] = array('settings' => $LANG_ENVCHECK['php_version'],
                           'current' => $current,
-                          'recommended' => '5.2.0+',
+                          'recommended' => '5.3.3+',
                           'notes' => $LANG_ENVCHECK['php_req_version']);
 
     $rg = ini_get('register_globals');
@@ -575,13 +575,13 @@ function php_v()
 /**
  * Check if the user's PHP version is supported by Geeklog
  *
- * @return bool True if supported, falsed if not supported
+ * @return bool True if supported, false if not supported
  *
  */
 function _phpOutOfDate()
 {
     $phpv = php_v();
-    if (($phpv[0] < 5) || (($phpv[0] == 5) && ($phpv[1] < 2))) {
+    if (($phpv[0] < 5) || (($phpv[0] == 3) && ($phpv[1] < 3))) {
         return true;
     } else {
         return false;
