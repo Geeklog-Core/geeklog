@@ -27,6 +27,7 @@ Not Released (2.1.2)
 - [Feature] Support default settings of MySQL 5.7. [Mystralkk]
 - [Feature] Further integration of UIkit into the Denim theme. [Dengen]
 - [Feature] New Denim Curve them which replicates the older Modern Curve theme. The Denim Curve theme is a child theme of the Denim theme. [Dengen]
+- [Feature] Admin Environment Check now checks database version. [Tom]
 - [Update] Dropped MSSQL support [Mystralkk]
 - [Update] Removed Professional and Professional CSS themes [Tom]
 - [Update] UIkit framework to version 2.27.2 [Dengen]
