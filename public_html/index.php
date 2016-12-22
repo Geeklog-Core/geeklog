@@ -301,8 +301,7 @@ if ($_CONF['allow_user_photo'] == 1) {
     }
 }
 
-// The incorrect t.topic, t.imageurl will most likely be return ... will fix later in fixtopic function.
-// Could not fix in sql since 2 many variables to contend with plus speed of sql statement probably an issue
+// The incorrect t.topic, t.imageurl will most likely be return so removed from this statement and added later in fixtopic function. (also because of MySQL 5.7 default install support)
 $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
             {$userfields}
