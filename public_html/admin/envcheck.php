@@ -46,7 +46,7 @@ if (!SEC_inGroup('Root')) {
 
 function _checkEnvironment()
 {
-    global $_CONF, $_TABLES, $_PLUGINS, $_SYSTEM, $LANG_ADMIN, $LANG_ENVCHECK, $_SCRIPTS;
+    global $_CONF, $_TABLES, $_PLUGINS, $_SYSTEM, $LANG_ADMIN, $LANG_ENVCHECK, $_SCRIPTS, $_DB_dbms;
 
     $retval = '';
     $permError = 0;
@@ -78,7 +78,75 @@ function _checkEnvironment()
         $LANG_ENVCHECK['php_warning'],
         $_CONF['layout_url'] . '/images/icons/envcheck.png'
     );
+    
+    // ***********************************************
+    // Database Settings Section
+    $dbms_error = false;
+    if (!empty($_DB_dbms)) {
+        $header_arr = array(      // display 'text' and use table field 'field'
+            array('text' => $LANG_ENVCHECK['setting'], 'field' => 'settings'),
+            array('text' => $LANG_ENVCHECK['current'], 'field' => 'current'),
+            array('text' => $LANG_ENVCHECK['recommended'], 'field' => 'recommended'),
+            array('text' => $LANG_ENVCHECK['notes'], 'field' => 'notes')
 
+        );
+        $text_arr = array('has_menu' => false,
+                          'title'    => $LANG_ENVCHECK['database_settings'],
+                          'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
+        );
+        $data_arr = array();
+        
+        $current = preg_replace('#[^0-9\.]#', '', DB_getVersion());
+
+        if ($_DB_dbms == 'mysql') {
+            if (version_compare($current, '4.1.2', '>=')) {
+                $current = '<span class="yes">'.$current.'</span>';
+            } else {
+                $current = '<span class="notok">'.$current.'</span>';
+            }
+            $data_arr[] = array('settings' => $LANG_ENVCHECK['database_mysql_version'],
+                                  'current' => $current,
+                                  'recommended' => '4.1.2+',
+                                  'notes' => $LANG_ENVCHECK['database_mysql_req_version']);    
+        } elseif  ($_DB_dbms == 'pgsql') {
+            if (version_compare($current, '9.1.7', '>=')) {
+                $current = '<span class="yes">'.$current.'</span>';
+            } else {
+                $current = '<span class="notok">'.$current.'</span>';
+            }
+            $data_arr[] = array('settings' => $LANG_ENVCHECK['database_pgsql_version'],
+                                  'current' => $current,
+                                  'recommended' => '9.1.7+',
+                                  'notes' => $LANG_ENVCHECK['database_pgsql_req_version']);    
+        } else {
+            $dbms_error = true;
+        }
+    } else {
+        $dbms_error = true;
+    }
+    
+    if ($dbms_error) {   
+        $header_arr = array(      // display 'text' and use table field 'field'
+            array('text' => $LANG_ENVCHECK['item'], 'field' => 'item'),
+            array('text' => $LANG_ENVCHECK['status'], 'field' => 'status'),
+            array('text' => $LANG_ENVCHECK['notes'], 'field' => 'notes')
+        );
+        $text_arr = array('has_menu' => false,
+                          'title'    => $LANG_ENVCHECK['database_settings'],
+                          'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
+        );
+        $data_arr = array();
+
+        $data_arr[] = array(
+            'item' => $LANG_ENVCHECK['database_dms'],
+            'status' => '<span class="notok">' .  $LANG_ENVCHECK['not_found'] . '</span>',
+            'notes' => $LANG_ENVCHECK['database_dms_notes']
+        );                              
+    }
+
+    $admin_list = ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
+    $T->set_var('database_settings_list', $admin_list);
+                          
     // ***********************************************
     // PHP Settings Section - First we will validate the general environment.
     $header_arr = array(      // display 'text' and use table field 'field'
@@ -103,6 +171,7 @@ function _checkEnvironment()
                           'current' => $current,
                           'recommended' => '5.3.3+',
                           'notes' => $LANG_ENVCHECK['php_req_version']);
+                          
 
     $rg = ini_get('register_globals');
     $sm = ini_get('safe_mode');
@@ -173,6 +242,7 @@ function _checkEnvironment()
 
     $admin_list = ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     $T->set_var('php_settings_list', $admin_list);
+    
 
     // ***********************************************
     // Libraries
@@ -580,6 +650,8 @@ function php_v()
  */
 function _phpOutOfDate()
 {
+    // Min PHP Version 5.3.3
+    
     $phpv = php_v();
     if (($phpv[0] < 5) || (($phpv[0] == 3) && ($phpv[1] < 3))) {
         return true;
