@@ -618,3 +618,15 @@ function DB_escapeString($str)
 
     return $_DB->dbEscapeString($str);
 }
+
+/**
+ * @param int $mode use one of Database::MYSQL_SQL_MODE_xxx constant
+ */
+function DB_setMysqlSqlMode($mode)
+{
+    global $_DB, $_DB_dbms;
+
+    if ($_DB_dbms === 'mysql') {
+        $_DB->setSqlMode($mode);
+    }
+}

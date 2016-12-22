@@ -37,6 +37,15 @@
  */
 class Database
 {
+    // MySQL sql_mode constants
+    const MYSQL_SQL_MODE_NONE = 0;    // Prior to MySQL 5.6.6
+    const MYSQL_SQL_MODE_566 = 1;
+    const MYSQL_SQL_MODE_570 = 2;
+    const MYSQL_SQL_MODE_575 = 3;
+    const MYSQL_SQL_MODE_577 = 4;
+    const MYSQL_SQL_MODE_578 = 5;
+    const MYSQL_SQL_MODE_800 = 6;
+
     /**
      * @var string
      */
@@ -96,6 +105,11 @@ class Database
      * @var bool
      */
     private $_use_innodb = false;
+
+    /**
+     * @var int
+     */
+    private $sqlMode = self::MYSQL_SQL_MODE_NONE;
 
     /**
      * Logs messages
@@ -205,6 +219,74 @@ class Database
         }
 
         return $retval;
+    }
+
+    /**
+     * Set MySQL sql_mode
+     *
+     * @param int $mode one of SQL_MODE_xxx constants
+     */
+    public function setSqlMode($mode)
+    {
+        $mode = (int) $mode;
+
+        if (($mode >= self::MYSQL_SQL_MODE_NONE) && ($mode <= self::MYSQL_SQL_MODE_800)) {
+            $this->sqlMode = $mode;
+        } else {
+            throw new InvalidArgumentException(__METHOD__ . ': bad argument was given');
+        }
+    }
+
+    /**
+     * Return sql_mode string the current MySQL server accepts
+     *
+     * @return string
+     */
+    private function getMysqlSqlModeString()
+    {
+        $sqlModes = array(
+            self::MYSQL_SQL_MODE_NONE => array(),
+            self::MYSQL_SQL_MODE_566  => array(
+                'NO_ENGINE_SUBSTITUTION'
+            ),
+            self::MYSQL_SQL_MODE_570 => array(
+                'NO_ENGINE_SUBSTITUTION',
+            ),
+            self::MYSQL_SQL_MODE_575  => array(
+                'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'NO_ENGINE_SUBSTITUTION',
+            ),
+            self::MYSQL_SQL_MODE_577  => array(
+                'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'NO_AUTO_CREATE_USER', 'NO_ENGINE_SUBSTITUTION',
+            ),
+            self::MYSQL_SQL_MODE_578  => array(
+                'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'NO_ZERO_IN_DATE', 'NO_ZERO_DATE',
+                'ERROR_FOR_DIVISION_BY_ZERO', 'NO_AUTO_CREATE_USER', 'NO_ENGINE_SUBSTITUTION',
+            ),
+            self::MYSQL_SQL_MODE_800  => array(
+                'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'NO_ZERO_IN_DATE', 'NO_ZERO_DATE',
+                'ERROR_FOR_DIVISION_BY_ZERO', 'NO_AUTO_CREATE_USER', 'NO_ENGINE_SUBSTITUTION',
+            ),
+        );
+
+        if ($this->_mysql_version < 50606) {
+            $currentMode = self::MYSQL_SQL_MODE_NONE;
+        } elseif (($this->_mysql_version >= 50606) && ($this->_mysql_version < 50700)) {
+            $currentMode = self::MYSQL_SQL_MODE_566;
+        } elseif (($this->_mysql_version >= 50700) && ($this->_mysql_version < 50705)) {
+            $currentMode = self::MYSQL_SQL_MODE_570;
+        } elseif (($this->_mysql_version >= 50705) && ($this->_mysql_version < 50707)) {
+            $currentMode = self::MYSQL_SQL_MODE_575;
+        } elseif (($this->_mysql_version >= 50707) && ($this->_mysql_version < 50708)) {
+            $currentMode = self::MYSQL_SQL_MODE_577;
+        } elseif (($this->_mysql_version >= 50708) && ($this->_mysql_version < 80000)) {
+            $currentMode = self::MYSQL_SQL_MODE_578;
+        } else {
+            $currentMode = self::MYSQL_SQL_MODE_800;
+        }
+
+        $allowedMode = min($this->sqlMode, $currentMode);
+
+        return implode(', ', $sqlModes[$allowedMode]);
     }
 
     /**
@@ -356,6 +438,8 @@ class Database
         }
 
         // Run query
+        @mysql_query("SET SESSION sql_mode = '" . $this->getMysqlSqlModeString() . "'", $this->_db);
+
         if ($ignore_errors) {
             $result = @mysql_query($sql, $this->_db);
         } else {

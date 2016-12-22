@@ -1,13 +1,5 @@
 <?php
 
-// Modify DATETIME columns with '0000-00-00 00:00:00' being the default value to DATETIME DEFAULT NULL
-// to make Geeklog compatible with MySQL-5.7 with NO_ZERO_DATE in sql_mode
-$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} MODIFY COLUMN `rdfupdated` DATETIME DEFAULT NULL";
-$_SQL[] = "ALTER TABLE {$_TABLES['stories']} MODIFY COLUMN `comment_expire` DATETIME DEFAULT NULL";
-$_SQL[] = "ALTER TABLE {$_TABLES['stories']} MODIFY COLUMN `expire` DATETIME DEFAULT NULL";
-$_SQL[] = "ALTER TABLE {$_TABLES['syndication']} MODIFY COLUMN `updated` DATETIME DEFAULT NULL";
-$_SQL[] = "ALTER TABLE {$_TABLES['users']} MODIFY COLUMN `regdate` DATETIME DEFAULT NULL";
-
 // Add device type to blocks table
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `device` VARCHAR( 15 ) NOT NULL DEFAULT 'all' AFTER `blockorder`";
 
@@ -116,6 +108,43 @@ function update_addRouting()
     $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/links/portal/@item', '/links/portal.php?what=link&item=@item', 140)";
     $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/links/category/@cat', '/links/index.php?category=@cat', 150)";
     $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic', '/index.php?topic=@topic', 160)";
+
+    foreach ($_SQL as $sql) {
+        DB_query($sql, 1);
+    }
+}
+
+/**
+* Modify DATETIME columns with '0000-00-00 00:00:00' being the default value to DATETIME DEFAULT NULL
+* to make Geeklog compatible with MySQL-5.7 with NO_ZERO_DATE in sql_mode
+ */
+function update_dateTimeColumns212()
+{
+    global $_TABLES;
+
+    $date = '2030-01-01 00:00:00';
+    $_SQL = array();
+
+    // Replace '0000-00-00 00:00:00' with a future timestamp temporarily
+    $_SQL[] = "UPDATE {$_TABLES['blocks']} SET `rdfupdated` = {$date} WHERE `rdfupdated` = '0000-00-00 00:00:00'";
+    $_SQL[] = "UPDATE {$_TABLES['stories']} SET `comment_expire` = {$date} WHERE `comment_expire` = '0000-00-00 00:00:00'";
+    $_SQL[] = "UPDATE {$_TABLES['stories']} SET `expire` = {$date} WHERE `expire` = '0000-00-00 00:00:00'";
+    $_SQL[] = "UPDATE {$_TABLES['syndication']} SET `updated` = {$date} WHERE `updated` = '0000-00-00 00:00:00'";
+    $_SQL[] = "UPDATE {$_TABLES['users']} SET `regdate` = {$date} WHERE `regdate` = '0000-00-00 00:00:00'";
+
+    // Alter columns to allow NULL value
+    $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} MODIFY COLUMN `rdfupdated` DATETIME";
+    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} MODIFY COLUMN `comment_expire` DATETIME";
+    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} MODIFY COLUMN `expire` DATETIME";
+    $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} MODIFY COLUMN `updated` DATETIME";
+    $_SQL[] = "ALTER TABLE {$_TABLES['users']} MODIFY COLUMN `regdate` DATETIME";
+
+    // Restore '0000-00-00 00:00:00' with NULL
+    $_SQL[] = "UPDATE {$_TABLES['blocks']} SET `rdfupdated` = NULL WHERE `rdfupdated` = '{$date}'";
+    $_SQL[] = "UPDATE {$_TABLES['stories']} SET `comment_expire` = NULL WHERE `comment_expire` = '{$date}'";
+    $_SQL[] = "UPDATE {$_TABLES['stories']} SET `expire` = NULL WHERE `expire` = '{$date}'";
+    $_SQL[] = "UPDATE {$_TABLES['syndication']} SET `updated` = NULL WHERE `updated` = '{$date}'";
+    $_SQL[] = "UPDATE {$_TABLES['users']} SET `regdate` = NULL WHERE `regdate` = '{$date}'";
 
     foreach ($_SQL as $sql) {
         DB_query($sql, 1);

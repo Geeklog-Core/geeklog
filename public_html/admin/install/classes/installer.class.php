@@ -2440,6 +2440,7 @@ HTML;
         // leaving that up to each Geeklog database driver
         $done = false;
         $progress = '';
+        DB_setMysqlSqlMode(Database::MYSQL_SQL_MODE_NONE);
         $_SQL = array();
 
         while (!$done) {
@@ -2912,6 +2913,7 @@ HTML;
                         }
                     } else {
                         $this->updateDB($_SQL, $progress);
+                        update_dateTimeColumns212();
                         update_addLanguage();
                         update_addRouting();
                         update_ConfValuesFor212();
