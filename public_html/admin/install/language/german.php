@@ -136,7 +136,7 @@ $LANG_INSTALL = array(
     84 => 'Der Pfad "',
     85 => '" scheint nicht korrekt zu sein. Bitte gib den Pfad noch einmal ein.',
     86 => 'Sprache',
-    87 => 'http://geeklog.info/forum/index.php?forum=1',
+    87 => 'https://www.geeklog.net/forum/index.php?forum=1',
     88 => '&Auml;ndere das Verzeichnis und die Dateien darin zu',
     89 => 'Aktuelle Version:',
     90 => 'Leere Datenbank?',
