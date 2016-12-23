@@ -98,45 +98,39 @@ class OAuthConsumer
 
         switch ($this->client->server) {
             case 'facebook' :
-                $api_url = 'https://graph.facebook.com/me';
-                $scope = 'email,user_website,user_location,user_about_me,user_photos';
-                $q_api = array();
+                $api_url = 'https://graph.facebook.com/me?fields=name,email,link,id,first_name,last_name,about';
+                $scope   = 'email,public_profile,user_friends';
+                $q_api   = array();
                 break;
-
-            case 'github' :
-                $api_url = 'https://api.github.com/user';
-                $scope = 'user:email';
-                $q_api = array();
-                break;
-
             case 'google' :
                 $api_url = 'https://www.googleapis.com/oauth2/v1/userinfo';
-                $scope = 'https://www.googleapis.com/auth/userinfo.email ' . 'https://www.googleapis.com/auth/userinfo.profile';
-                $q_api = array();
+                $scope   = 'https://www.googleapis.com/auth/userinfo.email '.'https://www.googleapis.com/auth/userinfo.profile';
+                $q_api   = array();
                 break;
-
             case 'microsoft' :
                 $api_url = 'https://apis.live.net/v5.0/me';
-                $scope = 'wl.basic wl.emails';
-                $q_api = array();
+                $scope   = 'wl.basic wl.emails';
+                $q_api   = array();
                 break;
-
             case 'twitter' :
                 $api_url = 'https://api.twitter.com/1.1/account/verify_credentials.json';
-                $scope = '';
-                $q_api = array();
+                $scope   = '';
+                $q_api   = array('include_entities' => "true", 'skip_status' => "true", 'include_email' => "true");
                 break;
-
             case 'yahoo' :
                 $api_url = 'http://query.yahooapis.com/v1/yql';
-                $scope = '';
-                $q_api = array('q' => 'SELECT * FROM social.profile WHERE guid=me', 'format' => 'json');
+                $scope   = '';
+                $q_api   = array('q'=>'select * from social.profile where guid=me','format'=>'json');
                 break;
-
             case 'linkedin' :
                 $api_url = 'http://api.linkedin.com/v1/people/~:(id,first-name,last-name,location,summary,email-address,picture-url,public-profile-url)';
-                $scope = 'r_fullprofile r_emailaddress';
-                $q_api = array('format' => 'json');
+                $scope   = 'r_basicprofile r_emailaddress';
+                $q_api   = array('format'=>'json');
+                break;
+            case 'github' :
+                $api_url = 'https://api.github.com/user';
+                $scope   = 'user:email';
+                $q_api   = array();
                 break;
 
             default:
@@ -222,7 +216,7 @@ class OAuthConsumer
 
         $users = $this->_getCreateUserInfo($info);
         $userInfo = $this->_getUpdateUserInfo($info);
-
+        
         $sql = "SELECT uid, status FROM {$_TABLES['users']} "
             . "WHERE remoteusername = '" . DB_escapeString($users['remoteusername']) . "' "
             . "AND remoteservice = '" . DB_escapeString($users['remoteservice']) . "'";
@@ -261,6 +255,8 @@ class OAuthConsumer
             $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
             DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($remote_grp, $uid)");
         }
+        
+        return true;
     }
 
     public function doSynch($info)
@@ -312,36 +308,33 @@ class OAuthConsumer
 
         switch ($this->client->server) {
             case 'facebook' :
-                if (isset($info->about)) {
-                    $userInfo['about'] = $info->about;
+                if ( isset($info->about) ) {
+                    $userinfo['about'] = $info->about;
                 }
-                if (isset($info->location->name)) {
-                    $userInfo['location'] = $info->location->name;
+                if ( isset($info->location->name) ) {
+                    $userinfo['location'] = $info->location->name;
                 }
                 break;
-
-            case 'github' :
-                break;
-
             case 'google' :
                 break;
-
             case 'microsoft' :
                 break;
-
             case 'twitter' :
+                if ( isset($info->email ) ) {
+                    $userinfo['email'] = $info->email;
+                }
                 break;
-
             case 'yahoo' :
                 if (isset($info->query->results->profile->location)) {
                     $userInfo['location'] = $info->query->results->profile->location;
                 }
                 break;
-
             case 'linkedin' :
-                if (isset($info->location->name)) {
-                    $userInfo['location'] = $info->location->name;
+                if ( isset($info->location->name) ) {
+                    $userinfo['location'] = $info->location->name;
                 }
+                break;
+            case 'github' :
                 break;
         }
 
@@ -361,9 +354,9 @@ class OAuthConsumer
                     'homepage'       => $info->link,
                     'remoteusername' => DB_escapeString($info->id),
                     'remoteservice'  => 'oauth.facebook',
-                    'remotephoto'    => 'http://graph.facebook.com/' . $info->id . '/picture',
+                    'remotephoto'    => 'http://graph.facebook.com/'.$info->id.'/picture',
                 );
-                break;
+                break;            
 
             case 'github' :
                 $users = array(
@@ -377,9 +370,17 @@ class OAuthConsumer
                     'remoteservice'  => 'oauth.github',
                     'remotephoto'    => $info->{'avatar_url'},
                 );
-                break;
+                break;                
 
             case 'google' :
+                $homepage = $info->link;
+
+                $plusPos = strpos($homepage,"+");
+                if ( $plusPos !== false ) {
+                    $username = substr($homepage,strlen("https://plug.google.com/+"));
+                } else {
+                    $username = "";
+                }
                 $users = array(
                     'loginname'      => (isset($info->given_name) ? $info->given_name : $info->id),
                     'email'          => $info->email,
@@ -391,21 +392,25 @@ class OAuthConsumer
                     'remoteservice'  => 'oauth.google',
                     'remotephoto'    => $info->picture,
                 );
-                break;
+                break;                
 
             case 'twitter' :
+                $mail = '';
+                if ( isset($info->email)) {
+                    $mail = $info->email;
+                }
                 $users = array(
                     'loginname'      => $info->screen_name,
-                    'email'          => '',
+                    'email'          => $mail,
                     'passwd'         => '',
                     'passwd2'        => '',
                     'fullname'       => $info->name,
-                    'homepage'       => 'http://twitter.com/' . $info->screen_name,
+                    'homepage'       => 'http://twitter.com/'.$info->screen_name,
                     'remoteusername' => DB_escapeString($info->screen_name),
                     'remoteservice'  => 'oauth.twitter',
                     'remotephoto'    => $info->profile_image_url,
                 );
-                break;
+                break;                
 
             case 'microsoft' :
                 $users = array(
@@ -420,7 +425,7 @@ class OAuthConsumer
                     'remotephoto'    => 'https://apis.live.net/v5.0/me/picture?access_token=' . $this->client->access_token,
                 );
                 break;
-
+                
             case 'yahoo' :
                 $users = array(
                     'loginname'      => (isset($info->query->results->profile->nickname) ? $info->query->results->profile->nickname : $info->query->results->profile->guid),
@@ -434,14 +439,14 @@ class OAuthConsumer
                     'remotephoto'    => $info->query->results->profile->image->imageUrl,
                 );
                 break;
-
+                
             case 'linkedin' :
                 $users = array(
                     'loginname'      => (isset($info->{'firstName'}) ? $info->{'firstName'} : $info->id),
                     'email'          => $info->{'emailAddress'},
                     'passwd'         => '',
                     'passwd2'        => '',
-                    'fullname'       => $info->{'firstName'} . ' ' . $info->{'lastName'},
+                    'fullname'       => $info->{'firstName'} . ' ' .  $info->{'lastName'},
                     'homepage'       => $info->{'publicProfileUrl'},
                     'remoteusername' => DB_escapeString($info->id),
                     'remoteservice'  => 'oauth.linkedin',

@@ -913,14 +913,17 @@ switch ($mode) {
 
                 $consumer->setRedirectURL($callback_url);
                 $oauth_userinfo = $consumer->authenticate_user();
-                if ($oauth_userinfo === false) {
+                if ( $oauth_userinfo === false ) {
                     COM_updateSpeedlimit('login');
                     COM_errorLog("OAuth Error: " . $consumer->error);
-                    COM_redirect($_CONF['site_url'] . '/users.php?msg=110'); // OAuth authentication error
+                    COM_redirect($_CONF['site_url'] . '/users.php?msg=111'); // OAuth authentication error
                 }
-
-                $consumer->doAction($oauth_userinfo);
-            }
+                
+                if ( $consumer->doAction($oauth_userinfo) == NULL ) {
+                    COM_errorLog("Oauth: Error creating new user in OAuth authentication");
+                    COM_redirect($_CONF['site_url'] . '/users.php?msg=111'); // OAuth authentication error
+                }
+            }            
         } else {
             $status = -2; // User just visited login page no error. -1 = error
         }

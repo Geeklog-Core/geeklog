@@ -1445,7 +1445,7 @@ if (!COM_isAnonUser()) {
 
         case 'synch':
             // This case is the result of a callback from an OAuth service.
-            // The user has made a request to resynch their glFusion user account with the remote OAuth service
+            // The user has made a request to resynch their Geeklog user account with the remote OAuth service
             if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)
                 && isset($_GET['oauth_login'])
             ) {
@@ -1469,7 +1469,7 @@ if (!COM_isAnonUser()) {
 
                     $consumer = new OAuthConsumer($service);
 
-                    if ($service === 'oauth.facebook') {
+                    if($service == 'oauth.facebook') {
                         // facebook resynchronizations are simple to perform
                         $oauth_userinfo = $consumer->refresh_userinfo();
                         if (empty($oauth_userinfo)) {
@@ -1489,11 +1489,9 @@ if (!COM_isAnonUser()) {
                         // COM_errorLog("callback_url={$callback_url}");
 
                         // authenticate with the remote service
-                        if (!isset($query[$callback_query_string]) &&
-                            (empty($cancel_query_string) || !isset($query[$cancel_query_string]))
-                        ) {
+                        if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
                             $msg = 114; // Resynch with remote account has failed but other account information has been successfully saved
-                            // elseif the callback query string is set, then we have successfully authenticated
+                        // elseif the callback query string is set, then we have successfully authenticated
                         } elseif (isset($query[$callback_query_string])) {
                             // COM_errorLog("authenticated with remote service, retrieve userinfo");
                             // foreach($query as $key=>$value) {
