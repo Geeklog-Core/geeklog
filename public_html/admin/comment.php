@@ -41,7 +41,7 @@
 
 define('SUFFIX_COMMENTS', '_comments');
 define('SUFFIX_COMMENT_SUBMISSIONS', '_submissions');
-define('COMMENT_MAX_LENGTH', 20);
+define('COMMENT_MAX_LENGTH', 60);
 
 // Geeklog common function library
 require_once '../lib-common.php';
@@ -125,14 +125,6 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
                     $fieldValue = $LANG01[11];
                     break;
 
-                case 'staticpages':
-                    $fieldValue = $LANG_STATIC['staticpages'];
-                    break;
-
-                case 'polls':
-                    $fieldValue = $LANG_POLLS['poll'];
-                    break;
-
                 default:
                     $fieldValue = ucfirst($fieldValue);
                     break;
@@ -141,14 +133,16 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
 
         case 'sid':
             $result = PLG_getItemInfo($A['type'], $fieldValue, 'title,url');
-
-            if (is_array($result) && isset($result['title'], $result['url'])) {
+            if (is_array($result) && isset($result[0], $result[1])) {
                 list ($title, $url) = $result;
+                $fieldValue = '<a href="' . $url . '">' . htmlspecialchars($title, ENT_QUOTES, $encoding) . '</a>';
+            } elseif (is_array(0) && isset($result[1])) {
+                list ($title) = $result;
+                $fieldValue = htmlspecialchars($title, ENT_QUOTES, $encoding);
             } else {
-                throw new Exception(__FUNCTION__ . ': PLG_getItemInfo failed for "' . $A['type'] . '" plugin.');
+                $fieldValue = '';
             }
-
-            $fieldValue = '<a href="' . $url . '">' . htmlspecialchars($title, ENT_QUOTES, $encoding) . '</a>';
+            
             break;
 
         case 'title':
@@ -158,7 +152,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
             break;
 
         case 'comment':
-            $fieldValue = COM_truncate($fieldValue, COMMENT_MAX_LENGTH, '...');
+            $fieldValue = COM_truncate(strip_tags($fieldValue), COMMENT_MAX_LENGTH, '...');
             break;
 
         case 'uid':
@@ -203,16 +197,16 @@ function getTypeSelector($itemType)
 
     $selected = ($itemType === 'article') ? ' selected="selected"' : '';
     $retval .= '<option value="article"' . $selected . '>' . $LANG09[6] . '</option>' . LB;
-
-    if (in_array('staticpages', $_PLUGINS)) {
-        $selected = ($itemType === 'staticpages') ? ' selected="selected"' : '';
-        $retval .= '<option value="staticpages"' . $selected . '>' . $LANG_STATIC['staticpages'] . '</option>' . LB;
-    }
-
-    if (in_array('polls', $_PLUGINS)) {
-        $selected = ($itemType === 'polls') ? ' selected="selected"' : '';
-        $retval .= '<option value="polls"' . $selected . '>' . $LANG_POLLS['polls'] . '</option>' . LB;
-    }
+    
+   // Add enabled plugins that use comments
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_displaycomment_' . $pi_name;
+        if (function_exists($function)) {
+            // Since can display comments assume it uses comment system
+            $selected = ($itemType === $pi_name) ? ' selected="selected"' : '';
+        $retval .= '<option value="' . $pi_name . '"' . $selected . '>' . ucfirst($pi_name) . '</option>' . LB;
+        }
+    }    
 
     $retval .= '</select>' . LB;
 
