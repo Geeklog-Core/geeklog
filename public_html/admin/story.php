@@ -762,7 +762,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     // Add JavaScript
     $_SCRIPTS->setJavaScriptFile('story_editor', '/javascript/story_editor.js');
-    if ($_CONF['titletoid'] && empty($oldSid)) {
+    // Only use title_2_id if enabled, new story, clone or editing story submission (basically any story that does not exist yet)  - $mode = 'preview', 'edit', 'editsubmission', 'clone'
+    if ($_CONF['titletoid'] && (empty($oldSid) || $mode == 'editsubmission' || $mode == 'clone')) {
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
         $story_templates->set_var('titletoid', true);
     }
