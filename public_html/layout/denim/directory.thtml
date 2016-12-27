@@ -2,7 +2,7 @@
 
 {current_month}
 {blockheader}
-<form class="floatright uk-form" action="{url}" method="post" style="margin:0">
+<form class="floatright uk-form" action="{url}" method="get" style="margin:0">
   <div>
     <select name="topic" onchange="this.form.submit()">
     {topic_list}
