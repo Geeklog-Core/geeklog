@@ -1303,10 +1303,12 @@ function PLG_userInfoChanged($uid)
             $function($uid);
         }
     }
-
-    $function = 'CUSTOM_user_changed';
-    if (function_exists($function)) {
-        $function($uid);
+    
+    if ($_CONF['custom_registration']) {
+        $function = 'CUSTOM_user_changed';
+        if (function_exists($function)) {
+            $function($uid);
+        }
     }
 }
 
