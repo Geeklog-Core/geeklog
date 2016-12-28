@@ -1184,7 +1184,7 @@ function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
 */
 function PLG_createUser($uid)
 {
-    global $_PLUGINS;
+    global $_PLUGINS, $_CONF;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_create_' . $pi_name;
@@ -1193,11 +1193,13 @@ function PLG_createUser($uid)
         }
     }
 
-    if (is_callable('CUSTOM_userCreate')) {
-        CUSTOM_userCreate($uid, false);
-    } elseif (is_callable('CUSTOM_user_create')) {
-        COM_errorLog(__FUNCTION__ . ': CUSTOM_user_create is deprecated as of Geeklog 2.1.2.  Please use CUSTOM_userCreate instead.');
-        CUSTOM_user_create($uid);
+    if ($_CONF['custom_registration']) {
+        if (is_callable('CUSTOM_userCreate')) {
+            CUSTOM_userCreate($uid, false);
+        } elseif (is_callable('CUSTOM_user_create')) {
+            COM_errorLog(__FUNCTION__ . ': CUSTOM_user_create is deprecated as of Geeklog 2.1.2.  Please use CUSTOM_userCreate instead.');
+            CUSTOM_user_create($uid);
+        }
     }
 }
 
@@ -1210,7 +1212,7 @@ function PLG_createUser($uid)
 */
 function PLG_deleteUser($uid)
 {
-    global $_PLUGINS;
+    global $_PLUGINS, $_CONF;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_delete_' . $pi_name;
@@ -1219,9 +1221,11 @@ function PLG_deleteUser($uid)
         }
     }
 
-    $function = 'CUSTOM_user_delete';
-    if (function_exists($function)) {
-        $function($uid);
+    if ($_CONF['custom_registration']) {
+        $function = 'CUSTOM_user_delete';
+        if (function_exists($function)) {
+            $function($uid);
+        }
     }
 }
 
