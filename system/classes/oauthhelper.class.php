@@ -164,7 +164,7 @@ class OAuthConsumer
             $success = $this->client->Finalize($success);
         }
         if ($_SYSTEM['debug_oauth']) {
-            COM_errorLog($this->client->debug_output);
+            COM_errorLog($this->client->debug_output, 1);
         }
         if ($this->client->exit) {
             exit;
@@ -213,10 +213,10 @@ class OAuthConsumer
 
         // remote auth precludes usersubmission, and integrates user activation
         $status = USER_ACCOUNT_ACTIVE;
-
+        
         $users = $this->_getCreateUserInfo($info);
         $userInfo = $this->_getUpdateUserInfo($info);
-        
+    
         $sql = "SELECT uid, status FROM {$_TABLES['users']} "
             . "WHERE remoteusername = '" . DB_escapeString($users['remoteusername']) . "' "
             . "AND remoteservice = '" . DB_escapeString($users['remoteservice']) . "'";

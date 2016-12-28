@@ -895,7 +895,7 @@ switch ($mode) {
             $active_service = (count($modules) == 0) ? false : in_array($_GET['oauth_login'], $modules);
             if (!$active_service) {
                 $status = -1;
-                COM_errorLog("OAuth login failed - there was no consumer available for the service:" . $_GET['oauth_login']);
+                COM_errorLog("OAuth login failed - there was no consumer available for the service:" . $_GET['oauth_login'], 1);
             } else {
                 $query = array_merge($_GET, $_POST);
                 $service = $query['oauth_login'];
@@ -913,14 +913,15 @@ switch ($mode) {
 
                 $consumer->setRedirectURL($callback_url);
                 $oauth_userinfo = $consumer->authenticate_user();
+                
                 if ( $oauth_userinfo === false ) {
                     COM_updateSpeedlimit('login');
-                    COM_errorLog("OAuth Error: " . $consumer->error);
+                    COM_errorLog("OAuth Error: " . $consumer->error, 1);
                     COM_redirect($_CONF['site_url'] . '/users.php?msg=111'); // OAuth authentication error
                 }
                 
                 if ( $consumer->doAction($oauth_userinfo) == NULL ) {
-                    COM_errorLog("Oauth: Error creating new user in OAuth authentication");
+                    COM_errorLog("Oauth: Error creating new user in OAuth authentication", 1);
                     COM_redirect($_CONF['site_url'] . '/users.php?msg=111'); // OAuth authentication error
                 }
             }            
