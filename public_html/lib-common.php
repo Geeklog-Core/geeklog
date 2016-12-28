@@ -2462,7 +2462,7 @@ function COM_featuredCheck()
  * @see      function COM_accessLog
  * @return   string  If $actionId = 2 or '' then HTML formatted string (wrapped in block) else nothing
  */
-function COM_errorLog($logEntry, $actionId = 2)
+function COM_errorLog($logEntry, $actionId = '')
 {
     global $_CONF, $LANG01;
 
