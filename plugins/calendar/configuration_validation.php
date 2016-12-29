@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -78,5 +78,3 @@ $_CONF_VALIDATE['calendar']['autotag_permissions_event[2]'] = array(
 $_CONF_VALIDATE['calendar']['autotag_permissions_event[3]'] = array(
     'rule' => array('inList', array(0, 2), true)
 );
-
-?>

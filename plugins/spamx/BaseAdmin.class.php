@@ -38,14 +38,14 @@ abstract class BaseAdmin
      */
     protected function getAction()
     {
-        $action = '';
+        $action = Geeklog\Input::get('action', '');
 
-        if (isset($_GET['action'])) {
-            $action = $_GET['action'];
-        } else if (isset($_POST['paction'])) {
-            $action = $_POST['paction'];
-        } else if (isset($_POST['delbutton_x']) && isset($_POST['delbutton_y'])) {
-            $action = 'mass_delete';
+        if (empty($action)) {
+            $action = Geeklog\Input::post('paction', '');
+
+            if (empty($action) && isset($_POST['delbutton_x'], $_POST['delbutton_y'])) {
+                $action = 'mass_delete';
+            }
         }
 
         return $action;
@@ -58,12 +58,10 @@ abstract class BaseAdmin
      */
     protected function getEntry()
     {
-        $entry = '';
+        $entry = Geeklog\Input::fGet('entry', '');
 
-        if (isset($_GET['entry'])) {
-            $entry = COM_stripslashes($_GET['entry']);
-        } elseif (isset($_POST['pentry'])) {
-            $entry = COM_stripslashes($_POST['pentry']);
+        if (empty($entry)) {
+            $entry = Geeklog\Input::fPost('pentry', '');
         }
 
         return $entry;
@@ -176,7 +174,7 @@ abstract class BaseAdmin
         if ($fieldName === 'id') {
             $retval = '<input type="checkbox" name="delitem[]" value="'
                 . $this->escape($fieldValue) . '"' . XHTML . '>';
-        } else if ($fieldName === 'value') {
+        } elseif ($fieldName === 'value') {
             $retval = COM_createLink(
                 $this->escape($fieldValue),
                 $_CONF['site_admin_url'] . '/plugins/spamx/index.php?'
@@ -188,7 +186,7 @@ abstract class BaseAdmin
                 ))
             );
 
-        } else if ($fieldName === 'regdate') {
+        } elseif ($fieldName === 'regdate') {
             // Does nothing for now
         }
 
@@ -321,7 +319,7 @@ abstract class BaseAdmin
 
                 case 'mass_delete':
                     if (isset($_POST['delitem'])) {
-                        $this->deleteSelectedEntries($_POST['delitem']);
+                        $this->deleteSelectedEntries(Geeklog\Input::post('delitem'));
                     }
 
                     break;

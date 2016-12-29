@@ -42,7 +42,7 @@
 * @package Links
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
@@ -1032,10 +1032,7 @@ function plugin_submit_links()
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
     $linkform->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);
-    $category = '';
-    if (isset($_REQUEST['cid'])) {
-        $category = $_REQUEST['cid'];
-    }
+    $category = Geeklog\Input::request('cid', '');
     $linkform->set_var('link_category_options', links_select_box(2, $category));
     $linkform->set_var('lang_description', $LANG12[15]);
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);

@@ -11,7 +11,7 @@
  * @subpackage Modules
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'mailadmin.action.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 

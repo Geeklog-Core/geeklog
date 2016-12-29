@@ -7,7 +7,7 @@
  * Licensed under the GNU General Public License
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'SFS.Examine.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die ('This file can not be used on its own!');
 }
 

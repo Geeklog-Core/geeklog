@@ -13,7 +13,7 @@
  * @package Spam-X
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die ('This file can not be used on its own.');
 }
 
@@ -633,7 +633,7 @@ function plugin_itemPreSave_spamx($type, $username)
     if ($type == 'registration') {
         require_once $_CONF['path'].'/plugins/spamx/SFS.Misc.class.php';
         $EX = new SFS;
-        $res = $EX->execute($_POST['email'], $_SERVER['REMOTE_ADDR']);
+        $res = $EX->execute(Geeklog\Input::post('email'), Geeklog\Input::server('REMOTE_ADDR'));
         if ($res > 0) {
             return $LANG_SX00['invalid_email_or_ip'];
         }

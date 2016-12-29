@@ -40,7 +40,7 @@
  * @package Calendar
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
@@ -655,7 +655,7 @@ function plugin_getheadercode_calendar()
     global $_SCRIPTS;
 
     // use the CSS only if we are on the plugin's pages
-    if (substr_count($_SERVER['PHP_SELF'], '/calendar/') > 0) {
+    if (substr_count(Geeklog\Input::server('PHP_SELF'), '/calendar/') > 0) {
         $_SCRIPTS->setCSSFile('calendar', CTL_plugin_themeFindFile('calendar', 'css', 'style.css'), false);
     }
 }
@@ -667,42 +667,29 @@ function plugin_submit_calendar($mode = 'master')
 {
     global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12, $MESSAGE, $_SCRIPTS;
 
-    if (isset($_POST['calendar_type'])) {
-        $mode = $_POST['calendar_type'];
+    $mode = Geeklog\Input::fPost('calendar_type', null);
+
+    if ($mode !== null) {
         if (!in_array($mode, array('master', 'personal', 'quickadd'))) {
             $mode = 'master';
         }
-    } elseif (isset($_REQUEST['mode']) && ($_REQUEST['mode'] == 'personal')) {
+    } elseif (Geeklog\Input::fRequest('mode') === 'personal') {
         $mode = 'personal';
     }
 
-    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) {
+    if (($_CA_CONF['personalcalendars'] == 1) && ($mode === 'quickadd')) {
         // quick add form, just save it.
         $display = plugin_savesubmission_calendar($_POST);
 
         return $display;
     } elseif (SEC_hasRights('calendar.edit') && ($mode != 'personal')) {
         // admin posts non-personal, go to editor
-        if (isset($_REQUEST['year'])) {
-            $year = COM_applyFilter($_REQUEST['year'], true);
-        } else {
-            $year = date('Y', time());
-        }
-        if (isset($_REQUEST['month'])) {
-            $month = COM_applyFilter($_REQUEST['month'], true);
-        } else {
-            $month = date('m', time());
-        }
-        if (isset($_REQUEST['day'])) {
-            $day = COM_applyFilter($_REQUEST['day'], true);
-        } else {
-            $day = date('d', time());
-        }
-        if (isset($_REQUEST['hour'])) {
-            $hour = COM_applyFilter($_REQUEST['hour'], true);
-        } else {
-            $hour = date('H', time());
-        }
+        $currentTime = time();
+        $year = (int) Geeklog\Input::fRequest('year', date('Y', $currentTime));
+        $month = (int) Geeklog\Input::fRequest('month', date('m', $currentTime));
+        $day = (int) Geeklog\Input::fRequest('day', date('d', $currentTime));
+        $hour = (int) Geeklog\Input::fRequest('hour', date('H', $currentTime));
+
         $startat = '';
         if ($year > 0) {
             $startat = '&amp;datestart='
@@ -888,11 +875,7 @@ function CALENDAR_listOld()
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS,
            $LANG01, $_IMAGE_TYPE;
 
-    if (isset($_REQUEST['usr_time'])) {
-        $usr_time = $_REQUEST['usr_time'];
-    } else {
-        $usr_time = 12;
-    }
+    $usr_time = (int) Geeklog\Input::fRequest('usr_time', 12);
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -978,18 +961,14 @@ function CALENDAR_deleteOld()
     global $_CONF, $LANG_CAL_ADMIN;
 
     $msg = '';
-    $event_list = array();
-    if (isset($_POST['delitem'])) {
-        $event_list = $_POST['delitem'];
-    }
+    $event_list = Geeklog\Input::fPost('delitem', array());
 
-    if (count($event_list) == 0) {
+    if (count($event_list) === 0) {
         $msg = $LANG_CAL_ADMIN[33] . "<br" . XHTML . ">";
     }
     $c = 0;
     if (isset($event_list) && is_array($event_list)) {
         foreach ($event_list as $delitem) {
-            $delitem = COM_applyFilter($delitem);
             if (!CALENDAR_deleteEvent($delitem)) {
                 $msg .= "<strong>{$LANG_CAL_ADMIN[34]} $delitem $LANG_CAL_ADMIN[35]}</strong><br" . XHTML . ">\n";
             } else {

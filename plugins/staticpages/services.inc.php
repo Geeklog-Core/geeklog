@@ -39,7 +39,7 @@
  * @package StaticPages
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'services.inc.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 

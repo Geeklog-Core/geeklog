@@ -40,7 +40,7 @@
  * @package StaticPages
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
@@ -1077,12 +1077,9 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
                         $what = 'menu';
                         break;
                 }
-                if (isset($_GET['msg'])) {
-                    $msg = COM_applyFilter($_GET['msg'], true);
-                    if ($msg > 0) {
-                        $retval .= COM_showMessage($msg);
-                    }
-                }
+
+                $msg = (int) Geeklog\Input::fGet('msg', 0);
+                $retval .= COM_showMessage($msg);
             }
 
             $spage = COM_newTemplate(CTL_plugin_templatePath('staticpages'));

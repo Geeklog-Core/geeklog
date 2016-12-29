@@ -12,7 +12,7 @@
  * @subpackage Modules
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'editheader.admin.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -86,10 +86,10 @@ class EditHeader extends BaseAdmin
             $this->deleteEntry($entry);
         } elseif (($action === $LANG_SX00['addentry']) && SEC_checkToken()) {
             $entry = '';
-            $name = COM_applyFilter($_REQUEST['header-name']);
+            $name = Geeklog\Input::fRequest('header-name');
             $n = explode(':', $name);
             $name = $n[0];
-            $value = $_REQUEST['header-value'];
+            $value = Geeklog\Input::request('header-value');
 
             if (!empty($name) && !empty($value)) {
                 $entry = $name . ': ' . $value;
