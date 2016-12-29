@@ -3578,13 +3578,21 @@ function COM_adminMenu($help = '', $title = '', $position = '')
  */
 function COM_redirect($url)
 {
-    $url = str_ireplace('&amp;', '&', $url);
-    header('Location: ' . $url);
+    if (!headers_sent($file, $line)) {
+        $url = str_ireplace('&amp;', '&', $url);
+        header('Location: ' . $url);
+    }
+
+    COM_errorLog(
+        sprintf(
+            '%1$s failed to redirect to "%2$s".  Headers were already sent at line %3$d of "%4$s".',
+            __FUNCTION__, $url, $line, $file
+        )
+    );
 
     // Send out HTML meta tags in case header('Location: some_url') fails
-    COM_errorLog(__FUNCTION__ . ' failed.  The URL given is "' . $url . '".');
-    header('Content-Type: text/html; charset=' . COM_getCharset());
-    echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . PHP_EOL;
+    @header('Content-Type: text/html; charset=' . COM_getCharset());
+    echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL={$url}\"></head></html>" . PHP_EOL;
     die(1);
 }
 
