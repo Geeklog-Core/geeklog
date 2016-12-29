@@ -1293,7 +1293,7 @@ function PLG_logoutUser($uid)
 */
 function PLG_userInfoChanged($uid)
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     $all_plugins = array_merge($_PLUGINS, array('topic'));
 
