@@ -865,7 +865,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
     if (!empty($table)) {
         $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
         if ($cid <= 0) {
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
         }
         $commentUid = DB_getItem($table, 'uid', "cid = '$cid'");
     }
@@ -1681,7 +1681,7 @@ function CMT_reportAbusiveComment($cid, $type)
  */
 function CMT_sendReport($cid, $type)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG09;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG09, $LANG40;
 
     if (COM_isAnonUser()) {
         $retval = SEC_loginRequiredForm();
@@ -1691,8 +1691,13 @@ function CMT_sendReport($cid, $type)
     }
 
     COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
-    if (COM_checkSpeedlimit('mail') > 0) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+    $speedLimit = COM_checkSpeedlimit('mail');
+    if ($speedLimit > 0) {
+        $message = $LANG40[39] . $speedLimit . $LANG40[40];
+        $content = COM_showMessageText($message);
+        $display = COM_createHTMLDocument($content);
+        COM_output($display);
+        exit;
     }
 
     $username = DB_getItem($_TABLES['users'], 'username',
@@ -1773,7 +1778,7 @@ function CMT_handleEditSubmit($mode = null)
     ) {
         COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment with one or more missing values.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     $commentuid = DB_getItem($_TABLES['comments'], 'uid', "cid = '$cid'");
@@ -1786,7 +1791,7 @@ function CMT_handleEditSubmit($mode = null)
     if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
         COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment without proper permission.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     $comment = CMT_prepareText(Geeklog\Input::post('comment'), $postmode, $type);
@@ -1810,7 +1815,7 @@ function CMT_handleEditSubmit($mode = null)
         if (DB_error()) { //saving to non-existent comment or comment in wrong article
             COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                 . 'to edit to a non-existent comment or the cid/sid did not match');
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
         }
         //save edit information for published comment
         // Update any feeds
@@ -1831,7 +1836,7 @@ function CMT_handleEditSubmit($mode = null)
     } else {
         COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to submit a comment with invalid $title and/or $comment.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     list($plgurl, $plgid) = CMT_getCommentUrlId($type);
@@ -2095,15 +2100,15 @@ function CMT_handleCancel()
 
     $type = Geeklog\Input::fPost(CMT_TYPE, '');
     if (empty($type)) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     } else {
         list($plgurl, $plgid) = CMT_getCommentUrlId($type);
         if (empty($plgurl) || empty($plgid)) {
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
         } else {
             $sid = Geeklog\Input::fPost(CMT_SID, '');
             if (empty($sid)) {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             } else {
                 COM_redirect("$plgurl?$plgid=$sid");
             }
@@ -2132,7 +2137,7 @@ function CMT_handleSubmit($title, $sid, $pid, $type, $postMode, $uid)
 
     $display = PLG_commentSave($type, $title, Geeklog\Input::post('comment'), $sid, $pid, $postMode);
     if (!$display) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     return $display;
@@ -2156,7 +2161,7 @@ function CMT_handleDelete($sid, $type, $formType)
 
     $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
     if ($cid <= 0) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     if ($formType === 'editsubmission') {
@@ -2165,7 +2170,7 @@ function CMT_handleDelete($sid, $type, $formType)
     } else {
         $display = PLG_commentDelete($type, $cid, $sid);
         if (!$display) {
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
         }
     }
 
@@ -2239,7 +2244,7 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
     if ($cid <= 0) {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment with one or more missing/bad values.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     $type = '';
@@ -2270,7 +2275,7 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
     if (empty($sid) || empty($type)) {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment with one or more missing/bad values.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     // Filemgmt plugin is doing special processing.
@@ -2303,7 +2308,7 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
     } else {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment that doesn\'t exist as described.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     return CMT_commentForm($title, $commentText, $sid, $cid, $type, $mode, $postMode,
@@ -2397,13 +2402,13 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             if ($cid <= 0) {
                 COM_errorLog("CMT_handleComment(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                     . 'to edit a comment with one or more missing/bad values.');
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
             $pid = $cid;
         }
         if (($pid > 0) && empty($title)) {
             $atype = DB_escapeString($type);
-            $title = DB_getItem($_TABLES['comments'], 'title', "(cid = $pid) AND (type = '$atype')");
+            $title = DB_getItem($_TABLES['comments'], 'title', "(cid = {$pid}) AND (type = '{$atype}')");
         }
         if (empty($title)) {
             $title = PLG_getItemInfo($type, $sid, 'title');
@@ -2436,7 +2441,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             if (SEC_checkToken()) {
                 $retval .= CMT_handleEditSubmit($commentMode);
             } else {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
             break;
 
@@ -2449,7 +2454,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             if (SEC_checkToken()) {
                 $retval .= CMT_handleDelete($sid, $type, $formType);
             } else {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
             break;
 
@@ -2466,7 +2471,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                 $cid = (int) Geeklog\Input::fGet(CMT_CID, 0);
                 $type = Geeklog\Input::get(CMT_TYPE, '');
                 if (($cid <= 0) || empty($type)) {
-                    COM_redirect($_CONF['site_url'] . '/index.php');
+                    COM_handle404($_CONF['site_url'] . '/index.php');
                 }
                 $retval .= CMT_reportAbusiveComment($cid, $type);
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[27]));
@@ -2478,17 +2483,17 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                 $cid = (int) Geeklog\Input::fPost(CMT_CID, 0);
                 $type = Geeklog\Input::fPost(CMT_TYPE, '');
                 if (($cid <= 0) || empty($type)) {
-                    COM_redirect($_CONF['site_url'] . '/index.php');
+                    COM_handle404($_CONF['site_url'] . '/index.php');
                 }
                 $retval .= CMT_sendReport($cid, $type);
             } else {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
             break;
 
         case 'editsubmission':
             if (!SEC_hasRights('comment.moderate')) {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
         // deliberate fall-through
         case 'edit':
@@ -2508,27 +2513,26 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                     $redirectUrl = $_CONF['site_url']
                         . '/comment.php?mode=view&amp;cid=' . $cid
                         . '&amp;format=nested&amp;msg=16';
-                    DB_delete($_TABLES['commentnotifications'], 'deletehash', $key,
-                        $redirectUrl);
+                    DB_delete($_TABLES['commentnotifications'], 'deletehash', $key, $redirectUrl);
                     exit;
                 }
             }
 
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
             break;
 
         case $LANG_ADMIN['cancel']:
-            if ($formType == 'editsubmission') {
+            if ($formType === 'editsubmission') {
                 COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
             } else {
-                $retval .= CMT_handleCancel();  // moved to function for readibility
+                $retval .= CMT_handleCancel();  // moved to function for readability
             }
             break;
 
         default: // New Comment or Reply Comment
             $abort = false;
             // Check to make sure comment type exists
-            if ($type != 'article' && !in_array($type, $_PLUGINS)) {
+            if (($type !== 'article') && !in_array($type, $_PLUGINS)) {
                 $abort = true;
             }
 
@@ -2548,15 +2552,14 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             if (!$abort && !empty($sid) && !empty($type)) {
                 if (($pid > 0) && empty($title)) {
                     $atype = DB_escapeString($type);
-                    $title = DB_getItem($_TABLES['comments'], 'title',
-                        "(cid = $pid) AND (type = '$atype')");
+                    $title = DB_getItem($_TABLES['comments'], 'title', "(cid = $pid) AND (type = '{$atype}')");
                 }
                 if (empty($title)) {
                     $title = PLG_getItemInfo($type, $sid, 'title');
 
-                    // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so return to homepage
+                    // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so error404
                     if (is_array($title) || empty($title) || ($title == false)) {
-                        COM_redirect($_CONF['site_url'] . '/index.php');
+                        COM_handle404($_CONF['site_url'] . '/index.php');
                     }
                     $title = str_replace('$', '&#36;', $title);
                     // CMT_commentForm expects non-htmlspecial chars for title...
@@ -2572,7 +2575,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                     // Do nothing and do not show comment form (happens most likely when admin viewing draft article)
                 } else {
                     // For comments not displayed on same page (probably owner pushed the post comment button on a draft article)
-                    COM_redirect($_CONF['site_url'] . '/index.php');
+                    COM_handle404($_CONF['site_url'] . '/index.php');
                 }
             }
             if ($is_comment_page) {
