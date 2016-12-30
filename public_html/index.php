@@ -100,12 +100,7 @@ if ($_CONF['url_rewrite'] && isset($_CONF['url_routing']) && !empty($_CONF['url_
 // See if user has access to view topic else display message.
 // This check has already been done in lib-common so re check to figure out if
 // 404 message needs to be displayed.
-$topic_check = '';
-if (isset($_GET['topic'])) {
-    $topic_check = COM_applyFilter($_GET['topic']);
-} elseif (isset($_POST['topic'])) {
-    $topic_check = COM_applyFilter($_POST['topic']);
-}
+$topic_check = Geeklog\Input::fGetOrPost('topic', '');
 if ($topic_check != '') {
     if (strtolower($topic_check) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic_check' " . COM_getPermSQL('AND')))) {
         COM_handle404();
@@ -113,21 +108,16 @@ if ($topic_check != '') {
 }
 
 $displayall = false;
-if (isset($_GET['display'])) {
-    if (($_GET['display'] == 'all') && (empty($topic))) {
-        $displayall = true;
-    }
+if ((Geeklog\Input::get('display') === 'all') && empty($topic)) {
+    $displayall = true;
 }
 
 // Retrieve the archive topic - currently only one supported
 $archivetid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
 
-$page = 1;
-if (isset($_GET['page'])) {
-    $page = COM_applyFilter($_GET['page'], true);
-    if ($page == 0) {
-        $page = 1;
-    }
+$page = (int) Geeklog\Input::fGet('page', 1);
+if ($page == 0) {
+    $page = 1;
 }
 
 $display = '';
@@ -142,11 +132,8 @@ if (!$displayall) {
 }
 
 if (isset($_GET['msg'])) {
-    $plugin = '';
-    if (isset($_GET['plugin'])) {
-        $plugin = COM_applyFilter($_GET['plugin']);
-    }
-    $display .= COM_showMessage(COM_applyFilter($_GET['msg'], true), $plugin);
+    $plugin = Geeklog\Input::fGet('plugin', '');
+    $display .= COM_showMessage((int) Geeklog\Input::fGet('msg'), $plugin);
 }
 
 if (SEC_inGroup('Root') && ($page == 1)) {

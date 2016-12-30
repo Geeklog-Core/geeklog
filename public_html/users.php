@@ -352,22 +352,13 @@ function newuserform($msg = '')
     PLG_templateSetVars('registration', $user_templates);
     $user_templates->set_var('end_block', COM_endBlock());
 
-    $username = '';
-    if (!empty($_POST['username'])) {
-        $username = COM_applyFilter($_POST['username']);
-    }
+    $username = Geeklog\Input::fPost('username', '');
     $user_templates->set_var('username', $username);
 
-    $email = '';
-    if (!empty($_POST['email'])) {
-        $email = COM_applyFilter($_POST['email']);
-    }
+    $email = Geeklog\Input::fPost('email', '');
     $user_templates->set_var('email', $email);
 
-    $email_conf = '';
-    if (!empty($_POST['email_conf'])) {
-        $email_conf = COM_applyFilter($_POST['email_conf']);
-    }
+    $email_conf = Geeklog\Input::fPost('email_conf', '');
     $user_templates->set_var('email_conf', $email_conf);
 
     $user_templates->parse('output', 'regform');
@@ -491,31 +482,29 @@ function resend_request()
 {
     global $_CONF;
 
-    $method = '';
-    if (isset($_POST['token_requestmethod'])) {
-        $method = COM_applyFilter($_POST['token_requestmethod']);
-    }
-    $returnUrl = '';
-    if (isset($_POST['token_returnurl'])) {
-        $returnUrl = urldecode($_POST['token_returnurl']);
-        if (substr($returnUrl, 0, strlen($_CONF['site_url'])) !=
-            $_CONF['site_url']
-        ) {
+    $method = Geeklog\Input::fPost('token_requestmethod', '');
+    $returnUrl = Geeklog\Input::post('token_returnurl', '');
+    if (!empty($returnUrl)) {
+        $returnUrl = urldecode($returnUrl);
+        if (substr($returnUrl, 0, strlen($_CONF['site_url'])) !== $_CONF['site_url']) {
             // only accept URLs on our site
             $returnUrl = '';
         }
     }
-    $postData = '';
-    if (isset($_POST['token_postdata'])) {
-        $postData = urldecode($_POST['token_postdata']);
+
+    $postData = Geeklog\Input::post('token_postdata', '');
+    if (!empty($postData)) {
+        $postData = urldecode($postData);
     }
-    $getData = '';
-    if (isset($_POST['token_getdata'])) {
-        $getData = urldecode($_POST['token_getdata']);
+
+    $getData = Geeklog\Input::post('token_getdata', '');
+    if (!empty($getData)) {
+        $getData = urldecode($getData);
     }
-    $files = '';
-    if (isset($_POST['token_files'])) {
-        $files = urldecode($_POST['token_files']);
+
+    $files = Geeklog\Input::post('token_files', '');
+    if (!empty($files)) {
+        $files = urldecode($files);
     }
 
     if (SECINT_checkToken() && !empty($method) && !empty($returnUrl) &&
@@ -597,12 +586,7 @@ function resend_request()
 }
 
 // MAIN
-if (isset($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
-} else {
-    $mode = '';
-}
-
+$mode = Geeklog\Input::request('mode', '');
 $display = '';
 
 switch ($mode) {
@@ -618,15 +602,12 @@ switch ($mode) {
         break;
 
     case 'profile':
-        $uid = COM_applyFilter($_GET['uid'], true);
-        if (is_numeric($uid) && ($uid > 1)) {
-            $msg = 0;
-            if (isset($_GET['msg'])) {
-                $msg = COM_applyFilter($_GET['msg'], true);
-            }
+        $uid = (int) Geeklog\Input::fGet('uid', 0);
+        if ($uid > 1) {
+            $msg = (int) Geeklog\Input::fGet('msg', 0);
             $plugin = '';
             if (($msg > 0) && isset($_GET['plugin'])) {
-                $plugin = COM_applyFilter($_GET['plugin']);
+                $plugin = Geeklog\Input::fGet('plugin');
             }
             $display .= USER_showProfile($uid, false, $msg, $plugin);
         } else {
@@ -636,7 +617,7 @@ switch ($mode) {
         break;
 
     case 'user':
-        $username = COM_applyFilter($_GET['username']);
+        $username = Geeklog\Input::fGet('username');
         if (!empty($username)) {
             $username = DB_escapeString($username);
             $uid = DB_getItem($_TABLES['users'], 'uid', "username = '$username'");
@@ -655,9 +636,10 @@ switch ($mode) {
             $display .= COM_showMessageText($LANG04[122], $LANG04[22]);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[22]));
         } else {
-            $email = COM_applyFilter($_POST['email']);
-            $email_conf = COM_applyFilter($_POST['email_conf']);
-            $display .= createuser(COM_applyFilter($_POST['username']), $email, $email_conf);
+            $userName = Geeklog\Input::fPost('username');
+            $email = Geeklog\Input::fPost('email');
+            $email_conf = Geeklog\Input::fPost('email_conf');
+            $display .= createuser($userName, $email, $email_conf);
         }
         break;
 
@@ -679,13 +661,10 @@ switch ($mode) {
         break;
 
     case 'newpwd':
-        $uid = COM_applyFilter($_GET['uid'], true);
-        $reqid = COM_applyFilter($_GET['rid']);
-        if (!empty($uid) && is_numeric($uid) && ($uid > 0) &&
-            !empty($reqid) && (strlen($reqid) == 16)
-        ) {
-            $valid = DB_count($_TABLES['users'], array('uid', 'pwrequestid'),
-                array($uid, $reqid));
+        $uid = (int) Geeklog\Input::fGet('uid', 0);
+        $reqid = Geeklog\Input::fGet('rid');
+        if (!empty($uid) && ($uid > 0) && !empty($reqid) && (strlen($reqid) === 16)) {
+            $valid = DB_count($_TABLES['users'], array('uid', 'pwrequestid'), array($uid, $reqid));
             if ($valid == 1) {
                 $display .= newpasswordform($uid, $reqid);
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[92]));
@@ -705,19 +684,20 @@ switch ($mode) {
             || ($_POST['passwd'] != $_POST['passwd_conf'])
         ) {
             COM_redirect(
-                $_CONF['site_url'] . '/users.php?mode=newpwd&amp;uid=' . $_POST['uid']
-                . '&amp;rid=' . $_POST['rid']
+                $_CONF['site_url'] . '/users.php?'
+                . http_build_query(array(
+                    'mode' => 'newpwd',
+                    'uid' => (int) Geeklog\Input::fPost('uid'),
+                    'rid' => Geeklog\Input::post('rid')
+                ))
             );
         } else {
-            $uid = COM_applyFilter($_POST['uid'], true);
-            $reqid = COM_applyFilter($_POST['rid']);
-            if (!empty($uid) && is_numeric($uid) && ($uid > 0) &&
-                !empty($reqid) && (strlen($reqid) == 16)
-            ) {
-                $valid = DB_count($_TABLES['users'], array('uid', 'pwrequestid'),
-                    array($uid, $reqid));
+            $uid = (int) Geeklog\Input::fPost('uid', 0);
+            $reqid = Geeklog\Input::fPost('rid');
+            if (!empty($uid) && ($uid > 0) && !empty($reqid) && (strlen($reqid) === 16)) {
+                $valid = DB_count($_TABLES['users'], array('uid', 'pwrequestid'), array($uid, $reqid));
                 if ($valid == 1) {
-                    SEC_updateUserPassword($_POST['passwd'], $uid);
+                    SEC_updateUserPassword(Geeklog\Input::post('passwd'), $uid);
 
                     DB_delete($_TABLES['sessions'], 'uid', $uid);
                     DB_change($_TABLES['users'], 'pwrequestid', "NULL",
@@ -748,8 +728,8 @@ switch ($mode) {
             );
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG12[26]));
         } else {
-            $username = COM_applyFilter($_POST['username']);
-            $email = COM_applyFilter($_POST['email']);
+            $userName = Geeklog\Input::fPost('username');
+            $email = Geeklog\Input::fPost('email');
             if (empty($username) && !empty($email)) {
                 $username = DB_getItem($_TABLES['users'], 'username',
                     "email = '$email' AND ((remoteservice IS NULL) OR (remoteservice = ''))");
@@ -787,18 +767,9 @@ switch ($mode) {
             displayLoginErrorAndAbort(82, $LANG12[26], $LANG04[112]);
         }
 
-        $loginname = '';
-        if (isset($_POST['loginname'])) {
-            $loginname = COM_applyFilter($_POST['loginname']);
-        }
-        $passwd = '';
-        if (isset($_POST['passwd'])) {
-            $passwd = $_POST['passwd'];
-        }
-        $service = '';
-        if (isset($_POST['service'])) {
-            $service = COM_applyFilter($_POST['service']);
-        }
+        $loginname = Geeklog\Input::fPost('loginname', '');
+        $passwd = Geeklog\Input::post('passwd', '');
+        $service = Geeklog\Input::fPost('service', '');
         $uid = '';
         if (!empty($loginname) && !empty($passwd) && empty($service)) {
             if (empty($service) && $_CONF['user_login_method']['standard']) {
@@ -806,7 +777,6 @@ switch ($mode) {
             } else {
                 $status = -1;
             }
-
         } elseif (($_CONF['usersubmission'] == 0) && $_CONF['user_login_method']['3rdparty'] && ($service != '')) {
             /* Distributed Authentication */
             //pass $loginname by ref so we can change it ;-)
@@ -815,8 +785,7 @@ switch ($mode) {
         } elseif ($_CONF['user_login_method']['openid'] &&
             ($_CONF['usersubmission'] == 0) &&
             !$_CONF['disable_new_user_registration'] &&
-            (isset($_GET['openid_login']) && ($_GET['openid_login'] == '1'))
-        ) {
+            (Geeklog\Input::get('openid_login')  == '1')) {
             // Here we go with the handling of OpenID authentication.
 
             $query = array_merge($_GET, $_POST);
@@ -1013,10 +982,7 @@ switch ($mode) {
                 COM_updateSpeedlimit('login');
             }
 
-            $msg = 0;
-            if (isset($_REQUEST['msg'])) {
-                $msg = COM_applyFilter($_REQUEST['msg'], true);
-            }
+            $msg = (int) Geeklog\Input::fRequest('msg', 0);
             if ($msg > 0) {
                 $display .= COM_showMessage($msg);
             }
@@ -1037,34 +1003,28 @@ switch ($mode) {
                 case 'tokenexpired':
                     // check to see if this was the last allowed attempt
                     if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
-                        $files = '';
-                        if (isset($_POST['token_files'])) {
-                            $files = urldecode($_POST['token_files']);
+                        $files = Geeklog\Input::post('token_files', '');
+                        if (!empty($files)) {
+                            $files = urldecode($files);
                         }
                         if (!empty($files)) {
                             SECINT_cleanupFiles($files);
                         }
                         displayLoginErrorAndAbort(82, $LANG04[163], $LANG04[164]);
                     } else {
-                        $returnurl = '';
-                        if (isset($_POST['token_returnurl'])) {
-                            $returnurl = urldecode($_POST['token_returnurl']);
+                        $returnurl = Geeklog\Input::post('token_returnurl', '');
+                        if (!empty($returnurl)) {
+                            $returnurl = urldecode($returnurl);
                         }
-                        $method = '';
-                        if (isset($_POST['token_requestmethod'])) {
-                            $method = COM_applyFilter($_POST['token_requestmethod']);
+                        $method = Geeklog\Input::fPost('token_requestmethod', '');
+                        $postdata = Geeklog\Input::post('token_postdata', '');
+                        $getdata = Geeklog\Input::post('token_getdata', '');
+                        if (!empty($getdata)) {
+                            $getdata = urldecode($getdata);
                         }
-                        $postdata = '';
-                        if (isset($_POST['token_postdata'])) {
-                            $postdata = urldecode($_POST['token_postdata']);
-                        }
-                        $getdata = '';
-                        if (isset($_POST['token_getdata'])) {
-                            $getdata = urldecode($_POST['token_getdata']);
-                        }
-                        $files = '';
-                        if (isset($_POST['token_files'])) {
-                            $files = urldecode($_POST['token_files']);
+                        $files = Geeklog\Input::post('token_files', '');
+                        if (!empty($files)) {
+                            $files = urldecode($files);
                         }
                         if (SECINT_checkToken() && !empty($method) &&
                             !empty($returnurl) &&

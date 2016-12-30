@@ -461,10 +461,11 @@ function moderation($mid, $action, $type, $count)
     }
 
     // Add new comment users to group comment.submit group
-    if (isset($_POST['publishfuture'])) {
-        for ($i = 0; $i < count($_POST['publishfuture']); $i++) {
-            $uid = COM_applyFilter($_POST['publishfuture'][$i], true);
-            if ($uid > 1 && !SEC_inGroup('Comment Submitters', $uid)) {
+    if (isset($_POST['publishfuture']) && is_array($_POST['publishfuture'])) {
+        foreach (Geeklog\Input::fPost('publishfuture') as $uid) {
+            $uid = (int) $uid;
+
+            if (($uid > 1) && !SEC_inGroup('Comment Submitters', $uid)) {
                 SEC_addUserToGroup($uid, 'Comment Submitters');
             }
         }

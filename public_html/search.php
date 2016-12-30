@@ -38,7 +38,7 @@ $searchObj = new Search();
 // Figure out topic to display
 TOPIC_getTopic();
 
-if (isset($_GET['mode']) && ($_GET['mode'] === 'search')) {
+if (Geeklog\Input::get('mode') === 'search') {
     $content = $searchObj->doSearch();
     $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG09[11]));
 } else {

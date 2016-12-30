@@ -185,57 +185,58 @@ function editdefaultblock($A, $access)
 function overridePostdata(&$A)
 {
     if (isset($_POST['name'])) {
-        $A['name'] = COM_sanitizeID($_POST['name']);
+        $A['name'] = COM_sanitizeID(Geeklog\Input::post('name'));
     }
     if (isset($_POST['title'])) {
-        $A['title'] = COM_stripslashes(strip_tags($_POST['title']));
+        $A['title'] = strip_tags(Geeklog\Input::post('title'));
     }
     if (isset($_POST['help'])) {
-        $A['help'] = COM_sanitizeUrl($_POST['help'], array('http', 'https'));
+        $A['help'] = COM_sanitizeUrl(Geeklog\Input::post('help'), array('http', 'https'));
     }
     if (in_array($_POST['type'], array('normal', 'portal', 'phpblock', 'gldefault'))) {
-        $A['type'] = $_POST['type'];
+        $A['type'] = Geeklog\Input::post('type');
     }
     if (isset($_POST['blockorder'])) {
-        $A['blockorder'] = COM_applyFilter($_POST['blockorder'], true);
+        $A['blockorder'] = (int) Geeklog\Input::fPost('blockorder', 0);
     }
     if (isset($_POST['device'])) {
-        $A['device'] = COM_applyFilter($_POST['device']);
+        $A['device'] = Geeklog\Input::fPost('device');
     }
     if (isset($_POST['content'])) {
-        $A['content'] = $_POST['content']; // to be sanitized when saving
+        $A['content'] = Geeklog\Input::post('content'); // to be sanitized when saving
     }
     if (isset($_POST['rdfurl'])) {
-        $A['rdfurl'] = $_POST['rdfurl']; // to be sanitized when saving
+        $A['rdfurl'] = Geeklog\Input::post('rdfurl'); // to be sanitized when saving
     }
     if (isset($_POST['rdfupdated'])) {
-        $A['rdfupdated'] = COM_applyFilter($_POST['rdfupdated']);
+        $A['rdfupdated'] = Geeklog\Input::fPost('rdfupdated');
     }
     if (isset($_POST['rdflimit'])) {
-        $A['rdflimit'] = COM_applyFilter($_POST['rdflimit'], true);
+        $A['rdflimit'] = (int) Geeklog\Input::fPost('rdflimit');
     }
     if (isset($_POST['phpblockfn'])) {
-        $A['phpblockfn'] = $_POST['phpblockfn']; // to be sanitized when saving
+        $A['phpblockfn'] = Geeklog\Input::post('phpblockfn'); // to be sanitized when saving
     }
     if (isset($_POST['owner_id'])) {
-        $A['owner_id'] = COM_applyFilter($_POST['owner_id'], true);
+        $A['owner_id'] = (int) Geeklog\Input::fPost('owner_id', 0);
     }
     if (isset($_POST['group_id'])) {
-        $A['group_id'] = COM_applyFilter($_POST['group_id'], true);
+        $A['group_id'] = (int) Geeklog\Input::fPost('group_id', 0);
     }
 
     list($A['perm_owner'], $A['perm_group'],
         $A['perm_members'], $A['perm_anon']) =
         SEC_getPermissionValues(
-            $_POST['perm_owner'], $_POST['perm_group'],
-            $_POST['perm_members'], $_POST['perm_anon']);
+            Geeklog\Input::post('perm_owner'), Geeklog\Input::post('perm_group'),
+            Geeklog\Input::post('perm_members'), Geeklog\Input::post('perm_anon')
+        );
 
     $A['onleft'] = ($_POST['onleft'] == 1) ? 1 : 0;
     $A['is_enabled'] = ($_POST['is_enabled'] == 'on') ? 1 : 0;
     $A['allow_autotags'] = ($_POST['allow_autotags'] == 'on') ? 1 : 0;
 
     if (isset($_POST['cache_time'])) {
-        $A['cache_time'] = COM_applyFilter($_POST['cache_time'], true);
+        $A['cache_time'] = (int) Geeklog\Input::fPost('cache_time', 0);
     }
 }
 
@@ -295,7 +296,7 @@ function editblock($bid = '')
         $A['phpblockfn'] = '';
         $A['help'] = '';
         $A['owner_id'] = $_USER['uid'];
-        if (isset ($_GROUPS['Block Admin'])) {
+        if (isset($_GROUPS['Block Admin'])) {
             $A['group_id'] = $_GROUPS['Block Admin'];
         } else {
             $A['group_id'] = SEC_getFeatureGroup('block.edit');
@@ -888,8 +889,8 @@ function moveBlock()
 {
     global $_CONF, $_TABLES;
 
-    $bid = COM_applyFilter($_GET['bid']);
-    $where = COM_applyFilter($_GET['where']);
+    $bid = Geeklog\Input::fGet('bid');
+    $where = Geeklog\Input::fGet('where');
 
     // if the block id exists
     if (DB_count($_TABLES['blocks'], "bid", $bid) == 1) {
@@ -979,35 +980,18 @@ function deleteBlock($bid)
 }
 
 // MAIN
-$mode = '';
-if (!empty($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
-}
-
-$position = BLOCK_ALL_POSITIONS;
-if (isset($_REQUEST['position'])) {
-    $position = COM_applyFilter($_REQUEST['position'], true);
-}
-
-$bid = '';
-if (!empty($_REQUEST['bid'])) {
-    $bid = COM_applyFilter($_REQUEST['bid']);
-}
+$mode = Geeklog\Input::request('mode', '');
+$position = (int) Geeklog\Input::fRequest('position', BLOCK_ALL_POSITIONS);
+$bid = Geeklog\Input::fRequest('bid', '');
 
 if (isset($_POST['blockenabler']) && SEC_checkToken()) {
-    $enabledblocks = array();
-    if (isset($_POST['enabledblocks'])) {
-        $enabledblocks = $_POST['enabledblocks'];
-    }
-    $visibleblocks = array();
-    if (isset($_POST['visibleblocks'])) {
-        $visibleblocks = $_POST['visibleblocks'];
-    }
+    $enabledblocks = Geeklog\Input::post('enabledblocks', array());
+    $visibleblocks = Geeklog\Input::post('visibleblocks', array());
     changeBlockStatus($enabledblocks, $visibleblocks);
 }
 
 if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
-    if (!isset ($bid) || empty($bid) || ($bid == 0)) {
+    if (!isset($bid) || empty($bid) || ($bid == 0)) {
         COM_errorLog('Attempted to delete block, bid empty or null, value =' . $bid);
         COM_redirect($_CONF['site_admin_url'] . '/block.php');
     } elseif (SEC_checkToken()) {
@@ -1017,64 +1001,32 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
-    $name = '';
-    if (isset ($_POST['name'])) {
-        $name = COM_sanitizeID($_POST['name']);
+    $name = Geeklog\Input::post('name', '');
+    if (!empty($name)) {
+        $name = COM_sanitizeID($name);
     }
-    $help = '';
-    if (isset ($_POST['help'])) {
-        $help = COM_sanitizeUrl($_POST['help'], array('http', 'https'));
+    $help = Geeklog\Input::post('help', '');
+    if (!empty($help)) {
+        $help = COM_sanitizeUrl($help, array('http', 'https'));
     }
-    $blockorder = 0;
-    if (isset ($_POST['blockorder'])) {
-        $blockorder = COM_applyFilter($_POST['blockorder'], true);
-    }
-    $device = Device::ALL;
-    if (isset ($_POST['device'])) {
-        $device = COM_applyFilter($_POST['device']);
-    }
-    $content = '';
-    if (isset ($_POST['content'])) {
-        $content = $_POST['content'];
-    }
-    $rdfurl = '';
-    if (isset ($_POST['rdfurl'])) {
-        $rdfurl = $_POST['rdfurl']; // to be sanitized later
-    }
-    $rdfupdated = '';
-    if (isset ($_POST['rdfupdated'])) {
-        $rdfupdated = COM_applyFilter($_POST['rdfupdated']);
-    }
-    $rdflimit = 0;
-    if (isset ($_POST['rdflimit'])) {
-        $rdflimit = COM_applyFilter($_POST['rdflimit'], true);
-    }
-    $phpblockfn = '';
-    if (isset ($_POST['phpblockfn'])) {
-        $phpblockfn = $_POST['phpblockfn'];
-    }
-    $is_enabled = '';
-    if (isset ($_POST['is_enabled'])) {
-        $is_enabled = $_POST['is_enabled'];
-    }
-    $allow_autotags = '';
-    if (isset ($_POST['allow_autotags'])) {
-        $allow_autotags = $_POST['allow_autotags'];
-    }
-    $cache_time = $_CONF['default_cache_time_block'];
-    if (isset ($_POST['cache_time'])) {
-        $cache_time = COM_applyFilter($_POST['cache_time'], true);
-    }
-    $display .= saveblock($bid, $name, $_POST['title'],
-        $help, $_POST['type'], $blockorder, $device, $content,
-        $rdfurl, $rdfupdated,
-        $rdflimit, $phpblockfn, $_POST['onleft'],
-        COM_applyFilter($_POST['owner_id'], true),
-        COM_applyFilter($_POST['group_id'], true),
-        $_POST['perm_owner'], $_POST['perm_group'],
-        $_POST['perm_members'], $_POST['perm_anon'],
+    $blockorder = (int) Geeklog\Input::fPost('blockorder', 0);
+    $device = Geeklog\Input::fPost('device', Device::ALL);
+    $content = Geeklog\Input::post('content', '');
+    $rdfurl = Geeklog\Input::post('rdfurl', '');    // to be sanitized later
+    $rdfupdated = Geeklog\Input::fPost('rdfupdated', '');
+    $rdflimit = (int) Geeklog\Input::fPost('rdflimit', 0);
+    $phpblockfn = Geeklog\Input::post('phpblockfn', '');
+    $is_enabled = Geeklog\Input::post('is_enabled', '');
+    $allow_autotags = Geeklog\Input::post('allow_autotags', '');
+    $cache_time = (int) Geeklog\Input::fPost('cache_time', $_CONF['default_cache_time_block']);
+    $display .= saveblock(
+        $bid, $name, Geeklog\Input::post('title'), $help, Geeklog\Input::post('type'), $blockorder,
+        $device, $content, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, Geeklog\Input::post('onleft'),
+        (int) Geeklog\Input::fPost('owner_id', 0), (int) Geeklog\Input::fPost('group_id', 0),
+        Geeklog\Input::post('perm_owner'), Geeklog\Input::post('perm_group'),
+        Geeklog\Input::post('perm_members'), Geeklog\Input::post('perm_anon'),
         $is_enabled, $allow_autotags, $cache_time);
-} elseif ($mode == 'edit') {
+} elseif ($mode === 'edit') {
     $tmp = editblock($bid);
     $display = COM_createHTMLDocument($tmp, array('pagetitle' => $LANG21[3]));
 } elseif ($mode == 'move') {

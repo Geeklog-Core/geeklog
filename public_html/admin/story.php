@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | story.php                                                                 |
 // |                                                                           |
@@ -882,30 +882,23 @@ function submitstory($type = '')
 }
 
 // MAIN
-$mode = '';
-if (isset($_REQUEST['mode'])) {
-    $mode = COM_applyFilter($_REQUEST['mode']);
-}
+$mode = Geeklog\Input::fRequest('mode', '');
 
 if (isset($_REQUEST['editopt'])) {
-    $editopt = COM_applyFilter($_REQUEST['editopt']);
-    if ($editopt == 'default') {
+    $editopt = Geeklog\Input::fRequest('editopt');
+    if ($editopt === 'default') {
         $_CONF['advanced_editor'] = false;
     }
 }
 
-
 $display = '';
 if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
-    $sid = COM_applyFilter($_POST['sid']);
-    $type = '';
-    if (isset($_POST['type'])) {
-        $type = COM_applyFilter($_POST['type']);
-    }
+    $sid = Geeklog\Input::fPost('sid');
+    $type = Geeklog\Input::fPost('type', '');
     if (!isset($sid) || empty($sid)) {
         COM_errorLog('Attempted to delete story sid=' . $sid);
         COM_redirect($_CONF['site_admin_url'] . '/story.php');
-    } elseif ($type == 'submission') {
+    } elseif ($type === 'submission') {
         if (TOPIC_hasMultiTopicAccess('article', $sid) < 3) {
             COM_accessLog("User {$_USER['username']} tried to illegally delete story submission $sid.");
             COM_redirect($_CONF['site_admin_url'] . '/index.php');
@@ -926,40 +919,28 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['preview']) && !empty($LANG_ADMIN['preview'])) {
-    $display .= storyeditor(COM_applyFilter($_POST['sid']), 'preview', '', '');
+    $display .= storyeditor(Geeklog\Input::fPost('sid'), 'preview', '', '');
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[5]));
     COM_output($display);
 } elseif (($mode == 'edit') || ($mode == 'clone')) {
-    $sid = '';
-    if (isset($_GET['sid'])) {
-        $sid = COM_applyFilter($_GET['sid']);
-    }
+    $sid = Geeklog\Input::fGet('sid', '');
     $display .= storyeditor($sid, $mode, '');
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[5]));
     COM_output($display);
-} else if ($mode == 'editsubmission') {
-    $display .= storyeditor(COM_applyFilter($_GET['id']), $mode);
+} elseif ($mode == 'editsubmission') {
+    $display .= storyeditor(Geeklog\Input::fGet('id'), $mode);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[5]));
     COM_output($display);
-} else if (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     submitstory();
 } else { // 'cancel' or no mode at all
-    $type = '';
-    if (isset($_POST['type'])) {
-        $type = COM_applyFilter($_POST['type']);
-    }
-    if (($mode == $LANG24[10]) && !empty($LANG24[10]) &&
-        ($type == 'submission')
-    ) {
+    $type = Geeklog\Input::fPost('type', '');
+    if (($mode == $LANG24[10]) && !empty($LANG24[10]) && ($type === 'submission')) {
         COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $current_topic = '';
         if (empty($mode)) {
-            if (!empty($_GET['tid'])) {
-                $current_topic = COM_applyFilter($_GET['tid']);
-            } elseif (!empty($_POST['tid'])) {
-                $current_topic = COM_applyFilter($_POST['tid']);
-            }
+            $current_topic = Geeklog\Input::fGetOrPost('tid', '');
         }
         $display .= COM_showMessageFromParameter();
         $display .= liststories($current_topic);
@@ -967,5 +948,3 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     }
     COM_output($display);
 }
-
-?>

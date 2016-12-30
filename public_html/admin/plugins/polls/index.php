@@ -636,25 +636,15 @@ function deletePoll($pid)
 
 // MAIN
 $display = '';
+$mode = Geeklog\Input::fRequest('mode', '');
 
-$mode = '';
-if (isset($_REQUEST['mode'])) {
-    $mode = COM_applyFilter($_REQUEST['mode']);
-}
-
-if ($mode == 'edit') {
-    $pid = '';
-    if (isset($_GET['pid'])) {
-        $pid = COM_applyFilter($_GET['pid']);
-    }
+if ($mode === 'edit') {
+    $pid = Geeklog\Input::fGet('pid', '');
     $display .= editpoll($pid);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[5]));
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) {
-    $pid = COM_applyFilter($_POST['pid']);
-    $old_pid = '';
-    if (isset($_POST['old_pid'])) {
-        $old_pid = COM_applyFilter($_POST['old_pid']);
-    }
+    $pid = Geeklog\Input::fPost('pid');
+    $old_pid = Geeklog\Input::fPost('old_pid', '');
     if (empty($pid) && !empty($old_pid)) {
         $pid = $old_pid;
     }
@@ -662,60 +652,50 @@ if ($mode == 'edit') {
         $old_pid = $pid;
     }
     if (!empty($pid)) {
-        $statuscode = 0;
-        if (isset($_POST['statuscode'])) {
-            $statuscode = COM_applyFilter($_POST['statuscode'], true);
-        }
-        $mainpage = '';
-        if (isset($_POST['mainpage'])) {
-            $mainpage = COM_applyFilter($_POST['mainpage']);
-        }
-        $open = '';
-        if (isset($_POST['open'])) {
-            $open = COM_applyFilter($_POST['open']);
-        }
-        $hideresults = '';
-        if (isset($_POST['hideresults'])) {
-            $hideresults = COM_applyFilter($_POST['hideresults']);
-        }
-        $display .= savepoll($pid, $old_pid, $_POST['question'], $mainpage,
-            $_POST['topic'], $_POST['meta_description'],
-            $_POST['meta_keywords'], $statuscode, $open,
-            $hideresults,
-            COM_applyFilter($_POST['commentcode'], true),
-            $_POST['answer'], $_POST['votes'], $_POST['remark'],
-            COM_applyFilter($_POST['owner_id'], true),
-            COM_applyFilter($_POST['group_id'], true),
-            $_POST['perm_owner'], $_POST['perm_group'],
-            $_POST['perm_members'], $_POST['perm_anon'],
-            $_POST['allow_multipleanswers'],
-            COM_applyFilter($_POST['topic_description']),
-            $_POST['description']);
+        $statuscode = (int) Geeklog\Input::fPost('statuscode', 0);
+        $mainpage = Geeklog\Input::post('mainpage', '');
+        $open = Geeklog\Input::fPost('open', '');
+        $hideresults = Geeklog\Input::fPost('hideresults', '');
+        $display .= savepoll(
+            $pid, $old_pid,
+            Geeklog\Input::post('question'), $mainpage,
+            Geeklog\Input::post('topic'),
+            Geeklog\Input::post('meta_description'),
+            Geeklog\Input::post('meta_keywords'),
+            $statuscode, $open, $hideresults,
+            (int) Geeklog\Input::fPost('commentcode'),
+            Geeklog\Input::post('answer'),
+            Geeklog\Input::post('votes'),
+            Geeklog\Input::post('remark'),
+            (int) Geeklog\Input::fPost('owner_id'),
+            (int) Geeklog\Input::fPost('group_id'),
+            Geeklog\Input::post('perm_owner'),
+            Geeklog\Input::post('perm_group'),
+            Geeklog\Input::post('perm_members'),
+            Geeklog\Input::post('perm_anon'),
+            Geeklog\Input::post('allow_multipleanswers'),
+            Geeklog\Input::fPost('topic_description'),
+            Geeklog\Input::post('description')
+        );
     } else {
-        $display .= COM_showMessageText($LANG25[17], $LANG21[32])
-            . editpoll();
+        $display .= COM_showMessageText($LANG25[17], $LANG21[32]) . editpoll();
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[5]));
     }
 } elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
-    $pid = '';
-    if (isset($_POST['pid'])) {
-        $pid = COM_applyFilter($_POST['pid']);
-    }
+    $pid = Geeklog\Input::fPost('pid', '');
     if (empty($pid)) {
         COM_errorLog('Ignored possibly manipulated request to delete a poll.');
         COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     } elseif (SEC_checkToken()) {
         $display .= deletePoll($pid);
     } else {
-        COM_accessLog("User {$_USER['username']} tried to illegally delete poll $pid and failed CSRF checks.");
+        COM_accessLog("User {$_USER['username']} tried to illegally delete poll {$pid} and failed CSRF checks.");
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } else { // 'cancel' or no mode at all
-    if (isset($_REQUEST['msg'])) {
-        $msg = COM_applyFilter($_REQUEST['msg'], true);
-        if ($msg > 0) {
-            $display .= COM_showMessage($msg, 'polls');
-        }
+    $msg = (int) Geeklog\Input::fRequest('msg', 0);
+    if ($msg > 0) {
+        $display .= COM_showMessage($msg, 'polls');
     }
     $display .= listpolls();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[18]));

@@ -1384,17 +1384,12 @@ function savepreferences($A)
 }
 
 // MAIN
-$mode = '';
-if (isset($_POST['btncancel']) && $_POST['btncancel'] == $LANG_ADMIN['cancel']) {
+if (Geeklog\Input::post('btncancel')  === $LANG_ADMIN['cancel']) {
     COM_redirect($_CONF['site_url']);
-} elseif (isset($_POST['btnsubmit']) && ($_POST['btnsubmit'] === $LANG04[96]) &&
-    ($_POST['mode'] !== 'deleteconfirmed')
-) {
+} elseif ((Geeklog\Input::post('btnsubmit') === $LANG04[96]) && (Geeklog\Input::post('mode') !== 'deleteconfirmed')) {
     $mode = 'confirmdelete';
-} elseif (isset($_POST['mode'])) {
-    $mode = COM_applyFilter($_POST['mode']);
-} elseif (isset($_GET['mode'])) {
-    $mode = COM_applyFilter($_GET['mode']);
+} else {
+    $mode = Geeklog\Input::fPostOrGet('mode', '');
 }
 
 $display = '';
@@ -1414,7 +1409,7 @@ if (!COM_isAnonUser()) {
 
         case 'confirmdelete':
             if (($_CONF['allow_account_delete'] == 1) && ($_USER['uid'] > 1)) {
-                $accountId = COM_applyFilter($_POST['account_id']);
+                $accountId = Geeklog\Input::fPost('account_id');
                 if (!empty($accountId)) {
                     $display .= confirmAccountDelete($accountId);
                 } else {
@@ -1427,7 +1422,7 @@ if (!COM_isAnonUser()) {
 
         case 'deleteconfirmed':
             if (($_CONF['allow_account_delete'] == 1) && ($_USER['uid'] > 1)) {
-                $accountId = COM_applyFilter($_POST['account_id']);
+                $accountId = Geeklog\Input::fPost('account_id');
                 if (!empty($accountId)) {
                     $display .= deleteUserAccount($accountId);
                 } else {

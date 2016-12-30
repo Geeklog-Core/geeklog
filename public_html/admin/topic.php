@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | topic.php                                                                 |
 // |                                                                           |
@@ -383,7 +383,7 @@ function savetopic(
     $duplicate_tid = false;
     $old_tid = '';
     if (isset($_POST['old_tid'])) {
-        $old_tid = COM_applyFilter($_POST['old_tid']);
+        $old_tid = Geeklog\Input::fPost('old_tid');
         if (!empty($old_tid)) {
             $old_tid = COM_sanitizeID($old_tid);
             // See if new topic id
@@ -922,14 +922,10 @@ function handleIconUpload($tid)
 
 // MAIN
 $display = '';
-
-$mode = '';
-if (isset($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
-}
+$mode = Geeklog\Input::request('mode', '');
 
 if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
-    $tid = COM_applyFilter($_POST['tid']);
+    $tid = Geeklog\Input::fPost('tid');
     if (!isset($tid) || empty($tid)) {
         COM_errorLog('Attempted to delete topic tid=' . $tid);
         COM_redirect($_CONF['site_admin_url'] . '/topic.php');
@@ -941,66 +937,47 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     if (empty($_FILES['newicon']['name'])) {
-        $imageurl = COM_applyFilter($_POST['imageurl']);
+        $imageurl = Geeklog\Input::fPost('imageurl');
     } else {
-        $imageurl = handleIconUpload($_POST['tid']);
+        $imageurl = handleIconUpload(Geeklog\Input::post('tid'));
         $imageurl = COM_applyFilter($imageurl);
     }
-    $is_default = '';
-    if (isset($_POST['is_default'])) {
-        $is_default = $_POST['is_default'];
-    }
-    $is_archive = '';
-    if (isset($_POST['is_archive'])) {
-        $is_archive = $_POST['is_archive'];
-    }
-    $inherit = '';
-    if (isset($_POST['inherit'])) {
-        $inherit = COM_applyFilter($_POST['inherit'], true);
-    }
-    $hidden = '';
-    if (isset($_POST['hidden'])) {
-        $hidden = COM_applyFilter($_POST['hidden'], true);
-    }
-    $parent_id = '';
-    if (isset($_POST['parent_id'])) {
-        $parent_id = COM_applyFilter($_POST['parent_id']);
-    }
 
-    $sortnum = 0;
-    if (isset($_POST['sortnum'])) {
-        $sortnum = COM_applyFilter($_POST['sortnum'], true);
-    }
-    $display .= savetopic(COM_applyFilter($_POST['tid']), $_POST['topic_name'],
-        $inherit, $hidden, $parent_id,
-        $imageurl, $_POST['meta_description'],
-        $_POST['meta_keywords'], $sortnum,
-        COM_applyFilter($_POST['limitnews'], true),
-        COM_applyFilter($_POST['owner_id'], true),
-        COM_applyFilter($_POST['group_id'], true),
-        $_POST['perm_owner'], $_POST['perm_group'],
-        $_POST['perm_members'], $_POST['perm_anon'],
-        $is_default, $is_archive);
-} elseif ($mode == 'edit') {
-    $tid = '';
-    if (isset($_GET['tid'])) {
-        $tid = COM_applyFilter($_GET['tid']);
-    }
+    $is_default = Geeklog\Input::post('is_default', '');
+    $is_archive = Geeklog\Input::post('is_archive', '');
+    $inherit = (int) Geeklog\Input::fPost('inherit', 0);
+    $hidden = (int) Geeklog\Input::fPost('hidden', 0);
+    $parent_id = Geeklog\Input::fPost('parent_id');
+    $sortnum = (int) Geeklog\Input::fPost('sortnum', 0);
+    $display .= savetopic(
+        Geeklog\Input::fPost('tid'),
+        Geeklog\Input::post('topic_name'),
+        $inherit, $hidden, $parent_id, $imageurl,
+        Geeklog\Input::post('meta_description'),
+        Geeklog\Input::post('meta_keywords'),
+        $sortnum,
+        (int) Geeklog\Input::fPost('limitnews'),
+        (int) Geeklog\Input::fPost('owner_id'),
+        (int) Geeklog\Input::fPost('group_id'),
+        (int) Geeklog\Input::post('perm_owner'),
+        (int) Geeklog\Input::post('perm_group'),
+        (int) Geeklog\Input::post('perm_members'),
+        (int) Geeklog\Input::post('perm_anon'),
+        $is_default, $is_archive
+    );
+} elseif ($mode === 'edit') {
+    $tid = Geeklog\Input::fGet('tid', '');
     $display .= edittopic($tid);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[1]));
-
-
-} elseif ($mode == 'change_sortnum' && SEC_checkToken()) {
+} elseif ($mode === 'change_sortnum' && SEC_checkToken()) {
     $display .= COM_showMessageFromParameter();
-    moveTopics(COM_applyFilter($_GET['tid']), COM_applyFilter($_GET['where']));
+    moveTopics(Geeklog\Input::fGet('tid'), Geeklog\Input::fGet('where'));
 
     $display .= listTopics(SEC_createToken());
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
-
 } else { // 'cancel' or no mode at all
     $display .= COM_showMessageFromParameter();
     $display .= listTopics(SEC_createToken());
-
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
 }
 

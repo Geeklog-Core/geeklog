@@ -1304,16 +1304,12 @@ function plugin_get_pluginname($plugin)
 
 // MAIN
 $display = '';
-$mode = '';
-if (isset($_POST['mode'])) {
-    $mode = $_POST['mode'];
-} elseif (isset($_GET['mode'])) {
-    $mode = $_GET['mode'];
-}
+$mode = Geeklog\Input::postOrGet('mode', '');
+
 if ($mode === 'delete') {
-    $pi_name = COM_applyFilter($_GET['pi_name']);
+    $pi_name = Geeklog\Input::fGet('pi_name');
     if ((!empty($pi_name)) && SEC_hasRights('plugin.install')) {
-        if (($_GET['confirmed'] == 1) && SEC_checkToken()) {
+        if ((Geeklog\Input::get('confirmed') == 1) && SEC_checkToken()) {
             $msg = do_uninstall($pi_name);
             if ($msg === false) {
                 COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
@@ -1335,25 +1331,21 @@ if ($mode === 'delete') {
     } else {
         COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
     }
-
 } elseif (($mode === 'updatethisplugin') && SEC_checkToken()) { // update
-    $pi_name = COM_applyFilter($_GET['pi_name']);
+    $pi_name = Geeklog\Input::fGet('pi_name');
     $display .= do_update($pi_name);
 
 } elseif ($mode === 'info_installed') {
-    $display .= plugin_info_installed(COM_applyFilter($_GET['pi_name']));
+    $display .= plugin_info_installed(Geeklog\Input::fGet('pi_name'));
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG32[13]));
 
 } elseif ($mode === 'info_uninstalled') {
-    $display .= plugin_info_uninstalled(COM_applyFilter($_GET['pi_name']));
+    $display .= plugin_info_uninstalled(Geeklog\Input::fGet('pi_name'));
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG32[13]));
 
 } elseif ($mode === 'toggle') {
     SEC_checkToken();
-    $pi_name = '';
-    if (!empty($_GET['pi_name'])) {
-        $pi_name = COM_applyFilter($_GET['pi_name']);
-    }
+    $pi_name = Geeklog\Input::fGet('pi_name', '');
     changePluginStatus($pi_name);
     $sorting = '';
     if (!empty($_GET['order']) && !empty($_GET['direction'])) { // Remember how the list was sorted
@@ -1364,14 +1356,11 @@ if ($mode === 'delete') {
     }
     COM_redirect($_CONF['site_admin_url'] . '/plugins.php' . $sorting);
 } elseif (($mode === 'change_load_order') && SEC_checkToken()) {
-    change_load_order(COM_applyFilter($_GET['pi_name']), COM_applyFilter($_GET['where']));
+    change_load_order(Geeklog\Input::fGet('pi_name'), Geeklog\Input::fGet('where'));
     COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
 } elseif (($mode === 'autoinstall') && SEC_checkToken()) {
     if (SEC_hasRights('plugin.install')) {
-        $plugin = '';
-        if (isset($_GET['plugin'])) {
-            $plugin = COM_applyFilter($_GET['plugin']);
-        }
+        $plugin = Geeklog\Input::fGet('plugin', '');
         if (plugin_autoinstall($plugin)) {
             PLG_pluginStateChange($plugin, 'installed');
             COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=44');
@@ -1382,12 +1371,12 @@ if ($mode === 'delete') {
         COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
     }
 } elseif ($mode === 'continue_upgrade') {
-    $display .= continue_upgrade(COM_sanitizeFilename($_GET['plugin']),
-        $_GET['piversion'], $_GET['codeversion']);
-
+    $display .= continue_upgrade(
+        COM_sanitizeFilename(Geeklog\Input::Get('plugin')),
+        Geeklog\Input::Get('piversion'), Geeklog\Input::Get('codeversion')
+    );
 } elseif (isset($_FILES['plugin']) && SEC_checkToken() && SEC_hasRights('plugin.install,plugin.upload')) {
     $display .= plugin_upload();
-
 } else { // 'cancel' or no mode at all
     $display .= plugin_main();
 }

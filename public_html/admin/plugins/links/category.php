@@ -529,18 +529,14 @@ function links_delete_category($cid)
 }
 
 // MAIN
-$mode = '';
-if (isset ($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
-}
-
+$mode = Geeklog\Input::request('mode', '');
 $root = $_LI_CONF['root'];
 
 // delete category
 if ((($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) || ($mode == "delete")) {
-    $cid = '';
-    if (isset($_REQUEST['cid'])) {
-        $cid = strip_tags($_REQUEST['cid']);
+    $cid = Geeklog\Input::request('cid', '');
+    if (!empty($cid)) {
+        $cid = strip_tags($cid);
     }
     if (empty($cid)) {
         COM_errorLog('Attempted to delete empty category');
@@ -558,13 +554,18 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) || ($mod
     // save category
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $msg = links_save_category(
-        $_POST['cid'], $_POST['old_cid'],
-        $_POST['pid'], $_POST['category'],
-        $_POST['description'], COM_applyFilter($_POST['tid']),
-        COM_applyFilter($_POST['owner_id'], true),
-        COM_applyFilter($_POST['group_id'], true),
-        $_POST['perm_owner'], $_POST['perm_group'],
-        $_POST['perm_members'], $_POST['perm_anon']
+        Geeklog\Input::post('cid'),
+        Geeklog\Input::post('old_cid'),
+        Geeklog\Input::post('pid'),
+        Geeklog\Input::post('category'),
+        Geeklog\Input::post('description'),
+        Geeklog\Input::fPost('tid'),
+        (int) Geeklog\Input::fPost('owner_id'),
+        (int) Geeklog\Input::fPost('group_id'),
+        Geeklog\Input::post('perm_owner'),
+        Geeklog\Input::post('perm_group'),
+        Geeklog\Input::post('perm_members'),
+        Geeklog\Input::post('perm_anon')
     );
 
     $display .= COM_showMessage($msg, 'links');
@@ -572,25 +573,17 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) || ($mod
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[11]));
 
     // edit category
-} elseif ($mode == 'edit') {
-    $pid = '';
-    if (isset($_GET['pid'])) {
-        $pid = strip_tags(COM_stripslashes($_GET['pid']));
-    }
-    $cid = '';
-    if (isset($_GET['cid'])) {
-        $cid = strip_tags(COM_stripslashes($_GET['cid']));
-    }
+} elseif ($mode === 'edit') {
+    $pid = strip_tags(Geeklog\Input::get('pid', ''));
+    $cid = strip_tags(Geeklog\Input::get('cid', ''));
     $display .= links_edit_category($cid, $pid);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[56]));
 
     // nothing, so list categories
 } else {
-    if (isset ($_REQUEST['msg'])) {
-        $msg = COM_applyFilter($_REQUEST['msg'], true);
-        if ($msg > 0) {
-            $display .= COM_showMessage($msg, 'links');
-        }
+    $msg = (int) Geeklog\Input::fRequest('msg', 0);
+    if ($msg > 0) {
+        $display .= COM_showMessage($msg, 'links');
     }
     $display .= links_list_categories($root);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[11]));

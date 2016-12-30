@@ -300,7 +300,7 @@ function send_messages(array $vars)
 }
 
 // MAIN
-if (isset($_POST['mail']) && ($_POST['mail'] == 'mail') && SEC_checkToken()) {
+if ((Geeklog\Input::post('mail') === 'mail') && SEC_checkToken()) {
     $display .= send_messages($_POST);
 } else {
     $display .= COM_showMessageFromParameter();

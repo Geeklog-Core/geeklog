@@ -253,7 +253,7 @@ function savelink($lid, $old_lid, $cid, $categoryDd, $url, $description, $title,
     $cid = GLText::remove4byteUtf8Chars($cid);
     $cid = DB_escapeString($cid);
 
-    if (empty ($owner_id)) {
+    if (empty($owner_id)) {
         // this is new link from admin, set default values
         $owner_id = $_USER['uid'];
         if (isset ($_GROUPS['Links Admin'])) {
@@ -293,13 +293,13 @@ function savelink($lid, $old_lid, $cid, $categoryDd, $url, $description, $title,
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess(
             $A['owner_id'], $A['group_id'],
-            $A['perm_owner'], $A['perm_group'], 
+            $A['perm_owner'], $A['perm_group'],
             $A['perm_members'], $A['perm_anon']
         );
     } else {
         $access = SEC_hasAccess(
-            $owner_id, $group_id, 
-            $perm_owner, $perm_group, 
+            $owner_id, $group_id,
+            $perm_owner, $perm_group,
             $perm_members, $perm_anon
         );
     }
@@ -373,22 +373,24 @@ function listlinks()
     $menu_arr = array(
         array(
             'url'  => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
-              'text' => $LANG_LINKS_ADMIN[51]
+            'text' => $LANG_LINKS_ADMIN[51],
         ),
     );
 
     $validate = '';
     if (isset($_GET['validate'])) {
         $token = SEC_createToken();
-        $menu_arr[] = array('url'  => $_CONF['site_admin_url'] . '/plugins/links/index.php',
-                            'text' => $LANG_LINKS_ADMIN[53]);
+        $menu_arr[] = array(
+            'url'  => $_CONF['site_admin_url'] . '/plugins/links/index.php',
+            'text' => $LANG_LINKS_ADMIN[53],
+        );
         $doValidateUrl = $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=validate' . '&amp;' . CSRF_TOKEN . '=' . $token;
         $doValidateText = $LANG_LINKS_ADMIN[58];
         $form_arr['top'] = COM_createLink($doValidateText, $doValidateUrl);
-        if ($_GET['validate'] === 'enabled') {
+        if (Geeklog\Input::get('validate') === 'enabled') {
             $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'beforevalidate', 'sort' => false);
             $validate = '?validate=enabled';
-        } elseif ($_GET['validate'] === 'validate') {
+        } elseif (Geeklog\Input::get('validate') === 'validate') {
             $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'dovalidate', 'sort' => false);
             $validate = '?validate=validate&amp;' . CSRF_TOKEN . '=' . $token;
         }
@@ -396,7 +398,7 @@ function listlinks()
     } else {
         $menu_arr[] = array(
             'url'  => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled',
-                            'text' => $LANG_LINKS_ADMIN[26]
+            'text' => $LANG_LINKS_ADMIN[26],
         );
         $form_arr = array();
         $validate_help = '';
@@ -406,15 +408,15 @@ function listlinks()
 
     $menu_arr[] = array(
         'url'  => $_CONF['site_admin_url'] . '/plugins/links/category.php',
-                        'text' => $LANG_LINKS_ADMIN[50]
+        'text' => $LANG_LINKS_ADMIN[50],
     );
     $menu_arr[] = array(
         'url'  => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
-                        'text' => $LANG_LINKS_ADMIN[52]
+        'text' => $LANG_LINKS_ADMIN[52],
     );
     $menu_arr[] = array(
         'url'  => $_CONF['site_admin_url'],
-                        'text' => $LANG_ADMIN['admin_home']
+        'text' => $LANG_ADMIN['admin_home'],
     );
 
     $retval .= COM_startBlock($LANG_LINKS_ADMIN[11], '',
@@ -429,14 +431,14 @@ function listlinks()
 
     $query_arr = array(
         'table'          => 'links',
-                       'sql'            => "SELECT l.lid AS lid, l.cid as cid, l.title AS title, "
-                           . "c.category AS category, l.url AS url, l.description AS description, "
-                           . "l.owner_id, l.group_id, l.perm_owner, l.perm_group, l.perm_members, l.perm_anon "
-                           . "FROM {$_TABLES['links']} AS l "
-                           . "LEFT JOIN {$_TABLES['linkcategories']} AS c "
-                           . "ON l.cid=c.cid WHERE 1=1",
-                       'query_fields'   => array('title', 'category', 'url', 'l.description'),
-                       'default_filter' => COM_getPermSQL('AND', 0, 3, 'l'),
+        'sql'            => "SELECT l.lid AS lid, l.cid as cid, l.title AS title, "
+            . "c.category AS category, l.url AS url, l.description AS description, "
+            . "l.owner_id, l.group_id, l.perm_owner, l.perm_group, l.perm_members, l.perm_anon "
+            . "FROM {$_TABLES['links']} AS l "
+            . "LEFT JOIN {$_TABLES['linkcategories']} AS c "
+            . "ON l.cid=c.cid WHERE 1=1",
+        'query_fields'   => array('title', 'category', 'url', 'l.description'),
+        'default_filter' => COM_getPermSQL('AND', 0, 3, 'l'),
     );
 
     $retval .= ADMIN_list('links', 'plugin_getListField_links', $header_arr,
@@ -487,53 +489,51 @@ function deleteLink($lid, $type = '')
 }
 
 // MAIN
-$mode = '';
-if (isset ($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
-}
+$mode = Geeklog\Input::request('mode', '');
 
-if (($mode === $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
-    $lid = COM_applyFilter($_POST['lid']);
-    if (!isset ($lid) || empty ($lid)) {  // || ($lid == 0)
+if (($mode === $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
+    $lid = Geeklog\Input::fPost('lid');
+    if (empty($lid)) {  // || ($lid == 0)
         COM_errorLog('Attempted to delete link lid=' . $lid);
         COM_redirect($_CONF['site_admin_url'] . '/plugins/links/index.php');
     } elseif (SEC_checkToken()) {
-        $type = '';
-        if (isset($_POST['type'])) {
-            $type = COM_applyFilter($_POST['type']);
-        }
+        $type = Geeklog\Input::fPost('type', '');
         $display .= deleteLink($lid, $type);
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete link $lid and failed CSRF checks.");
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode === $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
-    $cid = '';
-    if (isset($_POST['cid'])) {
-        $cid = $_POST['cid'];
-    }
-    $display .= savelink(COM_applyFilter($_POST['lid']),
-        COM_applyFilter($_POST['old_lid']),
-        $cid, $_POST['categorydd'],
-        $_POST['url'], $_POST['description'], $_POST['title'],
-        COM_applyFilter($_POST['hits'], true),
-        COM_applyFilter($_POST['owner_id'], true),
-        COM_applyFilter($_POST['group_id'], true),
-        $_POST['perm_owner'], $_POST['perm_group'],
-        $_POST['perm_members'], $_POST['perm_anon']);
+    $cid = Geeklog\Input::post('cid', '');
+    $display .= savelink(
+        Geeklog\Input::fPost('lid'),
+        Geeklog\Input::fPost('old_lid'),
+        $cid,
+        Geeklog\Input::post('categorydd'),
+        Geeklog\Input::post('url'),
+        Geeklog\Input::post('description'),
+        Geeklog\Input::post('title'),
+        (int) Geeklog\Input::fPost('hits'),
+        (int) Geeklog\Input::fPost('owner_id'),
+        (int) Geeklog\Input::fPost('group_id'),
+        Geeklog\Input::post('perm_owner'),
+        Geeklog\Input::post('perm_group'),
+        Geeklog\Input::post('perm_members'),
+        Geeklog\Input::post('perm_anon')
+    );
 } elseif ($mode === 'editsubmission') {
-    $display .= editlink($mode, COM_applyFilter($_GET['id']));
+    $display .= editlink($mode, Geeklog\Input::fGet('id'));
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[1]));
 } elseif ($mode === 'edit') {
-    if (empty ($_GET['lid'])) {
+    if (empty($_GET['lid'])) {
         $display .= editlink($mode);
     } else {
-        $display .= editlink($mode, COM_applyFilter($_GET['lid']));
+        $display .= editlink($mode, Geeklog\Input::fGet('id'));
     }
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[1]));
 } else { // 'cancel' or no mode at all
     if (isset($_GET['msg'])) {
-        $msg = COM_applyFilter($_GET['msg'], true);
+        $msg = (int) Geeklog\Input::fGet('msg', 0);
         if ($msg > 0) {
             $display .= COM_showMessage($msg, 'links');
         }

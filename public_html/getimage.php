@@ -31,13 +31,12 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* For really strict webhosts, this file an be used to show images in pages that
-* serve the images from outside of the webtree to a place that the webserver
-* user can actually write too
-*
-* @author   Tony Bibbs, tony AT tonybibbs DOT com
-*
-*/
+ * For really strict webhosts, this file an be used to show images in pages that
+ * serve the images from outside of the webtree to a place that the webserver
+ * user can actually write too
+ *
+ * @author   Tony Bibbs, tony AT tonybibbs DOT com
+ */
 
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'classes/downloader.class.php';
@@ -51,12 +50,12 @@ $downloader->setAllowedExtensions(
         'jpg'  => 'image/jpeg',
         'jpeg' => 'image/jpeg',
         'png'  => 'image/png',
-        'png'  => 'image/x-png'
+        'png'  => 'image/x-png',
     )
 );
 
 COM_setArgNames(array('mode', 'image'));
-$mode  = COM_applyFilter(COM_getArgument('mode'));
+$mode = COM_applyFilter(COM_getArgument('mode'));
 $image = COM_applyFilter(COM_getArgument('image'));
 
 if (strstr($image, '..')) {
@@ -94,16 +93,10 @@ if (is_file($pathToImage)) {
     if (is_array($st)) {
         // cf. RFC 2616, Section 3.3.1 Full Date
         $last_mod = str_replace('+0000', 'GMT', gmdate('r', $st['mtime']));
-        $etag     = '"' . md5($image) . '"';
+        $etag = '"' . md5($image) . '"';
 
-        $mod_since  = '';
-        $none_match = '';
-        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-            $mod_since = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
-        }
-        if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
-            $none_match = $_SERVER['HTTP_IF_NONE_MATCH'];
-        }
+        $mod_since = Geeklog\Input::server('HTTP_IF_MODIFIED_SINCE', '');
+        $none_match = Geeklog\Input::server('HTTP_IF_NONE_MATCH', '');
 
         if (($last_mod == $mod_since) && ($etag == $none_match)) {
             // image hasn't change - we're done

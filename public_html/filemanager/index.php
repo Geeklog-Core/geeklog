@@ -234,7 +234,7 @@ $relPaths = array(
     'Root'  => $rootPath,
 );
 
-$type = isset($_GET['Type']) ? COM_applyFilter($_GET['Type']) : '';
+$type = Geeklog\Input::fGet('type', '');
 
 if (!array_key_exists($type, $relPaths)) {
     $type = 'Image';

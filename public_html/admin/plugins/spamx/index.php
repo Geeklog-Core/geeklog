@@ -35,15 +35,15 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Spam-X administration page
-*
-* @package Spam-X
-* @subpackage admin
-*/
+ * Spam-X administration page
+ *
+ * @package    Spam-X
+ * @subpackage admin
+ */
 
 /**
-* Geeklog common function library and Admin authentication
-*/
+ * Geeklog common function library and Admin authentication
+ */
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
 require_once $_CONF['path_system'] . '/lib-admin.php';
@@ -67,14 +67,14 @@ if (!SEC_hasRights('spamx.admin')) {
 
 
 /**
-* Main
-*/
+ * Main
+ */
 
 $display = '';
 
-$menu_arr = array (
-    array('url' => $_CONF['site_admin_url'],
-          'text' => $LANG_ADMIN['admin_home'])
+$menu_arr = array(
+    array('url'  => $_CONF['site_admin_url'],
+          'text' => $LANG_ADMIN['admin_home']),
 );
 
 $display = COM_startBlock(
@@ -100,16 +100,16 @@ if ($dir = @opendir($_CONF['path'] . 'plugins/spamx/')) {
 $header_arr = array(
     array(
         'text'  => $LANG_SX00['plugin'],
-        'field' => 'title'
+        'field' => 'title',
     ),
     array(
         'text'  => $LANG33[30],
-        'field' => 'regdate'
+        'field' => 'regdate',
     ),
     array(
         'text'  => $LANG_SX00['action'],
-        'field' => 'edit'
-    )
+        'field' => 'edit',
+    ),
 );
 $data_arr = array();
 
@@ -117,8 +117,8 @@ foreach ($files as $file) {
     require_once $_CONF['path'] . 'plugins/spamx/' . $file . '.Admin.class.php';
 
     $CM = new $file;
-    $action  = 'Edit';
-    $link    = $CM->linkText;
+    $action = 'Edit';
+    $link = $CM->linkText;
     $regdate = '-';
 
     if (strpos($link, 'Edit ') !== false) {
@@ -134,7 +134,7 @@ foreach ($files as $file) {
         'edit'    => COM_createLink(
             $LANG_SX00[strtolower($action)],
             $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=' . $file
-        )
+        ),
     );
 }
 
@@ -144,12 +144,12 @@ $data_arr[] = array(
     'edit'    => COM_createLink(
         $LANG_SX00['view'],
         plugin_getdocumentationurl_spamx('index')
-    )
+    ),
 );
-$display.= ADMIN_simpleList(null, $header_arr, null, $data_arr);
+$display .= ADMIN_simpleList(null, $header_arr, null, $data_arr);
 
 if (isset($_REQUEST['command'])) {
-    $cmd = COM_applyFilter($_REQUEST['command']);
+    $cmd = Geeklog\Input::fRequest('command');
 
     if (!empty($cmd) && in_array($cmd, $files)) {
         $CM = new $cmd;
@@ -158,12 +158,9 @@ if (isset($_REQUEST['command'])) {
 }
 
 $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
-
 $display = COM_createHTMLDocument(
     $display,
     array('pagetitle' => $LANG_SX00['plugin_name'])
 );
 
 COM_output($display);
-
-?>

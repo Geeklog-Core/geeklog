@@ -129,9 +129,8 @@ function contactemail($uid, $cc, $author, $authoremail, $subject, $message)
 
             $sent = COM_mail($to, $subject, $message, $from);
 
-            if ($sent && $_CONF['mail_cc_enabled'] && isset($_POST['cc']) && ($_POST['cc'] === 'on')) {
-                $ccmessage = sprintf($LANG08[38], COM_getDisplayName($uid,
-                                            $A['username'], $A['fullname']));
+            if ($sent && $_CONF['mail_cc_enabled'] && (Geeklog\Input::post('cc') === 'on')) {
+                $ccmessage = sprintf($LANG08[38], COM_getDisplayName($uid, $A['username'], $A['fullname']));
                 $ccmessage .= "\n------------------------------------------------------------\n\n" . $message;
 
                 $sent = COM_mail($from, $subject, $ccmessage, $from);
@@ -231,9 +230,9 @@ function contactform($uid, $cc = false, $subject = '', $message = '')
             $mail_template->set_var('lang_description', $LANG08[26]);
             $mail_template->set_var('lang_username', $LANG08[11]);
             if (COM_isAnonUser()) {
-                $sender = '';
-                if (isset($_POST['author'])) {
-                    $sender = strip_tags($_POST['author']);
+                $sender = Geeklog\Input::post('author', '');
+                if (!empty($sender)) {
+                    $sender = strip_tags($sender);
                     $sender = substr($sender, 0, strcspn($sender, "\r\n"));
                     $sender = htmlspecialchars(trim($sender), ENT_QUOTES);
                 }
@@ -245,9 +244,9 @@ function contactform($uid, $cc = false, $subject = '', $message = '')
             }
             $mail_template->set_var('lang_useremail', $LANG08[12]);
             if (COM_isAnonUser()) {
-                $email = '';
-                if (isset($_POST['authoremail'])) {
-                    $email = strip_tags($_POST['authoremail']);
+                $email = Geeklog\Input::post('authoremail', '');
+                if (!empty($email)) {
+                    $email = strip_tags($email);
                     $email = substr($email, 0, strcspn($email, "\r\n"));
                     $email = htmlspecialchars(trim($email), ENT_QUOTES);
                 }
@@ -394,7 +393,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $sent = COM_mail($mailto, $subject, $mailtext, $mailfrom);
 
-    if ($sent && $_CONF['mail_cc_enabled'] && isset($_POST['cc']) && ($_POST['cc'] === 'on')) {
+    if ($sent && $_CONF['mail_cc_enabled'] && (Geeklog\Input::post('cc') === 'on')) {
         $ccmessage = sprintf($LANG08[38], $to);
         $ccmessage .= "\n------------------------------------------------------------\n\n" . $mailtext;
 
@@ -508,40 +507,32 @@ function mailstoryform($sid, $cc = false, $to = '', $toemail = '', $from = '',
 // MAIN
 $display = '';
 
-if (isset($_POST['what'])) {
-    $what = COM_applyFilter($_POST['what']);
-} else if (isset($_GET['what'])) {
-    $what = COM_applyFilter($_GET['what']);
-} else {
-    $what = '';
-}
+$what = Geeklog\Input::fPostOrGet('what', '');
 
-if (isset($_POST['cc'])) { // Remember if user wants to get a copy of the message
-    $cc = true;
-} else {
-    $cc = false;
-}
+// Remember if user wants to get a copy of the message
+$cc = isset($_POST['cc']);
 
 switch ($what) {
     case 'contact':
-        $uid = COM_applyFilter($_POST['uid'], true);
+        $uid = (int) Geeklog\Input::fPost('uid', 0);
         if ($uid > 1) {
-            $display .= contactemail($uid, $cc, $_POST['author'],
-                    $_POST['authoremail'], $_POST['subject'],
-                    $_POST['message']);
+            $display .= contactemail(
+                $uid, $cc,
+                Geeklog\Input::post('author'), Geeklog\Input::post('authoremail'),
+                Geeklog\Input::post('subject'), Geeklog\Input::post('message')
+            );
         } else {
             COM_redirect($_CONF['site_url'] . '/index.php');
         }
         break;
 
     case 'emailstory':
-        $sid = COM_applyFilter($_GET['sid']);
+        $sid = Geeklog\Input::get('sid');
 
         if (empty($sid)) {
             COM_redirect($_CONF['site_url'] . '/index.php');
         } elseif ($_CONF['hideemailicon'] == 1) {
-            COM_redirect(COM_buildUrl($_CONF['site_url']
-                                    . '/article.php?story=' . $sid));
+            COM_redirect(COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid));
         } else {
             $display = mailstoryform($sid, $_CONF['mail_cc_default']);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
@@ -549,7 +540,7 @@ switch ($what) {
         break;
 
     case 'sendstory':
-        $sid = COM_applyFilter($_POST['sid']);
+        $sid = Geeklog\Input::fPost('sid');
 
         if (empty($sid)) {
             $display = COM_redirect($_CONF['site_url'] . '/index.php');
@@ -559,49 +550,60 @@ switch ($what) {
                     !COM_isEmail($_POST['fromemail']) ||
                     (strpos($_POST['to'], '@') !== false) ||
                     (strpos($_POST['from'], '@') !== false)) {
-                $display = mailstoryform($sid, $cc, COM_applyFilter($_POST['to']),
-                                COM_applyFilter($_POST['toemail']),
-                                COM_applyFilter($_POST['from']),
-                                COM_applyFilter($_POST['fromemail']),
-                                $_POST['shortmsg'], 52);
+                $display = mailstoryform(
+                    $sid, $cc,
+                    Geeklog\Input::fPost('to'),
+                    Geeklog\Input::fPost('toemail'),
+                    Geeklog\Input::fPost('from'),
+                    Geeklog\Input::fPost('fromemail'),
+                    Geeklog\Input::post('shortmsg'),
+                    52
+                );
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
-            } elseif (empty($_POST['to']) || empty($_POST['from']) ||
-                    empty($_POST['shortmsg'])) {
+            } elseif (empty($_POST['to']) || empty($_POST['from']) || empty($_POST['shortmsg'])) {
                 $display = COM_showMessageText($LANG08[22])
-                         . mailstoryform($sid, $cc, COM_applyFilter($_POST['to']),
-                                COM_applyFilter($_POST['toemail']),
-                                COM_applyFilter($_POST['from']),
-                                COM_applyFilter($_POST['fromemail']),
-                                $_POST['shortmsg']);
+                     . mailstoryform(
+                        $sid, $cc,
+                        Geeklog\Input::fPost('to'),
+                        Geeklog\Input::fPost('toemail'),
+                        Geeklog\Input::fPost('from'),
+                        Geeklog\Input::fPost('fromemail'),
+                        Geeklog\Input::post('shortmsg')
+                    );
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
             } else {
-                $msg = PLG_itemPreSave('emailstory', $_POST['shortmsg']);
+                $msg = PLG_itemPreSave('emailstory', Geeklog\Input::post('shortmsg'));
                 if (!empty($msg)) {
                     $display = COM_errorLog($msg, 2)
-                             . mailstoryform($sid, $cc, COM_applyFilter($_POST['to']),
-                                COM_applyFilter($_POST['toemail']),
-                                COM_applyFilter($_POST['from']),
-                                COM_applyFilter($_POST['fromemail']),
-                                $_POST['shortmsg']);
+                         . mailstoryform(
+                            $sid, $cc,
+                            Geeklog\Input::fPost('to'),
+                            Geeklog\Input::fPost('toemail'),
+                            Geeklog\Input::fPost('from'),
+                            Geeklog\Input::fPost('fromemail'),
+                            Geeklog\Input::post('shortmsg')
+                        );
                     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
                 } else {
-                    $display .= mailstory($sid, $_POST['to'], $_POST['toemail'],
-                        $_POST['from'], $_POST['fromemail'], $_POST['shortmsg']);
+                    $display .= mailstory(
+                        $sid,
+                        Geeklog\Input::fPost('to'),
+                        Geeklog\Input::fPost('toemail'),
+                        Geeklog\Input::fPost('from'),
+                        Geeklog\Input::fPost('fromemail'),
+                        Geeklog\Input::post('shortmsg')
+                    );
                 }
             }
         }
         break;
 
     default:
-        if (isset($_GET['uid'])) {
-            $uid = COM_applyFilter($_GET['uid'], true);
-        } else {
-            $uid = 0;
-        }
+        $uid = (int) Geeklog\Input::fGet('uid', 0);
         if ($uid > 1) {
-            $subject = '';
-            if (isset($_GET['subject'])) {
-                $subject = strip_tags($_GET['subject']);
+            $subject = Geeklog\Input::get('subject', '');
+            if (!empty($subject)) {
+                $subject = strip_tags($subject);
                 $subject = substr($subject, 0, strcspn($subject, "\r\n"));
                 $subject = htmlspecialchars(trim($subject), ENT_QUOTES);
             }

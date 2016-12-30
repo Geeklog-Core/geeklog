@@ -45,8 +45,7 @@ if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
 $uid = '';
 if (!empty($_POST['loginname']) && !empty($_POST['passwd'])) {
     if ($_CONF['user_login_method']['standard']) {
-        $status = SEC_authenticate(COM_applyFilter($_POST['loginname']),
-                                   $_POST['passwd'], $uid);
+        $status = SEC_authenticate(Geeklog\Input::fPost('loginname'), Geeklog\Input::post('passwd'), $uid);
     } else {
         $status = '';
     }
@@ -98,7 +97,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
         if (isset($_POST['warn'])) {
             $display .= $LANG20[2]
                      . '<br' . XHTML . '><br' . XHTML . '>'
-                     . COM_accessLog($LANG20[3] . ' ' . $_POST['loginname']);
+                     . COM_accessLog($LANG20[3] . ' ' . Geeklog\Input::post('loginname'));
         }
 
         $display .= '<form action="' . $_CONF['site_admin_url'] . '/index.php" method="post">'

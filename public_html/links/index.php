@@ -78,15 +78,12 @@ function links_list($message)
     $cid = $_LI_CONF['root'];
     $display = '';
     if (isset($_GET['category'])) {
-        $cid = strip_tags(COM_stripslashes($_GET['category']));
+        $cid = strip_tags(Geeklog\Input::get('category'));
     } elseif (isset($_POST['category'])) {
-        $cid = strip_tags(COM_stripslashes($_POST['category']));
+        $cid = strip_tags(Geeklog\Input::post('category'));
     }
     $cat = DB_escapeString($cid);
-    $page = 0;
-    if (isset ($_GET['page'])) {
-        $page = COM_applyFilter($_GET['page'], true);
-    }
+    $page = (int) Geeklog\Input::fGet('page', 0);
     if ($page == 0) {
         $page = 1;
     }
@@ -134,8 +131,8 @@ function links_list($message)
 
     if (is_array($message) && !empty($message[0])) {
         $display .= COM_showMessageText($message[1], $message[0]);
-    } else if (isset($_REQUEST['msg'])) {
-        $msg = COM_applyFilter($_REQUEST['msg'], true);
+    } elseif (isset($_REQUEST['msg'])) {
+        $msg = (int) Geeklog\Input::fRequest('msg');
         if ($msg > 0) {
             $display .= COM_showMessage($msg, 'links');
         }
@@ -415,14 +412,14 @@ function prepare_link_item($A, &$template)
 $display = '';
 $mode = '';
 $root = $_LI_CONF['root'];
-if (isset ($_REQUEST['mode'])) {
+if (isset($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
 $message = array();
 if (($mode === 'report') && !COM_isAnonUser()) {
-    if (isset ($_GET['lid'])) {
-        $lid = COM_applyFilter($_GET['lid']);
+    if (isset($_GET['lid'])) {
+        $lid = Geeklog\Input::fGet('lid');
     }
     if (!empty($lid)) {
         $lidsl = DB_escapeString($lid);

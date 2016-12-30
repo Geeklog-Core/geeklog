@@ -5194,15 +5194,10 @@ function COM_showMessageFromParameter()
 {
     $retval = '';
 
-    if (isset($_GET['msg'])) {
-        $msg = COM_applyFilter($_GET['msg'], true);
-        if ($msg > 0) {
-            $plugin = '';
-            if (isset($_GET['plugin'])) {
-                $plugin = COM_applyFilter($_GET['plugin']);
-            }
-            $retval .= COM_showMessage($msg, $plugin);
-        }
+    $msg = (int) Geeklog\Input::fGet('msg', 0);
+    if ($msg > 0) {
+        $plugin = Geeklog\Input::fGet('plugin', '');
+        $retval .= COM_showMessage($msg, $plugin);
     }
 
     return $retval;

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | trackback.php                                                             |
 // |                                                                           |
@@ -30,24 +30,24 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Admin functions related to Trackbacks, Pingbacks, and Pings: Send Trackbacks,
-* Pingbacks, and configure the list of weblog directory services to "ping"
-* after an update.
-*
-*/
+ * Admin functions related to Trackbacks, Pingbacks, and Pings: Send Trackbacks,
+ * Pingbacks, and configure the list of weblog directory services to "ping"
+ * after an update.
+ */
 
 /**
-* Geeklog common function library
-*/
+ * Geeklog common function library
+ */
 require_once '../lib-common.php';
 
 /**
-* Security check to ensure user even belongs on this page
-*/
+ * Security check to ensure user even belongs on this page
+ */
 require_once 'auth.inc.php';
 
 if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled'] &&
-        !$_CONF['ping_enabled']) {
+    !$_CONF['ping_enabled']
+) {
     COM_redirect($_CONF['site_admin_url'] . '/index.php');
 }
 
@@ -66,32 +66,31 @@ require_once $_CONF['path_system'] . 'lib-pingback.php';
 require_once $_CONF['path_system'] . 'lib-story.php';
 
 /**
-* Display trackback comment submission form.
-*
-* @param    string  $target     URL to send the trackback comment to
-* @param    string  $url        URL of our entry
-* @param    string  $title      title of our entry
-* @param    string  $excerpt    excerpt of our entry
-* @param    string  $blog       name of our site
-* @return   string              HTML for the trackback comment editor
-*
-*/
-function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', $blog = '')
+ * Display trackback comment submission form.
+ *
+ * @param    string $target  URL to send the trackback comment to
+ * @param    string $url     URL of our entry
+ * @param    string $title   title of our entry
+ * @param    string $excerpt excerpt of our entry
+ * @param    string $blog    name of our site
+ * @return   string              HTML for the trackback comment editor
+ */
+function trackback_editor($target = '', $url = '', $title = '', $excerpt = '', $blog = '')
 {
     global $_CONF, $LANG_TRB;
 
     $retval = '';
 
     // show preview if we have at least the URL
-    if (!empty ($url)) {
+    if (!empty($url)) {
         // filter them for the preview
-        $p_title = TRB_filterTitle ($title);
-        $p_excerpt = TRB_filterExcerpt ($excerpt);
-        $p_blog = TRB_filterBlogname ($blog);
+        $p_title = TRB_filterTitle($title);
+        $p_excerpt = TRB_filterExcerpt($excerpt);
+        $p_blog = TRB_filterBlogname($blog);
 
         // MT and other weblogs will shorten the excerpt like this
-        if (MBYTE_strlen ($p_excerpt) > 255) {
-            $p_excerpt = MBYTE_substr ($p_excerpt, 0, 252) . '...';
+        if (MBYTE_strlen($p_excerpt) > 255) {
+            $p_excerpt = MBYTE_substr($p_excerpt, 0, 252) . '...';
         }
 
         $retval .= COM_startBlock($LANG_TRB['preview']);
@@ -106,27 +105,27 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
         $retval .= COM_endBlock();
     }
 
-    if (empty ($url) && empty ($blog)) {
-        $blog = htmlspecialchars ($_CONF['site_name']);
+    if (empty($url) && empty($blog)) {
+        $blog = htmlspecialchars($_CONF['site_name']);
     }
-    $title = htmlspecialchars ($title);
-    $excerpt = htmlspecialchars ($excerpt, ENT_NOQUOTES);
+    $title = htmlspecialchars($title);
+    $excerpt = htmlspecialchars($excerpt, ENT_NOQUOTES);
 
     $retval .= COM_startBlock($LANG_TRB['editor_title'],
-                              getHelpUrl() . '#trackback',
-                              COM_getBlockTemplate('_admin_block', 'header'));
+        getHelpUrl() . '#trackback',
+        COM_getBlockTemplate('_admin_block', 'header'));
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file(array('editor' => 'trackbackeditor.thtml'));
 
     $template->set_var('php_self', $_CONF['site_admin_url']
-                                    . '/trackback.php');
+        . '/trackback.php');
 
-    if (empty ($url) || empty ($title)) {
+    if (empty($url) || empty($title)) {
         $template->set_var('lang_explain', $LANG_TRB['editor_intro_none']);
     } else {
         $template->set_var('lang_explain',
-                            sprintf ($LANG_TRB['editor_intro'], $url, $title));
+            sprintf($LANG_TRB['editor_intro'], $url, $title));
     }
     $template->set_var('lang_trackback_url', $LANG_TRB['trackback_url']);
     $template->set_var('lang_entry_url', $LANG_TRB['entry_url']);
@@ -146,41 +145,40 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
     $template->set_var('gltoken_name', CSRF_TOKEN);
     $template->set_var('gltoken', SEC_createToken());
 
-    $template->parse ('output', 'editor');
-    $retval .= $template->finish ($template->get_var ('output'));
+    $template->parse('output', 'editor');
+    $retval .= $template->finish($template->get_var('output'));
 
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
 
 /**
-* Deletes a trackback comment. Checks if the current user has proper
-* permissions first.
-*
-* @param    int     $id     ID of the trackback comment to delete
-* @return   string          HTML redirect
-*
-*/
-function deleteTrackbackComment ($id)
+ * Deletes a trackback comment. Checks if the current user has proper
+ * permissions first.
+ *
+ * @param    int $id ID of the trackback comment to delete
+ * @return   string          HTML redirect
+ */
+function deleteTrackbackComment($id)
 {
     global $_TABLES;
 
     $cid = DB_escapeString($id);
-    $result = DB_query ("SELECT sid,type FROM {$_TABLES['trackback']} WHERE cid = '$cid'");
-    list ($sid, $type) = DB_fetchArray ($result);
+    $result = DB_query("SELECT sid,type FROM {$_TABLES['trackback']} WHERE cid = '$cid'");
+    list ($sid, $type) = DB_fetchArray($result);
     $url = PLG_getItemInfo($type, $sid, 'url');
 
-    if (TRB_allowDelete ($sid, $type)) {
-        TRB_deleteTrackbackComment ($id);
+    if (TRB_allowDelete($sid, $type)) {
+        TRB_deleteTrackbackComment($id);
         if ($type == 'article') {
-            DB_query ("UPDATE {$_TABLES['stories']} SET trackbacks = trackbacks - 1 WHERE (sid = '$sid')");
+            DB_query("UPDATE {$_TABLES['stories']} SET trackbacks = trackbacks - 1 WHERE (sid = '$sid')");
         }
         $msg = 62;
     } else {
         $msg = 63;
     }
-    if (strpos ($url, '?') === false) {
+    if (strpos($url, '?') === false) {
         $url .= '?msg=' . $msg;
     } else {
         $url .= '&amp;msg=' . $msg;
@@ -190,27 +188,25 @@ function deleteTrackbackComment ($id)
 }
 
 /**
-* Show an error or warning message
-*
-* @param    string  $title      block title
-* @param    string  $message    the actual message
-* @return   string              HTML for the message block
-*
-*/
+ * Show an error or warning message
+ *
+ * @param    string $title   block title
+ * @param    string $message the actual message
+ * @return   string              HTML for the message block
+ */
 function showTrackbackMessage($title, $message)
 {
     return COM_showMessageText($message, $title);
 }
 
 /**
-* Send a Pingback to all the links in our entry
-*
-* @param    string  $type   type of entry we're advertising ('article' = story)
-* @param    string  $id     ID of that entry
-* @return   string          pingback results
-*
-*/
-function sendPingbacks ($type, $id)
+ * Send a Pingback to all the links in our entry
+ *
+ * @param    string $type type of entry we're advertising ('article' = story)
+ * @param    string $id   ID of that entry
+ * @return   string          pingback results
+ */
+function sendPingbacks($type, $id)
 {
     global $_CONF, $LANG_TRB;
 
@@ -219,13 +215,13 @@ function sendPingbacks ($type, $id)
     list($url, $text) = PLG_getItemInfo($type, $id, 'url,description');
 
     // extract all links from the text
-    preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
-                    $matches);
-    $numlinks = count ($matches[0]);
+    preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
+        $matches);
+    $numlinks = count($matches[0]);
     if ($numlinks > 0) {
-        $links = array ();
+        $links = array();
         for ($i = 0; $i < $numlinks; $i++) {
-            if (!isset ($links[$matches[1][$i]])) {
+            if (!isset($links[$matches[1][$i]])) {
                 $links[$matches[1][$i]] = $matches[2][$i];
             }
         }
@@ -238,15 +234,15 @@ function sendPingbacks ($type, $id)
 
         $counter = 1;
         foreach ($links as $URLtoPing => $linktext) {
-            $result = PNB_sendPingback ($url, $URLtoPing);
+            $result = PNB_sendPingback($url, $URLtoPing);
             $resend = '';
-            if (empty ($result)) {
+            if (empty($result)) {
                 $result = '<b>' . $LANG_TRB['pingback_success'] . '</b>';
-            } else if ($result != $LANG_TRB['no_pingback_url']) {
+            } elseif ($result != $LANG_TRB['no_pingback_url']) {
                 $result = '<span class="warningsmall">' . $result . '</span>';
                 // TBD: $resend = '...';
             }
-            $parts = parse_url ($URLtoPing);
+            $parts = parse_url($URLtoPing);
 
             $template->set_var('url_to_ping', $URLtoPing);
             $template->set_var('link_text', $linktext);
@@ -254,13 +250,13 @@ function sendPingbacks ($type, $id)
             $template->set_var('pingback_result', $result);
             $template->set_var('resend', $resend);
             $template->set_var('alternate_row',
-                    ($counter % 2) == 0 ? 'row-even' : 'row-odd');
+                ($counter % 2) == 0 ? 'row-even' : 'row-odd');
             $template->set_var('cssid', ($i % 2) + 1);
-            $template->parse ('pingback_results', 'item', true);
+            $template->parse('pingback_results', 'item', true);
             $counter++;
         }
-        $template->parse ('output', 'list');
-        $retval .= $template->finish ($template->get_var ('output'));
+        $template->parse('output', 'list');
+        $retval .= $template->finish($template->get_var('output'));
 
     } else {
         $retval = '<p>' . $LANG_TRB['no_links_pingback'] . '</p>';
@@ -269,13 +265,13 @@ function sendPingbacks ($type, $id)
     return $retval;
 }
 
-function pingbackForm ($targetUrl = '')
+function pingbackForm($targetUrl = '')
 {
     global $_CONF, $LANG_TRB;
 
     $retval = '';
     $retval .= COM_startBlock($LANG_TRB['pingback_button'], getHelpUrl(),
-                              COM_getBlockTemplate('_admin_block', 'header'));
+        COM_getBlockTemplate('_admin_block', 'header'));
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file(array('list' => 'pingbackform.thtml'));
@@ -290,53 +286,52 @@ function pingbackForm ($targetUrl = '')
     $template->set_var('gltoken_name', CSRF_TOKEN);
     $template->set_var('gltoken', SEC_createToken());
 
-    $template->parse ('output', 'list');
-    $retval .= $template->finish ($template->get_var ('output'));
+    $template->parse('output', 'list');
+    $retval .= $template->finish($template->get_var('output'));
 
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
 
 /**
-* Ping weblog directory services
-*
-* @param    string  $type   type of entry we're advertising ('article' = story)
-* @param    string  $id     ID of that entry
-* @return   string          result of the pings
-*
-*/
-function sendPings ($type, $id)
+ * Ping weblog directory services
+ *
+ * @param    string $type type of entry we're advertising ('article' = story)
+ * @param    string $id   ID of that entry
+ * @return   string          result of the pings
+ */
+function sendPings($type, $id)
 {
     global $_CONF, $_TABLES, $LANG_TRB;
 
     $retval = '';
 
-    list($itemurl,$feedurl) = PLG_getItemInfo($type, $id, 'url,feed');
+    list($itemurl, $feedurl) = PLG_getItemInfo($type, $id, 'url,feed');
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
-    $template->set_file (array ('list' => 'pinglist.thtml',
-                                'item' => 'pingitem.thtml'));
+    $template->set_file(array('list' => 'pinglist.thtml',
+                              'item' => 'pingitem.thtml'));
     $template->set_var('lang_resend', $LANG_TRB['resend']);
     $template->set_var('lang_results', $LANG_TRB['ping_results']);
 
-    $result = DB_query ("SELECT ping_url,method,name,site_url FROM {$_TABLES['pingservice']} WHERE is_enabled = 1");
-    $services = DB_numRows ($result);
+    $result = DB_query("SELECT ping_url,method,name,site_url FROM {$_TABLES['pingservice']} WHERE is_enabled = 1");
+    $services = DB_numRows($result);
     if ($services > 0) {
         for ($i = 0; $i < $services; $i++) {
-            $A = DB_fetchArray ($result);
+            $A = DB_fetchArray($result);
             $resend = '';
             if ($A['method'] == 'weblogUpdates.ping') {
-                $pinged = PNB_sendPing ($A['ping_url'], $_CONF['site_name'],
-                                        $_CONF['site_url'], $itemurl);
-            } else if ($A['method'] == 'weblogUpdates.extendedPing') {
-                $pinged = PNB_sendExtendedPing ($A['ping_url'],
-                            $_CONF['site_name'], $_CONF['site_url'], $itemurl,
-                            $feedurl);
+                $pinged = PNB_sendPing($A['ping_url'], $_CONF['site_name'],
+                    $_CONF['site_url'], $itemurl);
+            } elseif ($A['method'] == 'weblogUpdates.extendedPing') {
+                $pinged = PNB_sendExtendedPing($A['ping_url'],
+                    $_CONF['site_name'], $_CONF['site_url'], $itemurl,
+                    $feedurl);
             } else {
                 $pinged = $LANG_TRB['unknown_method'] . ': ' . $A['method'];
             }
-            if (empty ($pinged)) {
+            if (empty($pinged)) {
                 $pinged = '<b>' . $LANG_TRB['ping_success'] . '</b>';
             } else {
                 $pinged = '<span class="warningsmall">' . $pinged . '</span>';
@@ -348,58 +343,57 @@ function sendPings ($type, $id)
             $template->set_var('ping_result', $pinged);
             $template->set_var('resend', $resend);
             $template->set_var('alternate_row',
-                                (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
+                (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
             $template->set_var('cssid', ($i % 2) + 1);
-            $template->parse ('ping_results', 'item', true);
+            $template->parse('ping_results', 'item', true);
         }
     } else {
         $template->set_var('ping_results', '<tr><td colspan="2">' .
-                            $LANG_TRB['no_services'] . '</td></tr>');
+            $LANG_TRB['no_services'] . '</td></tr>');
     }
     $template->set_var('gltoken_name', CSRF_TOKEN);
     $template->set_var('gltoken', SEC_createToken());
     $template->parse('output', 'list');
-    $retval .= $template->finish ($template->get_var ('output'));
+    $retval .= $template->finish($template->get_var('output'));
 
     return $retval;
 }
 
 /**
-* Prepare a list of all links in a story/item so that we can ask the user
-* which one to send the trackback to.
-*
-* @param    string  $type   type of entry ('article' = story, etc.)
-* @param    string  $id     ID of that entry
-* @param    string  $text   text of that entry, to get the links from
-* @return   string          formatted list of links
-*
-*/
-function prepareAutodetect ($type, $id, $text)
+ * Prepare a list of all links in a story/item so that we can ask the user
+ * which one to send the trackback to.
+ *
+ * @param    string $type type of entry ('article' = story, etc.)
+ * @param    string $id   ID of that entry
+ * @param    string $text text of that entry, to get the links from
+ * @return   string          formatted list of links
+ */
+function prepareAutodetect($type, $id, $text)
 {
     global $_CONF, $LANG_TRB;
 
     $retval = '';
 
     $baseurl = $_CONF['site_admin_url']
-             . '/trackback.php?mode=autodetect&amp;id=' . $id;
+        . '/trackback.php?mode=autodetect&amp;id=' . $id;
     if ($type != 'article') {
         $baseurl .= '&type' . $type;
     }
 
     // extract all links from the text
-    preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
-                    $matches);
-    $numlinks = count ($matches[0]);
+    preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
+        $matches);
+    $numlinks = count($matches[0]);
     if ($numlinks == 1) {
         // skip the link selection when there's only one link in the story
-        $url = urlencode ($matches[1][0]);
+        $url = urlencode($matches[1][0]);
         $link = $baseurl .= '&amp;url=' . $url;
         COM_redirect($link);
     } elseif ($numlinks > 0) {
         $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
         $template->set_file(array(
             'list' => 'autodetectlist.thtml',
-            'item' => 'autodetectitem.thtml'
+            'item' => 'autodetectitem.thtml',
         ));
 
         $url = $_CONF['site_admin_url'] . '/trackback.php?mode=new&amp;id=' . $id;
@@ -407,22 +401,22 @@ function prepareAutodetect ($type, $id, $text)
             $url .= '&amp;type=' . $type;
         }
         $template->set_var('lang_trackback_explain',
-                            sprintf ($LANG_TRB['trackback_explain'], $url));
+            sprintf($LANG_TRB['trackback_explain'], $url));
 
         for ($i = 0; $i < $numlinks; $i++) {
-            $url = urlencode ($matches[1][$i]);
+            $url = urlencode($matches[1][$i]);
             $link = $baseurl .= '&amp;url=' . $url;
 
             $template->set_var('autodetect_link', $link);
             $template->set_var('link_text', $matches[2][$i]);
             $template->set_var('link_url', $matches[1][$i]);
             $template->set_var('alternate_row',
-                    (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
+                (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
             $template->set_var('cssid', ($i % 2) + 1);
-            $template->parse ('autodetect_items', 'item', true);
+            $template->parse('autodetect_items', 'item', true);
         }
-        $template->parse ('output', 'list');
-        $retval .= $template->finish ($template->get_var ('output'));
+        $template->parse('output', 'list');
+        $retval .= $template->finish($template->get_var('output'));
     } else {
         $retval .= $LANG_TRB['no_links_trackback'];
     }
@@ -431,11 +425,10 @@ function prepareAutodetect ($type, $id, $text)
 }
 
 /**
-* Display a list of all weblog directory services in the system
-*
-* @return   string          HTML for the list
-*
-*/
+ * Display a list of all weblog directory services in the system
+ *
+ * @return   string          HTML for the list
+ */
 function listServices()
 {
     global $LANG_ADMIN, $LANG_TRB, $_CONF, $_IMAGE_TYPE, $_TABLES;
@@ -450,19 +443,19 @@ function listServices()
         array('text' => $LANG_TRB['service'], 'field' => 'name', 'sort' => true),
         array('text' => $LANG_TRB['ping_method'], 'field' => 'method', 'sort' => true),
         array('text' => $LANG_TRB['service_ping_url'], 'field' => 'ping_url', 'sort' => true),
-        array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => false)
+        array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => false),
     );
 
     $defsort_arr = array('field' => 'name', 'direction' => 'asc');
 
-    $menu_arr = array (
-        array('url' => $_CONF['site_admin_url'] . '/trackback.php?mode=editservice',
+    $menu_arr = array(
+        array('url'  => $_CONF['site_admin_url'] . '/trackback.php?mode=editservice',
               'text' => $LANG_ADMIN['create_new']),
-        array('url' => $_CONF['site_admin_url'],
+        array('url'  => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']));
 
     $retval .= COM_startBlock($LANG_TRB['services_headline'], '',
-                              COM_getBlockTemplate('_admin_block', 'header'));
+        COM_getBlockTemplate('_admin_block', 'header'));
 
     $retval .= ADMIN_createMenu(
         $menu_arr,
@@ -473,96 +466,95 @@ function listServices()
     $text_arr = array(
         'has_extras' => true,
         'form_url'   => $_CONF['site_admin_url'] . '/trackback.php',
-        'help_url'   => getHelpUrl() . '#ping'
+        'help_url'   => getHelpUrl() . '#ping',
     );
 
     $query_arr = array(
-        'table' => 'pingservice',
-        'sql' => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1=1",
-        'query_fields' => array('name', 'ping_url'),
+        'table'          => 'pingservice',
+        'sql'            => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1=1",
+        'query_fields'   => array('name', 'ping_url'),
         'default_filter' => "",
-        'no_data' => $LANG_TRB['no_services']
+        'no_data'        => $LANG_TRB['no_services'],
     );
 
     // this is a dummy variable so we know the form has been used if all services
     // should be disabled in order to disable the last one.
     $form_arr = array(
         'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
-                    . $token . '"' . XHTML . '>',
+            . $token . '"' . XHTML . '>',
         'bottom' => '<input type="hidden" name="serviceChanger" value="true"'
-                    . XHTML . '>'
+            . XHTML . '>',
     );
 
     $retval .= ADMIN_list('pingservice', 'ADMIN_getListField_trackback',
-                          $header_arr, $text_arr, $query_arr, $defsort_arr,
-                          '', $token, '', $form_arr);
+        $header_arr, $text_arr, $query_arr, $defsort_arr,
+        '', $token, '', $form_arr);
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     if ($_CONF['trackback_enabled']) {
-        $retval .= freshTrackback ();
+        $retval .= freshTrackback();
     }
     if ($_CONF['pingback_enabled']) {
-        $retval .= freshPingback ();
+        $retval .= freshPingback();
     }
 
     return $retval;
 }
 
 /**
-* Display weblog directory service editor
-*
-* @param    int     $pid            ID of the service or 0 for new service
-* @param    string  $msg            an error message to display
-* @param    string  $new_name       name of the service
-* @param    string  $new_site_url   URL of the service's site
-* @param    string  $new_ping_url   URL to ping at the service
-* @param    string  $new_method     ping method to use
-* @param    int     $new_enabled    service is enabled (1) / disabled (0)
-* @return   string                  HTML for the editor
-*
-*/
-function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $new_ping_url = '', $new_method = '', $new_enabled = -1)
+ * Display weblog directory service editor
+ *
+ * @param    int    $pid          ID of the service or 0 for new service
+ * @param    string $msg          an error message to display
+ * @param    string $new_name     name of the service
+ * @param    string $new_site_url URL of the service's site
+ * @param    string $new_ping_url URL to ping at the service
+ * @param    string $new_method   ping method to use
+ * @param    int    $new_enabled  service is enabled (1) / disabled (0)
+ * @return   string                  HTML for the editor
+ */
+function editServiceForm($pid, $msg = '', $new_name = '', $new_site_url = '', $new_ping_url = '', $new_method = '', $new_enabled = -1)
 {
     global $_CONF, $_TABLES, $LANG_TRB, $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
     if ($pid > 0) {
-        $result = DB_query ("SELECT * FROM {$_TABLES['pingservice']} WHERE pid = '$pid'");
-        $A = DB_fetchArray ($result);
+        $result = DB_query("SELECT * FROM {$_TABLES['pingservice']} WHERE pid = '$pid'");
+        $A = DB_fetchArray($result);
     } else {
         $A['is_enabled'] = 1;
         $A['method'] = 'weblogUpdates.ping';
     }
 
-    if (!empty ($new_name)) {
+    if (!empty($new_name)) {
         $A['name'] = $new_name;
     }
-    if (!empty ($new_site_url)) {
+    if (!empty($new_site_url)) {
         $A['site_url'] = $new_site_url;
     }
-    if (!empty ($new_ping_url)) {
+    if (!empty($new_ping_url)) {
         $A['ping_url'] = $new_ping_url;
     }
-    if (!empty ($new_method)) {
+    if (!empty($new_method)) {
         $A['method'] = $new_method;
     }
     if ($new_enabled >= 0) {
         $A['is_enabled'] = $new_enabled;
     }
 
-    if (!empty ($msg)) {
-        $retval .= showTrackbackMessage ('Error', $msg);
+    if (!empty($msg)) {
+        $retval .= showTrackbackMessage('Error', $msg);
     }
 
     $token = SEC_createToken();
 
     $retval .= COM_startBlock($LANG_TRB['edit_service'], getHelpUrl() . '#ping',
-                              COM_getBlockTemplate('_admin_block', 'header'));
+        COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= SEC_getTokenExpiryNotice($token);
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
-    $template->set_file (array ('editor' => 'serviceeditor.thtml'));
+    $template->set_file(array('editor' => 'serviceeditor.thtml'));
     $template->set_var('max_url_length', 255);
     $template->set_var('method_ping', 'weblogUpdates.ping');
     $template->set_var('method_ping_extended', 'weblogUpdates.extendedPing');
@@ -579,12 +571,12 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
 
     if ($pid > 0) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="servicemode[2]"%s' . XHTML . '>';
+            . '" name="servicemode[2]"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $template->set_var('delete_option',
-                            sprintf ($delbutton, $jsconfirm));
+            sprintf($delbutton, $jsconfirm));
         $template->set_var('delete_option_no_confirmation',
-                            sprintf ($delbutton, ''));
+            sprintf($delbutton, ''));
 
         $template->set_var('allow_delete', true);
         $template->set_var('lang_delete', $LANG_ADMIN['delete']);
@@ -593,22 +585,22 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
         $template->set_var('delete_option', '');
     }
 
-    if (isset ($A['pid'])) {
+    if (isset($A['pid'])) {
         $template->set_var('service_id', $A['pid']);
     } else {
         $template->set_var('service_id', '');
     }
-    if (isset ($A['name'])) {
+    if (isset($A['name'])) {
         $template->set_var('service_name', $A['name']);
     } else {
         $template->set_var('service_name', '');
     }
-    if (isset ($A['site_url'])) {
+    if (isset($A['site_url'])) {
         $template->set_var('service_site_url', $A['site_url']);
     } else {
         $template->set_var('service_site_url', '');
     }
-    if (isset ($A['ping_url'])) {
+    if (isset($A['ping_url'])) {
         $template->set_var('service_ping_url', $A['ping_url']);
     } else {
         $template->set_var('service_ping_url', '');
@@ -628,28 +620,27 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
     $template->set_var('gltoken_name', CSRF_TOKEN);
     $template->set_var('gltoken', $token);
 
-    $template->parse ('output', 'editor');
-    $retval .= $template->finish ($template->get_var ('output'));
+    $template->parse('output', 'editor');
+    $retval .= $template->finish($template->get_var('output'));
 
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
     $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_TRB['edit_service']));
 
     return $retval;
 }
 
 /**
-* Save information of a weblog directory service
-*
-* @param    int     $pid        ID of service or 0 for new entry
-* @param    string  $name       name of the service
-* @param    string  $site_url   Homepage URL of the service
-* @param    string  $ping_url   URL to ping at the service
-* @param    string  $method     method used for the ping
-* @param    string  $enabled    'on' when enabled
-* @return   string              HTML redirect or service editor
-*
-*/
-function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
+ * Save information of a weblog directory service
+ *
+ * @param    int    $pid      ID of service or 0 for new entry
+ * @param    string $name     name of the service
+ * @param    string $site_url Homepage URL of the service
+ * @param    string $ping_url URL to ping at the service
+ * @param    string $method   method used for the ping
+ * @param    string $enabled  'on' when enabled
+ * @return   string              HTML redirect or service editor
+ */
+function saveService($pid, $name, $site_url, $ping_url, $method, $enabled)
 {
     global $_CONF, $_TABLES, $LANG_TRB;
 
@@ -660,56 +651,55 @@ function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
         $method = 'weblogUpdates.ping';
     }
 
-    $name     = strip_tags (COM_stripslashes ($name));
-    $site_url = strip_tags (COM_stripslashes ($site_url));
-    $ping_url = strip_tags (COM_stripslashes ($ping_url));
+    $name = strip_tags(COM_stripslashes($name));
+    $site_url = strip_tags(COM_stripslashes($site_url));
+    $ping_url = strip_tags(COM_stripslashes($ping_url));
 
     $errormsg = '';
-    if (empty ($name)) {
+    if (empty($name)) {
         $errormsg = $LANG_TRB['error_site_name'];
     } else {
         // all URLs must start with http: or https:
-        $parts = explode (':', $site_url);
+        $parts = explode(':', $site_url);
         if (($parts[0] != 'http') && ($parts[0] != 'https')) {
             $errormsg = $LANG_TRB['error_site_url'];
         } else {
-            $parts = explode (':', $ping_url);
+            $parts = explode(':', $ping_url);
             if (($parts[0] != 'http') && ($parts[0] != 'https')) {
                 $errormsg = $LANG_TRB['error_ping_url'];
             }
         }
     }
 
-    if (!empty ($errormsg)) {
-        return editServiceForm ($pid, $errormsg, $name, $site_url, $ping_url,
-                                $method, $enabled);
+    if (!empty($errormsg)) {
+        return editServiceForm($pid, $errormsg, $name, $site_url, $ping_url,
+            $method, $enabled);
     }
 
-    $name     = DB_escapeString($name);
+    $name = DB_escapeString($name);
     $site_url = DB_escapeString($site_url);
     $ping_url = DB_escapeString($ping_url);
 
     if ($pid > 0) {
-        DB_save ($_TABLES['pingservice'],
-                 'pid,name,site_url,ping_url,method,is_enabled',
-                 "'$pid','$name','$site_url','$ping_url','$method','$enabled'");
+        DB_save($_TABLES['pingservice'],
+            'pid,name,site_url,ping_url,method,is_enabled',
+            "'$pid','$name','$site_url','$ping_url','$method','$enabled'");
     } else {
         DB_save($_TABLES['pingservice'],
-                 'name,site_url,ping_url,method,is_enabled',
-                 "'$name','$site_url','$ping_url','$method','$enabled'");
+            'name,site_url,ping_url,method,is_enabled',
+            "'$name','$site_url','$ping_url','$method','$enabled'");
     }
 
     COM_redirect($_CONF['site_admin_url'] . '/trackback.php?mode=listservice&amp;msg=65');
 }
 
 /**
-* Toggle status of a ping service from enabled to disabled and back
-*
-* @param    array   $enabledservices    array containing ids of enabled services
-* @param    array   $visibleservices    array containing ids of visible services
-* @return   void
-*
-*/
+ * Toggle status of a ping service from enabled to disabled and back
+ *
+ * @param    array $enabledservices array containing ids of enabled services
+ * @param    array $visibleservices array containing ids of visible services
+ * @return   void
+ */
 function changeServiceStatus($enabledservices, $visibleservices)
 {
     global $_TABLES;
@@ -718,24 +708,23 @@ function changeServiceStatus($enabledservices, $visibleservices)
 
     // disable services
     $in = implode(',', $disabled);
-    if (! empty($in)) {
+    if (!empty($in)) {
         $sql = "UPDATE {$_TABLES['pingservice']} SET is_enabled = 0 WHERE pid IN ($in)";
         DB_query($sql);
     }
 
     // enable services
     $in = implode(',', $enabledservices);
-    if (! empty($in)) {
+    if (!empty($in)) {
         $sql = "UPDATE {$_TABLES['pingservice']} SET is_enabled = 1 WHERE pid IN ($in)";
         DB_query($sql);
     }
 }
 
 /**
-* Display a note about how trackbacks are supposed to be used
-*
-*/
-function freshTrackback ()
+ * Display a note about how trackbacks are supposed to be used
+ */
+function freshTrackback()
 {
     global $_CONF, $LANG_TRB;
 
@@ -744,18 +733,17 @@ function freshTrackback ()
     $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=fresh';
 
     $retval .= COM_startBlock($LANG_TRB['trackback'], getHelpUrl(),
-                              COM_getBlockTemplate('_admin_block', 'header'));
-    $retval .= sprintf ($LANG_TRB['trackback_note'], $freshurl);
+        COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= sprintf($LANG_TRB['trackback_note'], $freshurl);
     $retval .= COM_endBlock();
 
     return $retval;
 }
 
 /**
-* Display a note about how pingbacks are supposed to be used
-*
-*/
-function freshPingback ()
+ * Display a note about how pingbacks are supposed to be used
+ */
+function freshPingback()
 {
     global $_CONF, $LANG_TRB;
 
@@ -764,7 +752,7 @@ function freshPingback ()
     $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=freepb';
 
     $retval .= COM_startBlock($LANG_TRB['pingback'], getHelpUrl(),
-                              COM_getBlockTemplate('_admin_block', 'header'));
+        COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= sprintf($LANG_TRB['pingback_note'], $freshurl);
     $retval .= COM_endBlock();
 
@@ -772,11 +760,10 @@ function freshPingback ()
 }
 
 /**
-* Get URL of the help file (trackback.html)
-*
-* @return   string  full URL of trackback.html
-*
-*/
+ * Get URL of the help file (trackback.html)
+ *
+ * @return   string  full URL of trackback.html
+ */
 function getHelpUrl()
 {
     global $_CONF;
@@ -799,185 +786,162 @@ function getHelpUrl()
 $display = '';
 $mode = '';
 if ($_CONF['ping_enabled'] && isset($_POST['serviceChanger']) && SEC_checkToken()) {
-    $enabledservices = array();
-    if (isset($_POST['enabledservices'])) {
-        $enabledservices = $_POST['enabledservices'];
-    }
-    $visibleservices = array();
-    if (isset($_POST['visibleservices'])) {
-        $visibleservices = $_POST['visibleservices'];
-    }
+    $enabledservices = Geeklog\Input::post('enabledservices', array());
+    $visibleservices = Geeklog\Input::post('visibleservices', array());
     changeServiceStatus($enabledservices, $visibleservices);
 }
 
-if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {
-    $mode = $_POST['mode'];
-    if (isset ($mode[0])) {
+if (isset($_POST['mode']) && is_array($_POST['mode'])) {
+    $mode = Geeklog\Input::post('mode');
+    if (isset($mode[0])) {
         $mode = 'send';
-    } else if (isset ($mode[1])) {
+    } elseif (isset($mode[1])) {
         $mode = 'preview';
-    } else if (isset ($mode[2])) {
+    } elseif (isset($mode[2])) {
         $mode = 'sendpingback';
     } else {
         $mode = '';
     }
-} else if (isset ($_POST['servicemode']) && is_array ($_POST['servicemode'])) {
-    $mode = $_POST['servicemode'];
-    if (isset ($mode[0])) {
+} elseif (isset($_POST['servicemode']) && is_array($_POST['servicemode'])) {
+    $mode = Geeklog\Input::post('servicemode');
+    if (isset($mode[0])) {
         $mode = 'saveservice';
-    } else if (isset ($mode[2])) {
+    } elseif (isset($mode[2])) {
         $mode = 'deleteservice';
     } else { // $mode[1], Cancel
         $mode = '';
     }
 } else {
     if (isset($_REQUEST['mode'])) {
-        $mode = COM_applyFilter ($_REQUEST['mode']);
+        $mode = Geeklog\Input::fRequest('mode');
     }
-
 }
 
 // sanity check for modes, depending on enabled features ...
-if (!$_CONF['ping_enabled']) {
-    if (($mode == 'deleteservice') || ($mode == 'saveservice') ||
-            ($mode == 'editservice')) {
-        $mode = '';
-    }
+if (!$_CONF['ping_enabled'] && in_array($mode, array('deleteservice', 'saveservice', 'editservice'))) {
+    $mode = '';
 }
-if (!$_CONF['trackback_enabled']) {
-    if (($mode == 'send') || ($mode == 'new') || ($mode == 'pretrackback') ||
-            ($mode == 'autodetect') || ($mode == 'preview')) {
-        $mode = '';
-    }
+if (!$_CONF['trackback_enabled'] &&
+    in_array($mode, array('send', 'new', 'pretrackback', 'autodetect', 'preview'))
+) {
+    $mode = '';
 }
-if (!$_CONF['pingback_enabled']) {
-    if ($mode == 'pingback') {
-        $mode = '';
-    }
+if (!$_CONF['pingback_enabled'] && ($mode === 'pingback')) {
+    $mode = '';
 }
-if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled']) {
-    if ($mode == 'delete') {
-        $mode = '';
-    }
+if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled'] && ($mode === 'delete')) {
+    $mode = '';
 }
 
 // default action depends on which features are enabled ...
-if (empty ($mode)) {
+if (empty($mode)) {
     if ($_CONF['ping_enabled']) {
         $mode = 'listservice';
-    } else if ($_CONF['trackback_enabled']) {
+    } elseif ($_CONF['trackback_enabled']) {
         $mode = 'fresh';
-    } else if ($_CONF['pinback_enabled']) {
+    } elseif ($_CONF['pinback_enabled']) {
         $mode = 'freepb';
     }
 }
 
-if (($mode == 'delete') && SEC_checkToken()) {
-    $cid = COM_applyFilter($_REQUEST['cid'], true);
+if (($mode === 'delete') && SEC_checkToken()) {
+    $cid = (int) Geeklog\Input::fRequest('cid');
     if ($cid > 0) {
         $display = deleteTrackbackComment($cid);
     } else {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} elseif ($mode == 'send') {
-    $target = COM_applyFilter ($_POST['target']);
-    $url = COM_applyFilter ($_POST['url']);
-    $title = COM_stripslashes ($_POST['title']);
-    $excerpt = COM_stripslashes ($_POST['excerpt']);
-    $blog = COM_stripslashes ($_POST['blog_name']);
-
-    if (empty ($target)) {
-        $display .= showTrackbackMessage ($LANG_TRB['target_missing'],
-                                          $LANG_TRB['target_required']);
-        $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
-    } else if (empty ($url)) {
-        $display .= showTrackbackMessage ($LANG_TRB['url_missing'],
-                                          $LANG_TRB['url_required']);
-        $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
+} elseif ($mode === 'send') {
+    $target = Geeklog\Input::fPost('target');
+    $url = Geeklog\Input::fPost('url');
+    $title = Geeklog\Input::post('title');
+    $excerpt = Geeklog\Input::post('excerpt');
+    $blog = Geeklog\Input::post('blog_name');
+    if (empty($target)) {
+        $display .= showTrackbackMessage($LANG_TRB['target_missing'],
+            $LANG_TRB['target_required']);
+        $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
+    } elseif (empty($url)) {
+        $display .= showTrackbackMessage($LANG_TRB['url_missing'],
+            $LANG_TRB['url_required']);
+        $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
     } elseif (SEC_checkToken()) {
         // prepare for send
-        $send_title = TRB_filterTitle ($title);
-        $send_excerpt = TRB_filterExcerpt ($excerpt);
-        $send_blog = TRB_filterBlogname ($blog);
+        $send_title = TRB_filterTitle($title);
+        $send_excerpt = TRB_filterExcerpt($excerpt);
+        $send_blog = TRB_filterBlogname($blog);
 
-        $result = TRB_sendTrackbackPing ($target, $url, $send_title,
-                                         $send_excerpt, $send_blog);
-
+        $result = TRB_sendTrackbackPing($target, $url, $send_title, $send_excerpt, $send_blog);
         if ($result === true) {
-            $display .= COM_showMessage (64);
-            $display .= trackback_editor ();
+            $display .= COM_showMessage(64);
+            $display .= trackback_editor();
         } else {
             $message = '<p>' . $LANG_TRB['send_error_details']
-                     . '<br' . XHTML . '><span class="warningsmall">'
-                     . htmlspecialchars ($result) . '</span></p>';
+                . '<br' . XHTML . '><span class="warningsmall">'
+                . htmlspecialchars($result) . '</span></p>';
             $display .= showTrackbackMessage($LANG_TRB['send_error'], $message);
 
             // display editor with the same contents again
-            $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
+            $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
         }
     }
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
-} else if ($mode == 'new') {
-    $type = COM_applyFilter ($_REQUEST['type']);
-    if (empty ($type)) {
+} elseif ($mode === 'new') {
+    $type = Geeklog\Input::fRequest('type');
+    if (empty($type)) {
         $type = 'article';
     }
-    $id = COM_applyFilter ($_REQUEST['id']);
-    if (!empty ($id)) {
-        list($url, $title, $excerpt) = PLG_getItemInfo($type, $id,
-                                                       'url,title,excerpt');
-        $excerpt = trim (strip_tags ($excerpt));
-        $blog = TRB_filterBlogname ($_CONF['site_name']);
+    $id = Geeklog\Input::fRequest('id');
+    if (!empty($id)) {
+        list($url, $title, $excerpt) = PLG_getItemInfo($type, $id, 'url,title,excerpt');
+        $excerpt = trim(strip_tags($excerpt));
+        $blog = TRB_filterBlogname($_CONF['site_name']);
 
-        $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
+        $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
     } else {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} elseif ($mode == 'pingback') {
-    $type = COM_applyFilter ($_REQUEST['type']);
-    if (empty ($type)) {
+} elseif ($mode === 'pingback') {
+    $type = Geeklog\Input::fRequest('type');
+    if (empty($type)) {
         $type = 'article';
     }
-    $id = COM_applyFilter ($_REQUEST['id']);
-    if (!empty ($id)) {
-        $display .= COM_startBlock ($LANG_TRB['pingback_results'])
-                  . sendPingbacks ($type, $id)
-                  . COM_endBlock ();
+    $id = Geeklog\Input::fRequest('id');
+    if (!empty($id)) {
+        $display .= COM_startBlock($LANG_TRB['pingback_results'])
+            . sendPingbacks($type, $id)
+            . COM_endBlock();
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['pingback']));
     } else {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} elseif ($mode == 'sendall') {
-    $id = COM_applyFilter ($_REQUEST['id']);
-    if (empty ($id)) {
+} elseif ($mode === 'sendall') {
+    $id = Geeklog\Input::fRequest('id');
+    if (empty($id)) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-    $type = '';
-    if (isset ($_REQUEST['type'])) {
-        $type = COM_applyFilter ($_REQUEST['type']);
-    }
-    if (empty ($type)) {
+    $type = Geeklog\Input::fRequest('type', '');
+    if (empty($type)) {
         $type = 'article';
     }
 
-    $pingback_sent  = isset ($_REQUEST['pingback_sent']);
-    $ping_sent      = isset ($_REQUEST['ping_sent']);
-    $trackback_sent = isset ($_REQUEST['trackback_sent']);
+    $pingback_sent = isset($_REQUEST['pingback_sent']);
+    $ping_sent = isset($_REQUEST['ping_sent']);
+    $trackback_sent = isset($_REQUEST['trackback_sent']);
 
     $pingresult = '';
-    if (isset ($_POST['what']) && is_array ($_POST['what'])) {
-        $what = $_POST['what'];
-        if (isset ($what[0])) {         // Pingback
-            $pingresult = sendPingbacks ($type, $id);
+    if (isset($_POST['what']) && is_array($_POST['what'])) {
+        $what = Geeklog\Input::post('what');
+        if (isset($what[0])) {         // Pingback
+            $pingresult = sendPingbacks($type, $id);
             $pingback_sent = true;
-        } else if (isset ($what[1])) {  // Ping
-            $pingresult = sendPings ($type, $id);
+        } elseif (isset($what[1])) {  // Ping
+            $pingresult = sendPings($type, $id);
             $ping_sent = true;
-        } else if (isset ($what[2])) {  // Trackback
-            $url = $_CONF['site_admin_url']
-                 . '/trackback.php?mode=pretrackback&amp;id=' . $id;
-            if ($type != 'article') {
+        } elseif (isset($what[2])) {  // Trackback
+            $url = $_CONF['site_admin_url'] . '/trackback.php?mode=pretrackback&amp;id=' . $id;
+            if ($type !== 'article') {
                 $url .= '&amp;type=' . $type;
             }
             COM_redirect($url);
@@ -986,26 +950,22 @@ if (($mode == 'delete') && SEC_checkToken()) {
 
     $title = PLG_getItemInfo($type, $id, 'title');
 
-    $display .= COM_startBlock (sprintf ($LANG_TRB['send_pings_for'], $title));
+    $display .= COM_startBlock(sprintf($LANG_TRB['send_pings_for'], $title));
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
-    $template->set_file (array ('form' => 'pingform.thtml'));
-    $template->set_var('php_self', $_CONF['site_admin_url']
-                                    . '/trackback.php');
+    $template->set_file(array('form' => 'pingform.thtml'));
+    $template->set_var('php_self', $_CONF['site_admin_url'] . '/trackback.php');
     $template->set_var('lang_may_take_a_while', $LANG_TRB['may_take_a_while']);
     $template->set_var('lang_ping_explain', $LANG_TRB['ping_all_explain']);
-
     $template->set_var('ping_results', $pingresult);
 
     if ($_CONF['pingback_enabled']) {
         if (!$pingback_sent) {
-            $template->set_var('lang_pingback_button',
-                                $LANG_TRB['pingback_button']);
-            $template->set_var('lang_pingback_short',
-                                $LANG_TRB['pingback_short']);
+            $template->set_var('lang_pingback_button', $LANG_TRB['pingback_button']);
+            $template->set_var('lang_pingback_short', $LANG_TRB['pingback_short']);
             $button = '<button type="submit" name="what[0]" value="'
-                    . $LANG_TRB['pingback_button'] . '" class="uk-form">'
-                    . $LANG_TRB['pingback_button'] . '</button>';
+                . $LANG_TRB['pingback_button'] . '" class="uk-form">'
+                . $LANG_TRB['pingback_button'] . '</button>';
             $template->set_var('pingback_button', $button);
         }
     } else {
@@ -1016,8 +976,8 @@ if (($mode == 'delete') && SEC_checkToken()) {
             $template->set_var('lang_ping_button', $LANG_TRB['ping_button']);
             $template->set_var('lang_ping_short', $LANG_TRB['ping_short']);
             $button = '<button type="submit" name="what[1]" value="'
-                    . $LANG_TRB['ping_button'] . '" class="uk-form">'
-                    . $LANG_TRB['ping_button'] . '</button>';
+                . $LANG_TRB['ping_button'] . '" class="uk-form">'
+                . $LANG_TRB['ping_button'] . '</button>';
             $template->set_var('ping_button', $button);
         }
     } else {
@@ -1025,13 +985,11 @@ if (($mode == 'delete') && SEC_checkToken()) {
     }
     if ($_CONF['trackback_enabled']) {
         if (!$trackback_sent) {
-            $template->set_var('lang_trackback_button',
-                                $LANG_TRB['trackback_button']);
-            $template->set_var('lang_trackback_short',
-                                $LANG_TRB['trackback_short']);
+            $template->set_var('lang_trackback_button', $LANG_TRB['trackback_button']);
+            $template->set_var('lang_trackback_short', $LANG_TRB['trackback_short']);
             $button = '<button type="submit" name="what[2]" value="'
-                    . $LANG_TRB['trackback_button'] . '" class="uk-form">'
-                    . $LANG_TRB['trackback_button'] . '</button>';
+                . $LANG_TRB['trackback_button'] . '" class="uk-form">'
+                . $LANG_TRB['trackback_button'] . '</button>';
             $template->set_var('trackback_button', $button);
         }
     } else {
@@ -1053,165 +1011,138 @@ if (($mode == 'delete') && SEC_checkToken()) {
     $hidden .= '<input type="hidden" name="mode" value="sendall"' . XHTML . '>';
     $template->set_var('hidden_input_fields', $hidden);
 
-    $template->parse ('output', 'form');
-    $display .= $template->finish ($template->get_var ('output'));
+    $template->parse('output', 'form');
+    $display .= $template->finish($template->get_var('output'));
 
-    $display .= COM_endBlock ();
+    $display .= COM_endBlock();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['send_pings']));
-} else if ($mode == 'pretrackback') {
-    $id = COM_applyFilter ($_REQUEST['id']);
-    if (empty ($id)) {
+} elseif ($mode === 'pretrackback') {
+    $id = Geeklog\Input::fRequest('id');
+    if (empty($id)) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-    $type = '';
-    if (isset ($_REQUEST['type'])) {
-        $type = COM_applyFilter ($_REQUEST['type']);
-    }
-    if (empty ($type)) {
+    $type = Geeklog\Input::fRequest('type');
+    if (empty($type)) {
         $type = 'article';
     }
 
     $fulltext = PLG_getItemInfo($type, $id, 'description');
 
     $display .= COM_startBlock($LANG_TRB['select_url'],
-                               getHelpUrl() . '#trackback')
-             . prepareAutodetect($type, $id, $fulltext)
-             . COM_endBlock();
+            getHelpUrl() . '#trackback')
+        . prepareAutodetect($type, $id, $fulltext)
+        . COM_endBlock();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
-} else if ($mode == 'autodetect') {
-    $id = COM_applyFilter ($_REQUEST['id']);
-    $url = $_REQUEST['url'];
-    if (empty ($id) || empty ($url)) {
+} elseif ($mode === 'autodetect') {
+    $id = Geeklog\Input::fRequest('id');
+    $url = Geeklog\Input::request('url');
+    if (empty($id) || empty($url)) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-    $type = '';
-    if (isset ($_REQUEST['type'])) {
-        $type = COM_applyFilter ($_REQUEST['type']);
-    }
-    if (empty ($type)) {
+
+    $type = Geeklog\Input::fRequest('type');
+    if (empty($type)) {
         $type = 'article';
     }
 
-    $trackbackUrl = TRB_detectTrackbackUrl ($url);
+    $trackbackUrl = TRB_detectTrackbackUrl($url);
 
-    list($url, $title, $excerpt) = PLG_getItemInfo($type, $id,
-                                                 'url,title,excerpt');
-    $excerpt = trim (strip_tags ($excerpt));
-    $blog = TRB_filterBlogname ($_CONF['site_name']);
+    list($url, $title, $excerpt) = PLG_getItemInfo($type, $id, 'url,title,excerpt');
+    $excerpt = trim(strip_tags($excerpt));
+    $blog = TRB_filterBlogname($_CONF['site_name']);
 
     if ($trackbackUrl === false) {
-        $display .= showTrackbackMessage ($LANG_TRB['not_found'],
-                                          $LANG_TRB['autodetect_failed']);
+        $display .= showTrackbackMessage($LANG_TRB['not_found'], $LANG_TRB['autodetect_failed']);
     }
-    $display .= trackback_editor ($trackbackUrl, $url, $title, $excerpt, $blog);
+    $display .= trackback_editor($trackbackUrl, $url, $title, $excerpt, $blog);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
-} else if (($mode == 'fresh') || ($mode == 'preview')) {
+} elseif (($mode === 'fresh') || ($mode === 'preview')) {
     $display .= COM_showMessageFromParameter();
 
-    $target = '';
-    if (isset ($_REQUEST['target'])) {
-        $target = COM_applyFilter ($_REQUEST['target']);
-    }
-    $url = '';
-    if (isset ($_REQUEST['url'])) {
-        $url = COM_applyFilter ($_REQUEST['url']);
-    }
-    $title = '';
-    if (isset ($_REQUEST['title'])) {
-        $title = COM_stripslashes ($_REQUEST['title']);
-    }
-    $excerpt = '';
-    if (isset ($_REQUEST['excerpt'])) {
-        $excerpt = COM_stripslashes ($_REQUEST['excerpt']);
-    }
-    $blog = '';
-    if (isset ($_REQUEST['blog_name'])) {
-        $blog = COM_stripslashes ($_REQUEST['blog_name']);
-    }
+    $target = Geeklog\Input::fRequest('target', '');
+    $url = Geeklog\Input::fRequest('url', '');
+    $title = Geeklog\Input::fRequest('title', '');
+    $excerpt = Geeklog\Input::request('excerpt', '');
+    $blog = Geeklog\Input::request('blog_name', '');
 
-    if (isset ($_REQUEST['id']) && isset ($_REQUEST['type'])) {
-        $id = COM_applyFilter ($_REQUEST['id']);
-        $type = COM_applyFilter ($_REQUEST['type']);
-        if (!empty ($id) && !empty ($type)) {
-            list($newurl, $newtitle, $newexcerpt) =
-                            PLG_getItemInfo($type, $id, 'url,title,excerpt');
-            $newexcerpt = trim (strip_tags ($newexcerpt));
+    if (isset($_REQUEST['id'], $_REQUEST['type'])) {
+        $id = Geeklog\Input::fRequest('id', '');
+        $type = Geeklog\Input::fRequest('type', '');
+        if (!empty($id) && !empty($type)) {
+            list($newurl, $newtitle, $newexcerpt) = PLG_getItemInfo($type, $id, 'url,title,excerpt');
+            $newexcerpt = trim(strip_tags($newexcerpt));
 
-            if (empty ($url) && !empty ($newurl)) {
+            if (empty($url) && !empty($newurl)) {
                 $url = $newurl;
             }
-            if (empty ($title) && !empty ($newtitle)) {
+            if (empty($title) && !empty($newtitle)) {
                 $title = $newtitle;
             }
-            if (empty ($newexcerpt) && !empty ($newexcerpt)) {
+            if (empty($newexcerpt) && !empty($newexcerpt)) {
                 $excerpt = $newexcerpt;
             }
 
-            if (empty ($blog)) {
-                $blog = TRB_filterBlogname ($_CONF['site_name']);
+            if (empty($blog)) {
+                $blog = TRB_filterBlogname($_CONF['site_name']);
             }
         }
     }
 
-    if (($mode == 'preview') && empty ($url)) {
-        $display .= showTrackbackMessage ($LANG_TRB['url_missing'],
-                                          $LANG_TRB['url_required']);
+    if (($mode === 'preview') && empty($url)) {
+        $display .= showTrackbackMessage($LANG_TRB['url_missing'], $LANG_TRB['url_required']);
     }
 
-    $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
+    $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
 
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
-} elseif (($mode == 'deleteservice') && SEC_checkToken()) {
-    $pid = COM_applyFilter ($_POST['service_id'], true);
+} elseif (($mode === 'deleteservice') && SEC_checkToken()) {
+    $pid = (int) Geeklog\Input::fPost('service_id', 0);
     if ($pid > 0) {
         DB_delete($_TABLES['pingservice'], 'pid', $pid);
         COM_redirect($_CONF['site_admin_url'] . '/trackback.php?mode=listservice&amp;msg=66');
     } else {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} elseif (($mode == 'saveservice') && SEC_checkToken()) {
-    $is_enabled = '';
-    if (isset($_POST['is_enabled'])) {
-        $is_enabled = $_POST['is_enabled'];
-    }
-    $display .= saveService(COM_applyFilter($_POST['service_id'], true),
-                            $_POST['service_name'], $_POST['service_site_url'],
-                            $_POST['service_ping_url'], $_POST['method'],
-                            $is_enabled);
-} else if ($mode == 'editservice') {
-    $service_id = 0;
-    if (isset ($_GET['service_id'])) {
-        $service_id = COM_applyFilter ($_GET['service_id'], true);
-    }
-    $pid = COM_applyFilter ($service_id, true);
+} elseif (($mode === 'saveservice') && SEC_checkToken()) {
+    $is_enabled = Geeklog\Input::post('is_enabled', '');
+    $display .= saveService(
+        (int) Geeklog\Input::fPost('service_id'),
+        Geeklog\Input::post('service_name'),
+        Geeklog\Input::post('service_site_url'),
+        Geeklog\Input::post('service_ping_url'),
+        Geeklog\Input::post('method'),
+        $is_enabled
+    );
+} elseif ($mode === 'editservice') {
+    $service_id = (int) Geeklog\Input::fGet('service_id', 0);
+    $pid = COM_applyFilter($service_id, true);
 
-    $display .= editServiceForm ($pid);
-} else if ($mode == 'listservice') {
+    $display .= editServiceForm($pid);
+} elseif ($mode === 'listservice') {
     $display .= COM_showMessageFromParameter();
     $display .= listServices();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['services_headline']));
-} else if ($mode == 'freepb') {
+} elseif ($mode === 'freepb') {
     $display .= COM_showMessageFromParameter();
-    $display .= pingbackForm ();
+    $display .= pingbackForm();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['pingback']));
-} else if ($mode == 'sendpingback') {
-    $target = COM_applyFilter ($_POST['target']);
-    if (empty ($target)) {
-        $display .= showTrackbackMessage ($LANG_TRB['pbtarget_missing'],
-                                          $LANG_TRB['pbtarget_required']);
+} elseif ($mode === 'sendpingback') {
+    $target = Geeklog\Input::fPost('target');
+    if (empty($target)) {
+        $display .= showTrackbackMessage($LANG_TRB['pbtarget_missing'], $LANG_TRB['pbtarget_required']);
     } elseif (SEC_checkToken()) {
-        $result = PNB_sendPingback ($_CONF['site_url'], $target);
-        if (empty ($result)) {
-            $display .= COM_showMessage (74);
+        $result = PNB_sendPingback($_CONF['site_url'], $target);
+        if (empty($result)) {
+            $display .= COM_showMessage(74);
             $target = '';
         } else {
             $message = '<p>' . $LANG_TRB['pb_error_details'] . '<br' . XHTML . '>'
-                     . '<span class="warningsmall">'
-                     . htmlspecialchars ($result) . '</span></p>';
-            $display .= showTrackbackMessage ($LANG_TRB['send_error'], $message);
+                . '<span class="warningsmall">'
+                . htmlspecialchars($result) . '</span></p>';
+            $display .= showTrackbackMessage($LANG_TRB['send_error'], $message);
         }
     }
-    $display .= pingbackForm ($target);
+    $display .= pingbackForm($target);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['pingback']));
 } else {
     COM_redirect($_CONF['site_admin_url'] . '/index.php');

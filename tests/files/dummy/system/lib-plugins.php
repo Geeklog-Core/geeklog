@@ -39,8 +39,8 @@
 *
 */
 
-require_once('tst.class.php');
-require_once Tst::$tests.'files/classes/xmldb.class.php';
+require_once 'tst.class.php';
+require_once Tst::$tests . 'files/classes/xmldb.class.php';
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-plugins.php') !== false) {
     die('This file can not be used on its own!');
@@ -49,7 +49,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-plugins.php') !== false) {
 /**
 * Include plugin class
 */
-require_once Tst::$root.'system/classes/plugin.class.php';
+require_once Tst::$root . 'system/classes/plugin.class.php';
 
 /**
 * Response codes for the service invocation PLG_invokeService(). Note that
@@ -1326,7 +1326,7 @@ function PLG_groupChanged($grp_id, $mode)
 
     $function = 'CUSTOM_group_changed';
     if (function_exists($function)) {
-        $function($uid);
+        $function($grp_id);
     }
 }
 
@@ -2352,7 +2352,7 @@ function PLG_getBlocks($side, $topic='')
     }
 
     if (function_exists('CUSTOM_getBlocks')) {
-       $cust_items .= CUSTOM_getBlocks($side, $topic='');
+       $cust_items = CUSTOM_getBlocks($side, $topic='');
        if (is_array($cust_items)) {
           $ret = array_merge($ret, $cust_items);
        }

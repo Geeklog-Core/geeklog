@@ -642,10 +642,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         }
     } elseif ($mode == 'edit') {
         // check if a new sp_id has been suggested
-        $sp_new_id = '';
-        if (isset($_GET['sp_new_id'])) {
-            $sp_new_id = COM_applyFilter($_GET['sp_new_id']);
-        }
+        $sp_new_id = Geeklog\Input::fGet('sp_new_id', '');
         if (empty($sp_new_id)) {
             $A['sp_id'] = COM_makesid();
         } else {
@@ -791,15 +788,8 @@ function submitstaticpage($sp_id, $sp_title, $sp_page_title, $sp_content, $sp_hi
 }
 
 // MAIN
-$mode = '';
-if (isset($_REQUEST['mode'])) {
-    $mode = COM_applyFilter($_REQUEST['mode']);
-}
-$sp_id = '';
-if (isset($_REQUEST['sp_id'])) {
-    $sp_id = COM_applyFilter($_REQUEST['sp_id']);
-}
-
+$mode = Geeklog\Input::fRequest('mode', '');
+$sp_id = Geeklog\Input::fRequest('sp_id', '');
 $display = '';
 
 if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_checkToken()) {
@@ -813,15 +803,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
     }
 } elseif ($mode == 'edit') {
     if (isset($_GET['msg'])) {
-        $msg = COM_applyFilter($_GET['msg'], true);
+        $msg = (int) Geeklog\Input::fGet('msg', 0);
         if ($msg > 0) {
             $display .= COM_showMessage($msg, 'staticpages');
         }
     }
-    $editor = '';
-    if (isset($_GET['editor'])) {
-        $editor = COM_applyFilter($_GET['editor']);
-    }
+    $editor = Geeklog\Input::fGet('editor', '');
     $display .= staticpageeditor($sp_id, $mode, $editor);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_STATIC['staticpageeditor']));
 } elseif ($mode == 'clone') {
@@ -853,7 +840,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         }
         $help = '';
         if (isset($_POST['sp_help'])) {
-            $sp_help = COM_sanitizeUrl($_POST['sp_help'], array('http', 'https'));
+            $sp_help = COM_sanitizeUrl(Geeklog\Input::post('sp_help'), array('http', 'https'));
         }
         if (!isset($_POST['sp_inblock'])) {
             $_POST['sp_inblock'] = '';
@@ -871,28 +858,46 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
             $_POST['template_flag'] = '';
         }
 
-        $display .= submitstaticpage($sp_id, $_POST['sp_title'], $_POST['sp_page_title'],
-            $_POST['sp_content'], COM_applyFilter($_POST['sp_hits'], true),
-            COM_applyFilter($_POST['sp_format']), $_POST['sp_onmenu'], $_POST['sp_onhits'], $_POST['sp_onlastupdate'],
-            $_POST['sp_label'], COM_applyFilter($_POST['commentcode'], true),
-            COM_applyFilter($_POST['owner_id'], true),
-            COM_applyFilter($_POST['group_id'], true), $_POST['perm_owner'],
-            $_POST['perm_group'], $_POST['perm_members'], $_POST['perm_anon'],
-            $_POST['sp_php'], $_POST['sp_nf'],
-            COM_applyFilter($_POST['sp_old_id']), $_POST['sp_centerblock'],
+        $display .= submitstaticpage(
+            $sp_id,
+            Geeklog\Input::post('sp_title'),
+            Geeklog\Input::post('sp_page_title'),
+            Geeklog\Input::post('sp_content'),
+            (int) Geeklog\Input::fPost('sp_hits'),
+            Geeklog\Input::fPost('sp_format'),
+            Geeklog\Input::post('sp_onmenu'),
+            Geeklog\Input::post('sp_onhits'),
+            Geeklog\Input::post('sp_onlastupdate'),
+            Geeklog\Input::post('sp_label'),
+            (int) Geeklog\Input::fPost('commentcode'),
+            (int) Geeklog\Input::fPost('owner_id'),
+            (int) Geeklog\Input::fPost('group_id'),
+            Geeklog\Input::post('perm_owner'),
+            Geeklog\Input::post('perm_group'),
+            Geeklog\Input::post('perm_members'),
+            Geeklog\Input::post('perm_anon'),
+            Geeklog\Input::post('sp_php'),
+            Geeklog\Input::post('sp_nf'),
+            Geeklog\Input::fPost('sp_old_id'),
+            Geeklog\Input::post('sp_centerblock'),
             $sp_help,
-            COM_applyFilter($_POST['sp_where'], true), $_POST['sp_inblock'],
-            COM_applyFilter($_POST['postmode']), $_POST['meta_description'],
-            $_POST['meta_keywords'], $_POST['draft_flag'], $_POST['template_flag'], $_POST['template_id'], COM_applyFilter($_POST['cache_time'], true));
+            (int) Geeklog\Input::fPost('sp_where'),
+            Geeklog\Input::post('sp_inblock'),
+            Geeklog\Input::fPost('postmode'),
+            Geeklog\Input::post('meta_description'),
+            Geeklog\Input::post('meta_keywords'),
+            Geeklog\Input::post('draft_flag'),
+            Geeklog\Input::post('template_flag'),
+            Geeklog\Input::post('template_id'),
+            (int) Geeklog\Input::fPost('cache_time')
+        );
     } else {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 } else {
-    if (isset($_REQUEST['msg'])) {
-        $msg = COM_applyFilter($_REQUEST['msg'], true);
-        if ($msg > 0) {
-            $display .= COM_showMessage($msg, 'staticpages');
-        }
+    $msg = (int) Geeklog\Input::fRequest('msg', 0);
+    if ($msg > 0) {
+        $display .= COM_showMessage($msg, 'staticpages');
     }
     $display .= liststaticpages();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_STATIC['staticpagelist']));

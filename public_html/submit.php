@@ -105,7 +105,7 @@ function submitstory()
 
     $story = new Story();
 
-    if (isset($_POST['mode']) && ($_POST['mode'] == $LANG12[32])) {
+    if (Geeklog\Input::post('mode') === $LANG12[32]) {
         // preview
         $story->loadSubmission();
         $retval .= COM_startBlock($LANG12[32])
@@ -204,8 +204,7 @@ function submitstory()
     $storyform->set_var('lang_preview', $LANG12[32]);
 
     PLG_templateSetVars('story', $storyform);
-    if (($_CONF['skip_preview'] == 1) ||
-            (isset($_POST['mode']) && ($_POST['mode'] == $LANG12[32]))) {
+    if (($_CONF['skip_preview'] == 1) || (Geeklog\Input::post('mode') === $LANG12[32])) {
         $storyform->set_var(
             'save_button',
             '<input name="mode" type="submit" value="' . $LANG12[8] . '"' . XHTML . '>'
@@ -376,17 +375,8 @@ $display = '';
 
 // note that 'type' _may_ come in through $_GET even when the
 // other parameters are in $_POST
-$type = '';
-if (isset($_POST['type'])) {
-    $type = COM_applyFilter($_POST['type']);
-} elseif (isset($_GET['type'])) {
-    $type = COM_applyFilter($_GET['type']);
-}
-
-$mode = '';
-if (isset($_REQUEST['mode'])) {
-    $mode = COM_applyFilter($_REQUEST['mode']);
-}
+$type = Geeklog\Input::fPostOrGet('type', '');
+$mode = Geeklog\Input::fRequest('mode', '');
 
 // Get last topic
 TOPIC_getTopic();

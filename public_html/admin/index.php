@@ -33,7 +33,7 @@ require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
 // MAIN
-if (isset($_GET['mode']) && ($_GET['mode'] == 'logout')) {
+if (Geeklog\Input::get('mode') === 'logout') {
     COM_redirect($_CONF['site_url'] . '/users.php?mode=logout');
 }
 
