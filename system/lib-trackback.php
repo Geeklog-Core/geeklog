@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-trackback.php                                                         |
 // |                                                                           |
@@ -455,7 +455,7 @@ function TRB_linksToUs($sid, $type, $urlToGet)
 {
     global $_CONF;
 
-    if (!isset ($_CONF['check_trackback_link'])) {
+    if (!isset($_CONF['check_trackback_link'])) {
         $_CONF['check_trackback_link'] = 2;
     }
 
@@ -527,7 +527,7 @@ function TRB_handleTrackbackPing($sid, $type = 'article')
     );
 
     // the speed limit applies to trackback comments, too
-    if (isset ($_CONF['trackbackspeedlimit'])) {
+    if (isset($_CONF['trackbackspeedlimit'])) {
         $speedlimit = $_CONF['trackbackspeedlimit'];
     } else {
         $speedlimit = $_CONF['commentspeedlimit'];
@@ -537,7 +537,7 @@ function TRB_handleTrackbackPing($sid, $type = 'article')
     if ($last > 0) {
         TRB_sendTrackbackResponse(1, sprintf($TRB_ERROR['speedlimit'],
             $last, $speedlimit), 403, 'Forbidden');
-        TRB_logRejected('Speedlimit', $_POST['url']);
+        TRB_logRejected('Speedlimit', Geeklog\Input::post('url'));
 
         return false;
     }
@@ -545,45 +545,45 @@ function TRB_handleTrackbackPing($sid, $type = 'article')
     // update speed limit now in any case
     COM_updateSpeedlimit('trackback');
 
-    if (isset ($_POST['url'])) { // a URL is mandatory ...
-
+    if (isset($_POST['url'])) { // a URL is mandatory ...
         if (substr($_POST['url'], 0, 4) != 'http') {
-            TRB_sendTrackbackResponse(1, $TRB_ERROR['no_url'],
-                403, 'Forbidden');
-            TRB_logRejected('No valid URL', $_POST['url']);
+            TRB_sendTrackbackResponse(1, $TRB_ERROR['no_url'], 403, 'Forbidden');
+            TRB_logRejected('No valid URL', Geeklog\Input::post('url'));
 
             return false;
         }
 
         // do spam check on the unfiltered post
-        $result = TRB_checkForSpam($_POST['url'], $_POST['title'],
-            $_POST['blog_name'], $_POST['excerpt']);
+        $result = TRB_checkForSpam(
+            Geeklog\Input::post('url'),
+            Geeklog\Input::post('title'),
+            Geeklog\Input::post('blog_name'),
+            Geeklog\Input::post('excerpt')
+        );
 
         if ($result == TRB_SAVE_SPAM) {
             TRB_sendTrackbackResponse(1, $TRB_ERROR['spam'], 403, 'Forbidden');
-            TRB_logRejected('Spam detected', $_POST['url']);
+            TRB_logRejected('Spam detected', Geeklog\Input::post('url'));
 
             return false;
         }
 
-        if (!isset ($_CONF['check_trackback_link'])) {
+        if (!isset($_CONF['check_trackback_link'])) {
             $_CONF['check_trackback_link'] = 2;
         }
 
         if ($_CONF['check_trackback_link'] & 4) {
-            $parts = parse_url($_POST['url']);
+            $parts = parse_url(Geeklog\Input::post('url'));
             if (empty($parts['host'])) {
-                TRB_sendTrackbackResponse(1, $TRB_ERROR['no_url'],
-                    403, 'Forbidden');
-                TRB_logRejected('No valid URL', $_POST['url']);
+                TRB_sendTrackbackResponse(1, $TRB_ERROR['no_url'], 403, 'Forbidden');
+                TRB_logRejected('No valid URL', Geeklog\Input::post('url'));
 
                 return false;
             } else {
                 $ip = gethostbyname($parts['host']);
                 if ($ip != $_SERVER['REMOTE_ADDR']) {
-                    TRB_sendTrackbackResponse(1, $TRB_ERROR['spam'],
-                        403, 'Forbidden');
-                    TRB_logRejected('IP address mismatch', $_POST['url']);
+                    TRB_sendTrackbackResponse(1, $TRB_ERROR['spam'], 403, 'Forbidden');
+                    TRB_logRejected('IP address mismatch', Geeklog\Input::post('url'));
 
                     return false;
                 }
@@ -591,30 +591,37 @@ function TRB_handleTrackbackPing($sid, $type = 'article')
         }
 
         if ($_CONF['check_trackback_link'] & 3) {
-            if (!TRB_linksToUs($sid, $type, $_POST['url'])) {
-                TRB_sendTrackbackResponse(1, $TRB_ERROR['no_link'],
-                    403, 'Forbidden');
-                $comment = TRB_formatComment($_POST['url'], $_POST['title'],
-                    $_POST['blog_name'], $_POST['excerpt']);
+            if (!TRB_linksToUs($sid, $type, Geeklog\Input::post('url'))) {
+                TRB_sendTrackbackResponse(1, $TRB_ERROR['no_link'], 403, 'Forbidden');
+                $comment = TRB_formatComment(
+                    Geeklog\Input::post('url'),
+                    Geeklog\Input::post('title'),
+                    Geeklog\Input::post('blog_name'),
+                    Geeklog\Input::post('excerpt')
+                );
                 PLG_spamAction($comment, $_CONF['spamx']);
-                TRB_logRejected('No link to us', $_POST['url']);
+                TRB_logRejected('No link to us', Geeklog\Input::post('url'));
 
                 return false;
             }
         }
 
-        $saved = TRB_saveTrackbackComment($sid, $type, $_POST['url'],
-            $_POST['title'], $_POST['blog_name'], $_POST['excerpt']);
+        $saved = TRB_saveTrackbackComment(
+            $sid, $type,
+            Geeklog\Input::post('url'),
+            Geeklog\Input::post('title'),
+            Geeklog\Input::post('blog_name'),
+            Geeklog\Input::post('excerpt')
+        );
 
         if ($saved == TRB_SAVE_REJECT) {
-            TRB_sendTrackbackResponse(1, $TRB_ERROR['rejected'],
-                403, 'Forbidden');
-            TRB_logRejected('Multiple Trackbacks', $_POST['url']);
+            TRB_sendTrackbackResponse(1, $TRB_ERROR['rejected'], 403, 'Forbidden');
+            TRB_logRejected('Multiple Trackbacks', Geeklog\Input::post('url'));
 
             return false;
         }
 
-        if (isset ($_CONF['notification']) &&
+        if (isset($_CONF['notification']) &&
             in_array('trackback', $_CONF['notification'])
         ) {
             TRB_sendNotificationEmail($saved, 'trackback');
@@ -625,7 +632,7 @@ function TRB_handleTrackbackPing($sid, $type = 'article')
         return true;
     } else {
         TRB_sendTrackbackResponse(1, $TRB_ERROR['no_url']);
-        TRB_logRejected('No URL', $_POST['url']);
+        TRB_logRejected('No URL', Geeklog\Input::post('url'));
     }
 
     return false;
@@ -634,20 +641,20 @@ function TRB_handleTrackbackPing($sid, $type = 'article')
 /**
  * Render all the trackback comments for a specific entry
  *
- * @param    string $sid       entry id
- * @param    string $type      type of entry ('article' = story, etc.)
- * @param    string $title     the entry's title
- * @param    string $permalink link to the entry
- * @param           string     trackback_url   trackback URL for this entry
- * @return   string                  HTML (formatted list of trackback comments)
+ * @param    string $sid          entry id
+ * @param    string $type         type of entry ('article' = story, etc.)
+ * @param    string $title        the entry's title
+ * @param    string $permalink    link to the entry
+ * @param    string $trackbackUrl trackback URL for this entry
+ * @return   string               HTML (formatted list of trackback comments)
  */
-function TRB_renderTrackbackComments($sid, $type, $title, $permalink, $trackback_url = '')
+function TRB_renderTrackbackComments($sid, $type, $title, $permalink, $trackbackUrl = '')
 {
     global $_CONF, $_TABLES, $LANG_TRB;
 
     $link_and_title = COM_createLink($title, $permalink);
-    if (empty($trackback_url)) {
-        $trackback_url = TRB_makeTrackbackUrl($sid, $type);
+    if (empty($trackbackUrl)) {
+        $trackbackUrl = TRB_makeTrackbackUrl($sid, $type);
     }
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'trackback');
@@ -658,7 +665,7 @@ function TRB_renderTrackbackComments($sid, $type, $title, $permalink, $trackback
 
     $template->set_var('permalink', $permalink);
     $template->set_var('permalink_and_title', $link_and_title);
-    $template->set_var('trackback_url', $trackback_url);
+    $template->set_var('trackback_url', $trackbackUrl);
 
     $result = DB_query("SELECT cid,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) AS day "
         . "FROM {$_TABLES['trackback']} WHERE sid = '$sid' AND type = '$type' ORDER BY date");
@@ -719,12 +726,12 @@ function TRB_sendTrackbackPing($targeturl, $url, $title, $excerpt, $blog = '')
     }
 
     $target = parse_url($targeturl);
-    if (!isset ($target['query'])) {
+    if (!isset($target['query'])) {
         $target['query'] = '';
     } else if (!empty($target['query'])) {
         $target['query'] = '?' . $target['query'];
     }
-    if (!isset ($target['port']) || !is_numeric($target['port'])) {
+    if (!isset($target['port']) || !is_numeric($target['port'])) {
         $target['port'] = 80;
     }
 

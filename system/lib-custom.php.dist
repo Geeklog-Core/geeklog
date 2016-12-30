@@ -53,12 +53,10 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 $_CST_VERBOSE = false;
 
 /**
-* Sample PHP Block function
-*
-* this is a sample function used by a PHP block.  This will show the rights that
-* a user has in the "What you have access to" block.
-*
-*/
+ * Sample PHP Block function
+ * this is a sample function used by a PHP block.  This will show the rights that
+ * a user has in the "What you have access to" block.
+ */
 function phpblock_showrights()
 {
     global $_RIGHTS, $_CST_VERBOSE;
@@ -72,7 +70,7 @@ function phpblock_showrights()
     $retval .= '&nbsp;';
 
     for ($i = 0; $i < count($_RIGHTS); $i++) {
-        $retval .=  '<li>' . $_RIGHTS[$i] . '</li>' . LB;
+        $retval .= '<li>' . $_RIGHTS[$i] . '</li>' . LB;
     }
 
     if ($_CST_VERBOSE) {
@@ -84,60 +82,59 @@ function phpblock_showrights()
 
 
 /**
-* Include any code in this function that will be called by the internal CRON API
-* The interval between runs is determined by $_CONF['cron_schedule_interval']
-*/
-function CUSTOM_runScheduledTask() {
+ * Include any code in this function that will be called by the internal CRON API
+ * The interval between runs is determined by $_CONF['cron_schedule_interval']
+ */
+function CUSTOM_runScheduledTask()
+{
 
 }
 
 
 /**
-* Example of custom function that can be used to handle a login error.
-* Only active with custom registration mode enabled
-* Used if you have a custom front page and need to trap and reformat any error messages
-* This example redirects to the front page with a extra passed variable plus the message
-* Note: Message could be a string but in this case maps to $MESSAGE[81] as a default - edit in language file
-*/
-function CUSTOM_loginErrorHandler($msg='') {
-    global $_CONF,$MESSAGE;
+ * Example of custom function that can be used to handle a login error.
+ * Only active with custom registration mode enabled
+ * Used if you have a custom front page and need to trap and reformat any error messages
+ * This example redirects to the front page with a extra passed variable plus the message
+ * Note: Message could be a string but in this case maps to $MESSAGE[81] as a default - edit in language file
+ */
+function CUSTOM_loginErrorHandler($msg = '')
+{
+    global $_CONF, $MESSAGE;
 
     if ($msg > 0) {
         $msg = $msg;
     } elseif ($msg == '') {
         $msg = 81;
     }
-    $retval = COM_refresh($_CONF['site_url'] .'/index.php?mode=loginfail&amp;msg='.$msg);
+    $retval = COM_refresh($_CONF['site_url'] . '/index.php?mode=loginfail&amp;msg=' . $msg);
     echo $retval;
     exit;
 }
 
 
 /**
-* Include any code in this function to add custom template variables.
-*
-* Called from within Geeklog for:
-* - 'header' (site header)
-* - 'footer' (site footer)
-* - 'storytext', 'featuredstorytext', 'archivestorytext' (story templates)
-* - 'story' (story submission)
-* - 'comment' (comment submission form)
-* - 'registration' (user registration form)
-* - 'contact' (email user form)
-* - 'emailstory' (email story to a friend)
-* - 'loginblock' (login form in the side bar)
-* - 'loginform' (login form in the content area)
-* - 'search' (advanced search form; simple search is usually part of 'header')
-*
-* This function is called whenever PLG_templateSetVars is called, i.e. in
-* addition to the templates listed here, it may also be called from plugins.
-*
-* @param    string  $templatename   name of the template, e.g. 'header'
-* @param    object  $template       the template class object
-* @return   void
-* @see      PLG_templateSetVars
-*
-*/
+ * Include any code in this function to add custom template variables.
+ * Called from within Geeklog for:
+ * - 'header' (site header)
+ * - 'footer' (site footer)
+ * - 'storytext', 'featuredstorytext', 'archivestorytext' (story templates)
+ * - 'story' (story submission)
+ * - 'comment' (comment submission form)
+ * - 'registration' (user registration form)
+ * - 'contact' (email user form)
+ * - 'emailstory' (email story to a friend)
+ * - 'loginblock' (login form in the side bar)
+ * - 'loginform' (login form in the content area)
+ * - 'search' (advanced search form; simple search is usually part of 'header')
+ * This function is called whenever PLG_templateSetVars is called, i.e. in
+ * addition to the templates listed here, it may also be called from plugins.
+ *
+ * @param    string $templatename name of the template, e.g. 'header'
+ * @param    object $template     the template class object
+ * @return   void
+ * @see      PLG_templateSetVars
+ */
 function CUSTOM_templateSetVars($templatename, $template)
 {
     // define a {hello_world} variable available in header.thtml and
@@ -182,50 +179,44 @@ function CUSTOM_templateSetVars($templatename, $template)
 */
 
 /**
-* Called when user is first created
-* Create any new records in additional tables you may have added
-* Update any fields in the core GL tables for this user as needed
-*
-* @param    int     $uid         user id - record already exists at this point
-* @param    boolean $batchImport true during Batch User Import (admin/user.php)
-* @return   boolean              true on success, otherwise false
-*
-*/
+ * Called when user is first created
+ * Create any new records in additional tables you may have added
+ * Update any fields in the core GL tables for this user as needed
+ *
+ * @param    int     $uid         user id - record already exists at this point
+ * @param    boolean $batchImport true during Batch User Import (admin/user.php)
+ * @return   boolean              true on success, otherwise false
+ */
 function CUSTOM_userCreate($uid, $batchImport = false)
 {
     global $_CONF, $_TABLES;
 
-    if ($batchImport) {
+    if ($batchImport || !$_CONF['custom_registration']) {
         // the sample code in this function is written for the normal sign up
-        // process; the $_POST variables are not set during bulk import
+        // process; the $_POST variables are not set during bulk import or OAuth login
         return true;
+    }
+
+    $uid = (int) $uid;
+    if ($uid < 1) {
+        return false;
     }
 
     // Ensure all data is prepared correctly before inserts, quotes may need to
     // be escaped with DB_escapeString()
-    $email = '';
-    if (isset($_POST['email'])) {
-        $email = COM_applyFilter ($_POST['email']);
-        $email = DB_escapeString ($email);
-    }
+    $email = Geeklog\Input::fPost('email', '');
+    $email = DB_escapeString($email);
 
-    $homepage = '';
-    if (isset($_POST['homepage'])) {
-        $homepage = COM_applyFilter ($_POST['homepage']);
-        $homepage = DB_escapeString($homepage);
-    }
+    $homepage = Geeklog\Input::fPost('homepage', '');
+    $homepage = DB_escapeString($homepage);
 
-    $fullname = '';
-    if (isset($_POST['fullname'])) {
-        // COM_applyFilter would strip special characters, e.g. quotes, so
-        // we only strip HTML
-        $fullname = strip_tags ($_POST['fullname']);
-        $fullname = DB_escapeString($fullname);
-    }
+    $fullname = Geeklog\Input::post('fullname', '');
+    // COM_applyFilter would strip special characters, e.g. quotes, so we only strip HTML
+    $fullname = strip_tags($fullname);
+    $fullname = DB_escapeString($fullname);
 
-    // Note: In this case, we can trust the $uid variable to contain the new
-    // account's uid.
-    DB_query("UPDATE {$_TABLES['users']} SET email = '$email', homepage = '$homepage', fullname = '$fullname' WHERE uid = $uid");
+    // Note: In this case, we can trust the $uid variable to contain the new account's uid.
+    DB_query("UPDATE {$_TABLES['users']} SET email = '{$email}', homepage = '{$homepage}', fullname = '{$fullname}' WHERE uid = {$uid}");
 
     return true;
 }
@@ -251,7 +242,7 @@ function CUSTOM_userDisplay($uid)
     $var = "Value from custom table";
     $retval .= '<tr>
         <td align="right"><b>Custom Fields:</b></td>
-        <td>' . $var .'</td>
+        <td>' . $var . '</td>
      </tr>';
 
     return $retval;
@@ -278,15 +269,15 @@ function CUSTOM_userEdit($uid)
     $var = "Value from custom table";
     $cookietimeout = DB_getitem($_TABLES['users'], 'cookietimeout', $uid);
     $selection = '<select name="cooktime">' . LB;
-    $selection .= COM_optionList ($_TABLES['cookiecodes'], 'cc_value,cc_descr', $cookietimeout, 0);
+    $selection .= COM_optionList($_TABLES['cookiecodes'], 'cc_value,cc_descr', $cookietimeout, 0);
     $selection .= '</select>';
     $retval .= '<tr>
         <td align="right">Remember user for:</td>
-        <td>' . $selection .'</td>
+        <td>' . $selection . '</td>
      </tr>';
     $retval .= '<tr>
         <td align="right"><b>Custom Fields:</b></td>
-        <td><input type="text" name="custom1" size="50" value="' . $var .'"' . XHTML . '></td>
+        <td><input type="text" name="custom1" size="50" value="' . $var . '"' . XHTML . '></td>
      </tr>';
     $retval .= '<tr><td colspan="2"><hr' . XHTML . '></td></tr>';
 
@@ -299,29 +290,25 @@ function CUSTOM_userSave($uid)
 {
     global $_CONF, $_TABLES;
 
-    $cooktime = 0;
     if (isset($_POST['cooktime'])) {
-        $cooktime = COM_applyFilter ($_POST['cooktime'], true);
-        if ($cooktime < 0) {
-            $cooktime = 0;
+        $cookTime = (int) Geeklog\Input::fPost('cooktime', 0);
+        if ($cookTime < 0) {
+            $cookTime = 0;
         }
 
-        DB_query("UPDATE {$_TABLES['users']} SET cookietimeout = $cooktime WHERE uid = $uid");
+        DB_query("UPDATE {$_TABLES['users']} SET cookietimeout = $cookTime WHERE uid = $uid");
     }
 }
 
-
 /**
-* Main Form used for Custom membership when member is registering
-*
-* Note: Requires a file custom/memberdetail.thtml in every theme that is
-*       installed on the site!
-*
-* @param    string  $msg    an error message to display or the word 'new'
-* @return   string          HTML for the registration form
-*
-*/
-function CUSTOM_userForm ($msg = '')
+ * Main Form used for Custom membership when member is registering
+ * Note: Requires a file custom/memberdetail.thtml in every theme that is
+ *       installed on the site!
+ *
+ * @param    string $msg an error message to display or the word 'new'
+ * @return   string          HTML for the registration form
+ */
+function CUSTOM_userForm($msg = '')
 {
     global $_CONF, $_TABLES, $LANG04;
 
@@ -345,33 +332,24 @@ function CUSTOM_userForm ($msg = '')
 
     $user_templates->set_var('USERNAME', $LANG04[2]);
     $user_templates->set_var('USERNAME_HELP', "Name to be used when accessing this site");
-    $username = '';
-    if (isset($_POST['username'])) {
-        $username = COM_applyFilter ($_POST['username']);
-    }
+    $username = Geeklog\Input::fPost('username', '');
     $user_templates->set_var('username', $username);
 
     $user_templates->set_var('EMAIL', $LANG04[5]);
     $user_templates->set_var('EMAIL_HELP', $LANG04[33]);
-    $email = '';
-    if (isset($_POST['email'])) {
-        $email = COM_applyFilter ($_POST['email']);
-    }
+    $email = Geeklog\Input::fPost('email', '');
     $user_templates->set_var('email', $email);
 
     $user_templates->set_var('EMAIL_CONF', $LANG04[124]);
     $user_templates->set_var('EMAIL_CONF_HELP', $LANG04[126]);
-    $email_conf = '';
-    if (isset($_POST['email_conf'])) {
-        $email_conf = COM_applyFilter ($_POST['email_conf']);
-    }
+    $email_conf = Geeklog\Input::fPost('email_conf', '');
     $user_templates->set_var('email_conf', $email_conf);
 
     $user_templates->set_var('FULLNAME', $LANG04[3]);
     $user_templates->set_var('FULLNAME_HELP', $LANG04[34]);
-    $fullname = '';
-    if (isset($_POST['fullname'])) {
-        $fullname = strip_tags ($_POST['fullname']);
+    $fullname = Geeklog\Input::post('fullname', '');
+    if (!empty($fullname)) {
+        $fullname = strip_tags($fullname);
     }
     $user_templates->set_var('fullname', $fullname);
 
@@ -386,18 +364,20 @@ function CUSTOM_userForm ($msg = '')
 }
 
 /**
-* Geeklog is about to create a new user or edit an existing user.
-* This is the custom code's last chance to do any form validation,
-* e.g. to check if all required data has been entered.
-*
-* @param    string  $username   username that Geeklog would use for the new user* @param    string  $email      email address of that user
-* @return   mixed               Returns an empty string if no issues found validating user account form
-*                               If a validation test fails, return both a message and code
-*                                  > usercreate needs a string and usersettings saveuser() needs a message number
-*                               The message number will map to the GLOBALS $MESSAGE define in the site language files
-*                               By default $MESSAGE[400] will appear if a non-numeric is returned to usersettings.php - saveuser function
-*/
-function CUSTOM_userCheck ($username, $email='')
+ * Geeklog is about to create a new user or edit an existing user.
+ * This is the custom code's last chance to do any form validation,
+ * e.g. to check if all required data has been entered.
+ *
+ * @param    string $username       username that Geeklog would use for the new user* @param    string  $email
+ *                                  email address of that user
+ * @return   mixed               Returns an empty string if no issues found validating user account form
+ *                                  If a validation test fails, return both a message and code
+ *                                  > usercreate needs a string and usersettings saveuser() needs a message number
+ *                                  The message number will map to the GLOBALS $MESSAGE define in the site language
+ *                                  files By default $MESSAGE[400] will appear if a non-numeric is returned to
+ *                                  usersettings.php - saveuser function
+ */
+function CUSTOM_userCheck($username, $email = '')
 {
     global $MESSAGE;
 
@@ -413,32 +393,28 @@ function CUSTOM_userCheck ($username, $email='')
     return $retval;
 }
 
-
 /**
-* Custom function to retrieve and return a formatted list of blocks
-* Can be used when calling COM_siteHeader or COM_siteFooter
-*
-* Example:
-* 1: Setup an array of blocks to display
-* 2: Call COM_siteHeader or COM_siteFooter
-*
-*  $myblocks = array( 'site_menu', 'site_news', 'poll_block' );
-*
-* COM_siteHeader( array( 'CUSTOM_showBlocks', $myblocks )) ;
-* COM_siteFooter( true, array( 'CUSTOM_showBlocks', $myblocks ));
-*
-* @param   array   $showblocks    An array of block names to retrieve and format
-* @return  string                 Formated HTML containing site footer and optionally right blocks
-*/
+ * Custom function to retrieve and return a formatted list of blocks
+ * Can be used when calling COM_siteHeader or COM_siteFooter
+ * Example:
+ * 1: Setup an array of blocks to display
+ * 2: Call COM_siteHeader or COM_siteFooter
+ *  $myblocks = array( 'site_menu', 'site_news', 'poll_block' );
+ * COM_siteHeader( array( 'CUSTOM_showBlocks', $myblocks )) ;
+ * COM_siteFooter( true, array( 'CUSTOM_showBlocks', $myblocks ));
+ *
+ * @param   array $showblocks An array of block names to retrieve and format
+ * @return  string                 Formated HTML containing site footer and optionally right blocks
+ */
 function CUSTOM_showBlocks($showblocks)
 {
     global $_CONF, $_USER, $_TABLES;
 
     $retval = '';
 
-    if( !isset( $_USER['noboxes'] )) {
-        if( !empty( $_USER['uid'] )) {
-            $noboxes = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );
+    if (!isset($_USER['noboxes'])) {
+        if (!empty($_USER['uid'])) {
+            $noboxes = DB_getItem($_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}");
         } else {
             $noboxes = 0;
         }
@@ -446,7 +422,7 @@ function CUSTOM_showBlocks($showblocks)
         $noboxes = $_USER['noboxes'];
     }
 
-    foreach($showblocks as $block) {
+    foreach ($showblocks as $block) {
         $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help,allow_autotags,onleft FROM {$_TABLES['blocks']} WHERE name='$block'";
         $result = DB_query($sql);
         if (DB_numRows($result) == 1) {
@@ -456,7 +432,7 @@ function CUSTOM_showBlocks($showblocks)
             } else {
                 $side = 'right';
             }
-            $retval .= COM_formatBlock($A,$noboxes, $side);
+            $retval .= COM_formatBlock($A, $noboxes, $side);
         }
     }
 
@@ -465,14 +441,12 @@ function CUSTOM_showBlocks($showblocks)
 
 
 /**
-* This is an example of a custom email function. When this function is NOT
-* commented out, Geeklog would send all emails through this function
-* instead of sending them through COM_mail in lib-common.php.
-*
-* This is basically a re-implementation of the way emails were sent
-* prior to Geeklog 1.3.9 (Geeklog uses PEAR::Mail as of version 1.3.9).
-*
-*/
+ * This is an example of a custom email function. When this function is NOT
+ * commented out, Geeklog would send all emails through this function
+ * instead of sending them through COM_mail in lib-common.php.
+ * This is basically a re-implementation of the way emails were sent
+ * prior to Geeklog 1.3.9 (Geeklog uses PEAR::Mail as of version 1.3.9).
+ */
 /*
 function CUSTOM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0)
 {
@@ -502,10 +476,9 @@ function CUSTOM_mail($to, $subject, $message, $from = '', $html = false, $priori
 */
 
 /**
-* This is an example of a function that returns menu entries to be used for
-* the 'custom' entry in $_CONF['menu_elements'] (see configuration).
-*
-*/
+ * This is an example of a function that returns menu entries to be used for
+ * the 'custom' entry in $_CONF['menu_elements'] (see configuration).
+ */
 /*
 function CUSTOM_menuEntries ()
 {
@@ -530,12 +503,12 @@ function CUSTOM_menuEntries ()
 */
 
 /**
-  * This is an example of an error handler override. This will be used in
-  * place of COM_handleError if the user is not in the Root group. Really,
-  * this should only be used to display some nice pretty "site error" html.
-  * Though you could try and notify the sysadmin, and log the error, as this
-  * example will show. The function is commented out for saftey.
-  */
+ * This is an example of an error handler override. This will be used in
+ * place of COM_handleError if the user is not in the Root group. Really,
+ * this should only be used to display some nice pretty "site error" html.
+ * Though you could try and notify the sysadmin, and log the error, as this
+ * example will show. The function is commented out for saftey.
+ */
 /*
 function CUSTOM_handleError($errno, $errstr, $errfile, $errline, $errcontext)
 {

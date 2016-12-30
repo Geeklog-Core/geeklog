@@ -226,19 +226,15 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     $order_sql = '';
     $group_by_sql = '';
     $limit = '';
-    $prevOrder = '';
-    if (isset ($_GET['prevorder'])) { # what was the last sorting?
-        $prevOrder = COM_applyFilter($_GET['prevorder']);
-    }
-
-    $query = '';
-    if (isset ($_REQUEST['q'])) { // get query (text-search)
-        $query = strip_tags(COM_stripslashes($_REQUEST['q']));
+    $prevOrder = Geeklog\Input::fGet('prevorder', '');  // what was the last sorting?
+    $query = Geeklog\Input::request('q', '');           // get query (text-search)
+    if (!empty($query)) {
+        $query = strip_tags($query);
     }
 
     $query_limit = '';
     if (isset($_REQUEST['query_limit'])) { // get query-limit (list-length)
-        $query_limit = COM_applyFilter($_REQUEST['query_limit'], true);
+        $query_limit = (int) Geeklog\Input::fRequest('query_limit');
         if ($query_limit == 0) {
             $query_limit = DEFAULT_ENTRIES_PER_PAGE;
         }
@@ -249,8 +245,8 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     $page = '';
     // get the current page from the interface. The variable is linked to the
     // component, i.e. the plugin/function calling this here to avoid overlap
-    if (isset ($_REQUEST[$component . 'listpage'])) {
-        $page = COM_applyFilter($_REQUEST[$component . 'listpage'], true);
+    if (isset($_REQUEST[$component . 'listpage'])) {
+        $page = (int) Geeklog\Input::fRequest($component . 'listpage');
         $currentPage = $page;
     }
     if ($currentPage <= 0) {
@@ -340,10 +336,10 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     $order_var_link = ''; # Variable for google paging.
 
     // is the order set in the link (when sorting the list)
-    if (!isset ($_GET['order'])) {
+    if (!isset($_GET['order'])) {
         $order = $defSort_arr['field']; // no, get the default
     } else {
-        $order_var = COM_applyFilter($_GET['order'], true);
+        $order_var = (int) Geeklog\Input::fGet('order');
         $order_var_link = "&amp;order=$order_var"; # keep the variable for the google paging
         $order = $header_arr[$order_var]['field'];  # current order field name
     }
@@ -365,12 +361,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     //    $order = $order[0];
     //}
 
-    if (!isset ($_GET['direction'])) { # get direction to sort after
-        $direction = $defSort_arr['direction'];
-    } else {
-        $direction = COM_applyFilter($_GET['direction']);
-    }
-
+    $direction = Geeklog\Input::fGet('direction', $defSort_arr['direction']);   // get direction to sort after
     $direction = strtoupper($direction);
     if ($order == $prevOrder) { #reverse direction if prev. order was the same
         $direction = ($direction === 'DESC') ? 'ASC' : 'DESC';
@@ -378,12 +369,13 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
         $direction = ($direction === 'DESC') ? 'DESC' : 'ASC';
     }
 
-    if ($direction == 'ASC') { # assign proper arrow img name dep. on sort order
+    if ($direction === 'ASC') { // assign proper arrow img name dep. on sort order
         $arrow = 'bararrowdown';
     } else {
         $arrow = 'bararrowup';
     }
-    # make actual order arrow image
+
+    // make actual order arrow image
     $img_arrow_url = "{$_CONF['layout_url']}/images/$arrow.$_IMAGE_TYPE";
     $img_arrow = '&nbsp;' . COM_createImage($img_arrow_url, $arrow);
 
@@ -882,7 +874,7 @@ function ADMIN_getListField_groups($fieldName, $fieldValue, $A, $icon_arr, $sele
     }
 
     $show_all_groups = false;
-    if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+    if (Geeklog\Input::request('chk_showall') == 1) {
         $show_all_groups = true;
     }
 
@@ -1357,9 +1349,9 @@ function ADMIN_getListField_plugins($fieldName, $fieldValue, $A, $icon_arr, $tok
                     $sorting = '';
                     $csrfToken2 = '&amp;' . CSRF_TOKEN . '=' . $token;
                     if (!empty($_GET['order']) && !empty($_GET['direction'])) { // Remember how the list was sorted
-                        $ord = trim($_GET['order']);
-                        $dir = trim($_GET['direction']);
-                        $old = trim($_GET['prevorder']);
+                        $ord = trim(Geeklog\Input::get('order'));
+                        $dir = trim(Geeklog\Input::get('direction'));
+                        $old = trim(Geeklog\Input::get('prevorder'));
                         $sorting = "&amp;order=$ord&amp;direction=$dir&amp;prevorder=$old";
                     }
                     $retval = COM_createLink($icon_arr[$switch], $_CONF['site_admin_url'] .

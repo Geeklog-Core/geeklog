@@ -150,9 +150,9 @@ class ListFactory
      * LF_SOURCE_TITLE, LF_SOURCE_NAME and LF_ROW_NUMBER constants.
      *
      * @access public
-     * @param string $url      The URL of the page the table appears on
-     * @param array|string  $limits   The avaliable page limits
-     * @param int    $per_page The default number or rows per page
+     * @param string       $url      The URL of the page the table appears on
+     * @param array|string $limits   The avaliable page limits
+     * @param int          $per_page The default number or rows per page
      */
     public function __construct($url, $limits = '10,15,20,25,30,35', $per_page = 20)
     {
@@ -422,7 +422,7 @@ class ListFactory
         }
 
         if (isset($_GET['direction'])) {
-            $this->_sort_arr['direction'] = $_GET['direction'] == 'asc' ? 'asc' : 'desc';
+            $this->_sort_arr['direction'] = (Geeklog\Input::get('direction') === 'asc') ? 'asc' : 'desc';
         } else {
             $this->_sort_arr['direction'] = $this->_def_sort_arr['direction'];
         }
@@ -435,9 +435,9 @@ class ListFactory
         }
         $order_sql = ' ORDER BY ' . $ord . ' ' . strtoupper($this->_sort_arr['direction']);
 
-        $this->_page = isset($_GET['page']) ? COM_applyFilter($_GET['page'], true) : 1;
+        $this->_page = (int) Geeklog\Input::fGet('page', 1);
         if (isset($_GET['results'])) {
-            $this->_per_page = COM_applyFilter($_GET['results'], true);
+            $this->_per_page = (int) Geeklog\Input::fGet('results');
         }
 
         $rows_arr = $this->_preset_rows;
@@ -762,7 +762,7 @@ class ListFactory
      * @return string HTML output
      */
     public function getFormattedOutput2($rows_arr, $title, $list_top = '', $list_bottom = '', $show_sort = true, $show_limit = true,
-                                 $params_arr = null)
+                                        $params_arr = null)
     {
         global $_CONF, $_IMAGE_TYPE, $LANG_ADMIN, $LANG09;
 

@@ -866,12 +866,12 @@ class config
 
         $t->set_var('search_configuration_label', $LANG_CONFIG['search_configuration_label']);
         if (isset($_POST['search-configuration-cached'])) {
-            $t->set_var('search_configuration_value', $_POST['search-configuration-cached']);
+            $t->set_var('search_configuration_value', Geeklog\Input::post('search-configuration-cached'));
         } else {
             $t->set_var('search_configuration_value', '');
         }
         if (isset($_POST['tab-id-cached'])) {
-            $t->set_var('tab_id_value', $_POST['tab-id-cached']);
+            $t->set_var('tab_id_value', Geeklog\Input::post('tab-id-cached'));
         } else {
             $t->set_var('tab_id_value', '');
         }

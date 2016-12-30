@@ -71,18 +71,17 @@ class Search
 
         // Set search criteria
         if (isset($_GET['query'])) {
-            $query = COM_stripslashes($_GET['query']);
+            $query = Geeklog\Input::fGet('query');
             $query = GLText::remove4byteUtf8Chars($query);
             $this->_query = strip_tags($query);
         }
-        
+
         if (isset($_GET['topic'])) {
             // see if topic exists
-            $tid = COM_applyFilter($_GET['topic']);
+            $tid = Geeklog\Input::fGet('topic');
 
             // If it exists and user has access to it, it will return itself else an empty string
-            $tid = DB_getItem($_TABLES['topics'], 'tid', "tid = '$tid'" . COM_getPermSQL('AND', 0, 2));
-
+            $tid = DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($tid) . "'" . COM_getPermSQL('AND', 0, 2));
             $this->_topic = $tid;
         } else {
             if ($_CONF['search_use_topic']) {
@@ -93,28 +92,28 @@ class Search
             }
         }
         if (isset($_GET['datestart'])) {
-            $this->_dateStart = COM_applyFilter($_GET['datestart']);
+            $this->_dateStart = Geeklog\Input::fGet('datestart');
         }
         if (isset($_GET['dateend'])) {
-            $this->_dateEnd = COM_applyFilter($_GET['dateend']);
+            $this->_dateEnd = Geeklog\Input::fGet('dateend');
         }
         if (isset($_GET['author'])) {
-            $this->_author = COM_applyFilter($_GET['author']);
+            $this->_author = Geeklog\Input::fGet('author');
 
             // In case we got a username instead of uid, convert it.  This should
             // make custom themes for search page easier.
             if (!is_numeric($this->_author) && !preg_match('/^([0-9]+)$/', $this->_author) && $this->_author != '') {
-                $this->_author = DB_getItem($_TABLES['users'], 'uid', 'username=\'' . DB_escapeString($this->_author) . '\'');
+                $this->_author = DB_getItem($_TABLES['users'], 'uid', "username='" . DB_escapeString($this->_author) . "'");
             }
 
             if ($this->_author < 1) {
                 $this->_author = '';
             }
         }
-        $this->_type = isset($_GET['type']) ? COM_applyFilter($_GET['type']) : 'all';
-        $this->_keyType = isset($_GET['keyType']) ? COM_applyFilter($_GET['keyType']) : $_CONF['search_def_keytype'];
 
-        $this->_titlesOnly = isset($_GET['title']) ? true : false;
+        $this->_type = Geeklog\Input::fGet('type', 'all');
+        $this->_keyType = Geeklog\Input::fGet('keyType', $_CONF['search_def_keytype']);
+        $this->_titlesOnly = isset($_GET['title']);
     }
 
     /**
@@ -489,10 +488,11 @@ class Search
         $searchTimer->startTimer();
 
         // Have plugins do their searches
-        $page = isset($_GET['page']) ? COM_applyFilter($_GET['page'], true) : 1;
+        $page = (int) Geeklog\Input::fGet('page', 1);
         $result_plugins = PLG_doSearch($this->_query, $this->_dateStart,
             $this->_dateEnd, $this->_topic, $this->_type,
-            $this->_author, $this->_keyType, $page, 5);
+            $this->_author, $this->_keyType, $page, 5
+        );
 
         // Add core searches
         $result_plugins = array_merge($result_plugins, $this->_searchStories());

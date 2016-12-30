@@ -357,21 +357,18 @@ class sanitizer
         if (!is_array($data)) {
             return false;
         }
-        $cleandata = array();
-        foreach ($data as $varname => $type) {
-            if (isset($_GET[$varname]) AND !empty($_GET[$varname])) {
-                $data = $_GET[$varname];
-                $cleandata[$varname] = $this->getCleanData($type, $data);
+
+        $cleanData = array();
+        foreach ($data as $varName => $type) {
+            if (isset($_GET[$varName]) && !empty($_GET[$varName])) {
+                $data = Geeklog\Input::get($varName);
+                $cleanData[$varName] = $this->getCleanData($type, $data);
             } else {
-                if ($type = 'int') {
-                    $cleandata[$varname] = 0;
-                } else {
-                    $cleandata[$varname] = '';
-                }
+                $cleanData[$varName] = ($type == 'int') ? 0 : '';
             }
         }
 
-        return $cleandata;
+        return $cleanData;
     }
 
     /* Expect an array of $_POST variables to filter and return sanitized values  */
@@ -380,21 +377,18 @@ class sanitizer
         if (!is_array($data)) {
             return false;
         }
-        $cleandata = array();
-        foreach ($data as $varname => $type) {
-            if (isset($_POST[$varname]) AND !empty($_POST[$varname])) {
-                $data = $_POST[$varname];
-                $cleandata[$varname] = $this->getCleanData($type, $data);
+
+        $cleanData = array();
+        foreach ($data as $varName => $type) {
+            if (isset($_POST[$varName]) && !empty($_POST[$varName])) {
+                $data = Geeklog\Input::post($varName);
+                $cleanData[$varName] = $this->getCleanData($type, $data);
             } else {
-                if ($type = 'int') {
-                    $cleandata[$varname] = 0;
-                } else {
-                    $cleandata[$varname] = '';
-                }
+                $cleanData[$varName] = ($type == 'int') ? 0 : '';
             }
         }
 
-        return $cleandata;
+        return $cleanData;
     }
 
     /* Expect an array of $_REQUEST variables to filter and return sanitized values  */
@@ -403,21 +397,18 @@ class sanitizer
         if (!is_array($data)) {
             return false;
         }
-        $cleandata = array();
-        foreach ($data as $varname => $type) {
-            if (isset($_REQUEST[$varname]) AND !empty($_REQUEST[$varname])) {
-                $data = $_REQUEST[$varname];
-                $cleandata[$varname] = $this->getCleanData($type, $data);
+
+        $cleanData = array();
+        foreach ($data as $varName => $type) {
+            if (isset($_REQUEST[$varName]) && !empty($_REQUEST[$varName])) {
+                $data = Geeklog\Input::request($varName);
+                $cleanData[$varName] = $this->getCleanData($type, $data);
             } else {
-                if ($type = 'int') {
-                    $cleandata[$varname] = 0;
-                } else {
-                    $cleandata[$varname] = '';
-                }
+                $cleanData[$varName] = ($type == 'int') ? 0 : '';
             }
         }
 
-        return $cleandata;
+        return $cleanData;
     }
 
     /* Expect an array of $_COOKIE variables to filter and return sanitized values  */

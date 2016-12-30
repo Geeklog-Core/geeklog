@@ -790,7 +790,7 @@ function SEC_checkUserStatus($userid)
     if (strpos($_SERVER['PHP_SELF'], 'users.php') === false) {
         $redirect = true;
     } else {
-        if (empty($_REQUEST['mode']) || ($_REQUEST['mode'] == 'logout')) {
+        if (empty($_REQUEST['mode']) || (Geeklog\Input::request('mode') === 'logout')) {
             $redirect = false;
         } else {
             $redirect = true;
@@ -1039,7 +1039,7 @@ function SEC_removeFeatureFromDB($feature_name, $logging = false)
             if ($logging) {
                 COM_errorLog('...success', 1);
             }
-        } else if ($logging) {
+        } elseif ($logging) {
             COM_errorLog("SEC_removeFeatureFromDB: Feature '$feature_name' not found.");
         }
     }
@@ -1419,14 +1419,8 @@ function SECINT_checkToken()
 {
     global $_TABLES, $_USER, $_DB_dbms;
 
-    $token = ''; // Default to no token.
+    $token = Geeklog\Input::fGetOrPost(CSRF_TOKEN, ''); // Default to no token
     $return = false; // Default to fail.
-
-    if (array_key_exists(CSRF_TOKEN, $_GET)) {
-        $token = COM_applyFilter($_GET[CSRF_TOKEN]);
-    } elseif (array_key_exists(CSRF_TOKEN, $_POST)) {
-        $token = COM_applyFilter($_POST[CSRF_TOKEN]);
-    }
 
     if (trim($token) != '') {
         $sql['mysql'] = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
@@ -1447,9 +1441,9 @@ function SECINT_checkToken()
             $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
             if ($uid != $tokendata['owner_id']) {
                 $return = false;
-            } else if ($tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
+            } elseif ($tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
                 $return = false;
-            } else if ($tokendata['expired']) {
+            } elseif ($tokendata['expired']) {
                 $return = false;
             } else {
                 $return = true; // Everything is AOK in only one condition...
@@ -1925,7 +1919,7 @@ function SEC_loginForm($use_config = array())
                 'microsoft' => 'windows',
                 'linkedin'  => 'linkedin',
                 'yahoo'     => 'yahoo',
-                'github'    => 'github'
+                'github'    => 'github',
             );
             foreach ($modules as $service) {
                 $loginform->set_file('oauth_login', '../loginform_oauth.thtml');
