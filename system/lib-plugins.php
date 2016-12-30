@@ -1194,11 +1194,14 @@ function PLG_createUser($uid)
     }
 
     if ($_CONF['custom_registration']) {
-        if (is_callable('CUSTOM_userCreate')) {
-            CUSTOM_userCreate($uid, false);
-        } elseif (is_callable('CUSTOM_user_create')) {
-            COM_errorLog(__FUNCTION__ . ': CUSTOM_user_create is deprecated as of Geeklog 2.1.2.  Please use CUSTOM_userCreate instead.');
-            CUSTOM_user_create($uid);
+        // Check to see if user is a remote user. Cannot call custom user create function if a remote user
+        if (!SEC_inGroup('Remote Users', $uid)) {
+            if (is_callable('CUSTOM_userCreate')) {
+                CUSTOM_userCreate($uid, false);
+            } elseif (is_callable('CUSTOM_user_create')) {
+                COM_errorLog(__FUNCTION__ . ': CUSTOM_user_create is deprecated as of Geeklog 2.1.2.  Please use CUSTOM_userCreate instead.');
+                CUSTOM_user_create($uid);
+            }
         }
     }
 }

@@ -176,6 +176,10 @@ function CUSTOM_templateSetVars($templatename, $template)
     - All other users will see the standard User profile with the optional extended custom information
     - Customization requires changes to a few of the core template files to add {customfields} variables
     - See notes below in the custom function about the template changes
+    - Remember remote accounts (like OAuth and OpenID) behave differently when they are created (and logging in) so the 
+      CUSTOM_userCreate function is not run for new remote accounts. All other functions are as once 
+      created in Geeklog, remote accounts behave pretty much like the other accounts. If you do not want to use the rest 
+      of the custom user functions for remote accounts you will have to handle that within the custom function
 */
 
 /**
