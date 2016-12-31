@@ -3578,17 +3578,22 @@ function COM_adminMenu($help = '', $title = '', $position = '')
  */
 function COM_redirect($url)
 {
+    global $_CONF;
+
     if (!headers_sent($file, $line)) {
         $url = str_ireplace('&amp;', '&', $url);
         header('Location: ' . $url);
     }
 
-    COM_errorLog(
-        sprintf(
-            '%1$s failed to redirect to "%2$s".  Headers were already sent at line %3$d of "%4$s".',
-            __FUNCTION__, $url, $line, $file
-        )
-    );
+    if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
+        // for debugging
+        COM_errorLog(
+            sprintf(
+                '%1$s failed to redirect to "%2$s".  Headers were already sent at line %3$d of "%4$s".',
+                __FUNCTION__, $url, $line, $file
+            )
+        );
+    }
 
     // Send out HTML meta tags in case header('Location: some_url') fails
     @header('Content-Type: text/html; charset=' . COM_getCharset());
