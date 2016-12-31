@@ -247,12 +247,14 @@ class config
                 //    continue;
             }
 
+            $autoCompleteData = $row[0];
+
             if ($row[1] !== 'unset') {
                 if (!array_key_exists($row[2], $this->config_array) ||
                     !array_key_exists($row[0], $this->config_array[$row[2]])
                 ) {
                     $value = @unserialize($row[1]);
-                    if (($value === false) && ($row[1] != $false_str)) {
+                    if (($value === false) && ($row[1] !== $false_str)) {
                         if (function_exists('COM_errorLog')) {
                             COM_errorLog("Unable to unserialize {$row[1]} for {$row[2]}:{$row[0]}");
                         }
@@ -261,21 +263,17 @@ class config
 
                         if (strpos($row[3], '@') === 0) { // if @
                             if (is_array($value) && !empty($value)) {
-                                $this->conf_tab_arr[$row[2]][$row[4]]
-                                [$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = array_keys($value);
+                                $autoCompleteData = array_keys($value);
                             }
-                        } else {
-                            $this->conf_tab_arr[$row[2]][$row[4]]
-                            [$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = $row[0];
                         }
                     }
                 }
-            } else {
-                // set to autocomplete only
-                $this->conf_tab_arr[$row[2]][$row[4]]
-                [$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = $row[0];
             }
+
+            // set to auto complete
+            $this->conf_tab_arr[$row[2]][$row[4]][$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = $autoCompleteData;
         }
+
         $this->_post_initconfig();
         $this->_post_configuration();
 
