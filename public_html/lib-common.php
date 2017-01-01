@@ -3934,11 +3934,6 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
         $numRows = DB_numRows($result);
 
         if ($numRows > 0) {
-            $dateOnly = $_CONF['dateonly'];
-            if (empty($dateOnly)) {
-                $dateOnly = '%d-%b'; // fallback: day - abbrev. month name
-            }
-
             $day = 'noday';
             $string = '';
             $oldNews = array();
@@ -3951,12 +3946,11 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
                     if ($day !== 'noday') {
                         $dayList = COM_makeList($oldNews, 'list-older-stories');
                         $oldNews = array(); // Reset old news array
-                        $dayList = preg_replace("/(\015\012)|(\015)|(\012)/",
-                            '', $dayList);
+                        $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
                         $string .= $dayList . '<div class="divider-older-stories"></div>';
                     }
 
-                    $day2 = strftime($dateOnly, $A['day']);
+                    list($day2, ) = COM_getUserDateTimeFormat($A['day'], 'dateonly');
                     $string .= '<h3>' . $dayCheck . ' <small>' . $day2 . '</small></h3>' . LB;
                     $day = $dayCheck;
                 }
@@ -4749,7 +4743,8 @@ function COM_emailUserTopics()
             continue;
         }
 
-        $mailText = $LANG08[29] . strftime($_CONF['shortdate'], time()) . "\n";
+        list($date, ) = COM_getUserDateTimeFormat(time(), 'shortdate');
+        $mailText = $LANG08[29] . $date . "\n";
 
         for ($y = 0; $y < $numArticles; $y++) {
             // Loop through stories building the requested email message
@@ -4768,7 +4763,8 @@ function COM_emailUserTopics()
                 $mailText .= "$LANG24[7]: " . $articleAuthor . "\n";
             }
 
-            $mailText .= "$LANG08[32]: " . strftime($_CONF['date'], strtotime($S['day'])) . "\n\n";
+            list($date, ) = COM_getUserDateTimeFormat(strtotime($S['day']), 'date');
+            $mailText .= "$LANG08[32]: " . $date . "\n\n";
 
             if ($_CONF['emailstorieslength'] > 0) {
                 if ($S['postmode'] === 'wikitext') {
@@ -5134,7 +5130,7 @@ function COM_showMessageText($message, $title = '')
         if (empty($title)) {
             $title = $MESSAGE[40];
         }
-        $timestamp = strftime($_CONF['daytime']);
+        list($timestamp, ) = COM_getUserDateTimeFormat(time(), 'daytime');
         $retval .= COM_startBlock($title . ' - ' . $timestamp, '',
                 COM_getBlockTemplate('_msg_block', 'header'))
             . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
@@ -5350,20 +5346,82 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
  * the format in the config file is used.  This returns an array where array[0]
  * is the formatted date and array[1] is the unixtimestamp
  *
- * @param  string $date date to format, otherwise we format current date/time
- * @return array        array[0] is the formatted date and array[1] is the unixtimestamp.
+ * @param  string|int $date   date to format, otherwise we format current date/time
+ * @param  string     $format (optional, since v2.1.2) any of 'date', 'daytime', 'shortdate', 'dateonly', 'timeonly'
+ * @return array              array[0] is the formatted date and array[1] is the unixtimestamp.
  */
-function COM_getUserDateTimeFormat($date = '')
+function COM_getUserDateTimeFormat($date = '', $format = 'date')
 {
     global $_USER, $_CONF;
+    static $isAnonUser, $isWindows, $hasMbStringFunctions, $locale;
 
-    // Get display format for time
-    if (!COM_isAnonUser()) {
-        $dateFormat = empty($_USER['format']) ? $_CONF['date'] : $_USER['format'];
-    } else {
-        $dateFormat = $_CONF['date'];
+    if (!isset($isAnonUser)) {
+        $isAnonUser = COM_isAnonUser();
+        $isWindows = (stripos(PHP_OS, 'WIN') === 0);
+        $hasMbStringFunctions = is_callable('mb_convert_encoding');
+        $locale = strtolower($_CONF['locale']);
+        $dot = strpos($locale, '.');
+        if ($dot !== false) {
+            $locale = substr($locale, 0, $dot);
+        }
     }
 
+    // Check for format
+    $format = strtolower($format);
+
+    switch ($format) {
+        case 'daytime':
+            $dateFormat = $_CONF[$format];
+
+            if (empty($dateFormat)) {
+                $dateFormat = '%m/%d %I:%M%p';
+            }
+            break;
+
+        case 'shortdate':
+            $dateFormat = $_CONF[$format];
+
+            if (empty($dateFormat)) {
+                $dateFormat = '%x';
+            }
+            break;
+
+        case 'dateonly':
+            $dateFormat = $_CONF[$format];
+
+            if (empty(($dateFormat))) {
+                $dateFormat = '%d-%b';
+            }
+            break;
+
+        case 'timeonly':
+            $dateFormat = $_CONF[$format];
+
+            if (empty($dateFormat)) {
+                $dateFormat = '%I:%M %p %Z';
+            }
+            break;
+
+        case 'date':
+        default:
+            if ($isAnonUser) {
+                $dateFormat = $_CONF[$format];
+            } else {
+                $dateFormat = empty($_USER['format']) ? $_CONF[$format] : $_USER['format'];
+            }
+
+            if (empty($dateFormat)) {
+                $dateFormat = '%A, %B %d %Y @ %I:%M %p %Z';
+            }
+            break;
+    }
+
+    // Change %e modifier to %#d on Microsoft Windows
+    if ($isWindows) {
+        $dateFormat = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $dateFormat);
+    }
+
+    // Check for date
     if (empty($date)) {
         // Date is empty, get current date/time
         $stamp = time();
@@ -5376,7 +5434,24 @@ function COM_getUserDateTimeFormat($date = '')
     }
 
     // Format the date
+    if ($isWindows && $hasMbStringFunctions) {
+        $dateFormat = mb_convert_encoding($dateFormat, 'shift_jis', $_CONF['default_charset']);
+    }
     $date = strftime($dateFormat, $stamp);
+
+    // Additional fix for Japanese users and so on
+    switch ($locale) {
+        case 'ja':
+        case 'ja_jp':
+        case 'japanese':
+            if ($isWindows && $hasMbStringFunctions) {
+                $date = mb_convert_encoding($date, $_CONF['default_charset'], 'shift_jis');
+            }
+            break;
+
+        default:
+            break;
+    }
 
     return array($date, $stamp);
 }

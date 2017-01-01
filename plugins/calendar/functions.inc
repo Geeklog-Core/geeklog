@@ -113,14 +113,9 @@ function phpblock_calendar($help = '', $title = '')
         if ($range == 0) {
             $range = 14; // fallback: 14 days
         }
-        $dateonly = $_CONF['dateonly'];
-        if (empty($dateonly)) {
-            $dateonly = '%d-%b'; // fallback: day - abbrev. month name
-        }
 
         if (empty($title)) {
-            $title = DB_getItem($_TABLES['blocks'], 'title',
-                "name = 'events_block'");
+            $title = DB_getItem($_TABLES['blocks'], 'title', "name = 'events_block'");
         }
         $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
             . "FROM {$_TABLES['events']} ";
@@ -132,19 +127,19 @@ function phpblock_calendar($help = '', $title = '')
         $eventSql .= 'ORDER BY datestart,timestart';
 
         if (($_CA_CONF['personalcalendars'] == 1) && !COM_isAnonUser()) {
-            $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
+            $personalEventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
                 . "FROM {$_TABLES['personal_events']} ";
-            if ($_DB_dbms == 'pgsql') {
-                $personaleventsql .= "WHERE uid = {$_USER['uid']} AND dateend >= (NOW() - INTERVAL '1 day')  AND (NOW() - INTERVAL '$range days') < datestart ";
+            if ($_DB_dbms === 'pgsql') {
+                $personalEventSql .= "WHERE uid = {$_USER['uid']} AND dateend >= (NOW() - INTERVAL '1 day')  AND (NOW() - INTERVAL '$range days') < datestart ";
             } else {
-                $personaleventsql .= "WHERE uid = {$_USER['uid']} AND dateend >= (NOW() - INTERVAL 24 HOUR)  AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
+                $personalEventSql .= "WHERE uid = {$_USER['uid']} AND dateend >= (NOW() - INTERVAL 24 HOUR)  AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
             }
-            $personaleventsql .= 'ORDER BY datestart, dateend';
+            $personalEventSql .= 'ORDER BY datestart, dateend';
         }
 
         $allEvents = DB_query($eventSql);
         $numRows = DB_numRows($allEvents);
-        $totalrows = $numRows;
+        $totalRows = $numRows;
 
         $numDays = 0;          // Without limits, I'll force them.
         $theRow = 1;           // Start with today!
@@ -162,18 +157,18 @@ function phpblock_calendar($help = '', $title = '')
 
         for ($z = 1; $z <= $iterations; $z++) {
             if ($z == 2) {
-                $allEvents = DB_query($personaleventsql);
+                $allEvents = DB_query($personalEventSql);
                 $numRows = DB_numRows($allEvents);
-                $totalrows = $totalrows + $numRows;
+                $totalRows = $totalRows + $numRows;
 
                 $numDays = 0;          // Without limits, I'll force them.
                 $theRow = 1;           // Start with today!
                 $oldDate1 = 'no_day';  // Invalid Date!
                 $oldDate2 = 'last_d';  // Invalid Date!
-                $classname = 'list-new-plugins';
+                $className = 'list-new-plugins';
                 $headline = false;
             } else {
-                $classname = 'list-new-plugins';
+                $className = 'list-new-plugins';
                 $headline = false;
             }
             if ($_CA_CONF['personalcalendars'] == 0) {
@@ -182,7 +177,7 @@ function phpblock_calendar($help = '', $title = '')
             }
 
             while ($theRow <= $numRows && $numDays < $range) {
-                // Retreive the next event, and format the start date.
+                // Retrieve the next event, and format the start date.
                 $theEvent = DB_fetchArray($allEvents);
 
                 if (SEC_hasAccess($theEvent['owner_id'], $theEvent['group_id'],
@@ -194,11 +189,11 @@ function phpblock_calendar($help = '', $title = '')
                     if (!$headline) {
                         if ($z == 2) {
                             if ($numRows > 0) {
-                                $retval .= '<b>' . $LANG_CAL_1[23] . '</b><br' . XHTML . '>';
+                                $retval .= '<strong>' . $LANG_CAL_1[23] . '</strong><br' . XHTML . '>';
                             }
                         } else {
-                            if ($totalrows > 0) {
-                                $retval .= '<b>' . $LANG_CAL_1[24] . '</b><br' . XHTML . '>';
+                            if ($totalRows > 0) {
+                                $retval .= '<strong>' . $LANG_CAL_1[24] . '</strong><br' . XHTML . '>';
                             }
                         }
                         $headline = true;
@@ -208,13 +203,13 @@ function phpblock_calendar($help = '', $title = '')
                     $startDate = $theEvent['datestart'];
                     $theTime1 = strtotime($startDate);
                     $dayName1 = strftime('%A', $theTime1);
-                    $abbrDate1 = strftime($dateonly, $theTime1);
+                    list($abbrDate1,) = COM_getUserDateTimeFormat($theTime1, 'dateonly');
 
                     // End Date strings...
                     $endDate = $theEvent['dateend'];
                     $theTime2 = strtotime($endDate);
                     $dayName2 = strftime('%A', $theTime2);
-                    $abbrDate2 = strftime($dateonly, $theTime2);
+                    list($abbrDate2,) = COM_getUserDateTimeFormat($theTime2, 'dateonly');
 
                     $todaysEvent = false;
                     if (date('Ymd', $theTime1) == date('Ymd', time())) {
@@ -233,8 +228,8 @@ function phpblock_calendar($help = '', $title = '')
                         $numDays++;
 
                         if ($numDays < $range) {
-                            if (!empty($newevents)) {
-                                $retval .= COM_makeList($newevents, $classname);
+                            if (!empty($newEvents)) {
+                                $retval .= COM_makeList($newEvents, $className);
                             }
                             if ($skipFirstBreak) {
                                 $skipFirstBreak = false;
@@ -255,36 +250,36 @@ function phpblock_calendar($help = '', $title = '')
                                 $retval .= '</span>';
                             }
                         }
-                        $newevents = array();
+                        $newEvents = array();
                     }
 
                     // Now display this event record.
                     if ($numDays < $range) {
                         // Display the url now!
-                        $newevent_url = $_CONF['site_url']
+                        $newEventUrl = $_CONF['site_url']
                             . '/calendar/event.php?';
 
                         if ($z == 2) {
-                            $newevent_url .= 'mode=personal&amp;';
+                            $newEventUrl .= 'mode=personal&amp;';
                         }
 
-                        $newevent_url .= 'eid=' . $theEvent['eid'];
+                        $newEventUrl .= 'eid=' . $theEvent['eid'];
                         $attr = array();
                         if ($todaysEvent) {
                             $attr = array('class' => $todaysClassName);
                         }
 
-                        $newevent = COM_createLink(
+                        $newEvent = COM_createLink(
                             stripslashes($theEvent['title']),
-                            $newevent_url,
+                            $newEventUrl,
                             $attr
                         );
-                        $newevents[] = $newevent;
+                        $newEvents[] = $newEvent;
                     }
 
-                    if (!empty($newevents)) {
-                        $retval .= COM_makeList($newevents, $classname);
-                        $newevents = array();
+                    if (!empty($newEvents)) {
+                        $retval .= COM_makeList($newEvents, $className);
+                        $newEvents = array();
                     }
                 }
                 $theRow++;
@@ -708,7 +703,7 @@ function plugin_submit_calendar($mode = 'master')
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon-i18n');
-    $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');    
+    $_SCRIPTS->setJavaScriptFile('datetimepicker', '/javascript/datetimepicker.js');
 
     $langCode = COM_getLangIso639Code();
     $toolTip = $MESSAGE[118];
@@ -1062,30 +1057,28 @@ function CALENDAR_sendNotification($table, $A)
 
     $title = stripslashes($A['title']);
     $description = stripslashes($A['description']);
-
-    $mailbody = "$LANG09[16]: $title\n"
-        . "$LANG09[17]: " . strftime($_CONF['date'],
-            strtotime($A['datestart'] . ' ' . $A['timestart']));
+    list($dateTime, ) = COM_getUserDateTimeFormat(strtotime($A['datestart'] . ' ' . $A['timestart']), 'date');
+    $mailBody = sprintf("%s: %s\n%s: %s", $LANG09[16], $title, $LANG09[17], $dateTime);
     if ($A['allday']) {
-        $mailbody .= ' (' . $LANG_CAL_2[26] . ')';
+        $mailBody .= ' (' . $LANG_CAL_2[26] . ')';
     }
-    $mailbody .= "\n";
-    if (!empty($A['url']) && ($A['url'] != 'http://')) {
-        $mailbody .= "$LANG09[33]: <" . $A['url'] . ">\n";
+    $mailBody .= "\n";
+    if (!empty($A['url']) && ($A['url'] !== 'http://') && ($A['url'] !== 'https://')) {
+        $mailBody .= "$LANG09[33]: <" . $A['url'] . ">\n";
     }
-    $mailbody .= "\n" . $description . "\n\n";
+    $mailBody .= "\n" . $description . "\n\n";
     if ($table == $_TABLES['eventsubmission']) {
-        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
+        $mailBody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
-        $mailbody .= "$LANG_CAL_1[12] <{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}>\n\n";
+        $mailBody .= "$LANG_CAL_1[12] <{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}>\n\n";
     }
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
+    $mailSubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
 
-    $mailbody .= "\n------------------------------\n";
-    $mailbody .= "\n$LANG08[34]\n";
-    $mailbody .= "\n------------------------------\n";
+    $mailBody .= "\n------------------------------\n";
+    $mailBody .= "\n$LANG08[34]\n";
+    $mailBody .= "\n------------------------------\n";
 
-    COM_mail($_CONF['site_mail'], $mailsubject, $mailbody);
+    COM_mail($_CONF['site_mail'], $mailSubject, $mailBody);
 }
 
 /**
