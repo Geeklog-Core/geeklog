@@ -144,7 +144,7 @@ function XML_RPC_Server_methodSignature($server, $m)
     global $XML_RPC_err, $XML_RPC_str, $XML_RPC_Server_dmap;
 
     $method = $m->getParam(0);
-    $methodName = $method->scalarValue();
+    $methodName = $method->scalarval();
     if (strpos($methodName, 'system.') === 0) {
         $dmap = $XML_RPC_Server_dmap;
         $sysCall = 1;
@@ -189,7 +189,7 @@ function XML_RPC_Server_methodHelp($server, $m)
     global $XML_RPC_err, $XML_RPC_str, $XML_RPC_Server_dmap;
 
     $method = $m->getParam(0);
-    $methodName = $method->scalarValue();
+    $methodName = $method->scalarval();
     if (strpos($methodName, 'system.') === 0) {
         $dmap = $XML_RPC_Server_dmap;
         $sysCall = 1;
