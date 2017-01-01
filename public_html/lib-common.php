@@ -867,7 +867,7 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
            $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $relLinks;
     global $_GLOBAL_WHAT;
 
-    COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '2.2.0', 'COM_createHTMLDocument');
 
     $_GLOBAL_WHAT = $what;
 
@@ -1263,7 +1263,7 @@ function COM_siteFooter($rightBlock = -1, $custom = '')
 {
     global $_CONF, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS, $_SCRIPTS, $_GLOBAL_WHAT;
 
-    COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '2.2.0', 'COM_createHTMLDocument');
 
     // If the theme implemented this for us then call their version instead.
     $function = $_CONF['theme'] . '_siteFooter';
@@ -2528,6 +2528,44 @@ function COM_errorLog($logEntry, $actionId = '')
 }
 
 /**
+ * Writes a deprecated warning message in Geeklog error log file (only in root debug mode)
+ *
+ * @param   string $deprecated_object       Name of depreciated function, class, etc..
+ * @param   string $deprecated_version      Version of Geeklog that object was depreciated in
+ * @param   string $removed_version         Planned version of Geeklog object will be removed
+ * @param   string $new_object              New object developer should be using instead
+ * @return  
+ * @since   since v2.1.2
+ */
+function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_version, $new_object = '')
+{
+    global $_CONF;
+
+    // Only log in debug mode
+    if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
+        
+        $log_msg = sprintf(
+                    'Deprecated Warning - %1$s has been deprecated since Geeklog %2$s. This object will be removed in Geeklog %3$s.',
+                    $deprecated_object, $deprecated_version, $removed_version
+                );
+        
+        if (!empty($new_object)) {
+            $log_msg .= sprintf(' Use %1$s instead.', $new_object);            
+        }
+
+        // Generate an exception to trace the deprecated call
+        $e = new Exception();
+        $trace = $e->getTrace();
+        //position 0 would be the line that called this function so we ignore it
+        $last_call = $trace[1];
+        $log_msg .= ' Call Trace: ' . print_r($last_call, true);        
+        
+        COM_errorLog($log_msg, 1);
+    }
+
+}
+
+/**
  * Logs message to access.log
  * This will print a message to the Geeklog access log
  *
@@ -3615,7 +3653,7 @@ function COM_redirect($url)
  */
 function COM_refresh($url)
 {
-    COM_errorLog('Warning!  COM_refresh has been deprecated since v2.1.2.  Use COM_redirect instead.');
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0', 'COM_redirect');
 
     if (is_callable('CUSTOM_refresh')) {
         return CUSTOM_refresh($url);
@@ -3635,6 +3673,8 @@ function COM_refresh($url)
 function COM_userComments($sid, $title, $type = 'article', $order = '', $mode = '', $pid = 0, $page = 1, $cid = false, $delete_option = false)
 {
     global $_CONF;
+    
+    COM_deprecatedLog(__FUNCTION__, '1.4.0', '3.0.0', 'CMT_userComments in lib-comment.php');
 
     require_once $_CONF['path_system'] . 'lib-comment.php';
 
@@ -3818,6 +3858,8 @@ function COM_isEmail($email)
  */
 function COM_emailEscape($string)
 {
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0');
+    
     if (function_exists('CUSTOM_emailEscape')) {
         return CUSTOM_emailEscape($string);
     }
@@ -3858,6 +3900,8 @@ function COM_emailEscape($string)
  */
 function COM_formatEmailAddress($name, $address)
 {
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0');
+    
     $name = trim($name);
     $address = trim($address);
 
@@ -5787,6 +5831,8 @@ function COM_getMinuteFormOptions($selected = '', $step = 1)
  */
 function COM_getMinuteOptions($selected = '', $step = 1)
 {
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0', 'COM_getMinuteFormOptions');
+    
     return COM_getMinuteFormOptions($selected, $step);
 }
 
@@ -6765,6 +6811,8 @@ function COM_onFrontpage()
  */
 function COM_isFrontpage()
 {
+    COM_deprecatedLog(__FUNCTION__, '1.4.1', '3.0.0', 'COM_onFrontpage');
+    
     return !COM_onFrontpage();
 }
 
