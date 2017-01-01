@@ -56,7 +56,7 @@ $path_layout = $path_themes . $theme . '/';
 
 // set etag file name and path
 // have moved or renamed /data directory, please change the following line accordingly.
-$etag_filename =  $_CONF['path'] . 'data/layout_css/' . $theme . '_' . $LANG_DIRECTION . '_etag.cache';
+$etag_filename =  $_CONF['path'] . 'data/layout_css/' . $theme . '_' . $package_name. '_' . $LANG_DIRECTION . '_etag.cache';
 
 // get theme info
 if (!file_exists($path_layout . 'functions.php')) {
