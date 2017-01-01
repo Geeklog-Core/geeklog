@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.0                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | functions.php                                                             |
 // |                                                                           |
@@ -46,8 +46,8 @@ function theme_config_modern_curve()
 {
     return array(
         'image_type' => 'png',
-        'doctype' => 'xhtml10strict',
-        'etag' => true,
+        'doctype'    => 'xhtml5',
+        'etag'       => true,
         'supported_version_theme' => '2.0.0' // support new theme format for the later Geeklog 2.0.0
     );
 }

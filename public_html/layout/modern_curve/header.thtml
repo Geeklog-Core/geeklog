@@ -1,13 +1,9 @@
 {doctype}
 <html{lang_attribute}{xmlns}>
-  <head profile="http://www.w3.org/2003/g/data-view">
-    <meta http-equiv="Content-Type" content="text/html; charset={charset}"{xhtml}>
+  <head>
+    <meta charset="{charset}"{xhtml}>
     <title>{page_title_and_site_name}</title>
-
-    <meta http-equiv="Content-Script-Type" content="text/javascript"{xhtml}>
-    <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
-    <meta http-equiv="imagetoolbar" content="no"{xhtml}>
-    <link rel="SHORTCUT ICON" href="{layout_url}/images/favicon.ico"{xhtml}>
+    <link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
     <!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
     <link rel="start contents" href="{site_url}"{xhtml}>
 {feed_url}
