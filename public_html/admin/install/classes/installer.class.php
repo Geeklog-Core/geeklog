@@ -1920,9 +1920,30 @@ HTML;
         }
 
         // Write our changes to db-config.php
-        $result = (@file_put_contents($dbConfigFilePath, $dbConfigData) !== false);
+        $result = (@file_put_contents($dbConfigFilePath, $dbConfigData, LOCK_EX) !== false);
 
         return $result;
+    }
+
+    /**
+     * Make sure to include(require) db-config.php
+     *
+     * NOTE: In Ubuntu OS (maybe also in similar Linux distros), when include
+     * db-config.php right after the writeConfig method is called, the read value is
+     * equal to the value before being changed by the writeConfig method, and an error
+     * occurs on installation because it is different from the DB information.
+     * This method is to make sure to read the value changed by the writeConfig method.
+     *
+     * @param string $dbConfigFilePath Full path to db-config.php
+     */
+    private function includeConfig($dbConfigFilePath)
+    {
+        global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
+               $_DB_dbms, $_DB_charset;
+
+        $dbConfigData = @file_get_contents($dbConfigFilePath);
+        $dbConfigData =str_replace('<' . '?php', '', $dbConfigData);
+        eval($dbConfigData);
     }
 
     /**
@@ -2803,7 +2824,7 @@ HTML;
                         }
 
                         require $this->env['siteconfig_path'];
-                        require $this->env['dbconfig_path'];
+                        $this->includeConfig($this->env['dbconfig_path']);
                     }
 
                     // Update the GL configuration with the correct paths.
@@ -3708,7 +3729,7 @@ HTML;
                 }
             }
 
-            require_once $this->env['dbconfig_path']; // Not sure if this needs to be included..
+            $this->includeConfig($this->env['dbconfig_path']); // Not sure if this needs to be included..
 
             switch ($_REQUEST['migration_type']) {
                 case 'select':
@@ -3955,7 +3976,7 @@ HTML;
             $this->env['dbconfig_path'] = $_CONF['path'] . 'db-config.php';
         }
 
-        require_once $this->env['dbconfig_path'];
+        $this->includeConfig($this->env['dbconfig_path']);
         require_once $_CONF['path_system'] . 'lib-database.php';
         require_once $_CONF['path_system'] . 'classes/Autoload.php';
         Geeklog\Autoload::initialize();
@@ -4505,7 +4526,7 @@ HTML;
                         }
                     }
 
-                    require $this->env['dbconfig_path'];
+                    $this->includeConfig($this->env['dbconfig_path']);
                     require_once $this->env['siteconfig_path'];
                     require_once $_CONF['path_system'] . 'lib-database.php';
 
@@ -4622,7 +4643,7 @@ HTML;
                         $utf8 = ($this->post('utf8') === 'true') || ($this->get('utf8') === 'true');
 
                         // We need all this just to do one DB query
-                        require_once $this->env['dbconfig_path'];
+                        $this->includeConfig($this->env['dbconfig_path']);
                         require_once $this->env['siteconfig_path'];
                         require_once $_CONF['path_system'] . 'lib-database.php';
 
@@ -4736,7 +4757,7 @@ HTML;
                         $version = $this->get('version', $this->post('version', ''));
 
                         // Let's do this
-                        require_once $this->env['dbconfig_path'];
+                        $this->includeConfig($this->env['dbconfig_path']);
                         require_once $this->env['siteconfig_path'];
                         require_once $_CONF['path_system'] . 'lib-database.php';
 
