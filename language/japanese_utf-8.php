@@ -813,8 +813,8 @@ $LANG21 = array(
     2 => 'このブロックを編集する権限がありません。',
     3 => 'ブロックの編集',
     4 => 'フィードの読み込みでエラーが発生しました。(error.logを参照してください。)',
-    5 => 'Yes',
-    6 => 'No',
+    5 => 'はい',
+    6 => 'いいえ',
     7 => 'すべて',
     8 => 'ブロックのセキュリティレベル',
     9 => '順序',
@@ -879,9 +879,14 @@ $LANG21 = array(
     68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
     69 => 'プラグイン名',
     'autotag_desc_block' => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
-    'position' => 'Position',
+    'position' => '位置',
     'cache_time' => 'キャッシュ期間',
-    'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)'
+    'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)',
+    'block_type_gldefault'  => 'システム',
+    'block_type_normal'     => 'ノーマル',
+    'block_type_phpblock'   => 'PHP',
+    'block_type_portal'     => 'ポータル',
+    'block_type_dynamic'    => 'ダイナミック'
 );
 
 ###############################################################################

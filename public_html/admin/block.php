@@ -486,7 +486,8 @@ jQuery(function () {
 /**
  * Display two lists of blocks, separated by left and right
  *
- * @return   string  HTML for the two lists
+ * @param  int $position
+ * @return string  HTML for the two lists
  */
 function listblocks($position = BLOCK_ALL_POSITIONS)
 {
@@ -509,8 +510,7 @@ function listblocks($position = BLOCK_ALL_POSITIONS)
         ),
     );
 
-    $retval .= COM_startBlock($LANG21[19], '',
-        COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG21[19], '', COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG21[25],

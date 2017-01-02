@@ -876,7 +876,12 @@ $LANG21 = array(
     'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
     'position'              => 'Position', 
     'cache_time'            => 'Cache Time',
-    'cache_time_desc'       => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
+    'cache_time_desc'       => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)',
+    'block_type_gldefault'  => 'System',
+    'block_type_normal'     => 'Normal',
+    'block_type_phpblock'   => 'PHP',
+    'block_type_portal'     => 'Portal',
+    'block_type_dynamic'    => 'Dynamic'
 );
 
 ###############################################################################

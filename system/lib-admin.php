@@ -768,6 +768,14 @@ function ADMIN_getListField_blocks($fieldName, $fieldValue, $A, $icon_arr, $toke
                 $retval = TOPIC_getTopicAdminColumn('block', $A['bid']);
                 break;
 
+            case 'type':
+                if (in_array($fieldValue, array('gldefault', 'normal', 'phpblock', 'portal', 'dynamic'))) {
+                    $retval = $LANG21['block_type_' . $fieldValue];
+                } else {
+                    $retval = $fieldValue;
+                }
+                break;
+
             default:
                 $retval = $fieldValue;
                 break;
@@ -843,6 +851,14 @@ function ADMIN_getListField_dynamicblocks($fieldName, $fieldValue, $A, $icon_arr
                 }
             }
 
+            break;
+
+        case 'type':
+            if (in_array($fieldValue, array('gldefault', 'normal', 'phpblock', 'portal', 'dynamic'))) {
+                $retval = $LANG21['block_type_' . $fieldValue];
+            } else {
+                $retval = $fieldValue;
+            }
             break;
 
         default:
