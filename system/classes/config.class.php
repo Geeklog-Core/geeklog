@@ -310,6 +310,64 @@ class config
     }
 
     /**
+     * Check if tab exists or not
+     *
+     * @param   string $group Group name
+     * @param   string $tab   Tab name
+     * @return  bool          True if group exists
+     */
+    public function tab_exists($group, $tab)
+    {
+        $tab = strtolower($tab);
+        if (strpos($tab, 'tab_') !== 0) {
+            $tab = 'tab_' . $tab;
+        }
+
+        if (isset($this->conf_tab_arr[$group])) {
+            foreach ($this->conf_tab_arr[$group] as $itemGroups) {
+                foreach ($itemGroups as $tabName => $values) {
+                    if ($tab === $tabName) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return all group names
+     *
+     * @return  array of group names
+     */
+    public function getAllGroups()
+    {
+        return array_keys($this->config_array);
+    }
+
+    /**
+     * Return all tab names of a given group
+     *
+     * @param   string $group Group name
+     * @return  array of tab names
+     */
+    public function getAllTabs($group)
+    {
+        $retval = array();
+
+        if (isset($this->conf_tab_arr[$group])) {
+            foreach ($this->conf_tab_arr[$group] as $itemGroups) {
+                foreach ($itemGroups as $tabName => $values) {
+                    $retval[] = str_replace('tab_', '', $tabName);
+                }
+            }
+        }
+
+        return $retval;
+    }
+
+    /**
      * This method sets a configuration variable to a value in the database
      * and in the current array. If the variable does not already exist,
      * nothing will happen.
