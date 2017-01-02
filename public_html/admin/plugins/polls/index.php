@@ -165,9 +165,9 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
 
     $topic = COM_stripslashes($topic);
     $topic = COM_checkHTML($topic);
-    $topic_description = strip_tags(COM_stripslashes($topic_description));
-    $meta_description = strip_tags(COM_stripslashes($meta_description));
-    $meta_keywords = strip_tags(COM_stripslashes($meta_keywords));
+    $topic_description = GLText::stripTags(COM_stripslashes($topic_description));
+    $meta_description = GLText::stripTags(COM_stripslashes($meta_description));
+    $meta_keywords = GLText::stripTags(COM_stripslashes($meta_keywords));
     $pid = COM_sanitizeID($pid);
     $old_pid = COM_sanitizeID($old_pid);
     if (empty($pid)) {

@@ -152,7 +152,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
             break;
 
         case 'comment':
-            $fieldValue = COM_truncate(strip_tags($fieldValue), COMMENT_MAX_LENGTH, '...');
+            $fieldValue = COM_truncate(GLText::stripTags($fieldValue), COMMENT_MAX_LENGTH, '...');
             break;
 
         case 'uid':

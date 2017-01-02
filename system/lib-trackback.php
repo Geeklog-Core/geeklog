@@ -153,7 +153,7 @@ function TRB_makeTrackbackUrl($id, $type = 'article')
  */
 function TRB_filterTitle($title)
 {
-    return htmlspecialchars(COM_checkWords(strip_tags(COM_stripslashes($title))));
+    return htmlspecialchars(COM_checkWords(GLText::stripTags(COM_stripslashes($title))));
 }
 
 /**
@@ -164,7 +164,7 @@ function TRB_filterTitle($title)
  */
 function TRB_filterBlogname($blogname)
 {
-    return htmlspecialchars(COM_checkWords(strip_tags(COM_stripslashes($blogname))));
+    return htmlspecialchars(COM_checkWords(GLText::stripTags(COM_stripslashes($blogname))));
 }
 
 /**
@@ -176,7 +176,7 @@ function TRB_filterBlogname($blogname)
  */
 function TRB_filterExcerpt($excerpt)
 {
-    return COM_checkWords(strip_tags(COM_stripslashes($excerpt)));
+    return COM_checkWords(GLText::stripTags(COM_stripslashes($excerpt)));
 }
 
 /**

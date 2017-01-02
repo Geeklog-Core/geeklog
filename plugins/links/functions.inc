@@ -1085,7 +1085,7 @@ function plugin_save_submit_links($A)
         return $retval;
     }
 
-    $A['cid'] = strip_tags(COM_stripslashes($A['categorydd']));
+    $A['cid'] = GLText::stripTags(COM_stripslashes($A['categorydd']));
 
     $validcat = false;
     if (!empty($A['cid'])) {
@@ -1108,7 +1108,7 @@ function plugin_save_submit_links($A)
     // Remove any autotags the user doesn't have permission to use
     $A['description'] = PLG_replaceTags($A['description'], '', true);
     $A['description'] = DB_escapeString(htmlspecialchars(COM_checkWords($A['description'])));
-    $A['title'] = DB_escapeString(strip_tags(COM_checkWords($A['title'])));
+    $A['title'] = DB_escapeString(GLText::stripTags(COM_checkWords($A['title'])));
     $A['url'] = DB_escapeString(COM_sanitizeUrl($A['url']));
     $A['lid'] = DB_escapeString(COM_makeSid());
 

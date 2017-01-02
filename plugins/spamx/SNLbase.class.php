@@ -126,7 +126,7 @@ class SNLbase
         $links = $this->getLinks($comment);
 
         // strip all HTML, then get all the plain text links
-        $comment = COM_makeClickableLinks(strip_tags($comment));
+        $comment = COM_makeClickableLinks(GLText::stripTags($comment));
         $links += $this->getLinks($comment);
 
         return $links;

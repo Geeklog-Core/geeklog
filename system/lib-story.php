@@ -672,9 +672,9 @@ function STORY_extractLinks($fulltext, $maxlength = 26)
      */
     preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $fulltext, $matches);
     for ($i = 0; $i < count($matches[0]); $i++) {
-        $matches[2][$i] = strip_tags($matches[2][$i]);
+        $matches[2][$i] = GLText::stripTags($matches[2][$i]);
         if (!MBYTE_strlen(trim($matches[2][$i]))) {
-            $matches[2][$i] = strip_tags($matches[1][$i]);
+            $matches[2][$i] = GLText::stripTags($matches[1][$i]);
         }
 
         // if link is too long, shorten it and add ... at the end

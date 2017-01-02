@@ -117,7 +117,7 @@ function display_mailform($vars = array())
     } else {
         $from = $_CONF['site_name'];
     }
-    $from = strip_tags($from);
+    $from = GLText::stripTags($from);
     $from = substr($from, 0, strcspn($from, "\r\n"));
     $from = htmlspecialchars(trim($from), ENT_QUOTES);
     $mail_templates->set_var('site_name', $from);
@@ -128,7 +128,7 @@ function display_mailform($vars = array())
     } else {
         $fromEmail = $_CONF['site_mail'];
     }
-    $fromEmail = strip_tags($fromEmail);
+    $fromEmail = GLText::stripTags($fromEmail);
     $fromEmail = substr($fromEmail, 0, strcspn($fromEmail, "\r\n"));
     $fromEmail = htmlspecialchars(trim($fromEmail), ENT_QUOTES);
     $mail_templates->set_var('site_mail', $fromEmail);
@@ -229,7 +229,7 @@ function send_messages(array $vars)
 
     $from = array($vars['fraepost'] => $vars['fra']);
     $subject = COM_stripslashes($vars['subject']);
-    $subject = strip_tags($subject);
+    $subject = GLText::stripTags($subject);
     $message = COM_stripslashes($vars['message']);
 
     if ($html) {
@@ -245,7 +245,7 @@ function send_messages(array $vars)
             $message = '<html>' . PHP_EOL . $message . '</html>' . PHP_EOL;
         }
     } else {
-        $message = strip_tags($message);
+        $message = GLText::stripTags($message);
     }
 
     // Loop through and send the messages!

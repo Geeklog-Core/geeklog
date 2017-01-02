@@ -479,7 +479,7 @@ function custom_validation_noTags($rule, $ruleParams)
         foreach ($ruleParams[0] as $paramName => $paramValue) {
             break;
         }
-        if ($ruleParams[0][$paramName] == strip_tags($ruleParams[0][$paramName])) {
+        if ($ruleParams[0][$paramName] == GLText::stripTags($ruleParams[0][$paramName])) {
             $ret = true;
         }
     }

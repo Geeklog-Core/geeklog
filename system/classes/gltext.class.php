@@ -629,4 +629,21 @@ class GLText
 
         return $text;
     }
+
+    /**
+     * Better strip_tags
+     *
+     * @param  mixed  $var
+     * @return string
+     */
+    public static function stripTags($var)
+    {
+        if (is_array($var)) {
+            list($var, ) = $var;
+        }
+
+        $var = strip_tags($var);
+
+        return $var;
+    }
 }

@@ -77,8 +77,8 @@ class Input
             $var = COM_applyBasicFilter($var);
         } else {
             // Simulate COM_applyBasicFilter
-            $var = \GLText::remove4byteUtf8Chars($var);
-            $var = strip_tags($var);
+            $var = GLText::remove4byteUtf8Chars($var);
+            $var = GLText::stripTags($var);
 
             if (is_callable('COM_killJS')) {
                 $var = COM_killJS($var); // doesn't help a lot right now, but still ...

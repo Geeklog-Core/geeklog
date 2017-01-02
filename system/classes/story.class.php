@@ -2184,7 +2184,7 @@ class Story
      */
     private function _applyTitleFilter($title)
     {
-        $retval = strip_tags(COM_checkWords($title, 'story'));
+        $retval = GLText::stripTags(COM_checkWords($title, 'story'));
         $retval = GLText::remove4byteUtf8Chars($retval);
         $retval = htmlspecialchars($retval, ENT_QUOTES, COM_getEncodingt());
 

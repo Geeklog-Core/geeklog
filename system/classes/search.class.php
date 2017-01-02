@@ -73,7 +73,7 @@ class Search
         if (isset($_GET['query'])) {
             $query = Geeklog\Input::fGet('query');
             $query = GLText::remove4byteUtf8Chars($query);
-            $this->_query = strip_tags($query);
+            $this->_query = GLText::stripTags($query);
         }
 
         if (isset($_GET['topic'])) {

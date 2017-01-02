@@ -226,7 +226,7 @@ function edituser()
     $preferences->set_var('homepage_value',
         htmlspecialchars(COM_killJS($A['homepage'])));
     $preferences->set_var('location_value',
-        htmlspecialchars(strip_tags($A['location'])));
+        htmlspecialchars(GLText::stripTags($A['location'])));
     $preferences->set_var('signature_value', htmlspecialchars($A['sig']));
 
     if ($_CONF['allow_user_photo'] == 1) {
@@ -1039,11 +1039,11 @@ function saveuser(array $A)
     $A['homepage'] = COM_applyFilter($A['homepage']);
 
     // basic filtering only
-    $A['fullname'] = strip_tags(COM_stripslashes($A['fullname']));
-    $A['location'] = strip_tags(COM_stripslashes($A['location']));
-    $A['sig'] = strip_tags(COM_stripslashes($A['sig']));
-    $A['about'] = strip_tags(COM_stripslashes($A['about']));
-    $A['pgpkey'] = strip_tags(COM_stripslashes($A['pgpkey']));
+    $A['fullname'] = GLText::stripTags(COM_stripslashes($A['fullname']));
+    $A['location'] = GLText::stripTags(COM_stripslashes($A['location']));
+    $A['sig'] = GLText::stripTags(COM_stripslashes($A['sig']));
+    $A['about'] = GLText::stripTags(COM_stripslashes($A['about']));
+    $A['pgpkey'] = GLText::stripTags(COM_stripslashes($A['pgpkey']));
 
     if (!COM_isEmail($A['email'])) {
         COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=52');

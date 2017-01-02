@@ -113,7 +113,7 @@ if (stripos($_SERVER['PHP_SELF'], 'listfactory.class.php') !== false) {
             $row['title'] = '<a href="https://www.geeklog.net/list_test.php?id='.$row['id'].'">'.$row['title'].'</a>';
 
             // Shorten the text and strip any HTML tags
-            $row['text'] = substr(strip_tags($row['text']), 0, 20);
+            $row['text'] = substr(GLText::stripTags($row['text']), 0, 20);
         }
 
         // Return the reformatted row
@@ -514,7 +514,7 @@ class ListFactory
         $direction = $this->_sort_arr['direction'] == 'asc' ? SORT_ASC : SORT_DESC;
         $column = array();
         foreach ($rows_arr as $sortarray) {
-            $c = strip_tags($sortarray[$this->_sort_arr['field']]);
+            $c = GLText::stripTags($sortarray[$this->_sort_arr['field']]);
             $column[] = $c == 'LF_NULL' ? '0' : $c;
         }
         array_multisort($column, $direction, $rows_arr);

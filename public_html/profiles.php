@@ -92,7 +92,7 @@ function contactemail($uid, $cc, $author, $authoremail, $subject, $message)
                 $sig = DB_getItem($_TABLES['users'], 'sig',
                                   "uid={$_USER['uid']}");
                 if (!empty($sig)) {
-                    $sig = strip_tags(COM_stripslashes($sig));
+                    $sig = GLText::stripTags(COM_stripslashes($sig));
                     $sig = "\n\n-- \n" . $sig;
                 }
             }
@@ -117,9 +117,9 @@ function contactemail($uid, $cc, $author, $authoremail, $subject, $message)
                 return $retval;
             }
 
-            $subject = strip_tags($subject);
+            $subject = GLText::stripTags($subject);
             $subject = substr($subject, 0, strcspn($subject, "\r\n"));
-            $message = strip_tags($message) . $sig;
+            $message = GLText::stripTags($message) . $sig;
             if (!empty($A['fullname'])) {
                 $to = array($A['email'] => $A['fullname']);
             } else {
@@ -142,7 +142,7 @@ function contactemail($uid, $cc, $author, $authoremail, $subject, $message)
                 . ($sent ? '27' : '85')
             );
         } else {
-            $subject = strip_tags($subject);
+            $subject = GLText::stripTags($subject);
             $subject = substr($subject, 0, strcspn($subject, "\r\n"));
             $subject = htmlspecialchars(trim($subject), ENT_QUOTES);
             $retval = COM_errorLog($LANG08[3], 2)
@@ -150,7 +150,7 @@ function contactemail($uid, $cc, $author, $authoremail, $subject, $message)
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
         }
     } else {
-        $subject = strip_tags($subject);
+        $subject = GLText::stripTags($subject);
         $subject = substr($subject, 0, strcspn($subject, "\r\n"));
         $subject = htmlspecialchars(trim($subject), ENT_QUOTES);
         $retval = COM_errorLog($LANG08[4], 2)
@@ -232,7 +232,7 @@ function contactform($uid, $cc = false, $subject = '', $message = '')
             if (COM_isAnonUser()) {
                 $sender = Geeklog\Input::post('author', '');
                 if (!empty($sender)) {
-                    $sender = strip_tags($sender);
+                    $sender = GLText::stripTags($sender);
                     $sender = substr($sender, 0, strcspn($sender, "\r\n"));
                     $sender = htmlspecialchars(trim($sender), ENT_QUOTES);
                 }
@@ -246,7 +246,7 @@ function contactform($uid, $cc = false, $subject = '', $message = '')
             if (COM_isAnonUser()) {
                 $email = Geeklog\Input::post('authoremail', '');
                 if (!empty($email)) {
-                    $email = strip_tags($email);
+                    $email = GLText::stripTags($email);
                     $email = substr($email, 0, strcspn($email, "\r\n"));
                     $email = htmlspecialchars(trim($email), ENT_QUOTES);
                 }
@@ -364,8 +364,8 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $introtext = $story->DisplayElements('introtext');
     $bodytext  = $story->DisplayElements('bodytext');
-    $introtext = COM_undoSpecialChars(strip_tags($introtext));
-    $bodytext  = COM_undoSpecialChars(strip_tags($bodytext));
+    $introtext = COM_undoSpecialChars(GLText::stripTags($introtext));
+    $bodytext  = COM_undoSpecialChars(GLText::stripTags($bodytext));
 
     $introtext = str_replace(array("\012\015", "\015"), LB, $introtext);
     $bodytext  = str_replace(array("\012\015", "\015"), LB, $bodytext);
@@ -389,7 +389,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $mailto = array($toemail => $to);
     $mailfrom = array($fromemail => $from);
-    $subject = 'Re: ' . COM_undoSpecialChars(strip_tags($story->DisplayElements('title')));
+    $subject = 'Re: ' . COM_undoSpecialChars(GLText::stripTags($story->DisplayElements('title')));
 
     $sent = COM_mail($mailto, $subject, $mailtext, $mailfrom);
 
@@ -603,7 +603,7 @@ switch ($what) {
         if ($uid > 1) {
             $subject = Geeklog\Input::get('subject', '');
             if (!empty($subject)) {
-                $subject = strip_tags($subject);
+                $subject = GLText::stripTags($subject);
                 $subject = substr($subject, 0, strcspn($subject, "\r\n"));
                 $subject = htmlspecialchars(trim($subject), ENT_QUOTES);
             }

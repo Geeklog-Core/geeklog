@@ -353,9 +353,9 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
     $category = COM_checkHTML(COM_checkWords($category), 'links.edit');
     $category = GLText::remove4byteUtf8Chars($category);
     $category = DB_escapeString($category);
-    $pid = DB_escapeString(strip_tags($pid));
-    $cid = DB_escapeString(strip_tags($cid));
-    $old_cid = DB_escapeString(strip_tags($old_cid));
+    $pid = DB_escapeString(GLText::stripTags($pid));
+    $cid = DB_escapeString(GLText::stripTags($cid));
+    $old_cid = DB_escapeString(GLText::stripTags($old_cid));
 
     if (empty($category) || empty($description)) {
         return 7;
@@ -536,7 +536,7 @@ $root = $_LI_CONF['root'];
 if ((($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) || ($mode == "delete")) {
     $cid = Geeklog\Input::request('cid', '');
     if (!empty($cid)) {
-        $cid = strip_tags($cid);
+        $cid = GLText::stripTags($cid);
     }
     if (empty($cid)) {
         COM_errorLog('Attempted to delete empty category');
@@ -574,8 +574,8 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) || ($mod
 
     // edit category
 } elseif ($mode === 'edit') {
-    $pid = strip_tags(Geeklog\Input::get('pid', ''));
-    $cid = strip_tags(Geeklog\Input::get('cid', ''));
+    $pid = GLText::stripTags(Geeklog\Input::get('pid', ''));
+    $cid = GLText::stripTags(Geeklog\Input::get('cid', ''));
     $display .= links_edit_category($cid, $pid);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[56]));
 

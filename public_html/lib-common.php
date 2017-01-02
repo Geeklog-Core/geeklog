@@ -4720,7 +4720,7 @@ function COM_emailUserTopics()
         return;
     }
 
-    $subject = strip_tags($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d', time()));
+    $subject = GLText::stripTags($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d', time()));
     $authors = array();
 
     // Get users who want stories emailed to them
@@ -4812,9 +4812,9 @@ function COM_emailUserTopics()
 
             if ($_CONF['emailstorieslength'] > 0) {
                 if ($S['postmode'] === 'wikitext') {
-                    $articleText = COM_undoSpecialChars(strip_tags(COM_renderWikiText(stripslashes($S['introtext']))));
+                    $articleText = COM_undoSpecialChars(GLText::stripTags(COM_renderWikiText(stripslashes($S['introtext']))));
                 } else {
-                    $articleText = COM_undoSpecialChars(strip_tags(PLG_replaceTags(stripslashes($S['introtext']))));
+                    $articleText = COM_undoSpecialChars(GLText::stripTags(PLG_replaceTags(stripslashes($S['introtext']))));
                 }
 
                 if ($_CONF['emailstorieslength'] > 1) {
@@ -6352,7 +6352,7 @@ function COM_applyBasicFilter($parameter, $isNumeric = false)
     $log_manipulation = false; // set to true to log when the filter applied
 
     $p = GLText::remove4byteUtf8Chars($parameter);
-    $p = strip_tags($p);
+    $p = GLText::stripTags($p);
     $p = COM_killJS($p); // doesn't help a lot right now, but still ...
 
     if ($isNumeric) {
@@ -6404,7 +6404,7 @@ function COM_sanitizeUrl($url, $allowed_protocols = '', $default_protocol = '')
         $default_protocol .= ':';
     }
 
-    $url = strip_tags($url);
+    $url = GLText::stripTags($url);
     if (!empty($url)) {
         $pos = MBYTE_strpos($url, ':');
         if ($pos === false) {
@@ -7454,9 +7454,9 @@ function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $t
     $tooltip->set_var('class', $class);
     $tooltip->set_var('hoverover', $hoverOver);
     $tooltip->set_var('text', $text);
-    $tooltip->set_var('plaintext', strip_tags($text));
+    $tooltip->set_var('plaintext', GLText::stripTags($text));
     $tooltip->set_var('title', $title);
-    $tooltip->set_var('plaintitle', strip_tags($title));
+    $tooltip->set_var('plaintitle', GLText::stripTags($title));
     if ($link == '') {
         $link = 'javascript:void(0);';
         $cursor = 'help';
@@ -7906,7 +7906,7 @@ function COM_escapeMetaTagValue($value)
     }
 
     $value = preg_replace('/[[:cntrl:]]/', ' ', $value);
-    $value = strip_tags($value);
+    $value = GLText::stripTags($value);
     $value = trim($value);
     $value = preg_replace('/\s\s+/', ' ', $value);
 
@@ -8107,7 +8107,7 @@ function COM_getTextContent($text)
     $text = str_replace('><', '> <', $text);
 
     // only now remove all HTML tags
-    $text = strip_tags($text);
+    $text = GLText::stripTags($text);
 
     // replace all tabs, newlines, and carriage returns with spaces
     $text = str_replace(array("\011", "\012", "\015"), ' ', $text);

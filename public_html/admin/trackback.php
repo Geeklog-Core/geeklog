@@ -651,9 +651,9 @@ function saveService($pid, $name, $site_url, $ping_url, $method, $enabled)
         $method = 'weblogUpdates.ping';
     }
 
-    $name = strip_tags(COM_stripslashes($name));
-    $site_url = strip_tags(COM_stripslashes($site_url));
-    $ping_url = strip_tags(COM_stripslashes($ping_url));
+    $name = GLText::stripTags(COM_stripslashes($name));
+    $site_url = GLText::stripTags(COM_stripslashes($site_url));
+    $ping_url = GLText::stripTags(COM_stripslashes($ping_url));
 
     $errormsg = '';
     if (empty($name)) {
@@ -894,7 +894,7 @@ if (($mode === 'delete') && SEC_checkToken()) {
     $id = Geeklog\Input::fRequest('id');
     if (!empty($id)) {
         list($url, $title, $excerpt) = PLG_getItemInfo($type, $id, 'url,title,excerpt');
-        $excerpt = trim(strip_tags($excerpt));
+        $excerpt = trim(GLText::stripTags($excerpt));
         $blog = TRB_filterBlogname($_CONF['site_name']);
 
         $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
@@ -1048,7 +1048,7 @@ if (($mode === 'delete') && SEC_checkToken()) {
     $trackbackUrl = TRB_detectTrackbackUrl($url);
 
     list($url, $title, $excerpt) = PLG_getItemInfo($type, $id, 'url,title,excerpt');
-    $excerpt = trim(strip_tags($excerpt));
+    $excerpt = trim(GLText::stripTags($excerpt));
     $blog = TRB_filterBlogname($_CONF['site_name']);
 
     if ($trackbackUrl === false) {
@@ -1070,7 +1070,7 @@ if (($mode === 'delete') && SEC_checkToken()) {
         $type = Geeklog\Input::fRequest('type', '');
         if (!empty($id) && !empty($type)) {
             list($newurl, $newtitle, $newexcerpt) = PLG_getItemInfo($type, $id, 'url,title,excerpt');
-            $newexcerpt = trim(strip_tags($newexcerpt));
+            $newexcerpt = trim(GLText::stripTags($newexcerpt));
 
             if (empty($url) && !empty($newurl)) {
                 $url = $newurl;

@@ -78,9 +78,9 @@ function links_list($message)
     $cid = $_LI_CONF['root'];
     $display = '';
     if (isset($_GET['category'])) {
-        $cid = strip_tags(Geeklog\Input::get('category'));
+        $cid = GLText::stripTags(Geeklog\Input::get('category'));
     } elseif (isset($_POST['category'])) {
-        $cid = strip_tags(Geeklog\Input::post('category'));
+        $cid = GLText::stripTags(Geeklog\Input::post('category'));
     }
     $cat = DB_escapeString($cid);
     $page = (int) Geeklog\Input::fGet('page', 0);

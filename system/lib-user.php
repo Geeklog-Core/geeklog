@@ -939,7 +939,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('lang_homepage', $LANG04[6]);
     $user_templates->set_var('user_homepage', COM_killJS($A['homepage']));
     $user_templates->set_var('lang_location', $LANG04[106]);
-    $user_templates->set_var('user_location', strip_tags($A['location']));
+    $user_templates->set_var('user_location', GLText::stripTags($A['location']));
     $user_templates->set_var('lang_bio', $LANG04[7]);
     $user_templates->set_var('user_bio', COM_nl2br(stripslashes($A['about'])));
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);

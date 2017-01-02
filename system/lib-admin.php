@@ -229,7 +229,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     $prevOrder = Geeklog\Input::fGet('prevorder', '');  // what was the last sorting?
     $query = Geeklog\Input::request('q', '');           // get query (text-search)
     if (!empty($query)) {
-        $query = strip_tags($query);
+        $query = GLText::stripTags($query);
     }
 
     $query_limit = '';

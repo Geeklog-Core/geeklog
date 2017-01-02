@@ -188,7 +188,7 @@ function overridePostdata(&$A)
         $A['name'] = COM_sanitizeID(Geeklog\Input::post('name'));
     }
     if (isset($_POST['title'])) {
-        $A['title'] = strip_tags(Geeklog\Input::post('title'));
+        $A['title'] = GLText::stripTags(Geeklog\Input::post('title'));
     }
     if (isset($_POST['help'])) {
         $A['help'] = COM_sanitizeUrl(Geeklog\Input::post('help'), array('http', 'https'));
@@ -684,7 +684,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
 
     $retval = '';
 
-    $title = DB_escapeString(COM_stripslashes(strip_tags($title)));
+    $title = DB_escapeString(COM_stripslashes(GLText::stripTags($title)));
     $phpBlockFn = DB_escapeString(COM_stripslashes(trim($phpBlockFn)));
     if (empty($title) || !TOPIC_checkTopicSelectionControl()) {
         $retval .= COM_showMessageText($LANG21[64], $LANG21[63])

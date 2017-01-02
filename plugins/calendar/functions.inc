@@ -413,7 +413,7 @@ function plugin_savesubmission_calendar($A)
 
     $retval = '';
 
-    $A['title'] = strip_tags(COM_checkWords($A['title']));
+    $A['title'] = GLText::stripTags(COM_checkWords($A['title']));
     $A['title'] = GLText::remove4byteUtf8Chars($A['title']);
     $A['start_year'] = COM_applyFilter($A['start_year'], true);
     $A['start_month'] = COM_applyFilter($A['start_month'], true);
@@ -502,13 +502,13 @@ function plugin_savesubmission_calendar($A)
     // Remove any autotags the user doesn't have permission to use
     $A['description'] = PLG_replaceTags($A['description'], '', true);
     $A['description'] = DB_escapeString(htmlspecialchars(GLText::remove4byteUtf8Chars(COM_checkWords($A['description']))));
-    $A['address1'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['address1']))));
-    $A['address2'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['address2']))));
-    $A['city'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['city']))));
-    $A['zipcode'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['zipcode']))));
-    $A['state'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['state']))));
-    $A['location'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['location']))));
-    $A['event_type'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['event_type']))));
+    $A['address1'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['address1']))));
+    $A['address2'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['address2']))));
+    $A['city'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['city']))));
+    $A['zipcode'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['zipcode']))));
+    $A['state'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['state']))));
+    $A['location'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['location']))));
+    $A['event_type'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['event_type']))));
     $A['title'] = DB_escapeString(GLText::remove4byteUtf8Chars($A['title']));
 
     $A['url'] = DB_escapeString(COM_sanitizeUrl($A['url']));

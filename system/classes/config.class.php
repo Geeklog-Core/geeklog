@@ -1848,7 +1848,7 @@ class config
                             break;
 
                         case 'noTags':
-                            $input_val = strip_tags($input_val);
+                            $input_val = GLText::stripTags($input_val);
                             $default_strip_tags = false;
                             break;
 
@@ -1867,7 +1867,7 @@ class config
                 }
             }
             if ($default_strip_tags) {
-                $input_val = strip_tags($input_val);
+                $input_val = GLText::stripTags($input_val);
             }
         }
 

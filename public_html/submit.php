@@ -233,7 +233,7 @@ function sendNotification ($table, $story)
     $title = COM_undoSpecialChars($story->displayElements('title'));
     $introtext = COM_undoSpecialChars($story->displayElements('introtext') . "\n" . $story->displayElements('bodytext'));
     if ($story->_postmode === 'html') {
-        $introtext = strip_tags($introtext);
+        $introtext = GLText::stripTags($introtext);
     } else {
         $introtext = str_replace('<br' . XHTML . '>', "\n", $introtext);
     }

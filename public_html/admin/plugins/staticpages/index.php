@@ -684,16 +684,16 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 
     if (isset($A)) {
         if (isset($A['sp_title'])) {
-            $A['sp_title'] = strip_tags($A['sp_title']);
+            $A['sp_title'] = GLText::stripTags($A['sp_title']);
         }
         if (isset($A['sp_page_title'])) {
-            $A['sp_page_title'] = strip_tags($A['sp_page_title']);
+            $A['sp_page_title'] = GLText::stripTags($A['sp_page_title']);
         }
         if (isset($A['meta_description'])) {
-            $A['meta_description'] = strip_tags($A['meta_description']);
+            $A['meta_description'] = GLText::stripTags($A['meta_description']);
         }
         if (isset($A['meta_keywords'])) {
-            $A['meta_keywords'] = strip_tags($A['meta_keywords']);
+            $A['meta_keywords'] = GLText::stripTags($A['meta_keywords']);
         }
 
         $A['editor'] = $editor;

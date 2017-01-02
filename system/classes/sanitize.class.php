@@ -191,7 +191,7 @@ class sanitizer
     private function _applyFilter($parameter, $isnumeric = false)
     {
         $p = COM_stripslashes($parameter);
-        $p = strip_tags($p);
+        $p = GLText::stripTags($p);
         $p = COM_killJS($p); // doesn't help a lot right now, but still ...
         if ($isnumeric) {
             // Note: PHP's is_numeric() accepts values like 4e4 as numeric

@@ -126,16 +126,16 @@ function edituser($uid = '', $msg = '')
 
     // POST data can override, in case there was an error while editing a user
     if (isset($_POST['username'])) {
-        $A['username'] = strip_tags($_POST['username']);
+        $A['username'] = GLText::stripTags($_POST['username']);
     }
     if (isset($_POST['fullname'])) {
-        $A['fullname'] = strip_tags($_POST['fullname']);
+        $A['fullname'] = GLText::stripTags($_POST['fullname']);
     }
     if (isset($_POST['email'])) {
-        $A['email'] = strip_tags($_POST['email']);
+        $A['email'] = GLText::stripTags($_POST['email']);
     }
     if (isset($_POST['homepage'])) {
-        $A['homepage'] = strip_tags($_POST['homepage']);
+        $A['homepage'] = GLText::stripTags($_POST['homepage']);
     }
     if (isset($_POST['userstatus'])) {
         $A['status'] = COM_applyFilter($_POST['userstatus'], true);
@@ -1102,7 +1102,7 @@ function importusers()
 
         list ($full_name, $u_name, $email) = explode("\t", $line);
 
-        $full_name = strip_tags($full_name);
+        $full_name = GLText::stripTags($full_name);
         $u_name = COM_applyFilter($u_name);
         $email = COM_applyFilter($email);
 
