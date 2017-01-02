@@ -126,10 +126,10 @@ class Scripts
         $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui . '/jquery-ui.min.js';
 
         // Set jQuery UI CSS
-        $this->setCSSFilePrivate('jquery-ui', $theme_path . '/jquery_ui/jquery-ui.min.css', false);
-        $this->setCSSFilePrivate('jquery-ui.structure', $theme_path . '/jquery_ui/jquery-ui.structure.min.css', false);
-        $this->setCSSFilePrivate('jquery-ui.theme', $theme_path . '/jquery_ui/jquery-ui.theme.min.css', false);
-        $this->setCSSFilePrivate('jquery-ui.geeklog', $theme_path . '/jquery_ui/jquery-ui.geeklog.css', false);
+        $this->setCSSFilePrivate('jquery-ui', $theme_path . '/jquery_ui/jquery-ui.min.css', 0.1, false);
+        $this->setCSSFilePrivate('jquery-ui.structure', $theme_path . '/jquery_ui/jquery-ui.structure.min.css', 0.2, false);
+        $this->setCSSFilePrivate('jquery-ui.theme', $theme_path . '/jquery_ui/jquery-ui.theme.min.css', 0.3, false);
+        $this->setCSSFilePrivate('jquery-ui.geeklog', $theme_path . '/jquery_ui/jquery-ui.geeklog.css', 0.4, false);
 
         // Set jQuery UI 
         $names[] = 'jquery-ui';
@@ -180,13 +180,12 @@ class Scripts
                     // Check that file exists, if not use Google version
                     if (!file_exists($_CONF['path_html'] . $this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
-
-                        $this->css_files['jquery-ui.theme']['load'] = true;
                         $this->css_files['jquery-ui']['load'] = false;
                     } else {
                         $this->css_files['jquery-ui']['load'] = true;
                     }
                     $this->css_files['jquery-ui.structure']['load'] = true;
+                    $this->css_files['jquery-ui.theme']['load'] = true;
 
                     // Geeklog specific css overrides for jQuery (includes timepicker-addon css)
                     $this->css_files['jquery-ui.geeklog']['load'] = true;
@@ -332,10 +331,11 @@ class Scripts
      *
      * @param    string      $name       name of CSS file
      * @param    string      $file       location of file relative to public_html directory. Include '/' at beginning
+     * @param    int         $priority   In what order the script should be loaded in
      * @param    boolean     $load       set to true to load script right away. Should only be loaded when related script is loaded
      * @return   boolean
      */
-    private function setCSSFilePrivate($name, $file, $load = true)
+    private function setCSSFilePrivate($name, $file, $priority = 100, $load = true)
     {
         global $_CONF;
 
@@ -357,7 +357,7 @@ class Scripts
 
         $this->css_files[$name]['file'] = $file;
         $this->css_files[$name]['extra'] = '';
-        $this->css_files[$name]['priority'] = 100; // Default is 100
+        $this->css_files[$name]['priority'] = $priority; // Default is 100
         $this->css_files[$name]['constant'] = false;
         $this->css_files[$name]['load'] = $load;
 
