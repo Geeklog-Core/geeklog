@@ -38,6 +38,9 @@ define('GLTEXT_LATEST_VERSION', 2);
 
 class GLText
 {
+    // Temporary markers to process JavaScript
+    const SCRIPT_MARKER = '__SCRIPT_%s_MARKER__';
+
     /**
      * Returns text ready for the edit fields.
      *
@@ -556,6 +559,72 @@ class GLText
 
         if ($isRemove) {
             $text = preg_replace('/[\xf0-\xfd][\x80-\xbf]{2}[\x80-\xbf]{1,3}/', $replace, $text);
+        }
+
+        return $text;
+    }
+
+    /**
+     * Parse a string and replace JavaScript code with temporary markers
+     *
+     * @param  string $text
+     * @return array        array(0 => 'modified text', 1=> array of temporary markers)
+     */
+    public static function protectJavascript($text)
+    {
+        $new_text = '';
+        $markers = array();
+
+        while ($text !== '') {
+            $posStart = stripos($text, '<script');
+
+            if ($posStart === false) {
+                // There is no JavaScript left
+                $new_text .= $text;
+                $text = '';
+            } else {
+                if ($posStart > 0) {
+                    $new_text .= substr($text, 0, $posStart);
+                    $text = substr($text, $posStart);
+                }
+
+                $posEnd = stripos($text, '</script>');
+
+                if ($posEnd === false) {
+                    // '</script>' tag is missing
+                    $posEnd = strlen($text);
+                } else {
+                    $posEnd += strlen('</script>');
+                }
+
+                $part = substr($text, 0, $posEnd);
+                $marker = sprintf(self::SCRIPT_MARKER, microtime(true));
+                $marker = str_replace('.', '', $marker);
+                $markers[] = array(
+                    'text'   => $part,
+                    'marker' => $marker,
+                );
+                $new_text .= $marker;
+                $text = substr($text, $posEnd);
+            }
+        }
+
+        return array($new_text, $markers);
+    }
+
+    /**
+     * Parse a string and replace temporary markers with the original JavaScript code
+     *
+     * @param  string $text    the first element of the value returned by self::protectJavascript
+     * @param  array  $markers the second element of the value returned by self::protectJavascript
+     * @return string
+     */
+    public static function unprotectJavaScript($text, array $markers = array())
+    {
+        if (count($markers) > 0) {
+            foreach ($markers as $marker) {
+                $text = str_replace($marker['marker'], $marker['text'], $text);
+            }
         }
 
         return $text;

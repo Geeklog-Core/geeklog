@@ -32,40 +32,35 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* This is the plugin library for Geeklog.  This is the API that plugins can
-* implement to get tight integration with Geeklog.
-* See each function for more details.
-* @link http://wiki.geeklog.net/index.php/Plugin_API
-*
-*/
+ * This is the plugin library for Geeklog.  This is the API that plugins can
+ * implement to get tight integration with Geeklog.
+ * See each function for more details.
+ *
+ * @link http://wiki.geeklog.net/index.php/Plugin_API
+ */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-plugins.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
 /**
-* Include plugin class
-*/
-require_once $_CONF['path_system'] . 'classes/plugin.class.php';
-
-/**
-* Response codes for the service invocation PLG_invokeService(). Note that
-* these are intentionally vague so as not to give away too much information.
-*/
-define('PLG_RET_OK',                   0);  // success
-define('PLG_RET_ERROR',               -1);  // generic error
-define('PLG_RET_PERMISSION_DENIED',   -2);  // access to item or object denied
-define('PLG_RET_AUTH_FAILED',         -3);  // authentication failed
+ * Response codes for the service invocation PLG_invokeService(). Note that
+ * these are intentionally vague so as not to give away too much information.
+ */
+define('PLG_RET_OK', 0);  // success
+define('PLG_RET_ERROR', -1);  // generic error
+define('PLG_RET_PERMISSION_DENIED', -2);  // access to item or object denied
+define('PLG_RET_AUTH_FAILED', -3);  // authentication failed
 define('PLG_RET_PRECONDITION_FAILED', -4);  // a precondition was not met
 
 // Response codes for checking for a SPAM
-define('PLG_SPAM_NOT_FOUND',       0);
-define('PLG_SPAM_FOUND',           1);
-define('PLG_SPAM_UNSURE',          2);
+define('PLG_SPAM_NOT_FOUND', 0);
+define('PLG_SPAM_FOUND', 1);
+define('PLG_SPAM_UNSURE', 2);
 
 // Constants for actions when a SPAM was found
-define('PLG_SPAM_ACTION_NONE',     0);
-define('PLG_SPAM_ACTION_NOTIFY',   8);
+define('PLG_SPAM_ACTION_NONE', 0);
+define('PLG_SPAM_ACTION_NOTIFY', 8);
 define('PLG_SPAM_ACTION_DELETE', 128);
 
 // buffer for function names for the center block API
@@ -76,23 +71,22 @@ $PLG_buffered = false;
 $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1 ORDER BY pi_load ASC");
 
 /**
-* @global array List of all active plugins
-*/
+ * @global array List of all active plugins
+ */
 $_PLUGINS = array();
 while ($A = DB_fetchArray($result)) {
     $_PLUGINS[] = $A['pi_name'];
 }
 
 /**
-* Calls a function for all enabled plugins
-*
-* @param    string  $function_name  holds name of function to call
-* @return   void
-* @access   private
-* @internal not to be used by plugins
-* @todo     only supports functions without any parameters
-*
-*/
+ * Calls a function for all enabled plugins
+ *
+ * @param    string $function_name holds name of function to call
+ * @return   void
+ * @access   private
+ * @internal not to be used by plugins
+ * @todo     only supports functions without any parameters
+ */
 function PLG_callFunctionForAllPlugins($function_name)
 {
     global $_PLUGINS;
@@ -110,56 +104,51 @@ function PLG_callFunctionForAllPlugins($function_name)
 }
 
 /**
-* Calls a function for a single plugin
-*
-* This is a generic function used by some of the other API functions to
-* call a function for a specific plugin and, optionally pass parameters.
-* This function can handle up to 7 arguments and if more exist it will
-* try to pass the entire args array to the function.
-*
-* @param        string      $function       holds name of function to call
-* @param        array       $args           arguments to send to function
-* @return       mixed       returns result of function call, otherwise false
-* @access   private
-* @internal not to be used by plugins
-*
-*/
-function PLG_callFunctionForOnePlugin($function, $args='')
+ * Calls a function for a single plugin
+ * This is a generic function used by some of the other API functions to
+ * call a function for a specific plugin and, optionally pass parameters.
+ * This function can handle up to 7 arguments and if more exist it will
+ * try to pass the entire args array to the function.
+ *
+ * @param    string $function holds name of function to call
+ * @param    array  $args     arguments to send to function
+ * @return   mixed            returns result of function call, otherwise false
+ * @access   private
+ * @internal not to be used by plugins
+ */
+function PLG_callFunctionForOnePlugin($function, array $args = array())
 {
     if (function_exists($function)) {
-        if (empty($args)) {
-            $args = array();
-        }
 
         // great, function exists, run it
         switch (count($args)) {
-        case 0:
-            return $function();
-            break;
-        case 1:
-            return $function($args[1]);
-            break;
-        case 2:
-            return $function($args[1], $args[2]);
-            break;
-        case 3:
-            return $function($args[1], $args[2], $args[3]);
-            break;
-        case 4:
-            return $function($args[1], $args[2], $args[3], $args[4]);
-            break;
-        case 5:
-            return $function($args[1], $args[2], $args[3], $args[4], $args[5]);
-            break;
-        case 6:
-            return $function($args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
-            break;
-        case 7:
-            return $function($args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7]);
-            break;
-        default:
-            return $function($args);
-            break;
+            case 0:
+                return $function();
+                break;
+            case 1:
+                return $function($args[1]);
+                break;
+            case 2:
+                return $function($args[1], $args[2]);
+                break;
+            case 3:
+                return $function($args[1], $args[2], $args[3]);
+                break;
+            case 4:
+                return $function($args[1], $args[2], $args[3], $args[4]);
+                break;
+            case 5:
+                return $function($args[1], $args[2], $args[3], $args[4], $args[5]);
+                break;
+            case 6:
+                return $function($args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
+                break;
+            case 7:
+                return $function($args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7]);
+                break;
+            default:
+                return $function($args);
+                break;
         }
     } else {
         return false;
@@ -167,44 +156,43 @@ function PLG_callFunctionForOnePlugin($function, $args='')
 }
 
 /**
-* Tells a plugin to install itself. NOTE: not currently used any more
-*
-* @param    string      $type   Plugin name
-* @return   boolean             Returns true on success otherwise false
-* @deprecated deprecated since Geeklog 1.6.0
-* @link     http://wiki.geeklog.net/index.php/Plugin_Autoinstall
-*
-*/
+ * Tells a plugin to install itself. NOTE: not currently used any more
+ *
+ * @param       string $type Plugin name
+ * @return      boolean             Returns true on success otherwise false
+ * @deprecated  deprecated since Geeklog 1.6.0
+ * @link        http://wiki.geeklog.net/index.php/Plugin_Autoinstall
+ */
 function PLG_install($type)
 {
+    COM_deprecatedLog(__FUNCTION__, '1.6.0', '3.0.0');
+
     return PLG_callFunctionForOnePlugin('plugin_install_' . $type);
 }
 
 /**
-* Upgrades a plugin. Tells a plugin to upgrade itself.
-*
-* @param    string  $type   Plugin name
-* @return   mixed           true on success, false or error number on failure
-*
-*/
+ * Upgrades a plugin. Tells a plugin to upgrade itself.
+ *
+ * @param    string $type Plugin name
+ * @return   mixed        true on success, false or error number on failure
+ */
 function PLG_upgrade($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_upgrade_' . $type);
 }
 
 /**
-* Called during site migration - let plugin handle changed URLs or paths
-*
-* @param    string  $type       Plugin name
-* @param    array   $old_conf   contents of $_CONF before the migration
-* @return   boolean             true on success, otherwise false
-* @link     http://wiki.geeklog.net/index.php/PLG_migrate
-* @since    Geeklog 1.6.0
-*
-*/
+ * Called during site migration - let plugin handle changed URLs or paths
+ *
+ * @param    string $type     Plugin name
+ * @param    array  $old_conf contents of $_CONF before the migration
+ * @return   boolean             true on success, otherwise false
+ * @link     http://wiki.geeklog.net/index.php/PLG_migrate
+ * @since    Geeklog 1.6.0
+ */
 function PLG_migrate($type, $old_conf)
 {
-    if (! function_exists('plugin_migrate_' . $type)) {
+    if (!function_exists('plugin_migrate_' . $type)) {
         // since PLG_callFunctionForOnePlugin would return false ...
         return true;
     }
@@ -215,26 +203,24 @@ function PLG_migrate($type, $old_conf)
 }
 
 /**
-* Calls the plugin function to return the current version of code.
-* Used to indicate to admin if an update or upgrade is required.
-*
-* @param        string      $type       Plugin name
-* @return       boolean     Returns true on success otherwise false
-*
-*/
+ * Calls the plugin function to return the current version of code.
+ * Used to indicate to admin if an update or upgrade is required.
+ *
+ * @param        string $type Plugin name
+ * @return       boolean      Returns true on success otherwise false
+ */
 function PLG_chkVersion($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_chkVersion_' . $type);
 }
 
 /**
-* Tells a plugin to uninstall itself.
-*
-* @param    string      $type   Plugin to uninstall
-* @return   boolean             Returns true on success otherwise false
-* @link     http://wiki.geeklog.net/index.php/Plugin_Auto-Uninstall
-*
-*/
+ * Tells a plugin to uninstall itself.
+ *
+ * @param    string $type Plugin to uninstall
+ * @return   boolean             Returns true on success otherwise false
+ * @link     http://wiki.geeklog.net/index.php/Plugin_Auto-Uninstall
+ */
 function PLG_uninstall($type)
 {
     global $_PLUGINS, $_TABLES;
@@ -286,7 +272,7 @@ function PLG_uninstall($type)
         }
         for ($i = 0; $i < $num_groups; $i++) {
             $grp_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                                 "grp_name = '{$remvars['groups'][$i]}'");
+                "grp_name = '{$remvars['groups'][$i]}'");
             if (!empty($grp_id)) {
                 COM_errorLog("Attempting to remove the {$remvars['groups'][$i]} group", 1);
                 DB_delete($_TABLES['groups'], 'grp_id', $grp_id);
@@ -310,19 +296,19 @@ function PLG_uninstall($type)
         // uninstall feeds
         $sql = "SELECT filename FROM {$_TABLES['syndication']} WHERE type = '$type';";
         $result = DB_query($sql);
-        $nrows = DB_numRows($result);
-        if ($nrows > 0) {
+        $numRows = DB_numRows($result);
+        if ($numRows > 0) {
             COM_errorLog('removing feed files', 1);
-            COM_errorLog($nrows. ' files stored in table.', 1);
-            for ($i = 0; $i < $nrows; $i++) {
+            COM_errorLog($numRows . ' files stored in table.', 1);
+            for ($i = 0; $i < $numRows; $i++) {
                 $fcount = $i + 1;
                 $A = DB_fetchArray($result);
                 $fullpath = SYND_getFeedPath($A[0]);
                 if (file_exists($fullpath)) {
                     unlink($fullpath);
-                    COM_errorLog("removed file $fcount of $nrows: $fullpath", 1);
+                    COM_errorLog("removed file {$fcount} of {$numRows}: {$fullpath}", 1);
                 } else {
-                    COM_errorLog("cannot remove file $fcount of $nrows, it does not exist! ($fullpath)", 1);
+                    COM_errorLog("cannot remove file {$fcount} of {$numRows}, it does not exist! ($fullpath)", 1);
                 }
             }
             COM_errorLog('...success', 1);
@@ -344,8 +330,8 @@ function PLG_uninstall($type)
             $num_blocks = 0;
         }
         for ($i = 0; $i < $num_blocks; $i++) {
-            DB_delete($_TABLES['blocks'], array('type',     'phpblockfn'),
-                                          array('phpblock', $remvars['php_blocks'][$i]));
+            DB_delete($_TABLES['blocks'], array('type', 'phpblockfn'),
+                array('phpblock', $remvars['php_blocks'][$i]));
         }
 
         // remove config table data for this plugin
@@ -361,7 +347,7 @@ function PLG_uninstall($type)
         // uninstall the plugin
         COM_errorLog("Attempting to unregister the $type plugin from Geeklog", 1);
         DB_delete($_TABLES['plugins'], 'pi_name', $type);
-        COM_errorLog('...success',1);
+        COM_errorLog('...success', 1);
 
         COM_errorLog("Finished uninstalling the $type plugin.", 1);
 
@@ -385,54 +371,49 @@ function PLG_uninstall($type)
 }
 
 /**
-* Inform plugin that it is either being enabled or disabled.
-*
-* @param    string      $type       Plugin name
-* @param    boolean     $enable     true if enabling, false if disabling
-* @return   boolean     Returns true on success otherwise false
-* @see      PLG_pluginStateChange
-*
-*/
+ * Inform plugin that it is either being enabled or disabled.
+ *
+ * @param    string  $type   Plugin name
+ * @param    boolean $enable true if enabling, false if disabling
+ * @return   boolean     Returns true on success otherwise false
+ * @see      PLG_pluginStateChange
+ */
 function PLG_enableStateChange($type, $enable)
 {
-   global $_CONF, $_TABLES, $_DB_table_prefix;
+    global $_CONF, $_TABLES, $_DB_table_prefix;
 
     $args[1] = $enable;
 
     // IF we are enabling the plugin
     // THEN we must include its functions.inc so we have access to the function
     if ($enable) {
-        require_once ($_CONF['path'] . 'plugins/' . $type . '/functions.inc');
+        require_once($_CONF['path'] . 'plugins/' . $type . '/functions.inc');
     }
 
-    return PLG_callFunctionForOnePlugin ('plugin_enablestatechange_' . $type,
-                                         $args);
+    return PLG_callFunctionForOnePlugin('plugin_enablestatechange_' . $type,
+        $args);
 }
 
 /**
-* Checks to see if user is a plugin moderator
-*
-* Geeklog is asking if the user is a moderator for any installed plugins.
-*
-* @return   boolean     True if current user is moderator of plugin otherwise false
-*
-*/
+ * Checks to see if user is a plugin moderator
+ * Geeklog is asking if the user is a moderator for any installed plugins.
+ *
+ * @return   boolean     True if current user is moderator of plugin otherwise false
+ */
 function PLG_isModerator()
 {
     return PLG_callFunctionForAllPlugins('ismoderator');
 }
 
 /**
-* Gives plugins a chance to print their menu items in header
-*
-* Note that this is fairly unflexible.  This simply loops through the plugins
-* in the database in the order they were installed and get their menu items.
-* If you want more flexibility in your menu then you should hard code the menu
-* items in header.thtml for the theme(s) you are using.
-*
-* @return   array   Returns menu options for plugin
-*
-*/
+ * Gives plugins a chance to print their menu items in header
+ * Note that this is fairly unflexible.  This simply loops through the plugins
+ * in the database in the order they were installed and get their menu items.
+ * If you want more flexibility in your menu then you should hard code the menu
+ * items in header.thtml for the theme(s) you are using.
+ *
+ * @return   array   Returns menu options for plugin
+ */
 function PLG_getMenuItems()
 {
     global $_PLUGINS;
@@ -441,9 +422,9 @@ function PLG_getMenuItems()
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getmenuitems_' . $pi_name;
         if (function_exists($function)) {
-            $menuitems = $function();
-            if (is_array($menuitems)) {
-                $menu = array_merge ($menu, $menuitems);
+            $menuItems = $function();
+            if (is_array($menuItems)) {
+                $menu = array_merge($menu, $menuItems);
             }
         }
     }
@@ -454,8 +435,8 @@ function PLG_getMenuItems()
 /**
  * Get view URL and name of unique identifier
  *
- * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
- * @param   string  $type   Plugin to delete comment
+ * @author  Vincent Furia, vinny01 AT users DOT sourceforge DOT net
+ * @param   string $type Plugin to delete comment
  * @return  array   string of URL of view page, name of unique identifier
  */
 function PLG_getCommentUrlId($type)
@@ -476,20 +457,22 @@ function PLG_getCommentUrlId($type)
 /**
  * Plugin should delete a comment
  *
- * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
- * @param   string  $type   Plugin to delete comment
- * @param   int     $cid    Comment to be deleted
- * @param   string  $id     Item id to which $cid belongs
- * @return  mixed   false for failure, HTML string (redirect?) for success
+ * @author  Vincent Furia, vinny01 AT users DOT sourceforge DOT net
+ * @param   string $type Plugin to delete comment
+ * @param   int    $cid  Comment to be deleted
+ * @param   string $id   Item id to which $cid belongs
+ * @return  mixed        false for failure, HTML string (redirect?) for success
  */
 function PLG_commentDelete($type, $cid, $id)
 {
     global $_CONF;
 
-    $args[1] = $cid;
-    $args[2] = $id;
+    $args = array(
+        1 => $cid,
+        2 => $id,
+    );
 
-    if ($type == 'article') {
+    if ($type === 'article') {
         require_once $_CONF['path_system'] . 'lib-story.php';
     }
 
@@ -500,15 +483,15 @@ function PLG_commentDelete($type, $cid, $id)
  * Plugin should save a comment
  *
  * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
- * @param   string  $type   Plugin to delete comment
- * @param   string  $title  comment title
- * @param   string  $comment comment text
- * @param   string  $id     Item id to which $cid belongs
- * @param   int     $pid    comment parent
- * @param   string  $postmode 'html' or 'text'
+ * @param   string $type     Plugin to delete comment
+ * @param   string $title    comment title
+ * @param   string $comment  comment text
+ * @param   string $id       Item id to which $cid belongs
+ * @param   int    $pid      comment parent
+ * @param   string $postMode 'html' or 'text'
  * @return  mixed   false for failure, HTML string (redirect?) for success
  */
-function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode)
+function PLG_commentSave($type, $title, $comment, $id, $pid, $postMode)
 {
     global $_CONF;
 
@@ -516,9 +499,9 @@ function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode)
     $args[2] = $comment;
     $args[3] = $id;
     $args[4] = $pid;
-    $args[5] = $postmode;
+    $args[5] = $postMode;
 
-    if ($type == 'article') {
+    if ($type === 'article') {
         require_once $_CONF['path_system'] . 'lib-story.php';
     }
 
@@ -530,7 +513,7 @@ function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode)
  *
  * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @param   string  $type   Plugin to display comment
- * @param   string  $id     Unique idenifier for item comment belongs to
+ * @param   string  $id     Unique identifier for item comment belongs to
  * @param   int     $cid    Comment id to display (possibly including sub-comments)
  * @param   string  $title  Page/comment title
  * @param   string  $order  'ASC' or 'DSC' or blank
@@ -543,15 +526,17 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
 {
     global $_CONF;
 
-    $args[1] = $id;
-    $args[2] = $cid;
-    $args[3] = $title;
-    $args[4] = $order;
-    $args[5] = $format;
-    $args[6] = $page;
-    $args[7] = $view;
+    $args = array(
+        1 => $id,
+        2 => $cid,
+        3 => $title,
+        4 => $order,
+        5 => $format,
+        6 => $page,
+        7 => $view,
+    );
 
-    if ($type == 'article') {
+    if ($type === 'article') {
         require_once $_CONF['path_system'] . 'lib-story.php';
     }
 
@@ -559,32 +544,30 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
 }
 
 /**
-* Allows plugins a chance to handle a comment before Geeklog does.
-
-* This is a first-come-first-serve affair so if a plugin returns an error, other
-* plugins wishing to handle comment preprocessing won't get called
-*
-* @author Tony Bibbs, tony AT tonybibbs DOT com
-* @access public
-* @param  int       $uid User ID
-* @param  string   &$title Comment title
-* @param  string   &$comment Comment text
-* @param  string    $sid Story ID (not always a story, remember!)
-* @param  int       $pid Parent comment ID
-* @param  string    $type Type of comment
-* @param  string   &$postmode HTML or text
-* @return mixed     an error otherwise false if no errors were encountered
-* @see    PLG_itemPreSave
-*
-*/
-function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postmode)
+ * Allows plugins a chance to handle a comment before Geeklog does.
+ * This is a first-come-first-serve affair so if a plugin returns an error, other
+ * plugins wishing to handle comment preprocessing won't get called
+ *
+ * @author Tony Bibbs, tony AT tonybibbs DOT com
+ * @access public
+ * @param  int    $uid       User ID
+ * @param  string &$title    Comment title
+ * @param  string &$comment  Comment text
+ * @param  string $sid       Story ID (not always a story, remember!)
+ * @param  int    $pid       Parent comment ID
+ * @param  string $type      Type of comment
+ * @param  string &$postMode HTML or text
+ * @return mixed     an error otherwise false if no errors were encountered
+ * @see    PLG_itemPreSave
+ */
+function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postMode)
 {
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_commentPreSave_' . $pi_name;
         if (function_exists($function)) {
-            $someError = $function($uid, $title, $comment, $sid, $pid, $type, $postmode);
+            $someError = $function($uid, $title, $comment, $sid, $pid, $type, $postMode);
             if ($someError) {
                 // Plugin doesn't want to save the comment
                 return $someError;
@@ -594,7 +577,7 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
 
     $function = 'CUSTOM_commentPreSave';
     if (function_exists($function)) {
-        $someError = $function($uid, $title, $comment, $sid, $pid, $type, $postmode);
+        $someError = $function($uid, $title, $comment, $sid, $pid, $type, $postMode);
         if ($someError) {
             // Custom function refused save:
             return $someError;
@@ -605,27 +588,25 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
 }
 
 /**
-* Allows plugins a chance to handle an item before Geeklog does. Modeled
-* after the PLG_commentPreSave() function.
-*
-* This is a first-come-first-serve affair so if a plugin returns an error, other
-* plugins wishing to handle comment preprocessing won't get called
-*
-* @author Mark Evans, mevans AT ecsnet DOT com
-* @access public
-* @param string $type Type of item, i.e.; registration, contact ...
-* @param string $content item specific content
-* @return string empty is no error, error message if error was encountered
-* @see PLG_commentPreSave
-*
-*/
+ * Allows plugins a chance to handle an item before Geeklog does. Modeled
+ * after the PLG_commentPreSave() function.
+ * This is a first-come-first-serve affair so if a plugin returns an error, other
+ * plugins wishing to handle comment preprocessing won't get called
+ *
+ * @author Mark Evans, mevans AT ecsnet DOT com
+ * @access public
+ * @param string $type    Type of item, i.e.; registration, contact ...
+ * @param string $content item specific content
+ * @return string empty is no error, error message if error was encountered
+ * @see    PLG_commentPreSave
+ */
 function PLG_itemPreSave($type, $content)
 {
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_itemPreSave_' . $pi_name;
-        if (function_exists ($function)) {
+        if (function_exists($function)) {
             $msgError = $function ($type, $content);
             if (!empty($msgError)) {
                 // Plugin doesn't want to save the item
@@ -635,7 +616,7 @@ function PLG_itemPreSave($type, $content)
     }
 
     $function = 'CUSTOM_itemPreSave';
-    if (function_exists ($function)) {
+    if (function_exists($function)) {
         $msgError = $function ($type, $content);
         if (!empty($msgError)) {
             // Custom doesn't want to save the item
@@ -647,93 +628,89 @@ function PLG_itemPreSave($type, $content)
 }
 
 /**
-* The way this function works is very specific to how Geeklog shows its
-* statistics.  On stats.php, there is the top box which gives overall
-* statistics for Geeklog and then there are blocks below it that give
-* more specific statistics for various components of Geeklog.
-*
-* This plugin API function suffers from a variety of bugs and bad design
-* decisions for which we have to provide backward compatibility, so please
-* bear with us ...
-*
-* The only parameter to this function, $showsitestats, was documented as being
-* being 1 for the site stats and 0 for the plugin-specific stats. However, the
-* latter was always called with a value of 2, so plugins only did a check for 1
-* and "else", which makes extensions somewhat tricky.
-* Furthermore, due to the original templates for the site stats, it has
-* become standard practice to hard-code a <table> in the plugins as the return
-* value for $showsitestats == 1. This table, however, didn't align properly
-* with the built-in site stats entries.
-*
-* Because of all this, the new mode, 3, works differently:
-* - for $showsitestats == 3, we call a new plugin API function,
-*   plugin_statssummary_<plugin-name>, which is supposed to return the plugin's
-*   entry for the site stats in an array which stats.php will then properly
-*   format, alongside the entries for the built-in items.
-* - for $showsitestats == 1, we only call those plugins that do NOT have a
-*   plugin_statssummary_<plugin-name> function, thus providing backward
-*   compatibility
-* - for $showsitestats == 2, nothing has changed
-*
-* @param    int     $showsitestats      value indicating type of stats to return
-* @return   mixed                       array (for mode 3) or string
-*
-*/
-function PLG_getPluginStats($showsitestats)
+ * The way this function works is very specific to how Geeklog shows its
+ * statistics.  On stats.php, there is the top box which gives overall
+ * statistics for Geeklog and then there are blocks below it that give
+ * more specific statistics for various components of Geeklog.
+ * This plugin API function suffers from a variety of bugs and bad design
+ * decisions for which we have to provide backward compatibility, so please
+ * bear with us ...
+ * The only parameter to this function, $showsitestats, was documented as being
+ * being 1 for the site stats and 0 for the plugin-specific stats. However, the
+ * latter was always called with a value of 2, so plugins only did a check for 1
+ * and "else", which makes extensions somewhat tricky.
+ * Furthermore, due to the original templates for the site stats, it has
+ * become standard practice to hard-code a <table> in the plugins as the return
+ * value for $showsitestats == 1. This table, however, didn't align properly
+ * with the built-in site stats entries.
+ * Because of all this, the new mode, 3, works differently:
+ * - for $showsitestats == 3, we call a new plugin API function,
+ *   plugin_statssummary_<plugin-name>, which is supposed to return the plugin's
+ *   entry for the site stats in an array which stats.php will then properly
+ *   format, alongside the entries for the built-in items.
+ * - for $showsitestats == 1, we only call those plugins that do NOT have a
+ *   plugin_statssummary_<plugin-name> function, thus providing backward
+ *   compatibility
+ * - for $showsitestats == 2, nothing has changed
+ *
+ * @param    int $showSiteStats value indicating type of stats to return
+ * @return   array|string          array (for mode 3) or string
+ */
+function PLG_getPluginStats($showSiteStats)
 {
     global $_PLUGINS;
 
-    if ($showsitestats == 3) {
+    if ($showSiteStats == 3) {
         $retval = array();
     } else {
         $retval = '';
     }
 
     foreach ($_PLUGINS as $pi_name) {
-        if ($showsitestats == 3) {
+        if ($showSiteStats == 3) {
             $function = 'plugin_statssummary_' . $pi_name;
-            if (function_exists ($function)) {
+            if (function_exists($function)) {
                 $summary = $function ();
                 if (is_array($summary)) {
                     $retval[$pi_name] = $summary;
                 }
             }
-        } elseif ($showsitestats == 1) {
+        } elseif ($showSiteStats == 1) {
             $function1 = 'plugin_showstats_' . $pi_name;
             $function2 = 'plugin_statssummary_' . $pi_name;
-            if (!function_exists ($function2)) {
-                if (function_exists ($function1)) {
-                    $retval .= $function1 ($showsitestats);
+            if (!function_exists($function2)) {
+                if (function_exists($function1)) {
+                    $retval .= $function1 ($showSiteStats);
                 }
             }
-        } elseif ($showsitestats == 2) {
+        } elseif ($showSiteStats == 2) {
             $function = 'plugin_showstats_' . $pi_name;
-            if (function_exists ($function)) {
-                $retval .= $function ($showsitestats);
+            if (function_exists($function)) {
+                $retval .= $function ($showSiteStats);
             }
         }
     }
 
-    if ($showsitestats == 3) {
+    if ($showSiteStats == 3) {
         $function = 'CUSTOM_statssummary';
-        if (function_exists ($function)) {
+        if (function_exists($function)) {
             $summary = $function ();
             if (is_array($summary)) {
                 $retval['Custom'] = $summary;
             }
         }
-    } elseif ($showsitestats == 1) {
+    } elseif ($showSiteStats == 1) {
         $function1 = 'CUSTOM_showstats';
         $function2 = 'CUSTOM_statssummary';
-        if (!function_exists ($function2)) {
-            if (function_exists ($function1)) {
-                $retval .= $function1 ($showsitestats);
+        if (!function_exists($function2)) {
+            if (function_exists($function1)) {
+                $retval .= $function1 ($showSiteStats);
             }
         }
-    } elseif ($showsitestats == 2) {
+    } elseif ($showSiteStats == 2) {
         $function = 'CUSTOM_showstats';
-        if (function_exists ($function)) {
-            $retval .= $function ($showsitestats);
+        if (function_exists($function)) {
+            $retval .= $function ($showSiteStats);
         }
     }
 
@@ -741,61 +718,58 @@ function PLG_getPluginStats($showsitestats)
 }
 
 /**
-* This function gives each plugin the opportunity to put a value(s) in
-* the 'Type' drop down box on the search.php page so that their plugin
-* can be incorporated into searches.
-*
-* @return   array   String array of search types for plugin(s)
-*
-*/
+ * This function gives each plugin the opportunity to put a value(s) in
+ * the 'Type' drop down box on the search.php page so that their plugin
+ * can be incorporated into searches.
+ *
+ * @return   array   String array of search types for plugin(s)
+ */
 function PLG_getSearchTypes()
 {
     global $_PLUGINS;
 
     $types = array();
-    $cur_types = array();
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_searchtypes_' . $pi_name;
-        if (function_exists ($function)) {
-            $cur_types = $function ();
-            if (is_array($cur_types) && (count($cur_types) > 0)) {
-                $types = array_merge ($types, $cur_types);
+        if (function_exists($function)) {
+            $currentTypes = $function ();
+            if (is_array($currentTypes) && (count($currentTypes) > 0)) {
+                $types = array_merge($types, $currentTypes);
             }
         } // no else because this is not a required API function
     }
 
     $function = 'CUSTOM_searchtypes';
-    if (function_exists ($function)) {
-        $cur_types = $function ();
-        if (is_array($cur_types) && (count($cur_types) > 0)) {
-            $types = array_merge ($types, $cur_types);
+    if (function_exists($function)) {
+        $currentTypes = $function ();
+        if (is_array($currentTypes) && (count($currentTypes) > 0)) {
+            $types = array_merge($types, $currentTypes);
         }
     }
 
     asort($types);
+
     return $types;
 }
 
-
 /**
-* This function gives each plugin the opportunity to do their search
-* and return their results.  Results come back in an array of HTML
-* formatted table rows that can be quickly printed by search.php
-*
-* @param    string  $query      What the user searched for
-* @param    date    $datestart  beginning of date range to search for
-* @param    date    $dateend    ending date range to search for
-* @param    string  $topic      the topic the user searched within
-* @param    string  $type       Type of items they are searching, or 'all'
-* @param    int     $author     UID...only return results for this person
-* @param    string  $keyType    search key type: 'all', 'phrase', 'any'
-* @param    int     $page       page number of current search (deprecated)
-* @param    int     $perpage    number of results per page (deprecated)
-* @return   array               Returns search results
-*
-*/
-function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all', $page = 1, $perpage = 10)
+ * This function gives each plugin the opportunity to do their search
+ * and return their results.  Results come back in an array of HTML
+ * formatted table rows that can be quickly printed by search.php
+ *
+ * @param    string $query     What the user searched for
+ * @param    date   $dateStart beginning of date range to search for
+ * @param    date   $dateEnd   ending date range to search for
+ * @param    string $topic     the topic the user searched within
+ * @param    string $type      Type of items they are searching, or 'all'
+ * @param    int    $author    UID...only return results for this person
+ * @param    string $keyType   search key type: 'all', 'phrase', 'any'
+ * @param    int    $page      page number of current search (deprecated)
+ * @param    int    $perPage   number of results per page (deprecated)
+ * @return   array             Returns search results
+ */
+function PLG_doSearch($query, $dateStart, $dateEnd, $topic, $type, $author, $keyType = 'all', $page = 1, $perPage = 10)
 {
     global $_PLUGINS;
 
@@ -809,7 +783,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_dopluginsearch_' . $pi_name;
         if (function_exists($function)) {
-            $result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
+            $result = $function($query, $dateStart, $dateEnd, $topic, $type, $author, $keyType, $page, $perPage);
             if (is_array($result)) {
                 $search_results = array_merge($search_results, $result);
             } else {
@@ -821,19 +795,18 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
 
     $function = 'CUSTOM_dopluginsearch';
     if (function_exists($function)) {
-        $search_results[] = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
+        $search_results[] = $function($query, $dateStart, $dateEnd, $topic, $type, $author, $keyType, $page, $perPage);
     }
 
     return $search_results;
 }
 
 /**
-* Asks each plugin to report any submissions they may have in their
-* submission queue
-*
-* @return   int     Number of submissions in queue for plugins
-*
-*/
+ * Asks each plugin to report any submissions they may have in their
+ * submission queue
+ *
+ * @return   int     Number of submissions in queue for plugins
+ */
 function PLG_getSubmissionCount()
 {
     global $_PLUGINS;
@@ -850,46 +823,43 @@ function PLG_getSubmissionCount()
 }
 
 /**
-* This function will get & check user or admin options from plugins and check
-* required ones for availability. This function is called by several other
-* functions and is not to be called from the plugin directly. The function which
-* call this here follow below.
-*
-* NOTE for plugin developers:
-* The plugin is responsible for its own security.
-* This supports a plugin having either a single menuitem or multiple menuitems.
-* The plugin has to provide an array for the menuitem of the format:
-* <code>
-* array(menuitem_title, item_url, submission_count)
-* </code>
-* or an array of arrays in case there are several entries:
-* <code>
-* array(
-*   array(menuitem1_title, item1_url, submission1_count),
-*   array(menuitem2_title, item2_url, submission2_count),
-*   array(menuitem3_title, item3_url, submission3_count))
-* </code>
-* Plugin function can return a single record array or multiple records
-*
-*
-* @param    array $var_names    An array of the variables that are retrieved.
-*                               This has to match the named array that is used
-*                               in the function returning the values
-* @param    array $required_names An array of true/false-values, describing
-*                                 which of the above listed values is required
-*                                 to give a valid set of data.
-* @param    string $function_name A string that gives the name of the function
-*                                 at the plugin that will return the values.
-* @return   array Returns options to add to the given menu that is calling this
-* @access   private
-* @internal not to be used by plugins
-*
-*/
+ * This function will get & check user or admin options from plugins and check
+ * required ones for availability. This function is called by several other
+ * functions and is not to be called from the plugin directly. The function which
+ * call this here follow below.
+ * NOTE for plugin developers:
+ * The plugin is responsible for its own security.
+ * This supports a plugin having either a single menuitem or multiple menuitems.
+ * The plugin has to provide an array for the menuitem of the format:
+ * <code>
+ * array(menuitem_title, item_url, submission_count)
+ * </code>
+ * or an array of arrays in case there are several entries:
+ * <code>
+ * array(
+ *   array(menuitem1_title, item1_url, submission1_count),
+ *   array(menuitem2_title, item2_url, submission2_count),
+ *   array(menuitem3_title, item3_url, submission3_count))
+ * </code>
+ * Plugin function can return a single record array or multiple records
+ *
+ * @param    array  $var_names      An array of the variables that are retrieved.
+ *                                  This has to match the named array that is used
+ *                                  in the function returning the values
+ * @param    array  $required_names An array of true/false-values, describing
+ *                                  which of the above listed values is required
+ *                                  to give a valid set of data.
+ * @param    string $function_name  A string that gives the name of the function
+ *                                  at the plugin that will return the values.
+ * @return   array Returns options to add to the given menu that is calling this
+ * @access   private
+ * @internal not to be used by plugins
+ */
 function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 {
     global $_PLUGINS;
 
-    $plgresults = array();
+    $pluginResults = array();
 
     $num_var_names = count($var_names);
     foreach ($_PLUGINS as $pi_name) {
@@ -904,7 +874,7 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
                     // Single record - so we need to prepare the sets_array;
                     $sets_array[0] = $plg_array;
                 } else {
-                    // Multiple menuitem records - in required format
+                    // Multiple menu item records - in required format
                     $sets_array = $plg_array;
                 }
                 foreach ($sets_array as $val) {
@@ -922,172 +892,161 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
                     }
 
                     if ($good_array) {
-                        $plgresults[] = $plugin;
+                        $pluginResults[] = $plugin;
                     }
                 }
             }
         }
     }
 
-    return $plgresults;
+    return $pluginResults;
 }
 
 /**
-* This function shows the option for all plugins at the top of the
-* command and control center.
-*
-* This supports that a plugin can have several lines in the CC menu.
-* The plugin has to provide simply a set arrays with 3 variables in order to
-* get n lines in the menu such as
-* <code>
-* array(
-*   array("first line", "url1", "1"),
-*   array("second line", "url2", "44"),
-*            etc, etc)
-* </code>
-* If there is only one item, a single array is enough:
-* <code>
-* array("first line", "url1", "1")
-* </code>
-*
-* @return   array   Returns Command and Control options for moderation.php
-*
-*/
+ * This function shows the option for all plugins at the top of the
+ * command and control center.
+ * This supports that a plugin can have several lines in the CC menu.
+ * The plugin has to provide simply a set arrays with 3 variables in order to
+ * get n lines in the menu such as
+ * <code>
+ * array(
+ *   array("first line", "url1", "1"),
+ *   array("second line", "url2", "44"),
+ *            etc, etc)
+ * </code>
+ * If there is only one item, a single array is enough:
+ * <code>
+ * array("first line", "url1", "1")
+ * </code>
+ *
+ * @return   array   Returns Command and Control options for moderation.php
+ */
 function PLG_getCCOptions()
 {
     $var_names = array('adminlabel', 'adminurl', 'plugin_image', 'admingroup');
     $required_names = array(true, true, true, false);
     $function_name = 'plugin_cclabel_';
-    $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
+    $pluginResults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
 
-    return $plgresults;
+    return $pluginResults;
 }
 
 /**
-* This function will show any plugin adminstrative options in the
-* admin functions block on every page (assuming the user is an admin
-* and is logged in).
-*
-* NOTE: the plugin is responsible for its own security.
-* This supports that a plugin can have several lines in the Admin menu.
-* The plugin has to provide simply a set arrays with 3 variables in order to
-* get n lines in the menu such as
-* <code>
-* array(
-*   array("first line", "url1", "1"),
-*   array("second line", "url2", "44"),,
-*            etc, etc)
-* </code>
-* If there is only one item, a single array is enough:
-* <code>
-* array("first line", "url1", "1")
-* </code>
-*
-* @return   array   Returns options to put in admin menu
-*
-*/
+ * This function will show any plugin administrative options in the
+ * admin functions block on every page (assuming the user is an admin
+ * and is logged in).
+ * NOTE: the plugin is responsible for its own security.
+ * This supports that a plugin can have several lines in the Admin menu.
+ * The plugin has to provide simply a set arrays with 3 variables in order to
+ * get n lines in the menu such as
+ * <code>
+ * array(
+ *   array("first line", "url1", "1"),
+ *   array("second line", "url2", "44"),,
+ *            etc, etc)
+ * </code>
+ * If there is only one item, a single array is enough:
+ * <code>
+ * array("first line", "url1", "1")
+ * </code>
+ *
+ * @return   array   Returns options to put in admin menu
+ */
 function PLG_getAdminOptions()
 {
     $var_names = array('adminlabel', 'adminurl', 'numsubmissions', 'admingroup');
     $required_names = array(true, true, false, false);
     $function_name = 'plugin_getadminoption_';
-    $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
+    $pluginResults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
 
-    return $plgresults;
+    return $pluginResults;
 }
 
 /**
-* This function will show any plugin user options in the
-* user block on every page
-*
-* This supports that a plugin can have several lines in the User menu.
-* The plugin has to provide simply a set of arrays with 3 variables in order to
-* get n lines in the menu such as
-* <code>
-* array(
-*   array("first line", "url1", "1"),
-*   array("second line", "url2", "44"),
-*            etc, etc)
-* </code>
-* If there is only one item, a single array is enough:
-* <code>
-* array("first line", "url1", "1")
-* </code>
-*
-* NOTE: the plugin is responsible for its own security.
-*
-* @return   array   Returns options to add to user menu
-*
-*/
+ * This function will show any plugin user options in the
+ * user block on every page
+ * This supports that a plugin can have several lines in the User menu.
+ * The plugin has to provide simply a set of arrays with 3 variables in order to
+ * get n lines in the menu such as
+ * <code>
+ * array(
+ *   array("first line", "url1", "1"),
+ *   array("second line", "url2", "44"),
+ *            etc, etc)
+ * </code>
+ * If there is only one item, a single array is enough:
+ * <code>
+ * array("first line", "url1", "1")
+ * </code>
+ * NOTE: the plugin is responsible for its own security.
+ *
+ * @return   array   Returns options to add to user menu
+ */
 function PLG_getUserOptions()
 {
     // I know this uses the adminlabel, adminurl but who cares?
     $var_names = array('adminlabel', 'adminurl', 'numsubmissions');
     $required_names = array(true, true, false);
     $function_name = 'plugin_getuseroption_';
-    $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
+    $pluginResults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
 
-    return $plgresults;
+    return $pluginResults;
 }
 
 /**
-* This function is responsible for calling
-* plugin_moderationapproves_<pluginname> which approves an item from the
-* submission queue for a plugin.
-*
-* @param        string      $type       Plugin name to do submission approval for
-* @param        string      $id         used to identify the record to approve
-* @return       boolean     Returns true on success otherwise false
-*
-*/
+ * This function is responsible for calling
+ * plugin_moderationapproves_<pluginname> which approves an item from the
+ * submission queue for a plugin.
+ *
+ * @param        string $type Plugin name to do submission approval for
+ * @param        string $id   used to identify the record to approve
+ * @return       boolean     Returns true on success otherwise false
+ */
 function PLG_approveSubmission($type, $id)
 {
-    $args[1] = $id;
+    $args = array(1 => $id);
 
     return PLG_callFunctionForOnePlugin('plugin_moderationapprove_' . $type, $args);
 }
 
 /**
-* This function is responsible for calling
-* plugin_moderationdelete_<pluginname> which deletes an item from the
-* submission queue for a plugin.
-*
-* @param        string      $type       Plugin to do submission deletion for
-* @param        string      $id         used to identify the record for which to delete
-* @return       boolean     Returns true on success otherwise false
-*
-*/
+ * This function is responsible for calling
+ * plugin_moderationdelete_<pluginname> which deletes an item from the
+ * submission queue for a plugin.
+ *
+ * @param        string $type Plugin to do submission deletion for
+ * @param        string $id   used to identify the record for which to delete
+ * @return       boolean     Returns true on success otherwise false
+ */
 function PLG_deleteSubmission($type, $id)
 {
-    $args[1] = $id;
+    $args = array(1 => $id);
 
     return PLG_callFunctionForOnePlugin('plugin_moderationdelete_' . $type, $args);
 }
 
 /**
-* This function calls the plugin_savesubmission_<pluginname> to save
-* a user submission
-*
-* @param        string      $type       Plugin to save submission for
-* @param        array       $A          holds plugin specific data to save
-* @return       boolean     Returns true on success otherwise false
-*
-*/
+ * This function calls the plugin_savesubmission_<pluginname> to save
+ * a user submission
+ *
+ * @param        string $type Plugin to save submission for
+ * @param        array  $A    holds plugin specific data to save
+ * @return       boolean     Returns true on success otherwise false
+ */
 function PLG_saveSubmission($type, $A)
 {
-    $args[1] = $A;
+    $args = array(1 => $A);
 
     return PLG_callFunctionForOnePlugin('plugin_savesubmission_' . $type, $args);
 }
 
 /**
-* This function starts the chain of calls needed to show any submissions
-* needing moderation for the plugins.
-*
-* @param    string  $token  security token
-* @return   string          returns list of items needing moderation for plugins
-*
-*/
+ * This function starts the chain of calls needed to show any submissions
+ * needing moderation for the plugins.
+ *
+ * @param    string $token security token
+ * @return   string          returns list of items needing moderation for plugins
+ */
 function PLG_showModerationList($token)
 {
     global $_PLUGINS;
@@ -1102,46 +1061,42 @@ function PLG_showModerationList($token)
 }
 
 /**
-* This function is responsible for setting the plugin-specific values
-* needed by moderation.php to approve stuff.
-*
-* @param        string      $type       Plugin to call function for
-* @return       string
-*
-*/
+ * This function is responsible for setting the plugin-specific values
+ * needed by moderation.php to approve stuff.
+ *
+ * @param        string $type Plugin to call function for
+ * @return       string
+ */
 function PLG_getModerationValues($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_moderationvalues_' . $type);
 }
 
 /**
-* This function is resonsible for calling plugin_submit_<pluginname> so
-* that the submission form for the plugin is displayed.
-*
-* @param        string      $type       Plugin to show submission form for
-* @return       string      HTML for submit form for plugin
-*
-*/
+ * This function is resonsible for calling plugin_submit_<pluginname> so
+ * that the submission form for the plugin is displayed.
+ *
+ * @param        string $type Plugin to show submission form for
+ * @return       string      HTML for submit form for plugin
+ */
 function PLG_showSubmitForm($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_submit_' . $type);
 }
 
 /**
-* This function will show the centerblock for any plugin.
-*
-* Plugin can display some of their own content in a block on the index or any
-* topic index page. The block can be at the top or bottom of the page, after
-* the featured story or the plugin can take over the entire page.
-* The plugin is responsible to format the output correctly.
-*
-* @param    int     $where  where 1 = top, 2 = after feat. story, 3 = bottom of page, 0 = entire page
-* @param    int     $page   page number (1, ...)
-* @param    string  $topic  topic ID or empty string == front page
-* @return   string          Formatted center block content
-* @since    Geeklog 1.3.8
-*
-*/
+ * This function will show the centerblock for any plugin.
+ * Plugin can display some of their own content in a block on the index or any
+ * topic index page. The block can be at the top or bottom of the page, after
+ * the featured story or the plugin can take over the entire page.
+ * The plugin is responsible to format the output correctly.
+ *
+ * @param    int    $where where 1 = top, 2 = after feat. story, 3 = bottom of page, 0 = entire page
+ * @param    int    $page  page number (1, ...)
+ * @param    string $topic topic ID or empty string == front page
+ * @return   string          Formatted center block content
+ * @since    Geeklog 1.3.8
+ */
 function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
 {
     global $PLG_bufferCenterAPI, $PLG_buffered, $_PLUGINS;
@@ -1176,12 +1131,11 @@ function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
 }
 
 /**
-* This function will inform all plugins when a new user account is created.
-*
-* @param    int     $uid    user id of the new user account
-* @return   void
-*
-*/
+ * This function will inform all plugins when a new user account is created.
+ *
+ * @param    int $uid user id of the new user account
+ * @return   void
+ */
 function PLG_createUser($uid)
 {
     global $_PLUGINS, $_CONF;
@@ -1207,19 +1161,18 @@ function PLG_createUser($uid)
 }
 
 /**
-* This function will inform all plugins when a user account is deleted.
-*
-* @param    int     $uid    user id of the deleted user account
-* @return   void
-*
-*/
+ * This function will inform all plugins when a user account is deleted.
+ *
+ * @param    int $uid user id of the deleted user account
+ * @return   void
+ */
 function PLG_deleteUser($uid)
 {
     global $_PLUGINS, $_CONF;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_delete_' . $pi_name;
-        if (function_exists ($function)) {
+        if (function_exists($function)) {
             $function($uid);
         }
     }
@@ -1233,16 +1186,14 @@ function PLG_deleteUser($uid)
 }
 
 /**
-* This function will inform all plugins when a user logs in
-*
-* Note: This function is NOT called when users are re-authenticated by their
-* long-term cookie. The global variable $_USER['auto_login'] will be set to
-* 'true' in that case, however.
-*
-* @param    int     $uid    user id
-* @return   void
-*
-*/
+ * This function will inform all plugins when a user logs in
+ * Note: This function is NOT called when users are re-authenticated by their
+ * long-term cookie. The global variable $_USER['auto_login'] will be set to
+ * 'true' in that case, however.
+ *
+ * @param    int $uid user id
+ * @return   void
+ */
 function PLG_loginUser($uid)
 {
     global $_PLUGINS;
@@ -1261,14 +1212,13 @@ function PLG_loginUser($uid)
 }
 
 /**
-* This function will inform all plugins when a user logs out.
-* Plugins should not rely on this ever being called, as the user may simply
-* close the browser instead of logging out.
-*
-* @param    int     $uid    user id
-* @return   void
-*
-*/
+ * This function will inform all plugins when a user logs out.
+ * Plugins should not rely on this ever being called, as the user may simply
+ * close the browser instead of logging out.
+ *
+ * @param    int $uid user id
+ * @return   void
+ */
 function PLG_logoutUser($uid)
 {
     global $_PLUGINS;
@@ -1287,13 +1237,12 @@ function PLG_logoutUser($uid)
 }
 
 /**
-* This function is called to inform plugins when a user's information
-* (profile or preferences) has changed.
-*
-* @param    int     $uid    user id
-* @return   void
-*
-*/
+ * This function is called to inform plugins when a user's information
+ * (profile or preferences) has changed.
+ *
+ * @param    int $uid user id
+ * @return   void
+ */
 function PLG_userInfoChanged($uid)
 {
     global $_CONF, $_PLUGINS;
@@ -1306,7 +1255,7 @@ function PLG_userInfoChanged($uid)
             $function($uid);
         }
     }
-    
+
     if ($_CONF['custom_registration']) {
         $function = 'CUSTOM_user_changed';
         if (function_exists($function)) {
@@ -1316,14 +1265,13 @@ function PLG_userInfoChanged($uid)
 }
 
 /**
-* This function is called to inform plugins when a group's information has
-* changed or a new group has been created.
-*
-* @param    int     $grp_id     Group ID
-* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
-* @return   void
-*
-*/
+ * This function is called to inform plugins when a group's information has
+ * changed or a new group has been created.
+ *
+ * @param    int    $grp_id Group ID
+ * @param    string $mode   type of change: 'new', 'edit', or 'delete'
+ * @return   void
+ */
 function PLG_groupChanged($grp_id, $mode)
 {
     global $_PLUGINS;
@@ -1344,14 +1292,13 @@ function PLG_groupChanged($grp_id, $mode)
 }
 
 /**
-* Geeklog is about to display the edit form for the user's profile. Plugins
-* now get a chance to add their own variables and input fields to the form.
-*
-* @param    int  $uid        user id of the user profile to be edited
-* @param    ref &$template   reference of the Template for the profile edit form
-* @return   void
-*
-*/
+ * Geeklog is about to display the edit form for the user's profile. Plugins
+ * now get a chance to add their own variables and input fields to the form.
+ *
+ * @param    int $uid       user id of the user profile to be edited
+ * @param    ref &$template reference of the Template for the profile edit form
+ * @return   void
+ */
 function PLG_profileVariablesEdit($uid, &$template)
 {
     global $_PLUGINS;
@@ -1370,13 +1317,12 @@ function PLG_profileVariablesEdit($uid, &$template)
 }
 
 /**
-* Geeklog is about to display the edit form for the user's profile. Plugins
-* now get a chance to add their own blocks below the standard form.
-*
-* @param    int      $uid   user id of the user profile to be edited
-* @return   string          HTML for additional block(s)
-*
-*/
+ * Geeklog is about to display the edit form for the user's profile. Plugins
+ * now get a chance to add their own blocks below the standard form.
+ *
+ * @param    int $uid user id of the user profile to be edited
+ * @return   string          HTML for additional block(s)
+ */
 function PLG_profileBlocksEdit($uid)
 {
     global $_PLUGINS;
@@ -1399,15 +1345,14 @@ function PLG_profileBlocksEdit($uid)
 }
 
 /**
-* Geeklog is about to display the user's profile. Plugins now get a chance to
-* add their own variables to the profile.
-*
-* @param   int   $uid        user id of the user profile to be edited
-* @param   ref  &$template   reference of the Template for the profile edit form
-* @return  void
-*
-*/
-function PLG_profileVariablesDisplay($uid, &$template)
+ * Geeklog is about to display the user's profile. Plugins now get a chance to
+ * add their own variables to the profile.
+ *
+ * @param   int      $uid      user id of the user profile to be edited
+ * @param   Template $template reference of the Template for the profile edit form
+ * @return  void
+ */
+function PLG_profileVariablesDisplay($uid, $template)
 {
     global $_PLUGINS;
 
@@ -1425,13 +1370,12 @@ function PLG_profileVariablesDisplay($uid, &$template)
 }
 
 /**
-* Geeklog is about to display the user's profile. Plugins now get a chance to
-* add their own blocks below the standard profile form.
-*
-* @param    int      $uid        user id of the user profile to be edited
-* @return   string               HTML for additional block(s)
-*
-*/
+ * Geeklog is about to display the user's profile. Plugins now get a chance to
+ * add their own blocks below the standard profile form.
+ *
+ * @param    int $uid user id of the user profile to be edited
+ * @return   string               HTML for additional block(s)
+ */
 function PLG_profileBlocksDisplay($uid)
 {
     global $_PLUGINS;
@@ -1454,51 +1398,47 @@ function PLG_profileBlocksDisplay($uid)
 }
 
 /**
-* The user wants to save changes to his/her profile. Any plugin that added its
-* own variables or blocks to the profile input form will now have to extract
-* its data and save it.
-* Plugins will have to refer to the global $_POST array to get the
-* actual data.
-*
-* @param    string  $plugin     name of a specific plugin or empty(all plugins)
-* @return   void
-*
-*/
+ * The user wants to save changes to his/her profile. Any plugin that added its
+ * own variables or blocks to the profile input form will now have to extract
+ * its data and save it.
+ * Plugins will have to refer to the global $_POST array to get the
+ * actual data.
+ *
+ * @param    string $plugin name of a specific plugin or empty(all plugins)
+ * @return   void
+ */
 function PLG_profileExtrasSave($plugin = '')
 {
     if (empty($plugin)) {
-        PLG_callFunctionForAllPlugins ('profileextrassave');
+        PLG_callFunctionForAllPlugins('profileextrassave');
     } else {
-        PLG_callFunctionForOnePlugin ('plugin_profileextrassave_' . $plugin);
+        PLG_callFunctionForOnePlugin('plugin_profileextrassave_' . $plugin);
     }
 }
 
 /**
-* This function can be called to check if a plugin wants to set a template
-* variable
-*
-* A plugin can check for $templatename == 'header' and then set additional
-* template variables
-*
-* Called from within Geeklog for:
-* - 'header' (site header)
-* - 'footer' (site footer)
-* - 'storytext', 'featuredstorytext', 'archivestorytext' (story templates)
-* - 'story' (story submission)
-* - 'comment' (comment submission form)
-* - 'registration' (user registration form)
-* - 'contact' (email user form)
-* - 'emailstory' (email story to a friend)
-* - 'loginblock' (login form in the side bar)
-* - 'loginform' (login form in the content area)
-* - 'search' (advanced search form; simple search is usually part of 'header')
-*
-* @param    string   $templateName  Name of calling template
-* @param    Template $template      reference for the Template
-* @return   void
-* @see      CUSTOM_templateSetVars
-*
-*/
+ * This function can be called to check if a plugin wants to set a template
+ * variable
+ * A plugin can check for $templatename == 'header' and then set additional
+ * template variables
+ * Called from within Geeklog for:
+ * - 'header' (site header)
+ * - 'footer' (site footer)
+ * - 'storytext', 'featuredstorytext', 'archivestorytext' (story templates)
+ * - 'story' (story submission)
+ * - 'comment' (comment submission form)
+ * - 'registration' (user registration form)
+ * - 'contact' (email user form)
+ * - 'emailstory' (email story to a friend)
+ * - 'loginblock' (login form in the side bar)
+ * - 'loginform' (login form in the content area)
+ * - 'search' (advanced search form; simple search is usually part of 'header')
+ *
+ * @param    string   $templateName Name of calling template
+ * @param    Template $template     reference for the Template
+ * @return   void
+ * @see      CUSTOM_templateSetVars
+ */
 function PLG_templateSetVars($templateName, $template)
 {
     global $_PLUGINS;
@@ -1516,74 +1456,71 @@ function PLG_templateSetVars($templateName, $template)
 }
 
 /**
-* This function is called from COM_siteHeader and will return additional header
-* information. This can be used for JavaScript functions required for the plugin
-* or extra Metatags
-*
-* @return   string      returns a concatenated string of all plugins extra header code
-* @since    Geeklog 1.3.8
-*
-*/
+ * This function is called from COM_siteHeader and will return additional header
+ * information. This can be used for JavaScript functions required for the plugin
+ * or extra Metatags
+ *
+ * @return   string      returns a concatenated string of all plugins extra header code
+ * @since    Geeklog 1.3.8
+ */
 function PLG_getHeaderCode()
 {
     global $_PLUGINS;
 
-    $headercode = '';
+    $headerCode = '';
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getheadercode_' . $pi_name;
         if (function_exists($function)) {
-            $headercode .= $function();
+            $headerCode .= $function();
         }
     }
 
     $function = 'CUSTOM_getheadercode';
     if (function_exists($function)) {
-        $headercode .= $function();
+        $headerCode .= $function();
     }
 
-    return $headercode;
+    return $headerCode;
 }
 
 /**
-* This function is called from COM_siteFooter and will return additional footer
-* information. This can be used for JavaScript functions required for the plugin
-*
-* @return   string      returns a concatenated string of all plugins extra footer code
-* @since    Geeklog 1.8.0
-*
-*/
+ * This function is called from COM_siteFooter and will return additional footer
+ * information. This can be used for JavaScript functions required for the plugin
+ *
+ * @return   string      returns a concatenated string of all plugins extra footer code
+ * @since    Geeklog 1.8.0
+ */
 function PLG_getFooterCode()
 {
     global $_PLUGINS;
 
-    $footercode = '';
+    $footerCode = '';
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getfootercode_' . $pi_name;
         if (function_exists($function)) {
-            $footercode .= $function();
+            $footerCode .= $function();
         }
     }
 
     $function = 'CUSTOM_getfootercode';
     if (function_exists($function)) {
-        $footercode .= $function();
+        $footerCode .= $function();
     }
 
-    return $footercode;
+    return $footerCode;
 }
 
 /**
-* Get a list of all currently supported autolink tags.
-*
-* Returns an associative array where $A['tag-name'] = 'plugin-name'
-*
-* @return   array   All currently supported autolink tags
-* @access   private
-* @internal not to be used by plugins
-*
-*/
+ * Get a list of all currently supported autolink tags.
+ * Returns an associative array where $A['tag-name'] = 'plugin-name'
+ *
+ * @param    string $type
+ * @return   array   All currently supported autolink tags
+ * @access   private
+ * @internal not to be used by plugins
+ */
 function PLG_collectTags($type = 'tagname')
 {
     global $_CONF, $_PLUGINS;
@@ -1598,9 +1535,9 @@ function PLG_collectTags($type = 'tagname')
     require_once $_CONF['path_system'] . 'lib-user.php';
     require_once $_CONF['path_system'] . 'lib-topic.php';
     require_once $_CONF['path_system'] . 'lib-block.php';
-    
 
-    if (! is_array($_PLUGINS)) {
+
+    if (!is_array($_PLUGINS)) {
         /** as a side effect of parsing autotags in templates, we may end
          *  up here from a call to COM_errorLog() during the install, i.e.
          *  when Geeklog is not fully operational, so we need to catch this
@@ -1646,19 +1583,19 @@ function PLG_collectTags($type = 'tagname')
 }
 
 /**
-* This function will allow plugins to support the use of custom autolinks
-* in other site content. Plugins can now use this API when saving content
-* and have the content checked for any autolinks before saving.
-* The autolink would be like:  [story:20040101093000103 here]
-*
-* @param   string   $content   Content that should be parsed for autolinks
-* @param   string   $plugin    Optional if you only want to parse using a specific plugin
-* @param   string   $remove    Optional if you want to remove the autotag from the content
-*
-*/
+ * This function will allow plugins to support the use of custom autolinks
+ * in other site content. Plugins can now use this API when saving content
+ * and have the content checked for any autolinks before saving.
+ * The autolink would be like:  [story:20040101093000103 here]
+ *
+ * @param   string $content Content that should be parsed for autolinks
+ * @param   string $plugin  Optional if you only want to parse using a specific plugin
+ * @param   bool   $remove  Optional if you want to remove the autotag from the content
+ * @return  string
+ */
 function PLG_replaceTags($content, $plugin = '', $remove = false)
 {
-    global $_CONF, $_TABLES, $LANG32;
+    global $_CONF, $LANG32;
 
     if (isset($_CONF['disable_autolinks']) && ($_CONF['disable_autolinks'] == 1)) {
         // autolinks are disabled - return $content unchanged
@@ -1675,60 +1612,63 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
     }
 
     for ($i = 1; $i <= 5; $i++) {
+        list($content, $markers) = GLText::protectJavascript($content);
+
         // For each supported module, scan the content looking for any AutoLink tags
         $tags = array();
-        $contentlen = MBYTE_strlen($content);
+        $contentLength = MBYTE_strlen($content);
         $content_lower = MBYTE_strtolower($content);
-        foreach ($autolinkModules as $moduletag => $module) {
-            $autotag_prefix = '[' . $moduletag . ':';
+        foreach ($autolinkModules as $moduleTag => $module) {
+            $autotag_prefix = '[' . $moduleTag . ':';
             $offset = 0;
             $prev_offset = 0;
-            while ($offset < $contentlen) {
+            while ($offset < $contentLength) {
                 $start_pos = MBYTE_strpos($content_lower, $autotag_prefix,
-                                          $offset);
+                    $offset);
                 if ($start_pos === false) {
                     break;
                 } else {
-                    $end_pos  = MBYTE_strpos($content_lower, ']', $start_pos);
+                    $end_pos = MBYTE_strpos($content_lower, ']', $start_pos);
                     $next_tag = MBYTE_strpos($content_lower, '[', $start_pos + 1);
-                    if (($end_pos > $start_pos) AND
-                            (($next_tag === false) OR ($end_pos < $next_tag))) {
-                        $taglength = $end_pos - $start_pos + 1;
-                        $tag = MBYTE_substr($content, $start_pos, $taglength);
-                        $parms = explode(' ', $tag);
+                    if (($end_pos > $start_pos) &&
+                        (($next_tag === false) || ($end_pos < $next_tag))
+                    ) {
+                        $tagLength = $end_pos - $start_pos + 1;
+                        $tag = MBYTE_substr($content, $start_pos, $tagLength);
+                        $params = explode(' ', $tag);
 
                         // Extra test to see if autotag was entered with a space
                         // after the module name
-                        if (MBYTE_substr($parms[0], -1) == ':') {
-                            $startpos = MBYTE_strlen($parms[0]) + MBYTE_strlen($parms[1]) + 2;
-                            $label = str_replace(']', '', MBYTE_substr($tag, $startpos));
-                            $tagid = $parms[1];
+                        if (MBYTE_substr($params[0], -1) == ':') {
+                            $startPos = MBYTE_strlen($params[0]) + MBYTE_strlen($params[1]) + 2;
+                            $label = str_replace(']', '', MBYTE_substr($tag, $startPos));
+                            $tagId = $params[1];
                         } else {
                             $label = str_replace(']', '', MBYTE_substr($tag,
-                                                    MBYTE_strlen($parms[0]) + 1));
-                            $parms = explode(':', $parms[0]);
-                            if (count($parms) > 2) {
+                                MBYTE_strlen($params[0]) + 1));
+                            $params = explode(':', $params[0]);
+                            if (count($params) > 2) {
                                 // whoops, there was a ':' in the tag id ...
-                                array_shift($parms);
-                                $tagid = implode(':', $parms);
+                                array_shift($params);
+                                $tagId = implode(':', $params);
                             } else {
-                                $tagid = $parms[1];
+                                $tagId = $params[1];
                             }
                         }
 
-                        $newtag = array(
-                            'module'    => $module,
-                            'tag'       => $moduletag,
-                            'tagstr'    => $tag,
-                            'startpos'  => $start_pos,
-                            'length'    => $taglength,
-                            'parm1'     => str_replace(']', '', $tagid),
-                            'parm2'     => $label
+                        $newTag = array(
+                            'module'   => $module,
+                            'tag'      => $moduleTag,
+                            'tagstr'   => $tag,
+                            'startpos' => $start_pos,
+                            'length'   => $tagLength,
+                            'parm1'    => str_replace(']', '', $tagId),
+                            'parm2'    => $label,
                         );
-                        $tags[] = $newtag;
+                        $tags[] = $newTag;
                     } else {
                         // Error: tags do not match - return with no changes
-                        return $content . $LANG32[32];
+                        return GLText::unprotectJavaScript($content, $markers) . $LANG32[32];
                     }
                     $prev_offset = $offset;
                     $offset = $end_pos;
@@ -1743,13 +1683,17 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
                     $content = str_replace($autotag['tagstr'], '', $content);
                 } else {
                     $function = 'plugin_autotags_' . $autotag['module'];
-                    if (function_exists($function) AND
-                            (empty($plugin) OR ($plugin == $autotag['module']))) {
+                    if (function_exists($function) &&
+                        (empty($plugin) || ($plugin == $autotag['module']))
+                    ) {
                         $content = $function('parse', $content, $autotag);
                     }
                 }
             }
+
+            $content = GLText::unprotectJavaScript($content, $markers);
         } else {
+            $content = GLText::unprotectJavaScript($content, $markers);
             break;
         }
     }
@@ -1758,13 +1702,12 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
 }
 
 /**
-* Prepare a list of all plugins that support feeds. To do this, we re-use
-* plugin_getfeednames_<plugin name> and only keep the names of those plugins
-* which support that function
-*
-* @return   array   array of plugin names (can be empty)
-*
-*/
+ * Prepare a list of all plugins that support feeds. To do this, we re-use
+ * plugin_getfeednames_<plugin name> and only keep the names of those plugins
+ * which support that function
+ *
+ * @return   array   array of plugin names (can be empty)
+ */
 function PLG_supportingFeeds()
 {
     global $_CONF, $_PLUGINS;
@@ -1772,18 +1715,16 @@ function PLG_supportingFeeds()
     require_once $_CONF['path_system'] . 'lib-story.php';
     require_once $_CONF['path_system'] . 'lib-comment.php';
 
-    $plugins = array();
+    $retval = array();
 
-    $plugintypes[] = 'article';
-    $plugintypes[] = 'comment';
-    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+    $pluginTypes = array_merge(array('article', 'comment'), $_PLUGINS);
 
-    foreach ($plugintypes as $pi_name) {
+    foreach ($pluginTypes as $pi_name) {
         $function = 'plugin_getfeednames_' . $pi_name;
         if (function_exists($function)) {
             $feeds = $function();
             if (is_array($feeds) && (count($feeds) > 0)) {
-                $plugins[] = $pi_name;
+                $retval[] = $pi_name;
             }
         }
     }
@@ -1792,37 +1733,36 @@ function PLG_supportingFeeds()
     if (function_exists($function)) {
         $feeds = $function();
         if (is_array($feeds) && (count($feeds) > 0)) {
-            $plugins[] = 'custom';
+            $retval[] = 'custom';
         }
     }
 
-    return $plugins;
+    return $retval;
 }
 
 /**
-* Ask the plugin for a list of feeds it supports. The plugin is expected to
-* return an array of id/name pairs where 'id' is the plugin's internal id
-* for the feed and 'name' is what will be presented to the user.
-*
-* @param    string   $plugin  plugin name
-* @return   array             array of id/name pairs
-*
-*/
+ * Ask the plugin for a list of feeds it supports. The plugin is expected to
+ * return an array of id/name pairs where 'id' is the plugin's internal id
+ * for the feed and 'name' is what will be presented to the user.
+ *
+ * @param    string $plugin plugin name
+ * @return   array          array of id/name pairs
+ */
 function PLG_getFeedNames($plugin)
 {
     global $_CONF, $_PLUGINS;
 
     $feeds = array();
 
-    if ($plugin == 'custom') {
+    if ($plugin === 'custom') {
         $function = 'CUSTOM_getfeednames';
         if (function_exists($function)) {
             $feeds = $function();
         }
-    } elseif ($plugin == 'article') {
+    } elseif ($plugin === 'article') {
         require_once $_CONF['path_system'] . 'lib-story.php';
         $feeds = plugin_getfeednames_article();
-    } elseif ($plugin == 'comment') {
+    } elseif ($plugin === 'comment') {
         require_once $_CONF['path_system'] . 'lib-comment.php';
         $feeds = plugin_getfeednames_comment();
     } else {
@@ -1838,22 +1778,20 @@ function PLG_getFeedNames($plugin)
 }
 
 /**
-* Get the content of a feed from the plugin.
-*
-* The plugin is expected to return an array holding the content of the feed
-* and to fill in 'link' (some link that represents the same content on the
-* site as that in the feed) and 'update_data' (to be stored for later up-to-date
-* checks.
-*
-* @param    string   $plugin       plugin name
-* @param    int      $feed         feed id
-* @param    string  &$link         link to content on the site
-* @param    string  &$update_data  information for later up-to-date checks
-* @param    string   $feedType     The type of feed (RSS/Atom etc)
-* @param    string   $feedVersion  The version info of the feed.
-* @return   array                  content of feed
-*
-*/
+ * Get the content of a feed from the plugin.
+ * The plugin is expected to return an array holding the content of the feed
+ * and to fill in 'link' (some link that represents the same content on the
+ * site as that in the feed) and 'update_data' (to be stored for later up-to-date
+ * checks.
+ *
+ * @param    string $plugin       plugin name
+ * @param    int    $feed         feed id
+ * @param    string &$link        link to content on the site
+ * @param    string &$update_data information for later up-to-date checks
+ * @param    string $feedType     The type of feed (RSS/Atom etc)
+ * @param    string $feedVersion  The version info of the feed.
+ * @return   array                content of feed
+ */
 function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $feedVersion)
 {
     global $_CONF, $_PLUGINS;
@@ -1874,7 +1812,7 @@ function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $f
     } else {
         if (in_array($plugin, $_PLUGINS)) {
             $function = 'plugin_getfeedcontent_' . $plugin;
-            if (function_exists ($function)) {
+            if (function_exists($function)) {
                 $content = $function ($feed, $link, $update_data, $feedType, $feedVersion);
             }
         }
@@ -1884,36 +1822,32 @@ function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $f
 }
 
 /**
-  * Get extension tags for a feed. For example, some plugins may extened the
-  * available elements for an RSS 2.0 feed for articles. For some reason. This
-  * function allows that.
-  *
-  * @param  string  $contentType    Type of feed content, article or a plugin specific type
-  * @param  string  $contentID      Unique identifier of content item to extend
-  * @param  string  $feedType       Type of feed format (RSS/Atom/etc)
-  * @param  string  $feedVersion    Type of feed version (RSS 1.0 etc)
-  * @param  string  $topic          The topic for the feed.
-  * @param  string  $fid            The ID of the feed being fetched.
-  * @return array                   list of extension tags
-  *
-  */
+ * Get extension tags for a feed. For example, some plugins may extened the
+ * available elements for an RSS 2.0 feed for articles. For some reason. This
+ * function allows that.
+ *
+ * @param  string $contentType Type of feed content, article or a plugin specific type
+ * @param  string $contentID   Unique identifier of content item to extend
+ * @param  string $feedType    Type of feed format (RSS/Atom/etc)
+ * @param  string $feedVersion Type of feed version (RSS 1.0 etc)
+ * @param  string $topic       The topic for the feed.
+ * @param  string $fid         The ID of the feed being fetched.
+ * @return array               list of extension tags
+ */
 function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feedVersion, $topic, $fid)
 {
     global $_PLUGINS;
 
     $extensions = array();
-    foreach( $_PLUGINS as $plugin )
-    {
-        $function = 'plugin_feedElementExtensions_'.$plugin;
-        if (function_exists($function))
-        {
+    foreach ($_PLUGINS as $plugin) {
+        $function = 'plugin_feedElementExtensions_' . $plugin;
+        if (function_exists($function)) {
             $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion, $topic, $fid));
         }
     }
 
     $function = 'CUSTOM_feedElementExtensions';
-    if (function_exists($function))
-    {
+    if (function_exists($function)) {
         $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion, $topic, $fid));
     }
 
@@ -1921,35 +1855,31 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
 }
 
 /**
-  * Get namespaces extensions for a feed. If a plugin has added extended tags
-  * to a feed, then it may also need to insert some extensions to the name
-  * spaces.
-  *
-  * @param  string  $contentType    Type of feed content, article or a plugin specific type
-  * @param  string  $feedType       Type of feed format (RSS/Atom/etc)
-  * @param  string  $feedVersion    Type of feed version (RSS 1.0 etc)
-  * @param  string  $topic          The topic for the feed.
-  * @param  string  $fid            The ID of the feed being fetched.
-  * @return array                   list of extension namespaces
-  *
-  */
+ * Get namespaces extensions for a feed. If a plugin has added extended tags
+ * to a feed, then it may also need to insert some extensions to the name
+ * spaces.
+ *
+ * @param  string $contentType Type of feed content, article or a plugin specific type
+ * @param  string $feedType    Type of feed format (RSS/Atom/etc)
+ * @param  string $feedVersion Type of feed version (RSS 1.0 etc)
+ * @param  string $topic       The topic for the feed.
+ * @param  string $fid         The ID of the feed being fetched.
+ * @return array               list of extension namespaces
+ */
 function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion, $topic, $fid)
 {
     global $_PLUGINS;
 
     $namespaces = array();
-    foreach( $_PLUGINS as $plugin )
-    {
-        $function = 'plugin_feedNSExtensions_'.$plugin;
-        if (function_exists($function))
-        {
+    foreach ($_PLUGINS as $plugin) {
+        $function = 'plugin_feedNSExtensions_' . $plugin;
+        if (function_exists($function)) {
             $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion, $topic, $fid));
         }
     }
 
     $function = 'CUSTOM_feedNSExtensions';
-    if (function_exists($function))
-    {
+    if (function_exists($function)) {
         $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion, $topic, $fid));
     }
 
@@ -1957,34 +1887,30 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion, $topic, 
 }
 
 /**
-  * Get meta tag extensions for a feed. Add extended tags to the meta
-  * area of a feed.
-  *
-  * @param  string  $contentType    Type of feed content, article or a plugin specific type
-  * @param  string  $feedType       Type of feed format (RSS/Atom/etc)
-  * @param  string  $feedVersion    Type of feed version (RSS 1.0 etc)
-  * @param  string  $topic          The topic for the feed.
-  * @param  string  $fid            The ID of the feed being fetched.
-  * @return array                   list of meta tag extensions
-  *
-  */
+ * Get meta tag extensions for a feed. Add extended tags to the meta
+ * area of a feed.
+ *
+ * @param  string $contentType Type of feed content, article or a plugin specific type
+ * @param  string $feedType    Type of feed format (RSS/Atom/etc)
+ * @param  string $feedVersion Type of feed version (RSS 1.0 etc)
+ * @param  string $topic       The topic for the feed.
+ * @param  string $fid         The ID of the feed being fetched.
+ * @return array               list of meta tag extensions
+ */
 function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic, $fid)
 {
     global $_PLUGINS;
 
     $tags = array();
-    foreach( $_PLUGINS as $plugin )
-    {
-        $function = 'plugin_feedExtensionTags_'.$plugin;
-        if (function_exists($function))
-        {
+    foreach ($_PLUGINS as $plugin) {
+        $function = 'plugin_feedExtensionTags_' . $plugin;
+        if (function_exists($function)) {
             $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion, $topic, $fid));
         }
     }
 
     $function = 'CUSTOM_feedExtensionTags';
-    if (function_exists($function))
-    {
+    if (function_exists($function)) {
         $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion, $topic, $fid));
     }
 
@@ -1992,52 +1918,49 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic,
 }
 
 /**
-* The plugin is expected to check if the feed content needs to be updated.
-*
-* This is called from COM_rdfUpToDateCheck() every time Geeklog's index.php
-* is displayed - it should try to be as efficient as possible ...
-*
-* NOTE: The presence of non-empty $updated_XXX parameters indicates that an
-*       existing entry has been changed. The plugin may therefore apply a
-*       different method to check if its feed has to be updated.
-*
-* @param    string  $plugin         plugin name
-* @param    int     $feed           feed id
-* @param    string  $topic          "topic" of the feed - plugin specific
-* @param    string  $update_data    comma-sep. list of updated ids
-* @param    string  $limit          number of entries or number of hours
-* @param    string  $updated_type   (optional) type of feed to update
-* @param    string  $updated_topic  (optional) topic to update
-* @param    string  $updated_id     (optional) entry id to update
-* @return   boolean                 false = feed has to be updated, true = ok
-*
-*/
+ * The plugin is expected to check if the feed content needs to be updated.
+ * This is called from COM_rdfUpToDateCheck() every time Geeklog's index.php
+ * is displayed - it should try to be as efficient as possible ...
+ * NOTE: The presence of non-empty $updated_XXX parameters indicates that an
+ *       existing entry has been changed. The plugin may therefore apply a
+ *       different method to check if its feed has to be updated.
+ *
+ * @param    string $plugin        plugin name
+ * @param    int    $feed          feed id
+ * @param    string $topic         "topic" of the feed - plugin specific
+ * @param    string $update_data   comma-sep. list of updated ids
+ * @param    string $limit         number of entries or number of hours
+ * @param    string $updated_type  (optional) type of feed to update
+ * @param    string $updated_topic (optional) topic to update
+ * @param    string $updated_id    (optional) entry id to update
+ * @return   boolean               false = feed has to be updated, true = ok
+ */
 function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $updated_type = '', $updated_topic = '', $updated_id = '')
 {
     global $_CONF, $_PLUGINS;
 
     $is_current = true;
 
-    if ($plugin == 'custom') {
+    if ($plugin === 'custom') {
         $function = 'CUSTOM_feedupdatecheck';
         if (function_exists($function)) {
             $is_current = $function ($feed, $topic, $update_data, $limit,
-                            $updated_type, $updated_topic, $updated_id);
+                $updated_type, $updated_topic, $updated_id);
         }
-    } elseif ($plugin == 'article') {
+    } elseif ($plugin === 'article') {
         require_once $_CONF['path_system'] . 'lib-story.php';
         $is_current = plugin_feedupdatecheck_article($feed, $topic, $update_data, $limit,
-                                $updated_type, $updated_topic, $updated_id);
+            $updated_type, $updated_topic, $updated_id);
     } elseif ($plugin == 'comment') {
         require_once $_CONF['path_system'] . 'lib-comment.php';
         $is_current = plugin_feedupdatecheck_comment($feed, $topic, $update_data, $limit,
-                                $updated_type, $updated_topic, $updated_id);
+            $updated_type, $updated_topic, $updated_id);
     } else {
         if (in_array($plugin, $_PLUGINS)) {
             $function = 'plugin_feedupdatecheck_' . $plugin;
             if (function_exists($function)) {
                 $is_current = $function($feed, $topic, $update_data, $limit,
-                                $updated_type, $updated_topic, $updated_id);
+                    $updated_type, $updated_topic, $updated_id);
             }
         }
     }
@@ -2046,58 +1969,62 @@ function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $upda
 }
 
 /**
-* Ask plugins if they want to add something to Geeklog's Related Items list.
-*
-* @return   array   A list of clickable links with the key being the timestamp
-*
-*/
+ * Ask plugins if they want to add something to Geeklog's Related Items list.
+ *
+ * @param  array $types
+ * @param  array $tids list of topic ids
+ * @param  int   $max  maximum number of items to return
+ * @param  int   $trim max length of text
+ * @return array   A list of clickable links with the key being the timestamp
+ */
 function PLG_getRelatedItems($types, $tids, $max, $trim)
 {
     global $_PLUGINS, $_CONF;
 
-    $relateditems =  array();
-    $returneditems =  array();
+    $relatedItems = array();
+    $returnedItems = array();
 
-    $args[1] = $tids;
-    $args[2] = $max;
-    $args[3] = $trim;
+    $args = array(
+        1 => $tids,
+        2 => $max,
+        3 => $trim,
+    );
 
     if (in_array('article', $types) || in_array('story', $types) || empty($types)) {
         require_once $_CONF['path_system'] . 'lib-story.php';
-        $returneditems = plugin_getrelateditems_story($tids, $max, $trim);
+        $returnedItems = plugin_getrelateditems_story($tids, $max, $trim);
     }
 
     foreach ($_PLUGINS as $pi_name) {
         // If no types (plugins) passed then assume all
         if (empty($types) OR in_array($pi_name, $types)) {
-            $relateditems = PLG_callFunctionForOnePlugin('plugin_getrelateditems_' . $pi_name, $args);
-            if (is_array($relateditems)) {
-                $returneditems = $returneditems + $relateditems;
+            $relatedItems = PLG_callFunctionForOnePlugin('plugin_getrelateditems_' . $pi_name, $args);
+            if (is_array($relatedItems)) {
+                $returnedItems = $returnedItems + $relatedItems;
             }
         }
     }
 
-    $relateditems = PLG_callFunctionForOnePlugin('CUSTOM_getrelateditems', $args);
-    if (is_array($relateditems)) {
-        $returneditems = $returneditems + $relateditems;
+    $relatedItems = PLG_callFunctionForOnePlugin('CUSTOM_getrelateditems', $args);
+    if (is_array($relatedItems)) {
+        $returnedItems = $returnedItems + $relatedItems;
     }
 
-    return $returneditems;
+    return $returnedItems;
 }
 
 /**
-* Ask plugins if they want to add something to Geeklog's What's New block.
-*
-* @return   array   array($headlines[], $bylines[], $content[$entries[]])
-*
-*/
+ * Ask plugins if they want to add something to Geeklog's What's New block.
+ *
+ * @return   array   array($headlines[], $bylines[], $content[$entries[]])
+ */
 function PLG_getWhatsNew()
 {
     global $_PLUGINS;
 
-    $newheadlines = array();
-    $newbylines   = array();
-    $newcontent   = array();
+    $newHeadlines = array();
+    $newByLines = array();
+    $newContent = array();
 
     foreach ($_PLUGINS as $pi_name) {
         $fn_head = 'plugin_whatsnewsupported_' . $pi_name;
@@ -2108,10 +2035,10 @@ function PLG_getWhatsNew()
 
                 $fn_new = 'plugin_getwhatsnew_' . $pi_name;
                 if (function_exists($fn_new)) {
-                    $whatsnew = $fn_new ();
-                    $newcontent[] = $whatsnew;
-                    $newheadlines[] = $headline;
-                    $newbylines[] = $byline;
+                    $whatsNew = $fn_new ();
+                    $newContent[] = $whatsNew;
+                    $newHeadlines[] = $headline;
+                    $newByLines[] = $byline;
                 }
             }
         }
@@ -2125,66 +2052,64 @@ function PLG_getWhatsNew()
 
             $fn_new = 'CUSTOM_getwhatsnew';
             if (function_exists($fn_new)) {
-                $whatsnew = $fn_new ();
-                $newcontent[] = $whatsnew;
-                $newheadlines[] = $headline;
-                $newbylines[] = $byline;
+                $whatsNew = $fn_new ();
+                $newContent[] = $whatsNew;
+                $newHeadlines[] = $headline;
+                $newByLines[] = $byline;
             }
         }
     }
 
-    return array($newheadlines, $newbylines, $newcontent);
+    return array($newHeadlines, $newByLines, $newContent);
 }
 
-
 /**
-* Ask plugins if they want to add new comments to Geeklog's What's New block or
-* User Profile Page.
-*
-* @param    string  $type       Plugin name. '' for all plugins.
-* @param    int     $numreturn  If 0 will return results for What's New Block.
-*                               If > 0 will return last X new comments for User Profile.
-* @param    int     $uid        ID of the user to return results for. 0 = all users.
-* @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
-* @since    Geeklog 1.7.0
-*
-*/
-function PLG_getWhatsNewComment($type = '', $numreturn = 0, $uid = 0)
+ * Ask plugins if they want to add new comments to Geeklog's What's New block or
+ * User Profile Page.
+ *
+ * @param    string $type        Plugin name. '' for all plugins.
+ * @param    int    $numReturn   If 0 will return results for What's New Block.
+ *                               If > 0 will return last X new comments for User Profile.
+ * @param    int    $uid         ID of the user to return results for. 0 = all users.
+ * @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
+ * @since    Geeklog 1.7.0
+ */
+function PLG_getWhatsNewComment($type = '', $numReturn = 0, $uid = 0)
 {
     global $_PLUGINS, $_CONF;
 
-    $whatsnew = array();
-    $plugintypes = array();
+    $whatsNew = array();
+    $pluginTypes = array();
 
     // Get Story new comment info first
-    if (($type == 'article') || ($type == 'story') || ($type == '')) {
+    if (($type === 'article') || ($type === 'story') || ($type == '')) {
         require_once $_CONF['path_system'] . 'lib-story.php';
-        $whatsnew  = plugin_getwhatsnewcomment_story($numreturn, $uid);
+        $whatsNew = plugin_getwhatsnewcomment_story($numReturn, $uid);
 
         if ($type == '') {
-            $plugintypes = $_PLUGINS;
+            $pluginTypes = $_PLUGINS;
         }
     } else {
-        $plugintypes[] = $type;
+        $pluginTypes[] = $type;
     }
 
-     if (!(($type == 'article') || ($type == 'story'))) {
+    if (!(($type === 'article') || ($type === 'story'))) {
         // Now check new comments for plugins
-        foreach ($plugintypes as $pi_name) {
+        foreach ($pluginTypes as $pi_name) {
             $fn_head = 'plugin_whatsnewsupported_' . $pi_name;
             if (function_exists($fn_head)) {
                 $supported = $fn_head();
-                if (is_array($supported) || ($numreturn > 0)) {
+                if (is_array($supported) || ($numReturn > 0)) {
                     list($headline, $byline) = $supported;
 
                     $fn_new = 'plugin_getwhatsnewcomment_' . $pi_name;
                     if (function_exists($fn_new)) {
-                        $tempwhatsnew = $fn_new ($numreturn, $uid);
-                        if(!empty($tempwhatsnew) && is_array($tempwhatsnew)) {
-                            if (!empty($whatsnew)) {
-                                $whatsnew = array_merge($tempwhatsnew, $whatsnew);
+                        $tempWhatsNew = $fn_new ($numReturn, $uid);
+                        if (!empty($tempWhatsNew) && is_array($tempWhatsNew)) {
+                            if (!empty($whatsNew)) {
+                                $whatsNew = array_merge($tempWhatsNew, $whatsNew);
                             } else {
-                                $whatsnew = $tempwhatsnew;
+                                $whatsNew = $tempWhatsNew;
                             }
                         }
                     }
@@ -2202,45 +2127,42 @@ function PLG_getWhatsNewComment($type = '', $numreturn = 0, $uid = 0)
 
             $fn_new = 'CUSTOM_getwhatsnewcomment';
             if (function_exists($fn_new)) {
-                $tempwhatsnew = $fn_new ($numreturn, $uid);
-                if(!empty($tempwhatsnew) && is_array($tempwhatsnew)) {
-                    $whatsnew = array_merge($tempwhatsnew, $whatsnew);
+                $tempWhatsNew = $fn_new ($numReturn, $uid);
+                if (!empty($tempWhatsNew) && is_array($tempWhatsNew)) {
+                    $whatsNew = array_merge($tempWhatsNew, $whatsNew);
                 }
             }
         }
     }
 
-    return $whatsnew;
+    return $whatsNew;
 
 }
 
 /**
-* Allows plugins and Core Geeklog Components to filter out spam.
-*
-* The Spam-X Plugin is now part of the Geeklog Distribution
-* This plugin API will call the main function in the Spam-X plugin
-* but can also be used to call other plugins or custom functions
-* if available for filtering spam or content.
-*
-* The caller should check for return values > 0 in which case spam has been
-* detected and the poster should be told, either via
-* <code>
-*   echo COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $result
-*                    . '&amp;plugin=spamx');
-* </code>
-* or by
-* <code>
-*   COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
-* </code>
-* Where the former will only display a "spam detected" message while the latter
-* will also send an HTTP status code 403 with the message.
-*
-* @param    string  $content    Text to be filtered or checked for spam
-* @param    int     $action     what to do if spam found
-* @return   int                 > 0: spam detected, == 0: no spam detected
-* @link     http://wiki.geeklog.net/index.php/Filtering_Spam_with_Spam-X
-*
-*/
+ * Allows plugins and Core Geeklog Components to filter out spam.
+ * The Spam-X Plugin is now part of the Geeklog Distribution
+ * This plugin API will call the main function in the Spam-X plugin
+ * but can also be used to call other plugins or custom functions
+ * if available for filtering spam or content.
+ * The caller should check for return values > 0 in which case spam has been
+ * detected and the poster should be told, either via
+ * <code>
+ *   echo COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $result
+ *                    . '&amp;plugin=spamx');
+ * </code>
+ * or by
+ * <code>
+ *   COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
+ * </code>
+ * Where the former will only display a "spam detected" message while the latter
+ * will also send an HTTP status code 403 with the message.
+ *
+ * @param    string $content Text to be filtered or checked for spam
+ * @param    int    $action  what to do if spam found
+ * @return   int                 > 0: spam detected, == 0: no spam detected
+ * @link     http://wiki.geeklog.net/index.php/Filtering_Spam_with_Spam-X
+ */
 function PLG_checkforSpam($content, $action = -1)
 {
     global $_PLUGINS;
@@ -2252,6 +2174,7 @@ function PLG_checkforSpam($content, $action = -1)
 
             if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
                 $result = PLG_spamAction($content, $action);
+
                 return $result;
             }
         }
@@ -2263,6 +2186,7 @@ function PLG_checkforSpam($content, $action = -1)
 
         if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
             $result = PLG_spamAction($content, $action);
+
             return $result;
         }
     }
@@ -2271,20 +2195,18 @@ function PLG_checkforSpam($content, $action = -1)
 }
 
 /**
-* Act on spam
-*
-* This is normally called from PLG_checkforSpam (see above) automatically when
-* spam has been detected. There may however be situations where spam has been
-* detected by some other means, in which case you may want to trigger the
-* spam action explicitly.
-*
-* @param    string  $content    Text to be filtered or checked for spam
-* @param    int     $action     what to do if spam found
-* @return   int                 > 0: spam detected, == 0: no spam detected
-* @see      PLG_checkforSpam
-* @since    Geeklog 1.4.1
-*
-*/
+ * Act on spam
+ * This is normally called from PLG_checkforSpam (see above) automatically when
+ * spam has been detected. There may however be situations where spam has been
+ * detected by some other means, in which case you may want to trigger the
+ * spam action explicitly.
+ *
+ * @param    string $content Text to be filtered or checked for spam
+ * @param    int    $action  what to do if spam found
+ * @return   int                 > 0: spam detected, == 0: no spam detected
+ * @see      PLG_checkforSpam
+ * @since    Geeklog 1.4.1
+ */
 function PLG_spamAction($content, $action = -1)
 {
     global $_PLUGINS;
@@ -2311,101 +2233,93 @@ function PLG_spamAction($content, $action = -1)
 }
 
 /**
-* Ask plugin for information about one of its items
-*
-* Item properties that can be requested:
-* - 'date-created'  - creation date, if available
-* - 'date-modified' - date of last modification, if available
-* - 'description'   - full description of the item
-* - 'excerpt'       - short description of the item
-* - 'id'            - ID of the item, e.g. sid for articles
-* - 'title'         - title of the item
-* - 'url'           - URL of the item
-*
-* 'excerpt' and 'description' may return the same value. Properties should be
-* returned in the order they are listed in $what. Properties that are not
-* available should return an empty string.
-* Return false for errors (e.g. access denied, item does not exist, etc.).
-*
-* @param    string  $type       plugin type (incl. 'article' for stories)
-* @param    string  $id         ID of an item under the plugin's control or '*'
-* @param    string  $what       comma-separated list of item properties
-* @param    int     $uid        user ID or 0 = current user
-* @param    array   $options    (reserved for future extensions)
-* @return   mixed               string or array of strings with the information
-* @link     http://wiki.geeklog.net/index.php/PLG_getItemInfo
-*
-*/
+ * Ask plugin for information about one of its items
+ * Item properties that can be requested:
+ * - 'date-created'  - creation date, if available
+ * - 'date-modified' - date of last modification, if available
+ * - 'description'   - full description of the item
+ * - 'excerpt'       - short description of the item
+ * - 'id'            - ID of the item, e.g. sid for articles
+ * - 'title'         - title of the item
+ * - 'url'           - URL of the item
+ * 'excerpt' and 'description' may return the same value. Properties should be
+ * returned in the order they are listed in $what. Properties that are not
+ * available should return an empty string.
+ * Return false for errors (e.g. access denied, item does not exist, etc.).
+ *
+ * @param    string $type    plugin type (incl. 'article' for stories)
+ * @param    string $id      ID of an item under the plugin's control or '*'
+ * @param    string $what    comma-separated list of item properties
+ * @param    int    $uid     user ID or 0 = current user
+ * @param    array  $options (reserved for future extensions)
+ * @return   mixed               string or array of strings with the information
+ * @link     http://wiki.geeklog.net/index.php/PLG_getItemInfo
+ */
 function PLG_getItemInfo($type, $id, $what, $uid = 0, $options = array())
 {
     if (($type == 'article') || ($type == 'story')) {
-
         global $_CONF;
 
         require_once $_CONF['path_system'] . 'lib-story.php';
 
         $type = 'story';
-
     }
 
-    $args[1] = $id;
-    $args[2] = $what;
-    $args[3] = $uid;
-    $args[4] = $options;
-
+    $args = array(
+        1 => $id,
+        2 => $what,
+        3 => $uid,
+        4 => $options,
+    );
     $function = 'plugin_getiteminfo_' . $type;
 
     return PLG_callFunctionForOnePlugin($function, $args);
 }
 
 /**
-* Geeklog is about to perform an operation on a trackback or pingback comment
-* to one of the items under the plugin's control and asks for the plugin's
-* permission to continue.
-*
-* Geeklog handles receiving and deleting trackback comments and pingbacks
-* for the plugin but since it doesn't know about the plugin's access control,
-* it has to ask the plugin to approve / reject such an operation.
-*
-* $operation can be one of the following:
-* - 'acceptByID':  accept a trackback comment on item with ID $id
-*                  returns: true for accept, false for reject
-* - 'acceptByURI': accept a pingback comment on item at URL $id
-*                  returns: the item's ID for accept, false for reject
-* - 'delete':      is the current user allowed to delete item with ID $id?
-*                  returns: true for accept, false for reject
-*
-* @param    string  $type       plugin type
-* @param    string  $id         an ID or URL, depending on the operation
-* @param    string  $operation  operation to perform
-* @return   mixed               depends on $operation
-*
-*/
+ * Geeklog is about to perform an operation on a trackback or pingback comment
+ * to one of the items under the plugin's control and asks for the plugin's
+ * permission to continue.
+ * Geeklog handles receiving and deleting trackback comments and pingbacks
+ * for the plugin but since it doesn't know about the plugin's access control,
+ * it has to ask the plugin to approve / reject such an operation.
+ * $operation can be one of the following:
+ * - 'acceptByID':  accept a trackback comment on item with ID $id
+ *                  returns: true for accept, false for reject
+ * - 'acceptByURI': accept a pingback comment on item at URL $id
+ *                  returns: the item's ID for accept, false for reject
+ * - 'delete':      is the current user allowed to delete item with ID $id?
+ *                  returns: true for accept, false for reject
+ *
+ * @param    string $type      plugin type
+ * @param    string $id        an ID or URL, depending on the operation
+ * @param    string $operation operation to perform
+ * @return   mixed               depends on $operation
+ */
 function PLG_handlePingComment($type, $id, $operation)
 {
-    $args[1] = $id;
-    $args[2] = $operation;
-
+    $args = array(
+        1 => $id,
+        2 => $operation,
+    );
     $function = 'plugin_handlepingoperation_' . $type;
 
-    return PLG_callFunctionForOnePlugin ($function, $args);
+    return PLG_callFunctionForOnePlugin($function, $args);
 }
 
-
 /**
-* Check if plugins have a scheduled task they want to run
-* The interval between runs is determined by $_CONF['cron_schedule_interval']
-*
-* @return void
-*
-*/
+ * Check if plugins have a scheduled task they want to run
+ * The interval between runs is determined by $_CONF['cron_schedule_interval']
+ *
+ * @return void
+ */
 function PLG_runScheduledTask()
 {
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_runScheduledTask_' . $pi_name;
-        if (function_exists ($function)) {
+        if (function_exists($function)) {
             $function ();
         }
     }
@@ -2416,15 +2330,14 @@ function PLG_runScheduledTask()
 }
 
 /**
-* "Generic" plugin API: Save submission
-*
-* Called whenever Geeklog saves a submission into the database.
-* Plugins can define their own 'submissionsaved' function to be notified whenever
-* an submission is saved.
-*
-* @param    string  $type   type of the item, e.g. 'article'
-*
-*/
+ * "Generic" plugin API: Save submission
+ * Called whenever Geeklog saves a submission into the database.
+ * Plugins can define their own 'submissionsaved' function to be notified whenever
+ * an submission is saved.
+ *
+ * @param  string $type type of the item, e.g. 'article'
+ * @return void|bool
+ */
 function PLG_submissionSaved($type)
 {
     global $_CONF, $_PLUGINS;
@@ -2433,12 +2346,12 @@ function PLG_submissionSaved($type)
     $plg_type = $t[0];
 
     // Treat template system like a plugin (since belong to core group)
-    $plugintypes[] = 'template';
+    $pluginTypes = array('template');
     require_once $_CONF['path_system'] . 'lib-template.php';
 
-    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+    $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
-    foreach ($plugintypes as $pi_name) {
+    foreach ($pluginTypes as $pi_name) {
         if ($pi_name != $plg_type) {
             $function = 'plugin_submissionsaved_' . $pi_name;
             if (function_exists($function)) {
@@ -2447,7 +2360,7 @@ function PLG_submissionSaved($type)
         }
     }
 
-    if (function_exists('CUSTOM_submissionsaved')) {
+    if (function_exists('CUSTOM_itemsaved')) {
         CUSTOM_itemsaved($type);
     }
 
@@ -2455,15 +2368,13 @@ function PLG_submissionSaved($type)
 }
 
 /**
-* "Generic" plugin API: Delete submission
-*
-* Called whenever Geeklog removes a submission from the database.
-* Plugins can define their own 'submissiondeleted' function to be notified whenever
-* an submission is deleted.
-*
-* @param    string  $type   type of the item, e.g. 'article'
-*
-*/
+ * "Generic" plugin API: Delete submission
+ * Called whenever Geeklog removes a submission from the database.
+ * Plugins can define their own 'submissiondeleted' function to be notified whenever
+ * an submission is deleted.
+ *
+ * @param    string $type type of the item, e.g. 'article'
+ */
 function PLG_submissionDeleted($type)
 {
     global $_CONF, $_PLUGINS;
@@ -2472,12 +2383,12 @@ function PLG_submissionDeleted($type)
     $plg_type = $t[0];
 
     // Treat template system like a plugin (since belong to core group)
-    $plugintypes[] = 'template';
+    $pluginTypes = array('template');
     require_once $_CONF['path_system'] . 'lib-template.php';
 
-    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+    $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
-    foreach ($plugintypes as $pi_name) {
+    foreach ($pluginTypes as $pi_name) {
         if ($pi_name != $plg_type) {
             $function = 'plugin_submissiondeleted_' . $pi_name;
             if (function_exists($function)) {
@@ -2486,27 +2397,24 @@ function PLG_submissionDeleted($type)
         }
     }
 
-    if (function_exists('CUSTOM_submissiondeleted')) {
+    if (function_exists('CUSTOM_itemdeleted')) {
         CUSTOM_itemdeleted($type);
     }
 }
 
 /**
-* "Generic" plugin API: Save item
-*
-* To be called (eventually) whenever Geeklog saves an item into the database.
-* Plugins can define their own 'itemsaved' function to be notified whenever
-* an item is saved or modified.
-*
-* NOTE:     The behaviour of this API function changed in Geeklog 1.6.0
-*
-* @param    string  $id     unique ID of the item
-* @param    string  $type   type of the item, e.g. 'article'
-* @param    string  $old_id (optional) old ID when the ID was changed
-* @return   void            (actually: false, for backward compatibility)
-* @link     http://wiki.geeklog.net/index.php/PLG_itemSaved
-*
-*/
+ * "Generic" plugin API: Save item
+ * To be called (eventually) whenever Geeklog saves an item into the database.
+ * Plugins can define their own 'itemsaved' function to be notified whenever
+ * an item is saved or modified.
+ * NOTE:     The behaviour of this API function changed in Geeklog 1.6.0
+ *
+ * @param    string $id     unique ID of the item
+ * @param    string $type   type of the item, e.g. 'article'
+ * @param    string $old_id (optional) old ID when the ID was changed
+ * @return   void|bool      (actually: false, for backward compatibility)
+ * @link     http://wiki.geeklog.net/index.php/PLG_itemSaved
+ */
 function PLG_itemSaved($id, $type, $old_id = '')
 {
     global $_CONF, $_PLUGINS;
@@ -2515,12 +2423,12 @@ function PLG_itemSaved($id, $type, $old_id = '')
     $plg_type = $t[0];
 
     // Treat template system like a plugin (since belong to core group)
-    $plugintypes[] = 'template';
+    $pluginTypes = array('template');
     require_once $_CONF['path_system'] . 'lib-template.php';
 
-    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+    $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
-    foreach ($plugintypes as $pi_name) {
+    foreach ($pluginTypes as $pi_name) {
         if ($pi_name != $plg_type) {
             $function = 'plugin_itemsaved_' . $pi_name;
             if (function_exists($function)) {
@@ -2537,18 +2445,16 @@ function PLG_itemSaved($id, $type, $old_id = '')
 }
 
 /**
-* "Generic" plugin API: Delete item
-*
-* To be called (eventually) whenever Geeklog removes an item from the database.
-* Plugins can define their own 'itemdeleted' function to be notified whenever
-* an item is deleted.
-*
-* @param    string  $id     ID of the item
-* @param    string  $type   type of the item, e.g. 'article'
-* @return   void
-* @since    Geeklog 1.6.0
-*
-*/
+ * "Generic" plugin API: Delete item
+ * To be called (eventually) whenever Geeklog removes an item from the database.
+ * Plugins can define their own 'itemdeleted' function to be notified whenever
+ * an item is deleted.
+ *
+ * @param    string $id   ID of the item
+ * @param    string $type type of the item, e.g. 'article'
+ * @return   void
+ * @since    Geeklog 1.6.0
+ */
 function PLG_itemDeleted($id, $type)
 {
     global $_CONF, $_PLUGINS;
@@ -2557,12 +2463,12 @@ function PLG_itemDeleted($id, $type)
     $plg_type = $t[0];
 
     // Treat template system like a plugin (since belong to core group)
-    $plugintypes[] = 'template';
+    $pluginTypes = array('template');
     require_once $_CONF['path_system'] . 'lib-template.php';
 
-    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+    $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
-    foreach ($plugintypes as $pi_name) {
+    foreach ($pluginTypes as $pi_name) {
         if ($pi_name != $plg_type) {
             $function = 'plugin_itemdeleted_' . $pi_name;
             if (function_exists($function)) {
@@ -2577,24 +2483,20 @@ function PLG_itemDeleted($id, $type)
 }
 
 /**
-* "Generic" plugin API: Display item
-*
-* To be called (eventually) whenever Geeklog displays an item.
-* Plugins can hook into this and add content to the displayed item, in the form
-* of an array (true, string1, string2...).
-*
-* The object that called can then display one or several items with a
-* object-defined layout.
-*
-* Plugins can signal an error by returning an array (false, 'Error Message')
-* In case of an error, the error message will be written to the error.log and
-* nothing will be displayed on the output.
-*
-* @param    string  $id     unique ID of the item
-* @param    string  $type   type of the item, e.g. 'article'
-* @return   array           array with a status and one or several strings
-*
-*/
+ * "Generic" plugin API: Display item
+ * To be called (eventually) whenever Geeklog displays an item.
+ * Plugins can hook into this and add content to the displayed item, in the form
+ * of an array (true, string1, string2...).
+ * The object that called can then display one or several items with a
+ * object-defined layout.
+ * Plugins can signal an error by returning an array (false, 'Error Message')
+ * In case of an error, the error message will be written to the error.log and
+ * nothing will be displayed on the output.
+ *
+ * @param    string $id   unique ID of the item
+ * @param    string $type type of the item, e.g. 'article'
+ * @return   array        array with a status and one or several strings
+ */
 function PLG_itemDisplay($id, $type)
 {
     global $_PLUGINS;
@@ -2610,40 +2512,37 @@ function PLG_itemDisplay($id, $type)
                 COM_errorLog($result[1], 1);
             } else {
                 array_shift($result);
-                $result_arr = array_merge($result_arr,$result);
+                $result_arr = array_merge($result_arr, $result);
             }
         }
     }
 
     $function = 'CUSTOM_itemdisplay';
-    if (function_exists ($function)) {
+    if (function_exists($function)) {
         $result = $function ($id, $type);
         if ($result[0] == false) {
             // plugin reported a problem - do not add and continue
-            COM_errorLog( $result[1], 1);
+            COM_errorLog($result[1], 1);
         } else {
             array_shift($result);
-            $result_arr = array_merge($result_arr,$result);
+            $result_arr = array_merge($result_arr, $result);
         }
     }
 
     return $result_arr;
 }
 
-
 /**
-* Gets Geeklog blocks from plugins
-*
-* Returns data for blocks on a given side and, potentially, for
-* a given topic.
-*
-* @param    string   $side   Side to get blocks for (right or left for now)
-* @param    string   $topic  Only get blocks for this topic
-* @return   array           array of block data
-* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
-*
-*/
-function PLG_getBlocks($side, $topic='')
+ * Gets Geeklog blocks from plugins
+ * Returns data for blocks on a given side and, potentially, for
+ * a given topic.
+ *
+ * @param    string $side  Side to get blocks for (right or left for now)
+ * @param    string $topic Only get blocks for this topic
+ * @return   array           array of block data
+ * @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+ */
+function PLG_getBlocks($side, $topic = '')
 {
     global $_PLUGINS;
 
@@ -2659,28 +2558,26 @@ function PLG_getBlocks($side, $topic='')
     }
 
     if (function_exists('CUSTOM_getBlocks')) {
-       $cust_items = CUSTOM_getBlocks($side, $topic);
-       if (is_array($cust_items)) {
-          $ret = array_merge($ret, $cust_items);
-       }
+        $customItems = CUSTOM_getBlocks($side, $topic);
+        if (is_array($customItems)) {
+            $ret = array_merge($ret, $customItems);
+        }
     }
 
     return $ret;
 }
 
 /**
-* Gets Geeklog blocks from plugins
-*
-* Returns config data for blocks on a given side and, potentially, for
-* a given topic.
-*
-* @param    string   $side   Side to get blocks for (right or left for now)
-* @param    string   $topic  Only get blocks for this topic
-* @return   array           array of block data
-* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
-*
-*/
-function PLG_getBlocksConfig($side, $topic='')
+ * Gets Geeklog blocks from plugins
+ * Returns config data for blocks on a given side and, potentially, for
+ * a given topic.
+ *
+ * @param    string $side  Side to get blocks for (right or left for now)
+ * @param    string $topic Only get blocks for this topic
+ * @return   array           array of block data
+ * @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+ */
+function PLG_getBlocksConfig($side, $topic = '')
 {
     global $_PLUGINS;
 
@@ -2695,23 +2592,22 @@ function PLG_getBlocksConfig($side, $topic='')
         }
     }
 
-    if (function_exists('CUSTOM_getBlocksConfig')) {
-       $cust_items = CUSTOM_getBlocks($side, $topic);
-       if (is_array($cust_items)) {
-          $ret = array_merge($ret, $cust_items);
-       }
+    if (function_exists('CUSTOM_getBlocks')) {
+        $customItems = CUSTOM_getBlocks($side, $topic);
+        if (is_array($customItems)) {
+            $ret = array_merge($ret, $customItems);
+        }
     }
 
     return $ret;
 }
 
 /**
-* Get the URL of a plugin's icon
-*
-* @param    string  $type   plugin name
-* @return   string          URL of the icon
-*
-*/
+ * Get the URL of a plugin's icon
+ *
+ * @param    string $type plugin name
+ * @return   string          URL of the icon
+ */
 function PLG_getIcon($type)
 {
     global $_CONF;
@@ -2728,10 +2624,10 @@ function PLG_getIcon($type)
     if (empty($retval)) {
         $function = 'plugin_cclabel_' . $type;
         if (function_exists($function)) {
-            $cclabel = $function ();
-            if (is_array($cclabel)) {
-                if (!empty($cclabel[2])) {
-                    $retval = $cclabel[2];
+            $ccLabel = $function ();
+            if (is_array($ccLabel)) {
+                if (!empty($ccLabel[2])) {
+                    $retval = $ccLabel[2];
                 }
             }
         }
@@ -2740,10 +2636,13 @@ function PLG_getIcon($type)
     // lastly, search for the icon
     if (empty($retval)) {
         // create a list of possible icon locations
-        $icons = array('/' . $type . '/images/' . $type . '.gif',
-                       '/' . $type . '/images/' . $type . '.png',
-                       '/admin/plugins/' . $type . '/images/' . $type . '.gif',  // Hardcoding 'admin' here is not ideal, but we
-                       '/admin/plugins/' . $type . '/images/' . $type . '.png'); // don't have a $_CONF['path_site_admin'] variable.
+        $icons = array(
+            '/' . $type . '/images/' . $type . '.gif',
+            '/' . $type . '/images/' . $type . '.png',
+            '/admin/plugins/' . $type . '/images/' . $type . '.gif',  // Hardcoding 'admin' here is not ideal, but we
+            '/admin/plugins/' . $type . '/images/' . $type . '.png',
+        ); // don't have a $_CONF['path_site_admin'] variable.
+
         // see if any of these files exists and is readable
         foreach ($icons as $key => $value) {
             if (is_readable($_CONF['path_html'] . $value)) { // search for the path (e.g.: '/home/user/example.com/foo')
@@ -2764,14 +2663,13 @@ function PLG_getIcon($type)
 /**
  * Invoke a service
  *
- * @param   string  $type    The plugin type whose service is to be called
- * @param   string  $action  The service action to be performed
- * @param   array   $args    The arguments to be passed to the service invoked
+ * @param   string $type     The plugin type whose service is to be called
+ * @param   string $action   The service action to be performed
+ * @param   array  $args     The arguments to be passed to the service invoked
  * @param   array  &$output  The output variable that will contain the output after invocation
  * @param   array  &$svc_msg The output variable that will contain the service messages
  * @return  int              The result of the invocation
  * @link    http://wiki.geeklog.net/index.php/Webservices_API
- *
  */
 function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 {
@@ -2784,7 +2682,7 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
         require_once $_CONF['path_system'] . 'lib-story.php';
     }
 
-    $output  = array();
+    $output = array();
     $svc_msg = array();
 
     // Check if the plugin type and action are valid
@@ -2803,10 +2701,9 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 /**
  * Returns true if the plugin supports webservices
  *
- * @param   string  $type   The plugin type that is to be checked
+ * @param   string $type The plugin type that is to be checked
  * @return  boolean         true: enabled, false: disabled
  * @link    http://wiki.geeklog.net/index.php/Webservices_API
- *
  */
 function PLG_wsEnabled($type)
 {
@@ -2826,15 +2723,14 @@ function PLG_wsEnabled($type)
 }
 
 /**
-* Forward the user depending on config setting after saving something
-*
-* @param  string  $target     where to redirect to
-* @param  string  $item_url   the url of the item saved
-* @param  string  $plugin     the name of the plugin that saved the item
-* @param  string  $message    (optional) message number to attach to url
-* @return string              the url where the user will be forwarded to
-*
-*/
+ * Forward the user depending on config setting after saving something
+ *
+ * @param  string $target   where to redirect to
+ * @param  string $item_url the url of the item saved
+ * @param  string $plugin   the name of the plugin that saved the item
+ * @param  string $message  (optional) message number to attach to url
+ * @return string              the url where the user will be forwarded to
+ */
 function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
 {
     global $_CONF;
@@ -2846,90 +2742,88 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
     }
 
     switch ($target) {
-    case 'item':
-        $url = $item_url;
-        if (!empty($msg) && ($plugin != 'story')) {
-            if (strpos($url, '?') === false) {
+        case 'item':
+            $url = $item_url;
+            if (!empty($msg) && ($plugin != 'story')) {
+                if (strpos($url, '?') === false) {
+                    $url .= '?' . $msg;
+                } else {
+                    $url .= '&amp;' . $msg;
+                }
+            }
+            break;
+
+        case 'home':
+            $url = $_CONF['site_url'] . '/index.php';
+            if (!empty($msg)) {
                 $url .= '?' . $msg;
+                if (($plugin != 'story') && ($plugin != 'user')) {
+                    $url .= '&amp;plugin=' . $plugin;
+                }
+            }
+            break;
+
+        case 'admin':
+            $url = $_CONF['site_admin_url'] . '/moderation.php';
+            if (!empty($msg)) {
+                $url .= '?' . $msg;
+                if (($plugin != 'story') && ($plugin != 'user')) {
+                    $url .= '&amp;plugin=' . $plugin;
+                }
+            }
+            break;
+
+        case 'plugin':
+            $url = $_CONF['site_url'] . "/$plugin/index.php";
+            if (!empty($msg)) {
+                $url .= '?' . $msg;
+            }
+            break;
+
+        case 'list':
+        default:
+            if ($plugin == 'story') {
+                $url = $_CONF['site_admin_url'] . "/$plugin.php";
+            } elseif ($plugin == 'user') {
+                $url = $_CONF['site_admin_url'] . "/user.php";
             } else {
-                $url .= '&amp;' . $msg;
+                $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php";
             }
-        }
-        break;
-
-    case 'home':
-        $url = $_CONF['site_url'] . '/index.php';
-        if (!empty($msg)) {
-            $url .= '?' . $msg;
-            if (($plugin != 'story') && ($plugin != 'user')) {
-                $url .= '&amp;plugin=' . $plugin;
+            if (!empty($msg)) {
+                $url .= '?' . $msg;
             }
-        }
-        break;
-
-    case 'admin':
-        $url = $_CONF['site_admin_url'] . '/moderation.php';
-        if (!empty($msg)) {
-            $url .= '?' . $msg;
-            if (($plugin != 'story') && ($plugin != 'user')) {
-                $url .= '&amp;plugin=' . $plugin;
-            }
-        }
-        break;
-
-    case 'plugin':
-        $url = $_CONF['site_url'] . "/$plugin/index.php";
-        if (!empty($msg)) {
-            $url .= '?' . $msg;
-        }
-        break;
-
-    case 'list':
-    default:
-        if ($plugin == 'story') {
-            $url = $_CONF['site_admin_url'] . "/$plugin.php";
-        } elseif ($plugin == 'user') {
-            $url = $_CONF['site_admin_url'] . "/user.php";
-        } else {
-            $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php";
-        }
-        if (!empty($msg)) {
-            $url .= '?' . $msg;
-        }
-        break;
+            break;
     }
 
     COM_redirect($url);
 }
 
 /**
-* Inform plugins of configuration changes
-*
-* NOTE: Plugins will only be notified of details of changes in 'Core' and in
-*       their own configuration. For other plugins, they will only be notified
-*       of the fact that something in the other plugin's config changed.
-*
-* @param    string  $group      plugin name or 'Core' for $_CONF changes
-* @param    array   $changes    names of config values that changed
-* @return   void
-* @link     http://wiki.geeklog.net/index.php/PLG_configChange
-* @since    Geeklog 1.6.0
-*
-*/
+ * Inform plugins of configuration changes
+ * NOTE: Plugins will only be notified of details of changes in 'Core' and in
+ *       their own configuration. For other plugins, they will only be notified
+ *       of the fact that something in the other plugin's config changed.
+ *
+ * @param    string $group   plugin name or 'Core' for $_CONF changes
+ * @param    array  $changes names of config values that changed
+ * @return   void
+ * @link     http://wiki.geeklog.net/index.php/PLG_configChange
+ * @since    Geeklog 1.6.0
+ */
 function PLG_configChange($group, $changes)
 {
     global $_CONF, $_PLUGINS;
 
     // Treat articles like a plugin (since belong to core group)
-    $plugintypes[] = 'article';
+    $pluginTypes = array('article');
     require_once $_CONF['path_system'] . 'lib-story.php';
     // Treat template system like a plugin (since belong to core group)
-    $plugintypes[] = 'template';
+    $pluginTypes[] = 'template';
     require_once $_CONF['path_system'] . 'lib-template.php';
 
-    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+    $pluginTypes = array_merge($pluginTypes, $_PLUGINS);
 
-    foreach ($plugintypes as $pi_name) {
+    foreach ($pluginTypes as $pi_name) {
         $args = array();
         $args[1] = $group;
 
@@ -2942,7 +2836,7 @@ function PLG_configChange($group, $changes)
 
     $function = 'CUSTOM_configchange';
     if (function_exists($function)) {
-        if ($group == 'Core') {
+        if ($group === 'Core') {
             $function($group, $changes);
         } else {
             $function($group);
@@ -2951,15 +2845,14 @@ function PLG_configChange($group, $changes)
 }
 
 /**
-* Ask plugin for the URL to its documentation
-*
-* @param    string  $type   plugin name
-* @param    string  $file   documentation file being requested, e.g. 'config'
-* @return   mixed           URL or false / empty string when not available
-* @link     http://wiki.geeklog.net/index.php/PLG_getDocumentationUrl
-* @since    Geeklog 1.6.0
-*
-*/
+ * Ask plugin for the URL to its documentation
+ *
+ * @param    string $type plugin name
+ * @param    string $file documentation file being requested, e.g. 'config'
+ * @return   mixed           URL or false / empty string when not available
+ * @link     http://wiki.geeklog.net/index.php/PLG_getDocumentationUrl
+ * @since    Geeklog 1.6.0
+ */
 function PLG_getDocumentationUrl($type, $file)
 {
     $args[1] = $file;
@@ -2969,19 +2862,18 @@ function PLG_getDocumentationUrl($type, $file)
 }
 
 /**
-* Ask plugin for text for a Configuration tooltip
-*
-* @param    string  $group  plugin name or 'Core'
-* @param    string  $id     Id of config value
-* @return   mixed           Text to use regular tooltip, NULL to use config
-*                           tooltip hack, or empty string when not available
-* @link     http://wiki.geeklog.net/index.php/PLG_getConfigTooltip
-* @since    Geeklog 1.8.0
-*
-*/
+ * Ask plugin for text for a Configuration tooltip
+ *
+ * @param    string $group   plugin name or 'Core'
+ * @param    string $id      Id of config value
+ * @return   mixed           Text to use regular tooltip, NULL to use config
+ *                           tooltip hack, or empty string when not available
+ * @link     http://wiki.geeklog.net/index.php/PLG_getConfigTooltip
+ * @since    Geeklog 1.8.0
+ */
 function PLG_getConfigTooltip($group, $id)
 {
-    if ($group == 'Core') {
+    if ($group === 'Core') {
         $retval = false;
     } else {
         $args[1] = $id;
@@ -2994,28 +2886,27 @@ function PLG_getConfigTooltip($group, $id)
 }
 
 /**
-* Inform plugins when another plugin's state changed
-*
-* Unlike PLG_enableStateChange, this function is called after the state
-* change.
-*
-* NOTE: You can not rely on being informed of state changes for 'installed',
-* 'uninstalled', and 'upgraded', as these may happen in the plugin's install
-* script, outside of Geeklog's control.
-*
-* @param    string  $type   plugin name
-* @param    string  $status new status: 'enabled', 'disabled', 'installed', 'uninstalled', 'upgraded'
-* @return   void
-* @see      PLG_enableStateChange
-* @since    Geeklog 1.6.0
-*
-*/
+ * Inform plugins when another plugin's state changed
+ * Unlike PLG_enableStateChange, this function is called after the state
+ * change.
+ * NOTE: You can not rely on being informed of state changes for 'installed',
+ * 'uninstalled', and 'upgraded', as these may happen in the plugin's install
+ * script, outside of Geeklog's control.
+ *
+ * @param    string $type   plugin name
+ * @param    string $status new status: 'enabled', 'disabled', 'installed', 'uninstalled', 'upgraded'
+ * @return   void
+ * @see      PLG_enableStateChange
+ * @since    Geeklog 1.6.0
+ */
 function PLG_pluginStateChange($type, $status)
 {
     global $_PLUGINS;
 
-    $args[1] = $type;
-    $args[2] = $status;
+    $args = array(
+        1 => $type,
+        2 => $status,
+    );
     foreach ($_PLUGINS as $pi_name) {
         if ($pi_name != $type) {
             $function = 'plugin_pluginstatechange_' . $pi_name;
@@ -3030,13 +2921,13 @@ function PLG_pluginStateChange($type, $status)
 }
 
 /**
-*  Disables all plugins with unresolved dependencies
-*  and resolves the load order for all enabled plugins.
-*
-* @return   bool    True or False, depending on whether it was
-*                   necessary to alter the load order of a plugin
-* @since            Geeklog 1.8.0
-*/
+ *  Disables all plugins with unresolved dependencies
+ *  and resolves the load order for all enabled plugins.
+ *
+ * @return   bool    True or False, depending on whether it was
+ *                   necessary to alter the load order of a plugin
+ * @since            Geeklog 1.8.0
+ */
 function PLG_resolveDependencies()
 {
     global $_PLUGINS, $_TABLES;
@@ -3050,7 +2941,7 @@ function PLG_resolveDependencies()
                 $flag = true; // disabling a plugin can break the dependencies of a plugin that has already been checked, remember to loop again
                 PLG_enableStateChange($pi_name, false);
                 DB_change($_TABLES['plugins'], 'pi_enabled', 0,
-                                               'pi_name', $pi_name);
+                    'pi_name', $pi_name);
                 PLG_pluginStateChange($pi_name, 'disabled');
                 unset($_PLUGINS[$key]);
             }
@@ -3058,10 +2949,10 @@ function PLG_resolveDependencies()
     }
     // automatically resolve load order for enabled plugins
     $index = 2000; // how far through the load order to push back plugins
-    $maxqueries = 50; // just in case...
-    $globalflag = false; // remember if we change the load order of any plugin
+    $maxQueries = 50; // just in case...
+    $globalFlag = false; // remember if we change the load order of any plugin
     $flag = true; // set true if we need another pass in the while loop
-    while ($flag && $maxqueries) { // Now check if the load order is correct
+    while ($flag && $maxQueries) { // Now check if the load order is correct
         $flag = false;
         // get the load orders of all enabled plugins
         $q = DB_query("SELECT pi_name, pi_load FROM {$_TABLES['plugins']} WHERE pi_enabled='1'");
@@ -3069,9 +2960,9 @@ function PLG_resolveDependencies()
         while ($a = DB_fetchArray($q)) {
             $plo[] = $a;
         }
-        $params = array();
+
         foreach ($plo as $key => $value) { // for each available plugin
-            $maxqueries--;
+            $maxQueries--;
             $params = PLG_getParams($value['pi_name']); // get dependencies
             if (isset($params['requires']) && is_array($params['requires'])) { // if any
                 foreach ($params['requires'] as $rkey => $rvalue) { // process each dependency
@@ -3083,20 +2974,22 @@ function PLG_resolveDependencies()
                                 break;
                             }
                         }
-                        if ( $dep_load > $value['pi_load'] ) { // incorrect load order
+                        if ($dep_load > $value['pi_load']) { // incorrect load order
                             // move down the order
                             DB_query("UPDATE {$_TABLES['plugins']} SET pi_load = '{$index}' WHERE pi_name = '{$value['pi_name']}'");
                             $index++;
                             $flag = true;
-                            $globalflag = true;
+                            $globalFlag = true;
                         }
                     }
                 }
             }
         }
     }
+
     reorderplugins();
-    if ($globalflag == false) {
+
+    if ($globalFlag == false) {
         return true; // no change
     } else {
         return false; // something changed
@@ -3104,23 +2997,22 @@ function PLG_resolveDependencies()
 }
 
 /**
-* Returns a string with HTML that contains the dependency information of a plugin.
-*
-* @param    $pi_name         string     The short name of the plugin
-* @param    $pi_gl_version   string     Specify a minimum version of Geeklog to require.
-*                                       (Optional and only for use with plugins that have the old-style install.)
-* @return                    string     An string that contains HTML code.
-* @since    Geeklog 1.8.0
-*
-*/
-function PLG_printDependencies($pi_name, $pi_gl_version='')
+ * Returns a string with HTML that contains the dependency information of a plugin.
+ *
+ * @param    $pi_name        string     The short name of the plugin
+ * @param    $pi_gl_version  string     Specify a minimum version of Geeklog to require.
+ *                           (Optional and only for use with plugins that have the old-style install.)
+ * @return   string         An string that contains HTML code.
+ * @since    Geeklog 1.8.0
+ */
+function PLG_printDependencies($pi_name, $pi_gl_version = '')
 {
     global $LANG32, $_DB_dbms;
 
     $retval = '';
     $params = PLG_getParams($pi_name);
 
-    $dbAvailable  = array(); // cache the databases that are supported by the plugin
+    $dbAvailable = array(); // cache the databases that are supported by the plugin
     $dbSupported = false; // True if we support the database that the plugin is requiring
 
     if (isset($params['requires']) && count($params['requires']) > 0) { // new autoinstall type
@@ -3155,7 +3047,7 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
                     $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
                 }
                 $retval .= "</b>";
-            } else if (isset($value['db'])){ // check for a database requirement
+            } else if (isset($value['db'])) { // check for a database requirement
                 $dbAvailable[] = array($value['db'], $op, $ver); // cache the database types
                 if ($_DB_dbms == $value['db']) { // this db requirement matches the database that the site is run on
                     $name = $value['db'];
@@ -3188,18 +3080,18 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
     } else { // we're not too sure right now....
         $retval .= "<b class='status_black'>{$LANG32[57]}</b>";
     }
+
     return $retval;
 }
 
 /**
-* Given a plugin name see if ALL of it's dependencies are satisfied
-*
-* @param    $pi_name         string     The short name of the plugin
-* @return                    bool       True or False, depending on whether all of the
-*                                       dependencies are satisfied for plugin $pi_name
-* @since    Geeklog 1.8.0
-*
-*/
+ * Given a plugin name see if ALL of it's dependencies are satisfied
+ *
+ * @param    string $pi_name  The short name of the plugin
+ * @return   bool            True or False, depending on whether all of the
+ *                            dependencies are satisfied for plugin $pi_name
+ * @since    Geeklog 1.8.0
+ */
 function PLG_checkDependencies($pi_name)
 {
     global $_TABLES, $_DB_dbms;
@@ -3208,7 +3100,7 @@ function PLG_checkDependencies($pi_name)
     $params = PLG_getParams($pi_name);
 
     $dbSupported = false; // True if we support the database that the plugin is requiring
-    $dbRequired  = false; // True if the plugin needs a database
+    $dbRequired = false; // True if the plugin needs a database
 
     if (isset($params['requires']) && count($params['requires']) > 0) { // plugin exists and uses new installer
         foreach ($params['requires'] as $key => $value) { // check for requirements
@@ -3251,39 +3143,40 @@ function PLG_checkDependencies($pi_name)
             }
         }
     }
+
     return true;
 }
 
 /**
-* Returns the status of a plugin or false if unavailable
-*
-* @param    $pi_name         string     The short name of the plugin to look for
-* @param    $version         string     A version to ask for, the default operator is '>='
-* @param    $operator        string     Optional operator to override the default
-*                                       See COM_versionCompare() for all valid operators
-* @return                    mixed      false is returned if the plugin is unavailable
-*                                       other possible values are: 'ok', 'disabled', 'uninstalled', 'wrong_version'
-* @since    Geeklog 1.8.0
-*
-*/
-function PLG_checkAvailable($pi_name, $version, $operator='>=')
+ * Returns the status of a plugin or false if unavailable
+ *
+ * @param    $pi_name                    string     The short name of the plugin to look for
+ * @param    $version                    string     A version to ask for, the default operator is '>='
+ * @param    $operator                   string     Optional operator to override the default
+ *                                       See COM_versionCompare() for all valid operators
+ * @return                    mixed      false is returned if the plugin is unavailable
+ *                                       other possible values are: 'ok', 'disabled', 'uninstalled', 'wrong_version'
+ * @since    Geeklog 1.8.0
+ */
+function PLG_checkAvailable($pi_name, $version, $operator = '>=')
 {
     global $_PLUGINS, $_TABLES, $_CONF;
+
     // not really a plugin
-    if ($pi_name == 'geeklog') {
+    if ($pi_name === 'geeklog') {
         if (COM_VersionCompare(VERSION, $version, $operator)) { // use default operator
             return 'ok';
         } else {
             return false;
         }
     }
+
     // real plugins
-    $A = array();
     $q = DB_query("SELECT pi_version FROM {$_TABLES['plugins']} WHERE pi_name = '{$pi_name}'");
     $A = DB_fetchArray($q); // access database
     if (DB_numRows($q)) {
         // an enabled plugin
-        if (in_array($pi_name, $_PLUGINS)){
+        if (in_array($pi_name, $_PLUGINS)) {
             if (COM_VersionCompare($A['pi_version'], $version, $operator)) {
                 return 'ok';
             } else {
@@ -3295,31 +3188,31 @@ function PLG_checkAvailable($pi_name, $version, $operator='>=')
             return 'disabled';
         }
     }
+
     // an uninstalled plugin
     $file1 = $_CONF['path'] . 'plugins/' . $pi_name . '/autoinstall.php';
     $file2 = $_CONF['path'] . 'plugins/' . $pi_name . '/config.php';
     if (file_exists($file1) || file_exists($file2)) {
         return 'uninstalled';
     }
+
     // 'unavailable'
     return false;
 }
 
 /**
-* Returns true if the database server version matches the criteria and the required
-* file is available in the plugin, false otherwise.
-*
-* @param    $db              string     The name of the dbms to check for
-* @param    $pi_name         string     The short name of the plugin for which to check support
-* @param    $version         string     A version to ask for, the default operator is '>='
-* @param    $operator        string     Optional operator to override the default
-*                                       See COM_versionCompare() for all valid operators
-* @return                    bool
-*
-* @since    Geeklog 1.8.0
-*
-*/
-function PLG_checkAvailableDb($db, $pi_name, $version, $operator='>=')
+ * Returns true if the database server version matches the criteria and the required
+ * file is available in the plugin, false otherwise.
+ *
+ * @param    $db                         string     The name of the dbms to check for
+ * @param    $pi_name                    string     The short name of the plugin for which to check support
+ * @param    $version                    string     A version to ask for, the default operator is '>='
+ * @param    $operator                   string     Optional operator to override the default
+ *                                       See COM_versionCompare() for all valid operators
+ * @return                    bool
+ * @since    Geeklog 1.8.0
+ */
+function PLG_checkAvailableDb($db, $pi_name, $version, $operator = '>=')
 {
     global $_CONF;
 
@@ -3335,15 +3228,13 @@ function PLG_checkAvailableDb($db, $pi_name, $version, $operator='>=')
 }
 
 /**
-* Get list of install parameters for a plugin (including dependencies)
-* For plugins with new install this works like a charm. For the older plugins, not so much.
-*
-* @param    $pi_name         string     The short name of the plugin
-* @return                    array      An array containing the installation parameters of a plugin
-*
-* @since    Geeklog 1.8.0
-*
-*/
+ * Get list of install parameters for a plugin (including dependencies)
+ * For plugins with new install this works like a charm. For the older plugins, not so much.
+ *
+ * @param    $pi_name         string     The short name of the plugin
+ * @return                    array      An array containing the installation parameters of a plugin
+ * @since    Geeklog 1.8.0
+ */
 function PLG_getParams($pi_name)
 {
     global $_CONF, $LANG_ADMIN, $_DB_table_prefix;
@@ -3352,7 +3243,7 @@ function PLG_getParams($pi_name)
     if (file_exists($file)) {
         // new install system
         include_once $file;
-        $function =    'plugin_autoinstall_' . $pi_name;
+        $function = 'plugin_autoinstall_' . $pi_name;
         if (function_exists($function)) {
             $retval = $function($pi_name);
         }
@@ -3400,45 +3291,45 @@ function PLG_getParams($pi_name)
         // We need to initialise this index of the array, so we place a string in it.
         $retval['info']['pi_version'] = $LANG_ADMIN['na'];
     }
+
     return $retval;
 }
 
 /**
-* This function is called from COM_siteHeader and other places where meta tags
-* are being built and will return additional meta tags.
-*
-* @param    string   $type     item type of the caller, e.g. 'article', 'staticpages'
-* @param    string   $id       id of the current item of the caller
-* @param    string   $myTags   meta tags the caller wants to add (optional)
-* @return   string             all meta tags
-* @since    Geeklog 2.1.0
-*
-*/
+ * This function is called from COM_siteHeader and other places where meta tags
+ * are being built and will return additional meta tags.
+ *
+ * @param    string $type   item type of the caller, e.g. 'article', 'staticpages'
+ * @param    string $id     id of the current item of the caller
+ * @param    array  $myTags meta tags the caller wants to add (optional)
+ * @return   string         all meta tags
+ * @since    Geeklog 2.1.0
+ */
 function PLG_getMetaTags($type, $id, array $myTags = array())
 {
     global $_CONF, $_PLUGINS;
 
     $type = strtolower(trim($type));
-    $id   = trim($id);
+    $id = trim($id);
 
     require_once $_CONF['path_system'] . 'classes/metatags.class.php';
 
-    $charset     = COM_getCharset();
+    $charset = COM_getCharset();
     $htmlVersion = ($_CONF['doctype'] === 'xhtml5') ? 5 : 4;
-    $isXhtml     = (stripos($_CONF['doctype'], 'xhtml') === 0);
+    $isXhtml = (stripos($_CONF['doctype'], 'xhtml') === 0);
 
     $obj = new Metatags($charset, $htmlVersion, $isXhtml);
-//  $obj->setLog($_CONF['path'] . 'logs/error.log');
+    //  $obj->setLog($_CONF['path'] . 'logs/error.log');
 
     // First, adds meta tags plugins want to add (the lowest priority)
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getmetatags_' . $pi_name;
 
         if (($type !== $pi_name) && function_exists($function)) {
-            $metatags = $function($type, $id);
+            $metaTags = $function($type, $id);
 
-            if (is_array($metatags) && (count($metatags) > 0)) {
-                foreach ($metatags as $tag) {
+            if (is_array($metaTags) && (count($metaTags) > 0)) {
+                foreach ($metaTags as $tag) {
                     $obj->addTag($tag);
                 }
             }
@@ -3449,10 +3340,10 @@ function PLG_getMetaTags($type, $id, array $myTags = array())
     $function = 'CUSTOM_getmetatags';
 
     if (function_exists($function)) {
-        $metatags = $function($type, $id);
+        $metaTags = $function($type, $id);
 
-        if (is_array($metatags) && (count($metatags) > 0)) {
-            foreach ($metatags as $tag) {
+        if (is_array($metaTags) && (count($metaTags) > 0)) {
+            foreach ($metaTags as $tag) {
                 $obj->addTag($tag);
             }
         }
@@ -3471,20 +3362,22 @@ function PLG_getMetaTags($type, $id, array $myTags = array())
 /**
  * Ask plugins for items they want to include in an XML site map
  *
- * @param    string    $type    plugin type (incl. 'article' for stories)
- * @param    int       $uid     user ID or 0 = current user; should be 1 (= anonymous user) in most cases
- * @param    int       $limit   the max number of items to be returned (0 = no limit)
+ * @param    string $type                               plugin type (incl. 'article' for stories)
+ * @param    int    $uid                                user ID or 0 = current user; should be 1 (= anonymous user) in
+ *                                                      most cases
+ * @param    int    $limit                              the max number of items to be returned (0 = no limit)
  * @return   array              array of array(
- *                                   'url'           => the URL of an item (mandatory),
- *                                   'date-modified' => the UNIX timestamp when an item was last modified (optional)
- *                                   'change-freq'   => one of 'always', 'hourly', 'daily', 'weekly',
+ *                                                      'url'           => the URL of an item (mandatory),
+ *                                                      'date-modified' => the UNIX timestamp when an item was last
+ *                                                      modified (optional)
+ *                                                      'change-freq'   => one of 'always', 'hourly', 'daily',
+ *                                                      'weekly',
  *                                                      'monthly', 'yearly', 'never' (optional)
- *                                   'priority'      => a float value showing the priority of an item, must be
- *                                                      between 0.0 (lowest) and 1.0 (highest) (optional)
- *                               )
+ *                                                      'priority'      => a float value showing the priority of an
+ *                                                      item, must be between 0.0 (lowest) and 1.0 (highest) (optional)
+ *                                                      )
  * @since    Geeklog-2.1.1
  * @link     http://wiki.geeklog.net/index.php/PLG_getSitemapItems
- *
  */
 function PLG_collectSitemapItems($type, $uid = 1, $limit = 0)
 {
@@ -3495,7 +3388,7 @@ function PLG_collectSitemapItems($type, $uid = 1, $limit = 0)
         $type = 'story';
     }
 
-    $uid   = intval($uid, 10);
+    $uid = intval($uid, 10);
     $limit = intval($limit, 10);
     $args = array(
         1 => $uid,
@@ -3518,5 +3411,3 @@ function PLG_collectSitemapItems($type, $uid = 1, $limit = 0)
 
     return $result;
 }
-
-?>
