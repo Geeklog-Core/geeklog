@@ -352,6 +352,45 @@ function getIndirectFeatures($grp_id)
 }
 
 /**
+ * Remove indirect features
+ *
+ * @param  int   $grp_id   ID of the group
+ * @param  array $features array of feature IDs
+ * @return array
+ */
+function removeIndirectFeatures($grp_id, array $features)
+{
+    global $_TABLES;
+
+    $retval = array();
+
+    if (count($features) > 0) {
+        $indirectFeatureNames = trim(getIndirectFeatures($grp_id));
+
+        if ($indirectFeatureNames !== '') {
+            $indirectFeatureNames = explode(',', $indirectFeatureNames);
+            $indirectFeatureNames = array_map('DB_escapeString', $indirectFeatureNames);
+            $sql = "SELECT ft_id FROM {$_TABLES['features']} "
+                . "WHERE ft_name IN ('" . implode("', '", $indirectFeatureNames) . "')";
+            $result = DB_query($sql);
+            $indirectFeatures = array();
+
+            while (($A = DB_fetchArray($result, false)) !== false) {
+                $indirectFeatures[] = $A['ft_id'];
+            }
+
+            foreach ($features as $feature) {
+                if (!in_array($feature, $indirectFeatures)) {
+                    $retval[] = $feature;
+                }
+            }
+        }
+    }
+
+    return $retval;
+}
+
+/**
  * Prints the features a group has access.  Please follow the comments in the
  * code closely if you need to modify this function. Also right is synonymous
  * with feature.
@@ -532,7 +571,7 @@ function applydefaultgroup($grp_id, $add = true)
  *                                     user accounts
  * @param    array   $features         Features the group has access to
  * @param    array   $groups           Groups this group will belong to
- * @return   string                  HTML refresh or error message
+ * @return   string                    HTML refresh or error message
  */
 function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $grp_default, $grp_applydefault, $features, $groups)
 {
@@ -550,14 +589,13 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             COM_redirect($_CONF['site_admin_url'] . '/group.php');
         }
 
-        if ($grp_gl_core == 1 AND !is_array($features)) {
+        if ($grp_gl_core == 1 && !is_array($features)) {
             COM_errorLog("Sorry, no valid features were passed to this core group ($grp_id) and saving could cause problem...bailing.");
             COM_redirect($_CONF['site_admin_url'] . '/group.php');
         }
 
         // group names have to be unique, so check if this one exists already
-        $g_id = DB_getItem($_TABLES['groups'], 'grp_id',
-            "grp_name = '$grp_name'");
+        $g_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = '$grp_name'");
         if ($g_id > 0) {
             if (empty($grp_id) || ($grp_id != $g_id)) {
                 // there already is a group with that name - complain
@@ -621,20 +659,26 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
 
         // now save the features
         DB_delete($_TABLES['access'], 'acc_grp_id', $grp_id);
-        $num_features = count($features);
-        if (SEC_inGroup('Root')) {
-            foreach ($features as $f) {
-                DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES ($f,$grp_id)");
-            }
-        } else {
-            $GroupAdminFeatures = SEC_getUserPermissions();
-            $availableFeatures = explode(',', $GroupAdminFeatures);
-            foreach ($features as $f) {
-                if (in_array($f, $availableFeatures)) {
+
+        // Remove features inherited from groups (bug #
+        $features = removeIndirectFeatures($grp_id, $features);
+
+        if (count($features) > 0) {
+            if (SEC_inGroup('Root')) {
+                foreach ($features as $f) {
                     DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES ($f,$grp_id)");
+                }
+            } else {
+                $GroupAdminFeatures = SEC_getUserPermissions();
+                $availableFeatures = explode(',', $GroupAdminFeatures);
+                foreach ($features as $f) {
+                    if (in_array($f, $availableFeatures)) {
+                        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES ($f,$grp_id)");
+                    }
                 }
             }
         }
+
         if ($_GROUP_VERBOSE) {
             COM_errorLog('groups = ' . $groups);
             COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name", 1);
