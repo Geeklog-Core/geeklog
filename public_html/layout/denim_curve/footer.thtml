@@ -1,0 +1,44 @@
+
+        </main>
+      </div>
+
+      {left_blocks}
+
+      {right_blocks}
+
+    </div>
+    <!-- } #wrapper -->
+
+    <hr class="separator"{xhtml}>
+
+    <footer id="footer" role="contentinfo" class="clearfix">
+      <div id="footer-content">
+        <div id="copyright">{copyright_msg}</div>
+        <div id="trademark">{trademark_msg}</div>
+        <div id="powered_by">{powered_by}&nbsp;<a href="https://www.geeklog.net/">Geeklog</a></div>
+        <div id="execution_textandtime">{execution_textandtime}</div>
+      </div>
+    </footer>
+
+    <div id="totop-scroller" style="display: none;" data-uk-smooth-scroll="{offset: 12}">
+      <i class="uk-icon-chevron-circle-up"></i>
+    </div>
+
+  </div>
+  <!-- } #container -->
+
+  {plg_footercode}
+
+  <!-- Depending on the situation, HTML body element's class attribute to specify a value by JavaScript
+       The argument from the left, the right block container, the middle block left the right block id attribute value -->
+  <script type="text/javascript">
+  <!--
+    FixHTML('leftblocks', 'centerblocks', 'rightblocks');
+  -->
+  </script>
+
+{# end {templatelocation} #}
+
+</body>
+
+</html>
