@@ -152,6 +152,8 @@ class Plugin
     */
     function setExpandedSearchSupport($switch)
     {
+        COM_deprecatedLog(__FUNCTION__, '1.6.0', '3.0.0', '_expandedSearchSupport');
+        
         if (!is_bool($switch)) {
             $switch = false;
         }
@@ -170,6 +172,8 @@ class Plugin
     */
     function supportsExpandedSearch()
     {
+        COM_deprecatedLog(__FUNCTION__, '1.6.0', '3.0.0', '_expandedSearchSupport');
+        
         return $this->_expandedSearchSupport;
     }
 }

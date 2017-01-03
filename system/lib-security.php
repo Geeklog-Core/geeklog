@@ -273,6 +273,8 @@ function SEC_hasConfigAccess()
  */
 function SEC_hasConfigAcess()
 {
+    COM_deprecatedLog(__FUNCTION__, '2.0.0', '3.0.0', 'SEC_hasConfigAccess');
+    
     return SEC_hasConfigAccess();
 }
 

@@ -165,7 +165,7 @@ function PLG_callFunctionForOnePlugin($function, array $args = array())
  */
 function PLG_install($type)
 {
-    COM_deprecatedLog(__FUNCTION__, '1.6.0', '3.0.0');
+    COM_deprecatedLog(__FUNCTION__, '1.6.0', '3.0.0', 'plugin_install_' . $type);
 
     return PLG_callFunctionForOnePlugin('plugin_install_' . $type);
 }
