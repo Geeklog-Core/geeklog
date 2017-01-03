@@ -554,8 +554,14 @@ function resend_request()
         $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
         // need to fake the referrer so the new token matches
         $req->setHeader('Referer', COM_getCurrentUrl());
-        foreach ($_COOKIE as $cookie => $value) {
-            $req->addCookie($cookie, $value);
+        foreach ($_COOKIE as $name => $value) {
+            $cookie = $name . '=' . $value;
+
+            if (preg_match(HTTP_Request2::REGEXP_INVALID_COOKIE, $cookie)) {
+                COM_errorLog(__FUNCTION__ . " detected invalid cookie: {$cookie}", 1);
+            } else {
+                $req->addCookie($name, $value);
+            }
         }
 
         try {
