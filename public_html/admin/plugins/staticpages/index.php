@@ -137,7 +137,8 @@ function staticpageeditor_form($A)
     }
 
     // Add JavaScript
-    if ($_CONF['titletoid'] && empty($sp_id)) {
+    // Only use title_2_id if enabled, new staticpage or clone (basically any staticpage that does not exist yet)  - $mode = 'edit', 'clone'
+    if ($_CONF['titletoid'] && (empty($sp_id) ||  $mode == 'clone')) {
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
         $sp_template->set_var('titletoid', true);
     }
