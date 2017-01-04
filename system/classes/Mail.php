@@ -92,6 +92,9 @@ class Mail
         // Create a message
         $message = \Swift_Message::newInstance();
 
+        // Avoid double dots problem
+        $message->setEncoder(new \Swift_Mime_ContentEncoder_Base64ContentEncoder());
+
         if (!empty($_CONF['mail_charset'])) {
             $message->setCharset($_CONF['mail_charset']);
         } else {
