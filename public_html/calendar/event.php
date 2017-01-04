@@ -458,7 +458,7 @@ switch ($action) {
             $thedate = sprintf('%4d-%02d-%02d', $year, $month, $day);
             $datesql = "SELECT * FROM {$_TABLES['events']} "
                 . "WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') "
-                . "and DATE_FORMAT(dateend,'%Y-%m-%d') "
+                . "AND DATE_FORMAT(dateend,'%Y-%m-%d') "
                 . "ORDER BY datestart ASC,timestart ASC,title";
         }
         $cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar'));
@@ -470,7 +470,7 @@ switch ($action) {
 
         $cal_templates->set_var('lang_addevent', $LANG_CAL_1[6]);
         $cal_templates->set_var('lang_backtocalendar', $LANG_CAL_1[15]);
-        if ($mode == 'personal') {
+        if ($mode === 'personal') {
             $cal_templates->set_var('calendar_mode', '?mode=personal');
         } else {
             $cal_templates->set_var('calendar_mode', '');
@@ -520,9 +520,7 @@ switch ($action) {
                     $cal_templates->set_var('event_title', $event_title_and_url);
                     $cal_templates->set_var('event_title_only', $event_title);
 
-                    if (($_CA_CONF['personalcalendars'] == 1)
-                        && !COM_isAnonUser()
-                    ) {
+                    if (($_CA_CONF['personalcalendars'] == 1) && !COM_isAnonUser()) {
                         $tmpresult = DB_query("SELECT * FROM {$_TABLES['personal_events']} WHERE eid='{$A['eid']}' AND uid={$_USER['uid']}");
                         $tmpnrows = DB_numRows($tmpresult);
                         if ($tmpnrows > 0) {
@@ -544,46 +542,35 @@ switch ($action) {
                     }
                     $cal_templates->set_var('lang_when', $LANG_CAL_1[3]);
                     if ($A['allday'] == 0) {
-                        $thedatetime = COM_getUserDateTimeFormat($A['datestart'] .
-                            ' ' . $A['timestart']);
+                        $thedatetime = COM_getUserDateTimeFormat($A['datestart'] . ' ' . $A['timestart']);
                         $cal_templates->set_var('event_start', $thedatetime[0]);
 
                         if ($A['datestart'] == $A['dateend']) {
-                            $thedatetime[0] = strftime($_CONF['timeonly'],
-                                strtotime($A['dateend'] . ' ' . $A['timeend']));
+                            $thedatetime = COM_getUserDateTimeFormat(strtotime($A['dateend'] . ' ' . $A['timeend']), 'timeonly');
                         } else {
-                            $thedatetime = COM_getUserDateTimeFormat($A['dateend']
-                                . ' ' . $A['timeend']);
+                            $thedatetime = COM_getUserDateTimeFormat(strtotime($A['dateend'] . ' ' . $A['timeend']), 'date');
                         }
                         $cal_templates->set_var('event_end', $thedatetime[0]);
-                    } else if ($A['allday'] == 1 AND $A['datestart'] <> $A['dateend']) {
-                        $thedatetime1 = strftime('%A, ' . $_CONF['shortdate'],
-                            strtotime($A['datestart']));
+                    } elseif ($A['allday'] == 1 && $A['datestart'] != $A['dateend']) {
+                        $thedatetime1 = strftime('%A, ' . $_CONF['shortdate'], strtotime($A['datestart']));
                         $cal_templates->set_var('event_start', $thedatetime1);
-                        $thedatetime2 = strftime('%A, ' . $_CONF['shortdate'],
-                            strtotime($A['dateend']));
-                        $cal_templates->set_var('event_end', $thedatetime2
-                            . ' ' . $LANG_CAL_2[26]);
+                        $thedatetime2 = strftime('%A, ' . $_CONF['shortdate'], strtotime($A['dateend']));
+                        $cal_templates->set_var('event_end', $thedatetime2 . ' ' . $LANG_CAL_2[26]);
                     } else {
-                        $thedatetime = strftime('%A, ' . $_CONF['shortdate'],
-                            strtotime($A['datestart']));
+                        $thedatetime = strftime('%A, ' . $_CONF['shortdate'], strtotime($A['datestart']));
                         $cal_templates->set_var('event_start', $thedatetime);
                         $cal_templates->set_var('event_end', $LANG_CAL_2[26]);
                     }
 
                     // set the location variables
                     $cal_templates->set_var('lang_where', $LANG_CAL_1[4]);
-                    $cal_templates->set_var('event_location',
-                        stripslashes($A['location']));
-                    $cal_templates->set_var('event_address1',
-                        stripslashes($A['address1']));
-                    $cal_templates->set_var('event_address2',
-                        stripslashes($A['address2']));
+                    $cal_templates->set_var('event_location', stripslashes($A['location']));
+                    $cal_templates->set_var('event_address1', stripslashes($A['address1']));
+                    $cal_templates->set_var('event_address2', stripslashes($A['address2']));
                     $cal_templates->set_var('event_zip', $A['zipcode']);
-                    $cal_templates->set_var('event_city',
-                        stripslashes($A['city']));
+                    $cal_templates->set_var('event_city', stripslashes($A['city']));
                     $cal_templates->set_var('event_state_only', $A['state']);
-                    if (empty($A['state']) || ($A['state'] == '--')) {
+                    if (empty($A['state']) || ($A['state'] === '--')) {
                         $cal_templates->set_var('event_state', '');
                         $cal_templates->set_var('event_state_name', '');
                         $cal_templates->set_var('event_state_name_only', '');
@@ -649,7 +636,7 @@ switch ($action) {
                             . $LANG01[4] . '"' . XHTML . '>';
                         $cal_templates->set_var('edit_icon',
                             COM_createLink($img, $editurl));
-                    } else if ((SEC_hasAccess($A['owner_id'], $A['group_id'],
+                    } elseif ((SEC_hasAccess($A['owner_id'], $A['group_id'],
                                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                                 $A['perm_anon']) == 3) && SEC_hasRights('calendar.edit')
                     ) {
