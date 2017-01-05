@@ -39,7 +39,7 @@
  * @package StaticPages
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'services.inc.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
@@ -395,16 +395,16 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
         $sp_content = GLText::remove4byteUtf8Chars($sp_content);
 
-        $sp_title = strip_tags($sp_title);
+        $sp_title = GLText::stripTags($sp_title);
         $sp_title = GLText::remove4byteUtf8Chars($sp_title);
-        $sp_page_title = strip_tags($sp_page_title);
+        $sp_page_title = GLText::stripTags($sp_page_title);
         $sp_page_title = GLText::remove4byteUtf8Chars($sp_page_title);
-        $sp_label = strip_tags($sp_label);
+        $sp_label = GLText::stripTags($sp_label);
         $sp_label = GLText::remove4byteUtf8Chars($sp_label);
 
-        $meta_description = strip_tags($meta_description);
+        $meta_description = GLText::stripTags($meta_description);
         $meta_description = GLText::remove4byteUtf8Chars($meta_description);
-        $meta_keywords = strip_tags($meta_keywords);
+        $meta_keywords = GLText::stripTags($meta_keywords);
         $meta_keywords = GLText::remove4byteUtf8Chars($meta_keywords);
         $sp_help = GLText::remove4byteUtf8Chars($sp_help);
 
@@ -779,7 +779,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             if (!isset($args['template'])) {
                 $output['sp_content'] = SP_render_content($page, $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id']);
             }
-        } else { // an error occured (page not found, access denied, ...)
+        } else { // an error occurred (page not found, access denied, ...)
             /**
              * if the user has edit permissions and the page does not exist,
              * send them to the editor so they can create it "wiki style"

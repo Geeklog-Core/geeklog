@@ -1163,6 +1163,8 @@ $LANG29 = array(
     41 => 'Kommentaaride sisestused',
     42 => 'Kasutaja nimi',
     43 => 'Auto-publitseeri kommentaarid?',
+    44 => 'Results of your moderation',
+    45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -2513,4 +2515,3 @@ $LANG_VALIDATION = array(
 );
 
 
-?>

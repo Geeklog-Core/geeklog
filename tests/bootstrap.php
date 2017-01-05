@@ -3,6 +3,7 @@
 global $_CONF;
 
 require_once __DIR__ . '/tst.class.php';
+Tst::init();
 
 // To disable your site quickly, simply set this flag to false
 $_CONF['site_enabled'] = true;
@@ -34,7 +35,7 @@ if (!defined('LB')) {
     define('LB',"\n");
 }
 if (!defined('VERSION')) {
-    define('VERSION', '2.1.2');
+    define('VERSION', Tst::VERSION);
 }
 
 require_once $_CONF['path_system'] . 'classes/Autoload.php';

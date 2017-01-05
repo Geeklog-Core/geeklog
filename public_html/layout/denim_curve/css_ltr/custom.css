@@ -1,0 +1,8 @@
+
+.block-left-content #loginform-loginname,
+.block-left-content #service,
+.block-left-content #loginform-passwd,
+.block-left-content #loginform button,
+.block-left-content .third-party-login input {
+	width: 100%;
+}

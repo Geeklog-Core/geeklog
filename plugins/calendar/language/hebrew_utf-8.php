@@ -249,4 +249,3 @@ $LANG_configselects['calendar'] = array(
     15 => array('כולם' => 'all', 'דף הבית בלבד' => 'homeonly', 'בחירת נושאים' => 'selectedtopics')
 );
 
-?>

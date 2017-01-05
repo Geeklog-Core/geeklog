@@ -18,7 +18,7 @@ class Text_Wiki_Render_Plain_Html extends Text_Wiki_Render {
     
     function token($options)
     {
-        return strip_tags($options['text']);
+        return GLText::stripTags($options['text']);
     }
 }
 ?>

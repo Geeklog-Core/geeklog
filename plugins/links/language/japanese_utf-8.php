@@ -278,4 +278,3 @@ $LANG_configselects['links'] = array(
     13 => array('アクセス不可' => 0, '利用する' => 2)
 );
 
-?>

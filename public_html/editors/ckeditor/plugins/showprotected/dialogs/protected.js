@@ -1,65 +1,40 @@
 
 CKEDITOR.dialog.add( 'showProtectedDialog', function( editor ) {
 
-	var size = CKEDITOR.document.getWindow().getViewPaneSize();
-
-	// Make it maximum 700px wide, but still fully visible in the viewport.
-	var width = Math.min(size.width - 30, 700);
-
-	// Make it maximum 300px high, but still fully visible in the viewport.
-	var height = Math.min(size.height - 130, 300);
-
 	return {
 		title: 'Edit Protected Source',
-		minWidth: width,
-		minHeight: height,
-
+		minWidth: 300,
+		minHeight: 60,
 		onOk: function() {
-			var newSourceValue = this.getContentElement( 'main', 'protectedSource' ).getValue();
+			var newSourceValue = this.getContentElement( 'info', 'txtProtectedSource' ).getValue();
 			
 			var encodedSourceValue = CKEDITOR.plugins.showprotected.encodeProtectedSource( newSourceValue );
 			
-			this._.selectedElement.setAttribute('data-cke-realelement', encodedSourceValue);
-			this._.selectedElement.setAttribute('title', newSourceValue);
-			this._.selectedElement.setAttribute('alt', newSourceValue);
+			CKEDITOR.plugins.showprotected.selectedElement.$.previousSibling.nodeValue = encodedSourceValue;
+			CKEDITOR.plugins.showprotected.selectedElement.setAttribute('title', newSourceValue);
+			CKEDITOR.plugins.showprotected.selectedElement.setAttribute('alt', newSourceValue);
 		},
 
 		onHide: function() {
-			delete this._.selectedElement;
+			CKEDITOR.plugins.showprotected.selectedElement = undefined;
 		},
 
 		onShow: function() {
-			this._.selectedElement = editor.getSelection().getSelectedElement();
-			
-			var decodedSourceValue = CKEDITOR.plugins.showprotected.decodeProtectedSource( this._.selectedElement.getAttribute('data-cke-realelement') );
+			var encodedSourceValue = CKEDITOR.plugins.showprotected.selectedElement.$.previousSibling.nodeValue;
+			var decodedSourceValue = CKEDITOR.plugins.showprotected.decodeProtectedSource( encodedSourceValue );
 
-			this.setValueOf( 'main', 'protectedSource', decodedSourceValue );
-
-			if (typeof jQuery !== undefined) {
-				var jqobj = jQuery('.cke_dialog_contents_body');
-				// Fine-tune padding.
-				jqobj.css('padding','10px');
-				// Make textarea height resizable.
-				jqobj.find('div').css('height','100%');
-				jqobj.find('table').css('height','100%');
-				jqobj.find('td').css('height','100%');
-				jqobj.find('textarea').css('height','100%');
-			}
+			this.setValueOf( 'info', 'txtProtectedSource', decodedSourceValue );
 		},
-		contents: [ {
-			id: 'main',
+		contents: [
+			{
+			id: 'info',
 			label: 'Edit Protected Source',
 			accessKey: 'I',
-			elements: [ {
-				type: 'textarea',
-				id: 'protectedSource',
-				dir: 'ltr',
-				inputStyle: 'cursor:auto;' +
-					'width:100%;' +
-					'height:' + height + 'px;' +
-					'tab-size:4;' +
-					'text-align:left;',
-				'class': 'cke_source',
+			elements: [
+				{
+				type: 'text',
+				id: 'txtProtectedSource',
+				label: 'Value',
 				required: true,
 				validate: function() {
 					if ( !this.getValue() ) {
@@ -68,7 +43,9 @@ CKEDITOR.dialog.add( 'showProtectedDialog', function( editor ) {
 					}
 					return true;
 				}
-			} ]
-		} ]
+			}
+			]
+		}
+		]
 	};
 } );

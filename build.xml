@@ -84,6 +84,9 @@
         <copy file="${srcDir}/system/lib-custom.php.dist" tofile="${dstDir}/system/lib-custom.php"/>
         <copy file="${srcDir}/public_html/siteconfig.php.dist" tofile="${dstDir}/public_html/siteconfig.php"/>
 
+        <!-- Move filemanager configuration file -->
+        <copy file="${srcDir}/public_html/filemanager/scripts/filemanager.config.default.json" tofile="${dstDir}/public_html/filemanager/scripts/filemanager.config.json" overwrite="true"/>
+
         <!-- Change permissions -->
         <echo msg="Changing directory and file permissions..."/>
         <chmod file="${dstDir}/emailgeeklogstories" mode="0755"/>
@@ -128,6 +131,7 @@
         <chmod file="${dstDir}/public_html/images/_thumbs/articles" mode="0775"/>
         <chmod file="${dstDir}/public_html/images/_thumbs/library/Image" mode="0775"/>
         <chmod file="${dstDir}/public_html/images/_thumbs/userphotos" mode="0775"/>
+        <chmod file="${dstDir}/public_html/filemanager/scripts/filemanager.config.json" mode="0644"/>
     </target>
 
     <!-- ============================== -->

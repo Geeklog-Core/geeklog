@@ -45,23 +45,28 @@ function fixTopic(&$A, $tid_list)
 {
     global $_TABLES, $topic;
 
+    // This case may happen if a article belongs to the current topic but the default topic for the article is a child  of the current topic.
+    $sql = "SELECT t.topic, t.imageurl
+        FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
+        WHERE t.tid = ta.tid";
+    // If all topics (blank) then find default topic
     if (!empty($topic)) {
-        // This case may happen if a article belongs to the current topic but the default topic for the article is a child  of the current topic.
-        $sql = "SELECT t.topic, t.imageurl
-            FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
-            WHERE t.tid = ta.tid
-            AND ta.type = 'article' AND ta.id = '{$A['sid']}' AND ta.tid = '$topic'
-            " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
+        $sql .= " AND ta.type = 'article' AND ta.id = '{$A['sid']}' AND ta.tid = '$topic'";
+    } else {
+        $sql .= " AND ta.type = 'article' AND ta.id = '{$A['sid']}'";
+    }
+    $sql .= COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
+    $sql .= " ORDER BY ta.tdefault DESC"; // Do this just in case story doesn't have a default (it always should) and the current topic is all
 
-        $result = DB_query($sql);
-        $nrows = DB_numRows($result);
-        if ($nrows > 0) {
-            $B = DB_fetchArray($result);
-            $A['topic'] = $B['topic'];
-            $A['imageurl'] = $B['imageurl'];
-        } else {
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        $B = DB_fetchArray($result);
+        $A['topic'] = $B['topic'];
+        $A['imageurl'] = $B['imageurl'];
+    } else {
+        if (!empty($topic)) {
             // Does not belong to current topic so check inherited
-
             // Make sure sort order the same as in TOPIC_getTopic or articles with multiple topics might not display in the right topic when clicked
             $sql = "SELECT t.topic, t.imageurl
                 FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
@@ -78,7 +83,12 @@ function fixTopic(&$A, $tid_list)
                 $A['topic'] = $B['topic'];
                 $A['imageurl'] = $B['imageurl'];
             }
+        } else {
+            // This should not happen as every article should have at least 1 default topic
+            $A['topic'] = '';
+            $A['imageurl'] = '';
         }
+
     }
 }
 
@@ -90,12 +100,7 @@ if ($_CONF['url_rewrite'] && isset($_CONF['url_routing']) && !empty($_CONF['url_
 // See if user has access to view topic else display message.
 // This check has already been done in lib-common so re check to figure out if
 // 404 message needs to be displayed.
-$topic_check = '';
-if (isset($_GET['topic'])) {
-    $topic_check = COM_applyFilter($_GET['topic']);
-} elseif (isset($_POST['topic'])) {
-    $topic_check = COM_applyFilter($_POST['topic']);
-}
+$topic_check = Geeklog\Input::fGetOrPost('topic', '');
 if ($topic_check != '') {
     if (strtolower($topic_check) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic_check' " . COM_getPermSQL('AND')))) {
         COM_handle404();
@@ -103,21 +108,16 @@ if ($topic_check != '') {
 }
 
 $displayall = false;
-if (isset($_GET['display'])) {
-    if (($_GET['display'] == 'all') && (empty($topic))) {
-        $displayall = true;
-    }
+if ((Geeklog\Input::get('display') === 'all') && empty($topic)) {
+    $displayall = true;
 }
 
 // Retrieve the archive topic - currently only one supported
 $archivetid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
 
-$page = 1;
-if (isset($_GET['page'])) {
-    $page = COM_applyFilter($_GET['page'], true);
-    if ($page == 0) {
-        $page = 1;
-    }
+$page = (int) Geeklog\Input::fGet('page', 1);
+if ($page == 0) {
+    $page = 1;
 }
 
 $display = '';
@@ -132,11 +132,8 @@ if (!$displayall) {
 }
 
 if (isset($_GET['msg'])) {
-    $plugin = '';
-    if (isset($_GET['plugin'])) {
-        $plugin = COM_applyFilter($_GET['plugin']);
-    }
-    $display .= COM_showMessage(COM_applyFilter($_GET['msg'], true), $plugin);
+    $plugin = Geeklog\Input::fGet('plugin', '');
+    $display .= COM_showMessage((int) Geeklog\Input::fGet('msg'), $plugin);
 }
 
 if (SEC_inGroup('Root') && ($page == 1)) {
@@ -291,20 +288,19 @@ if ($_CONF['allow_user_photo'] == 1) {
     }
 }
 
-// The incorrect t.topic, t.imageurl will most likely be return ... will fix later in fixtopic function.
-// Could not fix in sql since 2 many variables to contend with plus speed of sql statement probably an issue
-$msql = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
+// The incorrect t.topic, t.imageurl will most likely be return so removed from this statement and added later in fixtopic function. (also because of MySQL 5.7 default install support)
+$msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
-            {$userfields}, t.topic, t.imageurl
+            {$userfields}
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND
             ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
-            {$sql} GROUP BY s.sid, s.uid, s.draft_flag, s.date, s.title, s.page_title, s.introtext, 
-            s.bodytext, s.text_version, s.hits, s.numemails, s.comments, s.comment_expire, s.trackbacks,
-            s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire,
-            s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, s.meta_keywords, 
-            s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, 
-            ta.tid, expireunix, {$userfields}, t.topic, t.imageurl 
+            {$sql} GROUP BY s.sid, s.uid, s.draft_flag, s.date, s.title, s.page_title, s.introtext,  
+            s.bodytext, s.text_version, s.hits, s.numemails, s.comments, s.comment_expire, s.trackbacks, 
+            s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, 
+            s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, s.meta_keywords,  
+            s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon,  
+            expireunix, {$userfields}, date 
             ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";
 
 $result = DB_query($msql);

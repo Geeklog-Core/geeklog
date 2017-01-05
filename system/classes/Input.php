@@ -49,10 +49,6 @@ class Input
      */
     private static $magicQuotes = false;
 
-    private function __constructor()
-    {
-    }
-
     /**
      * Initialize the Input class
      */
@@ -81,8 +77,8 @@ class Input
             $var = COM_applyBasicFilter($var);
         } else {
             // Simulate COM_applyBasicFilter
-            $var = \GLText::remove4byteUtf8Chars($var);
-            $var = strip_tags($var);
+            $var = GLText::remove4byteUtf8Chars($var);
+            $var = GLText::stripTags($var);
 
             if (is_callable('COM_killJS')) {
                 $var = COM_killJS($var); // doesn't help a lot right now, but still ...
@@ -241,6 +237,42 @@ class Input
     }
 
     /**
+     * Return the value of $_GET[$name] if it is set.  Otherwise return the value of $_POST[$name]
+     *
+     * @param    string       $name an index of $_GET or $_POST
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function getOrPost($name, $defaultValue = null)
+    {
+        $retval = self::get($name, null);
+
+        if ($retval === null) {
+            $retval = self::post($name, $defaultValue);
+        }
+
+        return $retval;
+    }
+
+    /**
+     * Return the value of $_POST[$name] if it is set.  Otherwise return the value of $_GET[$name]
+     *
+     * @param    string       $name an index of $_GET or $_POST
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function postOrGet($name, $defaultValue = null)
+    {
+        $retval = self::post($name, null);
+
+        if ($retval === null) {
+            $retval = self::get($name, $defaultValue);
+        }
+
+        return $retval;
+    }
+
+    /**
      * Return the value of $_GET variable
      *
      * @param    string       $name an index of $_GET
@@ -353,5 +385,41 @@ class Input
         return (self::server('REQUEST_METHOD', 'GET') === 'POST')
             ? self::applyFilter(self::post($name, $defaultValue))
             : self::applyFilter(self::get($name, $defaultValue));
+    }
+
+    /**
+     * Return the value of $_GET[$name] if it is set.  Otherwise return the value of $_POST[$name]
+     *
+     * @param    string       $name an index of $_GET or $_POST
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fGetOrPost($name, $defaultValue = null)
+    {
+        $retval = self::fGet($name, null);
+
+        if ($retval === null) {
+            $retval = self::fPost($name, $defaultValue);
+        }
+
+        return $retval;
+    }
+
+    /**
+     * Return the value of $_POST[$name] if it is set.  Otherwise return the value of $_GET[$name]
+     *
+     * @param    string       $name an index of $_GET or $_POST
+     * @param    string|array $defaultValue
+     * @return   array|null|string
+     */
+    public static function fPostOrGet($name, $defaultValue = null)
+    {
+        $retval = self::fPost($name, null);
+
+        if ($retval === null) {
+            $retval = self::fGet($name, $defaultValue);
+        }
+
+        return $retval;
     }
 }

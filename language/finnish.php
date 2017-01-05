@@ -1163,6 +1163,8 @@ $LANG29 = array(
     41 => 'Comment Submissions',
     42 => 'Username',
     43 => 'Auto-publish Comments?',
+    44 => 'Results of your moderation',
+    45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -1276,7 +1278,7 @@ $LANG32 = array(
     67 => 'The directory "%s" is not writable.',
     68 => 'You do not have the required permissions to install plugins.',
     69 => 'You do not have the required permissions to upload plugins.',
-    99 => 'An unknown error occured',
+    99 => 'An unknown error occurred',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
     102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
@@ -1459,8 +1461,8 @@ $MESSAGE = array(
     69 => 'Your account has been blocked!',
     70 => 'Your account is awaiting administrator approval.',
     71 => 'Your account has now been confirmed and is awaiting administrator approval.',
-    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
-    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    72 => 'An error occurred while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occurred while attempting to uninstall the plugin. See error.log for details.',
     74 => 'The pingback has been successfully sent.',
     75 => 'Trackbacks must be sent using a POST request.',
     76 => 'Do you really want to delete this item?',
@@ -2513,4 +2515,3 @@ $LANG_VALIDATION = array(
 );
 
 
-?>

@@ -7,7 +7,7 @@ public_html/siteconfig.php
 system/lib-custom.php
 
 public_html/sitemap.xml
-public_html/filemanager/scripts/filemanager.config.js
+public_html/filemanager/scripts/filemanager.config.json
 
 # cache files
 data/layout_cache/**

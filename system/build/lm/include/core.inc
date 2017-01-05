@@ -234,5 +234,3 @@ mergeArrays($ENG_configselects['Core'], $LANG_configselects['Core'], "LANG_confi
 
 echo "\n";
 mergeArrays($ENGVA,  $LANG_VALIDATION, 'LANG_VALIDATION', "Localization of validation error messages", false);
-
-?>

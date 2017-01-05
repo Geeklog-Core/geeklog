@@ -1178,6 +1178,8 @@ $LANG29 = array(
     41 => 'Comment Submissions',
     42 => 'Username',
     43 => 'Auto-publish Comments?',
+    44 => 'Results of your moderation',
+    45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -1291,7 +1293,7 @@ $LANG32 = array(
     67 => 'The directory "%s" is not writable.',
     68 => 'You do not have the required permissions to install plugins.',
     69 => 'You do not have the required permissions to upload plugins.',
-    99 => 'An unknown error occured',
+    99 => 'An unknown error occurred',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
     102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
@@ -2528,4 +2530,3 @@ $LANG_VALIDATION = array(
 );
 
 
-?>

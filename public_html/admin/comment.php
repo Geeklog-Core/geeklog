@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2012 by the following authors:                         |
+// | Copyright (C) 2000-2016 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -41,6 +41,7 @@
 
 define('SUFFIX_COMMENTS', '_comments');
 define('SUFFIX_COMMENT_SUBMISSIONS', '_submissions');
+define('COMMENT_MAX_LENGTH', 60);
 
 // Geeklog common function library
 require_once '../lib-common.php';
@@ -98,16 +99,11 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
         $encoding = COM_getEncodingt();
     }
 
-    if (!in_array($A['type'], array('article', 'staticpages', 'polls'))) {
-        throw new Exception(__FUNCTION__ . ': unknown type "' . $A['type'] . '" was given');
-    }
-
     $commentId = $A['cid'];
 
     switch ($fieldName) {
         case 'selector':
-            $fieldValue = '<input type="checkbox" name="cids' . $suffix
-                . '[]" value="' . $commentId . '"' . XHTML . '>';
+            $fieldValue = '<input type="checkbox" name="cids' . $suffix . '[]" value="' . $commentId . '"' . XHTML . '>';
             break;
 
         case 'edit':
@@ -120,8 +116,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
                     . htmlspecialchars($commentId, ENT_QUOTES, $encoding);
             }
 
-            $fieldValue = '<a href="' . $link . '" title="' . $LANG01[4] . '">'
-                . $iconArray['edit'] . '</a>';
+            $fieldValue = '<a href="' . $link . '" title="' . $LANG01[4] . '">' . $iconArray['edit'] . '</a>';
             break;
 
         case 'type':
@@ -130,35 +125,24 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
                     $fieldValue = $LANG01[11];
                     break;
 
-                case 'staticpages':
-                    $fieldValue = $LANG_STATIC['staticpages'];
-                    break;
-
-                case 'polls':
-                    $fieldValue = $LANG_POLLS['poll'];
+                default:
+                    $fieldValue = ucfirst($fieldValue);
                     break;
             }
             break;
 
         case 'sid':
-            $what = 'title,url';
-
-            switch ($A['type']) {
-                case 'article':
-                    list($title, $url) = plugin_getiteminfo_story($fieldValue, $what);
-                    break;
-
-                case 'staticpages':
-                    list($title, $url) = plugin_getiteminfo_staticpages($fieldValue, $what);
-                    break;
-
-                case 'polls':
-                    list($title, $url) = plugin_getiteminfo_polls($fieldValue, $what);
-                    break;
+            $result = PLG_getItemInfo($A['type'], $fieldValue, 'title,url');
+            if (is_array($result) && isset($result[0], $result[1])) {
+                list ($title, $url) = $result;
+                $fieldValue = '<a href="' . $url . '">' . htmlspecialchars($title, ENT_QUOTES, $encoding) . '</a>';
+            } elseif (is_array(0) && isset($result[1])) {
+                list ($title) = $result;
+                $fieldValue = htmlspecialchars($title, ENT_QUOTES, $encoding);
+            } else {
+                $fieldValue = '';
             }
-
-            $fieldValue = '<a href="' . $url . '">'
-                . htmlspecialchars($title, ENT_QUOTES, $encoding) . '</a>';
+            
             break;
 
         case 'title':
@@ -168,6 +152,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
             break;
 
         case 'comment':
+            $fieldValue = COM_truncate(GLText::stripTags($fieldValue), COMMENT_MAX_LENGTH, '...');
             break;
 
         case 'uid':
@@ -212,16 +197,16 @@ function getTypeSelector($itemType)
 
     $selected = ($itemType === 'article') ? ' selected="selected"' : '';
     $retval .= '<option value="article"' . $selected . '>' . $LANG09[6] . '</option>' . LB;
-
-    if (in_array('staticpages', $_PLUGINS)) {
-        $selected = ($itemType === 'staticpages') ? ' selected="selected"' : '';
-        $retval .= '<option value="staticpages"' . $selected . '>' . $LANG_STATIC['staticpages'] . '</option>' . LB;
-    }
-
-    if (in_array('polls', $_PLUGINS)) {
-        $selected = ($itemType === 'polls') ? ' selected="selected"' : '';
-        $retval .= '<option value="polls"' . $selected . '>' . $LANG_POLLS['polls'] . '</option>' . LB;
-    }
+    
+   // Add enabled plugins that use comments
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_displaycomment_' . $pi_name;
+        if (function_exists($function)) {
+            // Since can display comments assume it uses comment system
+            $selected = ($itemType === $pi_name) ? ' selected="selected"' : '';
+        $retval .= '<option value="' . $pi_name . '"' . $selected . '>' . ucfirst($pi_name) . '</option>' . LB;
+        }
+    }    
 
     $retval .= '</select>' . LB;
 
@@ -297,29 +282,11 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
 
     $itemType = \Geeklog\Input::fPost('item_type', '');
 
-    switch ($itemType) {
-        case 'article':
-        case 'all':
-            break;
-
-        case 'staticpages':
-            if (!in_array('staticpages', $_PLUGINS)) {
-                $itemType = '';
-            }
-            break;
-
-        case 'polls':
-            if (!in_array('polls', $_PLUGINS)) {
-                $itemType = '';
-            }
-            break;
-
-        default:
-            $itemType = '';
-            break;
+    if (($itemType !== 'article') && ($itemType !== 'all') && !in_array($itemType, $_PLUGINS)) {
+        $itemType = '';
     }
 
-    if (($itemType === '') || ($itemType === 'all')) {
+    if (empty($itemType) || ($itemType === 'all')) {
         $sqlForType = '';
     } else {
         $sqlForType = " AND (type = '" . DB_escapeString($itemType) . "') ";

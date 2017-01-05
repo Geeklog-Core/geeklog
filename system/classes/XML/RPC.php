@@ -312,7 +312,7 @@ class XML_RPC
         $kind = $XML_RPC_val->kindOf();
 
         if ($kind === 'scalar') {
-            return $XML_RPC_val->scalarValue();
+            return $XML_RPC_val->scalarval();
         } elseif ($kind == 'array') {
             $size = $XML_RPC_val->arraySize();
             $arr = array();
@@ -1760,8 +1760,7 @@ class XML_RPC_Message extends XML_RPC_Base
             if ($XML_RPC_xh[$parser]['isf']) {
                 $f = $v->structMem('faultCode');
                 $fs = $v->structMem('faultString');
-                $r = new XML_RPC_Response($v, $f->scalarValue(),
-                    $fs->scalarValue());
+                $r = new XML_RPC_Response($v, $f->scalarval(), $fs->scalarval());
             } else {
                 $r = new XML_RPC_Response($v);
             }
@@ -2076,7 +2075,7 @@ class XML_RPC_Value extends XML_RPC_Base
             $t = get_object_vars($b);
 
             foreach ($t as $id => $cont) {
-                $t[$id] = $cont->scalarValue();
+                $t[$id] = $cont->scalarval();
             }
 
             foreach ($t as $id => $cont) {
@@ -2092,7 +2091,7 @@ class XML_RPC_Value extends XML_RPC_Base
      * @return mixed  the current element's scalar value.  If the value is
      *                 not scalar, FALSE is returned.
      */
-    public function scalarValue()
+    public function scalarval()
     {
         reset($this->me);
         $v = current($this->me);

@@ -11,7 +11,7 @@
  * @subpackage Modules
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'slvbase.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -190,7 +190,7 @@ class SLVbase
         $links = $this->getLinks($comment);
 
         // strip all HTML, then get all the plain text links
-        $comment = COM_makeClickableLinks(strip_tags($comment));
+        $comment = COM_makeClickableLinks(GLText::stripTags($comment));
         $links += $this->getLinks($comment);
 
         if (count($links) > 0) {

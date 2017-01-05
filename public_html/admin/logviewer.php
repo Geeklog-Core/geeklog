@@ -47,14 +47,7 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
-if (isset($_GET['log'])) {
-    $log = COM_applyFilter($_GET['log']);
-} elseif (isset($_POST['log'])) {
-    $log = COM_applyFilter($_POST['log']);
-} else {
-    $log = '';
-}
-
+$log = Geeklog\Input::fGetOrPost('log', '');
 $log = COM_sanitizeFilename($log, true);
 if (empty($log)) {
     $log = 'error.log';

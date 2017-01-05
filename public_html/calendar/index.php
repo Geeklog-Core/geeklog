@@ -64,41 +64,40 @@ function getDayViewData($result, $cur_time = '')
     }
 
     // Initialize array
-    $hourcols = array();
-    for ($i = 0; $i <= 23; $i++) {
-        $hourcols[$i] = 0;
-    }
+    $hourCols = array_fill(0, 24, 0);
 
     // Get data and increment counters
-    $thedata = array();
-    $nrows = DB_numRows($result);
+    $theData = array();
+    $numRows = DB_numRows($result);
 
-    $alldaydata = array();
-    for ($i = 1; $i <= $nrows; $i++) {
+    $allDayData = array();
+    for ($i = 1; $i <= $numRows; $i++) {
         $A = DB_fetchArray($result);
-        if ($A['allday'] == 1 OR (($A['datestart'] < date('Y-m-d', $cur_time)) AND ($A['dateend'] > date('Y-m-d', $cur_time)))) {
+        if (($A['allday'] == 1) ||
+            (($A['datestart'] < date('Y-m-d', $cur_time)) && ($A['dateend'] > date('Y-m-d', $cur_time)))
+        ) {
             // This is an all day event
-            $alldaydata[$i] = $A;
+            $allDayData[$i] = $A;
         } else {
             // This is an event with start/end times
-            if ($A['datestart'] < date('Y-m-d', $cur_time) AND $A['dateend'] >= date('Y-m-d', $cur_time)) {
-                $starthour = '00';
+            if (($A['datestart'] < date('Y-m-d', $cur_time)) && ($A['dateend'] >= date('Y-m-d', $cur_time))) {
+                $startHour = '00';
             } else {
-                $starthour = date('G', strtotime($A['datestart'] . ' ' . $A['timestart']));
+                $startHour = date('G', strtotime($A['datestart'] . ' ' . $A['timestart']));
             }
-            $endhour = date('G', strtotime($A['dateend'] . ' ' . $A['timeend']));
+            $endHour = date('G', strtotime($A['dateend'] . ' ' . $A['timeend']));
             if (date('i', strtotime($A['dateend'] . ' ' . $A['timeend'])) == '00') {
-                $endhour = $endhour - 1;
+                $endHour = $endHour - 1;
             }
-            $hourcols[$starthour] = $hourcols[$starthour] + 1;
-            if ($hourcols[$starthour] > $max) {
-                $max = $hourcols[$starthour];
+            $hourCols[$startHour] = $hourCols[$startHour] + 1;
+            if ($hourCols[$startHour] > $max) {
+                $max = $hourCols[$startHour];
             }
-            $thedata[$i] = $A;
+            $theData[$i] = $A;
         }
     }
 
-    return array($hourcols, $thedata, $max, $alldaydata);
+    return array($hourCols, $theData, $max, $allDayData);
 }
 
 /**
@@ -140,7 +139,7 @@ function setCalendarLanguage($aCalendar)
  * Returns an abbreviated day's name
  *
  * @param    int $day 1 = Sunday, 2 = Monday, ...
- * @return   string          abbreviated day's name (2 characters)
+ * @return   string   abbreviated day's name (2 characters)
  */
 function shortDaysName($day)
 {
@@ -186,7 +185,7 @@ function addMode($mode, $more = true)
 {
     $retval = '';
 
-    if (!empty ($mode)) {
+    if (!empty($mode)) {
         $retval .= 'mode=' . $mode;
         if ($more) {
             $retval .= '&amp;';
@@ -204,7 +203,7 @@ function addMode($mode, $more = true)
  * @param    string $mode  'personal' for personal events
  * @param    array  $A     event permissions and id
  * @param    string $token security token
- * @return   string          link or empty string
+ * @return   string        link or empty string
  */
 function getDeleteImageLink($mode, $A, $token)
 {
@@ -250,60 +249,67 @@ function getSmallCalendar($m, $y, $mode = '')
     global $_CONF;
 
     $retval = '';
-    $mycal = new Calendar();
-    setCalendarLanguage($mycal);
-    $mycal->setCalendarMatrix($m, $y);
+    $myCal = new Calendar();
+    setCalendarLanguage($myCal);
+    $myCal->setCalendarMatrix($m, $y);
 
-    if (!empty ($mode)) {
+    if (!empty($mode)) {
         $mode = '&amp;mode=' . $mode;
     }
 
-    $retval .= '<table class="smallcal">' . LB
+    $retval .= '<table class="smallcal">' . PHP_EOL
         . '<tr class="smallcal-headline"><td align="center" colspan="7">'
-        . COM_createLink($mycal->getMonthName($m), $_CONF['site_url']
+        . COM_createLink($myCal->getMonthName($m), $_CONF['site_url']
             . '/calendar/index.php?month=' . $m . '&amp;year=' . $y . $mode)
-        . '</td></tr>' . makeDaysHeadline() . LB;
+        . '</td></tr>' . makeDaysHeadline() . PHP_EOL;
 
     for ($i = 1; $i <= 6; $i++) {
         if ($i % 2 == 0) {
-            $tr = '<tr class="smallcal-week-even">' . LB;
+            $tr = '<tr class="smallcal-week-even">' . PHP_EOL;
         } else {
-            $tr = '<tr class="smallcal-week-odd">' . LB;
+            $tr = '<tr class="smallcal-week-odd">' . PHP_EOL;
         }
         $tr_sent = false;
         for ($j = 1; $j <= 7; $j++) {
-            $curday = $mycal->getDayData($i, $j);
+            $currentDay = $myCal->getDayData($i, $j);
             if (!$tr_sent) {
-                if (empty ($curday)) {
-                    $retval .= '<tr class="smallcal-week-empty">' . LB;
+                if (empty($currentDay)) {
+                    $retval .= '<tr class="smallcal-week-empty">' . PHP_EOL;
                 } else {
                     $retval .= $tr;
                 }
                 $tr_sent = true;
             }
             $retval .= '<td align="right"';
-            if (!empty ($curday)) {
+            if (!empty($currentDay)) {
                 if ($j % 2 == 0) {
-                    $retval .= ' class="smallcal-day-even">' . LB;
+                    $retval .= ' class="smallcal-day-even">' . PHP_EOL;
                 } else {
-                    $retval .= ' class="smallcal-day-odd">' . LB;
+                    $retval .= ' class="smallcal-day-odd">' . PHP_EOL;
                 }
-                $retval .= $curday->daynumber;
+                $retval .= $currentDay->daynumber;
             } else {
                 $retval .= ' class="smallcal-day-empty">&nbsp;';
             }
-            $retval .= '</td>' . LB;
+            $retval .= '</td>' . PHP_EOL;
         }
-        $retval .= '</tr>' . LB;
+        $retval .= '</tr>' . PHP_EOL;
     }
 
-    $retval .= '</table>' . LB;
+    $retval .= '</table>' . PHP_EOL;
 
     return $retval;
 }
 
 /**
  * Builds Quick Add form
+ *
+ * @param  Template $tpl
+ * @param  int      $month
+ * @param  int      $day
+ * @param  int      $year
+ * @param  string   $token
+ * @return Template
  */
 function getQuickAdd($tpl, $month, $day, $year, $token)
 {
@@ -313,28 +319,23 @@ function getQuickAdd($tpl, $month, $day, $year, $token)
     $tpl->set_var('day_options', COM_getDayFormOptions($day));
     $tpl->set_var('year_options', COM_getYearFormOptions($year));
 
-    $cur_hour = date('H', time());
-    if ($cur_hour >= 12) {
-        $ampm = 'pm';
-    } else {
-        $ampm = 'am';
+    $currentHour = date('H', time());
+    $amPm = ($currentHour >= 12) ? 'pm' : 'am';
+    $currentHour24 = $currentHour % 24;
+    if ($currentHour > 12) {
+        $currentHour = $currentHour - 12;
+    } elseif ($currentHour == 0) {
+        $currentHour = 12;
     }
-    $cur_hour_24 = $cur_hour % 24;
-    if ($cur_hour > 12) {
-        $cur_hour = $cur_hour - 12;
-    } elseif ($cur_hour == 0) {
-        $cur_hour = 12;
-    }
+
     if (isset($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
         $tpl->set_var('hour_mode', 24);
-        $tpl->set_var('hour_options',
-            COM_getHourFormOptions($cur_hour_24, 24));
+        $tpl->set_var('hour_options', COM_getHourFormOptions($currentHour24, 24));
     } else {
         $tpl->set_var('hour_mode', 12);
-        $tpl->set_var('hour_options', COM_getHourFormOptions($cur_hour));
+        $tpl->set_var('hour_options', COM_getHourFormOptions($currentHour));
     }
-    $tpl->set_var('startampm_selection',
-        COM_getAmPmFormSelection('start_ampm', $ampm));
+    $tpl->set_var('startampm_selection', COM_getAmPmFormSelection('start_ampm', $amPm));
     $cur_min = intval(date('i') / 15) * 15;
     $tpl->set_var('minute_options', COM_getMinuteFormOptions($cur_min, 15));
 
@@ -353,6 +354,11 @@ function getQuickAdd($tpl, $month, $day, $year, $token)
 
 /**
  * Returns timestamp for the prior sunday of a given day
+ *
+ * @param  int $month
+ * @param  int $day
+ * @param  int $year
+ * @return array
  */
 function getPriorSunday($month, $day, $year)
 {
@@ -367,27 +373,19 @@ function getPriorSunday($month, $day, $year)
 }
 
 // MAIN
-$mode = '';
-if (isset ($_REQUEST['mode'])) {
-    $mode = COM_applyFilter($_REQUEST['mode']);
-}
-
-if ($mode != 'personal' && $mode != 'quickadd') {
+$mode = Geeklog\Input::fRequest('mode', '');
+if ($mode !== 'personal' && $mode !== 'quickadd') {
     $mode = '';
 }
 
-if ($mode == 'personal') {
-    $pagetitle = $LANG_CAL_1[42];
-} else {
-    $pagetitle = $LANG_CAL_1[41];
-}
+$pagetitle = ($mode === 'personal') ? $LANG_CAL_1[42] : $LANG_CAL_1[41];
 
 // Set mode back to master if user refreshes screen after their session expires
-if (($mode == 'personal') && COM_isAnonUser()) {
+if (($mode === 'personal') && COM_isAnonUser()) {
     $mode = '';
 }
 
-if ($mode == 'personal' AND $_CA_CONF['personalcalendars'] == 0) {
+if ($mode === 'personal' && $_CA_CONF['personalcalendars'] == 0) {
     // User is trying to use the personal calendar feature even though it isn't
     // turned on.
     $display .= $LANG_CAL_2[37];
@@ -399,39 +397,23 @@ if ($mode == 'personal' AND $_CA_CONF['personalcalendars'] == 0) {
 // after this point, we can safely assume that if $mode == 'personal',
 // the current user is actually allowed to use this personal calendar
 
-$msg = 0;
-if (isset ($_REQUEST['msg'])) {
-    $msg = COM_applyFilter($_REQUEST['msg'], true);
-}
+$msg = (int) Geeklog\Input::fRequest('msg', 0);
 if ($msg > 0) {
     $display .= COM_showMessage($msg, 'calendar');
 }
 
-$view = '';
-if (isset ($_REQUEST['view'])) {
-    $view = COM_applyFilter($_REQUEST['view']);
-}
-
+$view = Geeklog\Input::fRequest('view', '');
 if (!in_array($view, array('month', 'week', 'day', 'addentry', 'savepersonal'))) {
     $view = '';
 }
 
-$year = 0;
-if (isset ($_REQUEST['year'])) {
-    $year = COM_applyFilter($_REQUEST['year'], true);
-}
-$month = 0;
-if (isset ($_REQUEST['month'])) {
-    $month = COM_applyFilter($_REQUEST['month'], true);
-}
-$day = 0;
-if (isset ($_REQUEST['day'])) {
-    $day = COM_applyFilter($_REQUEST['day'], true);
-}
+$year = (int) Geeklog\Input::fRequest('year', 0);
+$month = (int) Geeklog\Input::fRequest('month', 0);
+$day = (int) Geeklog\Input::fRequest('day', 0);
 
 $token = '';
-if ((($view == 'day') || ($view == 'week')) &&
-    (($mode == 'personal') || SEC_hasRights('calendar.edit'))
+if ((($view === 'day') || ($view === 'week')) &&
+    (($mode === 'personal') || SEC_hasRights('calendar.edit'))
 ) {
     $token = SEC_createToken();
 }
@@ -439,23 +421,24 @@ if ((($view == 'day') || ($view == 'week')) &&
 // Create new calendar object
 $cal = new Calendar();
 
-if ($view == 'week' AND (empty($month) AND empty($day) AND empty($year))) {
+if (($view === 'week') && (empty($month) && empty($day) && empty($year))) {
     list($month, $day, $year) = getPriorSunday(date('m', time()), date('j', time()), date('Y', time()));
 } else {
     // Get current month
-    $currentmonth = date('m', time());
+    $currentTimestamp = time();
+    $currentmonth = date('m', $currentTimestamp);
     if (empty($month)) {
         $month = $currentmonth;
     }
 
     // Get current year
-    $currentyear = date('Y', time());
+    $currentYear = date('Y', $currentTimestamp);
     if (empty($year)) {
-        $year = $currentyear;
+        $year = $currentYear;
     }
 
     // Get current day
-    $currentday = date('j', time());
+    $currentday = date('j', $currentTimestamp);
     if (empty($day)) {
         $day = $currentday;
     }
@@ -487,10 +470,12 @@ $cal->setCalendarMatrix($month, $year);
 switch ($view) {
     case 'day':
         $cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar', 'dayview'));
-        $cal_templates->set_file(array('column'   => 'column.thtml',
-                                       'event'    => 'singleevent.thtml',
-                                       'dayview'  => 'dayview.thtml',
-                                       'quickadd' => 'quickaddform.thtml'));
+        $cal_templates->set_file(array(
+            'column'   => 'column.thtml',
+            'event'    => 'singleevent.thtml',
+            'dayview'  => 'dayview.thtml',
+            'quickadd' => 'quickaddform.thtml',
+        ));
         $cal_templates->set_var('mode', $mode);
         $cal_templates->set_var('lang_day', $LANG_CAL_2[39]);
         $cal_templates->set_var('lang_week', $LANG_CAL_2[40]);
@@ -512,7 +497,7 @@ switch ($view) {
         $cal_templates->set_var('nextyear', strftime('%Y', $nextstamp));
 
         $cal_templates->set_var('currentday', strftime('%A, %x', mktime(0, 0, 0, $month, $day, $year)));
-        if ($mode == 'personal') {
+        if ($mode === 'personal') {
             $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
             $cal_templates->set_var('calendar_toggle', '|&nbsp;'
                 . COM_createLink($LANG_CAL_2[11], $_CONF['site_url']
@@ -520,7 +505,7 @@ switch ($view) {
             );
         } else {
             $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
-            if (!COM_isAnonUser() AND $_CA_CONF['personalcalendars'] == 1) {
+            if (!COM_isAnonUser() && $_CA_CONF['personalcalendars'] == 1) {
                 $cal_templates->set_var('calendar_toggle', '|&nbsp;'
                     . COM_createLink($LANG_CAL_2[12], $_CONF['site_url']
                         . "/calendar/index.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year") . ']'
@@ -529,9 +514,12 @@ switch ($view) {
                 $cal_templates->set_var('calendar_toggle', ']');
             }
         }
-        $thedate = COM_getUserDateTimeFormat(mktime(0, 0, 0, $month, $day, $year));
-        $cal_templates->set_var('week_num', strftime('%V', $thedate[1]));
-        if ($mode == 'personal') {
+
+        // Set week number
+        $theDate = COM_getUserDateTimeFormat(mktime(0, 0, 0, $month, $day, $year));
+        $cal_templates->set_var('week_num', strftime('%V', $theDate[1]));
+
+        if ($mode === 'personal') {
             $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['personal_events']} "
                 . "WHERE (uid = {$_USER['uid']}) "
                 . "AND ((allday=1 AND datestart = '$year-$month-$day') "
@@ -548,26 +536,25 @@ switch ($view) {
                 . " ORDER BY datestart,timestart";
         }
         $result = DB_query($calsql);
-        $nrows = DB_numRows($result);
-        list($hourcols, $thedata, $max, $alldaydata) = getDayViewData($result);
+        $numRows = DB_numRows($result);
+        list($hourCols, $theData, $max, $allDayData) = getDayViewData($result);
 
         // Get all day events
-        $alldaycount = count($alldaydata);
-        if ($alldaycount > 0) {
-            for ($i = 1; $i <= $alldaycount; $i++) {
-                $A = current($alldaydata);
-                $cal_templates->set_var('delete_imagelink',
-                    getDeleteImageLink($mode, $A, $token));
+        $allDayCount = count($allDayData);
+        if ($allDayCount > 0) {
+            for ($i = 1; $i <= $allDayCount; $i++) {
+                $A = current($allDayData);
+                $cal_templates->set_var('delete_imagelink', getDeleteImageLink($mode, $A, $token));
                 $cal_templates->set_var('event_time', $LANG_CAL_2[26]);
                 $cal_templates->set_var('eid', $A['eid']);
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
-                if ($i < $alldaycount) {
+                if ($i < $allDayCount) {
                     $cal_templates->set_var('br', '<br' . XHTML . '>');
                 } else {
                     $cal_templates->set_var('br', '');
                 }
                 $cal_templates->parse('allday_events', 'event', true);
-                next($alldaydata);
+                next($allDayData);
             }
         } else {
             $cal_templates->set_var('allday_events', '&nbsp;');
@@ -576,21 +563,18 @@ switch ($view) {
         //$cal_templates->set_var('first_colspan', $maxcols);
         //$cal_templates->set_var('title_colspan', $maxcols + 1);
         for ($i = 0; $i <= 23; $i++) {
-            $numevents = $hourcols[$i];
-            if ($numevents > 0) {
+            $numEvents = $hourCols[$i];
+            if ($numEvents > 0) {
                 // $colsleft = $maxcols;
-                for ($j = 1; $j <= $numevents; $j++) {
-                    $A = current($thedata);
-                    $cal_templates->set_var('event_time',
-                        strftime($_CONF['timeonly'], strtotime($A['datestart']
-                            . ' ' . $A['timestart'])) . '-'
-                        . strftime($_CONF['timeonly'], strtotime($A['dateend']
-                            . ' ' . $A['timeend'])));
-                    $cal_templates->set_var('delete_imagelink',
-                        getDeleteImageLink($mode, $A, $token));
+                for ($j = 1; $j <= $numEvents; $j++) {
+                    $A = current($theData);
+                    list($startTime,) = COM_getUserDateTimeFormat(strtotime($A['datestart'] . ' ' . $A['timestart']), 'timeonly');
+                    list($endTime,) = COM_getUserDateTimeFormat(strtotime($A['dateend'] . ' ' . $A['timeend']), 'timeonly');
+                    $cal_templates->set_var('event_time', $startTime . '-' . $endTime);
+                    $cal_templates->set_var('delete_imagelink', getDeleteImageLink($mode, $A, $token));
                     $cal_templates->set_var('eid', $A['eid']);
                     $cal_templates->set_var('event_title', stripslashes($A['title']));
-                    if ($j < $numevents) {
+                    if ($j < $numEvents) {
                         $cal_templates->set_var('br', '<br' . XHTML . '>');
                     } else {
                         $cal_templates->set_var('br', '');
@@ -598,17 +582,18 @@ switch ($view) {
                     $cal_templates->parse('event_entry', 'event',
                         ($j == 1) ? false : true);
                     // $colsleft = $colsleft - 1;
-                    next($thedata);
+                    next($theData);
                 }
             } else {
                 $cal_templates->set_var('event_entry', '&nbsp;');
             }
-            $cal_templates->set_var($i . '_hour',
-                strftime($_CONF['timeonly'], mktime($i, 0)));
+
+            list($time,) = COM_getUserDateTimeFormat(mktime($i, 0), 'timeonly');
+            $cal_templates->set_var($i . '_hour', $time);
             $cal_templates->parse($i . '_cols', 'column', true);
         }
 
-        if ($mode == 'personal') {
+        if ($mode === 'personal') {
             $cal_templates = getQuickAdd($cal_templates, $month, $day, $year, $token);
         } else {
             $cal_templates->set_var('quickadd_form', '');
@@ -619,12 +604,14 @@ switch ($view) {
 
     case 'week':
         $cal_templates = COM_newTemplate(CTL_plugin_templatePath('calendar'));
-        $cal_templates->set_file(array('week'     => 'weekview/weekview.thtml',
-                                       'events'   => 'weekview/events.thtml',
-                                       'quickadd' => 'dayview/quickaddform.thtml'));
+        $cal_templates->set_file(array(
+            'week'     => 'weekview/weekview.thtml',
+            'events'   => 'weekview/events.thtml',
+            'quickadd' => 'dayview/quickaddform.thtml',
+        ));
         $cal_templates->set_var('mode', $mode);
         $cal_templates->set_var('lang_week', $LANG_CAL_2[27]);
-        if ($mode == 'personal') {
+        if ($mode === 'personal') {
             $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
             $cal_templates->set_var('calendar_toggle', '|&nbsp;'
                 . COM_createLink($LANG_CAL_2[11], $_CONF['site_url']
@@ -632,7 +619,7 @@ switch ($view) {
             );
         } else {
             $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
-            if (!COM_isAnonUser() AND $_CA_CONF['personalcalendars'] == 1) {
+            if (!COM_isAnonUser() && $_CA_CONF['personalcalendars'] == 1) {
                 $cal_templates->set_var('calendar_toggle', '|&nbsp;'
                     . COM_createLink($LANG_CAL_2[12], $_CONF['site_url']
                         . "/calendar/index.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year") . ']'
@@ -663,7 +650,7 @@ switch ($view) {
             $time_day7 = mktime(0, 0, 0, $month, $day + 7, $year);
             $start_mname = strftime('%B', $time_day1);
             // Check for Windows to find and replace the %e
-            if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                 $eday = strftime('%#d', $time_day7);
             } else {
                 $eday = strftime('%e', $time_day7);
@@ -684,25 +671,25 @@ switch ($view) {
             $end_ynum = strftime('%Y', $time_day6);
             $date_range = $start_mname . ' ' . $day;
         }
-        if ($year <> $end_ynum) {
+        if ($year != $end_ynum) {
             $date_range .= ', ' . $year . ' - ';
         } else {
             $date_range .= ' - ';
         }
-        if ($start_mname <> $end_mname) {
+        if ($start_mname != $end_mname) {
             $date_range .= $end_mname . ' ' . $eday . ', ' . $end_ynum;
         } else {
             $date_range .= $eday . ', ' . $end_ynum;
         }
         $cal_templates->set_var('date_range', $date_range);
-        if ($_CONF['week_start'] == 'Mon') {
+        if ($_CONF['week_start'] === 'Mon') {
             $thedate = COM_getUserDateTimeFormat(mktime(0, 0, 0, $month, $day + 1, $year));
         } else {
             $thedate = COM_getUserDateTimeFormat(mktime(0, 0, 0, $month, $day, $year));
         }
         $cal_templates->set_var('week_num', $thedate[1]);
         for ($i = 1; $i <= 7; $i++) {
-            if ($_CONF['week_start'] == 'Mon') {
+            if ($_CONF['week_start'] === 'Mon') {
                 $dayname = (date('w', $thedate[1]) == 0)
                     ? $cal->getDayName(7)
                     : $cal->getDayName(date('w', $thedate[1]));
@@ -723,7 +710,7 @@ switch ($view) {
                     $_CONF['site_url'] . '/calendar/index.php?' . addMode($mode)
                     . "view=day&amp;day$daynum&amp;month=$monthnum&amp;year=$yearnum")
             );
-            if ($mode == 'personal') {
+            if ($mode === 'personal') {
                 $add_str = $LANG_CAL_2[8];
             } else {
                 $add_str = $LANG_CAL_2[42];
@@ -733,14 +720,14 @@ switch ($view) {
                 COM_createLink($add_str, $_CONF['site_url'] . '/submit.php?type=calendar&amp;'
                     . addMode($mode) . "day=$daynum&amp;month=$monthnum&amp;year=$yearnum")
             );
-            if ($mode == 'personal') {
+            if ($mode === 'personal') {
                 $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" BETWEEN datestart AND dateend)) ORDER BY datestart,timestart";
             } else {
                 $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" BETWEEN datestart AND dateend))" . COM_getPermSql('AND') . " ORDER BY datestart,timestart";
             }
             $result = DB_query($calsql);
-            $nrows = DB_numRows($result);
-            for ($j = 1; $j <= $nrows; $j++) {
+            $numRows = DB_numRows($result);
+            for ($j = 1; $j <= $numRows; $j++) {
                 $A = DB_fetchArray($result);
                 if ($A['allday'] == 1) {
                     $cal_templates->set_var('event_starttime', $LANG_CAL_2[26]);
@@ -752,12 +739,12 @@ switch ($view) {
                     $startmonth = date('n', $startstamp);
                     $endday = date('d', $endstamp);
                     $endmonth = date('n', $endstamp);
-                    if (($startmonth == $monthnum && $daynum > $startday) OR ($startmonth <> $monthnum)) {
+                    if (($startmonth == $monthnum && $daynum > $startday) || ($startmonth != $monthnum)) {
                         $starttime = date('n/j g:i a', $startstamp);
                     } else {
                         $starttime = date('g:i a', $startstamp);
                     }
-                    if (($endmonth == $monthnum && $daynum < $endday) OR ($endmonth <> $monthnum)) {
+                    if (($endmonth == $monthnum && $daynum < $endday) || ($endmonth != $monthnum)) {
                         $endtime = date('n/j g:i a', $endstamp);
                     } else {
                         $endtime = date('g:i a', $endstamp);
@@ -775,7 +762,7 @@ switch ($view) {
                     getDeleteImageLink($mode, $A, $token));
                 $cal_templates->parse('events_day' . $i, 'events', true);
             }
-            if ($nrows == 0) {
+            if ($numRows == 0) {
                 $cal_templates->set_var('event_starttime', '&nbsp;');
                 $cal_templates->set_var('event_endtime', '');
                 $cal_templates->set_var('event_title_and_link', '');
@@ -837,7 +824,7 @@ switch ($view) {
         $cal_templates->set_var('cal_nextmo_num', $nextmonth);
         $cal_templates->set_var('cal_nextyr_num', $nextyear);
 
-        if ($_CONF['week_start'] == 'Mon') {
+        if ($_CONF['week_start'] === 'Mon') {
             $cal_templates->set_var('lang_sunday', $LANG_WEEK[2]);
             $cal_templates->set_var('lang_monday', $LANG_WEEK[3]);
             $cal_templates->set_var('lang_tuesday', $LANG_WEEK[4]);
@@ -856,51 +843,84 @@ switch ($view) {
         }
 
         $cal_templates->set_var('lang_january', $LANG_MONTH[1]);
-        if ($month == 1) $cal_templates->set_var('selected_jan', 'selected="selected"');
+        if ($month == 1) {
+            $cal_templates->set_var('selected_jan', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_february', $LANG_MONTH[2]);
-        if ($month == 2) $cal_templates->set_var('selected_feb', 'selected="selected"');
+        if ($month == 2) {
+            $cal_templates->set_var('selected_feb', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_march', $LANG_MONTH[3]);
-        if ($month == 3) $cal_templates->set_var('selected_mar', 'selected="selected"');
+        if ($month == 3) {
+            $cal_templates->set_var('selected_mar', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_april', $LANG_MONTH[4]);
-        if ($month == 4) $cal_templates->set_var('selected_apr', 'selected="selected"');
+        if ($month == 4) {
+            $cal_templates->set_var('selected_apr', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_may', $LANG_MONTH[5]);
-        if ($month == 5) $cal_templates->set_var('selected_may', 'selected="selected"');
+        if ($month == 5) {
+            $cal_templates->set_var('selected_may', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_june', $LANG_MONTH[6]);
-        if ($month == 6) $cal_templates->set_var('selected_jun', 'selected="selected"');
+        if ($month == 6) {
+            $cal_templates->set_var('selected_jun', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_july', $LANG_MONTH[7]);
-        if ($month == 7) $cal_templates->set_var('selected_jul', 'selected="selected"');
+        if ($month == 7) {
+            $cal_templates->set_var('selected_jul', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_august', $LANG_MONTH[8]);
-        if ($month == 8) $cal_templates->set_var('selected_aug', 'selected="selected"');
+        if ($month == 8) {
+            $cal_templates->set_var('selected_aug', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_september', $LANG_MONTH[9]);
-        if ($month == 9) $cal_templates->set_var('selected_sep', 'selected="selected"');
+        if ($month == 9) {
+            $cal_templates->set_var('selected_sep', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_october', $LANG_MONTH[10]);
-        if ($month == 10) $cal_templates->set_var('selected_oct', 'selected="selected"');
+        if ($month == 10) {
+            $cal_templates->set_var('selected_oct', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_november', $LANG_MONTH[11]);
-        if ($month == 11) $cal_templates->set_var('selected_nov', 'selected="selected"');
+        if ($month == 11) {
+            $cal_templates->set_var('selected_nov', 'selected="selected"');
+        }
+
         $cal_templates->set_var('lang_december', $LANG_MONTH[12]);
-        if ($month == 12) $cal_templates->set_var('selected_dec', 'selected="selected"');
+        if ($month == 12) {
+            $cal_templates->set_var('selected_dec', 'selected="selected"');
+        }
 
         $cal_templates->set_var('lang_day', $LANG_CAL_2[39]);
         $cal_templates->set_var('lang_week', $LANG_CAL_2[40]);
         $cal_templates->set_var('lang_month', $LANG_CAL_2[41]);
 
-        if ($mode == 'personal') {
-            $cal_templates->set_var('calendar_title',
-                $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
+        if ($mode === 'personal') {
+            $cal_templates->set_var('calendar_title', $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
         } else {
-            $cal_templates->set_var('calendar_title',
-                $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
+            $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
         }
 
-        $yroptions = '';
-        for ($y = $currentyear - 5; $y <= $currentyear + 5; $y++) {
-            $yroptions .= '<option value="' . $y . '"';
+        $yearOptions = '';
+        for ($y = $currentYear - 5; $y <= $currentYear + 5; $y++) {
+            $yearOptions .= '<option value="' . $y . '"';
             if ($y == $year) {
-                $yroptions .= ' selected="selected"';
+                $yearOptions .= ' selected="selected"';
             }
-            $yroptions .= '>' . $y . '</option>' . LB;
+            $yearOptions .= '>' . $y . '</option>' . LB;
         }
-        $cal_templates->set_var('year_options', $yroptions);
+        $cal_templates->set_var('year_options', $yearOptions);
 
         for ($i = 1; $i <= 6; $i++) {
             $wday = '';
@@ -911,13 +931,13 @@ switch ($view) {
                     if (empty($wday)) {
                         $wday = $curday->daynumber;
                     }
-                    if (($currentyear > $year) OR
-                        ($currentmonth > $month && $currentyear == $year) OR
-                        ($currentmonth == $month && $currentday > $curday->daynumber && $currentyear == $year)
+                    if (($currentYear > $year) ||
+                        ($currentmonth > $month && $currentYear == $year) ||
+                        ($currentmonth == $month && $currentday > $curday->daynumber && $currentYear == $year)
                     ) {
                         $cal_templates->set_var('cal_day_style', 'cal-oldday');
                     } else {
-                        if ($currentyear == $year && $currentmonth == $month && $currentday == $curday->daynumber) {
+                        if ($currentYear == $year && $currentmonth == $month && $currentday == $curday->daynumber) {
                             $cal_templates->set_var('cal_day_style', 'cal-today');
                         } else {
                             $cal_templates->set_var('cal_day_style', 'cal-futureday');
@@ -940,7 +960,7 @@ switch ($view) {
                         $month = '0' . $month;
                     }
 
-                    if ($mode == 'personal') {
+                    if ($mode === 'personal') {
                         $calsql_tbl = $_TABLES['personal_events'];
                         $calsql_filt = "AND (uid = {$_USER['uid']})";
                     } else {
@@ -979,7 +999,6 @@ switch ($view) {
                         }
 
                         $cal_templates->set_var('event_anchortags', $entries);
-
                     } else {
                         if ($q2_numrows < 4) {
                             for ($t = 0; $t < (4 - $q2_numrows); $t++) {
@@ -1022,7 +1041,7 @@ switch ($view) {
             // check if we need to render the following week at all
             if ($i < 6) {
                 $data = $cal->getDayData($i + 1, 1);
-                if (empty ($data)) {
+                if (empty($data)) {
                     break;
                 }
             }
@@ -1040,14 +1059,13 @@ switch ($view) {
             }
         }
 
-
         $cal_templates->set_var('lang_cal_curmo', $LANG_MONTH[$currentmonth + 0]);
         $cal_templates->set_var('cal_curmo_num', $currentmonth);
-        $cal_templates->set_var('cal_curyr_num', $currentyear);
+        $cal_templates->set_var('cal_curyr_num', $currentYear);
         $cal_templates->set_var('lang_cal_displaymo', $LANG_MONTH[$month + 0]);
         $cal_templates->set_var('cal_displaymo_num', $month);
         $cal_templates->set_var('cal_displayyr_num', $year);
-        if ($mode == 'personal') {
+        if ($mode === 'personal') {
             $cal_templates->set_var('lang_addevent', $LANG_CAL_2[8]);
             $cal_templates->set_var('addevent_formurl', '/calendar/index.php');
         } else {
@@ -1060,7 +1078,6 @@ switch ($view) {
 
         $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
         break;
-
 } // end switch
 
 COM_output($display);

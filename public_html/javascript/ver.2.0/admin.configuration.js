@@ -497,7 +497,7 @@ $(function() {
                 }
             }
 
-            if ( $('a[href=#tab-dropdown]', tabs).length ) {
+            if ( $('a[href="#tab-dropdown"]', tabs).length ) {
                 geeklog.admin.configuration.removeTab(tabs, geeklog.admin.configuration.getTabLength(tabs) - 1);
             }
 

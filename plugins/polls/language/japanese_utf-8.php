@@ -198,4 +198,3 @@ $LANG_configselects['polls'] = array(
     15 => array('すべて' => 'all', 'ホームページのみ' => 'homeonly', '話題を選択する' => 'selectedtopics')
 );
 
-?>

@@ -40,7 +40,7 @@
  * @package Polls
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
@@ -516,11 +516,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                     $poll->set_var('edit_icon', $editlink);
                 }
 
-                if (array_key_exists('aid', $_POST)) {
-                    $aid = $_POST['aid'];
-                } else {
-                    $aid = array();
-                }
+                $aid = Geeklog\Input::fPost('aid', array());
 
                 for ($j = 0; $j < $nquestions; $j++) {
                     $Q = DB_fetchArray($questions);

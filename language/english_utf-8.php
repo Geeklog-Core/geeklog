@@ -746,8 +746,15 @@ $LANG_ENVCHECK = array(
     'off'                       => 'Off',
     'ok'                        => 'OK',
     'on'                        => 'On',
+    'database_settings'         => 'Database Settings',
+    'database_mysql_version'    => 'MySQL Version',
+    'database_mysql_req_version' => 'Geeklog requires MySQL version 4.1.2 or newer (MySQL 5 recommended).',
+    'database_pgsql_version'    => 'Postgresql Version',
+    'database_pgsql_req_version' => 'Geeklog requires Postgresql version 9.1.7 or newer.',
+    'database_dms'              => 'Database Management System',
+    'database_dms_notes'        => 'Failed to determine Database Management System. Geeklog requires either MySQL or Postgresql',
     'open_basedir'              => 'If <strong>open_basedir</strong> restrictions are enabled on your site, it may cause permission problems during the install. The File System Check below should point out any issues.',
-    'php_req_version'           => 'Geeklog requires PHP version 5.2.0 or newer.',
+    'php_req_version'           => 'Geeklog requires PHP version 5.3.3 or newer.',
     'php_settings'              => 'PHP Settings',
     'php_version'               => 'PHP Version',
     'php_warning'               => 'If any of the items below are marked in <span class="no">red</span>, you may encounter problems with your Geeklog site.  Check with your hosting provider for information on changing any of these PHP settings.',
@@ -869,7 +876,12 @@ $LANG21 = array(
     'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
     'position'              => 'Position', 
     'cache_time'            => 'Cache Time',
-    'cache_time_desc'       => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
+    'cache_time_desc'       => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)',
+    'block_type_gldefault'  => 'System',
+    'block_type_normal'     => 'Normal',
+    'block_type_phpblock'   => 'PHP',
+    'block_type_portal'     => 'Portal',
+    'block_type_dynamic'    => 'Dynamic'
 );
 
 ###############################################################################
@@ -1168,6 +1180,8 @@ $LANG29 = array(
     41 => 'Comment Submissions',
     42 => 'Username',
     43 => 'Auto-publish Comments?',
+    44 => 'Results of your moderation',
+    45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -1285,7 +1299,7 @@ $LANG32 = array(
     // to match the PHP error constants,
     // http://www.php.net/manual/en/features.file-upload.errors.php
     // TBD: move to a separate $LANG array
-     99 => 'An unknown error occured',
+     99 => 'An unknown error occurred',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
     102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
@@ -1466,8 +1480,8 @@ $MESSAGE = array(
     69 => 'Your account has been blocked!',
     70 => 'Your account is awaiting administrator approval.',
     71 => 'Your account has now been confirmed and is awaiting administrator approval.',
-    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
-    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    72 => 'An error occurred while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occurred while attempting to uninstall the plugin. See error.log for details.',
     74 => 'The pingback has been successfully sent.',
     75 => 'Trackbacks must be sent using a POST request.',
     76 => 'Do you really want to delete this item?',

@@ -1951,26 +1951,29 @@ class Story
             }
         }
 
-        if (count($work) > 1) {
-            usort($work, array(__CLASS__, 'getRelatedArticlesSort'));
+        $retval = '';
+        if ($found) {
+            if (count($work) > 1) {
+                usort($work, array(__CLASS__, 'getRelatedArticlesSort'));
+            }
+
+            if (count($work) > $limit) {
+                $work = array_slice($work, 0, $limit);
+            }
+
+            $encoding = COM_getEncodingt();
+            $retval = array();
+
+            foreach ($work as $item) {
+                $retval[] = '<li>'
+                    . '<a href="' . COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $item['sid'])
+                    . '">' . htmlspecialchars($item['title'], ENT_QUOTES, $encoding) . '</a>'
+                    . '</li>' . PHP_EOL;
+            }
+
+            $retval = '<h3>' . $LANG24[92] . '</h3>' . PHP_EOL
+                . '<ul>' . PHP_EOL . implode('', $retval) . '</ul>' . PHP_EOL;
         }
-
-        if (count($work) > $limit) {
-            $work = array_slice($work, 0, $limit);
-        }
-
-        $encoding = COM_getEncodingt();
-        $retval = array();
-
-        foreach ($work as $item) {
-            $retval[] = '<li>'
-                . '<a href="' . COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $item['sid'])
-                . '">' . htmlspecialchars($item['title'], ENT_QUOTES, $encoding) . '</a>'
-                . '</li>' . PHP_EOL;
-        }
-
-        $retval = '<h3>' . $LANG24[92] . '</h3>' . PHP_EOL
-            . '<ul>' . PHP_EOL . implode('', $retval) . '</ul>' . PHP_EOL;
 
         return $retval;
     }
@@ -2184,7 +2187,7 @@ class Story
      */
     private function _applyTitleFilter($title)
     {
-        $retval = strip_tags(COM_checkWords($title, 'story'));
+        $retval = GLText::stripTags(COM_checkWords($title, 'story'));
         $retval = GLText::remove4byteUtf8Chars($retval);
         $retval = htmlspecialchars($retval, ENT_QUOTES, COM_getEncodingt());
 

@@ -194,4 +194,3 @@ $LANG_configselects['spamx'] = array(
     1 => array('はい' => true, 'いいえ' => false)
 );
 
-?>

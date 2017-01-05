@@ -40,7 +40,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-user.php') !== false) {
  * Delete a user account
  *
  * @param    int $uid id of the user to delete
- * @return   boolean   true = user deleted, false = an error occured
+ * @return   boolean   true = user deleted, false = an error occurred
  */
 function USER_deleteAccount($uid)
 {
@@ -135,7 +135,7 @@ function USER_deleteAccount($uid)
  *
  * @param    string $username  user's login name
  * @param    string $useremail user's email address
- * @return   boolean             true = success, false = an error occured
+ * @return   boolean             true = success, false = an error occurred
  */
 function USER_createAndSendPassword($username, $useremail, $uid)
 {
@@ -184,7 +184,7 @@ function USER_createAndSendPassword($username, $useremail, $uid)
  *
  * @param    string $userName  user's login name
  * @param    string $userEmail user's email address
- * @return   boolean           true = success, false = an error occured
+ * @return   boolean           true = success, false = an error occurred
  */
 function USER_sendActivationEmail($userName, $userEmail)
 {
@@ -341,7 +341,7 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
  * @param  string $email    Email address of the new user
  * @param  int    $uid      User id of the new user
  * @param  string $mode     Mode user was added at.
- * @return boolean             true = success, false = an error occured
+ * @return boolean             true = success, false = an error occurred
  */
 function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
 {
@@ -939,7 +939,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('lang_homepage', $LANG04[6]);
     $user_templates->set_var('user_homepage', COM_killJS($A['homepage']));
     $user_templates->set_var('lang_location', $LANG04[106]);
-    $user_templates->set_var('user_location', strip_tags($A['location']));
+    $user_templates->set_var('user_location', GLText::stripTags($A['location']));
     $user_templates->set_var('lang_bio', $LANG04[7]);
     $user_templates->set_var('user_bio', COM_nl2br(stripslashes($A['about'])));
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);

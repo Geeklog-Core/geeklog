@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | syndication.php                                                           |
 // |                                                                           |
@@ -31,19 +31,19 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Content syndication administration page: Here you can create, edit, and
-* delete feeds in various formats for Geeklog and its plugins.
-*
-*/
+ * Content syndication administration page: Here you can create, edit, and
+ * delete feeds in various formats for Geeklog and its plugins.
+
+ */
 
 /**
-* Geeklog common function library
-*/
+ * Geeklog common function library
+ */
 require_once '../lib-common.php';
 
 /**
-* Security check to ensure user even belongs on this page
-*/
+ * Security check to ensure user even belongs on this page
+ */
 require_once 'auth.inc.php';
 
 $display = '';
@@ -57,15 +57,14 @@ if (!SEC_hasRights('syndication.edit')) {
 }
 
 /**
-* Delete a feed's file
-*
-* @param    string  filename (without the path) of the feed
-* @return   void
-*
-*/
+ * Delete a feed's file
+ *
+ * @param    string  filename (without the path) of the feed
+ * @return   void
+ */
 function deleteFeedFile($filename)
 {
-    if (! empty($filename)) {
+    if (!empty($filename)) {
         $feedfile = SYND_getFeedPath($filename);
         if (file_exists($feedfile)) {
             @unlink($feedfile);
@@ -74,13 +73,12 @@ function deleteFeedFile($filename)
 }
 
 /**
-* Toggle status of a feed from enabled to disabled and back
-*
-* @param    array   $enabledfeeds   array containing ids of enabled feeds
-* @param    array   $visiblefeeds   array containing ids of visible feeds
-* @return   void
-*
-*/
+ * Toggle status of a feed from enabled to disabled and back
+ *
+ * @param    array $enabledfeeds array containing ids of enabled feeds
+ * @param    array $visiblefeeds array containing ids of visible feeds
+ * @return   void
+ */
 function changeFeedStatus($enabledfeeds, $visiblefeeds)
 {
     global $_TABLES;
@@ -91,14 +89,14 @@ function changeFeedStatus($enabledfeeds, $visiblefeeds)
 
     // disable feeds
     $in = implode(',', $disabled);
-    if (! empty($in)) {
+    if (!empty($in)) {
         $sql = "UPDATE {$_TABLES['syndication']} SET is_enabled = 0 WHERE fid IN ($in)";
         DB_query($sql);
     }
 
     // enable feeds
     $in = implode(',', $enabledfeeds);
-    if (! empty($in)) {
+    if (!empty($in)) {
         // if we just enabled a feed, figure out which one it was
         $sql = "SELECT fid FROM {$_TABLES['syndication']} WHERE fid IN ($in) AND is_enabled = 0";
         $result = DB_query($sql);
@@ -125,32 +123,30 @@ function changeFeedStatus($enabledfeeds, $visiblefeeds)
 }
 
 /**
-* Get a list of feed formats from the feed parser factory.
-*
-* @return   array   array of names of feed formats (and versions)
-*
-*/
-function find_feedFormats ()
+ * Get a list of feed formats from the feed parser factory.
+ *
+ * @return   array   array of names of feed formats (and versions)
+ */
+function find_feedFormats()
 {
     global $_CONF;
 
     // Import the feed handling classes:
     require_once $_CONF['path_system']
-                 . '/classes/syndication/parserfactory.class.php';
+        . '/classes/syndication/parserfactory.class.php';
 
     $factory = new FeedParserFactory ();
-    $formats = $factory->getFeedTypes ();
-    sort ($formats);
+    $formats = $factory->getFeedTypes();
+    sort($formats);
 
     return $formats;
 }
 
 /**
-* List all feeds
-*
-* @return   string  HTML with the list of all feeds
-*
-*/
+ * List all feeds
+ *
+ * @return   string  HTML with the list of all feeds
+ */
 function listfeeds()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
@@ -161,27 +157,27 @@ function listfeeds()
     $token = SEC_createToken();
 
     $header_arr = array(      # display 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
-                    array('text' => $LANG33[17], 'field' => 'format', 'sort' => true),
-                    array('text' => $LANG33[16], 'field' => 'filename', 'sort' => true),
-                    array('text' => $LANG_ADMIN['topic'], 'field' => 'header_tid', 'sort' => true),
-                    array('text' => $LANG33[18], 'field' => 'updated', 'sort' => true),
-                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+        array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
+        array('text' => $LANG33[17], 'field' => 'format', 'sort' => true),
+        array('text' => $LANG33[16], 'field' => 'filename', 'sort' => true),
+        array('text' => $LANG_ADMIN['topic'], 'field' => 'header_tid', 'sort' => true),
+        array('text' => $LANG33[18], 'field' => 'updated', 'sort' => true),
+        array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true),
     );
 
     $defsort_arr = array('field' => 'title', 'direction' => 'asc');
 
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/syndication.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
+    $menu_arr = array(
+        array('url'  => $_CONF['site_admin_url'] . '/syndication.php?mode=edit',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url'  => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home']),
     );
 
     $retval .= COM_startBlock($LANG33[10], '',
-                              COM_getBlockTemplate('_admin_block', 'header'));
+        COM_getBlockTemplate('_admin_block', 'header'));
 
     $retval .= ADMIN_createMenu(
         $menu_arr,
@@ -191,46 +187,45 @@ function listfeeds()
 
     $text_arr = array(
         'has_extras' => true,
-        'form_url'   => $_CONF['site_admin_url'] . '/syndication.php'
+        'form_url'   => $_CONF['site_admin_url'] . '/syndication.php',
     );
 
-    $query_arr = array('table' => 'syndication',
-                       'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
-                       'query_fields' => array('title', 'filename'),
+    $query_arr = array('table'          => 'syndication',
+                       'sql'            => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
+                       'query_fields'   => array('title', 'filename'),
                        'default_filter' => '');
 
     // this is a dummy variable so we know the form has been used if all feeds
     // should be disabled in order to disable the last one.
     $form_arr = array(
         'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
-                    . $token . '"' . XHTML . '>',
+            . $token . '"' . XHTML . '>',
         'bottom' => '<input type="hidden" name="feedenabler" value="true"'
-                    . XHTML . '>'
+            . XHTML . '>',
     );
 
     $retval .= ADMIN_list('syndication', 'ADMIN_getListField_syndication',
-                          $header_arr, $text_arr, $query_arr, $defsort_arr, '',
-                          $token, '', $form_arr);
+        $header_arr, $text_arr, $query_arr, $defsort_arr, '',
+        $token, '', $form_arr);
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
 
 /**
-* Display the feed editor.
-*
-* @param    int      $fid    feed id (0 for new feeds)
-* @param    string   $type   type of feed, e.g. 'article'
-* @return   string           HTML for the feed editor
-*
-*/
-function editfeed ($fid = 0, $type = '')
+ * Display the feed editor.
+ *
+ * @param    int    $fid  feed id (0 for new feeds)
+ * @param    string $type type of feed, e.g. 'article'
+ * @return   string           HTML for the feed editor
+ */
+function editfeed($fid = 0, $type = '')
 {
     global $_CONF, $_TABLES, $LANG33, $LANG_ADMIN, $MESSAGE;
 
     if ($fid > 0) {
-        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE fid = '$fid'");
-        $A = DB_fetchArray ($result);
+        $result = DB_query("SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE fid = '$fid'");
+        $A = DB_fetchArray($result);
         $fid = $A['fid'];
     }
     if ($fid == 0) {
@@ -261,31 +256,31 @@ function editfeed ($fid = 0, $type = '')
     $token = SEC_createToken();
 
     $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
-    $feed_template->set_file ('editor', 'feededitor.thtml');
+    $feed_template->set_file('editor', 'feededitor.thtml');
 
     $start_block = COM_startBlock($LANG33[24], '',
-                        COM_getBlockTemplate('_admin_block', 'header'));
+        COM_getBlockTemplate('_admin_block', 'header'));
     $start_block .= SEC_getTokenExpiryNotice($token);
 
     $feed_template->set_var('start_feed_editor', $start_block);
     $feed_template->set_var('end_block',
-            COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
+        COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
 
-    $feed_template->set_var ('lang_feedtitle', $LANG33[25]);
-    $feed_template->set_var ('lang_enabled', $LANG33[19]);
-    $feed_template->set_var ('lang_format', $LANG33[17]);
-    $feed_template->set_var ('lang_limits', $LANG33[26]);
-    $feed_template->set_var ('lang_content_length', $LANG33[27]);
-    $feed_template->set_var ('lang_clen_explain', $LANG33[28]);
-    $feed_template->set_var ('lang_description', $LANG33[29]);
-    $feed_template->set_var ('lang_feedlogo', $LANG33[49]);
-    $feed_template->set_var ('lang_feedlogo_explain', $LANG33[50]);
-    $feed_template->set_var ('lang_filename', $LANG33[16]);
-    $feed_template->set_var ('lang_updated', $LANG33[30]);
-    $feed_template->set_var ('lang_type', $LANG33[15]);
-    $feed_template->set_var ('lang_charset', $LANG33[31]);
-    $feed_template->set_var ('lang_language', $LANG33[32]);
-    $feed_template->set_var ('lang_topic', $LANG33[33]);
+    $feed_template->set_var('lang_feedtitle', $LANG33[25]);
+    $feed_template->set_var('lang_enabled', $LANG33[19]);
+    $feed_template->set_var('lang_format', $LANG33[17]);
+    $feed_template->set_var('lang_limits', $LANG33[26]);
+    $feed_template->set_var('lang_content_length', $LANG33[27]);
+    $feed_template->set_var('lang_clen_explain', $LANG33[28]);
+    $feed_template->set_var('lang_description', $LANG33[29]);
+    $feed_template->set_var('lang_feedlogo', $LANG33[49]);
+    $feed_template->set_var('lang_feedlogo_explain', $LANG33[50]);
+    $feed_template->set_var('lang_filename', $LANG33[16]);
+    $feed_template->set_var('lang_updated', $LANG33[30]);
+    $feed_template->set_var('lang_type', $LANG33[15]);
+    $feed_template->set_var('lang_charset', $LANG33[31]);
+    $feed_template->set_var('lang_language', $LANG33[32]);
+    $feed_template->set_var('lang_topic', $LANG33[33]);
 
     $feed_template->set_var('lang_header_topic', $LANG33[45]);
     $feed_template->set_var('header_topic_options', TOPIC_getTopicListSelect($A['header_tid'], 6, true));
@@ -295,27 +290,27 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     if ($A['fid'] > 0) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s' . XHTML . '>';
+            . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $feed_template->set_var ('delete_option',
-                                 sprintf ($delbutton, $jsconfirm));
-        $feed_template->set_var ('delete_option_no_confirmation',
-                                 sprintf ($delbutton, ''));
+        $feed_template->set_var('delete_option',
+            sprintf($delbutton, $jsconfirm));
+        $feed_template->set_var('delete_option_no_confirmation',
+            sprintf($delbutton, ''));
 
         $feed_template->set_var('allow_delete', true);
         $feed_template->set_var('lang_delete', $LANG_ADMIN['delete']);
         $feed_template->set_var('confirm_message', $MESSAGE[76]);
     }
-    $feed_template->set_var ('feed_id', $A['fid']);
-    $feed_template->set_var ('feed_title', $A['title']);
-    $feed_template->set_var ('feed_description', $A['description']);
-    $feed_template->set_var ('feed_logo', $A['feedlogo']);
-    $feed_template->set_var ('feed_content_length', $A['content_length']);
-    $feed_template->set_var ('feed_filename', $A['filename']);
-    $feed_template->set_var ('feed_type', $A['type']);
+    $feed_template->set_var('feed_id', $A['fid']);
+    $feed_template->set_var('feed_title', $A['title']);
+    $feed_template->set_var('feed_description', $A['description']);
+    $feed_template->set_var('feed_logo', $A['feedlogo']);
+    $feed_template->set_var('feed_content_length', $A['content_length']);
+    $feed_template->set_var('feed_filename', $A['filename']);
+    $feed_template->set_var('feed_type', $A['type']);
     $feed_template->set_var('feed_type_display', ucwords($A['type']));
-    $feed_template->set_var ('feed_charset', $A['charset']);
-    $feed_template->set_var ('feed_language', $A['language']);
+    $feed_template->set_var('feed_charset', $A['charset']);
+    $feed_template->set_var('feed_language', $A['language']);
 
     if (($A['is_enabled'] == 1) && !empty($A['updated'])) {
         $nicedate = COM_getUserDateTimeFormat($A['date']);
@@ -324,26 +319,26 @@ function editfeed ($fid = 0, $type = '')
         $feed_template->set_var('feed_updated', $LANG_ADMIN['na']);
     }
 
-    $formats = find_feedFormats ();
+    $formats = find_feedFormats();
     $selection = '<select name="format">' . LB;
     foreach ($formats as $f) {
         // if one changes this format below ('name-version'), also change parsing
         // in COM_createHTMLDocument. It uses explode( "-" , $string )
         $selection .= '<option value="' . $f['name'] . '-' . $f['version']
-                   . '"';
+            . '"';
         if ($A['format'] == $f['name'] . '-' . $f['version']) {
             $selection .= ' selected="selected"';
         }
-        $selection .= '>' . ucwords ($f['name'] . ' ' . $f['version'])
-                   . '</option>' . LB;
+        $selection .= '>' . ucwords($f['name'] . ' ' . $f['version'])
+            . '</option>' . LB;
     }
     $selection .= '</select>' . LB;
-    $feed_template->set_var ('feed_format', $selection);
+    $feed_template->set_var('feed_format', $selection);
 
     $limits = $A['limits'];
     $hours = false;
-    if (substr ($A['limits'], -1) == 'h') {
-        $limits = substr ($A['limits'], 0, -1);
+    if (substr($A['limits'], -1) == 'h') {
+        $limits = substr($A['limits'], 0, -1);
         $hours = true;
     }
     $selection = '<select name="limits_in">' . LB;
@@ -358,19 +353,19 @@ function editfeed ($fid = 0, $type = '')
     }
     $selection .= '>' . $LANG33[35] . '</option>' . LB;
     $selection .= '</select>' . LB;
-    $feed_template->set_var ('feed_limits', $limits);
-    $feed_template->set_var ('feed_limits_what', $selection);
+    $feed_template->set_var('feed_limits', $limits);
+    $feed_template->set_var('feed_limits_what', $selection);
 
     if ($A['type'] != 'article' AND $A['type'] != 'comment') {
         $result = DB_query("SELECT pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name='{$A['type']}'");
         if ($result) {
             $P = DB_fetchArray($result);
-            if($P['pi_enabled'] == 0) {
-                COM_redirect($_CONF['site_admin_url'].'/syndication.php?msg=80');
+            if ($P['pi_enabled'] == 0) {
+                COM_redirect($_CONF['site_admin_url'] . '/syndication.php?msg=80');
             }
         }
     }
-    $options = PLG_getFeedNames ($A['type']);
+    $options = PLG_getFeedNames($A['type']);
 
     $selection = '<select name="topic">' . LB;
     foreach ($options as $o) {
@@ -382,75 +377,74 @@ function editfeed ($fid = 0, $type = '')
     }
     $selection .= '</select>' . LB;
 
-    $feed_template->set_var ('feed_topic', $selection);
+    $feed_template->set_var('feed_topic', $selection);
 
     if ($A['is_enabled'] == 1) {
-        $feed_template->set_var ('is_enabled', 'checked="checked"');
+        $feed_template->set_var('is_enabled', 'checked="checked"');
     } else {
-        $feed_template->set_var ('is_enabled', '');
+        $feed_template->set_var('is_enabled', '');
     }
     $feed_template->set_var('gltoken_name', CSRF_TOKEN);
     $feed_template->set_var('gltoken', $token);
 
     $retval .= $feed_template->finish($feed_template->parse('output',
-                                                            'editor'));
+        'editor'));
+
     return $retval;
 }
 
 /**
-* Create a new feed. This is an extra step to take once you have a plugin
-* installed that supports the new Feed functions in the Plugin API. This
-* will let you select for which plugin (or Geeklog) you're creating the feed.
-*
-* @return   string   HTML for the complete page (selection or feed editor)
-*
-*/
-function newfeed ()
+ * Create a new feed. This is an extra step to take once you have a plugin
+ * installed that supports the new Feed functions in the Plugin API. This
+ * will let you select for which plugin (or Geeklog) you're creating the feed.
+ *
+ * @return   string   HTML for the complete page (selection or feed editor)
+ */
+function newfeed()
 {
     global $_CONF, $LANG33;
 
     $retval = '';
 
-    $plugins = PLG_supportingFeeds ();
+    $plugins = PLG_supportingFeeds();
 
     $selection = '<select name="type">' . LB;
     foreach ($plugins as $p) {
-        $selection .= '<option value="' . $p . '">' . ucwords ($p)
-                   . '</option>' . LB;
+        $selection .= '<option value="' . $p . '">' . ucwords($p)
+            . '</option>' . LB;
     }
     $selection .= '</select>' . LB;
 
     $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
-    $feed_template->set_file ('type', 'selecttype.thtml');
+    $feed_template->set_file('type', 'selecttype.thtml');
 
-    $feed_template->set_var ('type_selection', $selection);
+    $feed_template->set_var('type_selection', $selection);
 
-    $feed_template->set_var ('lang_explain', $LANG33[54]);
-    $feed_template->set_var ('lang_go', $LANG33[1]);
+    $feed_template->set_var('lang_explain', $LANG33[54]);
+    $feed_template->set_var('lang_go', $LANG33[1]);
 
-    $retval .= COM_startBlock ($LANG33[36], '',
-            COM_getBlockTemplate ('_admin_block', 'header'));
-    $retval .= $feed_template->finish ($feed_template->parse ('output',
-                                                              'type'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_startBlock($LANG33[36], '',
+        COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= $feed_template->finish($feed_template->parse('output',
+        'type'));
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
     $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[11]));
 
     return $retval;
 }
 
 /**
-* Save feed.
-*
-* @param    array    $A
-* @return   string   HTML redirect on success or feed editor + error message
-*
-*/
-function savefeed ($A)
+ * Save feed.
+ *
+ * @param    array $A
+ * @return   string   HTML redirect on success or feed editor + error message
+ */
+function savefeed($A)
 {
     global $_CONF, $_TABLES, $LANG33;
 
     foreach ($A as $name => $value) {
-        $A[$name] = COM_stripslashes ($value);
+        $A[$name] = COM_stripslashes($value);
     }
 
     if (isset($A['is_enabled']) && ($A['is_enabled'] == 'on')) {
@@ -467,8 +461,7 @@ function savefeed ($A)
         $formats = find_feedFormats();
         foreach ($formats as $f) {
             if ($A['format'] == ($f['name'] . '-' . $f['version'])) {
-                switch($f['name'])
-                {
+                switch ($f['name']) {
                     case 'Atom':
                         if (!in_array(@$file_parts['extension'], array('atm', 'xml'))) {
                             $file_parts['extension'] = 'xml';
@@ -493,10 +486,12 @@ function savefeed ($A)
         }
     }
     if (empty($A['title']) || empty($A['description']) ||
-            empty($A['filename'])) {
+        empty($A['filename'])
+    ) {
         $retval = COM_showMessageText($LANG33[39], $LANG33[38])
-                . editfeed ($A['fid'], $A['type']);
+            . editfeed($A['fid'], $A['type']);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[38]));
+
         return $retval;
     }
 
@@ -504,15 +499,17 @@ function savefeed ($A)
     $C = DB_fetchArray($result);
     if ($C['count'] > 0) {
         $retval = COM_showMessageText($LANG33[51], $LANG33[52])
-                . editfeed ($A['fid'], $A['type']);
+            . editfeed($A['fid'], $A['type']);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[52]));
+
         return $retval;
     }
 
     if ($A['limits'] <= 0) {
         $retval = COM_showMessageText($LANG33[40], $LANG33[38])
-                . editfeed ($A['fid'], $A['type']);
+            . editfeed($A['fid'], $A['type']);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[38]));
+
         return $retval;
     }
     if ($A['limits_in'] == 1) {
@@ -570,19 +567,18 @@ function savefeed ($A)
 }
 
 /**
-* Delete a feed.
-*
-* @param    int      $fid   feed id
-* @return   string          HTML redirect
-*
-*/
+ * Delete a feed.
+ *
+ * @param    int $fid feed id
+ * @return   string          HTML redirect
+ */
 function deletefeed($fid)
 {
     global $_CONF, $_TABLES;
 
     if ($fid > 0) {
         $feedfile = DB_getItem($_TABLES['syndication'], 'filename',
-                               "fid = $fid");
+            "fid = $fid");
         deleteFeedFile($feedfile);
         DB_delete($_TABLES['syndication'], 'fid', $fid);
         COM_redirect($_CONF['site_admin_url'] . '/syndication.php?msg=59');
@@ -595,51 +591,31 @@ function deletefeed($fid)
 $display = '';
 
 if ($_CONF['backend'] && isset($_POST['feedenabler']) && SEC_checkToken()) {
-    $enabledfeeds = array();
-    if (isset($_POST['enabledfeeds'])) {
-        $enabledfeeds = $_POST['enabledfeeds'];
-    }
-    $visiblefeeds = array();
-    if (isset($_POST['visiblefeeds'])) {
-        $visiblefeeds = $_POST['visiblefeeds'];
-    }
+    $enabledfeeds = Geeklog\Input::post('enabledfeeds', array());
+    $visiblefeeds = Geeklog\Input::post('visiblefeeds', array());
     changeFeedStatus($enabledfeeds, $visiblefeeds);
 }
-$mode = '';
-if (isset($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
-}
-if ($mode == 'edit') {
+
+$mode = Geeklog\Input::request('mode', '');
+if ($mode === 'edit') {
     if (empty($_REQUEST['fid'])) {
-        $display .= newfeed ();
+        $display .= newfeed();
     } else {
-        $display .= editfeed (COM_applyFilter($_REQUEST['fid']));
+        $display .= editfeed(Geeklog\Input::fRequest('fid'));
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG33[24]));
     }
-}
-elseif (($mode == $LANG33[1]) && !empty($LANG33[1]))
-{
-    $display .= editfeed (0, COM_applyFilter($_REQUEST['type']));
+} elseif (($mode == $LANG33[1]) && !empty($LANG33[1])) {
+    $display .= editfeed(0, Geeklog\Input::fRequest('type'));
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG33[24]));
-}
-elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken())
-{
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $display .= savefeed($_POST);
-}
-elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_checkToken()) {
-    $fid = 0;
-    if (isset($_POST['fid'])) {
-        $fid = COM_applyFilter($_POST['fid'], true);
-    }
+} elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_checkToken()) {
+    $fid = (int) Geeklog\Input::fPost('fid', 0);
     $display .= deletefeed($fid);
-}
-else
-{
+} else {
     $display .= COM_showMessageFromParameter();
     $display .= listfeeds();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG33[10]));
 }
 
 COM_output($display);
-
-?>

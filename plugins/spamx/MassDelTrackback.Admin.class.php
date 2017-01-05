@@ -12,7 +12,7 @@
  * @subpackage Modules
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'massdeltrackback.admin.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -47,17 +47,8 @@ class MassDelTrackback extends BaseAdmin
 
         $display = $LANG_SX00['masstb'];
 
-        $act = '';
-
-        if (isset($_POST['action'])) {
-            $act = COM_applyFilter($_POST['action']);
-        }
-
-        $lmt = 0;
-
-        if (isset($_POST['limit'])) {
-            $lmt = COM_applyFilter($_POST['limit'], true);
-        }
+        $act = Geeklog\Input::fPost('action', '');
+        $lmt = (int) Geeklog\Input::fPost('limit', 0);
 
         if (($act == $LANG_SX00['deletespam']) && ($lmt > 0) &&
             SEC_checkToken()

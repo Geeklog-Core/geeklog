@@ -115,7 +115,7 @@ function plugin_load_configuration_links($pi_name)
 * We're inserting our default data here since it depends on other stuff that
 * has to happen first ...
 *
-* @return   boolean     true = proceed with install, false = an error occured
+* @return   boolean     true = proceed with install, false = an error occurred
 *
 */
 function plugin_postinstall_links($pi_name)

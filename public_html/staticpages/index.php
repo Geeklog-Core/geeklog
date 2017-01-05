@@ -32,15 +32,15 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Display a Static Page
-*
-* @package StaticPages
-* @subpackage public_html
-*/
+ * Display a Static Page
+ *
+ * @package    StaticPages
+ * @subpackage public_html
+ */
 
 /**
-* Geeklog common function library
-*/
+ * Geeklog common function library
+ */
 require_once '../lib-common.php';
 
 if (!in_array('staticpages', $_PLUGINS)) {
@@ -54,27 +54,25 @@ if (!in_array('staticpages', $_PLUGINS)) {
 COM_setArgNames(array('page', 'disp_mode'));
 $page = COM_applyFilter(COM_getArgument('page'));
 $display_mode = COM_applyFilter(COM_getArgument('disp_mode'));
-$query = '';
-if (isset($_REQUEST['query'])) {
-    $query = COM_applyfilter($_GET['query']);
-}
+$query = Geeklog\Input::fRequest('query', '');
 
 TOPIC_getTopic('staticpages', $page);
 
 // from comments display refresh:
 if (isset($_REQUEST['order'])) {
-    $comment_order = COM_applyFilter($_REQUEST['order']);
-    $comment_mode  = COM_applyFilter($_REQUEST['mode']);
+    $comment_order = Geeklog\Input::fRequest('order');
+    $comment_mode = Geeklog\Input::fRequest('mode');
     if (isset($_REQUEST['cpage'])) {
-        $comment_page = COM_applyFilter($_REQUEST['cpage']);
+        $comment_page = Geeklog\Input::fRequest('cpage');
     }
     if ((strcasecmp($comment_order, 'ASC') != 0) &&
-            (strcasecmp($comment_order, 'DESC') != 0)) {
+        (strcasecmp($comment_order, 'DESC') != 0)
+    ) {
         $comment_order = '';
     }
 } else {
     $comment_order = '';
-    $comment_mode  = '';
+    $comment_mode = '';
     $comment_page = 1;
 }
 
@@ -82,12 +80,9 @@ if ($display_mode != 'print') {
     $display_mode = '';
 }
 
-$msg = 0;
-if (isset($_GET['msg'])) {
-    $msg = COM_applyFilter($_GET['msg'], true);
-    if ($msg <= 0) {
-        $msg = 0;
-    }
+$msg = (int) Geeklog\Input::fGet('msg', 0);
+if ($msg <= 0) {
+    $msg = 0;
 }
 
 // Handle just template staticpage security here, rest done in services.
@@ -116,7 +111,7 @@ if ($display_mode == 'print') {
     header('X-XSS-Protection: 1; mode=block');
     header('X-Content-Type-Options: nosniff');
 
-    if (! empty($_CONF['frame_options'])) {
+    if (!empty($_CONF['frame_options'])) {
         header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
     }
 }

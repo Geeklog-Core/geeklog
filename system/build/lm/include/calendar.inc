@@ -102,5 +102,3 @@ mergeArrays($ENG_fs['calendar'], $LANG_fs['calendar'], "LANG_fs['calendar']", fa
 echo "\n";
 echo "// Note: entries 0, 1, 6, 9, 12 are the same as in \$LANG_configselects['Core']";
 mergeArrays($ENG_configselects['calendar'], $LANG_configselects['calendar'], "LANG_configselects['calendar']", false);
-
-?>

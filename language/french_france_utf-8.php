@@ -1163,6 +1163,8 @@ $LANG29 = array(
     41 => 'Soumission des commentaires',
     42 => 'Nom du membre',
     43 => 'Auto-publier les commentaires?',
+    44 => 'Results of your moderation',
+    45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -1910,7 +1912,7 @@ $LANG_ADMIN = array(
     'token_expiry' => 'Vous avez jusque %s pour saisir vos informations. Passé ce délais et pour des raisons de sécurité, vous perdrez votre saisie.',
     'token_expired' => 'Le délais de sécurité pour cette opératiton à expiré. Merci de vous identifier à nouveau pour continuer.',
     'reauth_msg' => 'Le délais de sécurité pour cette opératiton à expiré. Si vous souhaitez poursuivre l\'opération, merci de vous identifier à nouveau ci-dessous. Cela permettra de conserver vos dernières modifications.',
-    'authenticate' => 'Authentification',
+    'authenticate' => 'authentication',
     'approve' => 'Approve',
     'device' => 'Device',
     'device_desc' => 'For what device do you want this item to display for?',
@@ -2513,4 +2515,3 @@ $LANG_VALIDATION = array(
 );
 
 
-?>

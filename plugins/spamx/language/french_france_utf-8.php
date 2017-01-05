@@ -190,4 +190,3 @@ $LANG_configselects['spamx'] = array(
     1 => array('True' => true, 'False' => false)
 );
 
-?>

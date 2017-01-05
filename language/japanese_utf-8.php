@@ -755,7 +755,14 @@ $LANG_ENVCHECK = array(
     'ok' => 'OK',
     'on' => 'On',
     'open_basedir' => '<strong>open_basedir</strong> の制限がこのサイトで有効な場合、インストールの際にパーミッションで問題が起きるかもしれません。以下のファイルシステムチェックを行ってください。',
-    'php_req_version' => 'GeeklogにはPHP version 5.2.0以降が必要です。',
+    'database_settings'         => 'Database Settings',
+    'database_mysql_version'    => 'MySQL Version', 
+    'database_mysql_req_version' => 'Geeklog requires MySQL version 4.1.2 or newer (MySQL 5 recommended).',
+    'database_pgsql_version'    => 'Postgresql Version',
+    'database_pgsql_req_version' => 'Geeklog requires Postgresql version 9.1.7 or newer.',
+    'database_dms'              => 'Database Management System',
+    'database_dms_notes'        => 'Failed to determine Database Management System. Geeklog requires either MySQL or Postgresql',
+    'php_req_version' => 'GeeklogにはPHP version 5.3.3以降が必要です。',
     'php_settings' => 'PHPの設定',
     'php_version' => 'PHPのバージョン',
     'php_warning' => '以下のリストで<span class="no">赤文字の箇所</span>があれば、あなたのGeeklogサイトで問題が発生するかもしれません。これらのPHP設定をホスティングプロバイダーの情報に照らし合わせてチェックしてください。',
@@ -806,8 +813,8 @@ $LANG21 = array(
     2 => 'このブロックを編集する権限がありません。',
     3 => 'ブロックの編集',
     4 => 'フィードの読み込みでエラーが発生しました。(error.logを参照してください。)',
-    5 => 'Yes',
-    6 => 'No',
+    5 => 'はい',
+    6 => 'いいえ',
     7 => 'すべて',
     8 => 'ブロックのセキュリティレベル',
     9 => '順序',
@@ -872,9 +879,14 @@ $LANG21 = array(
     68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
     69 => 'プラグイン名',
     'autotag_desc_block' => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
-    'position' => 'Position',
+    'position' => '位置',
     'cache_time' => 'キャッシュ期間',
-    'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)'
+    'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)',
+    'block_type_gldefault'  => 'システム',
+    'block_type_normal'     => 'ノーマル',
+    'block_type_phpblock'   => 'PHP',
+    'block_type_portal'     => 'ポータル',
+    'block_type_dynamic'    => 'ダイナミック'
 );
 
 ###############################################################################
@@ -1171,11 +1183,13 @@ $LANG29 = array(
     41 => 'コメントの投稿申請',
     42 => 'ユーザー名',
     43 => 'コメントを自動的に公開?',
+    44 => '投稿の処理結果',
+    45 => 'ユーザーが投稿している項目のうち %1$d 件を承認、%2$d 件を削除しました。',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
     'users' => 'Users',
-    'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。マルチプル投稿を承認、削除するには、リストのライジオオプションを試用して保存をクリックしてください。'
+    'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。投稿を一括して承認・削除するには、リストのラジオボタンを選択してから保存をクリックしてください。'
 );
 
 ###############################################################################
@@ -1466,9 +1480,9 @@ $MESSAGE = array(
     68 => '正しい現在のパスワードを入力してください。',
     69 => 'アカウントをロックしました。',
     70 => 'アカウントは管理者の承認待ちです。',
-    71 => 'アカウントの確認をしました、そして管理者の承認待ちです。',
-    72 => 'プラグインのインストールしてる間にエラーが発生しました。error.logを確認してください。',
-    73 => 'プラグインのアンインストールしている間にエラーが発生しました。error.logを確認してください。',
+    71 => 'アカウントの確認を行いました、そして管理者の承認待ちです。',
+    72 => 'プラグインをインストールしている間にエラーが発生しました。error.logを確認してください。',
+    73 => 'プラグインをアンインストールしている間にエラーが発生しました。error.logを確認してください。',
     74 => 'ピングバックを送信しました。',
     75 => 'トラックバックはPOSTリクエストを使用して送信しなければなりません。',
     76 => 'この項目を削除してもよいですか?',
@@ -2521,4 +2535,3 @@ $LANG_VALIDATION = array(
 );
 
 
-?>

@@ -48,7 +48,7 @@ function adveditor_config_ckeditor()
 }
 
 /**
- * Do any other initialisation here
+ * Do any other initializations here
  */
 function adveditor_init_ckeditor()
 {

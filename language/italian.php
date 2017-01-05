@@ -1164,6 +1164,8 @@ $LANG29 = array(
     41 => 'Commenti Inviati',
     42 => 'Nome utente',
     43 => 'Auto-Pubblicare Commenti?',
+    44 => 'Results of your moderation',
+    45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -2514,4 +2516,3 @@ $LANG_VALIDATION = array(
 );
 
 
-?>

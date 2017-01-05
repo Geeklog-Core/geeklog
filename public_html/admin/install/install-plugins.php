@@ -126,7 +126,7 @@ switch ($step) {
         $upload_success = false;
 
         if (isset($_FILES['plugin'])) {
-            if ($error_msg = $installer->getUploadError($_FILES['plugin'])) { // If an error occured while uploading the file.
+            if ($error_msg = $installer->getUploadError($_FILES['plugin'])) { // If an error occurred while uploading the file.
                 $display .= '<div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' . $error_msg . '</div>' . PHP_EOL;
             } else {
                 $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file

@@ -40,7 +40,7 @@
  * @package Calendar
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
@@ -113,14 +113,9 @@ function phpblock_calendar($help = '', $title = '')
         if ($range == 0) {
             $range = 14; // fallback: 14 days
         }
-        $dateonly = $_CONF['dateonly'];
-        if (empty($dateonly)) {
-            $dateonly = '%d-%b'; // fallback: day - abbrev. month name
-        }
 
         if (empty($title)) {
-            $title = DB_getItem($_TABLES['blocks'], 'title',
-                "name = 'events_block'");
+            $title = DB_getItem($_TABLES['blocks'], 'title', "name = 'events_block'");
         }
         $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
             . "FROM {$_TABLES['events']} ";
@@ -132,19 +127,19 @@ function phpblock_calendar($help = '', $title = '')
         $eventSql .= 'ORDER BY datestart,timestart';
 
         if (($_CA_CONF['personalcalendars'] == 1) && !COM_isAnonUser()) {
-            $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
+            $personalEventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
                 . "FROM {$_TABLES['personal_events']} ";
-            if ($_DB_dbms == 'pgsql') {
-                $personaleventsql .= "WHERE uid = {$_USER['uid']} AND dateend >= (NOW() - INTERVAL '1 day')  AND (NOW() - INTERVAL '$range days') < datestart ";
+            if ($_DB_dbms === 'pgsql') {
+                $personalEventSql .= "WHERE uid = {$_USER['uid']} AND dateend >= (NOW() - INTERVAL '1 day')  AND (NOW() - INTERVAL '$range days') < datestart ";
             } else {
-                $personaleventsql .= "WHERE uid = {$_USER['uid']} AND dateend >= (NOW() - INTERVAL 24 HOUR)  AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
+                $personalEventSql .= "WHERE uid = {$_USER['uid']} AND dateend >= (NOW() - INTERVAL 24 HOUR)  AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
             }
-            $personaleventsql .= 'ORDER BY datestart, dateend';
+            $personalEventSql .= 'ORDER BY datestart, dateend';
         }
 
         $allEvents = DB_query($eventSql);
         $numRows = DB_numRows($allEvents);
-        $totalrows = $numRows;
+        $totalRows = $numRows;
 
         $numDays = 0;          // Without limits, I'll force them.
         $theRow = 1;           // Start with today!
@@ -162,18 +157,18 @@ function phpblock_calendar($help = '', $title = '')
 
         for ($z = 1; $z <= $iterations; $z++) {
             if ($z == 2) {
-                $allEvents = DB_query($personaleventsql);
+                $allEvents = DB_query($personalEventSql);
                 $numRows = DB_numRows($allEvents);
-                $totalrows = $totalrows + $numRows;
+                $totalRows = $totalRows + $numRows;
 
                 $numDays = 0;          // Without limits, I'll force them.
                 $theRow = 1;           // Start with today!
                 $oldDate1 = 'no_day';  // Invalid Date!
                 $oldDate2 = 'last_d';  // Invalid Date!
-                $classname = 'list-new-plugins';
+                $className = 'list-new-plugins';
                 $headline = false;
             } else {
-                $classname = 'list-new-plugins';
+                $className = 'list-new-plugins';
                 $headline = false;
             }
             if ($_CA_CONF['personalcalendars'] == 0) {
@@ -182,7 +177,7 @@ function phpblock_calendar($help = '', $title = '')
             }
 
             while ($theRow <= $numRows && $numDays < $range) {
-                // Retreive the next event, and format the start date.
+                // Retrieve the next event, and format the start date.
                 $theEvent = DB_fetchArray($allEvents);
 
                 if (SEC_hasAccess($theEvent['owner_id'], $theEvent['group_id'],
@@ -194,11 +189,11 @@ function phpblock_calendar($help = '', $title = '')
                     if (!$headline) {
                         if ($z == 2) {
                             if ($numRows > 0) {
-                                $retval .= '<b>' . $LANG_CAL_1[23] . '</b><br' . XHTML . '>';
+                                $retval .= '<strong>' . $LANG_CAL_1[23] . '</strong><br' . XHTML . '>';
                             }
                         } else {
-                            if ($totalrows > 0) {
-                                $retval .= '<b>' . $LANG_CAL_1[24] . '</b><br' . XHTML . '>';
+                            if ($totalRows > 0) {
+                                $retval .= '<strong>' . $LANG_CAL_1[24] . '</strong><br' . XHTML . '>';
                             }
                         }
                         $headline = true;
@@ -208,13 +203,13 @@ function phpblock_calendar($help = '', $title = '')
                     $startDate = $theEvent['datestart'];
                     $theTime1 = strtotime($startDate);
                     $dayName1 = strftime('%A', $theTime1);
-                    $abbrDate1 = strftime($dateonly, $theTime1);
+                    list($abbrDate1,) = COM_getUserDateTimeFormat($theTime1, 'dateonly');
 
                     // End Date strings...
                     $endDate = $theEvent['dateend'];
                     $theTime2 = strtotime($endDate);
                     $dayName2 = strftime('%A', $theTime2);
-                    $abbrDate2 = strftime($dateonly, $theTime2);
+                    list($abbrDate2,) = COM_getUserDateTimeFormat($theTime2, 'dateonly');
 
                     $todaysEvent = false;
                     if (date('Ymd', $theTime1) == date('Ymd', time())) {
@@ -233,8 +228,8 @@ function phpblock_calendar($help = '', $title = '')
                         $numDays++;
 
                         if ($numDays < $range) {
-                            if (!empty($newevents)) {
-                                $retval .= COM_makeList($newevents, $classname);
+                            if (!empty($newEvents)) {
+                                $retval .= COM_makeList($newEvents, $className);
                             }
                             if ($skipFirstBreak) {
                                 $skipFirstBreak = false;
@@ -255,36 +250,36 @@ function phpblock_calendar($help = '', $title = '')
                                 $retval .= '</span>';
                             }
                         }
-                        $newevents = array();
+                        $newEvents = array();
                     }
 
                     // Now display this event record.
                     if ($numDays < $range) {
                         // Display the url now!
-                        $newevent_url = $_CONF['site_url']
+                        $newEventUrl = $_CONF['site_url']
                             . '/calendar/event.php?';
 
                         if ($z == 2) {
-                            $newevent_url .= 'mode=personal&amp;';
+                            $newEventUrl .= 'mode=personal&amp;';
                         }
 
-                        $newevent_url .= 'eid=' . $theEvent['eid'];
+                        $newEventUrl .= 'eid=' . $theEvent['eid'];
                         $attr = array();
                         if ($todaysEvent) {
                             $attr = array('class' => $todaysClassName);
                         }
 
-                        $newevent = COM_createLink(
+                        $newEvent = COM_createLink(
                             stripslashes($theEvent['title']),
-                            $newevent_url,
+                            $newEventUrl,
                             $attr
                         );
-                        $newevents[] = $newevent;
+                        $newEvents[] = $newEvent;
                     }
 
-                    if (!empty($newevents)) {
-                        $retval .= COM_makeList($newevents, $classname);
-                        $newevents = array();
+                    if (!empty($newEvents)) {
+                        $retval .= COM_makeList($newEvents, $className);
+                        $newEvents = array();
                     }
                 }
                 $theRow++;
@@ -418,7 +413,7 @@ function plugin_savesubmission_calendar($A)
 
     $retval = '';
 
-    $A['title'] = strip_tags(COM_checkWords($A['title']));
+    $A['title'] = GLText::stripTags(COM_checkWords($A['title']));
     $A['title'] = GLText::remove4byteUtf8Chars($A['title']);
     $A['start_year'] = COM_applyFilter($A['start_year'], true);
     $A['start_month'] = COM_applyFilter($A['start_month'], true);
@@ -507,13 +502,13 @@ function plugin_savesubmission_calendar($A)
     // Remove any autotags the user doesn't have permission to use
     $A['description'] = PLG_replaceTags($A['description'], '', true);
     $A['description'] = DB_escapeString(htmlspecialchars(GLText::remove4byteUtf8Chars(COM_checkWords($A['description']))));
-    $A['address1'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['address1']))));
-    $A['address2'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['address2']))));
-    $A['city'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['city']))));
-    $A['zipcode'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['zipcode']))));
-    $A['state'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['state']))));
-    $A['location'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['location']))));
-    $A['event_type'] = DB_escapeString(GLText::remove4byteUtf8Chars(strip_tags(COM_checkWords($A['event_type']))));
+    $A['address1'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['address1']))));
+    $A['address2'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['address2']))));
+    $A['city'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['city']))));
+    $A['zipcode'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['zipcode']))));
+    $A['state'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['state']))));
+    $A['location'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['location']))));
+    $A['event_type'] = DB_escapeString(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($A['event_type']))));
     $A['title'] = DB_escapeString(GLText::remove4byteUtf8Chars($A['title']));
 
     $A['url'] = DB_escapeString(COM_sanitizeUrl($A['url']));
@@ -655,7 +650,7 @@ function plugin_getheadercode_calendar()
     global $_SCRIPTS;
 
     // use the CSS only if we are on the plugin's pages
-    if (substr_count($_SERVER['PHP_SELF'], '/calendar/') > 0) {
+    if (substr_count(Geeklog\Input::server('PHP_SELF'), '/calendar/') > 0) {
         $_SCRIPTS->setCSSFile('calendar', CTL_plugin_themeFindFile('calendar', 'css', 'style.css'), false);
     }
 }
@@ -667,42 +662,29 @@ function plugin_submit_calendar($mode = 'master')
 {
     global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12, $MESSAGE, $_SCRIPTS;
 
-    if (isset($_POST['calendar_type'])) {
-        $mode = $_POST['calendar_type'];
+    $mode = Geeklog\Input::fPost('calendar_type', null);
+
+    if ($mode !== null) {
         if (!in_array($mode, array('master', 'personal', 'quickadd'))) {
             $mode = 'master';
         }
-    } elseif (isset($_REQUEST['mode']) && ($_REQUEST['mode'] == 'personal')) {
+    } elseif (Geeklog\Input::fRequest('mode') === 'personal') {
         $mode = 'personal';
     }
 
-    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) {
+    if (($_CA_CONF['personalcalendars'] == 1) && ($mode === 'quickadd')) {
         // quick add form, just save it.
         $display = plugin_savesubmission_calendar($_POST);
 
         return $display;
     } elseif (SEC_hasRights('calendar.edit') && ($mode != 'personal')) {
         // admin posts non-personal, go to editor
-        if (isset($_REQUEST['year'])) {
-            $year = COM_applyFilter($_REQUEST['year'], true);
-        } else {
-            $year = date('Y', time());
-        }
-        if (isset($_REQUEST['month'])) {
-            $month = COM_applyFilter($_REQUEST['month'], true);
-        } else {
-            $month = date('m', time());
-        }
-        if (isset($_REQUEST['day'])) {
-            $day = COM_applyFilter($_REQUEST['day'], true);
-        } else {
-            $day = date('d', time());
-        }
-        if (isset($_REQUEST['hour'])) {
-            $hour = COM_applyFilter($_REQUEST['hour'], true);
-        } else {
-            $hour = date('H', time());
-        }
+        $currentTime = time();
+        $year = (int) Geeklog\Input::fRequest('year', date('Y', $currentTime));
+        $month = (int) Geeklog\Input::fRequest('month', date('m', $currentTime));
+        $day = (int) Geeklog\Input::fRequest('day', date('d', $currentTime));
+        $hour = (int) Geeklog\Input::fRequest('hour', date('H', $currentTime));
+
         $startat = '';
         if ($year > 0) {
             $startat = '&amp;datestart='
@@ -717,8 +699,7 @@ function plugin_submit_calendar($mode = 'master')
     // otherwise non-admin or admin-personal. do personal form or public submission.
 
     // Loads jQuery UI datepicker and timepicker-addon
-    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.slider');
-    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
+    $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Require slider and date picker
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon');
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-timepicker-addon-i18n');
@@ -889,11 +870,7 @@ function CALENDAR_listOld()
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS,
            $LANG01, $_IMAGE_TYPE;
 
-    if (isset($_REQUEST['usr_time'])) {
-        $usr_time = $_REQUEST['usr_time'];
-    } else {
-        $usr_time = 12;
-    }
+    $usr_time = (int) Geeklog\Input::fRequest('usr_time', 12);
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -979,18 +956,14 @@ function CALENDAR_deleteOld()
     global $_CONF, $LANG_CAL_ADMIN;
 
     $msg = '';
-    $event_list = array();
-    if (isset($_POST['delitem'])) {
-        $event_list = $_POST['delitem'];
-    }
+    $event_list = Geeklog\Input::fPost('delitem', array());
 
-    if (count($event_list) == 0) {
+    if (count($event_list) === 0) {
         $msg = $LANG_CAL_ADMIN[33] . "<br" . XHTML . ">";
     }
     $c = 0;
     if (isset($event_list) && is_array($event_list)) {
         foreach ($event_list as $delitem) {
-            $delitem = COM_applyFilter($delitem);
             if (!CALENDAR_deleteEvent($delitem)) {
                 $msg .= "<strong>{$LANG_CAL_ADMIN[34]} $delitem $LANG_CAL_ADMIN[35]}</strong><br" . XHTML . ">\n";
             } else {
@@ -1084,30 +1057,28 @@ function CALENDAR_sendNotification($table, $A)
 
     $title = stripslashes($A['title']);
     $description = stripslashes($A['description']);
-
-    $mailbody = "$LANG09[16]: $title\n"
-        . "$LANG09[17]: " . strftime($_CONF['date'],
-            strtotime($A['datestart'] . ' ' . $A['timestart']));
+    list($dateTime, ) = COM_getUserDateTimeFormat(strtotime($A['datestart'] . ' ' . $A['timestart']), 'date');
+    $mailBody = sprintf("%s: %s\n%s: %s", $LANG09[16], $title, $LANG09[17], $dateTime);
     if ($A['allday']) {
-        $mailbody .= ' (' . $LANG_CAL_2[26] . ')';
+        $mailBody .= ' (' . $LANG_CAL_2[26] . ')';
     }
-    $mailbody .= "\n";
-    if (!empty($A['url']) && ($A['url'] != 'http://')) {
-        $mailbody .= "$LANG09[33]: <" . $A['url'] . ">\n";
+    $mailBody .= "\n";
+    if (!empty($A['url']) && ($A['url'] !== 'http://') && ($A['url'] !== 'https://')) {
+        $mailBody .= "$LANG09[33]: <" . $A['url'] . ">\n";
     }
-    $mailbody .= "\n" . $description . "\n\n";
+    $mailBody .= "\n" . $description . "\n\n";
     if ($table == $_TABLES['eventsubmission']) {
-        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
+        $mailBody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
-        $mailbody .= "$LANG_CAL_1[12] <{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}>\n\n";
+        $mailBody .= "$LANG_CAL_1[12] <{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}>\n\n";
     }
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
+    $mailSubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
 
-    $mailbody .= "\n------------------------------\n";
-    $mailbody .= "\n$LANG08[34]\n";
-    $mailbody .= "\n------------------------------\n";
+    $mailBody .= "\n------------------------------\n";
+    $mailBody .= "\n$LANG08[34]\n";
+    $mailBody .= "\n------------------------------\n";
 
-    COM_mail($_CONF['site_mail'], $mailsubject, $mailbody);
+    COM_mail($_CONF['site_mail'], $mailSubject, $mailBody);
 }
 
 /**

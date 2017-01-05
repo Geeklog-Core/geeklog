@@ -103,14 +103,14 @@ table#admin-permissions {
 }
 
 table#admin-permissions th {
-  padding: 4px;
+  padding: 5px 8px;
   border: 1px solid #ffffff;
   background: #dae0ed;
-  text-align: {left};
+  text-align: center;
 }
 
 table#admin-permissions td {
-  padding: 4px;
+  padding: 5px 8px;
   border: 1px solid #ffffff;
   background: #f7f7f7;
   font-weight: bold;

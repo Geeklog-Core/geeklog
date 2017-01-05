@@ -14,22 +14,19 @@ class Mail
     /**
      * Strip a new line
      *
-     * @param  string|array $string
+     * @param  string|array $item
      * @return string|array
      */
-    private static function stripNewLine($string)
+    private static function stripControlCharacters($item)
     {
-        if (is_array($string)) {
-            foreach ($string as $key => &$value) {
-                $value = substr($value, 0, strcspn($value, self::NEW_LINE));
-            }
-
-            unset($value);
+        if (is_array($item)) {
+            return array_map('\Geeklog\Mail\stripControlCharacters', $item);
         } else {
-            $string = substr($string, 0, strcspn($string, self::NEW_LINE));
+            $item = substr($item, 0, strcspn($item, self::NEW_LINE));
+            $item = preg_replace('/[[:cntrl:]]/', '', $item);
         }
 
-        return $string;
+        return $item;
     }
 
     /**
@@ -59,9 +56,9 @@ class Mail
         }
 
         // Remove new lines
-        $to = self::stripNewLine($to);
-        $from = self::stripNewLine($from);
-        $subject = self::stripNewLine($subject);
+        $to = self::stripControlCharacters($to);
+        $from = self::stripControlCharacters($from);
+        $subject = self::stripControlCharacters($subject);
 
         // Set up transport
         switch ($_CONF['mail_settings']['backend']) {
@@ -95,6 +92,9 @@ class Mail
         // Create a message
         $message = \Swift_Message::newInstance();
 
+        // Avoid double dots problem
+        $message->setEncoder(new \Swift_Mime_ContentEncoder_Base64ContentEncoder());
+
         if (!empty($_CONF['mail_charset'])) {
             $message->setCharset($_CONF['mail_charset']);
         } else {
@@ -121,7 +121,7 @@ class Mail
         }
 
         if (($optional != null) && !is_array($optional)) {
-            $optional = self::stripNewLine($optional);
+            $optional = self::stripControlCharacters($optional);
         }
 
         if (($optional != null) && !is_array($optional) && !empty($optional)) {

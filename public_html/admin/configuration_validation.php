@@ -152,18 +152,11 @@ $_CONF_VALIDATE['Core']['path_editors'] = array(
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
 
-/* Subgroup Site, Tab Pear */
-$_CONF_VALIDATE['Core']['have_pear'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['path_pear'] = array(
-    'rule' => 'path',
-    'message' => isset($LANG_VALIDATION['path']) ?
-                 $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
-);
-
-/* Subgroup Site, Tab MySQL */
+/* Subgroup Site, Tab Database */
+$_CONF_VALIDATE['Core']['dbdump_filename_prefix'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['dbdump_tables_only'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['dbdump_gzip'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['dbdump_filename_prefix'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['dbdump_max_files'] = array('rule' => 'numeric');
 
 /* Subgroup Site, Tab Search */
 $_CONF_VALIDATE['Core']['search_style'] = array('rule' => array('inList', array('google', 'table'), true));

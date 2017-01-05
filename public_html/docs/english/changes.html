@@ -19,9 +19,17 @@ list of files that have been changed since the last release.</p>
 
 <h2><a name="changes212">Geeklog 2.1.2</a></h2>
 
-<p>Geeklog 2.1.2 major new feature is </p>
+<p>Geeklog 2.1.2 major new features include a number of new administration tools along with the support of URL Routing and detecting a mobile user.</p>
 
-<p>This Geeklog release no longer supports Microsoft SQL Server (mssql).</p>
+<p>The Geeklog minimum requirements have changed slightly since, Geeklog now supports PHP 7 and the default settings for MySQL 5.7. The minimum requirements are:</p>
+
+<ul>
+<li>PHP 5.3.3 or higher</li>
+<li>MySQL 4.1.2 or higher (MySQL 5 recommended)</li> 
+<li>Postgresql 9.1.7 or later</li>
+</ul>
+
+<p>This Geeklog release no longer supports Microsoft SQL Server (mssql). The Professional and Professional CSS themes also have been removed. Geeklog ships with jQuery v3.1.1, jQuery UI v1.12.1, CKEditor v4.6.1, UIkit v2.27.2, Filemanager v2.2.0, and OAuth class v1.152.</p>
 
 <h3>Major New Features and Improvements</h3>
 
@@ -38,8 +46,14 @@ list of files that have been changed since the last release.</p>
     <li>Added a new config option $_CONF['gravatar_identicon'] to specify a default gravatar icon type (bug #579)</li>
     <li>Added ability for Geeklog to detect device type (mobile or computer) of visitor. This can be used by blocks to display only for a certain device type</li>
     <li>Blocks can display based on visitor device type</li>
-    <li>Template variable {device_movile} added which returns true if viewing device is considered mobile (phone and tablet)</li>
-    <li>Remove PEAR settings.  PEAR libraries are now managed by way of composer</li>
+    <li>Template variable {device_mobile} added which returns true if viewing device is considered mobile (phone and tablet)</li>
+    <li>Remove PEAR settings. PEAR libraries are now managed by way of composer</li>
+    <li>New Denim Curve theme which is a child theme of Denim and based on the look of the Modern Curve theme</li>
+    <li>New Geeklog Database backup which now works without using an external program</li>
+    <li>Improved Geeklog Install process which now includes upgrade messages</li>
+    <li>Support for MySQL databases which use a 4 byte character set (utf8mb4_xxx_ci)</li>
+    <li>COM_switchLocaleSettings now overrides $_CONF['meta_description'],$_CONF['meta_keywords'], $_CONF['site_name'], $_CONF['owner_name'], and $_CONF['site_slogan'].</li>
+    <li>Updates to a number of libraries including Pear, Uikit, OAuth, jQuery, and jQuery UI</li>
     <li>Numerous bug and security fixes.</li>
 </ul>
 

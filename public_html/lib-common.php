@@ -362,7 +362,6 @@ $TEMPLATE_OPTIONS = array(
 // Template library contains helper functions for template class
 require_once $_CONF['path_system'] . 'lib-template.php';
 
-
 // Set language
 if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
     $language = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_language']]);
@@ -499,7 +498,7 @@ if (empty($serialized_topic_tree)) {
     $_TOPICS = unserialize($serialized_topic_tree);
 }
 
-// Figure out if we need to update article feeds. Check last article date punlished in feed
+// Figure out if we need to update article feeds. Check last article date published in feed
 $sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
 $result = DB_query($sql);
 $A = DB_fetchArray($result);
@@ -868,7 +867,7 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
            $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $relLinks;
     global $_GLOBAL_WHAT;
 
-    COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '2.2.0', 'COM_createHTMLDocument');
 
     $_GLOBAL_WHAT = $what;
 
@@ -1264,7 +1263,7 @@ function COM_siteFooter($rightBlock = -1, $custom = '')
 {
     global $_CONF, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS, $_SCRIPTS, $_GLOBAL_WHAT;
 
-    COM_errorLog('Warning! ' . __FUNCTION__ . ' will be deprecated with Geeklog-2.1.2.  Please use COM_createHTMLDocument instead.');
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '2.2.0', 'COM_createHTMLDocument');
 
     // If the theme implemented this for us then call their version instead.
     $function = $_CONF['theme'] . '_siteFooter';
@@ -1474,7 +1473,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     if ($_CONF['supported_version_theme'] === '1.8.1') {
         if (is_callable('COM_siteHeader') && is_callable('COM_siteFooter')) {
             return COM_siteHeader($what, $pageTitle, $headerCode) . $content
-            . COM_siteFooter($rightBlock, $custom);
+                . COM_siteFooter($rightBlock, $custom);
         } else {
             throw new Exception('COM_siteHeader and COM_siteFooter are removed. Please use COM_createHTMLDocument instead.');
         }
@@ -2050,12 +2049,8 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
             if (!defined('GL-HELP-SET')) {
                 define('GL-HELP-SET', true);
 
-                // Add in Query dialog for help file
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.dialog');
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.draggable');
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.droppable');
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.resizable');
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.button');
+                // Add in jQuery dialog for help file
+                $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Requires dialog, draggable, droppable, resizable, and button
 
                 // Add Language variables
                 $_SCRIPTS->setLang(array('close' => $LANG32[60]));
@@ -2467,7 +2462,7 @@ function COM_featuredCheck()
  * @see      function COM_accessLog
  * @return   string  If $actionId = 2 or '' then HTML formatted string (wrapped in block) else nothing
  */
-function COM_errorLog($logEntry, $actionId = 2)
+function COM_errorLog($logEntry, $actionId = '')
 {
     global $_CONF, $LANG01;
 
@@ -2530,6 +2525,44 @@ function COM_errorLog($logEntry, $actionId = 2)
     }
 
     return $retval;
+}
+
+/**
+ * Writes a deprecated warning message in Geeklog error log file (only in root debug mode)
+ *
+ * @param   string $deprecated_object       Name of depreciated function, class, etc..
+ * @param   string $deprecated_version      Version of Geeklog that object was depreciated in
+ * @param   string $removed_version         Planned version of Geeklog object will be removed
+ * @param   string $new_object              New object developer should be using instead
+ * @return  
+ * @since   since v2.1.2
+ */
+function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_version, $new_object = '')
+{
+    global $_CONF;
+
+    // Only log in debug mode
+    if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
+        
+        $log_msg = sprintf(
+                    'Deprecated Warning - %1$s has been deprecated since Geeklog %2$s. This object will be removed in Geeklog %3$s.',
+                    $deprecated_object, $deprecated_version, $removed_version
+                );
+        
+        if (!empty($new_object)) {
+            $log_msg .= sprintf(' Use %1$s instead.', $new_object);            
+        }
+
+        // Generate an exception to trace the deprecated call
+        $e = new Exception();
+        $trace = $e->getTrace();
+        //position 0 would be the line that called this function so we ignore it
+        $last_call = $trace[1];
+        $log_msg .= ' Call Trace: ' . print_r($last_call, true);        
+        
+        COM_errorLog($log_msg, 1);
+    }
+
 }
 
 /**
@@ -2930,7 +2963,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
             $login->set_var('openid_login', '');
         }
 
-        // OAuth remote authentification.
+        // OAuth remote authentication.
         if ($_CONF['user_login_method']['oauth'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
             $_SCRIPTS->setJavaScriptFile('login', '/javascript/login.js');
             $modules = SEC_collectRemoteOAuthModules();
@@ -2952,7 +2985,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
                     'microsoft' => 'windows',
                     'linkedin'  => 'linkedin',
                     'yahoo'     => 'yahoo',
-                    'github'    => 'github'
+                    'github'    => 'github',
                 );
                 foreach ($modules as $service) {
                     $login->set_file('oauth_login', 'loginform_oauth.thtml');
@@ -3332,7 +3365,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                         'image'     => $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE,
                     ),
                     array(
-                        'condition' => SEC_inGroup('Root'),
+                        'condition' => ($_DB_dbms === 'mysql') && SEC_inGroup('Root'),
                         'url'       => $_CONF['site_admin_url'] . '/database.php',
                         'lang'      => $LANG01[103],
                         'num'       => '',
@@ -3583,12 +3616,26 @@ function COM_adminMenu($help = '', $title = '', $position = '')
  */
 function COM_redirect($url)
 {
-    header('Location: ' . $url);
+    global $_CONF;
+
+    if (!headers_sent($file, $line)) {
+        $url = str_ireplace('&amp;', '&', $url);
+        header('Location: ' . $url);
+    }
+
+    if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
+        // for debugging
+        COM_errorLog(
+            sprintf(
+                '%1$s failed to redirect to "%2$s".  Headers were already sent at line %3$d of "%4$s".',
+                __FUNCTION__, $url, $line, $file
+            )
+        );
+    }
 
     // Send out HTML meta tags in case header('Location: some_url') fails
-    COM_errorLog(__FUNCTION__ . ' failed.  The URL given is "' . $url . '".');
-    header('Content-Type: text/html; charset=' . COM_getCharset());
-    echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . PHP_EOL;
+    @header('Content-Type: text/html; charset=' . COM_getCharset());
+    echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL={$url}\"></head></html>" . PHP_EOL;
     die(1);
 }
 
@@ -3606,7 +3653,7 @@ function COM_redirect($url)
  */
 function COM_refresh($url)
 {
-    COM_errorLog('Warning!  COM_refresh has been deprecated since v2.1.2.  Use COM_redirect instead.');
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0', 'COM_redirect');
 
     if (is_callable('CUSTOM_refresh')) {
         return CUSTOM_refresh($url);
@@ -3626,6 +3673,8 @@ function COM_refresh($url)
 function COM_userComments($sid, $title, $type = 'article', $order = '', $mode = '', $pid = 0, $page = 1, $cid = false, $delete_option = false)
 {
     global $_CONF;
+    
+    COM_deprecatedLog(__FUNCTION__, '1.4.0', '3.0.0', 'CMT_userComments in lib-comment.php');
 
     require_once $_CONF['path_system'] . 'lib-comment.php';
 
@@ -3809,6 +3858,8 @@ function COM_isEmail($email)
  */
 function COM_emailEscape($string)
 {
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0');
+    
     if (function_exists('CUSTOM_emailEscape')) {
         return CUSTOM_emailEscape($string);
     }
@@ -3849,6 +3900,8 @@ function COM_emailEscape($string)
  */
 function COM_formatEmailAddress($name, $address)
 {
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0');
+    
     $name = trim($name);
     $address = trim($address);
 
@@ -3907,29 +3960,24 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
         $retval = COM_startBlock($title, $help,
             COM_getBlockTemplate('older_stories_block', 'header', $position));
 
-        $sql['mysql'] = "SELECT sid,ta.tid,title,comments,UNIX_TIMESTAMP(date) AS day
+        $sql['mysql'] = "SELECT sid,title,comments,UNIX_TIMESTAMP(date) AS day
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid, featured, date, ta.tid, title, comments, day
+            GROUP BY sid, featured, date, title, comments, day 
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
-        $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day
+        $sql['pgsql'] = "SELECT sid,title,comments,date_part('epoch',date) AS day
             FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
             AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid, featured, date, ta.tid, title, comments, day
+            GROUP BY sid, featured, date, title, comments, day  
             ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
         $result = DB_query($sql);
         $numRows = DB_numRows($result);
 
         if ($numRows > 0) {
-            $dateOnly = $_CONF['dateonly'];
-            if (empty($dateOnly)) {
-                $dateOnly = '%d-%b'; // fallback: day - abbrev. month name
-            }
-
             $day = 'noday';
             $string = '';
             $oldNews = array();
@@ -3941,12 +3989,12 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
                 if ($day != $dayCheck) {
                     if ($day !== 'noday') {
                         $dayList = COM_makeList($oldNews, 'list-older-stories');
-                        $dayList = preg_replace("/(\015\012)|(\015)|(\012)/",
-                            '', $dayList);
+                        $oldNews = array(); // Reset old news array
+                        $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
                         $string .= $dayList . '<div class="divider-older-stories"></div>';
                     }
 
-                    $day2 = strftime($dateOnly, $A['day']);
+                    list($day2, ) = COM_getUserDateTimeFormat($A['day'], 'dateonly');
                     $string .= '<h3>' . $dayCheck . ' <small>' . $day2 . '</small></h3>' . LB;
                     $day = $dayCheck;
                 }
@@ -4672,7 +4720,7 @@ function COM_emailUserTopics()
         return;
     }
 
-    $subject = strip_tags($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d', time()));
+    $subject = GLText::stripTags($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d', time()));
     $authors = array();
 
     // Get users who want stories emailed to them
@@ -4739,7 +4787,8 @@ function COM_emailUserTopics()
             continue;
         }
 
-        $mailText = $LANG08[29] . strftime($_CONF['shortdate'], time()) . "\n";
+        list($date, ) = COM_getUserDateTimeFormat(time(), 'shortdate');
+        $mailText = $LANG08[29] . $date . "\n";
 
         for ($y = 0; $y < $numArticles; $y++) {
             // Loop through stories building the requested email message
@@ -4758,13 +4807,14 @@ function COM_emailUserTopics()
                 $mailText .= "$LANG24[7]: " . $articleAuthor . "\n";
             }
 
-            $mailText .= "$LANG08[32]: " . strftime($_CONF['date'], strtotime($S['day'])) . "\n\n";
+            list($date, ) = COM_getUserDateTimeFormat(strtotime($S['day']), 'date');
+            $mailText .= "$LANG08[32]: " . $date . "\n\n";
 
             if ($_CONF['emailstorieslength'] > 0) {
                 if ($S['postmode'] === 'wikitext') {
-                    $articleText = COM_undoSpecialChars(strip_tags(COM_renderWikiText(stripslashes($S['introtext']))));
+                    $articleText = COM_undoSpecialChars(GLText::stripTags(COM_renderWikiText(stripslashes($S['introtext']))));
                 } else {
-                    $articleText = COM_undoSpecialChars(strip_tags(PLG_replaceTags(stripslashes($S['introtext']))));
+                    $articleText = COM_undoSpecialChars(GLText::stripTags(PLG_replaceTags(stripslashes($S['introtext']))));
                 }
 
                 if ($_CONF['emailstorieslength'] > 1) {
@@ -5124,7 +5174,7 @@ function COM_showMessageText($message, $title = '')
         if (empty($title)) {
             $title = $MESSAGE[40];
         }
-        $timestamp = strftime($_CONF['daytime']);
+        list($timestamp, ) = COM_getUserDateTimeFormat(time(), 'daytime');
         $retval .= COM_startBlock($title . ' - ' . $timestamp, '',
                 COM_getBlockTemplate('_msg_block', 'header'))
             . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
@@ -5189,15 +5239,10 @@ function COM_showMessageFromParameter()
 {
     $retval = '';
 
-    if (isset($_GET['msg'])) {
-        $msg = COM_applyFilter($_GET['msg'], true);
-        if ($msg > 0) {
-            $plugin = '';
-            if (isset($_GET['plugin'])) {
-                $plugin = COM_applyFilter($_GET['plugin']);
-            }
-            $retval .= COM_showMessage($msg, $plugin);
-        }
+    $msg = (int) Geeklog\Input::fGet('msg', 0);
+    if ($msg > 0) {
+        $plugin = Geeklog\Input::fGet('plugin', '');
+        $retval .= COM_showMessage($msg, $plugin);
     }
 
     return $retval;
@@ -5345,20 +5390,82 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
  * the format in the config file is used.  This returns an array where array[0]
  * is the formatted date and array[1] is the unixtimestamp
  *
- * @param  string $date date to format, otherwise we format current date/time
- * @return array        array[0] is the formatted date and array[1] is the unixtimestamp.
+ * @param  string|int $date   date to format, otherwise we format current date/time
+ * @param  string     $format (optional, since v2.1.2) any of 'date', 'daytime', 'shortdate', 'dateonly', 'timeonly'
+ * @return array              array[0] is the formatted date and array[1] is the unixtimestamp.
  */
-function COM_getUserDateTimeFormat($date = '')
+function COM_getUserDateTimeFormat($date = '', $format = 'date')
 {
     global $_USER, $_CONF;
+    static $isAnonUser, $isWindows, $hasMbStringFunctions, $locale;
 
-    // Get display format for time
-    if (!COM_isAnonUser()) {
-        $dateFormat = empty($_USER['format']) ? $_CONF['date'] : $_USER['format'];
-    } else {
-        $dateFormat = $_CONF['date'];
+    if (!isset($isAnonUser)) {
+        $isAnonUser = COM_isAnonUser();
+        $isWindows = (stripos(PHP_OS, 'WIN') === 0);
+        $hasMbStringFunctions = is_callable('mb_convert_encoding');
+        $locale = strtolower($_CONF['locale']);
+        $dot = strpos($locale, '.');
+        if ($dot !== false) {
+            $locale = substr($locale, 0, $dot);
+        }
     }
 
+    // Check for format
+    $format = strtolower($format);
+
+    switch ($format) {
+        case 'daytime':
+            $dateFormat = $_CONF[$format];
+
+            if (empty($dateFormat)) {
+                $dateFormat = '%m/%d %I:%M%p';
+            }
+            break;
+
+        case 'shortdate':
+            $dateFormat = $_CONF[$format];
+
+            if (empty($dateFormat)) {
+                $dateFormat = '%x';
+            }
+            break;
+
+        case 'dateonly':
+            $dateFormat = $_CONF[$format];
+
+            if (empty(($dateFormat))) {
+                $dateFormat = '%d-%b';
+            }
+            break;
+
+        case 'timeonly':
+            $dateFormat = $_CONF[$format];
+
+            if (empty($dateFormat)) {
+                $dateFormat = '%I:%M %p %Z';
+            }
+            break;
+
+        case 'date':
+        default:
+            if ($isAnonUser) {
+                $dateFormat = $_CONF[$format];
+            } else {
+                $dateFormat = empty($_USER['format']) ? $_CONF[$format] : $_USER['format'];
+            }
+
+            if (empty($dateFormat)) {
+                $dateFormat = '%A, %B %d %Y @ %I:%M %p %Z';
+            }
+            break;
+    }
+
+    // Change %e modifier to %#d on Microsoft Windows
+    if ($isWindows) {
+        $dateFormat = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $dateFormat);
+    }
+
+    // Check for date
     if (empty($date)) {
         // Date is empty, get current date/time
         $stamp = time();
@@ -5371,7 +5478,24 @@ function COM_getUserDateTimeFormat($date = '')
     }
 
     // Format the date
+    if ($isWindows && $hasMbStringFunctions) {
+        $dateFormat = mb_convert_encoding($dateFormat, 'shift_jis', $_CONF['default_charset']);
+    }
     $date = strftime($dateFormat, $stamp);
+
+    // Additional fix for Japanese users and so on
+    switch ($locale) {
+        case 'ja':
+        case 'ja_jp':
+        case 'japanese':
+            if ($isWindows && $hasMbStringFunctions) {
+                $date = mb_convert_encoding($date, $_CONF['default_charset'], 'shift_jis');
+            }
+            break;
+
+        default:
+            break;
+    }
 
     return array($date, $stamp);
 }
@@ -5707,6 +5831,8 @@ function COM_getMinuteFormOptions($selected = '', $step = 1)
  */
 function COM_getMinuteOptions($selected = '', $step = 1)
 {
+    COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0', 'COM_getMinuteFormOptions');
+    
     return COM_getMinuteFormOptions($selected, $step);
 }
 
@@ -6226,7 +6352,7 @@ function COM_applyBasicFilter($parameter, $isNumeric = false)
     $log_manipulation = false; // set to true to log when the filter applied
 
     $p = GLText::remove4byteUtf8Chars($parameter);
-    $p = strip_tags($p);
+    $p = GLText::stripTags($p);
     $p = COM_killJS($p); // doesn't help a lot right now, but still ...
 
     if ($isNumeric) {
@@ -6278,7 +6404,7 @@ function COM_sanitizeUrl($url, $allowed_protocols = '', $default_protocol = '')
         $default_protocol .= ':';
     }
 
-    $url = strip_tags($url);
+    $url = GLText::stripTags($url);
     if (!empty($url)) {
         $pos = MBYTE_strpos($url, ':');
         if ($pos === false) {
@@ -6685,6 +6811,8 @@ function COM_onFrontpage()
  */
 function COM_isFrontpage()
 {
+    COM_deprecatedLog(__FUNCTION__, '1.4.1', '3.0.0', 'COM_onFrontpage');
+    
     return !COM_onFrontpage();
 }
 
@@ -6843,7 +6971,7 @@ function COM_displayMessageAndAbort($msg, $plugin = '', $http_status = 200, $htt
                 }
             }
 
-            if (isset($MESSAGE) && isset($MESSAGE[$msg])) {
+            if (isset($MESSAGE, $MESSAGE[$msg])) {
                 $display = $MESSAGE[$msg];
             }
         }
@@ -7199,6 +7327,8 @@ function COM_switchLocaleSettings()
             'date', 'daytime', 'shortdate', 'dateonly', 'timeonly',
             'week_start', 'hour_mode',
             'thousand_separator', 'decimal_separator',
+            // Since GL-2.1.2
+            'meta_description', 'meta_keywords', 'site_name', 'owner_name', 'site_slogan',
         );
 
         $langId = COM_getLanguageId();
@@ -7324,9 +7454,9 @@ function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $t
     $tooltip->set_var('class', $class);
     $tooltip->set_var('hoverover', $hoverOver);
     $tooltip->set_var('text', $text);
-    $tooltip->set_var('plaintext', strip_tags($text));
+    $tooltip->set_var('plaintext', GLText::stripTags($text));
     $tooltip->set_var('title', $title);
-    $tooltip->set_var('plaintitle', strip_tags($title));
+    $tooltip->set_var('plaintitle', GLText::stripTags($title));
     if ($link == '') {
         $link = 'javascript:void(0);';
         $cursor = 'help';
@@ -7776,7 +7906,7 @@ function COM_escapeMetaTagValue($value)
     }
 
     $value = preg_replace('/[[:cntrl:]]/', ' ', $value);
-    $value = strip_tags($value);
+    $value = GLText::stripTags($value);
     $value = trim($value);
     $value = preg_replace('/\s\s+/', ' ', $value);
 
@@ -7977,7 +8107,7 @@ function COM_getTextContent($text)
     $text = str_replace('><', '> <', $text);
 
     // only now remove all HTML tags
-    $text = strip_tags($text);
+    $text = GLText::stripTags($text);
 
     // replace all tabs, newlines, and carriage returns with spaces
     $text = str_replace(array("\011", "\012", "\015"), ' ', $text);

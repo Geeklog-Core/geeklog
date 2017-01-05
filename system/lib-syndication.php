@@ -30,10 +30,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (stripos($_SERVER['PHP_SELF'], 'lib-syndication.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
+/** @noinspection PhpUndefinedVariableInspection */
 if ($_CONF['trackback_enabled']) {
     require_once $_CONF['path_system'] . 'lib-trackback.php';
 }
@@ -55,7 +56,7 @@ $_SYND_DEBUG = false;
  */
 function SYND_feedUpdateCheckAll($frontpage_only, $update_info, $limit, $updated_topic = '', $updated_id = '')
 {
-    global $_CONF, $_TABLES, $_SYND_DEBUG;
+    global $_TABLES, $_SYND_DEBUG;
 
     $where = '';
     if (!empty($limit)) {
@@ -73,8 +74,7 @@ function SYND_feedUpdateCheckAll($frontpage_only, $update_info, $limit, $updated
     $sids = array();
 
     // get list of topics that anonymous users have access to
-    $tresult = DB_query("SELECT tid FROM {$_TABLES['topics']}"
-        . COM_getPermSQL('WHERE', 1));
+    $tresult = DB_query("SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL('WHERE', 1));
     $tnumrows = DB_numRows($tresult);
     $topiclist = array();
     for ($i = 0; $i < $tnumrows; $i++) {
@@ -124,7 +124,7 @@ function SYND_feedUpdateCheckAll($frontpage_only, $update_info, $limit, $updated
  */
 function SYND_feedUpdateCheckTopic($tid, $update_info, $limit, $updated_topic = '', $updated_id = '')
 {
-    global $_CONF, $_TABLES, $_SYND_DEBUG;
+    global $_TABLES, $_SYND_DEBUG;
 
     $where = '';
     if (!empty($limit)) {
@@ -208,11 +208,15 @@ function SYND_feedUpdateCheck($topic, $update_data, $limit, $updated_topic = '',
 /**
  * Get content for a feed that holds stories from one topic.
  *
- * @param    string $tid    topic id
- * @param    string $limit  number of entries or number of stories
- * @param    string $link   link to topic
- * @param    string $update list of story ids
- * @return   array              content of the feed
+ * @param  string $tid    topic id
+ * @param  string $limit  number of entries or number of stories
+ * @param  string $link   link to topic
+ * @param  string $update list of story ids
+ * @param  int    $contentLength
+ * @param  string $feedType
+ * @param  string $feedVersion
+ * @param  int    $fid
+ * @return  array                content of the feed
  */
 function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLength, $feedType, $feedVersion, $fid)
 {
@@ -221,7 +225,7 @@ function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLen
     $content = array();
     $sids = array();
 
-    if (DB_getItem($_TABLES['topics'], 'perm_anon', "tid = '$tid'") >= 2) {
+    if (DB_getItem($_TABLES['topics'], 'perm_anon', "tid = '" . DB_escapeString($tid) . "'") >= 2) {
         $where = '';
         if (!empty($limit)) {
             if (substr($limit, -1) == 'h') {// last xx hours
@@ -235,8 +239,7 @@ function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLen
             $limitsql = ' LIMIT 10';
         }
 
-        $topic = stripslashes(DB_getItem($_TABLES['topics'], 'topic',
-            "tid = '$tid'"));
+        $topic = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '" . DB_escapeString($tid) . "'"));
 
         // Retrieve list of inherited topics for anonymous user
         $tid_list = TOPIC_getChildList($tid, 1);
@@ -486,6 +489,7 @@ function SYND_updateFeed($fid)
                         $format[1], $fid);
                 }
             } else {
+                /** @noinspection PhpUndefinedVariableInspection */
                 $content = PLG_getFeedContent($A['type'], $fid, $link, $data, $format[0], $format[1]);
 
                 // can't randomly change the api to send a max length, so
@@ -560,7 +564,7 @@ function SYND_updateFeed($fid)
             $feed->extensions = PLG_getFeedExtensionTags($A['type'], $format[0], $format[1], $A['topic'], $fid, $feed);
 
             /* Inject the self reference for Atom into RSS feeds. Illogical?
-             * Well apparantly not:
+             * Well apparently not:
              * http://feedvalidator.org/docs/warning/MissingAtomSelfLink.html
              */
             if ($format[0] == 'RSS') {
@@ -593,28 +597,26 @@ function SYND_updateFeed($fid)
  * @param    string $text   the item's text
  * @param    int    $length max. length
  * @return   string              truncated text
- *                          Note: Use COM_truncateHTML from now on.
+ * @note     Use COM_truncateHTML from now on.
  */
 function SYND_truncateSummary($text, $length)
 {
-    $storytext = ($length == 1) ? $text : COM_truncateHTML($text, $length, ' ...');
+    $storyText = ($length == 1) ? $text : COM_truncateHTML($text, $length, ' ...');
 
-    return $storytext;
+    return $storyText;
 }
 
 /**
  * Get the path of the feed directory or a specific feed file
  *
- * @param    string $feedfile (option) feed file name
+ * @param    string $feedFile (option) feed file name
  * @return   string              path of feed directory or file
  */
-function SYND_getFeedPath($feedfile = '')
+function SYND_getFeedPath($feedFile = '')
 {
     global $_CONF;
 
-    $feedpath = $_CONF['rdf_file'];
-    $pos = strrpos($feedpath, '/');
-    $feed = substr($feedpath, 0, $pos + 1) . $feedfile;
+    $feed = dirname($_CONF['rdf_file']) . DIRECTORY_SEPARATOR . basename($feedFile);
 
     return $feed;
 }
@@ -622,17 +624,16 @@ function SYND_getFeedPath($feedfile = '')
 /**
  * Get the URL of the feed directory or a specific feed file
  *
- * @param    string $feedfile (option) feed file name
+ * @param    string $feedFile (option) feed file name
  * @return   string              URL of feed directory or file
  */
-function SYND_getFeedUrl($feedfile = '')
+function SYND_getFeedUrl($feedFile = '')
 {
     global $_CONF;
 
-    $feedpath = SYND_getFeedPath();
-    $url = substr_replace($feedpath, $_CONF['site_url'], 0,
-        strlen($_CONF['path_html']) - 1);
-    $url .= $feedfile;
+    $feedPath = SYND_getFeedPath();
+    $url = substr_replace($feedPath, $_CONF['site_url'], 0, strlen($_CONF['path_html']) - 1);
+    $url .= $feedFile;
 
     return $url;
 }
@@ -679,8 +680,9 @@ function SYND_getDefaultFeedUrl()
     $feed = '';
 
     if ($_CONF['backend'] > 0) {
-        $feed = substr_replace($_CONF['rdf_file'], $_CONF['site_url'], 0,
-            strlen($_CONF['path_html']) - 1);
+        $feed = substr_replace(
+            $_CONF['rdf_file'], $_CONF['site_url'], 0, strlen($_CONF['path_html']) - 1
+        );
     }
 
     return $feed;
@@ -693,8 +695,9 @@ function SYND_getDefaultFeedUrl()
  */
 function SYND_fixCharset($fid)
 {
-    global $_CONF, $_TABLES, $_SYND_DEBUG;
+    global $_TABLES;
 
+    $fid = (int) $fid;
     $sql = "SELECT COUNT(filename) AS cnt "
         . "FROM {$_TABLES['syndication']} "
         . "WHERE (fid = {$fid}) AND (filename = 'geeklog.rss') "
@@ -709,6 +712,7 @@ function SYND_fixCharset($fid)
             clearstatcache();
 
             if (@filesize($fileName) === 0) {
+                $fid = DB_escapeString($fid);
                 $charset = DB_escapeString(COM_getCharset());
                 $sql = "UPDATE {$_TABLES['syndication']} "
                     . "SET charset = '{$charset}' "

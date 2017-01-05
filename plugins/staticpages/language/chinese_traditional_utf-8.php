@@ -210,4 +210,3 @@ $LANG_configselects['staticpages'] = array(
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
-?>

@@ -105,6 +105,8 @@ class timerobject
      */
     public function setPercision($num_dec_places)
     {
+        COM_deprecatedLog(__FUNCTION__, '1.6.0', '3.0.0', 'setPrecision');
+        
         $this->setPrecision($num_dec_places);
     }
 

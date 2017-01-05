@@ -211,4 +211,3 @@ $LANG_configselects['staticpages'] = array(
     17 => array('Kommentare eingeschaltet' => 0, 'Kommentare ausgeschaltet' => -1)
 );
 
-?>

@@ -71,5 +71,3 @@ mergeArrays($ENG_fs['spamx'], $LANG_fs['spamx'], "LANG_fs['spamx']", false);
 echo "\n";
 echo "// Note: entries 0, 1, 9, and 12 are the same as in \$LANG_configselects['Core']";
 mergeArrays($ENG_configselects['spamx'], $LANG_configselects['spamx'], "LANG_configselects['spamx']", false);
-
-?>

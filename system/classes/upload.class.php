@@ -435,7 +435,7 @@ class Upload
      * Keep the original (unscaled) image file, if configured.
      *
      * @param    string $filename name of uploaded file
-     * @return   boolean             true: okay, false: an error occured
+     * @return   boolean             true: okay, false: an error occurred
      */
     private function _keepOriginalFile($filename)
     {

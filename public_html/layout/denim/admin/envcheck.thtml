@@ -1,5 +1,7 @@
 {# begin {templatelocation} #}
 
+{database_settings_list}
+
 {php_settings_list}
 
 {graphics_list}

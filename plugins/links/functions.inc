@@ -42,7 +42,7 @@
 * @package Links
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
@@ -1032,10 +1032,7 @@ function plugin_submit_links()
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
     $linkform->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);
-    $category = '';
-    if (isset($_REQUEST['cid'])) {
-        $category = $_REQUEST['cid'];
-    }
+    $category = Geeklog\Input::request('cid', '');
     $linkform->set_var('link_category_options', links_select_box(2, $category));
     $linkform->set_var('lang_description', $LANG12[15]);
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
@@ -1088,7 +1085,7 @@ function plugin_save_submit_links($A)
         return $retval;
     }
 
-    $A['cid'] = strip_tags(COM_stripslashes($A['categorydd']));
+    $A['cid'] = GLText::stripTags(COM_stripslashes($A['categorydd']));
 
     $validcat = false;
     if (!empty($A['cid'])) {
@@ -1111,7 +1108,7 @@ function plugin_save_submit_links($A)
     // Remove any autotags the user doesn't have permission to use
     $A['description'] = PLG_replaceTags($A['description'], '', true);
     $A['description'] = DB_escapeString(htmlspecialchars(COM_checkWords($A['description'])));
-    $A['title'] = DB_escapeString(strip_tags(COM_checkWords($A['title'])));
+    $A['title'] = DB_escapeString(GLText::stripTags(COM_checkWords($A['title'])));
     $A['url'] = DB_escapeString(COM_sanitizeUrl($A['url']));
     $A['lid'] = DB_escapeString(COM_makeSid());
 

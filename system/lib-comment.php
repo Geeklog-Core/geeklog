@@ -157,22 +157,13 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
         $commentBar->set_var('parent_url', $comment_url . '#comments');
         $commentBar->set_var('editor_url', $comment_url . '#commenteditform');
         $hidden = '';
-        $commentMode = '';
-        if (isset($_REQUEST[CMT_MODE])) {
-            $commentMode = COM_applyFilter($_REQUEST[CMT_MODE]);
-        }
-        $cid = 0;
-        if (isset($_REQUEST[CMT_CID])) {
-            $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
-        }
-        $pid = 0;
-        if (isset($_REQUEST[CMT_PID])) {
-            $pid = COM_applyFilter($_REQUEST[CMT_PID], true);
-        }
+        $commentMode = Geeklog\Input::fRequest(CMT_MODE, '');
+        $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
+        $pid = (int) Geeklog\Input::fRequest(CMT_PID, 0);
         if (in_array($commentMode, array('view', $LANG03[28], $LANG03[34], $LANG03[14], 'edit'))) {
             $hidden .= '<input type="hidden" name="' . CMT_CID . '" value="' . $cid . '"' . XHTML . '>';
             $hidden .= '<input type="hidden" name="' . CMT_PID . '" value="' . $cid . '"' . XHTML . '>';
-        } else if ($commentMode == 'display' || empty($commentMode)) {
+        } elseif ($commentMode === 'display' || empty($commentMode)) {
             $hidden .= '<input type="hidden" name="' . CMT_PID . '" value="' . $pid . '"' . XHTML . '>';
         }
         $hidden .= '<input type="hidden" name="mode" value="' . $commentMode . '"' . XHTML . '>';
@@ -293,10 +284,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         return '';
     }
 
-    $commentMode = '';
-    if (isset($_REQUEST[CMT_MODE])) {
-        $commentMode = COM_applyFilter($_REQUEST[CMT_MODE]);
-    }
+    $commentMode = Geeklog\Input::fRequest(CMT_MODE, '');
     $submit = (($commentMode == $LANG03[29]) || ($commentMode == $LANG03[35]));
     $token = '';
     if ($delete_option && !$preview && !$submit) {
@@ -342,7 +330,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
 
         // comment variables
         $template->set_var('indent', $indent);
-        $template->set_var('author_name', strip_tags($A['username']));
+        $template->set_var('author_name', GLText::stripTags($A['username']));
         $template->set_var('author_id', $A['uid']);
         $template->set_var('cid', $A['cid']);
         $template->set_var('cssid', $row % 2);
@@ -384,7 +372,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         } else {
             // comment is from anonymous user
             if (isset($A['name'])) {
-                $A['username'] = strip_tags($A['name']);
+                $A['username'] = GLText::stripTags($A['name']);
             }
             $template->set_var('author', $A['username']);
             $template->set_var('author_fullname', $A['username']);
@@ -563,8 +551,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
 
         // highlight search terms if specified
         if (!empty($_REQUEST['query'])) {
-            $A['comment'] = COM_highlightQuery($A['comment'],
-                $_REQUEST['query']);
+            $A['comment'] = COM_highlightQuery($A['comment'], Geeklog\Input::request('query'));
         }
 
         $A['comment'] = str_replace('$', '&#36;', $A['comment']);
@@ -842,7 +829,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
     if (empty($format)) {
         if (isset($_REQUEST['format'])) {
-            $format = COM_applyFilter($_REQUEST['format']);
+            $format = Geeklog\Input::fRequest('format');
         }
         if (!in_array($format, array('threaded', 'nested', 'flat', 'nocomment'))) {
             if (COM_isAnonUser()) {
@@ -855,14 +842,16 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
     if (empty($order)) {
         if (isset($_REQUEST['order'])) {
-            $order = COM_applyFilter($_REQUEST['order']);
+            $order = Geeklog\Input::fRequest('order');
         }
     }
 
     if (empty($page)) {
         if (isset($_REQUEST['cpage'])) {
-            $page = COM_applyFilter($_REQUEST['cpage'], true);
-            if (empty($page)) $page = 1;
+            $page = (int) Geeklog\Input::fRequest('cpage', 0);
+            if (empty($page)) {
+                $page = 1;
+            }
         }
     }
 
@@ -874,12 +863,9 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
         $table = $_TABLES['commentsubmissions'];
     }
     if (!empty($table)) {
-        $cid = 0;
-        if (isset($_REQUEST[CMT_CID])) {
-            $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
-        }
+        $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
         if ($cid <= 0) {
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
         }
         $commentUid = DB_getItem($table, 'uid', "cid = '$cid'");
     }
@@ -947,7 +933,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $commentText = str_replace('[', '&#91;', $commentText);
             $commentText = str_replace(']', '&#93;', $commentText);
 
-            $title = COM_checkWords(strip_tags(COM_stripslashes($title)), 'comment');
+            $title = COM_checkWords(GLText::stripTags(COM_stripslashes($title)), 'comment');
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
 
             $_POST['title'] = $title;
@@ -971,23 +957,22 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $A = array();
                 foreach ($_POST as $key => $value) {
                     if (($key == CMT_PID) || ($key == CMT_CID)) {
-                        $A[$key] = COM_applyFilter($_POST[$key], true);
-                    } else if (($key == 'title') || ($key == 'comment')) {
+                        $A[$key] = (int) Geeklog\Input::fPost($key);
+                    } elseif (($key === 'title') || ($key === 'comment')) {
                         // these have already been filtered above
-                        $A[$key] = $_POST[$key];
-                    } else if ($key == CMT_USERNAME) {
+                        $A[$key] = Geeklog\Input::post($key);
+                    } elseif ($key == CMT_USERNAME) {
                         $A[$key] = htmlspecialchars(
-                            COM_checkWords(strip_tags(COM_stripslashes($_POST[$key])), 'comment')
+                            COM_checkWords(GLText::stripTags(Geeklog\Input::post($key)), 'comment')
                         );
                     } else {
-                        $A[$key] = COM_applyFilter($_POST[$key]);
+                        $A[$key] = Geeklog\Input::fPost($key);
                     }
                 }
 
                 // correct time and username for edit preview
                 if (($mode == $LANG03[28]) || ($mode == $LANG03[34])) {
-                    $A['nice_date'] = DB_getItem($table, 'UNIX_TIMESTAMP(date)',
-                        "cid = '{$cid}'");
+                    $A['nice_date'] = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = '" . DB_escapeString($cid) . "'");
                     if ($_USER['uid'] != $commentUid) {
                         $uresult = DB_query("SELECT username, fullname, email, photo FROM {$_TABLES['users']} WHERE uid = $commentUid");
                         $A = array_merge($A, DB_fetchArray($uresult));
@@ -1016,7 +1001,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $retval .= COM_startBlock($LANG03[14])
                     . $start->finish($start->parse('output', 'comment'))
                     . COM_endBlock();
-            } else if ($mode == $LANG03[14]) {
+            } elseif ($mode == $LANG03[14]) {
                 $retval .= COM_showMessageText($LANG03[12], $LANG03[17]);
                 $mode = 'error';
             }
@@ -1088,7 +1073,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $comment_template->set_var('start_block_postacomment',
                     COM_startBlock($LANG03[32]));
                 $comment_template->set_var('cid', '<input type="hidden" name="' . CMT_CID . '" value="' . $cid . '"' . XHTML . '>');
-            } else if ($mode == 'editsubmission' || $mode == $LANG03[34]) {
+            } elseif ($mode == 'editsubmission' || $mode == $LANG03[34]) {
                 $comment_template->set_var('start_block_postacomment',
                     COM_startBlock($LANG03[33]));
                 $comment_template->set_var('cid', '<input type="hidden" name="' . CMT_CID . '" value="' . $cid . '"' . XHTML . '>');
@@ -1108,7 +1093,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     // stored as cookie, name used before
                     $name = htmlspecialchars(
                         COM_checkWords(
-                            strip_tags(COM_stripslashes($_COOKIE[$_CONF['cookie_anon_name']])),
+                            GLText::stripTags(COM_stripslashes($_COOKIE[$_CONF['cookie_anon_name']])),
                             'comment'
                         )
                     );
@@ -1233,12 +1218,9 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             }
 
             if (($_CONF['allow_reply_notifications'] == 1 && $uid != 1) &&
-                ($mode == '' || $mode == $LANG03[14] || $mode == 'error')
+                ($mode == '' || $mode == $LANG03[14] || $mode === 'error')
             ) {
-                $checked = '';
-                if (isset($_POST['notify'])) {
-                    $checked = ' checked="checked"';
-                }
+                $checked = isset($_POST['notify']) ? ' checked="checked"' : '';
                 $comment_template->set_var('notification',
                     '<p><input type="checkbox"' . ' name="notify"' . $checked
                     . '>' . $LANG03[36] . '</p>');
@@ -1323,20 +1305,14 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     // Store unescaped comment and title for use in notification.
     $comment0 = CMT_prepareText($comment, $postmode, $type);
-    $title0 = COM_checkWords(
-        strip_tags($title),
-        'comment'
-    );
+    $title0 = COM_checkWords(GLText::stripTags($title), 'comment');
 
     $comment = DB_escapeString($comment0);
     $title = DB_escapeString($title0);
     if (($uid == 1) && isset($_POST[CMT_USERNAME])) {
         $anon = COM_getDisplayName(1);
         if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
-            $username = COM_checkWords(
-                strip_tags(COM_stripslashes($_POST[CMT_USERNAME])),
-                'comment'
-            );
+            $username = COM_checkWords(GLText::stripTags(Geeklog\Input::post(CMT_USERNAME)), 'comment');
             setcookie($_CONF['cookie_anon_name'], $username, time() + 31536000,
                 $_CONF['cookie_path'], $_CONF['cookiedomain'],
                 $_CONF['cookiesecure']);
@@ -1517,7 +1493,7 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
 
     // strip HTML if posted in HTML mode
     if (preg_match('/<.*>/', $comment) != 0) {
-        $comment = strip_tags($comment);
+        $comment = GLText::stripTags($comment);
     }
 
     if ($uid < 1) {
@@ -1702,7 +1678,7 @@ function CMT_reportAbusiveComment($cid, $type)
  */
 function CMT_sendReport($cid, $type)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG09;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG09, $LANG40;
 
     if (COM_isAnonUser()) {
         $retval = SEC_loginRequiredForm();
@@ -1712,8 +1688,13 @@ function CMT_sendReport($cid, $type)
     }
 
     COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
-    if (COM_checkSpeedlimit('mail') > 0) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+    $speedLimit = COM_checkSpeedlimit('mail');
+    if ($speedLimit > 0) {
+        $message = $LANG40[39] . $speedLimit . $LANG40[40];
+        $content = COM_showMessageText($message);
+        $display = COM_createHTMLDocument($content);
+        COM_output($display);
+        exit;
     }
 
     $username = DB_getItem($_TABLES['users'], 'username',
@@ -1726,7 +1707,7 @@ function CMT_sendReport($cid, $type)
 
     // strip HTML if posted in HTML mode
     if (preg_match('/<.*>/', $comment) != 0) {
-        $comment = strip_tags($comment);
+        $comment = GLText::stripTags($comment);
     }
 
     $author = COM_getDisplayName($A['uid']);
@@ -1783,22 +1764,10 @@ function CMT_handleEditSubmit($mode = null)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03;
 
-    $type = '';
-    if (isset($_POST[CMT_TYPE])) {
-        $type = COM_applyFilter($_POST[CMT_TYPE]);
-    }
-    $sid = '';
-    if (isset($_POST[CMT_SID])) {
-        $sid = COM_applyFilter($_POST[CMT_SID]);
-    }
-    $cid = 0;
-    if (isset($_POST[CMT_CID])) {
-        $cid = COM_applyFilter($_POST[CMT_CID], true);
-    }
-    $postmode = '';
-    if (isset($_POST['postmode'])) {
-        $postmode = COM_applyFilter($_POST['postmode']);
-    }
+    $type = Geeklog\Input::fPost(CMT_TYPE, '');
+    $sid = Geeklog\Input::fPost(CMT_SID, '');
+    $cid = (int) Geeklog\Input::fPost(CMT_CID, 0);
+    $postmode = Geeklog\Input::fPost('postmode', '');
 
     // check for bad input
     if (empty($sid) || empty($_POST['title']) || empty($_POST['comment']) ||
@@ -1806,7 +1775,7 @@ function CMT_handleEditSubmit($mode = null)
     ) {
         COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment with one or more missing values.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     $commentuid = DB_getItem($_TABLES['comments'], 'uid', "cid = '$cid'");
@@ -1819,14 +1788,11 @@ function CMT_handleEditSubmit($mode = null)
     if ($uid != $commentuid && !SEC_hasRights('comment.moderate')) {
         COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment without proper permission.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    $comment = CMT_prepareText($_POST['comment'], $postmode, $type);
-    $title = COM_checkWords(
-        strip_tags(COM_stripslashes($_POST['title'])),
-        'comment'
-    );
+    $comment = CMT_prepareText(Geeklog\Input::post('comment'), $postmode, $type);
+    $title = COM_checkWords(GLText::stripTags(Geeklog\Input::post('title')), 'comment');
 
     if ($mode == $LANG03[35]) {
         $table = $_TABLES['commentsubmissions'];
@@ -1846,7 +1812,7 @@ function CMT_handleEditSubmit($mode = null)
         if (DB_error()) { //saving to non-existent comment or comment in wrong article
             COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                 . 'to edit to a non-existent comment or the cid/sid did not match');
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
         }
         //save edit information for published comment
         // Update any feeds
@@ -1867,7 +1833,7 @@ function CMT_handleEditSubmit($mode = null)
     } else {
         COM_errorLog("CMT_handleEditSubmit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to submit a comment with invalid $title and/or $comment.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     list($plgurl, $plgid) = CMT_getCommentUrlId($type);
@@ -2129,23 +2095,17 @@ function CMT_handleCancel()
 
     $display = '';
 
-    $type = '';
-    if (isset($_POST[CMT_TYPE])) {
-        $type = COM_applyFilter($_POST[CMT_TYPE]);
-    }
+    $type = Geeklog\Input::fPost(CMT_TYPE, '');
     if (empty($type)) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     } else {
         list($plgurl, $plgid) = CMT_getCommentUrlId($type);
         if (empty($plgurl) || empty($plgid)) {
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
         } else {
-            $sid = '';
-            if (isset($_POST[CMT_SID])) {
-                $sid = COM_applyFilter($_POST[CMT_SID]);
-            }
+            $sid = Geeklog\Input::fPost(CMT_SID, '');
             if (empty($sid)) {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             } else {
                 COM_redirect("$plgurl?$plgid=$sid");
             }
@@ -2170,11 +2130,11 @@ function CMT_handleCancel()
  */
 function CMT_handleSubmit($title, $sid, $pid, $type, $postMode, $uid)
 {
-    global $_CONF, $_TABLES, $LANG03;
+    global $_CONF;
 
-    $display = PLG_commentSave($type, $title, $_POST['comment'], $sid, $pid, $postMode);
+    $display = PLG_commentSave($type, $title, Geeklog\Input::post('comment'), $sid, $pid, $postMode);
     if (!$display) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     return $display;
@@ -2196,21 +2156,18 @@ function CMT_handleDelete($sid, $type, $formType)
 
     $display = '';
 
-    $cid = 0;
-    if (isset($_REQUEST[CMT_CID])) {
-        $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
-    }
+    $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
     if ($cid <= 0) {
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    if ($formType == 'editsubmission') {
+    if ($formType === 'editsubmission') {
         DB_delete($_TABLES['commentsubmissions'], 'cid', $cid);
         COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $display = PLG_commentDelete($type, $cid, $sid);
         if (!$display) {
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
         }
     }
 
@@ -2235,11 +2192,11 @@ function CMT_handleView($format, $order, $page, $view = true)
     $cid = 0;
     if ($view) {
         if (isset($_REQUEST[CMT_CID])) {
-            $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
+            $cid = (int) Geeklog\Input::fRequest(CMT_CID);
         }
     } else {
         if (isset($_REQUEST[CMT_PID])) {
-            $cid = COM_applyFilter($_REQUEST[CMT_PID], true);
+            $cid = (int) Geeklog\Input::fRequest(CMT_PID);
         }
     }
     if ($cid <= 0) {
@@ -2279,15 +2236,12 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
 {
     global $_TABLES, $LANG03, $_CONF, $_USER;
 
-    //get needed data
-    $cid = 0;
-    if (isset($_REQUEST[CMT_CID])) {
-        $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
-    }
+    // get needed data
+    $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
     if ($cid <= 0) {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment with one or more missing/bad values.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     $type = '';
@@ -2299,17 +2253,17 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
     } else {
         $table = $_TABLES['comments'];
         if (isset($_REQUEST[CMT_TYPE])) {
-            $type = COM_applyFilter($_REQUEST[CMT_TYPE]);
+            $type = Geeklog\Input::fRequest(CMT_TYPE);
         }
 
         if (COMMENT_ON_SAME_PAGE) {
             list($pluginUrl, $pluginId) = CMT_getCommentUrlId($type);
             if (isset($_REQUEST[$pluginId])) {
-                $sid = COM_applyFilter($_REQUEST[$pluginId]);
+                $sid = Geeklog\Input::fRequest($pluginId);
             }
         } else {
             if (isset($_REQUEST['sid'])) {
-                $sid = COM_applyFilter($_REQUEST['sid']);
+                $sid = Geeklog\Input::fRequest('sid');
             }
         }
     }
@@ -2318,7 +2272,7 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
     if (empty($sid) || empty($type)) {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment with one or more missing/bad values.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     // Filemgmt plugin is doing special processing.
@@ -2351,7 +2305,7 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
     } else {
         COM_errorLog("CMT_handleEdit(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
             . 'to edit a comment that doesn\'t exist as described.');
-        COM_redirect($_CONF['site_url'] . '/index.php');
+        COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
     return CMT_commentForm($title, $commentText, $sid, $cid, $type, $mode, $postMode,
@@ -2372,10 +2326,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
 {
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG_ADMIN, $topic, $_PLUGINS;
 
-    $commentMode = '';
-    if (!empty($_REQUEST[CMT_MODE])) {
-        $commentMode = COM_applyFilter($_REQUEST[CMT_MODE]);
-    }
+    $commentMode = Geeklog\Input::fRequest(CMT_MODE, '');
 
     if (empty($mode)) {
         $mode = COM_applyFilter(COM_getArgument(CMT_MODE));
@@ -2386,24 +2337,21 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
     }
 
     if (empty($sid) && !empty($_REQUEST[CMT_SID])) {
-        $sid = COM_applyFilter($_REQUEST[CMT_SID]);
+        $sid = Geeklog\Input::fRequest(CMT_SID);
     }
 
-    $pid = 0;
-    if (!empty($_REQUEST[CMT_PID])) {
-        $pid = COM_applyFilter($_REQUEST[CMT_PID], true);
-    }
+    $pid = (int) Geeklog\Input::fRequest(CMT_PID, 0);
 
     if (empty($type) && !empty($_REQUEST[CMT_TYPE])) {
-        $type = COM_applyFilter($_REQUEST[CMT_TYPE]);
+        $type = Geeklog\Input::fRequest(CMT_TYPE);
     }
 
     if (!empty($_REQUEST['title'])) {
-        $title = $_REQUEST['title']; // apply filters later in CMT_commentForm or CMT_saveComment
+        $title = Geeklog\Input::request('title'); // apply filters later in CMT_commentForm or CMT_saveComment
     }
 
     if (!empty($_REQUEST[CMT_UID])) {
-        $uid = COM_applyFilter($_REQUEST[CMT_UID]);
+        $uid = Geeklog\Input::fRequest(CMT_UID);
     } else {
         $uid = 1;
         if (!empty($_USER['uid'])) {
@@ -2411,44 +2359,32 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
         }
     }
 
-    $postMode = $_CONF['postmode'];
-    if (isset($_REQUEST['postmode'])) {
-        $postMode = COM_applyFilter($_REQUEST['postmode']);
-    }
-
-    $formType = '';
-    if (!empty($_REQUEST['formtype'])) {
-        $formType = COM_applyFilter($_REQUEST['formtype']);
-    }
+    $postMode = Geeklog\Input::fRequest('postmode', $_CONF['postmode']);
+    $formType = Geeklog\Input::fRequest('formtype', '');
 
     // Get comment id, may not be there...will handle in function
-    $cid = 0;
-    if (isset($_REQUEST[CMT_CID])) {
-        $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
-    }
+    $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
     TOPIC_getTopic('comment', $cid);
 
     if (empty($format) && isset($_REQUEST['format'])) {
-        $format = COM_applyFilter($_REQUEST['format']);
+        $format = Geeklog\Input::fRequest('format');
     }
     if (!in_array($format, array('threaded', 'nested', 'flat', 'nocomment'))) {
         if (COM_isAnonUser()) {
             $format = $_CONF['comment_mode'];
         } else {
-            $format = DB_getItem($_TABLES['usercomment'], 'commentmode',
-                "uid = {$_USER['uid']}");
+            $format = DB_getItem($_TABLES['usercomment'], 'commentmode', "uid = {$_USER['uid']}");
         }
     }
 
-    $order = '';
-    if (isset($_REQUEST['order'])) {
-        $order = COM_applyFilter($_REQUEST['order']);
-    }
+    $order = Geeklog\Input::fRequest('order', '');
 
     $cPage = 1;
     if (!empty($_REQUEST['cpage'])) {
-        $cPage = COM_applyFilter($_REQUEST['cpage'], true);
-        if (empty($cPage)) $cPage = 1;
+        $cPage = (int) Geeklog\Input::fRequest('cpage');
+        if (empty($cPage)) {
+            $cPage = 1;
+        }
     }
 
     $is_comment_page = CMT_isCommentPage();
@@ -2458,22 +2394,18 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
     if ($_CONF['show_comments_at_replying'] && $is_comment_page && !empty($sid) && !empty($type)
         && in_array($commentMode, array('', $LANG03[28], $LANG03[34], $LANG03[14], 'edit'))
     ) {
-        if ($commentMode == 'edit') {
-            $cid = 0;
-            if (isset($_REQUEST[CMT_CID])) {
-                $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
-            }
+        if ($commentMode === 'edit') {
+            $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
             if ($cid <= 0) {
                 COM_errorLog("CMT_handleComment(): {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                     . 'to edit a comment with one or more missing/bad values.');
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
             $pid = $cid;
         }
         if (($pid > 0) && empty($title)) {
             $atype = DB_escapeString($type);
-            $title = DB_getItem($_TABLES['comments'], 'title',
-                "(cid = $pid) AND (type = '$atype')");
+            $title = DB_getItem($_TABLES['comments'], 'title', "(cid = {$pid}) AND (type = '{$atype}')");
         }
         if (empty($title)) {
             $title = PLG_getItemInfo($type, $sid, 'title');
@@ -2491,9 +2423,11 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
         case $LANG03[28]: // Preview Changes (for edit)
         case $LANG03[34]: // Preview Submission changes (for edit)
         case $LANG03[14]: // Preview
-            $retval .= CMT_commentForm($title, $_POST['comment'],
+            $retval .= CMT_commentForm(
+                $title, Geeklog\Input::post('comment'),
                 $sid, $pid, $type, $commentMode, $postMode,
-                $format, $order, $cPage);
+                $format, $order, $cPage
+            );
             if ($is_comment_page) {
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[14]));
             }
@@ -2504,7 +2438,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             if (SEC_checkToken()) {
                 $retval .= CMT_handleEditSubmit($commentMode);
             } else {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
             break;
 
@@ -2517,7 +2451,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             if (SEC_checkToken()) {
                 $retval .= CMT_handleDelete($sid, $type, $formType);
             } else {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
             break;
 
@@ -2531,16 +2465,10 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
 
         case 'report':
             if ($is_comment_page) {
-                $cid = 0;
-                if (isset($_GET[CMT_CID])) {
-                    $cid = COM_applyFilter($_GET[CMT_CID], true);
-                }
-                $type = '';
-                if (isset($_GET[CMT_TYPE])) {
-                    $type = COM_applyFilter($_GET[CMT_TYPE]);
-                }
+                $cid = (int) Geeklog\Input::fGet(CMT_CID, 0);
+                $type = Geeklog\Input::get(CMT_TYPE, '');
                 if (($cid <= 0) || empty($type)) {
-                    COM_redirect($_CONF['site_url'] . '/index.php');
+                    COM_handle404($_CONF['site_url'] . '/index.php');
                 }
                 $retval .= CMT_reportAbusiveComment($cid, $type);
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[27]));
@@ -2549,26 +2477,20 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
 
         case 'sendreport':
             if (SEC_checkToken()) {
-                $cid = 0;
-                if (isset($_POST[CMT_CID])) {
-                    $cid = COM_applyFilter($_POST[CMT_CID], true);
-                }
-                $type = '';
-                if (isset($_POST[CMT_TYPE])) {
-                    $type = COM_applyFilter($_POST[CMT_TYPE]);
-                }
+                $cid = (int) Geeklog\Input::fPost(CMT_CID, 0);
+                $type = Geeklog\Input::fPost(CMT_TYPE, '');
                 if (($cid <= 0) || empty($type)) {
-                    COM_redirect($_CONF['site_url'] . '/index.php');
+                    COM_handle404($_CONF['site_url'] . '/index.php');
                 }
                 $retval .= CMT_sendReport($cid, $type);
             } else {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
             break;
 
         case 'editsubmission':
             if (!SEC_hasRights('comment.moderate')) {
-                COM_redirect($_CONF['site_url'] . '/index.php');
+                COM_handle404($_CONF['site_url'] . '/index.php');
             }
         // deliberate fall-through
         case 'edit':
@@ -2579,36 +2501,35 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             break;
 
         case 'unsubscribe':
-            $key = COM_applyFilter($_GET['key']);
+            $key = Geeklog\Input::fGet('key');
             if (!empty($key)) {
                 $key = DB_escapeString($key);
-                $cid = DB_getItem($_TABLES['commentnotifications'], 'cid', "deletehash = '$key'");
+                $cid = DB_getItem($_TABLES['commentnotifications'], 'cid', "deletehash = '{$key}'");
 
                 if (!empty($cid)) {
                     $redirectUrl = $_CONF['site_url']
                         . '/comment.php?mode=view&amp;cid=' . $cid
                         . '&amp;format=nested&amp;msg=16';
-                    DB_delete($_TABLES['commentnotifications'], 'deletehash', $key,
-                        $redirectUrl);
+                    DB_delete($_TABLES['commentnotifications'], 'deletehash', $key, $redirectUrl);
                     exit;
                 }
             }
 
-            COM_redirect($_CONF['site_url'] . '/index.php');
+            COM_handle404($_CONF['site_url'] . '/index.php');
             break;
 
         case $LANG_ADMIN['cancel']:
-            if ($formType == 'editsubmission') {
+            if ($formType === 'editsubmission') {
                 COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
             } else {
-                $retval .= CMT_handleCancel();  // moved to function for readibility
+                $retval .= CMT_handleCancel();  // moved to function for readability
             }
             break;
 
         default: // New Comment or Reply Comment
             $abort = false;
             // Check to make sure comment type exists
-            if ($type != 'article' && !in_array($type, $_PLUGINS)) {
+            if (($type !== 'article') && !in_array($type, $_PLUGINS)) {
                 $abort = true;
             }
 
@@ -2628,15 +2549,14 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
             if (!$abort && !empty($sid) && !empty($type)) {
                 if (($pid > 0) && empty($title)) {
                     $atype = DB_escapeString($type);
-                    $title = DB_getItem($_TABLES['comments'], 'title',
-                        "(cid = $pid) AND (type = '$atype')");
+                    $title = DB_getItem($_TABLES['comments'], 'title', "(cid = $pid) AND (type = '{$atype}')");
                 }
                 if (empty($title)) {
                     $title = PLG_getItemInfo($type, $sid, 'title');
 
-                    // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so return to homepage
+                    // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so error404
                     if (is_array($title) || empty($title) || ($title == false)) {
-                        COM_redirect($_CONF['site_url'] . '/index.php');
+                        COM_handle404($_CONF['site_url'] . '/index.php');
                     }
                     $title = str_replace('$', '&#36;', $title);
                     // CMT_commentForm expects non-htmlspecial chars for title...
@@ -2652,7 +2572,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                     // Do nothing and do not show comment form (happens most likely when admin viewing draft article)
                 } else {
                     // For comments not displayed on same page (probably owner pushed the post comment button on a draft article)
-                    COM_redirect($_CONF['site_url'] . '/index.php');
+                    COM_handle404($_CONF['site_url'] . '/index.php');
                 }
             }
             if ($is_comment_page) {

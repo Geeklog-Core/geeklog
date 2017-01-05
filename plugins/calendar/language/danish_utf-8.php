@@ -250,4 +250,3 @@ $LANG_configselects['calendar'] = array(
     15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
 );
 
-?>

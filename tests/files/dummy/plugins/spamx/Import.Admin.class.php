@@ -80,7 +80,7 @@ class Import extends BaseAdmin {
         $rss = fetch_rss($_SPX_CONF['rss_url']);
         if ($rss === false) {
             if (strpos($_SPX_CONF['rss_url'], 'jayallen.org') === false) {
-                return '<p>An error occured when updating MT Blacklist</p>';
+                return '<p>An error occurred when updating MT Blacklist</p>';
             } else {
                 $url = COM_createLink('discontinued', 'http://www.geeklog.net/article.php/mt-blacklist-discontinued');
                 return '<p>Please note that MT-Blacklist has been $url and will not be updated any more.</p>';

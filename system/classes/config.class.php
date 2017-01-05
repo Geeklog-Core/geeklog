@@ -253,12 +253,14 @@ class config
                 //    continue;
             }
 
+            $autoCompleteData = $row[0];
+
             if ($row[1] !== 'unset') {
                 if (!array_key_exists($row[2], $this->config_array) ||
                     !array_key_exists($row[0], $this->config_array[$row[2]])
                 ) {
                     $value = @unserialize($row[1]);
-                    if (($value === false) && ($row[1] != $false_str)) {
+                    if (($value === false) && ($row[1] !== $false_str)) {
                         if (function_exists('COM_errorLog')) {
                             COM_errorLog("Unable to unserialize {$row[1]} for {$row[2]}:{$row[0]}");
                         }
@@ -267,21 +269,17 @@ class config
 
                         if (strpos($row[3], '@') === 0) { // if @
                             if (is_array($value) && !empty($value)) {
-                                $this->conf_tab_arr[$row[2]][$row[4]]
-                                [$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = array_keys($value);
+                                $autoCompleteData = array_keys($value);
                             }
-                        } else {
-                            $this->conf_tab_arr[$row[2]][$row[4]]
-                            [$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = $row[0];
                         }
                     }
                 }
-            } else {
-                // set to autocomplete only
-                $this->conf_tab_arr[$row[2]][$row[4]]
-                [$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = $row[0];
             }
+
+            // set to auto complete
+            $this->conf_tab_arr[$row[2]][$row[4]][$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = $autoCompleteData;
         }
+
         $this->_post_initconfig();
         $this->_post_configuration();
 
@@ -315,6 +313,64 @@ class config
     public function group_exists($group)
     {
         return array_key_exists($group, $this->config_array);
+    }
+
+    /**
+     * Check if tab exists or not
+     *
+     * @param   string $group Group name
+     * @param   string $tab   Tab name
+     * @return  bool          True if group exists
+     */
+    public function tab_exists($group, $tab)
+    {
+        $tab = strtolower($tab);
+        if (strpos($tab, 'tab_') !== 0) {
+            $tab = 'tab_' . $tab;
+        }
+
+        if (isset($this->conf_tab_arr[$group])) {
+            foreach ($this->conf_tab_arr[$group] as $itemGroups) {
+                foreach ($itemGroups as $tabName => $values) {
+                    if ($tab === $tabName) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return all group names
+     *
+     * @return  array of group names
+     */
+    public function getAllGroups()
+    {
+        return array_keys($this->config_array);
+    }
+
+    /**
+     * Return all tab names of a given group
+     *
+     * @param   string $group Group name
+     * @return  array of tab names
+     */
+    public function getAllTabs($group)
+    {
+        $retval = array();
+
+        if (isset($this->conf_tab_arr[$group])) {
+            foreach ($this->conf_tab_arr[$group] as $itemGroups) {
+                foreach ($itemGroups as $tabName => $values) {
+                    $retval[] = str_replace('tab_', '', $tabName);
+                }
+            }
+        }
+
+        return $retval;
     }
 
     /**
@@ -508,7 +564,7 @@ class config
             $Qargs[9] = $tab;
         }
         $Qargs = array_map('DB_escapeString', $Qargs);
-        
+
         // Delete old config value if exists (incase re-adding it for developer db update script)
         $sql = "DELETE FROM {$_TABLES['conf_values']} WHERE name = '{$Qargs[0]}' AND group_name = '{$Qargs[4]}' AND subgroup={$Qargs[3]}";
         $this->_DB_escapedQuery($sql);
@@ -565,35 +621,37 @@ class config
      * @param string  $tab               the tab to display the variable under
      */
     function update($param_name, $default_value, $type, $subgroup, $fieldset,
-         $selection_array=null, $sort=0, $set=true, $group='Core', $tab = null)
+                    $selection_array = null, $sort = 0, $set = true, $group = 'Core', $tab = null)
     {
         global $_TABLES;
 
-        $Qargs = array($param_name,
-                       $set ? serialize($default_value) : 'unset',
-                       $type,
-                       $subgroup,
-                       $group,
-                       ($selection_array === null ?
-                        -1 : $selection_array),
-                       $sort,
-                       $fieldset,
-                       serialize($default_value));
-                       
+        $columns = '';
+        $Qargs = array(
+            $param_name,
+            ($set ? serialize($default_value) : 'unset'),
+            $type,
+            $subgroup,
+            $group,
+            ($selection_array === null ? -1 : $selection_array),
+            $sort,
+            $fieldset,
+            serialize($default_value),
+        );
+
         // special handling of $tab for backward compatibility
         if ($tab !== null) {
             $columns .= ', tab';
             $Qargs[9] = $tab;
-        }                       
-                       
+        }
+
         $Qargs = array_map('DB_escapeString', $Qargs);
 
-        $sql = "UPDATE {$_TABLES['conf_values']} SET sort_order={$Qargs[6]},fieldset={$Qargs[7]}".
-               " WHERE group_name='{$Qargs[4]}' AND name='{$Qargs[0]}'";
+        $sql = "UPDATE {$_TABLES['conf_values']} SET sort_order={$Qargs[6]},fieldset={$Qargs[7]}" .
+            " WHERE group_name='{$Qargs[4]}' AND name='{$Qargs[0]}'";
 
-        $this->_DB_escapedQuery($sql,1);
+        $this->_DB_escapedQuery($sql, 1);
     }
-    
+
     /**
      * Permanently deletes a parameter
      *
@@ -621,12 +679,10 @@ class config
     {
         global $_TABLES, $LANG_confignames, $LANG_configselects;
 
-        $q_string = "SELECT name, type, selectionArray, "
-            . "tab, value, default_value, fieldset FROM {$_TABLES['conf_values']}" .
-            " WHERE group_name='{$group}' AND subgroup='{$subgroup}' " .
-            " AND (type <> 'tab' AND type <> 'subgroup') " .
-            " ORDER BY tab,fieldset,sort_order ASC";
-
+        $q_string = "SELECT name, type, selectionArray, tab, value, default_value, fieldset FROM {$_TABLES['conf_values']}"
+            . " WHERE group_name='" . DB_escapeString($group) . "' AND subgroup='" . DB_escapeString($subgroup) . "' "
+            . " AND (type <> 'tab' AND type <> 'subgroup') "
+            . " ORDER BY tab, fieldset, sort_order ASC";
         $Qresult = DB_query($q_string);
         $res = array();
         if (!array_key_exists($group, $LANG_configselects)) {
@@ -643,28 +699,15 @@ class config
                 $cur[3] = 0;
             }  // If tab is null then old plugin so set default tab
 
-            if (substr($cur[5], 0, 6) === 'unset:') {
-                $cur[5] = true;
-            } else {
-                $cur[5] = false;
-            }
-            $res[$cur[3]][$cur[0]] =
-                array('display_name'   =>
-                          (array_key_exists($cur[0], $LANG_confignames[$group]) ?
-                              $LANG_confignames[$group][$cur[0]]
-                              : $cur[0]),
-                      'type'           =>
-                          (($cur[4] == 'unset') ?
-                              'unset' : $cur[1]),
-                      'selectionArray' =>
-                          (($cur[2] != -1) ?
-                              //isset($LANG_configselects[$group][$cur[2]]) : null),
-                              $LANG_configselects[$group][$cur[2]] : null),
-                      'value'          =>
-                          (($cur[4] == 'unset') ?
-                              'unset' : unserialize($cur[4])),
-                      'fieldset'       => $cur[6],
-                      'reset'          => $cur[5]);
+            $cur[5] = (substr($cur[5], 0, 6) === 'unset:');
+            $res[$cur[3]][$cur[0]] = array(
+                'display_name'   => (array_key_exists($cur[0], $LANG_confignames[$group]) ? $LANG_confignames[$group][$cur[0]] : $cur[0]),
+                'type'           => (($cur[4] === 'unset') ? 'unset' : $cur[1]),
+                'selectionArray' => (($cur[2] != -1) ? $LANG_configselects[$group][$cur[2]] : null),
+                'value'          => (($cur[4] === 'unset') ? 'unset' : unserialize($cur[4])),
+                'fieldset'       => $cur[6],
+                'reset'          => $cur[5],
+            );
         }
 
         return $res;
@@ -825,7 +868,7 @@ class config
      */
     public function get_ui($grp, $sg = '0', $change_result = null)
     {
-        global $_CONF, $LANG_CONFIG, $LANG_configsubgroups, $LANG_fs, $_SCRIPTS, $LANG01;
+        global $_CONF, $LANG_CONFIG, $LANG_configsubgroups, $LANG_fs, $_SCRIPTS, $_USER, $LANG01;
 
         if (!array_key_exists($grp, $LANG_configsubgroups)) {
             $LANG_configsubgroups[$grp] = array();
@@ -853,8 +896,10 @@ class config
         }
 
         $t = COM_newTemplate($_CONF['path_layout'] . 'admin/config');
-        $t->set_file(array('main'      => 'configuration.thtml',
-                           'menugroup' => 'menu_element.thtml'));
+        $t->set_file(array(
+            'main'      => 'configuration.thtml',
+            'menugroup' => 'menu_element.thtml',
+        ));
 
         $link_message = $LANG01[139];
         $t->set_var('noscript', COM_getNoScript(false, '', $link_message));
@@ -885,12 +930,12 @@ class config
 
         $t->set_var('search_configuration_label', $LANG_CONFIG['search_configuration_label']);
         if (isset($_POST['search-configuration-cached'])) {
-            $t->set_var('search_configuration_value', $_POST['search-configuration-cached']);
+            $t->set_var('search_configuration_value', Geeklog\Input::post('search-configuration-cached'));
         } else {
             $t->set_var('search_configuration_value', '');
         }
         if (isset($_POST['tab-id-cached'])) {
-            $t->set_var('tab_id_value', $_POST['tab-id-cached']);
+            $t->set_var('tab_id_value', Geeklog\Input::post('tab-id-cached'));
         } else {
             $t->set_var('tab_id_value', '');
         }
@@ -900,7 +945,7 @@ class config
 
         $t->set_var('open_group', $grp);
 
-        $outerloopcntr = 1;
+        $outerLoopCounter = 1;
         if (count($groups) > 0) {
             $t->set_block('menugroup', 'subgroup-selector', 'subgroups');
             foreach ($groups as $group) {
@@ -908,16 +953,15 @@ class config
                 $t->set_var("group_select_value", $group);
                 $t->set_var("group_display", ucwords($group));
                 $subgroups = $this->_get_sgroups($group);
-                $innerloopcntr = 1;
+
+                $innerLoopCounter = 1;
                 foreach ($subgroups as $sgname => $sgroup) {
-                    if ($grp == $group AND $sg == $sgroup) {
+                    if ($grp == $group && $sg == $sgroup) {
                         $t->set_var('group_active_name', ucwords($group));
                         if (isset($LANG_configsubgroups[$group][$sgname])) {
-                            $t->set_var('subgroup_active_name',
-                                $LANG_configsubgroups[$group][$sgname]);
+                            $t->set_var('subgroup_active_name', $LANG_configsubgroups[$group][$sgname]);
                         } elseif (isset($LANG_configsubgroups[$group][$sgroup])) {
-                            $t->set_var('subgroup_active_name',
-                                $LANG_configsubgroups[$group][$sgroup]);
+                            $t->set_var('subgroup_active_name', $LANG_configsubgroups[$group][$sgroup]);
                         } else {
                             $t->set_var('subgroup_active_name', $sgname);
                         }
@@ -932,16 +976,16 @@ class config
                     } else {
                         $t->set_var('subgroup_display_name', $sgname);
                     }
-                    if ($innerloopcntr == 1) {
+                    if ($innerLoopCounter == 1) {
                         $t->parse('subgroups', "subgroup-selector");
                     } else {
                         $t->parse('subgroups', "subgroup-selector", true);
                     }
-                    $innerloopcntr++;
+                    $innerLoopCounter++;
                 }
-                $t->set_var('cntr', $outerloopcntr);
+                $t->set_var('cntr', $outerLoopCounter);
                 $t->parse("menu_elements", "menugroup", true);
-                $outerloopcntr++;
+                $outerLoopCounter++;
             }
         } else {
             $t->set_var('hide_groupselection', 'none');
@@ -963,7 +1007,7 @@ class config
             $fs_flag = false;
             $table_flag = false;
             foreach ($params as $name => $e) {
-                if ($e['type'] == 'fieldset' AND $e['fieldset'] != $current_fs) {
+                if ($e['type'] === 'fieldset' && $e['fieldset'] != $current_fs) {
                     $fs_flag = true;
                     if ($current_fs != '') {
 
@@ -979,7 +1023,6 @@ class config
                     $current_fs = $e['fieldset'];
                 }
                 if (!$table_flag) {
-
                     if ($this->flag_version_2 == true) {
                         $tab_contents .= '<div class="inputTable">';
                     } else {
@@ -991,20 +1034,24 @@ class config
 
                 if ($this->flag_version_2 == true) {
                     $tab_contents .=
-                        $this->_UI_get_conf_element_2($grp, $name,
+                        $this->_UI_get_conf_element_2(
+                            $grp, $name,
                             $e['display_name'],
                             $e['type'],
                             $e['value'],
                             $e['selectionArray'], false,
-                            $e['reset']);
+                            $e['reset']
+                        );
                 } else {
                     $tab_contents .=
-                        $this->_UI_get_conf_element($grp, $name,
+                        $this->_UI_get_conf_element(
+                            $grp, $name,
                             $e['display_name'],
                             $e['type'],
                             $e['value'],
                             $e['selectionArray'], false,
-                            $e['reset']);
+                            $e['reset']
+                        );
                 }
             }
 
@@ -1037,11 +1084,12 @@ class config
         }
         $t->set_var('tab_li', $tab_li);
 
-        $_SCRIPTS->setJavaScriptLibrary('jquery.ui.autocomplete');
-        $_SCRIPTS->setJavaScriptLibrary('jquery.ui.menu');  // Required by 'jquery.ui.autocomplete'
-        if ($this->flag_version_2_2 != true) {
-            $_SCRIPTS->setJavaScriptLibrary('jquery.ui.tabs');
-        }
+        // $_SCRIPTS->setJavaScriptLibrary('jquery.ui.autocomplete');
+        // $_SCRIPTS->setJavaScriptLibrary('jquery.ui.menu');  // Required by 'jquery.ui.autocomplete'
+        // if ($this->flag_version_2_2 != true) {
+        //     $_SCRIPTS->setJavaScriptLibrary('jquery.ui.tabs');
+        // }
+        $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Require autocomplete, menu, and tabs
 
         $t->set_var('config_menu', $this->_UI_configmanager_menu($grp, $sg));
 
@@ -1064,8 +1112,16 @@ class config
         }
         $t->set_var('has_message_box', $has_message_box);
 
-        $display = $t->finish($t->parse("OUTPUT", "main"));
-        $display = COM_createHTMLDocument($display, array('what' => 'none', 'pagetitle' => $LANG_CONFIG['title'], 'rightblock' => false));
+        $display = $t->finish($t->parse('OUTPUT', 'main'));
+        $_CONF['theme'] = $_USER['theme'];
+        $display = COM_createHTMLDocument(
+            $display,
+            array(
+                'what'       => 'none',
+                'pagetitle'  => $LANG_CONFIG['title'],
+                'rightblock' => false,
+            )
+        );
 
         return $display;
     }
@@ -1073,8 +1129,7 @@ class config
     /**
      * Get messages to display when changes were made to the configuration.
      *
-     * @param  array  $changes Array of changes. Keys are configuration
-     *                         paramater name.
+     * @param  array  $changes Array of changes. Keys are configuration parameter name.
      * @param  string $group   Configuration group
      * @param  int    $sg      Configuration subgroup
      * @return string          string of HTML to be displayed on message box
@@ -1141,7 +1196,7 @@ class config
         $t->set_var('tab_contents', $contents);
         $tab_index = DB_getItem($_TABLES['conf_values'], 'name',
             "type = 'tab' AND tab = $tab_id AND group_name = '$group'");
-        $tab_display = '';
+
         if (empty($tab_index)) {
             if (empty($LANG_tab[$group][$tab_id])) {
                 $tab_display = $LANG_CONFIG['default_tab_name'];
@@ -1166,13 +1221,13 @@ class config
      * Set fieldset from configuration where fieldset = $fs_id under the group $group
      * with content $contents to template $t
      *
-     * @param  string $group
-     * @param  string $contents Contents
-     * @param  int    $fs_id
-     * @param  object $t        Template object
+     * @param  string   $group
+     * @param  string   $contents Contents
+     * @param  int      $fs_id
+     * @param  Template $t        Template object
      * @return void
      */
-    function _UI_get_fs($group, $contents, $fs_id, &$t)
+    function _UI_get_fs($group, $contents, $fs_id, $t)
     {
         global $_TABLES, $LANG_fs;
 
@@ -1233,10 +1288,13 @@ class config
         $t = COM_newTemplate($GLOBALS['_CONF']['path_layout'] . 'admin/config');
         $t->set_file('element', 'config_element.thtml');
 
-        $blocks = array('delete-button', 'text-element', 'placeholder-element',
+        $blocks = array(
+            'delete-button', 'text-element', 'placeholder-element',
             'select-element', 'list-element', 'unset-param',
             'keyed-add-button', 'unkeyed-add-button', 'text-area',
-            'validation_error_block');
+            'validation_error_block',
+        );
+
         foreach ($blocks as $block) {
             $t->set_block('element', $block);
         }
@@ -1405,7 +1463,7 @@ class config
      * @param  string $type           Configuration type such as select, text, textarea, @select, etc.
      * @param  string $val            Value of configuration
      * @param  mixed  $selectionArray Array of option of select element
-     * @param  bool   $deletable      If configuration is deleteable
+     * @param  bool   $deletable      If configuration is deletable
      * @param  bool   $allow_reset    Allow set and unset of configuration
      * @return string
      */
@@ -1617,27 +1675,23 @@ class config
              * the user's preferences in lib-common.php. Re-read values from
              * the database so that we're comparing the correct values below.
              */
-            $value = DB_getItem($_TABLES['conf_values'], 'value',
-                "group_name='Core' AND name='theme'");
+            $value = DB_getItem($_TABLES['conf_values'], 'value', "group_name='Core' AND name='theme'");
             $this->config_array['Core']['theme'] = unserialize($value);
-            $value = DB_getItem($_TABLES['conf_values'], 'value',
-                "group_name='Core' AND name='language'");
+            $value = DB_getItem($_TABLES['conf_values'], 'value', "group_name='Core' AND name='language'");
             $this->config_array['Core']['language'] = unserialize($value);
 
             /**
              * Same with $_CONF['cookiedomain'], which is overwritten
              * in lib-sessions.php (if empty).
              */
-            $value = DB_getItem($_TABLES['conf_values'], 'value',
-                "group_name='Core' AND name='cookiedomain'");
+            $value = DB_getItem($_TABLES['conf_values'], 'value', "group_name='Core' AND name='cookiedomain'");
             $this->config_array['Core']['cookiedomain'] = unserialize($value);
 
             /**
              * Same with $_CONF['doctype'], which is overwritten
              * with the theme's configuration in lib-common.php.
              */
-            $value = DB_getItem($_TABLES['conf_values'], 'value',
-                "group_name='Core' AND name='doctype'");
+            $value = DB_getItem($_TABLES['conf_values'], 'value', "group_name='Core' AND name='doctype'");
             $this->config_array['Core']['doctype'] = unserialize($value);
         }
 
@@ -1823,7 +1877,7 @@ class config
                             break;
 
                         case 'noTags':
-                            $input_val = strip_tags($input_val);
+                            $input_val = GLText::stripTags($input_val);
                             $default_strip_tags = false;
                             break;
 
@@ -1842,7 +1896,7 @@ class config
                 }
             }
             if ($default_strip_tags) {
-                $input_val = strip_tags($input_val);
+                $input_val = GLText::stripTags($input_val);
             }
         }
 
@@ -1854,7 +1908,7 @@ class config
      *
      * @param  string $config Configuration variable
      * @param  string $group  Configuration group
-     * @return boolean True if numeric
+     * @return bool           True if numeric
      */
     private function _validate_numeric($config, $group)
     {
@@ -1887,7 +1941,7 @@ class config
      * @param string $group        Configuration group
      * @param mixed  $value        Submitted value
      * @param mixed  $relatedValue value that related such as mail settings
-     * @return boolean True if there are no errors
+     * @return boolean             True if there are no errors
      */
     private function _validates($config, $group, &$value, &$relatedValue = null)
     {
@@ -1905,7 +1959,9 @@ class config
             foreach ($_CONF_VALIDATE[$group][$config] as $index => $validator) {
                 if ($index !== 'sanitize') {
                     if (!is_array($validator)) {
-                        if ($index === 'message' && is_string($validator)) continue;
+                        if ($index === 'message' && is_string($validator)) {
+                            continue;
+                        }
 
                         $validator = array('rule' => $validator);
                     } else {
@@ -1986,8 +2042,7 @@ class config
      */
     function _UI_configmanager_menu($conf_group, $sg = 0)
     {
-        global $_CONF, $LANG_ADMIN, $LANG_CONFIG,
-               $LANG_configsections, $LANG_configsubgroups;
+        global $_CONF, $LANG_ADMIN, $LANG_CONFIG, $LANG_configsections, $LANG_configsubgroups;
 
         $retval = COM_startBlock($LANG_CONFIG['sections'], '',
             COM_getBlockTemplate('configmanager_block', 'header'));
@@ -2213,9 +2268,7 @@ class config
             }
             if (empty($docUrl[$group])) {
                 if ($group === 'Core') {
-                    if (!empty($GLOBALS['_CONF']['site_url']) &&
-                        !empty($GLOBALS['_CONF']['path_html'])
-                    ) {
+                    if (!empty($GLOBALS['_CONF']['site_url']) && !empty($GLOBALS['_CONF']['path_html'])) {
                         $baseUrl = $GLOBALS['_CONF']['site_url'];
                         $docLang = COM_getLanguageName();
                         $cfg = 'docs/' . $docLang . '/config.html';

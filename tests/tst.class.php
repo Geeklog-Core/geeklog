@@ -5,6 +5,8 @@
 */
 class Tst
 {
+    const DS = DIRECTORY_SEPARATOR;
+
     // Default language
     const LANGUAGE = 'english';
 
@@ -38,17 +40,27 @@ class Tst
     /**
      * /path/to/public_html root
      */
-    public static $public = __DIR__ . '/../public_html/';
+    public static $public;
 
     /**
      * path/to/geeklog/root
      */
-    public static $root = __DIR__ . '/../';
+    public static $root;
 
     /**
      * path/to/tests
      */
-    public static $tests = __DIR__ . '/';
+    public static $tests;
+
+    /**
+     * Initialize the class
+     */
+    public static function init()
+    {
+        self::$root = dirname(__DIR__) . self::DS;
+        self::$public = self::$root . self::DS . 'public_html' . self::DS;
+        self::$tests = __DIR__ . self::DS;
+    }
 
     /**
      * Return true if access level matches parameter provided, else returns false
@@ -98,6 +110,7 @@ class Tst
             ob_start();
             /** @noinspection PhpIncludeInspection */
             @include_once self::$public . $name;
+            @ob_end_clean();
         } else {
             $path = self::$root . 'system/' . $name ;
             /** @noinspection PhpIncludeInspection */

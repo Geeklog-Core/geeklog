@@ -12,7 +12,7 @@
  * @subpackage Modules
  */
 
-if (stripos($_SERVER['PHP_SELF'], 'editblacklist.admin.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -67,7 +67,7 @@ class EditBlackList extends BaseAdmin
 
                 case 'mass_delete':
                     if (isset($_POST['delitem'])) {
-                        $this->deleteSelectedEntries($_POST['delitem']);
+                        $this->deleteSelectedEntries(Geeklog\Input::post('delitem'));
                     }
 
                     break;

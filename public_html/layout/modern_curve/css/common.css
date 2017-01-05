@@ -27,6 +27,9 @@ body {
   line-height: 1.25;
 }
 
+a {
+  outline: 0;
+}
 a:link {
   color: #033987;
   text-decoration: none;
@@ -119,7 +122,13 @@ input.text {
 }
 
 input[type="checkbox"] {
-  margin: 0 0.3em;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="radio"] {
+  margin: 0;
+  padding: 0;
 }
 
 /* Submit Button */

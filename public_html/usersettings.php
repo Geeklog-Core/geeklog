@@ -226,7 +226,7 @@ function edituser()
     $preferences->set_var('homepage_value',
         htmlspecialchars(COM_killJS($A['homepage'])));
     $preferences->set_var('location_value',
-        htmlspecialchars(strip_tags($A['location'])));
+        htmlspecialchars(GLText::stripTags($A['location'])));
     $preferences->set_var('signature_value', htmlspecialchars($A['sig']));
 
     if ($_CONF['allow_user_photo'] == 1) {
@@ -1039,11 +1039,11 @@ function saveuser(array $A)
     $A['homepage'] = COM_applyFilter($A['homepage']);
 
     // basic filtering only
-    $A['fullname'] = strip_tags(COM_stripslashes($A['fullname']));
-    $A['location'] = strip_tags(COM_stripslashes($A['location']));
-    $A['sig'] = strip_tags(COM_stripslashes($A['sig']));
-    $A['about'] = strip_tags(COM_stripslashes($A['about']));
-    $A['pgpkey'] = strip_tags(COM_stripslashes($A['pgpkey']));
+    $A['fullname'] = GLText::stripTags(COM_stripslashes($A['fullname']));
+    $A['location'] = GLText::stripTags(COM_stripslashes($A['location']));
+    $A['sig'] = GLText::stripTags(COM_stripslashes($A['sig']));
+    $A['about'] = GLText::stripTags(COM_stripslashes($A['about']));
+    $A['pgpkey'] = GLText::stripTags(COM_stripslashes($A['pgpkey']));
 
     if (!COM_isEmail($A['email'])) {
         COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=52');
@@ -1384,17 +1384,12 @@ function savepreferences($A)
 }
 
 // MAIN
-$mode = '';
-if (isset($_POST['btncancel']) && $_POST['btncancel'] == $LANG_ADMIN['cancel']) {
+if (Geeklog\Input::post('btncancel')  === $LANG_ADMIN['cancel']) {
     COM_redirect($_CONF['site_url']);
-} elseif (isset($_POST['btnsubmit']) && ($_POST['btnsubmit'] === $LANG04[96]) &&
-    ($_POST['mode'] !== 'deleteconfirmed')
-) {
+} elseif ((Geeklog\Input::post('btnsubmit') === $LANG04[96]) && (Geeklog\Input::post('mode') !== 'deleteconfirmed')) {
     $mode = 'confirmdelete';
-} elseif (isset($_POST['mode'])) {
-    $mode = COM_applyFilter($_POST['mode']);
-} elseif (isset($_GET['mode'])) {
-    $mode = COM_applyFilter($_GET['mode']);
+} else {
+    $mode = Geeklog\Input::fPostOrGet('mode', '');
 }
 
 $display = '';
@@ -1414,7 +1409,7 @@ if (!COM_isAnonUser()) {
 
         case 'confirmdelete':
             if (($_CONF['allow_account_delete'] == 1) && ($_USER['uid'] > 1)) {
-                $accountId = COM_applyFilter($_POST['account_id']);
+                $accountId = Geeklog\Input::fPost('account_id');
                 if (!empty($accountId)) {
                     $display .= confirmAccountDelete($accountId);
                 } else {
@@ -1427,7 +1422,7 @@ if (!COM_isAnonUser()) {
 
         case 'deleteconfirmed':
             if (($_CONF['allow_account_delete'] == 1) && ($_USER['uid'] > 1)) {
-                $accountId = COM_applyFilter($_POST['account_id']);
+                $accountId = Geeklog\Input::fPost('account_id');
                 if (!empty($accountId)) {
                     $display .= deleteUserAccount($accountId);
                 } else {
@@ -1445,7 +1440,7 @@ if (!COM_isAnonUser()) {
 
         case 'synch':
             // This case is the result of a callback from an OAuth service.
-            // The user has made a request to resynch their glFusion user account with the remote OAuth service
+            // The user has made a request to resynch their Geeklog user account with the remote OAuth service
             if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)
                 && isset($_GET['oauth_login'])
             ) {
@@ -1469,7 +1464,7 @@ if (!COM_isAnonUser()) {
 
                     $consumer = new OAuthConsumer($service);
 
-                    if ($service === 'oauth.facebook') {
+                    if($service == 'oauth.facebook') {
                         // facebook resynchronizations are simple to perform
                         $oauth_userinfo = $consumer->refresh_userinfo();
                         if (empty($oauth_userinfo)) {
@@ -1489,11 +1484,9 @@ if (!COM_isAnonUser()) {
                         // COM_errorLog("callback_url={$callback_url}");
 
                         // authenticate with the remote service
-                        if (!isset($query[$callback_query_string]) &&
-                            (empty($cancel_query_string) || !isset($query[$cancel_query_string]))
-                        ) {
+                        if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
                             $msg = 114; // Resynch with remote account has failed but other account information has been successfully saved
-                            // elseif the callback query string is set, then we have successfully authenticated
+                        // elseif the callback query string is set, then we have successfully authenticated
                         } elseif (isset($query[$callback_query_string])) {
                             // COM_errorLog("authenticated with remote service, retrieve userinfo");
                             // foreach($query as $key=>$value) {
@@ -1534,7 +1527,7 @@ if (!COM_isAnonUser()) {
                     $msg = 5;
                     $query[] = '';
 
-                    // Here we go with the handling of OAuth authentification
+                    // Here we go with the handling of OAuth authentication
                     $modules = SEC_collectRemoteOAuthModules();
                     $active_service = (count($modules) == 0) ? false : in_array(substr($_GET['oauth_login'], 6), $modules);
                     if (!$active_service) {

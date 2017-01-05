@@ -131,13 +131,13 @@ class Url
     {
         // if in GET VARS array return it
         if (!empty($_GET[$name])) {
-            return $_GET[$name];
+            return Geeklog\Input::get($name);
         }
 
         // Added for IIS 7 to work in FastCGI mode
         // if in REQUEST VARS array return it
         if (!empty($_REQUEST[$name])) {
-            return $_REQUEST[$name];
+            return Geeklog\Input::request($name);
         }
         // end of add
 
@@ -164,7 +164,8 @@ class Url
         }
 
         if (($this->urlRouting === Router::ROUTING_WITH_INDEX_PHP) ||
-            ($this->urlRouting === Router::ROUTING_WITHOUT_INDEX_PHP)) {
+            ($this->urlRouting === Router::ROUTING_WITHOUT_INDEX_PHP)
+        ) {
             $newUrl = Router::convertUrl($url);
 
             if ($newUrl !== $url) {
