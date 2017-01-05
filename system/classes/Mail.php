@@ -17,7 +17,7 @@ class Mail
      * @param  string|array $item
      * @return string|array
      */
-    private static function stripControlCharacters($item)
+    public static function stripControlCharacters($item)
     {
         if (is_array($item)) {
             return array_map('\Geeklog\Mail\stripControlCharacters', $item);
