@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "30f8168ced9620f331169e018fd9f4cf",
-    "content-hash": "d6a74dabb2c328de682181636749d722",
+    "content-hash": "a7c35c3a2e103ae99c754344080e9459",
     "packages": [
         {
             "name": "htmlawed/htmlawed",
@@ -51,7 +50,7 @@
                 "strip",
                 "tags"
             ],
-            "time": "2016-08-27 18:53:27"
+            "time": "2016-08-27T18:53:27+00:00"
         },
         {
             "name": "pear/console_getopt",
@@ -98,7 +97,7 @@
                 }
             ],
             "description": "More info available on: http://pear.php.net/package/Console_Getopt",
-            "time": "2015-07-20 20:28:12"
+            "time": "2015-07-20T20:28:12+00:00"
         },
         {
             "name": "pear/http_request2",
@@ -157,7 +156,7 @@
                 "http",
                 "request"
             ],
-            "time": "2016-02-13 20:20:39"
+            "time": "2016-02-13T20:20:39+00:00"
         },
         {
             "name": "pear/net_dns2",
@@ -201,7 +200,7 @@
                 "dns",
                 "network"
             ],
-            "time": "2016-08-23 03:59:55"
+            "time": "2016-08-23T03:59:55+00:00"
         },
         {
             "name": "pear/net_url2",
@@ -262,7 +261,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-04-18 22:24:01"
+            "time": "2016-04-18T22:24:01+00:00"
         },
         {
             "name": "pear/pear-core-minimal",
@@ -306,7 +305,7 @@
                 }
             ],
             "description": "Minimal set of PEAR core files to be used as composer dependency",
-            "time": "2015-10-17 11:41:19"
+            "time": "2015-10-17T11:41:19+00:00"
         },
         {
             "name": "pear/pear_exception",
@@ -361,7 +360,7 @@
             "keywords": [
                 "exception"
             ],
-            "time": "2015-02-10 20:07:52"
+            "time": "2015-02-10T20:07:52+00:00"
         },
         {
             "name": "splitbrain/php-archive",
@@ -408,7 +407,7 @@
                 "unzip",
                 "zip"
             ],
-            "time": "2015-08-12 13:24:34"
+            "time": "2015-08-12T13:24:34+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -461,7 +460,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-11-24 01:01:23"
+            "time": "2016-11-24T01:01:23+00:00"
         }
     ],
     "packages-dev": [],

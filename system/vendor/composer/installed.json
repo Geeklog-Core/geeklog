@@ -20,7 +20,7 @@
         "require-dev": {
             "phpunit/phpunit": "*"
         },
-        "time": "2015-02-10 20:07:52",
+        "time": "2015-02-10T20:07:52+00:00",
         "type": "class",
         "extra": {
             "branch-alias": {
@@ -71,7 +71,7 @@
             "reference": "82f05cd1aa3edf34e19aa7c8ca312ce13a6a577f",
             "shasum": ""
         },
-        "time": "2015-07-20 20:28:12",
+        "time": "2015-07-20T20:28:12+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -127,7 +127,7 @@
         "replace": {
             "rsky/pear-core-min": "self.version"
         },
-        "time": "2015-10-17 11:41:19",
+        "time": "2015-10-17T11:41:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -169,7 +169,7 @@
         "require": {
             "php": ">=5.1.2"
         },
-        "time": "2016-08-23 03:59:55",
+        "time": "2016-08-23T03:59:55+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -218,7 +218,7 @@
         "require-dev": {
             "phpunit/phpunit": ">=3.3.0"
         },
-        "time": "2016-04-18 22:24:01",
+        "time": "2016-04-18T22:24:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -286,7 +286,7 @@
             "lib-curl": "Allows using cURL as a request backend.",
             "lib-openssl": "Allows handling SSL requests when not using cURL."
         },
-        "time": "2016-02-13 20:20:39",
+        "time": "2016-02-13T20:20:39+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -342,7 +342,7 @@
         "require-dev": {
             "phpunit/phpunit": "4.5.*"
         },
-        "time": "2015-08-12 13:24:34",
+        "time": "2015-08-12T13:24:34+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -388,7 +388,7 @@
         "require": {
             "php": ">4.4.0"
         },
-        "time": "2016-08-27 18:53:27",
+        "time": "2016-08-27T18:53:27+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -439,7 +439,7 @@
         "require-dev": {
             "mockery/mockery": "~0.9.1"
         },
-        "time": "2016-11-24 01:01:23",
+        "time": "2016-11-24T01:01:23+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
