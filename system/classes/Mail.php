@@ -20,7 +20,7 @@ class Mail
     public static function stripControlCharacters($item)
     {
         if (is_array($item)) {
-            return array_map('\Geeklog\Mail\stripControlCharacters', $item);
+            return array_map('\Geeklog\Mail::stripControlCharacters', $item);
         } else {
             $item = substr($item, 0, strcspn($item, self::NEW_LINE));
             $item = preg_replace('/[[:cntrl:]]/', '', $item);
