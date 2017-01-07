@@ -86,7 +86,6 @@ fieldset {
   margin: 0 0 1em 0;
   padding: 8px 12px;
   border: 1px solid #CCC;
-  -webkit-border-radius: 4px;
   border-radius: 4px;
 }
 
@@ -233,7 +232,6 @@ input[type="reset"] {
   text-decoration: none;
   text-align: center;
   border: 1px solid rgba(0,0,0,.06);
-  -webkit-border-radius: 4px;
   border-radius: 4px;
   text-shadow: 0 1px 0 #FFF;
 }
@@ -291,7 +289,6 @@ input[type="reset"]:disabled {
 .uk-button-group > div:not(:first-child):not(:last-child) input[type="reset"] {
   border-right-color: rgba(0,0,0,.1);
   border-left-color: rgba(0,0,0,.1);
-  -webkit-border-radius: 0;
   border-radius: 0;
 }
 
@@ -2094,7 +2091,7 @@ body.center-right #config_content {
 }
 
 .brand-image .site_name a {
-  background: url("../images/logo2.png") 0 0 no-repeat;
+  background: url("../images/logo2.png") 100% 0 no-repeat;
   text-indent: -3000px;
   display: block;
   width: 100%;
@@ -2663,7 +2660,6 @@ h4 img {
 .block-message {
   margin: 1.5em 0;
   padding: 0;
-  -webkit-border-radius: 6px;
   border-radius: 6px;
   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
   box-shadow: 0 1px 2px rgba(0,0,0,.1);
@@ -2682,7 +2678,6 @@ h4 img {
   text-shadow: 0 1px 1px rgba(0,0,0,.3);
   font-weight: bold;
   border: 1px solid rgba(0,0,0,.2);
-  -webkit-border-radius: 6px 6px 0 0;
   border-radius: 6px 6px 0 0;
 }
 
@@ -2693,7 +2688,6 @@ h4 img {
   color: #404040;
   text-shadow: 0 1px 0 rgba(255,255,255,.5);
   border: 1px solid rgba(0,0,0,.2);
-  -webkit-border-radius: 0 0 6px 6px;
   border-radius: 0 0 6px 6px;
 }
 
@@ -2770,7 +2764,7 @@ h4 img {
 }
 
 input[type="text"].search {
-  background: url("../images/search.png") left center no-repeat #FFF;
+  background: url("../images/search.png") right center no-repeat #FFF;
   padding-right: 24px;
   width: 120px;
   color: #999;
@@ -3161,7 +3155,7 @@ div.third-party-login {
 .gl-tooltip span {
   margin-left: -999em;
   position: absolute;
-  text-align: left;
+  text-align: right;
   width: 250px;
 }
 
@@ -3174,7 +3168,6 @@ div.third-party-login {
 }
 
 .gl-tooltip:hover span {
-  -webkit-border-radius: 8px;
   border-radius: 8px;
   -webkit-box-shadow: -2px 2px 8px #666;
   box-shadow: -2px 2px 8px #666;
@@ -3295,7 +3288,6 @@ span.warning em {
 #commentbar {
   padding: 3px;
   background: none repeat scroll 100% 0 #EEE;
-  -webkit-border-radius: 4px;
   border-radius: 4px;
   zoom: 1;
 }
@@ -3920,7 +3912,6 @@ dd#profile-user_photo {
   border: 1px solid rgba(0,0,0,.2);
   padding: 10px;
   line-height: 1.25;
-  -webkit-border-radius: 4px;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
   box-shadow: 0 1px 2px rgba(0,0,0,.1);
@@ -4353,14 +4344,7 @@ b.status_black {
   color: #C00;
 }
 
-/* PHPInfo Panel style and button */
-#panel_phpinfo {
-  padding: 5px;
-  width: 600px;
-  margin: auto;
-  text-align: center;
-}
-
+/* PHPInfo Button and Panel style */
 #toggle_phpinfo {
   padding: 5px;
   width: 200px;
@@ -4370,8 +4354,90 @@ b.status_black {
 }
 
 #panel_phpinfo {
-  padding: 50px;
   display: none;
+  font-size: 13px;
+}
+
+#panel_phpinfo pre {
+  margin: 0;
+  font-family: monospace;
+}
+
+#panel_phpinfo a:link {
+  color: #009;
+  text-decoration: none;
+  background-color: #FFF;
+}
+
+#panel_phpinfo a:hover {
+  text-decoration: underline;
+}
+
+#panel_phpinfo table {
+  border-collapse: collapse;
+  border: 0;
+  width: 100%;
+}
+
+#panel_phpinfo .center {
+  text-align: center;
+}
+
+#panel_phpinfo .center table {
+  margin: 1em auto;
+  text-align: right;
+}
+
+#panel_phpinfo .center th {
+  text-align: center !important;
+}
+
+#panel_phpinfo td,
+#panel_phpinfo th {
+  border: 1px solid #666;
+  vertical-align: baseline;
+  padding: 4px 5px;
+}
+
+#panel_phpinfo .p {
+  text-align: right;
+}
+
+#panel_phpinfo .e {
+  background-color: #CCF;
+  width: 300px;
+  font-weight: bold;
+}
+
+#panel_phpinfo .h {
+  background-color: #99C;
+  font-weight: bold;
+}
+
+#panel_phpinfo .v {
+  background-color: #F0F0F0;
+  max-width: 300px;
+  overflow-x: auto;
+  word-wrap: break-word;
+}
+
+#panel_phpinfo .v i {
+  color: #999;
+}
+
+#panel_phpinfo .v p {
+  margin: 0;
+}
+
+#panel_phpinfo img {
+  float: left;
+  border: 0;
+}
+
+#panel_phpinfo hr {
+  background-color: #CCC;
+  border: 0;
+  height: 1px;
 }
 
 /*--------------------------------------
@@ -4556,7 +4622,6 @@ body.center-right #config_content {
     display: inline-block;
     border: 1px solid #666;
     border-color: #BEDAF3;
-    -webkit-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
     background: #E4EDF5;
     color: #369;
@@ -4576,7 +4641,6 @@ body.center-right #config_content {
     display: inline-block;
     border: 1px solid #666;
     border-color: #79B1E7;
-    -webkit-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
     background: #A8C4E0;
     color: #2A527A;

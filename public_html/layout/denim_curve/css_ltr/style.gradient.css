@@ -4551,14 +4551,7 @@ b.status_black {
   color: #C00;
 }
 
-/* PHPInfo Panel style and button */
-#panel_phpinfo {
-  padding: 5px;
-  width: 600px;
-  margin: auto;
-  text-align: center;
-}
-
+/* PHPInfo Button and Panel style */
 #toggle_phpinfo {
   padding: 5px;
   width: 200px;
@@ -4568,8 +4561,90 @@ b.status_black {
 }
 
 #panel_phpinfo {
-  padding: 50px;
   display: none;
+  font-size: 13px;
+}
+
+#panel_phpinfo pre {
+  margin: 0;
+  font-family: monospace;
+}
+
+#panel_phpinfo a:link {
+  color: #009;
+  text-decoration: none;
+  background-color: #FFF;
+}
+
+#panel_phpinfo a:hover {
+  text-decoration: underline;
+}
+
+#panel_phpinfo table {
+  border-collapse: collapse;
+  border: 0;
+  width: 100%;
+}
+
+#panel_phpinfo .center {
+  text-align: center;
+}
+
+#panel_phpinfo .center table {
+  margin: 1em auto;
+  text-align: left;
+}
+
+#panel_phpinfo .center th {
+  text-align: center !important;
+}
+
+#panel_phpinfo td,
+#panel_phpinfo th {
+  border: 1px solid #666;
+  vertical-align: baseline;
+  padding: 4px 5px;
+}
+
+#panel_phpinfo .p {
+  text-align: left;
+}
+
+#panel_phpinfo .e {
+  background-color: #CCF;
+  width: 300px;
+  font-weight: bold;
+}
+
+#panel_phpinfo .h {
+  background-color: #99C;
+  font-weight: bold;
+}
+
+#panel_phpinfo .v {
+  background-color: #F0F0F0;
+  max-width: 300px;
+  overflow-x: auto;
+  word-wrap: break-word;
+}
+
+#panel_phpinfo .v i {
+  color: #999;
+}
+
+#panel_phpinfo .v p {
+  margin: 0;
+}
+
+#panel_phpinfo img {
+  float: right;
+  border: 0;
+}
+
+#panel_phpinfo hr {
+  background-color: #CCC;
+  border: 0;
+  height: 1px;
 }
 
 /*--------------------------------------

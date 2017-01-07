@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1.0                                                             |
+// | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
 // | envcheck.php                                                              |
 // |                                                                           |
@@ -30,15 +30,18 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+// Geeklog common function library
 require_once '../lib-common.php';
+
+// Security check to ensure user even belongs on this page
 require_once 'auth.inc.php';
+
+// Include system library
 require_once $_CONF['path_system'] . 'lib-admin.php';
 
-$display = '';
-
 if (!SEC_inGroup('Root')) {
-    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
+    $content = COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($content, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the hosting environment check screen.");
     COM_output($display);
     exit;
@@ -53,15 +56,15 @@ function _checkEnvironment()
 
     $T = new Template($_CONF['path_layout'] . 'admin');
     $T->set_file('page','envcheck.thtml');
-
+    $T->set_block('page', 'status');
 
     $_SCRIPTS->setJavaScriptLibrary('jquery');
     $javascript = '
-                    $(document).ready(function(){
-                      $("#toggle_phpinfo").click(function(){
-                        $("#panel_phpinfo").slideToggle("slow");
-                      });
-                    });';
+    $(document).ready(function(){
+      $("#toggle_phpinfo").click(function(){
+        $("#panel_phpinfo").toggle();
+      });
+    });';
     $_SCRIPTS->setJavascript($javascript, true);
 
     $menu_arr = array (
@@ -84,40 +87,29 @@ function _checkEnvironment()
     $dbms_error = false;
     if (!empty($_DB_dbms)) {
         $header_arr = array(      // display 'text' and use table field 'field'
-            array('text' => $LANG_ENVCHECK['setting'], 'field' => 'settings'),
-            array('text' => $LANG_ENVCHECK['current'], 'field' => 'current'),
+            array('text' => $LANG_ENVCHECK['setting'],     'field' => 'settings'),
+            array('text' => $LANG_ENVCHECK['current'],     'field' => 'current'),
             array('text' => $LANG_ENVCHECK['recommended'], 'field' => 'recommended'),
-            array('text' => $LANG_ENVCHECK['notes'], 'field' => 'notes')
-
+            array('text' => $LANG_ENVCHECK['notes'],       'field' => 'notes')
         );
-        $text_arr = array('has_menu' => false,
-                          'title'    => $LANG_ENVCHECK['database_settings'],
-                          'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
+        $text_arr = array(
+            'has_menu' => false,
+            'title'    => $LANG_ENVCHECK['database_settings'],
+            'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
         );
         $data_arr = array();
-        
-        $current = preg_replace('#[^0-9\.]#', '', DB_getVersion());
 
-        if ($_DB_dbms == 'mysql') {
-            if (version_compare($current, '4.1.2', '>=')) {
-                $current = '<span class="yes">'.$current.'</span>';
-            } else {
-                $current = '<span class="notok">'.$current.'</span>';
-            }
-            $data_arr[] = array('settings' => $LANG_ENVCHECK['database_mysql_version'],
-                                  'current' => $current,
-                                  'recommended' => '4.1.2+',
-                                  'notes' => $LANG_ENVCHECK['database_mysql_req_version']);    
-        } elseif  ($_DB_dbms == 'pgsql') {
-            if (version_compare($current, '9.1.7', '>=')) {
-                $current = '<span class="yes">'.$current.'</span>';
-            } else {
-                $current = '<span class="notok">'.$current.'</span>';
-            }
-            $data_arr[] = array('settings' => $LANG_ENVCHECK['database_pgsql_version'],
-                                  'current' => $current,
-                                  'recommended' => '9.1.7+',
-                                  'notes' => $LANG_ENVCHECK['database_pgsql_req_version']);    
+        $current = preg_replace('#[^0-9\.]#', '', DB_getVersion());
+        if (in_array($_DB_dbms, array('mysql', 'pgsql'))) {
+            $recommended = ($_DB_dbms === 'mysql') ? '4.1.2' : '9.1.7';
+            $className = version_compare($current, $recommended, '>=') ? 'yes' : 'notok';
+            $current = _getStatusTags($T, $className, $current);
+            $data_arr[] = array(
+                'settings'    => $LANG_ENVCHECK['database_' . $_DB_dbms . '_version'],
+                'current'     => $current,
+                'recommended' => $recommended . '+',
+                'notes'       => $LANG_ENVCHECK['database_' . $_DB_dbms . '_req_version']
+            );    
         } else {
             $dbms_error = true;
         }
@@ -127,20 +119,21 @@ function _checkEnvironment()
     
     if ($dbms_error) {   
         $header_arr = array(      // display 'text' and use table field 'field'
-            array('text' => $LANG_ENVCHECK['item'], 'field' => 'item'),
+            array('text' => $LANG_ENVCHECK['item'],   'field' => 'item'),
             array('text' => $LANG_ENVCHECK['status'], 'field' => 'status'),
-            array('text' => $LANG_ENVCHECK['notes'], 'field' => 'notes')
+            array('text' => $LANG_ENVCHECK['notes'],  'field' => 'notes')
         );
-        $text_arr = array('has_menu' => false,
-                          'title'    => $LANG_ENVCHECK['database_settings'],
-                          'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
+        $text_arr = array(
+            'has_menu' => false,
+            'title'    => $LANG_ENVCHECK['database_settings'],
+            'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
         );
         $data_arr = array();
 
         $data_arr[] = array(
-            'item' => $LANG_ENVCHECK['database_dms'],
-            'status' => '<span class="notok">' .  $LANG_ENVCHECK['not_found'] . '</span>',
-            'notes' => $LANG_ENVCHECK['database_dms_notes']
+            'item'   => $LANG_ENVCHECK['database_dms'],
+            'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
+            'notes'  => $LANG_ENVCHECK['database_dms_notes']
         );                              
     }
 
@@ -162,83 +155,128 @@ function _checkEnvironment()
     );
     $data_arr = array();
 
-    if ( _phpOutOfDate() ) {
-        $current = '<span class="notok">'.phpversion().'</span>';
-    } else {
-        $current = '<span class="yes">'.phpversion().'</span>';
-    }
-    $data_arr[] = array('settings' => $LANG_ENVCHECK['php_version'],
-                          'current' => $current,
-                          'recommended' => '5.3.3+',
-                          'notes' => $LANG_ENVCHECK['php_req_version']);
-                          
+    $className = (!_phpOutOfDate()) ? 'yes' : 'notok';
+    $current = _getStatusTags($T, $className, phpversion());
+
+    $data_arr[] = array(
+        'settings'    => $LANG_ENVCHECK['php_version'],
+        'current'     => $current,
+        'recommended' => '5.3.3+',
+        'notes'       => $LANG_ENVCHECK['php_req_version']
+    );
 
     $rg = ini_get('register_globals');
+    $className = 'yes';
+    $value = $LANG_ENVCHECK['off'];
+    if ($rg == 1) {
+        $className = 'notok';
+        $value = $LANG_ENVCHECK['on'];
+    }
+    $current = _getStatusTags($T, $className, $value);
+    $data_arr[] = array(
+        'settings'    => 'register_globals',
+        'current'     => $current,
+        'recommended' => $LANG_ENVCHECK['off'],
+        'notes'       => $LANG_ENVCHECK['register_globals']
+    );
+
     $sm = ini_get('safe_mode');
+    $className = 'yes';
+    $value = $LANG_ENVCHECK['off'];
+    if ($sm == 1) {
+        $className = 'notok';
+        $value = $LANG_ENVCHECK['on'];
+    }
+    $current = _getStatusTags($T, $className, $value);
+    $data_arr[] = array(
+        'settings'    => 'safe_mode',
+        'current'     => $current,
+        'recommended' => $LANG_ENVCHECK['off'],
+        'notes'       => $LANG_ENVCHECK['safe_mode']
+    );
+
     $ob = ini_get('open_basedir');
-
-    $current = $rg == 1 ? '<span class="notok">'.$LANG_ENVCHECK['on'].'</span>' : '<span class="yes">'.$LANG_ENVCHECK['off'].'</span>';
-    $data_arr[] = array('settings' => 'register_globals',
-                          'current' => $current,
-                          'recommended' => $LANG_ENVCHECK['off'],
-                          'notes' => $LANG_ENVCHECK['register_globals']);
-
-    $current = $sm == 1 ? '<span class="notok">'.$LANG_ENVCHECK['on'].'</span>' : '<span class="yes">'.$LANG_ENVCHECK['off'].'</span>';
-    $data_arr[] = array('settings' => 'safe_mode',
-                          'current' => $current,
-                          'recommended' => $LANG_ENVCHECK['off'],
-                          'notes' => $LANG_ENVCHECK['safe_mode']);
-
-    $ob = ini_get('open_basedir');
-    if ( $ob == '' ) {
+    if ($ob == '') {
         $open_basedir_restriction = 0;
     } else {
         $open_basedir_restriction = 1;
         $open_basedir_directories = $ob;
     }
-    $current = $ob == '' ? '<span class="yes">'.$LANG_ENVCHECK['off'].'</span>' : '<span class="notok">'.$LANG_ENVCHECK['enabled'].'</span>';
-    $data_arr[] = array('settings' => 'open_basedir',
-                          'current' => $current,
-                          'recommended' => $LANG_ENVCHECK['off'],
-                          'notes' => $LANG_ENVCHECK['open_basedir']);
+    $className = 'notok';
+    $value = $LANG_ENVCHECK['enabled'];
+    if ($ob == '') {
+        $className = 'yes';
+        $value = $LANG_ENVCHECK['off'];
+    }
+    $current = _getStatusTags($T, $className, $value);
+    $data_arr[] = array(
+        'settings'    => 'open_basedir',
+        'current'     => $current,
+        'recommended' => $LANG_ENVCHECK['off'],
+        'notes'       => $LANG_ENVCHECK['open_basedir']
+    );
 
     $memory_limit = _return_bytes(ini_get('memory_limit'));
     $memory_limit_print = ($memory_limit / 1024) / 1024;
-    $current = $memory_limit < 50331648 ? '<span class="notok">'.$memory_limit_print.'M</span>' : '<span class="yes">'.$memory_limit_print.'M</span>';
-    $data_arr[] = array('settings' => 'memory_limit',
-                          'current' => $current,
-                          'recommended' => '48M',
-                          'notes' => $LANG_ENVCHECK['memory_limit']);
+    $className = ($memory_limit < 50331648) ? 'notok' : 'yes';
+    $value = $memory_limit_print . 'M';
+    $current = _getStatusTags($T, $className, $value);
+    $data_arr[] = array(
+        'settings'    => 'memory_limit',
+        'current'     => $current,
+        'recommended' => '48M',
+        'notes'       => $LANG_ENVCHECK['memory_limit']
+    );
 
     $fu = ini_get('file_uploads');
-    $current = $fu == 1 ? '<span class="yes">'.$LANG_ENVCHECK['on'].'</span>' : '<span class="notok">'.$LANG_ENVCHECK['off'].'</span>';
-    $data_arr[] = array('settings' => 'file_uploads',
-                          'current' => $current,
-                          'recommended' => $LANG_ENVCHECK['on'],
-                          'notes' => $LANG_ENVCHECK['file_uploads']);
+    $className = 'notok';
+    $value = $LANG_ENVCHECK['off'];
+    if ($fu == 1) {
+        $className = 'yes';
+        $value = $LANG_ENVCHECK['on'];
+    }
+    $current = _getStatusTags($T, $className, $value);
+    $data_arr[] = array(
+        'settings'    => 'file_uploads',
+        'current'     => $current,
+        'recommended' => $LANG_ENVCHECK['on'],
+        'notes'       => $LANG_ENVCHECK['file_uploads']
+    );
 
     $upload_limit = _return_bytes(ini_get('upload_max_filesize'));
     $upload_limit_print = ($upload_limit / 1024) / 1024;
-    $current = $upload_limit < 8388608 ? '<span class="notok">'.$upload_limit_print.'M</span>' : '<span class="yes">'.$upload_limit_print.'M</span>';
-    $data_arr[] = array('settings' => 'upload_max_filesize',
-                          'current' => $current,
-                          'recommended' => '8M',
-                          'notes' => $LANG_ENVCHECK['upload_max_filesize']);
+    $className = ($upload_limit < 8388608) ? 'notok' : 'yes';
+    $value = $upload_limit_print . 'M';
+    $current = _getStatusTags($T, $className, $value);
+    $data_arr[] = array(
+        'settings'    => 'upload_max_filesize',
+        'current'     => $current,
+        'recommended' => '8M',
+        'notes'       => $LANG_ENVCHECK['upload_max_filesize']
+    );
 
     $post_limit = _return_bytes(ini_get('post_max_size'));
     $post_limit_print = ($post_limit / 1024) / 1024;
-    $current = $post_limit < 8388608 ? '<span class="notok">'.$post_limit_print.'M</span>' : '<span class="yes">'.$post_limit_print.'M</span>';
-    $data_arr[] = array('settings' => 'post_max_size',
-                          'current' => $current,
-                          'recommended' => '8M',
-                          'notes' => $LANG_ENVCHECK['post_max_size']);
+    $className = ($post_limit < 8388608) ? 'notok' : 'yes';
+    $value = $post_limit_print . 'M';
+    $current = _getStatusTags($T, $className, $value);
+    $data_arr[] = array(
+        'settings'    => 'post_max_size',
+        'current'     => $current,
+        'recommended' => '8M',
+        'notes'       => $LANG_ENVCHECK['post_max_size']
+    );
 
     $max_execution_time = ini_get('max_execution_time');
-    $current = $max_execution_time < 30 ? '<span class="notok">' . $max_execution_time . ' secs</span>' : '<span class="yes">' . $max_execution_time . ' secs</span>';
-    $data_arr[] = array('settings' => 'max_execution_time',
-                          'current' => $current,
-                          'recommended' => '30 secs',
-                          'notes' => $LANG_ENVCHECK['max_execution_time']);
+    $className = ($max_execution_time < 30) ? 'notok' : 'yes';
+    $value = $max_execution_time . ' secs';
+    $current = _getStatusTags($T, $className, $value);
+    $data_arr[] = array(
+        'settings'    => 'max_execution_time',
+        'current'     => $current,
+        'recommended' => '30 secs',
+        'notes'       => $LANG_ENVCHECK['max_execution_time']
+    );
 
     $admin_list = ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     $T->set_var('php_settings_list', $admin_list);
@@ -247,75 +285,80 @@ function _checkEnvironment()
     // ***********************************************
     // Libraries
     $header_arr = array(      // display 'text' and use table field 'field'
-        array('text' => $LANG_ENVCHECK['item'], 'field' => 'item'),
+        array('text' => $LANG_ENVCHECK['item'],   'field' => 'item'),
         array('text' => $LANG_ENVCHECK['status'], 'field' => 'status'),
-        array('text' => $LANG_ENVCHECK['notes'], 'field' => 'notes')
+        array('text' => $LANG_ENVCHECK['notes'],  'field' => 'notes')
     );
-    $text_arr = array('has_menu' => false,
-                      'title'    => $LANG_ENVCHECK['libraries'],
-                      'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
+    $text_arr = array(
+        'has_menu' => false,
+        'title'    => $LANG_ENVCHECK['libraries'],
+        'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
     );
     $data_arr = array();
 
     if (extension_loaded('openssl')) {
         $data_arr[] = array(
-            'item' => $LANG_ENVCHECK['openssl_library'],
-            'status' => '<span class="yes">' . $LANG_ENVCHECK['ok'] . '</span>',
-            'notes' => $LANG_ENVCHECK['openssl_ok']);
+            'item'   => $LANG_ENVCHECK['openssl_library'],
+            'status' => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok']),
+            'notes'  => $LANG_ENVCHECK['openssl_ok']
+        );
     } else {
         $data_arr[] = array(
-            'item' => $LANG_ENVCHECK['openssl_library'],
-            'status' => '<span class="notok">' .  $LANG_ENVCHECK['not_found'] . '</span>',
-            'notes' => $LANG_ENVCHECK['openssl_not_found']);
+            'item'   => $LANG_ENVCHECK['openssl_library'],
+            'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
+            'notes'  => $LANG_ENVCHECK['openssl_not_found']
+        );
     }
 
-    if ( $sm != 1 && $open_basedir_restriction != 1 ) {
-        switch ( $_CONF['image_lib'] ) {
-            case 'imagemagick' :    // ImageMagick
+    if ($sm != 1 && $open_basedir_restriction != 1) {
+        switch ($_CONF['image_lib']) {
+            case 'imagemagick':    // ImageMagick
                 if (PHP_OS == "WINNT") {
                     $binary = "/convert.exe";
                 } else {
                     $binary = "/convert";
                 }
                 clearstatcache();
-                if (! @file_exists( $_CONF['path_to_mogrify'] . $binary ) ) {
+                if (!@file_exists($_CONF['path_to_mogrify'] . $binary)) {
                     $data_arr[] = array(
-                        'item' => $LANG_ENVCHECK['imagemagick'],
-                        'status' => '<span class="notok">' .  $LANG_ENVCHECK['not_found'] . '</span>',
-                        'notes' => $LANG_ENVCHECK['im_not_found']
+                        'item'   => $LANG_ENVCHECK['imagemagick'],
+                        'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
+                        'notes'  => $LANG_ENVCHECK['im_not_found']
                     );
                 } else {
                     $data_arr[] = array(
-                        'item' => $LANG_ENVCHECK['imagemagick'],
-                        'status' => '<span class="yes">' . $LANG_ENVCHECK['ok'] . '</span>',
-                        'notes' => $LANG_ENVCHECK['im_ok']
+                        'item'   => $LANG_ENVCHECK['imagemagick'],
+                        'status' => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok']),
+                        'notes'  => $LANG_ENVCHECK['im_ok']
                     );
                 }
                 break;
-            case 'gdlib' :        // GD Libs
+
+            case 'gdlib':        // GD Libs
                 if ($gdv = gdVersion()) {
-                    if ($gdv >=2) {
+                    if ($gdv >= 2) {
                         $data_arr[] = array(
-                            'item' => $LANG_ENVCHECK['gd_lib'],
-                            'status' => '<span class="yes">'.$LANG_ENVCHECK['ok'].'</span>',
-                            'notes' => $LANG_ENVCHECK['gd_ok']
+                            'item'   => $LANG_ENVCHECK['gd_lib'],
+                            'status' => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok']),
+                            'notes'  => $LANG_ENVCHECK['gd_ok']
                         );
                     } else {
                         $data_arr[] = array(
-                            'item' => $LANG_ENVCHECK['gd_lib'],
-                            'status' => '<span class="yes">'.$LANG_ENVCHECK['ok'].'</span>',
-                            'notes' => $LANG_ENVCHECK['gd_v1']
+                            'item'   => $LANG_ENVCHECK['gd_lib'],
+                            'status' => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok']),
+                            'notes'  => $LANG_ENVCHECK['gd_v1']
                         );
                     }
                 } else {
                     $data_arr[] = array(
-                        'item' => $LANG_ENVCHECK['gd_lib'],
-                        'status' =>  '<span class="notok">' . $LANG_ENVCHECK['not_found'] . '</span>',
-                        'notes' => $LANG_ENVCHECK['gd_not_found']
+                        'item'   => $LANG_ENVCHECK['gd_lib'],
+                        'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
+                        'notes'  => $LANG_ENVCHECK['gd_not_found']
                     );
                 }
                 break;
-            case 'netpbm' :    // NetPBM
+
+            case 'netpbm':    // NetPBM
                 if (PHP_OS == "WINNT") {
                     $binary = "/jpegtopnm.exe";
                 } else {
@@ -324,67 +367,68 @@ function _checkEnvironment()
                 clearstatcache();
                 if (! @file_exists( $_CONF['path_to_netpbm'] . $binary ) ) {
                     $data_arr[] = array(
-                        'item' => $LANG_ENVCHECK['netpbm'],
-                        'status' => '<span class="notok">' . $LANG_ENVCHECK['not_found'] . '</span>',
-                        'notes' => $LANG_ENVCHECK['np_not_found']
+                        'item'   => $LANG_ENVCHECK['netpbm'],
+                        'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
+                        'notes'  => $LANG_ENVCHECK['np_not_found']
                     );
                 } else {
                     $data_arr[] = array(
-                        'item' => $LANG_ENVCHECK['netpbm'],
-                        'status' =>  '<span class="yes">' . $LANG_ENVCHECK['ok'] . '</span>',
-                        'notes' => $LANG_ENVCHECK['np_ok']
+                        'item'   => $LANG_ENVCHECK['netpbm'],
+                        'status' => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok']),
+                        'notes'  => $LANG_ENVCHECK['np_ok']
                     );
                 }
                 break;
-            default :
+
+            default:
                 $data_arr[] = array(
-                    'item' => $LANG_ENVCHECK['graphics'],
+                    'item'   => $LANG_ENVCHECK['graphics'],
                     'status' => $LANG_ENVCHECK['not_checked'],
-                    'notes' => $LANG_ENVCHECK['not_used_note']
+                    'notes'  => $LANG_ENVCHECK['not_used_note']
                 );
 
         }
 
         /* Left incase we decided to use jhead and/or jpegtran Program in future
-        if ( $_CONF['jhead_enabled'] ) {
+        if ($_CONF['jhead_enabled']) {
             if (PHP_OS == "WINNT") {
                 $binary = "/jhead.exe";
             } else {
                 $binary = "/jhead";
             }
             clearstatcache();
-            if (! @file_exists( $_CONF['path_to_jhead'] . $binary ) ) {
+            if (!@file_exists($_CONF['path_to_jhead'] . $binary)) {
                 $data_arr[] = array(
-                    'item' => $LANG_ENVCHECK['jhead'],
-                    'status' =>  '<span class="notok">' .  $LANG_ENVCHECK['not_found'] . '</span>',
-                    'notes'     => $LANG_ENVCHECK['jhead_not_found'],
+                    'item'   => $LANG_ENVCHECK['jhead'],
+                    'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
+                    'notes'  => $LANG_ENVCHECK['jhead_not_found'],
                 );
             } else {
                 $data_arr[] = array(
-                    'item'      => $LANG_ENVCHECK['jhead'],
-                    'status'    => '<span class="yes">' . $LANG_ENVCHECK['ok'] . '</span>',
-                    'notes'     => $LANG_ENVCHECK['jhead_ok'],
+                    'item'   => $LANG_ENVCHECK['jhead'],
+                    'status' => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok']),
+                    'notes'  => $LANG_ENVCHECK['jhead_ok'],
                 );
             }
         }
 
-        if ( $_CONF['jpegtrans_enabled'] ) {
+        if ($_CONF['jpegtrans_enabled']) {
             if (PHP_OS == "WINNT") {
                 $binary = "/jpegtran.exe";
             } else {
                 $binary = "/jpegtran";
             }
             clearstatcache();
-            if (! @file_exists( $_CONF['path_to_jpegtrans'] . $binary ) ) {
+            if (!@file_exists($_CONF['path_to_jpegtrans'] . $binary)) {
                 $data_arr[] = array(
                     'item'   => $LANG_ENVCHECK['jpegtran'],
-                    'status' => '<span class="notok">' .  $LANG_ENVCHECK['not_found'] . '</span>',
+                    'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
                     'notes'  => $LANG_ENVCHECK['jpegtran_not_found'],
                 );
             } else {
                 $data_arr[] = array(
                     'item'   => $LANG_ENVCHECK['jpegtran'],
-                    'status' => '<span class="yes">' . $LANG_ENVCHECK['ok'] . '</span>',
+                    'status' => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok']),
                     'notes'  => $LANG_ENVCHECK['jpegtran_ok'],
                 );
             }
@@ -393,9 +437,9 @@ function _checkEnvironment()
 
     } else {
         $data_arr[] = array(
-            'item' => $LANG_ENVCHECK['graphics'],
+            'item'   => $LANG_ENVCHECK['graphics'],
             'status' => $LANG_ENVCHECK['not_checked'],
-            'notes' => $LANG_ENVCHECK['bypass_note']
+            'notes'  => $LANG_ENVCHECK['bypass_note']
         );
     }
 
@@ -406,11 +450,12 @@ function _checkEnvironment()
     // Directory / File Permissions
     $header_arr = array(      // display 'text' and use table field 'field'
         array('text' => $LANG_ENVCHECK['location'], 'field' => 'location'),
-        array('text' => $LANG_ENVCHECK['status'], 'field' => 'status')
+        array('text' => $LANG_ENVCHECK['status'],   'field' => 'status')
     );
-    $text_arr = array('has_menu' => false,
-                      'title'    => $LANG_ENVCHECK['filesystem_check'],
-                      'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
+    $text_arr = array(
+        'has_menu' => false,
+        'title'    => $LANG_ENVCHECK['filesystem_check'],
+        'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
     );
     $data_arr = array();
 
@@ -419,97 +464,98 @@ function _checkEnvironment()
     $pos = strrpos( $feedpath, '/' );
     $feedPath = substr( $feedpath, 0, $pos + 1 );
 
-    $file_list = array( $_CONF['path_data'],
-                        $_CONF['path_log'].'error.log',
-                        $_CONF['path_log'].'access.log',
-                        $_CONF['path_log'].'captcha.log',
-                        $_CONF['path_log'].'spamx.log',
-                        $_CONF['path_log'].'404.log',
-                        $_CONF['path_data'].'layout_cache/',
+    $file_list = array(
+        $_CONF['path_data'],
+        $_CONF['path_log'].'error.log',
+        $_CONF['path_log'].'access.log',
+        $_CONF['path_log'].'spamx.log',
+        $_CONF['path_log'].'404.log',
+        $_CONF['path_data'].'layout_cache/',
 
-                        $_CONF['path_html'],
-                        $feedPath,
-                        $_CONF['rdf_file'],
+        $_CONF['path_html'],
+        $feedPath,
+        $_CONF['rdf_file'],
 
-                        $_CONF['path_html'].'images/articles/',
-                        $_CONF['path_html'].'images/topics/',
-                        $_CONF['path_html'].'images/userphotos/',
-                        $_CONF['path_html'].'images/library/File/',
-                        $_CONF['path_html'].'images/library/Flash/',
-                        $_CONF['path_html'].'images/library/Image/',
-                        $_CONF['path_html'].'images/library/Media/',
-                    );
+        $_CONF['path_html'].'images/articles/',
+        $_CONF['path_html'].'images/topics/',
+        $_CONF['path_html'].'images/userphotos/',
+        $_CONF['path_html'].'images/library/File/',
+        $_CONF['path_html'].'images/library/Flash/',
+        $_CONF['path_html'].'images/library/Image/',
+        $_CONF['path_html'].'images/library/Media/',
+    );
 /* For Media Gallery Plugin - left in incase add plugin api checks in future
-    $mg_file_list = array($_CONF['path'].'plugins/mediagallery/tmp/',
-                        $_MG_CONF['path_mediaobjects'],
-                        $_MG_CONF['path_mediaobjects'].'covers/',
-                        $_MG_CONF['path_mediaobjects'].'orig/',
-                        $_MG_CONF['path_mediaobjects'].'disp/',
-                        $_MG_CONF['path_mediaobjects'].'tn/',
-                        $_MG_CONF['path_mediaobjects'].'orig/0/',
-                        $_MG_CONF['path_mediaobjects'].'disp/0/',
-                        $_MG_CONF['path_mediaobjects'].'tn/0/',
-                        $_MG_CONF['path_mediaobjects'].'orig/1/',
-                        $_MG_CONF['path_mediaobjects'].'disp/1/',
-                        $_MG_CONF['path_mediaobjects'].'tn/1/',
-                        $_MG_CONF['path_mediaobjects'].'orig/2/',
-                        $_MG_CONF['path_mediaobjects'].'disp/2/',
-                        $_MG_CONF['path_mediaobjects'].'tn/2/',
-                        $_MG_CONF['path_mediaobjects'].'orig/3/',
-                        $_MG_CONF['path_mediaobjects'].'disp/3/',
-                        $_MG_CONF['path_mediaobjects'].'tn/3/',
-                        $_MG_CONF['path_mediaobjects'].'orig/4/',
-                        $_MG_CONF['path_mediaobjects'].'disp/4/',
-                        $_MG_CONF['path_mediaobjects'].'tn/4/',
-                        $_MG_CONF['path_mediaobjects'].'orig/5/',
-                        $_MG_CONF['path_mediaobjects'].'disp/5/',
-                        $_MG_CONF['path_mediaobjects'].'tn/5/',
-                        $_MG_CONF['path_mediaobjects'].'orig/6/',
-                        $_MG_CONF['path_mediaobjects'].'disp/6/',
-                        $_MG_CONF['path_mediaobjects'].'tn/6/',
-                        $_MG_CONF['path_mediaobjects'].'orig/7/',
-                        $_MG_CONF['path_mediaobjects'].'disp/7/',
-                        $_MG_CONF['path_mediaobjects'].'tn/7/',
-                        $_MG_CONF['path_mediaobjects'].'orig/8/',
-                        $_MG_CONF['path_mediaobjects'].'disp/8/',
-                        $_MG_CONF['path_mediaobjects'].'tn/8/',
-                        $_MG_CONF['path_mediaobjects'].'orig/9/',
-                        $_MG_CONF['path_mediaobjects'].'disp/9/',
-                        $_MG_CONF['path_mediaobjects'].'tn/9/',
-                        $_MG_CONF['path_mediaobjects'].'orig/a/',
-                        $_MG_CONF['path_mediaobjects'].'disp/a/',
-                        $_MG_CONF['path_mediaobjects'].'tn/a/',
-                        $_MG_CONF['path_mediaobjects'].'orig/b/',
-                        $_MG_CONF['path_mediaobjects'].'disp/b/',
-                        $_MG_CONF['path_mediaobjects'].'tn/b/',
-                        $_MG_CONF['path_mediaobjects'].'orig/c/',
-                        $_MG_CONF['path_mediaobjects'].'disp/c/',
-                        $_MG_CONF['path_mediaobjects'].'tn/c/',
-                        $_MG_CONF['path_mediaobjects'].'orig/d/',
-                        $_MG_CONF['path_mediaobjects'].'disp/d/',
-                        $_MG_CONF['path_mediaobjects'].'tn/d/',
-                        $_MG_CONF['path_mediaobjects'].'orig/e/',
-                        $_MG_CONF['path_mediaobjects'].'disp/e/',
-                        $_MG_CONF['path_mediaobjects'].'tn/e/',
-                        $_MG_CONF['path_mediaobjects'].'orig/f/',
-                        $_MG_CONF['path_mediaobjects'].'disp/f/',
-                        $_MG_CONF['path_mediaobjects'].'tn/f/',
-                        $_MG_CONF['path_html'].'watermarks/',
-                    );
+    $mg_file_list = array(
+        $_CONF['path'].'plugins/mediagallery/tmp/',
+        $_MG_CONF['path_mediaobjects'],
+        $_MG_CONF['path_mediaobjects'].'covers/',
+        $_MG_CONF['path_mediaobjects'].'orig/',
+        $_MG_CONF['path_mediaobjects'].'disp/',
+        $_MG_CONF['path_mediaobjects'].'tn/',
+        $_MG_CONF['path_mediaobjects'].'orig/0/',
+        $_MG_CONF['path_mediaobjects'].'disp/0/',
+        $_MG_CONF['path_mediaobjects'].'tn/0/',
+        $_MG_CONF['path_mediaobjects'].'orig/1/',
+        $_MG_CONF['path_mediaobjects'].'disp/1/',
+        $_MG_CONF['path_mediaobjects'].'tn/1/',
+        $_MG_CONF['path_mediaobjects'].'orig/2/',
+        $_MG_CONF['path_mediaobjects'].'disp/2/',
+        $_MG_CONF['path_mediaobjects'].'tn/2/',
+        $_MG_CONF['path_mediaobjects'].'orig/3/',
+        $_MG_CONF['path_mediaobjects'].'disp/3/',
+        $_MG_CONF['path_mediaobjects'].'tn/3/',
+        $_MG_CONF['path_mediaobjects'].'orig/4/',
+        $_MG_CONF['path_mediaobjects'].'disp/4/',
+        $_MG_CONF['path_mediaobjects'].'tn/4/',
+        $_MG_CONF['path_mediaobjects'].'orig/5/',
+        $_MG_CONF['path_mediaobjects'].'disp/5/',
+        $_MG_CONF['path_mediaobjects'].'tn/5/',
+        $_MG_CONF['path_mediaobjects'].'orig/6/',
+        $_MG_CONF['path_mediaobjects'].'disp/6/',
+        $_MG_CONF['path_mediaobjects'].'tn/6/',
+        $_MG_CONF['path_mediaobjects'].'orig/7/',
+        $_MG_CONF['path_mediaobjects'].'disp/7/',
+        $_MG_CONF['path_mediaobjects'].'tn/7/',
+        $_MG_CONF['path_mediaobjects'].'orig/8/',
+        $_MG_CONF['path_mediaobjects'].'disp/8/',
+        $_MG_CONF['path_mediaobjects'].'tn/8/',
+        $_MG_CONF['path_mediaobjects'].'orig/9/',
+        $_MG_CONF['path_mediaobjects'].'disp/9/',
+        $_MG_CONF['path_mediaobjects'].'tn/9/',
+        $_MG_CONF['path_mediaobjects'].'orig/a/',
+        $_MG_CONF['path_mediaobjects'].'disp/a/',
+        $_MG_CONF['path_mediaobjects'].'tn/a/',
+        $_MG_CONF['path_mediaobjects'].'orig/b/',
+        $_MG_CONF['path_mediaobjects'].'disp/b/',
+        $_MG_CONF['path_mediaobjects'].'tn/b/',
+        $_MG_CONF['path_mediaobjects'].'orig/c/',
+        $_MG_CONF['path_mediaobjects'].'disp/c/',
+        $_MG_CONF['path_mediaobjects'].'tn/c/',
+        $_MG_CONF['path_mediaobjects'].'orig/d/',
+        $_MG_CONF['path_mediaobjects'].'disp/d/',
+        $_MG_CONF['path_mediaobjects'].'tn/d/',
+        $_MG_CONF['path_mediaobjects'].'orig/e/',
+        $_MG_CONF['path_mediaobjects'].'disp/e/',
+        $_MG_CONF['path_mediaobjects'].'tn/e/',
+        $_MG_CONF['path_mediaobjects'].'orig/f/',
+        $_MG_CONF['path_mediaobjects'].'disp/f/',
+        $_MG_CONF['path_mediaobjects'].'tn/f/',
+        $_MG_CONF['path_html'].'watermarks/',
+    );
 
     $fm_file_list = array(
-                        $filemgmt_FileStore,
-                        $filemgmt_FileStore.'tmp/',
-                        $filemgmt_SnapStore,
-                        $filemgmt_SnapStore.'tmp/',
-                        $filemgmt_SnapCat,
-                        $filemgmt_SnapCat.'tmp/',
-                    );
+        $filemgmt_FileStore,
+        $filemgmt_FileStore.'tmp/',
+        $filemgmt_SnapStore,
+        $filemgmt_SnapStore.'tmp/',
+        $filemgmt_SnapCat,
+        $filemgmt_SnapCat.'tmp/',
+    );
 
     $forum_file_list = array(
-                        $_FF_CONF['uploadpath'].'/',
-                        $_FF_CONF['uploadpath'].'/tn/',
-                      );
+        $_FF_CONF['uploadpath'].'/',
+        $_FF_CONF['uploadpath'].'/tn/',
+    );
 
 
     if (in_array('mediagallery', $_PLUGINS)) {
@@ -523,78 +569,58 @@ function _checkEnvironment()
     }
 */
 
-    $T->set_block('page','perms','perm');
-
-    foreach ($file_list AS $path) {
+    foreach ($file_list as $path) {
         $ok = _isWritable($path);
-        if ( !$ok ) {
-            $status = $ok ? '<span class="yes">'.$LANG_ENVCHECK['ok'].'</span>' : '<span class="notwriteable">'.$LANG_ENVCHECK['not_writable'].'</span>';
+        if (!$ok) {
             $data_arr[] = array(
                 'location' => $path,
-                'status' => $status
+                'status'   => _getStatusTags($T, 'notwriteable', $LANG_ENVCHECK['not_writable'])
             );
-
-            if  ( !$ok ) {
-                $permError = 1;
-            }
-        }
+            $permError = 1;
 /* --- debug code ---
-        else {
-            $status = $ok ? '<span class="yes">'.$LANG_ENVCHECK['ok'].'</span>' : '<span class="notwriteable">'.$LANG_ENVCHECK['not_writable'].'</span>';
+        } else {
             $data_arr[] = array(
                 'location' => $path,
-                'status' => $status
+                'status'   => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok'])
             );
+*/
         }
------------------------ */
     }
     // special test to see if we can create a directory under layout_cache...
     $rc = @mkdir($_CONF['path_data'].'layout_cache/test/');
     if (!$rc) {
-        $location = $_CONF['path_data'].'layout_cache/';
-        $status = '<span class="notwriteable">'.$LANG_ENVCHECK['unable_mkdir'].'</span>';
         $data_arr[] = array(
-            'location' => $location,
-            'status' => $status
+            'location' => $_CONF['path_data'] . 'layout_cache/',
+            'status'   => _getStatusTags($T, 'notwriteable', $LANG_ENVCHECK['unable_mkdir'])
         );
-
         $permError = 1;
-        @rmdir($_CONF['path_data'].'layout_cache/test/');
+        @rmdir($_CONF['path_data'] . 'layout_cache/test/');
     } else {
         $ok = _isWritable($_CONF['path_data'].'layout_cache/test/');
-        if ( !$ok ) {
-            $status = $ok ? '<span class="yes">'.$LANG_ENVCHECK['ok'].'</span>' : '<span class="notwriteable">'.$LANG_ENVCHECK['not_writable'].'</span>';
+        if (!$ok) {
             $data_arr[] = array(
                 'location' => $path,
-                'status' => $status
+                'status'   => _getStatusTags($T, 'notwriteable', $LANG_ENVCHECK['not_writable'])
             );
-
-            if  ( !$ok ) {
-                $permError = 1;
-            }
+            $permError = 1;
         }
-        @rmdir($_CONF['path_data'].'layout_cache/test/');
+        @rmdir($_CONF['path_data'] . 'layout_cache/test/');
     }
 
     // special test to see if existing cache files exist and are writable...
-    $rc = _checkCacheDir($_CONF['path_data'].'layout_cache/',$data_arr);
-    if ( $rc > 0 ) {
+    $rc = _checkCacheDir($T, $_CONF['path_data'] . 'layout_cache/', $data_arr);
+    if ($rc > 0) {
         $permError = 1;
     }
 
-    if ( !$permError ) {
-        $recheck = '';
-
-        $status = 1 ? '<span class="yes">'.$LANG_ENVCHECK['ok'].'</span>' : '<span class="notwriteable">'.$LANG_ENVCHECK['not_writable'].'</span>';
+    if (!$permError) {
         $data_arr[] = array(
             'location' => $LANG_ENVCHECK['directory_permissions'],
-            'status' => $status
+            'status'   => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok'])
         );
-
-        $status = 1 ? '<span class="yes">'.$LANG_ENVCHECK['ok'].'</span>' : '<span class="notwriteable">'.$LANG_ENVCHECK['not_writable'].'</span>';
         $data_arr[] = array(
             'location' => $LANG_ENVCHECK['file_permissions'],
-            'status' => $status
+            'status'   => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok'])
         );
     }
 
@@ -605,27 +631,29 @@ function _checkEnvironment()
     // Current PHP Settings
     $T->set_var(array(
         'lang_current_php_settings' => $LANG_ENVCHECK['current_php_settings'],
-        'lang_showhide_phpinfo' => $LANG_ENVCHECK['showhide_phpinfo'],
-        'phpinfo'           => _phpinfo(),
+        'lang_showhide_phpinfo'     => $LANG_ENVCHECK['showhide_phpinfo'],
     ));
 
     /*
-    if ( !defined('DEMO_MODE') ) {
-        $T->set_var(array(
-            'phpinfo'       => _phpinfo(),
-        ));
-    } else {
-        $T->set_var('phpinfo','');
+    if (!defined('DEMO_MODE')) {
+        _phpinfo($T);
     }
     */
-    $T->set_var('phpinfo', _phpinfo());
+    _phpinfo($T);
 
-    $T->parse('output','page');
+    $T->parse('output', 'page');
     $retval .= $T->finish($T->get_var('output'));
-
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
+}
+
+function _getStatusTags(&$T, $className, $value)
+{
+    $T->set_var('status_class', $className);
+    $T->set_var('status_value', $value);
+
+    return $T->parse('result', 'status');
 }
 
 /**
@@ -660,9 +688,10 @@ function _phpOutOfDate()
     }
 }
 
-function _isWritable($path) {
-    if ($path{strlen($path)-1}=='/')
-        return _isWritable($path.uniqid(mt_rand()).'.tmp');
+function _isWritable($path)
+{
+    if ($path{strlen($path)-1} == '/')
+        return _isWritable($path . uniqid(mt_rand()) . '.tmp');
 
     if (@file_exists($path)) {
         if (!($f = @fopen($path, 'r+')))
@@ -675,6 +704,7 @@ function _isWritable($path) {
         return false;
     @fclose($f);
     @unlink($path);
+
     return true;
 }
 
@@ -694,35 +724,31 @@ function _return_bytes($val) {
     return $val;
 }
 
-
-function _checkCacheDir($path, &$data_arr)
+function _checkCacheDir(&$T, $path, &$data_arr)
 {
     global $LANG_ENVCHECK;
 
     $permError = 0;
 
     // special test to see if existing cache files exist and are writable...
-    if ( $dh = @opendir($path) ) {
-        while (($file = readdir($dh)) !== false ) {
-            if ( $file == '.' || $file == '..' || $file == '.svn') {
+    if ($dh = @opendir($path)) {
+        while (($file = readdir($dh)) !== false) {
+            if ($file == '.' || $file == '..' || $file == '.svn') {
                 continue;
             }
-            if ( is_dir($path.$file) ) {
-                $rc = _checkCacheDir($path.$file.'/', $data_arr);
-                if ( $rc > 0 ) {
+            if (is_dir($path.$file)) {
+                $rc = _checkCacheDir($T, $path . $file . '/', $data_arr);
+                if ($rc > 0) {
                     $permError = 1;
                 }
             } else {
                 $ok = _isWritable($path.$file);
-                if ( !$ok ) {
+                if (!$ok) {
                     $data_arr[] = array(
-                        'location' => $path.$file,
-                        'status' => $ok ? '<span class="yes">OK</span>' : '<span class="notwriteable">'.$LANG_ENVCHECK['not_writable'].'</span>'
+                        'location' => $path . $file,
+                        'status'   => _getStatusTags($T, 'notwriteable', $LANG_ENVCHECK['not_writable'])
                     );
-
-                    if  ( !$ok ) {
-                        $permError = 1;
-                    }
+                    $permError = 1;
                 }
             }
         }
@@ -731,8 +757,9 @@ function _checkCacheDir($path, &$data_arr)
     return $permError;
 }
 
-function gdVersion($user_ver = 0) {
-    if (! extension_loaded('gd')) {
+function gdVersion($user_ver = 0)
+{
+    if (!extension_loaded('gd')) {
         return;
     }
 
@@ -745,7 +772,7 @@ function gdVersion($user_ver = 0) {
     }
 
     // Use the static variable if function was called previously.
-    if ($user_ver !=2 && $gd_ver > 0 ) {
+    if ($user_ver !=2 && $gd_ver > 0) {
         return $gd_ver;
     }
 
@@ -754,18 +781,17 @@ function gdVersion($user_ver = 0) {
         $ver_info = gd_info();
         preg_match('/\d/', $ver_info['GD Version'], $match);
         $gd_ver = $match[0];
-        return $match[0];
+        return $gd_ver;
     }
 
    // If phpinfo() is disabled use a specified / fail-safe choice...
    if (preg_match('/phpinfo/', ini_get('disable_functions'))) {
         if ($user_ver == 2) {
             $gd_ver = 2;
-            return 2;
         } else {
             $gd_ver = 1;
-            return 1;
         }
+        return $gd_ver;
     }
     // ...otherwise use phpinfo().
     ob_start();
@@ -775,42 +801,44 @@ function gdVersion($user_ver = 0) {
     $info = stristr($info, 'gd version');
     preg_match('/\d/', $info, $match);
     $gd_ver = $match[0];
-    return $match[0];
+
+    return $gd_ver;
 }
 
-
-function _phpinfo()
+function _phpinfo(&$T)
 {
     ob_start();
     phpinfo();
 
-    preg_match ('%<style type="text/css">(.*?)</style>.*?<body>(.*?)</body>%s', ob_get_clean(), $matches);
+    preg_match('%<style type="text/css">(.*?)</style>.*?<body>(.*?)</body>%s', ob_get_clean(), $matches);
 
-    # $matches [1]; # Style information
-    # $matches [2]; # Body information
+    # $matches[1]; # Style information
+    # $matches[2]; # Body information
 
-    $retval = "<div class='phpinfodisplay' style=\"font-size:1.2em;width:100%\"><style type='text/css'>\n" .
-        join( "\n",
-            array_map(
-                create_function(
-                    '$i',
-                    'return ".phpinfodisplay " . preg_replace( "/,/", ",.phpinfodisplay ", $i );'
-                    ),
-                preg_split( '/\n/', trim(preg_replace( "/\nbody/", "\n", $matches[1])) )
-                )
-            ) .
-        "</style>\n" .
-        $matches[2] .
-        "\n</div>\n";
+    $idName = "panel_phpinfo";
+    $style_array = array_map(
+        create_function(
+            '$i',
+            'return "#' . $idName . ' " . preg_replace("/,/", ",#' . $idName . '", $i);'
+        ),
+        preg_split('/\n/', trim(preg_replace("/\nbody/", "\n", $matches[1])))
+    );
+    $style = implode(PHP_EOL, $style_array);
 
-    return $retval;
+    $content = $matches[2];
+    $content = preg_replace('/<font/', '<span', $content);
+    $content = preg_replace('/<\/font>/', '</span>', $content);
+    $content = preg_replace('/<a name=/', '<a id=', $content);
+    $content = preg_replace('/<img border="0"/', '<img ', $content);
+    $content = preg_replace('/<h2/', '<h3', $content);
+    $content = preg_replace('/<\/h2>/', '</h3>', $content);
+    $content = preg_replace('/<h1/', '<h2', $content);
+    $content = preg_replace('/<\/h1>/', '</h2>', $content);
 
+    $T->set_var('phpinfo_style', $style);
+    $T->set_var('phpinfo_content', $content);
 }
 
-$display .= _checkEnvironment();
-
-$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_ENVCHECK['env_check']));
-
-COM_output($display)
-
-?>
+$content = _checkEnvironment();
+$display = COM_createHTMLDocument($content, array('pagetitle' => $LANG_ENVCHECK['env_check']));
+COM_output($display);

@@ -2004,7 +2004,7 @@ body.center-right #config_content {
   background-color: #426F9C;
   height: 120px;
   border: 1px solid #656663;
-  background: transparent url("../images/css/bg_header.png") repeat-x 0 0;
+  background: transparent url("../images/css/bg_header.png") repeat-x 100% 0;
   border-radius: 8px;
   -webkit-box-shadow: 0 0 2px 1px #888;
   box-shadow: 0 0 2px 1px #888;
@@ -2101,7 +2101,7 @@ body.center-right #config_content {
   background-color: #426F9C;
   height: 120px;
   border: 1px solid #656663;
-  background: transparent url("../images/css/bg_header.png") repeat-x 0 0;
+  background: transparent url("../images/css/bg_header.png") repeat-x 100% 0;
   border-radius: 8px;
   -webkit-box-shadow: 0 0 2px 1px #888;
   box-shadow: 0 0 2px 1px #888;
@@ -2138,7 +2138,7 @@ body.center-right #config_content {
 }
 
 .brand-image .site_name a {
-  background: url("../images/logo2.png") 0 0 no-repeat;
+  background: url("../images/logo2.png") 100% 0 no-repeat;
   text-indent: -3000px;
   display: block;
   width: 100%;
@@ -2762,7 +2762,7 @@ h4 img {
   margin-bottom: 12px;
   border-top: 1px solid #AAA;
   padding: 8px;
-  background: #FFF url("../images/css/block_bg.png") repeat-x scroll 0 0;
+  background: #FFF url("../images/css/block_bg.png") repeat-x scroll 100% 0;
   border-radius: 5px;
 }
 
@@ -2825,7 +2825,7 @@ h4 img {
 }
 
 input[type="text"].search {
-  background: url("../images/search.png") left center no-repeat #FFF;
+  background: url("../images/search.png") right center no-repeat #FFF;
   padding-right: 24px;
   width: 120px;
   color: #999;
@@ -3093,7 +3093,7 @@ div.third-party-login {
 
 #navigation {
   text-shadow: 0 1px 0 #FFF;
-  background: #DBDDD9 url("../images/css/menu_bg.png") repeat-x 0 0;
+  background: #DBDDD9 url("../images/css/menu_bg.png") repeat-x 100% 0;
   border: 1px solid #939490;
   margin: auto;
   margin-bottom: 12px;
@@ -3141,7 +3141,7 @@ div.third-party-login {
   -webkit-box-shadow: none;
   box-shadow: none;
   border-top-color: #939490;
-  background: #EDEDEB url("../images/css/menu_bg_active.png") repeat-x 0 0;
+  background: #EDEDEB url("../images/css/menu_bg_active.png") repeat-x 100% 0;
 }
 
 .navigation_content {
@@ -3352,7 +3352,7 @@ div.third-party-login {
 .gl-tooltip span {
   margin-left: -999em;
   position: absolute;
-  text-align: left;
+  text-align: right;
   width: 250px;
 }
 
@@ -4551,14 +4551,7 @@ b.status_black {
   color: #C00;
 }
 
-/* PHPInfo Panel style and button */
-#panel_phpinfo {
-  padding: 5px;
-  width: 600px;
-  margin: auto;
-  text-align: center;
-}
-
+/* PHPInfo Button and Panel style */
 #toggle_phpinfo {
   padding: 5px;
   width: 200px;
@@ -4568,8 +4561,90 @@ b.status_black {
 }
 
 #panel_phpinfo {
-  padding: 50px;
   display: none;
+  font-size: 13px;
+}
+
+#panel_phpinfo pre {
+  margin: 0;
+  font-family: monospace;
+}
+
+#panel_phpinfo a:link {
+  color: #009;
+  text-decoration: none;
+  background-color: #FFF;
+}
+
+#panel_phpinfo a:hover {
+  text-decoration: underline;
+}
+
+#panel_phpinfo table {
+  border-collapse: collapse;
+  border: 0;
+  width: 100%;
+}
+
+#panel_phpinfo .center {
+  text-align: center;
+}
+
+#panel_phpinfo .center table {
+  margin: 1em auto;
+  text-align: right;
+}
+
+#panel_phpinfo .center th {
+  text-align: center !important;
+}
+
+#panel_phpinfo td,
+#panel_phpinfo th {
+  border: 1px solid #666;
+  vertical-align: baseline;
+  padding: 4px 5px;
+}
+
+#panel_phpinfo .p {
+  text-align: right;
+}
+
+#panel_phpinfo .e {
+  background-color: #CCF;
+  width: 300px;
+  font-weight: bold;
+}
+
+#panel_phpinfo .h {
+  background-color: #99C;
+  font-weight: bold;
+}
+
+#panel_phpinfo .v {
+  background-color: #F0F0F0;
+  max-width: 300px;
+  overflow-x: auto;
+  word-wrap: break-word;
+}
+
+#panel_phpinfo .v i {
+  color: #999;
+}
+
+#panel_phpinfo .v p {
+  margin: 0;
+}
+
+#panel_phpinfo img {
+  float: left;
+  border: 0;
+}
+
+#panel_phpinfo hr {
+  background-color: #CCC;
+  border: 0;
+  height: 1px;
 }
 
 /*--------------------------------------

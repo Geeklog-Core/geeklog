@@ -25,29 +25,103 @@
   font-weight: bold;
   color: #46882b;
 }
+
 .no, .notok, .notwriteable {
   font-weight: bold;
   color: #cc0000;
 }
 
-/* PHPInfo Panel style and button */
-#panel_phpinfo {
-  padding:5px;
-  width:600px;
-  margin: auto;
-  text-align:center;
-}
+/* PHPInfo Button and Panel style */
 #toggle_phpinfo {
-  padding:5px;
-  width:200px;
+  padding: 5px;
+  width: 200px;
   margin: auto;
-  text-align:center;
-  border:solid 1px #c3c3c3;
+  text-align: center;
+  border: solid 1px #C3C3C3;
 }
 
 #panel_phpinfo {
-  padding:50px;
-  display:none;
+  display: none;
 }
-  
 
+#panel_phpinfo pre {
+  margin: 0;
+  font-family: monospace;
+}
+
+#panel_phpinfo a:link {
+  color: #009; 
+  text-decoration: none; 
+  background-color: #fff;
+}
+
+#panel_phpinfo a:hover {
+  text-decoration: underline;
+}
+
+#panel_phpinfo table {
+  border-collapse: collapse;
+  border: 0;
+  width: 100%;
+}
+
+#panel_phpinfo .center {
+  text-align: center;
+}
+
+#panel_phpinfo .center table {
+  margin: 1em auto;
+  text-align: left;
+}
+
+#panel_phpinfo .center th {
+  text-align: center !important;
+}
+
+#panel_phpinfo td,
+#panel_phpinfo th {
+  border: 1px solid #666;
+  vertical-align: baseline;
+  padding: 4px 5px;
+}
+
+#panel_phpinfo .p {
+  text-align: left;
+}
+
+#panel_phpinfo .e {
+  background-color: #ccf;
+  width: 250px;
+  font-weight: bold;
+}
+
+#panel_phpinfo .h {
+  background-color: #99c;
+  font-weight: bold;
+}
+
+#panel_phpinfo .v {
+  background-color: #f0f0f0;
+  max-width: 250px;
+  overflow-x: auto;
+  word-wrap: break-word;
+}
+
+#panel_phpinfo .v i {
+  color: #999;
+}
+
+#panel_phpinfo .v p {
+  margin: 0;
+}
+
+#panel_phpinfo img {
+  float: right;
+  border: 0;
+}
+
+#panel_phpinfo hr {
+  background-color: #ccc;
+  border: 0;
+  height: 1px;
+}

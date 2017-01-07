@@ -8,17 +8,24 @@
 
 {filesystem_list}
 
-{!if phpinfo}
-<div class="block-center">
+{!if phpinfo_content}
+<section class="block-center">
     {# Mimic ADMIN_simpleList function output #}
     <h2>{lang_current_php_settings}</h2>
     <div class="block-center-content">
         <div id="toggle_phpinfo">{lang_showhide_phpinfo}</div>
-        <div id="panel_phpinfo">
-            {phpinfo}
-        </div>
+        <section id="panel_phpinfo">
+            <!--
+            <style>{phpinfo_style}</style>
+            -->
+            {phpinfo_content}
+        </section>
     </div>
-</div>
+</section>
 {!endif}
 
 {# end {templatelocation} #}
+
+<!-- BEGIN status -->
+<span class="{status_class}">{status_value}</span>
+<!-- END status -->
