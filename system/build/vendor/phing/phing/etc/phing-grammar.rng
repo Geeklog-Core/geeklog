@@ -78,11 +78,13 @@
     <define name="coretypes">
         <zeroOrMore>
             <choice>
-                <ref name="fileset"/>
-                <ref name="filelist"/>
-                <ref name="path"/>
                 <ref name="classpath"/>
+                <ref name="dirset"/>
                 <ref name="excludes"/>
+                <ref name="filelist"/>
+                <ref name="fileset"/>
+                <ref name="path"/>
+                <ref name="patternset"/>
             </choice>
         </zeroOrMore>
     </define>
@@ -173,6 +175,7 @@
                 <ref name="ssh"/>
                 <ref name="simpletest"/>
                 <ref name="smarty"/>
+                <ref name="sonar"/>
                 <ref name="stopwatch"/>
                 <ref name="svncheckout"/>
                 <ref name="svncommit"/>
@@ -247,10 +250,12 @@
                 <ref name="reflexive"/>
                 <ref name="resolvepath"/>
                 <ref name="retry"/>
+                <ref name="sleep"/>
                 <ref name="switch"/>
                 <ref name="taskdef"/>
                 <ref name="tempfile"/>
                 <ref name="touch"/>
+                <ref name="truncate"/>
                 <ref name="trycatch"/>
                 <ref name="tstamp"/>
                 <ref name="typedef"/>
@@ -373,6 +378,48 @@
                 </choice>
                 <optional>
                 <attribute name="includes"/>
+                </optional>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="patternset">
+        <element name="patternset">
+            <interleave>
+                <choice>
+                    <attribute name="refid">
+                        <data type="IDREF"/>
+                    </attribute>
+                    <group>
+                        <optional>
+                            <choice>
+                                <attribute name="id">
+                                    <data type="ID"/>
+                                </attribute>
+                                <attribute name="refid">
+                                    <data type="IDREF"/>
+                                </attribute>
+                            </choice>
+                        </optional>
+                        <zeroOrMore>
+                            <choice>
+                                <ref name="include"/>
+                                <ref name="exclude"/>
+                            </choice>
+                        </zeroOrMore>
+                    </group>
+                </choice>
+                <optional>
+                    <attribute name="includes"/>
+                </optional>
+                <optional>
+                    <attribute name="excludes"/>
+                </optional>
+                <optional>
+                    <attribute name="includesfile"/>
+                </optional>
+                <optional>
+                    <attribute name="excludesfile"/>
                 </optional>
             </interleave>
         </element>
@@ -519,7 +566,21 @@
 
     <define name="append">
         <element name="append">
-            <attribute name="destFile"/>
+            <optional>
+                <attribute name="destFile"/>
+            </optional>
+            <optional>
+                <attribute name="append"/>
+            </optional>
+            <optional>
+                <attribute name="overwrite"/>
+            </optional>
+            <optional>
+                <attribute name="fixlastline"/>
+            </optional>
+            <optional>
+                <attribute name="eol"/>
+            </optional>
             <optional>
                 <attribute name="text"/>
             </optional>
@@ -541,6 +602,15 @@
                 </optional>
                 <optional>
                     <ref name="filterchain"/>
+                </optional>
+                <optional>
+                    <ref name="append-header"/>
+                </optional>
+                <optional>
+                    <ref name="append-footer"/>
+                </optional>
+                <optional>
+                    <ref name="path"/>
                 </optional>
             </interleave>
         </element>
@@ -736,14 +806,18 @@
 
     <define name="condition">
         <element name="condition">
-            <attribute name="property"/>
+            <attribute name="property">
+                <data type="string"/>
+            </attribute>
             <optional>
-                <attribute name="value"/>
+                <attribute name="value" a:defaultValue="true"/>
+            </optional>
+            <optional>
+                <attribute name="else"/>
             </optional>
             <optional>
                 <choice>
-                    <ref name="or"/>
-                    <ref name="and"/>
+                    <ref name="conditions"/>
                 </choice>
             </optional>
         </element>
@@ -1211,6 +1285,16 @@
             <interleave>
                 <attribute name="property"/>
                 <attribute name="file"/>
+                <optional>
+                    <attribute name="failonerror">
+                        <data type="boolean"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute name="quiet">
+                        <data type="boolean"/>
+                    </attribute>
+                </optional>
             </interleave>
             <zeroOrMore>
                 <ref name="filterchain"/>
@@ -1481,6 +1565,38 @@
         </element>
     </define>
 
+    <define name="sleep">
+        <element name="switch">
+            <interleave>
+                <optional>
+                    <attribute name="failonerror">
+                        <data type="boolean"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute name="hours">
+                        <data type="int"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute name="minutes">
+                        <data type="int"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute name="seconds">
+                        <data type="int"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute name="milliseconds">
+                        <data type="int"/>
+                    </attribute>
+                </optional>
+            </interleave>
+        </element>
+    </define>
+
     <define name="switch">
         <element name="switch">
             <interleave>
@@ -1571,6 +1687,40 @@
                 <optional>
                     <attribute name="millis">
                         <data type="int"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute name="mkdirs">
+                        <data type="boolean"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute name="verbose">
+                        <data type="boolean"/>
+                    </attribute>
+                </optional>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="truncate">
+        <element name="truncate">
+            <interleave>
+                <attribute name="file"/>
+                <optional>
+                    <attribute name="adjust"/>
+                </optional>
+                <optional>
+                    <attribute name="length"/>
+                </optional>
+                <optional>
+                    <attribute name="create" a:defaultValue="true">
+                        <data type="boolean"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute name="mkdirs" a:defaultValue="false">
+                        <data type="boolean"/>
                     </attribute>
                 </optional>
             </interleave>
@@ -5276,6 +5426,35 @@
         </element>
     </define>
 
+    <define name="sonar">
+        <element name="sonar">
+            <interleave>
+                <attribute name="executable"/>
+                <optional>
+                    <attribute name="errors"/>
+                </optional>
+                <optional>
+                    <attribute name="debug"/>
+                </optional>
+                <optional>
+                    <attribute name="configuration"/>
+                </optional>
+            </interleave>
+            <oneOrMore>
+                <ref name="sonar-property"/>
+            </oneOrMore>
+        </element>
+    </define>
+    
+    <define name="sonar-property">
+        <element name="property">
+            <interleave>
+                <attribute name="name"/>
+                <attribute name="value"/>
+            </interleave>
+        </element>
+    </define>
+
     <define name="stopwatch">
         <element name="stopwatch">
             <interleave>
@@ -6450,6 +6629,7 @@
             <ref name="versioncompare"/>
             <ref name="available_cond"/>
             <ref name="http"/>
+            <ref name="matches_cond"/>
         </choice>
     </define>
 
@@ -6643,6 +6823,62 @@
                 <attribute name="url"/>
                 <optional>
                     <attribute name="errorsBeginAt"/>
+                </optional>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="matches_cond">
+        <element name="matches">
+            <interleave>
+                <attribute name="string"/>
+                <attribute name="pattern"/>
+                <optional>
+                    <attribute name="casesensitive"/>
+                </optional>
+                <optional>
+                    <attribute name="multiline"/>
+                </optional>
+                <optional>
+                    <attribute name="modifiers"/>
+                </optional>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="append-header">
+        <element name="header">
+            <interleave>
+                <optional>
+                    <attribute name="filtering"/>
+                </optional>
+                <optional>
+                    <attribute name="file"/>
+                </optional>
+                <optional>
+                    <attribute name="trim"/>
+                </optional>
+                <optional>
+                    <attribute name="trimleading"/>
+                </optional>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="append-footer">
+        <element name="header">
+            <interleave>
+                <optional>
+                    <attribute name="filtering"/>
+                </optional>
+                <optional>
+                    <attribute name="file"/>
+                </optional>
+                <optional>
+                    <attribute name="trim"/>
+                </optional>
+                <optional>
+                    <attribute name="trimleading"/>
                 </optional>
             </interleave>
         </element>

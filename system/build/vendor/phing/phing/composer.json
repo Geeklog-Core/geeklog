@@ -19,11 +19,11 @@
         "irc": "irc://irc.freenode.net/phing"
     },
     "require": {
-        "php": ">=5.2.0"
+        "php": ">=5.2.0",
+        "symfony/yaml": "^3.1"
     },
     "require-dev": {
         "ext-pdo_sqlite": "*",
-        "lastcraft/simpletest": "@dev",
         "pear/archive_tar": "1.4.x",
         "pear/http_request2": "dev-trunk",
         "pear/net_growl": "dev-trunk",
@@ -39,8 +39,8 @@
         "sebastian/phpcpd": "2.x",
         "sebastian/git": "~1.0",
         "squizlabs/php_codesniffer": "~2.2",
-        "symfony/yaml": "~2.7",
-        "mikey179/vfsStream": "^1.6"
+        "mikey179/vfsStream": "^1.6",
+        "simpletest/simpletest": "^1.1"
     },
     "autoload": {
         "classmap": ["classes/phing/"]
@@ -54,7 +54,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.15.x-dev"
+            "dev-master": "2.16.x-dev"
         }
     },
     "suggest": {
