@@ -2029,6 +2029,7 @@ $LANG_confignames['Core'] = array(
     'noreply_mail' => "No-Reply E-Mail",
     'mail_cc_enabled' => 'Allow to Send Carbon Copies',
     'mail_cc_default' => '"Carbon Copy" on by Default',
+    'mail_charset' => 'Email Character Set',
     'site_name' => "Site Name",
     'site_slogan' => "Slogan",
     'owner_name' => "Owner Name",
