@@ -143,6 +143,9 @@ function update_DatabaseFor212()
 
     // Change Url from 255 to 250 since the field has too many bytes for tables with a utf8mb4 collation
     $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE `url` `url` VARCHAR(250) DEFAULT NULL";
+    
+    // Change the type of `value' column of `vars` table from VARCHAR(128) to TEXT
+    $_SQL[] = "ALTER TABLE {$_TABLES['vars']} CHANGE `value` `value` text NULL AFTER `name`";    
 
     
     // ***************************************     
