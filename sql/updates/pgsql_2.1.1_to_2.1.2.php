@@ -11,6 +11,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} CHANGE `topic` `topic` VARCHAR(75)
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} CHANGE `topic` `topic` VARCHAR(75) NOT NULL default '::all'";
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} CHANGE `header_tid` `header_tid` VARCHAR(75) NOT NULL default 'none'";
 
+// Change the type of `value' column of `vars` table from VARCHAR(128) to TEXT
+$_SQL = "ALTER TABLE {$_TABLES['vars']} CHANGE `value` `value` text NULL AFTER `name`";
+$_SQL = "ALTER TABLE {$_TABLES['vars']} ALTER value TYPE text, ALTER value SET DEFAULT NULL";
+
 /**
  * Upgrade Messages
  */

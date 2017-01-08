@@ -567,7 +567,7 @@ CREATE TABLE {$_TABLES['users']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
-  value varchar(128) default NULL,
+  value TEXT default NULL,
   PRIMARY KEY  (name)
 ) ENGINE=MyISAM
 ";
