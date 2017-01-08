@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 
-<div itemscope itemtype="http://schema.org/Article" class="archivestorytext">
-  <h2 itemprop="name" class="story_title">{story_title_link}</h2>
+<div class="archivestorytext">
+  <h2 class="story_title" itemprop="headline">{story_title_link}</h2>
 
   <ul class="icon">
     <li>{email_icon}</li>
@@ -31,7 +31,7 @@
 
   <div style="clear:both"></div>
 
-  <div itemprop="articleBody" class="story_introtext">
+  <div class="story_introtext" itemprop="description">
     {story_text_no_br}
   </div>
 

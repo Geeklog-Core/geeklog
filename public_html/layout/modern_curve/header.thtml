@@ -10,15 +10,15 @@
 {rel_links}
 {plg_headercode}
   </head>
-  <body dir="{direction}" class="{layout_columns}">
+  <body dir="{direction}" class="{layout_columns}" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 {# begin {templatelocation} #}
 
 <!-- #container { -->
     <div id="container">
       <!-- #header { -->
-      <div id="header">
+      <div id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
         <div id="header-content">
-          <h1 class="site_name"><a href="{site_url}"><img src="{site_logo}" width="226" height="80" alt="{site_name}"{xhtml}></a></h1>
+          <h1 class="site_name" itemprop="name"><a href="{site_url}" itemprop="url"><img src="{site_logo}" width="226" height="80" alt="{site_name}"{xhtml}></a></h1>
          <p class="site_slogan">{site_slogan}</p>
         </div>
       </div>
@@ -27,7 +27,7 @@
       <hr class="separator"{xhtml}>
 
       <!-- #navigation { -->
-      <div id="navigation">
+      <div id="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
         <ul>
           {menu_elements}
         </ul>
@@ -48,7 +48,7 @@
         {# Center Block Container #}
         <div id="centerblocks">
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
-          <div id="centerblocks-content">
+          <div id="centerblocks-content" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
           {breadcrumb_trail}
 
 {# end {templatelocation} #}

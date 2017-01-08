@@ -5,7 +5,7 @@
 {# end {templatelocation} #}
 
 <!-- BEGIN topicitem -->
-<a href="{topic_url}"><span itemprop="articleSection">{topic}</span></a>
+<a href="{topic_url}">{topic}</a>
 <!-- END topicitem -->
 <!-- BEGIN separator -->
 &nbsp;
