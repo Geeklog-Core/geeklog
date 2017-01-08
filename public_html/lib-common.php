@@ -2482,6 +2482,23 @@ function COM_errorLog($logEntry, $actionId = '')
         if (!isset($_CONF['path_log']) && ($actionId != 2)) {
             $actionId = 3;
         }
+        
+        // Only show call trace in developer mode (for log file only)
+        $callTrace = "";
+        if (isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) {
+            // Generate an exception to trace the deprecated call
+            $e = new Exception();
+            $trace = $e->getTrace();
+            
+            $callTrace = LB . 'Call Trace: ' . LB;
+            //position 0 would be the line that called this function so we ignore it
+            for($i = 1; $i < count($trace); ++$i) {
+                // Skip showing COM_deprecatedLog calls
+                if ($trace[$i]['function'] != 'COM_deprecatedLog') {
+                    $callTrace .= "#$i " . print_r($trace[$i], true);
+                }
+            }
+        }
 
         switch ($actionId) {
             case 1:
@@ -2490,7 +2507,7 @@ function COM_errorLog($logEntry, $actionId = '')
                 if (!$file = fopen($logfile, 'a')) {
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
                 } else {
-                    fputs($file, "$timestamp - $remoteAddress - $logEntry \n");
+                    fputs($file, "$timestamp - $remoteAddress - $logEntry $callTrace \n");
                 }
                 break;
 
@@ -2512,7 +2529,7 @@ function COM_errorLog($logEntry, $actionId = '')
                 if (!$file = fopen($logfile, 'a')) {
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
                 } else {
-                    fputs($file, "$timestamp - $remoteAddress - $logEntry \n");
+                    fputs($file, "$timestamp - $remoteAddress - $logEntry $callTrace \n");
                     $retval .= COM_startBlock($LANG01[34] . ' - ' . $timestamp,
                             '', COM_getBlockTemplate('_msg_block',
                                 'header'))
@@ -2541,8 +2558,8 @@ function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_ver
 {
     global $_CONF;
 
-    // Only log in debug mode
-    if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
+    // Only show deprecated calls in developer mode
+    if (isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) {
         
         $log_msg = sprintf(
                     'Deprecated Warning - %1$s has been deprecated since Geeklog %2$s. This object will be removed in Geeklog %3$s.',
@@ -2553,13 +2570,6 @@ function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_ver
             $log_msg .= sprintf(' Use %1$s instead.', $new_object);            
         }
 
-        // Generate an exception to trace the deprecated call
-        $e = new Exception();
-        $trace = $e->getTrace();
-        //position 0 would be the line that called this function so we ignore it
-        $last_call = $trace[1];
-        $log_msg .= ' Call Trace: ' . print_r($last_call, true);        
-        
         COM_errorLog($log_msg, 1);
     }
 
