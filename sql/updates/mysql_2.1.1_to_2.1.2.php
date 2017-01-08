@@ -15,7 +15,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} CHANGE `header_tid` `header_tid
 $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE `url` `url` VARCHAR(250) DEFAULT NULL";
 
 // Change the type of `value' column of `vars` table from VARCHAR(128) to TEXT
-$_SQL = "ALTER TABLE {$_TABLES['vars']} CHANGE `value` `value` text NULL AFTER `name`";
+$_SQL[] = "ALTER TABLE {$_TABLES['vars']} CHANGE `value` `value` text NULL AFTER `name`";
 
 /**
  * Upgrade Messages
