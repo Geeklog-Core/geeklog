@@ -302,6 +302,7 @@ function SP_countVisiblePages()
  * @param    array  $A             static page data
  * @param    string $comment_order sorting of comments
  * @param    string $comment_mode  comment mode (nested, flat, etc.)
+ * @param    int    $comment_page
  * @param    int    $msg           optional message number
  * @param    string $query         optional search query string to highlight
  * @return   string                  HTML for the static page
@@ -1742,6 +1743,7 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
         foreach ($tag as &$value) {
             $value = PLG_replaceTags($value);
         }
+        unset($value);
 
         $args = array(
             'sp_id'    => $template_id,

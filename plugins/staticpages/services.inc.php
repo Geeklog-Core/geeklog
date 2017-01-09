@@ -745,7 +745,10 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                 $topic_perms .= " OR (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "'))";
             }
         }
-        $topic_perms .= " GROUP BY sp_id";
+        $topic_perms .= " GROUP BY sp_id, sp_title, sp_page_title, sp_content, sp_onhits, sp_onlastupdate, sp_hits, "
+            . "created, modified, sp_format, commentcode, meta_description, meta_keywords, template_flag, template_id, "
+            . "draft_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon, sp_help, sp_php, "
+            . "sp_inblock,cache_time";
 
         $sql = array();
         $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_onhits,sp_onlastupdate,sp_hits,created,modified,sp_format,"
