@@ -744,6 +744,13 @@ $LANG_ENVCHECK = array(
     'ok' => 'OK',
     'on' => 'On',
     'open_basedir' => 'If <strong>open_basedir</strong> restrictions are enabled on your site, it may cause permission problems during the install. The File System Check below should point out any issues.',
+    'database_settings' => 'Database Settings',
+    'database_mysql_version' => 'MySQL Version',
+    'database_mysql_req_version' => 'Geeklog requires MySQL version 4.1.2 or newer (MySQL 5 recommended).',
+    'database_pgsql_version' => 'Postgresql Version',
+    'database_pgsql_req_version' => 'Geeklog requires Postgresql version 9.1.7 or newer.',
+    'database_dms' => 'Database Management System',
+    'database_dms_notes' => 'Failed to determine Database Management System. Geeklog requires either MySQL or Postgresql',
     'php_req_version' => 'Geeklog requires PHP version 5.2.0 or newer.',
     'php_settings' => 'PHP Settings',
     'php_version' => 'PHP Version',
@@ -863,7 +870,12 @@ $LANG21 = array(
     'autotag_desc_block' => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
     'position' => 'Position',
     'cache_time' => 'Cache Time',
-    'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)'
+    'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)',
+    'block_type_gldefault' => 'System',
+    'block_type_normal' => 'Normal',
+    'block_type_phpblock' => 'PHP',
+    'block_type_portal' => 'Portal',
+    'block_type_dynamic' => 'Dynamic'
 );
 
 ###############################################################################
@@ -2510,5 +2522,4 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
-
 
