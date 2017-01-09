@@ -633,6 +633,7 @@ function SYND_getFeedUrl($feedFile = '')
 
     $feedPath = SYND_getFeedPath();
     $url = substr_replace($feedPath, $_CONF['site_url'], 0, strlen($_CONF['path_html']) - 1);
+    $url = str_replace($url, DIRECTORY_SEPARATOR, '/'); // Need to do this for file will contain wrong backslash
     $url .= $feedFile;
 
     return $url;
