@@ -4,8 +4,10 @@
   <div id="comments">
     {commentbar}
     {comments}
-
-    <p class="pagenav">{pagenav}</p>
+    
+    {!if pagenav}
+    <div class="uk-margin-top">{pagenav}</div>
+    {!endif}
   </div>
   {commenteditor}
 </aside>
