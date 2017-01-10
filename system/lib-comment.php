@@ -306,8 +306,9 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
                 $editName = DB_getItem($_TABLES['users'], 'username', "uid={$B['uid']}");
             }
             // add edit info to text
+            list($date, ) = COM_getUserDateTimeFormat($B['time'], 'date');
             $A['comment'] .= '<div class="comment-edit">' . $LANG03[30] . ' '
-                . strftime($_CONF['date'], $B['time']) . ' '
+                . $date . ' '
                 . $LANG03[31] . ' ' . $editName
                 . '</div><!-- /COMMENTEDIT -->';
         }
@@ -419,7 +420,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $template->set_var('parent_link', '');
         }
 
-        $template->set_var('date', strftime($_CONF['date'], $A['nice_date']));
+        list($date, ) = COM_getUserDateTimeFormat($A['nice_date'], 'date');
+        $template->set_var('date', $date);
         $template->set_var('sid', $A['sid']);
         $template->set_var('type', $A['type']);
 
@@ -1884,8 +1886,9 @@ function CMT_prepareText($comment, $postMode, $type, $edit = false, $cid = null)
     }
 
     if ($edit) {
+        list($date, ) = COM_getUserDateTimeFormat(time(), 'date');
         $comment .= '<div class="comment-edit">' . $LANG03[30] . ' '
-            . strftime($_CONF['date'], time()) . ' ' . $LANG03[31] . ' '
+            . $date . ' ' . $LANG03[31] . ' '
             . $_USER['username'] . '</div><!-- /COMMENTEDIT -->';
     }
 
