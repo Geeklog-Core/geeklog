@@ -303,7 +303,7 @@ function DIR_displayMonth($template, $dir_topic, $year, $month)
                     $entries = array();
                 }
 
-                $day = strftime($_CONF['shortdate'], $A['day']);
+                list($day, ) = COM_getUserDateTimeFormat($A['day'], 'shortdate');
 
                 if (TEMPLATE_EXISTS) {
                     $template->set_var('section_title', $day);
@@ -377,8 +377,8 @@ function DIR_displayYear($template, $dir_topic, $year)
         $monthSql['mysql'] .= COM_getTopicSQL('AND', 0, 'ta');
         $monthSql['pgsql'] .= COM_getTopicSQL('AND', 0, 'ta');
     }
-    $monthSql['mysql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY month ORDER BY date ASC";
-    $monthSql['pgsql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY month ORDER BY DATE ASC";
+    $monthSql['mysql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY date ORDER BY date ASC";
+    $monthSql['pgsql'] .= COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND') . " GROUP BY date ORDER BY DATE ASC";
 
     $mResult = DB_query($monthSql);
     $numMonths = DB_numRows($mResult);
@@ -445,7 +445,7 @@ function DIR_displayAll($template, $dir_topic)
         WHERE (draft_flag = 0) AND (date <= NOW())
         AND ta.type = 'article' AND ta.id = sid "
             . COM_getTopicSQL('AND', 0, 'ta') . COM_getPermSql('AND') . COM_getLangSQL('sid', 'AND')
-            . " GROUP BY year ORDER BY date DESC",
+            . " GROUP BY date ORDER BY date DESC",
 
         'pgsql' =>
             "SELECT EXTRACT(YEAR from date) AS year
