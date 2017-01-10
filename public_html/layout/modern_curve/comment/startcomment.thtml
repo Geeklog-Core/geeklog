@@ -5,7 +5,9 @@
     {commentbar}
     {comments}
 
-    <p class="pagenav">{pagenav}</p>
+    {!if pagenav}
+    <div class="pagenav">{pagenav}</div>
+    {!endif}
   </div>
   {commenteditor}
 </div>

@@ -755,13 +755,13 @@ $LANG_ENVCHECK = array(
     'ok' => 'OK',
     'on' => 'On',
     'open_basedir' => '<strong>open_basedir</strong> の制限がこのサイトで有効な場合、インストールの際にパーミッションで問題が起きるかもしれません。以下のファイルシステムチェックを行ってください。',
-    'database_settings'         => 'Database Settings',
-    'database_mysql_version'    => 'MySQL Version', 
+    'database_settings' => 'Database Settings',
+    'database_mysql_version' => 'MySQL Version',
     'database_mysql_req_version' => 'Geeklog requires MySQL version 4.1.2 or newer (MySQL 5 recommended).',
-    'database_pgsql_version'    => 'Postgresql Version',
+    'database_pgsql_version' => 'Postgresql Version',
     'database_pgsql_req_version' => 'Geeklog requires Postgresql version 9.1.7 or newer.',
-    'database_dms'              => 'Database Management System',
-    'database_dms_notes'        => 'Failed to determine Database Management System. Geeklog requires either MySQL or Postgresql',
+    'database_dms' => 'Database Management System',
+    'database_dms_notes' => 'Failed to determine Database Management System. Geeklog requires either MySQL or Postgresql',
     'php_req_version' => 'GeeklogにはPHP version 5.3.3以降が必要です。',
     'php_settings' => 'PHPの設定',
     'php_version' => 'PHPのバージョン',
@@ -882,11 +882,11 @@ $LANG21 = array(
     'position' => '位置',
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)',
-    'block_type_gldefault'  => 'システム',
-    'block_type_normal'     => 'ノーマル',
-    'block_type_phpblock'   => 'PHP',
-    'block_type_portal'     => 'ポータル',
-    'block_type_dynamic'    => 'ダイナミック'
+    'block_type_gldefault' => 'システム',
+    'block_type_normal' => 'ノーマル',
+    'block_type_phpblock' => 'PHP',
+    'block_type_portal' => 'ポータル',
+    'block_type_dynamic' => 'ダイナミック'
 );
 
 ###############################################################################
@@ -2533,5 +2533,4 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-
 
