@@ -3976,7 +3976,6 @@ HTML;
                $_TABLES, $LANG_INSTALL, $LANG_MIGRATE, $_DEVICE;
 
         if (empty($this->env['dbconfig_path'])) {
-            require_once $this->env['siteconfig_path'];
             $this->env['dbconfig_path'] = $_CONF['path'] . 'db-config.php';
         }
 
@@ -4051,12 +4050,7 @@ HTML;
          *       need to fix the $_CONF values. We can _not_ simply reload
          *       them via get_config('Core') here yet.
          */
-        $gl_path = $this->env['gl_path'];
-        $gl_path = rtrim($gl_path, '/\\') . '/';
-        $backup_dir = $gl_path . 'backups/';
-        $backup_dir = rtrim($backup_dir, '/\\') . '/';
         $html_path = $this->env['html_path'];
-        $html_path = rtrim($html_path, '/\\') . '/';
 
         $config = config::get_instance();
         $config->initConfig();
@@ -4070,13 +4064,13 @@ HTML;
         $config->set('site_admin_url', $_CONF['site_admin_url']);
         $_CONF['path_html'] = $html_path;
         $config->set('path_html', $html_path);
-        $_CONF['path_log'] = $gl_path . 'logs/';
+        $_CONF['path_log'] = $_CONF['path'] . 'logs/';
         $config->set('path_log', $_CONF['path_log']);
-        $_CONF['path_language'] = $gl_path . 'language/';
+        $_CONF['path_language'] = $_CONF['path'] . 'language/';
         $config->set('path_language', $_CONF['path_language']);
-        $_CONF['backup_path'] = $backup_dir;
+        $_CONF['backup_path'] = $_CONF['path'] . 'backups/';
         $config->set('backup_path', $_CONF['backup_path']);
-        $_CONF['path_data'] = $gl_path . 'data/';
+        $_CONF['path_data'] = $_CONF['path'] . 'data/';
         $config->set('path_data', $_CONF['path_data']);
         $_CONF['path_images'] = $html_path . 'images/';
         $config->set('path_images', $_CONF['path_images']);
