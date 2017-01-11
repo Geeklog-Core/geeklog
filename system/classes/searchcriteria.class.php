@@ -157,60 +157,66 @@ class SearchCriteria
 
     function buildSearchSQL($keyType, $query, $columns, $sql = '')
     {
-        if ($keyType === 'all') {
-            // must contain ALL of the keywords
-            $words = array_unique(explode(' ', $query));
-            $words = array_filter($words); // filter out empty strings
-            $sep = 'AND';
+        // Make sure query has at least 1 letter
+        if (!empty(trim($query))) {
+            if ($keyType === 'all') {
+                // must contain ALL of the keywords
+                $words = array_unique(explode(' ', $query));
+                $words = array_filter($words); // filter out empty strings
+                $sep = 'AND';
 
-            $ftwords['mysql'] = '+' . str_replace(' ', ' +', $query);
-            $ftwords['pgsql'] = '"' . str_replace(' ', '" AND "', $query) . '"';
-        } elseif ($keyType === 'any') {
-            // must contain ANY of the keywords
-            $words = array_unique(explode(' ', $query));
-            $words = array_filter($words); // filter out empty strings
-            $sep = 'OR ';
-            $ftwords['mysql'] = $query;
-            $ftwords['pgsql'] = $query;
-        } else {
-            // do an exact phrase search (default)
-            $words = array($query);
-            $sep = '   ';
-
-            // Puttings quotes around a single word in mysql really slows things down
-            if (strpos($query, ' ') !== false) {
-                $ftwords['mysql'] = '"' . $query . '"';
-            } else {
+                $ftwords['mysql'] = '+' . str_replace(' ', ' +', $query);
+                $ftwords['pgsql'] = '"' . str_replace(' ', '" AND "', $query) . '"';
+            } elseif ($keyType === 'any') {
+                // must contain ANY of the keywords
+                $words = array_unique(explode(' ', $query));
+                $words = array_filter($words); // filter out empty strings
+                $sep = 'OR ';
                 $ftwords['mysql'] = $query;
+                $ftwords['pgsql'] = $query;
+            } else {
+                // do an exact phrase search (default)
+                $words = array($query);
+                $sep = '   ';
+
+                // Puttings quotes around a single word in mysql really slows things down
+                if (strpos($query, ' ') !== false) {
+                    $ftwords['mysql'] = '"' . $query . '"';
+                } else {
+                    $ftwords['mysql'] = $query;
+                }
+                $ftwords['pgsql'] = '"' . $query . '"';
             }
-            $ftwords['pgsql'] = '"' . $query . '"';
-        }
 
-        $titles = isset($_GET['title']) && isset($columns['title']);
-
-        if ($titles) {
-            $strcol = $columns['title'];
-        } else {
-            $strcol = implode(',', $columns);
-        }
-
-        $ftsql['mysql'] = $sql . "AND MATCH($strcol) AGAINST ('{$ftwords['mysql']}' IN BOOLEAN MODE)";
-
-        $tmp = 'AND (';
-        foreach ($words AS $word) {
-            $word = trim($word);
-            $tmp .= '(';
+            $titles = isset($_GET['title']) && isset($columns['title']);
 
             if ($titles) {
-                $tmp .= $columns['title'] . " LIKE '%$word%' OR ";
+                $strcol = $columns['title'];
             } else {
-                foreach ($columns AS $col) {
-                    $tmp .= "$col LIKE '%$word%' OR ";
-                }
+                $strcol = implode(',', $columns);
             }
-            $tmp = substr($tmp, 0, -4) . ") $sep ";
-        }
-        $sql .= substr($tmp, 0, -5) . ') ';
+
+            $ftsql['mysql'] = $sql . "AND MATCH($strcol) AGAINST ('{$ftwords['mysql']}' IN BOOLEAN MODE)";
+
+            $tmp = 'AND (';
+            foreach ($words AS $word) {
+                $word = trim($word);
+                $tmp .= '(';
+
+                if ($titles) {
+                    $tmp .= $columns['title'] . " LIKE '%$word%' OR ";
+                } else {
+                    foreach ($columns AS $col) {
+                        $tmp .= "$col LIKE '%$word%' OR ";
+                    }
+                }
+                $tmp = substr($tmp, 0, -4) . ") $sep ";
+            }
+            
+            $sql .= substr($tmp, 0, -5) . ') ';
+        } else {
+           $ftsql['mysql'] = $sql; 
+        }            
 
         return array($sql, $ftsql);
     }
