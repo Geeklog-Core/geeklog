@@ -383,31 +383,23 @@ function DIR_displayYear($template, $dir_topic, $year)
     $mResult = DB_query($monthSql);
     $numMonths = DB_numRows($mResult);
 
+    // The above query returns records with duplicate months.  So, let's sort them out.
     if ($numMonths > 0) {
+        $numArticles = array_fill(1, 12, 0);
+
+        while (($M = DB_fetchArray($mResult, false)) !== false) {
+            $month = (int) $M['month'];
+            $cnt = (int) $M['cnt'];
+            $numArticles[$month] += $cnt;
+        }
+
         $items = array();
-        $lastMonth = 1;
-        for ($j = 0; $j < $numMonths; $j++) {
-            $M = DB_fetchArray($mResult);
+        $lastMonth = ($year == $currentYear) ? $currentMonth : 12;
 
-            for (; $lastMonth < $M['month']; $lastMonth++) {
-                $items[] = DIR_monthLink($dir_topic, $year, $lastMonth, 0);
-            }
-            $lastMonth = $M['month'] + 1;
-
-            $items[] = DIR_monthLink($dir_topic, $year, $M['month'], $M['cnt']);
+        for ($month = 1; $month <= $lastMonth; $month++) {
+            $items[] = DIR_monthLink($dir_topic, $year, $month, $numArticles[$month]);
         }
 
-        if ($year == $currentYear) {
-            $fillMonth = $currentMonth;
-        } else {
-            $fillMonth = 12;
-        }
-
-        if ($lastMonth <= $fillMonth) {
-            for (; $lastMonth <= $fillMonth; $lastMonth++) {
-                $items[] = DIR_monthLink($dir_topic, $year, $lastMonth, 0);
-            }
-        }
         $retval .= COM_makeList($items);
     } else {
         if (TEMPLATE_EXISTS) {
