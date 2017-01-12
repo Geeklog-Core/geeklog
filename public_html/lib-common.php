@@ -480,22 +480,26 @@ $relLinks = array();
  * @global $_TOPICS array
  */
 
-// Figure out if we need to update topic tree or retrieve it from the cache
-// For anonymous users topic tree data can be shared
-$cacheInstance = 'topic_tree__' . CACHE_security_hash();
-$serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
+if ($_CONF['cache_templates']) {
+    // Figure out if we need to update topic tree or retrieve it from the cache
+    // For anonymous users topic tree data can be shared
+    $cacheInstance = 'topic_tree__' . CACHE_security_hash();
+    $serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
 
-// See if Topic Tree cache exists
-if (empty($serialized_topic_tree)) {
-    $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    // See if Topic Tree cache exists
+    if (empty($serialized_topic_tree)) {
+        $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
 
-    // Need this check since this variable is not set correctly when Geeklog is being install
-    if (isset($GLOBALS['TEMPLATE_OPTIONS']) && is_array($TEMPLATE_OPTIONS) && isset($TEMPLATE_OPTIONS['path_cache'])) {
-        // Save updated topic tree and date
-        CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
+        // Need this check since this variable is not set correctly when Geeklog is being install
+        if (isset($GLOBALS['TEMPLATE_OPTIONS']) && is_array($TEMPLATE_OPTIONS) && isset($TEMPLATE_OPTIONS['path_cache'])) {
+            // Save updated topic tree and date
+            CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
+        }
+    } else {
+        $_TOPICS = unserialize($serialized_topic_tree);
     }
 } else {
-    $_TOPICS = unserialize($serialized_topic_tree);
+    $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
 }
 
 // Figure out if we need to update article feeds. Check last article date published in feed
@@ -2618,11 +2622,13 @@ function COM_showTopics($topic = '')
 {
     global $_CONF, $_TABLES, $_TOPICS, $LANG01, $_BLOCK_TEMPLATE, $page;
 
-    // See if topic block cache is there for specified topic (since topics can be hidden here depending on what topic is clicked)
-    $cacheInstance = 'topicsblock__' . $topic . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-    $retval = CACHE_check_instance($cacheInstance); // Language and theme specific
-    if ($retval) {
-        return $retval;
+    if ($_CONF['cache_templates']) {
+        // See if topic block cache is there for specified topic (since topics can be hidden here depending on what topic is clicked)
+        $cacheInstance = 'topicsblock__' . $topic . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+        $retval = CACHE_check_instance($cacheInstance); // Language and theme specific
+        if ($retval) {
+            return $retval;
+        }
     }
 
     $topicNavigation = COM_newTemplate($_CONF['path_layout']);
@@ -2815,8 +2821,10 @@ function COM_showTopics($topic = '')
         }
     }
 
-    // Create cache so don't need to recreate unless change
-    CACHE_create_instance($cacheInstance, $retval);
+    if ($_CONF['cache_templates']) {
+        // Create cache so don't need to recreate unless change
+        CACHE_create_instance($cacheInstance, $retval);
+    }
 
     return $retval;
 }
@@ -3964,65 +3972,72 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
 {
     global $_TABLES, $_CONF;
 
-    $cacheInstance = 'olderarticles__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-    $retval = CACHE_check_instance($cacheInstance);
-    if (empty($retval)) {
-        $retval = COM_startBlock($title, $help,
-            COM_getBlockTemplate('older_stories_block', 'header', $position));
+    if ($_CONF['cache_templates']) {
+        $cacheInstance = 'olderarticles__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+        $retval = CACHE_check_instance($cacheInstance);
+        if ($retval) {
+            return $retval;
+        }
+    }
 
-        $sql['mysql'] = "SELECT sid,title,comments,UNIX_TIMESTAMP(date) AS day
-            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
-            WHERE ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND') . "
-            AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid, featured, date, title, comments, day 
-            ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $retval = COM_startBlock($title, $help,
+        COM_getBlockTemplate('older_stories_block', 'header', $position));
 
-        $sql['pgsql'] = "SELECT sid,title,comments,date_part('epoch',date) AS day
-            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
-            WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
-            AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-            GROUP BY sid, featured, date, title, comments, day  
-            ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $sql['mysql'] = "SELECT sid,title,comments,UNIX_TIMESTAMP(date) AS day
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+        WHERE ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND') . "
+        AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
+        GROUP BY sid, featured, date, title, comments, day 
+        ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
-        $result = DB_query($sql);
-        $numRows = DB_numRows($result);
+    $sql['pgsql'] = "SELECT sid,title,comments,date_part('epoch',date) AS day
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
+        WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
+        AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
+        GROUP BY sid, featured, date, title, comments, day  
+        ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
-        if ($numRows > 0) {
-            $day = 'noday';
-            $string = '';
-            $oldNews = array();
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
 
-            for ($i = 0; $i < $numRows; $i++) {
-                $A = DB_fetchArray($result);
-                $dayCheck = strftime('%A', $A['day']);
+    if ($numRows > 0) {
+        $day = 'noday';
+        $string = '';
+        $oldNews = array();
 
-                if ($day != $dayCheck) {
-                    if ($day !== 'noday') {
-                        $dayList = COM_makeList($oldNews, 'list-older-stories');
-                        $oldNews = array(); // Reset old news array
-                        $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
-                        $string .= $dayList . '<div class="divider-older-stories"></div>';
-                    }
+        for ($i = 0; $i < $numRows; $i++) {
+            $A = DB_fetchArray($result);
+            $dayCheck = strftime('%A', $A['day']);
 
-                    list($day2, ) = COM_getUserDateTimeFormat($A['day'], 'dateonly');
-                    $string .= '<h3>' . $dayCheck . ' <small>' . $day2 . '</small></h3>' . LB;
-                    $day = $dayCheck;
+            if ($day != $dayCheck) {
+                if ($day !== 'noday') {
+                    $dayList = COM_makeList($oldNews, 'list-older-stories');
+                    $oldNews = array(); // Reset old news array
+                    $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
+                    $string .= $dayList . '<div class="divider-older-stories"></div>';
                 }
 
-                $oldNewsUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $A['sid']);
-                $oldNews[] = COM_createLink($A['title'], $oldNewsUrl)
-                    . ' (' . COM_numberFormat($A['comments']) . ')';
+                list($day2, ) = COM_getUserDateTimeFormat($A['day'], 'dateonly');
+                $string .= '<h3>' . $dayCheck . ' <small>' . $day2 . '</small></h3>' . LB;
+                $day = $dayCheck;
             }
 
-            if (!empty($oldNews)) {
-                $dayList = COM_makeList($oldNews, 'list-older-stories');
-                $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
-                $string .= $dayList;
-                $retval .= $string;
-            }
+            $oldNewsUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $A['sid']);
+            $oldNews[] = COM_createLink($A['title'], $oldNewsUrl)
+                . ' (' . COM_numberFormat($A['comments']) . ')';
         }
 
-        $retval .= COM_endBlock(COM_getBlockTemplate('older_stories_block', 'footer', $position));
+        if (!empty($oldNews)) {
+            $dayList = COM_makeList($oldNews, 'list-older-stories');
+            $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
+            $string .= $dayList;
+            $retval .= $string;
+        }
+    }
+
+    $retval .= COM_endBlock(COM_getBlockTemplate('older_stories_block', 'footer', $position));
+
+    if ($_CONF['cache_templates']) {
         CACHE_create_instance($cacheInstance, $retval);
     }
 
@@ -4871,7 +4886,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW;
 
-    if ($_CONF['whatsnew_cache_time'] > 0) {
+    if ($_CONF['cache_templates'] && $_CONF['whatsnew_cache_time'] > 0) {
         $cacheInstance = 'whatsnew__' . CACHE_security_hash() . '__' . $_CONF['theme'];
         $retval = CACHE_check_instance($cacheInstance);
         if ($retval) {
@@ -5107,7 +5122,8 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
     }
 
     $retval .= COM_endBlock(COM_getBlockTemplate('whats_new_block', 'footer', $position));
-    if ($_CONF['whatsnew_cache_time'] > 0) {
+
+    if ($_CONF['cache_templates'] && $_CONF['whatsnew_cache_time'] > 0) {
         CACHE_create_instance($cacheInstance, $retval);
     }
 
