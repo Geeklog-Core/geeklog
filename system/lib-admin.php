@@ -1231,7 +1231,7 @@ function ADMIN_getListField_syndication($fieldName, $fieldValue, $A, $icon_arr, 
 
         case 'updated':
             if ($A['is_enabled'] == 1) {
-                $retval = strftime($_CONF['daytime'], $A['date']);
+                list($retval,) = COM_getUserDateTimeFormat($A['date'], 'daytime');
             } else {
                 $retval = $LANG_ADMIN['na'];
             }
@@ -1259,8 +1259,8 @@ function ADMIN_getListField_syndication($fieldName, $fieldValue, $A, $icon_arr, 
             break;
 
         case 'filename':
-            $url = SYND_getFeedUrl();
-            $retval = COM_createLink($A['filename'], $url . $A['filename']);
+            $url = SYND_getFeedUrl($A['filename']);
+            $retval = COM_createLink(basename($A['filename']), $url);
             break;
 
         default:

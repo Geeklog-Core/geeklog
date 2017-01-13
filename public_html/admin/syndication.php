@@ -33,7 +33,6 @@
 /**
  * Content syndication administration page: Here you can create, edit, and
  * delete feeds in various formats for Geeklog and its plugins.
-
  */
 
 /**
@@ -132,8 +131,7 @@ function find_feedFormats()
     global $_CONF;
 
     // Import the feed handling classes:
-    require_once $_CONF['path_system']
-        . '/classes/syndication/parserfactory.class.php';
+    require_once $_CONF['path_system'] . '/classes/syndication/parserfactory.class.php';
 
     $factory = new FeedParserFactory ();
     $formats = $factory->getFeedTypes();
@@ -170,15 +168,17 @@ function listfeeds()
     $defsort_arr = array('field' => 'title', 'direction' => 'asc');
 
     $menu_arr = array(
-        array('url'  => $_CONF['site_admin_url'] . '/syndication.php?mode=edit',
-              'text' => $LANG_ADMIN['create_new']),
-        array('url'  => $_CONF['site_admin_url'],
-              'text' => $LANG_ADMIN['admin_home']),
+        array(
+            'url'  => $_CONF['site_admin_url'] . '/syndication.php?mode=edit',
+            'text' => $LANG_ADMIN['create_new'],
+        ),
+        array(
+            'url'  => $_CONF['site_admin_url'],
+            'text' => $LANG_ADMIN['admin_home'],
+        ),
     );
 
-    $retval .= COM_startBlock($LANG33[10], '',
-        COM_getBlockTemplate('_admin_block', 'header'));
-
+    $retval .= COM_startBlock($LANG33[10], '', COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG33[13],
@@ -190,10 +190,12 @@ function listfeeds()
         'form_url'   => $_CONF['site_admin_url'] . '/syndication.php',
     );
 
-    $query_arr = array('table'          => 'syndication',
-                       'sql'            => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
-                       'query_fields'   => array('title', 'filename'),
-                       'default_filter' => '');
+    $query_arr = array(
+        'table'          => 'syndication',
+        'sql'            => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
+        'query_fields'   => array('title', 'filename'),
+        'default_filter' => '',
+    );
 
     // this is a dummy variable so we know the form has been used if all feeds
     // should be disabled in order to disable the last one.
