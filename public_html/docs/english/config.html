@@ -593,7 +593,11 @@ the admin panel.</p>
   should improve performance of the web site.  In some cases, caching could 
   slow performance down.  For example, if the disk access is slow on the web 
   server or if the web server is accessing Windows shared drives, setting this 
-  option to FALSE may improve performance.</td></tr>
+  option to FALSE may improve performance. Another reason to disable caching of template files is if you use 
+  autotags in the themes template files that need to display updated information to the visitor (since the 
+  autotags would only be run at the time when the cache file is created. Note: As stated this only affects 
+  the theme template files. Caching of other items like Articles, Blocks, Staticpages, etc... have there own 
+  config options for caching.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cache_mobile">cache_mobile</a></td>
   <td valign="top">true</td>
