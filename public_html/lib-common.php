@@ -480,26 +480,22 @@ $relLinks = array();
  * @global $_TOPICS array
  */
 
-if ($_CONF['cache_templates']) {
-    // Figure out if we need to update topic tree or retrieve it from the cache
-    // For anonymous users topic tree data can be shared
-    $cacheInstance = 'topic_tree__' . CACHE_security_hash();
-    $serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
+// Figure out if we need to update topic tree or retrieve it from the cache
+// For anonymous users topic tree data can be shared
+$cacheInstance = 'topic_tree__' . CACHE_security_hash();
+$serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
 
-    // See if Topic Tree cache exists
-    if (empty($serialized_topic_tree)) {
-        $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+// See if Topic Tree cache exists
+if (empty($serialized_topic_tree)) {
+    $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
 
-        // Need this check since this variable is not set correctly when Geeklog is being install
-        if (isset($GLOBALS['TEMPLATE_OPTIONS']) && is_array($TEMPLATE_OPTIONS) && isset($TEMPLATE_OPTIONS['path_cache'])) {
-            // Save updated topic tree and date
-            CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
-        }
-    } else {
-        $_TOPICS = unserialize($serialized_topic_tree);
+    // Need this check since this variable is not set correctly when Geeklog is being install
+    if (isset($GLOBALS['TEMPLATE_OPTIONS']) && is_array($TEMPLATE_OPTIONS) && isset($TEMPLATE_OPTIONS['path_cache'])) {
+        // Save updated topic tree and date
+        CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
     }
 } else {
-    $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    $_TOPICS = unserialize($serialized_topic_tree);
 }
 
 // Figure out if we need to update article feeds. Check last article date published in feed
@@ -2622,13 +2618,11 @@ function COM_showTopics($topic = '')
 {
     global $_CONF, $_TABLES, $_TOPICS, $LANG01, $_BLOCK_TEMPLATE, $page;
 
-    if ($_CONF['cache_templates']) {
-        // See if topic block cache is there for specified topic (since topics can be hidden here depending on what topic is clicked)
-        $cacheInstance = 'topicsblock__' . $topic . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-        $retval = CACHE_check_instance($cacheInstance); // Language and theme specific
-        if ($retval) {
-            return $retval;
-        }
+    // See if topic block cache is there for specified topic (since topics can be hidden here depending on what topic is clicked)
+    $cacheInstance = 'topicsblock__' . $topic . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+    $retval = CACHE_check_instance($cacheInstance); // Language and theme specific
+    if ($retval) {
+        return $retval;
     }
 
     $topicNavigation = COM_newTemplate($_CONF['path_layout']);
@@ -2821,10 +2815,8 @@ function COM_showTopics($topic = '')
         }
     }
 
-    if ($_CONF['cache_templates']) {
-        // Create cache so don't need to recreate unless change
-        CACHE_create_instance($cacheInstance, $retval);
-    }
+    // Create cache so don't need to recreate unless change
+    CACHE_create_instance($cacheInstance, $retval);
 
     return $retval;
 }
@@ -3972,12 +3964,10 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
 {
     global $_TABLES, $_CONF;
 
-    if ($_CONF['cache_templates']) {
-        $cacheInstance = 'olderarticles__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-        $retval = CACHE_check_instance($cacheInstance);
-        if ($retval) {
-            return $retval;
-        }
+    $cacheInstance = 'olderarticles__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+    $retval = CACHE_check_instance($cacheInstance);
+    if ($retval) {
+        return $retval;
     }
 
     $retval = COM_startBlock($title, $help,
@@ -4036,10 +4026,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
     }
 
     $retval .= COM_endBlock(COM_getBlockTemplate('older_stories_block', 'footer', $position));
-
-    if ($_CONF['cache_templates']) {
-        CACHE_create_instance($cacheInstance, $retval);
-    }
+    CACHE_create_instance($cacheInstance, $retval);
 
     return $retval;
 }
@@ -4886,7 +4873,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW;
 
-    if ($_CONF['cache_templates'] && $_CONF['whatsnew_cache_time'] > 0) {
+    if ($_CONF['whatsnew_cache_time'] > 0) {
         $cacheInstance = 'whatsnew__' . CACHE_security_hash() . '__' . $_CONF['theme'];
         $retval = CACHE_check_instance($cacheInstance);
         if ($retval) {
@@ -5122,8 +5109,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
     }
 
     $retval .= COM_endBlock(COM_getBlockTemplate('whats_new_block', 'footer', $position));
-
-    if ($_CONF['cache_templates'] && $_CONF['whatsnew_cache_time'] > 0) {
+    if ($_CONF['whatsnew_cache_time'] > 0) {
         CACHE_create_instance($cacheInstance, $retval);
     }
 
