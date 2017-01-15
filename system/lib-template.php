@@ -28,18 +28,18 @@
 // +--------------------------------------------------------------------------+
 
 // this file can't be used on its own
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-template.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
-
 /**
-* Returns possible theme template directories.
-*
-* @param    string  $root    Path to template root
-* @return   array            Theme template directories
-*/
-function CTL_setTemplateRoot($root) {
+ * Returns possible theme template directories.
+ *
+ * @param    string $root Path to template root
+ * @return   array            Theme template directories
+ */
+function CTL_setTemplateRoot($root)
+{
     global $_CONF;
 
     $retval = array();
@@ -52,29 +52,35 @@ function CTL_setTemplateRoot($root) {
         if (substr($r, -1) == '/') {
             $r = substr($r, 0, -1);
         }
-        if ( strpos($r,"plugins") != 0 ) {
-            $p = str_replace($_CONF['path'],$_CONF['path_themes'] . $_CONF['theme'] . '/', $r);
-            $x = str_replace("/templates", "",$p);
+        if (strpos($r, "plugins") != 0) {
+            $p = str_replace($_CONF['path'], $_CONF['path_themes'] . $_CONF['theme'] . '/', $r);
+            $x = str_replace("/templates", "", $p);
             $retval[] = $x;
         }
-        if ( $r != '' ) {
+        if ($r != '') {
             $retval[] = $r . '/custom';
             $retval[] = $r;
             $retval[] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/' .
                 substr($r, strlen($_CONF['path_layout']));
         }
     }
+
     return $retval;
 }
 
+/**
+ * Clear cache directories recursively
+ *
+ * @param  string $path
+ * @param  string $needle
+ */
 function CTL_clearCacheDirectories($path, $needle = '')
 {
-    if ( $path[strlen($path)-1] != '/' ) {
-        $path .= '/';
-    }
+    $path = rtrim($path, '/\\') . DIRECTORY_SEPARATOR;
+
     if ($dir = @opendir($path)) {
         while ($entry = readdir($dir)) {
-            if ($entry == '.' || $entry == '..' || is_link($entry) || $entry == '.svn' || $entry == 'index.html') {
+            if ($entry === '.' || $entry === '..' || is_link($entry) || $entry === '.svn' || $entry === 'index.html') {
                 continue;
             } elseif (is_dir($path . $entry)) {
                 CTL_clearCacheDirectories($path . $entry, $needle);
@@ -83,32 +89,35 @@ function CTL_clearCacheDirectories($path, $needle = '')
                 @unlink($path . $entry);
             }
         }
+
         @closedir($dir);
     }
 }
 
-
-function CTL_clearCache($plugin='')
+/**
+ * Clear cached data
+ *
+ * @param string $plugin
+ */
+function CTL_clearCache($plugin = '')
 {
-    global $TEMPLATE_OPTIONS, $_CONF;
+    global $_CONF;
 
     if (!empty($plugin)) {
         $plugin = '__' . $plugin . '__';
     }
 
     CTL_clearCacheDirectories($_CONF['path_data'] . 'layout_cache/', $plugin);
-
     CTL_clearCacheDirectories($_CONF['path_data'] . 'layout_css/', $plugin);
-
 }
 
 /**
-* Get path for the plugin template files.
-*
-* @param    string  $path   subdirectory within the base template path
-* @return   array           full path to possible template directories
-*
-*/
+ * Get path for the plugin template files.
+ *
+ * @param  string   $plugin
+ * @param    string $path subdirectory within the base template path
+ * @return   array           full path to possible template directories
+ */
 function CTL_plugin_templatePath($plugin, $path = '')
 {
     global $_CONF;
@@ -120,11 +129,11 @@ function CTL_plugin_templatePath($plugin, $path = '')
     $subdir = !empty($path) ? '/' . $path : '';
 
     // See if plugin templates exist in current theme
-    $retval[] = "{$_CONF['path_layout']}$plugin$subdir";
+    $retval[] = "{$_CONF['path_layout']}{$plugin}{$subdir}";
 
 
     // Now Check to see if default theme exists, if so add it to the mix
-    $retval[] = "{$_CONF['path_layout_default']}$plugin$subdir";
+    $retval[] = "{$_CONF['path_layout_default']}{$plugin}{$subdir}";
 
     // See if current theme templates stored with plugin
     $layout_path = "{$_CONF['path']}plugins/$plugin/templates/{$_CONF['theme']}$subdir";
@@ -156,60 +165,58 @@ function CTL_plugin_templatePath($plugin, $path = '')
     return $retval;
 }
 
-
 /**
-* Get HTML path for a plugin file (url or physical file location).
-* Order of checking is:
-* - theme path/plugin/file
-* - html path/plugin/directory/file
-* - html path/plugin/directory/theme/file
-* - html path/plugin/directory/theme_default/file * if default theme exists
-* - html path/plugin/directory/default/file
-* - html path/plugin/file (url path only)
-* - plugin path/plugin/directory/theme/file (physical path only)
-* - plugin path/plugin/directory/theme_default/file (physical path only) * if default theme exists
-* - plugin path/plugin/directory/default/file (physical path only)
-*
-* @param    string  $plugin     name of plugin
-* @param    string  $directory  name of directory
-* @param    string  $filename   name of file
-* @param    boolean $return_url return url path or file path
-* @return   string              full HTML path to file
-*
-*/
+ * Get HTML path for a plugin file (url or physical file location).
+ * Order of checking is:
+ * - theme path/plugin/file
+ * - html path/plugin/directory/file
+ * - html path/plugin/directory/theme/file
+ * - html path/plugin/directory/theme_default/file * if default theme exists
+ * - html path/plugin/directory/default/file
+ * - html path/plugin/file (url path only)
+ * - plugin path/plugin/directory/theme/file (physical path only)
+ * - plugin path/plugin/directory/theme_default/file (physical path only) * if default theme exists
+ * - plugin path/plugin/directory/default/file (physical path only)
+ *
+ * @param    string  $plugin     name of plugin
+ * @param    string  $directory  name of directory
+ * @param    string  $filename   name of file
+ * @param    boolean $return_url return url path or file path
+ * @return   string              full HTML path to file
+ */
 function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = true)
 {
     global $_CONF;
-    
+
     $retval = "";
 
     // See if plugin file exist in current theme
     $file = "{$_CONF['path_layout']}$plugin/$filename";
     if (file_exists($file)) {
-    	if ($return_url) {
-    		$retval = "{$_CONF['layout_url']}/$plugin/$filename";
-		} else {
-			$retval = $file;
-		}
+        if ($return_url) {
+            $retval = "{$_CONF['layout_url']}/$plugin/$filename";
+        } else {
+            $retval = $file;
+        }
     } else {
         // See if current theme templates stored with plugin
         $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme']}/$filename";
         if (file_exists($file)) {
-        	if ($return_url) {
-        		$retval = "/$plugin/$directory/{$_CONF['theme']}/$filename";
-			} else {
-				$retval = $file;
-			}
+            if ($return_url) {
+                $retval = "/$plugin/$directory/{$_CONF['theme']}/$filename";
+            } else {
+                $retval = $file;
+            }
         } else {
             // Check to see if theme has theme_default. If so check there
             $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme_default']}/$filename";
-            if (!empty($_CONF['theme_default']) AND file_exists($file)) {
+            if (!empty($_CONF['theme_default']) && file_exists($file)) {
                 if ($return_url) {
                     $retval = "/$plugin/$directory/{$_CONF['theme_default']}/$filename";
                 } else {
                     $retval = $file;
                 }
-            } else {        
+            } else {
                 // Use default templates then. This should always exist
                 $file = "{$_CONF['path_html']}/$plugin/$directory/default/$filename";
                 if (file_exists($file)) {
@@ -230,9 +237,9 @@ function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = 
                         } else {
                             // Check to see if theme has theme_default. If so check there
                             $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme_default']}/$filename";
-                            if (!empty($_CONF['theme_default']) AND file_exists($file)) {
+                            if (!empty($_CONF['theme_default']) && file_exists($file)) {
                                 $retval = $file;
-                            } else {        
+                            } else {
                                 // Use default templates then. This should always exist
                                 $file = "{$_CONF['path']}plugins/$plugin/$directory/default/$filename";
                                 if (file_exists($file)) {
@@ -250,16 +257,15 @@ function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = 
 }
 
 /**
-* Get physical path or url for plugin directory that could be located either in
-* the theme layout directory or the plugins directory
-*
-* @param    string  $plugin     name of plugin
-* @param    string  $directory  name of directory
-* @param    boolean $return_url flag to return url
-* @return   string              url or physical path
-*
-*/
-function CTL_plugin_dirLocation($plugin, $directory = "images", $return_url = true)
+ * Get physical path or url for plugin directory that could be located either in
+ * the theme layout directory or the plugins directory
+ *
+ * @param    string  $plugin     name of plugin
+ * @param    string  $directory  name of directory
+ * @param    boolean $return_url flag to return url
+ * @return   string              url or physical path
+ */
+function CTL_plugin_dirLocation($plugin, $directory = 'images', $return_url = true)
 {
     global $_CONF;
 
@@ -274,9 +280,9 @@ function CTL_plugin_dirLocation($plugin, $directory = "images", $return_url = tr
     } else {
         // Use default location then. This should always exist
         if ($return_url) {
-            $retval =  "{$_CONF['site_url']}/$plugin/$directory";
+            $retval = "{$_CONF['site_url']}/$plugin/$directory";
         } else {
-            $retval =  "{$_CONF['path_html']}/$plugin/$directory";
+            $retval = "{$_CONF['path_html']}/$plugin/$directory";
         }
     }
 
@@ -284,43 +290,43 @@ function CTL_plugin_dirLocation($plugin, $directory = "images", $return_url = tr
 }
 
 /**
-* Include plugin template functions file which may/may not do anything or exist.
-* This will currently set any additional css and javascript that is theme specific for a plugin templates
-*
-* @param    string  $plugin     name of plugin
-*
-*/
+ * Include plugin template functions file which may/may not do anything or exist.
+ * This will currently set any additional css and javascript that is theme specific for a plugin templates
+ *
+ * @param    string $plugin name of plugin
+ */
 function CTL_plugin_setTemplatesFunctions($plugin)
 {
-	global $_SCRIPTS, $_CONF;	
-	
-	$templateFuncutionsLocation = CTL_plugin_themeFindFile($plugin, 'templates', 'functions.php', false);
-	if (!empty($templateFuncutionsLocation) AND file_exists($templateFuncutionsLocation)) {
-		require_once $templateFuncutionsLocation;
+    global $_SCRIPTS, $_CONF;
+
+    $templateFuncutionsLocation = CTL_plugin_themeFindFile($plugin, 'templates', 'functions.php', false);
+    if (!empty($templateFuncutionsLocation) && file_exists($templateFuncutionsLocation)) {
+        /** @noinspection PhpIncludeInspection */
+        require_once $templateFuncutionsLocation;
 
         // Workaround since we don't know the theme name of the functions.php file we are using
         // It would have been checked in the following order. When found then quit
         $themes[] = $_CONF['theme'];
         $themes[] = $_CONF['theme_default'];
         $themes[] = 'default';
-        
+
         $function_found = false;
         foreach ($themes as $theme) {
-            /* Include scripts on behalf of plugin template files that are theme specific */
-            $func = $plugin . "_css_" . $theme;
+            // Include scripts on behalf of plugin template files that are theme specific
+            $func = $plugin . '_css_' . $theme;
             if (function_exists($func)) {
                 $function_found = true;
                 foreach ($func() as $info) {
                     $file = (!empty($info['file'])) ? $info['file'] : '';
                     $name = (!empty($info['name'])) ? $info['name'] : md5(!empty($file) ? $file : strval(time()));
-                    $constant   = (!empty($info['constant']))   ? $info['constant']   : true;
+                    $constant = (!empty($info['constant'])) ? $info['constant'] : true;
                     $attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
-                    $priority = (!empty($info['priority']))   ? $info['priority']   : 100;
-                    
+                    $priority = (!empty($info['priority'])) ? $info['priority'] : 100;
+
                     $_SCRIPTS->setCssFile($name, $file, $constant, $attributes, $priority, 'theme');
                 }
             }
-            $func = $plugin . "_js_libs_" . $theme;
+            $func = $plugin . '_js_libs_' . $theme;
             if (function_exists($func)) {
                 $function_found = true;
                 foreach ($func() as $info) {
@@ -331,7 +337,7 @@ function CTL_plugin_setTemplatesFunctions($plugin)
                     $_SCRIPTS->setJavaScriptLibrary($info['library'], $footer);
                 }
             }
-            $func = $plugin . "_js_files_" . $theme;
+            $func = $plugin . '_js_files_' . $theme;
             if (function_exists($func)) {
                 $function_found = true;
                 foreach ($func() as $info) {
@@ -339,17 +345,17 @@ function CTL_plugin_setTemplatesFunctions($plugin)
                     if (isset($info['footer']) && !$info['footer']) {
                         $footer = false;
                     }
-                    $priority = (!empty($info['priority']))   ? $info['priority']   : 100;
+                    $priority = (!empty($info['priority'])) ? $info['priority'] : 100;
                     $_SCRIPTS->setJavaScriptFile(md5($info['file']), $info['file'], $footer, $priority);
                 }
             }
 
             if ($function_found) {
-                break;    
+                break;
             }
-            
+
         }
-	}
+    }
 }
 
 /*
@@ -359,97 +365,103 @@ function CTL_plugin_setTemplatesFunctions($plugin)
  */
 
 /**
-* Config Option has changed. (use plugin api)
-*
-* @return   nothing
-*
-*/
+ * Config Option has changed. (use plugin api)
+ *
+ * @param  string $group
+ * @param  array  $changes
+ * @return void
+ */
 function plugin_configchange_template($group, $changes = array())
 {
-    global $_TABLES, $_CONF;
+    global $_CONF;
 
-    if ($group == 'Core' AND (in_array('cache_templates', $changes) 
-                                OR in_array('template_comments', $changes)
-                                OR in_array('language', $changes) 
-                                OR in_array('language_files', $changes) OR in_array('languages', $changes)
-                                OR in_array('url_rewrite', $changes) OR in_array('url_routing', $changes)
-                            )) {
+    if (($group === 'Core') && (in_array('cache_templates', $changes)
+            || in_array('template_comments', $changes)
+            || in_array('language', $changes)
+            || in_array('language_files', $changes)
+            || in_array('languages', $changes)
+            || in_array('url_rewrite', $changes)
+            || in_array('url_routing', $changes)
+        )
+    ) {
         // To be safe clear cache on enabling and disabling of cache
         // If template comments disabled or enabled clear all cached templates
         // Also clear on config language changes since some cache instances may get messed up going from a single language to multi language setup
         // Clear cache on change of URL Rewrite and URL Rewriting
         CTL_clearCache();
-    } elseif ($group == 'Core' AND (in_array('sortmethod', $changes) OR
-                              in_array('showstorycount', $changes) OR
-                              in_array('showsubmissioncount', $changes) OR
-                              in_array('hide_home_link', $changes))) {
+    } elseif (($group === 'Core') &&
+        (in_array('sortmethod', $changes) ||
+            in_array('showstorycount', $changes) ||
+            in_array('showsubmissioncount', $changes) ||
+            in_array('hide_home_link', $changes))
+    ) {
         // If Topics Block options changed then delete it's cache
         $cacheInstance = 'topicsblock__';
         CACHE_remove_instance($cacheInstance);
-    } elseif ($group == 'Core' AND (in_array('newstoriesinterval', $changes) OR
-                              in_array('newcommentsinterval', $changes) OR
-                              in_array('newtrackbackinterval', $changes) OR
-                              in_array('hidenewstories', $changes) OR
-                              in_array('hidenewcomments', $changes) OR
-                              in_array('hidenewtrackbacks', $changes) OR
-                              in_array('hidenewplugins', $changes) OR
-                              in_array('title_trim_length', $changes) OR
-                              in_array('whatsnew_cache_time', $changes))) {
+    } elseif (($group === 'Core') &&
+        (in_array('newstoriesinterval', $changes) ||
+            in_array('newcommentsinterval', $changes) ||
+            in_array('newtrackbackinterval', $changes) ||
+            in_array('hidenewstories', $changes) ||
+            in_array('hidenewcomments', $changes) ||
+            in_array('hidenewtrackbacks', $changes) ||
+            in_array('hidenewplugins', $changes) ||
+            in_array('title_trim_length', $changes) ||
+            in_array('whatsnew_cache_time', $changes))
+    ) {
         // Probably not really necessary but clear cache if enabled on these other settings that can have cache files
         // These are from the What's New Block
         if ($_CONF['whatsnew_cache_time'] > 0) {
-            $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+            $cacheInstance = 'whatsnew__'; // remove all what'snew instances
             CACHE_remove_instance($cacheInstance);
         }
     }
 }
 
 /**
-* Submission by a user
-*
-* @return   nothing
-*
-*/
+ * Submission by a user
+ *
+ * @param   string $type
+ * @return  void
+ */
 function plugin_submissionsaved_template($type)
 {
     global $_CONF;
 
-    if (($type == 'article' OR $type == 'story') AND $_CONF['showsubmissioncount']) {
+    if (($type === 'article' || $type === 'story') && $_CONF['showsubmissioncount']) {
         // Just call item delete since same functionality and doesn't need id
         plugin_itemdeleted_template('', $type);
     }
 }
 
 /**
-* Submission deleted by Admin
-*
-* @return   nothing
-*
-*/
+ * Submission deleted by Admin
+ *
+ * @param   string $type
+ * @return  void
+ */
 function plugin_submissiondeleted_template($type)
 {
     global $_CONF;
 
-    if (($type == 'article' OR $type == 'story') AND $_CONF['showsubmissioncount']) {
+    if (($type === 'article' || $type === 'story') && $_CONF['showsubmissioncount']) {
         // Just call item delete since same functionality and doesn't need id
         plugin_itemdeleted_template('', $type);
     }
 }
 
 /**
-* To be called (eventually) whenever Geeklog saves an item into the database.
-* Plugins can define their own 'itemsaved' function to be notified whenever
-* an item is saved or modified.
-*
-* NOTE:     The behaviour of this API function changed in Geeklog 1.6.0
-*
-* @param    string  $id     unique ID of the item
-* @param    string  $type   type of the item, e.g. 'article'
-* @param    string  $old_id (optional) old ID when the ID was changed
-* @return   void            (actually: false, for backward compatibility)
-* @link     http://wiki.geeklog.net/index.php/PLG_itemSaved
-*
-*/
+ * To be called (eventually) whenever Geeklog saves an item into the database.
+ * Plugins can define their own 'itemsaved' function to be notified whenever
+ * an item is saved or modified.
+ * NOTE:     The behaviour of this API function changed in Geeklog 1.6.0
+ *
+ * @param    string $id     unique ID of the item
+ * @param    string $type   type of the item, e.g. 'article'
+ * @param    string $old_id (optional) old ID when the ID was changed
+ * @return   void            (actually: false, for backward compatibility)
+ * @link     http://wiki.geeklog.net/index.php/PLG_itemSaved
+ */
 function plugin_itemsaved_template($id, $type, $old_id = '')
 {
     // Just call item delete since same functionality
@@ -461,16 +473,15 @@ function plugin_itemsaved_template($id, $type, $old_id = '')
 }
 
 /**
-* To be called (eventually) whenever Geeklog removes an item from the database.
-* Plugins can define their own 'itemdeleted' function to be notified whenever
-* an item is deleted.
-*
-* @param    string  $id     ID of the item
-* @param    string  $type   type of the item, e.g. 'article'
-* @return   void
-* @since    Geeklog 1.6.0
-*
-*/
+ * To be called (eventually) whenever Geeklog removes an item from the database.
+ * Plugins can define their own 'itemdeleted' function to be notified whenever
+ * an item is deleted.
+ *
+ * @param    string $id   ID of the item
+ * @param    string $type type of the item, e.g. 'article'
+ * @return   void
+ * @since    Geeklog 1.6.0
+ */
 function plugin_itemdeleted_template($id, $type)
 {
     // See if uses what's new block then delete cache of whatsnew
@@ -488,7 +499,7 @@ function plugin_itemdeleted_template($id, $type)
     $topicsblock = false;
     $topic_tree = false;
 
-    if ($type == 'article' OR $type == 'story') {
+    if ($type === 'article' || $type === 'story') {
         $article = true;
         $whatsnew = true;
         $olderstories = true;
@@ -534,5 +545,3 @@ function plugin_itemdeleted_template($id, $type)
         CACHE_remove_instance($cacheInstance);
     }
 }
-
-?>
