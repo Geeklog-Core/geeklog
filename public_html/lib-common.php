@@ -5429,7 +5429,7 @@ function COM_getUserDateTimeFormat($date = '', $format = 'date')
         case 'daytime':
             $dateFormat = $_CONF[$format];
 
-            if (empty($dateFormat)) {
+            if (trim($dateFormat) == false) {
                 $dateFormat = '%m/%d %I:%M%p';
             }
             break;
@@ -5437,7 +5437,7 @@ function COM_getUserDateTimeFormat($date = '', $format = 'date')
         case 'shortdate':
             $dateFormat = $_CONF[$format];
 
-            if (empty($dateFormat)) {
+            if (trim($dateFormat) == false) {
                 $dateFormat = '%x';
             }
             break;
@@ -5445,7 +5445,7 @@ function COM_getUserDateTimeFormat($date = '', $format = 'date')
         case 'dateonly':
             $dateFormat = $_CONF[$format];
 
-            if (empty(($dateFormat))) {
+            if (trim($dateFormat) == false) {
                 $dateFormat = '%d-%b';
             }
             break;
@@ -5453,7 +5453,7 @@ function COM_getUserDateTimeFormat($date = '', $format = 'date')
         case 'timeonly':
             $dateFormat = $_CONF[$format];
 
-            if (empty($dateFormat)) {
+            if (trim($dateFormat) == false) {
                 $dateFormat = '%I:%M %p %Z';
             }
             break;
@@ -5466,7 +5466,7 @@ function COM_getUserDateTimeFormat($date = '', $format = 'date')
                 $dateFormat = empty($_USER['format']) ? $_CONF[$format] : $_USER['format'];
             }
 
-            if (empty($dateFormat)) {
+            if (trim($dateFormat) == false) {
                 $dateFormat = '%A, %B %d %Y @ %I:%M %p %Z';
             }
             break;
