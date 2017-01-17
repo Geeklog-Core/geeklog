@@ -356,7 +356,7 @@ function listComments()
     $retval = COM_startBlock($LANG03[100], '', COM_getBlockTemplate('_admin_block', 'header'))
         . ADMIN_createMenu(
             $menu_arr,
-            $LANG03[100],
+            $LANG03[106],
             $_CONF['layout_url'] . '/images/icons/comment.' . $_IMAGE_TYPE
         )
         . ADMIN_buildCommentList(SUFFIX_COMMENT_SUBMISSIONS, 'commentsubmissions', $securityToken)

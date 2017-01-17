@@ -260,7 +260,8 @@ $LANG03 = array(
     102 => '一括操作',
     103 => 'このユーザーを禁止する',
     104 => 'このIPアドレスをSpamxプラグインで禁止する',
-    105 => 'IPアドレス'
+    105 => 'IPアドレス', 
+    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.'
 );
 
 ###############################################################################
