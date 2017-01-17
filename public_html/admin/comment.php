@@ -489,7 +489,7 @@ function banIpAddresses($suffix)
 
     if (SEC_checkToken()) {
         if (!in_array('spamx', $_PLUGINS)) {
-            COM_errorLog(__FUNCTION__ . ': Spmax plugin is not installed or disabled.');
+            COM_errorLog(__FUNCTION__ . ': Spamx plugin is not installed or disabled.');
             COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
 
