@@ -78,6 +78,10 @@
                 <exclude name="**/tests/**"/>
                 <exclude name="**/*.php.dist"/>
                 <exclude name="*.tar.gz"/>
+                <exclude name="**/node_modules"/>
+                <exclude name="**/node_modules/**"/>
+                <exclude name="**/css_src/dest"/>
+                <exclude name="**/css_src/dest/**"/>
             </fileset>
         </copy>
 
