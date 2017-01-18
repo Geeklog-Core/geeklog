@@ -47,6 +47,7 @@
     <!-- ============================== -->
     <target name="prepare">
         <echo msg="Making directory ${dstDir}..."/>
+        <delete dir="${dstDir}" quiet="true"/>
         <mkdir dir="${dstDir}"/>
     </target>
 
@@ -76,6 +77,7 @@
                 <exclude name="**/tests"/>
                 <exclude name="**/tests/**"/>
                 <exclude name="**/*.php.dist"/>
+                <exclude name="*.tar.gz"/>
             </fileset>
         </copy>
 
@@ -107,7 +109,7 @@
         <chmod file="${dstDir}/public_html/images/articles" mode="0775"/>
         <chmod mode="0644">
             <fileset dir="${dstDir}/public_html/images/articles">
-                <include name="*"/>
+                <include name="*,*.*"/>
             </fileset>
         </chmod>
         <chmod file="${dstDir}/public_html/images/library" mode="0775"/>
@@ -118,13 +120,13 @@
         <chmod file="${dstDir}/public_html/images/topics" mode="0775"/>
         <chmod mode="0644">
             <fileset dir="${dstDir}/public_html/images/topics">
-                <include name="*"/>
+                <include name="*,*.*"/>
             </fileset>
         </chmod>
         <chmod file="${dstDir}/public_html/images/userphotos" mode="0775"/>
         <chmod mode="0644">
             <fileset dir="${dstDir}/public_html/images/userphotos">
-                <include name="*"/>
+                <include name="*,*.*"/>
             </fileset>
         </chmod>
         <chmod file="${dstDir}/public_html/images/_thumbs" mode="0775"/>
@@ -139,6 +141,7 @@
     <!-- ============================== -->
     <target name="dist" depends="build">
         <echo msg="Creating an archive..."/>
+        <delete file="${project.basedir}/geeklog-${version}.tar.gz" quiet="true"/>
         <tar destfile="${project.basedir}/geeklog-${version}.tar.gz" compression="gzip">
             <fileset dir="${dstDir}">
                 <include name="*"/>
