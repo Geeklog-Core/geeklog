@@ -158,7 +158,8 @@ class SearchCriteria
     function buildSearchSQL($keyType, $query, $columns, $sql = '')
     {
         // Make sure query has at least 1 letter
-        if (trim($query) == false) {
+        // if (!empty(trim($query))) { // Doesn't work in PHP 5.3
+        if (strlen(trim($query)) > 0) {
             if ($keyType === 'all') {
                 // must contain ALL of the keywords
                 $words = array_unique(explode(' ', $query));
