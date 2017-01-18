@@ -25,8 +25,8 @@ list of files that have been changed since the last release.</p>
 
 <ul>
 <li>PHP 5.3.3 or higher</li>
-<li>MySQL 4.1.2 or higher (MySQL 5 recommended)</li> 
-<li>Postgresql 9.1.7 or later</li>
+<li>MySQL 4.1.2 or higher (MySQL 5 recommended)</li>
+<li>PostgreSQL 9.1.7 or later</li>
 </ul>
 
 <p>This Geeklog release no longer supports Microsoft SQL Server (mssql). The Professional and Professional CSS themes also have been removed. Geeklog ships with jQuery v3.1.1, jQuery UI v1.12.1, CKEditor v4.6.1, UIkit v2.27.2, Filemanager v2.2.0, and OAuth class v1.152.</p>
@@ -40,6 +40,7 @@ list of files that have been changed since the last release.</p>
     <li>Added an admin page for comments (feature request #586)</li>
     <li>Now install files are (optionally) deleted on successful install or upgrade (feature request #635)</li>
     <li>Added URL-routing feature which enables you to use public_html/index.php as a pseudo-front controller (feature requests #211, #326)</li>
+    <li>The way topics display is now controlled by $_CONF['url_rewrite'] (regardless of the value of $_CONF['url_routing'])</li>
     <li>Added new modules for the Spam-X plugin (feature request #585, files provided by Dirk Haun)</li>
     <li>Added an ability to change article template file with the topic (feature request #275, code provided by @hostellerie)</li>
     <li>Added the ability to search poll comments (feature request #394)</li>
@@ -97,19 +98,19 @@ for developing fast and powerful web interfaces".</p>
 
 <h2><a name="changes200">Geeklog 2.0.0</a></h2>
 
-<p><strong>Note:</strong> Geeklog 2.0.0 manages topics differently. Topic 
-assignments for articles and blocks are now stored in their own database table. 
-This means the article and block tables have changed slightly. Plugins that 
-modify blocks directly or have a centerblock may not be compatible with 
-Geeklog 2.0.0. Please check to see if the plugins you have installed are 
-compatible before you upgrade. If they are not then disable them if you still 
-wish to upgrade. We expect most plugin authors to upgrade their plugins to 
+<p><strong>Note:</strong> Geeklog 2.0.0 manages topics differently. Topic
+assignments for articles and blocks are now stored in their own database table.
+This means the article and block tables have changed slightly. Plugins that
+modify blocks directly or have a centerblock may not be compatible with
+Geeklog 2.0.0. Please check to see if the plugins you have installed are
+compatible before you upgrade. If they are not then disable them if you still
+wish to upgrade. We expect most plugin authors to upgrade their plugins to
 support Geeklog 2.0.0 soon after the release.</p>
 
-<p>The theme engine has also been updated. Geeklog 2.0.0 introduces 
-a new function that allows a page to be generated all at once instead of in specific   
-parts as it was before. Only themes and 
-plugins that have been updated to use the new function for display can take 
+<p>The theme engine has also been updated. Geeklog 2.0.0 introduces
+a new function that allows a page to be generated all at once instead of in specific
+parts as it was before. Only themes and
+plugins that have been updated to use the new function for display can take
 advantage of the new features this brings to Geeklog and themes.
 </p>
 

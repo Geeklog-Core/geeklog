@@ -225,7 +225,15 @@ if (COM_isAnonUser()) {
 }
 
 // Retrieve new topic if found
-$topic = \Geeklog\Input::fGet('topic', \Geeklog\Input::fPost('topic', ''));
+$topic = '';
+if ($_CONF['url_rewrite']) {
+    COM_setArgNames(array(TOPIC_PLACEHOLDER, 'topic'));
+    if (strcasecmp(COM_getArgument(TOPIC_PLACEHOLDER), 'topic') === 0) {
+        $topic = COM_getArgument('topic');
+    }
+} else {
+    $topic = \Geeklog\Input::fGet('topic', \Geeklog\Input::fPost('topic', ''));
+}
 
 // See if user has access to view topic
 if ($topic != '') {
@@ -2482,17 +2490,17 @@ function COM_errorLog($logEntry, $actionId = '')
         if (!isset($_CONF['path_log']) && ($actionId != 2)) {
             $actionId = 3;
         }
-        
+
         // Only show call trace in developer mode (for log file only)
         $callTrace = "";
         if (isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) {
             // Generate an exception to trace the deprecated call
             $e = new Exception();
             $trace = $e->getTrace();
-            
+
             $callTrace = LB . 'Call Trace: ' . LB;
             //position 0 would be the line that called this function so we ignore it
-            for($i = 1; $i < count($trace); ++$i) {
+            for ($i = 1; $i < count($trace); ++$i) {
                 // Skip showing COM_deprecatedLog calls
                 if ($trace[$i]['function'] != 'COM_deprecatedLog') {
                     $callTrace .= "#$i " . print_r($trace[$i], true);
@@ -2547,11 +2555,11 @@ function COM_errorLog($logEntry, $actionId = '')
 /**
  * Writes a deprecated warning message in Geeklog error log file (only in root debug mode)
  *
- * @param   string $deprecated_object       Name of depreciated function, class, etc..
- * @param   string $deprecated_version      Version of Geeklog that object was depreciated in
- * @param   string $removed_version         Planned version of Geeklog object will be removed
- * @param   string $new_object              New object developer should be using instead
- * @return  
+ * @param   string $deprecated_object  Name of depreciated function, class, etc..
+ * @param   string $deprecated_version Version of Geeklog that object was depreciated in
+ * @param   string $removed_version    Planned version of Geeklog object will be removed
+ * @param   string $new_object         New object developer should be using instead
+ * @return
  * @since   since v2.1.2
  */
 function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_version, $new_object = '')
@@ -2560,14 +2568,14 @@ function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_ver
 
     // Only show deprecated calls in developer mode
     if (isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) {
-        
+
         $log_msg = sprintf(
-                    'Deprecated Warning - %1$s has been deprecated since Geeklog %2$s. This object will be removed in Geeklog %3$s.',
-                    $deprecated_object, $deprecated_version, $removed_version
-                );
-        
+            'Deprecated Warning - %1$s has been deprecated since Geeklog %2$s. This object will be removed in Geeklog %3$s.',
+            $deprecated_object, $deprecated_version, $removed_version
+        );
+
         if (!empty($new_object)) {
-            $log_msg .= sprintf(' Use %1$s instead.', $new_object);            
+            $log_msg .= sprintf(' Use %1$s instead.', $new_object);
         }
 
         COM_errorLog($log_msg, 1);
@@ -2718,9 +2726,11 @@ function COM_showTopics($topic = '')
                     $topicNavigation->set_var('branch_spaces', $branch_spaces);
                     $topicNavigation->set_var('branch_level', $level);
 
+                    $topicNavigation->set_var(
+                        'option_url',
+                        TOPIC_getUrl($_TOPICS[$count_topic]['id'])
+                    );
                     $topicName = stripslashes($_TOPICS[$count_topic]['title']);
-                    $topicNavigation->set_var('option_url', COM_buildURL($_CONF['site_url']
-                        . '/index.php?topic=' . $_TOPICS[$count_topic]['id']));
                     $topicNavigation->set_var('option_label', $topicName);
 
                     $countString = '';
@@ -3683,7 +3693,7 @@ function COM_refresh($url)
 function COM_userComments($sid, $title, $type = 'article', $order = '', $mode = '', $pid = 0, $page = 1, $cid = false, $delete_option = false)
 {
     global $_CONF;
-    
+
     COM_deprecatedLog(__FUNCTION__, '1.4.0', '3.0.0', 'CMT_userComments in lib-comment.php');
 
     require_once $_CONF['path_system'] . 'lib-comment.php';
@@ -3869,7 +3879,7 @@ function COM_isEmail($email)
 function COM_emailEscape($string)
 {
     COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0');
-    
+
     if (function_exists('CUSTOM_emailEscape')) {
         return CUSTOM_emailEscape($string);
     }
@@ -3911,7 +3921,7 @@ function COM_emailEscape($string)
 function COM_formatEmailAddress($name, $address)
 {
     COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0');
-    
+
     $name = trim($name);
     $address = trim($address);
 
@@ -4007,7 +4017,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
                     $string .= $dayList . '<div class="divider-older-stories"></div>';
                 }
 
-                list($day2, ) = COM_getUserDateTimeFormat($A['day'], 'dateonly');
+                list($day2,) = COM_getUserDateTimeFormat($A['day'], 'dateonly');
                 $string .= '<h3>' . $dayCheck . ' <small>' . $day2 . '</small></h3>' . LB;
                 $day = $dayCheck;
             }
@@ -4799,7 +4809,7 @@ function COM_emailUserTopics()
             continue;
         }
 
-        list($date, ) = COM_getUserDateTimeFormat(time(), 'shortdate');
+        list($date,) = COM_getUserDateTimeFormat(time(), 'shortdate');
         $mailText = $LANG08[29] . $date . "\n";
 
         for ($y = 0; $y < $numArticles; $y++) {
@@ -4819,7 +4829,7 @@ function COM_emailUserTopics()
                 $mailText .= "$LANG24[7]: " . $articleAuthor . "\n";
             }
 
-            list($date, ) = COM_getUserDateTimeFormat(strtotime($S['day']), 'date');
+            list($date,) = COM_getUserDateTimeFormat(strtotime($S['day']), 'date');
             $mailText .= "$LANG08[32]: " . $date . "\n\n";
 
             if ($_CONF['emailstorieslength'] > 0) {
@@ -5186,7 +5196,7 @@ function COM_showMessageText($message, $title = '')
         if (empty($title)) {
             $title = $MESSAGE[40];
         }
-        list($timestamp, ) = COM_getUserDateTimeFormat(time(), 'daytime');
+        list($timestamp,) = COM_getUserDateTimeFormat(time(), 'daytime');
         $retval .= COM_startBlock($title . ' - ' . $timestamp, '',
                 COM_getBlockTemplate('_msg_block', 'header'))
             . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
@@ -5844,7 +5854,7 @@ function COM_getMinuteFormOptions($selected = '', $step = 1)
 function COM_getMinuteOptions($selected = '', $step = 1)
 {
     COM_deprecatedLog(__FUNCTION__, '2.1.2', '3.0.0', 'COM_getMinuteFormOptions');
-    
+
     return COM_getMinuteFormOptions($selected, $step);
 }
 
@@ -6824,7 +6834,7 @@ function COM_onFrontpage()
 function COM_isFrontpage()
 {
     COM_deprecatedLog(__FUNCTION__, '1.4.1', '3.0.0', 'COM_onFrontpage');
-    
+
     return !COM_onFrontpage();
 }
 

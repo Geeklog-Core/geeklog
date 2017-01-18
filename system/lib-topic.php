@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-topic.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -45,6 +45,8 @@ define("TOPIC_NONE_OPTION", 'none');
 define("TOPIC_HOMEONLY_OPTION", 'homeonly');
 define("TOPIC_SELECTED_OPTION", 'selectedtopics');
 define("TOPIC_ROOT", 'root');
+
+define('TOPIC_PLACEHOLDER', 'topic_placeholder');
 
 /**
  * Return the topic tree structure in an array.
@@ -564,11 +566,13 @@ function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true)
  * If multiple topics then will return the lowest access level found
  * (need to handle 'all' and 'homeonly' as special cases)
  *
- * @param    string $type  Type of object to find topic access about. If 'topic' then will check post array for topic
- *                         selection control
- * @param           string /array    $id     ID of object to check topic access for (not requried if $type is 'topic')
- * @param           string /array    $tid    ID of topic to check topic access for (not requried and not used if $type
- *                                   is 'topic')
+ * @param    string $type                      Type of object to find topic access about. If 'topic' then will check
+ *                                             post array for topic selection control
+ * @param           string                     /array    $id     ID of object to check topic access for (not requried
+ *                                                       if $type is
+ *                                             'topic')
+ * @param           string                     /array    $tid    ID of topic to check topic access for (not requried
+ *                                                       and not used if $type is 'topic')
  * @return   int                     returns 3 for read/edit 2 for read only 0 for no access
  */
 function TOPIC_hasMultiTopicAccess($type, $id = '', $tid = '')
@@ -1326,10 +1330,10 @@ function TOPIC_breadcrumbs($type, $id)
                     $url = '';
                     $use_block = 'breadcrumb_item_nolink';
                 } else {
-                    $url = $_CONF['site_url'] . '/';
-                    if ($value['tid'] != TOPIC_ROOT) {
-                        $url .= 'index.php?topic=' . $value['tid'];
-                        $url = COM_buildURL($url);
+                    if ($value['tid'] == TOPIC_ROOT) {
+                        $url = $_CONF['site_url'];
+                    } else {
+                        $url = TOPIC_getUrl($value['tid']);
                     }
                     $use_block = 'breadcrumb_item';
                 }
@@ -1551,6 +1555,32 @@ function TOPIC_relatedItems($type, $id, $include_types = array(), $max = 10, $tr
 
     // Make html list
     $retval = COM_makeList($related_items, 'list-new-plugins');
+
+    return $retval;
+}
+
+/**
+ * Return a URL corresponding to a given topic ID
+ *
+ * @param  string $topicId
+ * @return string
+ */
+function TOPIC_getUrl($topicId)
+{
+    global $_CONF;
+
+    if ($_CONF['url_rewrite']) {
+        $retval = COM_buildURL(
+            $_CONF['site_url'] . '/index.php?'
+            . http_build_query(array(
+                TOPIC_PLACEHOLDER => 'topic',
+                'topic'           => $topicId,
+            ))
+        );
+    } else {
+        $retval = $_CONF['site_url'] . '/index.php?'
+            . http_build_query(array('topic' => $topicId));
+    }
 
     return $retval;
 }

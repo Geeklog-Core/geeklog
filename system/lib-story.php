@@ -152,8 +152,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
         }
     }
 
-    $articleUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story='
-        . $story->getSid());
+    $articleUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $story->getSid());
     $article->set_var('article_url', $articleUrl);
     $article->set_var('story_title', $story->DisplayElements('title'));
 
@@ -169,7 +168,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
 
     // Topic Icon is user configurable so do not cache
     $topicname = $story->DisplayElements('topic');
-    $topicurl = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $story->DisplayElements('tid'));
+    $topicurl = TOPIC_getUrl($story->DisplayElements('tid'));
     if ((!isset($_USER['noicons']) || ($_USER['noicons'] != 1)) && $story->DisplayElements('show_topic_icon') == 1) {
         $imageurl = $story->DisplayElements('imageurl');
         if (!empty($imageurl)) {

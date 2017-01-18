@@ -46,7 +46,7 @@ function fixTopic(&$A, $tid_list)
     global $_TABLES, $topic;
 
     // This case may happen if a article belongs to the current topic but the default topic for the article is a child  of the current topic.
-    $sql = "SELECT t.topic, t.imageurl
+    $sql = "SELECT t.tid, t.topic, t.imageurl
         FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
         WHERE t.tid = ta.tid";
     // If all topics (blank) then find default topic
@@ -56,39 +56,43 @@ function fixTopic(&$A, $tid_list)
         $sql .= " AND ta.type = 'article' AND ta.id = '{$A['sid']}'";
     }
     $sql .= COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
+    $sql .= " GROUP BY tid, topic, imageurl, ta.tdefault ";
     $sql .= " ORDER BY ta.tdefault DESC"; // Do this just in case story doesn't have a default (it always should) and the current topic is all
 
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         $B = DB_fetchArray($result);
+        $A['tid'] = $B['tid'];
         $A['topic'] = $B['topic'];
         $A['imageurl'] = $B['imageurl'];
     } else {
         if (!empty($topic)) {
             // Does not belong to current topic so check inherited
             // Make sure sort order the same as in TOPIC_getTopic or articles with multiple topics might not display in the right topic when clicked
-            $sql = "SELECT t.topic, t.imageurl
+            $sql = "SELECT t.tid, t.topic, t.imageurl
                 FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
                 WHERE t.tid = ta.tid
                 AND ta.type = 'article' AND ta.id = '{$A['sid']}'
                 AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')))
                 " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't') . "
+                GROUP BY t.tid, topic, imageurl, ta.tdefault, ta.tid
                 ORDER BY ta.tdefault DESC, ta.tid ASC";
 
             $result = DB_query($sql);
             $nrows = DB_numRows($result);
             if ($nrows > 0) {
                 $B = DB_fetchArray($result);
+                $A['tid'] = $B['tid'];
                 $A['topic'] = $B['topic'];
                 $A['imageurl'] = $B['imageurl'];
             }
         } else {
             // This should not happen as every article should have at least 1 default topic
+            $A['tid'] = '';
             $A['topic'] = '';
             $A['imageurl'] = '';
         }
-
     }
 }
 
