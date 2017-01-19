@@ -58,9 +58,9 @@ class BannedUsers extends BaseCommand
 
         for ($i = 0; $i < $numRows; $i++) {
             list($val) = DB_fetchArray($result);
-            $val = str_replace('#', '\\#', $val);
+            $pattern = $this->prepareRegularExpression($val);
 
-            if (preg_match("#$val#i", $comment)) {
+            if (preg_match($pattern, $comment)) {
                 $ans = 1; // quit on first positive match
                 SPAMX_log($LANG_SX00['foundspam'] . $val .
                     ' (' . $LANG28[42] . ')' .

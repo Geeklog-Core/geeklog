@@ -9,6 +9,8 @@
  */
 abstract class BaseCommand
 {
+    const REGX_DELIMITER = '#';
+
     protected $result = PLG_SPAM_ACTION_NONE;   // Result of execute command
     protected $actionCode = PLG_SPAM_ACTION_NONE;   // Action code
 
@@ -107,5 +109,25 @@ abstract class BaseCommand
             . "SET counter = counter + 1, regdate = '{$timestamp}' "
             . "WHERE name='{$name}' AND value='{$value}' ";
         DB_query($sql, 1);
+    }
+
+    /**
+     * Prepare regular expression
+     *
+     * @param  string $str
+     * @param  string $delimiter
+     * @param  bool   $caseSensitive
+     * @return string
+     */
+    protected function prepareRegularExpression($str, $delimiter = self::REGX_DELIMITER, $caseSensitive = false)
+    {
+        $str = preg_quote($str, $delimiter);
+        $str = $delimiter . $str . $delimiter;
+
+        if (!$caseSensitive) {
+            $str .= 'i';
+        }
+
+        return $str;
     }
 }

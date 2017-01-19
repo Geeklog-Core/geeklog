@@ -118,11 +118,11 @@ class SLVbase
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             $val = $A['value'];
-            $val = str_replace('#', '\\#', $val);
+            $pattern = '#' . preg_quote($val, '#') . '#i';
 
             foreach ($links as $key => $link) {
                 if (!empty($link)) {
-                    if (preg_match("#$val#i", $link)) {
+                    if (preg_match($pattern, $link)) {
                         $links[$key] = '';
                         DB_query("UPDATE {$_TABLES['spamx']} SET counter = counter + 1, regdate = '$timestamp' WHERE name='SLVwhitelist' AND value='" . DB_escapeString($A['value']) . "'", 1);
                     }
@@ -144,16 +144,10 @@ class SLVbase
 
         $links = array();
 
-        preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i",
-            $comment, $matches);
+        preg_match_all("|<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)</a>|i", $comment, $matches);
         for ($i = 0; $i < count($matches[0]); $i++) {
             $url = $matches[1][$i];
-            if (!empty($_CONF['site_url']) &&
-                strpos($url, $_CONF['site_url']) === 0
-            ) {
-                // skip links to our own site
-                continue;
-            } else {
+            if (empty($_CONF['site_url']) || stripos($url, $_CONF['site_url']) !== 0) {
                 $links[] = $url;
             }
         }
@@ -169,22 +163,19 @@ class SLVbase
      * through getLinks() twice.
      *
      * @param    string $comment The post to check
-     * @return   string              All the URLs in the post, sep. by linefeeds
+     * @return   string          All the URLs in the post, sep. by line feeds
      */
     public function prepareLinks($comment)
     {
-        $links = array();
-        $linklist = '';
+        $linkList = '';
 
         // some spam posts have extra backslashes
         $comment = stripslashes($comment);
 
         // some spammers have yet to realize that we're not supporting BBcode
         // but since we want the URLs, convert it here ...
-        $comment = preg_replace('/\[url=([^\]]*)\]/i', '<a href="\1">',
-            $comment);
-        $comment = str_replace(array('[/url]', '[/URL]'),
-            array('</a>', '</a>'), $comment);
+        $comment = preg_replace('/\[url=([^\]]*)\]/i', '<a href="\1">', $comment);
+        $comment = str_ireplace('[/url]', '</a>', $comment);
 
         // get all links from <a href="..."> tags
         $links = $this->getLinks($comment);
@@ -195,9 +186,9 @@ class SLVbase
 
         if (count($links) > 0) {
             $this->checkWhitelist($links);
-            $linklist = implode("\n", $links);
+            $linkList = implode("\n", $links);
         }
 
-        return trim($linklist);
+        return trim($linkList);
     }
 }

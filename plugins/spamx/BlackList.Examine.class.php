@@ -59,12 +59,11 @@ class BlackList extends BaseCommand
 
         for ($i = 1; $i <= $nrows; $i++) {
             list($val) = DB_fetchArray($result);
-            $originalVal = $val;
-            $val = str_replace('#', '\\#', $val);
+            $pattern = $this->prepareRegularExpression($val);
 
-            if (preg_match("#$val#i", $comment)) {
+            if (preg_match($pattern, $comment)) {
                 $ans = PLG_SPAM_FOUND;  // quit on first positive match
-                $this->updateStat('Personal', $originalVal);
+                $this->updateStat('Personal', $val);
                 SPAMX_log($LANG_SX00['foundspam'] . $val .
                     $LANG_SX00['foundspam2'] . $uid .
                     $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);

@@ -66,11 +66,11 @@ class Header extends BaseCommand
             $v = explode(':', $entry);
             $name = trim($v[0]);
             $value = trim($v[1]);
-            $value = str_replace('#', '\\#', $value);
+            $pattern = $this->prepareRegularExpression($value);
 
             foreach ($headers as $key => $content) {
                 if (strcasecmp($name, $key) === 0) {
-                    if (preg_match("#{$value}#i", $content)) {
+                    if (preg_match($pattern, $content)) {
                         $ans = PLG_SPAM_FOUND;  // quit on first positive match
                         $this->updateStat('HTTPHeader', $entry);
                         SPAMX_log($LANG_SX00['foundspam'] . $entry .

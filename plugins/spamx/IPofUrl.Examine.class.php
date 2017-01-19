@@ -44,9 +44,7 @@ class IPofUrl extends BaseCommand
         /*
         * regex to find urls $2 = fqd
         */
-        $regx = '(ftp|http|file)://([^/\\s]+)';
-        $num = preg_match_all("#{$regx}#", html_entity_decode($comment), $urls);
-
+        $num = preg_match_all('#(https|http|ftps|ftp|file)://([^/\\s]+)#', html_entity_decode($comment), $urls);
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='IPofUrl'", 1);
         $numRows = DB_numRows($result);
 

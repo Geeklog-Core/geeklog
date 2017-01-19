@@ -171,7 +171,11 @@ class IP extends BaseCommand
             } elseif (strpos($val, '-') !== false) {
                 $matches = $this->_matchRange($ip, $val);
             } else {
-                $matches = preg_match("#^{$val}$#i", $ip);
+                if (strpos($val, '^') !== 0) {
+                    $val = '^' . $val;
+                }
+                $pattern = $this->prepareRegularExpression($val);
+                $matches = preg_match($pattern, $ip);
             }
 
             if ($matches) {
