@@ -66,7 +66,7 @@ class Url
     public function __construct($urlRewrite = true, $urlRouting = Router::ROUTING_DISABLED)
     {
         $this->urlRewrite = (bool) $urlRewrite;
-        $urlRouting = intval($urlRouting, 10);
+        $urlRouting = (int) $urlRouting;
 
         if (($urlRouting >= Router::ROUTING_DISABLED) && ($urlRouting <= Router::ROUTING_WITHOUT_INDEX_PHP)) {
             $this->urlRouting = $urlRouting;
@@ -98,27 +98,22 @@ class Url
      * @param        array $names String array of names to assign to variables pulled from query string
      * @return       boolean     true on success otherwise false
      */
-    public function setArgNames($names)
+    public function setArgNames(array $names)
     {
-        if (count($names) < count($this->arguments)) {
-            print "URL Class: number of names passed to setArgNames must be equal or greater than number of arguments found in URL";
-            exit;
-        }
-
-        if (is_array($names)) {
+        if ($this->urlRewrite) {
+            $this->getArguments();
             $newArray = array();
-            for ($i = 1; $i <= count($this->arguments); $i++) {
-                $newArray[current($names)] = current($this->arguments);
-                next($names);
-                next($this->arguments);
+
+            foreach ($names as $name) {
+                $newArray[$name] = array_shift($this->arguments);
             }
+
             $this->arguments = $newArray;
-            reset($this->arguments);
+
+            return true;
         } else {
             return false;
         }
-
-        return true;
     }
 
     /**

@@ -6062,7 +6062,7 @@ function COM_buildURL($url)
  * @param    array $names Names of arguments in query string to assign to values
  * @return   boolean      True if successful
  */
-function COM_setArgNames($names)
+function COM_setArgNames(array $names)
 {
     global $_URL;
 
