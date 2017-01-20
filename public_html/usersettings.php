@@ -913,7 +913,7 @@ function notifyAdminOfUserUpdate(array $A)
 {
     global $_CONF, $LANG04, $LANG08, $LANG29;
 
-    if (in_array('user', $_CONF['notification'])) {
+    if (in_array('user_update', $_CONF['notification'])) {
         $body = "{$LANG04[169]}\n\n"
             . "{$LANG04[2]}: {$A['username']}\n"
             . "{$LANG04[5]}: {$A['email']}\n"
@@ -1145,6 +1145,7 @@ function saveuser(array $A)
         }
 
         PLG_userInfoChanged($_USER['uid']);
+        $A['uid'] = $_USER['uid']; // Update user id for email notification as the one in the array deals with pwrequestid.
         notifyAdminOfUserUpdate($A);
 
         // at this point, the user information has been saved, but now we're going to check to see if
