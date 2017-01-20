@@ -424,6 +424,7 @@ $LANG04 = array(
     166 => 'Re-synch Remote Account',
     167 => 'Remote login',
     168 => 'You may also login with one of the remote authentication services below.',
+    169 => 'User has updated his/her profile',
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
@@ -1183,6 +1184,7 @@ $LANG29 = array(
     43 => 'Auto-publish Comments?',
     44 => 'Results of your moderation',
     45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
+    46 => 'User Profile Updated',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',

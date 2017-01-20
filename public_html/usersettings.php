@@ -765,8 +765,8 @@ function editpreferences()
  * Check if an email address already exists in the database
  * NOTE:    Allows remote accounts to have duplicate email addresses
  *
- * @param   string  $email   email address to check
- * @param   int     $uid     user id of current user
+ * @param   string $email email address to check
+ * @param   int    $uid   user id of current user
  * @return          boolean  true = exists, false = does not exist
  */
 function emailAddressExists($email, $uid)
@@ -904,9 +904,36 @@ function handlePhotoUpload($delete_photo = '')
 }
 
 /**
+ * Notify admin of user updating his/her profile
+ *
+ * @param  array $A
+ * @return bool
+ */
+function notifyAdminOfUserUpdate(array $A)
+{
+    global $_CONF, $LANG04, $LANG08, $LANG29;
+
+    if (in_array('user', $_CONF['notification'])) {
+        $body = "{$LANG04[169]}\n\n"
+            . "{$LANG04[2]}: {$A['username']}\n"
+            . "{$LANG04[5]}: {$A['email']}\n"
+            . "{$LANG04[6]}: {$A['homepage']}\n"
+            . "{$LANG29[4]} <{$_CONF['site_url']}/users.php?mode=profile&uid={$A['uid']}>\n\n"
+            . "\n------------------------------\n"
+            . "\n{$LANG08[34]}\n"
+            . "\n------------------------------\n";
+        $subject = $_CONF['site_name'] . ' ' . $LANG29[46];
+
+        return COM_mail($_CONF['site_mail'], $subject, $body);
+    } else {
+        return true;
+    }
+}
+
+/**
  * Saves the user's information back to the database
  *
- * @param    array   $A  User's data
+ * @param    array $A User's data
  * @return   string      HTML error message or meta redirect
  */
 function saveuser(array $A)
@@ -917,11 +944,9 @@ function saveuser(array $A)
         COM_errorLog('**** Inside saveuser in usersettings.php ****', 1);
     }
 
-    $reqid = DB_getItem($_TABLES['users'], 'pwrequestid',
-        "uid = {$_USER['uid']}");
-    if ($reqid != $A['uid']) {
-        DB_change($_TABLES['users'], 'pwrequestid', "NULL",
-            'uid', $_USER['uid']);
+    $reqId = DB_getItem($_TABLES['users'], 'pwrequestid', "uid = {$_USER['uid']}");
+    if ($reqId != $A['uid']) {
+        DB_change($_TABLES['users'], 'pwrequestid', "NULL", 'uid', $_USER['uid']);
         COM_accessLog("An attempt was made to illegally change the account information of user {$_USER['uid']}.");
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
@@ -932,6 +957,7 @@ function saveuser(array $A)
     } else {
         $A['cooktime'] = COM_applyFilter($A['cooktime'], true);
     }
+
     // If empty or invalid - set to user default
     // So code after this does not fail the user password required test
     if ($A['cooktime'] < 0) { // note that == 0 is allowed!
@@ -942,17 +968,11 @@ function saveuser(array $A)
     // we need the user's current password
     $service = DB_getItem($_TABLES['users'], 'remoteservice', "uid = {$_USER['uid']}");
     if ($service == '') {
-        if (!empty($A['passwd']) || ($A['email'] != $_USER['email']) ||
-            ($A['cooktime'] != $_USER['cookietimeout'])
-        ) {
+        if (!empty($A['passwd']) || ($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
             // verify password
-            if (empty($A['old_passwd']) ||
-                (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0)
-            ) {
+            if (empty($A['old_passwd']) || (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0)) {
                 COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=83');
-            } elseif ($_CONF['custom_registration'] &&
-                function_exists('CUSTOM_userCheck')
-            ) {
+            } elseif ($_CONF['custom_registration'] && function_exists('CUSTOM_userCheck')) {
                 $ret = CUSTOM_userCheck($A['username'], $A['email']);
                 if (!empty($ret)) {
                     // Need a numeric return for the default message handler
@@ -964,9 +984,7 @@ function saveuser(array $A)
                     COM_redirect("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
                 }
             }
-        } elseif ($_CONF['custom_registration'] &&
-            function_exists('CUSTOM_userCheck')
-        ) {
+        } elseif ($_CONF['custom_registration'] && function_exists('CUSTOM_userCheck')) {
             $ret = CUSTOM_userCheck($A['username'], $A['email']);
             if (!empty($ret)) {
                 // Need a numeric return for the default message handler
@@ -980,41 +998,33 @@ function saveuser(array $A)
         }
     } else {
         if (($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
-            // re athenticate remote user again for these changes to take place
-
-            // Can't just be done here since user may have to relogin to his service which then sends us back here and we lose his changes
+            // re-authenticate remote user again for these changes to take place
+            // Can't just be done here since user may have to re-login to his service which then sends us back here and we lose his changes
         }
     }
+
     // no need to filter the password as it's encoded anyway
     if ($_CONF['allow_username_change'] == 1) {
         $A['new_username'] = COM_applyFilter($A['new_username']);
-        if (!empty($A['new_username']) &&
-            ($A['new_username'] != $_USER['username'])
-        ) {
+        if (!empty($A['new_username']) && ($A['new_username'] != $_USER['username'])) {
             $A['new_username'] = DB_escapeString($A['new_username']);
             if (DB_count($_TABLES['users'], 'username', $A['new_username']) == 0) {
                 if ($_CONF['allow_user_photo'] == 1) {
-                    $photo = DB_getItem($_TABLES['users'], 'photo',
-                        "uid = {$_USER['uid']}");
+                    $photo = DB_getItem($_TABLES['users'], 'photo', "uid = {$_USER['uid']}");
                     if (!empty($photo)) {
-                        $newphoto = preg_replace('/' . $_USER['username'] . '/',
-                            $A['new_username'], $photo, 1);
-                        $imgpath = $_CONF['path_images'] . 'userphotos/';
-                        if (rename($imgpath . $photo,
-                                $imgpath . $newphoto) === false
-                        ) {
-                            $display = COM_errorLog('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
+                        $newPhoto = preg_replace('/' . $_USER['username'] . '/', $A['new_username'], $photo, 1);
+                        $imagePath = $_CONF['path_images'] . 'userphotos/';
+                        if (rename($imagePath . $photo, $imagePath . $newPhoto) === false) {
+                            $display = COM_errorLog('Could not rename userphoto "' . $photo . '" to "' . $newPhoto . '".');
                             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[21]));
 
                             return $display;
                         }
-                        DB_change($_TABLES['users'], 'photo',
-                            DB_escapeString($newphoto), "uid", $_USER['uid']);
+                        DB_change($_TABLES['users'], 'photo', DB_escapeString($newPhoto), "uid", $_USER['uid']);
                     }
                 }
 
-                DB_change($_TABLES['users'], 'username', $A['new_username'],
-                    "uid", $_USER['uid']);
+                DB_change($_TABLES['users'], 'username', $A['new_username'], "uid", $_USER['uid']);
             } else {
                 COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=51');
             }
@@ -1023,7 +1033,7 @@ function saveuser(array $A)
 
     // a quick spam check with the unfiltered field contents
     $profile = '<h1>' . $LANG04[1] . ' ' . $_USER['username'] . '</h1><p>';
-    // this is a hack, for some reason remoteservice links made SPAMX SLV check barf
+    // this is a hack, for some reason remote service links made SPAMX SLV check barf
     if (empty($service)) {
         $profile .= COM_createLink($A['homepage'], $A['homepage']) . '<br' . XHTML . '>';
     }
@@ -1064,8 +1074,7 @@ function saveuser(array $A)
                     } else {
                         $cooktime = -1000;
                     }
-                    SEC_setCookie($_CONF['cookie_password'], $passwd,
-                        time() + $cooktime);
+                    SEC_setCookie($_CONF['cookie_password'], $passwd, time() + $cooktime);
                 } elseif (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0) {
                     COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=68');
                 } elseif ($A['passwd'] != $A['passwd_conf']) {
@@ -1088,11 +1097,9 @@ function saveuser(array $A)
 
         if ($A['cooktime'] <= 0) {
             $cooktime = 1000;
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
-                time() - $cooktime);
+            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() - $cooktime);
         } else {
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
-                time() + $A['cooktime']);
+            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() + $A['cooktime']);
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
@@ -1138,14 +1145,17 @@ function saveuser(array $A)
         }
 
         PLG_userInfoChanged($_USER['uid']);
+        notifyAdminOfUserUpdate($A);
 
         // at this point, the user information has been saved, but now we're going to check to see if
-        // the user has requested resynchronization with their remoteservice account
+        // the user has requested resynchronization with their remote service account
         $msg = 5; // default msg = Your account information has been successfully saved
         if (isset($A['resynch'])) {
             if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)) {
                 $modules = SEC_collectRemoteOAuthModules();
-                $active_service = (count($modules) === 0) ? false : in_array(substr($_USER['remoteservice'], 6), $modules);
+                $active_service = (count($modules) === 0)
+                    ? false
+                    : in_array(substr($_USER['remoteservice'], 6), $modules);
                 if (!$active_service) {
                     $status = -1;
                     $msg = 115; // Remote service has been disabled.
@@ -1170,9 +1180,7 @@ function saveuser(array $A)
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
 
-
-        COM_redirect($_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-            . $_USER['uid'] . '&amp;msg=' . $msg);
+        COM_redirect($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=' . $msg);
     }
 }
 
@@ -1384,7 +1392,7 @@ function savepreferences($A)
 }
 
 // MAIN
-if (Geeklog\Input::post('btncancel')  === $LANG_ADMIN['cancel']) {
+if (Geeklog\Input::post('btncancel') === $LANG_ADMIN['cancel']) {
     COM_redirect($_CONF['site_url']);
 } elseif ((Geeklog\Input::post('btnsubmit') === $LANG04[96]) && (Geeklog\Input::post('mode') !== 'deleteconfirmed')) {
     $mode = 'confirmdelete';
@@ -1464,7 +1472,7 @@ if (!COM_isAnonUser()) {
 
                     $consumer = new OAuthConsumer($service);
 
-                    if($service == 'oauth.facebook') {
+                    if ($service == 'oauth.facebook') {
                         // facebook resynchronizations are simple to perform
                         $oauth_userinfo = $consumer->refresh_userinfo();
                         if (empty($oauth_userinfo)) {
@@ -1486,7 +1494,7 @@ if (!COM_isAnonUser()) {
                         // authenticate with the remote service
                         if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
                             $msg = 114; // Resynch with remote account has failed but other account information has been successfully saved
-                        // elseif the callback query string is set, then we have successfully authenticated
+                            // elseif the callback query string is set, then we have successfully authenticated
                         } elseif (isset($query[$callback_query_string])) {
                             // COM_errorLog("authenticated with remote service, retrieve userinfo");
                             // foreach($query as $key=>$value) {
