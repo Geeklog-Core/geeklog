@@ -632,26 +632,16 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
 */
 function plugin_getdocumentationurl_xmlsitemap($file)
 {
-    global $_CONF;
-
-    static $docurl;
+    static $docUrl;
 
     switch ($file) {
     case 'index':
     case 'config':
-        if (isset($docurl)) {
-            $retval = $docurl;
+        if (isset($docUrl)) {
+            $retval = $docUrl;
         } else {
-            $doclang = COM_getLanguageName();
-            $docs = 'docs/' . $doclang . '/xmlsitemap.html';
-
-            if (file_exists($_CONF['path_html'] . $docs)) {
-                $retval = $_CONF['site_url'] . '/' . $docs;
-            } else {
-                $retval = $_CONF['site_url'] . '/docs/english/smlsitemap.html';
-            }
-
-            $docurl = $retval;
+            $retval = COM_getDocumentUrl('docs', 'xmlsitemap.html');
+            $docUrl = $retval;
         }
         break;
 

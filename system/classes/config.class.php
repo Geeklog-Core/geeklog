@@ -2240,14 +2240,7 @@ class config
             if (empty($docUrl[$group])) {
                 if ($group === 'Core') {
                     if (!empty($GLOBALS['_CONF']['site_url']) && !empty($GLOBALS['_CONF']['path_html'])) {
-                        $baseUrl = $GLOBALS['_CONF']['site_url'];
-                        $docLang = COM_getLanguageName();
-                        $cfg = 'docs/' . $docLang . '/config.html';
-                        if (file_exists($GLOBALS['_CONF']['path_html'] . $cfg)) {
-                            $url = $baseUrl . '/' . $cfg;
-                        } else {
-                            $url = $baseUrl . '/docs/english/config.html';
-                        }
+                        $url = COM_getDocumentUrl('docs', 'config.html');
                     } else {
                         $url = 'https://www.geeklog.net/docs/english/config.html';
                     }

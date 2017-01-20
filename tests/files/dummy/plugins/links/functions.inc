@@ -1637,24 +1637,16 @@ function LINKS_getCategorySQL($type = 'WHERE', $u_id = 0, $table = '')
 */
 function plugin_getdocumentationurl_links($file)
 {
-    global $_CONF;
-
-    static $docurl;
+    static $docUrl;
 
     switch ($file) {
     case 'index':
     case 'config':
-        if (isset($docurl)) {
-            $retval = $docurl;
+        if (isset($docUrl)) {
+            $retval = $docUrl;
         } else {
-            $doclang = COM_getLanguageName();
-            $docs = 'docs/' . $doclang . '/links.html';
-            if (file_exists($_CONF['path_html'] . $docs)) {
-                $retval = $_CONF['site_url'] . '/' . $docs;
-            } else {
-                $retval = $_CONF['site_url'] . '/docs/english/links.html';
-            }
-            $docurl = $retval;
+            $retval = COM_getDocumentUrl('docs', 'links.html');
+            $docUrl = $retval;
         }
         break;
 

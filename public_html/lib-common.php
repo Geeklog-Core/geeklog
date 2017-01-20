@@ -2071,11 +2071,13 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
         $helpImage = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
         $helpContent = '<img src="' . $helpImage . '" alt="?"' . XHTML . '>';
         $helpAttr = array('class' => 'blocktitle', 'title' => "$title");
-        if (!stristr($helpFile, 'http://')) {
-            $help_url = $_CONF['site_url'] . "/help/{$helpFile}";
-        } else {
+
+        if (preg_match('@^https?://@', $helpFile)) {
             $help_url = $helpFile;
+        } else {
+            $help_url = COM_getDocumentUrl('help', $helpFile);
         }
+
         $help = COM_createLink($helpContent, $help_url, $helpAttr);
         $block->set_var('block_help', $help);
         $block->set_var('help_url', $help_url);
@@ -8532,6 +8534,46 @@ function COM_handleException($exception)
 {
     COM_handleError((int) $exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace());
     die(1);
+}
+
+/**
+ * Return a URL to a given document file
+ *
+ * @param  string $baseDirectory   the name of directory relative to $_CONF['path_html'], e.g., 'docs', 'help'
+ * @param  string $fileName
+ * @return string|false            false when the given file is missing
+ * @throws InvalidArgumentException
+ */
+function COM_getDocumentUrl($baseDirectory, $fileName)
+{
+    global $_CONF;
+
+    if (strpos($baseDirectory, '..') !== false) {
+        throw new InvalidArgumentException(__FUNCTION__ . ': directory traversal attack detected');
+    }
+
+    $baseDirectory = trim($baseDirectory, '/\\') . DIRECTORY_SEPARATOR;
+    $language = COM_getLanguageName();
+    $fileName = basename($fileName);
+    $path = $_CONF['path_html'] . $baseDirectory . $language . DIRECTORY_SEPARATOR . $fileName;
+
+    if (!file_exists($path)) {
+        $path = $_CONF['path_html'] . $baseDirectory . 'english' . DIRECTORY_SEPARATOR . $fileName;
+    }
+
+    if (!file_exists($path)) {
+        // Maybe old directory structure without language subdirectories
+        $path = $_CONF['path_html'] . $baseDirectory . $fileName;
+
+        if (!file_exists($path)) {
+            return false;
+        }
+    }
+
+    $retval = str_replace($_CONF['path_html'], $_CONF['site_url'] . '/', $path);
+    $retval = str_replace('\\', '/', $retval);
+
+    return $retval;
 }
 
 // Now include all plugin functions

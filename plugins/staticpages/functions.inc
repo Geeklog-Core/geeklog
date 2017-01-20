@@ -2171,24 +2171,16 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
  */
 function plugin_getdocumentationurl_staticpages($file)
 {
-    global $_CONF;
-
-    static $docurl;
+    static $docUrl;
 
     switch ($file) {
         case 'index':
         case 'config':
-            if (isset($docurl)) {
-                $retval = $docurl;
+            if (isset($docUrl)) {
+                $retval = $docUrl;
             } else {
-                $doclang = COM_getLanguageName();
-                $docs = 'docs/' . $doclang . '/staticpages.html';
-                if (file_exists($_CONF['path_html'] . $docs)) {
-                    $retval = $_CONF['site_url'] . '/' . $docs;
-                } else {
-                    $retval = $_CONF['site_url'] . '/docs/english/staticpages.html';
-                }
-                $docurl = $retval;
+                $retval = COM_getDocumentUrl('docs', 'staticpages.html');
+                $docUrl = $retval;
             }
             break;
 
