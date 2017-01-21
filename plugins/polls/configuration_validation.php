@@ -110,5 +110,3 @@ $_CONF_VALIDATE['polls']['autotag_permissions_poll_result[2]'] = array(
 $_CONF_VALIDATE['polls']['autotag_permissions_poll_result[3]'] = array(
     'rule' => array('inList', array(0, 2), true)
 );
-
-?>

@@ -194,7 +194,7 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
     // check for poll id change
     if (!empty($old_pid) && ($pid != $old_pid)) {
         // check if new pid is already in use
-        if (DB_count($_TABLES['polltopics'], 'pid', $pid) > 0) {
+        if (DB_count($_TABLES['polltopics'], 'pid', DB_escapeString($pid)) > 0) {
             // TBD: abort, display editor with all content intact again
             $pid = $old_pid; // for now ...
         }
@@ -206,8 +206,11 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
             . $_CONF['site_admin_url'] . '/plugins/polls/index.php ***');
     }
 
-    if (DB_count($_TABLES['polltopics'], 'pid', $pid) > 0) {
-        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} WHERE pid = '{$pid}'");
+    if (DB_count($_TABLES['polltopics'], 'pid', DB_escapeString($pid)) > 0) {
+        $result = DB_query(
+            "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} "
+            . "WHERE pid = '" . DB_escapeString($pid) . "' "
+        );
         $P = DB_fetchArray($result);
         $access = SEC_hasAccess(
             $P['owner_id'], $P['group_id'],
@@ -242,14 +245,16 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
         $del_pid = $old_pid; // delete by old pid, create using new pid below
     }
     // Retrieve Created Date before delete
-    $created_date = DB_getItem($_TABLES['polltopics'], 'created', "pid = '{$del_pid}'");
+    $created_date = DB_getItem(
+        $_TABLES['polltopics'], 'created', "pid = '" . DB_escapeString($del_pid) . "' "
+    );
     if ($created_date == '') {
         $created_date = date('Y-m-d H:i:s');
     }
 
-    DB_delete($_TABLES['polltopics'], 'pid', $del_pid);
-    DB_delete($_TABLES['pollanswers'], 'pid', $del_pid);
-    DB_delete($_TABLES['pollquestions'], 'pid', $del_pid);
+    DB_delete($_TABLES['polltopics'], 'pid', DB_escapeString($del_pid));
+    DB_delete($_TABLES['pollanswers'], 'pid', DB_escapeString($del_pid));
+    DB_delete($_TABLES['pollquestions'], 'pid', DB_escapeString($del_pid));
 
     $topic = GLText::remove4byteUtf8Chars($topic);
     $topic = DB_escapeString($topic);
@@ -271,18 +276,15 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
         $Q[$i] = GLText::remove4byteUtf8Chars($Q[$i]);
         $allow_multipleanswers[$i] = GLText::remove4byteUtf8Chars(COM_stripslashes($allow_multipleanswers[$i]));
         $description[$i] = GLText::remove4byteUtf8Chars(COM_checkHTML(COM_stripslashes($description[$i])));
-        if ($allow_multipleanswers[$i] == 'on') {
-            $allow_multipleanswers[$i] = 1;
-        } else {
-            $allow_multipleanswers[$i] = 0;
-        }
+        $allow_multipleanswers[$i] = ($allow_multipleanswers[$i] == 'on') ? 1 : 0;
 
         if (strlen($Q[$i]) > 0) { // only insert questions that exist
             $num_questions_exist++;
-
+            $pid = DB_escapeString($pid);
             $Q[$i] = DB_escapeString($Q[$i]);
+            $description[$i] = DB_escapeString($description[$i]);
             DB_save($_TABLES['pollquestions'], 'qid, pid, question,allow_multipleanswers,description',
-                "'$k', '$pid', '$Q[$i]','$allow_multipleanswers[$i]','$description[$i]'");
+                "{$k}, '{$pid}', '{$Q[$i]}',{$allow_multipleanswers[$i]},'{$description[$i]}'");
 
             // within the questions, we have another dimensions with answers,
             // votes and remarks
@@ -296,16 +298,17 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
                 $R[$i][$j] = GLText::remove4byteUtf8Chars($R[$i][$j]);
 
                 if (strlen($A[$i][$j]) > 0) { // only insert answers etc that exist
+                    // $pid is already escaped above
+                    // $k is in fact an integer, so we don't escape here
                     if (!is_numeric($V[$i][$j])) {
                         $V[$i][$j] = "0";
                     }
                     $A[$i][$j] = DB_escapeString($A[$i][$j]);
                     $R[$i][$j] = DB_escapeString($R[$i][$j]);
                     $sql = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES "
-                        . "('$pid', '$k', " . ($j + 1) . ", '{$A[$i][$j]}', {$V[$i][$j]}, '{$R[$i][$j]}');";
+                        . "('{$pid}', '{$k}', " . ($j + 1) . ", '{$A[$i][$j]}', {$V[$i][$j]}, '{$R[$i][$j]}');";
                     DB_query($sql);
-
-                    $num_total_votes = $num_total_votes + $V[$i][$j];
+                    $num_total_votes += (int) $V[$i][$j];
                 }
             }
             $k++;
@@ -321,12 +324,14 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
     }
 
     // save topics after the questions so we can include question count into table
-    $sql = "'$pid','$topic','$meta_description','$meta_keywords',$numVoters, $k, '$created_date', '" . date('Y-m-d H:i:s');
+    $created_date = DB_escapeString($created_date);
+    $modified_date = DB_escapeString(date('Y-m-d H:i:s'));
+    $sql = "'{$pid}','{$topic}','{$meta_description}','{$meta_keywords}',{$numVoters}, {$k}, '{$created_date}', '{$modified_date}' ";
 
     if ($mainPage == 'on') {
-        $sql .= "',1";
+        $sql .= ",1";
     } else {
-        $sql .= "',0";
+        $sql .= ",0";
     }
     if ($open == 'on') {
         $sql .= ",1";
@@ -339,28 +344,30 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
         $sql .= ",0";
     }
 
-    $sql .= ",'$statusCode','$commentCode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$topic_description'";
+    $sql .= ", {$statusCode}, {$commentCode}, {$owner_id}, {$group_id}, {$perm_owner}, {$perm_group}, "
+        . "{$perm_members}, {$perm_anon}, '{$topic_description}'";
 
     // Save poll topic
-    DB_save($_TABLES['polltopics'], "pid, topic, meta_description, meta_keywords, voters, questions, created, modified, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon,description", $sql);
+    DB_save(
+        $_TABLES['polltopics'],
+        "pid, topic, meta_description, meta_keywords, voters, questions, created, modified, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon,description",
+        $sql
+    );
 
     if (empty($old_pid) || ($old_pid == $pid)) {
         PLG_itemSaved($pid, 'polls');
     } else {
         DB_change($_TABLES['comments'], 'sid', DB_escapeString($pid),
             array('sid', 'type'), array(DB_escapeString($old_pid), 'polls'));
-
         DB_change($_TABLES['pollvoters'], 'pid', DB_escapeString($pid), 'pid', DB_escapeString($old_pid));
-
         PLG_itemSaved($pid, 'polls', $old_pid);
     }
 
     if ($_POLL_VERBOSE) {
-        COM_errorLog('**** Leaving savepoll() in '
-            . $_CONF['site_admin_url'] . '/plugins/polls/index.php ***');
+        COM_errorLog('**** Leaving savepoll() in ' . $_CONF['site_admin_url'] . '/plugins/polls/index.php ***');
     }
 
-    return PLG_afterSaveSwitch(
+    PLG_afterSaveSwitch(
         $_PO_CONF['aftersave'],
         $_CONF['site_url'] . '/polls/index.php?pid=' . $pid,
         'polls',
@@ -383,7 +390,9 @@ function editpoll($pid = '')
     $retval = '';
 
     if (!empty($pid)) {
-        $topic = DB_query("SELECT * FROM {$_TABLES['polltopics']} WHERE pid='$pid'");
+        $topic = DB_query(
+            "SELECT * FROM {$_TABLES['polltopics']} WHERE pid='" . DB_escapeString($pid) . "' "
+        );
         $T = DB_fetchArray($topic);
 
         // Get permissions for poll
@@ -536,8 +545,8 @@ function editpoll($pid = '')
     $poll_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
     // repeat for several questions
-    $question_sql = "SELECT question,qid ,allow_multipleanswers ,description "
-        . "FROM {$_TABLES['pollquestions']} WHERE pid='$pid' ORDER BY qid;";
+    $question_sql = "SELECT question,qid ,allow_multipleanswers ,description FROM {$_TABLES['pollquestions']} "
+        . "WHERE pid='" . DB_escapeString($pid) . "' ORDER BY qid";
     $questions = DB_query($question_sql);
     $navbar = new navbar;
 
@@ -570,8 +579,9 @@ function editpoll($pid = '')
         $poll_templates->set_var('description', $Q['description']);
 
         // answers
-        $answer_sql = "SELECT answer,aid,votes,remark "
-            . "FROM {$_TABLES['pollanswers']} WHERE qid='$j' AND pid='$pid' ORDER BY aid";
+        $answer_sql = "SELECT answer,aid,votes,remark FROM {$_TABLES['pollanswers']} "
+            . "WHERE qid='" . DB_escapeString($j) . "' AND pid = '" . DB_escapeString($pid) . "' "
+            . "ORDER BY aid";
         $answers = DB_query($answer_sql);
 
         for ($i = 0; $i < $_PO_CONF['maxanswers']; $i++) {
@@ -615,7 +625,7 @@ function deletePoll($pid)
     global $_CONF, $_TABLES, $_USER;
 
     $pid = DB_escapeString($pid);
-    $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} WHERE pid = '$pid'");
+    $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} WHERE pid = '{$pid}'");
     $Q = DB_fetchArray($result);
     $access = SEC_hasAccess($Q['owner_id'], $Q['group_id'], $Q['perm_owner'],
         $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']);

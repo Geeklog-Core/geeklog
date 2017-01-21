@@ -77,21 +77,23 @@ function polllist()
 
         $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
-        $text_arr = array('has_menu' => false,
-                          'title'    => $LANG_POLLS['pollstitle'], 'instructions' => "",
-                          'icon'     => '', 'form_url' => '',
-                          'form_url' => $_CONF['site_url'] . '/polls/index.php');
+        $text_arr = array(
+            'has_menu' => false,
+            'title'    => $LANG_POLLS['pollstitle'], 'instructions' => "",
+            'icon'     => '',
+            'form_url' => $_CONF['site_url'] . '/polls/index.php',
+        );
 
-        $query_arr = array('table'          => 'polltopics',
-                           'sql'            => $sql = "SELECT *,UNIX_TIMESTAMP(created) AS unixdate, display "
-                               . "FROM {$_TABLES['polltopics']} WHERE 1=1",
-                           'query_fields'   => array('topic'),
-                           'default_filter' => COM_getPermSQL(),
-                           'query'          => '',
-                           'query_limit'    => 0);
+        $query_arr = array(
+            'table'          => 'polltopics',
+            'sql'            => $sql = "SELECT *, UNIX_TIMESTAMP(created) AS unixdate, display FROM {$_TABLES['polltopics']} WHERE 1=1 ",
+            'query_fields'   => array('topic'),
+            'default_filter' => COM_getPermSQL(),
+            'query'          => '',
+            'query_limit'    => 0,
+        );
 
-        $retval .= ADMIN_list('polls', 'plugin_getListField_polls',
-            $header_arr, $text_arr, $query_arr, $defsort_arr);
+        $retval .= ADMIN_list('polls', 'plugin_getListField_polls', $header_arr, $text_arr, $query_arr, $defsort_arr);
     }
 
     return $retval;
@@ -135,7 +137,7 @@ $msg = (int) Geeklog\Input::fRequest('msg', 0);
 
 if (!empty($pid)) {
     $questions_sql = "SELECT question,qid FROM {$_TABLES['pollquestions']} "
-        . "WHERE pid='" . DB_escapeString($pid) . "' ORDER BY qid";
+        . "WHERE pid = '" . DB_escapeString($pid) . "' ORDER BY qid";
     $questions = DB_query($questions_sql);
     $nquestions = DB_numRows($questions);
 }
@@ -152,7 +154,9 @@ if (empty($pid)) {
     $display .= POLLS_pollsave($pid, $aid);
     $display = COM_createHTMLDocument($display);
 } elseif (!empty($pid)) {
-    $result = DB_query("SELECT topic, meta_description, meta_keywords FROM {$_TABLES['polltopics']} WHERE pid = '{$pid}'" . COM_getPermSQL('AND'));
+    $result = DB_query(
+        "SELECT topic, meta_description, meta_keywords FROM {$_TABLES['polltopics']} "
+        . "WHERE pid = '" . DB_escapeString($pid) . "' " . COM_getPermSQL('AND'));
     $A = DB_fetchArray($result);
 
     $polltopic = $A['topic'];

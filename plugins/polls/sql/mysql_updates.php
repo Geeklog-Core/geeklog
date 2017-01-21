@@ -27,10 +27,10 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* MySQL updates
-*
-* @package Polls
-*/
+ * MySQL updates
+ *
+ * @package Polls
+ */
 
 $_UPDATES = array(
 
@@ -53,7 +53,7 @@ $_UPDATES = array(
           PRIMARY KEY (qid, pid)
         ) ENGINE=MyISAM",
         // in 1.4.1, "don't display poll" was equivalent to "closed"
-        "UPDATE {$_TABLES['polltopics']} SET is_open = 0 WHERE display = 0"
+        "UPDATE {$_TABLES['polltopics']} SET is_open = 0 WHERE display = 0",
     ),
 
     '2.1.0' => array(
@@ -66,7 +66,7 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['pollvoters']} CHANGE pid pid varchar(40) NOT NULL default ''",
 
         // New field post-2.1.0
-        "ALTER TABLE {$_TABLES['polltopics']} ADD meta_description TEXT NULL AFTER topic, ADD meta_keywords TEXT NULL AFTER meta_description"
+        "ALTER TABLE {$_TABLES['polltopics']} ADD meta_description TEXT NULL AFTER topic, ADD meta_keywords TEXT NULL AFTER meta_description",
     ),
 
     '2.1.1' => array(
@@ -75,20 +75,20 @@ $_UPDATES = array(
 
         "ALTER TABLE {$_TABLES['polltopics']} CHANGE date `created` datetime default NULL",
         "ALTER TABLE {$_TABLES['polltopics']} ADD modified datetime default NULL AFTER `created`",
-        "UPDATE {$_TABLES['polltopics']} SET modified = `created`"
+        "UPDATE {$_TABLES['polltopics']} SET modified = `created`",
     ),
 
     '2.1.2' => array(
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_whatsnew', 'Access to configure polls what\'s new block', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_main', 'Access to configure general polls settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_permissions', 'Access to configure polls default permissions', 0)",
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_autotag_permissions', 'Access to configure polls autotag usage permissions', 0)"
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_autotag_permissions', 'Access to configure polls autotag usage permissions', 0)",
     ),
 
     '2.1.3' => array(
         // Delete Poll block since moved to dynamic
         "DELETE FROM {$_TABLES['blocks']} WHERE phpblockfn = 'phpblock_polls'",
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_poll_block', 'Access to configure poll block', 0)"
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_poll_block', 'Access to configure poll block', 0)",
     ),
 
     '2.1.4' => array(
@@ -96,11 +96,11 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['pollanswers']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL DEFAULT ''",
         "ALTER TABLE {$_TABLES['pollquestions']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL DEFAULT ''",
         "ALTER TABLE {$_TABLES['polltopics']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL DEFAULT ''",
-        "ALTER TABLE {$_TABLES['pollvoters']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL"
+        "ALTER TABLE {$_TABLES['pollvoters']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL",
     ),
 
     '2.1.6' => array(
-		// Added description and allow_multipleanswers fields
+        // Added description and allow_multipleanswers fields
         "ALTER TABLE {$_TABLES['pollquestions']} ADD `allow_multipleanswers` TINYINT(1) NULL DEFAULT NULL",
         "ALTER TABLE {$_TABLES['pollquestions']} ADD `description` MEDIUMTEXT NULL",
         "ALTER TABLE {$_TABLES['polltopics']} ADD `description` MEDIUMTEXT NULL",
@@ -108,9 +108,9 @@ $_UPDATES = array(
 );
 
 /**
-* Hook up pollquestions with polltopics
-*
-*/
+ * Hook up pollquestions with polltopics
+
+ */
 function polls_update_polltopics()
 {
     global $_TABLES;
@@ -122,6 +122,7 @@ function polls_update_polltopics()
     $count_move = DB_numRows($move_rst);
     for ($i = 0; $i < $count_move; $i++) {
         $A = DB_fetchArray($move_rst);
+        $A[0] = DB_escapeString($A[0]);
         $A[1] = DB_escapeString($A[1]);
         $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
     }
@@ -130,6 +131,7 @@ function polls_update_polltopics()
         $rst = DB_query($sql);
         if (DB_error()) {
             echo "There was an error upgrading the polls, SQL: $sql<br>";
+
             return false;
         }
     }
@@ -160,38 +162,37 @@ function polls_update_ConfValues_2_1_1()
     $c = config::get_instance();
 
     // What's New Block
-    $c->add('fs_whatsnew', NULL, 'fieldset',
-            0, 1, NULL, 0, true, 'polls');
-    $c->add('newpollsinterval',$_PO_DEFAULT['new_polls_interval'],'text',
-            0, 1, NULL, 10, TRUE, 'polls');
-    $c->add('hidenewpolls',$_PO_DEFAULT['hide_new_polls'],'select',
-            0, 1, 5, 20, TRUE, 'polls');
-    $c->add('title_trim_length',$_PO_DEFAULT['title_trim_length'],'text',
-            0, 1, NULL, 30, TRUE, 'polls');
+    $c->add('fs_whatsnew', null, 'fieldset',
+        0, 1, null, 0, true, 'polls');
+    $c->add('newpollsinterval', $_PO_DEFAULT['new_polls_interval'], 'text',
+        0, 1, null, 10, true, 'polls');
+    $c->add('hidenewpolls', $_PO_DEFAULT['hide_new_polls'], 'select',
+        0, 1, 5, 20, true, 'polls');
+    $c->add('title_trim_length', $_PO_DEFAULT['title_trim_length'], 'text',
+        0, 1, null, 30, true, 'polls');
 
     // Permissions (needed to redefine order on configuration form)
-    $c->del('fs_permissions','polls');
-    $c->del('default_permissions','polls');
+    $c->del('fs_permissions', 'polls');
+    $c->del('default_permissions', 'polls');
 
-    $c->add('fs_permissions', NULL, 'fieldset',
-            0, 2, NULL, 0, true, 'polls');
+    $c->add('fs_permissions', null, 'fieldset',
+        0, 2, null, 0, true, 'polls');
     $c->add('default_permissions', $_PO_CONF['default_permissions'], '@select',
-            0, 2, 12, 100, true, 'polls');
+        0, 2, 12, 100, true, 'polls');
 
     return true;
 }
 
 /**
  * Add in new security rights for the Group "Polls Admin"
- *
+
  */
 function polls_update_ConfigSecurity_2_1_2()
 {
     global $_TABLES;
 
     // Add in security rights for Polls Admin
-    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                            "grp_name = 'Polls Admin'");
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Polls Admin'");
 
     if ($group_id > 0) {
         $ft_names[] = 'config.polls.tab_whatsnew';
@@ -200,7 +201,8 @@ function polls_update_ConfigSecurity_2_1_2()
         $ft_names[] = 'config.polls.tab_autotag_permissions';
 
         foreach ($ft_names as $name) {
-            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");
+            $name = DB_escapeString($name);
+            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '{$name}'");
             if ($ft_id > 0) {
                 $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
                 DB_query($sql);
@@ -212,22 +214,18 @@ function polls_update_ConfigSecurity_2_1_2()
 
 /**
  * Add in new security rights for the Group "Polls Admin"
- *
+
  */
 function polls_update_ConfigSecurity_2_1_3()
 {
     global $_TABLES;
 
     // Add in security rights for Polls Admin
-    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                            "grp_name = 'Polls Admin'");
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Polls Admin'");
 
     if ($group_id > 0) {
         $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'config.polls.tab_poll_block'");
         $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
         DB_query($sql);
     }
-
 }
-
-?>
