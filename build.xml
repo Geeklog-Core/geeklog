@@ -142,7 +142,7 @@
         <chmod file="${dstDir}/public_html/images/_thumbs/articles" mode="0777"/>
         <chmod file="${dstDir}/public_html/images/_thumbs/library/Image" mode="0777"/>
         <chmod file="${dstDir}/public_html/images/_thumbs/userphotos" mode="0777"/>
-        <chmod file="${dstDir}/public_html/filemanager/scripts/filemanager.config.json" mode="0644"/>
+        <chmod file="${dstDir}/public_html/filemanager/scripts/filemanager.config.json" mode="0666"/>
         <chmod file="${dstDir}/public_html/siteconfig.php" mode="0666"/>
     </target>
 
