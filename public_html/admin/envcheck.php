@@ -68,7 +68,7 @@ function _checkEnvironment()
     $_SCRIPTS->setJavascript($javascript, true);
 
     $menu_arr = array (
-        array('url'  => $_CONF['site_admin_url'].'/envcheck.php',
+        array('url'  => $_CONF['site_admin_url'] . '/envcheck.php',
               'text' => $LANG_ENVCHECK['recheck']),
         array('url'  => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
@@ -466,95 +466,101 @@ function _checkEnvironment()
 
     $file_list = array(
         $_CONF['path_data'],
-        $_CONF['path_log'].'error.log',
-        $_CONF['path_log'].'access.log',
-        $_CONF['path_log'].'spamx.log',
-        $_CONF['path_log'].'404.log',
-        $_CONF['path_data'].'layout_cache/',
-
-        $_CONF['path_html'],
+        //$_CONF['path_data'] . 'layout_cache/',
+        //$_CONF['path_data'] . 'layout_css/',
+        $_CONF['path_log'] . '404.log',
+        $_CONF['path_log'] . 'access.log',
+        $_CONF['path_log'] . 'error.log',
+        $_CONF['path_log'] . 'spamx.log',
         $feedPath,
         $_CONF['rdf_file'],
-
-        $_CONF['path_html'].'images/articles/',
-        $_CONF['path_html'].'images/topics/',
-        $_CONF['path_html'].'images/userphotos/',
-        $_CONF['path_html'].'images/library/File/',
-        $_CONF['path_html'].'images/library/Flash/',
-        $_CONF['path_html'].'images/library/Image/',
-        $_CONF['path_html'].'images/library/Media/',
+        $_CONF['path_html'] . 'images/articles/',
+        $_CONF['path_html'] . 'images/topics/',
+        $_CONF['path_html'] . 'images/userphotos/',
+        $_CONF['path_html'] . 'images/library/File/',
+        $_CONF['path_html'] . 'images/library/Flash/',
+        $_CONF['path_html'] . 'images/library/Image/',
+        $_CONF['path_html'] . 'images/library/Image/_thumbs/',
+        $_CONF['path_html'] . 'images/library/Image/icons/',
+        $_CONF['path_html'] . 'images/library/Media/',
+        $_CONF['path_html'] . 'images/_thumbs/',
+        $_CONF['path_html'] . 'images/_thumbs/articles/',
+        $_CONF['path_html'] . 'images/_thumbs/library/Image/',
+        $_CONF['path_html'] . 'images/_thumbs/userphotos/',
+        $_CONF['path_html'] . 'filemanager/scripts/filemanager.config.json',
     );
+
 /* For Media Gallery Plugin - left in incase add plugin api checks in future
     $mg_file_list = array(
-        $_CONF['path'].'plugins/mediagallery/tmp/',
+        $_CONF['path'] . 'plugins/mediagallery/tmp/',
         $_MG_CONF['path_mediaobjects'],
-        $_MG_CONF['path_mediaobjects'].'covers/',
-        $_MG_CONF['path_mediaobjects'].'orig/',
-        $_MG_CONF['path_mediaobjects'].'disp/',
-        $_MG_CONF['path_mediaobjects'].'tn/',
-        $_MG_CONF['path_mediaobjects'].'orig/0/',
-        $_MG_CONF['path_mediaobjects'].'disp/0/',
-        $_MG_CONF['path_mediaobjects'].'tn/0/',
-        $_MG_CONF['path_mediaobjects'].'orig/1/',
-        $_MG_CONF['path_mediaobjects'].'disp/1/',
-        $_MG_CONF['path_mediaobjects'].'tn/1/',
-        $_MG_CONF['path_mediaobjects'].'orig/2/',
-        $_MG_CONF['path_mediaobjects'].'disp/2/',
-        $_MG_CONF['path_mediaobjects'].'tn/2/',
-        $_MG_CONF['path_mediaobjects'].'orig/3/',
-        $_MG_CONF['path_mediaobjects'].'disp/3/',
-        $_MG_CONF['path_mediaobjects'].'tn/3/',
-        $_MG_CONF['path_mediaobjects'].'orig/4/',
-        $_MG_CONF['path_mediaobjects'].'disp/4/',
-        $_MG_CONF['path_mediaobjects'].'tn/4/',
-        $_MG_CONF['path_mediaobjects'].'orig/5/',
-        $_MG_CONF['path_mediaobjects'].'disp/5/',
-        $_MG_CONF['path_mediaobjects'].'tn/5/',
-        $_MG_CONF['path_mediaobjects'].'orig/6/',
-        $_MG_CONF['path_mediaobjects'].'disp/6/',
-        $_MG_CONF['path_mediaobjects'].'tn/6/',
-        $_MG_CONF['path_mediaobjects'].'orig/7/',
-        $_MG_CONF['path_mediaobjects'].'disp/7/',
-        $_MG_CONF['path_mediaobjects'].'tn/7/',
-        $_MG_CONF['path_mediaobjects'].'orig/8/',
-        $_MG_CONF['path_mediaobjects'].'disp/8/',
-        $_MG_CONF['path_mediaobjects'].'tn/8/',
-        $_MG_CONF['path_mediaobjects'].'orig/9/',
-        $_MG_CONF['path_mediaobjects'].'disp/9/',
-        $_MG_CONF['path_mediaobjects'].'tn/9/',
-        $_MG_CONF['path_mediaobjects'].'orig/a/',
-        $_MG_CONF['path_mediaobjects'].'disp/a/',
-        $_MG_CONF['path_mediaobjects'].'tn/a/',
-        $_MG_CONF['path_mediaobjects'].'orig/b/',
-        $_MG_CONF['path_mediaobjects'].'disp/b/',
-        $_MG_CONF['path_mediaobjects'].'tn/b/',
-        $_MG_CONF['path_mediaobjects'].'orig/c/',
-        $_MG_CONF['path_mediaobjects'].'disp/c/',
-        $_MG_CONF['path_mediaobjects'].'tn/c/',
-        $_MG_CONF['path_mediaobjects'].'orig/d/',
-        $_MG_CONF['path_mediaobjects'].'disp/d/',
-        $_MG_CONF['path_mediaobjects'].'tn/d/',
-        $_MG_CONF['path_mediaobjects'].'orig/e/',
-        $_MG_CONF['path_mediaobjects'].'disp/e/',
-        $_MG_CONF['path_mediaobjects'].'tn/e/',
-        $_MG_CONF['path_mediaobjects'].'orig/f/',
-        $_MG_CONF['path_mediaobjects'].'disp/f/',
-        $_MG_CONF['path_mediaobjects'].'tn/f/',
-        $_MG_CONF['path_html'].'watermarks/',
+        $_MG_CONF['path_mediaobjects'] . 'covers/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/0/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/0/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/0/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/1/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/1/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/1/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/2/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/2/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/2/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/3/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/3/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/3/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/4/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/4/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/4/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/5/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/5/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/5/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/6/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/6/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/6/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/7/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/7/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/7/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/8/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/8/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/8/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/9/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/9/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/9/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/a/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/a/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/a/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/b/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/b/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/b/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/c/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/c/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/c/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/d/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/d/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/d/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/e/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/e/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/e/',
+        $_MG_CONF['path_mediaobjects'] . 'orig/f/',
+        $_MG_CONF['path_mediaobjects'] . 'disp/f/',
+        $_MG_CONF['path_mediaobjects'] . 'tn/f/',
+        $_MG_CONF['path_html'] . 'watermarks/',
     );
 
     $fm_file_list = array(
         $filemgmt_FileStore,
-        $filemgmt_FileStore.'tmp/',
+        $filemgmt_FileStore . 'tmp/',
         $filemgmt_SnapStore,
-        $filemgmt_SnapStore.'tmp/',
+        $filemgmt_SnapStore . 'tmp/',
         $filemgmt_SnapCat,
-        $filemgmt_SnapCat.'tmp/',
+        $filemgmt_SnapCat . 'tmp/',
     );
 
     $forum_file_list = array(
-        $_FF_CONF['uploadpath'].'/',
-        $_FF_CONF['uploadpath'].'/tn/',
+        $_FF_CONF['uploadpath'] . '/',
+        $_FF_CONF['uploadpath'] . '/tn/',
     );
 
 
@@ -586,31 +592,34 @@ function _checkEnvironment()
 */
         }
     }
-    // special test to see if we can create a directory under layout_cache...
-    $rc = @mkdir($_CONF['path_data'].'layout_cache/test/');
-    if (!$rc) {
-        $data_arr[] = array(
-            'location' => $_CONF['path_data'] . 'layout_cache/',
-            'status'   => _getStatusTags($T, 'notwriteable', $LANG_ENVCHECK['unable_mkdir'])
-        );
-        $permError = 1;
-        @rmdir($_CONF['path_data'] . 'layout_cache/test/');
-    } else {
-        $ok = _isWritable($_CONF['path_data'].'layout_cache/test/');
-        if (!$ok) {
+
+    foreach (array('layout_cache/', 'layout_css/') as $target) {
+        // special test to see if we can create a directory under layout_cache...
+        $rc = @mkdir($_CONF['path_data'] . $target . 'test/', 0777, true);
+        if (!$rc) {
             $data_arr[] = array(
-                'location' => $path,
-                'status'   => _getStatusTags($T, 'notwriteable', $LANG_ENVCHECK['not_writable'])
+                'location' => $_CONF['path_data'] . $target,
+                'status'   => _getStatusTags($T, 'notwriteable', $LANG_ENVCHECK['unable_mkdir'])
             );
             $permError = 1;
+            @rmdir($_CONF['path_data'] . $target . 'test/');
+        } else {
+            $ok = _isWritable($_CONF['path_data'] . $target . 'test/');
+            if (!$ok) {
+                $data_arr[] = array(
+                    'location' => $_CONF['path_data'] . $target,
+                    'status'   => _getStatusTags($T, 'notwriteable', $LANG_ENVCHECK['not_writable'])
+                );
+                $permError = 1;
+            }
+            @rmdir($_CONF['path_data'] . $target . 'test/');
         }
-        @rmdir($_CONF['path_data'] . 'layout_cache/test/');
-    }
 
-    // special test to see if existing cache files exist and are writable...
-    $rc = _checkCacheDir($T, $_CONF['path_data'] . 'layout_cache/', $data_arr);
-    if ($rc > 0) {
-        $permError = 1;
+        // special test to see if existing cache files exist and are writable...
+        $rc = _checkCacheDir($T, $_CONF['path_data'] . $target, $data_arr);
+        if ($rc > 0) {
+            $permError = 1;
+        }
     }
 
     if (!$permError) {
@@ -733,7 +742,7 @@ function _checkCacheDir(&$T, $path, &$data_arr)
     // special test to see if existing cache files exist and are writable...
     if ($dh = @opendir($path)) {
         while (($file = readdir($dh)) !== false) {
-            if ($file == '.' || $file == '..' || $file == '.svn') {
+            if ($file == '.' || $file == '..' || $file == '.svn' || $file == 'index.html') {
                 continue;
             }
             if (is_dir($path.$file)) {
