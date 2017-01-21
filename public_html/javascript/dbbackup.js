@@ -121,9 +121,9 @@ var geeklog_dbadminInterface = (function() {
                 data: {"mode" : 'dbbackup_complete', "backup_filename" : dbFileName},
             }).done(function(data) {
                 $("#dbbackupbutton").html(lang_backup);
-                UIkit.modal.confirm(lang_success, function(){
+                UIkit.modal.alert(lang_success, function(){
                     $(location).attr('href', 'database.php');
-                }, function(){}, {labels:{'Ok': lang_ok,'Cancel': lang_cancel } });
+                }, function(){}, {labels:{'Ok': lang_ok}});
             });
         }, 2000);
     };
