@@ -2941,6 +2941,7 @@ HTML;
                         update_dateTimeColumns212();
                         update_addLanguage();
                         update_addRouting();
+                        updateUserTheme212();
                         update_ConfValuesFor212();
                     }
                     $currentGlVersion = '2.1.2';

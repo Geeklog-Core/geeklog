@@ -23,10 +23,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['vars']} CHANGE `value` `value` text NULL AFTER
 function upgrade_message211()
 {
     global $_TABLES;
-    
+
     // 3 upgrade message types exist 'information', 'warning', 'error'
     // error type means the user cannot continue upgrade until fixed
-    
+
     /*
     // INCOMPLETE should check if user needs to change topic ids if changle length to 75 produces duplicate ids
     // Topic IDs and Names have changed from 128 to 75 
@@ -36,10 +36,12 @@ function upgrade_message211()
         $upgradeMessages['2.1.1'] = array('warning' => 15);
     }
     */
-    
+
     // Dropped Support for Professional theme
-    $upgradeMessages['2.1.1'] = array('information' => 17, // Dropped Support for Professional theme
-                                      'warning' => 15); // Topic IDs and Names have changed from 128 to 75 
+    $upgradeMessages['2.1.1'] = array(
+        'information' => 17,    // Dropped Support for Professional theme
+        'warning'     => 15,    // Topic IDs and Names have changed from 128 to 75
+    );
 
     return $upgradeMessages;
 }
@@ -117,8 +119,8 @@ function update_addRouting()
 }
 
 /**
-* Modify DATETIME columns with '0000-00-00 00:00:00' being the default value to DATETIME DEFAULT NULL
-* to make Geeklog compatible with MySQL-5.7 with NO_ZERO_DATE in sql_mode
+ * Modify DATETIME columns with '0000-00-00 00:00:00' being the default value to DATETIME DEFAULT NULL
+ * to make Geeklog compatible with MySQL-5.7 with NO_ZERO_DATE in sql_mode
  */
 function update_dateTimeColumns212()
 {
@@ -151,6 +153,18 @@ function update_dateTimeColumns212()
     foreach ($_SQL as $sql) {
         DB_query($sql, 1);
     }
+}
+
+/**
+ * Change users' theme to 'denim'
+ */
+function updateUserTheme212()
+{
+    global $_TABLES;
+
+    $sql = "UPDATE {$_TABLES['users']} SET theme = 'denim' "
+        . "WHERE (theme = 'professional') OR (theme = 'professional_css')";
+    DB_query($sql);
 }
 
 /**
@@ -217,6 +231,9 @@ function update_ConfValuesFor212()
 
     // Add a flag whether to filter utf-8 4-byte character
     $c->add('remove_4byte_chars', true, 'select', 4, 20, 1, 855, true, $me, 20);
+
+    // Change default theme to denim
+    $c->set('theme', 'denim', 'Core');
 
     return true;
 }
