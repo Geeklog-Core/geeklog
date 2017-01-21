@@ -7150,14 +7150,20 @@ function COM_getLanguage()
         return $langFile;
     }
 
-    $langFile = '';
+    // 1. Try to get language from URL
+    $langFile = COM_getLanguageFromBrowser();
 
-    if (!empty($_USER['language'])) {
-        $langFile = $_USER['language'];
-    } elseif (!empty($_COOKIE[$_CONF['cookie_language']])) {
-        $langFile = $_COOKIE[$_CONF['cookie_language']];
-    } elseif (isset($_CONF['languages'])) {
-        $langFile = COM_getLanguageFromBrowser();
+    if (empty($langFile)) {
+        if (!empty($_USER['language'])) {
+            // 2. Try to get language from the user's settings
+            $langFile = $_USER['language'];
+        } elseif (!empty($_COOKIE[$_CONF['cookie_language']])) {
+            // 3. Try to get language from a value stored in a cookie
+            $langFile = $_COOKIE[$_CONF['cookie_language']];
+        } elseif (isset($_CONF['languages'])) {
+            // 4. Try to get language from HTTP request headers sent by the web browser
+            $langFile = COM_getLanguageFromBrowser();
+        }
     }
 
     $langFile = COM_sanitizeFilename($langFile);
@@ -8539,7 +8545,7 @@ function COM_handleException($exception)
 /**
  * Return a URL to a given document file
  *
- * @param  string $baseDirectory   the name of directory relative to $_CONF['path_html'], e.g., 'docs', 'help'
+ * @param  string $baseDirectory the name of directory relative to $_CONF['path_html'], e.g., 'docs', 'help'
  * @param  string $fileName
  * @return string|false            false when the given file is missing
  * @throws InvalidArgumentException
@@ -8572,6 +8578,55 @@ function COM_getDocumentUrl($baseDirectory, $fileName)
 
     $retval = str_replace($_CONF['path_html'], $_CONF['site_url'] . '/', $path);
     $retval = str_replace('\\', '/', $retval);
+
+    return $retval;
+}
+
+/**
+ * Get language name from a URL
+ *
+ * @param  string $url
+ * @return string       e.g., 'en', 'ja', ...
+ * @note   code provided by hiroron
+ */
+function COM_getLanguageFromURL($url = '')
+{
+    global $_CONF;
+
+    $retval = '';
+
+    if (empty($url)) {
+        $url = COM_getCurrentURL();
+    }
+
+    if ($_CONF['url_rewrite']) {
+        // for "rewritten" URLs we assume that the first parameter after
+        // the script name is the ID, e.g. /article.php/story-id-here_en
+        $parts = explode('/', $url);
+        $numParts = count($parts);
+
+        for ($i = 0; $i < $numParts; $i++) {
+            if (substr($parts[$i], -4) === '.php') {
+                // found the script name - assume next parameter is the ID
+                if (isset($parts[$i + 1])) {
+                    $l = strrpos($parts[$i + 1], '_');
+                    if ($l !== false) {
+                        $retval = substr($parts[$i + 1], $l + 1);
+                    }
+                }
+                break;
+            }
+        }
+    } else { // URL contains '?' or '&'
+        $url = str_replace('&amp;', '&', $url);
+        $parts = explode('&', $url);
+        $part = $parts[0];
+        $l = strrpos($part, '_');
+
+        if ($l !== false) {
+            $retval = substr($part, $l + 1);
+        }
+    }
 
     return $retval;
 }
