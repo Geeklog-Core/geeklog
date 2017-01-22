@@ -3650,7 +3650,7 @@ HTML;
             . '<p>'
             // Todo: Add "Refresh" button to refresh the list of files in the backups directory
             // . '<input type="button" name="refresh" class="submit" value="' . 'Refresh' . '" onclick="INST_refreshBackupList()"' . XHTML . '>'
-            . '<input type="submit" name="submit" class="submit button" value="' . $LANG_MIGRATE[16] . ' &gt;&gt;"></p>' . PHP_EOL
+            . '<input type="submit" name="submit" class="submit button big-button" value="' . $LANG_MIGRATE[16] . ' &gt;&gt;"></p>' . PHP_EOL
             . '</form>' . PHP_EOL;
 
         return $display;
