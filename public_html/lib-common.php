@@ -235,6 +235,10 @@ if ($_CONF['url_rewrite']) {
     $topic = \Geeklog\Input::fGet('topic', \Geeklog\Input::fPost('topic', ''));
 }
 
+if ($topic === '-') {
+    $topic = '';
+}
+
 // See if user has access to view topic
 if ($topic != '') {
     $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'));

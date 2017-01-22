@@ -96,41 +96,54 @@ function fixTopic(&$A, $tid_list)
     }
 }
 
+// Main
 // If URL routing is enabled, then let the router handle the request
 if ($_CONF['url_rewrite'] && isset($_CONF['url_routing']) && !empty($_CONF['url_routing'])) {
     Router::dispatch();
 }
 
 // See if user has access to view topic else display message.
-// This check has already been done in lib-common so re check to figure out if
+// This check has already been done in lib-common so re-check to figure out if
 // 404 message needs to be displayed.
-$topic_check = Geeklog\Input::fGetOrPost('topic', '');
+$topic_check = '';
+$page = 0;
+if ($_CONF['url_rewrite']) {
+    COM_setArgNames(array(TOPIC_PLACEHOLDER, 'topic', 'page'));
+    if (strcasecmp(COM_getArgument(TOPIC_PLACEHOLDER), 'topic') === 0) {
+        $topic_check = COM_getArgument('topic');
+        $page = (int) COM_getArgument('page');
+    }
+} else {
+    $topic_check = Geeklog\Input::fGet('topic', Geeklog\Input::fPost('topic', ''));
+    $page = (int) Geeklog\Input::get('page', 0);
+}
+
+if ($topic_check === '-') {
+    $topic_check = '';
+}
+
 if ($topic_check != '') {
-    if (strtolower($topic_check) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic_check' " . COM_getPermSQL('AND')))) {
+    if (strtolower($topic_check) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($topic_check) . "' " . COM_getPermSQL('AND')))) {
         COM_handle404();
     }
 }
 
-$displayall = false;
-if ((Geeklog\Input::get('display') === 'all') && empty($topic)) {
-    $displayall = true;
-}
-
-// Retrieve the archive topic - currently only one supported
-$archivetid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
-
-$page = (int) Geeklog\Input::fGet('page', 1);
 if ($page == 0) {
     $page = 1;
 }
 
+$displayAll = (Geeklog\Input::get('display') === 'all') && empty($topic);
+
+// Retrieve the archive topic - currently only one supported
+$archiveTid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
+
 $display = '';
 
-if (!$displayall) {
+if (!$displayAll) {
     // give plugins a chance to replace this page entirely
-    $newcontent = PLG_showCenterblock(0, $page, $topic);
-    if (!empty($newcontent)) {
-        COM_output($newcontent);
+    $newContent = PLG_showCenterblock(0, $page, $topic);
+    if (!empty($newContent)) {
+        COM_output($newContent);
         exit;
     }
 }
@@ -140,7 +153,7 @@ if (isset($_GET['msg'])) {
     $display .= COM_showMessage((int) Geeklog\Input::fGet('msg'), $plugin);
 }
 
-if (SEC_inGroup('Root') && ($page == 1)) {
+if (SEC_inGroup('Root') && ($page === 1)) {
     $done = DB_getItem($_TABLES['vars'], 'value', "name = 'security_check'");
     if ($done != 1) {
         /**
@@ -199,8 +212,7 @@ if ($U['maxstories'] >= $_CONF['minnews']) {
     $maxstories = $U['maxstories'];
 }
 if ((!empty($topic)) && ($maxstories == 0)) {
-    $topiclimit = DB_getItem($_TABLES['topics'], 'limitnews',
-        "tid = '{$topic}'");
+    $topiclimit = DB_getItem($_TABLES['topics'], 'limitnews', "tid = '" . DB_escapeString($topic) . "'");
     if ($topiclimit >= $_CONF['minnews']) {
         $maxstories = $topiclimit;
     }
@@ -217,27 +229,27 @@ if ($limit < 1) {
 // Scan for any stories that have expired and should be archived or deleted
 $asql = "SELECT sid,ta.tid,title,expire,statuscode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta ";
 $asql .= "WHERE (expire <= NOW()) AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (statuscode = " . STORY_DELETE_ON_EXPIRE;
-if (empty($archivetid)) {
+if (empty($archiveTid)) {
     $asql .= ')';
 } else {
-    $asql .= ' OR statuscode = ' . STORY_ARCHIVE_ON_EXPIRE . ") AND ta.tid != '$archivetid'";
+    $asql .= ' OR statuscode = ' . STORY_ARCHIVE_ON_EXPIRE . ") AND ta.tid != '" . DB_escapeString($archiveTid) . "'";
 }
 $expiresql = DB_query($asql);
 while (list($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetcharray($expiresql)) {
     if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
-        if (!empty($archivetid)) {
-            COM_errorLog("Archive Story: $sid, Topic: $archivetid, Title: $title, Expired: $expire");
+        if (!empty($archiveTid)) {
+            COM_errorLog("Archive Story: $sid, Topic: $archiveTid, Title: $title, Expired: $expire");
 
             // Delete all topic references to story except topic default
-            $asql = "DELETE FROM {$_TABLES['topic_assignments']} WHERE type = 'article' AND id = '{$sid}' AND tdefault = 0";
+            $asql = "DELETE FROM {$_TABLES['topic_assignments']} "
+                . "WHERE type = 'article' AND id = '" . DB_escapeString($sid) . "' AND tdefault = 0";
             DB_query($asql);
 
             // Now move over story to archive topic
             $asql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
-                    SET ta.tid = '$archivetid', s.frontpage = '0', s.featured = '0'
-                    WHERE s.sid='{$sid}' AND ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1";
+                    SET ta.tid = '" . DB_escapeString($archiveTid) . "', s.frontpage = '0', s.featured = '0'
+                    WHERE s.sid='" . DB_escapeString($sid) . "' AND ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1";
             DB_query($asql);
-
         }
     } elseif ($statuscode == STORY_DELETE_ON_EXPIRE) {
         COM_errorLog("Delete Story and comments: $sid, Topic: $expiretopic, Title: $title, Expired: $expire");
@@ -260,15 +272,15 @@ if (!empty($topic)) {
 
     // Could have empty list if $topic does not exist or does not have permission so let it equal topic and will error out properly at end
     if (empty($tid_list)) {
-        $tid_list = "'" . $topic . "'";
+        $tid_list = "'" . DB_escapeString($topic) . "'";
     }
-    $sql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')))";
+    $sql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . DB_escapeString($topic) . "')))";
 } else {
     $sql .= " AND frontpage = 1 AND ta.tdefault = 1";
 }
 
-if (strtolower($topic) != strtolower($archivetid)) {
-    $sql .= " AND ta.tid != '{$archivetid}' ";
+if (strtolower($topic) != strtolower($archiveTid)) {
+    $sql .= " AND ta.tid != '" . DB_escapeString($archiveTid) . "' ";
 }
 
 $sql .= COM_getPermSQL('AND', 0, 2, 's');
@@ -292,7 +304,8 @@ if ($_CONF['allow_user_photo'] == 1) {
     }
 }
 
-// The incorrect t.topic, t.imageurl will most likely be return so removed from this statement and added later in fixtopic function. (also because of MySQL 5.7 default install support)
+// The incorrect t.topic, t.imageurl will most likely be returned so removed from this statement
+// and added later in fixTopic function. (also because of MySQL 5.7 default install support)
 $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
             {$userfields}
@@ -309,7 +322,7 @@ $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
 
 $result = DB_query($msql);
 
-//Figure out number of total pages
+// Figure out number of total pages
 $data = DB_query("SELECT s.sid FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta WHERE ta.type = 'article' AND ta.id = s.sid AND $sql GROUP BY s.sid");
 $nrows = DB_numRows($data);
 $num_pages = ceil($nrows / $limit);
@@ -353,25 +366,35 @@ if ($A = DB_fetchArray($result)) {
 
     // Print Google-like paging navigation
     if (!isset($_CONF['hide_main_page_navigation']) ||
-        ($_CONF['hide_main_page_navigation'] == 'false')
-    ) {
-        if (empty($topic)) {
-            $base_url = $_CONF['site_url'] . '/index.php';
+        ($_CONF['hide_main_page_navigation'] == 'false') ||
+        ($_CONF['hide_main_page_navigation'] === 'frontpage' && !empty($topic))) {
+        if ($_CONF['url_rewrite']) {
+            $tempTopic = empty($topic) ? '-' : $topic;
+            $base_url = COM_buildURL(
+                $_CONF['site_url'] . '/index.php?'
+                . http_build_query(array(
+                    TOPIC_PLACEHOLDER => 'topic',
+                    'topic'           => $tempTopic,
+                ))
+            );
         } else {
-            $base_url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $topic);
+            if (!empty($topic)) {
+                $base_url = COM_buildURL(
+                    $_CONF['site_url'] . '/index.php?'
+                    . http_build_query(array(
+                        'topic' => $topic,
+                    ))
+                );
+            } else {
+                $base_url = $_CONF['site_url'] . '/index.php';
+            }
         }
-        $display .= COM_printPageNavigation($base_url, $page, $num_pages);
-    } else {
-        if ($_CONF['hide_main_page_navigation'] == 'frontpage' && !empty($topic)) {
-            $base_url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $topic);
-            $display .= COM_printPageNavigation($base_url, $page, $num_pages);
-        }
+
+        $display .= COM_printPageNavigation($base_url, $page, $num_pages, 'page=', (bool) $_CONF['url_rewrite']);
     }
 } else { // no stories to display
     if ($page == 1) {
-        if (!isset($_CONF['hide_no_news_msg']) ||
-            ($_CONF['hide_no_news_msg'] == 0)
-        ) {
+        if (!isset($_CONF['hide_no_news_msg']) || ($_CONF['hide_no_news_msg'] == 0)) {
             $display .= COM_startBlock($LANG05[1], '',
                     COM_getBlockTemplate('_msg_block', 'header')) . $LANG05[2];
             $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
@@ -392,7 +415,7 @@ $header = '';
 if ($topic) {
     // Meta Tags
     if ($_CONF['meta_tags'] > 0) {
-        $result = DB_query("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
+        $result = DB_query("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '" . DB_escapeString($topic) . "'");
         $A = DB_fetcharray($result);
         $header .= LB . PLG_getMetaTags(
                 'homepage', '',
