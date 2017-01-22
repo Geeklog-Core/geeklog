@@ -945,8 +945,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
 
     $is_default = Geeklog\Input::post('is_default', '');
     $is_archive = Geeklog\Input::post('is_archive', '');
-    $inherit = (int) Geeklog\Input::fPost('inherit', 0);
-    $hidden = (int) Geeklog\Input::fPost('hidden', 0);
+    $inherit = Geeklog\Input::post('inherit', '');
+    $hidden = Geeklog\Input::post('hidden', '');
     $parent_id = Geeklog\Input::fPost('parent_id');
     $sortnum = (int) Geeklog\Input::fPost('sortnum', 0);
     $display .= savetopic(
