@@ -958,11 +958,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
         $sortnum,
         (int) Geeklog\Input::fPost('limitnews'),
         (int) Geeklog\Input::fPost('owner_id'),
-        (int) Geeklog\Input::fPost('group_id'),
-        (int) Geeklog\Input::post('perm_owner'),
-        (int) Geeklog\Input::post('perm_group'),
-        (int) Geeklog\Input::post('perm_members'),
-        (int) Geeklog\Input::post('perm_anon'),
+        (int) Geeklog\Input::fPost('group_id'),        
+        Geeklog\Input::post('perm_owner'),
+        Geeklog\Input::post('perm_group'),
+        Geeklog\Input::post('perm_members'),
+        Geeklog\Input::post('perm_anon'),        
         $is_default, $is_archive
     );
 } elseif ($mode === 'edit') {
