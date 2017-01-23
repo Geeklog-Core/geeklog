@@ -1459,7 +1459,7 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
         $topicrelated->set_var('lang_filed_under', $LANG27['filed_under:']);
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
-            $url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $A['tid']);
+            $url = TOPIC_getUrl($A['tid']);
 
             $topicrelated->set_var('topic_url', $url);
             $topicrelated->set_var('topic', $A['topic']);
@@ -1655,7 +1655,7 @@ function plugin_autotags_topic($op, $content = '', $autotag = '')
                 $result = DB_query($sql);
                 $A = DB_fetchArray($result);
                 if ($A['count'] == 1) {
-                    $url = COM_buildUrl($_CONF['site_url'] . '/index.php?topic=' . $tid);
+                    $url = TOPIC_getUrl($tid);
                     $linktext = $autotag['parm2'];
                     if (empty($linktext)) {
                         $linktext = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '$tid'"));

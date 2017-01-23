@@ -404,7 +404,7 @@ if ($A = DB_fetchArray($result)) {
     } else {
         $topic_url = '';
         if (!empty($topic)) {
-            $topic_url = COM_buildURL($_CONF['site_url'] . '/index.php?topic=' . $topic);
+            $topic_url = TOPIC_getUrl($topic);
         }
         COM_handle404($topic_url);
     }
