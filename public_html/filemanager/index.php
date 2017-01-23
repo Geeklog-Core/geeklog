@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Filemanager browser                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2016 by the following authors:                         |
+// | Copyright (C) 2014-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Riaan Los       - mail AT riaanlos DOT nl                        |
 // |          Simon Georget   - simon AT linea21 DOT com                       |
@@ -234,7 +234,7 @@ $relPaths = array(
     'Root'  => $rootPath,
 );
 
-$type = Geeklog\Input::fGet('type', '');
+$type = Geeklog\Input::fGet('Type', '');
 
 if (!array_key_exists($type, $relPaths)) {
     $type = 'Image';
