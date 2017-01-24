@@ -4677,7 +4677,25 @@ HTML;
                         // Check if GL is already installed
                         if ($this->tableExists('vars')) {
                             $this->env['use_innodb_string'] = $use_innodb ? 'true' : 'false';
-                            $this->env['installPlugins'] = $installPlugins;
+                            $this->env['installPlugins'] = $installPlugins ? 'true' : 'false';
+                            $site_name = $this->post('site_name', $this->get('site_name', ''));
+                            $site_slogan = $this->post('site_slogan', $this->get('site_slogan', ''));
+                            $site_url = $this->post('site_url', $this->get('site_url', ''));
+                            $site_admin_url = $this->post('site_admin_url', $this->get('site_admin_url', ''));
+                            $site_mail = $this->post('site_mail', $this->get('site_mail', ''));
+                            $noreply_mail = $this->post('noreply_mail', $this->get('noreply_mail', ''));
+
+                            $site_name = urldecode($site_name);
+                            $site_name = $this->cleanString($site_name);
+                            $site_slogan = urldecode($site_slogan);
+                            $site_slogan = $this->cleanString($site_slogan);
+
+                            $this->env['site_name'] = $site_name;
+                            $this->env['site_slogan'] = $site_slogan;
+                            $this->env['site_url'] = urldecode($site_url);
+                            $this->env['site_admin_url'] = urldecode($site_admin_url);
+                            $this->env['site_mail'] = urldecode($site_mail);
+                            $this->env['noreply_mail'] = urldecode($noreply_mail);
                             $retval .= MicroTemplate::quick(PATH_LAYOUT, 'step3-install', $this->env);
                         } else {
                             if ($this->createDatabaseStructures()) {
