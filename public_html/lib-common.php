@@ -7667,7 +7667,7 @@ function COM_handle404($alternate_url = '')
             $url = 'https';
         }
 
-        $url .= '://' . @$_SERVER['HTTP_HOST'] . strip_tags($_SERVER['SCRIPT_URI']);
+        $url .= '://' . @$_SERVER['HTTP_HOST'] . strip_tags($_SERVER['REQUEST_URI']);
     }
 
     // Add log stuff
