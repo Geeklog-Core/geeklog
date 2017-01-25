@@ -1,5 +1,5 @@
                                 Geeklog Readme
-                                October 24, 2016
+                                January 25, 2017
 
 Table of Contents
 ================
@@ -61,7 +61,7 @@ For the installation instructions please see
 To get the latest Geeklog source, read the latest Geeklog news, and
 participate in Geeklog discussions, visit the Geeklog site:
 
-http://www.geeklog.net
+https://www.geeklog.net
 
 
 2) Features
@@ -71,35 +71,39 @@ features are as follows:
 
 2.1) Blog/CMS Features
 ======================
-    - Create, Schedule, Post and Edit articles in multiple topics
-    - Articles can belong to one or more topics
+    - Create, Schedule, Post and Edit articles in multiple topics.
+    - Articles can belong to one or more topics.
     - Save story drafts until they are ready for publishing.
-    - Control over formatting used in articles (HTML whitelists)
-    - Control over acceptable content (filtering of offensive language)
-    - Embed images or other content in articles
-    - Multiple Authors can post
-    - Submissions from users
-    - Support for comments, trackbacks and pingbacks
-    - Export and import in all common syndication formats (RSS/RDF/Atom etc)
-    - Spam detection and rejection
+    - Control over formatting used in articles (HTML whitelists).
+    - Control over acceptable content (filtering of offensive language).
+    - Embed images or other content in articles.
+    - Multiple Authors can post.
+    - Submissions from users.
+    - Support for comments, trackbacks and pingbacks.
+    - Export and import in all common syndication formats (RSS/RDF/Atom etc).
+    - Spam detection and rejection.
     - Robust calendar feature with support for personalized calendars.
-    - Support for OpenID and other remote authentication methods.
+    - Advance Poll plugin included which allows you to poll your visitors
+    - Support for OAuth, OpenID and other remote authentication methods.
     - Extendible via numerous Open Source plugins.
+    - Includes advance WYSIWYG editor which can be used for submitting 
+      different types of content.
 
 2.2) Administration Features
 ============================
-    - Easy to install with a new automated installer in 1.5
-    - Fully support for internationalization and localization
-    - Easy to use admin interface
+    - Easy to install with an automated installer.
+    - Fully support for internationalization and localization.
+    - Easy to use admin interface.
     - Admin interface has complete configurability for all Geeklog Functions.
     - User-specified theming engine for custom look and feel.
+    - File Manager
 
 2.3) Security Features
 ======================
     - User accounts and access controls.
     - Robust *nix-like security model for all objects which can be extended for
-      use in plugins
-    - Access can be defined for each article, topic etc
+      use in plugins.
+    - Access can be defined for each article, topic etc.
     - All passwords are stored encrypted.
     - All admin access is logged.
     - All errors are logged.
@@ -121,7 +125,7 @@ features are as follows:
 ==================
 The Geeklog website is a good source of information at:
 
-http://www.geeklog.net
+https://www.geeklog.net
 
 Where you can find the Geeklog FAQ, Wiki, and the Forums.
 
@@ -138,7 +142,7 @@ Geeklog.
 ==================
 Another good support channel is the mailing list located at:
 
-http://lists.geeklog.net/mailman/listinfo/geeklog-users
+https://lists.geeklog.net/mailman/listinfo/geeklog-users
 
 
 3.3) Known Issues
@@ -153,7 +157,7 @@ https://github.com/Geeklog-Core/geeklog/issues
 =======================================
 See public_html/docs/english/install.html or the Geeklog.net site:
 
-http://www.geeklog.net/docs/english/install.html
+https://www.geeklog.net/docs/english/install.html
 
 
 5) Security Issues
@@ -170,12 +174,12 @@ It is up to you to properly secure your database, web server and host
 settings.  If you are looking for information in securing your system
 some starting points we can recommend are:
 
-http://www.php.net
-http://www.mysql.com
-http://www.apache.org
-http://www.devshed.com
+https://www.php.net
+https://www.mysql.com
+https://www.apache.org
+https://www.devshed.com
 http://www.securityfocus.com
-http://www.linux.com
+https://www.linux.com
 
 
 6) License
@@ -185,7 +189,7 @@ it really interests you (or you having trouble sleeping) go ahead and read it.
 
 In a nice gesture you could provide a link back to us:
 
-http://www.geeklog.net
+https://www.geeklog.net
 
 There is also a button that is in the release that we would appreciate you use
 (in public_html/images/buttons).
@@ -209,14 +213,15 @@ Further Documentation
 Read the documents in the public_html/docs directory for more information, etc.
 
 See also:
-    - FAQ: http://www.geeklog.net/faqman/
-    - Support Forum: http://www.geeklog.net/forum/
-    - Wiki: http://wiki.geeklog.net/
+    - FAQ: https://www.geeklog.net/faqman/
+    - Support Forum: https://www.geeklog.net/forum/
+    - Wiki: https://wiki.geeklog.net/
     - Plugin Developers Guide: http://gplugs.sourceforge.net/pluginman/
 
     
 Appendix A - readme history
 ===========================
+2017-01-25 - Updated links (tom)
 2016-10-24 - Added Gitter information. Formatting (tom)
 2016-01-11 - URL changes, minor updates (tom)
 2009-04-18 - docs URL changed (dhaun)
