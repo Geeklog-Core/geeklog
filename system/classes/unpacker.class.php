@@ -117,7 +117,7 @@ class Unpacker
             // copy vars
             $this->file = $file;
             $this->fileSize = filesize($file);
-            $this->ext = strtolower(substr($file, -4));
+            $this->ext = substr($file, strrpos($file, '.'));
 
             // if the type is passed, store it
             if (!empty($mimeType)) {
@@ -133,10 +133,10 @@ class Unpacker
                 // mime types are not reliable so this is the recommended way
                 // for example: unpacker($_FILES['foo']['name'],$type);
                 // .tar, .tgz, .tar.gz, .tar.bz2, and .tar.bz are supported
-                if ($this->ext === 'r.gz' || $this->ext === '.tgz') {
+                if ($this->ext === '.gz' || $this->ext === '.tgz') {
                     $this->type = 'tar';
                     $this->comp = 'gz';
-                } elseif ($this->ext === 'r.bz' || $this->ext === '.bz2') {
+                } elseif ($this->ext === '.bz' || $this->ext === '.bz2') {
                     $this->type = 'tar';
                     $this->comp = 'bz2';
                 } elseif ($this->ext === '.zip') {
