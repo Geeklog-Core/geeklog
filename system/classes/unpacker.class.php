@@ -117,7 +117,7 @@ class Unpacker
             // copy vars
             $this->file = $file;
             $this->fileSize = filesize($file);
-            $this->ext = substr($file, strrpos($file, '.'));
+            $this->ext = strtolower(substr($file, strrpos($file, '.')));
 
             // if the type is passed, store it
             if (!empty($mimeType)) {
