@@ -1,7 +1,7 @@
-<div style="margin-left: auto; margin-right: auto; width: 175px;">
-    <div style="position: absolute">
-        <form action="index.php" method="post">
-            <input type="submit" class="button big-button" value="&lt;&lt; {{ LANG.INSTALL.61 }}">
+<div class="uk-margin" style="margin: 0 auto; width: 100%; text-align: center;">
+    <div style="display: inline-block;">
+        <form action="index.php" method="post" class="uk-form">
+            <button type="submit" class="uk-button uk-button-primary uk-button-large" value="{{ LANG.INSTALL.61 }}"><i class="uk-icon-angle-double-left"></i>&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
         </form>
     </div>
 </div>

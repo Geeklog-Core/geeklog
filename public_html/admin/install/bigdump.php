@@ -53,6 +53,7 @@ global $_CONF, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_charset,
        $LANG_BIGDUMP, $LANG_CHARSET, $LANG_DIRECTION, $LANG_ERROR, $LANG_HELP, $LANG_INSTALL,
        $LANG_LABEL, $LANG_MIGRATE, $LANG_PLUGINS, $LANG_RESCUE, $LANG_SUCCESS;
 
+require_once __DIR__ . '/classes/micro_template.class.php';
 require_once __DIR__ . '/classes/installer.class.php';
 require_once __DIR__ . '/classes/db.class.php';
 require_once __DIR__ . '/../../siteconfig.php';
@@ -101,8 +102,7 @@ if (function_exists("date_default_timezone_set") && function_exists("date_defaul
     @date_default_timezone_set(@date_default_timezone_get());
 }
 
-header('Content-Type: text/html; charset=' . $LANG_CHARSET);
-echo Installer::getHeader($LANG_MIGRATE[17]);
+$content = '<h1 class="heading">' . $LANG_MIGRATE[17] . '</h1>' . PHP_EOL;
 
 $error = false;
 $file = false;
@@ -111,7 +111,7 @@ $file = false;
 $availableDrivers = Geeklog\Db::getDrivers();
 
 if (!$error && (count($availableDrivers) === 0)) {
-    echo '<p>' . $LANG_BIGDUMP[11] . '</p>' . PHP_EOL;
+    $content .= '<p>' . $LANG_BIGDUMP[11] . '</p>' . PHP_EOL;
     $error = true;
 }
 
@@ -145,7 +145,7 @@ if (!$error && !TESTMODE) {
     }
 
     if (empty($dbConnection) || !$db) {
-        echo $installer->getAlertMsg($LANG_ERROR[9] . $errorMessage . '<br>' . $LANG_ERROR[10]);
+        $content .= $installer->getAlertMsg($LANG_ERROR[9] . $errorMessage . '<br>' . $LANG_ERROR[10]);
         $error = true;
     }
 } else {
@@ -154,7 +154,7 @@ if (!$error && !TESTMODE) {
 
 // Single file mode
 if (!$error && !isset($_REQUEST["fn"]) && $filename != "") {
-    echo '<p><a href="' . $_SERVER['PHP_SELF'] . '?start=1&fn=' . urlencode($filename) . '&foffset=0&totalqueries=0\">' . $LANG_BIGDUMP[0] . '</a>' . $LANG_BIGDUMP[1] . $filename . $LANG_BIGDUMP[2] . $db_name . $LANG_BIGDUMP[3] . $db_server . PHP_EOL;
+    $content .= '<p><a href="' . $_SERVER['PHP_SELF'] . '?start=1&fn=' . urlencode($filename) . '&foffset=0&totalqueries=0\">' . $LANG_BIGDUMP[0] . '</a>' . $LANG_BIGDUMP[1] . $filename . $LANG_BIGDUMP[2] . $db_name . $LANG_BIGDUMP[3] . $db_server . PHP_EOL;
 }
 
 // Open the file
@@ -176,7 +176,7 @@ if (!$error && isset($_REQUEST["start"])) {
     }
 
     if ((!$gzipMode && !$file = @fopen($currentFileName, "r")) || ($gzipMode && !$file = @gzopen($currentFileName, "r"))) {
-        echo $installer->getAlertMsg($LANG_BIGDUMP[5] . $currentFileName . $LANG_BIGDUMP[6]);
+        $content .= $installer->getAlertMsg($LANG_BIGDUMP[5] . $currentFileName . $LANG_BIGDUMP[6]);
         $error = true;
     } elseif ((!$gzipMode && @fseek($file, 0, SEEK_END) == 0) || ($gzipMode && @gzseek($file, 0) == 0)) {
         // Get the file size (can't do it fast on gzipped files, no idea how)
@@ -186,7 +186,7 @@ if (!$error && isset($_REQUEST["start"])) {
             $fileSize = gztell($file);  // Always zero, ignore
         }
     } else {
-        echo $installer->getAlertMsg($LANG_BIGDUMP[4] . $currentFileName);
+        $content .= $installer->getAlertMsg($LANG_BIGDUMP[4] . $currentFileName);
         $error = true;
     }
 }
@@ -209,25 +209,25 @@ if (!empty($language)) {
 if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_match('/(\.(sql|gz))$/i', $currentFileName)) {
     // Check start and foffset are numeric values
     if (!is_numeric($_REQUEST["start"]) || !is_numeric($_REQUEST["foffset"])) {
-        echo $installer->getAlertMsg($LANG_BIGDUMP[7]);
+        $content .= $installer->getAlertMsg($LANG_BIGDUMP[7]);
         $error = true;
     }
 
     if (!$error) {
         $_REQUEST["start"] = floor($_REQUEST["start"]);
         $_REQUEST["foffset"] = floor($_REQUEST["foffset"]);
-        echo '<p>' . $LANG_BIGDUMP[8] . ' <b>' . $currentFileName . '</b></p>' . PHP_EOL;
+        $content .= '<p>' . $LANG_BIGDUMP[8] . ' <b>' . $currentFileName . '</b></p>' . PHP_EOL;
     }
 
     // Check $_REQUEST["foffset"] upon $fileSize (can't do it on gzipped files)
     if (!$error && !$gzipMode && $_REQUEST["foffset"] > $fileSize) {
-        echo $installer->getAlertMsg($LANG_BIGDUMP[9]);
+        $content .= $installer->getAlertMsg($LANG_BIGDUMP[9]);
         $error = true;
     }
 
     // Set file pointer to $_REQUEST["foffset"]
     if (!$error && ((!$gzipMode && fseek($file, $_REQUEST["foffset"]) != 0) || ($gzipMode && gzseek($file, $_REQUEST["foffset"]) != 0))) {
-        echo $installer->getAlertMsg($LANG_BIGDUMP[10] . $_REQUEST["foffset"]);
+        $content .= $installer->getAlertMsg($LANG_BIGDUMP[10] . $_REQUEST["foffset"]);
         $error = true;
     }
 
@@ -299,7 +299,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
 
             // Stop if query contains more lines as defined by MAX_QUERY_LINES
             if ($queryLines > MAX_QUERY_LINES) {
-                echo $installer->getAlertMsg($LANG_BIGDUMP[14] . $lineNumber . $LANG_BIGDUMP[15] . MAX_QUERY_LINES . $LANG_BIGDUMP[16]);
+                $content .= $installer->getAlertMsg($LANG_BIGDUMP[14] . $lineNumber . $LANG_BIGDUMP[15] . MAX_QUERY_LINES . $LANG_BIGDUMP[16]);
                 $error = true;
                 break;
             }
@@ -308,7 +308,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
             if (preg_match("/;$/", trim($dumpLine)) && !$inParents) {
                 if (!TESTMODE) {
                     if ($dbConnection->query(trim($query)) === false) {
-                        echo $installer->getAlertMsg(
+                        $content .= $installer->getAlertMsg(
                             $LANG_BIGDUMP[17] . $lineNumber . ': ' . trim($dumpLine) . '.<br ' . PHP_EOL . '>'
                             . $LANG_BIGDUMP[18] . trim(Installer::nl2br(htmlentities($query))) . '<br ' . PHP_EOL . '>'
                             . $LANG_BIGDUMP[19] . $dbConnection->error()
@@ -336,7 +336,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
             }
 
             if (!$fOffset) {
-                echo $installer->getAlertMsg($LANG_BIGDUMP[20]);
+                $content .= $installer->getAlertMsg($LANG_BIGDUMP[20]);
                 $error = true;
             }
         }
@@ -396,14 +396,14 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                 $pct_bar = str_replace(' ', '&nbsp;', '<tt>[         ' . $LANG_BIGDUMP[21] . '          ]</tt>');
             }
 
-            echo '
+            $content .= '
         <table width="650" border="0" cellpadding="3" cellspacing="1">
         <tr><th align="left" width="125">' . $LANG_BIGDUMP[22] . ': ' . $pct_done . '%</th><td colspan="4">' . $pct_bar . '</td></tr>
         </table><br>' . PHP_EOL;
 
             // Finish message and restart the script
             if ($lineNumber < $_REQUEST["start"] + $linesPerSession) {
-                echo $installer->getAlertMsg($LANG_BIGDUMP[23], 'success');
+                $content .= $installer->getAlertMsg($LANG_BIGDUMP[23], 'success');
                 /*** Go back to Geeklog installer ***/
                 echo("<script language=\"JavaScript\" type=\"text/javascript\">window.setTimeout('location.href=\""
                     . 'index.php?mode=migrate&step=4'
@@ -412,11 +412,11 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                     . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']) . "\";',3000);</script>\n");
             } else {
                 if ($delayPerSession != 0) {
-                    echo '<p><b>' . $LANG_BIGDUMP[24] . $delayPerSession . $LANG_BIGDUMP[25] . PHP_EOL;
+                    $content .= '<p><b>' . $LANG_BIGDUMP[24] . $delayPerSession . $LANG_BIGDUMP[25] . PHP_EOL;
                 }
 
                 // Go to the next step
-                echo '<script language="JavaScript" type="text/javascript">window.setTimeout(\'location.href="'
+                $content .= '<script language="JavaScript" type="text/javascript">window.setTimeout(\'location.href="'
                     . $_SERVER['PHP_SELF'] . '?start=' . $lineNumber . '&fn='
                     . urlencode($currentFileName) . '&foffset=' . $fOffset . '&totalqueries=' . $totalQueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $language . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delayPerSession . ');</script>' . PHP_EOL
                     . '<noscript>' . PHP_EOL
@@ -425,7 +425,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                     . '<p><strong><a href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[26] . '</a></strong> ' . $LANG_BIGDUMP[27] . ' <strong>' . $LANG_BIGDUMP[28] . '</strong></p>' . PHP_EOL;
             }
         } else {
-            echo $installer->getAlertMsg($LANG_BIGDUMP[29]);
+            $content .= $installer->getAlertMsg($LANG_BIGDUMP[29]);
         }
     }
 }
@@ -433,7 +433,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
 // If there was an error, we offer a link to retry migration
 if ($error) {
     $error_gobackUrl .= '&site_url=' . urlencode($site_url) . '&site_admin_url=' . urlencode($site_admin_url);
-    echo '<p><a href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[30] . '</a> '
+    $content .= '<p><a class="uk-button uk-button-primary uk-button-large" href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[30] . '</a></p><p>'
         . $LANG_BIGDUMP[31] . '</p>' . PHP_EOL;
 }
 
@@ -443,4 +443,4 @@ if ($file && !$gzipMode) {
     gzclose($file);
 }
 
-echo Installer::getFooter();
+$installer->display($content);

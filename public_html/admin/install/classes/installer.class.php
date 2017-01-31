@@ -65,91 +65,6 @@ class Installer
     }
 
     /**
-     * Returns the beginning HTML for the installer theme.
-     *
-     * @param  string $mHeading Heading
-     * @return string           Header HTML code
-     */
-    public static function getHeader($mHeading)
-    {
-        global $LANG_CHARSET, $LANG_INSTALL, $LANG_DIRECTION;
-
-        return <<<HTML
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="robots" content="noindex,nofollow">
-    <link rel="stylesheet" type="text/css" href="layout/style.css">
-    <script type="text/javascript">
-    function INST_selectMigrationType() {
-        var myType = document.migrate.migration_type.value;
-        var migrationSelect = document.getElementById("migration-select");
-        var migrationUpload = document.getElementById("migration-upload");
-        var migrationUploadWarning = document.getElementById("migration-upload-warning");
-    
-        switch (myType) {
-            case "select":
-              migrationSelect.style.display = "inline";
-              migrationUpload.style.display = "none";
-              migrationUploadWarning.style.display = "none";
-              break;l
-              
-            case "upload":
-              migrationSelect.style.display = "none";
-              migrationUpload.style.display = "inline";
-              migrationUploadWarning.style.display = "block";
-              break;
-              
-            default:
-              migrationSelect.style.display = "none";
-              migrationUpload.style.display = "none";
-              migrationUploadWarning.style.display = "none";
-              break;
-        }
-    }
-    </script>
-  <title>{$LANG_INSTALL[0]}</title>
-</head>
-
-<body dir="{$LANG_DIRECTION}">
-    <div class="header-navigation-container">
-        <div class="header-navigation-line">
-            <a href="{$LANG_INSTALL[87]}" class="header-navigation">{$LANG_INSTALL[1]}</a>&nbsp;&nbsp;&nbsp;
-        </div>
-    </div>
-    <div class="header-logobg-container-inner">
-        <a class="header-logo" href="https://www.geeklog.net/">
-            <img src="layout/logo.png"  width="151" height="56" alt="Geeklog">
-        </a>
-        <div class="header-slogan">{$LANG_INSTALL[2]}<br><br>
-        </div>
-    </div>
-    <div class="installation-container">
-        <div class="installation-body-container">
-            <h1 class="heading">{$mHeading}</h1>
-HTML;
-    }
-
-    /**
-     * Return the ending HTML for the installer theme.
-     *
-     * @return string Footer HTML code
-     */
-    public static function getFooter()
-    {
-        return <<<HTML
-        <br><br>
-    </div>
-</div>
-</body>
-</html>
-HTML;
-    }
-
-    /**
      * Installer constructor.
      */
     public function __construct()
@@ -186,13 +101,13 @@ HTML;
         if (!isset($LANG_DIRECTION)) {
             $LANG_DIRECTION = 'ltr';
         }
-
+        $this->env['rtl'] = $LANG_DIRECTION ==='rtl' ? '_rtl' : '';
         if ($LANG_DIRECTION === 'rtl') {
-            $this->env['form_label_dir'] = 'form-label-right';
-            $this->env['perms_label_dir'] = 'perms-label-right';
+            $this->env['icon_arrow_next'] = '<i class="uk-icon-angle-double-left"></i>';
+            $this->env['icon_arrow_prev'] = '<i class="uk-icon-angle-double-right"></i>';
         } else {
-            $this->env['form_label_dir'] = 'form-label-left';
-            $this->env['perms_label_dir'] = 'perms-label-left';
+            $this->env['icon_arrow_next'] = '<i class="uk-icon-angle-double-right"></i>';
+            $this->env['icon_arrow_prev'] = '<i class="uk-icon-angle-double-left"></i>';
         }
 
         /** @noinspection PhpUndefinedVariableInspection */
@@ -249,28 +164,30 @@ HTML;
      */
     public function getAlertMessage($message, $type = 'notice')
     {
-        $style = ($type === 'success') ? 'success' : 'error';
-
         switch (strtolower($type)) {
             case 'error':
                 $type = $this->LANG['INSTALL'][38];
+                $style = 'danger';
                 break;
 
             case 'warning':
                 $type = $this->LANG['INSTALL'][20];
+                $style = 'warning';
                 break;
 
             case 'success':
                 $type = $this->LANG['INSTALL'][93];
+                $style = 'success';
                 break;
 
             default:
                 $type = $this->LANG['INSTALL'][59];
+                $style = 'notice';
                 break;
         }
 
-        return '<div class="notice"><span class="' . $style . '">' . $type . ':</span> '
-            . $message . '</div>' . PHP_EOL;
+        return '<div class="uk-alert uk-alert-large uk-alert-' . $style . '">'
+            . '<span class="uk-badge uk-badge-' . $style . '">' . $type . '</span> ' . $message . '</div>' . PHP_EOL;
     }
 
     /**
@@ -704,7 +621,7 @@ HTML;
 
         // number of files with wrong permissions
         $numWrong = 0;
-        $retval_permissions = '<p><label class="' . $this->env['perms_label_dir'] . '"><strong>'
+        $retval_permissions = '<p><label class="perms-label"><strong>'
             . $this->LANG['INSTALL'][10] . '</strong></label> ' . PHP_EOL
             . '<strong>' . $this->LANG['INSTALL'][11] . '</strong></p>' . PHP_EOL;
         $chmodString = 'chmod -R 777 ';
@@ -761,7 +678,7 @@ HTML;
                 }
 
                 $retval_permissions .= '<p class="clearboth">'
-                    . '<label class="' . $this->env['perms_label_dir'] . '"><code>' . $file . '</code></label>' . PHP_EOL
+                    . '<label class="perms-label"><code>' . $file . '</code></label>' . PHP_EOL
                     . ' <span class="permissions-list">' . $this->LANG['INSTALL'][12] . ' ' . $permShouldBe . '</span> ('
                     . $this->LANG['INSTALL'][13] . ' ' . $permission . ')'
                     . '</p>' . PHP_EOL;
@@ -777,8 +694,8 @@ HTML;
             $retval .= '<h1 class="heading">' . $this->LANG['INSTALL'][101] . ' ' . $retval_step . ' - ' . $this->LANG['INSTALL'][97] . '</h1>' . PHP_EOL
                 . $this->LANG['INSTALL'][110];
             $cmd = 'chcon -Rt httpd_user_rw_content_t ' . $cmdSelinux;
-            $retval .= '<p class="codeblock"><code>' . $cmd . PHP_EOL
-                . '</code></p><br>' . PHP_EOL;
+            $retval .= '<pre><code>' . $cmd . PHP_EOL
+                . '</code></pre><br>' . PHP_EOL;
             $retval_step++;
         } elseif ($numWrong) {
             // If any files have incorrect permissions
@@ -805,8 +722,8 @@ HTML;
                 . $retval_permissions . '</div>' . PHP_EOL
                 . '<h2 class="clearboth">' . $this->LANG['INSTALL'][98] . '</h2>' . PHP_EOL
                 . '<p>' . $this->LANG['INSTALL'][99] . '</p>' . PHP_EOL
-                . '<p class="codeblock"><code>' . $chmodString . PHP_EOL
-                . '</code></p><br>' . PHP_EOL;
+                . '<pre><code>' . $chmodString . PHP_EOL
+                . '</code></pre><br>' . PHP_EOL;
             $this->env['step']++;
         } else {
             // Set the install type if the user clicked one
@@ -845,7 +762,6 @@ HTML;
         }
 
         // Show the "Select your installation method" buttons
-        $upgradeClass = ($this->LANG['DIRECTION'] === 'rtl') ? 'upgrade-rtl' : 'upgrade';
         $this->env['dbconfig_path'] = $paths['db-config.php'];
         $this->env['retval_step'] = $retval_step;
         $this->env['display_step'] = $retval_step + 1;
@@ -3259,27 +3175,30 @@ HTML;
     {
         global $LANG_INSTALL;
 
-        $mStyle = ($mType === 'success') ? 'success' : 'error';
-
         switch (strtolower($mType)) {
             case 'error':
                 $mType = $LANG_INSTALL[38];
+                $mStyle = 'danger';
                 break;
 
             case 'warning':
                 $mType = $LANG_INSTALL[20];
+                $mStyle = 'warning';
                 break;
 
             case 'success':
                 $mType = $LANG_INSTALL[93];
+                $mStyle = 'success';
                 break;
 
             default:
                 $mType = $LANG_INSTALL[59];
+                $mStyle = 'notice';
                 break;
         }
 
-        return '<div class="notice"><span class="' . $mStyle . '">' . $mType . ':</span> ' . $mMessage . '</div>' . PHP_EOL;
+        return '<div class="uk-alert uk-alert-large uk-alert-' . $mStyle . '">'
+            . '<span class="uk-badge uk-badge-' . $mStyle . '">' . $mType . '</span> ' . $mMessage . '</div>' . PHP_EOL;
     }
 
     /**
@@ -3517,7 +3436,7 @@ HTML;
         global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
                $LANG_INSTALL, $LANG_MIGRATE;
 
-        $display = $this->getAlertMessage($LANG_MIGRATE[0], 'warning') . PHP_EOL
+        $display = $this->getAlertMessage($LANG_MIGRATE[0]) . PHP_EOL
             . '<h2>' . $LANG_MIGRATE[1] . '</h2>' . PHP_EOL
             . '<ul>' . PHP_EOL
             . '<li>' . $LANG_MIGRATE[2] . '</li>' . PHP_EOL
@@ -3559,20 +3478,20 @@ HTML;
         $site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : $this->getSiteAdminUrl();
 
         $display .= '<h2>' . $LANG_INSTALL[31] . '</h2>' . PHP_EOL
-            . '<form action="index.php" method="post" name="migrate" enctype="multipart/form-data">' . PHP_EOL
+            . '<form action="index.php" method="post" name="migrate" enctype="multipart/form-data" class="uk-form uk-form-horizontal">' . PHP_EOL
             . '<input type="hidden" name="step" value="2">' . PHP_EOL
             . '<input type="hidden" name="language" value="' . $this->env['language'] . '">' . PHP_EOL
             . '<input type="hidden" name="mode" value="migrate">'
             . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($this->env['dbconfig_path']) . '">' . PHP_EOL
-            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[34] . ' ' . $this->getHelpLink('db_type') . '</label> <select name="db[type]">' . PHP_EOL
+            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[34] . ' ' . $this->getHelpLink('db_type') . '</label> <div class="uk-form-controls"><select name="db[type]">' . PHP_EOL
             . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . PHP_EOL
-            . '</select></p>' . PHP_EOL
-            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[39] . ' ' . $this->getHelpLink('db_host') . '</label> <input type="text" name="db[host]" value="' . $_FORM['host'] . '" size="20"></p>' . PHP_EOL
-            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[40] . ' ' . $this->getHelpLink('db_name') . '</label> <input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"></p>' . PHP_EOL
-            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[41] . ' ' . $this->getHelpLink('db_user') . '</label> <input type="text" name="db[user]" value="' . $_FORM['user'] . '" size="20"></p>' . PHP_EOL
-            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[42] . ' ' . $this->getHelpLink('db_pass') . '</label> <input type="password" name="db[pass]" value="' . $_FORM['pass'] . '" size="20"></p>' . PHP_EOL
-            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[45] . ' ' . $this->getHelpLink('site_url') . '</label> <input type="text" name="site_url" value="' . htmlspecialchars($site_url) . '" size="50">  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . PHP_EOL
-            . '<p><label class="' . $this->env['form_label_dir'] . '">' . $LANG_INSTALL[47] . ' ' . $this->getHelpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50">  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . PHP_EOL;
+            . '</select></div></div>' . PHP_EOL
+            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[39] . ' ' . $this->getHelpLink('db_host') . '</label> <div class="uk-form-controls"><input type="text" name="db[host]" value="' . $_FORM['host'] . '" size="20"></div></div>' . PHP_EOL
+            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[40] . ' ' . $this->getHelpLink('db_name') . '</label> <div class="uk-form-controls"><input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"></div></div>' . PHP_EOL
+            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[41] . ' ' . $this->getHelpLink('db_user') . '</label> <div class="uk-form-controls"><input type="text" name="db[user]" value="' . $_FORM['user'] . '" size="20"></div></div>' . PHP_EOL
+            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[42] . ' ' . $this->getHelpLink('db_pass') . '</label> <div class="uk-form-controls"><input type="password" name="db[pass]" value="' . $_FORM['pass'] . '" size="20"></div></div>' . PHP_EOL
+            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[45] . ' ' . $this->getHelpLink('site_url') . '</label> <div class="uk-form-controls"><input type="text" name="site_url" value="' . htmlspecialchars($site_url) . '" size="50">  &nbsp; ' . $LANG_INSTALL[46] . '</div></div>' . PHP_EOL
+            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[47] . ' ' . $this->getHelpLink('site_admin_url') . '</label> <div class="uk-form-controls"><input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50">  &nbsp; ' . $LANG_INSTALL[46] . '</div></div>' . PHP_EOL;
 
         // Identify the backup files in backups/ and order them newest to oldest
         $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
@@ -3589,10 +3508,10 @@ HTML;
 
         rsort($backupFiles);
 
-        $display .= '<p><label class="' . $this->env['form_label_dir'] . '">'
+        $display .= '<div class="uk-form-row"><label class="uk-form-label">'
             . $LANG_MIGRATE[6] . ' ' . $this->getHelpLink('migrate_file')
             . '</label>' . PHP_EOL
-            . '<select name="migration_type" onchange="INST_selectMigrationType()">' . PHP_EOL
+            . '<div class="uk-form-controls"><select name="migration_type" onchange="INST_selectMigrationType()">' . PHP_EOL
             . '<option value="">' . $LANG_MIGRATE[7] . '</option>' . PHP_EOL
             . '<option value="select">' . $LANG_MIGRATE[8] . '</option>' . PHP_EOL
             . '<option value="upload">' . $LANG_MIGRATE[9] . '</option>' . PHP_EOL
@@ -3635,22 +3554,22 @@ HTML;
         }
 
         $display .= '</span>' . PHP_EOL
-            . '</p>' . PHP_EOL
-            . '<div id="migration-upload-warning">' . PHP_EOL;
+            . '</div></div>' . PHP_EOL
+            . '<div class="uk-margin"><div id="migration-upload-warning">' . PHP_EOL;
 
         if ($fileUploads) {
             if ($isWritable) {
                 $display .= $this->getAlertMessage($LANG_MIGRATE[12] . ini_get('upload_max_filesize') . $LANG_MIGRATE[13] . ini_get('upload_max_filesize') . $LANG_MIGRATE[14], 'notice');
             } else {
-                $display .= $this->getAlertMessage($LANG_MIGRATE[15]);
+                $display .= $this->getAlertMessage($LANG_MIGRATE[15], 'warning');
             }
         }
 
-        $display .= '</div><br>' . PHP_EOL
-            . '<p>'
+        $display .= '</div></div>' . PHP_EOL
+            . '<div class="uk-margin">'
             // Todo: Add "Refresh" button to refresh the list of files in the backups directory
-            // . '<input type="button" name="refresh" class="submit" value="' . 'Refresh' . '" onclick="INST_refreshBackupList()"' . XHTML . '>'
-            . '<input type="submit" name="submit" class="submit button big-button" value="' . $LANG_MIGRATE[16] . ' &gt;&gt;"></p>' . PHP_EOL
+            // . '<button type="button" name="refresh" class="uk-button uk-button-primary uk-button-large" value="' . 'Refresh' . '" onclick="INST_refreshBackupList()">' . 'Refresh' . '</button>' . PHP_EOL
+            . '<button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large" value="' . $LANG_MIGRATE[16] . '">' . $LANG_MIGRATE[16] . '&nbsp;&nbsp;' . $this->env['icon_arrow_next'] . '</button></div>' . PHP_EOL
             . '</form>' . PHP_EOL;
 
         return $display;
@@ -3673,7 +3592,7 @@ HTML;
                 if (isset($_REQUEST['backup_file']) && !empty($_REQUEST['backup_file'])) {
                     $backupFile = array('name' => $_REQUEST['backup_file']);
                 } else { // No backup file was selected
-                    $display .= $this->getAlertMessage($LANG_MIGRATE[18]);
+                    $display .= $this->getAlertMessage($LANG_MIGRATE[18], 'warning');
                     $backupFile = false;
                     $importErrors++;
                 }
@@ -3683,7 +3602,7 @@ HTML;
             case 'upload': // Upload a new backup file
                 if ($upload_error = $this->getUploadError($_FILES['backup_file'])) { // If an error occurred while uploading the file
                     // or if no backup file was selected
-                    $display .= $this->getAlertMsg($upload_error);
+                    $display .= $this->getAlertMsg($upload_error, 'warning');
                     $backupFile = false;
                     $importErrors++;
                 } else {
@@ -3698,7 +3617,7 @@ HTML;
                 break;
 
             default:
-                $display .= $this->getAlertMsg($LANG_MIGRATE[18]);
+                $display .= $this->getAlertMsg($LANG_MIGRATE[18], 'warning');
                 $backupFile = false;
                 $importErrors++;
         } // End switch ($_REQUEST['migration_type'])
@@ -3707,7 +3626,7 @@ HTML;
         $DB = $_REQUEST['db'];
 
         if (!$this->dbConnect($DB)) {
-            $display .= $this->getAlertMsg($LANG_INSTALL[54]);
+            $display .= $this->getAlertMsg($LANG_INSTALL[54], 'warning');
             $importErrors++;
         } else {
             // Check if the user's version of MySQL is out of date
@@ -3720,7 +3639,7 @@ HTML;
 
         // Check if the database doesn't exist
         if (!$this->dbExists($DB)) {
-            $display .= $this->getAlertMsg($LANG_INSTALL[56]);
+            $display .= $this->getAlertMsg($LANG_INSTALL[56], 'warning');
             $importErrors++;
         }
 
@@ -3760,7 +3679,7 @@ HTML;
                             $display .= $LANG_MIGRATE[19] . $backup_file_copy . $LANG_MIGRATE[20] . $backup_dir . '.' . PHP_EOL;
                         } else {
                             $display .= '<p>' . $LANG_MIGRATE[21] . ' <code>' . $backupFile['name'] . '</code> ' . $LANG_MIGRATE[22] . '</p><br>' . PHP_EOL
-                                . '<form action="index.php" method="post"><p align="center">' . PHP_EOL
+                                . '<form action="index.php" method="post" class="uk-form"><p align="center">' . PHP_EOL
                                 . '<input type="hidden" name="mode" value="migrate">' . PHP_EOL
                                 . '<input type="hidden" name="step" value="3">' . PHP_EOL
                                 . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($this->env['dbconfig_path']) . '">' . PHP_EOL
@@ -3768,8 +3687,8 @@ HTML;
                                 . '<input type="hidden" name="site_admin_url" value="' . urlencode($_REQUEST['site_admin_url']) . '">' . PHP_EOL
                                 . '<input type="hidden" name="backup_file" value="' . $backupFile['name'] . '">' . PHP_EOL
                                 . '<input type="hidden" name="language" value="' . $this->env['language'] . '">' . PHP_EOL
-                                . '<input type="submit" class="button big-button" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '">' . PHP_EOL
-                                . '<input type="submit" class="button big-button" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'index.php\'">' . PHP_EOL
+                                . '<button type="submit" class="uk-button uk-button-primary uk-button-large" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '">' . $LANG_MIGRATE[23] . '</button>' . PHP_EOL
+                                . '<button type="submit" class="uk-button uk-button-primary uk-button-large" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'index.php\'">' . $LANG_MIGRATE[24] . '</button>' . PHP_EOL
                                 . '</p></form>' . PHP_EOL;
                         }
                     } else {
@@ -4269,11 +4188,11 @@ HTML;
             }
 
             $display .= '<p>' . $LANG_MIGRATE[36] . '</p>' . PHP_EOL
-                . '<form action="success.php" method="get">' . PHP_EOL
+                . '<form action="success.php" method="get" class="uk-form">' . PHP_EOL
                 . '<input type="hidden" name="type" value="migrate">' . PHP_EOL
                 . '<input type="hidden" name="language" value="' . $language . '">' . PHP_EOL
                 . '<input type="hidden" name="" value="">' . PHP_EOL
-                . '<p><input type="submit" class="button big-button" name="" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"></p>' . PHP_EOL
+                . '<p><button type="submit" class="uk-button uk-button-primary uk-button-large" name="" value="' . $LANG_INSTALL[62] . '">' . $LANG_INSTALL[62] . '&nbsp;&nbsp;' . $this->env['icon_arrow_next'] . '</button></p>' . PHP_EOL
                 . '</form>';
         } else {
             header('Location: success.php?type=migrate&language=' . $language);
@@ -4879,6 +4798,17 @@ HTML;
     }
 
     /**
+     * Display the installer
+     */
+    public function display($content)
+    {
+        $this->env['content'] = $content;
+        $T = $this->getTemplateObject();
+        $T->set($this->env);
+        $T->display('index');
+    }
+
+    /**
      * Run the installer
      */
     public function run()
@@ -4950,9 +4880,6 @@ HTML;
                 break;
         }
 
-        $this->env['content'] = $content;
-        $T = $this->getTemplateObject();
-        $T->set($this->env);
-        $T->display('index');
+        $this->display($content);
     }
 }

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Support for Geeklog installation script.                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt AT mattdanger DOT net                   |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -30,84 +30,46 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (!defined("LB")) {
-    define("LB", "\n");
+if (!defined('BASE_FILE')) {
+    define(
+        'BASE_FILE',
+        str_replace('\\', '/', str_replace(basename(__FILE__), 'index.php', __FILE__))
+    );
+}
 
-}
-if (!defined('XHTML') ) {
-    define('XHTML', ' /');
+if (!defined('PATH_INSTALL')) {
+    define('PATH_INSTALL', __DIR__ . '/');
 }
 
-$language = 'english';
-if (isset($_GET['language'])) {
-    $lng = $_GET['language'];
-} elseif (isset($_COOKIE['language'])) {
-    // Okay, so the name of the language cookie is configurable, so it may not
-    // be named 'language' after all. Still worth a try ...
-    $lng = $_COOKIE['language'];
-} else {
-    $lng = $language;
+if (!defined('PATH_LAYOUT')) {
+    define('PATH_LAYOUT', PATH_INSTALL . 'layout');
 }
-// sanitize value and check for file
-$lng = preg_replace('/[^a-z0-9\-_]/', '', $lng);
-if (!empty($lng) && is_file('language/' . $lng . '.php')) {
-    $language = $lng;
+
+require_once './classes/micro_template.class.php';
+require_once './classes/installer.class.php';
+$installer = new Installer();
+
+$language = $installer->get('language', Installer::DEFAULT_LANGUAGE);
+if (!file_exists(PATH_INSTALL . 'language/' . $language . '.php')) {
+    $language = Installer::DEFAULT_LANGUAGE;
 }
-require_once 'language/' . $language . '.php';
+require_once PATH_INSTALL . 'language/' . $language . '.php';
 
 $label = '';
 if (isset($_GET['label'])) {
     $label = preg_replace('/[^a-z0-9_]/', '', $_GET['label']);
 }
-// $display holds all the outputted HTML and content
-if (defined('XHTML')) {
-    $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">';
-} else {
-    $display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>';
-}
-if (empty($LANG_DIRECTION)) {
-    $LANG_DIRECTION = 'ltr';
-}
-$display .= '<head>
-<meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '"' . XHTML . '>
-<link rel="stylesheet" type="text/css" href="layout/style.css"' . XHTML . '>
-<meta name="robots" content="noindex,nofollow"' . XHTML . '>
-<title>' . $LANG_INSTALL[0] . '</title>
-</head>
 
-<body dir="' . $LANG_DIRECTION . '">
-    <div class="header-navigation-container">
-        <div class="header-navigation-line">
-            <a href="' . $LANG_INSTALL[87] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
-        </div>
-    </div>
-    <div class="header-logobg-container-inner">
-        <a class="header-logo" href="https://www.geeklog.net/">
-            <img src="layout/logo.png"  width="151" height="56" alt="Geeklog"' . XHTML . '>
-        </a>
-        <div class="header-slogan">' . $LANG_INSTALL[2] . ' <br' . XHTML . '><br' . XHTML . '></div>
-    </div>
-    <div class="installation-container">
-        <div class="installation-body-container">
-            <h1 class="heading">' . $LANG_HELP[0] . '</h1>';
+$content = '<h1 class="heading">' . $LANG_HELP[0] . '</h1>' . PHP_EOL;
 
 foreach ($LANG_LABEL as $key => $labeltext) {
-    $display .= '
+    $content .= '
             <div' . ($label == $key
-                     ? ' class="highlight" id="' . $key . '"' : '') . '>
+                ? ' class="help_highlight" id="' . $key . '"'
+                : ' class="help_normal"') . '>
             <h2><a name="' . $key . '">' . $labeltext . '</a></h2>
             <p class="indent">' . $LANG_HELP[$key] . '</p>
-            </div>' . LB;
+            </div>' . PHP_EOL;
 }
 
-$display .= '
-        </div>
-    </div>
-
-</body>
-</html>' . LB;
-
-header('Content-Type: text/html; charset=' . $LANG_CHARSET);
-echo $display;
+$installer->display($content);

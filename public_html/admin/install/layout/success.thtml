@@ -23,11 +23,11 @@
         <p>{lang_success_19}</p>
         {!endif!}
 
-        <form action="" method="post">
+        <form action="" method="post" class="uk-form">
             <div>
                 <p><strong>{lang_success_23}</strong></p>
-                <input type="submit" name="submit" value="{lang_success_24}" onclick="return confirm('{lang_confirm_delete}');"{xhtml}>
-                <input type="submit" name="submit" value="{lang_success_25}"{xhtml}>
+                <button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large" value="{lang_success_24}" onclick="return confirm('{lang_confirm_delete}');">{lang_success_24}</button>
+                <button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large" value="{lang_success_25}">{lang_success_25}</button>
             </div>
         </form>
     </div>

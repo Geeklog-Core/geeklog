@@ -6,31 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="noindex,nofollow">
     <title>{{ LANG.INSTALL.0 }}</title>
-    <link rel="stylesheet" type="text/css" href="layout/style.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/uikit/css{{ rtl }}/uikit.css">
+    <link rel="stylesheet" type="text/css" href="layout/style{{ rtl }}.css">
 </head>
 
 <body dir="{{ LANG.DIRECTION }}">
-<div class="header-navigation-container">
-    <div class="header-navigation-line">
-        <a href="rescue.php" class="header-navigation">{{ LANG.INSTALL.109 }}</a>&nbsp;&nbsp;&nbsp;
-        <a href="{{ LANG.INSTALL.87 }}" class="header-navigation">{{ LANG.INSTALL.1 }}</a>&nbsp;&nbsp;&nbsp;
+<div class="container">
+    <div class="header-navigation-container">
+        <div class="header-navigation-line">
+            <a href="rescue.php" class="header-navigation">{{ LANG.INSTALL.109 }}</a>&nbsp;&nbsp;&nbsp;
+            <a href="{{ LANG.INSTALL.87 }}" class="header-navigation">{{ LANG.INSTALL.1 }}</a>
+        </div>
+    </div>
+    <div class="header-logobg-container">
+        <a class="header-logo" href="https://www.geeklog.net/">
+            <img src="layout/logo.png" alt="Geeklog">
+        </a>
+        <div class="header-slogan">{{ LANG.INSTALL.2 }}</div>
+        <div class="header-lang-selector">{{ language_selector }}</div>
+    </div>
+    <div class="installation-container">
+        <div class="installation-body-container">
+            {{ content }}
+        </div>
     </div>
 </div>
-<div class="header-logobg-container-inner">
-    <a class="header-logo" href="https://www.geeklog.net/">
-        <img src="layout/logo.png" width="151" height="56" alt="Geeklog">
-    </a>
-    <div class="header-slogan">{{ LANG.INSTALL.2 }}<br><br>
-        {{ language_selector }}
-    </div>
-</div>
-<div class="installation-container">
-    <div class="installation-body-container">
-        {{ content }}
-        <br><br>
-    </div>
-</div>
-<script type="text/javascript">
+<script>
     function INST_selectMigrationType() {
         var myType = document.migrate.migration_type.value;
         var migrationSelect = document.getElementById("migration-select");

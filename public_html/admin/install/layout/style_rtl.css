@@ -47,8 +47,8 @@ h3 {
   font-size: 16px;
 }
 .perms-label {
-  float: left;
-  text-align: left;
+  float: right;
+  text-align: right;
   padding: 0px;
   width: 32em;
   margin-top: 5px;
@@ -60,7 +60,7 @@ h3 {
 .header-navigation-line {
   background: #E7E7E7;
   padding: 10px 15px;
-  text-align: right;
+  text-align: left;
 }
 .header-logobg-container {
   position: relative;
@@ -68,21 +68,21 @@ h3 {
   height: 120px;
 }
 .header-logo {
-  float: left;
-  margin: 20px 0 0 15px;
+  float: right;
+  margin: 20px 15px 0 0;
 }
 .header-slogan {
-  float: right;
-  margin: 15px 15px 0 0;
+  float: left;
+  margin: 15px 0 0 15px;
   color: #fff;
-  text-align: right;
+  text-align: left;
 }
 .header-lang-selector {
   color: #fff;
   position: absolute;
-  right: 15px;
+  left: 15px;
   bottom: 15px;
-  text-align: right;
+  text-align: left;
 }
 /* Installation ******************************************************************/
 .heading {
@@ -97,7 +97,7 @@ h3 {
 }
 .file-permissions {
   padding: 0px;
-  text-align: left;
+  text-align: right;
   margin: 0px;
   display: block;
   border: 0px solid;
@@ -114,12 +114,12 @@ h3 {
 .error {
   color: #FF0000;
   font-weight: bold;
-  margin-right: 2px;
+  margin-left: 2px;
 }
 .success {
   color: #41A317;
   font-weight: bold;
-  margin-right: 2px;
+  margin-left: 2px;
 }
 .permissions-list {
   color: #FF0000;
@@ -144,8 +144,8 @@ h3 {
   font-family: "Courier New";
 }
 .indent {
-  margin-left: 1em;
   margin-right: 1em;
+  margin-left: 1em;
 }
 .clearboth {
   clear: both;
@@ -160,7 +160,7 @@ h3 {
   border-bottom: 1px solid #E5E5E5;
 }
 .uk-table th {
-  text-align: left;
+  text-align: right;
 }
 .uk-table td {
   vertical-align: top;
@@ -174,7 +174,7 @@ h3 {
   font-style: italic;
 }
 .uk-table caption {
-  text-align: left;
+  text-align: right;
   color: #999;
 }
 .uk-table tbody tr.uk-active {

@@ -1,15 +1,16 @@
 <p>{{ LANG.INSTALL.63 }}</p>
+
 <ol>
     <li>{{ LANG.INSTALL.64 }}</li>
     <li>{{ LANG.INSTALL.65 }}</li>
 </ol>
 
-<div style="margin-left: auto; margin-right: auto; width: 175px;">
-    <div style="position: absolute">
-        <form action="index.php" method="post">
+<div class="uk-margin" style="margin: 0 auto; width: 100%; text-align: center;">
+    <div style="display: inline-block;">
+        <form action="index.php" method="post" class="uk-form">
             <input type="hidden" name="mode" value="install">
             <input type="hidden" name="step" value="3">
-            <input type="hidden" value="{! language !}">
+            <input type="hidden" name="language" value="{! language !}">
             <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
             <input type="hidden" name="innodb" value="{{ use_innodb_string }}">
             <input type="hidden" name="install_plugins" value="{! installPlugins !}">
@@ -19,16 +20,15 @@
             <input type="hidden" name="site_admin_url" value="{! site_admin_url !}">
             <input type="hidden" name="site_mail" value="{! site_mail !}">
             <input type="hidden" name="noreply_mail" value="{! noreply_mail !}">
-            <input type="submit" class="button big-button" value="{{ LANG.INSTALL.66 }}">
+            <button type="submit" class="uk-button uk-button-primary uk-button-large" value="{{ LANG.INSTALL.66 }}">{{ LANG.INSTALL.66 }}</button>
         </form>
     </div>
-
-    <div style="position: relative; left: 105px; top: 5px;">
-        <form action="index.php" method="post">
+    <div style="display: inline-block;">
+        <form action="index.php" method="post" class="uk-form">
             <input type="hidden" name="mode" value="upgrade">
             <input type="hidden" name="language" value="{! language !}">
             <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
-            <input type="submit" class="button big-button" value="{{ LANG.INSTALL.25 }}">
+            <button type="submit" class="uk-button uk-button-primary uk-button-large" value="{{ LANG.INSTALL.25 }}">{{ LANG.INSTALL.25 }}</button>
         </form>
     </div>
 </div>
