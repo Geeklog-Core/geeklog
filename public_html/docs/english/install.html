@@ -53,7 +53,7 @@
         <li>Know how to determine the path of your root web directory. (<a href="#glossary">What is a path?</a>)</li>
         <li>Have the ability to unpack the downloaded Geeklog tarball file.</li>
         <li>Have the ability to create a new database or have access to an existing one.</li>
-        <li>Have a db user that can modify the database. For MySQL this includes a user that has been granted all privileges on the database (including Lock).</li>
+        <li>Have a db user that can modify the database. For MySQL this includes a user that has been granted all privileges on the database (Plus the LOCK permission which is not included in the ALL permissions when granting permissions).</li>
         <li>Have access to your web server via SSH or FTP so you can change permissions on a few files and directories.</li>
     </ul>
 
@@ -71,7 +71,7 @@
             <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/">7-Zip</a> or <a href="http://www.rarlab.com/">WinRAR</a> if you must decompress the file locally.</p>
         </li>
         <li>
-            <p>Create a blank MySQL or PostgreSQL database and a user account with privileges to modify it. For MySQL this includes a user that has been granted all privileges on the database (including Lock). Your hosting provider may have already set up a database and account for you, contact them if you need assistance with this step.</p>
+            <p>Create a blank MySQL or PostgreSQL database and a user account with privileges to modify it. For MySQL this includes a user that has been granted all privileges on the database (including LOCK which is not included in the ALL permission). Your hosting provider may have already set up a database and account for you, contact them if you need assistance with this step.</p>
         </li>
         <li>
             <p>Place the contents of <code>geeklog-2.0.0/public_html/</code> into your web root directory on your web server. The web root directory is often named "public_html", "htdocs", or "www".</p>
