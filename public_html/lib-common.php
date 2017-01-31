@@ -3992,7 +3992,7 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
  */
 function COM_olderStoriesBlock($help = '', $title = '', $position = '')
 {
-    global $_TABLES, $_CONF;
+    global $_TABLES, $_CONF, $LANG01;
 
     $cacheInstance = 'olderarticles__' . CACHE_security_hash() . '__' . $_CONF['theme'];
     $retval = CACHE_check_instance($cacheInstance);
@@ -4053,6 +4053,9 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
             $string .= $dayList;
             $retval .= $string;
         }
+    } else {
+        // No older articles found
+        $retval .=  $LANG01[101];
     }
 
     $retval .= COM_endBlock(COM_getBlockTemplate('older_stories_block', 'footer', $position));
