@@ -1373,6 +1373,7 @@ $LANG33 = array(
 # admin/language.php
 
 $LANG_LANG = array(
+    'language_admin_title'  => 'Language Overrides',
     'language_manager' => '言語管理',
     'new_language_msg' => '言語の編集や削除は下の編集アイコンをクリックしてください。新しい言語の作成は上の「新規作成」をクリックしてください。',
     'language_editor' => '言語の編集',

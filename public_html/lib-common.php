@@ -3450,7 +3450,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                     array(
                         'condition' => SEC_hasRights('language.edit'),
                         'url'       => $_CONF['site_admin_url'] . '/language.php',
-                        'lang'      => $LANG_LANG['language'],
+                        'lang'      => $LANG_LANG['language_admin_title'],
                         'num'       => '',
                         'image'     => $_CONF['layout_url'] . '/images/icons/language.' . $_IMAGE_TYPE,
                     ),

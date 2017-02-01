@@ -1372,14 +1372,15 @@ $LANG33 = array(
 
 // admin/language.php (since v2.1.2)
 $LANG_LANG = array(
-    'language_manager' => 'Language Manager',
-    'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
-    'language_editor'  => 'Language Editor',
-    'id'               => 'ID',
-    'language'         => 'Language',
-    'name'             => 'Name',
-    'var_name'         => 'Var Name',
-    'value'            => 'Value',
+    'language_admin_title'  => 'Language Overrides',
+    'language_manager'      => 'Language Override Manager',
+    'new_language_msg'      => 'To modify or delete a language override item, click on that item\'s edit icon below. To create a new override, click on "Create New" above.',
+    'language_editor'       => 'Language Override Editor',
+    'id'                    => 'ID',
+    'language'              => 'Language',
+    'name'                  => 'Name',
+    'var_name'              => 'Var Name',
+    'value'                 => 'Value',
 );
 
 ###############################################################################
