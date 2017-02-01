@@ -298,8 +298,9 @@ class Language
             'form_url'   => $_CONF['site_admin_url'] . '/language.php',
         );
         $queryArray = array(
-            'sql'         => "SELECT * FROM {$_TABLES['language_items']} ",
+            'sql'         => "SELECT * FROM {$_TABLES['language_items']} WHERE 1=1",
             'query_group' => 'id, var_name, language, name, value ',
+            'query_fields'   => array('var_name', 'language', 'name', 'value'),
         );
         $defaultSortArray = array(
             'direction' => 'ASC',
