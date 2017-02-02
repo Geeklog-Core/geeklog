@@ -94,6 +94,11 @@ if (file_exists(PATH_INSTALL . 'language/' . $language . '.php')) {
 if (!isset($LANG_DIRECTION)) {
     $LANG_DIRECTION = 'ltr';
 }
+if ($LANG_DIRECTION === 'rtl') {
+    $icon_arrow_next = '<i class="uk-icon-angle-double-left"></i>';
+} else {
+    $icon_arrow_next = '<i class="uk-icon-angle-double-right"></i>';
+}
 
 // $content holds all the outputted HTML and content
 $content = '<h1 class="heading">' . $LANG_PLUGINS[2] . ' 3 - ' . $LANG_PLUGINS[1] . '</h1>' . PHP_EOL;
@@ -358,7 +363,7 @@ switch ($step) {
                 . '</div>' . PHP_EOL
                 . '<button type="button" class="uk-button uk-button-primary uk-button-large" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()">' . $LANG_PLUGINS[19] . '</button>' . PHP_EOL
                 . '<button type="submit" class="uk-button uk-button-primary uk-button-large" name="submit" value="' . $LANG_INSTALL[50] . '">'
-                . $LANG_INSTALL[50] . '&nbsp;&nbsp;{{ icon_arrow_next }}</button>'  . PHP_EOL
+                . $LANG_INSTALL[50] . '&nbsp;&nbsp;' . $icon_arrow_next . '</button>'  . PHP_EOL
                 . '</form></p>' . PHP_EOL;
         } else {
             $content .= '<p>' . $LANG_PLUGINS[20] . '</p>' . PHP_EOL
