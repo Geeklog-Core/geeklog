@@ -1112,6 +1112,9 @@ class Installer
             $this->env['use_innodb'] = $useInnodb;
 
             foreach ($_SQL as $sql) {
+                if ($useInnodb) {
+                    $sql = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB', $sql);
+                }
                 $sql = str_replace('#group#', $adminGroupId, $sql);
                 DB_query($sql);
 
@@ -1361,14 +1364,16 @@ class Installer
 
         if (count($_SQL) > 0) {
             $use_innodb = false;
-            if (($_DB_dbms == 'mysql') &&
-                (DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'")
-                    == 'InnoDB')
+            if (($_DB_dbms === 'mysql') &&
+                (DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'") === 'InnoDB')
             ) {
                 $use_innodb = true;
             }
 
             foreach ($_SQL as $sql) {
+                if ($use_innodb) {
+                    $sql = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB', $sql);
+                }
                 $sql = str_replace('#group#', $admin_group_id, $sql);
                 DB_query($sql);
                 if (DB_error()) {
@@ -2069,7 +2074,7 @@ class Installer
         // Get DBMS-specific create table array and data array
         $_SQL = array();
         $_DATA = array();
-        require_once $_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php';
+        $dbTableAndDataPath = $_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php';
 
         $progress = '';
 
@@ -2079,6 +2084,15 @@ class Installer
 
         switch ($_DB_dbms) {
             case 'mysql':
+                if ($this->env['use_innodb']) {
+                    $dbTableAndData = @file_get_contents($dbTableAndDataPath);
+                    $dbTableAndData = str_replace('<' . '?php', '', $dbTableAndData);
+                    $dbTableAndData = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB', $dbTableAndData);
+                    eval($dbTableAndData);
+                } else {
+                    require_once $dbTableAndDataPath;
+                }
+
                 $this->updateDB($_SQL, $progress);
 
                 if ($this->env['use_innodb']) {
@@ -2088,6 +2102,7 @@ class Installer
                 break;
 
             case 'pgsql':
+                require_once $dbTableAndDataPath;
                 foreach ($_SQL as $sql) {
                     $_DB->dbQuery($sql, 0, 1);
                 }
@@ -4558,6 +4573,7 @@ HTML;
 
                         // Check whether to use InnoDB tables
                         $use_innodb = ($this->post('innodb') === 'true') || ($this->get('innodb') === 'true');
+                        $this->env['use_innodb'] = $use_innodb;
                         $utf8 = ($this->post('utf8') === 'true') || ($this->get('utf8') === 'true');
 
                         // We need all this just to do one DB query
