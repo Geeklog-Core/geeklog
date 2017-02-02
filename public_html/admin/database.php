@@ -115,10 +115,8 @@ function DBADMIN_list()
         for ($i = 0; $i < $num_backups; $i++) {
             $downloadUrl = $thisUrl . '?download=x&amp;file='
                 . urlencode($backups[$i]);
-
             $downloadLink = COM_createLink(COM_createImage($diskIconUrl, $alt, $attr), $downloadUrl, $attr);
             $downloadLink .= '&nbsp;&nbsp;';
-            $attr['style'] = 'vertical-align:top;';
             $downloadLink .= COM_createLink($backups[$i], $downloadUrl, $attr);
             $backupfile = $_CONF['backup_path'] . $backups[$i];
             $backupfilesize = COM_numberFormat(filesize($backupfile))
