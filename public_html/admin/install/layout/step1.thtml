@@ -64,14 +64,24 @@
         <label class="uk-form-label" for="utf8">{{ LANG.INSTALL.92 }} {{ help_utf8 }}</label>
         <div class="uk-form-controls uk-form-controls-text"><input type="checkbox" id="utf8" name="utf8"{% if utf8 %} checked="checked"{% endif %}></div>
     </div>
+    
+    <div class="uk-form-row">
+        <div class="uk-alert uk-alert-large uk-alert-notice">
+            <span class="uk-badge uk-badge-notice">{{ LANG.INSTALL.59 }}</span> {{ LANG.INSTALL.114 }}
+        </div>    
+    </div>
     <div class="uk-form-row">
         <button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large" value="{{ button_text }}">{{ LANG.INSTALL.112 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
         <button type="submit" name="install_plugins" class="uk-button uk-button-primary uk-button-large" value="{{ button_text }}">{{ LANG.INSTALL.113 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
     </div>
 {% else %}
     <div class="uk-form-row">
-        <button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large" value="{{ button_text }}">{{ LANG.INSTALL.114 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
-        <button type="submit" name="install_plugins" class="uk-button uk-button-primary uk-button-large" value="{{ button_text }}">{{ LANG.INSTALL.115 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
+        <div class="uk-alert uk-alert-large uk-alert-notice">
+            <span class="uk-badge uk-badge-notice">{{ LANG.INSTALL.59 }}</span> {{ LANG.INSTALL.116 }}
+        </div>
+    </div>
+    <div class="uk-form-row">
+        <button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large" value="{{ button_text }}">{{ LANG.INSTALL.115 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
     </div>
 {% endif %}
 </form>
