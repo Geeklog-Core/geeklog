@@ -1312,29 +1312,30 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
-
+/**
+ * Check if the given URL exists
+ *
+ * @param  string $url
+ * @return string
+ */
 function links_validateUrl($url)
 {
     global $LANG_LINKS_STATUS;
 
-    require_once 'HTTP/Request.php';
+    $req = new HTTP_Request2($url, HTTP_Request2::METHOD_HEAD);
+    $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
 
-    $retval = '';
+    try {
+        $response = $req->send();
+        $status_code = $response->getStatus();
 
-    $req = new HTTP_Request($url);
-    $req->setMethod(HTTP_REQUEST_METHOD_HEAD);
-    $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
-
-    $response = $req->sendRequest();
-    if (PEAR::isError($response)) {
-        $retval = $response->getMessage();
-    } else {
-        $status_code = $req->getResponseCode();
         if (isset($LANG_LINKS_STATUS[$status_code])) {
-            $retval = $status_code . ": " . $LANG_LINKS_STATUS[$status_code];
+            $retval = $status_code . ': ' . $LANG_LINKS_STATUS[$status_code];
         } else {
             $retval = $LANG_LINKS_STATUS[999];
         }
+    } catch (HTTP_Request2_Exception $e) {
+        $retval = $e->getMessage();
     }
 
     return $retval;

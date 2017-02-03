@@ -64,8 +64,6 @@ function PNB_handlePingback($id, $type, $url, $oururl)
 {
     global $_CONF, $_TABLES, $PNB_ERROR;
 
-    require_once 'HTTP/Request.php';
-
     if (!isset($_CONF['check_trackback_link'])) {
         $_CONF['check_trackback_link'] = 2;
     }
