@@ -147,7 +147,7 @@ $LANG_INSTALL = array(
     100 => 'סופק מצב לא נכון',
     101 => 'שלב',
     102 => 'הכניסו את מידע הכיוון',
-    103 => 'וכיוון plugins נוספים',
+    103 => '',
     104 => 'נתיב בספריית ניהול לא נכון',
     105 => 'מצטערים, אבל נתיב ספריית הניהול שהכנסתם אינו נראה נכון. אנא חיזרו אחורה ונסו שנית.',
     106 => 'PostgreSQL',
@@ -155,7 +155,11 @@ $LANG_INSTALL = array(
     108 => 'לא נבחרו מנועי מאגר מידע!',
     109 => 'כלי סיוע חירום',
     110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:',
-    111 => 'Geeklog Version'
+    111 => 'Geeklog Version',
+    112 => 'Install (includes all plugins)',
+    113 => 'Install (then select plugins to install)',
+    114 => 'Upgrade (includes all plugins)',
+    115 => 'Upgrade (then select plugins to upgrade)'    
 );
 
 // +---------------------------------------------------------------------------+

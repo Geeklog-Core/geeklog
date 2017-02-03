@@ -152,7 +152,7 @@ $LANG_INSTALL = array(
     100 => 'Invalid mode specified',
     101 => 'Step',
     102 => 'Enter configuration information',
-    103 => 'and configure additional plugins',
+    103 => '', 
     104 => 'Incorrect Admin Directory Path',
     105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.',
     106 => 'PostgreSQL',
@@ -160,7 +160,11 @@ $LANG_INSTALL = array(
     108 => 'No Database Drivers found!',
     109 => 'Emergency Rescue Tool',
     110 => 'The permissions seem to be correct but the install script still cannot write to the Geeklog directory. If you happen to be on SELinux, make sure the httpd process has write permissions for the same, try this out:',
-    111 => 'Geeklog Version'
+    111 => 'Geeklog Version',
+    112 => 'Install (includes all plugins)',
+    113 => 'Install (then select plugins to install)',
+    114 => 'Upgrade (includes all plugins)',
+    115 => 'Upgrade (then select plugins to upgrade)'
 );
 
 // +---------------------------------------------------------------------------+

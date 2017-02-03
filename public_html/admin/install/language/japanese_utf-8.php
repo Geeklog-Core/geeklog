@@ -154,7 +154,7 @@ $LANG_INSTALL = array(
     100 => '無効なモードを指定',
     101 => 'ステップ',
     102 => 'コンフィギュレーションモード入力',
-    103 => '＋追加プラグインの設定',
+    103 => '',
     104 => '不正な管理者パス',
     105 => '入力した管理者のディレクトリパスは不正確でした。もう一度やり直してください。',
     106 => 'PostgreSQL',
@@ -162,7 +162,11 @@ $LANG_INSTALL = array(
     108 => 'データベースドライバーがありません!',
     109 => 'Emergency Rescue Tool',
     110 => 'パーミッションは正しいようですが、インストールスクリプトはGeeklogのディレクトリに書き込むことができません。SELinuxを使っているなら、httpd プロセスに書き込み権限を与えてください。次のコマンドを試してみてください:',
-    111 => 'Geeklog のバージョン'
+    111 => 'Geeklog のバージョン',
+    112 => 'Install (includes all plugins)',
+    113 => 'Install (then select plugins to install)',
+    114 => 'Upgrade (includes all plugins)',
+    115 => 'Upgrade (then select plugins to upgrade)'    
 );
 
 // +---------------------------------------------------------------------------+
