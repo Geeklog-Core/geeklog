@@ -156,7 +156,7 @@ $LANG01 = array(
     98 => 'Plug-ins',
     99 => 'ARTIKLER',
     100 => 'ingen nye artikler',
-    101 => '',
+    101 => 'There are no older stories',
     102 => '',
     103 => 'DB Backups',
     104 => 'av',
@@ -264,7 +264,8 @@ $LANG03 = array(
     102 => 'Bulk Action',
     103 => 'Ban this user',
     104 => 'Ban this IP address with the Spamx plugin',
-    105 => 'IP Address'
+    105 => 'IP Address',
+    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.'
 );
 
 ###############################################################################
@@ -435,6 +436,7 @@ $LANG04 = array(
     166 => 'Re-synch Remote Account',
     167 => 'Remote login',
     168 => 'You may also login with one on of the below remote authentication services',
+    169 => 'User has updated his/her profile',
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
@@ -1189,6 +1191,7 @@ $LANG29 = array(
     43 => 'Auto-publish Comments?',
     44 => 'Results of your moderation',
     45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
+    46 => 'User Profile Updated',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -1374,6 +1377,7 @@ $LANG33 = array(
 # admin/language.php
 
 $LANG_LANG = array(
+    'language_admin_title' => 'Language Overrides',
     'language_manager' => 'Language Manager',
     'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
     'language_editor' => 'Language Editor',
@@ -2473,7 +2477,7 @@ $LANG_configselects['Core'] = array(
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'Login' => 'login', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
-    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),

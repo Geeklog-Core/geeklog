@@ -166,7 +166,7 @@ $LANG_INSTALL = array(
     113 => 'Install (then select plugins to install)',
     114 => 'Only plugins that support being auto installed will be installed (all core plugins do). The plugins that don\'t support this can be installed via the Plugins Administration from the Geeklog Command & Control.',
     115 => 'Upgrade',
-    116 => 'Clicking the "Upgrade" button will upgrade Geeklog to the latest version including all core plugins (if required).'   
+    116 => 'Clicking the "Upgrade" button will upgrade Geeklog to the latest version including all core plugins (if required).'
 );
 
 // +---------------------------------------------------------------------------+
@@ -433,4 +433,3 @@ $LANG_LABEL = array(
     'migrate_file'   => $LANG_MIGRATE[6],
     'plugin_upload'  => $LANG_PLUGINS[10]
 );
-

@@ -144,7 +144,7 @@ $LANG01 = array(
     98 => 'Pluginad',
     99 => 'LOOD',
     100 => 'Pole uusi lugusid',
-    101 => '',
+    101 => 'There are no older stories',
     102 => '',
     103 => 'DB Backupid',
     104 => 'by',
@@ -252,7 +252,8 @@ $LANG03 = array(
     102 => 'Bulk Action',
     103 => 'Ban this user',
     104 => 'Ban this IP address with the Spamx plugin',
-    105 => 'IP Address'
+    105 => 'IP Address',
+    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.'
 );
 
 ###############################################################################
@@ -423,6 +424,7 @@ $LANG04 = array(
     166 => 'Re-synch Remote Account',
     167 => 'Remote login',
     168 => 'You may also login with one on of the below remote authentication services',
+    169 => 'User has updated his/her profile',
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
@@ -1177,6 +1179,7 @@ $LANG29 = array(
     43 => 'Auto-publitseeri kommentaarid?',
     44 => 'Results of your moderation',
     45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
+    46 => 'User Profile Updated',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -1362,6 +1365,7 @@ $LANG33 = array(
 # admin/language.php
 
 $LANG_LANG = array(
+    'language_admin_title' => 'Language Overrides',
     'language_manager' => 'Language Manager',
     'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
     'language_editor' => 'Language Editor',
@@ -2461,7 +2465,7 @@ $LANG_configselects['Core'] = array(
     22 => array('Range' => 'DENY', 'Sama allikas' => 'SAMEORIGIN', '(väljas)' => ''),
     23 => array('Keelatud' => 0, 'Lubatud' => 1, 'Lubatud (vaikimisi ainult avalehel)' => 2),
     24 => array('Avlda' => 'contribute', 'Avaleht' => 'home', 'Täpsem otsing' => 'search', 'Artiklid' => 'directory', 'Login' => 'login', 'Minu konto' => 'prefs', 'Pluginate kanded' => 'plugins', 'Kohandatud kanded' => 'custom', 'Lehe statistika' => 'stats'),
-    25 => array('Uued lood' => 'story', 'Uued kommentaarid' => 'comment', 'Uued Trackbackid' => 'trackback', 'Uued Pingbackid' => 'pingback', 'Uued kasutajad' => 'user'),
+    25 => array('Uued lood' => 'story', 'Uued kommentaarid' => 'comment', 'Uued Trackbackid' => 'trackback', 'Uued Pingbackid' => 'pingback', 'Uued kasutajad' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Klikke (ksv.)' => 'hits|asc', 'Klikke (kahan.)' => 'hits|desc', 'Aeg (ksv.)' => 'date|asc', 'Aeg (kahan.)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),

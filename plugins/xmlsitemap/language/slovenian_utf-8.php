@@ -78,4 +78,3 @@ $LANG_configselects['xmlsitemap'] = array(
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
     20 => array('vedno' => 'always', 'ob uri' => 'hourly', 'dnevno' => 'daily', 'tedensko' => 'weekly', 'meseèno' => 'monthly', 'letno' => 'yearly', 'nikoli' => 'never', 'hidden' => 'hidden')
 );
-

@@ -269,4 +269,3 @@ $LANG_configselects['links'] = array(
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
     13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2)
 );
-

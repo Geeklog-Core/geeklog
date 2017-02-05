@@ -194,4 +194,3 @@ $LANG_configselects['polls'] = array(
     14 => array('No access' => 0, 'Read-Only' => 2),
     15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
 );
-

@@ -255,4 +255,3 @@ $LANG_configselects['calendar'] = array(
     14 => array('アクセス不可' => 0, '表示' => 2),
     15 => array('すべて' => 'all', 'ホームページのみ' => 'homeonly', '話題を選択する' => 'selectedtopics')
 );
-

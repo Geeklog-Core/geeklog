@@ -145,7 +145,7 @@ $LANG01 = array(
     98 => 'הרחבות Plugins',
     99 => 'מאמרים',
     100 => 'אין מאמרים חדשים',
-    101 => '',
+    101 => 'There are no older stories',
     102 => '',
     103 => 'יצירת גיבוי',
     104 => 'על ידי',
@@ -253,7 +253,8 @@ $LANG03 = array(
     102 => 'Bulk Action',
     103 => 'Ban this user',
     104 => 'Ban this IP address with the Spamx plugin',
-    105 => 'IP Address'
+    105 => 'IP Address',
+    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.'
 );
 
 ###############################################################################
@@ -424,6 +425,7 @@ $LANG04 = array(
     166 => 'סינכרון מחדש של חשבון מרוחק',
     167 => 'כניסה מרחוק',
     168 => 'הנכם יכולים גם להיכנס עם אחד משירותי הזיהוי המרוחקים הבאים',
+    169 => 'User has updated his/her profile',
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
@@ -1178,6 +1180,7 @@ $LANG29 = array(
     43 => 'האם לפרסם אוטומטית תגובות?',
     44 => 'Results of your moderation',
     45 => 'Approved %1$d items and deleted %2$d items of user submissions.',
+    46 => 'User Profile Updated',
     'core' => 'Core',
     'plugins' => 'Plugins',
     'tools' => 'Tools',
@@ -1363,6 +1366,7 @@ $LANG33 = array(
 # admin/language.php
 
 $LANG_LANG = array(
+    'language_admin_title' => 'Language Overrides',
     'language_manager' => 'Language Manager',
     'new_language_msg' => 'To modify or delete a language item, click on that item\'s edit icon below. To create a new item, click on "Create New" above.',
     'language_editor' => 'Language Editor',
@@ -2462,7 +2466,7 @@ $LANG_configselects['Core'] = array(
     22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
     23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2),
     24 => array('הגשות' => 'contribute', 'דף הבית' => 'home', 'חיפוש מתקדם' => 'search', 'ספרייה' => 'directory', 'Login' => 'login', 'החשבון שלי' => 'prefs', 'פריטי plugins' => 'plugins', 'פריטים מותאמים אישית' => 'custom', 'סטטיסטיקת אתר' => 'stats'),
-    25 => array('מאמרים חדשים' => 'story', 'תגובות חדשות' => 'comment', 'הפניות חדשות' => 'trackback', 'פינגים חוזרים חדשים' => 'pingback', 'משתמשים חדשים' => 'user'),
+    25 => array('מאמרים חדשים' => 'story', 'תגובות חדשות' => 'comment', 'הפניות חדשות' => 'trackback', 'פינגים חוזרים חדשים' => 'pingback', 'משתמשים חדשים' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (קהל כללי)' => 'G', 'PG (ליווי הורים)' => 'PG', 'R (מוגבל)' => 'R', 'X (בוטה)' => 'X'),
     27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc'),
     28 => array('ללא גישה' => 0, 'שימוש' => 2),

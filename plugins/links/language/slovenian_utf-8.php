@@ -273,4 +273,3 @@ $LANG_configselects['links'] = array(
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
     13 => array('No access' => 0, 'Use' => 2)
 );
-

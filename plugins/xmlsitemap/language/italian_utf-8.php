@@ -74,4 +74,3 @@ $LANG_configselects['xmlsitemap'] = array(
     12 => array('Nessun Accesso' => 0, 'Sola lettura' => 2, 'Lettura e Scrittura' => 3),
     20 => array('sempre' => 'always', 'ogni ora' => 'hourly', 'giornaliero' => 'daily', 'settimanale' => 'weekly', 'mensile' => 'monthly', 'annuale' => 'yearly', 'mai' => 'never', 'hidden' => 'hidden')
 );
-

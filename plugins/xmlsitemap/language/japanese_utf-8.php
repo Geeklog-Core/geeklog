@@ -78,4 +78,3 @@ $LANG_configselects['xmlsitemap'] = array(
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     20 => array('常時' => 'always', '毎時間' => 'hourly', '毎日' => 'daily', '毎週' => 'weekly', '毎月' => 'monthly', '毎年' => 'yearly', '更新しない' => 'never', 'hidden' => 'hidden')
 );
-

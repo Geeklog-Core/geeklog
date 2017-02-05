@@ -273,4 +273,3 @@ $LANG_configselects['links'] = array(
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
     13 => array('No access' => 0, 'Use' => 2)
 );
-

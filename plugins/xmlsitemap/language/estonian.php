@@ -78,4 +78,3 @@ $LANG_configselects['xmlsitemap'] = array(
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
     20 => array('Alati' => 'always', 'Tunni tagant' => 'hourly', 'päeva tagant' => 'daily', 'nädala tagant' => 'weekly', 'kuu tagant' => 'monthly', 'aasta tagant' => 'yearly', 'mitte kunagi' => 'never', 'hidden' => 'hidden')
 );
-

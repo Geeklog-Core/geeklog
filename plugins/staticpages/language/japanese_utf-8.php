@@ -211,4 +211,3 @@ $LANG_configselects['staticpages'] = array(
     13 => array('アクセス不可' => 0, '利用する' => 2),
     17 => array('コメント有効' => 0, 'コメント無効' => -1)
 );
-

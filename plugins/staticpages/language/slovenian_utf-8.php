@@ -208,4 +208,3 @@ $LANG_configselects['staticpages'] = array(
     13 => array('No access' => 0, 'Use' => 2),
     17 => array('Komentarji omogoèeni' => 0, 'Komentarji onemogoèeni' => -1)
 );
-
