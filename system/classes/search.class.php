@@ -72,6 +72,7 @@ class Search
         // Set search criteria
         if (isset($_GET['query'])) {
             $query = Geeklog\Input::fGet('query');
+            $query = urldecode($query);
             $query = GLText::remove4byteUtf8Chars($query);
             $this->_query = GLText::stripTags($query);
         }
@@ -263,7 +264,7 @@ class Search
             if (!empty ($inlist)) {
                 $sql = "SELECT uid,username,fullname FROM {$_TABLES['users']} WHERE uid IN ($inlist)";
                 if (isset($_CONF['show_fullname']) && ($_CONF['show_fullname'] == 1)) {
-                    /* Caveat: This will group all users with an emtpy fullname
+                    /* Caveat: This will group all users with an empty fullname
                      *         together, so it's not exactly sorted by their
                      *         full name ...
                      */
