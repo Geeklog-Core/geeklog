@@ -160,14 +160,14 @@ $LANG_INSTALL = array(
     106 => 'PostgreSQL',
     107 => 'データベースのパスワードが必要です。',
     108 => 'データベースドライバーがありません!',
-    109 => 'Emergency Rescue Tool',
+    109 => '緊急レスキューツール',
     110 => 'パーミッションは正しいようですが、インストールスクリプトはGeeklogのディレクトリに書き込むことができません。SELinuxを使っているなら、httpd プロセスに書き込み権限を与えてください。次のコマンドを試してみてください:',
     111 => 'Geeklog のバージョン',
-    112 => 'Install (includes all plugins)',
-    113 => 'Install (then select plugins to install)',
-    114 => 'Only plugins that support being auto installed will be installed (all core plugins do). The plugins that don\'t support this can be installed via the Plugins Administration from the Geeklog Command & Control.',
-    115 => 'Upgrade',
-    116 => 'Clicking the "Upgrade" button will upgrade Geeklog to the latest version including all core plugins (if required).'
+    112 => 'インストール(コアプラグインも同時に)',
+    113 => 'インストール(次の画面でインストールするプラグインを選択)',
+    114 => '自動インストールに対応しているプラグインだけをインストールします(コアプラグインは対応しています)。対応していないプラグインは管理画面の「プラグイン」からインストールできます。',
+    115 => 'アップグレード',
+    116 => '「アップグレード」ボタンをクリックすると、Geeklogを最新バージョンにアップグレードします。このとき必要ならコアプラグインもアップグレードします。'
 );
 
 // +---------------------------------------------------------------------------+
