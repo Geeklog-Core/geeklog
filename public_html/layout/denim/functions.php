@@ -211,6 +211,12 @@ function theme_js_files_denim()
     );
 
     $result[] = array(
+        'file'     => '/layout/' . $_CONF['theme'] . '/javascript/uikit_modifier.js',
+        'footer'   => false, // Not required, default = true
+        'priority' => 101 // Not required, default = 100
+    );
+
+    $result[] = array(
         'file'     => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
         'footer'   => true, // Not required, default = true
         'priority' => 100 // Not required, default = 100

@@ -212,6 +212,12 @@ function theme_js_files_denim_curve()
     );
 
     $result[] = array(
+        'file'     => '/layout/' . $_CONF['theme_default'] . '/javascript/uikit_modifier.js',
+        'footer'   => false, // Not required, default = true
+        'priority' => 101 // Not required, default = 100
+    );
+
+    $result[] = array(
         'file'     => '/layout/' . $theme_var['theme_default'] . '/javascript/script.js',
         'footer'   => true, // Not required, default = true
         'priority' => 100 // Not required, default = 100

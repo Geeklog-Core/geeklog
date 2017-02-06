@@ -33,7 +33,7 @@ function postconfirm() {
     return confirm("Send this?");
 }
 
-$(function() {
+(function($) {
     $('form').addClass('uk-form');
 
     if (geeklog.theme_options.header_search == 0) {
@@ -99,4 +99,4 @@ $(function() {
             totop.fadeOut();
         }
     });
-});
+})(jQuery);
