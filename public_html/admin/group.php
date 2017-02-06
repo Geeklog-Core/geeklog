@@ -384,6 +384,9 @@ function removeIndirectFeatures($grp_id, array $features)
                     $retval[] = $feature;
                 }
             }
+        } else {
+            // There is no indirect feature
+            $retval = $features;
         }
     }
 
@@ -660,7 +663,7 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
         // now save the features
         DB_delete($_TABLES['access'], 'acc_grp_id', $grp_id);
 
-        // Remove features inherited from groups (bug #
+        // Remove features inherited from groups (bug #642)
         $features = removeIndirectFeatures($grp_id, $features);
 
         if (count($features) > 0) {
