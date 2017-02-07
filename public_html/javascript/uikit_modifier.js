@@ -1,8 +1,8 @@
-// Based on UIkit 2.27.2 tab.js
 (function(UI) {
 
     "use strict";
 
+    // Based on UIkit 2.27.2 tab.js
     UI.component('tab', {
 
         defaults: {
@@ -168,5 +168,36 @@
             this.responsivetab[this.responsivetab.lst.children('li').length ? 'removeClass':'addClass']('uk-hidden');
         }
     });
+
+    UI.modal.confirm = function(content, onconfirm, oncancel) {
+
+        var options = arguments.length > 1 && arguments[arguments.length-1] ? arguments[arguments.length-1] : {};
+
+        onconfirm = UI.$.isFunction(onconfirm) ? onconfirm : function(){};
+        oncancel  = UI.$.isFunction(oncancel) ? oncancel : function(){};
+        options   = UI.$.extend(true, {bgclose:false, keyboard:false, modal:false, labels:UI.modal.labels}, UI.$.isFunction(options) ? {}:options);
+
+        var button = (options.labels.Cancel == '')
+            ? '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary js-modal-confirm">'+options.labels.Ok+'</button></div>'
+            : '<div class="uk-modal-footer uk-text-right"><button class="uk-button js-modal-confirm-cancel">'+options.labels.Cancel+'</button> <button class="uk-button uk-button-primary js-modal-confirm">'+options.labels.Ok+'</button></div>';
+
+        var modal = UI.modal.dialog(([
+            '<div class="uk-margin uk-modal-content">'+String(content)+'</div>',
+            button
+        ]).join(""), options);
+
+        modal.element.find(".js-modal-confirm, .js-modal-confirm-cancel").on("click", function(){
+            UI.$(this).is('.js-modal-confirm') ? onconfirm() : oncancel();
+            modal.hide();
+        });
+
+        modal.on('show.uk.modal', function(){
+            setTimeout(function(){
+                modal.element.find('.js-modal-confirm').focus();
+            }, 50);
+        });
+
+        return modal.show();
+    };
 
 })(UIkit);

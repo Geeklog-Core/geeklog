@@ -95,9 +95,9 @@ var geeklog_dbadminInterface = (function() {
             }).done(function(data) {
                 $('#dbconvertbutton').prop("disabled",false);
                 $("#dbconvertbutton").html(lang_convert);
-                UIkit.modal.confirm_mod(lang_success, function(){
+                UIkit.modal.confirm(lang_success, function(){
                     $(location).attr('href', 'database.php');
-                }, {labels:{'Ok': lang_ok}});
+                }, function(){}, {labels:{'Ok': lang_ok, 'Cancel': ''}});
             });
         }, 3000);
     };
@@ -159,34 +159,6 @@ var geeklog_dbadminInterface = (function() {
     // return only public methods/properties
     return pub;
 })();
-
-(function(UI) {
-    UI.modal.confirm_mod = function(content, onconfirm) {
-
-        var options = arguments.length > 1 && arguments[arguments.length-1] ? arguments[arguments.length-1] : {};
-
-        onconfirm = UI.$.isFunction(onconfirm) ? onconfirm : function(){};
-        options   = UI.$.extend(true, {bgclose:false, keyboard:false, modal:false, labels:UI.modal.labels}, UI.$.isFunction(options) ? {}:options);
-
-        var modal = UI.modal.dialog(([
-            '<div class="uk-margin uk-modal-content">'+String(content)+'</div>',
-            '<div class="uk-modal-footer uk-text-right"><button class="uk-button uk-button-primary">'+options.labels.Ok+'</button></div>'
-        ]).join(""), options);
-
-        modal.element.find('button:first').on("click", function(){
-            onconfirm();
-            modal.hide();
-        });
-
-        modal.on('show.uk.modal', function(){
-            setTimeout(function(){
-                modal.element.find('button:first').focus();
-            }, 50);
-        });
-
-        return modal.show();
-    };
-})(UIkit);
 
 $(function() {
     geeklog_dbadminInterface.init();
