@@ -418,12 +418,12 @@ class Database
                     $option = str_ireplace('type', 'ENGINE', $option);
 
                     if ($this->_use_innodb === true) {
-                        $option = str_ireplace('MyISAM', 'InnoDB', $option);
+                        $option = str_ireplace('MyISAM', 'InnoDB ROW_FORMAT=DYNAMIC', $option);
                     }
                 } else {
                     // Appends engine type
                     $option = ' ENGINE='
-                        . (($this->_use_innodb === true) ? 'InnoDB' : 'MyISAM');
+                        . (($this->_use_innodb === true) ? 'InnoDB ROW_FORMAT=DYNAMIC' : 'MyISAM');
                 }
 
                 // Appends default charset if necessary

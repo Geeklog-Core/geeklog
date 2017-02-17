@@ -1113,7 +1113,7 @@ class Installer
 
             foreach ($_SQL as $sql) {
                 if ($useInnodb) {
-                    $sql = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB', $sql);
+                    $sql = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB ROW_FORMAT=DYNAMIC', $sql);
                 }
                 $sql = str_replace('#group#', $adminGroupId, $sql);
                 DB_query($sql);
@@ -1372,7 +1372,7 @@ class Installer
 
             foreach ($_SQL as $sql) {
                 if ($use_innodb) {
-                    $sql = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB', $sql);
+                    $sql = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB ROW_FORMAT=DYNAMIC', $sql);
                 }
                 $sql = str_replace('#group#', $admin_group_id, $sql);
                 DB_query($sql);
@@ -2087,7 +2087,7 @@ class Installer
                 if ($this->env['use_innodb']) {
                     $dbTableAndData = @file_get_contents($dbTableAndDataPath);
                     $dbTableAndData = str_replace('<' . '?php', '', $dbTableAndData);
-                    $dbTableAndData = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB', $dbTableAndData);
+                    $dbTableAndData = preg_replace('/ENGINE\s*=\s*MyISAM/i', 'ENGINE=InnoDB ROW_FORMAT=DYNAMIC', $dbTableAndData);
                     eval($dbTableAndData);
                 } else {
                     require_once $dbTableAndDataPath;
