@@ -420,8 +420,8 @@ class Language
             foreach ($ids as &$id) {
                 $id = intval($id, 10);
             }
-
             unset($id);
+
             $sql = "DELETE FROM {$_TABLES['language_items']} "
                 . " WHERE (id IN (" . implode(',', $ids) . ")) ";
             DB_query($sql);

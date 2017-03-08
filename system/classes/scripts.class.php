@@ -233,6 +233,7 @@ class Scripts
                         $file['load'] = false;
                     }
                 }
+                unset($file);
             }
         } elseif ($this->jquery_ui_cdn) { // This might happen if a jQuery UI file is not found
             $librarycode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $this->library_files['jquery']['file'] . '"></script>' . LB;
@@ -244,6 +245,7 @@ class Scripts
                     $file['load'] = false;
                 }
             }
+            unset($file);
         }
 
         // Now load in the rest of the libraries

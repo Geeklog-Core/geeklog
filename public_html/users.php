@@ -540,12 +540,13 @@ function resend_request()
             foreach ($data as $key => &$value) {
                 if ($key == CSRF_TOKEN) {
                     $value = SEC_createToken();
-                }                else {
+                } else {
                     if ($magic) {
                         $value = stripslashes_gpc_recursive($value);
                     }
                 }
             }
+            unset($value);
 
             $returnUrl = $returnUrl . '?' . http_build_query($data);
             $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_GET);
@@ -681,7 +682,7 @@ switch ($mode) {
             }
         } else {
             // this request doesn't make sense - ignore it
-            COM_redirect($_CONF['site_url']  . '/index.php');
+            COM_redirect($_CONF['site_url'] . '/index.php');
         }
         break;
 
@@ -693,8 +694,8 @@ switch ($mode) {
                 $_CONF['site_url'] . '/users.php?'
                 . http_build_query(array(
                     'mode' => 'newpwd',
-                    'uid' => (int) Geeklog\Input::fPost('uid'),
-                    'rid' => Geeklog\Input::post('rid')
+                    'uid'  => (int) Geeklog\Input::fPost('uid'),
+                    'rid'  => Geeklog\Input::post('rid'),
                 ))
             );
         } else {
@@ -791,7 +792,8 @@ switch ($mode) {
         } elseif ($_CONF['user_login_method']['openid'] &&
             ($_CONF['usersubmission'] == 0) &&
             !$_CONF['disable_new_user_registration'] &&
-            (Geeklog\Input::get('openid_login')  == '1')) {
+            (Geeklog\Input::get('openid_login') == '1')
+        ) {
             // Here we go with the handling of OpenID authentication.
 
             $query = array_merge($_GET, $_POST);
@@ -888,18 +890,18 @@ switch ($mode) {
 
                 $consumer->setRedirectURL($callback_url);
                 $oauth_userinfo = $consumer->authenticate_user();
-                
-                if ( $oauth_userinfo === false ) {
+
+                if ($oauth_userinfo === false) {
                     COM_updateSpeedlimit('login');
                     COM_errorLog("OAuth Error: " . $consumer->error, 1);
                     COM_redirect($_CONF['site_url'] . '/users.php?msg=111'); // OAuth authentication error
                 }
-                
-                if ( $consumer->doAction($oauth_userinfo) == NULL ) {
+
+                if ($consumer->doAction($oauth_userinfo) == null) {
                     COM_errorLog("Oauth: Error creating new user in OAuth authentication", 1);
                     COM_redirect($_CONF['site_url'] . '/users.php?msg=111'); // OAuth authentication error
                 }
-            }            
+            }
         } else {
             $status = -2; // User just visited login page no error. -1 = error
         }

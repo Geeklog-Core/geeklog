@@ -1938,7 +1938,6 @@ class Story
                         break;
                     }
                 }
-
                 unset($item);
 
                 if (!$found) {

@@ -758,6 +758,8 @@ function STORY_whatsRelated($related, $uid, $sid)
                     $value = COM_checkWords($value, 'story');
                 }
             }
+            unset($value);
+
         }
 
         $topics = array();
