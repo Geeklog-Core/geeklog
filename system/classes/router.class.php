@@ -22,7 +22,7 @@ class Router
     const PLACEHOLDER_REPLACE = '([^/&=?#]+)';
 
     // Values to escape pattern
-    const VALUE_MATCH = '|[^0-9a-zA-Z_.-]|';
+    const VALUE_MATCH = '|[^0-9a-zA-Z_%.-]|';
 
     // Default priority
     const DEFAULT_PRIORITY = 100;
