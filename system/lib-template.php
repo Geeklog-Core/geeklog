@@ -167,15 +167,18 @@ function CTL_plugin_templatePath($plugin, $path = '')
 
 /**
  * Get HTML path for a plugin file (url or physical file location).
+ * Usually used to find .css, .js files needed by plugin 
  * Order of checking is:
  * - theme path/plugin/file
  * - html path/plugin/directory/file
+ * - html path/plugin/directory/theme_plugins/file - ie $_CONF['theme_plugins']
  * - html path/plugin/directory/theme/file
  * - html path/plugin/directory/theme_default/file * if default theme exists
  * - html path/plugin/directory/default/file
  * - html path/plugin/file (url path only)
- * - plugin path/plugin/directory/theme/file (physical path only)
- * - plugin path/plugin/directory/theme_default/file (physical path only) * if default theme exists
+ * - plugin path/plugin/directory/theme_plugins/file (physical path only) - ie $_CONF['theme_plugins']
+ * - plugin path/plugin/directory/theme/file (physical path only) - ie $_CONF['theme']
+ * - plugin path/plugin/directory/theme_default/file (physical path only) * if default theme exists - ie $_CONF['theme_default']
  * - plugin path/plugin/directory/default/file (physical path only)
  *
  * @param    string  $plugin     name of plugin
@@ -199,51 +202,67 @@ function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = 
             $retval = $file;
         }
     } else {
-        // See if current theme templates stored with plugin
-        $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme']}/$filename";
+        // Check to see if theme has theme_plugins specified. If so check there
+        $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme_plugins']}/$filename";
         if (file_exists($file)) {
             if ($return_url) {
-                $retval = "/$plugin/$directory/{$_CONF['theme']}/$filename";
+                $retval = "/$plugin/$directory/{$_CONF['theme_plugins']}/$filename";
             } else {
                 $retval = $file;
             }
         } else {
-            // Check to see if theme has theme_default. If so check there
-            $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme_default']}/$filename";
-            if (!empty($_CONF['theme_default']) && file_exists($file)) {
+            // See if current theme templates stored with plugin
+            $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme']}/$filename";
+            if (file_exists($file)) {
                 if ($return_url) {
-                    $retval = "/$plugin/$directory/{$_CONF['theme_default']}/$filename";
+                    $retval = "/$plugin/$directory/{$_CONF['theme']}/$filename";
                 } else {
                     $retval = $file;
                 }
             } else {
-                // Use default templates then. This should always exist
-                $file = "{$_CONF['path_html']}/$plugin/$directory/default/$filename";
-                if (file_exists($file)) {
+                // Check to see if theme has theme_default. If so check there
+                $file = "{$_CONF['path_html']}/$plugin/$directory/{$_CONF['theme_default']}/$filename";
+                if (!empty($_CONF['theme_default']) && file_exists($file)) {
                     if ($return_url) {
-                        $retval = "/$plugin/$directory/default/$filename";
+                        $retval = "/$plugin/$directory/{$_CONF['theme_default']}/$filename";
                     } else {
                         $retval = $file;
                     }
                 } else {
-                    if ($return_url) {
-                        // Last guess for URL file location
-                        $retval = "/$plugin/$filename";
-                    } else {
-                        // See if current theme templates stored with plugin
-                        $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme']}/$filename";
-                        if (file_exists($file)) {
-                            $retval = $file;
+                    // Use default templates then. This should always exist
+                    $file = "{$_CONF['path_html']}/$plugin/$directory/default/$filename";
+                    if (file_exists($file)) {
+                        if ($return_url) {
+                            $retval = "/$plugin/$directory/default/$filename";
                         } else {
-                            // Check to see if theme has theme_default. If so check there
-                            $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme_default']}/$filename";
-                            if (!empty($_CONF['theme_default']) && file_exists($file)) {
+                            $retval = $file;
+                        }
+                    } else {
+                        if ($return_url) {
+                            // Last guess for URL file location
+                            $retval = "/$plugin/$filename";
+                        } else {
+                            // Check to see if theme has theme_plugins specified. If so check there
+                            $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme_plugins']}/$filename";
+                            if (file_exists($file)) {
                                 $retval = $file;
-                            } else {
-                                // Use default templates then. This should always exist
-                                $file = "{$_CONF['path']}plugins/$plugin/$directory/default/$filename";
+                            } else {                        
+                                // See if current theme templates stored with plugin
+                                $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme']}/$filename";
                                 if (file_exists($file)) {
                                     $retval = $file;
+                                } else {
+                                    // Check to see if theme has theme_default. If so check there
+                                    $file = "{$_CONF['path']}plugins/$plugin/$directory/{$_CONF['theme_default']}/$filename";
+                                    if (!empty($_CONF['theme_default']) && file_exists($file)) {
+                                        $retval = $file;
+                                    } else {
+                                        // Use default templates then. This should always exist
+                                        $file = "{$_CONF['path']}plugins/$plugin/$directory/default/$filename";
+                                        if (file_exists($file)) {
+                                            $retval = $file;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -290,8 +309,9 @@ function CTL_plugin_dirLocation($plugin, $directory = 'images', $return_url = tr
 }
 
 /**
- * Include plugin template functions file which may/may not do anything or exist.
+ * Include plugin template functions file (functions.php) which may/may not do anything or exist.
  * This will currently set any additional css and javascript that is theme specific for a plugin templates
+ * Usually called by plugin_getheadercode_foo so can set required javascript and css files needed by plugin
  *
  * @param    string $plugin name of plugin
  */
@@ -306,11 +326,18 @@ function CTL_plugin_setTemplatesFunctions($plugin)
 
         // Workaround since we don't know the theme name of the functions.php file we are using
         // It would have been checked in the following order. When found then quit
+        $themes = array();
+        if (isset($_CONF['theme_plugins']) AND ($_CONF['theme_plugins'] !='')) {;
+            // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php            
+            // Problem is that $_CONF['theme'] can be set in functions.php. With $_CONF['theme_plugins'] set files will not be loaded as the wrong dir is used. $_CONF['theme'] needs to be used in functions.php for fallback with child themes
+            $themes[] = $_CONF['theme_plugins']; // Override of theme to set which theme template files to use for plugins (if found)
+        }
         $themes[] = $_CONF['theme'];
         $themes[] = $_CONF['theme_default'];
         $themes[] = 'default';
 
         $function_found = false;
+        
         foreach ($themes as $theme) {
             // Include scripts on behalf of plugin template files that are theme specific
             $func = $plugin . '_css_' . $theme;
@@ -322,7 +349,6 @@ function CTL_plugin_setTemplatesFunctions($plugin)
                     $constant = (!empty($info['constant'])) ? $info['constant'] : true;
                     $attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
                     $priority = (!empty($info['priority'])) ? $info['priority'] : 100;
-
                     $_SCRIPTS->setCssFile($name, $file, $constant, $attributes, $priority, 'theme');
                 }
             }

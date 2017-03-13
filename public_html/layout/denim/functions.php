@@ -86,8 +86,8 @@ function theme_config_denim()
         'doctype'    => 'xhtml5',
         'etag'       => false, // never set this true. instead use $options['enable_etag'] above.
         'supported_version_theme' => '2.0.0', // support new theme format for the later Geeklog 2.0.0
-        'theme_plugins' => 'denim', // Not requred, you can specify compatible theme of template stored with some plugins
-        'options'    => $options // Not requred, some options of this theme
+        'theme_plugins' => '', // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php
+        'options'    => $options // Not required, some options of this theme
     );
 }
 
