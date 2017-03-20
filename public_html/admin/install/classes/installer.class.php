@@ -3908,7 +3908,7 @@ class Installer
     private function migrateStep4()
     {
         global $_CONF, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
-               $_TABLES, $LANG_INSTALL, $LANG_MIGRATE, $_DEVICE;
+               $_TABLES, $LANG_INSTALL, $LANG_MIGRATE, $_DEVICE, $_URL;
 
         if (empty($this->env['dbconfig_path'])) {
             $this->env['dbconfig_path'] = $_CONF['path'] . 'db-config.php';
