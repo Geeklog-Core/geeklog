@@ -1909,6 +1909,7 @@ class Story
 
         $escapedArticleId = DB_escapeString($articleId);
 
+        $found = false;
         foreach ($keywords as $keyword) {
             $keyword = trim($keyword);
 
