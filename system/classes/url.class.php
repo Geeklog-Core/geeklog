@@ -222,7 +222,7 @@ class Url
 
             // Added for IIS 7 to work in FastCGI mode
             array_shift($this->arguments);
-            if ($this->arguments[0] == substr($_SERVER['SCRIPT_NAME'], 1)) {
+            if (isset($this->arguments[0]) AND $this->arguments[0] == substr($_SERVER['SCRIPT_NAME'], 1)) {
                 array_shift($this->arguments);
             }
             // end of add
