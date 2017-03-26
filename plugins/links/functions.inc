@@ -799,14 +799,16 @@ function plugin_upgrade_links()
             break;
 
         case '2.1.2':
-
             $current_version = '2.1.3';
             break;
 
         case '2.1.3':
-
             $current_version = '2.1.4';
             break;
+            
+        case '2.1.4':
+            $current_version = '2.1.5'; // Shipped with Geeklog-2.1.3
+            break;            
 
         default:
             $done = true;
