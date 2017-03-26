@@ -320,9 +320,17 @@ function plugin_upgrade_spamx()
                 $current_version = '1.3.1';
                 break;
 
-            case '1.3.1':   // Shipped with Geeklog-2.1.1
-                $current_version = '1.3.2';
+            case '1.3.1':   
+                $current_version = '1.3.2'; // Shipped with Geeklog-2.1.1
                 break;
+
+            case '1.3.2':   
+                $current_version = '1.3.3'; // Shipped with Geeklog-2.1.2
+                break;
+                
+            case '1.3.3':   
+                $current_version = '1.3.4'; // Shipped with Geeklog-2.1.3
+                break;                
 
             default:
                 $done = true;
