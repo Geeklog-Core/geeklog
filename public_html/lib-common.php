@@ -1329,11 +1329,8 @@ function COM_siteFooter($rightBlock = -1, $custom = '')
     } else {
         $copyrightname = $_CONF['site_name'];
     }
-    $footer->set_var('copyright_notice', '&nbsp;' . $LANG01[93] . ' &copy; '
-        . $copyrightyear . ' ' . $copyrightname . '<br' . XHTML . '>&nbsp;'
-        . $LANG01[94]);
     $footer->set_var('copyright_msg', $LANG01[93] . ' &copy; '
-        . $copyrightyear . ' ' . $_CONF['site_name']);
+        . $copyrightYear . ' ' . $copyrightName);
     $footer->set_var('current_year', $year);
     $footer->set_var('lang_copyright', $LANG01[93]);
     $footer->set_var('trademark_msg', $LANG01[94]);
@@ -1888,11 +1885,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     } else {
         $copyrightName = $_CONF['site_name'];
     }
-    $footer->set_var('copyright_notice', '&nbsp;' . $LANG01[93] . ' &copy; '
-        . $copyrightYear . ' ' . $copyrightName . '<br' . XHTML . '>&nbsp;'
-        . $LANG01[94]);
     $footer->set_var('copyright_msg', $LANG01[93] . ' &copy; '
-        . $copyrightYear . ' ' . $_CONF['site_name']);
+        . $copyrightYear . ' ' . $copyrightName);
     $footer->set_var('current_year', $year);
     $footer->set_var('lang_copyright', $LANG01[93]);
     $footer->set_var('trademark_msg', $LANG01[94]);
