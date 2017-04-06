@@ -142,8 +142,8 @@ manually.</p>
     that replying to those emails is recommended.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_backend">backend</a></td>
     <td valign="top">mail</td>
-    <td valign="top">Used to select how to send email. Can be one of 'smtp',
-        'sendmail', or 'mail'.</td></tr>
+    <td valign="top">Used to select how to send email. Can be one of 'smtp', 'smtps',
+        'sendmail', or 'mail'. The smtps protocol requires the PHP extension OpenSSL to work.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_sendmail_path">sendmail_path</a></td>
     <td valign="top"><span class="tt">/usr/bin/sendmail</span></td>
     <td valign="top">If you chose 'sendmail' for the backend setting, this
@@ -155,24 +155,24 @@ manually.</p>
         binary.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_host">host</a></td>
     <td valign="top">smtp.example.com</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+    <td valign="top">If you chose 'smtp' or 'smtps' for the backend setting, this is the
         SMTP server to use.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_port">port</a></td>
     <td valign="top">25</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+    <td valign="top">If you chose 'smtp' (port 25) or 'smtps' (port 587) for the backend setting, this is the
         port number to talk to on the SMTP server.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_auth">auth</a></td>
     <td valign="top">0</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, set this to
+    <td valign="top">If you chose 'smtp' or 'smtps' for the backend setting, set this to
         <code>1</code> if your SMTP server requires authorization, and
         <code>0</code> (or leave the field empty) if it doesn't.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_username">username</a></td>
     <td valign="top">smtp-username</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+    <td valign="top">If you chose 'smtp' or 'smtps' for the backend setting, this is the
         name of your SMTP account.</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_password">password</a></td>
     <td valign="top">smtp-password</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+    <td valign="top">If you chose 'smtp' or 'smtps' for the backend setting, this is the
         password for your SMTP account.</td></tr>
 <tr><td valign="top"><a name="desc_mail_cc_enabled">cc_enabled</a></td>
     <td valign="top">True</td>

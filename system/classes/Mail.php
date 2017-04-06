@@ -76,6 +76,16 @@ class Mail
                 }
 
                 break;
+                
+            case 'smtps':
+                $transport = \Swift_SmtpTransport::newInstance($_CONF['mail_settings']['host'], $_CONF['mail_settings']['port'], 'ssl');
+
+                if (!empty($_CONF['mail_settings']['auth'])) {
+                    $transport->setUsername($_CONF['mail_settings']['username']);
+                    $transport->setPassword($_CONF['mail_settings']['password']);
+                }
+
+                break;                
 
             case 'mail':
             default:

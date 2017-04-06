@@ -62,7 +62,7 @@ $_CONF_VALIDATE['Core']['meta_keywords'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['site_mail'] = array('rule' => 'email');
 $_CONF_VALIDATE['Core']['noreply_mail'] = array('rule' => 'email');
 $_CONF_VALIDATE['Core']['mail_settings[backend]'] = array(
-    'rule' => array('inList', array('smtp', 'sendmail', 'mail')),
+    'rule' => array('inList', array('smtp', 'smtps', 'sendmail', 'mail')),
     'message' => isset($LANG_VALIDATION['mail_settings_backend']) ?
                  $LANG_VALIDATION['mail_settings_backend'] : $LANG_VALIDATION['default']
 );

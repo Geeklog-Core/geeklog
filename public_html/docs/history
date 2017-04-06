@@ -1,5 +1,10 @@
 Geeklog History/Changes:
 
+Future (2.1.2)
+------------
+
+- [Feature] Added ability to use SMTPS protocol for sending mail [Ivy] [Tom]
+
 
 March 1, 2017 (2.1.2)
 ------------
