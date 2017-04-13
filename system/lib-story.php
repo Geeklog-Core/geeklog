@@ -1702,9 +1702,9 @@ function plugin_configchange_article($group, $changes = array())
                 // This is all the related story column should really need
                 $fulltext = PLG_replaceTags($A['introtext']) . ' ' . PLG_replaceTags($A['bodytext']);
                 $related = DB_escapeString(implode("\n", STORY_extractLinks($fulltext, $_CONF['whats_related_trim'])));
-                if (!empty($related)) {
-                    DB_query("UPDATE {$_TABLES['stories']} SET related = '$related' WHERE sid = '{$A['sid']}'");
-                }
+                
+                // Update all related even if empty since number of related links could have changed for some reason
+                DB_query("UPDATE {$_TABLES['stories']} SET related = '$related' WHERE sid = '{$A['sid']}'");
             }
 
         }
