@@ -1,18 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html{lang_attribute}{xmlns}>
 <head>
+  <title>{page_title}</title>
   <meta name="robots" content="NOINDEX"{xhtml}>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"{xhtml}>
   <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
+  <link rel="stylesheet" type="text/css" href="{layout_url}/print.css"{xhtml}>
   <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/print.css"{xhtml}>
+  <link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
   <link rel="canonical" href="{article_url}"{xhtml}>
-
-<title>{page_title}</title>
-
 </head>
 
 <body dir="{direction}">
-
 {# begin {templatelocation} #}
 
   <h1 id="printable-story_title">{story_title}</h1>
@@ -33,6 +32,5 @@
   </dl>
 
 {# end {templatelocation} #}
-
 </body>
 </html>

@@ -139,9 +139,14 @@ if ($A['count'] > 0) {
                 ' xmlns="http://www.w3.org/1999/xhtml"');
         }
         $story_template->set_var('direction', $LANG_DIRECTION);
-        $story_template->set_var('page_title', $story->DisplayElements('page_title'));
-        $story_template->set_var('story_title',
-            $story->DisplayElements('title'));
+        
+        $page_title = $story->DisplayElements('page_title');
+        if (empty($page_title)) {
+            $page_title = $_CONF['site_name'] . ' - ' . $story->DisplayElements('title');
+        }
+        $story_template->set_var('page_title', $page_title);
+        
+        $story_template->set_var('story_title', $story->DisplayElements('title'));
         header('Content-Type: text/html; charset=' . COM_getCharset());
         header('X-XSS-Protection: 1; mode=block');
         header('X-Content-Type-Options: nosniff');
