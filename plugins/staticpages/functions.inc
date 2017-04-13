@@ -551,8 +551,14 @@ function SP_printPage($page, $A)
 
     $print->set_var('direction', $LANG_DIRECTION);
     COM_setLangIdAndAttribute($print);
-    $print->set_var('page_title', $_CONF['site_name'] . ' - '
-        . stripslashes($A['sp_title']));
+
+    $page_title = stripslashes($A['sp_page_title']);
+    if (empty($page_title)) {
+        $page_title = $_CONF['site_name'] . ' - ' .  stripslashes($A['sp_title']);
+    }
+    $print->set_var('page_title', $page_title);
+        
+        
     $sp_url = COM_buildURL($_CONF['site_url']
         . '/staticpages/index.php?page=' . $page);
     $print->set_var('sp_url', $sp_url);
@@ -1527,7 +1533,17 @@ function plugin_upgrade_staticpages()
                 }
                 
                 $current_version = '1.6.8';
-                break;                
+                break;
+            case '1.6.8':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+                
+                $current_version = '1.6.9';
+                break;                  
 
             default:
                 $done = true;

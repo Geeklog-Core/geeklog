@@ -1,27 +1,36 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html{lang_attribute}{xmlns}>
 <head>
   <title>{page_title}</title>
   <meta name="robots" content="NOINDEX"{xhtml}>
-  <link rel="stylesheet" type="text/css" href="{layout_url}/print.css"{xhtml}>
-  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/print.css"{xhtml}>
-  <link rel="canonical" href="{printable_url}"{xhtml}>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"{xhtml}>
+  <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
+  <link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/print.css"{xhtml}>
+  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/css_{direction}/print.css"{xhtml}>
+  <link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
+  <link rel="canonical" href="{sp_url}"{xhtml}>
 </head>
-<body dir="{direction}">
+<body id="print" dir="{direction}">
 {# begin {templatelocation} #}
 
-    <h1>{sp_title}</h1>
+    <div id="wrapper">
+        <div id="header">
+            <h2>{sp_title}</h2>
+        </div>
+        
+        <div id="story">
+            {sp_content}
+        </div>
 
-    <p>{sp_content}</p>
+        <p>{comments_text_in_brackets}</p>
 
-    <hr{xhtml}>
+        <hr class="hidden">
 
-    <p>{site_name}<br{xhtml}>
-        <a href="{sp_url}">{sp_url}</a>
-    </p>
-<p>{comments_text_in_brackets}</p>
-
+        <div id="footer">
+          <p>{page_title}<br>{sp_url}</p>
+        </div>    
+    </div>
+    
 {# end {templatelocation} #}
-
 </body>
 </html>
