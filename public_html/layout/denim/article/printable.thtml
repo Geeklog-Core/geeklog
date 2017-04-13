@@ -5,8 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="Content-Style-Type" content="text/css">
   <title>{page_title}</title>
-  <link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/print.css">
-  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/css/print.css">
+  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/css_{direction}/print.css">
   <link rel="shortcut icon" href="{layout_url}/images/favicon.ico">
   <link rel="canonical" href="{article_url}">
 </head>
