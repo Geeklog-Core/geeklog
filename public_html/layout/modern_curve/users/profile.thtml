@@ -12,7 +12,7 @@
     {email_option}
 
     <dt>{lang_homepage}</dt>
-    <dd><a href="{user_homepage}">{user_homepage}</a></dd>
+    <dd>{!if user_homepage}<a href="{user_homepage}">{user_homepage}</a>{!endif}</dd>
 
     <dt>{lang_location}</dt>
     <dd>{user_location}</dd>
