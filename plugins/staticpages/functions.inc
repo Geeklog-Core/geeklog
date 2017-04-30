@@ -1770,10 +1770,31 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
         $svc_msg = array();
 
         if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
+            
+            // Need to do below twice for backwards compatibility with pre Staticpage plugin v1.6.8 way of handling templates
+            // Reason is in case [staticpage_content: autotag is in staticpage template page variable which is used to load staticpage within staticpage template. 
+            // This staticpage may be a template and have may have template variables as well which we need to compile
+            for ($i = 1; $i <= 2; $i++) { // only do for 2 levels (this could become a setting of how deep to check for each staticpage which uses a template???)
+                // Treat as normal staticpage template but really just want to use a view and load no files
+                $sp_template = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
+                $sp_template->set_view(array(
+                    'page_view'   => $retval['sp_content'],
+                ));            
+                
+                // Add all the staticpage variables as template variables now
+                foreach ($tag as $key => $value) {
+                    $sp_template->set_var($key, $value);
+                }            
+
+                $retval['sp_content'] = $sp_template->finish($sp_template->parse('output', 'page_view'));
+            }
+            
+            /* Old way of applying variables left for bug checking (Staticpage plugin v1.6.8, Geeklog v2.1.2)
             $retval['sp_content'] = str_replace(array_keys($tag), array_values($tag), $retval['sp_content']);
             // Remove any unknown staticpage template variables as long as they use the curly brackets ie {templatevariable}
             // If template variable format is different then any unused ones will display
             $retval['sp_content'] = preg_replace('/{[^ \t\r\n}]+}/', '', $retval['sp_content']);
+            */
             $sp_content = $retval['sp_content'];
         }
     }
