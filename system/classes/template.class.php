@@ -109,6 +109,16 @@ class Template
      * @see       set_file
      */
     private $location = array();
+    
+    /**
+     * Tells template class if dealing with a template file or a view passed instead.
+     * If view no file access needed and no caching allowed. Default assumed always is no view.
+     * $view[$varName] = true;     
+     *
+     * @var       array/boolean
+     * @see       set_view
+     */
+    private $view = array();    
 
     /**
      * The in memory template
@@ -429,6 +439,69 @@ class Template
     }
 
     /******************************************************************************
+     * Defines a view for the initial value of a variable. A view is the template 
+     * contents (similarly what a template file contains).
+     *
+     * It may be passed either a var name and a view as two strings or
+     * a hash of strings with the key being the var name and the value
+     * being the file name.
+     *
+     * Since the content is already loaded and passed to the class (from whatever source like database or other file, the class does not care) 
+     * their is no mappings. The contents of the view are then complied right away.
+     * Views cannot be cached since in most cases whatever is requesting the view to be complied is probably going to be cached.
+     *
+     * Returns true on success, false on error.
+     *
+     * usage: set_view(array $views = (string $varName => string $view))
+     * or
+     * usage: set_view(string $varName, string $view)
+     *
+     * @param     string|array $varName          either a string containing a var name
+     *                                           or a hash of var name/view pairs.
+     * @param     string       $filename         if var name is a string this is the view otherwise view is not
+     *                                           required
+     * @return    boolean
+     */
+    public function set_view($varName, $view = '')
+    {
+        global $_CONF;
+
+        if (!is_array($varName)) {
+            if ($this->debug & 4) {
+                echo "<p><b>set_view:</b> (with scalar) varName = $varName, view = $view</p>\n";
+            }
+            if ($view == "") {
+                $this->halt("set_view: For varName $varName view is empty.");
+                return false;
+            }
+
+            $templateCode = $this->compile_template($varName, $view, false);
+            $this->templateCode[$varName] = $templateCode;
+            
+            $this->location[$varName] = ""; // No location since view
+            $this->view[$varName] = true;
+        } else {
+            reset($varName);
+            while (list($var, $v) = each($varName)) {
+                if ($this->debug & 4) {
+                    echo "<p><b>set_view:</b> (with array) varName = $var, view = $v</p>\n";
+                }
+                if ($v == "") {
+                    $this->halt("set_view: For varName $var view is empty.");
+                    return false;
+                }
+
+                $v = $this->compile_template($var, $v, false);
+                $this->templateCode[$var] = $v;
+                
+                $this->location[$var] = ""; // no location since view
+                $this->view[$var] = true;
+            }
+        }
+        return true;
+    }
+    
+    /******************************************************************************
      * Defines a filename for the initial value of a variable.
      *
      * It may be passed either a var name and a file name as two strings or
@@ -520,7 +593,8 @@ class Template
 
         $this->block_replace[$varName] = !empty($name) ? $name : $parent;
 
-        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true)) {
+        // if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true)) {
+        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) && ($this->view[$varName] == false)) {
             $filename = $this->file[$parent];
             $p = pathinfo($filename);
             $this->blocks[$varName] = $p['dirname'] . '/' . substr($p['basename'], 0, -(strlen($p['extension']) + 1)) . '__' . $varName . '.' . $p['extension'];
@@ -733,7 +807,8 @@ class Template
     {
         global $_CONF;
 
-        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true)) {
+        // If view always bypass cache
+        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) && ($this->view[$varName] == false)) {
             if (isset($this->blocks[$varName])) {
                 $filename = $this->blocks[$varName];
             } elseif (isset($this->file[$varName])) {
@@ -1820,7 +1895,7 @@ class Template
      * @return string
      * @see    cache_block,cache_write,filename
      */
-    private function compile_template($varName, $filename)
+    private function compile_template($varName, $filename, $isfile = true)
     {
         global $_CONF;
 
@@ -1828,7 +1903,11 @@ class Template
             printf("<compile_template> Var %s for file %s<br>", $varName, $filename);
         }
 
-        $str = @file_get_contents($filename);
+        if ($isfile) {
+            $str = @file_get_contents($filename);
+        } else {
+            $str = $filename;
+        }
 
         // Do any preprocessing
         $str = $this->_preprocess($str);
