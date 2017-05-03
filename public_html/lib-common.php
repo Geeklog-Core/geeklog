@@ -3796,7 +3796,6 @@ function COM_checkWords($message, $type = '')
                     // Check for exact match. Could happen for really short text strings like anonymous names in comments
                     if (strtolower($editedMessage) == strtolower($c)) {
                         // No need to continue since replaced entire string
-                        echo "ha";
                         return $Replacement;
                     } else {
                         // Cycle through each regular expression as needed
