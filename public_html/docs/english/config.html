@@ -1793,7 +1793,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_censorreplace">censorreplace</a></td>
   <td valign="top">*censored*</td>
-  <td valign="top">Text to replace a censored word with</td></tr>
+  <td valign="top">Text to replace a censored word with. Note: If the text being checked for censored words contains tags (like HTML or BBCode) censored words may not be found if the actual word is embedded with tags. For example if "badword" was in the Censor List. The text "This is a bad&#60;b&#62;wo&#60;/b&#62;rd." would not get censored because of the bold tags.</td></tr>
 <tr>
   <td valign="top"><a name="desc_censorlist">censorlist</a></td>
   <td valign="top">array(<em>a list of "bad" words goes here ...</em>)</td>

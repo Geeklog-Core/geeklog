@@ -3752,25 +3752,58 @@ function COM_checkWords($message, $type = '')
                 case 1: // Exact match
                     // Intentional fall-through
                 default:
-                    $RegExPrefix = '(\s)';
-                    $RegExSuffix = '(\W)';
+                    // Check words surround by any white-space character. 
+                    $RegExPrefix[] = '(\s)';
+                    $RegExSuffix[] = '(\W)';
+                    
+                    // Check words surround by multiple white-space characters. 
+                    $RegExPrefix[] = '(\s+)';
+                    $RegExSuffix[] = '(\W)';
+                    
+                    // Check start of string
+                    $RegExPrefix[] = '(^)'; // start of string
+                    $RegExSuffix[] = '(\W)'; 
+
+                    // Check End of string
+                    $RegExPrefix[] = '(\s)';
+                    $RegExSuffix[] = '($)'; // End of string
+                    
+                    // Check End of line (but not necessarily end of string)
+                    $RegExPrefix[] = '(\s)';
+                    $RegExSuffix[] = '(\r\n|\r|\n)'; // Line end
+
                     break;
 
                 case 2: // Word beginning
-                    $RegExPrefix = '(\s)';
-                    $RegExSuffix = '(\w*)';
+                    $RegExPrefix[] = '(\s)';
+                    $RegExSuffix[] = '(\w*)';
+                    
+                    // Check start of string
+                    $RegExPrefix[] = '(^)'; // start of string
+                    $RegExSuffix[] = '(\W)';
+                    
                     break;
 
                 case 3: // Word fragment
-                    $RegExPrefix = '(\w*)';
-                    $RegExSuffix = '(\w*)';
+                    $RegExPrefix[] = '(\w*)';
+                    $RegExSuffix[] = '(\w*)';
                     break;
             }
 
             foreach ($_CONF['censorlist'] as $c) {
                 if (!empty($c)) {
-                    $editedMessage = MBYTE_eregi_replace($RegExPrefix . $c
-                        . $RegExSuffix, "\\1$Replacement\\2", $editedMessage);
+                    
+                    // Check for exact match. Could happen for really short text strings like anonymous names in comments
+                    if (strtolower($editedMessage) == strtolower($c)) {
+                        // No need to continue since replaced entire string
+                        echo "ha";
+                        return $Replacement;
+                    } else {
+                        // Cycle through each regular expression as needed
+                        for($i = 0; $i < count($RegExPrefix); ++$i) {
+                            $editedMessage = MBYTE_eregi_replace($RegExPrefix[$i] . $c . $RegExSuffix[$i], "\\1$Replacement\\2", $editedMessage);
+                        }
+                    }
                 }
             }
         }
