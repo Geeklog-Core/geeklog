@@ -806,7 +806,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
         $from_db = false;
     }
     if (!$from_db) {
-        // see if a selection control variable is_a set. If not then first time for display of control
+        // see if a selection control variable is set. If not then first time for display of control
         if (isset($_POST['topic_options_hide'])) {
             TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
         } else {
@@ -882,7 +882,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     if ($show_options && $topic_option !== TOPIC_SELECTED_OPTION) {
         $topic_hide = true;
     }
-    $inherit_hide = true; // If false then inhert topic selection will be visible
+    $inherit_hide = true; // If false then inherit topic selection will be visible
     $default_hide = true; // If false then default topic selection will be visible
     if (!$topic_hide) {
         $inherit_hide = $show_inherit ? false : true;
@@ -908,14 +908,14 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
         $topic_templates->set_var('options_hide', $val_hide);
         $topic_templates->set_var('topic_options_hide', '1');
     }
-
+ 
     $opt_dummy = '<option value="dummy">dummy</option>';
     $inherit_options = $opt_dummy;
     $topic_inherit_hide = '1';
     if ($show_inherit) {
         $topic_inherit_hide = '0';
         $topic_info .= $LANG27[42];
-        if (!empty($inherit_tids)) {
+        if (!empty($inherit_tids) OR !empty($tids)) { // Can have no inherited topics selected but if topics selected and show_inherit then need to display
             if ($from_db) {
                 $inherit_options = TOPIC_getOtherListSelect($type, $id, $inherit_tids);
             } else {
