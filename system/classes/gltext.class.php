@@ -598,7 +598,7 @@ class GLText
                 }
 
                 $part = substr($text, 0, $posEnd);
-                $marker = sprintf(self::SCRIPT_MARKER, microtime(true));
+                $marker = sprintf(self::SCRIPT_MARKER, uniqid());
                 $marker = str_replace('.', '', $marker);
                 $markers[] = array(
                     'text'   => $part,
