@@ -277,6 +277,38 @@ function render($renderType, $args = array()) {
                 <li><?php e(28); ?> <?php echo VERSION; ?></li>
             </ul>
         </div>
+
+        <?php
+        // ********************************************************
+        // A few checks to see if Geeklog is installed properly. If not we generate a php error and stop tool
+        function fatal_handler() {
+
+            $error = error_get_last();
+            //check if it's a core/fatal error, otherwise it's a normal shutdown
+            if ($error !== NULL) {            
+            ?>
+            <div class="box error">
+                <p><?php e(45); ?></p>
+            </div>
+        </div>
+    </body>
+</html>
+            <?php
+                die;
+            }
+        }        
+        register_shutdown_function( "fatal_handler" );
+        
+        $result = DB_query("SELECT * FROM {$_TABLES['plugins']}");
+        $count = DB_count($_TABLES['conf_values']);
+        $count = DB_count($_TABLES['vars'], 'name', 'geeklog'); // Check if vars table exists and geeklog version record is found
+        if ($count == 0) {
+            trigger_error("Fatal error", E_USER_ERROR);
+        }
+        // ********************************************************
+        ?>
+        
+        
         <h2><?php e(29); ?></h2>
         <p style="margin-left:5px;"><?php e(30); ?></p>
         <ul class="option">
@@ -321,7 +353,6 @@ function render($renderType, $args = array()) {
                 </select>
                 <input type="radio" name="value" id="enable_block" value="1" /><label for="enable_block"><?php e(37); ?></label>
                 <input type="radio" name="value" id="disable_block" value="0" checked="checked" /><label for="disable_block"><?php e(38); ?></label><br />
-                <input type="hidden" name="table" value="blocks" />
                 <input type="hidden" name="view" value="handleRequest" />
                 <input type="hidden" name="args" value="operation:UPDATE|table:blocks|field:is_enabled|where:name" />
                 <input type="submit" value="<?php e(41); ?>" onclick="this.disabled=true;this.form.submit();" />

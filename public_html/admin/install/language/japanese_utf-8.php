@@ -413,7 +413,8 @@ $LANG_RESCUE = array(
     41 => '実行',
     42 => '主要な$_CONF変数を編集できます。',
     43 => 'Geeklogのroot/adminパスワードをリセットできます。',
-    44 => 'パスワードをメールで送信する'
+    44 => 'パスワードをメールで送信する', 
+    45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'    
 );
 
 // which texts to use as labels, so they don't have to be translated again

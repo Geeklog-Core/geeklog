@@ -409,6 +409,7 @@ $LANG_RESCUE = array(
     42 => 'You can edit some key $_CONF options.',
     43 => 'Here you can reset your geeklog root/admin password.',
     44 => 'Email my password',
+    45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'
 );
 
 // which texts to use as labels, so they don't have to be translated again

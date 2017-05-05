@@ -406,7 +406,8 @@ $LANG_RESCUE = array(
     41 => 'אישור',
     42 => 'תוכלו לערוך כמה אפשרויות $_CONF מרכזיות.',
     43 => 'כאן תוכלו לאפס את הססמה הראשית/הניהולית של Geeklog שלכם.',
-    44 => 'שליחת הססמה באימייל'
+    44 => 'שליחת הססמה באימייל',
+    45 => 'Geeklog appears not to be installed or the install did not complete properly as core information is missing in the Geeklog database. Therefore this rescue tool cannot be used.'
 );
 
 // which texts to use as labels, so they don't have to be translated again
