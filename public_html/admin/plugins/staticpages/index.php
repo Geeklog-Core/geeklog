@@ -672,7 +672,6 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
             $A['unixdate'] = time();
             $A['sp_hits'] = 0;
             $A['sp_old_id'] = '';
-            $A['commentcode'] = $_SP_CONF['comment_code'];
         }
     } else {
         $A = $_POST;
