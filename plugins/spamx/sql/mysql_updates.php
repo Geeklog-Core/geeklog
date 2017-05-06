@@ -56,7 +56,12 @@ $_UPDATES = array(
         "DROP INDEX `primary` ON {$_TABLES['spamx']}",
         "DROP INDEX `spamx_name` ON {$_TABLES['spamx']}",
         "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name)"
-    )
+    ),
+    '1.3.3' => array(
+        "DROP INDEX `primary` ON {$_TABLES['spamx']}",
+        "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)",
+        "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)"
+    )    
 );
 
 /**

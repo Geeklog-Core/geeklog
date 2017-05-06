@@ -324,11 +324,25 @@ function plugin_upgrade_spamx()
                 $current_version = '1.3.2'; // Shipped with Geeklog-2.1.1
                 break;
 
-            case '1.3.2':   
+            case '1.3.2':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                } 
+                
                 $current_version = '1.3.3'; // Shipped with Geeklog-2.1.2
                 break;
                 
-            case '1.3.3':   
+            case '1.3.3':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }            
+            
                 $current_version = '1.3.4'; // Shipped with Geeklog-2.1.3
                 break;                
 
