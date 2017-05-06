@@ -598,7 +598,7 @@ class GLText
                 }
 
                 $part = substr($text, 0, $posEnd);
-                $marker = sprintf(self::SCRIPT_MARKER, uniqid());
+                $marker = sprintf(self::SCRIPT_MARKER, self::_getUnqiueStr());
                 $marker = str_replace('.', '', $marker);
                 $markers[] = array(
                     'text'   => $part,
@@ -645,5 +645,21 @@ class GLText
         $var = strip_tags($var);
 
         return $var;
+    }
+
+    /**
+     * Generate unqiue string
+     *
+     * @param  int  $length length of string to generate
+     * @return string
+     */
+    private static function _getUnqiueStr($length = 8)
+    {
+        static $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJLKMNOPQRSTUVWXYZ0123456789';
+        $str = '';
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $chars[mt_rand(0, 61)];
+        }
+        return $str;
     }
 }
