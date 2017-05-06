@@ -61,6 +61,46 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
+function update_DatabaseFor213()
+{
+    global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
+
+    // ***************************************     
+    // Add database Geeklog Core updates here. 
+    // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
+    
+    
+    
+    
+    
+    // ***************************************     
+    // Core Plugin Updates Here
+    
+    // SpamX
+    $_SQL[] = "DROP INDEX `primary` ON {$_TABLES['spamx']}";
+    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)";
+    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)";    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.4' WHERE pi_name='spamx'";
+    
+    
+
+    if ($use_innodb) {
+        $statements = count($_SQL);
+        for ($i = 0; $i < $statements; $i++) {
+            $_SQL[$i] = str_replace('MyISAM', 'InnoDB', $_SQL[$i]);
+        }
+    }
+
+    foreach ($_SQL as $sql) {
+        DB_query($sql,1);
+    }
+
+    // update Geeklog version number
+    DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='geeklog'",1);
+    DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='geeklog'",1);
+    
+    return true;
+}
 
 function update_DatabaseFor212()
 {
@@ -212,7 +252,11 @@ $display .= "<p>This update is for Geeklog Core and Core Plugins. Can include ch
 // Geeklog Core Updates
 $display .= '<ul><li>Performing Geeklog Core configuration upgrades if necessary...<ul><li>';
 
-require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_' . $gl_prev_version . '_to_' . $gl_devel_version . '.php');
+
+$geeklog_sqlfile_upgrade = $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_' . $gl_prev_version . '_to_' . $gl_devel_version . '.php';
+if (file_exists ($geeklog_sqlfile_upgrade)) {
+    require_once($geeklog_sqlfile_upgrade);
+}
 
 $short_version = str_replace(".","", $gl_devel_version);
 $function = 'update_ConfValuesFor' . $short_version;
@@ -240,17 +284,17 @@ foreach ($corePlugins AS $pi_name) {
     switch ($pi_name) {
         case 'staticpages':
             $new_plugin_version = true;
-            $plugin_version = '1.6.8';
+            $plugin_version = '1.6.9';
             break;
         case 'spamx':
             $new_plugin_version = true;
             $plugin_version = '1.3.4';
             break;
         case 'links':
+            $new_plugin_version = true;
             $plugin_version = '2.1.5';
             break;
         case 'polls':
-            $new_plugin_version = true;
             $plugin_version = '2.1.7';
             break;
         case 'calendar':
