@@ -1468,16 +1468,15 @@ function ADMIN_getListField_moderation($fieldName, $fieldValue, $A, $icon_arr)
                 $retval = TOPIC_getTopicAdminColumn('article', $A[0]);
             } elseif (($fieldName == 2) && ($type === 'comment')) {
                 $commentText = COM_getTextContent($A['comment']);
-                $excerpt = htmlspecialchars(COM_truncate($commentText, 140, '...'));
-
+                $commentText = htmlspecialchars_decode($commentText, ENT_QUOTES);
+                $excerpt = htmlspecialchars(COM_truncate($commentText, 140, '...'), ENT_QUOTES, COM_getEncodingt());
                 // try to provide a link to the parent item (e.g. article, poll)
                 $info = PLG_getItemInfo($A['type'], $A['sid'], 'title,url');
                 if (empty($info) || empty($info[0]) || empty($info[1])) {
                     // if not available, display excerpt from the comment
-                    $retval = htmlspecialchars(COM_truncate($commentText, 40, '...'));
+                    $retval = htmlspecialchars(COM_truncate($commentText, 40, '...'), ENT_QUOTES, COM_getEncodingt());
                     if (strlen($commentText) > 40) {
-                        $retval = '<span title="' . $excerpt . '">' . $retval
-                            . '</span>';
+                        $retval = '<span title="' . $excerpt . '">' . $retval . '</span>';
                     }
                 } else {
                     $retval = COM_createLink($info[0], $info[1], array('title' => $excerpt));
