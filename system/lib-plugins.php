@@ -82,19 +82,19 @@ while ($A = DB_fetchArray($result)) {
  * Calls a function for all enabled plugins
  *
  * @param    string $function_name holds name of function to call
+ * @param    array  $args     arguments to send to function
  * @return   void
  * @access   private
  * @internal not to be used by plugins
- * @todo     only supports functions without any parameters
  */
-function PLG_callFunctionForAllPlugins($function_name)
+function PLG_callFunctionForAllPlugins($function_name, array $args = array())
 {
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_' . $function_name . '_' . $pi_name;
         if (function_exists($function)) {
-            $function();
+            PLG_callFunctionForOnePlugin($function, $args);
         }
     }
     $function = 'CUSTOM_' . $function_name;
@@ -1407,12 +1407,16 @@ function PLG_profileBlocksDisplay($uid)
  * @param    string $plugin name of a specific plugin or empty(all plugins)
  * @return   void
  */
-function PLG_profileExtrasSave($plugin = '')
+function PLG_profileExtrasSave($plugin = '', $uid = '')
 {
+    $args = array(
+        1 => $uid
+    );     
+    
     if (empty($plugin)) {
-        PLG_callFunctionForAllPlugins('profileextrassave');
+        PLG_callFunctionForAllPlugins('profileextrassave', $args);
     } else {
-        PLG_callFunctionForOnePlugin('plugin_profileextrassave_' . $plugin);
+        PLG_callFunctionForOnePlugin('plugin_profileextrassave_' . $plugin, $args);
     }
 }
 

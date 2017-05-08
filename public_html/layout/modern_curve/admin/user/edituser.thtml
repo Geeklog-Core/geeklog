@@ -30,6 +30,22 @@
 
       <dt><label for="admin-edituser-homepage">{lang_homepage}</label></dt>
       <dd><input type="text" size="48" maxlength="255" value="{user_homepage}" name="homepage" id="admin-edituser-homepage" class="text"{xhtml}></dd>
+      
+      <dt><label for="admin-edituser-location">{lang_location}</label></dt>
+      <dd><input type="text" size="60" maxlength="96" value="{user_location}" name="location" id="admin-edituser-location" class="text"{xhtml}></dd>
+      <dd class="description">{lang_location_text}</dd>
+
+      <dt><label for="admin-edituser-sig">{lang_signature}</label></dt>
+      <dd><textarea cols="45" rows="4" name="sig" id="admin-edituser-sig">{user_signature}</textarea></dd>
+      <dd class="description">{lang_signature_text}</dd>
+
+      <dt><label for="admin-edituser-about">{lang_about}</label></dt>
+      <dd><textarea cols="45" rows="6" name="about" id="admin-edituser-about">{user_about}</textarea></dd>
+      <dd class="description">{lang_about_text}</dd>
+
+      <dt><label for="admin-edituser-pgpkey">{lang_pgpkey}</label></dt>
+      <dd><textarea cols="45" rows="6" name="pgpkey" id="admin-edituser-pgpkey">{user_pgpkey}</textarea></dd>
+      <dd class="description">{lang_pgpkey_text}</dd>      
 
       <dt>{lang_user_status}</dt>
       <dd>{user_status}</dd>

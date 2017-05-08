@@ -76,7 +76,7 @@ if (!SEC_hasRights('user.edit')) {
  */
 function edituser($uid = '', $msg = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG_ACCESS, $LANG_ADMIN,
+    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG04, $LANG_ACCESS, $LANG_ADMIN,
            $MESSAGE;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
@@ -97,7 +97,7 @@ function edituser($uid = '', $msg = '')
     }
 
     if (!empty ($uid) && ($uid > 1)) {
-        $result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = '$uid'");
+        $result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = $uid");
         $A = DB_fetchArray($result);
         if (empty ($A['uid'])) {
             COM_redirect($_CONF['site_admin_url'] . '/user.php');
@@ -112,6 +112,12 @@ function edituser($uid = '', $msg = '')
 
             return $retval;
         }
+        $resultB = DB_query("SELECT about, pgpkey, location FROM {$_TABLES['userinfo']} WHERE uid = $uid");
+        $B = DB_fetchArray($resultB);
+        $A['about'] = $B['about'];
+        $A['pgpkey'] = $B['pgpkey'];
+        $A['location'] = $B['location'];
+        
         $curtime = COM_getUserDateTimeFormat($A['regdate']);
         $lastlogin = DB_getItem($_TABLES['userinfo'], 'lastlogin', "uid = '$uid'");
         $lasttime = COM_getUserDateTimeFormat($lastlogin);
@@ -137,6 +143,18 @@ function edituser($uid = '', $msg = '')
     if (isset($_POST['homepage'])) {
         $A['homepage'] = GLText::stripTags($_POST['homepage']);
     }
+    if (isset($_POST['location'])) {
+        $A['location'] = GLText::stripTags($_POST['location']);
+    }
+    if (isset($_POST['sig'])) {
+        $A['sig'] = GLText::stripTags($_POST['sig']);
+    }
+    if (isset($_POST['pgpkey'])) {
+        $A['pgpkey'] = GLText::stripTags($_POST['pgpkey']);
+    }    
+    if (isset($_POST['about'])) {
+        $A['about'] = GLText::stripTags($_POST['about']);
+    }    
     if (isset($_POST['userstatus'])) {
         $A['status'] = COM_applyFilter($_POST['userstatus'], true);
     }
@@ -239,11 +257,20 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_homepage', $LANG28[8]);
     if (isset($A['homepage'])) {
         $user_templates->set_var('user_homepage',
-            htmlspecialchars($A['homepage']));
+            htmlspecialchars(COM_killJS($A['homepage'])));
     } else {
         $user_templates->set_var('user_homepage', '');
     }
     $user_templates->set_var('do_not_use_spaces', '');
+    
+    $user_templates->set_var('lang_location', $LANG04[106]);
+    $user_templates->set_var('user_location', htmlspecialchars($A['location']));
+    $user_templates->set_var('lang_signature', $LANG04[32]);
+    $user_templates->set_var('user_signature', htmlspecialchars($A['sig']));    
+    $user_templates->set_var('lang_pgpkey', $LANG04[8]);
+    $user_templates->set_var('user_pgpkey', htmlspecialchars($A['pgpkey']));
+    $user_templates->set_var('lang_about', $LANG04[130]);
+    $user_templates->set_var('user_about', htmlspecialchars($A['about']));
 
     $statusarray = array(USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
                          USER_ACCOUNT_ACTIVE              => $LANG28[45],
@@ -375,6 +402,9 @@ function edituser($uid = '', $msg = '')
     }
     $user_templates->set_var('gltoken_name', CSRF_TOKEN);
     $user_templates->set_var('gltoken', $token);
+    
+    PLG_profileVariablesEdit($uid, $user_templates);
+    
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
@@ -481,7 +511,7 @@ function listusers()
  * @param    string $delete_photo delete user's photo if == 'on'
  * @return   string                  HTML redirect or error message
  */
-function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $groups, $delete_photo = '', $userstatus = 3, $oldstatus = 3)
+function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $signature, $pgpkey, $about, $groups, $delete_photo = '', $userstatus = 3, $oldstatus = 3)
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
 
@@ -584,7 +614,20 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                 return edituser($uid, $ret['number']);
             }
         }
-
+        
+        // basic filtering only (same as in usersettings.php)
+        $fullname= GLText::stripTags(COM_stripslashes($fullname));
+        $location = GLText::stripTags(COM_stripslashes($location));
+        $signature = GLText::stripTags(COM_stripslashes($signature));
+        $about = GLText::stripTags(COM_stripslashes($about));
+        $pgpkey = GLText::stripTags(COM_stripslashes($pgpkey));
+        
+        
+        // Escape these here since used both in new and updates
+        $location = DB_escapeString($location);
+        $signature = DB_escapeString($signature);
+        $pgpkey = DB_escapeString($pgpkey);
+        $about = DB_escapeString($about);
         if (empty ($uid)) {
             if (empty ($passwd)) {
                 // no password? create one ...
@@ -593,12 +636,18 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 
             $uid = USER_createAccount($username, $email, $passwd, $fullname,
                 $homepage);
+            DB_query("UPDATE {$_TABLES['users']} SET sig = '$signature' WHERE uid = $uid");
+                
+            DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
+            
             if ($uid > 1) {
                 DB_query("UPDATE {$_TABLES['users']} SET status = $userstatus WHERE uid = $uid");
             }
         } else {
+            // Do these ones here since USER_createAccount will do its own filtering
             $fullname = DB_escapeString($fullname);
             $homepage = DB_escapeString($homepage);
+            
             $curphoto = DB_getItem($_TABLES['users'], 'photo', "uid = $uid");
             if (!empty ($curphoto) && ($delete_photo == 'on')) {
                 USER_deletePhoto($curphoto);
@@ -626,7 +675,8 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             }
 
             $curphoto = DB_escapeString($curphoto);
-            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
+            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
+            DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
             if ($passwd_changed && !empty($passwd)) {
                 SEC_updateUserPassword($passwd, $uid);
             }
@@ -643,6 +693,9 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             }
             $userChanged = true;
         }
+
+        // See if any plugins added fields that need to be saved
+        PLG_profileExtrasSave('', $uid);
 
         // check that the user is allowed to change group assignments
         if (is_array($groups) && SEC_hasRights('group.assign')) {
@@ -1279,6 +1332,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // del
             Geeklog\Input::post('email'),
             Geeklog\Input::post('regdate'),
             Geeklog\Input::post('homepage'),
+            Geeklog\Input::post('location'),
+            Geeklog\Input::post('sig'),
+            Geeklog\Input::post('pgpkey'),
+            Geeklog\Input::post('about'),
             Geeklog\Input::post('groups'), $delphoto,
             Geeklog\Input::post('userstatus'),
             Geeklog\Input::post('oldstatus')
