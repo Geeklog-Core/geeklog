@@ -45,7 +45,9 @@
 
       <dt><label for="admin-edituser-pgpkey">{lang_pgpkey}</label></dt>
       <dd><textarea cols="45" rows="6" name="pgpkey" id="admin-edituser-pgpkey">{user_pgpkey}</textarea></dd>
-      <dd class="description">{lang_pgpkey_text}</dd>      
+      <dd class="description">{lang_pgpkey_text}</dd>
+      
+      {display_fields}
 
       <dt>{lang_user_status}</dt>
       <dd>{user_status}</dd>
@@ -71,5 +73,21 @@
     </p>
 
 </form>
+
+<!-- BEGIN display_field_text -->
+      <dt><label for="admin-edituser-{fieldname}">{lang_field}</label></dt>
+      <dd><textarea cols="45" rows="6" name="{fieldname}" id="admin-edituser-{fieldname}" class="wide" aria-describedby="desc-admin-edituser-{fieldname}">{field}</textarea></dd>
+      {!if lang_field_text}
+      <dd class="description" id="desc-admin-edituser-{fieldname}">{lang_field_text}</dd>
+      {!endif}
+<!-- END display_field_text -->
+
+<!-- BEGIN display_field -->
+      <dt><label for="admin-edituser-{fieldname}">{lang_field}</label></dt>
+      <dd><input type="text" maxlength="{fieldmaxlength}" value="{field}" name="{fieldname}" id="admin-edituser-{fieldname}" class="size5"{xhtml}></dd>
+      {!if lang_field_text}
+      <dd class="description" id="desc-admin-edituser-{fieldname}">{lang_field_text}</dd>
+      {!endif}
+<!-- END display_field -->
 
 {# end {templatelocation} #}

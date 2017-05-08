@@ -101,6 +101,8 @@
         <dt><label for="profile-pgpkey">{lang_pgpkey}</label></dt>
         <dd><textarea cols="45" rows="6" name="pgpkey" id="profile-pgpkey" class="wide" aria-describedby="desc-profile-pgpkey">{pgpkey_value}</textarea></dd>
         <dd class="description" id="desc-profile-pgpkey">{lang_pgpkey_text}</dd>
+        
+        {display_fields}
       </dl>
     </div>
   </fieldset>
@@ -117,5 +119,21 @@
 </div>
 
 </form>
+
+<!-- BEGIN display_field_text -->
+        <dt><label for="profile-{fieldname}">{lang_field}</label></dt>
+        <dd><textarea cols="45" rows="4" name="{fieldname}" id="profile-{fieldname}" class="wide" aria-describedby="desc-profile-{fieldname}">{signature_value}</textarea></dd>
+        {!if lang_field_text}
+        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>      
+        {!endif}
+<!-- END display_field_text -->
+
+<!-- BEGIN display_field -->
+        <dt><label for="profile-{fieldname}">{lang_field}</label></dt>
+        <dd><input type="text" maxlength="{fieldmaxlength}" value="{field}" name="{fieldname}" id="profile-{fieldname}" class="size7" aria-describedby="desc-profile-{fieldname}"{xhtml}></dd>
+        {!if lang_field_text}
+        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>      
+        {!endif}
+<!-- END display_field -->
 
 {# end {templatelocation} #}

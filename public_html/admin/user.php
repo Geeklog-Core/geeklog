@@ -169,6 +169,12 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_file(array('form'      => 'edituser.thtml',
                                     'password'  => 'password.thtml',
                                     'groupedit' => 'groupedit.thtml'));
+                                    
+    $blocks = array('display_field', 'display_field_text');
+    foreach ($blocks as $block) {
+        $user_templates->set_block('form', $block);
+    }
+    
     $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']

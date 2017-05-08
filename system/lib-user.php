@@ -863,11 +863,14 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 
     $user_templates = COM_newTemplate($_CONF['path_layout'] . 'users');
     $user_templates->set_file(array(
-        'profile' => 'profile.thtml',
-        'email'   => 'email.thtml',
-        'row'     => 'commentrow.thtml',
-        'strow'   => 'storyrow.thtml',
+        'profile' => 'profile.thtml'
     ));
+    
+    $blocks = array('display_field', 'field_statistic', 'last10_block', 'last10_row');
+    foreach ($blocks as $block) {
+        $user_templates->set_block('profile', $block);
+    }    
+    
     $user_templates->set_var('start_block_userprofile', COM_startBlock($LANG04[1] . ' ' . $display_name));
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->set_var('lang_username', $LANG04[2]);
@@ -944,8 +947,8 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('user_bio', COM_nl2br(stripslashes($A['about'])));
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
     $user_templates->set_var('user_pgp', COM_nl2br($A['pgpkey']));
-    $user_templates->set_var('start_block_last10stories', COM_startBlock($LANG04[82] . ' ' . $display_name));
-    $user_templates->set_var('start_block_last10comments', COM_startBlock($LANG04[10] . ' ' . $display_name));
+    
+    
     $user_templates->set_var('start_block_postingstats', COM_startBlock($LANG04[83] . ' ' . $display_name));
     $user_templates->set_var('lang_title', $LANG09[16]);
     $user_templates->set_var('lang_date', $LANG09[17]);
@@ -971,6 +974,9 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     } else {
         $numRows = 0;
     }
+    
+    $user_templates->set_var('start_block_last10', COM_startBlock($LANG04[82] . ' ' . $display_name));
+    $user_templates->set_var('end_block', COM_endBlock());
     if ($numRows > 0) {
         for ($i = 0; $i < $numRows; $i++) {
             $C = DB_fetchArray($result);
@@ -979,24 +985,33 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $articleUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $C['sid']);
             $user_templates->set_var('article_url', $articleUrl);
             $C['title'] = str_replace('$', '&#36;', $C['title']);
-            $user_templates->set_var('story_title',
+            $user_templates->set_var('item_title',
                 COM_createLink(
                     stripslashes($C['title']),
                     $articleUrl,
                     array('class' => 'b'))
             );
             $storyTime = COM_getUserDateTimeFormat($C['unixdate']);
-            $user_templates->set_var('story_date', $storyTime[0]);
-            $user_templates->parse('story_row', 'strow', true);
+            $user_templates->set_var('item_date', $storyTime[0]);
+            
+            if ($i == 0) {
+                $user_templates->parse('last10_rows', 'last10_row');
+            } else {
+                $user_templates->parse('last10_rows', 'last10_row', true);
+            }            
         }
     } else {
         $story_row = $LANG01[37];
         if ($_CONF['supported_version_theme'] == '1.8.1') {
             $story_row = '<tr><td>' . $story_row . '</td></tr>';
         }
-        $user_templates->set_var('story_row', $story_row);
+        $user_templates->set_var('last10_rows', $story_row);
     }
+    $user_templates->parse('last10_blocks', 'last10_block', true);
 
+    
+    $user_templates->set_var('start_block_last10', COM_startBlock($LANG04[10] . ' ' . $display_name));
+    $user_templates->set_var('end_block', COM_endBlock());
     // list of last 10 comments by this user
     $new_plugin_comments = PLG_getWhatsNewComment('', 10, $uid);
 
@@ -1018,16 +1033,22 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $user_templates->set_var('row_number', ($i) . '.');
             $C['title'] = str_replace('$', '&#36;', $C['title']);
             $comment_url = $_CONF['site_url'] . '/comment.php?mode=view&amp;cid=' . $C['cid'];
-            $user_templates->set_var('comment_title',
+            $user_templates->set_var('item_title',
                 COM_createLink(
                     stripslashes($C['title']),
                     $comment_url,
                     array('class' => 'b'))
             );
             $commentTime = COM_getUserDateTimeFormat($C['unixdate']);
-            $user_templates->set_var('comment_date', $commentTime[0]);
-            $user_templates->parse('comment_row', 'row', true);
-
+            $user_templates->set_var('item_date', $commentTime[0]);
+            //$user_templates->parse('item_row', 'row', true);
+            
+            if ($i == 1) {
+                $user_templates->parse('last10_rows', 'last10_row');
+            } else {
+                $user_templates->parse('last10_rows', 'last10_row', true);
+            }            
+            
             if ($i == 10) {
                 break;
             }
@@ -1037,20 +1058,25 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         if ($_CONF['supported_version_theme'] == '1.8.1') {
             $comment_row = '<tr><td>' . $comment_row . '</td></tr>';
         }
-        $user_templates->set_var('comment_row', $comment_row);
+        $user_templates->set_var('last10_rows', $comment_row);
     }
+    $user_templates->parse('last10_blocks', 'last10_block', true);
 
     // posting stats for this user
-    $user_templates->set_var('lang_number_stories', $LANG04[84]);
+    $user_templates->set_var('lang_number_field', $LANG04[84]);
     $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $uid) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL('AND');
     $result = DB_query($sql);
     $N = DB_fetchArray($result);
-    $user_templates->set_var('number_stories', COM_numberFormat($N['count']));
-    $user_templates->set_var('lang_number_comments', $LANG04[85]);
+    $user_templates->set_var('number_field', COM_numberFormat($N['count']));
+    $user_templates->parse('field_statistics', 'field_statistic', true);
+    
+    $user_templates->set_var('lang_number_field', $LANG04[85]);
     $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $uid)";
     $result = DB_query($sql);
     $N = DB_fetchArray($result);
-    $user_templates->set_var('number_comments', COM_numberFormat($N['count']));
+    $user_templates->set_var('number_field', COM_numberFormat($N['count']));
+    $user_templates->parse('field_statistics', 'field_statistic', true);
+    
     $user_templates->set_var('lang_all_postings_by',
         $LANG04[86] . ' ' . $display_name);
 
@@ -1058,6 +1084,8 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     if ($_CONF['custom_registration'] && function_exists('CUSTOM_userDisplay')) {
         $user_templates->set_var('customfields', CUSTOM_userDisplay($uid));
     }
+    
+    // See if other plugins want to add any extra profile informaiton
     PLG_profileVariablesDisplay($uid, $user_templates);
 
     $user_templates->parse('output', 'profile');

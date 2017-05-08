@@ -66,6 +66,11 @@ function edituser()
         'resynch'          => 'resynch.thtml',
         'deleteaccount'    => 'deleteaccount.thtml',
     ));
+    
+    $blocks = array('display_field', 'display_field_text');
+    foreach ($blocks as $block) {
+        $preferences->set_block('profile', $block);
+    }    
 
     include $_CONF['path_system'] . 'classes/navbar.class.php';
     $navbar = new navbar;
@@ -1143,6 +1148,9 @@ function saveuser(array $A)
         if ($_CONF['custom_registration'] && (function_exists('CUSTOM_userSave'))) {
             CUSTOM_userSave($_USER['uid']);
         }
+        
+        // See if any plugins added fields that need to be saved
+        //PLG_profileExtrasSave();        
 
         PLG_userInfoChanged($_USER['uid']);
         $A['uid'] = $_USER['uid']; // Update user id for email notification as the one in the array deals with pwrequestid.
@@ -1181,7 +1189,7 @@ function saveuser(array $A)
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
 
-        COM_redirect($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=' . $msg);
+        return $msg;
     }
 }
 
@@ -1407,8 +1415,9 @@ if (!COM_isAnonUser()) {
     switch ($mode) {
         case 'saveuser':
             savepreferences($_POST);
-            $display .= saveuser($_POST);
+            $msg = saveuser($_POST);
             PLG_profileExtrasSave();
+            COM_redirect($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=' . $msg);
             break;
 
         case 'savepreferences':
