@@ -683,8 +683,8 @@ function editpreferences()
                 . '</option>' . LB;
         }
 
-        if (DB_count($_TABLES['topics']) > 10) {
-            $Selboxsize = intval(DB_count($_TABLES['topics']) * 1.5);
+        if ($nrows > 0 AND $nrows <= 15) {
+            $Selboxsize = $nrows;
         } else {
             $Selboxsize = 15;
         }
@@ -1148,9 +1148,6 @@ function saveuser(array $A)
         if ($_CONF['custom_registration'] && (function_exists('CUSTOM_userSave'))) {
             CUSTOM_userSave($_USER['uid']);
         }
-        
-        // See if any plugins added fields that need to be saved
-        //PLG_profileExtrasSave();        
 
         PLG_userInfoChanged($_USER['uid']);
         $A['uid'] = $_USER['uid']; // Update user id for email notification as the one in the array deals with pwrequestid.
