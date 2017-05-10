@@ -1,9 +1,20 @@
 Geeklog History/Changes:
 
-Future (2.1.2)
+Future (2.1.3)
 ------------
 
 - [Feature] Added ability to use SMTPS protocol for sending mail [Ivy] [Tom]
+- [Feature] Images in articles can now be styled [Tom]
+- [Feature] Admins can now edit more fields of users [Tom]
+- [Feature] Plugins can now include profile fields automatically in My Account and User Profile [Tom]
+- [Feature] Staticpage Templates now use caching template library. This means logic processing is now possible. [Tom]
+- [Bug] Fix for articles and staticpages if more than one script tag included [Dengen]
+- [Bug] Printable pages for Articles and Staticpages links to css fixed [Tom]
+- [Bug] Footer Copy Right Name fixed [Ivy]
+- [Bug] Spam-X Plugin issues entering items fixed [Tom]
+- [Bug] Censor Exact Match improved [Tom]
+- [Bug] Links Plugin category links fixed when URL Rewrite is enabled [Mystralkk]
+- [Bug] Language Manager search fixed [Mystralkk]
 
 
 March 1, 2017 (2.1.2)
