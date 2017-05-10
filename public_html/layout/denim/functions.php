@@ -56,6 +56,7 @@ function theme_config_denim()
             'form_password' => 0,
             'form_select'   => 0,
             'htmleditor'    => 0,
+            'lightbox'      => 1,
             'nestable'      => 0,
             'notify'        => 0,
             'placeholder'   => 0,

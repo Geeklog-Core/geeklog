@@ -1210,6 +1210,28 @@ class Story
         } else {
             $ai_sid = $this->_sid;
         }
+        
+        // Figure out story type normal, featured or archived (grabbed from render article in lib-story)
+        if ($this->DisplayElements('featured') == 1) {
+            $article_filevar = 'featuredstorytext.thtml';
+        } elseif ($this->DisplayElements('statuscode') == STORY_ARCHIVE_ON_EXPIRE && $this->DisplayElements('expire') <= time()) {
+            $article_filevar = 'archivestorytext.thtml';
+        } else {
+            $article_filevar = 'storytext.thtml';
+        }
+
+        if (empty($storyTpl)) {
+            $storyTpl = 'storytext.thtml';
+        }
+
+        $article = COM_newTemplate($_CONF['path_layout']);
+        $article->set_file(array(
+            'article'          => $article_filevar
+        ));
+        $blocks = array('image_noalign', 'image_rightalign', 'image_leftalign');
+        foreach ($blocks as $block) {
+            $article->set_block('article', $block);
+        }        
 
         $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} "
             . "WHERE ai_sid = '{$ai_sid}' ORDER BY ai_img_num");
@@ -1239,15 +1261,14 @@ class Story
             } else {
                 $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
             }
+            $article->set_var('imgSrc', $imgSrc);
 
             $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
-
-            // Build image tags for each flavour of the image:
-            $img_noalign = '<img ' . $sizeAttributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>';
-            $img_leftalgn = '<img ' . $sizeAttributes . 'class="floatleft" src="' . $imgSrc . '" alt=""' . XHTML . '>';
-            $img_rightalgn = '<img ' . $sizeAttributes . 'class="floatright" src="' . $imgSrc . '" alt=""' . XHTML . '>';
+            $article->set_var('sizeAttributes', $sizeAttributes);
 
             // Are we keeping unscaled images?
+            $link_url = '';
+            $link_title = '';            
             if ($_CONF['keep_unscaled_image'] == 1) {
                 // Yes we are, so, we need to find out what the filename
                 // of the original, unscaled image is:
@@ -1267,47 +1288,58 @@ class Story
                 // And finally, replace the [imageX_mode] tags with the
                 // image and its hyperlink (only when the large image
                 // actually exists)
-                $lLink_url = '';
-                $lLink_attr = '';
                 if (file_exists($lFilename_large_complete)) {
-                    $lLink_url = $lFilename_large_URL;
-                    $lLink_attr = array('title' => $LANG24[57]);
+                    $link_url = $lFilename_large_URL;
+                    $link_title = $LANG24[57];
                 }
             }
 
             $norm = '[image' . $i . ']';
             $left = '[image' . $i . '_left]';
             $right = '[image' . $i . '_right]';
-
-            if (!empty($lLink_url)) {
-                $text = str_replace($norm, COM_createLink($img_noalign, $lLink_url, $lLink_attr), $text);
-                $text = str_replace($left, COM_createLink($img_leftalgn, $lLink_url, $lLink_attr), $text);
-                $text = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $text);
-            } else {
-                // We aren't wrapping our image tags in hyperlinks, so
-                // just replace the [imagex_mode] tags with the image:
-                $text = str_replace($norm, $img_noalign, $text);
-                $text = str_replace($left, $img_leftalgn, $text);
-                $text = str_replace($right, $img_rightalgn, $text);
-            }
-
+            
+            $article->set_var('link_url', $link_url);
+            $article->set_var('link_title', $link_title);
+            
+            $article->parse('output', 'image_noalign');
+            $img_noalign = $article->finish($article->get_var('output'));            
+            $text = str_replace($norm, $img_noalign, $text);
+            
+            $article->parse('output', 'image_rightalign');
+            $img_rightalgn = $article->finish($article->get_var('output'));              
+            $text = str_replace($right, $img_rightalgn, $text);            
+            
+            $article->parse('output', 'image_leftalign');
+            $img_leftalgn = $article->finish($article->get_var('output'));              
+            $text = str_replace($left, $img_leftalgn, $text);
+    
             // And insert the unscaled mode images:
             if (($_CONF['allow_user_scaling'] == 1) && ($_CONF['keep_unscaled_image'] == 1)) {
                 if (file_exists($lFilename_large_complete)) {
                     $imgSrc = $lFilename_large_URL;
                     $sizeAttributes = COM_getImgSizeAttributes($lFilename_large_complete);
+                    
+                    $article->set_var('imgSrc', $imgSrc);
+                    $article->set_var('sizeAttributes', $sizeAttributes);
                 }
+                $article->set_var('link_url', '');
+                $article->set_var('link_title', '');                
 
                 $unscaledNorm = '[unscaled' . $i . ']';
                 $unscaledLeft = '[unscaled' . $i . '_left]';
                 $unscaledRight = '[unscaled' . $i . '_right]';
-
-                $text = str_replace($unscaledNorm,
-                    '<img ' . $sizeAttributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>', $text);
-                $text = str_replace($unscaledLeft,
-                    '<img ' . $sizeAttributes . 'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>', $text);
-                $text = str_replace($unscaledRight,
-                    '<img ' . $sizeAttributes . 'align="right" src="' . $imgSrc . '" alt=""' . XHTML . '>', $text);
+                    
+                $article->parse('output', 'image_noalign');
+                $img_noalign = $article->finish($article->get_var('output'));            
+                $text = str_replace($unscaledNorm, $img_noalign, $text);
+                
+                $article->parse('output', 'image_rightalign');
+                $img_rightalgn = $article->finish($article->get_var('output'));              
+                $text = str_replace($unscaledRight, $img_rightalgn, $text);            
+                
+                $article->parse('output', 'image_leftalign');
+                $img_leftalgn = $article->finish($article->get_var('output'));              
+                $text = str_replace($unscaledLeft, $img_leftalgn, $text);                    
             }
         }
 

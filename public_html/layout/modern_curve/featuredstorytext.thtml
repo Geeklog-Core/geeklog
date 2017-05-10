@@ -59,4 +59,22 @@
 {!endif}
 </div>
 
+<!-- BEGIN image_noalign -->
+{!if link_url}<a href="{link_url}" title="{link_title}" target="_blank">{!endif}
+<img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}>
+{!if link_url}</a>{!endif}
+<!-- END image_noalign -->
+
+<!-- BEGIN image_leftalign -->
+{!if link_url}<a href="{link_url}" title="{link_title}" target="_blank">{!endif}
+<img {sizeAttributes} class="floatleft" src="{imgSrc}" alt=""{XHTML}>
+{!if link_url}</a>{!endif}
+<!-- END image_leftalign -->
+
+<!-- BEGIN image_rightalign -->
+{!if link_url}<a href="{link_url}" title="{link_title}" target="_blank">{!endif}
+<img {sizeAttributes} class="floatright" src="{imgSrc}" alt=""{XHTML}>
+{!if link_url}</a>{!endif}
+<!-- END image_rightalign -->
+
 {# end {templatelocation} #}

@@ -206,7 +206,9 @@ featured and archived stories.</li>
 <h2><a name="changes213">Theme changes in Geeklog 2.1.3</a></h2>
 
 <ul>
-<li>Removed {copyright_notice} from <span class="tt">footer.thtml</span> since it contained embedded HTML tags and the same message can be created from {copyright_msg} and {trademark_msg} template variables</li>
+<li>Removed {copyright_notice} from <span class="tt">footer.thtml</span> since it contained embedded HTML tags and the same message can be created from {copyright_msg} and {trademark_msg} template variables.</li>
+<li>Removed from the users directory the files <span class="tt">storyrow.thtml</span>, <span class="tt">commentrow.thtml</span>, and <span class="tt">email.thtml</span>. Added additional blocks to <span class="tt">profile.thtml</span> to take into account removed files.</li>
+<li>Added 3 blocks to <span class="tt">storytext.thtml</span>, <span class="tt">featuredstorytext.thtml</span>, and <span class="tt">archivestorytext.thtml</span> to control how left aligned, right aligned, and non aligned images are displayed in articles (using the [imageX], [imageX_right], and [imageX_left] tags).</li>
 </ul>
 
 <h2><a name="changes212">Theme changes in Geeklog 2.1.2</a></h2>
