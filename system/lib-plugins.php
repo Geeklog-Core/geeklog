@@ -1683,12 +1683,17 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
                                 // Since parm3 now update tagstr and length as well
                                 $newTag['tagstr'] = $tag . $wrapped_text . $close_tag;
                                 $newTag['length'] = $end_of_whole_tag_pos - $start_pos_tag;
+                                
+                                $tags[] = $newTag; // add completed tag to list
+                            } else {
+                                // Error: no close tag found - return with no changes
+                                return GLText::unprotectJavaScript($content, $markers) . $LANG32[32];
                             }
+                        } else {
+                            $tags[] = $newTag; // add completed tag to list
                         }
-                        
-                        $tags[] = $newTag;
                     } else {
-                        // Error: tags do not match - return with no changes
+                        // Error: tags do not match - return with no changes since error could cause loop if multiple autotags exist in content
                         return GLText::unprotectJavaScript($content, $markers) . $LANG32[32];
                     }
                     $prev_offset = $offset;
