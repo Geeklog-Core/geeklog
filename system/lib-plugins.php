@@ -1580,7 +1580,6 @@ function PLG_collectTags($type = 'tagname')
                 }
             }
         }
-
     }
 
     return $autolinkModules;
@@ -1614,6 +1613,9 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
     } else {
         $autolinkModules = PLG_collectTags();
     }
+    
+    //See if any tags require close tags
+    $tags_requireclose = array_flip(PLG_collectTags('closetag'));
 
     for ($i = 1; $i <= 5; $i++) {
         list($content, $markers) = GLText::protectJavascript($content);
@@ -1667,19 +1669,21 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
                             'parm2'    => $label,
                         );
                         
-                        // Check for close tag after end of start tag. if exist we have a parm3
-                        $close_tag = '[/' . $moduleTag . ']';
-                        $start_pos_close_tag = MBYTE_strpos($content_lower, $close_tag, $end_pos_tag);
-                        if ($start_pos_close_tag > $end_pos_tag) { // make sure close tag is after tag
-                            $end_of_whole_tag_pos = $start_pos_close_tag + strlen($close_tag);
-                            $wrapped_text_length = $start_pos_close_tag - ($end_pos_tag + 1);
-                            $wrapped_text = MBYTE_substr($content, ($end_pos_tag + 1), $wrapped_text_length);
-                            
-                            // New parm3
-                            $newTag['parm3'] = $wrapped_text;
-                            // Since parm3 now update tagstr and length as well
-                            $newTag['tagstr'] = $tag . $wrapped_text . $close_tag;
-                            $newTag['length'] = $end_of_whole_tag_pos - $start_pos_tag;
+                        if (in_array($moduleTag, $tags_requireclose)) {
+                            // Check for close tag after end of start tag. if exist we have a parm3
+                            $close_tag = '[/' . $moduleTag . ']';
+                            $start_pos_close_tag = MBYTE_strpos($content_lower, $close_tag, $end_pos_tag);
+                            if ($start_pos_close_tag > $end_pos_tag) { // make sure close tag is after tag
+                                $end_of_whole_tag_pos = $start_pos_close_tag + strlen($close_tag);
+                                $wrapped_text_length = $start_pos_close_tag - ($end_pos_tag + 1);
+                                $wrapped_text = MBYTE_substr($content, ($end_pos_tag + 1), $wrapped_text_length);
+                                
+                                // New parm3
+                                $newTag['parm3'] = $wrapped_text;
+                                // Since parm3 now update tagstr and length as well
+                                $newTag['tagstr'] = $tag . $wrapped_text . $close_tag;
+                                $newTag['length'] = $end_of_whole_tag_pos - $start_pos_tag;
+                            }
                         }
                         
                         $tags[] = $newTag;

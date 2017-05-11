@@ -4646,12 +4646,18 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = array())
     // List autotags user has permission to use (with descriptions)
     $autotags = array_keys(PLG_collectTags('permission'));
     $description = array_flip(PLG_collectTags('description'));
+    $closetag = array_flip(PLG_collectTags('closetag'));
     foreach ($autotags as $tag) {
+        if (in_array($tag, $closetag)) {
+            $tagname = '&#91;' . $tag . ':&#93;&#91;/' . $tag . '&#93;';
+        } else {
+            $tagname = '&#91;' . $tag . ':&#93;';
+        }        
         if (!empty($description[$tag])) {
             $desc = str_replace(array('[', ']'), array('&#91;', '&#93;'), $description[$tag]);
-            $list .= COM_getTooltip('&#91;' . $tag . ':&#93;', $desc, '', $LANG01[132], 'information') . ', ';
+            $list .= COM_getTooltip($tagname, $desc, '', $LANG01[132], 'information') . ', ';
         } else {
-            $list .= '&#91;' . $tag . ':&#93;&nbsp;, ';
+            $list .= $tagname . '&nbsp;, ';
         }
     }
     $list = rtrim($list, ', ');
