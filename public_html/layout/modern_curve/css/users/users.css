@@ -3,7 +3,7 @@
   Authors     : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
                 Rouslan Placella rouslan@placella.com
   Description : Account information page style.
-  Apply       : users/profile.thtml, users/commentrow.thtml, users/storyrow.thtml,
+  Apply       : users/profile.thtml,
                 users/loginform.thtml, users/registrationform.thtml,
                 users/getpasswordform.thtml, users/newpassword.thtml,
                 users/services.thtml
@@ -158,24 +158,13 @@ dl#profile-userprofile dd#profile-user_photo {
   padding: 8px;
 }
 
-/* Recent Submit  */
-p.storyrow {
+/* Profile Last 10 items  */
+p.last10row {
   margin: 0;
   padding: 0;
 }
 
-p.storyrow a {
-  margin: 0 8px 0 0;
-  padding: 0;
-}
-
-/* User Recent Comment  */
-p.commentrow {
-  margin: 0;
-  padding: 0;
-}
-
-p.commentrow a {
+p.last10row a {
   margin: 0 8px 0 0;
   padding: 0;
 }
