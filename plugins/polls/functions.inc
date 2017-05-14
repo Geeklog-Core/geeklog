@@ -1284,6 +1284,10 @@ function plugin_upgrade_polls()
 
                 $current_version = '2.1.7';
                 break;
+                
+            case '2.1.7':
+                $current_version = '2.1.8';
+                break;                
 
             default:
                 $done = true;
