@@ -452,7 +452,11 @@ function editpoll($pid = '')
         $poll_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
         $poll_templates->set_var('confirm_message', $MESSAGE[76]);
     } else {
-        $T['pid'] = COM_makeSid();
+        if ($_CONF['titletoid']) {
+            $T['pid'] = '';
+        } else {
+            $T['pid'] = COM_makeSid();
+        }
         $T['topic'] = '';
         $T['description'] = '';
         $T['meta_description'] = '';
@@ -481,6 +485,11 @@ function editpoll($pid = '')
     $_SCRIPTS->setJavaScript($js, true);
     $_SCRIPTS->setJavaScriptFile('polls_editor', '/polls/polls_editor.js');
 
+    if ($_CONF['titletoid'] && empty($T['pid'])) {
+        $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
+        $poll_templates->set_var('titletoid', true);
+    }    
+    
     $poll_templates->set_var('lang_pollid', $LANG25[6]);
     $poll_templates->set_var('poll_id', $T['pid']);
     $poll_templates->set_var('lang_donotusespaces', $LANG25[7]);
