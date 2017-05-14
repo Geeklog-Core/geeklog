@@ -1,15 +1,18 @@
 {# begin {templatelocation} #}
 
-        <tr class="pluginRow{cssidb}">
-            <td class="poll_answer_text" style="width:20%">{answer_text}</td>
-            <td class="poll_answer_bar">
-                <img src="{layout_url}/images/bar.gif" style="align:bottom; height:10px; width:{bar_width}%;" alt=""{xhtml}> {answer_num} ({answer_percent}%)
+        <tr>
+            <td class="uk-width-3-10">{answer_text}</td>
+            <td class="uk-width-6-10">
+                <div class="uk-progress uk-margin-small uk-margin-bottom-remove">
+                    <div class="uk-progress-bar" style="width: {bar_width}%;"></div>
+                </div>
+                {!if remark_text}
+                <div>{remark_text}</div>
+                {!endif}
+            </td>
+            <td class="uk-width-1-10">
+                {answer_num} ({answer_percent}%)
             </td>
         </tr>
-        <tr class="pluginRow{cssida}">
-            <td align="left" colspan="2">
-                {remark_text}
-            </td>
-        </tr>
-
+        
 {# end {templatelocation} #}
