@@ -3,7 +3,7 @@
 <div id="po_{question_id}" {style} class="wide">
   <dl class="form_block">
     <dt><label>{lang_question}</label></dt>
-    <dd><input type="text" dir="ltr" name="question[{q_idx}]" value="{question_text}" maxlength="255" class="size5"{xhtml}></dd>
+    <dd><input type="text" dir="ltr" name="question[{q_idx}]" value="{question_text}" maxlength="255" class="size8"{xhtml}></dd>
     <dt><label>{lang_allow_multipleanswers}</label></dt>
     <dd><input type="checkbox" name="allow_multipleanswers[{q_idx}]" {poll_allow_multipleanswers}{xhtml}></dd>
     <dt><label>{lang_questions_description}</label></dt>
