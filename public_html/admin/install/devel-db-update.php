@@ -76,11 +76,24 @@ function update_DatabaseFor213()
     // ***************************************     
     // Core Plugin Updates Here
     
+    // Staticpages
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.6.9', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
+    
+    
     // SpamX
     $_SQL[] = "DROP INDEX `primary` ON {$_TABLES['spamx']}";
     $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)";
     $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)";    
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.4' WHERE pi_name='spamx'";
+    
+    
+    // Links
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.5' WHERE pi_name='links'";
+    
+    
+    // Polls
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.8' WHERE pi_name='polls'";
+
     
     
 
@@ -295,7 +308,8 @@ foreach ($corePlugins AS $pi_name) {
             $plugin_version = '2.1.5';
             break;
         case 'polls':
-            $plugin_version = '2.1.7';
+            $new_plugin_version = true;
+            $plugin_version = '2.1.8';
             break;
         case 'calendar':
             $plugin_version = '1.1.5';
@@ -307,15 +321,20 @@ foreach ($corePlugins AS $pi_name) {
     
     $display .= "<li>";
     if ($new_plugin_version) {
-        require_once $_CONF['path'] . 'plugins/' . $pi_name . '/install_updates.php';
+        $plugin_install_updates_file = $_CONF['path'] . 'plugins/' . $pi_name . '/install_updates.php';
+        if (file_exists($plugin_install_updates_file)) {
+            require_once $plugin_install_updates_file;
 
-        $function = $pi_name . '_update_ConfValues_' . str_replace(".","_", $plugin_version);
-        
-        if (function_exists($function)) {
-            if ($function()) {;
-                $display .= "Configuration settings updated successfully for $pi_name plugin.";
+            $function = $pi_name . '_update_ConfValues_' . str_replace(".","_", $plugin_version);
+            
+            if (function_exists($function)) {
+                if ($function()) {;
+                    $display .= "Configuration settings updated successfully for $pi_name plugin.";
+                } else {
+                    $display .= "There was problems updating the configuration settings for $pi_name plugin.";
+                }
             } else {
-                $display .= "There was problems updating the configuration settings for $pi_name plugin.";
+                $display .= "No configuration settings found for updating $pi_name plugin.";
             }
         } else {
             $display .= "No configuration settings found for updating $pi_name plugin.";
