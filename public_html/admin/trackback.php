@@ -213,56 +213,61 @@ function sendPingbacks($type, $id)
     $retval = '';
 
     list($url, $text) = PLG_getItemInfo($type, $id, 'url,description');
-
-    // extract all links from the text
-    preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
-        $matches);
-    $numlinks = count($matches[0]);
-    if ($numlinks > 0) {
-        $links = array();
-        for ($i = 0; $i < $numlinks; $i++) {
-            if (!isset($links[$matches[1][$i]])) {
-                $links[$matches[1][$i]] = $matches[2][$i];
+    // Check if item exist
+    if (!empty($url)) {
+        // extract all links from the text
+        preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
+            $matches);
+        $numlinks = count($matches[0]);
+        if ($numlinks > 0) {
+            $links = array();
+            for ($i = 0; $i < $numlinks; $i++) {
+                if (!isset($links[$matches[1][$i]])) {
+                    $links[$matches[1][$i]] = $matches[2][$i];
+                }
             }
+
+            $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
+            $template->set_file(array('list' => 'pingbacklist.thtml',
+                                      'item' => 'pingbackitem.thtml'));
+            $template->set_var('lang_resend', $LANG_TRB['resend']);
+            $template->set_var('lang_results', $LANG_TRB['pingback_results']);
+
+            $counter = 1;
+            foreach ($links as $URLtoPing => $linktext) {
+                $result = PNB_sendPingback($url, $URLtoPing);
+                $resend = '';
+                if (empty($result)) {
+                    $result = '<b>' . $LANG_TRB['pingback_success'] . '</b>';
+                } elseif ($result != $LANG_TRB['no_pingback_url']) {
+                    $result = '<span class="warningsmall">' . $result . '</span>';
+                    // TBD: $resend = '...';
+                }
+                $parts = parse_url($URLtoPing);
+
+                $template->set_var('url_to_ping', $URLtoPing);
+                $template->set_var('link_text', $linktext);
+                $template->set_var('host_name', $parts['host']);
+                $template->set_var('pingback_result', $result);
+                $template->set_var('resend', $resend);
+                $template->set_var('alternate_row',
+                    ($counter % 2) == 0 ? 'row-even' : 'row-odd');
+                $template->set_var('cssid', ($i % 2) + 1);
+                $template->parse('pingback_results', 'item', true);
+                $counter++;
+            }
+            $template->parse('output', 'list');
+            $retval .= $template->finish($template->get_var('output'));
+
+        } else {
+            $retval = '<p>' . $LANG_TRB['no_links_pingback'] . '</p>';
         }
 
-        $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
-        $template->set_file(array('list' => 'pingbacklist.thtml',
-                                  'item' => 'pingbackitem.thtml'));
-        $template->set_var('lang_resend', $LANG_TRB['resend']);
-        $template->set_var('lang_results', $LANG_TRB['pingback_results']);
-
-        $counter = 1;
-        foreach ($links as $URLtoPing => $linktext) {
-            $result = PNB_sendPingback($url, $URLtoPing);
-            $resend = '';
-            if (empty($result)) {
-                $result = '<b>' . $LANG_TRB['pingback_success'] . '</b>';
-            } elseif ($result != $LANG_TRB['no_pingback_url']) {
-                $result = '<span class="warningsmall">' . $result . '</span>';
-                // TBD: $resend = '...';
-            }
-            $parts = parse_url($URLtoPing);
-
-            $template->set_var('url_to_ping', $URLtoPing);
-            $template->set_var('link_text', $linktext);
-            $template->set_var('host_name', $parts['host']);
-            $template->set_var('pingback_result', $result);
-            $template->set_var('resend', $resend);
-            $template->set_var('alternate_row',
-                ($counter % 2) == 0 ? 'row-even' : 'row-odd');
-            $template->set_var('cssid', ($i % 2) + 1);
-            $template->parse('pingback_results', 'item', true);
-            $counter++;
-        }
-        $template->parse('output', 'list');
-        $retval .= $template->finish($template->get_var('output'));
-
+        return $retval;
     } else {
-        $retval = '<p>' . $LANG_TRB['no_links_pingback'] . '</p>';
+        // Error out - Plugin item not found
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');        
     }
-
-    return $retval;
 }
 
 function pingbackForm($targetUrl = '')
@@ -306,57 +311,63 @@ function sendPings($type, $id)
     global $_CONF, $_TABLES, $LANG_TRB;
 
     $retval = '';
-
+ 
     list($itemurl, $feedurl) = PLG_getItemInfo($type, $id, 'url,feed');
+  
+    // Check if item exist
+    if (!empty($itemurl)) {    
+        $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
+        $template->set_file(array('list' => 'pinglist.thtml',
+                                  'item' => 'pingitem.thtml'));
+        $template->set_var('lang_resend', $LANG_TRB['resend']);
+        $template->set_var('lang_results', $LANG_TRB['ping_results']);
 
-    $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
-    $template->set_file(array('list' => 'pinglist.thtml',
-                              'item' => 'pingitem.thtml'));
-    $template->set_var('lang_resend', $LANG_TRB['resend']);
-    $template->set_var('lang_results', $LANG_TRB['ping_results']);
+        $result = DB_query("SELECT ping_url,method,name,site_url FROM {$_TABLES['pingservice']} WHERE is_enabled = 1");
+        $services = DB_numRows($result);
+        if ($services > 0) {
+            for ($i = 0; $i < $services; $i++) {
+                $A = DB_fetchArray($result);
+                $resend = '';
+                if ($A['method'] == 'weblogUpdates.ping') {
+                    $pinged = PNB_sendPing($A['ping_url'], $_CONF['site_name'],
+                        $_CONF['site_url'], $itemurl);
+                } elseif ($A['method'] == 'weblogUpdates.extendedPing') {
+                    $pinged = PNB_sendExtendedPing($A['ping_url'],
+                        $_CONF['site_name'], $_CONF['site_url'], $itemurl,
+                        $feedurl);
+                } else {
+                    $pinged = $LANG_TRB['unknown_method'] . ': ' . $A['method'];
+                }
+                if (empty($pinged)) {
+                    $pinged = '<b>' . $LANG_TRB['ping_success'] . '</b>';
+                } else {
+                    $pinged = '<span class="warningsmall">' . $pinged . '</span>';
+                }
 
-    $result = DB_query("SELECT ping_url,method,name,site_url FROM {$_TABLES['pingservice']} WHERE is_enabled = 1");
-    $services = DB_numRows($result);
-    if ($services > 0) {
-        for ($i = 0; $i < $services; $i++) {
-            $A = DB_fetchArray($result);
-            $resend = '';
-            if ($A['method'] == 'weblogUpdates.ping') {
-                $pinged = PNB_sendPing($A['ping_url'], $_CONF['site_name'],
-                    $_CONF['site_url'], $itemurl);
-            } elseif ($A['method'] == 'weblogUpdates.extendedPing') {
-                $pinged = PNB_sendExtendedPing($A['ping_url'],
-                    $_CONF['site_name'], $_CONF['site_url'], $itemurl,
-                    $feedurl);
-            } else {
-                $pinged = $LANG_TRB['unknown_method'] . ': ' . $A['method'];
+                $template->set_var('service_name', $A['name']);
+                $template->set_var('service_url', $A['site_url']);
+                $template->set_var('service_ping_url', $A['ping_url']);
+                $template->set_var('ping_result', $pinged);
+                $template->set_var('resend', $resend);
+                $template->set_var('alternate_row',
+                    (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
+                $template->set_var('cssid', ($i % 2) + 1);
+                $template->parse('ping_results', 'item', true);
             }
-            if (empty($pinged)) {
-                $pinged = '<b>' . $LANG_TRB['ping_success'] . '</b>';
-            } else {
-                $pinged = '<span class="warningsmall">' . $pinged . '</span>';
-            }
-
-            $template->set_var('service_name', $A['name']);
-            $template->set_var('service_url', $A['site_url']);
-            $template->set_var('service_ping_url', $A['ping_url']);
-            $template->set_var('ping_result', $pinged);
-            $template->set_var('resend', $resend);
-            $template->set_var('alternate_row',
-                (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
-            $template->set_var('cssid', ($i % 2) + 1);
-            $template->parse('ping_results', 'item', true);
+        } else {
+            $template->set_var('ping_results', '<tr><td colspan="2">' .
+                $LANG_TRB['no_services'] . '</td></tr>');
         }
-    } else {
-        $template->set_var('ping_results', '<tr><td colspan="2">' .
-            $LANG_TRB['no_services'] . '</td></tr>');
-    }
-    $template->set_var('gltoken_name', CSRF_TOKEN);
-    $template->set_var('gltoken', SEC_createToken());
-    $template->parse('output', 'list');
-    $retval .= $template->finish($template->get_var('output'));
+        $template->set_var('gltoken_name', CSRF_TOKEN);
+        $template->set_var('gltoken', SEC_createToken());
+        $template->parse('output', 'list');
+        $retval .= $template->finish($template->get_var('output'));
 
-    return $retval;
+        return $retval;
+    } else {
+        // Error out - Plugin item not found
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
+    }        
 }
 
 /**
@@ -894,11 +905,16 @@ if (($mode === 'delete') && SEC_checkToken()) {
     $id = Geeklog\Input::fRequest('id');
     if (!empty($id)) {
         list($url, $title, $excerpt) = PLG_getItemInfo($type, $id, 'url,title,excerpt');
-        $excerpt = trim(GLText::stripTags($excerpt));
-        $blog = TRB_filterBlogname($_CONF['site_name']);
+        if (!empty($url)) {
+            $excerpt = trim(GLText::stripTags($excerpt));
+            $blog = TRB_filterBlogname($_CONF['site_name']);
 
-        $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
-        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
+            $display .= trackback_editor($target, $url, $title, $excerpt, $blog);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
+        } else {
+            // Error out - Plugin item not found
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
+        }
     } else {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
@@ -949,73 +965,79 @@ if (($mode === 'delete') && SEC_checkToken()) {
     }
 
     $title = PLG_getItemInfo($type, $id, 'title');
+    
+    // Check if item exist
+    if (!empty($title)) {
+        $display .= COM_startBlock(sprintf($LANG_TRB['send_pings_for'], $title));
 
-    $display .= COM_startBlock(sprintf($LANG_TRB['send_pings_for'], $title));
+        $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
+        $template->set_file(array('form' => 'pingform.thtml'));
+        $template->set_var('php_self', $_CONF['site_admin_url'] . '/trackback.php');
+        $template->set_var('lang_may_take_a_while', $LANG_TRB['may_take_a_while']);
+        $template->set_var('lang_ping_explain', $LANG_TRB['ping_all_explain']);
+        $template->set_var('ping_results', $pingresult);
 
-    $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
-    $template->set_file(array('form' => 'pingform.thtml'));
-    $template->set_var('php_self', $_CONF['site_admin_url'] . '/trackback.php');
-    $template->set_var('lang_may_take_a_while', $LANG_TRB['may_take_a_while']);
-    $template->set_var('lang_ping_explain', $LANG_TRB['ping_all_explain']);
-    $template->set_var('ping_results', $pingresult);
-
-    if ($_CONF['pingback_enabled']) {
-        if (!$pingback_sent) {
-            $template->set_var('lang_pingback_button', $LANG_TRB['pingback_button']);
-            $template->set_var('lang_pingback_short', $LANG_TRB['pingback_short']);
-            $button = '<button type="submit" name="what[0]" value="'
-                . $LANG_TRB['pingback_button'] . '" class="uk-form">'
-                . $LANG_TRB['pingback_button'] . '</button>';
-            $template->set_var('pingback_button', $button);
+        if ($_CONF['pingback_enabled']) {
+            if (!$pingback_sent) {
+                $template->set_var('lang_pingback_button', $LANG_TRB['pingback_button']);
+                $template->set_var('lang_pingback_short', $LANG_TRB['pingback_short']);
+                $button = '<button type="submit" name="what[0]" value="'
+                    . $LANG_TRB['pingback_button'] . '" class="uk-form">'
+                    . $LANG_TRB['pingback_button'] . '</button>';
+                $template->set_var('pingback_button', $button);
+            }
+        } else {
+            $template->set_var('pingback_button', $LANG_TRB['pingback_disabled']);
         }
-    } else {
-        $template->set_var('pingback_button', $LANG_TRB['pingback_disabled']);
-    }
-    if ($_CONF['ping_enabled']) {
-        if (!$ping_sent) {
-            $template->set_var('lang_ping_button', $LANG_TRB['ping_button']);
-            $template->set_var('lang_ping_short', $LANG_TRB['ping_short']);
-            $button = '<button type="submit" name="what[1]" value="'
-                . $LANG_TRB['ping_button'] . '" class="uk-form">'
-                . $LANG_TRB['ping_button'] . '</button>';
-            $template->set_var('ping_button', $button);
+        if ($_CONF['ping_enabled']) {
+            if (!$ping_sent) {
+                $template->set_var('lang_ping_button', $LANG_TRB['ping_button']);
+                $template->set_var('lang_ping_short', $LANG_TRB['ping_short']);
+                $button = '<button type="submit" name="what[1]" value="'
+                    . $LANG_TRB['ping_button'] . '" class="uk-form">'
+                    . $LANG_TRB['ping_button'] . '</button>';
+                $template->set_var('ping_button', $button);
+            }
+        } else {
+            $template->set_var('ping_button', $LANG_TRB['ping_disabled']);
         }
-    } else {
-        $template->set_var('ping_button', $LANG_TRB['ping_disabled']);
-    }
-    if ($_CONF['trackback_enabled']) {
-        if (!$trackback_sent) {
-            $template->set_var('lang_trackback_button', $LANG_TRB['trackback_button']);
-            $template->set_var('lang_trackback_short', $LANG_TRB['trackback_short']);
-            $button = '<button type="submit" name="what[2]" value="'
-                . $LANG_TRB['trackback_button'] . '" class="uk-form">'
-                . $LANG_TRB['trackback_button'] . '</button>';
-            $template->set_var('trackback_button', $button);
+        if ($_CONF['trackback_enabled']) {
+            if (!$trackback_sent) {
+                $template->set_var('lang_trackback_button', $LANG_TRB['trackback_button']);
+                $template->set_var('lang_trackback_short', $LANG_TRB['trackback_short']);
+                $button = '<button type="submit" name="what[2]" value="'
+                    . $LANG_TRB['trackback_button'] . '" class="uk-form">'
+                    . $LANG_TRB['trackback_button'] . '</button>';
+                $template->set_var('trackback_button', $button);
+            }
+        } else {
+            $template->set_var('trackback_button', $LANG_TRB['trackback_disabled']);
         }
+
+        $hidden = '';
+        if ($pingback_sent) {
+            $hidden .= '<input type="hidden" name="pingback_sent" value="1"' . XHTML . '>';
+        }
+        if ($ping_sent) {
+            $hidden .= '<input type="hidden" name="ping_sent" value="1"' . XHTML . '>';
+        }
+        if ($trackback_sent) {
+            $hidden .= '<input type="hidden" name="trackback_sent" value="1"' . XHTML . '>';
+        }
+        $hidden .= '<input type="hidden" name="id" value="' . $id . '"' . XHTML . '>';
+        $hidden .= '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>';
+        $hidden .= '<input type="hidden" name="mode" value="sendall"' . XHTML . '>';
+        $template->set_var('hidden_input_fields', $hidden);
+
+        $template->parse('output', 'form');
+        $display .= $template->finish($template->get_var('output'));
+
+        $display .= COM_endBlock();
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['send_pings']));
     } else {
-        $template->set_var('trackback_button', $LANG_TRB['trackback_disabled']);
+        // Error out
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-
-    $hidden = '';
-    if ($pingback_sent) {
-        $hidden .= '<input type="hidden" name="pingback_sent" value="1"' . XHTML . '>';
-    }
-    if ($ping_sent) {
-        $hidden .= '<input type="hidden" name="ping_sent" value="1"' . XHTML . '>';
-    }
-    if ($trackback_sent) {
-        $hidden .= '<input type="hidden" name="trackback_sent" value="1"' . XHTML . '>';
-    }
-    $hidden .= '<input type="hidden" name="id" value="' . $id . '"' . XHTML . '>';
-    $hidden .= '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>';
-    $hidden .= '<input type="hidden" name="mode" value="sendall"' . XHTML . '>';
-    $template->set_var('hidden_input_fields', $hidden);
-
-    $template->parse('output', 'form');
-    $display .= $template->finish($template->get_var('output'));
-
-    $display .= COM_endBlock();
-    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['send_pings']));
 } elseif ($mode === 'pretrackback') {
     $id = Geeklog\Input::fRequest('id');
     if (empty($id)) {
@@ -1028,11 +1050,17 @@ if (($mode === 'delete') && SEC_checkToken()) {
 
     $fulltext = PLG_getItemInfo($type, $id, 'description');
 
-    $display .= COM_startBlock($LANG_TRB['select_url'],
-            getHelpUrl() . '#trackback')
-        . prepareAutodetect($type, $id, $fulltext)
-        . COM_endBlock();
-    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
+    // Check if item exist
+    if (!empty($fulltext)) {
+        $display .= COM_startBlock($LANG_TRB['select_url'],
+                getHelpUrl() . '#trackback')
+            . prepareAutodetect($type, $id, $fulltext)
+            . COM_endBlock();
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
+    } else {
+        // Error out - Plugin item not found
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
+    }
 } elseif ($mode === 'autodetect') {
     $id = Geeklog\Input::fRequest('id');
     $url = Geeklog\Input::request('url');
@@ -1048,14 +1076,21 @@ if (($mode === 'delete') && SEC_checkToken()) {
     $trackbackUrl = TRB_detectTrackbackUrl($url);
 
     list($url, $title, $excerpt) = PLG_getItemInfo($type, $id, 'url,title,excerpt');
-    $excerpt = trim(GLText::stripTags($excerpt));
-    $blog = TRB_filterBlogname($_CONF['site_name']);
+    
+    // Check if item exist
+    if (!empty($url)) {
+        $excerpt = trim(GLText::stripTags($excerpt));
+        $blog = TRB_filterBlogname($_CONF['site_name']);
 
-    if ($trackbackUrl === false) {
-        $display .= showTrackbackMessage($LANG_TRB['not_found'], $LANG_TRB['autodetect_failed']);
-    }
-    $display .= trackback_editor($trackbackUrl, $url, $title, $excerpt, $blog);
-    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
+        if ($trackbackUrl === false) {
+            $display .= showTrackbackMessage($LANG_TRB['not_found'], $LANG_TRB['autodetect_failed']);
+        }
+        $display .= trackback_editor($trackbackUrl, $url, $title, $excerpt, $blog);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
+    } else {
+        // Error out - Plugin item not found
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
+    }        
 } elseif (($mode === 'fresh') || ($mode === 'preview')) {
     $display .= COM_showMessageFromParameter();
 
