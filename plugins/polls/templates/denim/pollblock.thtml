@@ -16,4 +16,18 @@
     <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters} {poll_comments}
 </span>
 
+<!-- BEGIN poll_questions -->
+<div class="poll-questions">
+    <p class="poll-question">{lang_question}{lang_question_number}{poll_question}</p>
+    <p class="poll-description">{poll_description}</p>
+    <ul>
+    {poll_answers}
+    </ul>
+</div>
+<!-- END poll_questions -->
+
+<!-- BEGIN poll_answer -->
+<li><input type="{input_type}" name="aid[{question_id}][]" value="{answer_id}"{selected}{xhtml}>&nbsp;{answer_text}</li>
+<!-- END poll_answer -->
+
 {# end {templatelocation} #}

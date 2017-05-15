@@ -467,11 +467,15 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
             if ($nquestions > 0) {
                 $poll = COM_newTemplate(CTL_plugin_templatePath('polls'));
                 $poll->set_file(array(
-                    'panswer'    => 'pollanswer.thtml',
                     'block'      => 'pollblock.thtml',
-                    'pquestions' => 'pollquestions.thtml',
                     'comments'   => 'pollcomments.thtml',
                 ));
+                
+                $blocks = array('poll_questions', 'poll_answer');
+                foreach ($blocks as $block) {
+                    $poll->set_block('block', $block);
+                }            
+                
                 $poll->set_var('poll_id', $pid);
                 $poll->set_var('poll_topic', $P['topic']);
                 $poll->set_var('poll_topic_description', $P['description']);
@@ -557,10 +561,10 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                         }
                         $poll->set_var('answer_id', $A['aid']);
                         $poll->set_var('answer_text', $A['answer']);
-                        $poll->parse('poll_answers', 'panswer', true);
+                        $poll->parse('poll_answers', 'poll_answer', true);
                         $poll->clear_var('selected');
                     }
-                    $poll->parse('poll_questions', 'pquestions', true);
+                    $poll->parse('poll_questions', 'poll_questions', true);
                     $poll->clear_var('poll_answers');
                 }
                 if ($nquestions > 1) {
@@ -800,11 +804,14 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
             $poll = COM_newTemplate(CTL_plugin_templatePath('polls'));
             $poll->set_file(array(
                 'result'    => 'pollresult.thtml',
-                'question'  => 'pollquestion.thtml',
-                'comments'  => 'pollcomments.thtml',
-                'votes_bar' => 'pollvotes_bar.thtml',
-                'votes_num' => 'pollvotes_num.thtml',
+                'comments'  => 'pollcomments.thtml'
             ));
+            
+            $blocks = array('poll_question', 'poll_votes_bar', 'poll_votes_num');
+            foreach ($blocks as $block) {
+                $poll->set_block('result', $block);
+            }            
+            
             $poll->set_var('poll_topic', $P['topic']);
             $poll->set_var('poll_topic_description', $P['description']);
             $poll->set_var('poll_id', $pid);
@@ -838,7 +845,7 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
                 if ($nquestions >= 1) {
                     $counter = ($j + 1) . "/$nquestions: ";
                 }
-                $poll->set_var('poll_question', $counter . $Q['question']);
+                $poll->set_var('poll_question_text', $counter . $Q['question']);
                 $poll->set_var('poll_description', $counter . $Q['description']);
 
                 $answer_sql = "SELECT votes, answer, remark FROM {$_TABLES['pollanswers']} "
@@ -873,14 +880,14 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
                     $poll->set_var('answer_percent',
                         sprintf('%.2f', $percent * 100));
                     if ($scale < 50) {
-                        $poll->parse('poll_votes', 'votes_num', true);
+                        $poll->parse('poll_votes', 'poll_votes_num', true);
                     } else {
                         $width = (int) ($percent * $scale);
                         $poll->set_var('bar_width', $width);
-                        $poll->parse('poll_votes', 'votes_bar', true);
+                        $poll->parse('poll_votes', 'poll_votes_bar', true);
                     }
                 }
-                $poll->parse('poll_questions', 'question', true);
+                $poll->parse('poll_questions', 'poll_question', true);
                 $poll->clear_var('poll_votes');
                 if (($scale < 100) && ($j < 1)) {
                     $url = $_CONF['site_url'] . "/polls/index.php?pid=$pid";

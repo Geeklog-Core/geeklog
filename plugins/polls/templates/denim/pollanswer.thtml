@@ -1,5 +1,0 @@
-{# begin {templatelocation} #}
-
-<li><input type="{input_type}" name="aid[{question_id}][]" value="{answer_id}"{selected}{xhtml}>&nbsp;{answer_text}</li>
-
-{# end {templatelocation} #}
