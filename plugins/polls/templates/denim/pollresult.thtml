@@ -2,9 +2,17 @@
 
 <span class="uk-align-right">{edit_icon}</span><div class="poll-topic">{poll_topic}{poll_topic_description}</div>
 {poll_questions}
+
+{# display_type Possible values 0 = Normal, 1 = In Block, 2 = autotag #}
+{!!if {display_type} == '0' !!}
+<div>
+    {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters}
+</div>
+{!else}
 <div class="pluginTinyText">
     {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters} {poll_comments}
 </div>
+{!endif}
 
 <!-- BEGIN poll_question -->
 <div class="poll-questions">

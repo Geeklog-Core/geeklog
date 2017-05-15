@@ -476,6 +476,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                     $poll->set_block('block', $block);
                 }            
                 
+                $poll->set_var('display_type', $displaytype);
                 $poll->set_var('poll_id', $pid);
                 $poll->set_var('poll_topic', $P['topic']);
                 $poll->set_var('poll_topic_description', $P['description']);
@@ -812,6 +813,7 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
                 $poll->set_block('result', $block);
             }            
             
+            $poll->set_var('display_type', $displaytype);
             $poll->set_var('poll_topic', $P['topic']);
             $poll->set_var('poll_topic_description', $P['description']);
             $poll->set_var('poll_id', $pid);
