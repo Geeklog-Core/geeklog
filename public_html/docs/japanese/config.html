@@ -126,7 +126,7 @@
   <td valign="top">ユーザー登録時などにGeeklogがメールを送る送信元アドレスを指定します。サイトのメールアドレスと同じにするか、スパム送信者がサイトに登録することで管理者のメールアドレスを知るのを防ぐために送信専用アドレスを指定してください(スパム送信者がこのアドレスにメールを送ってもエラーメールが返るだけです。)。このアドレスがサイト管理者のメールアドレスと同じでない場合、送信するメッセージに「このメールは自動送信されたものです。返信しないでください。」というメッセージが追加されます。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_backend">メール設定(backend)</a></td>
     <td valign="top">mail</td>
-    <td valign="top">メールの送信方法を選択します。'smtp'(SMTPプロトコルでメールサーバーと直接交信), 'sendmail'(オペレーティングシステムにインストールされているsendmailプログラム経由), 'mail'(PHPのmail()関数使用)のどれかを指定します。</td></tr>
+    <td valign="top">メールの送信方法を選択します。'smtp'(SMTPプロトコルでメールサーバーと直接交信), 'smtps'(SMTPSプロトコルでメールサーバーと直接交信), 'sendmail'(オペレーティングシステムにインストールされているsendmailプログラム経由), 'mail'(PHPのmail()関数使用)のどれかを指定します。SMTPSプロトコルを使用するにはPHPのOpenSSL拡張を有効にする必要があります。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_sendmail_path">メール設定(sendmail_path)</a></td>
     <td valign="top"><span class="tt">/usr/bin/sendmail</span></td>
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailバイナリへの完全なパスを指定します。</td></tr>
@@ -135,21 +135,21 @@
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailに与える引数を指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_host">メール設定(host)</a></td>
     <td valign="top">smtp.example.com</td>
-    <td valign="top">送信方法で'smtp'を選択した場合に、SMTPサーバーを指定します。</td></tr>
+    <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーを指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_port">メール設定(port)</a></td>
     <td valign="top">25</td>
-    <td valign="top">送信方法で'smtp'を選択した場合に、SMTPサーバーのポート番号を指定します。</td></tr>
+    <td valign="top">送信方法で'smtp'(ポート番号25)または'smtps'(ポート番号587)を選択した場合に、SMTPサーバーのポート番号を指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_auth">メール設定(auth)</a></td>
     <td valign="top">0</td>
-    <td valign="top">送信方法で'smtp'を選択した場合に、SMTPサーバーが認証を必要とするなら
+    <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーが認証を必要とするなら
         <code>1</code> に、必要としないなら、
         <code>0</code> (あるいは空白のまま)に設定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_username">メール設定(username)</a></td>
     <td valign="top">smtp-username</td>
-    <td valign="top">送信方法で'smtp'を選択した場合に、SMTPサーバーのアカウント名を指定します。</td></tr>
+    <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーのアカウント名を指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_settings_password">メール設定(password)</a></td>
     <td valign="top">smtp-password</td>
-    <td valign="top">送信方法で'smtp'を選択した場合に、SMTPアカウントのパスワードを指定します。</td></tr>
+    <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPアカウントのパスワードを指定します。</td></tr>
 <tr><td valign="top"><a name="desc_mail_cc_enabled">CC(カーボンコピー)を許可する(cc_enabled)</a></td>
     <td valign="top">はい</td>
     <td valign="top">「はい」にすると、ユーザーが自分自身にCCメールを送信する機能を有効にします。</td></tr>
