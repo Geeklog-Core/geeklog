@@ -563,6 +563,7 @@ function liststaticpages()
     }
     $header_arr[] = array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true);
     $header_arr[] = array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true);
+    $header_arr[] = array('text' => $LANG_STATIC['template'], 'field' => 'template_id', 'sort' => true);
 
     switch ($_SP_CONF['sort_list_by']) {
         case 'author':
@@ -799,6 +800,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         $args = array(
             'sp_id' => $sp_id,
         );
+        
         PLG_invokeService('staticpages', 'delete', $args, $display, $svc_msg);
     }
 } elseif ($mode == 'edit') {

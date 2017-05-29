@@ -123,13 +123,16 @@ $LANG_STATIC = array(
     'cache_time'        => 'Cache Time',
     'cache_time_desc'   => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until page is edited again. Staticpages with PHP enabled or are a template will not be cached. (3600 = 1 hour,  86400 = 1 day)',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id] - Displays the contents of a staticpage.'
+    'autotag_desc_staticpage_content' => '[staticpage_content: id] - Displays the contents of a staticpage.',
+    'yes' => 'Yes', 
+    'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
 $PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
 $PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
+$PLG_staticpages_MESSAGE22 = 'You could not delete the page. It is a template staticpage and it is currently assigned to 1 or more staticpages.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';

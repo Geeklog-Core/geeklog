@@ -1617,7 +1617,7 @@ function plugin_autouninstall_staticpages()
 
 function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $LANG_ACCESS, $LANG_STATIC;
+    global $_CONF, $LANG_ACCESS, $LANG_STATIC, $_TABLES;
 
     switch ($fieldname) {
         case 'edit':
@@ -1694,6 +1694,49 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
                 $retval = $LANG_STATIC['centerblock_no'];
             }
             break;
+            
+        case 'template_id':
+            if ($A['template_id']) {
+                // Find name of template and see if have access to it
+                $result = DB_query("SELECT * FROM {$_TABLES['staticpage']} WHERE sp_id = '{$A['template_id']}'" . COM_getPermSQL('AND', 0, 3));
+                if (DB_numRows($result)) {
+                    $B = DB_fetchArray($result);
+                    $sp_title = trim(stripslashes($B['sp_title']));
+                    if (empty($sp_title)) {
+                        $sp_title = $B['sp_page_title'];
+                        if (empty($sp_title)) {
+                            $sp_title = $B['sp_id'];
+                        }
+                        $sp_title = '(' . $sp_title . ')';
+                    }
+                    
+                    $url = COM_buildURL($_CONF['site_url'] .  '/staticpages/index.php?page=' . $B['sp_id']);
+                    $attr = array();
+                    if (!empty($B['sp_page_title'])) {
+                        $attr['title'] = htmlspecialchars($B['sp_page_title']);
+                    }
+                    $retval = COM_createLink($sp_title, $url, $attr);
+                    $retval .= ' ' . COM_createLink($icon_arr['edit'], "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$B['sp_id']}");
+                    
+                } else {
+                    // Assume no access, This will create an issue if they edit the staticpage
+                    
+                }
+        
+            } else {
+                // Check to see if actually a template
+                if ($A['template_flag']) {
+                    $result = DB_query("SELECT count(template_id) num_temp FROM {$_TABLES['staticpage']} WHERE template_id = '{$A['sp_id']}'"); // . COM_getPermSQL('AND', 0, 3));
+                    if (DB_numRows($result)) {
+                        $B = DB_fetchArray($result);
+                        $desc = sprintf($LANG_STATIC['used_by'], $B['num_temp']);
+                        $retval = COM_getTooltip($LANG_STATIC['yes'], $desc);
+                    }
+                } else {
+                    $retval = '';
+                }
+            }
+            break;            
 
         case 'unixdate':
             $retval = strftime($_CONF['daytime'], $A['unixdate']);

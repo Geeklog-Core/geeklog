@@ -624,7 +624,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     $sp_id = $args['sp_id'];
 
     if (!SEC_hasRights('staticpages.delete')) {
-        $output .= COM_showMessageText($LANG_STATIC['access_denied_msg'], $LANG_STATIC['access_denied']);
+        $output = COM_showMessageText($LANG_STATIC['access_denied_msg'], $LANG_STATIC['access_denied']);
         $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['access_denied']));
         if ($_USER['uid'] > 1) {
             return PLG_RET_PERMISSION_DENIED;
@@ -633,11 +633,21 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
         }
     }
 
+    /*
     // If a staticpage template, remove any use of the file
     if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$sp_id'") == 1) {
         $sql = "UPDATE {$_TABLES['staticpage']} SET template_id = '' WHERE template_id = '$sp_id'";
         $result = DB_query($sql);
     }
+    */
+    // If a staticpage template and being used by another page cancel
+    if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$sp_id'") == 1) {
+        if (DB_COUNT($_TABLES['staticpage'], 'template_id', "$sp_id") > 0) {
+            $output = COM_refresh($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?msg=22');
+            return PLG_RET_PERMISSION_DENIED;
+        }
+    }
+    
     DB_delete($_TABLES['staticpage'], 'sp_id', $sp_id);
     DB_delete($_TABLES['comments'], array('sid', 'type'),
         array($sp_id, 'staticpages'));
