@@ -1618,7 +1618,7 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
     $tags_requireclose = array_flip(PLG_collectTags('closetag'));
 
     for ($i = 1; $i <= 5; $i++) {
-        list($content, $markers) = GLText::protectJavascript($content);
+        // list($content, $markers) = GLText::protectJavascript($content);
 
         // For each supported module, scan the content looking for any AutoLink tags
         $tags = array();
@@ -1687,14 +1687,16 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
                                 $tags[] = $newTag; // add completed tag to list
                             } else {
                                 // Error: no close tag found - return with no changes
-                                return GLText::unprotectJavaScript($content, $markers) . $LANG32[32];
+                                // return GLText::unprotectJavaScript($content, $markers) . $LANG32[32];
+                                return $content . $LANG32[32];
                             }
                         } else {
                             $tags[] = $newTag; // add completed tag to list
                         }
                     } else {
                         // Error: tags do not match - return with no changes since error could cause loop if multiple autotags exist in content
-                        return GLText::unprotectJavaScript($content, $markers) . $LANG32[32];
+                        // return GLText::unprotectJavaScript($content, $markers) . $LANG32[32];
+                        return $content . $LANG32[32];
                     }
                     $prev_offset = $offset;
                     $offset = $end_pos_tag;
@@ -1717,9 +1719,9 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
                 }
             }
 
-            $content = GLText::unprotectJavaScript($content, $markers);
+            // $content = GLText::unprotectJavaScript($content, $markers);
         } else {
-            $content = GLText::unprotectJavaScript($content, $markers);
+            // $content = GLText::unprotectJavaScript($content, $markers);
             break;
         }
     }
