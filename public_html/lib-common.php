@@ -4311,12 +4311,6 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
             $position = '';
         }
 
-        if ($A['type'] === 'portal') {
-            if (COM_rdfCheck($A['bid'], $A['rdfurl'], $A['date'], $A['rdflimit'])) {
-                $A['content'] = DB_getItem($_TABLES['blocks'], 'content', "bid = '{$A['bid']}'");
-            }
-        }
-
         if ($A['type'] === 'gldefault') {
             $retval .= COM_showBlock($A['name'], $A['help'], $A['title'], $position);
         } else {
@@ -4337,6 +4331,11 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
                     }
                 }
             }
+        }
+        
+        if ($A['type'] === 'portal') {
+            COM_rdfImport($A['bid'], $A['rdfurl'], $A['rdflimit']);
+            $A['content'] = DB_getItem($_TABLES['blocks'], 'content', "bid = '{$A['bid']}'");
         }
 
         if (($A['type'] === 'phpblock') && !$noBoxes) {
@@ -4404,41 +4403,16 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
 }
 
 /**
- * Checks to see if it's time to import and RDF/RSS block again
- * Updates RDF/RSS block if needed
- *
- * @param    string $bid          Block ID
- * @param    string $rdfUrl       URL to get headlines from
- * @param    int    $date         Last time the headlines were imported
- * @param    int    $maxHeadlines max. number of headlines to import
- * @return   boolean              true = feed was updated, false = otherwise
- * @see      function COM_rdfImport
- */
-function COM_rdfCheck($bid, $rdfUrl, $date, $maxHeadlines = 0)
-{
-    $retval = false;
-    $nextUpdate = $date + 3600;
-
-    if ($nextUpdate < time()) {
-        COM_rdfImport($bid, $rdfUrl, $maxHeadlines);
-        $retval = true;
-    }
-
-    return $retval;
-}
-
-/**
  * Syndication import function. Imports headline data to a portal block.
  * Rewritten December 19th 2004 by Michael Jervis (mike AT fuckingbrit DOT com).
- * Now utilises a Factory Pattern to open a URL and automaticaly retreive a feed
+ * Now utilises a Factory Pattern to open a URL and automaticaly retrieve a feed
  * object populated with feed data. Then import it into the portal block.
  *
  * @param    string $bid          Block ID
  * @param    string $rdfUrl       URL to get content from
  * @param    int    $maxHeadlines Maximum number of headlines to display
  * @return   void
- * @see      function COM_rdfCheck
- */
+  */
 function COM_rdfImport($bid, $rdfUrl, $maxHeadlines = 0)
 {
     global $_CONF, $_TABLES, $LANG21;

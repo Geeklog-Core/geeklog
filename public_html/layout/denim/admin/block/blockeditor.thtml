@@ -81,7 +81,7 @@
         <dd><input type="text" maxlength="3" value="{block_rdflimit}" name="rdflimit" id="admin-blockeditor-rdflimit" class="size1"{xhtml}></dd>
 
         <dt><label for="admin-blockeditor-rdfupdated">{lang_lastrdfupdate}</label></dt>
-        <dd><input type="text" value="{block_rdfupdated}" name="rdfupdated" id="admin-blockeditor-rdfupdated" class="size3"{xhtml}></dd>
+        <dd>{block_rdfupdated}</dd>
       </dl>
     </fieldset>
 

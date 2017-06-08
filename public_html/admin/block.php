@@ -208,9 +208,6 @@ function overridePostdata(&$A)
     if (isset($_POST['rdfurl'])) {
         $A['rdfurl'] = Geeklog\Input::post('rdfurl'); // to be sanitized when saving
     }
-    if (isset($_POST['rdfupdated'])) {
-        $A['rdfupdated'] = Geeklog\Input::fPost('rdfupdated');
-    }
     if (isset($_POST['rdflimit'])) {
         $A['rdflimit'] = (int) Geeklog\Input::fPost('rdflimit');
     }
@@ -665,7 +662,6 @@ function cmpDynamicBlocks($a, $b)
  * @param    string $device       Device type
  * @param    string $content      Content of block
  * @param    string $rdfUrl       URL to headline feed for portal blocks
- * @param    string $rdfUpdated   Date RSS/RDF feed was last updated
  * @param    string $rdfLimit     max. number of entries to import from feed
  * @param    string $phpBlockFn   Name of php function to call to get content
  * @param    int    $onLeft       Flag indicates if block shows up on left or right
@@ -678,7 +674,7 @@ function cmpDynamicBlocks($a, $b)
  * @param    int    $is_enabled   Flag, indicates if block is enabled or not
  * @return   string               HTML redirect or error message
  */
-function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $content, $rdfUrl, $rdfUpdated, $rdfLimit, $phpBlockFn, $onLeft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags, $cache_time)
+function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $content, $rdfUrl, $rdfLimit, $phpBlockFn, $onLeft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags, $cache_time)
 {
     global $_CONF, $_TABLES, $LANG21, $MESSAGE, $_USER;
 
@@ -736,13 +732,12 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
             $allow_autotags = 0;
         }
 
-        if ($cache_time < -1 || $cache_time == "") {
+        if ($cache_time < -1) {
             $cache_time = $_CONF['default_cache_time_block'];
         }
-
+        
         if ($type == 'portal') {
             $content = '';
-            $rdfUpdated = '';
             $phpBlockFn = '';
 
             // get rid of possible extra prefixes (e.g. "feed://http://...")
@@ -759,7 +754,6 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         if ($type == 'gldefault') {
             $content = '';
             $rdfUrl = '';
-            $rdfUpdated = '';
             $rdfLimit = 0;
             $phpBlockFn = '';
         }
@@ -776,12 +770,10 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
             }
             $content = '';
             $rdfUrl = '';
-            $rdfUpdated = '';
             $rdfLimit = 0;
         }
         if ($type == 'normal') {
             $rdfUrl = '';
-            $rdfUpdated = '';
             $rdfLimit = 0;
             $phpBlockFn = '';
 
@@ -797,9 +789,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         if (!empty($rdfUrl)) {
             $rdfUrl = DB_escapeString($rdfUrl);
         }
-        if (empty($rdfUpdated)) {
-            $rdfUpdated = 'CURRENT_TIMESTAMP';
-        }
+        
+        $rdfUpdated = 'CURRENT_TIMESTAMP';
 
         if ($bid > 0) {
             DB_save($_TABLES['blocks'], 'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,rdf_last_modified,rdf_etag', "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,NULL,NULL");
@@ -807,7 +798,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
             $sql = array();
             $sql['mysql'] = "INSERT INTO {$_TABLES['blocks']} "
                 . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',{$rdfUpdated},'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
 
             $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
                 . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
@@ -1013,15 +1004,15 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $device = Geeklog\Input::fPost('device', Device::ALL);
     $content = Geeklog\Input::post('content', '');
     $rdfurl = Geeklog\Input::post('rdfurl', '');    // to be sanitized later
-    $rdfupdated = Geeklog\Input::fPost('rdfupdated', '');
     $rdflimit = (int) Geeklog\Input::fPost('rdflimit', 0);
     $phpblockfn = Geeklog\Input::post('phpblockfn', '');
     $is_enabled = Geeklog\Input::post('is_enabled', '');
     $allow_autotags = Geeklog\Input::post('allow_autotags', '');
-    $cache_time = (int) Geeklog\Input::fPost('cache_time', $_CONF['default_cache_time_block']);
+    // $cache_time = (int) Geeklog\Input::fPost('cache_time', $_CONF['default_cache_time_block']); // Doesn't work as cache_time can be zero
+    $cache_time = (int) Geeklog\Input::fPost('cache_time');
     $display .= saveblock(
         $bid, $name, Geeklog\Input::post('title'), $help, Geeklog\Input::post('type'), $blockorder,
-        $device, $content, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, Geeklog\Input::post('onleft'),
+        $device, $content, $rdfurl, $rdflimit, $phpblockfn, Geeklog\Input::post('onleft'),
         (int) Geeklog\Input::fPost('owner_id', 0), (int) Geeklog\Input::fPost('group_id', 0),
         Geeklog\Input::post('perm_owner'), Geeklog\Input::post('perm_group'),
         Geeklog\Input::post('perm_members'), Geeklog\Input::post('perm_anon'),

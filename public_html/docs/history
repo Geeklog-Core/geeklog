@@ -16,6 +16,9 @@ Future (2.1.3)
 - [Bug] Censor Exact Match improved [Tom]
 - [Bug] Links Plugin category links fixed when URL Rewrite is enabled [Mystralkk]
 - [Bug] Language Manager search fixed [Mystralkk]
+- [Bug] Fixed Blocks Cache Time could not be set to 0 [Tom]
+- [Bug] Fixed Portal Blocks being able to use Cache Time [Tom]
+- [Bug] Fixed displaying of portal blocks. Removed function COM_rdfCheck from lib-common.php since not needed anymore (uses cache time instead) [Tom]
 
 
 March 1, 2017 (2.1.2)
