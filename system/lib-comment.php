@@ -1520,9 +1520,10 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $comment = MBYTE_substr($comment, 0, $_CONF['emailstorieslength'])
-                . '...';
+            $comment = COM_truncate($comment, $_CONF['emailstorieslength'], '...'); 
         }
+        $comment = htmlspecialchars_decode($comment);
+        
         $mailbody .= $comment . "\n\n";
     }
 
@@ -1729,9 +1730,10 @@ function CMT_sendReport($cid, $type)
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $comment = MBYTE_substr($comment, 0, $_CONF['emailstorieslength'])
-                . '...';
+            $comment = COM_truncate($comment, $_CONF['emailstorieslength'], '...'); 
         }
+        $comment = htmlspecialchars_decode($comment);
+        
         $mailBody .= $comment . "\n\n";
     }
 
