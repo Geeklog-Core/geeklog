@@ -129,8 +129,8 @@ $LANG_STATIC = array(
     'cache_time' => 'キャッシュタイム',
     'cache_time_desc' => 'この静的ページコンテンツはここで指定された秒数以上にキャッシュされることはありません。もしキャッシュが0ならキャッシュ無効 (3600 = 1時間,  86400 = 1日)。静的ページPHPまたはテンプレートの場合はキャッシュされません。',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意です。',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id] - 静的ページのコンテンツを表示します。', 
-    'yes' => 'Yes', 
+    'autotag_desc_staticpage_content' => '[staticpage_content: id] - 静的ページのコンテンツを表示します。',
+    'yes' => 'Yes',
     'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.'
 );
 
@@ -138,7 +138,6 @@ $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフに�
 $PLG_staticpages_MESSAGE19 = '静的ページを保存しました。';
 $PLG_staticpages_MESSAGE20 = '静的ページを削除しました。';
 $PLG_staticpages_MESSAGE21 = 'このページはまだ存在しません。ページを作成するには、下のフォームにすべてを入力してください。何かの間違いでしたらキャンセルボタンをクリックしてください。';
-$PLG_staticpages_MESSAGE22 = 'You could not delete the page. It is a template staticpage and it is currently assigned to 1 or more staticpages.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'プラグインはアップグレードをサポートしていません。';

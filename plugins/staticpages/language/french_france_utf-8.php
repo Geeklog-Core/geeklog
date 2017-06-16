@@ -126,7 +126,9 @@ $LANG_STATIC = array(
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
     'autotag_desc_staticpage' => '[staticpage: id titre alternatif] - Affiche un lien vers une page statique en utilisant le titre la page. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id] - Affiche le contenu d\'une page statique.'
+    'autotag_desc_staticpage_content' => '[staticpage_content: id] - Affiche le contenu d\'une page statique.',
+    'yes' => 'Yes',
+    'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Votre commentaire à bien été soumis et sera publié après avoir été approuvé par un modérateur.';
