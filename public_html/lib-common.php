@@ -8683,7 +8683,7 @@ foreach ($_PLUGINS as $pi_name) {
 
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
-if (!isset($_VARS['last_scheduled_run'])) {
+if (!isset($_VARS['last_scheduled_run']) OR !is_numeric($_VARS['last_scheduled_run'])) {
     $_VARS['last_scheduled_run'] = 0;
 }
 if ($_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage()) {
