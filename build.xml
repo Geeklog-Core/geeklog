@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="geeklog" basedir="." default="help">
-    <property name="version" value="2.1.2" override="true"/>
+    <property name="version" value="2.1.3" override="true"/>
     <property name="srcDir" value="." override="true"/>
     <property name="dstDir" value="./build" override="true"/>
 
