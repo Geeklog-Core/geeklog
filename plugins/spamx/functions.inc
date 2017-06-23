@@ -320,7 +320,14 @@ function plugin_upgrade_spamx()
                 $current_version = '1.3.1';
                 break;
 
-            case '1.3.1':   
+            case '1.3.1':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+                
                 $current_version = '1.3.2'; // Shipped with Geeklog-2.1.1
                 break;
 

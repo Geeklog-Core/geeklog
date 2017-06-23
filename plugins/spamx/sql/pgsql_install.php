@@ -38,7 +38,6 @@ CREATE TABLE {$_TABLES['spamx']} (
   regdate timestamp NOT NULL default NULL,
   PRIMARY KEY (name, value)
 );
-  CREATE INDEX {$_TABLES['spamx']}_name ON {$_TABLES['spamx']}(name);
 ";
 
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter', '0')";
