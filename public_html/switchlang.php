@@ -73,11 +73,15 @@ function switch_language($url, $newLang, $oldLang)
         for ($i = 0; $i < $parts; $i++) {
             if (substr($p[$i], -4) === '.php') {
                 // found the script name - assume next parameter is the ID
-                if (isset($p[$i + 1])) {
-                    if (substr($p[$i + 1], -($lang_len + 1)) === '_' . $oldLang) {
-                        $p[$i + 1] = substr_replace($p[$i + 1], $newLang, -$lang_len);
-                        $changed = true;
-                    }
+                // There is a langID somewhere after the script name (it may no longer be next with url_rewrite enabled, etc..)
+                for ($j = $i; $j < $parts; $j++) { 
+                    if (isset($p[$j + 1])) { 
+                        if (substr($p[$j + 1], -($lang_len + 1)) === '_' . $oldLang) { 
+                            $p[$j + 1] = substr_replace($p[$j + 1], $newLang, -$lang_len); 
+                            $changed = true; 
+                            break; 
+                        } 
+                    } 
                 }
                 break;
             }
