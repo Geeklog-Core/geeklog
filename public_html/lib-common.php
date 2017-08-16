@@ -7179,8 +7179,7 @@ function COM_getLanguage()
     }
 
     // 1. Try to get language from URL
-    $langFile = COM_getLanguageFromBrowser();
-
+    // $langFile = COM_getLanguageFromBrowser(); - Removed line as it doesn't work with the switch language block (that uses phpblock_switch_language) for some setups when a language cookie is set, need to check that first. 
     if (empty($langFile)) {
         if (!empty($_USER['language'])) {
             // 2. Try to get language from the user's settings
