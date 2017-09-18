@@ -1558,48 +1558,49 @@ function ADMIN_getListField_trackback($fieldName, $fieldValue, $A, $icon_arr, $t
  * @param  string $selected
  * @return string
  */
-function ADMIN_getListField_usergroups($fieldName, $fieldValue, $A, $icon_arr, $selected = '')
+function ADMIN_getListField_usergroups($fieldname, $fieldvalue, $A, $icon_arr, $selected = '')
 {
-    global $thisUsersGroups;
+    global $thisUsersGroups, $_USER_MAINGROUPS;
 
     $retval = false;
 
-    if (!is_array($thisUsersGroups)) {
+    if(!is_array($thisUsersGroups)) {
         $thisUsersGroups = SEC_getUserGroups();
     }
 
-    if (in_array($A['grp_id'], $thisUsersGroups) ||
-        SEC_groupIsRemoteUserAndHaveAccess($A['grp_id'], $thisUsersGroups)
-    ) {
-        switch ($fieldName) {
-            case 'checkbox':
-                $checked = '';
-                if (is_array($selected) && in_array($A['grp_id'], $selected)) {
-                    $checked = ' checked="checked"';
-                }
-                if (($A['grp_name'] === 'All Users') ||
-                    ($A['grp_name'] === 'Logged-in Users') ||
-                    ($A['grp_name'] === 'Remote Users')
-                ) {
-                    $retval = '<input type="checkbox" disabled="disabled"'
+    if (in_array($A['grp_id'], $thisUsersGroups ) ||
+          SEC_groupIsRemoteUserAndHaveAccess($A['grp_id'], $thisUsersGroups)) {
+        switch($fieldname) {
+        case 'checkbox':
+            $checked = '';
+            if (is_array($selected) && in_array($A['grp_id'], $selected)) {
+                $checked = ' checked="checked"';
+            }
+            if (($A['grp_name'] == 'All Users') ||
+                ($A['grp_name'] == 'Logged-in Users') ||
+                ($A['grp_name'] == 'Remote Users')) {
+                $retval = '<input type="checkbox" disabled="disabled"'
                         . $checked . XHTML . '>';
-                    if (!empty($checked)) {
-                        $retval .= '<input type="hidden" name="groups[]" value="'
+                if (!empty($checked)) {
+                    $retval .= '<input type="hidden" name="groups[]" value="'
                             . $A['grp_id'] . '"' . $checked . XHTML . '>';
-                    }
-                } else {
-                    $retval = '<input type="checkbox" name="groups[]" value="'
-                        . $A['grp_id'] . '"' . $checked . XHTML . '>';
                 }
-                break;
+            } elseif (!empty($checked) && (! in_array($A['grp_id'], $_USER_MAINGROUPS ))) {
+                $retval = '<input type="checkbox" disabled="disabled"'
+                        . $checked . XHTML . '>';
+            } else {
+                $retval = '<input type="checkbox" name="groups[]" value="'
+                        . $A['grp_id'] . '"' . $checked . XHTML . '>';
+            }
+            break;
 
-            case 'grp_name':
-                $retval = ucwords($fieldValue);
-                break;
+        case 'grp_name':
+            $retval = ucwords($fieldvalue);
+            break;
 
-            default:
-                $retval = $fieldValue;
-                break;
+        default:
+            $retval = $fieldvalue;
+            break;
         }
     }
 

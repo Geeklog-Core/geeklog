@@ -74,23 +74,26 @@ if (!defined('CSRF_TOKEN')) {
 }
 
 /**
- * Returns the groups a user belongs to
- * This is part of the GL security implementation.  This function returns
- * all the groups a user belongs to.  This function is called recursively
- * as groups can belong to other groups
- * Note: this is an expensive function -- if you are concerned about speed it should only
- *       be used once at the beginning of a page.  The resulting array $_GROUPS can then be
- *       used through out the page.
- *
- * @param        int $uid User ID to get information for. If empty current user.
- * @return   array   Associative Array grp_name -> ug_main_grp_id of group ID's user belongs to
- */
-function SEC_getUserGroups($uid = '')
+* Returns the groups a user belongs to
+*
+* This is part of the GL security implementation.  This function returns
+* all the groups a user belongs to.  This function is called recursively
+* as groups can belong to other groups
+*
+* Note: this is an expensive function -- if you are concerned about speed it should only
+*       be used once at the beginning of a page.  The resulting array $_GROUPS can then be
+*       used through out the page.
+*
+* @param        int     $uid            User ID to get information for. If empty current user.
+* @return   array   Associative Array grp_name -> ug_main_grp_id of group ID's user belongs to
+*
+*/
+function SEC_getUserGroups($uid='')
 {
-    global $_TABLES, $_USER, $_SEC_VERBOSE;
+    global $_TABLES, $_USER, $_SEC_VERBOSE, $_USER_MAINGROUPS;
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("****************in getusergroups(uid=$uid)***************", 1);
+        COM_errorLog("****************in getusergroups(uid=$uid,usergroups=$usergroups,cur_grp_id=$cur_grp_id)***************",1);
     }
 
     $groups = array();
@@ -101,10 +104,13 @@ function SEC_getUserGroups($uid = '')
         } else {
             $uid = $_USER['uid'];
         }
+    } else {
+        $_USER_MAINGROUPS = array();
+        $tuid = $uid;
     }
 
     $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-        . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid", 1);
+            . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid", 1);
 
     if ($result === false) {
         return $groups;
@@ -113,7 +119,7 @@ function SEC_getUserGroups($uid = '')
     $nrows = DB_numRows($result);
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("got $nrows rows", 1);
+        COM_errorLog("got $nrows rows",1);
     }
 
     while ($nrows > 0) {
@@ -132,9 +138,10 @@ function SEC_getUserGroups($uid = '')
         }
 
         if (count($cgroups) > 0) {
+            if (empty($_USER_MAINGROUPS) && !empty($tuid)) { $_USER_MAINGROUPS = $cgroups; }
             $glist = implode(',', $cgroups);
             $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-                . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)", 1);
+                    . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)", 1);
             $nrows = DB_numRows($result);
         } else {
             $nrows = 0;
@@ -144,7 +151,7 @@ function SEC_getUserGroups($uid = '')
     uksort($groups, 'strcasecmp');
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("****************leaving getusergroups(uid=$uid)***************", 1);
+        COM_errorLog("****************leaving getusergroups(uid=$uid)***************",1);
     }
 
     return $groups;
