@@ -76,7 +76,7 @@ if (!SEC_hasRights('group.edit')) {
 function editgroup($grp_id = '')
 {
     global $_TABLES, $_CONF, $_USER, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE,
-           $LANG28, $_GROUP_VERBOSE;
+           $LANG28, $_GROUP_VERBOSE, $_GROUP_MAINGROUPS;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -271,6 +271,51 @@ function editgroup($grp_id = '')
             }
             $sql = "SELECT grp_id, grp_name, grp_descr FROM {$_TABLES['groups']} WHERE (grp_name <> 'Root')" . $xsql . ' AND ' . $whereGroups;
         }
+        
+
+        // Create a complete list of inherited groups for this group being edited so we know what needs to be disabled on screen
+        $resultA = DB_query($sql, 1);
+        $nrowsA = DB_numRows($resultA);
+        $_GROUP_MAINGROUPS = array();
+        for ($iA = 1; $iA <= $nrowsA; $iA++) {
+            $groups = array();
+            $A = DB_fetchArray($resultA);
+            //Figure out if group being listed is already an inherited group
+            
+            $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
+                    . " WHERE grp_id = ug_main_grp_id AND ug_grp_id = " . $A['grp_id'], 1);
+
+            $nrows = DB_numRows($result);
+            while ($nrows > 0) {
+                $inheritedgroups = array();
+
+                for ($i = 1; $i <= $nrows; $i++) {
+                    $B = DB_fetchArray($result);
+
+                    if (!in_array($B['ug_main_grp_id'], $groups)) {
+                        array_push($inheritedgroups, $B['ug_main_grp_id']);
+                        $groups[$B['grp_name']] = $B['ug_main_grp_id'];
+                    }
+                }
+
+                if (count($inheritedgroups) > 0) {
+                    $glist = implode(',', $inheritedgroups);
+                    $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
+                            . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)", 1);
+                    $nrows = DB_numRows($result);
+                } else {
+                    $nrows = 0;
+                }
+            }
+            
+            // Check if part of inherited and if selected part of inherited
+            if (in_array($grp_id, $groups) OR in_array($A['grp_id'], explode(' ', $selected))) {
+                $_GROUP_MAINGROUPS = array_merge($_GROUP_MAINGROUPS, $groups);
+                // Add top group
+                $_GROUP_MAINGROUPS[$A['grp_name']] = $A['grp_id'];                        
+            }
+        }
+              
         $query_arr = array('table'          => 'groups',
                            'sql'            => $sql,
                            'query_fields'   => array('grp_name'),
@@ -847,7 +892,7 @@ function listusers($grp_id)
     $retval .= COM_startBlock($headline, '', COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= ADMIN_createMenu(
         $menu_arr,
-        '&nbsp;',
+        $LANG_ACCESS['usersingroupmsg'],
         $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE
     );
 
@@ -983,10 +1028,10 @@ function listgroups($show_all_groups = false)
  * in the given group and to get all list of all users NOT in that group.
  *
  * @param    int     $group_id group id
- * @param    boolean $allusers true: return users not in the group
+ * @param    int     $listtype 1: return users not in the actual group, 2: return just inherited users
  * @return   string              option list containing uids and usernames
  */
-function grp_selectUsers($group_id, $allusers = false)
+function grp_selectUsers($group_id, $listtype = 0)
 {
     global $_TABLES, $_USER;
 
@@ -1007,21 +1052,30 @@ function grp_selectUsers($group_id, $allusers = false)
     $sql = "SELECT DISTINCT uid,username FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['group_assignments']} ";
     $sql .= "ON {$_TABLES['group_assignments']}.ug_uid = uid WHERE uid > 1 AND ";
     $sql .= "{$_TABLES['group_assignments']}.ug_main_grp_id ";
-    if ($allusers) {
-        $sql .= 'NOT ';
-    }
-    $sql .= "IN {$grouplist} ";
-    // Filter out the users that will be in the selected group
-    if ($allusers) {
+    if ($listtype == 0) { // Group Users
+        $sql .= " AND {$_TABLES['group_assignments']}.ug_main_grp_id = $group_id ";
+    }    
+    if ($listtype == 1) { // Available Users
+        $sql .= "NOT IN {$grouplist} ";
+        // Filter out the users that will be in the selected group
         $filteredusers = implode(',', $filteredusers);
         $sql .= " AND uid NOT IN ($filteredusers) ";
     }
+    if ($listtype == 2) { // Inherited users
+        $sql .= "IN {$grouplist} ";
+        $sql .= " AND {$_TABLES['group_assignments']}.ug_main_grp_id != $group_id ";
+    }
     $sql .= "ORDER BY username";
+    
     $result = DB_query($sql);
     $numUsers = DB_numRows($result);
     for ($i = 0; $i < $numUsers; $i++) {
         list($uid, $username) = DB_fetchArray($result);
-        $retval .= '<option value="' . $uid . '">' . $username . '</option>';
+        $retval .= '<option';
+        if ($listtype == 2) {
+            $retval .= ' disabled';
+        }
+        $retval .= ' value="' . $uid . '">' . $username . '</option>';
     }
 
     return $retval;
@@ -1096,8 +1150,10 @@ function editusers($group)
     $groupmembers->set_var('lang_instructions', $LANG_ACCESS['editgroupmsg']);
     $groupmembers->set_var('LANG_sitemembers', $LANG_ACCESS['availmembers']);
     $groupmembers->set_var('LANG_grpmembers', $LANG_ACCESS['groupmembers']);
-    $groupmembers->set_var('sitemembers', grp_selectUsers($group, true));
+    $groupmembers->set_var('LANG_inheritmembers', $LANG_ACCESS['inheritmembers']);
+    $groupmembers->set_var('sitemembers', grp_selectUsers($group, 1));
     $groupmembers->set_var('group_list', grp_selectUsers($group));
+    $groupmembers->set_var('inherit_list', grp_selectUsers($group, 2));
     $groupmembers->set_var('LANG_add', $LANG_ACCESS['add']);
     $groupmembers->set_var('LANG_remove', $LANG_ACCESS['remove']);
     $groupmembers->set_var('lang_save', $LANG_ADMIN['save']);

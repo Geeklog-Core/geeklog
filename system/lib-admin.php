@@ -881,7 +881,7 @@ function ADMIN_getListField_dynamicblocks($fieldName, $fieldValue, $A, $icon_arr
  */
 function ADMIN_getListField_groups($fieldName, $fieldValue, $A, $icon_arr, $selected = '')
 {
-    global $_CONF, $LANG_ACCESS, $thisUsersGroups;
+    global $_CONF, $LANG_ACCESS, $thisUsersGroups, $_GROUP_MAINGROUPS;
 
     $retval = false;
 
@@ -944,10 +944,15 @@ function ADMIN_getListField_groups($fieldName, $fieldValue, $A, $icon_arr, $sele
             case 'checkbox':
                 $retval = '<input type="checkbox" name="groups[]" value="'
                     . $A['grp_id'] . '"';
+
                 if (is_array($selected) && in_array($A['grp_id'], $selected)) {
                     $retval .= ' checked="checked"';
+                } elseif (in_array($A['grp_id'], $_GROUP_MAINGROUPS)) { // If inherited then disable
+                    $retval .= ' disabled="disabled" checked="checked"';
                 }
+                
                 $retval .= XHTML . '>';
+                
                 break;
 
             case 'disabled-checkbox':
