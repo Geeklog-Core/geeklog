@@ -1557,7 +1557,7 @@ $LANG_ACCESS = array(
     'permmsg' => '注意: メンバーとはすべてのログインしているサイトのメンバーで、ゲストユーザーはログインせずにアクセスしているすべての利用者です。',
     'securitygroups' => 'セキュリティグループ',
     'editrootmsg' => "管理権限を持っていても、rootユーザーにならずにrootユーザーの編集はできません。rootを除いた他のすべてのユーザーを編集できます。不正にrootユーザーを編集しようする試みはすべて記録していることに注意してください。<a href=\"{$_CONF['site_admin_url']}/user.php\">ユーザー管理ページ</a>に戻る",
-    'securitygroupsmsg' => 'このユーザーを所属させたいグループをチェックしてください。',
+    'securitygroupsmsg' => 'Select the checkboxes for the groups you want the user to belong too. Groups that are checked but disabled are either core groups that are required or are inherited groups from other groups that user directly belongs too.',
     'groupeditor' => 'グループの編集',
     'description' => '説明',
     'name' => '名前',
