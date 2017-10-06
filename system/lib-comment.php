@@ -654,11 +654,23 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
         $limit = $_CONF['comment_limit'];
     }
 
+    // Retrieve base url in case needed for 404 error
+    list($pluginUrl, $pluginId) = CMT_getCommentUrlId($type);
+    $pluginLink = '';
+    if (!empty($pluginUrl)) {
+        $pluginLink = "$pluginUrl?$pluginId=$sid";
+    }        
+
     if (!is_numeric($page) || $page < 1) {
-        $page = 1;
+        COM_handle404($pluginLink);
     }
 
     $start = $limit * ($page - 1);
+
+    // trap if start page num is so large that ends up turning into an exponent which makes the sql statement fail
+    if (!is_int($start)) {
+        COM_handle404($pluginLink);
+    }
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'comment');
     $template->set_file(array('commentarea' => 'startcomment.thtml'));
@@ -755,11 +767,6 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
 
         if (DB_numRows($result) == 0) {
             if ($page > 1) {
-                list($pluginUrl, $pluginId) = CMT_getCommentUrlId($type);
-                $pluginLink = '';
-                if (!empty($pluginUrl)) {
-                    $pluginLink = "$pluginUrl?$pluginId=$sid";
-                }
                 // Requested invalid page
                 COM_handle404($pluginLink);
             }
