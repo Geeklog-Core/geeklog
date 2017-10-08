@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-common.php                                                            |
 // |                                                                           |
@@ -1320,17 +1320,12 @@ function COM_siteFooter($rightBlock = -1, $custom = '')
     $footer->set_var('rss_url', $feed);
 
     $year = date('Y');
-    $copyrightyear = $year;
-    if (!empty($_CONF['copyrightyear'])) {
-        $copyrightyear = $_CONF['copyrightyear'];
-    }
-    if (!empty($_CONF['owner_name'])) {
-        $copyrightname = $_CONF['owner_name'];
-    } else {
-        $copyrightname = $_CONF['site_name'];
-    }
-    $footer->set_var('copyright_msg', $LANG01[93] . ' &copy; '
-        . $copyrightYear . ' ' . $copyrightName);
+    $copyrightYear = empty($_CONF['copyrightyear']) ? $year : $_CONF['copyrightyear'];
+    $copyrightName = empty($_CONF['owner_name']) ? $_CONF['site_name'] : $_CONF['owner_name'];
+    $footer->set_var(
+        'copyright_msg',
+        $LANG01[93] . ' &copy; ' . $copyrightYear . ' ' . $copyrightName
+    );
     $footer->set_var('current_year', $year);
     $footer->set_var('lang_copyright', $LANG01[93]);
     $footer->set_var('trademark_msg', $LANG01[94]);
@@ -3060,7 +3055,7 @@ function COM_userMenu($help = '', $title = '', $position = '')
  */
 function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $position = '')
 {
-    global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW,
+    global $_CONF, $_CONF_FT, $_TABLES, $_BLOCK_TEMPLATE, $LANG01, $LANG29, $LANG_LOGVIEW,
            $LANG_ENVCHECK, $LANG_ADMIN, $LANG_LANG, $_IMAGE_TYPE, $LANG_ROUTER, $_DB_dbms, $config;
 
     $retval = '';
