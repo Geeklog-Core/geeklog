@@ -8,6 +8,16 @@
     "pear/http_request2": "~2.3.0",
     "splitbrain/php-archive": "~1.0",
     "htmlawed/htmlawed": "~1.0",
-    "swiftmailer/swiftmailer": "~5"
-  }
+    "swiftmailer/swiftmailer": "~5",
+    "phpclasses/oauth-api": ">=1.0.103"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https:\/\/www.phpclasses.org\/"
+    },
+    {
+      "packagist": false
+    }
+  ]
 }

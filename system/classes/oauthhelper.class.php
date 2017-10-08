@@ -2,14 +2,14 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1.0                                                             |
+// | Geeklog 2.2.0                                                             |
 // +---------------------------------------------------------------------------+
 // | oauthhelper.class.php                                                     |
-// | version: 2.1.0                                                            |
+// | version: 2.2.0                                                            |
 // |                                                                           |
 // | Geeklog Distributed Authentication Module.                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2010-2011 by the following authors:                         |
+// | Copyright (C) 2010-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Hiroron          - hiroron AT hiroron DOT com                    |
 // | Mark Howard               - mark AT usable-web DOT com                    |
@@ -36,19 +36,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
-// http://www.phpclasses.org/package/3-PHP-HTTP-client-to-access-Web-site-pages.html
-// httpclient 1.0.5 - Updated 2016-05-12
-// httpclient 1.0.2 - Updated 2014-08-14
-// No changes to file required to upgrade
-require_once __DIR__ . '/http/http.php';
-
-// http://www.phpclasses.org/package/7700-PHP-Authorize-and-access-APIs-using-OAuth.html
-// oauth-api 1.1.52 - Updated 2016-10-14
-// oauth-api 1.0.80 - Updated 2016-05-12
-// oauth-api 1.0.39 - Updated 2014-12-22
-// To upgrade need to update Initialize function in oauth_client.php. Replace upper case with lower case letters in case statement
-// facebook, github, google, microsoft, twitter, linkedin, yahoo
-require_once __DIR__ . '/oauth/oauth_client.php';
+// As of Geeklog 2.2.0, both oauth-api and httpclient classes are managed by composer.
 
 // Enable to show debug info for OAuth
 $_SYSTEM['debug_oauth'] = false;
@@ -102,31 +90,37 @@ class OAuthConsumer
                 $scope   = 'email,public_profile,user_friends';
                 $q_api   = array();
                 break;
+
             case 'google' :
                 $api_url = 'https://www.googleapis.com/oauth2/v1/userinfo';
                 $scope   = 'https://www.googleapis.com/auth/userinfo.email '.'https://www.googleapis.com/auth/userinfo.profile';
                 $q_api   = array();
                 break;
+
             case 'microsoft' :
                 $api_url = 'https://apis.live.net/v5.0/me';
                 $scope   = 'wl.basic wl.emails';
                 $q_api   = array();
                 break;
+
             case 'twitter' :
                 $api_url = 'https://api.twitter.com/1.1/account/verify_credentials.json';
                 $scope   = '';
                 $q_api   = array('include_entities' => "true", 'skip_status' => "true", 'include_email' => "true");
                 break;
+
             case 'yahoo' :
                 $api_url = 'http://query.yahooapis.com/v1/yql';
                 $scope   = '';
                 $q_api   = array('q'=>'select * from social.profile where guid=me','format'=>'json');
                 break;
+
             case 'linkedin' :
                 $api_url = 'http://api.linkedin.com/v1/people/~:(id,first-name,last-name,location,summary,email-address,picture-url,public-profile-url)';
                 $scope   = 'r_basicprofile r_emailaddress';
                 $q_api   = array('format'=>'json');
                 break;
+
             case 'github' :
                 $api_url = 'https://api.github.com/user';
                 $scope   = 'user:email';
@@ -315,25 +309,31 @@ class OAuthConsumer
                     $userinfo['location'] = $info->location->name;
                 }
                 break;
+
             case 'google' :
                 break;
+
             case 'microsoft' :
                 break;
+
             case 'twitter' :
                 if ( isset($info->email ) ) {
                     $userinfo['email'] = $info->email;
                 }
                 break;
+
             case 'yahoo' :
                 if (isset($info->query->results->profile->location)) {
                     $userInfo['location'] = $info->query->results->profile->location;
                 }
                 break;
+
             case 'linkedin' :
                 if ( isset($info->location->name) ) {
                     $userinfo['location'] = $info->location->name;
                 }
                 break;
+
             case 'github' :
                 break;
         }

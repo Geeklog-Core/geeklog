@@ -1,0 +1,10 @@
+{
+	"autoload":
+	{
+		"classmap": ["oauth_client.php", "mysqli_oauth_client.php", "mysqli_offline_access_to_google.php", "database_oauth_client.php", "cookie_oauth_client.php", "file_oauth_client.php"]
+	}
+,
+	"require": 
+	{
+		"phpclasses/httpclient": "1.0.5"
+	}}

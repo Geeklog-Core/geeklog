@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Class: Simple Authentication and Security Layer client</title>
+</head>
+<body>
+<center><h1>Class: Simple Authentication and Security Layer client</h1></center>
+<hr />
+<ul>
+<p><b>Version:</b> <tt>@(#) $Id: sasl.php,v 1.11 2005/10/31 18:43:27 mlemos Exp $</tt></p>
+<h2><a name="table_of_contents">Contents</a></h2>
+<ul>
+<li><a href="#2.1.1">Summary</a></li>
+<ul>
+<li><a href="#3.2.0">Name</a></li>
+<li><a href="#3.2.0.0">Author</a></li>
+<li><a href="#3.2.0.1">Copyright</a></li>
+<li><a href="#3.2.0.2">Version</a></li>
+<li><a href="#3.2.0.3">Purpose</a></li>
+<li><a href="#3.2.0.4">Usage</a></li>
+</ul>
+<li><a href="#4.1.1">Variables</a></li>
+<ul>
+<li><a href="#5.2.4">error</a></li>
+<li><a href="#5.2.5">mechanism</a></li>
+<li><a href="#5.2.6">encode_response</a></li>
+</ul>
+<li><a href="#6.1.1">Functions</a></li>
+<ul>
+<li><a href="#7.2.5">SetCredential</a></li>
+<li><a href="#9.2.6">GetCredentials</a></li>
+<li><a href="#11.2.7">Start</a></li>
+<li><a href="#13.2.8">Step</a></li>
+</ul>
+</ul>
+<p><a href="#table_of_contents">Top of the table of contents</a></p>
+</ul>
+<hr />
+<ul>
+<h2><li><a name="2.1.1">Summary</a></li></h2>
+<ul>
+<h3><a name="3.2.0">Name</a></h3>
+<p>Simple Authentication and Security Layer client</p>
+<h3><a name="3.2.0.0">Author</a></h3>
+<p>Manuel Lemos (<a href="mailto:mlemos-at-acm.org">mlemos-at-acm.org</a>)</p>
+<h3><a name="3.2.0.1">Copyright</a></h3>
+<p>Copyright &copy; (C) Manuel Lemos 2004</p>
+<h3><a name="3.2.0.2">Version</a></h3>
+<p>@(#) $Id: sasl.php,v 1.11 2005/10/31 18:43:27 mlemos Exp $</p>
+<h3><a name="3.2.0.3">Purpose</a></h3>
+<p>Provide a common interface to plug-in driver classes that implement different mechanisms for authentication used by clients of standard protocols like SMTP, POP3, IMAP, HTTP, etc.. Currently the supported authentication mechanisms are: <tt>PLAIN</tt>, <tt>LOGIN</tt>, <tt>CRAM-MD5</tt>, <tt>Digest</tt> and <tt>NTML</tt> (Windows or Samba).</p>
+<h3><a name="3.2.0.4">Usage</a></h3>
+<p>.</p>
+<p><a href="#table_of_contents">Table of contents</a></p>
+</ul>
+</ul>
+<hr />
+<ul>
+<h2><li><a name="variables"></a><a name="4.1.1">Variables</a></li></h2>
+<ul>
+<li><tt><a href="#variable_error">error</a></tt></li><br />
+<li><tt><a href="#variable_mechanism">mechanism</a></tt></li><br />
+<li><tt><a href="#variable_encode_response">encode_response</a></tt></li><br />
+<p><a href="#table_of_contents">Table of contents</a></p>
+<h3><a name="variable_error"></a><li><a name="5.2.4">error</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Store the message that is returned when an error occurs.</p>
+<h3>Usage</h3>
+<p>Check this variable to understand what happened when a call to any of the class functions has failed.</p>
+<p> This class uses cumulative error handling. This means that if one class functions that may fail is called and this variable was already set to an error message due to a failure in a previous call to the same or other function, the function will also fail and does not do anything.</p>
+<p> This allows programs using this class to safely call several functions that may fail and only check the failure condition after the last function call.</p>
+<p> Just set this variable to an empty string to clear the error condition.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_mechanism"></a><li><a name="5.2.5">mechanism</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Store the name of the mechanism that was selected during the call to the <tt><a href="#function_Start">Start</a></tt> function.</p>
+<h3>Usage</h3>
+<p>You can access this variable but do not change it.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_encode_response"></a><li><a name="5.2.6">encode_response</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>bool</i></tt></p>
+<h3>Default value</h3>
+<p><tt>1</tt></p>
+<h3>Purpose</h3>
+<p>Let the drivers inform the applications whether responses need to be encoded.</p>
+<h3>Usage</h3>
+<p>Applications should check this variable before sending authentication responses to the server to determine if the responses need to be encoded, eventually with base64 algorithm.</p>
+<p><a href="#variables">Variables</a></p>
+<p><a href="#table_of_contents">Table of contents</a></p>
+</ul>
+</ul>
+<hr />
+<ul>
+<h2><li><a name="functions"></a><a name="6.1.1">Functions</a></li></h2>
+<ul>
+<li><tt><a href="#function_SetCredential">SetCredential</a></tt></li><br />
+<li><tt><a href="#function_GetCredentials">GetCredentials</a></tt></li><br />
+<li><tt><a href="#function_Start">Start</a></tt></li><br />
+<li><tt><a href="#function_Step">Step</a></tt></li><br />
+<p><a href="#table_of_contents">Table of contents</a></p>
+<h3><a name="function_SetCredential"></a><li><a name="7.2.5">SetCredential</a></li></h3>
+<h3>Synopsis</h3>
+<p><tt><i></i> SetCredential(</tt><ul>
+<tt><i>string</i> </tt><tt><a href="#argument_SetCredential_key">key</a></tt><tt>,</tt><br />
+<tt><i>string</i> </tt><tt><a href="#argument_SetCredential_value">value</a></tt></ul>
+<tt>)</tt></p>
+<h3>Purpose</h3>
+<p>Store the value of a credential that may be used by any of the supported mechanisms to process the authentication messages and responses.</p>
+<h3>Usage</h3>
+<p>Call this function before starting the authentication dialog to pass all the credential values that be needed to use the type of authentication that the applications may need.</p>
+<h3>Arguments</h3>
+<ul>
+<p><tt><b><a name="argument_SetCredential_key">key</a></b></tt> - Specify the name of the credential key.</p>
+<p><tt><b><a name="argument_SetCredential_value">value</a></b></tt> - Specify the value for the credential.</p>
+</ul>
+<p><a href="#functions">Functions</a></p>
+<h3><a name="function_GetCredentials"></a><li><a name="9.2.6">GetCredentials</a></li></h3>
+<h3>Synopsis</h3>
+<p><tt><i>int</i> GetCredentials(</tt><ul>
+<tt>(input and output) <i>array</i> </tt><tt><a href="#argument_GetCredentials_credentials">credentials</a></tt><tt>,</tt><br />
+<tt>(input and output) <i>array</i> </tt><tt><a href="#argument_GetCredentials_defaults">defaults</a></tt><tt>,</tt><br />
+<tt>(input and output) <i>array</i> </tt><tt><a href="#argument_GetCredentials_interactions">interactions</a></tt></ul>
+<tt>)</tt></p>
+<h3>Purpose</h3>
+<p>Retrieve the values of one or more credentials to be used by the authentication mechanism classes.</p>
+<h3>Usage</h3>
+<p>This is meant to be used by authentication mechanism driver classes to retrieve the credentials that may be neede.</p>
+<h3>Arguments</h3>
+<ul>
+<p><tt><b><a name="argument_GetCredentials_credentials">credentials</a></b></tt> - Reference to an associative array variable with all the credentials that are being requested. The function initializes this associative array values.</p>
+<p><tt><b><a name="argument_GetCredentials_defaults">defaults</a></b></tt> - Associative arrays with default values for credentials that may have not been defined.</p>
+<p><tt><b><a name="argument_GetCredentials_interactions">interactions</a></b></tt> - Not yet in use. It is meant to provide context information to retrieve credentials that may be obtained interacting with the user.</p>
+</ul>
+<h3>Return value</h3>
+<p>The function may return <tt>SASL_CONTINUE</tt> if it succeeded, or <tt>SASL_NOMECH</tt> if it was not possible to retrieve one of the requested credentials.</p>
+<p><a href="#functions">Functions</a></p>
+<h3><a name="function_Start"></a><li><a name="11.2.7">Start</a></li></h3>
+<h3>Synopsis</h3>
+<p><tt><i>int</i> Start(</tt><ul>
+<tt>(input and output) <i>array</i> </tt><tt><a href="#argument_Start_mechanisms">mechanisms</a></tt><tt>,</tt><br />
+<tt>(output) <i>string &amp;</i> </tt><tt><a href="#argument_Start_message">message</a></tt><tt>,</tt><br />
+<tt>(input and output) <i>array</i> </tt><tt><a href="#argument_Start_interactions">interactions</a></tt></ul>
+<tt>)</tt></p>
+<h3>Purpose</h3>
+<p>Process the initial authentication step initializing the driver class that implements the first of the list of requested mechanisms that is supported by this SASL client library implementation.</p>
+<h3>Usage</h3>
+<p>Call this function specifying a list of mechanisms that the server supports. If the <tt><a href="#argument_Start_message">message</a></tt> argument returns a string, it should be sent to the server as initial message. Check the <tt><a href="#variable_encode_response">encode_response</a></tt> variable to determine whether the initial message needs to be encoded, eventually with base64 algorithm, before it is sent to the server.</p>
+<h3>Arguments</h3>
+<ul>
+<p><tt><b><a name="argument_Start_mechanisms">mechanisms</a></b></tt> - Define the list of names of authentication mechanisms supported by the that should be tried.</p>
+<p><tt><b><a name="argument_Start_message">message</a></b></tt> - Return the initial message that should be sent to the server to start the authentication dialog. If this value is undefined, no message should be sent to the server.</p>
+<p><tt><b><a name="argument_Start_interactions">interactions</a></b></tt> - Not yet in use. It is meant to provide context information to interact with the end user.</p>
+</ul>
+<h3>Return value</h3>
+<p>The function may return <tt>SASL_CONTINUE</tt> if it could start one of the requested authentication mechanisms. It may return <tt>SASL_NOMECH</tt> if it was not possible to start any of the requested mechanisms. It returns <tt>SASL_FAIL</tt> or other value in case of error.</p>
+<p><a href="#functions">Functions</a></p>
+<h3><a name="function_Step"></a><li><a name="13.2.8">Step</a></li></h3>
+<h3>Synopsis</h3>
+<p><tt><i>int</i> Step(</tt><ul>
+<tt><i>string</i> </tt><tt><a href="#argument_Step_response">response</a></tt><tt>,</tt><br />
+<tt>(output) <i>string &amp;</i> </tt><tt><a href="#argument_Step_message">message</a></tt><tt>,</tt><br />
+<tt>(input and output) <i>array</i> </tt><tt><a href="#argument_Step_interactions">interactions</a></tt></ul>
+<tt>)</tt></p>
+<h3>Purpose</h3>
+<p>Process the authentication steps after the initial step, until the authetication iteration dialog is complete.</p>
+<h3>Usage</h3>
+<p>Call this function iteratively after a successful initial step calling the <tt><a href="#function_Start">Start</a></tt> function.</p>
+<h3>Arguments</h3>
+<ul>
+<p><tt><b><a name="argument_Step_response">response</a></b></tt> - Pass the response returned by the server to the previous step.</p>
+<p><tt><b><a name="argument_Step_message">message</a></b></tt> - Return the message that should be sent to the server to continue the authentication dialog. If this value is undefined, no message should be sent to the server.</p>
+<p><tt><b><a name="argument_Step_interactions">interactions</a></b></tt> - Not yet in use. It is meant to provide context information to interact with the end user.</p>
+</ul>
+<h3>Return value</h3>
+<p>The function returns <tt>SASL_CONTINUE</tt> if step was processed successfully, or returns <tt>SASL_FAIL</tt> in case of error.</p>
+<p><a href="#functions">Functions</a></p>
+<p><a href="#table_of_contents">Table of contents</a></p>
+</ul>
+</ul>
+
+<hr />
+<address>Manuel Lemos (<a href="mailto:mlemos-at-acm.org">mlemos-at-acm.org</a>)</address>
+</body>
+</html>

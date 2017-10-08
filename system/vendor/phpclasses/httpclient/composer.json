@@ -1,0 +1,10 @@
+{
+	"autoload":
+	{
+		"classmap": ["http.php", "yahoo_user.php"]
+	}
+,
+	"require": 
+	{
+		"phpclasses/sasl": ">=1.0.0"
+	}}
