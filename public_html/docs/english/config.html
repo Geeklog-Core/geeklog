@@ -807,7 +807,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_show_servicename">show_servicename</a></td>
   <td valign="top">true</td>
   <td valign="top">If you allow users to log in with accounts on remote services
-    (like LDAP or LiveJournal), this option will at the service's name to
+    (like LDAP), this option will at the service's name to
     the username to avoid confusion with local users of the same name. Set to
     <span class="tt">false</span> to disable.</td></tr>
 <tr>
@@ -831,11 +831,11 @@ the admin panel.</p>
   <td valign="top"><code>false</code></td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with some other service to log into your Geeklog site with the
-    login for that service. Currently supported: LDAP and LiveJournal.<br />
+    login for that service. Currently supported: LDAP.<br />
     Please note that to enable login for a specific service, you need an
-    authorization class in <span class="tt">system/classes/authentication</span>. If you only
-    want to allow LDAP but not LiveJournal users (or vice versa), simply
-    remove the class file for the unwanted service(s).<br />
+    authorization class in <span class="tt">system/classes/authentication</span>. If you don't
+    want to allow LDAP users, simply
+    remove the class file for the unwanted service.<br />
     See <a href="https://www.geeklog.net/article.php/remote-authentication">Remote Authentication in Geeklog</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">oauth</a></td>

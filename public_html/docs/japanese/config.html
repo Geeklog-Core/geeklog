@@ -736,7 +736,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_show_servicename">サービス名を表示する(show_servicename)</a></td>
   <td valign="top">はい</td>
-  <td valign="top">「はい」にすると、<acronym title="Lightweight Directory Access Protocol">LDAP</acronym>やLiveJournalなどのリモートサービスのアカウントでログインを許可している場合、ローカルアカウントとの混同を避けるため、ユーザー名にサービス名が付加されて表示されるようになります。「いいえ」にすると、サービス名は付加されません。</td></tr>
+  <td valign="top">「はい」にすると、<acronym title="Lightweight Directory Access Protocol">LDAP</acronym>などのリモートサービスのアカウントでログインを許可している場合、ローカルアカウントとの混同を避けるため、ユーザー名にサービス名が付加されて表示されるようになります。「いいえ」にすると、サービス名は付加されません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_custom_registration">カスタム登録を有効にする(custom_registration)</a></td>
   <td valign="top"><code>いいえ</code></td>
@@ -753,14 +753,14 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_user_login_method_3rdparty">ログイン方法[3rdparty](user_login_method_3rdparty)</a></td>
   <td valign="top"><code>いいえ</code></td>
-  <td valign="top">「はい」にすると、外部サービスに既にアカウントを持っているユーザーがそのアカウント使ってGeeklogにログインできるようになります。現在サポートされているのは、LDAPとLiveJournalです。<br />
-    特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<span class="tt">system/classes/authentication</span>に必要です。したがって、LDAPを用いたログインは許可するがLiveJournalを用いたログインは禁止したいという場合、単に不要なサービスの認証クラスを削除するだけでよいのです。詳細は、<a href="https://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
+  <td valign="top">「はい」にすると、外部サービスに既にアカウントを持っているユーザーがそのアカウント使ってGeeklogにログインできるようになります。現在サポートされているのは、LDAPです。<br />
+    特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<span class="tt">system/classes/authentication</span>に必要です。したがって、LDAPを用いたログインを禁止したい場合には、単にその認証クラスを削除するだけでよいのです。詳細は、<a href="https://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">ログイン方法[oauth](user_login_method_oauth)</a></td>
   <td valign="top"><code>いいえ</code></td>
   <td valign="top"><a href="http://oauth.net/">OAuth</a>によるログインを許可するかどうかを設定します。「はい」にすると、通常のログインフォームの下にOAuthログインが表示されます。<br />
     <strong>注:</strong>現在はOAuth 1.0, 2.0をサポートしています。現在サポートしているのは、Facebook、Twitter、LinkedIn, Google, Microsoft, Yahooです。<br />特定のログイン方法を有効にするには、<span class="tt">system/classes/oauth</span>に認証のクラスが必要です。あなたがもしFacebookのみで、Twitterだけにしたければ(逆もまた同様)、単に
-    欲しくないクラスのファイルを削除するか、以下の設定オプションを使用してください。また、以下の設定オプションで正しいCosumer KeyとConsumer Secretも設定しなければなりません。PHPのOpenSSL拡張を有効にする必要があります。<br />
+    欲しくないクラスのファイルを削除するか、以下の設定オプションを使用してください。また、以下の設定オプションで正しいConsumer KeyとConsumer Secretも設定しなければなりません。PHPのOpenSSL拡張を有効にする必要があります。<br />
     さらに詳しい情報は<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_login">FacebookのOAuthを有効にする(facebook_login)</a></td>
