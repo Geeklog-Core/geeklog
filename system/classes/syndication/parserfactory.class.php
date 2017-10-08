@@ -186,11 +186,31 @@ class FeedParserFactory
      */
     protected function _getFeed($url)
     {
-        $req = new HTTP_Request2(
-            $url,
-            HTTP_Request2::METHOD_GET,
-            array('follow_redirects' => true)
+        global $_CONF;
+        static $hasCaFile = null;
+
+        if ($hasCaFile === null) {
+            if (version_compare(PHP_VERSION, '5.6.0', '<')) {
+                $hasCaFile = false;
+            } else {
+                $hasCaFile = is_readable(@ini_get('openssl.cafile')) ||
+                    is_dir(@ini_get('openssl.capath'));
+            }
+        }
+
+        $options = array(
+            'follow_redirects' => true
         );
+
+        if (stripos($url, 'https:') === 0) {
+            $options['ssl_verify_peer'] = true;
+
+            if ($hasCaFile !== true) {
+                $options['ssl_cafile'] = $_CONF['path_data'] . 'cacert.pem';
+            }
+        }
+
+        $req = new HTTP_Request2($url, HTTP_Request2::METHOD_GET, $options);
 
         if ($this->userAgent != '') {
             $req->setHeader('User-Agent', $this->userAgent);
