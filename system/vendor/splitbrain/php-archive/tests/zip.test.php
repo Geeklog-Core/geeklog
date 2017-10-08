@@ -69,9 +69,9 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
 
         $zip->create($tmp);
         $zip->setCompression(0);
-        $zip->AddFile("$dir/testdata1.txt", "$dir/testdata1.txt", 0);
-        $zip->AddFile("$dir/foobar/testdata2.txt", 'noway/testdata2.txt', 0);
-        $zip->addData('another/testdata3.txt', 'testcontent3', 0, 0);
+        $zip->addFile("$dir/testdata1.txt", "$dir/testdata1.txt");
+        $zip->addFile("$dir/foobar/testdata2.txt", 'noway/testdata2.txt');
+        $zip->addData('another/testdata3.txt', 'testcontent3');
         $zip->close();
 
         $this->assertTrue(filesize($tmp) > 30); //arbitrary non-zero number
@@ -93,6 +93,9 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $this->assertTrue(strpos($data, "foobar.txt") === false, 'File not in ZIP');
 
         $this->assertTrue(strpos($data, "foobar") === false, 'Path not in ZIP');
+
+        $this->nativeCheck($tmp);
+        $this->native7ZipCheck($tmp);
 
         @unlink($tmp);
     }
@@ -145,9 +148,81 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $this->assertFileExists("$extract/Zip.php");
         $this->assertFileNotExists("$extract/FileInfo.php");
 
+        $this->nativeCheck($archive);
+        $this->native7ZipCheck($archive);
+
         self::rdelete($extract);
         unlink($archive);
+    }
 
+    public function test_utf8() {
+        $archive = sys_get_temp_dir() . '/dwziptest' . md5(time()) . '.zip';
+        $extract = sys_get_temp_dir() . '/dwziptest' . md5(time() + 1);
+
+        $zip = new Zip();
+        $zip->create($archive);
+        $zip->addData('tüst.txt', 'test');
+        $zip->addData('snowy☃.txt', 'test');
+        $zip->close();
+        $this->assertFileExists($archive);
+
+        $zip = new Zip();
+        $zip->open($archive);
+        $zip->extract($extract);
+
+        $this->assertFileExists($extract.'/tüst.txt');
+        $this->assertFileExists($extract.'/snowy☃.txt');
+
+        $this->nativeCheck($archive);
+        $this->native7ZipCheck($archive);
+
+        self::rdelete($extract);
+        unlink($archive);
+    }
+
+
+    /**
+     * Test the given archive with a native zip installation (if available)
+     *
+     * @param $archive
+     */
+    protected function nativeCheck($archive)
+    {
+        if (!is_executable('/usr/bin/zipinfo')) {
+            return;
+        }
+        $archive = escapeshellarg($archive);
+
+        $return = 0;
+        $output = array();
+        $ok = exec("/usr/bin/zipinfo $archive 2>&1 >/dev/null", $output, $return);
+        $output = join("\n", $output);
+
+        $this->assertNotFalse($ok, "native zip execution for $archive failed:\n$output");
+        $this->assertSame(0, $return, "native zip execution for $archive had non-zero exit code $return:\n$output");
+        $this->assertSame('', $output, "native zip execution for $archive had non-empty output:\n$output");
+    }
+
+    /**
+     * Test the given archive with a native 7zip installation (if available)
+     *
+     * @param $archive
+     */
+    protected function native7ZipCheck($archive)
+    {
+        if (!is_executable('/usr/bin/7z')) {
+            return;
+        }
+        $archive = escapeshellarg($archive);
+
+        $return = 0;
+        $output = array();
+        $ok = exec("/usr/bin/7z t $archive 2>&1 >/dev/null", $output, $return);
+        $output = join("\n", $output);
+
+        $this->assertNotFalse($ok, "native 7zip execution for $archive failed:\n$output");
+        $this->assertSame(0, $return, "native 7zip execution for $archive had non-zero exit code $return:\n$output");
+        $this->assertSame('', $output, "native 7zip execution for $archive had non-empty output:\n$output");
     }
 
     /**
@@ -276,6 +351,27 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
 
         self::rdelete($out);
     }
+
+    public function test_umlautWinrar()
+    {
+        $out = sys_get_temp_dir().'/dwziptest'.md5(time());
+
+        $zip = new Zip();
+        $zip->open(__DIR__ . '/zip/issue14-winrar.zip');
+        $zip->extract($out);
+        $this->assertFileExists("$out/tüst.txt");
+    }
+
+    public function test_umlautWindows()
+    {
+        $out = sys_get_temp_dir().'/dwziptest'.md5(time());
+
+        $zip = new Zip();
+        $zip->open(__DIR__ . '/zip/issue14-windows.zip');
+        $zip->extract($out);
+        $this->assertFileExists("$out/täst.txt");
+    }
+
 
     /**
      * recursive rmdir()/unlink()
