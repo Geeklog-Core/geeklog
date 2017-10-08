@@ -661,7 +661,10 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
         $pluginLink = "$pluginUrl?$pluginId=$sid";
     }        
 
-    if (!is_numeric($page) || $page < 1) {
+    if ($page == '') {
+        // Assume first page if none given
+        $page = 1;
+    } elseif (!is_numeric($page) || $page < 1) {
         COM_handle404($pluginLink);
     }
 
