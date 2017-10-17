@@ -2060,6 +2060,7 @@ $LANG_confignames['Core'] = array(
     'disable_new_user_registration' => "Disable New Registrations",
     'allow_user_themes' => "Allow User Themes",
     'allow_user_language' => "Allow User Language",
+    'switchlang_homepage' => "Switch Language Block Redirects to Homepage",
     'allow_user_photo' => "Allow User Photo",
     'allow_username_change' => "Allow Username Changes",
     'allow_account_delete' => "Allow Account Deletion",

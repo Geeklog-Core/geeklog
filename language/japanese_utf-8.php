@@ -2066,6 +2066,7 @@ $LANG_confignames['Core'] = array(
     'disable_new_user_registration' => '新規ユーザー登録を停止する',
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
+    'switchlang_homepage' => "Switch Language Block Redirects to Homepage",
     'allow_user_photo' => '写真登録を許可する',
     'allow_username_change' => 'ユーザー名変更を許可する',
     'allow_account_delete' => 'アカウント削除を許可する',

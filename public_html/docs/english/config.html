@@ -1453,6 +1453,13 @@ the admin panel.</p>
   <td valign="top">Can be 1 or 0</td>
   <td valign="top">If set to 1, users can select the language for the site labels from My Account.</td></tr>    
 <tr>
+  <td valign="top"><a name="desc_switchlang_homepage">switchlang_homepage</a></td>
+  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">If set to 1, the switch language block will always redirect to the homepage. You will want to set this to 1 if you have language specific content on your site
+    (articles, topics, staticpages) that don't have matching corresponding content in all languages that your site supports. For example if you have an English Topic (with id "topic_en") and the user 
+    is on that topic and switches the language to Japanese, if a corresponding topic with the id "topic_ja" does not exist (or the user doesn't have access to it) then a 404 error will result after 
+    the language change.</td></tr>    
+<tr>
   <td valign="top"><a name="desc_language_files">language_files</a></td>
   <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language

@@ -2885,9 +2885,11 @@ class Installer
                     break;
                     
                 case '2.1.3':
-                    // there are currently no database changes in 2.1.3
-                
+                    require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.1.3_to_2.2.0.php';
+                    update_ConfValuesFor220();
+                    
                     $currentGlVersion = '2.2.0';
+                    $_SQL = array();
                     break;                    
                     
                 default:

@@ -714,6 +714,13 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、ユーザーはサイトのナビゲーションに使う言語を選択できるようになります。</td></tr>
 <tr>
+  <td valign="top"><a name="desc_switchlang_homepage">switchlang_homepage</a></td>
+  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">If set to 1, the switch language block will always redirect to the homepage. You will want to set this to 1 if you have language specific content on your site
+    (articles, topics, staticpages) that don't have matching corresponding content in all languages that your site supports. For example if you have an English Topic (with id "topic_en") and the user 
+    is on that topic and switches the language to Japanese, if a corresponding topic with the id "topic_ja" does not exist (or the user doesn't have access to it) then a 404 error will result after 
+    the language change.</td></tr>    
+<tr>
   <td valign="top"><a name="desc_allow_user_photo">写真登録を許可する(allow_user_photo)</a></td>
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、ユーザーは自分のプロフィール用の写真をアップロードできるようになります。</td></tr>
