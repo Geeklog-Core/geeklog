@@ -168,4 +168,11 @@ if (empty($ret_url)) {
     $ret_url = $_CONF['site_url'] . '/';
 }
 
+// **** ISSUE with switchlang
+// Article, Topics, and Staticpages (and maybe other third party plugins) support multiple languages
+// If a page is already in a specific language there may not be a page for it in the new language being switched too or the user could not have access to it
+// The problem is there currently is no easy way (with regular and rewritten urls) to determine if the last thing accessed was (article, topic, some plugin, admin page, whatever) or the id of it if there was one
+// If there was, then we could maybe use PLG_getItemInfo (which may need modifying to work with topics) to figure out access
+
+
 header("Location: $ret_url");
