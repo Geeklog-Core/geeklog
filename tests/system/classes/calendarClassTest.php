@@ -1,9 +1,11 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for calendarClassTest
  */
-class calendarClass extends PHPUnit_Framework_TestCase
+class calendarClass extends TestCase
 {
     /**
      * @var Calendar

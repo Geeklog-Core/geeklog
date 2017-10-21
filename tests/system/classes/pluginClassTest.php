@@ -1,9 +1,11 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for plugin.class.php
  */
-class pluginClass extends PHPUnit_Framework_TestCase
+class pluginClass extends TestCase
 {
     /**
      * @var Plugin

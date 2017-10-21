@@ -1,11 +1,13 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for the downloader class
  * Obviously, we can't really test the download functionality. So test at least
  * the getter / setter methods.
  */
-class downloaderClass extends PHPUnit_Framework_TestCase
+class downloaderClass extends TestCase
 {
     /**
      * @var downloader

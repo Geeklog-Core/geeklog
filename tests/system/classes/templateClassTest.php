@@ -1,9 +1,11 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for the Template class
  */
-class templateClass extends PHPUnit_Framework_TestCase
+class templateClass extends TestCase
 {
     /**
      * @var Template
@@ -24,6 +26,7 @@ class templateClass extends PHPUnit_Framework_TestCase
         $_CONF['site_url'] = 'http://www.example.com';
         $_CONF['site_admin_url'] = $_CONF['site_url'] . '/admin';
         $_CONF['layout_url'] = $_CONF['site_url'] . '/layout';
+        $_CONF['cache_templates'] = false;
 
         require_once $_CONF['path_system'] . 'classes/mobiledetect/Mobile_Detect.php';
         $_DEVICE = new Mobile_Detect();

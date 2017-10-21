@@ -1,9 +1,11 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for the CalendarDay class
  */
-class calendarDayClass extends PHPUnit_Framework_TestCase
+class calendarDayClass extends TestCase
 {
     private $cd;
 

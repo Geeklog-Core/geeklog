@@ -1,9 +1,11 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for lib-mbyte
  */
-class libmbyteNoMB extends PHPUnit_Framework_TestCase
+class libmbyteNoMB extends TestCase
 {
     public static function setUpBeforeClass()
     {

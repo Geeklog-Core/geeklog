@@ -1,9 +1,11 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for the url class
  */
-class urlClass extends PHPUnit_Framework_TestCase
+class urlClass extends TestCase
 {
     /**
      * @var Url
@@ -37,11 +39,6 @@ class urlClass extends PHPUnit_Framework_TestCase
     public function testSetArgNames()
     {
         $this->assertTrue($this->url->setArgNames(array('test')));
-    }
-
-    public function testSetWrongArgNames()
-    {
-        $this->assertFalse($this->url->setArgNames('test'));
     }
 
     public function testGetUnknownArgument()

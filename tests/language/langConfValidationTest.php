@@ -1,5 +1,7 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * There is now a dependency between the entries for dropdown menus in
  * $LANG_configselects and $_CONF_VALIDATE. If you accidentally translate
@@ -7,7 +9,7 @@
  * These tests ensure that all selection list entries match their equivalent
  * in the list of to-be-validated entries.
  */
-class langConfValidation extends PHPUnit_Framework_TestCase
+class langConfValidation extends TestCase
 {
     /**
      * @var config

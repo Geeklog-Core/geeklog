@@ -1,9 +1,11 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for plugin.class.php
  */
-class searchcriteriaClass extends PHPUnit_Framework_TestCase
+class searchcriteriaClass extends TestCase
 {
     private $s;
 

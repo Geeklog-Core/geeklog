@@ -1,5 +1,7 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for lib-mbyte
  */
@@ -7,7 +9,7 @@
 /**
  * @backupGlobals disabled
  */
-class libmbyteWithMB extends PHPUnit_Framework_TestCase
+class libmbyteWithMB extends TestCase
 {
     public static function setUpBeforeClass()
     {

@@ -1,9 +1,11 @@
 <?php
 
+use \PHPUnit\Framework\TestCase as TestCase;
+
 /**
  * Simple tests for timerobjectClassTest
  */
-class timerobjectClass extends PHPUnit_Framework_TestCase
+class timerobjectClass extends TestCase
 {
     /**
      * @var timerobject
