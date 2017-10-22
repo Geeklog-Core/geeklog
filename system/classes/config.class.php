@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | config.class.php                                                          |
 // |                                                                           |
@@ -1110,7 +1110,7 @@ class config
      * @param  int    $sg      Configuration subgroup
      * @return string          string of HTML to be displayed on message box
      */
-    function _UI_get_change_block($changes, $group = null, $sg = null)
+    private function _UI_get_change_block($changes, $group = null, $sg = null)
     {
         $display = '';
         $anchors = array();
@@ -1162,7 +1162,7 @@ class config
      * @param  object $t        Template object
      * @return string tab name to display based on current language
      */
-    function _UI_get_tab($group, $contents, $tab_id, &$t)
+    private function _UI_get_tab($group, $contents, $tab_id, &$t)
     {
         global $_TABLES, $LANG_tab, $LANG_CONFIG;
 
@@ -1203,7 +1203,7 @@ class config
      * @param  Template $t        Template object
      * @return void
      */
-    function _UI_get_fs($group, $contents, $fs_id, $t)
+    private function _UI_get_fs($group, $contents, $fs_id, $t)
     {
         global $_TABLES, $LANG_fs;
 
@@ -1388,7 +1388,7 @@ class config
         } elseif (strpos($type, '@') === 0) {
             $result = '';
             foreach ($val as $valkey => $valval) {
-                $result .= self::_UI_get_conf_element($group,
+                $result .= $this->_UI_get_conf_element($group,
                     $name . '[' . $valkey . ']',
                     $display_name . '[' . $valkey . ']',
                     substr($type, 1), $valval, $selectionArray,
@@ -1405,14 +1405,14 @@ class config
             $t->set_var('my_add_element_button', $button);
             $result = "";
             if ($type === '%select') {
-                $result .= self::_UI_get_conf_element($group,
+                $result .= $this->_UI_get_conf_element($group,
                     $name . '[placeholder]', 'placeholder',
                     substr($type, 1), 'placeholder', $selectionArray,
                     true
                 );
             }
             foreach ($val as $valkey => $valval) {
-                $result .= self::_UI_get_conf_element($group,
+                $result .= $this->_UI_get_conf_element($group,
                     $name . '[' . $valkey . ']', $valkey,
                     substr($type, 1), $valval, $selectionArray,
                     true);
@@ -2011,7 +2011,7 @@ class config
      * @param  int    $sg         Configuration subgroup
      * @return string
      */
-    function _UI_configmanager_menu($conf_group, $sg = 0)
+    private function _UI_configmanager_menu($conf_group, $sg = 0)
     {
         global $_CONF, $LANG_ADMIN, $LANG_CONFIG, $LANG_configsections, $LANG_configsubgroups;
 
