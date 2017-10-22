@@ -14,7 +14,7 @@ class Tst
     const THEME = 'modern_curve';
 
     // Geeklog version
-    const VERSION = '2.1.2';
+    const VERSION = '2.2.0';
 
     // Database settings
     const DB_TYPE = 'mysql';

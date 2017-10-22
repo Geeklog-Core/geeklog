@@ -1,6 +1,6 @@
 <?php
 
-use \PHPUnit\Framework\TestCase as TestCase;
+use \PHPUnit\Framework\TestCase;
 
 /**
  * (Very) Simple tests for the Story Class

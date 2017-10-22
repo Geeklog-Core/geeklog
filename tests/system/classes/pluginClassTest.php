@@ -1,6 +1,6 @@
 <?php
 
-use \PHPUnit\Framework\TestCase as TestCase;
+use \PHPUnit\Framework\TestCase;
 
 /**
  * Simple tests for plugin.class.php
