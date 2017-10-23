@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | search.class.php                                                          |
 // |                                                                           |
@@ -43,20 +43,74 @@ if (stripos($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
  */
 class Search
 {
-    // PRIVATE VARIABLES
+    /**
+     * @var string
+     */
     private $_query = '';
+
+    /**
+     * @var string
+     */
     private $_topic = '';
+
+    /**
+     * @var array|null|string
+     */
     private $_dateStart = null;
+
+    /**
+     * @var array|null|string
+     */
     private $_dateEnd = null;
+
+    /**
+     * @var string
+     */
     private $_author = '';
+
+    /**
+     * @var array|null|string
+     */
     private $_type = '';
+
+    /**
+     * @var array|null|string
+     */
     private $_keyType = '';
+
+    /**
+     * @var array
+     */
     private $_names = array();
+
+    /**
+     * @var array
+     */
     private $_url_rewrite = array();
+
+    /**
+     * @var array
+     */
     private $_append_query = array();
+
+    /**
+     * @var string
+     */
     private $_searchURL = '';
-    private $_wordlength;
+
+    /**
+     * @var
+     */
+    private $_wordLength;
+
+    /**
+     * @var bool
+     */
     private $_verbose = false; // verbose logging
+
+    /**
+     * @var bool
+     */
     private $_titlesOnly = false;
 
     /**
@@ -132,12 +186,12 @@ class Search
 
         if (COM_isAnonUser()) {
             //check if an anonymous user is attempting to illegally access privilege search capabilities
-            if (($this->_type != 'all') OR !empty($this->_dateStart) OR !empty($this->_dateEnd) OR ($this->_author > 0) OR !empty($topic)) {
-                if (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] >= 1)) {
+            if (($this->_type !== 'all') || !empty($this->_dateStart) || !empty($this->_dateEnd) || ($this->_author > 0) || !empty($topic)) {
+                if (($_CONF['loginrequired'] == 1) || ($_CONF['searchloginrequired'] >= 1)) {
                     return false;
                 }
             } else {
-                if (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] == 2)) {
+                if (($_CONF['loginrequired'] == 1) || ($_CONF['searchloginrequired'] == 2)) {
                     return false;
                 }
             }
@@ -185,84 +239,89 @@ class Search
         }
 
         $retval .= COM_startBlock($LANG09[1], 'advancedsearch.html');
-        $searchform = COM_newTemplate($_CONF['path_layout'] . 'search');
-        $searchform->set_file(array(
+        $searchForm = COM_newTemplate($_CONF['path_layout'] . 'search');
+        $searchForm->set_file(array(
             'searchform' => 'searchform.thtml',
             'authors'    => 'searchauthors.thtml',
         ));
-        $searchform->set_var('search_intro', $LANG09[19]);
-        $searchform->set_var('lang_keywords', $LANG09[2]);
-        $searchform->set_var('lang_keytype', $LANG09[36]);
-        $searchform->set_var('lang_date', $LANG09[20]);
-        $searchform->set_var('lang_to', $LANG09[21]);
-        $searchform->set_var('date_format', $LANG09[22]);
-        $searchform->set_var('lang_topic', $LANG09[3]);
-        $searchform->set_var('lang_all', $LANG09[4]);
-        $searchform->set_var('topic_option_list', TOPIC_getTopicListSelect($this->_topic, 2, true));
-        $searchform->set_var('lang_type', $LANG09[5]);
-        $searchform->set_var('lang_results', $LANG09[59]);
-        $searchform->set_var('lang_per_page', $LANG09[60]);
+        $searchForm->set_var('search_intro', $LANG09[19]);
+        $searchForm->set_var('lang_keywords', $LANG09[2]);
+        $searchForm->set_var('lang_keytype', $LANG09[36]);
+        $searchForm->set_var('lang_date', $LANG09[20]);
+        $searchForm->set_var('lang_to', $LANG09[21]);
+        $searchForm->set_var('date_format', $LANG09[22]);
+        $searchForm->set_var('lang_topic', $LANG09[3]);
+        $searchForm->set_var('lang_all', $LANG09[4]);
+        $searchForm->set_var('topic_option_list', TOPIC_getTopicListSelect($this->_topic, 2, true));
+        $searchForm->set_var('lang_type', $LANG09[5]);
+        $searchForm->set_var('lang_results', $LANG09[59]);
+        $searchForm->set_var('lang_per_page', $LANG09[60]);
 
-        $searchform->set_var('lang_exact_phrase', $LANG09[43]);
-        $searchform->set_var('lang_all_words', $LANG09[44]);
-        $searchform->set_var('lang_any_word', $LANG09[45]);
-        $searchform->set_var('lang_titles', $LANG09[69]);
+        $searchForm->set_var('lang_exact_phrase', $LANG09[43]);
+        $searchForm->set_var('lang_all_words', $LANG09[44]);
+        $searchForm->set_var('lang_any_word', $LANG09[45]);
+        $searchForm->set_var('lang_titles', $LANG09[69]);
 
-        $escquery = htmlspecialchars($this->_query);
-        $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'),
-            $escquery);
-        $searchform->set_var('query', $escquery);
-        $searchform->set_var('datestart', $this->_dateStart);
-        $searchform->set_var('dateend', $this->_dateEnd);
+        $escQuery = htmlspecialchars($this->_query);
+        $escQuery = str_replace(array('{', '}'), array('&#123;', '&#125;'), $escQuery);
+        $searchForm->set_var('query', $escQuery);
+        $searchForm->set_var('datestart', $this->_dateStart);
+        $searchForm->set_var('dateend', $this->_dateEnd);
         if ($this->_titlesOnly) {
-            $searchform->set_var('title_checked', ' checked="checked"');
+            $searchForm->set_var('title_checked', ' checked="checked"');
         } else {
-            $searchform->set_var('title_checked', '');
+            $searchForm->set_var('title_checked', '');
         }
 
         $phrase_selected = '';
         $all_selected = '';
         $any_selected = '';
-        if ($this->_keyType == 'phrase') {
+        if ($this->_keyType === 'phrase') {
             $phrase_selected = 'selected="selected"';
-        } elseif ($this->_keyType == 'all') {
+        } elseif ($this->_keyType === 'all') {
             $all_selected = 'selected="selected"';
-        } elseif ($this->_keyType == 'any') {
+        } elseif ($this->_keyType === 'any') {
             $any_selected = 'selected="selected"';
         }
-        $searchform->set_var('key_phrase_selected', $phrase_selected);
-        $searchform->set_var('key_all_selected', $all_selected);
-        $searchform->set_var('key_any_selected', $any_selected);
+        $searchForm->set_var('key_phrase_selected', $phrase_selected);
+        $searchForm->set_var('key_all_selected', $all_selected);
+        $searchForm->set_var('key_any_selected', $any_selected);
 
         $options = '';
-        $plugintypes = array('all' => $LANG09[4], 'stories' => $LANG09[6], 'comments' => $LANG09[7]);
-        $plugintypes = array_merge($plugintypes, PLG_getSearchTypes());
+        $pluginTypes = array(
+            'all' => $LANG09[4],
+            'stories' => $LANG09[6],
+            'comments' => $LANG09[7]
+        );
+        $pluginTypes = array_merge($pluginTypes, PLG_getSearchTypes());
 
         // Generally I don't like to hardcode HTML but this seems easiest
-        foreach ($plugintypes as $key => $val) {
+        foreach ($pluginTypes as $key => $val) {
             $options .= "<option value=\"$key\"";
-            if ($this->_type == $key)
+            if ($this->_type == $key) {
                 $options .= ' selected="selected"';
+            }
             $options .= ">$val</option>" . LB;
         }
-        $searchform->set_var('plugin_types', $options);
+        $searchForm->set_var('plugin_types', $options);
 
         if ($_CONF['contributedbyline'] == 1) {
-            $searchform->set_var('lang_authors', $LANG09[8]);
-            $searchusers = array();
+            $searchForm->set_var('lang_authors', $LANG09[8]);
+            $searchUsers = array();
             $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['comments']}");
             while ($A = DB_fetchArray($result)) {
-                $searchusers[$A['uid']] = $A['uid'];
+                $searchUsers[$A['uid']] = $A['uid'];
             }
+
             $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)");
             while ($A = DB_fetchArray($result)) {
-                $searchusers[$A['uid']] = $A['uid'];
+                $searchUsers[$A['uid']] = $A['uid'];
             }
 
-            $inlist = implode(',', $searchusers);
+            $inList = implode(',', $searchUsers);
 
-            if (!empty ($inlist)) {
-                $sql = "SELECT uid,username,fullname FROM {$_TABLES['users']} WHERE uid IN ($inlist)";
+            if (!empty ($inList)) {
+                $sql = "SELECT uid,username,fullname FROM {$_TABLES['users']} WHERE uid IN ($inList)";
                 if (isset($_CONF['show_fullname']) && ($_CONF['show_fullname'] == 1)) {
                     /* Caveat: This will group all users with an empty fullname
                      *         together, so it's not exactly sorted by their
@@ -281,13 +340,13 @@ class Search
                     }
                     $options .= '>' . htmlspecialchars(COM_getDisplayName('', $A['username'], $A['fullname'])) . '</option>';
                 }
-                $searchform->set_var('author_option_list', $options);
-                $searchform->parse('author_form_element', 'authors', true);
+                $searchForm->set_var('author_option_list', $options);
+                $searchForm->parse('author_form_element', 'authors', true);
             } else {
-                $searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0"' . XHTML . '>');
+                $searchForm->set_var('author_form_element', '<input type="hidden" name="author" value="0"' . XHTML . '>');
             }
         } else {
-            $searchform->set_var('author_form_element',
+            $searchForm->set_var('author_form_element',
                 '<input type="hidden" name="author" value="0"' . XHTML . '>');
         }
 
@@ -301,13 +360,13 @@ class Search
             }
             $options .= ">$limit</option>" . LB;
         }
-        $searchform->set_var('search_limits', $options);
+        $searchForm->set_var('search_limits', $options);
 
-        $searchform->set_var('lang_search', $LANG09[10]);
-        PLG_templateSetVars('search', $searchform);
-        $searchform->parse('output', 'searchform');
+        $searchForm->set_var('lang_search', $LANG09[10]);
+        PLG_templateSetVars('search', $searchForm);
+        $searchForm->parse('output', 'searchform');
 
-        $retval .= $searchform->finish($searchform->get_var('output'));
+        $retval .= $searchForm->finish($searchForm->get_var('output'));
         $retval .= COM_endBlock();
 
         return $retval;
@@ -351,12 +410,12 @@ class Search
 
         $columns = array('title' => 'title', 'introtext', 'bodytext');
         $sql .= $search_s->getDateRangeSQL('AND', 'date', $this->_dateStart, $this->_dateEnd);
-        list($sql, $ftsql) = $search_s->buildSearchSQL($this->_keyType, $query, $columns, $sql);
+        list($sql, $ftSql) = $search_s->buildSearchSQL($this->_keyType, $query, $columns, $sql);
 
         $sql .= " GROUP BY s.sid, s.title, s.introtext, date, s.uid, s.hits ";
 
         $search_s->setSQL($sql);
-        $search_s->setFTSQL($ftsql);
+        $search_s->setFtSQL($ftSql);
         $search_s->setRank(5);
         $search_s->setURLRewrite(true);
 
@@ -386,12 +445,12 @@ class Search
 
         $columns = array('title' => 'c.title', 'comment');
         $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $this->_dateStart, $this->_dateEnd);
-        list($sql, $ftsql) = $search_c->buildSearchSQL($this->_keyType, $query, $columns, $sql);
+        list($sql, $ftSql) = $search_c->buildSearchSQL($this->_keyType, $query, $columns, $sql);
 
         $sql .= " GROUP BY c.cid, c.title, c.comment, c.date, c.uid ";
 
         $search_c->setSQL($sql);
-        $search_c->setFTSQL($ftsql);
+        $search_c->setFtSQL($ftSql);
         $search_c->setRank(2);
 
         return array($search_s, $search_c);
@@ -458,7 +517,7 @@ class Search
             $obj->setField($LANG09[17], 'date', true, true);
             $obj->setField($LANG09[18], 'uid', $show_user, true);
             $obj->setField($LANG09[50], 'hits', $show_hits, true);
-            $this->_wordlength = 7;
+            $this->_wordLength = 7;
         } elseif ($style === 'google') {
             $sort_uid = $this->_author == '' ? true : false;
             $sort_date = empty($this->_dateStart) || empty($this->_dateEnd) || $this->_dateStart != $this->_dateEnd ? true : false;
@@ -473,7 +532,7 @@ class Search
             $obj->setField($LANG09[5], LF_SOURCE_TITLE, $show_type, $sort_type, ' - %s');
             $obj->setField($LANG09[50], 'hits', $show_hits, true, ' - %s ' . $LANG09[50]);
             $obj->setField('', '_html', true, false, '</span>');
-            $this->_wordlength = 50;
+            $this->_wordLength = 50;
         }
 
         // get default sort order
@@ -507,7 +566,7 @@ class Search
             if (is_a($result, 'SearchCriteria')) {
                 $debug_info = $result->getName() . ' using APIv2';
 
-                if ($this->_type != 'all' && $this->_type != $result->getName()) {
+                if ($this->_type !== 'all' && $this->_type != $result->getName()) {
                     if ($this->_verbose) {
                         $new_api++;
                         COM_errorLog($debug_info . '. Skipped as type is not ' . $this->_type);
@@ -531,7 +590,7 @@ class Search
                         $sql = $result->getSQL();
                     }
 
-                    $sql = $this->_convertsql($sql);
+                    $sql = $this->_convertSql($sql);
                     $debug_info .= ' with SQL = ' . print_r($sql, 1);
                     $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
                 }
@@ -566,7 +625,7 @@ class Search
 
                 // Extract the results
                 for ($i = 0; $i < 5; $i++) {
-                    // If the plugin does not repect the $perpage perameter force it here.
+                    // If the plugin does not respect the $perpage parameter, then force it here.
                     $j = ($i + ($page * 5)) - 5;
                     if ($j >= count($result->searchresults)) {
                         break;
@@ -606,24 +665,24 @@ class Search
         $results = $obj->ExecuteQueries();
 
         // Searches are done, stop timer
-        $searchtime = $searchTimer->stopTimer();
+        $searchTime = $searchTimer->stopTimer();
 
-        $escquery = htmlspecialchars($this->_query);
-        $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'), $escquery);
+        $escQuery = htmlspecialchars($this->_query);
+        $escQuery = str_replace(array('{', '}'), array('&#123;', '&#125;'), $escQuery);
 
         if ($this->_keyType == 'any' OR $this->_keyType == 'all') {
-            $words = array_unique(explode(' ', $escquery));
+            $words = array_unique(explode(' ', $escQuery));
             $words = array_filter($words); // filter out empty strings            
-            $escquery = implode(' ', $words);
+            $escQuery = implode(' ', $words);
             if ($this->_keyType == 'any') {
                 $lang_search_op = $LANG09[57];
             } elseif ($this->_keyType == 'all') {
                 $lang_search_op = $LANG09[56];
             }
-            $searchQuery = str_replace(' ', "</b>' " . $lang_search_op . " '<b>", $escquery);
+            $searchQuery = str_replace(' ', "</b>' " . $lang_search_op . " '<b>", $escQuery);
             $searchQuery = "<b>'$searchQuery'</b>";
         } else {
-            $searchQuery = $LANG09[55] . " '<b>$escquery</b>'";
+            $searchQuery = $LANG09[55] . " '<b>$escQuery</b>'";
         }
 
         // Clean the query string so that sprintf works as expected
@@ -636,7 +695,7 @@ class Search
             $retval .= '<p>' . $LANG09[13] . '</p>' . LB;
             $retval .= $this->showForm();
         } else {
-            $retval .= $LANG09[64] . " ($searchtime {$LANG09[27]}). ";
+            $retval .= $LANG09[64] . " ($searchTime {$LANG09[27]}). ";
             $retval .= str_replace('%', '%%', COM_createLink($LANG09[61], $url . 'refine'));
             $retval = '<p>' . $retval . '</p>' . LB;
 
@@ -682,8 +741,9 @@ class Search
      * each row accordingly for example pulling usernames from the
      * users table and displaying a link to their profile.
      *
-     * @param array $row An array of plain data to format
-     * @return array A reformatted version of the input array
+     * @param  bool  $preSort
+     * @param  array $row An array of plain data to format
+     * @return array      A reformatted version of the input array
      */
     public function searchFormatCallback($preSort, $row)
     {
@@ -731,7 +791,7 @@ class Search
             if ($row['description'] == 'LF_NULL') {
                 $row['description'] = '<i>' . $LANG09[70] . '</i>';
             } elseif ($row['description'] != '<i>' . $LANG09[70] . '</i>') {
-                $row['description'] = stripslashes($this->_shortenText($this->_query, PLG_replaceTags($row['description']), $this->_wordlength));
+                $row['description'] = stripslashes($this->_shortenText($this->_query, PLG_replaceTags($row['description']), $this->_wordLength));
             }
 
             if ($row['date'] != 'LF_NULL') {
@@ -831,7 +891,7 @@ class Search
      *
      * @param   string $needle   keyword(s), separated by spaces
      * @param   array  $haystack array of words to search through
-     * @return  mixed              index in $haystack or false when not found
+     * @return  mixed            index in $haystack or false when not found
      */
     private function _arraySearch($needle, $haystack)
     {
@@ -898,7 +958,7 @@ class Search
      * @param  string $sql The SQL to convert
      * @return string      MS SQL or PostgreSQL friendly SQL
      */
-    private function _convertsql($sql)
+    private function _convertSql($sql)
     {
         global $_DB_dbms;
 

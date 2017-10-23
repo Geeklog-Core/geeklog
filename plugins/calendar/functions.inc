@@ -1743,7 +1743,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
     list($sql_tmp, $ftsql_tmp) = $search_e->buildSearchSQL($keyType, $query, $columns, $sql_e . $sql);
 
     $search_e->setSQL($sql_tmp);
-    $search_e->setFTSQL($ftsql_tmp);
+    $search_e->setFtSQL($ftsql_tmp);
     $search_e->setRank(2);
 
     if (COM_isAnonUser()) {
@@ -1757,7 +1757,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
     list($sql_tmp, $ftsql_tmp) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql_p . $sql);
 
     $search_p->setSQL($sql_tmp);
-    $search_p->setFTSQL($ftsql_tmp);
+    $search_p->setFtSQL($ftsql_tmp);
     $search_p->setRank(2);
 
     return array($search_e, $search_p);

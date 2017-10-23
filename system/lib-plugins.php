@@ -759,8 +759,8 @@ function PLG_getSearchTypes()
  * formatted table rows that can be quickly printed by search.php
  *
  * @param    string $query     What the user searched for
- * @param    date   $dateStart beginning of date range to search for
- * @param    date   $dateEnd   ending date range to search for
+ * @param    string $dateStart beginning of date range to search for
+ * @param    string $dateEnd   ending date range to search for
  * @param    string $topic     the topic the user searched within
  * @param    string $type      Type of items they are searching, or 'all'
  * @param    int    $author    UID...only return results for this person

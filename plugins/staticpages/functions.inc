@@ -874,7 +874,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     list($sql, $ftsql) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql);
 
     $search_p->setSQL($sql);
-    $search_p->setFTSQL($ftsql);
+    $search_p->setFtSQL($ftsql);
     $search_p->setRank(3);
     $search_p->setURLRewrite(true);
 
@@ -907,7 +907,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     list($sql, $ftsql) = $search_c->buildSearchSQL($keyType, $query, $columns, $sql);
 
     $search_c->setSQL($sql);
-    $search_c->setFTSQL($ftsql);
+    $search_c->setFtSQL($ftsql);
     $search_c->setRank(2);
 
     return array($search_p, $search_c);

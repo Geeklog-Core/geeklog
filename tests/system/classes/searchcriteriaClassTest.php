@@ -5,8 +5,11 @@ use \PHPUnit\Framework\TestCase;
 /**
  * Simple tests for plugin.class.php
  */
-class searchcriteriaClass extends TestCase
+class SearchCriteriaClass extends TestCase
 {
+    /**
+     * @var SearchCriteria
+     */
     private $s;
 
     protected function setUp()
@@ -16,47 +19,64 @@ class searchcriteriaClass extends TestCase
 
     public function testSearchCriteriaConstructorSetsDefaults()
     {
-        $dummy = array(
-            '_pluginName'   => 'createVirus',
-            '_pluginLabel'  => 'unleashZombies',
-            '_rank'         => 3,
-            '_url_rewrite'  => false,
-            '_append_query' => true);
-
-        foreach ($dummy as $k => $v) {
-            $this->assertEquals($v, $this->s->$k,
-                'Error asserting dummy ' . $k . ' was equal to class variable ' . $k . '.');
-        }
+        $this->assertEquals(
+            'createVirus',
+            $this->s->getName(),
+            'Error asserting dummy pluginName was equal to class property pluginName.'
+        );
+        $this->assertEquals(
+            'unleashZombies',
+            $this->s->getLabel(),
+            'Error asserting dummy pluginLabel was equal to class property pluginLabel.'
+        );
+        $this->assertEquals(
+            3,
+            $this->s->getRank(),
+            'Error asserting dummy rank was equal to class property rank.'
+        );
+        $this->assertEquals(
+            false,
+            $this->s->isURLRewrite(),
+            'Error asserting dummy urlRewrite was equal to class property urlRewrite.'
+        );
+        $this->assertEquals(
+            true,
+            $this->s->isAppendQuery(),
+            'Error asserting dummy appendQuery was equal to class property appendQuery.'
+        );
     }
 
     public function testSetSQL()
     {
         $this->s->setSQL('SELECT * FROM dummy');
-        $this->assertEquals('SELECT * FROM dummy', $this->s->_sql);
+        $this->assertEquals('SELECT * FROM dummy', $this->s->getSQL());
     }
 
     public function testSetFTSQL()
     {
+        global $_DB_dbms;
+
+        $_DB_dbms = 'mysql';
         $this->s->setFTSQL('SELECT * FROM dummy');
-        $this->assertEquals('SELECT * FROM dummy', $this->s->_ftsql);
+        $this->assertEquals('SELECT * FROM dummy', $this->s->getFtSQL());
     }
 
     public function testSetRank()
     {
         $this->s->setRank(4);
-        $this->assertEquals(4, $this->s->_rank);
+        $this->assertEquals(4, $this->s->getRank());
     }
 
     public function testSetURLRewriteEnable()
     {
         $this->s->setURLRewrite(true);
-        $this->assertTrue($this->s->_url_rewrite);
+        $this->assertTrue($this->s->isURLRewrite());
     }
 
     public function testSetAppendQuery()
     {
         $this->s->setAppendQuery(false);
-        $this->assertFalse($this->s->_append_query);
+        $this->assertFalse($this->s->isAppendQuery());
     }
 
     public function testGetSQLReturnDefault()
@@ -67,7 +87,7 @@ class searchcriteriaClass extends TestCase
     public function testGetSQLReturnDefinedValue()
     {
         $dummy = 'SELECT * FROM dummy';
-        $this->s->_sql = $dummy;
+        $this->s->setSQL($dummy);
         $this->assertEquals($dummy, $this->s->getSQL());
     }
 
@@ -76,15 +96,15 @@ class searchcriteriaClass extends TestCase
     {
         $GLOBALS['_DB_dbms'] = 'mysql';
         $dummy = 'SELECT * FROM dummy';
-        $this->s->_ftsql = $dummy;
+        $this->s->setFtSQL($dummy);
         $this->assertEquals($dummy, $this->s->getFTSQL());
     }
-
 
     public function testGetFTSQLWhen_FtsqlIsArray()
     {
         $dummy = array('SELECT * FROM dummy', 'SELECT * FROM dummy2');
-        $this->s->_ftsql = $dummy;
+        $this->s->setFtSQL($dummy);
+
         foreach ($this->s->getFTSQL() as $k => $v) {
             $this->assertEquals($v, $dummy[$k]);
         }
@@ -92,13 +112,13 @@ class searchcriteriaClass extends TestCase
 
     public function testGetFTSQLEqualsBlankWhen_FtsqlIsNotString()
     {
-        $this->s->_ftsql = 1;
+        $this->s->setFtSQL(1);
         $this->assertEquals('', $this->s->getFTSQL());
     }
 
     public function testGetFTSQLEqualsBlankWhen_FtsqlIsBlank()
     {
-        $this->s->_ftsql = '';
+        $this->s->setFtSQL('');
         $this->assertEquals('', $this->s->getFTSQL());
     }
 
@@ -125,15 +145,15 @@ class searchcriteriaClass extends TestCase
 
     public function testURLRewriteEnable()
     {
-        $this->assertEquals(false, $this->s->URLRewriteEnable());
+        $this->assertEquals(false, $this->s->isURLRewrite());
     }
 
     public function testAppendQueryEnable()
     {
-        $this->assertEquals(true, $this->s->AppendQueryEnable());
+        $this->assertEquals(true, $this->s->isAppendQuery());
     }
 
-    public function testBuildSearchSQLWithKeytypeAllAndTitles()
+    public function testBuildSearchSQLWithKeyTypeAllAndTitles()
     {
         $_GET['title'] = 'dummy';
         $columns['title'] = 'coltitle';
@@ -190,7 +210,7 @@ class searchcriteriaClass extends TestCase
             'Error asserting that $dummy[1][mysql] and $arr[1][mysql] are equal.');
     }
 
-    public function testBuildSearchSQLWithKeytypeAnyAndWithoutTitles()
+    public function testBuildSearchSQLWithKeyTypeAnyAndWithoutTitles()
     {
         $columns = array('coltitle1', 'coltitle2');
         $query = 'word1 word2';
@@ -217,19 +237,16 @@ class searchcriteriaClass extends TestCase
         $columns['title'] = 'coltitle';
         $sql = 'A bit of SQL ';
 
-        $words = array($query);
-        $sep = '   ';
-
         if (strpos($query, ' ') !== false) {
-            $ftwords['mysql'] = '"' . $query . '"';
+            $ftWords['mysql'] = '"' . $query . '"';
         } else {
-            $ftwords['mysql'] = $query;
+            $ftWords['mysql'] = $query;
         }
 
-        $ftsql['mysql'] = $sql . "AND MATCH(coltitle) AGAINST ('{$ftwords['mysql']}' IN BOOLEAN MODE)";
-        $dsql = "$sql" . "AND ((coltitle LIKE '%word1 word2%')) ";
+        $ftSql['mysql'] = $sql . "AND MATCH(coltitle) AGAINST ('{$ftWords['mysql']}' IN BOOLEAN MODE)";
+        $dSql = "$sql" . "AND ((coltitle LIKE '%word1 word2%')) ";
 
-        $dummy = array($dsql, $ftsql);
+        $dummy = array($dSql, $ftSql);
 
         $arr = $this->s->buildSearchSQL('', 'word1 word2', $columns, 'A bit of SQL ');
 
@@ -244,19 +261,16 @@ class searchcriteriaClass extends TestCase
         $columns = array('coltitle1', 'coltitle2');
         $query = 'word1 word2';
         $sql = 'A bit of SQL';
-        $dsql = "$sql AND ((coltitle1 LIKE '%word1 word2%' OR coltitle2 LIKE '%word1 word2%')) ";
-
-        $words = array($query);
-        $sep = '   ';
+        $dSql = "$sql AND ((coltitle1 LIKE '%word1 word2%' OR coltitle2 LIKE '%word1 word2%')) ";
 
         if (strpos($query, ' ') !== false) {
-            $ftwords['mysql'] = '"' . $query . '"';
+            $ftWords['mysql'] = '"' . $query . '"';
         } else {
-            $ftwords['mysql'] = $query;
+            $ftWords['mysql'] = $query;
         }
 
-        $ftsql['mysql'] = "$sql AND MATCH(coltitle1,coltitle2) AGAINST ('{$ftwords['mysql']}' IN BOOLEAN MODE)";
-        $dummy = array($dsql, $ftsql);
+        $ftSql['mysql'] = "$sql AND MATCH(coltitle1,coltitle2) AGAINST ('{$ftWords['mysql']}' IN BOOLEAN MODE)";
+        $dummy = array($dSql, $ftSql);
 
         $arr = $this->s->buildSearchSQL('', 'word1 word2', $columns, 'A bit of SQL ');
 

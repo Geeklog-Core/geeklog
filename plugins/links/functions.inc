@@ -430,7 +430,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
 
     $search->setSQL($sql);
-    $search->setFTSQL($ftsql);
+    $search->setFtSQL($ftsql);
     $search->setRank(3);
     $search->setAppendQuery(false);
     $search->setURLRewrite(true);

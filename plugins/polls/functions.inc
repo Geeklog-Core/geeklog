@@ -2039,7 +2039,7 @@ function plugin_dopluginsearch_polls($query, $dateStart, $dateEnd, $topic, $type
     list($sql, $ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
 
     $search->setSQL($sql);
-    $search->setFTSQL($ftsql);
+    $search->setFtSQL($ftsql);
     $search->setRank(2);
 
     return $search;
