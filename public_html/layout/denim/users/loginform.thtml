@@ -17,9 +17,13 @@
         <dd><input type="password" name="passwd" id="users-loginform-passwd" class="size3"{xhtml}></dd>
       </dl>
 
-      <div class="loginform-submit" style="margin-bottom:1em"><button type="submit" value="{lang_login}" class="uk-button uk-button-primary">{lang_login}</button></div>
-      <div style="margin-bottom:0.5em">{lang_newreglink}</div>
-      <div style="margin-bottom:0.5em"><a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a></div>
+      {captcha}
+
+      <div class="submit">
+        <button type="submit" value="{lang_login}" class="uk-button uk-button-primary uk-margin-small-bottom">{lang_login}</button>
+        <div class="uk-margin-small-bottom">{lang_newreglink}</div>
+        <div class="uk-margin-small-bottom"><a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a></div>
+      </div>      
    </fieldset>
   </form>
   {openid_login}

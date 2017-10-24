@@ -385,6 +385,7 @@ function getpasswordform()
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('lang_email', $LANG04[5]);
     $user_templates->set_var('lang_emailpassword', $LANG04[28]);
+    PLG_templateSetVars('getpassword', $user_templates);
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->parse('output', 'form');
 

@@ -17,6 +17,10 @@
           <input type="password" size="16" name="passwd" id="loginform-passwd" class="text"{xhtml}>
           <label for="loginform-passwd">{lang_password}</label>
           <div style="clear:both"></div>
+          {!if captcha} 
+          {captcha}
+          <div style="clear:both"></div>
+          {!endif} 
           <input type="submit" value="{lang_login}" class="submit"{xhtml}>
           <div style="clear:both"></div>
 
