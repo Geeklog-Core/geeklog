@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | metatags.class.php                                                        |
 // |                                                                           |
@@ -115,7 +115,7 @@ class Metatags
     }
 
     /**
-    * Writes an entery into a log file
+    * Writes an entry into a log file
     *
     * @param     string       $entry
     * @return    $this
@@ -227,7 +227,7 @@ class Metatags
     *
     * @param    array    $pairs    For example, if you want to add
     *                              <meta name="description" content="SOME CONTENT">,
-    *                              specifify array('name' => 'description',
+    *                              specify array('name' => 'description',
     *                              'content' => 'SOME CONTENT').  This method can
     *                              be called many times, but values specified later
     *                              will overwrite the previous ones if they are the
