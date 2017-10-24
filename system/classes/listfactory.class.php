@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | listfactory.class.php                                                     |
 // |                                                                           |
@@ -151,7 +151,7 @@ class ListFactory
      *
      * @access public
      * @param string       $url      The URL of the page the table appears on
-     * @param array|string $limits   The avaliable page limits
+     * @param array|string $limits   The available page limits
      * @param int          $per_page The default number or rows per page
      */
     public function __construct($url, $limits = '10,15,20,25,30,35', $per_page = 20)
@@ -214,7 +214,7 @@ class ListFactory
      * @param string $title The text that's displayed to the user
      * @param string $name  The local name given to the query
      * @param string $sql   The SQL string without the ORDER BY or LIMIT clauses
-     * @param int    $rank  The rating that determins how many results will be returned
+     * @param int    $rank  The rating that determines how many results will be returned
      */
     public function setQuery($title, $name, $sql, $rank)
     {
@@ -239,8 +239,8 @@ class ListFactory
      * @param string $title    The text that's displayed to the user
      * @param string $name     The local name given to the query
      * @param string $callback Any callable function, method or lambda
-     * @param int    $rank     The rating that determins how many results will be returned
-     * @param int    $total    The total number of results that are avaliable
+     * @param int    $rank     The rating that determines how many results will be returned
+     * @param int    $total    The total number of results that are available
      */
     public function setCallback($title, $name, $callback, $rank, $total)
     {
@@ -256,7 +256,7 @@ class ListFactory
     }
 
     /**
-     * Sets the callback function thats called on every row for styling
+     * Sets the callback function that's called on every row for styling
      * or formatting.
      *
      * @param callback $callback Any callable function, method or lambda
@@ -376,7 +376,7 @@ class ListFactory
      * @param  array $source  The source we are currently working with
      * @return array The row with styling applied and extra meta details
      */
-    private function _fillrow($row_arr, $source)
+    private function _fillRow($row_arr, $source)
     {
         $col = array();
         $col[LF_SOURCE_TITLE] = $source['title'];
@@ -486,7 +486,7 @@ class ListFactory
                     );
 
                     foreach ($callback_rows as $row) {
-                        $rows_arr[] = $this->_fillrow($row, $this->_sources_arr[$i]);
+                        $rows_arr[] = $this->_fillRow($row, $this->_sources_arr[$i]);
                     }
                 } else {
                     COM_errorLog('ListFactory: A callback function was set for "' .
@@ -506,15 +506,15 @@ class ListFactory
 
             $result = DB_query($this->_sources_arr[$i]['sql']);
             while ($A = DB_fetchArray($result)) {
-                $rows_arr[] = $this->_fillrow($A, $this->_sources_arr[$i]);
+                $rows_arr[] = $this->_fillRow($A, $this->_sources_arr[$i]);
             }
         }
 
         // Sort the final array
         $direction = $this->_sort_arr['direction'] == 'asc' ? SORT_ASC : SORT_DESC;
         $column = array();
-        foreach ($rows_arr as $sortarray) {
-            $c = GLText::stripTags($sortarray[$this->_sort_arr['field']]);
+        foreach ($rows_arr as $sortArray) {
+            $c = GLText::stripTags($sortArray[$this->_sort_arr['field']]);
             $column[] = $c == 'LF_NULL' ? '0' : $c;
         }
         array_multisort($column, $direction, $rows_arr);
@@ -618,10 +618,9 @@ class ListFactory
         foreach ($this->_fields as $field) {
             if ($field['display'] == true && $field['title'] != '') {
                 $text = $sort_text . $field['title'];
-                $href = '';
                 $selected = '';
 
-                if ($this->_style == 'inline' && $show_sort && $field['sort'] != false) {
+                if ($this->_style === 'inline' && $show_sort && $field['sort'] != false) {
                     $direction = $this->_def_sort_arr['direction'];
 
                     // Show the sort arrow
@@ -654,7 +653,7 @@ class ListFactory
                     $list_templates->set_var('sort_href', $href);
                     $list_templates->set_var('sort_selected', '');
                     $list_templates->parse('page_sort', 'sort', true);
-                } elseif ($this->_style == 'table') {
+                } elseif ($this->_style === 'table') {
                     $direction = $this->_sort_arr['direction'] == 'asc' ? 'desc' : 'asc';
                     $href = $this->_page_url . "results={$this->_per_page}&amp;" .
                         "order={$field['name']}&amp;direction=$direction";
@@ -689,18 +688,18 @@ class ListFactory
 
             foreach ($this->_fields as $field) {
                 if ($field['display'] == true) {
-                    $fieldvalue = '';
+                    $fieldValue = '';
                     if ($field['name'] == LF_ROW_NUMBER) {
-                        $fieldvalue = $r + $offset;
+                        $fieldValue = $r + $offset;
                     } elseif (!empty($row[$field['name']])) {
-                        $fieldvalue = $row[$field['name']];
+                        $fieldValue = $row[$field['name']];
                     }
 
-                    if ($fieldvalue != 'LF_NULL') {
-                        $fieldvalue = sprintf($field['format'], $fieldvalue, $field['title']);
+                    if ($fieldValue != 'LF_NULL') {
+                        $fieldValue = sprintf($field['format'], $fieldValue, $field['title']);
 
                         // Write field
-                        $list_templates->set_var('field_text', $fieldvalue);
+                        $list_templates->set_var('field_text', $fieldValue);
                         $list_templates->parse('item_field', 'field', true);
                     } else {
                         // Write an empty field
@@ -850,7 +849,6 @@ class ListFactory
         foreach ($this->_fields as $field) {
             if ($field['display'] == true && $field['title'] != '') {
                 $text = $sort_text . $field['title'];
-                $href = '';
                 $selected = '';
 
                 if ($this->_style == 'inline' && $show_sort && $field['sort'] != false) {
@@ -914,18 +912,18 @@ class ListFactory
 
             foreach ($this->_fields as $field) {
                 if ($field['display'] == true) {
-                    $fieldvalue = '';
+                    $fieldValue = '';
                     if ($field['name'] == LF_ROW_NUMBER) {
-                        $fieldvalue = $r + $offset;
+                        $fieldValue = $r + $offset;
                     } elseif (!empty($row[$field['name']])) {
-                        $fieldvalue = $row[$field['name']];
+                        $fieldValue = $row[$field['name']];
                     }
 
-                    if ($fieldvalue != 'LF_NULL') {
-                        $fieldvalue = sprintf($field['format'], $fieldvalue, $field['title']);
+                    if ($fieldValue != 'LF_NULL') {
+                        $fieldValue = sprintf($field['format'], $fieldValue, $field['title']);
 
                         // Write field
-                        $list_templates->set_var('field_text', $fieldvalue);
+                        $list_templates->set_var('field_text', $fieldValue);
                         $list_templates->parse('item_field', 'field', true);
                     } else {
                         // Write an empty field
