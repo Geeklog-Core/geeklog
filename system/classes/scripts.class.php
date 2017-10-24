@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | scripts.class.php                                                         |
 // |                                                                           |
@@ -62,7 +62,7 @@ class Scripts
 
     /**
      * Constructor
-     * This initializes the scriptsobject
+     * This initializes the Scripts object
      */
     public function __construct()
     {
@@ -90,13 +90,10 @@ class Scripts
 
         // Setup restricted names after setting main libraries (do not want plugins messing with them)
         $this->restricted_names = array('core', 'jquery');
-
     }
 
     /**
      * Build a list of available JavaScript Libraries
-     *
-     * @return    boolean
      */
     private function findJavaScriptLibraries()
     {
@@ -176,7 +173,7 @@ class Scripts
             if (!$this->library_files[$name]['load']) {
                 $this->library_files[$name]['load'] = true;
                 // If name is subset of jQuery (. or - can be used) make sure all Core UI libraries are loaded
-                if ((substr($name, 0, 7) == 'jquery-' || substr($name, 0, 7) == 'jquery.') && !$this->jquery_ui_cdn) {
+                if ((substr($name, 0, 7) === 'jquery-' || substr($name, 0, 7) === 'jquery.') && !$this->jquery_ui_cdn) {
                     // Check that file exists, if not use Google version
                     if (!file_exists($_CONF['path_html'] . $this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
@@ -197,7 +194,7 @@ class Scripts
                         $this->jquery_cdn = true;
                         $this->jquery_ui_cdn = true;
                     }
-                } elseif ($name == 'jquery' && $_CONF['cdn_hosted']) {
+                } elseif ($name === 'jquery' && $_CONF['cdn_hosted']) {
                     $this->jquery_cdn = true;
                 }
 
@@ -220,28 +217,28 @@ class Scripts
     {
         global $_CONF;
 
-        $librarycode = '';
+        $libraryCode = '';
 
         if ($this->jquery_cdn) {
-            $librarycode .= '<script type="text/javascript" src="' . $this->jquery_cdn_file . '"></script>' . LB;
+            $libraryCode .= '<script type="text/javascript" src="' . $this->jquery_cdn_file . '"></script>' . LB;
             $this->library_files['jquery']['load'] = false; // Set to false so not reloaded
             if ($this->jquery_ui_cdn) {
-                $librarycode .= '<script type="text/javascript" src="' . $this->jquery_ui_cdn_file . '"></script>' . LB;
+                $libraryCode .= '<script type="text/javascript" src="' . $this->jquery_ui_cdn_file . '"></script>' . LB;
                 // Since using CDN file reset loading of jQuery UI
                 foreach ($this->library_files as $key => &$file) {
-                    if (substr($key, 0, 7) == 'jquery.') {
+                    if (substr($key, 0, 7) === 'jquery.') {
                         $file['load'] = false;
                     }
                 }
                 unset($file);
             }
         } elseif ($this->jquery_ui_cdn) { // This might happen if a jQuery UI file is not found
-            $librarycode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $this->library_files['jquery']['file'] . '"></script>' . LB;
+            $libraryCode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $this->library_files['jquery']['file'] . '"></script>' . LB;
             $this->library_files['jquery']['load'] = false; // Set to false so not reloaded
-            $librarycode .= '<script type="text/javascript" src="' . $this->jquery_ui_cdn_file . '"></script>' . LB;
+            $libraryCode .= '<script type="text/javascript" src="' . $this->jquery_ui_cdn_file . '"></script>' . LB;
             // Since using CDN file reset loading of jQuery UI
             foreach ($this->library_files as $key => &$file) {
-                if (substr($key, 0, 7) == 'jquery.') {
+                if (substr($key, 0, 7) === 'jquery.') {
                     $file['load'] = false;
                 }
             }
@@ -251,11 +248,11 @@ class Scripts
         // Now load in the rest of the libraries
         foreach ($this->library_files as $file) {
             if ($file['load']) {
-                $librarycode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $file['file'] . '"></script>' . LB;
+                $libraryCode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $file['file'] . '"></script>' . LB;
             }
         }
 
-        return $librarycode;
+        return $libraryCode;
     }
 
     /**
@@ -453,7 +450,6 @@ class Scripts
         }
 
         $this->css[] = $css;
-
         $this->css_set = true;
 
         return true;
@@ -469,8 +465,7 @@ class Scripts
         global $_CONF, $MESSAGE, $LANG_DIRECTION;
 
         $this->header_set = true;
-
-        $headercode = '';
+        $headerCode = '';
 
         // Sort CSS Files based on priority
         $priority = array();
@@ -481,9 +476,9 @@ class Scripts
 
         // See if theme uses ETag, if so load first
         if ($_CONF['theme_etag']) {
-            $csslink = '<link rel="stylesheet" type="text/css" href="'
+            $cssLink = '<link rel="stylesheet" type="text/css" href="'
                 . $_CONF['layout_url'] . '/style.css.php?theme=' . $_CONF['theme'] . '&amp;dir=' . $LANG_DIRECTION . '" media="all"' . XHTML . '>' . LB;
-            $headercode = $csslink . $headercode;
+            $headerCode = $cssLink . $headerCode;
         }
         // Set CSS Files
         foreach ($this->css_files as $file) {
@@ -504,30 +499,30 @@ class Scripts
             }
 
             if ($file['load'] && !empty($href)) {
-                $csslink = '<link rel="' . $rel
+                $cssLink = '<link rel="' . $rel
                     . '" type="' . $type
                     . '" href="' . $href
                     . '"' . $file['extra'] . XHTML . '>' . LB;
 
-                if (isset($file['name']) && $file['name'] == 'theme') { // load theme css first
-                    $headercode = $csslink . $headercode;
+                if (isset($file['name']) && $file['name'] === 'theme') { // load theme css first
+                    $headerCode = $cssLink . $headerCode;
                 } else {
-                    $headercode .= $csslink;
+                    $headerCode .= $cssLink;
                 }
             }
         }
         // Set CSS
         if ($this->css_set) {
-            $headercode .= '<style type="text/css">' . LB;
+            $headerCode .= '<style type="text/css">' . LB;
             foreach ($this->css as $css) {
-                $headercode .= $css . LB;
+                $headerCode .= $css . LB;
             }
-            $headercode .= '</style>' . LB;
+            $headerCode .= '</style>' . LB;
         }
 
-        // Set JavaScript Library files first incase other scripts need them
+        // Set JavaScript Library files first in case other scripts need them
         if (!$this->library_files_footer) { // // Do we load jQuery now?
-            $headercode .= $this->setJavaScriptLibraries();
+            $headerCode .= $this->setJavaScriptLibraries();
         }
 
         // Set JavaScript Variables (do this before file in case variables are needed)
@@ -565,7 +560,7 @@ class Scripts
         // Strip '{' and '}' from both ends of $str
         $str = substr($str, 1);
         $str = substr($str, 0, strlen($str) - 1);
-        $headercode .= <<<EOD
+        $headerCode .= <<<EOD
 <script type="text/javascript">
 var geeklog = {
     doc: document,
@@ -581,7 +576,7 @@ EOD;
 
         if (isset($this->scripts['header'])) {
             foreach ($this->scripts['header'] as $script) {
-                $headercode .= $script . LB;
+                $headerCode .= $script . LB;
             }
         }
 
@@ -595,11 +590,11 @@ EOD;
         // Set JavaScript Files
         foreach ($this->script_files as $file) {
             if (!$file['footer']) {
-                $headercode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . $file['file'] . '"></script>' . LB;
+                $headerCode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . $file['file'] . '"></script>' . LB;
             }
         }
 
-        return $headercode;
+        return $headerCode;
     }
 
     /**
@@ -650,30 +645,30 @@ EOD;
     {
         global $_CONF;
 
-        $footercode = '';
+        $footerCode = '';
 
         // Do we need to set JavaScript
         if ($this->javascript_set) {
-            // Set JavaScript Library files first incase other scripts need them
+            // Set JavaScript Library files first in case other scripts need them
             if ($this->library_files_footer) { // Has jQuery already been loaded in header?
-                $footercode .= $this->setJavaScriptLibraries();
+                $footerCode .= $this->setJavaScriptLibraries();
             }
 
-            // Set JavaScript (do this before file incase variables are needed)
+            // Set JavaScript (do this before file in case variables are needed)
             if (isset($this->scripts['footer'])) {
                 foreach ($this->scripts['footer'] as $script) {
-                    $footercode .= $script . LB;
+                    $footerCode .= $script . LB;
                 }
             }
 
             // Set JavaScript Files
             foreach ($this->script_files as $file) {
                 if ($file['footer']) {
-                    $footercode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . $file['file'] . '"></script>' . LB;
+                    $footerCode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . $file['file'] . '"></script>' . LB;
                 }
             }
         }
 
-        return $footercode;
+        return $footerCode;
     }
 }
