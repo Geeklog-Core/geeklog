@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +-------------------------------------------------------------------------+
-// | Geeklog 2.1                                                             |
+// | Geeklog 2.2                                                             |
 // +-------------------------------------------------------------------------+
 // | navbar.class.php                                                        |
 // |                                                                         |
@@ -39,24 +39,24 @@
 /* Example Use
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
 
-    $menuitems = array (
+    $menuItems = array (
         'Site Links' => $_CONF['site_url'] .'/links.php',
         'My Calendar'=> $_CONF['site_url'] .'/calendar.php',
         'Polls'      => $_CONF['site_url'] .'/pollbooth.php'
     );
 
     $navbar = new navbar;
-    $navbar->set_menuItems($menuitems);
+    $navbar->set_menuItems($menuItems);
 
-    // Add a menuitem if user has access
+    // Add a menu item if user has access
     if (SEC_inGroup('Root')) {
         $navbar->add_menuitem('Admin Home',$_CONF['site_admin_url'] . '/moderation.php');
     }
 
-    // Add a Menuitem which activates a Javascript function when the onClick event is triggered
+    // Add a menu item which activates a Javascript function when the onClick event is triggered
     $navbar->add_menuitem('On click test','alert("This works");',true);
 
-    // Add a new Menuitem which may or may not have a URL to redirect to but also triggers an onClick JS function
+    // Add a new menu item which may or may not have a URL to redirect to but also triggers an onClick JS function
     $navbar->add_menuitem('Search Engine','http://www.google.com');
     // Pass in the label to attach the onClick function to
     $navbar->set_onclick('Search Engine','return confirm("Do you want to leave this site?");');
@@ -72,11 +72,9 @@
    // Adds just a label, not a link as the last breadcrumb
     $navbar->add_lastBreadcrumb('myplugin');
 
-    // Close and generate the breakcrumb trail
+    // Close and generate the breadcrumb trail
     echo $navbar->closeBreadcrumbs();
-
 */
-
 
 class navbar
 {
@@ -103,12 +101,12 @@ class navbar
     /**
      * @var Template
      */
-    private $_bctemplate = null;    // Template to use for Breadcrumbs
+    private $_bcTemplate = null;    // Template to use for Breadcrumbs
 
     /**
      * @var int
      */
-    private $_numbreadcrumbs = 0;   // Number of Breadcrumb links added
+    private $_numBreadCrumbs = 0;   // Number of Breadcrumb links added
 
     /**
      * @param $menuItems
@@ -175,18 +173,17 @@ class navbar
             $navTemplate->set_var('parms', $this->_parms);
         }
 
-        for ($i = 1; $i <= count($this->menuItems); $i++) {
-            $label = key($this->menuItems);
-            $linkurl = current($this->menuItems);
+        foreach ($this->menuItems as $label => $linkUrl) {
             if (is_array($this->_onclick) && array_key_exists($label, $this->_onclick)) {
                 $onclick = " onclick='{$this->_onclick[$label]}'";
                 $navTemplate->set_var('onclick', $onclick);
-                $navTemplate->set_var('link', ($linkurl == '') ? '#' : $linkurl);
+                $navTemplate->set_var('link', ($linkUrl == '') ? '#' : $linkUrl);
             } else {
                 $navTemplate->set_var('onclick', '');
-                $navTemplate->set_var('link', $linkurl);
+                $navTemplate->set_var('link', $linkUrl);
             }
-            if ($label == $this->_selected) {
+
+            if ($label === $this->_selected) {
                 $navTemplate->set_var('cssactive', ' id="active"');
                 $navTemplate->set_var('csscurrent', ' id="current"');
             } else {
@@ -195,8 +192,8 @@ class navbar
             }
             $navTemplate->set_var('label', $label);
             $navTemplate->parse('menuitems', 'menuitem', true);
-            next($this->menuItems);
         }
+
         $navTemplate->parse('output', 'navbar');
         $retval = $navTemplate->finish($navTemplate->get_var('output'));
 
@@ -207,10 +204,11 @@ class navbar
     {
         global $_CONF;
 
-        $this->_bctemplate = COM_newTemplate($_CONF['path_layout'] . 'navbar');
-        $this->_bctemplate->set_file(array(
+        $this->_bcTemplate = COM_newTemplate($_CONF['path_layout'] . 'navbar');
+        $this->_bcTemplate->set_file(array(
             'breadcrumbs' => 'breadcrumbs.thtml',
-            'link'        => 'breadcrumb_link.thtml'));
+            'link'        => 'breadcrumb_link.thtml',
+        ));
     }
 
     /**
@@ -220,20 +218,22 @@ class navbar
      */
     public function add_breadcrumbs($url, $label, $title = '')
     {
-        if ($this->_numbreadcrumbs == '') {
-            $this->_numbreadcrumbs = 0;
+        if ($this->_numBreadCrumbs == '') {
+            $this->_numBreadCrumbs = 0;
         }
-        $this->_bctemplate->set_var('link_url', $url);
-        $this->_bctemplate->set_var('link_label', $label);
-        $this->_bctemplate->set_var('link_title', $title);
-        if ($this->_numbreadcrumbs > 0) {
-            $this->_bctemplate->set_var('link_separator', '/&nbsp;');
+        $this->_bcTemplate->set_var('link_url', $url);
+        $this->_bcTemplate->set_var('link_label', $label);
+        $this->_bcTemplate->set_var('link_title', $title);
+
+        if ($this->_numBreadCrumbs > 0) {
+            $this->_bcTemplate->set_var('link_separator', '/&nbsp;');
 
         } else {
-            $this->_bctemplate->set_var('link_separator', '');
+            $this->_bcTemplate->set_var('link_separator', '');
         }
-        $this->_bctemplate->parse('breadcrumb_links', 'link', true);
-        $this->_numbreadcrumbs = $this->_numbreadcrumbs + 1;
+
+        $this->_bcTemplate->parse('breadcrumb_links', 'link', true);
+        $this->_numBreadCrumbs = $this->_numBreadCrumbs + 1;
     }
 
     /**
@@ -243,7 +243,7 @@ class navbar
     {
         if (trim($label) != '') {
             $label = "/&nbsp;$label";
-            $this->_bctemplate->set_var('last_label', $label);
+            $this->_bcTemplate->set_var('last_label', $label);
         }
     }
 
@@ -252,8 +252,8 @@ class navbar
      */
     public function closeBreadcrumbs()
     {
-        $this->_bctemplate->parse('output', 'breadcrumbs');
+        $this->_bcTemplate->parse('output', 'breadcrumbs');
 
-        return $this->_bctemplate->finish($this->_bctemplate->get_var('output'));
+        return $this->_bcTemplate->finish($this->_bcTemplate->get_var('output'));
     }
 }
