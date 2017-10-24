@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | sanitize.class.php                                                        |
 // |                                                                           |
@@ -263,7 +263,6 @@ class sanitizer
 
     private function _cleanChar()
     {
-
         foreach ($this->_dirtydata['char'] as $var => $value) {
             // Check if this variable is an array - maybe a checkbox or multiple select
             if (is_array($value)) {
@@ -298,11 +297,13 @@ class sanitizer
 
     private function _santizeData($type = '', $data = '')
     {
+        $retval = '';
+
         if (!empty($data)) {
             $this->cleanData($type, $data);
         }
 
-        /* Check if we need to return just one type of filtered data */
+        // Check if we need to return just one type of filtered data
         if ($type != '' AND in_array($type, $this->_filtermodes)) {
             $filterFunction = '_clean' . ucfirst($type);
             if (method_exists($this, $filterFunction)) {
@@ -450,7 +451,6 @@ class sanitizer
 
     public function getWebData($type = '', $data = '')
     {
-        $retval = '';
         $currentWebState = $this->_prepforweb;
         $currentDbState = $this->_prepfordb;
         $this->setPrepforweb(true);
@@ -466,7 +466,6 @@ class sanitizer
 
     public function getDbData($type = '', $data = '')
     {
-        $retval = '';
         $currentWebState = $this->_prepforweb;
         $currentDbState = $this->_prepfordb;
         $this->setPrepfordb(true);
