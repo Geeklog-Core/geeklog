@@ -35,6 +35,9 @@ public_html/admin/plugins/ban
 plugins/dokuwiki
 public_html/dokuwiki
 public_html/admin/plugins/dokuwiki
+plugins/mediagallery
+public_html/mediagallery
+public_html/admin/plugins/mediagallery
 
 # test framework, if present
 public_html/tests
