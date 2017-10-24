@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | timer.class.php                                                           |
 // |                                                                           |
@@ -57,33 +57,33 @@ class timerobject
     /**
      * @var float
      */
-    private $_starttime = 0.0;
+    private $startTime = 0.0;
 
     /**
      * @var float
      */
-    private $_endtime = 0.0;
+    private $endTime = 0.0;
 
     /**
      * @var float
      */
-    private $_elapsedtime = 0.0;
+    private $elapsedTime = 0.0;
 
     /**
      * @var int
      */
-    private $_precision = 2;
+    private $precision = 2;
 
     /**
      * Set precision on timer results
      * This sets how many significant digits get
      * sent back when elapsedTime is called
      *
-     * @param    int $num_dec_places Number of significant digits
+     * @param    int $numDecPlaces Number of significant digits
      */
-    public function setPrecision($num_dec_places)
+    public function setPrecision($numDecPlaces)
     {
-        $this->_precision = $num_dec_places;
+        $this->precision = $numDecPlaces;
     }
 
     /**
@@ -93,21 +93,7 @@ class timerobject
      */
     public function getPrecision()
     {
-        return $this->_precision;
-    }
-
-    /**
-     * Deprecated - use setPrecision instead
-     *
-     * @param  int $num_dec_places
-     * @deprecated since Geeklog 1.6.0
-     * @see        setPrecision
-     */
-    public function setPercision($num_dec_places)
-    {
-        COM_deprecatedLog(__FUNCTION__, '1.6.0', '3.0.0', 'setPrecision');
-        
-        $this->setPrecision($num_dec_places);
+        return $this->precision;
     }
 
     /**
@@ -115,7 +101,7 @@ class timerobject
      */
     public function startTimer()
     {
-        $this->_starttime = microtime(true);
+        $this->startTime = microtime(true);
     }
 
     /**
@@ -125,8 +111,8 @@ class timerobject
      */
     public function stopTimer()
     {
-        $this->_endtime = microtime(true);
-        $this->_setElapsedTime();
+        $this->endTime = microtime(true);
+        $this->setElapsedTime();
 
         // We are going to assume that when the timer is stopped
         // they will want the elapsed time immediately
@@ -139,8 +125,8 @@ class timerobject
      */
     public function restart()
     {
-        $this->_endtime = 0.0;
-        $this->_elapsedtime = 0.0;
+        $this->endTime = 0.0;
+        $this->elapsedTime = 0.0;
 
         $this->startTimer();
     }
@@ -150,7 +136,7 @@ class timerobject
      */
     public function setStartTime($time)
     {
-        $this->_starttime = $time;
+        $this->startTime = $time;
     }
 
     /**
@@ -158,7 +144,7 @@ class timerobject
      */
     public function getStartTime()
     {
-        return $this->_starttime;
+        return $this->startTime;
     }
 
 
@@ -167,8 +153,8 @@ class timerobject
      */
     public function setEndTime($time)
     {
-        $this->_endtime = $time;
-        $this->_setElapsedTime();
+        $this->endTime = $time;
+        $this->setElapsedTime();
     }
 
     /**
@@ -176,7 +162,7 @@ class timerobject
      */
     public function getEndTime()
     {
-        return $this->_endtime;
+        return $this->endTime;
     }
 
     /**
@@ -188,7 +174,7 @@ class timerobject
      */
     public function getElapsedTime()
     {
-        return sprintf("%.{$this->_precision}f", $this->_elapsedtime);
+        return sprintf("%.{$this->precision}f", $this->elapsedTime);
     }
 
     /**
@@ -196,8 +182,8 @@ class timerobject
      * once stop timer is called this gets called to calculate
      * the elapsed time for later retrieval
      */
-    private function _setElapsedTime()
+    private function setElapsedTime()
     {
-        $this->_elapsedtime = $this->_endtime - $this->_starttime;
+        $this->elapsedTime = $this->endTime - $this->startTime;
     }
 }
