@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | language.class.php                                                        |
 // |                                                                           |
@@ -241,7 +241,7 @@ class Language
      */
     public static function adminShowList()
     {
-        global $_CONF, $_IMAGE_TYPE, $LANG_ACCESS, $LANG_ADMIN, $LANG_LANG, $_TABLES;
+        global $_CONF, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_LANG, $_TABLES;
 
         self::checkAccessRights();
 
