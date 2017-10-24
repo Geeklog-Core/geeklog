@@ -195,7 +195,8 @@ $LANG01 = array(
     'github' => 'Login with GitHub',
     'ctl' => 'Clear Cache',
     'ok' => 'OK',
-    'filemanager' => 'File Manager'
+    'filemanager' => 'File Manager',
+    'error_invalid_password' => 'Error, invalid password for username'
 );
 
 ###############################################################################

@@ -760,6 +760,8 @@ function SEC_authenticate($username, $password, &$uid)
             // banned, jump to here to save an password hash calc.
             return USER_ACCOUNT_DISABLED;
         } elseif (SEC_encryptUserPassword($password, $uid) < 0) {
+        $tmp = $LANG01['error_invalid_password'] . ": '" . $username . "'";
+        COM_accessLog($tmp);            
             return -1; // failed login
         } elseif ($U['status'] == USER_ACCOUNT_AWAITING_APPROVAL) {
             return USER_ACCOUNT_AWAITING_APPROVAL;

@@ -203,7 +203,8 @@ $LANG01 = array(
     'github' => 'GitHubでログイン',
     'ctl' => 'キャッシュ一括削除',
     'ok' => 'OK',
-    'filemanager' => 'ファイルマネージャー'
+    'filemanager' => 'ファイルマネージャー',
+    'error_invalid_password' => 'Error, invalid password for username'    
 );
 
 ###############################################################################
