@@ -64,6 +64,9 @@ class RSS20 extends FeedParserBase
      */
     private $_linkGUID;
 
+    /**
+     * RSS20 constructor.
+     */
     public function __construct()
     {
         parent::__construct();

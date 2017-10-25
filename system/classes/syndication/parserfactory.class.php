@@ -182,7 +182,7 @@ class FeedParserFactory
      * Opens a url in a file pointer
      *
      * @param    string $url The URL to open.
-     * @return   mixed              HTTP response body or boolean false
+     * @return   mixed       HTTP response body or boolean false
      */
     protected function _getFeed($url)
     {

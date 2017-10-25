@@ -51,71 +51,99 @@ abstract class FeedParserBase
      * summary - Short version of article
      * text - full version
      * author - Who wrote the article
+     *
+     * @var array
      */
     public $articles;
 
     /**
      * Encoding tag for the XML declaration
+     *
+     * @var string
      */
     public $encoding;
 
     /**
      * Language for the feed
+     *
+     * @var string
      */
     public $lang;
 
     /**
      * Title for the feed
+     *
+     * @var string
      */
     public $title;
 
     /**
      * The description of the feed
+     *
+     * @var string
      */
     public $description;
 
     /**
      * The URL of the feed
+     *
+     * @var string
      */
     public $url;
 
     /**
      * URL of the site
+     *
+     * @var string
      */
     public $sitelink;
 
     /**
      * Site contact
+     *
+     * @var string
      */
     public $sitecontact;
 
     /**
      * copyright tag:
+     *
+     * @var string
      */
     public $copyright;
 
     /**
      * system powering the feed
+     *
+     * @var string
      */
     public $system;
 
     /**
      * Image to link to the feed.
+     *
+     * @var string
      */
     public $feedlogo;
 
     /**
      * Additional namespaces to add.
+     *
+     * @var array
      */
     public $namespaces;
 
     /**
      * Additional tags to add.
+     *
+     * @var array
      */
     public $extensions;
 
     /**
      * Stuff for parsing XML
+     *
+     * @var string
      */
     protected $_currentTag;
 
@@ -129,6 +157,9 @@ abstract class FeedParserBase
      */
     protected $_currentItem;
 
+    /**
+     * FeedParserBase constructor.
+     */
     public function __construct()
     {
         $this->encoding = 'iso-8859-1';
@@ -137,7 +168,7 @@ abstract class FeedParserBase
         $this->namespaces = array();
         $this->extensions = array();
         $this->articles = array();
-        $this->currentTag = '';
+        $this->_currentTag = '';
         $this->_inItem = false;
         $this->_currentItem = array();
     }
@@ -145,8 +176,8 @@ abstract class FeedParserBase
     /**
      * Make sure a string is safe to be chardata in an xml element
      *
-     * @param    string  $string       the string to escape.
-     * @param    boolean $doubleEncode whether to encode HTML entities
+     * @param   string  $string       the string to escape.
+     * @param   boolean $doubleEncode whether to encode HTML entities
      * @return  string
      */
     protected function _safeXML($string, $doubleEncode = true)
@@ -178,8 +209,8 @@ abstract class FeedParserBase
      * specified. Uses the (abstract) function formatArticle to return XML
      * for an article.
      *
-     * @param    string $fileName The fully qualified path to the file to create.
-     * @param    int    $limit    (optional) max number of items to write.
+     * @param   string $fileName The fully qualified path to the file to create.
+     * @param   int    $limit    (optional) max number of items to write.
      * @return  bool
      */
     public function createFeed($fileName, $limit = 0)
@@ -254,7 +285,7 @@ abstract class FeedParserBase
      * Takes an associative article array and turns it into an XML definition
      * of an article.
      *
-     * @param array $article ASsociative array describing an article.
+     * @param  array $article associative array describing an article.
      */
     abstract protected function _formatArticle(array $article);
 
@@ -265,7 +296,7 @@ abstract class FeedParserBase
     abstract protected function _feedFooter();
 
     /**
-     * Handle the begining of an XML element
+     * Handle the beginning of an XML element
      * This is called from the parser factory once the type of data has been
      * determined. Standard XML_PARSER element handler.
      *

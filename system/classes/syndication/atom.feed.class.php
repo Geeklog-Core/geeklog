@@ -27,7 +27,6 @@
 /*  3. This notice may not be removed or altered from any source            */
 /*     distribution.                                                        */
 /****************************************************************************/
-// $Id: atom.feed.class.php,v 1.14 2008/09/15 08:15:26 dhaun Exp $
 
 /**
  * Provides feed handlers for Atom 0.3 and Atom 1.0
@@ -45,6 +44,9 @@
  */
 class Atom10 extends FeedParserBase
 {
+    /**
+     * Atom10 constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -56,7 +58,7 @@ class Atom10 extends FeedParserBase
      * Takes an associative article array and turns it into an XML definition
      * of an article. Uses merely title, link and summary.
      *
-     * @param  array $article Associative array describing an article.
+     * @param  array  $article Associative array describing an article.
      * @return string
      */
     protected function _formatArticle(array $article)
@@ -248,6 +250,9 @@ class Atom10 extends FeedParserBase
  */
 class Atom03 extends Atom10
 {
+    /**
+     * Atom03 constructor.
+     */
     public function __construct()
     {
         parent::__construct();
