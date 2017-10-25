@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | story.class.php                                                           |
 // |                                                                           |
@@ -38,8 +38,6 @@
  *  4) Database Mode
  *
  * @package   Geeklog
- * @filesource
- * @version   0.1
  * @since     GL 1.4.2
  * @copyright Copyright &copy; 2006-2009
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
@@ -424,7 +422,7 @@ class Story
      */
     public function loadFromDatabase($sid, $mode = 'edit')
     {
-        global $_TABLES, $_CONF, $_USER, $topic;
+        global $_TABLES, $_CONF, $_GROUPS, $_USER, $topic;
 
         $sid = DB_escapeString(COM_applyFilter($sid));
 
