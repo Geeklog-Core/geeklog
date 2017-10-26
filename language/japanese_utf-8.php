@@ -194,6 +194,7 @@ $LANG01 = array(
     140 => '使用できる自動タグ:',
     141 => 'エラーが発生しました',
     142 => 'このページを表示する際にエラーが発生しました。しばらくしてから、もう一度お試しください。',
+    143 => 'コメント (%d件)',
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
     'linkedin' => 'LinkedInでログイン',
@@ -204,7 +205,7 @@ $LANG01 = array(
     'ctl' => 'キャッシュ一括削除',
     'ok' => 'OK',
     'filemanager' => 'ファイルマネージャー',
-    'error_invalid_password' => 'Error, invalid password for username'    
+    'error_invalid_password' => 'Error, invalid password for username'
 );
 
 ###############################################################################
@@ -1604,7 +1605,7 @@ $LANG_ACCESS = array(
     'inheritmembers' => 'Inherited Group Members',
     'canteditgroup' => 'グループを編集するためには、グループのメンバーでなければなりません。これがエラーだと思う場合はシステムの管理者に連絡してください。',
     'cantlistgroup' => 'メンバーリストを見るには、グループのメンバーでなければなりません。これがエラーだと思う場合はシステムの管理者に連絡してください。',
-    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.<br><br>Inherited group members can only be removed by editing the group they actually belong too and are only shown here for informational purposes. Remember a user can be both a member of the actual group and still be inherited from another group.',
+    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.<br' . XHTML . '><br' . XHTML . '>Inherited group members can only be removed by editing the group they actually belong too and are only shown here for informational purposes. Remember a user can be both a member of the actual group and still be inherited from another group.',
     'listgroupmsg' => 'グループ<strong>%s</strong>に含まれるユーザー:',
     'search' => '検索',
     'submit' => '実行',
@@ -2067,7 +2068,7 @@ $LANG_confignames['Core'] = array(
     'disable_new_user_registration' => '新規ユーザー登録を停止する',
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
-    'switchlang_homepage' => "Switch Language Block Redirects to Homepage",
+    'switchlang_homepage' => 'Switch Language Block Redirects to Homepage',
     'allow_user_photo' => '写真登録を許可する',
     'allow_username_change' => 'ユーザー名変更を許可する',
     'allow_account_delete' => 'アカウント削除を許可する',

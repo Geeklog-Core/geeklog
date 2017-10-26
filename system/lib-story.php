@@ -440,7 +440,13 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
                 $article->set_var('comments_count',
                     COM_numberFormat($story->DisplayElements('comments')));
                 $article->set_var('lang_comments', $LANG01[3]);
-                $comments_with_count = sprintf($LANG01[121], COM_numberFormat($story->DisplayElements('comments')));
+
+                $numComments = (int) $story->DisplayElements('comments');
+                if ($numComments > 1) {
+                    $comments_with_count = sprintf($LANG01[121], COM_numberFormat($numComments));
+                } else {
+                    $comments_with_count = sprintf($LANG01[143], COM_numberFormat($numComments));
+                }
 
                 if ($story->DisplayElements('comments') > 0) {
                     $result = DB_query("SELECT UNIX_TIMESTAMP(date) AS day,username,fullname,{$_TABLES['comments']}.uid as cuid FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '" . $story->getSid() . "' ORDER BY date DESC LIMIT 1");

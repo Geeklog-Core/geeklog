@@ -186,6 +186,7 @@ $LANG01 = array(
     140 => 'Allowed Autotags:',
     141 => 'An Error Occurred',
     142 => 'Unfortunately, an error has occurred rendering this page. Please try again later.',
+    143 => 'Comment (%d)',
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
     'linkedin' => 'Login with LinkedIn',

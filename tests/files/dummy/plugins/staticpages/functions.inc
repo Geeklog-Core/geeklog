@@ -436,7 +436,12 @@ function SP_printPage($page, $A)
         $print->set_var('comments_text', $numComments . ' ' . $LANG01[3]);
         $print->set_var('comments_count', $numComments);
         $print->set_var('lang_comments', $LANG01[3]);
-        $comments_with_count = sprintf($LANG01[121], $numComments);
+
+        if ($numComments > 1) {
+            $comments_with_count = sprintf($LANG01[121], $numComments);
+        } else {
+            $comments_with_count = sprintf($LANG01[143], $numComments);
+        }
 
         if ($comments > 0) {
             $comments_with_count = COM_createLink($comments_with_count,
