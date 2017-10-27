@@ -885,7 +885,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Vorige Artikels',
@@ -928,8 +928,8 @@ $LANG24 = array(
     38 => 'Meer van',
     39 => 'Eposse',
     40 => '',
-    41 => "U probeer om toegang tot 'n artikel te verkry waartoe u nie regte het nie.  Hierdie poging is aangeteken.  U kan die artikel in lees-alleen formaat hieronder besigtig. Gaan <a href=\"{$_CONF['site_admin_url']}/story.php\">asseblief terug na artikel administrasieskerm</a> as u klaar is.",
-    42 => "U probeer om toegang tot \'n storie te verkry waartoe u nie regte het nie.  Hierdie poging is aangeteken.  Gaan asseblief <a href=\"{$_CONF['site_admin_url']}/story.php\">terug na die artikel administrasieskerm</a>.",
+    41 => "U probeer om toegang tot 'n artikel te verkry waartoe u nie regte het nie.  Hierdie poging is aangeteken.  U kan die artikel in lees-alleen formaat hieronder besigtig. Gaan <a href=\"{$_CONF['site_admin_url']}/article.php\">asseblief terug na artikel administrasieskerm</a> as u klaar is.",
+    42 => "U probeer om toegang tot \'n storie te verkry waartoe u nie regte het nie.  Hierdie poging is aangeteken.  Gaan asseblief <a href=\"{$_CONF['site_admin_url']}/article.php\">terug na die artikel administrasieskerm</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -965,7 +965,7 @@ $LANG24 = array(
     75 => 'Volkeuse',
     76 => 'Opsies vir Publikasie',
     77 => 'Javascript moet geaktiveer wees vir die Gevorderde Skryfblok. Opsie kan in die hoofwerf config.php buite werking gestel word',
-    78 => 'Kliek <a href="%s/story.php?mode=edit&sid=%s&editopt=default">hier</a> om die Standaard Skryfblok te gebruik',
+    78 => 'Kliek <a href="%s/article.php?mode=edit&sid=%s&editopt=default">hier</a> om die Standaard Skryfblok te gebruik',
     79 => 'Voorskou',
     80 => 'Skryfblok',
     81 => 'Publikasievoorkeure',

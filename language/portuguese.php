@@ -884,7 +884,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Notícia anterior',
@@ -927,8 +927,8 @@ $LANG24 = array(
     38 => 'Mais a partir de',
     39 => 'Emails',
     40 => '',
-    41 => "Está a tentar aceder a uma notícia para a qual não tem permissões.  Esta acção ficou registada.  Pode ver esta notícia com permissões de leitura a seguir. Por favor <a href=\"{$_CONF['site_admin_url']}/story.php\">volte ao écran de administração de notícias</a> quando terminar.",
-    42 => "Está a tentar aceder a uma notícia para a qual não tem permissões.  Esta acção ficou registada.  Por favor <a href=\"{$_CONF['site_admin_url']}/story.php\">volte ao écran de administração de notícias</a>.",
+    41 => "Está a tentar aceder a uma notícia para a qual não tem permissões.  Esta acção ficou registada.  Pode ver esta notícia com permissões de leitura a seguir. Por favor <a href=\"{$_CONF['site_admin_url']}/article.php\">volte ao écran de administração de notícias</a> quando terminar.",
+    42 => "Está a tentar aceder a uma notícia para a qual não tem permissões.  Esta acção ficou registada.  Por favor <a href=\"{$_CONF['site_admin_url']}/article.php\">volte ao écran de administração de notícias</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -964,7 +964,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

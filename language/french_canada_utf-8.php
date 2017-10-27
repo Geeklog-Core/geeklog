@@ -888,7 +888,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Articles pr&eacute;c&eacute;dents',
@@ -931,8 +931,8 @@ $LANG24 = array(
     38 => 'Plus de',
     39 => 'Emails',
     40 => '',
-    41 => "Vous essayez d'acc&eacute;der &agrave; un article auqule vous n'avez pas droit.  Cette tentative est enregistr&eacute;e.  Vous pouvez voir cet article en lecture seule uniquement. Veuillez <a href=\'{$_CONF['site_admin_url']}/story.php\'>retourner sur la page de contr&ocirc;le des article</a> lorsque vous aurez fini.",
-    42 => "Vous essayez d'acc&eacute;der &agrave; un article auquel vous n'avez pas droit.  Cette tentative est enregistr&eacute;e.  Veuillez <a href=\'{$_CONF['site_admin_url']}/story.php\'>retourner &agrave; la page de contr&ocirc;le des articles</a>.",
+    41 => "Vous essayez d'acc&eacute;der &agrave; un article auqule vous n'avez pas droit.  Cette tentative est enregistr&eacute;e.  Vous pouvez voir cet article en lecture seule uniquement. Veuillez <a href=\'{$_CONF['site_admin_url']}/article.php\'>retourner sur la page de contr&ocirc;le des article</a> lorsque vous aurez fini.",
+    42 => "Vous essayez d'acc&eacute;der &agrave; un article auquel vous n'avez pas droit.  Cette tentative est enregistr&eacute;e.  Veuillez <a href=\'{$_CONF['site_admin_url']}/article.php\'>retourner &agrave; la page de contr&ocirc;le des articles</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -968,7 +968,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

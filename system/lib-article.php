@@ -54,7 +54,7 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
 /**
  * Takes an article class and renders HTML in the specified template and style.
  * Formats the given article into HTML. Called by index.php, article.php,
- * submit.php and admin/story.php (Preview mode for the last two).
+ * submit.php and admin/article.php (Preview mode for the last two).
  *
  * @param   Article $story    The story to display, an instance of the Story class.
  * @param   string  $index    n = Full display of article. p = 'Preview' mode. Else introtext only.
@@ -578,7 +578,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
             ($story->checkAccess() == 3) &&
             (TOPIC_hasMultiTopicAccess('article', $story->DisplayElements('sid')) == 3)
         ) {
-            $editUrl = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
+            $editUrl = $_CONF['site_admin_url'] . '/article.php?mode=edit&amp;sid='
                 . $story->getSid();
             $editiconhtml = '<img src="' . $_CONF['layout_url']
                 . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
@@ -2195,7 +2195,7 @@ function service_delete_story($args, &$output, &$svc_msg)
     $access = min($access, TOPIC_hasMultiTopicAccess('article', $sid));
     if ($access < 3) {
         COM_accessLog("User {$_USER['username']} tried to illegally delete story $sid.");
-        $output = COM_refresh($_CONF['site_admin_url'] . '/story.php');
+        $output = COM_refresh($_CONF['site_admin_url'] . '/article.php');
         if ($_USER['uid'] > 1) {
             return PLG_RET_PERMISSION_DENIED;
         } else {
@@ -2205,7 +2205,7 @@ function service_delete_story($args, &$output, &$svc_msg)
 
     STORY_doDeleteThisStoryNow($sid);
 
-    $output = COM_refresh($_CONF['site_admin_url'] . '/story.php?msg=10');
+    $output = COM_refresh($_CONF['site_admin_url'] . '/article.php?msg=10');
 
     return PLG_RET_OK;
 }

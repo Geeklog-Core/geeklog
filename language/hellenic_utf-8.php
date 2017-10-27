@@ -893,7 +893,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Παλαιότερα Άρθρα',
@@ -936,8 +936,8 @@ $LANG24 = array(
     38 => 'Περισσότερα άρθρα του',
     39 => 'Ηλεκτρονικές διευθύνσεις',
     40 => '',
-    41 => "Τα δικαιώματα σας δεν αρκούν για να προσπελάσετε αυτό το άρθρο. Η απόπειρα έχει καταχωρηθεί. Παρακαλώ, <a ref=\"{$_CONF['site_admin_url']}/story.php\"> πηγαίνετε πίσω στην σελίδα διαχείρισης</a>.",
-    42 => "Τα δικαιώματα σας δεν αρκούν για να προσπελάσετε αυτό το άρθρο. Η απόπειρα έχει καταχωρηθεί. Παρακαλώ, <a ref=\"{$_CONF['site_admin_url']}/story.php\"> πηγαίνετε πίσω στην σελίδα διαχείρισης</a>.",
+    41 => "Τα δικαιώματα σας δεν αρκούν για να προσπελάσετε αυτό το άρθρο. Η απόπειρα έχει καταχωρηθεί. Παρακαλώ, <a ref=\"{$_CONF['site_admin_url']}/article.php\"> πηγαίνετε πίσω στην σελίδα διαχείρισης</a>.",
+    42 => "Τα δικαιώματα σας δεν αρκούν για να προσπελάσετε αυτό το άρθρο. Η απόπειρα έχει καταχωρηθεί. Παρακαλώ, <a ref=\"{$_CONF['site_admin_url']}/article.php\"> πηγαίνετε πίσω στην σελίδα διαχείρισης</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -973,7 +973,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

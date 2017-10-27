@@ -884,7 +884,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Forrige Historier',
@@ -927,8 +927,8 @@ $LANG24 = array(
     38 => 'Mere fra',
     39 => 'Emails',
     40 => '',
-    41 => "Du prøver at få adgang til en historie, som du ikke har rettigheder til! Dette forsøg er blevet logget! Gå tilbage til <a href=\"{$_CONF['site_url']}/admin/story.php\">administration af historier interfacet</a>.",
-    42 => "Du prøver at få adgang til en historie, som du ikke har rettigheder til! Dette forsøg er blevet logget! Gå tilbage til <a href=\"{$_CONF['site_url']}/admin/story.php\">administration af historier interfacet</a>.",
+    41 => "Du prøver at få adgang til en historie, som du ikke har rettigheder til! Dette forsøg er blevet logget! Gå tilbage til <a href=\"{$_CONF['site_url']}/admin/article.php\">administration af historier interfacet</a>.",
+    42 => "Du prøver at få adgang til en historie, som du ikke har rettigheder til! Dette forsøg er blevet logget! Gå tilbage til <a href=\"{$_CONF['site_url']}/admin/article.php\">administration af historier interfacet</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -964,7 +964,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

@@ -885,7 +885,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Напред',
@@ -928,8 +928,8 @@ $LANG24 = array(
     38 => 'Още от',
     39 => 'Emails',
     40 => '',
-    41 => "Опитвате се да влезете в събитие, до което нямате достъп.  Този опит бе регистриран и записан.  Можете да видите статията в режим четене долу. Моля <a href=\"{$_CONF['site_admin_url']}/story.php\">върнете се на администраторския екран</a> когато сте готов.",
-    42 => "Опитвате се да влезете в събитие, до което нямате достъп. Този опит бе записан . Моля <a href=\"{$_CONF['site_admin_url']}/story.php\">върнете се на администраторския екран</a>.",
+    41 => "Опитвате се да влезете в събитие, до което нямате достъп.  Този опит бе регистриран и записан.  Можете да видите статията в режим четене долу. Моля <a href=\"{$_CONF['site_admin_url']}/article.php\">върнете се на администраторския екран</a> когато сте готов.",
+    42 => "Опитвате се да влезете в събитие, до което нямате достъп. Този опит бе записан . Моля <a href=\"{$_CONF['site_admin_url']}/article.php\">върнете се на администраторския екран</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -965,7 +965,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

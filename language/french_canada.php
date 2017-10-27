@@ -888,7 +888,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Articles pr&eacute;c&eacute;dents',
@@ -931,8 +931,8 @@ $LANG24 = array(
     38 => 'More from',
     39 => 'Courriels',
     40 => '',
-    41 => "Vous essayez d'acc&eacute;der &agrave; un article auqule vous n'avez pas droit.  Cette tentative est enregistr&eacute;e.  Vous pouvez voir cet article en lecture seule uniquement. Veuillez <a href=\'{$_CONF['site_admin_url']}/story.php\'>retourner sur la page de contr&ocirc;le des article</a> lorsque vous aurez fini.",
-    42 => "Vous essayez d'acc&eacute;der &agrave; un article auquel vous n'avez pas droit.  Cette tentative est enregistr&eacute;e.  Veuillez <a href=\'{$_CONF['site_admin_url']}/story.php\'>retourner &agrave; la page de contr&ocirc;le des articles</a>.",
+    41 => "Vous essayez d'acc&eacute;der &agrave; un article auqule vous n'avez pas droit.  Cette tentative est enregistr&eacute;e.  Vous pouvez voir cet article en lecture seule uniquement. Veuillez <a href=\'{$_CONF['site_admin_url']}/article.php\'>retourner sur la page de contr&ocirc;le des article</a> lorsque vous aurez fini.",
+    42 => "Vous essayez d'acc&eacute;der &agrave; un article auquel vous n'avez pas droit.  Cette tentative est enregistr&eacute;e.  Veuillez <a href=\'{$_CONF['site_admin_url']}/article.php\'>retourner &agrave; la page de contr&ocirc;le des articles</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -968,7 +968,7 @@ $LANG24 = array(
     75 => 'Toutes les options',
     76 => 'Options de publication',
     77 => 'L\'option Javascript est n&eacute;cessaire pour que cet &eacute;diteur fonctionne. Cette option peut-être d&eacute;sactiv&eacute;e dans config.php',
-    78 => 'Cliquez <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">ici</a> pour utiliser l\'&eacute;diteur par d&eacute;faut',
+    78 => 'Cliquez <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">ici</a> pour utiliser l\'&eacute;diteur par d&eacute;faut',
     79 => 'Pr&eacute;vision',
     80 => '&eacute;dition',
     81 => 'Options de publication',

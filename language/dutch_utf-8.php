@@ -891,7 +891,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Vorige Artikelen',
@@ -934,8 +934,8 @@ $LANG24 = array(
     38 => 'Meer van..',
     39 => 'Emails',
     40 => '',
-    41 => "U heeft geprobeerd een artikel op te roepen zonder geldige autorisatie. De poging is vastgelegd. Het Artikel is hieronder weergegeven. <a href=\'{$_CONF['site_url']}/admin/story.php\'>Terug naar de artikel administratie pagina</a>.",
-    42 => "U heeft geprobeerd een artikel op te roepen zonder geldige autorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/story.php\'>Terug naar de artikel administratie pagina</a>.",
+    41 => "U heeft geprobeerd een artikel op te roepen zonder geldige autorisatie. De poging is vastgelegd. Het Artikel is hieronder weergegeven. <a href=\'{$_CONF['site_url']}/admin/article.php\'>Terug naar de artikel administratie pagina</a>.",
+    42 => "U heeft geprobeerd een artikel op te roepen zonder geldige autorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/article.php\'>Terug naar de artikel administratie pagina</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -971,7 +971,7 @@ $LANG24 = array(
     75 => 'Geheel featured',
     76 => 'Publiceer opties',
     77 => 'Javascript benodigt toegestaan te zijn voor de geavanceerde edittor. De optie kan worden uitgeschakler in config.php',
-    78 => 'Klik <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">hier</a> om de standaard edittor te gebruiken',
+    78 => 'Klik <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">hier</a> om de standaard edittor te gebruiken',
     79 => 'Voorbeeld',
     80 => 'Edittor',
     81 => 'Publiceer opties',

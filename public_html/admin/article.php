@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
-// | story.php                                                                 |
+// | article.php                                                                 |
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
@@ -182,7 +182,7 @@ function liststories($current_topic = '')
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array(
-        array('url'  => $_CONF['site_admin_url'] . '/story.php?mode=edit',
+        array('url'  => $_CONF['site_admin_url'] . '/article.php?mode=edit',
               'text' => $LANG_ADMIN['create_new']),
     );
 
@@ -201,7 +201,7 @@ function liststories($current_topic = '')
     );
     $text_arr = array(
         'has_extras' => true,
-        'form_url'   => $_CONF['site_admin_url'] . '/story.php',
+        'form_url'   => $_CONF['site_admin_url'] . '/article.php',
     );
 
     $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
@@ -318,7 +318,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             // handled by another Admin) - take us back to the moderation page
             COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
         } else {
-            COM_redirect($_CONF['site_admin_url'] . '/story.php');
+            COM_redirect($_CONF['site_admin_url'] . '/article.php');
         }
     } elseif ($result == STORY_DUPLICATE_SID) {
         $display .= COM_showMessageText($LANG24[24]);
@@ -897,7 +897,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $type = Geeklog\Input::fPost('type', '');
     if (!isset($sid) || empty($sid)) {
         COM_errorLog('Attempted to delete story sid=' . $sid);
-        COM_redirect($_CONF['site_admin_url'] . '/story.php');
+        COM_redirect($_CONF['site_admin_url'] . '/article.php');
     } elseif ($type === 'submission') {
         if (TOPIC_hasMultiTopicAccess('article', $sid) < 3) {
             COM_accessLog("User {$_USER['username']} tried to illegally delete story submission $sid.");

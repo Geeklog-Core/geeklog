@@ -883,7 +883,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Noticias Anteriores',
@@ -926,8 +926,8 @@ $LANG24 = array(
     38 => 'Más en',
     39 => 'correos electrónicos',
     40 => '',
-    41 => "Estás intentando acceder a una Noticia a la que no tienes derechos de acceso, por lo que podrás ver la Noticia pero no editarla. Por favor vuelve a la <a href=\"{$_CONF['site_admin_url']}/story.php\">página de administración</a> cuando hayas terminado.",
-    42 => "Estás intentando acceder a una Noticia a la que no tienes derechos de acceso. Por favor vuelve a la <a href=\"{$_CONF['site_admin_url']}/story.php\">página de administración</a>.",
+    41 => "Estás intentando acceder a una Noticia a la que no tienes derechos de acceso, por lo que podrás ver la Noticia pero no editarla. Por favor vuelve a la <a href=\"{$_CONF['site_admin_url']}/article.php\">página de administración</a> cuando hayas terminado.",
+    42 => "Estás intentando acceder a una Noticia a la que no tienes derechos de acceso. Por favor vuelve a la <a href=\"{$_CONF['site_admin_url']}/article.php\">página de administración</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -963,7 +963,7 @@ $LANG24 = array(
     75 => 'Barra de herramientas completa',
     76 => 'Opciones de Publicación',
     77 => 'Javascript debe estar habilitado en el navegador para hacer uso del editor de texto avanzado. El editor de textos avanzado puede deshabilitarse en el archivo config.php.',
-    78 => '<a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">Usar el editor de textos predeterminado</a>',
+    78 => '<a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">Usar el editor de textos predeterminado</a>',
     79 => 'Previsualizar',
     80 => 'Editor',
     81 => 'Opciones de publicación',

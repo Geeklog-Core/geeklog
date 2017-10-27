@@ -405,7 +405,7 @@ if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
             COM_redirect($_CONF['site_admin_url'] . "/plugins/$type/index.php?mode=edit");
         }
     } elseif (SEC_hasRights('story.edit')) {
-        COM_redirect($_CONF['site_admin_url'] . '/story.php?mode=edit');
+        COM_redirect($_CONF['site_admin_url'] . '/article.php?mode=edit');
     }
 
     switch ($type) {

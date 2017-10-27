@@ -884,7 +884,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Předešlé články',
@@ -927,8 +927,8 @@ $LANG24 = array(
     38 => 'Více z',
     39 => 'Posláno emailem',
     40 => '',
-    41 => "Pokoušíte se editovat odkaz na nějž nemáte dostatečná práva.  Tento pokus byl zaznamenán.  Můžete si jen prohlédnout články níže. Prosím <a href=\"{$_CONF['site_admin_url']}/story.php\">vraťte se na administraci článků</a> když skončíte.",
-    42 => "Pokoušíte se editovat odkaz na nějž nemáte dostatečná práva.  Tento pokus byl zaznamenán.  Prosím <a href=\"{$_CONF['site_admin_url']}/story.php\">vraťte se na administraci článků</a>.",
+    41 => "Pokoušíte se editovat odkaz na nějž nemáte dostatečná práva.  Tento pokus byl zaznamenán.  Můžete si jen prohlédnout články níže. Prosím <a href=\"{$_CONF['site_admin_url']}/article.php\">vraťte se na administraci článků</a> když skončíte.",
+    42 => "Pokoušíte se editovat odkaz na nějž nemáte dostatečná práva.  Tento pokus byl zaznamenán.  Prosím <a href=\"{$_CONF['site_admin_url']}/article.php\">vraťte se na administraci článků</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -964,7 +964,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

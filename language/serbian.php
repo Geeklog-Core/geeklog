@@ -890,7 +890,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Prethodni tekst',
@@ -933,8 +933,8 @@ $LANG24 = array(
     38 => 'Vise iz',
     39 => 'Emailovi',
     40 => '',
-    41 => "Pokusavate pristupati tekstu za koji nemate prava pristupa. Ovaj pokusaj pristupa je zabelezen. Mozete pogledati tekst u delu samo citanje ispod. Molimo <a href=\"{$_CONF['site_admin_url']}/story.php\">vratite se nazad</a> kada zavrsite.",
-    42 => "Pokusavate pristupiti tekstu za koji nemate prava pristupa. Ovaj pokusaj pristupa je zabelezen. Molimo <a href=\"{$_CONF['site_admin_url']}/story.php\">vratite se nazad</a>.",
+    41 => "Pokusavate pristupati tekstu za koji nemate prava pristupa. Ovaj pokusaj pristupa je zabelezen. Mozete pogledati tekst u delu samo citanje ispod. Molimo <a href=\"{$_CONF['site_admin_url']}/article.php\">vratite se nazad</a> kada zavrsite.",
+    42 => "Pokusavate pristupiti tekstu za koji nemate prava pristupa. Ovaj pokusaj pristupa je zabelezen. Molimo <a href=\"{$_CONF['site_admin_url']}/article.php\">vratite se nazad</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -970,7 +970,7 @@ $LANG24 = array(
     75 => 'Full Uoblicen',
     76 => 'Opcije Objavljivanja',
     77 => 'Javascript mora biti omogucen za koriscenje Naprednog Editora. Opcija moze biti onemogucena u config.php fajlu',
-    78 => 'Klikni <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">ovde</a> za koriscenje podrazumevanog editora',
+    78 => 'Klikni <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">ovde</a> za koriscenje podrazumevanog editora',
     79 => 'Pregled',
     80 => 'Editor',
     81 => 'Opcije Objavljivanja',

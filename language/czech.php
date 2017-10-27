@@ -884,7 +884,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Pøede¹lé èlánky',
@@ -927,8 +927,8 @@ $LANG24 = array(
     38 => 'Více z',
     39 => 'Posláno emailem',
     40 => '',
-    41 => "Pokou¹íte se editovat odkaz na nìj¾ nemáte dostateèná práva.  Tento pokus byl zaznamenán.  Mù¾ete si jen prohlédnout èlánky ní¾e. Prosím <a href=\"{$_CONF['site_admin_url']}/story.php\">vra»te se na administraci èlánkù</a> kdy¾ skonèíte.",
-    42 => "Pokou¹íte se editovat odkaz na nìj¾ nemáte dostateèná práva.  Tento pokus byl zaznamenán.  Prosím <a href=\"{$_CONF['site_admin_url']}/story.php\">vra»te se na administraci èlánkù</a>.",
+    41 => "Pokou¹íte se editovat odkaz na nìj¾ nemáte dostateèná práva.  Tento pokus byl zaznamenán.  Mù¾ete si jen prohlédnout èlánky ní¾e. Prosím <a href=\"{$_CONF['site_admin_url']}/article.php\">vra»te se na administraci èlánkù</a> kdy¾ skonèíte.",
+    42 => "Pokou¹íte se editovat odkaz na nìj¾ nemáte dostateèná práva.  Tento pokus byl zaznamenán.  Prosím <a href=\"{$_CONF['site_admin_url']}/article.php\">vra»te se na administraci èlánkù</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -964,7 +964,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

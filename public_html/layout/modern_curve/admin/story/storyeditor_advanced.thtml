@@ -5,7 +5,7 @@
 <div id="advanced_editor" style="display: none;">
 {navbar}
 
-<form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onsubmit="set_postcontent();" id="admin-storyeditor_advanced" class="compact">
+<form name="frmstory" action="{site_admin_url}/article.php" method="post" enctype="multipart/form-data" onsubmit="set_postcontent();" id="admin-storyeditor_advanced" class="compact">
 
   <div class="admin_basic">
     <dl>

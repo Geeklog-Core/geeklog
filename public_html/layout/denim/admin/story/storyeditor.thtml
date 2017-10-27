@@ -1,6 +1,6 @@
 {# begin {templatelocation} #}
 
-<form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="frmstory" class="compact uk-form">
+<form name="frmstory" action="{site_admin_url}/article.php" method="post" enctype="multipart/form-data" id="frmstory" class="compact uk-form">
 
   <div class="admin_basic">
     <dl class="form_block">

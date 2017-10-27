@@ -885,7 +885,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Poprzednie Artyku³y',
@@ -928,8 +928,8 @@ $LANG24 = array(
     38 => 'Wiêcej z sekcji',
     39 => 'Emaile',
     40 => '',
-    41 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Mo¿esz podgl±dn±æ artyku³ poni¿ej. Proszê <a href=\"{$_CONF['site_admin_url']}/story.php\">wróciæ do strony administruj±cej artyku³ami.",
-    42 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Proszê <a href=\"{$_CONF['site_admin_url']}/story.php\">wróciæ do strony administruj±cej artyku³ami</a>.",
+    41 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Mo¿esz podgl±dn±æ artyku³ poni¿ej. Proszê <a href=\"{$_CONF['site_admin_url']}/article.php\">wróciæ do strony administruj±cej artyku³ami.",
+    42 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Proszê <a href=\"{$_CONF['site_admin_url']}/article.php\">wróciæ do strony administruj±cej artyku³ami</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -965,7 +965,7 @@ $LANG24 = array(
     75 => 'Pe³na Opcja',
     76 => 'Opcje Publikowania',
     77 => 'Edytor Zaawansowany wymaga w³±czenia Javascript-u. Opcja mo¿e zostaæ wy³±czona w g³ównym pliku config.php',
-    78 => 'Kliknij <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">tutaj</a> aby w³±czyæ edytor domy¶lny',
+    78 => 'Kliknij <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">tutaj</a> aby w³±czyæ edytor domy¶lny',
     79 => 'Podgl±d',
     80 => 'Edytor',
     81 => 'Opcje Publikacji',

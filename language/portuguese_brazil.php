@@ -889,7 +889,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Publicações Anteriores',
@@ -932,8 +932,8 @@ $LANG24 = array(
     38 => 'Mais de',
     39 => 'E-mails',
     40 => '',
-    41 => "Você está tentando acessar uma publicação para a qual você não tem autorização.  Sua tentativa foi registrada.  Você pode ler esta publicação, mas não pode editar, clicando abaixo. Por favor <a href=\"{$_CONF['site_admin_url']}/story.php\">retorne para a tela de Administração de Publicações</a> quando estiver pronto.",
-    42 => "Você está tentando acessar uma publicação para a qual não tem autorização. Esta tentativa foi registrada.  Por favor <a href=\"{$_CONF['site_admin_url']}/story.php\">retorne para a tela de Administração de Publicações.</a>.",
+    41 => "Você está tentando acessar uma publicação para a qual você não tem autorização.  Sua tentativa foi registrada.  Você pode ler esta publicação, mas não pode editar, clicando abaixo. Por favor <a href=\"{$_CONF['site_admin_url']}/article.php\">retorne para a tela de Administração de Publicações</a> quando estiver pronto.",
+    42 => "Você está tentando acessar uma publicação para a qual não tem autorização. Esta tentativa foi registrada.  Por favor <a href=\"{$_CONF['site_admin_url']}/article.php\">retorne para a tela de Administração de Publicações.</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -969,7 +969,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

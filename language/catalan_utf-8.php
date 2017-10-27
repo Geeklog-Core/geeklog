@@ -883,7 +883,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Noticies Anteriors',
@@ -926,8 +926,8 @@ $LANG24 = array(
     38 => 'Més en',
     39 => 'correus electrònics',
     40 => '',
-    41 => "Estàs intentant accedir a una Notícia a la que no tens drets d\'accés, per tant, podràs veure la Notícia però no editar-la. Siusplau torna a la <a href=\"{$_CONF['site_admin_url']}/story.php\">pàgina d\'administració</a> quan hagis acabat.",
-    42 => "Estàs intentant accedir a una Notícia a la que no tens drets d\'accés. Siusplau torna a la <a href=\"{$_CONF['site_admin_url']}/story.php\">pàgina d\'administració</a>.",
+    41 => "Estàs intentant accedir a una Notícia a la que no tens drets d\'accés, per tant, podràs veure la Notícia però no editar-la. Siusplau torna a la <a href=\"{$_CONF['site_admin_url']}/article.php\">pàgina d\'administració</a> quan hagis acabat.",
+    42 => "Estàs intentant accedir a una Notícia a la que no tens drets d\'accés. Siusplau torna a la <a href=\"{$_CONF['site_admin_url']}/article.php\">pàgina d\'administració</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -963,7 +963,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

@@ -888,7 +888,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => '上篇文章',
@@ -931,8 +931,8 @@ $LANG24 = array(
     38 => '更多發表於',
     39 => '電郵',
     40 => '',
-    41 => "企圖存取不允許的文章已被記錄。你可以以唯讀模式觀看下面文章。看完後請<a href=\"{$_CONF['site_admin_url']}/story.php\">反回文章管理員晝面</a>。",
-    42 => "企圖存取不允許的文章已被記錄。請<a href=\"{$_CONF['site_admin_url']}/story.php\">反回文章管理員晝面</a>。",
+    41 => "企圖存取不允許的文章已被記錄。你可以以唯讀模式觀看下面文章。看完後請<a href=\"{$_CONF['site_admin_url']}/article.php\">反回文章管理員晝面</a>。",
+    42 => "企圖存取不允許的文章已被記錄。請<a href=\"{$_CONF['site_admin_url']}/article.php\">反回文章管理員晝面</a>。",
     43 => '',
     44 => '',
     45 => '',
@@ -968,7 +968,7 @@ $LANG24 = array(
     75 => '全部功能',
     76 => '出版選項',
     77 => '必須啟動Javascript 來用高級的編輯器。此選項可再config.php 關掉。',
-    78 => '點擊<a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">這裏</a>來用預設值的編輯器',
+    78 => '點擊<a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">這裏</a>來用預設值的編輯器',
     79 => '預覽',
     80 => '編輯器',
     81 => '出版選項',

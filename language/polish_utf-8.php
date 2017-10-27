@@ -885,7 +885,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Poprzednie Artykuły',
@@ -928,8 +928,8 @@ $LANG24 = array(
     38 => 'Więcej z sekcji',
     39 => 'Emaile',
     40 => '',
-    41 => "Próbujesz wyedytować artykuł do którego nie masz uprawnień.  Ta próba została zapisana w logu.  Możesz podglądnąć artykuł poniżej. Proszę <a href=\"{$_CONF['site_admin_url']}/story.php\">wrócić do strony administrującej artykułami.",
-    42 => "Próbujesz wyedytować artykuł do którego nie masz uprawnień.  Ta próba została zapisana w logu.  Proszę <a href=\"{$_CONF['site_admin_url']}/story.php\">wrócić do strony administrującej artykułami</a>.",
+    41 => "Próbujesz wyedytować artykuł do którego nie masz uprawnień.  Ta próba została zapisana w logu.  Możesz podglądnąć artykuł poniżej. Proszę <a href=\"{$_CONF['site_admin_url']}/article.php\">wrócić do strony administrującej artykułami.",
+    42 => "Próbujesz wyedytować artykuł do którego nie masz uprawnień.  Ta próba została zapisana w logu.  Proszę <a href=\"{$_CONF['site_admin_url']}/article.php\">wrócić do strony administrującej artykułami</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -965,7 +965,7 @@ $LANG24 = array(
     75 => 'Pełna Opcja',
     76 => 'Opcje Publikowania',
     77 => 'Edytor Zaawansowany wymaga włączenia Javascript-u. Opcja może zostać wyłączona w głównym pliku config.php',
-    78 => 'Kliknij <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">tutaj</a> aby włączyć edytor domyślny',
+    78 => 'Kliknij <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">tutaj</a> aby włączyć edytor domyślny',
     79 => 'Podgląd',
     80 => 'Edytor',
     81 => 'Opcje Publikacji',

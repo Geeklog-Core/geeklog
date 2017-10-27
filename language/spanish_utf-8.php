@@ -886,7 +886,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Noticias Anteriores',
@@ -929,8 +929,8 @@ $LANG24 = array(
     38 => 'Más en',
     39 => 'correos electrónicos',
     40 => '',
-    41 => "Estás intentando acceder a una Noticia a la que no tienes derechos de acceso, por lo que podrás ver la Noticia pero no editarla. Por favor vuelve a la <a href=\"{$_CONF['site_admin_url']}/story.php\">página de administración</a> cuando hayas terminado.",
-    42 => "Estás intentando acceder a una Noticia a la que no tienes derechos de acceso. Por favor vuelve a la <a href=\"{$_CONF['site_admin_url']}/story.php\">página de administración</a>.",
+    41 => "Estás intentando acceder a una Noticia a la que no tienes derechos de acceso, por lo que podrás ver la Noticia pero no editarla. Por favor vuelve a la <a href=\"{$_CONF['site_admin_url']}/article.php\">página de administración</a> cuando hayas terminado.",
+    42 => "Estás intentando acceder a una Noticia a la que no tienes derechos de acceso. Por favor vuelve a la <a href=\"{$_CONF['site_admin_url']}/article.php\">página de administración</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -966,7 +966,7 @@ $LANG24 = array(
     75 => 'Todas las características',
     76 => 'Opciones de publicación',
     77 => 'Javascript es preciso para usar el Editor Avanzado. Puede cancelarse esta opción en config.php',
-    78 => 'Pulsa <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">aquí</a> para usar el editor por defecto',
+    78 => 'Pulsa <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">aquí</a> para usar el editor por defecto',
     79 => 'Vista previa',
     80 => 'Editor',
     81 => 'Opciones de publicación',

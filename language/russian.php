@@ -901,7 +901,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Предыдущие статьи',
@@ -944,8 +944,8 @@ $LANG24 = array(
     38 => 'Ещё от',
     39 => 'Пересылки',
     40 => '',
-    41 => "Вы пытались получить доступ к статье, на которую у Вас нет прав. Эта попытка была запротоколирована.  You may view the article in read-only below. Пожалуйста, <a href=\"{$_CONF['site_admin_url']}/story.php\">вернитесь на станицу администрирования статей</a> когда закончите.",
-    42 => "Вы пытались получить доступ к статье, на которую у Вас нет прав. Эта попытка была запротоколирована. Пожалуйста, <a href=\"{$_CONF['site_admin_url']}/story.php\">вернитесь на станицу администрирования статей</a>.",
+    41 => "Вы пытались получить доступ к статье, на которую у Вас нет прав. Эта попытка была запротоколирована.  You may view the article in read-only below. Пожалуйста, <a href=\"{$_CONF['site_admin_url']}/article.php\">вернитесь на станицу администрирования статей</a> когда закончите.",
+    42 => "Вы пытались получить доступ к статье, на которую у Вас нет прав. Эта попытка была запротоколирована. Пожалуйста, <a href=\"{$_CONF['site_admin_url']}/article.php\">вернитесь на станицу администрирования статей</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -981,7 +981,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

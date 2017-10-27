@@ -884,7 +884,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Stiri precedente',
@@ -927,8 +927,8 @@ $LANG24 = array(
     38 => 'Mai mult despre',
     39 => 'Emails',
     40 => '',
-    41 => "You are trying to access o stire that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$_CONF['site_admin_url']}/story.php\">go back to the stire administration screen</a> when you are done.",
-    42 => "You are trying to access o stire that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF['site_admin_url']}/story.php\">go back to the stire administration screen</a>.",
+    41 => "You are trying to access o stire that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$_CONF['site_admin_url']}/article.php\">go back to the stire administration screen</a> when you are done.",
+    42 => "You are trying to access o stire that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF['site_admin_url']}/article.php\">go back to the stire administration screen</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -964,7 +964,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

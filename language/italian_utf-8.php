@@ -887,7 +887,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Articolo Precedente',
@@ -930,8 +930,8 @@ $LANG24 = array(
     38 => 'Altro su',
     39 => 'E-mail',
     40 => '',
-    41 => "Stai tentando di accedere a un articolo dove non hai i permessi di accesso. Questo tentativo sará tracciato. Puoi visualizzare l\articolo in sola lettura sotto. Prego <a href=\"{$_CONF['site_admin_url']}/story.php\">ritorna alla schermata amministrazione articoli</a> una volta terminato.",
-    42 => "Stai tentando di accedere a un articolo dove non hai i permessi di accesso. Questo tentativo sará tracciato. Prego <a href=\"{$_CONF['site_admin_url']}/story.php\">ritorna alla schermata amministrazione articoli</a>.",
+    41 => "Stai tentando di accedere a un articolo dove non hai i permessi di accesso. Questo tentativo sará tracciato. Puoi visualizzare l\articolo in sola lettura sotto. Prego <a href=\"{$_CONF['site_admin_url']}/article.php\">ritorna alla schermata amministrazione articoli</a> una volta terminato.",
+    42 => "Stai tentando di accedere a un articolo dove non hai i permessi di accesso. Questo tentativo sará tracciato. Prego <a href=\"{$_CONF['site_admin_url']}/article.php\">ritorna alla schermata amministrazione articoli</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -967,7 +967,7 @@ $LANG24 = array(
     75 => 'In Vetrina',
     76 => 'Opzioni di Pubblicazione',
     77 => 'É necessario che Javascript sia attivato per utilizzare l\'"Editor Avanzato". É possibile disabilitare quest\'opzione nella configurazione principale di config.php',
-    78 => 'Clicca <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">qui</a> per utilizzare il "default editor"',
+    78 => 'Clicca <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">qui</a> per utilizzare il "default editor"',
     79 => 'Anteprima',
     80 => 'Editor',
     81 => 'Opzioni di pubblicazione',

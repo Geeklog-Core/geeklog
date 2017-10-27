@@ -862,7 +862,7 @@ class Article
         global $_TABLES, $_CONF;
 
         /* magic_quotes_gpc cleanup routine now in submitstory() in
-         * /public_html/admin/story.php
+         * /public_html/admin/article.php
          */
 
         $retval = STORY_LOADED_OK; // default to success

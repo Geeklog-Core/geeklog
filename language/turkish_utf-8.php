@@ -885,7 +885,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Önceki Yazý',
@@ -928,8 +928,8 @@ $LANG24 = array(
     38 => 'Yazýlanlar:',
     39 => 'Emailler',
     40 => '',
-    41 => "Eriþim hakkýnýz olmayan bir yazýya eriþmek istiyorsunuz. Bu eyleminiz kayýtlara eklenmiþtir. Bu yazýya salt okunur þekilde aþaðýdan eriþebilirsiniz. Ýþiniz bittiði zaman lütfen <a href=\"{$_CONF['site_admin_url']}/story.php\">kontrol ekranýna dönünüz</a>.",
-    42 => "Eriþim hakkýnýz olmayan bir yazýya eriþmek istiyorsunuz.  Bu eyleminiz kayýtlara eklenmiþtir.  Lütfen <a href=\"{$_CONF['site_admin_url']}/story.php\">kontrol ekranýna geri dönünüz</a>.",
+    41 => "Eriþim hakkýnýz olmayan bir yazýya eriþmek istiyorsunuz. Bu eyleminiz kayýtlara eklenmiþtir. Bu yazýya salt okunur þekilde aþaðýdan eriþebilirsiniz. Ýþiniz bittiði zaman lütfen <a href=\"{$_CONF['site_admin_url']}/article.php\">kontrol ekranýna dönünüz</a>.",
+    42 => "Eriþim hakkýnýz olmayan bir yazýya eriþmek istiyorsunuz.  Bu eyleminiz kayýtlara eklenmiþtir.  Lütfen <a href=\"{$_CONF['site_admin_url']}/article.php\">kontrol ekranýna geri dönünüz</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -965,7 +965,7 @@ $LANG24 = array(
     75 => 'Full Özellikli',
     76 => 'Yayým Özellikleri',
     77 => 'Advanced Editorü çalýþtýrabilmek için Javascript gereksinimi vardýr.  config.php den gerekli ayarlarý yapabilirsiniz',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Ön Ýzleme',
     80 => 'Editör',
     81 => 'Yayým Ayarlarý',

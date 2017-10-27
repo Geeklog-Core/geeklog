@@ -889,7 +889,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Tidigare artiklar',
@@ -932,8 +932,8 @@ $LANG24 = array(
     38 => 'Mer från',
     39 => 'Epost',
     40 => '',
-    41 => "Du äger inte åtkomst till denna artikel.  Denna incident har loggats.  Du kan läsa artikeln nedan.  Gå tillbaka till <a href=\"{$_CONF['site_admin_url']}/story.php\">artikeladministrationen</a> när du är klar.",
-    42 => "Du äger inte åtkomst till denna artikel.  Denna incident har loggats.  Gå tillbaka till <a href=\"{$_CONF['site_admin_url']}/story.php\">artikeladministrationen</a>.",
+    41 => "Du äger inte åtkomst till denna artikel.  Denna incident har loggats.  Du kan läsa artikeln nedan.  Gå tillbaka till <a href=\"{$_CONF['site_admin_url']}/article.php\">artikeladministrationen</a> när du är klar.",
+    42 => "Du äger inte åtkomst till denna artikel.  Denna incident har loggats.  Gå tillbaka till <a href=\"{$_CONF['site_admin_url']}/article.php\">artikeladministrationen</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -969,7 +969,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

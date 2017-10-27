@@ -888,7 +888,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Prejšnji èlanki',
@@ -931,8 +931,8 @@ $LANG24 = array(
     38 => 'Veè s podroèja',
     39 => 'Št. posredovanj po e-pošti',
     40 => '',
-    41 => "Poskušaš dostopiti do èlanka, do katerega nimaš pravice dostopa. Ta poskus je bil zabeležen in shranjen. Èlanek lahko samo prebereš, ne moreš pa ga urejati. Ko konèaš, pojdi prosim nazaj na <a href=\"{$_CONF['site_url']}/admin/story.php\">zaslon za skrbništvo èlankov</a>.",
-    42 => "Poskušaš dostopiti do èlanka, do katerega nimaš pravice dostopa. Ta poskus je bil zabeležen in shranjen. Pojdi prosim nazaj na <a href=\"{$_CONF['site_url']}/admin/story.php\">zaslon za skrbništvo èlankov</a>.",
+    41 => "Poskušaš dostopiti do èlanka, do katerega nimaš pravice dostopa. Ta poskus je bil zabeležen in shranjen. Èlanek lahko samo prebereš, ne moreš pa ga urejati. Ko konèaš, pojdi prosim nazaj na <a href=\"{$_CONF['site_url']}/admin/article.php\">zaslon za skrbništvo èlankov</a>.",
+    42 => "Poskušaš dostopiti do èlanka, do katerega nimaš pravice dostopa. Ta poskus je bil zabeležen in shranjen. Pojdi prosim nazaj na <a href=\"{$_CONF['site_url']}/admin/article.php\">zaslon za skrbništvo èlankov</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -968,7 +968,7 @@ $LANG24 = array(
     75 => 'Vse funkcije',
     76 => 'Možnosti objave',
     77 => ' Za napredno urejanje mora biti Javascript omogoèen. Možnost lahko onemogoèiš na glavni strani config.php.',
-    78 => 'Za uporabo privzetega urejevalnika klikni <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">tukaj</a>.',
+    78 => 'Za uporabo privzetega urejevalnika klikni <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">tukaj</a>.',
     79 => 'Predogled',
     80 => 'Urejevalnik',
     81 => 'Možnosti objave',

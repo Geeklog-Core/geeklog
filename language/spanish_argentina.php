@@ -883,7 +883,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Notas Anteriores',
@@ -926,8 +926,8 @@ $LANG24 = array(
     38 => 'Más en',
     39 => 'Emails',
     40 => '',
-    41 => "Esta intentando acceder a una Nota para la cual no tiene derechos de acceso, por lo que podrá ver la Nota pero no editarla. Por favor vuelva a la <a href=\"{$_CONF['site_admin_url']}/story.php\">página de administración</a> cuando haya terminado.",
-    42 => "Esta intentando acceder a una Nota para la cual no tiene derechos de acceso. Por favor vuelva a la <a href=\"{$_CONF['site_admin_url']}/story.php\">página de administración</a>.",
+    41 => "Esta intentando acceder a una Nota para la cual no tiene derechos de acceso, por lo que podrá ver la Nota pero no editarla. Por favor vuelva a la <a href=\"{$_CONF['site_admin_url']}/article.php\">página de administración</a> cuando haya terminado.",
+    42 => "Esta intentando acceder a una Nota para la cual no tiene derechos de acceso. Por favor vuelva a la <a href=\"{$_CONF['site_admin_url']}/article.php\">página de administración</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -963,7 +963,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

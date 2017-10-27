@@ -873,7 +873,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'مقاله قبل',
@@ -916,8 +916,8 @@ $LANG24 = array(
     38 => 'بيشتر از',
     39 => 'اي -ميل ها',
     40 => '',
-    41 => "شما در حال تالاش براي دستيابي به مقاله اي هستيد كه اجازه دسترسي به آن را نداريد. اين تلاش شما گزارش شدمقالات فقط خواندني در زير موجود هستند.  <a href=\"{$_CONF['site_admin_url']}/story.php\">بازگشت به صفحه مديريت مقالات",
-    42 => "شما در حال تلاش براي دستيابي به مقاله اي هستيد كه اجازه دسترسي به آن را نداريد. اين تلاش شما گزارش شد.لطفا <a href=\"{$_CONF['site_admin_url']}/story.php\">بازگرديد به صفحه مديريت مقالات</a>.",
+    41 => "شما در حال تالاش براي دستيابي به مقاله اي هستيد كه اجازه دسترسي به آن را نداريد. اين تلاش شما گزارش شدمقالات فقط خواندني در زير موجود هستند.  <a href=\"{$_CONF['site_admin_url']}/article.php\">بازگشت به صفحه مديريت مقالات",
+    42 => "شما در حال تلاش براي دستيابي به مقاله اي هستيد كه اجازه دسترسي به آن را نداريد. اين تلاش شما گزارش شد.لطفا <a href=\"{$_CONF['site_admin_url']}/article.php\">بازگرديد به صفحه مديريت مقالات</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -953,7 +953,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',

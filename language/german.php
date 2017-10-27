@@ -889,7 +889,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Vorherige Artikel',
@@ -932,8 +932,8 @@ $LANG24 = array(
     38 => 'Mehr aus',
     39 => 'E-Mails',
     40 => '',
-    41 => "Du hast keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. Du kannst Dir den Artikel aber ansehen (s.u., Ändern nicht möglich). <a href=\"{$_CONF['site_admin_url']}/story.php\">Zurück zum Administrator-Menü</a>.",
-    42 => "Du hast keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/story.php\">Zurück zum Administrator-Menü</a>.",
+    41 => "Du hast keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. Du kannst Dir den Artikel aber ansehen (s.u., Ändern nicht möglich). <a href=\"{$_CONF['site_admin_url']}/article.php\">Zurück zum Administrator-Menü</a>.",
+    42 => "Du hast keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/article.php\">Zurück zum Administrator-Menü</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -969,7 +969,7 @@ $LANG24 = array(
     75 => 'Alle Symbole',
     76 => 'Veröffentlichung',
     77 => 'JavaScript muß für den WYSIWYG-Editor an sein. Der WYSIWYG-Editor kann in der Geeklog Konfiguration ausgeschaltet werden.',
-    78 => 'Klick <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">hier</a>, um den Standard-Editor zu verwenden',
+    78 => 'Klick <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">hier</a>, um den Standard-Editor zu verwenden',
     79 => 'Vorschau',
     80 => 'Editor',
     81 => 'Veröffentlichung',

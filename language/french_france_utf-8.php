@@ -886,7 +886,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Articles précédents',
@@ -929,8 +929,8 @@ $LANG24 = array(
     38 => 'Autres articles sur',
     39 => 'emails',
     40 => '',
-    41 => "Vous essayez d'éditer un article mais vous n'avez pas les droits nécessaires. Contactez l'administrateur si vous pensez que c'est une erreur. Vous pouvez voir cet article en lecture seule uniquement. Vous pouvez  <a href=\"{$_CONF['site_admin_url']}/story.php\">retourner sur la page de contrôle des article</a>.",
-    42 => "Vous essayez d'accéder à un article auquel vous n'avez pas droit.  Cette tentative est enregistrée.  Veuillez <a href=\'{$_CONF['site_admin_url']}/story.php\'>retourner à la page de contrôle des articles</a>.",
+    41 => "Vous essayez d'éditer un article mais vous n'avez pas les droits nécessaires. Contactez l'administrateur si vous pensez que c'est une erreur. Vous pouvez voir cet article en lecture seule uniquement. Vous pouvez  <a href=\"{$_CONF['site_admin_url']}/article.php\">retourner sur la page de contrôle des article</a>.",
+    42 => "Vous essayez d'accéder à un article auquel vous n'avez pas droit.  Cette tentative est enregistrée.  Veuillez <a href=\'{$_CONF['site_admin_url']}/article.php\'>retourner à la page de contrôle des articles</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -966,7 +966,7 @@ $LANG24 = array(
     75 => 'Toutes les options',
     76 => 'Options de publication',
     77 => 'L\'option Javascript est nécessaire pour que cet éditeur fonctionne. Cette option peut-être désactivée dans la config en ligne.',
-    78 => 'Cliquez <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">ici</a> pour utiliser l\'éditeur par défaut',
+    78 => 'Cliquez <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">ici</a> pour utiliser l\'éditeur par défaut',
     79 => 'Prévision',
     80 => 'Edition',
     81 => 'Options de publication',

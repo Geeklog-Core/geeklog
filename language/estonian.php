@@ -886,7 +886,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Eelmised lood',
@@ -929,8 +929,8 @@ $LANG24 = array(
     38 => 'Rohkem rubriigis',
     39 => 'E-kirju',
     40 => '',
-    41 => "Sa proovisid ligi p‰‰seda loole, millele pole sul ıigust. See katse on logitud. Sa vıid vaadata seda artiklit allpool ainult loetaval kujul. Palun <a href=\"{$_CONF['site_admin_url']}/story.php\">mine p‰rast lugemist tagasi lugude administreerimislehele. </a>",
-    42 => "Sa proovisid ligi p‰‰seda loole, millele pole sul ıigust. See katse on logitud. Palun <a href=\"{$_CONF['site_admin_url']}/story.php\">mine tagasi lugude administreerimislehele. </a>",
+    41 => "Sa proovisid ligi p‰‰seda loole, millele pole sul ıigust. See katse on logitud. Sa vıid vaadata seda artiklit allpool ainult loetaval kujul. Palun <a href=\"{$_CONF['site_admin_url']}/article.php\">mine p‰rast lugemist tagasi lugude administreerimislehele. </a>",
+    42 => "Sa proovisid ligi p‰‰seda loole, millele pole sul ıigust. See katse on logitud. Palun <a href=\"{$_CONF['site_admin_url']}/article.php\">mine tagasi lugude administreerimislehele. </a>",
     43 => '',
     44 => '',
     45 => '',
@@ -966,7 +966,7 @@ $LANG24 = array(
     75 => 'T‰is pıhilugu',
     76 => 'Avaldamise valikud',
     77 => 'Keerukama toimetaja jaoks peab lubatud olema JavaScript. Valiku saab v‰lja l¸litada saidi seadistuslehel.',
-    78 => '<a href="%s/story.php?mode=edit&sid=%s&editopt=default">vaiketoimetaja kasutamiseks klıpsa siia</a>',
+    78 => '<a href="%s/article.php?mode=edit&sid=%s&editopt=default">vaiketoimetaja kasutamiseks klıpsa siia</a>',
     79 => 'Eelvaade',
     80 => 'Toimetaja',
     81 => 'Avaldamisvalikud',
