@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | validator.class.php                                                       |
 // |                                                                           |
@@ -34,20 +34,20 @@
 
 /**
  * This class allows you to make a validation given input values along with its rules.
- * The process is very similiar with CakePHP Model Validation. Much of code in this class
+ * The process is very similar with CakePHP Model Validation. Much of code in this class
  * were borrowed from CakePHP Validation Class.
  *
  * @see    http://book.cakephp.org/view/1143/Data-Validation
  * @author Akeda Bagus
  */
-class validator
+class Validator
 {
     /**
      * Set the the value of methods $check param.
      *
      * @var string
      */
-    public $check = null;
+    private $check = null;
 
     /**
      * Set to a valid regular expression in the class methods.
@@ -55,7 +55,7 @@ class validator
      *
      * @var string
      */
-    public $regex = null;
+    private $regex = null;
 
     /**
      * Some complex patterns needed in multiple places
@@ -67,11 +67,11 @@ class validator
     );
 
     /**
-     * Some class methods use the $type param to determine which validation to perfom in the method
+     * Some class methods use the $type param to determine which validation to perform in the method
      *
      * @var string
      */
-    public $type = null;
+    private $type = null;
 
     /**
      * @var array
@@ -84,22 +84,41 @@ class validator
      *
      * @var array
      */
-    public $errors = array();
+    private $errors = array();
+
+    /**
+     * validator constructor.
+     */
+    private function __construct()
+    {
+        $this->reset();
+    }
+
+    /**
+     * @throws \LogicException
+     */
+    public final function __clone()
+    {
+        throw new \LogicException('You cannot clone this object');
+    }
 
     /**
      * Gets a reference to the Validation object instance
      *
-     * @return object Validation instance
+     * @return Validator
      */
     public static function getInstance()
     {
-        static $instance = array();
+        /**
+         * @var Validator
+         */
+        static $instance = null;
 
-        if (!$instance) {
-            $instance[0] = new validator();
+        if ($instance === null) {
+            $instance = new Validator();
         }
 
-        return $instance[0];
+        return $instance;
     }
 
     /**
@@ -116,19 +135,24 @@ class validator
         switch (count($params)) {
             case 0:
                 return $this->{$method}();
+                
             case 1:
                 return $this->{$method}($params[0]);
+                
             case 2:
                 return $this->{$method}($params[0], $params[1]);
+                
             case 3:
                 return $this->{$method}($params[0], $params[1], $params[2]);
+                
             case 4:
                 return $this->{$method}($params[0], $params[1], $params[2], $params[3]);
+                
             case 5:
                 return $this->{$method}($params[0], $params[1], $params[2], $params[3], $params[4]);
+                
             default:
                 return call_user_func_array(array(&$this, $method), $params);
-                break;
         }
     }
 
@@ -143,8 +167,8 @@ class validator
      */
     public function notEmpty($check)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
 
         if (is_array($check)) {
@@ -170,8 +194,8 @@ class validator
      */
     public function alphaNumeric($check)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
 
         if (is_array($check)) {
@@ -214,8 +238,8 @@ class validator
      */
     public function blank($check)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
 
         if (is_array($check)) {
@@ -290,7 +314,7 @@ class validator
                 break;
 
             default:
-                $_this = validator::getInstance();
+                $_this = Validator::getInstance();
                 $_this->errors[] = 'You must define the $operator parameter for validator::comparison()';
                 break;
         }
@@ -308,8 +332,8 @@ class validator
      */
     public function custom($check, $regex = null)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
         $_this->regex = $regex;
         if (is_array($check)) {
@@ -341,8 +365,8 @@ class validator
      */
     public function date($check, $format = 'ymd', $regex = null)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
         $_this->regex = $regex;
 
@@ -380,8 +404,8 @@ class validator
      */
     public function time($check)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
         $_this->regex = '%^((0?[1-9]|1[012])(:[0-5]\d){0,2}([AP]M|[ap]m))$|^([01]\d|2[0-3])(:[0-5]\d){0,2}$%';
 
@@ -412,8 +436,8 @@ class validator
      */
     public function decimal($check, $places = null, $regex = null)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->regex = $regex;
         $_this->check = $check;
 
@@ -437,8 +461,8 @@ class validator
      */
     public function email($check, $regex = null)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
         $_this->regex = $regex;
 
@@ -474,13 +498,13 @@ class validator
      * Check that value has a valid file extension.
      *
      * @param  mixed $check      Value to check
-     * @param  array $extensions file extenstions to allow
+     * @param  array $extensions file extensions to allow
      * @return boolean Success
      */
     public function extension($check, $extensions = array('gif', 'jpeg', 'png', 'jpg'))
     {
         if (is_array($check)) {
-            return validator::extension(array_shift($check), $extensions);
+            return Validator::extension(array_shift($check), $extensions);
         }
         $extension = strtolower(array_pop(explode('.', $check)));
         foreach ($extensions as $value) {
@@ -505,7 +529,7 @@ class validator
      */
     public function ip($check, $type = 'both')
     {
-        $_this = validator::getInstance();
+        $_this = Validator::getInstance();
         $success = false;
         $type = strtolower($type);
         if ($type === 'ipv4' || $type === 'both') {
@@ -586,7 +610,7 @@ class validator
      * Validate a multiple select.
      * Valid Options
      * - in => provide a list of choices that selections must be made from
-     * - max => maximun number of non-zero choices that can be made
+     * - max => maximum number of non-zero choices that can be made
      * - min => minimum number of non-zero choices that can be made
      *
      * @param  mixed $check   Value to check
@@ -638,7 +662,7 @@ class validator
      */
     public function phone($check, $regex = null)
     {
-        $_this = validator::getInstance();
+        $_this = Validator::getInstance();
         $_this->check = $check;
         $_this->regex = $regex;
 
@@ -688,8 +712,8 @@ class validator
      */
     public function string($check)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
 
         if (is_array($check)) {
@@ -716,8 +740,8 @@ class validator
      */
     public function stringOrEmpty($check)
     {
-        $_this = validator::getInstance();
-        $_this->__reset();
+        $_this = Validator::getInstance();
+        $_this->reset();
         $_this->check = $check;
 
         if (is_array($check)) {
@@ -746,7 +770,7 @@ class validator
      */
     public function url($check, $strict = false)
     {
-        $_this = validator::getInstance();
+        $_this = Validator::getInstance();
         $_this->__populateIp();
         $_this->check = $check;
         $validChars = '([' . preg_quote('!"$&\'()*+,-.@_:;=~') . '\/0-9a-z]|(%[0-9a-f]{2}))';
@@ -794,7 +818,7 @@ class validator
      */
     protected function _check()
     {
-        $_this = validator::getInstance();
+        $_this = Validator::getInstance();
         if (preg_match($_this->regex, $_this->check)) {
             $_this->error[] = false;
 
@@ -815,7 +839,7 @@ class validator
      */
     protected function _extract($params)
     {
-        $_this = validator::getInstance();
+        $_this = Validator::getInstance();
         extract($params, EXTR_OVERWRITE);
 
         if (isset($check)) {
@@ -830,7 +854,7 @@ class validator
     }
 
     /**
-     * Lazily popualate the IP address patterns used for validations
+     * Lazily populate the IP address patterns used for validations
      */
     private function __populateIp()
     {
@@ -861,7 +885,7 @@ class validator
     /**
      * Reset internal variables for another validation run.
      */
-    private function __reset()
+    private function reset()
     {
         $this->check = null;
         $this->regex = null;

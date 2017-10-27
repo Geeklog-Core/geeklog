@@ -1918,7 +1918,7 @@ class config
     {
         global $_CONF_VALIDATE, $LANG_VALIDATION;
 
-        $_validator = validator::getInstance();
+        $_validator = Validator::getInstance();
 
         if (isset($_CONF_VALIDATE[$group][$config]) &&
             !empty($_CONF_VALIDATE[$group][$config])
