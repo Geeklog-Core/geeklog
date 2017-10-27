@@ -63,7 +63,7 @@ if (!SEC_hasRights('story.ping')) {
 
 require_once $_CONF['path_system'] . 'lib-trackback.php';
 require_once $_CONF['path_system'] . 'lib-pingback.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 /**
  * Display trackback comment submission form.

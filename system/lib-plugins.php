@@ -473,7 +473,7 @@ function PLG_commentDelete($type, $cid, $id)
     );
 
     if ($type === 'article') {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
     }
 
     return PLG_callFunctionForOnePlugin('plugin_deletecomment_' . $type, $args);
@@ -502,7 +502,7 @@ function PLG_commentSave($type, $title, $comment, $id, $pid, $postMode)
     $args[5] = $postMode;
 
     if ($type === 'article') {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
     }
 
     return PLG_callFunctionForOnePlugin('plugin_savecomment_' . $type, $args);
@@ -537,7 +537,7 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
     );
 
     if ($type === 'article') {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
     }
 
     return PLG_callFunctionForOnePlugin('plugin_displaycomment_' . $type, $args);
@@ -1535,7 +1535,7 @@ function PLG_collectTags($type = 'tagname')
     }
 
     // ensure that we're picking up the Core autotags
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-article.php';
     require_once $_CONF['path_system'] . 'lib-user.php';
     require_once $_CONF['path_system'] . 'lib-topic.php';
     require_once $_CONF['path_system'] . 'lib-block.php';
@@ -1740,7 +1740,7 @@ function PLG_supportingFeeds()
 {
     global $_CONF, $_PLUGINS;
 
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-article.php';
     require_once $_CONF['path_system'] . 'lib-comment.php';
 
     $retval = array();
@@ -1788,7 +1788,7 @@ function PLG_getFeedNames($plugin)
             $feeds = $function();
         }
     } elseif ($plugin === 'article') {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
         $feeds = plugin_getfeednames_article();
     } elseif ($plugin === 'comment') {
         require_once $_CONF['path_system'] . 'lib-comment.php';
@@ -1832,7 +1832,7 @@ function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $f
             $content = $function($feed, $link, $update_data, $feedType, $feedVersion);
         }
     } elseif ($plugin == 'article') {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
         $content = plugin_getfeedcontent_article($feed, $link, $update_data, $feedType, $feedVersion);
     } elseif ($plugin == 'comment') {
         require_once $_CONF['path_system'] . 'lib-comment.php';
@@ -1976,7 +1976,7 @@ function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $upda
                 $updated_type, $updated_topic, $updated_id);
         }
     } elseif ($plugin === 'article') {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
         $is_current = plugin_feedupdatecheck_article($feed, $topic, $update_data, $limit,
             $updated_type, $updated_topic, $updated_id);
     } elseif ($plugin == 'comment') {
@@ -2019,7 +2019,7 @@ function PLG_getRelatedItems($types, $tids, $max, $trim)
     );
 
     if (in_array('article', $types) || in_array('story', $types) || empty($types)) {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
         $returnedItems = plugin_getrelateditems_story($tids, $max, $trim);
     }
 
@@ -2111,7 +2111,7 @@ function PLG_getWhatsNewComment($type = '', $numReturn = 0, $uid = 0)
 
     // Get Story new comment info first
     if (($type === 'article') || ($type === 'story') || ($type == '')) {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
         $whatsNew = plugin_getwhatsnewcomment_story($numReturn, $uid);
 
         if ($type == '') {
@@ -2288,7 +2288,7 @@ function PLG_getItemInfo($type, $id, $what, $uid = 0, $options = array())
     if (($type == 'article') || ($type == 'story')) {
         global $_CONF;
 
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
 
         $type = 'story';
     }
@@ -2707,7 +2707,7 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 
     if ($type === 'story') {
         // ensure we can see the service_XXX_story functions
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
     }
 
     $output = array();
@@ -2739,7 +2739,7 @@ function PLG_wsEnabled($type)
 
     if ($type == 'story') {
         // ensure we can see the service_XXX_story functions
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
     }
 
     $function = 'plugin_wsEnabled_' . $type;
@@ -2844,7 +2844,7 @@ function PLG_configChange($group, $changes)
 
     // Treat articles like a plugin (since belong to core group)
     $pluginTypes = array('article');
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-article.php';
     // Treat template system like a plugin (since belong to core group)
     $pluginTypes[] = 'template';
     require_once $_CONF['path_system'] . 'lib-template.php';
@@ -3412,7 +3412,7 @@ function PLG_collectSitemapItems($type, $uid = 1, $limit = 0)
     global $_CONF;
 
     if (($type === 'article') || ($type === 'story')) {
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
         $type = 'story';
     }
 

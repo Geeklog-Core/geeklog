@@ -33,7 +33,7 @@
 // +---------------------------------------------------------------------------+
 
 require_once 'lib-common.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see

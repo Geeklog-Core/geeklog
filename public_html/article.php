@@ -45,7 +45,7 @@
  * Geeklog common function library
  */
 require_once 'lib-common.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
 if ($_CONF['trackback_enabled']) {
     require_once $_CONF['path_system'] . 'lib-trackback.php';

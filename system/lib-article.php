@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
-// | lib-story.php                                                             |
+// | lib-article.php                                                             |
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (stripos($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], 'lib-article.php') !== false) {
     die('This file can not be used on its own!');
 }
 

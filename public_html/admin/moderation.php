@@ -35,7 +35,7 @@
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed

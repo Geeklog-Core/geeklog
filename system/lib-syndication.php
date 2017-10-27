@@ -39,7 +39,7 @@ if ($_CONF['trackback_enabled']) {
     require_once $_CONF['path_system'] . 'lib-trackback.php';
 }
 
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;

@@ -305,7 +305,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG08;
 
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-article.php';
 
     $storyUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
 
@@ -433,7 +433,7 @@ function mailstoryform($sid, $cc = false, $to = '', $toemail = '', $from = '',
 {
     global $_CONF, $_TABLES, $_USER, $LANG08;
 
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-article.php';
 
     $retval = '';
 

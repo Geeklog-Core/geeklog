@@ -33,7 +33,7 @@
 // +---------------------------------------------------------------------------+
 
 require_once 'lib-common.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 /**
  * Update array if need be with correct topic.

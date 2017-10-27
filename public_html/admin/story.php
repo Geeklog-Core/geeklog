@@ -52,7 +52,7 @@ require_once 'auth.inc.php';
 /**
  * Geeklog story function library
  */
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 // Set this to true if you want to have this code output debug messages to
 // the error log
