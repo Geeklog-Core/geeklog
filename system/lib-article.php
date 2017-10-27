@@ -1509,7 +1509,7 @@ function plugin_autotags_article($op, $content = '', $autotag = array())
             $A = DB_fetchArray($result);
 
             if ($A['count'] > 0) {
-                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?article=' . $sid);
+                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
                 $linktext = $autotag['parm2'];
                 if (empty($linktext)) {
                     $linktext = stripslashes(DB_getItem($_TABLES['stories'], 'title', "sid = '$sid'"));

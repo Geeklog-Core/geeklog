@@ -70,16 +70,9 @@ if (!empty($mode)) {
     $reply = Geeklog\Input::fPost('reply', '');
     $page = (int) Geeklog\Input::fPost('cpage', 0);
 } else {
-    COM_setArgNames(array('article', 'mode'));
-    $sid = COM_applyFilter(COM_getArgument('article'));
+    COM_setArgNames(array('story', 'mode'));
+    $sid = COM_applyFilter(COM_getArgument('story'));
     $mode = COM_applyFilter(COM_getArgument('mode'));
-
-    if (empty($sid)) {
-        COM_setArgNames(array('story', 'mode'));
-        $sid = COM_applyFilter(COM_getArgument('story'));
-        $mode = COM_applyFilter(COM_getArgument('mode'));
-    }
-
     $order = Geeklog\Input::fGet('order', '');
     $query = Geeklog\Input::get('query', '');
     $reply = Geeklog\Input::fGet('reply', '');
@@ -146,13 +139,13 @@ if ($A['count'] > 0) {
                 ' xmlns="http://www.w3.org/1999/xhtml"');
         }
         $articleTemplate->set_var('direction', $LANG_DIRECTION);
-        
+
         $page_title = $article->DisplayElements('page_title');
         if (empty($page_title)) {
             $page_title = $_CONF['site_name'] . ' - ' . $article->DisplayElements('title');
         }
         $articleTemplate->set_var('page_title', $page_title);
-        
+
         $articleTemplate->set_var('story_title', $article->DisplayElements('title'));
         header('Content-Type: text/html; charset=' . COM_getCharset());
         header('X-XSS-Protection: 1; mode=block');
@@ -198,7 +191,7 @@ if ($A['count'] > 0) {
         $articleTemplate->set_var('site_name', $_CONF['site_name']);
         $articleTemplate->set_var('site_slogan', $_CONF['site_slogan']);
         $articleTemplate->set_var('story_id', $article->getSid());
-        $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?article=' . $article->getSid());
+        $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $article->getSid());
 
         if ($article->DisplayElements('commentcode') >= 0) {
             $commentsUrl = $articleUrl . '#comments';
@@ -226,7 +219,7 @@ if ($A['count'] > 0) {
         }
         $articleTemplate->set_var('lang_full_article', $LANG08[33]);
         $articleTemplate->set_var('article_url', $articleUrl);
-        $printable = COM_buildUrl($_CONF['site_url'] . '/article.php?article='
+        $printable = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
             . $article->getSid() . '&amp;mode=print');
         $articleTemplate->set_var('printable_url', $printable);
 
@@ -242,7 +235,7 @@ if ($A['count'] > 0) {
         }
 
         $headercode = '';
-        $permalink = COM_buildUrl($_CONF['site_url'] . '/article.php?article='
+        $permalink = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
             . $article->getSid());
         $headercode .= '<link rel="canonical" href="' . $permalink . '"'
             . XHTML . '>';
@@ -308,7 +301,7 @@ if ($A['count'] > 0) {
             $articleTemplate->set_var('lang_email_story_alt', $LANG01[64]);
         }
         $printUrl = COM_buildUrl($_CONF['site_url']
-            . '/article.php?article=' . $article->getSid() . '&amp;mode=print');
+            . '/article.php?story=' . $article->getSid() . '&amp;mode=print');
         if ($_CONF['hideprintericon'] == 0) {
             $story_options[] = COM_createLink($LANG11[3], $printUrl, array('rel' => 'nofollow'));
             $articleTemplate->set_var('print_story_url', $printUrl);
@@ -331,7 +324,7 @@ if ($A['count'] > 0) {
                 $story_options[] = COM_createLink($feedTitle, $feedUrl,
                     array(
                         'type'  => $feedType,
-                          'class' => $feedClass
+                        'class' => $feedClass,
                     )
                 );
             }
@@ -454,7 +447,7 @@ if ($A['count'] > 0) {
             }
 
             $permalink = COM_buildUrl($_CONF['site_url']
-                . '/article.php?article=' . $article->getSid());
+                . '/article.php?story=' . $article->getSid());
             $articleTemplate->set_var('trackback',
                 TRB_renderTrackbackComments($article->getSID(), 'article',
                     $article->displayElements('title'), $permalink));
