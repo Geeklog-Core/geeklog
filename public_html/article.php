@@ -99,7 +99,7 @@ if ((strcasecmp($order, 'ASC') !== 0) && (strcasecmp($order, 'DESC') !== 0)) {
 $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getPermSql('AND'));
 $A = DB_fetchArray($result);
 if ($A['count'] > 0) {
-    $story = new Story();
+    $story = new Article();
 
     $args = array(
         'sid'  => $sid,

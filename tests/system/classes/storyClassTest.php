@@ -15,32 +15,32 @@ class storyClass extends TestCase
 
     public function testHasNoContent()
     {
-        $st = new Story();
+        $st = new Article();
         $this->assertFalse($st->hasContent());
     }
 
     public function testHasNoContentAdmin()
     {
-        $st = new Story('admin');
+        $st = new Article('admin');
         $this->assertFalse($st->hasContent());
     }
 
     public function testGetSpamCheckFormatEmpty()
     {
-        $st = new Story();
+        $st = new Article();
         $this->assertEquals('<h1></h1><p></p><p></p>',
             $st->getSpamCheckFormat());
     }
 
     public function testGetSidEmpty()
     {
-        $st = new Story();
+        $st = new Article();
         $this->assertEquals("", $st->getSid());
     }
 
     public function testGetAccessNotSet()
     {
-        $st = new Story();
+        $st = new Article();
         $this->assertNull($st->getAccess());
     }
 }

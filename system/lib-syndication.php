@@ -262,7 +262,7 @@ function SYND_getFeedContentPerTopic($tid, $limit, &$link, &$update, $contentLen
             $sids[] = $row['sid'];
 
             // Need to load story this way for intro and body text to insure things like [imageX] and autotags are processed properly
-            $story = new Story();
+            $story = new Article();
             $story->loadFromArray($row);
 
             $storytitle = stripslashes($row['title']);
@@ -390,7 +390,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $sids[] = $row['sid'];
 
         // Need to load story this way for intro and body text to insure things like [imageX] and autotags are processed properly
-        $story = new Story();
+        $story = new Article();
         $story->loadFromArray($row);
 
         $storytitle = stripslashes($row['title']);

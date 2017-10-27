@@ -103,7 +103,7 @@ function submitstory()
 
     $retval = '';
 
-    $story = new Story();
+    $story = new Article();
 
     if (Geeklog\Input::post('mode') === $LANG12[32]) {
         // preview
@@ -280,7 +280,7 @@ function savestory ($A)
 
     $retval = '';
 
-    $story = new Story();
+    $story = new Article();
     $story->loadSubmission();
 
     // pseudo-formatted story text for the spam check

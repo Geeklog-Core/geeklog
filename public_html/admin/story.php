@@ -266,7 +266,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $display .= COM_showMessageText($errormsg, $LANG24[25]);
     }
 
-    $story = new Story();
+    $story = new Article();
     if ($mode == 'preview') {
         // Handle Magic GPC Garbage:
         while (list($key, $value) = each($_POST)) {

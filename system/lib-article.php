@@ -2,9 +2,9 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
-// | lib-article.php                                                             |
+// | lib-article.php                                                           |
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
@@ -33,11 +33,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (stripos($_SERVER['PHP_SELF'], 'lib-article.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
-
-require_once $_CONF['path_system'] . '/classes/story.class.php';
 
 if ($_CONF['allow_user_photo']) {
     // only needed for the USER_getPhoto function
@@ -58,10 +56,10 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
  * Formats the given article into HTML. Called by index.php, article.php,
  * submit.php and admin/story.php (Preview mode for the last two).
  *
- * @param   Story  $story     The story to display, an instance of the Story class.
- * @param   string $index     n = Full display of article. p = 'Preview' mode. Else introtext only.
- * @param   string $storyTpl  The template to use to render the story.
- * @param   string $query     A search query, if one was specified.
+ * @param   Article $story    The story to display, an instance of the Story class.
+ * @param   string  $index    n = Full display of article. p = 'Preview' mode. Else introtext only.
+ * @param   string  $storyTpl The template to use to render the story.
+ * @param   string  $query    A search query, if one was specified.
  * @return  string           Article as formatted HTML.
  *                            Note: Formerly named COM_Article, and re-written totally since then.
  */
@@ -630,7 +628,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
         if ($index === 'n') {
             $article->set_var(
                 'related_articles_by_keyword',
-                Story::getRelatedArticlesByKeywords(
+                Article::getRelatedArticlesByKeywords(
                     $story->getSid(),
                     $story->DisplayElements('meta_keywords')
                 )
@@ -1939,7 +1937,7 @@ function service_submit_story($args, &$output, &$svc_msg)
             }
         }
     }
-    $story = new Story();
+    $story = new Article();
 
     $gl_edit = false;
     if (isset($args['gl_edit'])) {
@@ -2280,7 +2278,7 @@ function service_get_story($args, &$output, &$svc_msg)
         $sid = $args['sid'];
         $mode = $args['mode'];
 
-        $story = new Story();
+        $story = new Article();
         $retval = $story->loadFromDatabase($sid, $mode);
 
         if ($retval != STORY_LOADED_OK) {
@@ -2358,7 +2356,7 @@ function service_get_story($args, &$output, &$svc_msg)
                 break;
             }
 
-            $story = new Story();
+            $story = new Article();
             $story->loadFromArray($story_array);
 
             // This access check is not strictly necessary

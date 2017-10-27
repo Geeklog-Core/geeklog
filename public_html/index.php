@@ -331,7 +331,7 @@ $breadcrumbs = '';
 
 if ($A = DB_fetchArray($result)) {
     fixTopic($A, $tid_list);
-    $story = new Story();
+    $story = new Article();
     $story->loadFromArray($A);
     if ($_CONF['showfirstasfeatured'] == 1) {
         $story->_featured = 1;
@@ -356,7 +356,7 @@ if ($A = DB_fetchArray($result)) {
     // get remaining stories
     while ($A = DB_fetcharray($result)) {
         fixTopic($A, $tid_list);
-        $story = new Story();
+        $story = new Article();
         $story->loadFromArray($A);
         $display .= STORY_renderArticle($story, 'y');
     }
