@@ -989,7 +989,7 @@ $LANG24 = array(
     90 => 'キーワードのメタタグ',
     91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。',
     92 => '同じテーマの記事',
-    'autotag_desc_story' => '[story: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
+    'autotag_desc_story' => '[article: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'この記事を指定した秒数の間キャッシュします。0 を指定すると、キャッシュしません。(3600 = 1時間、86400 = 1日)'
 );
@@ -1842,7 +1842,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Stories"
+# %i    item, "Articles"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2301,7 +2301,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => '検索条件のデフォルト',
     'search_def_sort' => '並べ替え基準のデフォルト',
     'search_use_topic' => 'Use Current Topic',
-    'autotag_permissions_story' => '[story: ] パーミッション',
+    'autotag_permissions_story' => '[article: ] パーミッション',
     'autotag_permissions_user' => '[user: ] パーミッション',
     'autotag_permissions_topic' => '[topic: ] パーミッション',
     'autotag_permissions_related_topics' => '[related_topics: ] パーミッション',
@@ -2478,7 +2478,7 @@ $LANG_configselects['Core'] = array(
     22 => array('フレーム内表示を許可しない' => 'DENY', '同一オリジンのみフレーム内表示を許可する' => 'SAMEORIGIN', 'フレーム内表示を制限しない' => ''),
     23 => array('無効にする' => 0, '有効にする' => 1, '有効にする(トップページにのみデフォルトを使用する)' => 2),
     24 => array('記事投稿' => 'contribute', 'ホーム' => 'home', '検索オプション' => 'search', '記事一覧' => 'directory', 'Login' => 'login', 'マイアカウント' => 'prefs', 'プラグインエントリ' => 'plugins', 'カスタムエントリ' => 'custom', 'サイト情報' => 'stats'),
-    25 => array('新着記事' => 'story', '新着コメント' => 'comment', '新着トラックバック' => 'trackback', '新着ピングバック' => 'pingback', '新着ユーザー' => 'user', 'ユーザー情報更新' => 'user_update'),
+    25 => array('新着記事' => 'article', '新着コメント' => 'comment', '新着トラックバック' => 'trackback', '新着ピングバック' => 'pingback', '新着ユーザー' => 'user', 'ユーザー情報更新' => 'user_update'),
     26 => array('G (一般向け)' => 'G', 'PG (保護者の指導が望ましい)' => 'PG', 'R (保護者同伴制限付き' => 'R', 'X (17歳未満利用禁止)' => 'X'),
     27 => array('表示回数 (昇順)' => 'hits|asc', '表示回数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc'),
     28 => array('アクセス不可' => 0, '利用する' => 2),

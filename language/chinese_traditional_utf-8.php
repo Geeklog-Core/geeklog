@@ -146,7 +146,7 @@ $LANG01 = array(
     98 => '插件',
     99 => '文章',
     100 => '沒有新的文章',
-    101 => 'There are no older stories',
+    101 => 'There are no older articles',
     102 => '',
     103 => '資料庫備份',
     104 => '由',
@@ -578,7 +578,7 @@ $LANG09 = array(
     62 => '#',
     63 => 'Description',
     64 => 'Showing %1$d - %2$d of %3$d results',
-    65 => 'Story',
+    65 => 'Article',
     66 => 'Comment',
     67 => 'Show %d Results',
     68 => 'Sort By',
@@ -983,7 +983,7 @@ $LANG24 = array(
     90 => 'Meta Keywords',
     91 => 'You can always hit "Preview" to extend the expiry time.',
     92 => 'You might also like',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_story' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1021,7 +1021,7 @@ $LANG27 = array(
     27 => '或上載主題圖像',
     28 => '最大',
     29 => '文件上載出了問題',
-    30 => 'Stories in Topic',
+    30 => 'Articles in Topic',
     31 => 'You have used a restricted Topic ID. Please choose another one.',
     32 => 'Parent Topic',
     33 => 'Inherit',
@@ -1043,7 +1043,7 @@ $LANG27 = array(
     49 => 'This Topic ID is already being used. Please choose another one.',
     50 => 'Yes',
     51 => 'No',
-    52 => 'Story',
+    52 => 'Article',
     53 => 'Image',
     54 => 'Selected',
     55 => 'Assigned',
@@ -1360,7 +1360,7 @@ $LANG33 = array(
     50 => "跟網址有關 ({$_CONF['site_url']})",
     51 => '你所選的檔案名已經在另一個文流中用著了。請選另一個。',
     52 => '錯誤: 檔案名已存在',
-    53 => 'All Frontpage Stories',
+    53 => 'All Frontpage Articles',
     54 => 'Please select the type of feed to create.',
     55 => 'Articles'
 );
@@ -1510,7 +1510,7 @@ $MESSAGE = array(
     98 => 'The plugin was successfully uploaded.',
     99 => 'The plugin already exists.',
     100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
-    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit articles.',
     110 => 'Can not get URL for authentication.',
     111 => 'Authentication error.',
     112 => 'Certification has been canceled.',
@@ -1836,7 +1836,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Stories"
+# %i    item, "Articles"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2281,7 +2281,7 @@ $LANG_confignames['Core'] = array(
     'restrict_webservices' => '限制 Webservices?',
     'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Days to close comments (default)',
-    'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
+    'comment_close_rec_stories' => 'Number of most recent articles enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
     'comment_on_same_page' => 'Comment on Same Page?',
     'show_comments_at_replying' => 'Show Comments at Replying?',
@@ -2295,7 +2295,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Default Search Method',
     'search_def_sort' => 'Default Sort Order',
     'search_use_topic' => 'Use Current Topic',
-    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_story' => '[article: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
@@ -2423,7 +2423,7 @@ $LANG_tab['Core'] = array(
     'tab_whatsnew_block' => 'What\'s New Block',
     'tab_trackback' => 'Trackback',
     'tab_pingback' => 'Pingback',
-    'tab_story' => 'Story',
+    'tab_story' => 'Article',
     'tab_theme_advanced' => 'Advanced Settings',
     'tab_syndication' => 'Syndication',
     'tab_imagelib' => 'Image Library',
@@ -2472,7 +2472,7 @@ $LANG_configselects['Core'] = array(
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'Login' => 'login', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
-    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user', 'User Updates' => 'user_update'),
+    25 => array('New Articles' => 'article', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),

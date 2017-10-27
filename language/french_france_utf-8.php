@@ -144,7 +144,7 @@ $LANG01 = array(
     98 => 'Plugins',
     99 => 'ARTICLES',
     100 => 'Pas de nouvel article',
-    101 => 'There are no older stories',
+    101 => 'There are no older articles',
     102 => '',
     103 => 'Sauvegarde de la BDD',
     104 => 'par',
@@ -981,7 +981,7 @@ $LANG24 = array(
     90 => 'Meta Keywords',
     91 => 'Vous pouvez toujours utiliser le bouton "Aperçu" pour prolonger le délai de péremption.',
     92 => 'You might also like',
-    'autotag_desc_story' => '[story: id Titre alternatif] - Affiche un lien vers un article en utilisant le titre de l\'article, où id est l\'identifiant de l\'article. Optionnellement, un titre alternatif peut être spécifier.',
+    'autotag_desc_story' => '[article: id Titre alternatif] - Affiche un lien vers un article en utilisant le titre de l\'article, où id est l\'identifiant de l\'article. Optionnellement, un titre alternatif peut être spécifier.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1041,7 +1041,7 @@ $LANG27 = array(
     49 => 'This Topic ID is already being used. Please choose another one.',
     50 => 'Yes',
     51 => 'No',
-    52 => 'Story',
+    52 => 'Article',
     53 => 'Image',
     54 => 'Selected',
     55 => 'Assigned',
@@ -1358,7 +1358,7 @@ $LANG33 = array(
     50 => "URL du site ({$_CONF['site_url']})",
     51 => 'Le nom de fichier choisi est présentement utilisé par un autre flux. Merci de choisir un nom différent.',
     52 => 'Erreur: nom de fichier existant',
-    53 => 'All Frontpage Stories',
+    53 => 'All Frontpage Articles',
     54 => 'Please select the type of feed to create.',
     55 => 'Articles'
 );
@@ -1834,7 +1834,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Stories"
+# %i    item, "Articles"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2293,7 +2293,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Méthode de recherche par défaut',
     'search_def_sort' => 'Ordre de recherche par défaut',
     'search_use_topic' => 'Use Current Topic',
-    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_story' => '[article: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
@@ -2383,7 +2383,7 @@ $LANG_fs['Core'] = array(
     'fs_htmlfilter' => 'HTML Filtering',
     'fs_censoring' => 'Censoring',
     'fs_iplookup' => 'IP Lookup',
-    'fs_perm_story' => 'Story Default Permission',
+    'fs_perm_story' => 'Article Default Permission',
     'fs_perm_topic' => 'Topic Default Permission',
     'fs_perm_block' => 'Bloc Default Permission',
     'fs_webservices' => 'Webservices',
@@ -2470,7 +2470,7 @@ $LANG_configselects['Core'] = array(
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Désactivé' => 0, 'Activé' => 1, 'Activé (Par défaut pour la page principale seulement)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'Login' => 'login', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
-    25 => array('Nouveaux articles' => 'story', 'Nouveaux commentaires' => 'comment', 'Nouveaux Trackbacks' => 'trackback', 'Nouveaux Pingbacks' => 'pingback', 'Nouveaux membres' => 'user', 'User Updates' => 'user_update'),
+    25 => array('Nouveaux articles' => 'article', 'Nouveaux commentaires' => 'comment', 'Nouveaux Trackbacks' => 'trackback', 'Nouveaux Pingbacks' => 'pingback', 'Nouveaux membres' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Titre (asc)' => 'title|asc', 'Titre (desc)' => 'title|desc', 'Auteur (asc)' => 'uid|asc', 'Auteur (desc)' => 'uid|desc'),
     28 => array('Pas d\'accès' => 0, 'Utilisation possible' => 2),

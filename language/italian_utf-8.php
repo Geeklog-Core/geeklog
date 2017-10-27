@@ -145,7 +145,7 @@ $LANG01 = array(
     98 => 'Plug-in',
     99 => 'Articoli',
     100 => 'Nessun nuovo articolo',
-    101 => 'There are no older stories',
+    101 => 'There are no older articles',
     102 => '',
     103 => 'Backup DB',
     104 => 'da',
@@ -982,7 +982,7 @@ $LANG24 = array(
     90 => 'Meta Keywords',
     91 => 'É possibile estendere il tempo scadenza.',
     92 => 'You might also like',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_story' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1042,7 +1042,7 @@ $LANG27 = array(
     49 => 'This Topic ID is already being used. Please choose another one.',
     50 => 'Yes',
     51 => 'No',
-    52 => 'Story',
+    52 => 'Article',
     53 => 'Image',
     54 => 'Selected',
     55 => 'Assigned',
@@ -1835,7 +1835,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Stories"
+# %i    item, "Articles"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2294,7 +2294,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Metodo di Ricerca Predefinito',
     'search_def_sort' => 'Ordine Predefinito',
     'search_use_topic' => 'Use Current Topic',
-    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_story' => '[article: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
@@ -2422,7 +2422,7 @@ $LANG_tab['Core'] = array(
     'tab_whatsnew_block' => 'What\'s New Block',
     'tab_trackback' => 'Trackback',
     'tab_pingback' => 'Pingback',
-    'tab_story' => 'Story',
+    'tab_story' => 'Article',
     'tab_theme_advanced' => 'Advanced Settings',
     'tab_syndication' => 'Syndication',
     'tab_imagelib' => 'Image Library',
@@ -2471,7 +2471,7 @@ $LANG_configselects['Core'] = array(
     22 => array('Elevata' => 'DENY', 'Stessa Origine' => 'SAMEORIGIN', '(disabilitata)' => ''),
     23 => array('Disabilitati' => 0, 'Abilitati' => 1, 'Abilitati (Predefiniti solo per la homepage)' => 2),
     24 => array('Contribuisci' => 'contribute', 'Home' => 'home', 'Ricerca Avanzata' => 'search', 'Directory' => 'directory', 'Login' => 'login', 'Il Mio Account' => 'prefs', 'Inserimenti di Plug-in' => 'plugins', 'Inserimenti personalizzati' => 'custom', 'Statistiche del Sito' => 'stats'),
-    25 => array('Nuove Storie' => 'story', 'Nuovi Commenti' => 'comment', 'Nuovi Trackback' => 'trackback', 'Nuovi Pingback' => 'pingback', 'Nuovi Utenti' => 'user', 'User Updates' => 'user_update'),
+    25 => array('Nuove Storie' => 'article', 'Nuovi Commenti' => 'comment', 'Nuovi Trackback' => 'trackback', 'Nuovi Pingback' => 'pingback', 'Nuovi Utenti' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Visite (asc)' => 'hits|asc', 'Visite (desc)' => 'hits|desc', 'Data (asc)' => 'date|asc', 'Data (desc)' => 'date|desc', 'Titolo (asc)' => 'title|asc', 'Titolo (desc)' => 'title|desc', 'Autore (asc)' => 'uid|asc', 'Autore (desc)' => 'uid|desc'),
     28 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),

@@ -297,7 +297,8 @@ function savestory ($A)
         // user doesn't have access to this topic - bail
         COM_redirect($_CONF['site_url'] . '/index.php');
     } elseif (($result == STORY_SAVED ) || ( $result == STORY_SAVED_SUBMISSION )) {
-        if (isset($_CONF['notification']) && in_array('story', $_CONF['notification'])) {
+        if (isset($_CONF['notification']) &&
+            (in_array('article', $_CONF['notification']) || in_array('story', $_CONF['notification']))) {
             sendNotification ($_TABLES['storysubmission'], $story);
         }
 
