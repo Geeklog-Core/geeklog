@@ -63,7 +63,7 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
  * @return  string           Article as formatted HTML.
  *                            Note: Formerly named COM_Article, and re-written totally since then.
  */
-function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml', $query = '')
+function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
            $_IMAGE_TYPE, $mode;
@@ -79,7 +79,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
     }
 
     if (empty($storyTpl)) {
-        $storyTpl = 'storytext.thtml';
+        $storyTpl = 'articletext.thtml';
     }
 
     // Change article template file with the topic (feature request #275)
@@ -93,11 +93,11 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
     $article = COM_newTemplate($templateDir);
     $article->set_file(array(
         'article'          => $storyTpl,
-        'bodytext'         => 'storybodytext.thtml',
-        'featuredarticle'  => 'featuredstorytext.thtml',
-        'featuredbodytext' => 'featuredstorybodytext.thtml',
-        'archivearticle'   => 'archivestorytext.thtml',
-        'archivebodytext'  => 'archivestorybodytext.thtml',
+        'bodytext'         => 'articlebodytext.thtml',
+        'featuredarticle'  => 'featuredarticletext.thtml',
+        'featuredbodytext' => 'featuredarticlebodytext.thtml',
+        'archivearticle'   => 'archivearticletext.thtml',
+        'archivebodytext'  => 'archivearticlebodytext.thtml',
     ));
 
     // begin instance caching...
@@ -133,11 +133,11 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
                     $article = COM_newTemplate($_CONF['path_layout']);
                     $article->set_file(array(
                         'article'          => $storyTpl,
-                        'bodytext'         => 'storybodytext.thtml',
-                        'featuredarticle'  => 'featuredstorytext.thtml',
-                        'featuredbodytext' => 'featuredstorybodytext.thtml',
-                        'archivearticle'   => 'archivestorytext.thtml',
-                        'archivebodytext'  => 'archivestorybodytext.thtml',
+                        'bodytext'         => 'articlebodytext.thtml',
+                        'featuredarticle'  => 'featuredarticletext.thtml',
+                        'featuredbodytext' => 'featuredarticlebodytext.thtml',
+                        'archivearticle'   => 'archivearticletext.thtml',
+                        'archivebodytext'  => 'archivearticlebodytext.thtml',
                     ));
                 } else { // theme templates are not cache so can go ahead and delete story cache
                     CACHE_remove_instance($cacheInstance);

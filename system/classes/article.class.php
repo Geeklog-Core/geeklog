@@ -1211,15 +1211,15 @@ class Article
         
         // Figure out story type normal, featured or archived (grabbed from render article in lib-story)
         if ($this->DisplayElements('featured') == 1) {
-            $article_filevar = 'featuredstorytext.thtml';
+            $article_filevar = 'featuredarticletext.thtml';
         } elseif ($this->DisplayElements('statuscode') == STORY_ARCHIVE_ON_EXPIRE && $this->DisplayElements('expire') <= time()) {
-            $article_filevar = 'archivestorytext.thtml';
+            $article_filevar = 'archivearticletext.thtml';
         } else {
-            $article_filevar = 'storytext.thtml';
+            $article_filevar = 'articletext.thtml';
         }
 
         if (empty($storyTpl)) {
-            $storyTpl = 'storytext.thtml';
+            $storyTpl = 'articletext.thtml';
         }
 
         $article = COM_newTemplate($_CONF['path_layout']);

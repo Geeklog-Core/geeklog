@@ -382,7 +382,7 @@ if ($A['count'] > 0) {
             $related . $optionsblock);
 
         // Another option here could be to figure out if story is first on page
-        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredstorytext.thtml' : '';
+        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredarticletext.thtml' : '';
         $story_template->set_var('formatted_article',
             STORY_renderArticle($story, 'n', $tmpl, $query));
 

@@ -117,7 +117,7 @@ function submitstory()
 
     $storyform = COM_newTemplate($_CONF['path_layout'] . 'submit');
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-        $storyform->set_file('storyform','submitstory_advanced.thtml');
+        $storyform->set_file('storyform','submitarticle_advanced.thtml');
         $storyform->set_var('change_editormode', 'onchange="change_editmode(this);"');
         $storyform->set_var('lang_expandhelp', $LANG24[67]);
         $storyform->set_var('lang_reducehelp', $LANG24[68]);
@@ -135,7 +135,7 @@ function submitstory()
             $storyform->set_var('show_htmleditor', 'none');
         }
     } else {
-        $storyform->set_file('storyform','submitstory.thtml');
+        $storyform->set_file('storyform','submitarticle.thtml');
         if ($story->EditElements('postmode') === 'html') {
             $storyform->set_var('show_texteditor', 'none');
             $storyform->set_var('show_htmleditor', '');
