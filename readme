@@ -73,7 +73,7 @@ features are as follows:
 ======================
     - Create, Schedule, Post and Edit articles in multiple topics.
     - Articles can belong to one or more topics.
-    - Save story drafts until they are ready for publishing.
+    - Save article drafts until they are ready for publishing.
     - Control over formatting used in articles (HTML whitelists).
     - Control over acceptable content (filtering of offensive language).
     - Embed images or other content in articles.

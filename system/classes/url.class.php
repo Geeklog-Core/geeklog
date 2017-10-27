@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | url.class.php                                                             |
 // |                                                                           |
@@ -45,6 +45,11 @@ class Url
     /**
      * @var array
      */
+    private $originalArguments = array();
+
+    /**
+     * @var array
+     */
     private $arguments = array();  // Array of argument names
 
     /**
@@ -78,6 +83,9 @@ class Url
 
         if ($this->urlRewrite) {
             $this->getArguments();
+
+            // Cache $this->arguments for later use
+            $this->originalArguments = $this->arguments;
         }
     }
 
@@ -101,7 +109,7 @@ class Url
     public function setArgNames(array $names)
     {
         if ($this->urlRewrite) {
-            $this->getArguments();
+            $this->arguments = $this->originalArguments;
             $newArray = array();
 
             foreach ($names as $name) {

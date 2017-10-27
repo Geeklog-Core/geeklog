@@ -1461,6 +1461,69 @@ function plugin_group_changed_story($grp_id, $mode)
 }
 
 /**
+ * Implements the [article:] autotag.
+ *
+ * @param   string $op      operation to perform
+ * @param   string $content item (e.g. story text), including the autotag
+ * @param   array  $autotag parameters used in the autotag
+ * @return  mixed           tag names (for $op='tagname') or formatted content
+ */
+function plugin_autotags_article($op, $content = '', $autotag = array())
+{
+    global $_CONF, $_TABLES, $LANG24, $_GROUPS;
+
+    if ($op === 'tagname') {
+        return 'article';
+    } elseif ($op === 'permission' || $op === 'nopermission') {
+        $flag = ($op == 'permission');
+        $tagnames = array();
+
+        if (isset($_GROUPS['Story Admin'])) {
+            $group_id = $_GROUPS['Story Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();
+        $p = 'autotag_permissions_story';
+        if (COM_getPermTag($owner_id, $group_id,
+                $_CONF[$p][0], $_CONF[$p][1],
+                $_CONF[$p][2], $_CONF[$p][3]) == $flag
+        ) {
+            $tagnames[] = 'article';
+        }
+
+        if (count($tagnames) > 0) {
+            return $tagnames;
+        }
+    } elseif ($op == 'description') {
+        return array(
+            'story' => $LANG24['autotag_desc_story'],
+        );
+    } else {
+        $sid = COM_applyFilter($autotag['parm1']);
+        $sid = COM_switchLanguageIdForObject($sid);
+        if (!empty($sid)) {
+            $result = DB_query("SELECT COUNT(*) AS count "
+                . "FROM {$_TABLES['stories']} "
+                . "WHERE sid = '$sid'");
+            $A = DB_fetchArray($result);
+
+            if ($A['count'] > 0) {
+                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?article=' . $sid);
+                $linktext = $autotag['parm2'];
+                if (empty($linktext)) {
+                    $linktext = stripslashes(DB_getItem($_TABLES['stories'], 'title', "sid = '$sid'"));
+                }
+                $link = COM_createLink($linktext, $url);
+                $content = str_replace($autotag['tagstr'], $link, $content);
+            }
+        }
+
+        return $content;
+    }
+}
+
+/**
  * Implements the [story:] autotag.
  *
  * @param   string $op      operation to perform
