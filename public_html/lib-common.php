@@ -3292,7 +3292,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                     ),
                     array(
                         'condition' => SEC_hasRights('story.edit'),
-                        'url'       => $_CONF['site_admin_url'] . '/story.php',
+                        'url'       => $_CONF['site_admin_url'] . '/article.php',
                         'lang'      => $LANG01[11],
                         'num'       => COM_numberFormat($storyCount),
                         'image'     => $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,

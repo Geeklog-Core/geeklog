@@ -5,21 +5,21 @@
 <div id="advanced_editor" style="display: none;">
 {navbar}
 
-<form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onsubmit="set_postcontent();" id="admin-storyeditor_advanced" class="compact">
+<form  name="frmstory" action="{site_admin_url}/article.php" method="post" enctype="multipart/form-data" onsubmit='set_postcontent();' id="frmstory" class="compact uk-form">
 
   <div class="admin_basic">
-    <dl>
+    <dl class="form_block">
       <dt>{lang_author}</dt>
-      <dd>{story_author}</dd>
+      <dd class="controls_text">{story_author}</dd>
 
       <dt><label for="admin-storyeditor_advanced-title">{lang_title}</label></dt>
-      <dd><input type="text" size="48" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-storyeditor_advanced-title','admin-storyeditor_advanced-sid');" {!endif}value="{story_title}" name="title" id="admin-storyeditor_advanced-title" class="text"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-storyeditor_advanced-title','admin-storyeditor_advanced-sid');" {!endif}value="{story_title}" name="title" id="admin-storyeditor_advanced-title" class="size6"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor-page_title">{lang_page_title}</label></dt>
-      <dd><input type="text" size="48" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="text"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="size6"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor_advanced-sid">{lang_sid}</label></dt>
-      <dd><input type="text" size="48" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor_advanced-sid" class="text"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor_advanced-sid" class="size6"{xhtml}></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
       <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" style="width:95%" cols="70" rows="2">{meta_description}</textarea></dd>
@@ -27,21 +27,21 @@
       <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
       <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" style="width:95%" cols="70" rows="2">{meta_keywords}</textarea></dd>
 
-      <dt><label>{lang_topic}</label></dt>
-      <dd>{topic_selection}</dd>
+      <dt><label for="tid">{lang_topic}</label></dt>
+      <dd class="controls_text">{topic_selection}</dd>
 
       <dt><label for="admin-storyeditor_advanced-show_topic_icon">{lang_show_topic_icon}</label></dt>
-      <dd><input type="checkbox" {show_topic_icon_checked} name="show_topic_icon" id="admin-storyeditor_advanced-show_topic_icon"{xhtml}></dd>
+      <dd class="controls_text"><input type="checkbox" {show_topic_icon_checked} name="show_topic_icon" id="admin-storyeditor_advanced-show_topic_icon"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor_advanced-cachetime">{lang_cachetime}</label></dt>
-      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor_advanced-cachetime" class="text"{xhtml}></dd>
-      <dd class="description">{lang_cachetime_desc}</dd>
+      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor_advanced-cachetime" class="text" aria-describedby="desc-admin-storyeditor_advanced-cachetime"{xhtml}></dd>
+      <dd class="description" id="desc-admin-storyeditor_advanced-cachetime">{lang_cachetime_desc}</dd>
 
       <dt><label for="admin-storyeditor_advanced-draft_flag">{lang_draft}</label></dt>
-      <dd><input type="checkbox" {is_checked} name="draft_flag" id="admin-storyeditor_advanced-draft_flag"{xhtml}></dd>
+      <dd class="controls_text"><input type="checkbox" {is_checked} name="draft_flag" id="admin-storyeditor_advanced-draft_flag"{xhtml}></dd>
 
       <dt>{lang_story_stats}</dt>
-      <dd><div class="clearfix">
+      <dd class="controls_text"><div class="clearfix">
             <span class="story_stats">{lang_hits}: {story_hits}</span>
             <span class="story_stats">{lang_comments}: {story_comments}</span>
             <span class="story_stats">{lang_trackbacks}: {story_trackbacks}</span>
@@ -57,63 +57,59 @@
     </dl>
   </div>
 
-  <div>
-    <div id="text_editor" style="display: {show_texteditor};">
-      <dl>
+  <div class="clearboth">
+    <div id="text_editor" class="story_editor" style="display: {show_texteditor};">
+      <dl class="form_block">
         <dt><label for="introtext">{lang_introtext}</label></dt>
         <dd>
-          <ul class="navi">
-            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');" alt="expand button"{xhtml}></li>
-            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');" alt="collapse button"{xhtml}></li>
-          </ul>
-          <textarea cols="45" rows="14" name="introtext" id="introtext">{story_introtext}</textarea>
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-mini" type="button" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');" alt="expand button"><i class="uk-icon-plus"></i></button>
+            <button class="uk-button uk-button-mini" type="button" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');" alt="collapse button"><i class="uk-icon-minus"></i></button>
+          </div>
+          <textarea cols="45" rows="14" name="introtext" id="introtext" class="wide" aria-describedby="desc-admin-storyeditor-text">{story_introtext}</textarea>
         </dd>
 
-        <dt>
-          <label for="bodytext">{lang_bodytext}</label>
-        </dt>
+        <dt><label for="bodytext">{lang_bodytext}</label></dt>
         <dd>
-          <ul class="navi">
-            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');" alt="expand button"{xhtml}></li>
-            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');" alt="collapse button"{xhtml}></li>
-          </ul>
-          <textarea cols="45" rows="14" name="bodytext" id="bodytext">{story_bodytext}</textarea>
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-mini" type="button" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');" alt="expand button"><i class="uk-icon-plus"></i></button>
+            <button class="uk-button uk-button-mini" type="button" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');" alt="collapse button"><i class="uk-icon-minus"></i></button>
+          </div>
+          <textarea cols="45" rows="14" name="bodytext" id="bodytext" class="wide" aria-describedby="desc-admin-storyeditor-text">{story_bodytext}</textarea>
         </dd>
+        <dd class="description" id="desc-admin-storyeditor-text">{lang_allowed_html}</dd>
       </dl>
-      <div class="description">{lang_allowed_html}</div>
     </div>
 
-    <div id="html_editor" style="display: {show_htmleditor};">
-      <dl>
+    <div id="html_editor" class="story_editor" style="display: {show_htmleditor};">
+      <dl class="form_block">
+        <dt><label for="fckeditor_toolbar_selector">{lang_toolbar}</label></dt>
+        <dd><select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
+              <option value="editor-toolbar1">{toolbar1}</option>
+              <option value="editor-toolbar2" selected="selected">{toolbar2}</option>
+              <option value="editor-toolbar3">{toolbar3}</option>
+              <option value="Default">{toolbar5}</option>
+            </select></dd>
+
         <dt><label for="introhtml">{lang_introtext}</label></dt>
         <dd>
-          <ul class="navi">
-            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');" alt="expand button"{xhtml}></li>
-            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');" alt="collapse button"{xhtml}></li>
-            <li>
-              {lang_toolbar}
-              <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
-                <option value="editor-toolbar1">{toolbar1}</option>
-                <option value="editor-toolbar2" selected="selected">{toolbar2}</option>
-                <option value="editor-toolbar3">{toolbar3}</option>
-                <option value="Default">{toolbar5}</option>
-              </select>
-            </li>
-          </ul>
-          <textarea cols="45" rows="12" name="introhtml" id="introhtml">{story_introtext}</textarea>
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-mini" type="button" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');" alt="expand button"><i class="uk-icon-plus"></i></button>
+            <button class="uk-button uk-button-mini" type="button" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');" alt="collapse button"><i class="uk-icon-minus"></i></button>
+          </div>
+          <textarea cols="45" rows="12" name="introhtml" id="introhtml" class="wide">{story_introtext}</textarea>
         </dd>
 
         <dt><label for="bodyhtml">{lang_bodytext}</label></dt>
         <dd>
-          <ul class="navi">
-            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('bodyhtml','larger');" alt=""{xhtml}></li>
-            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');" alt=""{xhtml}></li>
-          </ul>
-          <textarea cols="45" rows="20" name="bodyhtml" id="bodyhtml">{story_bodytext}</textarea>
+          <div class="uk-button-group">
+            <button class="uk-button uk-button-mini" type="button" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('bodyhtml','larger');" alt="expand button"><i class="uk-icon-plus"></i></button>
+            <button class="uk-button uk-button-mini" type="button" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');" alt="collapse button"><i class="uk-icon-minus"></i></button>
+          </div>
+          <textarea cols="45" rows="20" name="bodyhtml" id="bodyhtml" class="wide">{story_bodytext}</textarea>
+          <div id="editor_mode">{lang_allowed_html}</div>
         </dd>
       </dl>
-
-      <div id="editor_mode" class="description">{lang_allowed_html}</div>
     </div>
   </div>
 
@@ -122,10 +118,10 @@
   <fieldset>
     <legend>{lang_publishdate}</legend>
 
-    <dl>
+    <dl class="form_block">
       <dt><label for="admin-storyeditor_advanced-publish_month">{lang_date}</label></dt>
       <dd>
-        <select name="publish_month" id="admin-storyeditor_advanced-publish_month">
+        <select name="publish_month" id="admin-storyeditor_advanced-publish_month" aria-describedby="desc-admin-storyeditor-publish_month">
           {publish_month_options}
         </select>
         /
@@ -147,18 +143,18 @@
 
         {publishampm_selection}
       </dd>
-      <dd class="description">{publish_date_explanation}</dd>
+      <dd class="description" id="desc-admin-storyeditor-publish_month">{publish_date_explanation}</dd>
     </dl>
   </fieldset>
 
   <fieldset>
     <legend>{lang_publishoptions}</legend>
 
-    <dl>
-      <dt>{lang_mode}</dt>
+    <dl class="form_block">
+      <dt><label for="publish-options">{lang_mode}</label></dt>
       <dd>
         {featured_options}
-        <select name="frontpage">
+        <select name="frontpage" id="publish-options">
           {frontpage_options}
         </select>
         <select name="commentcode">
@@ -205,8 +201,8 @@
   <fieldset>
     <legend>{lang_images}</legend>
 
-    <dl>
-      <dt>{lang_images}</dt>
+    <dl class="form_block">
+      <dt><label>{lang_images}</label></dt>
       <dd>
         {saved_images}
         {image_form_elements}
@@ -221,9 +217,9 @@
   <fieldset>
     <legend>{lang_archivetitle}</legend>
 
-    <dl>
+    <dl class="form_block">
       <dt><label for="admin-storyeditor_advanced-archiveflag">{lang_archivetitle}</label></dt>
-      <dd>
+      <dd class="controls_text">
         <label for="admin-storyeditor_advanced-archiveflag">{lang_enabled}</label>&nbsp;
         <input type="checkbox" value="1" {is_checked2} onclick="enablearchive(this);" name="archiveflag" id="admin-storyeditor_advanced-archiveflag"{xhtml}>
         <input type="checkbox" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}><label for="storycode10">{lang_optionarchive}</label>
@@ -264,10 +260,9 @@
   <div  id="se_perms" style="display: none;">
   <fieldset>
     <legend>{lang_accessrights}</legend>
-
-    <dl>
+    <dl class="form_block">
       <dt>{lang_owner}</dt>
-      <dd>{owner_name}</dd>
+      <dd class="controls_text">{owner_name}</dd>
 
       <dt><label for="group_id">{lang_group}</label></dt>
       <dd>{group_dropdown}</dd>
@@ -283,12 +278,13 @@
 
 
   <div id="se_bottom" style="display:{show_submitoptions}">
-  <ul class="submit">
-    <li><input type="submit" value="{lang_save}" name="mode"{xhtml}></li>
-    <li><input type="submit" value="{lang_preview}" name="mode"{xhtml}></li>
-    <li><input type="submit" value="{lang_cancel}" name="mode"{xhtml}></li>
-    <li>{delete_option}</li>
-    <li>
+    <div class="submit">
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+      <button type="submit" name="mode" value="{lang_preview}" class="uk-button uk-button-success">{lang_preview}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" value="{lang_cancel}" name="mode" class="uk-button">{lang_cancel}</button>
       <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
       <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
       <input type="hidden" name="old_sid" value="{old_story_id}"{xhtml}>
@@ -301,13 +297,12 @@
       <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
       {submission_option}
-    </li>
-  </ul>
+    </div>
   </div>
 </form>
 </div>
 
-<div id="preview" style="display: {show_preview};">
+<div id="preview" class="article" style="display: {show_preview};">
   {preview_content}
 </div>
 

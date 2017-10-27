@@ -466,7 +466,7 @@
     HTMLで自動タグのディスクリプションをtooltipとして表示できるようにしました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001042">#0001042</a>)
     [Tom]</li>
   <li>tooltip表示のためのCOM_Tooltip関数を追加しました。[Tom]</li>
-  <li>[story:]をlib-story.php、[user:]をlib-user.phpに移動しました。
+  <li>[story:]をlib-article.php、[user:]をlib-user.phpに移動しました。
     (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001115">#0001115</a>への準備)    [Dirk]</li>
 </ul>
 
@@ -2057,7 +2057,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
     <li>Sorted all stylesheet definitions alphabetically and split semantics and classes [Oliver]</li>
     <li>When making a topic the archive topic, update all existing stories in that topic to "archived" status (and likewise revert that status if the topic loses its archive topic status) [Dirk]</li>
     <li>Don't count archived stories as new stories in the What's New block [Dirk]</li>
-    <li>Moved the defines for STORY_ARCHIVE_ON_EXPIRE and STORY_DELETE_ON_EXPIRE to lib-story.php (from config.php) where they make more sense [Dirk]</li>
+    <li>Moved the defines for STORY_ARCHIVE_ON_EXPIRE and STORY_DELETE_ON_EXPIRE to lib-article.php (from config.php) where they make more sense [Dirk]</li>
     <li>COM_getPermSQL was using the current user's group information when called for another user. In Geeklog, this only happens for the Daily Digest, though (bug #594) [Dirk]</li>
     <li>When comments are disabled for a story, don't show any existing comments in the What's New block, in search results or via comment.php (bug #597) [Dirk]</li>
     <li>When trackbacks are disabled for a story, don't list any existing trackbacks in the What's New block [Dirk]</li>
@@ -2710,11 +2710,11 @@ Bugfixes:</p>
 
 <p>Bugfixes:</p>
 <ul>
-    <li>Added a missing stripslashes() call for the topic name in the What's Related block (bug #351) [Dirk]<br />(affected file: system/lib-story.php)</li>
+    <li>Added a missing stripslashes() call for the topic name in the What's Related block (bug #351) [Dirk]<br />(affected file: system/lib-article.php)</li>
     <li>Fixed problems in the story editor when editing plain-text posts with uploaded images (bug #356) [Dirk]<br />
-  (affected file: public_html/admin/story.php)</li>
+  (affected file: public_html/admin/article.php)</li>
     <li>When changing a story ID, update the story ID in any comments to that story, too (bug #357) [Dirk]<br />
-  (affected file: public_html/admin/story.php)</li>
+  (affected file: public_html/admin/article.php)</li>
     <li>Fixed handling of autotags that started with the same substring, e.g. for 2 tags 'mytag' and 'mytagtwo', the second tag would not be recognized (reported by Dr. Shakagee) [Dirk]<br />
   (affected file: system/lib-plugins.php)</li>
     <li>Fixed caching of $_GROUPS [Dirk]<br />
@@ -2867,7 +2867,7 @@ Bugfixes:</p>
     <li>Added support for URL rewriting to portal.php [Dirk]</li>
     <li>The links for the What's Related block are stored in the 'related' field in the gl_stories table again. Parsing the story for links every time it is rendered uses too much CPU power (with apologies to groklaw.net) [Dirk]</li>
     <li>Added theme variable {story_link} to commentbar.thtml to link back to original story the comments are derived from. [Vinny]</li>
-    <li>Introduced new file system/lib-story.php for story-related functions and moved COM_article, COM_whatsRelated, COM_extractLinks, as well as the code to delete article images into that file (functions were renamed accordingly: STORY_renderArticle, STORY_whatsRelated, STORY_extractLinks) [Dirk]</li>
+    <li>Introduced new file system/lib-article.php for story-related functions and moved COM_article, COM_whatsRelated, COM_extractLinks, as well as the code to delete article images into that file (functions were renamed accordingly: STORY_renderArticle, STORY_whatsRelated, STORY_extractLinks) [Dirk]</li>
     <li>Fixed URLs to userphotos and story images when $_CONF['path_images'] had been changed (but was still inside of $_CONF['path_html']) [Dirk]</li>
     <li>Added a script to convert an existing database to InnoDB tables (if the MySQL version supports them): admin/install/toinnodb.php [Dirk]</li>
     <li>Added missing closing &lt;/a&gt; tag in story search results (bug #260) [Dirk]</li>
@@ -2894,7 +2894,7 @@ Bugfixes:</p>
     <li>Don't emit the &lt;br&gt;&lt;br&gt; in article.php when the story's body text is empty (based on patch #147, provided by Andy Maloney) [Dirk]</li>
     <li>Set {article_url} variable when displaying the story in article.php [Dirk]</li>
     <li>Fixed missing &lt;/select&gt; tags for the comment display mode and sort order drop-down menus in usersettings.php (patch #255, provided by machinari) [Dirk]</li>
-    <li>Hard-coded the names of the pseudo image tags in story.php, i.e. they are always [imageX], [imageX_left], and [imageX_right] now, independent of the current language file (bug #139) [Dirk]</li>
+    <li>Hard-coded the names of the pseudo image tags in article.php, i.e. they are always [imageX], [imageX_left], and [imageX_right] now, independent of the current language file (bug #139) [Dirk]</li>
     <li>Added the Auto-Archive Management feature. Optionally allows the Story Editor to archive or delete a story when the expire date is reached [Blaine]</li>
     <li>Improved the commentbar to logically support comments viewed from comment.php [Vinny]</li>
     <li>Removed a bug in comment.php that allowed a story/comment mismatch during display.  This was not exploitable.  [Vinny]</li>
@@ -2924,7 +2924,7 @@ Bugfixes:</p>
     <li>Resizing an image didn't work when the image height exceeded the max. height but the image width was still below the max. width (bug #242) [Dirk]</li>
     <li>Keeping the unscaled image when using GDlib didn't work (bug #197) [Dirk]</li>
     <li>Added a workaround for the Zeus webserver so that blocks marked "homeonly" properly appear there (bug #244) [Dirk]</li>
-    <li>Previewing a story submission from admin/story.php before saving it left the original story submission in the submission queue while also adding it as a new story. This has been fixed now [Dirk]</li>
+    <li>Previewing a story submission from admin/article.php before saving it left the original story submission in the submission queue while also adding it as a new story. This has been fixed now [Dirk]</li>
     <li>Added {article_url} variable for article/printable.thtml so that we can print the proper URL to the article if URL rewriting is on [Dirk]</li>
     <li>Added filtering for the $order parameter in article.php [Dirk]</li>
     <li>Added {link_actual_url} variable in links.php, holding the actual URL of a link (not Geeklog's redirect URL via portal.php). Updated template file links/linkdetails.thtml in all default themes to use {link_actual_url} in a title attribute for the links [Dirk]</li>
@@ -3671,7 +3671,7 @@ Bugfixes:</p>
     <li>Fixed an SQL error when calling search.php and there were no stories and no comments in the system.</li>
     <li>Fixed an SQL error in the user profile when there were no stories and no polls in the system.</li>
     <li>Fixed date bug when previewing stories to be posted around the noon hour in the admin story editor.</li>
-    <li>Added sanity checks in admin/story.php to prevent possible loss of stories when using an incomplete language file (or manipulating the URL).</li>
+    <li>Added sanity checks in admin/article.php to prevent possible loss of stories when using an incomplete language file (or manipulating the URL).</li>
     <li>Fixed a variable in admin/plugins/editor.ththml of the Smooth Blue theme.</li>
     <li>Fixed a typo and a grammatical error in english.php</li>
     <li>Fixed problems with the "static page as frontpage" hack:<br />
@@ -3892,7 +3892,7 @@ Bugfixes:</p>
     <li>install.php was reworked a bit for upcoming release</li>
     <li>lib-common.php has changed.  can't even begin to note all the changes there</li>
     <li>admin/user.php has a very simple batch import utility.  You can now create multiple accounts by importing a tab-delimited file.  See that page for file format specs</li>
-    <li>story.php was reworked a bit to be simplified and to correctly do paging (old paging feature had a bug where one article would never show up.</li>
+    <li>article.php was reworked a bit to be simplified and to correctly do paging (old paging feature had a bug where one article would never show up.</li>
     <li>admin/user.php now allows for paging and searching.  Check it out, you'll see what I mean ;-)</li>
     <li>blocks can now be disabled in admin/block.php</li>
     <li>added support for images in articles</li>
@@ -3941,7 +3941,7 @@ Bugfixes:</p>
     <li>Fixed problems with saving rights to a group in admin/group.php (admin/group.php)</li>
     <li>Fixed bug in admin/user that would reset user's settings when admin made a change (admin/user.php)</li>
     <li>Fixed bug in index.php.  There were two FOR loops, one nested inside the other both interating on the variable $i.  This caused problems only for users who went into display preferences and selected only the topics they wanted to get articles for (index.php)</li>
-    <li>Fixed bug in story admin that would prevent the date edit from prepopulating right when admin hit the preview button (admin/story.php)</li>
+    <li>Fixed bug in story admin that would prevent the date edit from prepopulating right when admin hit the preview button (admin/article.php)</li>
     <li>Modified admin/plugin.php to reflect change in how plugins are installed.  Because of platform dependance issues, all plugins will have a simple but manual installation process.  This should work across all platforms. (admin/plugin.php, layout/Yahoo/admin/plugins/pluginlist.thtml, layout/Classic/admin/plugins/pluginlist.thtml, layout/Digital_Monochrome/admin/plugins/pluginlist.thtml)</li>
     <li>Alter the database to force all stories to show on the frontpage by default.  This will make the moderation of articles work as expected.  Before if you approved an article it would show up only in the topic and not on the frontpage (mysql_tableanddata.sql, table.sql, mysql_1.3.3_to_1.3.4.sql)</li>
 </ul>
@@ -4014,7 +4014,7 @@ Bugfixes:</p>
     <li>Fixed overlapping/bad HTML in index.php and common.php</li>
     <li>Fixed the bug in the sections block that showed submission cue numbers to non-logged in people</li>
     <li>Added workaround for problem where users (after following link in e-mail after registration) would still see the login page after logging in</li>
-    <li>Created phrase IDs for previously hard-coded English in common.php and story.php</li>
+    <li>Created phrase IDs for previously hard-coded English in common.php and article.php</li>
     <li>Fixed a bug which caused draft stories to be counted as new stories in the What's New block</li>
     <li>Fixed a bug with the upcoming events block where it would only work if the GeekLog site was in the root dir</li>
     <li>Stroked the cat</li>

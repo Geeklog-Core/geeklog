@@ -305,7 +305,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG08;
 
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-article.php';
 
     $storyUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
 
@@ -332,7 +332,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         COM_redirect($redirect);
     }
 
-    $story = new Story();
+    $story = new Article();
     $result = $story->loadFromDatabase($sid, 'view');
 
     if ($result != STORY_LOADED_OK) {
@@ -433,7 +433,7 @@ function mailstoryform($sid, $cc = false, $to = '', $toemail = '', $from = '',
 {
     global $_CONF, $_TABLES, $_USER, $LANG08;
 
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-article.php';
 
     $retval = '';
 
@@ -444,7 +444,7 @@ function mailstoryform($sid, $cc = false, $to = '', $toemail = '', $from = '',
         return $retval;
     }
 
-    $story = new Story();
+    $story = new Article();
     $result = $story->loadFromDatabase($sid, 'view');
 
     if ($result != STORY_LOADED_OK) {

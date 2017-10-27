@@ -2120,7 +2120,7 @@ function PLG_getItemInfo($type, $id, $what, $uid = 0, $options = array())
 
         global $_CONF;
 
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
 
         return STORY_getItemInfo($id, $what, $uid, $options);
 
@@ -2437,7 +2437,7 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 
     if ($type == 'story') {
         // ensure we can see the service_XXX_story functions
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
     }
 
     $output  = '';
@@ -2470,7 +2470,7 @@ function PLG_wsEnabled($type)
 
     if ($type == 'story') {
         // ensure we can see the service_XXX_story functions
-        require_once $_CONF['path_system'] . 'lib-story.php';
+        require_once $_CONF['path_system'] . 'lib-article.php';
     }
 
     $function = 'plugin_wsEnabled_' . $type;

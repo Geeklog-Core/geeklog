@@ -59,7 +59,7 @@ if (!SEC_hasRights('comment.moderate')) {
 
 // Include system libraries
 require_once $_CONF['path_system'] . 'lib-admin.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
 
 /**

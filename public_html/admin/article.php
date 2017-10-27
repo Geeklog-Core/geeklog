@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
-// | story.php                                                                 |
+// | article.php                                                                 |
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
@@ -52,7 +52,7 @@ require_once 'auth.inc.php';
 /**
  * Geeklog story function library
  */
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 // Set this to true if you want to have this code output debug messages to
 // the error log
@@ -182,7 +182,7 @@ function liststories($current_topic = '')
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array(
-        array('url'  => $_CONF['site_admin_url'] . '/story.php?mode=edit',
+        array('url'  => $_CONF['site_admin_url'] . '/article.php?mode=edit',
               'text' => $LANG_ADMIN['create_new']),
     );
 
@@ -201,7 +201,7 @@ function liststories($current_topic = '')
     );
     $text_arr = array(
         'has_extras' => true,
-        'form_url'   => $_CONF['site_admin_url'] . '/story.php',
+        'form_url'   => $_CONF['site_admin_url'] . '/article.php',
     );
 
     $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
@@ -266,7 +266,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $display .= COM_showMessageText($errormsg, $LANG24[25]);
     }
 
-    $story = new Story();
+    $story = new Article();
     if ($mode == 'preview') {
         // Handle Magic GPC Garbage:
         while (list($key, $value) = each($_POST)) {
@@ -318,7 +318,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             // handled by another Admin) - take us back to the moderation page
             COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
         } else {
-            COM_redirect($_CONF['site_admin_url'] . '/story.php');
+            COM_redirect($_CONF['site_admin_url'] . '/article.php');
         }
     } elseif ($result == STORY_DUPLICATE_SID) {
         $display .= COM_showMessageText($LANG24[24]);
@@ -327,7 +327,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     // Load HTML templates
     $story_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/story');
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-        $story_templates->set_file(array('editor' => 'storyeditor_advanced.thtml'));
+        $story_templates->set_file(array('editor' => 'articleeditor_advanced.thtml'));
         $advanced_editormode = true;
         $story_templates->set_var('change_editormode', 'onchange="change_editmode(this);"');
 
@@ -351,7 +351,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $story_templates->set_var('show_htmleditor', 'none');
         }
     } else {
-        $story_templates->set_file(array('editor' => 'storyeditor.thtml'));
+        $story_templates->set_file(array('editor' => 'articleeditor.thtml'));
         $advanced_editormode = false;
     }
     $story_templates->set_var('hour_mode', $_CONF['hour_mode']);
@@ -897,7 +897,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $type = Geeklog\Input::fPost('type', '');
     if (!isset($sid) || empty($sid)) {
         COM_errorLog('Attempted to delete story sid=' . $sid);
-        COM_redirect($_CONF['site_admin_url'] . '/story.php');
+        COM_redirect($_CONF['site_admin_url'] . '/article.php');
     } elseif ($type === 'submission') {
         if (TOPIC_hasMultiTopicAccess('article', $sid) < 3) {
             COM_accessLog("User {$_USER['username']} tried to illegally delete story submission $sid.");

@@ -145,7 +145,7 @@ $LANG01 = array(
     98 => 'הרחבות Plugins',
     99 => 'מאמרים',
     100 => 'אין מאמרים חדשים',
-    101 => 'There are no older stories',
+    101 => 'There are no older articles',
     102 => '',
     103 => 'יצירת גיבוי',
     104 => 'על ידי',
@@ -887,7 +887,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'המאמרים הקודמים',
@@ -930,8 +930,8 @@ $LANG24 = array(
     38 => 'עוד מ:',
     39 => 'שליחות אימייל',
     40 => '',
-    41 => "הנכם מנסים לגשת למאמר שאין לכם זכויות לגביו. ניסיון זה נרשם ביומן. הינכם רשאים לצפות במאמר שלהלן במצב קריאה בלבד. אנא <a href=\"{$_CONF['site_url']}/admin/story.php\">חיזרו לחלון ניהול המאמרים</a> לאחר שתסיימו.",
-    42 => "הינכם מנסים לגשת למאמר שאין לכם זכויות לגביו. ניסיון זה נרשם ביומן. אנא <a href=\"{$_CONF['site_url']}/admin/story.php\">חיזרו לחלון ניהול המאמרים</a>.",
+    41 => "הנכם מנסים לגשת למאמר שאין לכם זכויות לגביו. ניסיון זה נרשם ביומן. הינכם רשאים לצפות במאמר שלהלן במצב קריאה בלבד. אנא <a href=\"{$_CONF['site_url']}/admin/article.php\">חיזרו לחלון ניהול המאמרים</a> לאחר שתסיימו.",
+    42 => "הינכם מנסים לגשת למאמר שאין לכם זכויות לגביו. ניסיון זה נרשם ביומן. אנא <a href=\"{$_CONF['site_url']}/admin/article.php\">חיזרו לחלון ניהול המאמרים</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -967,7 +967,7 @@ $LANG24 = array(
     75 => 'מוצג במלואו',
     76 => 'אפשרויות פירסום',
     77 => 'Javascript חייב להיות מופעל בעורך המתקדם. האפשרות יכולה להיכבות בתפריט ניהול ההגדרות',
-    78 => 'ליחצו <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">כאן</a> כדי להשתמש בעורך ברירת המחדל',
+    78 => 'ליחצו <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">כאן</a> כדי להשתמש בעורך ברירת המחדל',
     79 => 'תצוגה מקדימה',
     80 => 'עורך',
     81 => 'אפשרויות פירסום',
@@ -982,7 +982,7 @@ $LANG24 = array(
     90 => 'Meta Keywords',
     91 => 'הנכם יכולים תמיד ללחוץ על "תצוגה מקדימה" כדי להאריך את תוקף התפוגה.',
     92 => 'You might also like',
-    'autotag_desc_story' => '[story: id alternate title] - מציג קישור למאמר תוך שימוש בכותרת המאמר בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
+    'autotag_desc_story' => '[article: id alternate title] - מציג קישור למאמר תוך שימוש בכותרת המאמר בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1835,7 +1835,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Stories"
+# %i    item, "Articles"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2294,7 +2294,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'שיטת חיפוש ברירת המחדל',
     'search_def_sort' => 'ברירת המחדל של סדר מיון',
     'search_use_topic' => 'Use Current Topic',
-    'autotag_permissions_story' => '[story: ] הרשאות',
+    'autotag_permissions_story' => '[article: ] הרשאות',
     'autotag_permissions_user' => '[user: ] הרשאות',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
@@ -2471,7 +2471,7 @@ $LANG_configselects['Core'] = array(
     22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
     23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2),
     24 => array('הגשות' => 'contribute', 'דף הבית' => 'home', 'חיפוש מתקדם' => 'search', 'ספרייה' => 'directory', 'Login' => 'login', 'החשבון שלי' => 'prefs', 'פריטי plugins' => 'plugins', 'פריטים מותאמים אישית' => 'custom', 'סטטיסטיקת אתר' => 'stats'),
-    25 => array('מאמרים חדשים' => 'story', 'תגובות חדשות' => 'comment', 'הפניות חדשות' => 'trackback', 'פינגים חוזרים חדשים' => 'pingback', 'משתמשים חדשים' => 'user', 'User Updates' => 'user_update'),
+    25 => array('מאמרים חדשים' => 'article', 'תגובות חדשות' => 'comment', 'הפניות חדשות' => 'trackback', 'פינגים חוזרים חדשים' => 'pingback', 'משתמשים חדשים' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (קהל כללי)' => 'G', 'PG (ליווי הורים)' => 'PG', 'R (מוגבל)' => 'R', 'X (בוטה)' => 'X'),
     27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc'),
     28 => array('ללא גישה' => 0, 'שימוש' => 2),

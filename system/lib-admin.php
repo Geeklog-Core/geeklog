@@ -1071,7 +1071,7 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
 }
 
 /**
- * used for the list of stories in admin/story.php
+ * used for the list of stories in admin/article.php
  *
  * @param  string $fieldName
  * @param  string $fieldValue
@@ -1141,11 +1141,11 @@ function ADMIN_getListField_stories($fieldName, $fieldValue, $A, $icon_arr)
                 }
                 if ($fieldName === 'copy') {
                     $copyUrl = $_CONF['site_admin_url']
-                        . '/story.php?mode=clone&amp;sid=' . $A['sid'];
+                        . '/article.php?mode=clone&amp;sid=' . $A['sid'];
                     $retval = COM_createLink($icon_arr['copy'], $copyUrl);
                 } else {
                     $editUrl = $_CONF['site_admin_url']
-                        . '/story.php?mode=edit&amp;editor=' . $editMode
+                        . '/article.php?mode=edit&amp;editor=' . $editMode
                         . '&amp;sid=' . $A['sid'];
                     $retval = COM_createLink($icon_arr['edit'], $editUrl);
                 }

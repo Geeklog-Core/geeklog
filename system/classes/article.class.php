@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
-// | story.class.php                                                           |
+// | article.class.php                                                         |
 // |                                                                           |
 // | Geeklog Story Abstraction.                                                |
 // +---------------------------------------------------------------------------+
@@ -79,7 +79,7 @@ define('STORY_AL_NUMERIC', 1);
 define('STORY_AL_CHECKBOX', 2);
 define('STORY_AL_ANYTHING', 3);
 
-class Story
+class Article
 {
     //*************************************************************************/
     // Variables:
@@ -862,7 +862,7 @@ class Story
         global $_TABLES, $_CONF;
 
         /* magic_quotes_gpc cleanup routine now in submitstory() in
-         * /public_html/admin/story.php
+         * /public_html/admin/article.php
          */
 
         $retval = STORY_LOADED_OK; // default to success
@@ -1211,15 +1211,15 @@ class Story
         
         // Figure out story type normal, featured or archived (grabbed from render article in lib-story)
         if ($this->DisplayElements('featured') == 1) {
-            $article_filevar = 'featuredstorytext.thtml';
+            $article_filevar = 'featuredarticletext.thtml';
         } elseif ($this->DisplayElements('statuscode') == STORY_ARCHIVE_ON_EXPIRE && $this->DisplayElements('expire') <= time()) {
-            $article_filevar = 'archivestorytext.thtml';
+            $article_filevar = 'archivearticletext.thtml';
         } else {
-            $article_filevar = 'storytext.thtml';
+            $article_filevar = 'articletext.thtml';
         }
 
         if (empty($storyTpl)) {
-            $storyTpl = 'storytext.thtml';
+            $storyTpl = 'articletext.thtml';
         }
 
         $article = COM_newTemplate($_CONF['path_layout']);

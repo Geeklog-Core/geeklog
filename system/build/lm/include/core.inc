@@ -182,7 +182,7 @@ mergeArrays($ENG_LOGVIEW, $LANG_LOGVIEW, 'LANG_LOGVIEW', 'admin/logviewer.php');
 mergeArrays($ENG_ENVCHECK, $LANG_ENVCHECK, 'LANG_ENVCHECK', 'admin/envcheck.php - distribution integrity checker');
 mergeArrays($ENG20, $LANG20, 'LANG20', 'admin/auth.inc.php');
 mergeArrays($ENG21, $LANG21, 'LANG21', 'admin/block.php');
-mergeArrays($ENG24, $LANG24, 'LANG24', 'admin/story.php');
+mergeArrays($ENG24, $LANG24, 'LANG24', 'admin/article.php');
 mergeArrays($ENG27, $LANG27, 'LANG27', 'admin/topic.php');
 mergeArrays($ENG28, $LANG28, 'LANG28', 'admin/user.php');
 mergeArrays($ENG29, $LANG29, 'LANG29', 'admin/moderation.php');

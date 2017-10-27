@@ -33,7 +33,7 @@
 // +---------------------------------------------------------------------------+
 
 require_once 'lib-common.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -103,7 +103,7 @@ function submitstory()
 
     $retval = '';
 
-    $story = new Story();
+    $story = new Article();
 
     if (Geeklog\Input::post('mode') === $LANG12[32]) {
         // preview
@@ -117,7 +117,7 @@ function submitstory()
 
     $storyform = COM_newTemplate($_CONF['path_layout'] . 'submit');
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-        $storyform->set_file('storyform','submitstory_advanced.thtml');
+        $storyform->set_file('storyform','submitarticle_advanced.thtml');
         $storyform->set_var('change_editormode', 'onchange="change_editmode(this);"');
         $storyform->set_var('lang_expandhelp', $LANG24[67]);
         $storyform->set_var('lang_reducehelp', $LANG24[68]);
@@ -135,7 +135,7 @@ function submitstory()
             $storyform->set_var('show_htmleditor', 'none');
         }
     } else {
-        $storyform->set_file('storyform','submitstory.thtml');
+        $storyform->set_file('storyform','submitarticle.thtml');
         if ($story->EditElements('postmode') === 'html') {
             $storyform->set_var('show_texteditor', 'none');
             $storyform->set_var('show_htmleditor', '');
@@ -280,7 +280,7 @@ function savestory ($A)
 
     $retval = '';
 
-    $story = new Story();
+    $story = new Article();
     $story->loadSubmission();
 
     // pseudo-formatted story text for the spam check
@@ -297,7 +297,8 @@ function savestory ($A)
         // user doesn't have access to this topic - bail
         COM_redirect($_CONF['site_url'] . '/index.php');
     } elseif (($result == STORY_SAVED ) || ( $result == STORY_SAVED_SUBMISSION )) {
-        if (isset($_CONF['notification']) && in_array('story', $_CONF['notification'])) {
+        if (isset($_CONF['notification']) &&
+            (in_array('article', $_CONF['notification']) || in_array('story', $_CONF['notification']))) {
             sendNotification ($_TABLES['storysubmission'], $story);
         }
 
@@ -405,7 +406,7 @@ if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
             COM_redirect($_CONF['site_admin_url'] . "/plugins/$type/index.php?mode=edit");
         }
     } elseif (SEC_hasRights('story.edit')) {
-        COM_redirect($_CONF['site_admin_url'] . '/story.php?mode=edit');
+        COM_redirect($_CONF['site_admin_url'] . '/article.php?mode=edit');
     }
 
     switch ($type) {

@@ -35,7 +35,7 @@
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -203,7 +203,7 @@ function itemlist($type, $token)
             $A['edit'] = $_CONF['site_url'] . '/comment.php'
                 . '?mode=editsubmission&amp;cid=' . $A[0];
         } elseif ($type == 'story_draft') {
-            $A['edit'] = $_CONF['site_admin_url'] . '/story.php'
+            $A['edit'] = $_CONF['site_admin_url'] . '/article.php'
                 . '?mode=edit&amp;sid=' . $A[0];
         } else { // this pretty much only leaves $type == 'story'
             $A['edit'] = $_CONF['site_admin_url'] . '/' . $type

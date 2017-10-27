@@ -2,9 +2,9 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
-// | lib-story.php                                                             |
+// | lib-article.php                                                           |
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
@@ -33,11 +33,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (stripos($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
-
-require_once $_CONF['path_system'] . '/classes/story.class.php';
 
 if ($_CONF['allow_user_photo']) {
     // only needed for the USER_getPhoto function
@@ -56,16 +54,16 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
 /**
  * Takes an article class and renders HTML in the specified template and style.
  * Formats the given article into HTML. Called by index.php, article.php,
- * submit.php and admin/story.php (Preview mode for the last two).
+ * submit.php and admin/article.php (Preview mode for the last two).
  *
- * @param   Story  $story     The story to display, an instance of the Story class.
- * @param   string $index     n = Full display of article. p = 'Preview' mode. Else introtext only.
- * @param   string $storyTpl  The template to use to render the story.
- * @param   string $query     A search query, if one was specified.
+ * @param   Article $story    The story to display, an instance of the Story class.
+ * @param   string  $index    n = Full display of article. p = 'Preview' mode. Else introtext only.
+ * @param   string  $storyTpl The template to use to render the story.
+ * @param   string  $query    A search query, if one was specified.
  * @return  string           Article as formatted HTML.
  *                            Note: Formerly named COM_Article, and re-written totally since then.
  */
-function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml', $query = '')
+function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
            $_IMAGE_TYPE, $mode;
@@ -81,7 +79,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
     }
 
     if (empty($storyTpl)) {
-        $storyTpl = 'storytext.thtml';
+        $storyTpl = 'articletext.thtml';
     }
 
     // Change article template file with the topic (feature request #275)
@@ -95,11 +93,11 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
     $article = COM_newTemplate($templateDir);
     $article->set_file(array(
         'article'          => $storyTpl,
-        'bodytext'         => 'storybodytext.thtml',
-        'featuredarticle'  => 'featuredstorytext.thtml',
-        'featuredbodytext' => 'featuredstorybodytext.thtml',
-        'archivearticle'   => 'archivestorytext.thtml',
-        'archivebodytext'  => 'archivestorybodytext.thtml',
+        'bodytext'         => 'articlebodytext.thtml',
+        'featuredarticle'  => 'featuredarticletext.thtml',
+        'featuredbodytext' => 'featuredarticlebodytext.thtml',
+        'archivearticle'   => 'archivearticletext.thtml',
+        'archivebodytext'  => 'archivearticlebodytext.thtml',
     ));
 
     // begin instance caching...
@@ -135,11 +133,11 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
                     $article = COM_newTemplate($_CONF['path_layout']);
                     $article->set_file(array(
                         'article'          => $storyTpl,
-                        'bodytext'         => 'storybodytext.thtml',
-                        'featuredarticle'  => 'featuredstorytext.thtml',
-                        'featuredbodytext' => 'featuredstorybodytext.thtml',
-                        'archivearticle'   => 'archivestorytext.thtml',
-                        'archivebodytext'  => 'archivestorybodytext.thtml',
+                        'bodytext'         => 'articlebodytext.thtml',
+                        'featuredarticle'  => 'featuredarticletext.thtml',
+                        'featuredbodytext' => 'featuredarticlebodytext.thtml',
+                        'archivearticle'   => 'archivearticletext.thtml',
+                        'archivebodytext'  => 'archivearticlebodytext.thtml',
                     ));
                 } else { // theme templates are not cache so can go ahead and delete story cache
                     CACHE_remove_instance($cacheInstance);
@@ -580,7 +578,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
             ($story->checkAccess() == 3) &&
             (TOPIC_hasMultiTopicAccess('article', $story->DisplayElements('sid')) == 3)
         ) {
-            $editUrl = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
+            $editUrl = $_CONF['site_admin_url'] . '/article.php?mode=edit&amp;sid='
                 . $story->getSid();
             $editiconhtml = '<img src="' . $_CONF['layout_url']
                 . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
@@ -630,7 +628,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'storytext.thtml',
         if ($index === 'n') {
             $article->set_var(
                 'related_articles_by_keyword',
-                Story::getRelatedArticlesByKeywords(
+                Article::getRelatedArticlesByKeywords(
                     $story->getSid(),
                     $story->DisplayElements('meta_keywords')
                 )
@@ -1463,6 +1461,69 @@ function plugin_group_changed_story($grp_id, $mode)
 }
 
 /**
+ * Implements the [article:] autotag.
+ *
+ * @param   string $op      operation to perform
+ * @param   string $content item (e.g. story text), including the autotag
+ * @param   array  $autotag parameters used in the autotag
+ * @return  mixed           tag names (for $op='tagname') or formatted content
+ */
+function plugin_autotags_article($op, $content = '', $autotag = array())
+{
+    global $_CONF, $_TABLES, $LANG24, $_GROUPS;
+
+    if ($op === 'tagname') {
+        return 'article';
+    } elseif ($op === 'permission' || $op === 'nopermission') {
+        $flag = ($op == 'permission');
+        $tagnames = array();
+
+        if (isset($_GROUPS['Story Admin'])) {
+            $group_id = $_GROUPS['Story Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();
+        $p = 'autotag_permissions_story';
+        if (COM_getPermTag($owner_id, $group_id,
+                $_CONF[$p][0], $_CONF[$p][1],
+                $_CONF[$p][2], $_CONF[$p][3]) == $flag
+        ) {
+            $tagnames[] = 'article';
+        }
+
+        if (count($tagnames) > 0) {
+            return $tagnames;
+        }
+    } elseif ($op == 'description') {
+        return array(
+            'story' => $LANG24['autotag_desc_story'],
+        );
+    } else {
+        $sid = COM_applyFilter($autotag['parm1']);
+        $sid = COM_switchLanguageIdForObject($sid);
+        if (!empty($sid)) {
+            $result = DB_query("SELECT COUNT(*) AS count "
+                . "FROM {$_TABLES['stories']} "
+                . "WHERE sid = '$sid'");
+            $A = DB_fetchArray($result);
+
+            if ($A['count'] > 0) {
+                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
+                $linktext = $autotag['parm2'];
+                if (empty($linktext)) {
+                    $linktext = stripslashes(DB_getItem($_TABLES['stories'], 'title', "sid = '$sid'"));
+                }
+                $link = COM_createLink($linktext, $url);
+                $content = str_replace($autotag['tagstr'], $link, $content);
+            }
+        }
+
+        return $content;
+    }
+}
+
+/**
  * Implements the [story:] autotag.
  *
  * @param   string $op      operation to perform
@@ -1939,7 +2000,7 @@ function service_submit_story($args, &$output, &$svc_msg)
             }
         }
     }
-    $story = new Story();
+    $story = new Article();
 
     $gl_edit = false;
     if (isset($args['gl_edit'])) {
@@ -2197,7 +2258,7 @@ function service_delete_story($args, &$output, &$svc_msg)
     $access = min($access, TOPIC_hasMultiTopicAccess('article', $sid));
     if ($access < 3) {
         COM_accessLog("User {$_USER['username']} tried to illegally delete story $sid.");
-        $output = COM_refresh($_CONF['site_admin_url'] . '/story.php');
+        $output = COM_refresh($_CONF['site_admin_url'] . '/article.php');
         if ($_USER['uid'] > 1) {
             return PLG_RET_PERMISSION_DENIED;
         } else {
@@ -2207,7 +2268,7 @@ function service_delete_story($args, &$output, &$svc_msg)
 
     STORY_doDeleteThisStoryNow($sid);
 
-    $output = COM_refresh($_CONF['site_admin_url'] . '/story.php?msg=10');
+    $output = COM_refresh($_CONF['site_admin_url'] . '/article.php?msg=10');
 
     return PLG_RET_OK;
 }
@@ -2280,7 +2341,7 @@ function service_get_story($args, &$output, &$svc_msg)
         $sid = $args['sid'];
         $mode = $args['mode'];
 
-        $story = new Story();
+        $story = new Article();
         $retval = $story->loadFromDatabase($sid, $mode);
 
         if ($retval != STORY_LOADED_OK) {
@@ -2358,7 +2419,7 @@ function service_get_story($args, &$output, &$svc_msg)
                 break;
             }
 
-            $story = new Story();
+            $story = new Article();
             $story->loadFromArray($story_array);
 
             // This access check is not strictly necessary

@@ -183,7 +183,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>話題選択のための新しいファイルedit_topics.thtmlが/admin/commonに追加されました。</li>
 <li>topicoption.thtmlとtopicoption_off.thtml がテーマのrootフォルダに追加されました。</li>
 <li>adminフォルダの話題フォルダの入れ替え。たくさんのファイルに変更があります。</li>  
-<li>話題選択のために、テーマ変数 {topic_selection} が、ファイル /admin/block/blockeditor.thtml, /admin/block/defaultblockeditor.thtml, /admin/story/storyeditor.thtml, /admin/story/ storyeditor_advenced.thtml, /submit/submitstory.thtml, と /submit/submitstory_advanced.thtmlに追加されました。</li>
+<li>話題選択のために、テーマ変数 {topic_selection} が、ファイル /admin/block/blockeditor.thtml, /admin/block/defaultblockeditor.thtml, /admin/article/articleeditor.thtml, /admin/article/articleeditor_advenced.thtml, /submit/submitstory.thtml, と /submit/submitstory_advanced.thtmlに追加されました。</li>
 <li>同じページでコメントする機能で多くの変更があります。すべてのコメントフォルダとcommentbar.thtml と comment.thtmlを必要に応じてカスタマイズします。</li>
 <li>静的ページとブロック編集のための新しいCSSが追加されました。</li>
 </ul>
@@ -329,7 +329,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     <span class="tt">{story_title}</span>、<span class="tt">{story_url}</span>、<span class="tt">{story_link}</span>です。</li>
 <li><span class="tt">profiles/contactauthorform.thtml</span>フォームに「自分宛にコピーを送信」という
     オプションを追加しました。</li>
-<li>記事エディターのテンプレート(<span class="tt">admin/story/storyeditor.thtml</span>と
+<li>記事エディターのテンプレート(<span class="tt">admin/article/articleeditor.thtml</span>と
     <span class="tt">admin/story/storyeditor_advanced.thtml</span>)に記事のdescriptionメタタグと
     keywordsメタタグを入力するtextareaフィールドを追加しました。</li>
 <li>話題エディターのテンプレート(<span class="tt">admin/topic/topiceditor.thtml</span>)に話題の
@@ -570,8 +570,8 @@ if (empty($lang)) {
     <li>admin/group/groupmembers.thtml</li>
     <li>admin/mail/mailform.thtml</li>
     <li>admin/plugins/editor.thtml</li>
-    <li>admin/story/storyeditor.thtml</li>
-    <li>admin/story/storyeditor_advanced.thtml</li>
+    <li>admin/article/articleeditor.thtml</li>
+    <li>admin/article/articleeditor_advanced.thtml</li>
     <li>admin/syndication/feededitor.thtml</li>
     <li>admin/topic/topiceditor.thtml</li>
     <li>admin/trackback/pingbackform.thtml</li>
@@ -763,7 +763,7 @@ the entire <span class="tt">admin</span> directory with the one from the Geeklog
 distribution.</p>
 
 <ul>
-<li>The story editor, <span class="tt">admin/story/storyeditor.thtml</span> includes new
+<li>The story editor, <span class="tt">admin/article/articleeditor.thtml</span> includes new
     options for the story archiving and for editable story IDs. <em>It is
     recommended to make a copy of this file and re-apply any changes you may
     have made to your copy again afterwards!</em></li>
@@ -1053,7 +1053,7 @@ are necessary.</p>
   <li>Removed the Normal / Archive / Refreshing drop down menus from the admin
     story and poll editors of the themes that ship with Geeklog. The setting
     of this dropdown isn't used in Geeklog anyway and has just confused users
-    in the past ... (files <span class="tt">admin/story/storyeditor.thtml</span> and
+    in the past ... (files <span class="tt">admin/article/articleeditor.thtml</span> and
     <span class="tt">admin/poll/polleditor.thtml</span>)</li>
 </ul>
 

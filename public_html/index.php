@@ -33,7 +33,7 @@
 // +---------------------------------------------------------------------------+
 
 require_once 'lib-common.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 /**
  * Update array if need be with correct topic.
@@ -331,7 +331,7 @@ $breadcrumbs = '';
 
 if ($A = DB_fetchArray($result)) {
     fixTopic($A, $tid_list);
-    $story = new Story();
+    $story = new Article();
     $story->loadFromArray($A);
     if ($_CONF['showfirstasfeatured'] == 1) {
         $story->_featured = 1;
@@ -356,7 +356,7 @@ if ($A = DB_fetchArray($result)) {
     // get remaining stories
     while ($A = DB_fetcharray($result)) {
         fixTopic($A, $tid_list);
-        $story = new Story();
+        $story = new Article();
         $story->loadFromArray($A);
         $display .= STORY_renderArticle($story, 'y');
     }

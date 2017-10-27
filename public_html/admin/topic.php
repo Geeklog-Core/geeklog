@@ -43,7 +43,7 @@ require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
 // Geeklog story function library
-require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-article.php';
 
 $display = '';
 

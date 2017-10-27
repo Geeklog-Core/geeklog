@@ -144,7 +144,7 @@ $LANG01 = array(
     98 => 'Pluginad',
     99 => 'LOOD',
     100 => 'Pole uusi lugusid',
-    101 => 'There are no older stories',
+    101 => 'There are no older articles',
     102 => '',
     103 => 'DB Backupid',
     104 => 'by',
@@ -886,7 +886,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Eelmised lood',
@@ -929,8 +929,8 @@ $LANG24 = array(
     38 => 'Rohkem rubriigis',
     39 => 'E-kirju',
     40 => '',
-    41 => "Sa proovisid ligi p‰‰seda loole, millele pole sul ıigust. See katse on logitud. Sa vıid vaadata seda artiklit allpool ainult loetaval kujul. Palun <a href=\"{$_CONF['site_admin_url']}/story.php\">mine p‰rast lugemist tagasi lugude administreerimislehele. </a>",
-    42 => "Sa proovisid ligi p‰‰seda loole, millele pole sul ıigust. See katse on logitud. Palun <a href=\"{$_CONF['site_admin_url']}/story.php\">mine tagasi lugude administreerimislehele. </a>",
+    41 => "Sa proovisid ligi p‰‰seda loole, millele pole sul ıigust. See katse on logitud. Sa vıid vaadata seda artiklit allpool ainult loetaval kujul. Palun <a href=\"{$_CONF['site_admin_url']}/article.php\">mine p‰rast lugemist tagasi lugude administreerimislehele. </a>",
+    42 => "Sa proovisid ligi p‰‰seda loole, millele pole sul ıigust. See katse on logitud. Palun <a href=\"{$_CONF['site_admin_url']}/article.php\">mine tagasi lugude administreerimislehele. </a>",
     43 => '',
     44 => '',
     45 => '',
@@ -966,7 +966,7 @@ $LANG24 = array(
     75 => 'T‰is pıhilugu',
     76 => 'Avaldamise valikud',
     77 => 'Keerukama toimetaja jaoks peab lubatud olema JavaScript. Valiku saab v‰lja l¸litada saidi seadistuslehel.',
-    78 => '<a href="%s/story.php?mode=edit&sid=%s&editopt=default">vaiketoimetaja kasutamiseks klıpsa siia</a>',
+    78 => '<a href="%s/article.php?mode=edit&sid=%s&editopt=default">vaiketoimetaja kasutamiseks klıpsa siia</a>',
     79 => 'Eelvaade',
     80 => 'Toimetaja',
     81 => 'Avaldamisvalikud',
@@ -981,7 +981,7 @@ $LANG24 = array(
     90 => 'Meta m‰rksınad',
     91 => 'Sa vıid alati klıpsata "Eelvaade", et aegumisaega pikendada.',
     92 => 'You might also like',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_story' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1041,7 +1041,7 @@ $LANG27 = array(
     49 => 'This Topic ID is already being used. Please choose another one.',
     50 => 'Yes',
     51 => 'No',
-    52 => 'Story',
+    52 => 'Article',
     53 => 'Image',
     54 => 'Selected',
     55 => 'Assigned',
@@ -1834,7 +1834,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Stories"
+# %i    item, "Articles"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2293,7 +2293,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Vaikimisi otsimisviis',
     'search_def_sort' => 'vaikimisi sorteerimisj‰rjestus',
     'search_use_topic' => 'Use Current Topic',
-    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_story' => '[article: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
@@ -2421,7 +2421,7 @@ $LANG_tab['Core'] = array(
     'tab_whatsnew_block' => 'What\'s New Block',
     'tab_trackback' => 'Trackback',
     'tab_pingback' => 'Pingback',
-    'tab_story' => 'Story',
+    'tab_story' => 'Article',
     'tab_theme_advanced' => 'Advanced Settings',
     'tab_syndication' => 'Syndication',
     'tab_imagelib' => 'Image Library',
@@ -2470,7 +2470,7 @@ $LANG_configselects['Core'] = array(
     22 => array('Range' => 'DENY', 'Sama allikas' => 'SAMEORIGIN', '(v‰ljas)' => ''),
     23 => array('Keelatud' => 0, 'Lubatud' => 1, 'Lubatud (vaikimisi ainult avalehel)' => 2),
     24 => array('Avlda' => 'contribute', 'Avaleht' => 'home', 'T‰psem otsing' => 'search', 'Artiklid' => 'directory', 'Login' => 'login', 'Minu konto' => 'prefs', 'Pluginate kanded' => 'plugins', 'Kohandatud kanded' => 'custom', 'Lehe statistika' => 'stats'),
-    25 => array('Uued lood' => 'story', 'Uued kommentaarid' => 'comment', 'Uued Trackbackid' => 'trackback', 'Uued Pingbackid' => 'pingback', 'Uued kasutajad' => 'user', 'User Updates' => 'user_update'),
+    25 => array('Uued lood' => 'article', 'Uued kommentaarid' => 'comment', 'Uued Trackbackid' => 'trackback', 'Uued Pingbackid' => 'pingback', 'Uued kasutajad' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Klikke (ksv.)' => 'hits|asc', 'Klikke (kahan.)' => 'hits|desc', 'Aeg (ksv.)' => 'date|asc', 'Aeg (kahan.)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),

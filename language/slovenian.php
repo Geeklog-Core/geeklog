@@ -146,7 +146,7 @@ $LANG01 = array(
     98 => 'Prikljuèni moduli',
     99 => 'Èlanki',
     100 => 'Ni novih èlankov',
-    101 => 'There are no older stories',
+    101 => 'There are no older articles',
     102 => '',
     103 => 'Varnostne kopije DB',
     104 => 'z',
@@ -888,7 +888,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Prejšnji èlanki',
@@ -931,8 +931,8 @@ $LANG24 = array(
     38 => 'Veè s podroèja',
     39 => 'Št. posredovanj po e-pošti',
     40 => '',
-    41 => "Poskušaš dostopiti do èlanka, do katerega nimaš pravice dostopa. Ta poskus je bil zabeležen in shranjen. Èlanek lahko samo prebereš, ne moreš pa ga urejati. Ko konèaš, pojdi prosim nazaj na <a href=\"{$_CONF['site_url']}/admin/story.php\">zaslon za skrbništvo èlankov</a>.",
-    42 => "Poskušaš dostopiti do èlanka, do katerega nimaš pravice dostopa. Ta poskus je bil zabeležen in shranjen. Pojdi prosim nazaj na <a href=\"{$_CONF['site_url']}/admin/story.php\">zaslon za skrbništvo èlankov</a>.",
+    41 => "Poskušaš dostopiti do èlanka, do katerega nimaš pravice dostopa. Ta poskus je bil zabeležen in shranjen. Èlanek lahko samo prebereš, ne moreš pa ga urejati. Ko konèaš, pojdi prosim nazaj na <a href=\"{$_CONF['site_url']}/admin/article.php\">zaslon za skrbništvo èlankov</a>.",
+    42 => "Poskušaš dostopiti do èlanka, do katerega nimaš pravice dostopa. Ta poskus je bil zabeležen in shranjen. Pojdi prosim nazaj na <a href=\"{$_CONF['site_url']}/admin/article.php\">zaslon za skrbništvo èlankov</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -968,7 +968,7 @@ $LANG24 = array(
     75 => 'Vse funkcije',
     76 => 'Možnosti objave',
     77 => ' Za napredno urejanje mora biti Javascript omogoèen. Možnost lahko onemogoèiš na glavni strani config.php.',
-    78 => 'Za uporabo privzetega urejevalnika klikni <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">tukaj</a>.',
+    78 => 'Za uporabo privzetega urejevalnika klikni <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">tukaj</a>.',
     79 => 'Predogled',
     80 => 'Urejevalnik',
     81 => 'Možnosti objave',
@@ -983,7 +983,7 @@ $LANG24 = array(
     90 => 'Meta Keywords',
     91 => 'Za podaljšanje trajanja seje klikni "Predogled".',
     92 => 'You might also like',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_story' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1043,7 +1043,7 @@ $LANG27 = array(
     49 => 'This Topic ID is already being used. Please choose another one.',
     50 => 'Yes',
     51 => 'No',
-    52 => 'Story',
+    52 => 'Article',
     53 => 'Image',
     54 => 'Selected',
     55 => 'Assigned',
@@ -1784,11 +1784,11 @@ $LANG_TRB = array(
     'trackbacks' => 'Trackbacks',
     'editor_intro' => 'Prepare your trackback comment for <a href="%s">%s</a>.',
     'editor_intro_none' => 'Prepare your trackback comment.',
-    'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'trackback_note' => 'To send a trackback comment for an article, go to the list of articles and click on "Send Ping" for the article. To send a trackback that is not related to an article, <a href="%s">click here</a>.',
     'pingback_explain' => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
     'pingback_url' => 'Pingback URL',
     'site_url' => 'This site\'s URL',
-    'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pingback_note' => 'To send a pingback for an article, go to the list of articles and click on "Send Ping" for the article. To send a pingback that is not related to an article, <a href="%s">click here</a>.',
     'pbtarget_missing' => 'No Pingback URL',
     'pbtarget_required' => 'Please enter a pingback URL',
     'pb_error_details' => 'Error when sending the pingback:',
@@ -1836,7 +1836,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Stories"
+# %i    item, "Articles"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2295,7 +2295,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Prednastavljena metoda iskanja',
     'search_def_sort' => 'Prednastavljen vrstni red sortiranja',
     'search_use_topic' => 'Use Current Topic',
-    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_story' => '[article: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
@@ -2423,7 +2423,7 @@ $LANG_tab['Core'] = array(
     'tab_whatsnew_block' => 'What\'s New Block',
     'tab_trackback' => 'Trackback',
     'tab_pingback' => 'Pingback',
-    'tab_story' => 'Story',
+    'tab_story' => 'Article',
     'tab_theme_advanced' => 'Advanced Settings',
     'tab_syndication' => 'Syndication',
     'tab_imagelib' => 'Image Library',
@@ -2472,7 +2472,7 @@ $LANG_configselects['Core'] = array(
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'Login' => 'login', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
-    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user', 'User Updates' => 'user_update'),
+    25 => array('New Articles' => 'article', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),

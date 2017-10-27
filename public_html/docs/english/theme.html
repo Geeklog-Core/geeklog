@@ -284,7 +284,7 @@ The 1.8.1 theme engine will eventually be removed from Geeklog so if you are dev
 <li>New file edit_topics.thtml for topic selection found in /admin/common folder.</li>
 <li>Updated topicoption.thtml and topicoption_off.thtml files found in root of theme folder.</li>
 <li>Replace topic folder in admin folder. Lots of changes with these files.</li>  
-<li>For topic selection control you need to add the template variable {topic_selection} to the files /admin/block/blockeditor.thtml, /admin/block/defaultblockeditor.thtml, /admin/story/storyeditor.thtml, /admin/story/ storyeditor_advenced.thtml, /submit/submitstory.thtml, and /submit/submitstory_advanced.thtml.</li>
+<li>For topic selection control you need to add the template variable {topic_selection} to the files /admin/block/blockeditor.thtml, /admin/block/defaultblockeditor.thtml, /admin/article/articleeditor.thtml, /admin/article/articleeditor_advenced.thtml, /submit/submitstory.thtml, and /submit/submitstory_advanced.thtml.</li>
 <li>Comments on same page changed a lot of things. Copy paste the complete comment folder and custom the commentbar.thtml and comment.thtml files as necessary.</li>
 <li>The page navigation uses a new file called page_navigation.thtml.</li>
 <li>New css for static pages, stories and blocks editors.</li>
@@ -445,7 +445,7 @@ The 1.8.1 theme engine will eventually be removed from Geeklog so if you are dev
 <li>Added a "send copy to myself" option to
     <span class="tt">profiles/contactauthorform.thtml</span></li>
 <li>Added textarea fields for meta description and meta keywords to the Story
-    Editor (<span class="tt">admin/story/storyeditor.thtml</span>,
+    Editor (<span class="tt">admin/article/articleeditor.thtml</span>,
     <span class="tt">admin/story/storyeditor_advanced.thtml</span>).</li>
 <li>Added textarea fields for meta description and meta keywords to the Topic
     Editor (<span class="tt">admin/topic/topiceditor.thtml</span>).</li>
@@ -775,8 +775,8 @@ form field in order for saving the form/processing the action to work. Add:</p>
     <li>admin/group/groupmembers.thtml</li>
     <li>admin/mail/mailform.thtml</li>
     <li>admin/plugins/editor.thtml</li>
-    <li>admin/story/storyeditor.thtml</li>
-    <li>admin/story/storyeditor_advanced.thtml</li>
+    <li>admin/article/articleeditor.thtml</li>
+    <li>admin/article/articleeditor_advanced.thtml</li>
     <li>admin/syndication/feededitor.thtml</li>
     <li>admin/topic/topiceditor.thtml</li>
     <li>admin/trackback/pingbackform.thtml</li>
@@ -1083,7 +1083,7 @@ the entire <span class="tt">admin</span> directory with the one from the Geeklog
 distribution.</p>
 
 <ul>
-<li>The story editor, <span class="tt">admin/story/storyeditor.thtml</span> includes new
+<li>The story editor, <span class="tt">admin/article/articleeditor.thtml</span> includes new
     options for the story archiving and for editable story IDs. <em>It is
     recommended to make a copy of this file and re-apply any changes you may
     have made to your copy again afterwards!</em></li>
@@ -1373,7 +1373,7 @@ are necessary.</p>
   <li>Removed the Normal / Archive / Refreshing drop down menus from the admin
     story and poll editors of the themes that ship with Geeklog. The setting
     of this dropdown isn't used in Geeklog anyway and has just confused users
-    in the past ... (files <span class="tt">admin/story/storyeditor.thtml</span> and
+    in the past ... (files <span class="tt">admin/article/articleeditor.thtml</span> and
     <span class="tt">admin/poll/polleditor.thtml</span>)</li>
 </ul>
 

@@ -148,7 +148,7 @@ $LANG01 = array(
     98 => 'Plugins',
     99 => 'ARTIKEL',
     100 => 'Keine neuen Artikel',
-    101 => 'There are no older stories',
+    101 => 'There are no older articles',
     102 => '',
     103 => 'DB Backups',
     104 => 'von',
@@ -890,7 +890,7 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/story.php
+# admin/article.php
 
 $LANG24 = array(
     1 => 'Vorherige Artikel',
@@ -933,8 +933,8 @@ $LANG24 = array(
     38 => 'Mehr aus',
     39 => 'E-Mails',
     40 => '',
-    41 => "Sie haben keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. Sie können sich den Artikel aber ansehen (s.u., Ändern nicht möglich). <a href=\"{$_CONF['site_admin_url']}/story.php\">Zurück zum Administrator-Menü</a>.",
-    42 => "Sie haben keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/story.php\">Zurück zum Administrator-Menü</a>.",
+    41 => "Sie haben keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. Sie können sich den Artikel aber ansehen (s.u., Ändern nicht möglich). <a href=\"{$_CONF['site_admin_url']}/article.php\">Zurück zum Administrator-Menü</a>.",
+    42 => "Sie haben keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/article.php\">Zurück zum Administrator-Menü</a>.",
     43 => '',
     44 => '',
     45 => '',
@@ -970,7 +970,7 @@ $LANG24 = array(
     75 => 'Alle Symbole',
     76 => 'Veröffentlichung',
     77 => 'JavaScript muß für den WYSIWYG-Editor an sein. Der WYSIWYG-Editor kann in der Geeklog Konfiguration ausgeschaltet werden.',
-    78 => 'Klicken Sie <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">hier</a>, um den Standard-Editor zu verwenden',
+    78 => 'Klicken Sie <a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">hier</a>, um den Standard-Editor zu verwenden',
     79 => 'Vorschau',
     80 => 'Editor',
     81 => 'Veröffentlichung',
@@ -985,7 +985,7 @@ $LANG24 = array(
     90 => 'Metatag Keywords',
     91 => 'Sie können aber jederzeit auf "Vorschau" klicken, um diese Zeit zu verlängern.',
     92 => 'You might also like',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_story' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1838,7 +1838,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Stories"
+# %i    item, "Articles"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2297,7 +2297,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Grundeinstellung Suchmethode',
     'search_def_sort' => 'Grundeinstellung Sortierreihenfolge',
     'search_use_topic' => 'Use Current Topic',
-    'autotag_permissions_story' => '[story: ]-Rechte',
+    'autotag_permissions_story' => '[article: ]-Rechte',
     'autotag_permissions_user' => '[user: ]-Rechte',
     'autotag_permissions_topic' => '[topic: ] Permissions',
     'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
@@ -2474,7 +2474,7 @@ $LANG_configselects['Core'] = array(
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Grundeinstellung nur auf der Startseite)' => 2),
     24 => array('Mitmachen' => 'contribute', 'Home' => 'home', 'Erweiterte Suche' => 'search', 'Verzeichnis' => 'directory', 'Login' => 'login', 'Mein Profil' => 'prefs', 'Plugin Einträge' => 'plugins', 'Custom Einträge' => 'custom', 'Statistik' => 'stats'),
-    25 => array('Neuer Artikel' => 'story', 'Neuer Kommentar' => 'comment', 'Neuer Trackback' => 'trackback', 'Neuer Pingback' => 'pingback', 'Neuer User' => 'user', 'User Updates' => 'user_update'),
+    25 => array('Neuer Artikel' => 'article', 'Neuer Kommentar' => 'comment', 'Neuer Trackback' => 'trackback', 'Neuer Pingback' => 'pingback', 'Neuer User' => 'user', 'User Updates' => 'user_update'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (aufst)' => 'hits|asc', 'Hits (abst)' => 'hits|desc', 'Datum (aufst)' => 'date|asc', 'Datum (abst)' => 'date|desc', 'Titel (aufst)' => 'title|asc', 'Titel (abst)' => 'title|desc', 'Autor (aufst)' => 'uid|asc', 'Autor (abst)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),
