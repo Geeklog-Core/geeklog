@@ -8,29 +8,26 @@
 // |                                                                           |
 // | Used for validation of data                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2010-2011 by the following authors:                         |
-// |                                                                           |
-// | Authors: Akeda Bagus       - admin AT gedex DOT web DOT id                |
-// |                                                                           |
-// | Copyright 2005-2010,                                                      |
-// | Cake Software Foundation, Inc. (http://cakefoundation.org)                |
-// +---------------------------------------------------------------------------+
-// |                                                                           |
-// | This program is free software; you can redistribute it and/or             |
-// | modify it under the terms of the GNU General Public License               |
-// | as published by the Free Software Foundation; either version 2            |
-// | of the License, or (at your option) any later version.                    |
-// |                                                                           |
-// | This program is distributed in the hope that it will be useful,           |
-// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
-// | GNU General Public License for more details.                              |
-// |                                                                           |
-// | You should have received a copy of the GNU General Public License         |
-// | along with this program; if not, write to the Free Software Foundation,   |
-// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
-// |                                                                           |
-// +---------------------------------------------------------------------------+
+
+/*
+ * Validation Class.  Used for validation of model data
+ *
+ * PHP versions 4 and 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.libs
+ * @since         CakePHP(tm) v 1.2.0.3830
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 
 /**
  * This class allows you to make a validation given input values along with its rules.
