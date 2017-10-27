@@ -1,3 +1,7 @@
+body, h1, h2, h3, h4, h5, h6 {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
 #admin-groupmembers-fieldFrom, #admin-groupmembers-fieldTo, #admin-groupmembers-fieldInherit {
     width: 100%;
     height: 100%;
