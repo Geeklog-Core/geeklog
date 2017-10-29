@@ -375,7 +375,7 @@ class Search
     /**
      * Performs search on all stories
      *
-     * @return array of object plugin object
+     * @return array of SearchCriteria
      */
     private function _searchStories()
     {
@@ -595,8 +595,8 @@ class Search
                     $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
                 }
 
-                $this->_url_rewrite[$result->getName()] = $result->UrlRewriteEnable();
-                $this->_append_query[$result->getName()] = $result->AppendQueryEnable();
+                $this->_url_rewrite[$result->getName()] = $result->isURLRewrite();
+                $this->_append_query[$result->getName()] = $result->isAppendQuery();
 
                 if ($this->_verbose) {
                     $new_api++;
