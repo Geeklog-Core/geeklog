@@ -287,7 +287,7 @@ function getSmallCalendar($m, $y, $mode = '')
                 } else {
                     $retval .= ' class="smallcal-day-odd">' . PHP_EOL;
                 }
-                $retval .= $currentDay->daynumber;
+                $retval .= $currentDay->getDayNumber();
             } else {
                 $retval .= ' class="smallcal-day-empty">&nbsp;';
             }
@@ -929,29 +929,29 @@ switch ($view) {
                 if (!empty($curday)) {
                     // Cache first actual day of the week to build week view link
                     if (empty($wday)) {
-                        $wday = $curday->daynumber;
+                        $wday = $curday->getDayNumber();
                     }
                     if (($currentYear > $year) ||
                         ($currentmonth > $month && $currentYear == $year) ||
-                        ($currentmonth == $month && $currentday > $curday->daynumber && $currentYear == $year)
+                        ($currentmonth == $month && $currentday > $curday->getDayNumber() && $currentYear == $year)
                     ) {
                         $cal_templates->set_var('cal_day_style', 'cal-oldday');
                     } else {
-                        if ($currentYear == $year && $currentmonth == $month && $currentday == $curday->daynumber) {
+                        if ($currentYear == $year && $currentmonth == $month && $currentday == $curday->getDayNumber()) {
                             $cal_templates->set_var('cal_day_style', 'cal-today');
                         } else {
                             $cal_templates->set_var('cal_day_style', 'cal-futureday');
                         }
                     }
 
-                    if (strlen($curday->daynumber) == 1) {
-                        $curday->daynumber = '0' . $curday->daynumber;
+                    if (strlen($curday->getDayNumber()) == 1) {
+                        $curday->setDayNumber('0' . $curday->getDayNumber());
                     }
 
                     $cal_templates->set_var('cal_day_anchortags',
-                        COM_createLink($curday->daynumber, $_CONF['site_url']
+                        COM_createLink($curday->getDayNumber(), $_CONF['site_url']
                             . '/calendar/index.php?view=day&amp;' . addMode($mode)
-                            . 'day=' . $curday->daynumber . "&amp;month=$month&amp;year=$year",
+                            . 'day=' . $curday->getDayNumber() . "&amp;month=$month&amp;year=$year",
                             array('class' => 'cal-date'))
                         . '<hr' . XHTML . '>'
                     );
@@ -969,11 +969,11 @@ switch ($view) {
                     }
 
                     $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM $calsql_tbl WHERE "
-                        . "((datestart >= '$year-$month-$curday->daynumber 00:00:00' "
-                        . "AND datestart <= '$year-$month-$curday->daynumber 23:59:59') "
-                        . "OR (dateend >= '$year-$month-$curday->daynumber 00:00:00' "
-                        . "AND dateend <= '$year-$month-$curday->daynumber 23:59:59') "
-                        . "OR ('$year-$month-$curday->daynumber' BETWEEN datestart AND dateend))"
+                        . "((datestart >= '$year-$month-$curday->getDayNumber() 00:00:00' "
+                        . "AND datestart <= '$year-$month-$curday->getDayNumber() 23:59:59') "
+                        . "OR (dateend >= '$year-$month-$curday->getDayNumber() 00:00:00' "
+                        . "AND dateend <= '$year-$month-$curday->getDayNumber() 23:59:59') "
+                        . "OR ('$year-$month-$curday->getDayNumber()' BETWEEN datestart AND dateend))"
                         . $calsql_filt . " ORDER BY datestart,timestart";
 
                     $query2 = DB_query($calsql);

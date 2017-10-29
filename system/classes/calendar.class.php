@@ -144,6 +144,16 @@ class CalendarDay
 
         $this->dayNumber = $dayNumber;
     }
+
+    /**
+     * Return the day number
+     *
+     * @return int
+     */
+    public function getDayNumber()
+    {
+        return $this->dayNumber;
+    }
 }
 
 class Calendar
@@ -685,7 +695,7 @@ class Calendar
      *
      * @param    int $week   week of day to get data for
      * @param    int $dayNum Number of day to get data for
-     * @return   object  Returns calendarDay object
+     * @return   CalendarDay Returns calendarDay object
      */
     public function getDayData($week, $dayNum)
     {
