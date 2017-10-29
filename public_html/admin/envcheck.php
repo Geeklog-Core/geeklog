@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | envcheck.php                                                              |
 // |                                                                           |
@@ -719,7 +719,9 @@ function _isWritable($path)
 
 function _return_bytes($val) {
     $val = trim($val);
-    $last = strtolower($val{strlen($val)-1});
+    $last = strtolower(substr($val, -1));
+    $val = (int) substr($val, 0, -1);
+
     switch($last) {
         // The 'G' modifier is available since PHP 5.1.0
         case 'g':
