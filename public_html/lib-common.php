@@ -7496,7 +7496,7 @@ function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $t
     }
 
     if ($hoverOver == '') {
-        $hoverOver = '<img alt="?" id="gl-tooltip-icon" src="' . $_CONF['layout_url']
+        $hoverOver = '<img alt="?" class="gl-tooltip-icon" src="' . $_CONF['layout_url']
             . '/images/tooltips/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';
     }
 

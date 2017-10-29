@@ -51,7 +51,7 @@ a.gl-tooltip:hover img.icon {
     float: {left};
     position: absolute;
 }
-a.gl-tooltip img#gl-tooltip-icon { 
+a.gl-tooltip img.gl-tooltip-icon {
     border: 0;
 }
 a.gl-tooltip:hover em {
