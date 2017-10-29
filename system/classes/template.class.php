@@ -51,10 +51,10 @@
  *
  * Note: If you think that this is like FastTemplates, read carefully. It isn't.
  */
-
 /* This should be the only Geeklog-isms in the file. Didn't want to "infect" the class but it was necessary.
  * These options are global to all templates.
  */
+
 class Template
 {
     /**
@@ -109,16 +109,16 @@ class Template
      * @see       set_file
      */
     private $location = array();
-    
+
     /**
      * Tells template class if dealing with a template file or a view passed instead.
      * If view no file access needed and no caching allowed. Default assumed always is no view.
-     * $view[$varName] = true;     
+     * $view[$varName] = true;
      *
      * @var       array/boolean
      * @see       set_view
      */
-    private $view = array();    
+    private $view = array();
 
     /**
      * The in memory template
@@ -285,16 +285,16 @@ class Template
                     $_CONF['path'],
                     '/'                     // this entry must always exist and must always be last
                 ),
-                'incl_phpself_header'   => true,          // set this to true if your template cache exists within your web server's docroot.
-                'cache_by_language'     => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
-                'cache_for_mobile'      => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
-                'default_vars'          => array(                                // list of vars found in all templates.
-                    'xhtml'             => (defined('XHTML') ? XHTML : ''),
-                    'site_url'          => $_CONF['site_url'],
-                    'site_admin_url'    => $_CONF['site_admin_url'],
-                    'layout_url'        => $_CONF['layout_url'], // Can be set by lib-common on theme change
-                    'anonymous_user'    => true,
-                    'device_mobile'     => false,
+                'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's docroot.
+                'cache_by_language'   => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
+                'cache_for_mobile'    => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
+                'default_vars'        => array(                                // list of vars found in all templates.
+                    'xhtml'          => (defined('XHTML') ? XHTML : ''),
+                    'site_url'       => $_CONF['site_url'],
+                    'site_admin_url' => $_CONF['site_admin_url'],
+                    'layout_url'     => $_CONF['layout_url'], // Can be set by lib-common on theme change
+                    'anonymous_user' => true,
+                    'device_mobile'  => false,
                 ),
                 'hook'                => array(),
             );
@@ -378,6 +378,7 @@ class Template
         } else {
             $this->halt("set_root: at least on existing directory must be set as root.");
         }
+
         return false;
     }
 
@@ -439,16 +440,18 @@ class Template
     }
 
     /******************************************************************************
-     * Defines a view for the initial value of a variable. A view is the template 
+     * Defines a view for the initial value of a variable. A view is the template
      * contents (similarly what a template file contains).
      *
      * It may be passed either a var name and a view as two strings or
      * a hash of strings with the key being the var name and the value
      * being the file name.
      *
-     * Since the content is already loaded and passed to the class (from whatever source like database or other file, the class does not care) 
-     * their is no mappings. The contents of the view are then complied right away.
-     * Views cannot be cached since in most cases whatever is requesting the view to be complied is probably going to be cached.
+     * Since the content is already loaded and passed to the class (from whatever
+     * source like database or other file, the class does not care) there is no
+     * mappings. The contents of the view are then complied right away.  Views
+     * cannot be cached since in most cases whatever is requesting the view to be
+     * complied is probably going to be cached.
      *
      * Returns true on success, false on error.
      *
@@ -456,51 +459,51 @@ class Template
      * or
      * usage: set_view(string $varName, string $view)
      *
-     * @param     string|array $varName          either a string containing a var name
-     *                                           or a hash of var name/view pairs.
-     * @param     string       $filename         if var name is a string this is the view otherwise view is not
-     *                                           required
-     * @return    boolean
+     * @param     string|array $varName  either a string containing a var name
+     *                                   or a hash of var name/view pairs.
+     * @param     string       $view     if var name is a string this is the view
+     *                                   otherwise view is not required
+     * @return    bool
      */
     public function set_view($varName, $view = '')
     {
-        global $_CONF;
-
         if (!is_array($varName)) {
             if ($this->debug & 4) {
                 echo "<p><b>set_view:</b> (with scalar) varName = $varName, view = $view</p>\n";
             }
-            if ($view == "") {
+            if ($view == '') {
                 $this->halt("set_view: For varName $varName view is empty.");
+
                 return false;
             }
 
             $templateCode = $this->compile_template($varName, $view, false);
             $this->templateCode[$varName] = $templateCode;
-            
-            $this->location[$varName] = ""; // No location since view
+
+            $this->location[$varName] = ''; // No location since view
             $this->view[$varName] = true;
         } else {
-            reset($varName);
-            while (list($var, $v) = each($varName)) {
+            foreach ($varName as $var => $v) {
                 if ($this->debug & 4) {
                     echo "<p><b>set_view:</b> (with array) varName = $var, view = $v</p>\n";
                 }
-                if ($v == "") {
+                if ($v == '') {
                     $this->halt("set_view: For varName $var view is empty.");
+
                     return false;
                 }
 
                 $v = $this->compile_template($var, $v, false);
                 $this->templateCode[$var] = $v;
-                
-                $this->location[$var] = ""; // no location since view
+
+                $this->location[$var] = ''; // no location since view
                 $this->view[$var] = true;
             }
         }
+
         return true;
     }
-    
+
     /******************************************************************************
      * Defines a filename for the initial value of a variable.
      *
@@ -533,6 +536,7 @@ class Template
             }
             if ($filename == "") {
                 $this->halt("set_file: For varName $varName filename is empty.");
+
                 return false;
             }
             $tFilename = $this->filename($filename);
@@ -545,13 +549,13 @@ class Template
             }
             $this->location[$varName] = $tFilename;
         } else {
-            reset($varName);
-            while (list($v, $f) = each($varName)) {
+            foreach ($varName as $v => $f) {
                 if ($this->debug & 4) {
                     echo "<p><b>set_file:</b> (with array) varName = $v, filename = $f</p>\n";
                 }
                 if ($f == "") {
                     $this->halt("set_file: For varName $v filename is empty.");
+
                     return false;
                 }
                 $tFilename = $this->filename($f);
@@ -565,6 +569,7 @@ class Template
                 $this->location[$v] = $tFilename;
             }
         }
+
         return true;
     }
 
@@ -679,8 +684,7 @@ class Template
                 }
             }
         } else {
-            reset($varName);
-            while (list($k, $v) = each($varName)) {
+            foreach ($varName as $k => $v) {
                 if (!empty($k) || ($k == 0)) { // Allow varName to be numbers including 0
                     if ($this->debug & 1) {
                         printf("<b>set_var:</b> (with array) <b>%s</b> = '%s'<br>\n", $k, htmlentities($v));
@@ -696,8 +700,8 @@ class Template
                         $this->varVals[$k] = $v;
 
                         if (is_array($value)) {
-                            foreach ($value as $k => $v) {
-                                $this->set_var($varName . '[' . $k . ']', $v, $append);
+                            foreach ($value as $k2 => $v2) {
+                                $this->set_var($varName . '[' . $k2 . ']', $v2, $append);
                             }
                         }
                     }
@@ -737,8 +741,7 @@ class Template
                 $this->set_var($varName, "");
             }
         } else {
-            reset($varName);
-            while (list($k, $v) = each($varName)) {
+            foreach ($varName as $k => $v) {
                 if (!empty($v) || ($v == 0)) { // Allow number variable names including 0
                     if ($this->debug & 1) {
                         printf("<b>clear_var:</b> (with array) <b>%s</b><br>\n", $v);
@@ -777,8 +780,7 @@ class Template
                 unset($this->varVals[$varName]);
             }
         } else {
-            reset($varName);
-            while (list($k, $v) = each($varName)) {
+            foreach ($varName as $k => $v) {
                 if (!empty($v) || ($v == 0)) { // Allow number variable names including 0
                     if ($this->debug & 1) {
                         printf("<b>unset_var:</b> (with array) <b>%s</b><br>\n", $v);
@@ -822,6 +824,7 @@ class Template
                 if ($this->debug & 4) {
                     echo "<p><b>subst:</b> varName $varName does not reference a file</p>\n";
                 }
+
                 return '';
             }
 
@@ -830,17 +833,20 @@ class Template
                 if ($this->debug & 4) {
                     echo "<p><b>subst:</b> file $filename Does Not Exist or is not readable</p>\n";
                 }
+
                 return '';
             }
 
             $p = pathinfo($filename);
             if ($p['extension'] === 'php') {
                 ob_start();
+                /** @noinspection PhpIncludeInspection */
                 include $filename;
                 $str = ob_get_clean();
             } else {
                 $str = $this->slow_subst($varName);
             }
+
             return $str;
         } else {
             if (isset($this->blocks[$varName])) {
@@ -854,12 +860,14 @@ class Template
                 if ($this->debug & 4) {
                     echo "<p><b>subst:</b> varName $varName does not reference a file</p>\n";
                 }
+
                 return '';
             }
 
             ob_start();
             eval('?>' . $templateCode . '<?php ');
             $str = ob_get_clean();
+
             return $str;
         }
     }
@@ -894,13 +902,13 @@ class Template
         }
 
         // quote the replacement strings to prevent bogus stripping of special chars
-        reset($this->varVals);
-        while (list($k, $v) = each($this->varVals)) {
+        foreach ($this->varVals as $k => $v) {
             $varVals_quoted[$k] = str_replace(array('\\\\', '$'), array('\\\\\\\\', '\\\\$'), $v);
         }
 
         $str = $this->get_var($varName);
         $str = str_replace($this->varKeys, $varVals_quoted, $str);
+
         return $str;
     }
 
@@ -983,8 +991,7 @@ class Template
                 $this->set_var($target, $str);
             }
         } else {
-            reset($varName);
-            while (list($i, $v) = each($varName)) {
+            foreach ($varName as $i => $v) {
                 if ($this->debug & 4) {
                     echo "<p><b>parse:</b> (with array) target = $target, i = $i, varName = $v, append = $append</p>\n";
                 }
@@ -1001,6 +1008,7 @@ class Template
         if ($this->debug & 4) {
             echo "<p><b>parse:</b> completed</p>\n";
         }
+
         return $str;
     }
 
@@ -1052,10 +1060,11 @@ class Template
         if ($this->debug & 4) {
             echo "<p><b>get_vars:</b> constructing array of vars...</p>\n";
         }
-        reset($this->varVals);
-        while (list($k, $v) = each($this->varVals)) {
+
+        foreach ($this->varVals as $k => $v) {
             $result[$k] = $this->get_var($k);
         }
+
         return $result;
     }
 
@@ -1090,10 +1099,10 @@ class Template
             if ($this->debug & 2) {
                 printf("<b>get_var</b> (with scalar) <b>%s</b> = '%s'<br>\n", $varName, htmlentities($str));
             }
+
             return $str;
         } else {
-            reset($varName);
-            while (list($k, $v) = each($varName)) {
+            foreach ($varName as $v) {
                 if (isset($this->varVals[$v])) {
                     $str = $this->varVals[$v];
                 } else {
@@ -1104,6 +1113,7 @@ class Template
                 }
                 $result[$v] = $str;
             }
+
             return $result;
         }
     }
@@ -1132,6 +1142,7 @@ class Template
         }
         if (!$this->loadFile($varName)) {
             $this->halt("get_undefined: unable to load $varName.");
+
             return false;
         }
 
@@ -1141,8 +1152,7 @@ class Template
             return false;
         }
 
-        reset($m);
-        while (list($k, $v) = each($m)) {
+        foreach ($m as $v) {
             if (!isset($this->varVals[$v])) {
                 if ($this->debug & 4) {
                     echo "<p><b>get_undefined:</b> undefined: $v</p>\n";
@@ -1237,18 +1247,19 @@ class Template
         }
         if ($this->debug & 8) {
             foreach ($this->root as $r) {
-                echo "root: " . $r . "<br>";
+                echo 'root: ' . $r . '<br>';
             }
         }
 
         // if path reaches root, just use it.
-        if (substr($fileName, 0, 1) == '/' ||   // handle unix root /
-            substr($fileName, 1, 1) == ':' ||   // handle windows d:\path
-            substr($fileName, 0, 2) == '\\\\'   // handle windows network path \\server\path
+        if (substr($fileName, 0, 1) === '/' ||   // handle unix root /
+            substr($fileName, 1, 1) === ':' ||   // handle windows d:\path
+            substr($fileName, 0, 2) === '\\\\'   // handle windows network path \\server\path
         ) {
             if (!file_exists($fileName)) {
                 $this->halt("filename: file $fileName does not exist.(1)");
             }
+
             return $fileName;
         } else {
             // check each path in order
@@ -1263,6 +1274,7 @@ class Template
             }
         }
         $this->halt("filename: file $fileName does not exist.(2)");
+
         return $fileName;
     }
 
@@ -1296,6 +1308,7 @@ class Template
             if ($this->debug & 4) {
                 echo "<p><b>loadFile:</b> varName $varName does not reference a file</p>\n";
             }
+
             return true;
         }
 
@@ -1305,6 +1318,7 @@ class Template
             if ($this->debug & 4) {
                 echo "<p><b>loadFile:</b> varName $varName is already loaded</p>\n";
             }
+
             return true;
         }
         $filename = $this->file[$varName];
@@ -1313,6 +1327,7 @@ class Template
         $str = @file_get_contents($filename);
         if (empty($str)) {
             $this->halt("loadFile: While loading $varName, $filename does not exist or is empty.");
+
             return false;
         }
 
@@ -1393,17 +1408,22 @@ class Template
             // return '{'.$val.'}{'.$this->varVals[$val].'}'; // Not sure why this was like this and not like below
             return '{' . $val . '}';
         }
+
         return '';
     }
 
     /***
      * Used in {!if var}. Avoid duplicating a large string when all we care about is if the string is non-zero length
+     *
+     * @param  string $val
+     * @return bool
      */
     function var_notempty($val)
     {
         if (array_key_exists($val, $this->varVals)) {
             return !empty($this->varVals[$val]);
         }
+
         return false;
     }
 
@@ -1425,14 +1445,17 @@ class Template
                     case 'u':
                         $ret = urlencode($ret);
                         break;
+
                     case 's':
                         $ret = htmlspecialchars($ret);
                         break;
+
                     case 't':
                         $ret = substr($ret, 0, intval(substr($mod, 1))); // truncate
                         break;
                 }
             }
+
             return $ret;
         }
         if ($this->unknowns == 'comment') {
@@ -1440,6 +1463,7 @@ class Template
         } elseif ($this->unknowns == 'keep') {
             return '{' . htmlspecialchars($val . $modifier) . '}';
         }
+
         return '';
     }
 
@@ -1469,6 +1493,7 @@ class Template
         } elseif ($this->unknowns == 'keep') {
             return '{' . htmlspecialchars($val) . '}';
         }
+
         return '';
     }
 
@@ -1477,6 +1502,7 @@ class Template
         if (array_key_exists($block, $this->block_replace)) {
             return $this->get_var($this->block_replace[$block]);
         }
+
         return '';
     }
 
@@ -1493,6 +1519,7 @@ class Template
             $ret = $current >= $limit;
         }
         if (!$ret) $this->unset_var($loopVar);
+
         return $ret;
     }
 
@@ -1501,6 +1528,7 @@ class Template
         $val = $this->get_var($var);
         if ($val == 0) $val = 0;
         $this->set_var($var, ++$val);
+
         return $val;
     }
 
@@ -1509,6 +1537,7 @@ class Template
         $val = $this->get_var($var);
         if ($val == 0) $val = 0;
         $this->set_var($var, --$val);
+
         return $val;
     }
 
@@ -1580,6 +1609,7 @@ class Template
                     $tmplt);
             }
         }
+
         return $tmplt;
     }
 
@@ -1630,6 +1660,7 @@ class Template
                 ),
                 $tmplt);
         }
+
         return $tmplt;
     }
 
@@ -1833,6 +1864,7 @@ class Template
             }
             $this->cache_write($phpFile, $str);
         }
+
         return $phpFile;
     }
 
@@ -1894,10 +1926,11 @@ class Template
      *
      * @param  string $varName  unused, name of the variable associated with the file
      * @param  string $filename path to the template file
+     * @param  bool   $isFile
      * @return string
      * @see    cache_block,cache_write,filename
      */
-    private function compile_template($varName, $filename, $isfile = true)
+    private function compile_template($varName, $filename, $isFile = true)
     {
         global $_CONF;
 
@@ -1905,7 +1938,7 @@ class Template
             printf("<compile_template> Var %s for file %s<br>", $varName, $filename);
         }
 
-        if ($isfile) {
+        if ($isFile) {
             $str = @file_get_contents($filename);
         } else {
             $str = $filename;
@@ -1997,7 +2030,7 @@ class Template
         }
         if ($TEMPLATE_OPTIONS['cache_for_mobile'] && $_DEVICE->is_mobile()) {
             $path_cache .= 'mobile/';
-        }        
+        }
         $iid = str_replace(array('..', '/', '\\', ':'), '', $iid);
         // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores ... this affects articles and staticpages
         // $iid = str_replace('-','_',$iid);
@@ -2007,6 +2040,7 @@ class Template
             . '{# end cached as ' . htmlspecialchars($iid) . " #}\n";
         $this->cache_write($filename, $tmplt);
         $this->unknowns = $old_unknowns;
+
         return $filename;
     }
 
@@ -2044,15 +2078,17 @@ class Template
         }
         if ($TEMPLATE_OPTIONS['cache_for_mobile'] && $_DEVICE->is_mobile()) {
             $path_cache .= 'mobile/';
-        }          
+        }
         $iid = str_replace(array('..', '/', '\\', ':'), '', $iid);
         // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores ... this affects articles and staticpages
         // $iid = str_replace('-','_',$iid);
         $filename = $path_cache . 'instance__' . $iid . '.php';
         if (file_exists($filename) && array_key_exists($fileVar, $this->file)) {
             $this->file[$fileVar] = $filename;
+
             return true;
         }
+
         return false;
     }
 
@@ -2138,9 +2174,10 @@ function CACHE_remove_instance($iid)
  *
  * usage: CACHE_create_instance($iid, $data, $bypass_lang);
  *
- * @param  string  $iid         A globally unique instance identifier.
- * @param  string  $data        The data to cache
- * @param  boolean $bypass_lang If true, the cached data is not instanced by language
+ * @param  string $iid         A globally unique instance identifier.
+ * @param  string $data        The data to cache
+ * @param  bool   $bypass_lang If true, the cached data is not instanced by language
+ * @param  bool   $bypass_mobile
  * @access public
  * @return void
  * @see    CACHE_check_instance, CACHE_remove_instance
@@ -2190,8 +2227,9 @@ function CACHE_create_instance($iid, $data, $bypass_lang = false, $bypass_mobile
  *      }
  *      // use the object
  *
- * @param  string  $iid         A globally unique instance identifier.
- * @param  boolean $bypass_lang If true, the cached data is not instanced by language
+ * @param  string $iid         A globally unique instance identifier.
+ * @param  bool   $bypass_lang If true, the cached data is not instanced by language
+ * @param  bool   $bypass_mobile
  * @access public
  * @return string|false the data string or false is there is no such instance
  * @see    CACHE_check_instance, CACHE_remove_instance
@@ -2201,8 +2239,10 @@ function CACHE_check_instance($iid, $bypass_lang = false, $bypass_mobile = false
     $filename = CACHE_instance_filename($iid, $bypass_lang, $bypass_mobile);
     if (file_exists($filename)) {
         $str = @file_get_contents($filename);
+
         return ($str === false) ? false : $str;
     }
+
     return false;
 }
 
@@ -2211,8 +2251,9 @@ function CACHE_check_instance($iid, $bypass_lang = false, $bypass_mobile = false
  *
  * usage: $time = CACHE_get_instance_update($iid, $bypass_lang = false)
  *
- * @param  string  $iid         A globally unique instance identifier.
- * @param  boolean $bypass_lang If true, the cached data is not instanced by language
+ * @param  string $iid         A globally unique instance identifier.
+ * @param  bool   $bypass_lang If true, the cached data is not instanced by language
+ * @param  bool   $bypass_mobile
  * @access public
  * @return int unix_timestamp of when the instance was generated or false
  * @see    CACHE_check_instance, CACHE_remove_instance
@@ -2220,6 +2261,7 @@ function CACHE_check_instance($iid, $bypass_lang = false, $bypass_mobile = false
 function CACHE_get_instance_update($iid, $bypass_lang = false, $bypass_mobile = false)
 {
     $filename = CACHE_instance_filename($iid, $bypass_lang, $bypass_mobile);
+
     return @filemtime($filename);
 }
 
@@ -2229,8 +2271,9 @@ function CACHE_get_instance_update($iid, $bypass_lang = false, $bypass_mobile = 
  *
  * usage: $time = CACHE_instance_filename($iid, $bypass_lang = false)
  *
- * @param  string  $iid         A globally unique instance identifier.
- * @param  boolean $bypass_lang If true, the cached data is not instanced by language
+ * @param  string $iid         A globally unique instance identifier.
+ * @param  bool   $bypass_lang If true, the cached data is not instanced by language
+ * @param  bool   $bypass_mobile
  * @access public
  * @return int unix_timestamp of when the instance was generated or false
  * @see    CACHE_create_instance, CACHE_check_instance, CACHE_remove_instance
@@ -2280,5 +2323,6 @@ function CACHE_security_hash()
             $hash .= 'tz' . md5($_USER['tzid']);
         }
     }
+
     return $hash;
 }
