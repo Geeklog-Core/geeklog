@@ -118,14 +118,16 @@ geeklog.datepicker = {
         // Fixes language code for jQuery UI
         langCode = this.fixLangCode(langCode);
 
-        // Set default options for datepickers
+        // Set default options for all datepickers
         $.datepicker.setDefaults({
             autoSize: true,
             buttonImage: imgUrl,
             buttonImageOnly: true,
             buttonText: toolTip,
             dateFormat: 'yy-mm-dd',
-            showOn: 'button'
+            showOn: 'button',
+            minDate: '-1y',
+            maxDate: '+5y'
         });
 
         // Creates an invisible input field for a datepicker

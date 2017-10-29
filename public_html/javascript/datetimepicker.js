@@ -161,6 +161,8 @@ geeklog.datetimepicker = {
         this.options.buttonImage = imgUrl;
         this.options.buttonText = toolTip;
         this.options.timeFormat = (geeklog.hour_mode == 12) ? 'hh:mm tt' : 'HH:mm';
+        this.options.minDate = '-1y';
+        this.options.maxDate = '+5y';
 
         // Creates an invisible input field for a datetimepicker
         inputId = selectorName + '_value_hidden';
