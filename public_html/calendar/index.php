@@ -41,8 +41,6 @@ if (!in_array('calendar', $_PLUGINS)) {
     exit;
 }
 
-require_once $_CONF['path_system'] . 'classes/calendar.class.php';
-
 $display = '';
 
 if (COM_isAnonUser() &&
@@ -240,9 +238,10 @@ function getDeleteImageLink($mode, $A, $token)
 /**
  * Gets a small, text-only version of a calendar
  *
- * @param    int $m Month to display
- * @param    int $y Year to display
- * @return   string      HTML for small calendar
+ * @param    int    $m    Month to display
+ * @param    int    $y    Year to display
+ * @param    string $mode additional mode
+ * @return   string       HTML for small calendar
  */
 function getSmallCalendar($m, $y, $mode = '')
 {
@@ -362,14 +361,45 @@ function getQuickAdd($tpl, $month, $day, $year, $token)
  */
 function getPriorSunday($month, $day, $year)
 {
-    $thestamp = mktime(0, 0, 0, $month, $day, $year);
-    $newday = $day - date('w', $thestamp);
-    $newstamp = mktime(0, 0, 0, $month, $newday, $year);
-    $newday = date('j', $newstamp);
-    $newmonth = date('n', $newstamp);
-    $newyear = date('Y', $newstamp);
+    $theStamp = mktime(0, 0, 0, $month, $day, $year);
+    $newDay = $day - date('w', $theStamp);
+    $newStamp = mktime(0, 0, 0, $month, $newDay, $year);
+    $newDay = date('j', $newStamp);
+    $newMonth = date('n', $newStamp);
+    $newYear = date('Y', $newStamp);
 
-    return array($newmonth, $newday, $newyear);
+    return array($newMonth, $newDay, $newYear);
+}
+
+/**
+ * Return if the date is within the current time window
+ *
+ * @param  int $year
+ * @param  int $month
+ * @param  int $day
+ * @return bool true if the date is within the current window
+ * @since  Geeklog 2.2.0
+ * @note   Currently, the time window is 1 year.  So links to dates which are one year older or one year newer
+ *          than the current day have 'rel="nofollow"' attribute added.
+ */
+function isWithinCurrentWindow($year, $month, $day)
+{
+    static $start = null;
+    static $end = null;
+
+    if ($start === null) {
+        // DateTime and DateInterval classes are built in the PHP core since PHP 5.2.0
+        $today = new DateTime();
+
+        // For the format of the argument of the constructor of the DateInterval class,
+        // see http://php.net/manual/en/dateinterval.construct.php
+        $start = $today->sub(new DateInterval('P1Y'))->getTimestamp();  // -1 year
+        $end = $today->add(new DateInterval('P1Y'))->getTimestamp();    // +1 year
+    }
+
+    $date = mktime(0, 0, 0, $month, trim($day), $year);
+
+    return ($start <= $date) && ($date <= $end);
 }
 
 // MAIN
@@ -418,48 +448,49 @@ if ((($view === 'day') || ($view === 'week')) &&
     $token = SEC_createToken();
 }
 
+// Get current month
+$currentTimestamp = time();
+$currentYear = date('Y', $currentTimestamp);
+$currentMonth = date('m', $currentTimestamp);
+$currentDay = date('j', $currentTimestamp);
+
 // Create new calendar object
 $cal = new Calendar();
 
 if (($view === 'week') && (empty($month) && empty($day) && empty($year))) {
     list($month, $day, $year) = getPriorSunday(date('m', time()), date('j', time()), date('Y', time()));
 } else {
-    // Get current month
-    $currentTimestamp = time();
-    $currentmonth = date('m', $currentTimestamp);
     if (empty($month)) {
-        $month = $currentmonth;
+        $month = $currentMonth;
     }
 
     // Get current year
-    $currentYear = date('Y', $currentTimestamp);
     if (empty($year)) {
         $year = $currentYear;
     }
 
     // Get current day
-    $currentday = date('j', $currentTimestamp);
     if (empty($day)) {
-        $day = $currentday;
+        $day = $currentDay;
     }
 }
 
 // Get previous month and year
-$prevmonth = $month - 1;
-if ($prevmonth == 0) {
-    $prevmonth = 12;
-    $prevyear = $year - 1;
+$prevMonth = $month - 1;
+if ($prevMonth == 0) {
+    $prevMonth = 12;
+    $prevYear = $year - 1;
 } else {
-    $prevyear = $year;
+    $prevYear = $year;
 }
 
 // Get next month and year
-$nextmonth = $month + 1;
-if ($nextmonth == 13) {
-    $nextmonth = 1;
-    $nextyear = $year + 1;
+$nextMonth = $month + 1;
+if ($nextMonth == 13) {
+    $nextMonth = 1;
+    $nextYear = $year + 1;
 } else {
-    $nextyear = $year;
+    $nextYear = $year;
 }
 
 setCalendarLanguage($cal);
@@ -480,10 +511,10 @@ switch ($view) {
         $cal_templates->set_var('lang_day', $LANG_CAL_2[39]);
         $cal_templates->set_var('lang_week', $LANG_CAL_2[40]);
         $cal_templates->set_var('lang_month', $LANG_CAL_2[41]);
-        list($wmonth, $wday, $wyear) = getPriorSunday($month, $day, $year);
-        $cal_templates->set_var('wmonth', $wmonth);
-        $cal_templates->set_var('wday', $wday);
-        $cal_templates->set_var('wyear', $wyear);
+        list($wMonth, $wDay, $wYear) = getPriorSunday($month, $day, $year);
+        $cal_templates->set_var('wmonth', $wMonth);
+        $cal_templates->set_var('wday', $wDay);
+        $cal_templates->set_var('wyear', $wYear);
         $cal_templates->set_var('month', $month);
         $cal_templates->set_var('day', $day);
         $cal_templates->set_var('year', $year);
@@ -812,17 +843,17 @@ switch ($view) {
             $cal_templates->set_var('end_block', COM_endBlock());
         }
 
-        $smallcal_prev = getSmallCalendar($prevmonth, $prevyear, $mode);
-        $cal_templates->set_var('previous_months_calendar', $smallcal_prev);
+        $smallCalendarPrev = getSmallCalendar($prevMonth, $prevYear, $mode);
+        $cal_templates->set_var('previous_months_calendar', $smallCalendarPrev);
 
-        $smallcal_next = getSmallCalendar($nextmonth, $nextyear, $mode);
-        $cal_templates->set_var('next_months_calendar', $smallcal_next);
+        $smallCalendarNext = getSmallCalendar($nextMonth, $nextYear, $mode);
+        $cal_templates->set_var('next_months_calendar', $smallCalendarNext);
 
-        $cal_templates->set_var('cal_prevmo_num', $prevmonth);
-        $cal_templates->set_var('cal_prevyr_num', $prevyear);
+        $cal_templates->set_var('cal_prevmo_num', $prevMonth);
+        $cal_templates->set_var('cal_prevyr_num', $prevYear);
         $cal_templates->set_var('cal_month_and_year', $cal->getMonthName($month) . ' ' . $year);
-        $cal_templates->set_var('cal_nextmo_num', $nextmonth);
-        $cal_templates->set_var('cal_nextyr_num', $nextyear);
+        $cal_templates->set_var('cal_nextmo_num', $nextMonth);
+        $cal_templates->set_var('cal_nextyr_num', $nextYear);
 
         if ($_CONF['week_start'] === 'Mon') {
             $cal_templates->set_var('lang_sunday', $LANG_WEEK[2]);
@@ -923,21 +954,21 @@ switch ($view) {
         $cal_templates->set_var('year_options', $yearOptions);
 
         for ($i = 1; $i <= 6; $i++) {
-            $wday = '';
+            $wDay = '';
             for ($j = 1; $j <= 7; $j++) {
                 $curday = $cal->getDayData($i, $j);
                 if (!empty($curday)) {
                     // Cache first actual day of the week to build week view link
-                    if (empty($wday)) {
-                        $wday = $curday->getDayNumber();
+                    if (empty($wDay)) {
+                        $wDay = $curday->getDayNumber();
                     }
                     if (($currentYear > $year) ||
-                        ($currentmonth > $month && $currentYear == $year) ||
-                        ($currentmonth == $month && $currentday > $curday->getDayNumber() && $currentYear == $year)
+                        ($currentMonth > $month && $currentYear == $year) ||
+                        ($currentMonth == $month && $currentDay > $curday->getDayNumber() && $currentYear == $year)
                     ) {
                         $cal_templates->set_var('cal_day_style', 'cal-oldday');
                     } else {
-                        if ($currentYear == $year && $currentmonth == $month && $currentday == $curday->getDayNumber()) {
+                        if ($currentYear == $year && $currentMonth == $month && $currentDay == $curday->getDayNumber()) {
                             $cal_templates->set_var('cal_day_style', 'cal-today');
                         } else {
                             $cal_templates->set_var('cal_day_style', 'cal-futureday');
@@ -968,12 +999,13 @@ switch ($view) {
                         $calsql_filt = COM_getPermSql('AND');
                     }
 
+                    $dayNumber = $curday->getDayNumber();
                     $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM $calsql_tbl WHERE "
-                        . "((datestart >= '$year-$month-$curday->getDayNumber() 00:00:00' "
-                        . "AND datestart <= '$year-$month-$curday->getDayNumber() 23:59:59') "
-                        . "OR (dateend >= '$year-$month-$curday->getDayNumber() 00:00:00' "
-                        . "AND dateend <= '$year-$month-$curday->getDayNumber() 23:59:59') "
-                        . "OR ('$year-$month-$curday->getDayNumber()' BETWEEN datestart AND dateend))"
+                        . "((datestart >= '{$year}-{$month}-{$dayNumber} 00:00:00' "
+                        . "AND datestart <= '{$year}-{$month}-{$dayNumber} 23:59:59') "
+                        . "OR (dateend >= '{$year}-{$month}-{$dayNumber} 00:00:00' "
+                        . "AND dateend <= '{$year}-{$month}-{$dayNumber} 23:59:59') "
+                        . "OR ('{$year}-{$month}-{$dayNumber}' BETWEEN datestart AND dateend))"
                         . $calsql_filt . " ORDER BY datestart,timestart";
 
                     $query2 = DB_query($calsql);
@@ -985,16 +1017,23 @@ switch ($view) {
                             $results = DB_fetchArray($query2);
                             if ($results['title']) {
                                 $cal_templates->set_var('cal_day_entries', '');
+
+                                // Add 'rel="nofollow"' attribute to all links of dates out of the current window
+                                $attributes = array('class' => 'cal-event');
+                                if (!isWithinCurrentWindow($year, $month, $dayNumber)) {
+                                    $attributes['rel'] = 'nofollow';
+                                }
+
                                 $entries .=
                                     COM_createLink(
                                         stripslashes($results['title']),
-                                        $_CONF['site_url'] . '/calendar/event.php?' . addMode($mode)
-                                        . 'eid=' . $results['eid'],
-                                        array('class' => 'cal-event'))
+                                        $_CONF['site_url'] . '/calendar/event.php?' . addMode($mode) . 'eid=' . $results['eid'],
+                                        $attributes
+                                    )
                                     . '<hr' . XHTML . '>';
                             }
                         }
-                        for ($z = $z; $z <= 4; $z++) {
+                        for (; $z <= 4; $z++) {
                             $entries .= '<br' . XHTML . '>';
                         }
 
@@ -1031,10 +1070,10 @@ switch ($view) {
                 }
                 $cal_templates->parse('cal_days', 'day', true);
             }
-            list($wmonth, $wday, $wyear) = getPriorSunday($month, $wday, $year);
-            $cal_templates->set_var('wmonth', $wmonth);
-            $cal_templates->set_var('wday', $wday);
-            $cal_templates->set_var('wyear', $wyear);
+            list($wMonth, $wDay, $wYear) = getPriorSunday($month, $wDay, $year);
+            $cal_templates->set_var('wmonth', $wMonth);
+            $cal_templates->set_var('wday', $wDay);
+            $cal_templates->set_var('wyear', $wYear);
             $cal_templates->parse('cal_week', 'week', true);
             $cal_templates->set_var('cal_days', '');
 
@@ -1059,8 +1098,8 @@ switch ($view) {
             }
         }
 
-        $cal_templates->set_var('lang_cal_curmo', $LANG_MONTH[$currentmonth + 0]);
-        $cal_templates->set_var('cal_curmo_num', $currentmonth);
+        $cal_templates->set_var('lang_cal_curmo', $LANG_MONTH[$currentMonth + 0]);
+        $cal_templates->set_var('cal_curmo_num', $currentMonth);
         $cal_templates->set_var('cal_curyr_num', $currentYear);
         $cal_templates->set_var('lang_cal_displaymo', $LANG_MONTH[$month + 0]);
         $cal_templates->set_var('cal_displaymo_num', $month);
@@ -1078,6 +1117,6 @@ switch ($view) {
 
         $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
         break;
-} // end switch
+}
 
 COM_output($display);

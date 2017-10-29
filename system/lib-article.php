@@ -1563,7 +1563,7 @@ function plugin_autotags_story($op, $content = '', $autotag = array())
             'story' => $LANG24['autotag_desc_story'],
         );
     } else {
-        $sid = COM_applyFilter($autotag['parm1']);
+        $sid = isset($autotag['parm1']) ?  COM_applyFilter($autotag['parm1']) : '';
         $sid = COM_switchLanguageIdForObject($sid);
         if (!empty($sid)) {
             $result = DB_query("SELECT COUNT(*) AS count "

@@ -8340,11 +8340,11 @@ HTML;
 /**
  * Provide support for drop-in replaceable template engines
  *
- * @param    string $root    Path to template root
- * @param    array  $options List of options to pass to constructor
- * @return   Template          An ITemplate derived object
+ * @param    string|array $root    Path to template root
+ * @param    string|array $options List of options to pass to constructor
+ * @return   Template              An ITemplate derived object
  */
-function COM_newTemplate($root, $options = Array())
+function COM_newTemplate($root, $options = array())
 {
     if (function_exists('OVERRIDE_newTemplate')) {
         if (is_string($options)) {

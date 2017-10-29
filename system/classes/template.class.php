@@ -594,7 +594,8 @@ class Template
         $this->block_replace[$varName] = !empty($name) ? $name : $parent;
 
         // if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true)) {
-        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) && ($this->view[$varName] == false)) {
+        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
+            (!isset($this->view[$varName]) || ($this->view[$varName] == false))) {
             $filename = $this->file[$parent];
             $p = pathinfo($filename);
             $this->blocks[$varName] = $p['dirname'] . '/' . substr($p['basename'], 0, -(strlen($p['extension']) + 1)) . '__' . $varName . '.' . $p['extension'];
@@ -808,7 +809,8 @@ class Template
         global $_CONF;
 
         // If view always bypass cache
-        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) && ($this->view[$varName] == false)) {
+        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
+            (!isset($this->view[$varName]) || ($this->view[$varName] == false))) {
             if (isset($this->blocks[$varName])) {
                 $filename = $this->blocks[$varName];
             } elseif (isset($this->file[$varName])) {
