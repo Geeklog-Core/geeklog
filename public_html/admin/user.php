@@ -83,11 +83,11 @@ function edituser($uid = '', $msg = '')
 
     $retval = '';
 
-    if (!empty ($msg)) {
+    if (!empty($msg)) {
         $retval .= COM_showMessageText($MESSAGE[$msg], $LANG28[22]);
     }
 
-    if (!empty ($msg) && !empty ($uid) && ($uid > 1)) {
+    if (!empty($msg) && !empty($uid) && ($uid > 1)) {
         // an error occurred while editing a user - if it was a new account,
         // don't bother trying to read the user's data from the database ...
         $cnt = DB_count($_TABLES['users'], 'uid', $uid);
@@ -96,10 +96,10 @@ function edituser($uid = '', $msg = '')
         }
     }
 
-    if (!empty ($uid) && ($uid > 1)) {
+    if (!empty($uid) && ($uid > 1)) {
         $result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = $uid");
         $A = DB_fetchArray($result);
-        if (empty ($A['uid'])) {
+        if (empty($A['uid'])) {
             COM_redirect($_CONF['site_admin_url'] . '/user.php');
         }
 
@@ -128,6 +128,10 @@ function edituser($uid = '', $msg = '')
         $lastlogin = '';
         $lasttime = '';
         $A['status'] = USER_ACCOUNT_ACTIVE;
+        $A['location'] = '';
+        $A['pgpkey'] = '';
+        $A['sig'] = '';
+        $A['about'] = '';
     }
 
     // POST data can override, in case there was an error while editing a user
@@ -166,9 +170,11 @@ function edituser($uid = '', $msg = '')
     $retval .= SEC_getTokenExpiryNotice($token);
 
     $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
-    $user_templates->set_file(array('form'      => 'edituser.thtml',
+    $user_templates->set_file(array(
+        'form'      => 'edituser.thtml',
                                     'password'  => 'password.thtml',
-                                    'groupedit' => 'groupedit.thtml'));
+                                    'groupedit' => 'groupedit.thtml'
+    ));
                                     
     $blocks = array('display_field', 'display_field_text');
     foreach ($blocks as $block) {
@@ -192,7 +198,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
     $user_templates->set_var('lang_userid', $LANG28[2]);
-    if (empty ($A['uid'])) {
+    if (empty($A['uid'])) {
         $user_templates->set_var('user_id', $LANG_ADMIN['na']);
     } else {
         $user_templates->set_var('user_id', $A['uid']);
@@ -201,7 +207,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('regdate_timestamp', $curtime[1]);
     $user_templates->set_var('user_regdate', $curtime[0]);
     $user_templates->set_var('lang_lastlogin', $LANG28[35]);
-    if (empty ($lastlogin)) {
+    if (empty($lastlogin)) {
         $user_templates->set_var('user_lastlogin', $LANG28[36]);
     } else {
         $user_templates->set_var('user_lastlogin', $lasttime[0]);
@@ -224,7 +230,7 @@ function edituser($uid = '', $msg = '')
     if ($_CONF['allow_user_photo'] && ($A['uid'] > 0)) {
         $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email'], -1);
         $user_templates->set_var('user_photo', $photo);
-        if (empty ($A['photo'])) {
+        if (empty($A['photo'])) {
             $user_templates->set_var('lang_delete_photo', '');
             $user_templates->set_var('delete_photo_option', '');
         } else {
@@ -278,7 +284,8 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_about', $LANG04[130]);
     $user_templates->set_var('user_about', htmlspecialchars($A['about']));
 
-    $statusarray = array(USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
+    $statusarray = array(
+        USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
                          USER_ACCOUNT_ACTIVE              => $LANG28[45],
     );
 
@@ -568,7 +575,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         }
 
         $uname = DB_escapeString($username);
-        if (empty ($uid)) {
+        if (empty($uid)) {
             $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)',
                 "username = '$uname'");
         } else {
@@ -634,8 +641,8 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         $signature = DB_escapeString($signature);
         $pgpkey = DB_escapeString($pgpkey);
         $about = DB_escapeString($about);
-        if (empty ($uid)) {
-            if (empty ($passwd)) {
+        if (empty($uid)) {
+            if (empty($passwd)) {
                 // no password? create one ...
                 $passwd = SEC_generateRandomPassword();
             }
@@ -655,12 +662,12 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             $homepage = DB_escapeString($homepage);
             
             $curphoto = DB_getItem($_TABLES['users'], 'photo', "uid = $uid");
-            if (!empty ($curphoto) && ($delete_photo == 'on')) {
+            if (!empty($curphoto) && ($delete_photo == 'on')) {
                 USER_deletePhoto($curphoto);
                 $curphoto = '';
             }
 
-            if (($_CONF['allow_user_photo'] == 1) && !empty ($curphoto)) {
+            if (($_CONF['allow_user_photo'] == 1) && !empty($curphoto)) {
                 $curusername = DB_getItem($_TABLES['users'], 'username',
                     "uid = $uid");
                 if ($curusername != $username) {
@@ -1155,7 +1162,7 @@ function importusers()
     $failures = 0;
     foreach ($users as $line) {
         $line = rtrim($line);
-        if (empty ($line)) {
+        if (empty($line)) {
             continue;
         }
 
@@ -1304,7 +1311,7 @@ if (isset($_GET['direction'])) {
     $direction = Geeklog\Input::fGet('direction');
 }
 
-if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // delete
+if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // delete
     $uid = (int) Geeklog\Input::fPost('uid');
     if ($uid <= 1) {
         COM_errorLog('Attempted to delete user uid=' . $uid);
