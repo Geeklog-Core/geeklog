@@ -325,7 +325,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     }
 
     // Load HTML templates
-    $story_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/story');
+    $story_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/article');
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $story_templates->set_file(array('editor' => 'articleeditor_advanced.thtml'));
         $advanced_editormode = true;
