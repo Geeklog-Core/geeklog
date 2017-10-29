@@ -171,9 +171,9 @@ class dbBackup
         if (!empty($a_name) && $a_name != '*') {
             if (is_array($a_name)) {
                 $result = array();
-                reset($a_name);
-                while(list($key, $val) = each($a_name))
+                foreach ($a_name as $key => $val) {
                     $result[$key] = '`' . $val . '`';
+                }
                 return $result;
             } else {
                 return '`' . $a_name . '`';

@@ -269,11 +269,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $story = new Article();
     if ($mode == 'preview') {
         // Handle Magic GPC Garbage:
-        while (list($key, $value) = each($_POST)) {
+        foreach ($_POST as $key => $value) {
             if (!is_array($value)) {
                 $_POST[$key] = COM_stripslashes($value);
             } else {
-                while (list($subkey, $subvalue) = each($value)) {
+                foreach ($value as $subkey => $subvalue) {
                     $value[$subkey] = COM_stripslashes($subvalue);
                 }
             }
@@ -864,11 +864,11 @@ function submitstory($type = '')
     $args = &$_POST;
 
     // Handle Magic GPC Garbage:
-    while (list($key, $value) = each($args)) {
+    foreach ($args as $key => $value) {
         if (!is_array($value)) {
             $args[$key] = COM_stripslashes($value);
         } else {
-            while (list($subkey, $subvalue) = each($value)) {
+            foreach ($value as $subkey => $subvalue) {
                 $value[$subkey] = COM_stripslashes($subvalue);
             }
         }

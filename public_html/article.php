@@ -113,15 +113,14 @@ if ($A['count'] > 0) {
 
     if ($result == PLG_RET_OK) {
         // loadFromArray cannot be used, since it overwrites the timestamp
-        reset($article->_dbFields);
-
-        while (list($fieldname, $save) = each($article->_dbFields)) {
+        foreach ($article->_dbFields as $fieldname => $save) {
             $varname = '_' . $fieldname;
 
             if (array_key_exists($fieldname, $output)) {
                 $article->{$varname} = $output[$fieldname];
             }
         }
+
         $article->_username = $output['username'];
         $article->_fullname = $output['fullname'];
     }

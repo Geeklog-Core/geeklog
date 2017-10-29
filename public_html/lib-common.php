@@ -7913,7 +7913,7 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
  */
 function COM_rootDebugClean($array, $blank = false)
 {
-    while (list($key, $value) = each($array)) {
+    foreach ($array as $key => $value) {
         if ((stripos($key, 'pass') !== false) || (stripos($key, 'cookie') !== false) ||
             (stripos($key, '_consumer_key') !== false) ||
             (stripos($key, '_consumer_secret') !== false)

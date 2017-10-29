@@ -2350,9 +2350,7 @@ function service_get_story($args, &$output, &$svc_msg)
             return PLG_RET_ERROR;
         }
 
-        reset($story->_dbFields);
-
-        while (list($fieldname, $save) = each($story->_dbFields)) {
+        foreach ($story->_dbFields as $fieldname => $save) {
             $varname = '_' . $fieldname;
             $output[$fieldname] = $story->{$varname};
         }
@@ -2437,7 +2435,7 @@ function service_get_story($args, &$output, &$svc_msg)
 
             $output_item = array();
 
-            while (list($fieldname, $save) = each($story->_dbFields)) {
+            foreach ($story->_dbFields as $fieldname => $save) {
                 $varname = '_' . $fieldname;
                 $output_item[$fieldname] = $story->{$varname};
             }

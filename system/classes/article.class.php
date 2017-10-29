@@ -367,9 +367,7 @@ class Article
         /* Use the magic cheat array to quickly reload the whole story
          * from the database result array, doing the quick stripslashes.
          */
-        reset($this->_dbFields);
-
-        while (list($fieldName, $save) = each($this->_dbFields)) {
+        foreach ($this->_dbFields as $fieldName => $save) {
             $varName = '_' . $fieldName;
 
             if (array_key_exists($fieldName, $story)) {
@@ -803,7 +801,7 @@ class Article
          * means that when adding new fields to save and load, all we need to do
          * is add the field name to the array, and the code will magically cope.
          */
-        while (list($fieldName, $save) = each($this->_dbFields)) {
+        foreach ($this->_dbFields as $fieldName => $save) {
             if ($save === 1) {
                 $varName = '_' . $fieldName;
                 $fields .= $fieldName . ', ';
@@ -1010,7 +1008,7 @@ class Article
         }
 
         // Handle Magic GPC Garbage:
-        while (list($key, $value) = each($array)) {
+        foreach ($array as $key => $value) {
             $array[$key] = COM_stripslashes($value);
         }
 
