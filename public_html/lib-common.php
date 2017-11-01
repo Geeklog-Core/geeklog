@@ -1322,10 +1322,7 @@ function COM_siteFooter($rightBlock = -1, $custom = '')
     $year = date('Y');
     $copyrightYear = empty($_CONF['copyrightyear']) ? $year : $_CONF['copyrightyear'];
     $copyrightName = empty($_CONF['owner_name']) ? $_CONF['site_name'] : $_CONF['owner_name'];
-    $footer->set_var(
-        'copyright_msg',
-        $LANG01[93] . ' &copy; ' . $copyrightYear . ' ' . $copyrightName
-    );
+    $footer->set_var('copyright_msg', $LANG01[93] . ' &copy; ' . $copyrightYear . ' ' . $copyrightName);
     $footer->set_var('current_year', $year);
     $footer->set_var('lang_copyright', $LANG01[93]);
     $footer->set_var('trademark_msg', $LANG01[94]);
@@ -1871,17 +1868,9 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     ));
 
     $year = date('Y');
-    $copyrightYear = $year;
-    if (!empty($_CONF['copyrightyear'])) {
-        $copyrightYear = $_CONF['copyrightyear'];
-    }
-    if (!empty($_CONF['owner_name'])) {
-        $copyrightName = $_CONF['owner_name'];
-    } else {
-        $copyrightName = $_CONF['site_name'];
-    }
-    $footer->set_var('copyright_msg', $LANG01[93] . ' &copy; '
-        . $copyrightYear . ' ' . $copyrightName);
+    $copyrightYear = empty($_CONF['copyrightyear']) ? $year : $_CONF['copyrightyear'];
+    $copyrightName = empty($_CONF['owner_name']) ? $_CONF['site_name'] : $_CONF['owner_name'];
+    $footer->set_var('copyright_msg', $LANG01[93] . ' &copy; ' . $copyrightYear . ' ' . $copyrightName);
     $footer->set_var('current_year', $year);
     $footer->set_var('lang_copyright', $LANG01[93]);
     $footer->set_var('trademark_msg', $LANG01[94]);
