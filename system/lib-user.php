@@ -238,6 +238,7 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
     global $_CONF, $_TABLES;
 
     $queueUser = false;
+    $username = GLText::remove4byteUtf8Chars($username);
     $username = DB_escapeString($username);
     $email = DB_escapeString($email);
 

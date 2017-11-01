@@ -1054,11 +1054,11 @@ function saveuser(array $A)
     $A['homepage'] = COM_applyFilter($A['homepage']);
 
     // basic filtering only
-    $A['fullname'] = GLText::stripTags(COM_stripslashes($A['fullname']));
-    $A['location'] = GLText::stripTags(COM_stripslashes($A['location']));
-    $A['sig'] = GLText::stripTags(COM_stripslashes($A['sig']));
-    $A['about'] = GLText::stripTags(COM_stripslashes($A['about']));
-    $A['pgpkey'] = GLText::stripTags(COM_stripslashes($A['pgpkey']));
+    $A['fullname'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['fullname'])));
+    $A['location'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['location'])));
+    $A['sig'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['sig'])));
+    $A['about'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['about'])));
+    $A['pgpkey'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['pgpkey'])));
 
     if (!COM_isEmail($A['email'])) {
         COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=52');

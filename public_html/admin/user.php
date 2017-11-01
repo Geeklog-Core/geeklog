@@ -629,11 +629,11 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         }
         
         // basic filtering only (same as in usersettings.php)
-        $fullname= GLText::stripTags(COM_stripslashes($fullname));
-        $location = GLText::stripTags(COM_stripslashes($location));
-        $signature = GLText::stripTags(COM_stripslashes($signature));
-        $about = GLText::stripTags(COM_stripslashes($about));
-        $pgpkey = GLText::stripTags(COM_stripslashes($pgpkey));
+        $fullname = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($fullname)));
+        $location = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($location)));
+        $signature = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($signature)));
+        $about = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($about)));
+        $pgpkey = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($pgpkey)));
         
         
         // Escape these here since used both in new and updates
@@ -686,7 +686,9 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                     $curphoto = $newphoto;
                 }
             }
-
+            
+            $username = GLText::remove4byteUtf8Chars($username);
+            $username = DB_escapeString($username);            
             $curphoto = DB_escapeString($curphoto);
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
             DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
