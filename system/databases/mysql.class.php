@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | mysql.class.php                                                           |
 // |                                                                           |
@@ -113,18 +113,15 @@ class Database
 
     /**
      * Logs messages
-     * Logs messages by calling the function held in $_errorlog_fn
+     * Logs messages by calling the function held in $_errorLog_fn
      *
      * @param    string $msg Message to log
      * @access   private
      */
-    private function _errorlog($msg)
+    private function _errorLog($msg)
     {
         $function = $this->_errorlog_fn;
-
-        if (function_exists($function)) {
-            $function($msg);
-        }
+        $function($msg);
     }
 
     /**
@@ -136,7 +133,7 @@ class Database
         global $_TABLES, $use_innodb;
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->_connect ***");
+            $this->_errorLog("\n*** Inside database->_connect ***");
         }
 
         // Connect to MySQL server
@@ -155,7 +152,7 @@ class Database
 
         if (!($this->_db)) {
             if ($this->isVerbose()) {
-                $this->_errorlog("\n*** Error in database->_connect ***");
+                $this->_errorLog("\n*** Error in database->_connect ***");
             }
 
             // damn, got an error.
@@ -181,7 +178,7 @@ class Database
         }
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n***leaving database->_connect***");
+            $this->_errorLog("\n***leaving database->_connect***");
         }
     }
 
@@ -328,7 +325,7 @@ class Database
         $this->_pass = $dbpass;
         $this->_tablePrefix = $tablePrefix;
         $this->_verbose = false;
-        $this->_errorlog_fn = $errorlogfn;
+        $this->setErrorFunction($errorlogfn);
         $this->_charset = strtolower($charset);
         $this->_mysql_version = 0;
         $this->_use_innodb = false;
@@ -386,7 +383,11 @@ class Database
      */
     public function setErrorFunction($functionName)
     {
-        $this->_errorlog_fn = $functionName;
+        if (is_callable($functionName)) {
+            $this->_errorlog_fn = $functionName;
+        } else {
+            throw new \InvalidArgumentException('function "' . $functionName . '" is not callable');
+        }
     }
 
     /**
@@ -400,8 +401,8 @@ class Database
     public function dbQuery($sql, $ignore_errors = 0)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n***inside database->dbQuery***");
-            $this->_errorlog("\n*** sql to execute is $sql ***");
+            $this->_errorLog("\n***inside database->dbQuery***");
+            $this->_errorLog("\n*** sql to execute is $sql ***");
         }
 
         // Modifies "CREATE TABLE" SQL
@@ -449,8 +450,8 @@ class Database
         // If OK, return otherwise echo error
         if (mysql_errno() == 0 && !empty($result)) {
             if ($this->isVerbose()) {
-                $this->_errorlog("\n***sql ran just fine***");
-                $this->_errorlog("\n*** Leaving database->dbQuery ***");
+                $this->_errorLog("\n***sql ran just fine***");
+                $this->_errorLog("\n*** Leaving database->dbQuery ***");
             }
 
             return $result;
@@ -460,9 +461,12 @@ class Database
                 return false;
             }
 
+            // Log errors
+            $this->dbError($sql);
+
             if ($this->isVerbose()) {
-                $this->_errorlog("\n***sql caused an error***");
-                $this->_errorlog("\n*** Leaving database->dbQuery ***");
+                $this->_errorLog("\n***sql caused an error***");
+                $this->_errorLog("\n*** Leaving database->dbQuery ***");
             }
         }
     }
@@ -479,7 +483,7 @@ class Database
     public function dbSave($table, $fields, $values)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbSave ***");
+            $this->_errorLog("\n*** Inside database->dbSave ***");
         }
 
         $sql = "REPLACE INTO $table ($fields) VALUES ($values)";
@@ -487,7 +491,7 @@ class Database
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbSave ***");
+            $this->_errorLog("\n*** Leaving database->dbSave ***");
         }
     }
 
@@ -505,7 +509,7 @@ class Database
     public function dbDelete($table, $id, $value)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** inside database->dbDelete ***");
+            $this->_errorLog("\n*** inside database->dbDelete ***");
         }
 
         $sql = "DELETE FROM $table";
@@ -541,7 +545,7 @@ class Database
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** inside database->dbDelete ***");
+            $this->_errorLog("\n*** inside database->dbDelete ***");
         }
 
         return true;
@@ -563,7 +567,7 @@ class Database
     public function dbChange($table, $item_to_set, $value_to_set, $id, $value, $suppress_quotes = false)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside dbChange ***");
+            $this->_errorLog("\n*** Inside dbChange ***");
         }
 
         if ($suppress_quotes) {
@@ -599,13 +603,13 @@ class Database
         }
 
         if ($this->isVerbose()) {
-            $this->_errorlog("dbChange sql = $sql");
+            $this->_errorLog("dbChange sql = $sql");
         }
 
         $result = $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbChange ***");
+            $this->_errorLog("\n*** Leaving database->dbChange ***");
         }
 
         return $result;
@@ -624,7 +628,7 @@ class Database
     public function dbCount($table, $id = '', $value = '')
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbCount ***");
+            $this->_errorLog("\n*** Inside database->dbCount ***");
         }
 
         $sql = "SELECT COUNT(*) FROM $table";
@@ -657,13 +661,13 @@ class Database
         }
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** sql = $sql ***");
+            $this->_errorLog("\n*** sql = $sql ***");
         }
 
         $result = $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbCount ***");
+            $this->_errorLog("\n*** Leaving database->dbCount ***");
         }
 
         return ($this->dbResult($result, 0));
@@ -685,7 +689,7 @@ class Database
     public function dbCopy($table, $fields, $values, $tableFrom, $id, $value)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbCopy ***");
+            $this->_errorLog("\n*** Inside database->dbCopy ***");
         }
 
         $sql = "REPLACE INTO $table ($fields) SELECT $values FROM $tableFrom";
@@ -720,7 +724,7 @@ class Database
         $this->dbDelete($tableFrom, $id, $value);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbCopy ***");
+            $this->_errorLog("\n*** Leaving database->dbCopy ***");
         }
 
         return $result;
@@ -736,21 +740,21 @@ class Database
     public function dbNumRows($recordSet)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbNumRows ***");
+            $this->_errorLog("\n*** Inside database->dbNumRows ***");
         }
 
         // return only if recordset exists, otherwise 0
         if ($recordSet) {
             if ($this->isVerbose()) {
-                $this->_errorlog('got ' . @mysql_numrows($recordSet) . ' rows');
-                $this->_errorlog("\n*** Inside database->dbNumRows ***");
+                $this->_errorLog('got ' . @mysql_numrows($recordSet) . ' rows');
+                $this->_errorLog("\n*** Inside database->dbNumRows ***");
             }
 
             return @mysql_numrows($recordSet);
         } else {
             if ($this->isVerbose()) {
-                $this->_errorlog("got no rows");
-                $this->_errorlog("\n*** Inside database->dbNumRows ***");
+                $this->_errorLog("got no rows");
+                $this->_errorLog("\n*** Inside database->dbNumRows ***");
             }
 
             return 0;
@@ -768,15 +772,15 @@ class Database
     public function dbResult($recordSet, $row, $field = 0)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbResult ***");
+            $this->_errorLog("\n*** Inside database->dbResult ***");
 
             if (empty($recordSet)) {
-                $this->_errorlog("\n*** Passed recordset isn't valid ***");
+                $this->_errorLog("\n*** Passed recordset isn't valid ***");
             } else {
-                $this->_errorlog("\n*** Everything looks good ***");
+                $this->_errorLog("\n*** Everything looks good ***");
             }
 
-            $this->_errorlog("\n*** Leaving database->dbResult ***");
+            $this->_errorLog("\n*** Leaving database->dbResult ***");
         }
 
         return @mysql_result($recordSet, $row, $field);
@@ -829,13 +833,17 @@ class Database
      */
     public function dbFetchArray($recordSet, $both = false)
     {
-        if ($both) {
-            $result_type = MYSQL_BOTH;
-        } else {
-            $result_type = MYSQL_ASSOC;
-        }
+        if (is_resource($recordSet)) {
+            if ($both) {
+                $result_type = MYSQL_BOTH;
+            } else {
+                $result_type = MYSQL_ASSOC;
+            }
 
-        return @mysql_fetch_array($recordSet, $result_type);
+            return @mysql_fetch_array($recordSet, $result_type);
+        } else {
+            return array();
+        }
     }
 
     /**
@@ -884,9 +892,9 @@ class Database
             }
 
             if (empty($fn)) {
-                $this->_errorlog(@mysql_errno() . ': ' . @mysql_error() . ". SQL in question: $sql");
+                $this->_errorLog(@mysql_errno() . ': ' . @mysql_error() . ". SQL in question: $sql");
             } else {
-                $this->_errorlog(@mysql_errno() . ': ' . @mysql_error() . " in $fn. SQL in question: $sql");
+                $this->_errorLog(@mysql_errno() . ': ' . @mysql_error() . " in $fn. SQL in question: $sql");
             }
             if ($this->_display_error) {
                 return @mysql_errno() . ': ' . @mysql_error();
@@ -909,7 +917,7 @@ class Database
     public function dbLockTable($table)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbLockTable ***");
+            $this->_errorLog("\n*** Inside database->dbLockTable ***");
         }
 
         $sql = "LOCK TABLES $table WRITE";
@@ -917,7 +925,7 @@ class Database
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbLockTable ***");
+            $this->_errorLog("\n*** Leaving database->dbLockTable ***");
         }
     }
 
@@ -932,7 +940,7 @@ class Database
     public function dbUnlockTable($table)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbUnlockTable ***");
+            $this->_errorLog("\n*** Inside database->dbUnlockTable ***");
         }
 
         $sql = 'UNLOCK TABLES';
@@ -940,7 +948,7 @@ class Database
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbUnlockTable ***");
+            $this->_errorLog("\n*** Leaving database->dbUnlockTable ***");
         }
     }
 
@@ -950,6 +958,48 @@ class Database
     public function dbGetVersion()
     {
         return @mysql_get_server_info();
+    }
+
+    /**
+     * Start a new transaction
+     *
+     * @return bool true on success, false otherwise
+     */
+    public function dbStartTransaction()
+    {
+        if ($this->_use_innodb) {
+            return $this->dbQuery("START TRANSACTION") && $this->dbQuery("BEGIN");
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Commit the current transaction
+     *
+     * @return bool true on success, false otherwise
+     */
+    public function dbCommit()
+    {
+        if ($this->_use_innodb) {
+            return $this->dbQuery("COMMIT");
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Rollback the current transaction
+     *
+     * @return bool true on success, false otherwise
+     */
+    public function dbRollBack()
+    {
+        if ($this->_use_innodb) {
+            return $this->dbQuery("ROLLBACK");
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -963,5 +1013,15 @@ class Database
         $retval = mysql_real_escape_string($str, $this->_db);
 
         return $retval;
+    }
+
+    /**
+     * Return if the database server supports InnoDB engine
+     *
+     * @return bool
+     */
+    public function isInnoDb()
+    {
+        return $this->_use_innodb;
     }
 }

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-database.php                                                          |
 // |                                                                           |
@@ -629,4 +629,56 @@ function DB_setMysqlSqlMode($mode)
     if ($_DB_dbms === 'mysql') {
         $_DB->setSqlMode($mode);
     }
+}
+
+/**
+ * Return if database server (only MySQL) supports InnoDB engine
+ *
+ * @return bool
+ */
+function DB_isInnoDb()
+{
+    global $_DB, $_DB_dbms;
+
+    if ($_DB_dbms === 'mysql') {
+        return $_DB->isInnoDb();
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Start a new transaction
+ *
+ * @return bool true on success, false otherwise
+ */
+function DB_beginTransaction()
+{
+    global $_DB;
+
+    return $_DB->dbStartTransaction();
+}
+
+/**
+ * Commit the current transaction
+ *
+ * @return bool true on success, false otherwise
+ */
+function DB_commit()
+{
+    global $_DB;
+
+    return $_DB->dbCommit();
+}
+
+/**
+ * Rollback the current transaction
+ *
+ * @return bool true on success, false otherwise
+ */
+function DB_rollBack()
+{
+    global $_DB;
+
+    return $_DB->dbRollback();
 }
