@@ -373,6 +373,8 @@ CREATE TABLE {$_TABLES['storysubmission']} (
   text_version tinyint(2) NOT NULL default '1',
   date datetime default NULL,
   postmode varchar(10) NOT NULL default 'html',
+  meta_description TEXT NULL,
+  meta_keywords TEXT NULL,
   PRIMARY KEY  (sid)
 ) ENGINE=MyISAM
 ";

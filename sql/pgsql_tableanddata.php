@@ -371,6 +371,8 @@ CREATE TABLE {$_TABLES['storysubmission']} (
   text_version smallint NOT NULL default '1',
   date timestamp default NULL,
   postmode varchar(10) NOT NULL default 'html',
+  meta_description TEXT NULL,
+  meta_keywords TEXT NULL,
   PRIMARY KEY (sid)
 )
 ";

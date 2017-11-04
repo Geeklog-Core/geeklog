@@ -1042,9 +1042,17 @@ class Article
             }
         }
 
-        // Load the introtext, bodytext
+        // Load the introtext, bodytext, meta_description, and meta_keywords
         $this->_introtext = $this->_applyTextFilter($array['introtext'], $array['postmode']);
         $this->_bodytext = $this->_applyTextFilter($array['bodytext'], $array['postmode']);
+
+        if ($_CONF['meta_tags'] > 0) {
+            $this->_meta_description = $this->_applyTextFilter($array['meta_description'], $array['postmode']);
+            $this->_meta_keywords = $this->_applyTextFilter($array['meta_keywords'], $array['postmode']);
+        } else {
+            $this->_meta_description = '';
+            $this->_meta_keywords = '';
+        }
 
         $this->_advanced_editor_mode = 0;
         if (in_array($array['postmode'], array('html', 'adveditor'))) {
@@ -1095,6 +1103,8 @@ class Article
         // Remove any autotags the user doesn't have permission to use
         $introText = PLG_replaceTags($this->_introtext, '', true);
         $bodyText = PLG_replaceTags($this->_bodytext, '', true);
+        $metaDescription = PLG_replaceTags($this->_meta_description, '', true);
+        $metaKeyWords = PLG_replaceTags($this->_meta_keywords, '', true);
 
         if (!TOPIC_hasMultiTopicAccess('topic')) {
             // user doesn't have access to one or more topics - bail
@@ -1108,9 +1118,13 @@ class Article
             $introText = DB_escapeString($introText);
             $bodyText = DB_escapeString($bodyText);
             $postMode = DB_escapeString($this->_postmode);
-            DB_save($_TABLES['storysubmission'], 'sid,uid,title,introtext,bodytext,date,postmode,text_version',
-                "$sid,{$this->_uid},'$title'," .
-                "'$introText','$bodyText',NOW(),'$postMode','{$this->_text_version}'"
+            $metaDescription = DB_escapeString($metaDescription);
+            $metaKeyWords = DB_escapeString($metaKeyWords);
+            DB_save(
+                $_TABLES['storysubmission'],
+                'sid,uid,title,introtext,bodytext,date,postmode,text_version, meta_description, meta_keywords',
+                "$sid,{$this->_uid},'$title','$introText','$bodyText',NOW(),'$postMode','{$this->_text_version}', " .
+                "'{$metaDescription}', '{$metaKeyWords}'"
             );
 
             // Save Topics selected
@@ -1207,7 +1221,7 @@ class Article
             $ai_sid = $this->_sid;
         }
         
-        // Figure out story type normal, featured or archived (grabbed from render article in lib-story)
+        // Figure out story type normal, featured or archived (grabbed from render article in lib-article)
         if ($this->DisplayElements('featured') == 1) {
             $article_filevar = 'featuredarticletext.thtml';
         } elseif ($this->DisplayElements('statuscode') == STORY_ARCHIVE_ON_EXPIRE && $this->DisplayElements('expire') <= time()) {

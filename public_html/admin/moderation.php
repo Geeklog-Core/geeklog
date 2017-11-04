@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | moderation.php                                                            |
 // |                                                                           |
@@ -206,6 +206,10 @@ function itemlist($type, $token)
             $A['edit'] = $_CONF['site_admin_url'] . '/article.php'
                 . '?mode=edit&amp;sid=' . $A[0];
         } else { // this pretty much only leaves $type == 'story'
+            if ($type === 'story') {
+                $type = 'article';
+            }
+
             $A['edit'] = $_CONF['site_admin_url'] . '/' . $type
                 . '.php?mode=editsubmission&amp;id=' . $A[0];
         }

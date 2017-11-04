@@ -1,11 +1,8 @@
 <?php
 
-/**
- * Database Updates
- */
-// None yet
-//$_SQL[] = "";
-
+// Add meta_description and meta_keywords to storysubmission
+$_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_description` TEXT NULL AFTER `postmode`";
+$_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_keywords` TEXT NULL AFTER `meta_description`";
 
 /**
  * Upgrade Messages

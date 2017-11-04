@@ -20,6 +20,12 @@
           <dt><label for="submitstory_advanced-tid">{lang_topic}</label></dt>
           <dd>{topic_selection}</dd>
 
+          <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
+          <dd{hide_meta}><textarea cols="45" rows="2" name="meta_description" id="admin-storyeditor-metadescription">{meta_description}</textarea></dd>
+
+          <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
+          <dd{hide_meta}><textarea cols="45" rows="2" name="meta_keywords" id="admin-storyeditor-metakeywords">{meta_keywords}</textarea></dd>
+
           <dt><label for="introtext">{lang_story}</label></dt>
           <dd>
             <div id="text_editor" style="display: {show_texteditor};">
