@@ -8,7 +8,7 @@
  *
  */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'siteconfig.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -27,12 +27,35 @@ $_CONF['site_enabled'] = true;
 /**
  * Developer mode
  *
- * If you set this mode to true, detailed information will be displayed and/or logged.
+ * If you set this flag to true, detailed information will be displayed and/or logged.
+ * When this flag is not set or set to false, all the options below DO NOT take effect.
  *
  * @var boolean
- * @since 2.1.2
+ * @since v2.1.2
  */
 // $_CONF['developer_mode'] = true;
+
+/**
+ * This overwrites error_reporting level set in lib-common.php
+ *
+ * @var int
+ * @see http://php.net/manual/en/function.error-reporting.php
+ * @since v2.2.0
+ */
+// $_CONF['developer_mode_php']['error_reporting'] = -1;
+
+/**
+ * When these flags are set to true, detailed information will be logged respectively.
+ *
+ * @var bool
+ * @since v2.2.0
+ */
+// $_CONF['developer_mode_log']['database'] = true;
+// $_CONF['developer_mode_log']['deprecated'] = true;
+// $_CONF['developer_mode_log']['security'] = true;
+// $_CONF['developer_mode_log']['session'] = true;
+// $_CONF['developer_mode_log']['template'] = true;
+// $_CONF['developer_mode_log']['topic'] = true;
 
 $_CONF['path'] = '/path/to/Geeklog/';
 $_CONF['path_system'] = $_CONF['path'] . 'system/';
@@ -41,14 +64,11 @@ $_CONF['default_charset'] = 'iso-8859-1';
 
 $_CONF_FCK['imagelibrary'] = '/images/library';
 
-
 // Useful Stuff
-
 if (!defined('LB')) {
   define('LB',"\n");
 }
+
 if (!defined('VERSION')) {
   define('VERSION', '2.2.0');
 }
-
-?>

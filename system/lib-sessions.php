@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-sessions.php                                                          |
 // |                                                                           |
@@ -37,7 +37,7 @@
 */
 
 // Turn this on if you want to see various debug messages from this library
-$_SESS_VERBOSE = false;
+$_SESS_VERBOSE = COM_isEnableDeveloperModeLog('session');
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-sessions.php') !== false) {
     die('This file can not be used on its own!');

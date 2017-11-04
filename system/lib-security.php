@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-security.php                                                          |
 // |                                                                           |
@@ -56,9 +56,9 @@
  */
 
 // Turn this on to get various debug messages from the code in this library
-$_SEC_VERBOSE = false;
+$_SEC_VERBOSE = COM_isEnableDeveloperModeLog('security');
 
-if (stripos($_SERVER['PHP_SELF'], 'lib-security.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -84,16 +84,16 @@ if (!defined('CSRF_TOKEN')) {
 *       be used once at the beginning of a page.  The resulting array $_GROUPS can then be
 *       used through out the page.
 *
-* @param        int     $uid            User ID to get information for. If empty current user.
+* @param    int     $uid            User ID to get information for. If empty current user.
 * @return   array   Associative Array grp_name -> ug_main_grp_id of group ID's user belongs to
 *
 */
-function SEC_getUserGroups($uid='')
+function SEC_getUserGroups($uid = 0)
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE, $_USER_MAINGROUPS;
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("****************in getusergroups(uid=$uid,usergroups=$usergroups,cur_grp_id=$cur_grp_id)***************",1);
+        COM_errorLog("****************in SEC_getUserGroups(uid=$uid)***************",1);
     }
 
     $groups = array();
@@ -151,7 +151,7 @@ function SEC_getUserGroups($uid='')
     uksort($groups, 'strcasecmp');
 
     if ($_SEC_VERBOSE) {
-        COM_errorLog("****************leaving getusergroups(uid=$uid)***************",1);
+        COM_errorLog("****************leaving SEC_getUserGroups(uid=$uid)***************",1);
     }
 
     return $groups;
@@ -164,11 +164,11 @@ function SEC_getUserGroups($uid='')
  * the group id for "Remote User" group is, because it's a later static
  * group, and upgraded systems could have it in any id slot.
  *
- * @param      groupid     int     The id of a group, which might be the remote users group
- * @param      groups      array   Array of group ids the user has access to.
+ * @param      int   $groupId  The id of a group, which might be the remote users group
+ * @param      array $groups   Array of group ids the user has access to.
  * @return     boolean
  */
-function SEC_groupIsRemoteUserAndHaveAccess($groupid, $groups)
+function SEC_groupIsRemoteUserAndHaveAccess($groupId, $groups)
 {
     global $_TABLES, $_CONF;
     if (!isset($_CONF['remote_users_group_id'])) {
@@ -178,7 +178,7 @@ function SEC_groupIsRemoteUserAndHaveAccess($groupid, $groups)
             $_CONF['remote_users_group_id'] = $row['grp_id'];
         }
     }
-    if ($groupid == $_CONF['remote_users_group_id']) {
+    if ($groupId == $_CONF['remote_users_group_id']) {
         if (in_array(1, $groups) || // root
             in_array(9, $groups) || // user admin
             in_array(11, $groups) // Group admin
@@ -199,10 +199,9 @@ function SEC_groupIsRemoteUserAndHaveAccess($groupid, $groups)
  *
  * @param        string $grp_to_verify Group we want to see if user belongs to
  * @param        int    $uid           ID for user to check. If empty current user.
- * @param        string $cur_grp_id    NOT USED Current group we are working with in hierarchy
- * @return       boolean     true if user is in group, otherwise false
+ * @return       bool                  true if user is in group, otherwise false
  */
-function SEC_inGroup($grp_to_verify, $uid = '', $cur_grp_id = '')
+function SEC_inGroup($grp_to_verify, $uid = 0)
 {
     global $_USER, $_GROUPS;
 

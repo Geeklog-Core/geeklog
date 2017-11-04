@@ -8,7 +8,7 @@
 // |                                                                           |
 // | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2013 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -373,7 +373,7 @@ class Database
             return false;
         }
 
-        return $this->_verbose;
+        return $this->_verbose && COM_isEnableDeveloperModeLog('database');
     }
 
     /**
@@ -896,6 +896,7 @@ class Database
             } else {
                 $this->_errorLog(@mysql_errno() . ': ' . @mysql_error() . " in $fn. SQL in question: $sql");
             }
+
             if ($this->_display_error) {
                 return @mysql_errno() . ': ' . @mysql_error();
             } else {

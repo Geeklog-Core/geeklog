@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-topic.php                                                             |
 // |                                                                           |
@@ -34,7 +34,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 }
 
 // set to true to enable debug output in error.log
-$_TOPIC_DEBUG = false;
+$_TOPIC_DEBUG = COM_isEnableDeveloperModeLog('topic');
 
 // These constants are used by topic assignments table and when the user selects
 // a topic option.

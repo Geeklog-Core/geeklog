@@ -949,7 +949,7 @@ class Database
             return false;
         }
 
-        return $this->_verbose;
+        return $this->_verbose && COM_isEnableDeveloperModeLog('database');
     }
 
     /**

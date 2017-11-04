@@ -122,11 +122,12 @@ class Tst
      * Create a site configuration file
      *
      * @return bool
+     * @note   the line "define('VERSION', '2.2.0');" should be updated with each release
+
      */
     public static function createSiteConfigFile()
     {
-        $version = self::VERSION;
-        $content = <<<PHP
+        $content = <<< 'PHP'
 <?php
 
 /*
@@ -137,46 +138,69 @@ class Tst
  *
  */
 
-if (strpos(strtolower(\$_SERVER['PHP_SELF']), 'siteconfig.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
-global \$_CONF;
+global $_CONF;
 
 // To disable your site quickly, simply set this flag to false
-\$_CONF['site_enabled'] = true;
+$_CONF['site_enabled'] = true;
 
 // If you have errors on your site, can't login, or can't get to the
 // config UI, then you can comment this in to set the root debug option
 // on and get detailed error messages. You can set this to 'force' (which the
 // Config UI won't allow you to do) to override hiding of password and cookie
 // items in the debug trace.
-//\$_CONF['rootdebug'] = true;
+// $_CONF['rootdebug'] = true;
 
 /**
  * Developer mode
  *
- * If you set this mode to true, detailed information will be displayed and/or logged.
+ * If you set this flag to true, detailed information will be displayed and/or logged.
+ * When this flag is not set or set to false, all the options below DO NOT take effect.
  *
  * @var boolean
- * @since 2.1.2
+ * @since v2.1.2
  */
-// \$_CONF['developer_mode'] = true;
+// $_CONF['developer_mode'] = true;
 
-\$_CONF['path'] = dirname(__DIR__) . '/';
-\$_CONF['path_system'] = \$_CONF['path'] . 'system/';
+/**
+ * This overwrites error_reporting level set in lib-common.php
+ *
+ * @var int
+ * @see http://php.net/manual/en/function.error-reporting.php
+ * @since v2.2.0
+ */
+// $_CONF['developer_mode_php']['error_reporting'] = -1;
 
-\$_CONF['default_charset'] = 'utf-8';
+/**
+ * When these flags are set to true, detailed information will be logged respectively.
+ *
+ * @var bool
+ * @since v2.2.0
+ */
+// $_CONF['developer_mode_log']['database'] = true;
+// $_CONF['developer_mode_log']['deprecated'] = true;
+// $_CONF['developer_mode_log']['security'] = true;
+// $_CONF['developer_mode_log']['session'] = true;
+// $_CONF['developer_mode_log']['template'] = true;
+// $_CONF['developer_mode_log']['topic'] = true;
 
-\$_CONF_FCK['imagelibrary'] = '/images/library';
+$_CONF['path'] = '/path/to/Geeklog/';
+$_CONF['path_system'] = $_CONF['path'] . 'system/';
+
+$_CONF['default_charset'] = 'iso-8859-1';
+
+$_CONF_FCK['imagelibrary'] = '/images/library';
 
 // Useful Stuff
-
 if (!defined('LB')) {
   define('LB',"\n");
 }
+
 if (!defined('VERSION')) {
-  define('VERSION', '{$version}');
+  define('VERSION', '2.2.0');
 }
 PHP;
 

@@ -313,8 +313,8 @@ class Template
             clearstatcache();
         }
 
-        // Since GL-2.1.2
-        if (isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) {
+        // Since GL-2.2.0
+        if (COM_isEnableDeveloperModeLog('template')) {
             $this->halt_on_error = 'log';
         }
     }

@@ -85,6 +85,11 @@ if (is_callable('set_exception_handler')) {
  */
 require_once __DIR__ . '/siteconfig.php';
 
+if (COM_isDeveloperMode() &&
+    isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
+    error_reporting((int) $_CONF['developer_mode_php']['error_reporting']);
+}
+
 COM_checkInstalled();
 
 // Register autoloader
@@ -2492,7 +2497,7 @@ function COM_errorLog($logEntry, $actionId = '')
 
         // Only show call trace in developer mode (for log file only)
         $callTrace = "";
-        if (isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) {
+        if (COM_isDeveloperMode()) {
             // Generate an exception to trace the deprecated call
             $e = new Exception();
             $trace = $e->getTrace();
@@ -2563,11 +2568,8 @@ function COM_errorLog($logEntry, $actionId = '')
  */
 function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_version, $new_object = '')
 {
-    global $_CONF;
-
     // Only show deprecated calls in developer mode
-    if (isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true)) {
-
+    if (COM_isEnableDeveloperModeLog('deprecated')) {
         $log_msg = sprintf(
             'Deprecated Warning - %1$s has been deprecated since Geeklog %2$s. This object will be removed in Geeklog %3$s.',
             $deprecated_object, $deprecated_version, $removed_version
@@ -2579,7 +2581,6 @@ function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_ver
 
         COM_errorLog($log_msg, 1);
     }
-
 }
 
 /**
@@ -8655,6 +8656,38 @@ function COM_getLanguageFromURL($url = '')
             $retval = substr($part, $l + 1);
         }
     }
+
+    return $retval;
+}
+
+/**
+ * Return if developer mode is set
+ *
+ * @since  v2.2.0
+ * @return bool   true = developer mode on, false otherwise
+ */
+function COM_isDeveloperMode()
+{
+    global $_CONF;
+
+    return isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true);
+}
+
+/**
+ * Return if we should enable the detailed logging of some kind in developer mode
+ *
+ * @param  string $type
+ * @since  v2.2.0
+ * @return bool true = detailed logging is enabled, false otherwise
+ */
+function COM_isEnableDeveloperModeLog($type)
+{
+    global $_CONF;
+
+    $type = strtolower($type);
+    $retval = COM_isDeveloperMode() &&
+        isset($_CONF['developer_mode_log'], $_CONF['developer_mode_log'][$type]) &&
+        $_CONF['developer_mode_log'][$type];
 
     return $retval;
 }
