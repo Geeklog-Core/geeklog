@@ -657,10 +657,21 @@ function plugin_getheadercode_calendar()
 
 /**
  * Shows event submission form or diverts to event editor if admin calls in
+ *
+ * @param  string $mode
+ * @return string
  */
 function plugin_submit_calendar($mode = 'master')
 {
     global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12, $MESSAGE, $_SCRIPTS;
+
+    // Anonymous user tried to submit an event when login is required
+    if (COM_isAnonUser() && ($_CONF['loginrequired'] || $_CONF['submitloginrequired'] || $_CA_CONF['calendarloginrequired'])) {
+        $display = SEC_loginRequiredForm();
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_1[41]));
+        COM_output($display);
+        exit;
+    }
 
     $mode = Geeklog\Input::fPost('calendar_type', null);
 
@@ -2258,6 +2269,6 @@ function plugin_itemdeleted_calendar($id, $type)
             $c = config::get_instance();
             $c->set('block_topic', $_CA_CONF['block_topic'], 'calendar');
         }
-        // Note: All topics could get deleted from array which would mean the block would not display untill user adds more in config
+        // Note: All topics could get deleted from array which would mean the block would not display until user adds more in config
     }
 }

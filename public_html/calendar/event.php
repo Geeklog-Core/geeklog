@@ -309,14 +309,17 @@ function setCalendarLanguage(&$aCalendar)
 {
     global $LANG_WEEK, $LANG_MONTH, $LANG_CAL_2;
 
-    $lang_days = array('sunday'    => $LANG_WEEK[1],
+    $lang_days = array(
+        'sunday'    => $LANG_WEEK[1],
                        'monday'    => $LANG_WEEK[2],
                        'tuesday'   => $LANG_WEEK[3],
                        'wednesday' => $LANG_WEEK[4],
                        'thursday'  => $LANG_WEEK[5],
                        'friday'    => $LANG_WEEK[6],
-                       'saturday'  => $LANG_WEEK[7]);
-    $lang_months = array('january'   => $LANG_MONTH[1],
+                       'saturday'  => $LANG_WEEK[7]
+    );
+    $lang_months = array(
+        'january'   => $LANG_MONTH[1],
                          'february'  => $LANG_MONTH[2],
                          'march'     => $LANG_MONTH[3],
                          'april'     => $LANG_MONTH[4],
@@ -327,10 +330,10 @@ function setCalendarLanguage(&$aCalendar)
                          'september' => $LANG_MONTH[9],
                          'october'   => $LANG_MONTH[10],
                          'november'  => $LANG_MONTH[11],
-                         'december'  => $LANG_MONTH[12]);
+                         'december'  => $LANG_MONTH[12]
+    );
     $aCalendar->setLanguage($lang_days, $lang_months);
 }
-
 
 // MAIN
 $display = '';
@@ -438,8 +441,8 @@ switch ($action) {
                     $display .= COM_showMessage($msg, 'calendar');
                 }
             }
-            $display .= COM_startBlock($pagetitle);
 
+            $display .= COM_startBlock($pagetitle);
         } else {
             $year = (int) Geeklog\Input::fGet('year', 0);
             $month = (int) Geeklog\Input::fGet('month', 0);
@@ -468,6 +471,10 @@ switch ($action) {
             'addremove' => 'addremoveevent.thtml',
         ));
 
+        $cal_templates->set_var(
+            'when_logged_in',
+            !COM_isAnonUser() || (!$_CONF['loginrequired'] && !$_CONF['submitloginrequired'] && !$_CA_CONF['calendarloginrequired'])
+        );
         $cal_templates->set_var('lang_addevent', $LANG_CAL_1[6]);
         $cal_templates->set_var('lang_backtocalendar', $LANG_CAL_1[15]);
         if ($mode === 'personal') {
@@ -495,7 +502,6 @@ switch ($action) {
                 if (SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                         $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0
                 ) {
-
                     if (strftime('%B', strtotime($A['datestart'])) != $currentmonth) {
                         $str_month = $cal->getMonthName(strftime('%m', strtotime($A['datestart'])));
                         $cal_templates->set_var('lang_month', $str_month);

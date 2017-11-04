@@ -43,9 +43,7 @@ if (!in_array('calendar', $_PLUGINS)) {
 
 $display = '';
 
-if (COM_isAnonUser() &&
-    (($_CONF['loginrequired'] == 1) || ($_CA_CONF['calendarloginrequired'] == 1))
-) {
+if (COM_isAnonUser() && ($_CONF['loginrequired'] || $_CA_CONF['calendarloginrequired'])) {
     $display .= SEC_loginRequiredForm();
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_1[41]));
     COM_output($display);
