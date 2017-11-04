@@ -5236,10 +5236,11 @@ function COM_showMessageText($message, $title = '')
  */
 function COM_showMessage($msg, $plugin = '')
 {
-    global $MESSAGE;
+    global $_CONF, $MESSAGE;
 
     $retval = '';
 
+    $msg = (int) $msg;
     if ($msg > 0) {
         if (!empty($plugin)) {
             $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
@@ -5252,6 +5253,12 @@ function COM_showMessage($msg, $plugin = '')
             }
         } else {
             $message = $MESSAGE[$msg];
+
+            // Ugly workaround for mailstory function (public_html/profiles.php)
+            if ($msg === 153) {
+                $speedLimit = (int) Geeklog\Input::fGet('speedlimit', 0);
+                $message = sprintf($message, $speedLimit, $_CONF['speedlimit']);
+            }
         }
 
         if (!empty($message)) {

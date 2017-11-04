@@ -310,14 +310,14 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     $storyUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
 
     if ($_CONF['url_rewrite']) {
-        $redirect = $storyUrl . '?msg=85';
+        $redirect = $storyUrl . '?msg=153';
     } else {
-        $redirect = $storyUrl . '&amp;msg=85';
+        $redirect = $storyUrl . '&amp;msg=153';
     }
 
     // check for correct $_CONF permission
-    if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
-                             ($_CONF['emailstoryloginrequired'] == 1))) {
+    if (COM_isAnonUser() &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
         COM_redirect($redirect);
     }
 
@@ -328,7 +328,9 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     // check mail speedlimit
     COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
-    if (COM_checkSpeedlimit('mail') > 0) {
+    $speedLimit = COM_checkSpeedlimit('mail');
+    if ($speedLimit > 0) {
+        $redirect .= '&amp;speedlimit=' . $speedLimit;
         COM_redirect($redirect);
     }
 
@@ -424,7 +426,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 * @param    string  $from       name of person sending the email
 * @param    string  $fromemail  sender's email address
 * @param    string  $shortmsg   short intro text to send with the story
-* @param    string  $msg        Error message code
+* @param    int     $msg        Error message code
 * @return   string              HTML for email story form
 *
 */
