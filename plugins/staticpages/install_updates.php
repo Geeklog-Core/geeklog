@@ -73,7 +73,6 @@ function SP_update_ConfValues_1_6_4()
     return true;
 }
 
-
 function SP_update_ConfValues_1_6_5()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
@@ -90,5 +89,3 @@ function SP_update_ConfValues_1_6_5()
 
     return true;
 }
-
-?>

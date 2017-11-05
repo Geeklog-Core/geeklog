@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.6                                                   |
+// | Static Pages Plugin 1.7                                                   |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -69,6 +69,9 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_nf tinyint(1) unsigned default '0',
   sp_inblock tinyint(1) unsigned default '1',
   postmode varchar(16) NOT NULL default 'html',
+  sp_prev varchar(128) NOT NULL default '',
+  sp_next varchar(128) NOT NULL default '',
+  sp_parent varchar(128) NOT NULL default '',
   PRIMARY KEY  (sp_id),
   KEY staticpage_created (created),
   KEY staticpage_sp_onmenu (sp_onmenu),

@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.6                                                   |
+// | Static Pages Plugin 1.7                                                   |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2010 by the following authors:                         |
+// | Copyright (C) 2009-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Stansislav Palatnik - spalatnikk AT gmail DOT com                |
 // +---------------------------------------------------------------------------+
@@ -67,6 +67,9 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_nf int default '0',
   sp_inblock int default '1',
   postmode varchar(16) NOT NULL default 'html',
+  sp_prev varchar(128) NOT NULL default '',
+  sp_next varchar(128) NOT NULL default '',
+  sp_parent varchar(128) NOT NULL default '',
   PRIMARY KEY  (sp_id));
   CREATE INDEX {$_TABLES['staticpage']}_sp_uid ON {$_TABLES['staticpage']}(sp_uid);
   CREATE INDEX {$_TABLES['staticpage']}_created ON {$_TABLES['staticpage']}(created);
@@ -74,5 +77,3 @@ CREATE TABLE {$_TABLES['staticpage']} (
   CREATE INDEX {$_TABLES['staticpage']}_sp_centerblock ON {$_TABLES['staticpage']}(sp_centerblock);
   CREATE INDEX {$_TABLES['staticpage']}_sp_where ON {$_TABLES['staticpage']}(sp_where);
 ";
-
-?>

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages                                                              |
+// | Static Pages 1.7                                                          |
 // +---------------------------------------------------------------------------+
 // | configuration_validation.php                                              |
 // |                                                                           |
 // | List of validation rules for the Links plugin configurations              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2010 by the following authors:                         |
+// | Copyright (C) 2007-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Akeda Bagus       - admin AT gedex DOT web DOT id                |
 // |          Tom Homer         - tomhomer AT gmail DOT com                    |
@@ -117,5 +117,3 @@ $_CONF_VALIDATE['staticpages']['autotag_permissions_staticpage_content[2]'] = ar
 $_CONF_VALIDATE['staticpages']['autotag_permissions_staticpage_content[3]'] = array(
     'rule' => array('inList', array(0, 2), true)
 );
-
-?>

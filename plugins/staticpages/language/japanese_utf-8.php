@@ -125,13 +125,16 @@ $LANG_STATIC = array(
     'draft' => 'ドラフト',
     'draft_yes' => '○',
     'draft_no' => '-',
-    'show_on_page' => 'Show on Page',
+    'show_on_page' => 'ページに表示する',
     'cache_time' => 'キャッシュタイム',
     'cache_time_desc' => 'この静的ページコンテンツはここで指定された秒数以上にキャッシュされることはありません。もしキャッシュが0ならキャッシュ無効 (3600 = 1時間,  86400 = 1日)。静的ページPHPまたはテンプレートの場合はキャッシュされません。',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意です。',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - 静的ページのコンテンツを表示します。',
-    'yes' => 'Yes',
-    'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.'
+    'yes' => 'はい',
+    'used_by' => 'このテンプレートを使用しているのは %s ページです。他のテンプレートの自動タグを経由して間接的に使用されている場合は、使用ページはもっと多いかもしれません。',
+    'prev_page' => '前のページ',
+    'next_page' => '次のページ',
+    'parent_page' => '親ページ',
 );
 
 $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';

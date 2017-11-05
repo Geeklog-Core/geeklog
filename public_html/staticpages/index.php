@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.6                                                   |
+// | Static Pages Plugin 1.7                                                   |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | This is the main page for the Geeklog Static Pages Plugin                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -48,7 +48,6 @@ if (!in_array('staticpages', $_PLUGINS)) {
     exit;
 }
 
-
 // MAIN
 
 COM_setArgNames(array('page', 'disp_mode'));
@@ -76,7 +75,7 @@ if (isset($_REQUEST['order'])) {
     $comment_page = 1;
 }
 
-if ($display_mode != 'print') {
+if ($display_mode !== 'print') {
     $display_mode = '';
 }
 
@@ -106,7 +105,7 @@ if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$page'") == 1)
 
 $retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode, $comment_page, $msg, $query);
 
-if ($display_mode == 'print') {
+if ($display_mode === 'print') {
     header('Content-Type: text/html; charset=' . COM_getCharset());
     header('X-XSS-Protection: 1; mode=block');
     header('X-Content-Type-Options: nosniff');

@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.6                                                   |
+// | Static Pages Plugin 1.7                                                   |
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                         |
+// | Copyright (C) 2009-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer        - websitemaster AT cogeco DOT net               |
 // +---------------------------------------------------------------------------+
@@ -55,7 +55,13 @@ $_UPDATES = array(
     '1.6.7' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onmenu`",
         "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onlastupdate` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onhits`"
-    )
+    ),
+
+    '1.6.9' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_prev` VARCHAR NOT NULL DEFAULT '' AFTER `postmode`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_next` VARCHAR NOT NULL DEFAULT '' AFTER `sp_prev`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_parent` VARCHAR NOT NULL DEFAULT '' AFTER `sp_next`",
+    ),
 );
 
 /**
@@ -67,8 +73,7 @@ function SP_update_ConfigSecurity_1_6_3()
     global $_TABLES;
 
     // Add in security rights for Static Page Admin
-    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                            "grp_name = 'Static Page Admin'");
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin'");
 
     if ($group_id > 0) {
         $ft_names[] = 'config.staticpages.tab_main';
@@ -85,7 +90,4 @@ function SP_update_ConfigSecurity_1_6_3()
             }
         }
     }
-
 }
-
-?>

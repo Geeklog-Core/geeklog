@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.6                                                   |
+// | Static Pages Plugin 1.7                                                   |
 // +---------------------------------------------------------------------------+
 // | install_defaults.php                                                      |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010 by the following authors:                         |
+// | Copyright (C) 2008-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Blaine Lang      - blaine AT portalparts DOT com                 |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -244,5 +244,3 @@ function plugin_initconfig_staticpages()
 
     return true;
 }
-
-?>

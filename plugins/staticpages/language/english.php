@@ -126,7 +126,10 @@ $LANG_STATIC = array(
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - Displays the contents of a staticpage.', 
     'yes' => 'Yes', 
-    'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.'
+    'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.',
+    'prev_page' => 'Previous page',
+    'next_page' => 'Next page',
+    'parent_page' => 'Parent page',
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
@@ -210,5 +213,3 @@ $LANG_configselects['staticpages'] = array(
     13 => array('No access' => 0, 'Use' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
-
-?>

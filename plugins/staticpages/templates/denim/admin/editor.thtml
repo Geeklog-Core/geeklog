@@ -104,6 +104,16 @@
         <dd class="controls_text"><input type="checkbox" name="sp_nf" id="sp-editor-sp_nf" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</dd>
       </dl>
 
+      <hr style="margin-bottom: 15px;"{xhtml}>
+      <dl class="form_block">
+        <dt><label for="sp-editor-sp_prev">{lang_prev_page}</label></dt>
+        <dd><select name="sp_prev" id="sp-editor-sp_prev">{sp_prev_pages}</select></dd>
+        <dt><label for="sp-editor-sp_next">{lang_next_page}</label></dt>
+        <dd><select name="sp_next" id="sp-editor-sp_next">{sp_next_pages}</select></dd>
+        <dt><label for="sp-editor-sp_parent">{lang_parent_page}</label></dt>
+        <dd><select name="sp_parent" id="sp-editor-sp_parent">{sp_parent_pages}</select></dd>
+      </dl>
+
       <fieldset>
         <legend>{lang_accessrights}</legend>
 

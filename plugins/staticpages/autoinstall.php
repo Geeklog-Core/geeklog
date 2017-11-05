@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.6                                                   |
+// | Static Pages Plugin 1.7                                                   |
 // +---------------------------------------------------------------------------+
 // | autoinstall.php                                                           |
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010 by the following authors:                         |
+// | Copyright (C) 2008-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -51,8 +51,8 @@ function plugin_autoinstall_staticpages($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.6.9',
-        'pi_gl_version'   => '2.1.2',
+        'pi_version'      => '1.7.0',
+        'pi_gl_version'   => '2.2.0',
         'pi_homepage'     => 'https://www.geeklog.net/'
     );
 

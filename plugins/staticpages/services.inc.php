@@ -2,13 +2,13 @@
 
 // Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.6                                                   |
+// | Static Pages Plugin 1.7                                                   |
 // +---------------------------------------------------------------------------+
 // | services.inc.php                                                          |
 // |                                                                           |
 // | This file implements the services provided by the 'Static Pages' plugin.  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -156,7 +156,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
 
     // START: Staticpages defaults
-
     if (empty($args['sp_format'])) {
         $args['sp_format'] = 'allblocks';
     }
@@ -246,8 +245,18 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $args['template_id'] = '';
         }
 
-    }
+        if (empty($args['sp_prev'])) {
+            $args['sp_prev'] = '';
+        }
 
+        if (empty($args['sp_next'])) {
+            $args['sp_next'] = '';
+        }
+
+        if (empty($args['sp_parent'])) {
+            $args['sp_parent'] = '';
+        }
+    }
     // END: Staticpages defaults
 
     $sp_id = $args['sp_id'];
@@ -295,6 +304,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $sp_where = $args['sp_where'];
     $sp_inblock = $args['sp_inblock'];
     $postmode = $args['postmode'];
+    $sp_prev = $args['sp_prev'];
+    $sp_next = $args['sp_next'];
+    $sp_parent = $args['sp_parent'];
 
     if ($gl_edit && !empty($args['gl_etag'])) {
         // First load the original staticpage to check if it has been modified
@@ -383,6 +395,22 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $template_flag = 0;
         }
 
+        // Check if previous page, next page and parent page exist respective;y
+        $sp_prev = COM_sanitizeID($sp_prev, false);
+        if (($sp_prev !== '') && !staticPageIdExists($sp_prev)) {
+            $sp_prev = '';
+        }
+
+        $sp_next = COM_sanitizeID($sp_next, false);
+        if (($sp_next !== '') && !staticPageIdExists($sp_next)) {
+            $sp_next = '';
+        }
+
+        $sp_parent = COM_sanitizeID($sp_parent, false);
+        if (($sp_parent !== '') && !staticPageIdExists($sp_parent)) {
+            $sp_parent = '';
+        }
+
         // Remove any autotags the user doesn't have permission to use
         $sp_content = PLG_replaceTags($sp_content, '', true);
         // Clean up the text
@@ -415,6 +443,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $meta_description = DB_escapeString($meta_description);
         $meta_keywords = DB_escapeString($meta_keywords);
         $sp_help = DB_escapeString($sp_help);
+        $sp_prev = DB_escapeString($sp_prev);
+        $sp_next = DB_escapeString($sp_next);
+        $sp_parent = DB_escapeString($sp_parent);
 
         // If user does not have php edit perms, then set php flag to 0.
         if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights('staticpages.PHP')) {
@@ -514,11 +545,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
 
         DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_onhits,sp_onlastupdate,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time,owner_id,group_id,'
-            . 'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode',
+            . 'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode,sp_prev,sp_next,sp_parent',
             "'$sp_id','$sp_title','$sp_page_title','$sp_content','$dateCreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
             . "$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help',$sp_where,"
-            . "'$sp_inblock','$postmode'");
-
+            . "'$sp_inblock','$postmode', '{$sp_prev}', '{$sp_next}', '{$sp_parent}'");
         TOPIC_saveTopicSelectionControl('staticpages', $sp_id);
 
         if ($delete_old_page && !empty($sp_old_id)) {
@@ -577,11 +607,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             }
         }
 
-        $url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page='
-            . $sp_id);
-        $output .= PLG_afterSaveSwitch($_SP_CONF['aftersave'], $url,
-            'staticpages', 19);
-
+        $url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_id);
+        $output .= PLG_afterSaveSwitch($_SP_CONF['aftersave'], $url, 'staticpages', 19);
         $svc_msg['id'] = $sp_id;
 
         return PLG_RET_OK;
@@ -694,6 +721,9 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         'sp_php',
         'sp_inblock',
         'commentcode',
+        'sp_prev',
+        'sp_next',
+        'sp_parent',
     );
 
     if (empty($args['sp_id']) && !empty($args['id'])) {
@@ -745,7 +775,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
         // Topic Permissions
         $topic_perms = COM_getTopicSQL('', 0, 'ta');
-        if ($topic_perms != "") {
+        if ($topic_perms != '') {
             $topic_perms = " AND (" . $topic_perms . "";
 
             if (COM_onFrontpage()) {
@@ -760,22 +790,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             . "draft_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon, sp_help, sp_php, "
             . "sp_inblock,cache_time";
 
-        $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_onhits,sp_onlastupdate,sp_hits,created,modified,sp_format,"
-            . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
-            . "owner_id,group_id,perm_owner,perm_group,"
-            . "perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time "
-            . "FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta "
-            . "WHERE (sp_id = '$page')" . $perms
-            . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
-        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_onhits,sp_onlastupdate,sp_hits,"
-            . "created,modified,sp_format,"
-            . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
-            . "owner_id,group_id,perm_owner,perm_group,"
-            . "perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time "
-            . "sp_inblock FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta "
-            . "WHERE (sp_id = '$page')" . $perms
-            . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
+        $sql = <<<SQL
+SELECT sp_id, sp_title, sp_page_title, sp_content, sp_onhits, sp_onlastupdate, sp_hits, created, modified, sp_format,
+        commentcode, meta_description, meta_keywords, template_flag, template_id, draft_flag, 
+        owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon, 
+        sp_help, sp_php, sp_inblock, cache_time, sp_prev, sp_next, sp_parent 
+  FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta 
+  WHERE (sp_id = '{$page}') {$perms} AND (ta.type = 'staticpages') AND (ta.id = sp_id) {$topic_perms}
+SQL;
         $result = DB_query($sql);
         $count = DB_numRows($result);
 
@@ -897,7 +919,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                 $output_item['title'] = $output_item['sp_title'];
                 $output_item['page_title'] = $output_item['sp_page_title'];
                 //$output_item['category']     = array($output_item['sp_tid']);
-                $output_item['category'] = TOPIC_getTopicIdsForObject('staticpages', $page);
+                $output_item['category'] = TOPIC_getTopicIdsForObject('staticpages', $output_item['sp_id']);
                 //$output_item['content']      = $output_item['sp_content'];
                 $output['content'] = SP_render_content($output['sp_id'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id']);
                 $output_item['content_type'] = 'html';
