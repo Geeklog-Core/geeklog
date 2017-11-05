@@ -3399,7 +3399,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
                         'image'     => $_CONF['layout_url'] . '/images/icons/router.' . $_IMAGE_TYPE,
                     ),
                     array(
-                        'condition' => SEC_inGroup('Root'),
+                        'condition' => SEC_inGroup('Root') || SEC_inGroup('Theme Admin'),
                         'url'       => $_CONF['site_admin_url'] . '/clearctl.php',
                         'lang'      => $LANG01['ctl'],
                         'num'       => '',
@@ -3618,7 +3618,7 @@ function COM_adminMenu($help = '', $title = '', $position = '')
     $num_plugins = count($plugin_options);
 
     if (SEC_isModerator() ||
-        SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR') ||
+        SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit,theme.edit', 'OR') ||
         ($num_plugins > 0) || SEC_hasConfigAccess()
     ) {
         $retval = COM_commandControl(true, $help, $title, $position);

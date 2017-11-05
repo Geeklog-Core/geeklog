@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | auth.inc.php                                                              |
 // |                                                                           |
@@ -65,27 +65,23 @@ if ($status == USER_ACCOUNT_ACTIVE) {
     PLG_loginUser($_USER['uid']);
 
     // Now that we handled session cookies, handle longterm cookie
-
     if (!isset($_COOKIE[$_CONF['cookie_name']])) {
-
         // Either their cookie expired or they are new
-
         $cooktime = COM_getUserCookieTimeout();
 
         if (!empty($cooktime)) {
-
             // They want their cookie to persist for some amount of time so set it now
-
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
-                          time() + $cooktime);
+            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() + $cooktime);
         }
     }
-    if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,syndication.edit','OR')) {
+
+    if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,syndication.edit,theme.edit','OR')) {
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     } else {
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
-} elseif (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit','OR') && (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAccess()) {
+} elseif (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit,theme.edit','OR') &&
+    (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAccess()) {
     COM_updateSpeedlimit('login');
 
     $display .= COM_startBlock($LANG20[1]);

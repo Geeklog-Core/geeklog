@@ -1,6 +1,7 @@
 <?php
+
 // +--------------------------------------------------------------------------+
-// | Geeklog 2.0                                                               |
+// | Geeklog 2.2                                                              |
 // +---------------------------------------------------------------------------+
 // | clearctl.php                                                             |
 // |                                                                          |
@@ -31,7 +32,7 @@ require_once '../lib-common.php';
 
 $display = '';
 
-if (!SEC_inGroup ('Root')) {
+if (!SEC_inGroup('Root') && !SEC_inGroup('Theme Admin')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the clear cache.");
@@ -42,6 +43,5 @@ if (!SEC_inGroup ('Root')) {
 /*
  * Main processing
  */
-
 CTL_clearCache();
 COM_redirect($_CONF['site_admin_url'] . '/index.php?msg=500');
