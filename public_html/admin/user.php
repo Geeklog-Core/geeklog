@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | user.php                                                                  |
 // |                                                                           |
@@ -54,7 +54,7 @@ require_once 'auth.inc.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
 
 // Set this to true to get various debug messages from this script
-$_USER_VERBOSE = false;
+$_USER_VERBOSE = COM_isEnableDeveloperModeLog('user');
 
 $display = '';
 

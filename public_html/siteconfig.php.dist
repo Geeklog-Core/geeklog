@@ -56,6 +56,7 @@ $_CONF['site_enabled'] = true;
 // $_CONF['developer_mode_log']['session'] = true;
 // $_CONF['developer_mode_log']['template'] = true;
 // $_CONF['developer_mode_log']['topic'] = true;
+// $_CONF['developer_mode_log']['user'] = true;
 
 $_CONF['path'] = '/path/to/Geeklog/';
 $_CONF['path_system'] = $_CONF['path'] . 'system/';
