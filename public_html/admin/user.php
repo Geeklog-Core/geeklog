@@ -74,10 +74,9 @@ if (!SEC_hasRights('user.edit')) {
  * @param    int $msg Error message to display
  * @return   string          HTML for user edit form
  */
-function edituser($uid = '', $msg = '')
+function edituser($uid = 0, $msg = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG04, $LANG_ACCESS, $LANG_ADMIN,
-           $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG04, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -92,7 +91,7 @@ function edituser($uid = '', $msg = '')
         // don't bother trying to read the user's data from the database ...
         $cnt = DB_count($_TABLES['users'], 'uid', $uid);
         if ($cnt == 0) {
-            $uid = '';
+            $uid = 0;
         }
     }
 
@@ -106,8 +105,7 @@ function edituser($uid = '', $msg = '')
         if (SEC_inGroup('Root', $uid) && !SEC_inGroup('Root')) {
             // the current admin user isn't Root but is trying to change
             // a root account.  Deny them and log it.
-            $retval .= COM_showMessageText($LANG_ACCESS['editrootmsg'],
-                $LANG28[1]);
+            $retval .= COM_showMessageText($LANG_ACCESS['editrootmsg'], $LANG28[1]);
             COM_accessLog("User {$_USER['username']} tried to edit a Root account with insufficient privileges.");
 
             return $retval;
@@ -117,7 +115,7 @@ function edituser($uid = '', $msg = '')
         $A['about'] = $B['about'];
         $A['pgpkey'] = $B['pgpkey'];
         $A['location'] = $B['location'];
-        
+
         $curtime = COM_getUserDateTimeFormat($A['regdate']);
         $lastlogin = DB_getItem($_TABLES['userinfo'], 'lastlogin', "uid = '$uid'");
         $lasttime = COM_getUserDateTimeFormat($lastlogin);
@@ -155,10 +153,10 @@ function edituser($uid = '', $msg = '')
     }
     if (isset($_POST['pgpkey'])) {
         $A['pgpkey'] = GLText::stripTags($_POST['pgpkey']);
-    }    
+    }
     if (isset($_POST['about'])) {
         $A['about'] = GLText::stripTags($_POST['about']);
-    }    
+    }
     if (isset($_POST['userstatus'])) {
         $A['status'] = COM_applyFilter($_POST['userstatus'], true);
     }
@@ -172,15 +170,15 @@ function edituser($uid = '', $msg = '')
     $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file(array(
         'form'      => 'edituser.thtml',
-                                    'password'  => 'password.thtml',
-                                    'groupedit' => 'groupedit.thtml'
+        'password'  => 'password.thtml',
+        'groupedit' => 'groupedit.thtml',
     ));
-                                    
+
     $blocks = array('display_field', 'display_field_text');
     foreach ($blocks as $block) {
         $user_templates->set_block('form', $block);
     }
-    
+
     $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
@@ -255,6 +253,10 @@ function edituser($uid = '', $msg = '')
     if (empty($A['remoteservice'])) {
         $user_templates->set_var('lang_password', $LANG28[5]);
         $user_templates->set_var('lang_password_conf', $LANG28[39]);
+        $user_templates->set_var(array(
+            'lang_send_password' => $LANG28[91],
+            'send_password'      => SEC_hasRights('user.edit') && ($uid != $_USER['uid']),
+        ));
         $user_templates->parse('password_option', 'password', true);
     } else {
         $user_templates->set_var('password_option', '');
@@ -274,11 +276,11 @@ function edituser($uid = '', $msg = '')
         $user_templates->set_var('user_homepage', '');
     }
     $user_templates->set_var('do_not_use_spaces', '');
-    
+
     $user_templates->set_var('lang_location', $LANG04[106]);
     $user_templates->set_var('user_location', htmlspecialchars($A['location']));
     $user_templates->set_var('lang_signature', $LANG04[32]);
-    $user_templates->set_var('user_signature', htmlspecialchars($A['sig']));    
+    $user_templates->set_var('user_signature', htmlspecialchars($A['sig']));
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
     $user_templates->set_var('user_pgpkey', htmlspecialchars($A['pgpkey']));
     $user_templates->set_var('lang_about', $LANG04[130]);
@@ -286,7 +288,7 @@ function edituser($uid = '', $msg = '')
 
     $statusarray = array(
         USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
-                         USER_ACCOUNT_ACTIVE              => $LANG28[45],
+        USER_ACCOUNT_ACTIVE              => $LANG28[45],
     );
 
     $allow_ban = true;
@@ -385,25 +387,30 @@ function edituser($uid = '', $msg = '')
 
         $form_url = $_CONF['site_admin_url']
             . '/user.php?mode=edit&amp;uid=' . $uid;
-        $text_arr = array('has_menu' => false,
-                          'title'    => '', 'instructions' => '',
-                          'icon'     => '', 'form_url' => $form_url,
-                          'inline'   => true,
+        $text_arr = array(
+            'has_menu'     => false,
+            'title'        => '',
+            'instructions' => '',
+            'icon'         => '',
+            'form_url'     => $form_url,
+            'inline'       => true,
         );
 
         $sql = "SELECT grp_id, grp_name, grp_descr FROM {$_TABLES['groups']} WHERE " . $whereGroups;
-        $query_arr = array('table'          => 'groups',
-                           'sql'            => $sql,
-                           'query_fields'   => array('grp_name'),
-                           'default_filter' => '',
-                           'query'          => '',
-                           'query_limit'    => 0,
+        $query_arr = array(
+            'table'          => 'groups',
+            'sql'            => $sql,
+            'query_fields'   => array('grp_name'),
+            'default_filter' => '',
+            'query'          => '',
+            'query_limit'    => 0,
         );
 
         $groupoptions = ADMIN_list('usergroups',
             'ADMIN_getListField_usergroups',
             $header_arr, $text_arr, $query_arr,
-            $defsort_arr, '', explode(' ', $selected));
+            $defsort_arr, '', explode(' ', $selected)
+        );
 
         $user_templates->set_var('group_options', $groupoptions);
         $user_templates->parse('group_edit', 'groupedit', true);
@@ -415,9 +422,9 @@ function edituser($uid = '', $msg = '')
     }
     $user_templates->set_var('gltoken_name', CSRF_TOKEN);
     $user_templates->set_var('gltoken', $token);
-    
+
     PLG_profileVariablesEdit($uid, $user_templates);
-    
+
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
@@ -450,14 +457,14 @@ function listusers()
         array('text' => $LANG28[7], 'field' => 'email', 'sort' => true),
     );
 
-    if ($_CONF['user_login_method']['openid'] ||
-        $_CONF['user_login_method']['3rdparty']
-    ) {
+    if ($_CONF['user_login_method']['openid'] || $_CONF['user_login_method']['3rdparty']) {
         $header_arr[] = array('text' => $LANG04[121], 'field' => 'remoteservice', 'sort' => true);
     }
 
-    $defsort_arr = array('field'     => $_TABLES['users'] . '.uid',
-                         'direction' => 'ASC');
+    $defsort_arr = array(
+        'field'     => $_TABLES['users'] . '.uid',
+        'direction' => 'ASC',
+    );
 
     $menu_arr = array(
         array('url'  => $_CONF['site_admin_url'] . '/user.php?mode=edit',
@@ -499,10 +506,12 @@ function listusers()
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
         . "FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
 
-    $query_arr = array('table'          => 'users',
-                       'sql'            => $sql,
-                       'query_fields'   => array('username', 'email', 'fullname', 'homepage'),
-                       'default_filter' => "AND {$_TABLES['users']}.uid > 1");
+    $query_arr = array(
+        'table'          => 'users',
+        'sql'            => $sql,
+        'query_fields'   => array('username', 'email', 'fullname', 'homepage'),
+        'default_filter' => "AND {$_TABLES['users']}.uid > 1",
+    );
 
     $retval .= ADMIN_list('user', 'ADMIN_getListField_users', $header_arr,
         $text_arr, $query_arr, $defsort_arr);
@@ -515,7 +524,7 @@ function listusers()
  * Saves user to the database
  *
  * @param    int    $uid          user id
- * @param    string $usernmae     (short) username
+ * @param    string $username     (short) username
  * @param    string $fullname     user's full name
  * @param    string $email        user's email address
  * @param    string $regdate      date the user registered with the site
@@ -526,7 +535,7 @@ function listusers()
  */
 function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $signature, $pgpkey, $about, $groups, $delete_photo = '', $userstatus = 3, $oldstatus = 3)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG28, $_USER_VERBOSE;
 
     $retval = '';
     $userChanged = false;
@@ -544,14 +553,11 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
     }
 
     $passwd_changed = true;
-    if (empty($service) &&
-        SEC_encryptUserPassword($passwd, $uid) === 0 &&
-        $passwd_conf === ''
-    ) {
+    if (empty($service) && (SEC_encryptUserPassword($passwd, $uid) === 0) && ($passwd_conf === '')) {
         $passwd_changed = false;
     }
 
-    if ($passwd_changed && $passwd != $passwd_conf) { // passwords don't match
+    if ($passwd_changed && ($passwd != $passwd_conf)) { // passwords don't match
         return edituser($uid, 67);
     }
 
@@ -569,15 +575,13 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
     }
 
     if ($nameAndEmailOkay) {
-
         if (!empty($email) && !COM_isEmail($email)) {
             return edituser($uid, 52);
         }
 
         $uname = DB_escapeString($username);
         if (empty($uid)) {
-            $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)',
-                "username = '$uname'");
+            $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)', "username = '$uname'");
         } else {
             if (!empty($service)) {
                 $uservice = DB_escapeString($service);
@@ -604,9 +608,10 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                 // email address didn't change so don't care
                 $ucount = 0;
             } else {
-                $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)',
-                    "email = '$emailaddr' AND uid <> $uid"
-                    . $exclude_remote);
+                $ucount = DB_getItem(
+                    $_TABLES['users'], 'COUNT(*)',
+                    "email = '$emailaddr' AND uid <> $uid" . $exclude_remote
+                );
             }
         }
         if ($ucount > 0) {
@@ -614,9 +619,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             return edituser($uid, 56);
         }
 
-        if ($_CONF['custom_registration'] &&
-            function_exists('CUSTOM_userCheck')
-        ) {
+        if ($_CONF['custom_registration'] && function_exists('CUSTOM_userCheck')) {
             $ret = CUSTOM_userCheck($username, $email);
             if (!empty($ret)) {
                 // need a numeric return value - otherwise use default message
@@ -627,40 +630,48 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                 return edituser($uid, $ret['number']);
             }
         }
-        
+
         // basic filtering only (same as in usersettings.php)
         $fullname = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($fullname)));
         $location = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($location)));
         $signature = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($signature)));
         $about = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($about)));
         $pgpkey = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($pgpkey)));
-        
-        
+
         // Escape these here since used both in new and updates
         $location = DB_escapeString($location);
         $signature = DB_escapeString($signature);
         $pgpkey = DB_escapeString($pgpkey);
         $about = DB_escapeString($about);
+
+        $emailData = array(
+            'username' => $username,
+            'fullname' => $fullname,
+            'email' => $email,
+            'password' => $passwd,
+        );
+
         if (empty($uid)) {
+            $emailData['is_new_user'] = true;
             if (empty($passwd)) {
                 // no password? create one ...
                 $passwd = SEC_generateRandomPassword();
             }
 
-            $uid = USER_createAccount($username, $email, $passwd, $fullname,
-                $homepage);
+            $uid = USER_createAccount($username, $email, $passwd, $fullname, $homepage);
             DB_query("UPDATE {$_TABLES['users']} SET sig = '$signature' WHERE uid = $uid");
-                
             DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
-            
+
             if ($uid > 1) {
                 DB_query("UPDATE {$_TABLES['users']} SET status = $userstatus WHERE uid = $uid");
             }
         } else {
+            $emailData['is_new_user'] = false;
+
             // Do these ones here since USER_createAccount will do its own filtering
             $fullname = DB_escapeString($fullname);
             $homepage = DB_escapeString($homepage);
-            
+
             $curphoto = DB_getItem($_TABLES['users'], 'photo', "uid = $uid");
             if (!empty($curphoto) && ($delete_photo == 'on')) {
                 USER_deletePhoto($curphoto);
@@ -672,23 +683,19 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                     "uid = $uid");
                 if ($curusername != $username) {
                     // user has been renamed - rename the photo, too
-                    $newphoto = preg_replace('/' . $curusername . '/',
-                        $username, $curphoto, 1);
+                    $newphoto = preg_replace('/' . $curusername . '/', $username, $curphoto, 1);
                     $imgpath = $_CONF['path_images'] . 'userphotos/';
-                    if (@rename($imgpath . $curphoto,
-                            $imgpath . $newphoto) === false
-                    ) {
-                        $retval .= COM_errorLog('Could not rename userphoto "'
-                            . $curphoto . '" to "' . $newphoto . '".');
+                    if (@rename($imgpath . $curphoto, $imgpath . $newphoto) === false) {
+                        $retval .= COM_errorLog('Could not rename userphoto "' . $curphoto . '" to "' . $newphoto . '".');
 
                         return $retval;
                     }
                     $curphoto = $newphoto;
                 }
             }
-            
+
             $username = GLText::remove4byteUtf8Chars($username);
-            $username = DB_escapeString($username);            
+            $username = DB_escapeString($username);
             $curphoto = DB_escapeString($curphoto);
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
             DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
@@ -715,8 +722,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         // check that the user is allowed to change group assignments
         if (is_array($groups) && SEC_hasRights('group.assign')) {
             if (!SEC_inGroup('Root')) {
-                $rootgrp = DB_getItem($_TABLES['groups'], 'grp_id',
-                    "grp_name = 'Root'");
+                $rootgrp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
                 if (in_array($rootgrp, $groups)) {
                     COM_accessLog("User {$_USER['username']} ({$_USER['uid']}) just tried to give Root permissions to user $username.");
                     COM_redirect($_CONF['site_admin_url'] . '/index.php');
@@ -725,8 +731,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 
             // make sure the Remote Users group is in $groups
             if (SEC_inGroup('Remote Users', $uid)) {
-                $remUsers = DB_getItem($_TABLES['groups'], 'grp_id',
-                    "grp_name = 'Remote Users'");
+                $remUsers = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
                 if (!in_array($remUsers, $groups)) {
                     $groups[] = $remUsers;
                 }
@@ -738,18 +743,15 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 
             // remove user from all groups that the User Admin is a member of
             $UserAdminGroups = SEC_getUserGroups();
-            $whereGroup = 'ug_main_grp_id IN ('
-                . implode(',', $UserAdminGroups) . ')';
+            $whereGroup = 'ug_main_grp_id IN (' . implode(',', $UserAdminGroups) . ')';
             DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_uid = $uid) AND " . $whereGroup);
 
             // make sure to add user to All Users and Logged-in Users groups
-            $allUsers = DB_getItem($_TABLES['groups'], 'grp_id',
-                "grp_name = 'All Users'");
+            $allUsers = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'All Users'");
             if (!in_array($allUsers, $groups)) {
                 $groups[] = $allUsers;
             }
-            $logUsers = DB_getItem($_TABLES['groups'], 'grp_id',
-                "grp_name = 'Logged-in Users'");
+            $logUsers = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Logged-in Users'");
             if (!in_array($logUsers, $groups)) {
                 $groups[] = $logUsers;
             }
@@ -757,12 +759,36 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             foreach ($groups as $userGroup) {
                 if (in_array($userGroup, $UserAdminGroups)) {
                     if ($_USER_VERBOSE) {
-                        COM_errorLog("adding group_assignment " . $userGroup
-                            . " for $username", 1);
+                        COM_errorLog("adding group_assignment " . $userGroup . " for $username", 1);
                     }
                     $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($userGroup, $uid)";
                     DB_query($sql);
                 }
+            }
+        }
+
+        // Send password to the user
+        if (!empty($uid) && ($uid > 1) &&
+            (\Geeklog\Input::fPost('send_passwd') === 'on') &&
+            ($emailData['is_new_user'] || $passwd_changed)) {
+            $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+            $mailText = $emailData['is_new_user'] ? $LANG04[15] : $LANG04[170];
+            $mailText .= "\n\n"
+                . $LANG04[2] . ": {$emailData['username']}\n"
+                . $LANG04[4] . ": {$emailData['password']}\n\n"
+                . $LANG04[14] . "\n\n"
+                . $_CONF['site_name'] . "\n"
+                . $_CONF['site_url'] . "\n";
+
+            if (!empty($_CONF['noreply_mail']) && ($_CONF['site_mail'] !== $_CONF['noreply_mail'])) {
+                $mailFrom = $_CONF['noreply_mail'];
+                $mailText .= "\n\n\n\n" . $LANG04[159];
+            } else {
+                $mailFrom = $_CONF['site_mail'];
+            }
+
+            if (!COM_mail($emailData['email'], $subject, $mailText, $mailFrom)) {
+                COM_errorLog(sprintf('failed to send a new password to user (uid: %d)', $uid));
             }
         }
 
@@ -779,17 +805,14 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                 21
             );
         } else {
-            $retval .= COM_errorLog('Error in saveusers in '
-                . $_CONF['site_admin_url'] . '/user.php');
+            $retval .= COM_errorLog('Error in saveusers in ' . $_CONF['site_admin_url'] . '/user.php');
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG28[22]));
             echo $retval;
             exit;
         }
     } else {
         $retval .= COM_showMessageText($LANG28[10]);
-        if (!empty($uid) && ($uid > 1) &&
-            DB_count($_TABLES['users'], 'uid', $uid) > 0
-        ) {
+        if (!empty($uid) && ($uid > 1) && DB_count($_TABLES['users'], 'uid', $uid) > 0) {
             $retval .= edituser($uid);
         } else {
             $retval .= edituser();
@@ -863,9 +886,11 @@ function batchdelete()
     );
 
     $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
-    $user_templates->set_file(array('form'     => 'batchdelete.thtml',
-                                    'options'  => 'batchdelete_options.thtml',
-                                    'reminder' => 'reminder.thtml'));
+    $user_templates->set_file(array(
+        'form'     => 'batchdelete.thtml',
+        'options'  => 'batchdelete_options.thtml',
+        'reminder' => 'reminder.thtml',
+    ));
     $user_templates->set_var('usr_type', $usr_type);
     $user_templates->set_var('usr_time', $usr_time);
     $user_templates->set_var('lang_instruction', $LANG28[56]);
@@ -903,6 +928,7 @@ function batchdelete()
             $filter_sql = "lastlogin = CAST(0 AS CHAR) AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
             $sort = 'regdate';
             break;
+
         case 'short':
             $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
@@ -913,6 +939,7 @@ function batchdelete()
                 . "AND UNIX_TIMESTAMP() - lastlogin > " . ($usr_time * 2592000) . " AND";
             $sort = 'lastlogin';
             break;
+
         case 'old':
             $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
@@ -920,6 +947,7 @@ function batchdelete()
             $filter_sql = "lastlogin > CAST(0 AS CHAR) AND (UNIX_TIMESTAMP() - lastlogin) > " . ($usr_time * 2592000) . " AND";
             $sort = 'lastlogin';
             break;
+
         case 'recent':
             $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
@@ -940,17 +968,20 @@ function batchdelete()
               'text' => $LANG_ADMIN['admin_home']),
     );
 
-    $text_arr = array('has_menu'     => true,
-                      'has_extras'   => true,
-                      'title'        => '',
-                      'instructions' => $desc,
-                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
-                      'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
-                      'help_url'     => '',
+    $text_arr = array(
+        'has_menu'     => true,
+        'has_extras'   => true,
+        'title'        => '',
+        'instructions' => $desc,
+        'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
+        'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
+        'help_url'     => '',
     );
 
-    $defsort_arr = array('field'     => $sort,
-                         'direction' => 'ASC');
+    $defsort_arr = array(
+        'field'     => $sort,
+        'direction' => 'ASC',
+    );
 
     $join_userinfo = "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
     $select_userinfo = ", lastlogin as lastlogin_short $list_sql ";
@@ -1035,7 +1066,6 @@ function batchdeleteexec()
     return $msg;
 }
 
-
 /**
  * This function used to send out reminders to users to access the site or account may be deleted
  *
@@ -1107,7 +1137,6 @@ function batchreminders()
 
     return $msg;
 }
-
 
 /**
  * This function allows the administrator to import batches of users
@@ -1324,7 +1353,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // dele
         COM_accessLog("User {$_USER['username']} tried to illegally delete user $uid and failed CSRF checks.");
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) { // save
+} elseif (!empty($LANG_ADMIN['save']) && ($mode == $LANG_ADMIN['save']) && SEC_checkToken()) { // save
     $delphoto = Geeklog\Input::post('delete_photo', '');
     if (!isset($_POST['oldstatus'])) {
         $_POST['oldstatus'] = USER_ACCOUNT_ACTIVE;

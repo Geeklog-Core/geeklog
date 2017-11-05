@@ -427,6 +427,7 @@ $LANG04 = array(
     167 => 'Remote login',
     168 => 'You may also login with one of the remote authentication services below.',
     169 => 'User has updated his/her profile',
+    170 => "Admin at {$_CONF['site_name']} changed the password of your account as follows.  Please save this mail for further reference.",
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
@@ -1133,7 +1134,7 @@ $LANG28 = array(
     68 => 'Online Hours',
     69 => 'Offline Months',
     70 => 'could not be deleted',
-    71 => 'Sucessfully deleted',
+    71 => 'Successfully deleted',
     72 => 'No User selected for deletion',
     73 => 'Are You sure you want to permanently delete ALL selected users?',
     74 => 'Recent Users',
@@ -1144,7 +1145,7 @@ $LANG28 = array(
     79 => 'No User selected for reminders',
     80 => 'Successfully sent Reminders',
     81 => 'Reminder to verify account for %s',
-    82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the next 30 days.",
+    82 => "Your account on {$_CONF['site_name']} has not been accessed since %s and will be disabled if not accessed in the next 30 days.",
     83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will be deleted soon if not accessed.",
     84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
     85 => 'If you have forgotten the password use the following link: %s',
@@ -1153,6 +1154,7 @@ $LANG28 = array(
     88 => 'Default Group',
     89 => 'Check to make this a default group for new users',
     90 => 'Apply "Default Group" change to existing user accounts',
+    91 => 'Send password to user',
     'autotag_desc_user' => '[user: name alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
