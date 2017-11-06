@@ -51,7 +51,7 @@ SQL;
                     '{site_name}'     => $_CONF['site_name'],
                     '{site_slogan}'   => $_CONF['site_slogan'],
                     '{owner_name}'    => $_CONF['owner_name'],
-                    '{copyrightyear}' => $_CONF['copyrightyear'],
+                    '{copyrightyear}' => (isset($_CONF['copyrightyear']) ? $_CONF['copyrightyear'] : date('Y')),
                     '{site_mail}'     => $_CONF['site_mail'],
                     '{noreply_mail}'  => $_CONF['noreply_mail'],
                 );
