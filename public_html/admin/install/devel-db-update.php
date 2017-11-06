@@ -61,6 +61,60 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
+function update_DatabaseFor220()
+{
+    global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
+
+    // ***************************************     
+    // Add database Geeklog Core updates here. 
+    // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
+    
+    
+    
+    
+    
+    // ***************************************     
+    // Core Plugin Updates Here
+    
+    // Staticpages
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_prev` VARCHAR(128) NOT NULL DEFAULT '' AFTER `postmode`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_next` VARCHAR(128) NOT NULL DEFAULT '' AFTER `sp_prev`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_parent` VARCHAR(128) NOT NULL DEFAULT '' AFTER `sp_next`";
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.0', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
+    
+    
+    // SpamX
+    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.4' WHERE pi_name='spamx'";
+    
+    
+    // Links
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.6' WHERE pi_name='links'";
+    
+    
+    // Polls
+    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.8' WHERE pi_name='polls'";
+
+    
+    
+
+    if ($use_innodb) {
+        $statements = count($_SQL);
+        for ($i = 0; $i < $statements; $i++) {
+            $_SQL[$i] = str_replace('MyISAM', 'InnoDB', $_SQL[$i]);
+        }
+    }
+
+    foreach ($_SQL as $sql) {
+        DB_query($sql,1);
+    }
+
+    // update Geeklog version number
+    DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='geeklog'",1);
+    DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='geeklog'",1);
+    
+    return true;
+}
+
 function update_DatabaseFor213()
 {
     global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
@@ -296,7 +350,8 @@ foreach ($corePlugins AS $pi_name) {
     $new_plugin_version = false;
     switch ($pi_name) {
         case 'staticpages':
-            $plugin_version = '1.6.9';
+            $new_plugin_version = true;
+            $plugin_version = '1.7.0';
             break;
         case 'spamx':
             $plugin_version = '1.3.4';
