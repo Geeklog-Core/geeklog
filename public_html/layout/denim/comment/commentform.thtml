@@ -46,6 +46,7 @@
       <dt><label for="comment_text">{lang_comment}</label></dt>
       <dd><div class="text_editor"><textarea rows="10" cols="45" name="comment" id="comment_text" class="wide" aria-describedby="desc-comment_text">{comment}</textarea></div></dd>
       <dd class="description" id="desc-comment_text">{allowed_html}</dd>
+      {record_edit}
     </dl>
 
     {captcha}
@@ -68,5 +69,9 @@
 
 </div>
 {end_block}
+
+<!-- BEGIN record_edit -->
+<dd class="description" id="record_edit"><input type="checkbox" name="record_edit" checked value="yes">{lang_record_edit}</dd>
+<!-- END record_edit -->
 
 {# end {templatelocation} #}

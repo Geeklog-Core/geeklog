@@ -25,6 +25,7 @@
       <dt><label for="comment_text">{lang_comment}</label></dt>
       <dd><textarea rows="10" cols="90" name="comment" id="comment_text">{comment}</textarea></dd>
       <dd class="description">{allowed_html}</dd>
+      {record_edit}
 
       <dt><label for="commentform-postmode">{lang_postmode}</label></dt>
       <dd>
@@ -65,5 +66,9 @@
 
 </div>
 {end_block}
+
+<!-- BEGIN record_edit -->
+<dd><input type="checkbox" name="record_edit" checked value="yes">{lang_record_edit}</dd>
+<!-- END record_edit -->
 
 {# end {templatelocation} #}

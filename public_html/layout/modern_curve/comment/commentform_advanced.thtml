@@ -32,6 +32,7 @@
             </div>
           </dd>
           <dd class="description">{allowed_html}</dd>
+          {record_edit}
 
           <dt><label for="commentform-postmode">{lang_postmode}</label></dt>
           <dd>
@@ -71,5 +72,9 @@
   </div>
   {end_block}
 </div>
+
+<!-- BEGIN record_edit -->
+<dd><input type="checkbox" name="record_edit" checked value="yes">{lang_record_edit}</dd>
+<!-- END record_edit -->
 
 {# end {templatelocation} #}

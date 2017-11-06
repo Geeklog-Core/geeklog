@@ -1037,6 +1037,8 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             } else {
                 $comment_template->set_file('form', 'commentform.thtml');
             }
+            // Blocks
+            $comment_template->set_block('form', 'record_edit');
 
             $is_comment_page = CMT_isCommentPage();
             if ($is_comment_page) {
@@ -1060,9 +1062,18 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $comment_template->set_var('pid', $pid);
             $comment_template->set_var('type', $type);
             if ($mode == 'edit' || $mode == 'editsubmission' || $mode == $LANG03[28] || $mode == $LANG03[34]) {
+                // Only allow admins to disable record of edit
+                if (SEC_hasRights('comment.moderate')) {
+                    $comment_template->set_var('lang_record_edit', $LANG03['record_edit']);
+                    $comment_template->parse('record_edit', 'record_edit'); // Add record_edit block to record_edit variable
+                } else {
+                    $comment_template->set_var('record_edit', '');
+                }
+                
                 $comment_template->set_var('hidewhenediting',
                     ' style="display:none;"');
             } else {
+                $comment_template->set_var('record_edit', '');
                 $comment_template->set_var('hidewhenediting', '');
             }
 
@@ -1782,6 +1793,11 @@ function CMT_handleEditSubmit($mode = null)
     $sid = Geeklog\Input::fPost(CMT_SID, '');
     $cid = (int) Geeklog\Input::fPost(CMT_CID, 0);
     $postmode = Geeklog\Input::fPost('postmode', '');
+    if (SEC_hasRights('comment.moderate')) {
+        $record_edit = Geeklog\Input::fPost('record_edit', '');
+    } else {
+        $record_edit = true;
+    }
 
     // check for bad input
     if (empty($sid) || empty($_POST['title']) || empty($_POST['comment']) ||
@@ -1831,7 +1847,9 @@ function CMT_handleEditSubmit($mode = null)
         //save edit information for published comment
         // Update any feeds
         if ($mode != $LANG03[35]) {
-            DB_save($_TABLES['commentedits'], 'cid,uid,time', "$cid,$uid,NOW()");
+            if ($record_edit) {
+                DB_save($_TABLES['commentedits'], 'cid,uid,time', "$cid,$uid,NOW()");
+            }
 
             COM_rdfUpToDateCheck('comment');
 

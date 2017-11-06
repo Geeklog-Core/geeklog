@@ -52,6 +52,7 @@
             </div>
           </dd>
           <dd class="description" id="desc-comment_text">{allowed_html}</dd>
+          {record_edit}
         </dl>
 
         {captcha}
@@ -73,5 +74,9 @@
   </div>
   {end_block}
 </div>
+
+<!-- BEGIN record_edit -->
+<dd class="description" id="record_edit"><input type="checkbox" name="record_edit" checked value="yes">{lang_record_edit}</dd>
+<!-- END record_edit -->
 
 {# end {templatelocation} #}
