@@ -1151,7 +1151,11 @@ the admin panel.</p>
   <tr>
     <td valign="top"><a name="desc_remove_4byte_chars">remove_4byte_chars</a></td>
     <td valign="top">true</td>
-    <td valign="top">If set to <code>true</code>, 4-byte utf-8 characters, including emoji icons, will be removed when you call COM_applyBasicFilter().</td></tr>
+    <td valign="top">If set to <code>true</code>, 4-byte utf-8 characters, including emoji icons, will be removed when you call COM_applyBasicFilter(). If set to <code>false</code> 
+      make sure your MySQL Geeklog database, tables and column collations is already set to one that supports multi byte characters. For example if your current collation is 
+      utf8_general_ci, you will want to then convert your database, tables, and columns to the "utf8mb4_general_ci" collation before setting this option to false. If not SQL errors 
+      may happen if someone attempts to save a 4 byte character to the database that is not stripped out of the content. Note: Some third party plugins may not support a mb4 
+      collation or this config option.</td></tr>
 </table>
 
 <h3><a name="users_comments">Users and Submissions: Comments</a></h3>
