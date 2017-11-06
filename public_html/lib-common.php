@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -47,13 +47,6 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR |
  */
 
 /**
- * Turn this on to get various debug messages from the code in this library
- *
- * @global bool $_COM_VERBOSE
- */
-$_COM_VERBOSE = false;
-
-/**
  * Prevent getting any surprise values. But we should really stop
  * using $_REQUEST altogether.
  */
@@ -89,6 +82,13 @@ if (COM_isDeveloperMode() &&
     isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
     error_reporting((int) $_CONF['developer_mode_php']['error_reporting']);
 }
+
+/**
+ * Turn this on to get various debug messages from the code in this library
+ *
+ * @global bool $_COM_VERBOSE
+ */
+$_COM_VERBOSE = COM_isEnableDeveloperModeLog('common');
 
 COM_checkInstalled();
 
