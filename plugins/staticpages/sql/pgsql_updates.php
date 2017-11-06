@@ -58,9 +58,9 @@ $_UPDATES = array(
     ),
 
     '1.6.9' => array(
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_prev` VARCHAR NOT NULL DEFAULT '' AFTER `postmode`",
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_next` VARCHAR NOT NULL DEFAULT '' AFTER `sp_prev`",
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_parent` VARCHAR NOT NULL DEFAULT '' AFTER `sp_next`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_prev` VARCHAR(128) NOT NULL DEFAULT '' AFTER `postmode`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_next` VARCHAR(128) NOT NULL DEFAULT '' AFTER `sp_prev`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_parent` VARCHAR(128) NOT NULL DEFAULT '' AFTER `sp_next`",
     ),
 );
 
