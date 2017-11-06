@@ -675,6 +675,12 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
         }
     }
     
+    // Remove deleted page from previous, next, or parent of other pages
+    DB_query("UPDATE {$_TABLES['staticpage']} SET sp_prev = '' WHERE sp_prev = '$sp_id'");
+    DB_query("UPDATE {$_TABLES['staticpage']} SET sp_next = '' WHERE sp_next = '$sp_id'");
+    DB_query("UPDATE {$_TABLES['staticpage']} SET sp_parent = '' WHERE sp_parent = '$sp_id'");
+    
+    // Delete page
     DB_delete($_TABLES['staticpage'], 'sp_id', $sp_id);
     DB_delete($_TABLES['comments'], array('sid', 'type'),
         array($sp_id, 'staticpages'));
