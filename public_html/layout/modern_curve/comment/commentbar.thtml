@@ -16,7 +16,7 @@
         {hidden_field}
         <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
         <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
-        <input type="submit" value="{lang_refresh}" class="submit"{xhtml}>
+        <input type="submit" value="{lang_refresh}" class="submit" rel="nofollow"{xhtml}>
       </li>
     </ul>
   </div>
@@ -31,7 +31,7 @@
         <input type="hidden" name="{nprefix}pid" value="0"{xhtml}>
         <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
         <input type="hidden" name="title" value="{comment_title}"{xhtml}>
-        <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}" class="submit"{xhtml}>
+        <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}" class="submit" rel="nofollow"{xhtml}>
       </li>
     </ul>
     {jump_link_for_commenteditform}

@@ -14,7 +14,7 @@
 {!if jump_link_for_commenteditform}
       {jump_link_for_commenteditform}
 {!else}
-      <button type="submit" name="reply" value="{lang_reply}" class="uk-button">{lang_reply}</button>
+      <button type="submit" name="reply" value="{lang_reply}" class="uk-button" rel="nofollow">{lang_reply}</button>
 {!endif}
       <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
       <input type="hidden" name="{nprefix}pid" value="0"{xhtml}>
@@ -27,7 +27,7 @@
   <form action="{parent_url}" method="post" id="commentbar-selector" class="uk-form">
     <div>
       {order_selector} {mode_selector}
-      <button type="submit" value="{lang_refresh}" class="uk-button">{lang_refresh}</button>
+      <button type="submit" value="{lang_refresh}" class="uk-button" rel="nofollow">{lang_refresh}</button>
       <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
       <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
       {hidden_field}

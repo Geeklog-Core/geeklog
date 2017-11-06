@@ -11,7 +11,7 @@
 
     {!if email_option}
     <dt>{lang_email}</dt>
-    <dd><a href="{site_url}/profiles.php?uid={user_id}">{lang_sendemail}</a></dd>
+    <dd><a href="{site_url}/profiles.php?uid={user_id}" rel="nofollow">{lang_sendemail}</a></dd>
     {!endif}
 
     <dt>{lang_homepage}</dt>

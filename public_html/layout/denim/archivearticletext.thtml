@@ -6,8 +6,8 @@
 
     <div class="story_icon">
       {!if email_icon}<a title="{lang_email_story}" href="{email_story_url}" class="uk-icon-hover uk-icon-envelope-o"></a>{!endif}
-      {!if print_icon}<a title="{lang_print_story}" href="{print_story_url}" class="uk-icon-hover uk-icon-print"></a>{!endif}
-      {!if edit_icon}<a title="{lang_edit_text}" href="{edit_url}" class="uk-icon-hover uk-icon-pencil"></a>{!endif}
+      {!if print_icon}<a title="{lang_print_story}" href="{print_story_url}" class="uk-icon-hover uk-icon-print" rel="nofollow"></a>{!endif}
+      {!if edit_icon}<a title="{lang_edit_text}" href="{edit_url}" class="uk-icon-hover uk-icon-pencil" rel="nofollow"></a>{!endif}
     </div>
 
     <ul class="story_status">

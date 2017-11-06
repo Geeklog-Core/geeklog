@@ -7071,21 +7071,30 @@ function COM_getTopicImageUrl($imageUrl)
 /**
  * Create an HTML link
  *
- * @param   string $content     the object to be linked (text, image etc)
- * @param   string $url         the URL the link will point to
- * @param   array  $attr        an array of optional attributes for the link
- *                              for example array('title' => 'whatever');
- * @return  string             the HTML link
+ * @param   string $content the object to be linked (text, image etc)
+ * @param   string $url     the URL the link will point to
+ * @param   array  $attr    an array of optional attributes for the link
+ *                           for example array('title' => 'whatever');
+ * @return  string          the HTML link
  */
 function COM_createLink($content, $url, $attr = array())
 {
-    $retval = '';
+    static $charset = null;
 
-    $attr_str = 'href="' . $url . '"';
-    foreach ($attr as $key => $value) {
-        $attr_str .= " $key=\"$value\"";
+    if ($charset === null) {
+        $charset = COM_getEncodingt();
     }
-    $retval .= "<a {$attr_str}>{$content}</a>";
+
+    $attributes = '';
+    foreach ($attr as $key => $value) {
+        $attributes .= sprintf(
+            ' %s="%s"',
+            htmlspecialchars($key, ENT_QUOTES, $charset),
+            htmlspecialchars($value, ENT_QUOTES, $charset)
+        );
+    }
+
+    $retval = sprintf('<a href="%s"%s>%s</a>', $url, $attributes, $content);
 
     return $retval;
 }

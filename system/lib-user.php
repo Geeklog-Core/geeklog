@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-user.php                                                              |
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -811,6 +811,39 @@ function USER_getAllowedTopics()
 }
 
 /**
+ * Return if the current user can send email to the user
+ *
+ * @param  int   $toUid
+ * @return bool  true if the current user can send email to the user
+ */
+function USER_isCanSendMail($toUid = 0)
+{
+    global $_CONF, $_TABLES;
+
+    $retval = false;
+
+    // Anonymous users cannot send email at this site
+    if (($_CONF['loginrequired'] || $_CONF['emailuserloginrequired']) && COM_isAnonUser()) {
+        return $retval;
+    }
+
+    $toUid = (int) $toUid;
+
+    if ($toUid > 1) {
+        $sql = "SELECT emailfromadmin, emailfromuser FROM {$_TABLES['userprefs']} "
+            . "WHERE (uid = {$toUid})";
+        $result = DB_query($sql);
+
+        if (!DB_error()) {
+            $A = DB_fetchArray($result, false);
+            $retval = (bool) $A['emailfromuser'] || ((bool) $A['emailfromadmin'] && SEC_inGroup('Root'));
+        }
+    }
+
+    return $retval;
+}
+
+/**
  * Shows a profile for a user
  * This grabs the user profile for a given user and displays it
  *
@@ -818,7 +851,7 @@ function USER_getAllowedTopics()
  * @param    boolean $preview whether being called as preview from My Account
  * @param    int     $msg     Message to display (if != 0)
  * @param    string  $plugin  optional plugin name for message
- * @return   string              HTML for user profile page
+ * @return   string           HTML for user profile page
  */
 function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 {
@@ -934,12 +967,14 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('lang_email', $LANG04[5]);
     $user_templates->set_var('user_id', $uid);
     $user_templates->set_var('uid', $uid);
-    if ($A['email'] != '') {
+
+    if (!empty($A['email']) && USER_isCanSendMail($uid)) {
         $user_templates->set_var('lang_sendemail', $LANG04[81]);
-        $user_templates->parse('email_option', 'email', true);
+        $user_templates->set_var('email_option', true);
     } else {
-        $user_templates->set_var('email_option', '');
+        $user_templates->set_var('email_option', false);
     }
+
     $user_templates->set_var('lang_homepage', $LANG04[6]);
     $user_templates->set_var('user_homepage', COM_killJS($A['homepage']));
     $user_templates->set_var('lang_location', $LANG04[106]);
@@ -1010,7 +1045,6 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     }
     $user_templates->parse('last10_blocks', 'last10_block', true);
 
-    
     $user_templates->set_var('start_block_last10', COM_startBlock($LANG04[10] . ' ' . $display_name));
     $user_templates->set_var('end_block', COM_endBlock());
     // list of last 10 comments by this user
@@ -1034,11 +1068,13 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $user_templates->set_var('row_number', ($i) . '.');
             $C['title'] = str_replace('$', '&#36;', $C['title']);
             $comment_url = $_CONF['site_url'] . '/comment.php?mode=view&amp;cid=' . $C['cid'];
-            $user_templates->set_var('item_title',
+            $user_templates->set_var(
+                'item_title',
                 COM_createLink(
                     stripslashes($C['title']),
                     $comment_url,
-                    array('class' => 'b'))
+                    array('class' => 'b')
+                )
             );
             $commentTime = COM_getUserDateTimeFormat($C['unixdate']);
             $user_templates->set_var('item_date', $commentTime[0]);
@@ -1078,8 +1114,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('number_field', COM_numberFormat($N['count']));
     $user_templates->parse('field_statistics', 'field_statistic', true);
     
-    $user_templates->set_var('lang_all_postings_by',
-        $LANG04[86] . ' ' . $display_name);
+    $user_templates->set_var('lang_all_postings_by', $LANG04[86] . ' ' . $display_name);
 
     // Call custom registration function if enabled and exists
     if ($_CONF['custom_registration'] && function_exists('CUSTOM_userDisplay')) {

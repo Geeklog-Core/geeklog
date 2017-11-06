@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -586,7 +586,17 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $article->set_var('edit_link', COM_createLink($LANG01[4], $editUrl));
             $article->set_var('edit_url', $editUrl);
             $article->set_var('lang_edit_text', $LANG01[4]);
-            $article->set_var('edit_icon', COM_createLink($editiconhtml, $editUrl, array('class' => 'editlink')));
+            $article->set_var(
+                'edit_icon',
+                COM_createLink(
+                    $editiconhtml,
+                    $editUrl,
+                    array(
+                        'class' => 'editlink',
+                        'rel'   => 'nofollow',
+                    )
+                )
+            );
             $article->set_var('edit_image', $editiconhtml);
         }
 
@@ -1563,7 +1573,7 @@ function plugin_autotags_story($op, $content = '', $autotag = array())
             'story' => $LANG24['autotag_desc_story'],
         );
     } else {
-        $sid = isset($autotag['parm1']) ?  COM_applyFilter($autotag['parm1']) : '';
+        $sid = isset($autotag['parm1']) ? COM_applyFilter($autotag['parm1']) : '';
         $sid = COM_switchLanguageIdForObject($sid);
         if (!empty($sid)) {
             $result = DB_query("SELECT COUNT(*) AS count "
@@ -1769,7 +1779,7 @@ function plugin_configchange_article($group, $changes = array())
                 // This is all the related story column should really need
                 $fulltext = PLG_replaceTags($A['introtext']) . ' ' . PLG_replaceTags($A['bodytext']);
                 $related = DB_escapeString(implode("\n", STORY_extractLinks($fulltext, $_CONF['whats_related_trim'])));
-                
+
                 // Update all related even if empty since number of related links could have changed for some reason
                 DB_query("UPDATE {$_TABLES['stories']} SET related = '$related' WHERE sid = '{$A['sid']}'");
             }
@@ -1857,7 +1867,7 @@ function service_submit_story($args, &$output, &$svc_msg)
     $content = '';
     if (!empty($args['content'])) {
         $content = $args['content'];
-    } else if (!empty($args['summary'])) {
+    } elseif (!empty($args['summary'])) {
         $content = $args['summary'];
     }
     if (!empty($content)) {
@@ -1924,7 +1934,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         if (!empty($args['content_type'])) {
             if ($args['content_type'] == 'text') {
                 $args['postmode'] = 'text';
-            } else if (($args['content_type'] == 'html')
+            } elseif (($args['content_type'] == 'html')
                 || ($args['content_type'] == 'xhtml')
             ) {
                 $args['postmode'] = 'html';

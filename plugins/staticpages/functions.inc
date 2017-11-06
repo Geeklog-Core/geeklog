@@ -348,19 +348,19 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $sp_prev = stripslashes($A['sp_prev']);
         if ($sp_prev !== '') {
             $headerCode .= PHP_EOL . sprintf(
-                '<link rel="prev" href="%s"%s>',
-                COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_prev),
-                XHTML
-            );
+                    '<link rel="prev" href="%s"%s>',
+                    COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_prev),
+                    XHTML
+                );
         }
 
         $sp_next = stripslashes($A['sp_next']);
         if ($sp_next !== '') {
             $headerCode .= PHP_EOL . sprintf(
-                '<link rel="next" href="%s"%s>',
-                COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_next),
-                XHTML
-            );
+                    '<link rel="next" href="%s"%s>',
+                    COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_next),
+                    XHTML
+                );
         }
 
         $page_title = stripslashes($A['sp_page_title']);
@@ -454,7 +454,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $print_url = COM_buildURL($_CONF['site_url']
                 . '/staticpages/index.php?page=' . $page
                 . '&amp;disp_mode=print');
-            $icon = COM_createLink($printicon, $print_url);
+            $icon = COM_createLink($printicon, $print_url, array('rel' => 'nofollow'));
             $spage->set_var('printable_url', $print_url);
             $spage->set_var('print_icon', $icon);
         }
@@ -465,14 +465,18 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
             $attr = array('title' => $LANG_STATIC['edit']);
             $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'], $attr);
-            $attr = array('class' => 'editlink', 'title' => $LANG_STATIC['edit']);
+            $attr = array(
+                'class' => 'editlink',
+                'title' => $LANG_STATIC['edit'],
+                'rel'   => 'nofollow',
+            );
             $url = $_CONF['site_admin_url']
                 . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $page;
-            $icon =
-                '&nbsp;' . COM_createLink(
-                    $editiconhtml, //display
-                    $url,  //target
-                    $attr //other attributes
+            $icon = '&nbsp;'
+                . COM_createLink(
+                    $editiconhtml,  //display
+                    $url,           //target
+                    $attr           //other attributes
                 );
             $spage->set_var('edit_icon', $icon);
         }
@@ -1120,14 +1124,13 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
             }
 
             if ($_CONF['hideprintericon'] == 0) {
-                $icon_url = $_CONF['layout_url'] . '/images/print.'
-                    . $_IMAGE_TYPE;
+                $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
                 $attr = array('title' => $LANG_STATIC['printable_format']);
                 $printicon = COM_createImage($icon_url, $LANG01[65], $attr);
                 $print_url = COM_buildURL($_CONF['site_url']
                     . '/staticpages/index.php?page=' . $S['sp_id']
                     . '&amp;disp_mode=print');
-                $icon = COM_createLink($printicon, $print_url);
+                $icon = COM_createLink($printicon, $print_url, array('rel' => 'nofollow'));
                 $spage->set_var('print_icon', $icon);
             }
             if ((SEC_hasAccess($S['owner_id'], $S['group_id'], $S['perm_owner'],
@@ -1141,13 +1144,16 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
                     $attr);
                 $url = $_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $S['sp_id'];
-                $attr = array('class' => 'editlink',
-                              'title' => $LANG_STATIC['edit']);
-                $icon =
-                    '&nbsp;' . COM_createLink(
-                        $editiconhtml, //display
-                        $url,  //target
-                        $attr //other attributes
+                $attr = array(
+                    'class' => 'editlink',
+                    'title' => $LANG_STATIC['edit'],
+                    'rel'   => 'nofollow',
+                );
+                $icon = '&nbsp;'
+                    . COM_createLink(
+                        $editiconhtml,  //display
+                        $url,           //target
+                        $attr           //other attributes
                     );
                 $spage->set_var('edit_icon', $icon);
             }
@@ -1419,7 +1425,7 @@ function plugin_upgrade_staticpages()
                     return false;
                 }
 
-                if (isset($_UPDATES[$current_version])) {
+                if (isset($_UPDATES, $_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
                         DB_query($sql);
