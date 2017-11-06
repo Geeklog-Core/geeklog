@@ -1233,17 +1233,36 @@ function plugin_user_delete_staticpages($uid)
     if (DB_count($_TABLES['staticpage'], 'owner_id', $uid) == 0) {
         return;
     }
+    
+    // Figure out root user 
+    $rootgroup = DB_getItem($_TABLES['groups'], 'grp_id',
+        "grp_name = 'Root'");
+    $result = DB_query("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
+    $A = DB_fetchArray($result);
+    $rootuser = $A['ug_uid'];
 
     if ($_SP_CONF['delete_pages'] == 1) {
-        // delete the pages
-        DB_query("DELETE FROM {$_TABLES['staticpage']} WHERE owner_id = $uid");
+        // delete the pages for the user if able
+        
+        $sql = "SELECT sp_id FROM {$_TABLES['staticpage']} WHERE owner_id = $uid";
+
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);        
+            
+            $args = array(
+                'sp_id' => $A['sp_id'],
+            );
+            if (PLG_RET_OK != PLG_invokeService('staticpages', 'delete', $args, $display, $svc_msg)) {
+                // Couldn't delete for some reason (security, page is a template being used, etc)
+                // Can't stop user delete so assign new ownership to page
+                DB_query("UPDATE {$_TABLES['staticpage']} SET owner_id = $rootuser WHERE sp_id = '{$A['sp_id']}'");
+            }
+        }
     } else {
         // assign ownership to a user from the Root group
-        $rootgroup = DB_getItem($_TABLES['groups'], 'grp_id',
-            "grp_name = 'Root'");
-        $result = DB_query("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
-        $A = DB_fetchArray($result);
-        $rootuser = $A['ug_uid'];
 
         DB_query("UPDATE {$_TABLES['staticpage']} SET owner_id = $rootuser WHERE owner_id = $uid");
     }

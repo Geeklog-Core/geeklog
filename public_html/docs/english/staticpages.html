@@ -140,7 +140,7 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>As all objects in Geeklog, static pages have an owner (the user that created the static page). When that user's account is deleted for some reason, any static pages owned by that user can either be deleted as well or they can be assigned to another user in Geeklog's Root group.</p>
 
-<p>In the Configuration admin panel for the static pages plugin, you can set the "<a href="#desc_delete_pages">Delete Pages with Owner?</a>" option to either "False" (which is also the default), meaning that static pages will not be deleted withtheir owner, but assigned to a member of the Root group instead (the user withthe lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
+<p>In the Configuration admin panel for the static pages plugin, you can set the "<a href="#desc_delete_pages">Delete Pages with Owner?</a>" option to either "False" (which is also the default), meaning that static pages will not be deleted with their owner, but assigned to a member of the Root group instead (the user with the lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
 
 <h2><a name="config.php">Configuration</a></h2>
 
@@ -185,7 +185,10 @@ the Configuration admin panel:</p>
   <td>Specify what should happen to a static page when its owner (i.e. the user
     who created the page) is deleted. 'True' would delete the page, 'False'
     will assign it to a user in the "Root" group (usually the user with the
-    lowest user ID).</td>
+    lowest user ID). Note: If set to 'True' some pages may not be deleted. For 
+    example if the page is a template that is currently be used by other pages, 
+    or other security reasons. If this happens then the page will be assigned 
+    to a user in the "Root" group.</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_in_block">in_block</a></td>
