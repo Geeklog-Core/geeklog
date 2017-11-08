@@ -991,7 +991,8 @@ $LANG24 = array(
     90 => 'キーワードのメタタグ',
     91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。',
     92 => '同じテーマの記事',
-    'autotag_desc_story' => '[article: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to an article. Functions the same as the article autotag. Please use the article autotag instead.',
+    'autotag_desc_article' => '[article: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'この記事を指定した秒数の間キャッシュします。0 を指定すると、キャッシュしません。(3600 = 1時間、86400 = 1日)'
 );

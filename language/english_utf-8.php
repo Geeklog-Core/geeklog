@@ -986,7 +986,8 @@ $LANG24 = array(
     90 => 'Meta Keywords',
     91 => 'You can always hit "Preview" to extend the expiry time.',
     92 => 'You might also like',
-    'autotag_desc_story' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to an article. Functions the same as the article autotag. Please use the article autotag instead.',
+    'autotag_desc_article' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'cache_time'        => 'Cache Time',
     'cache_time_desc'   => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );

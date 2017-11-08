@@ -1534,7 +1534,7 @@ function plugin_autotags_article($op, $content = '', $autotag = array())
 }
 
 /**
- * Implements the [story:] autotag.
+ * Implements the [story:] and [article:] autotag.
  *
  * @param   string $op      operation to perform
  * @param   string $content item (e.g. story text), including the autotag
@@ -1546,7 +1546,7 @@ function plugin_autotags_story($op, $content = '', $autotag = array())
     global $_CONF, $_TABLES, $LANG24, $_GROUPS;
 
     if ($op === 'tagname') {
-        return 'story';
+        return array('article', 'story');
     } elseif ($op === 'permission' || $op === 'nopermission') {
         $flag = ($op == 'permission');
         $tagnames = array();
@@ -1562,6 +1562,7 @@ function plugin_autotags_story($op, $content = '', $autotag = array())
                 $_CONF[$p][0], $_CONF[$p][1],
                 $_CONF[$p][2], $_CONF[$p][3]) == $flag
         ) {
+            $tagnames[] = 'article';
             $tagnames[] = 'story';
         }
 
@@ -1570,7 +1571,8 @@ function plugin_autotags_story($op, $content = '', $autotag = array())
         }
     } elseif ($op == 'description') {
         return array(
-            'story' => $LANG24['autotag_desc_story'],
+            'article' => $LANG24['autotag_desc_article'],
+            'story' => $LANG24['autotag_desc_story']
         );
     } else {
         $sid = isset($autotag['parm1']) ? COM_applyFilter($autotag['parm1']) : '';
