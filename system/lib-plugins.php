@@ -2810,8 +2810,8 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
 
         case 'list':
         default:
-            if ($plugin == 'story') {
-                $url = $_CONF['site_admin_url'] . "/$plugin.php";
+            if ($plugin == 'story' OR $plugin == 'article') {
+                $url = $_CONF['site_admin_url'] . "/article.php";
             } elseif ($plugin == 'user') {
                 $url = $_CONF['site_admin_url'] . "/user.php";
             } else {
