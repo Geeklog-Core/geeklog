@@ -9,6 +9,8 @@ namespace Geeklog;
  */
 class Autoload
 {
+    const DS = DIRECTORY_SEPARATOR;
+
     /**
      * @var bool
      */
@@ -33,7 +35,7 @@ class Autoload
             // New classes under \Geeklog namespace
             $className = str_replace('Geeklog\\', '', $className);
             $className = ucfirst($className);
-            $path = __DIR__ . DIRECTORY_SEPARATOR . $className . '.php';
+            $path = __DIR__ . self::DS . $className . '.php';
 
             if (file_exists($path)) {
                 /** @noinspection PhpIncludeInspection */
@@ -42,6 +44,23 @@ class Autoload
                 if (method_exists($className, 'init')) {
                     $className::init();
                 }
+            }
+        } elseif (stripos($className, 'MatthiasMullie\\') === 0) {
+            if (stripos($className, 'MatthiasMullie\\Minify\\') === 0) {
+                $path = __DIR__ . self::DS . 'MatthiasMullie' . self::DS . 'minify'
+                    . self::DS . 'src' . self::DS
+                    . str_ireplace('MatthiasMullie\\Minify\\', '', $className) . '.php';
+            } elseif (stripos($className, 'MatthiasMullie\\PathConverter\\') === 0) {
+                $path = __DIR__ . self::DS . 'MatthiasMullie' . self::DS . 'path-converter'
+                    . self::DS . 'src' . self::DS
+                    . str_ireplace('MatthiasMullie\\PathConverter\\', '', $className) . '.php';
+            } else {
+                $path = '';
+            }
+
+            if (file_exists($path)) {
+                /** @noinspection PhpIncludeInspection */
+                include $path;
             }
         } else {
             // Legacy Geeklog classes
