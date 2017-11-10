@@ -266,6 +266,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['routes']} (
     method int NOT NULL DEFAULT 1,
     rule varchar(255) NOT NULL DEFAULT '',
     route varchar(255) NOT NULL DEFAULT '',
+    status_code int NOT NULL DEFAULT 302,
     priority int NOT NULL DEFAULT 100,
     PRIMARY KEY (rid)
 )

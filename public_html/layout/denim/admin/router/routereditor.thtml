@@ -28,6 +28,20 @@
       <dt><label for="admin-routereditor-route">{lang_router_route}</label></dt>
       <dd><input type="text" size="40" value="{route}" name="route" id="admin-routereditor-route" class="size7"{xhtml}></dd>
 
+      <dt><label for="admin-routereditor-status_code">{lang_router_status_code}</label></dt>
+      <dd>
+        <select id="admin-routereditor-status_code" name="status_code">
+          <option value="300"{status300_selected}>300 (Multiple Choices)</option>
+          <option value="301"{status301_selected}>301 (Moved Permanently)</option>
+          <option value="302"{status302_selected}>302 (Found/Moved Temporarily)</option>
+          <option value="303"{status303_selected}>303 (See Other)</option>
+          <option value="304"{status304_selected}>304 (Not Modified)</option>
+          <option value="305"{status305_selected}>305 (Use Proxy)</option>
+          <option value="307"{status307_selected}>307 (Temporary Redirect)</option>
+          <option value="308"{status308_selected}>308 (Permanent Redirect)</option>
+        </select>
+      </dd>
+
       <dt><label for="admin-routereditor-priority">{lang_router_priority}</label></dt>
       <dd><input type="text" size="20" value="{priority}" name="priority" id="admin-routereditor-priority" class="size1"{xhtml}></dd>
     </dl>

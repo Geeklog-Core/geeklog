@@ -267,6 +267,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['routes']} (
     method int(11) NOT NULL DEFAULT 1,
     rule varchar(255) NOT NULL DEFAULT '',
     route varchar(255) NOT NULL DEFAULT '',
+    status_code int(11) NOT NULL DEFAULT 302,
     priority int(11) NOT NULL DEFAULT 100,
     PRIMARY KEY (rid)
 ) ENGINE=MyISAM

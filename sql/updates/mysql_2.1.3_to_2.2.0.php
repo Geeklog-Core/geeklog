@@ -1,8 +1,11 @@
 <?php
 
-// Add meta_description and meta_keywords to storysubmission
+// Add `meta_description` and `meta_keywords` columns to the `storysubmission` table
 $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_description` TEXT NULL AFTER `postmode`";
 $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_keywords` TEXT NULL AFTER `meta_description`";
+
+// Add the `status_code` column to the `routes` table
+$_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT(11) NOT NULL DEFAULT 302 AFTER `route`";
 
 /**
  * Upgrade Messages
