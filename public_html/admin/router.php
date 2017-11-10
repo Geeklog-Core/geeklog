@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | router.php                                                                |
 // |                                                                           |
@@ -64,11 +64,12 @@ function getRouteEditor($rid = 0)
     $retval = '';
 
     $A = array(
-        'rid'      => $rid,
-        'method'   => Router::HTTP_REQUEST_GET,
-        'rule'     => '',
-        'route'    => '',
-        'priority' => Router::DEFAULT_PRIORITY,
+        'rid'         => $rid,
+        'method'      => Router::HTTP_REQUEST_GET,
+        'rule'        => '',
+        'route'       => '',
+        'status_code' => Router::DEFAULT_STATUS_CODE,
+        'priority'    => Router::DEFAULT_PRIORITY,
     );
     $rid = intval($rid, 10);
 
@@ -106,21 +107,44 @@ function getRouteEditor($rid = 0)
         'method'       => $A['method'],
         'rule'         => $A['rule'],
         'route'        => $A['route'],
+        'status_code'  => $A['status_code'],
         'priority'     => $A['priority'],
         'gltoken_name' => CSRF_TOKEN,
         'gltoken'      => $securityToken,
     ));
+
+    $A['method'] = (int) $A['method'];
     $T->set_var(array(
-        'lang_router_rid'      => $LANG_ROUTER[3],
-        'lang_router_method'   => $LANG_ROUTER[4],
-        'lang_router_rule'     => $LANG_ROUTER[5],
-        'lang_router_route'    => $LANG_ROUTER[6],
-        'lang_router_priority' => $LANG_ROUTER[7],
-        'lang_router_notice'   => $LANG_ROUTER[20],
-        'lang_save'            => $LANG_ADMIN['save'],
-        'lang_cancel'          => $LANG_ADMIN['cancel'],
-        'lang_delete'          => $LANG_ADMIN['delete'],
-        'confirm_message'      => $MESSAGE[76],
+        'get_selected'    => ($A['method'] === Router::HTTP_REQUEST_GET ? ' selected="selected"' : ''),
+        'post_selected'   => ($A['method'] === Router::HTTP_REQUEST_POST ? ' selected="selected"' : ''),
+        'put_selected'    => ($A['method'] === Router::HTTP_REQUEST_PUT ? ' selected="selected"' : ''),
+        'delete_selected' => ($A['method'] === Router::HTTP_REQUEST_DELETE ? ' selected="selected"' : ''),
+        'head_selected'   => ($A['method'] === Router::HTTP_REQUEST_HEAD ? ' selected="selected"' : ''),
+    ));
+
+    $A['status_code'] = (int) $A['status_code'];
+    $T->set_var(array(
+        'status300_selected' => ($A['status_code'] === 300 ? ' selected="selected"' : ''),
+        'status301_selected' => ($A['status_code'] === 301 ? ' selected="selected"' : ''),
+        'status302_selected' => ($A['status_code'] === 302 ? ' selected="selected"' : ''),
+        'status303_selected' => ($A['status_code'] === 303 ? ' selected="selected"' : ''),
+        'status304_selected' => ($A['status_code'] === 304 ? ' selected="selected"' : ''),
+        'status305_selected' => ($A['status_code'] === 305 ? ' selected="selected"' : ''),
+        'status307_selected' => ($A['status_code'] === 307 ? ' selected="selected"' : ''),
+        'status308_selected' => ($A['status_code'] === 308 ? ' selected="selected"' : ''),
+    ));
+    $T->set_var(array(
+        'lang_router_rid'         => $LANG_ROUTER[3],
+        'lang_router_method'      => $LANG_ROUTER[4],
+        'lang_router_rule'        => $LANG_ROUTER[5],
+        'lang_router_route'       => $LANG_ROUTER[6],
+        'lang_router_status_code' => $LANG_ROUTER[21],
+        'lang_router_priority'    => $LANG_ROUTER[7],
+        'lang_router_notice'      => $LANG_ROUTER[20],
+        'lang_save'               => $LANG_ADMIN['save'],
+        'lang_cancel'             => $LANG_ADMIN['cancel'],
+        'lang_delete'             => $LANG_ADMIN['delete'],
+        'confirm_message'         => $MESSAGE[76],
     ));
 
     $T->set_var(
@@ -129,6 +153,7 @@ function getRouteEditor($rid = 0)
     );
     $T->parse('output', 'editor');
     $retval .= $T->finish($T->get_var('output'));
+    CTL_clearCache();
 
     return $retval;
 }
@@ -186,6 +211,9 @@ function ADMIN_getListFieldRoutes($fieldName, $fieldValue, $A, $iconArray, $extr
             break;
 
         case 'route':
+            break;
+
+        case 'status_code':
             break;
 
         case 'priority':
@@ -270,6 +298,11 @@ function listRoutes()
             'sort'  => true,
         ),
         array(
+            'text'  => $LANG_ROUTER[21],
+            'field' => 'status_code',
+            'sort'  => true,
+        ),
+        array(
             'text'  => $LANG_ROUTER[7],
             'field' => 'priority',
             'sort'  => true,
@@ -290,7 +323,7 @@ function listRoutes()
     $queryArray = array(
         'table'          => 'routes',
         'sql'            => "SELECT * FROM {$_TABLES['routes']} WHERE (1 = 1) ",
-        'query_fields'   => array('rule', 'route', 'priority'),
+        'query_fields'   => array('rule', 'route', 'status_code', 'priority'),
         'default_filter' => COM_getPermSql('AND'),
     );
 
@@ -311,10 +344,11 @@ function listRoutes()
  * @param  int    $method
  * @param  string $rule
  * @param  string $route
+ * @param  int    $statusCode
  * @param  int    $priority
  * @return string
  */
-function saveRoute($rid, $method, $rule, $route, $priority)
+function saveRoute($rid, $method, $rule, $route, $statusCode, $priority)
 {
     global $_CONF, $_TABLES, $MESSAGE, $LANG_ROUTER;
 
@@ -324,6 +358,7 @@ function saveRoute($rid, $method, $rule, $route, $priority)
     $method = intval($method, 10);
     $rule = trim($rule);
     $route = trim($route);
+    $statusCode = (int) trim($statusCode);
     $priority = intval($priority, 10);
 
     if (($method < Router::HTTP_REQUEST_GET) || ($method > Router::HTTP_REQUEST_HEAD)) {
@@ -381,6 +416,11 @@ function saveRoute($rid, $method, $rule, $route, $priority)
         $messageText = $LANG_ROUTER[15];
     }
 
+    // If HTTP status code is out of range, then fix it silently
+    if (($statusCode < 300) || ($statusCode > 308)) {
+        $statusCode = Router::DEFAULT_STATUS_CODE;
+    }
+
     // If priority is out of range, then fix it silently
     if (($priority < 1) || ($priority > 65535)) {
         $priority = Router::DEFAULT_PRIORITY;
@@ -403,16 +443,17 @@ function saveRoute($rid, $method, $rule, $route, $priority)
     $method = DB_escapeString($method);
     $rule = DB_escapeString($rule);
     $route = DB_escapeString($route);
+    $statusCode = DB_escapeString($statusCode);
     $priority = DB_escapeString($priority);
 
     $count = intval(DB_count($_TABLES['routes'], 'rid', $rid), 10);
 
     if ($count === 0) {
-        $sql = "INSERT INTO {$_TABLES['routes']} (rid, method, rule, route, priority) "
-            . "VALUES (NULL, {$method}, '{$rule}', '{$route}', {$priority})";
+        $sql = "INSERT INTO {$_TABLES['routes']} (rid, method, rule, route, status_code, priority) "
+            . "VALUES (NULL, {$method}, '{$rule}', '{$route}', {$statusCode}, {$priority})";
     } else {
         $sql = "UPDATE {$_TABLES['routes']} "
-            . "SET method = {$method}, rule = '{$rule}', route = '{$route}', priority = {$priority} "
+            . "SET method = {$method}, rule = '{$rule}', route = '{$route}', status_code = {$statusCode}, priority = {$priority} "
             . "WHERE rid = {$rid} ";
     }
 
@@ -421,8 +462,7 @@ function saveRoute($rid, $method, $rule, $route, $priority)
 
         if (!DB_error()) {
             reorderRoutes();
-
-            return COM_refresh($_CONF['site_admin_url'] . '/router.php?msg=121');
+            COM_redirect($_CONF['site_admin_url'] . '/router.php?msg=121');
         }
 
         // Retry
@@ -463,10 +503,10 @@ function reorderRoutes()
         DB_query($sql);
         $priority += $step;
     }
-    
+
     // Clear the cache once reordered so any updated urls can be refreshed
     // reorderRoutes is called by save and delete so it covers those instances as well
-    CTL_clearCache();    
+    CTL_clearCache();
 }
 
 /**
@@ -503,7 +543,6 @@ function moveRoute($rid)
  * Delete a route
  *
  * @param    int $rid id of block to delete
- * @return   string  HTML redirect or error message
  */
 function deleteRoute($rid)
 {
@@ -512,8 +551,7 @@ function deleteRoute($rid)
     $rid = intval($rid, 10);
     DB_delete($_TABLES['routes'], 'rid', $rid);
     reorderRoutes();
-
-    return COM_refresh($_CONF['site_admin_url'] . '/router.php?msg=123');
+    COM_redirect($_CONF['site_admin_url'] . '/router.php?msg=123');
 }
 
 // MAIN
@@ -528,30 +566,28 @@ switch ($mode) {
     case $LANG_ADMIN['delete']:
         if ($rid === 0) {
             COM_errorLog('Attempted to delete route, rid empty or null, value =' . $rid);
-            $display = COM_refresh($_CONF['site_admin_url'] . '/router.php');
+            COM_redirect($_CONF['site_admin_url'] . '/router.php');
         } elseif (SEC_checkToken()) {
-            $display = deleteRoute($rid);
+            deleteRoute($rid);
         } else {
             COM_accessLog("User {$_USER['username']} tried to illegally delete route {$rid} and failed CSRF checks.");
-            $display = COM_refresh($_CONF['site_admin_url'] . '/index.php');
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
 
-        echo $display;
-        die();
         break;
 
     case $LANG_ADMIN['save']:
         if (!SEC_checkToken()) {
             COM_accessLog("User {$_USER['username']} tried to illegally save route {$rid} and failed CSRF checks.");
-            echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
-            die();
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
 
         $method = \Geeklog\Input::fPost('method', '');
         $rule = \Geeklog\Input::post('rule', '');
         $route = \Geeklog\Input::post('route', '');
+        $statusCode = (int) \Geeklog\Input::fPost('status_code', 302);
         $priority = \Geeklog\Input::fPost('priority', Router::DEFAULT_PRIORITY);
-        $display = saveRoute($rid, $method, $rule, $route, $priority);
+        $display = saveRoute($rid, $method, $rule, $route, $statusCode, $priority);
         break;
 
     case 'edit':

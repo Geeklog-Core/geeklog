@@ -8,7 +8,7 @@
 // |                                                                           |
 // | class to allow for spider friendly URL's                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2011 by the following authors:                         |
+// | Copyright (C) 2002-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // +---------------------------------------------------------------------------+

@@ -1413,6 +1413,7 @@ $LANG_ROUTER = array(
     18 => '<strong>To enable URL routing, you have to enable URL rewrite in the Configuration.</strong>',
     19 => '<strong>To enable URL routing, you have to enable URL routing in the Configuration.</strong>',
     20 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>',
+    21 => 'Status Code',
 );
 
 ###############################################################################
