@@ -340,7 +340,8 @@ $LANG_ERROR = array(
     14 => 'アップグレードの注意点',
     15 => '話題IDと話題の最大長が128文字から75文字へ変更されました。このため、アップグレードの際に話題IDが強制的に切り詰められ、問題が発生するかもしれません(話題IDが75文字を超える場合)。75文字を超える話題IDを75文字に切り詰めたものが他の話題IDと重複しないか確認してください。',
     16 => '話題IDと話題の最大長が128文字から75文字へ変更されました。アップグレードを進める前に修正する必要のある話題IDを検出しました。',
-    17 => 'Professionalテーマはサポートされなくなりました。Geeklog 2.1.1以前からProfessionalテーマやProfessional_cssテーマを使っている場合はサイトが正常に機能しなくなる可能性があります。'
+    17 => 'Professionalテーマはサポートされなくなりました。Geeklog 2.1.1以前からProfessionalテーマやProfessional_cssテーマを使っている場合はサイトが正常に機能しなくなる可能性があります。', 
+    18 => 'Comment Signatures before Geeklog 2.2.0 where stored with the comment. Now they are added when the comment is viewed. For backwards compatibility the upgrade will remove all comment signatures stored directly with the comment (so comment signatures will not display twice).'    
 );
 
 // +---------------------------------------------------------------------------+

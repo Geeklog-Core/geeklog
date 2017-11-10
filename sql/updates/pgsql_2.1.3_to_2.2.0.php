@@ -10,9 +10,21 @@ $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT NOT NULL DEFAU
 /**
  * Upgrade Messages
  */
-// None yet
-// function upgrade_message220() { }
+function upgrade_message213()
+{
+    global $_TABLES;
 
+    // 3 upgrade message types exist 'information', 'warning', 'error'
+    // error type means the user cannot continue upgrade until fixed
+
+
+    // Comment signatures will be removed from old comments
+    $upgradeMessages['2.1.3'] = array(
+        'warning'     => 18 
+    );
+
+    return $upgradeMessages;
+}
 
 /**
  * Add new config options
@@ -82,6 +94,35 @@ function addThemeAdminFor220()
         DB_rollBack();
 
         return false;
+    }
+
+    return true;
+}
+
+/**
+ * Remove old Comment Signatures and User Edit Dates
+ *
+ * @return bool
+ */
+function removeCommentSig220()
+{
+    global $_TABLES;
+
+    $sql = "SELECT cid, comment FROM {$_TABLES['comments']} 
+        WHERE comment LIKE '%<!-- COMMENTSIG -->%' 
+        OR  comment LIKE '%<!-- /COMMENTEDIT -->%'";
+    
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+        
+        $text = str_replace('<!-- COMMENTSIG --><div class="comment-sig">', '', $A['comment']);
+        $text = str_replace('</div><!-- /COMMENTSIG -->', '', $text);
+        $text = str_replace('<div class="comment-edit">', '', $text);
+        $text = str_replace('</div><!-- /COMMENTEDIT -->', '', $text);        
+        
+        DB_query("UPDATE {$_TABLES['comments']} SET comment = '$text' WHERE cid = {$A['cid']}");
     }
 
     return true;

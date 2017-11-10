@@ -295,24 +295,6 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
     $row = 1;
 
     do {
-        // check for comment edit
-        $commentEdit = DB_query("SELECT cid,uid,UNIX_TIMESTAMP(time) AS time FROM {$_TABLES['commentedits']} WHERE cid = {$A['cid']}");
-        $B = DB_fetchArray($commentEdit);
-        if ($B) { //comment edit present
-            // get correct editor name
-            if ($A['uid'] == $B['uid']) {
-                $editName = $A['username'];
-            } else {
-                $editName = DB_getItem($_TABLES['users'], 'username', "uid={$B['uid']}");
-            }
-            // add edit info to text
-            list($date, ) = COM_getUserDateTimeFormat($B['time'], 'date');
-            $A['comment'] .= '<div class="comment-edit">' . $LANG03[30] . ' '
-                . $date . ' '
-                . $LANG03[31] . ' ' . $editName
-                . '</div><!-- /COMMENTEDIT -->';
-        }
-
         // determines indentation for current comment
         if ($mode === 'threaded' || $mode === 'nested') {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
@@ -541,15 +523,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $template->set_var('delete_option', '');
         }
 
-        //and finally: format the actual text of the comment, but check only the text, not sig or edit
-        $text = str_replace('<!-- COMMENTSIG --><div class="comment-sig">', '',
-            $A['comment']);
-        $text = str_replace('</div><!-- /COMMENTSIG -->', '', $text);
-        $text = str_replace('<div class="comment-edit">', '', $text);
-        $text = str_replace('</div><!-- /COMMENTEDIT -->', '', $text);
-        if (preg_match('/<.*>/', $text) == 0) {
-            $A['comment'] = '<div class="commentbody">' . COM_nl2br($A['comment']) . '</div>';
-        }
+        // Not sure if we need to wrap the comment in a div anymore????
+        $A['comment'] = '<div class="commentbody">' . COM_nl2br($A['comment']) . '</div>';
 
         // highlight search terms if specified
         if (!empty($_REQUEST['query'])) {
@@ -584,6 +559,38 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $template->set_var('reply_option', '');
         }
         $template->set_var('reply_link', $reply_link);
+        
+        // Check for User Signature and add first
+        // Get signature of comment owner
+        if ($A['uid'] > 1) {
+            $sig = DB_getItem($_TABLES['users'], 'sig', "uid = {$A['uid']}");
+            if (!empty($sig)) {
+                $A['comment'] .= '<!-- COMMENTSIG --><div class="comment-sig">';
+                $A['comment'] .= '---<br' . XHTML . '>' . COM_nl2br($sig);
+                $A['comment'] .= '</div><!-- /COMMENTSIG -->';
+            }
+        }
+        
+        // check for comment edit
+        $commentEdit = DB_query("SELECT cid,uid,UNIX_TIMESTAMP(time) AS time FROM {$_TABLES['commentedits']} WHERE cid = {$A['cid']}");
+        $B = DB_fetchArray($commentEdit);
+        if ($B) { //comment edit present
+            // get correct editor name
+            if ($A['uid'] == $B['uid']) {
+                $editName = $A['username'];
+            } else {
+                $editName = DB_getItem($_TABLES['users'], 'username', "uid={$B['uid']}");
+            }
+            
+            
+            // add edit info to text
+            list($date, ) = COM_getUserDateTimeFormat($B['time'], 'date');
+            $A['comment'] .= '<!-- COMMENTEDIT --><div class="comment-edit">' . $LANG03[30] . ' '
+                . $date . ' '
+                . $LANG03[31] . ' ' . $editName
+                . '</div><!-- /COMMENTEDIT -->';
+            
+        }
 
         // format title for display, must happen after reply_link is created
         $A['title'] = htmlspecialchars($A['title']);
@@ -869,12 +876,14 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
     $commentUid = $uid;
     $table = '';
-    $editsubmission = false; // flag if in edit submission (not regular edit of comment)
+    $edit_comment = false;
+    $edit_comment_submission = false; // flag if in edit submission (not regular edit of comment)
     if ($mode === 'edit' || $mode === $LANG03[28]) {
         $table = $_TABLES['comments'];
+        $edit_comment = true;
     } elseif ($mode === 'editsubmission' || $mode == $LANG03[34]) {
         $table = $_TABLES['commentsubmissions'];
-        $editsubmission = true;
+        $edit_comment_submission = true;
     }
     if (!empty($table)) {
         $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
@@ -951,13 +960,16 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
 
             $_POST['title'] = $title;
+            /*
             if ($mode == $LANG03[28]) { // for preview
                 $newComment = CMT_prepareText($comment, $postMode, $type, true, $cid);
             } elseif ($mode == $LANG03[34]) {
                 $newComment = CMT_prepareText($comment, $postMode, $type, true);
             } else {
                 $newComment = CMT_prepareText($comment, $postMode, $type);
-            }
+            } */
+            $newComment = CMT_prepareText($comment, $postMode, $type);
+            
             $_POST['comment'] = $newComment;
 
             // Preview mode:
@@ -1070,7 +1082,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $comment_template->set_var('type', $type);
             if ($mode == 'edit' || $mode == 'editsubmission' || $mode == $LANG03[28] || $mode == $LANG03[34]) {
                 // Only allow admins to disable record of edit
-                if (SEC_hasRights('comment.moderate') AND !$editsubmission) {
+                if (SEC_hasRights('comment.moderate') AND !$edit_comment_submission) {
                     $comment_template->set_var('lang_record_edit', $LANG03['record_edit']);
                     $comment_template->parse('record_edit', 'record_edit'); // Add record_edit block to record_edit variable
                 } else {
@@ -1867,10 +1879,8 @@ function CMT_handleEditSubmit($mode = null)
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    $comment = CMT_prepareText(Geeklog\Input::post('comment'), $postmode, $type);
+    $comment = CMT_prepareText(Geeklog\Input::post('comment'), $postmode, $mode);
     $title = COM_checkWords(GLText::stripTags(Geeklog\Input::post('title')), 'comment');
-
-
 
     if (!empty($title) && !empty($comment)) {
         COM_updateSpeedlimit('comment');
@@ -1893,7 +1903,7 @@ function CMT_handleEditSubmit($mode = null)
                 }
             }
         }
-        
+
         // save the comment into the table
         DB_query("UPDATE $table SET comment = '$comment', title = '$title', type = '$type'" . $sql_name
             . " WHERE cid=$cid AND sid='$sid'");
@@ -1940,11 +1950,9 @@ function CMT_handleEditSubmit($mode = null)
  * @param string  $comment  comment text
  * @param string  $postMode ('html', 'plaintext', ...)
  * @param string  $type     Type of item (article, polls, etc.)
- * @param boolean $edit     if true append edit tag
- * @param int     $cid      comment id if editing comment (for proper sig)
  * @return string of comment text
  */
-function CMT_prepareText($comment, $postMode, $type, $edit = false, $cid = null)
+function CMT_prepareText($comment, $postMode, $type)
 {
     global $_USER, $_TABLES, $LANG03, $_CONF;
 
@@ -1971,35 +1979,6 @@ function CMT_prepareText($comment, $postMode, $type, $edit = false, $cid = null)
         $newComment = COM_makeClickableLinks($comment);
         if (strcmp($comment, $newComment) != 0) {
             $comment = COM_nl2br($newComment);
-        }
-    }
-
-    if ($edit) {
-        list($date, ) = COM_getUserDateTimeFormat(time(), 'date');
-        $comment .= '<div class="comment-edit">' . $LANG03[30] . ' '
-            . $date . ' ' . $LANG03[31] . ' '
-            . $_USER['username'] . '</div><!-- /COMMENTEDIT -->';
-    }
-
-    if (empty($_USER['uid'])) {
-        $uid = 1;
-    } elseif ($edit && is_numeric($cid)) {
-        //if comment moderator
-        $uid = DB_getItem($_TABLES['comments'], 'uid', "cid = '$cid'");
-    } else {
-        $uid = $_USER['uid'];
-    }
-
-    if ($uid > 1) {
-        $sig = DB_getItem($_TABLES['users'], 'sig', "uid = '$uid'");
-        if (!empty($sig)) {
-            $comment .= '<!-- COMMENTSIG --><div class="comment-sig">';
-            if ($postMode == 'html') {
-                $comment .= '---<br' . XHTML . '>' . COM_nl2br($sig);
-            } else {
-                $comment .= '---' . LB . $sig;
-            }
-            $comment .= '</div><!-- /COMMENTSIG -->';
         }
     }
 
@@ -2381,13 +2360,7 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
         $A = DB_fetchArray($result);
         $title = COM_stripslashes($A['title']);
         $commentText = COM_stripslashes(COM_undoSpecialChars($A['comment']));
-
-        //remove signature
-        $pos = strpos($commentText, '<!-- COMMENTSIG --><span class="comment-sig">');
-        if ($pos > 0) {
-            $commentText = substr($commentText, 0, $pos);
-        }
-
+        
         //get format mode
         if (preg_match('/<.*>/', $commentText) != 0) {
             $postMode = 'html';

@@ -2886,9 +2886,16 @@ class Installer
                     
                 case '2.1.3':
                     require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.1.3_to_2.2.0.php';
-                    update_ConfValuesFor220();
-                    addThemeAdminFor220();
-
+                    if ($checkForMessage) {
+                        $retval = upgrade_message213();
+                        if (is_array($retval)) {
+                            $this->upgradeMessages = array_merge($this->upgradeMessages, $retval);
+                        }
+                    } else {
+                        removeCommentSig220();
+                        update_ConfValuesFor220();
+                        addThemeAdminFor220();
+                    }
                     $currentGlVersion = '2.2.0';
                     $_SQL = array();
                     break;                    
