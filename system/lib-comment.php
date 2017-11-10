@@ -869,10 +869,12 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
     $commentUid = $uid;
     $table = '';
+    $editsubmission = false; // flag if in edit submission (not regular edit of comment)
     if ($mode === 'edit' || $mode === $LANG03[28]) {
         $table = $_TABLES['comments'];
     } elseif ($mode === 'editsubmission' || $mode == $LANG03[34]) {
         $table = $_TABLES['commentsubmissions'];
+        $editsubmission = true;
     }
     if (!empty($table)) {
         $cid = (int) Geeklog\Input::fRequest(CMT_CID, 0);
@@ -986,13 +988,17 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 if (($mode == $LANG03[28]) || ($mode == $LANG03[34])) {
                     $A['nice_date'] = DB_getItem($table, 'UNIX_TIMESTAMP(date)', "cid = '" . DB_escapeString($cid) . "'");
                     if ($_USER['uid'] != $commentUid) {
-                        $uresult = DB_query("SELECT username, fullname, email, photo FROM {$_TABLES['users']} WHERE uid = $commentUid");
-                        $A = array_merge($A, DB_fetchArray($uresult));
+                        if (!COM_isAnonUser($commentUid)) {
+                            $uresult = DB_query("SELECT username, fullname, email, photo FROM {$_TABLES['users']} WHERE uid = $commentUid");
+                            $A = array_merge($A, DB_fetchArray($uresult));
+                        }
                     }
                 }
-                if (($uid != 1) || empty($A[CMT_USERNAME])) {
-                    $A[CMT_USERNAME] = DB_getItem($_TABLES['users'], 'username',
-                        "uid = $uid");
+                
+                if (($commentUid != 1) || empty($A[CMT_USERNAME])) {
+                    //if (!($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34])) { // Preview mode
+                        $A[CMT_USERNAME] = DB_getItem($_TABLES['users'], 'username', "uid = $commentUid");
+                    //}
                 }
 
                 if (COMMENT_ON_SAME_PAGE) {
@@ -1039,6 +1045,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             }
             // Blocks
             $comment_template->set_block('form', 'record_edit');
+            $comment_template->set_block('form', 'username_anon');
 
             $is_comment_page = CMT_isCommentPage();
             if ($is_comment_page) {
@@ -1063,7 +1070,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $comment_template->set_var('type', $type);
             if ($mode == 'edit' || $mode == 'editsubmission' || $mode == $LANG03[28] || $mode == $LANG03[34]) {
                 // Only allow admins to disable record of edit
-                if (SEC_hasRights('comment.moderate')) {
+                if (SEC_hasRights('comment.moderate') AND !$editsubmission) {
                     $comment_template->set_var('lang_record_edit', $LANG03['record_edit']);
                     $comment_template->parse('record_edit', 'record_edit'); // Add record_edit block to record_edit variable
                 } else {
@@ -1123,9 +1130,10 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 } else {
                     $name = COM_getDisplayName(1); // anonymous user
                 }
-                $usernameblock = '<input type="text" name="' . CMT_USERNAME . '" size="16" value="' .
-                    $name . '" maxlength="32"' . XHTML . '>';
-                $comment_template->set_var('username', $usernameblock);
+                //$comment_template->set_var('CMT_USERNAME', CMT_USERNAME);
+                $comment_template->set_var('username_value', $name);
+                $comment_template->set_var('lang_anonymous', $LANG03[24]);
+                $comment_template->parse('username', 'username_anon');
 
                 $comment_template->set_var('action_url',
                     $_CONF['site_url'] . '/users.php?mode=new');
@@ -1133,8 +1141,10 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     $LANG03[04]);
             } else {
                 if ($commentUid != $_USER['uid']) {
-                    $uresult = DB_query("SELECT username, fullname FROM {$_TABLES['users']} WHERE uid = $commentUid");
-                    list($username, $fullname) = DB_fetchArray($uresult);
+                    if (!COM_isAnonUser($commentUid)) {
+                        $uresult = DB_query("SELECT username, fullname FROM {$_TABLES['users']} WHERE uid = $commentUid");
+                        list($username, $fullname) = DB_fetchArray($uresult);
+                    }
                 } else {
                     $username = $_USER['username'];
                     $fullname = $_USER['fullname'];
@@ -1142,8 +1152,26 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $comment_template->set_var('gltoken_name', CSRF_TOKEN);
                 $comment_template->set_var('gltoken', SEC_createToken());
                 $comment_template->set_var('uid', $commentUid);
-                $name = COM_getDisplayName($commentUid, $username, $fullname);
-                $comment_template->set_var('username', $name);
+              
+                if (COM_isAnonUser($commentUid)) {
+                    // Since anonymous user get name stored with comment
+                    if ($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) { // // Preview mode
+                        $name = $A[CMT_USERNAME];
+                    } else {
+                        $cn_result = DB_query("SELECT name FROM $table WHERE cid = $cid");
+                        list($name) = DB_fetchArray($cn_result);
+                    }
+                    $comment_template->set_var('lang_anonymous', $LANG03[24]);
+                    //$comment_template->set_var('CMT_USERNAME', CMT_USERNAME);
+                    $comment_template->set_var('username_value', $name);
+                    $comment_template->parse('username', 'username_anon');               
+                } else {
+               
+                    $name = COM_getDisplayName($commentUid, $username, $fullname);
+                    $comment_template->set_var('username', $name);
+
+                }
+                
                 $comment_template->set_var('action_url',
                     $_CONF['site_url'] . '/users.php?mode=logout');
                 $comment_template->set_var('lang_logoutorcreateaccount',
@@ -1276,7 +1304,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     $ret = 0;
     $cid = 0;
-
+    
     // Get a valid uid
     if (empty($_USER['uid'])) {
         $uid = 1;
@@ -1325,13 +1353,14 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     if ($someError = PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode)) {
         return $someError;
     }
-
+    
     // Store unescaped comment and title for use in notification.
     $comment0 = CMT_prepareText($comment, $postmode, $type);
     $title0 = COM_checkWords(GLText::stripTags($title), 'comment');
 
     $comment = DB_escapeString($comment0);
     $title = DB_escapeString($title0);
+    // Get Name for anonymous user comments being added or edited
     if (($uid == 1) && isset($_POST[CMT_USERNAME])) {
         $anon = COM_getDisplayName(1);
         if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
@@ -1359,7 +1388,10 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     if (($_CONF['commentsubmission'] == 1) && !SEC_hasRights('comment.submit')) {
         // comment into comment submission table enabled
-        if (isset($name)) {
+        if (isset($name) AND trim($name) == '') {
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,ipaddress) "
+                . "VALUES ('$sid',$uid,NULL,'$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+        } elseif (isset($name)) {
             DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,ipaddress) "
                 . "VALUES ('$sid',$uid,'$name','$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         } else {
@@ -1382,7 +1414,11 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
                 . "WHERE sid = '$sid' AND type = '$type' AND lft >= $rht");
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
                 . "WHERE sid = '$sid' AND type = '$type' AND rht >= $rht");
-            if (isset($name)) {
+                
+            if (isset($name) AND trim($name) == '') {
+                DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");
+            } elseif (isset($name)) {
                 DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
                     "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
             } else {
@@ -1434,7 +1470,10 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         }
         $rht2 = $rht + 1;  // value of new comment's "lft"
         $rht3 = $rht + 2;  // value of new comment's "rht"
-        if (isset($name)) {
+        if (isset($name) AND trim($name) == '') {
+            DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");            
+        } elseif (isset($name)) {
             DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
         } else {
@@ -1808,7 +1847,14 @@ function CMT_handleEditSubmit($mode = null)
         COM_handle404($_CONF['site_url'] . '/index.php');
     }
 
-    $commentuid = DB_getItem($_TABLES['comments'], 'uid', "cid = '$cid'");
+    if ($mode == $LANG03[35]) {
+        $table = $_TABLES['commentsubmissions'];
+        $record_edit = false;
+    } else {
+        $table = $_TABLES['comments'];
+    }
+    
+    $commentuid = DB_getItem($table, 'uid', "cid = '$cid'");
     $uid = 1;
     if (!empty($_USER['uid'])) {
         $uid = $_USER['uid'];
@@ -1824,19 +1870,32 @@ function CMT_handleEditSubmit($mode = null)
     $comment = CMT_prepareText(Geeklog\Input::post('comment'), $postmode, $type);
     $title = COM_checkWords(GLText::stripTags(Geeklog\Input::post('title')), 'comment');
 
-    if ($mode == $LANG03[35]) {
-        $table = $_TABLES['commentsubmissions'];
-    } else {
-        $table = $_TABLES['comments'];
-    }
+
 
     if (!empty($title) && !empty($comment)) {
         COM_updateSpeedlimit('comment');
         $title = DB_escapeString($title);
         $comment = DB_escapeString($comment);
 
+        // Get Name for anonymous user comments being added or edited
+        $sql_name = "";
+        if (COM_isAnonUser($commentuid)) {
+            $anon = COM_getDisplayName($commentuid);
+            if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
+                $username = COM_checkWords(GLText::stripTags(Geeklog\Input::post(CMT_USERNAME)), 'comment');
+                $name = DB_escapeString($username);
+                
+                // Add name to update sql
+                if (trim($name) != '') {
+                    $sql_name = ", name = '$name' ";
+                } else { // if Blank set to Null (will use anonymous)
+                    $sql_name = ", name = NULL ";
+                }
+            }
+        }
+        
         // save the comment into the table
-        DB_query("UPDATE $table SET comment = '$comment', title = '$title', type = '$type'"
+        DB_query("UPDATE $table SET comment = '$comment', title = '$title', type = '$type'" . $sql_name
             . " WHERE cid=$cid AND sid='$sid'");
 
         if (DB_error()) { //saving to non-existent comment or comment in wrong article
