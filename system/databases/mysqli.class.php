@@ -121,21 +121,16 @@ class Database
      */
     private function _errorLog($msg)
     {
-        $function = $this->_errorlog_fn;
-        $function($msg);
+        call_user_func($this->_errorlog_fn, $msg);
     }
 
     /**
      * Connects to the MySQL database server
-     * This function connects to the MySQL server and returns the connection object
-     *
-     * @return   bool Returns connection object
+     * This function connects to the MySQL server
      */
     private function _connect()
     {
         global $_TABLES, $use_innodb;
-
-        $result = true;
 
         if ($this->_verbose) {
             $this->_errorLog("\n*** Inside database->_connect ***");
@@ -162,7 +157,6 @@ class Database
 
             // damn, got an error.
             $this->dbError();
-            $result = false;
         }
 
         // Set the character set
@@ -186,8 +180,6 @@ class Database
         if ($this->_verbose) {
             $this->_errorLog("\n***leaving database->_connect***");
         }
-
-        return $result;
     }
 
     /**
@@ -384,17 +376,35 @@ class Database
     }
 
     /**
+     * Default logger when COM_errorLog is not available
+     *
+     * @param  string $msg
+     */
+    private function defaultLogger($msg)
+    {
+        if (is_callable('error_log')) {
+            $msg .= PHP_EOL;
+            error_log($msg, 0);
+        } else {
+            if (!headers_sent()) {
+                header('Content-Type: text/html; charset=utf-8');
+            }
+
+            echo nl2br($msg) . '<br>' . PHP_EOL;
+        }
+    }
+
+    /**
      * Sets the function this class should call to log debug messages
      *
      * @param  string $functionName Function name
-     * @throws \InvalidArgumentException
      */
     public function setErrorFunction($functionName)
     {
         if (is_callable($functionName)) {
             $this->_errorlog_fn = $functionName;
         } else {
-            throw new \InvalidArgumentException('function "' . $functionName . '" is not callable');
+            $this->_errorlog_fn = array($this, 'defaultLogger');
         }
     }
 

@@ -3,7 +3,7 @@
 /**
  * File: EditSFS.Admin.class.php
  * This is the Edit Personal Blacklist Module for the glFusion Spam-X plugin
- * Copyright (C) 2004-2009 by the following authors:
+ * Copyright (C) 2004-2017 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
  *          Dirk Haun       dirk AT haun-online DOT de
  * Licensed under GNU General Public License

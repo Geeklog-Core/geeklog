@@ -3,7 +3,7 @@
 /**
  * File: BanUser.Action.class.php
  * This is the Ban User Action for the Geeklog Spam-X plugin
- * Copyright (C) 2012 by the following authors:
+ * Copyright (C) 2012-2017 by the following authors:
  * Author   Dirk Haun       dirk AT haun-online DOT net
  * based on earlier works by Tom Willett
  * Licensed under GNU General Public License

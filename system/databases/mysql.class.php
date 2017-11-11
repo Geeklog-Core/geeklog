@@ -87,7 +87,7 @@ class Database
     private $_display_error = false;
 
     /**
-     * @var callable
+     * @var string|callable
      */
     private $_errorlog_fn = '';
 
@@ -120,8 +120,7 @@ class Database
      */
     private function _errorLog($msg)
     {
-        $function = $this->_errorlog_fn;
-        $function($msg);
+        call_user_func($this->_errorlog_fn, $msg);
     }
 
     /**
@@ -377,6 +376,25 @@ class Database
     }
 
     /**
+     * Default logger when COM_errorLog is not available
+     *
+     * @param  string $msg
+     */
+    private function defaultLogger($msg)
+    {
+        if (is_callable('error_log')) {
+            $msg .= PHP_EOL;
+            error_log($msg, 0);
+        } else {
+            if (!headers_sent()) {
+                header('Content-Type: text/html; charset=utf-8');
+            }
+
+            echo nl2br($msg) . '<br>' . PHP_EOL;
+        }
+    }
+
+    /**
      * Sets the function this class should call to log debug messages
      *
      * @param        string|callable * $functionName Function name
@@ -386,7 +404,7 @@ class Database
         if (is_callable($functionName)) {
             $this->_errorlog_fn = $functionName;
         } else {
-            throw new \InvalidArgumentException('function "' . $functionName . '" is not callable');
+            $this->_errorlog_fn = array($this, 'defaultLogger');
         }
     }
 
@@ -468,6 +486,8 @@ class Database
                 $this->_errorLog("\n***sql caused an error***");
                 $this->_errorLog("\n*** Leaving database->dbQuery ***");
             }
+
+            return false;
         }
     }
 
@@ -795,7 +815,13 @@ class Database
      */
     public function dbNumFields($recordSet)
     {
-        return @mysql_numfields($recordSet);
+        $retval = @mysql_num_fields($recordSet);
+
+        if ($retval === false) {
+            $retval = 0;
+        }
+
+        return $retval;
     }
 
     /**
@@ -808,7 +834,7 @@ class Database
      */
     public function dbFieldName($recordSet, $fieldNumber)
     {
-        return @mysql_fieldname($recordSet, $fieldNumber);
+        return @mysql_field_name($recordSet, (int) $fieldNumber);
     }
 
     /**
@@ -820,7 +846,7 @@ class Database
      */
     public function dbAffectedRows($recordSet)
     {
-        return @mysql_affected_rows();
+        return @mysql_affected_rows($this->_db);
     }
 
     /**
@@ -856,7 +882,7 @@ class Database
     public function dbInsertId($link_identifier = null, $sequence = '')
     {
         if (empty($link_identifier)) {
-            return @mysql_insert_id();
+            return @mysql_insert_id($this->_db);
         } else {
             return @mysql_insert_id($link_identifier);
         }

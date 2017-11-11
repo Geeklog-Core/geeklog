@@ -3,7 +3,7 @@
 /**
  * File: SFS.Examine.class.php
  * This is the Stop Forum Spam Examine class for the Geeklog Spam-X plugin
- * Copyright  (C) 2014 Tom Homer  - WebSiteMaster AT cogeco DOT com
+ * Copyright  (C) 2014-2017 Tom Homer  - WebSiteMaster AT cogeco DOT com
  * Licensed under the GNU General Public License
  */
 

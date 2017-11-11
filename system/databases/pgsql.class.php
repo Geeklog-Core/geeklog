@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | pgsql.class.php                                                           |
 // |                                                                           |
 // | PostgreSQL database class                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Stanislav Palatnik, spalatnikk AT gmail DoT com                  |
 // +---------------------------------------------------------------------------+
@@ -80,7 +80,7 @@ class Database
     private $_display_error = false;
 
     /**
-     * @var callable
+     * @var string|callable
      */
     private $_errorlog_fn = '';
 
@@ -104,11 +104,7 @@ class Database
      */
     private function _errorLog($msg)
     {
-        $function = $this->_errorlog_fn;
-
-        if (function_exists($function)) {
-            $function($msg);
-        }
+        call_user_func($this->_errorlog_fn, $msg);
     }
 
     /**
@@ -147,8 +143,6 @@ class Database
     /**
      * Connects to the pgSQL database server
      * This function connects to the PostgreSQL server and returns the connection object
-     *
-     * @return   object      Returns connection object
      */
     private function _connect()
     {
@@ -186,17 +180,35 @@ class Database
     }
 
     /**
+     * Default logger when COM_errorLog is not available
+     *
+     * @param  string $msg
+     */
+    private function defaultLogger($msg)
+    {
+        if (is_callable('error_log')) {
+            $msg .= PHP_EOL;
+            error_log($msg, 0);
+        } else {
+            if (!headers_sent()) {
+                header('Content-Type: text/html; charset=utf-8');
+            }
+
+            echo nl2br($msg) . '<br>' . PHP_EOL;
+        }
+    }
+
+    /**
      * Sets the function this class should call to log debug messages
      *
      * @param  string $functionName Function name
-     * @throws \InvalidArgumentException
      */
     public function setErrorFunction($functionName)
     {
         if (is_callable($functionName)) {
             $this->_errorlog_fn = $functionName;
         } else {
-            throw new \InvalidArgumentException('function "' . $functionName . '" is not callable');
+            $this->_errorlog_fn = array($this, 'defaultLogger');
         }
     }
 
@@ -220,7 +232,6 @@ class Database
         $this->_pass = $dbpass;
         $this->setErrorFunction($errorlogfn);
         $this->_verbose = false;
-        $this->_errorlog_fn = $errorlogfn;
         $this->_charset = strtolower($charset);
         $this->_pgsql_version = 0;
 
@@ -231,16 +242,16 @@ class Database
      * Retrieves returns the number of effected rows for last query
      * Retrieves returns the number of effected rows for last query
      *
-     * @param    object $recordset The recordset to operate on
+     * @param    object $recordSet The recordset to operate on
      * @return   int     Number of rows affected by last query
      */
-    public function dbAffectedRows($recordset)
+    public function dbAffectedRows($recordSet)
     {
-        if (!isset($recordset)) {
-            $recordset = pg_get_result($this->_db);
+        if (!isset($recordSet)) {
+            $recordSet = pg_get_result($this->_db);
         }
 
-        return @pg_affected_rows($recordset);
+        return @pg_affected_rows($recordSet);
     }
 
     /**

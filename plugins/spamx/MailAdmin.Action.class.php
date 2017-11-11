@@ -3,7 +3,7 @@
 /**
  * File: MailAdmin.Action.class.php
  * This is the Mail Admin Action for the Geeklog Spam-X plugin
- * Copyright (C) 2004-2008 by the following authors:
+ * Copyright (C) 2004-2017 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
  * Licensed under GNU General Public License
  *

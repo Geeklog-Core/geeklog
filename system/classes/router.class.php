@@ -1,5 +1,33 @@
 <?php
 
+// +---------------------------------------------------------------------------+
+// | Geeklog 2.2                                                               |
+// +---------------------------------------------------------------------------+
+// | router.class.php                                                          |
+// |                                                                           |
+// | Geeklog homepage.                                                         |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2016-2017 by the following authors:                         |
+// |                                                                           |
+// | Authors: Kenji ITO         - mystralkk AT gmail DOT com                   |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+
 /**
  * Class Router
  */
@@ -23,6 +51,9 @@ class Router
 
     // Values to escape pattern
     const VALUE_MATCH = '|[^0-9a-zA-Z_%.-]|';
+
+    // Default HTTP status code
+    const DEFAULT_STATUS_CODE = 302;
 
     // Default priority
     const DEFAULT_PRIORITY = 100;
@@ -121,6 +152,12 @@ class Router
             $rule = $A['rule'];
             $route = $A['route'];
 
+            // HTTP response code since v2.2.0
+            $responseCode = isset($A['response_code']) ? (int) $A['response_code'] : self::DEFAULT_STATUS_CODE;
+            if (($responseCode < 300) || ($responseCode > 308)) {
+                $responseCode = self::DEFAULT_STATUS_CODE;
+            }
+
             // Try simple comparison without placeholders
             if (strcasecmp($rule, $pathInfo) === 0) {
                 $route = $_CONF['site_url'] . $route;
@@ -129,7 +166,7 @@ class Router
                     COM_errorLog(__METHOD__ . ': "' . $pathInfo . '"matched with simple comparison rule "' . $A['rule'] . '", converted into "' . $route . '"');
                 }
 
-                header('Location: ' . $route);
+                header('Location: ' . $route, $responseCode);
 
                 COM_errorLog(__METHOD__ . ': somehow could not redirect');
 
@@ -181,7 +218,7 @@ class Router
                     COM_errorLog(__METHOD__ . ': "' . $pathInfo . '" matched with regular expression rule "' . $A['rule'] . '", converted into "' . $route . '"');
                 }
 
-                header('Location: ' . $route);
+                header('Location: ' . $route, $responseCode);
             }
         }
 
@@ -327,5 +364,24 @@ class Router
         }
 
         return $originalUrl;
+    }
+
+    /**
+     * Return an array of (HTTP response code => message)
+     *
+     * @return array
+     */
+    public static function getResponseCodesForRedirect()
+    {
+        return array(
+            300 => 'Multiple Choices',
+            301 => 'Moved Permanently',
+            302 => 'Found (Moved Temporarily)',
+            303 => 'See Other',
+            304 => 'Not Modified',
+            305 => 'Use Proxy',
+            307 => 'Temporary Redirect',
+            308 => 'Permanent Redirect',
+        );
     }
 }

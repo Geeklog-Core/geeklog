@@ -3,7 +3,7 @@
 /**
  * File: Header.Examine.class.php
  * This is the HTTP Header Examine class for the Geeklog Spam-X plugin
- * Copyright (C) 2005-2009 by the following authors:
+ * Copyright (C) 2005-2017 by the following authors:
  * Author    Dirk Haun <dirk AT haun-online DOT de>
  * based on the works of Tom Willett <tomw AT pigstye DOT net>
  * Licensed under the GNU General Public License

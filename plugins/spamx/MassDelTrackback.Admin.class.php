@@ -3,7 +3,7 @@
 /**
  * File:  MassDelTrackback.Admin.class.php
  * Mass delete trackback spam
- * Copyright (C) 2004-2008 by the following authors:
+ * Copyright (C) 2004-2017 by the following authors:
  *
  * @author     Tom Willett     tomw AT pigstye DOT net
  * @author     Dirk Haun       dirk AT haun-online DOT de

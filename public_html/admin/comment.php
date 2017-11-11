@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | comment.php                                                               |
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2016 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -169,7 +169,14 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
             break;
 
         case 'ipaddress':
-            $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
+            $forDisplay = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
+
+            if (SPAMX_isIPBanned($fieldValue)) {
+                $fieldValue = '<span style="color: red;">' . $forDisplay . '</span>';
+            } else {
+                $fieldValue = $forDisplay;
+            }
+
             break;
 
         default:
@@ -508,11 +515,7 @@ function banIpAddresses($suffix)
                     $ipAddresses[] = $A['ipaddress'];
                 }
 
-                foreach ($ipAddresses as $ipAddress) {
-                    $sql = "INSERT INTO {$_TABLES['spamx']} (name, value) "
-                        . "VALUES ('IP', '" . DB_escapeString($ipAddress) . "')";
-                    DB_query($sql);
-                }
+                SPAMX_registerBannedIPs($ipAddresses);
             }
 
             COM_redirect($_CONF['site_admin_url'] . '/comment.php?msg=144');

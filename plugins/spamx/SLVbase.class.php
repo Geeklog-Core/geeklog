@@ -3,7 +3,7 @@
 /**
  * File: SLVbase.class.php
  * Spam Link Verification (SLV) Base Class
- * Copyright (C) 2006 by the following authors:
+ * Copyright (C) 2006-2017 by the following authors:
  * Author        Dirk Haun       dirk AT haun-online DOT de
  * Licensed under the GNU General Public License
  *

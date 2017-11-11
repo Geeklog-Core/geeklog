@@ -3,7 +3,7 @@
 /**
  * File: SFSbase.class.php
  * Stop Forum Spam (SFS) Base Class
- * Copyright  (C) 2014 Tom Homer  - WebSiteMaster AT cogeco DOT com
+ * Copyright  (C) 2014-2017 Tom Homer  - WebSiteMaster AT cogeco DOT com
  * Licensed under the GNU General Public License
 
 

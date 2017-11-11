@@ -3,7 +3,7 @@
 /**
  * File: SLV.Action.class.php
  * This is the Spam Link Verification Action class for the Geeklog Spam-X plugin
- * Copyright (C) 2006 by the following authors:
+ * Copyright (C) 2006-2017 by the following authors:
  * Author        Dirk Haun       dirk AT haun-online DOT de
  * Licensed under the GNU General Public License
  *

@@ -16,8 +16,8 @@
          <input type="hidden" name="{nprefix}pid" value="{pid}"{xhtml}>
          <input type="hidden" name="{nprefix}type" value="{type}"{xhtml}>
          <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-         <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>{username}
-         <span{hidewhenediting}><a href="{action_url}" rel="nofollow" class="logoutorcreateaccount">{lang_logoutorcreateaccount}</a></span>
+         <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>
+         {username}<span{hidewhenediting}>&nbsp;<a href="{action_url}" rel="nofollow" class="logoutorcreateaccount">{lang_logoutorcreateaccount}</a></span>
       </dd>
       <dt class="title"><label for="commentform-title">{lang_title}</label></dt>
       <dd class="title"><input type="text" size="32" value="{title}" maxlength="96" name="title" id="commentform-title" class="text"{xhtml}></dd>
@@ -70,5 +70,9 @@
 <!-- BEGIN record_edit -->
 <dd><input type="checkbox" name="record_edit" checked value="yes">{lang_record_edit}</dd>
 <!-- END record_edit -->
+
+<!-- BEGIN username_anon -->
+<input type="text" name="username" size="16" value="{username_value}" maxlength="32"{xhtml}> ({lang_anonymous})
+<!-- END username_anon -->
 
 {# end {templatelocation} #}

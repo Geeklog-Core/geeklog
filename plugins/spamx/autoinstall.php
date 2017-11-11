@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010 by the following authors:                         |
+// | Copyright (C) 2008-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -50,8 +50,8 @@ function plugin_autoinstall_spamx($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.3.4',
-        'pi_gl_version'   => '2.1.2',
+        'pi_version'      => '1.3.5',
+        'pi_gl_version'   => '2.2.0',
         'pi_homepage'     => 'https://www.geeklog.net/',
     );
 
