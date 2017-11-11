@@ -1,4 +1,5 @@
 <?php
+
 /**
  *   SFS.Misc.class.php
  *   Special examiner to check email and IP addresses during registration.
@@ -6,7 +7,7 @@
  *   email and/or IP address to the spamx table.
  *
  * @author       Lee Garner <lee@leegarner.com>
- * @copyright    Copyright (c) 2010 Lee Garner <lee@leegarner.com>
+ * @copyright    Copyright (c) 2010-2017 Lee Garner <lee@leegarner.com>
  * @package      spamx
  * @subpackage   Modules
  * @version      1.0.0

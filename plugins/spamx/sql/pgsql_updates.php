@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X Plugin 1.2                                                         |
+// | Spam-X Plugin 1.3                                                         |
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2010 by the following authors:                              |
+// | Copyright (C) 2010-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer        - websitemaster AT cogeco DOT net               |
 // +---------------------------------------------------------------------------+

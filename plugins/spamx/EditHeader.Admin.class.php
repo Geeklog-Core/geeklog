@@ -3,7 +3,7 @@
 /**
  * File: EditHeader.Admin.class.php
  * This is the Edit HTTP Header Module for the Geeklog Spam-X plugin
- * Copyright (C) 2005-2009 by the following authors:
+ * Copyright (C) 2005-2017 by the following authors:
  * Author    Dirk Haun <dirk AT haun-online DOT de>
  * based on the works of Tom Willett <tomw AT pigstye DOT net>
  * Licensed under GNU General Public License

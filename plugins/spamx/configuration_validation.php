@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X                                                                    |
+// | Spam-X 1.3                                                                |
 // +---------------------------------------------------------------------------+
 // | configuration_validation.php                                              |
 // |                                                                           |
 // | List of validation rules for the Links plugin configurations              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2010 by the following authors:                         |
+// | Copyright (C) 2007-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Akeda Bagus       - admin AT gedex DOT web DOT id                |
 // |          Tom Homer         - tomhomer AT gmail DOT com                    |

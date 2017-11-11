@@ -3,7 +3,7 @@
 /**
  * File:  MassDelete.Admin.class.php
  * Mass delete comment spam
- * Copyright (C) 2004-2008 by the following authors:
+ * Copyright (C) 2004-2017 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
  * Licensed under GNU General Public License
  *

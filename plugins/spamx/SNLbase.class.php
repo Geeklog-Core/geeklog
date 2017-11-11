@@ -3,7 +3,7 @@
 /**
  * File: SNLbase.class.php
  * Spam Number of Links (SNL) Base Class
- * Copyright  (C) 2006 Tom Homer  - WebSiteMaster AT cogeco DOT com
+ * Copyright  (C) 2006-2017 Tom Homer  - WebSiteMaster AT cogeco DOT com
  * Licensed under the GNU General Public License
 
 

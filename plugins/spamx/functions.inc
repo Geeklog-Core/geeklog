@@ -1,15 +1,33 @@
 <?php
 
-/**
- * File: functions.inc
- * This is the functions.inc for the Geeklog Spam-X plugin
- * Copyright (C) 2004-2011 by the following authors:
- * Authors      Tom Willett     tomw AT pigstye DOT net
- *              Dirk Haun       dirk AT haun-online DOT de
- * Licensed under GNU General Public License
- *
- * @package Spam-X
- */
+// +---------------------------------------------------------------------------+
+// | Spam-X Plugin 1.3                                                         |
+// +---------------------------------------------------------------------------+
+// | functions.inc                                                             |
+// |                                                                           |
+// | This file provides helper functions for the automatic plugin install.     |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2004-2017 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tom Willett       - tomw AT pigstye DOT net                      |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
 
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die ('This file can not be used on its own.');
@@ -46,9 +64,9 @@ if (!isset($_SPX_CONF['timeout'])) {
  * then we are to only print the overall stats in the 'site statistics' box
  * otherwise we show the detailed stats for the plugin
  *
- * @param    int $showSiteStats Flag to let us know which stats to get
- * @return   string  returns formatted HTML to insert in stats page
- * @see      plugin_statssummary_spamx
+ * @param   int    $showSiteStats Flag to let us know which stats to get
+ * @return  string                returns formatted HTML to insert in stats page
+ * @see     plugin_statssummary_spamx
  */
 function plugin_showstats_spamx($showSiteStats)
 {
@@ -60,8 +78,17 @@ function plugin_showstats_spamx($showSiteStats)
         // detailed stats are only visible to Spam-X admins
         require_once($_CONF['path_system'] . 'lib-admin.php');
         $header_arr = array(
-            array('text' => $LANG_SX00['stats_page_title'], 'field' => 'label', 'header_class' => 'stats-header-title'),
-            array('text' => $LANG_SX00['stats_entries'], 'field' => 'stats', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
+            array(
+                'text' => $LANG_SX00['stats_page_title'],
+                'field' => 'label',
+                'header_class' => 'stats-header-title'
+            ),
+            array(
+                'text' => $LANG_SX00['stats_entries'],
+                'field' => 'stats',
+                'header_class' => 'stats-header-count',
+                'field_class' => 'stats-list-count'
+            ),
         );
         $data_arr = array();
         $text_arr = array(
@@ -100,8 +127,8 @@ function plugin_showstats_spamx($showSiteStats)
 /**
  * New stats plugin API function for proper integration with the site stats
  *
- * @return   array(item text, item count);
- * @see      plugin_showstats_spamx
+ * @return array(item text, item count);
+ * @see     plugin_showstats_spamx
  */
 function plugin_statssummary_spamx()
 {
@@ -124,9 +151,11 @@ function plugin_cclabel_spamx()
 
     $retval = array();
     if (SEC_hasRights('spamx.admin')) {
-        $retval = array($LANG_SX00['plugin_name'],
+        $retval = array(
+            $LANG_SX00['plugin_name'],
             $_CONF['site_admin_url'] . '/plugins/spamx/index.php',
-            plugin_geticon_spamx(), 'tools');
+            plugin_geticon_spamx(), 'tools'
+        );
     }
 
     return $retval;
@@ -148,6 +177,8 @@ function plugin_getadminoption_spamx()
         $count = $A['cnt'];
 
         return array($LANG_SX00['plugin_name'], $_CONF['site_admin_url'] . '/plugins/spamx/index.php', $count, 'tools');
+    } else {
+        return array();
     }
 }
 
@@ -351,7 +382,18 @@ function plugin_upgrade_spamx()
                 }            
             
                 $current_version = '1.3.4'; // Shipped with Geeklog-2.1.3
-                break;                
+                break;
+
+            case '1.3.4':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+
+                $current_version = '1.3.5'; // Shipped with Geeklog-2.2.0
+                break;
 
             default:
                 $done = true;
@@ -380,8 +422,7 @@ function plugin_migrate_spamx($old_conf)
 
     for ($i = 0; $i < $num; $i++) {
         list($name, $value) = DB_fetchArray($result);
-        $new_value = DB_escapeString(str_replace($old_conf['site_url'],
-            $_CONF['site_url'], $value));
+        $new_value = DB_escapeString(str_replace($old_conf['site_url'], $_CONF['site_url'], $value));
         $old_value = DB_escapeString($value);
 
         DB_query("UPDATE {$_TABLES['spamx']} SET value = '$new_value' WHERE name = 'SLVwhitelist' AND value = '$old_value'");
@@ -418,24 +459,24 @@ function plugin_checkforSpam_spamx($comment, $action = -1)
     }
 
     // Clear out any old records
-    $deletelist = '';
+    $deleteList = '';
     if (is_array($_SPX_CONF['records_delete'])) {
         foreach ($_SPX_CONF['records_delete'] as $record) {
             if (!empty($record)) {
                 $record = DB_escapeString($record);
-                if ($deletelist == '') {
-                    $deletelist = "'$record'";
+                if ($deleteList == '') {
+                    $deleteList = "'$record'";
                 } else {
-                    $deletelist .= ", '$record'";
+                    $deleteList .= ", '$record'";
                 }
             }
         }
     }
-    if ($_SPX_CONF['max_age'] > 1 && $deletelist != '') {
+    if ($_SPX_CONF['max_age'] > 1 && $deleteList != '') {
         $timestamp = DB_escapeString(date('Y-m-d'));
         $sql = "DELETE FROM {$_TABLES['spamx']}
             WHERE DATE_ADD(regdate,INTERVAL {$_SPX_CONF['max_age']} DAY) < '$timestamp'
-            AND name IN ($deletelist)";
+            AND name IN ($deleteList)";
         DB_query($sql);
     }
 
@@ -500,7 +541,7 @@ function plugin_spamaction_spamx($comment, $action)
             if (is_file($spamx_path . $file)) {
                 if (substr($file, -17) == '.Action.class.php') {
                     $sfile = str_replace('.Action.class.php', '', $file);
-                    require_once($spamx_path . $file);
+                    require_once $spamx_path . $file;
                     $CM = new $sfile;
                     $Spamx_Action[$sfile] = $CM->getActionCode();
                 }
@@ -524,15 +565,14 @@ function plugin_spamaction_spamx($comment, $action)
  * Logs message to spamx.log
  * This will print a message to the spamx log
  *
- * @param   string $logentry Message to write to log
+ * @param   string $logEntry Message to write to log
  */
-function SPAMX_log($logentry)
+function SPAMX_log($logEntry)
 {
     global $_CONF, $LANG01, $_SPX_CONF;
 
-    if ((!isset($_SPX_CONF['logging']) || ($_SPX_CONF['logging'] === true)) && !empty($logentry)) {
-        $logentry = str_replace(array('<?', '?>'), array('(@', '@)'), $logentry);
-
+    if ((!isset($_SPX_CONF['logging']) || ($_SPX_CONF['logging'] === true)) && !empty($logEntry)) {
+        $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
         $timestamp = strftime('%c');
         $logfile = $_CONF['path_log'] . 'spamx.log';
 
@@ -540,7 +580,8 @@ function SPAMX_log($logentry)
             COM_errorLog($LANG01[33] . $logfile . ' (' . $timestamp . ')', 1);
         }
 
-        fputs($file, "$timestamp - $logentry \n");
+        fputs($file, "$timestamp - $logEntry \n");
+        fclose($file);
     }
 }
 
@@ -650,4 +691,125 @@ function plugin_itemPreSave_spamx($type, $username)
     }
 
     return '';
+}
+
+/**
+ * Public APIs to provide the information the Spam-X has stored or to manipulate the data it has
+ *
+ * @since v2.2.0
+ */
+
+/**
+ * @param  string $ipToCheck
+ * @return bool
+ */
+function SPAMX_isIPBanned($ipToCheck)
+{
+    global $_TABLES;
+
+    $ipToCheck = trim($ipToCheck);
+    $ipToCheck = strtolower($ipToCheck);
+
+    if ($ipToCheck !== '') {
+        $sql = "SELECT value FROM {$_TABLES['spamx']} WHERE (name = 'IP')";
+        $result = DB_query($sql);
+
+        if (!DB_error()) {
+            while (($A = DB_fetchArray($result, false)) !== false) {
+                $target = strtolower($A['value']);
+
+                if (strpos($target, '/') !== false) {
+                    $check = Geeklog\IP::matchCIDR($ipToCheck, $target);
+                } elseif (strpos($target, '-') !== false) {
+                    $check = Geeklog\IP::matchRange($ipToCheck, $target);
+                } else {
+                    $target = '/' . preg_quote($target, '/') . '/';
+                    $check = (preg_match($target, $ipToCheck) == 1);
+                }
+
+                if ($check) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Return an array of banned IPs
+ *
+ * @return array of string representing an IP
+ */
+function SPAMX_getBannedIPs()
+{
+    global $_TABLES;
+
+    $retval = array();
+    $sql = "SELECT value FROM {$_TABLES['spamx']} WHERE name = 'IP'";
+    $result = DB_query($sql);
+
+    if (!DB_error()) {
+        while (($A = DB_fetchArray($result, false)) !== false) {
+            $retval[] = $A['value'];
+        }
+    }
+
+    return $retval;
+}
+
+/**
+ * Register or update banned IPs
+ *
+ * @param  string|array $ips
+ */
+function SPAMX_registerBannedIPs($ips)
+{
+    global $_TABLES;
+
+    $ips = (array) $ips;
+
+    foreach ($ips as $ip) {
+        $ip = trim($ip);
+
+        if ($ip !== '') {
+            $ip = DB_escapeString($ip);
+
+            if (DB_count($_TABLES['spamx'], array('name', 'value'), array('IP', $ip)) == 1) {
+                // The IP given already exists
+                $sql = "UPDATE {$_TABLES['spamx']} SET counter = counter + 1 "
+                    . "WHERE (name = 'IP') AND (value = '{$ip}')";
+            } else {
+                // The IP given not found
+                $timestamp = DB_escapeString(date('Y-m-d H:i:s'));
+                $sql = "INSERT INTO {$_TABLES['spamx']} (name, value, counter, regdate) "
+                    . "VALUES('IP', '{$ip}', 1, '{$timestamp}')";
+            }
+
+            DB_query($sql);
+        }
+    }
+}
+
+/**
+ * Delete IPs from the database
+ *
+ * @param  string|array $ips
+ */
+function SPAMX_deleteBannedIPs($ips)
+{
+    global $_TABLES;
+
+    $ips = (array) $ips;
+
+    foreach ($ips as $ip) {
+        $ip = trim($ip);
+
+        if ($ip !== '') {
+            $ip = DB_escapeString($ip);
+            $sql = "DELETE FROM {$_TABLES['spamx']} WHERE (name = 'IP') AND (value = '{$ip}') LIMIT 1";
+            DB_query($sql);
+        }
+    }
 }

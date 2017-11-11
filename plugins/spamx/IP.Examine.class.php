@@ -3,7 +3,7 @@
 /**
  * File: IP.Examine.class.php
  * This is the IP BlackList Examine class for the Geeklog Spam-X plugin
- * Copyright (C) 2004-2010 by the following authors:
+ * Copyright (C) 2004-2017 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
  * Licensed under GNU General Public License
  *

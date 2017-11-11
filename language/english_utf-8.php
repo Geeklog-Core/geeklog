@@ -255,7 +255,7 @@ $LANG03 = array(
     103 => 'Ban this user',
     104 => 'Ban this IP address with the Spamx plugin',
     105 => 'IP Address',
-    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.',
+    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.  <span style="color: red;">IP addresses in red are the ones banned by the Spam-X plugin.</span>',
     'record_edit' => 'Record user and time of edit?'
 );
 

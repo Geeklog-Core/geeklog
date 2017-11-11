@@ -3,7 +3,7 @@
 /**
  * File: SLVwhitelist.Admin.class.php
  * This is the SLV Whitelist Module for the Geeklog Spam-X plugin
- * Copyright (C) 2004-2010 by the following authors:
+ * Copyright (C) 2004-2017 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
  *          Dirk Haun       dirk AT haun-online DOT de
  * Licensed under GNU General Public License
