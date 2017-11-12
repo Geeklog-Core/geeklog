@@ -107,6 +107,9 @@ $_CONF = $config->get_config('Core');
 // Get features that has ft_name like 'config%'
 $_CONF_FT = $config->_get_config_features();
 
+// Load Cache class
+Geeklog\Cache::init();
+
 // Load in Geeklog Variables Table
 
 /**
