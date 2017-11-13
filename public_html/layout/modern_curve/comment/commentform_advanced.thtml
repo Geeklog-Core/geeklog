@@ -74,7 +74,7 @@
 </div>
 
 <!-- BEGIN record_edit -->
-<dd><input type="checkbox" name="record_edit" checked value="yes">{lang_record_edit}</dd>
+<dd><input type="checkbox" name="record_edit" {record_edit_checked} value="1">{lang_record_edit}</dd>
 <!-- END record_edit -->
 
 <!-- BEGIN username_anon -->

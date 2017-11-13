@@ -569,7 +569,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $sig = DB_getItem($_TABLES['users'], 'sig', "uid = {$A['uid']}");
             if (!empty($sig)) {
                 $template->set_var('user_signature', COM_nl2br($sig));
-                $template->parse('comment_signature', 'comment_signature'); // Add record_edit block to record_edit variable                
+                $template->parse('comment_signature', 'comment_signature');     
             }
         }
         
@@ -588,7 +588,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             list($date, ) = COM_getUserDateTimeFormat($B['time'], 'date');
             $edit_info = $LANG03[30] . ' ' . $date . ' ' . $LANG03[31] . ' ' . $editName;
             $template->set_var('user_edit_info', $edit_info);
-            $template->parse('comment_edit', 'comment_edit'); // Add record_edit block to record_edit variable                
+            $template->parse('comment_edit', 'comment_edit');              
         }
 
         // format title for display, must happen after reply_link is created
@@ -872,7 +872,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             }
         }
     }
-
+    
     $commentUid = $uid;
     $table = '';
     $edit_comment = false;
@@ -1083,6 +1083,20 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 // Only allow admins to disable record of edit
                 if (SEC_hasRights('comment.moderate') AND !$edit_comment_submission) {
                     $comment_template->set_var('lang_record_edit', $LANG03['record_edit']);
+                    
+                    if ($mode == 'edit') {
+                        $record_edit = true;
+                    } elseif (isset($_POST['record_edit'])) {
+                        $record_edit = true;
+                    } else {
+                        $record_edit = false;
+                    }
+                    if ($record_edit) {
+                        $comment_template->set_var('record_edit_checked', "checked");
+                    } else {
+                        $comment_template->set_var('record_edit_checked', "");
+                    }
+                    
                     $comment_template->parse('record_edit', 'record_edit'); // Add record_edit block to record_edit variable
                 } else {
                     $comment_template->set_var('record_edit', '');
@@ -1844,7 +1858,11 @@ function CMT_handleEditSubmit($mode = null)
     $cid = (int) Geeklog\Input::fPost(CMT_CID, 0);
     $postmode = Geeklog\Input::fPost('postmode', '');
     if (SEC_hasRights('comment.moderate')) {
-        $record_edit = Geeklog\Input::fPost('record_edit', '');
+        if (isset($_POST['record_edit'])) {
+            $record_edit = true;
+        } else {
+            $record_edit = false;
+        }
     } else {
         $record_edit = true;
     }
