@@ -361,6 +361,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             if (isset($A['name'])) {
                 $A['username'] = GLText::stripTags($A['name']);
             }
+            $A['username'] = GLText::remove4byteUtf8Chars($A['username']); // Need to do this if doing a comment preview when adding/editing a comment
+            
             $template->set_var('author', $A['username']);
             $template->set_var('author_fullname', $A['username']);
             $template->set_var('author_link', $A['username']);
@@ -956,17 +958,12 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $commentText = str_replace(']', '&#93;', $commentText);
 
             $title = COM_checkWords(GLText::stripTags(COM_stripslashes($title)), 'comment');
+            $title = GLText::remove4byteUtf8Chars($title);
+            
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
 
             $_POST['title'] = $title;
-            /*
-            if ($mode == $LANG03[28]) { // for preview
-                $newComment = CMT_prepareText($comment, $postMode, $type, true, $cid);
-            } elseif ($mode == $LANG03[34]) {
-                $newComment = CMT_prepareText($comment, $postMode, $type, true);
-            } else {
-                $newComment = CMT_prepareText($comment, $postMode, $type);
-            } */
+
             $newComment = CMT_prepareText($comment, $postMode, $type);
             
             $_POST['comment'] = $newComment;
@@ -1144,6 +1141,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $comment_template->set_var('uid', 1);
                 if (isset($A[CMT_USERNAME])) {
                     $name = $A[CMT_USERNAME]; // for preview
+                    $name = GLText::remove4byteUtf8Chars($name);
                 } elseif (isset($_COOKIE[$_CONF['cookie_anon_name']])) {
                     // stored as cookie, name used before
                     $name = htmlspecialchars(
@@ -1155,7 +1153,6 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 } else {
                     $name = COM_getDisplayName(1); // anonymous user
                 }
-                //$comment_template->set_var('CMT_USERNAME', CMT_USERNAME);
                 $comment_template->set_var('username_value', $name);
                 $comment_template->set_var('lang_anonymous', $LANG03[24]);
                 $comment_template->parse('username', 'username_anon');
@@ -1182,6 +1179,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     // Since anonymous user get name stored with comment
                     if ($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) { // // Preview mode
                         $name = $A[CMT_USERNAME];
+                        $name = GLText::remove4byteUtf8Chars($name);
                     } else {
                         $cn_result = DB_query("SELECT name FROM $table WHERE cid = $cid");
                         list($name) = DB_fetchArray($cn_result);
@@ -1382,6 +1380,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     // Store unescaped comment and title for use in notification.
     $comment0 = CMT_prepareText($comment, $postmode, $type);
     $title0 = COM_checkWords(GLText::stripTags($title), 'comment');
+    $title0 = GLText::remove4byteUtf8Chars($title0);
 
     $comment = DB_escapeString($comment0);
     $title = DB_escapeString($title0);
@@ -1390,6 +1389,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         $anon = COM_getDisplayName(1);
         if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
             $username = COM_checkWords(GLText::stripTags(Geeklog\Input::post(CMT_USERNAME)), 'comment');
+            $username = GLText::remove4byteUtf8Chars($username);
             setcookie($_CONF['cookie_anon_name'], $username, time() + 31536000,
                 $_CONF['cookie_path'], $_CONF['cookiedomain'],
                 $_CONF['cookiesecure']);
@@ -1898,6 +1898,7 @@ function CMT_handleEditSubmit($mode = null)
 
     $comment = CMT_prepareText(Geeklog\Input::post('comment'), $postmode, $mode);
     $title = COM_checkWords(GLText::stripTags(Geeklog\Input::post('title')), 'comment');
+    $title = GLText::remove4byteUtf8Chars($title);
 
     if (!empty($title) && !empty($comment)) {
         COM_updateSpeedlimit('comment');
@@ -1910,6 +1911,7 @@ function CMT_handleEditSubmit($mode = null)
             $anon = COM_getDisplayName($commentuid);
             if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
                 $username = COM_checkWords(GLText::stripTags(Geeklog\Input::post(CMT_USERNAME)), 'comment');
+                $username = GLText::remove4byteUtf8Chars($username);
                 $name = DB_escapeString($username);
                 
                 // Add name to update sql
