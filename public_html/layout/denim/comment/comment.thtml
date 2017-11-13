@@ -7,10 +7,23 @@
   </ul>
 
   <div class="comment_content">{comments}</div>
+  {comment_signature}
+  {comment_edit}
 
   <div class="comment_navi" role="navigation" {hide_if_preview}>[
    <span>{reply_option} {parent_link} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="bookmark" title="{lang_permlink}">#</a></span>
   ]</div>
 </div>
+
+<!-- BEGIN comment_signature -->
+<div class="comment-sig">
+    ---<br{xhtml}>
+    {user_signature}
+</div>
+<!-- END comment_signature -->
+
+<!-- BEGIN comment_edit -->
+<div class="comment-edit">{user_edit_info}</div>
+<!-- END comment_edit -->
 
 {# end {templatelocation} #}

@@ -233,6 +233,10 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         'comment' => 'comment.thtml',
         'thread'  => 'thread.thtml',
     ));
+    
+    // Blocks
+    $template->set_block('comment', 'comment_signature');
+    $template->set_block('comment', 'comment_edit');    
 
     // generic template variables
     $template->set_var('lang_authoredby', $LANG01[42]);
@@ -523,8 +527,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $template->set_var('delete_option', '');
         }
 
-        // Not sure if we need to wrap the comment in a div anymore????
-        $A['comment'] = '<div class="commentbody">' . COM_nl2br($A['comment']) . '</div>';
+        $A['comment'] = COM_nl2br($A['comment']);
 
         // highlight search terms if specified
         if (!empty($_REQUEST['query'])) {
@@ -565,9 +568,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         if ($A['uid'] > 1) {
             $sig = DB_getItem($_TABLES['users'], 'sig', "uid = {$A['uid']}");
             if (!empty($sig)) {
-                $A['comment'] .= '<!-- COMMENTSIG --><div class="comment-sig">';
-                $A['comment'] .= '---<br' . XHTML . '>' . COM_nl2br($sig);
-                $A['comment'] .= '</div><!-- /COMMENTSIG -->';
+                $template->set_var('user_signature', COM_nl2br($sig));
+                $template->parse('comment_signature', 'comment_signature'); // Add record_edit block to record_edit variable                
             }
         }
         
@@ -582,14 +584,11 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
                 $editName = DB_getItem($_TABLES['users'], 'username', "uid={$B['uid']}");
             }
             
-            
             // add edit info to text
             list($date, ) = COM_getUserDateTimeFormat($B['time'], 'date');
-            $A['comment'] .= '<!-- COMMENTEDIT --><div class="comment-edit">' . $LANG03[30] . ' '
-                . $date . ' '
-                . $LANG03[31] . ' ' . $editName
-                . '</div><!-- /COMMENTEDIT -->';
-            
+            $edit_info = $LANG03[30] . ' ' . $date . ' ' . $LANG03[31] . ' ' . $editName;
+            $template->set_var('user_edit_info', $edit_info);
+            $template->parse('comment_edit', 'comment_edit'); // Add record_edit block to record_edit variable                
         }
 
         // format title for display, must happen after reply_link is created
