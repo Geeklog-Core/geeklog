@@ -1,9 +1,1 @@
 *** dummy entry ***
-Tue Nov 14 11:54:01 2017 - 192.168.1.224 - COM_redirect failed to redirect to "http://192.168.1.200/index.php?msg=8".  Headers were already sent at line 0 of "".  
-Tue Nov 14 11:54:07 2017 - 192.168.1.224 - COM_redirect failed to redirect to "http://192.168.1.200/admin/plugins.php".  Headers were already sent at line 0 of "".  
-Tue Nov 14 11:54:16 2017 - 192.168.1.224 - COM_redirect failed to redirect to "http://192.168.1.200/admin/plugins.php".  Headers were already sent at line 0 of "".  
-Tue Nov 14 11:54:48 2017 - 192.168.1.224 - COM_redirect failed to redirect to "http://192.168.1.200/admin/plugins.php".  Headers were already sent at line 0 of "".  
-Tue Nov 14 11:55:34 2017 - 192.168.1.224 - COM_redirect failed to redirect to "http://192.168.1.200/admin/plugins.php".  Headers were already sent at line 0 of "".  
-Tue Nov 14 11:55:36 2017 - 192.168.1.224 - COM_redirect failed to redirect to "http://192.168.1.200/admin/plugins.php".  Headers were already sent at line 0 of "".  
-Tue Nov 14 11:55:39 2017 - 192.168.1.224 - COM_redirect failed to redirect to "http://192.168.1.200/admin/plugins.php".  Headers were already sent at line 0 of "".  
-Tue Nov 14 11:55:42 2017 - 192.168.1.224 - COM_redirect failed to redirect to "http://192.168.1.200/admin/plugins.php".  Headers were already sent at line 0 of "".  

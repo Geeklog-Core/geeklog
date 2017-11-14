@@ -580,10 +580,6 @@ function banIpAddresses_ban($suffix)
                 . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
                 . " (cid IN (" . implode(',', $getCommentIds) . "))";
                 
-            $sql = "SELECT DISTINCT ipaddress FROM $table "
-                . "WHERE  "
-                . " (cid IN (" . implode(',', $getCommentIds) . "))";
-
             $result = DB_query($sql);
 
             if (!DB_error()) {
