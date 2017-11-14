@@ -1007,6 +1007,8 @@ class config
                     
                     ,'custom_registration','user_login_method'
                     
+                    ,'mail_cc_enabled','mail_cc_default'
+                    
                     ,'facebook_login','facebook_consumer_key','facebook_consumer_secret'
                     ,'linkedin_login','linkedin_consumer_key','linkedin_consumer_secret'
                     ,'twitter_login','twitter_consumer_key','twitter_consumer_secret'
