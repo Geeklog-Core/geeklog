@@ -78,13 +78,17 @@ class FileSystem implements CacheInterface
     }
 
     /**
-     * Calculate hash
+     * Calculate hash of data
      *
      * @param  string $data
      * @return string
      */
     private function getHash($data)
     {
+        if (!is_string($data)) {
+            $data = serialize($data);
+        }
+
         if (is_callable('hash_hmac')) {
             $hash = hash_hmac('sha1', $data, $this->root, true);
         } else {
@@ -105,30 +109,34 @@ class FileSystem implements CacheInterface
     {
         if (!$this->exists($key)) {
             return $defaultValue;
+        }
+
+        $fileName = $this->getFileName($key);
+        $temp = @file_get_contents($fileName);
+
+        if ($temp === false) {
+            $this->delete($key);
+
+            return $defaultValue;
+        }
+
+        $data = @unserialize($temp);
+
+        if ($data === false) {
+            // Failed to unserialize the cached data
+            $this->delete($key);
+
+            return $defaultValue;
+        }
+
+        if (is_array($data) && isset($data['data'], $data['created'], $data['ttl'], $data['hash']) &&
+            (($data['ttl'] === 0) || (time() <= $data['created'] + $data['ttl'])) &&
+            ($this->getHash($data['data']) === $data['hash'])) {
+            return $data['data'];
         } else {
-            $fileName = $this->getFileName($key);
-            $temp = @file_get_contents($fileName);
+            $this->delete($key);
 
-            if ($temp === false) {
-                $this->delete($key);
-
-                return $defaultValue;
-            } else {
-                $data = @unserialize($temp);
-
-                if ($data === false) {
-                    // Failed to unserialize the cached data
-                    return $defaultValue;
-                }
-
-                if (is_array($data) && isset($data['data'], $data['created'], $data['ttl'], $data['hash']) &&
-                    (($data['ttl'] === 0) || (time() <= $data['created'] + $data['ttl'])) &&
-                    ($this->getHash($data['data'] === $data['hash']))) {
-                    return $data['data'];
-                }
-
-                return $defaultValue;
-            }
+            return $defaultValue;
         }
     }
 
@@ -190,6 +198,6 @@ class FileSystem implements CacheInterface
         $fileName = $this->getFileName($key);
         clearstatcache();
 
-        return file_exists($fileName);
+        return @is_file($fileName) && @is_readable($fileName);
     }
 }

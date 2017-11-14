@@ -78,6 +78,8 @@ class Autoload
                     include __DIR__ . '/XML/RPC.php';
                 } elseif (stripos($className, 'Date_TimeZone') === 0) {
                     include __DIR__ . '/Date/TimeZone.php';
+                } elseif (stripos($className, 'Mobile_Detect') === 0) {
+                    include __DIR__ . '/mobiledetect/Mobile_Detect.php';
                 }
             }
         }
