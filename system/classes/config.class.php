@@ -1018,6 +1018,9 @@ class config
                     ,'github_login','github_consumer_secret','github_consumer_key'
                     
                     ,'filemanager_upload_restrictions','filemanager_images_ext','filemanager_videos_ext','filemanager_audios_ext'
+                    
+                    // For reCaptcha Plugin
+                    ,'public_key','private_key','enable_emailstory','enable_registration','enable_contact','remoteusers','anonymous_only'
                     ))) {
                         continue;
                     }
