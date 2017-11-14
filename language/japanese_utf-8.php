@@ -1619,7 +1619,8 @@ $LANG_ACCESS = array(
     'group_id' => 'グループID',
     'plugin_access_denied_msg' => 'このプラグインの管理権限がないのに管理画面にアクセスしようとしました。不正にこのページにアクセスする試みはすべて記録していることに注意してください。',
     'groupexists' => 'このグループ名は既に存在しています。',
-    'groupexistsmsg' => '同名のグループがあります。グループ名は重複してはいけません。'
+    'groupexistsmsg' => '同名のグループがあります。グループ名は重複してはいけません。',
+    'demo_mode_denied_msg' => 'This feature is currently disabled while the site is in Demo Mode.'
 );
 
 ###############################################################################

@@ -1339,17 +1339,19 @@ function SEC_createToken($ttl = 1200)
     $token = md5($uid . $pageURL . uniqid(rand(), 1));
     $pageURL = DB_escapeString($pageURL);
 
-    /* Destroy exired tokens: */
+    /* Destroy expired tokens: */
     $sql['mysql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
         . " AND (ttl > 0)";
     $sql['pgsql'] = "DELETE FROM {$_TABLES['tokens']} WHERE ROUND(EXTRACT(EPOCH FROM ABSTIME(created)))::int4 + (SELECT ttl from {$_TABLES['tokens']} LIMIT 1) < ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW())))::int4"
         . " AND (ttl > 0)";
     DB_query($sql);
 
-    /* Destroy tokens for this user/url combination. Since annonymous user share same id do not delete */
-    if ($uid != 1) {
-        $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id = '{$uid}' AND urlfor= '$pageURL'";
-        DB_query($sql);
+    /* Destroy tokens for this user/url combination. Since anonymous user share same id do not delete */
+    if (!(isset($_CONF['demo_mode']) && $_CONF['demo_mode'])) {
+        if ($uid != 1) {
+            $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id = '{$uid}' AND urlfor= '$pageURL'";
+            DB_query($sql);
+        }
     }
 
     /* Create a token for this user/url combination */

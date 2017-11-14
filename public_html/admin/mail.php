@@ -261,11 +261,15 @@ function send_messages(array $vars)
         }
 
         $tempTo = is_array($to) ? implode('', array_keys($to)) : $to;
-
-        if (! COM_mail($to, $subject, $message, $from, $html, $priority)) {
-            $failures[] = htmlspecialchars($tempTo);
+        
+        if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+            $successes[] = htmlspecialchars ($tempTo);
         } else {
-            $successes[] = htmlspecialchars($tempTo);
+            if (! COM_mail($to, $subject, $message, $from, $html, $priority)) {
+                $failures[] = htmlspecialchars($tempTo);
+            } else {
+                $successes[] = htmlspecialchars($tempTo);
+            }
         }
     }
 
