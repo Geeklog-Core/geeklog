@@ -253,10 +253,11 @@ $LANG03 = array(
     101 => 'Existing Comments',
     102 => 'Bulk Action',
     103 => 'Ban this user',
-    104 => 'Ban this IP address with the Spamx plugin',
+    104 => 'Ban this IP address with the Spam-X plugin',
     105 => 'IP Address',
-    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.  <span style="color: red;">IP addresses in red are the ones banned by the Spam-X plugin.</span>',
-    'record_edit' => 'Record user and time of edit?'
+    106 => 'Perform bulk action on comments and comment submissions including approval and deleting. You can also bulk ban users and IP addresses. <span style="color: red;">IP addresses in red</span> are the ones banned by the Spam-X plugin (banned from submissions only) and/or Ban plugin (banned from visiting site).  <span style="color: red;">User names in red</span> are users that have been banned.',
+    'record_edit' => 'Record user and time of edit?',
+    'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin'
 );
 
 ###############################################################################
@@ -1541,7 +1542,8 @@ $MESSAGE = array(
     141 => 'Failed to delete a comment.',
     142 => 'Approved comment(s).',
     143 => 'Banned user(s).',
-    144 => 'Banned IP addresses with the Spamx plugin.',
+    144 => 'Banned IP addresses with the Spam-X plugin.',
+    145 => 'Banned IP addresses with the Ban plugin.',
     150 => 'Successfully deleted all the files and directories used during the installation.',
     151 => 'Failed to delete some files and directories used during the installation.  Please remove them manually.',
     152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
