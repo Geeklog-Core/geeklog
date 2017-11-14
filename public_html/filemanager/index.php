@@ -50,6 +50,16 @@ if (!SEC_inGroup('Root') &&
     exit;
 }
 
+if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+    $display = COM_createHTMLDocument(
+        COM_showMessageText($LANG_ACCESS['demo_mode_denied_msg'], $LANG_ACCESS['accessdenied']),
+        array('pagetitle' => $LANG_ACCESS['accessdenied'])
+    );
+
+    COM_output($display);
+    exit;
+}
+
 // Default values defined in filemanager.config.js.dist
 $_FM_CONF = array(
     '_comment'        => 'IMPORTANT : go to the wiki page to know about options configuration https://github.com/simogeo/Filemanager/wiki/Filemanager-configuration-file',

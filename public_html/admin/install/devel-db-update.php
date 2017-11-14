@@ -394,7 +394,8 @@ foreach ($corePlugins AS $pi_name) {
             $plugin_version = '1.7.0';
             break;
         case 'spamx':
-            $plugin_version = '1.3.4';
+            $new_plugin_version = true;
+            $plugin_version = '1.3.5';
             break;
         case 'links':
             $new_plugin_version = true;

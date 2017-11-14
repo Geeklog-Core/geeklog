@@ -1618,7 +1618,8 @@ $LANG_ACCESS = array(
     'group_id' => 'Group ID',
     'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
     'groupexists' => 'Group name already exists',
-    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
+    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.',
+    'demo_mode_denied_msg' => 'This feature is currently disabled while the site is in Demo Mode.'
 );
 
 ###############################################################################

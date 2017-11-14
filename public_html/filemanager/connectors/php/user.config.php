@@ -24,11 +24,15 @@ require_once __DIR__ . '/../../../lib-common.php';
  *	@return boolean true if access granted, false if no access
  */
 function auth() {
-  // You can insert your own code over here to check if the user is authorized.
-  // If you use a session variable, you've got to start the session first (session_start())
-  global $_CONF;
+    // You can insert your own code over here to check if the user is authorized.
+    // If you use a session variable, you've got to start the session first (session_start())
+    global $_CONF;
 
-  return SEC_inGroup('Root') || (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')));
+    if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+        return false;
+    } else {
+        return SEC_inGroup('Root') || (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')));
+    }
 }
 
 // @todo Work on plugins registration

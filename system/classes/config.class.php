@@ -994,7 +994,33 @@ class config
             $current_fs = '';
             $fs_flag = false;
             $table_flag = false;
+            //print_r($params);
             foreach ($params as $name => $e) {
+                if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+                    if ( in_array($name,array(
+                    'site_url','site_admin_url'
+                    ,'url_routing'
+                    
+                    ,'path_html','path_log','path_language','backup_path','path_data','path_data','path_themes','path_images','path_editors','rdf_file'
+                    
+                    ,'path_to_mogrify', 'path_to_netpbm', 'image_lib'
+                    
+                    ,'custom_registration','user_login_method'
+                    
+                    ,'facebook_login','facebook_consumer_key','facebook_consumer_secret'
+                    ,'linkedin_login','linkedin_consumer_key','linkedin_consumer_secret'
+                    ,'twitter_login','twitter_consumer_key','twitter_consumer_secret'
+                    ,'google_login','google_consumer_key','google_consumer_secret'
+                    ,'microsoft_login','microsoft_consumer_key','microsoft_consumer_secret'
+                    ,'yahoo_login','yahoo_consumer_key','yahoo_consumer_secret'
+                    ,'github_login','github_consumer_secret','github_consumer_key'
+                    
+                    ,'filemanager_upload_restrictions','filemanager_images_ext','filemanager_videos_ext','filemanager_audios_ext'
+                    ))) {
+                        continue;
+                    }
+                }     
+
                 if ($e['type'] === 'fieldset' && $e['fieldset'] != $current_fs) {
                     $fs_flag = true;
                     if ($current_fs != '') {

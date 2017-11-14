@@ -233,6 +233,10 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         'comment' => 'comment.thtml',
         'thread'  => 'thread.thtml',
     ));
+    
+    // Blocks
+    $template->set_block('comment', 'comment_signature');
+    $template->set_block('comment', 'comment_edit');    
 
     // generic template variables
     $template->set_var('lang_authoredby', $LANG01[42]);
@@ -357,6 +361,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             if (isset($A['name'])) {
                 $A['username'] = GLText::stripTags($A['name']);
             }
+            $A['username'] = GLText::remove4byteUtf8Chars($A['username']); // Need to do this if doing a comment preview when adding/editing a comment
+            
             $template->set_var('author', $A['username']);
             $template->set_var('author_fullname', $A['username']);
             $template->set_var('author_link', $A['username']);
@@ -523,8 +529,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $template->set_var('delete_option', '');
         }
 
-        // Not sure if we need to wrap the comment in a div anymore????
-        $A['comment'] = '<div class="commentbody">' . COM_nl2br($A['comment']) . '</div>';
+        $A['comment'] = COM_nl2br($A['comment']);
 
         // highlight search terms if specified
         if (!empty($_REQUEST['query'])) {
@@ -565,9 +570,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         if ($A['uid'] > 1) {
             $sig = DB_getItem($_TABLES['users'], 'sig', "uid = {$A['uid']}");
             if (!empty($sig)) {
-                $A['comment'] .= '<!-- COMMENTSIG --><div class="comment-sig">';
-                $A['comment'] .= '---<br' . XHTML . '>' . COM_nl2br($sig);
-                $A['comment'] .= '</div><!-- /COMMENTSIG -->';
+                $template->set_var('user_signature', COM_nl2br($sig));
+                $template->parse('comment_signature', 'comment_signature');     
             }
         }
         
@@ -582,14 +586,11 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
                 $editName = DB_getItem($_TABLES['users'], 'username', "uid={$B['uid']}");
             }
             
-            
             // add edit info to text
             list($date, ) = COM_getUserDateTimeFormat($B['time'], 'date');
-            $A['comment'] .= '<!-- COMMENTEDIT --><div class="comment-edit">' . $LANG03[30] . ' '
-                . $date . ' '
-                . $LANG03[31] . ' ' . $editName
-                . '</div><!-- /COMMENTEDIT -->';
-            
+            $edit_info = $LANG03[30] . ' ' . $date . ' ' . $LANG03[31] . ' ' . $editName;
+            $template->set_var('user_edit_info', $edit_info);
+            $template->parse('comment_edit', 'comment_edit');              
         }
 
         // format title for display, must happen after reply_link is created
@@ -873,7 +874,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             }
         }
     }
-
+    
     $commentUid = $uid;
     $table = '';
     $edit_comment = false;
@@ -957,17 +958,12 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $commentText = str_replace(']', '&#93;', $commentText);
 
             $title = COM_checkWords(GLText::stripTags(COM_stripslashes($title)), 'comment');
+            $title = GLText::remove4byteUtf8Chars($title);
+            
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
 
             $_POST['title'] = $title;
-            /*
-            if ($mode == $LANG03[28]) { // for preview
-                $newComment = CMT_prepareText($comment, $postMode, $type, true, $cid);
-            } elseif ($mode == $LANG03[34]) {
-                $newComment = CMT_prepareText($comment, $postMode, $type, true);
-            } else {
-                $newComment = CMT_prepareText($comment, $postMode, $type);
-            } */
+
             $newComment = CMT_prepareText($comment, $postMode, $type);
             
             $_POST['comment'] = $newComment;
@@ -1084,6 +1080,20 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 // Only allow admins to disable record of edit
                 if (SEC_hasRights('comment.moderate') AND !$edit_comment_submission) {
                     $comment_template->set_var('lang_record_edit', $LANG03['record_edit']);
+                    
+                    if ($mode == 'edit') {
+                        $record_edit = true;
+                    } elseif (isset($_POST['record_edit'])) {
+                        $record_edit = true;
+                    } else {
+                        $record_edit = false;
+                    }
+                    if ($record_edit) {
+                        $comment_template->set_var('record_edit_checked', "checked");
+                    } else {
+                        $comment_template->set_var('record_edit_checked', "");
+                    }
+                    
                     $comment_template->parse('record_edit', 'record_edit'); // Add record_edit block to record_edit variable
                 } else {
                     $comment_template->set_var('record_edit', '');
@@ -1131,6 +1141,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $comment_template->set_var('uid', 1);
                 if (isset($A[CMT_USERNAME])) {
                     $name = $A[CMT_USERNAME]; // for preview
+                    $name = GLText::remove4byteUtf8Chars($name);
                 } elseif (isset($_COOKIE[$_CONF['cookie_anon_name']])) {
                     // stored as cookie, name used before
                     $name = htmlspecialchars(
@@ -1142,7 +1153,6 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 } else {
                     $name = COM_getDisplayName(1); // anonymous user
                 }
-                //$comment_template->set_var('CMT_USERNAME', CMT_USERNAME);
                 $comment_template->set_var('username_value', $name);
                 $comment_template->set_var('lang_anonymous', $LANG03[24]);
                 $comment_template->parse('username', 'username_anon');
@@ -1169,6 +1179,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     // Since anonymous user get name stored with comment
                     if ($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) { // // Preview mode
                         $name = $A[CMT_USERNAME];
+                        $name = GLText::remove4byteUtf8Chars($name);
                     } else {
                         $cn_result = DB_query("SELECT name FROM $table WHERE cid = $cid");
                         list($name) = DB_fetchArray($cn_result);
@@ -1369,6 +1380,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     // Store unescaped comment and title for use in notification.
     $comment0 = CMT_prepareText($comment, $postmode, $type);
     $title0 = COM_checkWords(GLText::stripTags($title), 'comment');
+    $title0 = GLText::remove4byteUtf8Chars($title0);
 
     $comment = DB_escapeString($comment0);
     $title = DB_escapeString($title0);
@@ -1377,6 +1389,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         $anon = COM_getDisplayName(1);
         if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
             $username = COM_checkWords(GLText::stripTags(Geeklog\Input::post(CMT_USERNAME)), 'comment');
+            $username = GLText::remove4byteUtf8Chars($username);
             setcookie($_CONF['cookie_anon_name'], $username, time() + 31536000,
                 $_CONF['cookie_path'], $_CONF['cookiedomain'],
                 $_CONF['cookiesecure']);
@@ -1845,7 +1858,11 @@ function CMT_handleEditSubmit($mode = null)
     $cid = (int) Geeklog\Input::fPost(CMT_CID, 0);
     $postmode = Geeklog\Input::fPost('postmode', '');
     if (SEC_hasRights('comment.moderate')) {
-        $record_edit = Geeklog\Input::fPost('record_edit', '');
+        if (isset($_POST['record_edit'])) {
+            $record_edit = true;
+        } else {
+            $record_edit = false;
+        }
     } else {
         $record_edit = true;
     }
@@ -1881,6 +1898,7 @@ function CMT_handleEditSubmit($mode = null)
 
     $comment = CMT_prepareText(Geeklog\Input::post('comment'), $postmode, $mode);
     $title = COM_checkWords(GLText::stripTags(Geeklog\Input::post('title')), 'comment');
+    $title = GLText::remove4byteUtf8Chars($title);
 
     if (!empty($title) && !empty($comment)) {
         COM_updateSpeedlimit('comment');
@@ -1893,6 +1911,7 @@ function CMT_handleEditSubmit($mode = null)
             $anon = COM_getDisplayName($commentuid);
             if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
                 $username = COM_checkWords(GLText::stripTags(Geeklog\Input::post(CMT_USERNAME)), 'comment');
+                $username = GLText::remove4byteUtf8Chars($username);
                 $name = DB_escapeString($username);
                 
                 // Add name to update sql

@@ -606,6 +606,10 @@ function plugin_upload_enabled()
     // If 'file_uploads' is enabled in php.ini
     // and the plugin directories are writable by the web server.
     $errors = array();
+    
+    if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+        $errors[] = $LANG32[69];
+    }
     if (!ini_get('file_uploads')) {
         $errors[] = $LANG32[66];
     }

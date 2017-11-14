@@ -642,14 +642,11 @@ function _checkEnvironment()
         'lang_current_php_settings' => $LANG_ENVCHECK['current_php_settings'],
         'lang_showhide_phpinfo'     => $LANG_ENVCHECK['showhide_phpinfo'],
     ));
-
-    /*
-    if (!defined('DEMO_MODE')) {
+    
+   if (!(isset($_CONF['demo_mode']) && $_CONF['demo_mode'])) {
         _phpinfo($T);
     }
-    */
-    _phpinfo($T);
-
+    
     $T->parse('output', 'page');
     $retval .= $T->finish($T->get_var('output'));
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));

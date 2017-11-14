@@ -25,6 +25,19 @@ $_CONF['site_enabled'] = true;
 // $_CONF['rootdebug'] = true;
 
 /**
+ * Demo mode
+ *
+ * If you uncomment the line below the site will be in a demo mode. This will disable 
+ * certain config options from being changed and from certain features being enabled.
+ * This includes the File Manager, Saving of Static Pages, Uploading Plugins, and
+ * Sending Bulk Emails. Some plugins may support this setting as well.
+ * For more information see: http://wiki.geeklog.net/Setting_up_a_Demo_Site
+ *
+ * @since v2.2.0
+ */
+// $_CONF['demo_mode'] = true;
+
+/**
  * Developer mode
  *
  * If you set this flag to true, detailed information will be displayed and/or logged.

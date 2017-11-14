@@ -432,7 +432,9 @@ function SESS_endUserSession($userid)
 {
     global $_TABLES;
 
-    DB_delete($_TABLES['sessions'], 'uid', $userid);
+    if (!(isset($_CONF['demo_mode']) && $_CONF['demo_mode'])) {
+        DB_delete($_TABLES['sessions'], 'uid', $userid);
+    }
 
     return 1;
 }
