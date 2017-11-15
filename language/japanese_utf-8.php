@@ -263,8 +263,9 @@ $LANG03 = array(
     103 => 'このユーザーを禁止する',
     104 => 'このIPアドレスをSpamxプラグインで禁止する',
     105 => 'IPアドレス',
-    106 => 'ユーザーやIPアドレスの一括承認・削除・禁止を含めて、コメントに対するアクションを一括して行います。<span style="color: red;">赤字のIPアドレスはSpam-Xプラグインで禁止されているIPです。</span>',
-    'record_edit' => '編集者と編集時刻を記録する'
+    106 => 'Perform bulk action on comments and comment submissions including approval and deleting. You can also bulk ban users and IP addresses. <span style="color: red;">IP addresses in red</span> are the ones banned by the Spam-X plugin (banned from submissions only) and/or Ban plugin (banned from visiting site).  <span style="color: red;">User names in red</span> are users that have been banned.',
+    'record_edit' => '編集者と編集時刻を記録する',
+    'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin'
 );
 
 ###############################################################################
@@ -1542,7 +1543,8 @@ $MESSAGE = array(
     141 => 'コメントを削除できませんでした。',
     142 => 'コメントを承認しました。',
     143 => 'ユーザーを禁止しました。',
-    144 => 'IPアドレスをSpamxプラグインで禁止しました。',
+    144 => 'IPアドレスをSpam-Xプラグインで禁止しました。',
+    145 => 'Banned IP addresses with the Ban plugin.',
     150 => 'インストール時に使用したすべてのファイルとディレクトリを削除しました。',
     151 => 'インストール時に使用したファイルとディレクトリを削除しようとしましたが、一部を削除できませんでした。お手数ですが、手動で削除してください。',
     152 => 'インストール時に使用したすべてのファイルとディレクトリはそのまま残っています。このまま残しておくのは危険なので、お手数ですが、手動で削除してください。',

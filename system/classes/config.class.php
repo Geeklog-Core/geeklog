@@ -1007,6 +1007,8 @@ class config
                     
                     ,'custom_registration','user_login_method'
                     
+                    ,'mail_cc_enabled','mail_cc_default'
+                    
                     ,'facebook_login','facebook_consumer_key','facebook_consumer_secret'
                     ,'linkedin_login','linkedin_consumer_key','linkedin_consumer_secret'
                     ,'twitter_login','twitter_consumer_key','twitter_consumer_secret'
@@ -1016,6 +1018,9 @@ class config
                     ,'github_login','github_consumer_secret','github_consumer_key'
                     
                     ,'filemanager_upload_restrictions','filemanager_images_ext','filemanager_videos_ext','filemanager_audios_ext'
+                    
+                    // For reCaptcha Plugin
+                    ,'public_key','private_key','enable_emailstory','enable_registration','enable_contact','remoteusers','anonymous_only'
                     ))) {
                         continue;
                     }

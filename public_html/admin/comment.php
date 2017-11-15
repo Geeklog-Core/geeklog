@@ -92,7 +92,7 @@ function getCommentIds($suffix)
  */
 function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $suffix)
 {
-    global $_CONF, $LANG01, $LANG_STATIC, $LANG_POLLS;
+    global $_CONF, $LANG01, $LANG_STATIC, $LANG_POLLS, $_PLUGINS, $_TABLES;
     static $encoding = null;
 
     if ($encoding === null) {
@@ -162,8 +162,14 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
             $fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
 
             if ($userId > 1) {
-                $fieldValue = '<a href="' . $_CONF['site_url']
-                    . '/users.php?mode=profile&amp;uid=' . $userId . '">' . $fieldValue . '</a>';
+                // Check if user disabled
+                if (DB_getItem($_TABLES['users'], 'status', "uid = $userId") == USER_ACCOUNT_DISABLED) {
+                    $fieldValue = '<a href="' . $_CONF['site_url']
+                        . '/users.php?mode=profile&amp;uid=' . $userId . '"><span style="color: red;">' . $fieldValue . '</span></a>';                    
+                } else {
+                    $fieldValue = '<a href="' . $_CONF['site_url']
+                        . '/users.php?mode=profile&amp;uid=' . $userId . '">' . $fieldValue . '</a>';
+                }
             }
 
             break;
@@ -171,10 +177,14 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
         case 'ipaddress':
             $forDisplay = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
 
-            if (SPAMX_isIPBanned($fieldValue)) {
+            if (in_array('spamx', $_PLUGINS) && SPAMX_isIPBanned($fieldValue)) {
                 $fieldValue = '<span style="color: red;">' . $forDisplay . '</span>';
             } else {
-                $fieldValue = $forDisplay;
+                if (function_exists('BAN_for_plugins_ban_found') && BAN_for_plugins_ban_found($fieldValue)) {
+                    $fieldValue = '<span style="color: red;">' . $forDisplay . '</span>';
+                } else {
+                    $fieldValue = $forDisplay;
+                }
             }
 
             break;
@@ -319,8 +329,12 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
         . '<option value="bulk_ban_user">' . $LANG03[103] . '</option>' . LB;
 
     if (in_array('spamx', $_PLUGINS)) {
-        $actionSelector .= '<option value="bulk_ban_ip_address">' . $LANG03[104] . '</option>' . LB;
+        $actionSelector .= '<option value="bulk_spamx_ban_ip_address">' . $LANG03[104] . '</option>' . LB;
     }
+    
+    if (function_exists('BAN_for_plugins_check_access') AND BAN_for_plugins_check_access()) {
+        $actionSelector .= '<option value="bulk_ban_ip_address">' . $LANG03['ban_plugin_ban_ip'] . '</option>' . LB;
+    }    
 
     $actionSelector .= '</select>' . LB
         . '<input type="submit" name="submit" id="bulk_action_submit' . $suffix . '" value="'
@@ -490,22 +504,29 @@ function banUsers($suffix)
  *
  * @param  string $suffix
  */
-function banIpAddresses($suffix)
+function banIpAddresses_spamx($suffix)
 {
     global $_CONF, $_PLUGINS, $_TABLES, $_USER;
 
     if (SEC_checkToken()) {
         if (!in_array('spamx', $_PLUGINS)) {
-            COM_errorLog(__FUNCTION__ . ': Spamx plugin is not installed or disabled.');
+            COM_errorLog(__FUNCTION__ . ': Spam-X plugin is not installed or disabled.');
             COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
-
+        
         $getCommentIds = getCommentIds($suffix);
-
+        
         if (count($getCommentIds) > 0) {
-            $sql = "SELECT DISTINCT ipaddress FROM {$_TABLES['comments']} "
+            if ($suffix === SUFFIX_COMMENTS) {
+                $table = $_TABLES['comments'];
+            } else {
+                $table = $_TABLES['commentsubmissions'];
+            }        
+            
+            $sql = "SELECT DISTINCT ipaddress FROM $table "
                 . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
                 . " (cid IN (" . implode(',', $getCommentIds) . "))";
+
             $result = DB_query($sql);
 
             if (!DB_error()) {
@@ -525,6 +546,59 @@ function banIpAddresses($suffix)
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
 }
+
+/**
+ * Ban IP Addresses being selected with the Ban plugin
+ *
+ * @param  string $suffix
+ */
+function banIpAddresses_ban($suffix)
+{
+    global $_CONF, $_PLUGINS, $_TABLES, $_USER;
+
+    if (SEC_checkToken()) {
+        if (!in_array('ban', $_PLUGINS)) {
+            COM_errorLog(__FUNCTION__ . ': Ban plugin is not installed or disabled.');
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
+        }        
+        
+        if (!(function_exists('BAN_for_plugins_check_access') AND BAN_for_plugins_check_access())) {
+            COM_errorLog(__FUNCTION__ . ': This version of the Ban plugin doesn\'t support this function or the user doesn\'t have Ban Admin access.');
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
+        }         
+
+        $getCommentIds = getCommentIds($suffix);
+        
+        if (count($getCommentIds) > 0) {
+            if ($suffix === SUFFIX_COMMENTS) {
+                $table = $_TABLES['comments'];
+            } else {
+                $table = $_TABLES['commentsubmissions'];
+            }        
+            
+            $sql = "SELECT DISTINCT ipaddress FROM $table "
+                . "WHERE (ipaddress NOT LIKE '192.168.%') AND (ipaddress <> '::1') AND "
+                . " (cid IN (" . implode(',', $getCommentIds) . "))";
+                
+            $result = DB_query($sql);
+
+            if (!DB_error()) {
+                while (($A = DB_fetchArray($result, false)) !== false) {
+                    if (!BAN_for_plugins_ban_found($A['ipaddress'])) {
+                        BAN_for_plugins_ban_ip($A['ipaddress'], '', true, 'Banned via Comment Manager');
+                    }
+                }
+
+            }
+
+            //COM_redirect($_CONF['site_admin_url'] . '/comment.php?msg=145');
+        }
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to ban IP addresses and failed CSRF checks.");
+        COM_redirect($_CONF['site_admin_url'] . '/index.php');
+    }
+}
+
 
 // MAIN
 $list = \Geeklog\Input::fPost('list', '');
@@ -552,8 +626,12 @@ switch ($action) {
         banUsers($suffix);
         break;
 
+    case 'bulk_spamx_ban_ip_address':
+        banIpAddresses_spamx($suffix);
+        break;
+        
     case 'bulk_ban_ip_address':
-        banIpAddresses($suffix);
+        banIpAddresses_ban($suffix);
         break;
 
     default:
