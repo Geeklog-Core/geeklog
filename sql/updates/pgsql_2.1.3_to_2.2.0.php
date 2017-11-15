@@ -41,6 +41,9 @@ function update_ConfValuesFor220()
 
     // Add switch language redirect option
     $c->add('switchlang_homepage',0,'select',6,28,0,370,TRUE, $me, 28);
+    
+    // Add the cache_mobile config option again since the config option may be missing for sites who upgraded from 2.1.2 (upgrade script had a bug in it)
+    $c->add('cache_mobile',TRUE,'select',2,10,1,230,TRUE, $me, 10);    
 
     return true;
 }
