@@ -135,6 +135,29 @@ class Resource
         'topic_control'                   => '/javascript/topic_control.js',
         'uikit_modifier'                  => '/javascript/uikit_modifier.js',
         'uikit'                           => '/vendor/uikit/js/uikit.min.js',
+        'uikit.accordion'                 => '/vendor/uikit/js/components/accordion.min.js',
+        'uikit.autocomplete'              => '/vendor/uikit/js/components/autocomplete.min.js',
+        'uikit.datepicker'                => '/vendor/uikit/js/components/datepicker.min.js',
+        'uikit.form-password'             => '/vendor/uikit/js/components/form-password.min.js',
+        'uikit.form-select'               => '/vendor/uikit/js/components/form-select.min.js',
+        'uikit.grid-parallax'             => '/vendor/uikit/js/components/grid-parallax.min.js',
+        'uikit.grid'                      => '/vendor/uikit/js/components/grid.min.js',
+        'uikit.htmleditor'                => '/vendor/uikit/js/components/htmleditor.min.js',
+        'uikit.lightbox'                  => '/vendor/uikit/js/components/lightbox.min.js',
+        'uikit.nestable'                  => '/vendor/uikit/js/components/nestable.min.js',
+        'uikit.notify'                    => '/vendor/uikit/js/components/notify.min.js',
+        'uikit.pagination'                => '/vendor/uikit/js/components/pagination.min.js',
+        'uikit.parallax'                  => '/vendor/uikit/js/components/parallax.min.js',
+        'uikit.search'                    => '/vendor/uikit/js/components/search.min.js',
+        'uikit.slider'                    => '/vendor/uikit/js/components/slider.min.js',
+        'uikit.slideset'                  => '/vendor/uikit/js/components/slideset.min.js',
+        'uikit.slideshow-fx'              => '/vendor/uikit/js/components/slideshow-fx.min.js',
+        'uikit.slideshow'                 => '/vendor/uikit/js/components/slideshow.min.js',
+        'uikit.sortable'                  => '/vendor/uikit/js/components/sortable.min.js',
+        'uikit.sticky'                    => '/vendor/uikit/js/components/sticky.min.js',
+        'uikit.timepicker'                => '/vendor/uikit/js/components/timepicker.min.js',
+        'uikit.tooltip'                   => '/vendor/uikit/js/components/tooltip.min.js',
+        'uikit.upload'                    => '/vendor/uikit/js/components/upload.min.js',
     );
 
     /**
@@ -334,6 +357,8 @@ class Resource
      */
     public function setJavaScriptLibrary($name, $isFooter = true)
     {
+        global $LANG_DIRECTION;
+
         $name = strtolower($name);
         $position = $isFooter ? 'footer' : 'header';
 
@@ -388,6 +413,19 @@ class Resource
                     'file'     => $this->libraryLocations[$name],
                     'priority' => 100,
                 );
+
+                // In case of a UIkit component, add a suitable CSS file
+                if (strpos($name, 'uikit.') === 0) {
+                    if (!$this->useUIkit) {
+                        $this->setJavaScriptLibrary('uikit');
+                    }
+
+                    list (, $componentName) = explode('.', $name, 2);
+                    $dir = (isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl')) ? 'css_rtl' : 'css';
+                    $cssPath = '/vendor/uikit/' . $dir . '/components/' . $componentName . '.min.css';
+                    $this->setCssFile($name, $cssPath, true, array());
+                }
+
                 break;
         }
 
