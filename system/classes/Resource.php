@@ -98,6 +98,11 @@ class Resource
     private $useUIkit = false;
 
     /**
+     * @var bool
+     */
+    private $useUIkit3 = false;
+
+    /**
      * @var string
      */
     private $theme = self::DEFAULT_THEME;
@@ -158,6 +163,8 @@ class Resource
         'uikit.timepicker'                => '/vendor/uikit/js/components/timepicker.min.js',
         'uikit.tooltip'                   => '/vendor/uikit/js/components/tooltip.min.js',
         'uikit.upload'                    => '/vendor/uikit/js/components/upload.min.js',
+        'uikit3'                          => '/vendor/uikit3/js/uikit.min.js',
+        'uikit3-icons'                    => '/vendor/uikit3/js/uikit-icons.min.js',
     );
 
     /**
@@ -404,6 +411,17 @@ class Resource
                 }
 
                 $this->useUIkit = true;
+
+                return true;
+                break;
+
+            case 'uikit3':
+                if ($this->useUIkit3) {
+                    // Already used
+                    return true;
+                }
+
+                $this->useUIkit3 = true;
 
                 return true;
                 break;
@@ -890,6 +908,25 @@ class Resource
             $retval .= PHP_EOL;
         }
 
+        // UIkit3
+        if (!$isFooter && $this->useUIkit3) {
+            if ($this->config['cdn_hosted']) {
+                $retval .= sprintf(
+                    self::JS_TAG_TEMPLATE,
+                    sprintf(self::UIKIT3_CDN, self::UIKIT3_VERSION)
+                );
+            } else {
+                $retval .= sprintf(
+                        self::JS_TAG_TEMPLATE,
+                        $this->config['site_url'] . $this->libraryLocations['uikit3']
+                    )
+                    . PHP_EOL
+                    . sprintf(self::JS_TAG_TEMPLATE, $this->libraryLocations['uikit3-icons']);
+            }
+
+            $retval .= PHP_EOL;
+        }
+
         return $retval;
     }
 
@@ -900,7 +937,7 @@ class Resource
      */
     public function getHeader()
     {
-        global $MESSAGE;
+        global $LANG_DIRECTION, $MESSAGE;
 
         $retval = PHP_EOL;
         $this->isHeaderSet = true;
@@ -938,6 +975,14 @@ class Resource
                 array(
                     'file'     => '/layout/' . $this->config['theme'] . '/jquery_ui/jquery-ui.geeklog.css',
                     'priority' => self::JQUERY_UI_PRIORITY + 30,
+                ),
+            );
+        } elseif ($this->useUIkit3) {
+            $cssFileName = (isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl')) ? 'uikit-rtl' : 'uikit';
+            $cssFiles = array(
+                array(
+                    'file'     => '/vendor/uikit3/css/' . $cssFileName . '.min.css',
+                    'priority' => self::UIKIT3_PRIORITY,
                 ),
             );
         }
