@@ -62,6 +62,14 @@ class Autoload
                 /** @noinspection PhpIncludeInspection */
                 include $path;
             }
+        } elseif (stripos($className, 'JSMin\\') === 0){
+            $path = __DIR__ . self::DS . 'JSMin' . self::DS
+                . str_ireplace('JSMin\\', '', $className) . '.php';
+
+            if (file_exists($path)) {
+                /** @noinspection PhpIncludeInspection */
+                include $path;
+            }
         } else {
             // Legacy Geeklog classes
             $path = __DIR__ . DIRECTORY_SEPARATOR . strtolower($className) . '.class.php';

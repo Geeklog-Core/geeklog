@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | usersettings.php                                                          |
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -93,34 +93,6 @@ function edituser()
 
     // Add JavaScript
     $_SCRIPTS->setJavaScriptFile('profile_editor', '/javascript/profile_editor.js');
-
-    $js = '<!-- JS Functions which will execute only if JS enabled will un-hide the special features that enhance the profile editor -->
-    <script type="text/JavaScript">
-    //<![CDATA[
-        /* Initially the navbar is hidden - in case JS is disabled. Enable it now */
-        document.getElementById("pe_navbar").style.display="";
-
-        /* Now cycle through the profile tabs as the number in the template could have been modified (personalized)
-           If you add custom panels, just ensure you use the class jsenabled_hide or jsenabled_show
-           Build an object that can then be referenced in the functon showhideProfileEditorDiv
-        */
-
-        var profilepanels = new Object;
-        var el;
-        el=document.getElementsByTagName("div");
-        for(i=0;i<el.length;i++) {
-            var divname = el[i].id
-            if(el[i].className == "jsenabled_show"){
-                el[i].style.display = "";
-                profilepanels[divname] = "show";
-            } else if(el[i].className == "jsenabled_hide"){
-                el[i].style.display = "none";
-                profilepanels[divname] = "hidden";
-            }
-        }
-    //]]>
-    </script>';
-    $_SCRIPTS->setJavaScript($js);
 
     // some trickery to ensure alternating colors with the available options ...
     if ($_CONF['allow_username_change'] == 1) {
