@@ -1,13 +1,11 @@
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2003-2009 by the following authors:                         |
 // | Version 1.0    Date: Jun 24, 2006                                         |
 // | Authors:   Blaine Lang - blaine@portalparts.com                           |
-// |                                                                           |
 // | Javascript functions for Account Profile Editor                           |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -26,51 +24,85 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-// @param  string   selected    Name of div that has been selected
-// @param  int      selindex    index id of the selected tab as in 1 - 7 used to set the selected tab
-function showhideProfileEditorDiv(selected, selindex) {
-
+// @param  string selected      Name of div that has been selected
+// @param  int    selectedIndex index id of the selected tab as in 1 - 7 used to set the selected tab
+function showhideProfileEditorDiv(selected, selectedIndex) {
+    'use strict';
     // Reset the current selected navbar tab
-    var cnavbar = document.getElementById('current');
-    if (cnavbar) cnavbar.id = '';
+    var cNavbar = document.getElementById('current');
 
-    // Cycle thru the navlist child elements - buiding an array of just the link items
+    if (cNavbar) {
+        cNavbar.id = '';
+    }
+
+    // Cycle thru the navlist child elements - building an array of just the link items
     var navbar = document.getElementById('navlist');
-    var menuitems = new Array(7);
+    var menuItems = new Array(7);
     var item = 0;
-    for (var i=0 ;i < navbar.childNodes.length ; i++ ) {
-        if (navbar.childNodes[i].nodeName.toLowerCase() == 'li') {
-            menuitems[item] = navbar.childNodes[i];
+    for (var i = 0; i < navbar.childNodes.length; i++) {
+        if (navbar.childNodes[i].nodeName.toLowerCase() === 'li') {
+            menuItems[item] = navbar.childNodes[i];
             item++;
         }
     }
+
     // Now that I have just the link items I can set the selected tab using the passed selected Item number
     // Set the <a tag to have an id called 'current'
-    var menuitem = menuitems[selindex];
-    for (var j=0 ;j < menuitem.childNodes.length ; j++ ) {
-        if (menuitem.childNodes[j].nodeName.toLowerCase() == 'a')  menuitem.childNodes[j].id = 'current';
+    var menuItem = menuItems[selectedIndex];
+    for (var j = 0; j < menuItem.childNodes.length; j++) {
+        if (menuItem.childNodes[j].nodeName.toLowerCase() === 'a') {
+            menuItem.childNodes[j].id = 'current';
+        }
     }
 
     // Reset or show all the main divs - editor tab sections
     // Object profilepanels defined in profile.thtml after page is generated
-    for( var divid in profilepanels){
-        if (selected != divid) {
-            document.getElementById(divid).style.display = 'none';
-        } else {
-            document.getElementById(divid).style.display = '';
+    for (var divId in window.profilepanels) {
+        if (window.profilepanels.hasOwnProperty(divId)) {
+            if (selected !== divId) {
+                document.getElementById(divId).style.display = 'none';
+            } else {
+                document.getElementById(divId).style.display = '';
+            }
         }
     }
 
     document.getElementById('pe_preview').style.display = 'none';
 
-    if (selected != 'pe_preview') {
+    if (selected !== 'pe_preview') {
         document.getElementById('save_button').style.display = '';
-    } else if (selected == 'pe_preview') {
+    } else if (selected === 'pe_preview') {
         document.getElementById('pe_preview').style.display = '';
         document.getElementById('save_button').style.display = 'none';
     } else {
         document.getElementById('pe_preview').style.display = '';
         document.getElementById('save_button').style.display = 'none';
     }
-
 }
+
+(function () {
+    'use strict';
+    /* Initially the navbar is hidden - in case JS is disabled. Enable it now */
+    document.getElementById('pe_navbar').style.display = '';
+
+    /* Now cycle through the profile tabs as the number in the template could have been modified (personalized)
+       If you add custom panels, just ensure you use the class jsenabled_hide or jsenabled_show
+       Build an object that can then be referenced in the function showhideProfileEditorDiv
+    */
+
+    var profilePanels = {};
+    var el = document.getElementsByTagName("div");
+
+    for (var i = 0; i < el.length; i++) {
+        var divName = el[i].id;
+        if (el[i].className === "jsenabled_show") {
+            el[i].style.display = "";
+            profilePanels[divName] = "show";
+        } else if (el[i].className === "jsenabled_hide") {
+            el[i].style.display = "none";
+            profilePanels[divName] = "hidden";
+        }
+    }
+
+    window.profilepanels = profilePanels;
+})();

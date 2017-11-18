@@ -66,6 +66,7 @@ $_CONF['site_enabled'] = true;
 // $_CONF['developer_mode_log']['common'] = true;       // lib-common.php
 // $_CONF['developer_mode_log']['database'] = true;     // lib-database.php
 // $_CONF['developer_mode_log']['deprecated'] = true;   // deprecated features
+// $_CONF['developer_mode_log']['resource'] = true;     // Resource class
 // $_CONF['developer_mode_log']['security'] = true;     // lib-security.php
 // $_CONF['developer_mode_log']['session'] = true;      // lib-session.php
 // $_CONF['developer_mode_log']['template'] = true;     // Template class

@@ -191,7 +191,11 @@ function theme_js_libs_denim()
        array(
             'library' => 'jquery',
             'footer'  => false // Not required, default = true
-        )
+        ),
+        array(
+            'library'     => 'uikit',
+            'footer'   => false, // Not required, default = true
+        ),
     );
 }
 
@@ -205,12 +209,6 @@ function theme_js_files_denim()
     $theme_var = theme_config_denim();
 
     $result = array();
-    $result[] = array(
-        'file'     => '/vendor/uikit/js/uikit.js',
-        'footer'   => false, // Not required, default = true
-        'priority' => 100 // Not required, default = 100
-    );
-
     $result[] = array(
         'file'     => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
         'footer'   => true, // Not required, default = true

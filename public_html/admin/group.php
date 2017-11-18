@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | group.php                                                                 |
 // |                                                                           |
 // | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -263,16 +263,15 @@ function editgroup($grp_id = '')
 
         if ($A['grp_gl_core'] == 1) {
             $inclause = str_replace(' ', ',', $selected);
-            $sql = "SELECT grp_id, grp_name, grp_descr FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id IN ($inclause)";
+            $sql = "SELECT grp_id, grp_name, grp_descr, grp_gl_core FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id IN ($inclause)";
         } else {
             $xsql = '';
             if (!empty($grp_id)) {
                 $xsql = " AND (grp_id <> $grp_id)";
             }
-            $sql = "SELECT grp_id, grp_name, grp_descr FROM {$_TABLES['groups']} WHERE (grp_name <> 'Root')" . $xsql . ' AND ' . $whereGroups;
+            $sql = "SELECT grp_id, grp_name, grp_descr, grp_gl_core FROM {$_TABLES['groups']} WHERE (grp_name <> 'Root')" . $xsql . ' AND ' . $whereGroups;
         }
         
-
         // Create a complete list of inherited groups for this group being edited so we know what needs to be disabled on screen
         $resultA = DB_query($sql, 1);
         $nrowsA = DB_numRows($resultA);

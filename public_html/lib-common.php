@@ -107,6 +107,9 @@ $_CONF = $config->get_config('Core');
 // Get features that has ft_name like 'config%'
 $_CONF_FT = $config->_get_config_features();
 
+// Load Cache class
+Geeklog\Cache::init();
+
 // Load in Geeklog Variables Table
 
 /**
@@ -301,7 +304,7 @@ if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_c
  *
  * @global $_SCRIPTS Scripts
  */
-$_SCRIPTS = new Scripts();
+//$_SCRIPTS = new Scripts();
 
 // Include theme functions file which may/may not do anything
 if (file_exists($_CONF['path_layout'] . 'functions.php')) {
@@ -340,6 +343,13 @@ if (function_exists($func)) {
         $_CONF['theme_options'] = $theme_config['options'];
     }
 }
+
+/**
+ * This provides the ability to set css and javascript.
+ *
+ * @global $_SCRIPTS Geeklog\Resource
+ */
+$_SCRIPTS = new Geeklog\Resource($_CONF);
 
 /**
  * themes can specify the default image type
