@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-comment.php                                                           |
 // |                                                                           |
 // | Geeklog comment library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2012 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -1364,10 +1364,11 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     }
 
     // Let plugins have a chance to check for spam
-    $spamcheck = '<h1>' . $title . '</h1><p>' . $comment . '</p>';
-    $result = PLG_checkforSpam($spamcheck, $_CONF['spamx']);
+    $spamCheck = '<h1>' . $title . '</h1><p>' . $comment . '</p>';
+    $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], COM_getCurrentURL(), Geeklog\Akismet::COMMENT_TYPE_COMMENT);
+
     // Now check the result and display message if spam action was taken
-    if ($result > 0) {
+    if ($result > PLG_SPAM_NOT_FOUND) {
         COM_updateSpeedlimit('comment');                                // update speed limit nonetheless
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden'); // then tell them to get lost ...
     }

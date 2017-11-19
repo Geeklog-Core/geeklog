@@ -36,7 +36,21 @@ abstract class BaseCommand
         return chr('0x' . $str);
     }
 
-    abstract public function execute($comment);
+    /**
+     * Here we do the work
+     *
+     * @param  string $comment
+     * @param  string $permanentLink (since GL 2.2.0)
+     * @param  string $commentType (since GL 2.2.0)
+     * @param  string $commentAuthor (since GL 2.2.0)
+     * @param  string $commentAuthorEmail (since GL 2.2.0)
+     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+     * @note As for valid value for $commentType, see system/classes/Akismet.php
+     */
+    abstract public function execute(
+        $comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                                     $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null);
 
     /**
      * Returns one of the result codes defined in "lib-plugins.php"

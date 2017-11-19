@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Links      |
 // | Plugins' PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
@@ -1073,10 +1073,11 @@ function plugin_save_submit_links($A)
     } else {
         $link = COM_createLink($A['title'], $A['url']);
     }
-    $spamcheck = '<p>'. $link .' (' . $A['categorydd'] . ')<br' . XHTML . '>'
+    $spamCheck = '<p>'. $link .' (' . $A['categorydd'] . ')<br' . XHTML . '>'
                . $A['description'] . '</p>';
-    $result = PLG_checkforSpam($spamcheck, $_CONF['spamx']);
-    if ($result > 0) {
+    $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], $link, Geeklog\Akismet::COMMENT_TYPE_LINK);
+
+    if ($result > PLG_SPAM_NOT_FOUND) {
         COM_updateSpeedlimit('submit');
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }

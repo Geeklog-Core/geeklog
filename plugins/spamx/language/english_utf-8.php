@@ -4,12 +4,10 @@
  * File: english_utf-8.php
  * This is the English language file for the Geeklog Spam-X plugin
  *
- * Copyright (C) 2004-2008 by the following authors:
+ * Copyright (C) 2004-2017 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
  *
  * Licensed under GNU General Public License
- *
- * $Id: english.php,v 1.23 2008/04/13 11:59:08 dhaun Exp $
  */
 
 global $LANG32;
@@ -170,7 +168,9 @@ $LANG_confignames['spamx'] = array(
     'sfs_enabled' => 'Enable SFS',
     'sfs_confidence' => 'Confidence Threshold',
     'snl_enabled' => 'Enable SNL',
-    'snl_num_links' => 'Number of links'
+    'snl_num_links' => 'Number of links',
+    'akismet_enabled' => 'Enable Akismet',
+    'akismet_api_key' => 'API Key',
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -185,12 +185,11 @@ $LANG_tab['spamx'] = array(
 $LANG_fs['spamx'] = array(
     'fs_main' => 'Spam-X Main Settings',
     'fs_sfs' => 'Stop Forum Spam (SFS)',
-    'fs_snl' => 'Spam Number of Links (SNL)'
+    'fs_snl' => 'Spam Number of Links (SNL)',
+    'fs_akismet' => 'Akismet',
 );
 
 $LANG_configselects['spamx'] = array(
     0 => array('True' => 1, 'False' => 0),
     1 => array('True' => TRUE, 'False' => FALSE)
 );
-
-?>

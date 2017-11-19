@@ -30,11 +30,18 @@ class IPofUrl extends BaseCommand
      * Here we do the work
      *
      * @param  string $comment
-     * @return int
+     * @param  string $permanentLink (since GL 2.2.0)
+     * @param  string $commentType (since GL 2.2.0)
+     * @param  string $commentAuthor (since GL 2.2.0)
+     * @param  string $commentAuthorEmail (since GL 2.2.0)
+     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+     * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($comment)
+    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                            $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
-        global $_CONF, $_TABLES, $LANG_SX00;
+        global $_TABLES, $LANG_SX00;
 
         $uid = $this->getUid();
 
@@ -48,7 +55,7 @@ class IPofUrl extends BaseCommand
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='IPofUrl'", 1);
         $numRows = DB_numRows($result);
 
-        $ans = PLG_SPAM_NOT_FOUND;
+        $answer = PLG_SPAM_NOT_FOUND;
 
         for ($j = 1; $j <= $numRows; $j++) {
             list($val) = DB_fetchArray($result);
@@ -57,20 +64,21 @@ class IPofUrl extends BaseCommand
                 $ip = gethostbyname($urls[2][$i]);
 
                 if ($val == $ip) {
-                    $ans = PLG_SPAM_FOUND;  // quit on first positive match
+                    $answer = PLG_SPAM_FOUND;  // quit on first positive match
                     $this->updateStat('IPofUrl', $val);
                     SPAMX_log($LANG_SX00['foundspam'] . $urls[2][$i] .
                         $LANG_SX00['foundspam2'] . $uid .
-                        $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                        $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']
+                    );
                     break;
                 }
             }
 
-            if ($ans == PLG_SPAM_FOUND) {
+            if ($answer == PLG_SPAM_FOUND) {
                 break;
             }
         }
 
-        return $ans;
+        return $answer;
     }
 }

@@ -85,9 +85,15 @@ $_SPX_DEFAULT['snl_enabled'] = false;
 // The number of links the module Spam Number of Links allows in a post
 $_SPX_DEFAULT['snl_num_links'] = 5;
 
+// If the module Akismet is enabled
+$_SPX_DEFAULT['akismet_enabled'] = false;
+
+// API key for Akismet
+$_SPX_DEFAULT['akismet_api_key'] = '';
+
 /**
  * Initialize Spam-X plugin configuration
- * Creates the database entries for the configuation if they don't already
+ * Creates the database entries for the configuration if they don't already
  * exist. Initial values will be taken from $_SPX_CONF if available (e.g. from
  * an old config.php), uses $_SPX_DEFAULT otherwise.
  *
@@ -113,31 +119,29 @@ function plugin_initconfig_spamx()
         $c->add('sg_main', null, 'subgroup', 0, 0, null, 0, true, 'spamx', 0);
         $c->add('tab_main', null, 'tab', 0, 0, null, 0, true, 'spamx', 0);
         $c->add('fs_main', null, 'fieldset', 0, 0, null, 0, true, 'spamx', 0);
-        $c->add('logging', $_SPX_DEFAULT['logging'], 'select',
-            0, 0, 1, 10, true, 'spamx', 0);
-        $c->add('timeout', $_SPX_DEFAULT['timeout'], 'text',
-            0, 0, null, 30, true, 'spamx', 0);
-        $c->add('notification_email', $_SPX_DEFAULT['notification_email'],
-            'text', 0, 0, null, 40, $enable_email, 'spamx', 0);
-        $c->add('spamx_action', $_SPX_DEFAULT['action'], 'text',
-            0, 0, null, 50, false, 'spamx', 0);
-        $c->add('max_age', $_SPX_DEFAULT['max_age'], 'text',
-            0, 0, null, 60, true, 'spamx', 0);
+        $c->add('logging', $_SPX_DEFAULT['logging'], 'select', 0, 0, 1, 10, true, 'spamx', 0);
+        $c->add('timeout', $_SPX_DEFAULT['timeout'], 'text', 0, 0, null, 30, true, 'spamx', 0);
+        $c->add('notification_email', $_SPX_DEFAULT['notification_email'], 'text', 0, 0, null, 40, $enable_email, 'spamx', 0);
+        $c->add('spamx_action', $_SPX_DEFAULT['action'], 'text', 0, 0, null, 50, false, 'spamx', 0);
+        $c->add('max_age', $_SPX_DEFAULT['max_age'], 'text', 0, 0, null, 60, true, 'spamx', 0);
         $c->add('records_delete', $_SPX_DEFAULT['records_delete'], '%text', 0, 0, null, 70, true, 'spamx', 0);
 
         $c->add('tab_modules', null, 'tab', 0, 0, null, 0, true, 'spamx', 10);
+
+        // Stop Forum Spam (SFS)
         $c->add('fs_sfs', null, 'fieldset', 0, 0, null, 0, true, 'spamx', 10);
-        $c->add('sfs_enabled', $_SPX_DEFAULT['sfs_enabled'], 'select',
-            0, 0, 1, 10, true, 'spamx', 10);
-        $c->add('sfs_confidence', $_SPX_DEFAULT['sfs_confidence'], 'text',
-            0, 0, null, 20, true, 'spamx', 10);
+        $c->add('sfs_enabled', $_SPX_DEFAULT['sfs_enabled'], 'select', 0, 0, 1, 10, true, 'spamx', 10);
+        $c->add('sfs_confidence', $_SPX_DEFAULT['sfs_confidence'], 'text', 0, 0, null, 20, true, 'spamx', 10);
 
+        // Spam Number of Links (SNL)
         $c->add('fs_snl', null, 'fieldset', 0, 10, null, 0, true, 'spamx', 10);
-        $c->add('snl_enabled', $_SPX_DEFAULT['snl_enabled'], 'select',
-            0, 10, 1, 10, true, 'spamx', 10);
-        $c->add('snl_num_links', $_SPX_DEFAULT['snl_num_links'], 'text',
-            0, 10, null, 20, true, 'spamx', 10);
+        $c->add('snl_enabled', $_SPX_DEFAULT['snl_enabled'], 'select', 0, 10, 1, 10, true, 'spamx', 10);
+        $c->add('snl_num_links', $_SPX_DEFAULT['snl_num_links'], 'text', 0, 10, null, 20, true, 'spamx', 10);
 
+        // Akismet
+        $c->add('fs_akismet', null, 'fieldset', 0, 20, null, 0, true, 'spamx', 10);
+        $c->add('akismet_enabled', $_SPX_DEFAULT['akismet_enabled'], 'select', 0, 20, 1, 10, true, 'spamx', 10);
+        $c->add('akismet_api_key', $_SPX_DEFAULT['akismet_api_key'], 'text', 0, 20, null, 20, true, 'spamx', 10);
     }
 
     return true;

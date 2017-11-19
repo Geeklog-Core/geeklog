@@ -392,6 +392,8 @@ function plugin_upgrade_spamx()
                     }
                 }
 
+                spamx_update_ConfValues_1_3_4();
+
                 $current_version = '1.3.5'; // Shipped with Geeklog-2.2.0
                 break;
 
@@ -440,11 +442,19 @@ function plugin_migrate_spamx($old_conf)
 /**
  * Check a post for spam
  *
- * @param   string $comment comment text
- * @param   int    $action  (former spam action - not used any more)
- * @return  int                 > 0: spam detected, == 0: no spam
+ * @param  string $comment comment text
+ * @param  int    $action  (former spam action - not used any more)
+ * @param  string $permanentLink (since GL 2.2.0)
+ * @param  string $commentType (since GL 2.2.0)
+ * @param  string $commentAuthor (since GL 2.2.0)
+ * @param  string $commentAuthorEmail (since GL 2.2.0)
+ * @param  string $commentAuthorURL (since GL 2.2.0)
+ * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+ * @note As for valid value for $commentType, see system/classes/Akismet.php
  */
-function plugin_checkforSpam_spamx($comment, $action = -1)
+function plugin_checkforSpam_spamx($comment, $action = -1, $permanentLink,
+                                   $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                                   $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
 {
     global $_CONF, $_SPX_CONF, $_TABLES;
 
@@ -482,37 +492,39 @@ function plugin_checkforSpam_spamx($comment, $action = -1)
 
     $spamx_path = $_CONF['path'] . 'plugins/spamx/';
 
-    // Set up Spamx_Examine array
-    $Spamx_Examine = array();
+    // Set up SpamxExaminer array
+    $spamxExaminerSources = array();
     if ($dir = @opendir($spamx_path)) {
         while (($file = readdir($dir)) !== false) {
             if (is_file($spamx_path . $file)) {
                 if (substr($file, -18) == '.Examine.class.php') {
-                    $sfile = str_replace('.Examine.class.php', '', $file);
-                    $Spamx_Examine[] = $sfile;
+                    $sourceFile = str_replace('.Examine.class.php', '', $file);
+                    $spamxExaminerSources[] = $sourceFile;
                 }
             }
         }
         closedir($dir);
     }
 
-    $res = PLG_SPAM_NOT_FOUND;
+    // Sort the files. IP Class needs to execute before Stop Forum Spam class yo save on calls to stopforumspam.com
+    asort($spamxExaminerSources);
+    $answer = PLG_SPAM_NOT_FOUND;
 
-    asort($Spamx_Examine); // Sort the files. IP Class needs to execute before Stop Forum Spam class yo save on calls to stopforumspam.com
+    foreach ($spamxExaminerSources as $spamxExaminerSource) {
+        $filename = $spamxExaminerSource . '.Examine.class.php';
+        require_once $spamx_path . $filename;
 
-    foreach ($Spamx_Examine as $Examine) {
-        $filename = $Examine . '.Examine.class.php';
-        require_once($spamx_path . $filename);
+        $examiner = new $spamxExaminerSource;
+        $answer = $examiner->execute(
+            $comment, $permanentLink, $commentType, $commentAuthor, $commentAuthorEmail, $commentAuthorURL
+        );
 
-        $EX = new $Examine;
-        $res = $EX->execute($comment);
-
-        if ($res != PLG_SPAM_NOT_FOUND) {
+        if ($answer != PLG_SPAM_NOT_FOUND) {
             break;
         }
     }
 
-    return $res;
+    return $answer;
 }
 
 /**

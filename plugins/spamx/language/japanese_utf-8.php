@@ -4,17 +4,15 @@
  * File: japanese_utf-8.php
  * This is the Japanese language file for the Geeklog Spam-X plugin
  * 
- * Copyright (C) 2004-2008 by the following authors:
+ * Copyright (C) 2004-2017 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
  * Tranlated by Ivy (Geeklog Japanese)
  * Copyright (C) 2008 Takahiro Kambe
  * Additional translation to Japanese by taca AT back-street DOT net
- * Copyright (C) 2006,2007,2008 Geeklog.jp group
+ * Copyright (C) 2006-2017 Geeklog.jp group
  * Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
  * 
  * Licensed under GNU General Public License
- *
- * $Id: japanese_utf-8.php,v 1.14 2008/09/09 18:26:18 dhaun Exp $
  */
 
 global $LANG32;
@@ -170,7 +168,9 @@ $LANG_confignames['spamx'] = array(
     'sfs_enabled' => 'Stop Forum Spamモジュールを有効にする',
     'sfs_confidence' => '信頼スコアの閾値',
     'snl_enabled' => 'Spam Number of Linksモジュールを有効にする',
-    'snl_num_links' => 'リンクの数'
+    'snl_num_links' => 'リンクの数',
+    'akismet_enabled' => 'Akismetモジュールを有効にする',
+    'akismet_api_key' => 'APIキー',
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -185,7 +185,8 @@ $LANG_tab['spamx'] = array(
 $LANG_fs['spamx'] = array(
     'fs_main' => 'Spam-Xの設定',
     'fs_sfs' => 'Stop Forum Spam',
-    'fs_snl' => 'Spam Number of Links'
+    'fs_snl' => 'Spam Number of Links',
+    'fs_akismet' => 'Akismet',
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

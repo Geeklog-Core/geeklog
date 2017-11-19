@@ -30,10 +30,17 @@ class Header extends BaseCommand
     /**
      * Here we do the work
      *
-     * @param  string
-     * @return int
+     * @param  string $comment
+     * @param  string $permanentLink (since GL 2.2.0)
+     * @param  string $commentType (since GL 2.2.0)
+     * @param  string $commentAuthor (since GL 2.2.0)
+     * @param  string $commentAuthorEmail (since GL 2.2.0)
+     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+     * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($comment)
+    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                            $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
         global $_TABLES, $LANG_SX00;
 
@@ -58,7 +65,7 @@ class Header extends BaseCommand
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='HTTPHeader'", 1);
         $numRows = DB_numRows($result);
 
-        $ans = PLG_SPAM_NOT_FOUND;
+        $answer = PLG_SPAM_NOT_FOUND;
 
         for ($i = 0; $i < $numRows; $i++) {
             list ($entry) = DB_fetchArray($result);
@@ -71,18 +78,19 @@ class Header extends BaseCommand
             foreach ($headers as $key => $content) {
                 if (strcasecmp($name, $key) === 0) {
                     if (preg_match($pattern, $content)) {
-                        $ans = PLG_SPAM_FOUND;  // quit on first positive match
+                        $answer = PLG_SPAM_FOUND;  // quit on first positive match
                         $this->updateStat('HTTPHeader', $entry);
                         SPAMX_log($LANG_SX00['foundspam'] . $entry .
                             $LANG_SX00['foundspam2'] . $uid .
                             $LANG_SX00['foundspam3'] .
-                            $_SERVER['REMOTE_ADDR']);
+                            $_SERVER['REMOTE_ADDR']
+                        );
                         break;
                     }
                 }
             }
         }
 
-        return $ans;
+        return $answer;
     }
 }

@@ -59,3 +59,22 @@ function spamx_update_ConfValues_1_3_0()
 
     return true;
 }
+
+function spamx_update_ConfValues_1_3_4()
+{
+    global $_CONF, $_SPX_DEFAULT;
+
+    // Now add in new Config options
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/spamx/install_defaults.php';
+
+    // Add in new config options for Akismet module
+    $c->add('fs_akismet', null, 'fieldset', 0, 20, null, 0, true, 'spamx', 10);
+    $c->add('akismet_enabled', $_SPX_DEFAULT['akismet_enabled'], 'select', 0, 10, 1, 10, true, 'spamx', 10);
+    $c->add('akismet_api_key', $_SPX_DEFAULT['akismet_api_key'], 'text', 0, 0, null, 20, true, 'spamx', 10);
+
+    return true;
+}

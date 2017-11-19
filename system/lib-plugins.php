@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-plugins.php                                                           |
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -2186,22 +2186,33 @@ function PLG_getWhatsNewComment($type = '', $numReturn = 0, $uid = 0)
  * Where the former will only display a "spam detected" message while the latter
  * will also send an HTTP status code 403 with the message.
  *
- * @param    string $content Text to be filtered or checked for spam
- * @param    int    $action  what to do if spam found
- * @return   int                 > 0: spam detected, == 0: no spam detected
- * @link     http://wiki.geeklog.net/index.php/Filtering_Spam_with_Spam-X
+ * @param  string $comment Text to be filtered or checked for spam
+ * @param  int    $action  what to do if spam found
+ * @param  string $permanentLink (since GL 2.2.0)
+ * @param  string $commentType (since GL 2.2.0)
+ * @param  string $commentAuthor (since GL 2.2.0)
+ * @param  string $commentAuthorEmail (since GL 2.2.0)
+ * @param  string $commentAuthorURL (since GL 2.2.0)
+ * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+ * @note   As for valid value for $commentType, see system/classes/Akismet.php
+ * @link   http://wiki.geeklog.net/index.php/Filtering_Spam_with_Spam-X
  */
-function PLG_checkforSpam($content, $action = -1)
+function PLG_checkForSpam($comment, $action = -1, $permanentLink,
+                          $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                          $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
 {
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_checkforSpam_' . $pi_name;
         if (function_exists($function)) {
-            $result = $function($content, $action);
+            $result = $function(
+                $comment, $action, $permanentLink, $commentType,
+                $commentAuthor, $commentAuthorEmail, $commentAuthorURL
+            );
 
             if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
-                $result = PLG_spamAction($content, $action);
+                $result = PLG_spamAction($comment, $action);
 
                 return $result;
             }
@@ -2210,10 +2221,10 @@ function PLG_checkforSpam($content, $action = -1)
 
     $function = 'CUSTOM_checkforSpam';
     if (function_exists($function)) {
-        $result = $function($content, $action);
+        $result = $function($comment, $action);
 
         if ($result > PLG_SPAM_NOT_FOUND) { // Plugin found a match for spam
-            $result = PLG_spamAction($content, $action);
+            $result = PLG_spamAction($comment, $action);
 
             return $result;
         }
@@ -2232,7 +2243,7 @@ function PLG_checkforSpam($content, $action = -1)
  * @param    string $content Text to be filtered or checked for spam
  * @param    int    $action  what to do if spam found
  * @return   int                 > 0: spam detected, == 0: no spam detected
- * @see      PLG_checkforSpam
+ * @see      PLG_checkForSpam
  * @since    Geeklog 1.4.1
  */
 function PLG_spamAction($content, $action = -1)

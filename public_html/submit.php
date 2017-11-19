@@ -292,8 +292,12 @@ function savestory(array $A)
     $story->loadSubmission();
 
     // pseudo-formatted story text for the spam check
-    $result = PLG_checkforSpam($story->getSpamCheckFormat(), $_CONF['spamx']);
-    if ($result > 0) {
+    $url = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $story->getSid());
+    $result = PLG_checkForSpam(
+        $story->getSpamCheckFormat(), $_CONF['spamx'], $url, Geeklog\Akismet::COMMENT_TYPE_BLOG_POST
+    );
+
+    if ($result > PLG_SPAM_NOT_FOUND) {
         COM_updateSpeedlimit('submit');
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }

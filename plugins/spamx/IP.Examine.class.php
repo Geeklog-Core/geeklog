@@ -27,13 +27,19 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 class IP extends BaseCommand
 {
     /**
-     * The execute method examines the IP address a comment is coming from,
-     * comparing it against a blacklist of banned IP addresses.
+     * Here we do the work
      *
-     * @param   string $comment Comment text to examine
-     * @return  int                 0: no spam, else: spam detected
+     * @param  string $comment
+     * @param  string $permanentLink (since GL 2.2.0)
+     * @param  string $commentType (since GL 2.2.0)
+     * @param  string $commentAuthor (since GL 2.2.0)
+     * @param  string $commentAuthorEmail (since GL 2.2.0)
+     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+     * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($comment)
+    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                            $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
         return $this->_process($_SERVER['REMOTE_ADDR']);
     }
@@ -59,17 +65,17 @@ class IP extends BaseCommand
     /**
      * Private internal method to match an IP address against a CIDR
      *
-     * @param   string $iptocheck IP address to check
+     * @param   string $ipToCheck IP address to check
      * @param   string $CIDR      IP address range to check against
      * @return  boolean             true if IP falls into the CIDR, else false
      * @todo    CIDR support for IPv6 addresses
      *                            Original author: Ian B, taken from
      * @link    http://www.php.net/manual/en/function.ip2long.php#71939
      */
-    private function _matchCIDR($iptocheck, $CIDR)
+    private function _matchCIDR($ipToCheck, $CIDR)
     {
         // not for IPv6 addresses
-        if (strpos($iptocheck, ':') !== false) {
+        if (strpos($ipToCheck, ':') !== false) {
             return false;
         }
 
@@ -97,7 +103,7 @@ class IP extends BaseCommand
         $high = $i | (~$mask & 0xFFFFFFFF);
 
         // now split the ip we're checking against up into classes
-        $ex = explode('.', $iptocheck);
+        $ex = explode('.', $ipToCheck);
 
         if (count($ex) == 4) {
             // now convert the ip we're checking against to an int
@@ -147,7 +153,7 @@ class IP extends BaseCommand
      * address against a blacklist of IP regular expressions.
      *
      * @param   string $ip IP address of comment poster
-     * @return  int        0: no spam, else: spam detected
+     * @return  int        PLG_SPAM_NOT_FOUND: no spam, PLG_SPAM_FOUND: spam detected
      */
     private function _process($ip)
     {
@@ -161,7 +167,7 @@ class IP extends BaseCommand
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='IP'", 1);
         $numRows = DB_numRows($result);
 
-        $ans = PLG_SPAM_NOT_FOUND;
+        $answer = PLG_SPAM_NOT_FOUND;
 
         for ($i = 0; $i < $numRows; $i++) {
             list($val) = DB_fetchArray($result);
@@ -176,15 +182,16 @@ class IP extends BaseCommand
             }
 
             if ($matches) {
-                $ans = PLG_SPAM_FOUND;  // quit on first positive match
+                $answer = PLG_SPAM_FOUND;  // quit on first positive match
                 $this->updateStat('IP', $val);
                 SPAMX_log($LANG_SX00['foundspam'] . $val .
                     $LANG_SX00['foundspam2'] . $uid .
-                    $LANG_SX00['foundspam3'] . $ip);
+                    $LANG_SX00['foundspam3'] . $ip)
+                ;
                 break;
             }
         }
 
-        return $ans;
+        return $answer;
     }
 }
