@@ -69,7 +69,7 @@ function theme_config_denim_curve()
             'tooltip'       => 1,
             'upload'        => 0,
         ),
-        'enable_etag'       => 1,   // 1:enable or 0:disable ETag
+        'enable_etag'       => 0,   // 1:enable or 0:disable ETag
         'use_minified_css'  => 1,   // 1:use  or 0:no_use minified css
         'header_search'     => 1,   // 1:show or 0:hide header searchbox
         'block_left_search' => 0,   // 1:show or 0:hide left block searchbox
@@ -191,7 +191,11 @@ function theme_js_libs_denim_curve()
        array(
             'library' => 'jquery',
             'footer'  => false // Not required, default = true
-        )
+        ),
+        array(
+            'library' => 'uikit',
+            'footer'  => false // Not required, default = true
+        ),
     );
 }
 
@@ -205,11 +209,6 @@ function theme_js_files_denim_curve()
     $theme_var = theme_config_denim_curve();
 
     $result = array();
-    $result[] = array(
-        'file'     => '/vendor/uikit/js/uikit.js',
-        'footer'   => false, // Not required, default = true
-        'priority' => 100 // Not required, default = 100
-    );
 
     $result[] = array(
         'file'     => '/layout/' . $theme_var['theme_default'] . '/javascript/script.js',
