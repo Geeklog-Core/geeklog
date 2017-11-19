@@ -407,11 +407,11 @@ function editblock($bid = '')
     $block_templates->set_var('lang_normalblock', $LANG21[12]);
     $block_templates->set_var('lang_phpblock', $LANG21[27]);
     $block_templates->set_var('lang_portalblock', $LANG21[11]);
-    if ($A['type'] == 'normal') {
+    if ($A['type'] === 'normal') {
         $block_templates->set_var('normal_selected', 'selected="selected"');
-    } elseif ($A['type'] == 'phpblock') {
+    } elseif ($A['type'] === 'phpblock') {
         $block_templates->set_var('php_selected', 'selected="selected"');
-    } elseif ($A['type'] == 'portal') {
+    } elseif ($A['type'] === 'portal') {
         $block_templates->set_var('portal_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_cachetime', $LANG21['cache_time']);
@@ -695,9 +695,15 @@ function cmpDynamicBlocks($a, $b)
  * @param    array  $perm_members Permissions the logged in members have
  * @param    array  $perm_anon    Permissions anonymous users have
  * @param    int    $is_enabled   Flag, indicates if block is enabled or not
+ * @param    bool   $allow_autotags
+ * @param    int    $cache_time
+ * @param    string $cssId        CSS ID (since GL 2.2.0)
+ * @param    string $cssClasses   CSS class names separated by space (since GL 2.2.0)
  * @return   string               HTML redirect or error message
  */
-function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $content, $rdfUrl, $rdfLimit, $phpBlockFn, $onLeft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags, $cache_time)
+function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $content, $rdfUrl, $rdfLimit,
+                   $phpBlockFn, $onLeft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon,
+                   $is_enabled, $allow_autotags, $cache_time, $cssId, $cssClasses)
 {
     global $_CONF, $_TABLES, $LANG21, $MESSAGE, $_USER;
 
@@ -735,11 +741,11 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         return $retval;
     } elseif (!empty($name) &&
         (($type == 'normal' && !empty($title) && !empty($content))
-            || ($type == 'portal' && !empty($title) && !empty($rdfUrl))
-            || ($type == 'phpblock' && !empty($phpBlockFn) && !empty($title))
-            || ($type == 'gldefault' && (strlen($blockOrder) > 0)))
+            || ($type === 'portal' && !empty($title) && !empty($rdfUrl))
+            || ($type === 'phpblock' && !empty($phpBlockFn) && !empty($title))
+            || ($type === 'gldefault' && (strlen($blockOrder) > 0)))
     ) {
-        if ($is_enabled == 'on') {
+        if ($is_enabled === 'on') {
             $is_enabled = 1;
         } else {
             $is_enabled = 0;
@@ -759,7 +765,27 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
             $cache_time = $_CONF['default_cache_time_block'];
         }
 
-        if ($type == 'portal') {
+        // Check for CSS id
+        $cssId = trim($cssId);
+        if (!preg_match('/^[a-zA-Z][0-9a-zA-Z_-]*$/', $cssId)) {
+            $cssId = '';
+        }
+        $cssId = DB_escapeString($cssId);
+
+        // Check for CSS classes
+        $cssClasses = trim($cssClasses);
+        $temp = array();
+
+        foreach (preg_split('/\s+/', $cssClasses) as $item) {
+            if (preg_match('/^[a-zA-Z][0-9a-zA-Z_-]*$/', $item)) {
+                $temp[] = $item;
+            }
+        }
+
+        $cssClasses = implode(' ', $temp);
+        $cssClasses = DB_escapeString($cssClasses);
+        
+        if ($type === 'portal') {
             $content = '';
             $phpBlockFn = '';
 
@@ -774,13 +800,13 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
             }
             $rdfUrl = COM_sanitizeUrl($rdfUrl, array('http', 'https'));
         }
-        if ($type == 'gldefault') {
+        if ($type === 'gldefault') {
             $content = '';
             $rdfUrl = '';
             $rdfLimit = 0;
             $phpBlockFn = '';
         }
-        if ($type == 'phpblock') {
+        if ($type === 'phpblock') {
             // NOTE: PHP Blocks must be within a function and the function
             // must start with phpblock_ as the prefix.  This will prevent
             // the arbitrary execution of code
@@ -795,7 +821,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
             $rdfUrl = '';
             $rdfLimit = 0;
         }
-        if ($type == 'normal') {
+        if ($type === 'normal') {
             $rdfUrl = '';
             $rdfLimit = 0;
             $phpBlockFn = '';
@@ -816,16 +842,20 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         $rdfUpdated = 'CURRENT_TIMESTAMP';
 
         if ($bid > 0) {
-            DB_save($_TABLES['blocks'], 'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,rdf_last_modified,rdf_etag', "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,NULL,NULL");
+            DB_save(
+                $_TABLES['blocks'],
+                'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,css_id,css_classes,rdf_last_modified,rdf_etag',
+                "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,'{$cssId}','{$cssClasses}',NULL,NULL"
+            );
         } else {
             $sql = array();
             $sql['mysql'] = "INSERT INTO {$_TABLES['blocks']} "
-                . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+                . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,css_id,css_classes) '
+                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,'{$cssId}','{$cssClasses}')";
 
             $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
-                . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time) '
-                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',CURRENT_TIMESTAMP,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time)";
+                . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,css_id,css_classes) '
+                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',CURRENT_TIMESTAMP,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,'{$cssId}','{$cssClasses}')";
 
             DB_query($sql);
             $bid = DB_insertId();
@@ -1014,7 +1044,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
         COM_accessLog("User {$_USER['username']} tried to illegally delete block $bid and failed CSRF checks.");
         COM_redirect($_CONF['site_admin_url'] . '/index.php');
     }
-} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
+} elseif (!empty($LANG_ADMIN['save']) && ($mode === $LANG_ADMIN['save']) && SEC_checkToken()) {
     $name = Geeklog\Input::post('name', '');
     if (!empty($name)) {
         $name = COM_sanitizeID($name);
@@ -1033,13 +1063,15 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $allow_autotags = Geeklog\Input::post('allow_autotags', '');
     // $cache_time = (int) Geeklog\Input::fPost('cache_time', $_CONF['default_cache_time_block']); // Doesn't work as cache_time can be zero
     $cache_time = (int) Geeklog\Input::fPost('cache_time');
+    $cssId = Geeklog\Input::post('css_id', '');
+    $cssClasses = Geeklog\Input::post('css_classes', '');
     $display .= saveblock(
         $bid, $name, Geeklog\Input::post('title'), $help, Geeklog\Input::post('type'), $blockorder,
         $device, $content, $rdfurl, $rdflimit, $phpblockfn, Geeklog\Input::post('onleft'),
         (int) Geeklog\Input::fPost('owner_id', 0), (int) Geeklog\Input::fPost('group_id', 0),
         Geeklog\Input::post('perm_owner'), Geeklog\Input::post('perm_group'),
         Geeklog\Input::post('perm_members'), Geeklog\Input::post('perm_anon'),
-        $is_enabled, $allow_autotags, $cache_time);
+        $is_enabled, $allow_autotags, $cache_time, $cssId, $cssClasses);
 } elseif ($mode === 'edit') {
     $tmp = editblock($bid);
     $display = COM_createHTMLDocument($tmp, array('pagetitle' => $LANG21[3]));

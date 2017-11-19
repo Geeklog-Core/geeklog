@@ -4,8 +4,12 @@
 $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_description` TEXT NULL AFTER `postmode`";
 $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_keywords` TEXT NULL AFTER `meta_description`";
 
-// Add the `status_code` column to the `routes` table
+// Add `status_code` column to the `routes` table
 $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT NOT NULL DEFAULT 302 AFTER `route`";
+
+// Add `css_id` and `css_classes` columns to the `blocks` table
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `help`";
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_classes` VARCHAR(255) NOT NULL DEFAULT '' AFTER `css_id`";
 
 /**
  * Upgrade Messages

@@ -1,6 +1,6 @@
 {# begin {templatelocation} #}
 
-<aside class="uk-alert uk-alert-large" data-uk-alert>
+<aside class="uk-alert uk-alert-large{!if css_classes} {css_classes}{!endif}"{!if css_id} id="{css_id}"{!endif} data-uk-alert>
   <a class="uk-alert-close uk-close" href=""></a>
   <h4 class="title">{showhide}{block_title}{block_help}</h4>
   <div class="message">

@@ -37,6 +37,8 @@ CREATE TABLE {$_TABLES['blocks']} (
   onleft tinyint(1) unsigned NOT NULL default '1',
   phpblockfn varchar(128) default '',
   help varchar(255) default '',
+  css_id varchar(255) NOT NULL default '',
+  css_classes varchar(255) NOT NULL default '',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',

@@ -1,6 +1,6 @@
 {# begin {templatelocation} #}
 
-<div class="block-list">
+<div class="block-list{!if css_classes} {css_classes}{!endif}"{!if css_id} id="{css_id}"{!endif}>
     <h2>{block_title}{block_help}</h2>
       <div class="block-list-content">
       <ul>
