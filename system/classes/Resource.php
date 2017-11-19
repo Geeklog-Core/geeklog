@@ -669,6 +669,60 @@ class Resource
     }
 
     /**
+     * Minify CSS for Modern Curve theme
+     *
+     * @param  array $files
+     * @return string
+     * @note   Currently, this method does NOT minify CSS code
+     */
+    private function minifyCSSForModernCurve(array $files)
+    {
+        global $LANG_DIRECTION;
+
+        $contents = '';
+        $relativePaths = array();
+
+        // Concatenate all CSS files
+        foreach ($files as $file) {
+            $chunk = @file_get_contents($this->config['path_html'] . $file['file']);
+
+            if ($chunk !== false) {
+                $relativePaths[] = $file['file'];
+                $contents .= $chunk . PHP_EOL;
+            }
+        }
+
+        // Replace {left} and {right} place-holders
+        if (isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl')) {
+            $dir = 'rtl';
+            $left = 'right';
+            $right = 'left';
+        } else {
+            $dir = 'ltr';
+            $left = 'left';
+            $right = 'right';
+        }
+        $contents = str_replace(array('{left}', '{right}'), array($left, $right), $contents);
+
+        // Rewrite image paths
+        $contents = str_ireplace(' url("./images/', ' url("layout/modern_curve/images/', $contents);
+        $contents = str_ireplace(" url('./images/", " url('layout/modern_curve/images/", $contents);
+        $contents = str_ireplace(" url('jquery_ui/images/", " url('layout/modern_curve/jquery_ui/images/", $contents);
+
+        $key = $this->makeCacheKey($relativePaths) . $dir;
+        $data = array(
+            'createdAt' => microtime(true),
+            'data'      => $contents,
+            'paths'     => $relativePaths,
+            'type'      => 'c',
+        );
+        Cache::set($key, $data);
+        $retval = $this->buildLinkTag($this->config['site_url'] . '/r.php?k=' . $key, array());
+
+        return $retval;
+    }
+
+    /**
      * Minify CSS
      *
      * @param  array $files
@@ -677,6 +731,10 @@ class Resource
      */
     private function minifyCSS(array $files)
     {
+        if (strcasecmp($this->config['theme'],'modern_curve') === 0) {
+            return $this->minifyCSSForModernCurve($files);
+        }
+
         $retval = '';
 
         foreach ($files as $file) {

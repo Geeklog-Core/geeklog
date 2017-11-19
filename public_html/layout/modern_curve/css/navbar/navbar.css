@@ -78,7 +78,7 @@ ul.navbar-breadcrumbs li a {
     border-top-right-radius: 5px;
 
     border: 1px solid #c5dbec;
-    background: #dfeffc url(jquery_ui/images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+    background: #dfeffc url('jquery_ui/images/ui-bg_glass_85_dfeffc_1x400.png') 50% 50% repeat-x;
     font-weight: bold;
     color: #2e6e9e;
 
@@ -98,7 +98,7 @@ ul.navbar-breadcrumbs li a {
 
 #navcontainer ul li a#current {
     border: 1px solid #79b7e7;
-    background: #f5f8f9 url(jquery_ui/images/ui-bg_inset-hard_100_f5f8f9_1x100.png) 50% 50% repeat-x;
+    background: #f5f8f9 url('jquery_ui/images/ui-bg_inset-hard_100_f5f8f9_1x100.png') 50% 50% repeat-x;
     font-weight: bold;
     padding-bottom: 1px;
     margin-bottom: 0;
@@ -111,7 +111,7 @@ ul.navbar-breadcrumbs li a {
 
 #navcontainer ul li a:hover {
     border: 1px solid #79b7e7;
-    background: #d0e5f5 url(jquery_ui/images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50% repeat-x;
+    background: #d0e5f5 url('jquery_ui/images/ui-bg_glass_75_d0e5f5_1x400.png') 50% 50% repeat-x;
     font-weight: bold;
     color: #1d5987;
 }
