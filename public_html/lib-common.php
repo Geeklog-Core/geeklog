@@ -2039,14 +2039,16 @@ function COM_createHTMLDocument(&$content = '', $information = array())
  * but anything that uses that format, e.g. Stats page.  They are used like
  * COM_siteHeader and COM_siteFooter but for internal page elements.
  *
- * @param    string $title    Value to set block title to
- * @param    string $helpFile Help file, if one exists
- * @param    string $template HTML template file to use to format the block
- * @return   string           Formatted HTML containing block header
+ * @param    string $title      Value to set block title to
+ * @param    string $helpFile   Help file, if one exists
+ * @param    string $template   HTML template file to use to format the block
+ * @param    string $cssId      CSS ID (since GL 2.2.0, optional)
+ * @param    string $cssClasses CSS class names separated by space (since GL 2.2.0, optional)
+ * @return   string             Formatted HTML containing block header
  * @see COM_endBlock
  * @see COM_siteHeader
  */
-function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.thtml')
+function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.thtml', $cssId = '', $cssClasses = '')
 {
     global $_CONF, $LANG32, $_IMAGE_TYPE, $_SCRIPTS;
 
@@ -2059,7 +2061,11 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
     $block = COM_newTemplate($_CONF['path_layout']);
     $block->set_file('block', $template);
 
-    $block->set_var('block_title', stripslashes($title));
+    $block->set_var(array(
+        'block_title' => stripslashes($title),
+        'css_id'      => $cssId,
+        'css_classes' => $cssClasses,
+    ));
 
     if (!empty($helpFile)) {
         // Only works when header generated all at once
@@ -2845,13 +2851,15 @@ function COM_showTopics($topic = '')
  * Shows the user their menu options
  * This shows the average Joe User their menu options. This is the user block on the left side
  *
- * @param  string $help     Help file to show
- * @param  string $title    Title of Menu
- * @param  string $position Side being shown on 'left', 'right'. Though blank works not likely.
+ * @param  string $help       Help file to show
+ * @param  string $title      Title of Menu
+ * @param  string $position   Side being shown on 'left', 'right'. Though blank works not likely.
+ * @param  string $cssId      CSS ID (since GL 2.2.0, optional)
+ * @param  string $cssClasses CSS class names separated by space (since GL 2.2.0, optional)
  * @return string
  * @see     function COM_adminMenu
  */
-function COM_userMenu($help = '', $title = '', $position = '')
+function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $cssClasses = '')
 {
     global $_TABLES, $_CONF, $LANG01, $LANG04, $_BLOCK_TEMPLATE, $_SCRIPTS;
 
@@ -2878,8 +2886,11 @@ function COM_userMenu($help = '', $title = '', $position = '')
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
 
-        $retval .= COM_startBlock($title, $help,
-            COM_getBlockTemplate('user_block', 'header', $position));
+        $retval .= COM_startBlock(
+            $title, $help,
+            COM_getBlockTemplate('user_block', 'header', $position),
+            $cssId, $cssClasses
+        );
 
         // Allow anything not in the blocks but in the rest of the template file to be displayed
         $retval .= $userMenu->parse('item', 'usernavigation', true);
@@ -2927,8 +2938,11 @@ function COM_userMenu($help = '', $title = '', $position = '')
         $retval .= $userMenu->finish($userMenu->parse('item', 'option'));
         $retval .= COM_endBlock(COM_getBlockTemplate('user_block', 'footer', $position));
     } else {
-        $retval .= COM_startBlock($LANG01[47], $help,
-            COM_getBlockTemplate('user_block', 'header', $position));
+        $retval .= COM_startBlock(
+            $LANG01[47], $help,
+            COM_getBlockTemplate('user_block', 'header', $position),
+            $cssId, $cssClasses
+        );
         $login = COM_newTemplate($_CONF['path_layout']);
         $login->set_file('form', 'loginform.thtml');
         $login->set_var('lang_username', $LANG01[21]);
@@ -3050,10 +3064,12 @@ function COM_userMenu($help = '', $title = '', $position = '')
  * @param  string $help        Help file to show (admin menu only)
  * @param  string $title       Menu Title (admin menu only)
  * @param  string $position    Side being shown on 'left', 'right' or blank. (admin menu only)
+ * @param  string $cssId       CSS ID (since GL 2.2.0, optional)
+ * @param  string $cssClasses  CSS class names separated by space (since GL 2.2.0, optional)
  * @return string
  * @see     function COM_adminMenu
  */
-function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $position = '')
+function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $position = '', $cssId = '', $cssClasses = '')
 {
     global $_CONF, $_CONF_FT, $_TABLES, $_BLOCK_TEMPLATE, $LANG01, $LANG29, $LANG_LOGVIEW,
            $LANG_ENVCHECK, $LANG_ADMIN, $LANG_LANG, $_IMAGE_TYPE, $LANG_ROUTER, $_DB_dbms, $config;
@@ -3099,7 +3115,11 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
             $title = DB_getItem($_TABLES['blocks'], 'title', "name = 'admin_block'");
         }
 
-        $retval .= COM_startBlock($title, $help, COM_getBlockTemplate('admin_block', 'header', $position));
+        $retval .= COM_startBlock(
+            $title, $help,
+            COM_getBlockTemplate('admin_block', 'header', $position),
+            $cssId, $cssClasses
+        );
 
         // Allow anything not in the blocks but in the rest of the template file to be displayed
         $retval .= $adminMenu->parse('item', 'adminnavigation', true);
@@ -3126,8 +3146,11 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
             $admin_templates->set_block('cc', $block);
         }
 
-        $retval .= COM_startBlock('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
-            COM_getBlockTemplate('_admin_block', 'header'));
+        $retval .= COM_startBlock(
+            'Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
+            COM_getBlockTemplate('_admin_block', 'header'),
+            $cssId, $cssClasses
+        );
 
         // Get any plugin items
         $plugins = PLG_getCCOptions();
@@ -3609,13 +3632,15 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
  * This will return the administration menu items that the user has
  * sufficient rights to -- Admin Block on the left side.
  *
- * @param  string $help     Help file to show
- * @param  string $title    Menu Title
- * @param  string $position Side being shown on 'left', 'right' or blank.
+ * @param  string $help       Help file to show
+ * @param  string $title      Menu Title
+ * @param  string $position   Side being shown on 'left', 'right' or blank.
+ * @param  string $cssId      CSS ID (since GL 2.2.0, optional)
+ * @param  string $cssClasses CSS class names separated by space (since GL 2.2.0, optional)
  * @return string
  * @see     function COM_userMenu
  */
-function COM_adminMenu($help = '', $title = '', $position = '')
+function COM_adminMenu($help = '', $title = '', $position = '', $cssId = '', $cssClasses = '')
 {
     $retval = '';
 
@@ -3631,7 +3656,7 @@ function COM_adminMenu($help = '', $title = '', $position = '')
         SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit,theme.edit', 'OR') ||
         ($num_plugins > 0) || SEC_hasConfigAccess()
     ) {
-        $retval = COM_commandControl(true, $help, $title, $position);
+        $retval = COM_commandControl(true, $help, $title, $position, $cssId, $cssClasses);
     }
 
     return $retval;
@@ -3750,19 +3775,19 @@ function COM_checkWords($message, $type = '')
                     // Check words surround by any white-space character. 
                     $RegExPrefix[] = '(\s)';
                     $RegExSuffix[] = '(\W)';
-                    
+
                     // Check words surround by multiple white-space characters. 
                     $RegExPrefix[] = '(\s+)';
                     $RegExSuffix[] = '(\W)';
-                    
+
                     // Check start of string
                     $RegExPrefix[] = '(^)'; // start of string
-                    $RegExSuffix[] = '(\W)'; 
+                    $RegExSuffix[] = '(\W)';
 
                     // Check End of string
                     $RegExPrefix[] = '(\s)';
                     $RegExSuffix[] = '($)'; // End of string
-                    
+
                     // Check End of line (but not necessarily end of string)
                     $RegExPrefix[] = '(\s)';
                     $RegExSuffix[] = '(\r\n|\r|\n)'; // Line end
@@ -3772,11 +3797,11 @@ function COM_checkWords($message, $type = '')
                 case 2: // Word beginning
                     $RegExPrefix[] = '(\s)';
                     $RegExSuffix[] = '(\w*)';
-                    
+
                     // Check start of string
                     $RegExPrefix[] = '(^)'; // start of string
                     $RegExSuffix[] = '(\W)';
-                    
+
                     break;
 
                 case 3: // Word fragment
@@ -3787,14 +3812,14 @@ function COM_checkWords($message, $type = '')
 
             foreach ($_CONF['censorlist'] as $c) {
                 if (!empty($c)) {
-                    
+
                     // Check for exact match. Could happen for really short text strings like anonymous names in comments
                     if (strtolower($editedMessage) == strtolower($c)) {
                         // No need to continue since replaced entire string
                         return $Replacement;
                     } else {
                         // Cycle through each regular expression as needed
-                        for($i = 0; $i < count($RegExPrefix); ++$i) {
+                        for ($i = 0; $i < count($RegExPrefix); ++$i) {
                             $editedMessage = MBYTE_eregi_replace($RegExPrefix[$i] . $c . $RegExSuffix[$i], "\\1$Replacement\\2", $editedMessage);
                         }
                     }
@@ -4007,12 +4032,14 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
  * Shows older story information in a block
  * Return the HTML that shows any older stories
  *
- * @param    string $help     Help file for block
- * @param    string $title    Title used in block header
- * @param    string $position Position in which block is being rendered 'left', 'right' or blank (for centre)
- * @return   string           Return the HTML that shows any new stories, comments, etc
+ * @param    string $help       Help file for block
+ * @param    string $title      Title used in block header
+ * @param    string $position   Position in which block is being rendered 'left', 'right' or blank (for centre)
+ * @param    string $cssId      CSS ID (since GL 2.2.0, optional)
+ * @param    string $cssClasses CSS class names separated by space (since GL 2.2.0, optional)
+ * @return   string             Return the HTML that shows any new stories, comments, etc
  */
-function COM_olderStoriesBlock($help = '', $title = '', $position = '')
+function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId = '', $cssClasses = '')
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -4022,8 +4049,11 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
         return $retval;
     }
 
-    $retval = COM_startBlock($title, $help,
-        COM_getBlockTemplate('older_stories_block', 'header', $position));
+    $retval = COM_startBlock(
+        $title, $help,
+        COM_getBlockTemplate('older_stories_block', 'header', $position),
+        $cssId, $cssClasses
+    );
 
     $sql['mysql'] = "SELECT sid,title,comments,UNIX_TIMESTAMP(date) AS day
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
@@ -4077,7 +4107,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
         }
     } else {
         // No older articles found
-        $retval .=  $LANG01[101];
+        $retval .= $LANG01[101];
     }
 
     $retval .= COM_endBlock(COM_getBlockTemplate('older_stories_block', 'footer', $position));
@@ -4091,15 +4121,17 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '')
  * This shows a single block and is typically called from
  * COM_showBlocks OR from plugin code
  *
- * @param        string $name     Logical name of block (not same as title) -- 'user_block', 'admin_block',
- *                                'section_block', 'whats_new_block'.
- * @param        string $help     Help file location
- * @param        string $title    Title shown in block header
- * @param        string $position Side, 'left', 'right' or empty.
- * @see          function COM_showBlocks
- * @return       string           HTML Formatted block
+ * @param    string $name       Logical name of block (not same as title) -- 'user_block', 'admin_block',
+ *                              'section_block', 'whats_new_block'.
+ * @param    string $help       Help file location
+ * @param    string $title      Title shown in block header
+ * @param    string $position   Side, 'left', 'right' or empty.
+ * @param    string $cssId      CSS ID (since GL 2.2.0, optional)
+ * @param    string $cssClasses CSS class names separated by space (since GL 2.2.0, optional)
+ * @see       function COM_showBlocks
+ * @return    string            HTML Formatted block
  */
-function COM_showBlock($name, $help = '', $title = '', $position = '')
+function COM_showBlock($name, $help = '', $title = '', $position = '', $cssId = '', $cssClasses = '')
 {
     global $topic, $_TABLES, $_USER;
 
@@ -4113,16 +4145,19 @@ function COM_showBlock($name, $help = '', $title = '', $position = '')
 
     switch ($name) {
         case 'user_block':
-            $retval .= COM_userMenu($help, $title, $position);
+            $retval .= COM_userMenu($help, $title, $position, $cssId, $cssClasses);
             break;
 
         case 'admin_block':
-            $retval .= COM_adminMenu($help, $title, $position);
+            $retval .= COM_adminMenu($help, $title, $position, $cssId, $cssClasses);
             break;
 
         case 'section_block':
-            $retval .= COM_startBlock($title, $help,
-                    COM_getBlockTemplate($name, 'header', $position))
+            $retval .= COM_startBlock(
+                    $title, $help,
+                    COM_getBlockTemplate($name, 'header', $position),
+                    $cssId, $cssClasses
+                )
                 . COM_showTopics($topic)
                 . COM_endBlock(COM_getBlockTemplate($name, 'footer', $position));
             break;
@@ -4297,6 +4332,13 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
         }
     }
 
+    if (empty($A['css_id'])) {
+        $A['css_id'] = '';
+    }
+    if (empty($A['css_classes'])) {
+        $A['css_classes'] = '';
+    }
+
     // Make sure block can be used by specific device
     // If no device column found then bypass compare check (could happen with dynamic blocks that do not pass device)
     if (!isset($A['device']) || $_DEVICE->compare($A['device'])) {
@@ -4307,7 +4349,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
         }
 
         if ($A['type'] === 'gldefault') {
-            $retval .= COM_showBlock($A['name'], $A['help'], $A['title'], $position);
+            $retval .= COM_showBlock($A['name'], $A['help'], $A['title'], $position, $A['css_id'], $A['css_classes']);
         } else {
             // The only time cache_time would not be set if for dynamic blocks (they can handle their own caching if needed)
             // Don't Cache default blocks either
@@ -4327,7 +4369,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
                 }
             }
         }
-        
+
         if ($A['type'] === 'portal') {
             COM_rdfImport($A['bid'], $A['rdfurl'], $A['rdflimit']);
             $A['content'] = DB_getItem($_TABLES['blocks'], 'content', "bid = '{$A['bid']}'");
@@ -4341,7 +4383,11 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
                     $function = $matches[1];
                     $args = $matches[2];
                 }
-                $blockHeader = COM_startBlock($A['title'], $A['help'], COM_getBlockTemplate($A['name'], 'header', $position));
+                $blockHeader = COM_startBlock(
+                    $A['title'], $A['help'],
+                    COM_getBlockTemplate($A['name'], 'header', $position),
+                    $A['css_id'], $A['css_classes']
+                );
                 $blockFooter = COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
 
                 if (function_exists($function)) {
@@ -4380,8 +4426,11 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
             }
             $blockContent = str_replace(array('<?', '?>'), '', $blockContent);
 
-            $retval .= COM_startBlock($A['title'], $A['help'],
-                    COM_getBlockTemplate($A['name'], 'header', $position))
+            $retval .= COM_startBlock(
+                    $A['title'], $A['help'],
+                    COM_getBlockTemplate($A['name'], 'header', $position),
+                    $A['css_id'], $A['css_classes']
+                )
                 . $blockContent . LB
                 . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
         }
@@ -4407,7 +4456,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
  * @param    string $rdfUrl       URL to get content from
  * @param    int    $maxHeadlines Maximum number of headlines to display
  * @return   void
-  */
+ */
 function COM_rdfImport($bid, $rdfUrl, $maxHeadlines = 0)
 {
     global $_CONF, $_TABLES, $LANG21;
@@ -4621,7 +4670,7 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = array())
             $tagname = '&#91;' . $tag . ':&#93;&#91;/' . $tag . '&#93;';
         } else {
             $tagname = '&#91;' . $tag . ':&#93;';
-        }        
+        }
         if (!empty($description[$tag])) {
             $desc = str_replace(array('[', ']'), array('&#91;', '&#93;'), $description[$tag]);
             $list .= COM_getTooltip($tagname, $desc, '', $LANG01[132], 'information') . ', ';
@@ -4899,12 +4948,14 @@ function COM_emailUserTopics()
  * Shows any new information in a block
  * Return the HTML that shows any new stories, comments, etc
  *
- * @param    string $help     Help file for block
- * @param    string $title    Title used in block header
- * @param    string $position Position in which block is being rendered 'left', 'right' or blank (for centre)
- * @return   string           Return the HTML that shows any new stories, comments, etc
+ * @param    string $help       Help file for block
+ * @param    string $title      Title used in block header
+ * @param    string $position   Position in which block is being rendered 'left', 'right' or blank (for centre)
+ * @param    string $cssId      CSS ID (since GL 2.2.0, optional)
+ * @param    string $cssClasses CSS class names separated by space (since GL 2.2.0, optional)
+ * @return   string             Return the HTML that shows any new stories, comments, etc
  */
-function COM_whatsNewBlock($help = '', $title = '', $position = '')
+function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '', $cssClasses = '')
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW;
 
@@ -4920,8 +4971,11 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '')
         }
     }
 
-    $retval = COM_startBlock($title, $help,
-        COM_getBlockTemplate('whats_new_block', 'header', $position));
+    $retval = COM_startBlock(
+        $title, $help,
+        COM_getBlockTemplate('whats_new_block', 'header', $position),
+        $cssId, $cssClasses
+    );
 
     $topicSql = '';
     if (($_CONF['hidenewstories'] == 0) || ($_CONF['hidenewcomments'] == 0)
@@ -7081,9 +7135,9 @@ function COM_getTopicImageUrl($imageUrl)
 /**
  * Create an HTML link
  *
- * @param   string $content the object to be linked (text, image etc)
- * @param   string $url     the URL the link will point to
- * @param   array  $attr    an array of optional attributes for the link
+ * @param   string $content  the object to be linked (text, image etc)
+ * @param   string $url      the URL the link will point to
+ * @param   array  $attr     an array of optional attributes for the link
  *                           for example array('title' => 'whatever');
  * @return  string          the HTML link
  */
