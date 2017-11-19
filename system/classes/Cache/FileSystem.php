@@ -61,7 +61,7 @@ class FileSystem implements CacheInterface
 
                 if (is_dir($path)) {
                     $this->removeDirContents($path);
-                    rmdir($path);
+                    @rmdir($path);
                 } else {
                     @unlink($path);
                 }
@@ -174,9 +174,7 @@ class FileSystem implements CacheInterface
         if ($this->exists($key)) {
             return false;
         } else {
-            $this->set($key, $data, $ttl);
-
-            return true;
+            return $this->set($key, $data, $ttl);
         }
     }
 

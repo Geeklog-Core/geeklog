@@ -237,7 +237,7 @@ class Installer
                     // record what type of prompt we need
                     if ($type === 'information' || $type === 'warning' || $type === 'error') {
                         if ($prompt !== 'error') {
-                            if ($prompt == 'information') {
+                            if ($prompt === 'information') {
                                 $prompt = $type;
                             }
                         }
@@ -627,8 +627,10 @@ class Installer
         $chmodString = 'chmod -R 777 ';
 
         // Files to check if writable
-        $fileList = array($paths['db-config.php'],
+        $fileList = array(
+            $paths['db-config.php'],
             $this->env['gl_path'] . 'data/',
+            $this->env['gl_path'] . 'data/cache/',
             $this->env['gl_path'] . 'data/layout_cache/',
             $this->env['gl_path'] . 'data/layout_css/',
             $this->env['gl_path'] . 'logs/404.log',
@@ -3326,9 +3328,9 @@ class Installer
         for ($i = 0; $i < $numEngines; $i++) {
             $A = DB_fetchArray($result);
 
-            if (strcasecmp($A['Engine'], 'InnoDB') == 0) {
-                if ((strcasecmp($A['Support'], 'yes') == 0) ||
-                    (strcasecmp($A['Support'], 'default') == 0)
+            if (strcasecmp($A['Engine'], 'InnoDB') === 0) {
+                if ((strcasecmp($A['Support'], 'yes') === 0) ||
+                    (strcasecmp($A['Support'], 'default') === 0)
                 ) {
                     $retval = true;
                 }
@@ -3756,7 +3758,7 @@ class Installer
                     for ($i = 0; $i < $num_tables; $i++) {
                         list($table) = DB_fetchArray($result);
 
-                        if (substr($table, -6) == 'access') {
+                        if (substr($table, -6) === 'access') {
                             $DB['table_prefix'] = substr($table, 0, -6);
                         } elseif (strpos($table, 'conf_values') !== false) {
                             $has_config = true;
@@ -3857,7 +3859,7 @@ class Installer
                             if (count($words) >= 3) {
                                 $table = str_replace('`', '', $words[2]);
 
-                                if (substr($table, -6) == 'access') {
+                                if (substr($table, -6) === 'access') {
                                     $DB['table_prefix'] = substr($table, 0, -6);
                                 }
                             }
@@ -4534,7 +4536,7 @@ HTML;
                                 // then there's no need to update.
                                 $retval .= '<h2>' . $this->LANG['INSTALL'][74] . '</h2>' . PHP_EOL
                                     . '<p>' . $this->LANG['INSTALL'][75] . '</p>';
-                            } elseif ($currentVersion == 'empty') {
+                            } elseif ($currentVersion === 'empty') {
                                 $retval .= '<h2>' . $this->LANG['INSTALL'][90] . '</h2>' . PHP_EOL
                                     . '<p>' . $this->LANG['INSTALL'][91] . '</p>';
                             } else {
@@ -4902,7 +4904,7 @@ HTML;
             case 'install': // Deliberate fall-through, no "break"
             case 'upgrade':
             case 'migrate':
-                if ($this->env['mode'] == 'migrate') {
+                if ($this->env['mode'] === 'migrate') {
                     // Need conf paths etc for migration
                     require_once $this->env['siteconfig_path'];
                 }
