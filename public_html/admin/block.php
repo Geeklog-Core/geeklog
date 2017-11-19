@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | block.php                                                                 |
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -300,7 +300,7 @@ function editblock($bid = '')
         }
         SEC_setDefaultPermissions($A, $_CONF['default_permissions_block']);
         $access = 3;
-        if ($_POST['mode'] == $LANG_ADMIN['save'] && !empty($LANG_ADMIN['save'])) {
+        if (!empty($LANG_ADMIN['save']) && (Geeklog\Input::post('mode') === $LANG_ADMIN['save'])) {
             overridePostdata($A);
         }
     }
