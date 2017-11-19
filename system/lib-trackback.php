@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-trackback.php                                                         |
 // |                                                                           |
 // | Functions needed to handle trackback comments.                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2010 by the following authors:                         |
+// | Copyright (C) 2005-2017 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -229,7 +229,10 @@ function TRB_checkForSpam($url, $title = '', $blog = '', $excerpt = '')
     global $_CONF;
 
     $comment = TRB_formatComment($url, $title, $blog, $excerpt);
-    $result = PLG_checkforSpam($comment, $_CONF['spamx']);
+    $result = PLG_checkForSpam(
+        $comment, $_CONF['spamx'], COM_getCurrentURL(), Geeklog\Akismet::COMMENT_TYPE_TRACKBACK,
+        null, null, $url
+    );
 
     if ($result > 0) {
         return TRB_SAVE_SPAM;

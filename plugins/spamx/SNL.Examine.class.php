@@ -27,26 +27,34 @@ class SNL extends BaseCommand
      * Here we do the work
      *
      * @param  string $comment
-     * @return int
+     * @param  string $permanentLink (since GL 2.2.0)
+     * @param  string $commentType (since GL 2.2.0)
+     * @param  string $commentAuthor (since GL 2.2.0)
+     * @param  string $commentAuthorEmail (since GL 2.2.0)
+     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+     * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($comment)
+    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                            $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
         global $LANG_SX00;
 
-        $ans = PLG_SPAM_NOT_FOUND;
+        $answer = PLG_SPAM_NOT_FOUND;
         $uid = $this->getUid();
-
         $SNL = new SNLbase();
+
         if ($SNL->CheckForSpam($comment)) {
-            $ans = PLG_SPAM_FOUND;
+            $answer = PLG_SPAM_FOUND;
             SPAMX_log($LANG_SX00['foundspam'] . 'Spam Number of Links (SNL)' .
                 $LANG_SX00['foundspam2'] . $uid .
-                $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']
+            );
         }
 
         // tell the Action module that we've already been triggered
         $GLOBALS['SNL_triggered'] = true;
 
-        return $ans;
+        return $answer;
     }
 }

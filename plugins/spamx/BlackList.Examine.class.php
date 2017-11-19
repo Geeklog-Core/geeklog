@@ -31,10 +31,17 @@ class BlackList extends BaseCommand
     /**
      * Here we do the work
      *
-     * @param  string
-     * @return int
+     * @param  string $comment
+     * @param  string $permanentLink (since GL 2.2.0)
+     * @param  string $commentType (since GL 2.2.0)
+     * @param  string $commentAuthor (since GL 2.2.0)
+     * @param  string $commentAuthorEmail (since GL 2.2.0)
+     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+     * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($comment)
+    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                            $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
         global $_CONF, $_TABLES, $LANG_SX00;
 
@@ -44,7 +51,7 @@ class BlackList extends BaseCommand
          * Include Blacklist Data
          */
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='Personal'", 1);
-        $nrows = DB_numRows($result);
+        $numRows = DB_numRows($result);
 
         // named entities
         $comment = html_entity_decode($comment);
@@ -55,14 +62,14 @@ class BlackList extends BaseCommand
         // hex notation
         $comment = preg_replace_callback('/&#x([a-f0-9]+);/mi', array($this, 'callbackHex'), $comment);
 
-        $ans = PLG_SPAM_NOT_FOUND;
+        $answer = PLG_SPAM_NOT_FOUND;
 
-        for ($i = 1; $i <= $nrows; $i++) {
+        for ($i = 1; $i <= $numRows; $i++) {
             list($val) = DB_fetchArray($result);
             $pattern = $this->prepareRegularExpression($val);
 
             if (preg_match($pattern, $comment)) {
-                $ans = PLG_SPAM_FOUND;  // quit on first positive match
+                $answer = PLG_SPAM_FOUND;  // quit on first positive match
                 $this->updateStat('Personal', $val);
                 SPAMX_log($LANG_SX00['foundspam'] . $val .
                     $LANG_SX00['foundspam2'] . $uid .
@@ -71,6 +78,6 @@ class BlackList extends BaseCommand
             }
         }
 
-        return $ans;
+        return $answer;
     }
 }

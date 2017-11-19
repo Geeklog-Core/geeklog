@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Calendar   |
 // | plugin's PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -472,12 +472,12 @@ function plugin_savesubmission_calendar($A)
     $A['event_type']  = (isset($A['event_type']) ? $A['event_type'] : '');
 
     // pseudo-formatted event description for the spam check
-    $spamcheck = COM_createLink($A['title'], $A['url']) . '<br' . XHTML . '>'
+    $spamCheck = COM_createLink($A['title'], $A['url']) . '<br' . XHTML . '>'
                . $A['location'] . '<br' . XHTML . '>' . $A['address1'] . '<br' . XHTML . '>'
                . $A['address2'] . '<br' . XHTML . '>' . $A['city'] . ', ' . $A['zipcode']
                . '<br' . XHTML . '>' . $A['description'] . '</p>';
-    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
-    if ($result > 0) {
+    $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], $A['url'], Geeklog\Akismet::COMMENT_TYPE_EVENT);
+    if ($result > PLG_SPAM_NOT_FOUND) {
         COM_updateSpeedlimit ('submit');
         COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }

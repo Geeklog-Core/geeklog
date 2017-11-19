@@ -1016,8 +1016,13 @@ function saveuser(array $A)
     }
     $profile .= $A['location'] . '<br' . XHTML . '>' . $A['sig'] . '<br' . XHTML . '>'
         . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
-    $result = PLG_checkforSpam($profile, $_CONF['spamx']);
-    if ($result > 0) {
+
+    $url = $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $A['uid'];
+    $result = PLG_checkForSpam(
+        $profile, $_CONF['spamx'], $url, Geeklog\Akismet::COMMENT_TYPE_PROFILE,
+        $A['username'], $A['email'], $A['homepage']
+    );
+    if ($result > PLG_SPAM_NOT_FOUND) {
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }
 

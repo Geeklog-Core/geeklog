@@ -23,6 +23,9 @@ class Akismet
     const COMMENT_TYPE_SIGNUP = 'signup';
     const COMMENT_TYPE_MESSAGE = 'message';
     const COMMENT_TYPE_TRACKBACK = 'trackback';
+    const COMMENT_TYPE_EVENT = 'event';
+    const COMMENT_TYPE_LINK = 'link';
+    const COMMENT_TYPE_PROFILE = 'profile';
 
     // Result types
     const RESULT_HAM = 0;           // = PLG_SPAM_NOT_FOUND
@@ -124,7 +127,14 @@ class Akismet
             . "User-Agent: {$akismetUA}\r\n"
             . "\r\n"
             . $data;
-        $timeout = isset($_SPX_CONF['timeout']) ? (int) $_SPX_CONF['timeout'] : self::STREAM_TIMEOUT;
+
+        // Set time out
+        $timeout = self::STREAM_TIMEOUT;
+        if (isset($_SPX_CONF['timeout']) && is_numeric($_SPX_CONF['timeout'])) {
+            if ((int) $_SPX_CONF['timeout'] >= 1) {
+                $timeout = (int) $_SPX_CONF['timeout'];
+            }
+        }
 
         if (($fs = @fsockopen('ssl://' . $http_host, $port, $errNo, $errStr, $timeout)) !== false) {
             stream_set_timeout($fs, $timeout);

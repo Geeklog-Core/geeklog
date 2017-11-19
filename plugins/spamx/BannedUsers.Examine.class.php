@@ -33,13 +33,20 @@ class BannedUsers extends BaseCommand
      * Here we do the work
      *
      * @param  string $comment
-     * @return int
+     * @param  string $permanentLink (since GL 2.2.0)
+     * @param  string $commentType (since GL 2.2.0)
+     * @param  string $commentAuthor (since GL 2.2.0)
+     * @param  string $commentAuthorEmail (since GL 2.2.0)
+     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+     * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($comment)
+    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                            $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
-        global $_TABLES, $_USER, $LANG_SX00, $LANG28;
+        global $_TABLES, $LANG_SX00, $LANG28;
 
-        $uid = COM_isAnonUser() ? 1 : $_USER['uid'];
+        $uid = $this->getUid();
 
         // Get homepage URLs of all banned users
         $result = DB_query("SELECT DISTINCT homepage FROM {$_TABLES['users']} WHERE status = 0 AND homepage IS NOT NULL AND homepage <> ''");
@@ -54,14 +61,14 @@ class BannedUsers extends BaseCommand
         // hex notation
         $comment = preg_replace_callback('/&#x([a-f0-9]+);/mi', array($this, 'callbackHex'), $comment);
 
-        $ans = 0;
+        $answer = PLG_SPAM_NOT_FOUND;
 
         for ($i = 0; $i < $numRows; $i++) {
             list($val) = DB_fetchArray($result);
             $pattern = $this->prepareRegularExpression($val);
 
             if (preg_match($pattern, $comment)) {
-                $ans = 1; // quit on first positive match
+                $answer = PLG_SPAM_FOUND; // quit on first positive match
                 SPAMX_log($LANG_SX00['foundspam'] . $val . ' (' . $LANG28[42] . ')' .
                     $LANG_SX00['foundspam2'] . $uid .
                     $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']
@@ -70,8 +77,8 @@ class BannedUsers extends BaseCommand
             }
         }
 
-        $this->result = $ans;
+        $this->result = $answer;
 
-        return $ans;
+        return $answer;
     }
 }
