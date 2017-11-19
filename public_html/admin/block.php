@@ -144,6 +144,16 @@ function editdefaultblock($A, $access)
     }
     $block_templates->set_var('lang_device_desc', $LANG_ADMIN['device_desc']);
 
+    // CSS id and classes (both optional)
+    $block_templates->set_var(array(
+        'css_id'                => $A['css_id'],
+        'css_classes'           => $A['css_classes'],
+        'lang_css_id'           => $LANG21[70],
+        'lang_css_id_desc'      => $LANG21[71],
+        'lang_css_classes'      => $LANG21[72],
+        'lang_css_classes_desc' => $LANG21[73],
+    ));
+
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $ownername = COM_getDisplayName($A['owner_id']);
@@ -253,8 +263,9 @@ function editblock($bid = '')
     $retval = '';
 
     if (!empty($bid)) {
-        $sql['mysql'] = "SELECT * FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
-        $sql['pgsql'] = "SELECT * FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
+        $bid = DB_escapeString($bid);
+        $sql['mysql'] = "SELECT * FROM {$_TABLES['blocks']} WHERE bid ='{$bid}'";
+        $sql['pgsql'] = "SELECT * FROM {$_TABLES['blocks']} WHERE bid ='{$bid}'";
 
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
@@ -269,7 +280,7 @@ function editblock($bid = '')
 
             return $retval;
         }
-        if ($A['type'] == 'gldefault') {
+        if ($A['type'] === 'gldefault') {
             $retval .= editdefaultblock($A, $access);
 
             return $retval;
@@ -292,6 +303,8 @@ function editblock($bid = '')
         $A['onleft'] = 0;
         $A['phpblockfn'] = '';
         $A['help'] = '';
+        $A['css_id'] = '';
+        $A['css_classes'] = '';
         $A['owner_id'] = $_USER['uid'];
         if (isset($_GROUPS['Block Admin'])) {
             $A['group_id'] = $_GROUPS['Block Admin'];
@@ -404,6 +417,16 @@ function editblock($bid = '')
     $block_templates->set_var('lang_cachetime', $LANG21['cache_time']);
     $block_templates->set_var('lang_cachetime_desc', $LANG21['cache_time_desc']);
     $block_templates->set_var('cache_time', $A['cache_time']);
+
+    // CSS id and classes (both optional)
+    $block_templates->set_var(array(
+        'css_id'                => $A['css_id'],
+        'css_classes'           => $A['css_classes'],
+        'lang_css_id'           => $LANG21[70],
+        'lang_css_id_desc'      => $LANG21[71],
+        'lang_css_classes'      => $LANG21[72],
+        'lang_css_classes_desc' => $LANG21[73],
+    ));
 
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -735,7 +758,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         if ($cache_time < -1) {
             $cache_time = $_CONF['default_cache_time_block'];
         }
-        
+
         if ($type == 'portal') {
             $content = '';
             $phpBlockFn = '';
@@ -789,7 +812,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         if (!empty($rdfUrl)) {
             $rdfUrl = DB_escapeString($rdfUrl);
         }
-        
+
         $rdfUpdated = 'CURRENT_TIMESTAMP';
 
         if ($bid > 0) {
@@ -1020,7 +1043,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
 } elseif ($mode === 'edit') {
     $tmp = editblock($bid);
     $display = COM_createHTMLDocument($tmp, array('pagetitle' => $LANG21[3]));
-} elseif ($mode == 'move') {
+} elseif ($mode === 'move') {
     if (SEC_checkToken()) {
         $display .= moveBlock();
     }
