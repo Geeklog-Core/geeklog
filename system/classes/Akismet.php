@@ -25,12 +25,12 @@ class Akismet
     const COMMENT_TYPE_TRACKBACK = 'trackback';
 
     // Result types
-    const RESULT_HAM = 0;
-    const RESULT_SPAM = 1;
-    const RESULT_MAYBE_SPAM = 2;
+    const RESULT_HAM = 0;           // = PLG_SPAM_NOT_FOUND
+    const RESULT_SPAM = 1;          // = PLG_SPAM_FOUND
+    const RESULT_MAYBE_SPAM = 2;    // = PLG_SPAM_UNSURE
 
-    // Time out in seconds
-    const STREAM_TIMEOUT = 10;
+    // Time out in seconds when $_SPX_CONF['timeout'] is not set
+    const STREAM_TIMEOUT = 5;
 
     /**
      * API key
@@ -110,6 +110,8 @@ class Akismet
      */
     private function send($path, array $data)
     {
+        global $_SPX_CONF;
+
         $data = http_build_query($data, '', '&');
         $host = $http_host = 'rest.akismet.com';
         $port = 443;
@@ -122,9 +124,10 @@ class Akismet
             . "User-Agent: {$akismetUA}\r\n"
             . "\r\n"
             . $data;
+        $timeout = isset($_SPX_CONF['timeout']) ? (int) $_SPX_CONF['timeout'] : self::STREAM_TIMEOUT;
 
-        if (($fs = @fsockopen('ssl://' . $http_host, $port, $errNo, $errStr, self::STREAM_TIMEOUT)) !== false) {
-            stream_set_timeout($fs, self::STREAM_TIMEOUT);
+        if (($fs = @fsockopen('ssl://' . $http_host, $port, $errNo, $errStr, $timeout)) !== false) {
+            stream_set_timeout($fs, $timeout);
             fwrite($fs, $httpRequest);
             $response = '';
 
@@ -200,10 +203,10 @@ class Akismet
     }
 
     /**
-     * Check for spam
+     * Prepare common data for APIs
      *
-     * @param  string $uri
      * @param  string $content
+     * @param  string $permanentLink
      * @param  string $commentType
      * @param  string $commentAuthor
      * @param  string $commentAuthorEmail
@@ -211,8 +214,7 @@ class Akismet
      * @param  bool   $isTest
      * @return array
      */
-    private function prepareData($uri, $content, $commentType,
-                                 $commentAuthor, $commentAuthorEmail, $commentAuthorURL, $isTest)
+    private function prepareData($content, $permanentLink, $commentType, $commentAuthor, $commentAuthorEmail, $commentAuthorURL, $isTest)
     {
         global $LANG01;
 
@@ -223,7 +225,7 @@ class Akismet
             'user_ip'         => Input::server('REMOTE_ADDR'),
             'user_agent'      => Input::server('HTTP_USER_AGENT'),
             'referrer'        => Input::server('HTTP_REFERER'),
-            'permalink'       => $uri,
+            'permalink'       => $permanentLink,
             'comment_content' => $content,
             'comment_type'    => $commentType,
         );
@@ -248,17 +250,17 @@ class Akismet
      * Check for spam
      *
      * @see https://akismet.com/development/api/#comment-check
-     * @param  string $uri
      * @param  string $content
+     * @param  string $permanentLink
+     * @param  string $commentType
      * @param  string $commentAuthor
      * @param  string $commentAuthorEmail
      * @param  string $commentAuthorURL
-     * @param  string $commentType
      * @param  bool   $isTest
-     * @return int    either RESULT_HAM, RESULT_SPAM or RESULT_MAYBE_SPAM
+     * @return int either RESULT_HAM, RESULT_SPAM or RESULT_MAYBE_SPAM
      */
-    public function checkForSpam($uri, $content, $commentAuthor, $commentAuthorEmail = null,
-                                 $commentAuthorURL = null, $commentType = self::COMMENT_TYPE_COMMENT, $isTest = false)
+    public function checkForSpam($content, $permanentLink, $commentType = self::COMMENT_TYPE_COMMENT,
+                                 $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null, $isTest = false)
     {
         if (!$this->isAPIKeyVerified) {
             // Doesn't check
@@ -267,7 +269,7 @@ class Akismet
 
         $path = '/1.1/comment-check';
         $data = $this->prepareData(
-            $uri, $content, $commentType, $commentAuthor, $commentAuthorEmail, $commentAuthorURL, $isTest
+            $content, $permanentLink, $commentType, $commentAuthor, $commentAuthorEmail, $commentAuthorURL, $isTest
         );
         $response = $this->send($path, $data);
 
@@ -311,17 +313,17 @@ class Akismet
      * Submit a spam
      *
      * @see https://akismet.com/development/api/#submit-spam
-     * @param  string $uri
      * @param  string $content
+     * @param  string $permanentLink
+     * @param  string $commentType
      * @param  string $commentAuthor
      * @param  string $commentAuthorEmail
      * @param  string $commentAuthorURL
-     * @param  string $commentType
      * @param  bool   $isTest
-     * @return bool   true on success, false otherwise
+     * @return bool true on success, false otherwise
      */
-    public function submitSpam($uri, $content, $commentAuthor, $commentAuthorEmail = null,
-                               $commentAuthorURL = null, $commentType = self::COMMENT_TYPE_COMMENT, $isTest = false)
+    public function submitSpam($content, $permanentLink, $commentType = self::COMMENT_TYPE_COMMENT,
+                               $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null, $isTest = false)
     {
         if (!$this->isAPIKeyVerified) {
             // Doesn't check
@@ -330,7 +332,7 @@ class Akismet
 
         $path = '/1.1/submit-spam';
         $data = $this->prepareData(
-            $uri, $content, $commentType, $commentAuthor, $commentAuthorEmail, $commentAuthorURL, $isTest
+            $content, $permanentLink, $commentType, $commentAuthor, $commentAuthorEmail, $commentAuthorURL, $isTest
         );
         $response = $this->send($path, $data);
 
@@ -345,17 +347,17 @@ class Akismet
      * Submit a ham
      *
      * @see https://akismet.com/development/api/#submit-ham
-     * @param  string $uri
      * @param  string $content
+     * @param  string $permanentLink
+     * @param  string $commentType
      * @param  string $commentAuthor
      * @param  string $commentAuthorEmail
      * @param  string $commentAuthorURL
-     * @param  string $commentType
      * @param  bool   $isTest
-     * @return bool   true on success, false otherwise
+     * @return bool true on success, false otherwise
      */
-    public function submitHam($uri, $content, $commentAuthor, $commentAuthorEmail = null,
-                              $commentAuthorURL = null, $commentType = self::COMMENT_TYPE_COMMENT, $isTest = false)
+    public function submitHam($content, $permanentLink, $commentType = self::COMMENT_TYPE_COMMENT,
+                              $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null, $isTest = false)
     {
         if (!$this->isAPIKeyVerified) {
             // Doesn't check
@@ -364,7 +366,7 @@ class Akismet
 
         $path = '/1.1/submit-ham';
         $data = $this->prepareData(
-            $uri, $content, $commentType, $commentAuthor, $commentAuthorEmail, $commentAuthorURL, $isTest
+            $content, $permanentLink, $commentType, $commentAuthor, $commentAuthorEmail, $commentAuthorURL, $isTest
         );
         $response = $this->send($path, $data);
 
