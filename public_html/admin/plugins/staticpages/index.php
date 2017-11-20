@@ -929,10 +929,6 @@ if (!empty($LANG_ADMIN['delete']) && ($mode === $LANG_ADMIN['delete']) && SEC_ch
         if (!isset($_POST['sp_centerblock'])) {
             $_POST['sp_centerblock'] = '';
         }
-        $help = '';
-        if (isset($_POST['sp_help'])) {
-            $sp_help = COM_sanitizeUrl(Geeklog\Input::post('sp_help'), array('http', 'https'));
-        }
         if (!isset($_POST['sp_inblock'])) {
             $_POST['sp_inblock'] = '';
         }
@@ -971,7 +967,7 @@ if (!empty($LANG_ADMIN['delete']) && ($mode === $LANG_ADMIN['delete']) && SEC_ch
             Geeklog\Input::post('sp_nf'),
             Geeklog\Input::fPost('sp_old_id'),
             Geeklog\Input::post('sp_centerblock'),
-            $sp_help,
+            Geeklog\Input::post('sp_help'),
             (int) Geeklog\Input::fPost('sp_where'),
             Geeklog\Input::post('sp_inblock'),
             Geeklog\Input::fPost('postmode'),

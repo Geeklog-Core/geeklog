@@ -201,7 +201,7 @@ function overridePostdata(&$A)
         $A['title'] = GLText::stripTags(Geeklog\Input::post('title'));
     }
     if (isset($_POST['help'])) {
-        $A['help'] = COM_sanitizeUrl(Geeklog\Input::post('help'), array('http', 'https'));
+        $A['help'] = GLText::stripTags(Geeklog\Input::post('help'));
     }
     if (in_array($_POST['type'], array('normal', 'portal', 'phpblock', 'gldefault'))) {
         $A['type'] = Geeklog\Input::post('type');
@@ -1050,9 +1050,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
         $name = COM_sanitizeID($name);
     }
     $help = Geeklog\Input::post('help', '');
-    if (!empty($help)) {
-        $help = COM_sanitizeUrl($help, array('http', 'https'));
-    }
     $blockorder = (int) Geeklog\Input::fPost('blockorder', 0);
     $device = Geeklog\Input::fPost('device', Device::ALL);
     $content = Geeklog\Input::post('content', '');
