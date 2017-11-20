@@ -9,9 +9,13 @@ system/lib-custom.php
 public_html/sitemap.xml
 public_html/filemanager/scripts/filemanager.config.json
 
-# cache files
+# Template cache files
 data/layout_cache/**
 data/layout_css/**
+
+# Resource cache files
+data/cache/**
+
 
 # image and logs
 logs/*.log
