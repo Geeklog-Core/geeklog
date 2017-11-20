@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Polls      |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -1827,6 +1827,8 @@ function plugin_getBlocks_polls($side, $topic = '')
                     'content'        => $display,
                     'allow_autotags' => false,
                     'help'           => '',
+                    'css_id'         => 'polls_block',  // since GL 2.2.0
+                    'css_classes'    => '',             // since GL 2.2.0
                 );
             }
         }

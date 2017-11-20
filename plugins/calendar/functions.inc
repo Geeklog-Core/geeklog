@@ -2102,6 +2102,8 @@ function plugin_getBlocks_calendar($side, $topic = '')
                     'content'        => $display,
                     'allow_autotags' => false,
                     'help'           => '',
+                    'css_id'         => 'event_block',  // since GL 2.2.0
+                    'css_classes'    => '',             // since GL 2.2.0
                 );
             }
         }
