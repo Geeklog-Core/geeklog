@@ -73,8 +73,8 @@ function spamx_update_ConfValues_1_3_4()
 
     // Add in new config options for Akismet module
     $c->add('fs_akismet', null, 'fieldset', 0, 20, null, 0, true, 'spamx', 10);
-    $c->add('akismet_enabled', $_SPX_DEFAULT['akismet_enabled'], 'select', 0, 10, 1, 10, true, 'spamx', 10);
-    $c->add('akismet_api_key', $_SPX_DEFAULT['akismet_api_key'], 'text', 0, 0, null, 20, true, 'spamx', 10);
+    $c->add('akismet_enabled', $_SPX_DEFAULT['akismet_enabled'], 'select', 0, 20, 1, 10, true, 'spamx', 10);
+    $c->add('akismet_api_key', $_SPX_DEFAULT['akismet_api_key'], 'text', 0, 20, null, 20, true, 'spamx', 10);
 
     return true;
 }
