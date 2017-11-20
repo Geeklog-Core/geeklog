@@ -1583,6 +1583,8 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     if (preg_match('/<.*>/', $comment) != 0) {
         $comment = GLText::stripTags($comment);
     }
+    
+    $comment = PLG_replaceTags($comment);
 
     if ($uid < 1) {
         $uid = 1;
@@ -1798,6 +1800,8 @@ function CMT_sendReport($cid, $type)
     if (preg_match('/<.*>/', $comment) != 0) {
         $comment = GLText::stripTags($comment);
     }
+    
+    $comment = PLG_replaceTags($comment);
 
     $author = COM_getDisplayName($A['uid']);
     if (($A['uid'] <= 1) && !empty($A['ipaddress'])) {
