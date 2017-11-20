@@ -135,7 +135,7 @@ function update_DatabaseFor220()
     
     
     // SpamX
-    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.4' WHERE pi_name='spamx'";
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.5' WHERE pi_name='spamx'";
     
     
     // Links
@@ -402,15 +402,15 @@ foreach ($corePlugins AS $pi_name) {
     switch ($pi_name) {
         case 'staticpages':
             $new_plugin_version = true;
-            $plugin_version = '1.7.0';
+            $plugin_version = '1.6.9';
             break;
         case 'spamx':
             $new_plugin_version = true;
-            $plugin_version = '1.3.5';
+            $plugin_version = '1.3.4';
             break;
         case 'links':
             $new_plugin_version = true;
-            $plugin_version = '2.1.6';
+            $plugin_version = '2.1.5';
             break;
         case 'polls':
             $plugin_version = '2.1.8';
