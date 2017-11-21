@@ -720,12 +720,15 @@ class Resource
         }
 
         // Rewrite image paths
-        $contents = str_ireplace(' url("./images/', ' url("layout/' . $theme . '/images/', $contents);
-        $contents = str_ireplace(" url('./images/", " url('layout/' . $theme . '/images/", $contents);
-        $contents = str_ireplace(' url("../images/', ' url("layout/' . $theme . '/images/', $contents);
-        $contents = str_ireplace(" url('../images/", " url('layout/' . $theme . '/images/", $contents);
-        $contents = str_ireplace(" url('jquery_ui/images/", " url('layout/' . $theme . '/jquery_ui/images/", $contents);
+        $contents = str_ireplace('url("./images/', 'url("layout/' . $theme . '/images/', $contents);
+        $contents = str_ireplace("url('./images/", "url('layout/" . $theme . "/images/", $contents);
+        $contents = str_ireplace('url(./images/', 'url(layout/' . $theme . '/images/', $contents);
+        $contents = str_ireplace('url("../images/', 'url("layout/' . $theme . '/images/', $contents);
+        $contents = str_ireplace("url('../images/", "url('layout/" . $theme . "/images/", $contents);
+        $contents = str_ireplace('url(../images/', 'url(layout/' . $theme . "/images/", $contents);
+        $contents = str_ireplace("url('jquery_ui/images/", "url('layout/" . $theme . "/jquery_ui/images/", $contents);
         $contents = str_ireplace('url("../fonts/', 'url("vendor/uikit/fonts/', $contents);
+        $contents = str_ireplace('url(../fonts/', 'url(vendor/uikit/fonts/', $contents);
 
         // Unify lien ends
         $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
