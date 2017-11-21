@@ -669,15 +669,25 @@ class Resource
     }
 
     /**
-     * Minify CSS for Modern Curve theme
+     * Minify CSS
      *
      * @param  array $files
      * @return string
      * @note   Currently, this method does NOT minify CSS code
      */
-    private function minifyCSSForModernCurve(array $files)
+    private function minifyCSS(array $files)
     {
         global $LANG_DIRECTION;
+
+        if ($this->debug) {
+            $retval = '';
+
+            foreach ($files as $file) {
+                $retval .= $this->buildLinkTag($this->config['site_url'] . $file['file'], array()) . PHP_EOL;
+            }
+
+            return $retval;
+        }
 
         $contents = '';
         $relativePaths = array();
@@ -692,6 +702,8 @@ class Resource
             }
         }
 
+        $theme = strtolower($this->config['theme']);
+
         // Replace {left} and {right} place-holders
         if (isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl')) {
             $dir = 'rtl';
@@ -702,12 +714,27 @@ class Resource
             $left = 'left';
             $right = 'right';
         }
-        $contents = str_replace(array('{left}', '{right}'), array($left, $right), $contents);
+
+        if ($theme === 'modern_curve') {
+            $contents = str_replace(array('{left}', '{right}'), array($left, $right), $contents);
+        }
 
         // Rewrite image paths
-        $contents = str_ireplace(' url("./images/', ' url("layout/modern_curve/images/', $contents);
-        $contents = str_ireplace(" url('./images/", " url('layout/modern_curve/images/", $contents);
-        $contents = str_ireplace(" url('jquery_ui/images/", " url('layout/modern_curve/jquery_ui/images/", $contents);
+        $contents = str_ireplace(' url("./images/', ' url("layout/' . $theme . '/images/', $contents);
+        $contents = str_ireplace(" url('./images/", " url('layout/' . $theme . '/images/", $contents);
+        $contents = str_ireplace(' url("../images/', ' url("layout/' . $theme . '/images/', $contents);
+        $contents = str_ireplace(" url('../images/", " url('layout/' . $theme . '/images/", $contents);
+        $contents = str_ireplace(" url('jquery_ui/images/", " url('layout/' . $theme . '/jquery_ui/images/", $contents);
+        $contents = str_ireplace('url("../fonts/', 'url("vendor/uikit/fonts/', $contents);
+
+        // Unify lien ends
+        $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
+
+        // strip comments
+        $contents = preg_replace("@/\*[^!].*?\*/@sm", '', $contents);
+
+        // strip indentation
+        $contents = preg_replace("@\s*\n+\s*@sm", "\n", $contents);
 
         $key = $this->makeCacheKey($relativePaths) . $dir;
         $data = array(
@@ -718,28 +745,6 @@ class Resource
         );
         Cache::set($key, $data);
         $retval = $this->buildLinkTag($this->config['site_url'] . '/r.php?k=' . $key, array());
-
-        return $retval;
-    }
-
-    /**
-     * Minify CSS
-     *
-     * @param  array $files
-     * @return string
-     * @note   Currently, this method does NOT minify CSS code
-     */
-    private function minifyCSS(array $files)
-    {
-        if (strcasecmp($this->config['theme'],'modern_curve') === 0) {
-            return $this->minifyCSSForModernCurve($files);
-        }
-
-        $retval = '';
-
-        foreach ($files as $file) {
-            $retval .= $this->buildLinkTag($this->config['site_url'] . $file['file'], array()) . PHP_EOL;
-        }
 
         return $retval;
     }
