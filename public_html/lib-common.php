@@ -2068,9 +2068,11 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
     ));
 
     if (!empty($helpFile)) {
+        $helpPopup = "";
         // Only works when header generated all at once
         // Make sure not a full link. Needs to follow help file format (correct location and divs)
         if (($_CONF['supported_version_theme'] !== '1.8.1') && !stristr($helpFile, 'http://') && !stristr($helpFile, 'https://')) {
+            $helpPopup = "gl-help-popup";
             // Only need to set it once
             if (!defined('GL-HELP-SET')) {
                 define('GL-HELP-SET', true);
@@ -2086,19 +2088,15 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
             }
         }
 
-        $helpImage = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
-        $helpContent = '<img src="' . $helpImage . '" alt="?"' . XHTML . '>';
-        $helpAttr = array('class' => 'blocktitle', 'title' => "$title");
-
         if (preg_match('@^https?://@', $helpFile)) {
             $help_url = $helpFile;
         } else {
             $help_url = COM_getDocumentUrl('help', $helpFile);
         }
 
-        $help = COM_createLink($helpContent, $help_url, $helpAttr);
-        $block->set_var('block_help', $help);
+        $block->set_var('help_title', $title);
         $block->set_var('help_url', $help_url);
+        $block->set_var('gl-help-popup', $helpPopup);
     }
 
     $block->parse('startHTML', 'block');

@@ -1,5 +1,5 @@
 $(function() {
-    $('a.blocktitle').each(function() {
+    $('a[gl-help-popup]').each(function() {
         var $link = $(this);
         $link.one('click', function() {
 
