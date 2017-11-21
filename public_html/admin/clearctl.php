@@ -43,6 +43,9 @@ if (!SEC_inGroup('Root') && !SEC_inGroup('Theme Admin')) {
 /*
  * Main processing
  */
-CTL_clearCache();
+CTL_clearCache(); // Clearing Template Cache
+
+Geeklog\Cache::clear(); // Clearing Resource Cache (CSS, and Javascript concatenated and minified files)
+
 COM_redirect($_CONF['site_admin_url'] . '/index.php?msg=500');
-Geeklog\Cache::clear();
+
