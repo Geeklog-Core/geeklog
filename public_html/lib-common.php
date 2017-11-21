@@ -8580,7 +8580,9 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor
     require_once $_CONF['path_editors'] . $name . '/functions.php';
 
     $function = 'adveditor_config_' . $name;
-    $footer = $priority = '';
+    $footer = true;
+    $priority = '';
+
     if (function_exists($function)) {
         $config = $function();
         $js = $config['file'];
@@ -8634,10 +8636,10 @@ HTML;
     }
 
     // Add JavaScript
-    $_SCRIPTS->setJavaScriptFile("adveditor_$name", "/$dir/$name/$js", $footer, $priority);
-    $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', $footer, $priority + 1);
-    $_SCRIPTS->setJavaScriptFile("adveditor_api_$name", "/$dir/$name/functions.js", $footer, $priority + 2);
-    $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom, $footer, $priority + 3);
+    $_SCRIPTS->setJavaScriptFile("adveditor_$name", "/$dir/$name/$js", false, $priority);
+    $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', false, $priority + 1);
+    $_SCRIPTS->setJavaScriptFile("adveditor_api_$name", "/$dir/$name/functions.js", true, $priority + 2);
+    $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom, true, $priority + 3);
 }
 
 /**

@@ -1,11 +1,10 @@
-/* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.0                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | Javascript functions for WYSIWYG HTML Editor Integration into Geeklog     |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2013 by the following authors:                         |
+// | Copyright (C) 2003-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors:   Blaine Lang       - blaine AT portalparts DOT com              |
 // |            Yoshinori Tahara  - dengenxp AT gmail DOT com                  |
@@ -27,7 +26,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-AdvancedEditor = new Object();
+var AdvancedEditor = {};
 
 AdvancedEditor.TextareaId = [];
 
@@ -45,7 +44,7 @@ AdvancedEditor.api = [];
 
 AdvancedEditor.editor = 'ckeditor';
 
-AdvancedEditor.newEditor = function(options) {
+AdvancedEditor.newEditor = function (options) {
     if (geeklogEditorName) {
         this.editor = geeklogEditorName;
     }
@@ -67,74 +66,81 @@ AdvancedEditor.newEditor = function(options) {
         bar = options.toolbar;
     }
     if (this.AutoToolbar === true &&
-            navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
+        navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
         bar = 0;
     }
 
     for (var i = 0; i < this.TextareaId.length; i++) {
-        this.api[this.editor].newEditor(this.TextareaId[i].advanced, {toolbar:bar});
+        this.api[this.editor].newEditor(this.TextareaId[i].advanced, {toolbar: bar});
     }
 
     this.addEvent();
 
-    var elem;
-    elem = document.getElementById(this.ContainerId);
-    if (elem) elem.style.display = '';
+    var elem = document.getElementById(this.ContainerId);
+    if (elem) {
+        elem.style.display = '';
+    }
 
     elem = document.getElementById(this.SelToolbarId);
-    if (elem) elem.options[bar].selected = true;
-}
+    if (elem) {
+        elem.options[bar].selected = true;
+    }
+};
 
-AdvancedEditor.isAdvancedMode = function() {
-    return (document.getElementById(this.EditModeId).value == this.ValModeAdvanced);
-}
+AdvancedEditor.isAdvancedMode = function () {
+    return (document.getElementById(this.EditModeId).value === this.ValModeAdvanced);
+};
 
-AdvancedEditor.swapEditorContent = function() {
+AdvancedEditor.swapEditorContent = function () {
+    var i;
+
     if (this.isAdvancedMode()) {
-        for (var i = 0; i < this.TextareaId.length; i++) {
+        for (i = 0; i < this.TextareaId.length; i++) {
             this.api[this.editor].setContent(this.TextareaId[i].advanced,
                 document.getElementById(this.TextareaId[i].plain).value);
         }
     } else {
-        for (var i = 0; i < this.TextareaId.length; i++) {
+        for (i = 0; i < this.TextareaId.length; i++) {
             document.getElementById(this.TextareaId[i].plain).value =
                 this.api[this.editor].getContent(this.TextareaId[i].advanced);
         }
     }
-}
+};
 
-AdvancedEditor.set_postcontent = function() {
-    if (!this.isAdvancedMode()) return;
+AdvancedEditor.set_postcontent = function () {
+    if (!this.isAdvancedMode()) {
+        return;
+    }
     for (var i = 0; i < this.TextareaId.length; i++) {
         document.getElementById(this.TextareaId[i].plain).value =
             this.api[this.editor].getContent(this.TextareaId[i].advanced);
     }
-}
+};
 
-AdvancedEditor.changeHTMLTextAreaSize = function(element, option) {
+AdvancedEditor.changeHTMLTextAreaSize = function (element, option) {
     this.api[this.editor].changeTextAreaSize(element, option);
-}
+};
 
-AdvancedEditor.changeToolbar = function(toolbar) {
+AdvancedEditor.changeToolbar = function (toolbar) {
     for (var i = 0; i < this.TextareaId.length; i++) {
         this.api[this.editor].changeToolbar(this.TextareaId[i].advanced, toolbar);
     }
-}
+};
 
-AdvancedEditor.addEvent = function() {
+AdvancedEditor.addEvent = function () {
     var elem = document.getElementById(this.EditModeId);
     this.addEventListener(elem, 'change', this.onchange_editmode);
-}
+};
 
-AdvancedEditor.addEventListener = function(target, type, listener) {
+AdvancedEditor.addEventListener = function (target, type, listener) {
     if (target.addEventListener) {
         target.addEventListener(type, listener, false);
     } else if (target.attachEvent) {
         target.attachEvent('on' + type, listener); // support legacy IE
     }
-}
+};
 
-AdvancedEditor.onchange_editmode = function() {
+AdvancedEditor.onchange_editmode = function () {
     if (AdvancedEditor.isAdvancedMode()) {
         document.getElementById('text_editor').style.display = 'none';
         document.getElementById('html_editor').style.display = '';
@@ -143,7 +149,7 @@ AdvancedEditor.onchange_editmode = function() {
         document.getElementById('html_editor').style.display = 'none';
     }
     AdvancedEditor.swapEditorContent();
-}
+};
 
 function changeToolbar(toolbar) {
     AdvancedEditor.changeToolbar(toolbar);
@@ -162,6 +168,5 @@ function change_editmode(obj) {
 }
 
 function changeTextAreaSize(element, option) {
-    document.getElementById(element).rows += (option == 'larger' ? 3 : -3);
+    document.getElementById(element).rows += (option === 'larger' ? 3 : -3);
 }
-

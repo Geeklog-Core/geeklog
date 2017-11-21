@@ -814,6 +814,28 @@ class Resource
             return $this->minifyCSS($files);
         }
 
+        // Minify JavaScript
+        $retval = '';
+
+        // Exclude files for advanced editor, since they wouldn't work in displaced locations
+
+        // typically, /editors/
+        $editorPath = str_replace(
+            $this->config['path_html'],
+            '',
+            str_replace('\\', '/', $this->config['path_editors'])
+        );
+        $temp = $files;
+        $files = array();
+
+        foreach ($temp as $file) {
+            if (stripos($file['file'], $editorPath) === 0) {
+                $retval .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
+            } else {
+                $files[] = $file;
+            }
+        }
+
         $absolutePaths = array();
         $relativePaths = array();
         $success = false;
@@ -845,10 +867,10 @@ class Resource
 
         if ($success && !$this->debug) {
             $url = $this->config['site_url'] . '/r.php?k=' . $key;
-            $retval = sprintf('<script type="text/javascript" src="%s"></script>', $url);
+            $retval .= sprintf('<script type="text/javascript" src="%s"></script>', $url);
         } else {
             // Somehow failed to save data into cache or debug mode is on
-            $retval = PHP_EOL;
+            $retval .= PHP_EOL;
 
             foreach ($files as $file) {
                 $retval .= sprintf(

@@ -1,8 +1,7 @@
 <?php
 
-/* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.0                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | functions.php                                                             |
 // |                                                                           |
@@ -30,7 +29,7 @@
 // +---------------------------------------------------------------------------+
 
 // this file can't be used on its own
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -42,8 +41,8 @@ function adveditor_config_ckeditor()
     return array(
         'name'     => 'CKEditor',
         'file'     => 'ckeditor.js',
-        'footer'   => true, // Not requred, default = true
-        'priority' => 110   // Not requred, default = 100
+        'footer'   => true, // Not required, default = true
+        'priority' => 110   // Not required, default = 100
     );
 }
 
@@ -69,4 +68,3 @@ function adveditor_setup_ckeditor($custom)
     $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom,                                true, 113);
 }
 */
-?>
