@@ -191,6 +191,12 @@ class FileSystem implements CacheInterface
         return @unlink($fileName);
     }
 
+    /**
+     * Return if cached data exists
+     *
+     * @param  string $key
+     * @return bool
+     */
     public function exists($key)
     {
         $fileName = $this->getFileName($key);

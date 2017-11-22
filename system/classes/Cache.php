@@ -2,6 +2,7 @@
 
 namespace Geeklog;
 
+use Geeklog\Cache\APCu;
 use Geeklog\Cache\FileSystem;
 
 /**
@@ -35,6 +36,7 @@ abstract class Cache
 
         if (!self::$isInitialized) {
             self::$instance = new FileSystem($_CONF['path'] . 'data/cache/');
+//            self::$instance = new APCu();
             self::$isInitialized = true;
         }
     }
