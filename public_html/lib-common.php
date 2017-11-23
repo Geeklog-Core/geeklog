@@ -7243,6 +7243,8 @@ function COM_getLanguage()
 
     // 1. Try to get language from URL
     // $langFile = COM_getLanguageFromBrowser(); - Removed line as it doesn't work with the switch language block (that uses phpblock_switch_language) for some setups when a language cookie is set, need to check that first. 
+    $langFile = COM_getLanguageFromURL();
+    
     if (empty($langFile)) {
         if (!empty($_USER['language'])) {
             // 2. Try to get language from the user's settings
@@ -8692,51 +8694,67 @@ function COM_getDocumentUrl($baseDirectory, $fileName)
 }
 
 /**
- * Get language name from a URL
+ * Get language ID from a URL
  *
  * @param  string $url
  * @return string       e.g., 'en', 'ja', ...
  * @note   code provided by hiroron
  */
-function COM_getLanguageFromURL($url = '')
+function COM_getLanguageIdFromURL($url='') 
 {
     global $_CONF;
-
+    
+    if (empty($url)) { $url=COM_getCurrentURL(); }
     $retval = '';
-
-    if (empty($url)) {
-        $url = COM_getCurrentURL();
-    }
-
     if ($_CONF['url_rewrite']) {
         // for "rewritten" URLs we assume that the first parameter after
-        // the script name is the ID, e.g. /article.php/story-id-here_en
-        $parts = explode('/', $url);
-        $numParts = count($parts);
-
-        for ($i = 0; $i < $numParts; $i++) {
-            if (substr($parts[$i], -4) === '.php') {
-                // found the script name - assume next parameter is the ID
-                if (isset($parts[$i + 1])) {
-                    $l = strrpos($parts[$i + 1], '_');
-                    if ($l !== false) {
-                        $retval = substr($parts[$i + 1], $l + 1);
+        // [NG]the script name is the ID, e.g. /article.php/story-id-here_en
+        // 2017 fix hiroron /index.php/topic/home_ja or /index.php?topic=home_ja
+        $p = explode('/', $url);
+        $parts = count($p);
+        for ($i = 0; $i < $parts; $i++) {
+            if (strrpos($p[$i], '.php') !== false) {
+                for ($j = $i; $j < $parts; $j++) {
+                    if (isset($p[$j])) {
+                        $l = strrpos($p[$j], '_');
+                        if ($l !== false) {
+                            $retval = substr($p[$j], $l+1);
+                            break;
+                        }
                     }
                 }
                 break;
             }
         }
     } else { // URL contains '?' or '&'
-        $url = str_replace('&amp;', '&', $url);
-        $parts = explode('&', $url);
-        $part = $parts[0];
-        $l = strrpos($part, '_');
-
+        $url = explode('&', $url);
+        $urlpart = $url[0];
+        $l = strrpos($urlpart, '_');
         if ($l !== false) {
-            $retval = substr($part, $l + 1);
+            $retval = substr($urlpart, $l+1);
         }
     }
+    return $retval;
+}
 
+/**
+ * Get language name from a URL
+ *
+ * @param  string $url
+ * @return string       e.g., 'english', 'japanese', ...
+ * @note   code provided by hiroron
+ */
+function COM_getLanguageFromURL($url='') 
+{
+    global $_CONF;
+    
+    $retval = '';
+    $langid = COM_getLanguageIdFromURL($url);
+    if (!empty($langid)) {
+        if (array_key_exists($langid, $_CONF['language_files'])) {
+            $retval = $_CONF['language_files'][$langid];
+        }
+    }
     return $retval;
 }
 
