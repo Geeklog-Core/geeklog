@@ -205,7 +205,7 @@ $LANG01 = array(
     'ctl' => 'キャッシュ一括削除',
     'ok' => 'OK',
     'filemanager' => 'ファイルマネージャー',
-    'error_invalid_password' => 'Error, invalid password for username'
+    'error_invalid_password' => 'エラー: パスワードが無効です'
 );
 
 ###############################################################################
@@ -265,7 +265,7 @@ $LANG03 = array(
     105 => 'IPアドレス',
     106 => 'Perform bulk action on comments and comment submissions including approval and deleting. You can also bulk ban users and IP addresses. <span style="color: red;">IP addresses in red</span> are the ones banned by the Spam-X plugin (banned from submissions only) and/or Ban plugin (banned from visiting site).  <span style="color: red;">User names in red</span> are users that have been banned.',
     'record_edit' => '編集者と編集時刻を記録する',
-    'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin'
+    'ban_plugin_ban_ip' => 'BanプラグインでこのIPアドレスを禁止する'
 );
 
 ###############################################################################
@@ -866,8 +866,8 @@ $LANG21 = array(
     48 => 'ブロックID',
     49 => '(スペース不可)',
     50 => 'ブロックIDを入力してください。',
-    51 => 'include http:// or https:// if help file includes a URL',
-    52 => 'If you leave this blank the help icon for this block will not be displayed. If you list just an HTML file (so the popup window can be used) please ensure the file is located in the Geeklog public_html/help directory under the correct language (this feature does support multiple languages).',
+    51 => 'ヘルプファイルがURLを含む場合は、http://かhttps://から始めてください',
+    52 => 'この欄を空白にしておくと、このブロックのヘルプアイコンは表示されません。(ポップアップウィンドウを使用できるよう)HTMLファイルを指定する場合は、そのファイルを public_html/help ディレクトリ内の適切な言語のサブディレクトリ内に配置してください(この機能は多言語をサポートしません)。',
     53 => '有効',
     54 => '保存',
     55 => 'キャンセル',
@@ -996,7 +996,7 @@ $LANG24 = array(
     90 => 'キーワードのメタタグ',
     91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。',
     92 => '同じテーマの記事',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to an article. Functions the same as the article autotag. Please use the article autotag instead.',
+    'autotag_desc_story' => '[story: id 代替タイトル] - 記事のリンクを表示します。機能は同じなので、article自動タグの方をお使いください。',
     'autotag_desc_article' => '[article: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'この記事を指定した秒数の間キャッシュします。0 を指定すると、キャッシュしません。(3600 = 1時間、86400 = 1日)'
@@ -1063,7 +1063,7 @@ $LANG27 = array(
     55 => '割り当て',
     'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'ホーム',
-    'autotag_desc_topic' => '[topic: id alternate title] - 話題へのリンク表示にIDを使う。代替のタイトルは必須ではありません。',
+    'autotag_desc_topic' => '[topic: id 代替タイトル] - 話題へのリンク表示にIDを使う。代替のタイトルは必須ではありません。',
     'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - IDとタイプにおける関連話題のクリッカブルホリゾンタルリストを作成する。',
     'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - IDとタイプにおける関連話題のクリッカブルリストを作成する。',
     'no_related_items' => '関連アイテムがありません。',
@@ -1585,9 +1585,9 @@ $LANG_ACCESS = array(
     'yes' => 'はい',
     'no' => 'いいえ',
     'corerightsdescr' => "このグループは、{$_CONF['site_name']}の「コア(中核)グループ」です。そのため、このグループの権限を編集することはできません。このグループの権限リストを読み取り専用で以下に表示しています。",
-    'groupmsg' => 'Security Groups on this site are hierarchical.  By adding this group to any of the groups below you will be giving this group the same rights that those groups have.  Where possible it is encouraged you use the groups below to give rights to a group.  If you need this group to have custom rights then you can select the rights to various site features in the section below called \'Rights\'.  To add this group to any of the ones below simply check the box next to the group(s) that you want. Groups that are checked but disabled are inherited groups from other groups that belongs directly to this group.',
+    'groupmsg' => 'このサイトのセキュリティグループは階層をなしています。このグループを下記のどのグループに追加しても、このグループに下記のグループと同じ権限を与えることになります。可能な場合には、下記のグループを指定することをお勧めします。カスタムの権限のためにこのグループが必要なら、下記の「権限」のセクションから選んでください。このグループを下記のグループに追加するには希望のグループの隣にあるチェックボックスをチェックしてください。チェックが入っていて選択不可になっているグループはこのグループが直接に属している他のグループから継承されたグループです。',
     'coregroupmsg' => "本グループは{$_CONF['site_name']}の「コア(中核)グループ」です。そのため、本グループの所属するグループは編集できません。このグループの権限リストを読み取り専用で以下に表示しています。",
-    'rightsdescr' => 'A group\'s access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below with a disabled checkbox (that is checked) are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights that can be given directly to this group.',
+    'rightsdescr' => '下記の権限は、任意のグループないし任意のグルプープが属している別のグループに直接与えることができます。(チェックが入っていて)選択できないチェックボックスのある権限は、その権限を持つ別のグループに属しているためにこのグループに与えられている権限です。下記のチェックボックスのある権限は、このグループに直接与えることができる権限です。',
     'lock' => 'ロック',
     'members' => 'メンバー',
     'anonymous' => 'ゲストユーザー',
@@ -1608,7 +1608,7 @@ $LANG_ACCESS = array(
     'listusers' => 'ユーザーの表示と編集',
     'listthem' => 'リスト',
     'usersingroup' => '"%s"に含まれるユーザーの一覧',
-    'usersingroupmsg' => 'A list of users that belong to the group. Users lists here may belong directly to the group or are inherited from another group that has been added to this group.',
+    'usersingroupmsg' => 'このグループに属するユーザーの一覧。ここに表示されているユーザーは、このグループに直接属しているユーザーかこのグループに追加された別のグループから継承されているユーザーです。',
     'usergroupadmin' => 'グループ管理',
     'add' => '追加',
     'remove' => '削除',
@@ -1617,7 +1617,7 @@ $LANG_ACCESS = array(
     'inheritmembers' => 'Inherited Group Members',
     'canteditgroup' => 'グループを編集するためには、グループのメンバーでなければなりません。これがエラーだと思う場合はシステムの管理者に連絡してください。',
     'cantlistgroup' => 'メンバーリストを見るには、グループのメンバーでなければなりません。これがエラーだと思う場合はシステムの管理者に連絡してください。',
-    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.<br' . XHTML . '><br' . XHTML . '>Inherited group members can only be removed by editing the group they actually belong too and are only shown here for informational purposes. Remember a user can be both a member of the actual group and still be inherited from another group.',
+    'editgroupmsg' => 'グループのメンバーを変更するには、メンバー名をクリックして「追加」・「削除」のボタンを使用してください。メンバーがこのグループに直接属しているメンバーの場合、メンバー名は右のパネルしか表示されません。操作が完了したら、<b>保存</b>をクリックすると、更新が行われて管理者ページのトップへ戻ります。<br' . XHTML . '><br' . XHTML . '>他のグループから継承されているメンバーは、情報提供のためにここに表示されているだけであり、削除するには直接所属しているグループを編集してください。ユーザーはあるグループのメンバーになることも、他のグループから継承されているグループのメンバーになることもできます。',
     'listgroupmsg' => 'グループ<strong>%s</strong>に含まれるユーザー:',
     'search' => '検索',
     'submit' => '実行',
@@ -1626,7 +1626,7 @@ $LANG_ACCESS = array(
     'plugin_access_denied_msg' => 'このプラグインの管理権限がないのに管理画面にアクセスしようとしました。不正にこのページにアクセスする試みはすべて記録していることに注意してください。',
     'groupexists' => 'このグループ名は既に存在しています。',
     'groupexistsmsg' => '同名のグループがあります。グループ名は重複してはいけません。',
-    'demo_mode_denied_msg' => 'This feature is currently disabled while the site is in Demo Mode.'
+    'demo_mode_denied_msg' => 'サイトがデモモードになっている間、この機能は無効になっています。'
 );
 
 ###############################################################################
@@ -2502,7 +2502,7 @@ $LANG_configselects['Core'] = array(
     33 => array('無効にする' => 0, '有効にする' => 1, '有効にする(リンクなし)' => 2, '有効にする(外部リンクなし)' => 3),
     34 => array('グリッド' => 'grid', 'リスト' => 'list'),
     35 => array('デフォルト' => 'default', '名前(昇順)' => 'NAME_ASC', '名前(降順)' => 'NAME_DESC', '種類(昇順)' => 'TYPE_ASC', '種類(降順)' => 'TYPE_DESC', '変更日時(昇順)' => 'MODIFIED_ASC', '変更日時(降順)' => 'MODIFIED_DESC'),
-    36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
+    36 => array('いいえ' => 'false', 'トップページのみ' => 'frontpage', 'トップページと話題ページ' => 'frontpage_topics'),
     37 => array('無効' => 0, '有効(index.phpあり)' => 1, '有効(index.phpなし)' => 2),
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro')
 );
@@ -2542,7 +2542,7 @@ $LANG_VALIDATION = array(
     'rdf_limit' => 'このフィールドには数値で入力してください',
     'path' => 'パスがありません',
     'file' => 'ファイルがありません',
-    'fileName' => 'This field must be a proper file name',
+    'fileName' => 'このフィールドには適切なファイル名を入力してください',
     'search_limits' => 'このフィールドにはコンマで区切られた数値を入力してください',
     'num_search_results' => 'このフィールドには下の\'search_limits\'の数値を入力してください',
     'theme' => 'テーマディレクトリがありません',
@@ -2555,4 +2555,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-
