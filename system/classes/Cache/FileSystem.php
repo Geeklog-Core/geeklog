@@ -11,6 +11,8 @@ use Geeklog\CacheInterface;
  */
 class FileSystem implements CacheInterface
 {
+    const SECURITY_HEADER = "<?php if (!defined('VERSION')) { die('This file cannot be used on its own!'); } ?>\n";
+
     /**
      * @var string
      */
@@ -120,6 +122,8 @@ class FileSystem implements CacheInterface
             return $defaultValue;
         }
 
+        // Remove security header
+        $temp = str_replace(self::SECURITY_HEADER, '', $temp);
         $data = @unserialize($temp);
 
         if ($data === false) {
@@ -157,8 +161,9 @@ class FileSystem implements CacheInterface
             'ttl'     => (int) $ttl,
             'hash'    => $this->getHash($data),
         );
+        $serialized = self::SECURITY_HEADER . serialize($item);
 
-        return (@file_put_contents($fileName, serialize($item)) !== false);
+        return (@file_put_contents($fileName, $serialized) !== false);
     }
 
     /**
