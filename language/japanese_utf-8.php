@@ -263,7 +263,7 @@ $LANG03 = array(
     103 => 'このユーザーを禁止する',
     104 => 'このIPアドレスをSpamxプラグインで禁止する',
     105 => 'IPアドレス',
-    106 => 'Perform bulk action on comments and comment submissions including approval and deleting. You can also bulk ban users and IP addresses. <span style="color: red;">IP addresses in red</span> are the ones banned by the Spam-X plugin (banned from submissions only) and/or Ban plugin (banned from visiting site).  <span style="color: red;">User names in red</span> are users that have been banned.',
+    106 => 'ユーザーやIPアドレスの一括承認・削除・禁止を含めて、コメントに対するアクションを一括して行います。<span style="color: red;">赤字のIPアドレス</span>は、承認待ちのコメントをSpam-Xプラグインで禁止されたユーザーかBanプラグインで退去処分を受けたユーザーのIPです。</span><span style="color: red;">赤字のユーザー名</span>は退去処分を受けたユーザーです。',
     'record_edit' => '編集者と編集時刻を記録する',
     'ban_plugin_ban_ip' => 'BanプラグインでこのIPアドレスを禁止する'
 );
