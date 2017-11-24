@@ -35,7 +35,7 @@ manually.</p>
 
 <ul>
 <li><a href="#site">Site</a></li>
-<li><a href="#stories">Stories and Trackback</a></li>
+<li><a href="#stories">Articles and Trackback</a></li>
 <li><a href="#theme">Theme</a></li>
 <li><a href="#blocks">Blocks</a></li>
 <li><a href="#users">Users and Submissions</a></li>
@@ -109,7 +109,7 @@ manually.</p>
 <tr>
   <td valign="top"><a name="desc_meta_tags">meta_tags</a></td>
   <td valign="top">disabled</td>
-  <td valign="top">Enabled - The meta tags for stories and topics will be displayed. If none are found, then the default will be used. The default will also be used for any page that doesn't have meta tags.<br />
+  <td valign="top">Enabled - The meta tags for articles and topics will be displayed. If none are found, then the default will be used. The default will also be used for any page that doesn't have meta tags.<br />
       Enabled (Default for Homepage only) - The same as Enabled except, the defaults are used only for the Homepage.<br />
     Disabled - Meta tags are not used.</td></tr>
 <tr>
@@ -200,16 +200,16 @@ the admin panel.</p>
     <th style="width:63%">Description</th></tr>
 <tr><td valign="top"><a name="desc_backend">backend</a></td>
     <td valign="top">1</td>
-    <td valign="top">Create a feed file for the stories in rdf_file (0=no, 1=yes)</td></tr>
+    <td valign="top">Create a feed file for the articles in rdf_file (0=no, 1=yes)</td></tr>
 <tr><td valign="top"><a name="desc_rdf_file">rdf_file</a></td>
     <td valign="top">HTML path with "/backend/geeklog.rss" suffix</td>
     <td valign="top">File system path for the feed file. This file allows you to share your site's headlines with others</td></tr>
 <tr><td valign="top"><a name="desc_rdf_limit">rdf_limit</a></td>
     <td valign="top">10</td>
-    <td valign="top">Limit the number of stories to export to the news feed. If the value for this setting is a number, the feed will hold this many stories. If the number is followed by a lower-case 'h' (e.g. 24h) it denotes the number of hours from which to chose the stories.</td></tr>
+    <td valign="top">Limit the number of articles to export to the news feed. If the value for this setting is a number, the feed will hold this many articles. If the number is followed by a lower-case 'h' (e.g. 24h) it denotes the number of hours from which to chose the articles.</td></tr>
 <tr><td valign="top"><a name="desc_rdf_storytext">rdf_storytext</a></td>
     <td valign="top">0</td>
-    <td valign="top">If this value is 1, then the entire introtext of the stories will be included in the news feed. Any number greater than 1 limits the introtext to that many characters (e.g. a value of 80 would only include the first 80 characters from the introtext in the feed). If set to 0, the introtext is not included in the feed.</td></tr>
+    <td valign="top">If this value is 1, then the entire introtext of the articles will be included in the news feed. Any number greater than 1 limits the introtext to that many characters (e.g. a value of 80 would only include the first 80 characters from the introtext in the feed). If set to 0, the introtext is not included in the feed.</td></tr>
 <tr><td valign="top"><a name="desc_rdf_language">rdf_language</a></td>
     <td valign="top">en-gb</td>
     <td valign="top">Value for the feed's language tag. Depending on your site's language and operating system, this may differ from the language setting in the locale (see above).<br /><strong>Example:</strong> The PHP locale setting for German is 'de_DE' while the correct language setting for a German RSS feed would be 'de-DE' (note the dash instead of the underscore).</td></tr>
@@ -263,7 +263,7 @@ the admin panel.</p>
 <tr><td valign="top"><a name="desc_path_images">path_images</a></td>
     <td valign="top">/path/to/geeklog/public_html/images/</td>
     <td valign="top">Path where Geeklog expects to find its images, including
-        user photos and images for stories.</td></tr>
+        user photos and images for articles.</td></tr>
 <tr><td valign="top"><a name="desc_path_editors">path_editors</a></td>
     <td valign="top">/path/to/geeklog/public_html/editors/</td>
     <td valign="top">Path where all WYSIWYG editors reside.</td></tr>
@@ -346,9 +346,9 @@ the admin panel.</p>
   <td valign="top">If true the last topic the user visited will be set on the advanced search page and used automatically in the search block. If false, "All" topics will be set when the user visits the advance search page, and will be used when searching via the search block.</td></tr>
 </table>
 
-<h2><a name="stories">Stories and Trackback</a></h2>
+<h2><a name="stories">Articles and Trackback</a></h2>
 
-<h3><a name="stories_story">Stories and Trackback: Story</a></h3>
+<h3><a name="stories_story">Articles and Trackback: Article</a></h3>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
@@ -357,15 +357,15 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_maximagesperarticle">maximagesperarticle</a></td>
   <td valign="top">5</td>
-  <td valign="top">max. number of images you can have in a story</td></tr>
+  <td valign="top">max. number of images you can have in a article</td></tr>
 <tr>
   <td valign="top"><a name="desc_limitnews">limitnews</a></td>
   <td valign="top">10</td>
-  <td valign="top">Number of stories to limit the index page to, this same number will appear in the older stuff block</td></tr>
+  <td valign="top">Number of articles to limit the index page to, this same number will appear in the older stuff block</td></tr>
 <tr>
   <td valign="top"><a name="desc_minnews">minnews</a></td>
   <td valign="top">1</td>
-  <td valign="top">Minimum numbers of stories than can appear on a topic page</td></tr>
+  <td valign="top">Minimum numbers of articles than can appear on a topic page</td></tr>
 <tr>
   <td valign="top"><a name="desc_contributedbyline">contributedbyline</a></td>
   <td valign="top">1</td>
@@ -374,28 +374,28 @@ the admin panel.</p>
   <td valign="top"><a name="desc_hideviewscount">hideviewscount</a></td>
   <td valign="top">0</td>
   <td valign="top">Whether to show (= 0) or to hide (= 1) the number of views
-    a story has had.</td></tr>
+    a article has had.</td></tr>
 <tr>
   <td valign="top"><a name="desc_hideemailicon">hideemailicon</a></td>
   <td valign="top">0</td>
-  <td valign="top">When set to 1, this will disable the ability to send a story by email. It
-    will also hide the email icon from stories and the &quot;Email Article To a
-    Friend&quot; from the Story Options block.</td></tr>
+  <td valign="top">When set to 1, this will disable the ability to send a article by email. It
+    will also hide the email icon from articles and the &quot;Email Article To a
+    Friend&quot; from the Article Options block.</td></tr>
 <tr>
   <td valign="top"><a name="desc_hideprintericon">hideprintericon</a></td>
   <td valign="top">0</td>
-  <td valign="top">When set to 1, this will disable display of a story in a &quot;printer
-    friendly&quot; format. It will also hide the printer icon from stories and
-    the &quot;View Printable Version&quot; from the Story Options
+  <td valign="top">When set to 1, this will disable display of a article in a &quot;printer
+    friendly&quot; format. It will also hide the printer icon from articles and
+    the &quot;View Printable Version&quot; from the Article Options
     block.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_page_breaks">allow_page_breaks</a></td>
   <td valign="top">1</td>
-  <td valign="top">Allow usage of the <code>[page_break]</code> tag in stories (when set to 1), so that stories can spread over multiple pages.</td></tr>
+  <td valign="top">Allow usage of the <code>[page_break]</code> tag in articles (when set to 1), so that articles can spread over multiple pages.</td></tr>
 <tr>
   <td valign="top"><a name="desc_page_break_comments">page_break_comments</a></td>
   <td valign="top">last</td>
-  <td valign="top">When the <code>[page_break]</code> tag is allowed in stories (see above), where should the story's comments be displayed: <code>'last'</code> = on the story's last page only, <code>'first'</code> = on the first page only, <code>'all'</code> = on every page.</td></tr>
+  <td valign="top">When the <code>[page_break]</code> tag is allowed in articles (see above), where should the article's comments be displayed: <code>'last'</code> = on the article's last page only, <code>'first'</code> = on the first page only, <code>'all'</code> = on every page.</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_image_align">article_image_align</a></td>
   <td valign="top">right</td>
@@ -403,19 +403,19 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_show_topic_icon">show_topic_icon</a></td>
   <td valign="top">1</td>
-  <td valign="top">Default setting for new stories and story submissions: Whether to show the topic icon (1) or not (0).</td></tr>
+  <td valign="top">Default setting for new articles and article submissions: Whether to show the topic icon (1) or not (0).</td></tr>
 <tr>
   <td valign="top"><a name="desc_draft_flag">draft_flag</a></td>
   <td valign="top">0</td>
-  <td valign="top">Default setting for new stories created by Story Admins: Whether the story's draft flag should be set (1) or not (0).</td></tr>
+  <td valign="top">Default setting for new articles created by Story Admins: Whether the article's draft flag should be set (1) or not (0).</td></tr>
 <tr>
   <td valign="top"><a name="desc_frontpage">frontpage</a></td>
   <td valign="top">0</td>
-  <td valign="top">Default setting for new stories and story submissions: Whether the story should appear on the site's frontpage (1) or only in its topic's page (0). Please note that for stories submitted to the archive topic, this setting will be ignored and the story will <em>not</em> appear on the frontpage.</td></tr>
+  <td valign="top">Default setting for new articles and article submissions: Whether the article should appear on the site's frontpage (1) or only in its topic's page (0). Please note that for articles submitted to the archive topic, this setting will be ignored and the article will <em>not</em> appear on the frontpage.</td></tr>
 <tr>
   <td valign="top"><a name="desc_hide_no_news_msg">hide_no_news_msg</a></td>
   <td valign="top">0</td>
-  <td valign="top">When set to 1, hide the "No News To Display" message on the index page (e.g. when viewing a topic without any stories in it)</td></tr>
+  <td valign="top">When set to 1, hide the "No News To Display" message on the index page (e.g. when viewing a topic without any articles in it)</td></tr>
 <tr>
   <td valign="top"><a name="desc_hide_main_page_navigation">hide_main_page_navigation</a></td>
   <td valign="top">false</td>
@@ -426,22 +426,22 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_onlyrootfeatures">onlyrootfeatures</a></td>
   <td valign="top">0</td>
-  <td valign="top">This restricts the featuring of stories to root user(s). If you have several story admins who can create content that is not visible to other story admins,
+  <td valign="top">This restricts the featuring of articles to root user(s). If you have several article admins who can create content that is not visible to other article admins,
   and such a content is featured, another admin might think its ok to feature his own content. To prevent
   that two admins unknowingly take features from each other away, only a user who can see all content (= root)
-  should be able to feature a story.</td></tr>
+  should be able to feature a article.</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_story">aftersave_story</a></td>
   <td valign="top">'list'</td>
-  <td valign="top">Which page to go to after a story has been saved:
+  <td valign="top">Which page to go to after a article has been saved:
     <ul>
-    <li>'item': display the story</li>
-    <li>'list': show admin's list of stories (default)</li>
+    <li>'item': display the article</li>
+    <li>'list': show admin's list of articles (default)</li>
     <li>'home': display the site's homepage</li>
     <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
     </ul>
-  <strong>Note:</strong> This option is ignored for story submissions. Editing
-  a story submission will always send you back to the submission queue (i.e.
+  <strong>Note:</strong> This option is ignored for article submissions. Editing
+  a article submission will always send you back to the submission queue (i.e.
   "Admin Home" aka Command &amp; Control).</td></tr>
 <tr>
   <td valign="top"><a name="desc_related_topics">related_topics</a></td>
@@ -474,7 +474,7 @@ the admin panel.</p>
     </ul></td></tr>    
 </table>
 
-<h3><a name="stories_trackback">Stories and Trackback: Trackback</a></h3>
+<h3><a name="stories_trackback">Articles and Trackback: Trackback</a></h3>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
@@ -487,7 +487,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_trackback_code">trackback_code</a></td>
   <td valign="top">0</td>
-  <td valign="top">Default value for new stories: Trackback enabled (0) or disabled (-1)</td></tr>
+  <td valign="top">Default value for new articles: Trackback enabled (0) or disabled (-1)</td></tr>
 <tr>
   <td valign="top"><a name="desc_trackbackspeedlimit">trackbackspeedlimit</a></td>
   <td valign="top">300</td>
@@ -511,7 +511,7 @@ the admin panel.</p>
   <td valign="top">How to handle multiple trackbacks and pingbacks from the same source: 0 = keep only the first, reject any further trackbacks / pingbacks; 1 = overwrite, i.e. only keep the latest trackback / pingback; 2 = allow multiple trackbacks / pingbacks, i.e. list them all</td></tr>
 </table>
 
-<h3><a name="stories_pingback">Stories and Trackback: Pingback</a></h3>
+<h3><a name="stories_pingback">Articles and Trackback: Pingback</a></h3>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
@@ -533,14 +533,14 @@ the admin panel.</p>
   <td valign="top"><a name="desc_pingback_self">pingback_self</a></td>
   <td valign="top">0</td>
   <td valign="top">Pingbacks are sent out automatically to <em>all</em> the
-    URLs linked from a story - which includes stories on your own site that
+    URLs linked from a article - which includes articles on your own site that
     you may have linked in the article. This option lets you specify how these
     "self pingbacks" are to be handled: 0 = skip them, i.e. don't send pingbacks
-    to stories on your own site; 1 = allow them, but obey the speed limit;
+    to articles on your own site; 1 = allow them, but obey the speed limit;
     2 = allow them and ignore the speed limit.<br />
-    If your article contains more than one link to other stories on your site,
+    If your article contains more than one link to other articles on your site,
     then option 1 is probably of limited use, as it would only pingback the
-    first linked story and run into the speed limit for the others.</td></tr>
+    first linked article and run into the speed limit for the others.</td></tr>
 <tr>
   <td valign="top"><a name="desc_ping_enabled">ping_enabled</a></td>
   <td valign="top">true</td>
@@ -623,9 +623,9 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_showfirstasfeatured">showfirstasfeatured</a></td>
   <td valign="top">0</td>
-  <td valign="top">When set to 1, this will render the first story on <em>any</em> page
-    using the templates for a featured story, even if that story is not
-    featured. This will even be applied to the first story on page 2 of a
+  <td valign="top">When set to 1, this will render the first article on <em>any</em> page
+    using the templates for a featured article, even if that article is not
+    featured. This will even be applied to the first article on page 2 of a
     topic page, for example.</td></tr>
 <tr>
   <td valign="top"><a name="desc_template_comments">template_comments</a></td>
@@ -684,11 +684,11 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_showstorycount">showstorycount</a></td>
   <td valign="top">1</td>
-  <td valign="top">Show the number of stories in a topic in the Sections block (0=no, 1=yes)</td></tr>
+  <td valign="top">Show the number of articles in a topic in the Sections block (0=no, 1=yes)</td></tr>
 <tr>
   <td valign="top"><a name="desc_showsubmissioncount">showsubmissioncount</a></td>
   <td valign="top">1</td>
-  <td valign="top">Show the number of story submissions for a topic in the Sections block (0=no, 1=yes)</td></tr>
+  <td valign="top">Show the number of article submissions for a topic in the Sections block (0=no, 1=yes)</td></tr>
 <tr>
   <td valign="top"><a name="desc_hide_home_link">hide_home_link</a></td>
   <td valign="top">0</td>
@@ -724,7 +724,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_newstoriesinterval">newstoriesinterval</a></td>
   <td valign="top">86400</td>
-  <td valign="top">Stories are "new" if they are this many seconds old.</td></tr>
+  <td valign="top">Articles are "new" if they are this many seconds old.</td></tr>
 <tr>
   <td valign="top"><a name="desc_newcommentsinterval">newcommentsinterval</a></td>
   <td valign="top">172800</td>
@@ -736,7 +736,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_hidenewstories">hidenewstories</a></td>
   <td valign="top">0</td>
-  <td valign="top">Set to 1 to hide new stories from the What's New block.</td></tr>
+  <td valign="top">Set to 1 to hide new articles from the What's New block.</td></tr>
 <tr>
   <td valign="top"><a name="desc_hidenewcomments">hidenewcomments</a></td>
   <td valign="top">0</td>
@@ -787,12 +787,12 @@ the admin panel.</p>
   <td valign="top"><a name="desc_allow_username_change">allow_username_change</a></td>
   <td valign="top">0</td>
   <td valign="top">If set to 1, users will be allowed to change their username
-    (login name). Stories and comments posted under the old username will
+    (login name). Articles and comments posted under the old username will
     automatically show the new username.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_account_delete">allow_account_delete</a></td>
   <td valign="top">0</td>
-  <td valign="top">If set to 1, users will be allowed to delete their accounts. Stories and comments posted under that account will be kept and show up as being posted by "Anonymous".</td></tr>
+  <td valign="top">If set to 1, users will be allowed to delete their accounts. Articles and comments posted under that account will be kept and show up as being posted by "Anonymous".</td></tr>
 <tr>
   <td valign="top"><a name="desc_hide_author_exclusion">hide_author_exclusion</a></td>
   <td valign="top">Can be 1 or 0</td>
@@ -1011,7 +1011,7 @@ the admin panel.</p>
       from the following settings.</td></tr>
 <tr><td valign="top"><a name="desc_submitloginrequired">submitloginrequired</a></td>
     <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can submit stories
+    <td valign="top">When set to 1, only registered users can submit articles
       and items handled by plugins, e.g. links and events</td></tr>
 <tr><td valign="top"><a name="desc_commentsloginrequired">commentsloginrequired</a></td>
     <td valign="top">0</td>
@@ -1032,7 +1032,7 @@ the admin panel.</p>
       form to send an email to another user</td></tr>
 <tr><td valign="top"><a name="desc_emailstoryloginrequired">emailstoryloginrequired</a></td>
     <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can email stories</td></tr>
+    <td valign="top">When set to 1, only registered users can email articles</td></tr>
 <tr><td valign="top"><a name="desc_directoryloginrequired">directoryloginrequired</a></td>
     <td valign="top">0</td>
     <td valign="top">When set to 1, only registered users can access the list of past articles</td></tr>
@@ -1113,12 +1113,12 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_storysubmission">storysubmission</a></td>
   <td valign="top">1</td>
-  <td valign="top">Enable (1) or disable (0) the story submission queue</td></tr>
+  <td valign="top">Enable (1) or disable (0) the article submission queue</td></tr>
 <tr>
   <td valign="top"><a name="desc_listdraftstories">listdraftstories</a></td>
   <td valign="top">0</td>
   <td valign="top">When set to 1, this will display an additional block on the
-    submissions page (<span class="tt">moderation.php</span>) that lists all the stories that
+    submissions page (<span class="tt">moderation.php</span>) that lists all the articles that
     have the 'draft' flag set.</td></tr>
 <tr>
   <td valign="top"><a name="desc_postmode">postmode</a></td>
@@ -1131,12 +1131,12 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_skip_preview">skip_preview</a></td>
   <td valign="top">0</td>
-  <td valign="top">If 1, allows submission of stories and comments without previewing (i.e. the submission form will always have a Preview <em>and</em> a Submit button).</td></tr>
+  <td valign="top">If 1, allows submission of articles and comments without previewing (i.e. the submission form will always have a Preview <em>and</em> a Submit button).</td></tr>
 <tr>
   <td valign="top"><a name="desc_advanced_editor">advanced_editor</a></td>
   <td valign="top">false</td>
   <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
-    story and comment submissions and static pages. Geeklog ships with <a
+    article and comment submissions and static pages. Geeklog ships with <a
     href="http://ckeditor.com">CKeditor</a>.</td></tr>
 <tr>
   <td valign="top"><a name="desc_advanced_editor_name">advanced_editor_name</a></td>
@@ -1145,8 +1145,8 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_wikitext_editor">wikitext_editor</a></td>
   <td valign="top">false</td>
-  <td valign="top">Allow using <a href="http://pear.reversefold.com/dokuwiki/text_wiki:samplepage">wiki syntax</a> in stories. This adds a third option,
-    "Wiki-style format", to the Post Mode dropdown in the story editor
+  <td valign="top">Allow using <a href="http://pear.reversefold.com/dokuwiki/text_wiki:samplepage">wiki syntax</a> in articles. This adds a third option,
+    "Wiki-style format", to the Post Mode dropdown in the article editor
     (implemented using the <a href="http://pear.php.net/package/Text_Wiki">PEAR::Text_Wiki</a> package).</td></tr>
   <tr>
     <td valign="top"><a name="desc_remove_4byte_chars">remove_4byte_chars</a></td>
@@ -1183,7 +1183,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_comment_code">comment_code</a></td>
   <td valign="top">0</td>
-  <td valign="top">Default value for new stories: Comments enabled (0) or disabled (-1)</td></tr>
+  <td valign="top">Default value for new articles: Comments enabled (0) or disabled (-1)</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_edit">comment_edit</a></td>
   <td valign="top">0</td>
@@ -1202,25 +1202,25 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_enabled">article_comment_close_enabled</a></td>
   <td valign="top">0</td>
-  <td valign="top">Whether or not stories should be closed for comments after
+  <td valign="top">Whether or not articles should be closed for comments after
     a certain amount of days (see next option). This is only the default
-    setting for new stories and can be changed separately for each
-    story.</td></tr>
+    setting for new articles and can be changed separately for each
+    article.</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_days">article_comment_close_days</a></td>
   <td valign="top">30</td>
-  <td valign="top">Number of days after which a story is to be automatically
+  <td valign="top">Number of days after which a article is to be automatically
     closed for comments, i.e. no new comments can be posted after that many
     days.<br />
     Note that this is only the default value to which the "Disable Comments"
-    option is set when creating a new story. It will not take effect unless it
-    has also been enabled for the story.</td></tr>
+    option is set when creating a new article. It will not take effect unless it
+    has also been enabled for the article.</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_close_rec_stories">comment_close_rec_stories</a></td>
   <td valign="top">0</td>
-  <td valign="top">Number of most recent stories for which comment posting is
-    allowed. Posting a new story will automatically close comments for the
-    oldest of these stories. Set to 0 to disable this option.</td></tr>
+  <td valign="top">Number of most recent articles for which comment posting is
+    allowed. Posting a new article will automatically close comments for the
+    oldest of these articles. Set to 0 to disable this option.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_reply_notifications">allow_reply_notifications</a></td>
   <td valign="top">0</td>
@@ -1285,7 +1285,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_allow_user_scaling">allow_user_scaling</a></td>
   <td valign="top">1</td>
   <td valign="top">When unscaled images are kept (see above), this option lets
-    the user chose between using the scaled or unscaled image in the story, i.e.
+    the user chose between using the scaled or unscaled image in the article, i.e.
     enables the <code>[unscaled<em>X</em>]</code> image tag (in addition to the
     <code>[image<em>X</em>]</code> tag).</td></tr>
 <tr>
@@ -1502,7 +1502,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_date">date</a></td>
   <td valign="top">%A, %B %d %Y @ %I:%M %p %Z</td>
-  <td valign="top">Date format used for most of the site, including story displays. See <a
+  <td valign="top">Date format used for most of the site, including article displays. See <a
     href="#date_formats">date formats</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_daytime">daytime</a></td>
@@ -1518,7 +1518,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_dateonly">dateonly</a></td>
   <td valign="top">%d-%b</td>
   <td valign="top">Short date format (day and month only), to be used e.g. in the
-    Upcoming Events and Older Stories blocks. See <a href="#date_formats">date
+    Upcoming Events and Older Articles blocks. See <a href="#date_formats">date
     formats</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_timeonly">timeonly</a></td>
@@ -1533,7 +1533,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_hour_mode">hour_mode</a></td>
   <td valign="top">12</td>
   <td valign="top">Which format to use when submitting or editing an object
-    with a time setting (e.g. the publish time of a story). Can be 12 (for the
+    with a time setting (e.g. the publish time of a article). Can be 12 (for the
     12 hour am/pm format) or 24 (for the 24 hour format).</td></tr>
 <tr>
   <td valign="top"><a name="desc_thousand_separator">thousand_separator</a></td>
@@ -1633,13 +1633,13 @@ the admin panel.</p>
   <td valign="top"><a name="desc_notification">notification</a></td>
   <td valign="top">array()</td>
   <td valign="top">Send an email notification to <span class="tt">$_CONF['site_email']</span>
-    when a new story, comment, trackback or pingback has been submitted
+    when a new article, comment, trackback or pingback has been submitted
     or a new user has registered with the site (or a user updated their account). The <span class="tt">array()</span> can hold
-    any combination of the strings <span class="tt">'story'</span>, <span class="tt">'comment'</span>,
+    any combination of the strings <span class="tt">'article'</span>, <span class="tt">'comment'</span>,
     <span class="tt">'trackback'</span>, <span class="tt">'pingback'</span>, <span class="tt">'user'</span>, and <span class="tt">'user_update'</span> (separated
     by commas), depending on which notification(s) you want.<br />
-    <strong>Example:</strong> <code>array('story','user');</code> would
-    send notifications when a new story has been submitted or a new user has
+    <strong>Example:</strong> <code>array('article','user');</code> would
+    send notifications when a new article has been submitted or a new user has
     registered. No notifications would be sent, for example, for new
     comments.</td></tr>
 <tr>
@@ -1660,7 +1660,7 @@ the admin panel.</p>
   <td valign="top">0</td>
   <td valign="top">If set to 1, disables the <a
     href="https://www.geeklog.net/article.php/autolinks">autotags</a>. I.e. the
-    special tags in square brackets (e.g. [story:]) will not be interpreted
+    special tags in square brackets (e.g. [article:]) will not be interpreted
     any more.</td></tr>
 <tr>
   <td valign="top"><a name="desc_clickable_links">clickable_links</a></td>
@@ -1740,13 +1740,13 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_emailstories">emailstories</a></td>
   <td valign="top">0</td>
-  <td valign="top">Let users get stories e-mailed to them (0=no, 1=yes), aka Daily Digest.
+  <td valign="top">Let users get articles e-mailed to them (0=no, 1=yes), aka Daily Digest.
     Please note that this requires cron and the use of PHP as a shell script.</td></tr>
 <tr>
   <td valign="top"><a name="desc_emailstorieslength">emailstorieslength</a></td>
   <td valign="top">1</td>
   <td valign="top">When emailstories (above) is enabled, send only the title and the
-    link to the new stories (0), or send the entire introtext (1) or send
+    link to the new articles (0), or send the entire introtext (1) or send
     the first <em>n</em> characters from the introtext (where <em>n</em> = any other number)</td></tr>
 <tr>
   <td valign="top"><a name="desc_emailstoriesperdefault">emailstoriesperdefault</a></td>
@@ -1765,7 +1765,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_user_html">user_html</a></td>
   <td valign="top">&lt;p&gt;, &lt;b&gt;, &lt;i&gt;, &lt;a&gt;, &lt;em&gt;, &lt;br&gt;, &lt;tt&gt;, &lt;hr&gt;, &lt;ol&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;code&gt;, &lt;pre&gt;</td>
   <td valign="top">HTML tags and attributes that normal users are allowed to
-      use in story submissions and comments.</td></tr>
+      use in article submissions and comments.</td></tr>
 <tr>
   <td valign="top"><a name="desc_admin_html">admin_html</a></td>
   <td valign="top">additional HTML tags, e.g. for tables</td>
@@ -1843,7 +1843,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_atom_max_stories">atom_max_stories</a></td>
   <td valign="top">10</td>
-  <td valign="top">Max. number of stories returned when an Atom feed is
+  <td valign="top">Max. number of articles returned when an Atom feed is
     requested through the webservices API.</td></tr>
 </table>
 
@@ -2112,7 +2112,7 @@ the installation and you should not normally have to edit this file.</p>
 <p>Geeklog includes a simple but useful URL rewriting feature which can help
 make your site more crawler friendly (i.e. the URLs of your site are more
 likely to be picked up by the search engine's indexing bots). This feature is
-supported for URLs to stories, topics, static pages, the article directory, and links.
+supported for URLs to articles, topics, static pages, the article directory, and links.
 </p>
 <p>URL rewriting means that your URLs will look like this</p>
 <p style="margin-left:4em;"><span class="tt">https://www.geeklog.net/article.php/20021022234959146</span></p>
@@ -2130,7 +2130,9 @@ with your site.</p>
 
 <p>This feature enhances the above <a href="#url-rewrite">URL Rewriting</a> feature and makes
     public_html/index.php work like a front controller.  So, in order to use URL Routing feature,
-    you have to enable URL Rewriting beforehand.  Currently, the following rules are predefined.</p>
+    you have to enable URL Rewriting beforehand.  Remember URL Routing currently only works with 
+    whatever URL Rewriting supports (articles, topics, static pages, the article directory, and links plugin). 
+    Currently, the following rules are predefined.</p>
 <table border="1">
     <thead>
     <tr><th>Rule</th><th>Route</th><th>Priority</th></tr>
@@ -2170,8 +2172,8 @@ with your site.</p>
 </table>
 
 <p>Look at the first row in the table.  This means if you access "http://yourdomain/index.php/article/@sid/print",
-    then you will be redirected to "http://yourdomain/article.php?story=@sid&mode=print".
-    @sid is a story ID.</p>
+    then you will be redirected to "http://yourdomain/article.php?article=@sid&mode=print".
+    @sid is a article ID.</p>
 <p>Then, look at the third row.  You will see an at mark (@), followed by alphabetical
     letters.  This is a placeholder.  For instance, when you access
     "http://yourdomain/index.php/archives/all/2016/1", @topic matches "all", @year matches "2016",
