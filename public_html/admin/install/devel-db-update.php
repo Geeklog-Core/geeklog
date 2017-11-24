@@ -324,7 +324,7 @@ function update_DatabaseFor212()
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.3', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='spamx'";
     
     // Links
-    // $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.4', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='links'";
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.6', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='links'";
     
     // Polls
     $_SQL[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD `allow_multipleanswers` TINYINT(1) NULL DEFAULT NULL";
@@ -333,7 +333,7 @@ function update_DatabaseFor212()
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.7', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='polls'";
     
     // Calendar
-    // $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.5', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.6', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
     
     // XMLSiteMap
     // $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.0', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
@@ -413,9 +413,11 @@ foreach ($corePlugins AS $pi_name) {
             $plugin_version = '2.1.5';
             break;
         case 'polls':
+            $new_plugin_version = true;
             $plugin_version = '2.1.8';
             break;
         case 'calendar':
+            $new_plugin_version = true;
             $plugin_version = '1.1.5';
             break;
         case 'xmlsitemap':
