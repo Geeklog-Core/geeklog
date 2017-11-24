@@ -269,7 +269,11 @@ function listRoutes()
         $notice .= ' ' . $LANG_ROUTER[19];
     }
 
-    $retval = COM_startBlock($LANG_ROUTER[2], '', COM_getBlockTemplate('_admin_block', 'header'))
+    $helpFile = "config.html";
+    $help_url = COM_getDocumentUrl('docs', $helpFile);
+    $help_url .= "#url-routing";
+    
+    $retval = COM_startBlock($LANG_ROUTER[2], $help_url, COM_getBlockTemplate('_admin_block', 'header'))
         . ADMIN_createMenu(
             $menu_arr,
             $notice,

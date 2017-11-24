@@ -432,7 +432,10 @@ $LANG04 = array(
     170 => "Admin at {$_CONF['site_name']} changed the password of your account as follows.  Please save this mail for further reference.",
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
-    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
+    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?", 
+    'user_max_login_attempts' => "Max Login Attempts and Speed Limit Reached",
+    
+       8 => " seconds ago.  This site requires at least {$_CONF['commentspeedlimit']} seconds between comments",
 );
 
 ###############################################################################
@@ -1408,7 +1411,7 @@ $LANG_ROUTER = array(
     8 => 'Increase priority',
     9 => 'Decrease priority',
     10 => 'Edit routing',
-    11 => 'To modify or delete a route, click on the route\'s edit icon below. To create a new route, click on "Create New" above.  When you use placeholders (@), you must define the same placeholders in a rule and its route.',
+    11 => 'To modify or delete a route, click on the route\'s edit icon below. To create a new route, click on "Create New" above.  When you use placeholders (@), you must define the same placeholders in a rule and its route. Remember URL routing currently only supports articles, topics, static pages, the article directory, and the links plugin.',
     12 => 'Bad request method',
     13 => 'Rule is a mandatory item.',
     14 => 'Route is a mandatory item.',
@@ -2261,6 +2264,7 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => "Password Speed Limit",
     'login_attempts' => "Max. Login Attempts",
     'login_speedlimit' => "Login Speed Limit",
+    'login_speedlimit_email' => "Email Admin after Speed Limit Reached",
     'pass_alg' => 'Password Hash Algorithm',
     'pass_stretch' => 'Hash Stretch Count',
     'user_html' => "User HTML",
