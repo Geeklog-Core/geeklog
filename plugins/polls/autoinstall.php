@@ -51,7 +51,7 @@ function plugin_autoinstall_polls($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '2.1.8',
+        'pi_version'      => '2.1.9',
         'pi_gl_version'   => '2.1.1',
         'pi_homepage'     => 'https://www.geeklog.net/'
     );
