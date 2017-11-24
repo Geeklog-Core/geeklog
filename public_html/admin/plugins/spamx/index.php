@@ -77,8 +77,10 @@ $menu_arr = array(
           'text' => $LANG_ADMIN['admin_home']),
 );
 
+$help_url = COM_getDocumentUrl('docs', "spamx.html");
+
 $display = COM_startBlock(
-    $LANG_SX00['plugin_name'], '', COM_getBlockTemplate('_admin_block', 'header')
+    $LANG_SX00['plugin_name'], $help_url, COM_getBlockTemplate('_admin_block', 'header')
 );
 $display .= ADMIN_createMenu($menu_arr, $LANG_SX00['adminc'], plugin_geticon_spamx());
 

@@ -269,8 +269,7 @@ function listRoutes()
         $notice .= ' ' . $LANG_ROUTER[19];
     }
 
-    $helpFile = "config.html";
-    $help_url = COM_getDocumentUrl('docs', $helpFile);
+    $help_url = COM_getDocumentUrl('docs', "config.html");
     $help_url .= "#url-routing";
     
     $retval = COM_startBlock($LANG_ROUTER[2], $help_url, COM_getBlockTemplate('_admin_block', 'header'))

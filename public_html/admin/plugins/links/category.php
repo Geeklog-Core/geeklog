@@ -125,8 +125,10 @@ function links_list_categories($root)
             'text' => $LANG_ADMIN['admin_home'],
         ),
     );
+    
+    $help_url = COM_getDocumentUrl('docs', "links.html");
 
-    $retval .= COM_startBlock($LANG_LINKS_ADMIN[54], '', COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG_LINKS_ADMIN[54], $help_url, COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12], plugin_geticon_links());
 
     $text_arr = array(

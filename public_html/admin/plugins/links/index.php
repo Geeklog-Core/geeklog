@@ -419,7 +419,9 @@ function listlinks()
         'text' => $LANG_ADMIN['admin_home'],
     );
 
-    $retval .= COM_startBlock($LANG_LINKS_ADMIN[11], '',
+    $help_url = COM_getDocumentUrl('docs', "links.html");
+    
+    $retval .= COM_startBlock($LANG_LINKS_ADMIN[11], $help_url,
         COM_getBlockTemplate('_admin_block', 'header'));
 
     $retval .= ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12] . $validate_help, plugin_geticon_links());

@@ -676,8 +676,10 @@ function liststaticpages()
         array('url'  => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']),
     );
+    
+    $help_url = COM_getDocumentUrl('docs', "staticpages.html");
 
-    $retval .= COM_startBlock($LANG_STATIC['staticpagelist'], '',
+    $retval .= COM_startBlock($LANG_STATIC['staticpagelist'], $help_url,
         COM_getBlockTemplate('_admin_block', 'header'));
 
     $retval .= ADMIN_createMenu($menu_arr, $LANG_STATIC['instructions'],

@@ -112,7 +112,7 @@ function trackback_editor($target = '', $url = '', $title = '', $excerpt = '', $
     $excerpt = htmlspecialchars($excerpt, ENT_NOQUOTES);
 
     $retval .= COM_startBlock($LANG_TRB['editor_title'],
-        getHelpUrl() . '#trackback',
+        COM_getDocumentUrl('docs', "trackback.html") . '#trackback',
         COM_getBlockTemplate('_admin_block', 'header'));
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
@@ -275,7 +275,7 @@ function pingbackForm($targetUrl = '')
     global $_CONF, $LANG_TRB;
 
     $retval = '';
-    $retval .= COM_startBlock($LANG_TRB['pingback_button'], getHelpUrl(),
+    $retval .= COM_startBlock($LANG_TRB['pingback_button'], COM_getDocumentUrl('docs', "trackback.html"),
         COM_getBlockTemplate('_admin_block', 'header'));
 
     $template = COM_newTemplate($_CONF['path_layout'] . 'admin/trackback');
@@ -477,7 +477,7 @@ function listServices()
     $text_arr = array(
         'has_extras' => true,
         'form_url'   => $_CONF['site_admin_url'] . '/trackback.php',
-        'help_url'   => getHelpUrl() . '#ping',
+        'help_url'   => COM_getDocumentUrl('docs', "trackback.html") . '#ping',
     );
 
     $query_arr = array(
@@ -560,7 +560,7 @@ function editServiceForm($pid, $msg = '', $new_name = '', $new_site_url = '', $n
 
     $token = SEC_createToken();
 
-    $retval .= COM_startBlock($LANG_TRB['edit_service'], getHelpUrl() . '#ping',
+    $retval .= COM_startBlock($LANG_TRB['edit_service'], COM_getDocumentUrl('docs', "trackback.html") . '#ping',
         COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= SEC_getTokenExpiryNotice($token);
 
@@ -743,7 +743,7 @@ function freshTrackback()
 
     $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=fresh';
 
-    $retval .= COM_startBlock($LANG_TRB['trackback'], getHelpUrl(),
+    $retval .= COM_startBlock($LANG_TRB['trackback'], COM_getDocumentUrl('docs', "trackback.html"),
         COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= sprintf($LANG_TRB['trackback_note'], $freshurl);
     $retval .= COM_endBlock();
@@ -762,32 +762,10 @@ function freshPingback()
 
     $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=freepb';
 
-    $retval .= COM_startBlock($LANG_TRB['pingback'], getHelpUrl(),
+    $retval .= COM_startBlock($LANG_TRB['pingback'], COM_getDocumentUrl('docs', "trackback.html"),
         COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= sprintf($LANG_TRB['pingback_note'], $freshurl);
     $retval .= COM_endBlock();
-
-    return $retval;
-}
-
-/**
- * Get URL of the help file (trackback.html)
- *
- * @return   string  full URL of trackback.html
- */
-function getHelpUrl()
-{
-    global $_CONF;
-
-    $retval = '';
-
-    $doclang = COM_getLanguageName();
-    $docs = 'docs/' . $doclang . '/trackback.html';
-    if (file_exists($_CONF['path_html'] . $docs)) {
-        $retval = $_CONF['site_url'] . '/' . $docs;
-    } else {
-        $retval = $_CONF['site_url'] . '/docs/english/trackback.html';
-    }
 
     return $retval;
 }
@@ -1053,7 +1031,7 @@ if (($mode === 'delete') && SEC_checkToken()) {
     // Check if item exist
     if (!empty($fulltext)) {
         $display .= COM_startBlock($LANG_TRB['select_url'],
-                getHelpUrl() . '#trackback')
+                COM_getDocumentUrl('docs', "trackback.html") . '#trackback')
             . prepareAutodetect($type, $id, $fulltext)
             . COM_endBlock();
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));

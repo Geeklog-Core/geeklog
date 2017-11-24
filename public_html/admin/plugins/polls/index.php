@@ -77,7 +77,9 @@ function listpolls()
         array('url'  => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']));
 
-    $retval .= COM_startBlock($LANG25[18], '',
+    $help_url = COM_getDocumentUrl('docs', "polls.html");
+              
+    $retval .= COM_startBlock($LANG25[18], $help_url,
         COM_getBlockTemplate('_admin_block', 'header'));
 
     $retval .= ADMIN_createMenu(
