@@ -1580,14 +1580,17 @@ function plugin_upgrade_calendar()
                 break;
 
             case '1.1.3':
-
                 $current_version = '1.1.4';
                 break;
 
             case '1.1.4':
-
                 $current_version = '1.1.5';
                 break;
+
+            case '1.1.5':
+                $current_version = '1.1.6';
+                break;
+                
             default:
                 $done = true;
                 break;
