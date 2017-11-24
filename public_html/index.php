@@ -99,7 +99,7 @@ function fixTopic(&$A, $tid_list)
 // Main
 // If URL routing is enabled, then let the router handle the request
 if ($_CONF['url_rewrite'] && isset($_CONF['url_routing']) && !empty($_CONF['url_routing'])) {
-    \Geeklog\Router::dispatch();
+    Router::dispatch();
 }
 
 // See if user has access to view topic else display message.
