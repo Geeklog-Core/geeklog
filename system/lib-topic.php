@@ -1569,17 +1569,26 @@ function TOPIC_getUrl($topicId)
 {
     global $_CONF;
 
-    if ($_CONF['url_rewrite']) {
-        $retval = COM_buildURL(
-            $_CONF['site_url'] . '/index.php?'
-            . http_build_query(array(
-                TOPIC_PLACEHOLDER => 'topic',
-                'topic'           => $topicId,
-            ))
-        );
-    } else {
-        $retval = $_CONF['site_url'] . '/index.php?'
-            . http_build_query(array('topic' => $topicId));
+    switch ($_CONF['url_routing']) {
+        case Router::ROUTING_WITH_INDEX_PHP:
+            $retval = COM_buildURL(
+                $_CONF['site_url'] . '/index.php?'
+                . http_build_query(array(
+                    TOPIC_PLACEHOLDER => 'topic',
+                    'topic'           => $topicId,
+                ))
+            );
+            break;
+
+        case Router::ROUTING_WITHOUT_INDEX_PHP:
+            $retval = $_CONF['site_url'] . '/topic/' . urlencode($topicId);
+            break;
+
+        case Router::ROUTING_DISABLED:
+        default:
+            $retval = $_CONF['site_url'] . '/index.php?'
+                . http_build_query(array('topic' => $topicId));
+            break;
     }
 
     return $retval;
