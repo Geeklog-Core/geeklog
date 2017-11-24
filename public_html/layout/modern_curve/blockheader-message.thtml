@@ -2,7 +2,7 @@
 
 <div class="block-message{!if css_classes} {css_classes}{!endif}"{!if css_id} id="{css_id}"{!endif}>
   <dl>
-    <dt class="title">{showhide}{block_title}{!if help_url}<a class="blocktitle" {gl-help-popup} href="{help_url}" title="{help_title}"><img src="{layout_url}/images/button_help.png" alt="?" /></a>{!endif}</dt>
+    <dt class="title">{showhide}{block_title}{!if help_url}<a class="blocktitle" {gl-help-popup} href="{help_url}" title="{help_title}" target="_blank"><img src="{layout_url}/images/button_help.png" alt="?" /></a>{!endif}</dt>
     <dd class="message">
 
 {# end {templatelocation} #}

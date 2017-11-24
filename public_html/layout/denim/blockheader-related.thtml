@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 
 <aside class="block-related{!if css_classes} {css_classes}{!endif}"{!if css_id} id="{css_id}"{!endif}>
-  <h3>{block_title}{!if help_url}<a class="blocktitle block-help-icon uk-icon-hover uk-icon-question-circle uk-icon-small" {gl-help-popup} href="{help_url}" title="{help_title}"></a>{!endif}</h3>
+  <h3>{block_title}{!if help_url}<a class="blocktitle block-help-icon uk-icon-hover uk-icon-question-circle uk-icon-small" {gl-help-popup} href="{help_url}" title="{help_title}" target="_blank"></a>{!endif}</h3>
   <div class="block-related-content">
 
 {# end {templatelocation} #}
