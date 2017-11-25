@@ -370,7 +370,11 @@ class Resource
         $position = $isFooter ? 'footer' : 'header';
 
         if (!isset($this->libraryLocations[$name])) {
-            return false;
+            if (stripos($name, 'jquery.ui.') === 0) {
+                $name = 'jquery-ui';
+            } else {
+                return false;
+            }
         }
 
         switch ($name) {
