@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -37,6 +37,9 @@ require_once 'auth.inc.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
 require_once $_CONF['path_system'] . 'lib-article.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
+
+// The maximum number of items on each moderation list
+define('NUM_ITEMS_ON_MODERATION_LIST', 10);
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -80,12 +83,14 @@ function usersubmissions($token, $approved = 0, $deleted = 0)
     $menu_arr = array(
         array(
             'url'  => $_CONF['site_admin_url'],
-              'text' => $LANG_ADMIN['admin_home']
+            'text' => $LANG_ADMIN['admin_home'],
         ),
     );
 
-    $retval .= COM_startBlock($LANG29[13], '',
-        COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= COM_startBlock(
+        $LANG29[13], '',
+        COM_getBlockTemplate('_admin_block', 'header')
+    );
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG29['submissions_desc'],
@@ -100,27 +105,22 @@ function usersubmissions($token, $approved = 0, $deleted = 0)
         $retval .= itemlist('story', $token);
     }
 
-    if ($_CONF['listdraftstories'] == 1) {
-        if (SEC_hasRights('story.edit')) {
-            $retval .= itemlist('story_draft', $token);
-        }
+    if (($_CONF['listdraftstories'] == 1) && SEC_hasRights('story.edit')) {
+        $retval .= itemlist('story_draft', $token);
     }
 
-    if ($_CONF['commentsubmission'] == 1) {
-        if (SEC_hasRights('comment.moderate')) {
-            $retval .= itemlist('comment', $token);
-        }
+    if (($_CONF['commentsubmission'] == 1) && SEC_hasRights('comment.moderate')) {
+        $retval .= itemlist('comment', $token);
     }
 
-    if ($_CONF['usersubmission'] == 1) {
-        if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
-            $retval .= userlist($token);
-        }
+    if (($_CONF['usersubmission'] == 1) &&
+        SEC_hasRights('user.edit') &&
+        SEC_hasRights('user.delete')) {
+        $retval .= userlist($token);
     }
 
-    $retval .= PLG_showModerationList($token);
-
-    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+    $retval .= PLG_showModerationList($token)
+        . COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -143,16 +143,26 @@ function itemlist($type, $token)
 
     if (empty($type)) {
         // something is terribly wrong, bail
-        COM_errorLog("Submission type not set in moderation.php");
+        COM_errorLog('Submission type not set in moderation.php');
 
         return $retval;
     }
 
-    $isplugin = false;
+    $isPlugin = false;
 
-    if ($type == 'comment') {
-        $sql = "SELECT cid AS id,title,comment,date,uid,type,sid "
-            . "FROM {$_TABLES['commentsubmissions']} "
+    // Get current page
+    if (($type === 'story') || ($type === 'article')) {
+        $page = (int) Geeklog\Input::fGet('page_article', 1);
+    } else {
+        $page = (int) Geeklog\Input::fGet('page_' . $type, 1);
+    }
+
+    if ($page < 1) {
+        $page = 1;
+    }
+
+    if ($type === 'comment') {
+        $sql = "SELECT cid AS id,title,comment,date,uid,type,sid FROM {$_TABLES['commentsubmissions']} "
             . "ORDER BY cid ASC";
         $H = array($LANG29[10], $LANG29[36], $LANG29[14]);
         $section_title = $LANG29[41];
@@ -162,47 +172,68 @@ function itemlist($type, $token)
         if (function_exists($function)) {
             // Great, we found the plugin, now call its itemlist method
             $plugin = $function();
-            if (is_object($plugin)) {
-                $helpfile = $plugin->submissionhelpfile;
+
+            if ($plugin instanceof Plugin) {
                 $sql = $plugin->getsubmissionssql;
                 $H = $plugin->submissionheading;
                 $section_title = $plugin->submissionlabel;
-                $section_help = $helpfile;
-                if (($type != 'story') && ($type != 'story_draft')) {
-                    $isplugin = true;
+                $section_help = $plugin->submissionhelpfile;
+                if (($type !== 'story') && ($type !== 'story_draft')) {
+                    $isPlugin = true;
                 }
-            } else if (is_string($plugin)) {
+            } elseif (is_string($plugin)) {
                 return '<div class="block-box">' . $plugin . '</div>' . LB;
+            } else {
+                return '';
             }
         }
     }
 
-    // run SQL but this time ignore any errors
-    if (!empty($sql)) {
-        $sql .= ' LIMIT 50'; // quick'n'dirty workaround to prevent timeouts
-        $result = DB_query($sql, 1);
-    }
-    if (empty($sql) || DB_error()) {
+    if (empty($sql)) {
         // was more than likely a plugin that doesn't need moderation
-        $nrows = 0;
-
-        return;
-    } else {
-        $nrows = DB_numRows($result);
+        return '';
     }
+
+    // Get the number of all entries for pagination
+    $result = DB_query($sql, 1);
+    if (DB_error()) {
+        return '';
+    }
+
+    $numRows = (int) DB_numRows($result);
+    $maxPage = (int) floor(($numRows - 1) / NUM_ITEMS_ON_MODERATION_LIST) + 1;
+    if ($page > $maxPage) {
+        $page = $maxPage;
+    }
+
+    // run SQL but this time ignore any errors
+    $sql .= sprintf(
+        ' LIMIT %d, %d',
+        NUM_ITEMS_ON_MODERATION_LIST * ($page - 1),
+        NUM_ITEMS_ON_MODERATION_LIST
+    );
+    $result = DB_query($sql, 1);
+
+    if (DB_error()) {
+        return '';
+    } else {
+        $numRows = DB_numRows($result);
+    }
+
     $data_arr = array();
-    for ($i = 0; $i < $nrows; $i++) {
+
+    for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result);
         /**
          * @todo There should be an API for these URLs ...
          */
-        if ($isplugin) {
+        if ($isPlugin) {
             $A['edit'] = $_CONF['site_admin_url'] . '/plugins/' . $type
                 . '/index.php?mode=editsubmission&amp;id=' . $A[0];
-        } elseif ($type == 'comment') {
+        } elseif ($type === 'comment') {
             $A['edit'] = $_CONF['site_url'] . '/comment.php'
                 . '?mode=editsubmission&amp;cid=' . $A[0];
-        } elseif ($type == 'story_draft') {
+        } elseif ($type === 'story_draft') {
             $A['edit'] = $_CONF['site_admin_url'] . '/article.php'
                 . '?mode=edit&amp;sid=' . $A[0];
         } else { // this pretty much only leaves $type == 'story'
@@ -218,7 +249,7 @@ function itemlist($type, $token)
         $data_arr[$i] = $A;
     }
 
-    if ($type == 'comment') {
+    if ($type === 'comment') {
         $header_arr = array(      // display 'text' and use table field 'field'
             array('text' => $LANG_ADMIN['edit'], 'field' => 0),
             array('text' => $H[0], 'field' => 1),
@@ -229,7 +260,7 @@ function itemlist($type, $token)
             array('text' => $LANG29[42], 'field' => 'uid'),
             array('text' => $LANG29[43], 'field' => 'publishfuture'),
         );
-    } elseif ($type == 'story' || $type == 'story_draft') {
+    } elseif ($type === 'story' || $type === 'story_draft') {
         $header_arr = array(      // display 'text' and use table field 'field'
             array('text' => $LANG_ADMIN['edit'], 'field' => 0),
             array('text' => $H[0], 'field' => 1),
@@ -250,25 +281,35 @@ function itemlist($type, $token)
         );
     }
 
-    $text_arr = array('has_menu' => false,
-                      'title'    => $section_title,
-                      'help_url' => $section_help,
-                      'no_data'  => $LANG29[39],
-                      'form_url' => "{$_CONF['site_admin_url']}/moderation.php",
+    $text_arr = array(
+        'has_menu' => false,
+        'title'    => $section_title,
+        'help_url' => $section_help,
+        'no_data'  => $LANG29[39],
+        'form_url' => "{$_CONF['site_admin_url']}/moderation.php",
     );
     $form_arr = array('bottom' => '', 'top' => '');
-    if ($nrows > 0) {
-        $form_arr['bottom'] = '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
+    if ($numRows > 0) {
+        // Add pagination
+        if ($maxPage > 1) {
+            $form_arr['bottom'] .= COM_printPageNavigation(
+                $_CONF['site_admin_url'] . '/moderation.php', $page, $maxPage,
+                'page_' . $type . '='
+            );
+        }
+
+        $form_arr['bottom'] .= '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
-            . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
+            . '<input type="hidden" name="count" value="' . $numRows . '"' . XHTML . '>'
             . '<p class="aligncenter"><button type="submit" value="'
             . $LANG_ADMIN['submit'] . '" class="uk-button">' . $LANG_ADMIN['submit'] . '</button></p>' . LB;
+
     }
 
-    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
+    $listOptions = array('chkdelete' => true, 'chkfield' => 'id');
     $retval .= ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-        $text_arr, $data_arr, $listoptions, $form_arr);
+        $text_arr, $data_arr, $listOptions, $form_arr);
 
     return $retval;
 }
@@ -291,9 +332,9 @@ function userlist($token)
     $retval = '';
     $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
     $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $numRows = DB_numRows($result);
     $data_arr = array();
-    for ($i = 0; $i < $nrows; $i++) {
+    for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result);
         $A['edit'] = $_CONF['site_admin_url'] . '/user.php?mode=edit&amp;uid=' . $A['id'];
         $A['row'] = $i;
@@ -310,29 +351,29 @@ function userlist($token)
         array('text' => $LANG29[1], 'field' => 'approve'),
     );
 
-    $text_arr = array('has_menu' => false,
+    $text_arr = array(
+        'has_menu' => false,
                       'title'    => $LANG29[40],
                       'help_url' => 'ccusersubmission.html',
                       'no_data'  => $LANG29[39],
                       'form_url' => "{$_CONF['site_admin_url']}/moderation.php",
     );
 
-    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
+    $listOptions = array('chkdelete' => true, 'chkfield' => 'id');
 
     $form_arr = array("bottom" => '', "top" => '');
-    if ($nrows > 0) {
+    if ($numRows > 0) {
         $form_arr['bottom'] = '<input type="hidden" name="type" value="user"' . XHTML . '>' . LB
             . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
-            . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
+            . '<input type="hidden" name="count" value="' . $numRows . '"' . XHTML . '>'
             . '<p class="aligncenter"><button type="submit" value="'
             . $LANG_ADMIN['submit'] . '" class="uk-button">' . $LANG_ADMIN['submit'] . '</button></p>' . LB;
     }
 
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-        $text_arr, $data_arr, $listoptions, $form_arr);
+        $text_arr, $data_arr, $listOptions, $form_arr);
     $retval .= $table;
-
 
     return $retval;
 }

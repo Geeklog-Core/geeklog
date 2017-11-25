@@ -56,7 +56,7 @@ if (!defined('DEFAULT_ENTRIES_PER_PAGE')) {
  * @param    array  $header_arr    array of header fields with sortables and table fields
  * @param    array  $text_arr      array with different text strings
  * @param    array  $data_arr      array with sql query data - array of list records
- * @param    array  $options       array of options - intially just used for the Check-All feature
+ * @param    array  $options       array of options - initially just used for the Check-All feature
  * @param    array  $form_arr      optional extra forms at top or bottom
  * @return   string                  HTML output of function
  */
@@ -185,8 +185,10 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
     $admin_templates->parse('output', 'list');
 
     if (!empty($title)) {
-        $retval .= COM_startBlock($title, $help_url,
-            COM_getBlockTemplate('_admin_block', 'header'));
+        $retval .= COM_startBlock(
+            $title, $help_url,
+            COM_getBlockTemplate('_admin_block', 'header')
+        );
     }
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     if (!empty($title)) {
@@ -207,7 +209,7 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
  * @param    array  $defSort_arr    default sorting values
  * @param    string $filter         additional drop-down filters
  * @param    string $extra          additional values passed to fieldfunction
- * @param    array  $options        array of options - intially just used for the Check-All feature
+ * @param    array  $options        array of options - initially just used for the Check-All feature
  * @param    array  $form_arr       optional extra forms at top or bottom
  * @param    bool   $showSearch     whether to show the search functionality
  * @param    string $pageNavUrl     additional url values that page navigation and sorting by columns may need for any
@@ -441,7 +443,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
 
     if ($has_extras && $showSearch) {
         /**
-         * default query limit if no other ch osen.
+         * default query limit if no other chosen.
          *
          * @todo maybe this could be a setting from the list?
          */
