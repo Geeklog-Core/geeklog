@@ -6,11 +6,10 @@
 </dl>
 
 <dl>
-  <dt><label for="deleteaccount-submit">{lang_deleteoption}</label></dt>
+  <dt><label for="delete_account">{lang_deleteoption}</label></dt>
   <dd>
-    <input type="hidden" name="mode" value="{delete_mode}"{xhtml}>
-    <input type="hidden" name="account_id" value="{account_id}"{xhtml}>
-    <input type="submit" name="btnsubmit" value="{lang_button_delete}" id="deleteaccount-submit" class="submit"{xhtml}>
+    <input type="checkbox" name="delete_account" id="delete_account">
+    <input type="hidden" name="account_id" value="{account_id}">
   </dd>
 </dl>
 

@@ -1383,6 +1383,10 @@ if (Geeklog\Input::post('btncancel') === $LANG_ADMIN['cancel']) {
     $mode = Geeklog\Input::fPostOrGet('mode', '');
 }
 
+if (Geeklog\Input::fPost('delete_account') === 'on') {
+    $mode = 'confirmdelete';
+}
+
 $display = '';
 
 if (!COM_isAnonUser()) {

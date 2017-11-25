@@ -358,7 +358,7 @@ $LANG04 = array(
     92 => 'Enter New Password',
     93 => 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.',
     94 => 'Delete Account "%s"',
-    95 => 'Click the "delete account" button below to remove your account from our database. Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
+    95 => 'To remove your account from our database, enter your current password into the above "Current Password", check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
     96 => 'delete account',
     97 => 'Confirm Account Deletion',
     98 => 'Are you sure you want to delete your account? By doing so, you will not be able to log into this site again (unless you create a new account). If you are sure, click "delete account" again on the form below.',
@@ -432,10 +432,8 @@ $LANG04 = array(
     170 => "Admin at {$_CONF['site_name']} changed the password of your account as follows.  Please save this mail for further reference.",
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
-    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?", 
-    'user_max_login_attempts' => "Max Login Attempts and Speed Limit Reached",
-    
-       8 => " seconds ago.  This site requires at least {$_CONF['commentspeedlimit']} seconds between comments",
+    'user_logged_in_message' => "You are already logged in. Would you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?",
+    'user_max_login_attempts' => 'Max Login Attempts and Speed Limit Reached',
 );
 
 ###############################################################################
