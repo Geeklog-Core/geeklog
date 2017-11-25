@@ -745,9 +745,14 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['cache_time'] = $_SP_CONF['default_cache_time'];
         $A['template_flag'] = ''; // Defaults to not a template
         $A['template_id'] = ''; // Defaults to None
+
         if ($_USER['advanced_editor'] == 1) {
             $A['postmode'] = 'adveditor';
         }
+
+        $A['sp_prev'] = '';
+        $A['sp_next'] = '';
+        $A['sp_parent'] = '';
     } elseif (!empty($sp_id) && $mode == 'clone') {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(modified) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
         if (DB_numRows($result) == 1) {
@@ -758,6 +763,9 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
             $A['unixdate'] = time();
             $A['sp_hits'] = 0;
             $A['sp_old_id'] = '';
+            $A['sp_prev'] = '';
+            $A['sp_next'] = '';
+            $A['sp_parent'] = '';
         }
     } else {
         $A = $_POST;
