@@ -170,7 +170,7 @@ $LANG_confignames['spamx'] = array(
     'snl_enabled' => 'Spam Number of Linksモジュールを有効にする',
     'snl_num_links' => 'リンクの数',
     'akismet_enabled' => 'Akismetモジュールを有効にする',
-    'akismet_api_key' => 'APIキー',
+    'akismet_api_key' => 'APIキー'
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -186,7 +186,7 @@ $LANG_fs['spamx'] = array(
     'fs_main' => 'Spam-Xの設定',
     'fs_sfs' => 'Stop Forum Spam',
     'fs_snl' => 'Spam Number of Links',
-    'fs_akismet' => 'Akismet',
+    'fs_akismet' => 'Akismet'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

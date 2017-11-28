@@ -128,7 +128,10 @@ $LANG_STATIC = array(
     'autotag_desc_staticpage' => '[staticpage: id titre alternatif] - Affiche un lien vers une page statique en utilisant le titre la page. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - Affiche le contenu d\'une page statique.',
     'yes' => 'Yes',
-    'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.'
+    'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.',
+    'prev_page' => 'Previous page',
+    'next_page' => 'Next page',
+    'parent_page' => 'Parent page'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Votre commentaire à bien été soumis et sera publié après avoir été approuvé par un modérateur.';

@@ -256,7 +256,9 @@ $LANG03 = array(
     103 => 'Ban this user',
     104 => 'Ban this IP address with the Spamx plugin',
     105 => 'IP Address',
-    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.'
+    106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.',
+    'record_edit' => 'Record user and time of edit?',
+    'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin'
 );
 
 ###############################################################################
@@ -428,9 +430,11 @@ $LANG04 = array(
     167 => 'Remote login',
     168 => 'You may also login with one on of the below remote authentication services',
     169 => 'User has updated his/her profile',
+    170 => "Admin at {$_CONF['site_name']} changed the password of your account as follows.  Please save this mail for further reference.",
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
-    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
+    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?",
+    'user_max_login_attempts' => 'Max Login Attempts and Speed Limit Reached'
 );
 
 ###############################################################################
@@ -875,6 +879,10 @@ $LANG21 = array(
     67 => 'Seleziona per consentire "autotag"',
     68 => 'Il flusso per questo portale é troppo lungo per mostrarlo. Scegli il numero massimo per articoli da importare nel blocco nella configurazione dei blocchi, o un numero massimo globale nella configurazione di Geeklog.',
     69 => 'Plugin Name',
+    70 => 'CSS ID',
+    71 => 'This field is optional',
+    72 => 'CSS Classes',
+    73 => 'This field is optional.  You can specify multiple classes separated by space',
     'autotag_desc_block' => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
     'position' => 'Position',
     'cache_time' => 'Cache Time',
@@ -983,6 +991,7 @@ $LANG24 = array(
     91 => 'É possibile estendere il tempo scadenza.',
     92 => 'You might also like',
     'autotag_desc_story' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_article' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
@@ -1150,6 +1159,7 @@ $LANG28 = array(
     88 => 'Gruppo Predefinito',
     89 => 'Seleziona per rendere questo il gruppo predefinito per i nuovi utenti',
     90 => 'Applica il cambiamento al "Gruppo Predefinito" agli account degli utenti esistenti',
+    91 => 'Send password to user',
     'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
@@ -1402,7 +1412,8 @@ $LANG_ROUTER = array(
     17 => 'Database error occurred.',
     18 => '<strong>To enable URL routing, you have to enable URL rewrite in the Configuration.</strong>',
     19 => '<strong>To enable URL routing, you have to enable URL routing in the Configuration.</strong>',
-    20 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>'
+    20 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>',
+    21 => 'Status Code'
 );
 
 ###############################################################################
@@ -1531,9 +1542,11 @@ $MESSAGE = array(
     142 => 'Approved comment(s).',
     143 => 'Banned user(s).',
     144 => 'Banned IP addresses with the Spamx plugin.',
+    145 => 'Banned IP addresses with the Ban plugin.',
     150 => 'Successfully deleted all the files and directories used during the installation.',
     151 => 'Failed to delete some files and directories used during the installation.  Please remove them manually.',
     152 => 'All the files and directories used during the installation are left as they are.  It is dangerous to keep them on the server, so please don\'t forget to remove them manually.',
+    153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
     400 => 'Non tutti i campi sono stati validati con successo.',
     401 => 'Inserisci il tuo nome completo',
     500 => 'The Template Cache has been successfully cleared.'
@@ -1606,7 +1619,8 @@ $LANG_ACCESS = array(
     'group_id' => 'ID del Gruppo',
     'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
     'groupexists' => 'Il nome del Gruppo é giá utilizzato',
-    'groupexistsmsg' => 'Il nome del Gruppo é giá utilizzato. Nomi dei gruppi devomo essere unici.'
+    'groupexistsmsg' => 'Il nome del Gruppo é giá utilizzato. Nomi dei gruppi devomo essere unici.',
+    'demo_mode_denied_msg' => 'This feature is currently disabled while the site is in Demo Mode.'
 );
 
 ###############################################################################
@@ -1835,7 +1849,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Articles"
+# %i    item, "Stories"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -1996,6 +2010,12 @@ $LANG_postmodes = array(
 $LANG_sortcodes = array(
     'ASC' => 'Piú vecchi prima',
     'DESC' => 'Piú nuovi prima'
+);
+
+$LANG_statuscodes = array(
+    0 => 'Normal',
+    1 => 'Refreshing',
+    10 => 'Archive'
 );
 
 $LANG_trackbackcodes = array(

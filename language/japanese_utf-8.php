@@ -441,7 +441,7 @@ $LANG04 = array(
     'user_login' => 'ユーザーログイン',
     'user_login_message' => 'ログインしてください。ユーザー名とパスワードの両方を入力してください。',
     'user_logged_in_message' => "すでにログインしています。<a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">ログアウト</a>しますか?",
-    'user_max_login_attempts' => 'ログインの試行回数の上限を超えました、',
+    'user_max_login_attempts' => 'ログインの試行回数の上限を超えました、'
 );
 
 ###############################################################################
@@ -1420,7 +1420,7 @@ $LANG_ROUTER = array(
     18 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLリライトを有効にしてください。</strong>',
     19 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLルーティングを有効にしてください。</strong>',
     20 => '<ul><li>プレースホルダー(@)はルールとルートで同じものを定義してください。</li><li>プレースホルダーは@で始まり、1文字目は英字、2文字目以降は英数字を使えます。</li><li>プレースホルダーは大文字・小文字を区別します。</li></ul>',
-    21 => 'ステータスコード',
+    21 => 'ステータスコード'
 );
 
 ###############################################################################
@@ -1856,7 +1856,7 @@ $LANG_SECTEST = array(
 # 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
-# %i    item, "Articles"
+# %i    item, "Stories"
 # %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
@@ -2017,12 +2017,6 @@ $LANG_postmodes = array(
 $LANG_sortcodes = array(
     'ASC' => '古い順に',
     'DESC' => '新しい順に'
-);
-
-$LANG_statuscodes = array(
-    0 => 'Normal',
-    1 => 'Refreshing',
-    10 => 'Archive'
 );
 
 $LANG_trackbackcodes = array(
@@ -2562,3 +2556,4 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
+

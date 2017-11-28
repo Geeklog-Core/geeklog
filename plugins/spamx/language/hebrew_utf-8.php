@@ -165,7 +165,9 @@ $LANG_confignames['spamx'] = array(
     'sfs_enabled' => 'איפשור SFS',
     'sfs_confidence' => 'Confidence Threshold',
     'snl_enabled' => 'איפשור SNL',
-    'snl_num_links' => 'מספר הקישורים'
+    'snl_num_links' => 'מספר הקישורים',
+    'akismet_enabled' => 'Enable Akismet',
+    'akismet_api_key' => 'API Key'
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -180,7 +182,8 @@ $LANG_tab['spamx'] = array(
 $LANG_fs['spamx'] = array(
     'fs_main' => 'ההגדרות הראשיות של Spam-X',
     'fs_sfs' => 'הפסיקו פורום ספאם (SFS)',
-    'fs_snl' => 'ספאם מספר קישורים (SNL)'
+    'fs_snl' => 'ספאם מספר קישורים (SNL)',
+    'fs_akismet' => 'Akismet'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
