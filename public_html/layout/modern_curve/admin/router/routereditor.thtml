@@ -27,6 +27,7 @@
             <dt><label for="admin-routereditor-status_code">{lang_router_status_code}</label></dt>
             <dd>
                 <select id="admin-routereditor-status_code" name="status_code">
+                    <option value="200"{status200_selected}>200 (OK)</option>
                     <option value="300"{status300_selected}>300 (Multiple Choices)</option>
                     <option value="301"{status301_selected}>301 (Moved Permanently)</option>
                     <option value="302"{status302_selected}>302 (Found/Moved Temporarily)</option>

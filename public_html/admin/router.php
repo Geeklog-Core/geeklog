@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog URL routing administration.                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2016-2016 by the following authors:                         |
+// | Copyright (C) 2016-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - mystralkk AT gmail DOT com                   |
 // +---------------------------------------------------------------------------+
@@ -124,6 +124,7 @@ function getRouteEditor($rid = 0)
 
     $A['status_code'] = (int) $A['status_code'];
     $T->set_var(array(
+        'status200_selected' => ($A['status_code'] === 200 ? ' selected="selected"' : ''),
         'status300_selected' => ($A['status_code'] === 300 ? ' selected="selected"' : ''),
         'status301_selected' => ($A['status_code'] === 301 ? ' selected="selected"' : ''),
         'status302_selected' => ($A['status_code'] === 302 ? ' selected="selected"' : ''),
@@ -420,7 +421,7 @@ function saveRoute($rid, $method, $rule, $route, $statusCode, $priority)
     }
 
     // If HTTP status code is out of range, then fix it silently
-    if (($statusCode < 300) || ($statusCode > 308)) {
+    if (($statusCode < 200) || ($statusCode > 308)) {
         $statusCode = Router::DEFAULT_STATUS_CODE;
     }
 

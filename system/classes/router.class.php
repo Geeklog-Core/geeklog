@@ -53,7 +53,7 @@ class Router
     const VALUE_MATCH = '|[^0-9a-zA-Z_%.-]|';
 
     // Default HTTP status code
-    const DEFAULT_STATUS_CODE = 302;
+    const DEFAULT_STATUS_CODE = 200;
 
     // Default priority
     const DEFAULT_PRIORITY = 100;
@@ -71,6 +71,50 @@ class Router
     public static function setDebug($switch)
     {
         self::$debug = (bool) $switch;
+    }
+
+    /**
+     * Act as a proxy
+     *
+     * Fetch the content of the target URL and display it on behalf of the original controller
+     *
+     * @param  string $url
+     */
+    private static function proxy($url)
+    {
+        $request = new HTTP_Request2($url);
+
+        // Add the current cookies.  Otherwise, session will be lost.
+        foreach ($_COOKIE as $key => $value) {
+            $request->addCookie(
+                htmlspecialchars($key, ENT_QUOTES, 'utf-8'),
+                htmlspecialchars($value, ENT_QUOTES, 'utf-8')
+            );
+        }
+
+        try {
+            $response = $request->send();
+            $statusCode = (int) $response->getStatus();
+
+            if ($statusCode === 200) {
+                if (!headers_sent()) {
+                    header('Content-Type: text/html; charset=' . COM_getCharset(), true, $statusCode);
+                }
+
+                echo $response->getBody();
+            } elseif (($statusCode >= 300) && ($statusCode < 400)) {
+                // e.g. public_html/links/portal.php
+                $newLocation = $response->getHeader('Location');
+                header('Location: ' . $newLocation, true, $statusCode);
+            } else {
+                throw new RuntimeException($response->getBody());
+            }
+        } catch (Exception $e) {
+            COM_handle404();
+        }
+
+        // Never return to callee
+        die();
     }
 
     /**
@@ -154,9 +198,6 @@ class Router
 
             // HTTP response code since v2.2.0
             $responseCode = isset($A['response_code']) ? (int) $A['response_code'] : self::DEFAULT_STATUS_CODE;
-            if (($responseCode < 300) || ($responseCode > 308)) {
-                $responseCode = self::DEFAULT_STATUS_CODE;
-            }
 
             // Try simple comparison without placeholders
             if (strcasecmp($rule, $pathInfo) === 0) {
@@ -166,7 +207,12 @@ class Router
                     COM_errorLog(__METHOD__ . ': "' . $pathInfo . '"matched with simple comparison rule "' . $A['rule'] . '", converted into "' . $route . '"');
                 }
 
-                header('Location: ' . $route, $responseCode);
+                if ($responseCode === 200) {
+                    self::proxy($route);
+                    die();
+                } else {
+                    header('Location: ' . $route, $responseCode);
+                }
 
                 COM_errorLog(__METHOD__ . ': somehow could not redirect');
 
@@ -218,7 +264,12 @@ class Router
                     COM_errorLog(__METHOD__ . ': "' . $pathInfo . '" matched with regular expression rule "' . $A['rule'] . '", converted into "' . $route . '"');
                 }
 
-                header('Location: ' . $route, $responseCode);
+                if ($responseCode === 200) {
+                    self::proxy($route);
+                    die();
+                } else {
+                    header('Location: ' . $route, $responseCode);
+                }
             }
         }
 
@@ -364,24 +415,5 @@ class Router
         }
 
         return $originalUrl;
-    }
-
-    /**
-     * Return an array of (HTTP response code => message)
-     *
-     * @return array
-     */
-    public static function getResponseCodesForRedirect()
-    {
-        return array(
-            300 => 'Multiple Choices',
-            301 => 'Moved Permanently',
-            302 => 'Found (Moved Temporarily)',
-            303 => 'See Other',
-            304 => 'Not Modified',
-            305 => 'Use Proxy',
-            307 => 'Temporary Redirect',
-            308 => 'Permanent Redirect',
-        );
     }
 }
