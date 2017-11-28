@@ -55,27 +55,11 @@ CREATE TABLE {$_TABLES['blocks']} (
 ";
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['commentcodes']} (
-  code tinyint(4) NOT NULL default '0',
-  name varchar(32) default NULL,
-  PRIMARY KEY  (code)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
 CREATE TABLE {$_TABLES['commentedits']} (
   cid int(10) NOT NULL,
   uid mediumint(8) NOT NULL,
   time datetime NOT NULL,
   PRIMARY KEY (cid)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['commentmodes']} (
-  mode varchar(10) NOT NULL default '',
-  name varchar(32) default NULL,
-  PRIMARY KEY  (mode)
 ) ENGINE=MyISAM
 ";
 
@@ -162,14 +146,6 @@ CREATE TABLE {$_TABLES['dateformats']} (
 ";
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['featurecodes']} (
-  code tinyint(4) NOT NULL default '0',
-  name varchar(32) default NULL,
-  PRIMARY KEY  (code)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
 CREATE TABLE {$_TABLES['features']} (
   ft_id mediumint(8) NOT NULL auto_increment,
   ft_name varchar(50) NOT NULL default '',
@@ -177,14 +153,6 @@ CREATE TABLE {$_TABLES['features']} (
   ft_gl_core tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ft_id),
   KEY ft_name (ft_name)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['frontpagecodes']} (
-  code tinyint(4) NOT NULL default '0',
-  name varchar(32) default NULL,
-  PRIMARY KEY  (code)
 ) ENGINE=MyISAM
 ";
 
@@ -256,14 +224,6 @@ CREATE TABLE {$_TABLES['plugins']} (
 ) ENGINE=MyISAM
 ";
 
-$_SQL[] = "
-CREATE TABLE {$_TABLES['postmodes']} (
-  code char(10) NOT NULL default '',
-  name char(32) default NULL,
-  PRIMARY KEY  (code)
-) ENGINE=MyISAM
-";
-
 $_SQL[] = "CREATE TABLE {$_TABLES['routes']} (
     rid int(11) NOT NULL AUTO_INCREMENT,
     method int(11) NOT NULL DEFAULT 1,
@@ -292,14 +252,6 @@ CREATE TABLE {$_TABLES['sessions']} (
 ";
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['sortcodes']} (
-  code char(4) NOT NULL default '0',
-  name char(32) default NULL,
-  PRIMARY KEY  (code)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id int(10) unsigned NOT NULL auto_increment,
   ipaddress varchar(39) NOT NULL default '',
@@ -308,14 +260,6 @@ CREATE TABLE {$_TABLES['speedlimit']} (
   PRIMARY KEY (id),
   KEY type_ipaddress (type,ipaddress),
   KEY date (date)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['statuscodes']} (
-  code int(1) NOT NULL default '0',
-  name char(32) default NULL,
-  PRIMARY KEY  (code)
 ) ENGINE=MyISAM
 ";
 
@@ -473,14 +417,6 @@ CREATE TABLE {$_TABLES['trackback']} (
 ";
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['trackbackcodes']} (
-  code tinyint(4) NOT NULL default '0',
-  name varchar(32) default NULL,
-  PRIMARY KEY  (code)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
 CREATE TABLE {$_TABLES['usercomment']} (
   uid mediumint(8) NOT NULL default '1',
   commentmode varchar(10) NOT NULL default 'nested',
@@ -577,7 +513,7 @@ CREATE TABLE {$_TABLES['vars']} (
 ) ENGINE=MyISAM
 ";
 
-
+// Data
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (2,3) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (4,3) ";
@@ -656,15 +592,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (6,1,'whosonline_block','phpblock','Who\'s Online',10,'','',CURRENT_TIMESTAMP,0,'phpblock_whosonline',4,2,3,3,2,2) ";
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,1,'older_stories','gldefault','Older Stories',40,'','',CURRENT_TIMESTAMP,1,'',4,2,3,3,2,2) ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (0,'Comments Enabled') ";
-$_DATA[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (-1,'Comments Disabled') ";
-$_DATA[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Comments Closed') ";
-
-$_DATA[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('flat','Flat') ";
-$_DATA[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('nested','Nested') ";
-$_DATA[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('threaded','Threaded') ";
-$_DATA[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('nocomment','No Comments') ";
-
 $_DATA[] = "INSERT INTO {$_TABLES['cookiecodes']} (cc_value, cc_descr) VALUES (0,'(don\'t)') ";
 $_DATA[] = "INSERT INTO {$_TABLES['cookiecodes']} (cc_value, cc_descr) VALUES (3600,'1 Hour') ";
 $_DATA[] = "INSERT INTO {$_TABLES['cookiecodes']} (cc_value, cc_descr) VALUES (7200,'2 Hours') ";
@@ -693,9 +620,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VA
 $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (17,'%d/%m/%y %H:%M','21/03/99 22:00') ";
 $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (18,'%a %d %b %I:%M%p','Sun 21 Mar 10:00PM') ";
 $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (19,'%Y-%m-%d %H:%M','1999-03-21 22:00') ";
-
-$_DATA[] = "INSERT INTO {$_TABLES['featurecodes']} (code, name) VALUES (0,'Not Featured') ";
-$_DATA[] = "INSERT INTO {$_TABLES['featurecodes']} (code, name) VALUES (1,'Featured') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (1,'story.edit','Access to story editor',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (2,'story.moderate','Ability to moderate pending stories',1) ";
@@ -766,9 +690,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (68, 'language.edit', 'Can manage Language Settings', 1)";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (69, 'theme.edit', 'Can manage Theme Settings', 1)";
 
-$_DATA[] = "INSERT INTO {$_TABLES['frontpagecodes']} (code, name) VALUES (0,'Show Only in Topic') ";
-$_DATA[] = "INSERT INTO {$_TABLES['frontpagecodes']} (code, name) VALUES (1,'Show on Front Page') ";
-
 $_DATA[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,1,NULL) ";
 $_DATA[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (3,NULL,1) ";
@@ -831,22 +752,12 @@ $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Hea
 
 $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (1, 'Ping-O-Matic', 'http://pingomatic.com/', 'http://rpc.pingomatic.com/', 'weblogUpdates.ping', 1)";
 
-$_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('plaintext','Plain Old Text') ";
-$_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('html','HTML Formatted') ";
-
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid/print', '/article.php?story=@sid&mode=print', 100)";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/article/@sid', '/article.php?story=@sid', 110)";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/archives/@topic/@year/@month', '/directory.php?topic=@topic&year=@year&month=@month', 120)";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/page/@page', '/staticpages/index.php?page=@page', 130)";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/links/portal/@item', '/links/portal.php?what=link&item=@item', 140)";
 $_DATA[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/links/category/@cat', '/links/index.php?category=@cat', 150)";
-
-$_DATA[] = "INSERT INTO {$_TABLES['sortcodes']} (code, name) VALUES ('ASC','Oldest First') ";
-$_DATA[] = "INSERT INTO {$_TABLES['sortcodes']} (code, name) VALUES ('DESC','Newest First') ";
-
-$_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (1,'Refreshing') ";
-$_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (0,'Normal') ";
-$_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (10,'Archive') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('welcome',2,0,NOW(),'Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing Geeklog. Please take the time to read everything in the <a href=\"docs/english/index.html\">docs directory</a>. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.</p>\r<p>To log into your new Geeklog site, please use this account:</p>\r<p>Username: <b>Admin</b><br />\rPassword: <b>password</b></p><p><b>And don\'t forget to <a href=\"usersettings.php\">change your password</a> after logging in!</b></p>','',100,1,0,'',1,0,0,'html',1,2,3,3,2,2,2) ";
 
@@ -890,6 +801,3 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedsto
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_scheduled_run','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_article_publish','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_version','0.0.0') ";
-
-$_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";
-$_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (-1,'Trackback Disabled') ";

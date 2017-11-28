@@ -2012,6 +2012,12 @@ $LANG_sortcodes = array(
     'DESC' => 'Newest First'
 );
 
+$LANG_statuscodes = array(
+    0 => 'Normal',
+    1 => 'Refreshing',
+    10 => 'Archive'
+);
+
 $LANG_trackbackcodes = array(
     0   => 'Trackback Enabled',
     -1  => 'Trackback Disabled'

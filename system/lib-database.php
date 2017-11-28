@@ -52,30 +52,23 @@ global $_CONF, $_DB, $_TABLES, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_
 $_TABLES['access'] = $_DB_table_prefix . 'access';
 $_TABLES['article_images'] = $_DB_table_prefix . 'article_images';
 $_TABLES['blocks'] = $_DB_table_prefix . 'blocks';
-$_TABLES['commentcodes'] = $_DB_table_prefix . 'commentcodes';
 $_TABLES['commentedits'] = $_DB_table_prefix . 'commentedits';
-$_TABLES['commentmodes'] = $_DB_table_prefix . 'commentmodes';
 $_TABLES['commentnotifications'] = $_DB_table_prefix . 'commentnotifications';
 $_TABLES['comments'] = $_DB_table_prefix . 'comments';
 $_TABLES['commentsubmissions'] = $_DB_table_prefix . 'commentsubmissions';
 $_TABLES['conf_values'] = $_DB_table_prefix . 'conf_values';
 $_TABLES['cookiecodes'] = $_DB_table_prefix . 'cookiecodes';
 $_TABLES['dateformats'] = $_DB_table_prefix . 'dateformats';
-$_TABLES['featurecodes'] = $_DB_table_prefix . 'featurecodes';
 $_TABLES['features'] = $_DB_table_prefix . 'features';
-$_TABLES['frontpagecodes'] = $_DB_table_prefix . 'frontpagecodes';
 $_TABLES['group_assignments'] = $_DB_table_prefix . 'group_assignments';
 $_TABLES['groups'] = $_DB_table_prefix . 'groups';
 $_TABLES['language_items'] = $_DB_table_prefix . 'language_items';
 $_TABLES['maillist'] = $_DB_table_prefix . 'maillist';
 $_TABLES['pingservice'] = $_DB_table_prefix . 'pingservice';
 $_TABLES['plugins'] = $_DB_table_prefix . 'plugins';
-$_TABLES['postmodes'] = $_DB_table_prefix . 'postmodes';
 $_TABLES['routes'] = $_DB_table_prefix . 'routes';
 $_TABLES['sessions'] = $_DB_table_prefix . 'sessions';
-$_TABLES['sortcodes'] = $_DB_table_prefix . 'sortcodes';
 $_TABLES['speedlimit'] = $_DB_table_prefix . 'speedlimit';
-$_TABLES['statuscodes'] = $_DB_table_prefix . 'statuscodes';
 $_TABLES['stories'] = $_DB_table_prefix . 'stories';
 $_TABLES['storysubmission'] = $_DB_table_prefix . 'storysubmission';
 $_TABLES['syndication'] = $_DB_table_prefix . 'syndication';
@@ -83,13 +76,22 @@ $_TABLES['tokens'] = $_DB_table_prefix . 'tokens';
 $_TABLES['topic_assignments'] = $_DB_table_prefix . 'topic_assignments';
 $_TABLES['topics'] = $_DB_table_prefix . 'topics';
 $_TABLES['trackback'] = $_DB_table_prefix . 'trackback';
-$_TABLES['trackbackcodes'] = $_DB_table_prefix . 'trackbackcodes';
 $_TABLES['usercomment'] = $_DB_table_prefix . 'usercomment';
 $_TABLES['userindex'] = $_DB_table_prefix . 'userindex';
 $_TABLES['userinfo'] = $_DB_table_prefix . 'userinfo';
 $_TABLES['userprefs'] = $_DB_table_prefix . 'userprefs';
 $_TABLES['users'] = $_DB_table_prefix . 'users';
 $_TABLES['vars'] = $_DB_table_prefix . 'vars';
+
+// The tables were dropped as of Geeklog 2.2.0, but are used as part of code
+$_TABLES['commentcodes'] = $_DB_table_prefix . 'commentcodes';
+$_TABLES['commentmodes'] = $_DB_table_prefix . 'commentmodes';
+$_TABLES['featurecodes'] = $_DB_table_prefix . 'featurecodes';
+$_TABLES['frontpagecodes'] = $_DB_table_prefix . 'frontpagecodes';
+$_TABLES['postmodes'] = $_DB_table_prefix . 'postmodes';
+$_TABLES['sortcodes'] = $_DB_table_prefix . 'sortcodes';
+$_TABLES['statuscodes'] = $_DB_table_prefix . 'statuscodes';
+$_TABLES['trackbackcodes'] = $_DB_table_prefix . 'trackbackcodes';
 
 // Tables used by the bundled plugins
 

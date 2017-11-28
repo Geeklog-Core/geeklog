@@ -2133,6 +2133,50 @@ function COM_endBlock($template = 'blockfooter.thtml')
  * Creates a <option> list from a database list for use in forms
  * Creates option list form field using given arguments
  *
+ * @param  string $langVariableName one of 'LANG_commentcodes', 'LANG_commentmodes', 'LANG_cookiecodes',
+ *                                  'LANG_featurecodes', 'LANG_frontpagecodes', 'LANG_postmodes', 'LANG_sortcodes',
+ *                                  'LANG_statuscodes', 'LANG_trackbackcodes'
+ * @param  mixed  $selected         Value (from $selection) to set to SELECTED or default
+ * @see function COM_checkList
+ * @return   string  Formatted HTML of option values
+ */
+function COM_optionListFromLangVariables($langVariableName, $selected = '')
+{
+    static  $langVariableNames = array(
+        'LANG_commentcodes', 'LANG_commentmodes', 'LANG_featurecodes', 'LANG_frontpagecodes',
+        'LANG_postmodes', 'LANG_sortcodes', 'LANG_statuscodes', 'LANG_trackbackcodes',
+    );
+    static $charset = null;
+
+    if (!in_array($langVariableName, $langVariableNames)) {
+        throw new InvalidArgumentException('Unknown language variable name: ' . $langVariableName);
+    }
+
+    if ($charset === null) {
+        $charset = COM_getEncodingt();
+    }
+
+    global $$langVariableName;
+
+    $retval = '';
+
+    foreach ($$langVariableName as $value => $text) {
+        $isSelected = ($value == $selected) ? ' selected="selected"' : '';
+        $retval .= sprintf(
+            '<option value="%s"%s>%s</option>',
+            htmlspecialchars($value, ENT_QUOTES, $charset),
+            $isSelected,
+            htmlspecialchars($text, ENT_QUOTES, $charset)
+        ) . PHP_EOL;
+    }
+
+    return $retval;
+}
+
+/**
+ * Creates a <option> list from a database list for use in forms
+ * Creates option list form field using given arguments
+ *
  * @param        string $table     Database Table to get data from
  * @param        string $selection Comma delimited string of fields to pull The first field is the value of the option
  *                                 and the second is the label to be displayed.  This is used in a SQL statement and
@@ -2146,16 +2190,25 @@ function COM_endBlock($template = 'blockfooter.thtml')
 function COM_optionList($table, $selection, $selected = '', $sortCol = 1, $where = '')
 {
     global $_DB_table_prefix;
+    static  $langTableNames = array(
+        'LANG_commentcodes', 'LANG_commentmodes', 'LANG_featurecodes', 'LANG_frontpagecodes',
+        'LANG_postmodes', 'LANG_sortcodes', 'LANG_statuscodes', 'LANG_trackbackcodes',
+    );
 
-    $retval = '';
-
-    if (substr($table, 0, strlen($_DB_table_prefix)) == $_DB_table_prefix) {
+    if (substr($table, 0, strlen($_DB_table_prefix)) === $_DB_table_prefix) {
         $LangTableName = 'LANG_' . substr($table, strlen($_DB_table_prefix));
     } else {
         $LangTableName = 'LANG_' . $table;
     }
 
+    if (in_array($LangTableName, $langTableNames)) {
+        return COM_optionListFromLangVariables($LangTableName, $selected);
+    }
+
+    // Currently, this is the case with $_TABLES['dateformats']
     global $$LangTableName;
+
+    $retval = '';
 
     $LangTable = isset($$LangTableName) ? $$LangTableName : array();
     $tmp = str_replace('DISTINCT ', '', $selection);

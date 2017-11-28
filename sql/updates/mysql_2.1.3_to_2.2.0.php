@@ -11,6 +11,16 @@ $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT(11) NOT NULL D
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `help`";
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_classes` VARCHAR(255) NOT NULL DEFAULT '' AFTER `css_id`";
 
+// Drop small, read-only tables
+$_SQL[] = "DROP TABLE {$_TABLES['commentcodes']}";
+$_SQL[] = "DROP TABLE {$_TABLES['commentmodes']}";
+$_SQL[] = "DROP TABLE {$_TABLES['featurecodes']}";
+$_SQL[] = "DROP TABLE {$_TABLES['frontpagecodes']}";
+$_SQL[] = "DROP TABLE {$_TABLES['postmodes']}";
+$_SQL[] = "DROP TABLE {$_TABLES['sortcodes']}";
+$_SQL[] = "DROP TABLE {$_TABLES['statuscodes']}";
+$_SQL[] = "DROP TABLE {$_TABLES['trackbackcodes']}";
+
 /**
  * Upgrade Messages
  */
