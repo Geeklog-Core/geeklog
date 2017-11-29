@@ -81,3 +81,94 @@
         el1.style.display = (el1.style.display != 'block')? 'block' : 'none';
     }
 
+// Below is Javascript for Repositiory
+// Either displays or hides the data link
+function smart_toggle_datalink(id, e, divisor)
+{
+    if (document.getElementById(id).style.display == "none") {
+        display_datalink(id,e, divisor);
+    }
+    else {
+        hide_datalink(id);
+    }
+};
+
+// Displays data link
+function display_datalink(id,e, divisor)
+{
+    var arr = XYpos(e);
+    
+    if (divisor) {
+        if (divisor == false) {
+            var tleft = (screen.width / 2);
+            arr[1] = (screen.height / 2);
+        }
+        else {
+            var tleft = arr[0] / divisor;
+        }
+    }
+    else {
+        var tleft = arr[0];
+    }
+    
+    
+    set_topleftpos(arr[1],tleft, id);
+    document.getElementById(id).style.display = "";
+};
+
+// Hide data link
+function hide_datalink(id)
+{
+    document.getElementById(id).style.display = "none";
+};
+
+// Open warning box, warning of potential malicious content
+function warn_malicious_plugin(id,e, mode)
+{
+    if (mode == "install_unsafe") {
+        var cmd = "install";
+    }
+    else {
+        var cmd = "download";
+    }
+    var data = '<b style="color:red">'+MALICIOUS_PLUGIN_WARN['warning']+'!!</b><br /><br />'+MALICIOUS_PLUGIN_WARN['msg']+'<br /><br />'+MALICIOUS_PLUGIN_WARN['msg2']+'<br /><br /><input type="button" name="get_me_out" value="'+MALICIOUS_PLUGIN_WARN['cancel']+'" onclick="javascript:hide_maliciouswarning();" /><input type="button" name="install" value="'+MALICIOUS_PLUGIN_WARN['install']+'" onclick="javascript:hide_maliciouswarning();window.location = \'plugins.php?cmd='+cmd+'&id='+id+'\'" />';
+    document.getElementById("MALICIOUS_PLUGIN_WARN").innerHTML = data;    
+    display_datalink("MALICIOUS_PLUGIN_WARN",e);
+};
+
+// Bring up install/download plugin warning enabled box
+// id is plugin id, e = event
+function is_downloadinstall_plugin(mode, id, e)
+{ 
+    // Switch through the modes --
+    // install_safe = auto redirect
+    // install_unsafe = bring up prompt
+    // same for download, download_safe and download_unsafe
+    switch(mode)
+    {
+        case "install_safe":
+        case "download_safe":
+            if (mode == "install_safe") {
+                var cmd = "install";
+            }
+            else {
+                var cmd = "download";
+            }
+            
+            window.location = "plugins.php?cmd="+cmd+"&id="+id;
+            break;
+        case "download_unsafe":
+        case "install_unsafe":
+            // Open message box
+            warn_malicious_plugin(id,e, mode);
+            break;
+    }
+};
+
+// Hides warning
+function hide_maliciouswarning()
+{
+    hide_datalink("MALICIOUS_PLUGIN_WARN");
+};
+
+

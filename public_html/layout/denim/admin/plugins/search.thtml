@@ -1,0 +1,51 @@
+
+                            <div class="aligncenter">
+                                <div class="block-divider"></div>
+                            </div><div class="block-box">
+                            {start_block_editor}
+                            <form action="{site_admin_url}/plugins.php" method="post">
+                                <table cellspacing="0" cellpadding="3">
+                                    <tr>
+                                        <td><img src="{pi_icon}" alt=""{xhtml}></td>
+                                        <td>
+                                            
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_306}</b></td>
+                                        <td> - {lang_320}</td>
+                                    </tr>				    
+                                    <tr>
+                                        <td class="alignright"></td>
+                                        <td></td>
+                                    </tr>	
+				    <tr>
+                                        <td class="alignright"><b>{lang_307}</b></td>
+                                        <td><input type="text" value="" name="plugin_name"{xhtml}></td>
+                                    </tr> <!-- // Not in use at the moment, maybe later
+                                    <tr>
+                                        <td class="alignright"><b>{lang_308}</b></td>
+                                        <td><input type="text" value="" name="plugin_version"{xhtml}></td>
+                                    </tr>
+                                    So we include a hidden field to work
+                                    --> 
+                                    <input type="hidden" value="" name="plugin_version"{xhtml}>
+                                     <tr>
+                                        <td class="alignright"><b>{lang_309}</b></td>
+                                        <td><select name="plugin_repo">
+					    <option value="" selected="selected">{lang_310}</option>
+					    {value_0}
+					</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"></td>
+                                        <td>
+                                            <input type="submit" value="{lang_search}" name="search"{xhtml}>
+                                        </td>
+                                    </tr>
+
+                                   </table>
+                                   <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+                            </form>
+</div>                            {end_block}

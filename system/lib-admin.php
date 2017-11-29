@@ -1407,6 +1407,123 @@ function ADMIN_getListField_plugins($fieldName, $fieldValue, $A, $icon_arr, $tok
 }
 
 /**
+ * used for the search results from the repository listings in plugins.php
+ *
+ */
+function ADMIN_getListField_repository($fieldname, $fieldvalue, $A, $icon_arr, $token)
+{
+    global $_CONF, $LANG_ADMIN, $LANG32, $REPOSITORY;
+
+    $retval = '';
+    switch($fieldname) {
+        case 'install':
+            // Check to see if the repository is ok
+            switch ($REPOSITORY[$A['repository_name']]) {
+                case '3':
+                    $titular = "safe";
+                    break;
+                default:
+                    $titular = "unsafe";
+                    break;
+            }
+            
+            if ($A['install'] == 0) {
+                // Plugin is not ready for auto install
+                // So disabled INSTALL button
+                $retval = '<input type="button" name="install_button" value="'.$LANG32[315].'" disabled="disabled" /> '.$LANG32[317].' <input type="button" name="install_button" value="'.$LANG32[316].'" onclick="javascript:is_downloadinstall_plugin(\'download_'.$titular.'\', '.$A['plugin_id'] .', event);" />';
+            }
+            else
+            {
+                // Plugin ready for auto install
+                $retval = '<input type="button" name="install_button" value="'.$LANG32[315].'" onclick="javascript:is_downloadinstall_plugin(\'install_'.$titular.'\', '.$A['plugin_id'] .', event);" /> '.$LANG32[317].' <input type="button" name="install_button" value="'.$LANG32[316].'" onclick="javascript:is_downloadinstall_plugin(\'download_'.$titular.'\', '.$A['plugin_id'] .', event);" />';
+            }
+            break;
+            case 'state':
+                $retval = $LANG32[$A['state']];
+                break;
+            case 'downloads':
+                if ($A['downloads'] < 1) {
+                    $retval = 0;
+                }
+                else {
+                    $retval = $A['downloads'];
+                }
+                break;
+            case 'short_des':
+                $retval = substr($A['short_des'], 0, 101);
+                break;
+             case 'repository_name':
+           // Check to see if the repository is ok
+                 switch ($REPOSITORY[$A['repository_name']]) {
+                     case '3':
+                         $titular = "";
+                         break;
+                     default:
+                         $titular = "<span style='color:red'>&nbsp;{$LANG32[344]}</span>";
+                         break;
+                 }
+                  
+                 return $A['repository_name']. $titular;
+
+                break;
+             case 'name':
+                 // Check to see if the repository is ok
+                 switch ($REPOSITORY[$A['repository_name']]) {
+                     case '3':
+                         $titular = $LANG32[326];
+                         break;
+                     default:
+                         $titular = '<span style="color:red">'.$LANG32[327].'</span>';
+                         break;
+                 }
+                 
+                 $dep = ($A['dependencies'] == "") ? "({$LANG32[345]})" : $A['dependencies'];
+                 $sdep = ($A['soft_dep'] == "") ? "({$LANG32[345]})" : $A['soft_dep'];
+                 $des = ($A['short_des'] == "") ? "({$LANG32[345]})" : $A['short_des'];
+                 $credits = ($A['credits'] == "") ? "({$LANG32[345]})" : $A['credits'];
+                 $retval = "<a href='javascript:void();' onclick='javascript:smart_toggle_datalink(\"DISPLAY_DATA{$A['plugin_id']}\",event);'>{$A['name']}</a> <div class='plugin_data' style='display:none' id='DISPLAY_DATA{$A['plugin_id']}'><img style='float:right' onclick='javascriprt:hide_datalink(\"DISPLAY_DATA{$A['plugin_id']}\");' alt='Close' src='{$_CONF['site_url']}/images/close.gif' /><b>{$A['name']} {$A['version']}</b><br /><br />{$titular}<br /><br /><b>{$LANG32[340]}</b><br />{$des}<br /><br /><b>{$LANG32[341]}</b><br />{$dep}<br /><br /><b>{$LANG32[342]}</b><br />{$sdep}<br /><br /><b>{$LANG32[343]}</b><br />{$sdep}<br /><br /><b>Credits:</b><br />{$credits}</div>";
+                 break;
+         default:
+            $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
+}
+
+/**
+ * used for the list of repositories in admin/plugins.php
+ *
+ */
+function ADMIN_getListField_repositorylisting($fieldname, $fieldvalue, $A, $icon_arr, $token)
+{
+    global $_CONF, $LANG_ADMIN, $LANG32;
+
+    $retval = '';
+    switch($fieldname) {
+        case 'enabled':
+            if ($A['enabled'] == 1) {
+                $switch = ' checked="checked"';
+                $enabled = true;
+            }
+            else {
+                $switch = '';
+                $enabled = false;
+            }
+            
+            $retval = '<input type="checkbox" name="prep'.$A['repository_url'].'" onclick="window.location = \'plugins.php?cmd=toggle_repo&rname='.$A['repository_url'].'&enabled='.$enabled.'\'" value="1"'
+                      . $switch . XHTML . '>&nbsp;<input type="button" name="delete_pl" onclick="window.location = \'plugins.php?cmd=del_rep&rname='.$A['repository_url'].'\';" value="'.$LANG_ADMIN['delete'].'" /> ';
+                      
+            $retval .= '<input type="hidden" name="' . CSRF_TOKEN . '" '
+                      . 'value="' . $token . '"' . XHTML . '>';
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
+}
+
+/**
  * used for the lists of submissions and draft stories in admin/moderation.php
  *
  * @param  string $fieldName

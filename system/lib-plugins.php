@@ -3399,6 +3399,152 @@ function PLG_getMetaTags($type, $id, array $myTags = array())
 }
 
 /**
+* Check for updates from the repository for installed plugins
+*
+* @return Show Message()
+*/
+function chk_updates_prepo()
+{
+    session_start();
+    // If session is initialized, do not load
+    if ($_SESSION['plugin_repository_admin_panel_updates_chk'] === true) {
+        return;
+    }
+    $_SESSION['plugin_repository_admin_panel_updates_chk'] = true;
+
+    // Declare Variables
+    global $_CONF, $_TABLES;    
+    
+    // Do a repository listing update
+    $list_repo = array();
+    
+    $result = DB_query("SELECT repository_url FROM {$_TABLES['plugin_repository']};");
+    
+    // Loop through results, storing them in an array to be sent off
+    while ( ($result2 = DB_fetchArray($result)) !== FALSE) {
+        $list_repo[] = $result2['repository_url'];
+    }
+    
+    // Send off post data
+    $data = "REPOSITORIES=".rawurlencode(serialize($list_repo));    
+    $result = do_post_request($_CONF['geeklog_auth_service'] . 'repositorylisting/check_repository.php?cmd=update', $data);    
+    $return_array = unserialize($result);
+    // Did it return false, its ok
+    if ( ($result === FALSE) or ($return_array === FALSE) or (count($return_array) < 1)) {
+        
+    }
+    else {
+        // We should get back an array like so:
+        // ARRAY [repository_name] => state
+        foreach ($return_array as $key => $value) {
+            // Update DB
+            $state = (int)$value;
+            
+            // Validate state
+            if ($state === 1) {
+                // Banned URL, must delete
+                DB_query("DELETE FROM {$_TABLES['plugin_repository']} WHERE repository_name = '{$url}';");
+            }
+            else {
+                $state = ($state === 3) ? 3 : 2;
+                $url = COM_applyFilter($key);
+                DB_query("UPDATE {$_TABLES['plugin_repository']} SET state = '{$state}' WHERE repository_name = '{$url}';");
+            }
+        }
+    }
+    
+    // And now check for updates
+    $ap = array();
+    $update_count = 0;
+    $upgrade_count = 0;
+    $final_array = array();
+ 
+    // For each plugin in the plugins table
+    $result = DB_query("SELECT pi_name, pi_version, pi_update_count FROM {$_TABLES['plugins']} WHERE pi_enabled = '1';");
+    
+    // Loop for each installed plugin, until FALSE reached
+    while ( ($result2 = DB_fetchArray($result)) !== FALSE) {
+        // Attempt to retreive the listing from the repository local copy, to get the plugin ID
+        $result3 = DB_query("SELECT plugin_id, repository_name FROM {$_TABLES['plugin_repository_list']} WHERE name = '{$result2['pi_name']}' AND version = '{$result2['pi_version']}';");
+    
+        // Do query
+        $result4 = DB_fetchArray($result3);
+        
+        // Plugin must not exist in the repository anymore.. how sad
+        if ($result4 === FALSE) {
+            continue;
+        }
+        
+        // Load up array with repository_name, and the plugin_id, and version
+        $ap[$result4['repository_name']][$result4['plugin_id']] = array($result4['version'], $result2['pi_update_count']); 
+        
+    }
+
+    // Array full of data, lets loop through array, and for each repository URL, send for a list of updates.
+    foreach ($ap as $repository => $plugin_value) {
+        // Send to repository
+        $data = "REPOSITORY_ARRAY_INSTALLED=".rawurlencode(serialize($plugin_value));
+        
+        $result = do_post_request($repository . '/cmd/nchkpdate.php?cmd=1', $data);
+
+        // Did it fail (if so, we don't do anything)
+        if ( ($result === FALSE) or (unserialize($result) === FALSE)) {
+            continue;
+        }
+        
+        // Whatever number we have is an integer detailing how many plugins have updates - update counter
+        $rarray = unserialize($result);
+
+        if ($rarray === FALSE) {
+            continue;
+        }        
+        $final_array[$repository] = $rarray;
+        $upgrade_count += count($rarray[1]);        
+        $update_count += count($rarray[0]);
+
+    }
+
+    // Is it bigger than 0?
+    if ( ($update_count > 0) or ($upgrade_count > 0)) {
+        // Header information
+        header("Location: moderation.php?tmsg=502&enable_spf=1&count={$update_count}&ccount={$update_count}");
+        return;
+    }
+    
+}
+
+
+/**
+* Send post request for updates info
+*
+* @return 
+*/
+function do_post_request($url, $data, $optional_headers = null)
+{
+    $params = array('http' => array(
+        'method' => 'POST',
+        'content' => $data
+        ));
+     
+     // Optional headers
+     if ($optional_headers !== null) {
+        $params['http']['header'] = $optional_headers;
+     }
+     
+     // Create stream, read in contents
+     $ctx = stream_context_create($params);
+     $fp = @fopen($url, 'rb', false, $ctx);
+     if (!$fp) {
+        return false;
+     }
+     
+     // Get response
+     $response = @stream_get_contents($fp);
+
+     return $response;
+}
+
+/**
  * Ask plugins for items they want to include in an XML site map
  *
  * @param    string $type                               plugin type (incl. 'article' for stories)

@@ -1323,7 +1323,69 @@ $LANG32 = array(
     105 => '(undefined error)',
     106 => 'Missing a temporary folder.',
     107 => 'Failed to write file to disk.',
-    108 => 'File upload stopped by extension.'
+    108 => 'File upload stopped by extension.',
+    
+    //
+    // Repository Updates
+    // 
+    300 => 'Search for a plugin',
+    301 => 'Check for Updates',
+    302 => 'Manage Repositories',
+    303 => 'Add Repository',
+    304 => 'Update Repository Plugin Lists',
+    305 => 'Search Repository for plugins',
+    306 => 'Filter Results',
+    307 => 'Plugin Name',
+    308 => 'Version',
+    309 => 'Repository',
+    310 => 'All Repositories',
+    311 => 'Install / Download',
+    312 => 'Downloads',
+    313 => 'State',
+    314 => 'If a plugin is offered for auto-install, simply click the install button next to the name. However, if the developer did not create this plugin for automatic installation, you may have to manually download it using the download button.',
+    315 => 'Install',
+    316 => 'Download',
+    317 => 'or',
+    'stable' => 'Stable',
+    'depreciated' => 'Depreciated',
+    'insecure' => 'Insecure',
+    'beta' => 'Beta',
+    'final' => 'Final',
+    'dev' => 'Dev',
+    318 => 'Repository URL',
+    319 => 'Repository Name',
+    320 => 'Name field supports the AND and OR operator. Note that AND is evaluated before OR.<br />&nbsp;&nbsp;eg. \'Geeklog AND Plugin OR Scape\' is evaluated as Geeklog and (Plugin OR Scape) ', // , and the ^ operator as OR for search terms.<br />&nbsp;&nbsp;However, note only one type of operator is allowed in a query - either + or ^ but not both'
+    321 => 'Security Warning',
+    322 => 'Caution: The plugin you are attempting to retrieve may be malicious!',
+    323 => 'This plugin is stored in an untrusted repository - ONLY install if you trust the author(s) of the plugin AND the repository. This may be an attempt to gain control of your Geeklog installation.',
+    324 => 'Cancel',
+    325 => 'Proceed',
+    326 => 'This plugin is from a certified safe repository! Install with pride!',
+    327 => 'Caution: This plugin is from a non-certified safe repository - it may contain malicious code.<br />Only install if you trust the author(s) of this plugin.',
+    328 => '<h2>The following update(s) are available to be installed.</h2>Clicking on the name will give a description of the patch / changes, as well as any other information necessary.',
+    329 => 'Updates / Upgrades Available',
+    330 => 'Applies to Version',
+    331 => 'Severity',
+    332 => 'Install Updates / Upgrades',
+    333 => 'There are no updates or upgrades available at this moment - try again later!',
+    334 => '<h2>The following upgrade(s) are available to be installed.</h2>Clicking on the name will give a description of the plugin, as well as any other information necessary.',
+    335 => '(Must install manually)',
+    336 => '(Warning: May be malicious update)',
+    337 => 'Warning: Some patches were not installed',
+    338 => 'Update was completed',
+    339 => 'Error: The file you selected for download does not exist - please try reloading your repository (Update Plugin List).',
+    340 => 'About:',
+    341 => 'Following plugin dependencies are required:',
+    342 => 'Following software dependencies are required:',
+    343 => 'Credits:',
+    344 => '(May be unsafe)',
+    345 => 'none',
+    346 => 'Caution: This item is from a non-certified safe repository - it may contain malicious code.<br />&nbsp;Only install if you trust the author(s) of this plugin, and / or have reviewed the source code.',
+    347 => 'Warning: It was impossible to update from the following repositories:',
+    348 => 'Repository List',
+    349 => 'Here is a list of all installed repositories. Simply delete or disable any you do not want to search for plugins from, or click \'Update Plugin List\' to update the list of plugins that the repositories offer',
+    350 => 'All updates and upgrades available for your plugin are displayed below. You are able to uncheck any you do not want to install at this time.'    
+    
 );
 
 ###############################################################################
@@ -1555,7 +1617,22 @@ $MESSAGE = array(
     153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
-    500 => 'The Template Cache has been successfully cleared.'
+    //500 => 'The Template Cache has been successfully cleared.',
+    
+    // Error codes in the 500 range reserved for Repository Plugin Management
+    500 => 'Repository Update Successful %s',
+    501 => 'Error: The plugin you selected does not exist - It might be time to reload the repository :)',
+    502 => 'Attention: There are %d update(s) and %d upgrade(s) available for the plugins installed!<br />Please <a href="plugins.php?mode=chkupdates">update them right away</a>, as there may be important security updates available.',
+    503 => 'Repository URL deleted successfully',
+    504 => 'Error: A valid repository URL is required in format: http://www.sitedomain.com/repository/main',
+    505 => 'Repository added!',
+    506 => 'Error: The repository you entered is blacklisted, for containing malicious software harmful to your computer. ',
+    507 => 'Error: Failure to contact repository check database. Please try again later.',
+    508 => "Error: The repository you entered does not exist (HTTP STATUS %s). Did you make a typing error? Host: %s",
+    509 => 'Error: Failed to get patch %s.. Please try again without this patch',
+    510 => 'Error: Patch install failed for patch %s, aborting updates'
+    
+    
 );
 
 ###############################################################################
@@ -2561,3 +2638,12 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
+
+################################################################################
+# Updater Class Plugin Language
+$LANG_PUPDATE_ERROR = array(
+    100 => 'Update Failed: Unable to get a meaningful update package from the repository',
+    101 => 'Update Failed: Unable to find update class',
+    102 => 'Update Failed: Unable to process update',
+    103 => 'Update Failed: Unable to find required processing files'
+);    

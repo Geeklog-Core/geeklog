@@ -1,0 +1,17 @@
+                            <form action="{form_url}" method="post">
+                            
+                                {install_button}
+                                {msg1}
+                                
+                                <table class="admin-list-table">
+                                    {header_row}
+                                    {item_row}
+                                </table>
+                                
+                                {msg2}
+                                <table class="admin-list-table">
+                                    {header_row2}
+                                    {item_row2}
+                                </table>                   
+                           
+                           </form>

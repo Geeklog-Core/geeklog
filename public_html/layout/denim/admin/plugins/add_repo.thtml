@@ -1,0 +1,26 @@
+                            {start_block_editor}
+                            <form action="{site_admin_url}/plugins.php" method="post">
+                                <table cellspacing="0" cellpadding="3">
+                                    <tr>
+                                        <td><img src="{pi_icon}" alt=""{xhtml}></td>
+                                        <td>
+
+                                            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright" style="text-align:left;"><b>{lang_repourl}</b></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright" style="text-align:left;"><input type="text" value="" name="repository_url"{xhtml}></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr> 
+                                        <td class="alignright" style="text-align:left;"><input type="submit" value="{lang_save}" name="add_repo"{xhtml}></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </form>
+                            {end_block}
+

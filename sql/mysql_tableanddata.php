@@ -251,6 +251,7 @@ CREATE TABLE {$_TABLES['plugins']} (
   pi_enabled tinyint(1) unsigned NOT NULL default '1',
   pi_homepage varchar(128) NOT NULL default '',
   pi_load smallint(5) unsigned NOT NULL default '10000',
+  pi_update_count INT DEFAULT 0,
   INDEX plugins_enabled(pi_enabled),
   PRIMARY KEY  (pi_name)
 ) ENGINE=MyISAM
@@ -893,3 +894,36 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_versi
 
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (-1,'Trackback Disabled') ";
+
+// Repository Client
+$_SQL[] = "
+CREATE TABLE `{$_TABLES['plugin_repository']}` (
+  `repository_url` varchar(255) default NULL,
+  `enabled` tinyint(4) default NULL,
+  `status` int(1) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 
+";
+
+$_SQL[] = "
+CREATE TABLE `{$_TABLES['plugin_repository_list']}` (
+  `plugin_id` int(11) default NULL,
+  `name` varchar(255) default NULL,
+  `repository_name` varchar(255) default NULL,
+  `version` varchar(255) default NULL,
+  `db` tinyint(4) default NULL,
+  `dependencies` text,
+  `soft_dep` text,
+  `short_des` text,
+  `credits` text,
+  `vett` int(11) default NULL,
+  `downloads` int(11) default NULL,
+  `install` tinyint(4) default NULL,
+  `state` varchar(255) default NULL,
+  `ext` varchar(100) default NULL,
+  `fname` varchar(255) default NULL,
+  KEY `plugin_id` (`plugin_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 
+";
+
+$_DATA[] = "INSERT INTO `{$_TABLES['plugin_repository']}` (`repository_url`, `enabled`, `status`) VALUES 
+('https://www.geeklog.net/repository/main', 1, 3) ";
