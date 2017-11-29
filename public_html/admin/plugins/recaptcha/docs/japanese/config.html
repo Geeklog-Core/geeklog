@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Geeklog reCAPTCHAプラグインの設定</title>
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+</head>
+
+<body>
+
+<h1>reCAPTCHA&reg;プラグインの設定</h1>
+
+<h2><a name="system">システム</a></h2>
+
+<table border="1" width="100%">
+<tr><th style="width: 20%;">項目(変数)</th>
+    <th style="width: 20%;">デフォルト</th>
+    <th style="width: 60%;">説明</th></tr>
+<tr>
+  <td valign="top"><a name="desc_public_key">public_key</a></td>
+  <td valign="top">(未入力)</td>
+  <td valign="top">reCAPTCHA APIのSite Keyを入力します。お持ちでない場合は、<a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_private_key">private_key</a></td>
+  <td valign="top">(未入力)</td>
+  <td valign="top">reCAPTCHA APIのSecret Keyを入力します。お持ちでない場合は、<a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>で登録して入手してください。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_logging">logging</a></td>
+  <td valign="top">いいえ</td>
+  <td valign="top">「はい」にすると、reCAPTCHAは無効な入力をログファイル(recaptcha.log)に記録します。</td></tr>
+</table>
+
+<h2><a name="integration">Geeklogへの統合</a></h2>
+
+<table border="1" width="100%">
+<tr><th style="width: 20%;">項目(変数)</th>
+    <th style="width: 20%;">デフォルト</th>
+    <th style="width: 60%;">説明</th></tr>
+<tr>
+  <td valign="top"><a name="desc_anonymous_only">anonymous_only</a></td>
+  <td valign="top">いいえ</td>
+  <td valign="top">「はい」にすると、reCAPTCHAはゲストユーザーに対してのみ表示されます。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_remoteusers">remoteusers</a></td>
+  <td valign="top">いいえ</td>
+  <td valign="top">「はい」にすると、reCAPTCHAが全てのリモートユーザーに対して強制されるようになります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_comment">enable_comment</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAがコメントに対して有効になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_contact">enable_contact</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAがメール送信に対して有効になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_emailstory">enable_emailstory</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAが「記事をメールする」に対して有効になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_forum">enable_forum</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAが掲示板プラグインに対して有効になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_registration">enable_registration</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAがユーザー登録の際に有効になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_mediagallery">enable_mediagallery</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAがメディアギャラリー(Mediagallery)プラグインに対して有効になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_rating">enable_rating</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAがレーティング(Rating)プラグインに対して有効になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_story">enable_story</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAが記事を投稿する際に有効になります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_enable_calendar">enable_calendar</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、reCAPTCHAがカレンダープラグインに対して有効になります。</td></tr>
+<tr><td valign="top"><a name="desc_enable_links">enable_links</a></td>
+    <td valign="top">はい</td>
+    <td valign="top">「はい」にすると、reCAPTCHAがリンクプラグインに対して有効になります。</td></tr>
+<tr><td valign="top"><a name="desc_enable_getpassword">enable_getpassword</a></td>
+    <td valign="top">はい</td>
+    <td valign="top">「はい」にすると、reCAPTCHAがパスワード再設定フォームに対して有効になります。</td></tr>
+<tr><td valign="top"><a id="desc_enable_loginform">enable_loginfotm</a></td>
+    <td valign="top">Yes</td>
+    <td valign="top">「はい」にすると、reCAPTCHAがログインフォームに対して有効になります。</td></tr>
+</table>
+
+<div class="footer">
+    <a href="https://github.com/Geeklog-Plugins/recaptcha">https://github.com/Geeklog-Plugins/recaptcha</a><br />
+    本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
+</div>
+
+</body>
+</html>

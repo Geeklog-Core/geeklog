@@ -1,0 +1,161 @@
+body {
+  margin: 1em 5%;
+  background: white;
+  color: black;
+  line-height: 1.5em;
+}
+
+h1 {
+  font-size: 1.4em;
+  border-left: solid 10px blue;
+  padding-left: 3px;
+}
+
+h2 {
+  font-size: 1.2em;
+  border-left: solid 10px blue;
+  padding-left: 3px;
+  margin-top: 30px;
+}
+
+h3 {
+  font-size: 1.0em;
+}
+
+h4 {
+  font-size: 0.8em;
+}
+
+img {
+  border: 0px;
+}
+
+p, ul, ol, li {
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+}
+ul, ol {
+  margin-left: 0.9em;
+  padding-left: 0.9em;
+}
+
+code {
+	border: dotted 1px blue;
+	background-color: #ccffff;
+	padding: 3px;
+}
+
+table {
+  width: 100%;
+  border: solid 1px black;
+  border-collapse: collapse;
+}
+
+tr {
+  border: solid 1px black;
+}
+
+td, th {
+  vertical-align: middle;
+  padding: 4px;
+  line-height: 128%;
+  font-size: smaller;
+  border: solid 1px black;
+}
+
+th {
+  text-align: left;
+  background: silver;
+}
+
+.r2 {
+  background: rgb(240,240,240);
+}
+
+dt {
+  font-weight: bold;
+}
+
+
+.usual {
+  font-size: 100%;
+}
+
+.menu {
+  background: #dddddd;
+  color: black;
+  padding: 5px;
+}
+
+.footer {
+  font-size: 90%;
+  background: #dddddd;
+  color: black;
+  padding: 5px;
+  margin-top: 4em;
+}
+
+.comment {
+  font-size: 80%;
+}
+
+.codeheader {
+  font-family: Courier, "Courier New", monospace;
+}
+
+a:link,
+a:visited {
+  color: #2222FF;
+  background: transparent;
+}
+a:hover {
+  color: #5252FF;
+  background: transparent;
+}
+
+a:active {
+  color: #2222FF;
+  background: transparent;
+}
+
+/* this is to prevent Mozilla from applying :hover on <a name="..."> */
+a[name] {
+  color: black;
+  background: transparent;
+}
+
+a.wikipedia {
+  text-decoration: none;
+  color: black;
+  border-bottom: 1px dotted black;
+}
+
+.geeklog {
+  background-color: yellow;
+}
+
+.public {
+  background-color: #99ff00;
+}
+
+.admin {
+  background-color: aqua;
+}
+
+.new {
+  color: white;
+  font-weight: bold;
+  background-color: #3333ff;
+}
+
+.fixed {
+  color: white;
+  font-weight: bold;
+  background-color: #ff0033;
+}
+
+.code {
+	color: white;
+	background: black;
+	padding: 5px;
+}
