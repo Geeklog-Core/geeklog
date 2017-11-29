@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Shows articles in various formats.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2017 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
@@ -56,6 +56,28 @@ if ($_CONF['trackback_enabled']) {
 // the data being passed in a POST operation
 
 // echo COM_debug($_POST);
+
+/**
+ * Extract external <a> tags
+ *
+ * @param  string $text
+ * @return array
+ */
+function extractExternalLinks($text) {
+    global $_CONF;
+
+    $retval = array();
+
+    if (preg_match_all('@<a\s.*?href="(https?://.+?)".*?>.+?</a>@im', $text, $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+            if (stripos($match[1], $_CONF['site_url']) !== 0) {
+                $retval[$match[1]] = $match[0];
+            }
+        }
+    }
+
+    return $retval;
+}
 
 // MAIN
 CMT_updateCommentcodes();
@@ -134,10 +156,25 @@ if ($A['count'] > 0) {
         $articleTemplate = COM_newTemplate($_CONF['path_layout'] . 'article');
         $articleTemplate->set_file('article', 'printable.thtml');
         if (XHTML != '') {
-            $articleTemplate->set_var('xmlns',
-                ' xmlns="http://www.w3.org/1999/xhtml"');
+            $articleTemplate->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
         }
         $articleTemplate->set_var('direction', $LANG_DIRECTION);
+
+        $theme = $_CONF['theme'];
+        if (($theme === 'denim') || ($theme === 'denim_curve')) {
+            $dir = isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl') ? 'rtl' : 'ltr';
+            $_SCRIPTS->setCssFile(
+                'print', '/layout/' . $theme . '/css_' . $dir . '/print.css', true, array('media' => 'print')
+            );
+        } else {
+            $_SCRIPTS->setCssFile(
+                'print', '/layout/' . $theme . '/print.css', true, array('media' => 'print')
+            );
+        }
+
+        // Override style for <a> tags
+        $_SCRIPTS->setCSS('a { color: blue !important; text-decoration: underline !important; }');
+        $articleTemplate->set_var('plg_headercode', $_SCRIPTS->getHeader());
 
         $page_title = $article->DisplayElements('page_title');
         if (empty($page_title)) {
@@ -161,8 +198,7 @@ if ($A['count'] > 0) {
             $authorname = COM_getDisplayName($article->displayElements('uid'));
             $articleTemplate->set_var('author', $authorname);
             $articleTemplate->set_var('story_author', $authorname);
-            $articleTemplate->set_var('story_author_username',
-                $article->DisplayElements('username'));
+            $articleTemplate->set_var('story_author_username', $article->DisplayElements('username'));
         }
 
         $introtext = $article->DisplayElements('introtext');
@@ -171,8 +207,7 @@ if ($A['count'] > 0) {
             $fulltext = $introtext;
             $fulltext_no_br = $introtext;
         } else {
-            $fulltext = $introtext . '<br' . XHTML . '><br' . XHTML . '/>'
-                . $bodytext;
+            $fulltext = $introtext . '<br' . XHTML . '><br' . XHTML . '/>' . $bodytext;
             $fulltext_no_br = $introtext . ' ' . $bodytext;
         }
         if ($article->DisplayElements('postmode') == 'plaintext') {
@@ -182,11 +217,27 @@ if ($A['count'] > 0) {
             $fulltext_no_br = '<p>' . $fulltext_no_br . '</p>';
         }
 
+        $links = extractExternalLinks($fulltext_no_br);
+        $externalLinks = array();
+        $i = 1;
+        foreach ($links as $url => $tag) {
+            $marker = '[*' . $i . '] ';
+            $externalLinks[] = $marker . $url;
+            $fulltext_no_br = str_replace($tag, $tag . $marker, $fulltext_no_br);
+            $i++;
+        }
+
+        if (count($externalLinks) > 0) {
+            $externalLinks = '<p>' . implode('<br' . XHTML . '>' . PHP_EOL, $externalLinks) . PHP_EOL . '</p>';
+        } else {
+            $externalLinks = '';
+        }
+        $articleTemplate->set_var('external_links', $externalLinks);
+
         $articleTemplate->set_var('story_introtext', $introtext);
         $articleTemplate->set_var('story_bodytext', $bodytext);
         $articleTemplate->set_var('story_text', $fulltext);
         $articleTemplate->set_var('story_text_no_br', $fulltext_no_br);
-
         $articleTemplate->set_var('site_name', $_CONF['site_name']);
         $articleTemplate->set_var('site_slogan', $_CONF['site_slogan']);
         $articleTemplate->set_var('story_id', $article->getSid());
@@ -221,7 +272,6 @@ if ($A['count'] > 0) {
         $printable = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
             . $article->getSid() . '&amp;mode=print');
         $articleTemplate->set_var('printable_url', $printable);
-
         COM_setLangIdAndAttribute($articleTemplate);
 
         $articleTemplate->parse('output', 'article');

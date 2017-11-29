@@ -5,8 +5,7 @@
   <meta name="robots" content="NOINDEX"{xhtml}>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"{xhtml}>
   <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
-  <link rel="stylesheet" type="text/css" href="{layout_url}/print.css"{xhtml}>
-  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/print.css"{xhtml}>
+  {plg_headercode}
   <link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
   <link rel="canonical" href="{article_url}"{xhtml}>
 </head>
@@ -30,6 +29,7 @@
     <dt>{site_name}</dt>
     <dd><a href="{article_url}">{article_url}</a></dd>
   </dl>
+  {external_links}
 
 {# end {templatelocation} #}
 </body>

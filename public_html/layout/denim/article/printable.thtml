@@ -5,8 +5,7 @@
   <meta name="robots" content="NOINDEX">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/print.css">
-  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/css_{direction}/print.css">
+  {plg_headercode}
   <link rel="shortcut icon" href="{layout_url}/images/favicon.ico">
   <link rel="canonical" href="{article_url}">
 </head>
@@ -29,6 +28,7 @@
     
     <div id="footer">
       <p>{page_title}<br>{article_url}</p>
+      {external_links}
     </div>
   </div>
 
