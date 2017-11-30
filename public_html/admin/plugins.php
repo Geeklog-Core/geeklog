@@ -943,7 +943,6 @@ function continue_upgrade($plugin, $pi_version, $code_version)
  * @param    string $message (optional) message to display
  * @param    string $token   an optional csrf token
  * @return   string              HTML for the plugin screen
- * @throws Exception
  */
 function plugin_main($message = '', $token = '')
 {
