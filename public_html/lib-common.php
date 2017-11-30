@@ -7204,8 +7204,8 @@ function COM_createLink($content, $url, $attr = array())
     foreach ($attr as $key => $value) {
         $attributes .= sprintf(
             ' %s="%s"',
-            htmlspecialchars($key, ENT_QUOTES, $charset),
-            htmlspecialchars($value, ENT_QUOTES, $charset)
+            htmlspecialchars($key, ENT_QUOTES, $charset, false),
+            htmlspecialchars($value, ENT_QUOTES, $charset, false)
         );
     }
 
