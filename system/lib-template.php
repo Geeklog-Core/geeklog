@@ -402,6 +402,8 @@ function plugin_configchange_template($group, $changes = array())
     global $_CONF;
 
     if (($group === 'Core') && (in_array('cache_templates', $changes)
+            || in_array('cache_mobile', $changes)
+            || in_array('cache_resource', $changes)
             || in_array('template_comments', $changes)
             || in_array('language', $changes)
             || in_array('language_files', $changes)

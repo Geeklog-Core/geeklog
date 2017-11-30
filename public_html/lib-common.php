@@ -503,6 +503,11 @@ if (function_exists($func)) {
 }
 unset($theme_config, $func);
 
+// Disable Resource cache (combined and minified CSS and JavaScript files)
+if (isset($_CONF['cache_resource']) && !$_CONF['cache_resource']) {
+    Geeklog\Cache::disable();
+};
+
 // Clear out any expired sessions
 DB_lockTable($_TABLES['sessions']);
 DB_query("UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . (time() - $_CONF['whosonline_threshold']));
