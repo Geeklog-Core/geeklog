@@ -2078,6 +2078,7 @@ $LANG_confignames['Core'] = array(
     'path_themes' => "Themes Path",
     'cache_templates' => "Cache Templates?",
     'cache_mobile' => "Cache Mobile Devices Separately?",
+    'cache_resource' => "Combine, Minify and Cache CSS and JavaScript Files?",
     'disable_new_user_registration' => "Disable New Registrations",
     'allow_user_themes' => "Allow User Themes",
     'allow_user_language' => "Allow User Language",

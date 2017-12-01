@@ -79,6 +79,16 @@ function update_DatabaseFor220()
     // Add `css_id` and `css_classes` columns to the `blocks` table
     $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `help`";
     $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_classes` VARCHAR(255) NOT NULL DEFAULT '' AFTER `css_id`";    
+    
+    // Drop small, read-only tables
+    $_SQL[] = "DROP TABLE {$_TABLES['commentcodes']}";
+    $_SQL[] = "DROP TABLE {$_TABLES['commentmodes']}";
+    $_SQL[] = "DROP TABLE {$_TABLES['featurecodes']}";
+    $_SQL[] = "DROP TABLE {$_TABLES['frontpagecodes']}";
+    $_SQL[] = "DROP TABLE {$_TABLES['postmodes']}";
+    $_SQL[] = "DROP TABLE {$_TABLES['sortcodes']}";
+    $_SQL[] = "DROP TABLE {$_TABLES['statuscodes']}";
+    $_SQL[] = "DROP TABLE {$_TABLES['trackbackcodes']}";    
 
     // Add theme admin
     $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_name='Theme Admin'");

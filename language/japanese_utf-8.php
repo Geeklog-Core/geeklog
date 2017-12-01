@@ -2079,6 +2079,7 @@ $LANG_confignames['Core'] = array(
     'path_themes' => 'テーマのパス',
     'cache_templates' => 'テンプレートをキャッシュする',
     'cache_mobile' => 'モバイル用のコンテンツを別にキャッシュする',
+    'cache_resource' => "Combine, Minify and Cache CSS and JavaScript Files?",
     'disable_new_user_registration' => '新規ユーザー登録を停止する',
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
