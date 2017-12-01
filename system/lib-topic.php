@@ -239,8 +239,8 @@ function TOPIC_getChildList($id, $uid = 0)
 /**
  * This function creates html options for Inherited and default Topics
  *
- * @param    string $type  Type of object to display access for
- * @param    string $id    Id of onject
+ * @param    string $type Type of object to display access for
+ * @param    string $id   Id of onject
  * @param           string /array    $selected_ids   Topics Ids to mark as selected
  * @param           string /array    $tids           Topics Ids to use instead of retrieving from db
  * @return   HTML string
@@ -566,11 +566,11 @@ function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true)
  * If multiple topics then will return the lowest access level found
  * (need to handle 'all' and 'homeonly' as special cases)
  *
- * @param    string $type                      Type of object to find topic access about. If 'topic' then will check
- *                                             post array for topic selection control
+ * @param    string $type                                Type of object to find topic access about. If 'topic' then
+ *                                                       will check post array for topic selection control
  * @param           string                     /array    $id     ID of object to check topic access for (not requried
  *                                                       if $type is
- *                                             'topic')
+ *                                                       'topic')
  * @param           string                     /array    $tid    ID of topic to check topic access for (not requried
  *                                                       and not used if $type is 'topic')
  * @return   int                     returns 3 for read/edit 2 for read only 0 for no access
@@ -908,7 +908,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
         $topic_templates->set_var('options_hide', $val_hide);
         $topic_templates->set_var('topic_options_hide', '1');
     }
- 
+
     $opt_dummy = '<option value="dummy">dummy</option>';
     $inherit_options = $opt_dummy;
     $topic_inherit_hide = '1';
@@ -1048,7 +1048,7 @@ function TOPIC_getTopicDefault($type, $id = '')
 /**
  * Delete Topic Assignments for a specfic object
  *
- * @param    string $type  Type of object to find topic access about.
+ * @param    string $type Type of object to find topic access about.
  * @param           string /array    $id     ID of object
  * @return   nothing
  */
@@ -1062,7 +1062,7 @@ function TOPIC_deleteTopicAssignments($type, $id)
 /**
  * Add Topic Assignments for a specfic object
  *
- * @param    string $type  Type of object to find topic access about.
+ * @param    string $type Type of object to find topic access about.
  * @param           string /array    $id     ID of object
  * @return   nothing
  */
@@ -1081,7 +1081,7 @@ function TOPIC_addTopicAssignments($type, $id, $tid = '')
  * Return Topic list for Admin list Topic Column
  * (need to handle 'all' and 'homeonly' as special cases)
  *
- * @param    string $type  Type of object to find topic access about.
+ * @param    string $type Type of object to find topic access about.
  * @param           string /array    $id     ID of object
  * @return   string                  Returns topic list
  */
@@ -1120,7 +1120,7 @@ function TOPIC_getTopicAdminColumn($type, $id)
  * on page that is affected by the topic after lib-common.php so it can grab
  * topic in url if need be. Also if pass blank $type and $id then return just last topic
  *
- * @param    string $type  Type of object to find topic access about.
+ * @param    string $type Type of object to find topic access about.
  * @param           string /array    $id     ID of object
  * @return   void
  */
@@ -1245,7 +1245,7 @@ function TOPIC_getTopic($type = '', $id = '')
 /**
  * If found returns one or more html breadcrumb. Used by Topics, Stories and Plugins.
  *
- * @param    string $type  Type of object to create breadcrumb trail
+ * @param    string $type Type of object to create breadcrumb trail
  * @param           string /array    $id     ID of object
  * @return   string                  1 or more breadcrumb trail in html
  */
@@ -1396,9 +1396,9 @@ function TOPIC_inPath($tid, $current_tid = '')
  * This function creates an html list of topics the object belongs too or
  * creates a similar list based on topics passed to it
  *
- * @param    string  $type  Type of object to display access for
- * @param    string  $id    Id of onject
- * @param    integer $max   Max number of items returned
+ * @param    string  $type Type of object to display access for
+ * @param    string  $id   Id of onject
+ * @param    integer $max  Max number of items returned
  * @param            string /array    $tids           Topics Ids to use instead of retrieving from db
  * @return   HTML string
  */
@@ -1480,10 +1480,10 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
  * This function creates a list of the newest and recently modified items that are related based on
  * the topics passed or that the object belongs too
  *
- * @param    string  $type  Type of object to display access for
- * @param    string  $id    Id of onject
- * @param    integer $max   Max number of items returned
- * @param    integer $trim  Max length of link text
+ * @param    string  $type Type of object to display access for
+ * @param    string  $id   Id of onject
+ * @param    integer $max  Max number of items returned
+ * @param    integer $trim Max length of link text
  * @param            string /array    $tids           Topics Ids to use instead of retrieving from db
  * @return   HTML string
  */
@@ -1569,26 +1569,19 @@ function TOPIC_getUrl($topicId)
 {
     global $_CONF;
 
-    switch ($_CONF['url_routing']) {
-        case Router::ROUTING_WITH_INDEX_PHP:
-            $retval = COM_buildURL(
-                $_CONF['site_url'] . '/index.php?'
-                . http_build_query(array(
-                    TOPIC_PLACEHOLDER => 'topic',
-                    'topic'           => $topicId,
-                ))
-            );
-            break;
-
-        case Router::ROUTING_WITHOUT_INDEX_PHP:
-            $retval = $_CONF['site_url'] . '/topic/' . urlencode($topicId);
-            break;
-
-        case Router::ROUTING_DISABLED:
-        default:
-            $retval = $_CONF['site_url'] . '/index.php?'
-                . http_build_query(array('topic' => $topicId));
-            break;
+    if ($_CONF['url_rewrite'] && ($_CONF['url_routing'] == Router::ROUTING_WITH_INDEX_PHP)) {
+        $retval = COM_buildURL(
+            $_CONF['site_url'] . '/index.php?'
+            . http_build_query(array(
+                TOPIC_PLACEHOLDER => 'topic',
+                'topic'           => $topicId,
+            ))
+        );
+    } elseif ($_CONF['url_rewrite'] && ($_CONF['url_routing'] == Router::ROUTING_WITHOUT_INDEX_PHP)) {
+        $retval = $_CONF['site_url'] . '/topic/' . urlencode($topicId);
+    } else {
+        // Traditional topic URL
+        $retval = $_CONF['site_url'] . '/index.php?' . http_build_query(array('topic' => $topicId));
     }
 
     return $retval;
@@ -1604,9 +1597,9 @@ function TOPIC_getUrl($topicId)
 /**
  * Implements the [topic:] autotag.
  *
- * @param    string $op                 operation to perform
- * @param    string $content            item (e.g. topic text), including the autotag
- * @param    array  $autotag            parameters used in the autotag
+ * @param    string $op      operation to perform
+ * @param    string $content item (e.g. topic text), including the autotag
+ * @param    array  $autotag parameters used in the autotag
  * @param           mixed               tag names (for $op='tagname') or formatted content
  */
 
