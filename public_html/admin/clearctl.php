@@ -40,12 +40,72 @@ if (!SEC_inGroup('Root') && !SEC_inGroup('Theme Admin')) {
     exit;
 }
 
+// Clean directory
+function clean_directory($dir, $leave_dirs = array(), $leave_files = array()) { 
+
+    foreach( glob("$dir/*") as $file ) {
+        if (is_dir($file)) {
+            if (!in_array(basename($file), $leave_dirs)) {
+                delete_files($file); // delete all sub directories and files in those directories
+            }
+        } elseif( !in_array(basename($file), $leave_files) ) {
+            unlink($file);
+        }
+    }
+}
+
+// Delete all files in a directory and any sub directory
+function delete_files($dir) { 
+  
+    foreach(glob($dir . '/*') as $file) { 
+        if (is_dir($file)) {
+            delete_files($file); 
+        } else {
+            unlink($file); 
+        }
+    } 
+    rmdir($dir); 
+}
+
 /*
  * Main processing
  */
-CTL_clearCache(); // Clearing Template Cache
+ 
+// Clearing Theme Template Cache
+CTL_clearCache(); 
 
-Geeklog\Cache::clear(); // Clearing Resource Cache (CSS, and Javascript concatenated and minified files)
+// Clearing Resource Cache (CSS, and Javascript concatenated and minified files)
+Geeklog\Cache::clear(); 
+
+// Clean out Data directory (includes things like temp uploaded plugin files, user batch files, etc...)
+$leave_dirs = array('cache', 'layout_cache', 'layout_css');
+$leave_files = array('cacert.pem', 'README');
+clean_directory($_CONF['path_data'], $leave_dirs, $leave_files);
+
+// File Manager Thumbnail Files
+
+$leave_dirs = array();
+$leave_files = array('index.html');
+clean_directory($_CONF['path_images'] . '_thumbs/articles/', $leave_dirs, $leave_files);
+
+$leave_dirs = array();
+$leave_files = array('index.html');
+clean_directory($_CONF['path_images'] . '_thumbs/userphotos/', $leave_dirs, $leave_files);
+
+$leave_dirs = array();
+$leave_files = array('index.html');
+clean_directory($_CONF['path_images'] . '_thumbs/library/image/', $leave_dirs, $leave_files);
+
+$leave_dirs = array('Image');
+$leave_files = array();
+clean_directory($_CONF['path_images'] . '_thumbs/library/', $leave_dirs, $leave_files);
+
+$leave_dirs = array('articles', 'library', 'userphotos');
+$leave_files = array();
+clean_directory($_CONF['path_images'] . '_thumbs/', $leave_dirs, $leave_files);
+
+// Allow Plugins to clear any cached items
+PLG_clearCache(); 
 
 COM_redirect($_CONF['site_admin_url'] . '/index.php?msg=500');
 
