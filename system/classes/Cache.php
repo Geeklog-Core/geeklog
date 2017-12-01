@@ -58,6 +58,16 @@ abstract class Cache
     }
 
     /**
+     * Return if caching is enabled
+     *
+     * @return bool true if caching is enabled
+     */
+    public static function isEnabled()
+    {
+        return self::$isEnabled;
+    }
+
+    /**
      * Clear all cached data
      */
     public static function clear()

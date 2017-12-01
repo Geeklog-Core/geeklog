@@ -265,6 +265,7 @@ $_CONF_VALIDATE['Core']['path_themes'] = array(
 );
 $_CONF_VALIDATE['Core']['cache_templates'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['cache_mobile'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['cache_resource'] = array('rule' => 'boolean');
 
 /* Subgroup Theme, Tab Advanced Settings */
 $_CONF_VALIDATE['Core']['show_right_blocks'] = array('rule' => 'boolean');
@@ -458,6 +459,7 @@ $_CONF_VALIDATE['Core']['language'] = array(
                  $LANG_VALIDATION['language'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['allow_user_language'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['switchlang_homepage'] = array('rule' => 'boolean');
 
 /* Subgroup Language, Tab Locale */
 $_CONF_VALIDATE['Core']['locale']     = array('rule' => 'stringOrEmpty');

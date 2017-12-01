@@ -86,10 +86,11 @@ class Router
 
         // Add the current cookies.  Otherwise, session will be lost.
         foreach ($_COOKIE as $key => $value) {
-            $request->addCookie(
-                htmlspecialchars($key, ENT_QUOTES, 'utf-8'),
-                htmlspecialchars($value, ENT_QUOTES, 'utf-8')
-            );
+            try {
+                $request->addCookie(urlencode($key), urlencode($value));
+            } catch (HTTP_Request2_LogicException $e) {
+                COM_errorLog(__METHOD__ . ': invalid cookie detected. name = "' . $key . '" value = "' . $value . '"');
+            }
         }
 
         try {
