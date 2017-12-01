@@ -683,7 +683,7 @@ class Resource
     {
         global $LANG_DIRECTION;
 
-        if ($this->debug) {
+        if ($this->debug || !Cache::isEnabled()) {
             $retval = '';
 
             foreach ($files as $file) {
@@ -1185,7 +1185,7 @@ class Resource
             usort($this->externalJsFiles['footer'], array('\\Geeklog\\Resource', 'comparePriority'));
 
             foreach ($this->externalJsFiles['footer'] as $jsFile) {
-                $retval .= sprintf('<script src="%s"></script>', $jsFile['file']) . PHP_EOL;
+                $retval .= sprintf('<script src="%s" async defer></script>', $jsFile['file']) . PHP_EOL;
             }
         }
 
