@@ -82,8 +82,7 @@ $leave_dirs = array('cache', 'layout_cache', 'layout_css');
 $leave_files = array('cacert.pem', 'README');
 clean_directory($_CONF['path_data'], $leave_dirs, $leave_files);
 
-// File Manager Thumbnail Files
-
+// Clean out File Manager Thumbnail Files
 $leave_dirs = array();
 $leave_files = array('index.html');
 clean_directory($_CONF['path_images'] . '_thumbs/articles/', $leave_dirs, $leave_files);
