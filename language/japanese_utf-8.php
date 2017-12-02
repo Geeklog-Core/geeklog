@@ -2019,6 +2019,12 @@ $LANG_sortcodes = array(
     'DESC' => '新しい順に'
 );
 
+$LANG_statuscodes = array(
+    0 => 'Normal',
+    1 => 'Refreshing',
+    10 => 'Archive'
+);
+
 $LANG_trackbackcodes = array(
     0 => 'トラックバックを受け付ける',
     -1 => 'トラックバックを受け付けない'

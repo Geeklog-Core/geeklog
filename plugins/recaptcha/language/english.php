@@ -30,55 +30,59 @@
 // +---------------------------------------------------------------------------+
 
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
-	die('This file cannot be used on its own!');
+    die('This file cannot be used on its own!');
 }
 
 $LANG_RECAPTCHA = array(
-	'plugin'      => 'reCAPTCHA',
-	'admin'       => 'reCAPTCHA',
-	'entry_error' => 'An invalid reCAPTCHA string was entered in %1s - IP Address: %2s - Error Codes: %3s',	// %1s = $type, %2s = $ip, %3s = $errorCode
+    'plugin'      => 'reCAPTCHA',
+    'admin'       => 'reCAPTCHA',
+    'entry_error' => 'An invalid reCAPTCHA string was entered in %1s - IP Address: %2s - Error Codes: %3s',    // %1s = $type, %2s = $ip, %3s = $errorCode
 );
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['recaptcha'] = array(
-	'label' => 'reCAPTCHA',
-	'title' => 'reCAPTCHA Configuration'
+    'label' => 'reCAPTCHA',
+    'title' => 'reCAPTCHA Configuration',
 );
 
 $LANG_confignames['recaptcha'] = array(
-	'public_key'          => 'reCAPTCHA API Site Key',
-	'private_key'         => 'reCAPTCHA API Secret Key',
-	'logging'             => 'Log invalid reCAPTCHA attempts',
-	'anonymous_only'      => 'Anonymous Only',
-	'remoteusers'         => 'Force reCAPTCHA for all Remote Users',
-	'enable_comment'      => 'Enable Comment Support' ,
-	'enable_contact'      => 'Enable Contact Support',
-	'enable_emailstory'   => 'Enable Email Story Support',
-	'enable_forum'        => 'Enable Forum Support',
-	'enable_registration' => 'Enable Registration Support',
-	'enable_loginform'    => 'Enable Login Form Support',
-	'enable_getpassword'  => 'Enable Get Password Form Support',
-	'enable_mediagallery' => 'Enable Media Gallery (Postcards) Support',
-	'enable_rating'       => 'Enable Rating Plugin Support',
-	'enable_story'        => 'Enable Story Support',
-	'enable_calendar'     => 'Enable Calendar Plugin Support',
-	'enable_links'        => 'Enable Links Plugin Support',
+    'site_key'             => 'reCAPTCHA v2 Site Key',
+    'secret_key'           => 'reCAPTCHA v2 Secret Key',
+    'invisible_site_key'   => 'Invisible reCAPTCHA Site Key',
+    'invisible_secret_key' => 'Invisible reCAPTCHA Secret Key',
+    'logging'              => 'Log invalid reCAPTCHA attempts',
+    'anonymous_only'       => 'Anonymous Only',
+    'remoteusers'          => 'Force reCAPTCHA for all Remote Users',
+    'enable_comment'       => 'Enable Comment Support',
+    'enable_contact'       => 'Enable Contact Support',
+    'enable_emailstory'    => 'Enable Email Story Support',
+    'enable_forum'         => 'Enable Forum Support',
+    'enable_registration'  => 'Enable Registration Support',
+    'enable_loginform'     => 'Enable Login Form Support',
+    'enable_getpassword'   => 'Enable Get Password Form Support',
+    'enable_mediagallery'  => 'Enable Media Gallery (Postcards) Support',
+    'enable_rating'        => 'Enable Rating Plugin Support',
+    'enable_story'         => 'Enable Story Support',
+    'enable_calendar'      => 'Enable Calendar Plugin Support',
+    'enable_links'         => 'Enable Links Plugin Support',
 );
 
 $LANG_configsubgroups['recaptcha'] = array(
-	'sg_main' => 'Main Settings',
+    'sg_main' => 'Main Settings',
 );
 
 $LANG_tab['recaptcha'] = array(
-	'tab_main' => 'reCAPTCHA Settings',
+    'tab_general'     => 'reCAPTCHA Settings',
+    'tab_integration' => 'Geeklog Integration',
 );
 
 $LANG_fs['recaptcha'] = array(
-	'fs_system'      => 'System',
-	'fs_integration' => 'Integration',
+    'fs_system'   => 'System',
+    'fs_location' => 'Where to use reCAPTCHA',
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['recaptcha'] = array(
-	0 => array('Yes' => 1, 'No' => 0),
+    0 => array('Yes' => 1, 'No' => 0),
+    2 => array('Disabled' => 0, 'reCAPTCHA v2' => 1, 'Invisible reCAPTCHA' => 2),
 );

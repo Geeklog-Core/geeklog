@@ -34,30 +34,15 @@ require_once '../../../lib-common.php';
 
 // Only let admin users access this page
 if (!SEC_hasRights('recaptcha.edit')) {
-	// Someone is trying to illegally access this page
-	COM_errorLog("Someone has tried to illegally access the recaptcha Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
-	
-	if (is_callable('COM_createHTMLDocument')) {
-		$content = COM_startBlock(RECAPTCHA_esc($LANG_ACCESS['accessdenied']))
-			. RECAPTCHA_esc($LANG_ACCESS['plugin_access_denied_msg'])
-			. COM_endBlock();
-		$display = COM_createHTMLDocument($content);
-	} else {
-		$display = COM_siteHeader()
-				 . COM_startBlock(RECAPTCHA_esc($LANG_ACCESS['accessdenied']))
-				 . RECAPTCHA_esc($LANG_ACCESS['plugin_access_denied_msg'])
-				 . COM_endBlock()
-				 . COM_siteFooter();
-	}
-	
-	if (is_callable('COM_output')) {
-		COM_output($display);
-	} else {
-		header('Content-Type: text/html; charset=' . COM_getCharset());
-		echo $display;
-	}
-	
-	exit;
+    // Someone is trying to illegally access this page
+    COM_errorLog("Someone has tried to illegally access the recaptcha Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
+
+    $content = COM_startBlock(RECAPTCHA_esc($LANG_ACCESS['accessdenied']))
+        . RECAPTCHA_esc($LANG_ACCESS['plugin_access_denied_msg'])
+        . COM_endBlock();
+    $display = COM_createHTMLDocument($content);
+    COM_output($display);
+    exit;
 }
 
 // Main

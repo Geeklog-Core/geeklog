@@ -1,7 +1,7 @@
 # Install/Uninstall/Upgrade instruction for the Geeklog reCAPTCHA plugin
 
 * Repository: https://github.com/mystralkk/recaptcha
-* Version: 1.1.4
+* Version: 1.2.0
 * License: GPL v2 or later
 
 ## What is reCAPTCHA?
@@ -10,8 +10,7 @@ ReCAPTCHA(R) is a free anti-bot service providing powerful CAPTCHA(Completely Au
 
 ## System Requirements
 
-* Geeklog-1.6.0+
-* PHP-5.3.2+.  Maybe PHP-5-3.0 or PHP-5.3.1 will do, but I am not sure.
+* Geeklog-2.2.0+
 
 ## INSTALL
 
@@ -41,6 +40,11 @@ In the following descriptions
 
 | Version | Date(YYYY-MM-DD) |Description                                                                         |
 |:-------:|-----------------:|------------------------------------------------------------------------------------|
+|   1.2.0 |       2017-12-02 |* Added support for Invisible reCAPTCHA.                                            |
+|   1.1.6 |       2017-11-28 |* Added support for Login Form.                                                     |
+|         |                  |* Added support for Forget Password Form.                                           |
+|         |                  |* Added support for the demo mode introduced in Geeklog 2.2.0.                      |
+|   1.1.5 |       2017-04-12 |* Fixed a bug where reCAPTCHA failed to check for input when $_RECAPTCHA_CONF['logging'] is set to off.                                                                    |
 |   1.1.4 |       2017-01-18 |* Small bug fix.                                                                    |
 |   1.1.3 |       2016-08-12 |* Replaced COM_siteHeader and COM_siteFooter with COM_createHTMLDocument.           |
 |   1.1.2 |       2016-02-20 |* Modified to use reCAPTCHA v1.1.2 library.                                         |

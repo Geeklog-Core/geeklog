@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta http-equiv="Content-Style-Type" content="text/css">
-	<link href="../docstyle.css" rel="stylesheet" type="text/css">
-	<title>Geeklog reCAPTCHA plugin</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <link href="../docstyle.css" rel="stylesheet" type="text/css">
+    <title>Geeklog reCAPTCHA plugin</title>
 </head>
 
 <body>
@@ -12,117 +12,167 @@
 
 <h2>What is reCAPTCHA?</h2>
 
-<p>ReCAPTCHA&reg; is a free anti-bot service providing powerful <acronym title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</acronym>.  This plugin makes it easy to use reCAPTCHA with Geeklog.</p>
+<p>ReCAPTCHA&reg; is a free anti-bot service providing powerful <acronym
+        title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</acronym>. This
+    plugin makes it easy to use reCAPTCHA with Geeklog.</p>
 
 <h2>System Requirements</h2>
 
 <ul>
-	<li style="background-color: #ff99ff;">Since v1.1.0, PHP-5.3.2 or later is required.  Maybe PHP-5-3.0 or PHP-5.3.1 will do, but I am not sure.</li>
-	<li>Since v1.1.6, Geeklog 1.8.0 or newer is required.</li>
+    <li style="background-color: #ff99ff;">Since v1.1.0, PHP-5.3.2 or later is required. Maybe PHP-5-3.0 or PHP-5.3.1
+        will do, but I am not sure.
+    </li>
+    <li>Since v1.1.6, Geeklog 1.8.0 or newer is required.</li>
+    <li>Since v1.2.0, Geeklog 2.2.0 or newer is required.</li>
 </ul>
 
 <h2>INSTALL</h2>
 
 <p>In the following descriptions</p>
 <ul>
-	<li><span class="geeklog">&lt;geeklog_dir&gt;</span> is the directory where the system config.php file resides</li>
-	<li><span class="admin">&lt;admin&gt;</span> is the directory where the administration files reside (usually, under <span class="public">&lt;public_html&gt;</span>)</li>
+    <li><span class="geeklog">&lt;geeklog_dir&gt;</span> is the directory where the system config.php file resides</li>
+    <li><span class="admin">&lt;admin&gt;</span> is the directory where the administration files reside (usually, under
+        <span class="public">&lt;public_html&gt;</span>)
+    </li>
 </ul>
 
 <ol>
-	<li>Uncompress the recaptcha plugin archive while in the <span class="geeklog">&lt;geeklog_dir&gt;</span>/plugins directory.  The archive will create a directory called recaptcha in the plugins directory.</li>
-	<li>Create the admin directory.  Under your <span class="admin">&lt;admin&gt;</span>/plugins/ directory, create a directory called recaptcha.</li>
-	<li>Change to your <span class="geeklog">&lt;geeklog_dir&gt;</span>/plugins/recaptcha/ directory.  Copy the files in the admin directory to the <span class="admin">&lt;admin&gt;</span>/plugins/recaptcha/ directory your created in step 2.</li>
-	<li>Log in to your Geeklog as a root user, go to the plugin editor and click on reCAPTCHA.  If the install failed, examine Geeklog system errorlog for possible problems.</li>
-	<li style="background-color: #ff99ff;"><strong>Important</strong>: Set up API keys.  Go to the Configuration and enter reCAPTCHA API Site Key and Secret Key that you can get at <a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>.  <strong>It is not until you set the API keys that you can use reCAPTCHA service.</strong></li>
+    <li>Uncompress the recaptcha plugin archive while in the <span class="geeklog">&lt;geeklog_dir&gt;</span>/plugins
+        directory. The archive will create a directory called recaptcha in the plugins directory.
+    </li>
+    <li>Create the admin directory. Under your <span class="admin">&lt;admin&gt;</span>/plugins/ directory, create a
+        directory called recaptcha.
+    </li>
+    <li>Change to your <span class="geeklog">&lt;geeklog_dir&gt;</span>/plugins/recaptcha/ directory. Copy the files in
+        the admin directory to the <span class="admin">&lt;admin&gt;</span>/plugins/recaptcha/ directory your created in
+        step 2.
+    </li>
+    <li>Log in to your Geeklog as a root user, go to the plugin editor and click on reCAPTCHA. If the install failed,
+        examine Geeklog system errorlog for possible problems.
+    </li>
+    <li style="background-color: #ff99ff;"><strong>Important</strong>: Set up API keys. Go to the Configuration and
+        enter reCAPTCHA API Site Key and Secret Key that you can get at <a
+                href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>.
+        <strong>It is not until you set the API keys that you can use reCAPTCHA service.</strong></li>
 </ol>
 
 <h2>UNINSTALL</h2>
 
 <ol>
-	<li>Log in to your Geeklog web site as a root user, go to the plugin editor and click on reCAPTCHA.  If the unstall failed, examine Geeklog system errorlog for possible problems.</li>
-	<li>Delete the two plugin directories created in the install process:  <span class="geeklog">&lt;geeklog-dir&gt;</span>/plugins/recaptcha/ and <span class="admin">&lt;admin&gt;</span>/plugins/recaptcha/.</li>
+    <li>Log in to your Geeklog web site as a root user, go to the plugin editor and click on reCAPTCHA. If the unstall
+        failed, examine Geeklog system errorlog for possible problems.
+    </li>
+    <li>Delete the two plugin directories created in the install process: <span
+            class="geeklog">&lt;geeklog-dir&gt;</span>/plugins/recaptcha/ and <span class="admin">&lt;admin&gt;</span>/plugins/recaptcha/.
+    </li>
 </ol>
 
 <h2>UPGRADE</h2>
 
 <ol>
-	<li>Log in to your Geeklog web site as a root user, go to the plugin editor and disable the reCAPTCHA plugin.</li>
-	<li>Uncompress the recaptcha plugin archive and upload the resulting files as you did when you installed the plugin.</li>
-	<li>Go to the plugin editor and Enable the reCAPTCHA plugin.  Then, upgrade the plugin.</li>
+    <li>Log in to your Geeklog web site as a root user, go to the plugin editor and disable the reCAPTCHA plugin.</li>
+    <li>Uncompress the recaptcha plugin archive and upload the resulting files as you did when you installed the
+        plugin.
+    </li>
+    <li>Go to the plugin editor and Enable the reCAPTCHA plugin. Then, upgrade the plugin.</li>
 </ol>
 
 <h2>REVISION HISTORY</h2>
 
 <table>
-	<tr><th>Version</th><th>Date(YYYY-MM-DD)</th><th>Description</th></tr>
-	<tr>
-		<td>1.1.6</td><td>2017-11-27</td>
-		<td>
-			<ul>
-				<li>Added support for Login Form.</li>
-				<li>Added support for Forget Password Form.</li>
-				<li>Added support for the demo mode intruduced in Geeklog 2.2.0.</li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>1.1.5</td><td>2017-04-12</td>
-		<td>
-			<ul>
-				<li>Fixed a bug where reCAPTCHA failed to check for input when $_RECAPTCHA_CONF['logging'] is set to off.</li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>1.1.4</td><td>2017-01-18</td>
-		<td>
-			<ul>
-				<li>Small bug fix.</li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>1.1.3</td><td>2016-08-12</td>
-		<td>
-			<ul>
-				<li>Replaced COM_siteHeader and COM_siteFooter with COM_createHTMLDocument.</li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>1.1.2</td><td>2016-02-20</td>
-		<td>
-			<ul>
-				<li>Upgraded reCAPTCHA library to v1.1.2.</li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>1.1.0</td><td>2015-07-03</td>
-		<td>
-			<ul>
-				<li>Upgraded to Google reCAPTCHA v2.</li>
-				<li>Added an error code to a log file(logs/recaptch.log) entry.  Patch provided by Tom.</li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>1.0.1</td><td>2014-01-26</td>
-		<td>
-			<ul>
-				<li>Added a &lt;div&gt; tag to enclose the reCAPTCHA code.  Patch provided by Tom.</li>
-				<li>Changed to write log entries into "logs/recaptch.log".  Patch provided by Tom.</li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>1.0.0</td><td>2014-01-24</td><td>Initial release.</td>
-	</tr>
+    <tr>
+        <th>Version</th>
+        <th>Date(YYYY-MM-DD)</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>1.2.0</td>
+        <td>2017-12-02</td>
+        <td>
+            <ul>
+                <li>Added support for Invisible reCAPTCHA.</li>
+                <li>Requires Geeklog 2.2.0.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>1.1.6</td>
+        <td>2017-11-27</td>
+        <td>
+            <ul>
+                <li>Added support for Login Form.</li>
+                <li>Added support for Forget Password Form.</li>
+                <li>Added support for the demo mode introduced in Geeklog 2.2.0.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>1.1.5</td>
+        <td>2017-04-12</td>
+        <td>
+            <ul>
+                <li>Fixed a bug where reCAPTCHA failed to check for input when $_RECAPTCHA_CONF['logging'] is set to
+                    off.
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>1.1.4</td>
+        <td>2017-01-18</td>
+        <td>
+            <ul>
+                <li>Small bug fix.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>1.1.3</td>
+        <td>2016-08-12</td>
+        <td>
+            <ul>
+                <li>Replaced COM_siteHeader and COM_siteFooter with COM_createHTMLDocument.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>1.1.2</td>
+        <td>2016-02-20</td>
+        <td>
+            <ul>
+                <li>Upgraded reCAPTCHA library to v1.1.2.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>1.1.0</td>
+        <td>2015-07-03</td>
+        <td>
+            <ul>
+                <li>Upgraded to Google reCAPTCHA v2.</li>
+                <li>Added an error code to a log file(logs/recaptch.log) entry. Patch provided by Tom.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>1.0.1</td>
+        <td>2014-01-26</td>
+        <td>
+            <ul>
+                <li>Added a &lt;div&gt; tag to enclose the reCAPTCHA code. Patch provided by Tom.</li>
+                <li>Changed to write log entries into "logs/recaptch.log". Patch provided by Tom.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>1.0.0</td>
+        <td>2014-01-24</td>
+        <td>Initial release.</td>
+    </tr>
 </table>
 
 <div class="footer">
-Copyright (C) 2014-2017 mystral-kk - geeklog AT mystral-kk DOT net
+    Copyright (C) 2014-2017 mystral-kk - geeklog AT mystral-kk DOT net
 </div>
 
 </body>

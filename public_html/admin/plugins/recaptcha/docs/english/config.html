@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Geeklog reCAPTCHA plugin - Configuration</title>
-  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Geeklog reCAPTCHA plugin - Configuration</title>
+    <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet"/>
 </head>
 
 <body>
@@ -13,86 +13,134 @@
 <h2><a name="system">System</a></h2>
 
 <table border="1" width="100%">
-<tr><th style="width: 20%;">Variable</th>
-    <th style="width: 20%;">Default Value</th>
-    <th style="width: 60%;">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_public_key">public_key</a></td>
-  <td valign="top">(empty)</td>
-  <td valign="top">reCAPTCHA API Site Key.  If you don't have one, please go to <a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a> and sign up.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_private_key">private_key</a></td>
-  <td valign="top">(empty)</td>
-  <td valign="top">reCAPTCHA API Secret Key.  If you don't have one, please go to <a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a> and sign up.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_logging">logging</a></td>
-  <td valign="top">No</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA plugin will log invalid reCAPTCHA attempts into the log file (recaptcha.log).</td></tr>
+    <tr>
+        <th style="width: 20%;">Variable</th>
+        <th style="width: 20%;">Default Value</th>
+        <th style="width: 60%;">Description</th>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_site_key">site_key</a></td>
+        <td valign="top">(empty)</td>
+        <td valign="top">reCAPTCHA API Site Key. If you don't have one, please go to <a
+                href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
+            and sign up.
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_secret_key">secret_key</a></td>
+        <td valign="top">(empty)</td>
+        <td valign="top">reCAPTCHA API Secret Key. If you don't have one, please go to <a
+                href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
+            and sign up.
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_invisible_site_key">invisible_site_key</a></td>
+        <td valign="top">(empty)</td>
+        <td valign="top">Invisible reCAPTCHA API Site Key. If you don't have one, please go to <a
+                href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
+            and sign up.
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_invisible_secret_key">invisible_secret_key</a></td>
+        <td valign="top">(empty)</td>
+        <td valign="top">Invisible reCAPTCHA API Secret Key. If you don't have one, please go to <a
+                href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>
+            and sign up.
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_logging">logging</a></td>
+        <td valign="top">No</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA plugin will log invalid reCAPTCHA attempts into the log file
+            (recaptcha.log).
+        </td>
+    </tr>
 </table>
 
 <h2><a name="integration">Integration</a></h2>
 
 <table border="1" width="100%">
-<tr><th style="width: 20%;">Variable</th>
-    <th style="width: 20%;">Default Value</th>
-    <th style="width: 60%;">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_anonymous_only">anonymous_only</a></td>
-  <td valign="top">No</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be shown to anonymous users only.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_remoteusers">remoteusers</a></td>
-  <td valign="top">No</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be forced upon all Remote Users.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_comment">enable_comment</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for comments.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_contact">enable_contact</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for contact.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_emailstory">enable_emailstory</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for emailing a story.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_forum">enable_forum</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Forum plugin.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_registration">enable_registration</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for user registration.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_mediagallery">enable_mediagallery</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Mediagallery plugin.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_rating">enable_rating</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Rating plugin.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_story">enable_story</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for submitting a story.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_enable_calendar">enable_calendar</a></td>
-  <td valign="top">Yes</td>
-  <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Calendar plugin.</td></tr>
-<tr><td valign="top"><a name="desc_enable_links">enable_links</a></td>
-    <td valign="top">Yes</td>
-    <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Links plugin.</td></tr>
-<tr><td valign="top"><a name="desc_enable_getpassword">enable_getpassword</a></td>
-    <td valign="top">Yes</td>
-    <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for Forget Password Form.</td></tr>
-<tr><td valign="top"><a name="desc_enable_loginform">enable_loginfotm</a></td>
-    <td valign="top">Yes</td>
-    <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for Login Form.</td></tr>
+    <tr>
+        <th style="width: 20%;">Variable</th>
+        <th style="width: 20%;">Default Value</th>
+        <th style="width: 60%;">Description</th>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_anonymous_only">anonymous_only</a></td>
+        <td valign="top">No</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be shown to anonymous users only.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_remoteusers">remoteusers</a></td>
+        <td valign="top">No</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be forced upon all Remote Users.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_comment">enable_comment</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for comments.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_contact">enable_contact</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for contact.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_emailstory">enable_emailstory</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for emailing a story.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_forum">enable_forum</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Forum plugin.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_registration">enable_registration</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for user registration.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_mediagallery">enable_mediagallery</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Mediagallery plugin.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_rating">enable_rating</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Rating plugin.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_story">enable_story</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for submitting a story.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_calendar">enable_calendar</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Calendar plugin.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_links">enable_links</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for the Links plugin.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_getpassword">enable_getpassword</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for Forget Password Form.</td>
+    </tr>
+    <tr>
+        <td valign="top"><a name="desc_enable_loginform">enable_loginfotm</a></td>
+        <td valign="top">Yes</td>
+        <td valign="top">If you set this to Yes, reCAPTCHA will be enabled for Login Form.</td>
+    </tr>
 </table>
 
 <div class="footer">
-    <a href="https://github.com/Geeklog-Plugins/recaptcha">https://github.com/Geeklog-Plugins/recaptcha</a><br />
+    <a href="https://github.com/Geeklog-Plugins/recaptcha">https://github.com/Geeklog-Plugins/recaptcha</a><br/>
     All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
 </div>
 

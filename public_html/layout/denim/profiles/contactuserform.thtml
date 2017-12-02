@@ -29,7 +29,7 @@
     <div class="submit">
       <input type="hidden" name="what" value="contact"{xhtml}>
       <input type="hidden" name="uid" value="{uid}"{xhtml}>
-      <button type="submit" value="{lang_submit}" onclick="return postconfirm();" onkeypress="return postconfirm();" class="uk-button uk-button-primary">{lang_submit}</button>
+      <button type="submit" value="{lang_submit}" onclick="return postconfirm();" onkeypress="return postconfirm();" class="uk-button uk-button-primary g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_submit}</button>
     </div>
   </div>
 </form>

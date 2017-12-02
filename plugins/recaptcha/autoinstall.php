@@ -31,66 +31,69 @@
 // +---------------------------------------------------------------------------+
 
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
-	die('This file cannot be used on its own!');
+    die('This file cannot be used on its own!');
 }
 
 /**
-* Plugin autoinstall function
-*
-* @param    string  $pi_name    Plugin name
-* @return   array               Plugin information
-*/
-function plugin_autoinstall_recaptcha($pi_name) {
-	global $_CONF, $_RECAPTCHA_CONF;
+ * Plugin autoinstall function
+ *
+ * @param  string $pi_name Plugin name
+ * @return array           Plugin information
+ */
+function plugin_autoinstall_recaptcha($pi_name)
+{
+    global $_CONF, $_RECAPTCHA_CONF;
 
-	// IF demo mode (since GL 2.2.0) is in effect, return no valid information
-	if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
-		return array();
-	}
-	
-	require_once dirname(__FILE__) . '/config.php';
+    // IF demo mode (since GL 2.2.0) is in effect, return no valid information
+    if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+        return array();
+    }
 
-	return array(
-		'info'      => array(
-			'pi_name'         => 'recaptcha',
-			'pi_display_name' => 'reCAPTCHA',
-			'pi_version'      => $_RECAPTCHA_CONF['pi_version'],
-			'pi_gl_version'   => $_RECAPTCHA_CONF['gl_version'],
-			'pi_homepage'     => $_RECAPTCHA_CONF['pi_url'],
-		),
-		'groups'    => $_RECAPTCHA_CONF['GROUPS'],
-		'features'  => $_RECAPTCHA_CONF['FEATURES'],
-		'mappings'  => $_RECAPTCHA_CONF['MAPPINGS'],
-		'tables'    => array(),
-	);
+    require_once __DIR__ . '/config.php';
+
+    return array(
+        'info'     => array(
+            'pi_name'         => 'recaptcha',
+            'pi_display_name' => 'reCAPTCHA',
+            'pi_version'      => $_RECAPTCHA_CONF['pi_version'],
+            'pi_gl_version'   => $_RECAPTCHA_CONF['gl_version'],
+            'pi_homepage'     => $_RECAPTCHA_CONF['pi_url'],
+        ),
+        'groups'   => $_RECAPTCHA_CONF['GROUPS'],
+        'features' => $_RECAPTCHA_CONF['FEATURES'],
+        'mappings' => $_RECAPTCHA_CONF['MAPPINGS'],
+        'tables'   => array(),
+    );
 }
 
 /**
-* Load plugin configuration from database
-*
-* @param    string  $pi_name    Plugin name
-* @return   boolean             true on success, otherwise false
-* @see      plugin_initconfig_recaptcha
-*/
-function plugin_load_configuration_recaptcha($pi_name) {
-    global $_CONF;
-
-    $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
-
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-    require_once $base_path . 'install_defaults.php';
+ * Load plugin configuration from database
+ *
+ * @param  string $pi_name Plugin name
+ * @return bool    true on success, otherwise false
+ * @see    plugin_initconfig_recaptcha
+ */
+function plugin_load_configuration_recaptcha($pi_name)
+{
+    require_once __DIR__ . '/install_defaults.php';
 
     return plugin_initconfig_recaptcha();
 }
 
 /**
-* Checks if the plugin is compatible with this Geeklog version
-*
-* @param    string  $pi_name    Plugin name
-* @return   boolean             true: plugin compatible; false: not compatible
-*/
-function plugin_compatible_with_this_version_recaptcha($pi_name) {
-	global $_CONF;
+ * Checks if the plugin is compatible with this Geeklog version
+ *
+ * @param  string $pi_name Plugin name
+ * @return bool   true: plugin compatible; false: not compatible
+ */
+function plugin_compatible_with_this_version_recaptcha($pi_name)
+{
+    global $_RECAPTCHA_CONF;
 
-	return version_compare(PHP_VERSION, '5.3.0', '>=');
+    require_once __DIR__ . '/config.php';
+
+    $geeklogVersion = preg_replace('/[^0-9.]/', '', VERSION);
+
+    return version_compare(PHP_VERSION, '5.3.0', '>=') &&
+        version_compare($geeklogVersion, $_RECAPTCHA_CONF['gl_version'], '>=');
 }

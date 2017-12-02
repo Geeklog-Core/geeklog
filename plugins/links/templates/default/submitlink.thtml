@@ -19,7 +19,7 @@
     <div class="submit">
       <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
       <input type="hidden" name="type" value="links"{xhtml}>
-      <input type="submit" value="{lang_submit}" class="submit"{xhtml}>
+      <button type="submit" value="{lang_submit}" class="submit g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}></button>
     </div>
   </div>
 </form>

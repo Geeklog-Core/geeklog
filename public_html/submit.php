@@ -75,12 +75,12 @@ function submissionform($type = 'story', $mode = '')
                 . COM_endBlock();
 
             if ((strlen($type) > 0) && ($type !== 'story')) {
-                $formresult = PLG_showSubmitForm($type);
-                if ($formresult == false) {
+                $formResult = PLG_showSubmitForm($type);
+                if ($formResult == false) {
                     COM_errorLog("Someone tried to submit an item to the {$type}-plugin, which cannot be found.", 1);
                     COM_displayMessageAndAbort(79, '', 410, 'Gone');
                 } else {
-                    $retval .= $formresult;
+                    $retval .= $formResult;
                 }
             } else {
                 $retval .= submitstory();
@@ -97,7 +97,7 @@ function submissionform($type = 'story', $mode = '')
  */
 function submitstory()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG12, $LANG24, $LANG_ADMIN, $_SCRIPTS;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG12, $LANG24, $LANG_ADMIN, $_SCRIPTS, $_PLUGINS;
 
     // Add JavaScript
     $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');
@@ -210,13 +210,13 @@ function submitstory()
     $storyForm->set_var('story_sid', $story->EditElements('sid'));
     $storyForm->set_var('story_date', $story->EditElements('unixdate'));
     $storyForm->set_var('lang_preview', $LANG12[32]);
+    $storyForm->set_var('lang_save', $LANG12[8]);
 
     PLG_templateSetVars('story', $storyForm);
     if (($_CONF['skip_preview'] == 1) || (Geeklog\Input::post('mode') === $LANG12[32])) {
-        $storyForm->set_var(
-            'save_button',
-            '<input name="mode" type="submit" value="' . $LANG12[8] . '"' . XHTML . '>'
-        );
+         $storyForm->set_var('allow_save', true);
+    } else {
+        $storyForm->set_var('allow_save', false);
     }
 
     $retval .= COM_startBlock($LANG12[6], 'submitstory.html');
@@ -331,6 +331,7 @@ function savestory(array $A)
  * @param  string $type Type of submission we are dealing with
  * @param  array  $A    Data for that submission
  * @return string
+ * @throws Exception
  */
 function savesubmission($type, $A)
 {
