@@ -31,14 +31,21 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 class SFS extends BaseCommand
 {
     /**
-     * The execute method examines the Email address
+     * Here we do the work
      *
-     * @param   string $email Email text to examine
-     * @return  int                 0: no spam, else: spam detected
+     * @param  string $comment
+     * @param  string $permanentLink (since GL 2.2.0)
+     * @param  string $commentType (since GL 2.2.0)
+     * @param  string $commentAuthor (since GL 2.2.0)
+     * @param  string $commentAuthorEmail (since GL 2.2.0)
+     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
+     * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($email)
+    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+                            $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
-        $this->result = $this->_process($email, $_SERVER['REMOTE_ADDR']);
+        $this->result = $this->_process($commentAuthorEmail, $_SERVER['REMOTE_ADDR']);
 
         return $this->result;
     }
