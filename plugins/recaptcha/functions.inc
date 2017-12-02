@@ -619,39 +619,43 @@ function RECAPTCHA_getIP()
  */
 function RECAPTCHA_getFormId($type) {
     switch ($type) {
-        case 'comment': // OK
+        case 'comment':
             $formId = 'commentform';
             break;
 
-        case 'story':   // OK
+        case 'story':
             $formId = 'submitstory';
             break;
 
-        case 'registration':    // OK
+        case 'registration':
             $formId = 'registrationform';
             break;
 
-        case 'loginform':   // OK
+        case 'loginform':
             $formId = 'userloginform';
             break;
 
-        case 'getpassword': // OK
+        case 'getpassword':
             $formId = 'getpasswordform';
             break;
 
-        case 'contact': // OK
+        case 'contact':
             $formId = 'contactuserform';
             break;
 
-        case 'emailstory':  // OK
+        case 'emailstory':
             $formId = 'contactauthorform';
             break;
 
-        case 'forum':
-            $formId = '';
+        case 'links':
+            $formId = 'submitlink';
             break;
 
-        case 'mediagallery':
+        case 'calendar':
+            $formId = 'submit_event_form';
+            break;
+
+        case 'forum':
             $formId = '';
             break;
 
@@ -659,12 +663,8 @@ function RECAPTCHA_getFormId($type) {
             $formId = '';
             break;
 
-        case 'links':   // OK
-            $formId = 'submitlink';
-            break;
-
-        case 'calendar':
-            $formId = 'submit_event_form';
+        case 'mediagallery':
+            $formId = '';
             break;
 
         default:

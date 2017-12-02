@@ -54,9 +54,15 @@
       <li><input type="submit" name="{nprefix}mode" value="{lang_preview}" class="submit"{xhtml}></li>
       <li>
         <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
-        {save_option}
+{!if allow_save}
+        <button type="submit" name="{nprefix}mode" value="{lang_save}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_save}</button>
+        <input type="hidden" name="{nprefix}mode" value="{lang_save}"{xhtml}>
+{!endif}
         <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}>
-        {delete_option}
+{!if allow_delete}
+        <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger g-recaptcha" onclick="return confirm('{confirm_message}');"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_delete}</button>
+        <input type="hidden" name="mode" value="{lang_delete}"{xhtml}>
+{!endif}
         {notification}
       </li>
     </ul>

@@ -24,7 +24,7 @@
       <ul class="submit">
         <li>
           <input type="hidden" name="mode" value="create"{xhtml}>
-          <input type="submit" value="{lang_register}" class="submit"{xhtml}>
+          <button type="submit" value="{lang_register}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_register}</button>
         </li>
       </ul>
     </fieldset>

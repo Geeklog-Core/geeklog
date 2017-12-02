@@ -20,8 +20,8 @@
           {!if captcha} 
           {captcha}
           <div style="clear:both"></div>
-          {!endif} 
-          <input type="submit" value="{lang_login}" class="submit"{xhtml}>
+          {!endif}
+          <button type="submit" value="{lang_login}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_login}</button>
           <div style="clear:both"></div>
 
         <ul class="navi">

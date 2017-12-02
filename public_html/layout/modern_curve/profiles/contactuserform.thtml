@@ -30,7 +30,7 @@
       <li>
         <input type="hidden" name="what" value="contact"{xhtml}>
         <input type="hidden" name="uid" value="{uid}"{xhtml}>
-        <input type="submit" value="{lang_submit}" onclick="return postconfirm();" onkeypress="return postconfirm();" class="submit"{xhtml}>
+        <button type="submit" value="{lang_submit}" onclick="return postconfirm();" onkeypress="return postconfirm();" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_submit}</button>
       </li>
     </ul>
   </div>

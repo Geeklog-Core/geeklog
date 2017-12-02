@@ -54,7 +54,10 @@
             <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
             <input type="hidden" name="sid" value="{story_sid}"{xhtml}>
             <input type="hidden" name="date" value="{story_date}"{xhtml}>
-            {save_button}
+            {!if allow_save}
+            <button type="submit" name="mode" value="{lang_save}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_save}</button>
+            <input type="hidden" name="mode" value="{lang_save}">
+            {!endif}
           </li>
         </ul>
       </div>
