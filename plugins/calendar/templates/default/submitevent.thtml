@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 
                             {explanation}
-                            <form class="form-theme uk-form" action="{site_url}{submit_url}" method="post">
+                            <form class="form-theme uk-form" id="submit_event_form" action="{site_url}{submit_url}" method="post">
                                 <div class="form-description">{lang_title}:</div>
                                 <div class="form-field"><input type="text" size="48" maxlength="128" name="title"{xhtml}></div>
                                 <div class="clear-left"></div>
@@ -99,7 +99,7 @@
                                     <input type="hidden" name="type" value="calendar"{xhtml}>
                                     <input type="hidden" name="calendar_type" value="{mode}"{xhtml}>
                                     <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
-                                    <input type="submit" value="{lang_submit}"{xhtml}>
+                                    <button type="submit" value="{lang_submit}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>lang_submit</button>
                                     {hidden_fields}
                                 </div>
                                 <div class="clear-left"></div>
