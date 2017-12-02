@@ -39,6 +39,7 @@ class Resource
     const DEFAULT_CACHE_LIFESPAN = 604800; // 1 week
 
     const JS_TAG_TEMPLATE = '<script type="text/javascript" src="%s"></script>';
+    const EXTERNAL_JS_TAG_TEMPLATE = '<script type="text/javascript" src="%s" async defer></script>';
 
     // Default theme
     const DEFAULT_THEME = 'denim';
@@ -879,7 +880,7 @@ class Resource
 
         if ($success && !$this->debug) {
             $url = $this->config['site_url'] . '/r.php?k=' . $key;
-            $retval .= sprintf('<script type="text/javascript" src="%s"></script>', $url);
+            $retval .= sprintf(self::JS_TAG_TEMPLATE, $url);
         } else {
             // Somehow failed to save data into cache or debug mode is on
             $retval .= PHP_EOL;
@@ -1105,7 +1106,7 @@ class Resource
             usort($this->externalJsFiles['header'], array('\\Geeklog\\Resource', 'comparePriority'));
 
             foreach ($this->externalJsFiles['header'] as $jsFile) {
-                $retval .= sprintf(self::JS_TAG_TEMPLATE, $jsFile['file']) . PHP_EOL;
+                $retval .= sprintf(self::EXTERNAL_JS_TAG_TEMPLATE, $jsFile['file']) . PHP_EOL;
             }
         }
 
@@ -1157,7 +1158,7 @@ class Resource
             if ($this->debug) {
                 $retval .= '<script type="text/javascript">'
                     . implode(PHP_EOL, $this->jsBlocks['header'])
-                    . '</<script>' . PHP_EOL;
+                    . '</script>' . PHP_EOL;
             } else {
                 $code = implode(PHP_EOL, $this->jsBlocks['header']);
                 $code = JSMin::minify($code);
@@ -1185,7 +1186,7 @@ class Resource
             usort($this->externalJsFiles['footer'], array('\\Geeklog\\Resource', 'comparePriority'));
 
             foreach ($this->externalJsFiles['footer'] as $jsFile) {
-                $retval .= sprintf('<script src="%s" async defer></script>', $jsFile['file']) . PHP_EOL;
+                $retval .= sprintf(self::EXTERNAL_JS_TAG_TEMPLATE, $jsFile['file']) . PHP_EOL;
             }
         }
 
