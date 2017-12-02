@@ -2316,6 +2316,27 @@ function PLG_getItemInfo($type, $id, $what, $uid = 0, $options = array())
 }
 
 /**
+ * Asks each plugin tif they want to clear any cache of files they control
+ * Used by clear cache in Geeklog Administration
+ *
+ * @return   array     Plugins that cleared their cache files and if they where successful or not
+ */
+function PLG_clearCache()
+{
+    global $_PLUGINS;
+
+    $plugin_cache_name = array();
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_clearcache_' . $pi_name;
+        if (function_exists($function)) {
+            $plugin_cache_name[$pi_name] = $function(); // Should return true if success
+        }
+    }
+
+    return $plugin_cache_name;
+}
+
+/**
  * Geeklog is about to perform an operation on a trackback or pingback comment
  * to one of the items under the plugin's control and asks for the plugin's
  * permission to continue.

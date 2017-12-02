@@ -74,7 +74,7 @@ function update_DatabaseFor220()
     $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_keywords` TEXT NULL AFTER `meta_description`";    
 
     // Add `status_code` column to the `routes` table
-    $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT(11) NOT NULL DEFAULT 302 AFTER `route`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT NOT NULL DEFAULT 200 AFTER `route`"; 
 
     // Add `css_id` and `css_classes` columns to the `blocks` table
     $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `help`";
