@@ -1004,8 +1004,7 @@ function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
                 $feed_title = $format_name . ' Feed: ' . $A['title'];
 
                 $feed_url[] = '<link rel="alternate" type="' . $format_type
-                    . '" hreflang="' . $A['language'] . '" href="'
-                    . $baseUrl . $A['filename'] . '" title="'
+                    . '" href="' . $baseUrl . $A['filename'] . '" title="'
                     . htmlspecialchars($feed_title) . '"' . XHTML . '>';
             }
         }
@@ -1604,8 +1603,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
                 $feed_title = $format_name . ' Feed: ' . $A['title'];
 
                 $feed_url[] = '<link rel="alternate" type="' . $format_type
-                    . '" hreflang="' . $A['language'] . '" href="'
-                    . $baseUrl . $A['filename'] . '" title="'
+                    . '" href="' . $baseUrl . $A['filename'] . '" title="'
                     . htmlspecialchars($feed_title) . '"' . XHTML . '>';
             }
         }
