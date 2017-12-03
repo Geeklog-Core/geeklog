@@ -546,7 +546,9 @@ if (empty($serialized_topic_tree)) {
 }
 
 // Figure out if we need to update article feeds. Check last article date published in feed
-$sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
+$sql = "SELECT date FROM {$_TABLES['stories']} "
+    . "WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 "
+    . "ORDER BY date DESC LIMIT 1";
 $result = DB_query($sql);
 $A = DB_fetchArray($result);
 if ($_VARS['last_article_publish'] != $A['date']) {
@@ -866,630 +868,18 @@ function COM_renderMenu($header, $plugin_menu)
 }
 
 /**
- * Returns the site header
- * This loads the proper templates, does variable substitution and returns the
- * HTML for the site header with or without blocks depending on the value of $what
- * Programming Note:
- * The two functions COM_siteHeader and COM_siteFooter provide the framework for
- * page display in Geeklog.  COM_siteHeader controls the display of the Header
- * and left blocks and COM_siteFooter controls the dsiplay of the right blocks
- * and the footer.  You use them like a sandwich.  Thus the following code will
- * display a Geeklog page with both right and left blocks displayed.
- * <code>
- * <?php
- * require_once 'lib-common.php';
- * // Change to COM_siteHeader('none') to not display left blocks
- * $display .= COM_siteHeader();
- * $display .= "Here is your html for display";
- * // Change to COM_siteFooter() to not display right blocks
- * $display .= COM_siteFooter(true);
- * echo $display;
- * ? >
- * </code>
- * Note that the default for the header is to display the left blocks and the
- * default of the footer is to not display the right blocks.
- * This sandwich produces code like this (greatly simplified)
- * <code>
- * // COM_siteHeader
- * <table><tr><td colspan="3">Header</td></tr>
- * <tr><td>Left Blocks</td><td>
- * // Your HTML goes here
- * Here is your html for display
- * // COM_siteFooter
- * </td><td>Right Blocks</td></tr>
- * <tr><td colspan="3">Footer</td></table>
- * </code>
- *
- * @param    string $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are
- *                              returned
- * @param    string $pagetitle  optional content for the page's <title>
- * @param    string $headercode optional code to go into the page's <head>
- * @return   string              Formatted HTML containing the site header
- * @see        function COM_siteFooter
- * @deprecated since v2.1.2
- */
-function COM_siteHeader($what = 'menu', $pagetitle = '', $headercode = '')
-{
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
-           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $relLinks;
-    global $_GLOBAL_WHAT;
-
-    COM_deprecatedLog(__FUNCTION__, '2.1.2', '2.2.0', 'COM_createHTMLDocument');
-
-    $_GLOBAL_WHAT = $what;
-
-    // If the theme implemented this for us then call their version instead.
-    $function = $_CONF['theme'] . '_siteHeader';
-
-    if (function_exists($function)) {
-        return $function($what, $pagetitle, $headercode);
-    }
-
-    // If we reach here then either we have the default theme OR
-    // the current theme only needs the default variable substitutions
-    switch ($_CONF['doctype']) {
-        case 'html401transitional':
-            $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
-            break;
-
-        case 'html401strict':
-            $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
-            break;
-
-        case 'xhtml10transitional':
-            $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-            break;
-
-        case 'xhtml10strict':
-            $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-            break;
-
-        case 'html5':
-        case 'xhtml5':
-            $doctype = '<!DOCTYPE html>';
-            break;
-
-        default: // fallback: HTML 4.01 Transitional w/o system identifier
-            $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
-            break;
-    }
-
-    // send out the charset header
-    header('Content-Type: text/html; charset=' . COM_getCharset());
-    header('X-XSS-Protection: 1; mode=block');
-    header('X-Content-Type-Options: nosniff');
-
-    if (!empty($_CONF['frame_options'])) {
-        header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
-    }
-
-    $header = COM_newTemplate($_CONF['path_layout']);
-    $header->set_file(array(
-        'header'         => 'header.thtml',
-        'menunavigation' => 'menunavigation.thtml',
-        'leftblocks'     => 'leftblocks.thtml',
-        'rightblocks'    => 'rightblocks.thtml',
-    ));
-    $blocks = array('menuitem', 'menuitem_last', 'menuitem_none');
-    foreach ($blocks as $block) {
-        $header->set_block('menunavigation', $block);
-    }
-
-    // Allow anything not in the blocks but in the rest of the template file to be displayed
-    $header->parse('menu_elements', 'menunavigation', true);
-    $header->set_var('doctype', $doctype . LB);
-
-    if (XHTML == '') {
-        $header->set_var('xmlns', '');
-    } else {
-        $header->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
-    }
-
-    $feed_url = array();
-    if ($_CONF['backend'] == 1) { // add feed-link to header if applicable
-        $baseUrl = SYND_getFeedUrl();
-
-        $sql = 'SELECT format, filename, title, language FROM '
-            . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";
-        if (!empty($topic)) {
-            $sql .= " OR (header_tid = '" . DB_escapeString($topic) . "')";
-        }
-        $result = DB_query($sql);
-        $numRows = DB_numRows($result);
-        for ($i = 0; $i < $numRows; $i++) {
-            $A = DB_fetchArray($result);
-            if (!empty($A['filename'])) {
-                $format_type = SYND_getMimeType($A['format']);
-                $format_name = SYND_getFeedType($A['format']);
-                $feed_title = $format_name . ' Feed: ' . $A['title'];
-
-                $feed_url[] = '<link rel="alternate" type="' . $format_type
-                    . '" href="' . $baseUrl . $A['filename'] . '" title="'
-                    . htmlspecialchars($feed_title) . '"' . XHTML . '>';
-            }
-        }
-    }
-    $header->set_var('feed_url', implode(LB, $feed_url));
-
-    // for backward compatibility only - use {feed_url} instead
-    $feed = SYND_getDefaultFeedUrl();
-    $header->set_var('rdf_file', $feed);
-    $header->set_var('rss_url', $feed);
-
-    if (COM_onFrontpage()) {
-        $relLinks['canonical'] = '<link rel="canonical" href="'
-            . $_CONF['site_url'] . '/"' . XHTML . '>';
-    } else {
-        $relLinks['home'] = '<link rel="home" href="' . $_CONF['site_url']
-            . '/" title="' . $LANG01[90] . '"' . XHTML . '>';
-    }
-    $loggedInUser = !COM_isAnonUser();
-    if ($loggedInUser || (($_CONF['loginrequired'] == 0) &&
-            ($_CONF['searchloginrequired'] == 0))
-    ) {
-        if ((substr($_SERVER['PHP_SELF'], -strlen('/search.php'))
-                != '/search.php') || isset($_GET['mode'])
-        ) {
-            $relLinks['search'] = '<link rel="search" href="'
-                . $_CONF['site_url'] . '/search.php" title="'
-                . $LANG01[75] . '"' . XHTML . '>';
-        }
-    }
-    if ($loggedInUser || (($_CONF['loginrequired'] == 0) &&
-            ($_CONF['directoryloginrequired'] == 0))
-    ) {
-        if (strpos($_SERVER['PHP_SELF'], '/article.php') !== false) {
-            $relLinks['contents'] = '<link rel="contents" href="'
-                . $_CONF['site_url'] . '/directory.php" title="'
-                . $LANG01[117] . '"' . XHTML . '>';
-        }
-    }
-    if (!$_CONF['disable_webservices']) {
-        $relLinks['service'] = '<link rel="service" '
-            . 'type="application/atomsvc+xml" ' . 'href="'
-            . $_CONF['site_url'] . '/webservices/atom/?introspection" '
-            . 'title="' . $LANG01[130] . '"' . XHTML . '>';
-    }
-    // TBD: add a plugin API and a lib-custom.php function
-    $header->set_var('rel_links', implode(LB, $relLinks));
-
-    $pagetitle_siteslogan = false;
-    if (empty($pagetitle)) {
-        if (empty($topic)) {
-            $pagetitle = $_CONF['site_slogan'];
-            $pagetitle_siteslogan = true;
-        } else {
-            $pagetitle = stripslashes(DB_getItem($_TABLES['topics'], 'topic',
-                "tid = '$topic'"));
-        }
-    }
-    if (!empty($pagetitle)) {
-        $header->set_var('page_site_splitter', ' - ');
-    } else {
-        $header->set_var('page_site_splitter', '');
-    }
-    $header->set_var('page_title', $pagetitle);
-    $header->set_var('site_name', $_CONF['site_name']);
-
-    if (COM_onFrontpage() || $pagetitle_siteslogan) {
-        $title_and_name = $_CONF['site_name'];
-        if (!empty($pagetitle)) {
-            $title_and_name .= ' - ' . $pagetitle;
-        }
-    } else {
-        $title_and_name = '';
-        if (!empty($pagetitle)) {
-            $title_and_name = $pagetitle . ' - ';
-        }
-        $title_and_name .= $_CONF['site_name'];
-    }
-    $header->set_var('page_title_and_site_name', $title_and_name);
-
-    COM_setLangIdAndAttribute($header);
-
-    $header->set_var('background_image', $_CONF['layout_url']
-        . '/images/bg.' . $_IMAGE_TYPE);
-    $header->set_var('site_mail', "mailto:{$_CONF['site_mail']}");
-    $header->set_var('site_name', $_CONF['site_name']);
-    $header->set_var('site_slogan', $_CONF['site_slogan']);
-
-    $msg = rtrim($LANG01[67]) . ' ' . $_CONF['site_name'];
-
-    if (!empty($_USER['username'])) {
-        $msg .= ', ' . COM_getDisplayName($_USER['uid'], $_USER['username'],
-                $_USER['fullname']);
-    }
-
-    $curtime = COM_getUserDateTimeFormat();
-
-    $header->set_var('welcome_msg', $msg);
-    $header->set_var('datetime', $curtime[0]);
-    $header->set_var('site_logo', $_CONF['layout_url']
-        . '/images/logo.' . $_IMAGE_TYPE);
-    $header->set_var('theme', $_CONF['theme']);
-    $header->set_var('datetime_html5', strftime('%FT%T', $curtime[1]));
-
-    $header->set_var('charset', COM_getCharset());
-    $header->set_var('direction', $LANG_DIRECTION);
-
-    // Now add variables for buttons like e.g. those used by the Yahoo theme
-    $header->set_var('button_home', $LANG_BUTTONS[1]);
-    $header->set_var('button_contact', $LANG_BUTTONS[2]);
-    $header->set_var('button_contribute', $LANG_BUTTONS[3]);
-    $header->set_var('button_sitestats', $LANG_BUTTONS[7]);
-    $header->set_var('button_personalize', $LANG_BUTTONS[8]);
-    $header->set_var('button_search', $LANG_BUTTONS[9]);
-    $header->set_var('button_advsearch', $LANG_BUTTONS[10]);
-    $header->set_var('button_directory', $LANG_BUTTONS[11]);
-
-    // Get plugin menu options
-    $plugin_menu = PLG_getMenuItems();
-
-    if ($_COM_VERBOSE) {
-        COM_errorLog('num plugin menu items in header = ' . count($plugin_menu), 1);
-    }
-
-    // Now add nested template for menu items
-    COM_renderMenu($header, $plugin_menu);
-
-    if (count($plugin_menu) === 0) {
-        $header->parse('plg_menu_elements', 'menuitem_none', true);
-    } else {
-        $count_plugin_menu = count($plugin_menu);
-        for ($i = 1; $i <= $count_plugin_menu; $i++) {
-            $header->set_var('menuitem_url', current($plugin_menu));
-            $header->set_var('menuitem_text', key($plugin_menu));
-
-            if ($i == $count_plugin_menu) {
-                $header->parse('plg_menu_elements', 'menuitem_last', true);
-            } else {
-                $header->parse('plg_menu_elements', 'menuitem', true);
-            }
-
-            next($plugin_menu);
-        }
-    }
-
-    // Call to plugins to set template variables in the header
-    PLG_templateSetVars('header', $header);
-
-    if ($_CONF['left_blocks_in_footer'] == 1) {
-        $header->set_var('left_blocks', '');
-        $header->set_var('geeklog_blocks', '');
-    } else {
-        $lblocks = '';
-
-        /* Check if an array has been passed that includes the name of a plugin
-         * function or custom function
-         * This can be used to take control over what blocks are then displayed
-         */
-        if (is_array($what)) {
-            $function = $what[0];
-            if (function_exists($function)) {
-                $lblocks = $function($what[1], 'left');
-            } else {
-                $lblocks = COM_showBlocks('left', $topic);
-            }
-        } elseif ($what !== 'none') {
-            // Now show any blocks -- need to get the topic if not on home page
-            $lblocks = COM_showBlocks('left', $topic);
-        }
-
-        if (empty($lblocks)) {
-            $header->set_var('left_blocks', '');
-            $header->set_var('geeklog_blocks', '');
-        } else {
-            $header->set_var('geeklog_blocks', $lblocks);
-            $header->parse('left_blocks', 'leftblocks', true);
-            $header->set_var('geeklog_blocks', '');
-        }
-    }
-
-    if ($_CONF['right_blocks_in_footer'] == 1) {
-        $header->set_var('right_blocks', '');
-        $header->set_var('geeklog_blocks', '');
-    } else {
-        $rblocks = '';
-
-        /* Check if an array has been passed that includes the name of a plugin
-         * function or custom function
-         * This can be used to take control over what blocks are then displayed
-         */
-        if (is_array($what)) {
-            $function = $what[0];
-            if (function_exists($function)) {
-                $rblocks = $function($what[1], 'right');
-            } else {
-                $rblocks = COM_showBlocks('right', $topic);
-            }
-        } elseif ($what !== 'none') {
-            // Now show any blocks -- need to get the topic if not on home page
-            $rblocks = COM_showBlocks('right', $topic);
-        }
-
-        if (empty($rblocks)) {
-            $header->set_var('right_blocks', '');
-            $header->set_var('geeklog_blocks', '');
-        } else {
-            $header->set_var('geeklog_blocks', $rblocks, true);
-            $header->parse('right_blocks', 'rightblocks', true);
-        }
-    }
-
-    // Set last topic session variable
-    if ($topic == TOPIC_ALL_OPTION) {
-        $topic = ''; // Do not save 'all' option. Nothing is the same thing
-    }
-    SESS_setVariable('topic', $topic);
-
-    // Call any plugin that may want to include extra Meta tags
-    // or Javascript functions
-    $headercode .= PLG_getHeaderCode();
-
-    // Meta Tags
-    // 0 = Disabled, 1 = Enabled, 2 = Enabled but default just for homepage
-    if ($_CONF['meta_tags'] > 0) {
-        $meta_description = '';
-        $meta_keywords = '';
-        $no_meta_description = 1;
-        $no_meta_keywords = 1;
-
-        //Find out if the meta tag description or keywords already exist in the headercode
-        if ($headercode != '') {
-            $pattern = '/<meta ([^>]*)name="([^"\'>]*)"([^>]*)/im';
-            if (preg_match_all($pattern, $headercode, $matches, PREG_SET_ORDER)) {
-                // Loop through all meta tags looking for description and keywords
-                for ($i = 0; $i < count($matches) && (($no_meta_description == 1) || ($no_meta_keywords == 1)); $i++) {
-                    $str_matches = strtolower($matches[$i][0]);
-                    $pos = strpos($str_matches, 'name=');
-                    if (!(is_bool($pos) && !$pos)) {
-                        $name = trim(substr($str_matches, $pos + 5), '"');
-                        $pos = strpos($name, '"');
-                        $name = substr($name, 0, $pos);
-
-                        if (strcasecmp('description', $name) === 0) {
-                            $pos = strpos($str_matches, 'content=');
-                            if (!(is_bool($pos) && !$pos)) {
-                                $no_meta_description = 0;
-                            }
-                        }
-                        if (strcasecmp("keywords", $name) === 0) {
-                            $pos = strpos($str_matches, 'content=');
-                            if (!(is_bool($pos) && !$pos)) {
-                                $no_meta_keywords = 0;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (COM_onFrontpage() && $_CONF['meta_tags'] == 2) { // Display default meta tags only on home page
-            if ($no_meta_description) {
-                $meta_description = $_CONF['meta_description'];
-            }
-            if ($no_meta_keywords) {
-                $meta_keywords = $_CONF['meta_keywords'];
-            }
-        } elseif ($_CONF['meta_tags'] == 1) { // Display default meta tags anywhere there are no tags
-            if ($no_meta_description) {
-                $meta_description = $_CONF['meta_description'];
-            }
-            if ($no_meta_keywords) {
-                $meta_keywords = $_CONF['meta_keywords'];
-            }
-        }
-
-        if ($no_meta_description || $no_meta_keywords) {
-            $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
-        }
-    }
-
-    $headercode = $_SCRIPTS->getHeader() . $headercode;
-    $header->set_var('plg_headercode', $headercode);
-    $header->set_var('layout_columns', 'js_off');
-
-    $retval = $header->finish($header->parse('index_header', 'header'));
-
-    return $retval;
-}
-
-/**
- * Returns the site footer
- * This loads the proper templates, does variable substitution and returns the
- * HTML for the site footer.
- *
- * @param   boolean $rightBlock Whether or not to show blocks on right hand side default is no
- * @param   array   $custom     An array defining custom function to be used to format Rightblocks
- * @see        function COM_siteHeader
- * @return   string  Formatted HTML containing site footer and optionally right blocks
- * @deprecated since v2.1.2
- */
-function COM_siteFooter($rightBlock = -1, $custom = '')
-{
-    global $_CONF, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS, $_SCRIPTS, $_GLOBAL_WHAT;
-
-    COM_deprecatedLog(__FUNCTION__, '2.1.2', '2.2.0', 'COM_createHTMLDocument');
-
-    // If the theme implemented this for us then call their version instead.
-    $function = $_CONF['theme'] . '_siteFooter';
-
-    if (function_exists($function)) {
-        return $function($rightBlock, $custom);
-    }
-
-    COM_hit();
-
-    // Set template directory
-    $footer = COM_newTemplate($_CONF['path_layout']);
-    // Set template file
-    $footer->set_file(array(
-        'footer'      => 'footer.thtml',
-        'rightblocks' => 'rightblocks.thtml',
-        'leftblocks'  => 'leftblocks.thtml',
-    ));
-
-    // Do variable assignments
-    $footer->set_var('site_mail', "mailto:{$_CONF['site_mail']}");
-    $footer->set_var('site_name', $_CONF['site_name']);
-    $footer->set_var('site_slogan', $_CONF['site_slogan']);
-
-    $feed = SYND_getDefaultFeedUrl();
-    $footer->set_var('rdf_file', $feed);
-    $footer->set_var('rss_url', $feed);
-
-    $year = date('Y');
-    $copyrightYear = empty($_CONF['copyrightyear']) ? $year : $_CONF['copyrightyear'];
-    $copyrightName = empty($_CONF['owner_name']) ? $_CONF['site_name'] : $_CONF['owner_name'];
-    $footer->set_var('copyright_msg', $LANG01[93] . ' &copy; ' . $copyrightYear . ' ' . $copyrightName);
-    $footer->set_var('current_year', $year);
-    $footer->set_var('lang_copyright', $LANG01[93]);
-    $footer->set_var('trademark_msg', $LANG01[94]);
-    $footer->set_var('powered_by', $LANG01[95]);
-    $footer->set_var('geeklog_url', 'https://www.geeklog.net/');
-    $footer->set_var('geeklog_version', VERSION);
-    // Now add variables for buttons like e.g. those used by the Yahoo theme
-    $footer->set_var('button_home', $LANG_BUTTONS[1]);
-    $footer->set_var('button_contact', $LANG_BUTTONS[2]);
-    $footer->set_var('button_contribute', $LANG_BUTTONS[3]);
-    $footer->set_var('button_sitestats', $LANG_BUTTONS[7]);
-    $footer->set_var('button_personalize', $LANG_BUTTONS[8]);
-    $footer->set_var('button_search', $LANG_BUTTONS[9]);
-    $footer->set_var('button_advsearch', $LANG_BUTTONS[10]);
-    $footer->set_var('button_directory', $LANG_BUTTONS[11]);
-
-    /* Right blocks. Argh. Don't talk to me about right blocks...
-     * Right blocks will be displayed if Right_blocks_in_footer is set [1],
-     * AND (this function has been asked to show them (first param) OR the
-     * show_right_blocks conf variable has been set to override what the code
-     * wants to do.
-     *
-     * If $custom sets an array (containing functionname and first argument)
-     * then this is used instead of the default (COM_showBlocks) to render
-     * the right blocks (and left).
-     *
-     * [1] - if it isn't, they'll be in the header already.
-     *
-     */
-    if ($_CONF['right_blocks_in_footer'] == 1) {
-        if (($rightBlock < 0) || !$rightBlock) {
-            if (isset($_CONF['show_right_blocks'])) {
-                $displayRightBlocks = $_CONF['show_right_blocks'];
-            } else {
-                $displayRightBlocks = false;
-            }
-        } else {
-            $displayRightBlocks = true;
-        }
-    } else {
-        $displayRightBlocks = false;
-    }
-
-    if ($displayRightBlocks) {
-        /* Check if an array has been passed that includes the name of a plugin
-         * function or custom function.
-         * This can be used to take control over what blocks are then displayed
-         */
-        if (is_array($custom)) {
-            $function = $custom['0'];
-            if (function_exists($function)) {
-                $rblocks = $function($custom['1'], 'right');
-            } else {
-                $rblocks = COM_showBlocks('right', $topic);
-            }
-        } else {
-            $rblocks = COM_showBlocks('right', $topic);
-        }
-
-        if (empty($rblocks)) {
-            $footer->set_var('geeklog_blocks', '');
-            $footer->set_var('right_blocks', '');
-        } else {
-            $footer->set_var('geeklog_blocks', $rblocks);
-            $footer->parse('right_blocks', 'rightblocks', true);
-            $footer->set_var('geeklog_blocks', '');
-        }
-    } else {
-        $footer->set_var('geeklog_blocks', '');
-        $footer->set_var('right_blocks', '');
-    }
-
-    if ($_CONF['left_blocks_in_footer'] == 1) {
-        $lblocks = '';
-
-        /* Check if an array has been passed that includes the name of a plugin
-         * function or custom function
-         * This can be used to take control over what blocks are then displayed
-         */
-        if (is_array($custom)) {
-            $function = $custom[0];
-            if (function_exists($function)) {
-                $lblocks = $function($custom[1], 'left');
-            }
-        } else {
-            if ($_GLOBAL_WHAT !== 'none') {
-                $lblocks = COM_showBlocks('left', $topic);
-            }
-        }
-
-        if (empty($lblocks)) {
-            $footer->set_var('left_blocks', '');
-            $footer->set_var('geeklog_blocks', '');
-        } else {
-            $footer->set_var('geeklog_blocks', $lblocks);
-            $footer->parse('left_blocks', 'leftblocks', true);
-            $footer->set_var('geeklog_blocks', '');
-        }
-    }
-
-    // Global centerspan variable set in index.php
-    if (isset($GLOBALS['centerspan'])) {
-        $footer->set_var('centerblockfooter-span', '</td></tr></table>');
-    }
-
-    $exectime = $_PAGE_TIMER->stopTimer();
-    $exectext = $LANG01[91] . ' ' . $exectime . ' ' . $LANG01[92];
-
-    $footer->set_var('execution_time', $exectime);
-    $footer->set_var('execution_textandtime', $exectext);
-
-    // Call to plugins to set template variables in the footer
-    PLG_templateSetVars('footer', $footer);
-
-    // Call any plugin that may want to include extra JavaScript functions
-    $plugin_footercode = PLG_getFooterCode();
-
-    // Retrieve any JavaScript libraries, variables and functions
-    $footercode = $_SCRIPTS->getFooter();
-
-    // $_SCRIPTS code should be placed before plugin_footer_code but plugin_footer_code should still be allowed to set $_SCRIPTS
-    $footercode .= $plugin_footercode;
-
-    $footer->set_var('plg_footercode', $footercode);
-
-    // Actually parse the template and make variable substitutions
-    $footer->parse('index_footer', 'footer');
-
-    // Return resulting HTML
-    return $footer->finish($footer->get_var('index_footer'));
-}
-
-/**
  * Create and return the HTML document
  *
- * @param    string $content     Main content for the page
- * @param    array  $information An array defining variables to be used when creating the output
- *                               string  'what'          If 'none' then no left blocks are returned, if 'menu'
- *                               (default) then right blocks are returned string  'pagetitle'     Optional content for
- *                               the page's <title> string  'breadcrumbs'   Optional content for the page's breadcrumb
- *                               string  'headercode'    Optional code to go into the page's <head> boolean
- *                               'rightblock'    Whether or not to show blocks on right hand side default is no (-1)
- *                               array   'custom'        An array defining custom function to be used to format
- *                               Rightblocks
- * @see      function COM_siteHeader
- * @see      function COM_siteFooter
- * @return   string              Formatted HTML document
- * @throws   Exception
+ * @param  string $content      Main content for the page
+ * @param  array  $information  An array defining variables to be used when creating the output
+ *                              string  'what'          If 'none' then no left blocks are returned, if 'menu'
+ *                              (default) then right blocks are returned string  'pagetitle'     Optional content for
+ *                              the page's <title> string  'breadcrumbs'   Optional content for the page's breadcrumb
+ *                              string  'headercode'    Optional code to go into the page's <head> boolean
+ *                              'rightblock'    Whether or not to show blocks on right hand side default is no (-1)
+ *                              array   'custom'        An array defining custom function to be used to format
+ *                              Rightblocks
+ * @return string              Formatted HTML document
  */
 function COM_createHTMLDocument(&$content = '', $information = array())
 {
@@ -1506,17 +896,11 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // If the theme does not support the CSS layout then call the legacy functions (Geeklog 1.8.1 and older).
     if ($_CONF['supported_version_theme'] === '1.8.1') {
-        if (is_callable('COM_siteHeader') && is_callable('COM_siteFooter')) {
-            return COM_siteHeader($what, $pageTitle, $headerCode) . $content
-                . COM_siteFooter($rightBlock, $custom);
-        } else {
-            throw new Exception('COM_siteHeader and COM_siteFooter are removed. Please use COM_createHTMLDocument instead.');
-        }
+        die('COM_siteHeader and COM_siteFooter are removed. Please use COM_createHTMLDocument instead.');
     }
 
     // If the theme implemented this for us then call their version instead.
     $function = $_CONF['theme'] . '_createHTMLDocument';
-
     if (function_exists($function)) {
         return $function($content, $information);
     }
@@ -1588,8 +972,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     if ($_CONF['backend'] == 1) { // add feed-link to header if applicable
         $baseUrl = SYND_getFeedUrl();
 
-        $sql = 'SELECT format, filename, title, language FROM '
-            . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";
+        $sql = "SELECT format, filename, title, language FROM {$_TABLES['syndication']} "
+            . " WHERE (header_tid = 'all')";
         if (!empty($topic)) {
             $sql .= " OR (header_tid = '" . DB_escapeString($topic) . "')";
         }
@@ -1612,8 +996,9 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // for backward compatibility only - use {feed_url} instead
     $feed = SYND_getDefaultFeedUrl();
+    $isOnFrontPage = COM_onFrontpage();
 
-    if (COM_onFrontpage()) {
+    if ($isOnFrontPage) {
         $relLinks['canonical'] = '<link rel="canonical" href="' . $_CONF['site_url'] . '/"' . XHTML . '>';
     } else {
         $relLinks['home'] = '<link rel="home" href="' . $_CONF['site_url'] . '/" title="' . $LANG01[90] . '"' . XHTML . '>';
@@ -1621,8 +1006,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $loggedInUser = !COM_isAnonUser();
     if ($loggedInUser || (($_CONF['loginrequired'] == 0) && ($_CONF['searchloginrequired'] == 0))) {
         if ((substr($_SERVER['PHP_SELF'], -strlen('/search.php')) !== '/search.php') || isset($_GET['mode'])) {
-            $relLinks['search'] = '<link rel="search" href="'
-                . $_CONF['site_url'] . '/search.php" title="'
+            $relLinks['search'] = '<link rel="search" href="' . $_CONF['site_url'] . '/search.php" title="'
                 . $LANG01[75] . '"' . XHTML . '>';
         }
     }
@@ -1659,7 +1043,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $header->set_var('page_title', $pageTitle);
     $header->set_var('site_name', $_CONF['site_name']);
 
-    if (COM_onFrontpage() || $pageTitle_siteSlogan) {
+    if ($isOnFrontPage || $pageTitle_siteSlogan) {
         $title_and_name = $_CONF['site_name'];
         if (!empty($pageTitle)) {
             $title_and_name .= ' - ' . $pageTitle;
@@ -1821,7 +1205,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $no_meta_description = 1;
         $no_meta_keywords = 1;
 
-        //Find out if the meta tag description or keywords already exist in the headercode
+        // Find out if the meta tag description or keywords already exist in the headercode
         if ($headerCode != '') {
             $pattern = '/<meta ([^>]*)name="([^"\'>]*)"([^>]*)/im';
             if (preg_match_all($pattern, $headerCode, $matches, PREG_SET_ORDER)) {
@@ -1851,7 +1235,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
             }
         }
 
-        if (COM_onFrontpage() && ($_CONF['meta_tags'] == 2)) { // Display default meta tags only on home page
+        if ($isOnFrontPage && ($_CONF['meta_tags'] == 2)) { // Display default meta tags only on home page
             if ($no_meta_description) {
                 $meta_description = $_CONF['meta_description'];
             }
@@ -2145,7 +1529,7 @@ function COM_endBlock($template = 'blockfooter.thtml')
  */
 function COM_optionListFromLangVariables($langVariableName, $selected = '')
 {
-    static  $langVariableNames = array(
+    static $langVariableNames = array(
         'LANG_commentcodes', 'LANG_commentmodes', 'LANG_featurecodes', 'LANG_frontpagecodes',
         'LANG_postmodes', 'LANG_sortcodes', 'LANG_statuscodes', 'LANG_trackbackcodes',
     );
@@ -2166,11 +1550,11 @@ function COM_optionListFromLangVariables($langVariableName, $selected = '')
     foreach ($$langVariableName as $value => $text) {
         $isSelected = ($value == $selected) ? ' selected="selected"' : '';
         $retval .= sprintf(
-            '<option value="%s"%s>%s</option>',
-            htmlspecialchars($value, ENT_QUOTES, $charset),
-            $isSelected,
-            htmlspecialchars($text, ENT_QUOTES, $charset)
-        ) . PHP_EOL;
+                '<option value="%s"%s>%s</option>',
+                htmlspecialchars($value, ENT_QUOTES, $charset),
+                $isSelected,
+                htmlspecialchars($text, ENT_QUOTES, $charset)
+            ) . PHP_EOL;
     }
 
     return $retval;
@@ -2193,7 +1577,7 @@ function COM_optionListFromLangVariables($langVariableName, $selected = '')
 function COM_optionList($table, $selection, $selected = '', $sortCol = 1, $where = '')
 {
     global $_DB_table_prefix;
-    static  $langTableNames = array(
+    static $langTableNames = array(
         'LANG_commentcodes', 'LANG_commentmodes', 'LANG_featurecodes', 'LANG_frontpagecodes',
         'LANG_postmodes', 'LANG_sortcodes', 'LANG_statuscodes', 'LANG_trackbackcodes',
     );
@@ -4523,8 +3907,7 @@ function COM_rdfImport($bid, $rdfUrl, $maxHeadlines = 0)
     list($last_modified, $eTag) = DB_fetchArray($result);
 
     // Load the actual feed handlers:
-    $factory = new FeedParserFactory($_CONF['path_system']
-        . '/classes/syndication/');
+    $factory = new FeedParserFactory($_CONF['path_system'] . '/classes/syndication/');
     $factory->userAgent = 'Geeklog/' . VERSION;
     if (!empty($last_modified) && !empty($eTag)) {
         $factory->lastModified = $last_modified;
@@ -7300,7 +6683,7 @@ function COM_getLanguage()
     // 1. Try to get language from URL
     // $langFile = COM_getLanguageFromBrowser(); - Removed line as it doesn't work with the switch language block (that uses phpblock_switch_language) for some setups when a language cookie is set, need to check that first. 
     $langFile = COM_getLanguageFromURL();
-    
+
     if (empty($langFile)) {
         if (!empty($_USER['language'])) {
             // 2. Try to get language from the user's settings
@@ -8756,11 +8139,13 @@ function COM_getDocumentUrl($baseDirectory, $fileName)
  * @return string       e.g., 'en', 'ja', ...
  * @note   code provided by hiroron
  */
-function COM_getLanguageIdFromURL($url='') 
+function COM_getLanguageIdFromURL($url = '')
 {
     global $_CONF;
-    
-    if (empty($url)) { $url=COM_getCurrentURL(); }
+
+    if (empty($url)) {
+        $url = COM_getCurrentURL();
+    }
     $retval = '';
     if ($_CONF['url_rewrite']) {
         // for "rewritten" URLs we assume that the first parameter after
@@ -8774,7 +8159,7 @@ function COM_getLanguageIdFromURL($url='')
                     if (isset($p[$j])) {
                         $l = strrpos($p[$j], '_');
                         if ($l !== false) {
-                            $retval = substr($p[$j], $l+1);
+                            $retval = substr($p[$j], $l + 1);
                             break;
                         }
                     }
@@ -8787,9 +8172,10 @@ function COM_getLanguageIdFromURL($url='')
         $urlpart = $url[0];
         $l = strrpos($urlpart, '_');
         if ($l !== false) {
-            $retval = substr($urlpart, $l+1);
+            $retval = substr($urlpart, $l + 1);
         }
     }
+
     return $retval;
 }
 
@@ -8800,10 +8186,10 @@ function COM_getLanguageIdFromURL($url='')
  * @return string       e.g., 'english', 'japanese', ...
  * @note   code provided by hiroron
  */
-function COM_getLanguageFromURL($url='') 
+function COM_getLanguageFromURL($url = '')
 {
     global $_CONF;
-    
+
     $retval = '';
     $langid = COM_getLanguageIdFromURL($url);
     if (!empty($langid)) {
@@ -8811,6 +8197,7 @@ function COM_getLanguageFromURL($url='')
             $retval = $_CONF['language_files'][$langid];
         }
     }
+
     return $retval;
 }
 
@@ -8853,13 +8240,11 @@ foreach ($_PLUGINS as $pi_name) {
 
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
-if (!isset($_VARS['last_scheduled_run']) OR !is_numeric($_VARS['last_scheduled_run'])) {
+if (!isset($_VARS['last_scheduled_run']) || !is_numeric($_VARS['last_scheduled_run'])) {
     $_VARS['last_scheduled_run'] = 0;
 }
 if ($_CONF['cron_schedule_interval'] > 0 && COM_onFrontpage()) {
-    if (($_VARS['last_scheduled_run']
-            + $_CONF['cron_schedule_interval']) <= time()
-    ) {
+    if (($_VARS['last_scheduled_run'] + $_CONF['cron_schedule_interval']) <= time()) {
         DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
         PLG_runScheduledTask();
     }
