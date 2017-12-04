@@ -74,6 +74,8 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>Please note that you should only use letters and digits for the page ID. Avoid national special characters, most punctuation characters ('-' and '.' should be okay, though) and spaces. The static page editor will catch some illegal characters but not all of them ...</p>
 
+<h2><a name="multi-language">Multi Language Support</a></h2>
+<p>The Staticpage plugin also supports multiple languages (same as articles, blocks and topics). This means you can have a staticpage with the same id but a different language encoded into it. For example when multiple languages is enabled (see the following <a href="https://www.geeklog.net/docs/english/config.html#languages">language config settings</a> for more information) staticpage ids like "exampleid_en" refers to the English version of the staticpage "exampleid". The page "exampleid_ja" refers to the Japanese version. If both pages exist and depending on what language the visitor is using the appropriate page will be displayed. For more information on how this works you can also read <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Geeklog's Multi-Lanaguage Wiki support page</a>.</p>
 
 <h2><a name="frontpage">Using Static Pages on the index page</a></h2>
 
@@ -141,6 +143,10 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 <p>As all objects in Geeklog, static pages have an owner (the user that created the static page). When that user's account is deleted for some reason, any static pages owned by that user can either be deleted as well or they can be assigned to another user in Geeklog's Root group.</p>
 
 <p>In the Configuration admin panel for the static pages plugin, you can set the "<a href="#desc_delete_pages">Delete Pages with Owner?</a>" option to either "False" (which is also the default), meaning that static pages will not be deleted with their owner, but assigned to a member of the Root group instead (the user with the lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
+
+<h2><a name="template">Template Static Pages</a></h2>
+
+<p>As of Geeklog 1.7.1, you now have the ability for a Static Page to use another Static Page as a template. What this allows you to do is create one template page and then have it be used by one or more other Static Pages as a base. This feature is ideal for people who have a number of similar formatted Static Pages. For example if you have a bunch of product pages that need to look the same but they have different titles, product image, and product description. For more information on how to do this and some examples please read the Geeklog Wiki about <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages">Staticpage Templates</a>.</p>
 
 <h2><a name="config.php">Configuration</a></h2>
 
