@@ -1123,7 +1123,7 @@ function plugin_getheadercode_polls()
 
     // You normally only set the css file when needed but with the possibility of
     // the poll block or autotag being displayed after COM_SiteHeader being called
-    // we need to set it just in case
+    // we need to set it just in case (for Geeklog version older than v2.2.0 - currently polls plugin supports 2.1.1)
     $_SCRIPTS->setCSSFile('polls', CTL_plugin_themeFindFile('polls', 'css', 'style.css'));
 }
 
