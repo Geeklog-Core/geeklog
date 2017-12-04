@@ -8191,10 +8191,11 @@ function COM_getLanguageFromURL($url = '')
     global $_CONF;
 
     $retval = '';
-    $langid = COM_getLanguageIdFromURL($url);
-    if (!empty($langid)) {
-        if (is_array($_CONF['language_files']) && array_key_exists($langid, $_CONF['language_files'])) {
-            $retval = $_CONF['language_files'][$langid];
+    $langId = COM_getLanguageIdFromURL($url);
+    if (!empty($langId)) {
+        if (isset($_CONF['language_files']) && is_array($_CONF['language_files']) &&
+            array_key_exists($langId, $_CONF['language_files'])) {
+            $retval = $_CONF['language_files'][$langId];
         }
     }
 
