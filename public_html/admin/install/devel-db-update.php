@@ -88,7 +88,11 @@ function update_DatabaseFor220()
     $_SQL[] = "DROP TABLE {$_TABLES['postmodes']}";
     $_SQL[] = "DROP TABLE {$_TABLES['sortcodes']}";
     $_SQL[] = "DROP TABLE {$_TABLES['statuscodes']}";
-    $_SQL[] = "DROP TABLE {$_TABLES['trackbackcodes']}";    
+    $_SQL[] = "DROP TABLE {$_TABLES['trackbackcodes']}";
+
+    // Add columns to track invalid user login attempts
+    $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `invalidlogins` SMALLINT NOT NULL DEFAULT '0' AFTER `num_reminders`";
+    $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `lastinvalid` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `invalidlogins`";
 
     // Add theme admin
     $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_name='Theme Admin'");

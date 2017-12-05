@@ -1212,6 +1212,32 @@ function PLG_loginUser($uid)
 }
 
 /**
+ * This function will inform all plugins when a user account has reached the Max 
+ * number of invalid login attempts in the specified number of seconds.
+ *
+ * @param    int $uid user id of the user account with the max invalid logins
+ * @return   void
+ */
+function PLG_invalidLoginsUser($uid)
+{
+    global $_PLUGINS, $_CONF;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_user_login_max_invalid_' . $pi_name;
+        if (function_exists($function)) {
+            $function($uid);
+        }
+    }
+
+    if ($_CONF['custom_registration']) {
+        $function = 'CUSTOM_user_login_max_invalid';
+        if (function_exists($function)) {
+            $function($uid);
+        }
+    }
+}
+
+/**
  * This function will inform all plugins when a user logs out.
  * Plugins should not rely on this ever being called, as the user may simply
  * close the browser instead of logging out.

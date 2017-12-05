@@ -21,6 +21,10 @@ $_SQL[] = "DROP TABLE {$_TABLES['sortcodes']}";
 $_SQL[] = "DROP TABLE {$_TABLES['statuscodes']}";
 $_SQL[] = "DROP TABLE {$_TABLES['trackbackcodes']}";
 
+// Add columns to track invalid user login attempts
+$_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `invalidlogins` SMALLINT NOT NULL DEFAULT '0' AFTER `num_reminders`";
+$_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `lastinvalid` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `invalidlogins`";
+
 /**
  * Upgrade Messages
  */
@@ -61,6 +65,10 @@ function update_ConfValuesFor220()
     
     // Enable or disable Resource cache
     $c->add('cache_resource',TRUE,'select',2,10,1,240,TRUE, $me, 10);
+    
+    // Add config options to track invalid user login attempts
+    $c->add('invalidloginattempts',7,'text',4,18,NULL,1710,TRUE, $me, 18);
+    $c->add('invalidloginmaxtime',1200,'text',4,18,NULL,1720,TRUE, $me, 18);
 
     return true;
 }

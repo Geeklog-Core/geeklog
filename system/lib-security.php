@@ -748,7 +748,7 @@ function SEC_authenticate($username, $password, &$uid)
 
     $password = str_replace(array("\015", "\012"), '', $password);
 
-    $result = DB_query("SELECT status, passwd, email, uid FROM {$_TABLES['users']} WHERE username='$username' AND ((remoteservice is null) or (remoteservice = ''))");
+    $result = DB_query("SELECT uid, status, passwd, email, uid, invalidlogins, lastinvalid + {$_CONF['invalidloginmaxtime']} lastinvalidcheck, UNIX_TIMESTAMP() currenttime  FROM {$_TABLES['users']} WHERE username='$username' AND ((remoteservice is null) or (remoteservice = ''))");
     $tmp = DB_error();
     $nrows = DB_numRows($result);
 
@@ -759,8 +759,36 @@ function SEC_authenticate($username, $password, &$uid)
             // banned, jump to here to save an password hash calc.
             return USER_ACCOUNT_DISABLED;
         } elseif (SEC_encryptUserPassword($password, $uid) < 0) {
-        $tmp = $LANG01['error_invalid_password'] . ": '" . $username . "'";
-        COM_accessLog($tmp);            
+            $tmp = $LANG01['error_invalid_password'] . ": '" . $username . "'";
+            COM_accessLog($tmp);            
+            
+            // Check and record invalid user login attempt
+            if ($_CONF['invalidloginattempts'] > 0 AND $_CONF['invalidloginmaxtime'] > 0 ) {
+                // Check to see if time is within max value (need to deal with NULLS)
+                if (!empty($U['lastinvalidcheck']) AND ($U['lastinvalidcheck'] > $U['currenttime'])) {
+                    // Now check if Max login attempts reached for user
+                    if ((($U['invalidlogins'] + 1) >= $_CONF['invalidloginattempts'])) {
+                        // Send an email 
+                        USER_sendInvalidLoginAlert($username, $U['email'], $U['uid']);
+                        
+                        // Notify any plugins
+                        PLG_invalidLoginsUser($U['uid']);
+
+                        // Reset Count
+                        $sql = "UPDATE {$_TABLES['users']} SET invalidlogins = 0, lastinvalid = UNIX_TIMESTAMP() WHERE uid = {$U['uid']}";
+                        DB_query($sql);
+                    } else {
+                        // If not 
+                        $sql = "UPDATE {$_TABLES['users']} SET invalidlogins = invalidlogins + 1 WHERE uid = {$U['uid']}";
+                        DB_query($sql);
+                    }
+                } else {
+                    // Time limit has passed so reset everything
+                    $sql = "UPDATE {$_TABLES['users']} SET invalidlogins = 0, lastinvalid = UNIX_TIMESTAMP() WHERE uid = {$U['uid']}";
+                    DB_query($sql);
+                }
+            }
+            
             return -1; // failed login
         } elseif ($U['status'] == USER_ACCOUNT_AWAITING_APPROVAL) {
             return USER_ACCOUNT_AWAITING_APPROVAL;

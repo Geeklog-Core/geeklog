@@ -1057,6 +1057,22 @@ the admin panel.</p>
     can be made after <code>$_CONF['login_attempts']</code> (see above) login
     attempts have failed.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_invalidloginattempts">invalidloginattempts</a></td>
+  <td valign="top">7</td>
+  <td valign="top">Max. number of invalid login attempts of a user account before an email is sent to the Admin
+   informing them of the situation. This is based on the max time config option below. If this config option is set to 0,
+   then the feature is disabled.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_invalidloginmaxtime">invalidloginmaxtime</a></td>
+  <td valign="top">1200</td>
+  <td valign="top">How many seconds have to pass before an email is sent to the Admin about the max number of
+   invalid login attempts for the user.  If the threshold is reached an email will be sent to the Admin 
+   regarding a possible hack attempt of the account. One thing you need to take into consideration when specifying 
+   this time is the Login Speed Limit config option. With the current default setting for Login Speed Limit and 
+   Invalid Login Attempts, the Login Speed Limit can be triggered twice before the Invalid Login can get triggered. 
+   If the Login Speed Limit is set to high then it is possible that Invalid Login Attempts may never get triggered. 
+   If this config option is set to 0, then the feature is disabled.</td></tr>
+<tr>
   <td valign="top"><a name="desc_pass_alg">pass_alg</a></td>
   <td valign="top">sha1</td>
   <td valign="top">Hash algorithm used to generate password hashes. Options

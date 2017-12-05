@@ -494,6 +494,8 @@ CREATE TABLE {$_TABLES['users']} (
   pwrequestid varchar(16) default NULL,
   status smallint NOT NULL default '1',
   num_reminders smallint NOT NULL default 0,
+  invalidlogins SMALLINT NOT NULL DEFAULT '0', 
+  lastinvalid int(10) unsigned default NULL, 
   PRIMARY KEY (uid)
 );
   CREATE INDEX {$_TABLES['users']}_LOGIN ON {$_TABLES['users']}(uid,passwd,username);

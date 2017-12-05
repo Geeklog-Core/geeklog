@@ -369,6 +369,37 @@ function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
 }
 
 /**
+ * Send an email notification when invalid logins max is reached.
+ *
+ * @param  string $userName Username of the new user
+ * @param  string $email    Email address of the new user
+ * @param  int    $uid      User id of the new user
+ * @param  string $mode     Mode user was added at.
+ * @return boolean             true = success, false = an error occurred
+ */
+function USER_sendInvalidLoginAlert($userName, $email, $uid, $mode = 'inactive')
+{
+    global $_CONF, $LANG01, $LANG04, $LANG08, $LANG28, $LANG29;
+    
+    $remoteAddress = $_SERVER['REMOTE_ADDR'];
+
+    $mailBody = "$LANG04[2]: $userName\n"
+        . "$LANG04[5]: $email\n";
+        
+    $mailBody .= sprintf($LANG29['max_invalid_login_msg'] . "\n\n", $remoteAddress);        
+
+    $mailBody .= "{$LANG29[4]} <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\n\n";
+
+    $mailBody .= "\n------------------------------\n";
+    $mailBody .= "\n{$LANG08[34]}\n";
+    $mailBody .= "\n------------------------------\n";
+
+    $mailSubject = $_CONF['site_name'] . ' ' . $LANG29['max_invalid_login'];
+
+    return COM_mail($_CONF['site_mail'], $mailSubject, $mailBody);
+}
+
+/**
  * Get a user's photo, either uploaded or from an external service
  * NOTE:     All parameters are optional and can be passed as 0 / empty string.
  *

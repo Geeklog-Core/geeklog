@@ -358,6 +358,8 @@ $_CONF_VALIDATE['Core']['directoryloginrequired'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['passwordspeedlimit'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['login_attempts'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['login_speedlimit'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['invalidloginattempts'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['invalidloginmaxtime'] = array('rule' => 'numeric');
 
 /* Subgroup User and Submissions, Tab Login Settings, Fieldset Password */
 $_CONF_VALIDATE['Core']['pass_alg'] = array(
