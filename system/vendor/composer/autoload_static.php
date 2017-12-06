@@ -16,12 +16,20 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         array (
             'splitbrain\\PHPArchive\\' => 22,
         ),
+        'R' => 
+        array (
+            'RobThree\\Auth\\' => 14,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'splitbrain\\PHPArchive\\' => 
         array (
             0 => __DIR__ . '/..' . '/splitbrain/php-archive/src',
+        ),
+        'RobThree\\Auth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/robthree/twofactorauth/lib',
         ),
     );
 

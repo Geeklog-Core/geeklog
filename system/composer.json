@@ -9,7 +9,8 @@
     "splitbrain/php-archive": "~1.0",
     "htmlawed/htmlawed": "~1.0",
     "swiftmailer/swiftmailer": "~5",
-    "phpclasses/oauth-api": ">=1.0.103"
+    "phpclasses/oauth-api": ">=1.0.103",
+    "robthree/twofactorauth": "^1.6"
   },
   "repositories": [
     {
@@ -19,5 +20,5 @@
     {
       "packagist": false
     }
-  ]
+  ]  
 }

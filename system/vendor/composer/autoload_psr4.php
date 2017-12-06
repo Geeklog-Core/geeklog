@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'splitbrain\\PHPArchive\\' => array($vendorDir . '/splitbrain/php-archive/src'),
+    'RobThree\\Auth\\' => array($vendorDir . '/robthree/twofactorauth/lib'),
 );
