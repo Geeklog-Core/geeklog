@@ -6737,6 +6737,8 @@ function _getLanguageFromURL()
             // Since COM_getLanguage is called right at the beginning of lib-common we don't have the option of setting the $_URL language before hand
             // so we must make our best guess based on the type of URL (normal, rewritten, routing)
             
+            // Another problem is we don't try to figure out if the item supports multiple language (article, topic, staticpage, other plugin)
+            
              $url = COM_getCurrentURL();
 
             if ($_CONF['url_rewrite']) {
@@ -6780,7 +6782,7 @@ function _getLanguageFromURL()
         } else {
             // This is used mainly by the switch language block (after the visitor has been on the site already)
             // The item also had a chance to update $_URL with the correct language since if this code is executed it has most likely been called after lib-common has been loaded
-            $langId = $_URL->getLanguage(); // If empty no language is assumed
+            $langId = $_URL->getLanguage(); // If empty no language is assumed or item does not support multi-language
         }
         if (!empty($langId)) {
             if (isset($_CONF['language_files']) && is_array($_CONF['language_files']) &&
