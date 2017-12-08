@@ -55,6 +55,16 @@ $page = COM_applyFilter(COM_getArgument('page'));
 $display_mode = COM_applyFilter(COM_getArgument('disp_mode'));
 $query = Geeklog\Input::fRequest('query', '');
 
+// If user is allowed to switch languages
+if ($_CONF['allow_user_language'] == 1) {
+    // Let's figure out if page is for specific language
+    // If so let URL class know in case user changes language
+    $page_lang = COM_getLanguageIdForObject($page);
+    if (!empty($page) AND !empty($page_lang)) {
+        $_URL->setItemInfo($page, $page_lang);
+    }
+}
+
 TOPIC_getTopic('staticpages', $page);
 
 // from comments display refresh:
