@@ -1817,3 +1817,140 @@ function plugin_user_changed_topic($uid)
     $cacheInstance = 'topic_tree__' . CACHE_security_hash();
     CACHE_remove_instance($cacheInstance);
 }
+
+/**
+ * Return information for a topic
+ *
+ * @param    string $tid   Topic ID or '*'
+ * @param    string $what    comma-separated list of properties
+ * @param    int    $uid     user ID or 0 = current user
+ * @param    array  $options (reserved for future extensions)
+ * @return   mixed               string or array of strings with the information
+ */
+function plugin_getiteminfo_topic($tid, $what, $uid = 0, $options = array())
+{
+    global $_CONF, $_TABLES;
+
+    // parse $what to see what we need to pull from the database
+    $properties = explode(',', $what);
+    $fields = array();
+    foreach ($properties as $p) {
+        switch ($p) {
+            case 'description':
+            case 'excerpt':
+                $fields[] = 'meta_description';
+                $fields[] = 'sp_php';
+                break;
+
+            case 'id':
+                $fields[] = 'tid';
+                break;
+
+            case 'page_title':
+            case 'title':
+                $fields[] = 'topic';
+                break;
+
+            case 'url':
+                // needed for $tid == '*', but also in case we're only requesting
+                // the URL (so that $fields isn't empty)
+                $fields[] = 'id';
+                break;
+
+            default:
+                // nothing to do
+                break;
+        }
+    }
+
+    $fields = array_unique($fields);
+
+    if (count($fields) == 0) {
+        $retval = array();
+
+        return $retval;
+    }
+
+    // prepare SQL request
+    $where = ' WHERE 1 ';
+    if ($tid != '*') {
+        $where .= " AND (tid = '" . DB_escapeString($tid) . "')";
+    }
+    if ($uid > 0) {
+        $permSql = COM_getPermSQL('AND', $uid);
+    } else {
+        $permSql = COM_getPermSQL('AND');
+    }
+    $sql = "SELECT " . implode(',', $fields)
+        . " FROM {$_TABLES['topics']}" . $where . $permSql;
+    if ($tid != '*') {
+        $sql .= ' LIMIT 1';
+    }
+
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+
+    $retval = array();
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+
+        $props = array();
+        foreach ($properties as $p) {
+            switch ($p) {
+                case 'description':
+                case 'excerpt':
+                    $props[$p] = stripslashes($retval['meta_description']);
+                    break;
+
+                case 'id':
+                    $props['id'] = $A['tid'];
+                    break;
+
+                case 'page_title':
+                case 'title':
+                    $props[$p] = stripslashes($A['topic']);
+                    break;
+
+                case 'url':
+                    if (empty($A['tid'])) {
+                        $props['url'] = COM_buildURL($_CONF['site_url']
+                            . '/index.php?topic=' . $tid);
+                    } else {
+                        $props['url'] = COM_buildURL($_CONF['site_url']
+                            . '/index.php?topic=' . $A['tid']);
+                    }
+                    break;
+
+                default:
+                    // return empty string for unknown properties
+                    $props[$p] = '';
+                    break;
+            }
+        }
+
+        $mapped = array();
+        foreach ($props as $key => $value) {
+            if ($tid == '*') {
+                if ($value != '') {
+                    $mapped[$key] = $value;
+                }
+            } else {
+                $mapped[] = $value;
+            }
+        }
+
+        if ($tid == '*') {
+            $retval[] = $mapped;
+        } else {
+            $retval = $mapped;
+            break;
+        }
+    }
+
+    if (($tid != '*') && (count($retval) == 1)) {
+        $retval = $retval[0];
+    }
+
+    return $retval;
+}
+

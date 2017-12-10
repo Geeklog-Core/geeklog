@@ -2747,6 +2747,40 @@ function PLG_getIcon($type)
 }
 
 /**
+ * Asks plugins to return what the url parts are for any that support mutli language items
+ *
+ * @return   array      Array of array of url parts needed to determine if a url has an item id in it that contains a language id
+ *                      URL parts of array include: plugin name, directory, filename, id
+ */
+function PLG_getLanguageURL()
+{
+    global $_CONF, $_PLUGINS;
+    
+    // Don't use a plugin function or plugin config for this as plugins functions.inc is not loaded yet when COM_getLanguage is called in lib-common
+    // Instead grab from a hidden Core conf_values (which are loaded)
+    // See _getLanguageInfoFromURL in lib-common for a detailed explanation
+      
+    $retval = array();
+
+    // Add article and topic to enabled plugins
+    $pluginTypes = array_merge(array('article', 'topic'), $_PLUGINS);
+
+    foreach ($pluginTypes as $pi_name) {
+        $array_key = 'langurl_' . $pi_name;
+        if (array_key_exists($array_key, $_CONF)) {
+            if (is_array($_CONF[$array_key]) && (count($_CONF[$array_key]) > 0)) {
+                $langurl = $_CONF[$array_key];
+                array_unshift($langurl, $pi_name);
+                $retval[] = $langurl;
+            }
+        }
+    }
+    
+    return $retval;
+}
+
+
+/**
  * Invoke a service
  *
  * @param   string $type     The plugin type whose service is to be called

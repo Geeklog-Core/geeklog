@@ -111,17 +111,6 @@ if (empty($sid)) {
     COM_handle404();
 }
 
-// If user is allowed to switch languages
-if ($_CONF['allow_user_language'] == 1) {
-    // Let's figure out if page is for specific language
-    // If so let URL class know in case user changes language
-    $article_lang = COM_getLanguageIdForObject($sid);
-    if (!empty($sid) AND !empty($article_lang)) {
-        $_URL->setItemInfo($sid, $article_lang);
-    }
-}
-
-
 // Get topic
 TOPIC_getTopic('article', $sid);
 

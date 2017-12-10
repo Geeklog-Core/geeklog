@@ -61,23 +61,6 @@ class Url
      * @var int
      */
     private $urlRouting;
-    
-
-    /**
-     * @var bool
-     */
-    private $itemSet = false;    
-    
-    /**
-     * @var string
-     */
-    private $itemId;
-    
-    /**
-     * @var string
-     */
-    private $itemLanguage;
-    
 
     /**
      * Constructor
@@ -255,51 +238,6 @@ class Url
             $this->arguments = array();
         }
     }
-    
-    /**
-     * Set Required Item info of url for multi-language support
-     * This only needs to be set for urls that point to an item that has an alternate language item
-     *
-     * @param  string $id       Id of item in url if exists
-     * @param  string $lang     Language of item in url if exists
-     */
-    public function setItemInfo($id, $lang)
-    {
-        $this->itemId = $id;
-        $this->itemLanguage = $lang;
-        $this->itemSet = true;
-    }
-    
-    /**
-     * Return language of item in url 
-     *
-     * @return string      language of url if exists
-     */
-    public function getLanguage()
-    {
-        return $this->itemLanguage;
-    }     
-
-    /**
-     * Return if Item has been set or not so we can deal with language issues
-     * if a specific language page is visited
-     *
-     * @return bool      if item information (id and lang) has already been set
-     */
-    public function ItemSet()
-    {
-        return $this->itemSet;
-    }  
-    
-    /**
-     * Return id of item in url. This way we don't have to find it
-     *
-     * @return string      id of url if exists
-     */
-    public function getId()
-    {
-        return $this->itemId;
-    }     
 
     /**
      * Return if URL rewrite feature is enabled
