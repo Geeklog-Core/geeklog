@@ -6682,7 +6682,7 @@ function COM_getLanguage()
 
     // 1. Try to get language from URL
     // $langFile = COM_getLanguageFromBrowser(); - Removed line as it doesn't work with the switch language block (that uses phpblock_switch_language) for some setups when a language cookie is set, need to check that first. 
-    $langFile = COM_getLanguageFromURL();
+    $langFile = _getLanguageFromURL();
 
     if (empty($langFile)) {
         if (!empty($_USER['language'])) {
@@ -6708,6 +6708,91 @@ function COM_getLanguage()
     $langFile = $_CONF['language'];
 
     return $langFile;
+}
+
+/**
+ * Get language name from current URL 
+ * Note: This function starts with _ therefore it should only call from within core
+ * 
+ *
+ * @return string       e.g., 'english', 'japanese', ...
+ * @note   code provided by hiroron
+ */
+function _getLanguageFromURL()
+{
+    global $_CONF, $_URL;
+
+    $retval = '';
+    
+    // If user is allowed to switch languages
+    if ($_CONF['allow_user_language'] == 1) {
+        $langId = '';
+        // Need to see if language is set for url
+        if (!$_URL->itemSet()) {
+            // THERE ARE ISSUES with this and figuring out the language from the URL may be incorrect if for example "_en" is found elsewhere in the url (see https://github.com/Geeklog-Core/geeklog/issues/819)
+            // This is used if the anonymous user visits the page directly to figure out what language to display the site in.
+            // If the user is logged in or has a language cookie already set (by the switch language block) from before then that language is taken (done at the beginning of lib-common)
+            
+            // We need to figure out if there is a specific language specified in the url
+            // Since COM_getLanguage is called right at the beginning of lib-common we don't have the option of setting the $_URL language before hand
+            // so we must make our best guess based on the type of URL (normal, rewritten, routing)
+            
+            // Another problem is we don't try to figure out if the item supports multiple language (article, topic, staticpage, other plugin)
+            
+             $url = COM_getCurrentURL();
+
+            if ($_CONF['url_rewrite']) {
+                if ($_CONF['url_routing']) {
+                    // url_routing = 1 - enabled with index.php
+                    // url_routing = 2 - enabled without index.php
+                    
+                    
+                    
+                    
+                    
+                } else {
+                    // for "rewritten" URLs we assume that the first parameter after
+                    // [NG]the script name is the ID, e.g. /article.php/story-id-here_en
+                    // 2017 fix hiroron /index.php/topic/home_ja or /index.php?topic=home_ja
+                    $p = explode('/', $url);
+                    $parts = count($p);
+                    for ($i = 0; $i < $parts; $i++) {
+                        if (strrpos($p[$i], '.php') !== false) {
+                            for ($j = $i; $j < $parts; $j++) {
+                                if (isset($p[$j])) {
+                                    $l = strrpos($p[$j], '_');
+                                    if ($l !== false) {
+                                        $langId = substr($p[$j], $l + 1);
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            } else { // URL contains '?' or '&'
+                $url = explode('&', $url);
+                $urlpart = $url[0];
+                $l = strrpos($urlpart, '_');
+                if ($l !== false) {
+                    $langId = substr($urlpart, $l + 1);
+                }
+            }            
+        } else {
+            // This is used mainly by the switch language block (after the visitor has been on the site already)
+            // The item also had a chance to update $_URL with the correct language since if this code is executed it has most likely been called after lib-common has been loaded
+            $langId = $_URL->getLanguage(); // If empty no language is assumed or item does not support multi-language
+        }
+        if (!empty($langId)) {
+            if (isset($_CONF['language_files']) && is_array($_CONF['language_files']) &&
+                array_key_exists($langId, $_CONF['language_files'])) {
+                $retval = $_CONF['language_files'][$langId];
+            }
+        }        
+    }
+
+    return $retval;
 }
 
 /**
@@ -6821,11 +6906,11 @@ function COM_getLangSQL($field, $type = 'WHERE', $table = '')
  */
 function phpblock_switch_language()
 {
-    global $_CONF;
+    global $_CONF, $_URL;
 
     $retval = '';
 
-    if (empty($_CONF['languages']) || empty($_CONF['language_files']) ||
+    if ($_CONF['allow_user_language'] == 0 || empty($_CONF['languages']) || empty($_CONF['language_files']) ||
         (count($_CONF['languages']) !== count($_CONF['language_files']))
     ) {
         return $retval;
@@ -6835,6 +6920,8 @@ function phpblock_switch_language()
     $langId = COM_getLanguageId($lang);
     $newLang = '';
     $newLangId = '';
+    // Figure out if we need to include language
+    $itemId = $_URL->getId();
 
     if (count($_CONF['languages']) === 2) {
         foreach ($_CONF['languages'] as $key => $value) {
@@ -6845,7 +6932,7 @@ function phpblock_switch_language()
             }
         }
 
-        $switchUrl = COM_buildURL($_CONF['site_url'] . '/switchlang.php?lang=' . $newLangId);
+        $switchUrl = COM_buildURL($_CONF['site_url'] . '/switchlang.php?lang=' . $newLangId . '&itemid' . $itemId);
         $retval .= COM_createLink($newLang, $switchUrl);
     } else {
         $retval .= '<form name="change" action="' . $_CONF['site_url']
@@ -6853,6 +6940,8 @@ function phpblock_switch_language()
         $retval .= '<div>' . LB;
         $retval .= '<input type="hidden" name="oldlang" value="' . $langId
             . '"' . XHTML . '>' . LB;
+        $retval .= '<input type="hidden" name="itemid" value="' . $itemId
+            . '"' . XHTML . '>' . LB;            
 
         $retval .= '<select onchange="change.submit()" name="lang">';
         foreach ($_CONF['languages'] as $key => $value) {
@@ -8128,76 +8217,6 @@ function COM_getDocumentUrl($baseDirectory, $fileName)
 
     $retval = str_replace($_CONF['path_html'], $_CONF['site_url'] . '/', $path);
     $retval = str_replace('\\', '/', $retval);
-
-    return $retval;
-}
-
-/**
- * Get language ID from a URL
- *
- * @param  string $url
- * @return string       e.g., 'en', 'ja', ...
- * @note   code provided by hiroron
- */
-function COM_getLanguageIdFromURL($url = '')
-{
-    global $_CONF;
-
-    if (empty($url)) {
-        $url = COM_getCurrentURL();
-    }
-    $retval = '';
-    if ($_CONF['url_rewrite']) {
-        // for "rewritten" URLs we assume that the first parameter after
-        // [NG]the script name is the ID, e.g. /article.php/story-id-here_en
-        // 2017 fix hiroron /index.php/topic/home_ja or /index.php?topic=home_ja
-        $p = explode('/', $url);
-        $parts = count($p);
-        for ($i = 0; $i < $parts; $i++) {
-            if (strrpos($p[$i], '.php') !== false) {
-                for ($j = $i; $j < $parts; $j++) {
-                    if (isset($p[$j])) {
-                        $l = strrpos($p[$j], '_');
-                        if ($l !== false) {
-                            $retval = substr($p[$j], $l + 1);
-                            break;
-                        }
-                    }
-                }
-                break;
-            }
-        }
-    } else { // URL contains '?' or '&'
-        $url = explode('&', $url);
-        $urlpart = $url[0];
-        $l = strrpos($urlpart, '_');
-        if ($l !== false) {
-            $retval = substr($urlpart, $l + 1);
-        }
-    }
-
-    return $retval;
-}
-
-/**
- * Get language name from a URL
- *
- * @param  string $url
- * @return string       e.g., 'english', 'japanese', ...
- * @note   code provided by hiroron
- */
-function COM_getLanguageFromURL($url = '')
-{
-    global $_CONF;
-
-    $retval = '';
-    $langId = COM_getLanguageIdFromURL($url);
-    if (!empty($langId)) {
-        if (isset($_CONF['language_files']) && is_array($_CONF['language_files']) &&
-            array_key_exists($langId, $_CONF['language_files'])) {
-            $retval = $_CONF['language_files'][$langId];
-        }
-    }
 
     return $retval;
 }

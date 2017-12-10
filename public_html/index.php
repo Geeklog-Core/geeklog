@@ -118,6 +118,16 @@ if ($_CONF['url_rewrite']) {
     $page = (int) Geeklog\Input::get('page', 0);
 }
 
+// If user is allowed to switch languages
+if ($_CONF['allow_user_language'] == 1) {
+    // Let's figure out if topic is for specific language
+    // If so let URL class know in case user changes language
+    $topic_lang = COM_getLanguageIdForObject($topic);
+    if (!empty($topic) AND !empty($topic_lang)) {
+        $_URL->setItemInfo($topic, $topic_lang);
+    }
+}
+
 if ($topic_check === '-') {
     $topic_check = '';
 }
