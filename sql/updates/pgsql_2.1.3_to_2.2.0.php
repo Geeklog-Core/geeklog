@@ -69,6 +69,11 @@ function update_ConfValuesFor220()
     // Add config options to track invalid user login attempts
     $c->add('invalidloginattempts',7,'text',4,18,NULL,1710,TRUE, $me, 18);
     $c->add('invalidloginmaxtime',1200,'text',4,18,NULL,1720,TRUE, $me, 18);
+    
+    // Hidden config option for Core used to determine language of topic url (see _getLanguageInfoFromURL in lib-common)
+    $c->add('langurl_topic',array('', 'index.php', 'topic'),'@hidden',7,31,1,1830,TRUE, $me, 31); 
+    // Hidden config option for Core used to determine language of article url (see _getLanguageInfoFromURL in lib-common)
+    $c->add('langurl_article',array('', 'article.php', 'story'),'@hidden',7,31,1,1830,TRUE, $me, 31);     
 
     return true;
 }

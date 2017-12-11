@@ -89,3 +89,19 @@ function SP_update_ConfValues_1_6_5()
 
     return true;
 }
+
+function SP_update_ConfValues_1_7_0()
+{
+    global $_CONF, $_TABLES, $_SP_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
+
+    // Hidden config option for Core used to determine language of staticpage url (see _getLanguageInfoFromURL in lib-common)
+    $c->add('langurl_staticpages',array('staticpages', 'index.php', 'page'),'@hidden',7,31,1,1830,TRUE, 'Core', 31); 
+
+    return true;
+}
