@@ -2750,7 +2750,7 @@ function PLG_getIcon($type)
  * Asks plugins to return what the url parts are for any that support mutli language items
  *
  * @return   array      Array of array of url parts needed to determine if a url has an item id in it that contains a language id
- *                      URL parts of array include: plugin name, directory, filename, id
+ *                      URL parts of array include: plugin name, directory, filename, item id url variable name
  */
 function PLG_getLanguageURL()
 {
