@@ -434,6 +434,16 @@ $LANG04 = array(
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Would you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?",
     'user_max_login_attempts' => 'Max Login Attempts and Speed Limit Reached',
+    'tfa_two_factor_auth' => 'Two Factor Authentication',
+    'tfa_enter_code' => 'Enter the %d-digit code your Google Authenticator app is showing',
+    'tfa_code' => 'Google Authenticator Code',
+    'tfa_show_qrcode' => 'Show QR code',
+    'tfa_hide_qrcode' => 'Hide QR code',
+    'tfa_do_not_require_tfa_again' => 'Don\'t require Two Factor Authentication again on this device',
+    'tfa_backup_code' => 'Backup Codes',
+    'tfa_backup_code_desc' => 'Please print or download the codes below in case you cannot use your mobile device you installed the Google Authenticator.  Each code is valid only one-time.  If you generate a new set of codes, then the current set will be invalid.',
+    'tfa_download' => 'Download Backup Codes',
+    'tfa_new_backup_code' => 'Generate a new set of backup codes'
 );
 
 ###############################################################################
@@ -2272,6 +2282,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => "Login Speed Limit",
     'invalidloginattempts' => "Max. Invalid Login Attempts",
     'invalidloginmaxtime' => "Invalid Login Max Time",
+    'enable_twofactorauth' => 'Enable Two Factor Authentication?',
     'pass_alg' => 'Password Hash Algorithm',
     'pass_stretch' => 'Hash Stretch Count',
     'user_html' => "User HTML",

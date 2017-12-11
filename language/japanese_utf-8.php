@@ -441,7 +441,17 @@ $LANG04 = array(
     'user_login' => 'ユーザーログイン',
     'user_login_message' => 'ログインしてください。ユーザー名とパスワードの両方を入力してください。',
     'user_logged_in_message' => "すでにログインしています。<a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">ログアウト</a>しますか?",
-    'user_max_login_attempts' => 'ログインの試行回数の上限を超えました、'
+    'user_max_login_attempts' => 'ログインの試行回数の上限を超えました、',
+    'tfa_two_factor_auth' => '2段階認証',
+    'tfa_enter_code' => 'Google認証システムに表示されている%d桁の数字を入力してください',
+    'tfa_code' => '認証コード',
+    'tfa_show_qrcode' => 'QRコードを表示',
+    'tfa_hide_qrcode' => 'QRコードを隠す',
+    'tfa_do_not_require_tfa_again' => 'このデバイスでは今後2段階認証を要求しない',
+    'tfa_backup_code' => 'バックアップコード',
+    'tfa_backup_code_desc' => 'Google認証システムをインストールしたデバイスを使えない場合に備えて、下記のコードを印刷するかダウンロードしてください。各コードは1回だけ有効です。新しいコードを生成すると、現在のコードは無効になります。',
+    'tfa_download' => 'バックアップコードをダウンロード',
+    'tfa_new_backup_code' => 'バックアップコードを再作成'
 );
 
 ###############################################################################
@@ -2279,6 +2289,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => 'ログイン試行制限間隔',
     'invalidloginattempts' => "Max. Invalid Login Attempts",
     'invalidloginmaxtime' => "Invalid Login Max Time",
+    'enable_twofactorauth' => '2段階認証を有効にする',
     'pass_alg' => 'パスワードのハッシュアルゴリズム',
     'pass_stretch' => 'ハッシュストレッチカウント',
     'user_html' => 'ユーザーHTML',
