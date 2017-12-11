@@ -1839,7 +1839,6 @@ function plugin_getiteminfo_topic($tid, $what, $uid = 0, $options = array())
             case 'description':
             case 'excerpt':
                 $fields[] = 'meta_description';
-                $fields[] = 'sp_php';
                 break;
 
             case 'id':
