@@ -1597,6 +1597,8 @@ function plugin_upgrade_staticpages()
                         DB_query($sql);
                     }
                 }
+                
+                SP_update_ConfValues_1_7_0();
 
                 $current_version = '1.7.0';
                 break;
