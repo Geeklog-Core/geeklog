@@ -42,21 +42,34 @@ require_once 'lib-common.php';
 * @param    string  $oldLang    old, i.e. current language
 * @return   string              new URL after the language switch
 */
-function switch_language($url, $newLang, $oldLang, $itemId)
+function switch_language($url, $newLang, $oldLang, $itemId, $itemType)
 {
     global $_CONF, $_URL;
-
+    
     // See if we need to figure out new URL (ie is url language specific and are any variables missing)
-    if (empty($itemId) || empty($newLang) || empty($oldLang) || (strlen($newLang) !== strlen($oldLang))) {
+    if (empty($itemType) || empty($itemId) || empty($newLang) || empty($oldLang) || (strlen($newLang) !== strlen($oldLang))) {
         return $url;
     }
     
+    $retval = "";
+    
     // Technically we don't care about if normal url, rewrite url, or routed url as id will be the same
-    // Still not 100% perfect search solution as other variables in string may have the exact same id (though highely unlikely)
+    // Still not 100% perfect search solution as other variables in string may have the exact same id (though highly unlikely)
     $pos = strrpos($itemId, "_");
     if ($pos) {
         $newItemId = substr($itemId, 0, $pos) . '_' . $newLang;
-        $retval = str_replace($itemId, $newItemId, $url);
+        
+        if ($_CONF['switchlang_homepage']) {
+            // Figure out if new item exists or user has access
+            $newItemId = PLG_getItemInfo($itemType, $newItemId, 'id'); // if it does the id will be returned
+        }
+        
+        if (!(empty($newItemId))) {
+            $retval = str_replace($itemId, $newItemId, $url);
+        } else {
+            // Doesn't exist so homepage
+            $retval = $_CONF['site_url'] . '/';
+        }
     } else {
         // Something went wrong so just return original url
         $retval = $url;
@@ -80,6 +93,7 @@ if ($_CONF['allow_user_language'] == 1) {
     $lang = preg_replace('/[^a-z0-9\-_]/', '', $lang);
     $oldLang = COM_getLanguageId();
     $itemId = Geeklog\Input::fRequest('itemid', '');
+    $itemType = Geeklog\Input::fRequest('itemtype', '');
     
     // do we really have a new language to switch to?
     if (!empty($lang) && array_key_exists($lang, $_CONF['language_files'])) {
@@ -104,7 +118,7 @@ if ($_CONF['allow_user_language'] == 1) {
 
     // Change the language ID if needed
     if (!empty($ret_url) && !empty($lang) && !empty($oldLang)) {
-        $ret_url = switch_language($ret_url, $lang, $oldLang, $itemId);
+        $ret_url = switch_language($ret_url, $lang, $oldLang, $itemId, $itemType);
     }
 }
 
@@ -112,16 +126,5 @@ if ($_CONF['allow_user_language'] == 1) {
 if (empty($ret_url)) {
     $ret_url = $_CONF['site_url'] . '/';
 }
-
-// **** ISSUE with switchlang
-// Article, Topics, and Staticpages (and maybe other third party plugins) support multiple languages
-// If a page is already in a specific language there may not be a page for it in the new language being switched too or the user could not have access to it
-// The problem is there currently is no easy way (with regular and rewritten urls) to determine if the last thing accessed was (article, topic, some plugin, admin page, whatever) or the id of it if there was one
-// If there was, then we could maybe use PLG_getItemInfo (which may need modifying to work with topics) to figure out access
-// Current fix is a setting in the config which allows the admin to have the switch language block to always redirect to the homepage
-if ($_CONF['switchlang_homepage']) {
-    $ret_url = $_CONF['site_url'] . '/';
-}
-
 
 header("Location: $ret_url");

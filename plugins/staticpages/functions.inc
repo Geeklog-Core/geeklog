@@ -1646,6 +1646,11 @@ function plugin_migrate_staticpages($old_conf)
  */
 function plugin_autouninstall_staticpages()
 {
+    
+    // Delete multi-language support Core Config option for Staticpage Plugin
+    $c = config::get_instance();
+    $c->del('langurl_staticpages', 'Core');
+    
     $out = array(
         /* give the name of the tables, without $_TABLES[] */
         'tables'     => array('staticpage'),

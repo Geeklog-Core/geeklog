@@ -416,6 +416,8 @@ function install_config()
     $c->add('page_navigation_max_pages',7,'text',7,31,NULL,1800,TRUE, $me, 31);
     $c->add('default_cache_time_block',0,'text',7,31,NULL,1810,TRUE, $me, 31);
     $c->add('titletoid',0,'select',7,31,1,1820,TRUE, $me, 31);
+    $c->add('langurl_topic',array('', 'index.php', 'topic'),'@hidden',7,31,1,1830,TRUE, $me, 31); // Hidden config option for Core used to determine language of topic url (see _getLanguageInfoFromURL in lib-common)
+    $c->add('langurl_article',array('', 'article.php', 'story'),'@hidden',7,31,1,1830,TRUE, $me, 31); // Hidden config option for Core used to determine language of article url (see _getLanguageInfoFromURL in lib-common)
 
     $c->add('tab_debug', NULL, 'tab', 7, 32, NULL, 0, TRUE, $me, 32);
     $c->add('fs_debug', NULL, 'fieldset', 7, 32, NULL, 0, TRUE, $me, 32);
