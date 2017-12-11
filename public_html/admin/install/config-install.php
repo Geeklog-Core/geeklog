@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | config-install.php                                                        |
 // |                                                                           |
@@ -275,7 +275,8 @@ function install_config()
     $c->add('login_speedlimit',300,'text',4,18,NULL,1700,TRUE, $me, 18);
     $c->add('invalidloginattempts',7,'text',4,18,NULL,1710,TRUE, $me, 18);
     $c->add('invalidloginmaxtime',1200,'text',4,18,NULL,1720,TRUE, $me, 18);
-    
+    $c->add('enable_twofactorauth',0,'select',4,18,NULL,1730,TRUE, $me, 18);
+
     // password options
     $c->add('fs_pass', NULL, 'fieldset', 4, 42, NULL, 0, TRUE, $me, 18);
     $c->add('pass_alg', 1, 'select', 4, 42, 29, 800, TRUE, $me, 18);

@@ -51,6 +51,7 @@ global $_CONF, $_DB, $_TABLES, $_DB_dbms, $_DB_host, $_DB_name, $_DB_user, $_DB_
 
 $_TABLES['access'] = $_DB_table_prefix . 'access';
 $_TABLES['article_images'] = $_DB_table_prefix . 'article_images';
+$_TABLES['backup_codes'] = $_DB_table_prefix . 'backup_codes';
 $_TABLES['blocks'] = $_DB_table_prefix . 'blocks';
 $_TABLES['commentedits'] = $_DB_table_prefix . 'commentedits';
 $_TABLES['commentnotifications'] = $_DB_table_prefix . 'commentnotifications';

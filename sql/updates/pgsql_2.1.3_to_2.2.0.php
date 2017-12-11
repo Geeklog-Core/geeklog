@@ -25,6 +25,20 @@ $_SQL[] = "DROP TABLE {$_TABLES['trackbackcodes']}";
 $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `invalidlogins` SMALLINT NOT NULL DEFAULT '0' AFTER `num_reminders`";
 $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `lastinvalid` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `invalidlogins`";
 
+// Add columns for two factor authentication
+$_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `twofactorauth_enabled` SMALLINT NOT NULL DEFAULT 0 AFTER `lastinvalid`";
+$_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `twofactorauth_secret` VARCHAR(255) NOT NULL DEFAULT '' AFTER `twofactorauth_enabled`";
+
+// Add a table to store backup codes for two factor authentication
+$_SQL[] = "
+CREATE TABLE {$_TABLES['backup_codes']} (
+  code VARCHAR(16) NOT NULL UNIQUE,
+  uid INT NOT NULL DEFAULT 0,
+  is_used SMALLINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (code)
+)
+";
+
 /**
  * Upgrade Messages
  */
@@ -74,6 +88,9 @@ function update_ConfValuesFor220()
     $c->add('langurl_topic',array('', 'index.php', 'topic'),'@hidden',7,31,1,1830,TRUE, $me, 31); 
     // Hidden config option for Core used to determine language of article url (see _getLanguageInfoFromURL in lib-common)
     $c->add('langurl_article',array('', 'article.php', 'story'),'@hidden',7,31,1,1830,TRUE, $me, 31);     
+
+    // Add a config option to decide whether to globally allow two factor auth
+    $c->add('enable_twofactorauth',0,'select',4,18,NULL,1730,TRUE, $me, 18);
 
     return true;
 }

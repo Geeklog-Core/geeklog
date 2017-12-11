@@ -496,6 +496,8 @@ CREATE TABLE {$_TABLES['users']} (
   num_reminders smallint NOT NULL default 0,
   invalidlogins SMALLINT NOT NULL DEFAULT '0', 
   lastinvalid int(10) unsigned default NULL, 
+  twofactorauth_enabled SMALLINT NOT NULL DEFAULT 0,
+  twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (uid)
 );
   CREATE INDEX {$_TABLES['users']}_LOGIN ON {$_TABLES['users']}(uid,passwd,username);
@@ -511,6 +513,15 @@ CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
   value TEXT default NULL,
   PRIMARY KEY (name)
+)
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['backup_codes']} (
+  code VARCHAR(16) NOT NULL UNIQUE,
+  uid INT NOT NULL DEFAULT 0,
+  is_used SMALLINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (code)
 )
 ";
 
