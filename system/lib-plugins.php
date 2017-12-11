@@ -1486,7 +1486,7 @@ function PLG_templateSetVars($templateName, $template)
 }
 
 /**
- * This function is called from COM_siteHeader and will return additional header
+ * This function is called from COM_createHTMLDocument and will return additional header
  * information. This can be used for JavaScript functions required for the plugin
  * or extra Metatags
  *
@@ -1515,7 +1515,7 @@ function PLG_getHeaderCode()
 }
 
 /**
- * This function is called from COM_siteFooter and will return additional footer
+ * This function is called from COM_createHTMLDocument and will return additional footer
  * information. This can be used for JavaScript functions required for the plugin
  *
  * @return   string      returns a concatenated string of all plugins extra footer code
@@ -3416,7 +3416,7 @@ function PLG_getParams($pi_name)
 }
 
 /**
- * This function is called from COM_siteHeader and other places where meta tags
+ * This function is called from COM_createHTMLDocument and other places where meta tags
  * are being built and will return additional meta tags.
  *
  * @param    string $type   item type of the caller, e.g. 'article', 'staticpages'

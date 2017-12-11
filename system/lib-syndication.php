@@ -671,7 +671,7 @@ function SYND_getFeedType($format)
  * Helper function: Get default feed URL
  * This is mostly for backward compatibility: Back in the dark ages, Geeklog
  * only had one RSS feed and its URL was available as a template variable.
- * Moved that code here from COM_siteHeader/Footer for better encapsulation.
+ * Moved that code here from COM_createHTMLDocument for better encapsulation.
  *
  * @return   string      URL of the feed
  */
