@@ -62,6 +62,39 @@
     </div>
     {delete_account_option}
   </fieldset>
+
+{!if enable_twofactorauth}
+  <fieldset>
+    <legend>{lang_tfa_two_factor_auth}</legend>
+
+    <div class="compact">
+      <div class="profile_notes uk-panel uk-panel-box">
+        <div class="uk-panel-title">
+          <i class="uk-icon-info-circle uk-text-primary"></i>
+          <span>{lang_tfa_two_factor_auth}</span>
+        </div>
+        <ol>
+          <li>{lang_tfa_help1}</li>
+          <li>{lang_tfa_help2}</li>
+          <li>{lang_tfa_help3}</li>
+          <li>{lang_tfa_help4}</li>
+        </ol>
+      </div>
+
+      <dl class="form_block">
+        <dt><label for="enable_tfa">{lang_enable_twofactorauth}</label></dt>
+        <dd>
+          <select name="enable_tfa" id="enable_tfa">
+            {enable_tfa_options}
+          </select>
+        </dd>
+
+        <dt><label for="tfa_qrcode">{lang_tfa_qrcode}</label></dt>
+        <dd><img src="{qrcode_data}" alt="" id="qrcode_data"{xhtml}></dd>
+      </dl>
+    </div>
+  </fieldset>
+{!endif}
 </div>
 
 <div id="pe_userinfo" class="jsenabled_hide">
@@ -101,7 +134,7 @@
         <dt><label for="profile-pgpkey">{lang_pgpkey}</label></dt>
         <dd><textarea cols="45" rows="6" name="pgpkey" id="profile-pgpkey" class="wide" aria-describedby="desc-profile-pgpkey">{pgpkey_value}</textarea></dd>
         <dd class="description" id="desc-profile-pgpkey">{lang_pgpkey_text}</dd>
-        
+
         {display_fields}
       </dl>
     </div>
@@ -124,7 +157,7 @@
         <dt><label for="profile-{fieldname}">{lang_field}</label></dt>
         <dd><textarea cols="45" rows="4" name="{fieldname}" id="profile-{fieldname}" class="wide" aria-describedby="desc-profile-{fieldname}">{signature_value}</textarea></dd>
         {!if lang_field_text}
-        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>      
+        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>
         {!endif}
 <!-- END display_field_text -->
 
@@ -132,7 +165,7 @@
         <dt><label for="profile-{fieldname}">{lang_field}</label></dt>
         <dd><input type="text" maxlength="{fieldmaxlength}" value="{field}" name="{fieldname}" id="profile-{fieldname}" class="size7" aria-describedby="desc-profile-{fieldname}"{xhtml}></dd>
         {!if lang_field_text}
-        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>      
+        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>
         {!endif}
 <!-- END display_field -->
 

@@ -43,18 +43,19 @@ class TwoFactorAuthentication
 
     /**
      * TwoFactorAuthentication constructor.
+     *
+     * @param  int $uid User ID
      */
-    public function __construct()
+    public function __construct($uid)
     {
-        global $_CONF, $_USER;
+        global $_CONF;
 
-        $this->isEnabled = !COM_isAnonUser() &&
-            isset($_CONF['enable_twofactorauth'], $_USER['twofactorauth_enabled']) &&
-            $_CONF['enable_twofactorauth'] &&
-            $_USER['twofactorauth_enabled'];
+        $uid = (int) $uid;
+        $this->isEnabled = ($uid > 1) && !COM_isAnonUser() &&
+            isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'];
 
         if ($this->isEnabled) {
-            $this->uid = (int) $_USER['uid'];
+            $this->uid = $uid;
 
             if ($this->uid <= 1) {
                 $this->isEnabled = false;
@@ -122,7 +123,6 @@ class TwoFactorAuthentication
      * Create and return a secret
      *
      * @return string
-     * @throws TwoFactorAuthException
      */
     public function createSecret()
     {
@@ -130,11 +130,16 @@ class TwoFactorAuthentication
 
         $this->checkEnabled();
 
-        do {
-            $secret = $this->tfa->createSecret(self::QR_CODE_SIZE);
-            $done = (DB_count($_TABLES['users'], 'twofactorauth_secret', DB_escapeString($secret)) == 0);
-        } while (!$done);
-
+        try {
+            do {
+                $secret = $this->getTFAObject()
+                    ->createSecret(self::QR_CODE_SIZE);
+                $done = (DB_count($_TABLES['users'], 'twofactorauth_secret', DB_escapeString($secret)) == 0);
+            } while (!$done);
+        } catch (TwoFactorAuthException $e) {
+            COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
+            $secret = null;
+        }
         return $secret;
     }
 
@@ -150,27 +155,35 @@ class TwoFactorAuthentication
 
         $this->checkEnabled();
 
-        $escapedSecret = DB_escapeString($secret);
-        $sql = "UPDATE {$_TABLES['users']} SET twofactorauth_secret = '{$escapedSecret}' "
-            . "WHERE (uid = {$this->uid})";
-        DB_query($sql);
+        if (!empty($secret)) {
+            $escapedSecret = DB_escapeString($secret);
+            $sql = "UPDATE {$_TABLES['users']} SET twofactorauth_secret = '{$escapedSecret}' "
+                . "WHERE (uid = {$this->uid})";
+            DB_query($sql);
 
-        return (DB_error() == '');
+            return (DB_error() == '');
+        } else {
+            return false;
+        }
     }
 
     /**
      * Return QR code as a data URI
      *
      * @param  string $secret
+     * @param  string $email
      * @return string
-     * @throws TwoFactorAuthException
      */
-    public function getQRCodeImageAsDataURI($secret)
+    public function getQRCodeImageAsDataURI($secret, $email)
     {
         $this->checkEnabled();
 
-        return $this->getTFAObject()
-            ->getQRCodeImageAsDataUri('Geeklog', $secret, self::QR_CODE_SIZE);
+        try {
+            return $this->getTFAObject()
+                ->getQRCodeImageAsDataUri($email, $secret, self::QR_CODE_SIZE);
+        } catch (TwoFactorAuthException $e) {
+            return null;
+        }
     }
 
     /**
