@@ -38,8 +38,9 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR |
 
 /**
  * This is the common library for Geeklog.  Through our code, you will see
- * functions with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions
- * can be found in this file.
+ * functions with the COM_ prefix (e.g. COM_createHTMLDocument()).  Any such functions
+ * can be found in this file and called by plugins. 
+ * Note: functions with the _ prefix should only be called by Core and not any plugins.
  * --- You don't need to modify anything in this file! ---
  * WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
  * modified frequently by the Geeklog development team.  If you put your hacks in
@@ -1424,7 +1425,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
  * Programming Note:  The two functions COM_startBlock and COM_endBlock are used
  * to sandwich your block content.  These functions are not used only for blocks
  * but anything that uses that format, e.g. Stats page.  They are used like
- * COM_siteHeader and COM_siteFooter but for internal page elements.
+ * COM_createHTMLDocument but for internal page elements.
  *
  * @param    string $title      Value to set block title to
  * @param    string $helpFile   Help file, if one exists
@@ -1433,7 +1434,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
  * @param    string $cssClasses CSS class names separated by space (since GL 2.2.0, optional)
  * @return   string             Formatted HTML containing block header
  * @see COM_endBlock
- * @see COM_siteHeader
+ * @see COM_createHTMLDocument
  */
 function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.thtml', $cssId = '', $cssClasses = '')
 {
@@ -7588,7 +7589,7 @@ function COM_escapeMetaTagValue($value)
 }
 
 /**
- * Create Meta Tags to be used by COM_siteHeader in the headercode variable
+ * Create Meta Tags to be used by COM_createHTMLDocument in the headercode variable
  *
  * @param    mixed  $meta_description    In case of a string value, this is the text
  *                                       for the meta description of the page being

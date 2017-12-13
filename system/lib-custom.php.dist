@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-custom.php                                                            |
 // |                                                                           |
@@ -399,13 +399,12 @@ function CUSTOM_userCheck($username, $email = '')
 
 /**
  * Custom function to retrieve and return a formatted list of blocks
- * Can be used when calling COM_siteHeader or COM_siteFooter
+ * Can be used when calling COM_createHTMLDocument
  * Example:
  * 1: Setup an array of blocks to display
- * 2: Call COM_siteHeader or COM_siteFooter
+ * 2: Call COM_createHTMLDocument
  *  $myblocks = array( 'site_menu', 'site_news', 'poll_block' );
- * COM_siteHeader( array( 'CUSTOM_showBlocks', $myblocks )) ;
- * COM_siteFooter( true, array( 'CUSTOM_showBlocks', $myblocks ));
+ * COM_createHTMLDocument(array( 'CUSTOM_showBlocks', $myblocks));
  *
  * @param   array $showblocks An array of block names to retrieve and format
  * @return  string                 Formated HTML containing site footer and optionally right blocks
