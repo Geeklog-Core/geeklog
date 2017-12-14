@@ -20,7 +20,7 @@ class TwoFactorAuthentication
     const NUM_DIGITS_OF_BACKUP_CODE = 8;
 
     // Number of backup codes in database
-    const NUM_BACKUP_CODES = 4;
+    const NUM_BACKUP_CODES = 10;
 
     /**
      * Flag to show whether two factor auth is enabled for the current user

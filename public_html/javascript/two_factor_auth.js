@@ -2,31 +2,38 @@
 var geeklog;
 
 geeklog = geeklog || {};
+
 geeklog.tfa = {
-    imageTag: document.getElementById('qrcode_data'),
+    elements: document.getElementsByClassName('tfa'),
     init: function () {
         'use strict';
         var self = this;
 
-        // Hide QR code for the first time
-        this.hideQRCodeImage();
+        // Hide QR code and backup codes at first
+        this.hideTFAElements();
 
         // Show/Hide QR code image
         document.getElementById('enable_tfa').addEventListener('change', function (ev) {
             if (ev.target.value === '0') {
-                self.hideQRCodeImage();
+                self.hideTFAElements();
             } else {
-                self.showQRCodeImage();
+                self.showTFAElements();
             }
         }, false);
     },
-    showQRCodeImage: function () {
+    showTFAElements: function () {
         'use strict';
-        this.imageTag.style.display = '';
+        var i;
+        for (i = 0; i < this.elements.length; i++) {
+            this.elements[i].style.display = '';
+        }
     },
-    hideQRCodeImage: function () {
+    hideTFAElements: function () {
         'use strict';
-        this.imageTag.style.display = 'none';
+        var i;
+        for (i = 0; i < this.elements.length; i++) {
+            this.elements[i].style.display = 'none';
+        }
     }
 };
 

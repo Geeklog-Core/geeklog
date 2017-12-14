@@ -78,6 +78,7 @@
           <li>{lang_tfa_help2}</li>
           <li>{lang_tfa_help3}</li>
           <li>{lang_tfa_help4}</li>
+          <li>{lang_tfa_help5}</li>
         </ol>
       </div>
 
@@ -89,8 +90,16 @@
           </select>
         </dd>
 
-        <dt><label for="tfa_qrcode">{lang_tfa_qrcode}</label></dt>
-        <dd><img src="{qrcode_data}" alt="" id="qrcode_data"{xhtml}></dd>
+        <dt class="tfa"><label for="tfa_qrcode">{lang_tfa_qrcode}</label></dt>
+        <dd class="tfa"><img src="{qrcode_data}" alt="" id="qrcode_data"{xhtml}></dd>
+
+        <dt class="tfa"><label for="tfa_backup_code">{lang_tfa_backup_code}</label></dt>
+        <dd class="tfa">
+          <p class="tfa"><a href="{site_url}/usersettings.php?mode=download_backupcodes" id="tfa_backup_code">{lang_tfa_download}</a></p>
+          <ul class="tfa">
+            {backup_codes}
+          </ul>
+        </dd>
       </dl>
     </div>
   </fieldset>

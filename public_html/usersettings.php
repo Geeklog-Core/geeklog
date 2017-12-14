@@ -171,9 +171,15 @@ function edituser()
         if (empty($secret)) {
             $secret = $tfa->createSecret();
             $tfa->saveSecretToDatabase($secret);
+            $backupCodes = $tfa->createBackupCodes();
+        } else {
+            $backupCodes = $tfa->getBackupCodesFromDatabase();
         }
 
         $qrCodeDat = $tfa->getQRCodeImageAsDataURI($secret, $_USER['email']);
+        $backupCodes = '<li class="backupcode">' . PHP_EOL
+            . implode('</li><li class="backupcode">', $backupCodes)
+            . '</li>' . PHP_EOL;
 
         $preferences->set_var(array(
             'enable_twofactorauth'      => true,
@@ -182,12 +188,16 @@ function edituser()
             'lang_tfa_help2'            => $LANG04['tfa_help2'],
             'lang_tfa_help3'            => $LANG04['tfa_help3'],
             'lang_tfa_help4'            => $LANG04['tfa_help4'],
+            'lang_tfa_help5'            => $LANG04['tfa_help5'],
             'lang_enable_twofactorauth' => $LANG_confignames['Core']['enable_twofactorauth'],
             'lang_tfa_qrcode'           => $LANG04['tfa_qrcode'],
             'lang_tfa_show_qrcode'      => $LANG04['tfa_show_qrcode'],
             'lang_tfa_hide_qrcode'      => $LANG04['tfa_hide_qrcode'],
+            'lang_tfa_backup_code'      => $LANG04['tfa_backup_code'],
+            'lang_tfa_download'         => $LANG04['tfa_download'],
             'enable_tfa_options'        => $enableTfaOptions,
             'qrcode_data'               => $qrCodeDat,
+            'backup_codes'              => $backupCodes,
         ));
         $_SCRIPTS->setJavaScriptFile('two_factor_auth', '/javascript/two_factor_auth.js');
     } else {
@@ -1436,6 +1446,40 @@ function savepreferences($A)
     PLG_userInfoChanged($_USER['uid']);
 }
 
+/**
+ * Download a file containing backup codes
+ */
+function downloadBackupCodes() {
+    global $_CONF, $_USER;
+
+    if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&
+        !COM_isAnonUser() && isset($_USER['uid']) &&($_USER['uid'] > 1)) {
+        $tfa = new \Geeklog\TwoFactorAuthentication($_USER['uid']);
+
+        try {
+            $secret = $tfa->loadSecretFromDatabase();
+
+            if (empty($secret)) {
+                $secret = $tfa->createSecret();
+                $tfa->saveSecretToDatabase($secret);
+                $backupCodes = $tfa->createBackupCodes();
+            } else {
+                $backupCodes = $tfa->getBackupCodesFromDatabase();
+            }
+
+            $backupCodes = implode("\r\n", $backupCodes);
+            header('Content-Type: text/plain');
+            header('Content-Length: ' . strlen($backupCodes));
+            header('Content-Disposition: attachment; filename="gl_backup_codes.txt"');
+            echo $backupCodes;
+        } catch (\RobThree\Auth\TwoFactorAuthException $e) {
+            COM_errorLog(__FUNCTION__ . ': ' . $e->getMessage());
+        }
+    }
+
+    die();
+}
+
 // MAIN
 if (Geeklog\Input::post('btncancel') === $LANG_ADMIN['cancel']) {
     COM_redirect($_CONF['site_url']);
@@ -1494,6 +1538,10 @@ if (!COM_isAnonUser()) {
         case 'plugin':
             PLG_profileExtrasSave($_POST['plugin']);
             COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=5');
+            break;
+
+        case 'download_backupcodes':
+            downloadBackupCodes();
             break;
 
         case 'synch':
