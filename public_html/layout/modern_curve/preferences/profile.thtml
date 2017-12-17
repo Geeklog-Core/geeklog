@@ -58,6 +58,58 @@
   </fieldset>
 </div>
 
+{!if enable_twofactorauth}
+<div>
+  <fieldset>
+    <legend>{lang_tfa_two_factor_auth}</legend>
+
+    <div class="compact">
+      <div class="profile_notes uk-panel uk-panel-box">
+        <div class="uk-panel-title">
+          <i class="uk-icon-info-circle uk-text-primary"></i>
+          <span>{lang_tfa_two_factor_auth}</span>
+        </div>
+        <ol>
+          <li>{lang_tfa_help1}</li>
+          <li>{lang_tfa_help2}</li>
+          <li>{lang_tfa_help3}</li>
+          <li>{lang_tfa_help4}</li>
+          <li>{lang_tfa_help5}</li>
+        </ol>
+      </div>
+
+      <dl class="form_block">
+        <dt><label for="enable_tfa">{lang_enable_twofactorauth}</label></dt>
+        <dd>
+          <select name="enable_tfa" id="enable_tfa">
+            {enable_tfa_options}
+          </select>
+        </dd>
+
+        <dt><label for="tfa_qrcode">{lang_tfa_qrcode}</label></dt>
+        <dd>
+          <a id="tfa_flip_qrcode" href="#">{lang_tfa_show_hide}</a><br{xhtml}>
+          <img class="tfa" src="{qrcode_data}" alt="" id="tfa_qrcode"{xhtml}>
+        </dd>
+
+        <dt><label for="tfa_backup_code">{lang_tfa_backup_code}</label></dt>
+        <dd>
+          <ul>
+            <li><a id="tfa_flip_backupcodes" href="#">{lang_tfa_show_hide}</a></li>
+            <li><a id="tfa_download_backupcodes" href="{site_url}/usersettings.php?mode=download_backupcodes&amp;{token_name}={token_value}">{lang_tfa_download}</a></li>
+            <li><a id="tfa_generate_backupcodes" href="{site_url}/usersettings.php?mode=generate_backupcodes&amp;{token_name}={token_value}" onclick="return window.confirm('{tfa_generate_confirm}');">{lang_tfa_new_backup_code}</a></li>
+          </ul>
+
+          <ul class="tfa" id="tfa_backupcodes">
+            {backup_codes}
+          </ul>
+        </dd>
+      </dl>
+    </div>
+  </fieldset>
+</div>
+{!endif}
+
 <div id="pe_userinfo" class="jsenabled_hide">
   <fieldset>
     <legend>{lang_personal_info_legend}</legend>

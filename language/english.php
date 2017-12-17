@@ -438,17 +438,17 @@ $LANG04 = array(
     'tfa_help1' => 'Make sure to install "Google Authenticator" application on your mobile device before you enable Two Factor Authentication.',
     'tfa_help2' => 'Enable Two Factor Authentication.',
     'tfa_help3' => 'Run "Google Authenticator", tap on the plus icon and scan the QR code.',
-    'tfa_help4' => 'Print or download the codes below in case you cannot use your mobile device you installed the Google Authenticator.  Each code is valid only one-time.  If you generate a new set of codes, then the current set will be invalid.',
+    'tfa_help4' => 'Print or download the backup codes below in case you cannot use your mobile device you installed the Google Authenticator.  Each backup code is valid only one-time.  If you generate a new set of backup codes, then the current set will be invalid.',
     'tfa_help5' => 'Hit the "Save" button at the bottom of the screen.',
-    'tfa_enter_code' => 'Enter the %d-digit code your Google Authenticator app is showing',
+    'tfa_enter_code' => 'Enter the %d-digit code your Google Authenticator app is showing or one of the backup code you have got in your preference page.',
     'tfa_code' => 'Google Authenticator Code',
+    'tfa_authenticate' => 'Authenticate',
     'tfa_qrcode' => 'QR Code',
-    'tfa_show_qrcode' => 'Show QR code',
-    'tfa_hide_qrcode' => 'Hide QR code',
-    'tfa_do_not_require_tfa_again' => 'Don\'t require Two Factor Authentication again on this device',
+    'tfa_show_hide' => 'Show/Hide',
     'tfa_backup_code' => 'Backup Codes',
     'tfa_download' => 'Download Backup Codes',
-    'tfa_new_backup_code' => 'Generate a new set of backup codes'
+    'tfa_new_backup_code' => 'Generate a new set of backup codes',
+    'tfa_generate_confirm' => 'Go ahead?'
 );
 
 ###############################################################################

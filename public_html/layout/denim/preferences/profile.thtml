@@ -90,13 +90,21 @@
           </select>
         </dd>
 
-        <dt class="tfa"><label for="tfa_qrcode">{lang_tfa_qrcode}</label></dt>
-        <dd class="tfa"><img src="{qrcode_data}" alt="" id="qrcode_data"{xhtml}></dd>
+        <dt><label for="tfa_qrcode">{lang_tfa_qrcode}</label></dt>
+        <dd>
+          <a id="tfa_flip_qrcode" href="#">{lang_tfa_show_hide}</a><br{xhtml}>
+          <img class="tfa" src="{qrcode_data}" alt="" id="tfa_qrcode"{xhtml}>
+        </dd>
 
-        <dt class="tfa"><label for="tfa_backup_code">{lang_tfa_backup_code}</label></dt>
-        <dd class="tfa">
-          <p class="tfa"><a href="{site_url}/usersettings.php?mode=download_backupcodes" id="tfa_backup_code">{lang_tfa_download}</a></p>
-          <ul class="tfa">
+        <dt><label for="tfa_backup_code">{lang_tfa_backup_code}</label></dt>
+        <dd>
+          <ul>
+            <li><a id="tfa_flip_backupcodes" href="#">{lang_tfa_show_hide}</a></li>
+            <li><a id="tfa_download_backupcodes" href="{site_url}/usersettings.php?mode=download_backupcodes&amp;{token_name}={token_value}">{lang_tfa_download}</a></li>
+            <li><a id="tfa_generate_backupcodes" href="{site_url}/usersettings.php?mode=generate_backupcodes&amp;{token_name}={token_value}" onclick="return window.confirm('{tfa_generate_confirm}');">{lang_tfa_new_backup_code}</a></li>
+          </ul>
+
+          <ul class="tfa" id="tfa_backupcodes">
             {backup_codes}
           </ul>
         </dd>

@@ -174,6 +174,10 @@ function edituser()
             $backupCodes = $tfa->createBackupCodes();
         } else {
             $backupCodes = $tfa->getBackupCodesFromDatabase();
+
+            if (count($backupCodes)) {
+                $backupCodes = $tfa->createBackupCodes();
+            }
         }
 
         $qrCodeDat = $tfa->getQRCodeImageAsDataURI($secret, $_USER['email']);
@@ -191,13 +195,16 @@ function edituser()
             'lang_tfa_help5'            => $LANG04['tfa_help5'],
             'lang_enable_twofactorauth' => $LANG_confignames['Core']['enable_twofactorauth'],
             'lang_tfa_qrcode'           => $LANG04['tfa_qrcode'],
-            'lang_tfa_show_qrcode'      => $LANG04['tfa_show_qrcode'],
-            'lang_tfa_hide_qrcode'      => $LANG04['tfa_hide_qrcode'],
+            'lang_tfa_show_hide'        => $LANG04['tfa_show_hide'],
             'lang_tfa_backup_code'      => $LANG04['tfa_backup_code'],
             'lang_tfa_download'         => $LANG04['tfa_download'],
+            'lang_tfa_new_backup_code'  => $LANG04['tfa_new_backup_code'],
+            'tfa_generate_confirm'      => $LANG04['tfa_generate_confirm'],
             'enable_tfa_options'        => $enableTfaOptions,
             'qrcode_data'               => $qrCodeDat,
             'backup_codes'              => $backupCodes,
+            'token_name'                => CSRF_TOKEN,
+            'token_value'               => SEC_createToken(),
         ));
         $_SCRIPTS->setJavaScriptFile('two_factor_auth', '/javascript/two_factor_auth.js');
     } else {
@@ -1381,10 +1388,8 @@ function savepreferences($A)
             "UPDATE {$_TABLES['users']} SET twofactorauth_secret = '' "
             . "WHERE (uid = {$_USER['uid']})"
         );
-        DB_query(
-            "UPDATE {$_TABLES['backup_codes']} SET is_used = 1 "
-            . "WHERE uid = {$_USER['uid']} "
-        );
+        $tfa = new Geeklog\TwoFactorAuthentication($_USER['uid']);
+        $tfa->invalidateBackupCodes();
     }
 
     $A['dfid'] = COM_applyFilter($A['dfid'], true);
@@ -1449,11 +1454,13 @@ function savepreferences($A)
 /**
  * Download a file containing backup codes
  */
-function downloadBackupCodes() {
+function downloadBackupCodes()
+{
     global $_CONF, $_USER;
 
     if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&
-        !COM_isAnonUser() && isset($_USER['uid']) &&($_USER['uid'] > 1)) {
+        !COM_isAnonUser() && isset($_USER['uid']) && ($_USER['uid'] > 1)) {
+        SEC_checkToken();
         $tfa = new \Geeklog\TwoFactorAuthentication($_USER['uid']);
 
         try {
@@ -1478,6 +1485,28 @@ function downloadBackupCodes() {
     }
 
     die();
+}
+
+/**
+ * Generate a new set of backup codes
+ */
+function generateBackupCodes()
+{
+    global $_CONF, $_USER;
+
+    if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&
+        !COM_isAnonUser() && isset($_USER['uid']) && ($_USER['uid'] > 1)) {
+        SEC_checkToken();
+
+        try {
+            $tfa = new Geeklog\TwoFactorAuthentication($_USER['uid']);
+            $tfa->createBackupCodes();
+        } catch (\RobThree\Auth\TwoFactorAuthException $e) {
+            COM_errorLog(__FUNCTION__ . ': ' . $e->getMessage());
+        }
+    }
+
+    COM_redirect($_CONF['site_url'] . '/usersettings.php');
 }
 
 // MAIN
@@ -1542,6 +1571,10 @@ if (!COM_isAnonUser()) {
 
         case 'download_backupcodes':
             downloadBackupCodes();
+            break;
+
+        case 'generate_backupcodes':
+            generateBackupCodes();
             break;
 
         case 'synch':

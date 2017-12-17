@@ -10,7 +10,7 @@ class TwoFactorAuthentication
     // Number of digits of two factor auth code
     const NUM_DIGITS = 6;
 
-    // Secret associated with a user
+    // Number of bits of a secret associated with a user
     const NUM_BITS_OF_SECRET = 160;
 
     // Image dimensions for QR code
@@ -140,6 +140,7 @@ class TwoFactorAuthentication
             COM_errorLog(__METHOD__ . ': ' . $e->getMessage());
             $secret = null;
         }
+
         return $secret;
     }
 
@@ -215,7 +216,7 @@ class TwoFactorAuthentication
     /**
      * Invalidate all the backup codes in database
      */
-    private function invalidateBackupCodes()
+    public function invalidateBackupCodes()
     {
         global $_TABLES;
 
@@ -236,13 +237,17 @@ class TwoFactorAuthentication
         global $_TABLES;
 
         $this->checkEnabled();
+
         $this->invalidateBackupCodes();
         $retval = array();
         $tfa = $this->getTFAObject();
 
+        // RobThree\TwoFactorAuth::createSecret uses 5 bits for each byte
+        $bitsForBackupCode = self::NUM_DIGITS_OF_BACKUP_CODE * 5;
+
         for ($i = 0; $i < self::NUM_BACKUP_CODES; $i++) {
             do {
-                $code = $tfa->createSecret(self::NUM_DIGITS_OF_BACKUP_CODE * 8);
+                $code = $tfa->createSecret($bitsForBackupCode);
                 $done = (DB_count($_TABLES['backup_codes'], 'code', $code) == 0);
             } while (!$done);
 
@@ -266,16 +271,59 @@ class TwoFactorAuthentication
     {
         $this->checkEnabled();
 
-        $code = preg_replace('/[^0-9]/', '', $code);
-        if (strlen($code) !== self::NUM_DIGITS) {
+        $code = preg_replace('/[^0-9A-Z]/', '', $code);
+
+        switch (strlen($code)) {
+            case self::NUM_DIGITS:
+                $code = preg_replace('/[^0-9]/', '', $code);
+                $secret = $this->loadSecretFromDatabase();
+                $retval = empty($secret)
+                    ? false
+                    : $this->getTFAObject()->verifyCode($secret, $code);
+                break;
+
+            case self::NUM_DIGITS_OF_BACKUP_CODE:
+                $retval = $this->authenticateWithBackupCode($code);
+                break;
+
+            default:
+                $retval = false;
+                break;
+        }
+
+        return $retval;
+    }
+
+    /**
+     * Authenticate the user with backup code
+     *
+     * @param $code
+     * @return bool
+     */
+    public function authenticateWithBackupCode($code)
+    {
+        global $_TABLES;
+
+        $code = DB_escapeString($code);
+        $sql1 = "SELECT is_used FROM {$_TABLES['backup_codes']} "
+            . "WHERE (code = '{$code}') AND (uid = {$this->uid})";
+        $result = DB_query($sql1);
+
+        if (DB_error() || (DB_numRows($result) == 0)) {
             return false;
         }
 
-        $secret = $this->loadSecretFromDatabase();
-        if (empty($secret)) {
+        $A = DB_fetchArray($result, false);
+        if ($A['is_used'] == 1) {
+            // This backup code is already used
             return false;
         }
 
-        return $this->getTFAObject()->verifyCode($secret, $code);
+        // Invalidate the code
+        $sql2 = "UPDATE {$_TABLES['backup_codes']} SET is_used = 1 "
+            . "WHERE (code = '{$code}') AND (uid = {$this->uid}) ";
+        DB_query($sql2);
+
+        return true;
     }
 }
