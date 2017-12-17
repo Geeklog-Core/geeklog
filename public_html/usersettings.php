@@ -51,7 +51,8 @@ $_US_VERBOSE = false;
  */
 function edituser()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN, $_SCRIPTS;
+    global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN, $LANG_confignames,
+           $LANG_configselects, $_SCRIPTS;
 
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
@@ -66,11 +67,11 @@ function edituser()
         'resynch'          => 'resynch.thtml',
         'deleteaccount'    => 'deleteaccount.thtml',
     ));
-    
+
     $blocks = array('display_field', 'display_field_text');
     foreach ($blocks as $block) {
         $preferences->set_block('profile', $block);
-    }    
+    }
 
     include $_CONF['path_system'] . 'classes/navbar.class.php';
     $navbar = new navbar;
@@ -153,6 +154,62 @@ function edituser()
     $preferences->set_var('lang_password_email_legend', $LANG04[129]);
     $preferences->set_var('lang_personal_info_legend', $LANG04[130]);
     $preferences->set_var('lang_resynch', $LANG04[166]);
+
+    // Two Factor Auth
+    if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth']) {
+        $enableTfaOptions = '';
+        foreach ($LANG_configselects['Core'][0] as $text => $value) {
+            $selected = ($_USER['twofactorauth_enabled'] == $value);
+            $enableTfaOptions .= '<option value="' . $value . '"'
+                . ($selected ? ' selected="selected"' : '') . '>'
+                . $text . '</option>' . PHP_EOL;
+        }
+
+        $tfa = new \Geeklog\TwoFactorAuthentication($_USER['uid']);
+        $secret = $tfa->loadSecretFromDatabase();
+
+        if (empty($secret)) {
+            $secret = $tfa->createSecret();
+            $tfa->saveSecretToDatabase($secret);
+            $backupCodes = $tfa->createBackupCodes();
+        } else {
+            $backupCodes = $tfa->getBackupCodesFromDatabase();
+
+            if (count($backupCodes)) {
+                $backupCodes = $tfa->createBackupCodes();
+            }
+        }
+
+        $qrCodeDat = $tfa->getQRCodeImageAsDataURI($secret, $_USER['email']);
+        $backupCodes = '<li class="backupcode">' . PHP_EOL
+            . implode('</li><li class="backupcode">', $backupCodes)
+            . '</li>' . PHP_EOL;
+
+        $preferences->set_var(array(
+            'enable_twofactorauth'      => true,
+            'lang_tfa_two_factor_auth'  => $LANG04['tfa_two_factor_auth'],
+            'lang_tfa_help1'            => $LANG04['tfa_help1'],
+            'lang_tfa_help2'            => $LANG04['tfa_help2'],
+            'lang_tfa_help3'            => $LANG04['tfa_help3'],
+            'lang_tfa_help4'            => $LANG04['tfa_help4'],
+            'lang_tfa_help5'            => $LANG04['tfa_help5'],
+            'lang_enable_twofactorauth' => $LANG_confignames['Core']['enable_twofactorauth'],
+            'lang_tfa_qrcode'           => $LANG04['tfa_qrcode'],
+            'lang_tfa_show_hide'        => $LANG04['tfa_show_hide'],
+            'lang_tfa_backup_code'      => $LANG04['tfa_backup_code'],
+            'lang_tfa_download'         => $LANG04['tfa_download'],
+            'lang_tfa_new_backup_code'  => $LANG04['tfa_new_backup_code'],
+            'tfa_generate_confirm'      => $LANG04['tfa_generate_confirm'],
+            'enable_tfa_options'        => $enableTfaOptions,
+            'qrcode_data'               => $qrCodeDat,
+            'backup_codes'              => $backupCodes,
+            'token_name'                => CSRF_TOKEN,
+            'token_value'               => SEC_createToken(),
+        ));
+        $_SCRIPTS->setJavaScriptFile('two_factor_auth', '/javascript/two_factor_auth.js');
+    } else {
+        $preferences->set_var('enable_twofactorauth', false);
+    }
 
     $display_name = COM_getDisplayName($_USER['uid']);
 
@@ -1300,11 +1357,21 @@ function savepreferences($A)
         $A['language'] = $_CONF['language'];
     }
 
+    $A['enable_tfa'] = (int) Geeklog\Input::fPost('enable_tfa', 0);
+    if (($A['enable_tfa'] !== 0) && ($A['enable_tfa'] !== 1)) {
+        $A['enable_tfa'] = 0;
+    }
+
     // Save theme, when doing so, put in cookie so we can set the user's theme
     // even when they aren't logged in
     $theme = DB_escapeString($A['theme']);
     $language = DB_escapeString($A['language']);
-    DB_query("UPDATE {$_TABLES['users']} SET theme='$theme',language='$language' WHERE uid = '{$_USER['uid']}'");
+
+    DB_query(
+        "UPDATE {$_TABLES['users']} SET theme = '{$theme}', language = '{$language}', twofactorauth_enabled = {$A['enable_tfa']} "
+        . "WHERE uid = '{$_USER['uid']}'"
+    );
+
     setcookie($_CONF['cookie_theme'], $A['theme'], time() + 31536000,
         $_CONF['cookie_path'], $_CONF['cookiedomain'],
         $_CONF['cookiesecure']);
@@ -1314,6 +1381,16 @@ function savepreferences($A)
     setcookie($_CONF['cookie_tzid'], $A['tzid'], time() + 31536000,
         $_CONF['cookie_path'], $_CONF['cookiedomain'],
         $_CONF['cookiesecure']);
+
+    // When the user has disabled Two Factor Authentication, invalidate secret code and all the backup codes he/she might have
+    if (!$A['enable_tfa']) {
+        DB_query(
+            "UPDATE {$_TABLES['users']} SET twofactorauth_secret = '' "
+            . "WHERE (uid = {$_USER['uid']})"
+        );
+        $tfa = new Geeklog\TwoFactorAuthentication($_USER['uid']);
+        $tfa->invalidateBackupCodes();
+    }
 
     $A['dfid'] = COM_applyFilter($A['dfid'], true);
 
@@ -1374,6 +1451,64 @@ function savepreferences($A)
     PLG_userInfoChanged($_USER['uid']);
 }
 
+/**
+ * Download a file containing backup codes
+ */
+function downloadBackupCodes()
+{
+    global $_CONF, $_USER;
+
+    if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&
+        !COM_isAnonUser() && isset($_USER['uid']) && ($_USER['uid'] > 1)) {
+        SEC_checkToken();
+        $tfa = new \Geeklog\TwoFactorAuthentication($_USER['uid']);
+
+        try {
+            $secret = $tfa->loadSecretFromDatabase();
+
+            if (empty($secret)) {
+                $secret = $tfa->createSecret();
+                $tfa->saveSecretToDatabase($secret);
+                $backupCodes = $tfa->createBackupCodes();
+            } else {
+                $backupCodes = $tfa->getBackupCodesFromDatabase();
+            }
+
+            $backupCodes = implode("\r\n", $backupCodes);
+            header('Content-Type: text/plain');
+            header('Content-Length: ' . strlen($backupCodes));
+            header('Content-Disposition: attachment; filename="gl_backup_codes.txt"');
+            echo $backupCodes;
+        } catch (\RobThree\Auth\TwoFactorAuthException $e) {
+            COM_errorLog(__FUNCTION__ . ': ' . $e->getMessage());
+        }
+    }
+
+    die();
+}
+
+/**
+ * Generate a new set of backup codes
+ */
+function generateBackupCodes()
+{
+    global $_CONF, $_USER;
+
+    if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&
+        !COM_isAnonUser() && isset($_USER['uid']) && ($_USER['uid'] > 1)) {
+        SEC_checkToken();
+
+        try {
+            $tfa = new Geeklog\TwoFactorAuthentication($_USER['uid']);
+            $tfa->createBackupCodes();
+        } catch (\RobThree\Auth\TwoFactorAuthException $e) {
+            COM_errorLog(__FUNCTION__ . ': ' . $e->getMessage());
+        }
+    }
+
+    COM_redirect($_CONF['site_url'] . '/usersettings.php');
+}
+
 // MAIN
 if (Geeklog\Input::post('btncancel') === $LANG_ADMIN['cancel']) {
     COM_redirect($_CONF['site_url']);
@@ -1432,6 +1567,14 @@ if (!COM_isAnonUser()) {
         case 'plugin':
             PLG_profileExtrasSave($_POST['plugin']);
             COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=5');
+            break;
+
+        case 'download_backupcodes':
+            downloadBackupCodes();
+            break;
+
+        case 'generate_backupcodes':
+            generateBackupCodes();
             break;
 
         case 'synch':

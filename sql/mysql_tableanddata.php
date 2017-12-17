@@ -497,6 +497,8 @@ CREATE TABLE {$_TABLES['users']} (
   num_reminders tinyint(1) NOT NULL default 0,
   invalidlogins SMALLINT NOT NULL DEFAULT '0', 
   lastinvalid int(10) unsigned default NULL,
+  twofactorauth_enabled TINYINT(3) NOT NULL DEFAULT 0,
+  twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username),
   INDEX users_username(username),
@@ -512,6 +514,15 @@ CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
   value TEXT default NULL,
   PRIMARY KEY  (name)
+) ENGINE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['backup_codes']} (
+  code VARCHAR(16) NOT NULL UNIQUE,
+  uid MEDIUMINT(8) NOT NULL DEFAULT 0,
+  is_used TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (code)
 ) ENGINE=MyISAM
 ";
 

@@ -434,6 +434,21 @@ $LANG04 = array(
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Would you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?",
     'user_max_login_attempts' => 'Max Login Attempts and Speed Limit Reached',
+    'tfa_two_factor_auth' => 'Two Factor Authentication',
+    'tfa_help1' => 'Make sure to install "Google Authenticator" application on your mobile device before you enable Two Factor Authentication.',
+    'tfa_help2' => 'Enable Two Factor Authentication.',
+    'tfa_help3' => 'Run "Google Authenticator", tap on the plus icon and scan the QR code.',
+    'tfa_help4' => 'Print or download the backup codes below in case you cannot use your mobile device you installed the Google Authenticator.  Each backup code is valid only one-time.  If you generate a new set of backup codes, then the current set will be invalid.',
+    'tfa_help5' => 'Hit the "Save" button at the bottom of the screen.',
+    'tfa_enter_code' => 'Enter the %d-digit code your Google Authenticator app is showing or one of the backup code you have got in your preference page.',
+    'tfa_code' => 'Google Authenticator Code',
+    'tfa_authenticate' => 'Authenticate',
+    'tfa_qrcode' => 'QR Code',
+    'tfa_show_hide' => 'Show/Hide',
+    'tfa_backup_code' => 'Backup Codes',
+    'tfa_download' => 'Download Backup Codes',
+    'tfa_new_backup_code' => 'Generate a new set of backup codes',
+    'tfa_generate_confirm' => 'Go ahead?'
 );
 
 ###############################################################################
@@ -2272,6 +2287,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => "Login Speed Limit",
     'invalidloginattempts' => "Max. Invalid Login Attempts",
     'invalidloginmaxtime' => "Invalid Login Max Time",
+    'enable_twofactorauth' => 'Enable Two Factor Authentication?',
     'pass_alg' => 'Password Hash Algorithm',
     'pass_stretch' => 'Hash Stretch Count',
     'user_html' => "User HTML",
