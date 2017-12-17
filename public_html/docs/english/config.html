@@ -84,7 +84,7 @@ manually.</p>
 <tr>
   <td valign="top"><a name="desc_owner_name">owner_name</a></td>
   <td valign="top"></td>
-  <td valign="top">The name of the owner of the site. This is used in the copyright notice if set, else the site name is used.</td></tr>     
+  <td valign="top">The name of the owner of the site. This is used in the copyright notice if set, else the site name is used.</td></tr>
 <tr>
   <td valign="top"><a name="desc_copyrightyear">copyrightyear</a></td>
   <td valign="top"><em>(disabled)</em></td>
@@ -99,13 +99,13 @@ manually.</p>
     <td valign="top"><a name="desc_url_routing">url_routing</a></td>
     <td valign="top">Disabled</td>
     <td valign="top">Enable or disable URL routing.  <strong>Caution: This feature takes effect only when URL Rewriting is enabled.</strong><br />
-        The setting 'Enabled (without "index.php")' requires additional settings for your web server to work properly. 
+        The setting 'Enabled (without "index.php")' requires additional settings for your web server to work properly.
         See the section on <a href="#url-routing">URL Routing</a> below for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cdn_hosted">cdn_hosted</a></td>
   <td valign="top">false</td>
-  <td valign="top">Enable (true) or disable (false) Google CDN-hosted source for jQuery 
-   and jQuery UI.</td></tr>    
+  <td valign="top">Enable (true) or disable (false) Google CDN-hosted source for jQuery
+   and jQuery UI.</td></tr>
 <tr>
   <td valign="top"><a name="desc_meta_tags">meta_tags</a></td>
   <td valign="top">disabled</td>
@@ -119,7 +119,7 @@ manually.</p>
 <tr>
   <td valign="top"><a name="desc_meta_keywords">meta_keywords</a></td>
   <td valign="top">'Geeklog, Blog, Content Management System, CMS, Open Source, Security'</td>
-  <td valign="top">The default meta keywords for your site.</td></tr>    
+  <td valign="top">The default meta keywords for your site.</td></tr>
 </table>
 
 <h3><a name="site_mail">Site: Mail</a></h3>
@@ -236,7 +236,7 @@ the admin panel.</p>
     <td valign="top">A tag to link to the article author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string. An example of an Article Author Tag would be: <pre> Written By: &lt;a href="%s"&gt;%s&lt;/a&gt;</pre></td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_comment_author_tag">comment_feeds_comment_author_tag</a></td>
     <td valign="top"><pre>, Comment By: &lt;a href="%s"&gt;%s&lt;/a&gt;</pre></td>
-    <td valign="top">A tag to link to the comment author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string.</td></tr>    
+    <td valign="top">A tag to link to the comment author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string.</td></tr>
 </table>
 
 <h3><a name="site_paths">Site: Paths</a></h3>
@@ -419,7 +419,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_hide_main_page_navigation">hide_main_page_navigation</a></td>
   <td valign="top">false</td>
-  <td valign="top">When set to frontpage, this option will hide the "Google paging" 
+  <td valign="top">When set to frontpage, this option will hide the "Google paging"
     navigation from index.php, i.e. from the site's frontpage. When set to frontpage_topics it will hide the navigation from the frontpage and all topic
     pages. This may come in handy for more advanced layouts but will of course
     prevent people from easily reaching older articles.</td></tr>
@@ -471,7 +471,7 @@ the admin panel.</p>
         <li>1 or more = Amount of seconds a article will be cached before it is regenerated and saved again to a new cache file.</li>
         <li>0 = Not cached. Article is always regenerated.</li>
         <li>-1 = Always cached and only regenerated when the article is updated and saved through the article editor.</li>
-    </ul></td></tr>    
+    </ul></td></tr>
 </table>
 
 <h3><a name="stories_trackback">Articles and Trackback: Trackback</a></h3>
@@ -589,27 +589,27 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_cache_templates">cache_templates</a></td>
   <td valign="top">true</td>
-  <td valign="top">If set to <span class="tt">true</span>, all templates will be cached, which 
-  should improve performance of the web site.  In some cases, caching could 
-  slow performance down.  For example, if the disk access is slow on the web 
-  server or if the web server is accessing Windows shared drives, setting this 
-  option to FALSE may improve performance. Another reason to disable caching of template files is if you use 
-  autotags in the themes template files that need to display updated information to the visitor (since the 
-  autotags would only be run at the time when the cache file is created. Note: As stated this only affects 
-  the theme template files. Caching of other items like Articles, Blocks, Staticpages, etc... have there own 
+  <td valign="top">If set to <span class="tt">true</span>, all templates will be cached, which
+  should improve performance of the web site.  In some cases, caching could
+  slow performance down.  For example, if the disk access is slow on the web
+  server or if the web server is accessing Windows shared drives, setting this
+  option to FALSE may improve performance. Another reason to disable caching of template files is if you use
+  autotags in the themes template files that need to display updated information to the visitor (since the
+  autotags would only be run at the time when the cache file is created. Note: As stated this only affects
+  the theme template files. Caching of other items like Articles, Blocks, Staticpages, etc... have there own
   config options for caching.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cache_mobile">cache_mobile</a></td>
   <td valign="top">true</td>
   <td valign="top">If set to <span class="tt">true</span>, mobile devices (phones and tablets) will be cached
-  separately from computers. This includes the template files, blocks, articles and other plugins which may use 
-  Geeklog's template cache system. You should only set this to false if you do not plan to display different information 
-  depending on if a mobile device is detected being used by the user. Performance will be improved slightly if set to false since 
+  separately from computers. This includes the template files, blocks, articles and other plugins which may use
+  Geeklog's template cache system. You should only set this to false if you do not plan to display different information
+  depending on if a mobile device is detected being used by the user. Performance will be improved slightly if set to false since
   less cached files will be created.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cache_resource">cache_resource</a></td>
   <td valign="top">true</td>
-  <td valign="top">If set to <span class="tt">true</span>, JavaScript files and CSS files will be combined, minified and cached.</td></tr>  
+  <td valign="top">If set to <span class="tt">true</span>, JavaScript files and CSS files will be combined, minified and cached.</td></tr>
 </table>
 
 <h3><a name="theme_advanced">Theme: Advanced Settings</a></h3>
@@ -634,15 +634,15 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_template_comments">template_comments</a></td>
   <td valign="top">false</td>
-  <td valign="top">Each template contains some internal comments 
-  (surrounded with {# #} ) that are removed before the template is sent to the 
-  browser.  If this option is set to True, the {# and #} will become &lt!-- --&gt; 
-  HTML comments and will be included in the output to the browser.  Also, at the 
-  beginning and end of each template, its physical location on the 
-  server, will be included in the output only if you are in the Root group and the <code>debug</code> property of the template class is set to the value other than 0.  This feature is useful if you are 
-  trying to determine which template controls a specific display item, or when 
-  developing a new theme. If this is set to False, the comments are removed 
-  prior to sending the output to the browser.</td></tr>    
+  <td valign="top">Each template contains some internal comments
+  (surrounded with {# #} ) that are removed before the template is sent to the
+  browser.  If this option is set to True, the {# and #} will become &lt!-- --&gt;
+  HTML comments and will be included in the output to the browser.  Also, at the
+  beginning and end of each template, its physical location on the
+  server, will be included in the output only if you are in the Root group and the <code>debug</code> property of the template class is set to the value other than 0.  This feature is useful if you are
+  trying to determine which template controls a specific display item, or when
+  developing a new theme. If this is set to False, the comments are removed
+  prior to sending the output to the browser.</td></tr>
 </table>
 
 
@@ -762,7 +762,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_whatsnew_cache_time">whatsnew_cache_time</a></td>
   <td valign="top">3600</td>
-  <td valign="top">The What's New Block will be cached for no longer than this many seconds. If 0 caching is disabled.</td></tr>    
+  <td valign="top">The What's New Block will be cached for no longer than this many seconds. If 0 caching is disabled.</td></tr>
 </table>
 
 
@@ -846,7 +846,7 @@ the admin panel.</p>
   <td valign="top"><code>false</code></td>
   <td valign="top">Whether to allow logins using <a href="http://oauth.net/">OAuth</a>. This will display a special OAuth login below the normal login field.<br />
     <strong>Note:</strong> Currently OAuth 1.0, 1.0a, and 2.0 is supported (depends on what the OAuth provider supports). Current login methods supported: Facebook, Twitter, LinkedIn, Google, Microsoft, and Yahoo.<br />
-    To enable logins for a specific method, you need to enable the method below and you must also update the config options with the correct key and secret string values. 
+    To enable logins for a specific method, you need to enable the method below and you must also update the config options with the correct key and secret string values.
     The PHP extension OpenSSL is required to be loaded for OAuth logins to work.<br />
     See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
@@ -857,13 +857,13 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_key">facebook_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Facebook OAuth login method. Visit this <a href="http://developers.facebook.com/setup/">Facebook Developers page</a> 
+  <td valign="top">Required to use Facebook OAuth login method. Visit this <a href="http://developers.facebook.com/setup/">Facebook Developers page</a>
   to create an application to receive your key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_secret">facebook_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Facebook OAuth login method. Visit this <a href="http://developers.facebook.com/setup/">Facebook Developers page</a> 
+  <td valign="top">Required to use Facebook OAuth login method. Visit this <a href="http://developers.facebook.com/setup/">Facebook Developers page</a>
   to create an application to receive your key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
@@ -874,13 +874,13 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_key">linkedin_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use LinkedIn OAuth login method. Visit this <a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a> 
+  <td valign="top">Required to use LinkedIn OAuth login method. Visit this <a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>
   to create an application to receive your API and secret key.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_secret">linkedin_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use LinkedIn OAuth login method. Visit this <a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a> 
+  <td valign="top">Required to use LinkedIn OAuth login method. Visit this <a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>
   to create an application to receive your API and secret key.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
@@ -891,13 +891,13 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_key">twitter_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a> 
+  <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a>
   to create an application to receive your consumer key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_secret">twitter_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a> 
+  <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a>
   to create an application to receive your consumer key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
@@ -908,13 +908,13 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_google_consumer_key">google_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a> 
+  <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a>
   to create an application to receive your client ID and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_consumer_secret">google_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a> 
+  <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a>
   to create an application to receive your client ID and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
@@ -925,13 +925,13 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_key">microsoft_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a> 
+  <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a>
   to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_secret">microsoft_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a> 
+  <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a>
   to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
@@ -942,13 +942,13 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_yahoo_consumer_key">yahoo_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a>  
+  <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a>
   to create an application to receive your consumer key and consumer secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_consumer_secret">yahoo_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a> 
+  <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a>
   to create an application to receive your consumer key and consumer secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
@@ -959,15 +959,15 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_github_consumer_key">github_consumer_key</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use GitHub OAuth login method. Visit this <a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>  
+  <td valign="top">Required to use GitHub OAuth login method. Visit this <a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>
   to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_github_consumer_secret">github_consumer_secret</a></td>
   <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use GitHub OAuth login method. Visit this <a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a> 
+  <td valign="top">Required to use GitHub OAuth login method. Visit this <a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>
   to create an application to receive your client id and client secret.<br />
-  See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>  
+  See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_user">aftersave_user</a></td>
   <td valign="top"><code>'item'</code></td>
@@ -1066,30 +1066,37 @@ the admin panel.</p>
   <td valign="top"><a name="desc_invalidloginmaxtime">invalidloginmaxtime</a></td>
   <td valign="top">1200</td>
   <td valign="top">How many seconds have to pass before an email is sent to the Admin about the max number of
-   invalid login attempts for the user.  If the threshold is reached an email will be sent to the Admin 
-   regarding a possible hack attempt of the account. One thing you need to take into consideration when specifying 
-   this time is the Login Speed Limit config option. With the current default setting for Login Speed Limit and 
-   Invalid Login Attempts, the Login Speed Limit can be triggered twice before the Invalid Login can get triggered. 
-   If the Login Speed Limit is set to high then it is possible that Invalid Login Attempts may never get triggered. 
+   invalid login attempts for the user.  If the threshold is reached an email will be sent to the Admin
+   regarding a possible hack attempt of the account. One thing you need to take into consideration when specifying
+   this time is the Login Speed Limit config option. With the current default setting for Login Speed Limit and
+   Invalid Login Attempts, the Login Speed Limit can be triggered twice before the Invalid Login can get triggered.
+   If the Login Speed Limit is set to high then it is possible that Invalid Login Attempts may never get triggered.
    If this config option is set to 0, then the feature is disabled.</td></tr>
+<tr>
+    <td valign="top"><a name="desc_enable_twofactorauth">enable_twofactorauth</a></td>
+    <td valign="top">False</td>
+    <td valign="top">If this config option is set to 1, then Two Factor Authentication is enabled.  In order for
+   each user to use Two Factor Authentication, they have to enable Two Factor Authentication in their account
+   settings and install the <a href="https://github.com/google/google-authenticator/wiki">Google Authenticator</a>
+   application on their mobile devices.</td></tr>
 <tr>
   <td valign="top"><a name="desc_pass_alg">pass_alg</a></td>
   <td valign="top">sha1</td>
   <td valign="top">Hash algorithm used to generate password hashes. Options
-    include 
-    <a href="http://en.wikipedia.org/wiki/Md5">md5</a>, 
-    <a href="http://en.wikipedia.org/wiki/SHA-1">sha1</a>, 
-    <a href="http://en.wikipedia.org/wiki/SHA-2">sha256</a>, 
-    <a href="http://en.wikipedia.org/wiki/SHA-2">sha512</a>, and 
-    <a href="http://en.wikipedia.org/wiki/Blowfish_(cipher)">blowfish</a>. 
-    sha1 is recommended for maximum portability between PHP versions, blowfish 
+    include
+    <a href="http://en.wikipedia.org/wiki/Md5">md5</a>,
+    <a href="http://en.wikipedia.org/wiki/SHA-1">sha1</a>,
+    <a href="http://en.wikipedia.org/wiki/SHA-2">sha256</a>,
+    <a href="http://en.wikipedia.org/wiki/SHA-2">sha512</a>, and
+    <a href="http://en.wikipedia.org/wiki/Blowfish_(cipher)">blowfish</a>.
+    sha1 is recommended for maximum portability between PHP versions, blowfish
     is considered the most secure</td></tr>
 <tr>
   <td valign="top"><a name="desc_pass_stretch">pass_stretch</a></td>
   <td valign="top">4096</td>
-  <td valign="top">The number of iterations of the hash algorithm that should 
-    be applied to the password. Must be greater than 0. See the 
-    <a href="http://en.wikipedia.org/wiki/Key_stretching">wikipedia article</a> 
+  <td valign="top">The number of iterations of the hash algorithm that should
+    be applied to the password. Must be greater than 0. See the
+    <a href="http://en.wikipedia.org/wiki/Key_stretching">wikipedia article</a>
     for more information.</td></tr>
 </table>
 
@@ -1171,10 +1178,10 @@ the admin panel.</p>
   <tr>
     <td valign="top"><a name="desc_remove_4byte_chars">remove_4byte_chars</a></td>
     <td valign="top">true</td>
-    <td valign="top">If set to <code>true</code>, 4-byte utf-8 characters, including emoji icons, will be removed when you call COM_applyBasicFilter(). If set to <code>false</code> 
-      make sure your MySQL Geeklog database, tables and column collations is already set to one that supports multi byte characters. For example if your current collation is 
-      utf8_general_ci, you will want to then convert your database, tables, and columns to the "utf8mb4_general_ci" collation before setting this option to false. If not SQL errors 
-      may happen if someone attempts to save a 4 byte character to the database that is not stripped out of the content. Note: Some third party plugins may not support a mb4 
+    <td valign="top">If set to <code>true</code>, 4-byte utf-8 characters, including emoji icons, will be removed when you call COM_applyBasicFilter(). If set to <code>false</code>
+      make sure your MySQL Geeklog database, tables and column collations is already set to one that supports multi byte characters. For example if your current collation is
+      utf8_general_ci, you will want to then convert your database, tables, and columns to the "utf8mb4_general_ci" collation before setting this option to false. If not SQL errors
+      may happen if someone attempts to save a 4 byte character to the database that is not stripped out of the content. Note: Some third party plugins may not support a mb4
       collation or this config option.</td></tr>
 </table>
 
@@ -1417,7 +1424,7 @@ the admin panel.</p>
   <td valign="top"><em>(disabled)</em></td>
   <td valign="top">When enabled, this option should point to an image (full URL
     required!) that should be displayed for users without a user photo. When
-    this option is not set and a user does not have a user photo (or an <a 
+    this option is not set and a user does not have a user photo (or an <a
     href="#images_gravatar">avatar</a>) then Geeklog will simply not display
     anything.</td></tr>
 </table>
@@ -1470,37 +1477,37 @@ the admin panel.</p>
   <td valign="top">The default language of the Geeklog site. Additional language files may be
     available for download at <a href="https://www.geeklog.net/">https://www.geeklog.net</a>.
     If you translate a language file, please send it to us. Also see <a
-    href="#Localization">Localization</a> below. If you wish to remove languages from this list and what the user can pick from, 
+    href="#Localization">Localization</a> below. If you wish to remove languages from this list and what the user can pick from,
     just delete the corresponding language file(s) from the Geeklog language directory.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_user_language">allow_user_language</a></td>
   <td valign="top">Can be 1 or 0</td>
-  <td valign="top">If set to 1, users can select the language for the site labels from My Account.</td></tr>    
+  <td valign="top">If set to 1, users can select the language for the site labels from My Account.</td></tr>
 <tr>
   <td valign="top"><a name="desc_switchlang_homepage">switchlang_homepage</a></td>
   <td valign="top">Can be 1 or 0</td>
   <td valign="top">If set to 1, the switch language block will always redirect to the homepage. You will want to set this to 1 if you have language specific content on your site
-    (articles, topics, staticpages) that don't have matching corresponding content in all languages that your site supports. For example if you have an English Topic (with id "topic_en") and the user 
-    is on that topic and switches the language to Japanese, if a corresponding topic with the id "topic_ja" does not exist (or the user doesn't have access to it) then a 404 error will result after 
-    the language change.</td></tr>    
+    (articles, topics, staticpages) that don't have matching corresponding content in all languages that your site supports. For example if you have an English Topic (with id "topic_en") and the user
+    is on that topic and switches the language to Japanese, if a corresponding topic with the id "topic_ja" does not exist (or the user doesn't have access to it) then a 404 error will result after
+    the language change.</td></tr>
 <tr>
   <td valign="top"><a name="desc_language_files">language_files</a></td>
   <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
-    shortcuts ('en', 'de', etc.) to the Geeklog language files to use. These shortcuts must each contain the same number of characters and 
+    shortcuts ('en', 'de', etc.) to the Geeklog language files to use. These shortcuts must each contain the same number of characters and
     the language file must exist in the Geeklog languages directory.<br />
-    When creating content that supports multiple langagues (topics, articles, blocks, staticpages, etc.) 
-    you would end the id of the content with one of these shortcuts ('storyid_en' or 'storyid2_de'). This would then map this content to the specific language. 
-    For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br /> 
-    For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages. 
+    When creating content that supports multiple langagues (topics, articles, blocks, staticpages, etc.)
+    you would end the id of the content with one of these shortcuts ('storyid_en' or 'storyid2_de'). This would then map this content to the specific language.
+    For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br />
+    For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
     Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 <tr>
   <td valign="top"><a name="desc_languages">languages</a></td>
   <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the language's native name ("English",
-    "Deutsch", etc.). These shortcuts must match the shortcuts set in the "Language Files" configuration option.<br /> 
-    For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages. 
+    "Deutsch", etc.). These shortcuts must match the shortcuts set in the "Language Files" configuration option.<br />
+    For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
     Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 </table>
 
@@ -1690,7 +1697,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_linktext_maxlen">linktext_maxlen</a></td>
   <td valign="top">50</td>
-  <td valign="top">Maximum text length of clickable URLs. If 0 then there is no maximum length.</td></tr>    
+  <td valign="top">Maximum text length of clickable URLs. If 0 then there is no maximum length.</td></tr>
 <tr>
   <td valign="top"><a name="desc_compressed_output">disable_compressed_output</a></td>
   <td valign="top">false</td>
@@ -1724,12 +1731,12 @@ the admin panel.</p>
         <li>1 or more = Amount of seconds a block will be cached before it is regenerated and saved again to a new cache file.</li>
         <li>0 = Not cached. Block is always regenerated.</li>
         <li>-1 = Always cached and only regenerated when the block is updated and saved through the block editor.</li>
-    </ul></td></tr>  
+    </ul></td></tr>
 <tr>
   <td valign="top"><a name="desc_titletoid">titletoid</a></td>
   <td valign="top">false</td>
-  <td valign="top">Whether or not to automatically create an id based on the title. This is used by the Article, Topic and Staticpage 
-  Editors (and other plugins that support it) and it automatically updates the id field when the user types in a Title.</td></tr>    
+  <td valign="top">Whether or not to automatically create an id based on the title. This is used by the Article, Topic and Staticpage
+  Editors (and other plugins that support it) and it automatically updates the id field when the user types in a Title.</td></tr>
 </table>
 
 <h3><a name="misc_debug">Miscellaneous: Debug</a></h3>
@@ -1878,7 +1885,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_multiple_breadcrumbs">multiple_breadcrumbs</a></td>
   <td valign="top">false</td>
-  <td valign="top">Set this to <code>true</code> to allow multiple breadcrumbs to display if available.</td></tr>    
+  <td valign="top">Set this to <code>true</code> to allow multiple breadcrumbs to display if available.</td></tr>
 <tr>
   <td valign="top"><a name="desc_disable_breadcrumbs_topics">disable_breadcrumbs_topics</a></td>
   <td valign="top">false</td>
@@ -2084,7 +2091,7 @@ you should not normally have to edit this file.</p>
 
 <p>The <span class="tt">siteconfig.php</span> file holds configuration data that can not be
 stored in the database. Again, most of this information is put there during
-the installation and you should not normally have to edit this file.</p> 
+the installation and you should not normally have to edit this file.</p>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
@@ -2150,8 +2157,8 @@ with your site.</p>
 
 <p>This feature enhances the above <a href="#url-rewrite">URL Rewriting</a> feature and makes
     public_html/index.php work like a front controller.  So, in order to use URL Routing feature,
-    you have to enable URL Rewriting beforehand.  Remember URL Routing currently only works with 
-    whatever URL Rewriting supports (articles, topics, static pages, the article directory, and links plugin). 
+    you have to enable URL Rewriting beforehand.  Remember URL Routing currently only works with
+    whatever URL Rewriting supports (articles, topics, static pages, the article directory, and links plugin).
     Currently, the following rules are predefined.</p>
 <table border="1">
     <thead>
@@ -2210,8 +2217,8 @@ with your site.</p>
 <p><strong>Note:</strong> This feature may not work with all web servers. It uses PHP's
     $_SERVER['PATH_INFO'] variable.  Please try it out before you go public with your site.</p>
 <p><strong>Advanced feature:</strong> If you use IIS as a Web server and want to remove "index.php"
-    from URLs you access, you will have to create the appropriate web.config file in the same directory as lib-common.php, with the proper redirects defined. 
-    An example file called "web.config.txt" is included with Geeklog which you can rename to "web.config". It includes the proper rewrite rule along with some 
+    from URLs you access, you will have to create the appropriate web.config file in the same directory as lib-common.php, with the proper redirects defined.
+    An example file called "web.config.txt" is included with Geeklog which you can rename to "web.config". It includes the proper rewrite rule along with some
     other security and optimizing enhancements for your IIS web server.</p>
 <ol>
     <li>Install the rewrite module on your web server if it has not been already (use the Microsoft Web Platform Installer for this).</li>
@@ -2238,12 +2245,12 @@ with your site.</p>
     <li>
         Finally, log in as admin and go to the Configuration screen, and set URL Routing
         to 'Enabled (<strong>without</strong> "index.php")'.
-    </li>    
-</ol>    
+    </li>
+</ol>
 <p><strong>Advanced feature:</strong> If you use Apache as a Web server and want to remove "index.php"
     from URLs you access, you have to do the following things.  <strong>Be warned!</strong>
-    Unless you are familiar with Web server configurations, you might as well not use this feature. An example file called ".htaccess.txt" 
-    is included with Geeklog which you can rename to ".htaccess". It includes the proper rewrite rule along with some other security and 
+    Unless you are familiar with Web server configurations, you might as well not use this feature. An example file called ".htaccess.txt"
+    is included with Geeklog which you can rename to ".htaccess". It includes the proper rewrite rule along with some other security and
     optimizing enhancements for your Apache web server.</p>
 <ol>
     <li>Enable the rewrite module of your web server.  In "httpd.conf", look for<br>

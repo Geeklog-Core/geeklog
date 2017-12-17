@@ -953,21 +953,27 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">300</td>
   <td valign="top">上記のログイン試行回数の制限を超えてログインに失敗した場合、次にログインが可能になるまでの待ち時間を秒単位で指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_invalidloginattempts">invalidloginattempts</a></td>
+  <td valign="top"><a name="desc_invalidloginattempts">ログイン失敗最大回数(invalidloginattempts)</a></td>
   <td valign="top">5</td>
-  <td valign="top">Max. number of invalid login attempts of a user account before an email is sent to the Admin
-   informing them of the situation. This is based on the max time config option below. If this config option is set to 0,
-   then the feature is disabled.</td></tr>
+  <td valign="top">ここで設定した回数を超えてユーザーがログインを失敗すると、管理者に警告メールが送られます。
+    下記の「ログイン失敗警告メール送信待機時間」も関連しています、このオプションを0に設定すると
+    機能が無効になります。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_invalidloginmaxtime">invalidloginmaxtime</a></td>
+  <td valign="top"><a name="desc_invalidloginmaxtime">ログイン失敗警告メール送信待機時間(invalidloginmaxtime)</a></td>
   <td valign="top">1200</td>
-  <td valign="top">How many seconds have to pass before an email is sent to the Admin about the max number of
-   invalid login attempts for the user.  If the threshold is reached an email will be sent to the Admin 
-   regarding a possible hack attempt of the account. One thing you need to take into consideration when specifying 
-   this time is the Login Speed Limit config option. With the current default setting for Login Speed Limit and 
-   Invalid Login Attempts, the Login Speed Limit can be triggered twice before the Invalid Login can get triggered. 
-   If the Login Speed Limit is set to high then it is possible that Invalid Login Attempts may never get triggered. 
-   If this config option is set to 0, then the feature is disabled.</td></tr>
+  <td valign="top">上記のログイン失敗最大回数を超えた後でこのオプションで設定した秒数が経過すると、管理者に
+  ログイン失敗回数をメールで通知します。制限値に達すると、当該アカウントが攻撃されている可能性を
+  管理者に通知します。この項目を設定する際には「ログイン試行制限間隔」を考慮してください。
+  「ログイン試行制限間隔」が既定値の場合、ログインが無効になる前にログイン試行制限が2回発動します。
+  「ログイン試行制限間隔」に大きな数値を指定すると、ログインが無効にならない可能性があります。
+   この項目を0に設定すると、機能が無効になります。</td></tr>
+<tr>
+    <td valign="top"><a name="desc_enable_twofactorauth">2段階認証を有効にする(enable_twofactorauth)</a></td>
+    <td valign="top">いいえ</td>
+    <td valign="top">このオプションを「はい」にすると、2段階認証が有効になります。
+    各ユーザーが2段階認証を利用するには、マイアカウントで2段階認証を有効にし、スマートフォンなどに
+    <a href="https://github.com/google/google-authenticator/wiki">Google Authenticator</a>アプリをインストールする
+    必要があります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_pass_alg">パスワードのハッシュアルゴリズム(pass_alg)</a></td>
   <td valign="top">sha1</td>
