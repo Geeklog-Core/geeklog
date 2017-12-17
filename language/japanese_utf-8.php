@@ -1220,8 +1220,8 @@ $LANG29 = array(
     'tools' => 'ツール',
     'users' => 'ユーザー',
     'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。投稿を一括して承認・削除するには、リストのラジオボタンを選択してから保存をクリックしてください。',
-    'max_invalid_login' => 'Max Invalid Logins Reached for User',
-    'max_invalid_login_msg' => "This user has reached the maximum number of invalid login attempts ({$_CONF['invalidloginattempts']}) within the specified time limit ({$_CONF['invalidloginmaxtime']} seconds). The last IP to make an invalid login attempt is %s. Either the real user has forgotten the password for their account, or someone else is attempting to guess the password for this user account."
+    'max_invalid_login' => 'ログイン失敗最大回数',
+    'max_invalid_login_msg' => "このユーザーは、指定時間内(({$_CONF['invalidloginmaxtime']}秒))にログイン失敗最大回数({$_CONF['invalidloginattempts']}回)に達しました。最後にログインに失敗したIPは %s です。登録ユーザーがパスワードを忘れたのかもしれませんが、誰かがこのユーザーのアカウントのパスワードを推測しようとしているのかもしれません。"
 );
 
 ###############################################################################
@@ -1566,14 +1566,14 @@ $MESSAGE = array(
     142 => 'コメントを承認しました。',
     143 => 'ユーザーを禁止しました。',
     144 => 'IPアドレスをSpam-Xプラグインで禁止しました。',
-    145 => 'Banned IP addresses with the Ban plugin.',
+    145 => 'BanプラグインでIPアドレスを禁止しました。',
     150 => 'インストール時に使用したすべてのファイルとディレクトリを削除しました。',
     151 => 'インストール時に使用したファイルとディレクトリを削除しようとしましたが、一部を削除できませんでした。お手数ですが、手動で削除してください。',
     152 => 'インストール時に使用したすべてのファイルとディレクトリはそのまま残っています。このまま残しておくのは危険なので、お手数ですが、手動で削除してください。',
     153 => 'あなたは %1$d 秒前に友だちに記事を送信しています。次に送信する前に %2$d 秒以上あけてください。',
     400 => '検証に通っていない必須のフィールドがあります。',
     401 => '氏名を入力してください。',
-    500 => 'The Data, Template, Resource, and File Manager Cache has been successfully cleared.'
+    500 => 'データ、テンプレート、リソース、ファイルマネージャーのキャッシュファイルを削除しました。'
 );
 
 ###############################################################################
@@ -1589,7 +1589,7 @@ $LANG_ACCESS = array(
     'permmsg' => '注意: メンバーとはすべてのログインしているサイトのメンバーで、ゲストユーザーはログインせずにアクセスしているすべての利用者です。',
     'securitygroups' => 'セキュリティグループ',
     'editrootmsg' => "管理権限を持っていても、rootユーザーにならずにrootユーザーの編集はできません。rootを除いた他のすべてのユーザーを編集できます。不正にrootユーザーを編集しようする試みはすべて記録していることに注意してください。<a href=\"{$_CONF['site_admin_url']}/user.php\">ユーザー管理ページ</a>に戻る",
-    'securitygroupsmsg' => 'Select the checkboxes for the groups you want the user to belong too. Groups that are checked but disabled are either core groups that are required or are inherited groups from other groups that user directly belongs too.',
+    'securitygroupsmsg' => 'ユーザーを所属させたいグループのチェックボックスにチェックを入れてください。チェックが入っているが選択不可になっているグループは、必要なコアグループかユーザーが直接所属しているグループから継承されているグループです。',
     'groupeditor' => 'グループの編集',
     'description' => '説明',
     'name' => '名前',
@@ -2102,11 +2102,11 @@ $LANG_confignames['Core'] = array(
     'path_themes' => 'テーマのパス',
     'cache_templates' => 'テンプレートをキャッシュする',
     'cache_mobile' => 'モバイル用のコンテンツを別にキャッシュする',
-    'cache_resource' => "Combine, Minify and Cache CSS and JavaScript Files?",
+    'cache_resource' => "CSSとJavaScriptファイルをひとまとめにして圧縮しキャッシュする",
     'disable_new_user_registration' => '新規ユーザー登録を停止する',
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
-    'switchlang_homepage' => 'Switch Language Block Redirects to Homepage',
+    'switchlang_homepage' => '言語切り替えブロックからトップページへリダイレクトする',
     'allow_user_photo' => '写真登録を許可する',
     'allow_username_change' => 'ユーザー名変更を許可する',
     'allow_account_delete' => 'アカウント削除を許可する',
@@ -2292,8 +2292,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',
-    'invalidloginattempts' => "Max. Invalid Login Attempts",
-    'invalidloginmaxtime' => "Invalid Login Max Time",
+    'invalidloginattempts' => "ログイン失敗最大回数",
+    'invalidloginmaxtime' => "ログイン失敗警告メール送信待機時間",
     'enable_twofactorauth' => '2段階認証を有効にする',
     'pass_alg' => 'パスワードのハッシュアルゴリズム',
     'pass_stretch' => 'ハッシュストレッチカウント',
@@ -2583,4 +2583,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-
