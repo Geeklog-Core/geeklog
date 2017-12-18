@@ -6234,6 +6234,47 @@ function COM_dateDiff($interval, $date1, $date2)
 }
 
 /**
+ * Delete all files and folders in a folder except those specified otherwise
+ *
+ * @since  Geeklog-2.2.0
+ * @param  string   $dir            Directory to clean of files and folders
+ * @param  array    $leave_dirs     Array of directory names to not delete
+ * @param  array    $leave_files    Array of file names to not delete
+ * @return nothing
+ */
+function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array()) { 
+
+    foreach( glob("$dir/*") as $file ) {
+        if (is_dir($file)) {
+            if (!in_array(basename($file), $leave_dirs)) {
+                COM_deleteFiles($file); // delete all sub directories and files in those directories
+            }
+        } elseif( !in_array(basename($file), $leave_files) ) {
+            unlink($file);
+        }
+    }
+}
+
+/**
+ * Delete all files and folders including original folder (recursive calls)
+ *
+ * @since  Geeklog-2.2.0
+ * @param  string   $dir            Directory to clean of files and folders
+ * @return nothing
+ */
+function COM_deleteFiles($dir) { 
+  
+    foreach(glob($dir . '/*') as $file) { 
+        if (is_dir($file)) {
+            COM_deleteFiles($file); 
+        } else {
+            unlink($file); 
+        }
+    } 
+    rmdir($dir); 
+}
+
+/**
  * Determine if running via AJAX call
  *
  * @since  Geeklog-2.1.2
