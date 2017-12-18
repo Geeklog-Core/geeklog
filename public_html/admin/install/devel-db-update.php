@@ -93,6 +93,20 @@ function update_DatabaseFor220()
     // Add columns to track invalid user login attempts
     $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `invalidlogins` SMALLINT NOT NULL DEFAULT '0' AFTER `num_reminders`";
     $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `lastinvalid` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `invalidlogins`";
+    
+    // Add columns for two factor authentication
+    $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `twofactorauth_enabled` TINYINT(3) NOT NULL DEFAULT 0 AFTER `lastinvalid`";
+    $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `twofactorauth_secret` VARCHAR(255) NOT NULL DEFAULT '' AFTER `twofactorauth_enabled`";    
+    
+    // Add a table to store backup codes for two factor authentication
+    $_SQL[] = "
+    CREATE TABLE IF NOT EXISTS {$_TABLES['backup_codes']} (
+      code VARCHAR(16) NOT NULL UNIQUE,
+      uid MEDIUMINT(8) NOT NULL DEFAULT 0,
+      is_used TINYINT(1) NOT NULL DEFAULT 0,
+      PRIMARY KEY (code)
+    ) ENGINE=MyISAM
+    ";    
 
     // Add theme admin
     $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_name='Theme Admin'");
