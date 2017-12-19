@@ -33,6 +33,7 @@
 namespace Geeklog;
 
 use JSMin\JSMin;
+use MatthiasMullie\Minify;
 
 class Resource
 {
@@ -694,17 +695,28 @@ class Resource
             return $retval;
         }
 
+        $isUseMinify = false;
+        $min = new Minify\CSS();
         $contents = '';
         $relativePaths = array();
 
         // Concatenate all CSS files
         foreach ($files as $file) {
-            $chunk = @file_get_contents($this->config['path_html'] . $file['file']);
+            if (preg_match('@min\.css$@', $file['file'])) {
+                $chunk = @file_get_contents($this->config['path_html'] . $file['file']);
 
-            if ($chunk !== false) {
-                $relativePaths[] = $file['file'];
-                $contents .= $chunk . PHP_EOL;
+                if ($chunk !== false) {
+                    $relativePaths[] = $file['file'];
+                    $contents .= $chunk . PHP_EOL;
+                }
+            } else {
+                $min->add($this->config['path_html'] . $file['file']);
+                $isUseMinify = true;
             }
+        }
+
+        if ($isUseMinify) {
+            $contents .= $min->execute($this->config['path_html']);
         }
 
         $theme = strtolower($this->config['theme']);
@@ -724,25 +736,8 @@ class Resource
             $contents = str_replace(array('{left}', '{right}'), array($left, $right), $contents);
         }
 
-        // Rewrite image paths
-        $contents = str_ireplace('url("./images/', 'url("layout/' . $theme . '/images/', $contents);
-        $contents = str_ireplace("url('./images/", "url('layout/" . $theme . "/images/", $contents);
-        $contents = str_ireplace('url(./images/', 'url(layout/' . $theme . '/images/', $contents);
-        $contents = str_ireplace('url("../images/', 'url("layout/' . $theme . '/images/', $contents);
-        $contents = str_ireplace("url('../images/", "url('layout/" . $theme . "/images/", $contents);
-        $contents = str_ireplace('url(../images/', 'url(layout/' . $theme . "/images/", $contents);
-        $contents = str_ireplace("url('jquery_ui/images/", "url('layout/" . $theme . "/jquery_ui/images/", $contents);
-        $contents = str_ireplace('url("../fonts/', 'url("vendor/uikit/fonts/', $contents);
-        $contents = str_ireplace('url(../fonts/', 'url(vendor/uikit/fonts/', $contents);
-
         // Unify lien ends
         $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
-
-        // strip comments
-        $contents = preg_replace("@/\*[^!].*?\*/@sm", '', $contents);
-
-        // strip indentation
-        $contents = preg_replace("@\s*\n+\s*@sm", "\n", $contents);
 
         $key = $this->makeCacheKey($relativePaths) . $dir;
         $data = array(
