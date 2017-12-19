@@ -90,7 +90,7 @@ function update_ConfValuesFor220()
     $c->add('langurl_article',array('', 'article.php', 'story'),'@hidden',7,31,1,1830,TRUE, $me, 31);     
 
     // Add a config option to decide whether to globally allow two factor auth
-    $c->add('enable_twofactorauth',0,'select',4,18,NULL,1730,TRUE, $me, 18);
+    $c->add('enable_twofactorauth',0,'select',4,18,0,1730,TRUE, $me, 18);
 
     return true;
 }

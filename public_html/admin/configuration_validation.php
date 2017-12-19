@@ -360,6 +360,7 @@ $_CONF_VALIDATE['Core']['login_attempts'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['login_speedlimit'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['invalidloginattempts'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['invalidloginmaxtime'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['enable_twofactorauth'] = array('rule' => 'boolean');
 
 /* Subgroup User and Submissions, Tab Login Settings, Fieldset Password */
 $_CONF_VALIDATE['Core']['pass_alg'] = array(
