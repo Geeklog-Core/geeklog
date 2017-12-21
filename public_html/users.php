@@ -112,6 +112,9 @@ function USER_requestPassword($username)
         $A = DB_fetchArray($result);
         if (($_CONF['usersubmission'] == 1) && ($A['status'] == USER_ACCOUNT_AWAITING_APPROVAL)) {
             COM_redirect($_CONF['site_url'] . '/index.php?msg=48');
+        } elseif (($_CONF['usersubmission'] == 0) && ($A['status'] != USER_ACCOUNT_ACTIVE || $A['status'] != USER_ACCOUNT_AWAITING_APPROVAL)) {
+            // Don't send password for these accounts with statuses of Locked, Disabled, New Email, New Password
+            COM_redirect($_CONF['site_url'] . '/index.php?msg=47');
         }
         $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
         DB_change($_TABLES['users'], 'pwrequestid', "$reqid",
@@ -153,7 +156,7 @@ function USER_requestPassword($username)
  * @param  string $requestId request id for password change
  * @return string             new password form
  */
-function USER_newPasswordForm($uid, $requestId)
+function USER_newPasswordForm($uid, $requestId = "")
 {
     global $_CONF, $_TABLES, $LANG04;
 
@@ -162,9 +165,16 @@ function USER_newPasswordForm($uid, $requestId)
 
     $passwordForm->set_var('user_id', $uid);
     $passwordForm->set_var('user_name', DB_getItem($_TABLES['users'], 'username', "uid = '{$uid}'"));
-    $passwordForm->set_var('request_id', $requestId);
-
-    $passwordForm->set_var('lang_explain', $LANG04[90]);
+    if (!empty($requestId)) {
+        // Used for form if User requests to set a new password
+        $passwordForm->set_var('request_id', $requestId);
+        $passwordForm->set_var('lang_explain', $LANG04[90]);
+        $passwordForm->set_var('mode', 'setnewpwd');
+    } else {
+        // Used for form if User status is set to require a new password on next login
+        $passwordForm->set_var('lang_explain', $LANG04['desc_new_pwd_status']);
+        $passwordForm->set_var('mode', 'setnewpwdstatus');
+    }
     $passwordForm->set_var('lang_username', $LANG04[2]);
     $passwordForm->set_var('lang_newpassword', $LANG04[4]);
     $passwordForm->set_var('lang_newpassword_conf', $LANG04[108]);
@@ -998,7 +1008,7 @@ switch ($mode) {
             );
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG12[26]));
         } else {
-            $userName = Geeklog\Input::fPost('username');
+            $username = Geeklog\Input::fPost('username');
             $email = Geeklog\Input::fPost('email');
             if (empty($username) && !empty($email)) {
                 $username = DB_getItem($_TABLES['users'], 'username',
@@ -1012,6 +1022,33 @@ switch ($mode) {
         }
         break;
 
+    case 'newpwdstatus':
+        if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
+            $display .= USER_newPasswordForm($_USER['uid']);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[92]));
+        } else {
+            // this request doesn't make sense - ignore it
+            COM_redirect($_CONF['site_url'] . '/index.php');
+        }
+        break;
+
+    case 'setnewpwdstatus':
+        if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
+            if ((empty($_POST['passwd'])) || ($_POST['passwd'] != $_POST['passwd_conf'])) {
+                COM_redirect($_CONF['site_url'] . '/users.php?mode=newpwdstatus');
+            } else {
+                SEC_updateUserPassword(Geeklog\Input::post('passwd'), $_USER['uid']);
+                DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);
+                DB_delete($_TABLES['sessions'], 'uid', $_USER['uid']);
+                COM_redirect($_CONF['site_url'] . '/users.php?msg=53');
+            }
+        } else {
+            // this request doesn't make sense - ignore it
+            COM_redirect($_CONF['site_url'] . '/index.php');
+        }
+
+        break;        
+        
     case 'new':
         if ($_CONF['disable_new_user_registration']) {
             $display .= COM_showMessageText($LANG04[122], $LANG04[22]);
@@ -1031,7 +1068,6 @@ switch ($mode) {
     case 'twofactorauth':
         $display = USER_tryTwoFactorAuth();
         break;
-
     case 'tokenexpired':
         // deliberate fallthrough (see below)
     default:
@@ -1167,7 +1203,7 @@ switch ($mode) {
             $status = -2; // User just visited login page no error. -1 = error
         }
 
-        if ($status == USER_ACCOUNT_ACTIVE) { // logged in AOK.
+        if ($status == USER_ACCOUNT_ACTIVE OR $status == USER_ACCOUNT_NEW_EMAIL OR $status == USER_ACCOUNT_NEW_PASSWORD) { // logged in AOK.
             if ($mode === 'tokenexpired') {
                 USER_resendRequest(); // won't come back
             }
@@ -1180,8 +1216,10 @@ switch ($mode) {
                 $content = USER_getTwoFactorAuthForm();
                 $display = COM_createHTMLDocument($content, array());
             } else {
-                USER_doLogin();
+                USER_doLogin(); // Never return
             }
+        }elseif ($status == USER_ACCOUNT_LOCKED) {
+            COM_redirect($_CONF['site_url'] . '/index.php?msg=17');  
         } else {
             $display = USER_loginFailed($loginname, $passwd, $service, $mode, $status);
         }

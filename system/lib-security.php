@@ -62,11 +62,14 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
-/* Constants for account stats */
+/* Constants for account status */
 define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
-define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login.
+define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login. Email has been sent
 define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
-define('USER_ACCOUNT_ACTIVE', 3); // active account
+define('USER_ACCOUNT_ACTIVE', 3); // Active account
+define('USER_ACCOUNT_LOCKED', 4); // Account is locked. User cannot login, emails to account is disabled
+define('USER_ACCOUNT_NEW_EMAIL', 5); // Emails to account is disabled. User when login must submit new email address and verify before access to rest of website (under the user account)
+define('USER_ACCOUNT_NEW_PASSWORD', 6); // User when login must submit new password before access to rest of website (under the user account), Only for regular accounts and not remote
 
 /* Constant for Security Token */
 if (!defined('CSRF_TOKEN')) {
@@ -798,6 +801,12 @@ function SEC_authenticate($username, $password, &$uid)
                 'username', $username);
 
             return USER_ACCOUNT_ACTIVE;
+        } elseif ($U['status'] == USER_ACCOUNT_LOCKED) {
+            return USER_ACCOUNT_LOCKED;
+        } elseif ($U['status'] == USER_ACCOUNT_NEW_EMAIL) {
+            return USER_ACCOUNT_NEW_EMAIL;
+        } elseif ($U['status'] == USER_ACCOUNT_NEW_PASSWORD) {
+            return USER_ACCOUNT_NEW_PASSWORD;            
         } else {
             return $U['status']; // just return their status
         }

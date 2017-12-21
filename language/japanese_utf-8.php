@@ -456,7 +456,8 @@ $LANG04 = array(
     'tfa_backup_code' => 'バックアップコード',
     'tfa_download' => 'バックアップコードをダウンロード',
     'tfa_new_backup_code' => 'バックアップコードを生成し直す',
-    'tfa_generate_confirm' => '実行してもよいですか?'
+    'tfa_generate_confirm' => '実行してもよいですか?',
+    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>'    
 );
 
 ###############################################################################
@@ -1182,7 +1183,10 @@ $LANG28 = array(
     89 => '新規登録ユーザーのデフォルトグループをチェック',
     90 => '登録済みユーザーアカウントにデフォルトグループを追加する',
     91 => 'パスワードをメールで送信する',
-    'autotag_desc_user' => '[user: name alternate title] - ユーザー名をタイトルとしてユーザーへのリンクを表示します。別のタイトルを指定できますが、必須ではありません。'
+    'autotag_desc_user' => '[user: name alternate title] - ユーザー名をタイトルとしてユーザーへのリンクを表示します。別のタイトルを指定できますが、必須ではありません。',
+    'USER_ACCOUNT_LOCKED' => 'Locked',
+    'USER_ACCOUNT_NEW_EMAIL' => 'New Email Required',
+    'USER_ACCOUNT_NEW_PASSWORD' => 'New Password Required'
 );
 
 ###############################################################################
@@ -1460,7 +1464,7 @@ $MESSAGE = array(
     14 => '話題とその話題に属するすべての記事とブロックを削除しました',
     15 => 'あなたのコメントは投稿済みです。管理者の承認後に公開されます。',
     16 => 'あなたは登録を解除しました。今後、新たな通知を受けることはありません。',
-    17 => '',
+    17 => 'Your user account has been locked and access to it has been disabled. For more information please contact the Admin.',
     18 => '',
     19 => '',
     20 => '',
@@ -1490,7 +1494,7 @@ $MESSAGE = array(
     44 => 'プラグインをインストールしました!',
     45 => 'プラグインを削除しました。',
     46 => '',
-    47 => '',
+    47 => 'Sorry you cannot currently request the password for your account. For more information please contact the Admin.',
     48 => "{$_CONF['site_name']}にご登録ありがとうございます。管理者の間で審査します。登録を承認すると、あなたの入力したメールアドレスにパスワードを送信します。",
     49 => 'グループを保存しました。',
     50 => 'グループを削除しました。',

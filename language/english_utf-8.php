@@ -448,7 +448,8 @@ $LANG04 = array(
     'tfa_backup_code' => 'Backup Codes',
     'tfa_download' => 'Download Backup Codes',
     'tfa_new_backup_code' => 'Generate a new set of backup codes',
-    'tfa_generate_confirm' => 'Go ahead?'
+    'tfa_generate_confirm' => 'Go ahead?',
+    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>'
 );
 
 ###############################################################################
@@ -1178,7 +1179,10 @@ $LANG28 = array(
     89 => 'Check to make this a default group for new users',
     90 => 'Apply "Default Group" change to existing user accounts',
     91 => 'Send password to user',
-    'autotag_desc_user' => '[user: name alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_user' => '[user: name alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.',
+    'USER_ACCOUNT_LOCKED' => 'Locked',
+    'USER_ACCOUNT_NEW_EMAIL' => 'New Email Required',
+    'USER_ACCOUNT_NEW_PASSWORD' => 'New Password Required'
 );
 
 ###############################################################################
@@ -1459,7 +1463,7 @@ $MESSAGE = array(
     14 => 'The topic and all its articles and blocks have been successfully deleted.',
     15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
     16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
-    17 => '',
+    17 => 'Your user account has been locked and access to it has been disabled. For more information please contact the Admin.',
     18 => '',
     19 => '',
     20 => '',
@@ -1471,7 +1475,7 @@ $MESSAGE = array(
     26 => '',
     27 => 'Message successfully sent.',
     28 => 'The plugin has been successfully saved',
-    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
+    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged.',
     30 => 'Access Denied',
     31 => '',
     32 => '',
@@ -1489,7 +1493,7 @@ $MESSAGE = array(
     44 => 'The plugin was successfully installed!',
     45 => 'The plugin was successfully deleted.',
     46 => '',
-    47 => '',
+    47 => 'Sorry you cannot currently request the password for your account. For more information please contact the Admin.',
     48 => "Thank you for applying for a membership with {$_CONF['site_name']}. Our team will review your application. If approved, your password will be emailed to you at the email address you just entered.",
     49 => 'Your group has been successfully saved.',
     50 => 'The group has been successfully deleted.',

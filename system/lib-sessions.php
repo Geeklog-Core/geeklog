@@ -102,7 +102,10 @@ function SESS_sessionCheck()
             // Check user status
             $status = SEC_checkUserStatus($userid);
             if (($status == USER_ACCOUNT_ACTIVE) ||
-                    ($status == USER_ACCOUNT_AWAITING_ACTIVATION)) {
+                    ($status == USER_ACCOUNT_AWAITING_ACTIVATION ||
+                    $status == USER_ACCOUNT_LOCKED ||
+                    $status == USER_ACCOUNT_NEW_EMAIL ||
+                    $status == USER_ACCOUNT_NEW_PASSWORD)) {
                 SESS_updateSessionTime($sessid, $_CONF['cookie_ip']);
                 $_USER = SESS_getUserDataFromId($userid);
                 if ($_SESS_VERBOSE) {
@@ -208,6 +211,25 @@ function SESS_sessionCheck()
     }
 
     $_USER['session_id'] = $sessid;
+    
+    // Check to see if user status is set to something we have to redirect the user too
+    if ($_USER['uid'] > 1) {
+        if ($_USER['status'] == USER_ACCOUNT_LOCKED) {
+            // Account is locked so user shouldn't be logged in
+            COM_redirect($_CONF['site_url'] . '/users.php?mode=logout');  
+        } elseif ($status == USER_ACCOUNT_NEW_EMAIL ||  $status == USER_ACCOUNT_NEW_PASSWORD) {
+            // Account requires additional info so get it
+            if ($_SERVER['PHP_SELF'] != '/users.php') {
+                if ($status == USER_ACCOUNT_NEW_EMAIL) {
+                    COM_redirect($_CONF['site_url'] . '/users.php?mode=newemailstatus');
+                } elseif ($status == USER_ACCOUNT_NEW_PASSWORD) {
+                    COM_redirect($_CONF['site_url'] . '/users.php?mode=newpwdstatus');
+                }
+            }
+            
+        }      
+    }
+
 }
 
 /**

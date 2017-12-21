@@ -291,23 +291,29 @@ function edituser($uid = 0, $msg = 0)
         USER_ACCOUNT_ACTIVE              => $LANG28[45],
     );
 
-    $allow_ban = true;
-
+    $allow_other_statuses = true;
+    // do not allow to ban yourself or forcing new email or password
     if (!empty($uid)) {
         if ($A['uid'] == $_USER['uid']) {
-            $allow_ban = false; // do not allow to ban yourself
+            $allow_other_statuses = false; // do not allow to ban yourself or forcing new email or password
         } elseif (SEC_inGroup('Root', $A['uid'])) { // editing a Root user?
             $count_root_sql = "SELECT COUNT(ug_uid) AS root_count FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 1 GROUP BY ug_uid;";
             $count_root_result = DB_query($count_root_sql);
             $C = DB_fetchArray($count_root_result); // how many are left?
             if ($C['root_count'] < 2) {
-                $allow_ban = false; // prevent banning the last root user
+                $allow_other_statuses = false; // prevent banning the last root user
             }
         }
     }
 
-    if ($allow_ban) {
+    if ($allow_other_statuses) {
         $statusarray[USER_ACCOUNT_DISABLED] = $LANG28[42];
+        $statusarray[USER_ACCOUNT_LOCKED] = $LANG28['USER_ACCOUNT_LOCKED'];
+        $statusarray[USER_ACCOUNT_NEW_EMAIL] = $LANG28['USER_ACCOUNT_NEW_EMAIL'];
+        // Only for non remote accounts
+        if (empty($A['remoteservice'])) {
+            $statusarray[USER_ACCOUNT_NEW_PASSWORD] = $LANG28['USER_ACCOUNT_NEW_PASSWORD'];
+        }
     }
 
     if (($_CONF['usersubmission'] == 1) && !empty($uid)) {
@@ -550,6 +556,11 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
     if (!empty($service)) {
         $passwd = '';
         $passwd_conf = '';
+            
+        // Make sure User Status is not some how USER_ACCOUNT_NEW_PASSWORD for remote users
+        if ($userstatus == USER_ACCOUNT_NEW_PASSWORD) {
+             $userstatus = USER_ACCOUNT_ACTIVE;   
+        }
     }
 
     $passwd_changed = true;
@@ -697,6 +708,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             $username = GLText::remove4byteUtf8Chars($username);
             $username = DB_escapeString($username);
             $curphoto = DB_escapeString($curphoto);
+
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
             DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
             if ($passwd_changed && !empty($passwd)) {
@@ -710,6 +722,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             ) {
                 USER_createAndSendPassword($username, $email, $uid);
             }
+            
             if ($userstatus == USER_ACCOUNT_DISABLED) {
                 SESS_endUserSession($uid);
             }

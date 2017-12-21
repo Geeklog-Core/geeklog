@@ -3464,7 +3464,36 @@ function COM_formatEmailAddress($name, $address)
  */
 function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
-    return Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+    global $_TABLES;
+    
+    // Need to check email address to ensure they are not from accounts that have a status of locked or new email. If so we need to remove them so no email sent
+    // Email addresses without accounts are not affected
+    if (is_array($to)) {
+        foreach($to as $key => $value) {
+            $email = $key;
+            // If no status exists then assume no user account and email is being sent to someone else (which is fine and should be sent)
+            $status = DB_getItem($_TABLES['users'], 'status', "email = '$email'");
+            if ($status == USER_ACCOUNT_DISABLED || $status == USER_ACCOUNT_LOCKED || $status = USER_ACCOUNT_NEW_EMAIL) {
+                unset($array[$key]);
+            }
+        }
+        if (count($to) > 0) {
+            return Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+        } else {
+            return false;
+        }
+    } else {
+        $email = $to;
+        // If no status exists then assume no user account and email is being sent to someone else (which is fine and should be sent)
+        $status = DB_getItem($_TABLES['users'], 'status', "email = '$email'");
+        
+        if ($status != USER_ACCOUNT_DISABLED && $status != USER_ACCOUNT_LOCKED && $status != USER_ACCOUNT_NEW_EMAIL) {
+            return Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+        } else {
+            return false;
+        }
+        
+    }
 }
 
 /**
