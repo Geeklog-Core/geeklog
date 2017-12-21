@@ -190,19 +190,24 @@ function contactform($uid, $cc = false, $subject = '', $message = '')
         $continue = false;
         $msg_no_mail = $LANG08[35];
 
-        $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE uid = '$uid'");
+        $result = DB_query("SELECT email, status FROM {$_TABLES['users']} WHERE uid = '$uid'");
         $nrows = DB_numRows($result);                                     
         
         if ($nrows == 1) {
             $P = DB_fetchArray($result);
-            if (!empty($P['email'])) {
-                if (COM_isEMail($P['email'])) {
-                    $continue = true;
+            
+            if ($P['status'] == USER_ACCOUNT_ACTIVE || $P['status'] == USER_ACCOUNT_NEW_PASSWORD) {
+                if (!empty($P['email'])) {
+                    if (COM_isEMail($P['email'])) {
+                        $continue = true;
+                    } elseif ($isAdmin) {
+                        $msg_no_mail = $LANG08[43]; // Email invalid
+                    }
                 } elseif ($isAdmin) {
-                    $msg_no_mail = $LANG08[43]; // Email invalid
+                    $msg_no_mail = $LANG08[42]; // Email doesn't exist
                 }
             } elseif ($isAdmin) {
-                $msg_no_mail = $LANG08[42]; // Email doesn't exist
+                $msg_no_mail = $LANG08[44]; // User Status issues, assume bad email
             }
         } elseif ($isAdmin) {
             $msg_no_mail = $LANG08[41]; // User doesn't exist

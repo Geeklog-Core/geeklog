@@ -525,7 +525,8 @@ $LANG08 = array(
     40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages", 
     41 => "This user doesn't exist.", 
     42 => "This users email address doesn't exist. This most likely means is is an OAuth user account.",
-    43 => 'This users email address is invalid.'
+    43 => 'This users email address is invalid.',
+    44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.'
 );
 
 ###############################################################################

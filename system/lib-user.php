@@ -999,7 +999,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('user_id', $uid);
     $user_templates->set_var('uid', $uid);
 
-    if (!empty($A['email']) && USER_isCanSendMail($uid)) {
+    if (!empty($A['email']) && USER_isCanSendMail($uid) && ($A['status'] == USER_ACCOUNT_ACTIVE || $A['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
         $user_templates->set_var('lang_sendemail', $LANG04[81]);
         $user_templates->set_var('email_option', true);
     } else {
