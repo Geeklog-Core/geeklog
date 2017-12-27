@@ -214,20 +214,22 @@ function SESS_sessionCheck()
     
     // Check to see if user status is set to something we have to redirect the user too
     if ($_USER['uid'] > 1) {
-        // Check if user has email account and if required
-        if ($_CONF['require_user_email'] && empty($_USER['email'])) {
-            $needEmail = true;
-        } else {
-            $needEmail = false;
+        // Check if active user has email account and if required
+        // Doesn't matter if remote account or not
+        if ($_CONF['require_user_email'] && empty($_USER['email']) && $_USER['status'] == USER_ACCOUNT_ACTIVE) {
+            $_USER['status'] = USER_ACCOUNT_NEW_EMAIL;
+            DB_change($_TABLES['users'], 'status', USER_ACCOUNT_NEW_EMAIL, 'uid', $_USER['uid']);
         }
         
         if ($_USER['status'] == USER_ACCOUNT_LOCKED) {
             // Account is locked so user shouldn't be logged in
-            COM_redirect($_CONF['site_url'] . '/users.php?mode=logout');  
-        } elseif ($needEmail || $_USER['status']  == USER_ACCOUNT_NEW_EMAIL || $_USER['status'] == USER_ACCOUNT_NEW_PASSWORD) {
+            if ($_SERVER['PHP_SELF'] != '/users.php') {
+                COM_redirect($_CONF['site_url'] . '/users.php?mode=logout&msg=17');  
+            }
+        } elseif ($_USER['status']  == USER_ACCOUNT_NEW_EMAIL || $_USER['status'] == USER_ACCOUNT_NEW_PASSWORD) {
             // Account requires additional info so get it
             if ($_SERVER['PHP_SELF'] != '/users.php') {
-                if ($needEmail || $_USER['status']  == USER_ACCOUNT_NEW_EMAIL) {
+                if ($_USER['status']  == USER_ACCOUNT_NEW_EMAIL) {
                     COM_redirect($_CONF['site_url'] . '/users.php?mode=newemailstatus');
                 } elseif ($status == USER_ACCOUNT_NEW_PASSWORD) {
                     COM_redirect($_CONF['site_url'] . '/users.php?mode=newpwdstatus');

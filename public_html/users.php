@@ -69,7 +69,7 @@ function USER_emailPassword($username, $msg = 0)
 
     $username = DB_escapeString($username);
     // don't retrieve any remote users!
-    $result = DB_query("SELECT uid,email,status FROM {$_TABLES['users']} WHERE username = '$username' AND ((remoteservice is null) OR (remoteservice = ''))");
+    $result = DB_query("SELECT uid,email,status FROM {$_TABLES['users']} WHERE username = '$username' AND ((remoteservice is NULL) OR (remoteservice = ''))");
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
         $A = DB_fetchArray($result);
@@ -242,6 +242,7 @@ function USER_emailConfirmation($email)
             }
             $emailconfirmid = substr(md5(uniqid(rand(), 1)), 1, 16);
             DB_change($_TABLES['users'], 'emailconfirmid', "$emailconfirmid", 'uid', $uid);
+            DB_change($_TABLES['users'], 'emailtoconfirm', "$email", 'uid', $uid);
 
             $mailtext = sprintf($LANG04['email_msg_email_status_1'], $_USER['username']);
             $mailtext .= $_CONF['site_url'] . '/users.php?mode=newemailstatus&uid=' . $uid . '&ecid=' . $emailconfirmid . "\n\n";
@@ -263,8 +264,6 @@ function USER_emailConfirmation($email)
                 $redirect = $_CONF['site_url'] . "/users.php?mode=newemailstatus&msg=85";    
             }
             
-            // Update new email after so it doesn't affect com_mail status check
-            DB_change($_TABLES['users'], 'email', "$email", 'uid', $uid);
 
             // Email sent so to confirm new email address so now logoff and tell user go check inbox
             COM_redirect($redirect);            
@@ -1075,8 +1074,7 @@ switch ($mode) {
                     SEC_updateUserPassword(Geeklog\Input::post('passwd'), $uid);
 
                     DB_delete($_TABLES['sessions'], 'uid', $uid);
-                    DB_change($_TABLES['users'], 'pwrequestid', "NULL",
-                        'uid', $uid);
+                    DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
                     COM_redirect($_CONF['site_url'] . '/users.php?msg=53');
                 } else { // request invalid or expired
                     $display .= COM_showMessage(54);
@@ -1155,11 +1153,14 @@ switch ($mode) {
         if (!empty($uid) && ($uid > 0) && !empty($ecid) && (strlen($ecid) === 16)) {
             $valid = DB_count($_TABLES['users'], array('uid', 'emailconfirmid'), array($uid, $ecid));
             if ($valid == 1) {
-                //SEC_updateUserPassword(Geeklog\Input::post('passwd'), $uid);
+                $confirmed_email = DB_getItem($_TABLES['users'], 'emailtoconfirm', "uid = $uid");
 
                 DB_delete($_TABLES['sessions'], 'uid', $uid);
-                DB_change($_TABLES['users'], 'emailconfirmid', "NULL", 'uid', $uid);
+                
+                DB_change($_TABLES['users'], 'email', $confirmed_email, 'uid', $uid);
                 DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);
+
+                DB_query("UPDATE {$_TABLES['users']} SET emailconfirmid = NULL, emailtoconfirm = NULL WHERE uid = $uid");
                 
                 COM_redirect($_CONF['site_url'] . '/users.php?msg=503');    
             }
@@ -1357,8 +1358,7 @@ switch ($mode) {
                 USER_resendRequest(); // won't come back
             }
 
-            DB_change($_TABLES['users'], 'pwrequestid', "NULL", 'uid', $uid);
-            //DB_change($_TABLES['users'], 'emailconfirmid', "NULL", 'uid', $uid);
+            DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
             $_USER = SESS_getUserDataFromId($uid);
 
             if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&

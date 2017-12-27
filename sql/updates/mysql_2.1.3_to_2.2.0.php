@@ -41,6 +41,10 @@ CREATE TABLE {$_TABLES['backup_codes']} (
 
 // Add column to confirm new email address
 $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `emailconfirmid` VARCHAR(16) NULL DEFAULT NULL AFTER `pwrequestid`";
+$_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `emailtoconfirm` VARCHAR(96) NULL DEFAULT NULL AFTER `emailconfirmid`";
+
+// Fix for password request id getting set to a string with the word "NULL" instead of actually NULL
+$_SQL[] = "UPDATE `{$_TABLES['users']}` SET pwrequestid = NULL WHERE pwrequestid = 'NULL'";
 
 /**
  * Upgrade Messages

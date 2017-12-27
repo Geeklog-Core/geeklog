@@ -810,10 +810,11 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_require_user_email">require_user_email</a></td>
   <td valign="top">true</td>
-  <td valign="top">If set to true, users will be required to add an email address to their account and need to verify it 
+  <td valign="top">If set to true, users without email addresses will be required to add an email address to their account and need to verify it 
     before they can continue to use the website while logged in. This affects remote accounts as some 
     may not return an email address to Geeklog when the account is created due to permissions from the 
-    remote service.</td></tr>       
+    remote service. When this is set to true Geeklog will check for an email address when a user logs in. If there is not one, the user account 
+    status will be switched from "Active" to "New Email Required".</td></tr>       
 <tr>
   <td valign="top"><a name="desc_show_servicename">show_servicename</a></td>
   <td valign="top">true</td>
