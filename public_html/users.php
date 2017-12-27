@@ -112,7 +112,7 @@ function USER_requestPassword($username)
         $A = DB_fetchArray($result);
         if (($_CONF['usersubmission'] == 1) && ($A['status'] == USER_ACCOUNT_AWAITING_APPROVAL)) {
             COM_redirect($_CONF['site_url'] . '/index.php?msg=48');
-        } elseif (($_CONF['usersubmission'] == 0) && ($A['status'] != USER_ACCOUNT_ACTIVE || $A['status'] != USER_ACCOUNT_AWAITING_APPROVAL)) {
+        } elseif (($_CONF['usersubmission'] == 0) && ($A['status'] != USER_ACCOUNT_ACTIVE && $A['status'] != USER_ACCOUNT_AWAITING_APPROVAL)) {
             // Don't send password for these accounts with statuses of Locked, Disabled, New Email, New Password
             COM_redirect($_CONF['site_url'] . '/index.php?msg=47');
         }
@@ -145,6 +145,38 @@ function USER_requestPassword($username)
     } else {
         $retval = COM_createHTMLDocument(USER_defaultForm($LANG04[17]), array('pagetitle' => $LANG04[17]));
     }
+
+    return $retval;
+}
+
+/**
+ * Display a form where the user can enter a new email address.
+ *
+ * @return string             new email form
+ */
+function USER_newEmailForm()
+{
+    global $_CONF, $_TABLES, $LANG04, $_USER;
+
+    $emailForm = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $emailForm->set_file(array('newemail' => 'newemail.thtml'));
+
+    $uid = $_USER['uid'];
+    $emailForm->set_var('user_id', $uid);
+    $emailForm->set_var('user_name', DB_getItem($_TABLES['users'], 'username', "uid = '{$uid}'"));
+
+
+    $emailForm->set_var('lang_explain', $LANG04['desc_new_email_status']);
+    $emailForm->set_var('mode', 'setnewemailstatus');
+    
+    $emailForm->set_var('lang_username', $LANG04[2]);
+    $emailForm->set_var('lang_newemail', $LANG04['new_email']);
+    $emailForm->set_var('lang_newemail_conf', $LANG04['confirm_new_email']);
+    $emailForm->set_var('lang_setnewemail', $LANG04['set_new_email']);
+
+    $retval = COM_startBlock($LANG04['enter_new_email'])
+        . $emailForm->finish($emailForm->parse('output', 'newemail'))
+        . COM_endBlock();
 
     return $retval;
 }
@@ -183,6 +215,63 @@ function USER_newPasswordForm($uid, $requestId = "")
     $retval = COM_startBlock($LANG04[92])
         . $passwordForm->finish($passwordForm->parse('output', 'newpw'))
         . COM_endBlock();
+
+    return $retval;
+}
+
+/**
+ * User required to confirm new email address - send email with a link and confirm id
+ *
+ * @return string           form or meta redirect
+ */
+function USER_emailConfirmation($email)
+{
+    global $_CONF, $_TABLES, $LANG04, $_USER;
+
+    $retval = '';
+    
+    $uid = $_USER['uid'];
+
+    if ($uid > 1) {
+        $result = DB_query("SELECT uid,email,emailconfirmid,status FROM {$_TABLES['users']} WHERE uid = $uid");
+        $numRows = DB_numRows($result);
+        if ($numRows == 1) {
+            $A = DB_fetchArray($result);
+            if ($A['status'] != USER_ACCOUNT_NEW_EMAIL) {
+                COM_redirect($_CONF['site_url'] . '/index.php?msg=30');
+            }
+            $emailconfirmid = substr(md5(uniqid(rand(), 1)), 1, 16);
+            DB_change($_TABLES['users'], 'emailconfirmid', "$emailconfirmid", 'uid', $uid);
+
+            $mailtext = sprintf($LANG04['email_msg_email_status_1'], $_USER['username']);
+            $mailtext .= $_CONF['site_url'] . '/users.php?mode=newemailstatus&uid=' . $uid . '&ecid=' . $emailconfirmid . "\n\n";
+            $mailtext .= $LANG04['email_msg_email_status_2'];
+            $mailtext .= "{$_CONF['site_name']}\n";
+            $mailtext .= "{$_CONF['site_url']}\n";
+
+            $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+            if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+                $mailfrom = $_CONF['noreply_mail'];
+                $mailtext .= LB . LB . $LANG04[159];
+            } else {
+                $mailfrom = $_CONF['site_mail'];
+            }
+            if (COM_mail($email, $subject, $mailtext, $mailfrom)) {
+                $redirect = $_CONF['site_url'] . "/users.php?mode=logout&msg=501";    
+            } else {
+                // problem sending the email
+                $redirect = $_CONF['site_url'] . "/users.php?mode=newemailstatus&msg=85";    
+            }
+            
+            // Update new email after so it doesn't affect com_mail status check
+            DB_change($_TABLES['users'], 'email', "$email", 'uid', $uid);
+
+            // Email sent so to confirm new email address so now logoff and tell user go check inbox
+            COM_redirect($redirect);            
+        } else {
+            $retval = COM_createHTMLDocument(USER_defaultForm($LANG04[17]), array('pagetitle' => $LANG04[17]));
+        }
+    }
 
     return $retval;
 }
@@ -880,7 +969,13 @@ switch ($mode) {
         SEC_setCookie($_CONF['cookie_session'], '', time() - 10000);
         SEC_setCookie($_CONF['cookie_password'], '', time() - 10000);
         SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
-        COM_redirect($_CONF['site_url'] . '/index.php?msg=8');
+        
+        $msg = (int) Geeklog\Input::fGet('msg', 0);
+        if ($msg == 0) {
+            $msg = 8;
+        }
+        
+        COM_redirect($_CONF['site_url'] . "/index.php?msg=$msg");
         break;
 
     case 'profile':
@@ -995,6 +1090,38 @@ switch ($mode) {
         }
         break;
 
+    case 'newpwdstatus':
+        if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
+            $msg = (int) Geeklog\Input::fRequest('msg', 0);
+            if ($msg > 0) {
+                $display .= COM_showMessage($msg);
+            }   
+            
+            $display .= USER_newPasswordForm($_USER['uid']);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[92]));
+        } else {
+            // this request doesn't make sense - ignore it
+            COM_redirect($_CONF['site_url'] . '/index.php');
+        }
+        break;
+
+    case 'setnewpwdstatus':
+        if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
+            if ((empty($_POST['passwd'])) || ($_POST['passwd'] != $_POST['passwd_conf'])) {
+                COM_redirect($_CONF['site_url'] . '/users.php?mode=newpwdstatus&msg=23');
+            } else {
+                SEC_updateUserPassword(Geeklog\Input::post('passwd'), $_USER['uid']);
+                DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);
+                DB_delete($_TABLES['sessions'], 'uid', $_USER['uid']);
+                COM_redirect($_CONF['site_url'] . '/users.php?msg=53');
+            }
+        } else {
+            // this request doesn't make sense - ignore it
+            COM_redirect($_CONF['site_url'] . '/index.php');
+        }
+
+        break;    
+
     case 'emailpasswd':
         if ($_CONF['passwordspeedlimit'] == 0) {
             $_CONF['passwordspeedlimit'] = 300; // 5 minutes
@@ -1021,33 +1148,55 @@ switch ($mode) {
             }
         }
         break;
+        
+    case 'newemailstatus':
+        $uid = (int) Geeklog\Input::fGet('uid', 0);
+        $ecid = Geeklog\Input::fGet('ecid');        
+        if (!empty($uid) && ($uid > 0) && !empty($ecid) && (strlen($ecid) === 16)) {
+            $valid = DB_count($_TABLES['users'], array('uid', 'emailconfirmid'), array($uid, $ecid));
+            if ($valid == 1) {
+                //SEC_updateUserPassword(Geeklog\Input::post('passwd'), $uid);
 
-    case 'newpwdstatus':
-        if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
-            $display .= USER_newPasswordForm($_USER['uid']);
-            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[92]));
+                DB_delete($_TABLES['sessions'], 'uid', $uid);
+                DB_change($_TABLES['users'], 'emailconfirmid', "NULL", 'uid', $uid);
+                DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);
+                
+                COM_redirect($_CONF['site_url'] . '/users.php?msg=503');    
+            }
+        } elseif (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_EMAIL)) {
+            $msg = (int) Geeklog\Input::fRequest('msg', 0);
+            if ($msg > 0) {
+                $display .= COM_showMessage($msg);
+            }            
+            
+            $display .= USER_newEmailForm();
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04['new_email']));
         } else {
             // this request doesn't make sense - ignore it
             COM_redirect($_CONF['site_url'] . '/index.php');
         }
         break;
-
-    case 'setnewpwdstatus':
-        if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
-            if ((empty($_POST['passwd'])) || ($_POST['passwd'] != $_POST['passwd_conf'])) {
-                COM_redirect($_CONF['site_url'] . '/users.php?mode=newpwdstatus');
+        
+    case 'setnewemailstatus':
+        if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_EMAIL)) {
+            $email = trim(Geeklog\Input::fPost('email'));
+            $email_conf = trim(Geeklog\Input::fPost('email_conf'));            
+            if ($email != $email_conf) {
+                COM_redirect($_CONF['site_url'] . '/users.php?mode=newemailstatus&msg=24');
+            } elseif (empty($email) || !COM_isEmail($email)) {
+                COM_redirect($_CONF['site_url'] . '/users.php?mode=newemailstatus&msg=25');
+            } elseif (USER_emailMatches($email, $_CONF['disallow_domains'])) {
+                COM_redirect($_CONF['site_url'] . '/users.php?mode=newemailstatus&msg=26');
             } else {
-                SEC_updateUserPassword(Geeklog\Input::post('passwd'), $_USER['uid']);
-                DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);
-                DB_delete($_TABLES['sessions'], 'uid', $_USER['uid']);
-                COM_redirect($_CONF['site_url'] . '/users.php?msg=53');
+                // Send out confirmation email of new address
+                USER_emailConfirmation($email);
             }
         } else {
             // this request doesn't make sense - ignore it
             COM_redirect($_CONF['site_url'] . '/index.php');
         }
 
-        break;        
+        break;          
         
     case 'new':
         if ($_CONF['disable_new_user_registration']) {
@@ -1209,6 +1358,7 @@ switch ($mode) {
             }
 
             DB_change($_TABLES['users'], 'pwrequestid', "NULL", 'uid', $uid);
+            //DB_change($_TABLES['users'], 'emailconfirmid', "NULL", 'uid', $uid);
             $_USER = SESS_getUserDataFromId($uid);
 
             if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&

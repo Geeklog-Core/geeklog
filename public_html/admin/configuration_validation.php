@@ -308,6 +308,7 @@ $_CONF_VALIDATE['Core']['allow_account_delete'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['hide_author_exclusion'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['show_fullname'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['show_servicename'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['require_user_email'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['custom_registration'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['user_login_method[standard]'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['user_login_method[openid]'] = array('rule' => 'boolean');

@@ -107,6 +107,9 @@ function update_DatabaseFor220()
       PRIMARY KEY (code)
     ) ENGINE=MyISAM
     ";    
+    
+    // Add column to confirm new email address
+    $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `emailconfirmid` VARCHAR(16) NULL DEFAULT NULL AFTER `pwrequestid`";
 
     // Add theme admin
     $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_name='Theme Admin'");

@@ -745,6 +745,13 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にするとユーザーのフルネームを表示し、「いいえ」にするとユーザー名しか表示しません。フルネームを入力していない場合は常にユーザー名が表示されます。</td></tr>
 <tr>
+  <td valign="top"><a name="desc_require_user_email">require_user_email</a></td>
+  <td valign="top">true</td>
+  <td valign="top">If set to true, users will be required to add an email address to their account and need to verify it 
+    before they can continue to use the website while logged in. This affects remote accounts as some 
+    may not return an email address to Geeklog when the account is created due to permissions from the 
+    remote service.</td></tr>    
+<tr>
   <td valign="top"><a name="desc_show_servicename">サービス名を表示する(show_servicename)</a></td>
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、<acronym title="Lightweight Directory Access Protocol">LDAP</acronym>などのリモートサービスのアカウントでログインを許可している場合、ローカルアカウントとの混同を避けるため、ユーザー名にサービス名が付加されて表示されるようになります。「いいえ」にすると、サービス名は付加されません。</td></tr>

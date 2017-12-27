@@ -227,6 +227,7 @@ function install_config()
     $c->add('allow_account_delete',0,'select',4,16,0,270,TRUE, $me, 16);
     $c->add('hide_author_exclusion',0,'select',4,16,0,280,TRUE, $me, 16);
     $c->add('show_fullname',0,'select',4,16,0,290,TRUE, $me, 16);
+    $c->add('require_user_email',1,'select',4,16,0,295,TRUE, $me, 16);
     $c->add('show_servicename',TRUE,'select',4,16,1,300,TRUE, $me, 16);
     $c->add('custom_registration',FALSE,'select',4,16,1,310,TRUE, $me, 16);
     $c->add('user_login_method',array('standard' => true, 'openid' => false, '3rdparty' => false, 'oauth' => false),'@select',4,16,1,320,TRUE, $me, 16);

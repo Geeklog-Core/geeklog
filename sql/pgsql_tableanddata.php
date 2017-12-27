@@ -492,6 +492,7 @@ CREATE TABLE {$_TABLES['users']} (
   theme varchar(64) default NULL,
   language varchar(64) default NULL,
   pwrequestid varchar(16) default NULL,
+  emailconfirmid varchar(16) default NULL,
   status smallint NOT NULL default '1',
   num_reminders smallint NOT NULL default 0,
   invalidlogins SMALLINT NOT NULL DEFAULT '0', 

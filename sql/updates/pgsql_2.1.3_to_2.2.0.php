@@ -39,6 +39,9 @@ CREATE TABLE {$_TABLES['backup_codes']} (
 )
 ";
 
+// Add column to confirm new email address
+$_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `emailconfirmid` VARCHAR(16) NULL DEFAULT NULL AFTER `pwrequestid`";
+
 /**
  * Upgrade Messages
  */
@@ -91,6 +94,9 @@ function update_ConfValuesFor220()
 
     // Add a config option to decide whether to globally allow two factor auth
     $c->add('enable_twofactorauth',0,'select',4,18,0,1730,TRUE, $me, 18);
+    
+    // Config option to force email to be required (used for all remote account types as some may not return email address)
+    $c->add('require_user_email',1,'select',4,16,0,295,TRUE, $me, 16);
 
     return true;
 }

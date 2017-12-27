@@ -3468,11 +3468,16 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
     
     // Need to check email address to ensure they are not from account that have a status of locked or new email. If so we need to remove them so no email sent
     // Email addresses without accounts are not affected
-    $email = key($to);
+    if (is_array($to)) {
+        $email = key($to);    
+    } else {
+        $email = $to;
+    }
+    
     // If no status exists then assume no user account and email is being sent to someone else (which is fine and should be sent like to new users)
     $status = DB_getItem($_TABLES['users'], 'status', "email = '$email'");
     
-    if ($status == USER_ACCOUNT_DISABLED || $status == USER_ACCOUNT_LOCKED || $status == USER_ACCOUNT_NEW_EMAIL) {
+    if (!empty($status) && ($status == USER_ACCOUNT_DISABLED || $status == USER_ACCOUNT_LOCKED || $status == USER_ACCOUNT_NEW_EMAIL)) {
         return false;
     } else {
         return Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);

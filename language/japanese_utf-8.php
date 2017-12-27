@@ -457,7 +457,14 @@ $LANG04 = array(
     'tfa_download' => 'バックアップコードをダウンロード',
     'tfa_new_backup_code' => 'バックアップコードを生成し直す',
     'tfa_generate_confirm' => '実行してもよいですか?',
-    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>'    
+    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>', 
+    'new_email' => 'New Email', 
+    'set_new_email' => 'Set New Email',
+    'confirm_new_email' => 'Confirm new email',
+    'enter_new_email' => 'Enter New Email',
+    'desc_new_email_status' => 'You are required to enter a new email address for your account. You can enter a new email for your account below. <em>Please note you will not be able to do anything with your account until your email is updated and verified.</em>',
+    'email_msg_email_status_1' => "You have updated your email address for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nPlease click on the following link to verify this email address:\n\n",
+    'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n"    
 );
 
 ###############################################################################
@@ -1471,10 +1478,10 @@ $MESSAGE = array(
     20 => '',
     21 => 'ユーザー情報を保存しました。',
     22 => 'ユーザー情報を削除しました。',
-    23 => '',
-    24 => '',
-    25 => '',
-    26 => '',
+    23 => 'Your passwords must match, please try again.',
+    24 => 'Your emails must match, please try again.',
+    25 => 'You have not entered a valid email address, please try again.',
+    26 => 'That email address is already being used by an account, please try again.',
     27 => 'メッセージを送信しました。',
     28 => 'プラグインを保存しました',
     29 => 'あなたはこの管理ページにアクセスできません。権限のない機能へのアクセスはすべて記録しています。',
@@ -1578,7 +1585,10 @@ $MESSAGE = array(
     153 => 'あなたは %1$d 秒前に友だちに記事を送信しています。次に送信する前に %2$d 秒以上あけてください。',
     400 => '検証に通っていない必須のフィールドがあります。',
     401 => '氏名を入力してください。',
-    500 => 'データ、テンプレート、リソース、ファイルマネージャーのキャッシュファイルを削除しました。'
+    500 => 'データ、テンプレート、リソース、ファイルマネージャーのキャッシュファイルを削除しました。',
+    501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
+    502 => 'Your request for a new email has expired. Please try again below.',
+    503 => 'Your email has been successfully verified. Please login now.'
 );
 
 ###############################################################################
@@ -2118,6 +2128,7 @@ $LANG_confignames['Core'] = array(
     'hide_author_exclusion' => '所有者の非表示を許可する',
     'show_fullname' => 'ユーザー名の代わりに氏名を表示する',
     'show_servicename' => 'サービス名を表示する',
+    'require_user_email' => "Require User Email",
     'custom_registration' => 'カスタム登録を有効にする',
     'user_login_method' => 'ログイン方法',
     'facebook_login' => 'FacebookのOAuthを有効にする',

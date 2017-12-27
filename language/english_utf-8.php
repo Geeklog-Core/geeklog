@@ -449,7 +449,14 @@ $LANG04 = array(
     'tfa_download' => 'Download Backup Codes',
     'tfa_new_backup_code' => 'Generate a new set of backup codes',
     'tfa_generate_confirm' => 'Go ahead?',
-    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>'
+    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>', 
+    'new_email' => 'New Email', 
+    'set_new_email' => 'Set New Email',
+    'confirm_new_email' => 'Confirm new email',
+    'enter_new_email' => 'Enter New Email',
+    'desc_new_email_status' => 'You are required to enter a new email address for your account. You can enter a new email for your account below. <em>Please note you will not be able to do anything with your account until your email is updated and verified.</em>',
+    'email_msg_email_status_1' => "You have updated your email address for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nPlease click on the following link to verify this email address:\n\n",
+    'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n"
 );
 
 ###############################################################################
@@ -1470,10 +1477,10 @@ $MESSAGE = array(
     20 => '',
     21 => 'The user has been successfully saved.',
     22 => 'The user has been successfully deleted.',
-    23 => '',
-    24 => '',
-    25 => '',
-    26 => '',
+    23 => 'Your passwords must match, please try again.',
+    24 => 'Your emails must match, please try again.',
+    25 => 'You have not entered a valid email address, please try again.',
+    26 => 'That email address is already being used by an account, please try again.',
     27 => 'Message successfully sent.',
     28 => 'The plugin has been successfully saved',
     29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged.',
@@ -1577,7 +1584,10 @@ $MESSAGE = array(
     153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
-    500 => 'The Data, Template, Resource, and File Manager Cache has been successfully cleared.'
+    500 => 'The Data, Template, Resource, and File Manager Cache has been successfully cleared.',
+    501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
+    502 => 'Your request for a new email has expired. Please try again below.',
+    503 => 'Your email has been successfully verified. Please login now.'
 );
 
 ###############################################################################
@@ -2112,6 +2122,7 @@ $LANG_confignames['Core'] = array(
     'hide_author_exclusion' => "Allow Hide Author",
     'show_fullname' => "Show Fullname",
     'show_servicename' => "Show Service Name",
+    'require_user_email' => "Require User Email",
     'custom_registration' => "Enable Custom Registration",
     'user_login_method' => "User Login Method",
     'facebook_login' => "Enable OAuth Login Method Facebook",
