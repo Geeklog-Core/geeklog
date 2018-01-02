@@ -55,7 +55,7 @@ if (!empty($_POST['loginname']) && !empty($_POST['passwd'])) {
 $display = '';
 
 if ($status == USER_ACCOUNT_ACTIVE) {
-    DB_change($_TABLES['users'], 'pwrequestid', "NULL", 'uid', $uid);
+    DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
     $_USER = SESS_getUserDataFromId($uid);
     $sessid = SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'],
             $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);

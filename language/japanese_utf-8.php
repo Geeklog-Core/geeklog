@@ -397,7 +397,7 @@ $LANG04 = array(
     123 => "<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">新規登録</a>",
     124 => '(確認)メールアドレス',
     125 => '両方の入力欄に同じメールアドレスを入力してください。',
-    126 => '確認のために同じものを繰り返し入力してください。',
+    126 => 'Please repeat for confirmation. When you update your email address, an email with a verification link will be sent to the new address which will need to be clicked on before the email address of this account will be changed.',
     127 => '設定を変更するには、現在のパスワードを入力する必要があります。',
     128 => 'お名前',
     129 => 'パスワードとメールアドレス',
@@ -464,7 +464,10 @@ $LANG04 = array(
     'enter_new_email' => 'Enter New Email',
     'desc_new_email_status' => 'You are required to enter a new email address for your account. You can enter a new email for your account below. <em>Please note you will not be able to do anything with your account until your email is updated and verified.</em>',
     'email_msg_email_status_1' => "You have updated your email address for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nPlease click on the following link to verify this email address:\n\n",
-    'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n"    
+    'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n",
+    'email_verify' => 'New Email to be Verified',
+    'email_verify_delete' => 'Delete email to be verified',
+    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it."
 );
 
 ###############################################################################
@@ -1588,7 +1591,7 @@ $MESSAGE = array(
     500 => 'データ、テンプレート、リソース、ファイルマネージャーのキャッシュファイルを削除しました。',
     501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
     502 => 'Your request for a new email has expired. Please try again below.',
-    503 => 'Your email has been successfully verified. Please login now.'
+    503 => 'Your email has been successfully verified.'
 );
 
 ###############################################################################

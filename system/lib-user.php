@@ -1230,3 +1230,76 @@ function plugin_autotags_user($op, $content = '', $autotag = array())
         return $content;
     }
 }
+
+
+/**
+ * User required to confirm new email address - send email with a link and confirm id
+ *
+ * @return string           form or meta redirect for users of status USER_ACCOUNT_NEW_EMAIL
+ */
+function USER_emailConfirmation($email)
+{
+    global $_CONF, $_TABLES, $LANG04, $_USER;
+
+    $retval = '';
+
+    $uid = $_USER['uid'];
+
+    if ($uid > 1) {
+        $result = DB_query("SELECT uid,email,emailconfirmid,status FROM {$_TABLES['users']} WHERE uid = $uid");
+        $numRows = DB_numRows($result);
+        if ($numRows == 1) {
+            $A = DB_fetchArray($result);
+            if ($A['status'] != USER_ACCOUNT_NEW_EMAIL && $A['status'] != USER_ACCOUNT_ACTIVE) {
+                COM_redirect($_CONF['site_url'] . '/index.php?msg=30');
+            }
+            $emailconfirmid = substr(md5(uniqid(rand(), 1)), 1, 16);
+            DB_change($_TABLES['users'], 'emailconfirmid', "$emailconfirmid", 'uid', $uid);
+            DB_change($_TABLES['users'], 'emailtoconfirm', "$email", 'uid', $uid);
+
+            $mailtext = sprintf($LANG04['email_msg_email_status_1'], $_USER['username']);
+            $mailtext .= $_CONF['site_url'] . '/users.php?mode=newemailstatus&uid=' . $uid . '&ecid=' . $emailconfirmid . "\n\n";
+            $mailtext .= $LANG04['email_msg_email_status_2'];
+            $mailtext .= "{$_CONF['site_name']}\n";
+            $mailtext .= "{$_CONF['site_url']}\n";
+
+            $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+            if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+                $mailfrom = $_CONF['noreply_mail'];
+                $mailtext .= LB . LB . $LANG04[159];
+            } else {
+                $mailfrom = $_CONF['site_mail'];
+            }
+            if (COM_mail($email, $subject, $mailtext, $mailfrom)) {
+                if ($A['status'] == USER_ACCOUNT_ACTIVE) {
+                    // Being called by usersettings.php so just return true on success
+                    return true;
+                } else {
+                    // Being called by users.php
+                    $redirect = $_CONF['site_url'] . "/users.php?mode=logout&msg=501";    
+                }
+            } else {
+                if ($A['status'] == USER_ACCOUNT_ACTIVE) {
+                    // Being called by usersettings.php
+                    return false;
+                } else {
+                    // Being called by users.php                
+                    // problem sending the email
+                    $redirect = $_CONF['site_url'] . "/users.php?mode=newemailstatus&msg=85";    
+                }
+            }
+
+            // Email sent so to confirm new email address so now logoff and tell user go check inbox
+            COM_redirect($redirect);            
+        } else {
+            if ($A['status'] == USER_ACCOUNT_ACTIVE) {
+                // Being called by usersettings.php
+                return false;
+            } else {
+                $retval = COM_createHTMLDocument(USER_defaultForm($LANG04[17]), array('pagetitle' => $LANG04[17]));
+            }
+        }
+    }
+
+    return $retval;
+}

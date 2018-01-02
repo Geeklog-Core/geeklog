@@ -220,62 +220,6 @@ function USER_newPasswordForm($uid, $requestId = "")
 }
 
 /**
- * User required to confirm new email address - send email with a link and confirm id
- *
- * @return string           form or meta redirect
- */
-function USER_emailConfirmation($email)
-{
-    global $_CONF, $_TABLES, $LANG04, $_USER;
-
-    $retval = '';
-    
-    $uid = $_USER['uid'];
-
-    if ($uid > 1) {
-        $result = DB_query("SELECT uid,email,emailconfirmid,status FROM {$_TABLES['users']} WHERE uid = $uid");
-        $numRows = DB_numRows($result);
-        if ($numRows == 1) {
-            $A = DB_fetchArray($result);
-            if ($A['status'] != USER_ACCOUNT_NEW_EMAIL) {
-                COM_redirect($_CONF['site_url'] . '/index.php?msg=30');
-            }
-            $emailconfirmid = substr(md5(uniqid(rand(), 1)), 1, 16);
-            DB_change($_TABLES['users'], 'emailconfirmid', "$emailconfirmid", 'uid', $uid);
-            DB_change($_TABLES['users'], 'emailtoconfirm', "$email", 'uid', $uid);
-
-            $mailtext = sprintf($LANG04['email_msg_email_status_1'], $_USER['username']);
-            $mailtext .= $_CONF['site_url'] . '/users.php?mode=newemailstatus&uid=' . $uid . '&ecid=' . $emailconfirmid . "\n\n";
-            $mailtext .= $LANG04['email_msg_email_status_2'];
-            $mailtext .= "{$_CONF['site_name']}\n";
-            $mailtext .= "{$_CONF['site_url']}\n";
-
-            $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-            if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
-                $mailfrom = $_CONF['noreply_mail'];
-                $mailtext .= LB . LB . $LANG04[159];
-            } else {
-                $mailfrom = $_CONF['site_mail'];
-            }
-            if (COM_mail($email, $subject, $mailtext, $mailfrom)) {
-                $redirect = $_CONF['site_url'] . "/users.php?mode=logout&msg=501";    
-            } else {
-                // problem sending the email
-                $redirect = $_CONF['site_url'] . "/users.php?mode=newemailstatus&msg=85";    
-            }
-            
-
-            // Email sent so to confirm new email address so now logoff and tell user go check inbox
-            COM_redirect($redirect);            
-        } else {
-            $retval = COM_createHTMLDocument(USER_defaultForm($LANG04[17]), array('pagetitle' => $LANG04[17]));
-        }
-    }
-
-    return $retval;
-}
-
-/**
  * Creates a user
  * Creates a user with the give username and email address
  *
@@ -1154,12 +1098,14 @@ switch ($mode) {
             $valid = DB_count($_TABLES['users'], array('uid', 'emailconfirmid'), array($uid, $ecid));
             if ($valid == 1) {
                 $confirmed_email = DB_getItem($_TABLES['users'], 'emailtoconfirm', "uid = $uid");
+                $user_status = DB_getItem($_TABLES['users'], 'status', "uid = $uid");
 
                 DB_delete($_TABLES['sessions'], 'uid', $uid);
                 
                 DB_change($_TABLES['users'], 'email', $confirmed_email, 'uid', $uid);
-                DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);
-
+                if ($user_status == USER_ACCOUNT_NEW_EMAIL) {
+                    DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);
+                }
                 DB_query("UPDATE {$_TABLES['users']} SET emailconfirmid = NULL, emailtoconfirm = NULL WHERE uid = $uid");
                 
                 COM_redirect($_CONF['site_url'] . '/users.php?msg=503');    
@@ -1357,7 +1303,7 @@ switch ($mode) {
             if ($mode === 'tokenexpired') {
                 USER_resendRequest(); // won't come back
             }
-
+            
             DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
             $_USER = SESS_getUserDataFromId($uid);
 

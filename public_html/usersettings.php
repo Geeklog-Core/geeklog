@@ -54,7 +54,7 @@ function edituser()
     global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN, $LANG_confignames,
            $LANG_configselects, $_SCRIPTS;
 
-    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
+    $result = DB_query("SELECT fullname,cookietimeout,email,emailtoconfirm,emailconfirmid,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
     $preferences = COM_newTemplate($_CONF['path_layout'] . 'preferences');
@@ -132,6 +132,9 @@ function edituser()
     $preferences->set_var('lang_email_text', $LANG04[33]);
     $preferences->set_var('lang_email_conf', $LANG04[124]);
     $preferences->set_var('lang_email_conf_text', $LANG04[126]);
+    $preferences->set_var('lang_email_verify', $LANG04['email_verify']);
+    $preferences->set_var('lang_email_verify_msg', $LANG04['email_verify_msg']);
+    $preferences->set_var('lang_email_verify_delete', $LANG04['email_verify_delete']);
     $preferences->set_var('lang_userinfo_help_title', $LANG04[148]);
     $preferences->set_var('lang_userinfo_help', $LANG04[149]);
     $preferences->set_var('lang_homepage', $LANG04[6]);
@@ -257,6 +260,11 @@ function edituser()
     $preferences->set_var('cooktime_selector', $selection);
 
     $preferences->set_var('email_value', htmlspecialchars($A['email']));
+    
+    if (!empty($A['emailtoconfirm']) && !empty($A['emailconfirmid'])) {
+        $preferences->set_var('emailtoconfirm', htmlspecialchars($A['emailtoconfirm']));
+    }
+    
     $preferences->set_var('homepage_value',
         htmlspecialchars(COM_killJS($A['homepage'])));
     $preferences->set_var('location_value',
@@ -980,7 +988,7 @@ function saveuser(array $A)
 
     $reqId = DB_getItem($_TABLES['users'], 'pwrequestid', "uid = {$_USER['uid']}");
     if ($reqId != $A['uid']) {
-        DB_change($_TABLES['users'], 'pwrequestid', "NULL", 'uid', $_USER['uid']);
+        DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = {$_USER['uid']}");
         COM_accessLog("An attempt was made to illegally change the account information of user {$_USER['uid']}.");
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
@@ -1002,7 +1010,7 @@ function saveuser(array $A)
     // we need the user's current password
     $service = DB_getItem($_TABLES['users'], 'remoteservice', "uid = {$_USER['uid']}");
     if ($service == '') {
-        if (!empty($A['passwd']) || ($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
+        if (!empty($A['passwd']) || !empty($A['delete_emailtoconfirm']) || ($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
             // verify password
             if (empty($A['old_passwd']) || (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0)) {
                 COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=83');
@@ -1174,8 +1182,18 @@ function saveuser(array $A)
                 $filename = '';
             }
         }
+      
+        // Confirm if email has changed and needs to be updated
+        $emailconfirmid = DB_getItem($_TABLES['users'], 'emailconfirmid', "uid = {$_USER['uid']}");
+        if ($A['email'] != DB_getItem($_TABLES['users'], 'email', "uid = '{$_USER['uid']}'")) {
+            // Send out confirmation email of new address and save to user record
+            USER_emailConfirmation($A['email']);
+        } elseif (!empty($emailconfirmid) && !empty($A['delete_emailtoconfirm'])) {
+            // Now check if delete emailtoconfirm
+            $sql_emailconfirm = ",emailtoconfirm=NULL";
+        }
 
-        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',email='{$A['email']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']},photo='$filename' WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']},photo='$filename'{$sql_emailconfirm} WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}',location='{$A['location']}' WHERE uid={$_USER['uid']}");
 
         // Call custom registration save function if enabled and exists

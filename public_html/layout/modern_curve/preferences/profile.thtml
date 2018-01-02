@@ -50,7 +50,14 @@
 
       <dt><label for="profile-email_conf">{lang_email_conf}</label></dt>
       <dd><input type="text" size="60" maxlength="96" value="{email_value}" name="email_conf" id="profile-email_conf" class="text"{xhtml}></dd>
-
+      <dd class="description" id="desc-profile-email_conf">{lang_email_conf_text}</dd>
+        
+      {!if emailtoconfirm}
+      <dt><label for="profile-email-verify">{lang_email_verify}</label></dt>
+      <dd><em>{emailtoconfirm}</em> <input type="checkbox" name="delete_emailtoconfirm" id="delete_emailtoconfirm">{lang_email_verify_delete}</dd>
+      <dd class="description" id="desc-email-verify">{lang_email_verify_msg}</dd>
+      {!endif}
+        
       {current_password_option}
 
       {delete_account_option}
