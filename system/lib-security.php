@@ -1296,15 +1296,52 @@ function SEC_encryptUserPassword($password, $uid = '')
 }
 
 /**
+ * Check if password passes minimum strength tests
+ * Passwords must be a minimum of 8 characters and have at least 1 letter and 1 number
+ *
+ * @return  boolean
+ */
+function SEC_checkPasswordStrength($password) {
+
+    return strlen($password) >= 8 && (
+        preg_match('(\pL)u', $password) // Letters
+      + preg_match('(\pN)u', $password) // Numbers
+      //+ preg_match('([^\pL\pN])u', $password) // Punctuation
+    ) >= 2;
+    
+}
+
+/**
  * Generate Random Password
- * Generates a random string of human readable characters.
+ * Generates a random string of human readable characters that has at least 1 number and 1 letter.
  *
  * @return  string  generated random password
  */
 function SEC_generateRandomPassword()
 {
     // SEC_generateSalt is used here as it creates a random string using readable characters
-    return substr(SEC_generateSalt(), 0, 12);
+    // return substr(SEC_generateSalt(), 0, 12);
+    
+    // Code borrowed from: https://stackoverflow.com/questions/26530629/php-random-string-with-one-number-and-one-letters
+    srand(time());
+    mt_srand(rand());
+    srand(mt_rand());
+    
+    $entropy = str_split(hash('sha256', uniqid('awesomesalt', TRUE) . mcrypt_create_iv(64) . microtime() . rand() . mt_rand(), TRUE));
+    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%^&*()_+=-";
+    $pass = array(); //remember to declare $pass as an array
+    $alphaLength = strlen($alphabet); //put the length in cache
+    $rand = floor(ord(array_pop($entropy)) * 50 / 255.1);
+    $pass[] = $alphabet[0 + $rand]; // Grab a random letter.
+    $rand = floor(ord(array_pop($entropy)) * 10 / 255.1);
+    $pass[] = $alphabet[50 + $rand]; // Grab a random number.
+    for ($i = 0; $i < 6; $i++) {
+      $rand = floor(ord(array_pop($entropy)) * $alphaLength / 255.1);
+      $pass[] = $alphabet[$rand];
+    }
+    
+    shuffle($pass);
+    return implode($pass); //turn the array into a string
 }
 
 /**

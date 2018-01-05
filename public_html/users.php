@@ -986,6 +986,10 @@ switch ($mode) {
         if (!empty($uid) && ($uid > 0) && !empty($reqid) && (strlen($reqid) === 16)) {
             $valid = DB_count($_TABLES['users'], array('uid', 'pwrequestid'), array($uid, $reqid));
             if ($valid == 1) {
+                $msg = (int) Geeklog\Input::fGet('msg', 0);
+                if ($msg > 0) {
+                    $display .= COM_showMessage($msg);
+                }                
                 $display .= USER_newPasswordForm($uid, $reqid);
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[92]));
             } else { // request invalid or expired
@@ -1000,13 +1004,27 @@ switch ($mode) {
         break;
 
     case 'setnewpwd':
-        if ((empty($_POST['passwd'])) || ($_POST['passwd'] != $_POST['passwd_conf'])) {
+        $passwd = Geeklog\Input::post('passwd');        
+        $passwd_conf = Geeklog\Input::post('passwd_conf');
+        
+        if ((empty($passwd)) || ($passwd != $passwd_conf)) {
             COM_redirect(
                 $_CONF['site_url'] . '/users.php?'
                 . http_build_query(array(
                     'mode' => 'newpwd',
                     'uid'  => (int) Geeklog\Input::fPost('uid'),
                     'rid'  => Geeklog\Input::post('rid'),
+                    'msg'  => 23
+                ))
+            );
+        } elseif (!SEC_checkPasswordStrength($passwd)) {
+            COM_redirect(
+                $_CONF['site_url'] . '/users.php?'
+                . http_build_query(array(
+                    'mode' => 'newpwd',
+                    'uid'  => (int) Geeklog\Input::fPost('uid'),
+                    'rid'  => Geeklog\Input::post('rid'),
+                    'msg'  => 504
                 ))
             );
         } else {
@@ -1015,7 +1033,7 @@ switch ($mode) {
             if (!empty($uid) && ($uid > 0) && !empty($reqid) && (strlen($reqid) === 16)) {
                 $valid = DB_count($_TABLES['users'], array('uid', 'pwrequestid'), array($uid, $reqid));
                 if ($valid == 1) {
-                    SEC_updateUserPassword(Geeklog\Input::post('passwd'), $uid);
+                    SEC_updateUserPassword($passwd, $uid);
 
                     DB_delete($_TABLES['sessions'], 'uid', $uid);
                     DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
@@ -1048,9 +1066,26 @@ switch ($mode) {
         break;
 
     case 'setnewpwdstatus':
+        $passwd = Geeklog\Input::post('passwd');        
+        $passwd_conf = Geeklog\Input::post('passwd_conf');
+    
         if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
-            if ((empty($_POST['passwd'])) || ($_POST['passwd'] != $_POST['passwd_conf'])) {
-                COM_redirect($_CONF['site_url'] . '/users.php?mode=newpwdstatus&msg=23');
+            if ((empty($passwd)) || ($passwd != $passwd_conf)) {
+                COM_redirect(
+                    $_CONF['site_url'] . '/users.php?'
+                    . http_build_query(array(
+                        'mode' => 'newpwdstatus',
+                        'msg'  => 23
+                    ))
+                );                
+            } elseif (!SEC_checkPasswordStrength($passwd)) {
+                COM_redirect(
+                    $_CONF['site_url'] . '/users.php?'
+                    . http_build_query(array(
+                        'mode' => 'newpwdstatus',
+                        'msg'  => 504
+                    ))
+                );
             } else {
                 SEC_updateUserPassword(Geeklog\Input::post('passwd'), $_USER['uid']);
                 DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);

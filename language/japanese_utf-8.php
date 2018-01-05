@@ -1481,7 +1481,7 @@ $MESSAGE = array(
     20 => '',
     21 => 'ユーザー情報を保存しました。',
     22 => 'ユーザー情報を削除しました。',
-    23 => 'Your passwords must match, please try again.',
+    23 => 'Your passwords must match, please try again. Passwords are case sensitive.',
     24 => 'Your emails must match, please try again.',
     25 => 'You have not entered a valid email address, please try again.',
     26 => 'That email address is already being used by an account, please try again.',
@@ -1525,7 +1525,7 @@ $MESSAGE = array(
     64 => 'トラックバックのコメントを送信しました。',
     65 => 'Weblog ディレクトリサービスを保存しました。',
     66 => 'Weblog ディレクトリサービスを削除しました。',
-    67 => '新しいパスワードと確認用パスワードが一致しません。',
+    67 => 'The new password does not match the confirmation password! Passwords are case sensitive.',
     68 => '正しい現在のパスワードを入力してください。',
     69 => 'アカウントをロックしました。',
     70 => 'アカウントは管理者の承認待ちです。',
@@ -1591,7 +1591,8 @@ $MESSAGE = array(
     500 => 'データ、テンプレート、リソース、ファイルマネージャーのキャッシュファイルを削除しました。',
     501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
     502 => 'Your request for a new email has expired. Please try again below.',
-    503 => 'Your email has been successfully verified.'
+    503 => 'Your email has been successfully verified.',
+    504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.'
 );
 
 ###############################################################################

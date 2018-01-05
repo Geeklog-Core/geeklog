@@ -1112,7 +1112,8 @@ function saveuser(array $A)
         $passwd = '';
         if ($service == '') {
             if (!empty($A['passwd'])) {
-                if (($A['passwd'] == $A['passwd_conf']) &&
+                if (($A['passwd'] == $A['passwd_conf']) && 
+                    SEC_checkPasswordStrength($A['passwd']) &&
                     (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) == 0)
                 ) {
                     SEC_updateUserPassword($A['passwd'], $_USER['uid']);
@@ -1126,6 +1127,8 @@ function saveuser(array $A)
                     COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=68');
                 } elseif ($A['passwd'] != $A['passwd_conf']) {
                     COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=67');
+                } elseif (!SEC_checkPasswordStrength($A['passwd'])) {
+                    COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=504');
                 }
             }
         } else {

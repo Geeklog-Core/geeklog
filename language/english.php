@@ -1479,7 +1479,7 @@ $MESSAGE = array(
     20 => '',
     21 => 'The user has been successfully saved.',
     22 => 'The user has been successfully deleted.',
-    23 => 'Your passwords must match, please try again.',
+    23 => 'Your passwords must match, please try again. Passwords are case sensitive.',
     24 => 'Your emails must match, please try again.',
     25 => 'You have not entered a valid email address, please try again.',
     26 => 'That email address is already being used by an account, please try again.',
@@ -1523,7 +1523,7 @@ $MESSAGE = array(
     64 => 'Your trackback comment has been successfully sent.',
     65 => 'Weblog directory service successfully saved.',
     66 => 'The weblog directory service has been deleted.',
-    67 => 'The new password does not match the confirmation password!',
+    67 => 'The new password does not match the confirmation password! Passwords are case sensitive.',
     68 => 'You have to enter the correct current password.',
     69 => 'Your account has been blocked!',
     70 => 'Your account is awaiting administrator approval.',
@@ -1588,7 +1588,8 @@ $MESSAGE = array(
     401 => 'Please enter Fullname',
     501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
     502 => 'Your request for a new email has expired. Please try again below.',
-    503 => 'Your email has been successfully verified.'
+    503 => 'Your email has been successfully verified.',
+    504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.'
 );
 
 ###############################################################################
