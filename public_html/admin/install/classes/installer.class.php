@@ -231,13 +231,25 @@ class Installer
 
             foreach ($this->upgradeMessages as $version => $message) {
                 $retval .= '<h2>' . $this->LANG['INSTALL'][111] . ' ' . $version . '</h2>' . PHP_EOL;
-                foreach ($message as $type => $message_id) {
-                    $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type);
-
-                    // record what type of prompt we need
-                    if ($type === 'information' || $type === 'warning' || $type === 'error') {
-                        if ($prompt !== 'error') {
-                            if ($prompt === 'information') {
+                if (version_compare($currentVersion, '2.1.2', '<')) {
+                    foreach ($message as $type => $message_id) {
+                        $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type);
+                        // record what type of prompt we need
+                        if ($type === 'information' || $type === 'warning' || $type === 'error') {
+                            if ($prompt !== 'error') {
+                                $prompt = $type;
+                            }
+                        }
+                    }
+                } else {
+                    // Upgrade message array changed in Geeklog v2.2.0 to allow multiple boxes of the same type (warning, information or error) to be displayed in the same Geeklog version
+                    foreach ($message as $id => $info) {
+                        $type = $info[0];
+                        $message_id = $info[1];
+                        $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type);
+                        // record what type of prompt we need
+                        if ($type === 'information' || $type === 'warning' || $type === 'error') {
+                            if ($prompt !== 'error') {
                                 $prompt = $type;
                             }
                         }
