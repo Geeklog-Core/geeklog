@@ -162,7 +162,7 @@ class Installer
      * @param    string $type    'error', 'warning', 'success', or 'notice'
      * @return   string          HTML formatted dialog message
      */
-    public function getAlertMessage($message, $type = 'notice')
+    public function getAlertMessage($message, $type = 'notice', $title = '')
     {
         switch (strtolower($type)) {
             case 'error':
@@ -186,8 +186,14 @@ class Installer
                 break;
         }
 
-        return '<div class="uk-alert uk-alert-large uk-alert-' . $style . '">'
-            . '<span class="uk-badge uk-badge-' . $style . '">' . $type . '</span> ' . $message . '</div>' . PHP_EOL;
+        $retval = '';
+        if (!empty($title)) {
+            $retval .= '<h3>' . $title . '</h3>';
+        }
+        $retval .= '<div class="uk-alert uk-alert-large uk-alert-' . $style . '">';
+        $retval .= '<span class="uk-badge uk-badge-' . $style . '">' . $type . '</span> ' . $message . '</div>' . PHP_EOL;
+            
+        return $retval;
     }
 
     /**
@@ -245,8 +251,9 @@ class Installer
                     // Upgrade message array changed in Geeklog v2.2.0 to allow multiple boxes of the same type (warning, information or error) to be displayed in the same Geeklog version
                     foreach ($message as $id => $info) {
                         $type = $info[0];
-                        $message_id = $info[1];
-                        $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type);
+                        $title_id = $info[1];
+                        $message_id = $info[2];
+                        $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type, $this->LANG['ERROR'][$title_id]);
                         // record what type of prompt we need
                         if ($type === 'information' || $type === 'warning' || $type === 'error') {
                             if ($prompt !== 'error') {
