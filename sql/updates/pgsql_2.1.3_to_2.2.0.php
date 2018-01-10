@@ -55,12 +55,11 @@ function upgrade_message213()
 
     // 3 upgrade message types exist 'information', 'warning', 'error'
     // error type means the user cannot continue upgrade until fixed
-
-
+    // array(error type, title, message)
+    
     $upgradeMessages['2.1.3'] = array(
-        1 => array('warning', 18), // Comment signatures will be removed from old comments
-        2 => array('warning', 19) // Warning about COM_SiteHeader and COM_SiteFooter being dropped which will affect some older plugins
-
+        1 => array('warning', 18, 19), // Comment signatures will be removed from old comments
+        2 => array('warning', 20, 21) // Warning about COM_SiteHeader and COM_SiteFooter being dropped which will affect some older plugins
     );
 
     return $upgradeMessages;
