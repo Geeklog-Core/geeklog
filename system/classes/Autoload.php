@@ -34,6 +34,7 @@ class Autoload
         if (strpos($className, 'Geeklog\\') === 0) {
             // New classes under \Geeklog namespace
             $className = str_replace('Geeklog\\', '', $className);
+            $className = str_replace('\\',self::DS, $className);
             $className = ucfirst($className);
             $path = __DIR__ . self::DS . $className . '.php';
 
