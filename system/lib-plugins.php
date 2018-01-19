@@ -2223,7 +2223,7 @@ function PLG_getWhatsNewComment($type = '', $numReturn = 0, $uid = 0)
  * @note   As for valid value for $commentType, see system/classes/Akismet.php
  * @link   http://wiki.geeklog.net/index.php/Filtering_Spam_with_Spam-X
  */
-function PLG_checkForSpam($comment, $action = -1, $permanentLink,
+function PLG_checkForSpam($comment, $action = -1, $permanentLink = null,
                           $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                           $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
 {
