@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog class to include javascript, javascript files and css files.      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2018 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer, tomhomer AT gmail DOT com                             |
 // |          Kenji ITO, mystralkk AT gmail DOT com                            |
@@ -56,7 +56,7 @@ class Resource
     const UIKIT_VERSION = '2.27.2';
     const UIKIT_PRIORITY = -3000;
 
-    const UIKIT3_VERSION = '3.0.0-beta.36';
+    const UIKIT3_VERSION = '3.0.0-beta.38';
     const UIKIT3_PRIORITY = -3000;
 
     /**
