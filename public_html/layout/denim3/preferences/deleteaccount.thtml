@@ -1,0 +1,23 @@
+{# start {templatelocation} #}
+
+<div class="linear">
+  <div class="profile_notes uk-panel uk-panel-box">
+    <div class="uk-panel-title">
+      <i class="uk-icon-info-circle uk-text-primary"></i>
+      <span>{lang_deleteaccount}</span>
+    </div>
+    <div>{delete_text}</div>
+  </div>
+</div>
+
+<div class="compact">
+  <dl class="form_block">
+    <dt><label for="delete_account">{lang_deleteoption}</label></dt>
+    <dd>
+      <input type="checkbox" name="delete_account" id="delete_account">
+      <input type="hidden" name="account_id" value="{account_id}">
+    </dd>
+  </dl>
+</div>
+
+{# end {templatelocation} #}

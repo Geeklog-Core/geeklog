@@ -1,0 +1,59 @@
+{# begin {templatelocation} #}
+
+{start_block}
+
+{admin_menu}
+
+<div class="uk-panel uk-panel-box uk-container-center">
+	<form class="uk-form uk-form-horizontal" action="{site_admin_url}/database.php" method="post">
+		<input type="hidden" name="saveconfig" value="x">
+		<input type="hidden" name="groupmembers">
+
+		<fieldset data-uk-margins>
+			<legend>{lang_tables_to_backup}</legend>
+
+			<div class="uk-form-row uk-margin-large-bottom">
+
+				<div class="uk-grid uk-container-center" data-uk-grid-match="{row: false}">
+
+					<div class="uk-width-medium-2-5 uk-text-center">
+						<h3>{lang_include}</h3>
+						<select multiple="multiple" size="10" name="fieldFrom"
+							style="height: 20em; padding: 2px;"
+							ondblclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">
+							{included_tables}
+						</select>
+					</div>
+
+					<div class="uk-width-medium-1-5 uk-text-center uk-vertical-align">
+						<div class="uk-vertical-align-middle">
+
+							<button class="uk-button uk-button-danger uk-form-width-small" name="right" onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false);return false;">{lang_exclude}&nbsp;<i class="uk-icon-angle-double-right"></i></button>
+							<br><br>
+							<button class="uk-button uk-button-primary uk-form-width-small" name="left" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false);return false;"><i class="uk-icon-angle-double-left"></i>&nbsp;{lang_include}</button>
+
+						</div>
+					</div>
+
+					<div class="uk-width-medium-2-5 uk-text-center">
+						<h3>{lang_exclude}</h3>
+						<select multiple="multiple" size="10" name="fieldTo"
+							style="width: 15em; height: 20em; padding: 2px;"
+							ondblclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">
+							{excluded_tables}
+						</select>
+					</div>
+				</div>
+			</div>
+
+		</fieldset>
+
+		<div class="uk-form-row">
+			<button class="uk-button uk-button-success uk-form-width-small uk-align-center" type="submit" value="{lang_save}" name="saveconfig" onclick="return setUsers(this.form)">{lang_save}</button>
+		</div>
+	</form>
+</div>
+
+{end_block}
+
+{# end {templatelocation} #}

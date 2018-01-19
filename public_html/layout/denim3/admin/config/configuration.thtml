@@ -1,0 +1,64 @@
+{noscript}
+<div id="geeklog_config_editor" style="display:none;">
+    <form method="post" action="{site_admin_url}/configuration.php" name="group" class="uk-form">
+        <div>
+            <input type="hidden" value="{open_group}" name="conf_group"{xhtml}>
+            <input type="hidden" value="" name="subgroup"{xhtml}>
+            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+        </div>
+    </form>
+
+    <div id="config_menu">
+        <section id="search-configuration-container" class="uk-form" role="search">
+            <h2 class="block-title" id="desc-search-configuration">{search_configuration_label}</h2>
+            <input name="search-configuration" id="search-configuration" type="text" value="{search_configuration_value}" aria-describedby="desc-search-configuration"{xhtml}>
+            <input name="tab-id" id="tab-id" type="hidden" value="{tab_id_value}"{xhtml}>
+        </section>
+        {config_menu}
+    </div>
+
+    <div id="config_content">
+
+        <div class="saved_message{error_validation_class}" style="display:{show_changeblock}">
+            {lang_changes_made}
+            {lang_error_validation_occurs}
+            {change_block}
+        </div>
+
+        <div id="config_main">
+            <form action="{site_admin_url}/configuration.php" method="post" name="subgroup" class="uk-form">
+                <div>
+                    <input type="hidden" name="conf_group" value="{open_group}"{xhtml}>
+                    <input type="hidden" name="sub_group" value="{open_sg}"{xhtml}>
+                    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+                    <input type="hidden" name="form_submit" value="true"{xhtml}>
+                </div>
+                <div id="tabs">
+
+                    {tab_li}
+
+                    <!-- BEGIN tab -->
+                    <div id="{tab_id}">
+
+                        <!-- BEGIN notes -->
+                        <div class="notes">
+                            <h4>{tab_display}</h4>
+                            <p class="last">{tab_help}</p>
+                            <span class="warningsmall">{tab_warning}</span>
+                        </div>
+                        <!-- END notes -->
+
+                        {tab_contents}
+
+                    </div>
+                    <!-- END tab -->
+
+                </div>
+                <div id="bottom_buttons" class="aligncenter">
+                    <input type="submit" id="save_changes" value="{lang_save_changes}"{xhtml}>
+                    <input type="submit" id="form_reset" name="form_reset" value="{lang_reset_form}"{xhtml}>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

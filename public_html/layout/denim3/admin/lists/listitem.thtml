@@ -1,0 +1,6 @@
+{# start {templatelocation} #}
+
+<tr>
+{item_field}</tr>
+
+{# end {templatelocation} #}

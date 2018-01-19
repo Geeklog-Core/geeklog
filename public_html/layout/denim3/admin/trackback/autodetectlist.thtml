@@ -1,0 +1,11 @@
+{# start {templatelocation} #}
+
+<p class="trackback-message">{lang_trackback_explain}</p>
+
+<table class="admin-list-table uk-table uk-table-hover uk-table-striped">
+  <tbody>
+    {autodetect_items}
+  </tbody>
+</table>
+
+{# end {templatelocation} #}

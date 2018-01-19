@@ -1,0 +1,36 @@
+{# begin {templatelocation} #}
+
+{database_settings_list}
+
+{php_settings_list}
+
+{graphics_list}
+
+{filesystem_list}
+
+{!if phpinfo_content}
+<section class="block-center">
+    {# Mimic ADMIN_simpleList function output #}
+    <h2>{lang_current_php_settings}</h2>
+    <div class="block-center-content">
+        <div id="toggle_phpinfo">{lang_showhide_phpinfo}</div>
+        <section id="panel_phpinfo">
+            <!--
+            <style>{phpinfo_style}</style>
+            -->
+            {phpinfo_content}
+        </section>
+    </div>
+</section>
+<script>
+    $(function() {
+        $("#panel_phpinfo table").addClass("uk-table").wrap("<div class='uk-overflow-container'></div>");
+    });
+</script>
+{!endif}
+
+{# end {templatelocation} #}
+
+<!-- BEGIN status -->
+<span class="{status_class}">{status_value}</span>
+<!-- END status -->

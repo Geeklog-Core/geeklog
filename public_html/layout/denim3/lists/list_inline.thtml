@@ -1,0 +1,56 @@
+{# start {templatelocation} #}
+
+{list_top}
+<form name="page_limit" action="{page_url}" method="get" class="uk-form">
+  <div class="admin-list-search">
+    {page_hidden}
+    <div class="search-part" style="{show_sort}">
+      <label for="search-results-order">{lang_sort}:</label>
+      <select id="search-results-order" name="order">
+        {page_sort}
+      </select>
+      <select name="direction">
+        {page_direction}
+      </select>
+    </div>
+    <div class="search-part" style="{show_limit}">
+      <label for="search-results-limit">{lang_limit}:</label>
+      <select id="search-results-limit" name="results">
+        {page_limit}
+      </select>
+    </div>
+    <div class="search-part">
+      <button type="submit" value="{lang_submit}" class="uk-button">{lang_submit}</button>
+    </div>
+  </div>
+</form>
+{item_row}
+{!if message}<p class="aligncenter" style="{show_message}"><strong>{message}</strong></p>{!endif}
+{google_paging}
+{list_bottom}
+
+{# end {templatelocation} #}
+
+<!-- BEGIN field -->
+{field_text}
+<!-- END field -->
+
+<!-- BEGIN row -->
+<div style="margin-bottom:15px">{item_field}</div>
+<!-- END row -->
+
+<!-- BEGIN limit -->
+<option{limit_selected} value="{limit_val}">{limit_text}</option>
+<!-- END limit -->
+
+<!-- BEGIN sort -->
+<option{sort_selected} value="{sort_val}">{sort_text}</option>
+<!-- END sort -->
+
+<!-- BEGIN direction -->
+<option{direction_selected} value="{direction_val}">{direction_text}</option>
+<!-- END direction -->
+
+<!-- BEGIN input_hidden -->
+<input type="hidden" name="{hidden_name}" value="{hidden_val}"{xhtml}>
+<!-- END input_hidden -->

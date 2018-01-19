@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+    <section class="block-right{!if css_classes} {css_classes}{!endif}"{!if css_id} id="{css_id}"{!endif}>
+      <h2 class="block-title">{block_title}{!if help_url}<a class="blocktitle block-help-icon uk-icon-link" {gl-help-popup} href="{help_url}" title="{help_title}" target="_blank" uk-icon="icon:question"></a>{!endif}</h2>
+      <div class="block-right-content">
+
+{# end {templatelocation} #}

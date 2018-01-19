@@ -1,0 +1,83 @@
+{doctype}
+<html{lang_attribute}{xmlns}>
+
+<head>
+<meta charset="{charset}"{xhtml}>
+<title>{page_title_and_site_name}</title>
+
+<!-- Mobile Specific Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"{xhtml}>
+
+<!-- Favicons -->
+<link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
+
+<!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
+<link rel="start contents" href="{site_url}"{xhtml}>
+{feed_url}
+{rel_links}
+{plg_headercode}
+
+<!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/ie8.css"{xhtml}><![endif]-->
+<!--[if lt IE 9]><script type="text/javascript" src="{layout_url}/javascript/respond.min.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body dir="{direction}" class="{layout_columns}" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+{# start {templatelocation} #}
+
+  <!-- #container { -->
+  <div id="container">
+    <header id="header" role="banner" class="brand-text" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+      <div id="header-content">
+        <div class="nameplate">
+          <h1 class="site_name" itemprop="name"><a href="{site_url}" title="{site_name}" itemprop="url">{site_name}</a></h1>
+          <p class="site_slogan">{site_slogan}</p>
+        </div>
+      </div>
+    </header>
+
+    <hr class="separator"{xhtml}>
+
+    <nav id="navigation" role="navigation" class="uk-navbar uk-navbar-container uk-margin-small" uk-navbar itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+      <div class="navigation_content gl-navbar-small uk-navbar-left">
+        <div class="uk-hidden@s">
+          <a class="uk-navbar-toggle" href="#offcanvas" uk-toggle>
+            <span uk-navbar-toggle-icon></span>
+          </a>
+        </div>
+        
+        <div id="header-search" class="uk-navbar-item uk-visible@s">
+          <form action="{site_url}/search.php" method="get" id="header-searchform">
+              <span uk-icon="icon: search"></span>
+              <input type="text" id="header-search-box" class="uk-input uk-form-width-small" maxlength="255" value="" name="query" placeholder="{button_search}"{xhtml}>
+              <input type="hidden" value="all" name="type"{xhtml}>
+              <input type="hidden" value="all" name="keyType"{xhtml}>
+              <input type="hidden" value="search" name="mode"{xhtml}>
+          </form>
+        </div>
+        
+        <ul id="navigation_ul" class="uk-navbar-nav uk-visible@s">
+          {menu_elements}
+        </ul>
+      </div>
+    </nav>
+
+    <div id="offcanvas" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" uk-offcanvas="mode: reveal">
+      <div class="uk-offcanvas-bar">
+        <ul class="uk-nav uk-nav-default">
+          {menu_elements}
+        </ul>
+      </div>
+    </div>
+
+    <hr class="separator"{xhtml}>
+
+    <!-- #wrapper { -->
+    <div id="wrapper">
+
+      <!-- Center Block Container -->
+      <div id="centerblocks">
+        <main id="main-content" role="main" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
+          <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
+          {breadcrumb_trail}
+

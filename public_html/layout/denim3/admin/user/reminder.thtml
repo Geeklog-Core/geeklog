@@ -1,0 +1,7 @@
+{# start {templatelocation} #}
+
+<div id="reminder-submit" class="submit">
+  <button type="submit" name="mode" value="{action_reminder}" class="uk-button" aria-describedby="desc-reminder-submit">{action_reminder}</button>&nbsp;<span id="desc-reminder-submit">{lang_reminder}</span>
+</div>
+
+{# end {templatelocation} #}
