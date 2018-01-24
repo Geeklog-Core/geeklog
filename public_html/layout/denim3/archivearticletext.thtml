@@ -51,26 +51,37 @@
 
 <!-- BEGIN image_noalign -->
 {!if link_url}
-<a href="{link_url}" title="{link_title}" class="uk-thumbnail" data-uk-lightbox><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></a>
+<div class="uk-card uk-card-default uk-card-hover uk-width-medium" uk-lightbox>
+    <a href="{link_url}" data-caption="{link_title}">
+        <img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}>
+    </a>
+</div>
 {!else}
-<div class="uk-thumbnail"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>
+<div class="uk-card uk-card-default uk-width-medium"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>
 {!endif}
 <!-- END image_noalign -->
 
 <!-- BEGIN image_leftalign -->
 {!if link_url}
-<a href="{link_url}" title="{link_title}" class="uk-thumbnail uk-align-left" data-uk-lightbox><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></a>
+<div class="uk-card uk-card-default uk-card-hover uk-align-center uk-align-left@m uk-width-medium" uk-lightbox>
+    <a href="{link_url}" data-caption="{link_title}">
+        <img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}>
+    </a>
+</div>
 {!else}
-<div class="uk-thumbnail uk-align-left"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>
+<div class="uk-card uk-card-default uk-align-center uk-align-left@m uk-width-medium"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>
 {!endif}
 <!-- END image_leftalign -->
 
 <!-- BEGIN image_rightalign -->
 {!if link_url}
-<a href="{link_url}" title="{link_title}" class="uk-thumbnail uk-align-right" data-uk-lightbox><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></a>
+<div class="uk-card uk-card-default uk-card-hover uk-align-center uk-align-right@m uk-width-medium" uk-lightbox>
+    <a href="{link_url}" data-caption="{link_title}">
+        <img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}>
+    </a>
+</div>
 {!else}
-<div class="uk-thumbnail uk-align-right"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>
-{!endif}
+<div class="uk-card uk-card-default uk-align-center uk-align-right@m uk-width-medium"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>{!endif}
 <!-- END image_rightalign -->
 
 {# end {templatelocation} #}
