@@ -3464,7 +3464,7 @@ function COM_formatEmailAddress($name, $address)
  */
 function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
-    global $_TABLES;
+    global $_TABLES, $_CONF;
     
     // Need to check email address to ensure they are not from account that have a status of locked or new email. If so we need to remove them so no email sent
     // Email addresses without accounts are not affected
@@ -3476,11 +3476,19 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
     
     // If no status exists then assume no user account and email is being sent to someone else (which is fine and should be sent like to new users)
     $status = DB_getItem($_TABLES['users'], 'status', "email = '$email'");
-    
+
     if (!empty($status) && ($status == USER_ACCOUNT_DISABLED || $status == USER_ACCOUNT_LOCKED || $status == USER_ACCOUNT_NEW_EMAIL)) {
         return false;
     } else {
         return Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+        /* NOT IMPLEMENTED YET FOR DEMO MODE NEED TO UPDATE SESSION HANDLING AND COM_showMessageText FIRST SEE https://github.com/Geeklog-Core/geeklog/issues/765
+        if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+            // Don't send any emails in demo mode
+            return true;
+        } else {
+            Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+        }
+        */
     }
 }
 
@@ -4735,8 +4743,17 @@ function COM_showMessageText($message, $title = '')
                 COM_getBlockTemplate('_msg_block', 'header'))
             . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
             . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" ' . XHTML
-            . '>' . $message . '</p>'
-            . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+            . '>' . $message . '</p>';
+            
+        /* NOT IMPLEMENTED YET FOR DEMO MODE NEED TO UPDATE SESSION HANDLING AND com_mail FIRST SEE https://github.com/Geeklog-Core/geeklog/issues/765    
+        if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+            if (!empty($_SESSION['LAST_EMAIL'])) {
+                $retval .= '<p>Please note sending emails is disabled in Demo mode. The last email which would have been sent was:</p>' . $_SESSION['LAST_EMAIL'];
+                $_SESSION['LAST_EMAIL'] = '';
+            }
+        }
+        */
+        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
     }
 
     return $retval;
@@ -6993,29 +7010,25 @@ function phpblock_switch_language()
         $switchUrl = COM_buildURL($_CONF['site_url'] . '/switchlang.php?lang=' . $newLangId . '&itemid' . $itemId . '&itemtype' . $itemType);
         $retval .= COM_createLink($newLang, $switchUrl);
     } else {
-        $retval .= '<form name="change" action="' . $_CONF['site_url']
-            . '/switchlang.php" method="get">' . LB;
-        $retval .= '<div>' . LB;
-        $retval .= '<input type="hidden" name="oldlang" value="' . $langId
-            . '"' . XHTML . '>' . LB;
-        $retval .= '<input type="hidden" name="itemid" value="' . $itemId
-            . '"' . XHTML . '>' . LB;
-        $retval .= '<input type="hidden" name="itemtype" value="' . $itemType
-            . '"' . XHTML . '>' . LB;             
 
-        $retval .= '<select onchange="change.submit()" name="lang">';
+        $t = COM_newTemplate($_CONF['path_layout'] . 'blocks/');
+        $t->set_file(array('switchlanguage' => 'switchlanguage.thtml'));
+            
+        $t->set_var('langId', $langId);
+        $t->set_var('itemId', $itemId);
+        $t->set_var('itemType', $itemType);
         foreach ($_CONF['languages'] as $key => $value) {
             if ($lang == $_CONF['language_files'][$key]) {
                 $selected = ' selected="selected"';
             } else {
                 $selected = '';
             }
-            $retval .= '<option value="' . $key . '"' . $selected . '>'
-                . $value . '</option>' . LB;
+            $retval .= '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
         }
-        $retval .= '</select>' . LB;
-        $retval .= '</div>' . LB;
-        $retval .= '</form>' . LB;
+        $t->set_var('language_options', $retval);
+        
+
+        $retval = $t->finish($t->parse('output', 'switchlanguage'));        
     }
 
     return $retval;
