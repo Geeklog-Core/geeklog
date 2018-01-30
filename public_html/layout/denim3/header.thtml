@@ -41,8 +41,7 @@
     <nav id="navigation" role="navigation" class="uk-navbar uk-navbar-container uk-margin-small" uk-navbar itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
       <div class="navigation_content gl-navbar-small uk-navbar-left">
         <div class="uk-hidden@s">
-          <a class="uk-navbar-toggle" href="#offcanvas" uk-toggle>
-            <span uk-navbar-toggle-icon></span>
+          <a class="uk-navbar-toggle" href="#offcanvas" uk-toggle uk-navbar-toggle-icon>
           </a>
         </div>
         

@@ -1,0 +1,18 @@
+{# begin {templatelocation} #}
+
+<div id="po_{question_id}" {style} class="wide">
+  <dl class="form_block">
+    <dt><label>{lang_question}</label></dt>
+    <dd><input type="text" dir="ltr" name="question[{q_idx}]" value="{question_text}" maxlength="255" class="size10"{xhtml}></dd>
+    <dt><label>{lang_allow_multipleanswers}</label></dt>
+    <dd class="controls_text"><input type="checkbox" name="allow_multipleanswers[{q_idx}]" {poll_allow_multipleanswers}{xhtml}></dd>
+    <dt><label>{lang_questions_description}</label></dt>
+    <dd><textarea name="description[{q_idx}]" rows="2" class="wide">{description}</textarea></dd>
+    <dt><label>{lang_answersvotes}</label></dt>
+    <dd>{answer_option}</dd>
+  </dl>
+</div>
+
+<hr class="separator"{xhtml}>
+
+{# end {templatelocation} #}

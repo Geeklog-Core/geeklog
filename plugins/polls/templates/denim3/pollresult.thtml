@@ -1,0 +1,52 @@
+{# begin {templatelocation} #}
+
+<span class="uk-align-right">{edit_icon}</span><div class="poll-topic">{poll_topic}{poll_topic_description}</div>
+{poll_questions}
+
+{# display_type Possible values 0 = Normal, 1 = In Block, 2 = autotag #}
+{!!if {display_type} == '0' !!}
+<div>
+    {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters}
+</div>
+{!else}
+<div class="pluginTinyText">
+    {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters} {poll_comments}
+</div>
+{!endif}
+
+<!-- BEGIN poll_question -->
+<div class="poll-questions">
+    <p class="poll-question">{lang_question}{lang_question_number}{poll_question_text}</p>
+    <table class="uk-table uk-table-striped">
+        <tbody>
+            {poll_votes}
+        </tbody>
+    </table>
+</div>
+<!-- END poll_question -->
+
+<!-- BEGIN poll_votes_bar -->
+        <tr>
+            <td class="uk-width-3-10">{answer_text}</td>
+            <td class="uk-width-6-10">
+                <div class="uk-progress uk-margin-small uk-margin-bottom-remove">
+                    <div class="uk-progress-bar" style="width: {bar_width}%;"></div>
+                </div>
+                {!if remark_text}
+                <div>{remark_text}</div>
+                {!endif}
+            </td>
+            <td class="uk-width-1-10">
+                {answer_num} ({answer_percent}%)
+            </td>
+        </tr>
+<!-- END poll_votes_bar -->
+
+<!-- BEGIN poll_votes_num -->
+        <tr>
+            <td class="poll_answer_text">{answer_text}</td>
+            <td class="poll_answer_percent">{answer_percent}% </td>
+        </tr>
+<!-- END poll_votes_num -->
+
+{# end {templatelocation} #}
