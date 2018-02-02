@@ -101,6 +101,10 @@ function update_ConfValuesFor220()
     
     // Config option to force email to be required (used for all remote account types as some may not return email address)
     $c->add('require_user_email',1,'select',4,16,0,295,TRUE, $me, 16);
+    
+    // Config option for enable/disable logging of 404 errors
+    $c->add('404_log',1,'select',7,31,1,1840,TRUE, $me, 31);
+   
 
     return true;
 }

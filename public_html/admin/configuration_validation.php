@@ -526,6 +526,7 @@ $_CONF_VALIDATE['Core']['page_navigation_max_pages'] = array(
 );
 $_CONF_VALIDATE['Core']['default_cache_time_block'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['titletoid'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['404_log'] = array('rule' => 'boolean');
 
 /* Subgroup Misc, Tab Debug */
 $_CONF_VALIDATE['Core']['rootdebug'] = array('rule' => 'boolean');

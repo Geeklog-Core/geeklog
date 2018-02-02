@@ -2324,6 +2324,7 @@ $LANG_confignames['Core'] = array(
     'page_navigation_max_pages' => 'Max Pages for Navigation',
     'default_cache_time_block' => 'Default Block Cache Time',
     'titletoid' => 'Enable Title To Id?',
+    '404_log' => 'Log 404 Errors',
     'censormode' => "Censor Mode?",
     'censorreplace' => "Censor Replace Text",
     'censorlist' => "Censor List",
