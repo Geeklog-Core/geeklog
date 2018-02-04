@@ -596,14 +596,14 @@ class Resource
     }
 
     /**
-     * Make a key for caching based on paths relative to public_html
+     * Make a key for caching based on contents
      *
-     * @param  array $relativePaths
+     * @param  array $contents
      * @return string
      */
-    private function makeCacheKey(array $relativePaths)
+    private function makeCacheKey($contents)
     {
-        return md5(implode('|', $relativePaths));
+        return md5($contents);
     }
 
     /**
@@ -747,7 +747,7 @@ class Resource
         // Unify line ends
         $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
 
-        $key = $this->makeCacheKey($relativePaths) . $dir;
+        $key = $this->makeCacheKey($contents);
         $data = array(
             'createdAt' => microtime(true),
             'data'      => $contents,
@@ -861,7 +861,7 @@ class Resource
             $relativePaths[] = $file['file'];
         }
 
-        $key = $this->makeCacheKey($relativePaths);
+        $key = $this->makeCacheKey(implode('|', $relativePaths));
         $cachedData = Cache::get($key);
 
         // Whether cached data exist and they are still valid?
