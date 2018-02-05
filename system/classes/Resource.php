@@ -562,7 +562,8 @@ class Resource
             return true;
         } else {
             if ($this->exists($this->config['path_html'] . $file)) {
-                $this->localCssFiles[] = array(
+                // enabled overwriting information by using the same name
+                $this->localCssFiles[$name] = array(
                     'name'       => $name,
                     'file'       => $file,
                     'attributes' => $attributes,
@@ -595,14 +596,14 @@ class Resource
     }
 
     /**
-     * Make a key for caching based on paths relative to public_html
+     * Make a key for caching based on contents
      *
-     * @param  array $relativePaths
+     * @param  array $contents
      * @return string
      */
-    private function makeCacheKey(array $relativePaths)
+    private function makeCacheKey($contents)
     {
-        return md5(implode('|', $relativePaths));
+        return md5($contents);
     }
 
     /**
@@ -699,7 +700,7 @@ class Resource
         $min = new Minify\CSS();
         $contents = '';
         $relativePaths = array();
-
+/*
         // Concatenate all CSS files
         foreach ($files as $file) {
             if (preg_match('@min\.css$@', $file['file'])) {
@@ -718,6 +719,13 @@ class Resource
         if ($isUseMinify) {
             $contents .= $min->execute($this->config['path_html']);
         }
+*/
+        // Concatenate all CSS files
+        foreach ($files as $file) {
+            // even if the target file is a minified css, relative paths need to be rewritten
+            $min->add($this->config['path_html'] . $file['file']);
+        }
+        $contents .= $min->execute($this->config['path_html']);
 
         $theme = strtolower($this->config['theme']);
 
@@ -736,10 +744,10 @@ class Resource
             $contents = str_replace(array('{left}', '{right}'), array($left, $right), $contents);
         }
 
-        // Unify lien ends
+        // Unify line ends
         $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
 
-        $key = $this->makeCacheKey($relativePaths) . $dir;
+        $key = $this->makeCacheKey($contents);
         $data = array(
             'createdAt' => microtime(true),
             'data'      => $contents,
@@ -853,7 +861,7 @@ class Resource
             $relativePaths[] = $file['file'];
         }
 
-        $key = $this->makeCacheKey($relativePaths);
+        $key = $this->makeCacheKey(implode('|', $relativePaths));
         $cachedData = Cache::get($key);
 
         // Whether cached data exist and they are still valid?

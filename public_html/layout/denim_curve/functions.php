@@ -50,26 +50,27 @@ function theme_config_denim_curve()
             'accordion'     => 0,
             'autocomplete'  => 0,
             'datepicker'    => 0,
-            'dotnav'        => 0,
-            'form_advanced' => 0,
-            'form_file'     => 0,
             'form_password' => 0,
             'form_select'   => 0,
+            'grid_parallax' => 0,
+            'grid'          => 0,
             'htmleditor'    => 0,
+            'lightbox'      => 1,
             'nestable'      => 0,
             'notify'        => 0,
-            'placeholder'   => 0,
-            'progress'      => 1,
+            'pagination'    => 0,
+            'parallax'      => 0,
             'search'        => 0,
-            'slidenav'      => 0,
             'slider'        => 0,
+            'slideset'      => 0,
+            'slideshow_fx'  => 0,
             'slideshow'     => 0,
             'sortable'      => 0,
             'sticky'        => 0,
+            'timepicker'    => 0,
             'tooltip'       => 1,
             'upload'        => 0,
         ),
-        'enable_etag'       => 0,   // 1:enable or 0:disable ETag
         'use_minified_css'  => 1,   // 1:use  or 0:no_use minified css
         'header_search'     => 1,   // 1:show or 0:hide header searchbox
         'block_left_search' => 0,   // 1:show or 0:hide left block searchbox
@@ -79,13 +80,14 @@ function theme_config_denim_curve()
         'pagenavi_string'   => 1,   // 1:show or 0:hide text string of page navigation
         'header_brand_type' => 0,   // 1:text or 0:image type of header brand (site name)
         'off_canvas_mode'   => 2,   // 0:push 1:slide 2:reveal or 3:none mode of UIkit off-canvas animation
+        'enable_etag'       => 0,   // 1:enable or 0:disable ETag (deprecated since version 2.2.0. keep the value to 0)
     );
 
     return array(
         'image_type' => 'png',
         'doctype'    => 'xhtml5',
         'etag'       => false, // never set this true. instead use $options['enable_etag'] above.
-        'supported_version_theme' => '2.0.0', // support new theme format for the later Geeklog 2.0.0
+        'supported_version_theme' => '2.2.0', // support new theme format for the later Geeklog 2.2.0
         'theme_plugins' => '', // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php
         'theme_default' => 'denim',
         'options'    => $options // Not required, some options of this theme
@@ -129,7 +131,7 @@ function theme_css_denim_curve()
             if ($value !== 1) continue;
             $componame = str_replace('_', '-', $component);
             $css_items[] = array(
-                'name'     => 'uk_' . $component,
+                'name'     => 'uikit.' . $component,
                 'file'     => '/vendor/uikit/css' . $direction . '/components/' . $componame . $ui_theme . $min . '.css',
                 'priority' => 81
             );
@@ -187,33 +189,18 @@ function theme_css_denim_curve()
  */
 function theme_js_libs_denim_curve()
 {
-    return array(
-       array(
-            'library' => 'jquery',
-            'footer'  => false // Not required, default = true
-        ),
-        array(
-            'library' => 'uikit',
-            'footer'  => false // Not required, default = true
-        ),
-    );
-}
-
-/**
- * Return an array of JS files to be loaded
- */
-function theme_js_files_denim_curve()
-{
-    global $_CONF;
-
     $theme_var = theme_config_denim_curve();
 
     $result = array();
 
     $result[] = array(
-        'file'     => '/layout/' . $theme_var['theme_default'] . '/javascript/script.js',
-        'footer'   => true, // Not required, default = true
-        'priority' => 100 // Not required, default = 100
+        'library' => 'jquery',
+        'footer'  => false // Required, default = true
+    );
+
+    $result[] = array(
+        'library' => 'uikit',
+        'footer'  => false, // Required, default = true
     );
 
     if (!empty($theme_var['options']['uikit_components'])) {
@@ -222,17 +209,34 @@ function theme_js_files_denim_curve()
             if ($value !== 1) continue;
             $componame = str_replace('_', '-', $component);
             $result[] = array(
-                'file'     => '/vendor/uikit/js/components/' . $componame . '.js',
-                'footer'   => false,
-                'priority' => 110
+                'library' => 'uikit.' . $componame,
+                'footer'  => false, // Required, default = true
             );
         }
     }
 
     $result[] = array(
-        'file'     => '/javascript/uikit_modifier.js',
-        'footer'   => false, // Not required, default = true
-        'priority' => 120 // Not required, default = 100
+        'library' => 'uikit_modifier',
+        'footer'  => false, // Required, default = true
+    );
+
+    return $result;
+}
+
+/**
+ * Return an array of JS files to be loaded
+ */
+function theme_js_files_denim_curve()
+{
+    $theme_var = theme_config_denim_curve();
+
+    $result = array();
+
+    $result[] = array(
+        'name'     => 'theme.script',
+        'file'     => '/layout/' . $theme_var['theme_default'] . '/javascript/script.js',
+        'footer'   => true, // Not required, default = true
+        'priority' => 100 // Not required, default = 100
     );
 
     return $result;

@@ -54,13 +54,7 @@ class TwoFactorAuthentication
         $this->isEnabled = ($uid > 1) && !COM_isAnonUser() &&
             isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'];
 
-        if ($this->isEnabled) {
-            $this->uid = $uid;
-
-            if ($this->uid <= 1) {
-                $this->isEnabled = false;
-            }
-        }
+        $this->uid = $uid;
     }
 
     /**
@@ -81,7 +75,7 @@ class TwoFactorAuthentication
     private function checkEnabled()
     {
         if (!$this->isEnabled) {
-            throw new \LogicException('Two factor auth is disabled fo the current user.');
+            throw new \LogicException('Two factor auth is disabled for the current user.');
         }
     }
 
@@ -220,7 +214,7 @@ class TwoFactorAuthentication
     {
         global $_TABLES;
 
-        $this->checkEnabled();
+        //$this->checkEnabled();
         $sql = "UPDATE {$_TABLES['backup_codes']} SET is_used = 1 "
             . "WHERE (uid = {$this->uid})";
         DB_query($sql);

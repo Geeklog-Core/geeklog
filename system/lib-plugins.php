@@ -73,6 +73,7 @@ $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled =
 /**
  * @global array List of all active plugins
  */
+global $_PLUGINS;
 $_PLUGINS = array();
 while ($A = DB_fetchArray($result)) {
     $_PLUGINS[] = $A['pi_name'];

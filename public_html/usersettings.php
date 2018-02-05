@@ -260,11 +260,11 @@ function edituser()
     $preferences->set_var('cooktime_selector', $selection);
 
     $preferences->set_var('email_value', htmlspecialchars($A['email']));
-    
+
     if (!empty($A['emailtoconfirm']) && !empty($A['emailconfirmid'])) {
         $preferences->set_var('emailtoconfirm', htmlspecialchars($A['emailtoconfirm']));
     }
-    
+
     $preferences->set_var('homepage_value',
         htmlspecialchars(COM_killJS($A['homepage'])));
     $preferences->set_var('location_value',
@@ -1112,7 +1112,7 @@ function saveuser(array $A)
         $passwd = '';
         if ($service == '') {
             if (!empty($A['passwd'])) {
-                if (($A['passwd'] == $A['passwd_conf']) && 
+                if (($A['passwd'] == $A['passwd_conf']) &&
                     SEC_checkPasswordStrength($A['passwd']) &&
                     (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) == 0)
                 ) {
@@ -1185,7 +1185,7 @@ function saveuser(array $A)
                 $filename = '';
             }
         }
-      
+
         // Confirm if email has changed and needs to be updated
         $emailconfirmid = DB_getItem($_TABLES['users'], 'emailconfirmid', "uid = {$_USER['uid']}");
         if ($A['email'] != DB_getItem($_TABLES['users'], 'email', "uid = '{$_USER['uid']}'")) {
@@ -1378,9 +1378,9 @@ function savepreferences($A)
         $A['language'] = $_CONF['language'];
     }
 
-    $A['enable_tfa'] = (int) Geeklog\Input::fPost('enable_tfa', 0);
-    if (($A['enable_tfa'] !== 0) && ($A['enable_tfa'] !== 1)) {
-        $A['enable_tfa'] = 0;
+    $A['enable_twofactorauth'] = (int) Geeklog\Input::fPost('enable_twofactorauth', 0);
+    if (($A['enable_twofactorauth'] !== 0) && ($A['enable_twofactorauth'] !== 1)) {
+        $A['enable_twofactorauth'] = 0;
     }
 
     // Save theme, when doing so, put in cookie so we can set the user's theme
@@ -1389,7 +1389,7 @@ function savepreferences($A)
     $language = DB_escapeString($A['language']);
 
     DB_query(
-        "UPDATE {$_TABLES['users']} SET theme = '{$theme}', language = '{$language}', twofactorauth_enabled = {$A['enable_tfa']} "
+        "UPDATE {$_TABLES['users']} SET theme = '{$theme}', language = '{$language}', twofactorauth_enabled = {$A['enable_twofactorauth']} "
         . "WHERE uid = '{$_USER['uid']}'"
     );
 
@@ -1404,7 +1404,7 @@ function savepreferences($A)
         $_CONF['cookiesecure']);
 
     // When the user has disabled Two Factor Authentication, invalidate secret code and all the backup codes he/she might have
-    if (!$A['enable_tfa']) {
+    if (!$A['enable_twofactorauth']) {
         DB_query(
             "UPDATE {$_TABLES['users']} SET twofactorauth_secret = '' "
             . "WHERE (uid = {$_USER['uid']})"
