@@ -14,12 +14,16 @@ label {
   text-align: right; /* rtl */
 }
 
+html {
+  background: none;
+}
+
 body {
   background-color: #FFF;
   border: none;
   color: #000;
   font-size: small; /* 10pt */
-  font-family: verdana, arial, sans-serif;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI","Segoe UI Emoji","Segoe UI Symbol";
   font-weight: normal;
   line-height: 1.3em;
 }
@@ -131,22 +135,22 @@ th {
 }
 
 @media screen {
-  #wrapper {
+  #print_wrapper {
     margin: 100px;
   }
 }
 
 @media print {
-  #wrapper {
+  #print_wrapper {
     margin: 0px;
   }
 }
 
-#wrapper div#header {
+#print_wrapper div#print_header {
   width: 100%;
 }
 
-#print div#header h2 {
+#print div#print_header h2 {
   font-size: 1.5em;
   font-weight: bold;
   line-height: 1.5em;
@@ -157,23 +161,23 @@ th {
 }
 
 @media print {
-  #print div#header h2 {
+  #print div#print_header h2 {
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
   }
 }
 
-#print div#header p {
+#print div#print_header p {
   font-size: 0.9em;
   text-align: left; /* rtl */
   padding: 2px 0;
 }
 
-#print div#story {
+#print div#print_story {
   padding: 1em 0;
 }
 
-#print div#story:after {
+#print div#print_story:after {
   content: "";
   display: block;
   clear: both;
@@ -181,14 +185,17 @@ th {
   overflow: hidden;
 }
 
-#print div#footer {
+#print div#print_footer {
   font-size: 0.85em;
   padding: 5px 0px;
   border-top: 1px solid #CCC;
 }
 
 @media print {
-  #print div#footer {
+  #print div#print_footer {
     border-top: 1px solid #000;
+  }
+  @page {
+    margin: 1.5cm;
   }
 }

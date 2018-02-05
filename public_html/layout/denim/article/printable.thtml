@@ -12,13 +12,13 @@
 <body id="print" dir="{direction}">
 {# begin {templatelocation} #}
 
-  <div id="wrapper">
-    <div id="header">
+  <div id="print_wrapper">
+    <div id="print_header">
       <h2>{story_title}</h2>
       <p>{lang_contributedby} {story_author} {story_date}</p>
     </div>
     
-    <div id="story">
+    <div id="print_story">
       {story_text_no_br}
     </div>
     
@@ -26,7 +26,7 @@
     
     <hr class="hidden">
     
-    <div id="footer">
+    <div id="print_footer">
       <p>{page_title}<br>{article_url}</p>
       {external_links}
     </div>
