@@ -46,9 +46,9 @@
         </div>
         
         <div id="header-search" class="uk-navbar-item uk-visible@s">
-          <form action="{site_url}/search.php" method="get" id="header-searchform">
-              <span uk-icon="icon: search"></span>
-              <input type="text" id="header-search-box" class="uk-input uk-form-width-small" maxlength="255" value="" name="query" placeholder="{button_search}"{xhtml}>
+          <form action="{site_url}/search.php" method="get" class="uk-search uk-search-default">
+              <span uk-search-icon></span>
+              <input type="search" class="uk-search-input" maxlength="255" value="" name="query" placeholder="{button_search}"{xhtml}>
               <input type="hidden" value="all" name="type"{xhtml}>
               <input type="hidden" value="all" name="keyType"{xhtml}>
               <input type="hidden" value="search" name="mode"{xhtml}>

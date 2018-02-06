@@ -1,8 +1,8 @@
-{# start {templatelocation} #}
+{# begin {templatelocation} #}
 
 {search_menu}
 
-<form action="{form_url}" method="post" class="uk-form">
+<form action="{form_url}" method="post">
 
 <div>
 {formfields_top}
