@@ -107,7 +107,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
     if ($cache_time > 0 || $cache_time == -1) {
         $hash = CACHE_security_hash();
-        $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $mode . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_USER['theme'];
+        $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $mode . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_CONF['theme'];
 
         if ($_CONF['cache_templates']) {
             $retval = $article->check_instance($cacheInstance, $article_filevar);
