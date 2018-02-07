@@ -548,6 +548,7 @@ class Template
                 $this->templateCode[$varName] = $templateCode;
             }
             $this->location[$varName] = $tFilename;
+            $this->view[$varName] = false;
         } else {
             foreach ($varName as $v => $f) {
                 if ($this->debug & 4) {
@@ -567,6 +568,7 @@ class Template
                     $this->templateCode[$v] = $f;
                 }
                 $this->location[$v] = $tFilename;
+                $this->view[$v] = false;
             }
         }
 
@@ -599,8 +601,11 @@ class Template
         $this->block_replace[$varName] = !empty($name) ? $name : $parent;
 
         // if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true)) {
-        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) &&
-            (!isset($this->view[$varName]) || ($this->view[$varName] == false))) {
+        // if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) && (!isset($this->view[$varName]) || ($this->view[$varName] == false))) {
+        // Should use parent here when checking view since assumed parent is the view that was set or not.
+        // NOTE: This means while blocks can be set in views they CANNOT be nested
+        // VIEWS with blocks need to be TESTED better as maybe there is a workaround to this
+        if (isset($_CONF['cache_templates']) && ($_CONF['cache_templates'] == true) && (!isset($this->view[$parent]) || ($this->view[$parent] == false))) {
             $filename = $this->file[$parent];
             $p = pathinfo($filename);
             $this->blocks[$varName] = $p['dirname'] . '/' . substr($p['basename'], 0, -(strlen($p['extension']) + 1)) . '__' . $varName . '.' . $p['extension'];
