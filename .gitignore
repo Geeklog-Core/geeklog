@@ -42,6 +42,9 @@ public_html/admin/plugins/dokuwiki
 plugins/mediagallery
 public_html/mediagallery
 public_html/admin/plugins/mediagallery
+plugins/vthemes
+public_html/vthemes
+public_html/admin/plugins/vthemes
 
 # test framework, if present
 public_html/tests
