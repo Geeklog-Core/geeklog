@@ -22,6 +22,7 @@ logs/*.log
 public_html/images/articles
 public_html/images/userphotos
 public_html/images/topics
+public_html/images/cache
 
 # popular plugins, if present
 plugins/forum
