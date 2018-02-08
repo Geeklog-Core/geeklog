@@ -55,6 +55,11 @@ $leave_dirs = array('cache', 'layout_cache', 'layout_css');
 $leave_files = array('cacert.pem', 'README');
 COM_cleanDirectory($_CONF['path_data'], $leave_dirs, $leave_files);
 
+// Clean out Image Cache Files (from aritcle image uploads)
+$leave_dirs = array();
+$leave_files = array('index.html');
+COM_cleanDirectory($_CONF['path_images'] . '/cache/', $leave_dirs, $leave_files);
+
 // Clean out File Manager Thumbnail Files
 $leave_dirs = array();
 $leave_files = array('index.html');
