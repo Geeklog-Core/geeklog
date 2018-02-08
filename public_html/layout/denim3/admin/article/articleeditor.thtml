@@ -214,11 +214,11 @@
 </form>
 
 <!-- BEGIN image-file-name -->
-{imagecount}) <a href="{imagelink}">{imagefilename}</a>&nbsp;&nbsp;&nbsp;{lang_delete}: <input type="checkbox" class="uk-checkbox" name="delete[{imagecount}]" /><br{xhtml}>
+<div>{imagecount}) <a href="{imagelink}">{imagefilename}</a>&nbsp;&nbsp;&nbsp;{lang_delete}: <input type="checkbox" class="uk-checkbox" name="delete[{imagecount}]"{xhtml}></div>
 <!-- END image-file-name -->
 
 <!-- BEGIN image-file-select -->
-{filecount}) <input type="file" dir="ltr" name="file{filecount}" /><br{xhtml}>
+<div>{filecount}) <input type="file" dir="ltr" name="file{filecount}"{xhtml}></div>
 <!-- END image-file-select -->
 
 {# end {templatelocation} #}

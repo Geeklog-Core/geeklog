@@ -318,11 +318,11 @@
 </div>
 
 <!-- BEGIN image-file-name -->
-{imagecount}) <a href="{imagelink}">{imagefilename}</a>&nbsp;&nbsp;&nbsp;{lang_delete}: <input type="checkbox" name="delete[{imagecount}]" /><br{xhtml}>
+{imagecount}) <a href="{imagelink}">{imagefilename}</a>&nbsp;&nbsp;&nbsp;{lang_delete}: <input type="checkbox" name="delete[{imagecount}]"{xhtml}><br{xhtml}>
 <!-- END image-file-name -->
 
 <!-- BEGIN image-file-select -->
-{filecount}) <input type="file" dir="ltr" name="file{filecount}" /><br{xhtml}>
+{filecount}) <input type="file" dir="ltr" name="file{filecount}"{xhtml}><br{xhtml}>
 <!-- END image-file-select -->
 
 {# end {templatelocation} #}
