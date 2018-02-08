@@ -157,6 +157,10 @@
       <dd>
         {saved_images}
         {image_form_elements}
+        
+        {image_add_instructions}
+        {allow_user_scaling}
+        {image_preview_instructions}
       </dd>
 
       <dt>{lang_story_stats}</dt>
@@ -208,5 +212,13 @@
   </div>
 
 </form>
+
+<!-- BEGIN image-file-name -->
+{imagecount}) <a href="{imagelink}">{imagefilename}</a>&nbsp;&nbsp;&nbsp;{lang_delete}: <input type="checkbox" name="delete[{imagecount}]" /><br{xhtml}>
+<!-- END image-file-name -->
+
+<!-- BEGIN image-file-select -->
+{filecount}) <input type="file" dir="ltr" name="file{filecount}" /><br{xhtml}>
+<!-- END image-file-select -->
 
 {# end {templatelocation} #}

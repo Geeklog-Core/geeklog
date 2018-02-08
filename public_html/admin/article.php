@@ -144,18 +144,15 @@ function liststories($current_topic = '')
 
         // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
         $excludetopics = " (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$current_topic}')))";
-        /*
-        $seltopics = COM_topicList('tid,topic', $current_topic, 1, true);
-        if (empty($seltopics)) {
-            $retval .= COM_showMessage(101);
-            return $retval;
-        }
-        */
     }
 
-    $filter = $LANG_ADMIN['topic']
-        . ': <select name="tid" style="width: 125px" onchange="this.form.submit()">'
-        . $seltopics . '</select>';
+    $tcc = COM_newTemplate($_CONF['path_layout']);
+    $tcc->set_file(array('commoncontrols' => 'commoncontrols.thtml'));
+    $tcc->set_block('commoncontrols', 'type-select-article-admin'); 
+    $tcc->set_var('name', 'tid');
+    $tcc->set_var('onchange', 'this.form.submit()');
+    $tcc->set_var('select_items', $seltopics);
+    $filter = $LANG_ADMIN['topic'] . ": " . $tcc->parse('commoncontrols', 'type-select-article-admin');
 
     $header_arr = array(
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
@@ -401,14 +398,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $oldSid = $story->EditElements('originalSid');
 
     if (!empty($oldSid) && $mode != 'clone') {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $story_templates->set_var('delete_option',
-            sprintf($delbutton, $jsconfirm));
-        $story_templates->set_var('delete_option_no_confirmation',
-            sprintf($delbutton, ''));
-
         $story_templates->set_var('allow_delete', true);
         $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
         $story_templates->set_var('confirm_message', $MESSAGE[76]);
@@ -730,34 +719,29 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $fileinputs = '';
     $saved_images = '';
     if ($_CONF['maximagesperarticle'] > 0) {
+        $story_templates->set_block('editor', 'image-file-name'); 
+        $story_templates->set_block('editor', 'image-file-select'); 
+        
         $story_templates->set_var('lang_images', $LANG24[47]);
         $icount = DB_count($_TABLES['article_images'], 'ai_sid', $story->getSid());
         if ($icount > 0) {
             $result_articles = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '" . $story->getSid() . "'");
             for ($z = 1; $z <= $icount; $z++) {
                 $I = DB_fetchArray($result_articles);
-                $saved_images .= $z . ') '
-                    . COM_createLink($I['ai_filename'],
-                        $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'])
-                    . '&nbsp;&nbsp;&nbsp;' . $LANG_ADMIN['delete']
-                    . ': <input type="checkbox" name="delete[' . $I['ai_img_num']
-                    . ']"' . XHTML . '><br' . XHTML . '>';
+   
+                $story_templates->set_var('imagecount', $z);
+                $story_templates->set_var('imagelink', $_CONF['site_url'] . '/images/articles/' . $I['ai_filename']);
+                $story_templates->set_var('imagefilename', $I['ai_filename']);
+                $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+                $saved_images .= $story_templates->parse('editor-image', 'image-file-name');
             }
         }
-
+        
         $newallowed = $_CONF['maximagesperarticle'] - $icount;
         for ($z = $icount + 1; $z <= $_CONF['maximagesperarticle']; $z++) {
-            $fileinputs .= $z . ') <input type="file" dir="ltr" name="file'
-                . $z . '"' . XHTML . '>';
-            if ($z < $_CONF['maximagesperarticle']) {
-                $fileinputs .= '<br' . XHTML . '>';
-            }
+            $story_templates->set_var('filecount', $z);
+            $fileinputs .= $story_templates->parse('editor-image', 'image-file-select');            
         }
-        $fileinputs .= '<br' . XHTML . '>' . $LANG24[51];
-        if ($_CONF['allow_user_scaling'] == 1) {
-            $fileinputs .= $LANG24[27];
-        }
-        $fileinputs .= $LANG24[28] . '<br' . XHTML . '>';
     }
 
     // Add JavaScript
@@ -794,6 +778,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     $story_templates->set_var('saved_images', $saved_images);
     $story_templates->set_var('image_form_elements', $fileinputs);
+    $story_templates->set_var('image_add_instructions', $LANG24[51]);
+    if ($_CONF['allow_user_scaling'] == 1) {
+        $story_templates->set_var('allow_user_scaling', $LANG24[27]);
+    }    
+    $story_templates->set_var('image_preview_instructions', $LANG24[28]);
     $story_templates->set_var('lang_hits', $LANG24[18]);
     $story_templates->set_var('story_hits', $story->EditElements('hits'));
     $story_templates->set_var('lang_comments', $LANG24[19]);

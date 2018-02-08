@@ -157,6 +157,10 @@
       <dd>
         {saved_images}
         {image_form_elements}
+        
+        {image_add_instructions}
+        {allow_user_scaling}
+        {image_preview_instructions}
       </dd>
 
       <dt>{lang_story_stats}</dt>
@@ -192,7 +196,9 @@
     <li><input type="submit" value="{lang_save}" name="mode"{xhtml}></li>
     <li><input type="submit" value="{lang_preview}" name="mode"{xhtml}></li>
     <li><input type="submit" value="{lang_cancel}" name="mode"{xhtml}></li>
-    <li>{delete_option}</li>
+{!if allow_delete}
+    <li><input type="submit" value="{lang_delete}" name="mode" onclick="return confirm('{confirm_message}');"{xhtml}></li>
+{!endif}    
     <li>
       <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
       <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
@@ -210,5 +216,13 @@
     </li>
   </ul>
 </form>
+
+<!-- BEGIN image-file-name -->
+{imagecount}) <a href="{imagelink}">{imagefilename}</a>&nbsp;&nbsp;&nbsp;{lang_delete}: <input type="checkbox" name="delete[{imagecount}]" /><br{xhtml}>
+<!-- END image-file-name -->
+
+<!-- BEGIN image-file-select -->
+{filecount}) <input type="file" dir="ltr" name="file{filecount}" /><br{xhtml}>
+<!-- END image-file-select -->
 
 {# end {templatelocation} #}
