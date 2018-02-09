@@ -1743,7 +1743,7 @@ function COM_topicArray($selection, $sortCol = 0, $ignoreLang = false)
  */
 function COM_checkList($table, $selection, $where = '', $selected = '', $fieldName = '')
 {
-    global $_TABLES, $_COM_VERBOSE;
+    global $_CONF, $_TABLES, $_COM_VERBOSE;
 
     $sql = "SELECT {$selection} FROM {$table}";
 
@@ -1767,9 +1767,15 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldNa
 
         $S = array();
     }
-    $retval = '<ul class="checkboxes-list">' . LB;
+
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls/');
+    $tcc->set_file('checklist', 'checklist.thtml');
+    $tcc->set_block('checklist', 'item'); 
+    $tcc->set_block('checklist', 'item-default');
+    
     for ($i = 0; $i < $numRows; $i++) {
         $access = true;
+        
         $A = DB_fetchArray($result, true);
 
         if (($table == $_TABLES['topics']) && (SEC_hasTopicAccess($A['tid']) == 0)) {
@@ -1783,24 +1789,27 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldNa
         }
 
         if ($access) {
-            $retval .= '<li><label><input type="checkbox" name="' . $fieldName . '[]" value="' . $A[0] . '"';
+            $tcc->set_var('name', $fieldName . '[]');
+            $tcc->set_var('value', $A[0]);
+            $tcc->set_var('label', stripslashes($A[1]));
 
             $sizeS = count($S);
             for ($x = 0; $x < $sizeS; $x++) {
                 if ($A[0] == $S[$x]) {
-                    $retval .= ' checked="checked"';
+                    $tcc->set_var('checked', ' checked="checked"');
                     break;
                 }
             }
 
             if (($table == $_TABLES['blocks']) && isset($A[2]) && ($A[2] === 'gldefault')) {
-                $retval .= XHTML . '><span class="gldefault">' . stripslashes($A[1]) . '</span></label></li>' . LB;
+                $tcc->parse('items', 'item-default', true);
+                
             } else {
-                $retval .= XHTML . '><span>' . stripslashes($A[1]) . '</span></label></li>' . LB;
+                $tcc->parse('items', 'item', true);
             }
         }
     }
-    $retval .= '</ul>' . LB;
+    $retval = $tcc->finish($tcc->parse('output', 'checklist'));
 
     return $retval;
 }

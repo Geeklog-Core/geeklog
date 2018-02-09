@@ -1,0 +1,15 @@
+{# begin {templatelocation} #}
+
+<ul class="checkboxes-list">
+    {items}
+</ul>
+
+<!-- BEGIN item -->
+<li><label><input type="checkbox"{checked} name="{name}" value="{value}"{xhtml}><span>{label}</span></label></li>
+<!-- END item -->
+
+<!-- BEGIN item-block -->
+<li><label><input type="checkbox"{checked} name="{name}" value="{value}"{xhtml}><span class="gldefault">{label}</span></label></li>
+<!-- END item-block -->
+
+{# end {templatelocation} #}

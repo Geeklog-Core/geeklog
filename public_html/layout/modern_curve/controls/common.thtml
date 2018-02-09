@@ -1,11 +1,11 @@
 {# begin {templatelocation} - Geeklog Common Controls #}
 
 <!-- BEGIN type-hidden -->
-<input type="hidden" name="{name}" value="{value}"{XHTML}>
+<input type="hidden" name="{name}" value="{value}"{xhtml}>
 <!-- END type-hidden -->
 
 <!-- BEGIN type-checkbox -->
-<input type="checkbox" name="{name}" title="{title}"{!if style} style="{style}"{!endif} class="uk-checkbox {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{XHTML}>
+<input type="checkbox" name="{name}" title="{title}"{!if style} style="{style}"{!endif} class="uk-checkbox {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
 <!-- END type-checkbox -->
 
 <!-- BEGIN type-select -->
