@@ -8,8 +8,8 @@
 <li><label><input type="checkbox"{checked} name="{name}" value="{value}"{xhtml}><span>{label}</span></label></li>
 <!-- END item -->
 
-<!-- BEGIN item-block -->
+<!-- BEGIN item-default -->
 <li><label><input type="checkbox"{checked} name="{name}" value="{value}"{xhtml}><span class="gldefault">{label}</span></label></li>
-<!-- END item-block -->
+<!-- END item-default -->
 
 {# end {templatelocation} #}
