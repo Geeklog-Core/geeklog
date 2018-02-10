@@ -277,11 +277,10 @@ function edituser()
             $preferences->set_var('display_photo', '');
         } else {
             if (empty($A['photo'])) { // external avatar
-                $photo = '<br' . XHTML . '>' . $photo;
+                // so do nothing
+                $preferences->set_var('lang_deletephoto', '');
             } else { // uploaded photo - add delete option
-                $photo = '<br' . XHTML . '>' . $photo . '<br' . XHTML . '>' . $LANG04[79]
-                    . '&nbsp;<input type="checkbox" name="delete_photo"' . XHTML . '>'
-                    . LB;
+                $preferences->set_var('lang_deletephoto', $LANG04[79]);
             }
             $preferences->set_var('display_photo', $photo);
         }
@@ -365,15 +364,16 @@ function confirmAccountDelete($form_reqid)
     }
 
     $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
-    DB_change($_TABLES['users'], 'pwrequestid', "$reqid",
-        'uid', $_USER['uid']);
-    $msg = '<p>' . $LANG04[98] . '</p>' . LB . '<form action="' . $_CONF['site_url']
-        . '/usersettings.php" method="post"><div>' . LB
-        . '<p align="center"><input type="submit" name="btnsubmit" value="'
-        . $LANG04[96] . '"' . XHTML . '></p>' . LB
-        . '<input type="hidden" name="mode" value="deleteconfirmed"' . XHTML . '>' . LB
-        . '<input type="hidden" name="account_id" value="' . $reqid . '"' . XHTML . '>' . LB
-        . '</div></form>' . LB;
+    DB_change($_TABLES['users'], 'pwrequestid', "$reqid", 'uid', $_USER['uid']);
+
+    $template = COM_newTemplate($_CONF['path_layout'] . 'preferences');
+    $template->set_file(array('confirm' => 'deleteaccountconfirm.thtml'));
+    $template->set_var('message', $LANG04[98]);
+    $template->set_var('lang_deleteaccount', $LANG04[156]);
+    $template->set_var('value_deleteconfirmed', $LANG04[96]);
+    $template->set_var('reqid', $reqid);
+    $msg = $template->finish($template->parse('output', 'confirm'));
+
     $retval = COM_showMessageText($msg, $LANG04[97]);
     $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[97]));
 

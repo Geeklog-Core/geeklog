@@ -1768,7 +1768,7 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldNa
         $S = array();
     }
 
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls/');
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
     $tcc->set_file('checklist', 'checklist.thtml');
     $tcc->set_block('checklist', 'item'); 
     $tcc->set_block('checklist', 'item-default');

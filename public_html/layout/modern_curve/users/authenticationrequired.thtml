@@ -1,0 +1,35 @@
+{# begin {templatelocation} #}
+
+{!if lang_nonstandardlogin}
+    <p>{lang_nonstandardlogin}</p>
+{!else}
+    {!if lang_incorrectlogin}
+        <p>{lang_incorrectlogin}</p>
+    {!endif}
+    <form action="{site_admin_url}/index.php" method="post">
+        <table cellspacing="0" cellpadding="3" border="0" width="100%">
+            <tr>
+                <td class="alignright"><b><label for="loginname">{lang_username}</label></b></td>
+                <td><input type="text" name="loginname" id="loginname" size="16" maxlength="16"{xhtml}></td>
+            </tr>
+            <tr>
+                <td class="alignright"><b><label for="passwd">{lang_password}</label></b></td>
+                <td><input type="password" name="passwd" id="passwd" size="16"{xhtml}></td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="center" class="warning">
+                    {lang_warning}<br{xhtml}>
+                    <input type="hidden" name="warn" value="1"{xhtml}>
+                  {!if captcha} 
+                  {captcha}
+                  <div style="clear:both"></div>
+                  {!endif}
+                  <button type="submit" value="{value_login}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_login}</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+{!endif}
+
+{# end {templatelocation} #}

@@ -84,33 +84,24 @@ if ($status == USER_ACCOUNT_ACTIVE) {
     (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAccess()) {
     COM_updateSpeedlimit('login');
 
+    $template = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $template->set_file(array('authenticationrequired' => 'authenticationrequired.thtml'));
+    
     $display .= COM_startBlock($LANG20[1]);
-
     if (!$_CONF['user_login_method']['standard']) {
-        $display .= '<p>' . $LANG_LOGIN[2] . '</p>';
+        $template->set_var('lang_nonstandardlogin', $LANG_LOGIN[2]);
     } else {
-
+        $template->set_var('lang_username', $LANG20[4]);
+        $template->set_var('lang_password', $LANG20[5]);
+        $template->set_var('lang_warning', $LANG20[6]);
+        $template->set_var('lang_login', $LANG20[8]);
+        $template->set_var('value_login', $LANG20[7]);
         if (isset($_POST['warn'])) {
-            $display .= $LANG20[2]
-                     . '<br' . XHTML . '><br' . XHTML . '>'
-                     . COM_accessLog($LANG20[3] . ' ' . Geeklog\Input::post('loginname'));
-        }
-
-        $display .= '<form action="' . $_CONF['site_admin_url'] . '/index.php" method="post">'
-            .'<table cellspacing="0" cellpadding="3" border="0" width="100%">'.LB
-            .'<tr><td class="alignright"><b><label for="loginname">'.$LANG20[4].'</label></b></td>'.LB
-            .'<td><input type="text" name="loginname" id="loginname" size="16" maxlength="16"' . XHTML . '></td>'.LB
-            .'</tr>'.LB
-            .'<tr>'.LB
-            .'<td class="alignright"><b><label for="passwd">'.$LANG20[5].'</label></b></td>'.LB
-            .'<td><input type="password" name="passwd" id="passwd" size="16"' . XHTML . '></td>'
-            .'</tr>'.LB
-            .'<tr>'.LB
-            .'<td colspan="2" align="center" class="warning">'.$LANG20[6].'<input type="hidden" name="warn" value="1"' . XHTML . '>'
-            .'<br' . XHTML . '><input type="submit" name="mode" value="'.$LANG20[7].'"' . XHTML . '></td>'.LB
-            .'</tr>'.LB
-            .'</table></form>';
+            $template->set_var('lang_incorrectlogin', $LANG20[2]);
+            COM_accessLog($LANG20[3] . ' ' . Geeklog\Input::post('loginname'));
+        }        
     }
+    $display .= $template->finish($template->parse('output', 'authenticationrequired'));        
 
     $display .= COM_endBlock();
     $display = COM_createHTMLDocument($display);

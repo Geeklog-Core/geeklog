@@ -827,12 +827,13 @@ $LANG_ENVCHECK = array(
 
 $LANG20 = array(
     1 => 'Authentication Required',
-    2 => 'Denied! Incorrect Login Information',
+    2 => 'Incorrect Login Information, please try again.',
     3 => 'Invalid password for user',
     4 => 'Username:',
     5 => 'Password:',
     6 => 'All access to administrative portions of this web site are logged and reviewed.<br' . XHTML . '>This page is for the use of authorized personnel only.',
-    7 => 'login'
+    7 => 'login',
+    8 => 'Login'
 );
 
 ###############################################################################

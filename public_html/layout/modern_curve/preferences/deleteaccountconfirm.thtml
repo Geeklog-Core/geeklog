@@ -1,0 +1,12 @@
+{# begin {templatelocation} #}
+
+<p>{message}</p>
+<form action="{site_url}/usersettings.php" method="post">
+    <div>
+        <p align="center"><input type="submit" name="btnsubmit" value="{deleteaccount}"{xhtml}></p>
+        <input type="hidden" name="mode" value="value_deleteconfirmed"{xhtml}>
+        <input type="hidden" name="account_id" value="{reqid}"{xhtml}>
+    </div>
+</form>
+
+{# end {templatelocation} #}

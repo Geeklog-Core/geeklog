@@ -146,13 +146,13 @@ function liststories($current_topic = '')
         $excludetopics = " (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$current_topic}')))";
     }
 
-    $tcc = COM_newTemplate($_CONF['path_layout']);
-    $tcc->set_file(array('common' => 'controls/common.thtml'));
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc->set_file('common', 'common.thtml');
     $tcc->set_block('common', 'type-select-article-admin'); 
     $tcc->set_var('name', 'tid');
     $tcc->set_var('onchange', 'this.form.submit()');
     $tcc->set_var('select_items', $seltopics);
-    $filter = $LANG_ADMIN['topic'] . ": " . $tcc->parse('common', 'type-select-article-admin');
+    $filter = $LANG_ADMIN['topic'] . ": " . $tcc->finish($tcc->parse('common', 'type-select-article-admin'));
 
     $header_arr = array(
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
