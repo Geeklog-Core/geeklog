@@ -54,6 +54,17 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR |
 $_REQUEST = array_merge($_GET, $_POST);
 
 /**
+ * Configuration Include:
+ * You do NOT need to modify anything here any more!
+ */
+require_once __DIR__ . '/siteconfig.php';
+
+if (COM_isDeveloperMode() &&
+    isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
+    error_reporting((int) $_CONF['developer_mode_php']['error_reporting']);
+}
+
+/**
  * Here, we shall establish an error handler. This will mean that whenever a
  * php level error is encountered, our own code handles it. This will hopefuly
  * go someway towards preventing nasties like path exposures from ever being
@@ -71,17 +82,6 @@ if (is_callable('set_error_handler')) {
 
 if (is_callable('set_exception_handler')) {
     set_exception_handler('COM_handleException');
-}
-
-/**
- * Configuration Include:
- * You do NOT need to modify anything here any more!
- */
-require_once __DIR__ . '/siteconfig.php';
-
-if (COM_isDeveloperMode() &&
-    isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
-    error_reporting((int) $_CONF['developer_mode_php']['error_reporting']);
 }
 
 /**
