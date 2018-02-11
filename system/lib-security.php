@@ -58,7 +58,7 @@
 // Turn this on to get various debug messages from the code in this library
 // Need to perform check as lib-security is also loaded by the Geeklog Emergency Rescue Tool 
 // which does not load lib-common.php
-if (function_exists(COM_isEnableDeveloperModeLog)) {
+if (function_exists('COM_isEnableDeveloperModeLog')) {
     $_SEC_VERBOSE = COM_isEnableDeveloperModeLog('security');
 } else {
     $_SEC_VERBOSE = false;
