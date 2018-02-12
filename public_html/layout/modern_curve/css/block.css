@@ -54,7 +54,7 @@ div#centerblocks div.block-message {
   -moz-box-shadow: 0px 0px 4px 1px #aaa;
   box-shadow: 0px 0px 4px 1px #aaa; 
 
-  background: #eeeeec url("./images/css/bg_message_title.png") repeat-x scroll 0 0;
+  background: #eeeeec url('../images/css/bg_message_title.png') repeat-x scroll 0 0;
 }
 
 div#centerblocks div.block-message dl {
@@ -115,7 +115,7 @@ div.block-related div.block-related-content {
 div#centerblocks {
   margin-bottom: 12px;
   border-top: 1px solid #aaa;
-  background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
+  background: #fff url('../images/css/block_bg.png') repeat-x scroll 0 0;
 
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -196,7 +196,7 @@ div#leftblocks div.block-left {
   margin-bottom: 12px;
   border-top: 1px solid #aaa;
   padding: 8px;
-  background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
+  background: #fff url('../images/css/block_bg.png') repeat-x scroll 0 0;
 
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -243,7 +243,7 @@ div#rightblocks div.block-right {
   margin-bottom: 12px;
   border-top: 1px solid #aaa;
   padding: 8px;
-  background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
+  background: #fff url('../images/css/block_bg.png') repeat-x scroll 0 0;
 
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;

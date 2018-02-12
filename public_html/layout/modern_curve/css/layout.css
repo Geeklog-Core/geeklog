@@ -24,7 +24,7 @@
 ==============================================================================*/
 
 body {
-  background: #eeeeec url('./images/css/bg.png') repeat-x 0 0;
+  background: #eeeeec url('../images/css/bg.png') repeat-x 0 0;
 }
 
 /*--------------------------------------
@@ -58,7 +58,7 @@ div#container {
 div#container div#header {
   height: 120px;
   border: 1px solid #656663;
-  background: transparent url('./images/css/bg_header.png') repeat-x 0 0;
+  background: transparent url('../images/css/bg_header.png') repeat-x 0 0;
   margin-bottom: 12px;
 
   -webkit-border-radius: 8px;
@@ -96,7 +96,7 @@ div#container div#header p.site_slogan {
 --------------------------------------*/
 
 div#container div#navigation {
-  background: #dbddd9 url('./images/css/menu_bg.png') repeat-x 0 0;
+  background: #dbddd9 url('../images/css/menu_bg.png') repeat-x 0 0;
   border: 1px solid #939490;
   margin: auto;
   margin-bottom: 12px;
@@ -141,7 +141,7 @@ div#container div#navigation ul li.menuitem a:visited {
 div#container div#navigation ul li.menuitem a:hover,
 div#container div#navigation ul li.menuitem a:focus,
 div#container div#navigation ul li.menuitem a:active {
-  background: #ededeb url('./images/css/menu_bg_active.png') repeat-x 0 0;
+  background: #ededeb url('../images/css/menu_bg_active.png') repeat-x 0 0;
   text-decoration: underline;
 }
 

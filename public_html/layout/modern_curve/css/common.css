@@ -390,7 +390,7 @@ form dl.notes dt {
   margin: 0 0 0.5em 0;
   padding: 0 0 0 24px;
   border-bottom: 1px solid #000000;
-  background: url(./images/icon_info.png) no-repeat 0 0;
+  background: url('../images/icon_info.png') no-repeat 0 0;
   font-weight: bold;
 }
 

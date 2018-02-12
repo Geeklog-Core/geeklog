@@ -31,7 +31,7 @@ div#leftblocks div#block-left-search form#searchform {
 div#leftblocks div#block-left-search form#searchform div {
   margin: 0;
   padding: 0;
-  background: transparent url('./images/css/search-{right}.png') no-repeat 0 0;
+  background: transparent url('../images/css/search-{right}.png') no-repeat 0 0;
   width: 180px;
   height: 26px;
   line-height: 26px;
