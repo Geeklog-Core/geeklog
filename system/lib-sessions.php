@@ -213,7 +213,7 @@ function SESS_sessionCheck()
     $_USER['session_id'] = $sessid;
     
     // Check to see if user status is set to something we have to redirect the user too
-    if ($_USER['uid'] > 1) {
+    if (isset($_USER['uid']) && $_USER['uid'] > 1) {
         // Check if active user has email account and if required
         // Doesn't matter if remote account or not
         if ($_CONF['require_user_email'] && empty($_USER['email']) && $_USER['status'] == USER_ACCOUNT_ACTIVE) {
