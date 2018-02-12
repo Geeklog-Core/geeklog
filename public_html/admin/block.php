@@ -240,7 +240,11 @@ function overridePostdata(&$A)
 
     $A['onleft'] = ($_POST['onleft'] == 1) ? 1 : 0;
     $A['is_enabled'] = ($_POST['is_enabled'] == 'on') ? 1 : 0;
-    $A['allow_autotags'] = ($_POST['allow_autotags'] == 'on') ? 1 : 0;
+    if (isset($_POST['allow_autotags'])) {
+        $A['allow_autotags'] = ($_POST['allow_autotags'] == 'on') ? 1 : 0;
+    } else {
+        $A['allow_autotags'] = 0;
+    }
 
     if (isset($_POST['cache_time'])) {
         $A['cache_time'] = (int) Geeklog\Input::fPost('cache_time', 0);
@@ -328,14 +332,6 @@ function editblock($bid = '')
     $block_templates->set_var('start_block_editor', $block_start);
 
     if (!empty($bid) && SEC_hasRights('block.delete')) {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $block_templates->set_var('delete_option',
-            sprintf($delbutton, $jsconfirm));
-        $block_templates->set_var('delete_option_no_confirmation',
-            sprintf($delbutton, ''));
-
         $block_templates->set_var('allow_delete', true);
         $block_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
         $block_templates->set_var('confirm_message', $MESSAGE[76]);

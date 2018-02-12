@@ -127,13 +127,15 @@
   <ul class="submit">
     <li><input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}></li>
     <li><input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}></li>
-    <li>
-      <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
-      <input type="hidden" name="bid" value="{block_bid}"{xhtml}>
-      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-      {delete_option}
-    </li>
+{!if allow_delete}
+    <li><input type="submit" value="{lang_delete}" name="mode" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}></li>
+{!endif}    
   </ul>
+  
+  <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+  <input type="hidden" name="bid" value="{block_bid}"{xhtml}>
+  <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+  
 </form>
 {end_block}
 
