@@ -161,15 +161,16 @@ if ($A['count'] > 0) {
         $articleTemplate->set_var('direction', $LANG_DIRECTION);
 
         $theme = $_CONF['theme'];
-        if (($theme === 'denim') || ($theme === 'denim_curve')) {
-            $dir = isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl') ? 'rtl' : 'ltr';
-            $_SCRIPTS->setCssFile(
-                'print', '/layout/' . $theme . '/css_' . $dir . '/print.css', true, array('media' => 'print')
-            );
-        } else {
-            $_SCRIPTS->setCssFile(
-                'print', '/layout/' . $theme . '/print.css', true, array('media' => 'print')
-            );
+        $dir = isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl') ? 'rtl' : 'ltr';
+        $paths = array(
+            'denim'        => 'layout/' . $theme . '/css_' . $dir . '/print.css',
+            'professional' => 'layout/' . $theme . '/print.css',
+            'other'        => 'layout/' . $theme . '/css/print.css',
+        );
+        foreach ($paths as $path) {
+            if (file_exists($_CONF['path_html'] . $path)) {
+                $_SCRIPTS->setCssFile('print', '/' . $path, true, array('media' => 'print'));
+            }
         }
 
         // Override style for <a> tags
