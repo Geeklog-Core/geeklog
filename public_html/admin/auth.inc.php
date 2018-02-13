@@ -101,6 +101,10 @@ if ($status == USER_ACCOUNT_ACTIVE) {
             COM_accessLog($LANG20[3] . ' ' . Geeklog\Input::post('loginname'));
         }        
     }
+    
+    // For Captcha 
+    PLG_templateSetVars('loginform', $template);
+    
     $display .= $template->finish($template->parse('output', 'authenticationrequired'));        
 
     $display .= COM_endBlock();
