@@ -64,13 +64,13 @@ function theme_css_modern_curve()
          array(
              'name' => 'theme', // Not required but if set to theme then will always be loaded first
              'file' => '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION,
-             'attributes' => array('media' => 'all'), // Not requred
-             'priority'   => 100  // Not requred, default = 100
+             'attributes' => array('media' => 'all'), // Not required
+             'priority'   => 100  // Not required, default = 100
          )
     );
      */
 
-    // Instead of importing all files in a single css file we will load them seperately
+    // Instead of importing all files in a single css file we will load them separately
     // since each file needs to be processed by style.css.php for language template vars
     return array(
          array('file' => '/layout/' . $_CONF['theme'] . '/css/compatible.css', 'priority' => 1.00),
