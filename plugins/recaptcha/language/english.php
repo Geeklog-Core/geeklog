@@ -77,8 +77,9 @@ $LANG_tab['recaptcha'] = array(
 );
 
 $LANG_fs['recaptcha'] = array(
-    'fs_system'   => 'System',
-    'fs_location' => 'Where to use reCAPTCHA',
+    'fs_system'         => 'System',
+    'fs_location'       => 'Where to use reCAPTCHA',
+    'fs_integration'    => 'Geeklog Integration'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

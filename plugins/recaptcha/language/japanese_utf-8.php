@@ -77,8 +77,9 @@ $LANG_tab['recaptcha'] = array(
 );
 
 $LANG_fs['recaptcha'] = array(
-    'fs_system'   => 'システム',
-    'fs_location' => '使用箇所',
+    'fs_system'         => 'システム',
+    'fs_location'       => '使用箇所',
+    'fs_integration'    => 'Geeklogへの統合',
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
