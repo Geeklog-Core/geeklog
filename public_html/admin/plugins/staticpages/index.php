@@ -278,17 +278,7 @@ function staticpageeditor_form(array $A)
     $sp_template->set_var('lang_save', $LANG_ADMIN['save']);
     $sp_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $sp_template->set_var('lang_preview', $LANG_ADMIN['preview']);
-    if (SEC_hasRights('staticpages.delete') && ($mode !== 'clone') &&
-        !empty($A['sp_old_id'])
-    ) {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $sp_template->set_var('delete_option',
-            sprintf($delbutton, $jsconfirm));
-        $sp_template->set_var('delete_option_no_confirmation',
-            sprintf($delbutton, ''));
-
+    if (SEC_hasRights('staticpages.delete') && ($mode !== 'clone') && !empty($A['sp_old_id'])) {
         $sp_template->set_var('allow_delete', true);
         $sp_template->set_var('lang_delete', $LANG_ADMIN['delete']);
         $sp_template->set_var('confirm_message', $MESSAGE[76]);

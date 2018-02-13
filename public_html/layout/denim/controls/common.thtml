@@ -5,7 +5,7 @@
 <!-- END type-hidden -->
 
 <!-- BEGIN type-checkbox -->
-<input type="checkbox" name="{name}" title="{title}"{!if style} style="{style}"{!endif} class="uk-checkbox {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
+<input type="checkbox" name="{name}"{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif} class="uk-checkbox {class}"{!if checked} checked="checked"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
 <!-- END type-checkbox -->
 
 <!-- BEGIN type-select -->

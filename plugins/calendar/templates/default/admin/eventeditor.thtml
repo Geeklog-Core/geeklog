@@ -118,7 +118,9 @@
       <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
       <input type="hidden" name="eid" value="{event_id}"{xhtml}>
       <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
-      {delete_option}
+{!if allow_delete}
+        <input type="submit" value="{lang_delete}" name="mode" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
+{!endif} 
       {submission_option}
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     </div>

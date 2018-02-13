@@ -1806,12 +1806,7 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
 
     $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
         $A['perm_group'], $A['perm_members'], $A['perm_anon']);
-
     switch ($fieldname) {
-        case 'delete':
-            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['eid']}]\" checked=\"checked\"" . XHTML . ">";
-            break;
-
         case 'edit':
             if ($access == 3) {
                 $retval = COM_createLink(

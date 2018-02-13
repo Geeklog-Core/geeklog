@@ -58,7 +58,9 @@
       <div class="submit">
         <input type="submit" name="mode" value="{lang_save}" class="submit"{xhtml}>
         <input type="submit" name="mode" value="{lang_cancel}" class="submit"{xhtml}>
-        {delete_option}
+{!if allow_delete}
+        <input type="submit" name="mode" value="{lang_delete}" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
+{!endif}        
         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
         <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
       </div>

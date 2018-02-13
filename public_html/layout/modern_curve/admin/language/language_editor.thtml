@@ -47,7 +47,9 @@
 
     <ul class="submit">
         <li><input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}></li>
-        {delete_option}
+{!if allow_delete}
+        <li><input type="submit" value="{lang_delete}" name="mode" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}></li>
+{!endif} 
         <li>
             <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
             <input type="hidden" name="{token_name}" value="{token_value}"{xhtml}>

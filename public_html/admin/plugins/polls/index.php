@@ -442,14 +442,6 @@ function editpoll($pid = '')
     ));
 
     if (!empty($pid) && ($access == 3) && !empty($T['owner_id'])) {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $poll_templates->set_var('delete_option',
-            sprintf($delbutton, $jsconfirm));
-        $poll_templates->set_var('delete_option_no_confirmation',
-            sprintf($delbutton, ''));
-
         $poll_templates->set_var('allow_delete', true);
         $poll_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
         $poll_templates->set_var('confirm_message', $MESSAGE[76]);

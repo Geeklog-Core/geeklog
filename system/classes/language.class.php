@@ -169,8 +169,6 @@ class Language
             $deleteOption = '';
             $allow_delete = false;
         } else {
-            $deleteOption = '<li><input type="submit" value="' . $LANG_ADMIN['delete']
-                . '" name="mode" class="submit" onclick="return confirm(\'' . $MESSAGE[76] . '\');"' . XHTML . '</li>';
             $allow_delete = true;
         }
 
@@ -191,7 +189,6 @@ class Language
             'name'                 => $A['name'],
             'value'                => $A['value'],
             'site_admin_url'       => $_CONF['site_admin_url'],
-            'delete_option'        => $deleteOption,
             'allow_delete'         => $allow_delete,
             'lang_language_editor' => $LANG_LANG['language_editor'],
             'lang_id'              => $LANG_LANG['id'],
