@@ -1187,6 +1187,7 @@ function saveuser(array $A)
         }
 
         // Confirm if email has changed and needs to be updated
+        $sql_emailconfirm = '';
         $emailconfirmid = DB_getItem($_TABLES['users'], 'emailconfirmid', "uid = {$_USER['uid']}");
         if ($A['email'] != DB_getItem($_TABLES['users'], 'email', "uid = '{$_USER['uid']}'")) {
             // Send out confirmation email of new address and save to user record
