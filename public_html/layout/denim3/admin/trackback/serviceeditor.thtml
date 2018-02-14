@@ -34,7 +34,7 @@
     <div class="submit">
       <button type="submit" name="servicemode[0]" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
 {!if allow_delete}
-      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+      <button type="submit" name="servicemode[2]" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
 {!endif}
       <button type="submit" name="servicemode[1]" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
       <input type="hidden" name="service_id" value="{service_id}"{xhtml}>

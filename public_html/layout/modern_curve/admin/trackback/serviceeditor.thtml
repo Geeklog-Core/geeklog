@@ -34,12 +34,13 @@
     <ul class="submit">
       <li><input type="submit" value="{lang_save}" name="servicemode[0]" class="submit"{xhtml}></li>
       <li><input type="submit" value="{lang_cancel}" name="servicemode[1]" class="submit"{xhtml}></li>
-      <li>
-        <input type="hidden" value="{service_id}" name="service_id"{xhtml}>
-        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-        {delete_option}
-      </li>
+{!if allow_delete}
+      <li><input type="submit" value="{lang_delete}" name="servicemode[2]" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}></li>
+{!endif}      
     </ul>
+    <input type="hidden" value="{service_id}" name="service_id"{xhtml}>
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    
   </div>
 </form>
 

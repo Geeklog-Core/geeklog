@@ -581,19 +581,9 @@ function editServiceForm($pid, $msg = '', $new_name = '', $new_site_url = '', $n
     $template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
     if ($pid > 0) {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="servicemode[2]"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $template->set_var('delete_option',
-            sprintf($delbutton, $jsconfirm));
-        $template->set_var('delete_option_no_confirmation',
-            sprintf($delbutton, ''));
-
         $template->set_var('allow_delete', true);
         $template->set_var('lang_delete', $LANG_ADMIN['delete']);
         $template->set_var('confirm_message', $MESSAGE[76]);
-    } else {
-        $template->set_var('delete_option', '');
     }
 
     if (isset($A['pid'])) {
