@@ -63,6 +63,7 @@ $_CONF['site_enabled'] = true;
  * @var bool
  * @since v2.2.0
  */
+// $_CONF['developer_mode_log']['trace'] = true;        // Include call trace in log file
 // $_CONF['developer_mode_log']['common'] = true;       // lib-common.php
 // $_CONF['developer_mode_log']['database'] = true;     // lib-database.php
 // $_CONF['developer_mode_log']['deprecated'] = true;   // deprecated features

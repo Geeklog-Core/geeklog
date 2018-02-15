@@ -1961,7 +1961,7 @@ function COM_errorLog($logEntry, $actionId = '')
 
         // Only show call trace in developer mode (for log file only)
         $callTrace = "";
-        if (COM_isDeveloperMode()) {
+        if (COM_isEnableDeveloperModeLog('trace')) {
             // Generate an exception to trace the deprecated call
             $e = new Exception();
             $trace = $e->getTrace();
