@@ -1,18 +1,27 @@
-{# begin {templatelocation} - Geeklog Common Controls #}
+{# begin {templatelocation} #}
+
+{# ------------------ Geeklog Common Controls ------------------ #}
 
 <!-- BEGIN type-hidden -->
 <input type="hidden" name="{name}" value="{value}"{xhtml}>
 <!-- END type-hidden -->
 
 <!-- BEGIN type-checkbox -->
-<input type="checkbox" name="{name}"{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif} class="uk-checkbox {class}"{!if checked} checked="checked"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
+<input type="checkbox" name="{name}"{!if id} id="{id}"{!endif}{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif}{!if class} class="{class}"{!endif}{!if checked} checked="checked"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
 <!-- END type-checkbox -->
 
 <!-- BEGIN type-select -->
-<select name="{name}"{!if style} style="{style}"{!endif}{!if class} class="{class}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
+<select name="{name}"{!if id} id="{id}"{!endif}{!if style} style="{style}"{!endif}{!if class} class="{class}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
 <!-- END type-select -->
 
-<!-- BEGIN type-select-article-admin -->
-{# For Admin Article List #}
-<select name="{name}" style="width: 125px;{style}"{!if class} class="{class}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
-<!-- END type-select-article-admin -->
+<!-- BEGIN type-submit -->
+<button name="{name}" {!if id} id="{id}"{!endif}{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif} class="uk-button {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>{lang_button}</button>
+<!-- END type-submit -->
+
+{# ------------------ Geeklog Specific Controls ------------------ #}
+
+<!-- BEGIN type-select-width-small -->
+<select name="{name}"{!if style} style="{style}"{!endif} class="uk-form-width-small {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
+<!-- END type-select-width-small -->
+
+{# end {templatelocation} #}

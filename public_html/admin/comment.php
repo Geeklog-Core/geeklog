@@ -103,7 +103,12 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
 
     switch ($fieldName) {
         case 'selector':
-            $fieldValue = '<input type="checkbox" name="cids' . $suffix . '[]" value="' . $commentId . '"' . XHTML . '>';
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-checkbox'); 
+            $tcc->set_var('name', 'cids' . $suffix . '[]');
+            $tcc->set_var('value', $commentId);
+            $fieldValue = $tcc->finish($tcc->parse('common', 'type-checkbox'));        
             break;
 
         case 'edit':
@@ -204,13 +209,16 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
  */
 function getTypeSelector($itemType)
 {
-    global $_PLUGINS, $LANG_ADMIN, $LANG09, $LANG_STATIC, $LANG_POLLS;
+    global $_CONF, $_PLUGINS, $LANG_ADMIN, $LANG09, $LANG_STATIC, $LANG_POLLS;
 
-    $retval = $LANG_ADMIN['type']
-        . ': <select name="item_type" style="width: 125px;" onchange="this.form.submit()">' . LB;
-
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc->set_file('common', 'common.thtml');
+    $tcc->set_block('common', 'type-select-width-small'); 
+    $tcc->set_var('name', 'item_type');
+    $tcc->set_var('onchange', 'this.form.submit()');
+    
     $selected = ($itemType === 'all') ? ' selected="selected"' : '';
-    $retval .= '<option value="all"' . $selected . '>' . $LANG09[4] . '</option>' . LB;
+    $retval = '<option value="all"' . $selected . '>' . $LANG09[4] . '</option>' . LB;
 
     $selected = ($itemType === 'article') ? ' selected="selected"' : '';
     $retval .= '<option value="article"' . $selected . '>' . $LANG09[6] . '</option>' . LB;
@@ -221,11 +229,12 @@ function getTypeSelector($itemType)
         if (function_exists($function)) {
             // Since can display comments assume it uses comment system
             $selected = ($itemType === $pi_name) ? ' selected="selected"' : '';
-        $retval .= '<option value="' . $pi_name . '"' . $selected . '>' . ucfirst($pi_name) . '</option>' . LB;
+            $retval .= '<option value="' . $pi_name . '"' . $selected . '>' . ucfirst($pi_name) . '</option>' . LB;
         }
     }    
 
-    $retval .= '</select>' . LB;
+    $tcc->set_var('select_items', $retval);
+    $retval = $LANG_ADMIN['type'] . ': ' . $tcc->finish($tcc->parse('common', 'type-select-width-small')); 
 
     return $retval;
 }
@@ -242,9 +251,17 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
 {
     global $_CONF, $_PLUGINS, $_TABLES, $LANG_ADMIN, $LANG01, $LANG03, $LANG28, $LANG29;
 
+    // For Header checkbox
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc->set_file('common', 'common.thtml');
+    $tcc->set_block('common', 'type-checkbox'); 
+    $tcc->set_var('name', 'select_all' . $suffix);
+    $tcc->set_var('id', 'select_all' . $suffix);
+    $fieldselector = $tcc->finish($tcc->parse('common', 'type-checkbox'));       
+    
     $headerArray = array(
         array(
-            'text'  => '<input type="checkbox" name="select_all' . $suffix . '" id="select_all' . $suffix . '"' . XHTML . '>',
+            'text'  => $fieldselector,
             'field' => 'selector',
             'sort'  => false,
         ),
@@ -318,28 +335,36 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
 
     $filter = getTypeSelector($itemType);
     $options = array();
-    $actionSelector = '<select name="bulk_action' . $suffix . '" id="bulk_action' . $suffix . '">' . LB
-        . '<option value="do_nothing">' . $LANG03[102] . '</option>' . LB;
-
-    if ($suffix === SUFFIX_COMMENT_SUBMISSIONS) {
-        $actionSelector .= '<option value="bulk_approve">' . $LANG29[1] . '</option>' . LB;
-    }
-
-    $actionSelector .= '<option value="bulk_delete">' . $LANG29[2] . '</option>' . LB
-        . '<option value="bulk_ban_user">' . $LANG03[103] . '</option>' . LB;
-
-    if (in_array('spamx', $_PLUGINS)) {
-        $actionSelector .= '<option value="bulk_spamx_ban_ip_address">' . $LANG03[104] . '</option>' . LB;
-    }
     
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc->set_file('common', 'common.thtml');
+    $tcc->set_block('common', 'type-select-width-small'); 
+    $tcc->set_var('name', 'bulk_action' . $suffix);
+    $tcc->set_var('id', 'bulk_action' . $suffix);
+    $select_items =  '<option value="do_nothing">' . $LANG03[102] . '</option>' . LB;
+    if ($suffix === SUFFIX_COMMENT_SUBMISSIONS) {
+        $select_items .= '<option value="bulk_approve">' . $LANG29[1] . '</option>' . LB;
+    }
+    $select_items .= '<option value="bulk_delete">' . $LANG29[2] . '</option>' . LB
+        . '<option value="bulk_ban_user">' . $LANG03[103] . '</option>' . LB;
+    if (in_array('spamx', $_PLUGINS)) {
+        $select_items .= '<option value="bulk_spamx_ban_ip_address">' . $LANG03[104] . '</option>' . LB;
+    }
     if (function_exists('BAN_for_plugins_check_access') AND BAN_for_plugins_check_access()) {
-        $actionSelector .= '<option value="bulk_ban_ip_address">' . $LANG03['ban_plugin_ban_ip'] . '</option>' . LB;
+        $select_items .= '<option value="bulk_ban_ip_address">' . $LANG03['ban_plugin_ban_ip'] . '</option>' . LB;
     }    
-
-    $actionSelector .= '</select>' . LB
-        . '<input type="submit" name="submit" id="bulk_action_submit' . $suffix . '" value="'
-        . $LANG_ADMIN['submit'] . '"' . XHTML . '>' . LB
-        . '<input type="hidden" name="list" value="' . $suffix . '"' . XHTML . '>' . LB;
+    $tcc->set_var('select_items', $select_items);
+    $actionSelector = $tcc->finish($tcc->parse('common', 'type-select-width-small'));    
+        
+    $tcc->set_block('common', 'type-submit'); 
+    $tcc->set_var('name', 'submit');
+    $tcc->set_var('id', 'bulk_action_submit' . $suffix);
+    $tcc->set_var('value', $LANG_ADMIN['submit']);
+    $tcc->set_var('lang_button', $LANG_ADMIN['submit']);
+    $actionSelector .= $tcc->finish($tcc->parse('common', 'type-submit'));    
+            
+    $actionSelector .= '<input type="hidden" name="list" value="' . $suffix . '"' . XHTML . '>' . LB;
+        
     $securityTokenTag = '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
         . $securityToken . '"' . XHTML . '>' . LB;
     $formArray = array(
