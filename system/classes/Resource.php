@@ -1017,7 +1017,10 @@ class Resource
                         $this->config['site_url'] . $this->libraryLocations['uikit3']
                     )
                     . PHP_EOL
-                    . sprintf(self::JS_TAG_TEMPLATE, $this->libraryLocations['uikit3-icons']);
+                    . sprintf(
+                        self::JS_TAG_TEMPLATE,
+                        $this->config['site_url'] . $this->libraryLocations['uikit3-icons']
+                    );
             }
 
             $retval .= PHP_EOL;
