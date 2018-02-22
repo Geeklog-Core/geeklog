@@ -92,14 +92,7 @@ function getRouteEditor($rid = 0)
     $T->set_var('start_router_editor', $routerStart);
 
     if ($rid > 0) {
-        $deleteButton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsConfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $T->set_var(array(
-            'delete_option'                 => sprintf($deleteButton, $jsConfirm),
-            'delete_option_no_confirmation' => sprintf($deleteButton, ''),
-            'allow_delete'                  => true,
-        ));
+        $T->set_var('allow_delete', true);
     }
 
     $T->set_var(array(
