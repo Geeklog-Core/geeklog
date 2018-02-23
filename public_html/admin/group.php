@@ -103,6 +103,10 @@ function editgroup($grp_id = '')
 
     $group_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file('editor', 'groupeditor.thtml');
+    $group_templates->set_block('editor', 'no-group-right-message');
+    $group_templates->set_block('editor', 'rights_list_options');
+    $group_templates->set_block('editor', 'rights_list_option');
+    $group_templates->set_block('editor', 'rights_list_option_disabled');
 
     $group_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $group_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
@@ -146,14 +150,6 @@ function editgroup($grp_id = '')
     if (!empty($grp_id)) {
         // Groups tied to Geeklog's functionality shouldn't be deleted
         if ($A['grp_gl_core'] != 1) {
-            $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                . '" name="mode"%s' . XHTML . '>';
-            $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-            $group_templates->set_var('delete_option',
-                sprintf($delbutton, $jsconfirm));
-            $group_templates->set_var('delete_option_no_confirmation',
-                sprintf($delbutton, ''));
-
             $group_templates->set_var('allow_delete', true);
             $group_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
             $group_templates->set_var('confirm_message', $MESSAGE[76]);
@@ -229,8 +225,8 @@ function editgroup($grp_id = '')
         }
         if ($count == 0) {
             // this group doesn't belong to anything...give a friendly message
-            $groupoptions = '<p class="pluginRow1">'
-                . $LANG_ACCESS['nogroupsforcoregroup'] . '</p>';
+            $group_templates->set_var('lang_message', $LANG_ACCESS['nogroupsforcoregroup']);
+            $groupoptions = $group_templates->parse('editor-message', 'no-group-right-message');        
         }
     } else {
         $group_templates->set_var('lang_securitygroupmsg',
@@ -335,7 +331,7 @@ function editgroup($grp_id = '')
     }
 
     $group_templates->set_var('rights_options',
-        printrights($grp_id, $A['grp_gl_core']));
+        printrights($grp_id, $A['grp_gl_core'], $group_templates));
     $group_templates->set_var('gltoken_name', CSRF_TOKEN);
     $group_templates->set_var('gltoken', $token);
     $group_templates->parse('output', 'editor');
@@ -446,7 +442,7 @@ function removeIndirectFeatures($grp_id, array $features)
  * @param    boolean $core   indicates if group is a core Geeklog group
  * @return   string      HTML for rights
  */
-function printrights($grp_id = '', $core = 0)
+function printrights($grp_id = '', $core = 0, &$group_templates)
 {
     global $_TABLES, $_USER, $LANG_ACCESS, $_GROUP_VERBOSE;
 
@@ -507,55 +503,43 @@ function printrights($grp_id = '', $core = 0)
     // OK, now loop through and print all the features giving edit rights
     // to only the ones that are direct features
     $ftcount = 0;
-    $retval = '<tr>';
     for ($i = 0; $i < $nfeatures; $i++) {
         $id = 'id-features' . $i;
         $A = DB_fetchArray($features);
 
         if ((empty($grpftarray[$A['ft_name']]) OR ($grpftarray[$A['ft_name']] == 'direct')) AND ($core != 1)) {
-            if (($ftcount > 0) && ($ftcount % $num_cols == 0)) {
-                $retval .= '</tr>' . LB . '<tr>';
-            }
-            $pluginRow = sprintf('pluginRow%d', ($ftcount % 2) + 1);
             $ftcount++;
-
-            $retval .= '<td class="' . $pluginRow . '">'
-                . '<input type="checkbox" id="' . $id . '" name="features[]" value="'
-                . $A['ft_id'] . '"';
+            $group_templates->set_var('id', $id);
+            $group_templates->set_var('value', $A['ft_id']);
+            $group_templates->set_var('checked', ''); // reset this as it goes through a loop
             if (!empty($grpftarray[$A['ft_name']])) {
                 if ($grpftarray[$A['ft_name']] == 'direct') {
-                    $retval .= ' checked="checked"';
+                    $group_templates->set_var('checked', '1');
                 }
             }
-
-            $retval .= XHTML . '><label for="' . $id . '" title="' . $A['ft_descr'] . '">'
-                . $A['ft_name'] . '</label></td>';
+            $group_templates->set_var('title', $A['ft_descr']);
+            $group_templates->set_var('feature_name', $A['ft_name']);
+            $group_templates->parse('rights_list_options', 'rights_list_option', true);
         } else {
             // either this is an indirect right OR this is a core feature
             if ((($core == 1) AND (isset($grpftarray[$A['ft_name']]) AND (($grpftarray[$A['ft_name']] == 'indirect') OR ($grpftarray[$A['ft_name']] == 'direct')))) OR ($core != 1)) {
-                if (($ftcount > 0) && ($ftcount % $num_cols == 0)) {
-                    $retval .= '</tr>' . LB . '<tr>';
-                }
-                $pluginRow = sprintf('pluginRow%d', ($ftcount % 2) + 1);
-                $ftcount++;
-
-                $retval .= '<td class="' . $pluginRow . '">'
-                    . '<input type="checkbox" checked="checked" '
-                    . 'disabled="disabled"' . XHTML . '>'
-                    . '<input type="hidden" name="features[]" value="'
-                    . $A['ft_id'] . '"' . XHTML . '>'
-                    . '(<i title="' . $A['ft_descr'] . '">' . $A['ft_name']
-                    . '</i>)</td>';
+                $ftcount++;    
+                $group_templates->set_var('value', $A['ft_id']);
+                $group_templates->set_var('title', $A['ft_descr']);
+                $group_templates->set_var('feature_name', $A['ft_name']);
+                $group_templates->parse('rights_list_options', 'rights_list_option_disabled', true);
             }
         }
-    }
+    }    
+    
     if ($ftcount == 0) {
         // This group doesn't have rights to any features
-        $retval .= '<td colspan="' . $num_cols . '" class="pluginRow1">'
-            . $LANG_ACCESS['grouphasnorights'] . '</td>';
+        $group_templates->set_var('lang_message', $LANG_ACCESS['grouphasnorights']);
+        $retval = $group_templates->parse('editor-message', 'no-group-right-message');        
+        
+    } else {
+        $retval = $group_templates->parse('editor-rights', 'rights_list_options');        
     }
-
-    $retval .= '</tr>' . LB;
 
     return $retval;
 }
@@ -983,7 +967,7 @@ function listgroups($show_all_groups = false)
         'form_url'   => $form_url,
     );
 
-    $filter = '<span style="padding-right:20px;">';
+    //$filter = '<span style="padding-right:20px;">';
 
     $checked = '';
     if ($show_all_groups) {
@@ -997,22 +981,34 @@ function listgroups($show_all_groups = false)
         $grpFilter = 'AND (grp_id IN (' . implode(',', $thisUsersGroups) . '))';
     }
 
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc->set_file('common', 'common.thtml');
+    $tcc->set_block('common', 'type-checkbox'); 
+    $tcc->set_var('name', 'chk_showall');
+    $tcc->set_var('id', 'chk_showall');
+    $tcc->set_var('value', '1');
     if ($show_all_groups) {
-        $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked"' . XHTML . '>';
+        //$filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked"' . XHTML . '>';
+        $tcc->set_var('checked', true);
+        
         $query_arr = array(
             'table'          => 'groups',
             'sql'            => "SELECT * FROM {$_TABLES['groups']} WHERE 1=1",
             'query_fields'   => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     } else {
-        $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1"' . $checked . XHTML . '>';
+        //$filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1"' . $checked . XHTML . '>';
+        $tcc->set_var('checked', $checked);
+        
         $query_arr = array(
             'table'          => 'groups',
             'sql'            => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_name IN ('All Users','Logged-in Users'))",
             'query_fields'   => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     }
-    $filter .= $LANG28[48] . '</label></span>';
+    $tcc->set_var('lang_label', $LANG28[48]);
+    $filter = $tcc->finish($tcc->parse('common', 'type-checkbox'));
+    //$filter .= $LANG28[48] . '</label></span>';
 
     $retval .= ADMIN_list('groups', 'ADMIN_getListField_groups', $header_arr,
         $text_arr, $query_arr, $defsort_arr, $filter);
