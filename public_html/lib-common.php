@@ -7343,7 +7343,8 @@ function COM_handle404($alternate_url = '')
     header('Status: 404 Not Found');
 
     if (isset($_SERVER['SCRIPT_URI'])) {
-        $url = $_SERVER['SCRIPT_URI'];
+        // Added QUERY_STRING as this works with PHP with FPM on. Not sure if this affects other PHP setups?
+        $url = $_SERVER['SCRIPT_URI'] . '?' . $_SERVER['QUERY_STRING'];
     } else {
         if (empty($_SERVER['HTTPS']) || ($_SERVER['HTTPS'] === 'off')) {
             $url = 'http';
