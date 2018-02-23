@@ -67,7 +67,9 @@
       <input type="hidden" name="uid" value="{user_id}"{xhtml}>
       <input type="hidden" name="regdate" value="{regdate_timestamp}"{xhtml}>
       <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
-      {delete_option}
+{!if allow_delete}
+      <input type="submit" value="{lang_delete}" name="mode" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
+{!endif}
       <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     </p>

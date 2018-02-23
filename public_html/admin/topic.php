@@ -119,14 +119,6 @@ function edittopic($tid = '')
     $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file('editor', 'topiceditor.thtml');
     if (!empty($tid) && SEC_hasRights('topic.edit')) {
-        $delButton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsConfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $topic_templates->set_var('delete_option',
-            sprintf($delButton, $jsConfirm));
-        $topic_templates->set_var('delete_option_no_confirmation',
-            sprintf($delButton, ''));
-
         $topic_templates->set_var('allow_delete', true);
         $topic_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
         $topic_templates->set_var('confirm_message', $MESSAGE[76]);

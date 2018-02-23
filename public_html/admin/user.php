@@ -181,14 +181,6 @@ function edituser($uid = 0, $msg = 0)
 
     $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $user_templates->set_var('delete_option',
-            sprintf($delbutton, $jsconfirm));
-        $user_templates->set_var('delete_option_no_confirmation',
-            sprintf($delbutton, ''));
-
         $user_templates->set_var('allow_delete', true);
         $user_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
         $user_templates->set_var('confirm_message', $MESSAGE[76]);

@@ -77,7 +77,10 @@
   <ul class="submit">
     <li><input type="hidden" name="owner_id" value="{owner_id}"{xhtml}><input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}><input type="submit" value="{lang_save}" name="mode"{xhtml}><input type="hidden" name="old_tid" value="{topic_id}"{xhtml}></li>
     <li><input type="submit" value="{lang_cancel}" name="mode"{xhtml}></li>
-    <li>{delete_option}</li>
+{!if allow_delete}
+    <li><input type="submit" value="{lang_delete}" name="mode" onclick="return confirm('{confirm_message}');"{xhtml}></li>
+{!endif}
+    
   </ul>
 </form>
 

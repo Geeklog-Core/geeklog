@@ -7,11 +7,25 @@
 <!-- END type-hidden -->
 
 <!-- BEGIN type-checkbox -->
+{!if lang_label}
+<label{!if id} for="{id}"{!endif}>
+{!endif}
 <input type="checkbox" name="{name}"{!if id} id="{id}"{!endif}{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif}{!if class} class="{class}"{!endif}{!if checked} checked="checked"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
+{!if lang_label}
+{lang_label}
+</label>
+{!endif}
 <!-- END type-checkbox -->
 
 <!-- BEGIN type-select -->
+{!if lang_label}
+<label{!if id} for="{id}"{!endif}>
+{lang_label}
+{!endif}
 <select name="{name}"{!if id} id="{id}"{!endif}{!if style} style="{style}"{!endif}{!if class} class="{class}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
+{!if lang_label}
+</label>
+{!endif}
 <!-- END type-select -->
 
 <!-- BEGIN type-submit -->
@@ -21,7 +35,13 @@
 {# ------------------ Geeklog Specific Controls ------------------ #}
 
 <!-- BEGIN type-select-width-small -->
+{!if lang_label}
+<label{!if id} for="{id}"{!endif}>
+{lang_label}
+{!endif}
 <select name="{name}"{!if style} style="{style}"{!endif} class="uk-form-width-small {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
 <!-- END type-select-width-small -->
-
+{!if lang_label}
+</label>
+{!endif}
 {# end {templatelocation} #}
