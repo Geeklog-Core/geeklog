@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+<section class="block-list{!if css_classes} {css_classes}{!endif}"{!if css_id} id="{css_id}"{!endif}>
+  <h2 class="block-title">{block_title}{!if help_url}<a class="blocktitle block-help-icon" {gl-help-popup} href="{help_url}" title="{help_title}" target="_blank" uk-icon="icon:question; ratio:0.85"></a>{!endif}</h2>
+  <nav class="block-list-content" role="navigation">
+    <ul class="noliststyle">
+
+{# end {templatelocation} #}

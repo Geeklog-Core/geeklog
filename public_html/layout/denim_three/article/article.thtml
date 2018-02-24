@@ -1,0 +1,23 @@
+{# begin {templatelocation} #}
+
+<div class="article">
+{formatted_article}
+</div>
+
+<div class="uk-margin uk-grid-match" uk-grid>
+<div class="uk-width-1-2@s">
+{whats_related}
+</div>
+
+<div class="uk-width-1-2@s">
+{story_options}
+</div>
+
+<div class="uk-width-1-1">
+{trackback}
+</div>
+</div>
+
+{commentbar}
+
+{# end {templatelocation} #}

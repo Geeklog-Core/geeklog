@@ -1,0 +1,11 @@
+{# begin {templatelocation} #}
+
+<dt><label for="advsearchform-author">{lang_authors}</label></dt>
+<dd>
+  <select name="author" id="advsearchform-author" class="uk-select uk-width-auto">
+    <option selected="selected" value="0">{lang_all}</option>
+    {author_option_list}
+  </select>
+</dd>
+
+{# end {templatelocation} #}

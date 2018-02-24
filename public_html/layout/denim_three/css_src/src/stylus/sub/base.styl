@@ -1,0 +1,746 @@
+
+$stage = 'base'
+
+html
+    font-size: 14px
+    line-height: 20px
+    color: #444
+
+address
+    font-style: normal
+    font-weight: normal
+
+q:before
+    content: open-quote
+
+q:after
+    content: close-quote
+
+cite, em, var, dfn
+    font-style: italic
+
+code, samp, kbd
+    font-family: monospace
+
+abbr[title], acronym[title]
+    border-bottom: 1px dotted
+
+a
+    color: $base-anker-color
+    outline: 0
+
+a:hover
+    color: $base-anker-color
+    text-decoration: underline
+
+dt
+    font-weight: bold
+    margin-left: 20px
+
+dd
+    margin-left: 20px
+
+ins
+    text-decoration: underline
+
+del
+    text-decoration: line-through
+
+textarea
+    font-size: 100%
+    width: 75%
+    min-height: 60px
+
+hr
+    height: 1px
+    border: none
+    border-top: 1px solid #CCC
+    margin: 0.5em auto
+
+sub
+    vertical-align: sub
+    font-size: 0.83em
+    line-height: normal
+
+sup
+    vertical-align: super
+    font-size: 0.83em
+    line-height: normal
+
+fieldset
+    margin: 0 0 15px 0
+    padding: 8px 15px
+    border: 1px solid #DDD
+    border-radius: 0
+
+* + fieldset
+  margin-top: 15px
+
+legend
+    padding: 2px 4px
+
+iframe[width="100%"]
+    width: 99%
+
+em
+    font-weight: bold
+
+img
+    border: none
+    vertical-align: bottom
+
+/* Heading */
+$mv = 15px
+h1, h2, h3, h4, h5, h6
+    margin: 0 0 $mv 0
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI", "Segoe UI Emoji", "Segoe UI Symbol"
+body
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI", "Segoe UI Emoji", "Segoe UI Symbol"
+
+* +
+    h1, h2, h3, h4, h5, h6
+        margin-top: $mv
+h1
+    font-size: 22px
+    line-height: @font-size + 6px
+h2
+    font-size: 20px
+    line-height: @font-size + 6px
+h3
+    font-size: 18px
+    line-height: @font-size + 6px
+h4
+    font-size: 16px
+    line-height: @font-size + 6px
+h5
+    font-size: 14px
+    line-height: @font-size + 6px
+h6
+    font-size: 12px
+    line-height: @font-size + 6px
+
+/* Table */
+/*
+table
+    text-align: left
+    border-collapse: collapse
+    margin: 1em 0.5em
+
+tr
+    margin: 0
+    padding: 0
+    vertical-align: middle
+
+th,
+td
+    margin: 0
+    padding: 0.2em 0.6em
+    vertical-align: middle
+    line-height: 160%
+    border: 1px solid #DDD
+
+th
+    text-align: left
+    font-weight: bold
+    background: #F5F5F5
+*/
+
+table img
+    vertical-align: middle
+
+/*! Forms */
+
+// Mobile Portrait Size to Mobile Landscape Size (devices and browsers)
+@media only screen and (max-width: $breakpoint-mini-max)
+    select
+        max-width: 270px
+
+select
+    height: 28px
+    line-height: 28px
+
+select.multiple,
+select[multiple="multiple"]
+    height: auto
+
+option
+    padding-right: 4px    /*! for Firefox */
+
+/*!--------------------------------------
+  Apply UIkit3 button styles
+--------------------------------------*/
+
+/* ========================================================================
+   Component: Button
+ ========================================================================== */
+/*
+ * 1. Remove margins in Chrome, Safari and Opera.
+ * 2. Remove borders for `button`.
+ * 3. Remove border-radius in Chrome.
+ * 4. Address `overflow` set to `hidden` in IE.
+ * 5. Correct `font` properties and `color` not being inherited for `button`.
+ * 6. Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 7. Style
+ * 8. `line-height` is used to create a height because it also centers the text vertically for `a` elements.
+ *    Better would be to use height and flexbox to center the text vertically but flexbox doesn't work in Firefox on `button` elements.
+ * 9. Align text if button has a width
+ * 10. Required for `a`.
+ */
+
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+button:not(.uk-button) {
+  /* 1 */
+  margin: 0;
+  /* 2 */
+  border: none;
+  /* 3 */
+  border-radius: 0;
+  /* 4 */
+  overflow: visible;
+  /* 5 */
+  font: inherit;
+  color: inherit;
+  /* 6 */
+  text-transform: none;
+  /* 7 */
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0 30px;
+  vertical-align: middle;
+  font-size: 0.875rem;
+  /* 8 */
+  line-height: 38px;
+  /* 9 */
+  text-align: center;
+  /* 10 */
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: 0.1s ease-in-out;
+  transition-property: color, background-color, border-color;
+}
+
+input[type="submit"]:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="reset"]:not(:disabled),
+button:not(.uk-button):not(:disabled) {
+  cursor: pointer;
+}
+/*
+ * Remove the inner border and padding in Firefox.
+ */
+input[type="submit"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+button:not(.uk-button)::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+/* Hover */
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+button:not(.uk-button):hover {
+  /* 8 */
+  text-decoration: none;
+}
+/* Focus */
+input[type="submit"]:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus,
+button:not(.uk-button):focus {
+  outline: none;
+}
+/* OnClick + Active */
+/* Style modifiers
+ ========================================================================== */
+/*
+ * Default
+ */
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+button:not(.uk-button) {
+  background-color: transparent;
+  color: #333;
+  border: 1px solid #e5e5e5;
+}
+/* Hover + Focus */
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+button:not(.uk-button):hover,
+input[type="submit"]:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus,
+button:not(.uk-button):focus {
+  background-color: transparent;
+  color: #333;
+  border-color: #b2b2b2;
+}
+/* OnClick + Active */
+input[type="submit"]:active,
+input[type="button"]:active,
+input[type="reset"]:active,
+button:not(.uk-button):active,
+input[type="submit"].uk-active,
+input[type="button"].uk-active,
+input[type="reset"].uk-active,
+button:not(.uk-button).uk-active {
+  background-color: transparent;
+  color: #333;
+  border-color: #999999;
+}
+/*
+ * Disabled
+ * The same for all style modifiers
+ */
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+input[type="reset"]:disabled,
+button:not(.uk-button):disabled {
+  background-color: transparent;
+  color: #999;
+  border-color: #e5e5e5;
+}
+
+/*
+ * Define consistent border, margin, and padding.
+ */
+.uk-fieldset,
+fieldset:not(.uk-fieldset) {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Legend
+ * 1. Behave like block element
+ * 2. Correct the color inheritance from `fieldset` elements in IE.
+ * 3. Remove padding so people aren't caught out if they zero out fieldsets.
+ * 4. `margin-bottom` is not working in Safari and Opera.
+ *    Using `padding` and :after instead to create the border
+ * 5. Style
+ */
+.uk-legend,
+legend:not(.uk-fieldset) {
+  /* 1 */
+  width: 100%;
+  /* 2 */
+  color: inherit;
+  /* 3 */
+  padding: 0;
+  /* 4 */
+  padding-bottom: 15px;
+  /* 5 */
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+/*
+ * 1. Fixes IE9
+ */
+.uk-legend:after,
+legend:not(.uk-fieldset):after {
+  content: "";
+  display: block;
+  border-bottom: 1px solid #ddd;
+  /* 1 */
+  width: 100%;
+}
+
+
+
+/* ========================================================================
+   Component: Form
+ ========================================================================== */
+/*
+ * 1. Define consistent box sizing.
+ *    Default is `content-box` with following exceptions set to `border-box`
+ *    `select`, `input[type="checkbox"]` and `input[type="radio"]`
+ *    `input[type="search"]` in Chrome, Safari and Opera
+ *    `input[type="color"]` in Firefox
+ * 2. Address margins set differently in Firefox/IE and Chrome/Safari/Opera.
+ * 3. Remove `border-radius` in iOS.
+ * 4. Change font properties to `inherit` in all browsers
+ */
+
+input[type="text"]:not(.uk-input),
+input[type="password"]:not(.uk-input),
+input[type="email"]:not(.uk-input),
+select:not(.uk-select),
+textarea:not(.uk-textarea),
+input[type="radio"]:not(.uk-radio),
+input[type="checkbox"]:not(.uk-checkbox) {
+  /* 1 */
+  box-sizing: border-box;
+  /* 2 */
+  margin: 0;
+  /* 3 */
+  border-radius: 0;
+  /* 4 */
+  font: inherit;
+}
+/*
+ * Show the overflow in Edge.
+ */
+input[type="text"]:not(.uk-input),
+input[type="password"]:not(.uk-input),
+input[type="email"]:not(.uk-input) {
+  overflow: visible;
+}
+/*
+ * Remove the inheritance of text transform in Firefox.
+ */
+select:not(.uk-select) {
+  text-transform: none;
+}
+/*
+ * 1. Change font properties to `inherit` in all browsers
+ * 2. Don't inherit the `font-weight` and use `bold` instead.
+ * NOTE: Both declarations don't work in Chrome, Safari and Opera.
+ */
+select:not(.uk-select) optgroup {
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  font-weight: bold;
+}
+/*
+ * Remove the default vertical scrollbar in IE.
+ */
+textarea:not(.uk-textarea) {
+  overflow: auto;
+}
+/*
+ * Removes placeholder transparency in Firefox.
+ */
+input[type="text"]::-moz-placeholder:not(.uk-input),
+input[type="password"]::-moz-placeholder:not(.uk-input),
+input[type="email"]::-moz-placeholder:not(.uk-input),
+textarea::-moz-placeholder:not(.uk-textarea) {
+  opacity: 1;
+}
+/*
+ * Improves consistency of cursor style for clickable elements
+ */
+input[type="radio"]:not(.uk-radio):not(:disabled),
+input[type="checkbox"]:not(.uk-checkbox):not(:disabled) {
+  cursor: pointer;
+}
+/* Input, select and textarea
+ * Allowed: `text`, `password`, `datetime`, `datetime-local`, `date`,  `month`,
+            `time`, `week`, `number`, `email`, `url`, `search`, `tel`, `color`
+ * Disallowed: `range`, `radio`, `checkbox`, `file`, `submit`, `reset` and `image`
+ ========================================================================== */
+/*
+ * Remove default style in iOS.
+ */
+input[type="text"]:not(.uk-input),
+input[type="password"]:not(.uk-input),
+input[type="email"]:not(.uk-input),
+textarea:not(.uk-textarea) {
+  -webkit-appearance: none;
+}
+/*
+ * 1. Prevent content overflow if a fixed width is used
+ * 2. Take the full width
+ * 3. Reset default
+ * 4. Style
+ */
+input[type="text"]:not(.uk-input),
+input[type="password"]:not(.uk-input),
+input[type="email"]:not(.uk-input),
+select:not(.uk-select),
+textarea:not(.uk-textarea) {
+  /* 1 */
+  /* max-width: 100%; */
+  /* 2 */
+  /* width: 100%; */
+  /* 3 */
+  border: 0 none;
+  /* 4 */
+  padding: 0 10px;
+  background: #fff;
+  color: #666;
+  border: 1px solid #e5e5e5;
+  transition: 0.2s ease-in-out;
+  transition-property: color, background-color, border;
+}
+/*
+ * Single-line
+ * 1. Allow any element to look like an `input` or `select` element
+ * 2. Make sure line-height is not larger than height
+ *    Also needed to center the text vertically
+ */
+input[type="text"]:not(.uk-input),
+input[type="password"]:not(.uk-input),
+input[type="email"]:not(.uk-input),
+select:not(.uk-select):not([multiple]):not([size]) {
+  height: 40px;
+  vertical-align: middle;
+  /* 1 */
+  display: inline-block;
+}
+/* 2 */
+/*
+.uk-input:not(input),
+.uk-select:not(select) {
+  line-height: 38px;
+}
+*/
+/*
+ * Multi-line
+ */
+select[multiple]:not(.uk-input),
+select[size]:not(.uk-input),
+textarea:not(.uk-textarea) {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  vertical-align: top;
+}
+/* Focus */
+input[type="text"]:not(.uk-input):focus,
+input[type="password"]:not(.uk-input):focus,
+input[type="email"]:not(.uk-input):focus,
+select:not(.uk-select):focus,
+textarea:not(.uk-textarea):focus {
+  outline: none;
+  background-color: #fff;
+  color: #666;
+  border-color: #1e87f0;
+}
+/* Disabled */
+input[type="text"]:not(.uk-input):disabled,
+input[type="password"]:not(.uk-input):disabled,
+input[type="email"]:not(.uk-input):disabled,
+select:not(.uk-select):disabled,
+textarea:not(.uk-textarea):disabled {
+  background-color: #f8f8f8;
+  color: #999;
+  border-color: #e5e5e5;
+}
+/*
+ * Placeholder
+ */
+input[type="text"]:not(.uk-input):-ms-input-placeholder,
+input[type="password"]:not(.uk-input):-ms-input-placeholder,
+input[type="email"]:not(.uk-input):-ms-input-placeholder {
+  color: #999 !important;
+}
+input[type="text"]:not(.uk-input):placeholder,
+input[type="password"]:not(.uk-input):placeholder,
+input[type="email"]:not(.uk-input):placeholder {
+  color: #999;
+}
+textarea:not(.uk-textarea):-ms-input-placeholder {
+  color: #999 !important;
+}
+textarea:not(.uk-textarea)::placeholder {
+  color: #999;
+}
+
+/* Select
+ ========================================================================== */
+/*
+ * 1. Remove default style. Also works in Firefox
+ * 2. Style
+ * 3. Remove default style in IE 10/11
+ */
+select:not(.uk-select):not([multiple]):not([size]) {
+  /* 1 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* 2 */
+  padding-right: 20px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23666%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23666%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+}
+/* 3 */
+select:not(.uk-select):not([multiple]):not([size])::-ms-expand {
+  display: none;
+}
+/*
+ * Disabled
+ */
+select:not(.uk-select):not([multiple]):not([size]):disabled {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23999%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23999%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A");
+}
+/* Radio and checkbox
+ * Note: Does not work in IE11
+ ========================================================================== */
+/*
+ * 1. Style
+ * 2. Make box more robust so it clips the child element
+ * 3. Vertical alignment
+ * 4. Remove default style
+ * 5. Fix black background on iOS
+ * 6. Center icons
+ */
+input[type="radio"]:not(.uk-radio),
+input[type="checkbox"]:not(.uk-checkbox) {
+  /* 1 */
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  /* 2 */
+  overflow: hidden;
+  /* 3 */
+  margin-top: -4px;
+  vertical-align: middle;
+  /* 4 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* 5 */
+  background-color: transparent;
+  /* 6 */
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border: 1px solid #cccccc;
+  transition: 0.2s ease-in-out;
+  transition-property: background-color, border;
+}
+input[type="radio"]:not(.uk-radio) {
+  border-radius: 50%;
+}
+/* Focus */
+input[type="radio"]:not(.uk-radio):focus,
+input[type="checkbox"]:not(.uk-checkbox):focus {
+  outline: none;
+  border-color: #1e87f0;
+}
+/*
+ * Checked
+ */
+input[type="radio"]:not(.uk-radio):checked,
+input[type="checkbox"]:not(.uk-checkbox):checked,
+input[type="checkbox"]:not(.uk-checkbox):indeterminate {
+  background-color: #1e87f0;
+  border-color: transparent;
+}
+/* Focus */
+input[type="radio"]:not(.uk-radio):checked:focus,
+input[type="checkbox"]:not(.uk-checkbox):checked:focus,
+input[type="checkbox"]:not(.uk-checkbox):indeterminate:focus {
+  background-color: #0e6dcd;
+}
+/*
+ * Icons
+ */
+input[type="radio"]:not(.uk-radio):checked {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Ccircle%20fill%3D%22%23fff%22%20cx%3D%228%22%20cy%3D%228%22%20r%3D%222%22%20%2F%3E%0A%3C%2Fsvg%3E");
+}
+input[type="checkbox"]:not(.uk-checkbox):checked {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2211%22%20viewBox%3D%220%200%2014%2011%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23fff%22%20points%3D%2212%201%205%207.5%202%205%201%205.5%205%2010%2013%201.5%22%20%2F%3E%0A%3C%2Fsvg%3E%0A");
+}
+input[type="checkbox"]:not(.uk-checkbox):indeterminate {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Crect%20fill%3D%22%23fff%22%20x%3D%223%22%20y%3D%228%22%20width%3D%2210%22%20height%3D%221%22%20%2F%3E%0A%3C%2Fsvg%3E");
+}
+/*
+ * Disabled
+ */
+input[type="radio"]:not(.uk-radio):disabled,
+input[type="checkbox"]:not(.uk-checkbox):disabled {
+  background-color: #f8f8f8;
+  border-color: #e5e5e5;
+}
+input[type="radio"]:not(.uk-radio):disabled:checked {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Ccircle%20fill%3D%22%23999%22%20cx%3D%228%22%20cy%3D%228%22%20r%3D%222%22%20%2F%3E%0A%3C%2Fsvg%3E");
+}
+input[type="checkbox"]:not(.uk-checkbox):disabled:checked {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2211%22%20viewBox%3D%220%200%2014%2011%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23999%22%20points%3D%2212%201%205%207.5%202%205%201%205.5%205%2010%2013%201.5%22%20%2F%3E%0A%3C%2Fsvg%3E%0A");
+}
+input[type="checkbox"]:not(.uk-checkbox):disabled:indeterminate {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Crect%20fill%3D%22%23999%22%20x%3D%223%22%20y%3D%228%22%20width%3D%2210%22%20height%3D%221%22%20%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+/*!--------------------------------------
+  Modify UIkit3 styles
+--------------------------------------*/
+
+/* ========================================================================
+   Component: Tab
+ ========================================================================== */
+/* Items
+ ========================================================================== */
+.uk-tab > * > a {
+  border-bottom: 2px solid transparent;
+}
+
+/* ========================================================================
+   Component: Alert
+ ========================================================================== */
+.uk-alert {
+  padding: 20px;
+}
+/* Style modifiers
+ ========================================================================== */
+/*
+ * Primary
+ */
+.uk-alert-primary {
+  background: #ebf7fd;
+  color: #2d7091;
+}
+/*
+ * Success
+ */
+.uk-alert-success {
+  background: #edfbf6;
+  color: #32d296;
+}
+/*
+ * Warning
+ */
+.uk-alert-warning {
+  background: #fff6ee;
+  color: #faa05a;
+}
+/*
+ * Danger
+ */
+.uk-alert-danger {
+  background: #fef4f6;
+  color: #f0506e;
+}
+
+/* ========================================================================
+   Component: Breadcrumb
+ ========================================================================== */
+/*
+ * Divider
+ * `nth-child` makes it also work without JS if it's only one row
+ */
+.uk-breadcrumb > :nth-child(n+2):not(.uk-first-column)::before {
+  content: "/";
+  display: inline-block;
+/*  margin: 0 20px;*/
+  margin: 0 10px;
+  color: #999;
+}
+
+.uk-checkbox,
+.uk-radio,
+input[type="checkbox"]:not(.uk-checkbox),
+input[type="checkbox"]:not(.uk-radio) {
+  margin-left: 3px;
+  margin-right: 3px;
+
+  vertical-align: middle;
+}
+
+.uk-input,
+.uk-button,
+.uk-select,
+.uk-textarea,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+select:not(.uk-select),
+textarea:not(.uk-textarea) {
+  margin: 0 0 3px;
+}
+
+hook-root($stage)

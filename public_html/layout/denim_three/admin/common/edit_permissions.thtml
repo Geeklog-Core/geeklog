@@ -1,0 +1,25 @@
+{# begin {templatelocation} #}
+
+<table id="admin-permissions" class="uk-table">
+  <thead>
+    <tr>
+      <th colspan="2">{lang_owner}</th>
+      <th colspan="2">{lang_group}</th>
+      <th>{lang_members}</th>
+      <th>{lang_anonymous}</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><label for="permissions-or">R</label><br{xhtml}><input type="checkbox" id="permissions-or" class="uk-checkbox" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
+      <td><label for="permissions-oe">E</label><br{xhtml}><input type="checkbox" id="permissions-oe" class="uk-checkbox" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
+      <td><label for="permissions-gr">R</label><br{xhtml}><input type="checkbox" id="permissions-gr" class="uk-checkbox" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>
+      <td><label for="permissions-ge">E</label><br{xhtml}><input type="checkbox" id="permissions-ge" class="uk-checkbox" name="perm_group[]" value="1"{group_e_checked}{xhtml}></td>
+      <td><label for="permissions-mr">R</label><br{xhtml}><input type="checkbox" id="permissions-mr" class="uk-checkbox" name="perm_members[]" value="2"{members_checked}{xhtml}></td>
+      <td><label for="permissions-ar">R</label><br{xhtml}><input type="checkbox" id="permissions-ar" class="uk-checkbox" name="perm_anon[]" value="2"{anon_checked}{xhtml}></td>
+    </tr>
+  </tbody>
+</table>
+
+{# end {templatelocation} #}

@@ -1,0 +1,16 @@
+{# begin {templatelocation} #}
+
+<form action="{site_admin_url}/syndication.php" method="post" id="admin-selecttype">
+  <fieldset>
+    <legend>{lang_go}</legend>
+
+    <p class="form_message">{lang_explain}</p>
+
+    <div class="submit">
+      {type_selection}
+      <button type="submit" name="mode" value="{lang_go}" class="uk-button uk-button-primary">{lang_go}</button>
+    </div>
+  </fieldset>
+</form>
+
+{# end {templatelocation} #}

@@ -1,0 +1,46 @@
+{# begin {templatelocation} #}
+
+<script>
+	var lang_backingup = "{lang_backingup}";
+	var lang_backup = "{lang_backup}";
+	var lang_success = "{lang_success}";
+	var lang_ok = "{lang_ok}";
+	var lang_cancel = "{lang_cancel}";
+</script>
+<script src="{site_url}/javascript/dbbackup.js"></script>
+
+{start_block}
+
+{admin_menu}
+
+<h2>{lang_title}</h2>
+
+<p>{lang_backup_instructions}</p>
+
+{!if struct_warning}
+<div class="uk-alert uk-alert-danger uk-margin">{struct_warning}</div>
+{!endif}
+
+<div id="dbbackup">
+	<form id="dbbackupform" action="{site_admin_url}/database.php" method="post" style="display:inline;">
+		<input type="hidden" name="{action}" value="{action}">
+		<input type="hidden" name="{security_token_name}" value="{security_token}">
+		<button id="dbbackupbutton" class="uk-button uk-button-primary" type="submit" >{lang_backup}</button>
+		<button id="dbcancelbutton" name="dbcancelbutton" class="uk-button uk-button-danger" type="submit" >{lang_cancel}</button>
+	</form>
+</div>
+
+<div style="height:400px;margin-top:15px;">
+	<div id="dbadmin_batchprocesor" style="display:none;">
+		<h3 class="uk-margin-bottom uk-margin-remove-top">{lang_ajax_status}</h3>
+		<div class="msg" id="batchinterface_msg">Idle</div>
+		<div class="uk-progress">
+			<div id="progress-bar" class="uk-progress-bar" style="width: 0%;">0%</div>
+		</div>
+	</div>
+</div>
+
+
+{end_block}
+
+{# end {templatelocation} #}

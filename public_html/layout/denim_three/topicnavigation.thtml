@@ -1,0 +1,11 @@
+{# {templatelocation} - The Topic Navigation uses template blocks which is built into this file #}
+
+<!-- BEGIN option -->
+<li class="topicoption sideoption branch_level{branch_level}"><a href="{option_url}">{option_label}{!if option_count}<span>{option_count}</span>{!endif}</a></li>
+<!-- END option -->
+<!-- BEGIN option-with-hidden -->
+<li class="topicoption sideoption branch_level{branch_level}"><a href="{option_url}">{option_label}{!if option_count}&nbsp;+<span>{option_count}</span>{!endif}</a></li>
+<!-- END option-with-hidden -->
+<!-- BEGIN option-off -->
+<li class="topicoption_off sideoption_off branch_level{branch_level}">{option_label}&nbsp;{option_count}</li>
+<!-- END option-off -->

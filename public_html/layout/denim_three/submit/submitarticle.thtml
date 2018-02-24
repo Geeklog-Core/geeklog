@@ -1,0 +1,53 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/submit.php" method="post" id="submitstory" class="compact">
+
+  <div class="user_basic">
+    <dl class="form_block">
+      <dt>{lang_username}</dt>
+      <dd>{story_username} [ <a href="{status_url}" rel="nofollow">{lang_loginout}</a>{separator}{create_account} ]</dd>
+
+      <dt><label for="submitstory-title">{lang_title}</label></dt>
+      <dd><input type="text" maxlength="96" value="{story_title}" name="title" id="submitstory-title" class="uk-input size5"{xhtml}></dd>
+
+      <dt><label>{lang_topic}</label></dt>
+      <dd>{topic_selection}</dd>
+
+      <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
+      <dd{hide_meta}><textarea cols="70" rows="2" name="meta_description" id="admin-storyeditor-metadescription" class="uk-textarea wide">{meta_description}</textarea></dd>
+
+      <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
+      <dd{hide_meta}><textarea cols="70" rows="2" name="meta_keywords" id="admin-storyeditor-metakeywords" class="uk-textarea wide">{meta_keywords}</textarea></dd>
+
+      <dt><label for="submitstory-postmode">{lang_postmode}</label></dt>
+      <dd>
+        <select name="postmode" id="submitstory-postmode" class="uk-select uk-width-auto">
+          {story_postmode_options}
+        </select>
+      </dd>
+
+      <dt><label for="introtext">{lang_introtext}</label></dt>
+      <dd><textarea cols="45" rows="15" name="introtext" id="introtext" class="uk-textarea wide" aria-describedby="desc-submitstory">{story_introtext}</textarea></dd>
+
+      <dt><label for="bodytext">{lang_bodytext}</label></dt>
+      <dd><textarea cols="45" rows="15" name="bodytext" id="bodytext" class="wide" aria-describedby="desc-submitstory">{story_bodytext}</textarea></dd>
+      <dd class="description" id="desc-submitstory">{allowed_html}</dd>
+    </dl>
+
+    {captcha}
+
+    <div class="submit">
+      <input name="mode" type="submit" value="{lang_preview}" class="submit"{xhtml}>
+      <input type="hidden" name="type" value="story"{xhtml}>
+      <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
+      <input type="hidden" name="sid" value="{story_sid}"{xhtml}>
+      <input type="hidden" name="date" value="{story_date}"{xhtml}>
+      {!if allow_save}
+      <button type="submit" value="{lang_save}" class="uk-button uk-button-primary g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_save}</button>
+      <input type="hidden" name="mode" value="{lang_save}">
+      {!endif}
+    </div>
+  </div>
+</form>
+
+{# end {templatelocation} #}

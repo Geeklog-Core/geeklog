@@ -1,0 +1,24 @@
+{# begin {templatelocation} #}
+
+<fieldset>
+  <legend>{lang_digest_top_header}</legend>
+
+  <div class="linear">
+    <div class="profile_notes" uk-alert>
+      <div class="uk-panel-title">
+        <span class="uk-text-primary" uk-icon="info"></span>
+        <span>{lang_digest_help_header}</span>
+      </div>
+      <div>{lang_emailedtopics}</div>
+    </div>
+  </div>
+
+  <div class="compact">
+    <dl class="form_block">
+      <dt><label>{lang_topics}</label></dt>
+      <dd>{email_topic_checklist}</dd>
+    </dl>
+  </div>
+</fieldset>
+
+{# end {templatelocation} #}

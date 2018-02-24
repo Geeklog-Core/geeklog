@@ -1,0 +1,37 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/profiles.php" method="post" id="contactuserform" class="compact">
+
+  <div class="user_basic">
+    <p class="form_message">{lang_description}</p>
+
+    <dl class="form_block">
+      <dt><label for="contactuserform-author">{lang_username}</label></dt>
+      <dd><input type="text" value="{username}" maxlength="32" name="author" id="contactuserform-author" class="uk-input size4"{xhtml}></dd>
+
+      <dt><label for="contactuserform-authoremail">{lang_useremail}</label></dt>
+      <dd><input type="text" value="{useremail}" maxlength="96" name="authoremail" id="contactuserform-authoremail" class="uk-input size4"{xhtml}></dd>
+
+      <dt><label for="contactuserform-subject">{lang_subject}</label></dt>
+      <dd><input type="text" maxlength="96" value="{subject}" name="subject" id="contactuserform-subject" class="uk-input size4"{xhtml}></dd>
+
+      <dt><label for="contactuserform-message">{lang_message}</label></dt>
+      <dd><textarea rows="10" cols="50" name="message" id="contactuserform-message" class="uk-textarea wide" aria-describedby="desc-contactuserform-message">{message}</textarea></dd>
+      <dd class="description" id="desc-contactuserform-message">{lang_nohtml}</dd>
+
+      <dt{cc_enabled}><label for="contactuserform-cc">{lang_cc}</label></dt>
+      <dd{cc_enabled}><label><input type="checkbox" name="cc" id="contactuserform-cc" class="uk-checkbox"{cc}{xhtml}>&nbsp;{lang_cc_description}</label></dd>
+
+    </dl>
+
+    {captcha}
+
+    <div class="submit">
+      <input type="hidden" name="what" value="contact"{xhtml}>
+      <input type="hidden" name="uid" value="{uid}"{xhtml}>
+      <button type="submit" value="{lang_submit}" onclick="return postconfirm();" onkeypress="return postconfirm();" class="uk-button uk-button-primary g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_submit}</button>
+    </div>
+  </div>
+</form>
+
+{# end {templatelocation} #}

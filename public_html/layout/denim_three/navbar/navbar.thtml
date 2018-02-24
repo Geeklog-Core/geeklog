@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<ul id="navlist" uk-tab>
+{menuitems}
+</ul>
+
+{# end {templatelocation} #}

@@ -1,0 +1,35 @@
+{# begin {templatelocation} #}
+
+<div class="uk-grid" uk-margin>
+    <div class="uk-width-1-1">
+        {message}
+        <ul class="uk-pagination uk-flex-center">
+            <li class="{!if start_first_anchortag}{!else}uk-disabled{!endif}">{start_first_anchortag}<span><span uk-pagination-previous></span><span uk-pagination-previous></span> <span class="pagination_text">{lang_first}</span></span>{end_first_anchortag}</li>
+            <li class="{!if start_previous_anchortag}{!else}uk-disabled{!endif}">{start_previous_anchortag}<span><span uk-pagination-previous></span> <span class="pagination_text">{lang_previous}</span></span>{end_previous_anchortag}</li>
+        {pages}
+        </ul>
+    </div>
+</div>
+
+{# end {templatelocation} #}
+
+<!-- BEGIN message -->
+{!if message_text}<p>{message_text}</p>{!endif}
+<!-- END message -->
+
+<!-- BEGIN page -->
+<li>{page_number}</li>
+<!-- END page -->
+
+<!-- BEGIN page-current -->
+<li class="uk-active"><span>{page_number}</span></li>
+<!-- END page-current -->
+
+<!-- BEGIN nav-end -->
+<li class="{!if start_next_anchortag}{!else}uk-disabled{!endif}">{start_next_anchortag}<span><span class="pagination_text">{lang_next}</span> <span uk-pagination-next></span></span>{end_next_anchortag}</li>
+<li class="{!if start_last_anchortag}{!else}uk-disabled{!endif}">{start_last_anchortag}<span><span class="pagination_text">{lang_last}</span> <span uk-pagination-next></span><span uk-pagination-next></span></span>{end_last_anchortag}</li>
+<!-- END nav-end -->
+
+<!-- BEGIN nav-open-ended -->
+{open_ended}
+<!-- END nav-open-ended -->

@@ -1,0 +1,58 @@
+{# begin {templatelocation} #}
+
+{start_block}
+
+{admin_menu}
+
+<h2>{lang_tables_to_backup}</h2>
+
+<div class="uk-panel">
+	<form action="{site_admin_url}/database.php" method="post">
+		<input type="hidden" name="saveconfig" value="x">
+		<input type="hidden" name="groupmembers">
+
+		<div class="uk-margin-large-bottom">
+
+			<div class="uk-grid-match" uk-grid>
+
+				<div class="uk-width-expand@l uk-width-1-3@m uk-text-center">
+					<div class="uk-align-center">
+					<h3>{lang_include}</h3>
+					<select multiple="multiple" name="fieldFrom" class="uk-select"
+						style="max-width:20em; height: 20em;"
+						ondblclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">
+						{included_tables}
+					</select>
+					</div>
+				</div>
+
+				<div class="uk-width-auto@l uk-width-1-3@m uk-text-center">
+					<div style="margin:auto">
+						<button class="uk-button uk-button-danger" name="right" onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false);return false;">{lang_exclude}&nbsp;<span uk-icon="arrow-right"></span></button>
+						<br><br>
+						<button class="uk-button uk-button-primary" name="left" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false);return false;"><span uk-icon="arrow-left"></span>&nbsp;{lang_include}</button>
+					</div>
+				</div>
+
+				<div class="uk-width-expand@l uk-width-1-3@m uk-text-center">
+					<div class="uk-align-center">
+					<h3>{lang_exclude}</h3>
+					<select multiple="multiple" name="fieldTo" class="uk-select"
+						style="max-width:20em; height: 20em;"
+						ondblclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">
+						{excluded_tables}
+					</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="submit">
+			<button class="uk-button uk-button-primary" type="submit" value="{lang_save}" name="saveconfig" onclick="return setUsers(this.form)">{lang_save}</button>
+		</div>
+	</form>
+</div>
+
+{end_block}
+
+{# end {templatelocation} #}

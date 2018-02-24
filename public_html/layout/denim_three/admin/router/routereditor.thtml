@@ -1,0 +1,63 @@
+{# begin {templatelocation} #}
+
+{start_router_editor}
+<form action="{site_admin_url}/router.php" method="post" id="admin-routereditor" class="compact">
+  <div class="admin_basic">
+    <div class="profile_notes uk-panel uk-panel-box">
+      {lang_router_notice}
+    </div>
+
+    <dl class="form_block">
+      <dt><label>{lang_router_rid}</label></dt>
+      <dd class="controls_text">{rid}</dd>
+
+      <dt><label for="admin-routereditor-method">{lang_router_method}</label></dt>
+      <dd>
+        <select id="admin-routereditor-method" name="method" class="uk-select uk-width-auto">
+          <option value="1"{get_selected}>GET</option>
+          <option value="2"{post_selected}>POST</option>
+          <option value="3"{put_selected}>PUT</option>
+          <option value="4"{delete_selected}>DELETE</option>
+          <option value="5"{head_selected}>HEAD</option>
+        </select>
+      </dd>
+
+      <dt><label for="admin-routereditor-rule">{lang_router_rule}</label></dt>
+      <dd><input type="text" size="40" value="{rule}" name="rule" id="admin-routereditor-rule" class="uk-input size7"{xhtml}></dd>
+
+      <dt><label for="admin-routereditor-route">{lang_router_route}</label></dt>
+      <dd><input type="text" size="40" value="{route}" name="route" id="admin-routereditor-route" class="uk-input size7"{xhtml}></dd>
+
+      <dt><label for="admin-routereditor-status_code">{lang_router_status_code}</label></dt>
+      <dd>
+        <select id="admin-routereditor-status_code" name="status_code" class="uk-select uk-width-auto">
+          <option value="200"{status200_selected}>200 (OK)</option>
+          <option value="300"{status300_selected}>300 (Multiple Choices)</option>
+          <option value="301"{status301_selected}>301 (Moved Permanently)</option>
+          <option value="302"{status302_selected}>302 (Found/Moved Temporarily)</option>
+          <option value="303"{status303_selected}>303 (See Other)</option>
+          <option value="304"{status304_selected}>304 (Not Modified)</option>
+          <option value="305"{status305_selected}>305 (Use Proxy)</option>
+          <option value="307"{status307_selected}>307 (Temporary Redirect)</option>
+          <option value="308"{status308_selected}>308 (Permanent Redirect)</option>
+        </select>
+      </dd>
+
+      <dt><label for="admin-routereditor-priority">{lang_router_priority}</label></dt>
+      <dd><input type="text" size="20" value="{priority}" name="priority" id="admin-routereditor-priority" class="uk-input size1"{xhtml}></dd>
+    </dl>
+
+    <div class="submit">
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" name="mode" value="{lang_cancel}" class="uk-button uk-button-default">{lang_cancel}</button>
+      <input type="hidden" name="rid" value="{rid}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+</form>
+{end_block}
+
+{# end {templatelocation} #}

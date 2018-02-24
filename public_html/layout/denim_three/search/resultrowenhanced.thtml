@@ -1,0 +1,11 @@
+{# begin {templatelocation} #}
+
+<tr>
+  <td>
+    <table>
+      {data_cols}
+    </table>
+  </td>
+</tr>
+
+{# end {templatelocation} #}

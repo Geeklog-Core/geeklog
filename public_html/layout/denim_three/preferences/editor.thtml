@@ -1,0 +1,6 @@
+{# begin {templatelocation} #}
+
+    <dt><label for="advanced_editor">{lang_advanced_editor}</label></dt>
+    <dd class="controls_text"><label><input type="checkbox" id="advanced_editor" class="uk-checkbox" name="advanced_editor" {advanced_editor_checked}{xhtml}>{adveditor_name}</label></dd>
+
+{# end {templatelocation} #}

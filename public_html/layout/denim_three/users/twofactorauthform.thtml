@@ -1,0 +1,23 @@
+{# begin {templatelocation} #}
+
+{start_block_twofactorauth}
+  <form action="{site_url}/users.php" method="post" id="twofactorauthform" class="compact">
+    <fieldset>
+      <p class="form_message">{lang_tfa_enter_code}</p>
+
+      <dl class="form_block">
+        <dt><label for="users-twofactorauthform-code">{lang_tfa_code}</label></dt>
+        <dd><input type="text" name="tfa_code" id="users-twofactorauthform-code" class="uk-input size3"{xhtml}></dd>
+      </dl>
+
+      <div class="submit">
+        <button type="submit" value="{lang_tfa_authenticate}" class="uk-button uk-button-primary uk-margin-small-bottom">{lang_tfa_authenticate}</button>
+        <input type="hidden" name="uid" value="{uid}">
+        <input type="hidden" name="mode" value="twofactorauth"{xhtml}>
+        <input type="hidden" name="{token_name}" value="{token_value}"{xhtml}>
+      </div>
+   </fieldset>
+  </form>
+{end_block}
+
+{# end {templatelocation} #}

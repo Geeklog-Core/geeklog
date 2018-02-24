@@ -1,0 +1,102 @@
+{doctype}
+<html{lang_attribute}{xmlns}>
+
+<head>
+<meta charset="{charset}"{xhtml}>
+<title>{page_title_and_site_name}</title>
+
+<!-- Mobile Specific Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"{xhtml}>
+
+<!-- Favicons -->
+<link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
+
+<!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
+<link rel="start contents" href="{site_url}"{xhtml}>
+{feed_url}
+{rel_links}
+{plg_headercode}
+
+<!--[if lt IE 9]><script type="text/javascript" src="{layout_url}/javascript/respond.min.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body dir="{direction}" class="{layout_columns}" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+{# begin {templatelocation} #}
+
+  <!-- #container { -->
+  <div id="container" class="uk-offcanvas-content">
+
+    <header id="header" role="banner" class="brand-text" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+      <div id="header-content">
+        <a class="header-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #offcanvas" href="#"></a>
+        <a class="header-toggle-right uk-hidden@m" uk-search-icon uk-toggle="target: #navsearch" href="#"></a>
+        <div class="nameplate">
+          <h1 class="site_name" itemprop="name"><a href="{site_url}" title="{site_name}" itemprop="url">{site_name}</a></h1>
+          <p class="site_slogan">{site_slogan}</p>
+        </div>
+      </div>
+
+    </header>
+
+    <nav id="navsearch" class="uk-navbar-container" uk-navbar hidden>
+      <div class="uk-navbar-left">
+        <div class="uk-navbar-item">
+          <form action="{site_url}/search.php" method="get" id="nav-searchform" class="uk-search uk-search-navbar uk-width-1-1">
+            <span uk-search-icon></span>
+            <input type="search" class="uk-search-input" value="" name="query" size="15" maxlength="255" placeholder="{button_search}" autofocus{xhtml}>
+            <input type="hidden" value="all" name="type"{xhtml}>
+            <input type="hidden" value="all" name="keyType"{xhtml}>
+            <input type="hidden" value="search" name="mode"{xhtml}>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div id="offcanvas" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" uk-offcanvas="mode:reveal; overlay:true">
+      <div class="uk-offcanvas-bar">
+        <ul class="uk-nav uk-nav-default">
+          {menu_elements}
+        </ul>
+      </div>
+    </div>
+
+    <hr class="separator"{xhtml}>
+
+    <div id="navigation">
+
+      <nav role="navigation" class="uk-navbar-container uk-visible@m uk-navbar-transparent gl-navbar-small navigation_content" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" uk-navbar>
+
+        <div class="uk-navbar-left">
+          <ul id="navigation_ul" class="uk-navbar-nav">
+            {menu_elements}
+          </ul>
+        </div>
+
+        <div class="uk-navbar-right">
+          <a class="uk-navbar-toggle" uk-search-icon href="#"></a>
+          <div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0" style="width: 200px">
+            <form action="{site_url}/search.php" method="get" id="header-searchform" class="uk-search uk-search-navbar uk-width-1-1">
+              <input type="search" id="header-search-box" class="uk-search-input" value="" name="query" size="15" maxlength="255" style="font-size:14px" placeholder="{button_search}" autofocus{xhtml}>
+              <input type="hidden" value="all" name="type"{xhtml}>
+              <input type="hidden" value="all" name="keyType"{xhtml}>
+              <input type="hidden" value="search" name="mode"{xhtml}>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+    </div>
+
+
+    <hr class="separator"{xhtml}>
+
+    <!-- #wrapper { -->
+    <div id="wrapper">
+
+      <!-- Center Block Container -->
+      <div id="centerblocks">
+        <main id="main-content" role="main" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
+          <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
+          {breadcrumb_trail}
+

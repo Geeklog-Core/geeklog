@@ -1,0 +1,106 @@
+{# begin {templatelocation} #}
+
+<form action="{site_admin_url}/group.php" method="post" id="admin-groupeditor">
+
+  <div class="admin_basic compact">
+    <dl class="form_block">
+      <dt><label for="admin-groupeditor-grp_name">{lang_groupname}</label></dt>
+      <dd>{groupname_static}<input type="{groupname_inputtype}" maxlength="50" value="{group_name}" name="grp_name" id="admin-groupeditor-grp_name" class="size3"{xhtml}></dd>
+
+      <dt><label for="admin-groupeditor-grp_descr">{lang_description}</label></dt>
+      <dd><input type="text" maxlength="255" value="{group_description}" name="grp_descr" id="admin-groupeditor-grp_descr" class="uk-input size5"{xhtml}></dd>
+
+    </dl>
+
+    <dl class="form_block" {hide_adminoption}>
+      <dt>{lang_admingroup}</dt>
+      <dd class="controls_text"><label><input type="checkbox" name="chk_grpadmin" class="uk-checkbox" value="1" {chk_adminuse}{xhtml}>
+          <span class="fieldhelp">{lang_admingrp_msg}</span></label>
+      </dd>
+    </dl>
+
+    <dl class="form_block" {hide_defaultoption}>
+      <dt>{lang_defaultgroup}</dt>
+      <dd class="controls_text">
+          <label><input type="checkbox" name="chk_grpdefault" id="chk1" class="uk-checkbox" onclick="showHide('msg1')" value="1" {chk_defaultuse}{xhtml}>
+          <span class="fieldhelp">{lang_defaultgrp_msg}</span></label>
+      </dd>
+    </dl>
+
+    <dl id="applydefault_row" class="form_block" {hide_defaultoption}>
+      <dt></dt>
+      <dd>
+        <div style="display:none" id="msg1">
+          <label><input type="checkbox" name="chk_applydefault" id="chk2" class="uk-checkbox" value="1"{xhtml}>
+          <span class="fieldhelp">{lang_applydefault_msg}</span></label>
+        </div>
+      </dd>
+    </dl>
+  </div>
+
+  <div class="linear">
+    <fieldset>
+      <legend>{lang_securitygroups}</legend>
+
+      <dl class="form_block">
+        <dd class="description">{lang_securitygroupmsg}</dd>
+        <dd><div class="fieldset-table-wrapper">{group_options}</div></dd>
+      </dl>
+    </fieldset>
+
+    <fieldset>
+      <legend>{lang_rights}</legend>
+
+      <dl class="form_block">
+        <dd class="description">{lang_rightsmsg}</dd>
+        <dd><div class="fieldset-table-wrapper">{rights_options}</div></dd>
+      </dl>
+    </fieldset>
+  </div>
+
+  <div class="submit">
+    <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+    <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+    <button type="submit" name="mode" value="{lang_cancel}" class="uk-button uk-button-default">{lang_cancel}</button>
+    <input type="hidden" name="grp_gl_core" value="{group_core}"{xhtml}>
+    <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>
+    <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+  </div>
+</form>
+
+<!-- BEGIN no-group-right-message -->
+<p><em>{lang_message}</em></p>
+<!-- END no-group-right-message -->
+
+<!-- BEGIN rights_list_options -->
+<style>
+.flex-rights-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+}
+
+.flex-rights-list > li {
+  width: 300px;
+}
+</style>
+<ul class="flex-rights-list">
+{rights_list_options}
+</ul>
+<!-- END rights_list_options -->
+
+<!-- BEGIN rights_list_option -->
+<li><input type="checkbox" id="{id}" name="features[]" class="uk-checkbox"{!if checked} checked="checked"{!endif} value="{value}"{xhtml}><label for="{id}" title="{title}">{feature_name}</label></li>
+<!-- END rights_list_option -->
+
+<!-- BEGIN rights_list_option_disabled -->
+<li><input type="checkbox" class="uk-checkbox" checked="checked" disabled="disabled"{xhtml}>
+    <input type="hidden" name="features[]" value="{value}"{xhtml}>
+    (<i title="{title}">{feature_name}</i>)
+</li>
+<!-- END rights_list_option_disabled -->
+
+{# end {templatelocation} #}

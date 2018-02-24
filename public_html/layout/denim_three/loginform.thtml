@@ -1,0 +1,34 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/users.php" method="post" id="loginform">
+  <fieldset class="noborder_fieldset">
+    <legend class="hidden_legend">{lang_login}</legend>
+
+    <div class="loginform">
+      <div class="form_part">
+        <label for="loginform-loginname" style="display:none">{lang_username}</label>
+        <input type="text" value="" name="loginname" id="loginform-loginname" class="uk-input uk-form-small" placeholder="{lang_username}"{xhtml}>
+      </div>
+
+      {services}
+
+      <div class="form_part">
+        <label for="loginform-passwd" style="display:none">{lang_password}</label>
+        <input type="password" name="passwd" id="loginform-passwd" class="uk-input uk-form-small" placeholder="{lang_password}"{xhtml}>
+      </div>
+    </div>
+
+    <div class="submit">
+      <button type="submit" value="{lang_login}" class="uk-button uk-button-small uk-button-default">{lang_login}</button>
+    </div>
+
+    <div class="navi">
+      <div>{lang_signup}</div>
+      <div>{lang_forgetpassword}</div>
+    </div>
+  </fieldset>
+</form>
+{oauth_login}
+{openid_login}
+
+{# end {templatelocation} #}

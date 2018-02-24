@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+<aside class="uk-alert-primary{!if css_classes} {css_classes}{!endif}"{!if css_id} id="{css_id}"{!endif} uk-alert>
+  <a class="uk-alert-close" uk-close></a>
+  <h4 class="title">{showhide}{block_title}{!if help_url}<a class="blocktitle block-help-icon" {gl-help-popup} href="{help_url}" title="{help_title}" uk-icon="icon:question; ratio:0.85"></a>{!endif}</h4>
+  <div class="message">
+
+{# end {templatelocation} #}

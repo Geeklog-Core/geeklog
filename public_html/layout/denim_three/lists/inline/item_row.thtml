@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+                                <div>
+                                    {item_field}
+                                </div>
+                                <br{xhtml}>
+
+{# end {templatelocation} #}

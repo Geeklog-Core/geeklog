@@ -1,0 +1,29 @@
+// Themme Default
+// ===========================================================================
+
+$wrapper-background    = transparent
+
+hook-selector($stage = '', $selector = '')
+    if $stage == 'layout_3cols_LRbar_xlarge'
+
+        if $selector == '#header-content'
+            width: 1440px
+
+        if $selector == '#footer-content'
+            width: 1440px
+
+    if $stage == 'layout_3cols_LRbar_large'
+
+        if $selector == '#header-content'
+            width: 1140px
+
+        if $selector == '#footer-content'
+            width: 1140px
+
+    if $stage == 'layout_2cols_Rbar_fixed'
+
+        if $selector == '#header-content'
+            width: 960px
+
+        if $selector == '#footer-content'
+            width: 960px

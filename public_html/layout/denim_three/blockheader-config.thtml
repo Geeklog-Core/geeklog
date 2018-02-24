@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<nav class="block-config{!if css_classes} {css_classes}{!endif}"{!if css_id} id="{css_id}"{!endif} role="navigation">
+    <h2 class="block-title">{block_title}{!if help_url}<a class="blocktitle block-help-icon" {gl-help-popup} href="{help_url}" title="{help_title}" target="_blank" uk-icon="icon:question; ratio:0.85"></a>{!endif}</h2>
+    <ul class="block-config-content">
+
+{# end {templatelocation} #}

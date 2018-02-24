@@ -1,0 +1,1 @@
+<li{!if csscurrent} class="uk-active"{!endif}><a {csscurrent} href="{link}{parms}"{onclick}><span>{label}</span></a></li>

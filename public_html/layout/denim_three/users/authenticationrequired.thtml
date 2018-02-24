@@ -1,0 +1,32 @@
+{# begin {templatelocation} #}
+
+{!if lang_nonstandardlogin}
+    <p>{lang_nonstandardlogin}</p>
+{!else}
+    {!if lang_incorrectlogin}
+        <p class="form_message">{lang_incorrectlogin}</p>
+    {!endif}
+  <form action="{site_admin_url}/index.php" method="post" id="userloginform" class="compact">
+    <fieldset>
+      <legend>{lang_login}</legend>
+
+      <p class="form_message">{lang_warning}</p>
+
+      <dl class="form_block">
+        <dt><label for="users-loginform-loginname">{lang_username}</label></dt>
+        <dd><input type="text" name="loginname" id="users-loginform-loginname" class="size3"{xhtml}></dd>
+        <dt><label for="users-loginform-passwd">{lang_password}</label></dt>
+        <dd><input type="password" name="passwd" id="users-loginform-passwd" class="size3"{xhtml}></dd>
+      </dl>
+
+      {captcha}
+
+      <div class="submit">
+        <button type="submit" name="mode" value="{value_login}" class="uk-button uk-button-primary uk-margin-small-bottom g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_login}</button>
+        <input type="hidden" name="warn" value="1"{xhtml}>
+      </div>
+   </fieldset>
+  </form>
+{!endif}
+
+{# end {templatelocation} #}
