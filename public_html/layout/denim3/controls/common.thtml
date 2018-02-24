@@ -22,7 +22,7 @@
 <label{!if id} for="{id}"{!endif}>
 {lang_label}
 {!endif}
-<select name="{name}"{!if id} id="{id}"{!endif}{!if style} style="{style}"{!endif} class="uk-select {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
+<select name="{name}"{!if id} id="{id}"{!endif}{!if style} style="{style}"{!endif} class="uk-select uk-width-auto {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
 {!if lang_label}
 </label>
 {!endif}

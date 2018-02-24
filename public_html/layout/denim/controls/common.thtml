@@ -29,7 +29,7 @@
 <!-- END type-select -->
 
 <!-- BEGIN type-submit -->
-<button name="{name}" {!if id} id="{id}"{!endif}{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif} class="uk-button {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>{lang_button}</button>
+<button name="{name}"{!if id} id="{id}"{!endif}{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif} class="uk-button {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>{lang_button}</button>
 <!-- END type-submit -->
 
 {# ------------------ Geeklog Specific Controls ------------------ #}
@@ -40,8 +40,9 @@
 {lang_label}
 {!endif}
 <select name="{name}"{!if style} style="{style}"{!endif} class="uk-form-width-small {class}"{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
-<!-- END type-select-width-small -->
 {!if lang_label}
 </label>
 {!endif}
+<!-- END type-select-width-small -->
+
 {# end {templatelocation} #}
