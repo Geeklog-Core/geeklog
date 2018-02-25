@@ -60,21 +60,63 @@
 </div>
 
 <!-- BEGIN image_noalign -->
-{!if link_url}<a href="{link_url}" title="{link_title}" target="_blank">{!endif}
-<img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}>
-{!if link_url}</a>{!endif}
+{!if link_url}
+<div class="gl-article-figure">
+  <div class="gl-align-none">
+    <a class="gl-thumbnail" href="{link_url}" title="{link_title}" target="_blank">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </a>
+  </div>
+</div>
+{!else}
+<div class="gl-article-figure">
+  <div class="gl-align-none">
+    <div class="gl-thumbnail">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </div>
+  </div>
+</div>
+{!endif}
 <!-- END image_noalign -->
 
 <!-- BEGIN image_leftalign -->
-{!if link_url}<a href="{link_url}" title="{link_title}" target="_blank">{!endif}
-<img {sizeAttributes} class="floatleft" src="{imgSrc}" alt=""{XHTML}>
-{!if link_url}</a>{!endif}
+{!if link_url}
+<div class="gl-article-figure">
+  <div class="gl-align-left">
+    <a class="gl-thumbnail" href="{link_url}" title="{link_title}" target="_blank">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </a>
+  </div>
+</div>
+{!else}
+<div class="gl-article-figure">
+  <div class="gl-align-left">
+    <div class="gl-thumbnail">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </div>
+  </div>
+</div>
+{!endif}
 <!-- END image_leftalign -->
 
 <!-- BEGIN image_rightalign -->
-{!if link_url}<a href="{link_url}" title="{link_title}" target="_blank">{!endif}
-<img {sizeAttributes} class="floatright" src="{imgSrc}" alt=""{XHTML}>
-{!if link_url}</a>{!endif}
+{!if link_url}
+<div class="gl-article-figure">
+  <div class="gl-align-right">
+    <a class="gl-thumbnail" href="{link_url}" title="{link_title}" target="_blank">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </a>
+  </div>
+</div>
+{!else}
+<div class="gl-article-figure">
+  <div class="gl-align-right">
+    <div class="gl-thumbnail">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </div>
+  </div>
+</div>
+{!endif}
 <!-- END image_rightalign -->
 
 {# end {templatelocation} #}
