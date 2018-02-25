@@ -110,6 +110,11 @@ class Resource
     private $theme = self::DEFAULT_THEME;
 
     /**
+     * @var bool to check if compatible with Modern Curve theme
+     */
+    private $compatibleWithMC = false;
+
+    /**
      * @var array
      */
     private $libraryLocations = array(
@@ -251,6 +256,7 @@ class Resource
         $config['path_html'] = str_replace('\\', '/', rtrim($config['path_html'], '/\\'));
         $this->config = $config;
         $this->theme = $config['theme'];
+        $this->compatibleWithMC = file_exists($config['path_layout'] . 'style.css.php');
         $this->setJavaScriptLibrary('common', false);
     }
 
@@ -740,8 +746,10 @@ class Resource
             $right = 'right';
         }
 
-        if ($theme === 'modern_curve') {
-            $contents = str_replace(array('{left}', '{right}'), array($left, $right), $contents);
+        if ($this->getCompatibilityWithMC()) {
+            $search  = array('{left}', '{right}', '../images/',  './images/');
+            $replace = array($left,    $right,    './images/',  '../images/');
+            $contents = str_replace($search, $replace, $contents);
         }
 
         // Unify line ends
@@ -1213,5 +1221,15 @@ class Resource
         }
 
         return $retval;
+    }
+
+    /**
+     * Return if current theme is compatible with Modern Curve theme
+     *
+     * @return bool
+     */
+    public function getCompatibilityWithMC()
+    {
+        return $this->compatibleWithMC;
     }
 }

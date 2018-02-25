@@ -504,6 +504,11 @@ if (function_exists($func)) {
 }
 unset($theme_config, $func);
 
+// Forcibly enable Resource cache if current theme is compatible with Modern Curve theme
+if ($_SCRIPTS->getCompatibilityWithMC()) {
+    $_CONF['cache_resource'] = true;
+}
+
 // Disable Resource cache (combined and minified CSS and JavaScript files)
 if (isset($_CONF['cache_resource']) && !$_CONF['cache_resource']) {
     Geeklog\Cache::disable();
