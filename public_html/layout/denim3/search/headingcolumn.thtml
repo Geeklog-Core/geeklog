@@ -1,5 +1,0 @@
-{# start {templatelocation} #}
-
-<th>{label}</th>
-
-{# end {templatelocation} #}

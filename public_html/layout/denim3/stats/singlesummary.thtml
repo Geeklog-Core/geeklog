@@ -1,8 +1,0 @@
-{# start {templatelocation} #}
-
-    <tr>
-      <th>{item_text}</th>
-      <td>{item_stat}</td>
-    </tr>
-
-{# end {templatelocation} #}

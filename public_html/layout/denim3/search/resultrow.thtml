@@ -1,7 +1,0 @@
-{# start {templatelocation} #}
-
-<tr class="resultrow{cssid}">
-  {data_cols}
-</tr>
-
-{# end {templatelocation} #}
