@@ -16,7 +16,7 @@
   <div class="compact">
     <dl class="form_block">
       <dt><label>{lang_blocks}</label></dt>
-      <dd><div id="exclude_blocks" class="uk-scrollable-box">{boxes_checklist}</div></dd>
+      <dd><div id="exclude_blocks" class="uk-panel uk-panel-scrollable">{boxes_checklist}</div></dd>
     </dl>
   </div>
 </fieldset>

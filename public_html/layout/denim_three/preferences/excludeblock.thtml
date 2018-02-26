@@ -16,7 +16,7 @@
   <div class="compact">
     <dl class="form_block">
       <dt><label>{lang_topics}</label></dt>
-      <dd class="controls_text"><div id="exclude_topic" class="uk-scrollable-box">{exclude_topic_checklist}</div></dd>
+      <dd class="controls_text"><div id="exclude_topic" class="uk-panel uk-panel-scrollable">{exclude_topic_checklist}</div></dd>
 
       {!if exclude_author_checklist}
       <dt><label>{lang_authors}</label></dt>
