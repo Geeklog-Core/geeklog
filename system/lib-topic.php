@@ -322,9 +322,7 @@ function TOPIC_getOtherListSelect($type, $id, $selected_ids = array(), $tids = a
  */
 function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific = false, $remove_archive = false)
 {
-    global $_TABLES, $_TOPICS;
-
-    $retval = '<ul class="checkboxes-list">' . LB;
+    global $_TABLES, $_TOPICS, $_CONF;
 
     if (!empty($selected_ids)) {
         $selected_ids = explode(' ', $selected_ids);
@@ -346,6 +344,12 @@ function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific
         $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');
     }
 
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc->set_file('checklist', 'checklist.thtml');
+    $tcc->set_block('checklist', 'item'); 
+    $tcc->set_block('checklist', 'item-default');
+    $tcc->set_block('checklist', 'item-indent');
+    
     for ($count_topic = $start_topic; $count_topic <= $total_topic; $count_topic++) {
         // Check to see if we need to include id (this is done for stuff like topic edits that cannot include themselves or child as parent
         if ($branch_level_skip >= $_TOPICS[$count_topic]['branch_level']) {
@@ -358,19 +362,21 @@ function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific
             // Make sure to show topics for proper language and access level only
             if ($archive_tid != $id && $_TOPICS[$count_topic]['access'] > 0 && (($lang_id == '') || ($lang_id != '' && $_TOPICS[$count_topic]['language_id'] == $lang_id))) {
                 $title = $_TOPICS[$count_topic]['title'];
-                $retval .= '<li><label>'
-                    . str_repeat(
-                        '&nbsp;&nbsp;&nbsp;',
-                        $_TOPICS[$count_topic]['branch_level'] - $start_topic + 1
-                    )
-                    . '<input type="checkbox" name="'
-                    . $fieldname . '[]" value="' . $id . '"';
-
-                if (in_array($id, $selected_ids)) {
-                    $retval .= ' checked="checked"';
+                $tcc->set_var('name', $fieldname . '[]');
+                $tcc->set_var('value', $id);
+                $tcc->set_var('label', $title);
+                $tcc->set_var('indent', ''); // reset for next row
+                for ($i = 1; $i <= ($_TOPICS[$count_topic]['branch_level'] - $start_topic + 1); $i++) {
+                    $tcc->parse('indent', 'item-indent', true);
                 }
 
-                $retval .= XHTML . '>' . $title . '</label></li>' . LB;
+                if (in_array($id, $selected_ids)) {
+                    $tcc->set_var('checked', true);
+                } else {
+                    $tcc->set_var('checked', '');
+                }
+
+                $tcc->parse('items', 'item', true);
             } else {
                 // Cannot pick child as parent so skip
                 $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];
@@ -378,7 +384,7 @@ function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific
         }
     }
 
-    $retval .= '</ul>' . LB;
+    $retval = $tcc->finish($tcc->parse('output', 'checklist'));
 
     return $retval;
 }

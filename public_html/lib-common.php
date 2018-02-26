@@ -1801,8 +1801,10 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldNa
             $sizeS = count($S);
             for ($x = 0; $x < $sizeS; $x++) {
                 if ($A[0] == $S[$x]) {
-                    $tcc->set_var('checked', ' checked="checked"');
+                    $tcc->set_var('checked', true);
                     break;
+                } else {
+                    $tcc->set_var('checked', '');
                 }
             }
 
