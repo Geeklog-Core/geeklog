@@ -1320,17 +1320,8 @@ if ($mode === 'delete') {
             } else {
                 COM_redirect($_CONF['site_admin_url'] . '/plugins.php?msg=' . $msg);
             }
-        } else { // ask user for confirmation
-            $token = SEC_CreateToken();
-            $message = $LANG32[31];
-            $message .= "<form action='{$_CONF['site_admin_url']}/plugins.php' method='GET'><div>";
-            $message .= "<input type='hidden' name='pi_name' value='" . $pi_name . "'" . XHTML . ">";
-            $message .= "<input type='hidden' name='mode' value='delete'" . XHTML . ">";
-            $message .= "<input type='hidden' name='confirmed' value='1'" . XHTML . ">";
-            $message .= "<input type='hidden' name='" . CSRF_TOKEN . "' value='" . $token . "'" . XHTML . ">";
-            $message .= "<input type='submit' value='{$LANG32[25]}'" . XHTML . ">";
-            $message .= "</div></form><p>";
-            $display = plugin_main($message, $token);
+        } else {
+            COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
         }
     } else {
         COM_redirect($_CONF['site_admin_url'] . '/plugins.php');
