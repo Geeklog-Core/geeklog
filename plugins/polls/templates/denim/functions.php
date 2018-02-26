@@ -1,7 +1,7 @@
 <?php
 
-// Allows plugin to add extra css and javascript libraries for individual themes.
-// Theme settings will overwrite any plugin settimgs that are the same name/file
+// Allows plugin to add extra CSS and javascript libraries for individual themes.
+// Theme settings will overwrite any plugin settings that are the same name/file
 
 
 // this file can't be used on its own (keep this in as plugin template files could be located with theme) 
@@ -19,7 +19,7 @@ function polls_css_denim()
 
     $direction = ($LANG_DIRECTION == 'rtl') ? '_rtl' : '';
 
-    // The only extra thing that the plugin needs from uikit is the progress bar for displaying results 
+    // The only extra component that the plugin needs from uikit is the progress bar for displaying results 
     return array(
         array(
             'name'       => 'uikit-progress',
