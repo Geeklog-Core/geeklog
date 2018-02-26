@@ -967,8 +967,6 @@ function listgroups($show_all_groups = false)
         'form_url'   => $form_url,
     );
 
-    //$filter = '<span style="padding-right:20px;">';
-
     $checked = '';
     if ($show_all_groups) {
         $checked = ' checked="checked"';
@@ -988,7 +986,6 @@ function listgroups($show_all_groups = false)
     $tcc->set_var('id', 'chk_showall');
     $tcc->set_var('value', '1');
     if ($show_all_groups) {
-        //$filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked"' . XHTML . '>';
         $tcc->set_var('checked', true);
         
         $query_arr = array(
@@ -997,7 +994,6 @@ function listgroups($show_all_groups = false)
             'query_fields'   => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     } else {
-        //$filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1"' . $checked . XHTML . '>';
         $tcc->set_var('checked', $checked);
         
         $query_arr = array(
@@ -1008,7 +1004,6 @@ function listgroups($show_all_groups = false)
     }
     $tcc->set_var('lang_label', $LANG28[48]);
     $filter = $tcc->finish($tcc->parse('common', 'type-checkbox'));
-    //$filter .= $LANG28[48] . '</label></span>';
 
     $retval .= ADMIN_list('groups', 'ADMIN_getListField_groups', $header_arr,
         $text_arr, $query_arr, $defsort_arr, $filter);

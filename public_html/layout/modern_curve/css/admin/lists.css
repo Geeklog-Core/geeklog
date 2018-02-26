@@ -28,7 +28,7 @@ form.admin-topmenu ul.filter {
 form.admin-topmenu ul.filter li {
   display: inline;
   margin: 0;
-  padding: 0;
+  padding-right: 5px;
 }
 
 form.admin-topmenu dl {
@@ -46,7 +46,7 @@ form.admin-topmenu dl dt {
 form.admin-topmenu dl dd {
   display: inline;
   margin: 0;
-  padding: 0;
+  padding-right: 5px;
 }
 
 form.admin-topmenu ul.submit {
