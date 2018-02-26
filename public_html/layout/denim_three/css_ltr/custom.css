@@ -1,0 +1,9 @@
+/* For Admin Group Editor Rights List */
+.gl-flex-rights-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+}
+.gl-flex-rights-list > li {
+  width: 300px;
+}

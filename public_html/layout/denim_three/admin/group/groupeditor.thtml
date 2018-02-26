@@ -76,18 +76,7 @@
 <!-- END no-group-right-message -->
 
 <!-- BEGIN rights_list_options -->
-<style>
-.flex-rights-list {
-  display: flex;
-  flex-wrap: wrap;
-  list-style-type: none;
-}
-
-.flex-rights-list > li {
-  width: 300px;
-}
-</style>
-<ul class="flex-rights-list">
+<ul class="gl-flex-rights-list">
 {rights_list_options}
 </ul>
 <!-- END rights_list_options -->
