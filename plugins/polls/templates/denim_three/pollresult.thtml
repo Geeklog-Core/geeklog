@@ -27,16 +27,14 @@
 
 <!-- BEGIN poll_votes_bar -->
         <tr>
-            <td class="uk-width-3-10">{answer_text}</td>
-            <td class="uk-width-6-10">
-                <div class="uk-progress uk-margin-small uk-margin-bottom-remove">
-                    <div class="uk-progress-bar" style="width: {bar_width}%;"></div>
-                </div>
+            <td class="uk-width-medium">{answer_text}</td>
+            <td class="uk-table-expand">
+                <progress class="uk-progress" value="{bar_width}" max="100"></progress>
                 {!if remark_text}
                 <div>{remark_text}</div>
                 {!endif}
             </td>
-            <td class="uk-width-1-10">
+            <td class="uk-width-small">
                 {answer_num} ({answer_percent}%)
             </td>
         </tr>

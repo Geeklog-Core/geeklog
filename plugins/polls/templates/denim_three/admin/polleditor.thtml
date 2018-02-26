@@ -2,7 +2,7 @@
 
 {noscript}
 <div id="advanced_editor" style="display:none;">
-  <form action="{site_admin_url}/plugins/polls/index.php" method="post" id="polls-polleditor" class="compact uk-form">
+  <form action="{site_admin_url}/plugins/polls/index.php" method="post" id="polls-polleditor" class="compact">
     <div class="admin_basic">
       <dl class="form_block">
         <dt><label for="polls-polleditor-topic">{lang_topic}</label></dt>
