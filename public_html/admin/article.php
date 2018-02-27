@@ -148,7 +148,7 @@ function liststories($current_topic = '')
 
     $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
     $tcc->set_file('common', 'common.thtml');
-    $tcc->set_block('common', 'type-select-width-small'); 
+    $tcc->set_block('common', 'type-select-width-small');
     $tcc->set_var('name', 'tid');
     $tcc->set_var('onchange', 'this.form.submit()');
     $tcc->set_var('select_items', $seltopics);
@@ -717,31 +717,28 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     }
     $allowed_html .= COM_allowedAutotags(false, $allowed_tags);
     $story_templates->set_var('lang_allowed_html', $allowed_html);
-    $fileinputs = '';
-    $saved_images = '';
     if ($_CONF['maximagesperarticle'] > 0) {
-        $story_templates->set_block('editor', 'image-file-name'); 
-        $story_templates->set_block('editor', 'image-file-select'); 
-        
+        $story_templates->set_block('editor', 'image-file-name');
+        $story_templates->set_block('editor', 'image-file-select');
+
         $story_templates->set_var('lang_images', $LANG24[47]);
-        $icount = DB_count($_TABLES['article_images'], 'ai_sid', $story->getSid());
-        if ($icount > 0) {
-            $result_articles = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '" . $story->getSid() . "'");
-            for ($z = 1; $z <= $icount; $z++) {
-                $I = DB_fetchArray($result_articles);
-   
-                $story_templates->set_var('imagecount', $z);
-                $story_templates->set_var('imagelink', $_CONF['site_url'] . '/images/articles/' . $I['ai_filename']);
-                $story_templates->set_var('imagefilename', $I['ai_filename']);
-                $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
-                $saved_images .= $story_templates->parse('editor-image', 'image-file-name');
-            }
+        $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+        $image_form = '';
+        $ai_filenames = array();
+        $result = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '" . $story->getSid() . "'");
+        while ($A = DB_fetchArray($result)) {
+            $ai_filenames[$A['ai_img_num']] = $A['ai_filename'];
         }
-        
-        $newallowed = $_CONF['maximagesperarticle'] - $icount;
-        for ($z = $icount + 1; $z <= $_CONF['maximagesperarticle']; $z++) {
-            $story_templates->set_var('filecount', $z);
-            $fileinputs .= $story_templates->parse('editor-image', 'image-file-select');            
+        for ($z = 1; $z <= $_CONF['maximagesperarticle']; $z++) {
+            if (!empty($ai_filenames[$z])) {
+                $story_templates->set_var('imagecount', $z);
+                $story_templates->set_var('imagelink', $_CONF['site_url'] . '/images/articles/' . $ai_filenames[$z]);
+                $story_templates->set_var('imagefilename', $ai_filenames[$z]);
+                $image_form .= $story_templates->parse('editor-image', 'image-file-name');
+            } else {
+                $story_templates->set_var('filecount', $z);
+                $image_form .= $story_templates->parse('editor-image', 'image-file-select');
+            }
         }
     }
 
@@ -776,13 +773,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     // Setup Advanced Editor
     COM_setupAdvancedEditor('/javascript/storyeditor_adveditor.js');
-
-    $story_templates->set_var('saved_images', $saved_images);
-    $story_templates->set_var('image_form_elements', $fileinputs);
+    $story_templates->set_var('image_form_elements', $image_form);
     $story_templates->set_var('image_add_instructions', $LANG24[51]);
     if ($_CONF['allow_user_scaling'] == 1) {
         $story_templates->set_var('allow_user_scaling', $LANG24[27]);
-    }    
+    }
     $story_templates->set_var('image_preview_instructions', $LANG24[28]);
     $story_templates->set_var('lang_hits', $LANG24[18]);
     $story_templates->set_var('story_hits', $story->EditElements('hits'));
