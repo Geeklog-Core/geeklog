@@ -1,0 +1,27 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/submit.php" method="post" id="submitlink" class="compact uk-form">
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="submitlink-title">{lang_title}</label></dt>
+      <dd><input type="text" maxlength="96" name="title" id="submitlink-title" class="size6"{xhtml}></dd>
+
+      <dt><label for="submitlink-url">{lang_link}</label></dt>
+      <dd><input type="text" dir="ltr" maxlength="{max_url_length}" name="url" value="http://" id="submitlink-url" class="size6"{xhtml}></dd>
+
+      <dt><label for="submitlink-categorydd">{lang_category}</label></dt>
+      <dd><select name="categorydd" id="submitlink-categorydd">{link_category_options}</select></dd>
+
+      <dt><label for="submitlink-description">{lang_description}</label></dt>
+      <dd><textarea name="description" rows="8" cols="30" id="submitlink-description" class="wide"></textarea><br{xhtml}>{lang_allowed_html}</dd>
+    </dl>
+    {captcha}
+    <div class="submit">
+      <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
+      <input type="hidden" name="type" value="links"{xhtml}>
+      <button type="submit" value="{lang_submit}" class="uk-button g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_submit}</button>
+    </div>
+  </div>
+</form>
+
+{# end {templatelocation} #}

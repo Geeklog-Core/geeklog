@@ -141,14 +141,6 @@ function editlink($mode, $lid = '')
 
     $link_templates->set_var('link_id', $A['lid']);
     if (!empty($lid) && SEC_hasRights('links.edit')) {
-        $delButton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsConfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $link_templates->set_var('delete_option',
-            sprintf($delButton, $jsConfirm));
-        $link_templates->set_var('delete_option_no_confirmation',
-            sprintf($delButton, ''));
-
         $link_templates->set_var('allow_delete', true);
         $link_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
         $link_templates->set_var('confirm_message', $MESSAGE[76]);

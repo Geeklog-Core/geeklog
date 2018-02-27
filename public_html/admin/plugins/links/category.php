@@ -247,12 +247,6 @@ function links_edit_category($cid, $pid)
     $T->set_var('lang_save', $LANG_ADMIN['save']);
 
     if (!empty($cid)) {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $T->set_var('delete_option', sprintf($delbutton, $jsconfirm));
-        $T->set_var('delete_option_no_confirmation', sprintf($delbutton, ''));
-
         $T->set_var('allow_delete', true);
         $T->set_var('lang_delete', $LANG_ADMIN['delete']);
         $T->set_var('confirm_message', $MESSAGE[76]);

@@ -5,22 +5,22 @@
   <div class="admin_basic">
     <dl class="form_block">
       <dt><label for="links-categoryeditor-pid">{lang_parent}</label></dt>
-      <dd><select name="pid" id="links-categoryeditor-pid">{category_options}</select></dd>
+      <dd><select name="pid" id="links-categoryeditor-pid" class="uk-select uk-form-width-medium">{category_options}</select></dd>
 
       <dt><label for="links-categoryeditor-category">{lang_category}</label></dt>
-      <dd><input type="text" name="category" maxlength="32" id="links-categoryeditor-category" value="{category_value}" class="size4"{xhtml}></dd>
+      <dd><input type="text" name="category" maxlength="32" id="links-categoryeditor-category" value="{category_value}" class="uk-input uk-form-width-medium"{xhtml}></dd>
 
       <dt><label for="links-categoryeditor-cid">{lang_cid}</label></dt>
-      <dd><input type="text" name="cid" maxlength="32" id="links-categoryeditor-cid" value="{cid_value}" class="size4"{xhtml}></dd>
+      <dd><input type="text" name="cid" maxlength="32" id="links-categoryeditor-cid" value="{cid_value}" class="uk-input uk-form-width-medium"{xhtml}></dd>
 
       <dt><label for="links-categoryeditor-description">{lang_description}</label></dt>
-      <dd><input type="text" name="description" maxlength="255" id="links-categoryeditor-description" value="{description_value}" class="size6"{xhtml}></dd>
+      <dd><input type="text" name="description" maxlength="255" id="links-categoryeditor-description" value="{description_value}" class="uk-input uk-form-width-large"{xhtml}></dd>
 
       <dt><label for="tid">{lang_topic}</label></dt>
       <dd>{topic_selection}</dd>
 
       <dt><label>{lang_num_links}</label></dt>
-      <dd>{num_links}</dd>
+      <dd class="controls_text">{num_links}</dd>
     </dl>
   </div>
 
@@ -29,7 +29,7 @@
 
     <dl class="form_block">
       <dt>{lang_owner}</dt>
-      <dd>{owner_name}<input type="hidden" name="owner_id" value="{cat_ownerid}"{xhtml}></dd>
+      <dd class="controls_text">{owner_name}<input type="hidden" name="owner_id" value="{cat_ownerid}"{xhtml}></dd>
 
       <dt><label for="group_id">{lang_group}</label></dt>
       <dd>{group_dropdown}</dd>
@@ -42,13 +42,13 @@
   </fieldset>
 
   <div class="submit">
+    <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+    <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+    <button type="submit" name="mode" value="{lang_cancel}" class="uk-button uk-button-default">{lang_cancel}</button>
     <input type="hidden" value="{old_cid_value}" name="old_cid"{xhtml}>
     <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-    <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
-    <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
-{!if allow_delete}
-    <input type="submit" value="{lang_delete}" name="mode" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
-{!endif}    
   </div>
 </form>
 

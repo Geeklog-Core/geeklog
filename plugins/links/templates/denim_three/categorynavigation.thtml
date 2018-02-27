@@ -1,0 +1,9 @@
+{# begin {templatelocation} #}
+
+<h2>{lang_categories}</h2>
+
+<table style="width:100%">
+{category_row}
+</table>
+
+{# end {templatelocation} #}
