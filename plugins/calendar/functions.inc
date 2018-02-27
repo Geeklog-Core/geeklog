@@ -427,6 +427,7 @@ function plugin_savesubmission_calendar($A)
 
         return $retval;
     }
+    
     // check ok, proceed to saving
     if (isset($A['end_year'])) {
         $A['end_year'] = COM_applyFilter($A['end_year'], true);
@@ -663,7 +664,7 @@ function plugin_getheadercode_calendar()
  */
 function plugin_submit_calendar($mode = 'master')
 {
-    global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12, $MESSAGE, $_SCRIPTS;
+    global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12, $MESSAGE, $_SCRIPTS, $LANG_CAL_2;
 
     // Anonymous user tried to submit an event when login is required
     if (COM_isAnonUser() && ($_CONF['loginrequired'] || $_CONF['submitloginrequired'] || $_CA_CONF['calendarloginrequired'])) {
@@ -684,6 +685,12 @@ function plugin_submit_calendar($mode = 'master')
     }
 
     if (($_CA_CONF['personalcalendars'] == 1) && ($mode === 'quickadd')) {
+        // check for missing event title field
+        if (empty(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($_POST['title']))))) {
+            // If missing must set or process goes into infinite loop
+            $_POST['title'] = $LANG_CAL_2[32]; // Default title will be "Event"
+        }
+        
         // quick add form, just save it.
         $display = plugin_savesubmission_calendar($_POST);
 
