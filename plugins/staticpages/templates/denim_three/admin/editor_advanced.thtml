@@ -7,28 +7,28 @@
     <div class="admin_basic">
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-sp_title">{lang_title}</label></dt>
-        <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('sp-advanced_editor-sp_title','sp-advanced_editor-sp_id');" {!endif}name="sp_title" value="{sp_title}" id="sp-advanced_editor-sp_title" class="size5"{xhtml}></dd>
+        <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('sp-advanced_editor-sp_title','sp-advanced_editor-sp_id');" {!endif}name="sp_title" value="{sp_title}" id="sp-advanced_editor-sp_title" class="uk-input uk-form-width-large"{xhtml}></dd>
 
         <dt><label for="sp-advanced_editor-sp_id">{lang_id}</label></dt>
-        <dd><input type="text" dir="ltr" name="sp_id" maxlength="128" value="{sp_id}" id="sp-advanced_editor-sp_id" class="size5"{xhtml}></dd>
+        <dd><input type="text" dir="ltr" name="sp_id" maxlength="128" value="{sp_id}" id="sp-advanced_editor-sp_id" class="uk-input uk-form-width-large"{xhtml}></dd>
 
         <dt><label>{lang_url}</label></dt>
-        <dd><span class="break-word">{example_url}</span></dd>
+        <dd class="controls_text"><span class="break-word">{example_url}</span></dd>
 
         <dt><label for="sp-advanced_editor-sp_page_title">{lang_page_title}</label></dt>
-        <dd><input type="text" maxlength="128" name="sp_page_title" value="{sp_page_title}" id="sp-advanced_editor-sp_page_title" class="size5"{xhtml}></dd>
+        <dd><input type="text" maxlength="128" name="sp_page_title" value="{sp_page_title}" id="sp-advanced_editor-sp_page_title" class="uk-input uk-form-width-large"{xhtml}></dd>
 
         <dt><label for="sp-advanced_editor-sp_onmenu">{lang_addtomenu}</label></dt>
-        <dd><input type="checkbox" name="sp_onmenu" id="sp-advanced_editor-sp_onmenu" {onmenu_checked}{xhtml}></dd>
+        <dd class="controls_text"><input type="checkbox" name="sp_onmenu" id="sp-advanced_editor-sp_onmenu" class="uk-checkbox" {onmenu_checked}{xhtml}></dd>
 
         <dt><label for="sp-advanced_editor-sp_label">{lang_label}</label></dt>
-        <dd><input type="text" name="sp_label" maxlength="64" value="{sp_label}" id="sp-advanced_editor-sp_label" class="size5"{xhtml}></dd>
+        <dd><input type="text" name="sp_label" maxlength="64" value="{sp_label}" id="sp-advanced_editor-sp_label" class="uk-input uk-form-width-large"{xhtml}></dd>
 
         <dt><label>{lang_topic}</label></dt>
-        <dd>{topic_selection}</dd>
+        <dd class="controls_text">{topic_selection}</dd>
 
         <dt><label for="sp-advanced_editor-sp_format">{lang_pageformat}</label></dt>
-        <dd><select name="sp_format" id="sp-advanced_editor-sp_format">
+        <dd><select name="sp_format" id="sp-advanced_editor-sp_format" class="uk-select uk-form-width-medium">
               <option value="blankpage" {blankpage_selected}>{lang_blankpage}</option>
               <option value="noblocks" {noblock_selected}>{lang_noblocks}</option>
               <option value="leftblocks" {leftblocks_selected}>{lang_leftblocks}</option>
@@ -36,25 +36,25 @@
             </select></dd>
 
         <dt><label for="sp-advanced_editor-commentcode">{lang_mode}</label></dt>
-        <dd><select name="commentcode" id="sp-advanced_editor-commentcode">
+        <dd><select name="commentcode" id="sp-advanced_editor-commentcode" class="uk-select uk-form-width-medium">
               {comment_options}
             </select></dd>
 
         <dt><label for="sel_editmode">{lang_postmode}</label></dt>
-        <dd><select name="postmode" id="sel_editmode" {change_editormode}>
+        <dd><select name="postmode" id="sel_editmode" {change_editormode} class="uk-select uk-form-width-medium">
               {post_options}
             </select></dd>
 
         <dt{hide_meta}><label for="sp-advanced_editor-meta_description">{lang_metadescription}</label></dt>
-        <dd{hide_meta}><textarea name="meta_description" cols="45" rows="2" id="sp-advanced_editor-meta_description" class="wide">{meta_description}</textarea></dd>
+        <dd{hide_meta}><textarea name="meta_description" rows="2" id="sp-advanced_editor-meta_description" class="uk-textarea">{meta_description}</textarea></dd>
 
         <dt{hide_meta}><label for="sp-advanced_editor-meta_keywords">{lang_metakeywords}</label></dt>
-        <dd{hide_meta}><textarea name="meta_keywords" cols="45" rows="2" id="sp-advanced_editor-meta_keywords" class="wide">{meta_keywords}</textarea></dd>
+        <dd{hide_meta}><textarea name="meta_keywords" rows="2" id="sp-advanced_editor-meta_keywords" class="uk-textarea">{meta_keywords}</textarea></dd>
       </dl>
 
       <div class="story_editor">
         <span id="sel_toolbar" style="display:{show_adveditor};">{lang_toolbar}:&nbsp;
-          <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
+          <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);" class="uk-select uk-form-width-medium">
             <option value="editor-toolbar1">{toolbar1}</option>
             <option value="editor-toolbar2" selected="selected">{toolbar2}</option>
             <option value="editor-toolbar3">{toolbar3}</option>
@@ -81,32 +81,32 @@
 
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-draft_flag">{lang_draft}</label></dt>
-        <dd><input type="checkbox" name="draft_flag" id="sp-advanced_editor-draft_flag" {draft_flag_checked}{xhtml}></dd>
+        <dd class="controls_text"><input type="checkbox" name="draft_flag" id="sp-advanced_editor-draft_flag" class="uk-checkbox" {draft_flag_checked}{xhtml}></dd>
 
         <dt><label for="sp-advanced_editor-cache_time">{lang_cache_time}</label></dt>
-        <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="sp-advanced_editor-cachetime" class="text"{xhtml}></dd>
+        <dd><input type="text" value="{cache_time}" name="cache_time" id="sp-advanced_editor-cachetime" class="uk-input uk-form-width-xsmall"{xhtml}></dd>
         <dd class="description">{lang_cache_time_desc}</dd>
 
         <dt><label for="sp-editor-sp_onlastupdate">{lang_lastupdated}</label></dt>
         <dd class="controls_text">
             {sp_formateddate} 
-            (<input type="checkbox" name="sp_onlastupdate" id="sp-editor-sp_onlastupdate" {onlastupdate_checked}{xhtml}> {lang_show_on_page})
+            (<input type="checkbox" name="sp_onlastupdate" id="sp-editor-sp_onlastupdate" class="uk-checkbox" {onlastupdate_checked}{xhtml}> {lang_show_on_page})
         </dd>
 
         <dt><label for="sp-editor-sp_onhits">{lang_hits}</label></dt>
         <dd class="controls_text">
             <input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted} 
-            (<input type="checkbox" name="sp_onhits" id="sp-editor-sp_onhits" {onhits_checked}{xhtml}> {lang_show_on_page})
-        </dd>         
+            (<input type="checkbox" name="sp_onhits" id="sp-editor-sp_onhits" class="uk-checkbox" {onhits_checked}{xhtml}> {lang_show_on_page})
+        </dd>        
 
         <dt><label>{lang_comments}</label></dt>
-        <dd>{sp_comments}</dd>
+        <dd class="controls_text">{sp_comments}</dd>
       </dl>
 
       <hr style="margin-bottom: 15px;"{xhtml}>
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-template_flag">{lang_template}</label></dt>
-        <dd><input type="checkbox" name="template_flag" id="sp-advanced_editor-template_flag" {template_flag_checked}{xhtml}>&nbsp;&nbsp;{lang_template_flag_msg}</dd>
+        <dd class="controls_text"><input type="checkbox" name="template_flag" id="sp-advanced_editor-template_flag" class="uk-checkbox" {template_flag_checked}{xhtml}>&nbsp;&nbsp;{lang_template_flag_msg}</dd>
 
         <dt><label>{lang_use_template}</label></dt>
         <dd>{use_template_selection}&nbsp;&nbsp;&nbsp;{lang_use_template_msg}</dd>
@@ -115,7 +115,7 @@
       <hr style="margin-bottom: 15px;"{xhtml}>
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-sp_centerblock">{lang_centerblock}</label></dt>
-        <dd><input type="checkbox" name="sp_centerblock" id="sp-advanced_editor-sp_centerblock" {centerblock_checked}{xhtml}>&nbsp;&nbsp;{lang_centerblock_msg}</dd>
+        <dd class="controls_text"><input type="checkbox" name="sp_centerblock" id="sp-advanced_editor-sp_centerblock" class="uk-checkbox" {centerblock_checked}{xhtml}>&nbsp;&nbsp;{lang_centerblock_msg}</dd>
 
         <dt><label>{lang_position}</label></dt>
         <dd>{pos_selection}</dd>
@@ -124,27 +124,27 @@
       <hr style="margin-bottom: 15px;"{xhtml}>
       <dl class="form_block">
         <dt><label for="sp-advanced_editor-sp_inblock">{inblock_msg}</label></dt>
-        <dd><input type="checkbox" name="sp_inblock" id="sp-advanced_editor-sp_inblock" {inblock_checked}{xhtml}>&nbsp;&nbsp;{inblock_info}</dd>
+        <dd class="controls_text"><input type="checkbox" name="sp_inblock" id="sp-advanced_editor-sp_inblock" class="uk-checkbox" {inblock_checked}{xhtml}>&nbsp;&nbsp;{inblock_info}</dd>
 
         <dt><label for="sp-advanced_editor-sp_help">{lang_centerblock_help}</label></dt>
-        <dd><input type="text" name="sp_help" value="{centerblock_help}" id="sp-advanced_editor-sp_help" class="size5"{xhtml}>&nbsp;{lang_centerblock_include}
+        <dd><input type="text" name="sp_help" value="{centerblock_help}" id="sp-advanced_editor-sp_help" class="uk-input uk-form-width-large"{xhtml}>&nbsp;{lang_centerblock_include}
             <br{xhtml}>{lang_centerblock_desc}</dd>
 
         <dt><label>{php_msg}</label></dt>
-        <dd>{php_selector}&nbsp;&nbsp;{php_warn}</dd>
+        <dd class="controls_text">{php_selector}&nbsp;&nbsp;{php_warn}</dd>
 
         <dt><label for="sp-advanced_editor-sp_nf">{exit_msg}</label></dt>
-        <dd><input type="checkbox" name="sp_nf" id="sp-advanced_editor-sp_nf" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</dd>
+        <dd class="controls_text"><input type="checkbox" name="sp_nf" id="sp-advanced_editor-sp_nf" class="uk-checkbox" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</dd>
       </dl>
 
       <hr style="margin-bottom: 15px;"{xhtml}>
       <dl class="form_block">
         <dt><label for="sp-editor-sp_prev">{lang_prev_page}</label></dt>
-        <dd><select name="sp_prev" id="sp-editor-sp_prev">{sp_prev_pages}</select></dd>
+        <dd><select name="sp_prev" id="sp-editor-sp_prev" class="uk-select uk-form-width-medium">{sp_prev_pages}</select></dd>
         <dt><label for="sp-editor-sp_next">{lang_next_page}</label></dt>
-        <dd><select name="sp_next" id="sp-editor-sp_next">{sp_next_pages}</select></dd>
+        <dd><select name="sp_next" id="sp-editor-sp_next" class="uk-select uk-form-width-medium">{sp_next_pages}</select></dd>
         <dt><label for="sp-editor-sp_parent">{lang_parent_page}</label></dt>
-        <dd><select name="sp_parent" id="sp-editor-sp_parent">{sp_parent_pages}</select></dd>
+        <dd><select name="sp_parent" id="sp-editor-sp_parent" class="uk-select uk-form-width-medium">{sp_parent_pages}</select></dd>
       </dl>
 
       <fieldset>
@@ -152,7 +152,7 @@
 
         <dl class="form_block">
           <dt>{lang_owner}</dt>
-          <dd>{owner_link} {camera_icon}
+          <dd class="controls_text">{owner_link} {camera_icon}
               <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
 
           <dt><label for="group_id">{lang_group}</label></dt>
@@ -166,12 +166,11 @@
       </fieldset>
 
       <div class="submit">
-        <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
-        <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+        <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
 {!if allow_delete}
-        <input type="submit" value="{lang_delete}" name="mode" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
-{!endif}        
-        {delete_option}
+        <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+        <button type="submit" name="mode" value="{lang_cancel}" class="uk-button uk-button-default">{lang_cancel}</button>
         <input type="hidden" name="sp_old_id" value="{sp_old_id}"{xhtml}>
         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
       </div>
