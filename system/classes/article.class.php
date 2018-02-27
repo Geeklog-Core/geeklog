@@ -1220,7 +1220,7 @@ class Article
         } else {
             $ai_sid = $this->_sid;
         }
-        
+
         // Figure out story type normal, featured or archived (grabbed from render article in lib-article)
         if ($this->DisplayElements('featured') == 1) {
             $article_filevar = 'featuredarticletext.thtml';
@@ -1241,9 +1241,9 @@ class Article
         $blocks = array('image_noalign', 'image_rightalign', 'image_leftalign');
         foreach ($blocks as $block) {
             $article->set_block('article', $block);
-        }        
+        }
 
-        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} "
+        $result = DB_query("SELECT ai_filename,ai_img_num FROM {$_TABLES['article_images']} "
             . "WHERE ai_sid = '{$ai_sid}' ORDER BY ai_img_num");
         $numRows = DB_numRows($result);
 
@@ -1278,7 +1278,7 @@ class Article
 
             // Are we keeping unscaled images?
             $link_url = '';
-            $link_title = '';            
+            $link_title = '';
             if ($_CONF['keep_unscaled_image'] == 1) {
                 // Yes we are, so, we need to find out what the filename
                 // of the original, unscaled image is:
@@ -1304,52 +1304,53 @@ class Article
                 }
             }
 
-            $norm = '[image' . $i . ']';
-            $left = '[image' . $i . '_left]';
-            $right = '[image' . $i . '_right]';
-            
+            $n = $A['ai_img_num'];
+            $norm = '[image' . $n . ']';
+            $left = '[image' . $n . '_left]';
+            $right = '[image' . $n . '_right]';
+
             $article->set_var('link_url', $link_url);
             $article->set_var('link_title', $link_title);
-            
+
             $article->parse('output', 'image_noalign');
-            $img_noalign = $article->finish($article->get_var('output'));            
+            $img_noalign = $article->finish($article->get_var('output'));
             $text = str_replace($norm, $img_noalign, $text);
-            
+
             $article->parse('output', 'image_rightalign');
-            $img_rightalgn = $article->finish($article->get_var('output'));              
-            $text = str_replace($right, $img_rightalgn, $text);            
-            
+            $img_rightalgn = $article->finish($article->get_var('output'));
+            $text = str_replace($right, $img_rightalgn, $text);
+
             $article->parse('output', 'image_leftalign');
-            $img_leftalgn = $article->finish($article->get_var('output'));              
+            $img_leftalgn = $article->finish($article->get_var('output'));
             $text = str_replace($left, $img_leftalgn, $text);
-    
+
             // And insert the unscaled mode images:
             if (($_CONF['allow_user_scaling'] == 1) && ($_CONF['keep_unscaled_image'] == 1)) {
                 if (file_exists($lFilename_large_complete)) {
                     $imgSrc = $lFilename_large_URL;
                     $sizeAttributes = COM_getImgSizeAttributes($lFilename_large_complete);
-                    
+
                     $article->set_var('imgSrc', $imgSrc);
                     $article->set_var('sizeAttributes', $sizeAttributes);
                 }
                 $article->set_var('link_url', '');
-                $article->set_var('link_title', '');                
+                $article->set_var('link_title', '');
 
-                $unscaledNorm = '[unscaled' . $i . ']';
-                $unscaledLeft = '[unscaled' . $i . '_left]';
-                $unscaledRight = '[unscaled' . $i . '_right]';
-                    
+                $unscaledNorm = '[unscaled' . $n . ']';
+                $unscaledLeft = '[unscaled' . $n . '_left]';
+                $unscaledRight = '[unscaled' . $n . '_right]';
+
                 $article->parse('output', 'image_noalign');
-                $img_noalign = $article->finish($article->get_var('output'));            
+                $img_noalign = $article->finish($article->get_var('output'));
                 $text = str_replace($unscaledNorm, $img_noalign, $text);
-                
+
                 $article->parse('output', 'image_rightalign');
-                $img_rightalgn = $article->finish($article->get_var('output'));              
-                $text = str_replace($unscaledRight, $img_rightalgn, $text);            
-                
+                $img_rightalgn = $article->finish($article->get_var('output'));
+                $text = str_replace($unscaledRight, $img_rightalgn, $text);
+
                 $article->parse('output', 'image_leftalign');
-                $img_leftalgn = $article->finish($article->get_var('output'));              
-                $text = str_replace($unscaledLeft, $img_leftalgn, $text);                    
+                $img_leftalgn = $article->finish($article->get_var('output'));
+                $text = str_replace($unscaledLeft, $img_leftalgn, $text);
             }
         }
 
@@ -1375,26 +1376,27 @@ class Article
             $ai_sid = $this->_sid;
         }
 
-        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} "
+        $result = DB_query("SELECT ai_filename,ai_img_num FROM {$_TABLES['article_images']} "
             . "WHERE ai_sid = '{$ai_sid}' ORDER BY ai_img_num");
         $numRows = DB_numRows($result);
         $errors = array();
         for ($i = 1; $i <= $numRows; $i++) {
             $A = DB_fetchArray($result);
+            $n = $A['ai_img_num'];
 
-            // See how many times image $i is used in the fulltext of the article:
-            $iCount = substr_count($text, '[image' . $i . ']')
-                + substr_count($text, '[image' . $i . '_left]')
-                + substr_count($text, '[image' . $i . '_right]')
-                + substr_count($text, '[unscaled' . $i . ']')
-                + substr_count($text, '[unscaled' . $i . '_left]')
-                + substr_count($text, '[unscaled' . $i . '_right]');
+            // See how many times image $n is used in the fulltext of the article:
+            $iCount = substr_count($text, '[image' . $n . ']')
+                + substr_count($text, '[image' . $n . '_left]')
+                + substr_count($text, '[image' . $n . '_right]')
+                + substr_count($text, '[unscaled' . $n . ']')
+                + substr_count($text, '[unscaled' . $n . '_left]')
+                + substr_count($text, '[unscaled' . $n . '_right]');
 
             // If the image we are currently looking at wasn't used, we need
             // to log an error
             if ($iCount == 0) {
                 // There is an image that wasn't used, create an error
-                $errors[] = $LANG24[48] . " #$i, {$A['ai_filename']}, " . $LANG24[53];
+                $errors[] = $LANG24[48] . " #$n, {$A['ai_filename']}, " . $LANG24[53];
             }
         }
 
@@ -1421,7 +1423,7 @@ class Article
         $count = 0;
         // If we haven't already cached the images for this story, do so
         if (!is_array($this->_storyImages)) {
-            $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE " .
+            $result = DB_query("SELECT ai_filename,ai_img_num FROM {$_TABLES['article_images']} WHERE " .
                 "ai_sid = '{$this->_sid}' ORDER BY ai_img_num");
             $numRows = DB_numRows($result);
             $this->_storyImages = array();
@@ -1438,10 +1440,11 @@ class Article
         // If the article has any images, remove them back to [image] tags.
         for ($i = 0; $i < $count; $i++) {
             $A = $this->_storyImages[$i];
+            $n = $A['ai_img_num'];
 
-            $imageX = '[image' . ($i + 1) . ']';
-            $imageX_left = '[image' . ($i + 1) . '_left]';
-            $imageX_right = '[image' . ($i + 1) . '_right]';
+            $imageX = '[image' . $n . ']';
+            $imageX_left = '[image' . $n . '_left]';
+            $imageX_right = '[image' . $n . '_right]';
 
             $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
 
@@ -1484,9 +1487,9 @@ class Article
             $text = str_replace($right, $imageX_right, $text);
 
             if (($_CONF['allow_user_scaling'] == 1) && ($_CONF['keep_unscaled_image'] == 1)) {
-                $unscaledX = '[unscaled' . ($i + 1) . ']';
-                $unscaledX_left = '[unscaled' . ($i + 1) . '_left]';
-                $unscaledX_right = '[unscaled' . ($i + 1) . '_right]';
+                $unscaledX = '[unscaled' . $n . ']';
+                $unscaledX_left = '[unscaled' . $n . '_left]';
+                $unscaledX_right = '[unscaled' . $n . '_right]';
 
                 if (file_exists($lFilename_large_complete)) {
                     $sizeAttributes = COM_getImgSizeAttributes($lFilename_large_complete);

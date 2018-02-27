@@ -2109,6 +2109,21 @@ function service_submit_story($args, &$output, &$svc_msg)
         }
 
         if (count($_FILES) > 0 && $_CONF['maximagesperarticle'] > 0) {
+            $filenames = array();
+            $ai_fnames = array();
+            $files = $_FILES;
+            $uploadFiles = array();
+            foreach ($files as $k => $file) {
+                if ($file['error'] == 0) {
+                    $num = str_replace('file', '', $k);
+                    $pos = strrpos($file['name'], '.') + 1;
+                    $fextension = substr($file['name'], $pos);
+                    $ai_fnames[$num] = $sid . '_' . $num . '.' . $fextension;
+                    $filenames[] = $ai_fnames[$num];
+                    $uploadFiles[$num] = $file;
+                }
+            }
+            $_FILES = $uploadFiles;
             $upload = new Upload();
 
             if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
@@ -2160,19 +2175,7 @@ function service_submit_story($args, &$output, &$svc_msg)
 
             // Set file permissions on file after it gets uploaded (number is in octal)
             $upload->setPerms('0644');
-            $filenames = array();
-            $end_index = $index_start + $upload->numFiles() - 1;
-            for ($z = $index_start; $z <= $end_index; $z++) {
-                $curfile = current($_FILES);
-                if (!empty($curfile['name'])) {
-                    $pos = strrpos($curfile['name'], '.') + 1;
-                    $fextension = substr($curfile['name'], $pos);
-                    $filenames[] = $sid . '_' . $z . '.' . $fextension;
-                }
-                next($_FILES);
-            }
             $upload->setFileNames($filenames);
-            reset($_FILES);
             $upload->uploadFiles();
 
             if ($upload->areErrors()) {
@@ -2182,10 +2185,8 @@ function service_submit_story($args, &$output, &$svc_msg)
                 exit;
             }
 
-            reset($filenames);
-            for ($z = $index_start; $z <= $end_index; $z++) {
-                DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $z, '" . current($filenames) . "')");
-                next($filenames);
+            foreach ($ai_fnames as $k => $ai_fname) {
+                DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $k, '" . $ai_fname . "')");
             }
         }
 

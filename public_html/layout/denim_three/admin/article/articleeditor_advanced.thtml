@@ -204,9 +204,7 @@
     <dl class="form_block">
       <dt><label>{lang_images}</label></dt>
       <dd>
-        {saved_images}
         {image_form_elements}
-
         {image_add_instructions}
         {allow_user_scaling}
         {image_preview_instructions}
