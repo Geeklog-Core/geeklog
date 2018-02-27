@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+{delete_imagelink} {event_time} <a href="{site_url}/calendar/event.php?mode={mode}&amp;eid={eid}">{event_title}</a>{br}
+
+{# end {templatelocation} #}

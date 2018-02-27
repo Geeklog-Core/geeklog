@@ -61,7 +61,7 @@
           </span></dd>
 
       <dt><label for="calendar-eventeditor-allday">{lang_alldayevent}</label></dt>
-      <dd><input type="checkbox" name="allday" id="calendar-eventeditor-allday" {allday_checked}{xhtml}></dd>
+      <dd class="controls_text"><input type="checkbox" name="allday" id="calendar-eventeditor-allday" {allday_checked}{xhtml}></dd>
 
       <dt><label for="calendar-eventeditor-location">{lang_location}</label></dt>
       <dd><textarea name="location" cols="45" rows="2" id="calendar-eventeditor-location" class="size6">{event_location}</textarea></dd>
@@ -93,7 +93,7 @@
           </select><br{xhtml}>{lang_allowed_html}</dd>
 
       <dt><label>{lang_hits}</label></dt>
-      <dd>{hits}</dd>
+      <dd class="controls_text">{hits}</dd>
     </dl>
 
     <fieldset>
@@ -101,7 +101,7 @@
 
       <dl class="form_block">
         <dt>{lang_owner}</dt>
-        <dd>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
+        <dd class="controls_text">{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
 
         <dt><label for="group_id">{lang_group}</label></dt>
         <dd>{group_dropdown}</dd>
@@ -114,13 +114,14 @@
     </fieldset>
 
     <div class="submit">
-      <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
-      <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+      <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary">{lang_save}</button>
+{!if allow_delete}
+      <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
+{!endif}
+      <button type="submit" name="mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
+
       <input type="hidden" name="eid" value="{event_id}"{xhtml}>
       <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
-{!if allow_delete}
-        <input type="submit" value="{lang_delete}" name="mode" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
-{!endif} 
       {submission_option}
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     </div>

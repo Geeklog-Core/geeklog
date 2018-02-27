@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 
                             {explanation}
-                            <form class="form-theme" id="submit_event_form" action="{site_url}{submit_url}" method="post">
+                            <form class="form-theme uk-form" id="submit_event_form" action="{site_url}{submit_url}" method="post">
                                 <div class="form-description">{lang_title}:</div>
                                 <div class="form-field"><input type="text" size="48" maxlength="128" name="title"{xhtml}></div>
                                 <div class="clear-left"></div>
@@ -67,39 +67,30 @@
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_alldayevent}:</div>
                                 <div class="form-field"><input type="checkbox" name="allday"{xhtml}></div>
-
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_location}:</div>
                                 <div class="form-field"><textarea name="location" cols="45" rows="2"></textarea></div>
-
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_addressline1}:</div>
                                 <div class="form-field"><input type="text" name="address1" size="40"{xhtml}></div>
-
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_addressline2}:</div>
                                 <div class="form-field"><input type="text" name="address2" size="40"{xhtml}></div>
-
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_city}:</div>
                                 <div class="form-field"><input type="text" name="city" size="40" maxlength="60"{xhtml}></div>
-
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_state}:</div>
                                 <div class="form-field"><input type="text" name="state" size="40"{xhtml}></div>
-
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_zipcode}:</div>
                                 <div class="form-field"><input type="text" name="zipcode" size="16" maxlength="16"{xhtml}></div>
-
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_link}:</div>
                                 <div class="form-field"><input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="http://"{xhtml}></div>
-
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_description}:</div>
-                                <div class="form-field"><textarea name="description" style="width:98%" rows="8"></textarea></div>
-
+                                <div class="form-field"><textarea name="description" style="width:100%" cols="45" rows="8"></textarea></div>
                                 <div class="clear-left"></div>
                                 <div class="form-field">{lang_allowed_html}</div>
                                 {captcha}
@@ -108,7 +99,7 @@
                                     <input type="hidden" name="type" value="calendar"{xhtml}>
                                     <input type="hidden" name="calendar_type" value="{mode}"{xhtml}>
                                     <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
-                                    <button type="submit" value="{lang_submit}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_submit}</button>
+                                    <button type="submit" value="{lang_submit}" class="uk-button uk-button-primary g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_submit}</button>
                                     {hidden_fields}
                                 </div>
                                 <div class="clear-left"></div>

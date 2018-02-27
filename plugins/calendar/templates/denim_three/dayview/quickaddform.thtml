@@ -19,34 +19,34 @@
                                                     <td><b>{lang_time}</b></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="text" size="20" maxlength="96" name="title"{xhtml}></td>
+                                                    <td><input type="text" maxlength="96" name="title" class="uk-input uk-form-width-medium"{xhtml}></td>
                                                     <td>
                                                       <span dir="ltr">
-                                                        <select name="start_month">
+                                                        <select name="start_month" class="uk-select uk-width-auto">
                                                             {month_options}
                                                         </select>
                                                         /
-                                                        <select name="start_day">
+                                                        <select name="start_day" class="uk-select uk-width-auto">
                                                             {day_options}
                                                         </select>
                                                         /
-                                                        <select name="start_year">
+                                                        <select name="start_year" class="uk-select uk-width-auto">
                                                             {year_options}
                                                         </select>
                                                       </span>
                                                     </td>
                                                     <td>
                                                       <span dir="ltr">
-                                                        <select name="start_hour">
+                                                        <select name="start_hour" class="uk-select uk-width-auto">
                                                             {hour_options}
                                                         </select>
                                                         :
-                                                        <select name="start_minute">
+                                                        <select name="start_minute" class="uk-select uk-width-auto">
                                                             {minute_options}
                                                         </select>
                                                         {startampm_selection}
                                                       </span>
-                                                        <input type="submit" value="{lang_add}"{xhtml}>
+                                                        <button type="submit" value="{lang_add}" class="uk-button uk-button-primary">{lang_add}</button>
                                                         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                                     </td>
                                                 </tr>
