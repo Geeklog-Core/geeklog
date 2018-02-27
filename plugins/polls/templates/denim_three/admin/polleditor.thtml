@@ -6,31 +6,31 @@
     <div class="admin_basic">
       <dl class="form_block">
         <dt><label for="polls-polleditor-topic">{lang_topic}</label></dt>
-        <dd><input type="text" name="topic" value="{poll_topic}" maxlength="255" {!if titletoid}onkeyup="TitleToId('polls-polleditor-topic','polls-polleditor-pid');" {!endif}id="polls-polleditor-topic" class="size6"{xhtml}><br{xhtml}>{poll_topic_info}</dd>
+        <dd><input type="text" name="topic" value="{poll_topic}" {!if titletoid}onkeyup="TitleToId('polls-polleditor-topic','polls-polleditor-pid');" {!endif}id="polls-polleditor-topic" class="uk-input uk-form-width-large" maxlength="255"{xhtml}><br{xhtml}>{poll_topic_info}</dd>
       
         <dt><label for="polls-polleditor-pid">{lang_pollid}</label></dt>
-        <dd><input type="text" dir="ltr" name="pid" value="{poll_id}" maxlength="128" id="polls-polleditor-pid" class="size6"{xhtml}> {lang_donotusespaces}</dd>
+        <dd><input type="text" dir="ltr" name="pid" value="{poll_id}" maxlength="128" id="polls-polleditor-pid" class="uk-input uk-form-width-large"{xhtml}> {lang_donotusespaces}</dd>
 
         <dt{hide_meta}><label for="polls-polleditor-meta_description">{lang_metadescription}</label></dt>
-        <dd{hide_meta}><textarea name="meta_description" cols="45" rows="2" id="polls-polleditor-meta_description" class="wide">{meta_description}</textarea></dd>
+        <dd{hide_meta}><textarea name="meta_description" rows="2" id="polls-polleditor-meta_description" class="uk-textarea">{meta_description}</textarea></dd>
 
         <dt{hide_meta}><label for="polls-polleditor-meta_keywords">{lang_metakeywords}</label></dt>
-        <dd{hide_meta}><textarea name="meta_keywords" cols="45" rows="2" id="polls-polleditor-meta_keywords" class="wide">{meta_keywords}</textarea></dd>
+        <dd{hide_meta}><textarea name="meta_keywords" rows="2" id="polls-polleditor-meta_keywords" class="uk-textarea">{meta_keywords}</textarea></dd>
 
         <dt><label for="polls-polleditor-commentcode">{lang_mode}</label></dt>
-        <dd><select name="commentcode" id="polls-polleditor-commentcode">{comment_options}</select></dd>
+        <dd><select name="commentcode" id="polls-polleditor-commentcode" class="uk-select uk-form-width-medium">{comment_options}</select></dd>
 
         <dt><label for="polls-polleditor-mainpage">{lang_appearsonhomepage}</label></dt>
-        <dd class="controls_text"><input type="checkbox" name="mainpage" id="polls-polleditor-mainpage" {poll_display}{xhtml}></dd>
+        <dd class="controls_text"><input type="checkbox" name="mainpage" id="polls-polleditor-mainpage" {poll_display} class="uk-checkbox"{xhtml}></dd>
 
         <dt><label for="polls-polleditor-open">{lang_openforvoting}</label></dt>
-        <dd class="controls_text"><input type="checkbox" name="open" id="polls-polleditor-open" {poll_open}{xhtml}></dd>
+        <dd class="controls_text"><input type="checkbox" name="open" id="polls-polleditor-open" {poll_open} class="uk-checkbox"{xhtml}></dd>
 
         <dt><label for="polls-polleditor-hideresults">{lang_hideresults}</label></dt>
-        <dd class="controls_text"><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</dd>
+        <dd class="controls_text"><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults} class="uk-checkbox"{xhtml}> {poll_hideresults_explain}</dd>
 
         <dt><label for="polls-polleditor-topic_description">{lang_topic_description}</label></dt>
-        <dd><textarea name="topic_description" rows="2" id="polls-polleditor-topic_description" class="wide">{topic_description}</textarea></dd>
+        <dd><textarea name="topic_description" rows="2" id="polls-polleditor-topic_description" class="uk-textarea">{topic_description}</textarea></dd>
       </dl>
 
       <div id="po_navbar" class="jsenabled_show">
@@ -60,7 +60,7 @@
 {!if allow_delete}
         <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
 {!endif}
-        <button type="submit" name="mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
+        <button type="submit" name="mode" value="{lang_cancel}" class="uk-button uk-button-default">{lang_cancel}</button>
         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
         <input type="hidden" name="old_pid" value="{poll_id}"{xhtml}>
       </div>
