@@ -151,16 +151,12 @@ function itemlist($type, $token)
     $isPlugin = false;
 
     // Get current page
-    if (($type === 'story') || ($type === 'article')) {
-        $page = (int) Geeklog\Input::fGet('page_article', 1);
-    } else {
-        $page = (int) Geeklog\Input::fGet('page_' . $type, 1);
-    }
+    $page = (int) Geeklog\Input::fGet('page_' . $type, 1);
 
     if ($page < 1) {
         $page = 1;
     }
-
+    
     if ($type === 'comment') {
         $sql = "SELECT cid AS id,title,comment,date,uid,type,sid FROM {$_TABLES['commentsubmissions']} "
             . "ORDER BY cid ASC";
@@ -238,10 +234,12 @@ function itemlist($type, $token)
                 . '?mode=edit&amp;sid=' . $A[0];
         } else { // this pretty much only leaves $type == 'story'
             if ($type === 'story') {
-                $type = 'article';
+                $filename = 'article';
+            } else {
+                $filename = $type;
             }
 
-            $A['edit'] = $_CONF['site_admin_url'] . '/' . $type
+            $A['edit'] = $_CONF['site_admin_url'] . '/' . $filename
                 . '.php?mode=editsubmission&amp;id=' . $A[0];
         }
         $A['row'] = $i;
