@@ -51,26 +51,82 @@
 
 <!-- BEGIN image_noalign -->
 {!if link_url}
-<a href="{link_url}" title="{link_title}" class="uk-thumbnail" data-uk-lightbox><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></a>
+<figure class="gl-article-figure">
+  <div class="gl-align-none">
+    <a class="uk-thumbnail" href="{link_url}" title="{link_title}" data-uk-lightbox>
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </a>
+  </div>
+</figure>
 {!else}
-<div class="uk-thumbnail"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>
+<figure class="gl-article-figure">
+  <div class="gl-align-none">
+    <div class="uk-thumbnail">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </div>
+  </div>
+</figure>
 {!endif}
 <!-- END image_noalign -->
 
 <!-- BEGIN image_leftalign -->
 {!if link_url}
-<a href="{link_url}" title="{link_title}" class="uk-thumbnail uk-align-left" data-uk-lightbox><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></a>
+<figure class="gl-article-figure">
+  <div class="gl-align-center gl-align-left-s">
+    <a class="uk-thumbnail" href="{link_url}" title="{link_title}" data-uk-lightbox>
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </a>
+  </div>
+</figure>
 {!else}
-<div class="uk-thumbnail uk-align-left"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>
+<figure class="gl-article-figure">
+  <div class="gl-align-center gl-align-left-s">
+    <div class="uk-thumbnail">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </div>
+  </div>
+</figure>
 {!endif}
 <!-- END image_leftalign -->
 
 <!-- BEGIN image_rightalign -->
 {!if link_url}
-<a href="{link_url}" title="{link_title}" class="uk-thumbnail uk-align-right" data-uk-lightbox><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></a>
+<figure class="gl-article-figure">
+  <div class="gl-align-center gl-align-right-s">
+    <a class="uk-thumbnail" href="{link_url}" title="{link_title}" data-uk-lightbox>
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </a>
+  </div>
+</figure>
 {!else}
-<div class="uk-thumbnail uk-align-right"><img {sizeAttributes} src="{imgSrc}" alt=""{XHTML}></div>
+<figure class="gl-article-figure">
+  <div class="gl-align-center gl-align-right-s">
+    <div class="uk-thumbnail">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </div>
+  </div>
+</figure>
 {!endif}
 <!-- END image_rightalign -->
+
+<!-- BEGIN image_centeralign -->
+{!if link_url}
+<figure class="gl-article-figure-center">
+  <div class="gl-align-center">
+    <a class="uk-thumbnail" href="{link_url}" title="{link_title}" data-uk-lightbox>
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </a>
+  </div>
+</figure>
+{!else}
+<figure class="gl-article-figure-center">
+  <div class="gl-align-center">
+    <div class="uk-thumbnail">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </div>
+  </div>
+</figure>
+{!endif}
+<!-- END image_centeralign -->
 
 {# end {templatelocation} #}

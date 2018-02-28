@@ -3024,7 +3024,7 @@ div.third-party-login {
 }
 
 /*--------------------------------------
-  Story
+  Article
 --------------------------------------*/
 
 /* Container */
@@ -3180,6 +3180,106 @@ div.third-party-login {
 
 .article {
   font-size: 100%;
+}
+
+/* Article Figure */
+.gl-article-figure {
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.gl-article-figure-center {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+@media (max-width: 479px) {
+
+  .gl-article-figure {
+    text-align: center;
+    padding: 0;
+  }
+
+  .gl-article-figure:before,
+  .gl-article-figure:after {
+    content: "";
+    display: table;
+  }
+
+  .gl-article-figure:after {
+    clear: both;
+  }
+}
+
+/* Alignment of Images */
+*[class*="gl-align-"] {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+.gl-align-left {
+  margin-right: 30px;
+  float: left;
+}
+
+.gl-align-right {
+  margin-left: 30px;
+  float: right;
+}
+
+.gl-align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gl-align-none {
+  margin-left: 0;
+  margin-right: 0;
+  float: none;
+}
+
+@media (min-width: 480px) {
+
+  .gl-align-left-s {
+    margin-right: 30px;
+    float: left;
+  }
+
+  .gl-align-right-s {
+    margin-left: 30px;
+    float: right;
+  }
+}
+
+/* Thumbnail of Images */
+.gl-thumbnail {
+  display: inline-block;
+  max-width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  /*
+    padding: 4px
+    border: 1px solid #ddd
+    background: #fff
+    */
+  border: 1px solid transparent;
+}
+
+a.gl-thumbnail:hover,
+a.gl-thumbnail:focus {
+  border-color: #AAA;
+  /*
+    background-color: #fff
+    */
+  text-decoration: none;
+  outline: none;
 }
 
 /*--------------------------------------

@@ -1238,7 +1238,7 @@ class Article
         $article->set_file(array(
             'article'          => $article_filevar
         ));
-        $blocks = array('image_noalign', 'image_rightalign', 'image_leftalign');
+        $blocks = array('image_noalign', 'image_rightalign', 'image_leftalign', 'image_centeralign');
         foreach ($blocks as $block) {
             $article->set_block('article', $block);
         }
@@ -1308,6 +1308,7 @@ class Article
             $norm = '[image' . $n . ']';
             $left = '[image' . $n . '_left]';
             $right = '[image' . $n . '_right]';
+            $center = '[image' . $n . '_center]';
 
             $article->set_var('link_url', $link_url);
             $article->set_var('link_title', $link_title);
@@ -1324,6 +1325,10 @@ class Article
             $img_leftalgn = $article->finish($article->get_var('output'));
             $text = str_replace($left, $img_leftalgn, $text);
 
+            $article->parse('output', 'image_centeralign');
+            $img_centeralgn = $article->finish($article->get_var('output'));
+            $text = str_replace($center, $img_centeralgn, $text);
+
             // And insert the unscaled mode images:
             if (($_CONF['allow_user_scaling'] == 1) && ($_CONF['keep_unscaled_image'] == 1)) {
                 if (file_exists($lFilename_large_complete)) {
@@ -1339,6 +1344,7 @@ class Article
                 $unscaledNorm = '[unscaled' . $n . ']';
                 $unscaledLeft = '[unscaled' . $n . '_left]';
                 $unscaledRight = '[unscaled' . $n . '_right]';
+                $unscaledCenter = '[unscaled' . $n . '_center]';
 
                 $article->parse('output', 'image_noalign');
                 $img_noalign = $article->finish($article->get_var('output'));
@@ -1351,6 +1357,10 @@ class Article
                 $article->parse('output', 'image_leftalign');
                 $img_leftalgn = $article->finish($article->get_var('output'));
                 $text = str_replace($unscaledLeft, $img_leftalgn, $text);
+
+                $article->parse('output', 'image_centeralign');
+                $img_centeralgn = $article->finish($article->get_var('output'));
+                $text = str_replace($unscaledCenter, $img_centeralgn, $text);
             }
         }
 
@@ -1388,9 +1398,11 @@ class Article
             $iCount = substr_count($text, '[image' . $n . ']')
                 + substr_count($text, '[image' . $n . '_left]')
                 + substr_count($text, '[image' . $n . '_right]')
+                + substr_count($text, '[image' . $n . '_center]')
                 + substr_count($text, '[unscaled' . $n . ']')
                 + substr_count($text, '[unscaled' . $n . '_left]')
-                + substr_count($text, '[unscaled' . $n . '_right]');
+                + substr_count($text, '[unscaled' . $n . '_right]')
+                + substr_count($text, '[unscaled' . $n . '_center]');
 
             // If the image we are currently looking at wasn't used, we need
             // to log an error
