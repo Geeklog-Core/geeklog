@@ -43,14 +43,13 @@
         {captcha}
 
         <div class="submit">
-          <input name="mode" type="submit" value="{lang_preview}" class="submit"{xhtml}>
+          <button type="submit" name="mode" value="{lang_preview}" class="uk-button">{lang_preview}</button>
           <input type="hidden" name="type" value="story"{xhtml}>
           <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
           <input type="hidden" name="sid" value="{story_sid}"{xhtml}>
           <input type="hidden" name="date" value="{story_date}"{xhtml}>
           {!if allow_save}
           <button type="submit" name="mode" value="{lang_save}" class="uk-button uk-button-primary g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_save}</button>
-          <input type="hidden" name="mode" value="{lang_save}">
           {!endif}
         </div>
       </div>
