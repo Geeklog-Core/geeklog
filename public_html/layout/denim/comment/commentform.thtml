@@ -63,7 +63,9 @@
 {!endif}
       <button type="submit" name="{nprefix}mode" value="{lang_cancel}" class="uk-button">{lang_cancel}</button>
       <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
-      {notification}
+{!if allow_notify}          
+      <div class="uk-margin-top"><input type="checkbox" name="notify"{notify_checked}>{lang_notify}</div>
+{!endif}
     </div>
   </div>
 

@@ -70,7 +70,9 @@
             <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger g-recaptcha" onclick="return confirm('{confirm_message}');"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_delete}</button>
             <input type="hidden" name="mode" value="{lang_delete}"{xhtml}>
 {!endif}
-            {notification}
+{!if allow_notify}          
+            <p><input type="checkbox" name="notify"{notify_checked}>{lang_notify}</p>
+{!endif}
           </li>
         </ul>
       </div>

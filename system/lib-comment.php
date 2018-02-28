@@ -1204,12 +1204,6 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $comment_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
             if ($mode == 'editsubmission' OR $mode == 'edit' OR $mode == $LANG03[34] OR $mode == $LANG03[28]) {
-                $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                    . '" name="mode"%s' . XHTML . '>';
-                $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-                $comment_template->set_var('delete_option',
-                    sprintf($delbutton, $jsconfirm));
-
                 $comment_template->set_var('allow_delete', true);
                 $comment_template->set_var('lang_delete', $LANG_ADMIN['delete']);
                 $comment_template->set_var('confirm_message', $MESSAGE[76]);
@@ -1263,41 +1257,24 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
             if ($mode == $LANG03[28] || ($mode == 'edit' && $_CONF['skip_preview'] == 1)) {
                 PLG_templateSetVars('comment', $comment_template); // Only for a edit form with a save button displayed (CAPTCHA related issue)
-                // for editing
-                $comment_template->set_var('save_option',
-                    '<input type="submit" name="' . CMT_MODE . '" value="' . $LANG03[29] // 'Submit Changes'
-                    . '"' . XHTML . '>');
-
                 $comment_template->set_var('allow_save', true);
                 $comment_template->set_var('lang_save', $LANG03[29]);
-
             } elseif ($mode == $LANG03[34] || ($mode == 'editsubmission' && $_CONF['skip_preview'] == 1)) {
                 PLG_templateSetVars('comment', $comment_template);
-                // editing submission comment
-                $comment_template->set_var('save_option',
-                    '<input type="submit" name="' . CMT_MODE . '" value="' . $LANG03[35] // 'Save Changes to Queue'
-                    . '"' . XHTML . '>');
-
                 $comment_template->set_var('allow_save', true);
                 $comment_template->set_var('lang_save', $LANG03[35]);
 
             } elseif (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
                 PLG_templateSetVars('comment', $comment_template);
-                $comment_template->set_var('save_option',
-                    '<input type="submit" name="' . CMT_MODE . '" value="' . $LANG03[11] // 'Submit Comment'
-                    . '"' . XHTML . '>');
-
                 $comment_template->set_var('allow_save', true);
                 $comment_template->set_var('lang_save', $LANG03[11]);
             }
 
-            if (($_CONF['allow_reply_notifications'] == 1 && $uid != 1) &&
-                ($mode == '' || $mode == $LANG03[14] || $mode === 'error')
-            ) {
+            if (($_CONF['allow_reply_notifications'] == 1 && $uid != 1) && ($mode == '' || $mode == $LANG03[14] || $mode === 'error')) {
+                $comment_template->set_var('allow_notify', true);
+                $comment_template->set_var('lang_notify', $LANG03[36]);
                 $checked = isset($_POST['notify']) ? ' checked="checked"' : '';
-                $comment_template->set_var('notification',
-                    '<p><input type="checkbox"' . ' name="notify"' . $checked
-                    . '>' . $LANG03[36] . '</p>');
+                $comment_template->set_var('notify_checked', $checked);
             }
 
             $comment_template->set_var('end_block', COM_endBlock());
