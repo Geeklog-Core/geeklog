@@ -114,4 +114,24 @@
 {!endif}
 <!-- END image_rightalign -->
 
+<!-- BEGIN image_centeralign -->
+{!if link_url}
+<div class="gl-article-figure-center">
+  <div class="gl-align-center">
+    <a class="gl-thumbnail" href="{link_url}" title="{link_title}" target="_blank">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </a>
+  </div>
+</div>
+{!else}
+<div class="gl-article-figure-center">
+  <div class="gl-align-center">
+    <div class="gl-thumbnail">
+      <img {sizeAttributes} src="{imgSrc}" alt=""{xhtml}>
+    </div>
+  </div>
+</div>
+{!endif}
+<!-- END image_centeralign -->
+
 {# end {templatelocation} #}
