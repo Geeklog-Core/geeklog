@@ -7437,6 +7437,7 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
 
     // Table of error code and error type
     $errorTypes = array(
+        0     => 'E_SYNTAX',            // Since Geeklog 2.2.0 - Handles syntax errors. Used when Developer Mode is on and PHP is set to show all errors 
         1     => 'E_ERROR',
         2     => 'E_WARNING',
         4     => 'E_PARSE',
