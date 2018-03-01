@@ -497,7 +497,11 @@ function SYND_updateFeed($fid)
                 if ($A['content_length'] != 1) {
                     $count = count($content);
                     for ($i = 0; $i < $count; $i++) {
-                        $content[$i]['summary'] = ($A['content_length'] == 1) ? $content[$i]['text'] : COM_truncateHTML($content[$i]['text'], $A['content_length'], ' ...');
+                        if (isset($content[$i]['text'])) {
+                            $content[$i]['summary'] = ($A['content_length'] == 1) ? $content[$i]['text'] : COM_truncateHTML($content[$i]['text'], $A['content_length'], ' ...');
+                        } else {
+                            $content[$i]['summary'] = '';
+                        }
                     }
                 }
             }
