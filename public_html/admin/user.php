@@ -891,11 +891,11 @@ function batchdelete()
     );
 
     $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
-    $user_templates->set_file(array(
-        'form'     => 'batchdelete.thtml',
-        'options'  => 'batchdelete_options.thtml',
-        'reminder' => 'reminder.thtml',
-    ));
+    $user_templates->set_file('form', 'batchdelete.thtml');
+    $user_templates->set_block('form', 'batchdelete_options');
+    $user_templates->set_block('form', 'reminder');
+
+    
     $user_templates->set_var('usr_type', $usr_type);
     $user_templates->set_var('usr_time', $usr_time);
     $user_templates->set_var('lang_instruction', $LANG28[56]);
@@ -913,7 +913,7 @@ function batchdelete()
         $user_templates->set_var('lang_text_start', $opt_arr[$i]['txt1']);
         $user_templates->set_var('lang_text_end', $opt_arr[$i]['txt2']);
         $user_templates->set_var('id_value', $usr_time_arr[$opt_arr[$i]['sel']]);
-        $user_templates->parse('options_list', 'options', true);
+        $user_templates->parse('options_list', 'batchdelete_options', true);
     }
     $user_templates->parse('form', 'form');
     $desc = $user_templates->finish($user_templates->get_var('form'));

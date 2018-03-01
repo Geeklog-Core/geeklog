@@ -14,4 +14,22 @@
   </div>
 </form>
 
+<!-- BEGIN batchdelete_options -->
+<div class="clearfix">
+  <div>
+  <label><input type="radio" name="usr_type" value="{sel_id}"{selector}{xhtml}> <strong>{lang_description}:</strong></label>
+  </div>
+
+  <div style="margin-bottom:1em;margin-left: 22px;">
+  {lang_text_start} <input class="aligncenter" type="text" name="usr_time[{sel_id}]" value="{id_value}" size="3"{selector}{xhtml}>{lang_text_end}
+  </div>
+</div>
+<!-- END batchdelete_options -->
+
+<!-- BEGIN reminder -->
+<div id="reminder-submit" class="submit">
+  <button type="submit" name="mode" value="{action_reminder}" class="uk-button" aria-describedby="desc-reminder-submit">{action_reminder}</button>&nbsp;<span id="desc-reminder-submit">{lang_reminder}</span>
+</div>
+<!-- END reminder -->
+
 {# end {templatelocation} #}
