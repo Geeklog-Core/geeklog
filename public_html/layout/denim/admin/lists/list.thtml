@@ -16,9 +16,11 @@
 </table>
 </div>
 
-<div class="admin-list-navi" style="{show_deleteimage}">
+{!if show_deleteimage}
+<div class="admin-list-navi">
   <input type="image" name="delbutton" alt="delbutton" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}>
 </div>
+{!endif}
 
 <div>
 {formfields_bottom}

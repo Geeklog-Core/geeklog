@@ -10,12 +10,23 @@
 {!if lang_label}
 <label{!if id} for="{id}"{!endif}>
 {!endif}
-<input type="checkbox" name="{name}"{!if id} id="{id}"{!endif}{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif} class="uk-checkbox {class}"{!if checked} checked="checked"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
+<input type="checkbox" name="{name}"{!if id} id="{id}"{!endif}{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif} class="uk-checkbox {class}"{!if checked} checked="checked"{!endif}{!if disabled} disabled="disabled"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
 {!if lang_label}
 {lang_label}
 </label>
 {!endif}
 <!-- END type-checkbox -->
+
+<!-- BEGIN type-radio -->
+{!if lang_label}
+<label{!if id} for="{id}"{!endif}>
+{!endif}
+<input type="radio" name="{name}"{!if id} id="{id}"{!endif}{!if value} value="{value}"{!endif}{!if title} title="{title}"{!endif}{!if style} style="{style}"{!endif} class="uk-radio {class}"{!if checked} checked="checked"{!endif}{!if disabled} disabled="disabled"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
+{!if lang_label}
+{lang_label}
+</label>
+{!endif}
+<!-- END type-radio -->
 
 <!-- BEGIN type-select -->
 {!if lang_label}

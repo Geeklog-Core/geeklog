@@ -12,9 +12,11 @@
   {item_row}
 </table>
 
-<ul class="admin-list-navi" style="{show_deleteimage}">
+{!if show_deleteimage}
+<ul class="admin-list-navi">
   <li><input type="image" name="delbutton" alt="delbutton" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}></li>
 </ul>
+{!endif}
 
 {formfields_bottom}
 

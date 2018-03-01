@@ -116,13 +116,19 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
         $min_data = $options['chkminimum'];
     }
     if (count($data_arr) > $min_data && is_array($options) && isset($options['chkdelete']) && $options['chkdelete']) {
-        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="' . $LANG01[126] . '" onclick="caItems(this.form);"' . XHTML . '>');
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-checkbox'); 
+        $tcc->set_var('name', 'chk_selectall');
+        $tcc->set_var('title', $LANG01[126]);
+        $tcc->set_var('onclick', 'caItems(this.form);');
+        $admin_templates->set_var('header_text', ($tcc->finish($tcc->parse('common', 'type-checkbox'))));
         $admin_templates->set_var('class', "admin-list-field");
-        $admin_templates->set_var('show_deleteimage', '');
+        $admin_templates->set_var('show_deleteimage', true);
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('on_click');
     } else {
-        $admin_templates->set_var('show_deleteimage', 'display:none;');
+        $admin_templates->clear_var('show_deleteimage');
     }
 
     # HEADER FIELDS array(text, field, sort)
@@ -148,9 +154,15 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
     } else {
         $admin_templates->set_var('show_message', 'display:none;');
         $useFieldFunction = is_callable($fieldFunction);
+        
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-checkbox'); 
+        $tcc->set_var('name', 'delitem[]');
         for ($i = 0; $i < count($data_arr); $i++) {
             if (count($data_arr) > $min_data && is_array($options) && isset($options['chkdelete']) && $options['chkdelete']) {
-                $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']] . '"' . XHTML . '>');
+                $tcc->set_var('value', $data_arr[$i][$options['chkfield']]);
+                $admin_templates->set_var('itemtext', ($tcc->finish($tcc->parse('common', 'type-checkbox'))));        
                 $admin_templates->set_var('class', "admin-list-field");
                 $admin_templates->parse('item_field', 'field', true);
             }
@@ -301,13 +313,19 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
 
     // Check if the delete checkbox and support for the delete all feature should be displayed
     if (is_array($options) && isset($options['chkdelete']) && $options['chkdelete']) {
-        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="' . $LANG01[126] . '" onclick="caItems(this.form);"' . XHTML . '>');
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-checkbox'); 
+        $tcc->set_var('name', 'chk_selectall');
+        $tcc->set_var('title', $LANG01[126]);
+        $tcc->set_var('onclick', 'caItems(this.form);');
+        $admin_templates->set_var('header_text', ($tcc->finish($tcc->parse('common', 'type-checkbox'))));
         $admin_templates->set_var('class', "admin-list-field");
-        $admin_templates->set_var('show_deleteimage', '');
+        $admin_templates->set_var('show_deleteimage', true);
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('on_click');
     } else {
-        $admin_templates->set_var('show_deleteimage', 'display:none;');
+        $admin_templates->clear_var('show_deleteimage');
     }
 
     // define icon paths. Those will be transmitted to $fieldFunction.
@@ -509,8 +527,13 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
         $A = DB_fetchArray($result);
         $this_row = false; # as long as no fields are returned, dont print row
         if (is_array($options) && isset($options['chkdelete']) && $options['chkdelete']) {
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-checkbox'); 
+            $tcc->set_var('name', 'delitem[]');
+            $tcc->set_var('value', $A[$options['chkfield']]);
+            $admin_templates->set_var('itemtext', ($tcc->finish($tcc->parse('common', 'type-checkbox'))));
             $admin_templates->set_var('class', "admin-list-field");
-            $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $A[$options['chkfield']] . '"' . XHTML . '>');
             $admin_templates->parse('item_field', 'field', true);
         }
         for ($j = 0; $j < count($header_arr); $j++) {
@@ -729,16 +752,19 @@ function ADMIN_getListField_blocks($fieldName, $fieldValue, $A, $icon_arr, $toke
 
             case 'is_enabled':
                 if ($access == 3) {
+                    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+                    $tcc->set_file('common', 'common.thtml');
+                    $tcc->set_block('common', 'type-checkbox'); 
+                    $tcc->set_var('name', 'enabledblocks[]');
+                    $tcc->set_var('value', $A['bid']);
                     if ($A['is_enabled'] == 1) {
-                        $switch = ' checked="checked"';
+                        $tcc->set_var('checked', true);
                     } else {
-                        $switch = '';
+                        $tcc->clear_var('checked');
                     }
-                    $retval = '<input type="checkbox" name="enabledblocks[]" '
-                        . 'onclick="submit()" value="' . $A['bid'] . '"'
-                        . $switch . XHTML . '>'
-                        . '<input type="hidden" name="visibleblocks[]" value="'
-                        . $A['bid'] . '"' . XHTML . '>';
+                    $tcc->set_var('onclick', "submit()");
+                    $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));                    
+                    $retval .= '<input type="hidden" name="visibleblocks[]" value="' . $A['bid'] . '"' . XHTML . '>';
                 }
                 break;
 
@@ -944,24 +970,28 @@ function ADMIN_getListField_groups($fieldName, $fieldValue, $A, $icon_arr, $sele
                 break;
 
             case 'checkbox':
-                $retval = '<input type="checkbox" name="groups[]" value="'
-                    . $A['grp_id'] . '"';
-
+                $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+                $tcc->set_file('common', 'common.thtml');
+                $tcc->set_block('common', 'type-checkbox'); 
+                $tcc->set_var('name', 'groups[]');
+                $tcc->set_var('value', $A['grp_id']);
                 if (is_array($selected) && in_array($A['grp_id'], $selected)) {
-                    $retval .= ' checked="checked"';
+                    $tcc->set_var('checked', true);
                 } elseif (in_array($A['grp_id'], $_GROUP_MAINGROUPS)) { // If inherited then disable
-                    $retval .= ' disabled="disabled" checked="checked"';
+                    $tcc->set_var('checked', true);
+                    $tcc->set_var('disabled', true);
                 }
-                
-                $retval .= XHTML . '>';
-                
+                $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));                
                 break;
 
             case 'disabled-checkbox':
-                $retval = '<input type="checkbox" checked="checked" '
-                    . 'disabled="disabled"' . XHTML . '>'
-                    . '<input type="hidden" name="groups[]" value="'
-                    . $A['grp_id'] . '"' . XHTML . '>';
+                $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+                $tcc->set_file('common', 'common.thtml');
+                $tcc->set_block('common', 'type-checkbox'); 
+                $tcc->set_var('checked', true);
+                $tcc->set_var('disabled', true);
+                $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));                
+                $retval .= '<input type="hidden" name="groups[]" value="' . $A['grp_id'] . '"' . XHTML . '>';
                 break;
 
             case 'grp_name':
@@ -992,7 +1022,12 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
 
     switch ($fieldName) {
         case 'delete':
-            $retval = '<input type="checkbox" name="delitem[]" checked="checked"' . XHTML . '>';
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-checkbox'); 
+            $tcc->set_var('name', 'delitem[]');
+            $tcc->set_var('checked', true);
+            $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));
             break;
 
         case 'edit':
@@ -1245,14 +1280,20 @@ function ADMIN_getListField_syndication($fieldName, $fieldValue, $A, $icon_arr, 
             break;
 
         case 'is_enabled':
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-checkbox'); 
+            $tcc->set_var('name', 'enabledfeeds[]');
+            $tcc->set_var('value', $A['fid']);
+            $tcc->set_var('onclick', "submit()");
             if ($A['is_enabled'] == 1) {
-                $switch = ' checked="checked"';
+                $tcc->set_var('checked', true);
             } else {
-                $switch = '';
+                $tcc->clear_var('checked');
             }
-            $retval = '<input type="checkbox" name="enabledfeeds[]" onclick="submit()" value="' . $A['fid'] . '"' . $switch . XHTML . '>'
-                . '<input type="hidden" name="visiblefeeds[]" value="' . $A['fid'] . '"' . XHTML . '>';
-            break;
+            $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));      
+            $retval .= '<input type="hidden" name="visiblefeeds[]" value="' . $A['fid'] . '"' . XHTML . '>';            
+            break;                
 
         case 'header_tid':
             if ($A['header_tid'] === 'all') {
@@ -1430,12 +1471,22 @@ function ADMIN_getListField_moderation($fieldName, $fieldValue, $A, $icon_arr)
             break;
 
         case 'delete':
-            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\"" . XHTML . ">";
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-radio'); 
+            $tcc->set_var('name', "action[{$A['row']}]");
+            $tcc->set_var('value', 'delete');
+            $retval = $tcc->finish($tcc->parse('common', 'type-radio'));
             break;
 
         case 'approve':
-            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"approve\"" . XHTML . ">"
-                . "<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\"" . XHTML . ">";
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-radio'); 
+            $tcc->set_var('name', "action[{$A['row']}]");
+            $tcc->set_var('value', 'approve');
+            $retval = $tcc->finish($tcc->parse('common', 'type-radio'));
+            $retval .= "<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\"" . XHTML . ">";
             break;
 
         case 'day':
@@ -1464,7 +1515,12 @@ function ADMIN_getListField_moderation($fieldName, $fieldValue, $A, $icon_arr)
 
         case 'publishfuture':
             if (!SEC_inGroup('Comment Submitters', $A['uid']) && ($A['uid'] > 1)) {
-                $retval = "<input type=\"checkbox\" name=\"publishfuture[]\" value=\"{$A['uid']}\"" . XHTML . ">";
+                $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+                $tcc->set_file('common', 'common.thtml');
+                $tcc->set_block('common', 'type-checkbox'); 
+                $tcc->set_var('name', 'publishfuture[]');
+                $tcc->set_var('value', $A['uid']);
+                $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));                
             } else {
                 $retval = $LANG_ADMIN['na'];
             }
@@ -1524,7 +1580,7 @@ function ADMIN_getListField_trackback($fieldName, $fieldValue, $A, $icon_arr, $t
             break;
 
         case 'method':
-            if ($A['method'] === 'weblogUpdates.ping') {
+            if ($A['method'] === '1weblogUpdates.ping') {
                 $retval = $LANG_TRB['ping_standard'];
             } elseif ($A['method'] === 'weblogUpdates.extendedPing') {
                 $retval = $LANG_TRB['ping_extended'];
@@ -1535,16 +1591,19 @@ function ADMIN_getListField_trackback($fieldName, $fieldValue, $A, $icon_arr, $t
             break;
 
         case 'is_enabled':
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-checkbox'); 
+            $tcc->set_var('name', 'enabledservices[]');
+            $tcc->set_var('value', $A['pid']);
+            $tcc->set_var('onclick', "submit()");
             if ($A['is_enabled'] == 1) {
-                $switch = ' checked="checked"';
+                $tcc->set_var('checked', true);
             } else {
-                $switch = '';
+                $tcc->clear_var('checked');
             }
-            $retval = '<input type="checkbox" name="enabledservices[]" '
-                . 'onclick="submit()" value="' . $A['pid'] . '"'
-                . $switch . XHTML . '>'
-                . '<input type="hidden" name="visibleservices[]" value="'
-                . $A['pid'] . '"' . XHTML . '>';
+            $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));
+            $retval .= '<input type="hidden" name="visibleservices[]" value="' . $A['pid'] . '"' . XHTML . '>';
             break;
 
         default:
@@ -1567,7 +1626,7 @@ function ADMIN_getListField_trackback($fieldName, $fieldValue, $A, $icon_arr, $t
  */
 function ADMIN_getListField_usergroups($fieldname, $fieldvalue, $A, $icon_arr, $selected = '')
 {
-    global $thisUsersGroups, $_USER_MAINGROUPS;
+    global $thisUsersGroups, $_USER_MAINGROUPS, $_CONF;
 
     $retval = false;
 
@@ -1579,25 +1638,31 @@ function ADMIN_getListField_usergroups($fieldname, $fieldvalue, $A, $icon_arr, $
           SEC_groupIsRemoteUserAndHaveAccess($A['grp_id'], $thisUsersGroups)) {
         switch($fieldname) {
         case 'checkbox':
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-checkbox');         
             $checked = '';
             if (is_array($selected) && in_array($A['grp_id'], $selected)) {
                 $checked = ' checked="checked"';
+                $tcc->set_var('checked', true);
+            } else {
+                $tcc->clear_var('checked');
             }
             if (($A['grp_name'] == 'All Users') ||
                 ($A['grp_name'] == 'Logged-in Users') ||
                 ($A['grp_name'] == 'Remote Users')) {
-                $retval = '<input type="checkbox" disabled="disabled"'
-                        . $checked . XHTML . '>';
+                $tcc->set_var('disabled', true);
+                $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));            
                 if (!empty($checked)) {
-                    $retval .= '<input type="hidden" name="groups[]" value="'
-                            . $A['grp_id'] . '"' . $checked . XHTML . '>';
+                    $retval .= '<input type="hidden" name="groups[]" value="' . $A['grp_id'] . '"' . $checked . XHTML . '>';
                 }
             } elseif (!empty($checked) && (! in_array($A['grp_id'], $_USER_MAINGROUPS ))) {
-                $retval = '<input type="checkbox" disabled="disabled"'
-                        . $checked . XHTML . '>';
+                $tcc->set_var('disabled', true);
+                $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));            
             } else {
-                $retval = '<input type="checkbox" name="groups[]" value="'
-                        . $A['grp_id'] . '"' . $checked . XHTML . '>';
+                $tcc->set_var('name', 'groups[]');
+                $tcc->set_var('value', $A['grp_id']);
+                $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));
             }
             break;
 
