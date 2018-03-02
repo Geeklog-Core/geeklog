@@ -667,6 +667,9 @@ class Article
             $this->_comments = 0;
             $this->_trackbacks = 0;
             $this->_numemails = 0;
+
+            // clone images
+            $this->_cloneImages($sid, $this->_sid);
         }
 
         $this->sanitizeData();
@@ -743,8 +746,7 @@ class Article
                 DB_query($sql);
 
                 // Move Images
-                $sql = "UPDATE {$_TABLES['article_images']} SET ai_sid = '{$newSid}' WHERE ai_sid = '{$checkSid}'";
-                DB_query($sql);
+                $this->_moveImages($checkSid, $newSid);
 
                 // Move trackbacks
                 $sql = "UPDATE {$_TABLES['trackback']} SET sid='{$newSid}' WHERE sid='{$checkSid}' AND type='article'";
@@ -2317,6 +2319,107 @@ class Article
             $this->_show_topic_icon = 1;
         } elseif ($this->_show_topic_icon != 1) {
             $this->_show_topic_icon = 0;
+        }
+    }
+
+    /**
+     * Rename all of attached images
+     *
+     * @param  string $oldSid
+     * @param  string $newSid
+     * @return void
+     */
+    private function _moveImages($oldSid, $newSid)
+    {
+        global $_CONF, $_TABLES;
+
+        DB_query("UPDATE {$_TABLES['article_images']} SET ai_sid = '{$newSid}' WHERE ai_sid = '{$oldSid}'");
+
+        $result = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '$newSid'");
+        while ($A = DB_fetchArray($result)) {
+            $ai_sid = $A['ai_sid'];
+            $ai_img_num = $A['ai_img_num'];
+            $old_filename = $A['ai_filename'];
+            $pos = strrpos($old_filename, '.') + 1;
+            $ext = substr($old_filename, $pos);
+            $new_filename = $ai_sid . '_' . $ai_img_num . '.' . $ext;
+            $dir = $_CONF['path_images'] . 'articles/';
+            $old_filepath = $dir . $old_filename;
+            $new_filepath = $dir . $new_filename;
+            if (file_exists($old_filepath) && !file_exists($new_filepath)) {
+                if (@rename($old_filepath, $new_filepath)) {
+                    $sql = "UPDATE {$_TABLES['article_images']} SET ai_filename = '{$new_filename}' "
+                         . "WHERE ai_sid = '{$ai_sid}' AND ai_img_num = '{$ai_img_num}'";
+                    DB_query($sql);
+                } else {
+                    // log the problem but don't abort the script
+                    echo COM_errorLog('Unable to rename image from '
+                        . $old_filename . ' to ' . $new_filename);
+                }
+            }
+
+            // rename unscaled image, if it exists
+            $old_filename_large = substr_replace($old_filename, '_original.', strrpos($old_filename, '.'), 1);
+            $new_filename_large = substr_replace($new_filename, '_original.', strrpos($new_filename, '.'), 1);
+            $old_filepath_large = $dir . $old_filename_large;
+            $new_filepath_large = $dir . $new_filename_large;
+            if (file_exists($old_filepath_large) && !file_exists($new_filepath_large)) {
+                if (!@rename($old_filepath_large, $new_filepath_large)) {
+                    // log the problem but don't abort the script
+                    echo COM_errorLog('Unable to rename image from '
+                        . $old_filename_large . ' to ' . $new_filename_large);
+                }
+            }
+        }
+    }
+
+    /**
+     * Clone all of attached images
+     *
+     * @param  string $oldSid
+     * @param  string $newSid
+     * @return void
+     */
+    private function _cloneImages($oldSid, $newSid)
+    {
+        global $_CONF, $_TABLES;
+
+        $result = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '$oldSid'");
+        while ($A = DB_fetchArray($result)) {
+            $ai_sid = $A['ai_sid'];
+            $ai_img_num = $A['ai_img_num'];
+            $old_filename = $A['ai_filename'];
+            $pos = strrpos($old_filename, '.') + 1;
+            $ext = substr($old_filename, $pos);
+
+            $new_filename = $newSid . '_' . $ai_img_num . '.' . $ext;
+            $dir = $_CONF['path_images'] . 'articles/';
+            $old_filepath = $dir . $old_filename;
+            $new_filepath = $dir . $new_filename;
+            if (file_exists($old_filepath) && !file_exists($new_filepath)) {
+                if (@copy($old_filepath, $new_filepath)) {
+                    $sql = "INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) "
+                         . "VALUES ('$newSid', $ai_img_num, '$new_filename')";
+                    DB_query($sql);
+                } else {
+                    // log the problem but don't abort the script
+                    echo COM_errorLog('Unable to rename copy from '
+                        . $old_filename . ' to ' . $new_filename);
+                }
+            }
+
+            // rename unscaled image, if it exists
+            $old_filename_large = substr_replace($old_filename, '_original.', strrpos($old_filename, '.'), 1);
+            $new_filename_large = substr_replace($new_filename, '_original.', strrpos($new_filename, '.'), 1);
+            $old_filepath_large = $dir . $old_filename_large;
+            $new_filepath_large = $dir . $new_filename_large;
+            if (file_exists($old_filepath_large) && !file_exists($new_filepath_large)) {
+                if (!@copy($old_filepath_large, $new_filepath_large)) {
+                    // log the problem but don't abort the script
+                    echo COM_errorLog('Unable to copy image from '
+                        . $old_filename_large . ' to ' . $new_filename_large);
+                }
+            }
         }
     }
 }

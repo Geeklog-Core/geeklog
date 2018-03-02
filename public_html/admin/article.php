@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.1                                                               |
 // +---------------------------------------------------------------------------+
-// | article.php                                                                 |
+// | article.php                                                               |
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
@@ -731,6 +731,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         }
         for ($z = 1; $z <= $_CONF['maximagesperarticle']; $z++) {
             if (!empty($ai_filenames[$z])) {
+                $story_templates->set_var('filecount', $z);
                 $story_templates->set_var('imagecount', $z);
                 $story_templates->set_var('imagelink', $_CONF['site_url'] . '/images/articles/' . $ai_filenames[$z]);
                 $story_templates->set_var('imagefilename', $ai_filenames[$z]);
@@ -788,7 +789,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $story_templates->set_var('lang_emails', $LANG24[39]);
     $story_templates->set_var('story_emails', $story->EditElements('numemails'));
     if ($mode == 'clone') {
-        $story_templates->set_var('story_id', COM_makesid());
+        $story_templates->set_var('story_id', $story->getSid());
     } else {
         $story_templates->set_var('story_id', $story->getSid());
         $story_templates->set_var('old_story_id', $story->EditElements('originalSid'));

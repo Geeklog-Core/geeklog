@@ -1826,6 +1826,8 @@ function service_submit_story($args, &$output, &$svc_msg)
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $_GROUPS;
 
+    $output = ''; // Initialize as a string variable
+
     if (!SEC_hasRights('story.edit')) {
         $output .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
         $output = COM_createHTMLDocument($output, array('pagetitle' => $MESSAGE[30]));
@@ -2050,7 +2052,8 @@ function service_submit_story($args, &$output, &$svc_msg)
         case STORY_DUPLICATE_SID:
             $output .= COM_errorLog($LANG24[24], 2);
             if (!$args['gl_svc']) {
-                $output .= storyeditor($sid);
+                $_POST['sid'] = $_POST['old_sid']; // Restore the previous value
+                $output .= storyeditor('', 'preview'); // Resume editing
             }
             $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[5]));
 
