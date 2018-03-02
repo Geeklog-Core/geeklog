@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+{start_block_msg}
+<p class="sysmessage"><img src="{layout_url}/images/sysmessage.{image_type}" alt=""{xhtml}>{lang_message}</p>
+{end_block_msg}
+
+{# end {templatelocation} #}

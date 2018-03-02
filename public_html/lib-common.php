@@ -392,12 +392,13 @@ $TEMPLATE_OPTIONS = array(
     'cache_by_language'   => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
     'cache_for_mobile'    => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
     'default_vars'        => array(                                // list of vars found in all templates.
-        'xhtml'          => XHTML,
-        'site_url'       => $_CONF['site_url'],
-        'site_admin_url' => $_CONF['site_admin_url'],
-        'layout_url'     => $_CONF['layout_url'], // Can be set by lib-common on theme change
-        'anonymous_user' => COM_isAnonUser(),
-        'device_mobile'  => $_DEVICE->is_mobile(),
+        'xhtml'           => XHTML,
+        'image_type'      => $_IMAGE_TYPE,
+        'site_url'        => $_CONF['site_url'],
+        'site_admin_url'  => $_CONF['site_admin_url'],
+        'layout_url'      => $_CONF['layout_url'], // Can be set by lib-common on theme change
+        'anonymous_user'  => COM_isAnonUser(),
+        'device_mobile'   => $_DEVICE->is_mobile()
     ),
     'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes
 );
@@ -4751,16 +4752,22 @@ function COM_showMessageText($message, $title = '')
     $retval = '';
 
     if (!empty($message)) {
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('system_message', 'system_message.thtml');
+        
         if (empty($title)) {
             $title = $MESSAGE[40];
         }
         list($timestamp,) = COM_getUserDateTimeFormat(time(), 'daytime');
-        $retval .= COM_startBlock($title . ' - ' . $timestamp, '',
-                COM_getBlockTemplate('_msg_block', 'header'))
-            . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" ' . XHTML
-            . '>' . $message . '</p>';
-            
+        $tcc->set_var('start_block_msg', COM_startBlock($title . ' - ' . $timestamp, ''
+                                       , COM_getBlockTemplate('_msg_block', 'header')));           
+        
+        $tcc->set_var('lang_message', $message);
+        
+        $tcc->set_var('end_block_msg', COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer')));
+        
+        $retval = $tcc->finish($tcc->parse('output', 'system_message'));        
+        
         /* NOT IMPLEMENTED YET FOR DEMO MODE NEED TO UPDATE SESSION HANDLING AND com_mail FIRST SEE https://github.com/Geeklog-Core/geeklog/issues/765    
         if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
             if (!empty($_SESSION['LAST_EMAIL'])) {
@@ -4769,7 +4776,6 @@ function COM_showMessageText($message, $title = '')
             }
         }
         */
-        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
     }
 
     return $retval;
