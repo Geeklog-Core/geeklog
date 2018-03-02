@@ -540,6 +540,9 @@ class Upload
 
         if (!($sizeOK)) {
             // OK, resize
+            
+            $retval = '';
+            
             $sizeFactor = $this->_calcSizeFactor($imageInfo['width'],
                 $imageInfo['height']);
             $newWidth = (int) ($imageInfo['width'] * $sizeFactor);
