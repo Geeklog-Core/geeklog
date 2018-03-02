@@ -179,10 +179,13 @@ function edittopic($tid = '')
         if ($A['sortnum'] == 0) {
             $A['sortnum'] = '';
         }
-        $topic_templates->set_var('sort_order', '<input type="text" size="5" maxlength="5" name="sortnum" value="' . $A['sortnum'] . '"' . XHTML . '>');
+        $topic_templates->set_var('sort_numeric', true);
+        $topic_templates->set_var('sort_order', $A['sortnum']);
     } else {
+        $topic_templates->clear_var('sort_numeric');
         $topic_templates->set_var('lang_sortorder', $LANG27[14]);
-        $topic_templates->set_var('sort_order', $LANG27[15] . '<input type="hidden" name="sortnum" value="' . $A['sortnum'] . '"' . XHTML . '>');
+        $topic_templates->set_var('lang_alphabetical', $LANG27[15]);
+        $topic_templates->set_var('sort_order', $A['sortnum']);
     }
     $topic_templates->set_var('lang_storiesperpage', $LANG27[11]);
     if ($A['limitnews'] == 0) {

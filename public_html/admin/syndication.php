@@ -291,14 +291,6 @@ function editfeed($fid = 0, $type = '')
     $feed_template->set_var('lang_save', $LANG_ADMIN['save']);
     $feed_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     if ($A['fid'] > 0) {
-        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-            . '" name="mode"%s' . XHTML . '>';
-        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $feed_template->set_var('delete_option',
-            sprintf($delbutton, $jsconfirm));
-        $feed_template->set_var('delete_option_no_confirmation',
-            sprintf($delbutton, ''));
-
         $feed_template->set_var('allow_delete', true);
         $feed_template->set_var('lang_delete', $LANG_ADMIN['delete']);
         $feed_template->set_var('confirm_message', $MESSAGE[76]);

@@ -23,8 +23,12 @@
         </select>
       </dd>
 
-      <dt><label>{lang_sortorder}</label></dt>
-      <dd class="controls_text">{sort_order}</dd>
+      <dt><label for="admin-topiceditor-sortnum">{lang_sortorder}</label></dt>
+      {!if sort_numeric}
+      <dd class="controls_text"><input type="text" size="5" maxlength="5" name="sortnum" id="admin-topiceditor-sortnum" value="{sort_order}"{xhtml}></dd>
+      {!else}
+      <dd class="controls_text">{lang_alphabetical}<input type="hidden" name="sortnum"  value="{sort_order}"{xhtml}></dd>
+      {!endif}
 
       <dt><label for="admin-topiceditor-limitnews">{lang_storiesperpage}</label></dt>
       <dd><input type="text" maxlength="3" value="{story_limit}" name="limitnews" id="admin-topiceditor-limitnews" class="size1" aria-describedby="desc-admin-topiceditor-limitnews"{xhtml}> <span class="fieldhelp" id="desc-admin-topiceditor-limitnews">{lang_defaultis} {default_limit}</span></dd>

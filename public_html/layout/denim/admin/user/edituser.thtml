@@ -15,7 +15,10 @@
 
       <dt><label for="admin-edituser-username">{lang_username}</label></dt>
       <dd><div><input type="text" maxlength="16" value="{username}" name="username" id="admin-edituser-username" class="size2"{xhtml}> {remoteservice}</div>
-          {user_photo}<label>{lang_delete_photo}</label>{delete_photo_option}
+          {!if user_photo}
+          {user_photo}
+          <label for="admin-edituser-delete-photo">{lang_delete_photo}</label> <input id="admin-edituser-delete-photo" type="checkbox" name="delete_photo"{xhtml}>
+          {!endif}
       </dd>
 
       <dt><label for="admin-edituser-fullname">{lang_fullname}</label></dt>

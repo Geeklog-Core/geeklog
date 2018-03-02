@@ -221,17 +221,13 @@ function edituser($uid = 0, $msg = 0)
         $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email'], -1);
         $user_templates->set_var('user_photo', $photo);
         if (empty($A['photo'])) {
-            $user_templates->set_var('lang_delete_photo', '');
-            $user_templates->set_var('delete_photo_option', '');
+            $user_templates->clear_var('lang_delete_photo');
         } else {
             $user_templates->set_var('lang_delete_photo', $LANG28[28]);
-            $user_templates->set_var('delete_photo_option',
-                '<input type="checkbox" name="delete_photo"' . XHTML . '>');
         }
     } else {
-        $user_templates->set_var('user_photo', '');
-        $user_templates->set_var('lang_delete_photo', '');
-        $user_templates->set_var('delete_photo_option', '');
+        $user_templates->clear_var('user_photo');
+        $user_templates->clear_var('lang_delete_photo');
     }
 
     $user_templates->set_var('lang_fullname', $LANG28[4]);
@@ -1282,9 +1278,7 @@ function display_batchAddform()
 
     $retval = '';
 
-    $token = SEC_createToken();
-    $retval .= COM_startBlock($LANG28[24], '',
-        COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG28[24], '', COM_getBlockTemplate('_admin_block', 'header'));
 
     $menu_arr = array(
         array('url'  => $_CONF['site_admin_url'] . '/user.php',
@@ -1295,21 +1289,21 @@ function display_batchAddform()
               'text' => $LANG_ADMIN['admin_home']),
     );
 
-    $desc = '<p>' . $LANG28[25] . '</p>';
+    $desc = $LANG28[25];
     $icon = $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE;
     $retval .= ADMIN_createMenu($menu_arr, $desc, $icon);
-
-    $retval .= '<form action="' . $_CONF['site_admin_url']
-        . '/user.php" method="post" enctype="multipart/form-data"><div>'
-        . $LANG28[29]
-        . ': <input type="file" dir="ltr" name="importfile" size="40"'
-        . XHTML . '>'
-        . '<input type="hidden" name="mode" value="import"' . XHTML . '>'
-        . '<input type="submit" name="submit" value="' . $LANG28[30]
-        . '"' . XHTML . '><input type="hidden" name="' . CSRF_TOKEN
-        . "\" value=\"{$token}\"" . XHTML . '></div></form>' . LB;
-
+    
+    $user_template = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
+    $user_template->set_file('batchimport', 'batchimport.thtml');    
+    $user_template->set_var('lang_file_title', $LANG28[29]);
+    $user_template->set_var('lang_import', $LANG28[30]);
+    $user_template->set_var('gltoken', SEC_createToken());
+    $user_template->set_var('gltoken_name', CSRF_TOKEN);
+    $user_template->set_var('end_block', COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));           
+    $retval .= $user_template->finish($user_template->parse('output', 'batchimport'));
+    
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+    
     $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG28[24]));
 
     return $retval;

@@ -1,0 +1,12 @@
+{# begin {templatelocation} #}            
+ 
+<form action="{site_admin_url}/user.php" method="post" enctype="multipart/form-data">
+    <div>{lang_file_title}:
+        <input type="file" dir="ltr" name="importfile" size="40"{xhtml}>
+        <input type="hidden" name="mode" value="import"{xhtml}>
+        <button type="submit" name="upload" value="{lang_import}" class="uk-button uk-button-default">{lang_import}</button>
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+</form>
+
+{# end {templatelocation} #}
