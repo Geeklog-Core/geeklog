@@ -1,0 +1,29 @@
+{# begin {templatelocation} #}            
+
+{start_block_editor}
+
+{!if show_errors}
+<p>{lang_error_message}</p>
+<div>
+    <ul>
+        {error_items}
+    </ul>
+</div>
+{!else}
+<p>{lang_message}</p>
+<form name="plugins_upload" action="{site_admin_url}/plugins.php" method="post" enctype="multipart/form-data" class="uk-form">
+    <div class="uk-form-file">{lang_file_title}:
+        <input type="file" dir="ltr" name="plugin" size="40"{xhtml}>
+        <button type="submit" name="upload" value="{lang_upload}" class="uk-button">{lang_upload}</button>
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+</form>
+{!endif}
+
+{end_block}
+
+<!-- BEGIN error_items -->
+<li class="url">{error_item}</li>
+<!-- END error_items -->
+
+{# end {templatelocation} #}

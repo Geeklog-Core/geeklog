@@ -642,34 +642,33 @@ function plugin_show_uploadform($token)
 {
     global $_CONF, $LANG28, $LANG32;
 
-    $retval = '';
-
-    $retval .= COM_startBlock($LANG32[39], '',
-        COM_getBlockTemplate('_admin_block', 'header'));
+    $plg_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates->set_file('upload', 'upload.thtml');    
+    $plg_templates->set_var('start_block_editor', COM_startBlock('', '', COM_getBlockTemplate('_admin_block', 'header')));    
 
     // Check if all the requirements needed to upload a plugin are met
     $errors = plugin_upload_enabled();
     if (count($errors) == 0) {
         // Show the upload form
-        $retval .= '<p>' . $LANG32[40] . '</p>' . LB
-            . '<form name="plugins_upload" action="' . $_CONF['site_admin_url']
-            . '/plugins.php" method="post" enctype="multipart/form-data">' . LB
-            . '<div>' . $LANG28[29] . ': '
-            . '<input type="file" dir="ltr" name="plugin" size="40"' . XHTML . '> ' . LB
-            . '<button type="submit" name="upload" value="' . $LANG32[41] . '" class="uk-form">' . $LANG32[41] . '</button>' . LB
-            . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>'
-            . '</div>' . LB . '</form>' . LB;
+        $plg_templates->set_var('lang_message', $LANG32[40]);
+        $plg_templates->set_var('lang_file_title', $LANG28[29]);
+        $plg_templates->set_var('lang_upload', $LANG32[41]);
+        $plg_templates->set_var('gltoken', SEC_createToken());
+        $plg_templates->set_var('gltoken_name', CSRF_TOKEN);
+        $plg_templates->set_var('end_block', COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));        
     } else {
         // Show the errors
-        $retval .= '<p>' . $LANG32[65] . '</p>' . LB . '<div><ul>' . LB;
+        $plg_templates->set_var('show_errors', true);
+        $plg_templates->set_var('lang_error_message', $LANG32[65]);
+        $plg_templates->set_block('upload', 'error_items'); 
         foreach ($errors as $key => $value) {
-            $retval .= "<li class=\"url\">$value</li>";
+            $plg_templates->set_var('error_item', $value);
+            $plg_templates->parse('error_items', 'error_items', true);
+            
         }
-        $retval .= '</ul></div>' . LB;
     }
-    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
-
-    return $retval;
+    
+    return $plg_templates->finish($plg_templates->parse('output', 'upload'));
 }
 
 /**
