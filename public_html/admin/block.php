@@ -240,11 +240,18 @@ function overridePostdata(&$A)
 
     $A['onleft'] = ($_POST['onleft'] == 1) ? 1 : 0;
     $A['is_enabled'] = ($_POST['is_enabled'] == 'on') ? 1 : 0;
+    
     if (isset($_POST['allow_autotags'])) {
         $A['allow_autotags'] = ($_POST['allow_autotags'] == 'on') ? 1 : 0;
     } else {
         $A['allow_autotags'] = 0;
     }
+    
+    if (isset($_POST['convert_newlines'])) {
+        $A['convert_newlines'] = ($_POST['convert_newlines'] == 'on') ? 1 : 0;
+    } else {
+        $A['convert_newlines'] = 0;
+    }    
 
     if (isset($_POST['cache_time'])) {
         $A['cache_time'] = (int) Geeklog\Input::fPost('cache_time', 0);
@@ -301,6 +308,7 @@ function editblock($bid = '')
         $A['cache_time'] = $_CONF['default_cache_time_block'];
         $A['content'] = '';
         $A['allow_autotags'] = 0;
+        $A['convert_newlines'] = 0;
         $A['rdfurl'] = '';
         $A['rdfupdated'] = '';
         $A['rdflimit'] = 0;
@@ -460,7 +468,9 @@ function editblock($bid = '')
     $block_templates->set_var('lang_blockcontent', $LANG21[17]);
     $block_templates->set_var('lang_autotags', $LANG21[66]);
     $block_templates->set_var('lang_use_autotags', $LANG21[67]);
-
+    $block_templates->set_var('lang_newlines', $LANG21['newlines']);
+    $block_templates->set_var('lang_convert_newlines', $LANG21['convert_newlines']);
+    
     $content = htmlspecialchars(stripslashes($A['content']));
     $content = str_replace(array('{', '}'), array('&#123;', '&#125;'),
         $content);
@@ -471,6 +481,11 @@ function editblock($bid = '')
     } else {
         $block_templates->set_var('allow_autotags', '');
     }
+    if ($A['convert_newlines'] == 1) {
+        $block_templates->set_var('convert_newlines', 'checked="checked"');
+    } else {
+        $block_templates->set_var('convert_newlines', '');
+    }    
     $block_templates->set_var('gltoken_name', CSRF_TOKEN);
     $block_templates->set_var('gltoken', $token);
     $block_templates->set_var('end_block',
@@ -692,6 +707,7 @@ function cmpDynamicBlocks($a, $b)
  * @param    array  $perm_anon    Permissions anonymous users have
  * @param    int    $is_enabled   Flag, indicates if block is enabled or not
  * @param    bool   $allow_autotags
+ * @param    bool   $convert_newlines
  * @param    int    $cache_time
  * @param    string $cssId        CSS ID (since GL 2.2.0)
  * @param    string $cssClasses   CSS class names separated by space (since GL 2.2.0)
@@ -699,7 +715,7 @@ function cmpDynamicBlocks($a, $b)
  */
 function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $content, $rdfUrl, $rdfLimit,
                    $phpBlockFn, $onLeft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon,
-                   $is_enabled, $allow_autotags, $cache_time, $cssId, $cssClasses)
+                   $is_enabled, $allow_autotags, $convert_newlines, $cache_time, $cssId, $cssClasses)
 {
     global $_CONF, $_TABLES, $LANG21, $MESSAGE, $_USER;
 
@@ -756,6 +772,12 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         } else {
             $allow_autotags = 0;
         }
+        
+        if ($convert_newlines == 'on') {
+            $convert_newlines = 1;
+        } else {
+            $convert_newlines = 0;
+        }        
 
         if ($cache_time < -1) {
             $cache_time = $_CONF['default_cache_time_block'];
@@ -840,18 +862,18 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         if ($bid > 0) {
             DB_save(
                 $_TABLES['blocks'],
-                'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,css_id,css_classes,rdf_last_modified,rdf_etag',
-                "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,'{$cssId}','{$cssClasses}',NULL,NULL"
+                'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes,rdf_last_modified,rdf_etag',
+                "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}',NULL,NULL"
             );
         } else {
             $sql = array();
             $sql['mysql'] = "INSERT INTO {$_TABLES['blocks']} "
-                . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,css_id,css_classes) '
-                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,'{$cssId}','{$cssClasses}')";
+                . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes) '
+                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}')";
 
             $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
-                . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,cache_time,css_id,css_classes) '
-                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',CURRENT_TIMESTAMP,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$cache_time,'{$cssId}','{$cssClasses}')";
+                . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes) '
+                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',CURRENT_TIMESTAMP,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}')";
 
             DB_query($sql);
             $bid = DB_insertId();
@@ -1054,6 +1076,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $phpblockfn = Geeklog\Input::post('phpblockfn', '');
     $is_enabled = Geeklog\Input::post('is_enabled', '');
     $allow_autotags = Geeklog\Input::post('allow_autotags', '');
+    $convert_newlines = Geeklog\Input::post('convert_newlines', '');
     // $cache_time = (int) Geeklog\Input::fPost('cache_time', $_CONF['default_cache_time_block']); // Doesn't work as cache_time can be zero
     $cache_time = (int) Geeklog\Input::fPost('cache_time');
     $cssId = Geeklog\Input::post('css_id', '');
@@ -1064,7 +1087,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
         (int) Geeklog\Input::fPost('owner_id', 0), (int) Geeklog\Input::fPost('group_id', 0),
         Geeklog\Input::post('perm_owner'), Geeklog\Input::post('perm_group'),
         Geeklog\Input::post('perm_members'), Geeklog\Input::post('perm_anon'),
-        $is_enabled, $allow_autotags, $cache_time, $cssId, $cssClasses);
+        $is_enabled, $allow_autotags, $convert_newlines, $cache_time, $cssId, $cssClasses);
 } elseif ($mode === 'edit') {
     $tmp = editblock($bid);
     $display = COM_createHTMLDocument($tmp, array('pagetitle' => $LANG21[3]));

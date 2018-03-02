@@ -914,6 +914,8 @@ $LANG21 = array(
     72 => 'CSS Classes',
     73 => 'This field is optional.  You can specify multiple classes separated by space',
     'autotag_desc_block'    => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
+    'newlines' => 'Newlines',
+    'convert_newlines' => 'Check to convert newlines (EOL) into line break HTML element',
     'position'              => 'Position', 
     'cache_time'            => 'Cache Time',
     'cache_time_desc'       => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)',

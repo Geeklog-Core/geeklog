@@ -28,6 +28,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   device varchar(15) NOT NULL default 'all',
   content text,
   allow_autotags tinyint(1) unsigned NOT NULL DEFAULT '0',
+  convert_newlines tinyint(1) unsigned NOT NULL DEFAULT '0',
   cache_time INT NOT NULL DEFAULT '0',
   rdfurl varchar(255) default NULL,
   rdfupdated datetime default NULL,

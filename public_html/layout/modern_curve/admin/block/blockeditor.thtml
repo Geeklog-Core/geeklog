@@ -102,6 +102,9 @@
       <dd><textarea cols="40" rows="12" name="content" id="admin-blockeditor-content">{block_content}</textarea></dd>
       <dt>{lang_autotags}</dt>
       <dd><input type="checkbox" name="allow_autotags" {allow_autotags}{xhtml}><span class="fieldhelp">{lang_use_autotags}</span></dd>
+      
+      <dt><label for="admin-blockeditor-convert_newlines">{lang_newlines}</label></dt>
+      <dd class="controls_text"><input type="checkbox" name="convert_newlines" id="admin-blockeditor-convert_newlines" {convert_newlines}{xhtml}><span class="fieldhelp">{lang_convert_newlines}</span></dd>      
     </dl>
 
     <p class="description">{lang_allowed_html}</p>

@@ -3731,7 +3731,7 @@ function COM_showBlocks($side, $topic = '')
     }
 
     $commonSql .= " GROUP BY bid, is_enabled, name, b.type, title, blockorder, device, content, "
-        . "allow_autotags, cache_time, rdfurl, rdfupdated, rdf_last_modified, rdf_etag, rdflimit, "
+        . "allow_autotags, convert_newlines, cache_time, rdfurl, rdfupdated, rdf_last_modified, rdf_etag, rdflimit, "
         . "onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon ";
     $commonSql .= ' ORDER BY blockorder,title ASC';
 
@@ -3894,10 +3894,9 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
         if (!empty($A['content']) && (trim($A['content']) != '') && !$noBoxes) {
             $blockContent = stripslashes($A['content']);
 
-            // Hack: If the block content starts with a '<' assume it
-            // contains HTML and do not call COM_nl2br() which would only add
-            // unwanted <br> tags.
-            if (substr(trim($blockContent), 0, 1) != '<') {
+            // Introduced in Geeklog v2.2.0
+            // Dynamic Blocks from older plugins may not have convert_newlines set so check this 
+            if (isset($A['convert_newlines']) && ($A['convert_newlines'] == 1) && ($A['type'] === 'normal')) {
                 $blockContent = COM_nl2br($blockContent);
             }
 

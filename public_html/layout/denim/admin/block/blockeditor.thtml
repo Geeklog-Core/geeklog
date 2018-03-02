@@ -103,6 +103,10 @@
 
         <dt><label for="admin-blockeditor-allow_autotags">{lang_autotags}</label></dt>
         <dd class="controls_text"><input type="checkbox" name="allow_autotags" id="admin-blockeditor-allow_autotags" {allow_autotags}{xhtml}>({lang_use_autotags})</dd>
+        
+        <dt><label for="admin-blockeditor-convert_newlines">{lang_newlines}</label></dt>
+        <dd class="controls_text"><input type="checkbox" name="convert_newlines" id="admin-blockeditor-convert_newlines" {convert_newlines}{xhtml}>({lang_convert_newlines})</dd>
+        
       </dl>
     </fieldset>
 

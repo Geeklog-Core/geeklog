@@ -2106,6 +2106,7 @@ function plugin_getBlocks_calendar($side, $topic = '')
                     'blockorder'     => $_CA_CONF['block_order'],
                     'content'        => $display,
                     'allow_autotags' => false,
+                    'convert_newlines' => false,
                     'help'           => '',
                     'css_id'         => 'event_block',  // since GL 2.2.0
                     'css_classes'    => '',             // since GL 2.2.0

@@ -919,6 +919,8 @@ $LANG21 = array(
     72 => 'CSSクラス名',
     73 => 'この項目はオプションです。スペースで区切って複数指定できます。',
     'autotag_desc_block' => '[block:name class:block-autotag] - ブロックを表示します。Classはオプションです。ClassにCSSクラスを指定すると、ブロックはdivタグで包まれます。block-autotagクラスは常にそのdivタグに含まれます。',
+    'newlines' => 'Newlines',
+    'convert_newlines' => 'Check to convert newlines (EOL) into line break HTML element',
     'position' => '位置',
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)',

@@ -10,6 +10,8 @@ $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT(11) NOT NULL D
 // Add `css_id` and `css_classes` columns to the `blocks` table
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `help`";
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_classes` VARCHAR(255) NOT NULL DEFAULT '' AFTER `css_id`";
+// Add column to enable/disable convert newlines for normal blocks
+$_SQL[] = "ALTER TABLE `{$_TABLES['blocks']}` ADD `convert_newlines` tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER `allow_autotags`";
 
 // Drop small, read-only tables
 $_SQL[] = "DROP TABLE {$_TABLES['commentcodes']}";
