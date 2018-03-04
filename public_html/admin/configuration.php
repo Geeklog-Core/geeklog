@@ -386,8 +386,7 @@ function custom_validation_path_to_mogrify($rule, $ruleParams)
     global $_CONF;
 
     $ret = false;
-    if (isset($ruleParams[0]['path_to_mogrify']) && isset($_CONF['image_lib']) &&
-        $_CONF['image_lib'] == 'imagemagick' &&
+    if (isset($ruleParams[0]['path_to_mogrify']) &&
         file_exists($ruleParams[0]['path_to_mogrify'])
     ) {
         $ret = true;
@@ -408,8 +407,7 @@ function custom_validation_path_to_netpbm($rule, $ruleParams)
     global $_CONF;
 
     $ret = false;
-    if (isset($ruleParams[0]['path_to_netpbm']) && isset($_CONF['image_lib']) &&
-        $_CONF['image_lib'] == 'netpbm' &&
+    if (isset($ruleParams[0]['path_to_netpbm']) &&
         is_dir($ruleParams[0]['path_to_netpbm'])
     ) {
         $ret = true;
