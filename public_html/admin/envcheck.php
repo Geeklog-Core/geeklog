@@ -315,11 +315,14 @@ function _checkEnvironment()
             case 'imagemagick':    // ImageMagick
                 if (PHP_OS == "WINNT") {
                     $binary = "/convert.exe";
+                    $mogrify = "/mogrify.exe";
                 } else {
                     $binary = "/convert";
+                    $mogrify = "/mogrify";
                 }
+                $filePath = str_replace($mogrify, $binary, $_CONF['path_to_mogrify']);
                 clearstatcache();
-                if (!@file_exists($_CONF['path_to_mogrify'] . $binary)) {
+                if (!@file_exists($filePath)) {
                     $data_arr[] = array(
                         'item'   => $LANG_ENVCHECK['imagemagick'],
                         'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),

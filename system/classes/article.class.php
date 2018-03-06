@@ -2391,7 +2391,6 @@ class Article
             $old_filename = $A['ai_filename'];
             $pos = strrpos($old_filename, '.') + 1;
             $ext = substr($old_filename, $pos);
-
             $new_filename = $newSid . '_' . $ai_img_num . '.' . $ext;
             $dir = $_CONF['path_images'] . 'articles/';
             $old_filepath = $dir . $old_filename;
@@ -2403,7 +2402,7 @@ class Article
                     DB_query($sql);
                 } else {
                     // log the problem but don't abort the script
-                    echo COM_errorLog('Unable to rename copy from '
+                    echo COM_errorLog('Unable to copy image from '
                         . $old_filename . ' to ' . $new_filename);
                 }
             }
