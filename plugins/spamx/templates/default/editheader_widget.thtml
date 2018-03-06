@@ -1,0 +1,22 @@
+{# begin {templatelocation} #}
+
+<hr{xhtml}>
+<p>{lang_msg_delete}</p>
+{items_list}
+<p>{lang_msg_add}</p>
+<form method="post" action="{site_admin_url}/plugins/spamx/index.php?command={spamx_command}">
+    <table border="0" width="100%">
+        <tr>
+            <td align="right"><b>Header:</b></td>
+            <td><input type="text" maxlength="191" size="40" name="header-name"{xhtml}> e.g. <tt>User-Agent</tt></td>
+        </tr>
+        <tr>
+            <td align="right"><b>Content:</b></td>
+            <td><input type="text" maxlength="191" size="40" name="header-value"{xhtml}> e.g. <tt>Mozilla</tt></td>
+        </tr>
+    </table>
+    <button type="submit" name="paction" value="{lang_add_entry}">{lang_add_entry}</button>
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+</form>
+
+{# end {templatelocation} #}

@@ -172,8 +172,12 @@ abstract class BaseAdmin
         $retval = $fieldValue;
 
         if ($fieldName === 'id') {
-            $retval = '<input type="checkbox" name="delitem[]" value="'
-                . $this->escape($fieldValue) . '"' . XHTML . '>';
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('common', 'common.thtml');
+            $tcc->set_block('common', 'type-checkbox'); 
+            $tcc->set_var('name', 'delitem[]');
+            $tcc->set_var('value', $this->escape($fieldValue));
+            $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));               
         } elseif ($fieldName === 'value') {
             $retval = COM_createLink(
                 $this->escape($fieldValue),
@@ -203,9 +207,18 @@ abstract class BaseAdmin
         global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG01, $LANG33, $LANG_SX00;
 
         $fieldfunction = array($this, 'fieldFunction');
+        
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-checkbox'); 
+        $tcc->set_var('name', 'chk_selectall');
+        $tcc->set_var('title', $LANG01[126]);
+        $tcc->set_var('onclick', 'caItems(this.form);');
+        $select_checkbox = $tcc->finish($tcc->parse('common', 'type-checkbox'));               
+        
         $header_arr = array(
             array(
-                'text'  => '<input type="checkbox" name="chk_selectall" title="' . $LANG01[126] . '" onclick="caItems(this.form);"' . XHTML . '>',
+                'text'  => $select_checkbox,
                 'field' => 'id',
                 'sort'  => false,
             ),
@@ -269,28 +282,25 @@ abstract class BaseAdmin
      * Returns a widget to be displayed for each command
      *
      * @return   string
-     * @note     this method is overriden in EditHeader class, since it requires
+     * @note     this method is overridden in EditHeader class, since it requires
      *           two input fields.
      */
     protected function getWidget()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
-
-        $this->csrfToken = SEC_createToken();
-        $display = '<hr' . XHTML . '>' . LB
-            . '<p>' . $LANG_SX00['e1'] . '</p>' . LB
-            . $this->getList()
-            . '<p>' . $LANG_SX00['e2'] . '</p>' . LB
-            . '<form method="post" class="uk-form" action="' . $_CONF['site_admin_url']
-            . '/plugins/spamx/index.php?command=' . $this->command . '">' . LB
-            . '<div><input type="text" size="31" name="pentry"' . XHTML
-            . '>&nbsp;&nbsp;&nbsp;'
-            . '<button type="submit" name="paction" value="'
-            . $LANG_SX00['addentry'] . '" class="uk-button">'
-            . $LANG_SX00['addentry'] . '</button>' . LB
-            . '<input type="hidden" name="' . CSRF_TOKEN
-            . '" value="' . $this->csrfToken . '"' . XHTML . '>' . LB
-            . '</div></form>' . LB;
+        
+        $template = COM_newTemplate(CTL_plugin_templatePath('spamx'));
+        $template->set_file('baseadmin_widget', 'baseadmin_widget.thtml');
+        $template->set_var('lang_msg_delete', $LANG_SX00['e1']);
+        $template->set_var('items_list', $this->getList());
+        $template->set_var('lang_msg_add', $LANG_SX00['e2']);
+        $template->set_var('spamx_command', $this->command);
+        $template->set_var('lang_add_entry', $LANG_SX00['addentry']);
+        $template->set_var('gltoken_name', CSRF_TOKEN);
+        $this->csrfToken = SEC_createToken();        
+        $template->set_var('gltoken', $this->csrfToken);
+        
+        $display = $template->finish($template->parse('output', 'baseadmin_widget'));        
 
         return $display;
     }

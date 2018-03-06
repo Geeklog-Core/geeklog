@@ -1,0 +1,15 @@
+{# begin {templatelocation} #}
+
+<hr{xhtml}>
+<p>{lang_msg_delete}</p>
+{items_list}
+<p>{lang_msg_add}</p>
+<form method="post" class="uk-form" action="{site_admin_url}/plugins/spamx/index.php?command={spamx_command}">
+    <div>
+        <input type="text" maxlength="191" class="uk-form-width-medium" name="pentry"{xhtml}>&nbsp;&nbsp;&nbsp;
+        <button type="submit" name="paction" value="{lang_add_entry}" class="uk-button">{lang_add_entry}</button>
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+</form>
+
+{# end {templatelocation} #}

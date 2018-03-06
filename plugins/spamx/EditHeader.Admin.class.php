@@ -45,28 +45,19 @@ class EditHeader extends BaseAdmin
     {
         global $_CONF, $LANG_SX00;
 
-        $this->csrfToken = SEC_createToken();
-        $display = '<hr' . XHTML . '>' . LB
-            . '<p>' . $LANG_SX00['e1'] . '</p>' . LB
-            . $this->getList()
-            . '<p>' . $LANG_SX00['e2'] . '</p>' . LB
-            . '<form method="post" class="uk-form" action="' . $_CONF['site_admin_url']
-            . '/plugins/spamx/index.php?command=EditHeader">' . LB
-            . '<table border="0" width="100%">' . LB
-            . '<tr><td align="right"><b>Header:</b></td>' . LB
-            . '<td><input type="text" size="40" name="header-name"'
-            . XHTML . '> e.g. <tt>User-Agent</tt></td></tr>' . LB
-            . '<tr><td align="right"><b>Content:</b></td>' . LB
-            . '<td><input type="text" size="40" name="header-value"'
-            . XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB
-            . '</table>' . LB
-            . '<p><button type="submit" name="paction" value="'
-            . $LANG_SX00['addentry'] . '" class="uk-button">'
-            . $LANG_SX00['addentry'] . '</button>' . LB
-            . '<input type="hidden" name="' . CSRF_TOKEN
-            . '" value="' . $this->csrfToken . '"' . XHTML . '></p>' . LB
-            . '</form>' . LB;
-
+        $template = COM_newTemplate(CTL_plugin_templatePath('spamx'));
+        $template->set_file('editheader_widget', 'editheader_widget.thtml');
+        $template->set_var('lang_msg_delete', $LANG_SX00['e1']);
+        $template->set_var('items_list', $this->getList());
+        $template->set_var('lang_msg_add', $LANG_SX00['e2']);
+        $template->set_var('spamx_command', $this->command);
+        $template->set_var('lang_add_entry', $LANG_SX00['addentry']);
+        $template->set_var('gltoken_name', CSRF_TOKEN);
+        $this->csrfToken = SEC_createToken();        
+        $template->set_var('gltoken', $this->csrfToken);
+        
+        $display = $template->finish($template->parse('output', 'editheader_widget'));          
+        
         return $display;
     }
 
