@@ -44,6 +44,9 @@ class EditHeader extends BaseAdmin
     protected function getWidget()
     {
         global $_CONF, $LANG_SX00;
+        
+        // This has to be done before function getList() is called
+        $this->csrfToken = SEC_createToken();
 
         $template = COM_newTemplate(CTL_plugin_templatePath('spamx'));
         $template->set_file('editheader_widget', 'editheader_widget.thtml');
@@ -53,7 +56,6 @@ class EditHeader extends BaseAdmin
         $template->set_var('spamx_command', $this->command);
         $template->set_var('lang_add_entry', $LANG_SX00['addentry']);
         $template->set_var('gltoken_name', CSRF_TOKEN);
-        $this->csrfToken = SEC_createToken();        
         $template->set_var('gltoken', $this->csrfToken);
         
         $display = $template->finish($template->parse('output', 'editheader_widget'));          
@@ -73,21 +75,34 @@ class EditHeader extends BaseAdmin
         $action = $this->getAction();
         $entry = $this->getEntry();
 
-        if (($action === 'delete') && SEC_checkToken()) {
-            $this->deleteEntry($entry);
-        } elseif (($action === $LANG_SX00['addentry']) && SEC_checkToken()) {
-            $entry = '';
-            $name = Geeklog\Input::fRequest('header-name');
-            $n = explode(':', $name);
-            $name = $n[0];
-            $value = Geeklog\Input::request('header-value');
+        if (!empty($action) && SEC_checkToken()) {
+            switch ($action) {
+                case 'delete':
+                    $this->deleteEntry($entry);
+                    break;
 
-            if (!empty($name) && !empty($value)) {
-                $entry = $name . ': ' . $value;
+                case $LANG_SX00['addentry']:
+                    $entry = '';
+                    $name = Geeklog\Input::fRequest('header-name');
+                    $n = explode(':', $name);
+                    $name = $n[0];
+                    $value = Geeklog\Input::request('header-value');
+
+                    if (!empty($name) && !empty($value)) {
+                        $entry = $name . ': ' . $value;
+                    }
+
+                    $this->addEntry($entry);
+                    break;
+
+                case 'mass_delete':
+                    if (isset($_POST['delitem'])) {
+                        $this->deleteSelectedEntries(Geeklog\Input::post('delitem'));
+                    }
+
+                    break;
             }
-
-            $this->addEntry($entry);
-        }
+        }        
 
         return $this->getWidget();
     }

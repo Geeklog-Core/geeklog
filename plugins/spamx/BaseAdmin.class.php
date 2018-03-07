@@ -263,11 +263,18 @@ abstract class BaseAdmin
         $extra = '';
         $options = '';
 
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-image'); 
+        $tcc->set_var('name', 'delbutton');
+        $tcc->set_var('title', $LANG01[124]);
+        $tcc->set_var('alt', 'delbutton');
+        $tcc->set_var('src', $_CONF['layout_url'] . '/images/deleteitem.' . $_IMAGE_TYPE);
+        $tcc->set_var('onclick', "return confirm('" . $LANG01[125] . "');");
+        $del_button = $tcc->finish($tcc->parse('common', 'type-image'));               
+        
         $form_arr = array(
-            'bottom' => '<input type="image" name="delbutton" alt="delbutton" src="'
-                . $_CONF['layout_url'] . '/images/deleteitem.' . $_IMAGE_TYPE
-                . '" title="' . $LANG01[124] . '" onclick="return confirm(\''
-                . $LANG01[125] . '\');"' . XHTML . '>',
+            'bottom' => $del_button,
         );
 
         $showsearch = true;
@@ -289,6 +296,9 @@ abstract class BaseAdmin
     {
         global $_CONF, $_TABLES, $LANG_SX00;
         
+        // This has to be done before function getList() is called
+        $this->csrfToken = SEC_createToken();
+        
         $template = COM_newTemplate(CTL_plugin_templatePath('spamx'));
         $template->set_file('baseadmin_widget', 'baseadmin_widget.thtml');
         $template->set_var('lang_msg_delete', $LANG_SX00['e1']);
@@ -297,7 +307,6 @@ abstract class BaseAdmin
         $template->set_var('spamx_command', $this->command);
         $template->set_var('lang_add_entry', $LANG_SX00['addentry']);
         $template->set_var('gltoken_name', CSRF_TOKEN);
-        $this->csrfToken = SEC_createToken();        
         $template->set_var('gltoken', $this->csrfToken);
         
         $display = $template->finish($template->parse('output', 'baseadmin_widget'));        

@@ -6,6 +6,10 @@
 <input type="hidden" name="{name}" value="{value}"{xhtml}>
 <!-- END type-hidden -->
 
+<!-- BEGIN type-image -->
+<input type="image" name="{name}"{!if id} id="{id}"{!endif} src="{src}"{!if title} title="{title}"{!endif}{!if alt} alt="{alt}"{!endif}{!if style} style="{style}"{!endif}{!if class} class="{class}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}{xhtml}>
+<!-- END type-image -->
+
 <!-- BEGIN type-checkbox -->
 {!if lang_label}
 <label{!if id} for="{id}"{!endif}>
