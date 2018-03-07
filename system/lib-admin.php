@@ -1580,7 +1580,7 @@ function ADMIN_getListField_trackback($fieldName, $fieldValue, $A, $icon_arr, $t
             break;
 
         case 'method':
-            if ($A['method'] === '1weblogUpdates.ping') {
+            if ($A['method'] === 'weblogUpdates.ping') {
                 $retval = $LANG_TRB['ping_standard'];
             } elseif ($A['method'] === 'weblogUpdates.extendedPing') {
                 $retval = $LANG_TRB['ping_extended'];
