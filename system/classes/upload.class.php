@@ -185,6 +185,11 @@ class Upload
     private $_ignoreMimeTest = false;
 
     /**
+     * @var string
+     */
+    private $_thumbsDirectory = '';
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -449,6 +454,8 @@ class Upload
                 $this->printErrors();
 
                 return false;
+            } else {
+                $this->createThumbnail($lFilename_large);
             }
         }
 
@@ -538,17 +545,18 @@ class Upload
             }
         }
 
-        if (!($sizeOK)) {
+        if (!$sizeOK) {
             // OK, resize
-            
-            $retval = '';
-            
-            $sizeFactor = $this->_calcSizeFactor($imageInfo['width'],
-                $imageInfo['height']);
+            $sizeFactor = $this->_calcSizeFactor($imageInfo['width'], $imageInfo['height']);
             $newWidth = (int) ($imageInfo['width'] * $sizeFactor);
             $newHeight = (int) ($imageInfo['height'] * $sizeFactor);
             $this->_addDebugMsg('Going to resize image to ' . $newWidth . 'x'
                 . $newHeight . ' using ' . $this->_imageLib);
+
+            $filename = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
+            if (!$this->_keepOriginalFile($filename)) {
+                exit;
+            }
 
             if ($this->_imageLib == 'imagemagick') {
                 $newSize = $newWidth . 'x' . $newHeight;
@@ -556,19 +564,11 @@ class Upload
                 if ($this->_jpegQuality > 0) {
                     $quality = sprintf(' -quality %d', $this->_jpegQuality);
                 }
-                $cmd = $this->_pathToMogrify . $quality . ' -resize ' . $newSize . ' "' . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . '" 2>&1';
+                $cmd = $this->_pathToMogrify . $quality . ' -resize ' . $newSize . ' "' . $filename . '" 2>&1';
                 $this->_addDebugMsg('Attempting to resize with this command (imagemagick): ' . $cmd);
-
-                $filename = $this->_fileUploadDirectory . '/'
-                    . $this->_getDestinationName();
-                if (!$this->_keepOriginalFile($filename)) {
-                    exit;
-                }
-
                 exec($cmd, $mogrify_output, $retval);
             } elseif ($this->_imageLib === 'netpbm') {
                 $cmd = $this->_pathToNetPBM;
-                $filename = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
                 $cmd_end = " '" . $filename . "' | " . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newWidth . ' -ysize=' . $newHeight . ' | ' . $this->_pathToNetPBM;
                 // convert to pnm, resize, convert back
                 if (($this->_currentFile['type'] == 'image/png') ||
@@ -596,11 +596,6 @@ class Upload
                 }
                 $this->_addDebugMsg('Attempting to resize with this command (netpbm): ' . $cmd);
                 exec($cmd, $netpbm_output, $retval);
-
-                if (!$this->_keepOriginalFile($filename)) {
-                    exit;
-                }
-
                 // Move tmp file to actual file
                 if (!copy($tempFile, $filename)) {
                     $this->_addError("Couldn't copy $tempFile to $filename.  You'll need remove both files");
@@ -615,13 +610,6 @@ class Upload
                     }
                 }
             } elseif ($this->_imageLib === 'gdlib') {
-                $filename = $this->_fileUploadDirectory . '/'
-                    . $this->_getDestinationName();
-
-                if (!$this->_keepOriginalFile($filename)) {
-                    exit;
-                }
-
                 if (!function_exists('gd_info')) {
                     $this->_addError('GD library does not seem to be enabled.');
                     $this->printErrors();
@@ -675,11 +663,6 @@ class Upload
                 }
 
                 // do resize
-                $sizeFactor = $this->_calcSizeFactor($imageInfo['width'], $imageInfo['height']);
-                $this->_addDebugMsg('Resizing image, factor=' . $sizeFactor);
-                $newWidth = (int) ($imageInfo['width'] * $sizeFactor);
-                $newHeight = (int) ($imageInfo['height'] * $sizeFactor);
-                $newSize = $newWidth . 'x' . $newHeight;
 
                 // ImageCreateTrueColor may throw a fatal error on some PHP
                 // versions when GD2 is not installed. Ugly workaround, but
@@ -736,7 +719,6 @@ class Upload
                         exit;
                     }
                 }
-
             }
 
             if ($retval > 0) {
@@ -1182,6 +1164,41 @@ class Upload
     }
 
     /**
+     * Sets directory to store thumbnails
+     *
+     * @param    string $thumbsDir Directory on server to store thumbnails
+     * @return   boolean returns true if we successfully set path otherwise false
+     */
+    public function setThumbsPath($thumbsDir)
+    {
+        if (!is_dir($thumbsDir)) {
+            $this->_addError('Specified upload directory, ' . $thumbsDir . ' is not a valid directory');
+
+            return false;
+        }
+
+        if (!is_writable($thumbsDir)) {
+            $this->_addError('Specified upload directory, ' . $thumbsDir . ' exists but is not writable');
+
+            return false;
+        }
+
+        $this->_thumbsDirectory = $thumbsDir;
+
+        return true;
+    }
+
+    /**
+     * Returns directory to store thumbnails
+     *
+     * @return   string  returns path to directory to store thumbnails
+     */
+    public function getThumbsPath()
+    {
+        return $this->_thumbsDirectory;
+    }
+
+    /**
      * Sets file name(s) for files
      * This function will set the name of any files uploaded.  If the
      * number of file names sent doesn't match the number of uploaded
@@ -1302,6 +1319,7 @@ class Upload
                 if ($this->checkMimeType() && $this->_imageSizeOK() && !$this->areErrors()) {
                     if ($this->_copyFile()) {
                         $this->_uploadedFiles[] = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
+                        $this->createThumbnail($this->_getDestinationName());
                     }
                 }
 
@@ -1321,6 +1339,175 @@ class Upload
 
         // This function returns false if any errors were encountered
         return !$this->areErrors();
+    }
+
+    /**
+     * Create thumbnail with GD Library
+     *
+     * @param    string $src_fname source file name to create thumbnail
+     * @return   boolean returns true if no errors were encountered otherwise false
+     */
+    public function _createThumbnail_gdlib($src_fname)
+    {
+        // Thumbnail size
+        $dst_w = 64;
+        $dst_h = 64;
+
+        $src_path = $this->_fileUploadDirectory . '/' . $src_fname;
+        $dst_fname = substr_replace($src_fname, '_64x64px.', strrpos($src_fname, '.'), 1);
+        $dst_path = $this->_thumbsDirectory . '/' . $dst_fname;
+
+        // Get size of source image
+        list($width, $height) = getimagesize($src_path);
+
+        // Compare width and height and match it either
+        // and set start position and size for copying part
+        $src_x = 0;
+        $src_y = 0;
+        $src_w = $width;
+        $src_h = $height;
+        if ($width > $height) {
+            $src_x = (int)(($width - $height) * 0.5);
+            $src_w = $height;
+        } elseif ($width < $height) {
+            $src_y = (int)(($height - $width) * 0.5);
+            $src_h = $width;
+        }
+
+        // Create a new image to be a thumbnail
+        $dst_image = imagecreatetruecolor($dst_w, $dst_h);
+
+        // Create a new image from source file
+        $src_image = imagecreatefromjpeg($src_path);
+
+        // Copy and resize part of source image
+        imagecopyresampled($dst_image,     $src_image,
+                           0,      0,      $src_x, $src_y,
+                           $dst_w, $dst_h, $src_w, $src_h);
+
+        // Output image to file
+        imagejpeg($dst_image, $dst_path);
+
+        return true;
+    }
+
+    /**
+     * Create thumbnail with ImageMagick
+     *
+     * @param    string $src_fname source file name to create thumbnail
+     * @return   boolean returns true if no errors were encountered otherwise false
+     */
+    private function _createThumbnail_imagick($src_fname)
+    {
+        // Thumbnail size
+        $dst_w = 64;
+        $dst_h = 64;
+        $newSize = $dst_w . 'x' . $dst_h;
+
+        $src_path = $this->_fileUploadDirectory . '/' . $src_fname;
+        $dst_fname = substr_replace($src_fname, '_64x64px.', strrpos($src_fname, '.'), 1);
+        $dst_path = $this->_thumbsDirectory . '/' . $dst_fname;
+
+        // convert src.jpg -resize 64x64^ -gravity center -extent 64x64 dist.jpg
+        $cmd = str_replace('mogrify', 'convert', $this->_pathToMogrify);
+        $cmd = $cmd . ' "' . $src_path . '" -resize ' . $newSize . '^ -gravity center -extent ' . $newSize . ' "' . $dst_path . '"';
+
+        $this->_addDebugMsg('Attempting to resize with this command (imagemagick): ' . $cmd);
+        exec($cmd, $mogrify_output, $retval);
+
+        return true;
+    }
+
+    /**
+     * Create thumbnail with Netpbm
+     *
+     * @param    string $src_fname source file name to create thumbnail
+     * @return   boolean returns true if no errors were encountered otherwise false
+     */
+    private function _createThumbnail_netpbm($src_fname)
+    {
+        // Thumbnail size
+        $dst_w = 64;
+        $dst_h = 64;
+
+        $src_path = $this->_fileUploadDirectory . '/' . $src_fname;
+        $dst_fname = substr_replace($src_fname, '_64x64px.', strrpos($src_fname, '.'), 1);
+        $dst_path = $this->_thumbsDirectory . '/' . $dst_fname;
+
+        // Get size of source image
+        list($width, $height) = getimagesize($src_path);
+
+        // Compare width and height and match it either
+        // and set start position and size for copying part
+        $src_x = 0;
+        $src_y = 0;
+        $src_w = $width;
+        $src_h = $height;
+        if ($width > $height) {
+            $src_x = (int)(($width - $height) * 0.5);
+            $src_w = $height;
+        } elseif ($width < $height) {
+            $src_y = (int)(($height - $width) * 0.5);
+            $src_h = $width;
+        }
+
+        //jpegtopnm orig.jpg | pnmcut 420 0 1080 1080 | pnmscale 0.059259259 | pnmtojpeg > dist.jpg
+        $path = $this->_pathToNetPBM;
+        $cut = $path . sprintf('pnmcut %d %d %d %d', $src_x, $src_y, $src_w, $src_h);
+        $scale = $path . 'pnmscale ' . (float)($dst_w / $src_w);
+
+        if ($this->_currentFile['type'] == 'image/png' ||
+            $this->_currentFile['type'] == 'image/x-png') {
+
+            $cmd .= $path . 'pngtopnm "' . $src_path . '" | ' . $cut . ' | ' . $scale
+                . ' | ' . $path . 'pnmtopng > "' . $dst_path . '"';
+
+        } elseif ($this->_currentFile['type'] == 'image/jpeg' ||
+            $this->_currentFile['type'] == 'image/pjpeg') {
+
+            $quality = '';
+            if ($this->_jpegQuality > 0) {
+                $quality = sprintf(' -quality=%d', $this->_jpegQuality);
+            }
+            $cmd .= $path . 'jpegtopnm "' . $src_path . '" | ' . $cut . ' | ' . $scale
+                . ' | ' . $path . 'pnmtojpeg' . $quality . ' > "' . $dst_path . '"';
+
+        } elseif ($this->_currentFile['type'] == 'image/gif') {
+
+            $cmd .= $path . 'giftopnm "' . $src_path . '" | ' . $cut . ' | ' . $scale . ' | '
+                . $path . 'ppmquant 256 | ' . $path . 'ppmtogif > "' . $dst_path . '"';
+
+        } else {
+
+            $this->_addError("Image format of file $filename is not supported.");
+            $this->printErrors();
+            exit;
+
+        }
+        $this->_addDebugMsg('Attempting to resize with this command (netpbm): ' . $cmd);
+        exec($cmd, $netpbm_output, $retval);
+
+        return true;
+    }
+
+    /**
+     * Create thumbnail
+     *
+     * @param    string $src_fname source file name to create thumbnail
+     * @return   boolean returns true if no errors were encountered otherwise false
+     */
+    public function createThumbnail($src_fname)
+    {
+        if (empty($this->_fileUploadDirectory) || empty($this->_thumbsDirectory)) {
+            return false;
+        }
+
+        if ($this->_imageLib === 'imagemagick') {
+            return $this->_createThumbnail_imagick($src_fname);
+        } elseif ($this->_imageLib === 'netpbm') {
+            return $this->_createThumbnail_netpbm($src_fname);
+        }
+        return $this->_createThumbnail_gdlib($src_fname);
     }
 
     /**

@@ -8,7 +8,7 @@
 
 
 /*--------------------------------------
-  Common Style 
+  Common Style
 --------------------------------------*/
 
 div#text_editor dl {
@@ -150,4 +150,16 @@ span.story_stats {
 #admin-storyeditor-bodytext {
   width: 98%;
   padding: 4px 6px;
+}
+
+/* Image Form Thumbnail Frame */
+.gl-image-form-thumb-frame {
+  width: 64px;
+  height: 64px;
+  background-color: #999;
+}
+
+.gl-image-form-thumb-frame img {
+  width: 64px;
+  height: 64px;
 }

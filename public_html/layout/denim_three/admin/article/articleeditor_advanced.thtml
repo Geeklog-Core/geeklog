@@ -5,7 +5,7 @@
 <div id="advanced_editor" style="display: none;">
 {navbar}
 
-<form  name="frmstory" action="{site_admin_url}/article.php" method="post" enctype="multipart/form-data" onsubmit='set_postcontent();' id="frmstory" class="compact">
+<form name="frmstory" action="{site_admin_url}/article.php" method="post" enctype="multipart/form-data" onsubmit='set_postcontent();' id="frmstory" class="compact">
 
   <div class="admin_basic">
     <dl class="form_block">
@@ -204,7 +204,7 @@
     <dl class="form_block">
       <dt><label>{lang_images}</label></dt>
       <dd>
-        {image_form_elements}
+        {image_form}
         {image_add_instructions}
         {allow_user_scaling}
         {image_preview_instructions}
@@ -286,7 +286,7 @@
 {!if allow_delete}
       <button type="submit" name="mode" value="{lang_delete}" class="uk-button uk-button-danger" onclick="return confirm('{confirm_message}');">{lang_delete}</button>
 {!endif}
-      <button type="submit" value="{lang_cancel}" name="mode" class="uk-button uk-button-default">{lang_cancel}</button>
+      <button type="submit" name="mode" value="{lang_cancel}" class="uk-button uk-button-default">{lang_cancel}</button>
       <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
       <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
       <input type="hidden" name="old_sid" value="{old_story_id}"{xhtml}>
@@ -308,12 +308,45 @@
   {preview_content}
 </div>
 
-<!-- BEGIN image-file-name -->
-<div>{imagecount}) <a href="{imagelink}">{imagefilename}</a>&nbsp;&nbsp;&nbsp;{lang_delete}: <input type="checkbox" name="delete[{imagecount}]"{xhtml}></div>
-<!-- END image-file-name -->
+<!-- BEGIN image-form -->
+<div class="uk-overflow-auto uk-margin-small">
+<table class="admin-list-table uk-table uk-table-hover uk-table-striped">
+<thead>
+<tr>
+  <th class="admin-list-headerfield">{lang_number}</th>
+  <th class="admin-list-headerfield">{lang_resized}</th>
+  <th class="admin-list-headerfield">{lang_original}</th>
+  <th class="admin-list-headerfield">{lang_upload_or_replace}</th>
+  <th class="admin-list-headerfield">{lang_delete}</th>
+</tr>
+</thead>
+<tbody>
+{image_form_elements}
+</tbody>
+</table>
+</div>
+<!-- END image-form -->
 
-<!-- BEGIN image-file-select -->
-<div>{filecount}) <input type="file" dir="ltr" name="file{filecount}"{xhtml}></div>
-<!-- END image-file-select -->
+<!-- BEGIN image-form-elements -->
+<tr>
+  <td class="admin-list-field">{imagecount}</td>
+  <td class="admin-list-field">
+    <div class="gl-image-form-thumb-frame" uk-tooltip="{imagefilename}">
+      {!if imagelink}<div uk-lightbox><a href="{imagelink}" title="" data-caption="{imagefilename}">{!endif}
+        <img src="{thumblink}" alt="">
+      {!if imagelink}</a></div>{!endif}
+    </div>
+  </td>
+  <td class="admin-list-field">
+    <div class="gl-image-form-thumb-frame" uk-tooltip="{largefilename}">
+      {!if largelink}<div uk-lightbox><a href="{largelink}" title="" data-caption="{largefilename}">{!endif}
+      <img src="{largethumblink}" alt="">
+      {!if largelink}</a></div>{!endif}
+    </div>
+  </td>
+  <td class="admin-list-field"><input type="file" dir="ltr" name="file{imagecount}"{xhtml}></td>
+  <td class="admin-list-field"><input type="checkbox" name="delete[{imagecount}]" class="uk-checkbox"{xhtml}></td>
+</tr>
+<!-- END image-form-elements -->
 
 {# end {templatelocation} #}

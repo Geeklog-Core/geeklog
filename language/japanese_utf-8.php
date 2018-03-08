@@ -457,8 +457,8 @@ $LANG04 = array(
     'tfa_download' => 'バックアップコードをダウンロード',
     'tfa_new_backup_code' => 'バックアップコードを生成し直す',
     'tfa_generate_confirm' => '実行してもよいですか?',
-    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>', 
-    'new_email' => 'New Email', 
+    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>',
+    'new_email' => 'New Email',
     'set_new_email' => 'Set New Email',
     'confirm_new_email' => 'Confirm new email',
     'enter_new_email' => 'Enter New Email',
@@ -543,7 +543,7 @@ $LANG08 = array(
     40 => " 秒前に送信しています。少なくとも{$_CONF['speedlimit']}秒待って、次のメッセージを送信してください。",
     41 => 'このユーザーは存在しません。',
     42 => 'このユーザーのメールアドレスは存在しません。おそらくOAuthユーザーのアカウントでしょう。',
-    43 => 'このユーザーのメールアドレスは無効です。', 
+    43 => 'このユーザーのメールアドレスは無効です。',
     44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.'
 );
 
@@ -1027,6 +1027,11 @@ $LANG24 = array(
     90 => 'キーワードのメタタグ',
     91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。',
     92 => '同じテーマの記事',
+    93 => '#',
+    94 => 'リサイズ',
+    95 => 'オリジナル',
+    96 => 'アップロード | 置き換え',
+    97 => 'なし',
     'autotag_desc_story' => '[story: id 代替タイトル] - 記事のリンクを表示します。機能は同じなので、article自動タグの方をお使いください。',
     'autotag_desc_article' => '[article: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
     'cache_time' => 'キャッシュ期間',
@@ -1892,7 +1897,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
 # %i    item, "Stories"
@@ -1950,7 +1955,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 

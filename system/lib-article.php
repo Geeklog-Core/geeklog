@@ -875,6 +875,25 @@ function STORY_deleteImage($image)
             echo COM_errorLog('Unable to remove the following image from the article: ' . $lFilename_large_complete);
         }
     }
+    // delete thumbnail image
+    STORY_deleteThumbnail($image);
+    STORY_deleteThumbnail($lFilename_large);
+}
+
+/**
+ * Delete thumbnail
+ *
+ * @param    string $image file name of the thumbnail (without the path)
+ */
+function STORY_deleteThumbnail($image)
+{
+    global $_CONF;
+
+    $thumb = substr_replace($image, '_64x64px.', strrpos($image, '.'), 1);
+    $thumb_path = $_CONF['path_images'] . '_thumbs/articles/' . $thumb;
+    if (file_exists($thumb_path)) {
+        @unlink($thumb_path);
+    }
 }
 
 /**
@@ -2168,6 +2187,12 @@ function service_submit_story($args, &$output, &$svc_msg)
                 echo $output;
                 exit;
             }
+            if (!$upload->setThumbsPath($_CONF['path_images'] . '_thumbs/articles')) {
+                $output = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
+                $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
+                echo $output;
+                exit;
+            }
 
             // NOTE: if $_CONF['path_to_mogrify'] is set, the call below will
             // force any images bigger than the passed dimensions to be resized.
@@ -2189,7 +2214,12 @@ function service_submit_story($args, &$output, &$svc_msg)
             }
 
             foreach ($ai_fnames as $k => $ai_fname) {
-                DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $k, '" . $ai_fname . "')");
+                $count = DB_count($_TABLES['article_images'], array('ai_sid','ai_img_num'), array($sid, $k));
+                if ($count == 1) {
+                    DB_query("UPDATE {$_TABLES['article_images']} SET ai_filename = '$ai_fname' WHERE ai_sid = '$sid' AND ai_img_num = $k");
+                } elseif ($count == 0) {
+                    DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $k, '$ai_fname')");
+                }
             }
         }
 

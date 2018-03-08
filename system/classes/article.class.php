@@ -2351,6 +2351,7 @@ class Article
                     $sql = "UPDATE {$_TABLES['article_images']} SET ai_filename = '{$new_filename}' "
                          . "WHERE ai_sid = '{$ai_sid}' AND ai_img_num = '{$ai_img_num}'";
                     DB_query($sql);
+                    $this->_moveThumbnail($old_filename, $new_filename);
                 } else {
                     // log the problem but don't abort the script
                     echo COM_errorLog('Unable to rename image from '
@@ -2369,6 +2370,7 @@ class Article
                     echo COM_errorLog('Unable to rename image from '
                         . $old_filename_large . ' to ' . $new_filename_large);
                 }
+                $this->_moveThumbnail($old_filename_large, $new_filename_large);
             }
         }
     }
@@ -2400,6 +2402,7 @@ class Article
                     $sql = "INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) "
                          . "VALUES ('$newSid', $ai_img_num, '$new_filename')";
                     DB_query($sql);
+                    $this->_cloneThumbnail($old_filename, $new_filename);
                 } else {
                     // log the problem but don't abort the script
                     echo COM_errorLog('Unable to copy image from '
@@ -2418,7 +2421,52 @@ class Article
                     echo COM_errorLog('Unable to copy image from '
                         . $old_filename_large . ' to ' . $new_filename_large);
                 }
+                $this->_cloneThumbnail($old_filename_large, $new_filename_large);
             }
+        }
+    }
+
+    /**
+     * Rename thumbnail
+     *
+     * @param  string $old_filename
+     * @param  string $new_filename
+     * @return void
+     */
+    private function _moveThumbnail($old_filename, $new_filename)
+    {
+        global $_CONF;
+
+        $old_thumb = substr_replace($old_filename, '_64x64px.', strrpos($old_filename, '.'), 1);
+        $old_thumb_path = $_CONF['path_images'] . '_thumbs/articles/' . $old_thumb;
+
+        $new_thumb = substr_replace($new_filename, '_64x64px.', strrpos($new_filename, '.'), 1);
+        $new_thumb_path = $_CONF['path_images'] . '_thumbs/articles/' . $new_thumb;
+
+        if (file_exists($old_thumb_path) && !file_exists($new_thumb_path)) {
+            @rename($old_thumb_path, $new_thumb_path);
+        }
+    }
+
+    /**
+     * Clone thumbnail
+     *
+     * @param  string $old_filename
+     * @param  string $new_filename
+     * @return void
+     */
+    private function _cloneThumbnail($old_filename, $new_filename)
+    {
+        global $_CONF;
+
+        $old_thumb = substr_replace($old_filename, '_64x64px.', strrpos($old_filename, '.'), 1);
+        $old_thumb_path = $_CONF['path_images'] . '_thumbs/articles/' . $old_thumb;
+
+        $new_thumb = substr_replace($new_filename, '_64x64px.', strrpos($new_filename, '.'), 1);
+        $new_thumb_path = $_CONF['path_images'] . '_thumbs/articles/' . $new_thumb;
+
+        if (file_exists($old_thumb_path) && !file_exists($new_thumb_path)) {
+            @copy($old_thumb_path, $new_thumb_path);
         }
     }
 }

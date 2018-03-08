@@ -718,29 +718,66 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $allowed_html .= COM_allowedAutotags(false, $allowed_tags);
     $story_templates->set_var('lang_allowed_html', $allowed_html);
     if ($_CONF['maximagesperarticle'] > 0) {
-        $story_templates->set_block('editor', 'image-file-name');
-        $story_templates->set_block('editor', 'image-file-select');
+        $story_templates->set_block('editor', 'image-form');
+        $story_templates->set_block('editor', 'image-form-elements');
 
         $story_templates->set_var('lang_images', $LANG24[47]);
+        $story_templates->set_var('lang_number', $LANG24[93]);
+        $story_templates->set_var('lang_resized', $LANG24[94]);
+        $story_templates->set_var('lang_original', $LANG24[95]);
+        $story_templates->set_var('lang_upload_or_replace', $LANG24[96]);
+        $story_templates->set_var('lang_none', $LANG24[97]);
         $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
-        $image_form = '';
+        $image_form_elements = '';
         $ai_filenames = array();
         $result = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '" . $story->getSid() . "'");
         while ($A = DB_fetchArray($result)) {
             $ai_filenames[$A['ai_img_num']] = $A['ai_filename'];
         }
         for ($z = 1; $z <= $_CONF['maximagesperarticle']; $z++) {
+            $imagename = $LANG24[97];
+            $largename = $LANG24[97];
+            $imagelink = '';
+            $largelink = '';
+            $thumblink = '';
+            $largethumblink = '';
             if (!empty($ai_filenames[$z])) {
-                $story_templates->set_var('filecount', $z);
-                $story_templates->set_var('imagecount', $z);
-                $story_templates->set_var('imagelink', $_CONF['site_url'] . '/images/articles/' . $ai_filenames[$z]);
-                $story_templates->set_var('imagefilename', $ai_filenames[$z]);
-                $image_form .= $story_templates->parse('editor-image', 'image-file-name');
-            } else {
-                $story_templates->set_var('filecount', $z);
-                $image_form .= $story_templates->parse('editor-image', 'image-file-select');
+                $imagename = $ai_filenames[$z];
+                $imagelink = $_CONF['site_url'] . '/images/articles/' . $ai_filenames[$z];
+
+                $thumbname = substr_replace($imagename, '_64x64px.', strrpos($imagename, '.'), 1);
+                $thumblink = $_CONF['site_url'] . '/images/_thumbs/articles/'. $thumbname;
+                $thumbpath = $_CONF['path_images'] . '_thumbs/articles/' . $thumbname;
+                if (!file_exists($thumbpath)) {
+                    createThumbnail($imagename);
+                }
+
+                $largename = substr_replace($imagename, '_original.', strrpos($imagename, '.'), 1);
+                $largelink = $_CONF['site_url'] . '/images/articles/'. $largename;
+                $largepath = $_CONF['path_images'] . 'articles/' . $largename;
+                if (!file_exists($largepath)) {
+                    $largename = $LANG24[97];
+                    $largelink = '';
+                } else {
+                    $largethumbname = substr_replace($largename, '_64x64px.', strrpos($largename, '.'), 1);
+                    $largethumblink = $_CONF['site_url'] . '/images/_thumbs/articles/'. $largethumbname;
+                    $largethumbpath = $_CONF['path_images'] . '_thumbs/articles/' . $largethumbname;
+                    if (!file_exists($largethumbpath)) {
+                        createThumbnail($largename);
+                    }
+                }
             }
+            $story_templates->set_var('imagecount', $z);
+            $story_templates->set_var('imagelink', $imagelink);
+            $story_templates->set_var('largelink', $largelink);
+            $story_templates->set_var('thumblink', $thumblink);
+            $story_templates->set_var('largethumblink', $largethumblink);
+            $story_templates->set_var('imagefilename', $imagename);
+            $story_templates->set_var('largefilename', $largename);
+            $image_form_elements .= $story_templates->parse('image-td', 'image-form-elements');
         }
+        $story_templates->set_var('image_form_elements', $image_form_elements);
+        $image_form = $story_templates->parse('output', 'image-form');
     }
 
     // Add JavaScript
@@ -774,7 +811,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     // Setup Advanced Editor
     COM_setupAdvancedEditor('/javascript/storyeditor_adveditor.js');
-    $story_templates->set_var('image_form_elements', $image_form);
+    $story_templates->set_var('image_form', $image_form);
     $story_templates->set_var('image_add_instructions', $LANG24[51]);
     if ($_CONF['allow_user_scaling'] == 1) {
         $story_templates->set_var('allow_user_scaling', $LANG24[27]);
@@ -812,6 +849,45 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $display;
+}
+
+/**
+ * Create thumbnail of attached image
+ *
+ * @param    string $ai_fname file name of attached image
+ */
+function createThumbnail($ai_fname)
+{
+    global $_CONF, $LANG24;
+
+    $upload = new Upload();
+
+    if (!empty($_CONF['image_lib'])) {
+        if ($_CONF['image_lib'] == 'imagemagick') {
+            // Using imagemagick
+            $upload->setMogrifyPath($_CONF['path_to_mogrify']);
+        } elseif ($_CONF['image_lib'] == 'netpbm') {
+            // using netPBM
+            $upload->setNetPBM($_CONF['path_to_netpbm']);
+        } elseif ($_CONF['image_lib'] == 'gdlib') {
+            // using the GD library
+            $upload->setGDLib();
+        }
+    }
+
+    if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
+        $output = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
+        echo $output;
+        exit;
+    }
+    if (!$upload->setThumbsPath($_CONF['path_images'] . '_thumbs/articles')) {
+        $output = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
+        echo $output;
+        exit;
+    }
+    $upload->createThumbnail($ai_fname);
 }
 
 /**
