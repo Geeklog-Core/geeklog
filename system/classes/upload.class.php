@@ -616,51 +616,7 @@ class Upload
                     exit;
                 }
 
-                if (($this->_currentFile['type'] === 'image/png') ||
-                    ($this->_currentFile['type'] === 'image/x-png')
-                ) {
-                    if (!function_exists('imagecreatefrompng')) {
-                        $this->_addError('Sorry, this version of the GD library does not support PNG images.');
-                        $this->printErrors();
-                        exit;
-                    }
-                    if (!$image_source = imagecreatefrompng($filename)) {
-                        $this->_addError('Could not create image from PNG: '
-                            . $filename);
-                        $this->printErrors();
-                        exit;
-                    }
-                } elseif (($this->_currentFile['type'] === 'image/jpeg') ||
-                    ($this->_currentFile['type'] === 'image/pjpeg')
-                ) {
-                    if (!function_exists('imagecreatefromjpeg')) {
-                        $this->_addError('Sorry, this version of the GD library does not support JPEG images.');
-                        $this->printErrors();
-                        exit;
-                    }
-                    if (!$image_source = imagecreatefromjpeg($filename)) {
-                        $this->_addError('Could not create image from JPEG: '
-                            . $filename);
-                        $this->printErrors();
-                        exit;
-                    }
-                } elseif ($this->_currentFile['type'] === 'image/gif') {
-                    if (!function_exists('imagecreatefromgif')) {
-                        $this->_addError('Sorry, this version of the GD library does not support GIF images.');
-                        $this->printErrors();
-                        exit;
-                    }
-                    if (!$image_source = imagecreatefromgif($filename)) {
-                        $this->_addError('Could not create image from GIF: '
-                            . $filename);
-                        $this->printErrors();
-                        exit;
-                    }
-                } else {
-                    $this->_addError('MIME type ' . $this->_currentFile['type'] . ' not supported.');
-                    $this->printErrors();
-                    exit;
-                }
+                $image_source = $this->_createImageFromFile_gdlib($filename);
 
                 // do resize
 
@@ -686,39 +642,10 @@ class Upload
                     imagealphablending($image_dest, false);
                     imagesavealpha($image_dest, true);
                 }
-
-                imagecopyresampled($image_dest, $image_source, 0, 0, 0, 0,
-                    $newWidth, $newHeight, $imageInfo['width'],
-                    $imageInfo['height']);
-                if (($this->_currentFile['type'] === 'image/png') ||
-                    ($this->_currentFile['type'] === 'image/x-png')
-                ) {
-                    if (!imagepng($image_dest, $filename)) {
-                        $this->_addError('Could not create PNG: ' . $filename);
-                        $this->printErrors();
-                        exit;
-                    }
-                } elseif (($this->_currentFile['type'] === 'image/jpeg') ||
-                    ($this->_currentFile['type'] === 'image/pjpeg')
-                ) {
-                    if ($this->_jpegQuality > 0) {
-                        $jpsuccess = imagejpeg($image_dest, $filename,
-                            $this->_jpegQuality);
-                    } else {
-                        $jpsuccess = imagejpeg($image_dest, $filename);
-                    }
-                    if (!$jpsuccess) {
-                        $this->_addError('Could not create JPEG: ' . $filename);
-                        $this->printErrors();
-                        exit;
-                    }
-                } elseif ($this->_currentFile['type'] === 'image/gif') {
-                    if (!imagegif($image_dest, $filename)) {
-                        $this->_addError('Could not create GIF: ' . $filename);
-                        $this->printErrors();
-                        exit;
-                    }
-                }
+                imagecopyresampled($image_dest, $image_source,
+                   0, 0, 0, 0, $newWidth, $newHeight,
+                   $imageInfo['width'], $imageInfo['height']);
+                $this->_outputImageToFile_gdlib($image_dest, $filename);
             }
 
             if ($retval > 0) {
@@ -1342,12 +1269,88 @@ class Upload
     }
 
     /**
+     * Create a new image from file with GD Library
+     *
+     * @param    string $src_path path to the source image
+     * @return   resource returns an image
+     */
+    private function _createImageFromFile_gdlib($src_path)
+    {
+        $src_image = false;
+        switch ($this->_currentFile['type']) {
+            case 'image/png':
+            case 'image/x-png':
+                $imageType = 'png';
+                break;
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                $imageType = 'jpeg';
+                break;
+            case 'image/gif':
+                $imageType = 'gif';
+                break;
+            default:
+                $this->_addError('MIME type ' . $this->_currentFile['type'] . ' not supported.');
+                $this->printErrors();
+                exit;
+                break;
+        }
+        $function = 'imagecreatefrom' . $imageType;
+        $imageType = strtoupper($imageType);
+        if (!function_exists($function)) {
+            $this->_addError('Sorry, this version of the GD library does not support '
+                . $imageType . ' images.');
+            $this->printErrors();
+            exit;
+        }
+        if (!$src_image = $function($src_path)) {
+            $this->_addError('Could not create image from '
+                . $imageType . ': ' . $src_path);
+            $this->printErrors();
+            exit;
+        }
+
+        return $src_image;
+    }
+
+    /**
+     * Output image to file with GD Library
+     *
+     * @param    resource $dst_image image resource returned by one of the image creation functions
+     * @param    string $dst_path path to save the file to
+     * @return   void
+     */
+    private function _outputImageToFile_gdlib($dst_image, $dst_path)
+    {
+        switch ($this->_currentFile['type']) {
+            case 'image/png':
+            case 'image/x-png':
+                $imageType = 'png';
+                break;
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                $imageType = 'jpeg';
+                break;
+            case 'image/gif':
+                $imageType = 'gif';
+                break;
+        }
+        $function = 'image' . $imageType;
+        if (!$function($dst_image, $dst_path)) {
+            $this->_addError('Could not create '
+                . strtoupper($imageType) . ': ' . $dst_path);
+            $this->printErrors();
+            exit;
+        }
+    }
+
+    /**
      * Create thumbnail with GD Library
      *
      * @param    string $src_fname source file name to create thumbnail
      * @return   boolean returns true if no errors were encountered otherwise false
      */
-    public function _createThumbnail_gdlib($src_fname)
+    private function _createThumbnail_gdlib($src_fname)
     {
         // Thumbnail size
         $dst_w = 64;
@@ -1378,7 +1381,7 @@ class Upload
         $dst_image = imagecreatetruecolor($dst_w, $dst_h);
 
         // Create a new image from source file
-        $src_image = imagecreatefromjpeg($src_path);
+        $src_image = $this->_createImageFromFile_gdlib($src_path);
 
         // Copy and resize part of source image
         imagecopyresampled($dst_image,     $src_image,
@@ -1386,7 +1389,7 @@ class Upload
                            $dst_w, $dst_h, $src_w, $src_h);
 
         // Output image to file
-        imagejpeg($dst_image, $dst_path);
+        $this->_outputImageToFile_gdlib($dst_image, $dst_path);
 
         return true;
     }
