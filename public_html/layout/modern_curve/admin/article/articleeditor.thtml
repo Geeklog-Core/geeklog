@@ -107,7 +107,7 @@
            &nbsp;
            <span dir="ltr">
            <select name="cmt_close_month">
-                   {cmt_close_month_options}
+              {cmt_close_month_options}
            </select>
            /
            <select name="cmt_close_day">
@@ -155,7 +155,7 @@
 
       <dt>{lang_images}</dt>
       <dd>
-        {image_form_elements}
+        {image_form}
         {image_add_instructions}
         {allow_user_scaling}
         {image_preview_instructions}
@@ -196,7 +196,7 @@
     <li><input type="submit" value="{lang_cancel}" name="mode"{xhtml}></li>
 {!if allow_delete}
     <li><input type="submit" value="{lang_delete}" name="mode" onclick="return confirm('{confirm_message}');"{xhtml}></li>
-{!endif}    
+{!endif}
     <li>
       <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
       <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
@@ -215,12 +215,45 @@
   </ul>
 </form>
 
-<!-- BEGIN image-file-name -->
-{imagecount}) <a href="{imagelink}">{imagefilename}</a>&nbsp;&nbsp;&nbsp;{lang_delete}: <input type="checkbox" name="delete[{imagecount}]"{xhtml}><br{xhtml}>
-<!-- END image-file-name -->
+<!-- BEGIN image-form -->
+<div class="uk-overflow-auto uk-margin-small">
+<table class="admin-list">
+<thead>
+<tr>
+  <th class="admin-list-headerfield">{lang_number}</th>
+  <th class="admin-list-headerfield">{lang_resized}</th>
+  <th class="admin-list-headerfield">{lang_original}</th>
+  <th class="admin-list-headerfield">{lang_upload_or_replace}</th>
+  <th class="admin-list-headerfield">{lang_delete}</th>
+</tr>
+</thead>
+<tbody>
+{image_form_elements}
+</tbody>
+</table>
+</div>
+<!-- END image-form -->
 
-<!-- BEGIN image-file-select -->
-{filecount}) <input type="file" dir="ltr" name="file{filecount}"{xhtml}><br{xhtml}>
-<!-- END image-file-select -->
+<!-- BEGIN image-form-elements -->
+<tr class="admin-listitem">
+  <td class="admin-list-field">{imagecount}</td>
+  <td class="admin-list-field">
+    <div class="gl-image-form-thumb-frame">
+      {!if imagelink}<a href="{imagelink}" title="{imagefilename}" target="_blank">{!endif}
+        <img src="{thumblink}" alt="">
+      {!if imagelink}</a>{!endif}
+    </div>
+  </td>
+  <td class="admin-list-field">
+    <div class="gl-image-form-thumb-frame">
+      {!if largelink}<a href="{largelink}" title="{largefilename}" target="_blank">{!endif}
+      <img src="{largethumblink}" alt="">
+      {!if largelink}</a>{!endif}
+    </div>
+  </td>
+  <td class="admin-list-field"><input type="file" dir="ltr" name="file{imagecount}"{xhtml}></td>
+  <td class="admin-list-field"><input type="checkbox" name="delete[{imagecount}]" class="uk-checkbox"{xhtml}></td>
+</tr>
+<!-- END image-form-elements -->
 
 {# end {templatelocation} #}

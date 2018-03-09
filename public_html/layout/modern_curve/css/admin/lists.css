@@ -85,6 +85,18 @@ table.admin-list tr.admin-listitem2 {
   background: #D9D9D9;
 }
 
+table.admin-list tr.admin-listitem {
+  background: #D9D9D9;
+}
+
+table.admin-list tr.admin-listitem:nth-of-type(odd) {
+  background: #EFEFEF;
+}
+
+table.admin-list tr.admin-listitem:hover > td {
+  background: #FFFF8F;
+}
+
 /* Rollover */
 table.admin-list tr.admin-listitem_rollover {
   background: #FFFF8F;

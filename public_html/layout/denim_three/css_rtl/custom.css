@@ -4,6 +4,19 @@
   flex-wrap: wrap;
   list-style-type: none;
 }
+
 .gl-flex-rights-list > li {
   width: 300px;
+}
+
+/* Image Form Thumbnail Frame */
+.gl-image-form-thumb-frame {
+  width: 64px;
+  height: 64px;
+  background-color: #ddd;
+}
+
+.gl-image-form-thumb-frame img {
+  width: 64px;
+  height: 64px;
 }
