@@ -33,9 +33,6 @@
 /**
  * Geeklog Time Zone Config class
  * A collection of static (for now) methods dealing with time zone handling.
- * For the original "Timezone Hack" discussion, see
- *
- * @link   https://www.geeklog.net/forum/viewtopic.php?showtopic=21232
  * @author Dirk Haun, dirk AT haun-online DOT de
  */
 class TimeZoneConfig
@@ -58,22 +55,16 @@ class TimeZoneConfig
 
         if (!empty($tz)) {
             if ($tz != $system_timezone) {
-                if (function_exists('date_default_timezone_set')) {
-                    if (!@date_default_timezone_set($tz)) {
-                        date_default_timezone_set('UTC');
-                        COM_errorLog("Timezone '$tz' not valid - using 'UTC' instead", 1);
-                        $system_timezone = 'UTC';
-                    } else {
-                        $system_timezone = $tz;
-                    }
-                } elseif (!ini_get('safe_mode') && function_exists('putenv')) {
-                    // aka "Timezone Hack"
-                    putenv('TZ=' . $tz);
+                if (!@date_default_timezone_set($tz)) {
+                    date_default_timezone_set('UTC');
+                    COM_errorLog("Timezone '$tz' not valid - using 'UTC' instead", 1);
+                    $system_timezone = 'UTC';
+                } else {
                     $system_timezone = $tz;
                 }
             }
-        } elseif (function_exists('date_default_timezone_get')) {
-            // this is not ideal but will stop PHP 5.3.0ff from complaining ...
+        } else {
+            // this is not ideal but will stop PHP 5.3.0 from complaining ...
             $system_timezone = @date_default_timezone_get();
             date_default_timezone_set($system_timezone);
         }
