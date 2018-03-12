@@ -27,6 +27,7 @@
           <option value="2" {none_selected}>{lang_none}</option>
           <option value="1" {left_selected}>{lang_left}</option>
           <option value="0" {right_selected}>{lang_right}</option>
+          {position_options}
         </select>
       </dd>
 

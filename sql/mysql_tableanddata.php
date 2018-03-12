@@ -36,6 +36,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   rdf_etag varchar(40) default NULL,
   rdflimit smallint(5) unsigned NOT NULL default '0',
   onleft tinyint(1) unsigned NOT NULL default '1',
+  location varchar(48) NOT NULL default '',
   phpblockfn varchar(128) default '',
   help varchar(255) default '',
   css_id varchar(255) NOT NULL default '',

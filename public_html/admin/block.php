@@ -112,14 +112,27 @@ function editdefaultblock($A, $access)
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
     $block_templates->set_var('lang_none', $LANG21[47]);
-
-    if ($A['onleft'] == 1) {
+    
+    if ($A['onleft'] == BLOCK_LEFT_POSITION) {
         $block_templates->set_var('left_selected', 'selected="selected"');
-    } elseif ($A['onleft'] == 0) {
+    } elseif ($A['onleft'] == BLOCK_RIGHT_POSITION) {
         $block_templates->set_var('right_selected', 'selected="selected"');
-    } else {
+    } elseif ($A['onleft'] == BLOCK_NONE_POSITION && empty($A['location'])) {
         $block_templates->set_var('none_selected', 'selected="selected"');
     }
+    // Add in rest of block position options if any
+    $block_locations = PLG_getBlockLocations();
+    $position_options = '';
+    foreach ($block_locations as $location) {
+        if ($A['onleft'] == BLOCK_NONE_POSITION && $A['location'] == $location['id'] ) {
+            $selected = ' selected="selected"';
+        } else {
+            $selected = '';
+        }
+        $position_options .= '<option value="' . $location['id'] . '"' . $selected . '>' . $location['name'] . '</option>';        
+    }
+    $block_templates->set_var('position_options', $position_options);
+    
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
     $block_templates->set_var('block_order', $A['blockorder']);
 
@@ -239,6 +252,7 @@ function overridePostdata(&$A)
         );
 
     $A['onleft'] = ($_POST['onleft'] == 1) ? 1 : 0;
+    $A['location'] = '';
     $A['is_enabled'] = ($_POST['is_enabled'] == 'on') ? 1 : 0;
     
     if (isset($_POST['allow_autotags'])) {
@@ -377,13 +391,31 @@ function editblock($bid = '')
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
     $block_templates->set_var('lang_none', $LANG21[47]);
-    if ($A['onleft'] == 1) {
+
+    
+    
+    if ($A['onleft'] == BLOCK_LEFT_POSITION) {
         $block_templates->set_var('left_selected', 'selected="selected"');
-    } elseif ($A['onleft'] == 0) {
+    } elseif ($A['onleft'] == BLOCK_RIGHT_POSITION) {
         $block_templates->set_var('right_selected', 'selected="selected"');
-    } else {
+    } elseif ($A['onleft'] == BLOCK_NONE_POSITION && empty($A['location'])) {
         $block_templates->set_var('none_selected', 'selected="selected"');
     }
+    // Add in rest of block position options if any
+    $block_locations = PLG_getBlockLocations();
+    $position_options = '';
+    foreach ($block_locations as $location) {
+        if ($A['onleft'] == BLOCK_NONE_POSITION && $A['location'] == $location['id'] ) {
+            $selected = ' selected="selected"';
+        } else {
+            $selected = '';
+        }
+        $position_options .= '<option value="' . $location['id'] . '"' . $selected . '>' . $location['name'] . '</option>';        
+    }
+    $block_templates->set_var('position_options', $position_options);    
+    
+    
+    
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
     $block_templates->set_var('block_order', $A['blockorder']);
 
@@ -585,6 +617,18 @@ function listblocks($position = BLOCK_ALL_POSITIONS)
         $position_filter .= ' selected="selected"';
     }
     $position_filter .= '>' . $LANG21[47] . '</option>';
+    /* // CAN'T DO rest of positions since rely on another field 
+    // Add in rest of block position options if any
+    $block_locations = PLG_getBlockLocations();
+    foreach ($block_locations as $block_location) {
+        if ($position == $block_location['id']) {
+            $selected = ' selected="selected"';
+        } else {
+            $selected = '';
+        }
+        $position_filter .= '<option value="' . $block_location['id'] . '"' . $selected . '>' . $block_location['name'] . '</option>';        
+    }
+    */
 
     $filter = $LANG21['position']
         . ': <select name="position" style="width: 125px" onchange="this.form.submit()">'
@@ -604,7 +648,7 @@ function listblocks($position = BLOCK_ALL_POSITIONS)
     );
 
     // Sort by position and then order for default
-    $defsort_arr = array('field' => 'onleft DESC, blockorder', 'direction' => 'asc');
+    $defsort_arr = array('field' => 'onleft DESC, location DESC, blockorder', 'direction' => 'asc');
 
     $text_arr = array(
         'has_extras' => true,
@@ -766,7 +810,22 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         if ($device != Device::MOBILE && $device != Device::COMPUTER) {
             $device = Device::ALL;
         }
-
+        
+        $location = '';
+        if ($onLeft === (string)BLOCK_LEFT_POSITION || $onLeft === (string)BLOCK_RIGHT_POSITION || $onLeft === (string)BLOCK_LEFT_POSITION) {
+            // value okay
+        } else {
+            $block_locations = PLG_getBlockLocations();
+            $key = array_search($onLeft, array_column($block_locations, 'id'));
+            if (is_numeric($key)) {
+                $onLeft = BLOCK_NONE_POSITION;
+                $location = $block_locations[$key]['id'];
+            } else {
+                // Block Position doesn't exist anymore for some reason so set to none
+                $onLeft = BLOCK_NONE_POSITION;
+            }
+        }
+            
         if ($allow_autotags == 'on') {
             $allow_autotags = 1;
         } else {
@@ -862,18 +921,18 @@ function saveblock($bid, $name, $title, $help, $type, $blockOrder, $device, $con
         if ($bid > 0) {
             DB_save(
                 $_TABLES['blocks'],
-                'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes,rdf_last_modified,rdf_etag',
-                "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}',NULL,NULL"
+                'bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,location,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes,rdf_last_modified,rdf_etag',
+                "$bid,'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,'$location',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}',NULL,NULL"
             );
         } else {
             $sql = array();
             $sql['mysql'] = "INSERT INTO {$_TABLES['blocks']} "
-                . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes) '
-                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}')";
+                . '(name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,location,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes) '
+                . "VALUES ('$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',$rdfUpdated,'$rdfLimit','$phpBlockFn',$onLeft,'$location',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}')";
 
             $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
-                . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes) '
-                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',CURRENT_TIMESTAMP,'$rdfLimit','$phpBlockFn',$onLeft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}')";
+                . '(bid,name,title,help,type,blockorder,device,content,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,location,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags,convert_newlines,cache_time,css_id,css_classes) '
+                . "VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockOrder','$device','$content','$rdfUrl',CURRENT_TIMESTAMP,'$rdfLimit','$phpBlockFn',$onLeft,'$location',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags,$convert_newlines,$cache_time,'{$cssId}','{$cssClasses}')";
 
             DB_query($sql);
             $bid = DB_insertId();
@@ -919,18 +978,19 @@ function reorderblocks()
 {
     global $_TABLES;
 
-    $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft ASC, blockorder ASC;";
+    $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft ASC, location ASC, blockorder ASC;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
     $lastside = 0;
+    $lastlocation = '';
     $blockOrd = 10;
     $stepNumber = 10;
 
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
 
-        if ($lastside != $A['onleft']) { // we are switching left/right blocks
+        if ($lastside != $A['onleft'] || $lastlocation != $A['location']) { // we are switching left/right blocks or template location
             $blockOrd = 10;              // so start with 10 again
         }
         if ($A['blockorder'] != $blockOrd) {  // only update incorrect ones
@@ -940,6 +1000,7 @@ function reorderblocks()
         }
         $blockOrd += $stepNumber;
         $lastside = $A['onleft'];       // save variable for next round
+        $lastlocation = $A['location'];       // save variable for next round
     }
 }
 
@@ -1043,7 +1104,7 @@ function deleteBlock($bid)
 
 // MAIN
 $mode = Geeklog\Input::request('mode', '');
-$position = (int) Geeklog\Input::fRequest('position', BLOCK_ALL_POSITIONS);
+$position = Geeklog\Input::fRequest('position', BLOCK_ALL_POSITIONS);
 $bid = Geeklog\Input::fRequest('bid', '');
 
 if (isset($_POST['blockenabler']) && SEC_checkToken()) {

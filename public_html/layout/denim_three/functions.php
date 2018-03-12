@@ -223,3 +223,36 @@ function theme_init_denim_three()
         $_BLOCK_TEMPLATE['user_block'] = 'blockheader-list.thtml,blockfooter-list.thtml';
     }
 }
+
+
+/**
+ * Return an array of Block Locations for a theme (besides left and right)
+ */
+/* 
+EXAMPLE CODE ONLY. Follow instructions below to implement.
+
+The code below can be added to the footer.html where you want the blocks to appear
+{!if blocks_footer}
+{blocks_footer}
+{!endif}  
+    
+Then uncomment this function below to register the above block location with Geeklog. Any new or updated blocks can then be assigned the following block location in the Block Editor
+    
+function theme_getBlockLocations_denim_three()
+{
+    $block_locations = array();
+
+    // Add any extra block positions in theme. Locations can have one or more variables assigned to them
+    // Remember these locations can only appear in templates that PLG_templateSetVars is used with
+    $block_locations[] = array(
+        'id'                => 'denim_three_footer', // Unique string. No other block location (includes Geeklog itself and any other plugins or themes) can share the same id ("left" and "right" are already taken).
+        'name'              => 'Denim Three Footer', // (should use language variable here)
+        'description'       => 'Blocks will appear at the bottom of all pages.', // (should use language variable here)
+        'template_name'     => 'footer',
+        'template_variable' => 'blocks_footer'
+    );
+
+    return $block_locations;
+}
+*/
+

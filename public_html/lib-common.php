@@ -622,6 +622,7 @@ function COM_getBlockTemplate($blockName, $which, $position = '')
         // Trim .thtml from the end.
         $positionSpecific = substr($template, 0, strlen($template) - 6);
         $positionSpecific .= '-' . $position . '.thtml';
+        
         if (file_exists($_CONF['path_layout'] . $positionSpecific)) {
             $template = $positionSpecific;
         }
@@ -1146,11 +1147,11 @@ function COM_createHTMLDocument(&$content = '', $information = array())
             if (function_exists($function)) {
                 $lBlocks = $function($what[1], 'left');
             } else {
-                $lBlocks = COM_showBlocks('left', $topic);
+                $lBlocks = COM_showBlocks('left');
             }
         } elseif ($what !== 'none') {
             // Now show any blocks -- need to get the topic if not on home page
-            $lBlocks = COM_showBlocks('left', $topic);
+            $lBlocks = COM_showBlocks('left');
         }
 
         if (empty($lBlocks)) {
@@ -1178,11 +1179,11 @@ function COM_createHTMLDocument(&$content = '', $information = array())
             if (function_exists($function)) {
                 $rBlocks = $function($what[1], 'right');
             } else {
-                $rBlocks = COM_showBlocks('right', $topic);
+                $rBlocks = COM_showBlocks('right');
             }
         } elseif ($what !== 'none') {
             // Now show any blocks -- need to get the topic if not on home page
-            $rBlocks = COM_showBlocks('right', $topic);
+            $rBlocks = COM_showBlocks('right');
         }
 
         if (empty($rBlocks)) {
@@ -1325,10 +1326,10 @@ function COM_createHTMLDocument(&$content = '', $information = array())
             if (function_exists($function)) {
                 $rBlocks = $function($custom['1'], 'right');
             } else {
-                $rBlocks = COM_showBlocks('right', $topic);
+                $rBlocks = COM_showBlocks('right');
             }
         } else {
-            $rBlocks = COM_showBlocks('right', $topic);
+            $rBlocks = COM_showBlocks('right');
         }
 
         if (empty($rBlocks)) {
@@ -1358,7 +1359,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
             }
         } else {
             if ($what !== 'none') {
-                $lBlocks = COM_showBlocks('left', $topic);
+                $lBlocks = COM_showBlocks('left');
             }
         }
 
@@ -3664,12 +3665,12 @@ function COM_showBlock($name, $help = '', $title = '', $position = '', $cssId = 
  * Returns HTML for blocks on a given side and, potentially, for
  * a given topic. Currently only used by static pages.
  *
- * @param  string $side  Side to get blocks for (right or left for now)
- * @param  string $topic Only get blocks for this topic
+ * @param  string $location  Side to get blocks for (right or left) OR other block location id
+ * @param  string $tempvar   Template variable currently assigned for blocks (not used for left or right)
  * @see    function COM_showBlock
  * @return string        HTML Formatted blocks
  */
-function COM_showBlocks($side, $topic = '')
+function COM_showBlocks($location)
 {
     global $_TABLES, $_USER, $topic, $_TOPICS;
 
@@ -3694,10 +3695,12 @@ function COM_showBlocks($side, $topic = '')
     $blockSql['pgsql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id::integer = bid AND is_enabled = 1";
 
     $commonSql = '';
-    if ($side === 'left') {
-        $commonSql .= " AND onleft = 1";
+    if ($location === 'left') {
+        $commonSql .= " AND onleft = " . BLOCK_LEFT_POSITION;
+    } elseif ($location === 'right') {
+        $commonSql .= " AND onleft = " . BLOCK_RIGHT_POSITION;
     } else {
-        $commonSql .= " AND onleft = 0";
+        $commonSql .= " AND onleft = " . BLOCK_NONE_POSITION . " AND location = '$location'";
     }
 
     // Figure out topic access
@@ -3748,7 +3751,7 @@ function COM_showBlocks($side, $topic = '')
     }
 
     // Check and see if any plugins have blocks to show
-    $pluginBlocks = PLG_getBlocks($side, $topic);
+    $pluginBlocks = PLG_getBlocks($location, $topic);
     $blocks = array_merge($blocks, $pluginBlocks);
 
     // sort the resulting array by block order
@@ -3824,7 +3827,20 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
     // If no device column found then bypass compare check (could happen with dynamic blocks that do not pass device)
     if (!isset($A['device']) || $_DEVICE->compare($A['device'])) {
         if (array_key_exists('onleft', $A) && !$noPosition) {
-            $position = ($A['onleft'] == 1) ? 'left' : 'right';
+            if ($A['onleft'] == 0) {
+                $position = 'right';
+            } elseif ($A['onleft'] == 1) {
+                $position = 'left';
+            } elseif ($A['onleft'] == 2) {
+                // Make sure location exists before checking it (in case dynamic block did not pass one)
+                if (array_key_exists('location', $A) && !empty($A['location'])) {
+                    $position = $A['location']; // This means it is a custom block location as defined by a theme or another plugin
+                } else {
+                    $position = '';
+                }
+            } else {
+                $position = '';
+            }
         } else {
             $position = '';
         }

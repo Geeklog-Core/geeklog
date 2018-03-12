@@ -1,3 +1,4 @@
+{# begin {templatelocation} #}
 
     <hr class="separator"{xhtml}>
 
@@ -5,3 +6,4 @@
       {geeklog_blocks}
     </div>
 
+{# end {templatelocation} #}

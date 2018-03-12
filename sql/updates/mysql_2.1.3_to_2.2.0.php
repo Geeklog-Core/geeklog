@@ -12,6 +12,8 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL D
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_classes` VARCHAR(255) NOT NULL DEFAULT '' AFTER `css_id`";
 // Add column to enable/disable convert newlines for normal blocks
 $_SQL[] = "ALTER TABLE `{$_TABLES['blocks']}` ADD `convert_newlines` tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER `allow_autotags`";
+// Add column to enable blocks appearing in other locations
+$_SQL[] = "ALTER TABLE `{$_TABLES['blocks']}` ADD `location` VARCHAR(48) NOT NULL DEFAULT '' AFTER `onleft`";
 
 // Drop small, read-only tables
 $_SQL[] = "DROP TABLE {$_TABLES['commentcodes']}";

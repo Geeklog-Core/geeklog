@@ -1474,7 +1474,9 @@ function PLG_templateSetVars($templateName, $template)
 {
     global $_PLUGINS;
 
-    foreach ($_PLUGINS as $pi_name) {
+    $all_plugins = array_merge($_PLUGINS, array('block'));
+
+    foreach ($all_plugins as $pi_name) {
         $function = 'plugin_templatesetvars_' . $pi_name;
         if (function_exists($function)) {
             $function ($templateName, $template);
@@ -2617,6 +2619,58 @@ function PLG_itemDisplay($id, $type)
     }
 
     return $result_arr;
+}
+
+/**
+ * Get list of template locations where blocks can appear. This includes Themes, Plugins, and Plugin Templates
+ * Introduced in Geeklog v2.2.0
+ *
+ * @return   array                  array of template names and variable names where blocks can appear
+ * @See      PLG_templateSetVars    Block locations can only exist in templates that have been called with this function
+ */
+function PLG_getBlockLocations()
+{
+    global $_PLUGINS, $_CONF;
+    
+    $ret = array();
+    
+    // Include block locations on behalf of the theme
+    $func = 'theme_getBlockLocations_' . $_CONF['theme'];
+    if (function_exists($func)) {
+        $items = $func();
+        if (is_array($items)) {
+            $ret = array_merge($ret, $items);
+        }
+    }    
+    
+    foreach ($_PLUGINS as $pi_name) {
+        // Check plugins
+        $function = 'plugin_getBlockLocations_' . $pi_name;
+        if (function_exists($function)) {
+            $items = $function();
+            if (is_array($items)) {
+                $ret = array_merge($ret, $items);
+            }
+        }
+        
+        // Now check plugin specific theme templates as it may only be assigned here
+        $function = $pi_name . '_getBlockLocations_' . $_CONF['theme'];
+        if (function_exists($function)) {
+            $items = $function();
+            if (is_array($items)) {
+                $ret = array_merge($ret, $items);
+            }
+        }        
+    }
+
+    if (function_exists('CUSTOM_getBlockLocations')) {
+        $customItems = CUSTOM_getBlocks();
+        if (is_array($customItems)) {
+            $ret = array_merge($ret, $customItems);
+        }
+    }
+
+    return $ret;
 }
 
 /**
