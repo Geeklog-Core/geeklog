@@ -376,7 +376,7 @@ class Template
         if (count($missing) > 0) {
             $this->halt("set_root: none of these directories exist: " . implode(', ', $missing));
         } else {
-            $this->halt("set_root: at least on existing directory must be set as root.");
+            $this->halt("set_root: at least one existing directory must be set as root.");
         }
 
         return false;
