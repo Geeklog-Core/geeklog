@@ -591,13 +591,14 @@ if ($_VARS['last_article_publish'] != $A['date']) {
  * @param        string $which      can be either 'header' or 'footer' for corresponding template
  * @param        string $position   can be 'left', 'right' or blank. If set, will be used to find a side specific
  *                                  override template.
+ * @param        string $plugin     name of plugin with blocks location
  * @see function COM_startBlock
  * @see function COM_endBlock
  * @see function COM_showBlocks
  * @see function COM_showBlock
  * @return   string  template name
  */
-function COM_getBlockTemplate($blockName, $which, $position = '')
+function COM_getBlockTemplate($blockName, $which, $position = '', $plugin = '')
 {
     global $_BLOCK_TEMPLATE, $_COM_VERBOSE, $_CONF;
 
@@ -622,9 +623,20 @@ function COM_getBlockTemplate($blockName, $which, $position = '')
         // Trim .thtml from the end.
         $positionSpecific = substr($template, 0, strlen($template) - 6);
         $positionSpecific .= '-' . $position . '.thtml';
+
+        $templatefound = false;        
+        if (!empty($plugin)) {
+            $plugin_template_paths = CTL_plugin_templatePath($plugin);
+            foreach($plugin_template_paths as $plugin_template_path) {
+                 if (file_exists($plugin_template_path . '/' . $positionSpecific)) {
+                     $template = $positionSpecific;
+                     $templatefound = true; // If found don't need to search theme or theme default if exist
+                     break;
+                 }
+            }
+        }
         
-        $templatefound = false;
-        if (file_exists($_CONF['path_layout'] . $positionSpecific)) {
+        if (!$templatefound && file_exists($_CONF['path_layout'] . $positionSpecific)) {
             $template = $positionSpecific;
             $templatefound = true; // If found don't need to search theme default if exist
         }
@@ -1441,11 +1453,12 @@ function COM_createHTMLDocument(&$content = '', $information = array())
  * @param    string $template   HTML template file to use to format the block
  * @param    string $cssId      CSS ID (since GL 2.2.0, optional)
  * @param    string $cssClasses CSS class names separated by space (since GL 2.2.0, optional)
+ * @param    string $plugin     Using a Plugin custom block location (since GL 2.2.0, optional)
  * @return   string             Formatted HTML containing block header
  * @see COM_endBlock
  * @see COM_createHTMLDocument
  */
-function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.thtml', $cssId = '', $cssClasses = '')
+function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.thtml', $cssId = '', $cssClasses = '', $plugin = '')
 {
     global $_CONF, $LANG32, $_IMAGE_TYPE, $_SCRIPTS;
 
@@ -1455,8 +1468,23 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
         return $function($title, $helpFile, $template);
     }
 
-    $block = COM_newTemplate($_CONF['path_layout']);
-    $block->set_file('block', $template);
+    // need to check if template file found for plugin if not then use regular theme location
+    $templatefound = false;        
+    if (!empty($plugin)) {
+        $plugin_template_paths = CTL_plugin_templatePath($plugin);
+        foreach($plugin_template_paths as $plugin_template_path) {
+             if (file_exists($plugin_template_path . '/' . $template)) {
+                 $block = COM_newTemplate(CTL_plugin_templatePath($plugin));
+                 $templatefound = true; // If found don't need to search theme or theme default if exist
+                 break;
+             }
+        }
+    }    
+    if (!$templatefound) {
+        $block = COM_newTemplate($_CONF['path_layout']);
+    }
+    $retval = $block->set_file('block', $template);
+
 
     $block->set_var(array(
         'block_title' => stripslashes($title),
@@ -1508,7 +1536,7 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
  * @return   string           Formatted HTML to close block
  * @see function COM_startBlock
  */
-function COM_endBlock($template = 'blockfooter.thtml')
+function COM_endBlock($template = 'blockfooter.thtml', $plugin = '')
 {
     global $_CONF;
 
@@ -1518,7 +1546,21 @@ function COM_endBlock($template = 'blockfooter.thtml')
         return $function($template);
     }
 
-    $block = COM_newTemplate($_CONF['path_layout']);
+    // need to check if template file found for plugin if not then use regular theme location
+    $templatefound = false;        
+    if (!empty($plugin)) {
+        $plugin_template_paths = CTL_plugin_templatePath($plugin);
+        foreach($plugin_template_paths as $plugin_template_path) {
+             if (file_exists($plugin_template_path . '/' . $template)) {
+                 $block = COM_newTemplate(CTL_plugin_templatePath($plugin));
+                 $templatefound = true; // If found don't need to search theme or theme default if exist
+                 break;
+             }
+        }
+    }    
+    if (!$templatefound) {
+        $block = COM_newTemplate($_CONF['path_layout']);
+    }
     $block->set_file('block', $template);
 
     $block->parse('endHTML', 'block');
@@ -3800,6 +3842,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
     global $_CONF, $_TABLES, $LANG21, $_DEVICE;
 
     $retval = '';
+    $plugin = '';
 
     $lang = COM_getLanguageId();
     if (!empty($lang)) {
@@ -3837,6 +3880,13 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
                 // Make sure location exists before checking it (in case dynamic block did not pass one)
                 if (array_key_exists('location', $A) && !empty($A['location'])) {
                     $position = $A['location']; // This means it is a custom block location as defined by a theme or another plugin
+                    
+                    // Determine if Plugin as it could be theme (need to pass plugin name to COM_startBlock and COM_getBlockTemplate so can find proper templates)
+                    $block_locations = PLG_getBlockLocations();
+                    $key = array_search($position, array_column($block_locations, 'id'));
+                    if (is_numeric($key) && $block_locations[$key]['type'] == 'plugin') {
+                        $plugin = $block_locations[$key]['type_name'];
+                    }
                 } else {
                     $position = '';
                 }
@@ -3884,10 +3934,11 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
                 }
                 $blockHeader = COM_startBlock(
                     $A['title'], $A['help'],
-                    COM_getBlockTemplate($A['name'], 'header', $position),
-                    $A['css_id'], $A['css_classes']
+                    COM_getBlockTemplate($A['name'], 'header', $position, $plugin),
+                    $A['css_id'], $A['css_classes'],
+                    $plugin
                 );
-                $blockFooter = COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
+                $blockFooter = COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position, $plugin), $plugin);
 
                 if (function_exists($function)) {
                     if (isset($args)) {
@@ -3926,11 +3977,12 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
 
             $retval .= COM_startBlock(
                     $A['title'], $A['help'],
-                    COM_getBlockTemplate($A['name'], 'header', $position),
-                    $A['css_id'], $A['css_classes']
+                    COM_getBlockTemplate($A['name'], 'header', $position, $plugin),
+                    $A['css_id'], $A['css_classes'],
+                    $plugin
                 )
                 . $blockContent . LB
-                . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
+                . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position, $plugin), $plugin);
         }
         // Cache only if enabled and not gldefault or dynamic
         if (isset($A['cache_time']) &&

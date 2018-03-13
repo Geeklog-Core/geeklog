@@ -2639,6 +2639,11 @@ function PLG_getBlockLocations()
     if (function_exists($function)) {
         $items = $function();
         if (is_array($items)) {
+            // Add type and type name for all elements
+            foreach (range($p, $size-1) as $key) {
+                $items[$key]['type'] = 'theme';
+                $items[$key]['type_name'] = $_CONF['theme'];
+            }            
             $ret = array_merge($ret, $items);
         }
     } elseif (!empty($_CONF['theme_default'])) {
@@ -2647,6 +2652,11 @@ function PLG_getBlockLocations()
         if (function_exists($function)) {
             $items = $function();
             if (is_array($items)) {
+                // Add type and type name for all elements
+                foreach (range($p, $size-1) as $key) {
+                    $items[$key]['type'] = 'theme';
+                    $items[$key]['type_name'] = $_CONF['theme_default'];
+                }            
                 $ret = array_merge($ret, $items);
             }
         }
@@ -2658,6 +2668,11 @@ function PLG_getBlockLocations()
         if (function_exists($function)) {
             $items = $function();
             if (is_array($items)) {
+                // Add type and type name for all elements
+                foreach (range($p, $size-1) as $key) {
+                    $items[$key]['type'] = 'plugin';
+                    $items[$key]['type_name'] = $pi_name;
+                }            
                 $ret = array_merge($ret, $items);
             }
         }
@@ -2667,6 +2682,11 @@ function PLG_getBlockLocations()
         if (function_exists($function)) {
             $items = $function();
             if (is_array($items)) {
+                // Add type and type name for all elements
+                foreach (range($p, $size-1) as $key) {
+                    $items[$key]['type'] = 'plugin';
+                    $items[$key]['type_name'] = $pi_name;
+                }            
                 $ret = array_merge($ret, $items);
             }
         } elseif (!empty($_CONF['theme_default'])) {
@@ -2675,6 +2695,11 @@ function PLG_getBlockLocations()
             if (function_exists($function)) {
                 $items = $function();
                 if (is_array($items)) {
+                    // Add type and type name for all elements
+                    foreach (range($p, $size-1) as $key) {
+                        $items[$key]['type'] = 'plugin';
+                        $items[$key]['type_name'] = $pi_name;
+                    }                      
                     $ret = array_merge($ret, $items);
                 }
             }
