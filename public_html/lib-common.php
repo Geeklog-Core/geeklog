@@ -623,11 +623,13 @@ function COM_getBlockTemplate($blockName, $which, $position = '')
         $positionSpecific = substr($template, 0, strlen($template) - 6);
         $positionSpecific .= '-' . $position . '.thtml';
         
+        $templatefound = false;
         if (file_exists($_CONF['path_layout'] . $positionSpecific)) {
             $template = $positionSpecific;
+            $templatefound = true; // If found don't need to search theme default if exist
         }
         // See if default theme if so check there
-        if (!empty($_CONF['theme_default'])) {
+        if (!$templatefound && !empty($_CONF['theme_default'])) {
             if (file_exists($_CONF['path_layout_default'] . $positionSpecific)) {
                 $template = $positionSpecific;
             }
