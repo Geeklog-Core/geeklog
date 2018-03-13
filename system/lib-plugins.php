@@ -2635,16 +2635,25 @@ function PLG_getBlockLocations()
     $ret = array();
     
     // Include block locations on behalf of the theme
-    $func = 'theme_getBlockLocations_' . $_CONF['theme'];
-    if (function_exists($func)) {
-        $items = $func();
+    $function = 'theme_getBlockLocations_' . $_CONF['theme'];
+    if (function_exists($function)) {
+        $items = $function();
         if (is_array($items)) {
             $ret = array_merge($ret, $items);
         }
-    }    
+    } elseif (!empty($_CONF['theme_default'])) {
+        // See if default theme if so check for it
+        $function = 'theme_getBlockLocations_' . $_CONF['theme_default'];
+        if (function_exists($function)) {
+            $items = $function();
+            if (is_array($items)) {
+                $ret = array_merge($ret, $items);
+            }
+        }
+    }
     
     foreach ($_PLUGINS as $pi_name) {
-        // Check plugins
+        // Check plugin itself (would cover all plugin theme templates)
         $function = 'plugin_getBlockLocations_' . $pi_name;
         if (function_exists($function)) {
             $items = $function();
@@ -2660,13 +2669,22 @@ function PLG_getBlockLocations()
             if (is_array($items)) {
                 $ret = array_merge($ret, $items);
             }
+        } elseif (!empty($_CONF['theme_default'])) {
+            // See if default theme if so check if plugin templates exist
+            $function = $pi_name . '_getBlockLocations_' . $_CONF['theme_default'];
+            if (function_exists($function)) {
+                $items = $function();
+                if (is_array($items)) {
+                    $ret = array_merge($ret, $items);
+                }
+            }
         }        
     }
 
     if (function_exists('CUSTOM_getBlockLocations')) {
-        $customItems = CUSTOM_getBlocks();
-        if (is_array($customItems)) {
-            $ret = array_merge($ret, $customItems);
+        $customBlocks = CUSTOM_getBlockLocations();
+        if (is_array($customBlocks)) {
+            $ret = array_merge($ret, $customBlocks);
         }
     }
 
