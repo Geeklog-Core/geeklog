@@ -1084,7 +1084,7 @@ class Resource
                     'priority' => self::JQUERY_UI_PRIORITY + 30,
                 ),
             );
-        } elseif ($this->useUIkit3) {
+        } elseif ($this->useUIkit3 && !isset($this->localCssFiles['uikit3'])) {
             $cssFileName = (isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl')) ? 'uikit-rtl' : 'uikit';
             $cssFiles = array(
                 array(
