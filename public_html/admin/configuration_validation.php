@@ -225,6 +225,7 @@ $_CONF_VALIDATE['Core']['whats_related'] = array(
 $_CONF_VALIDATE['Core']['whats_related_max'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['whats_related_trim'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['default_cache_time_article'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['blocks_article_topic_list_repeat_after'] = array('rule' => 'numeric');
 
 /* Subgroup Stories and Trackback, Tab Trackback */
 $_CONF_VALIDATE['Core']['trackback_enabled'] = array('rule' => 'boolean');

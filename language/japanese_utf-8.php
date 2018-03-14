@@ -932,6 +932,17 @@ $LANG21 = array(
 );
 
 ###############################################################################
+# Block Locations
+
+$LANG23 = array (
+    'blocks_article_footer_name'         => 'Article Footer',
+    'blocks_article_footer_desc'         => 'Display Blocks in article Footer',
+    
+    'blocks_article_topic_list_name'     => 'Article Topic List',
+    'blocks_article_topic_list_desc'     => 'Displays Blocks right after every X number of articles in topics.'
+);
+
+###############################################################################
 # admin/article.php
 
 $LANG24 = array(
@@ -2274,6 +2285,7 @@ $LANG_confignames['Core'] = array(
     'whats_related_max' => '表示する関連情報の最大数',
     'whats_related_trim' => '関連情報のタイトルの最大長',
     'default_cache_time_article' => '記事のキャッシュ期間のデフォルト',
+    'blocks_article_topic_list_repeat_after' => "Article Topic List Blocks Location Repeat",
     'aftersave_user' => 'ユーザー保存後の画面遷移',
     'show_right_blocks' => '右ブロックを常に表示する',
     'showfirstasfeatured' => '最初の記事を注目記事として表示する',

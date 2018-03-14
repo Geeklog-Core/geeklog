@@ -109,6 +109,8 @@ function update_ConfValuesFor220()
     // Config option for enable/disable logging of 404 errors
     $c->add('404_log',1,'select',7,31,1,1840,TRUE, $me, 31);
    
+    // Config option to control how often the Article Topic List Block repeats on the page
+    $c->add('blocks_article_topic_list_repeat_after',1,'text',1,7,NULL,1400,TRUE, $me, 7);
 
     return true;
 }

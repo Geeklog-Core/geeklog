@@ -346,7 +346,8 @@ if ($A = DB_fetchArray($result)) {
     }
 
     // display first article
-    $display .= STORY_renderArticle($story, 'y');
+    $articlecount = 1; // Post count of page
+    $display .= STORY_renderArticle($story, 'y', '', '', $articlecount);
 
     // get plugin center blocks after featured article
     if ($story->DisplayElements('featured') == 1) {
@@ -355,10 +356,11 @@ if ($A = DB_fetchArray($result)) {
 
     // get remaining stories
     while ($A = DB_fetcharray($result)) {
+        $articlecount++;
         fixTopic($A, $tid_list);
         $story = new Article();
         $story->loadFromArray($A);
-        $display .= STORY_renderArticle($story, 'y');
+        $display .= STORY_renderArticle($story, 'y', '', '' , $articlecount);
     }
 
     // get plugin center blocks that follow articles

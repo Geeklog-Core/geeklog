@@ -57,13 +57,13 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
  * submit.php and admin/article.php (Preview mode for the last two).
  *
  * @param   Article $story    The story to display, an instance of the Story class.
- * @param   string  $index    n = Full display of article. p = 'Preview' mode. Else introtext only.
+ * @param   string  $index    n = Full display of article. p = 'Preview' mode. Else y = introtext only.
  * @param   string  $storyTpl The template to use to render the story.
  * @param   string  $query    A search query, if one was specified.
  * @return  string           Article as formatted HTML.
  *                            Note: Formerly named COM_Article, and re-written totally since then.
  */
-function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '')
+function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '', $articlecount = 1)
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
            $_IMAGE_TYPE, $mode;
@@ -646,13 +646,30 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         }
 
         PLG_templateSetVars($article_filevar, $article);
+        // Used by Custom Block Locations (needs to be done before cache)
+        if ($index == 'n') { // p = preview, n = full article, y = intro only (displayed in topics)
+            PLG_templateSetVars($article_filevar . '_full', $article);
+        } elseif ($_CONF['blocks_article_topic_list_repeat_after'] > 0) {
+            if ($index == 'y' && ($articlecount %$_CONF['blocks_article_topic_list_repeat_after'] == 0)) {
+                PLG_templateSetVars($article_filevar . '_topic_list', $article);
+            }
+        }
 
         if ($index != 'p' && ($cache_time > 0 || $cache_time == -1)) {
             $article->create_instance($cacheInstance, $article_filevar);
             // CACHE_create_instance($cacheInstance, $article);
         }
+
     } else {
         PLG_templateSetVars($article_filevar, $article);
+        // Used by Custom Block Locations
+        if ($index == 'n') { // p = preview, n = full article, y = intro only (displayed in topics)
+            PLG_templateSetVars($article_filevar . '_full', $article);
+        } elseif ($_CONF['blocks_article_topic_list_repeat_after'] > 0) {
+            if ($index == 'y' && ($articlecount %$_CONF['blocks_article_topic_list_repeat_after'] == 0)) {
+                PLG_templateSetVars($article_filevar . '_topic_list', $article);
+            }
+        }        
 
         if (!$_CONF['cache_templates']) {
             // Hack (see Geeklog Bug Tracker issue #0001817): Cannot set the template variable directly with set_var since
@@ -663,7 +680,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $article->templateCode[$article_filevar] = $retval;
         }
     }
-
+   
     $article->parse('finalstory', $article_filevar);
 
     return $article->finish($article->get_var('finalstory'));
@@ -1777,6 +1794,36 @@ function plugin_getfeednames_article()
     }
 
     return $feeds;
+}
+
+/**
+ * Return an array of Block Locations in plugin templates
+ */
+function plugin_getBlockLocations_article()
+{
+   global $LANG23;
+    
+    $block_locations = array();
+
+    // Add any extra block locations for plugin
+    // Remember these locations can only appear in templates that PLG_templateSetVars is used with
+    $block_locations[] = array(
+        'id'                => 'article_footer', // Unique string. No other block location (includes Geeklog itself and any other plugins or themes) can share the same id ("left" and "right" are already taken).
+        'name'              => $LANG23['blocks_article_footer_name'],
+        'description'       => $LANG23['blocks_article_footer_desc'],
+        'template_name'     => 'article_full',
+        'template_variable' => 'blocks_article_footer'
+    );
+    
+    $block_locations[] = array(
+        'id'                => 'article_topic_list', // Unique string. No other block location (includes Geeklog itself and any other plugins or themes) can share the same id ("left" and "right" are already taken).
+        'name'              => $LANG23['blocks_article_topic_list_name'],
+        'description'       => $LANG23['blocks_article_topic_list_desc'], 
+        'template_name'     => 'article_topic_list',
+        'template_variable' => 'blocks_article_topic_list'
+    );    
+
+    return $block_locations;
 }
 
 /**

@@ -145,6 +145,7 @@ function install_config()
     $c->add('whats_related_max',0,'text',1,7,NULL,1370,TRUE, $me, 7);
     $c->add('whats_related_trim',26,'text',1,7,NULL,1380,TRUE, $me, 7);
     $c->add('default_cache_time_article',0,'text',1,7,NULL,1390,TRUE, $me, 7);
+    $c->add('blocks_article_topic_list_repeat_after',1,'text',1,7,NULL,1400,TRUE, $me, 7);
 
     $c->add('tab_trackback', NULL, 'tab', 1, 8, NULL, 0, TRUE, $me, 8);
     $c->add('fs_trackback', NULL, 'fieldset', 1, 8, NULL, 0, TRUE, $me, 8);

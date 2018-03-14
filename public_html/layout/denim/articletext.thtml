@@ -54,6 +54,13 @@
 {!endif}
 </article>
 
+{!if blocks_article_footer}
+{blocks_article_footer}
+{!endif}
+{!if blocks_article_topic_list}
+{blocks_article_topic_list}
+{!endif}
+
 <!-- BEGIN image_noalign -->
 {!if link_url}
 <figure class="gl-article-figure">
