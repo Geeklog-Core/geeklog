@@ -2640,10 +2640,10 @@ function PLG_getBlockLocations()
         $items = $function();
         if (is_array($items)) {
             // Add type and type name for all elements
-            foreach (range($p, $size-1) as $key) {
-                $items[$key]['type'] = 'theme';
-                $items[$key]['type_name'] = $_CONF['theme'];
-            }            
+                foreach ($items as &$item) {
+                    $item['type'] = 'theme';
+                    $item['type_name'] = $_CONF['theme'];
+                }                
             $ret = array_merge($ret, $items);
         }
     } elseif (!empty($_CONF['theme_default'])) {
@@ -2653,26 +2653,33 @@ function PLG_getBlockLocations()
             $items = $function();
             if (is_array($items)) {
                 // Add type and type name for all elements
-                foreach (range($p, $size-1) as $key) {
-                    $items[$key]['type'] = 'theme';
-                    $items[$key]['type_name'] = $_CONF['theme_default'];
-                }            
+                foreach ($items as &$item) {
+                    $item['type'] = 'theme';
+                    $item['type_name'] = $_CONF['theme_default'];
+                }                
                 $ret = array_merge($ret, $items);
             }
         }
     }
     
-    foreach ($_PLUGINS as $pi_name) {
+    
+    // Add in components so they can act like plugins
+    require_once $_CONF['path_system'] . 'lib-article.php';
+    require_once $_CONF['path_system'] . 'lib-comment.php';
+
+    $pluginTypes = array_merge(array('article', 'comment'), $_PLUGINS);    
+    
+    foreach ($pluginTypes as $pi_name) {
         // Check plugin itself (would cover all plugin theme templates)
         $function = 'plugin_getBlockLocations_' . $pi_name;
         if (function_exists($function)) {
             $items = $function();
             if (is_array($items)) {
                 // Add type and type name for all elements
-                foreach (range($p, $size-1) as $key) {
-                    $items[$key]['type'] = 'plugin';
-                    $items[$key]['type_name'] = $pi_name;
-                }            
+                foreach ($items as &$item) {
+                    $item['type'] = 'plugin';
+                    $item['type_name'] = $pi_name;
+                }                
                 $ret = array_merge($ret, $items);
             }
         }
@@ -2683,10 +2690,10 @@ function PLG_getBlockLocations()
             $items = $function();
             if (is_array($items)) {
                 // Add type and type name for all elements
-                foreach (range($p, $size-1) as $key) {
-                    $items[$key]['type'] = 'plugin';
-                    $items[$key]['type_name'] = $pi_name;
-                }            
+                foreach ($items as &$item) {
+                    $item['type'] = 'plugin';
+                    $item['type_name'] = $pi_name;
+                }                
                 $ret = array_merge($ret, $items);
             }
         } elseif (!empty($_CONF['theme_default'])) {
@@ -2696,10 +2703,10 @@ function PLG_getBlockLocations()
                 $items = $function();
                 if (is_array($items)) {
                     // Add type and type name for all elements
-                    foreach (range($p, $size-1) as $key) {
-                        $items[$key]['type'] = 'plugin';
-                        $items[$key]['type_name'] = $pi_name;
-                    }                      
+                    foreach ($items as &$item) {
+                        $item['type'] = 'plugin';
+                        $item['type_name'] = $pi_name;
+                    }                
                     $ret = array_merge($ret, $items);
                 }
             }

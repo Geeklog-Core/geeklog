@@ -104,6 +104,7 @@ function plugin_templatesetvars_block($templatename, &$template)
     // template_variable name should start with blocks_ and be returned in array like:
     /*
     $block_locations[] = array(
+        'id'                => 'theme_footer', // Unique string. No other block location (includes Geeklog itself and any other plugins or themes) can share the same id ("left" and "right" are already taken).
         'name'              => 'Text Name of block location',
         'description'       => 'Text description of block location',
         'template_name'     => 'footer',
@@ -113,13 +114,13 @@ function plugin_templatesetvars_block($templatename, &$template)
 
     // Include block locations on behalf of the theme, plugins (and there supported themes)
     $block_locations = PLG_getBlockLocations();
-    
+
     $keys = array_keys(array_column($block_locations, 'template_name'), $templatename);
 
     // Template could have multiple block template variables so loop through found keys
     foreach($keys as $key) {
-        $template->set_var($block_locations[$key]['template_variable'], COM_showBlocks($block_locations[$key]['id']));
-        //$template->set_var($block_locations[$key]['template_variable'], 'Test Time: ' . time());
+        //$template->set_var($block_locations[$key]['template_variable'], '<p><em>Time: ' . time() . '</em></p>', false, true);
+        $template->set_var($block_locations[$key]['template_variable'], COM_showBlocks($block_locations[$key]['id']), false, true); // need to insert as non cache variable
     }
 }
 
