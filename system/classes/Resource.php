@@ -1019,6 +1019,10 @@ class Resource
                     self::JS_TAG_TEMPLATE,
                     sprintf(self::UIKIT3_CDN, self::UIKIT3_VERSION)
                 );
+                $retval .= sprintf(
+                    self::JS_TAG_TEMPLATE,
+                    sprintf(self::UIKIT3_CDN2, self::UIKIT3_VERSION)
+                );
             } else {
                 $retval .= sprintf(
                         self::JS_TAG_TEMPLATE,
