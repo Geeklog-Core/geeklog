@@ -1817,13 +1817,14 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
  * Render the actual content of a static page (without any surrounding blocks)
  *
  * @param    string $sp_id       the id
+ * @param    string $sp_id       the title of the page. Used to set {sp_title} template variable
  * @param    string $sp_content  the content (HTML or PHP source)
  * @param    int    $sp_php      flag: 1 = content is PHP source, 0 = is HTML
  * @param    int    $cache_time  the max cache time of this page
  * @param    string $template_id the max cache time of this page
  * @return   string                  rendered content (HTML)
  */
-function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $template_id = '')
+function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time = 0, $template_id = '')
 {
     global $_SP_CONF, $LANG_STATIC;
 
@@ -1886,6 +1887,9 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
                 $sp_template->set_view(array(
                     'page_view' => $retval['sp_content'],
                 ));
+                
+                // Set Staticpage Title 
+                $sp_template->set_var('sp_title', stripslashes($sp_title));      
 
                 // Add all the staticpage variables as template variables now
                 foreach ($tag as $key => $value) {
