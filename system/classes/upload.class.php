@@ -1505,6 +1505,13 @@ class Upload
             return false;
         }
 
+        if (empty($this->_currentFile['type'])) {
+            $src_path = $this->_fileUploadDirectory . '/' . $src_fname;
+            // Get mime type
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $this->_currentFile['type'] = $finfo->file($src_path);
+        }
+
         if ($this->_imageLib === 'imagemagick') {
             return $this->_createThumbnail_imagick($src_fname);
         } elseif ($this->_imageLib === 'netpbm') {
