@@ -56,7 +56,7 @@
  */
 
 // Turn this on to get various debug messages from the code in this library
-// Need to perform check as lib-security is also loaded by the Geeklog Emergency Rescue Tool 
+// Need to perform check as lib-security is also loaded by the Geeklog Emergency Rescue Tool
 // which does not load lib-common.php
 if (function_exists('COM_isEnableDeveloperModeLog')) {
     $_SEC_VERBOSE = COM_isEnableDeveloperModeLog('security');
@@ -289,7 +289,7 @@ function SEC_hasConfigAccess()
 function SEC_hasConfigAcess()
 {
     COM_deprecatedLog(__FUNCTION__, '2.0.0', '3.0.0', 'SEC_hasConfigAccess');
-    
+
     return SEC_hasConfigAccess();
 }
 
@@ -769,17 +769,17 @@ function SEC_authenticate($username, $password, &$uid)
             return USER_ACCOUNT_DISABLED;
         } elseif (SEC_encryptUserPassword($password, $uid) < 0) {
             $tmp = $LANG01['error_invalid_password'] . ": '" . $username . "'";
-            COM_accessLog($tmp);            
-            
+            COM_accessLog($tmp);
+
             // Check and record invalid user login attempt
             if ($_CONF['invalidloginattempts'] > 0 AND $_CONF['invalidloginmaxtime'] > 0 ) {
                 // Check to see if time is within max value (need to deal with NULLS)
                 if (!empty($U['lastinvalidcheck']) AND ($U['lastinvalidcheck'] > $U['currenttime'])) {
                     // Now check if Max login attempts reached for user
                     if ((($U['invalidlogins'] + 1) >= $_CONF['invalidloginattempts'])) {
-                        // Send an email 
+                        // Send an email
                         USER_sendInvalidLoginAlert($username, $U['email'], $U['uid']);
-                        
+
                         // Notify any plugins
                         PLG_invalidLoginsUser($U['uid']);
 
@@ -787,7 +787,7 @@ function SEC_authenticate($username, $password, &$uid)
                         $sql = "UPDATE {$_TABLES['users']} SET invalidlogins = 0, lastinvalid = UNIX_TIMESTAMP() WHERE uid = {$U['uid']}";
                         DB_query($sql);
                     } else {
-                        // If not 
+                        // If not
                         $sql = "UPDATE {$_TABLES['users']} SET invalidlogins = invalidlogins + 1 WHERE uid = {$U['uid']}";
                         DB_query($sql);
                     }
@@ -797,7 +797,7 @@ function SEC_authenticate($username, $password, &$uid)
                     DB_query($sql);
                 }
             }
-            
+
             return -1; // failed login
         } elseif ($U['status'] == USER_ACCOUNT_AWAITING_APPROVAL) {
             return USER_ACCOUNT_AWAITING_APPROVAL;
@@ -812,7 +812,7 @@ function SEC_authenticate($username, $password, &$uid)
         } elseif ($U['status'] == USER_ACCOUNT_NEW_EMAIL) {
             return USER_ACCOUNT_NEW_EMAIL;
         } elseif ($U['status'] == USER_ACCOUNT_NEW_PASSWORD) {
-            return USER_ACCOUNT_NEW_PASSWORD;            
+            return USER_ACCOUNT_NEW_PASSWORD;
         } else {
             return $U['status']; // just return their status
         }
@@ -1108,14 +1108,16 @@ function SEC_removeFeatureFromDB($feature_name, $logging = false)
  */
 function SEC_getGroupDropdown($group_id, $access)
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
 
     $groupdd = '';
 
     if ($access == 3) {
         $usergroups = SEC_getUserGroups();
-
-        $groupdd .= '<select id="group_id" name="group_id">' . LB;
+        $T = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $T->set_file('common', 'common.thtml');
+        $T->set_block('common', 'type-select');
+        $T->set_var('name', $name);
         foreach ($usergroups as $ug_name => $ug_id) {
             $groupdd .= '<option value="' . $ug_id . '"';
             if ($group_id == $ug_id) {
@@ -1123,7 +1125,8 @@ function SEC_getGroupDropdown($group_id, $access)
             }
             $groupdd .= '>' . ucwords($ug_name) . '</option>' . LB;
         }
-        $groupdd .= '</select>' . LB;
+        $T->set_var('select_items', $groupdd);
+        $groupdd = $T->finish($T->parse('common', 'type-select'));
     } else {
         // They can't set the group then
         $groupdd .= DB_getItem($_TABLES['groups'], 'grp_name',
@@ -1314,7 +1317,7 @@ function SEC_checkPasswordStrength($password) {
       + preg_match('(\pN)u', $password) // Numbers
       //+ preg_match('([^\pL\pN])u', $password) // Punctuation
     ) >= 2;
-    
+
 }
 
 /**
@@ -1327,12 +1330,12 @@ function SEC_generateRandomPassword()
 {
     // SEC_generateSalt is used here as it creates a random string using readable characters
     // return substr(SEC_generateSalt(), 0, 12);
-    
+
     // Code borrowed from: https://stackoverflow.com/questions/26530629/php-random-string-with-one-number-and-one-letters
     srand(time());
     mt_srand(rand());
     srand(mt_rand());
-    
+
     $entropy = str_split(hash('sha256', uniqid('awesomesalt', TRUE) . mcrypt_create_iv(64) . microtime() . rand() . mt_rand(), TRUE));
     $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%^&*()_+=-";
     $pass = array(); //remember to declare $pass as an array
@@ -1345,7 +1348,7 @@ function SEC_generateRandomPassword()
       $rand = floor(ord(array_pop($entropy)) * $alphaLength / 255.1);
       $pass[] = $alphabet[$rand];
     }
-    
+
     shuffle($pass);
     return implode($pass); //turn the array into a string
 }
@@ -1936,7 +1939,11 @@ function SEC_loginForm($use_config = array())
                     . $modules[0] . '"' . XHTML . '>' . $modules[0];
             } else {
                 // Build select
-                $select = '<select name="service">';
+                $select = '';
+                $T = COM_newTemplate($_CONF['path_layout'] . 'controls');
+                $T->set_file('common', 'common.thtml');
+                $T->set_block('common', 'type-select');
+                $T->set_var('name', 'service');
                 if ($_CONF['user_login_method']['standard']) {
                     $select .= '<option value="">' . $_CONF['site_name']
                         . '</option>';
@@ -1945,7 +1952,8 @@ function SEC_loginForm($use_config = array())
                     $select .= '<option value="' . $service . '">' . $service
                         . '</option>';
                 }
-                $select .= '</select>';
+                $T->set_var('select_items', $select);
+                $select = $T->finish($T->parse('common', 'type-select'));
             }
 
             $loginform->set_file('services', 'services.thtml');
