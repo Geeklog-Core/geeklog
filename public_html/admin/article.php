@@ -659,9 +659,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     if (($_CONF['onlyrootfeatures'] == 1 && SEC_inGroup('Root'))
         or ($_CONF['onlyrootfeatures'] !== 1)
     ) {
-        $featured_options = "<select name=\"featured\">" . LB
-            . COM_optionList($_TABLES['featurecodes'], 'code,name', $story->EditElements('featured'))
-            . "</select>" . LB;
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-select');
+        $tcc->set_var('name', 'featured');
+        $items = COM_optionList($_TABLES['featurecodes'], 'code,name', $story->EditElements('featured'));
+        $tcc->set_var('select_items', $items);
+        $featured_options = $tcc->finish($tcc->parse('common', 'type-select'));
     } else {
         $featured_options = "<input type=\"hidden\" name=\"featured\" value=\"0\"" . XHTML . ">";
     }
