@@ -69,25 +69,32 @@ $display = COM_startBlock($LANG_LOGVIEW['log_viewer'], '', COM_getBlockTemplate(
     );
 
 $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/logviewer.php" class="uk-form"><div>'
-    . $LANG_LOGVIEW['logs'] . ':&nbsp;&nbsp;&nbsp;'
-    . '<select name="log">';
-
+    . $LANG_LOGVIEW['logs'] . ':&nbsp;' . PHP_EOL;
+$tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+$tcc->set_file('common', 'common.thtml');
+$tcc->set_block('common', 'type-select');
+$tcc->set_var('name', 'log');
+$items = '';
 foreach (glob($_CONF['path_log'] . '*.log') as $file) {
     $file = basename($file);
-    $display .= '<option value="' . $file . '"';
-
-    if ($log === $file) {
-        $display .= ' selected="selected"';
-    }
-
-    $display .= '>' . $file . '</option>';
+    $items .= '<option value="' . $file . '"'
+        . ($log === $file ? ' selected="selected"' : '') . '>' . $file . '</option>' . PHP_EOL;
 }
+$tcc->set_var('select_items', $items);
+$display .= $tcc->finish($tcc->parse('common', 'type-select'));
 
-$display .= '</select>&nbsp;&nbsp;&nbsp;&nbsp;'
-    . '<button type="submit" name="viewlog" value="' . $LANG_LOGVIEW['view'] . '" class="uk-button">' . $LANG_LOGVIEW['view'] . '</button>'
-    . '&nbsp;&nbsp;&nbsp;&nbsp;'
-    . '<button type="submit" name="clearlog" value="' . $LANG_LOGVIEW['clear'] . '" class="uk-button" onclick="return confirm(\'' . $MESSAGE[76] . '\');">' . $LANG_LOGVIEW['clear'] . '</button>'
-    . '</div></form>';
+$tcc->set_block('common', 'type-submit');
+$tcc->set_var('name', 'viewlog');
+$tcc->set_var('value', $LANG_LOGVIEW['view']);
+$tcc->set_var('lang_button', $LANG_LOGVIEW['view']);
+$display .= $tcc->finish($tcc->parse('common', 'type-submit'));
+
+$tcc->set_var('name', 'clearlog');
+$tcc->set_var('value', $LANG_LOGVIEW['clear']);
+$tcc->set_var('lang_button', $LANG_LOGVIEW['clear']);
+$tcc->set_var('onclick', 'return confirm(\'' . $MESSAGE[76] . '\');');
+$display .= $tcc->finish($tcc->parse('common', 'type-submit'));
+$display .= '</div></form>';
 
 if (isset($_POST['clearlog'])) {
     if (@unlink($_CONF['path_log'] . $log)) {
