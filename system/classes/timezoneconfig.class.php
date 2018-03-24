@@ -126,22 +126,26 @@ class TimeZoneConfig
      */
     public static function getTimeZoneDropDown($selected = '', $attributes = array())
     {
+        global $_CONF;
+
         $timezones = self::listAvailableTimeZones();
 
-        $selection = '<select';
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-select');
         foreach ($attributes as $name => $value) {
-            $selection .= sprintf(' %s="%s"', $name, $value);
+            $tcc->set_var($name, $value);
         }
-        $selection .= '>' . LB;
-
+        $items = '';
         foreach ($timezones as $tzId => $tzDisplay) {
-            $selection .= '<option value="' . $tzId . '"';
+            $items .= '<option value="' . $tzId . '"';
             if (!empty($selected) && ($selected == $tzId)) {
-                $selection .= ' selected="selected"';
+                $items .= ' selected="selected"';
             }
-            $selection .= ">{$tzDisplay}</option>" . LB;
+            $items .= ">{$tzDisplay}</option>" . LB;
         }
-        $selection .= '</select>';
+        $tcc->set_var('select_items', $items);
+        $selection = $tcc->finish($tcc->parse('common', 'type-select'));
 
         return $selection;
     }
