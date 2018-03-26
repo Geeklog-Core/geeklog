@@ -257,6 +257,9 @@ function editfeed($fid = 0, $type = '')
     $retval = '';
     $token = SEC_createToken();
 
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc->set_file('common', 'common.thtml');
+    $tcc->set_block('common', 'type-select');
     $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
     $feed_template->set_file('editor', 'feededitor.thtml');
 
@@ -314,19 +317,21 @@ function editfeed($fid = 0, $type = '')
     }
 
     $formats = find_feedFormats();
-    $selection = '<select name="format">' . LB;
+    $tcc->set_var('name', 'format');
+    $items = '';
     foreach ($formats as $f) {
         // if one changes this format below ('name-version'), also change parsing
         // in COM_createHTMLDocument. It uses explode( "-" , $string )
-        $selection .= '<option value="' . $f['name'] . '-' . $f['version']
+        $items .= '<option value="' . $f['name'] . '-' . $f['version']
             . '"';
         if ($A['format'] == $f['name'] . '-' . $f['version']) {
-            $selection .= ' selected="selected"';
+            $items .= ' selected="selected"';
         }
-        $selection .= '>' . ucwords($f['name'] . ' ' . $f['version'])
+        $items .= '>' . ucwords($f['name'] . ' ' . $f['version'])
             . '</option>' . LB;
     }
-    $selection .= '</select>' . LB;
+    $tcc->set_var('select_items', $items);
+    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
     $feed_template->set_var('feed_format', $selection);
 
     $limits = $A['limits'];
@@ -335,18 +340,22 @@ function editfeed($fid = 0, $type = '')
         $limits = substr($A['limits'], 0, -1);
         $hours = true;
     }
-    $selection = '<select name="limits_in">' . LB;
-    $selection .= '<option value="0"';
+
+    $tcc->set_var('name', 'limits_in');
+    $items = '';
+    $items .= '<option value="0"';
     if (!$hours) {
-        $selection .= ' selected="selected"';
+        $items .= ' selected="selected"';
     }
-    $selection .= '>' . $LANG33[34] . '</option>' . LB;
-    $selection .= '<option value="1"';
+    $items .= '>' . $LANG33[34] . '</option>' . LB;
+    $items .= '<option value="1"';
     if ($hours) {
-        $selection .= ' selected="selected"';
+        $items .= ' selected="selected"';
     }
-    $selection .= '>' . $LANG33[35] . '</option>' . LB;
-    $selection .= '</select>' . LB;
+    $items .= '>' . $LANG33[35] . '</option>' . LB;
+    $tcc->set_var('select_items', $items);
+    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
+
     $feed_template->set_var('feed_limits', $limits);
     $feed_template->set_var('feed_limits_what', $selection);
 
@@ -361,15 +370,17 @@ function editfeed($fid = 0, $type = '')
     }
     $options = PLG_getFeedNames($A['type']);
 
-    $selection = '<select name="topic">' . LB;
+    $tcc->set_var('name', 'topic');
+    $items = '';
     foreach ($options as $o) {
-        $selection .= '<option value="' . $o['id'] . '"';
+        $items .= '<option value="' . $o['id'] . '"';
         if ($A['topic'] == $o['id']) {
-            $selection .= ' selected="selected"';
+            $items .= ' selected="selected"';
         }
-        $selection .= '>' . $o['name'] . '</option>' . LB;
+        $items .= '>' . $o['name'] . '</option>' . LB;
     }
-    $selection .= '</select>' . LB;
+    $tcc->set_var('select_items', $items);
+    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
 
     $feed_template->set_var('feed_topic', $selection);
 

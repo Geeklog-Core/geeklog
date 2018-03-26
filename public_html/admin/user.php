@@ -308,16 +308,20 @@ function edituser($uid = 0, $msg = 0)
         $statusarray[USER_ACCOUNT_AWAITING_APPROVAL] = $LANG28[44];
     }
     asort($statusarray);
-    $statusselect = '<select name="userstatus">';
+    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc->set_file('common', 'common.thtml');
+    $tcc->set_block('common', 'type-select');
+    $tcc->set_var('name', 'userstatus');
+    $items = '';
     foreach ($statusarray as $key => $value) {
-        $statusselect .= '<option value="' . $key . '"';
+        $items .= '<option value="' . $key . '"';
         if ($key == $A['status']) {
-            $statusselect .= ' selected="selected"';
+            $items .= ' selected="selected"';
         }
-        $statusselect .= '>' . $value . '</option>' . LB;
+        $items .= '>' . $value . '</option>' . LB;
     }
-    $statusselect .= '</select><input type="hidden" name="oldstatus" value="'
-        . $A['status'] . '"' . XHTML . '>';
+    $tcc->set_var('select_items', $items);
+    $statusselect = $tcc->finish($tcc->parse('common', 'type-select'));
     $user_templates->set_var('user_status', $statusselect);
     $user_templates->set_var('lang_user_status', $LANG28[46]);
 
@@ -544,10 +548,10 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
     if (!empty($service)) {
         $passwd = '';
         $passwd_conf = '';
-            
+
         // Make sure User Status is not some how USER_ACCOUNT_NEW_PASSWORD for remote users
         if ($userstatus == USER_ACCOUNT_NEW_PASSWORD) {
-             $userstatus = USER_ACCOUNT_ACTIVE;   
+             $userstatus = USER_ACCOUNT_ACTIVE;
         }
     }
 
@@ -710,7 +714,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             ) {
                 USER_createAndSendPassword($username, $email, $uid);
             }
-            
+
             if ($userstatus == USER_ACCOUNT_DISABLED) {
                 SESS_endUserSession($uid);
             }
@@ -891,7 +895,7 @@ function batchdelete()
     $user_templates->set_block('form', 'batchdelete_options');
     $user_templates->set_block('form', 'reminder');
 
-    
+
     $user_templates->set_var('usr_type', $usr_type);
     $user_templates->set_var('usr_time', $usr_time);
     $user_templates->set_var('lang_instruction', $LANG28[56]);
@@ -1292,18 +1296,18 @@ function display_batchAddform()
     $desc = $LANG28[25];
     $icon = $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE;
     $retval .= ADMIN_createMenu($menu_arr, $desc, $icon);
-    
+
     $user_template = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
-    $user_template->set_file('batchimport', 'batchimport.thtml');    
+    $user_template->set_file('batchimport', 'batchimport.thtml');
     $user_template->set_var('lang_file_title', $LANG28[29]);
     $user_template->set_var('lang_import', $LANG28[30]);
     $user_template->set_var('gltoken', SEC_createToken());
     $user_template->set_var('gltoken_name', CSRF_TOKEN);
-    $user_template->set_var('end_block', COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));           
+    $user_template->set_var('end_block', COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
     $retval .= $user_template->finish($user_template->parse('output', 'batchimport'));
-    
+
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
-    
+
     $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG28[24]));
 
     return $retval;
