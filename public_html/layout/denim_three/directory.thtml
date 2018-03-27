@@ -2,7 +2,7 @@
 
 {current_month}
 {blockheader}
-<form class="floatright" action="{url}" method="get" style="margin:0">
+<form class="uk-align-right" action="{url}" method="get">
   <div>
     <select name="topic" class="uk-select uk-width-auto" onchange="this.form.submit()">
     {topic_list}
@@ -11,13 +11,17 @@
     <input type="hidden" name="month" value="{val_month}"{xhtml}>
   </div>
 </form>
+
 <!-- BEGIN section-title -->
 <h3>{section_title}</h3>
 <!-- END section-title -->
+
 {directory}
+
 <!-- BEGIN no-articles -->
 <p>{lang_no_articles}</p>
 <!-- END no-articles -->
+
 <div class="pagenav">{page_navigation}</div>
 {blockfooter}
 

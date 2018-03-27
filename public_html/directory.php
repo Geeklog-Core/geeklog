@@ -53,9 +53,7 @@ if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) || ($_CONF['directorylog
     exit;
 }
 
-$theme = isset($_USER['theme']) ? $_USER['theme'] : $_CONF['theme'];
 clearstatcache();
-define('TEMPLATE_EXISTS', file_exists($_CONF['path_themes'] . $theme . '/directory.thtml'));
 
 /**
  * Helper function: Calculate last day of a given month
@@ -84,30 +82,6 @@ function DIR_lastDayOfMonth($month, $year)
     return $retval;
 }
 
-/**
- * Display a topic selection drop-down menu
- *
- * @param    string $dir_topic current topic
- * @param    int    $year      current year
- * @param    int    $month     current month
- * @return   string            HTML string of drop-down menu
- */
-function DIR_topicList($dir_topic = 'all', $year = 0, $month = 0)
-{
-    global $_CONF;
-
-    $retval = '<form class="floatright" action="'
-        . $_CONF['site_url'] . '/' . THIS_SCRIPT
-        . '" method="get" style="margin: 0;"><div>' . PHP_EOL
-        . '<select name="topic" onchange="this.form.submit()">' . PHP_EOL
-        . TOPIC_getTopicListSelect($dir_topic, 2, true) . PHP_EOL
-        . '</select>' . PHP_EOL
-        . '<input type="hidden" name="year" value="' . $year . '"' . XHTML . '>' . PHP_EOL
-        . '<input type="hidden" name="month" value="' . $month . '"' . XHTML . '>' . PHP_EOL
-        . '</div></form>' . PHP_EOL;
-
-    return $retval;
-}
 
 /**
  * Build link to a month's page
@@ -305,12 +279,8 @@ function DIR_displayMonth($template, $dir_topic, $year, $month)
 
                 list($day, ) = COM_getUserDateTimeFormat($A['day'], 'shortdate');
 
-                if (TEMPLATE_EXISTS) {
-                    $template->set_var('section_title', $day);
-                    $retval .= $template->parse('title', 'section-title') . PHP_EOL;
-                } else {
-                    $retval .= '<h3>' . $day . '</h3>' . PHP_EOL;
-                }
+                $template->set_var('section_title', $day);
+                $retval .= $template->parse('title', 'section-title') . PHP_EOL;
 
                 $mday = $A['mday'];
             }
@@ -323,11 +293,7 @@ function DIR_displayMonth($template, $dir_topic, $year, $month)
             $retval .= COM_makeList($entries);
         }
     } else {
-        if (TEMPLATE_EXISTS) {
-            $retval .= $template->parse('message', 'no-articles') . PHP_EOL;
-        } else {
-            $retval .= '<p>' . $LANG_DIR['no_articles'] . '</p>' . PHP_EOL;
-        }
+        $retval .= $template->parse('message', 'no-articles') . PHP_EOL;
     }
 
     $retval .= PHP_EOL;
@@ -402,11 +368,7 @@ function DIR_displayYear($template, $dir_topic, $year)
 
         $retval .= COM_makeList($items);
     } else {
-        if (TEMPLATE_EXISTS) {
-            $retval .= $template->parse('message', 'no-articles') . PHP_EOL;
-        } else {
-            $retval .= '<p>' . $LANG_DIR['no_articles'] . '</p>' . PHP_EOL;
-        }
+        $retval .= $template->parse('message', 'no-articles') . PHP_EOL;
     }
 
     $retval .= PHP_EOL;
@@ -456,21 +418,13 @@ function DIR_displayAll($template, $dir_topic)
 
     if (count($years) > 0) {
         foreach ($years as $year) {
-            if (TEMPLATE_EXISTS) {
-                $template->set_var('section_title', $year);
-                $retval .= $template->parse('title', 'section-title') . PHP_EOL;
-            } else {
-                $retval .= '<h3>' . $year . '</h3>' . PHP_EOL;
-            }
+            $template->set_var('section_title', $year);
+            $retval .= $template->parse('title', 'section-title') . PHP_EOL;
 
             $retval .= DIR_displayYear($template, $dir_topic, $year);
         }
     } else {
-        if (TEMPLATE_EXISTS) {
-            $retval .= $template->parse('message', 'no-articles') . PHP_EOL;
-        } else {
-            $retval .= '<p>' . $LANG_DIR['no_articles'] . '</p>' . PHP_EOL;
-        }
+        $retval .= $template->parse('message', 'no-articles') . PHP_EOL;
     }
 
     return $retval;
@@ -564,13 +518,11 @@ if ($dir_topic !== 'all') {
 }
 
 $template = null;
-if (TEMPLATE_EXISTS) {
-    $template = COM_newTemplate($_CONF['path_layout']);
-    $template->set_file('t_directory', 'directory.thtml');
-    $template->set_block('t_directory', 'section-title');
-    $template->set_block('t_directory', 'no-articles');
-    $template->set_var('lang_no_articles', $LANG_DIR['no_articles']);
-}
+$template = COM_newTemplate($_CONF['path_layout']);
+$template->set_file('t_directory', 'directory.thtml');
+$template->set_block('t_directory', 'section-title');
+$template->set_block('t_directory', 'no-articles');
+$template->set_var('lang_no_articles', $LANG_DIR['no_articles']);
 
 if (($year != 0) && ($month != 0)) {
     $title = sprintf($LANG_DIR['title_month_year'], $LANG_MONTH[$month], $year);
@@ -615,35 +567,23 @@ if (($year != 0) && ($month != 0)) {
             . DIR_displayMonth($template, $dir_topic,
                 $currentYear, $currentMonth)
             . COM_endBlock();
-        if (TEMPLATE_EXISTS) {
-            $template->set_var('current_month', $thisMonth);
-        } else {
-            $display .= $thisMonth;
-        }
+        $template->set_var('current_month', $thisMonth);
     }
 }
 
-if (TEMPLATE_EXISTS) {
-    $topic_list = TOPIC_getTopicListSelect($dir_topic, 2, true);
-    $template->set_var(array(
-        'url'             => $_CONF['site_url'] . '/' . THIS_SCRIPT,
-        'topic_list'      => $topic_list,
-        'blockheader'     => COM_startBlock($block_title),
-        'val_year'        => $val_year,
-        'val_month'       => $val_month,
-        'directory'       => $directory,
-        'page_navigation' => $page_navigation,
-        'blockfooter'     => COM_endBlock(),
-    ));
-    $template->parse('output', 't_directory');
-    $display .= $template->finish($template->get_var('output'));
-} else {
-    $display .= COM_startBlock($block_title)
-        . DIR_topicList($dir_topic, $val_year, $val_month) . PHP_EOL
-        . $directory
-        . '<div class="pagenav">' . $page_navigation . '</div>' . PHP_EOL
-        . COM_endBlock();
-}
+$topic_list = TOPIC_getTopicListSelect($dir_topic, 2, true);
+$template->set_var(array(
+    'url'             => $_CONF['site_url'] . '/' . THIS_SCRIPT,
+    'topic_list'      => $topic_list,
+    'blockheader'     => COM_startBlock($block_title),
+    'val_year'        => $val_year,
+    'val_month'       => $val_month,
+    'directory'       => $directory,
+    'page_navigation' => $page_navigation,
+    'blockfooter'     => COM_endBlock(),
+));
+$template->parse('output', 't_directory');
+$display .= $template->finish($template->get_var('output'));
 
 $display = COM_createHTMLDocument(
     $display,
