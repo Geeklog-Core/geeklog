@@ -67,34 +67,24 @@ $display = COM_startBlock($LANG_LOGVIEW['log_viewer'], '', COM_getBlockTemplate(
         $LANG_LOGVIEW['info'],
         $_CONF['layout_url'] . '/images/icons/log_viewer.' . $_IMAGE_TYPE
     );
+    
+    
+$T = new Template($_CONF['path_layout'] . 'admin');
+$T->set_file('page','logviewer.thtml');
 
-$display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/logviewer.php" class="uk-form"><div>'
-    . $LANG_LOGVIEW['logs'] . ':&nbsp;' . PHP_EOL;
-$tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-$tcc->set_file('common', 'common.thtml');
-$tcc->set_block('common', 'type-select');
-$tcc->set_var('name', 'log');
+$T->set_var('lang_logs', $LANG_LOGVIEW['logs']);
+    
 $items = '';
 foreach (glob($_CONF['path_log'] . '*.log') as $file) {
     $file = basename($file);
     $items .= '<option value="' . $file . '"'
         . ($log === $file ? ' selected="selected"' : '') . '>' . $file . '</option>' . PHP_EOL;
 }
-$tcc->set_var('select_items', $items);
-$display .= $tcc->finish($tcc->parse('common', 'type-select'));
+$T->set_var('log_items', $items);
 
-$tcc->set_block('common', 'type-submit');
-$tcc->set_var('name', 'viewlog');
-$tcc->set_var('value', $LANG_LOGVIEW['view']);
-$tcc->set_var('lang_button', $LANG_LOGVIEW['view']);
-$display .= $tcc->finish($tcc->parse('common', 'type-submit'));
-
-$tcc->set_var('name', 'clearlog');
-$tcc->set_var('value', $LANG_LOGVIEW['clear']);
-$tcc->set_var('lang_button', $LANG_LOGVIEW['clear']);
-$tcc->set_var('onclick', 'return confirm(\'' . $MESSAGE[76] . '\');');
-$display .= $tcc->finish($tcc->parse('common', 'type-submit'));
-$display .= '</div></form>';
+$T->set_var('lang_log_view', $LANG_LOGVIEW['view']);
+$T->set_var('lang_log_clear', $LANG_LOGVIEW['clear']);
+$T->set_var('lang_confirm_del_message', $MESSAGE[76]);
 
 if (isset($_POST['clearlog'])) {
     if (@unlink($_CONF['path_log'] . $log)) {
@@ -104,14 +94,15 @@ if (isset($_POST['clearlog'])) {
     }
 }
 if (isset($_POST['viewlog'])) {
-    $display .= '<p><strong>' . $LANG_LOGVIEW['log_file'] . ': ' . $log . '</strong></p>'
-        . '<div style="margin:10px 0 5px;border-bottom:1px solid #cccccc;"></div>'
-        . '<pre style="overflow:scroll; height:500px;">'
-        . htmlentities(file_get_contents($_CONF['path_log'] . $log), ENT_NOQUOTES, COM_getEncodingt())
-        . '</pre>';
+    $T->set_var('lang_log_file', $LANG_LOGVIEW['log_file']);
+    $T->set_var('log_filename', $log);
+    $T->set_var('log_contents', htmlentities(file_get_contents($_CONF['path_log'] . $log), ENT_NOQUOTES, COM_getEncodingt()));
 }
 
+$T->parse('output', 'page');
+$display .= $T->finish($T->get_var('output'));
 $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+
 $output = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LOGVIEW['log_viewer']));
 header('Content-Type: text/html; charset=' . COM_getEncodingt());
 header('X-XSS-Protection: 1; mode=block');

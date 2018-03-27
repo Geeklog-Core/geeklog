@@ -1,0 +1,21 @@
+{# begin {templatelocation} #}
+
+<form method="post" action="{site_admin_url}/logviewer.php" class="uk-form">
+    <div>
+        {lang_logs}: <select name="log">{log_items}</select>
+        <button type="submit" name="viewlog" value="{lang_log_view}" class="uk-button">{lang_log_view}</button>
+        <button type="submit" name="clearlog" value="{lang_log_clear}" class="uk-button" onclick="return confirm('{lang_confirm_del_message}');">{lang_log_clear}</button>
+    
+        {!if log_contents}
+        <p><strong>{lang_log_file}: {log_filename}</strong></p>
+
+        <hr>
+        
+        <pre class="uk-overflow-container" style="height:500px;">
+            {log_contents}
+        </pre>
+        {!endif}
+    </div>
+</form>
+
+{# end {templatelocation} #}
