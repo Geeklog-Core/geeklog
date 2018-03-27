@@ -1117,7 +1117,7 @@ function SEC_getGroupDropdown($group_id, $access)
         $T = COM_newTemplate($_CONF['path_layout'] . 'controls');
         $T->set_file('common', 'common.thtml');
         $T->set_block('common', 'type-select');
-        $T->set_var('name', $name);
+        $T->set_var('name', 'group_id');
         foreach ($usergroups as $ug_name => $ug_id) {
             $groupdd .= '<option value="' . $ug_id . '"';
             if ($group_id == $ug_id) {
