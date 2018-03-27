@@ -2348,6 +2348,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'HTMLの出力を圧縮して送信する',
     'frame_options' => '"クリックジャッキング"を防止する',
     'page_navigation_max_pages' => 'ページナビゲーションの最大ページ数',
+    'page_navigation_mobile_max_pages' => 'Max Pages for Navigation with Mobile Devices',
     'default_cache_time_block' => 'ブロックのキャッシュ期間のデフォルト',
     'titletoid' => 'タイトルからIDを自動的に作成する',
     '404_log' => 'Log 404 Errors',

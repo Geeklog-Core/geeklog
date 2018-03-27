@@ -4936,7 +4936,7 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
                                  $page_str = 'page=', $do_rewrite = false, $msg = '',
                                  $open_ended = '')
 {
-    global $_CONF, $LANG05, $relLinks;
+    global $_CONF, $_DEVICE, $LANG05, $relLinks;
 
     if (function_exists('CUSTOM_printPageNavigation')) {
         return CUSTOM_printPageNavigation($base_url, $currentPage, $num_pages, $page_str, $do_rewrite, $msg, $open_ended);
@@ -4991,8 +4991,14 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
         $page_navigation->set_var('end_previous_anchortag', '');
     }
 
-    $page_nav_left = intval($_CONF['page_navigation_max_pages'] / 2);
-    $page_nav_right = $_CONF['page_navigation_max_pages'] - $page_nav_left - 1;
+    if ($_DEVICE->is_mobile()) {
+        $max_pages = $_CONF['page_navigation_mobile_max_pages'];
+    } else {
+        $max_pages = $_CONF['page_navigation_max_pages'];
+    }
+    
+    $page_nav_left = intval($max_pages / 2);
+    $page_nav_right = $max_pages - $page_nav_left - 1;
     $page_start = $currentPage - $page_nav_left;
     $odd = 0;
     if ($page_start < 1) {

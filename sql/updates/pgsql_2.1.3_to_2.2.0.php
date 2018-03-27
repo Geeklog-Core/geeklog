@@ -111,7 +111,9 @@ function update_ConfValuesFor220()
     
     // Config option to control how often the Article Topic List Block repeats on the page
     $c->add('blocks_article_topic_list_repeat_after',1,'text',1,7,NULL,1400,TRUE, $me, 7);
-    
+
+    // Config Option for max number of pages to display for the page navigation if the visitor is using a mobile device
+    $c->add('page_navigation_mobile_max_pages',7,'text',7,31,NULL,1805,TRUE, $me, 31);
 
     return true;
 }

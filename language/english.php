@@ -2340,6 +2340,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'Send compressed output?',
     'frame_options' => 'Protection against "clickjacking"',
     'page_navigation_max_pages' => 'Max Pages for Navigation',
+    'page_navigation_mobile_max_pages' => 'Max Pages for Navigation with Mobile Devices',
     'default_cache_time_block' => 'Default Block Cache Time',
     'titletoid' => 'Enable Title To Id?',
     '404_log' => 'Log 404 Errors',

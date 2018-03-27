@@ -417,6 +417,7 @@ function install_config()
     $c->add('compressed_output',0,'select',7,31,1,1756,TRUE, $me, 31);
     $c->add('frame_options','DENY','select',7,31,22,1758,TRUE, $me, 31);
     $c->add('page_navigation_max_pages',7,'text',7,31,NULL,1800,TRUE, $me, 31);
+    $c->add('page_navigation_mobile_max_pages',7,'text',7,31,NULL,1805,TRUE, $me, 31);
     $c->add('default_cache_time_block',0,'text',7,31,NULL,1810,TRUE, $me, 31);
     $c->add('titletoid',0,'select',7,31,1,1820,TRUE, $me, 31);
     $c->add('langurl_topic',array('', 'index.php', 'topic'),'@hidden',7,31,1,1830,TRUE, $me, 31); // Hidden config option for Core used to determine language of topic url (see _getLanguageInfoFromURL in lib-common)

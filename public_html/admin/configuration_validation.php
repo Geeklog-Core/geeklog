@@ -525,6 +525,11 @@ $_CONF_VALIDATE['Core']['page_navigation_max_pages'] = array(
     'message' => isset($LANG_VALIDATION['page_navigation_max_pages']) ?
                  $LANG_VALIDATION['page_navigation_max_pages'] : $LANG_VALIDATION['default']
 );
+$_CONF_VALIDATE['Core']['page_navigation_mobile_max_pages'] = array(
+    'rule' => array('range', 2, 21),
+    'message' => isset($LANG_VALIDATION['page_navigation_mobile_max_pages']) ?
+                 $LANG_VALIDATION['page_navigation_mobile_max_pages'] : $LANG_VALIDATION['default']
+);
 $_CONF_VALIDATE['Core']['default_cache_time_block'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['titletoid'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['404_log'] = array('rule' => 'boolean');

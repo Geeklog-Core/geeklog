@@ -1471,17 +1471,21 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">50</td>
   <td valign="top">クリッカブルURLのリンクテキストの最大文字数を指定します。0 にすると切り詰めずに表示します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_compressed_output">HTMLの出力を圧縮して送信する(disable_compressed_output) </a></td>
+  <td valign="top"><a name="desc_compressed_output">HTMLの出力を圧縮して送信する(disable_compressed_output)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">ブラウザーとWebサーバーの両方がサポートしているのであれば、HTMLをブラウザーに送信する前に圧縮できます。これにより通常20%から25%圧縮できます。しかしながら、Webサーバーに負荷を若干かけることになります。そのため、今のところこの機能は<strong>実験的</strong>な段階であり、すべてのHTML出力用にはまだ実装されていません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_frame_options">"クリックジャッキング"を防止する(frame_options) </a></td>
+  <td valign="top"><a name="desc_frame_options">"クリックジャッキング"を防止する(frame_options)</a></td>
   <td valign="top">フレーム内表示を許可しない</td>
   <td valign="top"><a href="http://en.wikipedia.org/wiki/Clickjacking">クリックジャッキング</a>を防止します。HTTPレスポンスヘッダーであるX-FRAME-OPTIONSにより、フレーム内での表示を許可しなくなります。ただし、ブラウザーが<span class="tt">X-FRAME-OPTIONS</span>に対応する場合のみ有効です。「フレーム内表示を一切許可しない」、「同一オリジンのみフレーム内表示を許可する」、「フレーム内表示を制限しない」の中から選びます。「フレーム内表示を一切許可しない」にすることを強く推奨します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_page_navigation_max_pages">ページナビゲーションの最大ページ数(page_navigation_max_pages)</a></td>
   <td valign="top">7</td>
   <td valign="top">ページナビゲーションに表示するページの数を指定します。最小3ページから最大20ページまで指定できます。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_page_navigation_mobile_max_pages">page_navigation_mobile_max_pages</a></td>
+  <td valign="top">7</td>
+  <td valign="top">Maximum number of pages to show for the page navigation when visitors are on mobile devices. Minimum of 3 pages to a maximum of 20 pages allowed. If this value differs from the config option page_navigation_max_pages and you have enabled "Cache Templates" (cache_templates) make sure that you have also enabled th econfig option "Cache Mobile Devices Separately" (cache_mobile) as well.</td></tr>  
 <tr>
   <td valign="top"><a name="desc_default_cache_time_block">ブロックのキャッシュ期間のデフォルト(default_cache_time_block)</a></td>
   <td valign="top">0</td>
