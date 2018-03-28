@@ -357,16 +357,22 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
     $actionSelector = $tcc->finish($tcc->parse('common', 'type-select-width-small'));    
         
     $tcc->set_block('common', 'type-submit'); 
+    $tcc->set_block('common', 'controls-left');
     $tcc->set_var('name', 'submit');
     $tcc->set_var('id', 'bulk_action_submit' . $suffix);
     $tcc->set_var('value', $LANG_ADMIN['submit']);
     $tcc->set_var('lang_button', $LANG_ADMIN['submit']);
+    
     $actionSelector .= $tcc->finish($tcc->parse('common', 'type-submit'));    
             
     $actionSelector .= '<input type="hidden" name="list" value="' . $suffix . '"' . XHTML . '>' . LB;
-        
+    
+    $tcc->set_var('control', $actionSelector);
+    $actionSelector =  $tcc->finish($tcc->parse('common', 'controls-left'));    
+            
     $securityTokenTag = '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
         . $securityToken . '"' . XHTML . '>' . LB;
+        
     $formArray = array(
         'top'    => '',
         'bottom' => $actionSelector . $securityTokenTag,

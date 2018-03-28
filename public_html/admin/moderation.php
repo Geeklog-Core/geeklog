@@ -288,6 +288,22 @@ function itemlist($type, $token)
     );
     $form_arr = array('bottom' => '', 'top' => '');
     if ($numRows > 0) {
+        
+        $form_arr['bottom'] .= '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
+            . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
+            . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
+            . '<input type="hidden" name="count" value="' . $numRows . '"' . XHTML . '>';
+        
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-submit'); 
+        $tcc->set_block('common', 'controls-center');
+        $tcc->set_var('name', 'submit');
+        $tcc->set_var('value', $LANG_ADMIN['submit']);
+        $tcc->set_var('lang_button', $LANG_ADMIN['submit']);
+        $tcc->set_var('control', $tcc->parse('common', 'type-submit'));
+        $form_arr['bottom'] .=  $tcc->finish($tcc->parse('common', 'controls-center'));    
+
         // Add pagination
         if ($maxPage > 1) {
             $form_arr['bottom'] .= COM_printPageNavigation(
@@ -295,14 +311,6 @@ function itemlist($type, $token)
                 'page_' . $type . '='
             );
         }
-
-        $form_arr['bottom'] .= '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
-            . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
-            . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
-            . '<input type="hidden" name="count" value="' . $numRows . '"' . XHTML . '>'
-            . '<p class="aligncenter"><button type="submit" value="'
-            . $LANG_ADMIN['submit'] . '" class="uk-button">' . $LANG_ADMIN['submit'] . '</button></p>' . LB;
-
     }
 
     $listOptions = array('chkdelete' => true, 'chkfield' => 'id');
@@ -361,12 +369,21 @@ function userlist($token)
 
     $form_arr = array("bottom" => '', "top" => '');
     if ($numRows > 0) {
+
         $form_arr['bottom'] = '<input type="hidden" name="type" value="user"' . XHTML . '>' . LB
             . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
-            . '<input type="hidden" name="count" value="' . $numRows . '"' . XHTML . '>'
-            . '<p class="aligncenter"><button type="submit" value="'
-            . $LANG_ADMIN['submit'] . '" class="uk-button">' . $LANG_ADMIN['submit'] . '</button></p>' . LB;
+            . '<input type="hidden" name="count" value="' . $numRows . '"' . XHTML . '>';
+            
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $tcc->set_block('common', 'type-submit'); 
+        $tcc->set_block('common', 'controls-center');
+        $tcc->set_var('name', 'submit');
+        $tcc->set_var('value', $LANG_ADMIN['submit']);
+        $tcc->set_var('lang_button', $LANG_ADMIN['submit']);
+        $tcc->set_var('control', $tcc->parse('common', 'type-submit'));
+        $form_arr['bottom'] .=  $tcc->finish($tcc->parse('common', 'controls-center')); 
     }
 
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,

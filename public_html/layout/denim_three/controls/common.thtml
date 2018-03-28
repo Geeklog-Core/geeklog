@@ -60,4 +60,18 @@
 {!endif}
 <!-- END type-select-width-small -->
 
+{# ------------------ Geeklog Controls Aligned ------------------ #}
+
+<!-- BEGIN controls-center -->
+<div class="uk-margin-top uk-text-center">{control}</div>
+<!-- END controls-center -->
+
+<!-- BEGIN controls-left -->
+<div class="uk-margin-top">{control}</div>
+<!-- END controls-left -->
+
+<!-- BEGIN controls-right -->
+<div class="uk-margin-top uk-text-right">{control}</div>
+<!-- END controls-right -->
+
 {# end {templatelocation} #}

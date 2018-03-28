@@ -60,4 +60,18 @@
 {!endif}
 <!-- END type-select-width-small -->
 
+{# ------------------ Geeklog Controls Aligned ------------------ #}
+
+<!-- BEGIN controls-center -->
+<p class="aligncenter">{control}</p>
+<!-- END controls-center -->
+
+<!-- BEGIN controls-left -->
+<p>{control}</p>
+<!-- END controls-left -->
+
+<!-- BEGIN controls-right -->
+<p class="alignright">{control}</p>
+<!-- END controls-right -->
+
 {# end {templatelocation} #}
