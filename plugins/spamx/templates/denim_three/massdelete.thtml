@@ -1,0 +1,29 @@
+{# begin {templatelocation} #}
+
+<hr{xhtml}>
+<h2>{lang_title}</h1>
+
+{!if lang_comments_deleted}
+<p>{num_comments} {lang_comments_deleted}</p>
+{!else}
+<form method="post" action="{site_admin_url}/plugins/spamx/index.php?command=MassDelete">
+    <div>
+        {lang_num_to_check}&nbsp;&nbsp;&nbsp;
+        <select name="limit" class="uk-select uk-width-auto">
+            {limit_options}
+        </select>
+        
+        {lang_note1}
+        {lang_note2}
+        {lang_note3}
+        {lang_note4}
+        {lang_note5}
+        {lang_note6}
+
+        <button type="submit" name="action" value="{lang_delete_spam}" class="uk-button uk-button-danger">{lang_delete_spam}</button>
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+</form>
+{!endif}
+
+{# end {templatelocation} #}

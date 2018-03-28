@@ -45,7 +45,11 @@ class MassDelete extends BaseAdmin
     {
         global $_CONF, $_TABLES, $LANG_SX00;
 
-        $display = $LANG_SX00['masshead'];
+        $template = COM_newTemplate(CTL_plugin_templatePath('spamx'));
+        $template->set_file('massdelete', 'massdelete.thtml');
+        
+        $template->set_var('lang_title', $LANG_SX00['masshead']);        
+        
         $act = Geeklog\Input::fPost('action', '');
         $lmt = (int) Geeklog\Input::fPost('limit', 0);
 
@@ -96,37 +100,34 @@ class MassDelete extends BaseAdmin
                 }
             }
 
-            $display .= '<p>' . $numc . $LANG_SX00['comdel'] . '</p>' . LB;
+            $template->set_var('num_comments', $numc);
+            $template->set_var('lang_comments_deleted', $LANG_SX00['comdel']);
         } else {
-            $token = SEC_createToken();
-            $display .= '<form class="uk-form" method="post" action="'
-                . $_CONF['site_admin_url']
-                . '/plugins/spamx/index.php?command=MassDelete"><div>';
-            $display .= $LANG_SX00['numtocheck'] . '&nbsp;&nbsp;&nbsp;'
-                . ' <select name="limit">' . LB;
-            $display .= '<option value="10">10</option>' . LB
+            $template->set_var('lang_num_to_check', $LANG_SX00['numtocheck']);
+            
+            $options = '<option value="10">10</option>' . LB
                 . '<option value="50">50</option>' . LB
                 . '<option value="100" selected="selected">100</option>'
                 . LB
                 . '<option value="200">200</option>' . LB
                 . '<option value="300">300</option>' . LB
                 . '<option value="400">400</option>' . LB;
-            $display .= '</select>' . LB;
-            $display .= $LANG_SX00['note1'];
-            $display .= $LANG_SX00['note2'];
-            $display .= $LANG_SX00['note3'];
-            $display .= $LANG_SX00['note4'];
-            $display .= $LANG_SX00['note5'];
-            $display .= $LANG_SX00['note6'] . LB;
-            $display .= '<button type="submit" name="action" value="'
-                . $LANG_SX00['deletespam'] . '" class="uk-button">'
-                . $LANG_SX00['deletespam'] . '</button>' . LB;
-            $display .= '<input type="hidden" name="' . CSRF_TOKEN
-                . "\" value=\"{$token}\"" . XHTML . '>' . LB;
-            $display .= '</div></form>' . LB;
+            $template->set_var('limit_options', $options);
+
+            $template->set_var('lang_note1', $LANG_SX00['note1']);
+            $template->set_var('lang_note2', $LANG_SX00['note2']);
+            $template->set_var('lang_note3', $LANG_SX00['note3']);
+            $template->set_var('lang_note4', $LANG_SX00['note4']);
+            $template->set_var('lang_note5', $LANG_SX00['note5']);
+            $template->set_var('lang_note6', $LANG_SX00['note6']);
+            
+            
+            $template->set_var('lang_delete_spam', $LANG_SX00['deletespam']);
+            $template->set_var('gltoken_name', CSRF_TOKEN);
+            $template->set_var('gltoken', SEC_createToken());
         }
 
-        return $display;
+        return $template->finish($template->parse('output', 'massdelete'));
     }
 
     /**
