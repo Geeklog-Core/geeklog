@@ -696,7 +696,7 @@ function plugin_itemPreSave_spamx($type, $username)
     if ($type == 'registration') {
         require_once $_CONF['path'] . '/plugins/spamx/SFS.Misc.class.php';
         $EX = new SFS;
-        $res = $EX->execute(Geeklog\Input::post('email'), Geeklog\Input::server('REMOTE_ADDR'));
+        $res = $EX->execute(null, null, Geeklog\Akismet::COMMENT_TYPE_COMMENT, null, Geeklog\Input::post('email'));
         if ($res > 0) {
             return $LANG_SX00['invalid_email_or_ip'];
         }
