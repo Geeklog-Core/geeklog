@@ -1587,7 +1587,8 @@ function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $fi
     $cfg = array(
         'hide_forgotpw_link' => true,
         'no_newreg_link'     => true,
-        'no_openid_login'    => true, // TBD
+        'no_openid_login'    => true,
+        'no_oauth_login'     => true,
         'no_plugin_vars'     => true, // no plugin vars in re-auth form, please
 
         'title'       => $LANG20[1],
