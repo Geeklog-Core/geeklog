@@ -2009,6 +2009,7 @@ $LANG_ADMIN = array(
     'token_expiry' => '%s までに編集してください。その時刻を過ぎると、このページに埋め込まれたセキュリティトークンは期限切れとなって、編集内容を失うことになります。',
     'token_expired' => 'この操作のセキュリティトークンは期限切れになりました。続けるには再度認証してください。',
     'reauth_msg' => 'この操作のセキュリティトークンは期限切れになりました。続けるには下の認証を行ってください。そうすれば今回の編集作業を失うことはありません。',
+    'token_expired_remote_user' => 'The security token for this operation has expired. Since you are a remote user you cannot re-authenticate, so you have lost your changes.',
     'authenticate' => '認証する',
     'approve' => '承認する',
     'device' => 'デバイス',

@@ -1,0 +1,12 @@
+{# begin {templatelocation} #}
+
+<span id="token-expirytime">{lang_time_only}</span>
+                
+<p id="token-expirynotice">
+    {lang_token_expiry}
+    {!if lang_extra_msg}
+     {lang_extra_msg}
+    {!endif}
+</p>
+
+{# end {templatelocation} #}

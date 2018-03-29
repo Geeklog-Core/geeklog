@@ -1472,31 +1472,34 @@ function SEC_checkToken()
         return true;
     }
 
-    /**
-     * Token not valid (probably expired): Ask user to authenticate again
-     */
-    $returnurl = COM_getCurrentUrl();
-    $method = strtoupper($_SERVER['REQUEST_METHOD']);
-    $postdata = serialize($_POST);
-    $getdata = serialize($_GET);
-    $files = '';
-    if (!empty($_FILES)) {
-        // rescue uploaded files
-        foreach ($_FILES as $key => $f) {
-            if (!empty($f['name'])) {
-                $filename = basename($f['tmp_name']);
-                move_uploaded_file($f['tmp_name'],
-                    $_CONF['path_data'] . $filename);
-                $_FILES[$key]['tmp_name'] = $filename; // drop temp. dir
+    // Token not valid (probably expired): Ask user to authenticate again
+    // Note: Currently Only Works with User Accounts that do not remotely login
+    if (!empty($_USER['remoteservice']) && (($_USER['remoteservice'] == 'openid') || (substr($_USER['remoteservice'],0,6) == 'oauth.'))) {
+        $display = COM_showMessageText($LANG_ADMIN['token_expired_remote_user']);
+    } else {
+        $returnurl = COM_getCurrentUrl();
+        $method = strtoupper($_SERVER['REQUEST_METHOD']);
+        $postdata = serialize($_POST);
+        $getdata = serialize($_GET);
+        $files = '';
+        if (!empty($_FILES)) {
+            // rescue uploaded files
+            foreach ($_FILES as $key => $f) {
+                if (!empty($f['name'])) {
+                    $filename = basename($f['tmp_name']);
+                    move_uploaded_file($f['tmp_name'],
+                        $_CONF['path_data'] . $filename);
+                    $_FILES[$key]['tmp_name'] = $filename; // drop temp. dir
+                }
             }
+            $files = serialize($_FILES);
         }
-        $files = serialize($_FILES);
+
+        $display = COM_showMessageText($LANG_ADMIN['token_expired'])
+            . SECINT_authform($returnurl, $method, $postdata, $getdata, $files);
     }
-
-    $display = COM_showMessageText($LANG_ADMIN['token_expired'])
-        . SECINT_authform($returnurl, $method, $postdata, $getdata, $files);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG20[1]));
-
+    
     COM_output($display);
     exit;
 
@@ -1705,8 +1708,8 @@ function SEC_getTokenExpiryTime($token)
 
 /**
  * Create a message informing the user when the security token is about to expire
- * This message is only created for Remote Users who logged in using OpenID,
- * since the re-authentication does not work with OpenID.
+ * This message is only created for Remote Users who logged in using OpenID and OAuth,
+ * since the re-authentication does not work with OpenID or OAuth.
  *
  * @param    string $token     the token
  * @param    string $extra_msg (optional) additional text to include in notice
@@ -1719,20 +1722,16 @@ function SEC_getTokenExpiryNotice($token, $extra_msg = '')
 
     $retval = '';
 
-    if (isset($_USER['remoteservice']) &&
-        ($_USER['remoteservice'] == 'openid')
-    ) {
+    if (!empty($_USER['remoteservice']) && (($_USER['remoteservice'] == 'openid') || (substr($_USER['remoteservice'],0,6) == 'oauth.'))) {
         $expirytime = SEC_getTokenExpiryTime($token);
         if ($expirytime > 0) {
-            $exptime = '<span id="token-expirytime">'
-                . strftime($_CONF['timeonly'], $expirytime) . '</span>';
-            $retval .= '<p id="token-expirynotice">'
-                . sprintf($LANG_ADMIN['token_expiry'], $exptime);
-            if (!empty($extra_msg)) {
-                $retval .= ' ' . $extra_msg;
-            }
-
-            $retval .= '</p>' . LB;
+            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc->set_file('expiry_message', 'expiry_message.thtml');
+            
+            $tcc->set_var('lang_token_expiry', sprintf($LANG_ADMIN['token_expiry'], strftime($_CONF['timeonly'], $expirytime)));
+            $tcc->set_var('lang_extra_msg', $extra_msg);
+            
+            $retval = $tcc->finish($tcc->parse('output', 'expiry_message'));        
         }
     }
 
