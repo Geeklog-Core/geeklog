@@ -551,8 +551,16 @@ function USER_resendRequest()
     ) {
         $magic = get_magic_quotes_gpc();
 
+        $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
+        $req->setConfig(array(
+            'adapter' => 'HTTP_Request2_Adapter_Curl',
+            'connect_timeout' => 15,
+            'timeout' => 30,
+            'follow_redirects' => TRUE,
+            'max_redirects' => 1,
+        ));
+        
         if ($method === 'POST') {
-            $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_POST);
             $data = unserialize($postData);
             foreach ($data as $key => $value) {
                 if ($key == CSRF_TOKEN) {
@@ -564,6 +572,7 @@ function USER_resendRequest()
                     $req->addPostParameter($key, $value);
                 }
             }
+
             if (!empty($files)) {
                 $files = unserialize($files);
             }
@@ -572,6 +581,7 @@ function USER_resendRequest()
                     $req->addPostParameter('_files_' . $key, $value);
                 }
             }
+            
         } else {
             $data = unserialize($getData);
 
@@ -587,7 +597,6 @@ function USER_resendRequest()
             unset($value);
 
             $returnUrl = $returnUrl . '?' . http_build_query($data);
-            $req = new HTTP_Request2($returnUrl, HTTP_Request2::METHOD_GET);
         }
 
         $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
@@ -795,7 +804,12 @@ function USER_loginFailed($loginName, $password, $service, $mode, $status)
                 }
 
                 $method = Geeklog\Input::fPost('token_requestmethod', '');
+                
                 $postData = Geeklog\Input::post('token_postdata', '');
+                if (!empty($postData)) {
+                    $postData = urldecode($postData);
+                }
+                
                 $getData = Geeklog\Input::post('token_getdata', '');
                 if (!empty($getData)) {
                     $getData = urldecode($getData);
