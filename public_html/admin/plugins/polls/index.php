@@ -276,9 +276,12 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
         $Q[$i] = COM_stripslashes($Q[$i]);
         $Q[$i] = COM_checkHTML($Q[$i]);
         $Q[$i] = GLText::remove4byteUtf8Chars($Q[$i]);
-        $allow_multipleanswers[$i] = GLText::remove4byteUtf8Chars(COM_stripslashes($allow_multipleanswers[$i]));
         $description[$i] = GLText::remove4byteUtf8Chars(COM_checkHTML(COM_stripslashes($description[$i])));
-        $allow_multipleanswers[$i] = ($allow_multipleanswers[$i] == 'on') ? 1 : 0;
+        if (isset($allow_multipleanswers[$i])) {
+            $allow_multipleanswers[$i] = ($allow_multipleanswers[$i] == 'on') ? 1 : 0;
+        } else {
+            $allow_multipleanswers[$i] = 0;
+        }
 
         if (strlen($Q[$i]) > 0) { // only insert questions that exist
             $num_questions_exist++;
