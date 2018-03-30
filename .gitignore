@@ -16,13 +16,13 @@ data/layout_css/**
 # Resource cache files
 data/cache/**
 
-
 # image and logs
 logs/*.log
 public_html/images/articles
 public_html/images/userphotos
 public_html/images/topics
 public_html/images/cache
+public_html/images/_thumbs
 
 # popular plugins, if present
 plugins/forum
