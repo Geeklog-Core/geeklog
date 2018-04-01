@@ -185,20 +185,19 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
     }
 
     // Order
-    $selector = '<select name="order">' . LB
-        . COM_optionList($_TABLES['sortcodes'], 'code,name', $order)
-        . LB . '</select>';
+    $selector = COM_optionList($_TABLES['sortcodes'], 'code,name', $order);
+    $selector = COM_createControl('type-select', array(
+        'name' => 'order',
+        'select_items' => $selector
+    ));
     $commentBar->set_var('order_selector', $selector);
 
     // Mode
-    if ($is_comment_page) {
-        $selector = '<select name="format">';
-    } else {
-        $selector = '<select name="mode">';
-    }
-    $selector .= LB
-        . COM_optionList($_TABLES['commentmodes'], 'mode,name', $mode)
-        . LB . '</select>';
+    $selector = COM_optionList($_TABLES['commentmodes'], 'mode,name', $mode);
+    $selector = COM_createControl('type-select', array(
+        'name' => $is_comment_page ? 'format' : 'mode',
+        'select_items' => $selector
+    ));
     $commentBar->set_var('mode_selector', $selector);
 
     return $commentBar->finish($commentBar->parse('output', 'commentbar'));

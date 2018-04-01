@@ -1781,6 +1781,47 @@ function COM_topicArray($selection, $sortCol = 0, $ignoreLang = false)
 }
 
 /**
+ * Create and return some control for use in forms
+ *
+ * @param    string $type      Type of control
+ * @param    string $variables Hash of variable name/value pairs
+ * @return   string            Formatted HTML of control code
+ */
+function COM_createControl($type, $variables = array())
+{
+    global $_CONF;
+
+    static $tcc = null;
+
+    if ($tcc === null) {
+        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc->set_file('common', 'common.thtml');
+        $blocks = array(
+            'type-hidden',
+            'type-image',
+            'type-checkbox',
+            'type-radio',
+            'type-select',
+            'type-submit',
+            'type-select-width-small',
+            'controls-center',
+            'controls-left',
+            'controls-right'
+        );
+        foreach ($blocks as $block) {
+            $tcc->set_block('common', $block);
+        }
+    }
+    $tcc->set_var($variables);
+    $retval = $tcc->finish($tcc->parse('common', $type));
+    foreach($variables as $key => $val) {
+        $tcc->unset_var($key);
+    }
+
+    return $retval;
+}
+
+/**
  * Creates a <input> checklist from a database list for use in forms
  * Creates a group of checkbox form fields with given arguments
  *
@@ -2469,7 +2510,7 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
                         . $modules[0] . '"' . XHTML . '>' . $modules[0];
                 } else {
                     // Build select
-                    $select = '<select name="service" id="service">';
+                    $select = '';
                     if ($_CONF['user_login_method']['standard']) {
                         $select .= '<option value="">' . $_CONF['site_name']
                             . '</option>';
@@ -2478,7 +2519,11 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
                         $select .= '<option value="' . $service . '">'
                             . $service . '</option>';
                     }
-                    $select .= '</select>';
+                    $select = COM_createControl('type-select', array(
+                        'name' => 'service',
+                        'id' => 'service',
+                        'select_items' => $select
+                    ));
                 }
 
                 $login->set_file('services', 'blockservices.thtml');

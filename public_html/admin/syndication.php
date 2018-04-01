@@ -412,13 +412,15 @@ function newfeed()
     $retval = '';
 
     $plugins = PLG_supportingFeeds();
-
-    $selection = '<select name="type">' . LB;
+    $selection = '';
     foreach ($plugins as $p) {
         $selection .= '<option value="' . $p . '">' . ucwords($p)
             . '</option>' . LB;
     }
-    $selection .= '</select>' . LB;
+    $selection = COM_createControl('type-select', array(
+        'name' => 'mode',
+        'select_items' => $selection
+    ));
 
     $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
     $feed_template->set_file('type', 'selecttype.thtml');
