@@ -682,8 +682,8 @@ function editpreferences()
 
     $preferences->set_var('maxstories_value', $A['maxstories']);
 
-    $tcc->set_var('id', 'theme');
-    $tcc->set_var('name', 'theme');
+    $tcc->set_var('id', 'dfid');
+    $tcc->set_var('name', 'dfid');
     $items = COM_optionList($_TABLES['dateformats'], 'dfid,description', $A['dfid']);
     $tcc->set_var('select_items', $items);
     $selection = $tcc->finish($tcc->parse('common', 'type-select'));
