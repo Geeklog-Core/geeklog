@@ -316,18 +316,12 @@ function ADMIN_getListField_blocks($fieldName, $fieldValue, $A, $icon_arr, $toke
 
             case 'is_enabled':
                 if ($access == 3) {
-                    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-                    $tcc->set_file('common', 'common.thtml');
-                    $tcc->set_block('common', 'type-checkbox'); 
-                    $tcc->set_var('name', 'enabledblocks[]');
-                    $tcc->set_var('value', $A['bid']);
-                    if ($A['is_enabled'] == 1) {
-                        $tcc->set_var('checked', true);
-                    } else {
-                        $tcc->clear_var('checked');
-                    }
-                    $tcc->set_var('onclick', "submit()");
-                    $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));                    
+                    $retval = COM_createControl('type-checkbox', array(
+                        'name' => 'enabledblocks[]',
+                        'value' => $A['bid'],
+                        'checked' => ($A['is_enabled'] == 1) ? true : '',
+                        'onclick' => 'submit()'
+                    ));
                     $retval .= '<input type="hidden" name="visibleblocks[]" value="' . $A['bid'] . '"' . XHTML . '>';
                 }
                 break;

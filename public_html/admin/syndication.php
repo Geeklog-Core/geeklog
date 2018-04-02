@@ -257,9 +257,6 @@ function editfeed($fid = 0, $type = '')
     $retval = '';
     $token = SEC_createToken();
 
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-    $tcc->set_file('common', 'common.thtml');
-    $tcc->set_block('common', 'type-select');
     $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
     $feed_template->set_file('editor', 'feededitor.thtml');
 
@@ -317,7 +314,6 @@ function editfeed($fid = 0, $type = '')
     }
 
     $formats = find_feedFormats();
-    $tcc->set_var('name', 'format');
     $items = '';
     foreach ($formats as $f) {
         // if one changes this format below ('name-version'), also change parsing
@@ -330,8 +326,10 @@ function editfeed($fid = 0, $type = '')
         $items .= '>' . ucwords($f['name'] . ' ' . $f['version'])
             . '</option>' . LB;
     }
-    $tcc->set_var('select_items', $items);
-    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
+    $selection = COM_createControl('type-select', array(
+        'name' => 'format',
+        'select_items' => $items
+    ));
     $feed_template->set_var('feed_format', $selection);
 
     $limits = $A['limits'];
@@ -341,7 +339,6 @@ function editfeed($fid = 0, $type = '')
         $hours = true;
     }
 
-    $tcc->set_var('name', 'limits_in');
     $items = '';
     $items .= '<option value="0"';
     if (!$hours) {
@@ -353,9 +350,10 @@ function editfeed($fid = 0, $type = '')
         $items .= ' selected="selected"';
     }
     $items .= '>' . $LANG33[35] . '</option>' . LB;
-    $tcc->set_var('select_items', $items);
-    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
-
+    $selection = COM_createControl('type-select', array(
+        'name' => 'limits_in',
+        'select_items' => $items
+    ));
     $feed_template->set_var('feed_limits', $limits);
     $feed_template->set_var('feed_limits_what', $selection);
 
@@ -370,7 +368,6 @@ function editfeed($fid = 0, $type = '')
     }
     $options = PLG_getFeedNames($A['type']);
 
-    $tcc->set_var('name', 'topic');
     $items = '';
     foreach ($options as $o) {
         $items .= '<option value="' . $o['id'] . '"';
@@ -379,9 +376,10 @@ function editfeed($fid = 0, $type = '')
         }
         $items .= '>' . $o['name'] . '</option>' . LB;
     }
-    $tcc->set_var('select_items', $items);
-    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
-
+    $selection = COM_createControl('type-select', array(
+        'name' => 'topic',
+        'select_items' => $items
+    ));
     $feed_template->set_var('feed_topic', $selection);
 
     if ($A['is_enabled'] == 1) {

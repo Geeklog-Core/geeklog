@@ -979,31 +979,28 @@ function listgroups($show_all_groups = false)
         $grpFilter = 'AND (grp_id IN (' . implode(',', $thisUsersGroups) . '))';
     }
 
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-    $tcc->set_file('common', 'common.thtml');
-    $tcc->set_block('common', 'type-checkbox'); 
-    $tcc->set_var('name', 'chk_showall');
-    $tcc->set_var('id', 'chk_showall');
-    $tcc->set_var('value', '1');
     if ($show_all_groups) {
-        $tcc->set_var('checked', true);
-        
+        $checked = true;
         $query_arr = array(
             'table'          => 'groups',
             'sql'            => "SELECT * FROM {$_TABLES['groups']} WHERE 1=1",
             'query_fields'   => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     } else {
-        $tcc->set_var('checked', $checked);
-        
         $query_arr = array(
             'table'          => 'groups',
             'sql'            => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_name IN ('All Users','Logged-in Users'))",
             'query_fields'   => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     }
-    $tcc->set_var('lang_label', $LANG28[48]);
-    $filter = $tcc->finish($tcc->parse('common', 'type-checkbox'));
+
+    $filter = COM_createControl('type-checkbox', array(
+        'name'       => 'chk_showall',
+        'id'         => 'chk_showall',
+        'value'      => '1',
+        'checked'    => $checked,
+        'lang_label' => $LANG28[48]
+    ));
 
     $retval .= ADMIN_list('groups', 'ADMIN_getListField_groups', $header_arr,
         $text_arr, $query_arr, $defsort_arr, $filter);

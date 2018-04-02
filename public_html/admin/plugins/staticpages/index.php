@@ -316,8 +316,7 @@ function staticpageeditor_form(array $A)
     }
 
     $sp_template->set_var('lang_position', $LANG_STATIC['position']);
-    $position = '<select name="sp_where">';
-    $position .= '<option value="1"';
+    $position = '<option value="1"';
     if ($A['sp_where'] == 1) {
         $position .= ' selected="selected"';
     }
@@ -337,15 +336,16 @@ function staticpageeditor_form(array $A)
         $position .= ' selected="selected"';
     }
     $position .= '>' . $LANG_STATIC['position_entire'] . '</option>';
-    $position .= '</select>';
+    $position = COM_createControl('type-select', array(
+        'name'         => 'sp_where',
+        'select_items' => $position,
+    ));
     $sp_template->set_var('pos_selection', $position);
-
     if (($_SP_CONF['allow_php'] == 1) && SEC_hasRights('staticpages.PHP')) {
         if (!isset($A['sp_php'])) {
             $A['sp_php'] = 0;
         }
-        $selection = '<select name="sp_php">' . LB;
-        $selection .= '<option value="0"';
+        $selection = '<option value="0"';
         if (($A['sp_php'] <= 0) || ($A['sp_php'] > 2)) {
             $selection .= ' selected="selected"';
         }
@@ -360,7 +360,10 @@ function staticpageeditor_form(array $A)
             $selection .= ' selected="selected"';
         }
         $selection .= '>' . $LANG_STATIC['select_php_free'] . '</option>' . LB;
-        $selection .= '</select>';
+        $selection = COM_createControl('type-select', array(
+            'name'         => 'sp_php',
+            'select_items' => $selection,
+        ));
         $sp_template->set_var('php_selector', $selection);
         $sp_template->set_var('php_warn', $LANG_STATIC['php_warn']);
     } else {
@@ -461,8 +464,11 @@ function staticpageeditor_form(array $A)
         $template_none .= ' selected="selected"';
     }
     $template_none .= '>' . $LANG_STATIC['none'] . '</option>';
-    $sp_template->set_var('use_template_selection', '<select name="template_id">'
-        . $template_none . $template_list . '</select>');
+    $selection = COM_createControl('type-select', array(
+        'name'         => 'template_id',
+        'select_items' => $template_none . $template_list,
+    ));
+    $sp_template->set_var('use_template_selection', $selection);
     $sp_template->set_var('lang_use_template', $LANG_STATIC['use_template']);
     $sp_template->set_var('lang_use_template_msg', $LANG_STATIC['use_template_msg']);
 
@@ -666,7 +672,7 @@ function liststaticpages()
         array('url'  => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']),
     );
-    
+
     $help_url = COM_getDocumentUrl('docs', "staticpages.html");
 
     $retval .= COM_startBlock($LANG_STATIC['staticpagelist'], $help_url,

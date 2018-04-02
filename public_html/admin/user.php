@@ -308,10 +308,7 @@ function edituser($uid = 0, $msg = 0)
         $statusarray[USER_ACCOUNT_AWAITING_APPROVAL] = $LANG28[44];
     }
     asort($statusarray);
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-    $tcc->set_file('common', 'common.thtml');
-    $tcc->set_block('common', 'type-select');
-    $tcc->set_var('name', 'userstatus');
+
     $items = '';
     foreach ($statusarray as $key => $value) {
         $items .= '<option value="' . $key . '"';
@@ -320,8 +317,10 @@ function edituser($uid = 0, $msg = 0)
         }
         $items .= '>' . $value . '</option>' . LB;
     }
-    $tcc->set_var('select_items', $items);
-    $statusselect = $tcc->finish($tcc->parse('common', 'type-select'));
+    $statusselect = COM_createControl('type-select', array(
+        'name' => 'userstatus',
+        'select_items' => $items
+    ));
     $user_templates->set_var('user_status', $statusselect);
     $user_templates->set_var('lang_user_status', $LANG28[46]);
 

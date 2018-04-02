@@ -129,13 +129,6 @@ class TimeZoneConfig
         global $_CONF;
 
         $timezones = self::listAvailableTimeZones();
-
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-        $tcc->set_file('common', 'common.thtml');
-        $tcc->set_block('common', 'type-select');
-        foreach ($attributes as $name => $value) {
-            $tcc->set_var($name, $value);
-        }
         $items = '';
         foreach ($timezones as $tzId => $tzDisplay) {
             $items .= '<option value="' . $tzId . '"';
@@ -144,8 +137,8 @@ class TimeZoneConfig
             }
             $items .= ">{$tzDisplay}</option>" . LB;
         }
-        $tcc->set_var('select_items', $items);
-        $selection = $tcc->finish($tcc->parse('common', 'type-select'));
+        $vars = array_merge($attributes, array('select_items' => $items));
+        $selection = COM_createControl('type-select', $vars);
 
         return $selection;
     }

@@ -293,16 +293,15 @@ function itemlist($type, $token)
             . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
             . '<input type="hidden" name="count" value="' . $numRows . '"' . XHTML . '>';
-        
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-        $tcc->set_file('common', 'common.thtml');
-        $tcc->set_block('common', 'type-submit'); 
-        $tcc->set_block('common', 'controls-center');
-        $tcc->set_var('name', 'submit');
-        $tcc->set_var('value', $LANG_ADMIN['submit']);
-        $tcc->set_var('lang_button', $LANG_ADMIN['submit']);
-        $tcc->set_var('control', $tcc->parse('common', 'type-submit'));
-        $form_arr['bottom'] .=  $tcc->finish($tcc->parse('common', 'controls-center'));    
+
+        $control = COM_createControl('type-submit', array(
+            'name'  => 'submit',
+            'value' => $LANG_ADMIN['submit'],
+            'lang_button' => $LANG_ADMIN['submit'],
+        ));
+        $form_arr['bottom'] .= COM_createControl('controls-center', array(
+            'control' => $control
+        ));
 
         // Add pagination
         if ($maxPage > 1) {
@@ -374,16 +373,15 @@ function userlist($token)
             . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
             . '<input type="hidden" name="count" value="' . $numRows . '"' . XHTML . '>';
-            
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-        $tcc->set_file('common', 'common.thtml');
-        $tcc->set_block('common', 'type-submit'); 
-        $tcc->set_block('common', 'controls-center');
-        $tcc->set_var('name', 'submit');
-        $tcc->set_var('value', $LANG_ADMIN['submit']);
-        $tcc->set_var('lang_button', $LANG_ADMIN['submit']);
-        $tcc->set_var('control', $tcc->parse('common', 'type-submit'));
-        $form_arr['bottom'] .=  $tcc->finish($tcc->parse('common', 'controls-center')); 
+
+        $control = COM_createControl('type-submit', array(
+            'name'  => 'submit',
+            'value' => $LANG_ADMIN['submit'],
+            'lang_button' => $LANG_ADMIN['submit'],
+        ));
+        $form_arr['bottom'] .= COM_createControl('controls-center', array(
+            'control' => $control
+        ));
     }
 
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,

@@ -5577,11 +5577,7 @@ function COM_getAmPmFormSelection($name, $selected = '')
         if (empty($selected)) {
             $selected = date('a');
         }
-        
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-        $tcc->set_file('common', 'common.thtml');
-        $tcc->set_block('common', 'type-select'); 
-        $tcc->set_var('name', $name);
+
         $retval .= '<option value="am"';
         if ($selected === 'am') {
             $retval .= ' selected="selected"';
@@ -5591,9 +5587,11 @@ function COM_getAmPmFormSelection($name, $selected = '')
             $retval .= ' selected="selected"';
         }
         $retval .= '>pm</option>' . LB;
-        $tcc->set_var('select_items', $retval);
 
-        $retval = $tcc->finish($tcc->parse('common', 'type-select'));        
+        $retval = COM_createControl('type-select', array(
+            'name' => $name,
+            'select_items' => $retval
+        ));
     }
 
     return $retval;

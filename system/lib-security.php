@@ -1114,10 +1114,6 @@ function SEC_getGroupDropdown($group_id, $access)
 
     if ($access == 3) {
         $usergroups = SEC_getUserGroups();
-        $T = COM_newTemplate($_CONF['path_layout'] . 'controls');
-        $T->set_file('common', 'common.thtml');
-        $T->set_block('common', 'type-select');
-        $T->set_var('name', 'group_id');
         foreach ($usergroups as $ug_name => $ug_id) {
             $groupdd .= '<option value="' . $ug_id . '"';
             if ($group_id == $ug_id) {
@@ -1125,8 +1121,10 @@ function SEC_getGroupDropdown($group_id, $access)
             }
             $groupdd .= '>' . ucwords($ug_name) . '</option>' . LB;
         }
-        $T->set_var('select_items', $groupdd);
-        $groupdd = $T->finish($T->parse('common', 'type-select'));
+        $groupdd = COM_createControl('type-select', array(
+            'name' => 'group_id',
+            'select_items' => $groupdd
+        ));
     } else {
         // They can't set the group then
         $groupdd .= DB_getItem($_TABLES['groups'], 'grp_name',
@@ -1940,10 +1938,6 @@ function SEC_loginForm($use_config = array())
             } else {
                 // Build select
                 $select = '';
-                $T = COM_newTemplate($_CONF['path_layout'] . 'controls');
-                $T->set_file('common', 'common.thtml');
-                $T->set_block('common', 'type-select');
-                $T->set_var('name', 'service');
                 if ($_CONF['user_login_method']['standard']) {
                     $select .= '<option value="">' . $_CONF['site_name']
                         . '</option>';
@@ -1952,8 +1946,10 @@ function SEC_loginForm($use_config = array())
                     $select .= '<option value="' . $service . '">' . $service
                         . '</option>';
                 }
-                $T->set_var('select_items', $select);
-                $select = $T->finish($T->parse('common', 'type-select'));
+                $select = COM_createControl('type-select', array(
+                    'name' => 'service',
+                    'select_items' => $select
+                ));
             }
 
             $loginform->set_file('services', 'services.thtml');

@@ -146,14 +146,12 @@ function liststories($current_topic = '')
         $excludetopics = " (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$current_topic}')))";
     }
 
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-    $tcc->set_file('common', 'common.thtml');
-    $tcc->set_block('common', 'type-select-width-small');
-    $tcc->set_var('name', 'tid');
-    $tcc->set_var('onchange', 'this.form.submit()');
-    $tcc->set_var('select_items', $seltopics);
-    $tcc->set_var('lang_label', $LANG_ADMIN['topic'] . ": ");
-    $filter = $tcc->finish($tcc->parse('common', 'type-select-width-small'));
+    $filter = COM_createControl('type-select-width-small', array(
+        'name'         => 'tid',
+        'onchange'     => 'this.form.submit()',
+        'select_items' => $seltopics,
+        'lang_label'   => $LANG_ADMIN['topic'] . ": "
+    ));
 
     $header_arr = array(
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
@@ -659,13 +657,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     if (($_CONF['onlyrootfeatures'] == 1 && SEC_inGroup('Root'))
         or ($_CONF['onlyrootfeatures'] !== 1)
     ) {
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-        $tcc->set_file('common', 'common.thtml');
-        $tcc->set_block('common', 'type-select');
-        $tcc->set_var('name', 'featured');
         $items = COM_optionList($_TABLES['featurecodes'], 'code,name', $story->EditElements('featured'));
-        $tcc->set_var('select_items', $items);
-        $featured_options = $tcc->finish($tcc->parse('common', 'type-select'));
+        $featured_options = COM_createControl('type-select', array(
+            'name' => 'featured',
+            'select_items' => $items
+        ));
     } else {
         $featured_options = "<input type=\"hidden\" name=\"featured\" value=\"0\"" . XHTML . ">";
     }

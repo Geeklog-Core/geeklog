@@ -630,9 +630,12 @@ function listblocks($position = BLOCK_ALL_POSITIONS)
     }
     */
 
-    $filter = $LANG21['position']
-        . ': <select name="position" style="width: 125px" onchange="this.form.submit()">'
-        . $position_filter . '</select>';
+    $position_filter = COM_createControl('type-select', array(
+        'name' => 'position',
+        'onchange' => 'this.form.submit()',
+        'select_items' => $position_filter
+    ));
+    $filter = $LANG21['position'] . ': ' . $position_filter;
 
     $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),

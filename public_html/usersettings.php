@@ -253,15 +253,12 @@ function edituser()
         $preferences->set_var('username_option', '');
     }
 
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-    $tcc->set_file('common', 'common.thtml');
-    $tcc->set_block('common', 'type-select');
-    $tcc->set_var('id', 'cooktime');
-    $tcc->set_var('name', 'cooktime');
     $items = COM_optionList($_TABLES['cookiecodes'], 'cc_value,cc_descr', $A['cookietimeout'], 0);
-    $tcc->set_var('select_items', $items);
-    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
-
+    $selection = COM_createControl('type-select', array(
+        'id' => 'cooktime',
+        'name' => 'cooktime',
+        'select_items' => $items
+    ));
     $preferences->set_var('cooktime_selector', $selection);
 
     $preferences->set_var('email_value', htmlspecialchars($A['email']));
@@ -432,9 +429,6 @@ function editpreferences()
         }
     }
 
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-    $tcc->set_file('common', 'common.thtml');
-    $tcc->set_block('common', 'type-select');
     $preferences = COM_newTemplate($_CONF['path_layout'] . 'preferences');
     $preferences->set_file(array(
         'prefs'    => 'displayprefs.thtml',
@@ -555,8 +549,6 @@ function editpreferences()
             $similarLang = $tmp[0];
         }
 
-        $tcc->set_var('id', 'language');
-        $tcc->set_var('name', 'language');
         $items = '';
         foreach ($language as $langFile => $langName) {
             $items .= '<option value="' . $langFile . '"';
@@ -571,9 +563,12 @@ function editpreferences()
 
             $items .= '>' . $langName . '</option>' . LB;
         }
-        $tcc->set_var('select_items', $items);
-        $selection = $tcc->finish($tcc->parse('common', 'type-select'));
 
+        $selection = COM_createControl('type-select', array(
+            'id' => 'language',
+            'name' => 'language',
+            'select_items' => $items
+        ));
         $preferences->set_var('language_selector', $selection);
         $preferences->parse('language_selection', 'language', true);
     } else {
@@ -581,9 +576,6 @@ function editpreferences()
     }
 
     if ($_CONF['allow_user_themes'] == 1) {
-        $tcc->set_var('id', 'theme');
-        $tcc->set_var('name', 'theme');
-
         if (empty($_USER['theme'])) {
             $usertheme = $_CONF['theme'];
         } else {
@@ -612,9 +604,12 @@ function editpreferences()
             }
             $items .= '>' . implode(' ', $bwords) . '</option>' . LB;
         }
-        $tcc->set_var('select_items', $items);
-        $selection = $tcc->finish($tcc->parse('common', 'type-select'));
 
+        $selection = COM_createControl('type-select', array(
+            'id' => 'theme',
+            'name' => 'theme',
+            'select_items' => $items
+        ));
         $preferences->set_var('theme_selector', $selection);
         $preferences->parse('theme_selection', 'theme', true);
     } else {
@@ -682,12 +677,12 @@ function editpreferences()
 
     $preferences->set_var('maxstories_value', $A['maxstories']);
 
-    $tcc->set_var('id', 'dfid');
-    $tcc->set_var('name', 'dfid');
     $items = COM_optionList($_TABLES['dateformats'], 'dfid,description', $A['dfid']);
-    $tcc->set_var('select_items', $items);
-    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
-
+    $selection = COM_createControl('type-select', array(
+        'id' => 'dfid',
+        'name' => 'dfid',
+        'select_items' => $items
+    ));
     $preferences->set_var('dateformat_selector', $selection);
     $preferences->parse('display_block', 'display', true);
 
@@ -805,18 +800,20 @@ function editpreferences()
         $A['commentlimit'] = 100;
     }
 
-    $tcc->set_var('id', 'commentmode');
-    $tcc->set_var('name', 'commentmode');
     $items = COM_optionList($_TABLES['commentmodes'], 'mode,name', $A['commentmode']);
-    $tcc->set_var('select_items', $items);
-    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
+    $selection = COM_createControl('type-select', array(
+        'id' => 'commentmode',
+        'name' => 'commentmode',
+        'select_items' => $items
+    ));
     $preferences->set_var('displaymode_selector', $selection);
 
-    $tcc->set_var('id', 'commentorder');
-    $tcc->set_var('name', 'commentorder');
     $items = COM_optionList($_TABLES['sortcodes'], 'code,name', $A['commentorder']);
-    $tcc->set_var('select_items', $items);
-    $selection = $tcc->finish($tcc->parse('common', 'type-select'));
+    $selection = COM_createControl('type-select', array(
+        'id' => 'commentorder',
+        'name' => 'commentorder',
+        'select_items' => $items
+    ));
     $preferences->set_var('sortorder_selector', $selection);
     $preferences->set_var('commentlimit_value', $A['commentlimit']);
     $preferences->parse('comment_block', 'comment', true);
