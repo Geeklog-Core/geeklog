@@ -1870,6 +1870,167 @@ the admin panel.</p>
 <code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
 </table>
 
+<h3><a name="misc_ip_lookup">Miscellaneous: Permissions</a></h3>
+
+<table border="1" width="100%">
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Default Value</th>
+    <th style="width:63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_story_0">default_permissions_story[0]</a></td>
+  <td valign="top"><em>Read-Write</em></td>
+  <td valign="top">Default permission for Owner of new articles.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_story_1">default_permissions_story[1]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for Group of new articles.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_story_2">default_permissions_story[2]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for all logged in users of new articles.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_story_3">default_permissions_story[3]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for all anonymous visitors of new articles.</td></tr>
+  
+<tr>
+  <td valign="top"><a name="desc_default_permissions_topic_0">default_permissions_topic[0]</a></td>
+  <td valign="top"><em>Read-Write</em></td>
+  <td valign="top">Default permission for Owner of new topics.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_topic_1">default_permissions_topic[1]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for Group of new topics.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_topic_2">default_permissions_topic[2]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for all logged in users of new topics.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_topic_3">default_permissions_topic[3]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for all anonymous visitors of new topics.</td></tr>
+  
+<tr>
+  <td valign="top"><a name="desc_default_permissions_block_0">default_permissions_block[0]</a></td>
+  <td valign="top"><em>Read-Write</em></td>
+  <td valign="top">Default permission for Owner of new blocks.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_block_1">default_permissions_block[1]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for Group of new blocks.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_block_2">default_permissions_block[2]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for all logged in users of new blocks.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_block_3">default_permissions_block[3]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for all anonymous users of new blocks.</td></tr>
+  
+  
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_story_0">autotag_permissions_story[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_story_1">autotag_permissions_story[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by Article Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_story_2">autotag_permissions_story[2]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_story_3">autotag_permissions_story[3]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_user_0">autotag_permissions_user[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_user_1">autotag_permissions_user[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by User Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_user_2">autotag_permissions_user[2]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_user_3">autotag_permissions_user[3]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_topic_0">autotag_permissions_topic[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_topic_1">autotag_permissions_topic[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by Topic Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_topic_2">autotag_permissions_topic[2]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_topic_3">autotag_permissions_topic[3]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_topics_0">autotag_permissions_related_topics[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_topics_1">autotag_permissions_related_topics[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by Topic Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_topics_2">autotag_permissions_related_topics[2]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_topics_3">autotag_permissions_related_topics[3]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_items_0">autotag_permissions_related_items[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_items_1">autotag_permissions_related_items[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by Topic Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_items_2">autotag_permissions_related_items[2]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_items_3">autotag_permissions_related_items[3]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_block_0">autotag_permissions_block[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_block_1">autotag_permissions_block[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by Block Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_block_2">autotag_permissions_block[2]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_block_3">autotag_permissions_block[3]</a></td>
+  <td valign="top"><em>No access</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+</table>
+
 <h3><a name="misc_ip_webservices">Miscellaneous: Webservices</a></h3>
 
 <table border="1" width="100%">

@@ -119,6 +119,90 @@ panel:</p>
   <td valign="top">Max. length of the title of items listed in the What's New block.</td></tr>
 </table>
 
+<h3><a name="search">Default Permissions</a></h3>
+
+<table>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_0">default_permissions[0]</a></td>
+  <td valign="top"><em>Read-Write</em></td>
+  <td valign="top">Default permission for Owner of new poll.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_1">default_permissions[1]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for Group of new poll.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_2">default_permissions[2]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for all logged in users of new poll.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_permissions_3">default_permissions[3]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">Default permission for all anonymous visitors of new poll.</td></tr>
+</table>
+
+<h3><a name="search">Autotag Usage Permissions</a></h3>
+
+<table>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_0">autotag_permissions_poll[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_1">autotag_permissions_poll[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by Polls Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_2">autotag_permissions_poll[2]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_3">autotag_permissions_poll[3]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_vote_0">autotag_permissions_poll_vote[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_vote_1">autotag_permissions_poll_vote[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by Polls Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_vote_2">autotag_permissions_poll_vote[2]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_vote_3">autotag_permissions_poll_vote[3]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_result_0">autotag_permissions_poll_result[0]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_result_1">autotag_permissions_poll_result[1]</a></td>
+  <td valign="top"><em>Use</em></td>
+  <td valign="top">Usage permission for autotag by Polls Admin Group.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_result_2">autotag_permissions_poll_result[2]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_result_3">autotag_permissions_poll_result[3]</a></td>
+  <td valign="top"><em>No Access</em></td>
+  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>  
+</table>
+
 <h3><a name="pollblock">Poll Block</a></h3>
 
 <table>
@@ -151,6 +235,22 @@ panel:</p>
   <td valign="top"><a name="desc_block_group_id">block_group_id</a></td>
   <td valign="top">Polls Admin</td>
   <td valign="top">The group used by permissions.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_block_permissions_0">block_permissions[0]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">View permission for dynamic block by block Owner (Root User).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_block_permissions_1">block_permissions[1]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">View permission for dynamic block by assigned Admin Group (see config option block_group_id).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_block_permissions_2">block_permissions[2]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">View permission for dynamic block by all logged in users.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_block_permissions_3">block_permissions[3]</a></td>
+  <td valign="top"><em>Read-Only</em></td>
+  <td valign="top">View permission for dynamic block by anonymous users.</td></tr>  
 </table>
 
 <h2>How do the polls work?</h2>

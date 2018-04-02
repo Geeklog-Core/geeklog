@@ -1352,15 +1352,22 @@ class config
                     . $LANG_CONFIG['disable'] . "'>X</a>)");
             }
             if (($a = strrchr($name, '[')) !== false) {
-                $on = substr($a, 1, -1);
+                //$on = substr($a, 1, -1);
                 $o = str_replace(array('[', ']'), array('_', ''), $name);
             } else {
                 $o = $name;
-                $on = $name;
+                //$on = $name;
             }
+            /*  As of v2.2.0 Removed numeric check for config help which indicates a config option variable is an array.
+                The only thing that uses config variables which are an array at the moment is Security Default Permissions for items like articles and Autotags usage permissions.
+                It was determined tooltip was needed since users where wondering what they are needed for.
+                This should not affect anything else.
+
             if (!is_numeric($on)) {
                 $this->_set_ConfigHelp($t, $group, $o);
             }
+            */ 
+            $this->_set_ConfigHelp($t, $group, $o);
         }
 
         if ($type === 'unset') {
@@ -1539,15 +1546,22 @@ class config
                     . $LANG_CONFIG['disable'] . "'>X</a>)");
             }
             if (($a = strrchr($name, '[')) !== false) {
-                $on = substr($a, 1, -1);
+                //$on = substr($a, 1, -1);
                 $o = str_replace(array('[', ']'), array('_', ''), $name);
             } else {
                 $o = $name;
-                $on = $name;
+                //$on = $name;
             }
+            /*  As of v2.2.0 Removed numeric check for config help which indicates a config option variable is an array.
+                The only thing that uses config variables which are an array at the moment is Security Default Permissions for items like articles and Autotags usage permissions.
+                It was determined tooltip was needed since users where wondering what they are needed for.
+                This should not affect anything else.
+
             if (!is_numeric($on)) {
                 $this->_set_ConfigHelp($t, $group, $o);
             }
+            */
+            $this->_set_ConfigHelp($t, $group, $o);
         }
         // if $name is like "blah[0]", separate name and index
         $n = explode('[', $name);
