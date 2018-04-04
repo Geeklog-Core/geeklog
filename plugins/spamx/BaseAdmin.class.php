@@ -172,12 +172,10 @@ abstract class BaseAdmin
         $retval = $fieldValue;
 
         if ($fieldName === 'id') {
-            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-            $tcc->set_file('common', 'common.thtml');
-            $tcc->set_block('common', 'type-checkbox'); 
-            $tcc->set_var('name', 'delitem[]');
-            $tcc->set_var('value', $this->escape($fieldValue));
-            $retval = $tcc->finish($tcc->parse('common', 'type-checkbox'));               
+            $retval = COM_createControl('type-checkbox', array(
+                'name' => 'delitem[]',
+                'value' => $this->escape($fieldValue)
+            ));
         } elseif ($fieldName === 'value') {
             $retval = COM_createLink(
                 $this->escape($fieldValue),
@@ -207,15 +205,13 @@ abstract class BaseAdmin
         global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG01, $LANG33, $LANG_SX00;
 
         $fieldfunction = array($this, 'fieldFunction');
-        
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-        $tcc->set_file('common', 'common.thtml');
-        $tcc->set_block('common', 'type-checkbox'); 
-        $tcc->set_var('name', 'chk_selectall');
-        $tcc->set_var('title', $LANG01[126]);
-        $tcc->set_var('onclick', 'caItems(this.form);');
-        $select_checkbox = $tcc->finish($tcc->parse('common', 'type-checkbox'));               
-        
+
+        $select_checkbox = COM_createControl('type-checkbox', array(
+            'name' => 'chk_selectall',
+            'title' => $LANG01[126],
+            'onclick' => 'caItems(this.form);'
+        ));
+
         $header_arr = array(
             array(
                 'text'  => $select_checkbox,
@@ -263,16 +259,14 @@ abstract class BaseAdmin
         $extra = '';
         $options = '';
 
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
-        $tcc->set_file('common', 'common.thtml');
-        $tcc->set_block('common', 'type-image'); 
-        $tcc->set_var('name', 'delbutton');
-        $tcc->set_var('title', $LANG01[124]);
-        $tcc->set_var('alt', 'delbutton');
-        $tcc->set_var('src', $_CONF['layout_url'] . '/images/deleteitem.' . $_IMAGE_TYPE);
-        $tcc->set_var('onclick', "return confirm('" . $LANG01[125] . "');");
-        $del_button = $tcc->finish($tcc->parse('common', 'type-image'));               
-        
+        $del_button = COM_createControl('type-image', array(
+            'name' => 'delbutton',
+            'title' => $LANG01[124],
+            'alt' => 'delbutton',
+            'src' => $_CONF['layout_url'] . '/images/deleteitem.' . $_IMAGE_TYPE,
+            'onclick' => "return confirm('" . $LANG01[125] . "');"
+        ));
+
         $form_arr = array(
             'bottom' => $del_button,
         );
