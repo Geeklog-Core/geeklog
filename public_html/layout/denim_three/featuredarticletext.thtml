@@ -5,9 +5,9 @@
     <h2 class="story_title" itemprop="headline">{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</h2>
 
     <div class="story_icon">
-      {!if email_icon}<a title="{lang_email_story}" href="{email_story_url}" class="uk-icon-link" uk-icon="icon:mail"></a>{!endif}
-      {!if print_icon}<a title="{lang_print_story}" href="{print_story_url}" class="uk-icon-link" rel="nofollow" uk-icon="icon:happy"></a>{!endif}
-      {!if edit_icon}<a title="{lang_edit_text}" href="{edit_url}" class="uk-icon-link" rel="nofollow" uk-icon="icon:pencil"></a>{!endif}
+      {!if email_icon}<a title="{lang_email_story}" href="{email_story_url}" class="uk-icon-link" uk-tooltip="{lang_email_story}" uk-icon="mail"></a>{!endif}
+      {!if print_icon}<a title="{lang_print_story}" href="{print_story_url}" class="uk-icon-link" rel="nofollow" uk-tooltip="{lang_print_story}" uk-icon="file"></a>{!endif}
+      {!if edit_icon}<a title="{lang_edit_text}" href="{edit_url}" class="uk-icon-link" rel="nofollow" uk-tooltip="{lang_edit_text}" uk-icon="pencil"></a>{!endif}
     </div>
 
     <ul class="story_status">
