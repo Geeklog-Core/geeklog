@@ -739,7 +739,13 @@ function editpreferences()
         } else {
             $Selboxsize = 15;
         }
-        $preferences->set_var('exclude_author_checklist', '<select name="selauthors[]" multiple="multiple" size="' . $Selboxsize . '">' . $selauthors . '</select>');
+        $exclude_author_checklist = COM_createControl('type-select', array(
+            'name'         => 'selauthors[]',
+            'multiple'     => true,
+            'select_items' => $selauthors,
+            'size'   => $Selboxsize
+        ));        
+        $preferences->set_var('exclude_author_checklist', $exclude_author_checklist);
     } else {
         $preferences->set_var('lang_authors', '');
         $preferences->set_var('exclude_author_checklist', '');

@@ -1,1 +1,4 @@
 *** dummy entry ***
+Wed Apr  4 16:18:37 2018 - 192.168.0.8 - COM_redirect failed to redirect to "http://192.168.0.200/".  Headers were already sent at line 0 of "".  
+Wed Apr  4 16:25:21 2018 - 192.168.0.8 - COM_redirect failed to redirect to "http://192.168.0.200/users.php?mode=profile&uid=2&msg=5".  Headers were already sent at line 0 of "".  
+Wed Apr  4 16:25:31 2018 - 192.168.0.8 - COM_redirect failed to redirect to "http://192.168.0.200/users.php?mode=profile&uid=2&msg=5".  Headers were already sent at line 0 of "".  

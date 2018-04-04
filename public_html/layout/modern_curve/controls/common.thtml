@@ -37,7 +37,7 @@
 <label{!if id} for="{id}"{!endif}>
 {lang_label}
 {!endif}
-<select name="{name}"{!if id} id="{id}"{!endif}{!if style} style="{style}"{!endif}{!if class} class="{class}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
+<select name="{name}"{!if id} id="{id}"{!endif}{!if style} style="{style}"{!endif}{!if class} class="{class}"{!endif}{!if multiple} multiple="multiple"{!endif}{!if size} size="{size}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
 {!if lang_label}
 </label>
 {!endif}
@@ -54,7 +54,7 @@
 <label{!if id} for="{id}"{!endif}>
 {lang_label}
 {!endif}
-<select name="{name}" style="width: 125px;{style}"{!if class} class="{class}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
+<select name="{name}" style="width: 125px;{style}"{!if class} class="{class}"{!endif}{!if multiple} multiple="multiple"{!endif}{!if size} size="{size}"{!endif}{!if onchange} onchange="{onchange}"{!endif}{!if onclick} onclick="{onclick}"{!endif}>{select_items}</select>
 {!if lang_label}
 </label>
 {!endif}
