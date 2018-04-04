@@ -3625,6 +3625,9 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
         COM_getBlockTemplate('older_stories_block', 'header', $position),
         $cssId, $cssClasses
     );
+    
+    $t = COM_newTemplate($_CONF['path_layout'] . 'blocks/');
+    $t->set_file(array('olderarticles' => 'olderarticles.thtml'));
 
     $sql['mysql'] = "SELECT sid,title,comments,UNIX_TIMESTAMP(date) AS day
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
@@ -3657,11 +3660,16 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
                     $dayList = COM_makeList($oldNews, 'list-older-stories');
                     $oldNews = array(); // Reset old news array
                     $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
-                    $string .= $dayList . '<div class="divider-older-stories"></div>';
+                    
+                    $t->set_var('older-articles-list', $dayList);
+                    $t->set_var('date-divider', true);
+                    $string .= $t->parse('output', 'olderarticles');                       
                 }
 
                 list($day2,) = COM_getUserDateTimeFormat($A['day'], 'dateonly');
-                $string .= '<h3>' . $dayCheck . ' <small>' . $day2 . '</small></h3>' . LB;
+                
+                $t->set_var('weekday', $dayCheck);
+                $t->set_var('short-date', $day2);
                 $day = $dayCheck;
             }
 
@@ -3673,7 +3681,10 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
         if (!empty($oldNews)) {
             $dayList = COM_makeList($oldNews, 'list-older-stories');
             $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
-            $string .= $dayList;
+            
+            $t->set_var('older-articles-list', $dayList);
+            $string .= $t->parse('output', 'olderarticles');                  
+            
             $retval .= $string;
         }
     } else {

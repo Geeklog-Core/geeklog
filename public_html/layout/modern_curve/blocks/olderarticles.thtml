@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<h3>{weekday} <small>{short-date}</small></h3>
+{older-articles-list}
+{!if date-divider}<div class="divider-older-stories"></div>{!endif}
+
+{# end {templatelocation} #}
