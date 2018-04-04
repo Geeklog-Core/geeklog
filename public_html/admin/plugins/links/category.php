@@ -273,21 +273,13 @@ function links_edit_category($cid, $pid)
     if (!isset($A['tid'])) {
         $A['tid'] = TOPIC_ALL_OPTION;
     }
-    /*
-    $topics = COM_topicList('tid,topic', $A['tid'], 1, true);
-    $T->set_var('topic_list', $topics);
-    $alltopics = '<option value="all"';
-    if ($A['tid'] == 'all') {
-        $alltopics .= ' selected="selected"';
-    }
-    $alltopics .= '>' . $LANG_LINKS_ADMIN[35] . '</option>' . LB;
-    $T->set_var('topic_selection', '<select name="tid">' . $alltopics
-                                   . $topics . '</select>');
-    */
-    $T->set_var(
-        'topic_selection',
-        '<select name="tid" id="tid">' . TOPIC_getTopicListSelect($A['tid'], 2, true) . '</select>'
-    );
+    
+    $topic_selection = COM_createControl('type-select', array(
+        'name'         => 'tid',
+        'id'           => 'tid',
+        'select_items' => TOPIC_getTopicListSelect($A['tid'], 2, true)
+    ));     
+    $T->set_var('topic_selection', $topic_selection);
 
     if (empty($cid)) {
         $num_links = $LANG_ADMIN['na'];
