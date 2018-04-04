@@ -2640,10 +2640,10 @@ function PLG_getBlockLocations()
         $items = $function();
         if (is_array($items)) {
             // Add type and type name for all elements
-                foreach ($items as &$item) {
-                    $item['type'] = 'theme';
-                    $item['type_name'] = $_CONF['theme'];
-                }                
+            foreach ($items as &$item) {
+                $item['type'] = 'theme';
+                $item['type_name'] = $_CONF['theme'];
+            }
             $ret = array_merge($ret, $items);
         }
     } elseif (!empty($_CONF['theme_default'])) {
