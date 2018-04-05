@@ -1,5 +1,7 @@
 {# begin {templatelocation} #}
 
+{# NOTE: If you add a control here please add the block name to the COM_createControl function #}
+
 {# ------------------ Geeklog Common Controls ------------------ #}
 
 <!-- BEGIN type-hidden -->
@@ -73,5 +75,29 @@
 <!-- BEGIN controls-right -->
 <div class="uk-margin-top uk-text-right">{control}</div>
 <!-- END controls-right -->
+
+{# ------------------ Geeklog Misc Display ------------------ #}
+
+<!-- BEGIN display-allowed-html -->
+<div dir="ltr" class="allowed_html_tags {post_mode_class} ">
+    {!if list_only}{!else}
+    <span class="warningsmall">{html_description}</span>
+    {!endif}
+    {!if html_list}
+    <div class="warningsmall">{html_list}</div>
+    {!endif}
+</div>
+<!-- END display-allowed-html -->
+
+<!-- BEGIN display-allowed-autotags -->
+<div dir="ltr" class="allowed_autotags">
+    {!if list_only}{!else}
+    <span class="warningsmall">{autotags_description}</span>
+    {!endif}
+    {!if autotags_list}
+    <div class="warningsmall">{autotags_list}</div>
+    {!endif}
+</div>
+<!-- END display-allowed-autotags -->
 
 {# end {templatelocation} #}

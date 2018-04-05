@@ -1803,10 +1803,15 @@ function COM_createControl($type, $variables = array())
             'type-radio',
             'type-select',
             'type-submit',
+            
             'type-select-width-small',
+            
             'controls-center',
             'controls-left',
-            'controls-right'
+            'controls-right',
+            
+            'display-allowed-html',
+            'display-allowed-autotags'
         );
         foreach ($blocks as $block) {
             $tcc->set_block('common', $block);
@@ -4200,11 +4205,6 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
         $description = $LANG01[31];  // Allowed HTML Tags:
     }
 
-    if (!$list_only) {
-        $retval .= '<span class="warningsmall">'
-            . $description . '</span>';
-    }
-
     if ($has_list) {
         if (empty($permissions) || !SEC_hasRights($permissions) ||
             empty($_CONF['admin_html'])
@@ -4226,15 +4226,16 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
             $list .= '&lt;' . $tag . '&gt;&nbsp;, ';
         }
         $list = rtrim($list, ', ');
-        if (!empty($list)) {
-            $retval .= '<div class="warningsmall">'
-                . $list . '</div>';
-        }
     }
 
     $class = !empty($post_mode) ? ' post_mode_' . $post_mode : '';
-    $retval = '<div dir="ltr" class="allowed_html_tags'
-        . $class . '">' . $retval . '</div>';
+        
+    $retval = COM_createControl('display-allowed-html', array(
+        'list_only' => $list_only,
+        'post_mode_class' => $class,
+        'html_description' => $description,
+        'html_list' => $list
+    ));        
 
     return $retval;
 }
@@ -4253,11 +4254,6 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = array())
     global $LANG01;
 
     $retval = '';
-    if (!$list_only) {
-        $retval .= '<span class="warningsmall">'
-            . $LANG01[140] // Allowed Autotags:
-            . '</span>';
-    }
 
     $list = '';
     if (count($allowed_tags) > 0) {
@@ -4284,12 +4280,12 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = array())
         }
     }
     $list = rtrim($list, ', ');
-    if (!empty($list)) {
-        $retval .= '<div class="warningsmall">'
-            . $list . '</div>';
-    }
 
-    $retval = '<div dir="ltr" class="allowed_autotags">' . $retval . '</div>';
+    $retval = COM_createControl('display-allowed-autotags', array(
+        'list_only' => $list_only,
+        'autotags_description' => $LANG01[140],
+        'autotags_list' => $list
+    ));     
 
     return $retval;
 }
