@@ -4577,6 +4577,9 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         COM_getBlockTemplate('whats_new_block', 'header', $position),
         $cssId, $cssClasses
     );
+    
+    $t = COM_newTemplate($_CONF['path_layout'] . 'blocks/');
+    $t->set_file(array('whatsnew' => 'whatsnew.thtml'));    
 
     $topicSql = '';
     if (($_CONF['hidenewstories'] == 0) || ($_CONF['hidenewcomments'] == 0)
@@ -4609,13 +4612,10 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         if (empty($title)) {
             $title = DB_getItem($_TABLES['blocks'], 'title', "name='whats_new_block'");
         }
-
         // Any late breaking news stories?
-        $retval .= '<h3>' . $LANG01[99] . ' <small>'
-            . COM_formatTimeString($LANG_WHATSNEW['new_last'],
-                $_CONF['newstoriesinterval'])
-            . '</small></h3>';
-
+        $t->set_var('item', $LANG01[99]);
+        $t->set_var('time-span', COM_formatTimeString($LANG_WHATSNEW['new_last'], $_CONF['newstoriesinterval']));
+            
         if ($numRows > 0) {
             $newArticles = array();
 
@@ -4637,25 +4637,25 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
                 $newArticles[] = COM_createLink($anchorText, $url, $attr);
             }
 
-            $retval .= COM_makeList($newArticles, 'list-new-plugins');
+            $t->set_var('new-item-list', COM_makeList($newArticles, 'list-new-plugins'));
         } else {
-            $retval .= $LANG01[100] . '<br' . XHTML . '>' . LB; // No new stories
+            $t->set_var('no-items', $LANG01[100]);
         }
 
         if (($_CONF['hidenewcomments'] == 0) || ($_CONF['hidenewplugins'] == 0)
             || ($_CONF['trackback_enabled']
                 && ($_CONF['hidenewtrackbacks'] == 0))
         ) {
-            $retval .= '<div class="divider-whats-new"></div>';
+            $t->set_var('item-divider', true);
         }
+        
+        $retval .= $t->parse('output', 'whatsnew');
     }
 
     if ($_CONF['hidenewcomments'] == 0) {
         // Go get the newest comments
-        $retval .= '<h3>' . $LANG01[83] . ' <small>'
-            . COM_formatTimeString($LANG_WHATSNEW['new_last'],
-                $_CONF['newcommentsinterval'])
-            . '</small></h3>';
+        $t->set_var('item', $LANG01[83]);
+        $t->set_var('time-span', COM_formatTimeString($LANG_WHATSNEW['new_last'], $_CONF['newcommentsinterval']));            
 
         $new_plugin_comments = PLG_getWhatsNewComment();
 
@@ -4710,24 +4710,24 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
 
             }
 
-            $retval .= COM_makeList($newComments, 'list-new-comments');
+            $t->set_var('new-item-list', COM_makeList($newComments, 'list-new-comments'));
         } else {
-            $retval .= $LANG01[86] . '<br' . XHTML . '>' . LB;
+            $t->set_var('no-items', $LANG01[86]);
         }
 
         if (($_CONF['hidenewplugins'] == 0)
             || ($_CONF['trackback_enabled']
                 && ($_CONF['hidenewtrackbacks'] == 0))
         ) {
-            $retval .= '<div class="divider-whats-new"></div>';
+            $t->set_var('item-divider', true);
         }
+        
+        $retval .= $t->parse('output', 'whatsnew');
     }
 
     if ($_CONF['trackback_enabled'] && ($_CONF['hidenewtrackbacks'] == 0)) {
-        $retval .= '<h3>' . $LANG01[114] . ' <small>'
-            . COM_formatTimeString($LANG_WHATSNEW['new_last'],
-                $_CONF['newtrackbackinterval'])
-            . '</small></h3>';
+        $t->set_var('item', $LANG01[114]);
+        $t->set_var('time-span', COM_formatTimeString($LANG_WHATSNEW['new_last'], $_CONF['newtrackbackinterval']));              
 
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
@@ -4769,13 +4769,15 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
                 $newComments[] = COM_createLink($anchorComment, $url, $attr);
             }
 
-            $retval .= COM_makeList($newComments, 'list-new-trackbacks');
+            $t->set_var('new-item-list', COM_makeList($newComments, 'list-new-trackbacks'));
         } else {
-            $retval .= $LANG01[115] . '<br' . XHTML . '>' . LB;
+            $t->set_var('no-items', $LANG01[115]);
         }
         if ($_CONF['hidenewplugins'] == 0) {
-            $retval .= '<div class="divider-whats-new"></div>';
+            $t->set_var('item-divider', true);
         }
+        
+        $retval .= $t->parse('output', 'whatsnew');
     }
 
     if ($_CONF['hidenewplugins'] == 0) {
@@ -4783,21 +4785,28 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         $plugins = count($headlines);
         if ($plugins > 0) {
             for ($i = 0; $i < $plugins; $i++) {
-                $retval .= '<h3>' . $headlines[$i] . ' <small>'
-                    . $smallHeadlines[$i] . '</small></h3>';
+                $t->set_var('item', $headlines[$i]);
+                $t->set_var('time-span', $smallHeadlines[$i]);              
+                
                 if (is_array($content[$i])) {
-                    $retval .= COM_makeList($content[$i], 'list-new-plugins');
+                    $t->set_var('new-item-list', COM_makeList($content[$i], 'list-new-plugins'));
                 } else {
-                    $retval .= $content[$i];
+                    // Because of the old way which plugin whats new list were created before a template was used
+                    // There may be a <br> tag at the end of the language variable. So strip it
+                    $content[$i] = strip_tags($content[$i]);
+                    
+                    $t->set_var('no-items', $content[$i]);
                 }
 
                 if ($i + 1 < $plugins) {
-                    $retval .= '<div class="divider-whats-new"></div>';
+                    $t->set_var('item-divider', true);
                 }
+                
+                $retval .= $t->parse('output', 'whatsnew');
             }
         }
     }
-
+    
     $retval .= COM_endBlock(COM_getBlockTemplate('whats_new_block', 'footer', $position));
     if ($_CONF['whatsnew_cache_time'] > 0) {
         CACHE_create_instance($cacheInstance, $retval);

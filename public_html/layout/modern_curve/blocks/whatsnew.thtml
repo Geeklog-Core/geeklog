@@ -1,0 +1,11 @@
+{# begin {templatelocation} #}
+
+<h3>{item} <small>{time-span}</small></h3>
+{!if no-items}
+{no-items}<br{xhtml}>
+{!else}
+{new-item-list}
+{!endif}
+{!if item-divider}<div class="divider-whats-new"></div>{!endif}
+
+{# end {templatelocation} #}
