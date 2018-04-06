@@ -3,12 +3,9 @@
 {start_block_editor}
 <form action="{site_admin_url}/plugins.php" method="post" class="compact uk-form">
   <div class="admin_basic" id="admin-editor">
-    <dl class="form_block">
-      <dt id="title">{title}</dt>
-      <dd><img src="{pi_icon}" alt=""{xhtml}></dd>
-
+    <dl class="uk-description-list-horizontal">
       <dt>{lang_pluginname}</dt>
-      <dd class="controls_text">{pi_display_name}</dd>
+      <dd class="controls_text"><img src="{pi_icon}" class="" alt=""{xhtml}> {pi_display_name}</dd>
 
       <dt>{lang_pluginhomepage}</dt>
       <dd class="controls_text"><a href="{pi_homepage}" class="break-word">{pi_homepage}</a></dd>
@@ -26,7 +23,13 @@
       <dd class="controls_text">{pi_load}</dd>
 
       <dt>{lang_enabled}</dt>
-      <dd class="controls_text">{pi_enabled}</dd>
+      <dd class="controls_text">
+        {!if pi_unavailable}
+        <div class="uk-text-danger">{pi_enabled}</div>
+        {!else}
+        {pi_enabled}
+        {!endif}
+      </dd>
     </dl>
     <div class="submit">
       <button id="close" type="submit" value="{back}" class="uk-button uk-button-primary">{back}</button>

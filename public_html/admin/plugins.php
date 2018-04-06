@@ -109,8 +109,7 @@ function plugin_info_installed($pi_name)
 
     $plg_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/plugins');
     $plg_templates->set_file('editor', 'editor.thtml');
-    $plg_templates->set_var('start_block_editor', COM_startBlock('', '', COM_getBlockTemplate('_admin_block', 'header')));
-    $plg_templates->set_var('title', $LANG32[13]);
+    $plg_templates->set_var('start_block_editor', COM_startBlock($LANG32[13], '', COM_getBlockTemplate('_admin_block', 'header')));
     $plg_templates->set_var('pi_icon', PLG_getIcon($pi_name));
     $plugin_code_version = PLG_chkVersion($pi_name);
     if (empty($plugin_code_version)) {
@@ -119,14 +118,6 @@ function plugin_info_installed($pi_name)
         $code_version = $plugin_code_version;
     }
     $pi_installed_version = $A['pi_version'];
-    if (empty ($plugin_code_version) ||
-        ($pi_installed_version == $code_version)
-    ) {
-        $plg_templates->set_var('update_option', '');
-    } else {
-        $plg_templates->set_var('update_option', '<button type="submit" value="'
-            . $LANG32[34] . '" name="mode" class="uk-form">' . $LANG32[34] . '</button>');
-    }
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
     $plg_templates->set_var('pi_name', $pi_name);
     $plg_templates->set_var('pi_display_name', plugin_get_pluginname($pi_name));
@@ -148,7 +139,8 @@ function plugin_info_installed($pi_name)
             . '/functions.inc')) {
             $plg_templates->set_var('pi_enabled', $LANG32[21]);
         } else {
-            $plg_templates->set_var('pi_enabled', '<div class="status_red">' . $LANG32[54] . '</div>');
+            $plg_templates->set_var('pi_unavailable', true);
+            $plg_templates->set_var('pi_enabled', $LANG32[54]);
         }
     }
     $plg_templates->set_var('back', $LANG32[60]);
