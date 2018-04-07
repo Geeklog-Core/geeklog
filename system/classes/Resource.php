@@ -873,7 +873,7 @@ class Resource
         $cachedData = Cache::get($key);
 
         // Whether cached data exist and they are still valid?
-        if (!empty($compressedData) && isset($cachedData['createdAt']) &&
+        if (isset($cachedData['createdAt']) &&
             ($this->getLatestModifiedTime($absolutePaths) <= $cachedData['createdAt'])) {
             $success = true;
         }
@@ -884,7 +884,7 @@ class Resource
                 'createdAt' => microtime(true),
                 'data'      => $this->minifyJS($absolutePaths),
                 'paths'     => $relativePaths,
-                'type'      => ($isCss ? 'c' : 'j'),
+                'type'      => 'j',
             );
             $success = Cache::set($key, $data, 0);
         }
@@ -897,10 +897,7 @@ class Resource
             $retval .= PHP_EOL;
 
             foreach ($files as $file) {
-                $retval .= sprintf(
-                        self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']
-                    )
-                    . PHP_EOL;
+                $retval .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
             }
         }
 
@@ -1163,8 +1160,8 @@ class Resource
         // Strip '{' and '}' from both ends of $str
         $str = substr($str, 1);
         $str = substr($str, 0, strlen($str) - 1);
-        $retval .= '<script>var geeklog={ doc:document,win:window,$:function(id){ return this.doc.getElementById(id); },'
-            . $str . ' };</script>' . PHP_EOL;
+        $str = 'var geeklog={ doc:document,win:window,$:function(id){ return this.doc.getElementById(id); },' . $str . ' };';
+        $retval .= '<script type="text/javascript">' . $str . '</script>' . PHP_EOL;
 
         // 8. Local JavaScript files
         if (count($this->localJsFiles['header']) > 0) {
@@ -1173,15 +1170,11 @@ class Resource
 
         // 9. JavaScript code blocks
         if (count($this->jsBlocks['header']) > 0) {
-            if ($this->debug) {
-                $retval .= '<script type="text/javascript">'
-                    . implode(PHP_EOL, $this->jsBlocks['header'])
-                    . '</script>' . PHP_EOL;
-            } else {
-                $code = implode(PHP_EOL, $this->jsBlocks['header']);
+            $code = implode(PHP_EOL, $this->jsBlocks['header']);
+            if (!$this->debug) {
                 $code = JSMin::minify($code);
-                $retval .= '<script type="text/javascript">' . $code . '</script>' . PHP_EOL;
             }
+            $retval .= '<script type="text/javascript">' . $code . '</script>' . PHP_EOL;
         }
 
         return $retval;
