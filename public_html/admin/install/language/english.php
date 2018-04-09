@@ -57,7 +57,7 @@ $LANG_INSTALL = array(
     5 => 'Sorry, but Geeklog requires at least PHP %s to run (you have version ',
     6 => '). Please <a href="http://www.php.net/downloads.php">upgrade your PHP</a> install or ask your hosting service to do it for you.',
     7 => 'Unable to locate Geeklog files',
-    8 => 'The installer was unable to locate critical Geeklog files. This is probably because you have moved them from their default location. Please specify the paths to the files and directories below:',
+    8 => 'The installer was unable to locate critical Geeklog files. This is probably because you have moved them from their default location. Please specify the paths to the files and directories below (do not include the filename in the path):',
     9 => 'Welcome and thank you for choosing Geeklog!',
     10 => 'File/Directory',
     11 => 'Permissions',
