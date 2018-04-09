@@ -337,7 +337,7 @@ if (function_exists($func)) {
         $_CONF['theme_etag'] = false;
     }
     if (isset($theme_config['theme_plugins'])) {
-        // EXPERIMENTAL
+        // EXPERIMENTAL for supported_version_theme v2.2.0 and higher (See Geeklog Core theme functions.php and theme_plugins for further explanation or  https://github.com/Geeklog-Core/geeklog/issues/767)
         $_CONF['theme_plugins'] = $theme_config['theme_plugins'];
     }
     if (isset($theme_config['options']) && is_array($theme_config['options'])) {
