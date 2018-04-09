@@ -1,5 +1,53 @@
 Geeklog History/Changes:
 
+?, 2018 (2.2.0)
+------------
+
+- [Feature] Add information about Permissions[X] [Tom]
+- [Feature] Added Demo Mode for Geeklog (enabled in siteconfig.php) [Tom]
+- [Feature] Uikit can now be loaded bia a CDN [Mystralkk]
+- [Feature] Uikit 3 framework added to Geeklog [Mystralkk]
+- [Feature] Allow number of max pages in page navigation to be set separately for mobile pages [Tom]
+- [Feature] Removed much of the remaining hard coded HTML [Tom] [Dengen]
+- [Feature] Blocks can now appear in more than just the left or right column. Block Locations can now be added by plugins and themes [Tom]
+- [Feature] New CSS and JS processor to Minify and combine files [Mystralkk]
+- [Feature] New Denim_Three theme which uses Uikit version 3 [Dengen]
+- [Feature] ReCaptcha Plugin added to Geeklog Install [Mystralkk]
+- [Feature] ReCaptcha Plugin now supports Invisible Captcha [Mystralkk]
+- [Feature] Added Captcha support for login and get password form [Tom]
+- [Feature] Passwords now must contain 8 characters and have at least 1 letter and 1 number in it [Tom]
+- [Feature] Two Factor Authentication (https://packagist.org/packages/robthree/twofactorauth)  [Mystralkk]
+- [Feature] Log all attempts of incorrect passwords used during logins [Tom]
+- [Feature] Send email alerts to regarding invalid password attempts on accounts [Tom]
+- [Feature] UTF-8mb4 Icons/emoji's now are colored for all Denim themes [Dengen]
+- [Feature] New User Statuses Added (Locked, New Email Required, New Password Required) [Tom]
+- [Feature] New Config Option to Require Email Address on all User Accounts (even Oauth accounts) [Tom]
+- [Feature] New/Updated Emails now must be verified [Tom]
+- [Feature] Clear Cache now clears all cached files and not just template cache (image thumbnails, resource cache, other defined plugin caches) [Tom]
+- [Feature] Moderation Page now has paging [Mystralkk]
+- [Feature] Block Help now uses Geeklog Popup Form [Tom]
+- [Feature] Blocks can now be assigned an id and css classes [Mystralkk]
+- [Feature] Comment Manager can now use BAN Plugin API [Tom]
+- [Feature] Comment Anonymous Names can now be edited by Comment Admin [Tom]
+- [Feature] Staticpages can now have a previous and next page (specifies a rel="next" and rel="pre") [Mystralkk]
+- [Feature] Check box to automatically send new password to user on Admin User Editor [Mystralkk]
+- [Feature] Changed most references from Story to Article. This includes in language files and template files [Mystralkk]
+
+- [Bug] Fixed After token expired re-authentication returns to a blank page once Authentication is successful [Tom]
+- [Bug] Fixed Switch Language Block (and COM_getLanguageFromURL) to work on a topic page [Tom]
+- [Bug] Comment titles and anonymous user names can now handle mb4 character [Tom]
+- [Bug] Fixed Comment User Signatures and Last User Edit title [Tom]
+- [Bug] Fixed Portal Blocks importing feeds [Tom]
+- [Bug] Fixed Spam-X plugin upgrade issue from Geeklog v2.1.2 to v2.1.3 [Tom]
+- [Bug] Fixed Link Edit button to edit link instead of create a new link [Tom]
+- [Bug] Fixed Links Plugin Category links when URL Rewrite Enabled  [Mystralkk]
+
+- [Update] UIkit 2 framework to version ???? [Mystralkk]
+- [Update] jQuery to version ???? and jQuery UI to version ????
+- [Update] CKEditor to version ????
+- [Update] OAuth class to version ???? [Mystralkk]
+- [Update] Removed Live Journal Authentication [Mystralkk]
+
 June 22, 2017 (2.1.3)
 ------------
 
@@ -39,7 +87,7 @@ March 1, 2017 (2.1.2)
 - [Feature] Reduced block lists in Block Manager [Tom]
 - [Feature] Added ability for Geeklog to detect device type (mobile or computer) of visitor [Tom]
 - [Feature] Blocks can display based on visitor device type [Tom]
-- [Feature] Template variable {device_movile} added which returns true if viewing device is considered mobile (phone and tablet) [Tom]
+- [Feature] Template variable {device_mobile} added which returns true if viewing device is considered mobile (phone and tablet) [Tom]
 - [Feature] Geeklog Database Backup now works without using a external program to backup. [Tom]
 - [Feature] Individual static pages can now have hits and last update date not displayed. [Tom]
 - [Feature] Re-factored Geeklog install. [Mystralkk]
