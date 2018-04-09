@@ -6610,6 +6610,10 @@ function COM_numberFormat($number)
 {
     global $_CONF;
 
+    if (!is_numeric($number)) {
+        return '';
+    }
+
     if ($number - floor($number) > 0) { // number has decimals
         $dc = $_CONF['decimal_count'];
     } else {

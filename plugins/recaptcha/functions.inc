@@ -95,7 +95,7 @@ function plugin_cclabel_recaptcha()
 /**
  * Returns the administrative option for this plugin
  *
- * @return array Array containing (plugin name, plugin admin url, # of items in plugin or '')
+ * @return array Array containing (plugin name, plugin admin url, # of items in plugin)
  */
 function plugin_getadminoption_recaptcha()
 {
@@ -109,7 +109,7 @@ function plugin_getadminoption_recaptcha()
         }
 
         $admin_url = $_CONF['site_admin_url'] . '/plugins/recaptcha/index.php';
-        $num_items = '';
+        $num_items = 0;
 
         return array($pi_name, $admin_url, $num_items);
     } else {
