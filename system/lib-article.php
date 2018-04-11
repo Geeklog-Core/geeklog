@@ -672,12 +672,12 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         }        
 
         if (!$_CONF['cache_templates']) {
-            // Hack (see Geeklog Bug Tracker issue #0001817): Cannot set the template variable directly with set_var since
-            // this template variable was set with set_file which uses the templatecode array (set_var uses varvals array)
-            // so have to update the templatecode array directly. This array really shouldn't be accessed this way
-            // and this hack should be changed in the future: either set_var or set_file functions need to allow update of the file template variable found in templatecode
-            // $article->set_var($article_filevar, $retval);
-            $article->templateCode[$article_filevar] = $retval;
+            // This is only triggered if cache_templates is disabled but caching is enabled for the article itself
+            
+            // Template var was original set with set_file (as it is a template file)
+            // Since the article itself is cached but not the rest of the templates we need to reset the templateCode variable in the template class
+            // Views use the templateCode variable as well so we can just update the template code variable with set_view as we have already retrieved the cache version of the article
+            $article->set_view($article_filevar, $retval);
         }
     }
    
