@@ -240,7 +240,7 @@ function sendPingbacks($type, $id)
                 if (empty($result)) {
                     $result = '<b>' . $LANG_TRB['pingback_success'] . '</b>';
                 } elseif ($result != $LANG_TRB['no_pingback_url']) {
-                    $result = '<span class="warningsmall">' . $result . '</span>';
+                    $result = COM_createControl('display-text-warning-small', array('text' => $result));
                     // TBD: $resend = '...';
                 }
                 $parts = parse_url($URLtoPing);
@@ -341,7 +341,7 @@ function sendPings($type, $id)
                 if (empty($pinged)) {
                     $pinged = '<b>' . $LANG_TRB['ping_success'] . '</b>';
                 } else {
-                    $pinged = '<span class="warningsmall">' . $pinged . '</span>';
+                    $pinged = COM_createControl('display-text-warning-small', array('text' => $pinged));
                 }
 
                 $template->set_var('service_name', $A['name']);

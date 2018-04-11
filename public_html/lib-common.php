@@ -1810,6 +1810,8 @@ function COM_createControl($type, $variables = array())
             'controls-left',
             'controls-right',
             
+            'display-text-warning',
+            'display-text-warning-small', 
             'display-allowed-html',
             'display-allowed-autotags'
         );

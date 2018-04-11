@@ -80,7 +80,7 @@ function plugin_cclabel_recaptcha()
         $pi_name = RECAPTCHA_str('admin');
 
         if (!RECAPTCHA_isRecaptchaEnabled() && !RECAPTCHA_isInvisibleRecaptchaEnabled()) {
-            $pi_name = '<span style="color: red;">' . $pi_name . '!</span>';
+            $pi_name = COM_createControl('display-text-warning', array('text' => $pi_name));
         }
 
         $admin_url = $_CONF['site_admin_url'] . '/plugins/recaptcha/index.php';
@@ -105,7 +105,7 @@ function plugin_getadminoption_recaptcha()
         $pi_name = RECAPTCHA_str('admin');
 
         if (!RECAPTCHA_isRecaptchaEnabled() && !RECAPTCHA_isInvisibleRecaptchaEnabled()) {
-            $pi_name = '<span style="color: red;">' . $pi_name . '!</span>';
+            $pi_name = COM_createControl('display-text-warning', array('text' => $pi_name));
         }
 
         $admin_url = $_CONF['site_admin_url'] . '/plugins/recaptcha/index.php';

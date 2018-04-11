@@ -78,6 +78,14 @@
 
 {# ------------------ Geeklog Misc Display ------------------ #}
 
+<!-- BEGIN display-text-warning-small -->
+<span class="warningsmall">{text}</span>
+<!-- END display-text-warning-small -->
+
+<!-- BEGIN display-text-warning -->
+<span style="color: red;">{text}</span>
+<!-- END display-text-warning -->
+
 <!-- BEGIN display-allowed-html -->
 <div dir="ltr" class="allowed_html_tags {post_mode_class} ">
     {!if list_only}{!else}

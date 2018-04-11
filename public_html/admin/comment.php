@@ -168,7 +168,7 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
                 // Check if user disabled
                 if (DB_getItem($_TABLES['users'], 'status', "uid = $userId") == USER_ACCOUNT_DISABLED) {
                     $fieldValue = '<a href="' . $_CONF['site_url']
-                        . '/users.php?mode=profile&amp;uid=' . $userId . '"><span style="color: red;">' . $fieldValue . '</span></a>';                    
+                        . '/users.php?mode=profile&amp;uid=' . $userId . '">' . COM_createControl('display-text-warning', array('text' => $fieldValue)) . '</a>';                    
                 } else {
                     $fieldValue = '<a href="' . $_CONF['site_url']
                         . '/users.php?mode=profile&amp;uid=' . $userId . '">' . $fieldValue . '</a>';
@@ -181,10 +181,10 @@ function ADMIN_getListField_comments($fieldName, $fieldValue, $A, $iconArray, $s
             $forDisplay = htmlspecialchars($fieldValue, ENT_QUOTES, $encoding);
 
             if (in_array('spamx', $_PLUGINS) && SPAMX_isIPBanned($fieldValue)) {
-                $fieldValue = '<span style="color: red;">' . $forDisplay . '</span>';
+                $fieldValue = COM_createControl('display-text-warning', array('text' => $forDisplay));
             } else {
                 if (function_exists('BAN_for_plugins_ban_found') && BAN_for_plugins_ban_found($fieldValue)) {
-                    $fieldValue = '<span style="color: red;">' . $forDisplay . '</span>';
+                    $fieldValue = COM_createControl('display-text-warning', array('text' => $forDisplay));
                 } else {
                     $fieldValue = $forDisplay;
                 }
