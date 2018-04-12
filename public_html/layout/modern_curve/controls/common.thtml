@@ -78,13 +78,17 @@
 
 {# ------------------ Geeklog Misc Display ------------------ #}
 
+<!-- BEGIN display-text-warning -->
+<span style="color: red;">{text}</span>
+<!-- END display-text-warning -->
+
 <!-- BEGIN display-text-warning-small -->
 <span class="warningsmall">{text}</span>
 <!-- END display-text-warning-small -->
 
-<!-- BEGIN display-text-warning -->
-<span style="color: red;">{text}</span>
-<!-- END display-text-warning -->
+<!-- BEGIN display-text-strikethrough -->
+<span class="strike"{!if title} title="{title}"{!endif}>{text}</span>
+<!-- END display-text-strikethrough -->
 
 <!-- BEGIN display-allowed-html -->
 <div dir="ltr" class="allowed_html_tags {post_mode_class} ">

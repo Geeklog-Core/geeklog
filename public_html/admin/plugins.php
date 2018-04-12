@@ -473,10 +473,10 @@ function listplugins($token)
     // this is a dummy variable so we know the form has been used if all plugins
     // should be disabled in order to disable the last one.
     $form_arr = array(
-        'top'    => '<div><input type="hidden" name="' . CSRF_TOKEN . '" value="'
-            . $token . '"' . XHTML . '></div>',
-        'bottom' => '<div><input type="hidden" name="pluginenabler" value="true"'
-            . XHTML . '></div>',
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+            . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="pluginenabler" value="true"'
+            . XHTML . '>',
     );
 
     $retval .= ADMIN_list('plugins', 'ADMIN_getListField_plugins', $header_arr,

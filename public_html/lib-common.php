@@ -1811,7 +1811,8 @@ function COM_createControl($type, $variables = array())
             'controls-right',
             
             'display-text-warning',
-            'display-text-warning-small', 
+            'display-text-warning-small',
+            'display-text-strikethrough',
             'display-allowed-html',
             'display-allowed-autotags'
         );

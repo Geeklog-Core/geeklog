@@ -856,8 +856,7 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
 
     if (isset($A['status']) && ($A['status'] == USER_ACCOUNT_DISABLED)) {
         if (($fieldName != 'edit') && ($fieldName != 'username')) {
-            $retval = sprintf('<span class="strike" title="%s">%s</span>',
-                $LANG28[42], $retval);
+            $retval = COM_createControl('display-text-strikethrough', array('text' =>  $retval, 'title' =>  $LANG28[42]));
         }
     }
 
@@ -1330,8 +1329,7 @@ function ADMIN_getListField_trackback($fieldName, $fieldValue, $A, $icon_arr, $t
             } elseif ($A['method'] === 'weblogUpdates.extendedPing') {
                 $retval = $LANG_TRB['ping_extended'];
             } else {
-                $retval = '<span class="warningsmall">' . $LANG_TRB['ping_unknown']
-                    . '</span>';
+                $retval = COM_createControl('display-text-warning', array('text' => $LANG_TRB['ping_unknown']));
             }
             break;
 
