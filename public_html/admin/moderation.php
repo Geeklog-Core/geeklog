@@ -119,8 +119,10 @@ function usersubmissions($token, $approved = 0, $deleted = 0)
         $retval .= userlist($token);
     }
 
-    $retval .= PLG_showModerationList($token)
-        . COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+    // Get lists from plugins that support submissions
+    $retval .= PLG_showModerationList($token);
+    
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -177,8 +179,6 @@ function itemlist($type, $token)
                 if (($type !== 'story') && ($type !== 'story_draft')) {
                     $isPlugin = true;
                 }
-            } elseif (is_string($plugin)) {
-                return '<div class="block-box">' . $plugin . '</div>' . LB;
             } else {
                 return '';
             }
@@ -197,23 +197,25 @@ function itemlist($type, $token)
     }
 
     $numRows = (int) DB_numRows($result);
-    $maxPage = (int) floor(($numRows - 1) / NUM_ITEMS_ON_MODERATION_LIST) + 1;
-    if ($page > $maxPage) {
-        $page = $maxPage;
-    }
+    if ($numRows > 0) {
+        $maxPage = (int) floor(($numRows - 1) / NUM_ITEMS_ON_MODERATION_LIST) + 1;
+        if ($page > $maxPage) {
+            $page = $maxPage;
+        }
 
-    // run SQL but this time ignore any errors
-    $sql .= sprintf(
-        ' LIMIT %d, %d',
-        NUM_ITEMS_ON_MODERATION_LIST * ($page - 1),
-        NUM_ITEMS_ON_MODERATION_LIST
-    );
-    $result = DB_query($sql, 1);
+        // run SQL but this time ignore any errors
+        $sql .= sprintf(
+            ' LIMIT %d, %d',
+            NUM_ITEMS_ON_MODERATION_LIST * ($page - 1),
+            NUM_ITEMS_ON_MODERATION_LIST
+        );
+        $result = DB_query($sql, 1);
 
-    if (DB_error()) {
-        return '';
-    } else {
-        $numRows = DB_numRows($result);
+        if (DB_error()) {
+            return '';
+        } else {
+            $numRows = DB_numRows($result);
+        }
     }
 
     $data_arr = array();
