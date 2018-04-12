@@ -284,7 +284,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         $article->set_var('story_topic_name', $topicname);
         $article->set_var('story_topic_url', $topicurl);
 
-        $recent_post_anchortag = '';
+        $recent_comment_anchortag = '';
 
         $article->set_var('lang_permalink', $LANG01[127]);
 
@@ -446,56 +446,49 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                     $comments_with_count = sprintf($LANG01[143], COM_numberFormat($numComments));
                 }
 
+                if ($_CONF['comment_on_same_page'] == true) {
+                    $postCommentUrl = $_CONF['site_url'] . '/article.php?story='
+                        . $story->getSid() . '#commenteditform';
+                } else {
+                    $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
+                        . $story->getSid() . '&amp;pid=0&amp;type=article';
+                    if ($_CONF['show_comments_at_replying'] == true) {
+                        $postCommentUrl .= '#commenteditform';
+                    }
+                }                
+
                 if ($story->DisplayElements('comments') > 0) {
                     $result = DB_query("SELECT UNIX_TIMESTAMP(date) AS day,username,fullname,{$_TABLES['comments']}.uid as cuid FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '" . $story->getSid() . "' ORDER BY date DESC LIMIT 1");
                     $C = DB_fetchArray($result);
 
-                    $recent_post_anchortag = '<span class="storybyline">'
-                        . $LANG01[27] . ': '
+                    $recent_comment_info = $LANG01[27] . ': '
                         . strftime($_CONF['daytime'], $C['day']) . ' '
                         . $LANG01[104] . ' ' . COM_getDisplayName($C['cuid'],
-                            $C['username'], $C['fullname'])
-                        . '</span>';
-                    $comments_with_count = COM_createLink($comments_with_count, $commentsUrl);
+                            $C['username'], $C['fullname']);
+                    $article->set_var('recent_comment_info', $recent_comment_info);
+                    
+                    $attr = array('title' => htmlspecialchars($recent_comment_info));
+                    $comments_with_count = COM_createLink($comments_with_count, $commentsUrl, $attr);
                     $article->set_var('comments_with_count', $comments_with_count);
-                    $article->set_var('start_comments_anchortag', '<a href="'
-                        . $commentsUrl . '">');
+                    
+                    $recent_comment_anchortag = COM_createLink($comments_with_count, $postCommentUrl, $attr);
+                    
+                    // Not really used anymore but left in for old themes
+                    $article->set_var('start_comments_anchortag', '<a href="' . $commentsUrl . '">');
                     $article->set_var('end_comments_anchortag', '</a>');
                 } else {
                     $article->set_var('comments_with_count', $comments_with_count);
-                    if ($_CONF['comment_on_same_page'] == true) {
-                        $recent_post_anchortag = COM_createLink($LANG01[60],
-                            $_CONF['site_url'] . '/article.php?story=' . $story->getSid()
-                            . '#commenteditform');
-                    } else {
-                        $recent_post_anchortag = COM_createLink($LANG01[60],
-                            $_CONF['site_url'] . '/comment.php?sid=' . $story->getSid()
-                            . '&amp;pid=0&amp;type=article');
-                        if ($_CONF['show_comments_at_replying'] == true) {
-                            $recent_post_anchortag .= '#commenteditform';
-                        }
-                    }
+                    
+                    $recent_comment_anchortag = COM_createLink($LANG01[60], $postCommentUrl);
                 }
+                
                 if ($story->DisplayElements('commentcode') == 0) {
-                    if ($_CONF['comment_on_same_page'] == true) {
-                        $postCommentUrl = $_CONF['site_url'] . '/article.php?story='
-                            . $story->getSid() . '#commenteditform';
-                    } else {
-                        $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
-                            . $story->getSid() . '&amp;pid=0&amp;type=article';
-                        if ($_CONF['show_comments_at_replying'] == true) {
-                            $postCommentUrl .= '#commenteditform';
-                        }
-                    }
                     $post_comment_link = COM_createLink($LANG01[60], $postCommentUrl,
                         array('rel' => 'nofollow'));
                     $article->set_var('post_comment_link', $post_comment_link);
-                    /*
-                        $article->set_var( 'subscribe_link',
-                                COM_createLink('Nubbies', '', array('rel' => 'nofollow'))
-                                         );
-                    */
                     $article->set_var('lang_post_comment', $LANG01[60]);
+                    
+                    // Not really used anymore but left in for old themes
                     $article->set_var('start_post_comment_anchortag',
                         '<a href="' . $postCommentUrl
                         . '" rel="nofollow">');
@@ -572,7 +565,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $article->set_var('story_counter', $storyCounter);
         }
 
-        $article->set_var('recent_post_anchortag', $recent_post_anchortag);
+        $article->set_var('recent_comment_anchortag', $recent_comment_anchortag);
 
         if (($index != 'p') && SEC_hasRights('story.edit') &&
             ($story->checkAccess() == 3) &&
