@@ -296,6 +296,20 @@ function _checkEnvironment()
     );
     $data_arr = array();
 
+    if (extension_loaded('fileinfo')) {
+        $data_arr[] = array(
+            'item'   => $LANG_ENVCHECK['fileinfo_library'],
+            'status' => _getStatusTags($T, 'yes', $LANG_ENVCHECK['ok']),
+            'notes'  => $LANG_ENVCHECK['fileinfo_ok']
+        );
+    } else {
+        $data_arr[] = array(
+            'item'   => $LANG_ENVCHECK['fileinfo_library'],
+            'status' => _getStatusTags($T, 'notok', $LANG_ENVCHECK['not_found']),
+            'notes'  => $LANG_ENVCHECK['fileinfo_not_found']
+        );
+    }
+    
     if (extension_loaded('openssl')) {
         $data_arr[] = array(
             'item'   => $LANG_ENVCHECK['openssl_library'],
