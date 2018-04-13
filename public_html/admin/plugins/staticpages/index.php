@@ -563,6 +563,7 @@ function staticpageeditor_form(array $A)
         'lang_prev_page'   => $LANG_STATIC['prev_page'],
         'lang_next_page'   => $LANG_STATIC['next_page'],
         'lang_parent_page' => $LANG_STATIC['parent_page'],
+        'lang_page_desc'   => $LANG_STATIC['page_desc'],
         'sp_prev_pages'    => staticPageGetIdOptions($sp_id, $A['sp_prev']),
         'sp_next_pages'    => staticPageGetIdOptions($sp_id, $A['sp_next']),
         'sp_parent_pages'  => staticPageGetIdOptions($sp_id, $A['sp_parent']),

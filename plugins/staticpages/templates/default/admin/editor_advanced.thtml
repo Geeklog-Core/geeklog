@@ -145,6 +145,7 @@
         <dd><select name="sp_next" id="sp-editor-sp_next">{sp_next_pages}</select></dd>
         <dt><label for="sp-editor-sp_parent">{lang_parent_page}</label></dt>
         <dd><select name="sp_parent" id="sp-editor-sp_parent">{sp_parent_pages}</select></dd>
+        <dd class="description">{lang_page_desc}</dd>
       </dl>
 
       <fieldset>
