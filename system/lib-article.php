@@ -702,7 +702,7 @@ function STORY_extractLinks($fulltext, $maxlength = 26)
 
         // if link is too long, shorten it and add ... at the end
         if (($maxlength > 0) && (MBYTE_strlen($matches[2][$i]) > $maxlength)) {
-            $matches[2][$i] = substr($matches[2][$i], 0, $maxlength - 3) . '...';
+            $matches[2][$i] = MBYTE_substr($matches[2][$i], 0, $maxlength - 3) . '...';
         }
 
         $rel[] = '<a href="' . $matches[1][$i] . '">'
