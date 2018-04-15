@@ -1,5 +1,6 @@
 {# begin {templatelocation} #}
 
+    <hr{xhtml}
   </div>
 </div>
 
