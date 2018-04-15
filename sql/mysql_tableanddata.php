@@ -379,6 +379,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['topics']} (
   tid varchar(75) NOT NULL default '',
   topic varchar(75) default NULL,
+  title varchar(128) default NULL,
   imageurl varchar(255) default NULL,
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,

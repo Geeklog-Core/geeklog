@@ -10,6 +10,10 @@
       <dt><label for="admin-topiceditor-tid">{lang_topicid}</label></dt>
       <dd><input type="text" maxlength="75" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="size5" aria-describedby="desc-admin-topiceditor-tid"{xhtml}> <span id="desc-admin-topiceditor-tid">{lang_donotusespaces}</span></dd>
 
+      <dt><label for="admin-topiceditor-title">{lang_topic_title}</label></dt>
+      <dd><input type="text" maxlength="128" value="{topic_title}" name="topic_title" id="admin-topiceditor-title" class="size5" aria-describedby="desc-admin-topiceditor-title"{xhtml}></dd>
+      <dd class="description">{lang_topic_title_description}</dd>
+      
       <dt><label for="admin-topiceditor-inherit">{lang_inherit}</label></dt>
       <dd class="controls_text"><label><input type="checkbox" {inherit_checked} name="inherit" id="admin-topiceditor-inherit"{xhtml}><span class="fieldhelp">{lang_inherit_info}</span></label></dd>
 

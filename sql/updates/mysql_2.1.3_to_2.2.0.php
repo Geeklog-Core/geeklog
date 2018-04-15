@@ -50,6 +50,9 @@ $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `emailtoconfirm` VARCHAR(96) NU
 // Fix for password request id getting set to a string with the word "NULL" instead of actually NULL
 $_SQL[] = "UPDATE `{$_TABLES['users']}` SET pwrequestid = NULL WHERE pwrequestid = 'NULL'";
 
+// Add column for Topic Title
+$_SQL[] = "ALTER TABLE `{$_TABLES['topics']}` ADD `title` VARCHAR(128) NULL DEFAULT NULL AFTER `topic`";
+
 /**
  * Upgrade Messages
  */

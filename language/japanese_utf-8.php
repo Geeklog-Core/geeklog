@@ -1118,7 +1118,9 @@ $LANG27 = array(
     'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - IDとタイプにおける関連話題のクリッカブルリストを作成する。',
     'no_related_items' => '関連アイテムがありません。',
     'topics:' => '話題:',
-    'filed_under:' => '話題:'
+    'filed_under:' => '話題:',
+    'topic_title' => 'Topic Title',
+    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.'
 );
 
 ###############################################################################

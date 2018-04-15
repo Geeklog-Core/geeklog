@@ -117,7 +117,10 @@ function update_DatabaseFor220()
     $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `emailtoconfirm` VARCHAR(96) NULL DEFAULT NULL AFTER `emailconfirmid`";
     
     // Fix for password request id getting set to a string with the word "NULL" instead of actually NULL
-    $_SQL[] = "UPDATE `{$_TABLES['users']}` SET pwrequestid = NULL WHERE pwrequestid = 'NULL'";    
+    $_SQL[] = "UPDATE `{$_TABLES['users']}` SET pwrequestid = NULL WHERE pwrequestid = 'NULL'";
+    
+    // Add column for Topic Title
+    $_SQL[] = "ALTER TABLE `{$_TABLES['topics']}` ADD `title` VARCHAR(128) NULL DEFAULT NULL AFTER `topic`";
 
     // Add theme admin
     $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_name='Theme Admin'");

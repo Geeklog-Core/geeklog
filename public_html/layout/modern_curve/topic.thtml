@@ -1,0 +1,16 @@
+{# begin {templatelocation} #}
+
+{# variables - index_page (first page) are available as well to use #}
+
+{!if topic_id}
+    {!if topic_title}
+    <h1>{topic_title}</h1>
+    {!endif}
+{!else}
+    {# If topic id does not exist then on homepage #}
+
+{!endif}
+
+{topic_content}
+
+{# end {templatelocation} #}

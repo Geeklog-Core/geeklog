@@ -412,13 +412,37 @@ if ($A = DB_fetchArray($result)) {
     }
 }
 
-$header = '';
 
+// Retrieve info about topic
+$result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid = '" . DB_escapeString($topic) . "'");
+$A = DB_fetcharray($result);
+
+
+$tt = COM_newTemplate($_CONF['path_layout']);
+$tt->set_file(array('topic' => 'topic.thtml'));
+$tt->set_var('topic_content', $display);
+if ($topic) {
+    if (empty($A['title'])) {
+        $title = $A['topic'];
+    } else {
+        $title = $A['title'];
+    }
+} else {
+    // Homepage then
+    $title = $_CONF['site_name'];
+}
+$tt->set_var('topic_id', $topic);
+$tt->set_var('topic_title', $title);
+if ($page == 1) {
+    $tt->set_var('first_page', true);
+}
+$tt->parse('output', 'topic');
+$display = $tt->finish($tt->get_var('output'));
+
+$header = '';
 if ($topic) {
     // Meta Tags
     if ($_CONF['meta_tags'] > 0) {
-        $result = DB_query("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '" . DB_escapeString($topic) . "'");
-        $A = DB_fetcharray($result);
         $header .= LB . PLG_getMetaTags(
                 'homepage', '',
                 array(

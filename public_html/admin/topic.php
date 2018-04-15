@@ -78,6 +78,7 @@ function edittopic($tid = '')
         $A = array(
             'tid'          => '',
             'topic'        => '',
+            'title'        => '',
             'sortnum'      => 0,
             'parent_id'    => TOPIC_ROOT,
             'inherit'      => 1,
@@ -132,6 +133,11 @@ function edittopic($tid = '')
     $topic_templates->set_var('lang_topicid', $LANG27[2]);
     $topic_templates->set_var('topic_id', $A['tid']);
 
+    $topic_templates->set_var('lang_topic_title', $LANG27['topic_title']);
+    $topic_templates->set_var('lang_topic_title_description', $LANG27['topic_title_desc']);
+    $topic_templates->set_var('topic_title', $A['title']);
+    
+    
     $topic_templates->set_var('lang_parent_id', $LANG27[32]);
     $topic_templates->set_var('parent_id_options',
         TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true));
@@ -356,7 +362,7 @@ function changetopicid($tid, $old_tid)
  * @return   string                   HTML redirect or error message
  */
 function savetopic(
-    $tid, $topic, $inherit, $hidden, $parent_id, $imageUrl, $meta_description, $meta_keywords, $sortNum, $limitNews,
+    $tid, $topic, $title, $inherit, $hidden, $parent_id, $imageUrl, $meta_description, $meta_keywords, $sortNum, $limitNews,
     $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_default, $is_archive)
 {
     global $_CONF, $_TABLES, $_USER, $LANG27, $MESSAGE;
@@ -461,6 +467,8 @@ function savetopic(
 
             $topic = GLText::remove4byteUtf8Chars(GLText::stripTags($topic));
             $topic = DB_escapeString($topic);
+            $title = GLText::remove4byteUtf8Chars(GLText::stripTags($title));
+            $title = DB_escapeString($title);            
             $meta_description = GLText::remove4byteUtf8Chars(GLText::stripTags($meta_description));
             $meta_description = DB_escapeString($meta_description);
             $meta_keywords = GLText::remove4byteUtf8Chars(GLText::stripTags($meta_keywords));
@@ -521,7 +529,7 @@ function savetopic(
                 }
             }
 
-            DB_save($_TABLES['topics'], 'tid, topic, inherit, hidden, parent_id, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon', "'$tid', '$topic', $inherit, $hidden, '$parent_id', '$imageUrl', '$meta_description', '$meta_keywords','$sortNum','$limitNews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+            DB_save($_TABLES['topics'], 'tid, topic, title, inherit, hidden, parent_id, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon', "'$tid', '$topic', '$title', $inherit, $hidden, '$parent_id', '$imageUrl', '$meta_description', '$meta_keywords','$sortNum','$limitNews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
 
             if ($old_tid != $tid) {
                 PLG_itemSaved($tid, 'topic', $old_tid);
@@ -947,6 +955,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $display .= savetopic(
         Geeklog\Input::fPost('tid'),
         Geeklog\Input::post('topic_name'),
+        Geeklog\Input::post('topic_title'),
         $inherit, $hidden, $parent_id, $imageurl,
         Geeklog\Input::post('meta_description'),
         Geeklog\Input::post('meta_keywords'),
