@@ -288,12 +288,13 @@ class Template
                 'cache_by_language'   => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
                 'cache_for_mobile'    => $_CONF['cache_mobile'],  // create cache directories for mobile devices. Non mobile devices uses regular directory. If disabled mobile uses regular cache files. Takes extra space
                 'default_vars'        => array(                                // list of vars found in all templates.
-                    'xhtml'          => (defined('XHTML') ? XHTML : ''),
-                    'site_url'       => $_CONF['site_url'],
-                    'site_admin_url' => $_CONF['site_admin_url'],
-                    'layout_url'     => $_CONF['layout_url'], // Can be set by lib-common on theme change
-                    'anonymous_user' => true,
-                    'device_mobile'  => false,
+                    'xhtml'           => (defined('XHTML') ? XHTML : ''),
+                    'site_url'        => $_CONF['site_url'],
+                    'site_admin_url'  => $_CONF['site_admin_url'],
+                    'layout_url'      => $_CONF['layout_url'], // Can be set by lib-common on theme change
+                    'anonymous_user'  => true,
+                    'device_mobile'   => false,
+                    'front_page'      => false
                 ),
                 'hook'                => array(),
             );
