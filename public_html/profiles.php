@@ -102,8 +102,9 @@ function contactemail($uid, $cc, $author, $authorEmail, $subject, $message)
 
             // do a spam check with the unfiltered message text and subject
             $mailtext = $subject . "\n" . $message . $sig;
+            $permanentlink = null; // Setting this to null as this is a stand alone email. There is no permantlink that the email is being added too (like a comment on a blog post)
             $result = PLG_checkForSpam(
-                $mailtext, $_CONF['spamx'], COM_getCurrentURL(), Geeklog\Akismet::COMMENT_TYPE_CONTACT_FORM,
+                $mailtext, $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_CONTACT_FORM,
                 $author, $authorEmail
             );
             if ($result > PLG_SPAM_NOT_FOUND) {
@@ -356,8 +357,9 @@ function mailstory($sid, $to, $toEmail, $from, $fromEmail, $shortMessage)
     }
 
     // just to make sure this isn't an attempt at spamming users ...
+    $permanentlink = null; // Setting this to null as this is a stand alone email. There is no permantlink that the email is being added too (like a comment on a blog post)
     $result = PLG_checkForSpam(
-        $mailText, $_CONF['spamx'], COM_getCurrentURL(), Geeklog\Akismet::COMMENT_TYPE_CONTACT_FORM,
+        $mailText, $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_CONTACT_FORM,
         $from, $fromEmail
     );
     if ($result > PLG_SPAM_NOT_FOUND) {

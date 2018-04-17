@@ -1075,7 +1075,22 @@ function plugin_save_submit_links($A)
     }
     $spamCheck = '<p>'. $link .' (' . $A['categorydd'] . ')<br' . XHTML . '>'
                . $A['description'] . '</p>';
-    $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], $link, Geeklog\Akismet::COMMENT_TYPE_LINK);
+               
+    $permanentlink = null; // Setting this to null as links can appear on a number of different pages like Category view and links homepage in topten list (there is no true permanent page that the link is being added too)
+    $authorname = null;
+    $authoremail = null;
+    $authorurl = null;
+    if (!COM_isAnonUser()) {
+        $authorname = $_USER['username'];
+        if (!empty($_USER['email'])) {
+            $authoremail = $_USER['email'];
+        }
+        if (!empty($_USER['homepage'])) {
+            $authorurl = $_USER['homepage'];
+        }
+    }
+    
+    $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_LINK, $authorname, $authoremail, $authorurl);
 
     if ($result > PLG_SPAM_NOT_FOUND) {
         COM_updateSpeedlimit('submit');

@@ -2217,11 +2217,11 @@ function PLG_getWhatsNewComment($type = '', $numReturn = 0, $uid = 0)
  *
  * @param  string $comment Text to be filtered or checked for spam
  * @param  int    $action  what to do if spam found
- * @param  string $permanentLink (since GL 2.2.0)
- * @param  string $commentType (since GL 2.2.0)
- * @param  string $commentAuthor (since GL 2.2.0)
- * @param  string $commentAuthorEmail (since GL 2.2.0)
- * @param  string $commentAuthorURL (since GL 2.2.0)
+ * @param  string $permanentLink (since GL 2.2.0 for Akismet) - The full permanent URL of the entry the comment was submitted to
+ * @param  string $commentType (since GL 2.2.0 for Akismet) - See system/classes/Akismet.php
+ * @param  string $commentAuthor (since GL 2.2.0 for Akismet) - Name submitted with the comment (usually User Name)
+ * @param  string $commentAuthorEmail (since GL 2.2.0 for Akismet) - User email address
+ * @param  string $commentAuthorURL (since GL 2.2.0 for Akismet) - User Homepage or URL submitted with comment
  * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
  * @note   As for valid value for $commentType, see system/classes/Akismet.php
  * @link   http://wiki.geeklog.net/index.php/Filtering_Spam_with_Spam-X

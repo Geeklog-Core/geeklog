@@ -284,7 +284,7 @@ function sendNotification($table, $story)
  */
 function savestory(array $A)
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_USER;
 
     $retval = '';
 
@@ -292,9 +292,23 @@ function savestory(array $A)
     $story->loadSubmission();
 
     // pseudo-formatted story text for the spam check
-    $url = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $story->getSid());
+    $permanentlink = null // Setting this to null as this is a new blog post with a new url. There is no permantlink that the post is being added too (like a comment on a blog post)
+    // $permanentlink = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $story->getSid());
+    $authorname = null;
+    $authoremail = null;
+    $authorurl = null;
+    if (!COM_isAnonUser()) {
+        $authorname = $_USER['username'];
+        if (!empty($_USER['email'])) {
+            $authoremail = $_USER['email'];
+        }
+        if (!empty($_USER['homepage'])) {
+            $authorurl = $_USER['homepage'];
+        }
+    }
+    
     $result = PLG_checkForSpam(
-        $story->getSpamCheckFormat(), $_CONF['spamx'], $url, Geeklog\Akismet::COMMENT_TYPE_BLOG_POST
+        $story->getSpamCheckFormat(), $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_BLOG_POST, $authorname, $authoremail, $authorurl
     );
 
     if ($result > PLG_SPAM_NOT_FOUND) {

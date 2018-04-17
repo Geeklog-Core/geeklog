@@ -27,8 +27,8 @@ class Akismet extends BaseCommand
     /**
      * Here we do the work
      *
-     * @param  string $comment - The content that was submitted. 
-     * @param  string $permanentLink (since GL 2.2.0) - The full permanent URL of the entry the comment was submitted to. 
+     * @param  string $comment - The content that was submitted
+     * @param  string $permanentLink (since GL 2.2.0) - The full permanent URL of the entry the comment was submitted to.
      * @param  string $commentType (since GL 2.2.0) - See system/classes/Akismet.php
      * @param  string $commentAuthor (since GL 2.2.0) - Name submitted with the comment (usually User Name)
      * @param  string $commentAuthorEmail (since GL 2.2.0) - User email address

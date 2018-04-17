@@ -1341,7 +1341,22 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     // Let plugins have a chance to check for spam
     $spamCheck = '<h1>' . $title . '</h1><p>' . $comment . '</p>';
-    $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], COM_getCurrentURL(), Geeklog\Akismet::COMMENT_TYPE_COMMENT);
+    
+    $permanentlink = COM_getCurrentURL(); // Should be link to article, staticpage, etc.. of comment
+    $authorname = null;
+    $authoremail = null;
+    $authorurl = null;
+    if (!COM_isAnonUser()) {
+        $authorname = $_USER['username'];
+        if (!empty($_USER['email'])) {
+            $authoremail = $_USER['email'];
+        }
+        if (!empty($_USER['homepage'])) {
+            $authorurl = $_USER['homepage'];
+        }
+    }
+    
+    $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_COMMENT, $authorname, $authoremail, $authorurl);
 
     // Now check the result and display message if spam action was taken
     if ($result > PLG_SPAM_NOT_FOUND) {
