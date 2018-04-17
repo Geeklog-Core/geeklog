@@ -27,16 +27,16 @@ class Akismet extends BaseCommand
     /**
      * Here we do the work
      *
-     * @param  string $comment
-     * @param  string $permanentLink (since GL 2.2.0)
-     * @param  string $commentType (since GL 2.2.0)
-     * @param  string $commentAuthor (since GL 2.2.0)
-     * @param  string $commentAuthorEmail (since GL 2.2.0)
-     * @param  string $commentAuthorURL (since GL 2.2.0)
+     * @param  string $comment - The content that was submitted. 
+     * @param  string $permanentLink (since GL 2.2.0) - The full permanent URL of the entry the comment was submitted to. 
+     * @param  string $commentType (since GL 2.2.0) - See system/classes/Akismet.php
+     * @param  string $commentAuthor (since GL 2.2.0) - Name submitted with the comment (usually User Name)
+     * @param  string $commentAuthorEmail (since GL 2.2.0) - User email address
+     * @param  string $commentAuthorURL (since GL 2.2.0) - User Homepage or URL submitted with comment
      * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
      * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+    public function execute($comment, $permanentLink = null, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                             $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
         global $_CONF, $_SPX_CONF, $LANG_SX00;

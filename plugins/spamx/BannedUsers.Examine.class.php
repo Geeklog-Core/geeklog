@@ -41,7 +41,7 @@ class BannedUsers extends BaseCommand
      * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
      * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
-    public function execute($comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+    public function execute($comment, $permanentLink = null, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                             $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
     {
         global $_TABLES, $LANG_SX00, $LANG28;
