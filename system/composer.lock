@@ -54,16 +54,16 @@
         },
         {
             "name": "matthiasmullie/minify",
-            "version": "1.3.57",
+            "version": "1.3.59",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasmullie/minify.git",
-                "reference": "7559ac0806f39f89f949c917e6612dda8154488b"
+                "reference": "62dac3bce06de66f0d71fe6490cf1c508d3c3ff7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/7559ac0806f39f89f949c917e6612dda8154488b",
-                "reference": "7559ac0806f39f89f949c917e6612dda8154488b",
+                "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/62dac3bce06de66f0d71fe6490cf1c508d3c3ff7",
+                "reference": "62dac3bce06de66f0d71fe6490cf1c508d3c3ff7",
                 "shasum": ""
             },
             "require": {
@@ -110,20 +110,20 @@
                 "minifier",
                 "minify"
             ],
-            "time": "2017-12-06T12:46:42+00:00"
+            "time": "2018-02-02T12:44:18+00:00"
         },
         {
             "name": "matthiasmullie/path-converter",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasmullie/path-converter.git",
-                "reference": "08551ec1b156e923c242a10ab484bd4d6ead6631"
+                "reference": "3082a6838be02b930239a97d38b5c9da4d693aca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasmullie/path-converter/zipball/08551ec1b156e923c242a10ab484bd4d6ead6631",
-                "reference": "08551ec1b156e923c242a10ab484bd4d6ead6631",
+                "url": "https://api.github.com/repos/matthiasmullie/path-converter/zipball/3082a6838be02b930239a97d38b5c9da4d693aca",
+                "reference": "3082a6838be02b930239a97d38b5c9da4d693aca",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +159,7 @@
                 "paths",
                 "relative"
             ],
-            "time": "2017-01-26T08:54:49+00:00"
+            "time": "2018-02-02T11:30:10+00:00"
         },
         {
             "name": "pear/console_getopt",
@@ -269,16 +269,16 @@
         },
         {
             "name": "pear/net_dns2",
-            "version": "v1.4.3",
+            "version": "v1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikepultz/netdns2.git",
-                "reference": "24c84c98c8a85a1f3b6aa9b17df60d32a2d254e9"
+                "reference": "9596a781b4358ee7c1ee0d6b884667c6c4d9a204"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikepultz/netdns2/zipball/24c84c98c8a85a1f3b6aa9b17df60d32a2d254e9",
-                "reference": "24c84c98c8a85a1f3b6aa9b17df60d32a2d254e9",
+                "url": "https://api.github.com/repos/mikepultz/netdns2/zipball/9596a781b4358ee7c1ee0d6b884667c6c4d9a204",
+                "reference": "9596a781b4358ee7c1ee0d6b884667c6c4d9a204",
                 "shasum": ""
             },
             "require": {
@@ -309,7 +309,7 @@
                 "dns",
                 "network"
             ],
-            "time": "2017-02-12T21:14:52+00:00"
+            "time": "2018-02-13T03:07:54+00:00"
         },
         {
             "name": "pear/net_url2",
@@ -644,16 +644,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.8",
+            "version": "v5.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517"
+                "reference": "7ffc1ea296ed14bf8260b6ef11b80208dbadba91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/9a06dc570a0367850280eefd3f1dc2da45aef517",
-                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/7ffc1ea296ed14bf8260b6ef11b80208dbadba91",
+                "reference": "7ffc1ea296ed14bf8260b6ef11b80208dbadba91",
                 "shasum": ""
             },
             "require": {
@@ -688,13 +688,13 @@
                 }
             ],
             "description": "Swiftmailer, free feature-rich PHP mailer",
-            "homepage": "http://swiftmailer.org",
+            "homepage": "https://swiftmailer.symfony.com",
             "keywords": [
                 "email",
                 "mail",
                 "mailer"
             ],
-            "time": "2017-05-01T15:54:03+00:00"
+            "time": "2018-01-23T07:37:21+00:00"
         }
     ],
     "packages-dev": [],

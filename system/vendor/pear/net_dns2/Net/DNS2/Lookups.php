@@ -206,6 +206,7 @@ class Net_DNS2_Lookups
     const EDNS0_OPT_TCP_KEEPALIVE   = 11;
     const EDNS0_OPT_PADDING         = 12;
     const EDNS0_OPT_CHAIN           = 13;
+    const EDNS0_OPT_KEY_TAG         = 14;
 
     /*
      * DNSSEC Algorithms
@@ -221,6 +222,10 @@ class Net_DNS2_Lookups
     const DNSSEC_ALGORITHM_RSASHA256	        = 8;
     const DNSSEC_ALGORITHM_RSASHA512            = 10;
     const DNSSEC_ALGORITHM_ECCGOST              = 12;
+    const DNSSEC_ALGORITHM_ECDSAP256SHA256      = 13;
+    const DNSSEC_ALGORITHM_ECDSAP384SHA384      = 14;
+    const DNSSEC_ALGORITHM_ED25519              = 15;
+    const DNSSEC_ALGORITHM_ED448                = 16;
     const DNSSEC_ALGORITHM_INDIRECT             = 252;
     const DNSSEC_ALGORITHM_PRIVATEDNS           = 253;
     const DNSSEC_ALGORITHM_PRIVATEOID           = 254;
@@ -338,7 +343,8 @@ class Net_DNS2_Lookups
                                     // 259 - 32767 unassigned
 
         'TA'            => 32768,   // same as DS
-        'DLV'           => 32769    // RFC 4431
+        'DLV'           => 32769,   // RFC 4431
+        'TYPE65534'     => 65534    // Private Bind record
     );
 
     /*
@@ -434,7 +440,8 @@ class Net_DNS2_Lookups
         257         => 'Net_DNS2_RR_CAA',
         258         => 'Net_DNS2_RR_AVC',
         32768       => 'Net_DNS2_RR_TA',
-        32769       => 'Net_DNS2_RR_DLV'
+        32769       => 'Net_DNS2_RR_DLV',
+        65534       => 'Net_DNS2_RR_TYPE65534'
     );
 
     /*
@@ -493,6 +500,10 @@ class Net_DNS2_Lookups
         self::DNSSEC_ALGORITHM_RSASHA256            => 'RSASHA256',
         self::DNSSEC_ALGORITHM_RSASHA512            => 'RSASHA512',
         self::DNSSEC_ALGORITHM_ECCGOST              => 'ECC-GOST',
+        self::DNSSEC_ALGORITHM_ECDSAP256SHA256      => 'ECDSAP256SHA256',
+        self::DNSSEC_ALGORITHM_ECDSAP384SHA384      => 'ECDSAP384SHA384',
+        self::DNSSEC_ALGORITHM_ED25519              => 'ED25519',
+        self::DNSSEC_ALGORITHM_ED448                => 'ED448',
         self::DNSSEC_ALGORITHM_INDIRECT             => 'INDIRECT',
         self::DNSSEC_ALGORITHM_PRIVATEDNS           => 'PRIVATEDNS',
         self::DNSSEC_ALGORITHM_PRIVATEOID           => 'PRIVATEOID'
