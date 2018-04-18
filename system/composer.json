@@ -1,4 +1,7 @@
 {
+  "config": {
+    "preferred-install": "dist"
+  },
   "require": {
     "pear/pear_exception": "~1.0",
     "pear/console_getopt": "~1.4",
