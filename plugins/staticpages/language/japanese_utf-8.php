@@ -134,7 +134,7 @@ $LANG_STATIC = array(
     'used_by' => 'このテンプレートを使用しているのは %s ページです。他のテンプレートの自動タグを経由して間接的に使用されている場合は、使用ページはもっと多いかもしれません。',
     'prev_page' => '前のページ',
     'next_page' => '次のページ',
-    'parent_page' => '親ページ', 
+    'parent_page' => '親ページ',
     'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=”next” and rel=”prev” to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.'
 );
 

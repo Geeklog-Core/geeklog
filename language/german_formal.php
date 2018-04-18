@@ -437,7 +437,33 @@ $LANG04 = array(
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?",
-    'user_max_login_attempts' => 'Max Login Attempts and Speed Limit Reached'
+    'user_max_login_attempts' => 'Max Login Attempts and Speed Limit Reached',
+    'tfa_two_factor_auth' => 'Two Factor Authentication',
+    'tfa_help1' => 'Make sure to install "Google Authenticator" application on your mobile device before you enable Two Factor Authentication.',
+    'tfa_help2' => 'Enable Two Factor Authentication.',
+    'tfa_help3' => 'Run "Google Authenticator", tap on the plus icon and scan the QR code.',
+    'tfa_help4' => 'Print or download the backup codes below in case you cannot use your mobile device you installed the Google Authenticator.  Each backup code is valid only one-time.  If you generate a new set of backup codes, then the current set will be invalid.',
+    'tfa_help5' => 'Hit the "Save" button at the bottom of the screen.',
+    'tfa_enter_code' => 'Enter the %d-digit code your Google Authenticator app is showing or one of the backup code you have got in your preference page.',
+    'tfa_code' => 'Google Authenticator Code',
+    'tfa_authenticate' => 'Authenticate',
+    'tfa_qrcode' => 'QR Code',
+    'tfa_show_hide' => 'Show/Hide',
+    'tfa_backup_code' => 'Backup Codes',
+    'tfa_download' => 'Download Backup Codes',
+    'tfa_new_backup_code' => 'Generate a new set of backup codes',
+    'tfa_generate_confirm' => 'Go ahead?',
+    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>',
+    'new_email' => 'New Email',
+    'set_new_email' => 'Set New Email',
+    'confirm_new_email' => 'Confirm new email',
+    'enter_new_email' => 'Enter New Email',
+    'desc_new_email_status' => 'You are required to enter a new email address for your account. You can enter a new email for your account below. <em>Please note you will not be able to do anything with your account until your email is updated and verified.</em>',
+    'email_msg_email_status_1' => "You have updated your email address for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nPlease click on the following link to verify this email address:\n\n",
+    'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n",
+    'email_verify' => 'New Email to be Verified',
+    'email_verify_delete' => 'Delete email to be verified',
+    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it."
 );
 
 ###############################################################################
@@ -513,7 +539,8 @@ $LANG08 = array(
     40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages",
     41 => 'This user doesn\'t exist.',
     42 => 'This users email address doesn\'t exist. This most likely means is is an OAuth user account.',
-    43 => 'This users email address is invalid.'
+    43 => 'This users email address is invalid.',
+    44 => 'This users status is set to something other than Active or New Password therefore the email address is assumed bad.'
 );
 
 ###############################################################################
@@ -752,6 +779,9 @@ $LANG_ENVCHECK = array(
     'netpbm' => 'NetPBM Library',
     'np_ok' => 'The NetPBM library is installed',
     'np_not_found' => 'The NetPBM executables were not found.',
+    'fileinfo_library' => 'Fileinfo Library',
+    'fileinfo_ok' => 'The Fileinfo library is loaded. This library is required when uploading images for articles. It is used to get the mime type of the file being uploaded when creating a thumbnail of the image.',
+    'fileinfo_not_found' => 'The Fileinfo library is not loaded. This is required <strong>only</strong> when uploading images in the article editor.',
     'openssl_library' => 'OpenSSL Library',
     'openssl_ok' => 'The OpenSSL library is loaded. This library is required if you wish to use the OAuth user login method with Geeklog.',
     'openssl_not_found' => 'The OpenSSL library is not loaded. This is required <strong>only</strong> if you wish to use the OAuth user login method with Geeklog.',
@@ -806,7 +836,8 @@ $LANG20 = array(
     4 => 'Username:',
     5 => 'Passwort:',
     6 => 'Zugriffe auf die Administrationsseiten dieser Website werden aufgezeichnet und kontrolliert.<br' . XHTML . '>Diese Seiten sind nur für befugte Personen zugänglich.',
-    7 => 'einloggen'
+    7 => 'einloggen',
+    8 => 'Login'
 );
 
 ###############################################################################
@@ -887,6 +918,8 @@ $LANG21 = array(
     72 => 'CSS Classes',
     73 => 'This field is optional.  You can specify multiple classes separated by space',
     'autotag_desc_block' => '[block:name class:block-autotag] - Displays a block. Class not required. Class specifies the css class and will wrap the block in a div. The class block-autotag will always be included with the div.',
+    'newlines' => 'Newlines',
+    'convert_newlines' => 'Check to convert newlines (EOL) into line break HTML element',
     'position' => 'Position',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)',
@@ -993,6 +1026,11 @@ $LANG24 = array(
     90 => 'Metatag Keywords',
     91 => 'Sie können aber jederzeit auf "Vorschau" klicken, um diese Zeit zu verlängern.',
     92 => 'You might also like',
+    93 => '#',
+    94 => 'Resized',
+    95 => 'Original',
+    96 => 'Upload | Replace',
+    97 => 'No Image',
     'autotag_desc_story' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'autotag_desc_article' => '[article: id alternate title] - Displays a link to an article using the Article Title as the title. An alternate title may be specified but is not required.',
     'cache_time' => 'Cache Time',
@@ -1065,7 +1103,9 @@ $LANG27 = array(
     'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
     'no_related_items' => 'No related items found.',
     'topics:' => 'Topics:',
-    'filed_under:' => 'Filed under:'
+    'filed_under:' => 'Filed under:',
+    'topic_title' => 'Topic Title',
+    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.'
 );
 
 ###############################################################################
@@ -1163,7 +1203,10 @@ $LANG28 = array(
     89 => 'Anklicken, um diese Gruppe zur voreingestellten Gruppe zu machen für neue User',
     90 => '"Voreingestellte Gruppe" anwenden, um dies auch bei existierenden Usern zu ändern.',
     91 => 'Send password to user',
-    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.',
+    'USER_ACCOUNT_LOCKED' => 'Locked',
+    'USER_ACCOUNT_NEW_EMAIL' => 'New Email Required',
+    'USER_ACCOUNT_NEW_PASSWORD' => 'New Password Required'
 );
 
 ###############################################################################
@@ -1200,7 +1243,9 @@ $LANG29 = array(
     'plugins' => 'Plugins',
     'tools' => 'Tools',
     'users' => 'Users',
-    'submissions_desc' => 'To modify or delete a user submssion, click on that item\'s edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit.'
+    'submissions_desc' => 'To modify or delete a user submssion, click on that item\'s edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit.',
+    'max_invalid_login' => 'Max Invalid Logins Reached for User',
+    'max_invalid_login_msg' => 'This user has reached the maximum number of invalid login attempts () within the specified time limit ( seconds). The last IP to make an invalid login attempt is %s. Either the real user has forgotten the password for their account, or someone else is attempting to guess the password for this user account.'
 );
 
 ###############################################################################
@@ -1439,16 +1484,16 @@ $MESSAGE = array(
     14 => 'Die Kategorie und alle zugehörigen Artikel wurden gelöscht.',
     15 => 'Der Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.',
     16 => 'Abonnement wurde gelöscht. Sie werden nicht länger über Antworten benachrichtigt.',
-    17 => '',
+    17 => 'Your user account has been locked and access to it has been disabled. For more information please contact the Admin.',
     18 => '',
     19 => '',
     20 => '',
     21 => 'Der User wurde gespeichert.',
     22 => 'Der User wurde gelöscht.',
-    23 => '',
-    24 => '',
-    25 => '',
-    26 => '',
+    23 => 'Your passwords must match, please try again. Passwords are case sensitive.',
+    24 => 'Your emails must match, please try again.',
+    25 => 'You have not entered a valid email address, please try again.',
+    26 => 'That email address is already being used by an account, please try again.',
     27 => 'Nachricht wurde verschickt.',
     28 => 'Das Plugin wurde gespeichert.',
     29 => 'Sie haben keinen Zugriff auf diese Administrationsseite. Alle Versuche, auf Bereiche ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
@@ -1469,7 +1514,7 @@ $MESSAGE = array(
     44 => 'Das Plugin wurde erfolgreich installiert.',
     45 => 'Das Plugin wurde gelöscht.',
     46 => '',
-    47 => '',
+    47 => 'Sorry you cannot currently request the password for your account. For more information please contact the Admin.',
     48 => "Danke, dass Sie sich bei {$_CONF['site_name']} angemeldet haben. Ihr Aufnahmeantrag wird von unserem Team geprüft. Sobald er akzeptiert wird, werden Sie ein Passwort per E-Mail erhalten.",
     49 => 'Die Gruppe wurde gespeichert.',
     50 => 'Die Gruppe wurde gelöscht.',
@@ -1552,7 +1597,10 @@ $MESSAGE = array(
     153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
     400 => 'Nicht alle erforderlichen Felder konnten bestätigt werden',
     401 => 'Bitte den echten Namen eingeben',
-    500 => 'The Template Cache has been successfully cleared.'
+    501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
+    502 => 'Your request for a new email has expired. Please try again below.',
+    503 => 'Your email has been successfully verified.',
+    504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.'
 );
 
 ###############################################################################
@@ -1950,6 +1998,7 @@ $LANG_ADMIN = array(
     'token_expiry' => 'Achtung, zeitgesteuerte Sicherheitsfunktion (Security-Token). Nach %s lässt sich diese Seite nicht mehr speichern. Änderungen gehen verloren.',
     'token_expired' => 'Das Security-Token für diese Veränderung ist ausgelaufen. Bitte neu authentifizieren, um weiterzumachen.',
     'reauth_msg' => 'Das Security-Token für diese Veränderung ist ausgelaufen. Wenn Sie weitermachen wollen, dann bitte unten neu authentifizieren. Damit wird sichergestellt, dass die gerade gemachten Änderungen nicht verloren gehen.',
+    'token_expired_remote_user' => 'The security token for this operation has expired. Since you are a remote user you cannot re-authenticate, so you have lost your changes.',
     'authenticate' => 'Authentifizieren',
     'approve' => 'Approve',
     'device' => 'Device',
@@ -2015,12 +2064,6 @@ $LANG_sortcodes = array(
     'DESC' => 'Neueste zuerst'
 );
 
-$LANG_statuscodes = array(
-    0 => 'Normal',
-    1 => 'Refreshing',
-    10 => 'Archive'
-);
-
 $LANG_trackbackcodes = array(
     0 => 'Trackbacks erlaubt',
     -1 => 'Keine Trackbacks'
@@ -2081,6 +2124,7 @@ $LANG_confignames['Core'] = array(
     'path_themes' => 'Pfad zu Themes',
     'cache_templates' => 'Cache Templates?',
     'cache_mobile' => 'Cache Mobile Devices Separately?',
+    'cache_resource' => 'Combine, Minify and Cache CSS and JavaScript Files?',
     'disable_new_user_registration' => 'Registrieren neuer User abschalten',
     'allow_user_themes' => 'User können Theme wählen',
     'allow_user_language' => 'User können Sprache wählen',
@@ -2091,6 +2135,7 @@ $LANG_confignames['Core'] = array(
     'hide_author_exclusion' => 'Beim Artikel steht kein Autor',
     'show_fullname' => 'Fullname wird angezeigt',
     'show_servicename' => 'Name des Service wird angezeigt',
+    'require_user_email' => 'Require User Email',
     'custom_registration' => '"Custom Registration" aktivieren',
     'user_login_method' => 'User-Anmeldemethode ',
     'facebook_login' => 'Facebook OAuth-Anmeldemethode aktivieren',
@@ -2224,6 +2269,7 @@ $LANG_confignames['Core'] = array(
     'whats_related_max' => 'Max What\'s Related to Display',
     'whats_related_trim' => 'What\'s Related Title Length',
     'default_cache_time_article' => 'Default Article Cache Time',
+    'blocks_article_topic_list_repeat_after' => 'Article Topic List Blocks Location Repeat',
     'aftersave_user' => 'Nachdem der User gespeichert wurde',
     'show_right_blocks' => 'Immer rechte Blöcke anzeigen?',
     'showfirstasfeatured' => 'Ersten Artikel als Hauptartikel anzeigen?',
@@ -2270,6 +2316,9 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'Passwort Speed-Limit',
     'login_attempts' => 'Max. Anmeldeversuche',
     'login_speedlimit' => 'Anmelde-Speed-Limit',
+    'invalidloginattempts' => 'Max. Invalid Login Attempts',
+    'invalidloginmaxtime' => 'Invalid Login Max Time',
+    'enable_twofactorauth' => 'Enable Two Factor Authentication?',
     'pass_alg' => 'Password Hash Algorithm',
     'pass_stretch' => 'Hash Stretch Count',
     'user_html' => 'Erlaubtes User HTML',
@@ -2283,8 +2332,10 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'Komprimierten Output senden?',
     'frame_options' => 'Schutz gegen "Clickjacking"',
     'page_navigation_max_pages' => 'Max Pages for Navigation',
+    'page_navigation_mobile_max_pages' => 'Max Pages for Navigation with Mobile Devices',
     'default_cache_time_block' => 'Default Block Cache Time',
     'titletoid' => 'Enable Title To Id?',
+    '404_log' => 'Log 404 Errors',
     'censormode' => 'Zensur-Modus?',
     'censorreplace' => 'Zensurwort wird ersetzt mit',
     'censorlist' => 'Liste zensierter Wörter',

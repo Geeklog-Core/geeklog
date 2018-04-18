@@ -130,7 +130,8 @@ $LANG_STATIC = array(
     'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.',
     'prev_page' => 'Previous page',
     'next_page' => 'Next page',
-    'parent_page' => 'Parent page'
+    'parent_page' => 'Parent page',
+    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=”next” and rel=”prev” to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Il suo commento é stato ricevuto e sará pubblicato appena approvato da un moderatore.';

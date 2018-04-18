@@ -935,17 +935,6 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# Block Locations
-
-$LANG23 = array (
-    'blocks_article_footer_name'         => 'Article Footer',
-    'blocks_article_footer_desc'         => 'Display Blocks in article Footer',
-    
-    'blocks_article_topic_list_name'     => 'Article Topic List',
-    'blocks_article_topic_list_desc'     => 'Displays Blocks right after every X number of articles in topics.'
-);
-
-###############################################################################
 # admin/article.php
 
 $LANG24 = array(
@@ -1260,7 +1249,7 @@ $LANG29 = array(
     'users' => 'ユーザー',
     'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。投稿を一括して承認・削除するには、リストのラジオボタンを選択してから保存をクリックしてください。',
     'max_invalid_login' => 'ログイン失敗最大回数',
-    'max_invalid_login_msg' => "このユーザーは、指定時間内(({$_CONF['invalidloginmaxtime']}秒))にログイン失敗最大回数({$_CONF['invalidloginattempts']}回)に達しました。最後にログインに失敗したIPは %s です。登録ユーザーがパスワードを忘れたのかもしれませんが、誰かがこのユーザーのアカウントのパスワードを推測しようとしているのかもしれません。"
+    'max_invalid_login_msg' => 'このユーザーは、指定時間内((秒))にログイン失敗最大回数(回)に達しました。最後にログインに失敗したIPは %s です。登録ユーザーがパスワードを忘れたのかもしれませんが、誰かがこのユーザーのアカウントのパスワードを推測しようとしているのかもしれません。'
 );
 
 ###############################################################################
@@ -1612,7 +1601,6 @@ $MESSAGE = array(
     153 => 'あなたは %1$d 秒前に友だちに記事を送信しています。次に送信する前に %2$d 秒以上あけてください。',
     400 => '検証に通っていない必須のフィールドがあります。',
     401 => '氏名を入力してください。',
-    500 => 'データ、テンプレート、リソース、ファイルマネージャーのキャッシュファイルを削除しました。',
     501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
     502 => 'Your request for a new email has expired. Please try again below.',
     503 => 'Your email has been successfully verified.',
@@ -1913,7 +1901,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-#
+# 
 # For the first two strings, you can use the following placeholders.
 # Order them so it makes sense in your language:
 # %i    item, "Stories"
@@ -1971,7 +1959,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-#
+# 
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2080,12 +2068,6 @@ $LANG_sortcodes = array(
     'DESC' => '新しい順に'
 );
 
-$LANG_statuscodes = array(
-    0 => 'Normal',
-    1 => 'Refreshing',
-    10 => 'Archive'
-);
-
 $LANG_trackbackcodes = array(
     0 => 'トラックバックを受け付ける',
     -1 => 'トラックバックを受け付けない'
@@ -2146,7 +2128,7 @@ $LANG_confignames['Core'] = array(
     'path_themes' => 'テーマのパス',
     'cache_templates' => 'テンプレートをキャッシュする',
     'cache_mobile' => 'モバイル用のコンテンツを別にキャッシュする',
-    'cache_resource' => "CSSとJavaScriptファイルを結合・圧縮しキャッシュする",
+    'cache_resource' => 'CSSとJavaScriptファイルを結合・圧縮しキャッシュする',
     'disable_new_user_registration' => '新規ユーザー登録を停止する',
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
@@ -2157,7 +2139,7 @@ $LANG_confignames['Core'] = array(
     'hide_author_exclusion' => '所有者の非表示を許可する',
     'show_fullname' => 'ユーザー名の代わりに氏名を表示する',
     'show_servicename' => 'サービス名を表示する',
-    'require_user_email' => "ユーザーにメールアドレスを要求する",
+    'require_user_email' => 'ユーザーにメールアドレスを要求する',
     'custom_registration' => 'カスタム登録を有効にする',
     'user_login_method' => 'ログイン方法',
     'facebook_login' => 'FacebookのOAuthを有効にする',
@@ -2291,7 +2273,7 @@ $LANG_confignames['Core'] = array(
     'whats_related_max' => '表示する関連情報の最大数',
     'whats_related_trim' => '関連情報のタイトルの最大長',
     'default_cache_time_article' => '記事のキャッシュ期間のデフォルト',
-    'blocks_article_topic_list_repeat_after' => "話題リストブロックを続けて配置する",
+    'blocks_article_topic_list_repeat_after' => '話題リストブロックを続けて配置する',
     'aftersave_user' => 'ユーザー保存後の画面遷移',
     'show_right_blocks' => '右ブロックを常に表示する',
     'showfirstasfeatured' => '最初の記事を注目記事として表示する',
@@ -2338,8 +2320,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',
-    'invalidloginattempts' => "ログイン失敗最大回数",
-    'invalidloginmaxtime' => "ログイン失敗警告メール送信待機時間",
+    'invalidloginattempts' => 'ログイン失敗最大回数',
+    'invalidloginmaxtime' => 'ログイン失敗警告メール送信待機時間',
     'enable_twofactorauth' => '2段階認証を有効にする',
     'pass_alg' => 'パスワードのハッシュアルゴリズム',
     'pass_stretch' => 'ハッシュストレッチカウント',
@@ -2363,8 +2345,8 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'バッドワード',
     'ip_lookup' => 'IPアドレス検索',
     'url_rewrite' => 'URLリライト',
-    'url_routing' => 'URLルーティング',
-    'cdn_hosted' => "CDNのjQueryとUIkitを使用する",
+    'url_Routing' => 'Enable URL Routing',
+    'cdn_hosted' => 'CDNのjQueryとUIkitを使用する',
     'meta_tags' => 'メタタグ',
     'meta_description' => 'サイトの説明文のメタタグ',
     'meta_keywords' => 'キーワードのメタタグ',
@@ -2631,3 +2613,4 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
+
