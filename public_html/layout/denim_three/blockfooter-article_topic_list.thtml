@@ -1,6 +1,6 @@
 {# begin {templatelocation} #}
 
-    <hr{xhtml}
+    <hr{xhtml}>
   </div>
 </aside>
 
