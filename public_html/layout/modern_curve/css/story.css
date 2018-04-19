@@ -83,6 +83,12 @@ div#centerblocks div.storytext div.story_introtext {
   padding: 0;
 }
 
+div#centerblocks div.storytext div.story_introtext:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 /* Topic Icon */
 div#centerblocks div.storytext span.story_image {
   float: {left};
@@ -197,6 +203,12 @@ div#centerblocks div.featuredstorytext div.story_introtext {
   padding: 0;
 }
 
+div#centerblocks div.featuredstorytext div.story_introtext:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 /* Topic Icon */
 div#centerblocks div.featuredstorytext span.story_image {
   float: {left};
@@ -309,6 +321,12 @@ div#centerblocks div.archivestorytext ul.status li dl dd {
 div#centerblocks div.archivestorytext div.story_introtext {
   margin: 0 0 2em 0;
   padding: 0;
+}
+
+div#centerblocks div.featuredstorytext div.story_introtext:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 /* Topic Icon */
