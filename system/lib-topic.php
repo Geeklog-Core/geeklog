@@ -1859,7 +1859,7 @@ function plugin_getiteminfo_topic($tid, $what, $uid = 0, $options = array())
             case 'url':
                 // needed for $tid == '*', but also in case we're only requesting
                 // the URL (so that $fields isn't empty)
-                $fields[] = 'id';
+                $fields[] = 'tid';
                 break;
 
             default:
