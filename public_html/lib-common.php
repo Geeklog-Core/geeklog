@@ -7878,6 +7878,59 @@ function COM_createMetaTags($meta_description, $meta_keywords)
 }
 
 /**
+ * Create hreflang HTML link element in header to be used by COM_createHTMLDocument in the headercode variable.
+ * Plugin needs to support the function PLG_getItemInfo and be able to return the id and url of the item 
+ *
+ * @param    string $type    plugin type (incl. 'article' for stories and 'topic' for topic)
+ * @param    string $id      ID of an item under the plugin's control (assumes exists and current user has access)
+ * @return   string          (X)HTML formatted text
+ * @since    Geeklog-2.2.0
+ */
+function COM_createHREFLang($type, $id)
+{
+    global $_CONF;
+
+    $headerCode = '';
+
+    // Add hreflang link element if multi-language site
+    // If user allowed to switch language then assume config languages and language_files setup correctly
+     if ($_CONF['allow_user_language']) {
+        $lang_id = COM_getLanguageIdForObject($id);
+        if (empty($lang_id)) {
+            // Non Language specific item id found
+
+            // Can set hreflang="x-default" when 
+            // See video at: https://support.google.com/webmasters/answer/189077?hl=en
+            // 1) url language is broad
+            // 2) Content can be dynamic (ie language displayed is based on IP)
+            // 3) Is a page that acts as a language selector)
+            // 4) Should only be included on the canonical url and not the duplicates
+            
+            $headerCode .= LB . '<link rel="alternate" hreflang="x-default" href="' . PLG_getItemInfo($type, $id, 'url') . '"' . XHTML . '>';
+        } else {
+            // Language specific item Id found
+            
+            // Find non language id of item then
+            $nonlang_item_id = MBYTE_substr($id, 0, (-(MBYTE_strlen($lang_id)+1))); // remove length of lang_id plus the underscore character
+        
+            // Cycle through each language and determine if item exists and is accessible
+            foreach ($_CONF['languages'] as $key => $value) {
+                $lang_id = $key;
+                $lang_item_id = $nonlang_item_id . '_' . $lang_id;
+                
+                // See if item for language found and user has access, not in draft, etc..      
+                if (!empty(PLG_getItemInfo($type, $lang_item_id, 'id'))) {                        
+                    // Now build url for page
+                    $headerCode .= LB . '<link rel="alternate" hreflang="' . $lang_id . '" href="' . PLG_getItemInfo($type, $lang_item_id, 'url') . '"' . XHTML . '>';
+                }
+            }
+        }
+     }
+
+    return $headerCode;
+}
+
+/**
  * Convert wiki-formatted text to (X)HTML
  *
  * @param    string $wikiText wiki-formatted text

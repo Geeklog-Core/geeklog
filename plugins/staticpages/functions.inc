@@ -343,6 +343,9 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
                     )
                 );
         }
+        
+        // Add hreflang link element if multi-language site
+        $headerCode .= COM_createHREFLang('staticpages', $page);        
 
         // Previous and next pages
         $sp_prev = stripslashes($A['sp_prev']);
@@ -353,7 +356,6 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
                     XHTML
                 );
         }
-
         $sp_next = stripslashes($A['sp_next']);
         if ($sp_next !== '') {
             $headerCode .= PHP_EOL . sprintf(

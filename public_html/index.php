@@ -457,6 +457,9 @@ if ($topic) {
                 )
             );
     }
+    
+    // Add hreflang link element if multi-language site
+    $header .= COM_createHREFLang('topic', $topic);
 }
 
 $display = COM_createHTMLDocument(

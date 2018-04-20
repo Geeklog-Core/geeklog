@@ -306,6 +306,9 @@ if ($A['count'] > 0) {
                     )
                 );
         }
+        
+        // Add hreflang link element if multi-language site
+        $headercode .= COM_createHREFLang('story', $article->getSid());            
 
         if ($article->DisplayElements('trackbackcode') == 0) {
             if ($_CONF['trackback_enabled']) {
