@@ -184,7 +184,7 @@ class Router
         }
 
         // Get routing rules and routes from database
-        $sql = "SELECT * FROM {$_TABLES['routes']} WHERE method = " . DB_escapeString($method) . " ORDER BY priority ";
+        $sql = "SELECT * FROM {$_TABLES['routes']} WHERE method = " . DB_escapeString($method) . " and enabled = 1 ORDER BY priority ";
         $result = DB_query($sql);
 
         if (DB_error()) {
@@ -323,7 +323,7 @@ class Router
         }
 
         // Get routing rules and routes from database
-        $sql = "SELECT * FROM {$_TABLES['routes']} WHERE method = " . DB_escapeString($requestMethod) . " ORDER BY priority ";
+        $sql = "SELECT * FROM {$_TABLES['routes']} WHERE method = " . DB_escapeString($requestMethod) . " AND enabled = 1 ORDER BY priority ";
         $result = DB_query($sql);
 
         if (DB_error()) {

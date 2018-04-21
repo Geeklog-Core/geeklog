@@ -45,6 +45,9 @@
 
       <dt><label for="admin-routereditor-priority">{lang_router_priority}</label></dt>
       <dd><input type="text" size="20" value="{priority}" name="priority" id="admin-routereditor-priority" class="uk-input size1"{xhtml}></dd>
+      
+      <dt><label for="admin-routereditor-enabled">{lang_enabled}</label></dt>
+      <dd><input type="checkbox" {enabled} name="enabled" id="admin-routereditor-enabled" class="uk-checkbox"{xhtml}></dd>
     </dl>
 
     <div class="submit">

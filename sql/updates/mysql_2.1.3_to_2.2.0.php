@@ -4,8 +4,12 @@
 $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_description` TEXT NULL AFTER `postmode`";
 $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_keywords` TEXT NULL AFTER `meta_description`";
 
-// Add `status_code` column to the `routes` table
+// Add `status_code` and `enabled` column to the `routes` table
 $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT(11) NOT NULL DEFAULT 200 AFTER `route`";
+$_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `enabled` tinyint(1) unsigned NOT NULL default '1' AFTER `priority`";
+// Add new topic routes
+$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic', '/index.php?topic=@topic', 160)";
+$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic/@page', '/index.php?topic=@topic&page=@page', 170)";
 
 // Add `css_id` and `css_classes` columns to the `blocks` table
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `help`";

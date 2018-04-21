@@ -70,6 +70,7 @@ function getRouteEditor($rid = 0)
         'route'       => '',
         'status_code' => Router::DEFAULT_STATUS_CODE,
         'priority'    => Router::DEFAULT_PRIORITY,
+        'enabled'     => 1
     );
     $rid = intval($rid, 10);
 
@@ -94,7 +95,13 @@ function getRouteEditor($rid = 0)
     if ($rid > 0) {
         $T->set_var('allow_delete', true);
     }
-
+    
+    if ($A['enabled'] == 1) {
+        $enabled = 'checked="checked"';
+    } else {
+        $enabled = '';
+    }
+    
     $T->set_var(array(
         'rid'          => $A['rid'],
         'method'       => $A['method'],
@@ -102,6 +109,7 @@ function getRouteEditor($rid = 0)
         'route'        => $A['route'],
         'status_code'  => $A['status_code'],
         'priority'     => $A['priority'],
+        'enabled'     => $enabled,
         'gltoken_name' => CSRF_TOKEN,
         'gltoken'      => $securityToken,
     ));
@@ -134,6 +142,7 @@ function getRouteEditor($rid = 0)
         'lang_router_route'       => $LANG_ROUTER[6],
         'lang_router_status_code' => $LANG_ROUTER[21],
         'lang_router_priority'    => $LANG_ROUTER[7],
+        'lang_enabled'            => $LANG_ROUTER[22],
         'lang_router_notice'      => $LANG_ROUTER[20],
         'lang_save'               => $LANG_ADMIN['save'],
         'lang_cancel'             => $LANG_ADMIN['cancel'],
@@ -222,7 +231,15 @@ function ADMIN_getListFieldRoutes($fieldName, $fieldValue, $A, $iconArray, $extr
                 . '<img src="' . $_CONF['layout_url'] . '/images/admin/down.' . $_IMAGE_TYPE . '" alt="' . $LANG_ROUTER[9] . '"'
                 . XHTML . '></a>';
             break;
-
+            
+        case 'enabled': 
+            if ($fieldValue == '1') {
+                $fieldValue = $LANG_ROUTER[23];
+            } else {
+                $fieldValue = $LANG_ROUTER[24];
+            }
+            break;
+            
         default:
             throw new InvalidArgumentException(__FUNCTION__ . ': unknown field name "' . $fieldName . '" was given');
     }
@@ -304,6 +321,11 @@ function listRoutes()
             'field' => 'priority',
             'sort'  => true,
         ),
+        array(
+            'text'  => $LANG_ROUTER[22],
+            'field' => 'enabled',
+            'sort'  => true,
+        )        
     );
 
     $defaultSortArray = array(
@@ -320,7 +342,7 @@ function listRoutes()
     $queryArray = array(
         'table'          => 'routes',
         'sql'            => "SELECT * FROM {$_TABLES['routes']} WHERE (1 = 1) ",
-        'query_fields'   => array('rule', 'route', 'status_code', 'priority'),
+        'query_fields'   => array('rule', 'route', 'status_code', 'priority', 'enabled'),
         'default_filter' => COM_getPermSql('AND'),
     );
 
@@ -345,7 +367,7 @@ function listRoutes()
  * @param  int    $priority
  * @return string
  */
-function saveRoute($rid, $method, $rule, $route, $statusCode, $priority)
+function saveRoute($rid, $method, $rule, $route, $statusCode, $priority, $enabled)
 {
     global $_CONF, $_TABLES, $MESSAGE, $LANG_ROUTER;
 
@@ -422,6 +444,14 @@ function saveRoute($rid, $method, $rule, $route, $statusCode, $priority)
     if (($priority < 1) || ($priority > 65535)) {
         $priority = Router::DEFAULT_PRIORITY;
     }
+    
+    if ($enabled === 'on') {
+        $enabled = 1;
+    } else {
+        $enabled = 0;
+    }
+        
+    $A['is_enabled'] = ($_POST['is_enabled'] == 'on') ? 1 : 0;
 
     if ($messageText !== '') {
         $content = COM_showMessageText($messageText, $MESSAGE[122]) . getRouteEditor($rid);
@@ -446,11 +476,11 @@ function saveRoute($rid, $method, $rule, $route, $statusCode, $priority)
     $count = intval(DB_count($_TABLES['routes'], 'rid', $rid), 10);
 
     if ($count === 0) {
-        $sql = "INSERT INTO {$_TABLES['routes']} (rid, method, rule, route, status_code, priority) "
+        $sql = "INSERT INTO {$_TABLES['routes']} (rid, method, rule, route, status_code, priority, enabled) "
             . "VALUES (NULL, {$method}, '{$rule}', '{$route}', {$statusCode}, {$priority})";
     } else {
         $sql = "UPDATE {$_TABLES['routes']} "
-            . "SET method = {$method}, rule = '{$rule}', route = '{$route}', status_code = {$statusCode}, priority = {$priority} "
+            . "SET method = {$method}, rule = '{$rule}', route = '{$route}', status_code = {$statusCode}, priority = {$priority}, enabled = {$enabled} "
             . "WHERE rid = {$rid} ";
     }
 
@@ -584,7 +614,8 @@ switch ($mode) {
         $route = \Geeklog\Input::post('route', '');
         $statusCode = (int) \Geeklog\Input::fPost('status_code', 302);
         $priority = \Geeklog\Input::fPost('priority', Router::DEFAULT_PRIORITY);
-        $display = saveRoute($rid, $method, $rule, $route, $statusCode, $priority);
+        $enabled = \Geeklog\Input::fPost('enabled', '');
+        $display = saveRoute($rid, $method, $rule, $route, $statusCode, $priority, $enabled);
         break;
 
     case 'edit':
