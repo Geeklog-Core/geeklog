@@ -233,30 +233,13 @@ if (COM_isAnonUser()) {
     $_USER['advanced_editor'] = $_CONF['advanced_editor'];
 }
 
-// Retrieve new topic if found
+
+// Initiate global topic variable
+// This variable contains the current topic id
+// It can be set by anything that uses topics like index.php (topics), article, directory, staticpages, other potential plugins. 
+// Retrieved usually via TOPIC_getTopic by the page (last topic is stored as a session var which TOPIC_getTopic uses)
+// Was retrieved here at one point but url_rewrite caused issues as lib-common doesn't know the difference between url rewritten topic urls, article urls, staticpage urls, etc...
 $topic = '';
-if ($_CONF['url_rewrite']) {
-    COM_setArgNames(array(TOPIC_PLACEHOLDER, 'topic'));
-    if (strcasecmp(COM_getArgument(TOPIC_PLACEHOLDER), 'topic') === 0) {
-        $topic = COM_getArgument('topic');
-    }
-} else {
-    $topic = \Geeklog\Input::fGet('topic', \Geeklog\Input::fPost('topic', ''));
-}
-
-if ($topic === '-') {
-    $topic = '';
-}
-
-// See if user has access to view topic
-if ($topic != '') {
-    $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'));
-    if (strtolower($topic) !== strtolower($test_topic)) {
-        $topic = '';
-    } else { // Make it equal to the db version since case maybe different
-        $topic = $test_topic;
-    }
-}
 
 // Set theme
 $useTheme = '';
