@@ -292,7 +292,7 @@ function savestory(array $A)
     $story->loadSubmission();
 
     // pseudo-formatted story text for the spam check
-    $permanentlink = null // Setting this to null as this is a new blog post with a new url. There is no permantlink that the post is being added too (like a comment on a blog post)
+    $permanentlink = null; // Setting this to null as this is a new blog post with a new url. There is no permantlink that the post is being added too (like a comment on a blog post)
     // $permanentlink = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $story->getSid());
     $authorname = null;
     $authoremail = null;
