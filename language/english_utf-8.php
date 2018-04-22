@@ -256,7 +256,7 @@ $LANG03 = array(
     104 => 'Ban this IP address with the Spam-X plugin',
     105 => 'IP Address',
     106 => 'Perform bulk action on comments and comment submissions including approval and deleting. You can also bulk ban users and IP addresses. <span style="color: red;">IP addresses in red</span> are the ones banned by the Spam-X plugin (banned from submissions only) and/or Ban plugin (banned from visiting site).  <span style="color: red;">User names in red</span> are users that have been banned.',
-    'record_edit'       => 'Record user and time of edit?',
+    'record_edit' => 'Record user and time of edit?',
     'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin'
 );
 
@@ -784,6 +784,7 @@ $LANG_ENVCHECK = array(
     'off'                       => 'Off',
     'ok'                        => 'OK',
     'on'                        => 'On',
+    'open_basedir'              => 'If <strong>open_basedir</strong> restrictions are enabled on your site, it may cause permission problems during the install. The File System Check below should point out any issues.',
     'database_settings'         => 'Database Settings',
     'database_mysql_version'    => 'MySQL Version',
     'database_mysql_req_version' => 'Geeklog requires MySQL version 4.1.2 or newer (MySQL 5 recommended).',
@@ -791,7 +792,6 @@ $LANG_ENVCHECK = array(
     'database_pgsql_req_version' => 'Geeklog requires Postgresql version 9.1.7 or newer.',
     'database_dms'              => 'Database Management System',
     'database_dms_notes'        => 'Failed to determine Database Management System. Geeklog requires either MySQL or Postgresql',
-    'open_basedir'              => 'If <strong>open_basedir</strong> restrictions are enabled on your site, it may cause permission problems during the install. The File System Check below should point out any issues.',
     'php_req_version'           => 'Geeklog requires PHP version 5.3.3 or newer.',
     'php_settings'              => 'PHP Settings',
     'php_version'               => 'PHP Version',
@@ -1370,7 +1370,7 @@ $LANG32 = array(
     // to match the PHP error constants,
     // http://www.php.net/manual/en/features.file-upload.errors.php
     // TBD: move to a separate $LANG array
-     99 => 'An unknown error occurred',
+    99 => 'An unknown error occurred',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
     102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
@@ -1438,7 +1438,9 @@ $LANG33 = array(
     55 => 'Articles'
 );
 
-// admin/language.php (since v2.1.2)
+###############################################################################
+# admin/language.php (since v2.1.2)
+
 $LANG_LANG = array(
     'language_admin_title'  => 'Language Overrides',
     'language_manager'      => 'Language Override Manager',
@@ -1614,7 +1616,6 @@ $MESSAGE = array(
     153 => 'You last emailed an article %1$d seconds ago.  This site requires at least %2$d seconds between emailing articles.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname',
-    500 => 'The Data, Template, Resource, and File Manager Cache has been successfully cleared.',
     501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
     502 => 'Your request for a new email has expired. Please try again below.',
     503 => 'Your email has been successfully verified.',
@@ -1782,6 +1783,7 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Login required',
@@ -1791,7 +1793,7 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# trackback
+# trackback.php
 
 $LANG_TRB = array (
     'trackback'          => 'Trackback',
@@ -1915,14 +1917,15 @@ $LANG_SECTEST = array(
 
 ################################################################################
 # "What's New" Time Strings
+# 
+# This here determines the order of the sentence "No new articles in 2 hrs"
+# order it so it makes sense in your language:
+# %i    item, "Articles"
+# %n    amount, "2", "20" etc
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array (
-    # This here determines the order of the sentence "No new articles in 2 hrs"
-    # order it so it makes sense in your language:
-    # %i    item, "Articles"
-    # %n    amount, "2", "20" etc
-    # %t    time, "2" (weeks)
-    # %s    scale, "hrs", "weeks"
     'new_string'  => '%n new %i in the last %t %s',
     'new_last'    => 'last %t %s',
     # other strings
@@ -1940,6 +1943,9 @@ $LANG_WHATSNEW = array (
     'year'        => 'year'
 );
 
+###############################################################################
+# Month names
+
 $LANG_MONTH = array(
     1 => 'January',
     2 => 'February',
@@ -1954,6 +1960,9 @@ $LANG_MONTH = array(
     11 => 'November',
     12 => 'December'
 );
+
+###############################################################################
+# Weekdays
 
 $LANG_WEEK = array(
     1 => 'Sunday',
@@ -2626,12 +2635,9 @@ $LANG_VALIDATION = array(
     'search_limits' => 'This field must be numeric and separated with a comma',
     'num_search_results' => "This field must be numeric and from the 'search_limits' field above",
     'theme' => 'Theme directory does not exist',
-    'path_themes' => 'Theme path must be an absolute path and make sure the last character contains the ' .
-                     'directory separator',
-    'path_to_mogrify' => 'You must set the image library to imagemagick and fill this field with the ' .
-                         'complete path to the mogrify executable',
-    'path_to_netpbm' => 'You must set the image library to netpbm and fill this field with the ' .
-                         'directory where the binaries from the Netpbm package are kept',
+    'path_themes' => 'Theme path must be an absolute path and make sure the last character contains the directory separator',
+    'path_to_mogrify' => 'You must set the image library to imagemagick and fill this field with the complete path to the mogrify executable',
+    'path_to_netpbm' => 'You must set the image library to netpbm and fill this field with the directory where the binaries from the Netpbm package are kept',
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
     'single_char' => 'This field must be a single character',

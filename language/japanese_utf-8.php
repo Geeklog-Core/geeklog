@@ -269,7 +269,7 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# users.php
+# usersettings.php
 
 $LANG04 = array(
     1 => 'アカウント情報',
@@ -397,7 +397,7 @@ $LANG04 = array(
     123 => "<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">新規登録</a>",
     124 => '(確認)メールアドレス',
     125 => '両方の入力欄に同じメールアドレスを入力してください。',
-    126 => 'Please repeat for confirmation. When you update your email address, an email with a verification link will be sent to the new address which will need to be clicked on before the email address of this account will be changed.',
+    126 => '確認のため再度入力してください。メールアドレスを更新すると、検証用のリンクを含むメールが新しいアドレスに送信されます。このアカウントのメールアドレスを変更するために、そのリンクをクリックする必要があります。',
     127 => '設定を変更するには、現在のパスワードを入力する必要があります。',
     128 => 'お名前',
     129 => 'パスワードとメールアドレス',
@@ -457,22 +457,21 @@ $LANG04 = array(
     'tfa_download' => 'バックアップコードをダウンロード',
     'tfa_new_backup_code' => 'バックアップコードを生成し直す',
     'tfa_generate_confirm' => '実行してもよいですか?',
-    'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>',
-    'new_email' => 'New Email',
-    'set_new_email' => 'Set New Email',
-    'confirm_new_email' => 'Confirm new email',
-    'enter_new_email' => 'Enter New Email',
-    'desc_new_email_status' => 'You are required to enter a new email address for your account. You can enter a new email for your account below. <em>Please note you will not be able to do anything with your account until your email is updated and verified.</em>',
-    'email_msg_email_status_1' => "You have updated your email address for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nPlease click on the following link to verify this email address:\n\n",
-    'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n",
-    'email_verify' => 'New Email to be Verified',
-    'email_verify_delete' => 'Delete email to be verified',
-    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it."
+    'desc_new_pwd_status' => 'アカウントのパスワードを入力する必要があります。以下にアカウントのパスワードを入力してください。<em>パスワードが更新されるまで、あなたのアカウントは使用できません。</em>',
+    'new_email' => 'メールアドレス',
+    'set_new_email' => 'メールアドレスの設定',
+    'confirm_new_email' => 'メールアドレスの確認',
+    'enter_new_email' => 'メールアドレスの入力',
+    'desc_new_email_status' => 'アカウントのメールアドレスを入力する必要があります。以下にアカウントのメールアドレスを入力してください。<em>メールアドレスが更新され、検証されるまで、あなたのアカウントは使用できません。</em>',
+    'email_msg_email_status_1' => "{$_CONF['site_name']}<{$_CONF['site_url']}> のアカウント \"%s\" のメールアドレスは更新されました。\n\nこのメールアドレスを検証するため、次のリンクをクリックしてください:\n\n",
+    'email_msg_email_status_2' => "このメールアドレスを検証せずにアカウントへログインすると、新しいメールアドレスの入力と検証のプロセスが再度必要になります。\n\n",
+    'email_verify' => '検証対象のメールアドレス',
+    'email_verify_delete' => '検証対象のメールアドレスを削除',
+    'email_verify_msg' => "あなたのアカウントのメールアドレスは更新されていますが、検証が必要です。{$_CONF['site_name']}から送信された検証用のリンクを含むメールを確認してください。あなたがそのリンクをクリックし、メールアドレスが検証されると、アカウントが有効になります。<br" . XHTML . "><br" . XHTML . ">あなたの希望により、上の入力欄でメールアドレスを更新するか、削除することができます。"
 );
 
 ###############################################################################
-# Customize if need to modify the Tabbed navbar MyAccount panels used.
-# Array index key matches preference div id
+# Customize if need to modify the Tabbed navbar MyAccount panels used. Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
     'pe_preview' => 'プレビュー',
@@ -482,6 +481,7 @@ $LANG_MYACCOUNT = array(
     'pe_content' => 'コンテンツ',
     'pe_privacy' => 'プライバシー'
 );
+
 
 ###############################################################################
 # index.php
@@ -818,12 +818,15 @@ $LANG_ENVCHECK = array(
     'location' => 'ロケーション',
     'status' => 'ステータス',
     'item' => 'アイテム',
+
+    /* Left incase we decided to use jhead and/or jpegtran Program in future */
     'jhead' => 'jheadプログラム',
     'jhead_not_found' => 'jheadを有効にできません。',
     'jhead_ok' => 'jheadはインストールされています。',
     'jpegtran' => 'jpegtranプログラム',
     'jpegtran_not_found' => 'jpegtranを有効にできません。',
     'jpegtran_ok' => 'jpegtranはインストールされています。',
+
     'showhide_phpinfo' => 'phpinfo 表示/非表示',
     'view_online' => 'オンライン表示はここ %s をクリック',
     'no_new_items' => '新アイテムはありません',
@@ -922,8 +925,8 @@ $LANG21 = array(
     72 => 'CSSクラス名',
     73 => 'この項目はオプションです。スペースで区切って複数指定できます。',
     'autotag_desc_block' => '[block:name class:block-autotag] - ブロックを表示します。Classはオプションです。ClassにCSSクラスを指定すると、ブロックはdivタグで包まれます。block-autotagクラスは常にそのdivタグに含まれます。',
-    'newlines' => 'Newlines',
-    'convert_newlines' => 'Check to convert newlines (EOL) into line break HTML element',
+    'newlines' => '改行',
+    'convert_newlines' => '改行 (行末文字) をHTMLの&lt;br&gt;要素に変換する',
     'position' => '位置',
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'このブロックは指定された秒数の間キャッシュされます。0 を指定するとキャッシュしません。(3600 = 1時間、86400 = 1日)',
@@ -932,6 +935,17 @@ $LANG21 = array(
     'block_type_phpblock' => 'PHP',
     'block_type_portal' => 'ポータル',
     'block_type_dynamic' => 'ダイナミック'
+);
+
+###############################################################################
+# Block Locations
+
+$LANG23 = array (
+    'blocks_article_footer_name'         => 'Article Footer',
+    'blocks_article_footer_desc'         => 'Display Blocks in article Footer',
+    
+    'blocks_article_topic_list_name'     => 'Article Topic List',
+    'blocks_article_topic_list_desc'     => 'Displays Blocks right after every X number of articles in topics.'
 );
 
 ###############################################################################
@@ -1040,6 +1054,7 @@ $LANG24 = array(
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'この記事を指定した秒数の間キャッシュします。0 を指定すると、キャッシュしません。(3600 = 1時間、86400 = 1日)'
 );
+
 
 ###############################################################################
 # admin/topic.php
@@ -1208,13 +1223,14 @@ $LANG28 = array(
     90 => '登録済みユーザーアカウントにデフォルトグループを追加する',
     91 => 'パスワードをメールで送信する',
     'autotag_desc_user' => '[user: name alternate title] - ユーザー名をタイトルとしてユーザーへのリンクを表示します。別のタイトルを指定できますが、必須ではありません。',
-    'USER_ACCOUNT_LOCKED' => 'Locked',
-    'USER_ACCOUNT_NEW_EMAIL' => 'New Email Required',
-    'USER_ACCOUNT_NEW_PASSWORD' => 'New Password Required'
+    'USER_ACCOUNT_LOCKED' => 'ロック状態',
+    'USER_ACCOUNT_NEW_EMAIL' => 'メールアドレスの設定が必要',
+    'USER_ACCOUNT_NEW_PASSWORD' => 'パスワードの設定が必要'
 );
 
 ###############################################################################
 # admin/moderation.php
+# admin/index.php
 
 $LANG29 = array(
     1 => '承認',
@@ -1249,7 +1265,7 @@ $LANG29 = array(
     'users' => 'ユーザー',
     'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。投稿を一括して承認・削除するには、リストのラジオボタンを選択してから保存をクリックしてください。',
     'max_invalid_login' => 'ログイン失敗最大回数',
-    'max_invalid_login_msg' => 'このユーザーは、指定時間内((秒))にログイン失敗最大回数(回)に達しました。最後にログインに失敗したIPは %s です。登録ユーザーがパスワードを忘れたのかもしれませんが、誰かがこのユーザーのアカウントのパスワードを推測しようとしているのかもしれません。'
+    'max_invalid_login_msg' => "このユーザーは、指定時間内(({$_CONF['invalidloginmaxtime']}秒))にログイン失敗最大回数({$_CONF['invalidloginattempts']}回)に達しました。最後にログインに失敗したIPは %s です。登録ユーザーがパスワードを忘れたのかもしれませんが、誰かがこのユーザーのアカウントのパスワードを推測しようとしているのかもしれません。"
 );
 
 ###############################################################################
@@ -1358,6 +1374,10 @@ $LANG32 = array(
     67 => 'ディレクトリ "%s" は書き込みできません。',
     68 => 'あなたにはプラグインをインストールする権限はありません。',
     69 => 'あなたにはプラグインをアップロードする権限はありません。',
+
+    // to match the PHP error constants,
+    // http://www.php.net/manual/en/features.file-upload.errors.php
+    // TBD: move to a separate $LANG array
     99 => '不明なエラーが発生しました。',
     100 => 'Ok.',
     101 => 'アップロードしようとしたファイルのサイズが php.ini 内の upload_max_filesize の値を超えています。',
@@ -1427,7 +1447,7 @@ $LANG33 = array(
 );
 
 ###############################################################################
-# admin/language.php
+# admin/language.php (since v2.1.2)
 
 $LANG_LANG = array(
     'language_admin_title' => '翻訳言語書き換え',
@@ -1466,9 +1486,9 @@ $LANG_ROUTER = array(
     19 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLルーティングを有効にしてください。</strong>',
     20 => '<ul><li>プレースホルダー(@)はルールとルートで同じものを定義してください。</li><li>プレースホルダーは@で始まり、1文字目は英字、2文字目以降は英数字を使えます。</li><li>プレースホルダーは大文字・小文字を区別します。</li></ul>',
     21 => 'ステータスコード', 
-    22 => 'Enabled', 
-    23 => 'Yes',
-    24 => 'No'
+    22 => '有効', 
+    23 => 'はい',
+    24 => 'いいえ'
 );
 
 ###############################################################################
@@ -1491,16 +1511,16 @@ $MESSAGE = array(
     14 => '話題とその話題に属するすべての記事とブロックを削除しました',
     15 => 'あなたのコメントは投稿済みです。管理者の承認後に公開されます。',
     16 => 'あなたは登録を解除しました。今後、新たな通知を受けることはありません。',
-    17 => 'Your user account has been locked and access to it has been disabled. For more information please contact the Admin.',
+    17 => 'あなたのアカウントはロックされており、そのアカウントへのアクセスは無効になっています。詳細については、管理者に連絡してください。',
     18 => '',
     19 => '',
     20 => '',
     21 => 'ユーザー情報を保存しました。',
     22 => 'ユーザー情報を削除しました。',
-    23 => 'Your passwords must match, please try again. Passwords are case sensitive.',
-    24 => 'Your emails must match, please try again.',
-    25 => 'You have not entered a valid email address, please try again.',
-    26 => 'That email address is already being used by an account, please try again.',
+    23 => 'パスワードが一致しません。再度入力してください。パスワードは大文字と小文字が区別されます。',
+    24 => 'メールアドレスが一致しません。再度入力してください。',
+    25 => 'メールアドレスが無効です。再度入力してください。',
+    26 => '入力したメールアドレスはすでに他のアカウントで使用されています。再度入力してください。',
     27 => 'メッセージを送信しました。',
     28 => 'プラグインを保存しました',
     29 => 'あなたはこの管理ページにアクセスできません。権限のない機能へのアクセスはすべて記録しています。',
@@ -1521,7 +1541,7 @@ $MESSAGE = array(
     44 => 'プラグインをインストールしました!',
     45 => 'プラグインを削除しました。',
     46 => '',
-    47 => 'Sorry you cannot currently request the password for your account. For more information please contact the Admin.',
+    47 => '申し訳ありませんが、現在アカウントのパスワードをリクエストできません。詳細については、管理者に連絡してください。',
     48 => "{$_CONF['site_name']}にご登録ありがとうございます。管理者の間で審査します。登録を承認すると、あなたの入力したメールアドレスにパスワードを送信します。",
     49 => 'グループを保存しました。',
     50 => 'グループを削除しました。',
@@ -1541,7 +1561,7 @@ $MESSAGE = array(
     64 => 'トラックバックのコメントを送信しました。',
     65 => 'Weblog ディレクトリサービスを保存しました。',
     66 => 'Weblog ディレクトリサービスを削除しました。',
-    67 => 'The new password does not match the confirmation password! Passwords are case sensitive.',
+    67 => '新しいパスワードが確認用パスワードと一致しません! パスワードは大文字と小文字が区別されます。',
     68 => '正しい現在のパスワードを入力してください。',
     69 => 'アカウントをロックしました。',
     70 => 'アカウントは管理者の承認待ちです。',
@@ -1604,10 +1624,10 @@ $MESSAGE = array(
     153 => 'あなたは %1$d 秒前に友だちに記事を送信しています。次に送信する前に %2$d 秒以上あけてください。',
     400 => '検証に通っていない必須のフィールドがあります。',
     401 => '氏名を入力してください。',
-    501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
-    502 => 'Your request for a new email has expired. Please try again below.',
-    503 => 'Your email has been successfully verified.',
-    504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.'
+    501 => '検証のメッセージがあなたのメールアドレスに送信されました。電子メールのリンクをクリックして、メールアドレスを検証し、アカウントを更新してください。 メールアドレスを検証する前に再度アカウントにログインすると、メールアドレスを再度尋ねられます。<br' . XHTML . '><br' . XHTML . '>あなたはこの検証を完了できるように、正常にログアウトされました。',
+    502 => '新しいメールアドレスのリクエストが期限切れになりました。以下からもう一度お試しください。',
+    503 => 'あなたのメールアドレスは正常に検証されました。',
+    504 => 'パスワードは8文字以上で、少なくとも1つの数字と1文字を含める必要があります。パスワードは大文字と小文字が区別されます。'
 );
 
 ###############################################################################
@@ -1666,7 +1686,7 @@ $LANG_ACCESS = array(
     'remove' => '削除',
     'availmembers' => 'ユーザー一覧',
     'groupmembers' => 'グループメンバー',
-    'inheritmembers' => 'Inherited Group Members',
+    'inheritmembers' => '継承されたグループメンバー',
     'canteditgroup' => 'グループを編集するためには、グループのメンバーでなければなりません。これがエラーだと思う場合はシステムの管理者に連絡してください。',
     'cantlistgroup' => 'メンバーリストを見るには、グループのメンバーでなければなりません。これがエラーだと思う場合はシステムの管理者に連絡してください。',
     'editgroupmsg' => 'グループのメンバーを変更するには、メンバー名をクリックして「追加」・「削除」のボタンを使用してください。メンバーがこのグループに直接属しているメンバーの場合、メンバー名は右のパネルしか表示されません。操作が完了したら、<b>保存</b>をクリックすると、更新が行われて管理者ページのトップへ戻ります。<br' . XHTML . '><br' . XHTML . '>他のグループから継承されているメンバーは、情報提供のためにここに表示されているだけであり、削除するには直接所属しているグループを編集してください。ユーザーはあるグループのメンバーになることも、他のグループから継承されているグループのメンバーになることもできます。',
@@ -1902,19 +1922,20 @@ $LANG_SECTEST = array(
     'password_okay' => 'Good! Rootユーザーアカウントのパスワードをデフォルトから変更しています。'
 );
 
-###############################################################################
+################################################################################
 # "What's New" Time Strings
 # 
-# For the first two strings, you can use the following placeholders.
-# Order them so it makes sense in your language:
-# %i    item, "Stories"
-# %n    amount, "2", "20" etc.
+# This here determines the order of the sentence "No new articles in 2 hrs"
+# order it so it makes sense in your language:
+# %i    item, "Articles"
+# %n    amount, "2", "20" etc
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
 
-$LANG_WHATSNEW = array(
+$LANG_WHATSNEW = array (
     'new_string' => '新着%i %n件(%t%s)',
     'new_last' => '新着(%t%s)',
+    # other strings
     'minutes' => '分',
     'hours' => '時間',
     'days' => '日',
@@ -1960,9 +1981,9 @@ $LANG_WEEK = array(
     7 => '土'
 );
 
-###############################################################################
+################################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2071,12 +2092,18 @@ $LANG_sortcodes = array(
     'DESC' => '新しい順に'
 );
 
+$LANG_statuscodes = array(
+    0 => 'Normal',
+    1 => 'Refreshing',
+    10 => 'Archive'
+);
+
 $LANG_trackbackcodes = array(
     0 => 'トラックバックを受け付ける',
     -1 => 'トラックバックを受け付けない'
 );
 
-###############################################################################
+################################################################################
 # Localization of the Admin Configuration UI
 
 $LANG_CONFIG = array(
@@ -2348,7 +2375,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'バッドワード',
     'ip_lookup' => 'IPアドレス検索',
     'url_rewrite' => 'URLリライト',
-    'url_routing' => 'Enable URL Routing',
+    'url_routing' => 'URLルーティング',
     'cdn_hosted' => 'CDNのjQueryとUIkitを使用する',
     'meta_tags' => 'メタタグ',
     'meta_description' => 'サイトの説明文のメタタグ',
@@ -2568,7 +2595,7 @@ $LANG_configselects['Core'] = array(
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro')
 );
 
-###############################################################################
+################################################################################
 # Localization of validation error messages
 
 $LANG_VALIDATION = array(
@@ -2616,4 +2643,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-

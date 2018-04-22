@@ -1370,7 +1370,7 @@ $LANG32 = array(
     // to match the PHP error constants,
     // http://www.php.net/manual/en/features.file-upload.errors.php
     // TBD: move to a separate $LANG array
-     99 => 'An unknown error occurred',
+    99 => 'An unknown error occurred',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
     102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
@@ -1438,7 +1438,9 @@ $LANG33 = array(
     55 => 'Articles'
 );
 
-// admin/language.php (since v2.1.2)
+###############################################################################
+# admin/language.php (since v2.1.2)
+
 $LANG_LANG = array(
     'language_admin_title'  => 'Language Overrides',
     'language_manager'      => 'Language Override Manager',
@@ -1455,7 +1457,7 @@ $LANG_LANG = array(
 # admin/router.php
 
 $LANG_ROUTER = array(
-    1 => 'URL routing',
+    1 => 'URL Routing',
     2 => 'Routing Manager',
     3 => 'ID',
     4 => 'method',
@@ -1465,7 +1467,8 @@ $LANG_ROUTER = array(
     8 => 'Increase priority',
     9 => 'Decrease priority',
     10 => 'Edit routing',
-    11 => 'To modify or delete a route, click on the route\'s edit icon below. To create a new route, click on "Create New" above.  When you use placeholders (@), you must define the same placeholders in a rule and its route. Remember URL routing currently only supports articles, topics, static pages, the article directory, and the links plugin.',    12 => 'Bad request method',
+    11 => 'To modify or delete a route, click on the route\'s edit icon below. To create a new route, click on "Create New" above.  When you use placeholders (@), you must define the same placeholders in a rule and its route. Remember URL routing currently only supports articles, topics, static pages, the article directory, and the links plugin.',
+    12 => 'Bad request method',
     13 => 'Rule is a mandatory item.',
     14 => 'Route is a mandatory item.',
     15 => 'Placeholders (@) in a rule and those in a route must be the same.',
@@ -1512,7 +1515,7 @@ $MESSAGE = array(
     26 => 'That email address is already being used by an account, please try again.',
     27 => 'Message successfully sent.',
     28 => 'The plugin has been successfully saved',
-    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
+    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged.',
     30 => 'Access Denied',
     31 => '',
     32 => '',
@@ -1780,6 +1783,7 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Login required',
@@ -1789,7 +1793,7 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# trackback
+# trackback.php
 
 $LANG_TRB = array (
     'trackback'          => 'Trackback',
@@ -1913,14 +1917,15 @@ $LANG_SECTEST = array(
 
 ################################################################################
 # "What's New" Time Strings
+# 
+# This here determines the order of the sentence "No new articles in 2 hrs"
+# order it so it makes sense in your language:
+# %i    item, "Articles"
+# %n    amount, "2", "20" etc
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array (
-    # This here determines the order of the sentence "No new articles in 2 hrs"
-    # order it so it makes sense in your language:
-    # %i    item, "Articles"
-    # %n    amount, "2", "20" etc
-    # %t    time, "2" (weeks)
-    # %s    scale, "hrs", "weeks"
     'new_string'  => '%n new %i in the last %t %s',
     'new_last'    => 'last %t %s',
     # other strings
@@ -1938,6 +1943,9 @@ $LANG_WHATSNEW = array (
     'year'        => 'year'
 );
 
+###############################################################################
+# Month names
+
 $LANG_MONTH = array(
     1 => 'January',
     2 => 'February',
@@ -1952,6 +1960,9 @@ $LANG_MONTH = array(
     11 => 'November',
     12 => 'December'
 );
+
+###############################################################################
+# Weekdays
 
 $LANG_WEEK = array(
     1 => 'Sunday',
@@ -2624,12 +2635,9 @@ $LANG_VALIDATION = array(
     'search_limits' => 'This field must be numeric and separated with a comma',
     'num_search_results' => "This field must be numeric and from the 'search_limits' field above",
     'theme' => 'Theme directory does not exist',
-    'path_themes' => 'Theme path must be an absolute path and make sure the last character contains the ' .
-                     'directory separator',
-    'path_to_mogrify' => 'You must set the image library to imagemagick and fill this field with the ' .
-                         'complete path to the mogrify executable',
-    'path_to_netpbm' => 'You must set the image library to netpbm and fill this field with the ' .
-                         'directory where the binaries from the Netpbm package are kept',
+    'path_themes' => 'Theme path must be an absolute path and make sure the last character contains the directory separator',
+    'path_to_mogrify' => 'You must set the image library to imagemagick and fill this field with the complete path to the mogrify executable',
+    'path_to_netpbm' => 'You must set the image library to netpbm and fill this field with the directory where the binaries from the Netpbm package are kept',
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
     'single_char' => 'This field must be a single character',
