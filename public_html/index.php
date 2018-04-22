@@ -97,7 +97,7 @@ function fixTopic(&$A, $tid_list)
 }
 
 // Main
-// If URL routing is enabled, then let the router handle the request
+// If URL routing is enabled, then all routed requests come through here for all rewrites. Let the router handle the request
 if ($_CONF['url_rewrite'] && isset($_CONF['url_routing']) && !empty($_CONF['url_routing'])) {
     Router::dispatch();
 }
@@ -105,25 +105,29 @@ if ($_CONF['url_rewrite'] && isset($_CONF['url_routing']) && !empty($_CONF['url_
 // See if user has access to view topic else display message.
 // This check has already been done in lib-common so re-check to figure out if
 // 404 message needs to be displayed.
-$topic_check = '';
+$topic = '';
 $page = 0;
-if ($_CONF['url_rewrite']) {
+if ($_CONF['url_rewrite'] && !$_CONF['url_routing']) {
     COM_setArgNames(array(TOPIC_PLACEHOLDER, 'topic', 'page'));
     if (strcasecmp(COM_getArgument(TOPIC_PLACEHOLDER), 'topic') === 0) {
-        $topic_check = COM_getArgument('topic');
+        $topic = COM_getArgument('topic');
         $page = (int) COM_getArgument('page');
     }
+} elseif ($_CONF['url_rewrite'] && $_CONF['url_routing']) {
+    COM_setArgNames(array('topic', 'page'));
+    $topic = COM_getArgument('topic');
+    $page = (int) COM_getArgument('page');
 } else {
-    $topic_check = Geeklog\Input::fGet('topic', Geeklog\Input::fPost('topic', ''));
+    $topic = Geeklog\Input::fGet('topic', Geeklog\Input::fPost('topic', ''));
     $page = (int) Geeklog\Input::get('page', 0);
 }
 
-if ($topic_check === '-') {
-    $topic_check = '';
+if ($topic === '-') {
+    $topic = '';
 }
 
-if ($topic_check != '') {
-    if (strtolower($topic_check) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($topic_check) . "' " . COM_getPermSQL('AND')))) {
+if ($topic != '') {
+    if (strtolower($topic) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($topic) . "' " . COM_getPermSQL('AND')))) {
         COM_handle404();
     }
 }
@@ -370,6 +374,18 @@ if ($A = DB_fetchArray($result)) {
     if (!isset($_CONF['hide_main_page_navigation']) ||
         ($_CONF['hide_main_page_navigation'] == 'false') ||
         ($_CONF['hide_main_page_navigation'] === 'frontpage' && !empty($topic))) {
+        
+        if ($_CONF['url_rewrite']) {
+            $tempTopic = empty($topic) ? '-' : $topic;
+            $base_url = TOPIC_getUrl($tempTopic);
+        } else {
+            if (!empty($topic)) {
+                $base_url = TOPIC_getUrl($topic);
+            } else {
+                $base_url = $_CONF['site_url'] . '/index.php';
+            }
+        }
+        /*    
         if ($_CONF['url_rewrite']) {
             $tempTopic = empty($topic) ? '-' : $topic;
             $base_url = COM_buildURL(
@@ -391,7 +407,7 @@ if ($A = DB_fetchArray($result)) {
                 $base_url = $_CONF['site_url'] . '/index.php';
             }
         }
-
+        */
         $display .= COM_printPageNavigation($base_url, $page, $num_pages, 'page=', (bool) $_CONF['url_rewrite']);
     }
 } else { // no stories to display

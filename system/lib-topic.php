@@ -1575,6 +1575,14 @@ function TOPIC_getUrl($topicId)
 {
     global $_CONF;
 
+    if ($_CONF['url_rewrite'] && $_CONF['url_routing']) {
+        $retval = COM_buildURL(
+            $_CONF['site_url'] . '/index.php?'
+            . http_build_query(array(
+                'topic'           => $topicId,
+            ))
+        );
+    /*
     if ($_CONF['url_rewrite'] && ($_CONF['url_routing'] == Router::ROUTING_WITH_INDEX_PHP)) {
         $retval = COM_buildURL(
             $_CONF['site_url'] . '/index.php?'
@@ -1585,6 +1593,15 @@ function TOPIC_getUrl($topicId)
         );
     } elseif ($_CONF['url_rewrite'] && ($_CONF['url_routing'] == Router::ROUTING_WITHOUT_INDEX_PHP)) {
         $retval = $_CONF['site_url'] . '/topic/' . urlencode($topicId);
+    */
+    } elseif ($_CONF['url_rewrite']) {
+        $retval = COM_buildURL(
+            $_CONF['site_url'] . '/index.php?'
+            . http_build_query(array(
+                TOPIC_PLACEHOLDER => 'topic',
+                'topic'           => $topicId,
+            ))
+        );
     } else {
         // Traditional topic URL
         $retval = $_CONF['site_url'] . '/index.php?' . http_build_query(array('topic' => $topicId));
