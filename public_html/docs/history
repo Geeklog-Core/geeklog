@@ -3,10 +3,11 @@ Geeklog History/Changes:
 ?, 2018 (2.2.0)
 ------------
 
+- [Feature] HrefLang link elements added to header for multi-lanugage sites with multi-language pages setup (Works with topics, articles, and staticpages) [Tom]
 - [Feature] Add information about Permissions[X] [Tom]
 - [Feature] Added Demo Mode for Geeklog (enabled in siteconfig.php) [Tom]
 - [Feature] Uikit can now be loaded bia a CDN [Mystralkk]
-- [Feature] Uikit 3 framework added to Geeklog [Mystralkk]
+- [Feature] Uikit 3 framework (v3.0.0-beta.40) added to Geeklog [Mystralkk]
 - [Feature] Allow number of max pages in page navigation to be set separately for mobile pages [Tom]
 - [Feature] Removed much of the remaining hard coded HTML [Tom] [Dengen]
 - [Feature] Blocks can now appear in more than just the left or right column. Block Locations can now be added by plugins and themes [Tom]
@@ -33,6 +34,7 @@ Geeklog History/Changes:
 - [Feature] Check box to automatically send new password to user on Admin User Editor [Mystralkk]
 - [Feature] Changed most references from Story to Article. This includes in language files and template files [Mystralkk]
 
+- [Bug] Wrong Template Files can be used if they share the same name. CTL_setTemplateRoot has been depreciated [Tom]
 - [Bug] Fixed After token expired re-authentication returns to a blank page once Authentication is successful [Tom]
 - [Bug] Fixed Switch Language Block (and COM_getLanguageFromURL) to work on a topic page [Tom]
 - [Bug] Comment titles and anonymous user names can now handle mb4 character [Tom]
@@ -42,10 +44,11 @@ Geeklog History/Changes:
 - [Bug] Fixed Link Edit button to edit link instead of create a new link [Tom]
 - [Bug] Fixed Links Plugin Category links when URL Rewrite Enabled  [Mystralkk]
 
-- [Update] UIkit 2 framework to version ???? [Mystralkk]
+- [Update] UIkit 2 framework to version 2.27.2 [Mystralkk]
 - [Update] jQuery to version ???? and jQuery UI to version ????
-- [Update] CKEditor to version ????
-- [Update] OAuth class to version ???? [Mystralkk]
+- [Update] CKEditor to version ???? [Dengen]
+- [Update] OAuth class to version 1.0.103 [Mystralkk]
+- [Update] Mobile_Detect class to version 2.8.31 [Tom]
 - [Update] Removed Live Journal Authentication [Mystralkk]
 
 June 22, 2017 (2.1.3)
