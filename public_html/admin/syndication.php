@@ -257,7 +257,7 @@ function editfeed($fid = 0, $type = '')
     $retval = '';
     $token = SEC_createToken();
 
-    $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
+    $feed_template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/syndication'));
     $feed_template->set_file('editor', 'feededitor.thtml');
 
     $start_block = COM_startBlock($LANG33[24], '',
@@ -420,7 +420,7 @@ function newfeed()
         'select_items' => $selection
     ));
 
-    $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
+    $feed_template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/syndication'));
     $feed_template->set_file('type', 'selecttype.thtml');
 
     $feed_template->set_var('type_selection', $selection);

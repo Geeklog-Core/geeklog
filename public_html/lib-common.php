@@ -384,7 +384,8 @@ $TEMPLATE_OPTIONS = array(
         'device_mobile'   => $_DEVICE->is_mobile(),
         'front_page'      => COM_onFrontpage()
     ),
-    'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes
+    'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes. CTL_setTemplateRoot will be depreciated as of Geeklog 3.0.0. 
+//    'hook'                => array() //
 );
 \Geeklog\Autoload::load('template');
 // Template library contains helper functions for template class
@@ -949,7 +950,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
     }
 
-    $header = COM_newTemplate($_CONF['path_layout']);
+    $header = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
     $header->set_file(array(
         'header'         => 'header.thtml',
         'menunavigation' => 'menunavigation.thtml',
@@ -1267,7 +1268,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     COM_hit();
 
     // Set template directory
-    $footer = COM_newTemplate($_CONF['path_layout']);
+    $footer = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
     // Set template file
     $footer->set_file(array(
         'footer'      => 'footer.thtml',
@@ -1465,7 +1466,7 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
         }
     }    
     if (!$templatefound) {
-        $block = COM_newTemplate($_CONF['path_layout']);
+        $block = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
     }
     $retval = $block->set_file('block', $template);
 
@@ -1543,7 +1544,7 @@ function COM_endBlock($template = 'blockfooter.thtml', $plugin = '')
         }
     }    
     if (!$templatefound) {
-        $block = COM_newTemplate($_CONF['path_layout']);
+        $block = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
     }
     $block->set_file('block', $template);
 
@@ -1778,7 +1779,7 @@ function COM_createControl($type, $variables = array())
     static $tcc = null;
 
     if ($tcc === null) {
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
         $tcc->set_file('common', 'common.thtml');
         $blocks = array(
             'type-hidden',
@@ -1852,7 +1853,7 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldNa
         $S = array();
     }
 
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
     $tcc->set_file('checklist', 'checklist.thtml');
     $tcc->set_block('checklist', 'item'); 
     $tcc->set_block('checklist', 'item-default');
@@ -2183,7 +2184,7 @@ function COM_showTopics($topic = '')
         return $retval;
     }
 
-    $topicNavigation = COM_newTemplate($_CONF['path_layout']);
+    $topicNavigation = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
     if (isset($_BLOCK_TEMPLATE['topicnavigation'])) {
         $topicNavigation->set_file('topicnavigation', $_BLOCK_TEMPLATE['topicnavigation']);
     } else {
@@ -2400,7 +2401,7 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
     $retval = '';
 
     if (!COM_isAnonUser()) {
-        $userMenu = COM_newTemplate($_CONF['path_layout']);
+        $userMenu = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
         if (isset($_BLOCK_TEMPLATE['usernavigation'])) {
             $userMenu->set_file('usernavigation', $_BLOCK_TEMPLATE['usernavigation']);
         } else {
@@ -2477,7 +2478,7 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
             COM_getBlockTemplate('user_block', 'header', $position),
             $cssId, $cssClasses
         );
-        $login = COM_newTemplate($_CONF['path_layout']);
+        $login = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
         $login->set_file('form', 'loginform.thtml');
         $login->set_var('lang_username', $LANG01[21]);
         $login->set_var('lang_password', $LANG01[57]);
@@ -2636,7 +2637,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
         }
 
         // Template Stuff
-        $adminMenu = COM_newTemplate($_CONF['path_layout']);
+        $adminMenu = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
         if (isset($_BLOCK_TEMPLATE['adminnavigation'])) {
             $adminMenu->set_file('adminnavigation', $_BLOCK_TEMPLATE['adminnavigation']);
         } else {
@@ -2677,7 +2678,7 @@ function COM_commandControl($isAdminMenu = false, $help = '', $title = '', $posi
         define('ICONS_PER_ROW', 6);
 
         // Template Stuff
-        $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin');
+        $admin_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin'));
         $admin_templates->set_file(array('cc' => 'commandcontrol.thtml'));
         $blocks = array('ccgroup', 'ccrow', 'ccitem');
         foreach ($blocks as $block) {
@@ -3618,7 +3619,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
         $cssId, $cssClasses
     );
     
-    $t = COM_newTemplate($_CONF['path_layout'] . 'blocks/');
+    $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'blocks/'));
     $t->set_file(array('olderarticles' => 'olderarticles.thtml'));
 
     $sql['mysql'] = "SELECT sid,title,comments,UNIX_TIMESTAMP(date) AS day
@@ -4565,7 +4566,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         $cssId, $cssClasses
     );
     
-    $t = COM_newTemplate($_CONF['path_layout'] . 'blocks/');
+    $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'blocks/'));
     $t->set_file(array('whatsnew' => 'whatsnew.thtml'));    
 
     $topicSql = '';
@@ -4869,7 +4870,7 @@ function COM_showMessageText($message, $title = '')
     $retval = '';
 
     if (!empty($message)) {
-        $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+        $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
         $tcc->set_file('system_message', 'system_message.thtml');
         
         if (empty($title)) {
@@ -5009,7 +5010,7 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
         $page_str = '';
     }
 
-    $page_navigation = COM_newTemplate($_CONF['path_layout']);
+    $page_navigation = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
     $page_navigation->set_file('page_navigation', 'pagenavigation.thtml');
     $blocks = array('page', 'page-current', 'nav-end', 'nav-open-ended', 'message');
     foreach ($blocks as $block) {
@@ -5612,7 +5613,7 @@ function COM_makeList($listOfItems, $className = '')
 {
     global $_CONF;
 
-    $list = COM_newTemplate($_CONF['path_layout']);
+    $list = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
     $list->set_file(array('list' => 'list.thtml'));
     $list->set_block('list', 'listitem');
 
@@ -7164,7 +7165,7 @@ function phpblock_switch_language()
         $retval .= COM_createLink($newLang, $switchUrl);
     } else {
 
-        $t = COM_newTemplate($_CONF['path_layout'] . 'blocks/');
+        $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'blocks/'));
         $t->set_file(array('switchlanguage' => 'switchlanguage.thtml'));
             
         $t->set_var('langId', $langId);
@@ -7270,7 +7271,7 @@ function COM_getNoScript($warning = true, $noScriptMessage = '', $link_message =
 {
     global $_CONF, $LANG01;
 
-    $noScript = COM_newTemplate($_CONF['path_layout']);
+    $noScript = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
     $noScript->set_file(array('noscript' => 'noscript.thtml'));
 
     if ($warning) {
@@ -7324,7 +7325,7 @@ function COM_getTooltip($hoverOver = '', $text = '', $link = '', $title = '', $t
             . '/images/tooltips/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';
     }
 
-    $tooltip = COM_newTemplate($_CONF['path_layout'] . 'tooltips/');
+    $tooltip = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'tooltips/'));
     $tooltip->set_file(array('tooltip' => $template . '.thtml'));
 
     $tooltip->set_var('class', $class);
@@ -8221,12 +8222,14 @@ HTML;
 /**
  * Provide support for drop-in replaceable template engines
  *
- * @param    string|array $root    Path to template root
+ * @param    string|array $root    Path to template root. If string assume core, if array assume plugin
  * @param    string|array $options List of options to pass to constructor
  * @return   Template              An ITemplate derived object
  */
 function COM_newTemplate($root, $options = array())
 {
+    global $TEMPLATE_OPTIONS;
+    
     if (function_exists('OVERRIDE_newTemplate')) {
         if (is_string($options)) {
             $options = array('unknowns', $options);
@@ -8243,6 +8246,19 @@ function COM_newTemplate($root, $options = array())
             $options = 'remove';
         }
 
+        // Note: as of Geeklog 2.2.0 
+        // CTL_setTemplateRoot before was set back when child themes support was added (not sure which Geeklog version) as a hook to run as a template preprocessor. 
+        // This was fine for Geeklog Core but could create issues for plugins as it could not tell the difference and would add in theme and theme_default root dir locations (among other custom folders)
+        // Now if root is passed as a single directory (not an array) it is assumed that Geeklog Core is setting the template or an old style plugin
+        // If root is an array assume it is a plugin that supports multiple locations for its template (uses CTL_plugin_templatePath)
+        // For more info see template class set_root function, CTL_setTemplateRoot, CTL_core_templatePath, CTL_plugin_templatePath
+        
+        // CTL_setTemplateRoot will be depreciated as of Geeklog 3.0.0. This means plugins will not be allowed to set the template class directly. They must use COM_newTemplate and either CTL_core_templatePath or CTL_plugin_templatePath
+        
+        if (is_array($root)) {
+            $TEMPLATE_OPTIONS['hook'] = array(); // Remove default hook that sets CTL_setTemplateRoot Function found in lib-template. It is used to add the ability for child themes (old way)
+        }
+        
         $T = new Template($root, $options);
     }
 

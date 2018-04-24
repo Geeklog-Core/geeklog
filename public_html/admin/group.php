@@ -101,7 +101,7 @@ function editgroup($grp_id = '')
         return $retval;
     }
 
-    $group_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/group');
+    $group_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/group'));
     $group_templates->set_file('editor', 'groupeditor.thtml');
     $group_templates->set_block('editor', 'no-group-right-message');
     $group_templates->set_block('editor', 'rights_list_options');
@@ -1129,7 +1129,7 @@ function editusers($group)
     $retval .= ADMIN_createMenu($menu_arr, $LANG_ACCESS['editgroupmsg'],
         $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE);
 
-    $groupmembers = COM_newTemplate($_CONF['path_layout'] . 'admin/group');
+    $groupmembers = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/group'));
     $groupmembers->set_file(array('groupmembers' => 'groupmembers.thtml'));
     $groupmembers->set_var('group_listing_url', $group_listing_url);
     $groupmembers->set_var('phpself', $_CONF['site_admin_url'] . '/group.php');

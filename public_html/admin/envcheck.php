@@ -54,7 +54,7 @@ function _checkEnvironment()
     $retval = '';
     $permError = 0;
 
-    $T = new Template($_CONF['path_layout'] . 'admin');
+    $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin'));
     $T->set_file('page','envcheck.thtml');
     $T->set_block('page', 'status');
 

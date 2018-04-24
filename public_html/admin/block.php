@@ -81,7 +81,7 @@ function editdefaultblock($A, $access)
     $token = SEC_createToken();
     $retval .= SEC_getTokenExpiryNotice($token);
 
-    $block_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/block');
+    $block_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/block'));
     $block_templates->set_file('editor', 'defaultblockeditor.thtml');
     $block_templates->set_var('block_id', $A['bid']);
     // standard Admin strings
@@ -346,7 +346,7 @@ function editblock($bid = '')
 
     $token = SEC_createToken();
 
-    $block_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/block');
+    $block_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/block'));
     $block_templates->set_file('editor', 'blockeditor.thtml');
     $block_start = COM_startBlock($LANG21[3], '',
         COM_getBlockTemplate('_admin_block', 'header'));

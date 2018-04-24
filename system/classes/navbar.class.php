@@ -163,7 +163,7 @@ class navbar
     {
         global $_CONF;
 
-        $navTemplate = COM_newTemplate($_CONF['path_layout'] . 'navbar');
+        $navTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'navbar'));
         $navTemplate->set_file(array(
             'navbar'   => 'navbar.thtml',
             'menuitem' => 'menuitem.thtml',
@@ -204,7 +204,7 @@ class navbar
     {
         global $_CONF;
 
-        $this->_bcTemplate = COM_newTemplate($_CONF['path_layout'] . 'navbar');
+        $this->_bcTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'navbar'));
         $this->_bcTemplate->set_file(array(
             'breadcrumbs' => 'breadcrumbs.thtml',
             'link'        => 'breadcrumb_link.thtml',

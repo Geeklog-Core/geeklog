@@ -145,7 +145,7 @@ function USER_createAndSendPassword($username, $useremail, $uid)
     SEC_updateUserPassword($passwd, $uid);
 
     if (file_exists($_CONF['path_data'] . 'welcome_email.txt')) {
-        $template = COM_newTemplate($_CONF['path_data']);
+        $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_data']));
         $template->set_file(array('mail' => 'welcome_email.txt'));
         $template->set_var('auth_info',
             "$LANG04[2]: $username\n$LANG04[4]: $passwd");
@@ -191,7 +191,7 @@ function USER_sendActivationEmail($userName, $userEmail)
     global $_CONF, $LANG04;
 
     if (file_exists($_CONF['path_data'] . 'activation_email.txt')) {
-        $template = COM_newTemplate($_CONF['path_data']);
+        $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_data']));
         $template->set_file(array('mail' => 'activation_email.txt'));
         $template->set_var('site_name', $_CONF['site_name']);
         $template->set_var('site_slogan', $_CONF['site_slogan']);
@@ -926,7 +926,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $currentTime = COM_getUserDateTimeFormat($A['regdate']);
     $A['regdate'] = $currentTime[0];
 
-    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $user_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $user_templates->set_file(array(
         'profile' => 'profile.thtml'
     ));

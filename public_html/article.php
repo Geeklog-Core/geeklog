@@ -153,7 +153,7 @@ if ($A['count'] > 0) {
     } elseif ($output == STORY_INVALID_SID) {
         COM_handle404();
     } elseif (($mode === 'print') && ($_CONF['hideprintericon'] == 0)) {
-        $articleTemplate = COM_newTemplate($_CONF['path_layout'] . 'article');
+        $articleTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'article'));
         $articleTemplate->set_file('article', 'printable.thtml');
         if (XHTML != '') {
             $articleTemplate->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
@@ -336,7 +336,7 @@ if ($A['count'] > 0) {
         }
 
         // Display whats related
-        $articleTemplate = COM_newTemplate($_CONF['path_layout'] . 'article');
+        $articleTemplate = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'article'));
         $articleTemplate->set_file('article', 'article.thtml');
 
         $articleTemplate->set_var('story_id', $article->getSid());

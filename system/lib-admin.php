@@ -82,7 +82,7 @@ function ADMIN_simpleList($fieldFunction, $header_arr, $text_arr,
         $form_url = $text_arr['form_url'];
     }
 
-    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/lists');
+    $admin_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/lists'));
     $admin_templates->set_file(
         array(
             'list'   => 'list.thtml',
@@ -286,7 +286,7 @@ function ADMIN_list($component, $fieldFunction, $header_arr, $text_arr,
     }
 
     # get all template fields.
-    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/lists');
+    $admin_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/lists'));
     $template_files = array(
         'list'   => ($inline_form ? 'inline.thtml' : 'list.thtml'),
         'header' => 'header.thtml',
@@ -632,7 +632,7 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '')
 {
     global $_CONF;
 
-    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/lists');
+    $admin_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/lists'));
     $admin_templates->set_file(
         array('top_menu' => 'topmenu.thtml')
     );

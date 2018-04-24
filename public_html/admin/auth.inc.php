@@ -84,7 +84,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
     (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAccess()) {
     COM_updateSpeedlimit('login');
 
-    $template = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $template->set_file(array('authenticationrequired' => 'authenticationrequired.thtml'));
     
     $display .= COM_startBlock($LANG20[1]);

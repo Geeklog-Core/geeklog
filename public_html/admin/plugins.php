@@ -107,7 +107,7 @@ function plugin_info_installed($pi_name)
 
     $A = DB_fetchArray($result);
 
-    $plg_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/plugins'));
     $plg_templates->set_file('editor', 'editor.thtml');
     $plg_templates->set_var('start_block_editor', COM_startBlock($LANG32[13], '', COM_getBlockTemplate('_admin_block', 'header')));
     $plg_templates->set_var('pi_icon', PLG_getIcon($pi_name));
@@ -174,7 +174,7 @@ function plugin_info_uninstalled($pi_name)
     $params = PLG_getParams($pi_name);
 
     // Do template stuff
-    $plg_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/plugins'));
     $plg_templates->set_file('editor', 'info.thtml');
     $plg_templates->set_var('start_block_editor', COM_startBlock('',
         '', COM_getBlockTemplate('_admin_block', 'header')));
@@ -634,7 +634,7 @@ function plugin_show_uploadform($token)
 {
     global $_CONF, $LANG28, $LANG32;
 
-    $plg_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/plugins'));
     $plg_templates->set_file('upload', 'upload.thtml');    
     $plg_templates->set_var('start_block_editor', COM_startBlock('', '', COM_getBlockTemplate('_admin_block', 'header')));    
 

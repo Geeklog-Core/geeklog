@@ -322,7 +322,7 @@ function DBADMIN_backupPrompt()
 
     if (is_writable($_CONF['backup_path'])) {
 
-        $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
+        $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/dbadmin'));
         $T->set_file('page', 'dbbackup.thtml');
 
         $lastrun = DB_getItem($_TABLES['vars'], 'UNIX_TIMESTAMP(value)',
@@ -549,7 +549,7 @@ function DBADMIN_innodb()
 
     $retval = '';
 
-    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
+    $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/dbadmin'));
 
     $T->set_file('page', 'dbconvert.thtml');
 
@@ -603,7 +603,7 @@ function DBADMIN_myisam()
 
     $retval = '';
 
-    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
+    $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/dbadmin'));
 
     $T->set_file('page', 'dbconvert.thtml');
 
@@ -829,7 +829,7 @@ function DBADMIN_optimize()
         "name = 'lastoptimizeddb'");
 
 
-    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
+    $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/dbadmin'));
 
     $T->set_file('page', 'dbconvert.thtml');
 
@@ -1098,7 +1098,7 @@ function DBADMIN_configBackup()
               'text' => $LANG_ADMIN['admin_home']),
     );
 
-    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/dbadmin');
+    $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/dbadmin'));
 
     $T->set_file('page', 'dbbackupcfg.thtml');
 

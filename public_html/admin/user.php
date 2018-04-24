@@ -167,7 +167,7 @@ function edituser($uid = 0, $msg = 0)
         COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= SEC_getTokenExpiryNotice($token);
 
-    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
+    $user_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/user'));
     $user_templates->set_file(array(
         'form'      => 'edituser.thtml',
         'password'  => 'password.thtml',
@@ -889,7 +889,7 @@ function batchdelete()
         array('sel' => 'recent', 'desc' => $LANG28[74], 'txt1' => $LANG28[75], 'txt2' => $LANG28[76]),
     );
 
-    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
+    $user_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/user'));
     $user_templates->set_file('form', 'batchdelete.thtml');
     $user_templates->set_block('form', 'batchdelete_options');
     $user_templates->set_block('form', 'reminder');
@@ -1095,7 +1095,7 @@ function batchreminders()
             $lastlogin = DB_getItem($_TABLES['userinfo'], 'lastlogin', "uid = '{$userid}'");
             $lasttime = COM_getUserDateTimeFormat($lastlogin);
             if (file_exists($_CONF['path_data'] . 'reminder_email.txt')) {
-                $template = COM_newTemplate($_CONF['path_data']);
+                $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_data']));
                 $template->set_file(array('mail' => 'reminder_email.txt'));
                 $template->set_var('site_name', $_CONF['site_name']);
                 $template->set_var('site_slogan', $_CONF['site_slogan']);
@@ -1296,7 +1296,7 @@ function display_batchAddform()
     $icon = $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE;
     $retval .= ADMIN_createMenu($menu_arr, $desc, $icon);
 
-    $user_template = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
+    $user_template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/user'));
     $user_template->set_file('batchimport', 'batchimport.thtml');
     $user_template->set_var('lang_file_title', $LANG28[29]);
     $user_template->set_var('lang_import', $LANG28[30]);

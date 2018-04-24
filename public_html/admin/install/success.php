@@ -128,7 +128,7 @@ switch ($submit) {
         break;
 }
 
-$T = COM_newTemplate(dirname(__FILE__) . '/layout');
+$T = COM_newTemplate(CTL_core_templatePath(dirname(__FILE__) . '/layout'));
 $T->set_file('success', 'success.thtml');
 
 if ($type === 'install') {

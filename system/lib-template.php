@@ -35,36 +35,51 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 /**
  * Returns possible theme template directories.
  *
- * @param    string $root Path to template root
- * @return   array            Theme template directories
+ * @param    string or array    $root Path to template root. 
+                                If Root is string then assumes it is a call from Geeklog Core or older plugin that does not use CTL_plugin_templatePath
+                                If Root is an array assume plugin supports CTL_plugin_templatePath
+ * @return   array              Theme template directories
  */
 function CTL_setTemplateRoot($root)
 {
     global $_CONF;
+    
+    COM_deprecatedLog(__FUNCTION__, '2.2.0', '3.0.0', 'CTL_core_templatePath. Setting template class directly has been depreciated. See COM_newTemplate, CTL_core_templatePath, and CTL_plugin_templatePath for more info.');
 
     $retval = array();
 
     if (!is_array($root)) {
+        // If here either Geeklog Core Template or Old way for plugins before using CTL_plugin_templatePath
+        // Lets add any additional root directories we need then
         $root = array($root);
-    }
 
-    foreach ($root as $r) {
-        if (substr($r, -1) == '/') {
-            $r = substr($r, 0, -1);
+        foreach ($root as $r) {
+            if (substr($r, -1) == '/') {
+                $r = substr($r, 0, -1);
+            }
+            /* REMOVED as not sure purpose and mangles correct directories with "plugins" in the directory path
+            if (strpos($r, "plugins") != 0) {
+                $p = str_replace($_CONF['path'], $_CONF['path_themes'] . $_CONF['theme'] . '/', $r);
+                $x = str_replace("/templates", "", $p);
+                $retval[] = $x;
+            }
+            */
+            if ($r != '') {
+                // $retval[] = $r . '/custom'; NEVER HEARD OF THIS BEING USED SO REMOVING as of Geeklog v2.2.0
+                $retval[] = $r;
+                if (!empty($_CONF['theme_default'])) {
+                    // This line should only get added for Geeklog Core but it gets added for plugins that don't pass in an array. Not much we can do about this...
+                    $retval[] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/' .
+                        substr($r, strlen($_CONF['path_layout']));
+                }
+            }
         }
-        if (strpos($r, "plugins") != 0) {
-            $p = str_replace($_CONF['path'], $_CONF['path_themes'] . $_CONF['theme'] . '/', $r);
-            $x = str_replace("/templates", "", $p);
-            $retval[] = $x;
-        }
-        if ($r != '') {
-            $retval[] = $r . '/custom';
-            $retval[] = $r;
-            $retval[] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/' .
-                substr($r, strlen($_CONF['path_layout']));
-        }
+    } else {
+        // Array so must be plugin which supports multiple locations for template files
+        // So just pass through since it already contains all locations
+        $retval = $root;
     }
-
+    
     return $retval;
 }
 
@@ -112,6 +127,40 @@ function CTL_clearCache($plugin = '')
 }
 
 /**
+ * Returns possible theme template directories for Core only (not any plugins, see CTL_plugin_templatePath).
+ *
+ * @since  v2.2.0 
+ * @param    string or array    $root Path to template root. 
+ * @return   array              Theme template directories
+ */
+function CTL_core_templatePath($root)
+{
+    global $_CONF;
+
+    $retval = array();
+
+    if (!is_array($root)) {
+        $root = array($root);
+    }
+
+    foreach ($root as $r) {
+        if (substr($r, -1) == '/') {
+            $r = substr($r, 0, -1);
+        }
+
+        if ($r != '') {
+            // $retval[] = $r . '/custom'; NEVER HEARD OF THIS BEING USED SO REMOVING as of Geeklog v2.2.0
+            $retval[] = $r;
+            if (!empty($_CONF['theme_default'])) {
+                $retval[] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/' . substr($r, strlen($_CONF['path_layout']));
+            }
+        }
+    }
+    
+    return $retval;
+}
+
+/**
  * Get path for the plugin template files.
  *
  * @param  string   $plugin
@@ -130,7 +179,6 @@ function CTL_plugin_templatePath($plugin, $path = '')
 
     // See if plugin templates exist in current theme
     $retval[] = "{$_CONF['path_layout']}{$plugin}{$subdir}";
-
 
     // Now Check to see if default theme exists, if so add it to the mix
     $retval[] = "{$_CONF['path_layout_default']}{$plugin}{$subdir}";

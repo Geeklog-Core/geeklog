@@ -196,7 +196,7 @@ if (!empty($displayBlock)) {
     // Check if theme has added the template which allows the centerblock
     // to span the top over the rightblocks
     if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
-        $topspan = COM_newTemplate($_CONF['path_layout']);
+        $topspan = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
         $topspan->set_file(array('topspan' => 'topcenterblock-span.thtml'));
         $topspan->parse('output', 'topspan');
         $display .= $topspan->finish($topspan->get_var('output'));
@@ -434,7 +434,7 @@ $result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid = '" . DB_escap
 $A = DB_fetcharray($result);
 
 
-$tt = COM_newTemplate($_CONF['path_layout']);
+$tt = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
 $tt->set_file(array('topic' => 'topic.thtml'));
 $tt->set_var('topic_content', $display);
 if ($topic) {

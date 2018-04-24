@@ -69,7 +69,7 @@ $display = COM_startBlock($LANG_LOGVIEW['log_viewer'], '', COM_getBlockTemplate(
     );
     
     
-$T = new Template($_CONF['path_layout'] . 'admin');
+$T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin'));
 $T->set_file('page','logviewer.thtml');
 
 $T->set_var('lang_logs', $LANG_LOGVIEW['logs']);

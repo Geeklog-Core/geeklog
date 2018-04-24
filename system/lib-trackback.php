@@ -365,7 +365,7 @@ function TRB_formatComment($url, $title = '', $blog = '', $excerpt = '', $date =
     }
     $curtime = COM_getUserDateTimeFormat($date);
 
-    $template = COM_newTemplate($_CONF['path_layout'] . 'trackback');
+    $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'trackback'));
     $template->set_file(array('comment' => 'formattedcomment.thtml'));
     $template->set_var('lang_from', $LANG_TRB['from']);
     $template->set_var('lang_tracked_on', $LANG_TRB['tracked_on']);
@@ -677,7 +677,7 @@ function TRB_renderTrackbackComments($sid, $type, $title, $permalink, $trackback
         $trackbackUrl = TRB_makeTrackbackUrl($sid, $type);
     }
 
-    $template = COM_newTemplate($_CONF['path_layout'] . 'trackback');
+    $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'trackback'));
     $template->set_file(array('trackback' => 'trackback.thtml',
                               'comment'   => 'trackbackcomment.thtml'));
     $template->set_var('lang_trackback', $LANG_TRB['trackback']);

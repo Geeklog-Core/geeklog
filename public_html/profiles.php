@@ -234,7 +234,7 @@ function contactform($uid, $cc = false, $subject = '', $message = '')
                 $cc = '';
             }
             $retval = COM_startBlock($LANG08[10] . ' ' . $displayname);
-            $mail_template = COM_newTemplate($_CONF['path_layout'] . 'profiles');
+            $mail_template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'profiles'));
             $mail_template->set_file('form', 'contactuserform.thtml');
             $mail_template->set_var('lang_description', $LANG08[26]);
             $mail_template->set_var('lang_username', $LANG08[11]);
@@ -481,7 +481,7 @@ function mailstoryform($sid, $cc = false, $to = '', $toemail = '', $from = '',
 
     $cc = $cc ? ' checked="checked"' : '';
 
-    $mail_template = COM_newTemplate($_CONF['path_layout'] . 'profiles');
+    $mail_template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'profiles'));
     $mail_template->set_file('form', 'contactauthorform.thtml');
     $mail_template->set_var('start_block_mailstory2friend',
                             COM_startBlock($LANG08[17]));

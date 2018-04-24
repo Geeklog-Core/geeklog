@@ -889,7 +889,7 @@ class config
             }
         }
 
-        $t = COM_newTemplate($_CONF['path_layout'] . 'admin/config');
+        $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/config'));
         $t->set_file(array(
             'main'      => 'configuration.thtml',
             'menugroup' => 'menu_element.thtml',
@@ -1292,7 +1292,7 @@ class config
     {
         global $LANG_CONFIG;
 
-        $t = COM_newTemplate($GLOBALS['_CONF']['path_layout'] . 'admin/config');
+        $t = COM_newTemplate(CTL_core_templatePath($GLOBALS['_CONF']['path_layout'] . 'admin/config'));
         $t->set_file('element', 'config_element.thtml');
 
         $blocks = array(
@@ -1487,7 +1487,7 @@ class config
     {
         global $LANG_CONFIG;
 
-        $t = COM_newTemplate($GLOBALS['_CONF']['path_layout'] . 'admin/config');
+        $t = COM_newTemplate(CTL_core_templatePath($GLOBALS['_CONF']['path_layout'] . 'admin/config'));
         $t->set_file('element', 'config_element_2.thtml');
 
         $blocks = array(

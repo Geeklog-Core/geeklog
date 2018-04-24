@@ -492,7 +492,7 @@ function SEC_getPermissionsHTML($perm_owner, $perm_group, $perm_members, $perm_a
 
     $retval = '';
 
-    $perm_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/common');
+    $perm_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/common'));
     $perm_templates->set_file(array('editor' => 'edit_permissions.thtml'));
 
     $perm_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -1723,7 +1723,7 @@ function SEC_getTokenExpiryNotice($token, $extra_msg = '')
     if (!empty($_USER['remoteservice']) && (($_USER['remoteservice'] == 'openid') || (substr($_USER['remoteservice'],0,6) == 'oauth.'))) {
         $expirytime = SEC_getTokenExpiryTime($token);
         if ($expirytime > 0) {
-            $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+            $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
             $tcc->set_file('expiry_message', 'expiry_message.thtml');
             
             $tcc->set_var('lang_token_expiry', sprintf($LANG_ADMIN['token_expiry'], strftime($_CONF['timeonly'], $expirytime)));
@@ -1893,7 +1893,7 @@ function SEC_loginForm($use_config = array())
 
     $config = array_merge($default_config, $use_config);
 
-    $loginform = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $loginform = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $loginform->set_file('login', 'loginform.thtml');
 
     $loginform->set_var('start_block_loginagain',

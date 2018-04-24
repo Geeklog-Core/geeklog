@@ -116,7 +116,7 @@ function submitstory()
         $story->initSubmission();
     }
 
-    $storyForm = COM_newTemplate($_CONF['path_layout'] . 'submit');
+    $storyForm = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'submit'));
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $storyForm->set_file('storyform', 'submitarticle_advanced.thtml');
         $storyForm->set_var('change_editormode', 'onchange="change_editmode(this);"');

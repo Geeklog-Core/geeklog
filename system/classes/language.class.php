@@ -178,7 +178,7 @@ class Language
         );
         $content .= SEC_getTokenExpiryNotice($token);
 
-        $editor = COM_newTemplate($_CONF['path_layout'] . 'admin/language');
+        $editor = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/language'));
         $editor->set_file('language_editor', 'language_editor.thtml');
         $editor->set_var(array(
             'id'                   => $A['id'],

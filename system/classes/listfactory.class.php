@@ -538,7 +538,7 @@ class ListFactory
         global $_CONF, $_IMAGE_TYPE, $LANG_ADMIN, $LANG09;
 
         // get all template fields.
-        $list_templates = COM_newTemplate($_CONF['path_layout'] . 'lists/' . $this->_style);
+        $list_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'lists/' . $this->_style));
         $list_templates->set_file(array(
             'list'  => 'list.thtml',
             'limit' => 'page_limit.thtml',
@@ -765,7 +765,7 @@ class ListFactory
     {
         global $_CONF, $_IMAGE_TYPE, $LANG_ADMIN, $LANG09;
 
-        $list_templates = COM_newTemplate($_CONF['path_layout'] . 'lists/');
+        $list_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'lists/'));
         $list_templates->set_file('list',
             ($this->_style == 'inline') ? 'list_inline.thtml' : 'list_table.thtml');
 

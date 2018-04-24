@@ -117,7 +117,7 @@ function edittopic($tid = '')
         SEC_setDefaultPermissions($A, $_CONF['default_permissions_topic']);
         $access = 3;
     }
-    $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/topic');
+    $topic_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/topic'));
     $topic_templates->set_file('editor', 'topiceditor.thtml');
     if (!empty($tid) && SEC_hasRights('topic.edit')) {
         $topic_templates->set_var('allow_delete', true);

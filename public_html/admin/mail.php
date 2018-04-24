@@ -82,7 +82,7 @@ function display_mailform($vars = array())
     $icon = $_CONF['layout_url'] . '/images/icons/mail.' . $_IMAGE_TYPE;
     $retval .= ADMIN_createMenu($menu_arr, $desc, $icon);
 
-    $mail_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/mail');
+    $mail_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/mail'));
     $mail_templates->set_file(array('form' => 'mailform.thtml'));
     $mail_templates->set_var('startblock_email', COM_startBlock($LANG31[1],
             '', COM_getBlockTemplate('_admin_block', 'header')));

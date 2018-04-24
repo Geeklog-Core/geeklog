@@ -57,7 +57,7 @@ function edituser()
     $result = DB_query("SELECT fullname,cookietimeout,email,emailtoconfirm,emailconfirmid,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
-    $preferences = COM_newTemplate($_CONF['path_layout'] . 'preferences');
+    $preferences = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'preferences'));
     $preferences->set_file(array(
         'profile'          => 'profile.thtml',
         'photo'            => 'userphoto.thtml',
@@ -368,7 +368,7 @@ function confirmAccountDelete($form_reqid)
     $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
     DB_change($_TABLES['users'], 'pwrequestid', "$reqid", 'uid', $_USER['uid']);
 
-    $template = COM_newTemplate($_CONF['path_layout'] . 'preferences');
+    $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'preferences'));
     $template->set_file(array('confirm' => 'deleteaccountconfirm.thtml'));
     $template->set_var('message', $LANG04[98]);
     $template->set_var('lang_deleteaccount', $LANG04[156]);
@@ -429,7 +429,7 @@ function editpreferences()
         }
     }
 
-    $preferences = COM_newTemplate($_CONF['path_layout'] . 'preferences');
+    $preferences = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'preferences'));
     $preferences->set_file(array(
         'prefs'    => 'displayprefs.thtml',
         'display'  => 'displayblock.thtml',

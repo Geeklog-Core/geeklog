@@ -239,7 +239,7 @@ class Search
         }
 
         $retval .= COM_startBlock($LANG09[1], 'advancedsearch.html');
-        $searchForm = COM_newTemplate($_CONF['path_layout'] . 'search');
+        $searchForm = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'search'));
         $searchForm->set_file(array(
             'searchform' => 'searchform.thtml',
             'authors'    => 'searchauthors.thtml',

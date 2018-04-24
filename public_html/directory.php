@@ -518,7 +518,7 @@ if ($dir_topic !== 'all') {
 }
 
 $template = null;
-$template = COM_newTemplate($_CONF['path_layout']);
+$template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
 $template->set_file('t_directory', 'directory.thtml');
 $template->set_block('t_directory', 'section-title');
 $template->set_block('t_directory', 'no-articles');

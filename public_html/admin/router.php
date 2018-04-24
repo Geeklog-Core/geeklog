@@ -86,7 +86,7 @@ function getRouteEditor($rid = 0)
         }
     }
 
-    $T = COM_newTemplate($_CONF['path_layout'] . 'admin/router');
+    $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/router'));
     $T->set_file('editor', 'routereditor.thtml');
     $routerStart = COM_startBlock($LANG_ROUTER[10], '', COM_getBlockTemplate('_admin_block', 'header'))
         . LB . SEC_getTokenExpiryNotice($securityToken);

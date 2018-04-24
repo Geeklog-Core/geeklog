@@ -90,7 +90,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         $templateDir = $topicDir;
     }
 
-    $article = COM_newTemplate($templateDir);
+    $article = COM_newTemplate(CTL_core_templatePath($templateDir));
     $article->set_file(array(
         'article'          => $storyTpl,
         'bodytext'         => 'articlebodytext.thtml',
@@ -130,7 +130,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                     // Need to close and recreate template class since issues arise when theme templates are cached
                     unset($article); // Close template class
                     CACHE_remove_instance($cacheInstance);
-                    $article = COM_newTemplate($_CONF['path_layout']);
+                    $article = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
                     $article->set_file(array(
                         'article'          => $storyTpl,
                         'bodytext'         => 'articlebodytext.thtml',

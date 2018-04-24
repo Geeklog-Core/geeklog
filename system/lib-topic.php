@@ -344,7 +344,7 @@ function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific
         $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');
     }
 
-    $tcc = COM_newTemplate($_CONF['path_layout'] . 'controls');
+    $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
     $tcc->set_file('checklist', 'checklist.thtml');
     $tcc->set_block('checklist', 'item'); 
     $tcc->set_block('checklist', 'item-default');
@@ -865,7 +865,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     $retval = '';
     $topic_info = $LANG27[40];
 
-    $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/common');
+    $topic_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'admin/common'));
     $topic_templates->set_file(array('editor' => 'edit_topics.thtml'));
 
     $_SCRIPTS->setJavaScriptLibrary('jquery');
@@ -1285,7 +1285,7 @@ function TOPIC_breadcrumbs($type, $id)
     }
     $result = DB_query($sql);
     if (DB_numRows($result) > 0) {
-        $breadcrumb_t = COM_newTemplate($_CONF['path_layout']);
+        $breadcrumb_t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
         $breadcrumb_t->set_file(array('breadcrumbs_list' => 'breadcrumbs.thtml'));
 
         $breadcrumb_t->set_block('breadcrumbs_list', 'breadcrumb');
@@ -1453,7 +1453,7 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
-        $topicrelated = COM_newTemplate($_CONF['path_layout']);
+        $topicrelated = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
         $topicrelated->set_file(array(
             'topicrelated' => 'topicrelated.thtml',
         ));

@@ -77,7 +77,7 @@ function CMT_commentBar($sid, $title, $type, $order, $mode, $ccode = 0)
     $nrows = DB_count($_TABLES['comments'], array('sid', 'type'),
         array($sid, $type));
 
-    $commentBar = COM_newTemplate($_CONF['path_layout'] . 'comment');
+    $commentBar = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
     $commentBar->set_file(array('commentbar' => 'commentbar.thtml'));
     $commentBar->set_block('commentbar', 'commenteditform_jumplink');
 
@@ -227,7 +227,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
     $indent = 0;  // begin with 0 indent
     $retval = ''; // initialize return value
 
-    $template = COM_newTemplate($_CONF['path_layout'] . 'comment');
+    $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
     $template->set_file(array(
         'comment' => 'comment.thtml',
         'thread'  => 'thread.thtml',
@@ -682,7 +682,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
         COM_handle404($pluginLink);
     }
 
-    $template = COM_newTemplate($_CONF['path_layout'] . 'comment');
+    $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
     $template->set_file(array('commentarea' => 'startcomment.thtml'));
     $template->set_var('commentbar',
         CMT_commentBar($sid, $title, $type, $order, $mode, $commentCode));
@@ -969,7 +969,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
             // Preview mode:
             if (($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) && !empty($title) && !empty($comment)) {
-                $start = COM_newTemplate($_CONF['path_layout'] . 'comment');
+                $start = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
                 $start->set_file(array('comment' => 'startcomment.thtml'));
                 $start->set_var('hide_if_preview', 'style="display:none"');
                 $start->set_var('area_id', 'commentpreview');
@@ -1033,7 +1033,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
             $permission = ($type == 'article') ? 'story.edit' : "$type.edit";
 
-            $comment_template = COM_newTemplate($_CONF['path_layout'] . 'comment');
+            $comment_template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $comment_template->set_file('form', 'commentform_advanced.thtml');
 
@@ -1717,7 +1717,7 @@ function CMT_reportAbusiveComment($cid, $type)
         return $retval;
     }
 
-    $start = COM_newTemplate($_CONF['path_layout'] . 'comment');
+    $start = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'comment'));
     $start->set_file(array('report' => 'reportcomment.thtml'));
     $start->set_var('lang_report_this', $LANG03[25]);
     $start->set_var('lang_send_report', $LANG03[10]);

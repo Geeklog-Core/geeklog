@@ -336,9 +336,6 @@ class Template
     {
         global $TEMPLATE_OPTIONS;
 
-        if (!is_array($root)) {
-            $root = array($root);
-        }
         if ($this->debug & 4) {
             echo '<p><b>set_root:</b> root = array(' . (count($root) > 0 ? '"' . implode('","', $root) . '"' : '') . ")</p>\n";
         }
@@ -348,6 +345,14 @@ class Template
                 $root = call_user_func($function, $root);
             }
         }
+        
+        // Make root now array if not already (hook above runs CTL_setTemplateRoot for plugins that do not use COM_newTemplate and CTL_core_templatePath which will be required as of Geeklog 3.0.0
+        // CTL_setTemplateRoot needs to figure out things based on if the root passed is an array or not 
+        // As of Geeklog 3.0.0 this arracy check should be moved to right after setting global variables in this function
+        // For more info see COM_newTemplate, CTL_setTemplateRoot, CTL_core_templatePath, CTL_plugin_templatePath
+        if (!is_array($root)) {
+            $root = array($root);
+        }        
 
         if ($this->debug & 4) {
             echo '<p><b>set_root:</b> root = array(' . (count($root) > 0 ? '"' . implode('","', $root) . '"' : '') . ")</p>\n";

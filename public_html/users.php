@@ -158,7 +158,7 @@ function USER_newEmailForm()
 {
     global $_CONF, $_TABLES, $LANG04, $_USER;
 
-    $emailForm = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $emailForm = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $emailForm->set_file(array('newemail' => 'newemail.thtml'));
 
     $uid = $_USER['uid'];
@@ -192,7 +192,7 @@ function USER_newPasswordForm($uid, $requestId = "")
 {
     global $_CONF, $_TABLES, $LANG04;
 
-    $passwordForm = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $passwordForm = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $passwordForm->set_file(array('newpw' => 'newpassword.thtml'));
 
     $passwordForm->set_var('user_id', $uid);
@@ -379,7 +379,7 @@ function USER_newUserForm($msg = 0)
     if (!empty($msg)) {
         $retval .= COM_showMessageText($msg, $LANG04[21]);
     }
-    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $user_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $user_templates->set_file('regform', 'registrationform.thtml');
     $user_templates->set_var('start_block', COM_startBlock($LANG04[22]));
     $user_templates->set_var('lang_instructions', $LANG04[23]);
@@ -417,7 +417,7 @@ function USER_getPasswordForm()
 
     $retval = '';
 
-    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $user_templates = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $user_templates->set_file('form', 'getpasswordform.thtml');
     $user_templates->set_var('start_block_forgetpassword', COM_startBlock($LANG04[25]));
     $user_templates->set_var('lang_instructions', $LANG04[26]);
@@ -648,7 +648,7 @@ function USER_getTwoFactorAuthForm()
 {
     global $_CONF, $_USER, $LANG04;
 
-    $T = COM_newTemplate($_CONF['path_layout'] . 'users');
+    $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $T->set_file('form', 'twofactorauthform.thtml');
     $T->set_var(array(
         'start_block_start_block_twofactorauth' => COM_startBlock($LANG04['tfa_two_factor_auth']),
