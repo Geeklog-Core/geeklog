@@ -7379,6 +7379,10 @@ function COM_truncateHTML($htmlText, $maxLen, $filler = '', $endChars = 0)
 
         $htmlText = $htmlText . $filler . MBYTE_substr($htmlText, $len - $endChars, $endChars);
 
+        // *******************************
+        // Note: At some point we should probably use htmLawed here or the GLText class which uses htmLawed???
+        // something like GLText::applyHTMLFilter but needs to be run with the view of an anonymous user
+        
         // put all opened tags into an array
         preg_match_all("#<([a-z]+)( .*)?(?!/)>#iU", $htmlText, $result);
         $openedTags = $result[1];
@@ -7404,6 +7408,7 @@ function COM_truncateHTML($htmlText, $maxLen, $filler = '', $endChars = 0)
                 unset($closedTags[array_search($openedTags[$i], $closedTags)]);
             }
         }
+        // *******************************
     }
 
     return $htmlText;
