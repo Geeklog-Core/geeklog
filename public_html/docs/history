@@ -45,7 +45,7 @@ Geeklog History/Changes:
 - [Bug] Fixed Links Plugin Category links when URL Rewrite Enabled  [Mystralkk]
 
 - [Update] UIkit 2 framework to version 2.27.5 [Dengen]
-- [Update] jQuery to version ???? and jQuery UI to version ????
+- [Update] jQuery to version 3.3.1 (jQuery UI is still at latest version 1.12.1) [Tom]
 - [Update] CKEditor to version 4.9.2 [Tom]
 - [Update] OAuth class to version 1.0.103 [Mystralkk]
 - [Update] Mobile_Detect class to version 2.8.31 [Tom]
