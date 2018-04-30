@@ -1464,7 +1464,10 @@ $LANG_ROUTER = array(
     18 => '<strong>To enable URL routing, you have to enable URL rewrite in the Configuration.</strong>',
     19 => '<strong>To enable URL routing, you have to enable URL routing in the Configuration.</strong>',
     20 => '<ul><li>Placeholders (@) must be the same both in a rule and its route.</li><li>A placeholder starts with "@", followed by an alphabet, optionally followed by any length of alphabet or digit.</li><li>Placeholders are case-sensitive.</li></ul>',
-    21 => 'Status Code'
+    21 => 'Status Code',
+    22 => 'Enabled',
+    23 => 'Yes',
+    24 => 'No'
 );
 
 ###############################################################################
@@ -2344,7 +2347,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'Censor List',
     'ip_lookup' => 'IP Lookup',
     'url_rewrite' => 'Enable URL Rewrite',
-    'url_Routing' => 'Enable URL Routing',
+    'url_routing' => 'Enable URL Routing',
     'cdn_hosted' => 'Use CDN-hosted copy of jQuery',
     'meta_tags' => 'Meta Tags',
     'meta_description' => 'Default Meta Description',

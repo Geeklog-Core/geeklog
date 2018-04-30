@@ -269,7 +269,7 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# usersettings.php
+# users.php
 
 $LANG04 = array(
     1 => 'アカウント情報',
@@ -471,7 +471,8 @@ $LANG04 = array(
 );
 
 ###############################################################################
-# Customize if need to modify the Tabbed navbar MyAccount panels used. Array index key matches preference div id
+# Customize if need to modify the Tabbed navbar MyAccount panels used.
+# Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
     'pe_preview' => 'プレビュー',
@@ -481,7 +482,6 @@ $LANG_MYACCOUNT = array(
     'pe_content' => 'コンテンツ',
     'pe_privacy' => 'プライバシー'
 );
-
 
 ###############################################################################
 # index.php
@@ -818,15 +818,12 @@ $LANG_ENVCHECK = array(
     'location' => 'ロケーション',
     'status' => 'ステータス',
     'item' => 'アイテム',
-
-    /* Left incase we decided to use jhead and/or jpegtran Program in future */
     'jhead' => 'jheadプログラム',
     'jhead_not_found' => 'jheadを有効にできません。',
     'jhead_ok' => 'jheadはインストールされています。',
     'jpegtran' => 'jpegtranプログラム',
     'jpegtran_not_found' => 'jpegtranを有効にできません。',
     'jpegtran_ok' => 'jpegtranはインストールされています。',
-
     'showhide_phpinfo' => 'phpinfo 表示/非表示',
     'view_online' => 'オンライン表示はここ %s をクリック',
     'no_new_items' => '新アイテムはありません',
@@ -938,17 +935,6 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# Block Locations
-
-$LANG23 = array (
-    'blocks_article_footer_name'         => 'Article Footer',
-    'blocks_article_footer_desc'         => 'Display Blocks in article Footer',
-    
-    'blocks_article_topic_list_name'     => 'Article Topic List',
-    'blocks_article_topic_list_desc'     => 'Displays Blocks right after every X number of articles in topics.'
-);
-
-###############################################################################
 # admin/article.php
 
 $LANG24 = array(
@@ -1054,7 +1040,6 @@ $LANG24 = array(
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'この記事を指定した秒数の間キャッシュします。0 を指定すると、キャッシュしません。(3600 = 1時間、86400 = 1日)'
 );
-
 
 ###############################################################################
 # admin/topic.php
@@ -1230,7 +1215,6 @@ $LANG28 = array(
 
 ###############################################################################
 # admin/moderation.php
-# admin/index.php
 
 $LANG29 = array(
     1 => '承認',
@@ -1265,7 +1249,7 @@ $LANG29 = array(
     'users' => 'ユーザー',
     'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。投稿を一括して承認・削除するには、リストのラジオボタンを選択してから保存をクリックしてください。',
     'max_invalid_login' => 'ログイン失敗最大回数',
-    'max_invalid_login_msg' => "このユーザーは、指定時間内(({$_CONF['invalidloginmaxtime']}秒))にログイン失敗最大回数({$_CONF['invalidloginattempts']}回)に達しました。最後にログインに失敗したIPは %s です。登録ユーザーがパスワードを忘れたのかもしれませんが、誰かがこのユーザーのアカウントのパスワードを推測しようとしているのかもしれません。"
+    'max_invalid_login_msg' => 'このユーザーは、指定時間内((秒))にログイン失敗最大回数(回)に達しました。最後にログインに失敗したIPは %s です。登録ユーザーがパスワードを忘れたのかもしれませんが、誰かがこのユーザーのアカウントのパスワードを推測しようとしているのかもしれません。'
 );
 
 ###############################################################################
@@ -1374,10 +1358,6 @@ $LANG32 = array(
     67 => 'ディレクトリ "%s" は書き込みできません。',
     68 => 'あなたにはプラグインをインストールする権限はありません。',
     69 => 'あなたにはプラグインをアップロードする権限はありません。',
-
-    // to match the PHP error constants,
-    // http://www.php.net/manual/en/features.file-upload.errors.php
-    // TBD: move to a separate $LANG array
     99 => '不明なエラーが発生しました。',
     100 => 'Ok.',
     101 => 'アップロードしようとしたファイルのサイズが php.ini 内の upload_max_filesize の値を超えています。',
@@ -1447,7 +1427,7 @@ $LANG33 = array(
 );
 
 ###############################################################################
-# admin/language.php (since v2.1.2)
+# admin/language.php
 
 $LANG_LANG = array(
     'language_admin_title' => '翻訳言語書き換え',
@@ -1485,8 +1465,8 @@ $LANG_ROUTER = array(
     18 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLリライトを有効にしてください。</strong>',
     19 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLルーティングを有効にしてください。</strong>',
     20 => '<ul><li>プレースホルダー(@)はルールとルートで同じものを定義してください。</li><li>プレースホルダーは@で始まり、1文字目は英字、2文字目以降は英数字を使えます。</li><li>プレースホルダーは大文字・小文字を区別します。</li></ul>',
-    21 => 'ステータスコード', 
-    22 => '有効', 
+    21 => 'ステータスコード',
+    22 => '有効',
     23 => 'はい',
     24 => 'いいえ'
 );
@@ -1922,20 +1902,19 @@ $LANG_SECTEST = array(
     'password_okay' => 'Good! Rootユーザーアカウントのパスワードをデフォルトから変更しています。'
 );
 
-################################################################################
+###############################################################################
 # "What's New" Time Strings
 # 
-# This here determines the order of the sentence "No new articles in 2 hrs"
-# order it so it makes sense in your language:
-# %i    item, "Articles"
-# %n    amount, "2", "20" etc
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
 
-$LANG_WHATSNEW = array (
+$LANG_WHATSNEW = array(
     'new_string' => '新着%i %n件(%t%s)',
     'new_last' => '新着(%t%s)',
-    # other strings
     'minutes' => '分',
     'hours' => '時間',
     'days' => '日',
@@ -1981,9 +1960,9 @@ $LANG_WEEK = array(
     7 => '土'
 );
 
-################################################################################
+###############################################################################
 # Admin - Strings
-#
+# 
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2092,18 +2071,12 @@ $LANG_sortcodes = array(
     'DESC' => '新しい順に'
 );
 
-$LANG_statuscodes = array(
-    0 => 'Normal',
-    1 => 'Refreshing',
-    10 => 'Archive'
-);
-
 $LANG_trackbackcodes = array(
     0 => 'トラックバックを受け付ける',
     -1 => 'トラックバックを受け付けない'
 );
 
-################################################################################
+###############################################################################
 # Localization of the Admin Configuration UI
 
 $LANG_CONFIG = array(
@@ -2595,7 +2568,7 @@ $LANG_configselects['Core'] = array(
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro')
 );
 
-################################################################################
+###############################################################################
 # Localization of validation error messages
 
 $LANG_VALIDATION = array(
@@ -2643,3 +2616,4 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
+
