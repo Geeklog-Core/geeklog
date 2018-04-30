@@ -2054,7 +2054,6 @@ $LANG_frontpagecodes = array(
 $LANG_postmodes = array(
     'plaintext' => 'Text Formatlý',
     'html' => 'HTML Formatlý',
-    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(

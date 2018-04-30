@@ -2063,7 +2063,6 @@ $LANG_frontpagecodes = array(
 $LANG_postmodes = array(
     'plaintext' => 'テキスト',
     'html' => 'HTML',
-    'wikitext' => 'Wikiスタイル'
 );
 
 $LANG_sortcodes = array(
