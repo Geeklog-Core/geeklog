@@ -2321,16 +2321,60 @@ make your site more crawler friendly (i.e. the URLs of your site are more
 likely to be picked up by the search engine's indexing bots). This feature is
 supported for URLs to articles, topics, static pages, the article directory, and links.
 </p>
-<p>URL rewriting means that your URLs will look like this</p>
-<p style="margin-left:4em;"><span class="tt">https://www.geeklog.net/article.php/20021022234959146</span></p>
-<p>instead of like this</p>
-<p style="margin-left:4em;"><span class="tt">https://www.geeklog.net/article.php?story=20021022234959146</span></p>
-<p>While some search engines will pick up the second form, Google seems to
-prefer the first format and often ignores the second format.</p>
+<p>URL rewriting means that your URLs will look like this:</p>
+
+<table border="1">
+    <thead>
+    <tr><th>Original URL</th><th>URL Rewritten</th></tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>https://www.example.com/article.php?story=@sid</td>
+        <td>https://www.example.com/article.php/@sid</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/article.php?story=@sid&mode=print</td>
+        <td>https://www.example.com/article.php/@sid/print</td>
+    </tr>    
+    <tr>
+        <td>https://www.example.com/index.php?topic=@topic</td>
+        <td>https://www.example.com/index.php/topic/@topic/</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/index.php?topic=@topic&page=@page</td>
+        <td>https://www.example.com/index.php/topic/@topic/@page</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/directory.php?topic=@topic&year=@year&month=@month</td>
+        <td>https://www.example.com/directory.php/@topic/@year/@month</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/staticpages/index.php?page=@page</td>
+        <td>https://www.example.com/staticpages/index.php/@page</td>
+    </tr>    
+    <tr>
+        <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
+        <td>https://www.example.com/staticpages/index.php/@page/print</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/links/portal.php?what=link&item=@item</td>
+        <td>https://www.example.com/links/portal.php/link/@item</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/links/index.php?category=@cat</td>
+        <td>https://www.example.com/links/index.php/@cat</td>
+    </tr>    
+    </tbody>
+</table>
+
+<p>While some search engines will pick up the first url form, Google seems to
+prefer the second url format and often ignores the second format.</p>
 <p><strong>Note:</strong> This feature may not work with all web servers. It
 is known to work with Apache (all versions) and known <em>not</em> to work
-with IIS (at least some versions). Please try it out before you go public
+with IIS (at least some older versions). Please try it out before you go public
 with your site.</p>
+<p><strong>Note:</strong> For the homepage, if on a page other than 1, the topic URL format will be followed. 
+The topic Id that will be used to represent the homepage is a dash "-". This is true for URL Routing as well.</p>
 
 
 <h2><a name="url-routing">URL Routing</a></h2>
@@ -2338,54 +2382,70 @@ with your site.</p>
 <p>This feature enhances the above <a href="#url-rewrite">URL Rewriting</a> feature and makes
     public_html/index.php work like a front controller.  So, in order to use URL Routing feature,
     you have to enable URL Rewriting beforehand.  Remember URL Routing currently only works with
-    whatever URL Rewriting supports (articles, topics, static pages, the article directory, and links plugin).
-    Currently, the following rules are predefined.</p>
+    whatever URL Rewriting supports (articles, topics, static pages, the article directory, and links plugin).</p>
+<p>Currently, the following rules are predefined (which covers all supported URL Rewrite URLs):</p>
 <table border="1">
     <thead>
     <tr><th>Rule</th><th>Route</th><th>Priority</th></tr>
     </thead>
     <tbody>
     <tr>
-        <td>http://yourdomain/article/@sid/print</td>
-        <td>http://yourdomain/article.php?story=@sid&mode=print</td>
+        <td>https://www.example.com/article/@sid</td>
+        <td>https://www.example.com/article.php?story=@sid</td>
         <td>100</td>
     </tr>
     <tr>
-        <td>http://yourdomain/article/@sid</td>
-        <td>http://yourdomain/article.php?story=@sid</td>
+        <td>https://www.example.com/article/@sid/print</td>
+        <td>https://www.example.com/article.php?story=@sid&mode=print</td>
         <td>110</td>
     </tr>
     <tr>
-        <td>http://yourdomain/archives/@topic/@year/@month</td>
-        <td>http://yourdomain/directory.php?topic=@topic&year=@year&month=@month</td>
+        <td>https://www.example.com/topic/@topic</td>
+        <td>https://www.example.com/index.php?topic=@topic</td>
         <td>120</td>
     </tr>
     <tr>
-        <td>http://yourdomain/page/@page</td>
-        <td>http://yourdomain/staticpages/index.php?page=@page</td>
+        <td>https://www.example.com/topic/@topic/@page</td>
+        <td>https://www.example.com/index.php?topic=@topic&page=@page</td>
         <td>130</td>
-    </tr>
+    </tr>    
     <tr>
-        <td>http://yourdomain/links/portal/@item</td>
-        <td>http://yourdomain/links/portal.php?what=link&item=@item</td>
+        <td>https://www.example.com/archives/@topic/@year/@month</td>
+        <td>https://www.example.com/directory.php?topic=@topic&year=@year&month=@month</td>
         <td>140</td>
     </tr>
     <tr>
-        <td>http://yourdomain/links/category/@cat</td>
-        <td>http://yourdomain/links/index.php?category=@cat</td>
+        <td>https://www.example.com/page/@page</td>
+        <td>https://www.example.com/staticpages/index.php?page=@page</td>
         <td>150</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/page/@page/print</td>
+        <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
+        <td>160</td>
+    </tr>
+    
+    <tr>
+        <td>https://www.example.com/links/portal/@item</td>
+        <td>https://www.example.com/links/portal.php?what=link&item=@item</td>
+        <td>170</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/links/category/@cat</td>
+        <td>https://www.example.com/links/index.php?category=@cat</td>
+        <td>180</td>
     </tr>
     </tbody>
 </table>
 
-<p>Look at the first row in the table.  This means if you access "http://yourdomain/index.php/article/@sid/print",
-    then you will be redirected to "http://yourdomain/article.php?article=@sid&mode=print".
+<p>Look at the second row in the table.  This means if you access "https://www.example.com/index.php/article/@sid/print",
+    then you will be redirected to "https://www.example.com/article.php?article=@sid&mode=print".
     @sid is a article ID.</p>
 <p>Then, look at the third row.  You will see an at mark (@), followed by alphabetical
     letters.  This is a placeholder.  For instance, when you access
-    "http://yourdomain/index.php/archives/all/2016/1", @topic matches "all", @year matches "2016",
+    "https://www.example.com/index.php/archives/all/2016/1", @topic matches "all", @year matches "2016",
     and @month matches "1" in the rule.  Then, all placeholders in the route will be replaced with
-    the matched values.  And you will be redirected to "http://yourdomain/directory.php?topic=all&year=2016&month=1".</p>
+    the matched values.  And you will be redirected to "https://www.example.com/directory.php?topic=all&year=2016&month=1".</p>
 <p>You don't have to include "/index.php" in a rule.</p>
 <p>You must NOT start a route with "/index.php/", since this will cause an infinite loop.  However, you can start
     with a route with "/index.php?".</p>
@@ -2396,6 +2456,8 @@ with your site.</p>
     route in the URL Routing screen (admin/router.php).</p>
 <p><strong>Note:</strong> This feature may not work with all web servers. It uses PHP's
     $_SERVER['PATH_INFO'] variable.  Please try it out before you go public with your site.</p>
+<p><strong>Note:</strong> If you use URL Routing but remove or disable one of the predefined routes, that route will fallback to how URL Rewrite will display the URL. The only time this is not true is with Topics. If their routes are removed or disabled the URL Rewrite will be "https://www.example.com/@topic" and for paging "https://www.example.com/@topic/@page". The "topic" text place holder will not be present (see above URL Rewrite for examples). This is a current limitation of Geeklog and the router but shouldn't cause an issue as you could change the route to reflect the URL Rewrite url if needed.</p>
+<p><strong>Note:</strong> Only the Status Code "200" should be used. The other options currently do not work correctly and if used may cause unforeseen problems.</p>
 <p><strong>Advanced feature:</strong> If you use IIS as a Web server and want to remove "index.php"
     from URLs you access, you will have to create the appropriate web.config file in the same directory as lib-common.php, with the proper redirects defined.
     An example file called "web.config.txt" is included with Geeklog which you can rename to "web.config". It includes the proper rewrite rule along with some

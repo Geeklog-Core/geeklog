@@ -477,7 +477,7 @@ function saveRoute($rid, $method, $rule, $route, $statusCode, $priority, $enable
 
     if ($count === 0) {
         $sql = "INSERT INTO {$_TABLES['routes']} (rid, method, rule, route, status_code, priority, enabled) "
-            . "VALUES (NULL, {$method}, '{$rule}', '{$route}', {$statusCode}, {$priority})";
+            . "VALUES (NULL, {$method}, '{$rule}', '{$route}', {$statusCode}, {$priority}, {$enabled})";
     } else {
         $sql = "UPDATE {$_TABLES['routes']} "
             . "SET method = {$method}, rule = '{$rule}', route = '{$route}', status_code = {$statusCode}, priority = {$priority}, enabled = {$enabled} "

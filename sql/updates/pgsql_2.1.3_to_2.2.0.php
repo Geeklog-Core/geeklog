@@ -10,6 +10,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `enabled` tinyint(1) unsigned NO
 // Add new topic routes
 $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic', '/index.php?topic=@topic', 160)";
 $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic/@page', '/index.php?topic=@topic&page=@page', 170)";
+$_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/page/@page/print', '/staticpages/index.php?page=@page&disp_mode=print', 180)";
 
 // Add `css_id` and `css_classes` columns to the `blocks` table
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `help`";

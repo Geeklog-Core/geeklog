@@ -82,6 +82,7 @@ function update_DatabaseFor220()
     if ( DB_numRows($result) == 0 ) {    
         $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic', '/index.php?topic=@topic', 160)";
         $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic/@page', '/index.php?topic=@topic&page=@page', 170)";
+        $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/page/@page/print', '/staticpages/index.php?page=@page&disp_mode=print', 180)";
     }
 
     // Add `css_id` and `css_classes` columns to the `blocks` table
@@ -193,7 +194,7 @@ function update_DatabaseFor220()
     
     
     // Polls
-    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.8' WHERE pi_name='polls'";
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.9' WHERE pi_name='polls'";
 
     
     
