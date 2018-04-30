@@ -232,12 +232,14 @@ function ADMIN_getListFieldRoutes($fieldName, $fieldValue, $A, $iconArray, $extr
                 . XHTML . '></a>';
             break;
             
-        case 'enabled': 
-            if ($fieldValue == '1') {
-                $fieldValue = $LANG_ROUTER[23];
-            } else {
-                $fieldValue = $LANG_ROUTER[24];
-            }
+        case 'enabled':
+            $fieldValue = COM_createControl('type-checkbox', array(
+                'name' => 'enabledroutes[]',
+                'value' => $A['rid'],
+                'checked' => ($A['enabled'] == 1) ? true : '',
+                'onclick' => 'submit()'
+            ));
+            $fieldValue .= '<input type="hidden" name="visibleroutes[]" value="' . $A['rid'] . '"' . XHTML . '>';        
             break;
             
         default:
@@ -345,10 +347,17 @@ function listRoutes()
         'query_fields'   => array('rule', 'route', 'status_code', 'priority', 'enabled'),
         'default_filter' => COM_getPermSql('AND'),
     );
+    
+    $formArray = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+            . $securityToken . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="routeenabler" value="1"'
+            . XHTML . '>',
+    );    
 
     $retval .= ADMIN_list(
         'routes', 'ADMIN_getListFieldRoutes', $headerArray, $textArray,
-        $queryArray, $defaultSortArray, '', $securityToken, ''
+        $queryArray, $defaultSortArray, '', $securityToken, '', $formArray
     );
 
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
@@ -567,6 +576,34 @@ function moveRoute($rid)
 }
 
 /**
+ * Enable and Disable routes
+ *
+ * @param    array $enabledRoutes array containing ids of enabled routes
+ * @param    array $visibleRoutes array containing ids of visible routes
+ * @return   void
+ */
+function changeRouteStatus($enabledRoutes, $visibleRoutes)
+{
+    global $_TABLES;
+
+    $disabled = array_diff($visibleRoutes, $enabledRoutes);
+
+    // disable routes
+    $in = implode(',', $disabled);
+    if (!empty($in)) {
+        $sql = "UPDATE {$_TABLES['routes']} SET enabled = 0 WHERE rid IN ($in)";
+        DB_query($sql);
+    }
+
+    // enable routes
+    $in = implode(',', $enabledRoutes);
+    if (!empty($in)) {
+        $sql = "UPDATE {$_TABLES['routes']} SET enabled = 1 WHERE rid IN ($in)";
+        DB_query($sql);
+    }
+}
+
+/**
  * Delete a route
  *
  * @param    int $rid id of block to delete
@@ -587,6 +624,13 @@ $display = '';
 $mode = \Geeklog\Input::fGet('mode', \Geeklog\Input::fPost('mode', ''));
 $rid = \Geeklog\Input::fGet('rid', \Geeklog\Input::fPost('rid', 0));
 $rid = intval($rid, 10);
+
+if (isset($_POST['routeenabler']) && SEC_checkToken()) {
+    $enabledRoutes = Geeklog\Input::post('enabledroutes', array());
+    $visibleRoutes = Geeklog\Input::post('visibleroutes', array());
+    changeRouteStatus($enabledRoutes, $visibleRoutes);
+}
+
 $securityToken = SEC_createToken();
 
 switch ($mode) {
