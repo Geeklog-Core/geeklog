@@ -7,7 +7,7 @@ Geeklog History/Changes:
 - [Feature] Add information about Permissions[X] [Tom]
 - [Feature] Added Demo Mode for Geeklog (enabled in siteconfig.php) [Tom]
 - [Feature] Uikit can now be loaded bia a CDN [Mystralkk]
-- [Feature] Uikit 3 framework (v3.0.0-beta.40) added to Geeklog [Mystralkk]
+- [Feature] Uikit 3 framework (v3.0.0-beta.42) added to Geeklog [Mystralkk]
 - [Feature] Allow number of max pages in page navigation to be set separately for mobile pages [Tom]
 - [Feature] Removed much of the remaining hard coded HTML [Tom] [Dengen]
 - [Feature] Blocks can now appear in more than just the left or right column. Block Locations can now be added by plugins and themes [Tom]
