@@ -1,4 +1,4 @@
-/*! UIkit 2.27.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.27.5 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(UI) {
 
     "use strict";
@@ -42,8 +42,12 @@
             this.element.attr('aria-hidden', this.element.hasClass('uk-open'));
 
             this.on('click', '.uk-modal-close', function(e) {
+
                 e.preventDefault();
-                $this.hide();
+
+                var modal = UI.$(e.target).closest('.uk-modal');
+                if (modal[0] === $this.element[0]) $this.hide();
+
             }).on('click', function(e) {
 
                 var target = UI.$(e.target);
@@ -376,7 +380,7 @@
                 content = UI.$('<div></div>').html(content);
         }else {
                 // unsupported data type!
-                content = UI.$('<div></div>').html('UIkit.modal Error: Unsupported data type: ' + typeof content);
+                content = UI.$('<div></div>').html('UIkit2.modal Error: Unsupported data type: ' + typeof content);
         }
 
         content.appendTo(modal.element.find('.uk-modal-dialog'));
@@ -384,4 +388,4 @@
         return modal;
     }
 
-})(UIkit);
+})(UIkit2);

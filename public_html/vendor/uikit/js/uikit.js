@@ -1,11 +1,17 @@
-/*! UIkit 2.27.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.27.5 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(core) {
+
+    var uikit;
+
+    if (!window.jQuery) {
+        throw new Error('UIkit 2.x requires jQuery');
+    } else {
+        uikit = core(window.jQuery);
+    }
 
     if (typeof define == 'function' && define.amd) { // AMD
 
         define('uikit', function(){
-
-            var uikit = window.UIkit || core(window, window.jQuery, window.document);
 
             uikit.load = function(res, req, onload, config) {
 
@@ -29,27 +35,22 @@
         });
     }
 
-    if (!window.jQuery) {
-        throw new Error('UIkit requires jQuery');
-    }
-
-    if (window && window.jQuery) {
-        core(window, window.jQuery, window.document);
-    }
-
-
-})(function(global, $, doc) {
+})(function($) {
 
     "use strict";
 
-    var UI = {}, _UI = global.UIkit ? Object.create(global.UIkit) : undefined;
+    if (window.UIkit2) {
+        return window.UIkit2;
+    }
 
-    UI.version = '2.27.2';
+    var UI = {}, _UI = window.UIkit || undefined;
+
+    UI.version = '2.27.5';
 
     UI.noConflict = function() {
         // restore UIkit version
         if (_UI) {
-            global.UIkit = _UI;
+            window.UIkit = _UI;
             $.UIkit      = _UI;
             $.fn.uk      = _UI.fn;
         }
@@ -57,9 +58,11 @@
         return UI;
     };
 
-    UI.prefix = function(str) {
-        return str;
-    };
+    window.UIkit2 = UI;
+
+    if (!_UI) {
+        window.UIkit = UI;
+    }
 
     // cache jQuery
     UI.$ = $;
@@ -73,7 +76,7 @@
 
         var transitionEnd = (function() {
 
-            var element = doc.body || doc.documentElement,
+            var element = document.body || document.documentElement,
                 transEndEventNames = {
                     WebkitTransition : 'webkitTransitionEnd',
                     MozTransition    : 'transitionend',
@@ -93,7 +96,7 @@
 
         var animationEnd = (function() {
 
-            var element = doc.body || doc.documentElement,
+            var element = document.body || document.documentElement,
                 animEndEventNames = {
                     WebkitAnimation : 'webkitAnimationEnd',
                     MozAnimation    : 'animationend',
@@ -137,13 +140,13 @@
 
     UI.support.touch = (
         ('ontouchstart' in document) ||
-        (global.DocumentTouch && document instanceof global.DocumentTouch)  ||
-        (global.navigator.msPointerEnabled && global.navigator.msMaxTouchPoints > 0) || //IE 10
-        (global.navigator.pointerEnabled && global.navigator.maxTouchPoints > 0) || //IE >=11
+        (window.DocumentTouch && document instanceof window.DocumentTouch)  ||
+        (window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints > 0) || //IE 10
+        (window.navigator.pointerEnabled && window.navigator.maxTouchPoints > 0) || //IE >=11
         false
     );
 
-    UI.support.mutationobserver = (global.MutationObserver || global.WebKitMutationObserver || null);
+    UI.support.mutationobserver = (window.MutationObserver || window.WebKitMutationObserver || null);
 
     UI.Utils = {};
 
@@ -408,8 +411,6 @@
     UI.Utils.events       = {};
     UI.Utils.events.click = UI.support.touch ? 'tap' : 'click';
 
-    global.UIkit = UI;
-
     // deprecated
 
     UI.fn = function(command, options) {
@@ -435,7 +436,11 @@
 
     UI.components    = {};
 
-    UI.component = function(name, def) {
+    UI.component = function(name, def, override) {
+
+        if (UI.components[name] && !override) {
+            return UI.components[name];
+        }
 
         var fn = function(element, options) {
 
@@ -831,6 +836,12 @@
 
 
   var touch = {}, touchTimeout, tapTimeout, swipeTimeout, longTapTimeout, longTapDelay = 750, gesture;
+  var hasTouchEvents = 'ontouchstart' in window,
+      hasPointerEvents = window.PointerEvent,
+      hasTouch = hasTouchEvents
+      || window.DocumentTouch && document instanceof DocumentTouch
+      || navigator.msPointerEnabled && navigator.msMaxTouchPoints > 0 // IE 10
+      || navigator.pointerEnabled && navigator.maxTouchPoints > 0; // IE >=11
 
   function swipeDirection(x1, x2, y1, y2) {
     return Math.abs(x1 - x2) >= Math.abs(y1 - y2) ? (x1 - x2 > 0 ? 'Left' : 'Right') : (y1 - y2 > 0 ? 'Up' : 'Down');
@@ -982,7 +993,14 @@
       // when the browser window loses focus,
       // for example when a modal dialog is shown,
       // cancel all ongoing events
-      .on('touchcancel MSPointerCancel pointercancel', cancelAll);
+      .on('touchcancel MSPointerCancel pointercancel', function(e){
+
+        // Ignore pointercancel if the event supports touch events, to prevent pointercancel in swipe gesture
+        if ((e.type == 'touchcancel' && hasTouchEvents && hasTouch) || (!hasTouchEvents && e.type == 'pointercancel' && hasPointerEvents)) {
+          cancelAll();
+        }
+
+    });
 
     // scrolling the window indicates intention of the user
     // to scroll, not tap or swipe, so cancel all ongoing events
@@ -1327,7 +1345,7 @@
         return val;
     }
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -1389,7 +1407,7 @@
         UI.$.easing.easeOutExpo = function(x, t, b, c, d) { return (t == d) ? b + c : c * (-Math.pow(2, -10 * t / d) + 1) + b; };
     }
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -1449,7 +1467,7 @@
                     var element     = UI.$(this),
                         inviewstate = element.data('inviewstate'),
                         inview      = UI.Utils.isInView(element, $this.options),
-                        toggle      = element.data('ukScrollspyCls') || togglecls[toggleclsIdx].trim();
+                        toggle      = element.attr('data-uk-scrollspy-cls') || togglecls[toggleclsIdx].trim();
 
                     if (inview && !inviewstate && !element.data('scrollspy-idle')) {
 
@@ -1598,7 +1616,7 @@
         }
     });
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI){
 
@@ -1722,7 +1740,7 @@
         }
     });
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -1788,7 +1806,7 @@
 
     });
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -1944,7 +1962,7 @@
         }
     });
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -2478,7 +2496,7 @@
         }
     }
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -2595,7 +2613,7 @@
         }
     });
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -2640,8 +2658,12 @@
             this.element.attr('aria-hidden', this.element.hasClass('uk-open'));
 
             this.on('click', '.uk-modal-close', function(e) {
+
                 e.preventDefault();
-                $this.hide();
+
+                var modal = UI.$(e.target).closest('.uk-modal');
+                if (modal[0] === $this.element[0]) $this.hide();
+
             }).on('click', function(e) {
 
                 var target = UI.$(e.target);
@@ -2974,7 +2996,7 @@
                 content = UI.$('<div></div>').html(content);
         }else {
                 // unsupported data type!
-                content = UI.$('<div></div>').html('UIkit.modal Error: Unsupported data type: ' + typeof content);
+                content = UI.$('<div></div>').html('UIkit2.modal Error: Unsupported data type: ' + typeof content);
         }
 
         content.appendTo(modal.element.find('.uk-modal-dialog'));
@@ -2982,7 +3004,7 @@
         return modal;
     }
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -3135,7 +3157,7 @@
         return height;
     }
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -3240,7 +3262,9 @@
 
                 var target = UI.$(e.target);
 
-                if (!e.type.match(/swipe/)) {
+                if (e.type.match(/swipe/)) {
+                    if (target.parents('.uk-offcanvas-bar:first').length) return;
+                } else {
 
                     if (!target.hasClass('uk-offcanvas-close')) {
                         if (target.hasClass('uk-offcanvas-bar')) return;
@@ -3332,7 +3356,7 @@
 
     UI.offcanvas = Offcanvas;
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -3639,7 +3663,7 @@
         return d.promise();
     }
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI) {
 
@@ -3733,7 +3757,7 @@
 
             // init UIkit components
             if (this.options.connect) {
-                
+
                 this.switcher = UI.switcher(this.element, {
                     toggle    : '>li:not(.uk-tab-responsive)',
                     connect   : this.options.connect,
@@ -3808,7 +3832,7 @@
         }
     });
 
-})(UIkit);
+})(UIkit2);
 
 (function(UI){
 
@@ -3895,4 +3919,4 @@
         }
     });
 
-})(UIkit);
+})(UIkit2);
