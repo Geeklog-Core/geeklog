@@ -3,10 +3,10 @@ Geeklog History/Changes:
 ?, 2018 (2.2.0)
 ------------
 
-- [Feature] HrefLang link elements added to header for multi-lanugage sites with multi-language pages setup (Works with topics, articles, and staticpages) [Tom]
+- [Feature] HrefLang link elements added to header for multi-language sites with multi-language pages setup (Works with topics, articles, and staticpages) [Tom]
 - [Feature] Add information about Permissions[X] [Tom]
 - [Feature] Added Demo Mode for Geeklog (enabled in siteconfig.php) [Tom]
-- [Feature] Uikit can now be loaded bia a CDN [Mystralkk]
+- [Feature] Uikit can now be loaded via a CDN [Mystralkk]
 - [Feature] Uikit 3 framework (v3.0.0-beta.42) added to Geeklog [Mystralkk]
 - [Feature] Allow number of max pages in page navigation to be set separately for mobile pages [Tom]
 - [Feature] Removed much of the remaining hard coded HTML [Tom] [Dengen]
@@ -42,7 +42,7 @@ Geeklog History/Changes:
 - [Bug] Fixed Portal Blocks importing feeds [Tom]
 - [Bug] Fixed Spam-X plugin upgrade issue from Geeklog v2.1.2 to v2.1.3 [Tom]
 - [Bug] Fixed Link Edit button to edit link instead of create a new link [Tom]
-- [Bug] Fixed Links Plugin Category links when URL Rewrite Enabled  [Mystralkk]
+- [Bug] Fixed Links plugin Category links when URL Rewrite Enabled  [Mystralkk]
 
 - [Update] UIkit 2 framework to version 2.27.5 [Dengen]
 - [Update] jQuery to version 3.3.1 (jQuery UI is still at latest version 1.12.1) [Tom]
@@ -71,7 +71,7 @@ June 22, 2017 (2.1.3)
 - [Bug] Fixed Portal Blocks being able to use Cache Time [Tom]
 - [Bug] Fixed displaying of portal blocks. Removed function COM_rdfCheck from lib-common.php since not needed anymore (uses cache time instead) [Tom]
 - [Bug] Fixed script tag issues in staticpages and theme templates [Dengen]
-- [Bug] Fixed Comment Submission tooltips when dealing with HTML Entities [Dengen]
+- [Bug] Fixed Comment Submission tool tips when dealing with HTML Entities [Dengen]
 - [Bug] Fixed Comment Notification emails when dealing with HTML Entities [Tom]
 
 March 1, 2017 (2.1.2)
