@@ -2913,6 +2913,7 @@ class Installer
                             $this->upgradeMessages = array_merge($this->upgradeMessages, $retval);
                         }
                     } else {
+                        $this->updateDB($_SQL, $progress);
                         removeCommentSig220();
                         update_ConfValuesFor220();
                         addThemeAdminFor220();

@@ -201,7 +201,9 @@ function removeCommentSig220()
         $text = str_replace('<!-- COMMENTSIG --><div class="comment-sig">', '', $A['comment']);
         $text = str_replace('</div><!-- /COMMENTSIG -->', '', $text);
         $text = str_replace('<div class="comment-edit">', '', $text);
-        $text = str_replace('</div><!-- /COMMENTEDIT -->', '', $text);        
+        $text = str_replace('</div><!-- /COMMENTEDIT -->', '', $text);
+
+        $text = DB_escapeString($text);        
         
         DB_query("UPDATE {$_TABLES['comments']} SET comment = '$text' WHERE cid = {$A['cid']}");
     }
