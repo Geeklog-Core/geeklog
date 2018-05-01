@@ -137,6 +137,9 @@ function plugin_chkVersion_recaptcha()
 function plugin_upgrade_recaptcha()
 {
     global $_TABLES, $_RECAPTCHA_CONF;
+    
+    // Retrieve other plugin info like min geeklog version and homepage 
+    $inst_parms = plugin_autoinstall_recaptcha('recaptcha');      
 
     $pluginVersionInDb = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'recaptcha'");
 
@@ -168,11 +171,10 @@ function plugin_upgrade_recaptcha()
         }
     }
 
-    // Updates plugin info
-    $sql = "UPDATE {$_TABLES['plugins']} SET pi_version = '{$_RECAPTCHA_CONF['pi_version']}' "
-        . "WHERE (pi_name = 'recaptcha') ";
-    DB_query($sql);
-    COM_errorLog("reCAPTCHA plugin was successfully updated to version {$_RECAPTCHA_CONF['pi_version']}.");
+    // update plugin version number and other info
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_RECAPTCHA_CONF['pi_version']}', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'recaptcha'");
+
+    COM_errorLog( "Updated recaptcha plugin from v$pluginVersionInDb to v{$_RECAPTCHA_CONF['pi_version']}", 1 );       
 
     return true;
 }

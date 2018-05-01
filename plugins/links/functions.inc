@@ -698,6 +698,9 @@ function plugin_upgrade_links()
     if (! plugin_compatible_with_this_version_links('links')) {
         return 3002;
     }
+    
+    // Retrieve other plugin info like min geeklog version and homepage 
+    $inst_parms = plugin_autoinstall_links('links');      
 
     require_once $_CONF['path'] . 'plugins/links/sql/'
                                 . $_DB_dbms . '_updates.php';
@@ -811,7 +814,7 @@ function plugin_upgrade_links()
             break;    
 
         case '2.1.5':
-            $current_version = '2.1.6'; // Shipped with Geeklog-2.1.4
+            $current_version = '2.1.6'; // Shipped with Geeklog-2.2.0
             break;               
 
         default:
@@ -819,7 +822,10 @@ function plugin_upgrade_links()
         }
     }
 
-    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$installed_version' WHERE pi_name = 'links'");
+    // update plugin version number and other info
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'links'");
+
+    COM_errorLog( "Updated links plugin from v$installed_version to v$code_version", 1 );      
 
     return true;
 }

@@ -196,6 +196,11 @@ function update_DatabaseFor220()
     // Polls
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.9' WHERE pi_name='polls'";
 
+    // XMLSiteMap
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.1', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
+    
+    // Calendar
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.6', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
     
     
 
@@ -473,6 +478,7 @@ foreach ($corePlugins AS $pi_name) {
             break;
         case 'xmlsitemap':
             $plugin_version = '2.0.0';
+            $new_plugin_version = true;
             break;
     }
     

@@ -221,7 +221,6 @@ function plugin_upgrade_spamx()
     }
 
     $inst_parms = plugin_autoinstall_spamx('spamx');
-    $pi_gl_version = $inst_parms['info']['pi_gl_version'];
 
     require_once $_CONF['path'] . 'plugins/spamx/sql/' . $_DB_dbms . '_updates.php';
     require_once $_CONF['path'] . 'plugins/spamx/install_updates.php';
@@ -402,7 +401,10 @@ function plugin_upgrade_spamx()
         }
     }
 
-    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'spamx'");
+    // update plugin version number and other info
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'spamx'");
+
+    COM_errorLog( "Updated spamx plugin from v$installed_version to v$code_version", 1 );      
 
     return true;
 }

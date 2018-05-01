@@ -1152,6 +1152,9 @@ function plugin_upgrade_polls()
     if (!plugin_compatible_with_this_version_polls('polls')) {
         return 3002;
     }
+    
+    // Retrieve other plugin info like min geeklog version and homepage 
+    $inst_parms = plugin_autoinstall_polls('polls');     
 
     require_once $_CONF['path'] . 'plugins/polls/sql/' . $_DB_dbms . '_updates.php';
     require_once $_CONF['path'] . 'plugins/polls/install_updates.php';
@@ -1311,10 +1314,10 @@ function plugin_upgrade_polls()
         }
     }
 
-    DB_query(
-        "UPDATE {$_TABLES['plugins']} SET pi_version = '" . DB_escapeString($code_version) . "', pi_gl_version = '" . DB_escapeString($installed_version) . "' "
-        . "WHERE pi_name = 'polls'"
-    );
+    // update plugin version number and other info
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'polls'");
+
+    COM_errorLog( "Updated polls plugin from v$installed_version to v$code_version", 1 );      
 
     return true;
 }

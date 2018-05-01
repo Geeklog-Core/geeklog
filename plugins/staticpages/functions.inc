@@ -1404,8 +1404,7 @@ function plugin_upgrade_staticpages()
 {
     global $_CONF, $_TABLES, $_DB_dbms;
 
-    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
-        "pi_name = 'staticpages'");
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'staticpages'");
     $code_version = plugin_chkVersion_staticpages();
     if ($installed_version == $code_version) {
         // nothing to do
@@ -1417,6 +1416,9 @@ function plugin_upgrade_staticpages()
     if (!plugin_compatible_with_this_version_staticpages('staticpages')) {
         return 3002;
     }
+    
+    // Retrieve other plugin info like min geeklog version and homepage 
+    $inst_parms = plugin_autoinstall_staticpages('staticpages');    
 
     require_once $_CONF['path'] . 'plugins/staticpages/sql/'
         . $_DB_dbms . '_updates.php';
@@ -1610,7 +1612,10 @@ function plugin_upgrade_staticpages()
         }
     }
 
-    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$installed_version' WHERE pi_name = 'staticpages'");
+    // update plugin version number and other info
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'staticpages'");
+    
+    COM_errorLog( "Updated staticpages plugin from v$installed_version to v$code_version", 1 );
 
     return true;
 }
