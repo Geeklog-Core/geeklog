@@ -237,7 +237,7 @@ class Installer
 
             foreach ($this->upgradeMessages as $version => $message) {
                 $retval .= '<h2>' . $this->LANG['INSTALL'][111] . ' ' . $version . '</h2>' . PHP_EOL;
-                if (version_compare($currentVersion, '2.1.2', '<')) {
+                if (version_compare($version, '2.1.2', '<')) {
                     foreach ($message as $type => $message_id) {
                         $retval .= $this->getAlertMessage($this->LANG['ERROR'][$message_id], $type);
                         // record what type of prompt we need
