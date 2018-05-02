@@ -4639,6 +4639,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         
         $retval .= $t->parse('output', 'whatsnew');
     }
+    $t->clear_var('no-items');
 
     if ($_CONF['hidenewcomments'] == 0) {
         // Go get the newest comments
@@ -4712,6 +4713,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         
         $retval .= $t->parse('output', 'whatsnew');
     }
+    $t->clear_var('no-items');
 
     if ($_CONF['trackback_enabled'] && ($_CONF['hidenewtrackbacks'] == 0)) {
         $t->set_var('item', $LANG01[114]);
@@ -4767,6 +4769,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         
         $retval .= $t->parse('output', 'whatsnew');
     }
+    $t->clear_var('no-items');
 
     if ($_CONF['hidenewplugins'] == 0) {
         list($headlines, $smallHeadlines, $content) = PLG_getWhatsNew();
@@ -4779,11 +4782,8 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
                 if (is_array($content[$i])) {
                     $t->set_var('new-item-list', COM_makeList($content[$i], 'list-new-plugins'));
                 } else {
-                    // Because of the old way which plugin whats new list were created before a template was used
-                    // There may be a <br> tag at the end of the language variable. So strip it
-                    $content[$i] = strip_tags($content[$i]);
-                    
-                    $t->set_var('no-items', $content[$i]);
+                    // plugins already used COM_makeList on content plus add <br> on no-items text so just use new-item-list
+                    $t->set_var('new-item-list', $content[$i]);
                 }
 
                 if ($i + 1 < $plugins) {
@@ -4791,6 +4791,8 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
                 }
                 
                 $retval .= $t->parse('output', 'whatsnew');
+                
+                $t->clear_var('no-items');
             }
         }
     }
