@@ -2198,10 +2198,10 @@ function CACHE_create_instance($iid, $data, $bypass_lang = false, $bypass_mobile
 
     if ($TEMPLATE_OPTIONS['cache_by_language'] || $TEMPLATE_OPTIONS['cache_for_mobile']) {
         $directory = '';
-        if ($TEMPLATE_OPTIONS['cache_by_language']) {
+        if (!$bypass_lang && $TEMPLATE_OPTIONS['cache_by_language']) {
             $directory = $_CONF['language'] . '/';
         }
-        if ($TEMPLATE_OPTIONS['cache_for_mobile'] && $_DEVICE->is_mobile()) {
+        if (!$bypass_mobile && $TEMPLATE_OPTIONS['cache_for_mobile'] && $_DEVICE->is_mobile()) {
             $directory .= 'mobile/';
         }
         if (!is_dir($TEMPLATE_OPTIONS['path_cache'] . $directory)) {
