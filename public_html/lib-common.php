@@ -522,7 +522,7 @@ $relLinks = array();
 // Figure out if we need to update topic tree or retrieve it from the cache
 // For anonymous users topic tree data can be shared
 $cacheInstance = 'topic_tree__' . CACHE_security_hash();
-$serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
+$serialized_topic_tree = CACHE_check_instance($cacheInstance, true, true); // Not language or mobile cache specific (as this is ALL topic information)
 
 // See if Topic Tree cache exists
 if (empty($serialized_topic_tree)) {
@@ -531,7 +531,7 @@ if (empty($serialized_topic_tree)) {
     // Need this check since this variable is not set correctly when Geeklog is being install
     if (isset($GLOBALS['TEMPLATE_OPTIONS']) && is_array($TEMPLATE_OPTIONS) && isset($TEMPLATE_OPTIONS['path_cache'])) {
         // Save updated topic tree and date
-        CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
+        CACHE_create_instance($cacheInstance, serialize($_TOPICS), true, true); // Not language or mobile cache specific
     }
 } else {
     $_TOPICS = unserialize($serialized_topic_tree);
