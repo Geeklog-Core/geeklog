@@ -42,7 +42,7 @@ function adveditor_config_ckeditor()
         'name'     => 'CKEditor',
         'file'     => 'ckeditor.js',
         'footer'   => true, // Not required, default = true
-        'priority' => 110   // Not required, default = 100
+        'priority' => 200   // Need to set higher than default 100 since if cache_resource config enabled (and editor js are NOT included in the resource file) it may cause an issue
     );
 }
 

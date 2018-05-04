@@ -95,14 +95,14 @@ class Resource
     private $jQueryUIPosition = '';
 
     /**
-     * @var bool
+     * @var string either '', 'header' or 'footer'
      */
-    private $useUIkit = false;
+    private $UIkitPosition = ''; // Position can only be changed for related js files, not css (will always be in header)
 
     /**
-     * @var bool
+     * @var string either '', 'header' or 'footer'
      */
-    private $useUIkit3 = false;
+    private $UIkit3Position = ''; // Position can only be changed for related js files, not css (will always be in header)
 
     /**
      * @var string
@@ -257,7 +257,7 @@ class Resource
         $this->config = $config;
         $this->theme = $config['theme'];
         $this->compatibleWithMC = file_exists($config['path_layout'] . 'style.css.php');
-        $this->setJavaScriptLibrary('common', false);
+        $this->setJavaScriptLibrary('common', true);
     }
 
     /**
@@ -373,6 +373,12 @@ class Resource
     public function setJavaScriptLibrary($name, $isFooter = true)
     {
         global $LANG_DIRECTION;
+        
+        // Sometimes it matters the order the libraries are submitted by Geeklog
+        // Example jquery-ui-timepicker-addon must be before jquery-ui-timepicker-addon-i18n
+        // Since the sort happens later and libraries which have the same priority may get shuffled within the priority
+        // Lets auto increment the library priority to prevent problems
+        static $library_priority = 100;
 
         $name = strtolower($name);
         $position = $isFooter ? 'footer' : 'header';
@@ -413,7 +419,7 @@ class Resource
                 break;
 
             case 'uikit':
-                if ($this->useUIkit) {
+                if ($this->UIkitPosition) {
                     // Already used
                     return true;
                 }
@@ -422,18 +428,18 @@ class Resource
                     $this->setJavaScriptLibrary('jquery', false);
                 }
 
-                $this->useUIkit = true;
+                $this->UIkitPosition = $position;
 
                 return true;
                 break;
 
             case 'uikit3':
-                if ($this->useUIkit3) {
+                if ($this->UIkit3Position) {
                     // Already used
                     return true;
                 }
 
-                $this->useUIkit3 = true;
+                $this->UIkit3Position = $position;
 
                 return true;
                 break;
@@ -441,12 +447,14 @@ class Resource
             default:
                 $this->localJsFiles[$position][] = array(
                     'file'     => $this->libraryLocations[$name],
-                    'priority' => 100,
+                    'priority' => $library_priority,
                 );
+                
+                $library_priority = $library_priority + 1;
 
                 // In case of a UIkit component, add a suitable CSS file
                 if (strpos($name, 'uikit.') === 0) {
-                    if (!$this->useUIkit) {
+                    if (!$this->UIkitPosition) {
                         $this->setJavaScriptLibrary('uikit');
                     }
 
@@ -840,8 +848,12 @@ class Resource
 
         // Minify JavaScript
         $retval = '';
+        $excludedfiles = '';
 
-        // Exclude files for advanced editor, since they wouldn't work in displaced locations
+        // *******************************
+        // Exclude files for advanced editor 
+        // Since they wouldn't work in displaced locations (ie in the new resource file and location)
+        // Also include them after the resource file
 
         // typically, /editors/
         $editorPath = str_replace(
@@ -854,11 +866,12 @@ class Resource
 
         foreach ($temp as $file) {
             if (stripos($file['file'], $editorPath) === 0) {
-                $retval .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
+                $excludedfiles .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
             } else {
                 $files[] = $file;
             }
         }
+        // *******************************
 
         $absolutePaths = array();
         $relativePaths = array();
@@ -900,6 +913,9 @@ class Resource
                 $retval .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
             }
         }
+        
+        // Add excluded files at the end 
+        $retval .= $excludedfiles;
 
         return $retval;
     }
@@ -993,7 +1009,8 @@ class Resource
         }
 
         // UIkit
-        if (!$isFooter && $this->useUIkit) {
+        if ((!$isFooter && ($this->UIkitPosition === 'header')) ||
+            ($isFooter && ($this->UIkitPosition === 'footer'))) {        
             if ($this->config['cdn_hosted']) {
                 $retval .= sprintf(
                     self::JS_TAG_TEMPLATE,
@@ -1010,7 +1027,8 @@ class Resource
         }
 
         // UIkit3
-        if (!$isFooter && $this->useUIkit3) {
+        if ((!$isFooter && ($this->UIkit3Position === 'header')) ||
+            ($isFooter && ($this->UIkit3Position === 'footer'))) {          
             if ($this->config['cdn_hosted']) {
                 $retval .= sprintf(
                     self::JS_TAG_TEMPLATE,
@@ -1085,7 +1103,7 @@ class Resource
                     'priority' => self::JQUERY_UI_PRIORITY + 30,
                 ),
             );
-        } elseif ($this->useUIkit3 && !isset($this->localCssFiles['uikit3'])) {
+        } elseif ($this->UIkit3Position && !isset($this->localCssFiles['uikit3'])) {
             $cssFileName = (isset($LANG_DIRECTION) && ($LANG_DIRECTION === 'rtl')) ? 'uikit-rtl' : 'uikit';
             $cssFiles = array(
                 array(

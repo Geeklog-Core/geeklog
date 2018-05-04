@@ -42,8 +42,8 @@ function adveditor_config_fckeditor()
     return array(
         'name'     => 'FCKEditor',
         'file'     => 'fckeditor.js',
-        'footer'   => true, // Not requred, default = true
-        'priority' => 110   // Not requred, default = 100
+        'footer'   => true, // Not required, default = true
+        'priority' => 200   // Not required, default = 100
     );
 }
 
