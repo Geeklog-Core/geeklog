@@ -612,6 +612,10 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         $article->set_var('navi_list', $navi_list);
         $article->set_var('feedback_list', $feedback_list);
         $article->set_var('story_footer', $story_footer);
+        
+        // Set type of view in template so can change display if needed
+        // Index variable:  n = Full display of article. p = 'Preview' mode. Else y = introtext only.
+        $article->set_var('display_type', $index);
 
         if ($story->DisplayElements('featured') == 1) {
             $article->set_var('lang_todays_featured_article', $LANG05[4]);
