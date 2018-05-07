@@ -829,7 +829,7 @@ function plugin_searchtypes_staticpages()
     global $LANG_STATIC, $_SP_CONF;
 
     if ($_SP_CONF['includesearch'] == 1) {
-        $tmp['staticpages'] = $LANG_STATIC['staticpages'];
+        $tmp['staticpages'] = $LANG_STATIC['pages'];
 
         return $tmp;
     } else {
@@ -893,7 +893,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         $sql .= 'AND sp_php = 0 ';
     }
 
-    $search_p = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
+    $search_p = new SearchCriteria('staticpages', $LANG_STATIC['pages']);
 
     $columns = array('title' => 'sp_title', 'sp_content');
     $sql .= $search_p->getDateRangeSQL('AND', 'created', $datestart, $dateend);
