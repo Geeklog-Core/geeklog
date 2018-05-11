@@ -136,7 +136,9 @@ function plugin_chkVersion_recaptcha()
  */
 function plugin_upgrade_recaptcha()
 {
-    global $_TABLES, $_RECAPTCHA_CONF;
+    global $_CONF, $_TABLES, $_RECAPTCHA_CONF;
+    
+    require_once $_CONF['path'] . 'plugins/recaptcha/autoinstall.php';  
     
     // Retrieve other plugin info like min geeklog version and homepage 
     $inst_parms = plugin_autoinstall_recaptcha('recaptcha');      
