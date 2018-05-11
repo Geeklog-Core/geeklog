@@ -144,7 +144,8 @@ function plugin_upgrade_recaptcha()
     $inst_parms = plugin_autoinstall_recaptcha('recaptcha');      
 
     $pluginVersionInDb = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'recaptcha'");
-
+    $originalPluginVersionInDb = $pluginVersionInDb;
+    
     // Does upgrading
     while (version_compare($pluginVersionInDb, $_RECAPTCHA_CONF['pi_version'], '<')) {
         switch ($pluginVersionInDb) {
@@ -176,7 +177,7 @@ function plugin_upgrade_recaptcha()
     // update plugin version number and other info
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_RECAPTCHA_CONF['pi_version']}', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'recaptcha'");
 
-    COM_errorLog( "Updated recaptcha plugin from v$pluginVersionInDb to v{$_RECAPTCHA_CONF['pi_version']}", 1 );       
+    COM_errorLog( "Updated recaptcha plugin from v$originalPluginVersionInDb to v{$_RECAPTCHA_CONF['pi_version']}", 1 );       
 
     return true;
 }
