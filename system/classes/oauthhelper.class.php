@@ -62,6 +62,34 @@ class OAuthConsumer
         if (strpos($service, 'oauth.') === 0) {
             $service = str_replace('oauth.', '', $service);
         }
+        
+        // Geeklog stores oauth service in all small case
+        // Vendor oauth_client.php capitalizes certain letters so update service variable to make sure will match when the vendor oauth_client_class is created
+        switch ($service) {
+            case "facebook":
+                $service = "Facebook";
+                break;
+            case "github":
+                $service = "github";
+                break;
+            case "google":
+                $service = "Google";
+                break;
+            case "linkedin":
+                $service = "LinkedIn";
+                break;
+            case "microsoft":
+                $service = "Microsoft";
+                break;
+            case "twitter":
+                $service = "Twitter";
+                break;
+            case "yahoo":
+                $service = "Yahoo";
+                break;
+            default:
+                break;
+        }
 
         $this->client = new oauth_client_class;
         $this->client->server = $service;
@@ -70,52 +98,52 @@ class OAuthConsumer
 
         // Set key and secret for OAuth service if found in config
         if ($this->client->client_id == '') {
-            if (isset($_CONF[$service . '_consumer_key'])) {
-                if ($_CONF[$service . '_consumer_key'] != '') {
-                    $this->client->client_id = $_CONF[$service . '_consumer_key'];
+            if (isset($_CONF[strtolower($service) . '_consumer_key'])) {
+                if ($_CONF[strtolower($service) . '_consumer_key'] != '') {
+                    $this->client->client_id = $_CONF[strtolower($service) . '_consumer_key'];
                 }
             }
         }
         if ($this->client->client_secret == '') {
-            if (isset($_CONF[$service . '_consumer_secret'])) {
-                if ($_CONF[$service . '_consumer_secret'] != '') {
-                    $this->client->client_secret = $_CONF[$service . '_consumer_secret'];
+            if (isset($_CONF[strtolower($service) . '_consumer_secret'])) {
+                if ($_CONF[strtolower($service) . '_consumer_secret'] != '') {
+                    $this->client->client_secret = $_CONF[strtolower($service) . '_consumer_secret'];
                 }
             }
         }
 
         switch ($this->client->server) {
-            case 'facebook' :
+            case 'Facebook' :
                 $api_url = 'https://graph.facebook.com/me?fields=name,email,link,id,first_name,last_name,about';
                 $scope   = 'email,public_profile,user_friends';
                 $q_api   = array();
                 break;
 
-            case 'google' :
+            case 'Google' :
                 $api_url = 'https://www.googleapis.com/oauth2/v1/userinfo';
                 $scope   = 'https://www.googleapis.com/auth/userinfo.email '.'https://www.googleapis.com/auth/userinfo.profile';
                 $q_api   = array();
                 break;
 
-            case 'microsoft' :
+            case 'Microsoft' :
                 $api_url = 'https://apis.live.net/v5.0/me';
                 $scope   = 'wl.basic wl.emails';
                 $q_api   = array();
                 break;
 
-            case 'twitter' :
+            case 'Twitter' :
                 $api_url = 'https://api.twitter.com/1.1/account/verify_credentials.json';
                 $scope   = '';
                 $q_api   = array('include_entities' => "true", 'skip_status' => "true", 'include_email' => "true");
                 break;
 
-            case 'yahoo' :
+            case 'Yahoo' :
                 $api_url = 'http://query.yahooapis.com/v1/yql';
                 $scope   = '';
                 $q_api   = array('q'=>'select * from social.profile where guid=me','format'=>'json');
                 break;
 
-            case 'linkedin' :
+            case 'LinkedIn' :
                 $api_url = 'http://api.linkedin.com/v1/people/~:(id,first-name,last-name,location,summary,email-address,picture-url,public-profile-url)';
                 $scope   = 'r_basicprofile r_emailaddress';
                 $q_api   = array('format'=>'json');
@@ -301,7 +329,7 @@ class OAuthConsumer
         $userInfo = array();
 
         switch ($this->client->server) {
-            case 'facebook' :
+            case 'Facebook' :
                 if ( isset($info->about) ) {
                     $userinfo['about'] = $info->about;
                 }
@@ -310,25 +338,25 @@ class OAuthConsumer
                 }
                 break;
 
-            case 'google' :
+            case 'Google' :
                 break;
 
-            case 'microsoft' :
+            case 'Microsoft' :
                 break;
 
-            case 'twitter' :
+            case 'Twitter' :
                 if ( isset($info->email ) ) {
                     $userinfo['email'] = $info->email;
                 }
                 break;
 
-            case 'yahoo' :
+            case 'Yahoo' :
                 if (isset($info->query->results->profile->location)) {
                     $userInfo['location'] = $info->query->results->profile->location;
                 }
                 break;
 
-            case 'linkedin' :
+            case 'LinkedIn' :
                 if ( isset($info->location->name) ) {
                     $userinfo['location'] = $info->location->name;
                 }
@@ -344,7 +372,7 @@ class OAuthConsumer
     protected function _getCreateUserInfo($info)
     {
         switch ($this->client->server) {
-            case 'facebook' :
+            case 'Facebook' :
                 $users = array(
                     'loginname'      => (isset($info->first_name) ? $info->first_name : $info->id),
                     'email'          => $info->email,
@@ -372,7 +400,7 @@ class OAuthConsumer
                 );
                 break;                
 
-            case 'google' :
+            case 'Google' :
                 $homepage = $info->link;
 
                 $plusPos = strpos($homepage,"+");
@@ -394,7 +422,7 @@ class OAuthConsumer
                 );
                 break;                
 
-            case 'twitter' :
+            case 'Twitter' :
                 $mail = '';
                 if ( isset($info->email)) {
                     $mail = $info->email;
@@ -412,7 +440,7 @@ class OAuthConsumer
                 );
                 break;                
 
-            case 'microsoft' :
+            case 'Microsoft' :
                 $users = array(
                     'loginname'      => (isset($info->first_name) ? $info->first_name : $info->id),
                     'email'          => $info->emails->preferred,
@@ -426,7 +454,7 @@ class OAuthConsumer
                 );
                 break;
                 
-            case 'yahoo' :
+            case 'Yahoo' :
                 $users = array(
                     'loginname'      => (isset($info->query->results->profile->nickname) ? $info->query->results->profile->nickname : $info->query->results->profile->guid),
                     'email'          => $info->query->results->profile->emails->handle,
@@ -440,7 +468,7 @@ class OAuthConsumer
                 );
                 break;
                 
-            case 'linkedin' :
+            case 'LinkedIn' :
                 $users = array(
                     'loginname'      => (isset($info->{'firstName'}) ? $info->{'firstName'} : $info->id),
                     'email'          => $info->{'emailAddress'},
