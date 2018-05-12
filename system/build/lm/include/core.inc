@@ -65,7 +65,7 @@ $ENG12 = $LANG12;
 $ENG20 = $LANG20;
 $ENG21 = $LANG21;
 // $LANG22 moved to the Calendar plugin as of Geeklog 1.4.1
-// $LANG23 moved to the Links plugin as of Geeklog 1.4.0
+$ENG23 = $LANG23;
 $ENG24 = $LANG24;
 // $LANG25 moved to the Polls plugin as of Geeklog 1.4.0
 // there is no $LANG26
@@ -105,6 +105,7 @@ $ENG_featurecodes = $LANG_featurecodes;
 $ENG_frontpagecodes = $LANG_frontpagecodes;
 $ENG_postmodes = $LANG_postmodes;
 $ENG_sortcodes = $LANG_sortcodes;
+$ENG_statuscodes = $LANG_statuscodes;
 $ENG_trackbackcodes = $LANG_trackbackcodes;
 
 $ENG_CONFIG = $LANG_CONFIG;
@@ -164,7 +165,7 @@ $LANG01[95] = str_replace('Powered By', 'Powered by', $LANG01[95]);
 
 mergeArrays($ENG01, $LANG01, 'LANG01', 'lib-common.php');
 mergeArrays($ENG03, $LANG03, 'LANG03', 'comment.php');
-mergeArrays($ENG04, $LANG04, 'LANG04', 'users.php');
+mergeArrays($ENG04, $LANG04, 'LANG04', 'usersettings.php');
 mergeArrays($ENGMY,  $LANG_MYACCOUNT, 'LANG_MYACCOUNT', "Customize if need to modify the Tabbed navbar MyAccount panels used.\nArray index key matches preference div id");
 mergeArrays($ENG05, $LANG05, 'LANG05', 'index.php');
 mergeArrays($ENG08, $LANG08, 'LANG08', 'profiles.php');
@@ -182,15 +183,16 @@ mergeArrays($ENG_LOGVIEW, $LANG_LOGVIEW, 'LANG_LOGVIEW', 'admin/logviewer.php');
 mergeArrays($ENG_ENVCHECK, $LANG_ENVCHECK, 'LANG_ENVCHECK', 'admin/envcheck.php - distribution integrity checker');
 mergeArrays($ENG20, $LANG20, 'LANG20', 'admin/auth.inc.php');
 mergeArrays($ENG21, $LANG21, 'LANG21', 'admin/block.php');
+mergeArrays($ENG23, $LANG23, 'LANG23', 'Block Locations');
 mergeArrays($ENG24, $LANG24, 'LANG24', 'admin/article.php');
 mergeArrays($ENG27, $LANG27, 'LANG27', 'admin/topic.php');
 mergeArrays($ENG28, $LANG28, 'LANG28', 'admin/user.php');
-mergeArrays($ENG29, $LANG29, 'LANG29', 'admin/moderation.php');
+mergeArrays($ENG29, $LANG29, 'LANG29', "admin/moderation.php\nadmin/index.php");
 mergeArrays($ENG31, $LANG31, 'LANG31', 'admin/mail.php');
 mergeArrays($ENG32, $LANG32, 'LANG32', 'admin/plugins.php');
 mergeArrays($ENG33, $LANG33, 'LANG33', 'admin/syndication.php');
 
-mergeArrays($ENG_LANG, $LANG_LANG, 'LANG_LANG', 'admin/language.php');
+mergeArrays($ENG_LANG, $LANG_LANG, 'LANG_LANG', 'admin/language.php (since v2.1.2)');
 mergeArrays($ENG_ROUTER, $LANG_ROUTER, 'LANG_ROUTER', 'admin/router.php');
 
 mergeArrays($ENGMS,  $MESSAGE, 'MESSAGE', 'confirmation and error messages');
@@ -203,7 +205,7 @@ mergeArrays($ENGLO,  $LANG_LOGIN, 'LANG_LOGIN', 'login form');
 mergeArrays($ENGTB,  $LANG_TRB, 'LANG_TRB', 'trackback.php');
 mergeArrays($ENGDI,  $LANG_DIR, 'LANG_DIR', 'directory.php');
 mergeArrays($ENGSEC, $LANG_SECTEST, 'LANG_SECTEST', 'admin/sectest.php');
-mergeArrays($ENGWN,  $LANG_WHATSNEW, 'LANG_WHATSNEW', "\"What's New\" Time Strings\n\nFor the first two strings, you can use the following placeholders.\nOrder them so it makes sense in your language:\n%i    item, \"Stories\"\n%n    amount, \"2\", \"20\" etc.\n%t    time, \"2\" (weeks)\n%s    scale, \"hrs\", \"weeks\"");
+mergeArrays($ENGWN,  $LANG_WHATSNEW, 'LANG_WHATSNEW', "\"What's New\" Time Strings\n\nThis here determines the order of the sentence \"No new articles in 2 hrs\"\norder it so it makes sense in your language:\n%i    item, \"Articles\"\n%n    amount, \"2\", \"20\" etc\n%t    time, \"2\" (weeks)\n%s    scale, \"hrs\", \"weeks\"");
 mergeArrays($ENGMO,  $LANG_MONTH, 'LANG_MONTH', 'Month names');
 mergeArrays($ENGWK,  $LANG_WEEK, 'LANG_WEEK', 'Weekdays');
 mergeArrays($ENGAD,  $LANG_ADMIN, 'LANG_ADMIN', "Admin - Strings\n\nThese are some standard strings used by core functions as well as plugins to\ndisplay administration lists and edit pages");
@@ -218,6 +220,7 @@ mergeArrays($ENG_featurecodes, $LANG_featurecodes, 'LANG_featurecodes', false);
 mergeArrays($ENG_frontpagecodes, $LANG_frontpagecodes, 'LANG_frontpagecodes', false);
 mergeArrays($ENG_postmodes, $LANG_postmodes, 'LANG_postmodes', false);
 mergeArrays($ENG_sortcodes, $LANG_sortcodes, 'LANG_sortcodes', false);
+mergeArrays($ENG_statuscodes, $LANG_statuscodes, 'LANG_statuscodes', false);
 mergeArrays($ENG_trackbackcodes, $LANG_trackbackcodes, 'LANG_trackbackcodes', false);
 
 echo "\n";
