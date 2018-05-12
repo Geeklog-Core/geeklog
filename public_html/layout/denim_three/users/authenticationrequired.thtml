@@ -14,9 +14,9 @@
 
       <dl class="form_block">
         <dt><label for="users-loginform-loginname">{lang_username}</label></dt>
-        <dd><input type="text" name="loginname" id="users-loginform-loginname" class="size3"{xhtml}></dd>
+        <dd><input type="text" name="loginname" id="users-loginform-loginname" class="uk-input size3"{xhtml}></dd>
         <dt><label for="users-loginform-passwd">{lang_password}</label></dt>
-        <dd><input type="password" name="passwd" id="users-loginform-passwd" class="size3"{xhtml}></dd>
+        <dd><input type="password" name="passwd" id="users-loginform-passwd" class="uk-input size3"{xhtml}></dd>
       </dl>
 
       {captcha}
