@@ -208,10 +208,16 @@ class Mail
         }
 
         // Send a message
-        $numSent = $mailer->send($message, $failures);
+        $numSent = 0;
 
-        if ($numSent != 1) {
-            COM_errorLog(__METHOD__ . ': failed to send an email to ' . @$failures[0]);
+        try {
+            $numSent = $mailer->send($message, $failures);
+
+            if ($numSent != 1) {
+                COM_errorLog(__METHOD__ . ': failed to send an email to ' . @$failures[0]);
+            }
+        } catch (\Exception $e) {
+            COM_errorLog(__METHOD__ . 'Failed to send an email to ' . $to . '.  Error message: ' . $e->getMessage());
         }
 
         return ($numSent == 1);
