@@ -1,13 +1,13 @@
 #!/bin/bash
 # +---------------------------------------------------------------------------+
-# | Geeklog 2.1                                                               |
+# | Geeklog 2.1.0                                                             |
 # +---------------------------------------------------------------------------+
 # | uplng.sh                                                                  |
 # |                                                                           |
 # | Helper script to update the Geeklog language files,                       |
 # | using the lm.php script.                                                  |
 # +---------------------------------------------------------------------------+
-# | Copyright (C) 2004-2009 by the following authors:                         |
+# | Copyright (C) 2004-2018 by the following authors:                         |
 # |                                                                           |
 # | Author:  Dirk Haun         - dirk AT haun-online DOT de                   |
 # +---------------------------------------------------------------------------+
@@ -31,67 +31,63 @@
 # Installation and usage:
 # - copy this script into the /path/to/geeklog of a local Geeklog install
 #   Note that all *.php files in all of the language directories will be
-#   deleted and new language files will be created there
-# - adjust paths below
-# - cd /path/to/geeklog, run the script
+#   updated.
 
-# just a basedir to save some typing ...
-basedir=`pwd`/../../../
+echo Syncing language files ...
 
-# the /path/to/geeklog of your local copy of the Mercurial repository
-cvspath=$basedir
-
-# target directory - where this script is located aka /path/to/geeklog
-destpath=$basedir
+root=`pwd`
 
 # path to the lm.php script and the include directory
-lm=$basedir/system/build/lm/lm.php
+lm=$root/system/build/lm/lm.php
 
 # you shouldn't need to change anything below ...
 
-function doConvert() { # parameters: "to" "from" "module"
+# @param  $1 = path
+# @param  $2 = module
+function doConvert() {
 
-  if [ -z "$3" ]; then
+  if [ -z "$2" ]; then
     echo "=== Core ==="
-
-    modpath=$1/language
-    langpath=$2/language
-  elif [ "$3" = "install" ]; then
-    echo "=== $3 ==="
-
-    modpath=$1/public_html/admin/$3/language
-    langpath=$2/public_html/admin/$3/language
+    #echo $1
+    #echo $2
+    langpath=$1/language
+  elif [ "$2" = "install" ]; then
+    echo "=== Install ==="
+    langpath=$1/public_html/admin/$2/language
   else
-    echo "=== $3 ==="
-
-    modpath=$1/plugins/$3/language
-    langpath=$2/plugins/$3/language
+    echo "=== Plugin - $2 ==="
+    langpath=$1/plugins/$2/language
   fi
 
-  cd $modpath
-  rm -f *.php
+  #cd $modpath
+  #rm -f *.php
 
   cd $langpath
-  files=`ls -1 *.php | grep -v english.php | grep -v english_utf-8.php`
+  #files=`ls -1 *.php | grep -v english.php | grep -v english_utf-8.php`
+  files=`ls -1 *.php | grep -v english.php`
 
-  cp english.php $modpath
-  if [ -e english_utf-8.php ]; then
-    cp english_utf-8.php $modpath
-  fi
+  #cp english.php $modpath
+  #if [ -e english_utf-8.php ]; then
+  #  cp english_utf-8.php $modpath
+  #fi
 
-  cd $destpath
   for l in $files; do
-    echo "$l"
-    php $lm $langpath/$l "$3" > $modpath/$l
+    echo $l
+    php $lm $langpath/$l "$2" > $langpath/$l.tmp
+	rm -f $langpath/$l
+	mv -f $langpath/$l.tmp $langpath/$l
   done
 
 }
 
-doConvert $destpath $cvspath
-doConvert $destpath $cvspath "calendar"
-doConvert $destpath $cvspath "links"
-doConvert $destpath $cvspath "polls"
-doConvert $destpath $cvspath "spamx"
-doConvert $destpath $cvspath "staticpages"
-doConvert $destpath $cvspath "xmlsitemap"
-doConvert $destpath $cvspath "install"
+doConvert $root
+doConvert $root "calendar"
+doConvert $root "links"
+doConvert $root "polls"
+doConvert $root "spamx"
+doConvert $root "staticpages"
+doConvert $root "xmlsitemap"
+doConvert $root "install"
+
+echo Done.
+

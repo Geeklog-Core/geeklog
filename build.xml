@@ -41,7 +41,7 @@
                 <exec command="uplng.bat" dir="${srcDir}/system/build/lm"/>
             </then>
             <else>
-                <exec command="uplng.sh" dir="${srcDir}/system/build/lm"/>
+                <exec command="${srcDir}/system/build/lm/uplng.sh" dir="${srcDir}"/>
             </else>
         </if>
 

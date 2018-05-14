@@ -9,7 +9,7 @@
 // |                                                                           |
 // | Update a language file by merging it with english.php                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2014 by the following authors:                         |
+// | Copyright (C) 2004-2018 by the following authors:                         |
 // |                                                                           |
 // | Author:  Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -153,7 +153,7 @@ function my_strpos($s1, $s2)
  */
 function makeXHTML($txt)
 {
-    global $mb;
+    global $mb, $module;
 
     // fix accidentally created <brXHTML> tags in some 1.5.0b1 language files
     $txt = my_str_replace('brXHTML', 'br', $txt);
@@ -164,10 +164,12 @@ function makeXHTML($txt)
         $fc = substr($txt, 0, 1);
     }
 
-    $txt = my_str_replace('<br>',
-        '<br' . $fc . ' . XHTML . ' . $fc . '>', $txt);
-    $txt = my_str_replace('<hr>',
-        '<hr' . $fc . ' . XHTML . ' . $fc . '>', $txt);
+    if ($module !== 'install') {
+        $txt = my_str_replace('<br>',
+            '<br' . $fc . ' . XHTML . ' . $fc . '>', $txt);
+        $txt = my_str_replace('<hr>',
+            '<hr' . $fc . ' . XHTML . ' . $fc . '>', $txt);
+    }
 
     return $txt;
 }

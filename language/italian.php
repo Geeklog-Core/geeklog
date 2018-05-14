@@ -262,7 +262,7 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# users.php
+# usersettings.php
 
 $LANG04 = array(
     1 => 'Profilo Utente di',
@@ -928,6 +928,16 @@ $LANG21 = array(
 );
 
 ###############################################################################
+# Block Locations
+
+$LANG23 = array(
+    'blocks_article_footer_name' => 'Article Footer',
+    'blocks_article_footer_desc' => 'Display Blocks in article Footer',
+    'blocks_article_topic_list_name' => 'Article Topic List',
+    'blocks_article_topic_list_desc' => 'Displays Blocks right after every X number of articles in topics.'
+);
+
+###############################################################################
 # admin/article.php
 
 $LANG24 = array(
@@ -1208,6 +1218,7 @@ $LANG28 = array(
 
 ###############################################################################
 # admin/moderation.php
+# admin/index.php
 
 $LANG29 = array(
     1 => 'Approva',
@@ -1420,7 +1431,7 @@ $LANG33 = array(
 );
 
 ###############################################################################
-# admin/language.php
+# admin/language.php (since v2.1.2)
 
 $LANG_LANG = array(
     'language_admin_title' => 'Language Overrides',
@@ -1898,10 +1909,10 @@ $LANG_SECTEST = array(
 ###############################################################################
 # "What's New" Time Strings
 # 
-# For the first two strings, you can use the following placeholders.
-# Order them so it makes sense in your language:
-# %i    item, "Stories"
-# %n    amount, "2", "20" etc.
+# This here determines the order of the sentence "No new articles in 2 hrs"
+# order it so it makes sense in your language:
+# %i    item, "Articles"
+# %n    amount, "2", "20" etc
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
 
@@ -2055,12 +2066,18 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Testo non formattato',
-    'html' => 'Testo in formato HTML',
+    'html' => 'Testo in formato HTML'
 );
 
 $LANG_sortcodes = array(
     'ASC' => 'Piú vecchi prima',
     'DESC' => 'Piú nuovi prima'
+);
+
+$LANG_statuscodes = array(
+    0 => 'Normal',
+    1 => 'Refreshing',
+    10 => 'Archive'
 );
 
 $LANG_trackbackcodes = array(

@@ -200,6 +200,9 @@ $LANG_SUCCESS = array(
     25 => 'No, thanks.  I will manually delete them afterwards.',
 );
 
+// +---------------------------------------------------------------------------+
+// migration
+
 $LANG_MIGRATE = array(
     0 => 'The migration process will overwrite any existing database information.',
     1 => 'Before Proceeding',
@@ -316,7 +319,7 @@ $LANG_BIGDUMP = array(
 );
 
 // +---------------------------------------------------------------------------+
-// Error messages
+// Error Messages
 
 $LANG_ERROR = array(
     0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.' . ' Please upload your backup file using another method, such as FTP.',
