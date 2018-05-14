@@ -43,9 +43,17 @@ if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
 }
 
 $uid = '';
+$error_msg = '';
 if (!empty($_POST['loginname']) && !empty($_POST['passwd'])) {
     if ($_CONF['user_login_method']['standard']) {
-        $status = SEC_authenticate(Geeklog\Input::fPost('loginname'), Geeklog\Input::post('passwd'), $uid);
+        // Let plugins like captcha have a chance to decide what to do before creating the user, return errors.
+        $error_msg = PLG_itemPreSave('loginform', Geeklog\Input::fPost('loginname'));
+        if (!empty($error_msg)) {
+            $status = ''; // captcha error but no login error so set as normal
+            unset($_POST['warn']); // To keep incorrect login message from displaying since this is a captcha error
+        } else {
+            $status = SEC_authenticate(Geeklog\Input::fPost('loginname'), Geeklog\Input::post('passwd'), $uid);
+        }
     } else {
         $status = '';
     }
@@ -86,6 +94,10 @@ if ($status == USER_ACCOUNT_ACTIVE) {
 
     $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $template->set_file(array('authenticationrequired' => 'authenticationrequired.thtml'));
+    
+    if (!empty($error_msg)) {
+        $display .= COM_errorLog($error_msg, 2);
+    }
     
     $display .= COM_startBlock($LANG20[1]);
     if (!$_CONF['user_login_method']['standard']) {
