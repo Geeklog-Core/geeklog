@@ -315,7 +315,7 @@ function plugin_commentPreSave_recaptcha($uid, $title, $comment, $sid, $pid, $ty
  */
 function plugin_itemPreSave_recaptcha($type, $content = '')
 {
-    global $_RECAPTCHA_CONF;
+    global $_RECAPTCHA_CONF, $LANG_RECAPTCHA;
 
     $msg = '';
 
@@ -348,6 +348,25 @@ function plugin_itemPreSave_recaptcha($type, $content = '')
                 );
                 $entry = RECAPTCHA_esc($entry);
                 RECAPTCHA_errorLog($entry);
+            }
+    
+            /*
+            Error code reference for recaptcha V2 https://developers.google.com/recaptcha/docs/verify
+            Error code 	Description
+            missing-input-secret 	The secret parameter is missing.
+            invalid-input-secret 	The secret parameter is invalid or malformed.
+            missing-input-response 	The response parameter is missing. - User didn't do anything with the recaptcha
+            invalid-input-response 	The response parameter is invalid or malformed.
+            bad-request             The request is invalid or malformed.
+            */
+            switch ($msg) {
+                case 'missing-input-response':
+                    $msg = $LANG_RECAPTCHA['msg_error'];
+                    break;
+                default:
+                
+                    break;
+
             }
         }
     }

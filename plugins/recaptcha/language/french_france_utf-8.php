@@ -36,6 +36,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 $LANG_RECAPTCHA = array(
     'plugin'      => 'reCAPTCHA',
     'admin'       => 'reCAPTCHA',
+    'msg_error'   => 'Error, reCAPTCHA was invalid.',
     'entry_error' => 'An invalid reCAPTCHA string was entered in %1s - IP Address: %2s - Error Codes: %3s',    // %1s = $type, %2s = $ip, %3s = $errorCode
 );
 
