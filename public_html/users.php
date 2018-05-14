@@ -87,7 +87,7 @@ function USER_emailPassword($username, $msg = 0)
             COM_redirect("{$_CONF['site_url']}/index.php?msg=1");
         }
     } else {
-        $retval = COM_createHTMLDocument(USER_defaultForm($LANG04[17]), array('pagetitle' => $LANG04[17]));
+        COM_redirect("{$_CONF['site_url']}/index.php?msg=85");
     }
 
     return $retval;
@@ -143,7 +143,8 @@ function USER_requestPassword($username)
         COM_updateSpeedlimit('password');
         COM_redirect($redirect);
     } else {
-        $retval = COM_createHTMLDocument(USER_defaultForm($LANG04[17]), array('pagetitle' => $LANG04[17]));
+        // Username not found so error out
+        COM_redirect($_CONF['site_url'] . "/users.php?mode=getpassword&msg=46");
     }
 
     return $retval;
@@ -264,7 +265,7 @@ function USER_createUser($username, $email, $email_conf)
                 }
             }
 
-            // Let plugins have a chance to decide what to do before creating the user, return errors.
+            // Let plugins like captcha have a chance to decide what to do before creating the user, return errors.
             $msg = PLG_itemPreSave('registration', $username);
             if (!empty($msg)) {
                 if ($_CONF['custom_registration'] && function_exists('CUSTOM_userForm')) {
@@ -333,15 +334,18 @@ function USER_createUser($username, $email, $email_conf)
  *
  * @param    boolean $hide_forgotpw_link whether to hide "forgot password?" link
  * @param    int     $userStatus         status of the user's account
+ * @param    string  $message            Text message passed by plugin. userStatus needs be set to -2 to display
  * @return   string                      HTML for login form
  */
-function USER_loginForm($hide_forgotpw_link = false, $userStatus = -1)
+function USER_loginForm($hide_forgotpw_link = false, $userStatus = -1, $message = '')
 {
     global $LANG04;
 
     $cfg = array(
         'hide_forgotpw_link' => $hide_forgotpw_link,
     );
+    
+    $display = '';
 
     if ($userStatus == USER_ACCOUNT_DISABLED) {
         $cfg['title'] = $LANG04[114];
@@ -356,12 +360,15 @@ function USER_loginForm($hide_forgotpw_link = false, $userStatus = -1)
     } elseif ($userStatus == -2) { // No error user just visited page to login
         $cfg['title'] = $LANG04['user_login'];
         $cfg['message'] = $LANG04['user_login_message'];
+        $display = COM_errorLog($message, 2);
     } else { // Status should be -1 which is login error
         $cfg['title'] = $LANG04[65];
         $cfg['message'] = $LANG04[66];
     }
-
-    return SEC_loginForm($cfg);
+    
+    $display .= SEC_loginForm($cfg);
+    
+    return $display;
 }
 
 /**
@@ -429,33 +436,6 @@ function USER_getPasswordForm()
     $user_templates->parse('output', 'form');
 
     $retval .= $user_templates->finish($user_templates->get_var('output'));
-
-    return $retval;
-}
-
-/**
- * Account does not exist - show both the login and register forms
- *
- * @param  string $msg message to display if one is needed
- * @return string      HTML for form
- */
-function USER_defaultForm($msg)
-{
-    global $_CONF, $LANG04;
-
-    $retval = '';
-
-    if (!empty($msg)) {
-        $retval .= COM_showMessageText($msg, $LANG04[21]);
-    }
-
-    $retval .= USER_loginForm(true);
-
-    if (!$_CONF['disable_new_user_registration']) {
-        $retval .= USER_newUserForm();
-    }
-
-    $retval .= USER_getPasswordForm();
 
     return $retval;
 }
@@ -756,9 +736,10 @@ function USER_doLogin()
  * @param  string $service
  * @param  string $mode
  * @param  int    $status
+ * @param  string $message
  * @return string
  */
-function USER_loginFailed($loginName, $password, $service, $mode, $status)
+function USER_loginFailed($loginName, $password, $service, $mode, $status, $message = '')
 {
     global $_CONF, $LANG04;
 
@@ -849,7 +830,7 @@ function USER_loginFailed($loginName, $password, $service, $mode, $status)
                             // main site page and need to control the login process
                             $display .= CUSTOM_loginErrorHandler($msg);
                         } else {
-                            $display .= USER_loginForm(false, $status);
+                            $display .= USER_loginForm(false, $status, $message);
                         }
                     } else {
                         // user is already logged in
@@ -989,6 +970,11 @@ switch ($mode) {
                 $LANG12[26]
             );
         } else {
+            $msg = (int) Geeklog\Input::fRequest('msg', 0);
+            if ($msg > 0) {
+                $display .= COM_showMessage($msg);
+            }                
+            
             $display .= USER_getPasswordForm();
         }
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[25]));
@@ -1128,14 +1114,23 @@ switch ($mode) {
         } else {
             $username = Geeklog\Input::fPost('username');
             $email = Geeklog\Input::fPost('email');
-            if (empty($username) && !empty($email)) {
-                $username = DB_getItem($_TABLES['users'], 'username',
-                    "email = '$email' AND ((remoteservice IS NULL) OR (remoteservice = ''))");
-            }
-            if (!empty($username)) {
-                $display .= USER_requestPassword($username);
+            
+            // Let plugins like captcha have a chance to decide what to do before creating the user, return errors.
+            $msg = PLG_itemPreSave('getpassword', $username);
+            if (!empty($msg)) {
+                $display = COM_errorLog($msg, 2);
+                $display .= USER_getPasswordForm();
+                $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[25]));
             } else {
-                COM_redirect($_CONF['site_url'] . '/users.php?mode=getpassword');
+                if (empty($username) && !empty($email)) {
+                    $username = DB_getItem($_TABLES['users'], 'username',
+                        "email = '$email' AND ((remoteservice IS NULL) OR (remoteservice = ''))");
+                }
+                if (!empty($username)) {
+                    $display .= USER_requestPassword($username);
+                } else {
+                    COM_redirect($_CONF['site_url'] . '/users.php?mode=getpassword');
+                }
             }
         }
         break;
@@ -1227,10 +1222,19 @@ switch ($mode) {
         $service = Geeklog\Input::fPost('service', '');
         $uid = '';
         if (!empty($loginname) && !empty($passwd) && empty($service)) {
-            if (empty($service) && $_CONF['user_login_method']['standard']) {
-                $status = SEC_authenticate($loginname, $passwd, $uid);
+            
+            // Let plugins like captcha have a chance to decide what to do before creating the user, return errors.
+            $msg = PLG_itemPreSave('loginform', $loginname);
+            if (!empty($msg)) {
+                $status = -2; // captcha error but no login error so set as normal
+                $display .= USER_loginFailed($loginname, $passwd, $service, $mode, $status, $msg);
+                break;
             } else {
-                $status = -1;
+                if (empty($service) && $_CONF['user_login_method']['standard']) {
+                    $status = SEC_authenticate($loginname, $passwd, $uid);
+                } else {
+                    $status = -1;
+                }
             }
         } elseif (($_CONF['usersubmission'] == 0) && $_CONF['user_login_method']['3rdparty'] && ($service != '')) {
             // Distributed Authentication

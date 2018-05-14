@@ -1296,7 +1296,8 @@ function USER_emailConfirmation($email)
                 // Being called by usersettings.php
                 return false;
             } else {
-                $retval = COM_createHTMLDocument(USER_defaultForm($LANG04[17]), array('pagetitle' => $LANG04[17]));
+                // Something else is wrong here so bail
+                COM_redirect($_CONF['site_url'] . '/users.php?msg=43');
             }
         }
     }
