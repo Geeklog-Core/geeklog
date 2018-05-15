@@ -49,7 +49,7 @@ abstract class BaseCommand
      * @note As for valid value for $commentType, see system/classes/Akismet.php
      */
     abstract public function execute(
-        $comment, $permanentLink, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
+        $comment, $permanentLink = null, $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                                      $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null);
 
     /**
