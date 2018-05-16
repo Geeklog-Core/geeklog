@@ -590,6 +590,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $edit_info = $LANG03[30] . ' ' . $date . ' ' . $LANG03[31] . ' ' . $editName;
             $template->set_var('user_edit_info', $edit_info);
             $template->parse('comment_edit', 'comment_edit');              
+        } else{
+            $template->unset_var('comment_edit');
         }
 
         // format title for display, must happen after reply_link is created
