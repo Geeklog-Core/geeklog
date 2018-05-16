@@ -4193,6 +4193,7 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
         $description = $LANG01[31];  // Allowed HTML Tags:
     }
 
+    $list = '';
     if ($has_list) {
         if (empty($permissions) || !SEC_hasRights($permissions) ||
             empty($_CONF['admin_html'])
@@ -4209,7 +4210,6 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
             }
         }
 
-        $list = '';
         foreach ($html as $tag => $attr) {
             $list .= '&lt;' . $tag . '&gt;&nbsp;, ';
         }
