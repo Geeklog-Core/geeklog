@@ -2227,7 +2227,7 @@ function CMT_handleSubmit($title, $sid, $pid, $type, $postMode, $uid)
 }
 
 /**
- * Hanldes a comment submission
+ * Handles a comment submission
  *
  * @copyright Vincent Furia 2005
  * @author    Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
