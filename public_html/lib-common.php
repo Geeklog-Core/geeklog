@@ -484,6 +484,20 @@ if (function_exists($func)) {
         $_SCRIPTS->setJavaScriptFile(md5($info['file']), $info['file'], $footer, $priority);
     }
 }
+$func = 'theme_js_' . $_CONF['theme'];
+if (function_exists($func)) {
+    foreach ($func() as $info) {
+        $wrap = true;
+        if (isset($info['wrap']) && !$info['wrap']) {
+            $wrap = false;
+        }        
+        $footer = true;
+        if (isset($info['footer']) && !$info['footer']) {
+            $footer = false;
+        }
+        $_SCRIPTS->setJavaScript($info['code'], $wrap, $footer);
+    }
+}
 $func = 'theme_init_' . $_CONF['theme'];
 if (function_exists($func)) {
     $func();
