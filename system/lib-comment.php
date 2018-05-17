@@ -528,7 +528,10 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $template->set_var('delete_option', '');
         }
 
-        $A['comment'] = COM_nl2br($A['comment']);
+        // Comments really should a postmode that is saved with the comment (ie store either 'html' or 'plaintext') but they don't so lets figure out if comment is html by searching for html tags
+        if (preg_match('/<.*>/', $A['comment']) == 0) {
+            $A['comment'] = COM_nl2br($A['comment']);
+        }        
 
         // highlight search terms if specified
         if (!empty($_REQUEST['query'])) {
@@ -2378,7 +2381,7 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
         $title = COM_stripslashes($A['title']);
         $commentText = COM_stripslashes(COM_undoSpecialChars($A['comment']));
         
-        //get format mode
+        // Comments really should a postmode that is saved with the comment (ie store either 'html' or 'plaintext') but they don't so lets figure out if comment is html by searching for html tags
         if (preg_match('/<.*>/', $commentText) != 0) {
             $postMode = 'html';
         } else {
