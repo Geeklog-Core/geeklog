@@ -466,8 +466,8 @@ $LANG04 = array(
     'email_msg_email_status_2' => "このメールアドレスを検証せずにアカウントへログインすると、新しいメールアドレスの入力と検証のプロセスが再度必要になります。\n\n",
     'email_verify' => '検証対象のメールアドレス',
     'email_verify_delete' => '検証対象のメールアドレスを削除',
-    'email_verify_msg' => "あなたのアカウントのメールアドレスは更新されていますが、検証が必要です。{$_CONF['site_name']}から送信された検証用のリンクを含むメールを確認してください。あなたがそのリンクをクリックし、メールアドレスが検証されると、アカウントが有効になります。<br" . XHTML . "><br" . XHTML . ">あなたの希望により、上の入力欄でメールアドレスを更新するか、削除することができます。", 
-    'remove_account_msg'  => 'あなたのアカウントを削除するには、上の「現在のパスワード」にパスワードを入力してから、下の「アカウントの削除オプション」にチェックを入れ、「保存」をクリックしてください。ただし、あなたのアカウント名で投稿した記事やコメントの<strong>削除はしません</strong>。これらの記事やコメントは「ゲストユーザー」の投稿として表示するようになります。',
+    'email_verify_msg' => "あなたのアカウントのメールアドレスは更新されていますが、検証が必要です。{$_CONF['site_name']}から送信された検証用のリンクを含むメールを確認してください。あなたがそのリンクをクリックし、メールアドレスが検証されると、アカウントが有効になります。<br" . XHTML . "><br" . XHTML . ">あなたの希望により、上の入力欄でメールアドレスを更新するか、削除することができます。",
+    'remove_account_msg' => 'あなたのアカウントを削除するには、上の「現在のパスワード」にパスワードを入力してから、下の「アカウントの削除オプション」にチェックを入れ、「保存」をクリックしてください。ただし、あなたのアカウント名で投稿した記事やコメントの<strong>削除はしません</strong>。これらの記事やコメントは「ゲストユーザー」の投稿として表示するようになります。',
     'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'
 );
 

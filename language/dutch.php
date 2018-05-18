@@ -363,7 +363,6 @@ $LANG04 = array(
     92 => 'Toets nieuw wachtwoord',
     93 => 'Uw laatste aanvraag voor een nieuw wachtwoord is %d seconden geleden. Het portaal vereist dat er minimaal %d seconden tussen dergelijke aanvragen verstrijken.',
     94 => 'Verwijder Account \'%s\'',
-    95 => 'Klik op \'Verwijder Account\' hieronder om uw account uit de database te verwijderen. Merk op dat uw gepubliceerde artikelen en uw geplaatste reacties <strong>niet</strong> verwijderd worden, maar getoond worden als \'Anonymous\'.',
     96 => 'verwijder account',
     97 => 'Bevestig het verwijderen van uw Account',
     98 => 'Weet u zeker dat uw account verwijderd moet worden? U bent daarna niet meer in staat in te loggen op dit portaal (tenzij u zelf weer aanmeldt). Indien de gevolgen u duidelijk zijn, klik dan nogmaals op \'verwijder account\' in het formulier hieronder.',
@@ -464,7 +463,9 @@ $LANG04 = array(
     'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n",
     'email_verify' => 'New Email to be Verified',
     'email_verify_delete' => 'Delete email to be verified',
-    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it."
+    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it.",
+    'remove_account_msg' => 'To remove your account from our database, enter your current password into the above "Current Password", check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
+    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'
 );
 
 ###############################################################################

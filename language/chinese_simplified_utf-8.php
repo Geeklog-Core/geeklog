@@ -360,7 +360,6 @@ $LANG04 = array(
     92 => '输入新密码',
     93 => '你在 %d 秒钟前刚要了一个新密码. 此站规定最少要 %d 秒钟以后才可再次要求新密码。',
     94 => '将用户 \'%s\' 删除',
-    95 => '单据下面的 \'删除用户\' 便将你在我们资料库里的用户。请注意，你以其用户所登载过的文章和评论不会删除，可是会以无名作者的身份显示。',
     96 => '删除用户',
     97 => '确定用户删除',
     98 => '你肯定要删除你的用户吗? 其后你就不在能使用此站,除非你重新设定新用户. 若你肯定的话请再次单据下面的 “删除用户”.',
@@ -461,7 +460,9 @@ $LANG04 = array(
     'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n",
     'email_verify' => 'New Email to be Verified',
     'email_verify_delete' => 'Delete email to be verified',
-    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it."
+    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it.",
+    'remove_account_msg' => 'To remove your account from our database, enter your current password into the above "Current Password", check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
+    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'
 );
 
 ###############################################################################

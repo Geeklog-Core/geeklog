@@ -365,7 +365,6 @@ $LANG04 = array(
     92 => 'Εισάγετε τον νεό κωδικό',
     93 => 'Η τελευταία αίτηση σας για αλλαγή κωδικού πραγματοποιήθηκε πρίν %d δευτερόλεπτα. Στην παρούσα ιστοσελίδα πρέπει να περιμένετε τουλάχιστον %d δευτερόλεπτα μεταξύ δύο αιτήσεων για αλλαγή κωδικού.',
     94 => 'Διαγραφή λογαριασμού "%s"',
-    95 => 'Επιλέξτε την "Διαφραφή λογαριασμού" παρακάτω για να αφαιρέσετε τον λογαριασμό σας απο την βάση δεδομένων. Τυχόν ιστορίες και σχόλια του λογαριασμού σας <strong>ΔΕΝ</strong> θα αφαιρεθούν αλλά ο αποστολέας τους θα αντικαταστάθει απο τον χρήστη "Anonymous".',
     96 => 'Διαφραφή Λογαριασμού',
     97 => 'Επιβεβαίωση διαγραφής λογαριασμού',
     98 => 'Είστε σίγουρος(η) οτι επιθυμείτε την διαγραφή του λογαριασμού σας; Αν συνεχίσετε θα χάσετε την δυνατότητα εισόδου στην παρούσα ιστοσελίδα με την ταυτότητας σας. Αν είστε σίγουρος(η) επιλέξτε την "Διαγραφή Λογαριασμού" ξανά στην παρακάτω φόρμα.',
@@ -466,7 +465,9 @@ $LANG04 = array(
     'email_msg_email_status_2' => "If you do not verify this email address and you log into your account you will be required to enter a new email address and go through this email verification process again.\n\n",
     'email_verify' => 'New Email to be Verified',
     'email_verify_delete' => 'Delete email to be verified',
-    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it."
+    'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it.",
+    'remove_account_msg' => 'To remove your account from our database, enter your current password into the above "Current Password", check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
+    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'
 );
 
 ###############################################################################
