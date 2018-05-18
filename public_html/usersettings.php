@@ -299,21 +299,17 @@ function edituser()
     } else {
         $preferences->set_var('userphoto_option', '');
     }
-
-    $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = {$_USER['uid']}");
-    $A = DB_fetchArray($result);
-
+    
     $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
     DB_change($_TABLES['users'], 'pwrequestid', $reqid, 'uid', $_USER['uid']);
-
-    $preferences->set_var('about_value', htmlspecialchars($A['about']));
-    $preferences->set_var('pgpkey_value', htmlspecialchars($A['pgpkey']));
-    $preferences->set_var('uid_value', $reqid);
-    $preferences->set_var('username_value', htmlspecialchars($_USER['username']));
-
+    
     if ($_CONF['allow_account_delete'] == 1) {
         $preferences->set_var('lang_deleteaccount', $LANG04[156]);
-        $preferences->set_var('delete_text', $LANG04[95]);
+        if ($A['remoteservice'] == '') {
+            $preferences->set_var('delete_text', $LANG04['remove_account_msg']);
+        } else {
+            $preferences->set_var('delete_text', $LANG04['remove_remote_account_msg']);
+        }
         $preferences->set_var('lang_button_delete', $LANG04[96]);
         $preferences->set_var('delete_mode', 'confirmdelete');
         $preferences->set_var('account_id', $reqid);
@@ -325,7 +321,15 @@ function edituser()
         $preferences->parse('delete_account_option', 'deleteaccount', false);
     } else {
         $preferences->set_var('delete_account_option', '');
-    }
+    }    
+
+    $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = {$_USER['uid']}");
+    $A = DB_fetchArray($result);
+
+    $preferences->set_var('about_value', htmlspecialchars($A['about']));
+    $preferences->set_var('pgpkey_value', htmlspecialchars($A['pgpkey']));
+    $preferences->set_var('uid_value', $reqid);
+    $preferences->set_var('username_value', htmlspecialchars($_USER['username']));
 
     // Call custom account form and edit function if enabled and exists
     if ($_CONF['custom_registration'] && (function_exists('CUSTOM_userEdit'))) {
@@ -349,12 +353,12 @@ function edituser()
 function confirmAccountDelete($form_reqid)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04;
-
-    if (DB_count($_TABLES['users'], array('pwrequestid', 'uid'), array($form_reqid, $_USER['uid'])) != 1) {
+    
+    if (!$_CONF['allow_account_delete'] && DB_count($_TABLES['users'], array('pwrequestid', 'uid'), array($form_reqid, $_USER['uid'])) != 1) {
         // not found - abort
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
-
+    
     // Do not check current password for remote users. At some point we should reauthenticate with the service when deleting the account
     if ($_USER['remoteservice'] == '') {
         // verify the password
@@ -392,13 +396,11 @@ function deleteUserAccount($form_reqid)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    if (DB_count($_TABLES['users'], array('pwrequestid', 'uid'),
-            array($form_reqid, $_USER['uid'])) != 1
-    ) {
+    if (DB_count($_TABLES['users'], array('pwrequestid', 'uid'), array($form_reqid, $_USER['uid'])) != 1) {
         // not found - abort
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
-
+    
     if (!USER_deleteAccount($_USER['uid'])) {
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
