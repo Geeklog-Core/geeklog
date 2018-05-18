@@ -17,16 +17,12 @@
       <dd><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}" id="newemail-email_conf" class="text"{xhtml}></dd>
     </dl>
     
-    {captcha}
-
-    <ul class="submit">
-      <li>
-        <input type="hidden" name="mode" value="{mode}"{xhtml}>
-        <input type="hidden" name="uid" value="{user_id}"{xhtml}>
-        <input type="hidden" name="rid" value="{request_id}"{xhtml}>
-        <input type="submit" value="{lang_setnewemail}" class="submit"{xhtml}>
-      </li>
-    </ul>
+    <div class="submit">
+      <input type="hidden" name="mode" value="{mode}"{xhtml}>
+      <input type="hidden" name="uid" value="{user_id}"{xhtml}>
+      <input type="hidden" name="rid" value="{request_id}"{xhtml}>
+      <button type="submit" value="{lang_setnewemail}" class="uk-button uk-button-primary">{lang_setnewemail}</button>
+    </div>
   </fieldset>
 </form>
 
