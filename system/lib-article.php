@@ -1376,7 +1376,7 @@ function plugin_itemlist_story()
         $plugin = new Plugin();
         $plugin->submissionlabel = $LANG29[35];
         $plugin->submissionhelpfile = 'ccstorysubmission.html';
-        $plugin->getsubmissionssql = "SELECT sid AS id,title,uid,date,ta.tid FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSQL('AND') . " ORDER BY date ASC";
+        $plugin->getsubmissionssql = "SELECT sid AS id,title,uid,date,ta.tid FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSQL('AND') . " ORDER BY date DESC";
         $plugin->addSubmissionHeading($LANG29[10]);
         $plugin->addSubmissionHeading($LANG29[37]);
         $plugin->addSubmissionHeading($LANG29[14]);
@@ -1439,7 +1439,7 @@ function plugin_itemlist_story_draft()
         $plugin = new Plugin();
         $plugin->submissionlabel = $LANG29[35] . ' (' . $LANG24[34] . ')';
         $plugin->submissionhelpfile = 'ccdraftsubmission.html';
-        $plugin->getsubmissionssql = "SELECT sid AS id,title,uid,date,tid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND draft_flag = 1 " . COM_getTopicSQL('AND') . COM_getPermSQL('AND', 0, 3) . " ORDER BY date ASC";
+        $plugin->getsubmissionssql = "SELECT sid AS id,title,uid,date,tid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND draft_flag = 1 " . COM_getTopicSQL('AND') . COM_getPermSQL('AND', 0, 3) . " ORDER BY date DESC";
         $plugin->addSubmissionHeading($LANG29[10]);
         $plugin->addSubmissionHeading($LANG29[37]);
         $plugin->addSubmissionHeading($LANG29[14]);

@@ -161,7 +161,7 @@ function itemlist($type, $token)
     
     if ($type === 'comment') {
         $sql = "SELECT cid AS id,title,comment,date,uid,type,sid FROM {$_TABLES['commentsubmissions']} "
-            . "ORDER BY cid ASC";
+            . "ORDER BY date DESC";
         $H = array($LANG29[10], $LANG29[36], $LANG29[14]);
         $section_title = $LANG29[41];
         $section_help = 'cccommentsubmission.html';
@@ -290,6 +290,9 @@ function itemlist($type, $token)
     );
     $form_arr = array('bottom' => '', 'top' => '');
     if ($numRows > 0) {
+        // Anchor for paging
+        $page_anchor = "gl-moderation-" . $type; 
+        $form_arr['top'] .= '<span id="' . $page_anchor . '"></span>';;
         
         $form_arr['bottom'] .= '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
             . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>' . LB
@@ -308,7 +311,7 @@ function itemlist($type, $token)
         // Add pagination
         if ($maxPage > 1) {
             $form_arr['bottom'] .= COM_printPageNavigation(
-                $_CONF['site_admin_url'] . '/moderation.php', $page, $maxPage,
+                array($_CONF['site_admin_url'] . '/moderation.php','#' . $page_anchor), $page, $maxPage,
                 'page_' . $type . '='
             );
         }

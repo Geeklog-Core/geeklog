@@ -321,7 +321,7 @@ function plugin_itemlist_calendar()
         $plugin->submissionhelpfile = 'cceventsubmission.html';
         $plugin->getsubmissionssql = "SELECT eid AS id,title,datestart as day,url "
             . "FROM {$_TABLES['eventsubmission']} "
-            . "ORDER BY datestart ASC";
+            . "ORDER BY datestart DESC";
         $plugin->addSubmissionHeading($LANG_CAL_1[20]);
         $plugin->addSubmissionHeading($LANG_CAL_1[21]);
         $plugin->addSubmissionHeading($LANG_CAL_1[22]);

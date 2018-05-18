@@ -919,7 +919,7 @@ function plugin_itemlist_links()
         $plugin = new Plugin();
         $plugin->submissionlabel = $LANG_LINKS_SUBMIT[11];
         $plugin->submissionhelpfile = 'cclinksubmission.html';
-        $plugin->getsubmissionssql = "SELECT lid AS id,title,cid AS category,url FROM {$_TABLES['linksubmission']} ORDER BY title ASC";
+        $plugin->getsubmissionssql = "SELECT lid AS id,title,cid AS category,url FROM {$_TABLES['linksubmission']} ORDER BY date DESC";
         $plugin->addSubmissionHeading($LANG_LINKS_SUBMIT[8]);
         $plugin->addSubmissionHeading($LANG_LINKS_SUBMIT[10]);
         $plugin->addSubmissionHeading($LANG_LINKS_SUBMIT[9]);
