@@ -1480,7 +1480,12 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
         }
     }    
     if (!$templatefound) {
-        $block = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
+        // If error happens early in the process (ie COM_handleException is called) the caching template library may not be loaded so fall back
+        if (function_exists('CTL_core_templatePath')) {
+            $block = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
+        } else {
+            $block = COM_newTemplate($_CONF['path_layout']);
+        }
     }
     $retval = $block->set_file('block', $template);
 
@@ -1558,8 +1563,14 @@ function COM_endBlock($template = 'blockfooter.thtml', $plugin = '')
         }
     }    
     if (!$templatefound) {
-        $block = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
-    }
+        // If error happens early in the process (ie COM_handleException is called) the caching template library may not be loaded so fall back
+        if (function_exists('CTL_core_templatePath')) {
+            $block = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
+        } else {
+            $block = COM_newTemplate($_CONF['path_layout']);
+        }
+    } 
+    
     $block->set_file('block', $template);
 
     $block->parse('endHTML', 'block');
