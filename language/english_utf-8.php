@@ -1254,7 +1254,7 @@ $LANG29 = array(
     'plugins' => 'Plugins',
     'tools' => 'Tools',
     'users' => 'Users',
-    'submissions_desc' => "To modify or delete a user submssion, click on that item's edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit.",
+    'submissions_desc' => "To modify or delete a user submssion, click on that item's edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit. Items in most cases are ordered newest to oldest.",
     'max_invalid_login' => 'Max Invalid Logins Reached for User',
     'max_invalid_login_msg' => "This user has reached the maximum number of invalid login attempts ({$_CONF['invalidloginattempts']}) within the specified time limit ({$_CONF['invalidloginmaxtime']} seconds). The last IP to make an invalid login attempt is %s. Either the real user has forgotten the password for their account, or someone else is attempting to guess the password for this user account."
 );
