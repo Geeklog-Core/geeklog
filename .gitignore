@@ -49,6 +49,13 @@ public_html/admin/plugins/vthemes
 plugins/faq
 public_html/faq
 public_html/admin/plugins/faq
+plugins/faqman
+public_html/faqman
+public_html/admin/plugins/faqman
+plugins/downloads
+public_html/downloads
+public_html/downloads_data
+public_html/admin/plugins/downloads
 
 # test framework, if present
 public_html/tests
