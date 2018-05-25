@@ -56,7 +56,7 @@ $_CONF_VALIDATE['recaptcha'] = array(
     'enable_links'         => array('rule' => array('inList', array('0', '1', '2'), true)),
 
     // The plugins below still don't support Invisible reCAPTCHA
-    'enable_forum'         => array('rule' => array('inList', array('0', '1'), true)),
+    'enable_forum'         => array('rule' => array('inList', array('0', '1', '2'), true)),
     'enable_mediagallery'  => array('rule' => array('inList', array('0', '1'), true)),
     'enable_rating'        => array('rule' => array('inList', array('0', '1'), true)),
 );

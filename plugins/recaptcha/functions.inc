@@ -250,6 +250,9 @@ function plugin_templatesetvars_recaptcha($type, &$template)
 
         if ($isInvisible) {
             $formId = RECAPTCHA_getFormId($type);
+            if (empty($formId)) {
+                COM_errorLog(__FUNCTION__ . ': undefined form id for type:"' . $type . '"');
+            }
             $code = <<<JS
 var onFormSubmit = function () {
     var form = document.getElementById('{$formId}');
@@ -680,7 +683,7 @@ function RECAPTCHA_getFormId($type) {
             break;
 
         case 'forum':
-            $formId = '';
+            $formId = 'forumform';
             break;
 
         case 'rating':
