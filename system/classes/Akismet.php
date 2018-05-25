@@ -116,7 +116,7 @@ class Akismet
         global $_SPX_CONF;
 
         $data = http_build_query($data, '', '&');
-        $host = $http_host = 'rest.akismet.com';
+        $host = $http_host = $this->APIKey . '.rest.akismet.com';
         $port = 443;
         $akismetUA = $this->getUAString();
         $contentLength = strlen($data);
@@ -269,7 +269,7 @@ class Akismet
      * @param  bool   $isTest
      * @return int either RESULT_HAM, RESULT_SPAM or RESULT_MAYBE_SPAM
      */
-    public function checkForSpam($content, $permanentLink, $commentType = self::COMMENT_TYPE_COMMENT,
+    public function checkForSpam($content, $permanentLink = null, $commentType = self::COMMENT_TYPE_COMMENT,
                                  $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null, $isTest = false)
     {
         if (!$this->isAPIKeyVerified) {
@@ -332,7 +332,7 @@ class Akismet
      * @param  bool   $isTest
      * @return bool true on success, false otherwise
      */
-    public function submitSpam($content, $permanentLink, $commentType = self::COMMENT_TYPE_COMMENT,
+    public function submitSpam($content, $permanentLink = null, $commentType = self::COMMENT_TYPE_COMMENT,
                                $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null, $isTest = false)
     {
         if (!$this->isAPIKeyVerified) {
@@ -366,7 +366,7 @@ class Akismet
      * @param  bool   $isTest
      * @return bool true on success, false otherwise
      */
-    public function submitHam($content, $permanentLink, $commentType = self::COMMENT_TYPE_COMMENT,
+    public function submitHam($content, $permanentLink = null, $commentType = self::COMMENT_TYPE_COMMENT,
                               $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null, $isTest = false)
     {
         if (!$this->isAPIKeyVerified) {
