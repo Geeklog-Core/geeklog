@@ -101,7 +101,7 @@ function plugin_initconfig_recaptcha()
         $so += 10;
         $c->add('secret_key', $_RECAPTCHA_DEFAULT['secret_key'], 'text', $sg, $fs, null, $so, true, $me, $tab);
         $so += 10;
-        $c->add('invisible_site_key', $_RECAPTCHA_DEFAULT['inbisible_site_key'], 'text', $sg, $fs, null, $so, true, $me, $tab);
+        $c->add('invisible_site_key', $_RECAPTCHA_DEFAULT['invisible_site_key'], 'text', $sg, $fs, null, $so, true, $me, $tab);
         $so += 10;
         $c->add('invisible_secret_key', $_RECAPTCHA_DEFAULT['invisible_secret_key'], 'text', $sg, $fs, null, $so, true, $me, $tab);
         $so += 10;
