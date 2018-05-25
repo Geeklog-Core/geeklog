@@ -24,6 +24,9 @@ public_html/images/topics
 public_html/images/cache
 public_html/images/_thumbs
 
+# Geeklog.net Theme
+public_html/layout/glnet_curve
+
 # popular plugins, if present
 plugins/forum
 public_html/forum
