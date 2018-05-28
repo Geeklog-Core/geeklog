@@ -33,6 +33,7 @@ Geeklog History/Changes:
 - [Feature] Staticpages can now have a previous and next page (specifies a rel="next" and rel="pre") [Mystralkk]
 - [Feature] Check box to automatically send new password to user on Admin User Editor [Mystralkk]
 - [Feature] Changed most references from Story to Article. This includes in language files and template files [Mystralkk]
+- [Feature] Akismet module now included with the SPAM-X plugin [Mystralkk]
 
 - [Bug] Wrong Template Files can be used if they share the same name. CTL_setTemplateRoot has been depreciated [Tom]
 - [Bug] Fixed After token expired re-authentication returns to a blank page once Authentication is successful [Tom]
