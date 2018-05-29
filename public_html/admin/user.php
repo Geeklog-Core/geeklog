@@ -243,6 +243,7 @@ function edituser($uid = 0, $msg = 0)
         $user_templates->set_var('lang_password_conf', $LANG28[39]);
         $user_templates->set_var(array(
             'lang_send_password' => $LANG28[91],
+            'lang_send_password_desc' => $LANG28[92],
             'send_password'      => SEC_hasRights('user.edit') && ($uid != $_USER['uid']),
         ));
         $user_templates->parse('password_option', 'password', true);

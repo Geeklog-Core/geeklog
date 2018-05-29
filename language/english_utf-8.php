@@ -1213,6 +1213,7 @@ $LANG28 = array(
     89 => 'Check to make this a default group for new users',
     90 => 'Apply "Default Group" change to existing user accounts',
     91 => 'Send password to user',
+    92 => 'Only for new users or when changing password for existing user.',
     'autotag_desc_user' => '[user: name alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.',
     'USER_ACCOUNT_LOCKED' => 'Locked',
     'USER_ACCOUNT_NEW_EMAIL' => 'New Email Required',

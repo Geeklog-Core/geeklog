@@ -1218,6 +1218,7 @@ $LANG28 = array(
     89 => '新規登録ユーザーのデフォルトグループをチェック',
     90 => '登録済みユーザーアカウントにデフォルトグループを追加する',
     91 => 'パスワードをメールで送信する',
+    92 => 'Only for new users or when changing password for existing user.',
     'autotag_desc_user' => '[user: name alternate title] - ユーザー名をタイトルとしてユーザーへのリンクを表示します。別のタイトルを指定できますが、必須ではありません。',
     'USER_ACCOUNT_LOCKED' => 'ロック状態',
     'USER_ACCOUNT_NEW_EMAIL' => 'メールアドレスの設定が必要',
