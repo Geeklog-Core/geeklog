@@ -440,6 +440,7 @@ $LANG04 = array(
     'tfa_help4' => 'Print or download the backup codes below in case you cannot use your mobile device you installed the Google Authenticator.  Each backup code is valid only one-time.  If you generate a new set of backup codes, then the current set will be invalid.',
     'tfa_help5' => 'Hit the "Save" button at the bottom of the screen.',
     'tfa_enter_code' => 'Enter the %d-digit code your Google Authenticator app is showing or one of the backup code you have got in your preference page.',
+    'tfa_backup_code_desc' => 'Note: You can only use a backup code once, then it becomes invalid. Remember to generate more backup codes from the user preference page if you are getting low.',
     'tfa_code' => 'Google Authenticator Code',
     'tfa_authenticate' => 'Authenticate',
     'tfa_qrcode' => 'QR Code',

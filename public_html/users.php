@@ -631,8 +631,9 @@ function USER_getTwoFactorAuthForm()
     $T = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'users'));
     $T->set_file('form', 'twofactorauthform.thtml');
     $T->set_var(array(
-        'start_block_start_block_twofactorauth' => COM_startBlock($LANG04['tfa_two_factor_auth']),
+        'start_block'                           => COM_startBlock($LANG04['tfa_two_factor_auth']),
         'lang_tfa_enter_code'                   => sprintf($LANG04['tfa_enter_code'], Geeklog\TwoFactorAuthentication::NUM_DIGITS),
+        'lang_tfa_backup_code_msg'              => $LANG04['tfa_backup_code_desc'],
         'lang_tfa_code'                         => $LANG04['tfa_code'],
         'lang_tfa_authenticate'                 => $LANG04['tfa_authenticate'],
         'uid'                                   => $_USER['uid'],
@@ -887,7 +888,7 @@ function USER_tryTwoFactorAuth()
             // Failed to authenticate the user
             COM_updateSpeedlimit('login');
             $content = USER_getTwoFactorAuthForm();
-            $retval = COM_createHTMLDocument($content, array());
+            $retval = COM_createHTMLDocument($content, array('pagetitle' => $LANG04['tfa_two_factor_auth']));
         }
     }
 
@@ -1363,7 +1364,7 @@ switch ($mode) {
             if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&
                 isset($_USER['twofactorauth_enabled']) && $_USER['twofactorauth_enabled']) {
                 $content = USER_getTwoFactorAuthForm();
-                $display = COM_createHTMLDocument($content, array());
+                $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG04['tfa_two_factor_auth']));
             } else {
                 USER_doLogin(); // Never return
             }

@@ -1,9 +1,11 @@
 {# start {templatelocation} #}
 
-{start_block_twofactorauth}
+{start_block}
 <form action="{site_url}/users.php" method="post" id="twofactorauthform" class="compact uk-form">
     <fieldset>
         <p class="form_message">{lang_tfa_enter_code}</p>
+        
+        <p class="form_message">{lang_tfa_backup_code_msg}</p>
 
         <dl class="form_block">
             <dt><label for="users-twofactorauthform-code">{lang_tfa_code}</label></dt>

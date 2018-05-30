@@ -88,7 +88,8 @@
       <dl class="form_block">
         <dt><label for="enable_tfa">{lang_enable_twofactorauth}</label></dt>
         <dd>
-          <select name="enable_tfa" id="enable_tfa">
+          {# id required to be enable_tfa for javascript #}
+          <select name="enable_twofactorauth" id="enable_tfa">        
             {enable_tfa_options}
           </select>
         </dd>

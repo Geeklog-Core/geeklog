@@ -448,6 +448,7 @@ $LANG04 = array(
     'tfa_help4' => 'Google認証システムをインストールしたデバイスを使えない場合に備えて、下記のバックアップコードを印刷するかダウンロードしてください。各バックアップコードは1回だけ有効です。新しいバックアップコードを生成すると、現在のバックアップコードは無効になります。',
     'tfa_help5' => '画面下部の「保存」をクリックしてください。',
     'tfa_enter_code' => 'Google認証システムに表示されている%d桁の数字かマイアカウントのページに表示されていたバックアップコードを入力してください',
+    'tfa_backup_code_desc' => 'Note: You can only use a backup code once, then it becomes invalid. Remember to generate more backup codes from the user preference page if you are getting low.',
     'tfa_code' => '認証コード',
     'tfa_authenticate' => '認証',
     'tfa_qrcode' => 'QRコード',

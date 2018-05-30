@@ -177,8 +177,7 @@ function edituser()
             $backupCodes = $tfa->createBackupCodes();
         } else {
             $backupCodes = $tfa->getBackupCodesFromDatabase();
-
-            if (count($backupCodes)) {
+            if (count($backupCodes) < 1) { // Have we run out of backup codes? generate some more
                 $backupCodes = $tfa->createBackupCodes();
             }
         }
