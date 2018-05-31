@@ -454,6 +454,7 @@ $LANG04 = array(
     'tfa_download' => 'Download Backup Codes',
     'tfa_new_backup_code' => 'Generate a new set of backup codes',
     'tfa_generate_confirm' => 'Go ahead?',
+    'lang_tfa_user_edit_desc' => 'You are only allowed to disable Two Factor Authentication (2FA) from this form if needed (like the user does not have their backup codes). It should not be enabled by Admins as the user themselves are required to enable and setup 2FA from their Account, including the Google Authenticator App for their phone and coping the backup codes.',
     'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>',
     'new_email' => 'New Email',
     'set_new_email' => 'Set New Email',
