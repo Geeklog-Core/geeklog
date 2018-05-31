@@ -76,7 +76,7 @@ if (!SEC_hasRights('user.edit')) {
  */
 function edituser($uid = 0, $msg = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG04, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG04, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE, $LANG_configselects, $LANG_confignames;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -112,6 +112,7 @@ function edituser($uid = 0, $msg = 0)
         }
         $resultB = DB_query("SELECT about, pgpkey, location FROM {$_TABLES['userinfo']} WHERE uid = $uid");
         $B = DB_fetchArray($resultB);
+        $newuser = false;
         $A['about'] = $B['about'];
         $A['pgpkey'] = $B['pgpkey'];
         $A['location'] = $B['location'];
@@ -120,6 +121,7 @@ function edituser($uid = 0, $msg = 0)
         $lastlogin = DB_getItem($_TABLES['userinfo'], 'lastlogin', "uid = '$uid'");
         $lasttime = COM_getUserDateTimeFormat($lastlogin);
     } else {
+        $newuser = true;
         $A['uid'] = '';
         $uid = '';
         $curtime = COM_getUserDateTimeFormat();
@@ -160,6 +162,9 @@ function edituser($uid = 0, $msg = 0)
     if (isset($_POST['userstatus'])) {
         $A['status'] = COM_applyFilter($_POST['userstatus'], true);
     }
+    if (isset($_POST['twofactorauth_enabled'])) {
+        $A['twofactorauth_enabled'] = COM_applyFilter($_POST['twofactorauth_enabled'], true);
+    }    
 
     $token = SEC_createToken();
 
@@ -257,6 +262,28 @@ function edituser($uid = 0, $msg = 0)
     } else {
         $user_templates->set_var('user_email', '');
     }
+    
+    // Two Factor Auth
+    if (!$newuser && isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth']) {
+        $enableTfaOptions = '';
+        foreach ($LANG_configselects['Core'][0] as $text => $value) {
+            $selected = ($A['twofactorauth_enabled'] == $value);
+            $enableTfaOptions .= '<option value="' . $value . '"'
+                . ($selected ? ' selected="selected"' : '') . '>'
+                . $text . '</option>' . PHP_EOL;
+        }    
+        
+        $user_templates->set_var(array(
+            'enable_twofactorauth'      => true,
+            'lang_tfa_two_factor_auth'  => $LANG04['tfa_two_factor_auth'], 
+            'lang_tfa_user_edit_desc'   => $LANG04['lang_tfa_user_edit_desc'], 
+            'lang_enable_twofactorauth' => $LANG_confignames['Core']['enable_twofactorauth'],
+            'enable_tfa_options'        => $enableTfaOptions
+        ));
+    } else {
+        $user_templates->set_var('enable_twofactorauth', false);
+    }
+    
     $user_templates->set_var('lang_homepage', $LANG28[8]);
     if (isset($A['homepage'])) {
         $user_templates->set_var('user_homepage',
@@ -531,7 +558,7 @@ function listusers()
  * @param    string $delete_photo delete user's photo if == 'on'
  * @return   string                  HTML redirect or error message
  */
-function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $signature, $pgpkey, $about, $groups, $delete_photo = '', $userstatus = 3, $oldstatus = 3)
+function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $signature, $pgpkey, $about, $groups, $delete_photo = '', $userstatus = 3, $oldstatus = 3, $enable_twofactorauth = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04, $LANG28, $_USER_VERBOSE;
 
@@ -700,8 +727,16 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             $username = GLText::remove4byteUtf8Chars($username);
             $username = DB_escapeString($username);
             $curphoto = DB_escapeString($curphoto);
+            
+            // Only allow Admins to disable other users 2 Factor Authentication (if enabled for entire site)
+            if (!$enable_twofactorauth && isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth']) {
+                $sql_enable_twofactorauth = ", twofactorauth_enabled = $enable_twofactorauth, twofactorauth_secret = '' ";
+            } else {
+                //$sql_enable_twofactorauth = ", twofactorauth_enabled = $enable_twofactorauth ";
+                $sql_enable_twofactorauth = ""; // Only allowed to disable
+            }
 
-            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
+            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status = '$userstatus' $sql_enable_twofactorauth WHERE uid = $uid");
             DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
             if ($passwd_changed && !empty($passwd)) {
                 SEC_updateUserPassword($passwd, $uid);
@@ -714,6 +749,16 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             ) {
                 USER_createAndSendPassword($username, $email, $uid);
             }
+            
+            // When the admin has disabled Two Factor Authentication, invalidate secret code and all the backup codes he/she might have
+            if (!$enable_twofactorauth) {
+                DB_query(
+                    "UPDATE {$_TABLES['users']} SET twofactorauth_secret = '' "
+                    . "WHERE (uid = {$uid})"
+                );
+                $tfa = new Geeklog\TwoFactorAuthentication($uid);
+                $tfa->invalidateBackupCodes();
+            }            
 
             if ($userstatus == USER_ACCOUNT_DISABLED) {
                 SESS_endUserSession($uid);
@@ -1371,6 +1416,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // dele
     } else {
         $passwd = Geeklog\Input::post('passwd', '');
         $passwd_conf = Geeklog\Input::post('passwd_conf', '');
+        
+        $enable_twofactorauth = (int) Geeklog\Input::fPost('enable_twofactorauth', 0);
+        if (($enable_twofactorauth !== 0) && ($enable_twofactorauth !== 1)) {
+            $enable_twofactorauth = 0;
+        }        
+
         $display = saveusers(
             $uid,
             Geeklog\Input::post('username'),
@@ -1385,7 +1436,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // dele
             Geeklog\Input::post('about'),
             Geeklog\Input::post('groups'), $delphoto,
             Geeklog\Input::post('userstatus'),
-            Geeklog\Input::post('oldstatus')
+            Geeklog\Input::post('oldstatus'),
+            $enable_twofactorauth
         );
         if (!empty($display)) {
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[22]));

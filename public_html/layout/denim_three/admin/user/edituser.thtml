@@ -25,6 +25,19 @@
       <dd><input type="text" maxlength="80" value="{user_fullname}" name="fullname" id="admin-edituser-fullname" class="uk-input size5"{xhtml}></dd>
 
       {password_option}
+      
+      <dt><label for="admin-edituser-email">{lang_emailaddress}</label></dt>
+      <dd><input type="text" maxlength="255" value="{user_email}" name="email" id="admin-edituser-email" class="size5"{xhtml}></dd>
+      
+      {!if enable_twofactorauth}
+        <dt><label for="admin-edituser-enable_tfa">{lang_enable_twofactorauth}</label></dt>
+        <dd>
+          <select name="enable_twofactorauth" id="admin-edituser-enable_tfa" class="uk-select uk-width-auto">        
+            {enable_tfa_options}
+          </select>
+        </dd>
+        <dd>{lang_tfa_user_edit_desc}</dd>
+      {!endif}      
 
       <dt><label for="admin-edituser-email">{lang_emailaddress}</label></dt>
       <dd><input type="text" maxlength="255" value="{user_email}" name="email" id="admin-edituser-email" class="uk-input size5"{xhtml}></dd>

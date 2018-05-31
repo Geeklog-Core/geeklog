@@ -457,6 +457,7 @@ $LANG04 = array(
     'tfa_download' => 'バックアップコードをダウンロード',
     'tfa_new_backup_code' => 'バックアップコードを生成し直す',
     'tfa_generate_confirm' => '実行してもよいですか?',
+    'lang_tfa_user_edit_desc' => 'You are only allowed to disable Two Factor Authentication (2FA) from this form if needed (like the user does not have their backup codes). It should not be enabled by Admins as the user themselves are required to enable and setup 2FA from their Account, including the Google Authenticator App for their phone and coping the backup codes.',    
     'desc_new_pwd_status' => 'アカウントのパスワードを入力する必要があります。以下にアカウントのパスワードを入力してください。<em>パスワードが更新されるまで、あなたのアカウントは使用できません。</em>',
     'new_email' => 'メールアドレス',
     'set_new_email' => 'メールアドレスの設定',
