@@ -448,7 +448,7 @@ $LANG04 = array(
     'tfa_help4' => 'Google認証システムをインストールしたデバイスを使えない場合に備えて、下記のバックアップコードを印刷するかダウンロードしてください。各バックアップコードは1回だけ有効です。新しいバックアップコードを生成すると、現在のバックアップコードは無効になります。',
     'tfa_help5' => '画面下部の「保存」をクリックしてください。',
     'tfa_enter_code' => 'Google認証システムに表示されている%d桁の数字かマイアカウントのページに表示されていたバックアップコードを入力してください',
-    'tfa_backup_code_desc' => 'Note: You can only use a backup code once, then it becomes invalid. Remember to generate more backup codes from the user preference page if you are getting low.',
+    'tfa_backup_code_desc' => '注意: バックアップコードは1回のみ使用でき、その後は無効になります。不足の場合は、ユーザー設定ページから改めてバックアップコードを生成してください。',
     'tfa_code' => '認証コード',
     'tfa_authenticate' => '認証',
     'tfa_qrcode' => 'QRコード',
@@ -457,7 +457,7 @@ $LANG04 = array(
     'tfa_download' => 'バックアップコードをダウンロード',
     'tfa_new_backup_code' => 'バックアップコードを生成し直す',
     'tfa_generate_confirm' => '実行してもよいですか?',
-    'lang_tfa_user_edit_desc' => 'You are only allowed to disable Two Factor Authentication (2FA) from this form if needed (like the user does not have their backup codes). It should not be enabled by Admins as the user themselves are required to enable and setup 2FA from their Account, including the Google Authenticator App for their phone and coping the backup codes.',
+    'lang_tfa_user_edit_desc' => '必要に応じて(ユーザーがバックアップコードを持っていない場合など)、このフォームから2段階認証(2FA)のみを無効にすることができます。ユーザー自身がスマートフォンのGoogle認証システムアプリやバックアップコードへの対処を含め、自分のアカウントから2FAを有効にして設定する必要があるため、管理者はこれを有効にしないでください。',
     'desc_new_pwd_status' => 'アカウントのパスワードを入力する必要があります。以下にアカウントのパスワードを入力してください。<em>パスワードが更新されるまで、あなたのアカウントは使用できません。</em>',
     'new_email' => 'メールアドレス',
     'set_new_email' => 'メールアドレスの設定',
@@ -470,7 +470,7 @@ $LANG04 = array(
     'email_verify_delete' => '検証対象のメールアドレスを削除',
     'email_verify_msg' => "あなたのアカウントのメールアドレスは更新されていますが、検証が必要です。{$_CONF['site_name']}から送信された検証用のリンクを含むメールを確認してください。あなたがそのリンクをクリックし、メールアドレスが検証されると、アカウントが有効になります。<br" . XHTML . "><br" . XHTML . ">あなたの希望により、上の入力欄でメールアドレスを更新するか、削除することができます。",
     'remove_account_msg' => 'あなたのアカウントを削除するには、上の「現在のパスワード」にパスワードを入力してから、下の「アカウントの削除オプション」にチェックを入れ、「保存」をクリックしてください。ただし、あなたのアカウント名で投稿した記事やコメントの<strong>削除はしません</strong>。これらの記事やコメントは「ゲストユーザー」の投稿として表示するようになります。',
-    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'
+    'remove_remote_account_msg' => 'あなたのリモートアカウントを削除するには、下の「アカウントの削除オプション」にチェックを入れ、「保存」をクリックしてください。ただし、あなたのアカウント名で投稿した記事やコメントの<strong>削除はしません</strong>。これらの記事やコメントは「ゲストユーザー」の投稿として表示するようになります。'
 );
 
 ###############################################################################
@@ -941,10 +941,10 @@ $LANG21 = array(
 # Block Locations
 
 $LANG23 = array(
-    'blocks_article_footer_name' => 'Article Footer',
-    'blocks_article_footer_desc' => 'Display Blocks in article Footer',
-    'blocks_article_topic_list_name' => 'Article Topic List',
-    'blocks_article_topic_list_desc' => 'Displays Blocks right after every X number of articles in topics.'
+    'blocks_article_footer_name' => '記事のフッター',
+    'blocks_article_footer_desc' => '記事のフッター部にブロックを表示します。',
+    'blocks_article_topic_list_name' => '記事の話題',
+    'blocks_article_topic_list_desc' => '話題のX個目の記事の直後にブロックを表示します。'
 );
 
 ###############################################################################
@@ -1048,8 +1048,8 @@ $LANG24 = array(
     95 => 'オリジナル',
     96 => 'アップロード | 置き換え',
     97 => 'なし',
-    'autotag_desc_story' => '[story: id 代替タイトル] - 記事のリンクを表示します。機能は同じなので、article自動タグの方をお使いください。',
-    'autotag_desc_article' => '[article: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
+    'autotag_desc_story' => '[story: id 代替タイトル] - 記事へのリンクを表示します。同じ機能を果たすarticle自動タグを使用してください。',
+    'autotag_desc_article' => '[article: id 代替タイトル] - 記事タイトルをタイトルとして使用して記事へのリンクを表示します。代替タイトルを指定できますが、必須ではありません。',
     'cache_time' => 'キャッシュ期間',
     'cache_time_desc' => 'この記事を指定した秒数の間キャッシュします。0 を指定すると、キャッシュしません。(3600 = 1時間、86400 = 1日)'
 );
@@ -1115,9 +1115,9 @@ $LANG27 = array(
     55 => '割り当て',
     'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'ホーム',
-    'autotag_desc_topic' => '[topic: id 代替タイトル] - 話題へのリンク表示にIDを使う。代替のタイトルは必須ではありません。',
-    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - IDとタイプにおける関連話題のクリッカブルホリゾンタルリストを作成する。',
-    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - IDとタイプにおける関連話題のクリッカブルリストを作成する。',
+    'autotag_desc_topic' => '[topic: id 代替タイトル] - IDをタイトルとして使用して話題へのリンクを表示します。代替タイトルを指定できますが、必須ではありません。',
+    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - IDとプラグインタイプに基づいて関連話題のクリック可能な水平リストを作成します。',
+    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - IDとプラグインタイプに基づいて関連アイテムのクリック可能なリストを作成します。',
     'no_related_items' => '関連アイテムがありません。',
     'topics:' => '話題:',
     'filed_under:' => '話題:',
@@ -1220,8 +1220,8 @@ $LANG28 = array(
     89 => '新規登録ユーザーのデフォルトグループをチェック',
     90 => '登録済みユーザーアカウントにデフォルトグループを追加する',
     91 => 'パスワードをメールで送信する',
-    92 => 'Only for new users or when changing password for existing user.',
-    'autotag_desc_user' => '[user: name alternate title] - ユーザー名をタイトルとしてユーザーへのリンクを表示します。別のタイトルを指定できますが、必須ではありません。',
+    92 => '新しいユーザーまたは既存のユーザーのパスワードを変更する場合のみ。',
+    'autotag_desc_user' => '[user: name 代替タイトル] - ユーザー名をタイトルとしてユーザーへのリンクを表示します。代替タイトルを指定できますが、必須ではありません。',
     'USER_ACCOUNT_LOCKED' => 'ロック状態',
     'USER_ACCOUNT_NEW_EMAIL' => 'メールアドレスの設定が必要',
     'USER_ACCOUNT_NEW_PASSWORD' => 'パスワードの設定が必要'
@@ -1262,7 +1262,7 @@ $LANG29 = array(
     'plugins' => 'プラグイン',
     'tools' => 'ツール',
     'users' => 'ユーザー',
-    'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。投稿を一括して承認・削除するには、リストのラジオボタンを選択してから保存をクリックしてください。',
+    'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。投稿を一括して承認・削除するには、リストのラジオボタンを選択してから保存をクリックしてください。ほとんどの場合、アイテムは最も新しいものから順に並べ替えられます。',
     'max_invalid_login' => 'ログイン失敗最大回数',
     'max_invalid_login_msg' => 'このユーザーは、指定時間内((秒))にログイン失敗最大回数(回)に達しました。最後にログインに失敗したIPは %s です。登録ユーザーがパスワードを忘れたのかもしれませんが、誰かがこのユーザーのアカウントのパスワードを推測しようとしているのかもしれません。'
 );
@@ -1470,7 +1470,7 @@ $LANG_ROUTER = array(
     8 => '優先順位を上げる',
     9 => '優先順位を下げる',
     10 => 'ルーティングの編集',
-    11 => '<p>ルーティングの編集・削除は編集アイコンを、作成は上の「新規作成」をクリックしてください。優先順位の変更は、[↑][↓]をクリックしてください。</p>',
+    11 => 'ルーティングの編集・削除は編集アイコンを、作成は上の「新規作成」をクリックしてください。優先順位の変更は、[↑][↓]をクリックしてください。プレースホルダー(@)を使用する場合は、ルールとそのルートに同じプレースホルダーを定義する必要があります。現在、URLルーティングは記事、話題、静的ページ、記事一覧、リンクプラグインのみをサポートしています。',
     12 => 'リクエストメソッドが不正です。',
     13 => 'ルールは必須項目です。',
     14 => 'ルートは必須項目です。',
@@ -1479,7 +1479,7 @@ $LANG_ROUTER = array(
     17 => 'データベース操作でエラーが発生しました。',
     18 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLリライトを有効にしてください。</strong>',
     19 => '<strong>URLルーティングを有効にするには、コンフィギュレーションでURLルーティングを有効にしてください。</strong>',
-    20 => '<ul><li>プレースホルダー(@)はルールとルートで同じものを定義してください。</li><li>プレースホルダーは@で始まり、1文字目は英字、2文字目以降は英数字を使えます。</li><li>プレースホルダーは大文字・小文字を区別します。</li><li>Status Code currently should be left at 200. Changing this may cause unforeseen issues as this feature is experimental.</li></ul>',
+    20 => '<ul><li>プレースホルダー(@)はルールとルートで同じものを定義してください。</li><li>プレースホルダーは@で始まり、1文字目は英字、2文字目以降は英数字を使えます。</li><li>プレースホルダーは大文字・小文字を区別します。</li><li>ステータスコードは200にしてください。これを変更すると、予期しない問題が発生する可能性があります。</li></ul>',
     21 => 'ステータスコード',
     22 => '有効',
     23 => 'はい',
@@ -1532,10 +1532,10 @@ $MESSAGE = array(
     40 => 'システムからのメッセージ',
     41 => '',
     42 => '',
-    43 => 'Account does not exist.',
+    43 => 'アカウントは存在しません。',
     44 => 'プラグインをインストールしました!',
     45 => 'プラグインを削除しました。',
-    46 => 'Your username or email address was not found, please try again.',
+    46 => 'ユーザー名またはメールアドレスが一致しません。再度入力してください。',
     47 => '申し訳ありませんが、現在アカウントのパスワードをリクエストできません。詳細については、管理者に連絡してください。',
     48 => "{$_CONF['site_name']}にご登録ありがとうございます。管理者の間で審査します。登録を承認すると、あなたの入力したメールアドレスにパスワードを送信します。",
     49 => 'グループを保存しました。',
