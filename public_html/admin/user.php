@@ -975,7 +975,10 @@ function batchdelete()
             $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[67], 'field' => 'phantom_date', 'sort' => true);
             $list_sql = ", UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) as phantom_date";
-            $filter_sql = "lastlogin = CAST(0 AS CHAR) AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
+            //$filter_sql = "lastlogin = CAST(0 AS CHAR) AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
+            // Cannot use Cast as it doesn't work with much older Geeklog installs and user records from way back
+            // This covers older and newer Geeklog Installs - lastlogin can be a blank, or a 0 and a user that does not have a userinfo record (so no lastlogin value which is NULL)
+            $filter_sql = "(lastlogin = '' OR lastlogin = '0' OR lastlogin IS NULL) AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
             $sort = 'regdate';
             break;
 
