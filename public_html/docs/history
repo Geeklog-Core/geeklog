@@ -34,6 +34,8 @@ Geeklog History/Changes:
 - [Feature] Check box to automatically send new password to user on Admin User Editor [Mystralkk]
 - [Feature] Changed most references from Story to Article. This includes in language files and template files [Mystralkk]
 - [Feature] Akismet module now included with the SPAM-X plugin [Mystralkk]
+- [Feature] Inherited Group Members List added to User Group Administration (accessible from group list). See what users have inherited security permissions from a group [Tom]
+- [Feature] Inherited security rights are now shown in Group Editor for other Groups the current edited group belongs too (prevents groups from belonging to themselves) [Tom]
 
 - [Bug] Wrong Template Files can be used if they share the same name. CTL_setTemplateRoot has been depreciated [Tom]
 - [Bug] Fixed After token expired re-authentication returns to a blank page once Authentication is successful [Tom]
@@ -44,6 +46,7 @@ Geeklog History/Changes:
 - [Bug] Fixed Spam-X plugin upgrade issue from Geeklog v2.1.2 to v2.1.3 [Tom]
 - [Bug] Fixed Link Edit button to edit link instead of create a new link [Tom]
 - [Bug] Fixed Links plugin Category links when URL Rewrite Enabled  [Mystralkk]
+- [Bug] Fixed when saving group assignments for a user. Inherited groups stay as inhertied and do not become directly related to the user [Tom] 
 
 - [Update] UIkit 2 framework to version 2.27.5 [Dengen]
 - [Update] jQuery to version 3.3.1 (jQuery UI is still at latest version 1.12.1) [Tom]
