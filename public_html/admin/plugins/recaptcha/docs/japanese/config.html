@@ -128,7 +128,7 @@
     <tr>
         <td valign="top"><a id="desc_enable_loginform">enable_loginform</a></td>
         <td valign="top">Yes</td>
-        <td valign="top">「はい」にすると、reCAPTCHAがログインフォームに対して有効になります。</td>
+        <td valign="top"><p>「はい」にすると、reCAPTCHAがログインフォームに対して有効になります。</p><p><strong>Important:</strong> If any type of CAPTCHA is enabled for the user login you must disable Read Access for Anonymous users for the User Functions block. The Block Name is "user_block" and you can find the permission under Access Rights on the Block Editor form. The reason for this is because this block will display a mini login form that does not support reCAPTCHA and therefore will always fail to login the user from it. <strong>Do not disable this block completely as the User Functions block is needed once users are logged in.</strong></p><p>You should then make sure the login menu element is enabled in the Geeklog Configuration so users can find out how to access the full page login form.</p></td>
     </tr>
 </table>
 
