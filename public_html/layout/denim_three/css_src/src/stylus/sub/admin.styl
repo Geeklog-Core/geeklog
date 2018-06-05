@@ -46,9 +46,13 @@ $stage = 'admin'
   Group Editor
 --------------------------------------*/
 
-#rights_options
-    width: 100%
+.gl-flex-rights-list
+    display: flex
+    flex-wrap: wrap
+    list-style-type: none
     font-size: 13px
+    > li
+        width: 300px
 
 /*!--------------------------------------
   Group Member Editor
@@ -265,6 +269,14 @@ b.status_black
 #admin-storyeditor-introtext,
 #admin-storyeditor-bodytext
     width: 98%
+
+.gl-image-form-thumb-frame
+  width: 64px
+  height: 64px
+  background-color: #DDD
+  img
+    width: 64px
+    height: 64px
 
 /*! Preview */
 #preview

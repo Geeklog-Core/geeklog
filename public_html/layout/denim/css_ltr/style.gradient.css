@@ -4078,9 +4078,25 @@ dd#profile-user_photo {
   Group Editor
 --------------------------------------*/
 
-#rights_options {
-  width: 100%;
-  font-size: 11px;
+.gl-flex-rights-list {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  list-style-type: none;
+  font-size: 13px;
+}
+
+.gl-flex-rights-list > li {
+  width: 300px;
 }
 
 /*--------------------------------------
@@ -4094,7 +4110,8 @@ dd#profile-user_photo {
 }
 
 #admin-groupmembers-fieldFrom,
-#admin-groupmembers-fieldTo {
+#admin-groupmembers-fieldTo,
+#admin-groupmembers-fieldInherit {
   width: 100%;
   height: 100%;
 }
@@ -4376,6 +4393,17 @@ b.status_black {
 #admin-storyeditor-introtext,
 #admin-storyeditor-bodytext {
   width: 98%;
+}
+
+.gl-image-form-thumb-frame {
+  width: 64px;
+  height: 64px;
+  background-color: #DDD;
+}
+
+.gl-image-form-thumb-frame img {
+  width: 64px;
+  height: 64px;
 }
 
 /* Preview */

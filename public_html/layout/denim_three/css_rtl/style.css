@@ -4307,9 +4307,25 @@ dd#profile-user_photo {
   Group Editor
 --------------------------------------*/
 
-#rights_options {
-  width: 100%;
+.gl-flex-rights-list {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  list-style-type: none;
   font-size: 13px;
+}
+
+.gl-flex-rights-list > li {
+  width: 300px;
 }
 
 /*--------------------------------------
@@ -4615,6 +4631,17 @@ b.status_black {
 #admin-storyeditor-introtext,
 #admin-storyeditor-bodytext {
   width: 98%;
+}
+
+.gl-image-form-thumb-frame {
+  width: 64px;
+  height: 64px;
+  background-color: #DDD;
+}
+
+.gl-image-form-thumb-frame img {
+  width: 64px;
+  height: 64px;
 }
 
 /* Preview */
@@ -5123,19 +5150,3 @@ body.center-right #config_content {
     padding: 5px 0;
   }
 }
-
-/*
-@import "nib";
-@import "sub/mixins";
-@import "sub/variables";
-@import "sub/theme_" + $var-name;
-@import "sub/variables_default";
-@import "sub/base";
-@import "sub/compatible";
-@import "sub/form_basic";
-@import "sub/layout_" + $var-name;
-@import "sub/block_contents";
-@import "sub/main_contents";
-@import "sub/admin";
-@import "sub/admin_config";
-*/
