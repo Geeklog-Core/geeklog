@@ -130,6 +130,11 @@ function update_DatabaseFor220()
     
     // Add column for Topic Title
     $_SQL[] = "ALTER TABLE `{$_TABLES['topics']}` ADD `title` VARCHAR(128) NULL DEFAULT NULL AFTER `topic`";
+    
+    // Make sure any lastlogin in user info table that equals '' or NULL is 0
+    $_SQL[] = "UPDATE `{$_TABLES['userinfo']}` SET `lastlogin` = '0' WHERE `lastlogin` = '' OR `lastlogin` IS NULL;";
+    // Make sure User Info Last Login defaults to 0
+    $_SQL[] = "ALTER TABLE `{$_TABLES['userinfo']}` CHANGE `lastlogin` `lastlogin` VARCHAR(10) NOT NULL DEFAULT '0';";    
 
     // Add theme admin
     $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_name='Theme Admin'");
