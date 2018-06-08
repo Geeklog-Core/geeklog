@@ -59,6 +59,10 @@ plugins/downloads
 public_html/downloads
 public_html/downloads_data
 public_html/admin/plugins/downloads
+plugins/menu
+public_html/menu
+public_html/admin/plugins/menu
+data/menu_data
 
 # test framework, if present
 public_html/tests
