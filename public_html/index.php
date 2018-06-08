@@ -128,6 +128,10 @@ if ($topic === '-') {
 
 if ($topic != '') {
     if (strtolower($topic) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($topic) . "' " . COM_getPermSQL('AND')))) {
+        // Topic doesn't exist (or user doesn't have access) so reset topic variable
+        $topic = '';
+        
+        // Now display 404
         COM_handle404();
     }
 }

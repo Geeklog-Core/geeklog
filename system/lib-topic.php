@@ -1152,11 +1152,19 @@ function TOPIC_getTopic($type = '', $id = '')
         }
     }
 
-    // Check and return Previous topic
+    // Check and return Previous topic if no current topic
     if ($topic == '') {
         // Blank could mean all topics or that we do not know topic
         // retrieve previous topic
         $last_topic = SESS_getVariable('topic');
+        
+        // Need to test last topic in session just in case it doesn't exist anymore or got corrupted some how (possibly by incorrect retrieval by 3rd party plugin)
+        $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '$last_topic' " . COM_getPermSQL('AND'));
+        if (strtolower($last_topic) != strtolower($test_topic)) {
+            $last_topic = '';
+        } else { // Make it equal to the db version since case maybe different
+            $last_topic = $test_topic;
+        }
     } else {
         $last_topic = $topic;
     }
