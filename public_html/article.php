@@ -307,8 +307,12 @@ if ($A['count'] > 0) {
                 );
         }
         
-        // Add hreflang link element if multi-language site
-        $headercode .= COM_createHREFLang('story', $article->getSid());            
+        // Add hreflang link element if Multi Language Content is setup
+        // Only allow hreflang link element to be visible when on canonical url
+        // ie no second pages which can happen with comments, or if [page_break] is used or with extra trailing variables like from a search query
+        if (strtolower(COM_getCurrentURL()) == strtolower($permalink)) {
+            $headercode .= COM_createHREFLang('story', $article->getSid());
+        }        
 
         if ($article->DisplayElements('trackbackcode') == 0) {
             if ($_CONF['trackback_enabled']) {

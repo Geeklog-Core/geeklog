@@ -7897,6 +7897,7 @@ function COM_createMetaTags($meta_description, $meta_keywords)
 /**
  * Create hreflang HTML link element in header to be used by COM_createHTMLDocument in the headercode variable.
  * Plugin needs to support the function PLG_getItemInfo and be able to return the id and url of the item 
+ * Plugin also needs to support the function _getLanguageInfoFromURL which requires extra config options present (see _getLanguageInfoFromURL for more details)
  *
  * @param    string $type    plugin type (incl. 'article' for stories and 'topic' for topic)
  * @param    string $id      ID of an item under the plugin's control (assumes exists and current user has access)

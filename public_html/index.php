@@ -478,8 +478,12 @@ if ($topic) {
             );
     }
     
-    // Add hreflang link element if multi-language site
-    $header .= COM_createHREFLang('topic', $topic);
+    // Add hreflang link element if Multi Language Content is setup
+    // Only allow hreflang link element to be visible when on canonical url. 
+    // NOTE: Since Topic does not have canonical do it just for first page (as other languages for same topic may not have the same number of articles in each)
+    if ($page == 1) {
+        $header .= COM_createHREFLang('topic', $topic);
+    }    
 }
 
 $display = COM_createHTMLDocument(

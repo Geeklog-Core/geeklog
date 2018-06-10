@@ -1299,11 +1299,23 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_language_files">言語ファイル[多言語モード](language_files)</a></td>
   <td valign="top"><em>(無効)</em></td>
-  <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語ファイルの対応関係を指定します。</td></tr>
+  <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語ファイルの対応関係を指定します。<br /><br />
+    
+    When creating content that supports multiple langagues (topics, articles, blocks, staticpages, etc.)
+    you would end the id of the content with one of these shortcuts ('storyid_en' or 'storyid2_de'). This would then map this content to the specific language.
+    For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br /><br />
+    
+    A hreflang link element(s) will be generated for articles, staticpages and topics (and 3rd party Plugins if they support it) if Multi Language Content is setup for Geeklog. 
+    This element will only appear on the canonical link of the item, or for topics on the first page.<br /><br />
+    
+    For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
+    Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 <tr>
   <td valign="top"><a name="desc_languages">言語名[多言語モード](languages)</a></td>
   <td valign="top"><em>(無効)</em></td>
-  <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語名("English"、"Deutsch"、"Japanese"など)の対応関係を指定します。</td></tr>
+  <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語名("English"、"Deutsch"、"Japanese"など)の対応関係を指定します。<br /><br />
+    For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
+    Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 </table>
 
 <p>Geeklog Wikiの<a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">多言語サポート(Multi-Language Support)</a>も参照してください。</p>

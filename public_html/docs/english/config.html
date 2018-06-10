@@ -1508,10 +1508,15 @@ the admin panel.</p>
   <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the Geeklog language files to use. These shortcuts must each contain the same number of characters and
-    the language file must exist in the Geeklog languages directory.<br />
+    the language file must exist in the Geeklog languages directory.<br /><br />
+    
     When creating content that supports multiple langagues (topics, articles, blocks, staticpages, etc.)
     you would end the id of the content with one of these shortcuts ('storyid_en' or 'storyid2_de'). This would then map this content to the specific language.
-    For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br />
+    For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br /><br />
+    
+    A hreflang link element(s) will be generated for articles, staticpages and topics (and 3rd party Plugins if they support it) if Multi Language Content is setup for Geeklog. 
+    This element will only appear on the canonical link of the item, or for topics on the first page.<br /><br />
+    
     For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
     Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 <tr>
@@ -1519,7 +1524,7 @@ the admin panel.</p>
   <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the language's native name ("English",
-    "Deutsch", etc.). These shortcuts must match the shortcuts set in the "Language Files" configuration option.<br />
+    "Deutsch", etc.). These shortcuts must match the shortcuts set in the "Language Files" configuration option.<br /><br />
     For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
     Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 </table>

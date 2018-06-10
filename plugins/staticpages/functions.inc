@@ -344,8 +344,12 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
                 );
         }
         
-        // Add hreflang link element if multi-language site
-        $headerCode .= COM_createHREFLang('staticpages', $page);        
+        // Add hreflang link element if Multi Language Content is setup
+        // Only allow hreflang link element to be visible when on canonical url
+        // ie no second pages which can happen with comments or with extra trailing variables like from a search query
+        if (strtolower(COM_getCurrentURL()) == strtolower($sp_url)) {
+            $headerCode .= COM_createHREFLang('staticpages', $page);
+        }
 
         // Previous and next pages
         $sp_prev = stripslashes($A['sp_prev']);
