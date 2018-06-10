@@ -7909,8 +7909,8 @@ function COM_createHREFLang($type, $id)
     $headerCode = '';
 
     // Add hreflang link element if multi-language site
-    // If user allowed to switch language then assume config languages and language_files setup correctly
-     if ($_CONF['allow_user_language']) {
+    // If user allowed to switch language and config languages and language_files exist (and assume setup correctly)
+    if ($_CONF['allow_user_language'] AND !empty($_CONF['languages']) AND !empty($_CONF['language_files'])) {
         $lang_id = COM_getLanguageIdForObject($id);
         if (empty($lang_id)) {
             // Non Language specific item id found
