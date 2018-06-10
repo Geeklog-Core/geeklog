@@ -6980,9 +6980,10 @@ function _getLanguageInfoFromURL()
     global $_CONF, $_URL;
 
     $retval = array('','','');
-    
-    // If user is allowed to switch languages
-    if ($_CONF['allow_user_language'] == 1) {
+
+    // If user allowed to switch language and Multi Language Content setup (because config languages and language_files exist (and assume setup correctly))
+    if ($_CONF['allow_user_language'] AND !empty($_CONF['languages']) AND !empty($_CONF['language_files'])) {
+        
         $langId = '';
         // Need to see if language is set for url. Supports normal, rewrite, and routing urls.
         // To support multi-language items plugins need to include an extra config option for Core that is called langurl_pluginname
@@ -7149,7 +7150,7 @@ function COM_getLangSQL($field, $type = 'WHERE', $table = '')
 }
 
 /**
- * Provide a block to switch languages
+ * Provide a block to switch languages (For when Multi Language Content is setup)
  * Provides a drop-down menu (or simple link, if you only have two languages)
  * to switch languages. This can be used as a PHP block or called from within
  * your theme's header.thtml:
@@ -7909,7 +7910,7 @@ function COM_createHREFLang($type, $id)
     $headerCode = '';
 
     // Add hreflang link element if multi-language site
-    // If user allowed to switch language and config languages and language_files exist (and assume setup correctly)
+    // If user allowed to switch language and Multi Language Content setup (because config languages and language_files exist (and assume setup correctly))
     if ($_CONF['allow_user_language'] AND !empty($_CONF['languages']) AND !empty($_CONF['language_files'])) {
         $lang_id = COM_getLanguageIdForObject($id);
         if (empty($lang_id)) {
