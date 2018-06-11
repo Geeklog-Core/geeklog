@@ -488,7 +488,7 @@ function plugin_configchange_template($group, $changes = array())
         // Probably not really necessary but clear cache if enabled on these other settings that can have cache files
         // These are from the What's New Block
         if ($_CONF['whatsnew_cache_time'] > 0) {
-            $cacheInstance = 'whatsnew__'; // remove all what'snew instances
+            $cacheInstance = 'whatsnew__'; // remove all what's new instances
             CACHE_remove_instance($cacheInstance);
         }
     }

@@ -559,6 +559,7 @@ $result = DB_query($sql);
 $A = DB_fetchArray($result);
 if ($_VARS['last_article_publish'] != $A['date']) {
     //Set new latest article published
+    // Below similar to what is run in STORY_updateLastArticlePublished
     DB_query("UPDATE {$_TABLES['vars']} SET value='{$A['date']}' WHERE name='last_article_publish'");
 
     // We need to see if there are currently two featured articles (because of future article).
@@ -573,6 +574,12 @@ if ($_VARS['last_article_publish'] != $A['date']) {
     // as well since article can have comments
     COM_rdfUpToDateCheck('article');
     COM_rdfUpToDateCheck('comment');
+
+    // If what's new block is cached, clear it since new article(s) are now online
+    if ($_CONF['whatsnew_cache_time'] > 0) {
+        $cacheInstance = 'whatsnew__'; // remove all what's new instances
+        CACHE_remove_instance($cacheInstance);
+    }    
 }
 
 // +---------------------------------------------------------------------------+
