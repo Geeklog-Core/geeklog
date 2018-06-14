@@ -3,7 +3,7 @@ Geeklog History/Changes:
 ?, 2018 (2.2.0)
 ------------
 
-- [Feature] HrefLang link elements added to header for multi-language sites with multi-language pages setup (Works with topics, articles, and staticpages) [Tom]
+- [Feature] HrefLang link elements added to header for multi-language sites with multi-language content setup (Works with topics, articles, and staticpages) [Tom]
 - [Feature] Add information about Permissions[X] [Tom]
 - [Feature] Added Demo Mode for Geeklog (enabled in siteconfig.php) [Tom]
 - [Feature] Uikit can now be loaded via a CDN [Mystralkk]
@@ -47,6 +47,7 @@ Geeklog History/Changes:
 - [Bug] Fixed Link Edit button to edit link instead of create a new link [Tom]
 - [Bug] Fixed Links plugin Category links when URL Rewrite Enabled  [Mystralkk]
 - [Bug] Fixed when saving group assignments for a user. Inherited groups stay as inhertied and do not become directly related to the user [Tom] 
+- [Bug] Fixes for PHP 7.2 [hirorongl]
 
 - [Update] UIkit 2 framework to version 2.27.5 [Dengen]
 - [Update] jQuery to version 3.3.1 (jQuery UI is still at latest version 1.12.1) [Tom]
