@@ -15,7 +15,7 @@
     {!endif}
 
     <dt>{lang_homepage}</dt>
-    <dd>{!if user_homepage}<a href="{user_homepage}">{user_homepage}</a>{!endif}</dd>
+    <dd>{!if user_homepage}<a href="{user_homepage}" target="_blank" rel="nofollow noopener">{user_homepage}</a>{!endif}</dd>
 
     <dt>{lang_location}</dt>
     <dd>{user_location}</dd>
