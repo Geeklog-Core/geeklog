@@ -21,16 +21,30 @@
 
 <h2><a name="changes220">Geeklog 2.2.0</a></h2>
 
-<p>Geeklog 2.2.0 major new features include ...</p>
+<p>Geeklog 2.2.0の主要な新機能</p>
 
 <h3>New Features and Improvements</h3>
 
 <ul>
+    <li>SPAM対策を更新しました。<ul>
+        <li>Spam-XプラグインにAkismetモジュールを追加しました。</li>
+        <li>Invisible reCAPTCHA(見えないreCAPTCHA)をサポートするreCAPTCHAプラグインを追加しました。</li>
+    </ul></li>
+    <li>ユーザー保護を更新しました。<ul>
+        <li>ユーザーのEメールアドレスとパスワードの要件を更新しました。</li>
+        <li>全てのユーザー(Oauthのユーザーを含む)に対してEメールアドレスを要求できるようにしました。</li>
+        <li>ユーザーのステータスを新設しました。(Locked, New Email Required, New Password Required)</li>
+        <li>2段階認証を追加しました。</li>
+        <li>アカウントに対する無効パスワード入力に関してEメールで警告するようにしました。</li>
+        <li>新規Eメールアドレス・Eメールアドレスの更新の際に、メールアドレスを検証するようにしました。</li>
+    </ul></li>
+    <li>Uikit 3フレームワークを導入しました。</li>
+    <li>Demin_Threeテーマを追加しました。(Uikit 3をサポートしています)</li>
+    <li>CSSファイルとJavaScriptファイルを縮小・結合するようにしました。</li>
+    <li>ブロックを右側と左側以外の位置に表示できるようにしました。プラグインとテーマがブロックの表示位置を追加できるようにしました。</li>
+    <li>デモモードを追加しました。</li>
     <li>Live Journal認証を廃止しました。</li>
-    <li>Spam-XプラグインにAkismetモジュールを追加しました。</li>
-    <li>Invisible reCAPTCHA(見えないreCAPTCHA)をサポートするreCAPTCHAプラグインを追加しました。</li>
-    <li>COM_siteHeader関数とCOM_siteFooter関数を廃止しました。代わりにCOM_createHTMLDocument関数を使用してください。</li>
-    <li>2段階認証を追加しました。</li>
+    <li>COM_siteHeader関数とCOM_siteFooter関数を廃止しました。開発者は、代わりにCOM_createHTMLDocument関数を使用してください。</li>
 </ul>
 
 

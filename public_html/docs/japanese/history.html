@@ -18,6 +18,119 @@
 
 <p><a href="../history">public_html/docs/history</a>をHTML化し、翻訳したものです。</p>
 
+<h2>?, 2018 (2.2.0)</h2>
+
+<li>[Feature] HrefLang link elements added to header for multi-language sites with multi-language content setup (Works with topics, articles, and staticpages) [Tom]</li>
+<li>[Feature] Add information about Permissions[X] [Tom]</li>
+<li>[Feature] Added Demo Mode for Geeklog (enabled in siteconfig.php) [Tom]</li>
+<li>[Feature] Uikit can now be loaded via a CDN [Mystralkk]</li>
+<li>[Feature] Uikit 3 framework (v3.0.0-beta.42) added to Geeklog [Mystralkk]</li>
+<li>[Feature] Allow number of max pages in page navigation to be set separately for mobile pages [Tom]</li>
+<li>[Feature] Removed much of the remaining hard coded HTML [Tom] [Dengen]</li>
+<li>[Feature] Blocks can now appear in more than just the left or right column. Block Locations can now be added by plugins and themes [Tom]</li>
+<li>[Feature] New CSS and JS processor to Minify and combine files [Mystralkk]</li>
+<li>[Feature] New Denim_Three theme which uses Uikit version 3 [Dengen]</li>
+<li>[Feature] ReCaptcha Plugin added to Geeklog Install [Mystralkk]</li>
+<li>[Feature] ReCaptcha Plugin now supports Invisible Captcha [Mystralkk]</li>
+<li>[Feature] Added Captcha support for login and get password form [Tom]</li>
+<li>[Feature] Passwords now must contain 8 characters and have at least 1 letter and 1 number in it [Tom]</li>
+<li>[Feature] Two Factor Authentication (https://packagist.org/packages/robthree/twofactorauth)  [Mystralkk]</li>
+<li>[Feature] Log all attempts of incorrect passwords used during logins [Tom]</li>
+<li>[Feature] Send email alerts to regarding invalid password attempts on accounts [Tom]</li>
+<li>[Feature] UTF-8mb4 Icons/emoji's now are colored for all Denim themes [Dengen]</li>
+<li>[Feature] New User Statuses Added (Locked, New Email Required, New Password Required) [Tom]</li>
+<li>[Feature] New Config Option to Require Email Address on all User Accounts (even Oauth accounts) [Tom]</li>
+<li>[Feature] New/Updated Emails now must be verified [Tom]</li>
+<li>[Feature] Clear Cache now clears all cached files and not just template cache (image thumbnails, resource cache, other defined plugin caches) [Tom]</li>
+<li>[Feature] Moderation Page now has paging [Mystralkk]</li>
+<li>[Feature] Block Help now uses Geeklog Popup Form [Tom]</li>
+<li>[Feature] Blocks can now be assigned an id and css classes [Mystralkk]</li>
+<li>[Feature] Comment Manager can now use BAN Plugin API [Tom]</li>
+<li>[Feature] Comment Anonymous Names can now be edited by Comment Admin [Tom]</li>
+<li>[Feature] Staticpages can now have a previous and next page (specifies a rel="next" and rel="pre") [Mystralkk]</li>
+<li>[Feature] Check box to automatically send new password to user on Admin User Editor [Mystralkk]</li>
+<li>[Feature] Changed most references from Story to Article. This includes in language files and template files [Mystralkk]</li>
+<li>[Feature] Akismet module now included with the SPAM-X plugin [Mystralkk]</li>
+<li>[Feature] Inherited Group Members List added to User Group Administration (accessible from group list). See what users have inherited security permissions from a group [Tom]</li>
+<li>[Feature] Inherited security rights are now shown in Group Editor for other Groups the current edited group belongs too (prevents groups from belonging to themselves) [Tom]</li>
+</li>
+<li>[Bug] Wrong Template Files can be used if they share the same name. CTL_setTemplateRoot has been depreciated [Tom]</li>
+<li>[Bug] Fixed After token expired re-authentication returns to a blank page once Authentication is successful [Tom]</li>
+<li>[Bug] Fixed Switch Language Block (and COM_getLanguageFromURL) to work on a topic page [Tom]</li>
+<li>[Bug] Comment titles and anonymous user names can now handle mb4 character [Tom]</li>
+<li>[Bug] Fixed Comment User Signatures and Last User Edit title [Tom]</li>
+<li>[Bug] Fixed Portal Blocks importing feeds [Tom]</li>
+<li>[Bug] Fixed Spam-X plugin upgrade issue from Geeklog v2.1.2 to v2.1.3 [Tom]</li>
+<li>[Bug] Fixed Link Edit button to edit link instead of create a new link [Tom]</li>
+<li>[Bug] Fixed Links plugin Category links when URL Rewrite Enabled  [Mystralkk]</li>
+<li>[Bug] Fixed when saving group assignments for a user. Inherited groups stay as inhertied and do not become directly related to the user [Tom]</li>
+<li>[Bug] Fixes for PHP 7.2 [hirorongl]</li>
+</li>
+<li>[Update] UIkit 2 framework to version 2.27.5 [Dengen]</li>
+<li>[Update] jQuery to version 3.3.1 (jQuery UI is still at latest version 1.12.1) [Tom]</li>
+<li>[Update] CKEditor to version 4.9.2 [Tom]</li>
+<li>[Update] OAuth class to version 1.0.103 [Mystralkk]</li>
+<li>[Update] Mobile_Detect class to version 2.8.31 [Tom]</li>
+<li>[Update] Removed Live Journal Authentication [Mystralkk]</li>
+
+<h2>June 22, 2017 (2.1.3)</h2>
+
+<li>[Feature] Added ability to use SMTPS protocol for sending mail [Ivy] [Tom]</li>
+<li>[Feature] Images in articles can now be styled [Tom]</li>
+<li>[Feature] Admins can now edit more fields of users [Tom]</li>
+<li>[Feature] Plugins can now include profile fields automatically in My Account and User Profile [Tom]</li>
+<li>[Feature] Staticpage Templates now use caching template library. This means logic processing is now possible [Tom]</li>
+<li>[Feature] Autotags can now have a close tag if needed [Tom]</li>
+<li>[Bug] Fix for articles and staticpages if more than one script tag included [Dengen]</li>
+<li>[Bug] Printable pages for Articles and Staticpages links to css fixed [Tom]</li>
+<li>[Bug] Footer Copy Right Name fixed [Ivy]</li>
+<li>[Bug] Spam-X Plugin issues entering items fixed [Tom]</li>
+<li>[Bug] Censor Exact Match improved [Tom]</li>
+<li>[Bug] Links Plugin category links fixed when URL Rewrite is enabled [Mystralkk]</li>
+<li>[Bug] Language Manager search fixed [Mystralkk]</li>
+<li>[Bug] Fixed Blocks Cache Time could not be set to 0 [Tom]</li>
+<li>[Bug] Fixed Portal Blocks being able to use Cache Time [Tom]</li>
+<li>[Bug] Fixed displaying of portal blocks. Removed function COM_rdfCheck from lib-common.php since not needed anymore (uses cache time instead) [Tom]</li>
+<li>[Bug] Fixed script tag issues in staticpages and theme templates [Dengen]</li>
+<li>[Bug] Fixed Comment Submission tool tips when dealing with HTML Entities [Dengen]</li>
+<li>[Bug] Fixed Comment Notification emails when dealing with HTML Entities [Tom]</li>
+
+<h2>March 1, 2017 (2.1.2)</h2>
+
+<li>[Feature] Added description, multiple answers per question to the Poll Plugin [Mystralkk]</li>
+<li>[Feature] New "Related Articles Section" to the article view [Mystralkk]</li>
+<li>[Feature] Added Language override feature [Mystralkk]</li>
+<li>[Feature] Added an Admin page for comments maintenance [Mystralkk]</li>
+<li>[Feature] Added URL-routing feature which enables you to use public_html/index.php as a pseudo-front controller [Mystralkk]</li>
+<li>[Feature] Added new modules for the Spam-X plugin Dirk</li>
+<li>[Feature] Added an ability to change article template file with the topic [Mystralkk]</li>
+<li>[Feature] Added GitHub OAuth Login [Tom]</li>
+<li>[Feature] Added $_CONF['theme_oauth_icons'] option to allow theme to use own OAuth icons [Tom]</li>
+<li>[Feature] Added autotag to display blocks [Tom]</li>
+<li>[Feature] Reduced block lists in Block Manager [Tom]</li>
+<li>[Feature] Added ability for Geeklog to detect device type (mobile or computer) of visitor [Tom]</li>
+<li>[Feature] Blocks can display based on visitor device type [Tom]</li>
+<li>[Feature] Template variable {device_mobile} added which returns true if viewing device is considered mobile (phone and tablet) [Tom]</li>
+<li>[Feature] Geeklog Database Backup now works without using a external program to backup. [Tom]</li>
+<li>[Feature] Individual static pages can now have hits and last update date not displayed. [Tom]</li>
+<li>[Feature] Re-factored Geeklog install. [Mystralkk]</li>
+<li>[Feature] Upgrade Messages added to Geeklog install. [Tom]</li>
+<li>[Feature] Geeklog Install files can now be deleted on successful install or upgrade. [Mystralkk]</li>
+<li>[Feature] Support PHP 7. [Mystralkk]</li>
+<li>[Feature] Support default settings of MySQL 5.7. [Mystralkk]</li>
+<li>[Feature] Further integration of UIkit into the Denim theme. [Dengen]</li>
+<li>[Feature] New Denim Curve them which replicates the older Modern Curve theme. The Denim Curve theme is a child theme of the Denim theme. [Dengen]</li>
+<li>[Feature] Admin Environment Check now checks database version. [Tom]</li>
+<li>[Update] Dropped MSSQL support [Mystralkk]</li>
+<li>[Update] Removed Professional and Professional CSS themes [Tom]</li>
+<li>[Update] UIkit framework to version 2.27.2 [Dengen]</li>
+<li>[Update] jQuery to version 3.1.1 and jQuery UI to version 1.12.1. [Tom]</li>
+<li>[Update] CKEditor to version 4.6.1 [Tom]</li>
+<li>[Update] OAuth class to version 1.152 [Tom]</li>
+<li>[Bug] Geeklog can now handle emoji icons and 4-byte characters. They can either be removed from the input or saved (depending on website setup) [Mystralkk]</li>
+<li>[Bug] Daily Digest URLs in articles are converted into absolute URLs. [Mystralkk]</li>
+<li>[Bug] Topic Ids and Names reduced to 75 characters to support utf8mb4_xxx_ci MySQL character sets. [Tom]</li>
+
 <h2>December 9, 2015 (2.1.1)</h2>
 
 <ul>

@@ -42,7 +42,19 @@
 
     <h3><a name="preinstall">必要なソフトウェア</a></h3>
 
-        <p>Geeklogをインストールして使用するには、ApacheやMicrosoft IISなどのWebサーバとPHP 5.2.0以降が必要です。また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL</a> 4.1.2以降か、(<a href="http://mariadb.org/">MariaDB</a> 5.1以降も可), <a href="http://www.postgresql.org/download/">PostgreSQL</a> 9.1.7以降, または<a href="http://www.microsoft.com/sqlserver/">Microsoft SQL Server 2000</a>以降が必要です。</p>
+<p>Geeklogをインストールして使用するには、ApacheやMicrosoft IISなどのWebサーバとPHP 5.3.3(7.xもサポートしています)以降が必要です。PHPのエクステンションで必要なものは:</p>
+
+<ul>
+    <li>mbstring</li>
+    <li>bzip2</li>
+    <li>mysqlかmysqli (MySQLをサポートするため)</li>
+    <li>pgsql (Postgresqlをサポートするため)</li>
+    <li>OpenSSL (OAuthによるログインを有効にするため)</li>
+    <li>JSON (ファイルマネージャーとデータベースツールのため)</li>
+    <li>fileinfo (記事で画像のサムネールをサポートするため)</li>
+</ul>
+
+<p>また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL</a> 4.1.2以降か、(<a href="http://mariadb.org/">MariaDB</a> 5.1以降も可), <a href="http://www.postgresql.org/download/">PostgreSQL</a> 9.1.7以降が必要です。</p>
 
     <h3><a name="things_you_should_know">必要な技術力</a></h3>
 

@@ -108,6 +108,33 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>同じコードを <span class="tt">featuredstorytext.thtml</span> と <span class="tt">archivestorytext.thtml</span> テンプレートファイルに追加すれば、注目記事にもパーマネントリンクが表示されるようになります。</li>
 </ol>
 
+<h2><a id="changes">変更点</a></h2>
+
+<h2><a name="changes220">Geeklog 2.2.0におけるテーマの変更点</a></h2>
+
+<ul>
+    <li>"record_edit"ブロックと{record_edit}テンプレート変数を <span class="tt">commentform.thtml</span> と <span class="tt">commentform_advanced.thtml</span> に追加しました。これにより、記録を残さずにモデレーターがコメントを編集できるようになりました。</li>
+    <li>"comment_signature", "comment_edit"ブロックと{comment_signature}, {comment_edit}テンプレート用を <span class="tt">comment.thtml</span>に追加しました。コメントの署名とユーザーが編集したもののスタイル付けが容易になり、ハードコードされていたCSSが取り除かれました。</li>
+    <li>{block_help}テンプレート変数を全てのブロックヘッダー用テンプレートファイル (blockheader.thtml, blockheader-left.thtml, etc..)から取り除きました。{help_title}テンプレート変数を追加し、ヘルプ用のアイコンとリンクをテンプレートファイルに直接追加しました。表示する必要を確認するのは、テンプレートのif構文で {help_url} 変数をチェックしてください。</li>
+    <li>PHPブロックに必要になるかもしれないテンプレートファイルを置くためにblocksディレクトリを追加しました。phpblock_switch_language関数用に <span class="tt">switchlanguage.thtml</span> テンプレートファイルを追加しました。</li>
+    <li>{delete_option}, {delete_option_no_confirmation}テンプレート変数を <span class="tt">articleeditor.thtml</span> と <span class="tt">articleeditor_advanced.thtml</span> テンプレートファイルから削除しました。代わりに {allow_delete} テンプレート変数を使用してください。具体例は Modern Curve テーマをご覧ください。</li>
+    <li>{image_add_instructions}, {allow_user_scaling}, {image_preview_instructions}テンプレート変数を <span class="tt">articleeditor.thtml</span> と  <span class="tt">articleeditor_advanced.thtml</span> テンプレートファイルに追加しました。</li>
+    <li>image-file-name, image-file-selectブロックを <span class="tt">articleeditor.thtml</span> と  <span class="tt">articleeditor_advanced.thtml</span> テンプレートファイルに追加しました。</li>
+    <li><span class="tt">common.thtml</span>, <span class="tt">checklist.thtml</span>テンプレートファイルを新しく"controls"ディレクトリに追加しました。</li>
+    <li><span class="tt">authenticationrequired.thtml</span> テンプレートファイルを"user"ディレクトリに追加しました。</li>
+    <li><span class="tt">deleteaccountconfirm.thtml</span> テンプレートファイルを"preferences"ディレクトリに追加しました。</li>
+    <li><span class="tt">topic.thtml</span> テンプレートファイルをテーマのルートディレクトリに追加しました。</li>
+</ul>
+
+<h2><a name="changes213">Geeklog 2.1.3におけるテーマの変更点</a></h2>
+
+<ul>
+    <li>{copyright_notice}を<span class="tt">footer.thtml</span>から削除しました。HTMLタグを含んでいる上に、同じメッセージを{copyright_msg}と{trademark_msg}テンプレート変数から作れるからです。</li>
+    <li>usersディレクトリから<span class="tt">storyrow.thtml</span>, <span class="tt">commentrow.thtml</span>, <span class="tt">email.thtml</span>を削除しました。これを補うために、<span class="tt">profile.thtml</span>にブロックを追加しました。</li>
+    <li>記事内の画像の左寄せ・右寄せ・寄せなし([imageX_left], [imageX_right], [imageX])をサポートするために、3つのブロックを <span class="tt">storytext.thtml</span>, <span class="tt">featuredstorytext.thtml</span>, <span class="tt">archivestorytext.thtml</span>に追加しました。</li>
+    <li>アンケートプラグインで、denimテーマとデフォルトテンプレート用の<span class="tt">pollanswer.thtml</span>, <span class="tt">pollquestions.thtml</span>, <span class="tt">pollvotes_bar.thtml</span>, <span class="tt">pollvotes_num.thtml</span>, <span class="tt">pollquestion.thtml</span>を削除しました。これを補うために、<span class="tt">pollblock.thtml</span> と <span class="tt">pollresult.thtml</span> にブロックを追加しました。</li>
+</ul>
+
 <h2><a name="changes212">Geeklog 2.1.2におけるテーマの変更点</a></h2>
 
 <ul>

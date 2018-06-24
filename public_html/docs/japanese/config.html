@@ -32,7 +32,7 @@
 
 <ul>
 <li><a href="#site">サイト(Site)</a></li>
-<li><a href="#stories">記事とトラックバック(Stories and Trackback)</a></li>
+<li><a href="#stories">記事とトラックバック(Articles and Trackback)</a></li>
 <li><a href="#theme">テーマ(Theme)</a></li>
 <li><a href="#blocks">ブロック(Blocks)</a></li>
 <li><a href="#users">ユーザーと投稿(Users and Submissions)</a></li>
@@ -74,7 +74,7 @@
 <tr>
   <td valign="top"><a name="desc_owner_name">管理者名(owner_name)</a></td>
   <td valign="top"></td>
-  <td valign="top">このサイトの管理者の名前を入力します。これはcopyright表示がセットされた場合に表示されます。設定しない場合は、サイト名が使用されます。</td></tr>
+  <td valign="top">このサイトの所有者の名前を入力します。これはcopyright表示がセットされた場合に表示されます。設定しない場合は、サイト名が使用されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_copyrightyear">Copyrightの年数設定(copyrightyear)</a></td>
   <td valign="top"><em>(無効)</em></td>
@@ -92,7 +92,7 @@
 <tr>
   <td valign="top"><a name="desc_cdn_hosted">cdn_hosted</a></td>
   <td valign="top">いいえ</td>
-  <td valign="top">Enable (true) or disable (false) CDN-hosted source for jQuery, jQuery UI and uikit.</td></tr>
+  <td valign="top">jQuery, jQuery UI, uikitを、CDNを利用して読み込むには「はい」、ローカルから読み込むには「いいえ」を選択します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_meta_tags">メタタグ(meta_tags)</a></td>
   <td valign="top">無効にする</td>
@@ -123,36 +123,36 @@
   <td valign="top"><a name="desc_noreply_mail">No-Replyメールアドレス(noreply_mail)</a></td>
   <td valign="top">noreply@example.com</td>
   <td valign="top">ユーザー登録時などにGeeklogがメールを送る送信元アドレスを指定します。サイトのメールアドレスと同じにするか、スパム送信者がサイトに登録することで管理者のメールアドレスを知るのを防ぐために送信専用アドレスを指定してください(スパム送信者がこのアドレスにメールを送ってもエラーメールが返るだけです。)。このアドレスがサイト管理者のメールアドレスと同じでない場合、送信するメッセージに「このメールは自動送信されたものです。返信しないでください。」というメッセージが追加されます。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_backend">メール設定(backend)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_backend">メール設定(mail_settings_backend)</a></td>
     <td valign="top">mail</td>
     <td valign="top">メールの送信方法を選択します。'smtp'(SMTPプロトコルでメールサーバーと直接交信), 'smtps'(SMTPSプロトコルでメールサーバーと直接交信), 'sendmail'(オペレーティングシステムにインストールされているsendmailプログラム経由), 'mail'(PHPのmail()関数使用)のどれかを指定します。SMTPSプロトコルを使用するにはPHPのOpenSSL拡張を有効にする必要があります。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_sendmail_path">メール設定(sendmail_path)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_sendmail_path">メール設定(mail_settings_sendmail_path)</a></td>
     <td valign="top"><span class="tt">/usr/bin/sendmail</span></td>
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailバイナリへの完全なパスを指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_sendmail_args">メール設定(sendmail_args)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_sendmail_args">メール設定(mail_settings_sendmail_args)</a></td>
     <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailに与える引数を指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_host">メール設定(host)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_host">メール設定(mail_settings_host)</a></td>
     <td valign="top">smtp.example.com</td>
     <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーを指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_port">メール設定(port)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_port">メール設定(mail_settings_port)</a></td>
     <td valign="top">25</td>
     <td valign="top">送信方法で'smtp'(ポート番号25)または'smtps'(ポート番号587)を選択した場合に、SMTPサーバーのポート番号を指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_auth">メール設定(auth)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_auth">メール設定(mail_settings_auth)</a></td>
     <td valign="top">0</td>
     <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーが認証を必要とするなら
         <code>1</code> に、必要としないなら、
         <code>0</code> (あるいは空白のまま)に設定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_username">メール設定(username)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_username">メール設定(smtp-username)</a></td>
     <td valign="top">smtp-username</td>
     <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーのアカウント名を指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_password">メール設定(password)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_password">メール設定(smtp-password)</a></td>
     <td valign="top">smtp-password</td>
     <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPアカウントのパスワードを指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_cc_enabled">CC(カーボンコピー)を許可する(cc_enabled)</a></td>
+<tr><td valign="top"><a name="desc_mail_cc_enabled">CC(カーボンコピー)を許可する(mail_cc_enabled)</a></td>
     <td valign="top">はい</td>
     <td valign="top">「はい」にすると、ユーザーが自分自身にCCメールを送信する機能を有効にします。</td></tr>
-<tr><td valign="top"><a name="desc_mail_cc_default">CC(カーボンコピー)をデフォルトにする(cc_default)</a></td>
+<tr><td valign="top"><a name="desc_mail_cc_default">CC(カーボンコピー)をデフォルトにする(mail_cc_default)</a></td>
     <td valign="top">いいえ</td>
     <td valign="top">「はい」にすると、メール送信画面で「自分宛にコピーを送信する」に最初からチェックが入るようになります。</td></tr>
   <tr><td valign="top"><a name="desc_mail_charset">メールの文字セット(mail_charset)</a></td>
@@ -433,9 +433,9 @@
         <li>-1 = 常にキャッシュし、エディターで記事を更新・保存した場合に限り、キャッシュを再生成します。</li>
     </ul></td></tr>
 <tr>
-  <td valign="top"><a name="desc_blocks_article_topic_list_repeat_after">blocks_article_topic_list_repeat_after</a></td>
+  <td valign="top"><a name="desc_blocks_article_topic_list_repeat_after">話題リストブロックを続けて配置する(blocks_article_topic_list_repeat_after)</a></td>
   <td valign="top">1</td>
-  <td valign="top">The Article Topic List Blocks location repeats after this many article introductions are displayed on a topic page (includes the homepage). If set to 0 this block location will be disabled.</td></tr>    
+  <td valign="top">話題ページ(ホームペジを含む)で、ここで指定した回数だけ記事の冒頭文が繰り返された後で話題リストブロックを再び表示します。0を指定すると、話題リストブロックを表示しません。</td></tr>    
 </table>
 
 <h3><a name="stories_trackback">記事とトラックバック: トラックバック</a></h3>
@@ -556,11 +556,11 @@ Windowsで共有ドライブにアクセスしている場合です。
   検出して異なる情報を表示する予定がない場合に限り、「いいえ」に設定した方がよいでしょう。「いいえ」にすると、
   作成するキャッシュファイルの数が減るので、パフォーマンスが少し向上します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_cache_resource">cache_resource</a></td>
-  <td valign="top">true</td>
-  <td valign="top">If set to <span class="tt">true</span>, JavaScript files and CSS files will be combined, minified and cached. 
-    Note: For themes that use the file "style.css.php" like the Modern Curve theme will ignore this setting and automatically always
-    cache resources as some processing on the css files are required for the theme to display correctly.</td></tr>
+  <td valign="top"><a name="desc_cache_resource">CSSとJavaScriptファイルを結合・圧縮しキャッシュする(cache_resource)</a></td>
+  <td valign="top">はい</td>
+  <td valign="top"><span class="tt">「はい」</span>に設定すると、JavaScriptとCSSファイルを結合・圧縮し、キャッシュします。 
+    注: Modern Curveなどの"style.css.php"を使用するテーマは、この設定を無視し、常にに自動的にリソースをキャッシュします。
+    テーマを正確に表示するためにCSSファイルを処理することが必要であるためです。</td></tr>
 </table>
 
 <h3><a name="theme_advanced">テーマ: テーマの拡張設定</a></h3>
@@ -723,12 +723,11 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、ユーザーはサイトのナビゲーションに使う言語を選択できるようになります。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_switchlang_homepage">switchlang_homepage</a></td>
-  <td valign="top">Can be 1 or 0</td>
-  <td valign="top">If set to 1, the switch language block will always redirect to the homepage. You will want to set this to 1 if you have language specific content on your site
-    (articles, topics, staticpages) that don't have matching corresponding content in all languages that your site supports. For example if you have an English Topic (with id "topic_en") and the user 
-    is on that topic and switches the language to Japanese, if a corresponding topic with the id "topic_ja" does not exist (or the user doesn't have access to it) then a 404 error will result after 
-    the language change.</td></tr>    
+  <td valign="top"><a name="desc_switchlang_homepage">言語切り替えブロックからトップページへリダイレクトする(switchlang_homepage)</a></td>
+  <td valign="top">「はい」または「いいえ」</td>
+  <td valign="top">「はい」にすると、常に言語切り替えブロックからトップページへリダイレクトします。
+    自分のサイトである言語ではサポートしているが、他の言語ではサポートしていないコンテンツ(記事、話題、静的ページ)がある場合、「はい」にする必要があるでしょう。たとえば、"topic_en"というIDの英語の話題があって、ユーザーがその話題の記事を読んでいる最中に 
+    言語を日本語に切り替えた場合、対応する"topic_ja"というIDの話題が存在していないと(あるいはそのユーザーがその話題に対するアクセス権を持っていないと)、404エラー(not found)が発生することになります。</td></tr>    
 <tr>
   <td valign="top"><a name="desc_allow_user_photo">写真登録を許可する(allow_user_photo)</a></td>
   <td valign="top">はい</td>
@@ -750,13 +749,13 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にするとユーザーのフルネームを表示し、「いいえ」にするとユーザー名しか表示しません。フルネームを入力していない場合は常にユーザー名が表示されます。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_require_user_email">require_user_email</a></td>
-  <td valign="top">true</td>
-  <td valign="top">If set to true, users without email addresses will be required to add an email address to their account and need to verify it 
-    before they can continue to use the website while logged in. This affects remote accounts as some 
-    may not return an email address to Geeklog when the account is created due to permissions from the 
-    remote service. When this is set to true Geeklog will check for an email address when a user logs in. If there is not one, the user account 
-    status will be switched from "Active" to "New Email Required".</td></tr>   
+  <td valign="top"><a name="desc_require_user_email">ユーザーにメールアドレスを要求する(require_user_email)</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」に設定すると、Eメールアドレスを設定していないユーザーは、ログイン中にEメールアドレスを設定・検証するよう要求されます。  
+    これはリモートアカウントにも影響します。 
+    リモートサービスの中には、ユーザー登録の際にパーミッションの関係でサーバーがEメールアドレスを返さないものがあるためです。 
+    「はい」に設定すると、ユーザーがログインする際にEメールアドレスをチェックし、ユーザーが設定していない場合には、 
+    ステータスが「有効」から「メールアドレスの設定が必要」へと変わります。</td></tr>   
 <tr>
   <td valign="top"><a name="desc_show_servicename">サービス名を表示する(show_servicename)</a></td>
   <td valign="top">はい</td>
@@ -1068,7 +1067,11 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
     <td valign="top"><a name="desc_remove_4byte_chars">4バイト文字を除去する(remove_4byte_chars)</a></td>
     <td valign="top">はい</td>
-    <td valign="top">「はい」にすると、COM_applyBasicFilter関数を使用する際に、utf-8の4バイト文字(絵文字を含む)を削除します。</td></tr>
+    <td valign="top">「はい」にすると、COM_applyBasicFilter関数を使用する際に、utf-8の4バイト文字(絵文字を含む)を削除します。「いいえ」にする場合には、
+      MySQLのデータベース・テーブル・列のコレーションがマルチバイト文字をサポートしていることを確認してください。たとえば、現在のコレーションが
+      "utf8_general_ci"の場合、「いいえ」にする前に、データベース・テーブル・列を"utf8mb4_general_ci"に変換する必要があるでしょう。さもなければ、
+      4バイト文字列を含むコンテンツをユーザーが保存しようとした場合、その文字列が削除されずにSQLエラーが発生するでしょう。注: サードパーティーのプラグインの中には、4バイト文字列
+      やこの設定値をサポートしてないものがあるかもしれません。</td></tr>
 </table>
 
 <h3><a name="users_comments">ユーザーと投稿: コメント</a></h3>
@@ -1301,21 +1304,21 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><em>(無効)</em></td>
   <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語ファイルの対応関係を指定します。<br /><br />
     
-    When creating content that supports multiple langagues (topics, articles, blocks, staticpages, etc.)
-    you would end the id of the content with one of these shortcuts ('storyid_en' or 'storyid2_de'). This would then map this content to the specific language.
-    For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br /><br />
+    多言語をサポートするコンテンツ(話題、記事、ブロック、静的ページなど)を作成するときには、
+    そのコンテンツのIDがここで指定したショートカットになるようにします('storyid_en'や'storyid2_de'など)。こうすることで、そのコンテンツが指定した言語と結びつけられます。
+    多言語コンテンツの詳しい情報については、<a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>をごらんください。<br /><br />
     
-    A hreflang link element(s) will be generated for articles, staticpages and topics (and 3rd party Plugins if they support it) if Multi Language Content is setup for Geeklog. 
-    This element will only appear on the canonical link of the item, or for topics on the first page.<br /><br />
+    多言語サポートを有効にすると、hreflangリンク要素がその記事、静的ページ、話題(と、サポートしている場合は、サードパーティーのプラグイン)に対して出力されます。 
+    この要素が出力されるのは、記事のcanonicalなリンクと話題の最初のページだけです。<br /><br />
     
-    For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
-    Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
+    多言語コンテンツをサポートするには、サイト管理者が同じ言語に対して言語ファイルと言語の両方の設定を行う必要があります。
+    両方の設定を同時に有効にする(多言語コンテンツ)か無効にする(単一言語コンテンツ)必要があります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_languages">言語名[多言語モード](languages)</a></td>
   <td valign="top"><em>(無効)</em></td>
   <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語名("English"、"Deutsch"、"Japanese"など)の対応関係を指定します。<br /><br />
-    For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
-    Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
+    多言語コンテンツをサポートするには、サイト管理者が同じ言語に対して言語ファイルと言語の両方の設定を行う必要があります。
+    両方の設定を同時に有効にする(多言語コンテンツ)か無効にする(単一言語コンテンツ)必要があります。</td></tr>
 </table>
 
 <p>Geeklog Wikiの<a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">多言語サポート(Multi-Language Support)</a>も参照してください。</p>
@@ -1373,7 +1376,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_timezone">タイムゾーン(timezone)</a></td>
   <td valign="top"><em>(無効)</em></td>
-  <td valign="top">サーバーが異なるタイムゾーンに配置されている場合、時刻が正しく表示されるようにローカルのタイムゾーンを設定します。この設定は。</td></tr>
+  <td valign="top">サーバーが異なるタイムゾーンに配置されている場合、時刻が正しく表示されるようにローカルのタイムゾーンを設定します。</td></tr>
 </table>
 
 
@@ -1494,9 +1497,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">7</td>
   <td valign="top">ページナビゲーションに表示するページの数を指定します。最小3ページから最大20ページまで指定できます。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_page_navigation_mobile_max_pages">page_navigation_mobile_max_pages</a></td>
+  <td valign="top"><a name="desc_page_navigation_mobile_max_pages">モバイル用のページナビゲーションの最大ページ数(page_navigation_mobile_max_pages)</a></td>
   <td valign="top">7</td>
-  <td valign="top">Maximum number of pages to show for the page navigation when visitors are on mobile devices. Minimum of 3 pages to a maximum of 20 pages allowed. If this value differs from the config option page_navigation_max_pages and you have enabled "Cache Templates" (cache_templates) make sure that you have also enabled th econfig option "Cache Mobile Devices Separately" (cache_mobile) as well.</td></tr>  
+  <td valign="top">モバイル用のページナビゲーションの最大ページ数を指定します。最小値は3、最大値は20です。 この値が「ページナビゲーションの最大ページ数(page_navigation_max_pages)」と違っていて、「テンプレートをキャッシュする(cache_templates)」を有効にしている場合には、「モバイル用のコンテンツを別にキャッシュする(cache_mobile)」も有効にしてください。</td></tr>  
 <tr>
   <td valign="top"><a name="desc_default_cache_time_block">ブロックのキャッシュ期間のデフォルト(default_cache_time_block)</a></td>
   <td valign="top">0</td>
@@ -1512,9 +1515,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">「はい」にすると、タイトルに基づいてIDを自動的に生成します。記事・話題・静的ページ
 (とサポートする他のプラグイン)で有効です。ユーザーがタイトルを入力すると自動的にIDを更新します。(訳注)タイトルが英数字のみで構成される場合、この機能は役に立ちます。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_404_log">404_log</a></td>
-  <td valign="top">true</td>
-  <td valign="top">Whether or not to log 404 errors to the 404.log file located in the logs directory.</td></tr>
+  <td valign="top"><a name="desc_404_log">404エラーログを有効にする(404_log)</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">logsディレクトリに404エラーのログを記録するかどうかを指定します。</td></tr>
 </table>
 
 <h3><a name="misc_debug">その他: デバッグ</a></h3>
@@ -1610,7 +1613,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">コメントを投稿した人のIPアドレスは記録され、管理者には表示されます。IPアドレス検索サービスを設定した場合、表示されたIPアドレスをクリックするとそのIPの所有者を調べることが可能になり、不正使用をインターネットサービスプロバイダーに通報しやすくなります。<br />設定値には、IP検索サービスの完全なURLを指定します。IPアドレスが入る部分は '<code>*</code>' にします。Tom Willetの<a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a>パッケージを使うこともできます。この場合は、<code>/nettools/whois.php?domain=*</code> <br />と指定します。</td></tr>
 </table>
 
-<h3><a name="misc_ip_lookup">Miscellaneous: Permissions</a></h3>
+<h3><a name="misc_permissions">Miscellaneous: Permissions</a></h3>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
@@ -2046,13 +2049,16 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <p style="margin-left:4em;"><span class="tt">https://www.geeklog.net/article.php/20021022234959146</span></p>
 <p>となります。1番目の形式のURLを解釈する検索エンジンもありますが、Googleは2番目の形式を好み、1番目の形式を無視するようです。(訳注)この記述は現在では当てはまりません。</p>
 <p><strong>注意:</strong>この機能はすべてのWebサーバーで機能するとは限りません。Apache(全バージョン)では機能しますが、<acronym title="Internt Information Service">IIS</acronym>(の少なくとも一部のバージョン)では<em>動作しない</em> ことが知られています。サイトを公開する前に検証してください。</p>
+<p><strong>注意:</strong> トップページが1ページ目以外の場合、話題のURLを使用します。 
+トップページを表す話題IDはダッシュ "-" です。これはURLルーティングにも当てはまります。</p>
 
 
 <h2><a name="url-routing">URLルーティング</a></h2>
 
 <p>この機能は上述の<a href="#url-rewrite">URLリライト</a>を拡張し、public_html/index.phpを
     疑似フロントコントローラーとして使用します。したがって、URLルーティング機能を使うには、
-    URLリライトを有効にする必要があります。現時点では以下のルールが定義されています。</p>
+    URLリライトを有効にする必要があります。</p>
+<p>現時点では以下のルールが定義されています(URLリライトが有効なコンテンツを網羅しています):</p>
 
 <table border="1">
     <thead>
@@ -2088,6 +2094,22 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
         <td>http://yourdomain/links/category/@cat</td>
         <td>http://yourdomain/links/index.php?category=@cat</td>
         <td>150</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/page/@page/print</td>
+        <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
+        <td>160</td>
+    </tr>
+    
+    <tr>
+        <td>https://www.example.com/links/portal/@item</td>
+        <td>https://www.example.com/links/portal.php?what=link&item=@item</td>
+        <td>170</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/links/category/@cat</td>
+        <td>https://www.example.com/links/index.php?category=@cat</td>
+        <td>180</td>
     </tr>
     </tbody>
 </table>
@@ -2137,6 +2159,8 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   「有効(index.php<strong>なし</strong>)」に変えます。
   </li>
 </ol>
+<p><strong>注意:</strong> URLルーティングを使用するが、定義済みのルートを削除したり無効にしたりすると、そのルートはURLリライトの設定に従って表示されます。例外は話題だけです。話題のルートを削除したり無効にしたりすると、話題のURLは "https://www.example.com/@topic"、2ページ目以降は "https://www.example.com/@topic/@page" となります。topicプレースホルダーはありません(上述のURLリライトの例をごらんください)。これは現在のGeeklogとルーターの制限ですが、必要なら、URLリライトを反映するルートを変更することができるので、問題にはならないはずです。</p>
+<p><strong>注意:</strong> ステータスコードは200だけを使用すべきです。他のオプションは現時点ではうまく機能しないため、使用すると予想できない問題を引き起こす可能性があります。</p>
 <p><strong>高度な機能:</strong> WebサーバーとしてApacheを使用し、ユーザーがアクセするURLから
     "index.php" を取り除きたいなら、以下のことを行います。<strong>警告!</strong> Webサーバーの
     設定を熟知していない場合は、この機能を使わない方が良いでしょう。</p>
