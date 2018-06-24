@@ -356,7 +356,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_maximagesperarticle">maximagesperarticle</a></td>
   <td valign="top">5</td>
-  <td valign="top">max. number of images you can have in a article</td></tr>
+  <td valign="top">max. number of images you can have in an article</td></tr>
 <tr>
   <td valign="top"><a name="desc_limitnews">limitnews</a></td>
   <td valign="top">10</td>
@@ -373,17 +373,17 @@ the admin panel.</p>
   <td valign="top"><a name="desc_hideviewscount">hideviewscount</a></td>
   <td valign="top">0</td>
   <td valign="top">Whether to show (= 0) or to hide (= 1) the number of views
-    a article has had.</td></tr>
+    an article has had.</td></tr>
 <tr>
   <td valign="top"><a name="desc_hideemailicon">hideemailicon</a></td>
   <td valign="top">0</td>
-  <td valign="top">When set to 1, this will disable the ability to send a article by email. It
+  <td valign="top">When set to 1, this will disable the ability to send an article by email. It
     will also hide the email icon from articles and the &quot;Email Article To a
     Friend&quot; from the Article Options block.</td></tr>
 <tr>
   <td valign="top"><a name="desc_hideprintericon">hideprintericon</a></td>
   <td valign="top">0</td>
-  <td valign="top">When set to 1, this will disable display of a article in a &quot;printer
+  <td valign="top">When set to 1, this will disable display of an article in a &quot;printer
     friendly&quot; format. It will also hide the printer icon from articles and
     the &quot;View Printable Version&quot; from the Article Options
     block.</td></tr>
@@ -428,11 +428,11 @@ the admin panel.</p>
   <td valign="top">This restricts the featuring of articles to root user(s). If you have several article admins who can create content that is not visible to other article admins,
   and such a content is featured, another admin might think its ok to feature his own content. To prevent
   that two admins unknowingly take features from each other away, only a user who can see all content (= root)
-  should be able to feature a article.</td></tr>
+  should be able to feature an article.</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_story">aftersave_story</a></td>
   <td valign="top">'list'</td>
-  <td valign="top">Which page to go to after a article has been saved:
+  <td valign="top">Which page to go to after an article has been saved:
     <ul>
     <li>'item': display the article</li>
     <li>'list': show admin's list of articles (default)</li>
@@ -440,7 +440,7 @@ the admin panel.</p>
     <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
     </ul>
   <strong>Note:</strong> This option is ignored for article submissions. Editing
-  a article submission will always send you back to the submission queue (i.e.
+  an article submission will always send you back to the submission queue (i.e.
   "Admin Home" aka Command &amp; Control).</td></tr>
 <tr>
   <td valign="top"><a name="desc_related_topics">related_topics</a></td>
@@ -465,9 +465,9 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_default_cache_time_article">default_cache_time_article</a></td>
   <td valign="top">0</td>
-  <td valign="top">The default cache time for a article. Possible values:<br />
+  <td valign="top">The default cache time for an article. Possible values:<br />
     <ul>
-        <li>1 or more = Amount of seconds a article will be cached before it is regenerated and saved again to a new cache file.</li>
+        <li>1 or more = Amount of seconds an article will be cached before it is regenerated and saved again to a new cache file.</li>
         <li>0 = Not cached. Article is always regenerated.</li>
         <li>-1 = Always cached and only regenerated when the article is updated and saved through the article editor.</li>
     </ul></td></tr>
@@ -536,7 +536,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_pingback_self">pingback_self</a></td>
   <td valign="top">0</td>
   <td valign="top">Pingbacks are sent out automatically to <em>all</em> the
-    URLs linked from a article - which includes articles on your own site that
+    URLs linked from an article - which includes articles on your own site that
     you may have linked in the article. This option lets you specify how these
     "self pingbacks" are to be handled: 0 = skip them, i.e. don't send pingbacks
     to articles on your own site; 1 = allow them, but obey the speed limit;
@@ -1249,7 +1249,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_days">article_comment_close_days</a></td>
   <td valign="top">30</td>
-  <td valign="top">Number of days after which a article is to be automatically
+  <td valign="top">Number of days after which an article is to be automatically
     closed for comments, i.e. no new comments can be posted after that many
     days.<br />
     Note that this is only the default value to which the "Disable Comments"
@@ -1578,7 +1578,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_hour_mode">hour_mode</a></td>
   <td valign="top">12</td>
   <td valign="top">Which format to use when submitting or editing an object
-    with a time setting (e.g. the publish time of a article). Can be 12 (for the
+    with a time setting (e.g. the publish time of an article). Can be 12 (for the
     12 hour am/pm format) or 24 (for the 24 hour format).</td></tr>
 <tr>
   <td valign="top"><a name="desc_thousand_separator">thousand_separator</a></td>
@@ -1875,7 +1875,7 @@ the admin panel.</p>
 <code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
 </table>
 
-<h3><a name="misc_ip_lookup">Miscellaneous: Permissions</a></h3>
+<h3><a name="misc_permissions">Miscellaneous: Permissions</a></h3>
 
 <table border="1" width="100%">
 <tr><th style="width:8%">Variable</th>
@@ -2445,7 +2445,7 @@ The topic Id that will be used to represent the homepage is a dash "-". This is 
 
 <p>Look at the second row in the table.  This means if you access "https://www.example.com/index.php/article/@sid/print",
     then you will be redirected to "https://www.example.com/article.php?article=@sid&mode=print".
-    @sid is a article ID.</p>
+    @sid is an article ID.</p>
 <p>Then, look at the third row.  You will see an at mark (@), followed by alphabetical
     letters.  This is a placeholder.  For instance, when you access
     "https://www.example.com/index.php/archives/all/2016/1", @topic matches "all", @year matches "2016",
