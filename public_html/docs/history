@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-?, 2018 (2.2.0)
+June 26, 2018 (2.2.0)
 ------------
 
 - [Feature] HrefLang link elements added to header for multi-language sites with multi-language content setup (Works with topics, articles, and staticpages) [Tom]
