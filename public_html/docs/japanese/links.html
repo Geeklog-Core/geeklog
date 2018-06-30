@@ -33,7 +33,7 @@
   <td>はい(1)にすると、登録ユーザーしかリンクセクションにアクセスできなくなります。<br />
     この設定値よりも、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_loginrequired">すべてにログインを要求する(loginrequired)</a>」の設定の方が優先されるます。「すべてにログインを要求する」をはい(1)にすると、リンクプラグインでログインを要求していなくても、ゲストユーザーはリンクセクションにアクセスできなくなります。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_linkcols">カテゴリの表示カラム数(linkcols)</a></td>
   <td>3</td>
   <td>1カラム（列）ごとに表示するリンクカテゴリの数を指定します。</td>
@@ -43,7 +43,7 @@
   <td>10</td>
   <td>1ページごとに表示するリンクの数を指定します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_show_top10">トップ10を表示する(show_top10)</a></td>
   <td><code>はい(true)</code></td>
   <td>「カテゴリの表示カラム数(linkcols)」と「ページあたりのリンク数(linksperpage)」がともに 0 で<strong>ない</strong>とき、リンクプラグインはそのトップページに最もクリックされたリンクの上位10位を自動的に表示します。表示したくなければ、この設定をいいえ(<code>false</code>)にします。</td>
@@ -53,7 +53,7 @@
   <td><code>はい(true)</code></td>
   <td>はい(true)にすると、カテゴリを表示するときにサブカテゴリの説明を表示します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_new_window">リンクを新しいウィンドウで開く(new_window)</a></td>
   <td><code>false</code></td>
   <td>外部サイトへのリンクを新規ウィンドウで開くかどうかを指定します。<br />
@@ -74,7 +74,7 @@
   <td>いいえ(0)</td>
   <td>はい(1)にすると、新着リンクが新着情報ブロックに表示されなくなります。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_newlinksinterval">リンクの"新着"期間(newlinksinterval)</a></td>
   <td>1209600秒 (= 2週間)</td>
   <td>が新着ブロックに表示される期間を秒数で指定します。</td>
@@ -84,7 +84,7 @@
   <td>いいえ(0)</td>
   <td>はい(1)にすると、サイトのメニューに「リンク」メニューを表示しません。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_linksubmission">リンクの投稿を管理者が承認する(linksubmission)</a></td>
   <td>はい(1)</td>
   <td>はい(1)にすると、ユーザーが投稿したリンクは管理者の承認待ちの状態になり、いいえ(0)にすると、即座に登録・表示されます。</td>
@@ -94,7 +94,7 @@
   <td>いいえ(0)</td>
   <td>はい(1)にすると、新規リンクが投稿されたときに、管理者にEメールで通知します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_delete_links">所有者の削除と共に削除する(delete_links)</a></td>
   <td>いいえ(0)</td>
   <td>はい(1)にすると、リンク所有者のアカウントが削除されたときに、所有していたすべてのリンクが削除され、いいえ(0)にすると、Rootグループに属するユーザー（たとえば、サイトの管理者）に引き継がれます。</td>
@@ -111,86 +111,86 @@
     <li>管理画面TOPを表示する(admin): 管理画面を表示します。</li>
     </ul></td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_root">トップカテゴリのID(root)</a></td>
   <td>site</td>
   <td>最上位のリンクカテゴリに使用するリンクIDを指定します。</td>
 </tr>
 </table>
 
-<h3><a name="search">Link Permissions</a></h3>
+<h3><a name="search">リンクのパーミッション</a></h3>
 
 <table>
-<tr><th style="width:25%">Variable</th>
-    <th style="width:25%">Default Value</th>
-    <th style="width:50%">Description</th>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_0">default_permissions[0]</a></td>
-  <td valign="top"><em>Read-Write</em></td>
-  <td valign="top">Default permission for Owner of new link.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_0">パーミッションのデフォルト[0](default_permissions[0])</a></td>
+  <td valign="top"><em>表示・編集</em></td>
+  <td valign="top">リンクに関する所有者のパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_1">default_permissions[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for Group of new link.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_1">パーミッションのデフォルト[1](default_permissions[1])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクに関するグループのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_2">default_permissions[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all logged in users of new link.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_2">パーミッションのデフォルト[2](default_permissions[2])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクに関するメンバーのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_3">default_permissions[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all anonymous visitors of new link.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_3">パーミッションのデフォルト[0](default_permissions[3])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクに関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
 </table>
 
-<h3><a name="search">Category Permissions</a></h3>
+<h3><a name="search">カテゴリーのパーミッション</a></h3>
 
 <table>
-<tr><th style="width:25%">Variable</th>
-    <th style="width:25%">Default Value</th>
-    <th style="width:50%">Description</th>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_category_permissions_0">category_permissions[0]</a></td>
-  <td valign="top"><em>Read-Write</em></td>
-  <td valign="top">Default permission for Owner of new link category.</td></tr>
+  <td valign="top"><a name="desc_category_permissions_0">カテゴリーのパーミッションのデフォルト[0](category_permissions[0])</a></td>
+  <td valign="top"><em>表示・編集</em></td>
+  <td valign="top">リンクカテゴリーに関する所有者のパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_category_permissions_1">category_permissions[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for Group of new link category.</td></tr>
+  <td valign="top"><a name="desc_category_permissions_1">カテゴリーのパーミッションのデフォルト[1](category_permissions[1])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクカテゴリーに関するグループのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_category_permissions_2">category_permissions[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all logged in users of new link category.</td></tr>
+  <td valign="top"><a name="desc_category_permissions_2">カテゴリーのパーミッションのデフォルト[2](category_permissions[2])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクカテゴリーに関するメンバーのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_category_permissions_3">category_permissions[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all anonymous visitors of new link category.</td></tr>
+  <td valign="top"><a name="desc_category_permissions_3">カテゴリーのパーミッションのデフォルト[3](category_permissions[3])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクカテゴリーに関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
 </table>
 
-<h3><a name="search">Autotag Usage Permissions</a></h3>
+<h3><a name="search">自動タグのパーミッション</a></h3>
 
 <table>
-<tr><th style="width:25%">Variable</th>
-    <th style="width:25%">Default Value</th>
-    <th style="width:50%">Description</th>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_link_0">autotag_permissions_link[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_link_0">自動タグ[link: ]のパーミッション[0](autotag_permissions_link[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_link_1">autotag_permissions_link[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Links Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_link_1">自動タグ[link: ]のパーミッション[1](autotag_permissions_link[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するLinks Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_link_2">autotag_permissions_link[2]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_link_2">自動タグ[link: ]のパーミッション[2](autotag_permissions_link[2])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_link_3">autotag_permissions_link[3]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_link_3">自動タグ[link: ]のパーミッション[3](autotag_permissions_link[3])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 </table>
 
 <h2><a name="layout">リンクプラグインのインデックスページのレイアウト</a></h2>

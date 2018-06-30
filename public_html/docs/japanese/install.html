@@ -42,19 +42,26 @@
 
     <h3><a name="preinstall">必要なソフトウェア</a></h3>
 
-<p>Geeklogをインストールして使用するには、ApacheやMicrosoft IISなどのWebサーバとPHP 5.3.3(7.xもサポートしています)以降が必要です。PHPのエクステンションで必要なものは:</p>
+        <p>Geeklogをインストールして使用するには、ApacheやMicrosoft IISなどのWebサーバとPHP 5.3.3(7.xもサポートしています)以降が必要です。PHPのエクステンションで必要なものは:</p>
 
-<ul>
-    <li>mbstring</li>
-    <li>bzip2</li>
-    <li>mysqlかmysqli (MySQLをサポートするため)</li>
-    <li>pgsql (Postgresqlをサポートするため)</li>
-    <li>OpenSSL (OAuthによるログインを有効にするため)</li>
-    <li>JSON (ファイルマネージャーとデータベースツールのため)</li>
-    <li>fileinfo (記事で画像のサムネールをサポートするため)</li>
-</ul>
+        <ul>
+            <li>mbstring</li>
+            <li>bzip2</li>
+            <li>mysqlかmysqli (MySQLをサポートするため)</li>
+            <li>pgsql (Postgresqlをサポートするため)</li>
+            <li>OpenSSL (OAuthによるログインを有効にするため)</li>
+            <li>JSON (ファイルマネージャーとデータベースツールのため)</li>
+            <li>fileinfo (記事で画像のサムネールをサポートするため)</li>
+        </ul>
 
-<p>また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL</a> 4.1.2以降か、(<a href="http://mariadb.org/">MariaDB</a> 5.1以降も可), <a href="http://www.postgresql.org/download/">PostgreSQL</a> 9.1.7以降が必要です。</p>
+        <p>また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL</a> 4.1.3以降か、(<a href="http://mariadb.org/">MariaDB</a> 5.1以降も可), <a href="http://www.postgresql.org/download/">PostgreSQL</a> 9.1.7以降が必要です。</p>
+
+        <p><strong>PostgreSQLユーザーのための注意:</strong> 現在、GeeklogではPostgresオプション <span class="tt">standard_conforming_strings</span> を <span class="tt">off</span> に設定する必要があります(PostgreSQL 9.1以降はデフォルトで <span class="tt">on</span> になっています)。</p>
+        
+        <p><strong>MySQLユーザーのための注意:</strong> 多言語サイトでは、通常、データベースの照合順序に utf8_general_ci を使用します。
+この照合順序では異なる言語の文字セットを処理できます。MySQLのバージョン5.5.3では4バイト文字をサポートしています。
+例えば4バイトの絵文字アイコンの文字をサポートしたい場合は、utf8mb4_general_ci などの、それをサポートする照合順序を使用する必要があります。
+異なる照合順序を使用している既存のGeeklogのデータベースでは、phpMyAdminなどのツールを使用して、データベースのデフォルトやすべての照合順序を変更できます。当初の照合順序によっては、テーブルのデータを更新する必要があります。</p>        
 
     <h3><a name="things_you_should_know">必要な技術力</a></h3>
 
@@ -63,6 +70,7 @@
         <li>Webディレクトリのルート（ドキュメントルート）のパス(<a href="#glossary">パスとは?</a>)を見つけ出す方法を理解している。</li>
         <li>ダウンロードしたGeeklogのターボール（圧縮ファイル）を展開（解凍）できる。</li>
         <li>データベースを新規作成するか、既存のデータベースにアクセスできる。</li>
+        <li>データベースを変更できるユーザーアカウントを持っている。MySQLの場合、これにはデータベースのすべての特権が付与されたユーザーを含む(加えて、権限を付与するときにALL権限に含まれていないLOCK権限)。</li>
         <li>WebサーバーにSSHやFTPでアクセスして、いくつかのファイルとディレクトリのパーミッションを変更できる。</li>
     </ul>
 
@@ -88,16 +96,16 @@
             <p>次に、<code>geeklog-2.0.0/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ（お勧め!）かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
 
             <p><strong>注意:</strong> ホスティング会社がドキュメントツリーの外にファイルを置くことを許可していない場合は、</p>
-            <ol>
+            <ul>
                 <li>ドキュメントルート内に推測されにくい名前でディレクトリを作成します(つまり、"geeklog"などと名付けるのはダメ)。</li>
                 <li>作成したディレクトリ内に残りのファイルを転送します。</li>
                 <li>.htaccessファイルなどを用いて、そのディレクトリにBASIC認証をかけます。</li>
-            </ol>
+            </ul>
         </li>
         <li>
             <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します（<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します）。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
 
-            <p>Geeklogのインストールウィザードは自動的にインストールを行うので、単に表示される手順に従ってください。</p>
+            <p>Geeklogのインストールウィザードは自動的にインストールを行うので、表示される手順に従ってください。</p>
         </li>
         <li>
             <p><strong>インストールが終了したら、必ず、 <code>admin/install</code> ディレクトリを削除してください。サイトに最初に表示される記事を読んで、管理者としてのログイン情報を知り、デフォルト状態のパスワードを速やかに変更してください。</strong><br />
@@ -128,27 +136,24 @@
         <li>
             <p><code>geeklog-2.0.0/</code> ディレクトリの中身を、現在インストールしているバージョンの同じディレクトリに転送します。たとえば、現在のバージョンを <code>/usr/home/www/geeklog/</code> にインストールしているなら、新しいバージョンも <code>/usr/home/www/geeklog/</code> に転送します。</p>
         </li>
-        <li>
-            旧バージョンからのアップグレード：
-						<ul>
-							<li><p><strong>Geeklog 1.4.1及びそれ以前のバージョンからのアップグレード</strong>：<span class="tt">config.php</span> ファイル（メインの <code>config.php</code> と各プラグインの <code>config.php</code>）をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。インストールウィザードはアップグレードの最中にこれらの設定ファイルからデータを読み取り、新しいコンフィギュレーション用に値を設定します。このステップを省くと、Geeklogとインストール済みプラグインのデフォルトに戻されてしまいます。</p></li>
-							<li><p><strong>Geeklog 1.5.0及びそれ以降のバージョンからのアップグレード</strong>：<span class="tt">db-config.php</span> と <span class="tt">siteconfig.php</span> をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。さもないと、アップグレードの過程でデータベース情報などを再入力することになります。</p></li>
-						</ul>
+        <li>旧バージョンからのアップグレード：
+            <ul>
+                <li><p><strong>Geeklog 1.4.1及びそれ以前のバージョンからのアップグレード</strong>：<span class="tt">config.php</span> ファイル（メインの <code>config.php</code> と各プラグインの <code>config.php</code>）をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。インストールウィザードはアップグレードの最中にこれらの設定ファイルからデータを読み取り、新しいコンフィギュレーション用に値を設定します。このステップを省くと、Geeklogとインストール済みプラグインのデフォルトに戻されてしまいます。</p></li>
+                <li><p><strong>Geeklog 1.5.0及びそれ以降のバージョンからのアップグレード</strong>：<span class="tt">db-config.php</span> と <span class="tt">siteconfig.php</span> をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。さもないと、アップグレードの過程でデータベース情報などを再入力することになります。</p></li>
+            </ul>
         </li>
         <li>
             <p>Webブラウザーを起動し、Geeklogのインストールウィザードを実行します（<code>http://サイトのURL/admin/install/index.php</code> をアドレス欄に入力します）。Geeklogのファイルをサブドメインに置いた場合は、<code>http://サイトのURL/サブドメイン名/admin/install/index.php</code> などとなります。</p>
 
-            <p>Geeklogのインストールウィザードは自動的にインストールを行うので、単に表示される手順に従ってください。</p>
+            <p>Geeklogのインストールウィザードは自動的にインストールを行うので、表示される手順に従ってください。</p>
         </li>
         <li>
-            <p><strong>インストールが終了したら、必ず、 <code>admin/install</code> ディレクトリを削除してください。</strong>
-</p>
+            <p><strong>インストールが終了したら、必ず、 <code>admin/install</code> ディレクトリを削除してください。</strong></p>
         </li>
         <li>
             <p>必要なら <code>lib-custom.php</code> などのバックアップしておいたコードやテーマなどのファイル類を戻します。</p>
         </li>
     </ol>
-
 
 <h2><a name="migrate">移行</a></h2>
 
@@ -249,7 +254,10 @@ Cannnot connect to DB server</code></p>
             </li>
             <li>
                 <p>エラーメッセージをGoogleで検索してみましょう。他の人が同じ問題に遭遇し、解決している可能性があります。Googleで検索していると、同じエラーが発生している壊れたページが表示されることもあります。</p>
-                <p>なお、サポートについて詳しくは、ドキュメント「<a href="support.html">サポート</a>」をご覧ください。</p></li>
+            </li>
+            <li>
+                <p>なお、サポートについて詳しくは、ドキュメント「<a href="support.html">サポート</a>」をご覧ください。</p>
+            </li>
         </ol>
 
 <div class="footer">

@@ -1,9 +1,10 @@
 body {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  line-height: 150%;
+  font-size: 14px;
   margin: 1em 5%;
   background: white;
   color: black;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: smaller;
 }
 
 h1 {
@@ -40,30 +41,41 @@ code, kbd, var {
   font-family: Courier, "Courier New", monospace;
 }
 
+code, kbd, var, tt {
+  font-size: 1.0em;
+}
+
 table {
   width: 100%;
+  margin: 1em;
+  background: #F9F9F9;
+  border: 1px #AAA solid;
+  border-collapse: collapse;
+  font-size: 1.0em;
 }
 
-td, th {
+table th,
+table td {
+  border: 1px #AAA solid;
+  padding: .2em;
   vertical-align: top;
-  padding: 4px;
-  line-height: 128%;
-  font-size: smaller;
+  line-height: 140%;
+  font-size: 1.0em;
 }
 
-th {
-  text-align: left;
+table th {
   background: silver;
+  text-align: center;
+  font-weight: bold;
 }
 
-.r2 {
+tbody tr:nth-of-type(2n+1) {
   background: rgb(240,240,240);
 }
 
 dt {
   font-weight: bold;
 }
-
 
 .usual {
   font-size: 100%;
@@ -132,5 +144,5 @@ strong {
 }
 
 em {
-    font-style: italic;;
+    font-style: italic;
 }

@@ -33,7 +33,7 @@
   <td>はい(1)にすると、登録ユーザーしか最近のアンケートにアクセスできなくなります。<br />
     この設定値よりも、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_loginrequired">すべてにログインを要求する(loginrequired)</a>」の設定の方が優先されます。「すべてにログインを要求する」をはい(1)にすると、アンケートプラグインでログインを要求していなくても、ゲストユーザーはアンケートにアクセスできなくなります。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_hidepollsmenu">メニューに表示しない(hidepollsmenu)</a></td>
   <td>いいえ(0)</td>
   <td>はい(1)にすると、サイトのメニューに「アンケート」メニューを表示しません。</td>
@@ -43,7 +43,7 @@
   <td>10</td>
   <td>アンケート毎の質問の最大数を指定します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_maxanswers">質問毎の選択肢の最大数(maxanswers)</a></td>
   <td>10</td>
   <td>質問毎の選択肢の最大数を指定します。</td>
@@ -53,7 +53,7 @@
   <td>登録順(submitorder)</td>
   <td>アンケート結果を「得票順(voteorder)」に並び替えるか、アンケートの「登録順(submitorder)」で並び替えるかを指定します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_pollcookietime">投票者のクッキーの有効期間(pollcookietime)</a></td>
   <td>86400（秒）</td>
   <td>投票者のクッキーの有効期間を秒数で指定します。いったん投票すると、この期間は同じ質問に投票できません。デフォルトは86,400秒（＝24時間）です。</td>
@@ -63,7 +63,7 @@
   <td>604800</td>
   <td>投票者のIPアドレスの有効期間を秒数で指定します。いったん投票すると、この期間は同じIPから投票できません。デフォルトは604,800秒（＝7日間）です。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_delete_polls">所有者の削除と共に削除する(delete_polls)</a></td>
   <td>いいえ(0)</td>
   <td>はい(1)にすると、アンケート所有者のアカウントが削除されたときに、所有していたすべてのアンケートが全コメントと共に削除され、いいえ(0)にすると、Rootグループに属するユーザー（たとえば、サイトの管理者）に引き継がれます。</td>
@@ -98,7 +98,7 @@
   <td valign="top"><a name="desc_newpollsinterval">アンケートの"新着"期間(newpollsinterval)</a></td>
   <td valign="top">1209600秒 (= 2週間)</td>
   <td valign="top">アンケートが新着ブロックに表示される期間を秒数で指定します。</td></tr>
-<tr class="r2">
+<tr>
   <td valign="top"><a name="desc_hidenewpolls">新着アンケート(hidenewpolls)</a></td>
   <td valign="top">表示しない</td>
   <td valign="top">新着ブロックに、'表示しない'、'作成日付によって表示する'、'編集日付によって表示する'を選択します。</td></tr>
@@ -108,91 +108,91 @@
   <td valign="top">新着ブロックに表示するタイトルのトリミングの文字数を指定します。</td></tr>
 </table>
 
-<h3><a name="search">Default Permissions</a></h3>
+<h3><a name="search">パーミッションのデフォルト</a></h3>
 
 <table>
-<tr><th style="width:25%">Variable</th>
-    <th style="width:25%">Default Value</th>
-    <th style="width:50%">Description</th>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_0">default_permissions[0]</a></td>
-  <td valign="top"><em>Read-Write</em></td>
-  <td valign="top">Default permission for Owner of new poll.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_0">パーミッションのデフォルト[0](default_permissions[0])</a></td>
+  <td valign="top"><em>表示・編集</em></td>
+  <td valign="top">アンケートに関する所有者のパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_1">default_permissions[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for Group of new poll.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_1">パーミッションのデフォルト[1](default_permissions[1])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">アンケートに関するグループのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_2">default_permissions[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all logged in users of new poll.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_2">パーミッションのデフォルト[2](default_permissions[2])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">アンケートに関するメンバーのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_3">default_permissions[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all anonymous visitors of new poll.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_3">パーミッションのデフォルト[3](default_permissions[3])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">アンケートに関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
 </table>
 
-<h3><a name="search">Autotag Usage Permissions</a></h3>
+<h3><a name="search">自動タグのパーミッション</a></h3>
 
 <table>
-<tr><th style="width:25%">Variable</th>
-    <th style="width:25%">Default Value</th>
-    <th style="width:50%">Description</th>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_0">autotag_permissions_poll[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_0">自動タグ[poll: ]のパーミッション[0](autotag_permissions_poll[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_1">autotag_permissions_poll[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Polls Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_1">自動タグ[poll: ]のパーミッション[1](autotag_permissions_poll[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するPolls Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_2">autotag_permissions_poll[2]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_2">自動タグ[poll: ]のパーミッション[2](autotag_permissions_poll[2])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_3">autotag_permissions_poll[3]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_3">自動タグ[poll: ]のパーミッション[3](autotag_permissions_poll[3])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_vote_0">autotag_permissions_poll_vote[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_vote_0">自動タグ[poll_vote: ]のパーミッション[0](autotag_permissions_poll_vote[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_vote_1">autotag_permissions_poll_vote[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Polls Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_vote_1">自動タグ[poll_vote: ]のパーミッション[1](autotag_permissions_poll_vote[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するPolls Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_vote_2">autotag_permissions_poll_vote[2]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_vote_2">自動タグ[poll_vote: ]のパーミッション[2](autotag_permissions_poll_vote[2])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_vote_3">autotag_permissions_poll_vote[3]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_vote_3">自動タグ[poll_vote: ]のパーミッション[3](autotag_permissions_poll_vote[3])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_result_0">autotag_permissions_poll_result[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_result_0">自動タグ[poll_result: ]のパーミッション[0](autotag_permissions_poll_result[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_result_1">autotag_permissions_poll_result[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Polls Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_result_1">自動タグ[poll_result: ]のパーミッション[1](autotag_permissions_poll_result[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するPolls Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_result_2">autotag_permissions_poll_result[2]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_result_2">自動タグ[poll_result: ]のパーミッション[2](autotag_permissions_poll_result[2])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_poll_result_3">autotag_permissions_poll_result[3]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_poll_result_3">自動タグ[poll_result: ]のパーミッション[3](autotag_permissions_poll_result[3])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 </table>
 
-<h3><a name="pollblock">投票ブロック</a></h3>
+<h3><a name="pollblock">アンケートブロック</a></h3>
 
 <table>
 <tr><th style="width:25%">項目(変数)</th>
@@ -203,7 +203,7 @@
   <td valign="top"><a name="desc_block_enable">有効(block_enable)</a></td>
   <td valign="top">true</td>
   <td valign="top">ブロックを有効化します。</td></tr>
-<tr class="r2">
+<tr>
   <td valign="top"><a name="desc_block_isleft">左ブロックで表示する(block_isleft)</a></td>
   <td valign="top">1</td>
   <td valign="top">左ブロックで表示(1) あるいは右 (0)に表示します。</td></tr>
@@ -211,7 +211,7 @@
   <td valign="top"><a name="desc_block_order">ブロックの順番(block_order)</a></td>
   <td valign="top">50</td>
   <td valign="top">ブロックカラムの並べ替え番号を指定します。</td></tr>
-<tr class="r2">
+<tr>
   <td valign="top"><a name="desc_block_topic_option">話題オプション(block_topic_option)</a></td>
   <td valign="top">'all'</td>
   <td valign="top">'すべて'なら、すべてのページで表示。'ホームページのみ'ならホームページのみで表示。'話題を選択する'なら選択された話題でのみ表示されます。</td></tr>
@@ -219,26 +219,26 @@
   <td valign="top"><a name="desc_block_topic">話題(block_topic)</a></td>
   <td valign="top"></td>
   <td valign="top">話題オプションが '話題を選択する'のときだけ表示されます。</td></tr>
-<tr class="r2">
+<tr>
   <td valign="top"><a name="desc_block_group_id">グループ(block_group_id)</a></td>
   <td valign="top">Calendar Admin</td>
   <td valign="top">パーミッションで使われるグループ</td></tr>
 <tr>
-  <td valign="top"><a name="desc_block_permissions_0">block_permissions[0]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">View permission for dynamic block by block Owner (Root User).</td></tr>
+  <td valign="top"><a name="desc_block_permissions_0">アンケートブロックのパーミッション[0](block_permissions[0])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">ダイナミックブロックの表示に関するブロック管理者(デフォルトはRootユーザー)のパーミッションを設定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_block_permissions_1">block_permissions[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">View permission for dynamic block by assigned Admin Group (see config option block_group_id).</td></tr>
+  <td valign="top"><a name="desc_block_permissions_1">アンケートブロックのパーミッション[1](block_permissions[1])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">ダイナミックブロックの表示に関する、アサインされた管理者グループ(コンフィグオプションblock_group_idを参照)のパーミッションを設定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_block_permissions_2">block_permissions[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">View permission for dynamic block by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_block_permissions_2">アンケートブロックのパーミッション[2](block_permissions[2])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">ダイナミックブロックの表示に関するメンバーのパーミッションを設定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_block_permissions_3">block_permissions[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">View permission for dynamic block by anonymous users.</td></tr>   
+  <td valign="top"><a name="desc_block_permissions_3">アンケートブロックのパーミッション[3](block_permissions[3])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">ダイナミックブロックの表示に関するゲストユーザーのパーミッションを設定します。</td></tr>   
 </table>
 
 <h2>アンケートの仕組み</h2>

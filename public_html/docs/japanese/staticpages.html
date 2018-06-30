@@ -159,7 +159,7 @@
   <td><code>はい</code></td>
   <td>静的ページにおいて、<a href="#php">PHPを許可する</a>。つまり、この設定で、個々のページの設定を上書きします</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_sort_by">センターブロックの並べ替え(sort_by)</a></td>
   <td><span class="tt">ページID</span></td>
   <td>センターブロックに静的ページが複数表示される場合の順番を設定します。ページID、ページタイトル、最後に編集した日付から選べます。</td>
@@ -169,7 +169,7 @@
   <td><span class="tt">ラベル</span></td>
   <td>サイトメニューの順番を設定します。ページラベル、ページID, ページタイトル、最後に編集した日付から選べます。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_sort_list_by">管理者ページの並べ替え(sort_list_by)</a></td>
   <td>タイトル</td>
   <td>管理者専用画面で表示する並べ替え順のデフォルトを指定します。
@@ -180,7 +180,7 @@
   <td><span class="tt">いいえ</span></td>
   <td>ページの所有者のアカウントが削除された場合、つまりその静的ページを最初に作成したユーザーが居なくなった場合、そのページを'True'なら削除、'False'なら"Root"グループのユーザー(通常は最も小さい値のIDのRootユーザー)に変更します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_in_block">ページをブロックで囲む(in_block)</a></td>
   <td><span class="tt">はい</span></td>
   <td>静的ページを作成する際、ページをブロックで囲むモードのデフォルトを設定します。</td>
@@ -190,7 +190,7 @@
   <td><span class="tt">いいえ</span></td>
   <td>閲覧回数を表示するかどうかを設定します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_show_date">日時を表示する(show_date)</a></td>
   <td><span class="tt">はい</span></td>
   <td>最後に編集した日時を表示するかどうかを設定します。</td>
@@ -200,7 +200,7 @@
   <td><span class="tt">いいえ</span></td>
   <td>GeeklogのHTMLフィルターを静的ページの編集時に適用させるかどうかを設定します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_censor">コンテンツを検閲する(censor)</a></td>
   <td><span class="tt">いいえ</span></td>
   <td>Geeklogの"バッドワード"フィルターを静的ページの編集時に適用させるかどうかを設定します。
@@ -217,7 +217,7 @@
     <li>管理画面トップを表示します。</li>
     </ul></td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_atom_max_items">フィードに書き出す最大ページ数(atom_max_items)</a></td>
   <td>10</td>
   <td>WebサービスAPIによってatomフィードに書き出す静的ページ数の最大値を指定します。</td>
@@ -227,7 +227,7 @@
   <td>false</td>
   <td>静的ページが表示されたときメタタグをセットするかどうかを指定します。</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_comment_code">新規作成時のデフォルト(comment_code)</a></td>
   <td>-1</td>
   <td>静的ページにコメントを許可 (0) または不可 (-1) を指定します。
@@ -243,14 +243,14 @@
   <td>0</td>
   <td>パンくずリストを無効(0)、または有効(1)にします。</td>
 </tr>
-<tr class="r2">
-  <td><a name="desc_default_cache_time">default_cache_time</a></td>
+<tr>
+  <td><a name="desc_default_cache_time">デフォルトキャッシュタイム(default_cache_time)</a></td>
   <td>0</td>
-  <td>The default cache time for a staticpage. Possible values:<br />
+  <td>静的ページのデフォルトのキャッシュ時間です。 指定可能な値:<br />
     <ul>
-        <li>1 or more = Amount of seconds a static page will be cached before it is regenerated and saved again to a new cache file.</li>
-        <li>0 = Not cached. Page is always regenerated.</li>
-        <li>-1 = Always cached and only regenerated when the page is updated and saved through the staticpage editor.</li>
+        <li>1以上 = 静的ページが再生成されてキャッシュファイルに保存されるまでにキャッシュされる秒数。</li>
+        <li>0 = キャッシュされません。 ページは常に再生成されます。</li>
+        <li>-1 = 常にキャッシュされ、ページが更新され、静的ページエディタで保存されたときにのみ再生成されます。</li>
     </ul>
 </td>
 </tr>
@@ -267,7 +267,7 @@
   <td valign="top"><a name="desc_newstaticpagesinterval">静的ページの"新着"期間(newstaticpagesinterval)</a></td>
   <td valign="top">1209600秒 (= 2週間)</td>
   <td valign="top">静的ページが新着ブロックに表示される期間を秒数で指定します。</td></tr>
-<tr class="r2">
+<tr>
   <td valign="top"><a name="desc_hidenewstaticpages">新着ブロック表示(hidenewstaticpages)</a></td>
   <td valign="top">表示しない</td>
   <td valign="top">新着ブロックに、'表示しない'、'作成日付によって表示する'、'編集日付によって表示する'を選択します。</td></tr>
@@ -275,7 +275,7 @@
   <td valign="top"><a name="desc_title_trim_length">タイトル最大長(title_trim_length)</a></td>
   <td valign="top">20</td>
   <td valign="top">新着ブロックに表示するタイトルのトリミングの文字数を指定します。</td></tr>
-<tr class="r2">
+<tr>
   <td valign="top"><a name="desc_includecenterblocks">センターブロックのページを含む(includecenterblocks)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">センターブロックに表示する静的ページを含むかどうかを指定します。</td></tr>
@@ -297,7 +297,7 @@
   <td valign="top"><a name="desc_includesearch">静的ページを検索する(includesearch)</a></td>
   <td valign="top">true</td>
   <td valign="top">検索結果に静的ページを含ませるかどうかを指定します。</td></tr>
-<tr class="r2">
+<tr>
   <td valign="top"><a name="desc_includesearchcenterblocks">センターブロックの静的ページを含む(includesearchcenterblocks)</a></td>
   <td valign="top">false</td>
   <td valign="top">検索結果にセンターブロックの静的ページを含ませるかどうかを指定します。</td></tr>
@@ -307,71 +307,71 @@
   <td valign="top">検索結果にPHPモードの静的ページを含ませるかどうかを指定します。</td></tr>
 </table>
 
-<h3><a name="search">Default Permissions</a></h3>
+<h3><a name="search">パーミッションのデフォルト</a></h3>
 
 <table>
-<tr><th style="width:25%">Variable</th>
-    <th style="width:25%">Default Value</th>
-    <th style="width:50%">Description</th>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_0">default_permissions[0]</a></td>
-  <td valign="top"><em>Read-Write</em></td>
-  <td valign="top">Default permission for Owner of new page.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_0">パーミッションのデフォルト[0](default_permissions[0])</a></td>
+  <td valign="top"><em>表示・編集</em></td>
+  <td valign="top">リンクに関する所有者のパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_1">default_permissions[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for Group of new page.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_1">パーミッションのデフォルト[1](default_permissions[1])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクに関するグループのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_2">default_permissions[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all logged in users of new page.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_2">パーミッションのデフォルト[2](default_permissions[2])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクに関するメンバーのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_3">default_permissions[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all anonymous visitors of new page.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_3">パーミッションのデフォルト[3](default_permissions[3])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">リンクに関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
 </table>
 
-<h3><a name="search">Autotag Usage Permissions</a></h3>
+<h3><a name="search">自動タグのパーミッション</a></h3>
 
 <table>
-<tr><th style="width:25%">Variable</th>
-    <th style="width:25%">Default Value</th>
-    <th style="width:50%">Description</th>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_staticpage_0">autotag_permissions_staticpage[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_staticpage_0">自動タグ[staticpage: ]のパーミッション[0](autotag_permissions_staticpage[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_staticpage_1">autotag_permissions_staticpage[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Static Page Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_staticpage_1">自動タグ[staticpage: ]のパーミッション[1](autotag_permissions_staticpage[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するStatic Page Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_staticpage_2">autotag_permissions_staticpage[2]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_staticpage_2">自動タグ[staticpage: ]のパーミッション[2](autotag_permissions_staticpage[2])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_staticpage_3">autotag_permissions_staticpage[3]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_staticpage_3">自動タグ[staticpage: ]のパーミッション[3](autotag_permissions_staticpage[3])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_staticpage_content_0">autotag_permissions_staticpage_content[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_staticpage_content_0">自動タグ[staticpage_content: ]のパーミッション[0](autotag_permissions_staticpage_content[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_staticpage_content_1">autotag_permissions_staticpage_content[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Static Page Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_staticpage_content_1">自動タグ[staticpage_content: ]のパーミッション[1](autotag_permissions_staticpage_content[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するStatic Page Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_staticpage_content_2">autotag_permissions_staticpage_content[2]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_staticpage_content_2">自動タグ[staticpage_content: ]のパーミッション[2](autotag_permissions_staticpage_content[2])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_staticpage_content_3">autotag_permissions_staticpage_content[3]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr> 
+  <td valign="top"><a name="desc_autotag_permissions_staticpage_content_3">自動タグ[staticpage_content: ]のパーミッション[3](autotag_permissions_staticpage_content[3])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr> 
 </table>
 
 

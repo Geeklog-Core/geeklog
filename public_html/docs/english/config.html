@@ -50,9 +50,9 @@ manually.</p>
 <h3><a name="site_site">Site: Site</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_site_url">site_url</a></td>
   <td valign="top">http://www.example.com</td>
@@ -83,7 +83,7 @@ manually.</p>
     in the <span class="tt">siteconfig.php</span> file.</td></tr>
 <tr>
   <td valign="top"><a name="desc_owner_name">owner_name</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">The name of the owner of the site. This is used in the copyright notice if set, else the site name is used.</td></tr>
 <tr>
   <td valign="top"><a name="desc_copyrightyear">copyrightyear</a></td>
@@ -107,7 +107,7 @@ manually.</p>
   <td valign="top">Enable (true) or disable (false) CDN-hosted source for jQuery, jQuery UI and uikit.</td></tr>
 <tr>
   <td valign="top"><a name="desc_meta_tags">meta_tags</a></td>
-  <td valign="top">disabled</td>
+  <td valign="top">Disabled</td>
   <td valign="top">Enabled - The meta tags for articles and topics will be displayed. If none are found, then the default will be used. The default will also be used for any page that doesn't have meta tags.<br />
       Enabled (Default for Homepage only) - The same as Enabled except, the defaults are used only for the Homepage.<br />
     Disabled - Meta tags are not used.</td></tr>
@@ -124,9 +124,9 @@ manually.</p>
 <h3><a name="site_mail">Site: Mail</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_site_mail">site_mail</a></td>
   <td valign="top">admin@example.com</td>
@@ -194,9 +194,9 @@ be used as the <em>default settings</em> for any new feeds that you create from
 the admin panel.</p>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr><td valign="top"><a name="desc_backend">backend</a></td>
     <td valign="top">1</td>
     <td valign="top">Create a feed file for the articles in rdf_file (0=no, 1=yes)</td></tr>
@@ -231,7 +231,7 @@ the admin panel.</p>
     <td valign="top">end</td>
     <td valign="top">The position of the article_tag in the comment body. This indicates where the article tag, when formatted, should be inserted into the comment. This may be start, end or none.</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_author_tag">comment_feeds_article_author_tag</a></td>
-    <td valign="top"></td>
+    <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
     <td valign="top">A tag to link to the article author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string. An example of an Article Author Tag would be: <pre> Written By: &lt;a href="%s"&gt;%s&lt;/a&gt;</pre></td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_comment_author_tag">comment_feeds_comment_author_tag</a></td>
     <td valign="top"><pre>, Comment By: &lt;a href="%s"&gt;%s&lt;/a&gt;</pre></td>
@@ -241,9 +241,9 @@ the admin panel.</p>
 <h3><a name="site_paths">Site: Paths</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr><td valign="top"><a name="desc_path_html">path_html</a></td>
     <td valign="top">/path/to/geeklog/public_html/</td>
     <td valign="top">Path to your web tree directory for your site (trailing slash necessary).  This directory holds all the web pages used by Geeklog.</td></tr>
@@ -271,9 +271,9 @@ the admin panel.</p>
 <h3><a name="site_database">Site: Database</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr><td valign="top"><a name="desc_dbdump_filename_prefix">dbdump_filename_prefix</a></td>
     <td valign="top">geeklog_db_backup</td>
     <td valign="top">Prefix to use for the names of the backup files. Default file name will be "geeklog_db_backup_date_time.sql".</td></tr>
@@ -292,9 +292,9 @@ the admin panel.</p>
 <h3><a name="site_search">Site: Search</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_search_style">search_style</a></td>
   <td valign="top">'google'</td>
@@ -350,9 +350,9 @@ the admin panel.</p>
 <h3><a name="stories_story">Articles and Trackback: Article</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_maximagesperarticle">maximagesperarticle</a></td>
   <td valign="top">5</td>
@@ -480,9 +480,9 @@ the admin panel.</p>
 <h3><a name="stories_trackback">Articles and Trackback: Trackback</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_trackback_enabled">trackback_enabled</a></td>
   <td valign="top">true</td>
@@ -517,9 +517,9 @@ the admin panel.</p>
 <h3><a name="stories_pingback">Articles and Trackback: Pingback</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_pingback_enabled">pingback_enabled</a></td>
   <td valign="top">true</td>
@@ -556,9 +556,9 @@ the admin panel.</p>
 <h3><a name="theme_theme">Theme: Theme</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_theme">theme</a></td>
   <td valign="top">Denim</td>
@@ -573,8 +573,8 @@ the admin panel.</p>
     hard-coded DOCTYPE in their <span class="tt">header.thtml</span>.</td></tr>
 <tr>
   <td valign="top"><a name="desc_menu_elements">menu_elements</a></td>
-  <td valign="top"><code>array('contribute', 'search', 'stats', 'directory',
-    'plugins')</code></td>
+  <td valign="top">array('contribute', 'search', 'stats', 'directory',
+    'plugins')</td>
   <td valign="top">Specifies which entries are displayed in the site's menu bar
     (if your theme uses the <code>{menu_elements}</code> variable to display
     the menu bar). Can be any combination of <span class="tt">'home'</span>,
@@ -587,7 +587,7 @@ the admin panel.</p>
     <span class="tt">lib-custom.php</span> for details).</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_themes">path_themes</a></td>
-  <td valign="top"><code>path/to/path_themes</code></td>
+  <td valign="top">path/to/path_themes</td>
   <td valign="top">Specifies the path to the parent directory (named "layout") of themes, which is directly under the path to public_html.  Trailing slash is necessary.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cache_templates">cache_templates</a></td>
@@ -620,9 +620,9 @@ the admin panel.</p>
 <h3><a name="theme_advanced">Theme: Advanced Settings</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_show_right_blocks">show_right_blocks</a></td>
   <td valign="top">false</td>
@@ -656,9 +656,9 @@ the admin panel.</p>
 <h3><a name="blocks_admin">Blocks: Admin Block</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_sort_admin">sort_admin</a></td>
   <td valign="top">false</td>
@@ -682,9 +682,9 @@ the admin panel.</p>
 <h3><a name="blocks_topics">Blocks: Topics Block</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_sortmethod">sortmethod</a></td>
   <td valign="top">alpha</td>
@@ -707,9 +707,9 @@ the admin panel.</p>
 <h3><a name="blocks_who">Blocks: Who's Online Block</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_whosonline_threshold">whosonline_threshold</a></td>
   <td valign="top">300</td>
@@ -727,9 +727,9 @@ the admin panel.</p>
 <h3><a name="blocks_what">Blocks: What's New Block</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_newstoriesinterval">newstoriesinterval</a></td>
   <td valign="top">86400</td>
@@ -776,9 +776,9 @@ the admin panel.</p>
 <h3><a name="users_users">Users and Submissions: Users</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_disable_new_user_registration">disable_new_user_registration</a></td>
   <td valign="top">false</td>
@@ -786,11 +786,11 @@ the admin panel.</p>
     to sign up as a new user.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_user_themes">allow_user_themes</a></td>
-  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">1</td>
   <td valign="top">If set to 1, users can set their own theme that the site uses</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_user_photo">allow_user_photo</a></td>
-  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">1</td>
   <td valign="top">If set to 1, users can upload a photo to their profile</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_username_change">allow_username_change</a></td>
@@ -804,7 +804,7 @@ the admin panel.</p>
   <td valign="top">If set to 1, users will be allowed to delete their accounts. Articles and comments posted under that account will be kept and show up as being posted by "Anonymous".</td></tr>
 <tr>
   <td valign="top"><a name="desc_hide_author_exclusion">hide_author_exclusion</a></td>
-  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">0</td>
   <td valign="top">If set to 1, the option to to exclude certain authors from being seen is hidden from the user's preferences.</td></tr>
 <tr>
   <td valign="top"><a name="desc_show_fullname">show_fullname</a></td>
@@ -829,23 +829,23 @@ the admin panel.</p>
     <span class="tt">false</span> to disable.</td></tr>
 <tr>
   <td valign="top"><a name="desc_custom_registration">custom_registration</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">When set to <code>true</code>, Geeklog will let you use
       your own signup form for new user registrations. Please see the file
       <span class="tt">lib-custom.php</span> that ships with Geeklog for an example.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_standard">standard</a></td>
-  <td valign="top"><code>true</code></td>
+  <td valign="top">true</td>
   <td valign="top">Whether to allow normal logins into the site, i.e. with
     a user account that only exists in your site's database.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_openid">openid</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Whether to allow logins using <a href="http://openid.net/">OpenID</a>. This will display a special OpenID login below the normal login field.<br />
     <strong>Note:</strong> Currently only OpenID 1.1 is supported.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_3rdparty">3rdparty</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with some other service to log into your Geeklog site with the
     login for that service. Currently supported: LDAP.<br />
@@ -856,7 +856,7 @@ the admin panel.</p>
     See <a href="https://www.geeklog.net/article.php/remote-authentication">Remote Authentication in Geeklog</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">oauth</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Whether to allow logins using <a href="http://oauth.net/">OAuth</a>. This will display a special OAuth login below the normal login field.<br />
     <strong>Note:</strong> Currently OAuth 1.0, 1.0a, and 2.0 is supported (depends on what the OAuth provider supports). Current login methods supported: Facebook, Twitter, LinkedIn, Google, Microsoft, and Yahoo.<br />
     To enable logins for a specific method, you need to enable the method below and you must also update the config options with the correct key and secret string values.
@@ -864,126 +864,126 @@ the admin panel.</p>
     See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_login">facebook_login</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Facebook to log into Geeklog with said account using OAuth. You must set the Facebook application ID and secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_key">facebook_consumer_key</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Facebook OAuth login method. Visit this <a href="http://developers.facebook.com/setup/">Facebook Developers page</a>
   to create an application to receive your key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_secret">facebook_consumer_secret</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Facebook OAuth login method. Visit this <a href="http://developers.facebook.com/setup/">Facebook Developers page</a>
   to create an application to receive your key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_login">linkedin_login</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with LinkedIn to log into Geeklog with said account using OAuth. You must set the LinkedIn API and secret key.</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_key">linkedin_consumer_key</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use LinkedIn OAuth login method. Visit this <a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>
   to create an application to receive your API and secret key.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_secret">linkedin_consumer_secret</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use LinkedIn OAuth login method. Visit this <a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>
   to create an application to receive your API and secret key.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_login">twitter_login</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Twitter to log into Geeklog with said account using OAuth. You must set the Twitter consumer key and secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_key">twitter_consumer_key</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a>
   to create an application to receive your consumer key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_secret">twitter_consumer_secret</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a>
   to create an application to receive your consumer key and secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_login">google_login</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Google to log into Geeklog with said account using OAuth. You must set the Google client id and client secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_consumer_key">google_consumer_key</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a>
   to create an application to receive your client ID and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_google_consumer_secret">google_consumer_secret</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a>
   to create an application to receive your client ID and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_login">microsoft_login</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Microsoft to log into Geeklog with said account using OAuth. You must set the Microsoft client id and client secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_key">microsoft_consumer_key</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a>
   to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_microsoft_consumer_secret">microsoft_consumer_secret</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Microsoft OAuth login method. Visit the <a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a>
   to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_login">yahoo_login</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with Yahoo to log into Geeklog with said account using OAuth. You must set the Yahoo consumer key and consumer secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_consumer_key">yahoo_consumer_key</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a>
   to create an application to receive your consumer key and consumer secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_yahoo_consumer_secret">yahoo_consumer_secret</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Yahoo OAuth login method. Visit this <a href="http://developer.yahoo.com">Yahoo Developer page</a>
   to create an application to receive your consumer key and consumer secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_github_login">github_login</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
     an account with GitHub to log into Geeklog with said account using OAuth. You must set the GitHub client id and client secret.</td></tr>
 <tr>
   <td valign="top"><a name="desc_github_consumer_key">github_consumer_key</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use GitHub OAuth login method. Visit this <a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>
   to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_github_consumer_secret">github_consumer_secret</a></td>
-  <td valign="top"><code>''</code></td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use GitHub OAuth login method. Visit this <a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>
   to create an application to receive your client id and client secret.<br />
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_user">aftersave_user</a></td>
-  <td valign="top"><code>'item'</code></td>
+  <td valign="top">'item'</td>
   <td valign="top">Which page to go to after a user has been saved:
     <ul>
     <li>'item': display the user's profile</li>
@@ -996,9 +996,9 @@ the admin panel.</p>
 <h3><a name="users_spamx">Users and Submissions: Spam-X</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_spamx">spamx</a></td>
   <td valign="top">128</td>
@@ -1012,12 +1012,12 @@ the admin panel.</p>
 <h3><a name="users_login">Users and Submissions: Login Settings</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_lastlogin">lastlogin</a></td>
-  <td valign="top"><code>true</code></td>
+  <td valign="top">true</td>
   <td valign="top">Whether to keep track of when a user last logged in
     (<code>= true</code>) or not (<code>= false</code>).</td></tr>
 <tr><td valign="top"><a name="desc_loginrequired">loginrequired</a></td>
@@ -1116,9 +1116,9 @@ the admin panel.</p>
 <h3><a name="users_usersub">Users and Submissions: User Submission</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_usersubmission">usersubmission</a></td>
   <td valign="top">0</td>
@@ -1126,7 +1126,7 @@ the admin panel.</p>
       new users must be approved before they receive their password)</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_domains">allow_domains</a></td>
-  <td valign="top">''</td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">When the user submission queue is enabled this can contain a
     comma-separated list of domain names from which user submissions will not
     be queued (but approved automatically). Regular expressions are also allowed
@@ -1134,7 +1134,7 @@ the admin panel.</p>
     <span class="tt">'mycompany.com,myothercompany.com'</span></td></tr>
 <tr>
   <td valign="top"><a name="desc_disallow_domains">disallow_domains</a></td>
-  <td valign="top">''</td>
+  <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">This is the opposite of <code>$_CONF['allow_domains']</code>
     (see above): A list of domain names that are <em>not</em> allowed in email
     addresses of new users. Note that this list is <em>always</em> used, even
@@ -1147,9 +1147,9 @@ the admin panel.</p>
 <h3><a name="users_submission">Users and Submissions: Submission Settings</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_storysubmission">storysubmission</a></td>
   <td valign="top">1</td>
@@ -1177,10 +1177,10 @@ the admin panel.</p>
   <td valign="top">false</td>
   <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
     article and comment submissions and static pages. Geeklog ships with <a
-    href="http://ckeditor.com">CKeditor</a>.</td></tr>
+    href="http://ckeditor.com">CKEditor</a>.</td></tr>
 <tr>
   <td valign="top"><a name="desc_advanced_editor_name">advanced_editor_name</a></td>
-  <td valign="top">CKeditor</td>
+  <td valign="top">CKEditor</td>
   <td valign="top">Default editor to use on the site</td></tr>
 <tr>
   <td valign="top"><a name="desc_wikitext_editor">wikitext_editor</a></td>
@@ -1201,9 +1201,9 @@ the admin panel.</p>
 <h3><a name="users_comments">Users and Submissions: Comments</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_commentspeedlimit">commentspeedlimit</a></td>
   <td valign="top">45</td>
@@ -1283,9 +1283,9 @@ the admin panel.</p>
 <h3><a name="images_imagelib">Images: Image Library</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_image_lib">image_lib</a></td>
   <td valign="top">None</td>
@@ -1314,9 +1314,9 @@ the admin panel.</p>
 <h3><a name="images_upload">Images: Upload</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_keep_unscaled_image">keep_unscaled_image</a></td>
   <td valign="top">0</td>
@@ -1343,7 +1343,7 @@ the admin panel.</p>
     images.</td></tr>
 <tr>
   <td valign="top"><a name="desc_debug_image_upload">debug_image_upload</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">When set to <code>true</code>, this option enables debugging
     output to be written into Geeklog's <span class="tt">error.log</span> file during the
     upload of an image. This is useful to track down problems with the image
@@ -1353,9 +1353,9 @@ the admin panel.</p>
 <h3><a name="images_articles">Images: Images in Articles</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_max_image_width">max_image_width</a></td>
   <td valign="top">160</td>
@@ -1364,7 +1364,7 @@ the admin panel.</p>
     <code>$_CONF['image_lib']</code> above).</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_image_height">max_image_height</a></td>
-  <td valign="top">120</td>
+  <td valign="top">160</td>
   <td valign="top">Max. height of an image in pixels. If it exceeds this, it is
     either rejected or resized (depending on the setting of
     <code>$_CONF['image_lib']</code> above).</td></tr>
@@ -1378,9 +1378,9 @@ the admin panel.</p>
 <h3><a name="images_topic">Images: Topic Icons</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_max_topicicon_width">max_topicicon_width</a></td>
   <td valign="top">48</td>
@@ -1403,9 +1403,9 @@ the admin panel.</p>
 <h3><a name="images_photos">Images: Photos</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_width">max_photo_width</a></td>
   <td valign="top">128</td>
@@ -1445,9 +1445,9 @@ the admin panel.</p>
 <h3><a name="images_gravatar">Images: Gravatar</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_use_gravatar">use_gravatar</a></td>
   <td valign="top">false</td>
@@ -1467,7 +1467,7 @@ the admin panel.</p>
     be displayed on your site (only G, PG, and R).</td></tr>
   <tr>
     <td valign="top"><a name="desc_gravatar_identicon">gravatar_identicon</a></td>
-    <td valign="top">Identicon</td>
+    <td valign="top"><em>(disabled)</em></td>
     <td valign="top">the default image when the user hasn't uoloaded his/her
       avartar image to gravatar.com.  You can choose from 'Mystery Man', 'Identicon',
       'MonsterId', 'WAvatar', and 'Retro'.
@@ -1481,9 +1481,9 @@ the admin panel.</p>
 <h3><a name="languages_language">Languages and Locale: Language</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_language">language</a></td>
   <td valign="top">english</td>
@@ -1494,11 +1494,11 @@ the admin panel.</p>
     just delete the corresponding language file(s) from the Geeklog language directory.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_user_language">allow_user_language</a></td>
-  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">1</td>
   <td valign="top">If set to 1, users can select the language for the site labels from My Account.</td></tr>
 <tr>
   <td valign="top"><a name="desc_switchlang_homepage">switchlang_homepage</a></td>
-  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">0</td>
   <td valign="top">If set to 1, the switch language block will always redirect to the homepage. You will want to set this to 1 if you have language specific content on your site
     (articles, topics, staticpages) that don't have matching corresponding content in all languages that your site supports. For example if you have an English Topic (with id "topic_en") and the user
     is on that topic and switches the language to Japanese, if a corresponding topic with the id "topic_ja" does not exist (or the user doesn't have access to it) then a 404 error will result after
@@ -1534,9 +1534,9 @@ the admin panel.</p>
 <h3><a name="languages_locale">Languages and Locale: Locale</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_locale">locale</a></td>
   <td valign="top">en_GB</td>
@@ -1582,11 +1582,11 @@ the admin panel.</p>
     12 hour am/pm format) or 24 (for the 24 hour format).</td></tr>
 <tr>
   <td valign="top"><a name="desc_thousand_separator">thousand_separator</a></td>
-  <td valign="top"><code>,</code></td>
+  <td valign="top">,</td>
   <td valign="top">Character to use between every group of thousands.</td></tr>
 <tr>
   <td valign="top"><a name="desc_decimal_separator">decimal_separator</a></td>
-  <td valign="top"><code>.</code></td>
+  <td valign="top">.</td>
   <td valign="top">Character to use before decimals.</td></tr>
 <tr>
   <td valign="top"><a name="desc_decimal_count">decimal_count</a></td>
@@ -1608,9 +1608,9 @@ the admin panel.</p>
 <p>These variables define the names of all of Geeklog's cookies. They can easily be changed in case there's a name collision with the cookies used by some other software package that you may use on your site.</p>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_cookie_session">cookie_session</a></td>
   <td valign="top">gl_session</td>
@@ -1669,9 +1669,9 @@ the admin panel.</p>
 <h3><a name="misc_misc">Miscellaneous: Miscellaneous</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_notification">notification</a></td>
   <td valign="top">array()</td>
@@ -1742,7 +1742,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_page_navigation_mobile_max_pages">page_navigation_mobile_max_pages</a></td>
   <td valign="top">7</td>
-  <td valign="top">Maximum number of pages to show for the page navigation when visitors are on mobile devices. Minimum of 3 pages to a maximum of 20 pages allowed. If this value differs from the config option page_navigation_max_pages and you have enabled "Cache Templates" (cache_templates) make sure that you have also enabled th econfig option "Cache Mobile Devices Separately" (cache_mobile) as well.</td></tr>  
+  <td valign="top">Maximum number of pages to show for the page navigation when visitors are on mobile devices. Minimum of 3 pages to a maximum of 20 pages allowed. If this value differs from the config option page_navigation_max_pages and you have enabled "Cache Templates" (cache_templates) make sure that you have also enabled the config option "Cache Mobile Devices Separately" (cache_mobile) as well.</td></tr>  
 <tr>
   <td valign="top"><a name="desc_default_cache_time_block">default_cache_time_block</a></td>
   <td valign="top">0</td>
@@ -1766,12 +1766,12 @@ the admin panel.</p>
 <h3><a name="misc_debug">Miscellaneous: Debug</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_rootdebug">rootdebug</a></td>
-  <td valign="top"><code>false</code></td>
+  <td valign="top">false</td>
   <td valign="top">When a PHP error occurs, Geeklog's error handler will only
     display the actual error message to members of the Root group (to prevent
     leakage of possibly sensitive information). When set to <code>true</code>,
@@ -1785,9 +1785,9 @@ the admin panel.</p>
 <h3><a name="misc_digest">Miscellaneous: Daily Digest</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_emailstories">emailstories</a></td>
   <td valign="top">0</td>
@@ -1809,9 +1809,9 @@ the admin panel.</p>
 <h3><a name="misc_html">Miscellaneous: HTML Filtering</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_user_html">user_html</a></td>
   <td valign="top">&lt;p&gt;, &lt;b&gt;, &lt;i&gt;, &lt;a&gt;, &lt;em&gt;, &lt;br&gt;, &lt;tt&gt;, &lt;hr&gt;, &lt;ol&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;code&gt;, &lt;pre&gt;</td>
@@ -1845,9 +1845,9 @@ the admin panel.</p>
 <h3><a name="misc_censoring">Miscellaneous: Censoring</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_censormode">censormode</a></td>
   <td valign="top">1</td>
@@ -1865,12 +1865,12 @@ the admin panel.</p>
 <h3><a name="misc_ip_lookup">Miscellaneous: IP Lookup</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
-  <td valign="top"><em>not set</em></td>
+  <td valign="top"><em>(disabled)</em></td>
   <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br />
 <code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
 </table>
@@ -1878,9 +1878,9 @@ the admin panel.</p>
 <h3><a name="misc_permissions">Miscellaneous: Permissions</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_default_permissions_story_0">default_permissions_story[0]</a></td>
   <td valign="top"><em>Read-Write</em></td>
@@ -2064,9 +2064,9 @@ the admin panel.</p>
 <h3><a name="misc_topics">Miscellaneous: Topics</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_multiple_breadcrumbs">multiple_breadcrumbs</a></td>
   <td valign="top">false</td>
@@ -2097,9 +2097,9 @@ the admin panel.</p>
 <h3><a name="filemanager_general">File Manager: General Settings</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_disabled">filemanager_disabled</a></td>
   <td valign="top">false</td>
@@ -2149,9 +2149,9 @@ the admin panel.</p>
 <h3><a name="filemanager_upload">File Manager: Upload</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_upload_restrictions">filemanager_upload_restrictions</a></td>
   <td valign="top">'jpg', 'jpeg', 'gif', 'png', 'svg', 'txt', 'pdf', 'odp', 'ods', 'odt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'ogv', 'mp4', 'webm', 'ogg', 'mp3', 'wav'</td>
@@ -2189,9 +2189,9 @@ the admin panel.</p>
 <h3><a name="filemanager_images">File Manager: Images</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_images_ext">filemanager_images_ext</a></td>
   <td valign="top">'jpg', 'jpeg', 'gif', 'png', 'svg'</td>
@@ -2201,9 +2201,9 @@ the admin panel.</p>
 <h3><a name="filemanager_videos">File Manager: Videos</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_show_video_player">filemanager_show_video_player</a></td>
   <td valign="top">true</td>
@@ -2225,9 +2225,9 @@ the admin panel.</p>
 <h3><a name="filemanager_audios">File Manager: Audios</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_show_audio_player">filemanager_show_audio_player</a></td>
   <td valign="top">true</td>
@@ -2245,9 +2245,9 @@ configuration. This information is put there during the initial install and
 you should not normally have to edit this file.</p>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr><td valign="top">_DB_host</td>
     <td valign="top">localhost</td>
     <td valign="top">Database Server (to be entered in the form: <em>hostname:port:unixsocket</em>). In most cases you won't need to change the default value.</td></tr>
@@ -2279,9 +2279,9 @@ stored in the database. Again, most of this information is put there during
 the installation and you should not normally have to edit this file.</p>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th></tr>
 <tr><td valign="top"><a name="desc_path">path</a></td>
     <td valign="top">/path/to/geeklog/</td>
     <td valign="top">Base file system path for your site (trailing slash necessary)</td></tr>

@@ -67,13 +67,13 @@
   <td valign="top">Another Nifty Geeklog Site</td>
   <td valign="top">サイトのスローガンを指定します。HTMLの&lt;title&gt;フィールドに追加されます。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_site_disabled_msg">サイト閉鎖用メッセージ(site_disabled_msg)</a></td>
+  <td valign="top"><a name="desc_site_disabled_msg">サイト停止のメッセージまたはURL(site_disabled_msg)</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
   <td valign="top">Geeklogのサイトを一時的に閉鎖するときに表示するメッセージを指定します。メッセージが"http:"で始まる場合、サイトの訪問者はそのURLへリダイレクトされます。<br />
     <strong>注:</strong>実際にサイトを閉鎖するかどうかを決める設定は、<span class="tt">siteconfig.php</span>ファイルの中にあります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_owner_name">管理者名(owner_name)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">このサイトの所有者の名前を入力します。これはcopyright表示がセットされた場合に表示されます。設定しない場合は、サイト名が使用されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_copyrightyear">Copyrightの年数設定(copyrightyear)</a></td>
@@ -90,7 +90,7 @@
     <td valign="top">「有効」でURLルーティングを行い、「無効」で行わないようになります。<strong>注意: この機能を使うにはURLリライトを「はい」にしてください。</strong><br />
         「有効(index.phpなし)」を使うには、Webサーバーで追加の設定を行う必要があります。詳しくは、下記の<a href="#url-routing">URLルーティング</a>のセクションを参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_cdn_hosted">cdn_hosted</a></td>
+  <td valign="top"><a name="desc_cdn_hosted">CDNのjQueryとUIkitを使用する(cdn_hosted)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">jQuery, jQuery UI, uikitを、CDNを利用して読み込むには「はい」、ローカルから読み込むには「いいえ」を選択します。</td></tr>
 <tr>
@@ -123,36 +123,36 @@
   <td valign="top"><a name="desc_noreply_mail">No-Replyメールアドレス(noreply_mail)</a></td>
   <td valign="top">noreply@example.com</td>
   <td valign="top">ユーザー登録時などにGeeklogがメールを送る送信元アドレスを指定します。サイトのメールアドレスと同じにするか、スパム送信者がサイトに登録することで管理者のメールアドレスを知るのを防ぐために送信専用アドレスを指定してください(スパム送信者がこのアドレスにメールを送ってもエラーメールが返るだけです。)。このアドレスがサイト管理者のメールアドレスと同じでない場合、送信するメッセージに「このメールは自動送信されたものです。返信しないでください。」というメッセージが追加されます。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_backend">メール設定(mail_settings_backend)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_backend">メール設定[backend](mail_settings_backend)</a></td>
     <td valign="top">mail</td>
     <td valign="top">メールの送信方法を選択します。'smtp'(SMTPプロトコルでメールサーバーと直接交信), 'smtps'(SMTPSプロトコルでメールサーバーと直接交信), 'sendmail'(オペレーティングシステムにインストールされているsendmailプログラム経由), 'mail'(PHPのmail()関数使用)のどれかを指定します。SMTPSプロトコルを使用するにはPHPのOpenSSL拡張を有効にする必要があります。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_sendmail_path">メール設定(mail_settings_sendmail_path)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_sendmail_path">メール設定[sendmail_path](mail_settings_sendmail_path)</a></td>
     <td valign="top"><span class="tt">/usr/bin/sendmail</span></td>
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailバイナリへの完全なパスを指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_sendmail_args">メール設定(mail_settings_sendmail_args)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_sendmail_args">メール設定[sendmail_args](mail_settings_sendmail_args)</a></td>
     <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
     <td valign="top">送信方法で'sendmail'を選択した場合に、sendmailに与える引数を指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_host">メール設定(mail_settings_host)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_host">メール設定[host](mail_settings_host)</a></td>
     <td valign="top">smtp.example.com</td>
     <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーを指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_port">メール設定(mail_settings_port)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_port">メール設定[port](mail_settings_port)</a></td>
     <td valign="top">25</td>
     <td valign="top">送信方法で'smtp'(ポート番号25)または'smtps'(ポート番号587)を選択した場合に、SMTPサーバーのポート番号を指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_auth">メール設定(mail_settings_auth)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_auth">メール設定[auth](mail_settings_auth)</a></td>
     <td valign="top">0</td>
     <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーが認証を必要とするなら
         <code>1</code> に、必要としないなら、
         <code>0</code> (あるいは空白のまま)に設定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_username">メール設定(smtp-username)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_username">メール設定[username](smtp-username)</a></td>
     <td valign="top">smtp-username</td>
     <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPサーバーのアカウント名を指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_password">メール設定(smtp-password)</a></td>
+<tr><td valign="top"><a name="desc_mail_settings_password">メール設定[password](smtp-password)</a></td>
     <td valign="top">smtp-password</td>
     <td valign="top">送信方法で'smtp'または'smtps'を選択した場合に、SMTPアカウントのパスワードを指定します。</td></tr>
-<tr><td valign="top"><a name="desc_mail_cc_enabled">CC(カーボンコピー)を許可する(mail_cc_enabled)</a></td>
+<tr><td valign="top"><a name="desc_mail_cc_enabled">CC(カーボンコピー)を許可(mail_cc_enabled)</a></td>
     <td valign="top">はい</td>
     <td valign="top">「はい」にすると、ユーザーが自分自身にCCメールを送信する機能を有効にします。</td></tr>
-<tr><td valign="top"><a name="desc_mail_cc_default">CC(カーボンコピー)をデフォルトにする(mail_cc_default)</a></td>
+<tr><td valign="top"><a name="desc_mail_cc_default">CC(カーボンコピー)をデフォルトで許可(mail_cc_default)</a></td>
     <td valign="top">いいえ</td>
     <td valign="top">「はい」にすると、メール送信画面で「自分宛にコピーを送信する」に最初からチェックが入るようになります。</td></tr>
   <tr><td valign="top"><a name="desc_mail_charset">メールの文字セット(mail_charset)</a></td>
@@ -204,7 +204,7 @@
     <td valign="top">最後(end)</td>
     <td valign="top">コメント本体内で記事のタグの表示位置を指定します。指定できるのは「最初(start)」、「最後(end)」、「なし(none)」です。</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_article_author_tag">記事の投稿者のタグ(comment_feeds_article_author_tag)</a></td>
-    <td valign="top">(空白)</td>
+    <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
     <td valign="top">記事投稿者のプロフィール・名前を表示するリンクを表すタグを指定します。このタグはコンフィギュレーションの「記事のタグ」内で使用されます。したがって、記事投稿者の情報を表示したくない場合は空白にしてください。表示する場合は、たとえば、<pre> 記事の投稿者: &lt;a href="%s"&gt;%s&lt;/a&gt;</pre> と指定します。</td></tr>
 <tr><td valign="top"><a name="desc_comment_feeds_comment_author_tag">コメントの投稿者のタグ(comment_feeds_comment_author_tag)</a></td>
     <td valign="top"><pre>, Comment By: &lt;a href="%s"&gt;%s&lt;/a&gt;</pre></td>
@@ -240,25 +240,24 @@
     <td valign="top"><acronym title="What You See Is What You Get">WYSIWYG</acronym>エディタのあるディレクトリを指定します。</td></tr>
 </table>
 
-<h3><a name="site_database">Site: Database</a></h3>
+<h3><a name="site_database">サイト: データベース</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
-<tr><td valign="top"><a name="desc_dbdump_filename_prefix">dbdump_filename_prefix</a></td>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th></tr>
+<tr><td valign="top"><a name="desc_dbdump_filename_prefix">バックアップファイル名の接頭子(dbdump_filename_prefix)</a></td>
     <td valign="top">geeklog_db_backup</td>
-    <td valign="top">Prefix to use for the names of the backup files. Default file name will be "geeklog_db_backup_date_time.sql".</td></tr>
-<tr><td valign="top"><a name="desc_dbdump_tables_only">dbdump_tables_only</a></td>
+    <td valign="top">バックアップファイル名に使用する接頭子を指定します。デフォルトのファイル名は「geeklog_db_backup_date_time.sql」です。</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_tables_only">テーブル構造のみのバックアップを行う(dbdump_tables_only)</a></td>
     <td valign="top">0</td>
-    <td valign="top">Enable or disable dumping of table structure only, else dump both table and table data (1 = on,
-        0 = off).</td></tr>
-<tr><td valign="top"><a name="desc_dbdump_gzip">dbdump_gzip</a></td>
+    <td valign="top">テーブル構造のみのバックアップを有効または無効にします。無効の場合はテーブル構造とテーブルデータの両方をバックアップします (1 = on,0 = off)。</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_gzip">可能なら圧縮ファイル(GZip)を使用する(dbdump_gzip)</a></td>
     <td valign="top">1</td>
-    <td valign="top">Compress database dump if gzip is available.</td></tr>
-<tr><td valign="top"><a name="desc_dbdump_max_files">dbdump_max_files</a></td>
+    <td valign="top">gzipが利用可能であれば、データベースのバックアップを圧縮するかどうかを指定します。</td></tr>
+<tr><td valign="top"><a name="desc_dbdump_max_files">バックアップファイルの最大保持数(dbdump_max_files)</a></td>
     <td valign="top">10</td>
-    <td valign="top">Limit the number of backup files to keep. Use "0" to disable purging.</td></tr>
+    <td valign="top">バックアップファイルの最大保持数を指定します。パージを無効にするには0を指定します。</td></tr>
 </table>
 
 <h3><a name="site_search">サイト: 検索</a></h3>
@@ -268,7 +267,7 @@
     <th style="width:25%">デフォルト</th>
     <th style="width:50%">説明</th></tr>
 <tr>
-  <td valign="top"><a name="desc_search_style">検索結果表示スタイル(search_style)</a></td>
+  <td valign="top"><a name="desc_search_style">検索結果の表示スタイル(search_style)</a></td>
   <td valign="top">Google</td>
   <td valign="top">検索結果表示のスタイルを指定します。「Google風」もしくは「テーブルレイアウト」を選択できます。</td></tr>
 <tr>
@@ -291,7 +290,7 @@
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、検索結果表示で検索順の番号を表示します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_search_show_type">タイプを表示する(search_show_type)</a></td>
+  <td valign="top"><a name="desc_search_show_type">検索のタイプを表示する(search_show_type)</a></td>
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、検索結果でプラグイン名を表示します。</td></tr>
 <tr>
@@ -311,9 +310,9 @@
   <td valign="top">表示回数(降順)</td>
   <td valign="top">検索結果を表示する並べ替え基準のデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_search_use_topic">search_use_topic</a></td>
-  <td valign="top">false</td>
-  <td valign="top">If true the last topic the user visited will be set on the advanced search page and used automatically in the search block. If false, "All" topics will be set when the user visits the advance search page, and will be used when searching via the search block.</td></tr>
+  <td valign="top"><a name="desc_search_use_topic">現在表示中の話題を使用する(search_use_topic)</a></td>
+  <td valign="top">いいえ</td>
+  <td valign="top">「はい」の場合、ユーザが最後に訪れた話題は、検索オプションページで設定され、検索ブロックで自動的に使用されます。「いいえ」の場合、ユーザーが検索オプションページにアクセスすると「すべて」の話題が設定され、検索ブロックで検索する場合も「すべて」の話題が使用されます。</td></tr>
 </table>
 
 <h2><a name="stories">記事とトラックバック</a></h2>
@@ -383,11 +382,8 @@
   <td valign="top">「はい」なら「記事がありません」を表示しません(記事がまだ投稿されていない話題を選んだときなど。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_hide_main_page_navigation">ページナビゲーションを表示しない (hide_main_page_navigation)</a></td>
-  <td valign="top">false</td>
-  <td valign="top">When set to frontpage, this option will hide the "Google paging"
-    navigation from index.php, i.e. from the site's frontpage. When set to frontpage_topics it will hide the navigation from the frontpage and all topic
-    pages. This may come in handy for more advanced layouts but will of course
-    prevent people from easily reaching older articles.</td></tr>
+  <td valign="top">いいえ</td>
+  <td valign="top">「トップページのみ」に設定すると、index.phpの、つまりサイトのトップページのページナビゲーションを非表示にします。「トップページと話題ページ」に設定すると、トップページとすべての話題ページのページナビゲーションを非表示にします。これは、より高度なレイアウトには便利ですが、古い記事に簡単にアクセスし難くなります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_onlyrootfeatures">Rootユーザーだけが注目記事を設定する(onlyrootfeatures)</a></td>
   <td valign="top">いいえ</td>
@@ -435,7 +431,7 @@
 <tr>
   <td valign="top"><a name="desc_blocks_article_topic_list_repeat_after">話題リストブロックを続けて配置する(blocks_article_topic_list_repeat_after)</a></td>
   <td valign="top">1</td>
-  <td valign="top">話題ページ(ホームペジを含む)で、ここで指定した回数だけ記事の冒頭文が繰り返された後で話題リストブロックを再び表示します。0を指定すると、話題リストブロックを表示しません。</td></tr>    
+  <td valign="top">話題ページ(ホームページを含む)で、ここで指定した回数だけ記事の冒頭文が繰り返された後で話題リストブロックを再び表示します。0を指定すると、話題リストブロックを表示しません。</td></tr>    
 </table>
 
 <h3><a name="stories_trackback">記事とトラックバック: トラックバック</a></h3>
@@ -447,7 +443,7 @@
 <tr>
   <td valign="top"><a name="desc_trackback_enabled">トラックバックを有効にする(trackback_enabled)</a></td>
   <td valign="top">はい</td>
-  <td valign="top">はいにすると、<a href="http://ja.wikipedia.org/wiki/%E3%83%88%E3%83%A9%E3%83%83%E3%82%AF%E3%83%90%E3%83%83%E3%82%AF">トラックバック</a>が有効になります。この設定はトラックバックの送信・受信の両方に適用されます。</td></tr>
+  <td valign="top">「はい」にすると、<a href="http://ja.wikipedia.org/wiki/%E3%83%88%E3%83%A9%E3%83%83%E3%82%AF%E3%83%90%E3%83%83%E3%82%AF">トラックバック</a>が有効になります。この設定はトラックバックの送信・受信の両方に適用されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_trackback_code">新着記事のデフォルト(trackback_code)</a></td>
   <td valign="top">トラックバックを受け付ける</td>
@@ -530,15 +526,15 @@
     href="http://en.wikipedia.org/wiki/Document_Type_Declaration">DOCTYPE宣言</a>(別名 DOCTYPE、DTD)を指定するテーマ変数<span class="tt">{doctype}</span>を指定できます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_menu_elements">メニュー項目(menu_elements)</a></td>
-  <td valign="top"><code>contribute, search, stats, directory,
-    plugins</code></td>
+  <td valign="top">contribute, search, stats, directory,
+    plugins</td>
   <td valign="top">どのメニュー項目をサイトのメニューバー(グローバルメニュー)に表示するかを指定します(使用するテーマにメニューバーを表示するための<code>{menu_elements}</code>テンプレート変数が使用されている場合)。<span class="tt">home</span>(トップページ),
     <span class="tt">contribute</span>(記事投稿), <span class="tt">search</span>(検索), <span class="tt">stats</span>,
     <span class="tt">directory</span>(記事一覧) , <span class="tt">login</span>, <span class="tt">prefs</span>(マイアカウント), <span class="tt">plugins</span>(プラグイン),
     <span class="tt">custom</span>(カスタム)を好きな数だけ好きな順序で組み合わせることができます。<span class="tt">plugins</span>(プラグイン)は<code>{plg_menu_elements}</code>テンプレート変数と同じで、各プラグインが提供するメニュー項目です。<span class="tt">custom</span>(カスタム)は<code>CUSTOM_menuEntries</code>カスタム関数が返すメニュー項目です(詳細は<span class="tt">lib-custom.php</span>を参照してください。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_themes">テーマのパス(path_themes)</a></td>
-  <td valign="top"><code>path/to/path_themes</code></td>
+  <td valign="top">path/to/path_themes</td>
   <td valign="top">テーマのパスの親ディレクトリ(layout)を指定します。普通は公開領域(path_html)の真下で、末尾のスラッシュ '/' が必要です。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cache_templates">テンプレートをキャッシュする(cache_templates)</a></td>
@@ -719,16 +715,6 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、ユーザーはサイトのテーマを選択できるようになります。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_allow_user_language">言語選択を許可する(allow_user_language)</a></td>
-  <td valign="top">はい</td>
-  <td valign="top">「はい」にすると、ユーザーはサイトのナビゲーションに使う言語を選択できるようになります。</td></tr>
-<tr>
-  <td valign="top"><a name="desc_switchlang_homepage">言語切り替えブロックからトップページへリダイレクトする(switchlang_homepage)</a></td>
-  <td valign="top">「はい」または「いいえ」</td>
-  <td valign="top">「はい」にすると、常に言語切り替えブロックからトップページへリダイレクトします。
-    自分のサイトである言語ではサポートしているが、他の言語ではサポートしていないコンテンツ(記事、話題、静的ページ)がある場合、「はい」にする必要があるでしょう。たとえば、"topic_en"というIDの英語の話題があって、ユーザーがその話題の記事を読んでいる最中に 
-    言語を日本語に切り替えた場合、対応する"topic_ja"というIDの話題が存在していないと(あるいはそのユーザーがその話題に対するアクセス権を持っていないと)、404エラー(not found)が発生することになります。</td></tr>    
-<tr>
   <td valign="top"><a name="desc_allow_user_photo">写真登録を許可する(allow_user_photo)</a></td>
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、ユーザーは自分のプロフィール用の写真をアップロードできるようになります。</td></tr>
@@ -751,10 +737,10 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_require_user_email">ユーザーにメールアドレスを要求する(require_user_email)</a></td>
   <td valign="top">はい</td>
-  <td valign="top">「はい」に設定すると、Eメールアドレスを設定していないユーザーは、ログイン中にEメールアドレスを設定・検証するよう要求されます。  
+  <td valign="top">「はい」に設定すると、メールアドレスを設定していないユーザーは、ログイン中にメールアドレスを設定・検証するよう要求されます。  
     これはリモートアカウントにも影響します。 
-    リモートサービスの中には、ユーザー登録の際にパーミッションの関係でサーバーがEメールアドレスを返さないものがあるためです。 
-    「はい」に設定すると、ユーザーがログインする際にEメールアドレスをチェックし、ユーザーが設定していない場合には、 
+    リモートサービスの中には、ユーザー登録の際にパーミッションの関係でサーバーがメールアドレスを返さないものがあるためです。 
+    「はい」に設定すると、ユーザーがログインする際にメールアドレスをチェックし、ユーザーが設定していない場合には、 
     ステータスが「有効」から「メールアドレスの設定が必要」へと変わります。</td></tr>   
 <tr>
   <td valign="top"><a name="desc_show_servicename">サービス名を表示する(show_servicename)</a></td>
@@ -762,136 +748,134 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">「はい」にすると、<acronym title="Lightweight Directory Access Protocol">LDAP</acronym>などのリモートサービスのアカウントでログインを許可している場合、ローカルアカウントとの混同を避けるため、ユーザー名にサービス名が付加されて表示されるようになります。「いいえ」にすると、サービス名は付加されません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_custom_registration">カスタム登録を有効にする(custom_registration)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、新規ユーザー登録の際、管理者が用意した独自のフォームが表示されます。フォームの具体例は、Geeklogに同梱されている<span class="tt">lib-custom.php</span>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_standard">ログイン方法[standard](user_login_method_standard)</a></td>
-  <td valign="top"><code>はい</code></td>
+  <td valign="top">はい</td>
   <td valign="top">通常のログイン方法、つまり、サイトのデータベースにしか登録されてないユーザーアカウントでログインを許可するかどうかを指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_openid">ログイン方法[openid](user_login_method_openid)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top"><a href="http://openid.net/">OpenID</a>を使用したログインを許可するかどうかを指定します。「はい」にすると、通常のログイン入力欄の下に特別なOpenIDログイン用の入力欄が表示されます。<br />
     <strong>注:</strong> 現在サポートされているのは OpenID 1.1 だけです。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_3rdparty">ログイン方法[3rdparty](user_login_method_3rdparty)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、外部サービスに既にアカウントを持っているユーザーがそのアカウント使ってGeeklogにログインできるようになります。現在サポートされているのは、LDAPです。<br />
     特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<span class="tt">system/classes/authentication</span>に必要です。したがって、LDAPを用いたログインを禁止したい場合には、単にその認証クラスを削除するだけでよいのです。詳細は、<a href="https://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_user_login_method_oauth">ログイン方法[oauth](user_login_method_oauth)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top"><a href="http://oauth.net/">OAuth</a>によるログインを許可するかどうかを設定します。「はい」にすると、通常のログインフォームの下にOAuthログインが表示されます。<br />
     <strong>注:</strong>現在はOAuth 1.0, 2.0をサポートしています。現在サポートしているのは、Facebook、Twitter、LinkedIn, Google, Microsoft, Yahooです。<br />特定のログイン方法を有効にするには、<span class="tt">system/classes/oauth</span>に認証のクラスが必要です。あなたがもしFacebookのみで、Twitterだけにしたければ(逆もまた同様)、単に
-    欲しくないクラスのファイルを削除するか、以下の設定オプションを使用してください。また、以下の設定オプションで正しいConsumer KeyとConsumer Secretも設定しなければなりません。PHPのOpenSSL拡張を有効にする必要があります。<br />
+    欲しくないクラスのファイルを削除するか、以下のオプションを使用してください。また、以下のオプションで正しいConsumer KeyとConsumer Secretも設定しなければなりません。PHPのOpenSSL拡張を有効にする必要があります。<br />
     さらに詳しい情報は<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_login">FacebookのOAuthを有効にする(facebook_login)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、Facebookのアカウントを用いてGeeklogにOAuthでログインできるようになります。管理者はFacebookのConsumer KeyとConsumer Secretを取得して設定しなければなりません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_key">Facebook OAuth Application ID(facebook_consumer_key)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Facebook OAuthログインを有効にする場合に入力してください。アプリケーションを作成してkeyとsecretを取得するには、<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_consumer_secret">Facebook OAuth Application Secret(facebook_consumer_secret)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Facebook OAuthログインを有効にする場合に入力してください。アプリケーションを作成してkeyとsecretを取得するには、<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>を参照してください。<br />
   より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_login">LinkedInのOAuthを有効にする(linkedin_login)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、LinkedInのアカウントを用いてGeeklogにOAuthでログインできるようになります。管理者はLinkedInのConsumer KeyとConsumer Secretを取得して設定しなければなりません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_key">LinkedIn OAuth API Key(linkedin_consumer_key)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">LinkedIn OAuthログインを有効にする場合に入力してください。アプリケーションを作成してAPI KeyとSecret Keyを取得するには、<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_linkedin_consumer_secret">LinkedIn OAuth Secret Key(linkedin_consumer_secret)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">LinkedIn OAuthログインを有効にする場合に入力してください。アプリケーションを作成してAPI KeyとSecret Keyを取得するには、<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_login">TwitterのOAuthを有効にする(twitter_login)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、Twitterのアカウンを用いてGeeklogにOAuthでログインできるようになります。管理者はTwitterのConsumer KeyとConsumer Secretを取得して設定しなければなりません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_key">Twitter OAuth Consumer Key(twitter_consumer_key)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Twitter OAuthログインを有効にする場合に入力してください。アプリケーションを作成してconsumer Keyとsecretを取得するには、<a href="https://twitter.com/apps">Twitter Application page</a>を参照してください。<br />
   より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
 <tr>
   <td valign="top"><a name="desc_twitter_consumer_secret">Twitter OAuth Consumer Secret(twitter_consumer_secret)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Twitter OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="https://twitter.com/apps">Twitter Application page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_google_login">google_login</a></td>
+  <td valign="top"><a name="desc_google_login">GoogleのOAuthをを有効にする(google_login)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、Googleのアカウントを用いてGeeklogにOAuthdeでログインできるようになります。
 管理者はTwitterのConsumer KeyとConsumer Secretを取得して設定しなければなりません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_google_consumer_key">google_consumer_key</a></td>
-  <td valign="top"></td>
+  <td valign="top"><a name="desc_google_consumer_key">Google OAuth Consumer Key(google_consumer_key)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Google OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="https://code.google.com/apis/console">Google Developers Console</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_google_consumer_secret">google_consumer_secret</a></td>
-  <td valign="top"></td>
+  <td valign="top"><a name="desc_google_consumer_secret">Google OAuth Consumer Secret(google_consumer_secret)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Google OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="https://code.google.com/apis/console">Google Developers Console</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_microsoft_login">microsoft_login</a></td>
+  <td valign="top"><a name="desc_microsoft_login">MicrosoftのOAuthを有効にする(microsoft_login)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、Microsoftのアカウントを用いてGeeklogにOAuthdeでログインできるようになります。
 管理者はMicrosoftのConsumer KeyとConsumer Secretを取得して設定しなければなりません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_microsoft_consumer_key">microsoft_consumer_key</a></td>
-  <td valign="top"></td>
+  <td valign="top"><a name="desc_microsoft_consumer_key">Microsoft OAuth Consumer Key(microsoft_consumer_key)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Microsoft OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_microsoft_consumer_secret">microsoft_consumer_secret</a></td>
-  <td valign="top"></td>
+  <td valign="top"><a name="desc_microsoft_consumer_secret">Microsoft OAuth Consumer Secret(microsoft_consumer_secret)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Microsoft OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="http://go.microsoft.com/fwlink/?LinkId=248605">Microsoft Seller Dashboard</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_yahoo_login">yahoo_login</a></td>
+  <td valign="top"><a name="desc_yahoo_login">YahooのOAuthを有効にする(yahoo_login)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、Yahooのアカウントを用いてGeeklogにOAuthdeでログインできるようになります。
 管理者はYahooのConsumer KeyとConsumer Secretを取得して設定しなければなりません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_yahoo_consumer_key">yahoo_consumer_key</a></td>
-  <td valign="top"></td>
+  <td valign="top"><a name="desc_yahoo_consumer_key">Yahoo OAuth Consumer Key(yahoo_consumer_key)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Yahoo OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="http://developer.yahoo.com">Yahoo Developer page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_yahoo_consumer_secret">yahoo_consumer_secret</a></td>
-  <td valign="top"></td>
+  <td valign="top"><a name="desc_yahoo_consumer_secret">Yahoo OAuth Consumer Secret(yahoo_consumer_secret)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Yahoo OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="http://developer.yahoo.com">Yahoo Developer page</a>を参照してください。<br />
   さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_github_login">github_login</a></td>
-  <td valign="top"><code>false</code></td>
-  <td valign="top">Allow (when set to <span class="tt">true</span>) users who already have
-    an account with GitHub to log into Geeklog with said account using OAuth. You must set the GitHub client id and client secret.</td></tr>
+  <td valign="top"><a name="desc_github_login">GitHubのOAuthを有効にする(github_login)</a></td>
+  <td valign="top">いいえ</td>
+  <td valign="top">「はい」にすると、GitHubのアカウントを用いてGeeklogにOAuthdeでログインできるようになります。
+管理者はGitHubのClient IDとClient Secretを取得して設定しなければなりません。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_github_consumer_key">github_consumer_key</a></td>
-  <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use GitHub OAuth login method. Visit this <a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>
-  to create an application to receive your client id and client secret.<br />
-  See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
+  <td valign="top"><a name="desc_github_consumer_key">GitHub OAuth Consumer Key(github_consumer_key)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
+  <td valign="top">GitHub OAuthログインを有効にする場合に入力してください。アプリケーションを作成してClient IDとClient Secretを取得するには、<a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>を参照してください。<br />
+  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_github_consumer_secret">github_consumer_secret</a></td>
-  <td valign="top"><code>''</code></td>
-  <td valign="top">Required to use GitHub OAuth login method. Visit this <a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>
-  to create an application to receive your client id and client secret.<br />
-  See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
+  <td valign="top"><a name="desc_github_consumer_secret">GitHub OAuth Consumer Secret(github_consumer_secret)</a></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
+  <td valign="top">GitHub OAuthログインを有効にする場合に入力してください。アプリケーションを作成してClient IDとClient Secretを取得するには、<a href="https://developer.github.com/v3/oauth/">GitHub Developer page</a>を参照してください。<br />
+  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_user">ユーザー保存後の画面遷移(aftersave_user)</a></td>
-  <td valign="top"><code>作成したページを表示する</code></td>
+  <td valign="top">作成したページを表示する</td>
   <td valign="top">ユーザーがデータを保存した後、どのページに移動するかを指定します。
     <ul>
     <li>作成したページを表示する: ユーザーのプロフィーを表示します。</li>
@@ -921,7 +905,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_lastlogin">最終のログインを記録する(lastlogin)</a></td>
-  <td valign="top"><code>はい</code></td>
+  <td valign="top">はい</td>
   <td valign="top">「はい」にすると、ユーザーが前回ログインした時間をシステムに記録します。</td></tr>
 <tr><td valign="top"><a name="desc_loginrequired">すべてにログインを必要とする(loginrequired)</a></td>
     <td valign="top">いいえ</td>
@@ -944,10 +928,10 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr><td valign="top"><a name="desc_emailuserloginrequired">メールの送信にログインを必要とする(emailuserloginrequired)</a></td>
     <td valign="top">いいえ</td>
     <td valign="top">「はい」にすると、登録ユーザーしか他のユーザーにメールを送信できなくなります。</td></tr>
-<tr><td valign="top"><a name="desc_emailstoryloginrequired">記事メール送信にログインを必要とする(emailstoryloginrequired)</a></td>
+<tr><td valign="top"><a name="desc_emailstoryloginrequired">記事のメール送信にログインを必要とする(emailstoryloginrequired)</a></td>
     <td valign="top">いいえ</td>
     <td valign="top">「はい」にすると、登録ユーザーしか「友だちに記事を送信する」機能を使用できなくなります。</td></tr>
-<tr><td valign="top"><a name="desc_directoryloginrequired">記事一覧表示にログインを必要とする(directoryloginrequired)</a></td>
+<tr><td valign="top"><a name="desc_directoryloginrequired">記事の一覧表示にログインを必要とする(directoryloginrequired)</a></td>
     <td valign="top">いいえ</td>
     <td valign="top">「はい」にすると、登録ユーザーしか「記事一覧」機能を使用できなくなります。</td></tr>
 
@@ -966,7 +950,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">上記のログイン試行回数の制限を超えてログインに失敗した場合、次にログインが可能になるまでの待ち時間を秒単位で指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_invalidloginattempts">ログイン失敗最大回数(invalidloginattempts)</a></td>
-  <td valign="top">5</td>
+  <td valign="top">7</td>
   <td valign="top">ここで設定した回数を超えてユーザーがログインを失敗すると、管理者に警告メールが送られます。
     下記の「ログイン失敗警告メール送信待機時間」も関連しています、このオプションを0に設定すると
     機能が無効になります。</td></tr>
@@ -1016,12 +1000,12 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">「はい」にすると、ユーザーの登録申請は管理者による承認待ちの状態になります。「いいえ」にすると、承認なしで即座に登録されます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_domains">自動的に許可するドメイン(allow_domains)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">上記の「ユーザーの登録を審査する」を有効にした場合でも、このドメインリスト(コンマで区切る)から登録申請したときには承認待ちの状態にならず、即座に承認されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong> mycompany.com と myothercompany.com を許可します。
     <span class="tt">mycompany.com,myothercompany.com</span></td></tr>
 <tr>
   <td valign="top"><a name="desc_disallow_domains">自動的に拒否するドメイン(disallow_domains)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">上記の「自動的に許可するドメイン」の逆で、このリストに含まれるドメインのユーザーは、上記の「ユーザーの登録を審査する」の設定にかかわらず、自動的に拒否されます。ドメイン名に正規表現も使えます。<br /><strong>例:</strong> somebaddomain.com と .edu ドメインのすべてを拒否します。
     <span class="tt">somebaddomain.com,\.edu$</span></td></tr>
 </table>
@@ -1065,7 +1049,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、記事編集時にwiki構文を使えるようになり、記事エディターの投稿モードにwiki構文が追加されます。この機能は、<a href="http://pear.php.net/package/Text_Wiki">PEAR::Text_Wiki</a>パッケージを用いて実装されています。</td></tr>
 <tr>
-    <td valign="top"><a name="desc_remove_4byte_chars">4バイト文字を除去する(remove_4byte_chars)</a></td>
+    <td valign="top"><a name="desc_remove_4byte_chars">4バイトのutf-8文字を除去する(remove_4byte_chars)</a></td>
     <td valign="top">はい</td>
     <td valign="top">「はい」にすると、COM_applyBasicFilter関数を使用する際に、utf-8の4バイト文字(絵文字を含む)を削除します。「いいえ」にする場合には、
       MySQLのデータベース・テーブル・列のコレーションがマルチバイト文字をサポートしていることを確認してください。たとえば、現在のコレーションが
@@ -1157,7 +1141,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><em>(無効)</em></td>
   <td valign="top">上記の「画像ライブラリ」にimagemagickを選んだ場合、<a href="http://www.imagemagick.org/">ImageMagick</a>パッケージ中のmogrifyバイナリへの<strong>完全なパス</strong>を '/usr/bin/mogrify' のように指定します(バージョン5.4.9以降を推奨します。)。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_path_to_netpbm">netpbmへのパス(path_to_netpbm)</a></td>
+  <td valign="top"><a name="desc_path_to_netpbm">netpbmのパス(path_to_netpbm)</a></td>
   <td valign="top"><em>(無効)</em></td>
   <td valign="top">上記の「画像ライブラリ」にnetpbmを選んだ場合、Netpbmのバイナリがある<em>ディレクトリ</em>の完全なパスを <code>/usr/bin/netpbm/</code> のように指定します。パスの最後はスラッシュ / でなければなりません。<br />様々なプラットフォーム用にコンパイルされたバイナリのパッケージは、<a href="http://netpbm.sourceforge.net/">Netpbm homepage</a>からダウンロードできます。</td></tr>
 </table>
@@ -1183,7 +1167,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     経験則: 90以上を指定しても画質は良くならず、画像サイズばかりが大きくなります。50以下では画質が悪くなります。25以下では画像が歪んでしまいます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_debug_image_upload">画像のアップロードをデバッグする(debug_image_upload)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、画像のアップロード・リサイズ中にデバッグ情報をGeeklogの<span class="tt">error.log</span>に書き込みます。画像アップロード時の問題を解明する際に役立ちます。</td></tr>
 </table>
 
@@ -1203,7 +1187,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">画像の高さの最大値をピクセル単位で指定します。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_image_size">ファイルサイズの最大値(max_image_size)</a></td>
-  <td valign="top"><em>1048576</em></td>
+  <td valign="top">1048576 <em>(= 1MB)</em></td>
   <td valign="top">ファイルサイズの最大値をバイト単位で指定します。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
 </table>
 
@@ -1223,7 +1207,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">話題アイコンの高さの最大値をピクセル単位で指定します。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_topicicon_size">ファイルサイズの最大値(max_topicicon_size)</a></td>
-  <td valign="top">65536</td>
+  <td valign="top">65536 <em>(= 64KB)</em></td>
   <td valign="top">ファイルサイズの最大値をバイト単位で指定します。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
 </table>
 
@@ -1243,10 +1227,10 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">写真の高さの最大値をピクセル単位で指定します。この数値を超えた場合、画像は拒否されるかリサイズされます(上記の画像ライブラリの設定による)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_size">ファイルサイズの最大値(max_photo_size)</a></td>
-  <td valign="top">65536</td>
+  <td valign="top">65536 <em>(= 64KB)</em></td>
   <td valign="top">ファイルサイズの最大値をバイト単位で指定します。この数値を超えた場合は、リサイズ用の画像ライブラリを使っていても、その画像ファイルは拒否されます。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_force_photo_width">幅を固定する(force_photo_width)</a></td>
+  <td valign="top"><a name="desc_force_photo_width">写真の幅を固定(force_photo_width)</a></td>
   <td valign="top"><em>(無効)</em></td>
   <td valign="top">この設定を有効にしても、ユーザーの写真を<em>表示する</em>ときにしか適用されません。写真表示用の <code>&lt;img&gt;</code>タグがここで指定されたサイズで出力されます。つまり、実際の写真のサイズはより大きくても、小さな(ここで指定された)サイズでしか表示されません。(掲示板などで)奇妙な形をしたユーザーの写真がページのレイアウトを台無しにするのを防ぎたい場合に役に立つでしょう。</td></tr>
 <tr>
@@ -1268,7 +1252,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     このオプションを有効にすると、(掲示板のスレッドなどの)複数ユーザーの多数の写真を表示するページでは、スピードダウンする可能性があることに注意してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_gravatar_rating">Gravatarの評価(gravatar_rating)</a></td>
-  <td valign="top"><em>無効(disabled)</em></td>
+  <td valign="top"><em>(無効)</em></td>
   <td valign="top">gravatar.comへ投稿されたアバターは、(米国で)映画鑑賞用に使われている評価システム
         <ul>
             <li>G = General Audiences：一般向け</li>
@@ -1279,7 +1263,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
         を用いて評価されます。このオプションでは、表示されるアバターの<em>最も厳しい</em>ランクを指定します。たとえばRを指定すると、G、PG、Rランクのアバターは表示されますが、Xランクのアバターは一切表示されなくなります。</td></tr>
   <tr>
     <td valign="top"><a name="desc_gravatar_identicon">Gravtarのデフォルト画像(gravatar_identicon)</a></td>
-    <td valign="top">Identicon</td>
+    <td valign="top"><em>(無効)</em></td>
     <td valign="top">ユーザーがまだアバターをgravatar.comにアップロードしていないときに表示されるデフォルトの画像。
       'Mystery Man', 'Identicon', 'MonsterId', 'WAvatar', 'Retro'の中から選びます。詳しくは、
       <a href="https://en.gravatar.com/site/implement/images/">このページ(英語)</a>をご覧ください。
@@ -1299,6 +1283,16 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_language">言語(language)</a></td>
   <td valign="top">english</td>
   <td valign="top">言語ファイル名を指定します。追加の言語ファイルは<a href="https://www.geeklog.net/">https://www.geeklog.net</a>でダウンロードできます。言語ファイルを翻訳した場合は送ってください。下記の<a href="#Localization">ローカリゼーション</a>も参照してください。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_user_language">言語選択を許可する(allow_user_language)</a></td>
+  <td valign="top">はい</td>
+  <td valign="top">「はい」にすると、ユーザーはサイトのナビゲーションに使う言語を選択できるようになります。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_switchlang_homepage">言語切り替えブロックからトップページへリダイレクトする(switchlang_homepage)</a></td>
+  <td valign="top">いいえ</td>
+  <td valign="top">「はい」にすると、常に言語切り替えブロックからトップページへリダイレクトします。
+    自分のサイトである言語ではサポートしているが、他の言語ではサポートしていないコンテンツ(記事、話題、静的ページ)がある場合、「はい」にする必要があるでしょう。たとえば、"topic_en"というIDの英語の話題があって、ユーザーがその話題の記事を読んでいる最中に 
+    言語を日本語に切り替えた場合、対応する"topic_ja"というIDの話題が存在していないと(あるいはそのユーザーがその話題に対するアクセス権を持っていないと)、404エラー(not found)が発生することになります。</td></tr>    
 <tr>
   <td valign="top"><a name="desc_language_files">言語ファイル[多言語モード](language_files)</a></td>
   <td valign="top"><em>(無効)</em></td>
@@ -1342,7 +1336,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">%m/%d %I:%M%p</td>
   <td valign="top">日時の短縮表記が必要なときのフォーマットを指定します。下記の<a href="#date_formats">日時のフォーマット</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_shortdate">日付のフォーマット(shortdate)</a></td>
+  <td valign="top"><a name="desc_shortdate">日付の短縮フォーマット(shortdate)</a></td>
   <td valign="top">%x</td>
   <td valign="top">日付のみのフォーマットを指定します。下記の<a href="#date_formats">日時のフォーマット</a>を参照してください。</td></tr>
 <tr>
@@ -1363,11 +1357,11 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">(記事の公開時刻などの)時間設定のあるアイテムを投稿したり編集したりするときに使う時間のフォーマットを指定します。12(12時間制。am/pmを使用します。)か24(24時間制)のどちらかです。</td></tr>
 <tr>
   <td valign="top"><a name="desc_thousand_separator">千単位の区切り文字(thousand_separator)</a></td>
-  <td valign="top"><code>,</code></td>
+  <td valign="top">,</td>
   <td valign="top">数字を3桁ごとに区切るときに使う文字を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_decimal_separator">小数点(decimal_separator)</a></td>
-  <td valign="top"><code>.</code></td>
+  <td valign="top">.</td>
   <td valign="top">小数点として使う文字を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_decimal_count">小数点以下の桁数(decimal_count)</a></td>
@@ -1436,7 +1430,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">クッキーが有効となるサーバー上のパスを指定します(詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookiedomain">クッキーのドメイン(cookiedomain)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><em>(空白)</em></td>
   <td valign="top">クッキーが有効となるドメインを指定します。GeeklogはサイトのURLに基づき、正しいドメインを推測しようとします(詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。)。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookiesecure">セキュア(HTTPS)なクッキーを使用する(cookiesecure)</a></td>
@@ -1452,7 +1446,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_notification">通知(notification)</a></td>
-  <td valign="top"></td>
+  <td valign="top"><em>(空リスト)</em></td>
   <td valign="top">新規の記事・コメントが投稿された場合、トラックバック・ピングバックを受信した場合、新規ユーザーが登録された場合（とユーザーがアカウント情報を更新した場合)に、サイトのメールアドレス<span class="tt">$_CONF['site_email']</span>に通知メールを送信するリストを指定します。この<span class="tt">リスト</span>に登録できるのは、
         <ul>
             <li><span class="tt">story</span></li>
@@ -1528,7 +1522,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_rootdebug">Rootデバッグ(rootdebug)</a></td>
-  <td valign="top"><code>いいえ</code></td>
+  <td valign="top">いいえ</td>
   <td valign="top">PHPのエラーが発生したとき、(重要な情報の漏洩を防ぐため)GeeklogのエラーハンドラはRootグループに属するメンバーにしか実際のエラー情報を表示しません。「はい」にすると、この情報が<em>すべての</em> ユーザーに表示されるようになります。<strong>デバッグ目的にのみ使用してください。</strong><br />
     ヒント: エラーのためにサイトにログインできない場合は、<a href="#desc_rootdebug_siteconfig">このオプションを<span class="tt">siteconfig.php</span></a>の中で有効にすることができます。</td></tr>
 </table>
@@ -1568,7 +1562,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">管理者HTMLに追加するHTMLタグ(例 テーブルタグ)</td>
   <td valign="top">管理者が使用できるHTMLタグと属性のリストを指定します。管理者は上記のユーザーHTMLも使えます。ユーザーHTMLに登録されているHTMLタグに属性を追加して再定義した場合、管理者HTMLの方が有効になります。たとえば、ユーザーHTMLでは(JavaScriptを使えないようにするため)&lt;p&gt;タグのstyle属性を無効にするが、管理者HTMLではstyle属性を有効にするといったことができます。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_advanced_html">アドバンストエディター用追加HTML(advanced_html)</a></td>
+  <td valign="top"><a name="desc_advanced_html">アドバンストエディター用に追加のHTML(advanced_html)</a></td>
   <td valign="top">アドバンストエディターに追加するHTMLタグ(例 画像)</td>
   <td valign="top"><a href="#desc_advanced_editor">アドバンストエディター</a>の利用が許可されている場合のアドバンストエディター用追加HTMLタグと属性を指定します。。</td></tr>
 <tr>
@@ -1613,165 +1607,165 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">コメントを投稿した人のIPアドレスは記録され、管理者には表示されます。IPアドレス検索サービスを設定した場合、表示されたIPアドレスをクリックするとそのIPの所有者を調べることが可能になり、不正使用をインターネットサービスプロバイダーに通報しやすくなります。<br />設定値には、IP検索サービスの完全なURLを指定します。IPアドレスが入る部分は '<code>*</code>' にします。Tom Willetの<a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a>パッケージを使うこともできます。この場合は、<code>/nettools/whois.php?domain=*</code> <br />と指定します。</td></tr>
 </table>
 
-<h3><a name="misc_permissions">Miscellaneous: Permissions</a></h3>
+<h3><a name="misc_ip_lookup">その他: パーミッション</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">Variable</th>
-    <th style="width:29%">Default Value</th>
-    <th style="width:63%">Description</th></tr>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_story_0">default_permissions_story[0]</a></td>
-  <td valign="top"><em>Read-Write</em></td>
-  <td valign="top">Default permission for Owner of new articles.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_story_0">記事のパーミッションのデフォルト[0](default_permissions_story[0])</a></td>
+  <td valign="top"><em>表示・編集</em></td>
+  <td valign="top">記事に関する所有者のパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_story_1">default_permissions_story[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for Group of new articles.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_story_1">記事のパーミッションのデフォルト[1](default_permissions_story[1])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">記事に関するグループのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_story_2">default_permissions_story[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all logged in users of new articles.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_story_2">記事のパーミッションのデフォルト[2](default_permissions_story[2])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">記事に関するメンバーのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_story_3">default_permissions_story[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all anonymous visitors of new articles.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_story_3">記事のパーミッションのデフォルト[3](default_permissions_story[3])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">記事に関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
   
 <tr>
-  <td valign="top"><a name="desc_default_permissions_topic_0">default_permissions_topic[0]</a></td>
-  <td valign="top"><em>Read-Write</em></td>
-  <td valign="top">Default permission for Owner of new topics.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_topic_0">話題のパーミッションのデフォルト[0](default_permissions_topic[0])</a></td>
+  <td valign="top"><em>表示・編集</em></td>
+  <td valign="top">話題に関する所有者のパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_topic_1">default_permissions_topic[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for Group of new topics.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_topic_1">話題のパーミッションのデフォルト[1](default_permissions_topic[1])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">話題に関するグループのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_topic_2">default_permissions_topic[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all logged in users of new topics.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_topic_2">話題のパーミッションのデフォルト[2](default_permissions_topic[2])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">話題に関するメンバーのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_topic_3">default_permissions_topic[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all anonymous visitors of new topics.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_topic_3">話題のパーミッションのデフォルト[3](default_permissions_topic[3])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">話題に関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
   
 <tr>
-  <td valign="top"><a name="desc_default_permissions_block_0">default_permissions_block[0]</a></td>
-  <td valign="top"><em>Read-Write</em></td>
-  <td valign="top">Default permission for Owner of new blocks.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_block_0">ブロックのパーミッションのデフォルト[0](default_permissions_block[0])</a></td>
+  <td valign="top"><em>表示・編集</em></td>
+  <td valign="top">ブロックに関する所有者のパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_block_1">default_permissions_block[1]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for Group of new blocks.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_block_1">ブロックのパーミッションのデフォルト[1](default_permissions_block[1])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">ブロックに関するグループのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_block_2">default_permissions_block[2]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all logged in users of new blocks.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_block_2">ブロックのパーミッションのデフォルト[2](default_permissions_block[2])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">ブロックに関するメンバーのパーミッションのデフォルトを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_permissions_block_3">default_permissions_block[3]</a></td>
-  <td valign="top"><em>Read-Only</em></td>
-  <td valign="top">Default permission for all anonymous users of new blocks.</td></tr>
+  <td valign="top"><a name="desc_default_permissions_block_3">ブロックのパーミッションのデフォルト[3](default_permissions_block[3])</a></td>
+  <td valign="top"><em>表示</em></td>
+  <td valign="top">ブロックに関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
   
   
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_story_0">autotag_permissions_story[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_story_0">自動タグ[article: ]のパーミッション[0](autotag_permissions_story[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_story_1">autotag_permissions_story[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Article Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_story_1">自動タグ[article: ]のパーミッション[1](autotag_permissions_story[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するArticle Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_story_2">autotag_permissions_story[2]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_story_2">自動タグ[article: ]のパーミッション[2](autotag_permissions_story[2])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_story_3">autotag_permissions_story[3]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_story_3">自動タグ[article: ]のパーミッション[3](autotag_permissions_story[3])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_user_0">autotag_permissions_user[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_user_0">自動タグ[user: ]のパーミッション[0](autotag_permissions_user[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_user_1">autotag_permissions_user[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by User Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_user_1">自動タグ[user: ]のパーミッション[1](autotag_permissions_user[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するUser Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_user_2">autotag_permissions_user[2]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_user_2">自動タグ[user: ]のパーミッション[2](autotag_permissions_user[2])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_user_3">autotag_permissions_user[3]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_user_3">自動タグ[user: ]のパーミッション[3](autotag_permissions_user[3])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_topic_0">autotag_permissions_topic[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_topic_0">自動タグ[topic: ]のパーミッション[0](autotag_permissions_topic[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_topic_1">autotag_permissions_topic[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Topic Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_topic_1">自動タグ[topic: ]のパーミッション[1](autotag_permissions_topic[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するTopic Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_topic_2">autotag_permissions_topic[2]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_topic_2">自動タグ[topic: ]のパーミッション[2](autotag_permissions_topic[2])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_topic_3">autotag_permissions_topic[3]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_topic_3">自動タグ[topic: ]のパーミッション[3](autotag_permissions_topic[3])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
   
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_related_topics_0">autotag_permissions_related_topics[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_topics_0">自動タグ[related_topics: ]のパーミッション[0](autotag_permissions_related_topics[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_related_topics_1">autotag_permissions_related_topics[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Topic Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_topics_1">自動タグ[related_topics: ]のパーミッション[1](autotag_permissions_related_topics[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するTopic Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_related_topics_2">autotag_permissions_related_topics[2]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_topics_2">自動タグ[related_topics: ]のパーミッション[2](autotag_permissions_related_topics[2])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_related_topics_3">autotag_permissions_related_topics[3]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_topics_3">自動タグ[related_topics: ]のパーミッション[3](autotag_permissions_related_topics[3])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_related_items_0">autotag_permissions_related_items[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_items_0">自動タグ[related_items: ]のパーミッション[0](autotag_permissions_related_items[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_related_items_1">autotag_permissions_related_items[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Topic Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_items_1">自動タグ[related_items: ]のパーミッション[1](autotag_permissions_related_items[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するTopic Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_related_items_2">autotag_permissions_related_items[2]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_items_2">自動タグ[related_items: ]のパーミッション[2](autotag_permissions_related_items[2])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_related_items_3">autotag_permissions_related_items[3]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_related_items_3">自動タグ[related_items: ]のパーミッション[3](autotag_permissions_related_items[3])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_block_0">autotag_permissions_block[0]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_block_0">自動タグ[block: ]のパーミッション[0](autotag_permissions_block[0])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関する所有者(デフォルトはRootユーザー)のパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_block_1">autotag_permissions_block[1]</a></td>
-  <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Block Admin Group.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_block_1">自動タグ[block: ]のパーミッション[1](autotag_permissions_block[1])</a></td>
+  <td valign="top"><em>利用する</em></td>
+  <td valign="top">自動タグの利用に関するBlock Adminグループのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_block_2">autotag_permissions_block[2]</a></td>
-  <td valign="top"><em>No Access</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_block_2">自動タグ[block: ]のパーミッション[2](autotag_permissions_block[2])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するメンバーのパーミッションを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_autotag_permissions_block_3">autotag_permissions_block[3]</a></td>
-  <td valign="top"><em>No access</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top"><a name="desc_autotag_permissions_block_3">自動タグ[block: ]のパーミッション[3](autotag_permissions_block[3])</a></td>
+  <td valign="top"><em>アクセス不可</em></td>
+  <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
 </table>
 
 <h3><a name="misc_ip_webservices">その他: Webサービス</a></h3>
@@ -1832,9 +1826,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <h3><a name="filemanager_general">ファイルマネージャー: 全般</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">項目(変数)</th>
-    <th style="width:29%">デフォルト</th>
-    <th style="width:63%">説明</th></tr>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_disabled">ファイルマネージャーを無効にする(filemanager_disabled)</a></td>
   <td valign="top">いいえ</td>
@@ -1884,9 +1878,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <h3><a name="filemanager_upload">ファイルマネージャー: アップロード</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">項目(変数)</th>
-    <th style="width:29%">デフォルト</th>
-    <th style="width:63%">説明</th></tr>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_upload_restrictions">許可するファイル拡張子(filemanager_upload_restrictions)</a></td>
   <td valign="top">jpg, jpeg, gif, png, svg, txt, pdf, odp, ods, odt, rtf, doc, docx, xls, xlsx, ppt, pptx, ogv, mp4, webm, ogg, mp3, wav</td>
@@ -1924,9 +1918,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <h3><a name="filemanager_images">ファイルマネージャー: 画像</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">項目(変数)</th>
-    <th style="width:29%">デフォルト</th>
-    <th style="width:63%">説明</th></tr>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_images_ext">画像ファイルの拡張子(filemanager_images_ext)</a></td>
   <td valign="top">jpg, jpeg, gif, png, svg</td>
@@ -1936,9 +1930,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <h3><a name="filemanager_videos">ファイルマネージャー: ビデオ</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">項目(変数)</th>
-    <th style="width:29%">デフォルト</th>
-    <th style="width:63%">説明</th></tr>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_show_video_player">動画プレーヤーを表示する(filemanager_show_video_player)</a></td>
   <td valign="top">はい</td>
@@ -1960,9 +1954,9 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <h3><a name="filemanager_audios">ファイルマネージャー: オーディオ</a></h3>
 
 <table border="1" width="100%">
-<tr><th style="width:8%">項目(変数)</th>
-    <th style="width:29%">デフォルト</th>
-    <th style="width:63%">説明</th></tr>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_show_audio_player">オーディオプレーヤーを表示する(filemanager_show_audio_player)</a></td>
   <td valign="top">はい</td>
@@ -2052,6 +2046,49 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <p><strong>注意:</strong> トップページが1ページ目以外の場合、話題のURLを使用します。 
 トップページを表す話題IDはダッシュ "-" です。これはURLルーティングにも当てはまります。</p>
 
+<table border="1">
+    <thead>
+    <tr><th>オリジナルのURL</th><th>書き換え後のURL</th></tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>https://www.example.com/article.php?story=@sid</td>
+        <td>https://www.example.com/article.php/@sid</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/article.php?story=@sid&mode=print</td>
+        <td>https://www.example.com/article.php/@sid/print</td>
+    </tr>    
+    <tr>
+        <td>https://www.example.com/index.php?topic=@topic</td>
+        <td>https://www.example.com/index.php/topic/@topic/</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/index.php?topic=@topic&page=@page</td>
+        <td>https://www.example.com/index.php/topic/@topic/@page</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/directory.php?topic=@topic&year=@year&month=@month</td>
+        <td>https://www.example.com/directory.php/@topic/@year/@month</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/staticpages/index.php?page=@page</td>
+        <td>https://www.example.com/staticpages/index.php/@page</td>
+    </tr>    
+    <tr>
+        <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
+        <td>https://www.example.com/staticpages/index.php/@page/print</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/links/portal.php?what=link&item=@item</td>
+        <td>https://www.example.com/links/portal.php/link/@item</td>
+    </tr>
+    <tr>
+        <td>https://www.example.com/links/index.php?category=@cat</td>
+        <td>https://www.example.com/links/index.php/@cat</td>
+    </tr>    
+    </tbody>
+</table>
 
 <h2><a name="url-routing">URLルーティング</a></h2>
 
@@ -2066,13 +2103,13 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     </thead>
     <tbody>
     <tr>
-        <td>http://yourdomain/article/@sid/print</td>
-        <td>http://yourdomain/article.php?story=@sid&mode=print</td>
+        <td>http://yourdomain/article/@sid</td>
+        <td>http://yourdomain/article.php?story=@sid</td>
         <td>100</td>
     </tr>
     <tr>
-        <td>http://yourdomain/article/@sid</td>
-        <td>http://yourdomain/article.php?story=@sid</td>
+        <td>http://yourdomain/article/@sid/print</td>
+        <td>http://yourdomain/article.php?story=@sid&mode=print</td>
         <td>110</td>
     </tr>
     <tr>

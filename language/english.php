@@ -2332,6 +2332,7 @@ $LANG_confignames['Core'] = array(
     'max_photo_size' => 'Max Photo Size?',
     'use_gravatar' => 'Use Gravatar?',
     'gravatar_rating' => 'Gravatar Rating',
+    'gravatar_identicon' => 'Gravatar Identicon',
     'force_photo_width' => 'Force Photo Width',
     'default_photo' => 'Default Photo',
     'commentspeedlimit' => 'Comment Speed Limit',
