@@ -1166,7 +1166,6 @@ class Resource
 
         $src = array(
             'site_url'       => $this->config['site_url'],
-            'site_admin_url' => $this->config['site_admin_url'],
             'layout_url'     => $this->config['layout_url'],
             'xhtml'          => XHTML,
             'lang'           => $lang,
