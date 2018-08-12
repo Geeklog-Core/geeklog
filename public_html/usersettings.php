@@ -1333,10 +1333,22 @@ function savepreferences($A)
         }
     }
 
-    $TIDS = @array_values($A['topics']);       // array of strings
-    $AIDS = @array_values($A['selauthors']);   // array of integers
-    $BOXES = @array_values($A['blocks']);       // array of integers
-    $ETIDS = @array_values($A['etids']);        // array of strings
+    $TIDS = array();
+    if (is_array($A['topics'])) {
+        $TIDS = array_values($A['topics']);     // array of strings
+    }
+    $AIDS = array();
+    if (is_array($A['selauthors'])) {
+        $AIDS = array_values($A['selauthors']); // array of integers
+    }
+    $BOXES = array();
+    if (is_array($A['blocks'])) {
+        $BOXES = array_values($A['blocks']);    // array of integers
+    }
+    $ETIDS = array();
+    if (is_array($A['etids'])) {
+        $ETIDS = array_values($A['etids']);     // array of strings
+    }
     $AETIDS = USER_getAllowedTopics();          // array of strings (fetched, needed to "clean" $TIDS and $ETIDS)
 
     $tids = '';
