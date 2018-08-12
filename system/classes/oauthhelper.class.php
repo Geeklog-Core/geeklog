@@ -114,8 +114,12 @@ class OAuthConsumer
 
         switch ($this->client->server) {
             case 'Facebook' :
-                $api_url = 'https://graph.facebook.com/me?fields=name,email,link,id,first_name,last_name,about';
-                $scope   = 'email,public_profile,user_friends';
+                //$api_url = 'https://graph.facebook.com/me?fields=name,email,link,id,first_name,last_name,about';
+                //$scope   = 'email,public_profile,user_friends';
+				// About returns no data as of April 4th, 2018 as new version of API
+				// Don't need to request user_friends scope. Fix for permissions now required by Facebook app when requesting non-default data
+				$api_url = 'https://graph.facebook.com/me?fields=name,email,link,id,first_name,last_name,location';
+				$scope   = 'email,public_profile';
                 $q_api   = array();
                 break;
 
@@ -330,9 +334,10 @@ class OAuthConsumer
 
         switch ($this->client->server) {
             case 'Facebook' :
-                if ( isset($info->about) ) {
-                    $userinfo['about'] = $info->about;
-                }
+				// Facebook removed all access to About in April, 2018
+                //if ( isset($info->about) ) {
+                //    $userinfo['about'] = $info->about;
+                //}
                 if ( isset($info->location->name) ) {
                     $userinfo['location'] = $info->location->name;
                 }
@@ -493,6 +498,8 @@ class OAuthConsumer
     {
         global $_TABLES;
 
+		// Location field returned by several Oauth Providers
+		// About field was returned by Facebook but not anymore. Left in for now in case in future we can set it again or by another OAuth provider
         if (!empty($userInfo['about']) || !empty($userInfo['location'])) {
             $sql = "UPDATE {$_TABLES['userinfo']} SET";
             $sql .= !empty($userInfo['about']) ? " about = '" . DB_escapeString($userInfo['about']) . "'" : "";
