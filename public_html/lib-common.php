@@ -382,7 +382,8 @@ $TEMPLATE_OPTIONS = array(
         'layout_url'      => $_CONF['layout_url'], // Can be set by lib-common on theme change
         'anonymous_user'  => COM_isAnonUser(),
         'device_mobile'   => $_DEVICE->is_mobile(),
-        'front_page'      => COM_onFrontpage()
+        'front_page'      => COM_onFrontpage(), 
+        'current_url'     => COM_getCurrentURL()
     ),
     'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes. CTL_setTemplateRoot will be depreciated as of Geeklog 3.0.0. 
 //    'hook'                => array() //
