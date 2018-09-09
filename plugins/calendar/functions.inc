@@ -701,7 +701,8 @@ function plugin_submit_calendar($mode = 'master')
 
     if (($_CA_CONF['personalcalendars'] == 1) && ($mode === 'quickadd')) {
         // check for missing event title field
-        if (empty(GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($_POST['title']))))) {
+        $tempTitle = GLText::remove4byteUtf8Chars(GLText::stripTags(COM_checkWords($_POST['title'])));
+        if (empty($tempTitle)) {
             // If missing must set or process goes into infinite loop
             $_POST['title'] = $LANG_CAL_2[32]; // Default title will be "Event"
         }

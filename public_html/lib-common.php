@@ -7920,7 +7920,7 @@ function COM_createHREFLang($type, $id)
 
     // Add hreflang link element if multi-language site
     // If user allowed to switch language and Multi Language Content setup (because config languages and language_files exist (and assume setup correctly))
-    if ($_CONF['allow_user_language'] AND !empty($_CONF['languages']) AND !empty($_CONF['language_files'])) {
+    if ($_CONF['allow_user_language'] && !empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
         $lang_id = COM_getLanguageIdForObject($id);
         if (empty($lang_id)) {
             // Non Language specific item id found
@@ -7944,8 +7944,9 @@ function COM_createHREFLang($type, $id)
                 $lang_id = $key;
                 $lang_item_id = $nonlang_item_id . '_' . $lang_id;
                 
-                // See if item for language found and user has access, not in draft, etc..      
-                if (!empty(PLG_getItemInfo($type, $lang_item_id, 'id'))) {                        
+                // See if item for language found and user has access, not in draft, etc..
+                $tempId = PLG_getItemInfo($type, $lang_item_id, 'id');
+                if (!empty($tempId)) {
                     // Now build url for page
                     $headerCode .= LB . '<link rel="alternate" hreflang="' . $lang_id . '" href="' . PLG_getItemInfo($type, $lang_item_id, 'url') . '"' . XHTML . '>';
                 }
