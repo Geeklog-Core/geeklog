@@ -269,45 +269,45 @@ function editgroup($grp_id = '')
         }
         
         // Create a complete list of inherited groups for this group being edited so we know what needs to be disabled on screen
-        $resultA = DB_query($sql, 1);
-        $nrowsA = DB_numRows($resultA);
+        $resultY = DB_query($sql, 1);
+        $nrowsY = DB_numRows($resultY);
         $_GROUP_MAINGROUPS = array();
-        for ($iA = 1; $iA <= $nrowsA; $iA++) {
+        for ($iY = 1; $iY <= $nrowsY; $iY++) {
             $groups = array();
-            $A = DB_fetchArray($resultA);
+            $Y = DB_fetchArray($resultY);
             //Figure out if group being listed is already an inherited group
             
-            $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-                    . " WHERE grp_id = ug_main_grp_id AND ug_grp_id = " . $A['grp_id'], 1);
+            $resultZ = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
+                    . " WHERE grp_id = ug_main_grp_id AND ug_grp_id = " . $Y['grp_id'], 1);
 
-            $nrows = DB_numRows($result);
-            while ($nrows > 0) {
+            $nrowsZ = DB_numRows($resultZ);
+            while ($nrowsZ > 0) {
                 $inheritedgroups = array();
 
-                for ($i = 1; $i <= $nrows; $i++) {
-                    $B = DB_fetchArray($result);
+                for ($i = 1; $i <= $nrowsZ; $i++) {
+                    $Z = DB_fetchArray($resultZ);
 
-                    if (!in_array($B['ug_main_grp_id'], $groups)) {
-                        array_push($inheritedgroups, $B['ug_main_grp_id']);
-                        $groups[$B['grp_name']] = $B['ug_main_grp_id'];
+                    if (!in_array($Z['ug_main_grp_id'], $groups)) {
+                        array_push($inheritedgroups, $Z['ug_main_grp_id']);
+                        $groups[$Z['grp_name']] = $Z['ug_main_grp_id'];
                     }
                 }
 
                 if (count($inheritedgroups) > 0) {
                     $glist = implode(',', $inheritedgroups);
-                    $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
+                    $resultZ = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
                             . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)", 1);
-                    $nrows = DB_numRows($result);
+                    $nrowsZ = DB_numRows($resultZ);
                 } else {
-                    $nrows = 0;
+                    $nrowsZ = 0;
                 }
             }
             
             // Check if part of inherited and if selected part of inherited
-            if (in_array($grp_id, $groups) OR in_array($A['grp_id'], explode(' ', $selected))) {
+            if (in_array($grp_id, $groups) OR in_array($Y['grp_id'], explode(' ', $selected))) {
                 $_GROUP_MAINGROUPS = array_merge($_GROUP_MAINGROUPS, $groups);
                 // Add top group
-                $_GROUP_MAINGROUPS[$A['grp_name']] = $A['grp_id'];                        
+                $_GROUP_MAINGROUPS[$Y['grp_name']] = $Y['grp_id'];                        
             }
         }
               
