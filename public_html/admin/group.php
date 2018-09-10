@@ -76,7 +76,7 @@ if (!SEC_hasRights('group.edit')) {
 function editgroup($grp_id = '')
 {
     global $_TABLES, $_CONF, $_USER, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE,
-           $LANG28, $_GROUP_VERBOSE, $_GROUP_MAINGROUPS;
+           $LANG28, $_GROUP_VERBOSE, $_GROUP_MAINGROUPS, $_GROUP_LOOPGROUPS;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -267,11 +267,12 @@ function editgroup($grp_id = '')
             }
             $sql = "SELECT grp_id, grp_name, grp_descr, grp_gl_core FROM {$_TABLES['groups']} WHERE (grp_name <> 'Root')" . $xsql . ' AND ' . $whereGroups;
         }
-        
+
         // Create a complete list of inherited groups for this group being edited so we know what needs to be disabled on screen
         $resultY = DB_query($sql, 1);
         $nrowsY = DB_numRows($resultY);
-        $_GROUP_MAINGROUPS = array();
+        $_GROUP_MAINGROUPS = array(); // Inherited groups from the actual groups the current group belongs to
+        $_GROUP_LOOPGROUPS = array(); // Groups that current group cannot belong to as it would create a loop on to itself (ie A can belong to B, B can belong to C but C cannot belong to A as it would then create a loop)
         for ($iY = 1; $iY <= $nrowsY; $iY++) {
             $groups = array();
             $Y = DB_fetchArray($resultY);
@@ -279,7 +280,6 @@ function editgroup($grp_id = '')
             
             $resultZ = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
                     . " WHERE grp_id = ug_main_grp_id AND ug_grp_id = " . $Y['grp_id'], 1);
-
             $nrowsZ = DB_numRows($resultZ);
             while ($nrowsZ > 0) {
                 $inheritedgroups = array();
@@ -302,15 +302,26 @@ function editgroup($grp_id = '')
                     $nrowsZ = 0;
                 }
             }
-            
+            /*
             // Check if part of inherited and if selected part of inherited
             if (in_array($grp_id, $groups) OR in_array($Y['grp_id'], explode(' ', $selected))) {
                 $_GROUP_MAINGROUPS = array_merge($_GROUP_MAINGROUPS, $groups);
                 // Add top group
                 $_GROUP_MAINGROUPS[$Y['grp_name']] = $Y['grp_id'];                        
-            }
+            } 
+            */            
+            // Check if could create a security group loop and then check, if part of inherited and if selected part of inherited
+            if (in_array($grp_id, $groups)) { 
+                $_GROUP_LOOPGROUPS = array_merge($_GROUP_LOOPGROUPS, $groups);
+                // Add loop group
+                $_GROUP_LOOPGROUPS[$Y['grp_name']] = $Y['grp_id'];
+            } elseif (in_array($Y['grp_id'], explode(' ', $selected))) {
+                $_GROUP_MAINGROUPS = array_merge($_GROUP_MAINGROUPS, $groups);
+                // Add top group
+                $_GROUP_MAINGROUPS[$Y['grp_name']] = $Y['grp_id'];
+            } 
         }
-              
+
         $query_arr = array('table'          => 'groups',
                            'sql'            => $sql,
                            'query_fields'   => array('grp_name'),

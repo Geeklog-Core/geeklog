@@ -675,7 +675,7 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '')
  */
 function ADMIN_getListField_groups($fieldName, $fieldValue, $A, $icon_arr, $selected = '')
 {
-    global $_CONF, $LANG_ACCESS, $thisUsersGroups, $_GROUP_MAINGROUPS;
+    global $_CONF, $LANG_ACCESS, $thisUsersGroups, $_GROUP_MAINGROUPS, $_GROUP_LOOPGROUPS;
 
     $retval = false;
 
@@ -741,9 +741,12 @@ function ADMIN_getListField_groups($fieldName, $fieldValue, $A, $icon_arr, $sele
                     'value' => $A['grp_id']);
                 if (is_array($selected) && in_array($A['grp_id'], $selected)) {
                     $vars = array_merge($vars, array('checked' => true));
-                } elseif (in_array($A['grp_id'], $_GROUP_MAINGROUPS)) { // If inherited then disable
+                } elseif (in_array($A['grp_id'], $_GROUP_MAINGROUPS)) { // If inherited then disable and check
                     $vars = array_merge($vars, array(
                         'checked' => true, 'disabled' => true));
+                } elseif (in_array($A['grp_id'], $_GROUP_LOOPGROUPS)) { // If loops back to itself then disable but do not check
+                    $vars = array_merge($vars, array(
+                        'checked' => false, 'disabled' => true));
                 }
                 $retval = COM_createControl('type-checkbox', $vars);
                 break;
