@@ -4718,7 +4718,7 @@ HTML;
                                 $config->set('path_editors', $this->env['html_path'] . 'editors/');
                                 $config->set('rdf_file', $this->env['html_path'] . 'backend/geeklog.rss');
                                 $config->set('cookie_path', $this->guessCookiePath(urldecode($site_url)));
-                                $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
+                                $config->set_default('default_photo', urldecode($site_url) . '/images/userphotos/default.png');
 
                                 $lng = $this->getDefaultLanguage($gl_path . 'language/', $this->env['language'], $utf8);
 
@@ -4802,7 +4802,7 @@ HTML;
                                 $config->set('site_admin_url', urldecode($site_admin_url));
                                 $config->set('site_mail', urldecode($site_mail));
                                 $config->set('noreply_mail', urldecode($noreply_mail));
-                                $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
+                                $config->set_default('default_photo', urldecode($site_url) . '/images/userphotos/default.png');
                             } else {
                                 $site_url = $this->post('site_url', $this->get('site_url', ''));
                                 $site_admin_url = $this->post('site_admin_url', $this->get('site_admin_url', ''));
