@@ -222,6 +222,7 @@ function edituser($uid = 0, $msg = 0)
     }
     $user_templates->set_var('remoteservice', $remoteservice);
 
+    $user_templates->clear_var('show_delete_photo');
     if ($_CONF['allow_user_photo'] && ($A['uid'] > 0)) {
         $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email'], -1);
         $user_templates->set_var('user_photo', $photo);
@@ -229,6 +230,7 @@ function edituser($uid = 0, $msg = 0)
             $user_templates->clear_var('lang_delete_photo');
         } else {
             $user_templates->set_var('lang_delete_photo', $LANG28[28]);
+            $user_templates->set_var('show_delete_photo', true); // Only show delete photo if no user photo or no site default user photo
         }
     } else {
         $user_templates->clear_var('user_photo');

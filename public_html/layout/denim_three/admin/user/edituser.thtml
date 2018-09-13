@@ -17,8 +17,10 @@
       <dd><div><input type="text" maxlength="16" value="{username}" name="username" id="admin-edituser-username" class="uk-input size2"{xhtml}> {remoteservice}</div>
           {!if user_photo}
           {user_photo}
-          <label for="admin-edituser-delete-photo">{lang_delete_photo}</label> <input id="admin-edituser-delete-photo" class="uk-checkbox" type="checkbox" name="delete_photo"{xhtml}>
           {!endif}
+          {!if show_delete_photo}
+          <label for="admin-edituser-delete-photo">{lang_delete_photo}</label> <input id="admin-edituser-delete-photo" class="uk-checkbox" type="checkbox" name="delete_photo"{xhtml}>
+          {!endif}            
       </dd>
 
       <dt><label for="admin-edituser-fullname">{lang_fullname}</label></dt>

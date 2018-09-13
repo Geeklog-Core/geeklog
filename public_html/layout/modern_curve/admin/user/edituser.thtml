@@ -17,7 +17,12 @@
       <dd><input type="text" size="16" maxlength="16" value="{username}" name="username" id="admin-edituser-username" class="text"{xhtml}> {remoteservice}<br{xhtml}></dd>
       {!if user_photo}
       <dd class="user_photo">
-        {user_photo}{lang_delete_photo} <input type="checkbox" name="delete_photo"{xhtml}>
+          {!if user_photo}
+          {user_photo}
+          {!endif}
+          {!if show_delete_photo}
+          {lang_delete_photo} <input type="checkbox" name="delete_photo"{xhtml}>
+          {!endif}        
       </dd>
       {!endif}
 
