@@ -671,7 +671,13 @@ function _checkEnvironment()
     return $retval;
 }
 
-function _getStatusTags(&$T, $className, $value)
+/**
+ * @param  Template $T
+ * @param  string $className
+ * @param  string $value
+ * @return mixed
+ */
+function _getStatusTags($T, $className, $value)
 {
     $T->set_var('status_class', $className);
     $T->set_var('status_value', $value);
@@ -830,7 +836,10 @@ function gdVersion($user_ver = 0)
     return $gd_ver;
 }
 
-function _phpinfo(&$T)
+/**
+ * @param Template $T
+ */
+function _phpinfo($T)
 {
     ob_start();
     phpinfo();
@@ -840,15 +849,9 @@ function _phpinfo(&$T)
     # $matches[1]; # Style information
     # $matches[2]; # Body information
 
-    $idName = "panel_phpinfo";
-    $style_array = array_map(
-        create_function(
-            '$i',
-            'return "#' . $idName . ' " . preg_replace("/,/", ",#' . $idName . '", $i);'
-        ),
-        preg_split('/\n/', trim(preg_replace("/\nbody/", "\n", $matches[1])))
-    );
-    $style = implode(PHP_EOL, $style_array);
+    foreach (explode("\n", trim(preg_replace("/\nbody/", "\n", $matches[1]))) as $key => &$value) {
+        $value = str_replace(',', ',#panel_phpinfo' . $key, $value);
+    }
 
     $content = $matches[2];
     $content = preg_replace('/<font/', '<span', $content);
@@ -860,7 +863,7 @@ function _phpinfo(&$T)
     $content = preg_replace('/<h1/', '<h2', $content);
     $content = preg_replace('/<\/h1>/', '</h2>', $content);
 
-    $T->set_var('phpinfo_style', $style);
+    $T->set_var('phpinfo_style', $matches[1]);
     $T->set_var('phpinfo_content', $content);
 }
 

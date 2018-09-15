@@ -963,15 +963,14 @@ class Search
         global $_DB_dbms;
 
         if ($_DB_dbms === 'pgsql') {
-            $callback = create_function(
-                '$match',
-                'return $this->_convertsqlCallback(\'\\\\1 || \', $match[1]);'
-            );
+            $callBack = function ($match) {
+                return $this->_convertsqlCallback('\\\\1 || ', $match[1]);
+            };
 
             if (is_string($sql)) {
-                $sql = preg_replace_callback("/CONCAT\(([^\)]+)\)/i", $callback, $sql);
+                $sql = preg_replace_callback("/CONCAT\(([^\)]+)\)/i", $callBack, $sql);
             } elseif (is_array($sql)) {
-                $sql['pgsql'] = preg_replace_callback("/CONCAT\(([^\)]+)\)/i", $callback, $sql['pgsql']);
+                $sql['pgsql'] = preg_replace_callback("/CONCAT\(([^\)]+)\)/i", $callBack, $sql['pgsql']);
             }
         }
 
