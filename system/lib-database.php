@@ -195,9 +195,9 @@ function DB_displayError($flag)
  * Executes a query on the db server
  * This executes the passed SQL and returns the recordset or errors out
  *
- * @param    mixed $sql           String or array of strings of SQL to be executed
- * @param    int   $ignore_errors If 1 this function supresses any error messages
- * @return   object  Returns results from query
+ * @param    mixed       $sql           String or array of strings of SQL to be executed
+ * @param    int         $ignore_errors If 1 this function supresses any error messages
+ * @return   object|bool                Returns results from query
  */
 function DB_query($sql, $ignore_errors = 0)
 {

@@ -2,7 +2,7 @@
 /*
  * login_check_with_facebook.php
  *
- * @(#) $Id: login_check_with_facebook.php,v 1.2 2016/08/07 04:37:14 mlemos Exp $
+ * @(#) $Id: login_check_with_facebook.php,v 1.3 2018/08/16 07:09:40 mlemos Exp $
  *
  */
 
@@ -16,7 +16,7 @@
 	$client->debug = false;
 	$client->debug_http = true;
 	$client->server = 'Facebook';
-	$client->redirect_uri = 'http://'.$_SERVER['HTTP_HOST'].
+	$client->redirect_uri = 'https://'.$_SERVER['HTTP_HOST'].
 		dirname(strtok($_SERVER['REQUEST_URI'],'?')).'/login_check_with_facebook.php';
 
 	$client->client_id = ''; $application_line = __LINE__;

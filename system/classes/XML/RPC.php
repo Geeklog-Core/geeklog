@@ -52,7 +52,7 @@ define('XML_RPC_ERROR_INCORRECT_PARAMS', 105);
 define('XML_RPC_ERROR_PROGRAMMING', 106);
 /**#@-*/
 
-
+$GLOBALS = [];
 /**
  * Data types
  *
@@ -1592,6 +1592,8 @@ class XML_RPC_Message extends XML_RPC_Base
         }
 
         $this->convert_payload_encoding = $in;
+
+        return true;
     }
 
     /**
@@ -1721,7 +1723,7 @@ class XML_RPC_Message extends XML_RPC_Base
         $data = substr($data, 0, strpos($data, '</methodResponse>') + strlen('</methodResponse>'));
         $this->response_payload = $data;
 
-        if (!xml_parse($parser_resource, $data, sizeof($data))) {
+        if (!xml_parse($parser_resource, $data, (strlen($data) > 0))) {
             // thanks to Peter Kocks <peter.kocks@baygate.com>
             if (xml_get_current_line_number($parser_resource) == 1) {
                 $errorString = 'XML error at line 1, check URL';

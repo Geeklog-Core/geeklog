@@ -542,7 +542,7 @@ function SEC_getPermissionsHTML($perm_owner, $perm_group, $perm_members, $perm_a
  * @param    int $uid    User to check, if empty current user.
  * @return   string  returns comma delimited list of features the user has access to
  */
-function SEC_getUserPermissions($grp_id = '', $uid = '')
+function SEC_getUserPermissions($grp_id = 0, $uid = 0)
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE, $_GROUPS;
 
@@ -702,11 +702,9 @@ function SEC_getPermissionValue($perm_x)
  * @param    int    $uid     (optional) user ID
  * @return   int                 group ID or 0
  */
-function SEC_getFeatureGroup($feature, $uid = '')
+function SEC_getFeatureGroup($feature, $uid = 0)
 {
     global $_GROUPS, $_TABLES, $_USER;
-
-    $ugroups = array();
 
     if (empty($uid)) {
         if (empty($_USER['uid'])) {
@@ -907,6 +905,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
     $servicefile = $_CONF['path_system'] . 'classes/authentication/' . $service
         . '.auth.class.php';
     if (file_exists($servicefile)) {
+        /** @noinspection PhpIncludeInspection */
         require_once $servicefile;
 
         $authmodule = new $service();
@@ -985,14 +984,16 @@ function SEC_collectRemoteAuthenticationModules()
  * @author Trinity L Bays, trinity93 AT gmail DOT com
  * @param  string $uid   Their user id
  * @param  string $gname The group name
- * @return boolean status, true or false.
+ * @return bool
  */
 function SEC_addUserToGroup($uid, $gname)
 {
-    global $_TABLES, $_CONF;
+    global $_TABLES;
 
     $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name='" . $gname . "'");
-    DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
+    $retval = DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
+
+    return $retval;
 }
 
 /**
@@ -1040,9 +1041,9 @@ function SEC_setDefaultPermissions(&$A, $use_permissions = array())
  */
 function SEC_buildAccessSql($clause = 'AND')
 {
-    global $_TABLES, $_USER;
+    global $_USER;
 
-    if (isset($_USER) AND $_USER['uid'] > 1) {
+    if (isset($_USER) && $_USER['uid'] > 1) {
         $uid = $_USER['uid'];
     } else {
         $uid = 1;
@@ -1108,7 +1109,7 @@ function SEC_removeFeatureFromDB($feature_name, $logging = false)
  */
 function SEC_getGroupDropdown($group_id, $access)
 {
-    global $_CONF, $_TABLES;
+    global $_TABLES;
 
     $groupdd = '';
 
@@ -1251,7 +1252,7 @@ function SEC_generateSalt()
  * @param  int    $uid      user id to authenticate
  * @return int     0 for success, non-zero for failure or error
  */
-function SEC_encryptUserPassword($password, $uid = '')
+function SEC_encryptUserPassword($password, $uid = 0)
 {
     global $_USER, $_CONF, $_TABLES;
 
@@ -1306,7 +1307,8 @@ function SEC_encryptUserPassword($password, $uid = '')
  * Check if password passes minimum strength tests
  * Passwords must be a minimum of 8 characters and have at least 1 letter and 1 number
  *
- * @return  boolean
+ * @param  string $password
+ * @return bool
  */
 function SEC_checkPasswordStrength($password) {
 
@@ -1322,7 +1324,7 @@ function SEC_checkPasswordStrength($password) {
  * Generate Random Password
  * Generates a random string of human readable characters that has at least 1 number and 1 letter.
  *
- * @return  string  generated random password
+ * @return string  generated random password
  */
 function SEC_generateRandomPassword()
 {
@@ -1334,7 +1336,7 @@ function SEC_generateRandomPassword()
     mt_srand(rand());
     srand(mt_rand());
 
-    $entropy = str_split(hash('sha256', uniqid('awesomesalt', TRUE) . mcrypt_create_iv(64) . microtime() . rand() . mt_rand(), TRUE));
+    $entropy = str_split(hash('sha256', uniqid('awesomesalt', true) . SEC_randomBytes(64) . microtime() . rand() . mt_rand(), true));
     $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%^&*()_+=-";
     $pass = array(); //remember to declare $pass as an array
     $alphaLength = strlen($alphabet); //put the length in cache
@@ -1342,9 +1344,10 @@ function SEC_generateRandomPassword()
     $pass[] = $alphabet[0 + $rand]; // Grab a random letter.
     $rand = floor(ord(array_pop($entropy)) * 10 / 255.1);
     $pass[] = $alphabet[50 + $rand]; // Grab a random number.
+
     for ($i = 0; $i < 6; $i++) {
-      $rand = floor(ord(array_pop($entropy)) * $alphaLength / 255.1);
-      $pass[] = $alphabet[$rand];
+        $rand = (int) floor(ord(array_pop($entropy)) * $alphaLength / 255.1);
+        $pass[] = $alphabet[$rand];
     }
 
     shuffle($pass);
@@ -1358,9 +1361,9 @@ function SEC_generateRandomPassword()
  *
  * @param  string $password Password to encrypt
  * @param  int    $uid      User id to update
- * @return int     0 for success, non-zero indicates error.
+ * @return int              0 for success, non-zero indicates error.
  */
-function SEC_updateUserPassword(&$password = '', $uid = '')
+function SEC_updateUserPassword(&$password = '', $uid = 0)
 {
     global $_TABLES, $_CONF, $_USER;
 
@@ -1403,7 +1406,7 @@ function SEC_updateUserPassword(&$password = '', $uid = '')
  */
 function SEC_createToken($ttl = 1200)
 {
-    global $_TABLES, $_USER;
+    global $_CONF, $_TABLES, $_USER;
 
     static $last_token;
 
@@ -1513,10 +1516,9 @@ function SEC_checkToken()
  */
 function SECINT_checkToken()
 {
-    global $_TABLES, $_USER, $_DB_dbms;
+    global $_TABLES, $_USER;
 
     $token = Geeklog\Input::fGetOrPost(CSRF_TOKEN, ''); // Default to no token
-    $return = false; // Default to fail.
 
     if (trim($token) != '') {
         $sql['mysql'] = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
@@ -1562,7 +1564,8 @@ function SECINT_checkToken()
  * @param    string $method    original request method: POST or GET
  * @param    string $postdata  serialized POST data
  * @param    string $getdata   serialized GET data
- * @return   string              HTML for the authentication form
+ * @param    string $files
+ * @return   string            HTML for the authentication form
  * @access   private
  */
 function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $files = '')
@@ -1742,19 +1745,18 @@ function SEC_getTokenExpiryNotice($token, $extra_msg = '')
  * Browsers that support the HttpOnly flag will not allow JavaScript access
  * to such a cookie.
  *
- * @param    string  $name   cookie name
- * @param    string  $value  cookie value
- * @param    int     $expire expire time
- * @param    string  $path   path on the server or $_CONF['cookie_path']
- * @param    string  $domain domain or $_CONF['cookiedomain']
- * @param    boolean $secure whether to use HTTPS or $_CONF['cookiesecure']
+ * @param  string  $name   cookie name
+ * @param  string  $value  cookie value
+ * @param  int     $expire expire time
+ * @param  string  $path   path on the server or $_CONF['cookie_path']
+ * @param  string  $domain domain or $_CONF['cookiedomain']
+ * @param  bool    $secure whether to use HTTPS or $_CONF['cookiesecure']
+ * @return bool
  * @link http://blog.mattmecham.com/2006/09/12/http-only-cookies-without-php-52/
  */
 function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null, $secure = null)
 {
     global $_CONF;
-
-    $retval = false;
 
     if ($path === null) {
         $path = $_CONF['cookie_path'];
@@ -1844,7 +1846,7 @@ function SEC_hasAccess2($A)
  */
 function SEC_loginRequiredForm()
 {
-    global $_CONF, $LANG_LOGIN;
+    global $LANG_LOGIN;
 
     $cfg = array(
         'title'   => $LANG_LOGIN[1],
@@ -2102,4 +2104,38 @@ function SEC_getDefaultRootUser()
     $A = DB_fetchArray($result);
 
     return $A['uid'];
+}
+
+/**
+ * Return random bytes
+ *
+ * @param  int $length
+ * @return string
+ */
+function SEC_randomBytes($length)
+{
+    $length = (int) $length;
+    if ($length < 1) {
+        $length = 32;
+    }
+
+    try {
+        $retval = random_bytes($length);
+    } catch (\Exception $e) {
+        $retval = false;
+
+        if (is_callable('openssl_random_pseudo_bytes ')) {
+            $retval = openssl_random_pseudo_bytes($length);
+        }
+
+        if ($retval === false) {
+            $retval = '';
+
+            for ($i = 0; $i < $length; $i++) {
+                $retval .= substr(md5(rand()), 0, 1);
+            }
+        }
+    }
+
+    return $retval;
 }

@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ef836782e1b8d747e78815386b148139' => $vendorDir . '/htmlawed/htmlawed/htmLawed.php',
+    '5255c38a0faeba867671b61dfda6d864' => $vendorDir . '/paragonie/random_compat/lib/random.php',
     '2c102faa651ef8ea5874edb585946bce' => $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
 );

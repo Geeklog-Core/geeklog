@@ -2,7 +2,7 @@
 /*
  * login_with_facebook.php
  *
- * @(#) $Id: login_with_facebook.php,v 1.6 2016/08/07 04:37:14 mlemos Exp $
+ * @(#) $Id: login_with_facebook.php,v 1.7 2018/08/16 07:09:40 mlemos Exp $
  *
  */
 
@@ -22,7 +22,7 @@
 	// before.
 	$client->reauthenticate = false;
 
-	$client->redirect_uri = 'http://'.$_SERVER['HTTP_HOST'].
+	$client->redirect_uri = 'https://'.$_SERVER['HTTP_HOST'].
 		dirname(strtok($_SERVER['REQUEST_URI'],'?')).'/login_with_facebook.php';
 
 	$client->client_id = ''; $application_line = __LINE__;

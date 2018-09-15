@@ -2,7 +2,7 @@
 /*
  * oauth_client.php
  *
- * @(#) $Id: oauth_client.php,v 1.165 2017/08/20 09:30:30 mlemos Exp $
+ * @(#) $Id: oauth_client.php,v 1.166 2018/08/16 07:12:24 mlemos Exp $
  *
  */
 
@@ -28,7 +28,7 @@ class oauth_session_value_class
 
 	<package>net.manuellemos.oauth</package>
 
-	<version>@(#) $Id: oauth_client.php,v 1.165 2017/08/20 09:30:30 mlemos Exp $</version>
+	<version>@(#) $Id: oauth_client.php,v 1.166 2018/08/16 07:12:24 mlemos Exp $</version>
 	<copyright>Copyright © (C) Manuel Lemos 2012</copyright>
 	<title>OAuth client</title>
 	<author>Manuel Lemos</author>
@@ -320,6 +320,7 @@ class oauth_client_class
 				<stringvalue>Xero</stringvalue>,
 				<stringvalue>XING</stringvalue>,
 				<stringvalue>Yahoo</stringvalue>,
+				<stringvalue>Yahoo2</stringvalue>,
 				<stringvalue>Yammer</stringvalue> and
 				<stringvalue>Yandex</stringvalue>. Please contact the author if you
 				would like to ask to add built-in support for other types of OAuth
@@ -1182,7 +1183,7 @@ class oauth_client_class
 {/metadocument}
 */
 	var $http_arguments = array();
-	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.165 $)';
+	var $oauth_user_agent = 'PHP-OAuth-API (http://www.phpclasses.org/oauth-api $Revision: 1.166 $)';
 
 	var $response_time = 0;
 	var $session = '';

@@ -414,7 +414,7 @@ class Database
      *
      * @param    string $sql              SQL to be executed
      * @param    int    $ignore_errors    If 1 this function suppresses any error messages
-     * @return   mysqli_result|false      Returns results of query
+     * @return   mysqli_result|bool       Returns results of query
      */
     public function dbQuery($sql, $ignore_errors = 0)
     {
