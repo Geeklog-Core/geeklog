@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2018 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -84,7 +84,6 @@ while ($A = DB_fetchArray($result)) {
  *
  * @param    string $function_name holds name of function to call
  * @param    array  $args     arguments to send to function
- * @return   void
  * @access   private
  * @internal not to be used by plugins
  */
@@ -381,7 +380,7 @@ function PLG_uninstall($type)
  */
 function PLG_enableStateChange($type, $enable)
 {
-    global $_CONF, $_TABLES, $_DB_table_prefix;
+    global $_CONF;
 
     $args[1] = $enable;
 
@@ -391,19 +390,16 @@ function PLG_enableStateChange($type, $enable)
         require_once($_CONF['path'] . 'plugins/' . $type . '/functions.inc');
     }
 
-    return PLG_callFunctionForOnePlugin('plugin_enablestatechange_' . $type,
-        $args);
+    return PLG_callFunctionForOnePlugin('plugin_enablestatechange_' . $type, $args);
 }
 
 /**
  * Checks to see if user is a plugin moderator
  * Geeklog is asking if the user is a moderator for any installed plugins.
- *
- * @return   boolean     True if current user is moderator of plugin otherwise false
  */
 function PLG_isModerator()
 {
-    return PLG_callFunctionForAllPlugins('ismoderator');
+    PLG_callFunctionForAllPlugins('ismoderator');
 }
 
 /**
@@ -759,16 +755,16 @@ function PLG_getSearchTypes()
  * and return their results.  Results come back in an array of HTML
  * formatted table rows that can be quickly printed by search.php
  *
- * @param    string $query     What the user searched for
- * @param    string $dateStart beginning of date range to search for
- * @param    string $dateEnd   ending date range to search for
- * @param    string $topic     the topic the user searched within
- * @param    string $type      Type of items they are searching, or 'all'
- * @param    int    $author    UID...only return results for this person
- * @param    string $keyType   search key type: 'all', 'phrase', 'any'
- * @param    int    $page      page number of current search (deprecated)
- * @param    int    $perPage   number of results per page (deprecated)
- * @return   array             Returns search results
+ * @param  string $query     What the user searched for
+ * @param  string $dateStart beginning of date range to search for
+ * @param  string $dateEnd   ending date range to search for
+ * @param  string $topic     the topic the user searched within
+ * @param  string $type      Type of items they are searching, or 'all'
+ * @param  int    $author    UID...only return results for this person
+ * @param  string $keyType   search key type: 'all', 'phrase', 'any'
+ * @param  int    $page      page number of current search (deprecated)
+ * @param  int    $perPage   number of results per page (deprecated)
+ * @return array of SearchCriteria
  */
 function PLG_doSearch($query, $dateStart, $dateEnd, $topic, $type, $author, $keyType = 'all', $page = 1, $perPage = 10)
 {
@@ -1323,9 +1319,8 @@ function PLG_groupChanged($grp_id, $mode)
  * Geeklog is about to display the edit form for the user's profile. Plugins
  * now get a chance to add their own variables and input fields to the form.
  *
- * @param    int $uid       user id of the user profile to be edited
- * @param    ref &$template reference of the Template for the profile edit form
- * @return   void
+ * @param  int      $uid      user id of the user profile to be edited
+ * @param  Template $template reference of the Template for the profile edit form
  */
 function PLG_profileVariablesEdit($uid, &$template)
 {
@@ -3157,7 +3152,7 @@ function PLG_pluginStateChange($type, $status)
 function PLG_resolveDependencies()
 {
     global $_PLUGINS, $_TABLES;
-    $retval = '';
+
     $flag = true; // false means that all dependencies are resolved
     while ($flag) { // loop until ALL dependencies are satisfied
         $flag = false; // set this if any plugin has been disabled during the loop
@@ -3322,7 +3317,6 @@ function PLG_checkDependencies($pi_name)
 {
     global $_TABLES, $_DB_dbms;
 
-    $retval = true;
     $params = PLG_getParams($pi_name);
 
     $dbSupported = false; // True if we support the database that the plugin is requiring

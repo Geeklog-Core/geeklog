@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2018 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-if (stripos($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
+if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own.');
 }
 
@@ -379,7 +379,7 @@ class Search
      */
     private function _searchStories()
     {
-        global $_TABLES, $_DB_dbms, $LANG09;
+        global $_TABLES, $LANG09;
 
         // Make sure the query is SQL safe
         $query = trim(DB_escapeString($this->_query));
@@ -441,7 +441,7 @@ class Search
             $sql .= 'AND (c.uid = \'' . $this->_author . '\') ';
         }
 
-        $search_c = new SearchCriteria('comments', array($LANG09[65], $LANG09[66]));
+        $search_c = new SearchCriteria('comments', $LANG09[66]);
 
         $columns = array('title' => 'c.title', 'comment');
         $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $this->_dateStart, $this->_dateEnd);
@@ -563,7 +563,7 @@ class Search
         $num_results = 0;
 
         foreach ($result_plugins as $result) {
-            if (is_a($result, 'SearchCriteria')) {
+            if ($result instanceof SearchCriteria) {
                 $debug_info = $result->getName() . ' using APIv2';
 
                 if ($this->_type !== 'all' && $this->_type != $result->getName()) {
@@ -840,7 +840,6 @@ class Search
                 $end = 0;
                 $rt = '<b>...</b> ';
             } else {
-                $str = substr($text, $pos, $pos_space - $pos);
                 $m = (int) (($num_words - 1) / 2);
                 $key = $this->_arraySearch($keyword, $words);
                 if ($key === false) {
@@ -851,9 +850,9 @@ class Search
                 } elseif ($key <= $m) {
                     // Keyword at the start of text
                     $start = 0 - $key;
-                    $end = $num_words - 1;
                     $end = ($key + $m <= $word_count - 1)
-                        ? $key : $word_count - $m - 1;
+                        ? $key
+                        : $word_count - $m - 1;
                     $abs_length = abs($start) + abs($end) + 1;
                     if ($abs_length < $num_words) {
                         $end += ($num_words - $abs_length);
@@ -953,10 +952,10 @@ class Search
     }
 
     /**
-     * Converts the MySQL CONCAT function to the MS SQL / Postgres equivalents
+     * Converts the MySQL CONCAT function to the Postgres equivalents
      *
      * @param  string $sql The SQL to convert
-     * @return string      MS SQL or PostgreSQL friendly SQL
+     * @return string      PostgreSQL friendly SQL
      */
     private function _convertSql($sql)
     {

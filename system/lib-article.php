@@ -933,8 +933,8 @@ function STORY_deleteImages($sid)
  * Delete a story.
  * This is used to delete a story from the list of stories.
  *
- * @param    string $sid ID of the story to delete
- * @return   string          HTML, e.g. a meta redirect
+ * @param  string $sid ID of the story to delete
+ * @return array
  */
 function STORY_deleteStory($sid)
 {
@@ -1419,8 +1419,6 @@ function plugin_moderationvalues_story_draft()
  */
 function plugin_moderationdelete_story_draft($sid)
 {
-    global $_TABLES;
-
     STORY_deleteStory($sid);
 
     return '';
@@ -1475,7 +1473,6 @@ function plugin_moderationapprove_story_draft($sid)
  *
  * @param    int    $grp_id Group ID
  * @param    string $mode   type of change: 'new', 'edit', or 'delete'
- * @return   void
  */
 function plugin_group_changed_story($grp_id, $mode)
 {
@@ -1483,7 +1480,6 @@ function plugin_group_changed_story($grp_id, $mode)
 
     if ($mode == 'delete') {
         // Change any deleted group ids to Story Admin if exist, if does not change to root group
-        $new_group_id = 0;
         if (isset($_GROUPS['Story Admin'])) {
             $new_group_id = $_GROUPS['Story Admin'];
         } else {
@@ -1499,7 +1495,7 @@ function plugin_group_changed_story($grp_id, $mode)
 
         // Update Story with new group id
         $sql = "UPDATE {$_TABLES['stories']} SET group_id = $new_group_id WHERE group_id = $grp_id";
-        $result = DB_query($sql);
+        DB_query($sql);
     }
 }
 
@@ -1645,7 +1641,7 @@ function plugin_autotags_story($op, $content = '', $autotag = array())
  */
 function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
 {
-    global $_CONF, $_TABLES, $LANG03, $_USER;
+    global $_CONF, $_TABLES, $LANG03;
 
     $retval = '';
 
@@ -1887,7 +1883,7 @@ function plugin_configchange_article($group, $changes = array())
  */
 function service_submit_story($args, &$output, &$svc_msg)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $_GROUPS;
+    global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE;
 
     $output = ''; // Initialize as a string variable
 
@@ -2374,8 +2370,6 @@ function service_delete_story($args, &$output, &$svc_msg)
 function service_get_story($args, &$output, &$svc_msg)
 {
     global $_CONF, $_TABLES, $_USER;
-
-    $retval = 0;
 
     if (!isset($_CONF['atom_max_stories'])) {
         $_CONF['atom_max_stories'] = 10; // set a reasonable default

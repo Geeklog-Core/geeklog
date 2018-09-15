@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2018 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -286,7 +286,7 @@ if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_c
 /**
  * This provides the ability to set css and javascript.
  *
- * @global $_SCRIPTS Scripts
+ * @global \Geeklog\Resource $_SCRIPTS
  */
 //$_SCRIPTS = new Scripts();
 
@@ -6072,19 +6072,19 @@ function COM_getTopicSQL($type = 'WHERE', $u_id = 0, $table = '')
  * Strip slashes from a string only when magic_quotes_gpc = on.
  *
  * @param   string $text The text
- * @return  string       The text, possibly without slashes.
+ * @return  string|array The text, possibly without slashes.
  */
 function COM_stripslashes($text)
 {
     if (@get_magic_quotes_gpc()) {
         if (is_array($text)) {
-            return (array_map('stripslashes', $text));
+            return array_map('stripslashes', $text);
         } else {
-            return (stripslashes($text));
+            return stripslashes($text);
         }
     }
 
-    return ($text);
+    return $text;
 }
 
 /**
@@ -6456,16 +6456,15 @@ function COM_dateDiff($interval, $date1, $date2)
  * @param  string   $dir            Directory to clean of files and folders
  * @param  array    $leave_dirs     Array of directory names to not delete
  * @param  array    $leave_files    Array of file names to not delete
- * @return nothing
  */
 function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array()) { 
 
-    foreach( glob("$dir/*") as $file ) {
+    foreach (glob("$dir/*") as $file) {
         if (is_dir($file)) {
             if (!in_array(basename($file), $leave_dirs)) {
                 COM_deleteFiles($file); // delete all sub directories and files in those directories
             }
-        } elseif( !in_array(basename($file), $leave_files) ) {
+        } elseif (!in_array(basename($file), $leave_files) ) {
             unlink($file);
         }
     }
@@ -6476,7 +6475,6 @@ function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array())
  *
  * @since  Geeklog-2.2.0
  * @param  string   $dir            Directory to clean of files and folders
- * @return nothing
  */
 function COM_deleteFiles($dir) { 
   
