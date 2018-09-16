@@ -396,10 +396,26 @@ function PLG_enableStateChange($type, $enable)
 /**
  * Checks to see if user is a plugin moderator
  * Geeklog is asking if the user is a moderator for any installed plugins.
+ *
+ * @return bool
  */
 function PLG_isModerator()
 {
-    PLG_callFunctionForAllPlugins('ismoderator');
+    global $_PLUGINS;
+
+    foreach ($_PLUGINS as $piName) {
+        $function = 'plugin_ismoderator_' . $piName;
+        if (is_callable($function) && $function()) {
+            return true;
+        }
+    }
+
+    $function = 'CUSTOM_ismoderator';
+    if (is_callable($function) && $function()) {
+        return true;
+    }
+
+    return false;
 }
 
 /**
