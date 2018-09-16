@@ -8595,6 +8595,33 @@ foreach ($_PLUGINS as $pi_name) {
     require_once $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc';
 }
 
+/**
+ * Return the actual admin/install directory
+ *
+ * @return string
+ * @since  Geeklog 2.2.1
+ */
+function COM_getInstallDir()
+{
+    global $_CONF;
+
+    $adminUrl = $_CONF['site_admin_url'];
+    if (strrpos($adminUrl, '/') == strlen($adminUrl)) {
+        $adminUrl = substr($adminUrl, 0, -1);
+    }
+
+    $pos = strrpos($adminUrl, '/');
+    if ($pos === false) {
+        // only guessing ...
+        $installDir = $_CONF['path_html'] . 'admin/install';
+    } else {
+        $installDir = $_CONF['path_html'] . substr($adminUrl, $pos + 1) . '/install';
+    }
+    $installDir = str_replace('\\', '/', $installDir);
+
+    return is_dir($installDir) ? $installDir : '';
+}
+
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
 if (!isset($_VARS['last_scheduled_run']) || !is_numeric($_VARS['last_scheduled_run'])) {
