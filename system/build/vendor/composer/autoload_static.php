@@ -6,14 +6,23 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit773d23c8c05db964ddef1e220b7111ce
 {
+    public static $files = array (
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
+            'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Component\\Yaml\\' => 23,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
         'Symfony\\Component\\Yaml\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
@@ -26,13 +35,6 @@ class ComposerStaticInit773d23c8c05db964ddef1e220b7111ce
             'PEAR' => 
             array (
                 0 => __DIR__ . '/..' . '/pear/pear_exception',
-            ),
-        ),
-        'J' => 
-        array (
-            'JShrink' => 
-            array (
-                0 => __DIR__ . '/..' . '/tedivm/jshrink/src',
             ),
         ),
         'C' => 
