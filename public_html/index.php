@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog homepage.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2018 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -163,31 +163,12 @@ if (isset($_GET['msg'])) {
 
 if (SEC_inGroup('Root') && ($page === 1)) {
     $done = DB_getItem($_TABLES['vars'], 'value', "name = 'security_check'");
-    if ($done != 1) {
-        /**
-         * we don't have the path to the admin directory, so try to figure it
-         * out from $_CONF['site_admin_url']
-         *
-         * @todo FIXME: this duplicates some code from admin/sectest.php
-         */
-        $adminurl = $_CONF['site_admin_url'];
-        if (strrpos($adminurl, '/') == strlen($adminurl)) {
-            $adminurl = substr($adminurl, 0, -1);
-        }
-        $pos = strrpos($adminurl, '/');
-        if ($pos === false) {
-            // only guessing ...
-            $installdir = $_CONF['path_html'] . 'admin/install';
-        } else {
-            $installdir = $_CONF['path_html'] . substr($adminurl, $pos + 1)
-                . '/install';
-        }
 
-        if (is_dir($installdir)) {
-            // deliberatly NOT print the actual path to the install dir
-            $secmsg = sprintf($LANG_SECTEST['remove_inst'], '')
-                . ' ' . $MESSAGE[92];
-            $display .= COM_showMessageText($secmsg);
+    if ($done != 1) {
+        if (COM_getInstallDir() !== '') {
+            // deliberately NOT print the actual path to the install dir
+            $secMsg = sprintf($LANG_SECTEST['remove_inst'], '') . ' ' . $MESSAGE[92];
+            $display .= COM_showMessageText($secMsg);
         }
     }
 }
