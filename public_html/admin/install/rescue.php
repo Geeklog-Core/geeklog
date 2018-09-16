@@ -44,7 +44,7 @@ $self = basename(__FILE__);
 $configs = array(
     'site_url', 'site_admin_url', 'site_mail', 'rdf_file', 'language', 'path_html',
     'path_themes', 'path_editors', 'path_images', 'path_log', 'path_language',
-    'backup_path', 'path_data', 'path_pear', 'theme', 'cookie_path', 'cookiedomain',
+    'backup_path', 'path_data', 'theme', 'cookie_path', 'cookiedomain',
 );
 
 // Start it off
@@ -251,7 +251,7 @@ function render($renderType, $args = array()) {
             ', $passwd, $username, $site_url);
             $headers  = 'MIME-Version: 1.0' . CRLB;
             $headers .= 'Content-type: text/html; charset=' . $LANG_CHARSET . CRLB;
-            $headers .= 'X-Mailer: PHP/' . phpversion();
+            $headers .= 'X-Mailer: PHP/' . PHP_VERSION;
             if (mail($to, $subject, $message, $headers)) {
                 $url = $self.'?view=options&amp;args=result:success|statusMessage:' . urlencode(s(22)) . '&amp;lang=' . urlencode($lang);
                 echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
@@ -273,7 +273,7 @@ function render($renderType, $args = array()) {
         <h2><?php e(26); ?></h2>
         <div class="info">
             <ul>
-                <li><?php e(27); ?>: <?php echo phpversion(); ?> <a href="<?php echo $self; ?>?view=phpinfo<?php echo '&amp;lang=' . urlencode($lang); ?>"> <small>phpinfo</small></a></li>
+                <li><?php e(27); ?>: <?php echo PHP_VERSION; ?> <a href="<?php echo $self; ?>?view=phpinfo<?php echo '&amp;lang=' . urlencode($lang); ?>"> <small>phpinfo</small></a></li>
                 <li><?php e(28); ?> <?php echo VERSION; ?></li>
             </ul>
         </div>
@@ -298,10 +298,15 @@ function render($renderType, $args = array()) {
             }
         }        
         register_shutdown_function( "fatal_handler" );
-        
-        $result = DB_query("SELECT * FROM {$_TABLES['plugins']}");
+
+        // Check if `conf_values` table exists
         $count = DB_count($_TABLES['conf_values']);
-        $count = DB_count($_TABLES['vars'], 'name', 'geeklog'); // Check if vars table exists and geeklog version record is found
+        if ($count == 0) {
+            trigger_error("Fatal error", E_USER_ERROR);
+        }
+
+        // Check if `vars` table exists
+        $count = DB_count($_TABLES['vars']);
         if ($count == 0) {
             trigger_error("Fatal error", E_USER_ERROR);
         }
