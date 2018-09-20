@@ -2923,8 +2923,15 @@ class Installer
                     break;                    
 
                 case '2.2.0':
-                    // there were no database changes in 2.2.0
-                
+                    require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.2.0_to_2.2.1.php';
+                    if ($checkForMessage) {
+                        $retval = upgrade_message220();
+                        if (is_array($retval)) {
+                            $this->upgradeMessages = array_merge($this->upgradeMessages, $retval);
+                        }
+                    } else {
+                        $this->updateDB($_SQL, $progress);
+                    }
                     $currentGlVersion = '2.2.1';
                     break;
                                         
