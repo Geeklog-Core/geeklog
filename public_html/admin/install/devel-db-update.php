@@ -61,6 +61,74 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
+function update_DatabaseFor221()
+{
+    global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
+
+    // ***************************************     
+    // Add database Geeklog Core updates here. 
+    // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
+
+    // *************************************
+    // Fix Group Assignments from Geeklog Install
+
+    // Remove Admin User (2) from all default groups assignments from the install except Root (1), All Users (2), Logged-In Users (13)
+    $_SQL[] = "DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_main_grp_id != 1 AND ug_main_grp_id != 2 AND ug_main_grp_id != 13) AND ug_uid = 2 AND ug_grp_id IS NULL";
+        
+    // Remove All Users (2) from any other group (should be just for users)
+    $_SQL[] = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 2 AND ug_uid IS NULL AND ug_grp_id > 0";
+    // Remove Root Group (1) from All Users Group (2) (which all users already belong too)
+    $_SQL[] = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 2 AND ug_uid IS NULL AND ug_grp_id = 1";
+    // *************************************    
+    
+    // Remove unused Vars table record (originally inserted by devel-db-update script on previous version upgrades)
+    $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
+
+    
+    // ***************************************     
+    // Core Plugin Updates Here
+    
+    // Staticpages
+    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.0', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
+    
+    
+    // SpamX
+    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.5' WHERE pi_name='spamx'";
+    
+    
+    // Links
+    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.6' WHERE pi_name='links'";
+    
+    
+    // Polls
+    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.9' WHERE pi_name='polls'";
+
+    // XMLSiteMap
+    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.1', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
+    
+    // Calendar
+    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.6', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
+    
+    
+
+    if ($use_innodb) {
+        $statements = count($_SQL);
+        for ($i = 0; $i < $statements; $i++) {
+            $_SQL[$i] = str_replace('MyISAM', 'InnoDB', $_SQL[$i]);
+        }
+    }
+
+    foreach ($_SQL as $sql) {
+        DB_query($sql,1);
+    }
+
+    // update Geeklog version number
+    DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='database_version'",1);
+    DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='database_version'",1);
+    
+    return true;
+}
+
 function update_DatabaseFor220()
 {
     global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
