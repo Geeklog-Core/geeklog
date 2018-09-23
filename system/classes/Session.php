@@ -21,13 +21,6 @@ abstract class Session
     const ANON_USER_ID = 1;
 
     /**
-     * Session options
-     *
-     * @var array
-     */
-    private static $options = [];
-
-    /**
      * "flash", i.e., one-time session variables
      *
      * @var array
@@ -43,23 +36,24 @@ abstract class Session
 
     /**
      * Init the Session class
-     *
-     * @param array $options
      */
-    public static function init(array $options = [])
+    public static function init()
     {
+        global $_CONF;
+
         if (self::$isInitialized) {
             return;
         }
 
-        // Save options
-        self::$options = $options;
-
         // Set PHP settings
-        ini_set('session.use_strict_mode', 1);
+        if (version_compare(PHP_VERSION, '5.5.2', '>=')) {
+            ini_set('session.use_strict_mode', 1);
+        }
+
         ini_set('session.use_cookies', 1);
         ini_set('session.use_only_cookies', 1);
         ini_set('session.use_trans_sid', 0);
+        ini_set('session.save_path', $_CONF['path'] . 'data/session');
 
         // Start a new session
         if (!session_start()) {
