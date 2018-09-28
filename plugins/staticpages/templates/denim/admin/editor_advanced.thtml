@@ -91,12 +91,14 @@
         <dd class="controls_text">
             {sp_formateddate} 
             (<input type="checkbox" name="sp_onlastupdate" id="sp-editor-sp_onlastupdate" {onlastupdate_checked}{xhtml}> {lang_show_on_page})
+            {!if lang_show_on_page_date_disabled}<dd class="description">{lang_show_on_page_date_disabled}</dd>{!endif}
         </dd>
 
         <dt><label for="sp-editor-sp_onhits">{lang_hits}</label></dt>
         <dd class="controls_text">
             <input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted} 
             (<input type="checkbox" name="sp_onhits" id="sp-editor-sp_onhits" {onhits_checked}{xhtml}> {lang_show_on_page})
+            {!if lang_show_on_page_hits_disabled}<dd class="description">{lang_show_on_page_hits_disabled}</dd>{!endif}
         </dd>        
 
         <dt><label>{lang_comments}</label></dt>

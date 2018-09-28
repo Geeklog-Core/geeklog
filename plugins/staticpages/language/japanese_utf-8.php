@@ -126,6 +126,7 @@ $LANG_STATIC = array(
     'draft_yes' => '○',
     'draft_no' => '-',
     'show_on_page' => 'ページに表示する',
+    'show_on_page_disabled' => 'Note: This is currently disabled for all pages in the Staticpage Configuration.',
     'cache_time' => 'キャッシュタイム',
     'cache_time_desc' => 'この静的ページコンテンツはここで指定された秒数以上にキャッシュされることはありません。もしキャッシュが0ならキャッシュ無効 (3600 = 1時間,  86400 = 1日)。静的ページPHPまたはテンプレートの場合はキャッシュされません。',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意です。',

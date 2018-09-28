@@ -5,7 +5,7 @@
 {content}
 {block_end}
 <p class="uk-text-center">
-    {!if lastupdate}{lastupdate}<span class="uk-margin-small-left uk-margin-small-right">|</span>{!endif}
+    {!if lastupdate}{lastupdate}{!if hits}<span class="uk-margin-small-left uk-margin-small-right">|</span>{!endif}{!endif}
     {!if hits}{hits}{!endif}
      {print_icon}{edit_icon}
 </p>

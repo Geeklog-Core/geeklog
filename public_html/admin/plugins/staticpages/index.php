@@ -488,6 +488,9 @@ function staticpageeditor_form(array $A)
     } else {
         $sp_template->set_var('onlastupdate_checked', '');
     }
+    if ($_SP_CONF['show_date'] != 1) {
+        $sp_template->set_var('lang_show_on_page_date_disabled', $LANG_STATIC['show_on_page_disabled']);
+    }    
 
     $sp_template->set_var('lang_label', $LANG_STATIC['label']);
     if (isset($A['sp_label'])) {
@@ -537,6 +540,9 @@ function staticpageeditor_form(array $A)
     $sp_template->set_var('lang_allowedhtml', $allowed);
     $sp_template->set_var('lang_allowed_html', $allowed);
     $sp_template->set_var('lang_show_on_page', $LANG_STATIC['show_on_page']);
+    if ($_SP_CONF['show_hits'] != 1) {
+        $sp_template->set_var('lang_show_on_page_hits_disabled', $LANG_STATIC['show_on_page_disabled']);
+    }
     $sp_template->set_var('lang_hits', $LANG_STATIC['hits']);
     if (empty($A['sp_hits'])) {
         $sp_template->set_var('sp_hits', '0');
