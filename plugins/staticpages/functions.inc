@@ -1610,6 +1610,10 @@ function plugin_upgrade_staticpages()
 
                 $current_version = '1.7.0';
                 break;
+                
+            case '1.7.0':
+                $current_version = '1.7.1';
+                break;                
 
             default:
                 $done = true;

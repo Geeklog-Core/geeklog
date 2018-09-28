@@ -530,8 +530,8 @@ foreach ($corePlugins AS $pi_name) {
     $new_plugin_version = false;
     switch ($pi_name) {
         case 'staticpages':
-            $new_plugin_version = false;
-            $plugin_version = '1.7.0';
+            $new_plugin_version = true;
+            $plugin_version = '1.7.1';
             break;
         case 'spamx':
             $new_plugin_version = false;
