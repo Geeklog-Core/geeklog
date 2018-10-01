@@ -1697,6 +1697,8 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $LANG_ACCESS, $LANG_STATIC, $_TABLES;
 
+    $retval = '';
+    
     switch ($fieldname) {
         case 'edit':
             $retval = COM_createLink($icon_arr['edit'],
