@@ -32,7 +32,7 @@ AdvancedEditor.TextareaId = [];
 
 AdvancedEditor.ContainerId = 'advanced_editor';
 
-AdvancedEditor.SelToolbarId = 'fckeditor_toolbar_selector';
+AdvancedEditor.SelToolbarId = 'adveditor_toolbar_selector';
 
 AdvancedEditor.EditModeId = 'sel_editmode';
 

@@ -92,7 +92,7 @@
             <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');" alt="collapse button"{xhtml}></li>
             <li>
               {lang_toolbar}
-              <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
+              <select id="adveditor_toolbar_selector" name="adveditor_toolbar_selector" onchange="changeToolbar(this.value);">
                 <option value="editor-toolbar1">{toolbar1}</option>
                 <option value="editor-toolbar2" selected="selected">{toolbar2}</option>
                 <option value="editor-toolbar3">{toolbar3}</option>

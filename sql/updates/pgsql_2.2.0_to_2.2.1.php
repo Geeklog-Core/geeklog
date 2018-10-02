@@ -27,8 +27,30 @@ function upgrade_message220()
     // Fix User Security Group assignments for Groups: Root, Admin, All Users
     // Fix User Security Group assignments for Users: Admin
     $upgradeMessages['2.2.0'] = array(
-        1 => array('warning', 22, 23), // Comment signatures will be removed from old comments
+        1 => array('warning', 22, 23), // Fix User Security Group assignments for Groups: Root, Admin, All Users - Fix User Security Group assignments for Users: Admin
+        2 => array('warning', 24, 25) // FCKEditor removed
     );
 
     return $upgradeMessages;
+}
+
+/**
+ * Add/Edit/Delete config options for new version
+ */
+function update_ConfValuesFor221()
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    $me = 'Core';
+    
+    // FCKEditor removed so make sure config is not set to use it. If is switch advance editor to CKEditor
+    if (isset($_CONF['advanced_editor_name']) && $_CONF['advanced_editor_name'] == 'fckeditor') {
+        $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
+    }
+
+    return true;
 }

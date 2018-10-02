@@ -83,8 +83,8 @@
 
     <div id="html_editor" class="story_editor" style="display: {show_htmleditor};">
       <dl class="form_block">
-        <dt><label for="fckeditor_toolbar_selector">{lang_toolbar}</label></dt>
-        <dd><select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" class="uk-select uk-width-auto" onchange="changeToolbar(this.value);">
+        <dt><label for="adveditor_toolbar_selector">{lang_toolbar}</label></dt>
+        <dd><select id="adveditor_toolbar_selector" name="adveditor_toolbar_selector" class="uk-select uk-width-auto" onchange="changeToolbar(this.value);">
               <option value="editor-toolbar1">{toolbar1}</option>
               <option value="editor-toolbar2" selected="selected">{toolbar2}</option>
               <option value="editor-toolbar3">{toolbar3}</option>

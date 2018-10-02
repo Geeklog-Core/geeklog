@@ -163,18 +163,3 @@
         }
     });
 
-    /* Enable if you want to have toolbar only auto-collapse when not editing in field */
-    /*
-    function FCKeditor_OnComplete( editorInstance )  {
-        editorInstance.Events.AttachEvent( 'OnBlur'    , FCKeditor_OnBlur ) ;
-        editorInstance.Events.AttachEvent( 'OnFocus', FCKeditor_OnFocus ) ;
-    }
-
-    function FCKeditor_OnBlur( editorInstance ) {
-        editorInstance.ToolbarSet.Collapse() ;
-    }
-
-    function FCKeditor_OnFocus( editorInstance ) {
-        editorInstance.ToolbarSet.Expand() ;
-    }
-    */
