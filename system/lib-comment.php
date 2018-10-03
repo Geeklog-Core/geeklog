@@ -1907,7 +1907,7 @@ function CMT_handleEditSubmit($mode = null)
         $comment = DB_escapeString($comment);
 
         // Get Name for anonymous user comments being added or edited
-        $sql_name = "";
+        $sql_name = ", name = NULL "; // If Null will use anonymous
         if (COM_isAnonUser($commentuid)) {
             $anon = COM_getDisplayName($commentuid);
             if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
