@@ -327,7 +327,7 @@ function SEC_hasModerationAccess()
     }
 
     if (PLG_isModerator()) {
-        $hasAccess = false;
+        $hasAccess = true;
     }
 
     return $hasAccess;
