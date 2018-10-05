@@ -491,20 +491,19 @@ function _checkEnvironment()
         $_CONF['path_log'] . 'spamx.log',
         $feedPath,
         $_CONF['rdf_file'],
-        $_CONF['path_html'] . 'images/articles/',
-        $_CONF['path_html'] . 'images/topics/',
-        $_CONF['path_html'] . 'images/userphotos/',
-        $_CONF['path_html'] . 'images/library/File/',
-        $_CONF['path_html'] . 'images/library/Flash/',
-        $_CONF['path_html'] . 'images/library/Image/',
-        $_CONF['path_html'] . 'images/library/Image/_thumbs/',
-        $_CONF['path_html'] . 'images/library/Image/icons/',
-        $_CONF['path_html'] . 'images/library/Media/',
-        $_CONF['path_html'] . 'images/_thumbs/',
-        $_CONF['path_html'] . 'images/_thumbs/articles/',
-        $_CONF['path_html'] . 'images/_thumbs/library/Image/',
-        $_CONF['path_html'] . 'images/_thumbs/userphotos/',
         $_CONF['path_html'] . 'filemanager/scripts/filemanager.config.json',
+        // Image Directories
+        $_CONF['path_images'] . 'articles/',                   // Used by article editor for when image is uploaded (to be included in article)
+        $_CONF['path_images'] . 'topics/',                     // Used by topic editor for when image is uploaded
+        $_CONF['path_images'] . 'userphotos/',                 // Used by user editor for when image is uploaded
+        $_CONF['path_images'] . 'library/File/',               // Used by CKEditor (launches File Manager to this directory when "image button" button pressed in CKeditor tool bar)
+        $_CONF['path_images'] . 'library/Flash/',              // Used by CKEditor (launches File Manager to this directory when "flash" button pressed in CKeditor tool bar)
+        $_CONF['path_images'] . 'library/Image/',              // Used by CKEditor (launches File Manager to this directory when "image" button pressed in CKeditor tool bar)
+        $_CONF['path_images'] . 'library/Image/_thumbs/',      // Used by CKEditor for thumbnails when File Manager used to pick images
+        $_CONF['path_images'] . 'library/Media/',              // Used by CKEditor (assumed as not sure how it is accessed)
+        $_CONF['path_images'] . '_thumbs/',                    // Used by File Manager for thumbnails when launched from Geeklog Control Panel
+        $_CONF['path_images'] . '_thumbs/articles/',           // Used by File Manager for thumbnails when launched from Geeklog Control Panel. Article Editor also stores articles thumbnail images here
+        $_CONF['path_images'] . '_thumbs/userphotos/',         // Used by File Manager for thumbnails when launched from Geeklog Control Panel
     );
 
 /* For Media Gallery Plugin - left in incase add plugin api checks in future

@@ -50,17 +50,15 @@ CTL_clearCache();
 // Clearing Resource Cache (CSS, and Javascript concatenated and minified files)
 Geeklog\Cache::clear(); 
 
+// ********************************
 // Clean out Data directory (includes things like temp uploaded plugin files, user batch files, etc...)
 $leave_dirs = array('cache', 'layout_cache', 'layout_css');
 $leave_files = array('cacert.pem', 'README');
 COM_cleanDirectory($_CONF['path_data'], $leave_dirs, $leave_files);
 
-// Clean out Image Cache Files (from aritcle image uploads)
-$leave_dirs = array();
-$leave_files = array('index.html');
-COM_cleanDirectory($_CONF['path_images'] . '/cache/', $leave_dirs, $leave_files);
-
-// Clean out File Manager Thumbnail Files
+// ********************************
+// Clean out File Manager Thumbnail Files (article directory is also used by article editor to create thumbs of images)
+// See Geeklog Environment Check or Geeklog Installer Check Permissions for complete list of all image directories and how they are used by Geeklog
 $leave_dirs = array();
 $leave_files = array('index.html');
 COM_cleanDirectory($_CONF['path_images'] . '_thumbs/articles/', $leave_dirs, $leave_files);
@@ -71,18 +69,14 @@ COM_cleanDirectory($_CONF['path_images'] . '_thumbs/userphotos/', $leave_dirs, $
 
 $leave_dirs = array();
 $leave_files = array('index.html');
-COM_cleanDirectory($_CONF['path_images'] . '_thumbs/library/image/', $leave_dirs, $leave_files);
+COM_cleanDirectory($_CONF['path_images'] . '/library/Image/_thumbs/', $leave_dirs, $leave_files);
 
-$leave_dirs = array('Image');
-$leave_files = array();
-COM_cleanDirectory($_CONF['path_images'] . '_thumbs/library/', $leave_dirs, $leave_files);
-
-$leave_dirs = array('articles', 'library', 'userphotos');
+$leave_dirs = array('articles', 'userphotos');
 $leave_files = array();
 COM_cleanDirectory($_CONF['path_images'] . '_thumbs/', $leave_dirs, $leave_files);
 
+// ********************************
 // Allow Plugins to clear any cached items
 PLG_clearCache(); 
 
 COM_redirect($_CONF['site_admin_url'] . '/index.php?msg=500');
-

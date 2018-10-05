@@ -658,22 +658,20 @@ class Installer
             $this->env['gl_path'] . 'logs/spamx.log',
             $paths['public_html/'] . 'siteconfig.php',
             $paths['public_html/'] . 'backend/geeklog.rss',
-            $paths['public_html/'] . 'images/articles/',
-            $paths['public_html/'] . 'images/topics/',
-            $paths['public_html/'] . 'images/userphotos',
             $paths['public_html/'] . 'filemanager/scripts/filemanager.config.json',
-            $paths['public_html/'] . 'images/library/File/',
-            $paths['public_html/'] . 'images/library/Flash/',
-            $paths['public_html/'] . 'images/library/Image/',
-            $paths['public_html/'] . 'images/library/Image/_thumbs/',
-            $paths['public_html/'] . 'images/library/Image/icons/',
-            $paths['public_html/'] . 'images/library/Media/',
-            $paths['public_html/'] . 'images/_thumbs/',
-            $paths['public_html/'] . 'images/_thumbs/articles/',
-            $paths['public_html/'] . 'images/_thumbs/library/Image/',
-            $paths['public_html/'] . 'images/_thumbs/userphotos/',
+            $paths['public_html/'] . 'images/articles/',                // Used by article editor for when image is uploaded (to be included in article)
+            $paths['public_html/'] . 'images/topics/',                  // Used by topic editor for when image is uploaded
+            $paths['public_html/'] . 'images/userphotos',               // Used by user editor for when image is uploaded
+            $paths['public_html/'] . 'images/library/File/',            // Used by CKEditor (launches File Manager to this directory when "image button" button pressed in CKeditor tool bar)
+            $paths['public_html/'] . 'images/library/Flash/',           // Used by CKEditor (launches File Manager to this directory when "flash" button pressed in CKeditor tool bar)
+            $paths['public_html/'] . 'images/library/Image/',           // Used by CKEditor (launches File Manager to this directory when "image" button pressed in CKeditor tool bar)
+            $paths['public_html/'] . 'images/library/Image/_thumbs/',   // Used by CKEditor for thumbnails when File Manager used to pick images
+            $paths['public_html/'] . 'images/library/Media/',           // Used by CKEditor (assumed as not sure how it is accessed)
+            $paths['public_html/'] . 'images/_thumbs/',                 // Used by File Manager when launched from Geeklog Control Panel
+            $paths['public_html/'] . 'images/_thumbs/articles/',        // Used by File Manager when launched from Geeklog Control Panel. Article Editor also stores article thumbnail images here
+            $paths['public_html/'] . 'images/_thumbs/userphotos/',      // Used by File Manager when launched from Geeklog Control Panel
         );
-
+        
         if ($_DB_dbms === 'mysql') {
             array_splice($fileList, 1, 0, $this->env['gl_path'] . 'backups/');
         }
