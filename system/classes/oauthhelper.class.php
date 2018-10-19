@@ -118,7 +118,10 @@ class OAuthConsumer
                 //$scope   = 'email,public_profile,user_friends';
 				// About returns no data as of April 4th, 2018 as new version of API
 				// Don't need to request user_friends scope. Fix for permissions now required by Facebook app when requesting non-default data
-				$api_url = 'https://graph.facebook.com/me?fields=name,email,link,id,first_name,last_name,location';
+                // 2018-10-19 - A link to the person's Timeline. Removed link since even with user_link permission it is not useful anymore.
+                // The link will only resolve if the person clicking the link is logged into Facebook and is a friend of the person whose profile is being viewed. 
+                // At one point it use to be visible to non friends 
+				$api_url = 'https://graph.facebook.com/me?fields=name,email,id,first_name,last_name,location';
 				$scope   = 'email,public_profile';
                 $q_api   = array();
                 break;
@@ -384,7 +387,7 @@ class OAuthConsumer
                     'passwd'         => '',
                     'passwd2'        => '',
                     'fullname'       => $info->name,
-                    'homepage'       => $info->link,
+                    'homepage'       => '', // Changed from $info->link, // See above in scope as to why removed (Facebook User must be logged in and a friend to work)
                     'remoteusername' => DB_escapeString($info->id),
                     'remoteservice'  => 'oauth.facebook',
                     'remotephoto'    => 'http://graph.facebook.com/'.$info->id.'/picture',
