@@ -1516,7 +1516,8 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
 
                 // Add in jQuery dialog for help file
                 $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Requires dialog, draggable, droppable, resizable, and button
-
+                $_SCRIPTS->setJavaScriptLibrary('jquery-ui-dialogoptions'); // extends jquery dialog functions to include responsive
+                
                 // Add Language variables
                 $_SCRIPTS->setLang(array('close' => $LANG32[60]));
 

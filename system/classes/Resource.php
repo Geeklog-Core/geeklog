@@ -124,6 +124,7 @@ class Resource
         'jquery-ui-slideraccess'          => '/javascript/jquery_ui/jquery-ui-slideraccess.min.js',
         'jquery-ui-timepicker-addon'      => '/javascript/jquery_ui/jquery-ui-timepicker-addon.min.js',
         'jquery-ui-timepicker-addon-i18n' => '/javascript/jquery_ui/jquery-ui-timepicker-addon-i18n.min.js',
+        'jquery-ui-dialogoptions'         => '/javascript/jquery_ui/jquery-ui-dialogoptions.js', // Used to make jquery help dialogs responsive. Found at https://github.com/jasonday/jQuery-UI-Dialog-extended
         'admin.configuration'             => '/javascript/admin.configuration.js',
         'admin.topic'                     => '/javascript/admin.topic.js',
         'advanced_editor'                 => '/javascript/advanced_editor.js',
