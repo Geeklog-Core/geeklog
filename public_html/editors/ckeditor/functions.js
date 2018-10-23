@@ -1,5 +1,7 @@
 ﻿
 function ckeditor_newEditor(instanceName, options) {
+    var name;
+
     switch (options['toolbar']) {
         case 0:
             name = 'toolbar1';
@@ -47,12 +49,14 @@ function ckeditor_changeTextAreaSize(instanceName, option) {
     var oEditor = CKEDITOR.instances[instanceName];
     var height = oEditor.ui.space('contents').getStyle('height');
     var currentSize = parseInt(height.replace("px", ""));
-    if (option == 'larger') {
-        var newsize = currentSize + 50;
-    } else if (option == 'smaller') {
-        var newsize = currentSize - 50;
+    var newSize;
+
+    if (option === 'larger') {
+        newSize = currentSize + 50;
+    } else if (option === 'smaller') {
+        newSize = currentSize - 50;
     }
-    oEditor.resize('100%', newsize, true);
+    oEditor.resize('100%', newSize, true);
 }
 
 AdvancedEditor.api['ckeditor'] = {
