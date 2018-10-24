@@ -3,6 +3,10 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
+ // Base groups of buttons for toolbars
+ // Geeklog has 4 toolbar types 'Basic', 'Common', 'Advanced', 'Full Featured'
+ // These item groups are used  by 1 or more of the first 3 toolbar types. The 'Full Featured' toolbar is defined separately below
+ // If for example you want to remove the 'Image' button from the toolbar you would have to remove the text "'Image'," (including the quotes and comma) from the items group 'insert' and 'insert_advanced along with the 'Full Featured' toolbar list below.
  var tools = {
 	items: {
 		'source': ['Source'],
@@ -112,6 +116,7 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.toolbar = 'toolbar1';
 
+    // Basic Toolbar buttons
 	config.toolbar_toolbar1 = [
 		tools.items['source'],
 		tools.items['undo'],
@@ -122,6 +127,7 @@ CKEDITOR.editorConfig = function( config ) {
 		tools.items['tools']
 	];
 
+    // Common Toolbar buttons
 	config.toolbar_toolbar2 = [
 		tools.items['source'],
 		tools.items['clipboard'],
@@ -134,6 +140,7 @@ CKEDITOR.editorConfig = function( config ) {
 		tools.items['tools']
 	];
 
+    // Advanced Toolbar buttons
 	config.toolbar_toolbar3 = [
 		tools.items['source'],
 		tools.items['clipboard'],
@@ -148,6 +155,7 @@ CKEDITOR.editorConfig = function( config ) {
 		tools.items['styles']
 	];
 
+    // Full Featured Toolbar buttons
 	config.toolbar_full = [
 		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
 		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
@@ -167,10 +175,12 @@ CKEDITOR.editorConfig = function( config ) {
 	];
 
 	// Filemanager
-	config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=File';
-//	config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Media';
-	config.filebrowserImageBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Image';
-	config.filebrowserFlashBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Flash';
+    if (geeklogFileManager) {
+        config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=File';
+        //	config.filebrowserBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Media';
+        config.filebrowserImageBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Image';
+        config.filebrowserFlashBrowseUrl = geeklog.site_url + '/filemanager/index.php?Type=Flash';
+    }
 };
 
 

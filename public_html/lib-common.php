@@ -8474,6 +8474,16 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor
             $_CONF['admin_html'],
             $_CONF['advanced_html']);
     }
+    
+    // Check if the current user has access to Filemanager
+    $geeklogFileManager = "false";
+    if (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Root') || (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')))) {
+        if (isset($_CONF['demo_mode']) && !$_CONF['demo_mode']) {
+            $geeklogFileManager = "true";
+        } elseif (!isset($_CONF['demo_mode'])) {
+            $geeklogFileManager = "true";
+        }
+    }
 
     // Add core JavaScript global variables
     $html = json_encode($html);
@@ -8481,6 +8491,7 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor
 <script type="text/javascript">
     var geeklogEditorName = "{$name}";
     var geeklogAllowedHtml = {$html};
+    var geeklogFileManager = {$geeklogFileManager};
 </script>
 HTML;
     $_SCRIPTS->setJavaScript($script);
