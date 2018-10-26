@@ -546,8 +546,8 @@ foreach ($corePlugins AS $pi_name) {
             $plugin_version = '2.1.9';
             break;
         case 'calendar':
-            $new_plugin_version = false;
-            $plugin_version = '1.1.6';
+            $new_plugin_version = true;
+            $plugin_version = '1.1.7';
             break;
         case 'xmlsitemap':
             $plugin_version = '2.0.1';

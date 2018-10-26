@@ -1617,6 +1617,10 @@ function plugin_upgrade_calendar()
                 $current_version = '1.1.6';
                 break;
                 
+            case '1.1.6':
+                $current_version = '1.1.7';
+                break;
+                
             default:
                 $done = true;
                 break;
@@ -2301,4 +2305,25 @@ function plugin_itemdeleted_calendar($id, $type)
         }
         // Note: All topics could get deleted from array which would mean the block would not display until user adds more in config
     }
+}
+
+/**
+ * Did user create any events
+ *
+ * @return   string   number of events user contributed. If nothing leave blank
+ */
+function plugin_usercontributed_calendar($uid)
+{
+    global $_TABLES, $LANG_CAL_ADMIN;
+
+    $retval = '';
+
+    // Include events and event submissions
+    $count = DB_getItem($_TABLES['events'], 'COUNT(owner_id)', "owner_id = {$uid}") + DB_getItem($_TABLES['eventsubmission'], 'COUNT(owner_id)', "owner_id = {$uid}");
+    
+    if ($count > 0) {
+        $retval = str_replace('%s', $count, $LANG_CAL_ADMIN['num_events']);
+    }
+
+    return $retval;
 }
