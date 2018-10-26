@@ -815,7 +815,11 @@ function plugin_upgrade_links()
 
         case '2.1.5':
             $current_version = '2.1.6'; // Shipped with Geeklog-2.2.0
-            break;               
+            break;
+
+        case '2.1.6':
+            $current_version = '2.1.7'; // Shipped with Geeklog-2.2.1
+            break;              
 
         default:
             $done = true;
@@ -1908,4 +1912,25 @@ function plugin_group_changed_links($grp_id, $mode)
         $sql = "UPDATE {$_TABLES['linkcategories']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
    }
+}
+
+/**
+ * Did user create any links
+ *
+ * @return   string   number of links user contributed. If nothing leave blank
+ */
+function plugin_usercontributed_links($uid)
+{
+    global $_TABLES, $LANG_LINKS_ADMIN;
+
+    $retval = '';
+
+    // Include links and link submissions
+    $count = DB_getItem($_TABLES['links'], 'COUNT(owner_id)', "owner_id = {$uid}") + DB_getItem($_TABLES['linksubmission'], 'COUNT(owner_id)', "owner_id = {$uid}");
+    
+    if ($count > 0) {
+        $retval = str_replace('%s', $count, $LANG_LINKS_ADMIN['num_links']);
+    }
+
+    return $retval;
 }

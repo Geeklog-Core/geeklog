@@ -538,8 +538,8 @@ foreach ($corePlugins AS $pi_name) {
             $plugin_version = '1.3.5';
             break;
         case 'links':
-            $new_plugin_version = false;
-            $plugin_version = '2.1.6';
+            $new_plugin_version = true;
+            $plugin_version = '2.1.7';
             break;
         case 'polls':
             $new_plugin_version = false;
