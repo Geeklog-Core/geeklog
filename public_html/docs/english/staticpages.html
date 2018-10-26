@@ -362,36 +362,36 @@ the Configuration admin panel:</p>
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_0">autotag_permissions_staticpage[0]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top">Usage permission for autotag [staticpage: ] and [page: ] by autotag Owner (Default Root User).</td></tr>
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_1">autotag_permissions_staticpage[1]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Static Page Admin Group.</td></tr>
+  <td valign="top">Usage permission for autotag [staticpage: ] and [page: ] by Static Page Admin Group.</td></tr>
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_2">autotag_permissions_staticpage[2]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top">Usage permission for autotag [staticpage: ] and [page: ] by all logged in users.</td></tr>
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_3">autotag_permissions_staticpage[3]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
+  <td valign="top">Usage permission for autotag [staticpage: ] and [page: ] by anonymous users.</td></tr>
 
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_content_0">autotag_permissions_staticpage_content[0]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by autotag Owner (Default Root User).</td></tr>
+  <td valign="top">Usage permission for autotag [staticpage_content: ] and [page_content: ] by autotag Owner (Default Root User).</td></tr>
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_content_1">autotag_permissions_staticpage_content[1]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by Static Page Admin Group.</td></tr>
+  <td valign="top">Usage permission for autotag [staticpage_content: ] and [page_content: ] by Static Page Admin Group.</td></tr>
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_content_2">autotag_permissions_staticpage_content[2]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by all logged in users.</td></tr>
+  <td valign="top">Usage permission for autotag [staticpage_content: ] and [page_content: ] by all logged in users.</td></tr>
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_content_3">autotag_permissions_staticpage_content[3]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag by anonymous users.</td></tr> 
+  <td valign="top">Usage permission for autotag [staticpage_content: ] and [page_content: ] by anonymous users.</td></tr> 
 </table>
 
 
@@ -401,11 +401,11 @@ the Configuration admin panel:</p>
 <code>[staticpage:]</code> and <code>[staticpage_content:]</code>.</p>
 
 <ul>
-<li>The <code>[staticpage:]</code> autotag will provide a link to a static page.
+<li>The <code>[staticpage:]</code> or <code>[page:]</code> autotag will provide a link to a static page.
     Simply add the page's ID after the colon. By default, the title of the
     static page will be used as the link text. You can provide your own link
     text after the page ID (but before the closing bracket).</li>
-<li>The <code>[staticpage_content:]</code> autotag will be replaced with the
+<li>The <code>[staticpage_content:]</code> or <code>[page_content:]</code> autotag will be replaced with the
     contents of the static page in question. This can be useful when you need
     to use a piece of text in more than one place.</li>
 </ul>

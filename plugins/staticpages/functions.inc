@@ -1310,7 +1310,7 @@ function plugin_chkVersion_staticpages()
 }
 
 /**
- * Implements the [staticpage:] autotag.
+ * Implements the [staticpage:] autotag. (and [page:])
  *
  * @param  string $op
  * @param  string $content
@@ -1323,8 +1323,10 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
 
     static $recursive = array();
 
+    // Note as of Geeklog v2.2.1 added short version of staticpage autotags (staticpage = page and staticpage_content = page_content)
+    // At some point we should depreciate staticpage and staticpage_content autotag name or at least hide the descriptions
     if ($op == 'tagname') {
-        return array('staticpage', 'staticpage_content');
+        return array('staticpage', 'staticpage_content', 'page', 'page_content');
     } elseif ($op == 'permission' || $op == 'nopermission') {
         $flag = ($op == 'permission');
         $tagnames = array();
@@ -1342,6 +1344,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
                 $_SP_CONF[$p][2], $_SP_CONF[$p][3]) == $flag
         ) {
             $tagnames[] = 'staticpage_content';
+            $tagnames[] = 'page_content';
         }
         $p = 'autotag_permissions_staticpage';
         if (COM_getPermTag($owner_id, $group_id,
@@ -1349,6 +1352,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
                 $_SP_CONF[$p][2], $_SP_CONF[$p][3]) == $flag
         ) {
             $tagnames[] = 'staticpage';
+            $tagnames[] = 'page';
         }
 
         if (count($tagnames) > 0) {
@@ -1358,9 +1362,11 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
         return array(
             'staticpage'         => $LANG_STATIC['autotag_desc_staticpage'],
             'staticpage_content' => $LANG_STATIC['autotag_desc_staticpage_content'],
+            'page'         => $LANG_STATIC['autotag_desc_page'],
+            'page_content' => $LANG_STATIC['autotag_desc_page_content'],
         );
     } elseif ($op == 'parse') {
-        if ($autotag['tag'] == 'staticpage') {
+        if ($autotag['tag'] == 'staticpage' || $autotag['tag'] == 'page') {
             $sp_id = COM_applyFilter($autotag['parm1']);
             $sp_id = COM_switchLanguageIdForObject($sp_id);
             if (!empty($sp_id)) {
@@ -1381,7 +1387,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
                     $content = str_replace($autotag['tagstr'], $link, $content);
                 }
             }
-        } elseif ($autotag['tag'] == 'staticpage_content') {
+        } elseif ($autotag['tag'] == 'staticpage_content' || $autotag['tag'] == 'page_content') {
             $sp_id = COM_applyFilter($autotag['parm1']);
             $sp_id = COM_switchLanguageIdForObject($sp_id);
             if (!empty($sp_id)) {

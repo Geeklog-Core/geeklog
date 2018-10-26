@@ -131,6 +131,8 @@ $LANG_STATIC = array(
     'cache_time_desc' => 'この静的ページコンテンツはここで指定された秒数以上にキャッシュされることはありません。もしキャッシュが0ならキャッシュ無効 (3600 = 1時間,  86400 = 1日)。静的ページPHPまたはテンプレートの場合はキャッシュされません。',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意です。',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - 静的ページのコンテンツを表示します。',
+    'autotag_desc_page' => '[page_content: id] - 静的ページのコンテンツを表示します。',
+    'autotag_desc_page_content' => '[page_content: id] - 静的ページのコンテンツを表示します。',
     'yes' => 'はい',
     'used_by' => 'このテンプレートを使用しているのは %s ページです。他のテンプレートの自動タグを経由して間接的に使用されている場合は、使用ページはもっと多いかもしれません。',
     'prev_page' => '前のページ',
