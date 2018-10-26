@@ -1869,6 +1869,27 @@ function plugin_configchange_article($group, $changes = array())
     }
 }
 
+/**
+ * Did user create any articles
+ *
+ * @return   string   number of articles user contributed. If nothing leave blank
+ */
+function plugin_usercontributed_article($uid)
+{
+    global $_TABLES, $LANG33;
+
+    $retval = '';
+
+    // Include articles and article submissions
+    $count = DB_getItem($_TABLES['stories'], 'COUNT(owner_id)', "owner_id = {$uid}") + DB_getItem($_TABLES['storysubmission'], 'COUNT(uid)', "uid = {$uid}");
+    
+    if ($count > 0) {
+        $retval = str_replace('%s', $count, $LANG33['num_articles']);
+    }
+
+    return $retval;
+}
+
 /*
  * START SERVICES SECTION
  * This section implements the various services offered by the story module

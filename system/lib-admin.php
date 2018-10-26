@@ -815,6 +815,33 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
                 $retval = strftime($_CONF['shortdate'], $fieldValue);
             }
             break;
+            
+        case 'contributed':
+            // Has user ever logged in?
+            if ($A['lastlogin_short'] < 1) {
+                $retval = $LANG28['na'];
+            } else {
+                $retval = '';
+                $content_contributed = PLG_userContributed($A['uid']);
+                if (is_array($content_contributed) && (count($content_contributed) > 0)) {
+                    foreach ($content_contributed as $pluginname) {
+                        if (!empty($retval)) {
+                            $retval .= ", ";
+                        }
+                        $retval .= $pluginname;
+                    }
+                }                
+                
+                if (empty($retval)) {
+                    $retval = $LANG28['nothing'];
+                } else {
+                    // Add in search link
+                    $url = "/search.php?type=all&amp;author={$A['uid']}&amp;mode=search";
+                    $retval = COM_createLink($retval, $url);
+                }
+            }
+            
+            break;            
 
         case 'lastlogin_short':
             if ($fieldValue < 1) {

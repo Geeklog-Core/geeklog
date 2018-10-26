@@ -3647,3 +3647,39 @@ function PLG_collectSitemapItems($type, $uid = 1, $limit = 0)
 
     return $result;
 }
+    
+    /**
+ * Prepare a list of all plugins that a user has contributed content too.
+ * If plugin finds content for user then should return text else then nothing.
+ * Used by User Batch Admin to show in user list if user has contributed
+ *
+ * @param    int    $uid                                user ID
+ * 
+ * @return   array   array of plugin names with text (can be empty)
+ *
+ * @since    Geeklog-2.2.1
+ * @link     NA
+ */
+function PLG_userContributed($uid)
+{
+    global $_CONF, $_PLUGINS;
+
+    require_once $_CONF['path_system'] . 'lib-article.php';
+    require_once $_CONF['path_system'] . 'lib-comment.php';
+
+    $retval = array();
+
+    $pluginTypes = array_merge(array('article', 'comment'), $_PLUGINS);
+
+    foreach ($pluginTypes as $pi_name) {
+        $function = 'plugin_usercontributed_' . $pi_name;
+        if (function_exists($function)) {
+            $contributed = $function($uid);
+            if (!empty($contributed)) {
+                $retval[$pi_name] = $contributed;
+            }
+        }
+    }
+
+    return $retval;
+}

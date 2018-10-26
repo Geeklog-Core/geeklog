@@ -2904,3 +2904,25 @@ function plugin_feedupdatecheck_comment($feed, $topic, $update_data, $limit, $up
 
     return ($current == $update_data);
 }
+
+
+/**
+ * Did user create any comments
+ *
+ * @return   string   number of comments user contributed. If nothing leave blank
+ */
+function plugin_usercontributed_comment($uid)
+{
+    global $_TABLES, $LANG03;
+
+    $retval = '';
+
+    // Include comments and comment submissions
+    $count = DB_getItem($_TABLES['comments'], 'COUNT(uid)', "uid = {$uid}") + DB_getItem($_TABLES['commentsubmissions'], 'COUNT(uid)', "uid = {$uid}");
+    
+    if ($count > 0) {
+        $retval = str_replace('%s', $count, $LANG03['num_comments']);
+    }
+
+    return $retval;
+}

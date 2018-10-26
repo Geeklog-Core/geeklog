@@ -257,7 +257,8 @@ $LANG03 = array(
     105 => 'IP Address',
     106 => 'Perform bulk action on comments and comment submissions including approval and deleting. You can also bulk ban users and IP addresses. <span style="color: red;">IP addresses in red</span> are the ones banned by the Spam-X plugin (banned from submissions only) and/or Ban plugin (banned from visiting site).  <span style="color: red;">User names in red</span> are users that have been banned.',
     'record_edit' => 'Record user and time of edit?',
-    'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin'
+    'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin',
+    'num_comments' => '%s Comment(s)'
 );
 
 ###############################################################################
@@ -1216,6 +1217,9 @@ $LANG28 = array(
     90 => 'Apply "Default Group" change to existing user accounts',
     91 => 'Send password to user',
     92 => 'Only for new users or when changing password for existing user.',
+    'contributed' => 'Contributed',
+    'na' => 'NA',
+    'nothing' => 'Nothing',
     'autotag_desc_user' => '[user: name alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.',
     'USER_ACCOUNT_LOCKED' => 'Locked',
     'USER_ACCOUNT_NEW_EMAIL' => 'New Email Required',
@@ -1437,7 +1441,8 @@ $LANG33 = array(
     52 => 'Error: existing Filename',
     53 => 'All Frontpage Articles',
     54 => 'Please select the type of feed to create.',
-    55 => 'Articles'
+    55 => 'Articles',
+    'num_articles' => '%s Article(s)'
 );
 
 ###############################################################################
