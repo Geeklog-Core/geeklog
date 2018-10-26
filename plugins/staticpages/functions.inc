@@ -269,6 +269,26 @@ function plugin_deletecomment_staticpages($cid, $id)
 }
 
 /**
+ * Did user create any pages
+ *
+ * @return   string   number of pages user contributed. If nothing leave blank
+ */
+function plugin_usercontributed_staticpages($uid)
+{
+    global $_TABLES, $LANG_STATIC;
+
+    $retval = '';
+
+    $count = DB_getItem($_TABLES['staticpage'], 'COUNT(owner_id)', "owner_id = {$uid}");
+    
+    if ($count > 0) {
+        $retval = str_replace('%s', $count, $LANG_STATIC['num_pages']);
+    }
+
+    return $retval;
+}
+
+/**
  * Helper function: Count static pages visible to the current user
  *
  * @return   int     number of pages
@@ -930,7 +950,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         }
     }
 
-    $search_c = new SearchCriteria('comments', array($LANG_STATIC['staticpages'], $LANG09[66]));
+    $search_c = new SearchCriteria('comments', array($LANG_STATIC['pages'], $LANG09[66]));
 
     $columns = array('title' => 'c.title', 'comment');
     $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $datestart, $dateend);
