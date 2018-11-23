@@ -1307,6 +1307,10 @@ function plugin_upgrade_polls()
                 
             case '2.1.8':
                 $current_version = '2.1.9';
+                break;
+
+            case '2.1.9':
+                $current_version = '2.2.0';
                 break;                 
 
             default:
@@ -1618,7 +1622,7 @@ function plugin_autotags_polls($op, $content = '', $autotag = '')
                 switch ($autotag['tag']) {
                     case 'poll':
                         if (!empty($autotag['parm2'])) {
-                            $title = COM_applyFilter($autotag['parm2']);
+                            $title = $autotag['parm2'];
                         } else {
                             $title = DB_getItem($_TABLES['polltopics'], 'topic', "pid = '" . DB_escapeString($pid) . "' ");
                         }
