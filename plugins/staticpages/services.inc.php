@@ -823,7 +823,7 @@ SQL;
             $page = $output['sp_id']; // reset page id so case mimics id perfectly since this affects the cache file and canonical link
 
             // WE ASSUME $output doesn't have any confidential fields
-            // Generate output now (omly if not grabing a template since template is combined with variables first and then generated)
+            // Generate output now (only if not grabbing a template since template is combined with variables first and then generated)
             if (!isset($args['template'])) {
                 $output['sp_content'] = SP_render_content($page, $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id']);
             }
