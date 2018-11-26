@@ -825,7 +825,7 @@ SQL;
             // WE ASSUME $output doesn't have any confidential fields
             // Generate output now (only if not grabbing a template since template is combined with variables first and then generated)
             if (!isset($args['template'])) {
-                $output['sp_content'] = SP_render_content($page, $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id']);
+                $output['sp_content'] = SP_render_content($page, $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id'], $output['created'], $output['modified']);
             }
         } else { // an error occurred (page not found, access denied, ...)
             /**
@@ -965,7 +965,7 @@ SQL;
                 //$output_item['category']     = array($output_item['sp_tid']);
                 $output_item['category'] = TOPIC_getTopicIdsForObject('staticpages', $output_item['sp_id']);
                 //$output_item['content']      = $output_item['sp_content'];
-                $output['content'] = SP_render_content($output['sp_id'], $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id']);
+                $output['content'] = SP_render_content($output['sp_id'], $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id'], $output_item['created'], $output_item['modified']);
                 $output_item['content_type'] = 'html';
 
                 $owner_data = SESS_getUserDataFromId($output_item['owner_id']);
