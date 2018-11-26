@@ -1460,6 +1460,10 @@ class Template
                     case 's':
                         $ret = htmlspecialchars($ret);
                         break;
+                        
+                    case 'h':
+                        $ret = strip_tags($ret);
+                        break;                        
 
                     case 't':
                         $ret = substr($ret, 0, intval(substr($mod, 1))); // truncate
@@ -1568,7 +1572,7 @@ class Template
             $tmplt = preg_replace(
                 array(
                     '/\{([-\.\w\d_\[\]]+)\}/',                              // matches {identifier}
-                    '/\{([-\.\w\d_\[\]]+)((:u|:s|:t\d+)+)\}/',              // matches {identifier} with optional :s, :u or :t### suffix
+                    '/\{([-\.\w\d_\[\]]+)((:u|:s|:h|:t\d+)+)\}/',              // matches {identifier} with optional :s, :u or :t### suffix
                 ),
                 array(
                     '$this->get_var(\'\1\')',
@@ -1579,7 +1583,7 @@ class Template
             $tmplt = preg_replace(
                 array(
                     '/\{([-\.\w\d_\[\]]+)\}/',                              // matches {identifier}
-                    '/\{([-\.\w\d_\[\]]+)((:u|:s|:t\d+)+)\}/',              // matches {identifier} with optional :s, :u or :t### suffix
+                    '/\{([-\.\w\d_\[\]]+)((:u|:s|:h|:t\d+)+)\}/',              // matches {identifier} with optional :s, :u or :t### suffix
                 ),
                 array(
                     '<?php echo $this->val_echo(\'\1\'); ?>',
