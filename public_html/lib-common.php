@@ -6973,6 +6973,25 @@ function COM_getLanguage()
 }
 
 /**
+ * Figure out if Geeklog is setup correctly for a multi language site and is enabled
+ * 
+ * @return      boolean
+  */
+function COM_isMultiLanguageEnabled()
+{
+    global $_CONF;
+    
+    $retval = false;
+
+    // If user allowed to switch language and Multi Language Content setup (because config languages and language_files exist (and assume setup correctly))
+    if ($_CONF['allow_user_language'] AND !empty($_CONF['languages']) AND !empty($_CONF['language_files']) AND (count($_CONF['languages']) == count($_CONF['language_files']))) {
+        $retval = true;
+    }
+    
+    return $retval;
+}
+
+/**
  * Get language name and plugin name and id from current URL 
  * Note: This function starts with _ therefore it should only call from within core
  * 
@@ -6985,8 +7004,7 @@ function _getLanguageInfoFromURL()
 
     $retval = array('','','');
 
-    // If user allowed to switch language and Multi Language Content setup (because config languages and language_files exist (and assume setup correctly))
-    if ($_CONF['allow_user_language'] AND !empty($_CONF['languages']) AND !empty($_CONF['language_files'])) {
+    if (COM_isMultiLanguageEnabled()) {
         
         $langId = '';
         // Need to see if language is set for url. Supports normal, rewrite, and routing urls.
@@ -7170,9 +7188,7 @@ function phpblock_switch_language()
 
     $retval = '';
 
-    if ($_CONF['allow_user_language'] == 0 || empty($_CONF['languages']) || empty($_CONF['language_files']) ||
-        (count($_CONF['languages']) !== count($_CONF['language_files']))
-    ) {
+    if (!COM_isMultiLanguageEnabled()) {
         return $retval;
     }
 
@@ -7916,7 +7932,7 @@ function COM_createHREFLang($type, $id)
 
     // Add hreflang link element if multi-language site
     // If user allowed to switch language and Multi Language Content setup (because config languages and language_files exist (and assume setup correctly))
-    if ($_CONF['allow_user_language'] && !empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+    if (COM_isMultiLanguageEnabled()) {
         $lang_id = COM_getLanguageIdForObject($id);
         if (empty($lang_id)) {
             // Non Language specific item id found
