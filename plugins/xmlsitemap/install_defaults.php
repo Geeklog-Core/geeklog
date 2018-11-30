@@ -86,7 +86,6 @@ $_XMLSMAP_DEFAULT['frequencies'] = array(
 // Ping targets
 $_XMLSMAP_DEFAULT['ping_google'] = true;
 $_XMLSMAP_DEFAULT['ping_bing']   = true;
-$_XMLSMAP_DEFAULT['ping_ask']    = true;
 
 /**
 * Initialize XMLSitemap plugin configuration
