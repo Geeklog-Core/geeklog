@@ -84,31 +84,26 @@ function update_DatabaseFor221()
     // Remove unused Vars table record (originally inserted by devel-db-update script on previous version upgrades)
     $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
 
-    
     // ***************************************     
-    // Core Plugin Updates Here
+    // Core Plugin Updates Here (including version update)
     
     // Staticpages
-    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.0', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
-    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.1', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
     
     // SpamX
     //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.5' WHERE pi_name='spamx'";
     
-    
     // Links
-    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.6' WHERE pi_name='links'";
-    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.7' WHERE pi_name='links'";
     
     // Polls
-    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.9' WHERE pi_name='polls'";
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.2.0' WHERE pi_name='polls'";
 
-    // XMLSiteMap
-    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.1', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
-    
     // Calendar
-    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.6', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
-    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.7', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
+        
+    // XMLSiteMap
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.2', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
     
 
     if ($use_innodb) {
@@ -550,8 +545,8 @@ foreach ($corePlugins AS $pi_name) {
             $plugin_version = '1.1.7';
             break;
         case 'xmlsitemap':
-            $plugin_version = '2.0.1';
-            $new_plugin_version = false;
+            $plugin_version = '2.0.2';
+            $new_plugin_version = true;
             break;
     }
     

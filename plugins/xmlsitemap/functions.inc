@@ -145,7 +145,13 @@ function plugin_upgrade_xmlsitemap()
             // Only code changes
 
             $current_version = '2.0.1';
-            break;            
+            break;  
+
+        case '2.0.1':
+            // Only code changes
+
+            $current_version = '2.0.2';
+            break;             
 
         default:
             $done = true;
