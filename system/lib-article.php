@@ -1132,45 +1132,51 @@ function plugin_getwhatsnewcomment_story($numreturn = 0, $uid = 0)
 function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
 {
     global $_CONF, $_TABLES;
-
+    
     // parse $what to see what we need to pull from the database
     $properties = explode(',', $what);
     $fields = array();
     foreach ($properties as $p) {
         switch ($p) {
             case 'date-created':
+            case 'date-modified': // don't think we should support this since it is not the modified date but not sure if anything asks for it so left it in
                 $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
-                break;
-
-            case 'date-modified':
-                $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
+                $groupby_fields[] = 'unixdate';
                 break;
 
             case 'description':
                 $fields[] = 'introtext';
                 $fields[] = 'bodytext';
+                $groupby_fields[] = 'introtext';
+                $groupby_fields[] = 'bodytext';
+                
                 break;
 
             case 'excerpt':
                 $fields[] = 'introtext';
+                $groupby_fields[] = 'introtext';
                 break;
 
             case 'feed':
                 $fields[] = 'ta.tid';
+                $groupby_fields[] = 'ta.tid';
                 break;
 
             case 'id':
                 $fields[] = 'sid';
+                $groupby_fields[] = 'sid';
                 break;
 
             case 'title':
                 $fields[] = 'title';
+                $groupby_fields[] = 'title';
                 break;
 
             case 'url':
                 // needed for $sid == '*', but also in case we're only requesting
-                // the URL (so that $fields isn't emtpy)
+                // the URL (so that $fields isn't empty)
                 $fields[] = 'sid';
+                $groupby_fields[] = 'sid';
                 break;
 
             default:
@@ -1188,24 +1194,48 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     }
 
     // prepare SQL request
+    $where = '';
+    $permSql = '';
+    $groupbySQL = '';
+    $filter_flag = false;
     if ($sid == '*') {
         $where = ' WHERE';
+        
+        // Check options to see if filters enabled
+        if (isset($options['filter']['date-created'])) {
+            //AND (date
+            
+            
+            
+        }
+        if (isset($options['filter']['topic-ids']) && !empty($options['filter']['topic-ids'])) {
+            $filter_flag = true;
+            $where = " WHERE (ta.tid IN (" . $options['filter']['topic-ids'] . ")) AND";
+        }
     } else {
         $where = " WHERE (sid = '" . DB_escapeString($sid) . "') AND";
     }
     $where .= ' (draft_flag = 0) AND (date <= NOW())';
     if ($uid > 0) {
-        $permSql = COM_getPermSql('AND', $uid)
-            . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', $uid, 'ta');
+        if ($filter_flag) {
+            // Need to group by as duplicates may be returned since we need to return articles that may belong in 1 or more topics (and the default may not be one of them)
+            $permSql = COM_getPermSql('AND', $uid) . " AND ta.type = 'article' AND ta.id = sid " . COM_getTopicSql('AND', $uid, 'ta');
+            $groupbySQL = " GROUP BY " . implode(',', $groupby_fields);
+        } else {
+            // Without a filter we can select just a the stories from a default topic since all stories are required a default topic. 
+            // So no duplicates returned
+            $permSql = COM_getPermSql('AND', $uid) . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', $uid, 'ta');
+        }
     } else {
         $permSql = COM_getPermSql('AND') . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', 0, 'ta');
     }
+    
     $sql = "SELECT " . implode(',', $fields)
-        . " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta" . $where . $permSql;
+        . " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta" . $where . $permSql . $groupbySQL;
     if ($sid != '*') {
         $sql .= ' LIMIT 1';
     }
-
+COM_errorLog($sql);
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
 

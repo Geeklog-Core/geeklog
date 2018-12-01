@@ -8494,9 +8494,7 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor
     // Check if the current user has access to Filemanager
     $geeklogFileManager = "false";
     if (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Root') || (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')))) {
-        if (isset($_CONF['demo_mode']) && !$_CONF['demo_mode']) {
-            $geeklogFileManager = "true";
-        } elseif (!isset($_CONF['demo_mode'])) {
+        if ((isset($_CONF['demo_mode']) && !$_CONF['demo_mode']) || !isset($_CONF['demo_mode'])) {
             $geeklogFileManager = "true";
         }
     }
