@@ -57,3 +57,8 @@ $_CONF_VALIDATE['xmlsitemap']['frequencies[staticpages]'] = array(
 // Ping target
 $_CONF_VALIDATE['xmlsitemap']['ping_google'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['xmlsitemap']['ping_bing']   = array('rule' => 'boolean');
+
+// News Sitemap
+$_CONF_VALIDATE['xmlsitemap']['news_sitemap_file'] = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['xmlsitemap']['news_sitemap_age'] = array('rule' => 'numeric');
+

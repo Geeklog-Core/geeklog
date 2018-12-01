@@ -39,3 +39,23 @@ function xmlsitemap_update_ConfValues_1_0_1()
     $c->add('ping_bing', $_XMLSMAP_DEFAULT['ping_bing'], 'select', 0,
         3, 1, 110, true, $me, 3);
 }
+
+function xmlsitemap_update_ConfValues_2_0_1()
+{
+    global $_CONF, $_XMLSMAP_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+    require_once $_CONF['path'] . 'plugins/xmlsitemap/install_defaults.php';
+
+    $c = config::get_instance();
+    $me = 'xmlsitemap';
+
+    // News Sitemap
+    $c->add('tab_news', null, 'tab', 0, 4, null, 0, true, $me, 4);
+    $c->add('fs_news', null, 'fieldset', 0, 4, null, 0, true, $me, 4);
+    $c->add('news_sitemap_file', $_XMLSMAP_DEFAULT['news_sitemap_file'],
+        'text', 0, 4, null, 120, false, $me, 4);
+    $c->add('news_sitemap_topics', $_XMLSMAP_DEFAULT['news_sitemap_topics'], '%text', 0, 4, null, 130,
+        true, $me, 4);
+    $c->add('news_sitemap_age',$_XMLSMAP_DEFAULT['news_sitemap_age'],'text',0,4,NULL,140,TRUE, $me, 4);
+}

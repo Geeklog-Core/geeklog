@@ -53,7 +53,7 @@ function plugin_autoinstall_xmlsitemap($pi_name)
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '2.0.2',
-        'pi_gl_version'   => '1.8.0',
+        'pi_gl_version'   => '2.2.1',
         'pi_homepage'     => 'https://www.geeklog.net/',
     );
 

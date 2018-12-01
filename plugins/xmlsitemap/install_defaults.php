@@ -56,6 +56,7 @@ $_XMLSMAP_DEFAULT = array();
 // XML sitemap names
 $_XMLSMAP_DEFAULT['sitemap_file']        = 'sitemap.xml';
 $_XMLSMAP_DEFAULT['mobile_sitemap_file'] = 'mobile_sitemap.xml';
+$_XMLSMAP_DEFAULT['news_sitemap_file']   = 'news_sitemap.xml';
 
 // Content types
 $_XMLSMAP_DEFAULT['types'] = array('article', 'calendar', 'polls', 'staticpages');
@@ -86,6 +87,12 @@ $_XMLSMAP_DEFAULT['frequencies'] = array(
 // Ping targets
 $_XMLSMAP_DEFAULT['ping_google'] = true;
 $_XMLSMAP_DEFAULT['ping_bing']   = true;
+
+// News Sitemap settings
+// Array of article topics for news. If none then all topics.
+$_XMLSMAP_DEFAULT['news_sitemap_topics'] = array();
+// In seconds (2 days default)
+$_XMLSMAP_DEFAULT['news_sitemap_age'] = 172800; 
 
 /**
 * Initialize XMLSitemap plugin configuration
@@ -136,6 +143,15 @@ function plugin_initconfig_xmlsitemap()
             3, 1, 100, true, $me, 3);
         $c->add('ping_bing', $_XMLSMAP_DEFAULT['ping_bing'], 'select', 0,
             3, 1, 110, true, $me, 3);
+            
+        // News Sitemap
+        $c->add('tab_news', null, 'tab', 0, 4, null, 0, true, $me, 4);
+        $c->add('fs_news', null, 'fieldset', 0, 4, null, 0, true, $me, 4);
+        $c->add('news_sitemap_file', $_XMLSMAP_DEFAULT['news_sitemap_file'],
+            'text', 0, 4, null, 120, false, $me, 4);
+        $c->add('news_sitemap_topics', $_XMLSMAP_DEFAULT['news_sitemap_topics'], '%text', 0, 4, null, 130,
+            true, $me, 4);
+        $c->add('news_sitemap_age',$_XMLSMAP_DEFAULT['news_sitemap_age'],'text',0,4,NULL,140,TRUE, $me, 4);
     }
 
     return true;

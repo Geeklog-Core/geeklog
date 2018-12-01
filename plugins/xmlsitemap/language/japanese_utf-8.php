@@ -49,7 +49,10 @@ $LANG_confignames['xmlsitemap'] = array(
     'priorities' => '優先度',
     'frequencies' => 'Frequency',
     'ping_google' => 'Googleにpingを送信する',
-    'ping_bing' => 'Bingにpingを送信する'
+    'ping_bing' => 'Bingにpingを送信する',
+    'news_sitemap_file'   => 'News Sitemap file name',
+    'news_sitemap_topics' => 'Include Articles from these Topics',
+    'news_sitemap_age'    => 'Max Age of Articles',
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
@@ -61,6 +64,7 @@ $LANG_tab['xmlsitemap'] = array(
     'tab_pri' => '優先度',
     'tab_freq' => '更新頻度',
     'tab_ping' => 'Ping送信'
+    'tab_news' => 'News Sitemap',    
 );
 
 $LANG_fs['xmlsitemap'] = array(
@@ -68,6 +72,7 @@ $LANG_fs['xmlsitemap'] = array(
     'fs_pri' => '優先度(既定値 = 0.5、0.0 = 最低、1.0 = 最高)',
     'fs_freq' => '更新頻度',
     'fs_ping' => 'サイトマップ更新時にPingを送信する'
+    'fs_news' => 'News Sitemap Settings',
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

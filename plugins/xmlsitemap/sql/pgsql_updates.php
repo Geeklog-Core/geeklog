@@ -45,6 +45,9 @@ $_UPDATES = array(
     ),
     '1.0.1' => array(
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.xmlsitemap.tab_freq', 'Access to configure XMLSitemap update ping', 0)"
+    ),
+    '2.0.1' => array(
+        "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('xmlsitemap_news', '" . DB_escapeString($_XMLSMAP_DEFAULT['news_sitemap_file']) . "')"
     )
 
 );

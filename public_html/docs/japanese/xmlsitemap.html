@@ -99,6 +99,31 @@
 </tr>
 </table>
 
+<h3><a name="ping">News Sitemap</a></h3>
+
+<table>
+<tr><th style="width: 25%;">項目(変数)</th>
+    <th style="width: 25%;">デフォルト</th>
+    <th style="width: 50%;">説明</th>
+</tr>
+</tr>
+<tr>
+  <td><a name="desc_news_sitemap_file">news_sitemap_file</a></td>
+  <td>news_sitemap.xml</td>
+  <td>When enabled this is the file name of an XML sitemap file for Google News. A Google News sitemap lets you control which content you submit to Google News. This file has to be located in the <strong>public_html</strong> directory (where lib-common.php resides) and be writable from the Web server.</td>
+</tr>
+<tr>
+  <td><a name="desc_news_sitemap_topics">news_sitemap_topics</a></td>
+  <td>(empty)</td>
+  <td>A list of topic ids. Only articles that belong to 1 or more of these topics (either directly or inherited) will be included in the news sitemap. If no topics ids are included then all topics are included.</td>
+</tr>
+<tr>
+  <td><a name="desc_news_sitemap_age">news_sitemap_age</a></td>
+  <td>172800</td>
+  <td>The maximum age in seconds of the articles to include in the news sitemap. If 0, then age is not a factor. Currently Google News recommends articles with a max age of 2 days (or 172800 seconds).</td>
+</tr>
+</table>
+
 <div class="footer">
     <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br />
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
