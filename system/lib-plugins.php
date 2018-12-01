@@ -2331,7 +2331,10 @@ function PLG_spamAction($content, $action = -1)
  * @param    string $id      ID of an item under the plugin's control or '*'
  * @param    string $what    comma-separated list of item properties
  * @param    int    $uid     user ID or 0 = current user
- * @param    array  $options (reserved for future extensions)
+ * @param    array  $options not required and may not be supported. 
+ *           string $options['filter']                 Filters work only for returning multiple items (using *). Allows filtering based on different supported properties. Unsupported filters are ignored
+ *           string $options['filter']['topic-ids']    Comma separated list of topic ids in single quotes to be used in a sql statement ie: 'topicid1','topicid2'
+ *           string $options['filter']['date-created'] Returns items created from this Unix timestamp till current date
  * @return   mixed               string or array of strings with the information
  * @link     http://wiki.geeklog.net/index.php/PLG_getItemInfo
  */

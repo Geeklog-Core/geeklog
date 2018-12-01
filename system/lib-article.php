@@ -1203,14 +1203,12 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
         
         // Check options to see if filters enabled
         if (isset($options['filter']['date-created'])) {
-            //AND (date
-            
-            
-            
+            $filter_flag = true;
+            $where .= " (date >= '" . date('c', $options['filter']['date-created']) . "') AND";
         }
         if (isset($options['filter']['topic-ids']) && !empty($options['filter']['topic-ids'])) {
             $filter_flag = true;
-            $where = " WHERE (ta.tid IN (" . $options['filter']['topic-ids'] . ")) AND";
+            $where .= " (ta.tid IN (" . $options['filter']['topic-ids'] . ")) AND";
         }
     } else {
         $where = " WHERE (sid = '" . DB_escapeString($sid) . "') AND";
@@ -1235,7 +1233,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     if ($sid != '*') {
         $sql .= ' LIMIT 1';
     }
-COM_errorLog($sql);
+
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
 
