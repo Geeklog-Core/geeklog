@@ -465,7 +465,7 @@ class SitemapXML
      */
     public function create()
     {
-        global $_XMLSMAP_CONF, $_CONF;
+        global $_XMLSMAP_CONF, $_CONF, $LANG_ISO639_1;
 
         // Get file names
         list ($filename, $mobile_filename, $news_filename) = $this->getFileNames();
@@ -612,7 +612,14 @@ class SitemapXML
 
             // Figure out language id
             $multi_lang = COM_isMultiLanguageEnabled();
-            $site_lang_id = COM_getLanguageId();
+            if ($multi_lang) {
+                // default language for multi language site
+                $site_lang_id = COM_getLanguageId();
+            } else {
+                // Just one default language
+                $site_lang_id = $LANG_ISO639_1;
+            }
+            
             // See if timezone is set
             $timezone = $this->getTimezoneStr();
 
