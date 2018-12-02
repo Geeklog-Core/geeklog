@@ -77,6 +77,8 @@ class SitemapXML
     private $filename;
     private $mobile_filename;
     private $news_filename;
+    private $news_topics;
+    private $news_age;
 
     // Valid expressions for 'changefreq' field
     private $valid_change_freqs = array('always', 'hourly', 'daily', 'weekly',
@@ -261,6 +263,46 @@ class SitemapXML
     {
         return $this->types;
     }
+    
+    /**
+     * Set the topics for news
+     *
+     * @param   mixed   $topics (string or array of string): 'topicid1', ...
+     */
+    public function setNewsTopics($topics)
+    {
+        $this->_news_topics = array_unique($topics);
+    }
+
+    /**
+     * Get the topics for news
+     *
+     * @return  array    array of strings of topics: 'topicid1', 'topicid2', ...     
+     */
+    public function getNewsTopics()
+    {
+        return $this->_news_topics;
+    }  
+
+    /**
+     * Set the max age for news
+     *
+     * @param   int   max age of news articles in seconds
+     */
+    public function setNewsAge($MaxAge)
+    {
+        $this->_news_age = intval($MaxAge);
+    }
+
+    /**
+     * Get the max age for news
+     *
+     * @return  int    max age of news articles in seconds
+     */
+    public function getNewsAge()
+    {
+        return $this->_news_age;
+    }    
 
     /**
      * Normalize a URL
@@ -576,8 +618,10 @@ class SitemapXML
 
             // Retrieve complete topic list including inherited ones 
             $topic_list = '';
-            if (!empty($_XMLSMAP_CONF['news_sitemap_topics'])) {
-                foreach ($_XMLSMAP_CONF['news_sitemap_topics'] as $tid) {
+            $newstopics = $this->getNewsTopics();
+            
+            if (!empty($newstopics)) {
+                foreach ($newstopics as $tid) {
                     $tids = TOPIC_getChildList($tid, $uid);
                     if (!empty($tids)) {
                         if (!empty($topic_list)) {
@@ -593,8 +637,8 @@ class SitemapXML
             }
 
             // Figure out max age
-            if ($_XMLSMAP_CONF['news_sitemap_age'] > 0) {
-                $options['filter']['date-created'] = strtotime("-{$_XMLSMAP_CONF['news_sitemap_age']} seconds");
+            if ($this->getNewsAge() > 0) {
+                $options['filter']['date-created'] = strtotime("-" . $this->getNewsAge() . " seconds");
             }
 
             $result = PLG_getItemInfo('article', '*', $what, $uid, $options);
@@ -678,7 +722,7 @@ class SitemapXML
     }
 
     /**
-     * Sends a ping to search engines
+     * Sends a ping to search engines for the main sitemap only
      *
      * @param    array    $destinations    an array of search engine types.
      *                                      Currently supported are 'google' and 'bing'.

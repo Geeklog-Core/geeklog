@@ -312,16 +312,14 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
 
     // News Sitemap settings
     if (isset($_XMLSMAP_CONF['news_sitemap_file']) && !empty($_XMLSMAP_CONF['news_sitemap_file'])) {
-        /*
         // Article topics to include
         if (isset($_XMLSMAP_CONF['news_sitemap_topics']) && $_XMLSMAP_CONF['news_sitemap_topics']) {
-            $pingTargets[] = 'bing';
+            $sitemap->setNewsTopics($_XMLSMAP_CONF['news_sitemap_topics']);
         }
         // Max article age in seconds
         if (isset($_XMLSMAP_CONF['news_sitemap_age']) && $_XMLSMAP_CONF['news_sitemap_age']) {
-            $pingTargets[] = 'bing';
+            $sitemap->setNewsAge($_XMLSMAP_CONF['news_sitemap_age']);
         }
-        */
     }
 
     $retval = $sitemap->create();
@@ -370,6 +368,23 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id)
 */
 function plugin_itemdeleted_xmlsitemap($id, $type)
 {
+    global $_XMLSMAP_CONF;
+
+    // we're really only interested in Topic Deletes because of the News Sitemap
+    if ($type == 'topic') {
+        $key = array_search($id, $_XMLSMAP_CONF['news_sitemap_topics']);
+
+        if ($key > 0) {
+            // delete item from config
+            unset($_XMLSMAP_CONF['news_sitemap_topics'][$key]);
+
+            // Now save it to the configuration
+            $c = config::get_instance();
+            $c->set('news_sitemap_topics', $_XMLSMAP_CONF['news_sitemap_topics'], 'xmlsitemap');
+        }
+    }
+    
+    // Rewrite all sitmap files
     XMLSMAP_update($type);
 }
 
