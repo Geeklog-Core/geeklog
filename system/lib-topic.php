@@ -1052,7 +1052,7 @@ function TOPIC_getTopicDefault($type, $id = '')
 }
 
 /**
- * Delete Topic Assignments for a specfic object
+ * Delete Topic Assignments for a specific object
  *
  * @param    string $type Type of object to find topic access about.
  * @param           string /array    $id     ID of object
@@ -1066,7 +1066,7 @@ function TOPIC_deleteTopicAssignments($type, $id)
 }
 
 /**
- * Add Topic Assignments for a specfic object
+ * Add Topic Assignments for a specific object
  *
  * @param    string $type Type of object to find topic access about.
  * @param           string /array    $id     ID of object
