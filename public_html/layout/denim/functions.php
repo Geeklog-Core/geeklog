@@ -76,7 +76,7 @@ function theme_config_denim()
         'block_left_search' => 1,   // 1:show or 0:hide left block searchbox
         'welcome_msg'       => 1,   // 1:show or 0:hide welcome message
         'trademark_msg'     => 0,   // 1:show or 0:hide trademark message on footer
-        'execution_time'    => 0,   // 1:show or 0:hide execution time on footer
+        'execution_time'    => 1,   // 1:show or 0:hide execution time on footer
         'pagenavi_string'   => 1,   // 1:show or 0:hide text string of page navigation
         'header_brand_type' => 1,   // 1:text or 0:image type of header brand (site name)
         'off_canvas_mode'   => 2,   // 0:push 1:slide 2:reveal or 3:none mode of UIkit off-canvas animation
@@ -274,4 +274,42 @@ function theme_init_denim()
     if (!COM_isAnonUser()) {
         $_BLOCK_TEMPLATE['user_block'] = 'blockheader-list.thtml,blockfooter-list.thtml';
     }
+}
+
+/**
+ * Return a list of one or more CSS classes for the request item location
+ *
+ */
+function theme_getCSSClasses_denim($item)
+{
+    $retval = '';
+    
+    switch ($item) {
+        // ***************************
+        // Item names used for lists created by COM_makeList 
+        
+        // These original list items css classes which were defined way back in Geeklog 1.3. Most are not in use anymore by any updated theme
+        // 'list-new-plugins', 'list-story-options', 'list-older-stories', 'list-feed', 'list-new-comments', 'list-new-trackbacks', 'list-whats-related', 'list-new-links', 'list-personal-events', 'list-site-events'
+        
+        // New Core, Article, Topic locations added Geeklog 2.2.1
+        // Theme can pass a specific css class(es) if needed else return empty string. Plugins can also set their own item locations and define their css classes in the plugin templates functions.php file
+        case 'article-list-options':  // replacing "list-story-options"
+            $retval = 'list-story-options'; // used by denim, denim_curve, modern_curve
+            break;
+        
+        case 'core-list-default': // Default List styling - not used yet
+        case 'core-list-new': // For What's New Block - replacing "list-new-plugins", 'list-new-comments', 'list-new-trackbacks'
+        case 'core-list-feed': // For RSS Feed Portal Block - replacing "list-feed"
+        case 'article-list-directory':  // For Article Directory page - New item as of GL v2.2.1
+        case 'article-list-related': // For Article Page What's Related List - replacing 'list-whats-related'
+        case 'article-list-older':  // For Older Articles Block - replacing "list-older-stories"
+        case 'topic-list-related': // For Autotags Related Topic items list - New item as of GL v2.2.1
+        // ***************************        
+
+        // If any other items requested return empty string
+        default:
+           break;
+    }
+    
+    return $retval;
 }

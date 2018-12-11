@@ -225,7 +225,7 @@ function theme_init_denim_three()
 }
 
 /**
- * Return a list of one or more CSS classes for the request item
+ * Return a list of one or more CSS classes for the request item location
  *
  */
 function theme_getCSSClasses_denim($item)
@@ -234,25 +234,25 @@ function theme_getCSSClasses_denim($item)
     
     switch ($item) {
         // ***************************
-        // Used for lists by COM_makeList 
+        // Item names used for lists created by COM_makeList 
         
-        // These original list items were defined way back in Geeklog 1.3. Most are not in use anymore
+        // These original list items css classes which were defined way back in Geeklog 1.3. Most are not in use anymore by any updated theme
         // 'list-new-plugins', 'list-story-options', 'list-older-stories', 'list-feed', 'list-new-comments', 'list-new-trackbacks', 'list-whats-related', 'list-new-links', 'list-personal-events', 'list-site-events'
         
         // New Core, Article, Topic locations added Geeklog 2.2.1
-        case 'core-list-default' // Default List styling
+        // Theme can pass a specific css class(es) if needed else return empty string. Plugins can also set their own item locations and define their css classes in the plugin templates functions.php file
+        case 'core-list-default': // Default List styling - not used yet
         case 'core-list-new': // For What's New Block - replacing "list-new-plugins", 'list-new-comments', 'list-new-trackbacks'
-        case 'core-list-feed': // replacing "list-feed"
+        case 'core-list-feed': // For RSS Feed Portal Block - replacing "list-feed"
         case 'article-list-directory':  // For Article Directory page - New item as of GL v2.2.1
-        case 'article-list-related': // replacing 'list-whats-related'
-        case 'article-list-options':  // replacing "list-story-options"
+        case 'article-list-related': // For Article Page What's Related List - replacing 'list-whats-related'
+        case 'article-list-options':  // For Article Page Options List - replacing "list-story-options"
         case 'article-list-older':  // For Older Articles Block - replacing "list-older-stories"
-        case 'topic-list-related': // New item as of GL v2.2.1
+        case 'topic-list-related': // For Autotags Related Topic items list - New item as of GL v2.2.1
         // ***************************
 
         // If any other items requested return empty string
         default:
-           
            break;
     }
     
