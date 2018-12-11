@@ -2637,6 +2637,61 @@ function PLG_itemDisplay($id, $type)
 }
 
 /**
+ * Get list of CSS classes for different items
+ * Introduced in Geeklog v2.2.1
+ *
+ * @param    string $id   unique ID of the item (either defined by core or a plugin)
+ * @param    string $type type of the item or plugin, e.g. 'article'
+ *
+ * @return   string One or more CSS classes to be used in HTML
+  */
+function PLG_getCSSClasses($id, $type)
+{
+    global $_CONF;
+    
+    $retval = '';
+    
+    switch($type)
+    {
+        case 'core';
+        case 'article';
+        case 'story';
+        case 'comment';
+        case 'topic';
+            // Check theme for these types
+            $function = 'theme_getCSSClasses_' . $_CONF['theme'];
+            if (function_exists($function)) {
+                $retval = $function($id);
+            } elseif (!empty($_CONF['theme_default'])) {
+                // See if default theme if so check for it
+                $function = 'theme_getCSSClasses_' . $_CONF['theme_default'];
+                if (function_exists($function)) {
+                    $retval = $function($id);
+                }
+            }
+        
+            break;
+            
+        default;
+            // Assume type is plugin so check plugin specific theme templates 
+            $function = $type . '_getCSSClasses_' . $_CONF['theme'];
+            if (function_exists($function)) {
+                $retval = $function($id);
+            } elseif (!empty($_CONF['theme_default'])) {
+                // See if default theme if so check if plugin templates exist
+                $function = $type . '_getCSSClasses_' . $_CONF['theme_default'];
+                if (function_exists($function)) {
+                    $retval = $function($id);
+                }
+            }        
+            
+            break;
+    }
+
+    return $retval;
+}
+
+/**
  * Get list of template locations where blocks can appear. This includes Themes, Plugins, and Plugin Templates
  * Introduced in Geeklog v2.2.0
  *

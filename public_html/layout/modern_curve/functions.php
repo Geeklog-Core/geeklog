@@ -180,4 +180,63 @@ function theme_init_modern_curve()
     }
 }
 
+/**
+ * Return a list of one or more CSS classes for the request item
+ *
+ */
+function theme_getCSSClasses_denim($item)
+{
+    $retval = '';
+    
+    switch ($item) {
+        // ***************************
+        // Used for lists by COM_makeList 
+        
+        // These original list items were defined way back in Geeklog 1.3. Most are not in use anymore
+        // 'list-new-plugins', 'list-story-options', 'list-older-stories', 'list-feed', 'list-new-comments', 'list-new-trackbacks', 'list-whats-related', 'list-new-links', 'list-personal-events', 'list-site-events'
+        
+        // New Core, Article, Topic locations added Geeklog 2.2.1
+        case 'core-list-default': // Default List styling
+            $retval = '';
+            break;
+        
+        case 'core-list-new': // For What's New Block - replacing "list-new-plugins", 'list-new-comments', 'list-new-trackbacks'
+            $retval = '';
+            break;
+            
+        case 'core-list-feed': // replacing "list-feed"
+            $retval = '';
+            break;
+            
+        case 'article-list-directory':  // For Article Directory page - New item as of GL v2.2.1
+            $retval = '';
+            break;
+            
+        case 'article-list-related': // replacing 'list-whats-related'
+            $retval = '';
+            break;
+            
+        case 'article-list-options':  // replacing "list-story-options"
+            $retval = 'list-story-options'; // used by denim, denim_curve, modern_curve
+            break;
+            
+        case 'article-list-older':  // For Older Articles Block - replacing "list-older-stories"
+            $retval = '';
+            break;
+            
+        case 'topic-list-related': // New item as of GL v2.2.1
+            $retval = '';
+            break;
+            
+        // ***************************
+
+        // If any other items requested return empty string
+        default:
+           
+           break;
+    }
+    
+    return $retval;
+}
+
 ?>

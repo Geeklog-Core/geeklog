@@ -849,7 +849,7 @@ function STORY_whatsRelated($related, $uid, $sid)
 
         $related = '';
         if (count($result) > 0) {
-            $related = COM_makeList($result, 'list-whats-related');
+            $related = COM_makeList($result, PLG_getCSSClasses('article-list-related', 'core'));
         }
     } else {
         $related = '';

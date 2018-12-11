@@ -224,6 +224,40 @@ function theme_init_denim_three()
     }
 }
 
+/**
+ * Return a list of one or more CSS classes for the request item
+ *
+ */
+function theme_getCSSClasses_denim($item)
+{
+    $retval = '';
+    
+    switch ($item) {
+        // ***************************
+        // Used for lists by COM_makeList 
+        
+        // These original list items were defined way back in Geeklog 1.3. Most are not in use anymore
+        // 'list-new-plugins', 'list-story-options', 'list-older-stories', 'list-feed', 'list-new-comments', 'list-new-trackbacks', 'list-whats-related', 'list-new-links', 'list-personal-events', 'list-site-events'
+        
+        // New Core, Article, Topic locations added Geeklog 2.2.1
+        case 'core-list-default' // Default List styling
+        case 'core-list-new': // For What's New Block - replacing "list-new-plugins", 'list-new-comments', 'list-new-trackbacks'
+        case 'core-list-feed': // replacing "list-feed"
+        case 'article-list-directory':  // For Article Directory page - New item as of GL v2.2.1
+        case 'article-list-related': // replacing 'list-whats-related'
+        case 'article-list-options':  // replacing "list-story-options"
+        case 'article-list-older':  // For Older Articles Block - replacing "list-older-stories"
+        case 'topic-list-related': // New item as of GL v2.2.1
+        // ***************************
+
+        // If any other items requested return empty string
+        default:
+           
+           break;
+    }
+    
+    return $retval;
+}
 
 /**
  * Return an array of Block Locations for a theme (besides left and right)

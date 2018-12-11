@@ -171,7 +171,7 @@ function plugin_getwhatsnew_links()
             $newlinks[] = COM_createLink($title, $lcount, $link_title) . LB;
         }
 
-        $retval .= COM_makeList($newlinks, 'list-new-plugins');
+        $retval .= COM_makeList($newlinks, PLG_getCSSClasses('core-list-new', 'core'));
     } else {
         $retval .= $LANG_LINKS[88] . '<br' . XHTML . '>' . LB;
     }

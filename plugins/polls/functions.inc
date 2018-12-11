@@ -1752,7 +1752,7 @@ function plugin_getwhatsnew_polls()
         }
 
         if (isset($url)) {
-            $retval .= COM_makeList($newpolls, 'list-new-plugins');
+            $retval .= COM_makeList($newpolls, PLG_getCSSClasses('core-list-new', 'core'));
         }
     }
 
