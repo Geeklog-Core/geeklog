@@ -29,13 +29,13 @@ abstract class Cache
 
     /**
      * Initialize Cache class
+     *
+     * @param CacheInterface $driver
      */
-    public static function init()
+    public static function init(CacheInterface $driver)
     {
-        global $_CONF;
-
         if (!self::$isInitialized) {
-            self::$instance = new FileSystem($_CONF['path'] . 'data/cache/');
+            self::$instance = $driver;
 //            self::$instance = new APCu();
             self::$isInitialized = true;
         }

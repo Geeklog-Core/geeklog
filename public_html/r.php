@@ -13,7 +13,7 @@ if (!isset($_CONF['path'], $_CONF['path_system']) ||
 // Register autoloader
 require_once $_CONF['path_system'] . 'classes/Autoload.php';
 Geeklog\Autoload::initialize();
-Geeklog\Cache::init();
+Geeklog\Cache::init(new Geeklog\Cache\FileSystem($_CONF['path'] . 'data/cache/'));
 
 // Get cache key
 $key = Geeklog\Input::fGet('k');

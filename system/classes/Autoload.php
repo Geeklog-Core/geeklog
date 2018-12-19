@@ -41,10 +41,6 @@ class Autoload
             if (file_exists($path)) {
                 /** @noinspection PhpIncludeInspection */
                 include $path;
-
-                if (method_exists($className, 'init')) {
-                    $className::init();
-                }
             }
         } elseif (stripos($className, 'MatthiasMullie\\') === 0) {
             if (stripos($className, 'MatthiasMullie\\Minify\\') === 0) {

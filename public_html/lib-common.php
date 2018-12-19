@@ -97,6 +97,9 @@ COM_checkInstalled();
 require_once $_CONF['path_system'] . 'classes/Autoload.php';
 Geeklog\Autoload::initialize();
 
+// Initialize system classes
+Geeklog\Input::init();
+
 // Load configuration
 $config = config::get_instance();
 $config->set_configfile($_CONF['path'] . 'db-config.php');
@@ -109,7 +112,7 @@ $_CONF = $config->get_config('Core');
 $_CONF_FT = $config->_get_config_features();
 
 // Load Cache class
-Geeklog\Cache::init();
+Geeklog\Cache::init(new Geeklog\Cache\FileSystem($_CONF['path'] . 'data/cache/'));
 
 // Load in Geeklog Variables Table
 
