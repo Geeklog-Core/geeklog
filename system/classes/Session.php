@@ -12,10 +12,10 @@ abstract class Session
     // Index of $_SESSION array
     const GL_NAMESPACE = '__gl';
     const VAR_NAMESPACE = '__v';
-    const FLASH_NAMESPACE = '__f';
+    const FLASH_VAR_NAMESPACE = '__f';
 
     // Lifespan of the session in seconds
-    const LIFE_SPAN = 60 * 60 * 2;
+    const LIFE_SPAN = 7200; // 60 * 60 * 2;
 
     // Anonymous user id
     const ANON_USER_ID = 1;
@@ -25,7 +25,7 @@ abstract class Session
      *
      * @var array
      */
-    private static $flashVars = [];
+    private static $flashVars = array();
 
     /**
      * The flag to show if the class is initialized
@@ -64,20 +64,20 @@ abstract class Session
         if (!isset($_SESSION[self::GL_NAMESPACE])
             || ($_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['uid'] < self::ANON_USER_ID)
             || self::isExpires()) {
-            $_SESSION[self::GL_NAMESPACE] = [
-                self::FLASH_NAMESPACE => [],
-                self::VAR_NAMESPACE   => [
+            $_SESSION[self::GL_NAMESPACE] = array(
+                self::FLASH_VAR_NAMESPACE => array(),
+                self::VAR_NAMESPACE       => array(
                     'uid' => self::ANON_USER_ID,
-                ],
-            ];
+                ),
+            );
         }
 
         // Move "flash" session vars to the property of the class
-        if (isset($_SESSION[self::GL_NAMESPACE][self::FLASH_NAMESPACE])
-            && is_array($_SESSION[self::GL_NAMESPACE][self::FLASH_NAMESPACE])) {
-            self::$flashVars = $_SESSION[self::GL_NAMESPACE][self::FLASH_NAMESPACE];
+        if (isset($_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE])
+            && is_array($_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE])) {
+            self::$flashVars = $_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE];
         }
-        $_SESSION[self::GL_NAMESPACE][self::FLASH_NAMESPACE] = [];
+        $_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE] = array();
 
         // Update life span
         $_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['expiresAt'] = time() + self::LIFE_SPAN;
@@ -155,7 +155,7 @@ abstract class Session
      */
     public static function setFlash($name, $value)
     {
-        $_SESSION[self::GL_NAMESPACE][self::FLASH_NAMESPACE][$name] = $value;
+        $_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE][$name] = $value;
     }
 
     /**
