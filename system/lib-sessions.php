@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog session library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2018 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
@@ -249,7 +249,7 @@ function SESS_sessionCheck()
 * @param        int         $userid         User ID to create session for
 * @param        string      $remote_ip      IP address user is connected from
 * @param        string      $lifespan       How long (seconds) this cookie should persist
-* @param        string      $md5_based      If 1 session will be MD5 hash of ip address
+* @param        int         $md5_based      If 1 session will be MD5 hash of ip address
 * @return       string      Session ID
 *
 */
@@ -387,7 +387,7 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
 */
 function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=0)
 {
-    global $_CONF, $_TABLES, $_SESS_VERBOSE;
+    global $_TABLES, $_SESS_VERBOSE;
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("*** Inside SESS_getUserIdFromSession ***",1);
@@ -460,7 +460,7 @@ function SESS_updateSessionTime($sessid, $md5_based=0)
 */
 function SESS_endUserSession($userid)
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
 
     if (!(isset($_CONF['demo_mode']) && $_CONF['demo_mode'])) {
         DB_delete($_TABLES['sessions'], 'uid', $userid);
@@ -581,11 +581,11 @@ function SESS_getVariable($variable)
 * @return       boolean     always true for some reason
 *
 */
-function SESS_setVariable($variable, $value, $session_id = 0)
+function SESS_setVariable($variable, $value, $session_id = '')
 {
     global $_TABLES, $_CONF, $_USER;
 
-    if ($session_id == 0) {
+    if ($session_id === '') {
         $session_id = $_USER['session_id'];
     }
 
@@ -599,5 +599,3 @@ function SESS_setVariable($variable, $value, $session_id = 0)
 
     return 1;
 }
-
-?>
