@@ -14,11 +14,25 @@ abstract class Session
     const VAR_NAMESPACE = '__v';
     const FLASH_VAR_NAMESPACE = '__f';
 
-    // Lifespan of the session in seconds
-    const LIFE_SPAN = 7200; // 60 * 60 * 2;
+    // Default lifespan of the session in seconds
+    const DEFAULT_LIFE_SPAN = 7200; // 60 * 60 * 2;
 
-    // Anonymous user id
+    // Anonymous user ID
     const ANON_USER_ID = 1;
+
+    /**
+     * User ID
+     *
+     * @var int
+     */
+    private static $uid = 1;
+
+    /**
+     * Lifespan of the session
+     *
+     * @var int
+     */
+    private static $lifeSpan = self::DEFAULT_LIFE_SPAN;
 
     /**
      * "flash", i.e., one-time session variables
@@ -36,11 +50,11 @@ abstract class Session
 
     /**
      * Init the Session class
+     *
+     * @param array $config
      */
-    public static function init()
+    public static function init(array $config)
     {
-        global $_CONF;
-
         if (self::$isInitialized) {
             return;
         }
@@ -53,7 +67,10 @@ abstract class Session
         ini_set('session.use_cookies', 1);
         ini_set('session.use_only_cookies', 1);
         ini_set('session.use_trans_sid', 0);
-        ini_set('session.save_path', $_CONF['path'] . 'data/session');
+
+        if (isset($config['session_dir']) && is_readable($config['session_dir']) && is_dir($config['session_dir'])) {
+            ini_set('session.save_path', $config['session_dir']);
+        }
 
         // Start a new session
         if (!session_start()) {
@@ -62,7 +79,13 @@ abstract class Session
 
         // Check if the user is new
         if (!isset($_SESSION[self::GL_NAMESPACE])
+            || !isset($_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE])
+            || !is_array($_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE])
+            || !isset($_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE])
+            || !is_array($_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE])
+            || !isset($_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['uid'])
             || ($_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['uid'] < self::ANON_USER_ID)
+            || !isset($_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['expiresAt'])
             || self::isExpires()) {
             $_SESSION[self::GL_NAMESPACE] = array(
                 self::FLASH_VAR_NAMESPACE => array(),
@@ -72,22 +95,22 @@ abstract class Session
             );
         }
 
+        // Get user ID from session
+        self::$uid = $_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['uid'];
+
         // Move "flash" session vars to the property of the class
-        if (isset($_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE])
-            && is_array($_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE])) {
-            self::$flashVars = $_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE];
-        }
+        self::$flashVars = $_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE];
         $_SESSION[self::GL_NAMESPACE][self::FLASH_VAR_NAMESPACE] = array();
 
         // Update life span
-        $_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['expiresAt'] = time() + self::LIFE_SPAN;
+        self::setLifeSpan(self::$lifeSpan);
 
         // Finished initialization
         self::$isInitialized = true;
     }
 
     /**
-     * Return if the current session has expired
+     * Return if the current session has already expired
      *
      * @return bool
      */
@@ -99,13 +122,13 @@ abstract class Session
     }
 
     /**
-     * Return if the current user is anonymous
+     * Return if the current user is logged in to the site
      *
      * @return bool
      */
     public static function isLoggedIn()
     {
-        return ($_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['uid'] > self::ANON_USER_ID);
+        return (self::$uid > self::ANON_USER_ID);
     }
 
     /**
@@ -115,7 +138,7 @@ abstract class Session
      */
     public static function getUid()
     {
-        return (int) $_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['uid'];
+        return self::$uid;
     }
 
     /**
@@ -190,5 +213,24 @@ abstract class Session
     public static function regenerate()
     {
         session_regenerate_id(false);
+    }
+
+    /**
+     * Set session lifespan
+     *
+     * @param int $lifeSpan
+     */
+    public static function setLifeSpan($lifeSpan)
+    {
+        $lifeSpan = (int) $lifeSpan;
+        if ($lifeSpan < 0) {
+            $lifeSpan = 0;
+        }
+        self::$lifeSpan = $lifeSpan;
+
+        $_SESSION[self::GL_NAMESPACE][self::VAR_NAMESPACE]['expiresAt'] = time() + self::$lifeSpan;
+        $args = session_get_cookie_params();
+        $args['lifetime'] = self::$lifeSpan;
+        session_set_cookie_params($args['lifetime'], $args['path'], $args['domain'], $args['secure'], $args['httponly']);
     }
 }
