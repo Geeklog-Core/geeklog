@@ -586,6 +586,12 @@ if ($_VARS['last_article_publish'] != $A['date']) {
     }    
 }
 
+/**
+ * This provides the ability to generate structure data based on types from schema.org to
+ */
+\Geeklog\Autoload::load('structureddata');
+$_STRUCT_DATA = new StructuredData();
+
 // +---------------------------------------------------------------------------+
 // | HTML WIDGETS                                                              |
 // +---------------------------------------------------------------------------+
@@ -916,7 +922,7 @@ function COM_renderMenu($header, $plugin_menu)
 function COM_createHTMLDocument(&$content = '', $information = array())
 {
     global $_CONF, $_VARS, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
-           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_PAGE_TIMER, $relLinks;
+           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_STRUCT_DATA, $_PAGE_TIMER, $relLinks;
 
     // Retrieve required variables from information array
     $what = isset($information['what']) ? $information['what'] : 'menu';
@@ -1424,6 +1430,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $header->set_var('layout_columns', $layout_columns);
 
     // All blocks, autotags, template files, etc, now have been rendered (since can be done in footer) so all scripts and css should be set now
+    $headerCode = $_STRUCT_DATA->toScript() . $headerCode;
     $headerCode = $_SCRIPTS->getHeader() . $headerCode;
     $header->set_var('plg_headercode', $headerCode);
 

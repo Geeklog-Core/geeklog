@@ -3,27 +3,17 @@
 {breadcrumbs}
 
 <!-- BEGIN breadcrumb -->
-<div {!if microdata} itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList" {!endif}class="bc_navigation">
+<div class="bc_navigation">
     {breadcrumb_items}
 </div>
 <!-- END breadcrumb -->
 
 <!-- BEGIN breadcrumb_item -->
-<span{!if microdata} itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem"{!endif}>
-    {separator}
-    <a href="{url}"{!if microdata} itemprop="item"{!endif}>
-        <span{!if microdata} itemprop="name"{!endif}>{name}</span>
-    </a>
-    {!if microdata}<meta itemprop="position" content="{count}" />{!endif}
-</span>
+{separator}<a href="{url}">{name}</a>
 <!-- END breadcrumb_item -->
 
 <!-- BEGIN breadcrumb_item_nolink -->
-<span{!if microdata} itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem"{!endif}>
-    {separator}
-    <span{!if microdata} itemprop="name"{!endif}>{name}</span>
-    {!if microdata}<meta itemprop="position" content="{count}" />{!endif}
-</span>
+{separator}{name}
 <!-- END breadcrumb_item_nolink -->
 
 {# end {templatelocation} #}

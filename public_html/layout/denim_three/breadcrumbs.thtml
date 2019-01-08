@@ -7,17 +7,15 @@
 {# end {templatelocation} #}
 
 <!-- BEGIN breadcrumb -->
-<ul{!if microdata} itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList"{!endif} class="uk-breadcrumb">
+<ul class="uk-breadcrumb">
 {breadcrumb_items}
 </ul>
 <!-- END breadcrumb -->
 
 <!-- BEGIN breadcrumb_item -->
-<li{!if microdata} itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem"{!endif}><a href="{url}"{!if microdata} itemprop="item"{!endif}><span{!if microdata} itemprop="name"{!endif}>{name}</span></a>
-{!if microdata}<meta itemprop="position" content="{count}"{xhtml}>{!endif}</li>
+<li><a href="{url}">{name}</a></li>
 <!-- END breadcrumb_item -->
 
 <!-- BEGIN breadcrumb_item_nolink -->
-<li{!if microdata} itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem"{!endif}><span{!if microdata} itemprop="name"{!endif}>{name}</span>
-{!if microdata}<meta itemprop="position" content="{count}"{xhtml}>{!endif}</li>
+<li>{name}</li>
 <!-- END breadcrumb_item_nolink -->

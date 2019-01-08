@@ -1265,7 +1265,7 @@ function TOPIC_getTopic($type = '', $id = '')
  */
 function TOPIC_breadcrumbs($type, $id)
 {
-    global $_CONF, $_TABLES, $LANG27, $_TOPICS, $topic;
+    global $_CONF, $_TABLES, $LANG27, $_TOPICS, $topic, $_STRUCT_DATA;
 
     $breadcrumbs_output = '';
 
@@ -1306,8 +1306,12 @@ function TOPIC_breadcrumbs($type, $id)
         $rootname = $_CONF['breadcrumb_root_site_name'] ?
             $_CONF['site_name'] : $LANG27['breadcrumb_root'];
         $separator = htmlspecialchars($LANG27['breadcrumb_separator']);
-
+        
         while ($A = DB_fetchArray($result)) {
+            // Setup structured data for breadcrumb list
+            $bcl_name = 'breadcrumb_' . $A['tid'];
+            $_STRUCT_DATA->add_BreadcrumbList($bcl_name);        
+            
             $breadcrumb_a = array();
             $breadcrumb_a[] = $A;
             $parent_id = $A['parent_id'];
@@ -1356,6 +1360,9 @@ function TOPIC_breadcrumbs($type, $id)
                 $breadcrumb_t->set_var('count', $count);
                 $breadcrumb_t->set_var('separator', ($count == 1) ? '' : $separator);
                 $breadcrumb_t->parse('breadcrumb_items', $use_block, ($count == 1) ? false : true);
+                
+                // Add Structured Data for breadcrumb
+                $_STRUCT_DATA->set_breadcrumb_item($bcl_name, $count, $url, $value['topic']);
             }
             $breadcrumb_t->parse('breadcrumbs', 'breadcrumb', true);
         }
