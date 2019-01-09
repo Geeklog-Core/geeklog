@@ -138,6 +138,13 @@ if ($topic != '') {
 
 if ($page == 0) {
     $page = 1;
+} elseif ($page < 0) {
+    // No negative page numbers. Bail here since it will create an error in the SQL statement below
+    $topic_url = '';
+    if (!empty($topic)) {
+        $topic_url = TOPIC_getUrl($topic);
+    }
+    COM_handle404($topic_url);    
 }
 
 $displayAll = (Geeklog\Input::get('display') === 'all') && empty($topic);
