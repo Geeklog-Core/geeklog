@@ -329,7 +329,7 @@ function SP_countVisiblePages()
  */
 function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nested', $comment_page = 1, $msg = 0, $query = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF, $_STRUCT_DATA;
 
     $retval = '';
 
@@ -427,7 +427,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             }
         }
         $spage->set_var('breadcrumb_trail', $breadcrumb_trail); // Still need to keep this template variable incase main theme does not support 2.0.0 theme engine. Once we drop support of theme engine 1.9.1 then remove
-
+        
         $author_name = COM_getDisplayName($A['owner_id']);
         $author_username = DB_getItem($_TABLES['users'], 'username',
             "uid = {$A['owner_id']}");
@@ -573,6 +573,11 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         if (!$_SP_CONF['disable_breadcrumbs_staticpages']) {
             $breadcrumbs = TOPIC_breadcrumbs('staticpages', $page);
         }
+        
+        // Set Structured Data
+        $sd_name = 'page-' . $page; // Structured Data name is "plugin_name-plugin_item_id"
+        $_STRUCT_DATA->add_Article($sd_name, $A['sp_title'], $sp_url, $A['created'], $A['modified'], $A['meta_description']);
+        $_STRUCT_DATA->set_author_item($sd_name, $author_name);
 
         $retval = COM_createHTMLDocument($retval, array('what' => $what, 'pagetitle' => $page_title, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headerCode, 'rightblock' => $rightblock));
     }
@@ -606,6 +611,7 @@ function SP_printPage($page, $A)
     $print->set_var('page_title', $page_title);
 
 
+    $print->set_var('sp_id', $page);
     $sp_url = COM_buildURL($_CONF['site_url']
         . '/staticpages/index.php?page=' . $page);
     $print->set_var('sp_url', $sp_url);
