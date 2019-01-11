@@ -3,13 +3,13 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
-// | structureddata.class.php                                                          |
+// | structureddata.class.php                                                  |
 // |                                                                           |
-// | Geeklog homepage.                                                         |
+// | Geeklog Structured Data class.                                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2016-2017 by the following authors:                         |
+// | Copyright (C) 2016-2019 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tom Homer                            |
+// | Authors: Tom Homer        - tomhomer AT gmail DOT com                     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -44,31 +44,154 @@ class StructuredData
         $this->items = array();
     }
     
+   
+    
+    /**
+     * Add article
+     *
+     * @param   string $sd_name     Name of structured data item (made up of "plugin_name-plugin_item_id")
+     */
+    public function add_Article($sd_name, $headline, $url, $datePublished, $dateModified, $description)
+    {
+        $this->items[$sd_name]['@context'] = "https://schema.org";
+        $this->items[$sd_name]['@type'] = "Article";
+        $this->items[$sd_name]['headline'] = $headline;
+        $this->items[$sd_name]['url'] = $url;
+        $this->items[$sd_name]['datePublished'] = $datePublished;
+        $this->items[$sd_name]['datePublished'] = $datePublished;
+        $this->items[$sd_name]['dateModified'] = $dateModified;
+        if (!isset($this->items[$sd_name]['description'])) {
+            $this->items[$sd_name]['description'] = $description;
+        }
+        $this->items[$sd_name]['publisher'] = array(
+            "@type"     => "Organization",
+            "name" 	=> "",
+            "logo" 		=>         
+                array(
+                    "@type"   => "ImageObject",
+                    "url"  => "",
+                    "width"  => "",
+                    "height"  => "",
+                ) 
+        );
+        $this->items[$sd_name]['mainEntityOfPage'] = array(
+            "@type"     => "WebPage",
+            "@id" 	=> $url,
+        );
+        
+    }
+    
+    /**
+	 * Set a parameter of the structured data item
+	 *
+	 * @param   string $sd_name     Name of structured data item
+	 * @param   string $name
+	 * @param   string $value
+	 */
+	public function set_param_item($sd_name, $name, $value) 
+    {
+        
+        $this->items[$sd_name][$name] = $value;
+
+	}     
+    
+    /**
+	 * Set a author
+	 *
+	 * @param   string $sd_name     Name of structured data item
+	 * @param   string $position    Position of breadcrumb
+	 * @param   string $id
+	 * @param   string $name
+	 */
+	public function set_author_item($sd_name, $name) 
+    {
+        
+        $this->items[$sd_name]['author'] = array(
+            "@type"   => "Person",
+            "name"  => $name
+        );
+        
+	}    
+    
+    /**
+	 * Set a image to a type
+	 *
+	 * @param   string $sd_name     Name of structured data item
+	 * @param   string $position    Position of breadcrumb
+	 * @param   string $id
+	 * @param   string $name
+	 */
+	public function set_image_item($sd_name, $url, $width, $height) 
+    {
+        
+        $image_item = array(
+                "@type"   => "ImageObject",
+                "url"  => $url,
+        );
+        
+        if (!empty($width)) {
+            $image_item['width'] = $width;
+        }
+        if (!empty($height)) {
+            $image_item['height'] = $height;
+        }
+        
+        $this->items[$sd_name]['image'][] = $image_item;
+        
+	}
     
     /**
      * Add a breadcrumb list
      *
-     * @param string $name
+     * @param string $sd_name
      */
-    public function add_BreadcrumbList($name)
+    public function add_BreadcrumbList($sd_name)
     {
-        $this->items[$name]['@context'] = "https://schema.org";
-        $this->items[$name]['@type'] = "BreadcrumbList";
-        $this->items[$name]['itemListElement'] = array();
+        $this->items[$sd_name]['@context'] = "https://schema.org";
+        $this->items[$sd_name]['@type'] = "BreadcrumbList";
+        $this->items[$sd_name]['itemListElement'] = array();
+        
+    
+    /*
+    $schema['@context'] = "https://schema.org";
+    $schema['@type'] = "BreadcrumbList";
+    $schema['itemListElement'] = array(
+            array(
+                "@type"     => "ListItem",
+                "position" 	=> 1,
+                "item" 		=>         
+                    array(
+                        "@id"   => "https://example.com/dresses",
+                        "name"  => "Dresses",
+                    ) 
+            ),
+            array(
+                "@type"     => "ListItem",
+                "position" 	=> 2,
+                "item" 		=>         
+                    array(
+                        "@id"   => "https://example.com/dresses/real",
+                        "name"  => "Real Dresses",
+                    ) 
+            )                
+        );
+    echo '<script type="application/ld+json">' . json_encode($schema) . '</script>';
+    */        
+        
     }
 
     /**
 	 * Set a breadcrumb for a breadcrumblist 
 	 *
-	 * @param   string $breadcrumb  Name of breadcrumb list
+	 * @param   string $sd_name     Name of breadcrumb list
 	 * @param   string $position    Position of breadcrumb
 	 * @param   string $id
 	 * @param   string $name
 	 */
-	public function set_breadcrumb_item($breadcrumb, $position, $id, $name) 
+	public function set_breadcrumb_item($sd_name, $position, $id, $name) 
     {
         
-        $this->items[$breadcrumb]['itemListElement'][] = array(
+        $this->items[$sd_name]['itemListElement'][] = array(
             array(
                 "@type"     => "ListItem",
                 "position" 	=> $position,

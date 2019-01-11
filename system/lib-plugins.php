@@ -1580,6 +1580,7 @@ function PLG_collectTags($type = 'tagname')
     require_once $_CONF['path_system'] . 'lib-user.php';
     require_once $_CONF['path_system'] . 'lib-topic.php';
     require_once $_CONF['path_system'] . 'lib-block.php';
+    require_once $_CONF['path_system'] . 'lib-structureddata.php';
 
 
     if (!is_array($_PLUGINS)) {
@@ -1589,7 +1590,7 @@ function PLG_collectTags($type = 'tagname')
          */
         $_PLUGINS = array();
     }
-    $all_plugins = array_merge($_PLUGINS, array('story', 'user', 'topic', 'block'));
+    $all_plugins = array_merge($_PLUGINS, array('story', 'user', 'topic', 'block', 'structureddata'));
 
     $autolinkModules = array();
 
