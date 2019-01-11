@@ -6,9 +6,9 @@
 // +---------------------------------------------------------------------------+
 // | lib-topic.php                                                             |
 // |                                                                           |
-// | Geeklog syndication library.                                              |
+// | Geeklog Topic library.                                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2011 by the following authors:                         |
+// | Copyright (C) 2003-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer        - tomhomer AT gmail DOT com                     |
 // +---------------------------------------------------------------------------+
@@ -1309,8 +1309,8 @@ function TOPIC_breadcrumbs($type, $id)
         
         while ($A = DB_fetchArray($result)) {
             // Setup structured data for breadcrumb list
-            $bcl_name = 'breadcrumb_' . $A['tid'];
-            $_STRUCT_DATA->add_BreadcrumbList($bcl_name);        
+            $sd_name = 'breadcrumb_' . $A['tid'];
+            $_STRUCT_DATA->add_BreadcrumbList($sd_name);        
             
             $breadcrumb_a = array();
             $breadcrumb_a[] = $A;
@@ -1362,7 +1362,7 @@ function TOPIC_breadcrumbs($type, $id)
                 $breadcrumb_t->parse('breadcrumb_items', $use_block, ($count == 1) ? false : true);
                 
                 // Add Structured Data for breadcrumb
-                $_STRUCT_DATA->set_breadcrumb_item($bcl_name, $count, $url, $value['topic']);
+                $_STRUCT_DATA->set_breadcrumb_item($sd_name, $count, $url, $value['topic']);
             }
             $breadcrumb_t->parse('breadcrumbs', 'breadcrumb', true);
         }
