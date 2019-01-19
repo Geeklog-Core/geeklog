@@ -1,5 +1,6 @@
 {# begin {templatelocation} #}
 
+<h3 class="sr-only">{lang_sr}</h3>
 <div class="uk-grid" uk-margin>
     <div class="uk-width-1-1">
         {message}
