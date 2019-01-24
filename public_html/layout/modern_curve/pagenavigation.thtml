@@ -1,6 +1,6 @@
 {# begin {templatelocation} #}
 
-<h3 class="sr-only">{lang_sr}</h3>
+<h3 class="sr-only">{lang_page_navigation}</h3>
 <div class="gl-pagenav">
 {message}<span>{start_first_anchortag}{lang_first}{end_first_anchortag}</span> |
 <span>{start_previous_anchortag}{lang_previous}{end_previous_anchortag}</span> |
