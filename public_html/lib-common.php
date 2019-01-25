@@ -5063,6 +5063,7 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
         $page_navigation->set_block('page_navigation', $block);
     }
 
+    $page_navigation->set_var('lang_page_navigation', $LANG05[9]);
     $page_navigation->set_var('lang_first', $LANG05[7]);
     $page_navigation->set_var('lang_previous', $LANG05[6]);
     $page_navigation->set_var('lang_next', $LANG05[5]);

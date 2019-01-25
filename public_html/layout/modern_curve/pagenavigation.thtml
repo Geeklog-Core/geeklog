@@ -1,5 +1,6 @@
 {# begin {templatelocation} #}
 
+<h3 class="gl-screen-reader-only">{lang_page_navigation}</h3>{# Visible to screen readers only #} 
 <div class="gl-pagenav">
 {message}<span>{start_first_anchortag}{lang_first}{end_first_anchortag}</span> |
 <span>{start_previous_anchortag}{lang_previous}{end_previous_anchortag}</span> |

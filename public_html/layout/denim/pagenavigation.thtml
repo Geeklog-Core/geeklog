@@ -1,5 +1,6 @@
 {# begin {templatelocation} #}
 
+<h3 class="gl-screen-reader-only">{lang_page_navigation}</h3>{# Visible to screen readers only #}
 <div class="uk-grid uk-text-center uk-margin-bottom uk-margin-small-top">
     <div class="uk-width-1-1">
         {message}
