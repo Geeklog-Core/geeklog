@@ -180,7 +180,7 @@
   padding-left:0.3em;
   padding-right:0.3em;
 }
-.sr-only {
+.gl-screen-reader-only {
   position: absolute;
   left: 0;
   clip: rect(1px, 1px, 1px, 1px);
