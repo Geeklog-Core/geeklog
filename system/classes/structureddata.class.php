@@ -44,8 +44,6 @@ class StructuredData
         $this->items = array();
     }
     
-   
-    
     /**
      * Add Structured Data Type
      *
@@ -54,40 +52,47 @@ class StructuredData
      */
     public function add_type($sd_type, $sd_name, $headline, $url, $datePublished, $dateModified, $description)
     {
-        switch ($sd_type) {
-            case 0: // None
-            
-                break;
-            case 2: // Article
-                $this->items[$sd_name]['@context'] = "https://schema.org";
-                $this->items[$sd_name]['@type'] = "Article";
-                $this->items[$sd_name]['headline'] = $headline;
-                $this->items[$sd_name]['url'] = $url;
-                $this->items[$sd_name]['datePublished'] = $datePublished;
-                $this->items[$sd_name]['datePublished'] = $datePublished;
-                $this->items[$sd_name]['dateModified'] = $dateModified;
-                if (!isset($this->items[$sd_name]['description'])) {
-                    $this->items[$sd_name]['description'] = $description;
-                }
-                $this->items[$sd_name]['publisher'] = array(
-                    "@type"     => "Organization",
-                    "name" 	=> "",
-                    "logo" 		=>         
-                        array(
-                            "@type"   => "ImageObject",
-                            "url"  => "",
-                            "width"  => "",
-                            "height"  => "",
-                        ) 
-                );
-                $this->items[$sd_name]['mainEntityOfPage'] = array(
-                    "@type"     => "WebPage",
-                    "@id" 	=> $url,
-                );
-            
-                break;
-        }        
-        
+        // 0 = None
+        if ($sd_type > 0 AND $sd_type < 5) {
+            $this->items[$sd_name]['@context'] = "https://schema.org";                
+            switch ($sd_type) {
+                case 1: // WebPage
+                    $this->items[$sd_name]['@type'] = "WebPage";
+                    break;                
+                case 2: // Article
+                    $this->items[$sd_name]['@type'] = "Article";
+                    break;                
+                case 3: // NewsArticle                
+                    $this->items[$sd_name]['@type'] = "NewsArticle";
+                    break;                
+                case 4: // BlogPosting                
+                    $this->items[$sd_name]['@type'] = "BlogPosting";
+                    break;                
+            }
+            $this->items[$sd_name]['headline'] = $headline;
+            $this->items[$sd_name]['url'] = $url;
+            $this->items[$sd_name]['datePublished'] = $datePublished;
+            $this->items[$sd_name]['datePublished'] = $datePublished;
+            $this->items[$sd_name]['dateModified'] = $dateModified;
+            if (!isset($this->items[$sd_name]['description'])) {
+                $this->items[$sd_name]['description'] = $description;
+            }
+            $this->items[$sd_name]['publisher'] = array(
+                "@type"     => "Organization",
+                "name" 	=> "",
+                "logo" 		=>         
+                    array(
+                        "@type"   => "ImageObject",
+                        "url"  => "",
+                        "width"  => "",
+                        "height"  => "",
+                    ) 
+            );
+            $this->items[$sd_name]['mainEntityOfPage'] = array(
+                "@type"     => "WebPage",
+                "@id" 	=> $url,
+            );
+        }
     }
     
     /**
