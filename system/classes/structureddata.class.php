@@ -47,37 +47,46 @@ class StructuredData
    
     
     /**
-     * Add article
+     * Add Structured Data Type
      *
-     * @param   string $sd_name     Name of structured data item (made up of "plugin_name-plugin_item_id")
+     * @param   numeric $sd_type     ID of Structured Data Type. See $LANG_structureddatatypes language variable for full list
+     * @param   string  $sd_name     Name of structured data item (made up of "plugin_name-plugin_item_id")
      */
-    public function add_Article($sd_name, $headline, $url, $datePublished, $dateModified, $description)
+    public function add_type($sd_type, $sd_name, $headline, $url, $datePublished, $dateModified, $description)
     {
-        $this->items[$sd_name]['@context'] = "https://schema.org";
-        $this->items[$sd_name]['@type'] = "Article";
-        $this->items[$sd_name]['headline'] = $headline;
-        $this->items[$sd_name]['url'] = $url;
-        $this->items[$sd_name]['datePublished'] = $datePublished;
-        $this->items[$sd_name]['datePublished'] = $datePublished;
-        $this->items[$sd_name]['dateModified'] = $dateModified;
-        if (!isset($this->items[$sd_name]['description'])) {
-            $this->items[$sd_name]['description'] = $description;
-        }
-        $this->items[$sd_name]['publisher'] = array(
-            "@type"     => "Organization",
-            "name" 	=> "",
-            "logo" 		=>         
-                array(
-                    "@type"   => "ImageObject",
-                    "url"  => "",
-                    "width"  => "",
-                    "height"  => "",
-                ) 
-        );
-        $this->items[$sd_name]['mainEntityOfPage'] = array(
-            "@type"     => "WebPage",
-            "@id" 	=> $url,
-        );
+        switch ($sd_type) {
+            case 0: // None
+            
+                break;
+            case 2: // Article
+                $this->items[$sd_name]['@context'] = "https://schema.org";
+                $this->items[$sd_name]['@type'] = "Article";
+                $this->items[$sd_name]['headline'] = $headline;
+                $this->items[$sd_name]['url'] = $url;
+                $this->items[$sd_name]['datePublished'] = $datePublished;
+                $this->items[$sd_name]['datePublished'] = $datePublished;
+                $this->items[$sd_name]['dateModified'] = $dateModified;
+                if (!isset($this->items[$sd_name]['description'])) {
+                    $this->items[$sd_name]['description'] = $description;
+                }
+                $this->items[$sd_name]['publisher'] = array(
+                    "@type"     => "Organization",
+                    "name" 	=> "",
+                    "logo" 		=>         
+                        array(
+                            "@type"   => "ImageObject",
+                            "url"  => "",
+                            "width"  => "",
+                            "height"  => "",
+                        ) 
+                );
+                $this->items[$sd_name]['mainEntityOfPage'] = array(
+                    "@type"     => "WebPage",
+                    "@id" 	=> $url,
+                );
+            
+                break;
+        }        
         
     }
     
@@ -206,20 +215,25 @@ class StructuredData
 	}
     
     /**
-     * Returns JSON-LD script of either 1 or all structured data. Can be included in head or body of webpage
+     * Returns JSON-LD script of either 1 or all structured data types. Can be included in head or body of webpage
      *
      * @param   string $name
      * @return  string
      */
-    public function toScript($name = '')
+    public function toScript($sd_name = '')
     {    
         $script = '';
         
-        if (!empty($name)) {
-            $script = '<script type="application/ld+json">' . json_encode($this->items[$name]) . '</script>' . PHP_EOL;    
+        if (!empty($sd_name)) {
+            // Autotags can insert some structured data variables and may not be setup correctly. Make sure an actual type is set before including
+            if (isset($this->items[$sd_name]['@type'])) { 
+                $script = '<script type="application/ld+json">' . json_encode($this->items[$sd_name]) . '</script>' . PHP_EOL;    
+            }
         } else {
             foreach ($this->items as $item) {
-                $script .= '<script type="application/ld+json">' . json_encode($item) . '</script>' . PHP_EOL;    
+                if (isset($item['@type'])) {                    
+                    $script .= '<script type="application/ld+json">' . json_encode($item) . '</script>' . PHP_EOL;    
+                }
             }        
         }
         

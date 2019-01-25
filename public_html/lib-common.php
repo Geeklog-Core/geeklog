@@ -1612,7 +1612,7 @@ function COM_optionListFromLangVariables($langVariableName, $selected = '')
 {
     static $langVariableNames = array(
         'LANG_commentcodes', 'LANG_commentmodes', 'LANG_featurecodes', 'LANG_frontpagecodes',
-        'LANG_postmodes', 'LANG_sortcodes', 'LANG_statuscodes', 'LANG_trackbackcodes',
+        'LANG_postmodes', 'LANG_sortcodes', 'LANG_statuscodes', 'LANG_trackbackcodes', 'LANG_structureddatatypes'
     );
     static $charset = null;
 

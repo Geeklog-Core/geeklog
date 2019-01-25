@@ -37,6 +37,11 @@
         <dd><select name="commentcode" id="sp-editor-commentcode">
               {comment_options}
             </select></dd>
+            
+        <dt><label for="sp-editor-structureddata">{lang_structured_data_type}</label></dt>
+        <dd><select name="structured_data_type" id="sp-editor-structureddata">
+              {structured_data_options}
+            </select></dd>            
 
         <dt{hide_meta}><label for="sp-editor-meta_description">{lang_metadescription}</label></dt>
         <dd{hide_meta}><textarea name="meta_description" cols="45" rows="2" id="sp-editor-meta_description" class="wide">{meta_description}</textarea></dd>

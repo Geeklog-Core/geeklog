@@ -118,6 +118,9 @@ $_SP_DEFAULT['meta_tags'] = 0;
 // Whether to enable (0) or disable (-1) comments by default
 $_SP_DEFAULT['comment_code'] = -1;
 
+// Default to set Structured Data type for new staticpages. See $LANG_structureddatatypes
+$_SP_DEFAULT['structured_data_type_default'] = 0;
+
 // Whether to set the draft flag by default for new pages
 $_SP_DEFAULT['draft_flag'] = 0;
 
@@ -200,6 +203,8 @@ function plugin_initconfig_staticpages()
                 0, 0, 0, 120, true, 'staticpages', 0);
         $c->add('comment_code', $_SP_DEFAULT['comment_code'], 'select',
                 0, 0, 17, 125, true, 'staticpages', 0);
+        $c->add('structured_data_type_default', $_SP_DEFAULT['structured_data_type_default'], 'select',
+                0, 0, 39, 126, true, 'staticpages', 0);
         $c->add('draft_flag', $_SP_DEFAULT['draft_flag'], 'select',
                 0, 0, 0, 127, true, 'staticpages', 0);
         $c->add('disable_breadcrumbs_staticpages', $_SP_DEFAULT['disable_breadcrumbs_staticpages'], 'select',

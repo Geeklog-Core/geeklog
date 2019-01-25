@@ -39,6 +39,11 @@
         <dd><select name="commentcode" id="sp-advanced_editor-commentcode">
               {comment_options}
             </select></dd>
+            
+        <dt><label for="sp-advanced_editor-structureddata">{lang_structured_data_type}</label></dt>
+        <dd><select name="structured_data_type" id="sp-advanced_editor-structureddata">
+              {structured_data_options}
+            </select></dd>             
 
         <dt><label for="sel_editmode">{lang_postmode}</label></dt>
         <dd><select name="postmode" id="sel_editmode" {change_editormode}>

@@ -88,6 +88,8 @@ function update_DatabaseFor221()
     // Core Plugin Updates Here (including version update)
     
     // Staticpages
+    // Add column for structured data
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.1', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
     
     // SpamX

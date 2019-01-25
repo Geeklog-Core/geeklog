@@ -132,7 +132,8 @@ function staticpageeditor_form(array $A)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
            $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG01, $LANG24,
-           $LANG_postmodes, $MESSAGE, $_IMAGE_TYPE, $_SCRIPTS;
+           $LANG_postmodes, $LANG_structureddatatypes, $LANG_STRUCT_DATA, 
+           $MESSAGE, $_IMAGE_TYPE, $_SCRIPTS;
 
     if (!empty($sp_id) && $mode === 'edit') {
         $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
@@ -214,6 +215,12 @@ function staticpageeditor_form(array $A)
         'comment_options',
         COM_optionList($_TABLES['commentcodes'], 'code,name', $A['commentcode'])
     );
+    
+    $sp_template->set_var('lang_structured_data_type', $LANG_STRUCT_DATA['lang_structured_data_type']);
+    $sp_template->set_var(
+        'structured_data_options',
+        COM_optionListFromLangVariables('LANG_structureddatatypes', $A['structured_data_type']) 
+    );    
 
     $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -743,6 +750,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['sp_help'] = '';
         $A['sp_old_id'] = '';
         $A['commentcode'] = $_SP_CONF['comment_code'];
+        $A['structured_data_type'] = $_SP_CONF['structured_data_type_default'];
         $A['sp_where'] = 1; // default new pages to "top of page"
         $A['draft_flag'] = $_SP_CONF['draft_flag'];
         $A['cache_time'] = $_SP_CONF['default_cache_time'];
@@ -816,6 +824,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
  * @param  string $sp_onlastupdate Flag to show last update
  * @param  string $sp_label        Menu Entry
  * @param  int    $commentCode     Comment Code
+ * @param  int    $structured_data_type     Structured Data Type
  * @param  int    $owner_id        Permission bits
  * @param  int    $group_id
  * @param  int    $perm_owner
@@ -839,7 +848,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
  * @return int
  */
 function submitstaticpage($sp_id, $sp_title, $sp_page_title, $sp_content, $sp_hits,
-                          $sp_format, $sp_onmenu, $sp_onhits, $sp_onlastupdate, $sp_label, $commentCode,
+                          $sp_format, $sp_onmenu, $sp_onhits, $sp_onlastupdate, $sp_label, $commentCode, $structured_data_type,
                           $owner_id, $group_id, $perm_owner, $perm_group,
                           $perm_members, $perm_anon, $sp_php, $sp_nf,
                           $sp_old_id, $sp_centerblock, $sp_help,
@@ -861,6 +870,7 @@ function submitstaticpage($sp_id, $sp_title, $sp_page_title, $sp_content, $sp_hi
         'sp_onlastupdate'  => $sp_onlastupdate,
         'sp_label'         => $sp_label,
         'commentcode'      => $commentCode,
+        'structured_data_type'      => $structured_data_type,
         'meta_description' => $meta_description,
         'meta_keywords'    => $meta_keywords,
         'template_flag'    => $template_flag,
@@ -970,6 +980,7 @@ if (!empty($LANG_ADMIN['delete']) && ($mode === $LANG_ADMIN['delete']) && SEC_ch
             Geeklog\Input::post('sp_onlastupdate'),
             Geeklog\Input::post('sp_label'),
             (int) Geeklog\Input::fPost('commentcode'),
+            (int) Geeklog\Input::fPost('structured_data_type'),
             (int) Geeklog\Input::fPost('owner_id'),
             (int) Geeklog\Input::fPost('group_id'),
             Geeklog\Input::post('perm_owner'),

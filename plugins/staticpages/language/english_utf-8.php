@@ -171,6 +171,7 @@ $LANG_confignames['staticpages'] = array(
     'atom_max_items' => 'Max. Pages in Webservices Feed',
     'meta_tags' => 'Enable Meta Tags',
     'comment_code' => 'Comment Default',
+    'structured_data_type_default' => 'Structured Data Type Default',
     'draft_flag' => 'Draft Flag Default',
     'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
     'default_cache_time' => 'Default Cache Time',
@@ -204,7 +205,7 @@ $LANG_fs['staticpages'] = array(
     'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
-// Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, 9, 12, 17, 39 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('True' => 1, 'False' => 0),
     1 => array('True' => TRUE, 'False' => FALSE),
@@ -215,5 +216,6 @@ $LANG_configselects['staticpages'] = array(
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
     13 => array('No access' => 0, 'Use' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
 );

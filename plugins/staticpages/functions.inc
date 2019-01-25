@@ -576,7 +576,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         
         // Set Structured Data
         $sd_name = 'page-' . $page; // Structured Data name is "plugin_name-plugin_item_id"
-        $_STRUCT_DATA->add_Article($sd_name, $A['sp_title'], $sp_url, $A['created'], $A['modified'], $A['meta_description']);
+        $_STRUCT_DATA->add_type($A['structured_data_type'], $sd_name, $A['sp_title'], $sp_url, $A['created'], $A['modified'], $A['meta_description']);
         $_STRUCT_DATA->set_author_item($sd_name, $author_name);
 
         $retval = COM_createHTMLDocument($retval, array('what' => $what, 'pagetitle' => $page_title, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headerCode, 'rightblock' => $rightblock));
@@ -1644,6 +1644,15 @@ function plugin_upgrade_staticpages()
                 break;
                 
             case '1.7.0':
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+                
+                staticpages_update_ConfValues_1_7_1();
+                
                 $current_version = '1.7.1';
                 break;                
 

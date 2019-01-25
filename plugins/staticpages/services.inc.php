@@ -142,7 +142,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             'mode', 'sp_id', 'sp_old_id', 'sp_format', 'postmode',
         );
         $par_num = array(
-            'sp_hits', 'owner_id', 'group_id', 'sp_where', 'sp_php', 'commentcode',
+            'sp_hits', 'owner_id', 'group_id', 'sp_where', 'sp_php', 'commentcode', 'structured_data_type',
         );
 
         foreach ($par_str as $str) {
@@ -176,8 +176,13 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
 
     if (($args['commentcode'] < -1) || ($args['commentcode'] > 1)) {
-        $args['commentcode'] = $_CONF['comment_code'];
+        $args['commentcode'] = $_SP_CONF['comment_code'];
     }
+
+    // Only 0 (None) and 4 other types supported
+    if (($args['structured_data_type'] < 0) || ($args['structured_data_type'] > 5)) {
+        $args['structured_data_type'] = $_SP_CONF['structured_data_type_default'];
+    }    
 
     if ($args['gl_svc']) {
         // Permissions
@@ -287,6 +292,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $meta_description = $args['meta_description'];
     $meta_keywords = $args['meta_keywords'];
     $commentcode = $args['commentcode'];
+    $structured_data_type = $args['structured_data_type'];
     $owner_id = $args['owner_id'];
     $group_id = $args['group_id'];
     $perm_owner = $args['perm_owner'];
@@ -551,9 +557,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $dateCreated = date('Y-m-d H:i:s');
         }
 
-        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_onhits,sp_onlastupdate,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time,owner_id,group_id,'
-            . 'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode,sp_prev,sp_next,sp_parent',
-            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$dateCreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_onhits,sp_onlastupdate,sp_label,commentcode,structured_data_type,meta_description,meta_keywords,template_flag,template_id,draft_flag,cache_time'
+        . ',owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_where,sp_inblock,postmode,sp_prev,sp_next,sp_parent',
+            "'$sp_id','$sp_title','$sp_page_title','$sp_content','$dateCreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,$sp_onhits,$sp_onlastupdate,'$sp_label','$commentcode','$structured_data_type','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$cache_time,$owner_id,$group_id,"
             . "$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help',$sp_where,"
             . "'$sp_inblock','$postmode', '{$sp_prev}', '{$sp_next}', '{$sp_parent}'");
         TOPIC_saveTopicSelectionControl('staticpages', $sp_id);
@@ -734,6 +740,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         'sp_php',
         'sp_inblock',
         'commentcode',
+        'structured_data_type',
         'sp_prev',
         'sp_next',
         'sp_parent',
@@ -799,13 +806,13 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             }
         }
         $topic_perms .= " GROUP BY sp_id, sp_title, sp_page_title, sp_content, sp_onhits, sp_onlastupdate, sp_hits, "
-            . "created, modified, sp_format, commentcode, meta_description, meta_keywords, template_flag, template_id, "
+            . "created, modified, sp_format, commentcode, structured_data_type, meta_description, meta_keywords, template_flag, template_id, "
             . "draft_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon, sp_help, sp_php, "
             . "sp_inblock,cache_time";
 
         $sql = <<<SQL
 SELECT sp_id, sp_title, sp_page_title, sp_content, sp_onhits, sp_onlastupdate, sp_hits, created, modified, sp_format,
-        commentcode, meta_description, meta_keywords, template_flag, template_id, draft_flag, 
+        commentcode, structured_data_type, meta_description, meta_keywords, template_flag, template_id, draft_flag, 
         owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon, 
         sp_help, sp_php, sp_inblock, cache_time, sp_prev, sp_next, sp_parent 
   FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta 

@@ -175,6 +175,7 @@ $LANG_confignames['staticpages'] = array(
     'atom_max_items' => 'フィードに書き出す最大ページ数',
     'meta_tags' => 'メタタグを有効にする',
     'comment_code' => '新規作成時のデフォルト',
+    'structured_data_type_default' => 'Structured Data Type Default',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
     'disable_breadcrumbs_staticpages' => 'パンくずリストを無効にする',
     'default_cache_time' => 'デフォルトキャッシュタイム',
@@ -208,7 +209,7 @@ $LANG_fs['staticpages'] = array(
     'fs_autotag_permissions' => '自動タグのパーミッション([0]所有者 [1]グループ [2]メンバー [3]ゲスト)'
 );
 
-// Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, 9, 12, 17, 39 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),
@@ -219,5 +220,6 @@ $LANG_configselects['staticpages'] = array(
     9 => array('ページを表示' => 'item', 'リストを表示' => 'list', 'ホームを表示' => 'home', '管理画面のトップを表示' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('アクセス不可' => 0, '利用する' => 2),
-    17 => array('コメント有効' => 0, 'コメント無効' => -1)
+    17 => array('コメント有効' => 0, 'コメント無効' => -1),
+    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
 );

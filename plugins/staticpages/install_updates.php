@@ -105,3 +105,19 @@ function SP_update_ConfValues_1_7_0()
 
     return true;
 }
+
+function staticpages_update_ConfValues_1_7_1()
+{
+    global $_CONF, $_TABLES, $_SP_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
+
+    // Default Structured Data type for new pages
+    $c->add('structured_data_type_default', $_SP_DEFAULT['structured_data_type_default'], 'select', 0, 0, 39, 126, true, 'staticpages', 0);
+
+    return true;
+}
