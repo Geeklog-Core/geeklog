@@ -1636,7 +1636,10 @@ function PLG_collectTags($type = 'tagname')
  * @param   string $content Content that should be parsed for autotags
  * @param   string $parse_plugin    Optional if you only want to parse using a specific plugin
  * @param   bool   $remove          Optional if you want to remove the autotag from the content
- * @param   string $plugin          Optional plugin of content - requires id - New as of Geeklog 2.2.1 - Allows autotag to know what has called it so it can use functions like PLG_getItemInfo
+ * @param   string $plugin          Optional plugin of content - requires id - New as of Geeklog 2.2.1 
+ *                                      Allows autotag to know what has called it (what content it is embedded in) 
+ *                                      so it can use functions like PLG_getItemInfo.
+ *                                      Note: not supported for things like autotags in templates or blocks
  * @param   string $id              Optional id of content - requires plugin - New as of Geeklog 2.2.1
  * @return  string
  */

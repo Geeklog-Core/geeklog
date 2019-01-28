@@ -2113,8 +2113,8 @@ $LANG_structureddatatypes = array(
 );
 
 $LANG_STRUCT_DATA = array(
-    'lang_structured_data_type'      => 'Structured Data Type', 
-    'autotag_desc_structureddata'   => '[structureddata:plugin_item_id type:plugin parameter:schema_parameter]Parameter Value[/structureddata] - Adds a parameter to the structured data of the plugin item.',
+    'lang_structured_data_type'     => 'Structured Data Type', 
+    'autotag_desc_structureddata'   => '[structureddata:parameter:schema_parameter]Parameter Value[/structureddata] - Adds a parameter to the structured data of the content that the autotag is embedded in.'
 );
 
 ###############################################################################

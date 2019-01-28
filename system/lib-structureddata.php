@@ -45,14 +45,15 @@ $_STRUCTUREDDATA_DEBUG = COM_isEnableDeveloperModeLog('structureddata');
  * @param           mixed               tag names (for $op='tagname') or formatted content
  */
 
-function plugin_autotags_structureddata($op, $content = '', $autotag = '')
+function plugin_autotags_structureddata($op, $content = '', $autotag = '', $parameters = array())
 {
-    global $_CONF, $_TABLES, $LANG27, $_GROUPS, $_STRUCT_DATA;
+    global $_CONF, $_TABLES, $LANG_STRUCT_DATA, $_GROUPS, $_STRUCT_DATA;
     if ($op == 'tagname') {
         return array('structureddata');
     } elseif (($op == 'permission') || ($op == 'nopermission')) {
         if ($op == 'permission') {
             $flag = true;
+            $tagnames[] = 'structureddata';
         } else {
             $flag = false;
         }
@@ -78,7 +79,7 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '')
             $tagnames[] = 'related_items';
         }
         */
-        $tagnames[] = 'structureddata';
+        //$tagnames[] = 'structureddata';
 
         if (count($tagnames) > 0) {
             return $tagnames;
@@ -89,7 +90,7 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '')
         );        
     } elseif ($op == 'description') {
         return array(
-            'structureddata'          => $LANG27['autotag_desc_topic']
+            'structureddata'          => $LANG_STRUCT_DATA['autotag_desc_structureddata']
         );
     } elseif ($op == 'parse') {
         if ($autotag['tag'] != 'structureddata') {
@@ -131,21 +132,33 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '')
                     }
                 }
 
-                if (!empty($type)) {
-                    $sd_name = $type . "-" . $p1; // Which is "plugin_name-plugin_item_id"
+                // Figure out content type and id (depends on how autotag is used)
+                
+                // If type is missing then assume type and id are passed via function. p1 then would be parameter
+                // If type is passed via autotag then assume p1 is id
+                if (empty($type)) {
+                    $parameter = $p1;
+                    if (isset($parameters['type']) && isset($parameters['id'])) {
+                        $type = $parameters['type'];
+                        $id = $parameters['id'];
+                    }
+                } else {
+                    $id = $p1;
+                }
+                
+                if (!empty($type) && !empty($id)) {
                     switch (strtolower($parameter)) {
                         case 'author':
-                            
-                            $_STRUCT_DATA->set_author_item($sd_name, $p3);
+                            $_STRUCT_DATA->set_author_item($type, $id, $p3);
                             
                             break;
                         case 'image':
-                            $_STRUCT_DATA->set_image_item($sd_name, $p3, $width, $height);
+                            $_STRUCT_DATA->set_image_item($type, $id, $p3, $width, $height);
                             
                             break;
                         default:
                             // assume standard
-                            $_STRUCT_DATA->set_param_item($sd_name, $parameter, $p3);
+                            $_STRUCT_DATA->set_param_item($type, $id, $parameter, $p3);
                             
                             break;
                     }
