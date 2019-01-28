@@ -43,15 +43,37 @@ class StructuredData
     {
         $this->items = array();
     }
+
+    /**
+     * Create Structured Data Type name
+     *
+     * @param   string  $type   Plugin of the content used to create the structured data
+     * @param   string  $id     Id of content 
+     */
+    public function create_name($type, $id) 
+    {
+    
+        $sd_name = $type . '-' . $id;
+        
+        return $sd_name;
+    
+    }
     
     /**
      * Add Structured Data Type
      *
-     * @param   numeric $sd_type     ID of Structured Data Type. See $LANG_structureddatatypes language variable for full list
-     * @param   string  $sd_name     Name of structured data item (made up of "plugin_name-plugin_item_id")
+     * @param   string  $type       Plugin of the content used to create the structured data
+     * @param   string  $id         Id of content 
+     * @param   numeric $sd_type    Id of Structured Data Type. See $LANG_structureddatatypes language variable for full list
+     * @param   string  $parameters Parameters for structured data type
      */
-    public function add_type($sd_type, $sd_name, $headline, $url, $datePublished, $dateModified, $description)
+     
+    public function add_type($type, $id, $sd_type, $parameters = array()) 
     {
+        
+        // Create structured data name
+        $sd_name = $this->create_name($type, $id);
+        
         // 0 = None
         if ($sd_type > 0 AND $sd_type < 5) {
             $this->items[$sd_name]['@context'] = "https://schema.org";                
@@ -69,42 +91,60 @@ class StructuredData
                     $this->items[$sd_name]['@type'] = "BlogPosting";
                     break;                
             }
-            $this->items[$sd_name]['headline'] = $headline;
-            $this->items[$sd_name]['url'] = $url;
-            $this->items[$sd_name]['datePublished'] = $datePublished;
-            $this->items[$sd_name]['datePublished'] = $datePublished;
-            $this->items[$sd_name]['dateModified'] = $dateModified;
-            if (!isset($this->items[$sd_name]['description'])) {
-                $this->items[$sd_name]['description'] = $description;
+            $this->items[$sd_name]['headline'] = $parameters['headline'];
+            $this->items[$sd_name]['url'] = $parameters['url'];
+            $this->items[$sd_name]['datePublished'] = $parameters['datePublished'];
+            $this->items[$sd_name]['dateModified'] = $parameters['dateModified'];
+            
+            if (isset($parameters['commentCount']) && $parameters['commentCount'] > 0) {
+                $this->items[$sd_name]['commentCount'] = $parameters['commentCount'];
             }
+            
+            // inLanguage
+            // keywords // Meta Keywords or Topic List
+            
+            // image
+            // thumbnailUrl
+            
+            // video
+            
+            
+            if (!isset($this->items[$sd_name]['description'])) {
+                $this->items[$sd_name]['description'] = $parameters['description'];
+            }
+            
             $this->items[$sd_name]['publisher'] = array(
                 "@type"     => "Organization",
-                "name" 	=> "",
+                "name" 	    => "DSR",
                 "logo" 		=>         
                     array(
                         "@type"   => "ImageObject",
-                        "url"  => "",
-                        "width"  => "",
-                        "height"  => "",
+                        "url"  => "https://www.datingsitesreviews.com/layout/dsr_responsive/images_dsr/logo2.png",
+                        "width"  => 360,
+                        "height"  => 84,
                     ) 
             );
+            
             $this->items[$sd_name]['mainEntityOfPage'] = array(
                 "@type"     => "WebPage",
-                "@id" 	=> $url,
+                "@id" 	=> $parameters['url'],
             );
         }
+        
     }
     
     /**
 	 * Set a parameter of the structured data item
 	 *
-	 * @param   string $sd_name     Name of structured data item
-	 * @param   string $name
-	 * @param   string $value
+     * @param   string  $type       Plugin of the content used to create the structured data
+     * @param   string  $id         Id of content 
+	 * @param   string $name        Name of parameter
+	 * @param   string $value       Value for parameter
 	 */
-	public function set_param_item($sd_name, $name, $value) 
+	public function set_param_item($type, $id, $name, $value) 
     {
         
+        $sd_name = $this->create_name($type, $id);        
         $this->items[$sd_name][$name] = $value;
 
 	}     
@@ -112,14 +152,14 @@ class StructuredData
     /**
 	 * Set a author
 	 *
-	 * @param   string $sd_name     Name of structured data item
-	 * @param   string $position    Position of breadcrumb
-	 * @param   string $id
+     * @param   string  $type   Plugin of the content used to create the structured data
+     * @param   string  $id     Id of content 
 	 * @param   string $name
 	 */
-	public function set_author_item($sd_name, $name) 
+	public function set_author_item($type, $id, $name) 
     {
         
+        $sd_name = $this->create_name($type, $id);        
         $this->items[$sd_name]['author'] = array(
             "@type"   => "Person",
             "name"  => $name
@@ -130,14 +170,13 @@ class StructuredData
     /**
 	 * Set a image to a type
 	 *
-	 * @param   string $sd_name     Name of structured data item
-	 * @param   string $position    Position of breadcrumb
-	 * @param   string $id
-	 * @param   string $name
+     * @param   string  $type   Plugin of the content used to create the structured data
+     * @param   string  $id     Id of content 
 	 */
-	public function set_image_item($sd_name, $url, $width, $height) 
+	public function set_image_item($type, $id, $url, $width, $height) 
     {
         
+        $sd_name = $this->create_name($type, $id);        
         $image_item = array(
                 "@type"   => "ImageObject",
                 "url"  => $url,
@@ -151,16 +190,19 @@ class StructuredData
         }
         
         $this->items[$sd_name]['image'][] = $image_item;
-        
+       
 	}
     
     /**
      * Add a breadcrumb list
      *
-     * @param string $sd_name
+     * @param   string  $type   Plugin of the content used to create the structured data
+     * @param   string  $id     Id of content 
      */
-    public function add_BreadcrumbList($sd_name)
+    public function add_BreadcrumbList($type, $id)
     {
+        
+        $sd_name = $this->create_name($type, $id);        
         $this->items[$sd_name]['@context'] = "https://schema.org";
         $this->items[$sd_name]['@type'] = "BreadcrumbList";
         $this->items[$sd_name]['itemListElement'] = array();
@@ -197,21 +239,23 @@ class StructuredData
     /**
 	 * Set a breadcrumb for a breadcrumblist 
 	 *
-	 * @param   string $sd_name     Name of breadcrumb list
+     * @param   string  $type       Plugin of the content used to create the structured data
+     * @param   string  $id         Id of content 
 	 * @param   string $position    Position of breadcrumb
 	 * @param   string $id
 	 * @param   string $name
 	 */
-	public function set_breadcrumb_item($sd_name, $position, $id, $name) 
+	public function set_breadcrumb_item($type, $id, $position, $item_id, $name) 
     {
         
+        $sd_name = $this->create_name($type, $id);        
         $this->items[$sd_name]['itemListElement'][] = array(
             array(
                 "@type"     => "ListItem",
                 "position" 	=> $position,
                 "item" 		=>         
                     array(
-                        "@id"   => $id,
+                        "@id"   => $item_id,
                         "name"  => $name,
                     ) 
             )
@@ -222,12 +266,17 @@ class StructuredData
     /**
      * Returns JSON-LD script of either 1 or all structured data types. Can be included in head or body of webpage
      *
-     * @param   string $name
+     * @param   string  $type   Plugin of the content used to create the structured data
+     * @param   string  $id     Id of content 
      * @return  string
      */
-    public function toScript($sd_name = '')
+    public function toScript($type = '', $id = '')
     {    
         $script = '';
+
+        if (!empty($type) && !empty($id)) {
+            $sd_name = $this->create_name($type, $id);        
+        }
         
         if (!empty($sd_name)) {
             // Autotags can insert some structured data variables and may not be setup correctly. Make sure an actual type is set before including

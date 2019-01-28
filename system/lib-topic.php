@@ -1309,8 +1309,7 @@ function TOPIC_breadcrumbs($type, $id)
         
         while ($A = DB_fetchArray($result)) {
             // Setup structured data for breadcrumb list
-            $sd_name = 'breadcrumb_' . $A['tid'];
-            $_STRUCT_DATA->add_BreadcrumbList($sd_name);        
+            $_STRUCT_DATA->add_BreadcrumbList('breadcrumb', $A['tid']);
             
             $breadcrumb_a = array();
             $breadcrumb_a[] = $A;
@@ -1362,7 +1361,7 @@ function TOPIC_breadcrumbs($type, $id)
                 $breadcrumb_t->parse('breadcrumb_items', $use_block, ($count == 1) ? false : true);
                 
                 // Add Structured Data for breadcrumb
-                $_STRUCT_DATA->set_breadcrumb_item($sd_name, $count, $url, $value['topic']);
+                $_STRUCT_DATA->set_breadcrumb_item('breadcrumb', $A['tid'], $count, $url, $value['topic']);
             }
             $breadcrumb_t->parse('breadcrumbs', 'breadcrumb', true);
         }

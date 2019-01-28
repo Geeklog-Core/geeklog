@@ -2905,6 +2905,22 @@ function plugin_feedupdatecheck_comment($feed, $topic, $update_data, $limit, $up
     return ($current == $update_data);
 }
 
+/**
+ * This function counts the number of comments this type of item has
+ *
+ * @param    string $sid   ID of item in question
+ * @param    string $type  Type of item (i.e. article, photo, etc)
+ * @return   int           Number of comments 
+ */
+function CMT_commentCount($sid, $type)
+{
+    global $_TABLES;
+
+    $nrows = DB_count($_TABLES['comments'], array('sid', 'type'),
+        array($sid, $type));
+        
+    return $nrows;
+}
 
 /**
  * Did user create any comments

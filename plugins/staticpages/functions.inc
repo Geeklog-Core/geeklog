@@ -574,10 +574,14 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $breadcrumbs = TOPIC_breadcrumbs('staticpages', $page);
         }
         
-        // Set Structured Data
-        $sd_name = 'page-' . $page; // Structured Data name is "plugin_name-plugin_item_id"
-        $_STRUCT_DATA->add_type($A['structured_data_type'], $sd_name, $A['sp_title'], $sp_url, $A['created'], $A['modified'], $A['meta_description']);
-        $_STRUCT_DATA->set_author_item($sd_name, $author_name);
+        $parameters['headline'] = $A['sp_title'];
+        $parameters['url'] = $sp_url;
+        $parameters['datePublished'] = $A['created'];
+        $parameters['dateModified'] = $A['modified'];
+        $parameters['description'] = $A['meta_description'];
+        $parameters['commentCount'] = CMT_commentCount($page, 'staticpages');
+        $_STRUCT_DATA->add_type('staticpages', $page, $A['structured_data_type'], $parameters);
+        $_STRUCT_DATA->set_author_item('staticpages', $page, $author_name);
 
         $retval = COM_createHTMLDocument($retval, array('what' => $what, 'pagetitle' => $page_title, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headerCode, 'rightblock' => $rightblock));
     }
@@ -1924,7 +1928,7 @@ function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time 
 
         // Loop through variables to replace any autotags first
         foreach ($tag as &$value) {
-            $value = PLG_replaceTags($value);
+            $value = PLG_replaceTags($value, '', false, 'staticpages', $sp_id);
         }
         unset($value);
 
@@ -1984,13 +1988,13 @@ function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time 
             ob_end_clean();
         }
 
-        $sp_content = PLG_replaceTags($sp_content);
+        $sp_content = PLG_replaceTags($sp_content, '', false, 'staticpages', $sp_id);
     } else {
         if ($sp_php != 0) {
             COM_errorLog("PHP in static pages is disabled. Can not display page.", 1);
             $sp_content .= $LANG_STATIC['deny_msg'];
         } else {
-            $sp_content .= PLG_replaceTags($sp_content);
+            $sp_content .= PLG_replaceTags($sp_content, '', false, 'staticpages', $sp_id);
         }
     }
 
