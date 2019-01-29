@@ -843,14 +843,6 @@ fieldset.form_block {
   display: none;
 }
 
-.speech {
-  overflow: hidden;
-  position: absolute;
-  left: -999px;
-  width: 0;
-  height: 0;
-}
-
 #save_button {
   padding-bottom: 1em;
 }
