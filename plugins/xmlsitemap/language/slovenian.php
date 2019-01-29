@@ -49,7 +49,10 @@ $LANG_confignames['xmlsitemap'] = array(
     'priorities' => 'Priority',
     'frequencies' => 'Frequency',
     'ping_google' => 'Send ping to Google',
-    'ping_bing' => 'Send ping to Bing'
+    'ping_bing' => 'Send ping to Bing',
+    'news_sitemap_file' => 'News Sitemap file name',
+    'news_sitemap_topics' => 'Include Articles from these Topics',
+    'news_sitemap_age' => 'Max Age of Articles'
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
@@ -60,14 +63,16 @@ $LANG_tab['xmlsitemap'] = array(
     'tab_main' => 'XMLSitemap Main Settings',
     'tab_pri' => 'Priority',
     'tab_freq' => 'Update frequency',
-    'tab_ping' => 'Ping'
+    'tab_ping' => 'Ping',
+    'tab_news' => 'News Sitemap'
 );
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => ' Glavne nastavitve XML kazala strani',
     'fs_pri' => 'Prioriteta (prednastavljena = 0.5, najnižja = 0.0, najvišja = 1.0)',
     'fs_freq' => 'Pogostost posodobitev',
-    'fs_ping' => 'Send ping on updating sitemap'
+    'fs_ping' => 'Send ping on updating sitemap',
+    'fs_news' => 'News Sitemap Settings'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
