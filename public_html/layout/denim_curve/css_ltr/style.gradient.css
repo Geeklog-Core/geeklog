@@ -476,12 +476,6 @@ html {
   overflow: auto;
 }
 
-.gl-screen-reader-only {
-  position: absolute;
-  left: 0;
-  clip: rect(1px, 1px, 1px, 1px);
-}
-
 .fieldhelp {
   font-size: .85em;
   color: #666;
