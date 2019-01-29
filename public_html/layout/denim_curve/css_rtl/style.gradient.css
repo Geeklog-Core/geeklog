@@ -483,6 +483,12 @@ html {
   padding-left: .8em;
 }
 
+.gl-screen-reader-only {
+  position: absolute;
+  left: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
 /* Forms */
 .form-description {
   /* used with calendar plugin */
@@ -897,14 +903,6 @@ fieldset.form_block {
 
 .separator {
   display: none;
-}
-
-.speech {
-  overflow: hidden;
-  position: absolute;
-  right: -999px;
-  width: 0;
-  height: 0;
 }
 
 #save_button {
