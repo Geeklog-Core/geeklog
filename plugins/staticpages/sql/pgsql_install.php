@@ -48,6 +48,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_onlastupdate int NOT NULL default '1',
   sp_label varchar(64) default NULL,
   commentcode int NOT NULL default '0',
+  structured_data_type tinyint(4) NOT NULL DEFAULT '0',
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,
   template_flag int default '0',
