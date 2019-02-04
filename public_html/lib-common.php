@@ -4541,7 +4541,7 @@ function COM_emailUserTopics()
 
             if ($_CONF['emailstorieslength'] > 0) {
                 if ($S['postmode'] === 'wikitext') {
-                    $articleText = COM_undoSpecialChars(GLText::stripTags(COM_renderWikiText(stripslashes($S['introtext']))));
+                    $articleText = COM_undoSpecialChars(GLText::stripTags(PLG_replaceTags(COM_renderWikiText(stripslashes($S['introtext'])))));
                 } else {
                     $articleText = COM_undoSpecialChars(GLText::stripTags(PLG_replaceTags(stripslashes($S['introtext']))));
                 }
