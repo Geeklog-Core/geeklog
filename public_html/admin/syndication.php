@@ -416,7 +416,7 @@ function newfeed()
             . '</option>' . LB;
     }
     $selection = COM_createControl('type-select', array(
-        'name' => 'mode',
+        'name' => 'type',
         'select_items' => $selection
     ));
 
