@@ -205,6 +205,9 @@ $_CONF_VALIDATE['Core']['article_image_align'] = array(
     'rule' => array('inList', array('left', 'right'), true)
 );
 $_CONF_VALIDATE['Core']['show_topic_icon'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['structured_data_type_default'] = array(
+    'rule' => array('inList', array('0', '1', '2', '3', '4'), true)
+);
 $_CONF_VALIDATE['Core']['draft_flag'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['frontpage'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['hide_no_news_msg'] = array('rule' => 'boolean');

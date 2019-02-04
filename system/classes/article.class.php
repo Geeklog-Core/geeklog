@@ -114,6 +114,7 @@ class Article
     var $_uid;
     var $_draft_flag;
     var $_date;
+    var $_modified;
     var $_hits;
     var $_numemails;
     var $_comment_expire;
@@ -123,6 +124,7 @@ class Article
     var $_featured;
     var $_show_topic_icon;
     var $_commentcode;
+    var $_structured_data_type;
     var $_trackbackcode;
     var $_statuscode;
     var $_expire;
@@ -177,6 +179,7 @@ class Article
         'uid'                  => 1,
         'draft_flag'           => 1,
         'date'                 => 1,
+        'modified'             => 1,
         'title'                => 1,
         'page_title'           => 1,
         'meta_description'     => 1,
@@ -192,6 +195,7 @@ class Article
         'featured'             => 1,
         'show_topic_icon'      => 1,
         'commentcode'          => 1,
+        'structured_data_type' => 1,
         'comment_expire'       => 1,
         'trackbackcode'        => 1,
         'statuscode'           => 1,
@@ -264,6 +268,10 @@ class Article
             STORY_AL_NUMERIC,
             '_commentcode',
         ),
+        'structured_data_type' => array(
+            STORY_AL_NUMERIC,
+            '_structured_data_type',
+        ),        
         'trackbackcode'    => array(
             STORY_AL_NUMERIC,
             '_trackbackcode',
@@ -436,11 +444,11 @@ class Article
             $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, "
                 . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
             */
-            $sql['mysql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
+            $sql['mysql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.modified) AS unixmodified, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
                 FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE ta.type = 'article' AND ta.id = sid {$topic_sql} AND (s.uid = u.uid) AND (ta.tid = t.tid) AND (sid = '$sid')";
 
-            $sql['pgsql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
+            $sql['pgsql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.modified) AS unixmodified, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
                 FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (s.uid = u.uid) AND (ta.tid = t.tid) AND (sid = '$sid')";
         } elseif (!empty($sid) && ($mode === 'editsubmission')) {
@@ -494,6 +502,7 @@ class Article
                 $this->_comment_expire = 0;
             }
             $this->_commentcode = $_CONF['comment_code'];
+            $this->_structured_data_type = $_CONF['structured_data_type_default'];
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_title = '';
             $this->_page_title = '';
@@ -618,6 +627,7 @@ class Article
             }
 
             $this->_commentcode = $_CONF['comment_code'];
+            $this->_structured_data_type = $_CONF['structured_data_type_default'];
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_featured = 0;
             $this->_cache_time = $_CONF['default_cache_time_article'];
@@ -807,9 +817,13 @@ class Article
             if ($save === 1) {
                 $varName = '_' . $fieldName;
                 $fields .= $fieldName . ', ';
-                if (($fieldName === 'date') || ($fieldName === 'expire') || ($fieldName === 'comment_expire')) {
-                    // let the DB server do this conversion (cf. timezone hack)
-                    $values .= 'FROM_UNIXTIME(' . $this->{$varName} . '), ';
+                if (($fieldName === 'date') || ($fieldName === 'modified') || ($fieldName === 'expire') || ($fieldName === 'comment_expire')) {
+                    if ($fieldName === 'modified') {
+                        $values .= 'CURRENT_TIMESTAMP, ';
+                    } else {
+                        // let the DB server do this conversion (cf. timezone hack)
+                        $values .= 'FROM_UNIXTIME(' . $this->{$varName} . '), ';
+                    }
                 } else {
                     if ($this->{$varName} === '') {
                         $values .= "'', ";
@@ -1154,6 +1168,7 @@ class Article
             $this->_date = mktime();
             $this->_featured = 0;
             $this->_commentcode = $_CONF['comment_code'];
+            $this->_structured_data_type = $_CONF['structured_data_type_default'];
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_statuscode = 0;
             $this->_show_topic_icon = $_CONF['show_topic_icon'];
@@ -1799,7 +1814,9 @@ class Article
                 $return = GLText::getDisplayText(
                     $return,
                     $this->_postmode,
-                    $this->_text_version);
+                    $this->_text_version, 
+                    'article', 
+                    $this->_sid);
                 $return = $this->renderImageTags($return);
 
                 break;
@@ -1840,6 +1857,17 @@ class Article
                 $return = $return[0];
 
                 break;
+                
+            case 'modified':
+                if (!empty($this->_modified)) {
+                    $return = COM_getUserDateTimeFormat($this->_modified);
+                    
+                    $return = $return[0];
+                } else {
+                    $return = "";
+                }
+
+                break;                
 
             case 'datetime':
                 $return = strftime('%FT%T', $this->_date);
@@ -1850,7 +1878,12 @@ class Article
                 $return = $this->_date;
 
                 break;
+                
+            case 'unixmodified':
+                $return = $this->_modified;
 
+                break;
+                
             case 'hits':
                 $return = COM_numberFormat($this->_hits);
 
@@ -1912,7 +1945,9 @@ class Article
             $text,
             $this->_postmode,
             'story.edit',
-            $this->_text_version);
+            $this->_text_version,
+            'article',
+            $this->_sid);
         $text = $this->renderImageTags($text);
 
         return $text;

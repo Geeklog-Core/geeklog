@@ -105,7 +105,8 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
     $current_article_tid = $story->DisplayElements('tid');
     $retval = false; // If stays false will rebuild article and not used cache (checks done below)
 
-    if ($cache_time > 0 || $cache_time == -1) {
+    // CHeck cache time or if search query do not use cache as need to add highlight
+    if (($cache_time > 0 || $cache_time == -1) && empty($query)) {
         $hash = CACHE_security_hash();
         $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $mode . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_CONF['theme'];
 
@@ -150,6 +151,8 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         }
     }
 
+    // ****************************************
+    // This Stuff below is never cached
     $articleUrl = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $story->getSid());
     $article->set_var('article_url', $articleUrl);
     $article->set_var('story_title', $story->DisplayElements('title'));
@@ -197,28 +200,28 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $article->set_var('story_topic_image_no_align', $topicimage_noalign, false, true);
         }
     }
+    // ****************************************
 
-    // Main article content
-    if ($index == 'p') {
-        $introtext = $story->getPreviewText('introtext');
-        $bodytext = $story->getPreviewText('bodytext');
-    } else {
-        $introtext = $story->displayElements('introtext');
-        $bodytext = $story->displayElements('bodytext');
-    }
-    $readmore = empty($bodytext) ? 0 : 1;
-    $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
-    if (COM_onFrontpage()) {
-        $bodytext = '';
-    }
-    if (!empty($query)) {
-        $introtext = COM_highlightQuery($introtext, $query);
-        $bodytext = COM_highlightQuery($bodytext, $query);
-    }
-
-
-    // Create article only if preview, or query not empty, or if no cache version or cache version is not required
+    // Create article (and ignore cache) only if preview, or query not empty, or if no cache or cache has been disabled
     if ($index == 'p' || !empty($query) || !$retval) {
+        // Main article content
+        if ($index == 'p') {
+            $introtext = $story->getPreviewText('introtext');
+            $bodytext = $story->getPreviewText('bodytext');
+        } else {
+            $introtext = $story->displayElements('introtext');
+            $bodytext = $story->displayElements('bodytext');
+        }
+        $readmore = empty($bodytext) ? 0 : 1;
+        $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
+        if (COM_onFrontpage()) {
+            $bodytext = '';
+        }
+        if (!empty($query)) {
+            $introtext = COM_highlightQuery($introtext, $query);
+            $bodytext = COM_highlightQuery($bodytext, $query);
+        }        
+        
         $article->set_var('article_filevar', '');
         $article->set_var('site_name', $_CONF['site_name']);
         //$article->set_var( 'story_date', $story->DisplayElements('date') );
@@ -652,7 +655,8 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             }
         }
 
-        if ($index != 'p' && ($cache_time > 0 || $cache_time == -1)) {
+        // Don't cache previews, article display from a search query or if no cache time
+        if ($index != 'p' && empty($query) && ($cache_time > 0 || $cache_time == -1)) {
             $article->create_instance($cacheInstance, $article_filevar);
             // CACHE_create_instance($cacheInstance, $article);
         }
@@ -1253,7 +1257,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
                     break;
 
                 case 'description':
-                    $props['description'] = trim(PLG_replaceTags(stripslashes($A['introtext']) . ' ' . stripslashes($A['bodytext'])));
+                    $props['description'] = trim(PLG_replaceTags(stripslashes($A['introtext']) . ' ' . stripslashes($A['bodytext'], '', false , 'article', $sid)));
                     break;
 
                 case 'excerpt':
@@ -1261,7 +1265,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
                     if (!empty($A['bodytext'])) {
                         $excerpt .= "\n\n" . stripslashes($A['bodytext']);
                     }
-                    $props['excerpt'] = trim(PLG_replaceTags($excerpt));
+                    $props['excerpt'] = trim(PLG_replaceTags($excerpt, '', false, 'article', $sid));
                     break;
 
                 case 'feed':
@@ -1866,7 +1870,7 @@ function plugin_configchange_article($group, $changes = array())
                 $A = DB_fetchArray($result);
                 // Should maybe retrieve through story service but just grab from database and apply any autotags
                 // This is all the related story column should really need
-                $fulltext = PLG_replaceTags($A['introtext']) . ' ' . PLG_replaceTags($A['bodytext']);
+                $fulltext = PLG_replaceTags($A['introtext'], 'article', $A['sid']) . ' ' . PLG_replaceTags($A['bodytext'], '', false , 'article', $A['sid']);
                 $related = DB_escapeString(implode("\n", STORY_extractLinks($fulltext, $_CONF['whats_related_trim'])));
 
                 // Update all related even if empty since number of related links could have changed for some reason

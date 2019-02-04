@@ -83,6 +83,10 @@ function update_DatabaseFor221()
     
     // Remove unused Vars table record (originally inserted by devel-db-update script on previous version upgrades)
     $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
+    
+    // Add structured data type to article table and modified date
+    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";    
 
     // ***************************************     
     // Core Plugin Updates Here (including version update)

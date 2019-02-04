@@ -84,7 +84,7 @@ manually.</p>
 <tr>
   <td valign="top"><a name="desc_owner_name">owner_name</a></td>
   <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
-  <td valign="top">The name of the owner of the site. This is used in the copyright notice if set, else the site name is used.</td></tr>
+  <td valign="top">The name of the owner of the site. This is used in the copyright notice and Structured Data Organization if set, else the site name is used.</td></tr>
 <tr>
   <td valign="top"><a name="desc_copyrightyear">copyrightyear</a></td>
   <td valign="top"><em>(disabled)</em></td>
@@ -403,6 +403,36 @@ the admin panel.</p>
   <td valign="top"><a name="desc_show_topic_icon">show_topic_icon</a></td>
   <td valign="top">1</td>
   <td valign="top">Default setting for new articles and article submissions: Whether to show the topic icon (1) or not (0).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_structured_data_type_default">structured_data_type_default</a></td>
+  <td valign="top">2</td>
+  <td valign="top">Default Structured Data Type for new articles. Structured Data markup will only be included when viewing the full article. Some plugins may also use this as the default. Supported types include:<br /><br />
+    <ul>
+    <li>0 => None</li>
+    <li>1 => WebPage</li>
+    <li>2 => Article</li>
+    <li>3 => NewsArticle</li>
+    <li>4 => BlogPosting</li>
+    </ul>
+    <br />
+    Geeklog will add Structured Data markup (JSON-LD code) to your pages (either in the head of the page or near the actual content as it depends on caching) which increases the understanding of the page by search engines and can enhance your appearance in search results. This does not require any additional changes to your theme (unless your theme contains hard coded conflicting structured data markup). Currently Geeklog supports Structured Data for Breadcrumbs, Articles, and Staticpages. Based on the page (i.e. Article or Staticpage) and structured data type selected, Geeklog will map the data fields to the appropriate Structured Data properties.<br /><br />
+    
+    Additional Structured Data properties can be added (or some current ones changed) by using the [structureddata: ] autotag in the actual article, static page, and other supported plugins items. For example:<br /><br />
+    
+    <code>[structureddata:image height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
+    
+    would add the image property to the sturctured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
+    
+    <code>[structureddata:image type:staticpages id:page_id height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
+    
+    For articles and static pages, the meta description is used for the structured data description property. If you wanted to change this without changing the meta description you could include an autotag like so within your content:<br /><br />
+    
+    <code>[structureddata:description]This is my new example description.[/structureddata]</code><br /><br /> 
+      
+    For more on Structured Data itself, see <a href="https://schema.org/" target="_blank">Schema.org</a> and <a href="https://developers.google.com/search/docs/data-types/article" target="_blank">Google Search Reference</a>.<br /><br />
+    
+    To test your pages for Structured Data and see if it is setup correctly you can use the <a href="https://search.google.com/structured-data/testing-tool" target="_blank">Google Structured Data Testing Tool</a>. Please note this tool test includes checking that the Structured Data supports the AMP specification so if some errors are reported they may only deal with AMP specific issues and may be fine for normal web pages. For more on the tool itself you can read Google's <a href="https://developers.google.com/search/docs/guides/prototype" target="_blank">guide</a>.
+  </td></tr>
 <tr>
   <td valign="top"><a name="desc_draft_flag">draft_flag</a></td>
   <td valign="top">0</td>

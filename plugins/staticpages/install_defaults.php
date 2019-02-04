@@ -119,7 +119,7 @@ $_SP_DEFAULT['meta_tags'] = 0;
 $_SP_DEFAULT['comment_code'] = -1;
 
 // Default to set Structured Data type for new staticpages. See $LANG_structureddatatypes
-$_SP_DEFAULT['structured_data_type_default'] = 0;
+$_SP_DEFAULT['structured_data_type_default'] = 1; // Setting WebPage as the default
 
 // Whether to set the draft flag by default for new pages
 $_SP_DEFAULT['draft_flag'] = 0;

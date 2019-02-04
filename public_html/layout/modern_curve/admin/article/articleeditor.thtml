@@ -44,6 +44,12 @@
 
       <dt><label for="admin-storyeditor-show_topic_icon">{lang_show_topic_icon}</label></dt>
       <dd><input type="checkbox" {show_topic_icon_checked} name="show_topic_icon" id="admin-storyeditor-show_topic_icon"{xhtml}></dd>
+      
+      <dt><label for="admin-storyeditor-structureddata">{lang_structured_data_type}</label></dt>
+      <dd><select name="structured_data_type" id="admin-storyeditor-structureddata">
+          {structured_data_options}
+        </select>
+      </dd>        
 
       <dt><label for="admin-storyeditor-cachetime">{lang_cachetime}</label></dt>
       <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor-cachetime" class="text"{xhtml}></dd>

@@ -90,7 +90,7 @@ class GLText
      * @return  string  Escaped String
      * @access  public
      */
-    public static function getDisplayText($text, $postMode, $version)
+    public static function getDisplayText($text, $postMode, $version, $type = NULL, $id = NULL)
     {
         if ($version == GLTEXT_FIRST_VERSION) {
             // first version
@@ -136,7 +136,11 @@ class GLText
             $text = COM_checkWords($text, 'story');
         }
 
-        $text = PLG_replaceTags(self::_displayEscape($text));
+        if (isset($type) && isset($id)) {
+            $text = PLG_replaceTags(self::_displayEscape($text), '', false, $type, $id);
+        } else {
+            $text = PLG_replaceTags(self::_displayEscape($text));
+        }        
 
         return $text;
     }
@@ -200,10 +204,10 @@ class GLText
      * @return  string  Escaped String
      * @access  public
      */
-    public static function getPreviewText($text, $postMode, $permissions, $version)
+    public static function getPreviewText($text, $postMode, $permissions, $version, $type = NULL, $id = NULL)
     {
         $text = self::applyHTMLFilter($text, $postMode, $permissions, $version);
-        $text = self::getDisplayText($text, $postMode, $version);
+        $text = self::getDisplayText($text, $postMode, $version, $type, $id);
 
         return $text;
     }

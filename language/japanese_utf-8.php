@@ -2113,7 +2113,7 @@ $LANG_structureddatatypes = array(
 
 $LANG_STRUCT_DATA = array(
     'lang_structured_data_type'     => 'Structured Data Type', 
-    'autotag_desc_structureddata'   => '[structureddata:parameter:schema_parameter]Parameter Value[/structureddata] - Adds a parameter to the structured data of the content that the autotag is embedded in.'
+    'autotag_desc_structureddata'   => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
 );
 
 ###############################################################################
@@ -2304,6 +2304,7 @@ $LANG_confignames['Core'] = array(
     'page_break_comments' => '改ページ時のコメント表示位置',
     'article_image_align' => '話題アイコンの表示位置',
     'show_topic_icon' => '話題アイコン表示のデフォルト',
+    'structured_data_type_default' => 'Structured Data Type Default',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
     'frontpage' => 'トップページ配置をデフォルトにする',
     'hide_no_news_msg' => '記事がない場合のメッセージを表示しない',

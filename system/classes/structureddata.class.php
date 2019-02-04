@@ -65,11 +65,13 @@ class StructuredData
      * @param   string  $type       Plugin of the content used to create the structured data
      * @param   string  $id         Id of content 
      * @param   numeric $sd_type    Id of Structured Data Type. See $LANG_structureddatatypes language variable for full list
-     * @param   string  $parameters Parameters for structured data type
+     * @param   string  $properties Properties for structured data type
      */
      
-    public function add_type($type, $id, $sd_type, $parameters = array()) 
+    public function add_type($type, $id, $sd_type, $properties = array()) 
     {
+        
+        global $_CONF;
         
         // Create structured data name
         $sd_name = $this->create_name($type, $id);
@@ -91,13 +93,14 @@ class StructuredData
                     $this->items[$sd_name]['@type'] = "BlogPosting";
                     break;                
             }
-            $this->items[$sd_name]['headline'] = $parameters['headline'];
-            $this->items[$sd_name]['url'] = $parameters['url'];
-            $this->items[$sd_name]['datePublished'] = $parameters['datePublished'];
-            $this->items[$sd_name]['dateModified'] = $parameters['dateModified'];
-            
-            if (isset($parameters['commentCount']) && $parameters['commentCount'] > 0) {
-                $this->items[$sd_name]['commentCount'] = $parameters['commentCount'];
+            $this->items[$sd_name]['headline'] = $properties['headline'];
+            $this->items[$sd_name]['url'] = $properties['url'];
+            $this->items[$sd_name]['datePublished'] = $properties['datePublished'];
+            if (isset($properties['dateModified'])) {
+                $this->items[$sd_name]['dateModified'] = $properties['dateModified'];
+            }
+            if (isset($properties['commentCount']) && $properties['commentCount'] > 0) {
+                $this->items[$sd_name]['commentCount'] = $properties['commentCount'];
             }
             
             // inLanguage
@@ -108,45 +111,51 @@ class StructuredData
             
             // video
             
-            
+            // Can be set by autotag which can be executed first so do not overwrite if set
             if (!isset($this->items[$sd_name]['description'])) {
-                $this->items[$sd_name]['description'] = $parameters['description'];
+                $this->items[$sd_name]['description'] = $properties['description'];
             }
             
+            if (!empty($_CONF['owner_name'])) {
+                $org_name = $_CONF['owner_name'];
+            } else {
+                $org_name = $_CONF['site_name'];
+            }
             $this->items[$sd_name]['publisher'] = array(
                 "@type"     => "Organization",
-                "name" 	    => "DSR",
+                "name" 	    => $org_name,
                 "logo" 		=>         
                     array(
                         "@type"   => "ImageObject",
-                        "url"  => "https://www.datingsitesreviews.com/layout/dsr_responsive/images_dsr/logo2.png",
-                        "width"  => 360,
-                        "height"  => 84,
+                        "url"  => "",
+                        "width"  => 240,
+                        "height"  => 60,
                     ) 
             );
             
             $this->items[$sd_name]['mainEntityOfPage'] = array(
                 "@type"     => "WebPage",
-                "@id" 	=> $parameters['url'],
+                "@id" 	=> $properties['url'],
             );
         }
         
     }
     
     /**
-	 * Set a parameter of the structured data item
+	 * Set a property of the structured data item
 	 *
      * @param   string  $type       Plugin of the content used to create the structured data
      * @param   string  $id         Id of content 
-	 * @param   string $name        Name of parameter
-	 * @param   string $value       Value for parameter
+	 * @param   string $name        Name of property
+	 * @param   string $value       Value for property
 	 */
 	public function set_param_item($type, $id, $name, $value) 
     {
         
         $sd_name = $this->create_name($type, $id);        
         $this->items[$sd_name][$name] = $value;
-
+        //debug_print_backtrace();
+//throw new Exception('Autotag check');
 	}     
     
     /**
@@ -263,6 +272,8 @@ class StructuredData
         
 	}
     
+    
+    
     /**
      * Returns JSON-LD script of either 1 or all structured data types. Can be included in head or body of webpage
      *
@@ -281,12 +292,14 @@ class StructuredData
         if (!empty($sd_name)) {
             // Autotags can insert some structured data variables and may not be setup correctly. Make sure an actual type is set before including
             if (isset($this->items[$sd_name]['@type'])) { 
-                $script = '<script type="application/ld+json">' . json_encode($this->items[$sd_name]) . '</script>' . PHP_EOL;    
+                $script = '<script type="application/ld+json">' . json_encode($this->items[$sd_name]) . '</script>' . PHP_EOL; 
+                // Since requested then remove from array so not added again later to the head
+                unset($this->items[$sd_name]);
             }
         } else {
             foreach ($this->items as $item) {
-                if (isset($item['@type'])) {                    
-                    $script .= '<script type="application/ld+json">' . json_encode($item) . '</script>' . PHP_EOL;    
+                if (isset($item['@type'])) {
+                    $script .= '<script type="application/ld+json">' . json_encode($item) . '</script>' . PHP_EOL;
                 }
             }        
         }

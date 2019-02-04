@@ -426,7 +426,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
                 $breadcrumb_trail = TOPIC_breadcrumbs('staticpages', $page);
             }
         }
-        $spage->set_var('breadcrumb_trail', $breadcrumb_trail); // Still need to keep this template variable incase main theme does not support 2.0.0 theme engine. Once we drop support of theme engine 1.9.1 then remove
+        $spage->set_var('breadcrumb_trail', $breadcrumb_trail); // Still need to keep this template variable in case main theme does not support 2.0.0 theme engine. Once we drop support of theme engine 1.9.1 then remove
         
         $author_name = COM_getDisplayName($A['owner_id']);
         $author_username = DB_getItem($_TABLES['users'], 'username',

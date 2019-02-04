@@ -53,7 +53,7 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
     } elseif (($op == 'permission') || ($op == 'nopermission')) {
         if ($op == 'permission') {
             $flag = true;
-            $tagnames[] = 'structureddata';
+            $tagnames[] = 'structureddata'; 
         } else {
             $flag = false;
         }
@@ -67,19 +67,10 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
         }
         $owner_id = SEC_getDefaultRootUser();
 
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_topic'][0], $_CONF['autotag_permissions_topic'][1], $_CONF['autotag_permissions_topic'][2], $_CONF['autotag_permissions_topic'][3]) == $flag) {
-            $tagnames[] = 'topic';
-        }
-
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_related_topics'][0], $_CONF['autotag_permissions_related_topics'][1], $_CONF['autotag_permissions_related_topics'][2], $_CONF['autotag_permissions_related_topics'][3]) == $flag) {
-            $tagnames[] = 'related_topics';
-        }
-
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_related_items'][0], $_CONF['autotag_permissions_related_items'][1], $_CONF['autotag_permissions_related_items'][2], $_CONF['autotag_permissions_related_items'][3]) == $flag) {
-            $tagnames[] = 'related_items';
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_structureddata'][0], $_CONF['autotag_permissions_structureddata'][1], $_CONF['autotag_permissions_structureddata'][2], $_CONF['autotag_permissions_structureddata'][3]) == $flag) {
+            $tagnames[] = 'structureddata';
         }
         */
-        //$tagnames[] = 'structureddata';
 
         if (count($tagnames) > 0) {
             return $tagnames;
@@ -100,7 +91,6 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
         if ($autotag['tag'] == 'structureddata') {
             $p1 = COM_applyFilter($autotag['parm1']);
             
-            // [structureddata:id parameter:description]This is what the description parameter will be set too.[/structureddata]
             $p2 = explode(' ', trim($autotag['parm2']));
             $parameter = '';
 
@@ -114,9 +104,9 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
                 
                 if (is_array($p2)) {
                     foreach ($p2 as $part) {
-                        if (substr($part, 0, 10) == 'parameter:') {
+                        if (substr($part, 0, 3) == 'id:') {
                             $a = explode(':', $part);
-                            $parameter = $a[1];
+                            $id = $a[1];
                         } elseif (substr($part, 0, 5) == 'type:') {
                             $a = explode(':', $part);
                             $type = $a[1];                        
@@ -134,20 +124,17 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
 
                 // Figure out content type and id (depends on how autotag is used)
                 
-                // If type is missing then assume type and id are passed via function. p1 then would be parameter
-                // If type is passed via autotag then assume p1 is id
-                if (empty($type)) {
-                    $parameter = $p1;
+                // If type or id is missing then assume type and id are passed via function. p1 then would be the property
+                $property = $p1;
+                if (empty($type) || empty($id)) {
                     if (isset($parameters['type']) && isset($parameters['id'])) {
                         $type = $parameters['type'];
                         $id = $parameters['id'];
                     }
-                } else {
-                    $id = $p1;
                 }
                 
                 if (!empty($type) && !empty($id)) {
-                    switch (strtolower($parameter)) {
+                    switch (strtolower($property)) {
                         case 'author':
                             $_STRUCT_DATA->set_author_item($type, $id, $p3);
                             
@@ -158,7 +145,7 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
                             break;
                         default:
                             // assume standard
-                            $_STRUCT_DATA->set_param_item($type, $id, $parameter, $p3);
+                            $_STRUCT_DATA->set_param_item($type, $id, $property, $p3);
                             
                             break;
                     }

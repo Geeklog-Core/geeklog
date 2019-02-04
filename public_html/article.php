@@ -193,6 +193,7 @@ if ($A['count'] > 0) {
         }
 
         $articleTemplate->set_var('story_date', $article->displayElements('date'));
+        $articleTemplate->set_var('story_modified', $article->displayElements('modified'));
 
         if ($_CONF['contributedbyline'] == 1) {
             $articleTemplate->set_var('lang_contributedby', $LANG01[1]);
@@ -514,6 +515,19 @@ if ($A['count'] > 0) {
         $display .= $articleTemplate->finish($articleTemplate->parse('output', 'article'));
 
         $breadcrumbs = TOPIC_breadcrumbs('article', $article->getSid());
+        
+        $properties['headline'] = $article->displayElements('title');
+        $properties['url'] = $permalink;
+        $properties['datePublished'] = $article->displayElements('date');
+        
+        // Don't include modified if empty or date is less than published
+        if (!empty($article->displayElements('unixmodified')) && ($article->displayElements('unixmodified') > $article->displayElements('unixdate'))) {
+            $properties['dateModified'] = $article->displayElements('modified');
+        }
+        $properties['description'] = $article->DisplayElements('meta_description');
+        $properties['commentCount'] = CMT_commentCount($article->getSid(), 'article');
+        $_STRUCT_DATA->add_type('article', $article->getSid(), $article->displayElements('structured_data_type'), $properties);
+        $_STRUCT_DATA->set_author_item('article', $article->getSid(), $article->DisplayElements('username'));        
 
         $display = COM_createHTMLDocument(
             $display,

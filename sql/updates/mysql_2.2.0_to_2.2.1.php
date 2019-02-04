@@ -15,6 +15,10 @@ $_SQL[] = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 2 
 // Remove unused Vars table record (originally inserted by devel-db-update script)
 $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
 
+// Add structured data type to article table and modified date
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";
+
 /**
  * Upgrade Messages
  */
@@ -48,6 +52,9 @@ function update_ConfValuesFor221()
     if (isset($_CONF['advanced_editor_name']) && $_CONF['advanced_editor_name'] == 'fckeditor') {
         $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
     }
+    
+    // Default Structured Data type for new articles
+    $c->add('structured_data_type_default',2,'select',1,7,39,1275,TRUE, $me, 7); // Setting article as the default
 
     return true;
 }
