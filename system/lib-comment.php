@@ -543,7 +543,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         $A['comment'] = str_replace('}', '&#125;', $A['comment']);
 
         // Replace any plugin autolink tags
-        $A['comment'] = PLG_replaceTags($A['comment']);
+        $A['comment'] = PLG_replaceTags($A['comment'], '', false, 'comment', $A['cid']);
 
         // create a reply to link
         $reply_link = '';
@@ -1580,7 +1580,7 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
         $comment = GLText::stripTags($comment);
     }
     
-    $comment = PLG_replaceTags($comment);
+    $comment = PLG_replaceTags($comment, '', false, 'comment', $cid);
 
     if ($uid < 1) {
         $uid = 1;
@@ -1797,7 +1797,7 @@ function CMT_sendReport($cid, $type)
         $comment = GLText::stripTags($comment);
     }
     
-    $comment = PLG_replaceTags($comment);
+    $comment = PLG_replaceTags($comment, '', false, 'comment', $cid);
 
     $author = COM_getDisplayName($A['uid']);
     if (($A['uid'] <= 1) && !empty($A['ipaddress'])) {

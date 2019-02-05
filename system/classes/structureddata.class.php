@@ -47,11 +47,28 @@ class StructuredData
     /**
      * Create Structured Data Type name
      *
-     * @param   string  $type   Plugin of the content used to create the structured data
+     * @param   string  $type   Usually the plugin of the content used to create the structured data
      * @param   string  $id     Id of content 
      */
     public function create_name($type, $id) 
     {
+    
+        // Make sure core components are called the same thing
+        // If type not recognized then assume plugin
+        switch ($type) {
+            case "comment":
+                break;
+            
+            case "stories":
+            case "story":
+                $type = "article";
+                break;
+                
+            case "staticpages":
+            case "staticpage":
+                $type = "page";
+                break;                
+        }
     
         $sd_name = $type . '-' . $id;
         
@@ -154,8 +171,7 @@ class StructuredData
         
         $sd_name = $this->create_name($type, $id);        
         $this->items[$sd_name][$name] = $value;
-        //debug_print_backtrace();
-//throw new Exception('Autotag check');
+        
 	}     
     
     /**

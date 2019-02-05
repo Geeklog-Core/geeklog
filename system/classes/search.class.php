@@ -791,7 +791,7 @@ class Search
             if ($row['description'] == 'LF_NULL') {
                 $row['description'] = '<i>' . $LANG09[70] . '</i>';
             } elseif ($row['description'] != '<i>' . $LANG09[70] . '</i>') {
-                $row['description'] = stripslashes($this->_shortenText($this->_query, PLG_replaceTags($row['description']), $this->_wordLength));
+                $row['description'] = stripslashes($this->_shortenText($this->_query, PLG_replaceTags($row['description'], '', false, $row[LF_SOURCE_NAME], $row['id']), $this->_wordLength));
             }
 
             if ($row['date'] != 'LF_NULL') {
