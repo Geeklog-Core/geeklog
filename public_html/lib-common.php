@@ -3261,8 +3261,7 @@ function COM_redirect($url)
         header('Location: ' . $url);
     }
 
-    if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
-        // for debugging
+    if (COM_isEnableDeveloperModeLog('redirect')) {
         COM_errorLog(
             sprintf(
                 '%1$s failed to redirect to "%2$s".  Headers were already sent at line %3$d of "%4$s".',
