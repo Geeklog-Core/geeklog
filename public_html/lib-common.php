@@ -6469,15 +6469,19 @@ function COM_dateDiff($interval, $date1, $date2)
  * @param  array    $leave_dirs     Array of directory names to not delete
  * @param  array    $leave_files    Array of file names to not delete
  */
-function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array()) { 
-
-    foreach (glob("$dir/*") as $file) {
+function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array()) 
+{ 
+    // Need to array merge glob to include regular file list AND hidden file lists (that ignore '.' and '..')
+    $merged = array_merge(glob(rtrim($dir, '/') . '/*'), glob(rtrim($dir, '/') . '/{*,.[!.]*,..?*}', GLOB_BRACE));
+    foreach ($merged as $file) {
         if (is_dir($file)) {
             if (!in_array(basename($file), $leave_dirs)) {
                 COM_deleteFiles($file); // delete all sub directories and files in those directories
             }
         } elseif (!in_array(basename($file), $leave_files) ) {
-            unlink($file);
+            if (is_file($file)) {
+                unlink($file);
+            }
         }
     }
 }
@@ -6488,15 +6492,18 @@ function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array())
  * @since  Geeklog-2.2.0
  * @param  string   $dir            Directory to clean of files and folders
  */
-function COM_deleteFiles($dir) { 
-  
-    foreach(glob($dir . '/*') as $file) { 
+function COM_deleteFiles($dir)
+{ 
+    $merged = array_merge(glob(rtrim($dir, '/') . '/*'), glob(rtrim($dir, '/') . '/{*,.[!.]*,..?*}', GLOB_BRACE));
+    foreach ($merged as $file) {  
         if (is_dir($file)) {
             COM_deleteFiles($file); 
         } else {
-            unlink($file); 
+            if (is_file($file)) {
+                unlink($file);
+            }
         }
-    } 
+    }
     rmdir($dir); 
 }
 
