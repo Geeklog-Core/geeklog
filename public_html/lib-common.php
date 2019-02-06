@@ -396,6 +396,7 @@ $TEMPLATE_OPTIONS = array(
 require_once $_CONF['path_system'] . 'lib-template.php';
 
 // Set language
+$_CONF['language_site_default'] = $_CONF['language']; // Store original site default language before it may get changed depending on other settings
 if (isset($_COOKIE[$_CONF['cookie_language']]) && empty($_USER['language'])) {
     $language = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_language']]);
     if (is_file($_CONF['path_language'] . $language . '.php') &&
