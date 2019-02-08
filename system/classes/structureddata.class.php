@@ -93,6 +93,12 @@ class StructuredData
         // Create structured data name
         $sd_name = $this->create_name($type, $id);
         
+        // Remove any empty properties
+        foreach($properties as $key => $value) {
+            if(empty($value)) 
+                unset($properties[$key]);         
+        }
+        
         // 0 = None
         if ($sd_type > 0 AND $sd_type < 5) {
             $this->items[$sd_name]['@context'] = "https://schema.org";                
@@ -120,8 +126,20 @@ class StructuredData
                 $this->items[$sd_name]['commentCount'] = $properties['commentCount'];
             }
             
-            // inLanguage
-            // keywords // Meta Keywords or Topic List
+            $lang_id = '';
+            if (COM_isMultiLanguageEnabled()) {
+                $lang_id = COM_getLanguageIdForObject($id);
+            }
+            if (empty($lang_id)) {
+                // Assume default language of site
+                $lang_id = COM_getLanguageId($_CONF['language_site_default']);
+            }
+            $this->items[$sd_name]['inLanguage'] = $lang_id;
+            
+            // keywords // Meta Keywords or Topic List (needs to be a comma delimited list)
+            if (isset($properties['keywords'])) {
+                $this->items[$sd_name]['keywords'] = $properties['keywords'];
+            }            
             
             // image
             // thumbnailUrl
@@ -129,7 +147,7 @@ class StructuredData
             // video
             
             // Can be set by autotag which can be executed first so do not overwrite if set
-            if (!isset($this->items[$sd_name]['description'])) {
+            if (isset($properties['description']) && !isset($this->items[$sd_name]['description'])) {
                 $this->items[$sd_name]['description'] = $properties['description'];
             }
             

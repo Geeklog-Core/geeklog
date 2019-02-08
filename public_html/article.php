@@ -525,6 +525,7 @@ if ($A['count'] > 0) {
             $properties['dateModified'] = $article->displayElements('modified');
         }
         $properties['description'] = $article->DisplayElements('meta_description');
+        $properties['keywords'] = $article->DisplayElements('meta_keywords');
         $properties['commentCount'] = CMT_commentCount($article->getSid(), 'article');
         $_STRUCT_DATA->add_type('article', $article->getSid(), $article->displayElements('structured_data_type'), $properties);
         $_STRUCT_DATA->set_author_item('article', $article->getSid(), $article->DisplayElements('username'));        

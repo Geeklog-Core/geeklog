@@ -574,14 +574,17 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $breadcrumbs = TOPIC_breadcrumbs('staticpages', $page);
         }
         
-        $parameters['headline'] = $A['sp_title'];
-        $parameters['url'] = $sp_url;
-        $parameters['datePublished'] = $A['created'];
-        $parameters['dateModified'] = $A['modified'];
-        $parameters['description'] = $A['meta_description'];
-        $parameters['commentCount'] = CMT_commentCount($page, 'staticpages');
-        $_STRUCT_DATA->add_type('staticpages', $page, $A['structured_data_type'], $parameters);
+        
+        $properties['headline'] = $A['sp_title'];
+        $properties['url'] = $sp_url;
+        $properties['datePublished'] = $A['created'];
+        $properties['dateModified'] = $A['modified'];
+        $properties['description'] = $A['meta_description'];
+        $properties['keywords'] = $A['meta_keywords'];
+        $properties['commentCount'] = CMT_commentCount($page, 'staticpages');
+        $_STRUCT_DATA->add_type('staticpages', $page, $A['structured_data_type'], $properties);
         $_STRUCT_DATA->set_author_item('staticpages', $page, $author_name);
+        
 
         $retval = COM_createHTMLDocument($retval, array('what' => $what, 'pagetitle' => $page_title, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headerCode, 'rightblock' => $rightblock));
     }
@@ -1999,7 +2002,21 @@ function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time 
     }
 
     $sp_content = stripslashes($sp_content);
-
+    
+    /*
+    // Since staticpage can be cached and autotags within content may insert structured data properties need to insert it now before cache file is written.
+    $properties['headline'] = $A['sp_title'];
+    $properties['url'] = $sp_url;
+    $properties['datePublished'] = $A['created'];
+    $properties['dateModified'] = $A['modified'];
+    $properties['description'] = $A['meta_description'];
+    $properties['keywords'] = $A['meta_keywords'];
+    $properties['commentCount'] = CMT_commentCount($page, 'staticpages');
+    $_STRUCT_DATA->add_type('staticpages', $page, $A['structured_data_type'], $properties);
+    $_STRUCT_DATA->set_author_item('staticpages', $page, $author_name);
+    $sp_content = $_STRUCT_DATA->toScript('staticpages', $page) . $sp_content;
+    */
+    
     if (($cache_time > 0 || $cache_time == -1) && $sp_php == 0) {
         CACHE_create_instance($cacheInstance, $sp_content);
     }
