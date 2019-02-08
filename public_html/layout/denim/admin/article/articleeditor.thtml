@@ -218,7 +218,7 @@
 </form>
 
 <!-- BEGIN image-form -->
-<div class="uk-overflow-auto uk-margin-small">
+<div class="uk-overflow-container uk-margin-small">
 <table class="admin-list-table uk-table uk-table-hover uk-table-striped">
 <thead>
 <tr>
