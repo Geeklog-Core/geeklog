@@ -222,7 +222,7 @@
 </form>
 
 <!-- BEGIN image-form -->
-<div class="uk-overflow-auto uk-margin-small">
+<div class="uk-overflow-container uk-margin-small">
 <table class="admin-list">
 <thead>
 <tr>
