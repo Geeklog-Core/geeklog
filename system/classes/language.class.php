@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog language administration page.                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2016      by the following authors:                         |
+// | Copyright (C) 2019      by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - mystralkk AT gmail DOT come                  |
 // +---------------------------------------------------------------------------+
@@ -338,7 +338,7 @@ class Language
         $varName = \Geeklog\Input::fPost('var_name', '');
         $language = \Geeklog\Input::fPost('language', '');
         $name = \Geeklog\Input::fPost('name', '');
-        $value = \Geeklog\Input::post('value', '');
+        $value = \Geeklog\Input::fPost('value', '');
 
         if (($id >= 0) && !empty($varName) && !empty($language) && !empty($name)) {
             $varName = DB_escapeString($varName);

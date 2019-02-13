@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | profiles.php                                                              |
 // |                                                                           |
@@ -542,7 +542,7 @@ switch ($what) {
         break;
 
     case 'emailstory':
-        $sid = Geeklog\Input::get('sid');
+        $sid = Geeklog\Input::fGet('sid');
 
         if (empty($sid)) {
             COM_redirect($_CONF['site_url'] . '/index.php');
