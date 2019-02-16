@@ -50,7 +50,6 @@
 <p>Geeklogには次の検出モジュールが同梱されています。</p>
 
 <ul>
-    <li><a href="#slv">スパムリンク検証(SLV: Spam Link Verification)</a></li>
     <li><a href="#personal">パーソナルブラックリスト(Personal Blacklist)</a></li>
     <li><a href="#ip">IPフィルター(IP Filter)</a></li>
     <li><a href="#ipofurl">URLのIPフィルター(IP of URL Filter)</a></li>
@@ -59,29 +58,6 @@
     <li><a href="#snl">Spam Number of Links (SNL)</a></li>
     <li><a href="#akismet">Akismet</a></li>
 </ul>
-
-<h3><a name="slv">スパムリンク検証(SLV: Spam Link Verification)</a></h3>
-
-<p>
-    SLVは集約されたサーバを拠点としたサービスで、Webサイトに投稿されたものを検証し、特定のリンクが異常なほど多く見られる場合にそれを検出します。言い換えれば、スパム送信者が多くのサイトに同一URLを含むスパムを送信し始め、これらのサイトすべてがSLVに報告した場合、SLVシステムはこの傾向をスパムと認識し、該当URLを含む投稿をスパムと判定します。</p>
-
-<p>
-    さらに言い換えると、SLVは、スパム送信者がサイトにスパムを送信し始めたときに、自動的に更新されるブラックリストであると言えます。SLVを使用するサイトが増えれば増えるほど（正確さと反応速度という点では）、ますますその質が高まります。</p>
-
-<p>SLVはRuss Jonesが<a href="http://www.linksleeve.org/">www.linksleeve.org</a>で運営している無料のサービスです。</p>
-
-<p><strong><a name="slvprivacy">プライバシーポリシーの表示</a></strong><br/>
-    SLVを使用しているということは、自分のサイトから第三者のサイトに情報を送信していることになるということを強調しておいた方がよいでしょう。法体系によっては、ユーザーにこの事実を告知する必要があるかもしれません。ご自分の地域のプライバシーに関する法律を確認してください。
-</p>
-
-<p>運用している状況によっては（たとえば、企業のイントラネットなど）、情報を外部のサイトに送信することが望ましくない場合もあるでしょう。その場合は、 <span
-        class="tt">SLV.Examine.class.php</span>, <span class="tt">SLVbase.class.php</span>, <span class="tt">SLVreport.Action.class.php</span>,
-    <span class="tt">SLVwhitelist.Admin.class.php</span> の4つのファイルをSpam-Xのディレクトリ(<span class="tt">/path/to/geeklog/plugins/spamx</span>)から削除すれば、SLVを無効にできます。単にSpam-Xプラグインを無効にする（または、アンインストールする）だけでもよいです。
-</p>
-
-<p>
-    SLV検証モジュールとアクションモジュールは、投稿されたデータからすべてのURLを抽出し、SLVへ送信するだけです(つまり、投稿されたデータのURL以外の部分は送信されません。)。また、自分のGeeklogサイトのURLを含むリンクはすべて除外します。投稿されたデータに外部リンクが含まれていない場合、これらのモジュールはSLVと通信を行いません。</p>
-
 
 <h3><a name="personal">パーソナルブラックリスト(Personal Blacklist)</a></h3>
 

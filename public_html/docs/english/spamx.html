@@ -54,7 +54,6 @@
 <p>Geeklog ships with the following examine modules:</p>
 
 <ul>
-    <li><a href="#slv">Spam Link Verification (SLV)</a></li>
     <li><a href="#personal">Personal Blacklist</a></li>
     <li><a href="#ip">IP Filter</a></li>
     <li><a href="#ipofurl">IP of URL Filter</a></li>
@@ -63,41 +62,6 @@
     <li><a href="#snl">Spam Number of Links (SNL)</a></li>
     <li><a href="#akismet">Akismet</a></li>
 </ul>
-
-<h3><a name="slv">Spam Link Verification (SLV)</a></h3>
-
-<p>SLV is a centralized, server-based service that examines posts made on
-    websites and detects when certain links show up in unusually high numbers. In
-    other words, when a spammer starts spamming a lot of sites with the same URLs
-    and those sites all report to SLV, the system will recognize this as a spam
-    wave and will flag posts containing these URLs as spam.</p>
-
-<p>In other words still, it's a dynamic blacklist that automatically updates
-    itself when a spammer starts spamming for their site. And it can only get
-    better (in terms of accuracy and reaction speed) the more sites use it.</p>
-
-<p>SLV is a free service run by Russ Jones at <a
-        href="http://www.linksleeve.org/">www.linksleeve.org</a>.</p>
-
-<p><strong><a name="slvprivacy">Privacy Notice:</a></strong>
-    It should be stressed that using SLV means that information from your site
-    is being sent to a third party's site. In some legislations you may have to
-    inform your users about this fact - please check with your local privacy
-    laws.</p>
-
-<p>Sending information to an external site may also be undesirable on some
-    setups, e.g. on a company intranet. You can disable SLV support by removing the
-    four files <span class="tt">SLV.Examine.class.php</span>, <span class="tt">SLVbase.class.php</span>,
-    <span class="tt">SLVreport.Action.class.php</span>, and <span class="tt">SLVwhitelist.Admin.class.php</span>
-    from your Spam-X directory (<span class="tt">/path/to/geeklog/plugins/spamx</span>). Or you
-    can simply disable the Spam-X plugin entirely (or uninstall it).</p>
-
-<p>The SLV Examine and Action modules will extract all URLs from a post and
-    only send those to SLV (i.e. the rest of the post's content is not being sent).
-    They also remove any links that contain your Geeklog site's URL. In case a post
-    does not contain any external links, the modules simply do not contact SLV at
-    all.</p>
-
 
 <h3><a name="personal">Personal Blacklist</a></h3>
 
