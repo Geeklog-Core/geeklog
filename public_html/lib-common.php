@@ -8278,7 +8278,7 @@ function COM_checkInstalled()
 </head>
 
 <body>
-<img src="{$rel}docs/images/newlogo.gif" alt="" />
+<img src="{$rel}docs/images/logo.gif" alt="" />
 
 <h1>Geeklog {$version}</h1>
   <p>Please run the <a href="{$rel}admin/install/index.php" rel="nofollow">install script</a> first.</p>
