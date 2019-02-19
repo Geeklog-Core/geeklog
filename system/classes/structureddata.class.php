@@ -216,7 +216,7 @@ class StructuredData
      * @param   string  $type   Plugin of the content used to create the structured data
      * @param   string  $id     Id of content 
 	 */
-	public function set_image_item($type, $id, $url, $width, $height) 
+	public function set_image_item($type, $id, $url, $width = '', $height = '') 
     {
         
         $sd_name = $this->create_name($type, $id);        

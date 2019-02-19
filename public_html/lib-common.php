@@ -6715,10 +6715,11 @@ function COM_convertDate2Timestamp($date, $time = '')
 /**
  * Get the HTML for an image with height & width
  *
- * @param    string $file full path to the file
- * @return   string          html that will be included in the img-tag
+ * @param    string  $file  full path to the file
+ * @param    boolean $html  flag to return html source or array
+ * @return   string         if $html true then html that will be included in the img-tag. Else an array will be returned with the information
  */
-function COM_getImgSizeAttributes($file)
+function COM_getImgSizeAttributes($file, $html = true)
 {
     $sizeAttributes = '';
 
@@ -6743,15 +6744,24 @@ function COM_getImgSizeAttributes($file)
                 }
 
                 if (($width !== '?') && ($height !== '?')) {
-                    $sizeAttributes = 'width="' . $width . '" height="' . $height . '" ';
+                    if ($html) {
+                        $sizeAttributes = 'width="' . $width . '" height="' . $height . '" ';
+                    } else {
+                        $sizeAttributes['width'] = $width;
+                        $sizeAttributes['height'] = $height;
+                    }
                 }
             }
         } else {
             // Other file type
             $dimensions = getimagesize($file);
             if (!empty($dimensions[0]) && !empty($dimensions[1])) {
-                $sizeAttributes = 'width="' . $dimensions[0]
-                    . '" height="' . $dimensions[1] . '" ';
+                if ($html) {
+                    $sizeAttributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
+                } else {
+                    $sizeAttributes['width'] = $dimensions[0];
+                    $sizeAttributes['height'] = $dimensions[1];
+                }
             }
         }
     }
