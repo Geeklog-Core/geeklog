@@ -4,6 +4,11 @@
   <fieldset class="noborder_fieldset">
     <legend class="hidden_legend">{lang_login}</legend>
 
+    {# This is currently setup for the recaptcha plugin. #}
+    {# If another solution is used that could work with the block then you could add the captcha template variable #}
+    {!if captcha_required}
+    
+    {!else}
     <div class="loginform">
       <div class="form_part">
         <label for="loginform-loginname" style="display:none">{lang_username}</label>
@@ -21,13 +26,18 @@
     <div class="submit">
       <button type="submit" value="{lang_login}" class="uk-button">{lang_login}</button>
     </div>
+    {!endif}
+    
 
     <div class="navi">
+      {!if captcha_required}<div>{lang_loginform}</div>{!endif}
       <div>{lang_signup}</div>
       <div>{lang_forgetpassword}</div>
     </div>
   </fieldset>
 </form>
+
+<div>{lang_remoteloginoptions}</div>
 {oauth_login}
 {openid_login}
 

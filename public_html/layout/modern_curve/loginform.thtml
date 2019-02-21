@@ -1,6 +1,11 @@
 {# begin {templatelocation} #}
 
 <form action="{site_url}/users.php" method="post" id="loginform" class="basic">
+  {# This is currently setup for the recaptcha plugin. #}
+  {# If another solution is used that could work with the block then you could add the captcha template variable #}
+  {!if captcha_required}
+
+  {!else}  
   <div>
     <dl>
       <dt><label for="loginform-loginname">{lang_username}</label></dt>
@@ -16,11 +21,16 @@
       <li><input type="submit" value="{lang_login}" class="submit"{xhtml}></li>
     </ul>
   </div>
+  {!endif}
+  
   <ul class="navi">
+    {!if captcha_required}<li>{lang_loginform}</li>{!endif}
     <li>{lang_signup}</li>
     <li>{lang_forgetpassword}</li>
   </ul>
 </form>
+
+<div>{lang_remoteloginoptions}</div>
 {oauth_login}
 {openid_login}
 

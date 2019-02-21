@@ -167,6 +167,10 @@ function plugin_upgrade_recaptcha()
                 recaptcha_update_ConfValues_1_1_6();
                 $pluginVersionInDb = '1.2.0';
                 break;
+                
+            case '1.2.0':
+                $pluginVersionInDb = '1.2.1';
+                break;                
 
             default:
                 $pluginVersionInDb = $_RECAPTCHA_CONF['pi_version'];
@@ -246,6 +250,8 @@ function plugin_templatesetvars_recaptcha($type, &$template)
     global $_RECAPTCHA_CONF, $_SCRIPTS;
 
     if (RECAPTCHA_requireCaptcha($type)) {
+        $template->set_var('captcha_required', true); // Set to notify templates in case situation arises that the capthca should not be displayed (for example the Login Block)
+        
         $isInvisible = ($_RECAPTCHA_CONF['enable_' . $type] == 2);
 
         if ($isInvisible) {

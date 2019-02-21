@@ -195,6 +195,8 @@ $LANG01 = array(
     141 => 'エラーが発生しました',
     142 => 'このページを表示する際にエラーが発生しました。しばらくしてから、もう一度お試しください。',
     143 => 'コメント (%d件)',
+    'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">Login Here</a>",
+    'remoteloginoptions' => "Remote Login Options",
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
     'linkedin' => 'LinkedInでログイン',

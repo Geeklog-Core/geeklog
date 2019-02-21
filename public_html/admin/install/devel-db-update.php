@@ -110,7 +110,9 @@ function update_DatabaseFor221()
         
     // XMLSiteMap
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.2', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
-    
+
+    // ReCaptcha
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.2.1', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='recaptcha'";
 
     if ($use_innodb) {
         $statements = count($_SQL);
@@ -526,7 +528,7 @@ $display .= '</li></ul>';
 // Geeklog Core Plugins
 $display .= '<li>Performing Geeklog Core Plugin configuration upgrades if necessary...<ul>';
 // Loop through core plugin config updates
-$corePlugins = array('staticpages','spamx','links','polls','calendar', 'xmlsitemap');
+$corePlugins = array('staticpages','spamx','links','polls','calendar', 'recaptcha');
 foreach ($corePlugins AS $pi_name) {
     $new_plugin_version = false;
     switch ($pi_name) {
@@ -554,6 +556,10 @@ foreach ($corePlugins AS $pi_name) {
             $new_plugin_version = true;
             $plugin_version = '2.0.2';
             break;
+        case 'xmlsitemap':
+            $new_plugin_version = true;
+            $plugin_version = '1.2.1';
+            break;            
     }
     
     $display .= "<li>";

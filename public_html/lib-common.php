@@ -2529,6 +2529,9 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
         $login->set_var('lang_password', $LANG01[57]);
         $login->set_var('lang_forgetpassword', $LANG01[119]);
         $login->set_var('lang_login', $LANG01[58]);
+        $login->set_var('lang_loginform', $LANG01['loginform']);
+        $login->set_var('lang_remoteloginoptions', $LANG01['remoteloginoptions']);
+        
         if ($_CONF['disable_new_user_registration']) {
             $login->set_var('lang_signup', '');
         } else {
@@ -2631,7 +2634,8 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
             $login->set_var('oauth_login', '');
         }
 
-        PLG_templateSetVars('loginblock', $login);
+        PLG_templateSetVars('loginblock', $login); 
+        PLG_templateSetVars('loginform', $login); // Need to set loginform as well since this is what Geeklog checks when logging in users. This will allow things like recaptcha work
         $retval .= $login->finish($login->parse('output', 'form'));
         $retval .= COM_endBlock(COM_getBlockTemplate('user_block', 'footer', $position));
     }

@@ -1473,8 +1473,8 @@ function PLG_profileExtrasSave($plugin = '', $uid = '')
  * - 'registration' (user registration form)
  * - 'contact' (email user form)
  * - 'emailstory' (email story to a friend)
- * - 'loginblock' (login form in the side bar)
- * - 'loginform' (login form in the content area)
+ * - 'loginblock' (login form as a block)
+ * - 'loginform' (both login form in the content area and login block since similar function and is only one checked by Geeklog login function)
  * - 'search' (advanced search form; simple search is usually part of 'header')
  *
  * @param    string   $templateName Name of calling template

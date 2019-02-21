@@ -37,7 +37,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 $_RECAPTCHA_CONF = array();
 
 // Plugin info
-$_RECAPTCHA_CONF['pi_version'] = '1.2.0';											// Plugin Version
+$_RECAPTCHA_CONF['pi_version'] = '1.2.1';											// Plugin Version
 $_RECAPTCHA_CONF['gl_version'] = '2.2.0';											// GL Version plugin for
 $_RECAPTCHA_CONF['pi_url']     = 'https://github.com/Geeklog-Plugins/recaptcha';	// Plugin Homepage
 $_RECAPTCHA_CONF['GROUPS']     = array(

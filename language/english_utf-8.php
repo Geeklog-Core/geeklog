@@ -187,6 +187,8 @@ $LANG01 = array(
     141 => 'An Error Occurred',
     142 => 'Unfortunately, an error has occurred rendering this page. Please try again later.',
     143 => 'Comment (%d)',
+    'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">Login Here</a>",
+    'remoteloginoptions' => "Remote Login Options",
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
     'linkedin' => 'Login with LinkedIn',
