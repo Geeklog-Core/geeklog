@@ -2016,8 +2016,7 @@ function SP_render_content($A)
 
     $sp_content = stripslashes($sp_content);
     
-    
-    // Since staticpage can be cached and autotags within content may insert structured data properties need to insert it now before cache file is written.
+    // Figure out structured data if need be
     if ($A['structured_data_type'] > 0 ) {
         $properties['headline'] = $A['sp_title'];
         $properties['url'] = $sp_url;
@@ -2031,7 +2030,10 @@ function SP_render_content($A)
         }
         
         $attributes['multi_language'] = true;
-        $attributes['cache'] = true;
+        // Since staticpage can be cached and autotags within content may insert structured data properties need to cache structured data info as well.
+        if (($cache_time > 0 || $cache_time == -1) && $sp_php == 0) {
+            $attributes['cache'] = true;
+        }
         $_STRUCT_DATA->add_type('staticpages', $sp_id, $A['structured_data_type'], $properties, $attributes);
         $_STRUCT_DATA->set_author_item('staticpages', $sp_id, COM_getDisplayName($A['owner_id']));
 
