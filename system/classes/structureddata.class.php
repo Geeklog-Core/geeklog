@@ -293,7 +293,6 @@ class StructuredData
         $retval = false;
         $sd_name = $this->create_name($type, $id);  
         $cacheInstance = $this->get_cacheInstanceID($sd_name);
-        //$sd_cache = CACHE_check_instance($cacheInstance);
         $sd_cache = CACHE_check_instance($cacheInstance, true, true); // Not language or mobile cache specific (as this is ALL topic information)
         if ($sd_cache && $cache_time == -1) {
             $item = unserialize($sd_cache);
@@ -312,6 +311,19 @@ class StructuredData
         }
         
         return $retval;
+    }
+    
+    /**
+	 * Delete Structured Data item cache
+	 *
+     * @param   string  $type       Plugin of the content used to create the structured data
+     * @param   string  $id         Id of content 
+	 */
+	public function clear_cachedScript($type, $id) 
+    {
+        $sd_name = $this->create_name($type, $id);  
+        $cacheInstance = $this->get_cacheInstanceID($sd_name);
+        CACHE_remove_instance($cacheInstance);    
     }
     
     /**
