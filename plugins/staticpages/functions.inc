@@ -329,7 +329,7 @@ function SP_countVisiblePages()
  */
 function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nested', $comment_page = 1, $msg = 0, $query = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF, $_STRUCT_DATA;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
 
     $retval = '';
 
@@ -573,18 +573,6 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         if (!$_SP_CONF['disable_breadcrumbs_staticpages']) {
             $breadcrumbs = TOPIC_breadcrumbs('staticpages', $page);
         }
-        
-        
-        $properties['headline'] = $A['sp_title'];
-        $properties['url'] = $sp_url;
-        $properties['datePublished'] = $A['created'];
-        $properties['dateModified'] = $A['modified'];
-        $properties['description'] = $A['meta_description'];
-        $properties['keywords'] = $A['meta_keywords'];
-        $properties['commentCount'] = CMT_commentCount($page, 'staticpages');
-        $_STRUCT_DATA->add_type('staticpages', $page, $A['structured_data_type'], $properties);
-        $_STRUCT_DATA->set_author_item('staticpages', $page, $author_name);
-        
 
         $retval = COM_createHTMLDocument($retval, array('what' => $what, 'pagetitle' => $page_title, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headerCode, 'rightblock' => $rightblock));
     }
@@ -1891,28 +1879,53 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
  * @param    string $modified    Last modified date of page
  * @return   string                  rendered content (HTML)
  */
-function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time = 0, $template_id = '', $created = '', $modified = '')
+//function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time = 0, $template_id = '', $created = '', $modified = '')
+function SP_render_content($A)
 {
-    global $_SP_CONF, $LANG_STATIC;
+    global $_CONF, $_SP_CONF, $LANG_STATIC, $_STRUCT_DATA;
 
     $retval = '';
+    
+    $sp_id = $A['sp_id'];
+    $sp_url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_id);
+    $sp_content = $A['sp_content'];
+    $sp_php = $A['sp_php'];
+    $cache_time = $A['cache_time'];
+    $template_id = $A['template_id'];
 
     // Retrieve non php staticpage from cache
     if ($cache_time > -1 && $sp_php == 0) {
+        $cache_found = false;
+        
         // Don't need to cache per theme since not rendered in a block yet
         $cacheInstance = 'staticpage__' . $sp_id . '__' . CACHE_security_hash();
         $retval = CACHE_check_instance($cacheInstance);
         if ($retval && $cache_time == -1) {
-            return $retval;
+            $cache_found = true;
         } elseif ($retval && $cache_time > 0) {
             $lu = CACHE_get_instance_update($cacheInstance);
             $now = time();
             if (($now - $lu) < $cache_time) {
-                return $retval;
+                $cache_found = true;
             } else {
                 $retval = '';
             }
         }
+        
+        // Now find structured data cache if required
+        // Structured Data is cached by itself. Need to cache in case structured data autotags exist in page.
+        // Since autotags are executed when the page is rendered therefore we have to cache structred data if page is cached.
+        if ($A['structured_data_type'] > 0 && $cache_found) {
+            if (!$_STRUCT_DATA->get_cachedScript('staticpages', $sp_id, $cache_time)) {
+                // Structured Data missing for some reason even though page cache found. Render all again
+                $retval = '';
+            } else {
+                return $retval;
+            }
+        } elseif ($cache_found) {
+            return $retval;
+        }      
+        
     }
 
     // See if uses template, if so get it
@@ -1955,12 +1968,12 @@ function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time 
                     'page_view' => $retval['sp_content'],
                 ));
                 
-                // Staticpage specfic template variables
+                // Staticpage specific template variables
                 // Set Staticpage Title
-                $sp_template->set_var('sp_title', stripslashes($sp_title));
+                $sp_template->set_var('sp_title', stripslashes($A['sp_title']));
                 // ISO 8601 dates for created and modified
-                $sp_template->set_var('sp_created', date('c', strtotime($created)));
-                $sp_template->set_var('sp_updated', date('c', strtotime($modified)));
+                $sp_template->set_var('sp_created', date('c', strtotime($A['created'])));
+                $sp_template->set_var('sp_updated', date('c', strtotime($A['modified'])));
 
                 // Add all the staticpage variables as template variables now
                 foreach ($tag as $key => $value) {
@@ -2003,19 +2016,34 @@ function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time 
 
     $sp_content = stripslashes($sp_content);
     
-    /*
+    
     // Since staticpage can be cached and autotags within content may insert structured data properties need to insert it now before cache file is written.
-    $properties['headline'] = $A['sp_title'];
-    $properties['url'] = $sp_url;
-    $properties['datePublished'] = $A['created'];
-    $properties['dateModified'] = $A['modified'];
-    $properties['description'] = $A['meta_description'];
-    $properties['keywords'] = $A['meta_keywords'];
-    $properties['commentCount'] = CMT_commentCount($page, 'staticpages');
-    $_STRUCT_DATA->add_type('staticpages', $page, $A['structured_data_type'], $properties);
-    $_STRUCT_DATA->set_author_item('staticpages', $page, $author_name);
-    $sp_content = $_STRUCT_DATA->toScript('staticpages', $page) . $sp_content;
-    */
+    if ($A['structured_data_type'] > 0 ) {
+        $properties['headline'] = $A['sp_title'];
+        $properties['url'] = $sp_url;
+        $properties['datePublished'] = $A['created'];
+        $properties['dateModified'] = $A['modified'];
+        $properties['description'] = $A['meta_description'];
+        $properties['keywords'] = $A['meta_keywords'];
+        if ($A['commentcode'] >= 0) {
+            require_once $_CONF['path_system'] . 'lib-comment.php';
+            $properties['commentCount'] = CMT_commentCount($sp_id, 'staticpages');
+        }
+        
+        $attributes['multi_language'] = true;
+        $attributes['cache'] = true;
+        $_STRUCT_DATA->add_type('staticpages', $sp_id, $A['structured_data_type'], $properties, $attributes);
+        $_STRUCT_DATA->set_author_item('staticpages', $sp_id, COM_getDisplayName($A['owner_id']));
+
+        /* Decided not to included structure data right by page content even though slightly faster. Rather keep all structured data in the head
+        // Cache structured data results with staticpage cache
+        if (($cache_time > 0 || $cache_time == -1) && $sp_php == 0) {
+            $sp_structureddata = $_STRUCT_DATA->toScript('staticpages', $sp_id);
+            $sp_content = $sp_structureddata . $sp_content;
+        }
+        */
+    }
+    
     
     if (($cache_time > 0 || $cache_time == -1) && $sp_php == 0) {
         CACHE_create_instance($cacheInstance, $sp_content);

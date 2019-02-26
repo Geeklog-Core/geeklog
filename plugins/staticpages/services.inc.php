@@ -479,8 +479,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $template_id = '';
 
             $sp_onmenu = 0;
-            $sp_onhits = $_SP_CONF['show_hits'];
-            $sp_onlastupdate = $_SP_CONF['show_date'];
+            $sp_onhits = 0;
+            $sp_onlastupdate = 0;
             $sp_label = "";
             $sp_centerblock = 0;
             $sp_php = 0;
@@ -491,6 +491,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $sp_hits = 0;
             $meta_description = "";
             $meta_keywords = "";
+            $structured_data_type = 0;
         } else {
             // See if it was a template before, if so and option changed, remove use from other pages
             if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$sp_old_id'") == 1) {
@@ -832,7 +833,8 @@ SQL;
             // WE ASSUME $output doesn't have any confidential fields
             // Generate output now (only if not grabbing a template since template is combined with variables first and then generated)
             if (!isset($args['template'])) {
-                $output['sp_content'] = SP_render_content($page, $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id'], $output['created'], $output['modified']);
+                //$output['sp_content'] = SP_render_content($page, $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id'], $output['created'], $output['modified']);
+                $output['sp_content'] = SP_render_content($output);
             }
         } else { // an error occurred (page not found, access denied, ...)
             /**
@@ -945,10 +947,10 @@ SQL;
         $order = " ORDER BY modified DESC";
         $sql = array();
         $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,draft_flag,owner_id,"
-            . "group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time "
+            . "group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time,structured_data_type "
             . " FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,draft_flag,owner_id,"
-            . "group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time "
+            . "group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time,structured_data_type "
             . "FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $result = DB_query($sql);
 
@@ -969,10 +971,9 @@ SQL;
                 $output_item['id'] = $output_item['sp_id'];
                 $output_item['title'] = $output_item['sp_title'];
                 $output_item['page_title'] = $output_item['sp_page_title'];
-                //$output_item['category']     = array($output_item['sp_tid']);
                 $output_item['category'] = TOPIC_getTopicIdsForObject('staticpages', $output_item['sp_id']);
-                //$output_item['content']      = $output_item['sp_content'];
-                $output['content'] = SP_render_content($output['sp_id'], $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id'], $output_item['created'], $output_item['modified']);
+                // $output['content'] = SP_render_content($output['sp_id'], $output['sp_title'], $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id'], $output_item['created'], $output_item['modified']);
+                $output['content'] = SP_render_content($output);
                 $output_item['content_type'] = 'html';
 
                 $owner_data = SESS_getUserDataFromId($output_item['owner_id']);
