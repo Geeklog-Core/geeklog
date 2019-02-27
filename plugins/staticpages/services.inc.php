@@ -585,7 +585,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                 // Clear Cache
                 $cacheInstance = 'staticpage__' . $sp_id . '__';
                 CACHE_remove_instance($cacheInstance);
-                
                 $_STRUCT_DATA->clear_cachedScript('staticpages', $sp_id);
             } else {
                 // If template then have to notify of all pages that use this template that a change to the page happened
@@ -597,7 +596,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                     // Clear Cache
                     $cacheInstance = 'staticpage__' . $A['sp_id'] . '__';
                     CACHE_remove_instance($cacheInstance);
-                    
                     $_STRUCT_DATA->clear_cachedScript('staticpages', $A['sp_id']);
                 }
             }
@@ -611,7 +609,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                 // Clear Cache
                 $cacheInstance = 'staticpage__' . $sp_old_id . '__';
                 CACHE_remove_instance($cacheInstance);
-                
                 $_STRUCT_DATA->clear_cachedScript('staticpages', $sp_old_id);
             } else {
                 // If template then have to notify of all pages that use this template that a change to the page happened
@@ -623,7 +620,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                     // Clear Cache
                     $cacheInstance = 'staticpage__' . $A['sp_id'] . '__';
                     CACHE_remove_instance($cacheInstance);
-                    
                     $_STRUCT_DATA->clear_cachedScript('staticpages', $A['sp_id']);
                 }
             }
@@ -714,7 +710,6 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     // Clear Cache
     $cacheInstance = 'staticpage__' . $sp_id . '__';
     CACHE_remove_instance($cacheInstance);
-    
     $_STRUCT_DATA->clear_cachedScript('staticpages', $sp_id);
 
     return PLG_RET_OK;

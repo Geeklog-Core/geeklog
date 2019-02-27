@@ -560,6 +560,8 @@ function plugin_itemsaved_template($id, $type, $old_id = '')
  */
 function plugin_itemdeleted_template($id, $type)
 {
+    global $_STRUCT_DATA;
+    
     // See if uses what's new block then delete cache of whatsnew
     // This will not catch everything though like trackbacks, comments, and
     // plugins that do not use itemsaved but let's delete the cache when we can
@@ -599,6 +601,7 @@ function plugin_itemdeleted_template($id, $type)
     if ($article) {
         $cacheInstance = 'article__' . $id; // remove all article instances
         CACHE_remove_instance($cacheInstance);
+        $_STRUCT_DATA->clear_cachedScript('article');
     }
     if ($block) {
         $cacheInstance = 'block__' . $id; // remove all block instances

@@ -66,7 +66,7 @@ if (!defined('STORY_ARCHIVE_ON_EXPIRE')) {
 function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml', $query = '', $articlecount = 1)
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
-           $_IMAGE_TYPE, $mode;
+           $_IMAGE_TYPE, $mode, $_STRUCT_DATA;
 
     static $storyCounter = 0;
 
@@ -105,7 +105,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
     $current_article_tid = $story->DisplayElements('tid');
     $retval = false; // If stays false will rebuild article and not used cache (checks done below)
 
-    // CHeck cache time or if search query do not use cache as need to add highlight
+    // Check cache time or if search query do not use cache as need to add highlight
     if (($cache_time > 0 || $cache_time == -1) && empty($query)) {
         $hash = CACHE_security_hash();
         $cacheInstance = 'article__' . $story->getSid() . '_' . $index . $mode . '_' . $article_filevar . '_' . $current_article_tid . '_' . $hash . '_' . $_CONF['theme'];
@@ -116,21 +116,25 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $retval = CACHE_check_instance($cacheInstance);
         }
 
+        $cache_found = false;
         if ($retval && $cache_time == -1) {
             // Cache file found so use it since no time limit set to recreate
-
+            $cache_found = true;
         } elseif ($retval && $cache_time > 0) {
             $lu = CACHE_get_instance_update($cacheInstance);
             $now = time();
             if (($now - $lu) < $cache_time) {
                 // Cache file found so use it since under time limit set to recreate
+                $cache_found = true;
             } else {
                 // generate article and create cache file
                 // Cache time is not built into template caching so need to delete it manually and reset $retval
                 if ($_CONF['cache_templates']) {
+                    CACHE_remove_instance($cacheInstance);
+                    $_STRUCT_DATA->clear_cachedScript('article', $story->getSid());
+                    
                     // Need to close and recreate template class since issues arise when theme templates are cached
                     unset($article); // Close template class
-                    CACHE_remove_instance($cacheInstance);
                     $article = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
                     $article->set_file(array(
                         'article'          => $storyTpl,
@@ -142,6 +146,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                     ));
                 } else { // theme templates are not cache so can go ahead and delete story cache
                     CACHE_remove_instance($cacheInstance);
+                    $_STRUCT_DATA->clear_cachedScript('article', $story->getSid());
                 }
                 $retval = false;
             }
@@ -149,6 +154,17 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             // Need to reset especially if caching is disabled for a certain story but template caching has been enabled for the theme
             $retval = false;
         }
+        
+        // Now find structured data cache if required
+        // Structured Data is cached by itself. Need to cache in case structured data autotags exist in page.
+        // Since autotags are executed when the page is rendered therefore we have to cache structred data if page is cached.
+        // Only cache and use structured data on full article view
+        if ($index == 'n' && $story->DisplayElements('structured_data_type') > 0 && $cache_found) {
+            if (!$_STRUCT_DATA->get_cachedScript('article', $story->getSid(), $cache_time)) {
+                // Structured Data missing for some reason even though page cache found. Render all again
+                $retval = false;
+            }
+        }          
     }
 
     // ****************************************
@@ -660,6 +676,62 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $article->create_instance($cacheInstance, $article_filevar);
             // CACHE_create_instance($cacheInstance, $article);
         }
+
+
+
+        // Figure out structured data if needed
+        if ($story->DisplayElements('structured_data_type') > 0 ) {
+            $attributes = array();
+            $attributes['multi_language'] = true;
+            // Only cache if not search and full article view (=n)
+            if ($index == 'n' && empty($query) && ($cache_time > 0 || $cache_time == -1)) {
+                $attributes['cache'] = true;
+            }
+            
+            $properties['headline'] = $story->displayElements('title');
+            $properties['url'] = $articleUrl;
+            $properties['datePublished'] = $story->displayElements('date');
+            // Don't include modified if empty or date is less than published
+            if (!empty($story->displayElements('unixmodified')) && ($story->displayElements('unixmodified') > $story->displayElements('unixdate'))) {
+                $properties['dateModified'] = $story->displayElements('modified');
+            }
+            $properties['description'] = $story->DisplayElements('meta_description');
+            $properties['keywords'] = $story->DisplayElements('meta_keywords');
+            $properties['commentCount'] = CMT_commentCount($story->getSid(), 'article');
+            $_STRUCT_DATA->add_type('article', $story->getSid(), $story->displayElements('structured_data_type'), $properties, $attributes);
+            $_STRUCT_DATA->set_author_item('article', $story->getSid(), $story->DisplayElements('username'));
+            // Include any images attached to the article (taken in part from renderImageTags function in article class)
+            $result = DB_query("SELECT ai_filename,ai_img_num FROM {$_TABLES['article_images']} WHERE ai_sid = '{$story->getSid()}' ORDER BY ai_img_num");
+            $numRows = DB_numRows($result);
+            $stdImageLoc = true;
+            if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
+                $stdImageLoc = false;
+            }
+            for ($i = 1; $i <= $numRows; $i++) {
+                $A = DB_fetchArray($result);
+
+                $imgPath = '';
+                if ($stdImageLoc) {
+                    $imgPath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
+                    $imgSrc = $_CONF['site_url'] . '/' . $imgPath . 'articles/' . $A['ai_filename'];
+                } else {
+                    $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
+                }
+                
+                $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename'], false);
+                if (is_array($sizeAttributes)) {
+                    $_STRUCT_DATA->set_image_item('article', $story->getSid(), $imgSrc, $sizeAttributes['width'], $sizeAttributes['height']);        
+                } else {
+                    $_STRUCT_DATA->set_image_item('article', $story->getSid(), $imgSrc);
+                }
+            }
+        }
+
+
+
+
+
+        
 
     } else {
         PLG_templateSetVars($article_filevar, $article);
@@ -1898,6 +1970,7 @@ function plugin_configchange_article($group, $changes = array())
         // If any Article options changed then delete all article cache
         $cacheInstance = 'article__';
         CACHE_remove_instance($cacheInstance);
+        $_STRUCT_DATA->clear_cachedScript('article');
     }
 }
 

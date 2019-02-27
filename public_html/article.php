@@ -515,48 +515,6 @@ if ($A['count'] > 0) {
         $display .= $articleTemplate->finish($articleTemplate->parse('output', 'article'));
 
         $breadcrumbs = TOPIC_breadcrumbs('article', $article->getSid());
-        
-        $properties['headline'] = $article->displayElements('title');
-        $properties['url'] = $permalink;
-        $properties['datePublished'] = $article->displayElements('date');
-        
-        // Don't include modified if empty or date is less than published
-        if (!empty($article->displayElements('unixmodified')) && ($article->displayElements('unixmodified') > $article->displayElements('unixdate'))) {
-            $properties['dateModified'] = $article->displayElements('modified');
-        }
-        $properties['description'] = $article->DisplayElements('meta_description');
-        $properties['keywords'] = $article->DisplayElements('meta_keywords');
-        $properties['commentCount'] = CMT_commentCount($article->getSid(), 'article');
-        $_STRUCT_DATA->add_type('article', $article->getSid(), $article->displayElements('structured_data_type'), $properties);
-        $_STRUCT_DATA->set_author_item('article', $article->getSid(), $article->DisplayElements('username'));
-        // Include any images attached to the article (taken in part from renderImageTags function in article class)
-        $result = DB_query("SELECT ai_filename,ai_img_num FROM {$_TABLES['article_images']} WHERE ai_sid = '{$article->getSid()}' ORDER BY ai_img_num");
-        $numRows = DB_numRows($result);
-
-        $stdImageLoc = true;
-        if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
-            $stdImageLoc = false;
-        }
-
-        for ($i = 1; $i <= $numRows; $i++) {
-            $A = DB_fetchArray($result);
-
-            $imgPath = '';
-
-            if ($stdImageLoc) {
-                $imgPath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
-                $imgSrc = $_CONF['site_url'] . '/' . $imgPath . 'articles/' . $A['ai_filename'];
-            } else {
-                $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
-            }
-            
-            $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename'], false);
-            if (is_array($sizeAttributes)) {
-                $_STRUCT_DATA->set_image_item('article', $article->getSid(), $imgSrc, $sizeAttributes['width'], $sizeAttributes['height']);        
-            } else {
-                $_STRUCT_DATA->set_image_item('article', $article->getSid(), $imgSrc);
-            }
-        }
 
         $display = COM_createHTMLDocument(
             $display,
