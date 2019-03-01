@@ -41,6 +41,7 @@ $_CONF_VALIDATE['Core']['site_url'] = array('rule' => 'url');
 $_CONF_VALIDATE['Core']['site_admin_url'] = array('rule' => 'url');
 $_CONF_VALIDATE['Core']['site_name'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['site_slogan'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['path_site_logo'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['owner_name'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['microsummary_short'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['site_disabled_msg'] = array(

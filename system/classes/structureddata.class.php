@@ -151,22 +151,39 @@ class StructuredData
                 $this->items[$sd_name]['description'] = $properties['description'];
             }
             
-            if (!empty($_CONF['owner_name'])) {
-                $org_name = $_CONF['owner_name'];
-            } else {
-                $org_name = $_CONF['site_name'];
-            }
             $this->items[$sd_name]['publisher'] = array(
                 "@type"     => "Organization",
-                "name" 	    => $org_name,
+                "name" 	    => $_CONF['site_name'],
+                "url" 	    => $_CONF['site_url']
+            );
+            
+            if (isset($_CONF['path_site_logo']) && !empty($_CONF['path_site_logo'])) {
+                $logo_path = rtrim($_CONF['path_html'], '/') . '/' . ltrim($_CONF['path_site_logo'], '/');
+                $sizeAttributes = COM_getImgSizeAttributes($logo_path, false);
+                if (is_array($sizeAttributes)) {
+                    $logo_url = rtrim($_CONF['site_url'], '/') . '/' . ltrim($_CONF['path_site_logo'], '/');
+                    $this->items[$sd_name]['publisher']['logo'] = array(
+                        "@type"   => "ImageObject",
+                        "url"  => $logo_url,
+                        "width"  => $sizeAttributes['width'],
+                        "height"  => $sizeAttributes['height']
+                    );
+                }
+            }
+            
+            /*
+            $this->items[$sd_name]['publisher'] = array(
+                "@type"     => "Organization",
+                "name" 	    => $_CONF['site_name'],
+                "url" 	    => $_CONF['site_url'],
                 "logo" 		=>         
                     array(
                         "@type"   => "ImageObject",
-                        "url"  => "",
-                        "width"  => 240,
-                        "height"  => 60,
+                        "url"  => $_CONF['site_logo_url'],
+                        "width"  => $sizeAttributes['width'],
+                        "height"  => $sizeAttributes['height'],
                     ) 
-            );
+            ); */
             
             $this->items[$sd_name]['mainEntityOfPage'] = array(
                 "@type"     => "WebPage",

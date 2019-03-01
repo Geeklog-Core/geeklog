@@ -2156,6 +2156,7 @@ $LANG_confignames['Core'] = array(
     'mail_charset' => 'Email Character Set',
     'site_name' => 'Site Name',
     'site_slogan' => 'Slogan',
+    'path_site_logo' => 'Site Logo',
     'owner_name' => 'Owner Name',
     'microsummary_short' => 'Microsummary',
     'path_log' => 'Log',

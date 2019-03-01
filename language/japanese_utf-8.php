@@ -2154,6 +2154,7 @@ $LANG_confignames['Core'] = array(
     'mail_charset' => 'メールの文字セット',
     'site_name' => 'サイト名',
     'site_slogan' => 'スローガン',
+    'path_site_logo' => 'Site Logo',
     'owner_name' => '管理者名',
     'microsummary_short' => 'マイクロサマリ接頭子',
     'path_log' => 'ログ',

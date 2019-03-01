@@ -57,6 +57,9 @@ function update_ConfValuesFor221()
     
     // Default Structured Data type for new articles
     $c->add('structured_data_type_default',2,'select',1,7,39,1275,TRUE, $me, 7); // Setting article as the default
+    
+    // Add absolute path for logo image which is used by the Publisher property with Structured Data
+    $c->add('path_site_logo','','text',0,0,NULL,65,TRUE, $me, 0);
 
     return true;
 }
