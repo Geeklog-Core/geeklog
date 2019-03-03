@@ -2180,6 +2180,7 @@ $LANG_confignames['Core'] = array(
     'allow_user_themes' => 'Allow User Themes',
     'allow_user_language' => 'Allow User Language',
     'switchlang_homepage' => 'Switch Language Block Redirects to Homepage',
+    'new_item_set_current_lang' => 'Add Current Language Id to New Item',
     'allow_user_photo' => 'Allow User Photo',
     'allow_username_change' => 'Allow Username Changes',
     'allow_account_delete' => 'Allow Account Deletion',

@@ -121,7 +121,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $args['group_id'] = SEC_getFeatureGroup('staticpages.edit', $_USER['uid']);
     }
 
-    $args['sp_id'] = COM_sanitizeID($args['sp_id']);
+    $args['sp_id'] = COM_sanitizeID($args['sp_id'], true, true);
     if (!$gl_edit) {
         if (strlen($args['sp_id']) > STATICPAGE_MAX_ID_LENGTH) {
             $slug = '';
@@ -131,7 +131,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             if (function_exists('WS_makeId')) {
                 $args['sp_id'] = WS_makeId($slug, STATICPAGE_MAX_ID_LENGTH);
             } else {
-                $args['sp_id'] = COM_makeSid();
+                $args['sp_id'] = COM_makeSid(true);
             }
         }
     }

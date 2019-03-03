@@ -60,6 +60,9 @@ function update_ConfValuesFor221()
     
     // Add absolute path for logo image which is used by the Publisher property with Structured Data
     $c->add('path_site_logo','','text',0,0,NULL,65,TRUE, $me, 0);
+    
+    // Add switch to enable setting of language id for item if Geeklog Multi Language is setup
+    $c->add('new_item_set_current_lang',0,'select',6,28,0,380,TRUE, $me, 28);
 
     return true;
 }

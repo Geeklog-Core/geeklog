@@ -469,6 +469,7 @@ $_CONF_VALIDATE['Core']['language'] = array(
 );
 $_CONF_VALIDATE['Core']['allow_user_language'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['switchlang_homepage'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['new_item_set_current_lang'] = array('rule' => 'boolean');
 
 /* Subgroup Language, Tab Locale */
 $_CONF_VALIDATE['Core']['locale']     = array('rule' => 'stringOrEmpty');

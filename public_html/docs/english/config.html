@@ -1539,6 +1539,10 @@ the admin panel.</p>
     is on that topic and switches the language to Japanese, if a corresponding topic with the id "topic_ja" does not exist (or the user doesn't have access to it) then a 404 error will result after
     the language change.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_new_item_set_current_lang">new_item_set_current_lang</a></td>
+  <td valign="top">0</td>
+  <td valign="top">If set to 1, and multiple languages for the site is setup correctly, on new items (that support multiple languages and uses Geeklog's make id function COM_makeSid) the current language id will be added to the item id. Articles and the Staticpages Plugin currently support this option. While Blocks and Topics support multiple languages they do not automatically generate an id on a new item so they do not support this option.</td></tr>    
+<tr>
   <td valign="top"><a name="desc_language_files">language_files</a></td>
   <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language

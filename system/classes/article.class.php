@@ -468,7 +468,7 @@ class Article
                 WHERE (s.uid = u.uid) AND  (ta.tid = t.tid) AND (sid = '$sid')
                 AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1";
         } elseif ($mode === 'edit') {
-            $this->_sid = COM_makesid();
+            $this->_sid = COM_makesid(true);
             $this->_old_sid = $this->_sid;
 
             if (isset($_CONF['draft_flag'])) {
@@ -653,7 +653,7 @@ class Article
             $this->_owner_id = $this->_uid;
         } elseif ($mode === 'clone') {
             // new story, new sid ...
-            $this->_sid = COM_makeSid();
+            $this->_sid = COM_makeSid(true);
             $this->_old_sid = $this->_sid;
 
             // assign ownership to current user
@@ -1108,7 +1108,7 @@ class Article
     {
         global $_USER, $_CONF, $_TABLES;
 
-        $this->_sid = COM_makeSid();
+        $this->_sid = COM_makeSid(true);
 
         if (COM_isAnonUser()) {
             $this->_uid = 1;
@@ -2124,7 +2124,7 @@ class Article
         }
 
         // SID's are a special case:
-        $sid = COM_sanitizeID($array['sid']);
+        $sid = COM_sanitizeID($array['sid'], true, true);
         if (isset($array['old_sid'])) {
             $oldSid = COM_sanitizeID($array['old_sid'], false);
         } else {
@@ -2136,7 +2136,7 @@ class Article
         }
 
         if (empty($sid)) {
-            $sid = COM_makeSid();
+            $sid = COM_makeSid(true);
         }
 
         $this->_sid = $sid;

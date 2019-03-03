@@ -3493,19 +3493,30 @@ function COM_undoSpecialChars($string)
 
 /**
  * Makes an ID based on current date/time
- * This function creates a 17 digit sid for stories based on the 14 digit date
+ * This function creates a 17 digit id for articles based on the 14 digit date
  * and a 3 digit random number that was seeded with the number of microseconds
- * (.000001th of a second) since the last full second.
- * NOTE: this is now used for more than just stories!
+ * (.000001th of a second) since the last full second. Supports adding current
+ * language id to id if multiple languages enabled.
+ * NOTE: this is now used for other ids for plugins etc..
  *
- * @return   string  $sid  Story ID
+ * @param    boolean $multilang_support     Does item that id is for support Geeklog multiple languages
+ * @return   string  $id                    ID
  */
-function COM_makeSid()
+function COM_makeSid($multilang_support = false)
 {
-    $sid = date('YmdHis');
-    $sid .= rand(0, 999);
+    global $_CONF;
+    
+    $id = date('YmdHis');
+    $id .= rand(0, 999);
+    
+    if ($multilang_support && $_CONF['new_item_set_current_lang'] && COM_isMultiLanguageEnabled()) {
+        $langid = COM_getLanguageId();
+        if (!empty($langid)) {
+            $id .= '_' . $langid;
+        }    
+    }
 
-    return $sid;
+    return $id;
 }
 
 /**
@@ -6215,18 +6226,19 @@ function COM_sanitizeUrl($url, $allowed_protocols = '', $default_protocol = '')
 /**
  * Ensure an ID contains only alphanumeric characters, dots, dashes, or underscores
  *
- * @param    string  $id     the ID to sanitize
- * @param    boolean $new_id true = create a new ID in case we end up with an empty string
- * @return   string          the sanitized ID
+ * @param    string  $id                    the ID to sanitize
+ * @param    boolean $new_id                true = create a new ID in case we end up with an empty string
+ * @param    boolean $multilang_support     For new id only. Does item that id is for support Geeklog multiple languages
+ * @return   string                         the sanitized ID
  */
-function COM_sanitizeID($id, $new_id = true)
+function COM_sanitizeID($id, $new_id = true, $multilang_support = false)
 {
     $id = str_replace(' ', '', $id);
     $id = str_replace(array('/', '\\', ':', '+'), '-', $id);
     $id = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $id);
 
     if (empty($id) && $new_id) {
-        $id = COM_makesid();
+        $id = COM_makesid($multilang_support);
     }
 
     return $id;

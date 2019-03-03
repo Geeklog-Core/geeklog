@@ -741,7 +741,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         // check if a new sp_id has been suggested
         $sp_new_id = Geeklog\Input::fGet('sp_new_id', '');
         if (empty($sp_new_id)) {
-            $A['sp_id'] = COM_makesid();
+            $A['sp_id'] = COM_makesid(true);
         } else {
             $A['sp_id'] = $sp_new_id;
         }
@@ -768,7 +768,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(modified) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
-            $A['sp_id'] = COM_makesid();
+            $A['sp_id'] = COM_makesid(true);
             $A['clone_sp_id'] = $sp_id; // need this so we can load the correct topics
             $A['owner_id'] = $_USER['uid'];
             $A['unixdate'] = time();

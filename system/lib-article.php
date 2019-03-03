@@ -2185,7 +2185,7 @@ function service_submit_story($args, &$output, &$svc_msg)
     if (!isset($args['sid'])) {
         $args['sid'] = '';
     }
-    $args['sid'] = COM_sanitizeID($args['sid']);
+    $args['sid'] = COM_sanitizeID($args['sid'], true, true);
     if (!$gl_edit) {
         if (strlen($args['sid']) > STORY_MAX_ID_LENGTH) {
             $slug = '';
@@ -2195,7 +2195,7 @@ function service_submit_story($args, &$output, &$svc_msg)
             if (function_exists('WS_makeId')) {
                 $args['sid'] = WS_makeId($slug, STORY_MAX_ID_LENGTH);
             } else {
-                $args['sid'] = COM_makeSid();
+                $args['sid'] = COM_makeSid(true);
             }
         }
     }

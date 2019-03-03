@@ -2179,6 +2179,7 @@ $LANG_confignames['Core'] = array(
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
     'switchlang_homepage' => '言語切り替えブロックからトップページへリダイレクトする',
+    'new_item_set_current_lang' => 'Add Current Language Id to New Item',
     'allow_user_photo' => '写真登録を許可する',
     'allow_username_change' => 'ユーザー名変更を許可する',
     'allow_account_delete' => 'アカウント削除を許可する',

@@ -982,7 +982,7 @@ function WS_writeSync()
 }
 
 /**
- * Create a new ID, preferrably from a provided 'Slug:' header
+ * Create a new ID, preferably from a provided 'Slug:' header
  *
  * For more information on the 'Slug:' header, see RFC 5023, section 9.7
  *
