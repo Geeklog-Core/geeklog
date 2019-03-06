@@ -49,7 +49,7 @@
           <form action="{site_url}/search.php" method="get" id="header-searchform" class="uk-form uk-display-inline-block uk-navbar-flip">
             <div class="uk-form-icon">
               <i class="uk-icon-search" aria-hidden="true"></i>
-              <input type="text" id="header-search-box" size="15" maxlength="255" value="" name="query" placeholder="{button_search}"{xhtml}>
+              <input type="text" id="header-search-box" size="15" maxlength="255" value="" name="query" placeholder="{button_search}" title="{button_search}"{xhtml}>
               <input type="hidden" value="all" name="type"{xhtml}>
               <input type="hidden" value="all" name="keyType"{xhtml}>
               <input type="hidden" value="search" name="mode"{xhtml}>
