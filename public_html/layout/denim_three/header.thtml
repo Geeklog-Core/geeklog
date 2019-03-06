@@ -77,7 +77,7 @@
           <a class="uk-navbar-toggle" uk-search-icon href="#"></a>
           <div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0" style="width: 200px">
             <form action="{site_url}/search.php" method="get" id="header-searchform" class="uk-search uk-search-navbar uk-width-1-1">
-              <input type="search" id="header-search-box" class="uk-search-input" value="" name="query" size="15" maxlength="255" style="font-size:14px" placeholder="{button_search}" autofocus{xhtml}>
+              <input type="search" id="header-search-box" class="uk-search-input" value="" name="query" size="15" maxlength="255" style="font-size:14px" placeholder="{button_search}" title="{button_search}" autofocus{xhtml}>
               <input type="hidden" value="all" name="type"{xhtml}>
               <input type="hidden" value="all" name="keyType"{xhtml}>
               <input type="hidden" value="search" name="mode"{xhtml}>
