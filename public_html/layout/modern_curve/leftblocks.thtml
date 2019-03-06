@@ -9,7 +9,7 @@
         <div class="block-left-content">
           <form action="{site_url}/search.php" method="get" id="searchform" class="basic">
             <div>
-              <input type="text" value="{button_search}" size="16" maxlength="255" name="query" class="text"{xhtml}>
+              <input type="text" value="{button_search}" size="16" maxlength="255" name="query" class="text" title="{button_search}"{xhtml}>
               <input type="submit" value="" title="{button_search}" class="submit"{xhtml}>
               <input type="hidden" value="all" name="type"{xhtml}>
               <input type="hidden" value="all" name="keyType"{xhtml}>

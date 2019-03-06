@@ -5,9 +5,9 @@
     <h2 class="story_title" itemprop="headline">{story_title_link}</h2>
 
     <div class="story_icon">
-      {!if email_icon}<a title="{lang_email_story}" href="{email_story_url}" class="uk-icon-link" uk-tooltip="{lang_email_story}" uk-icon="mail"></a>{!endif}
-      {!if print_icon}<a title="{lang_print_story}" href="{print_story_url}" class="uk-icon-link" rel="nofollow" uk-tooltip="{lang_print_story}" uk-icon="file"></a>{!endif}
-      {!if edit_icon}<a title="{lang_edit_text}" href="{edit_url}" class="uk-icon-link" rel="nofollow" uk-tooltip="{lang_edit_text}" uk-icon="pencil"></a>{!endif}
+      {!if email_icon}<a title="{lang_email_story}" href="{email_story_url}" class="uk-icon-link" uk-tooltip="{lang_email_story}" uk-icon="mail" aria-label="{lang_email_story}"></a>{!endif}
+      {!if print_icon}<a title="{lang_print_story}" href="{print_story_url}" class="uk-icon-link" rel="nofollow" uk-tooltip="{lang_print_story}" uk-icon="file" aria-label="{lang_print_story}"></a>{!endif}
+      {!if edit_icon}<a title="{lang_edit_text}" href="{edit_url}" class="uk-icon-link" rel="nofollow" uk-tooltip="{lang_edit_text}" uk-icon="pencil" aria-label="{lang_edit_text}"></a>{!endif}
     </div>
 
     <ul class="story_status">
