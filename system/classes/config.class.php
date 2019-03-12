@@ -1012,7 +1012,7 @@ class config
                     ,'facebook_login','facebook_consumer_key','facebook_consumer_secret'
                     ,'linkedin_login','linkedin_consumer_key','linkedin_consumer_secret'
                     ,'twitter_login','twitter_consumer_key','twitter_consumer_secret'
-                    ,'google_login','google_consumer_key','google_consumer_secret'
+                    //,'google_login','google_consumer_key','google_consumer_secret'
                     ,'microsoft_login','microsoft_consumer_key','microsoft_consumer_secret'
                     ,'yahoo_login','yahoo_consumer_key','yahoo_consumer_secret'
                     ,'github_login','github_consumer_secret','github_consumer_key'

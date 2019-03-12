@@ -220,6 +220,13 @@ function edituser($uid = 0, $msg = 0)
             $remoteservice = '@' . $A['remoteservice'];
         }
     }
+    // Always show if account is a remote service
+    if (!empty($A['remoteservice'])) {
+        $user_templates->set_var('lang_convert_remote', $LANG28['convert_remote']);
+        $user_templates->set_var('lang_convert_remote_tooltip', COM_getTooltip('', $LANG28['convert_remote_desc'], '', '', 'information'));
+        $user_templates->set_var('lang_convert_remote_desc', $LANG28['convert_remote_desc']);
+    }
+        
     $user_templates->set_var('remoteservice', $remoteservice);
 
     $user_templates->clear_var('show_delete_photo');
@@ -558,9 +565,10 @@ function listusers()
  * @param    string $homepage     user's homepage URL
  * @param    array  $groups       groups the user belongs to
  * @param    string $delete_photo delete user's photo if == 'on'
+ * @param    string $convert_remote  Convert remote account to local if 'on'
  * @return   string                  HTML redirect or error message
  */
-function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $signature, $pgpkey, $about, $groups, $delete_photo = '', $userstatus = 3, $oldstatus = 3, $enable_twofactorauth = 0)
+function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $location, $signature, $pgpkey, $about, $groups, $delete_photo = '', $convert_remote = '', $userstatus = 3, $oldstatus = 3, $enable_twofactorauth = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04, $LANG28, $_USER_VERBOSE;
 
@@ -746,9 +754,16 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userSave'))) {
                 CUSTOM_userSave($uid);
             }
-            if (($_CONF['usersubmission'] == 1) && ($oldstatus == USER_ACCOUNT_AWAITING_APPROVAL)
-                && ($userstatus == USER_ACCOUNT_ACTIVE)
-            ) {
+            
+            $curremote = DB_getItem($_TABLES['users'], 'remoteservice', "uid = $uid");
+            $user_convert = 0;
+            if (!empty($curremote) && ($convert_remote == 'on')) {
+                $user_convert = USER_convertRemote($uid);
+                $curremote = '';
+            } 
+            
+            // If user submission that meets conditions make sure password email not already sent with remote account conversion
+            if (($_CONF['usersubmission'] == 1) && ($oldstatus == USER_ACCOUNT_AWAITING_APPROVAL) && ($userstatus == USER_ACCOUNT_ACTIVE) && ($user_convert != 2)) {
                 USER_createAndSendPassword($username, $email, $uid);
             }
             
@@ -1406,6 +1421,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // dele
     }
 } elseif (!empty($LANG_ADMIN['save']) && ($mode == $LANG_ADMIN['save']) && SEC_checkToken()) { // save
     $delphoto = Geeklog\Input::post('delete_photo', '');
+    $convertremote = Geeklog\Input::post('convert_remote', '');
     if (!isset($_POST['oldstatus'])) {
         $_POST['oldstatus'] = USER_ACCOUNT_ACTIVE;
     }
@@ -1437,7 +1453,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // dele
             Geeklog\Input::post('sig'),
             Geeklog\Input::post('pgpkey'),
             Geeklog\Input::post('about'),
-            Geeklog\Input::post('groups'), $delphoto,
+            Geeklog\Input::post('groups'), $delphoto, $convertremote, 
             Geeklog\Input::post('userstatus'),
             Geeklog\Input::post('oldstatus'),
             $enable_twofactorauth

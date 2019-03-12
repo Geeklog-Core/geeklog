@@ -14,12 +14,16 @@
       <dd class="controls_text">{user_lastlogin}</dd>
 
       <dt><label for="admin-edituser-username">{lang_username}</label></dt>
-      <dd><div><input type="text" maxlength="16" value="{username}" name="username" id="admin-edituser-username" class="uk-input size2"{xhtml}> {remoteservice}</div>
+      <dd><div><input type="text" maxlength="16" value="{username}" name="username" id="admin-edituser-username" class="uk-input size2"{xhtml}> {remoteservice}
+            {!if lang_convert_remote}
+            <input id="admin-edituser-convert-remote" type="checkbox" name="convert_remote"{xhtml}> <label for="admin-edituser-convert-remote">{lang_convert_remote} {lang_convert_remote_tooltip}</label> 
+            {!endif}
+          </div>
           {!if user_photo}
           {user_photo}
           {!endif}
           {!if show_delete_photo}
-          <label for="admin-edituser-delete-photo">{lang_delete_photo}</label> <input id="admin-edituser-delete-photo" class="uk-checkbox" type="checkbox" name="delete_photo"{xhtml}>
+          <div><input id="admin-edituser-delete-photo" class="uk-checkbox" type="checkbox" name="delete_photo"{xhtml}> <label for="admin-edituser-delete-photo">{lang_delete_photo}</label></div>
           {!endif}            
       </dd>
 

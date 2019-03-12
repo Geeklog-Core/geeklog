@@ -341,7 +341,9 @@ $LANG_ERROR = array(
     22 => 'Default Security Group Assignments',
     23 => 'User security group assignments for groups "Root" and "All Users" will be fixed along with the security group assignments for the "Admin" (2) user. The "Admin" user had duplicate permissions in some cases and these will be removed  after this upgrade.',
     24 => 'FCKEditor Removed',
-    25 => 'The Advanced Editor FCKEditor has been removed from Geeklog since development for it has been stopped. If your Geeklog website is currently set to use the FCKEditor it will be updated to use the editor which currently ships with Geeklog called the CKEditor.'
+    25 => 'The Advanced Editor FCKEditor has been removed from Geeklog since development for it has been stopped. If your Geeklog website is currently set to use the FCKEditor it will be updated to use the editor which currently ships with Geeklog called the CKEditor.',
+    26 => 'Google+ OAuth Login',
+    27 => 'The Google+ OAuth login method has been removed from Geeklog since the <a href="https://support.google.com/plus/answer/9195133" target="_blank">service shut down on April 2, 2019</a>. If you currently have users who use Google+ to log into Geeklog, all of these accounts will be changed to regular Geeklog login accounts when Geeklog is upgraded to v2.2.1.<br><br>To access these updated accounts, users will have to request their passwords through your Geeklog site login page. If they do not remember their user name or they do not have an email address setup for their account, the Admin will have to lookup and update the account manually.'    
 );
 
 // +---------------------------------------------------------------------------+

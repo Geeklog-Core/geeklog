@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f09dfc3260ea7a70f5c87775b8bd3835",
+    "content-hash": "ae006562fe575bb38d189ba997dc1b50",
     "packages": [
         {
             "name": "htmlawed/htmlawed",

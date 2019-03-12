@@ -29,7 +29,8 @@ function upgrade_message220()
 
     $upgradeMessages['2.2.0'] = array(
         1 => array('warning', 22, 23), // Fix User Security Group assignments for Groups: Root, Admin, All Users - Fix User Security Group assignments for Users: Admin
-        2 => array('warning', 24, 25) // FCKEditor removed
+        2 => array('warning', 24, 25), // FCKEditor removed
+        3 => array('warning', 26, 27) // Google+ OAuth Login Method removed
     );
 
     return $upgradeMessages;
@@ -60,7 +61,64 @@ function update_ConfValuesFor221()
     $c->add('path_site_logo','','text',0,0,NULL,65,TRUE, $me, 0);
     
     // Add switch to enable setting of language id for item if Geeklog Multi Language is setup
-    $c->add('new_item_set_current_lang',0,'select',6,28,0,380,TRUE, $me, 28);    
+    $c->add('new_item_set_current_lang',0,'select',6,28,0,380,TRUE, $me, 28);
+    
+    // Remove Google+ OAuth login method 
+    $c->del('google_login', $me);
+    $c->del('google_consumer_key', $me);
+    $c->del('google_consumer_secret', $me);
 
+    return true;
+}
+            
+/**
+ * Convert all user accounts that use Google+ OAuth login method to regular accounts
+ *
+ * @return bool
+ */
+function convertGoogleAccounts221()
+{
+    global $_TABLES;
+
+    $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
+    
+    // Find all Google accounts
+    $sql = "SELECT uid, status, email FROM {$_TABLES['users']} 
+        WHERE remoteservice = 'oauth.google'";
+    
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+        
+        $uid = $A['uid'];
+        $status = $A['status'];
+        $email = $A['email'];
+        
+        // Remove them from remote accounts group
+        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $remote_grp AND ug_uid = $uid");
+        
+        
+        // If user account is active and has no email then it cannot function as a regular account so lock it
+        // Cannot set status to USER_ACCOUNT_NEW_EMAIL since user doesn't know his password as a new one is being created
+        if ($status == USER_ACCOUNT_ACTIVE && empty($email)) {
+            $status = USER_ACCOUNT_LOCKED;
+        }
+        // If account looking for new email then lock it since user does not know password and admin has deemed email to be invalid
+        if ($status == USER_ACCOUNT_NEW_EMAIL) {
+            $status = USER_ACCOUNT_LOCKED;
+        }
+        
+        // Add null to remoteusername and remoteservice
+        $sql = "UPDATE {$_TABLES['users']} SET 
+        remoteusername = NULL, remoteservice = NULL, status = $status 
+        WHERE uid = $uid";
+        DB_query($sql);
+        
+        // Update user with random password
+        $passwd = ''; //Pass empty so random will be created
+        SEC_updateUserPassword($passwd, $uid);
+    }
+    
     return true;
 }

@@ -2930,6 +2930,7 @@ class Installer
                     } else {
                         $this->updateDB($_SQL, $progress);
                         update_ConfValuesFor221();
+                        convertGoogleAccounts221();
                     }
                     $currentGlVersion = '2.2.1';
                     break;

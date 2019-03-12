@@ -37,6 +37,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 }
 
 // As of Geeklog 2.2.0, both oauth-api and httpclient classes are managed by composer.
+// Also see https://www.phpclasses.org/package/7700-PHP-Authorize-and-access-APIs-using-OAuth.html
 
 // Enable to show debug info for OAuth
 $_SYSTEM['debug_oauth'] = false;
@@ -72,8 +73,8 @@ class OAuthConsumer
             case "github":
                 $service = "github";
                 break;
-            case "google":
-                $service = "Google";
+            //case "google":
+            //    $service = "Google";
                 break;
             case "linkedin":
                 $service = "LinkedIn";
@@ -126,12 +127,13 @@ class OAuthConsumer
                 $q_api   = array();
                 break;
 
+            /*
             case 'Google' :
                 $api_url = 'https://www.googleapis.com/oauth2/v1/userinfo';
                 $scope   = 'https://www.googleapis.com/auth/userinfo.email '.'https://www.googleapis.com/auth/userinfo.profile';
                 $q_api   = array();
                 break;
-
+            */
             case 'Microsoft' :
                 $api_url = 'https://apis.live.net/v5.0/me';
                 $scope   = 'wl.basic wl.emails';
@@ -346,8 +348,8 @@ class OAuthConsumer
                 }
                 break;
 
-            case 'Google' :
-                break;
+            //case 'Google' :
+            //    break;
 
             case 'Microsoft' :
                 break;
@@ -408,6 +410,7 @@ class OAuthConsumer
                 );
                 break;                
 
+            /*
             case 'Google' :
                 $homepage = $info->link;
 
@@ -429,7 +432,7 @@ class OAuthConsumer
                     'remotephoto'    => $info->picture,
                 );
                 break;                
-
+            */
             case 'Twitter' :
                 $mail = '';
                 if ( isset($info->email)) {

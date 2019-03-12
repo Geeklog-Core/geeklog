@@ -138,14 +138,14 @@ function USER_deleteAccount($uid)
  * @param    string $useremail user's email address
  * @return   boolean             true = success, false = an error occurred
  */
-function USER_createAndSendPassword($username, $useremail, $uid)
+function USER_createAndSendPassword($username, $useremail, $uid, $email_type = '')
 {
     global $_CONF, $LANG04;
 
     $passwd = null;
     SEC_updateUserPassword($passwd, $uid);
 
-    if (file_exists($_CONF['path_data'] . 'welcome_email.txt')) {
+    if ($email_type == '' && file_exists($_CONF['path_data'] . 'welcome_email.txt')) {
         $template = COM_newTemplate(CTL_core_templatePath($_CONF['path_data']));
         $template->set_file(array('mail' => 'welcome_email.txt'));
         $template->set_var('auth_info',
@@ -162,7 +162,11 @@ function USER_createAndSendPassword($username, $useremail, $uid)
         $template->parse('output', 'mail');
         $mailtext = $template->get_var('output');
     } else {
-        $mailtext = $LANG04[15] . "\n\n";
+        if ($email_type == 'convert_remote') {
+            $mailtext = $LANG04['email_convert_remote'] . "\n\n";
+        } else {
+            $mailtext = $LANG04[15] . "\n\n";
+        }
         $mailtext .= $LANG04[2] . ": $username\n";
         $mailtext .= $LANG04[4] . ": $passwd\n\n";
         $mailtext .= $LANG04[14] . "\n\n";
@@ -523,6 +527,64 @@ function USER_deletePhoto($photo, $abortOnError = true)
             }
         }
     }
+}
+
+/**
+ * Convert a user account from remote to local
+ *
+ * @param    int        $uid    User id
+ * @return   int                0 = Problems, not converted
+ *                              1 = User account converted successfully
+ *                              2 = User account converted successfully and email sent with password info
+ */
+function USER_convertRemote($uid)
+{
+    global $_TABLES;
+
+    $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
+    
+    // Find all Google accounts
+    $sql = "SELECT status, username, email, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid = $uid";
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+    if ($numRows == 1) {
+        list($status, $username, $email, $remoteusername, $remoteservice) = DB_fetchArray($result);
+        // Confirm actually a remote account
+        if (!empty($remoteusername) || !empty($remoteservice)) {
+            // Remove them from remote accounts group
+            DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $remote_grp AND ug_uid = $uid");
+            
+            // If user account is active and has no email then it cannot function as a regular account so lock it
+            // Cannot set status to USER_ACCOUNT_NEW_EMAIL since user doesn't know his password as a new one is being created
+            if ($status == USER_ACCOUNT_ACTIVE && empty($email)) {
+                $status = USER_ACCOUNT_LOCKED;
+            }
+            // If account looking for new email then lock it since user does not know password and admin has deemed email to be invalid
+            if ($status == USER_ACCOUNT_NEW_EMAIL) {
+                $status = USER_ACCOUNT_LOCKED;
+            }
+            
+            // Add null to remoteusername and remoteservice
+            $sql = "UPDATE {$_TABLES['users']} SET 
+            remoteusername = NULL, remoteservice = NULL, status = $status 
+            WHERE uid = $uid";
+            DB_query($sql);
+            
+            // Update user with random password
+            if ($status == USER_ACCOUNT_ACTIVE && !empty($email)) {
+                USER_createAndSendPassword($username, $email, $uid, 'convert_remote');
+                
+                return 1; // Account converted NO email sent
+            } else {
+                $passwd = NULL; //Pass null so random will be created
+                SEC_updateUserPassword($passwd, $uid);
+                
+                return 2; // Account converted and email sent
+            }
+        }
+    }
+    
+    return 0;
 }
 
 /**

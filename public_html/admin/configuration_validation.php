@@ -328,9 +328,9 @@ $_CONF_VALIDATE['Core']['linkedin_consumer_secret'] = array('rule' => 'stringOrE
 $_CONF_VALIDATE['Core']['twitter_login'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['twitter_consumer_key'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['twitter_consumer_secret'] = array('rule' => 'stringOrEmpty');
-$_CONF_VALIDATE['Core']['google_login'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['google_consumer_key'] = array('rule' => 'stringOrEmpty');
-$_CONF_VALIDATE['Core']['google_consumer_secret'] = array('rule' => 'stringOrEmpty');
+//$_CONF_VALIDATE['Core']['google_login'] = array('rule' => 'boolean');
+//$_CONF_VALIDATE['Core']['google_consumer_key'] = array('rule' => 'stringOrEmpty');
+//$_CONF_VALIDATE['Core']['google_consumer_secret'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['microsoft_login'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['microsoft_consumer_key'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['microsoft_consumer_secret'] = array('rule' => 'stringOrEmpty');
