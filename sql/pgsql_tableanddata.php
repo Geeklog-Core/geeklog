@@ -509,7 +509,7 @@ CREATE TABLE {$_TABLES['users']} (
   PRIMARY KEY (uid)
 );
   CREATE INDEX {$_TABLES['users']}_LOGIN ON {$_TABLES['users']}(uid,passwd,username);
-  CREATE INDEX {$_TABLES['users']}_username ON {$_TABLES['users']}(username);
+  CREATE UNIQUE INDEX {$_TABLES['users']}_username ON {$_TABLES['users']}(username);
   CREATE INDEX {$_TABLES['users']}_fullname ON {$_TABLES['users']}(fullname);
   CREATE INDEX {$_TABLES['users']}_email ON {$_TABLES['users']}(email);
   CREATE INDEX {$_TABLES['users']}_passwd ON {$_TABLES['users']}(passwd);

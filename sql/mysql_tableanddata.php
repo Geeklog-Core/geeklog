@@ -509,7 +509,7 @@ CREATE TABLE {$_TABLES['users']} (
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username),
-  INDEX users_username(username),
+  UNIQUE KEY users_username (username), 
   INDEX users_fullname(fullname),
   INDEX users_email(email),
   INDEX users_passwd(passwd),

@@ -228,8 +228,8 @@ function USER_sendActivationEmail($userName, $userEmail)
  * Also calls the custom user registration (if enabled) and plugin functions.
  * NOTE: Does NOT send out password emails.
  *
- * @param  string  $username    username (mandatory)
- * @param  string  $email       user's email address (mandatory)
+ * @param  string  $username    username (mandatory) and needs to be unique without any spaces in the front or trailing
+ * @param  string  $email       user's email address (mandatory) and should be unique
  * @param  string  $passwd      password (optional, see above)
  * @param  string  $fullname    user's full name (optional)
  * @param  string  $homepage    user's home page (optional)
@@ -243,7 +243,10 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
     global $_CONF, $_TABLES;
 
     $queueUser = false;
-    $username = GLText::remove4byteUtf8Chars($username);
+    
+    // username should have been trimmed of spaces and checked if unique before this as if not this function does not fail gracefully
+    // Might as well double check as having spaces and 4 byte characters could cause issues. Better to fail in this function than later in the process
+    $username = trim(GLText::remove4byteUtf8Chars($username)); 
     $username = DB_escapeString($username);
     $email = DB_escapeString($email);
 

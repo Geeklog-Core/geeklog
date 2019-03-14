@@ -28,9 +28,10 @@ function upgrade_message220()
     // error type means the user cannot continue upgrade until fixed
 
     $upgradeMessages['2.2.0'] = array(
-        1 => array('warning', 22, 23), // Fix User Security Group assignments for Groups: Root, Admin, All Users - Fix User Security Group assignments for Users: Admin
-        2 => array('warning', 24, 25), // FCKEditor removed
-        3 => array('warning', 26, 27) // Google+ OAuth Login Method removed
+        1 => array('warning', 22, 23),  // Fix User Security Group assignments for Groups: Root, Admin, All Users - Fix User Security Group assignments for Users: Admin
+        2 => array('warning', 24, 25),  // FCKEditor removed
+        3 => array('warning', 26, 27),  // Google+ OAuth Login Method removed
+        4 => array('warning', 28, 29)   // Fixed spaces around user names and removed duplicate usernames
     );
 
     return $upgradeMessages;
@@ -78,47 +79,161 @@ function update_ConfValuesFor221()
  */
 function convertGoogleAccounts221()
 {
-    global $_TABLES;
+    global $_TABLES, $_CONF;
+    
+    // Need to load lib-security.php since it has status definitions and functions we need
+    // Might as well check if lib-security exists. Who knows in future versions if it does, so rather not fail since this is not a critical fix
+    $file_pointer = $_CONF['path_system'] . 'lib-security.php';
+    if (file_exists($file_pointer)) {
+        require_once $file_pointer;
 
-    $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
+        $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
+        
+        // Find all Google accounts
+        $sql = "SELECT uid, status, email FROM {$_TABLES['users']} 
+            WHERE remoteservice = 'oauth.google'";
+        
+        $result = DB_query($sql);
+        $numRows = DB_numRows($result);
+        for ($i = 0; $i < $numRows; $i++) {
+            $A = DB_fetchArray($result);
+            
+            $uid = $A['uid'];
+            $status = $A['status'];
+            $email = $A['email'];
+            
+            // Remove them from remote accounts group
+            DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $remote_grp AND ug_uid = $uid");
+            
+            
+            // If user account is active and has no email then it cannot function as a regular account so lock it
+            // Cannot set status to USER_ACCOUNT_NEW_EMAIL since user doesn't know his password as a new one is being created
+            if ($status == USER_ACCOUNT_ACTIVE && empty($email)) {
+                $status = USER_ACCOUNT_LOCKED;
+            }
+            // If account looking for new email then lock it since user does not know password and admin has deemed email to be invalid
+            if ($status == USER_ACCOUNT_NEW_EMAIL) {
+                $status = USER_ACCOUNT_LOCKED;
+            }
+            
+            // Add null to remoteusername and remoteservice
+            $sql = "UPDATE {$_TABLES['users']} SET 
+            remoteusername = NULL, remoteservice = NULL, status = $status 
+            WHERE uid = $uid";
+            DB_query($sql);
+            
+            // Update user with random password
+            $passwd = ''; //Pass empty so random will be created
+            SEC_updateUserPassword($passwd, $uid);
+        }
+        
+        return true;
+    }
+}
+
+/**
+ * Remove blank username accounts and update any duplicate username accounts with new names
+ * Add Unique index to username column
+ *
+ * @return bool
+ */
+function fixDuplicateUsernames221()
+{
+    global $_TABLES;
     
-    // Find all Google accounts
-    $sql = "SELECT uid, status, email FROM {$_TABLES['users']} 
-        WHERE remoteservice = 'oauth.google'";
-    
+    // Delete blank usernames first
+    // Left users that are just spaces... hopefully none of these
+    $sql = "SELECT uid, username FROM {$_TABLES['users']} WHERE username = ''";
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
     for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result);
         
         $uid = $A['uid'];
-        $status = $A['status'];
-        $email = $A['email'];
+
+        // Blank usernames were sometimes generated via new Facebook Oauth accounts for Geeklog 2.2.0 and older.
+        // See: https://github.com/Geeklog-Core/geeklog/issues/861
+        // Should be only 1 record in user table (all our tests showed this) but lets delete anything just in case.. since we cannot call USER_deleteAccount($uid) here
+        // remove from all security groups
+        DB_delete($_TABLES['group_assignments'], 'ug_uid', $uid);
+
+        // remove user information and preferences
+        DB_delete($_TABLES['userprefs'], 'uid', $uid);
+        DB_delete($_TABLES['userindex'], 'uid', $uid);
+        DB_delete($_TABLES['usercomment'], 'uid', $uid);
+        DB_delete($_TABLES['userinfo'], 'uid', $uid);
+        DB_delete($_TABLES['backup_codes'], 'uid', $uid);
+
+        // avoid having orphand stories/comments by making them anonymous posts
+        DB_query("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
+        DB_query("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
+        DB_query("UPDATE {$_TABLES['stories']} SET owner_id = 1 WHERE owner_id = $uid");
+
+        // delete submissions
+        DB_delete($_TABLES['storysubmission'], 'uid', $uid);
+        DB_delete($_TABLES['commentsubmissions'], 'uid', $uid); // Includes article and plugin submissions
         
-        // Remove them from remote accounts group
-        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $remote_grp AND ug_uid = $uid");
-        
-        
-        // If user account is active and has no email then it cannot function as a regular account so lock it
-        // Cannot set status to USER_ACCOUNT_NEW_EMAIL since user doesn't know his password as a new one is being created
-        if ($status == USER_ACCOUNT_ACTIVE && empty($email)) {
-            $status = USER_ACCOUNT_LOCKED;
-        }
-        // If account looking for new email then lock it since user does not know password and admin has deemed email to be invalid
-        if ($status == USER_ACCOUNT_NEW_EMAIL) {
-            $status = USER_ACCOUNT_LOCKED;
-        }
-        
-        // Add null to remoteusername and remoteservice
-        $sql = "UPDATE {$_TABLES['users']} SET 
-        remoteusername = NULL, remoteservice = NULL, status = $status 
-        WHERE uid = $uid";
-        DB_query($sql);
-        
-        // Update user with random password
-        $passwd = ''; //Pass empty so random will be created
-        SEC_updateUserPassword($passwd, $uid);
+        // now delete the user itself
+        DB_delete($_TABLES['users'], 'uid', $uid);                
     }
+    
+    // Must find and remove all duplicate usernames before adding index
+    $sql = "SELECT username, COUNT(*) c FROM {$_TABLES['users']} GROUP BY username HAVING c > 1";
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+        
+        $dup_username = DB_escapeString(trim($A['username']));
+
+        // Now fix if possible. List local account last as it will be not considered dup since all others have been changed
+        $sql_B = "SELECT uid, username FROM {$_TABLES['users']} WHERE TRIM(username) = '$dup_username' ORDER BY remoteservice DESC";
+        $result_B = DB_query($sql_B);
+        $numRows_B = DB_numRows($result_B);
+        for ($i_B = 0; $i_B < $numRows_B; $i_B++) {
+            $B = DB_fetchArray($result_B);
+            
+            $uid = $B['uid'];
+            $username = trim($B['username']); // Need to trim spaces as this may have been in part what caused the duplicates
+            
+            $checkName = DB_getItem($_TABLES['users'], 'username', "TRIM(username)='" . DB_escapeString($username) . "' AND uid != $uid");
+            if (!empty($checkName)) {
+                /*
+                // Cannot call CUSTOM_uniqueRemoteUsername since in install
+                if (function_exists('CUSTOM_uniqueRemoteUsername')) {
+                    $username = CUSTOM_uniqueRemoteUsername($username, $remoteService);
+                }
+                */
+                if (strcasecmp($checkName, $username) == 0) {
+                    // Cannot call USER_uniqueUsername so took code from function
+                    // $username = USER_uniqueUsername($username);
+                    $try = $username;
+                    do {
+                        $try = DB_escapeString($try);
+                        $test_uid = DB_getItem($_TABLES['users'], 'uid', "username = '$try'");
+                        if (!empty($test_uid)) {
+                            $r = rand(2, 9999);
+                            if (strlen($username) > 12) {
+                                $try = sprintf('%s%d', substr($username, 0, 12), $r);
+                            } else {
+                                $try = sprintf('%s%d', $username, $r);
+                            }
+                        }
+                    } while (!empty($test_uid));
+                    $username = $try;                        
+                }
+                
+                // Save new name
+                DB_query("UPDATE {$_TABLES['users']} SET username = '" . DB_escapeString($username) . "' WHERE uid=$uid");
+            }
+        }
+    }
+    
+    // Remove old username index and add unique index on username
+    $sql = "ALTER TABLE {$_TABLES['users']} DROP INDEX users_username;";
+    DB_query($sql);
+    $sql = "ALTER TABLE {$_TABLES['users']} ADD UNIQUE KEY users_username (username);";
+    DB_query($sql);    
     
     return true;
 }

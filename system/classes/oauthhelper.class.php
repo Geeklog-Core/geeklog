@@ -242,52 +242,55 @@ class OAuthConsumer
     {
         global $_TABLES, $status, $uid, $_CONF;
 
-        // remote auth precludes usersubmission, and integrates user activation
+        // remote auth precludes user submission, and integrates user activation
         $status = USER_ACCOUNT_ACTIVE;
         
         $users = $this->_getCreateUserInfo($info);
         $userInfo = $this->_getUpdateUserInfo($info);
-    
-        $sql = "SELECT uid, status FROM {$_TABLES['users']} "
-            . "WHERE remoteusername = '" . DB_escapeString($users['remoteusername']) . "' "
-            . "AND remoteservice = '" . DB_escapeString($users['remoteservice']) . "'";
-
-        $result = DB_query($sql);
-        $tmp = DB_error();
-        $numRows = DB_numRows($result);
-
-        if (empty($tmp) && $numRows == 1) {
-            list($uid, $status) = DB_fetchArray($result);
-        } else {
-            // initial login - create account
-            $status = USER_ACCOUNT_ACTIVE;
-            $loginName = $users['loginname'];
-            $checkName = DB_getItem($_TABLES['users'], 'username', "username='" . DB_escapeString($loginName) . "'");
-            if (!empty($checkName)) {
-                if (function_exists('CUSTOM_uniqueRemoteUsername')) {
-                    /** @noinspection PhpUndefinedVariableInspection */
-                    $loginName = CUSTOM_uniqueRemoteUsername($loginName, $remoteService);
-                }
-                if (strcasecmp($checkName, $loginName) == 0) {
-                    $loginName = USER_uniqueUsername($loginName);
-                }
-            }
-            $users['loginname'] = $loginName;
-            $uid = USER_createAccount($users['loginname'], $users['email'], '', $users['fullname'], $users['homepage'], $users['remoteusername'], $users['remoteservice']);
-
-            if (is_array($users)) {
-                $this->_DBupdate_users($uid, $users);
-            }
-
-            if (is_array($userInfo)) {
-                $this->_DBupdate_userinfo($uid, $userInfo);
-            }
-
-            $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
-            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($remote_grp, $uid)");
-        }
         
-        return true;
+        // We need to make sure we get a remote username. The odd time it may not get returned do to outside server error
+        if (!empty($users['remoteusername'])) { 
+            $sql = "SELECT uid, status FROM {$_TABLES['users']} "
+                . "WHERE remoteusername = '" . DB_escapeString($users['remoteusername']) . "' "
+                . "AND remoteservice = '" . DB_escapeString($users['remoteservice']) . "'";
+
+            $result = DB_query($sql);
+            $tmp = DB_error();
+            $numRows = DB_numRows($result);
+
+            if (empty($tmp) && $numRows == 1) {
+                list($uid, $status) = DB_fetchArray($result);
+            } else {
+                // initial login - create account
+                $status = USER_ACCOUNT_ACTIVE;
+                $loginName = trim($users['loginname']);
+                $checkName = DB_getItem($_TABLES['users'], 'username', "username='" . DB_escapeString($loginName) . "'");
+                if (!empty($checkName) || empty($loginName)) { // also if for some reason blank login name we should create one
+                    if (function_exists('CUSTOM_uniqueRemoteUsername')) {
+                        /** @noinspection PhpUndefinedVariableInspection */
+                        $loginName = CUSTOM_uniqueRemoteUsername($loginName, $remoteService);
+                    }
+                    if (strcasecmp($checkName, $loginName) == 0) {
+                        $loginName = USER_uniqueUsername($loginName);
+                    }
+                }
+                $users['loginname'] = $loginName;
+                $uid = USER_createAccount($users['loginname'], $users['email'], '', $users['fullname'], $users['homepage'], $users['remoteusername'], $users['remoteservice']);
+
+                if (is_array($users)) {
+                    $this->_DBupdate_users($uid, $users);
+                }
+
+                if (is_array($userInfo)) {
+                    $this->_DBupdate_userinfo($uid, $userInfo);
+                }
+
+                $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
+                DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($remote_grp, $uid)");
+            }
+            
+            return true;
+        }
     }
 
     public function doSynch($info)

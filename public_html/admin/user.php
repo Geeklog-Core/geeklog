@@ -574,6 +574,8 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 
     $retval = '';
     $userChanged = false;
+    
+    $username = trim($username);
 
     if ($_USER_VERBOSE) {
         COM_errorLog("**** entering saveusers****", 1);
