@@ -2487,6 +2487,7 @@ body.center-right #config_content {
 #navigation .gl-navbar-small .uk-navbar-nav > li > a,
 #navigation .gl-navbar-small .uk-navbar-item,
 #navigation .gl-navbar-small .uk-navbar-toggle {
+  min-height: 41px;
   height: 41px;
   font-size: 13px;
   line-height: 40px;
