@@ -1930,7 +1930,7 @@ function plugin_getBlockLocations_article()
  */
 function plugin_configchange_article($group, $changes = array())
 {
-    global $_TABLES, $_CONF;
+    global $_TABLES, $_CONF, $_STRUCT_DATA;
 
     // If trim length changes then need to redo all related url's for articles
     if ($group == 'Core' && in_array('whats_related_trim', $changes)) {
