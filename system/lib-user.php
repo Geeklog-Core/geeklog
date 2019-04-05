@@ -533,7 +533,8 @@ function USER_deletePhoto($photo, $abortOnError = true)
 }
 
 /**
- * Convert a user account from remote to local
+ * Convert a user account from remote to local. 
+ * If user status is active and a email address exists then a new password email will be sent
  *
  * @param    int        $uid    User id
  * @return   int                0 = Problems, not converted

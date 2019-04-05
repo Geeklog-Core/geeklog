@@ -75,62 +75,31 @@ function update_ConfValuesFor221()
 }
 
 /**
- * Convert all user accounts that use Google+ OAuth login method to regular accounts
+ * Lock all user accounts that use Google+ OAuth login method since not supported any more
  *
  * @return bool
  */
-function convertGoogleAccounts221()
+function lockGoogleAccounts221()
 {
     global $_TABLES, $_CONF;
     
-    // Need to load lib-security.php since it has status definitions and functions we need
-    // Might as well check if lib-security exists. Who knows in future versions if it does, so rather not fail since this is not a critical fix
-    $file_pointer = $_CONF['path_system'] . 'lib-security.php';
-    if (file_exists($file_pointer)) {
-        require_once $file_pointer;
-
-        $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
-        
-        // Find all Google accounts
-        $sql = "SELECT uid, status, email FROM {$_TABLES['users']} 
-            WHERE remoteservice = 'oauth.google'";
-        
-        $result = DB_query($sql);
-        $numRows = DB_numRows($result);
-        for ($i = 0; $i < $numRows; $i++) {
-            $A = DB_fetchArray($result);
-            
-            $uid = $A['uid'];
-            $status = $A['status'];
-            $email = $A['email'];
-            
-            // Remove them from remote accounts group
-            DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $remote_grp AND ug_uid = $uid");
-            
-            
-            // If user account is active and has no email then it cannot function as a regular account so lock it
-            // Cannot set status to USER_ACCOUNT_NEW_EMAIL since user doesn't know his password as a new one is being created
-            if ($status == USER_ACCOUNT_ACTIVE && empty($email)) {
-                $status = USER_ACCOUNT_LOCKED;
-            }
-            // If account looking for new email then lock it since user does not know password and admin has deemed email to be invalid
-            if ($status == USER_ACCOUNT_NEW_EMAIL) {
-                $status = USER_ACCOUNT_LOCKED;
-            }
-            
-            // Add null to remoteusername and remoteservice
-            $sql = "UPDATE {$_TABLES['users']} SET 
-            remoteusername = NULL, remoteservice = NULL, status = $status 
-            WHERE uid = $uid";
-            DB_query($sql);
-            
-            // Update user with random password
-            $passwd = ''; //Pass empty so random will be created
-            SEC_updateUserPassword($passwd, $uid);
-        }
-        
-        return true;
-    }
+    // lib-security not loaded in install so define all user status constants as of Geeklog 2.2.1 here
+    /* Constants for account status */
+    define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
+    define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login. Email has been sent
+    define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
+    define('USER_ACCOUNT_ACTIVE', 3); // Active account
+    define('USER_ACCOUNT_LOCKED', 4); // Account is locked. User cannot login, emails to account is disabled
+    define('USER_ACCOUNT_NEW_EMAIL', 5); // Emails to account is disabled. User when login must submit new email address and verify before access to rest of website (under the user account)
+    define('USER_ACCOUNT_NEW_PASSWORD', 6); // User when login must submit new password before access to rest of website (under the user account), Only for regular accounts and not remote    
+    
+    // Lock all accounts that are not already locked or banned/disabled
+    $sql = "UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_LOCKED . "
+        WHERE remoteservice = 'oauth.google' AND status != " . USER_ACCOUNT_LOCKED . " AND status != " . USER_ACCOUNT_DISABLED;    
+    
+    $result = DB_query($sql);
+    
+    return true;
 }
 
 /**
