@@ -2931,7 +2931,6 @@ class Installer
                         $this->updateDB($_SQL, $progress);
                         update_ConfValuesFor221();
                         fixDuplicateUsernames221();
-                        lockGoogleAccounts221(); // Google OAuth method not supported anymore
                     }
                     $currentGlVersion = '2.2.1';
                     break;

@@ -73,8 +73,8 @@ class OAuthConsumer
             case "github":
                 $service = "github";
                 break;
-            //case "google":
-            //    $service = "Google";
+            case "google":
+                $service = "Google";
                 break;
             case "linkedin":
                 $service = "LinkedIn";
@@ -127,13 +127,15 @@ class OAuthConsumer
                 $q_api   = array();
                 break;
 
-            /*
             case 'Google' :
-                $api_url = 'https://www.googleapis.com/oauth2/v1/userinfo';
+                // For differences see: https://stackoverflow.com/questions/31277898/difference-between-v1-v2-and-v3-in-https-www-googleapis-com-oauth2-v3-certs
+                //$api_url = 'https://www.googleapis.com/oauth2/v1/userinfo';
+                $api_url = 'https://www.googleapis.com/oauth2/v2/userinfo';
+                // $api_url = 'https://www.googleapis.com/oauth2/v3/userinfo';
                 $scope   = 'https://www.googleapis.com/auth/userinfo.email '.'https://www.googleapis.com/auth/userinfo.profile';
                 $q_api   = array();
                 break;
-            */
+            
             case 'Microsoft' :
                 $api_url = 'https://apis.live.net/v5.0/me';
                 $scope   = 'wl.basic wl.emails';
@@ -351,8 +353,8 @@ class OAuthConsumer
                 }
                 break;
 
-            //case 'Google' :
-            //    break;
+            case 'Google' :
+                break;
 
             case 'Microsoft' :
                 break;
@@ -412,17 +414,8 @@ class OAuthConsumer
                     'remotephoto'    => $info->{'avatar_url'},
                 );
                 break;                
-
-            /*
+            
             case 'Google' :
-                $homepage = $info->link;
-
-                $plusPos = strpos($homepage,"+");
-                if ( $plusPos !== false ) {
-                    $username = substr($homepage,strlen("https://plug.google.com/+"));
-                } else {
-                    $username = "";
-                }
                 $users = array(
                     'loginname'      => (isset($info->given_name) ? $info->given_name : $info->id),
                     'email'          => $info->email,
@@ -435,7 +428,7 @@ class OAuthConsumer
                     'remotephoto'    => $info->picture,
                 );
                 break;                
-            */
+            
             case 'Twitter' :
                 $mail = '';
                 if ( isset($info->email)) {

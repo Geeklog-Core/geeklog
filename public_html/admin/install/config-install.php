@@ -243,6 +243,9 @@ function install_config()
     $c->add('twitter_login',0,'select',4,16,1,356,TRUE, $me, 16);
     $c->add('twitter_consumer_key','','text',4,16,NULL,357,TRUE, $me, 16);
     $c->add('twitter_consumer_secret','','text',4,16,NULL,358,TRUE, $me, 16);
+    $c->add('google_login',0,'select',4,16,1,359,TRUE, $me, 16);
+    $c->add('google_consumer_key','','text',4,16,NULL,360,TRUE, $me, 16);
+    $c->add('google_consumer_secret','','text',4,16,NULL,361,TRUE, $me, 16);    
     $c->add('microsoft_login',0,'select',4,16,1,362,TRUE, $me, 16);
     $c->add('microsoft_consumer_key','','text',4,16,NULL,363,TRUE, $me, 16);
     $c->add('microsoft_consumer_secret','','text',4,16,NULL,364,TRUE, $me, 16);

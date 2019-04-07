@@ -30,7 +30,7 @@ function upgrade_message220()
     $upgradeMessages['2.2.0'] = array(
         1 => array('warning', 22, 23),  // Fix User Security Group assignments for Groups: Root, Admin, All Users - Fix User Security Group assignments for Users: Admin
         2 => array('warning', 24, 25),  // FCKEditor removed
-        3 => array('warning', 26, 27),  // Google+ OAuth Login Method removed
+        3 => array('warning', 26, 27),  // Google+ OAuth Login switched to Google OAuth Login 
         4 => array('warning', 28, 29)   // Fixed spaces around user names and removed duplicate usernames
     );
 
@@ -63,40 +63,7 @@ function update_ConfValuesFor221()
     
     // Add switch to enable setting of language id for item if Geeklog Multi Language is setup
     $c->add('new_item_set_current_lang',0,'select',6,28,0,380,TRUE, $me, 28);
-    
-    // Remove Google+ OAuth login method 
-    $c->del('google_login', $me);
-    $c->del('google_consumer_key', $me);
-    $c->del('google_consumer_secret', $me);
 
-    return true;
-}
-
-/**
- * Lock all user accounts that use Google+ OAuth login method since not supported any more
- *
- * @return bool
- */
-function lockGoogleAccounts221()
-{
-    global $_TABLES, $_CONF;
-    
-    // lib-security not loaded in install so define all user status constants as of Geeklog 2.2.1 here
-    /* Constants for account status */
-    define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
-    define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login. Email has been sent
-    define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
-    define('USER_ACCOUNT_ACTIVE', 3); // Active account
-    define('USER_ACCOUNT_LOCKED', 4); // Account is locked. User cannot login, emails to account is disabled
-    define('USER_ACCOUNT_NEW_EMAIL', 5); // Emails to account is disabled. User when login must submit new email address and verify before access to rest of website (under the user account)
-    define('USER_ACCOUNT_NEW_PASSWORD', 6); // User when login must submit new password before access to rest of website (under the user account), Only for regular accounts and not remote    
-    
-    // Lock all accounts that are not already locked or banned/disabled
-    $sql = "UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_LOCKED . "
-        WHERE remoteservice = 'oauth.google' AND status != " . USER_ACCOUNT_LOCKED . " AND status != " . USER_ACCOUNT_DISABLED;    
-    
-    $result = DB_query($sql);
-    
     return true;
 }
 
