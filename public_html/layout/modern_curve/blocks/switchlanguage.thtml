@@ -4,7 +4,7 @@
     <div>
         <input type="hidden" name="oldlang" value="{langId}"{XHTML}>
         <input type="hidden" name="itemid" value="{itemId}"{XHTML}>
-        <input type="hidden" name="itemtype" value="{itemtype}"{XHTML}>
+        <input type="hidden" name="itemtype" value="{itemType}"{XHTML}>
         <select onchange="change.submit()" name="lang">
             {language_options}
         </select>
