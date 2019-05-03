@@ -1,65 +1,17 @@
 [
     {
-        "name": "htmlawed/htmlawed",
-        "version": "1.1.22",
-        "version_normalized": "1.1.22.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kesar/HTMLawed.git",
-            "reference": "b270453ba016ee4c6dae585f047d1e4f3cc456a1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kesar/HTMLawed/zipball/b270453ba016ee4c6dae585f047d1e4f3cc456a1",
-            "reference": "b270453ba016ee4c6dae585f047d1e4f3cc456a1",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">4.4.0"
-        },
-        "time": "2016-08-27T18:53:27+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "htmLawed.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+",
-            "LGPL-3.0"
-        ],
-        "authors": [
-            {
-                "name": "Santosh Patnaik",
-                "homepage": "http://www.bioinformatics.org/people/index.php?user_hash=558b661f92d0ff7b",
-                "role": "Developer"
-            }
-        ],
-        "description": "htmLawed - Process text with HTML markup to make it more compliant with HTML standards and administrative policies",
-        "homepage": "http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/",
-        "keywords": [
-            "HTMLtidy",
-            "html",
-            "sanitize",
-            "strip",
-            "tags"
-        ]
-    },
-    {
         "name": "matthiasmullie/minify",
-        "version": "1.3.60",
-        "version_normalized": "1.3.60.0",
+        "version": "1.3.61",
+        "version_normalized": "1.3.61.0",
         "source": {
             "type": "git",
             "url": "https://github.com/matthiasmullie/minify.git",
-            "reference": "ab7fea80ce5ce6549baaf272bc8bd926a7e08f90"
+            "reference": "d5acb8ce5b6acb7d11bafe97cecc533f6e4fd751"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/ab7fea80ce5ce6549baaf272bc8bd926a7e08f90",
-            "reference": "ab7fea80ce5ce6549baaf272bc8bd926a7e08f90",
+            "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/d5acb8ce5b6acb7d11bafe97cecc533f6e4fd751",
+            "reference": "d5acb8ce5b6acb7d11bafe97cecc533f6e4fd751",
             "shasum": ""
         },
         "require": {
@@ -75,7 +27,7 @@
         "suggest": {
             "psr/cache-implementation": "Cache implementation to use with Minify::cache"
         },
-        "time": "2018-04-18T08:50:35+00:00",
+        "time": "2018-11-26T23:10:39+00:00",
         "bin": [
             "bin/minifycss",
             "bin/minifyjs"
@@ -111,17 +63,17 @@
     },
     {
         "name": "matthiasmullie/path-converter",
-        "version": "1.1.1",
-        "version_normalized": "1.1.1.0",
+        "version": "1.1.2",
+        "version_normalized": "1.1.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/matthiasmullie/path-converter.git",
-            "reference": "3082a6838be02b930239a97d38b5c9da4d693aca"
+            "reference": "5e4b121c8b9f97c80835c1d878b0812ba1d607c9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/matthiasmullie/path-converter/zipball/3082a6838be02b930239a97d38b5c9da4d693aca",
-            "reference": "3082a6838be02b930239a97d38b5c9da4d693aca",
+            "url": "https://api.github.com/repos/matthiasmullie/path-converter/zipball/5e4b121c8b9f97c80835c1d878b0812ba1d607c9",
+            "reference": "5e4b121c8b9f97c80835c1d878b0812ba1d607c9",
             "shasum": ""
         },
         "require": {
@@ -131,7 +83,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.8"
         },
-        "time": "2018-02-02T11:30:10+00:00",
+        "time": "2018-10-25T15:19:41+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -162,17 +114,17 @@
     },
     {
         "name": "paragonie/random_compat",
-        "version": "v2.0.17",
-        "version_normalized": "2.0.17.0",
+        "version": "v2.0.18",
+        "version_normalized": "2.0.18.0",
         "source": {
             "type": "git",
             "url": "https://github.com/paragonie/random_compat.git",
-            "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
+            "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
-            "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
+            "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
+            "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
             "shasum": ""
         },
         "require": {
@@ -184,7 +136,7 @@
         "suggest": {
             "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
         },
-        "time": "2018-07-04T16:31:37+00:00",
+        "time": "2019-01-03T20:59:08+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -213,20 +165,20 @@
     },
     {
         "name": "pear/console_getopt",
-        "version": "v1.4.1",
-        "version_normalized": "1.4.1.0",
+        "version": "v1.4.2",
+        "version_normalized": "1.4.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pear/Console_Getopt.git",
-            "reference": "82f05cd1aa3edf34e19aa7c8ca312ce13a6a577f"
+            "reference": "6c77aeb625b32bd752e89ee17972d103588b90c0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pear/Console_Getopt/zipball/82f05cd1aa3edf34e19aa7c8ca312ce13a6a577f",
-            "reference": "82f05cd1aa3edf34e19aa7c8ca312ce13a6a577f",
+            "url": "https://api.github.com/repos/pear/Console_Getopt/zipball/6c77aeb625b32bd752e89ee17972d103588b90c0",
+            "reference": "6c77aeb625b32bd752e89ee17972d103588b90c0",
             "shasum": ""
         },
-        "time": "2015-07-20T20:28:12+00:00",
+        "time": "2019-02-06T16:52:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -435,27 +387,27 @@
     },
     {
         "name": "pear/pear-core-minimal",
-        "version": "v1.10.6",
-        "version_normalized": "1.10.6.0",
+        "version": "v1.10.9",
+        "version_normalized": "1.10.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pear/pear-core-minimal.git",
-            "reference": "052868b244d31f822796e7e9981f62557eb256d4"
+            "reference": "742be8dd68c746a01e4b0a422258e9c9cae1c37f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/052868b244d31f822796e7e9981f62557eb256d4",
-            "reference": "052868b244d31f822796e7e9981f62557eb256d4",
+            "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/742be8dd68c746a01e4b0a422258e9c9cae1c37f",
+            "reference": "742be8dd68c746a01e4b0a422258e9c9cae1c37f",
             "shasum": ""
         },
         "require": {
-            "pear/console_getopt": "~1.3",
+            "pear/console_getopt": "~1.4",
             "pear/pear_exception": "~1.0"
         },
         "replace": {
             "rsky/pear-core-min": "self.version"
         },
-        "time": "2018-08-22T19:28:09+00:00",
+        "time": "2019-03-13T18:15:44+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -542,9 +494,7 @@
         "version_normalized": "1.0.5.0",
         "dist": {
             "type": "zip",
-            "url": "https://www.phpclasses.org/install/package/httpclient.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://www.phpclasses.org/install/package/httpclient.zip"
         },
         "require": {
             "phpclasses/sasl": ">=1.0.0"
@@ -564,9 +514,7 @@
         "version_normalized": "1.0.104.0",
         "dist": {
             "type": "zip",
-            "url": "https://www.phpclasses.org/install/package/oauth-api.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://www.phpclasses.org/install/package/oauth-api.zip"
         },
         "require": {
             "phpclasses/httpclient": "1.0.5"
@@ -590,9 +538,7 @@
         "version_normalized": "1.0.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://www.phpclasses.org/install/package/sasl.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://www.phpclasses.org/install/package/sasl.zip"
         },
         "type": "library",
         "installation-source": "dist",
@@ -610,17 +556,17 @@
     },
     {
         "name": "robthree/twofactorauth",
-        "version": "1.6.5",
-        "version_normalized": "1.6.5.0",
+        "version": "1.6.6",
+        "version_normalized": "1.6.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/RobThree/TwoFactorAuth.git",
-            "reference": "f5f58a4c62d0336a0e6175856894a51f3565dad2"
+            "reference": "7477d5d65625b7fe33cb338b98e419d394e9e9fd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/RobThree/TwoFactorAuth/zipball/f5f58a4c62d0336a0e6175856894a51f3565dad2",
-            "reference": "f5f58a4c62d0336a0e6175856894a51f3565dad2",
+            "url": "https://api.github.com/repos/RobThree/TwoFactorAuth/zipball/7477d5d65625b7fe33cb338b98e419d394e9e9fd",
+            "reference": "7477d5d65625b7fe33cb338b98e419d394e9e9fd",
             "shasum": ""
         },
         "require": {
@@ -629,7 +575,7 @@
         "require-dev": {
             "phpunit/phpunit": "@stable"
         },
-        "time": "2018-06-09T10:09:59+00:00",
+        "time": "2019-03-19T21:51:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
