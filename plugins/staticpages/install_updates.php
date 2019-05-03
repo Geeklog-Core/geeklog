@@ -118,6 +118,10 @@ function staticpages_update_ConfValues_1_7_1()
 
     // Default Structured Data type for new pages
     $c->add('structured_data_type_default', $_SP_DEFAULT['structured_data_type_default'], 'select', 0, 0, 39, 126, true, 'staticpages', 0);
+    
+    // Deleted somewhat duplicate config value that was added on new installs of Staticpages 1.7.0 (not on upgrades)
+    // The actual config value is hidden and used in support of multi language pages (see _getLanguageInfoFromURL in lib-common)
+    $c->del('langurl_staticpages', 'staticpages');
 
     return true;
 }

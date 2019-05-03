@@ -211,8 +211,6 @@ function plugin_initconfig_staticpages()
                 0, 0, 0, 128, true, 'staticpages', 0);
         $c->add('default_cache_time', $_SP_DEFAULT['default_cache_time'], 'text',
                 0, 0, null, 129, true, 'staticpages', 0);
-        $c->add('langurl_staticpages',array('staticpages', 'index.php', 'page'),'@hidden'
-                ,0, 0, null, 130, true, 'staticpages', 0);
         $c->add('langurl_staticpages',array('staticpages', 'index.php', 'page'),'@hidden',7,31,1,1830,TRUE, 'Core', 31); // Hidden config option for Core used to determine language of staticpage url (see _getLanguageInfoFromURL in lib-common)
 
         $c->add('tab_whatsnew', NULL, 'tab', 0, 1, NULL, 0, true, 'staticpages', 1);
