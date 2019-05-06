@@ -7045,7 +7045,7 @@ function COM_isMultiLanguageEnabled()
   */
 function _getLanguageInfoFromURL()
 {
-    global $_CONF, $_URL;
+    global $_CONF;
 
     $retval = array('','','');
 
@@ -7068,28 +7068,49 @@ function _getLanguageInfoFromURL()
         // $c->add('langurl_article',array('', 'article.php', 'story'),'@hidden',7,31,1,1830,TRUE, 'Core', 31);
         // $c->add('langurl_staticpages',array('staticpages', 'index.php', 'page'),'@hidden',7,31,1,1830,TRUE, 'Core', 31);
         
-        //$url = COM_getCurrentURL();
+        // ***************************
+        // Addtional Notes for Debugging
+        // For some reason this function gets called 2 times on a page load for the default URLs and URL_Rewrite URLs. It gets called 3 times if URL_Routing is enabled.
+        // Because of this after the first call to this function the $_SERVER['REQUEST_URI'] reverts back to the default URL for some unknown reason (I think it has to do with the URL Class)
+        // So that is why with URL_Routing enabled we check it just the same way as the default url. 
+        // ***************************
+        //echo $_SERVER['REQUEST_URI']; // /article.php/english_en/article.php/english_en 
         $curdirectory = ltrim(ltrim(dirname($_SERVER['REQUEST_URI']), '\\'), '/');
-        $curfilename = basename($_SERVER['SCRIPT_NAME']);
+        $site_path = ltrim(ltrim(parse_url($_CONF['site_url'], PHP_URL_PATH), '\\'), '/'); // Need to compare in case site_url has a directory ie www.domain.com/site/
+        $curdirectory = ltrim(ltrim(ltrim($curdirectory, $site_path), '\\'), '/');
+
+        $curfilename = basename($_SERVER['SCRIPT_NAME']);        
         
         // URL parts of array returned are: plugin name, directory, filename, id
         $url_lang = PLG_getLanguageURL();
-        
+
         foreach ($url_lang as $value) {
             $var = "";
-            // Found a matching directory and file
-            if ($_CONF['url_rewrite']) {
-                if (empty($value[1])) {
+
+            // Find a Match
+            
+            // Check for URL Rewrite enabled only
+            if ($_CONF['url_rewrite'] AND !$_CONF['url_routing']) {
+                if ($value[0] == 'topic') { // For Topic - Special Case
+                    $checkdir = $value[2] . "/" . $value[3];
+                } elseif ($value[0] == 'article') { // For Article - Special Case
                     $checkdir = $value[2];
-                } else {
+                } else { // For Plugins
                     $checkdir = $value[1] . "/" . $value[2];
+                }                
+                if ($curdirectory == $checkdir) {
+                    // Retrieve matching Variable
+                    if ($value[0] == 'topic') { // For Topic - Special Case
+                        COM_setArgNames(array(TOPIC_PLACEHOLDER, $value[3]));
+                        if (strcasecmp(COM_getArgument(TOPIC_PLACEHOLDER), $value[3]) === 0) {
+                            $var = COM_getArgument($value[3]);
+                        }
+                    } else {
+                        COM_setArgNames(array($value[3]));
+                        $var = COM_applyFilter(COM_getArgument($value[3]));
+                    }
                 }
-                
-                if ($curdirectory == $checkdir OR ($_CONF['url_routing'] AND ($curfilename == $checkdir))) {
-                    // Found a matching variable
-                    COM_setArgNames(array($value[3]));
-                    $var = COM_applyFilter(COM_getArgument($value[3]));                    
-                }
+            // Check for Default URL OR Check for URL Rewrite and URL Routing enabled (eith with index.php or without)
             } else {
                 if ($curdirectory . "/" . $curfilename == $value[1] . "/" . $value[2]) {
                     // Found a matching variable
