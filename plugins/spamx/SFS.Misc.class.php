@@ -94,7 +94,7 @@ class SFS extends BaseCommand
         }
 
         $em = urlencode($email);
-        $query = "http://www.stopforumspam.com/api?f=serial&email=$em";
+        $query = "http://api.stopforumspam.org/api?f=serial&email=$em";
         if (!empty($ip)) {
             $query .= "&ip=$ip";
         }

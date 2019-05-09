@@ -62,7 +62,7 @@ class SFSbase
 
 
         $ip = $_SERVER['REMOTE_ADDR'];
-        $query = "http://www.stopforumspam.com/api?f=serial&ip=$ip";
+        $query = "http://api.stopforumspam.org/api?f=serial&ip=$ip";
 
         $req = new HTTP_Request2(
             $query,
