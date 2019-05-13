@@ -226,10 +226,16 @@ class Language
     {
         global $_CONF, $LANG_ADMIN;
 
-        if ($fieldName === 'id') {
-            $fieldValue = '<a href="'
-                . $_CONF['site_admin_url'] . '/language.php?mode=edit&amp;id='
-                . $fieldValue . '" title="' . $LANG_ADMIN['edit'] . '">' . $icons['edit'] . '</a>';
+        switch ($fieldName) {
+            case 'id':
+                $fieldValue = '<a href="'
+                    . $_CONF['site_admin_url'] . '/language.php?mode=edit&amp;id='
+                    . $fieldValue . '" title="' . $LANG_ADMIN['edit'] . '">' . $icons['edit'] . '</a>';
+                break;    
+                
+            case 'value':
+                $fieldValue = COM_truncate(htmlspecialchars($fieldValue), 50, '...');
+                break;
         }
 
         return $fieldValue;
@@ -340,7 +346,7 @@ class Language
         $varName = trim(\Geeklog\Input::fPost('var_name', ''));
         $language = \Geeklog\Input::fPost('language', '');
         $name = trim(\Geeklog\Input::fPost('name', ''));
-        $value = \Geeklog\Input::fPost('value', '');
+        $value = COM_stripslashes(\Geeklog\Input::Post('value', ''));
 
         if (($id >= 0) && !empty($varName) && !empty($language)) {
             $varName = DB_escapeString($varName);

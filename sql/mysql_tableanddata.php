@@ -184,10 +184,10 @@ CREATE TABLE {$_TABLES['groups']} (
 $_SQL[] ="
 CREATE TABLE {$_TABLES['language_items']} (
   id INT(11) NOT NULL AUTO_INCREMENT,
-  var_name VARCHAR(30) NOT NULL,
-  language VARCHAR(30) NOT NULL,
-  name VARCHAR(30) NOT NULL,
-  value VARCHAR(255) NOT NULL DEFAULT '',
+  var_name varchar(30) NOT NULL,
+  language varchar(30) NOT NULL,
+  name varchar(30) NOT NULL,
+  value text,
   PRIMARY KEY (id)
 ) ENGINE=MyISAM
 ";

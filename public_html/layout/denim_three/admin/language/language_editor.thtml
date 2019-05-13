@@ -16,7 +16,7 @@
       <dd><input type="text" size="30" maxlength="30" value="{name}" name="name" id="admin-language-editor-name" class="uk-input size5"{xhtml}></dd>
 
       <dt><label for="admin-language-editor-value">{lang_value}</label></dt>
-      <dd><input type="text" size="50" maxlength="255" value="{value}" name="value" id="admin-language-editor-value" class="uk-input size8"{xhtml}></dd>
+      <dd><textarea cols="70" rows="3" name="value" id="admin-language-editor-value" class="uk-textarea uk-width-auto">{value}</textarea></dd>
     </dl>
 
     <div class="submit">

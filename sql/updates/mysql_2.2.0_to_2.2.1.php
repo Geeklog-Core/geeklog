@@ -19,6 +19,9 @@ $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";
 
+// Language Override value can now be longer than 255 characters
+$_SQL[] = "ALTER TABLE {$_TABLES['language_items']} CHANGE `value` `value` TEXT";
+
 /**
  * Upgrade Messages
  */
