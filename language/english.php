@@ -1463,6 +1463,8 @@ $LANG_LANG = array(
     'language'              => 'Language',
     'name'                  => 'Variable Element',
     'var_name'              => 'Variable Name',
+    'name_tip'              => 'Required just for language arrays.',
+    'var_name_tip'          => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
     'value'                 => 'New Value'
 );
 

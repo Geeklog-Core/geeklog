@@ -2062,3 +2062,14 @@ function plugin_dopluginsearch_polls($query, $dateStart, $dateEnd, $topic, $type
 
     return $search;
 }
+
+/**
+ * Lets Geeklog know the names of language variables and arrays that can be overridden if need be
+ *
+ * @return   array
+ */
+function plugin_getlanguageoverrides_polls()
+{
+
+    return array('LANG_POLLS');
+}

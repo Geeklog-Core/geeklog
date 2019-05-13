@@ -1458,12 +1458,14 @@ $LANG33 = array(
 $LANG_LANG = array(
     'language_admin_title'  => 'Language Overrides',
     'language_manager'      => 'Language Override Manager',
-    'new_language_msg'      => 'To modify or delete a language override item, click on that item\'s edit icon below. To create a new override, click on "Create New" above. Language overrides work for both Geeklog itself and any plugins installed.',
+    'new_language_msg'      => 'To modify or delete a language override item, click on that item\'s edit icon below. To create a new override, click on "Create New" above. Language overrides work for both Geeklog itself and any plugins installed that support this feature. Please note, not all language variables may be overwritten',
     'language_editor'       => 'Language Override Editor',
     'id'                    => 'ID',
     'language'              => 'Language',
     'name'                  => 'Variable Element',
     'var_name'              => 'Variable Name',
+    'name_tip'              => 'Required just for language arrays.',
+    'var_name_tip'          => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
     'value'                 => 'New Value'
 );
 

@@ -2327,3 +2327,14 @@ function plugin_usercontributed_calendar($uid)
 
     return $retval;
 }
+
+/**
+ * Lets Geeklog know the names of language variables and arrays that can be overridden if need be
+ *
+ * @return   array
+ */
+function plugin_getlanguageoverrides_calendar()
+{
+
+    return array('LANG_CAL_1', 'LANG_CAL_2', '_LANG_CAL_SEARCH', 'LANG_CAL_MESSAGE', 'PLG_calendar_MESSAGE4');
+}

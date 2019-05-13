@@ -3718,7 +3718,7 @@ function PLG_collectSitemapItems($type, $uid = 1, $limit = 0)
     return $result;
 }
     
-    /**
+/**
  * Prepare a list of all plugins that a user has contributed content too.
  * If plugin finds content for user then should return text else then nothing.
  * Used by User Batch Admin to show in user list if user has contributed
@@ -3752,4 +3752,38 @@ function PLG_userContributed($uid)
     }
 
     return $retval;
+}
+
+/**
+ * This function will return an array of language variable names and arrays that can
+ * be over written by Geeklog using the Language Override Manager
+ *
+ * @return   array      will be used by language class
+ * @since    Geeklog 2.2.1
+ */
+function PLG_getLanguageOverrides()
+{
+    global $_PLUGINS;
+
+    $overrides = array();
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_getlanguageoverrides_' . $pi_name;
+        if (function_exists($function)) {
+            $retarray = $function();
+            if (is_array($retarray)) {
+                $overrides = array_merge($overrides, $retarray);
+            }
+        }
+    }
+
+    $function = 'CUSTOM_getlanguageoverrides';
+    if (function_exists($function)) {
+        $retarray = $function();
+        if (is_array($retarray)) {
+            $overrides = array_merge($overrides, $retarray);
+        }
+    }
+
+    return $overrides;
 }

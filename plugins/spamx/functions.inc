@@ -708,6 +708,17 @@ function plugin_itemPreSave_spamx($type, $username)
 }
 
 /**
+ * Lets Geeklog know the names of language variables and arrays that can be overridden if need be
+ *
+ * @return   array
+ */
+function plugin_getlanguageoverrides_spamx()
+{
+
+    return array('LANG_SX00', 'PLG_spamx_MESSAGE128', 'PLG_spamx_MESSAGE8');
+}
+
+/**
  * Public APIs to provide the information the Spam-X has stored or to manipulate the data it has
  *
  * @since v2.2.0

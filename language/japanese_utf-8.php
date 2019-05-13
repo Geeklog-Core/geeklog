@@ -1463,7 +1463,9 @@ $LANG_LANG = array(
     'id' => 'ID',
     'language' => '言語',
     'name' => '名前',
+    'name_tip' => 'Required just for language arrays.',
     'var_name' => '変数名',
+    'var_name_tip' => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
     'value' => '値'
 );
 

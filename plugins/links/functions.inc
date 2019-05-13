@@ -1934,3 +1934,14 @@ function plugin_usercontributed_links($uid)
 
     return $retval;
 }
+
+/**
+ * Lets Geeklog know the names of language variables and arrays that can be overridden if need be
+ *
+ * @return   array
+ */
+function plugin_getlanguageoverrides_links()
+{
+
+    return array('LANG_LINKS', 'LANG_LINKS_STATS', 'LANG_LINKS_SEARCH', 'LANG_LINKS_SUBMIT', 'PLG_links_MESSAGE1', 'PLG_links_MESSAGE4', 'PLG_links_MESSAGE1');
+}

@@ -2578,3 +2578,14 @@ function plugin_group_changed_staticpages($grp_id, $mode)
         $result = DB_query($sql);
     }
 }
+
+/**
+ * Lets Geeklog know the names of language variables and arrays that can be overridden if need be
+ *
+ * @return   array
+ */
+function plugin_getlanguageoverrides_staticpages()
+{
+
+    return array('LANG_STATIC');
+}

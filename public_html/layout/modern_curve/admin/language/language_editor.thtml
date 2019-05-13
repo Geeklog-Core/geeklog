@@ -20,7 +20,7 @@
             </dd>
 
             <dt>
-                <label for="admin-language-editor-var_name">{lang_var_name}</label>
+                <label for="admin-language-editor-var_name">{lang_var_name}</label>{lang_var_name_tip}
             </dt>
             <dd>
                 <input type="text" size="30" maxlength="30" value="{var_name}"
@@ -28,7 +28,7 @@
             </dd>
 
             <dt>
-                <label for="admin-language-editor-name">{lang_name}</label>
+                <label for="admin-language-editor-name">{lang_name}</label>{lang_name_tip}
             </dt>
             <dd>
                 <input type="text" size="30" maxlength="30" value="{name}"

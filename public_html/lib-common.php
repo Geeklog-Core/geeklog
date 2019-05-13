@@ -430,7 +430,7 @@ if (setlocale(LC_ALL, $_CONF['locale']) === false) {
 }
 
 // Override language items (since v2.1.2)
-Language::override(array(
+$language_overrides = array(
     'LANG01', 'LANG03', 'LANG04', 'LANG_MYACCOUNT', 'LANG05', 'LANG08', 'LANG09',
     'LANG10', 'LANG11', 'LANG12', 'LANG_LOGVIEW', 'LANG_ENVCHECK', 'LANG20',
     'LANG21', 'LANG24', 'LANG27', 'LANG28', 'LANG29', 'LANG31', 'LANG32', 'LANG33',
@@ -439,8 +439,9 @@ Language::override(array(
     'LANG_WEEK', 'LANG_ADMIN', 'LANG_commentcodes', 'LANG_commentmodes',
     'LANG_cookiecodes', 'LANG_dateformats', 'LANG_featurecodes', 'LANG_frontpagecodes',
     'LANG_postmodes', 'LANG_sortcodes', 'LANG_trackbackcodes', 'LANG_CONFIG',
-    'LANG_VALIDATION',
-));
+    'LANG_VALIDATION');
+$language_overrides = array_merge($language_overrides, PLG_getLanguageOverrides());
+Language::override($language_overrides);
 
 /**
  * Global array of groups current user belongs to
