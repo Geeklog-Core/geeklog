@@ -153,6 +153,7 @@ $displayAll = (Geeklog\Input::get('display') === 'all') && empty($topic);
 $archiveTid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
 
 $display = '';
+$page_navigation = '';
 
 if (!$displayAll) {
     // give plugins a chance to replace this page entirely
@@ -400,7 +401,7 @@ if ($A = DB_fetchArray($result)) {
             }
         }
         */
-        $display .= COM_printPageNavigation($base_url, $page, $num_pages, 'page=', (bool) $_CONF['url_rewrite']);
+        $page_navigation = COM_printPageNavigation($base_url, $page, $num_pages, 'page=', (bool) $_CONF['url_rewrite']);
     }
 } else { // no stories to display
     if ($page == 1) {
@@ -429,6 +430,7 @@ $A = DB_fetcharray($result);
 $tt = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
 $tt->set_file(array('topic' => 'topic.thtml'));
 $tt->set_var('topic_content', $display);
+$tt->set_var('page_navigation', $page_navigation);
 if ($topic) {
     if (empty($A['title'])) {
         $title = $A['topic'];
