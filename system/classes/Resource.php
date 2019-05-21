@@ -510,10 +510,10 @@ class Resource
         if ($this->isHeaderSet && !$isFooter) {
             return false;
         }
-
+        
         $position = $isFooter ? 'footer' : 'header';
-
-        if ($this->isExternal($file)) {
+    
+        if ($this->isExternal($file) && array_search($file, array_column($this->externalJsFiles[$position], 'file')) == 0) {
             $this->externalJsFiles[$position][] = array(
                 'file'     => $file,
                 'priority' => $priority,
@@ -521,7 +521,8 @@ class Resource
 
             return true;
         } else {
-            if ($this->exists($this->config['path_html'] . $file)) {
+            // See if file exists and has not already been added (could happen on multiple calls of the same function by different plugins)
+            if ($this->exists($this->config['path_html'] . $file) && array_search($file, array_column($this->localJsFiles[$position], 'file')) == 0) {
                 $this->localJsFiles[$position][] = array(
                     'file'     => $file,
                     'priority' => $priority,
@@ -566,7 +567,7 @@ class Resource
 
         $attributes = $this->checkCssAttributes($attributes);
 
-        if ($this->isExternal($file)) {
+        if ($this->isExternal($file) && array_search($file, array_column($this->localJsFiles[$externalCssFiles], 'file')) == 0) {
             $this->externalCssFiles[] = array(
                 'file'       => $file,
                 'attributes' => $attributes,
