@@ -321,6 +321,22 @@ function install_config()
     $c->add('comment_on_same_page',0,'select',4,21,0, 1690, TRUE, $me, 21);
     $c->add('show_comments_at_replying',0,'select',4,21,0, 1691, TRUE, $me, 21);
 
+    // Subgroup: Likes
+    $sg  =  4;      // subgroup
+    $fs  = 51;      // fieldset
+    $tab = 51;      // tab
+    $so  = 1700;    // sort
+    $c->add('tab_likes', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_likes', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('likes_enabled',1,'select',$sg,$fs,40,$so,TRUE, $me, $tab);
+    $so += 10;
+    $c->add('likes_articles',1,'select',$sg,$fs,41,$so,TRUE, $me, $tab);
+    $so += 10;
+    $c->add('likes_comments',1,'select',$sg,$fs,41,$so,TRUE, $me, $tab);
+    $so += 10;
+    $c->add('likes_speedlimit',20,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);    
+    $so += 10;
+
     // Subgroup: Images
     $c->add('sg_images', NULL, 'subgroup', 5, 0, NULL, 0, TRUE, $me, 0);
 

@@ -414,6 +414,18 @@ $_CONF_VALIDATE['Core']['allow_reply_notifications'] = array('rule' => 'boolean'
 $_CONF_VALIDATE['Core']['comment_on_same_page'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['show_comments_at_replying'] = array('rule' => 'boolean');
 
+/* Subgroup Users and Submissions, Tab Likes */
+$_CONF_VALIDATE['Core']['likes_enabled'] = array(
+    'rule' => array('inList', array(0, 1, 2), false)
+);    
+$_CONF_VALIDATE['Core']['likes_articles'] = array(
+    'rule' => array('inList', array(0, 1, 2), false)
+);    
+$_CONF_VALIDATE['Core']['likes_comments'] = array(
+    'rule' => array('inList', array(0, 1, 2), false)
+);    
+$_CONF_VALIDATE['Core']['likes_speedlimit'] = array('rule' => 'numeric');
+
 /* Subgroup Images, Tab Image Library */
 $_CONF_VALIDATE['Core']['image_lib'] = array(
     'rule' => array('inList', array('', 'gdlib', 'imagemagick', 'netpbm'), true)

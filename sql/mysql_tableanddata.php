@@ -192,6 +192,19 @@ CREATE TABLE {$_TABLES['language_items']} (
 ) ENGINE=MyISAM
 ";
 
+$_SQL[] ="
+CREATE TABLE {$_TABLES['likes']} (
+  lid INT(11) NOT NULL AUTO_INCREMENT,
+  type varchar(30) NOT NULL,
+  id varchar(30) NOT NULL,
+  uid MEDIUMINT NOT NULL, 
+  ipaddress VARCHAR(39) NOT NULL, 
+  action TINYINT NOT NULL,
+  created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  PRIMARY KEY (lid)
+) ENGINE=MyISAM
+";
+
 $_SQL[] = "
 CREATE TABLE {$_TABLES['maillist']} (
   code int(1) NOT NULL default '0',

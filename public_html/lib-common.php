@@ -206,6 +206,9 @@ require_once $_CONF['path_system'] . 'lib-topic.php';
 // This is the block library used to manage blocks.
 require_once $_CONF['path_system'] . 'lib-block.php';
 
+// This is the likes library used to manage and display the likes and dislikes.
+require_once $_CONF['path_system'].'lib-likes.php';
+
 /**
  * These variables were taken out of the configuration and placed here since they
  * are necessary to change with the themes, not whole sites. They should now be

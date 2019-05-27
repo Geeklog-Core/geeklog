@@ -36,6 +36,13 @@
   </div>
 
   {related_topics}
+  
+  {!if likes_control}
+    {# story_display_type: n = full display of article, p = preview in editor, y = topic summary display. #}
+    {!!if {story_display_type} == 'n' !!}
+    <div class="aligncenter">{likes_control}</div>
+    {!endif}
+  {!endif}  
 
 {!if navi_list}
   <ul class="navi">

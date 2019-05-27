@@ -320,6 +320,13 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         $template->set_var('author_id', $A['uid']);
         $template->set_var('cid', $A['cid']);
         $template->set_var('cssid', $row % 2);
+        
+        if ($_CONF['likes_enabled'] != 0 && $_CONF['likes_comments'] != 0) {
+            $likes_control = LIKES_control('comment', $A['cid'], $_CONF['likes_comments']) . ' | ';
+            $template->set_var('likes_control', $likes_control);
+        } else {
+            $template->set_var('likes_control', '');
+        }
 
         if ($A['uid'] > 1) {
             $fullname = '';
@@ -1668,6 +1675,9 @@ function CMT_deleteComment($cid, $sid, $type)
         list($pid, $lft, $rht) = DB_fetchArray($result);
         DB_change($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
         DB_delete($_TABLES['comments'], 'cid', $cid);
+        
+        LIKES_deleteActions('comment', $cid);
+        
         DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
             . "WHERE sid = '$sid' AND type = '$type' AND lft BETWEEN $lft AND $rht");
         DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
@@ -2940,5 +2950,49 @@ function plugin_usercontributed_comment($uid)
         $retval = str_replace('%s', $count, $LANG03['num_comments']);
     }
 
+    return $retval;
+}
+
+/**
+ * Is Likes system enabled for comments
+ *
+ * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
+ */
+function plugin_likesenabled_comment()
+{
+    global $_CONF;
+
+    $retval = false;
+    
+    if ($_CONF['likes_enabled'] AND $_CONF['likes_comments'] > 0) {
+        $retval = $_CONF['likes_comments'];
+    }
+
+    return $retval;
+}
+
+/**
+ * Can user perform a like action on item
+ *
+ * @return   bool
+ */
+function plugin_canuserlike_comment($id, $uid, $ip)
+{
+    global $_TABLES;
+
+    $retval = false;
+
+    $sql = "SELECT uid, ipaddress FROM {$_TABLES['comments']} WHERE cid = ".$id;
+    $result = DB_query($sql);
+    if (DB_numRows($result) > 0) {
+        list ($owner_id, $owner_ip) = DB_fetchArray($result);
+        if ($owner_id != $uid) {
+            $retval = true;
+        } elseif ($uid == 1 AND $owner_id == 1 AND $ip != $owner_ip) {
+            $retval = true;
+        } 
+
+    }   
+    
     return $retval;
 }

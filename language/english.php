@@ -738,6 +738,27 @@ $LANG12 = array(
 );
 
 ###############################################################################
+# likes.php - likes and dislikes
+
+$LANG_LIKES = array(
+    'like'              => 'Like',
+    'unlike'            => 'Unlike',
+    'dislike'           => 'Dislike',
+    'undislike'         => 'Undislike',
+    'likes'             => 'Likes',
+    'unlikes'           => 'Unlikes',
+    'dislikes'          => 'Dislikes',
+    'undislikes'        => 'Undislikes',
+    'i_like_this'       => 'I like this',
+    'i_dislike_this'    => 'I dislike this',
+    'thanks_for_action' => 'Thanks for voting!',
+    'likes_speedlimit'  => "You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system",
+    'likes_ip_error'    => 'Your IP address has already performed this Likes action.',
+    'likes_uid_error'   => 'Your User account has already performed this Likes action.',
+    'own_item_error'    => 'Either you own the item or do not have permission to Like/Dislike it.'
+);
+
+###############################################################################
 # ADMIN PHRASES - These are file phrases used in admin scripts
 ###############################################################################
 
@@ -2372,6 +2393,10 @@ $LANG_confignames['Core'] = array(
     'comment_edit' => 'Allow Comment Edit?',
     'comment_edittime' => 'Comment Edit Time (seconds)',
     'commentsubmission' => 'Queue Comment Submissions',
+    'likes_enabled' => 'Likes Enabled',
+    'likes_articles' => 'Article Likes',
+    'likes_comments' => 'Comment Likes',
+    'likes_speedlimit' => 'Likes Speed Limit',
     'passwordspeedlimit' => 'Password Speed Limit',
     'login_attempts' => 'Max. Login Attempts',
     'login_speedlimit' => 'Login Speed Limit',
@@ -2514,6 +2539,7 @@ $LANG_fs['Core'] = array(
     'fs_userphoto' => 'Photos',
     'fs_gravatar' => 'Gravatar',
     'fs_comments' => 'Comments',
+    'fs_likes' => 'Likes',
     'fs_htmlfilter' => 'HTML Filtering',
     'fs_censoring' => 'Censoring',
     'fs_iplookup' => 'IP Lookup',
@@ -2565,6 +2591,7 @@ $LANG_tab['Core'] = array(
     'tab_userphoto' => 'Photos',
     'tab_gravatar' => 'Gravatar',
     'tab_comments' => 'Comments',
+    'tab_likes' => 'Likes',
     'tab_htmlfilter' => 'HTML Filtering',
     'tab_censoring' => 'Censoring',
     'tab_iplookup' => 'IP Lookup',
@@ -2625,7 +2652,9 @@ $LANG_configselects['Core'] = array(
     36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
     37 => array('Disabled' => 0, 'Enabled (with "index.php")' => 1, 'Enabled (without "index.php")' => 2),
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
+    40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)   
 );
 
 ###############################################################################

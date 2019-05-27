@@ -22,6 +22,20 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` timestamp default NU
 // Language Override value can now be longer than 255 characters
 $_SQL[] = "ALTER TABLE {$_TABLES['language_items']} CHANGE `value` `value` TEXT";
 
+// New Likes System table
+$_SQL[] ="
+CREATE TABLE {$_TABLES['likes']} (
+  lid INT(11) NOT NULL AUTO_INCREMENT,
+  type varchar(30) NOT NULL,
+  id varchar(30) NOT NULL,
+  uid MEDIUMINT NOT NULL, 
+  ipaddress VARCHAR(39) NOT NULL, 
+  action TINYINT NOT NULL,
+  created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  PRIMARY KEY (lid)
+) ENGINE=MyISAM
+";
+
 /**
  * Upgrade Messages
  */
@@ -68,6 +82,22 @@ function update_ConfValuesFor221()
     
     // Add switch to enable setting of language id for item if Geeklog Multi Language is setup
     $c->add('new_item_set_current_lang',0,'select',6,28,0,380,TRUE, $me, 28);
+    
+    // Add Likes System Tab and config options
+    $sg  =  4;      // subgroup
+    $fs  = 51;      // fieldset
+    $tab = 51;      // tab
+    $so  = 1700;    // sort
+    $c->add('tab_likes', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('fs_likes', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
+    $c->add('likes_enabled',1,'select',$sg,$fs,40,$so,TRUE, $me, $tab);
+    $so += 10;
+    $c->add('likes_articles',1,'select',$sg,$fs,41,$so,TRUE, $me, $tab);
+    $so += 10;
+    $c->add('likes_comments',1,'select',$sg,$fs,41,$so,TRUE, $me, $tab);
+    $so += 10;
+    $c->add('likes_speedlimit',20,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);    
+    $so += 10;
 
     return true;
 }
