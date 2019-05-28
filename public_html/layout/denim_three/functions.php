@@ -160,12 +160,12 @@ function theme_js_libs_denim_three()
         'library' => 'uikit3',
         'footer'  => false, // Required, default = true
     );
-/*
+
     $result[] = array(
-        'library' => 'uikit_modifier',
+        'library' => 'uikit3_modifier',
         'footer'  => false, // Required, default = true
     );
-*/
+
     return $result;
 }
 

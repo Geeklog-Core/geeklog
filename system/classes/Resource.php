@@ -173,6 +173,7 @@ class Resource
         'uikit.upload'                    => '/vendor/uikit/js/components/upload.min.js',
         'uikit3'                          => '/vendor/uikit3/js/uikit.min.js',
         'uikit3-icons'                    => '/vendor/uikit3/js/uikit-icons.min.js',
+        'uikit3_modifier'                  => '/javascript/uikit3_modifier.js',
     );
 
     /**
