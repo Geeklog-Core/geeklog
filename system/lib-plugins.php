@@ -3872,9 +3872,8 @@ function PLG_itemLike($type, $item_id, $action)
     $retval = true;
 
     $args[1] = $item_id;
-    $args[2] = $new_rating;
-    $args[3] = $added;
-    $function = 'plugin_itemrated_' . $type;
+    $args[2] = $action;
+    $function = 'plugin_itemlikesaction_' . $type;
 
     $retval = PLG_callFunctionForOnePlugin($function,$args);
 
