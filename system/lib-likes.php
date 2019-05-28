@@ -65,7 +65,16 @@ define('LIKES_ACTION_DISLIKE', 2);
 define('LIKES_ACTION_UNLIKE', 3);
 define('LIKES_ACTION_UNDISLIKE', 4);
 
-
+/**
+* Returns the Likes Control
+*
+* @param        string      $type               plugin name
+* @param        string      $id                 item id
+* @param        int         $likes_setting      if 2 dislikes will not be displayed 
+* @param        string      $message            language string of message to pass to user
+* @return       string      html of the likes control
+*
+*/
 function LIKES_control($type, $id, $likes_setting, $message = '') {
     global $_USER, $_CONF, $LANG_LIKES, $_SCRIPTS;
     
@@ -140,9 +149,9 @@ function LIKES_control($type, $id, $likes_setting, $message = '') {
     
     $likes_templates->set_var('lang_message', $message);
     
-    $likes_templates->set_var('num_of_likes', $num_likes);
+    $likes_templates->set_var('num_of_likes', LIKES_formatNum($num_likes));
     if ($dislike) {
-        $likes_templates->set_var('num_of_dislikes', $num_dislikes);
+        $likes_templates->set_var('num_of_dislikes', LIKES_formatNum($num_dislikes));
     }
     
     $likes_templates->parse('output', 'likes_control');
@@ -152,14 +161,28 @@ function LIKES_control($type, $id, $likes_setting, $message = '') {
 }
 
 /**
-* Returns the likes data for an item.
+* Returns the likes number in a rounded format over 1000
 *
-* Returns an array consisting of the rating_id, votes and rating of a specific
-* item.
+* @param        int     $num    number to format
+* @return       int     the formated number
+*
+*/
+function LIKES_formatNum($num)
+{
+    $units = ['', 'K', 'M', 'B', 'T'];
+    for ($i = 0; $num >= 1000; $i++) {
+        $num /= 1000;
+    }
+    return round($num, 1) . $units[$i];
+}
+
+
+/**
+* Returns the likes data for an item.
 *
 * @param        string      $type     plugin name
 * @param        string      $item_id  item id
-* @return       array       an array of rating_id, rating, votes
+* @return       array       an array of number of likes and dislikes
 *
 */
 function LIKES_getLikes($type, $item_id)
@@ -179,7 +202,6 @@ function LIKES_getLikes($type, $item_id)
 
 /**
 * Check if user or IP has already liked/disliked an item
-*
 *
 * @param        string      $type     plugin name
 * @param        string      $item_id  item id
@@ -230,19 +252,14 @@ function LIKES_deleteActions($type, $item_id)
 
 
 /**
-* Add a new rating to an item
-*
-* Adds a new rating for an item. This will calculate the new overall
-* rating, update the vote table with the user / ip info and ask the
-* plugin to update its records.
+* Add a new like action to an item
 *
 * @param        string      $type     plugin name
 * @param        string      $item_id  item id
-* @param        int         $rating   rating sent by user
-* @param        int         $uid      user id of rater
-* @param        string      $ip       IP address of rater
-* @return       array       an array with the new overall rating and total number
-*                           of votes.
+* @param        int         $action   like action sent by user
+* @param        int         $uid      user id of voter
+* @param        string      $ip       IP address of voter
+* @return       array       an array with the new overall number of likes and dislikes.
 *
 */
 function LIKES_addAction($type, $item_id, $action, $prev_action, $uid, $ip)
