@@ -50,7 +50,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: 'likes.php',
+            url: '/likes.php',
             type: 'post',
             data: {
                 'a': "1",
@@ -61,7 +61,7 @@ $(document).ready(function(){
             beforeSend: function(){
                 // Show loading image container
                 //$("#likes-loader-"+item_type+'-'+item_id).show();
-            },        
+            },
             success: function(data){
                 res = JSON.parse(data);
 
@@ -76,10 +76,18 @@ $(document).ready(function(){
             }, 
             error: function(error){
                 console.log("jQuery error message = "+error);    
+                
+                // Notify the user of anything that results in the action not happening
+                $clicked_btn.siblings('span.gl-likes-message').html('Error');                 
+                
             },
-            complete:function(data){
+            complete: function(data){
                 // Hide image loading container
                 //$("#likes-loader-"+item_type+'-'+item_id).hide();
+                
+                // Fix opacity and clicks incase error or error message returned from success
+                $("#likes-"+item_type+'-'+item_id).attr("style", "opacity:1.0; pointer-events: auto;"); 
+                
             }            
         });		
 
