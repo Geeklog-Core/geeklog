@@ -785,7 +785,7 @@ function TOPIC_getDataTopicSelectionControl(&$topic_option, &$tids, &$inherit_ti
  * admin screen for GL objects (i.e. stories, blocks, etc)
  *
  * @param        string  $type         Type of object to display access for
- * @param        string  $id           Id of onject (if '' then load date from control)
+ * @param        string  $id           Id of object (if '' then load date from control)
  * @param        boolean $show_options True/False. If true then All and Homepage options will be visible
  * @param        boolean $show_inherit True/False. If true then inhert selection will be enabled
  * @param        boolean $show_default True/False. If true then default topic selection will be enabled
