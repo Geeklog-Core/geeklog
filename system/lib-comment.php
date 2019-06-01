@@ -2635,7 +2635,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                     . COM_getPermSQL('AND'));
 
                 // if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid) < 2) { // Make sure have at least read access to topics to post comment
-                if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid, $topic) < 2) { // Make sure have at least read access to current topic of article to post comment
+                if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid, $topic) < 2) { // Make sure have at least read access (2 or greater) to current topic of article to post comment
                     // no permissions, or no story of that title
                     $abort = true;
                 }
