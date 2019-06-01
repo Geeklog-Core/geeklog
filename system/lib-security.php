@@ -334,7 +334,7 @@ function SEC_hasModerationAccess()
 }
 
 /**
- * Checks to see if current user has access to a topic
+ * Checks to see if current user has access to a topic. If not exist then no access returned
  *
  * @param        string $tid ID for topic to check on
  * @return       int     returns 3 for read/edit 2 for read only 0 for no access
@@ -349,8 +349,12 @@ function SEC_hasTopicAccess($tid)
 
     $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '$tid'");
     $A = DB_fetchArray($result);
-
-    return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+    
+    if (DB_numrows($result) > 0) { // Make sure record return else no access
+        return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+    } else {
+        return 0;
+    }
 }
 
 /**
