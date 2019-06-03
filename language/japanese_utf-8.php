@@ -1150,7 +1150,9 @@ $LANG27 = array(
     'topics:' => '話題:',
     'filed_under:' => '話題:',
     'topic_title' => '話題タイトル',
-    'topic_title_desc' => '話題のページタイトルとして使用されます。 空の場合、話題名が使用されます。'
+    'topic_title_desc' => '話題のページタイトルとして使用されます。 空の場合、話題名が使用されます。', 
+    'move_topic_up' => 'Move topic up the sort order',
+    'move_topic_down' => 'Move topic down in the sort order',    
 );
 
 ###############################################################################

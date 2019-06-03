@@ -1145,7 +1145,9 @@ $LANG27 = array(
     'topics:' => 'Topics:',
     'filed_under:' => 'Filed under:',
     'topic_title' => 'Topic Title',
-    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.'
+    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.', 
+    'move_topic_up' => 'Move topic up the sort order',
+    'move_topic_down' => 'Move topic down in the sort order',    
 );
 
 ###############################################################################

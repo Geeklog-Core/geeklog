@@ -1512,7 +1512,7 @@ function ADMIN_getListField_newplugins($fieldName, $fieldValue, $A, $icon_arr, $
  */
 function ADMIN_getListField_topics($fieldName, $fieldValue, $A, $icon_arr, $token)
 {
-    global $_CONF, $LANG_ACCESS, $_TABLES, $LANG27, $LANG32;
+    global $_CONF, $LANG_ACCESS, $_TABLES, $LANG27;
 
     $retval = false;
 
@@ -1530,7 +1530,7 @@ function ADMIN_getListField_topics($fieldName, $fieldValue, $A, $icon_arr, $toke
             break;
 
         case 'sortnum':
-            if ($_CONF['sortmethod'] === 'sortnum') {
+            if ($_CONF['sortmethod'] === 'sortnum' && $access == 3) {
                 $style = 'style="vertical-align: middle;"';
                 $upImage = $_CONF['layout_url'] . '/images/admin/up.png';
                 $downImage = $_CONF['layout_url'] . '/images/admin/down.png';
@@ -1539,11 +1539,11 @@ function ADMIN_getListField_topics($fieldName, $fieldValue, $A, $icon_arr, $toke
                     . '&amp;' . CSRF_TOKEN . '=' . $token
                     . '&amp;where=';
                 $retval .= COM_createLink("<img $style alt=\"+\" src=\"$upImage\"" . XHTML . ">",
-                    $url . 'up', array('title' => $LANG32[44])
+                    $url . 'up', array('title' => $LANG27['move_topic_up'])
                 );
                 $retval .= '&nbsp;' . $fieldValue . '&nbsp;';
                 $retval .= COM_createLink("<img $style alt=\"-\" src=\"$downImage\"" . XHTML . ">",
-                    $url . 'dn', array('title' => $LANG32[45])
+                    $url . 'dn', array('title' => $LANG27['move_topic_down'])
                 );
             } else {
                 $retval = $fieldValue;
