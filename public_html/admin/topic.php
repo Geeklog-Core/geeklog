@@ -140,8 +140,9 @@ function edittopic($tid = '')
     
     $topic_templates->set_var('lang_parent_id', $LANG27[32]);
     $topic_templates->set_var('parent_id_options',
-        TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true));
-
+        TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true, 0, 1));
+    $topic_templates->set_var('lang_parent_desc', $LANG27['topics_edit_access_select']);
+    
     $topic_templates->set_var('lang_inherit', $LANG27[33]);
     $topic_templates->set_var('lang_inherit_info', $LANG27[34]);
     if ($A['inherit'] == 1) {

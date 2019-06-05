@@ -437,10 +437,10 @@ function staticpageeditor_form(array $A)
         }
 
         $sp_template->set_var('topic_selection',
-            TOPIC_getTopicSelectionControl('staticpages', $topic_sp_id, true, false, true));
+            TOPIC_getTopicSelectionControl('staticpages', $topic_sp_id, true, false, true, true, 2));
     } else {
         $sp_template->set_var('topic_selection',
-            TOPIC_getTopicSelectionControl('staticpages', $A['clone_sp_id'], true, false, true));
+            TOPIC_getTopicSelectionControl('staticpages', $A['clone_sp_id'], true, false, true, true, 2));
     }
 
     $sp_template->set_var('lang_metadescription',
@@ -699,15 +699,17 @@ function liststaticpages()
         'has_extras' => true,
         'form_url'   => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php',
     );
+        
+    $sql = "SELECT *,UNIX_TIMESTAMP(modified) AS unixdate, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
+        . "FROM {$_TABLES['staticpage']} "
+        . "LEFT JOIN {$_TABLES['users']} ON {$_TABLES['staticpage']}.owner_id = {$_TABLES['users']}.uid "
+        . "WHERE 1=1 ";  
 
     $query_arr = array(
         'table'          => 'staticpage',
-        'sql'            => "SELECT *,UNIX_TIMESTAMP(modified) AS unixdate, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
-            . "FROM {$_TABLES['staticpage']} "
-            . "LEFT JOIN {$_TABLES['users']} ON {$_TABLES['staticpage']}.owner_id = {$_TABLES['users']}.uid "
-            . "WHERE 1=1 ",
+        'sql'            => $sql,
         'query_fields'   => array('sp_title', 'sp_id'),
-        'default_filter' => COM_getPermSQL('AND', 0, 3),
+        'default_filter' => COM_getPermSQL('AND'), // COM_getPermSQL('AND', 0, 3),
     );
 
     $retval .= ADMIN_list('static_pages', 'plugin_getListField_staticpages',

@@ -1126,7 +1126,10 @@ $LANG27 = array(
     38 => 'すべて',
     39 => 'ホームページのみ',
     40 => '1つ以上の話題を割り当ててください。',
-    41 => '"すべて" を選ぶと、そのアイテムはすべての話題に表示します。"ホームページのみ"を選ぶと、ホームページだけに表示します。それ以外の場合は少なくとも1つ以上の話題を選択してください。 ',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. ',
+    'topic_control_select_topics' => 'Else you must select at least one topic to assign the item to. ',
+    'topic_control_select_topics_disabled' => 'Else you must select at least one topic you have edit access for, to assign the item to (text is darker). ',
+    'topic_control_no_topics' => 'Unfortunately you do not have edit access to any topics so none can be selected. ',
     42 => '継承の欄は割り当てられている話題のリストを含んでいます。話題を選択すると、その話題の親の話題に継承されます。',
     43 => 'デフォルトは、割り当てた話題のリストを含んでいます。これは、ユーザーが実際の話題をみつけられないときに、アイテムを表示する時に使用するデフォルトの話題です。',
     44 => '継承',
@@ -1152,7 +1155,9 @@ $LANG27 = array(
     'topic_title' => '話題タイトル',
     'topic_title_desc' => '話題のページタイトルとして使用されます。 空の場合、話題名が使用されます。', 
     'move_topic_up' => 'Move topic up the sort order',
-    'move_topic_down' => 'Move topic down in the sort order',    
+    'move_topic_down' => 'Move topic down in the sort order',
+    'topics_edit_access_select' => 'You can only select topics you have Edit access to you (text is darker).',
+    'topics_edit_access_listed' => 'Only topics with Edit access are listed.'
 );
 
 ###############################################################################

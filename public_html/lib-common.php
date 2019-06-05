@@ -6042,7 +6042,7 @@ function COM_getPermSQL($type = 'WHERE', $u_id = 0, $access = 2, $table = '')
 
 /**
  * Return SQL expression to check for allowed topics.
- * Creates part of an SQL expression that can be used to only request stories
+ * Creates part of an SQL expression that can be used to only request items (like articles)
  * from topics to which the user has access to.
  * Note that this function does an SQL request, so you should cache
  * the resulting SQL expression if you need it more than once.
