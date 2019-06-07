@@ -243,7 +243,7 @@ function ADMIN_getListField_blocks($fieldName, $fieldValue, $A, $icon_arr, $toke
     if (($access > 0) && (TOPIC_hasMultiTopicAccess('block', $A['bid']) > 0)) {
         switch ($fieldName) {
             case 'edit':
-                if ($access == 3) {
+                if (($access == 3) && (TOPIC_hasMultiTopicAccess('block', $A['bid']) > 2)) {
                     $retval = COM_createLink($icon_arr['edit'],
                         "{$_CONF['site_admin_url']}/block.php?mode=edit&amp;bid={$A['bid']}");
                 }
@@ -315,7 +315,7 @@ function ADMIN_getListField_blocks($fieldName, $fieldValue, $A, $icon_arr, $toke
                 break;
 
             case 'is_enabled':
-                if ($access == 3) {
+                if (($access == 3) && (TOPIC_hasMultiTopicAccess('block', $A['bid']) > 2)) {
                     $retval = COM_createControl('type-checkbox', array(
                         'name' => 'enabledblocks[]',
                         'value' => $A['bid'],
@@ -327,7 +327,7 @@ function ADMIN_getListField_blocks($fieldName, $fieldValue, $A, $icon_arr, $toke
                 break;
 
             case 'move':
-                if ($access == 3) {
+                if (($access == 3) && (TOPIC_hasMultiTopicAccess('block', $A['bid']) > 2)) {
                     if ($A['onleft'] != BLOCK_NONE_POSITION) {
                         if ($A['onleft'] == 1) {
                             $side = $LANG21[40];

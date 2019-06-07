@@ -26,6 +26,7 @@
             {parent_id_options}
         </select>
       </dd>
+      <dd class="description">{lang_parent_desc}</dd>
 
       <dt><label for="admin-topiceditor-sortnum">{lang_sortorder}</label></dt>
       {!if sort_numeric}

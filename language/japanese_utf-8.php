@@ -669,7 +669,9 @@ $LANG10 = array(
     28 => '',
     29 => '',
     30 => '表示回数',
-    31 => ''
+    31 => '',
+    32 => 'Top Ten Liked Articles',
+    33 => 'No liked articles found.',    
 );
 
 ###############################################################################
@@ -743,6 +745,27 @@ $LANG12 = array(
     53 => 'アカウント作成',
     54 => '記事冒頭文',
     55 => '記事本文'
+);
+
+###############################################################################
+# likes.php - likes and dislikes
+
+$LANG_LIKES = array(
+    'like'              => 'Like',
+    'unlike'            => 'Unlike',
+    'dislike'           => 'Dislike',
+    'undislike'         => 'Undislike',
+    'likes'             => 'Likes',
+    'unlikes'           => 'Unlikes',
+    'dislikes'          => 'Dislikes',
+    'undislikes'        => 'Undislikes',
+    'i_like_this'       => 'I like this',
+    'i_dislike_this'    => 'I dislike this',
+    'thanks_for_action' => 'Thanks for voting!',
+    'likes_speedlimit'  => "You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system",
+    'likes_ip_error'    => 'Your IP address has already performed this Likes action.',
+    'likes_uid_error'   => 'Your User account has already performed this Likes action.',
+    'own_item_error'    => 'Either you own the item or do not have permission to Like/Dislike it.'
 );
 
 ###############################################################################
@@ -1103,7 +1126,10 @@ $LANG27 = array(
     38 => 'すべて',
     39 => 'ホームページのみ',
     40 => '1つ以上の話題を割り当ててください。',
-    41 => '"すべて" を選ぶと、そのアイテムはすべての話題に表示します。"ホームページのみ"を選ぶと、ホームページだけに表示します。それ以外の場合は少なくとも1つ以上の話題を選択してください。 ',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. ',
+    'topic_control_select_topics' => 'Else you must select at least one topic to assign the item to. ',
+    'topic_control_select_topics_disabled' => 'Else you must select at least one topic you have edit access for, to assign the item to (text is darker). ',
+    'topic_control_no_topics' => 'Unfortunately you do not have edit access to any topics so none can be selected. ',
     42 => '継承の欄は割り当てられている話題のリストを含んでいます。話題を選択すると、その話題の親の話題に継承されます。',
     43 => 'デフォルトは、割り当てた話題のリストを含んでいます。これは、ユーザーが実際の話題をみつけられないときに、アイテムを表示する時に使用するデフォルトの話題です。',
     44 => '継承',
@@ -1127,7 +1153,11 @@ $LANG27 = array(
     'topics:' => '話題:',
     'filed_under:' => '話題:',
     'topic_title' => '話題タイトル',
-    'topic_title_desc' => '話題のページタイトルとして使用されます。 空の場合、話題名が使用されます。'
+    'topic_title_desc' => '話題のページタイトルとして使用されます。 空の場合、話題名が使用されます。', 
+    'move_topic_up' => 'Move topic up the sort order',
+    'move_topic_down' => 'Move topic down in the sort order',
+    'topics_edit_access_select' => 'You can only select topics you have Edit access to you (text is darker).',
+    'topics_edit_access_listed' => 'Only topics with Edit access are listed.'
 );
 
 ###############################################################################
@@ -1463,7 +1493,9 @@ $LANG_LANG = array(
     'id' => 'ID',
     'language' => '言語',
     'name' => '名前',
+    'name_tip' => 'Required just for language arrays.',
     'var_name' => '変数名',
+    'var_name_tip' => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
     'value' => '値'
 );
 
@@ -2369,6 +2401,10 @@ $LANG_confignames['Core'] = array(
     'comment_edit' => 'コメントの編集を許可する',
     'comment_edittime' => 'コメントの編集時間(秒)',
     'commentsubmission' => '承認待ちリストに入れる',
+    'likes_enabled' => 'Likes Enabled',
+    'likes_articles' => 'Article Likes',
+    'likes_comments' => 'Comment Likes',
+    'likes_speedlimit' => 'Likes Speed Limit',
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',
@@ -2511,6 +2547,7 @@ $LANG_fs['Core'] = array(
     'fs_userphoto' => 'ユーザーの写真',
     'fs_gravatar' => 'Gravatar',
     'fs_comments' => 'コメント',
+    'fs_likes' => 'Likes',
     'fs_htmlfilter' => 'HTMLフィルター',
     'fs_censoring' => 'バッドワードチェック',
     'fs_iplookup' => 'IPアドレス検索',
@@ -2562,6 +2599,7 @@ $LANG_tab['Core'] = array(
     'tab_userphoto' => 'ユーザーの写真',
     'tab_gravatar' => 'Gravatar',
     'tab_comments' => 'コメント',
+    'tab_likes' => 'Likes',
     'tab_htmlfilter' => 'HTMLフィルター',
     'tab_censoring' => 'バッドワードチェック',
     'tab_iplookup' => 'IP検索',
@@ -2615,7 +2653,9 @@ $LANG_configselects['Core'] = array(
     36 => array('いいえ' => 'false', 'トップページのみ' => 'frontpage', 'トップページと話題ページ' => 'frontpage_topics'),
     37 => array('無効' => 0, '有効(index.phpあり)' => 1, '有効(index.phpなし)' => 2),
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
+    40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2) 
 );
 
 ###############################################################################

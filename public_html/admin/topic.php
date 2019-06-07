@@ -140,8 +140,9 @@ function edittopic($tid = '')
     
     $topic_templates->set_var('lang_parent_id', $LANG27[32]);
     $topic_templates->set_var('parent_id_options',
-        TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true));
-
+        TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true, 0, 1));
+    $topic_templates->set_var('lang_parent_desc', $LANG27['topics_edit_access_select']);
+    
     $topic_templates->set_var('lang_inherit', $LANG27[33]);
     $topic_templates->set_var('lang_inherit_info', $LANG27[34]);
     if ($A['inherit'] == 1) {
@@ -690,12 +691,21 @@ function reorderTopics()
  */
 function moveTopics($tid, $where)
 {
-    global $_TABLES;
+    global $_TABLES, $_CONF;
 
     if (empty($tid) || empty($where)) return;
 
-    $sortnum = DB_getItem($_TABLES['topics'], 'sortnum', "tid = '$tid'");
-    $parent_id = DB_getItem($_TABLES['topics'], 'parent_id', "tid = '$tid'");
+    $result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid ='$tid'");
+    $A = DB_fetchArray($result);
+    
+    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+    if ($access < 3) {
+        COM_accessLog("User {$_USER['username']} tried to illegally change the sort order of topic $tid.");
+        COM_redirect($_CONF['site_admin_url'] . '/topic.php');
+    }    
+    
+    $sortnum = $A['sortnum'];
+    $parent_id = $A['parent_id'];
 
     if (empty($sortnum) || empty($parent_id)) return;
 

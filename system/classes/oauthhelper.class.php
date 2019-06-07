@@ -265,7 +265,10 @@ class OAuthConsumer
             } else {
                 // initial login - create account
                 $status = USER_ACCOUNT_ACTIVE;
-                $loginName = trim($users['loginname']);
+                // Treat username same as Geeklog would for normal account (see USER_createAccount) even though they will not use name to login
+                // So remove any unwanted characters
+                $loginName = trim(GLText::remove4byteUtf8Chars(COM_applyFilter($users['loginname'])));
+                
                 $checkName = DB_getItem($_TABLES['users'], 'username', "username='" . DB_escapeString($loginName) . "'");
                 if (!empty($checkName) || empty($loginName)) { // also if for some reason blank login name we should create one
                     if (function_exists('CUSTOM_uniqueRemoteUsername')) {

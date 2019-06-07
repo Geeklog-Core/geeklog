@@ -9,14 +9,14 @@
       <dt><label for="admin-language-editor-language">{lang_language}</label></dt>
       <dd><select name="language" id="admin-language-editor-language" class="uk-select uk-width-auto">{language_options}</select></dd>
 
-      <dt><label for="admin-language-editor-var_name">{lang_var_name}</label></dt>
+      <dt><label for="admin-language-editor-var_name">{lang_var_name}</label>{lang_var_name_tip}</dt>
       <dd><input type="text" size="30" maxlength="30" value="{var_name}" name="var_name" id="admin-language-editor-var_name" class="uk-input size5"{xhtml}></dd>
 
-      <dt><label for="admin-language-editor-name">{lang_name}</label></dt>
+      <dt><label for="admin-language-editor-name">{lang_name}</label>{lang_name_tip}</dt>
       <dd><input type="text" size="30" maxlength="30" value="{name}" name="name" id="admin-language-editor-name" class="uk-input size5"{xhtml}></dd>
 
       <dt><label for="admin-language-editor-value">{lang_value}</label></dt>
-      <dd><input type="text" size="50" maxlength="255" value="{value}" name="value" id="admin-language-editor-value" class="uk-input size8"{xhtml}></dd>
+      <dd><textarea cols="70" rows="3" name="value" id="admin-language-editor-value" class="uk-textarea uk-width-auto">{value}</textarea></dd>
     </dl>
 
     <div class="submit">

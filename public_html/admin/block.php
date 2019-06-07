@@ -106,7 +106,7 @@ function editdefaultblock($A, $access)
     $block_templates->set_var('lang_blockname', $LANG21[48]);
 
     $block_templates->set_var('topic_selection',
-        TOPIC_getTopicSelectionControl('block', $A['bid'], true, true));
+        TOPIC_getTopicSelectionControl('block', $A['bid'], true, true, false, true, 1));
 
     $block_templates->set_var('lang_position', $LANG21['position']);
     $block_templates->set_var('lang_left', $LANG21[40]);
@@ -385,7 +385,7 @@ function editblock($bid = '')
     $block_templates->set_var('lang_nospaces', $LANG21[49]);
 
     $block_templates->set_var('topic_selection',
-        TOPIC_getTopicSelectionControl('block', $A['bid'], true, true));
+        TOPIC_getTopicSelectionControl('block', $A['bid'], true, true, false, true, 1));
 
     $block_templates->set_var('lang_position', $LANG21['position']);
     $block_templates->set_var('lang_left', $LANG21[40]);

@@ -193,8 +193,10 @@ class Language
             'lang_language_editor' => $LANG_LANG['language_editor'],
             'lang_id'              => $LANG_LANG['id'],
             'lang_var_name'        => $LANG_LANG['var_name'],
+            'lang_var_name_tip'    => COM_getTooltip('', $LANG_LANG['var_name_tip'], '', 'help'),
             'lang_language'        => $LANG_LANG['language'],
             'lang_name'            => $LANG_LANG['name'],
+            'lang_name_tip'        => COM_getTooltip('', $LANG_LANG['name_tip'], '', 'help'),
             'lang_value'           => $LANG_LANG['value'],
             'lang_save'            => $LANG_ADMIN['save'],
             'lang_delete'          => $LANG_ADMIN['delete'],
@@ -224,10 +226,16 @@ class Language
     {
         global $_CONF, $LANG_ADMIN;
 
-        if ($fieldName === 'id') {
-            $fieldValue = '<a href="'
-                . $_CONF['site_admin_url'] . '/language.php?mode=edit&amp;id='
-                . $fieldValue . '" title="' . $LANG_ADMIN['edit'] . '">' . $icons['edit'] . '</a>';
+        switch ($fieldName) {
+            case 'id':
+                $fieldValue = '<a href="'
+                    . $_CONF['site_admin_url'] . '/language.php?mode=edit&amp;id='
+                    . $fieldValue . '" title="' . $LANG_ADMIN['edit'] . '">' . $icons['edit'] . '</a>';
+                break;    
+                
+            case 'value':
+                $fieldValue = COM_truncate(htmlspecialchars($fieldValue), 50, '...');
+                break;
         }
 
         return $fieldValue;
@@ -335,12 +343,12 @@ class Language
 
         $id = \Geeklog\Input::fPost('id', 0);
         $id = intval($id, 10);
-        $varName = \Geeklog\Input::fPost('var_name', '');
+        $varName = trim(\Geeklog\Input::fPost('var_name', ''));
         $language = \Geeklog\Input::fPost('language', '');
-        $name = \Geeklog\Input::fPost('name', '');
-        $value = \Geeklog\Input::fPost('value', '');
+        $name = trim(\Geeklog\Input::fPost('name', ''));
+        $value = COM_stripslashes(\Geeklog\Input::Post('value', ''));
 
-        if (($id >= 0) && !empty($varName) && !empty($language) && !empty($name)) {
+        if (($id >= 0) && !empty($varName) && !empty($language)) {
             $varName = DB_escapeString($varName);
             $language = DB_escapeString($language);
             $name = DB_escapeString($name);

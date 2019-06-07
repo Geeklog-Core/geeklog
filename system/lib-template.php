@@ -229,13 +229,14 @@ function CTL_plugin_templatePath($plugin, $path = '')
  * - plugin path/plugin/directory/theme_default/file (physical path only) * if default theme exists - ie $_CONF['theme_default']
  * - plugin path/plugin/directory/default/file (physical path only)
  *
- * @param    string  $plugin     name of plugin
- * @param    string  $directory  name of directory
- * @param    string  $filename   name of file
- * @param    boolean $return_url return url path or file path
+ * @param    string  $plugin            name of plugin
+ * @param    string  $directory         name of directory
+ * @param    string  $filename          name of file
+ * @param    boolean $return_url        return url path or file path
+ * @param    boolean $include_filename  if true returns path with filename, false returns jsut path
  * @return   string              full HTML path to file
  */
-function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = true)
+function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = true, $include_filename = true)
 {
     global $_CONF;
 
@@ -318,6 +319,11 @@ function CTL_plugin_themeFindFile($plugin, $directory, $filename, $return_url = 
                 }
             }
         }
+    }
+
+    // Remove filename if needed
+    if (!empty($retval) && !$include_filename) {
+        $dirname = pathinfo($file, PATHINFO_DIRNAME); 
     }
 
     return $retval;

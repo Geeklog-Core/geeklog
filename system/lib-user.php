@@ -99,6 +99,7 @@ function USER_deleteAccount($uid)
     DB_delete($_TABLES['usercomment'], 'uid', $uid);
     DB_delete($_TABLES['userinfo'], 'uid', $uid);
     DB_delete($_TABLES['backup_codes'], 'uid', $uid);
+    DB_delete($_TABLES['likes'], 'uid', $uid);
 
     // avoid having orphand stories/comments by making them anonymous posts
     DB_query("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
@@ -244,8 +245,9 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
 
     $queueUser = false;
     
-    // username should have been trimmed of spaces and checked if unique before this as if not this function does not fail gracefully
+    // username should have had COM_applyFilter (so no punctuation, etc..) and been trimmed of spaces and checked if unique before this as if not this function does not fail gracefully
     // Might as well double check as having spaces and 4 byte characters could cause issues. Better to fail in this function than later in the process
+    // If username filters change remember to change same process for remote accounts (like in ouath helper class and doAction function)
     $username = trim(GLText::remove4byteUtf8Chars($username)); 
     $username = DB_escapeString($username);
     $email = DB_escapeString($email);

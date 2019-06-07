@@ -1,0 +1,31 @@
+{# start {templatelocation} #}
+
+<span class="gl-likes" id="likes-{item_type}-{item_id}">
+    {# Actions in URL: Like = 1, Dislike = 2, Unlike = 3, Undislike = 4 #}
+    {# Required classes for identification needed for JS: gl-like-btn gl-like-action gl-unlike-action gl-like-num gl-dislike-btn gl-dislike-action gl-undislike-action gl-dislike-num gl-likes-message #}
+    
+    {!if action_enabled}
+    {# if user likes item, style button differently #}
+    <a href="{site_url}/likes.php?type={item_type}&id={item_id}{!if user_liked}&action=3" class="uk-icon-thumbs-up uk-icon-small gl-like-btn gl-unlike-action"{!else}&action=1" class="uk-icon-thumbs-o-up uk-icon-small gl-like-btn gl-like-action"{!endif} rel="nofollow" data-type="{item_type}" data-id="{item_id}" data-uk-tooltip title="{lang_like_action}"></a>
+    {!else}
+    <span class="{!if user_liked}uk-icon-thumbs-up{!else}uk-icon-thumbs-o-up{!endif} uk-icon-small" data-uk-tooltip title="{lang_like_action}"></span>
+    {!endif}
+
+    <span class="gl-like-num">{num_of_likes}</span>
+    {!if dislike_enabled}
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    
+    {!if action_enabled}
+    {# if user dislikes item, style button differently #}
+    <a href="{site_url}/likes.php?type={item_type}&id={item_id}{!if user_disliked}&action=4" class="uk-icon-thumbs-down uk-icon-small gl-dislike-btn gl-undislike-action"{!else}&action=2" class="uk-icon-thumbs-o-down uk-icon-small gl-dislike-btn gl-dislike-action"{!endif} rel="nofollow" data-type="{item_type}" data-id="{item_id}" data-uk-tooltip title="{lang_dislike_action}"></a>
+    {!else}
+    <span class="{!if user_liked}uk-icon-thumbs-down{!else}uk-icon-thumbs-o-down{!endif} uk-icon-small" data-uk-tooltip title="{lang_dislike_action}"></span>
+    {!endif}
+    
+    <span class="gl-dislike-num">{num_of_dislikes}</span>
+    {!endif}
+
+    <span class="gl-likes-message">{lang_message}</span>
+</span>
+
+{# end {templatelocation} #}

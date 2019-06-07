@@ -312,6 +312,61 @@ if ($nrows > 0) {
     $display .= COM_endBlock();
 }
 
+// Top Ten Liked Articles
+if ($_CONF['likes_enabled'] != 0 AND $_CONF['likes_articles'] != 0) {
+    // Tricky SQL... that is expensive in resources to run since
+    // dealing articles that can not only belong to multiple topics but with obviously multiple likes
+    // Only way around this I see is a sub query so we can count the returned records after
+    $sql = "
+        SELECT sid, title, COUNT(sid) count FROM (
+            SELECT s.sid, s.title
+            FROM {$_TABLES['stories']} s,{$_TABLES['likes']} AS l, {$_TABLES['topic_assignments']} ta
+            WHERE ta.type = 'article' AND ta.id = s.sid
+            AND (s.draft_flag = 0) AND (s.date <= NOW()) AND (s.sid = l.id) AND (l.type = 'article') AND (l.action = 1)" . COM_getPermSQL('AND') . $topicsql . " 
+            GROUP BY l.id, s.sid, s.title, l.lid 
+        ) sub
+        GROUP BY sid ORDER BY count DESC LIMIT 10";
+
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        $header_arr = array(
+            array(
+                'text'         => $LANG10[8],
+                'field'        => 'sid',
+                'header_class' => 'stats-header-title',
+            ),
+            array(
+                'text'         => $LANG_LIKES['likes'],
+                'field'        => 'count',
+                'header_class' => 'stats-header-count',
+                'field_class'  => 'stats-list-count',
+            ),
+        );
+        $data_arr = array();
+        $text_arr = array(
+            'has_menu' => false,
+            'title'    => $LANG10[32],
+            'form_url' => $_CONF['site_url'] . '/stats.php',
+        );
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $A['title'] = stripslashes(str_replace('$', '&#36;', $A['title']));
+            $A['sid'] = COM_createLink($A['title'], COM_buildUrl($_CONF['site_url']
+                . "/article.php?story={$A['sid']}"));
+            $A['count'] = COM_NumberFormat($A['count']);
+            $data_arr[$i] = $A;
+        }
+        $display .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
+
+    } else {
+        $display .= COM_startBlock($LANG10[25]);
+        $display .= $LANG10[33];
+        $display .= COM_endBlock();
+    }
+}
+
+
 // Now show stats for any plugins that want to be included
 $display .= PLG_getPluginStats(2);
 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG10[1]));

@@ -13,4 +13,6 @@
 
 {topic_content}
 
+{page_navigation}
+
 {# end {templatelocation} #}

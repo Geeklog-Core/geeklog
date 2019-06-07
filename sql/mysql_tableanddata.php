@@ -184,11 +184,24 @@ CREATE TABLE {$_TABLES['groups']} (
 $_SQL[] ="
 CREATE TABLE {$_TABLES['language_items']} (
   id INT(11) NOT NULL AUTO_INCREMENT,
-  var_name VARCHAR(30) NOT NULL,
-  language VARCHAR(30) NOT NULL,
-  name VARCHAR(30) NOT NULL,
-  value VARCHAR(255) NOT NULL DEFAULT '',
+  var_name varchar(30) NOT NULL,
+  language varchar(30) NOT NULL,
+  name varchar(30) NOT NULL,
+  value text,
   PRIMARY KEY (id)
+) ENGINE=MyISAM
+";
+
+$_SQL[] ="
+CREATE TABLE {$_TABLES['likes']} (
+  lid INT(11) NOT NULL AUTO_INCREMENT,
+  type varchar(30) NOT NULL,
+  id varchar(30) NOT NULL,
+  uid MEDIUMINT NOT NULL, 
+  ipaddress VARCHAR(39) NOT NULL, 
+  action TINYINT NOT NULL,
+  created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  PRIMARY KEY (lid)
 ) ENGINE=MyISAM
 ";
 

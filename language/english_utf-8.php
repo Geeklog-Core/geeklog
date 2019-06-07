@@ -661,7 +661,9 @@ $LANG10 = array(
     28 => '',
     29 => '',
     30 => 'Hits',
-    31 => ''
+    31 => '',
+    32 => 'Top Ten Liked Articles',
+    33 => 'No liked articles found.',    
 );
 
 ###############################################################################
@@ -735,6 +737,27 @@ $LANG12 = array(
     53 => 'Create Account',
     54 => 'Article Introduction',
     55 => 'Article Body'
+);
+
+###############################################################################
+# likes.php - likes and dislikes
+
+$LANG_LIKES = array(
+    'like'              => 'Like',
+    'unlike'            => 'Unlike',
+    'dislike'           => 'Dislike',
+    'undislike'         => 'Undislike',
+    'likes'             => 'Likes',
+    'unlikes'           => 'Unlikes',
+    'dislikes'          => 'Dislikes',
+    'undislikes'        => 'Undislikes',
+    'i_like_this'       => 'I like this',
+    'i_dislike_this'    => 'I dislike this',
+    'thanks_for_action' => 'Thanks for voting!',
+    'likes_speedlimit'  => "You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system",
+    'likes_ip_error'    => 'Your IP address has already performed this Likes action.',
+    'likes_uid_error'   => 'Your User account has already performed this Likes action.',
+    'own_item_error'    => 'Either you own the item or do not have permission to Like/Dislike it.'
 );
 
 ###############################################################################
@@ -875,7 +898,7 @@ $LANG21 = array(
     22 => 'Dynamic Blocks',
     23 => 'Block Order',
     24 => 'Dynamic',
-    25 => 'To modify or delete a regular block, click on that block\'s edit icon below.  To create a new regular block, click on "Create New" above. To move a regular block, click on the arrows or [R] and [L] boxes. To edit dynamic blocks check the plugin configuration that the block is related to.',
+    25 => 'To modify or delete a regular block, click on that block\'s edit icon below.  To create a new regular block, click on "Create New" above. To move a regular block, click on the arrows or [R] and [L] boxes. To edit dynamic blocks check the plugin configuration that the block is related to. Edit and Read access to blocks depends not only on the block access itself, but the minimum topic access the block is assigned to. (if any)',
     26 => 'Layout Block',
     27 => 'PHP Block',
     28 => 'PHP Block Options',
@@ -973,7 +996,7 @@ $LANG24 = array(
     20 => 'Ping',
     21 => 'Send Ping',
     22 => 'Article List',
-    23 => 'To modify or delete an article, click on that article\'s edit icon below. To view an article, click on the title of the article you wish to view. To create a new article, click on "Create New" above.',
+    23 => 'To modify or delete an article, click on that article\'s edit icon below. To view an article, click on the title of the article you wish to view. To create a new article, click on "Create New" above. Edit and Read access to articles depends not only on the article access itself, but the minimum topic access the article is assigned to.',
     24 => 'The ID you chose for this article is already in use. Please use another ID.',
     25 => 'Error when saving article',
     26 => 'Article Preview',
@@ -1066,7 +1089,7 @@ $LANG27 = array(
     6 => 'Deleting a topic deletes all articles, submissions and blocks associated with it (as long as they are only associated with that deleted topic).',
     7 => 'Please fill in the Topic ID and Topic Name fields',
     8 => 'Topic Manager',
-    9 => 'To modify or delete a topic, click on that topic\'s edit icon below. To create a new topic, click on "Create New" above. The asterisk(*) denotes the default topic.',
+    9 => 'To modify or delete a topic, click on that topic\'s edit icon below. To create a new topic, click on "Create New" above. The asterisk(*) denotes the default topic. Remember topic Edit and Read access will also affect items (like blocks, articles, etc...) assigned to it.',
     10 => 'Sort Order',
     11 => 'Articles/Page',
     12 => 'Access Denied',
@@ -1098,7 +1121,10 @@ $LANG27 = array(
     38 => 'All',
     39 => 'Homepage Only',
     40 => 'Assign one or more topics. ',
-    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item to. ',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. ',
+    'topic_control_select_topics' => 'Else you must select at least one topic to assign the item to. ',
+    'topic_control_select_topics_disabled' => 'Else you must select at least one topic you have edit access for, to assign the item to (text is darker). ',
+    'topic_control_no_topics' => 'Unfortunately you do not have edit access to any topics so none can be selected. ',
     42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. ',
     43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actual topic the user is in is not found. ',
     44 => 'Inherit',
@@ -1122,7 +1148,11 @@ $LANG27 = array(
     'topics:' => 'Topics:',
     'filed_under:' => 'Filed under:',
     'topic_title' => 'Topic Title',
-    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.'
+    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.', 
+    'move_topic_up' => 'Move topic up the sort order',
+    'move_topic_down' => 'Move topic down in the sort order',
+    'topics_edit_access_select' => 'You can only select topics you have Edit access to you (text is darker).',
+    'topics_edit_access_listed' => 'Only topics with Edit access are listed.'
 );
 
 ###############################################################################
@@ -1458,12 +1488,14 @@ $LANG33 = array(
 $LANG_LANG = array(
     'language_admin_title'  => 'Language Overrides',
     'language_manager'      => 'Language Override Manager',
-    'new_language_msg'      => 'To modify or delete a language override item, click on that item\'s edit icon below. To create a new override, click on "Create New" above. Language overrides work for both Geeklog itself and any plugins installed.',
+    'new_language_msg'      => 'To modify or delete a language override item, click on that item\'s edit icon below. To create a new override, click on "Create New" above. Language overrides work for both Geeklog itself and any plugins installed that support this feature. Please note, not all language variables may be overwritten',
     'language_editor'       => 'Language Override Editor',
     'id'                    => 'ID',
     'language'              => 'Language',
     'name'                  => 'Variable Element',
     'var_name'              => 'Variable Name',
+    'name_tip'              => 'Required just for language arrays.',
+    'var_name_tip'          => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
     'value'                 => 'New Value'
 );
 
@@ -2371,6 +2403,10 @@ $LANG_confignames['Core'] = array(
     'comment_edit' => 'Allow Comment Edit?',
     'comment_edittime' => 'Comment Edit Time (seconds)',
     'commentsubmission' => 'Queue Comment Submissions',
+    'likes_enabled' => 'Likes Enabled',
+    'likes_articles' => 'Article Likes',
+    'likes_comments' => 'Comment Likes',
+    'likes_speedlimit' => 'Likes Speed Limit',
     'passwordspeedlimit' => 'Password Speed Limit',
     'login_attempts' => 'Max. Login Attempts',
     'login_speedlimit' => 'Login Speed Limit',
@@ -2513,6 +2549,7 @@ $LANG_fs['Core'] = array(
     'fs_userphoto' => 'Photos',
     'fs_gravatar' => 'Gravatar',
     'fs_comments' => 'Comments',
+    'fs_likes' => 'Likes',
     'fs_htmlfilter' => 'HTML Filtering',
     'fs_censoring' => 'Censoring',
     'fs_iplookup' => 'IP Lookup',
@@ -2564,6 +2601,7 @@ $LANG_tab['Core'] = array(
     'tab_userphoto' => 'Photos',
     'tab_gravatar' => 'Gravatar',
     'tab_comments' => 'Comments',
+    'tab_likes' => 'Likes',
     'tab_htmlfilter' => 'HTML Filtering',
     'tab_censoring' => 'Censoring',
     'tab_iplookup' => 'IP Lookup',
@@ -2624,7 +2662,9 @@ $LANG_configselects['Core'] = array(
     36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
     37 => array('Disabled' => 0, 'Enabled (with "index.php")' => 1, 'Enabled (without "index.php")' => 2),
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
+    40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );
 
 ###############################################################################

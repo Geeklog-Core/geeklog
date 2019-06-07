@@ -399,9 +399,10 @@ function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific
  *                                           parent id)
  * @param    boolean      $remove_archive    Remove archive topic from list if any
  * @param    int          $uid               User id or 0 = current user
+ * @param    int          $access_type       Return only topics that user has following access: 0 = Read/Edit, 1 = Read/Edit (with read disabled), 2 = Edit only
  * @return   string                              HTML
  */
-function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1, $language_specific = false, $remove_id = '', $remove_archive = false, $uid = 0)
+function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1, $language_specific = false, $remove_id = '', $remove_archive = false, $uid = 0, $access_type = 0)
 {
     global $_TOPICS, $_TABLES, $LANG21;
 
@@ -482,17 +483,30 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
                 } else {
                     $specified_user_access = SEC_hasAccess($_TOPICS[$count_topic]['owner_id'], $_TOPICS[$count_topic]['group_id'], $_TOPICS[$count_topic]['perm_owner'], $_TOPICS[$count_topic]['perm_group'], $_TOPICS[$count_topic]['perm_members'], $_TOPICS[$count_topic]['perm_anon'], $uid);
                 }
+                
+                // See if only show edit access
+                if ($access_type == 2) {
+                    $access_required = 3; // edit
+                } else {
+                    $access_required = 2; // read
+                }
 
                 // Make sure to show topics for proper language and access level only
-                if ($archive_tid != $id && $specified_user_access > 0 && $id != $remove_id && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {
+                if ($archive_tid != $id && $specified_user_access >= $access_required && $id != $remove_id && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {
                     $title = $_TOPICS[$count_topic]['title'];
 
                     $branch_spaces = "";
                     for ($branch_count = $start_topic; $branch_count <= $_TOPICS[$count_topic]['branch_level']; $branch_count++) {
                         $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
                     }
-
-                    $retval .= '<option value="' . $id . '"';
+                    
+                    // Show topics with read access but require edit access to enable
+                    if ($access_type == 1 && $access_required == 2 && $specified_user_access < 3) {
+                        $topic_disabled = ' disabled="disabled"';
+                    } else {
+                        $topic_disabled = "";
+                    }
+                $retval .= '<option' . $topic_disabled . ' value="' . $id . '"';
                     $retval .= ' title="' . $title . '"';
 
                     if (in_array($id, $selected_ids)) {
@@ -568,17 +582,17 @@ function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true)
 }
 
 /**
- * Check for topic access from a list of topics or for an object
- * If multiple topics then will return the lowest access level found
+ * Check for topic access of current user from a list of topics or for an object
+ * If multiple topics then will return the lowest access level found. If topic 
+ * does not exist then 0 for no access is returned
  * (need to handle 'all' and 'homeonly' as special cases)
  *
- * @param    string $type                                Type of object to find topic access about. If 'topic' then
- *                                                       will check post array for topic selection control
- * @param           string                     /array    $id     ID of object to check topic access for (not requried
- *                                                       if $type is
- *                                                       'topic')
- * @param           string                     /array    $tid    ID of topic to check topic access for (not requried
- *                                                       and not used if $type is 'topic')
+ * @param    string          $type   Type of object to find topic access about. If 'topic' then
+ *                                   will check post array for topic selection control
+ * @param    string/array    $id     ID of object to check topic access for (not requried
+ *                                   if $type is 'topic')
+ * @param    string/array    $tid    ID of topic to check topic access for (not requried
+ *                                   and not used if $type is 'topic'). Also can just specify this
  * @return   int                     returns 3 for read/edit 2 for read only 0 for no access
  */
 function TOPIC_hasMultiTopicAccess($type, $id = '', $tid = '')
@@ -610,16 +624,30 @@ function TOPIC_hasMultiTopicAccess($type, $id = '', $tid = '')
             $tid = $topic_list;
         }
     } else {
-        // Retrieve Topic options
-        $sql = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
-        if ($tid != '') {
-            $sql .= " AND tid = '$tid'";
-        }
+        if (!empty($type) && !empty($id)) {
+            // Retrieve Topic options
+            $sql = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
+            if ($tid != '') {
+                $sql .= " AND tid = '$tid'";
+            }
 
-        $result = DB_query($sql);
-        $A = DB_fetchArray($result);
-        $nrows = DB_numRows($result);
-        $tid = $A['tid'];
+            $result = DB_query($sql);
+            $A = DB_fetchArray($result);
+            $nrows = DB_numRows($result);
+            $tid = $A['tid'];
+        } else {
+            if (is_array($tid)) {
+                $nrows = count($tid);
+                if ($nrows > 0) {
+                    $tid = $tid[0];
+                } else {
+                    $tid = '';
+                }
+            } else {
+                $nrows = 1;
+                $tid = $tid;
+            }
+        }
     }
     if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_HOMEONLY_OPTION) {
         $access = 3;
@@ -630,6 +658,8 @@ function TOPIC_hasMultiTopicAccess($type, $id = '', $tid = '')
         for ($i = 1; $i < $nrows; $i++) {
             if ($type == 'topic') {
                 $tid = $id[$i];
+            } elseif (empty($type) && empty($id)) {
+                $tid = $tid[$i];
             } else {
                 $A = DB_fetchArray($result);
                 $tid = $A['tid'];
@@ -690,70 +720,76 @@ function TOPIC_saveTopicSelectionControl($type, $id)
 {
     global $_TABLES;
 
-    // Retrieve Archive Topic if any
-    $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');
+    // Just in case lets double check (this should have been done before) that the user 
+    // has at least read access to the topics in the post data
+    if (TOPIC_hasMultiTopicAccess('topic') > 0) {
+        // Retrieve Archive Topic if any
+        $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');
+        
+        TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
 
-    TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
+        $topic_inherit_hide = (int) Geeklog\Input::fPost('topic_inherit_hide', 1);
+        $topic_default_hide = (int) Geeklog\Input::fPost('topic_default_hide', 1);
 
-    $topic_inherit_hide = (int) Geeklog\Input::fPost('topic_inherit_hide', 1);
-    $topic_default_hide = (int) Geeklog\Input::fPost('topic_default_hide', 1);
-
-    // Save Topic Assignments
-    if (is_array($tids) && $topic_option == TOPIC_SELECTED_OPTION && !empty($tids)) {
-        DB_delete($_TABLES['topic_assignments'], array('type', 'id'), array($type, $id));
-
-        // Check if archive topic selected, if so then archive
-        if (in_array($archive_tid, $tids)) {
-            DB_save($_TABLES['topic_assignments'], 'tid,type,id,inherit,tdefault', "'$archive_tid', '$type', '$id', 0 , 1");
-        } else {
-            // Check if default in tid array, if not then set first topic as default
-            if (!in_array($default_tid, $tids)) {
-                $default_tid = $tids[0];
-            }
-            $set_default = false;
-            foreach ($tids as $value) {
-                $value = COM_applyFilter($value);
-
-                if ($topic_inherit_hide) {
-                    $inherit = 1;
-                } else {
-                    if (in_array($value, $inherit_tids)) {
-                        $inherit = 1;
-                    } else {
-                        $inherit = 0;
-                    }
-                }
-
-                if ($topic_default_hide) {
-                    // Need to set at least one default so set first one if none selected or option hidden
-                    if (!$set_default) {
-                        $default = 1;
-                        $set_default = true;
-                    } else {
-                        $default = 0;
-                    }
-                } else {
-                    if ($value == $default_tid) {
-                        $default = 1;
-                    } else {
-                        $default = 0;
-                    }
-                }
-
-                DB_save($_TABLES['topic_assignments'], 'tid,type,id,inherit,tdefault', "'$value', '$type', '$id', $inherit, $default");
-            }
-        }
-    } else {
-        if ($topic_option == TOPIC_ALL_OPTION || $topic_option == TOPIC_HOMEONLY_OPTION) {
+        // Save Topic Assignments
+        if (is_array($tids) && $topic_option == TOPIC_SELECTED_OPTION && !empty($tids)) {
             DB_delete($_TABLES['topic_assignments'], array('type', 'id'), array($type, $id));
 
-            DB_save($_TABLES['topic_assignments'], 'tid,type,id,inherit,tdefault', "'$topic_option', '$type', '$id', 0 , 0");
-        } else {
-            return false;
-        }
-    }
+            // Check if archive topic selected, if so then archive
+            if (in_array($archive_tid, $tids)) {
+                DB_save($_TABLES['topic_assignments'], 'tid,type,id,inherit,tdefault', "'$archive_tid', '$type', '$id', 0 , 1");
+            } else {
+                // Check if default in tid array, if not then set first topic as default
+                if (!in_array($default_tid, $tids)) {
+                    $default_tid = $tids[0];
+                }
+                $set_default = false;
+                foreach ($tids as $value) {
+                    $value = COM_applyFilter($value);
 
-    return true;
+                    if ($topic_inherit_hide) {
+                        $inherit = 1;
+                    } else {
+                        if (in_array($value, $inherit_tids)) {
+                            $inherit = 1;
+                        } else {
+                            $inherit = 0;
+                        }
+                    }
+
+                    if ($topic_default_hide) {
+                        // Need to set at least one default so set first one if none selected or option hidden
+                        if (!$set_default) {
+                            $default = 1;
+                            $set_default = true;
+                        } else {
+                            $default = 0;
+                        }
+                    } else {
+                        if ($value == $default_tid) {
+                            $default = 1;
+                        } else {
+                            $default = 0;
+                        }
+                    }
+
+                    DB_save($_TABLES['topic_assignments'], 'tid,type,id,inherit,tdefault', "'$value', '$type', '$id', $inherit, $default");
+                }
+            }
+        } else {
+            if ($topic_option == TOPIC_ALL_OPTION || $topic_option == TOPIC_HOMEONLY_OPTION) {
+                DB_delete($_TABLES['topic_assignments'], array('type', 'id'), array($type, $id));
+
+                DB_save($_TABLES['topic_assignments'], 'tid,type,id,inherit,tdefault', "'$topic_option', '$type', '$id', 0 , 0");
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    } else {
+        return false;
+    }
 
 }
 
@@ -784,14 +820,16 @@ function TOPIC_getDataTopicSelectionControl(&$topic_option, &$tids, &$inherit_ti
  * This will return the HTML needed to create the topic control seen on the
  * admin screen for GL objects (i.e. stories, blocks, etc)
  *
- * @param        string  $type         Type of object to display access for
- * @param        string  $id           Id of onject (if '' then load date from control)
- * @param        boolean $show_options True/False. If true then All and Homepage options will be visible
- * @param        boolean $show_inherit True/False. If true then inhert selection will be enabled
- * @param        boolean $show_default True/False. If true then default topic selection will be enabled
+ * @param        string  $type                      Type of object to display access for
+ * @param        string  $id                        Id of object (if '' then load date from control)
+ * @param        boolean $show_options              True/False. If true then All and Homepage options will be visible
+ * @param        boolean $show_inherit              True/False. If true then inhert selection will be enabled
+ * @param        boolean $show_default              True/False. If true then default topic selection will be enabled
+ * @param        boolean $set_topic_default_on_new  True/False. If true then default topic will be used as selection for an object that does not have any topic assignments
+ * @param        int     $access_type               Return only topics that user has following access: 0 = Read/Edit, 1 = Read/Edit (with read disabled), 2 = Edit only
  * @return       string  needed HTML (table) in HTML
  */
-function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show_inherit = false, $show_default = false)
+function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show_inherit = false, $show_default = false, $set_topic_default_on_new = true, $access_type = 0)
 {
     global $_CONF, $LANG27, $_TABLES, $topic, $_SCRIPTS;
 
@@ -818,7 +856,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
         } else {
             // Figure out if we set current topic for first display or use default topic
             if ($topic_option == TOPIC_SELECTED_OPTION && empty($tids)) {
-                if ($topic == '') {
+                if ($topic == '' AND $set_topic_default_on_new) {
                     $tids = DB_getItem($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND'));
                 } else {
                     $tids = $topic;
@@ -871,15 +909,30 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     $_SCRIPTS->setJavaScriptLibrary('jquery');
     $_SCRIPTS->setJavascriptFile('topic_control', '/javascript/topic_control.js');
 
-    $topiclist = TOPIC_getTopicListSelect($tids, false);
-    if (!$show_options && $topiclist == '') { // If access to no topics return nothing
+    // Generate topic list for topic select
+    if ($access_type == 1) { // Generate list when read access topics are disabled
+        // First see if any topics have edit access because if none we need to disable topic list
+        // Not the best way to do this...
+        $topiclist = TOPIC_getTopicListSelect($tids, false, false, '', false, 0 , 2);
+        if (!empty($topiclist != '')) {
+            // So at least one topic id passed has edit acces so regenerate list with read access topics disabled along with edit access topics
+            $topiclist = TOPIC_getTopicListSelect($tids, false, false, '', false, 0 , $access_type);
+        }
+    } else {
+        // Generate list as normal for either read or just edit access
+        $topiclist = TOPIC_getTopicListSelect($tids, false, false, '', false, 0 , $access_type);
+    }
+    
+    if (!$show_options && $topiclist == '') { // If access to no topics what so ever return nothing
         return '';
     }
 
     $topic_hide = false; // If false then topics multi select box will be visible
+    $topic_disabled = false; // Disabled if not topics are found to display for user (depends on access set to view)
     $val_hide = 'display:none;';
     if ($topiclist == '') { // Topics do not exist
         $topic_hide = true;
+        $topic_disabled = true;
         $topic_templates->set_var('topic_option_hide', $val_hide);
     } else {
         $topic_templates->set_var('topic_options', $topiclist);
@@ -898,6 +951,16 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     if ($show_options) {
         $topic_templates->set_var('topic_options_hide', '0');
         $topic_info = $LANG27[41];
+        if ($topic_disabled){
+            $topic_info .= $LANG27['topic_control_select_topics'];
+            $topic_info .= $LANG27['topic_control_no_topics'];
+        } else {
+            if ($access_type == 1) {
+                $topic_info .= $LANG27['topic_control_select_topics_disabled'];
+            } else {
+                $topic_info .= $LANG27['topic_control_select_topics'];
+            }
+        }
         $val_checked = 'checked="checked"';
         $all_checked = ($topic_option == TOPIC_ALL_OPTION) ? $val_checked : '';
         $homeonly_checked = ($topic_option == TOPIC_HOMEONLY_OPTION) ? $val_checked : '';
@@ -918,7 +981,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     $opt_dummy = '<option value="dummy">dummy</option>';
     $inherit_options = $opt_dummy;
     $topic_inherit_hide = '1';
-    if ($show_inherit) {
+    if ($show_inherit && !$topic_disabled) {
         $topic_inherit_hide = '0';
         $topic_info .= $LANG27[42];
         if (!empty($inherit_tids) OR !empty($tids)) { // Can have no inherited topics selected but if topics selected and show_inherit then need to display
@@ -930,11 +993,13 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
         } else {
             $inherit_hide = true;
         }
+    } else {
+        $inherit_hide = true;
     }
 
     $default_options = $opt_dummy;
     $topic_default_hide = '1';
-    if ($show_default) {
+    if ($show_default && !$topic_disabled) {
         $topic_default_hide = '0';
         $topic_info .= $LANG27[43];
         if (!empty($default_tid)) {
@@ -946,6 +1011,8 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
         } else {
             $default_hide = true;
         }
+    } else {
+        $default_hide = true;
     }
 
     $topic_templates->set_var('topic_inherit_hide', $topic_inherit_hide);

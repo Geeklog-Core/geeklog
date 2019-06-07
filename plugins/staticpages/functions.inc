@@ -895,6 +895,14 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "WHERE (sp.owner_id = u.uid) AND (draft_flag = 0) AND (template_flag = 0) ";
     $sql .= "AND ta.type = 'staticpages' AND ta.id = sp.sp_id ";
     $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
+    
+    // Topic Permissions
+    $topic_perms = COM_getTopicSQL('', 0, 'ta');
+    if ($topic_perms != '') {
+        $topic_perms = " AND (" . $topic_perms . "";
+        $topic_perms .= " OR (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "'))";
+    }
+    $sql .= $topic_perms;
 
     if (!empty($author)) {
         $sql .= "AND (owner_id = '$author') ";
@@ -903,13 +911,13 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     if (!empty($topic)) {
         // Retrieve list of inherited topics
         if ($topic == TOPIC_ALL_OPTION) {
-            $sql .= "AND ((ta.inherit = 1 " . COM_getTopicSQL('AND', 0, 'ta') . ") OR (ta.inherit = 0 AND ta.tid = '" . TOPIC_ALL_OPTION . "') OR (ta.inherit = 0 AND ta.tid = '" . TOPIC_HOMEONLY_OPTION . "')) ";
+            $sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . TOPIC_ALL_OPTION . "') OR (ta.inherit = 0 AND ta.tid = '" . TOPIC_HOMEONLY_OPTION . "')) ";
         } else {
             $tid_list = TOPIC_getChildList($topic);
             $sql .= "AND (ta.tid IN('" . TOPIC_ALL_OPTION . "',{$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND (ta.tid = '" . $topic . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')))) ";
         }
     }
-
+    
     if ($_SP_CONF['includesearchcenterblocks'] == 0) {
         $sql .= 'AND sp_centerblock = 0 ';
     }
@@ -923,6 +931,8 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $columns = array('title' => 'sp_title', 'sp_content');
     $sql .= $search_p->getDateRangeSQL('AND', 'created', $datestart, $dateend);
     list($sql, $ftsql) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql);
+
+    $sql .= " GROUP BY sp_id, sp_title, sp_content, created, owner_id, sp_hits";
 
     $search_p->setSQL($sql);
     $search_p->setFtSQL($ftsql);
@@ -939,13 +949,16 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.template_flag = 0) AND (s.commentcode >= 0) AND (s.created <= NOW()) ";
     $sql .= "AND ta.type = 'staticpages' AND ta.id = s.sp_id ";
 
+    // Topic Permissions
+    $sql .= $topic_perms;
+    
     if (!empty($author)) {
         $sql .= "AND (c.uid = '$author') ";
     }
 
     if (!empty($topic)) {
         if ($topic == TOPIC_ALL_OPTION) {
-            $sql .= "AND ((ta.inherit = 1 " . COM_getTopicSQL('AND', 0, 'ta') . ") OR (ta.inherit = 0 AND ta.tid = '" . TOPIC_ALL_OPTION . "') OR (ta.inherit = 0 AND ta.tid = '" . TOPIC_HOMEONLY_OPTION . "')) ";
+            $sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . TOPIC_ALL_OPTION . "') OR (ta.inherit = 0 AND ta.tid = '" . TOPIC_HOMEONLY_OPTION . "')) ";
         } else {
             $sql .= "AND (ta.tid IN('" . TOPIC_ALL_OPTION . "',{$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND (ta.tid = '" . $topic . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')))) ";
         }
@@ -956,6 +969,8 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $columns = array('title' => 'c.title', 'comment');
     $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $datestart, $dateend);
     list($sql, $ftsql) = $search_c->buildSearchSQL($keyType, $query, $columns, $sql);
+    
+    $sql .= " GROUP BY c.cid, c.title, c.comment, c.date, c.uid ";
 
     $search_c->setSQL($sql);
     $search_c->setFtSQL($ftsql);
@@ -993,7 +1008,7 @@ function plugin_getadminoption_staticpages()
     global $_CONF, $_TABLES, $LANG_STATIC;
 
     if (SEC_hasRights('staticpages.edit,staticpages.delete', 'OR')) {
-        $result = DB_query("SELECT COUNT(*) AS cnt FROM {$_TABLES['staticpage']}" . COM_getPermSQL('WHERE', 0, 3));
+        $result = DB_query("SELECT COUNT(*) AS cnt FROM {$_TABLES['staticpage']}" . COM_getPermSQL('WHERE')); // COM_getPermSQL('WHERE', 0, 3));
         $A = DB_fetchArray($result);
         $total_pages = $A['cnt'];
 
@@ -1735,21 +1750,24 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 
     $retval = '';
     
+    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);    
+    
     switch ($fieldname) {
         case 'edit':
-            $retval = COM_createLink($icon_arr['edit'],
-                "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$A['sp_id']}");
+            if ($access == 3) {
+                $retval = COM_createLink($icon_arr['edit'],
+                    "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$A['sp_id']}");
+            }
             break;
 
         case 'copy':
-            $retval = COM_createLink($icon_arr['copy'],
-                "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=clone&amp;sp_id={$A['sp_id']}");
+            if ($access == 3) {
+                $retval = COM_createLink($icon_arr['copy'],
+                    "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=clone&amp;sp_id={$A['sp_id']}");
+            }
             break;
 
         case 'access':
-            $access = SEC_hasAccess($A['owner_id'], $A['group_id'],
-                $A['perm_owner'], $A['perm_group'],
-                $A['perm_members'], $A['perm_anon']);
             if ($access == 3) {
                 $retval = $LANG_ACCESS['edit'];
             } else {
@@ -1814,9 +1832,10 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
         case 'template_id':
             if ($A['template_id']) {
                 // Find name of template and see if have access to it
-                $result = DB_query("SELECT * FROM {$_TABLES['staticpage']} WHERE sp_id = '{$A['template_id']}'" . COM_getPermSQL('AND', 0, 3));
+                $result = DB_query("SELECT * FROM {$_TABLES['staticpage']} WHERE sp_id = '{$A['template_id']}'" . COM_getPermSQL('AND'));
                 if (DB_numRows($result)) {
                     $B = DB_fetchArray($result);
+                    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);    
                     $sp_title = trim(stripslashes($B['sp_title']));
                     if (empty($sp_title)) {
                         $sp_title = $B['sp_page_title'];
@@ -1832,7 +1851,9 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
                         $attr['title'] = htmlspecialchars($B['sp_page_title']);
                     }
                     $retval = COM_createLink($sp_title, $url, $attr);
-                    $retval .= ' ' . COM_createLink($icon_arr['edit'], "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$B['sp_id']}");
+                    if ($access == 3) {
+                        $retval .= ' ' . COM_createLink($icon_arr['edit'], "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$B['sp_id']}");
+                    }
 
                 } else {
                     // Assume no access, This will create an issue if they edit the staticpage
@@ -2577,4 +2598,15 @@ function plugin_group_changed_staticpages($grp_id, $mode)
         $sql = "UPDATE {$_TABLES['staticpage']} SET group_id = $new_group_id WHERE group_id = $grp_id";
         $result = DB_query($sql);
     }
+}
+
+/**
+ * Lets Geeklog know the names of language variables and arrays that can be overridden if need be
+ *
+ * @return   array
+ */
+function plugin_getlanguageoverrides_staticpages()
+{
+
+    return array('LANG_STATIC');
 }

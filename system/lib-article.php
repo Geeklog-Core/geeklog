@@ -216,6 +216,13 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $article->set_var('story_topic_image_no_align', $topicimage_noalign, false, true);
         }
     }
+    
+    if ($_CONF['likes_enabled'] != 0 && $_CONF['likes_articles'] != 0) {
+        $article->set_var('likes_control',LIKES_control('article',$story->getSid(), $_CONF['likes_articles']), false, true);
+    } else {
+        $article->set_var('likes_control', '', false, true);
+    }    
+    
     // ****************************************
 
     // Create article (and ignore cache) only if preview, or query not empty, or if no cache or cache has been disabled
@@ -244,6 +251,8 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         $article->set_var('story_date_short', $story->DisplayElements('shortdate'));
         $article->set_var('story_date_only', $story->DisplayElements('dateonly'));
         $article->set_var('story_id', $story->getSid());
+        // Send index (display type) so theme developers have the option to display things 
+        $article->set_var('story_display_type', $index, false, true);
 
         if ($_CONF['contributedbyline'] == 1) {
             $article->set_var('lang_contributed_by', $LANG01[1]);
@@ -1047,6 +1056,8 @@ function STORY_doDeleteThisStoryNow($sid)
     DB_delete($_TABLES['stories'], 'sid', $sid);
 
     TOPIC_deleteTopicAssignments('article', $sid);
+    
+    LIKES_deleteActions('article', $sid);
 
     // notify plugins
     PLG_itemDeleted($sid, 'article');
@@ -1994,6 +2005,49 @@ function plugin_usercontributed_article($uid)
 
     return $retval;
 }
+
+/**
+ * Is Likes system enabled for articles
+ *
+ * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
+ */
+function plugin_likesenabled_article()
+{
+    global $_CONF;
+
+    $retval = false;
+    
+    if ($_CONF['likes_enabled'] AND $_CONF['likes_articles'] > 0) {
+        $retval = $_CONF['likes_articles'];
+    }
+
+    return $retval;
+}
+
+/**
+ * Can user perform a like action on item
+ *
+ * @return   bool
+ */
+function plugin_canuserlike_article($id, $uid, $ip)
+{
+    global $_TABLES;
+
+    $retval = false;
+
+    $perm_sql = COM_getPermSQL( 'AND', $uid, 2);
+    $sql = "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid='".$id."' " . $perm_sql;
+    $result = DB_query($sql);
+    if (DB_numRows($result) > 0) {
+        list ($owner_id, $group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) = DB_fetchArray($result);
+        if ($owner_id != $uid) {
+            $retval = true;
+        }
+    }   
+    
+    return $retval;
+}
+
 
 /*
  * START SERVICES SECTION

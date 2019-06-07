@@ -87,6 +87,20 @@ function update_DatabaseFor221()
     // Add structured data type to article table and modified date
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";    
+    
+    // New Likes System table
+    $_SQL[] ="
+    CREATE TABLE IF NOT EXISTS {$_TABLES['likes']} (
+      lid INT(11) NOT NULL AUTO_INCREMENT,
+      type varchar(30) NOT NULL,
+      id varchar(30) NOT NULL,
+      uid MEDIUMINT NOT NULL, 
+      ipaddress VARCHAR(39) NOT NULL, 
+      action TINYINT NOT NULL,
+      created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+      PRIMARY KEY (lid)
+    ) ENGINE=MyISAM
+    ";    
 
     // ***************************************     
     // Core Plugin Updates Here (including version update)

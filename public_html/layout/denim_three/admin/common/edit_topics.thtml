@@ -4,7 +4,7 @@
     <input type="hidden" name="topic_options_hide" value="{topic_options_hide}"{xhtml}>
     <label><input type="radio" name="topic_option" value="all" id="topic_option_all" class="uk-radio" {all_checked}{xhtml}> {lang_all}</label>
     <label><input type="radio" name="topic_option" value="homeonly" id="topic_option_homeonly" class="uk-radio" {homeonly_checked}{xhtml}> {lang_homeonly}</label>
-    <label><span style="{topic_option_hide}"><input type="radio" name="topic_option" id="topic_option_selectedtopics" class="uk-radio" value="selectedtopics" {selectedtopics_checked}{xhtml}></span> {lang_selected}</label>
+    <label style="{topic_option_hide}"><input type="radio" name="topic_option" id="topic_option_selectedtopics" class="uk-radio" value="selectedtopics" {selectedtopics_checked}{xhtml}> {lang_selected}</label>
 </div>
 <div id="panel_topic_options" style="vertical-align:top;width:38%;display:inline-block;{topic_hide}">
     <div style="vertical-align:top;">{lang_assigned}:</div>

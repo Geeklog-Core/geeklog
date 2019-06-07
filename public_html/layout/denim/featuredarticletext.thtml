@@ -28,6 +28,13 @@
   <footer>
 
     {related_topics}
+    
+    {!if likes_control}
+        {# story_display_type: n = full display of article, p = preview in editor, y = topic summary display. #}
+        {!!if {story_display_type} == 'n' !!}
+        <div class="uk-text-center uk-margin-bottom">{likes_control}</div>
+        {!endif}
+    {!endif}    
 
     {!if related_articles_by_keyword}
       <hr{xhtml}>
