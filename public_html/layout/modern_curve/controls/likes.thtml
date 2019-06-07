@@ -1,12 +1,12 @@
 {# start {templatelocation} #}
 
-<span class="gl-likes" id="likes-{item_type}-{item_id}">
+<span class="gl-likes" id="likes-{item_type}-{item_sub_type}-{item_id}">
     {# Actions in URL: Like = 1, Dislike = 2, Unlike = 3, Undislike = 4 #}
     {# Required classes for identification needed for JS: gl-like-btn gl-like-action gl-unlike-action gl-like-num gl-dislike-btn gl-dislike-action gl-undislike-action gl-dislike-num gl-likes-message #}
     
     {!if action_enabled}
     {# if user likes item, style button differently #}
-    <a href="{site_url}/likes.php?type={item_type}&id={item_id}{!if user_liked}&action=3" class="gl-like-btn gl-unlike-action"{!else}&action=1" class="gl-like-btn gl-like-action"{!endif} rel="nofollow" data-type="{item_type}" data-id="{item_id}" data-uk-tooltip title="{lang_like_action}">
+    <a href="{site_url}/likes.php?type={item_type}&subtype={item_sub_type}&id={item_id}{!if user_liked}&action=3" class="gl-like-btn gl-unlike-action"{!else}&action=1" class="gl-like-btn gl-like-action"{!endif} rel="nofollow" data-type="{item_type}" data-id="{item_id}" data-subtype="{item_sub_type}" data-uk-tooltip title="{lang_like_action}">
         {!if user_liked}
         <img src="/images/liked.png" style="height: 20px; vertical-align: middle;">
         {!else}
@@ -23,7 +23,7 @@
     
     {!if action_enabled}
     {# if user dislikes item, style button differently #}
-    <a href="{site_url}/likes.php?type={item_type}&id={item_id}{!if user_disliked}&action=4" class="gl-dislike-btn gl-undislike-action"{!else}&action=2" class="gl-dislike-btn gl-dislike-action"{!endif} rel="nofollow" data-type="{item_type}" data-id="{item_id}" data-uk-tooltip title="{lang_dislike_action}">
+    <a href="{site_url}/likes.php?type={item_type}&subtype={item_sub_type}&id={item_id}{!if user_disliked}&action=4" class="gl-dislike-btn gl-undislike-action"{!else}&action=2" class="gl-dislike-btn gl-dislike-action"{!endif} rel="nofollow" data-type="{item_type}" data-subtype="{item_sub_type}" data-id="{item_id}" data-uk-tooltip title="{lang_dislike_action}">
         {!if user_disliked}
         <img src="/images/disliked.png" style="height: 20px; vertical-align: middle;">
         {!else}

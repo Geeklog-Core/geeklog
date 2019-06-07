@@ -31,12 +31,13 @@ $(document).ready(function(){
     $(document).on('click', '.gl-like-btn, .gl-dislike-btn', function(event) {
         event.preventDefault(); // Prevent link click from calling likes.php
         
-        var item_type = $(this).data('type');
+        var type = $(this).data('type');
+        var sub_type = $(this).data('subtype');
         var item_id = $(this).data('id');
         $clicked_btn = $(this);
         
         // Disable Clicks and mute colors on buttons until finished
-        $("#likes-"+item_type+'-'+item_id).attr("style", "opacity:0.2; pointer-events: none;"); 
+        $("#likes-"+type+'-'+sub_type+'-'+item_id).attr("style", "opacity:0.2; pointer-events: none;"); 
 
         // Determine type of like action (what button type pressed)
         if ($clicked_btn.hasClass('gl-like-action')) {
@@ -55,12 +56,13 @@ $(document).ready(function(){
             data: {
                 'a': "1",
                 'action': action,
-                'type': item_type,
+                'type': type,
+                'subtype': sub_type,
                 'id': item_id
             },
             beforeSend: function(){
                 // Show loading image container
-                //$("#likes-loader-"+item_type+'-'+item_id).show();
+                //$("#likes-loader-"+type+'-'+sub_type+'-'+item_id).show();
             },
             success: function(data){
                 res = JSON.parse(data);
@@ -71,7 +73,7 @@ $(document).ready(function(){
                     alert(res.data);
                 } else {
                     // Copy over Likes control with new data
-                    $('#likes-'+item_type+'-'+item_id).prop('outerHTML', res.data);
+                    $('#likes-'+type+'-'+sub_type+'-'+item_id).prop('outerHTML', res.data);
                 }
             }, 
             error: function(error){
@@ -83,10 +85,10 @@ $(document).ready(function(){
             },
             complete: function(data){
                 // Hide image loading container
-                //$("#likes-loader-"+item_type+'-'+item_id).hide();
+                //$("#likes-loader-"+type+'-'+sub_type+'-'+item_id).hide();
                 
                 // Fix opacity and clicks incase error or error message returned from success
-                $("#likes-"+item_type+'-'+item_id).attr("style", "opacity:1.0; pointer-events: auto;"); 
+                $("#likes-"+type+'-'+sub_type+'-'+item_id).attr("style", "opacity:1.0; pointer-events: auto;"); 
                 
             }            
         });		

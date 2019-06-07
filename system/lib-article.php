@@ -218,7 +218,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
     }
     
     if ($_CONF['likes_enabled'] != 0 && $_CONF['likes_articles'] != 0) {
-        $article->set_var('likes_control',LIKES_control('article',$story->getSid(), $_CONF['likes_articles']), false, true);
+        $article->set_var('likes_control',LIKES_control('article', '',$story->getSid(), $_CONF['likes_articles']), false, true);
     } else {
         $article->set_var('likes_control', '', false, true);
     }    
@@ -1057,7 +1057,7 @@ function STORY_doDeleteThisStoryNow($sid)
 
     TOPIC_deleteTopicAssignments('article', $sid);
     
-    LIKES_deleteActions('article', $sid);
+    LIKES_deleteActions('article', '', $sid);
 
     // notify plugins
     PLG_itemDeleted($sid, 'article');
@@ -2011,7 +2011,7 @@ function plugin_usercontributed_article($uid)
  *
  * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
  */
-function plugin_likesenabled_article()
+function plugin_likesenabled_article($sub_type)
 {
     global $_CONF;
 
@@ -2029,7 +2029,7 @@ function plugin_likesenabled_article()
  *
  * @return   bool
  */
-function plugin_canuserlike_article($id, $uid, $ip)
+function plugin_canuserlike_article($sub_type, $id, $uid, $ip)
 {
     global $_TABLES;
 
