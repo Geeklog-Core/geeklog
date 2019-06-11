@@ -734,11 +734,11 @@ function TOPIC_saveTopicSelectionControl($type, $id, $sub_type = '')
     global $_TABLES;
 
     // Just in case lets double check (this should have been done before) that the user 
-    // has at least read access to all the topics in the post data
-    if (TOPIC_hasMultiTopicAccess('topic') > 0) {
+    // has at least read access to all the topics in the post data OR there is no topic selected (there by deleting any previously saved topic assignments)
+    if (TOPIC_hasMultiTopicAccess('topic') > 2 OR !TOPIC_checkTopicSelectionControl()) {
         // Retrieve Archive Topic if any
         $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');
-        
+
         TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
 
         $topic_inherit_hide = (int) Geeklog\Input::fPost('topic_inherit_hide', 1);
@@ -812,7 +812,13 @@ function TOPIC_saveTopicSelectionControl($type, $id, $sub_type = '')
 
                     DB_save($_TABLES['topic_assignments'], 'tid,type,subtype,id,inherit,tdefault', "'$topic_option', '$type', '$sub_type', '$id', 0 , 0");
                 }
-                    
+            // Delete Old selected topics since nothing selected. If a seleciton is required then this needs to be checked before this funciton is called
+            } elseif ($topic_option == TOPIC_SELECTED_OPTION) {
+                if (empty($sub_type)) {
+                    DB_delete($_TABLES['topic_assignments'], array('type', 'id'), array($type, $id));
+                } else {
+                    DB_delete($_TABLES['topic_assignments'], array('type', 'id', 'subtype'), array($type, $id, $sub_type));
+                }
             } else {
                 return false;
             }
