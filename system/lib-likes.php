@@ -300,3 +300,42 @@ function LIKES_addAction($type, $sub_type = '', $item_id, $action, $prev_action,
     // Get new counts and return
     return LIKES_getLikes($type, $sub_type, $item_id);
 }
+
+/**
+* Return number of likes or dislikes for a type, sub type, and id(s)
+*
+* @param        int         $action   like or dislike action
+* @param        string      $type     plugin name
+* @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @param        array       $item_ids  item id
+* @param        int         $uid      user id of voter
+* @param        string      $ip       IP address of voter
+* @return       array       an array with the new overall number of likes and dislikes.
+*
+*/
+function LIKES_getStats($action, $type = '', $sub_type = '', $item_ids = array()) 
+{
+    global $_TABLES;
+    
+    if ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE) {
+        $sql = "SELECT action FROM {$_TABLES['likes']} WHERE action = $action";
+        if (!empty($type)) {
+            $sql .= " AND type = '" . DB_escapeString($type) . "'";
+            
+            if (!empty($sub_type)) {
+                $sql .= " AND subtype = '" . DB_escapeString($sub_type) . "'";
+                
+                if (is_array($item_ids)) {
+                    $sql .= " AND id IN (" . implode("','", $item_ids)  . ")";
+                }                
+            }
+        }
+        $result = DB_query($sql);
+        
+        return DB_numRows($result);
+    } else {
+        return 0;
+    }
+}
+
+
