@@ -13,13 +13,13 @@
       <dd class="controls_text">{story_author}</dd>
 
       <dt><label for="admin-storyeditor_advanced-title">{lang_title}</label></dt>
-      <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-storyeditor_advanced-title','admin-storyeditor_advanced-sid');" {!endif}value="{story_title}" name="title" id="admin-storyeditor_advanced-title" class="uk-input size6"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-storyeditor_advanced-title','admin-storyeditor_advanced-sid');" {!endif}value="{story_title}" name="title" id="admin-storyeditor_advanced-title" class="uk-input uk-form-width-large"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor-page_title">{lang_page_title}</label></dt>
-      <dd><input type="text" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="uk-input size6"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="uk-input uk-form-width-large"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor_advanced-sid">{lang_sid}</label></dt>
-      <dd><input type="text" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor_advanced-sid" class="uk-input size6"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor_advanced-sid" class="uk-input uk-form-width-large"{xhtml}></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
       <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" class="uk-textarea" style="width:95%" cols="70" rows="2">{meta_description}</textarea></dd>
@@ -40,7 +40,7 @@
       </dd>        
 
       <dt><label for="admin-storyeditor_advanced-cachetime">{lang_cachetime}</label></dt>
-      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor_advanced-cachetime" class="uk-input text" aria-describedby="desc-admin-storyeditor_advanced-cachetime"{xhtml}></dd>
+      <dd><input type="text" value="{cache_time}" name="cache_time" id="admin-storyeditor_advanced-cachetime" class="uk-input uk-form-width-small" aria-describedby="desc-admin-storyeditor_advanced-cachetime"{xhtml}></dd>
       <dd class="description" id="desc-admin-storyeditor_advanced-cachetime">{lang_cachetime_desc}</dd>
 
       <dt><label for="admin-storyeditor_advanced-draft_flag">{lang_draft}</label></dt>

@@ -5,19 +5,19 @@
   <div class="admin_basic">
     <dl class="form_block">
       <dt><label for="admin-blockeditor-title">{lang_blocktitle}</label></dt>
-      <dd><input type="text" name="title" value="{block_title}" id="admin-blockeditor-title" class="uk-input size5"{xhtml}></dd>
+      <dd><input type="text" name="title" value="{block_title}" id="admin-blockeditor-title" class="uk-input uk-form-width-large"{xhtml}></dd>
 
       <dt><label for="admin-blockeditor-is_enabled">{lang_enabled}</label></dt>
       <dd class="controls_text"><input type="checkbox" name="is_enabled" {is_enabled} id="admin-blockeditor-is_enabled" class="uk-checkbox"{xhtml}></dd>
 
       <dt><label for="admin-blockeditor-help">{lang_blockhelpurl}</label></dt>
-      <dd><input type="text" name="help" value="{block_help}" maxlength="{max_url_length}" id="admin-blockeditor-help" class="uk-input size5" aria-describedby="desc-admin-blockeditor-help"{xhtml}></dd>
+      <dd><input type="text" name="help" value="{block_help}" maxlength="{max_url_length}" id="admin-blockeditor-help" class="uk-input uk-form-width-large" aria-describedby="desc-admin-blockeditor-help"{xhtml}></dd>
       <dd id="desc-admin-blockeditor-help" class="description">{lang_includehttp}<br{xhtml}>
                               {lang_explanation}</dd>
 
       <dt>{lang_blockname}</dt>
       <dd class="controls_text">{block_name}
-        <input type="hidden" name="name" value="{block_name}" class="size5"{xhtml}></dd>
+        <input type="hidden" name="name" value="{block_name}"{xhtml}></dd>
 
       <dt><label>{lang_topic}</label></dt>
       <dd class="controls_text">{topic_selection}</dd>
@@ -32,7 +32,7 @@
       </dd>
 
       <dt><label for="admin-blockeditor-blockorder">{lang_blockorder}</label></dt>
-      <dd><input type="text" name="blockorder" value="{block_order}" id="admin-blockeditor-blockorder" class="uk-input size1" aria-describedby="desc-admin-blockeditor-blockorder"{xhtml}>
+      <dd><input type="text" name="blockorder" value="{block_order}" id="admin-blockeditor-blockorder" class="uk-input uk-form-width-xsmall" aria-describedby="desc-admin-blockeditor-blockorder"{xhtml}>
         <span id="desc-admin-blockeditor-blockorder">0 - 9999</span></dd>
 
       <dt><label>{lang_device}</label></dt>
@@ -49,11 +49,11 @@
       </dd>
 
       <dt><label for="admin-blockeditor-css-id">{lang_css_id}</label></dt>
-      <dd><input type="text" value="{css_id}" name="css_id" id="admin-blockeditor-css-id" class="uk-input size5" aria-describedby="desc-admin-blockeditor-css-id"{xhtml}></dd>
+      <dd><input type="text" value="{css_id}" name="css_id" id="admin-blockeditor-css-id" class="uk-input uk-form-width-medium" aria-describedby="desc-admin-blockeditor-css-id"{xhtml}></dd>
       <dd id="desc-admin-blockeditor-css-id" class="description">{lang_css_id_desc}</dd>
 
       <dt><label for="admin-blockeditor-css-classes">{lang_css_classes}</label></dt>
-      <dd><input type="text" value="{css_classes}" name="css_classes" id="admin-blockeditor-css-classes" class="uk-input size5" aria-describedby="desc-admin-blockeditor-css-classes"{xhtml}></dd>
+      <dd><input type="text" value="{css_classes}" name="css_classes" id="admin-blockeditor-css-classes" class="uk-input uk-form-width-large" aria-describedby="desc-admin-blockeditor-css-classes"{xhtml}></dd>
       <dd id="desc-admin-blockeditor-css-classes" class="description">{lang_css_classes_desc}</dd>
     </dl>
 

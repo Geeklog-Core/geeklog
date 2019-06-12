@@ -34,10 +34,10 @@
       <dd class="description" id="desc-admin-storyeditor-publish_month">{publish_date_explanation}</dd>
 
       <dt><label for="admin-storyeditor-title">{lang_title}</label></dt>
-      <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-storyeditor-title','admin-storyeditor-sid');" {!endif}value="{story_title}" name="title" id="admin-storyeditor-title" class="uk-input size6"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-storyeditor-title','admin-storyeditor-sid');" {!endif}value="{story_title}" name="title" id="admin-storyeditor-title" class="uk-input uk-form-width-large"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor-page_title">{lang_page_title}</label></dt>
-      <dd><input type="text" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="uk-input size6"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="uk-input uk-form-width-large"{xhtml}></dd>
 
       <dt><label for="tid">{lang_topic}</label></dt>
       <dd class="controls_text">{topic_selection}</dd>
@@ -52,7 +52,7 @@
       </dd>        
 
       <dt><label for="admin-storyeditor-cachetime">{lang_cachetime}</label></dt>
-      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor-cachetime" class="uk-input text" aria-describedby="desc-admin-storyeditor-cachetime"{xhtml}></dd>
+      <dd><input type="text" value="{cache_time}" name="cache_time" id="admin-storyeditor-cachetime" class="uk-input uk-form-width-small" aria-describedby="desc-admin-storyeditor-cachetime"{xhtml}></dd>
       <dd class="description" id="desc-admin-storyeditor-cachetime">{lang_cachetime_desc}</dd>
 
       <dt><label for="admin-storyeditor-draft_flag">{lang_draft}</label></dt>
@@ -137,7 +137,7 @@
       </dd>
 
       <dt><label for="admin-storyeditor-sid">{lang_sid}</label></dt>
-      <dd><input type="text" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor-sid" class="uk-input size5"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor-sid" class="uk-input uk-form-width-large"{xhtml}></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
       <dd{hide_meta}><textarea cols="70" rows="2" name="meta_description" id="admin-storyeditor-metadescription" class="uk-textarea wide">{meta_description}</textarea></dd>
