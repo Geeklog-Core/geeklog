@@ -114,9 +114,21 @@ if ($_CONF['url_rewrite'] && !$_CONF['url_routing']) {
         $page = (int) COM_getArgument('page');
     }
 } elseif ($_CONF['url_rewrite'] && $_CONF['url_routing']) {
-    COM_setArgNames(array('topic', 'page'));
-    $topic = COM_getArgument('topic');
-    $page = (int) COM_getArgument('page');
+        // NOTE: this does not work if site_url config option contains a directory as URL class has issues grabing variables
+        // See: https://github.com/Geeklog-Core/geeklog/issues/937
+        COM_setArgNames(array('topic', 'page'));
+        $topic = COM_getArgument('topic');
+        $page = (int) COM_getArgument('page');
+/*      
+        // NOTE: $_URL->numArguments() currently does not work with URL Routing so cannot use yet like below...
+        // If on homepage will have less arguments so no need to grab variables.
+        // Cannot use COM_onFrontpage here as it requires global $topic variable to be already set
+        if ($_URL->numArguments() > 1) { // see if at least topic is set (or what we assume as topic)
+            COM_setArgNames(array('topic', 'page'));
+            $topic = COM_getArgument('topic');
+            $page = (int) COM_getArgument('page');
+        }
+*/
 } else {
     $topic = Geeklog\Input::fGet('topic', Geeklog\Input::fPost('topic', ''));
     $page = (int) Geeklog\Input::get('page', 0);

@@ -6619,6 +6619,7 @@ function COM_getCurrentURL()
 /**
  * Check if we're on Geeklog's index page.
  * See if we're on the main index page (first page, no topics selected).
+ * Note: Need to make sure topic global variable has already been set before using this function
  *
  * @return   boolean     true = we're on the frontpage, false = we're not
  */
