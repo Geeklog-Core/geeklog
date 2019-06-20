@@ -3791,12 +3791,13 @@ function PLG_getLanguageOverrides()
 /**
 * See if Likes system enabled for a plugin
 *
-* @param    string  $type  plugin name
-* @return   int            0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
+* @param    string  $type           plugin name
+* @param    string  $sub_type Sub   type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @return   int                     0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
 * @since    Geeklog 2.2.1
 *
 */
-function PLG_typeLikesEnabled($type)
+function PLG_typeLikesEnabled($type, $sub_type)
 {
     global $_CONF;
     
@@ -3808,9 +3809,10 @@ function PLG_typeLikesEnabled($type)
     }
 
     if ($_CONF['likes_enabled']) {
+        $args[1] = $sub_type;
         $function = 'plugin_likesenabled_' . $type;
 
-        $retval = PLG_callFunctionForOnePlugin($function);     
+        $retval = PLG_callFunctionForOnePlugin($function,$args);        
     }
 
     return $retval;
@@ -3820,6 +3822,7 @@ function PLG_typeLikesEnabled($type)
  * Checks to see if user can perform a likes action on a item
  *
  * @param   string $type     Plugin for which like is for 
+ * @param   string $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
  * @param   string $id       Item id for which like is for
  * @param   int    $uid      User id who is liking item
  * @param   int    $ip       ip who is liking item
@@ -3827,7 +3830,7 @@ function PLG_typeLikesEnabled($type)
  * @return   bool      
  * @since    Geeklog 2.2.1
  */
-function PLG_canUserLike($type, $id, $uid, $ip)
+function PLG_canUserLike($type, $sub_type, $id, $uid, $ip)
 {
    global $_CONF, $_TABLES;
 
@@ -3845,9 +3848,10 @@ function PLG_canUserLike($type, $id, $uid, $ip)
     }
 
     if ( $retval == true ) {
-        $args[1] = $id;
-        $args[2] = $uid;
-        $args[3] = $ip;
+        $args[1] = $sub_type;
+        $args[2] = $id;
+        $args[3] = $uid;
+        $args[4] = $ip;
         $function = 'plugin_canuserlike_' . $type;
 
         $retval = PLG_callFunctionForOnePlugin($function,$args);
@@ -3860,6 +3864,7 @@ function PLG_canUserLike($type, $id, $uid, $ip)
 * An item has had a likes action, allow plugin to update their records
 *
 * @param    string  $type       plugin name
+* @param    string  $sub_type   Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param    string  $item_id    the id of the item with the like action
 * @param    int     $action     the like action for the item. If LIKES_ACTION_NONE (0) then considered a delete
 *
@@ -3867,12 +3872,13 @@ function PLG_canUserLike($type, $id, $uid, $ip)
 * @since    Geeklog 2.2.1
 *
 */
-function PLG_itemLike($type, $item_id, $action)
+function PLG_itemLike($type, $sub_type, $item_id, $action)
 {
     $retval = true;
 
-    $args[1] = $item_id;
-    $args[2] = $action;
+    $args[1] = $sub_type;
+    $args[2] = $item_id;
+    $args[3] = $action;
     $function = 'plugin_itemlikesaction_' . $type;
 
     $retval = PLG_callFunctionForOnePlugin($function,$args);

@@ -322,7 +322,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         $template->set_var('cssid', $row % 2);
         
         if ($_CONF['likes_enabled'] != 0 && $_CONF['likes_comments'] != 0) {
-            $likes_control = LIKES_control('comment', $A['cid'], $_CONF['likes_comments']) . ' | ';
+            $likes_control = LIKES_control('comment', '', $A['cid'], $_CONF['likes_comments']) . ' | ';
             $template->set_var('likes_control', $likes_control);
         } else {
             $template->set_var('likes_control', '');
@@ -1676,7 +1676,7 @@ function CMT_deleteComment($cid, $sid, $type)
         DB_change($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
         DB_delete($_TABLES['comments'], 'cid', $cid);
         
-        LIKES_deleteActions('comment', $cid);
+        LIKES_deleteActions('comment', '', $cid);
         
         DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
             . "WHERE sid = '$sid' AND type = '$type' AND lft BETWEEN $lft AND $rht");
@@ -2958,7 +2958,7 @@ function plugin_usercontributed_comment($uid)
  *
  * @return   int    0 = disabled, 1 = Likes and Dislikes, 2 = Likes only
  */
-function plugin_likesenabled_comment()
+function plugin_likesenabled_comment($sub_type)
 {
     global $_CONF;
 
@@ -2976,7 +2976,7 @@ function plugin_likesenabled_comment()
  *
  * @return   bool
  */
-function plugin_canuserlike_comment($id, $uid, $ip)
+function plugin_canuserlike_comment($sub_type, $id, $uid, $ip)
 {
     global $_TABLES;
 

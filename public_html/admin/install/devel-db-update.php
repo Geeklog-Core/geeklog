@@ -89,10 +89,11 @@ function update_DatabaseFor221()
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";    
     
     // New Likes System table
-    $_SQL[] ="
+    $_SQL[] = "
     CREATE TABLE IF NOT EXISTS {$_TABLES['likes']} (
       lid INT(11) NOT NULL AUTO_INCREMENT,
       type varchar(30) NOT NULL,
+      subtype varchar(30) NOT NULL,
       id varchar(30) NOT NULL,
       uid MEDIUMINT NOT NULL, 
       ipaddress VARCHAR(39) NOT NULL, 
@@ -100,6 +101,18 @@ function update_DatabaseFor221()
       created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
       PRIMARY KEY (lid)
     ) ENGINE=MyISAM
+    ";
+
+    // Add subtype column to topic assignments table to allow plugins to have topics specified for types of objects
+    $_SQL[] = "ALTER TABLE {$_TABLES['topic_assignments']} ADD `subtype` VARCHAR(30) NOT NULL DEFAULT '' AFTER `type`";
+    $_SQL[] = "
+    ALTER TABLE {$_TABLES['topic_assignments']}
+      DROP PRIMARY KEY,
+       ADD PRIMARY KEY(
+         `tid`,
+         `type`,
+         `subtype`,
+         `id`);
     ";    
 
     // ***************************************     

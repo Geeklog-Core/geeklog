@@ -212,10 +212,19 @@ class Url
      */
     private function getArguments()
     {
+        global $_CONF;
+        
+        if ($this->urlRouting === Router::ROUTING_WITHOUT_INDEX_PHP) {
+            $check_for_dirs = true;
+        } else{
+            $check_for_dirs = false;
+        }
+        
         if (isset($_SERVER['PATH_INFO'])) {
             if ($_SERVER['PATH_INFO'] == '') {
                 if (isset($_ENV['ORIG_PATH_INFO'])) {
                     $this->arguments = explode('/', $_ENV['ORIG_PATH_INFO']);
+                    $check_for_dirs = true;
                 } else {
                     $this->arguments = array();
                 }
@@ -225,8 +234,10 @@ class Url
             array_shift($this->arguments);
         } elseif (isset($_ENV['ORIG_PATH_INFO'])) {
             $this->arguments = explode('/', substr($_ENV['ORIG_PATH_INFO'], 1));
+            $check_for_dirs = true;
         } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
             $this->arguments = explode('/', substr($_SERVER['ORIG_PATH_INFO'], 1));
+            $check_for_dirs = true;
 
             // Added for IIS 7 to work in FastCGI mode
             array_shift($this->arguments);
@@ -236,6 +247,21 @@ class Url
             // end of add
         } else {
             $this->arguments = array();
+        }
+        
+        // For when Routing enabled - Deal with site_url if it has directories in it. These are not arguments so we need to add extra array shifts
+        // For Routing with ROUTING_WITH_INDEX_PHP - Only ORIG_PATH_INFO variables contains these directories
+        // For Routing with ROUTING_WITHOUT_INDEX_PHP - Both PATH_INFO and ORIG_PATH_INFO variables contains these directories
+        // So add extra array_shifts if needed
+        if ($this->urlRouting) {
+            $url_path = parse_url($_CONF['site_url'], PHP_URL_PATH);
+            if (!empty($url_path) AND $check_for_dirs) {
+                $url_dir = explode('/', $url_path);
+                $num_url_dir = count($url_dir);
+                for ($i = 1; $i <= $num_url_dir; $i++) {
+                    array_shift($this->arguments);
+                }
+            }
         }
     }
 

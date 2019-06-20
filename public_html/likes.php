@@ -60,6 +60,7 @@ if ($ajax_call) {
 
 $status = 0;
 $type  = Geeklog\Input::fGetOrPost('type', '');
+$sub_type  = Geeklog\Input::fGetOrPost('subtype', '');
 $id  = Geeklog\Input::fGetOrPost('id', '');
 $action  = Geeklog\Input::fGetOrPost('action', '');
 $ip         = $_SERVER['REMOTE_ADDR'];
@@ -73,7 +74,7 @@ if (!$ajax_call) {
         $referer = $_CONF['site_url'];
     } else {
         // jump down to like user clicked
-        $referer .= '#likes-' . $type . '-' . $id;
+        $referer .= '#likes-' . $type . '-' . $sub_type . '-' . $id;
     }
 
     $sLength = strlen($_CONF['site_url']);
@@ -88,7 +89,7 @@ if (!in_array($type, $all_plugins)) {
     die('no type specified');
 }
 
-$likes_setting = PLG_typeLikesEnabled($type);
+$likes_setting = PLG_typeLikesEnabled($type, $sub_type);
 if (!($likes_setting == 1 OR $likes_setting == 2)) {
     die('likes system not enabled for type');
 }
@@ -107,13 +108,13 @@ switch ($action) {
         die("Sorry, likes system action appears to be invalid or disabled."); // kill the script because normal users will never see this.
 }
 
-$action_enabled = PLG_canUserLike($type, $id, $uid, $ip);
+$action_enabled = PLG_canUserLike($type, $sub_type, $id, $uid, $ip);
 if ($action_enabled) {
     // look up the item in our database....
-    list($num_likes, $num_dislikes) = LIKES_getLikes($type, $id);
+    list($num_likes, $num_dislikes) = LIKES_getLikes($type, $sub_type, $id);
 
     // Find out if user has voted and what that is (like or dislike)
-    $prev_action = LIKES_hasAction($type, $id, $uid, $ip);
+    $prev_action = LIKES_hasAction($type, $sub_type, $id, $uid, $ip);
     
     // Figure out valid actions
     if (($prev_action == LIKES_ACTION_NONE) AND ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE)) {
@@ -136,12 +137,12 @@ if ($action_enabled) {
     }
   
     if ($status == 0) { // if everything looks good then perform action
-        list($num_likes, $num_dislikes) = LIKES_addAction($type, $id, $action, $prev_action, $uid, $ip);
+        list($num_likes, $num_dislikes) = LIKES_addAction($type, $sub_type, $id, $action, $prev_action, $uid, $ip);
         COM_updateSpeedlimit ('likes');
     }
 } else {
     if ($ajax_call) {
-        list($num_likes, $num_dislikes) = LIKES_getLikes($type, $id);
+        list($num_likes, $num_dislikes) = LIKES_getLikes($type, $sub_type, $id);
         
         $status = 3;
     }
@@ -171,7 +172,7 @@ if ($ajax_call) {
             $message = $LANG_LIKES['thanks_for_action'];
         }    
         
-        $data = LIKES_control($type, $id, $likes_setting, $message);
+        $data = LIKES_control($type, $sub_type, $id, $likes_setting, $message);
     }
 
     $retval = [

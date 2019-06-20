@@ -69,13 +69,14 @@ define('LIKES_ACTION_UNDISLIKE', 4);
 * Returns the Likes Control
 *
 * @param        string      $type               plugin name
+* @param        string      $sub_type           Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        string      $id                 item id
 * @param        int         $likes_setting      if 2 dislikes will not be displayed 
 * @param        string      $message            language string of message to pass to user
 * @return       string      html of the likes control
 *
 */
-function LIKES_control($type, $id, $likes_setting, $message = '') {
+function LIKES_control($type, $sub_type = '', $id, $likes_setting, $message = '') {
     global $_USER, $_CONF, $LANG_LIKES, $_SCRIPTS;
     
     // Figure out if dislike is enabled or not
@@ -84,7 +85,7 @@ function LIKES_control($type, $id, $likes_setting, $message = '') {
         $dislike = false;
     }
     
-    list($num_likes, $num_dislikes) = LIKES_getLikes($type, $id);
+    list($num_likes, $num_dislikes) = LIKES_getLikes($type, $sub_type, $id);
     
     // Find likes control template file to use
     if ($type != 'article' OR $type != 'comment') {
@@ -109,18 +110,19 @@ function LIKES_control($type, $id, $likes_setting, $message = '') {
     }
     
     $likes_templates->set_var('item_type', $type);
+    $likes_templates->set_var('item_sub_type', $sub_type);
     $likes_templates->set_var('item_id', $id);
     
     $uid = isset($_USER['uid']) ? $_USER['uid'] : 1;
     $ip = $_SERVER['REMOTE_ADDR'];
     
-    $action_enabled = PLG_canUserLike($type, $id, $uid, $ip);
+    $action_enabled = PLG_canUserLike($type, $sub_type, $id, $uid, $ip);
     
     $likes_templates->set_var('dislike_enabled', $dislike);
     $likes_templates->set_var('action_enabled', $action_enabled);
     
     if ($action_enabled) {
-        $prev_action = LIKES_hasAction($type, $id, $uid, $ip);
+        $prev_action = LIKES_hasAction($type, $sub_type, $id, $uid, $ip);
         if ($prev_action == LIKES_ACTION_LIKE) {
             $likes_templates->set_var('user_liked', true);
             $likes_templates->set_var('lang_like_action', $LANG_LIKES['unlike']);
@@ -145,7 +147,7 @@ function LIKES_control($type, $id, $likes_setting, $message = '') {
     }
     
     // Debug
-    //$message .= " t=".$type." i=".$id." u=".$uid." a=".$action_enabled;
+    //$message .= " t=".$type." st=".$sub_type." i=".$id." u=".$uid." a=".$action_enabled;
     
     $likes_templates->set_var('lang_message', $message);
     
@@ -181,19 +183,20 @@ function LIKES_formatNum($num)
 * Returns the likes data for an item.
 *
 * @param        string      $type     plugin name
+* @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        string      $item_id  item id
 * @return       array       an array of number of likes and dislikes
 *
 */
-function LIKES_getLikes($type, $item_id)
+function LIKES_getLikes($type, $sub_type = '', $item_id)
 {
     global $_TABLES;
 
-    $sql = "SELECT action FROM {$_TABLES['likes']} WHERE type='" . DB_escapeString($type) . "' AND id='" . DB_escapeString($item_id) . "' AND action = " . LIKES_ACTION_LIKE;
+    $sql = "SELECT action FROM {$_TABLES['likes']} WHERE type='" . DB_escapeString($type) . "' AND subtype='" . DB_escapeString($sub_type) . "' AND id='" . DB_escapeString($item_id) . "' AND action = " . LIKES_ACTION_LIKE;
     $result = DB_query($sql);
     $num_likes = DB_numRows($result);
     
-    $sql = "SELECT action FROM {$_TABLES['likes']} WHERE type='" . DB_escapeString($type) . "' AND id='" . DB_escapeString($item_id) . "' AND action = " . LIKES_ACTION_DISLIKE;
+    $sql = "SELECT action FROM {$_TABLES['likes']} WHERE type='" . DB_escapeString($type) . "' AND subtype='" . DB_escapeString($sub_type) . "' AND id='" . DB_escapeString($item_id) . "' AND action = " . LIKES_ACTION_DISLIKE;
     $result = DB_query($sql);
     $num_dislikes = DB_numRows($result);
     
@@ -204,24 +207,25 @@ function LIKES_getLikes($type, $item_id)
 * Check if user or IP has already liked/disliked an item
 *
 * @param        string      $type     plugin name
+* @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        string      $item_id  item id
 * @param        int         $uid      user id
 * @param        string      $ip       IP address of user
 * @return       string      Empty if not voted else returns "like" or "dislike"
 *
 */
-function LIKES_hasAction($type, $item_id, $uid, $ip)
+function LIKES_hasAction($type, $sub_type = '', $item_id, $uid, $ip)
 {
     global $_TABLES;
 
     $prev_action = LIKES_ACTION_NONE;
 
     if ($uid == 1) {
-        $sql = "SELECT action FROM {$_TABLES['likes']} WHERE uid=1 AND ipaddress='".DB_escapeString($ip)."' AND type='".DB_escapeString($type)."' AND id='".DB_escapeString($item_id)."'";
+        $sql = "SELECT action FROM {$_TABLES['likes']} WHERE uid=1 AND ipaddress='".DB_escapeString($ip)."' AND type='".DB_escapeString($type)."' AND subtype='" . DB_escapeString($sub_type) . "' AND id='".DB_escapeString($item_id)."'";
     } else {
         //$sql = "SELECT action FROM {$_TABLES['likes']} WHERE (uid=$uid OR ipaddress='".DB_escapeString($ip)."') AND type='".DB_escapeString($type)."' AND id='".DB_escapeString($item_id)."'";
         //$sql = "SELECT action FROM {$_TABLES['likes']} WHERE (uid=$uid OR (uid=1 AND ipaddress='".DB_escapeString($ip)."')) AND type='".DB_escapeString($type)."' AND id='".DB_escapeString($item_id)."'";
-        $sql = "SELECT action FROM {$_TABLES['likes']} WHERE uid=$uid AND type='".DB_escapeString($type)."' AND id='".DB_escapeString($item_id)."'";
+        $sql = "SELECT action FROM {$_TABLES['likes']} WHERE uid=$uid AND type='".DB_escapeString($type)."' AND subtype='" . DB_escapeString($sub_type) . "' AND id='".DB_escapeString($item_id)."'";
     }
     
     $result = DB_query($sql);
@@ -237,17 +241,18 @@ function LIKES_hasAction($type, $item_id, $uid, $ip)
 * Removes all likes actions for an item
 *
 * @param        string      $type     plugin name
+* @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        string      $item_id  item id
 * @return       none
 *
 */
-function LIKES_deleteActions($type, $item_id)
+function LIKES_deleteActions($type, $sub_type = '', $item_id)
 {
     global $_TABLES;
 
-    DB_delete($_TABLES['likes'], array('type', 'item_id'), array($type, $item_id));
+    DB_delete($_TABLES['likes'], array('type', 'subtype', 'id'), array($type, $sub_type, $item_id));
 
-    PLG_itemLike($type, $item_id, LIKES_ACTION_NONE);
+    PLG_itemLike($type, $sub_type, $item_id, LIKES_ACTION_NONE);
 }
 
 
@@ -255,6 +260,7 @@ function LIKES_deleteActions($type, $item_id)
 * Add a new like action to an item
 *
 * @param        string      $type     plugin name
+* @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
 * @param        string      $item_id  item id
 * @param        int         $action   like action sent by user
 * @param        int         $uid      user id of voter
@@ -262,7 +268,7 @@ function LIKES_deleteActions($type, $item_id)
 * @return       array       an array with the new overall number of likes and dislikes.
 *
 */
-function LIKES_addAction($type, $item_id, $action, $prev_action, $uid, $ip)
+function LIKES_addAction($type, $sub_type = '', $item_id, $action, $prev_action, $uid, $ip)
 {
     global $_TABLES;
 
@@ -270,7 +276,7 @@ function LIKES_addAction($type, $item_id, $action, $prev_action, $uid, $ip)
     
     // Delete any previous action if exist
     if ($prev_action != LIKES_ACTION_NONE) {
-        $sql = "DELETE FROM {$_TABLES['likes']} WHERE type = '" . DB_escapeString($type) . "' AND id = '" . DB_escapeString($item_id) . "' ";
+        $sql = "DELETE FROM {$_TABLES['likes']} WHERE type = '" . DB_escapeString($type) . "' AND subtype='" . DB_escapeString($sub_type) . "' AND id = '" . DB_escapeString($item_id) . "' ";
         if ($uid > 1) {
             $sql .= "AND uid = " . $uid;
         } else {
@@ -282,15 +288,54 @@ function LIKES_addAction($type, $item_id, $action, $prev_action, $uid, $ip)
     
     // Now Insert new action if like or dislike
     if ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE) {
-        $sql = "INSERT INTO {$_TABLES['likes']} (type, id, uid, ipaddress, action) " .
-               "VALUES ('" . DB_escapeString($type) . "', '" . DB_escapeString($item_id) . "', " . $uid . ", '" . DB_escapeString($ip) . "', " . $action . ");";
+        $sql = "INSERT INTO {$_TABLES['likes']} (type, subtype, id, uid, ipaddress, action) " .
+               "VALUES ('" . DB_escapeString($type) . "', '" . DB_escapeString($sub_type) . "', '" . DB_escapeString($item_id) . "', " . $uid . ", '" . DB_escapeString($ip) . "', " . $action . ");";
                
         DB_query($sql);
     }
     
     // Let plugin know about like action
-    PLG_itemLike($type, $item_id, $action);
+    PLG_itemLike($type, $sub_type, $item_id, $action);
 
     // Get new counts and return
-    return LIKES_getLikes($type, $item_id);
+    return LIKES_getLikes($type, $sub_type, $item_id);
 }
+
+/**
+* Return number of likes or dislikes for a type, sub type, and id(s)
+*
+* @param        int         $action   like or dislike action
+* @param        string      $type     plugin name
+* @param        string      $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
+* @param        array       $item_ids  item id
+* @param        int         $uid      user id of voter
+* @param        string      $ip       IP address of voter
+* @return       array       an array with the new overall number of likes and dislikes.
+*
+*/
+function LIKES_getStats($action, $type = '', $sub_type = '', $item_ids = array()) 
+{
+    global $_TABLES;
+    
+    if ($action == LIKES_ACTION_LIKE OR $action == LIKES_ACTION_DISLIKE) {
+        $sql = "SELECT action FROM {$_TABLES['likes']} WHERE action = $action";
+        if (!empty($type)) {
+            $sql .= " AND type = '" . DB_escapeString($type) . "'";
+            
+            if (!empty($sub_type)) {
+                $sql .= " AND subtype = '" . DB_escapeString($sub_type) . "'";
+                
+                if (is_array($item_ids)) {
+                    $sql .= " AND id IN (" . implode("','", $item_ids)  . ")";
+                }                
+            }
+        }
+        $result = DB_query($sql);
+        
+        return DB_numRows($result);
+    } else {
+        return 0;
+    }
+}
+
+
