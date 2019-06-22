@@ -27,7 +27,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['likes']} (
   lid INT(11) NOT NULL AUTO_INCREMENT,
   type varchar(30) NOT NULL,
-  subtype varchar(30) NOT NULL,
+  subtype varchar(30) NOT NULL DEFAULT '',
   id varchar(30) NOT NULL,
   uid MEDIUMINT NOT NULL, 
   ipaddress VARCHAR(39) NOT NULL, 
