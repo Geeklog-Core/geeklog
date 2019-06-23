@@ -958,8 +958,8 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
         // First see if any topics have edit access because if none we need to disable topic list
         // Not the best way to do this...
         $topiclist = TOPIC_getTopicListSelect($tids, false, false, '', false, 0 , 2);
-        if (!empty($topiclist != '')) {
-            // So at least one topic id passed has edit acces so regenerate list with read access topics disabled along with edit access topics
+        if (!empty($topiclist)) {
+            // So at least one topic id passed has edit access so regenerate list with read access topics disabled along with edit access topics
             $topiclist = TOPIC_getTopicListSelect($tids, false, false, '', false, 0 , $access_type);
         }
     } else {

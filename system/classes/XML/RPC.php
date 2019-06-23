@@ -52,7 +52,7 @@ define('XML_RPC_ERROR_INCORRECT_PARAMS', 105);
 define('XML_RPC_ERROR_PROGRAMMING', 106);
 /**#@-*/
 
-$GLOBALS = [];
+$GLOBALS = array();
 /**
  * Data types
  *

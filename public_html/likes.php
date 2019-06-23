@@ -175,10 +175,10 @@ if ($ajax_call) {
         $data = LIKES_control($type, $sub_type, $id, $likes_setting, $message);
     }
 
-    $retval = [
+    $retval = array(
         'data_type' => $data_type,
         'data'      => $data
-    ];
+    );
     echo json_encode($retval);
     exit(0);
 } else {

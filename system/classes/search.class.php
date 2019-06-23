@@ -946,11 +946,6 @@ class Search
         return -1;
     }
 
-    private function _convertsqlCallback($replace, $match)
-    {
-        return preg_replace('/,?(\'[^\']+\'|[^,]+),/i', $replace, $match);
-    }
-
     /**
      * Converts the MySQL CONCAT function to the Postgres equivalents
      *
@@ -963,7 +958,7 @@ class Search
 
         if ($_DB_dbms === 'pgsql') {
             $callBack = function ($match) {
-                return $this->_convertsqlCallback('\\\\1 || ', $match[1]);
+                return preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 || ', $match[1]);
             };
 
             if (is_string($sql)) {

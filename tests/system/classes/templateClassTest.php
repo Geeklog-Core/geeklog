@@ -238,7 +238,8 @@ class templateClass extends TestCase
     public function testSetRootInConstructors()
     {
         $tp2 = new Template(Tst::$tests . 'files/templates');
-        $this->assertEquals(Tst::$tests . 'files/templates', $tp2->getRoot()[0]);
+        $temp = $tp2->getRoot();
+        $this->assertEquals(Tst::$tests . 'files/templates', $temp[0]);
     }
 
     public function testSetFile()

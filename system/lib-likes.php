@@ -171,7 +171,7 @@ function LIKES_control($type, $sub_type = '', $id, $likes_setting, $message = ''
 */
 function LIKES_formatNum($num)
 {
-    $units = ['', 'K', 'M', 'B', 'T'];
+    $units = array('', 'K', 'M', 'B', 'T');
     for ($i = 0; $num >= 1000; $i++) {
         $num /= 1000;
     }
