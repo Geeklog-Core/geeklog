@@ -701,7 +701,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $properties['url'] = $articleUrl;
             $properties['datePublished'] = $story->displayElements('date');
             // Don't include modified if empty or date is less than published
-            if (!empty($story->displayElements('unixmodified')) && ($story->displayElements('unixmodified') > $story->displayElements('unixdate'))) {
+            if (($story->displayElements('unixmodified') != false) && ($story->displayElements('unixmodified') > $story->displayElements('unixdate'))) {
                 $properties['dateModified'] = $story->displayElements('modified');
             }
             $properties['description'] = $story->DisplayElements('meta_description');

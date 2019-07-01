@@ -28,6 +28,8 @@ class langConfValidation extends TestCase
         $_CONF['speedlimit'] = 42;
         $_CONF['commentspeedlimit'] = 42;
         $_CONF['backup_path'] = '/path/to/geeklog/';
+        $_CONF['invalidloginattempts'] = 'Invalid login attempts';
+        $_CONF['invalidloginmaxtime'] = 'Invalid login max time';
         $_DB_mysqldump_path = '/usr/bin/mysqldump';
 
         $_USER['username'] = 'John Doe';

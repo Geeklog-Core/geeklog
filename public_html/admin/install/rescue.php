@@ -187,7 +187,7 @@ function render($renderType, $args = array()) {
         <div class="password_form">
             <div class="box">
                 <span class="message"><?php e(7); ?></span>
-                <form id="loginForm" method="post">
+                <form id="loginForm" method="post" action="">
                     <?php e(8); ?>:<input type="password" name="gl_password" />
                     <script type="text/javascript">
                         document.getElementById('loginForm')['gl_password'].focus();
@@ -324,7 +324,7 @@ function render($renderType, $args = array()) {
         </ul>
         <div id="plugins" name="options" class="box option" style="display: none;">
             <h3><?php e(35); ?></h3>
-            <form id="plugin-operator" method="post">
+            <form id="plugin-operator" method="post" action="">
                 <select name="target" onchange="toggleRadio(this.options[this.selectedIndex].getAttribute('class') == 'disabled', this.form.elements['value']);">
                     <option selected="selected" value=""><?php e(36); ?></option>
                     <?php
