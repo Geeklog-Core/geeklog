@@ -37,6 +37,43 @@ if (!is_callable('COM_deprecatedLog')) {
     }
 }
 
+if (!is_callable('COM_isDeveloperMode')) {
+    /**
+     * Return if developer mode is set
+     *
+     * @since  v2.2.0
+     * @return bool   true = developer mode on, false otherwise
+     */
+    function COM_isDeveloperMode()
+    {
+        global $_CONF;
+
+        return isset($_CONF['developer_mode']) && ($_CONF['developer_mode'] === true);
+    }
+}
+
+if (!is_callable('COM_isEnableDeveloperModeLog')) {
+    /**
+     * Return if we should enable the detailed logging of some kind in developer mode
+     *
+     * @param  string $type
+     * @since  v2.2.0
+     * @return bool true = detailed logging is enabled, false otherwise
+     */
+    function COM_isEnableDeveloperModeLog($type)
+    {
+        global $_CONF;
+
+        $type = strtolower($type);
+        $retval = COM_isDeveloperMode() &&
+            isset($_CONF['developer_mode_log'], $_CONF['developer_mode_log'][$type]) &&
+            $_CONF['developer_mode_log'][$type];
+
+        return $retval;
+    }
+
+}
+
 // To disable your site quickly, simply set this flag to false
 $_CONF['site_enabled'] = true;
 
@@ -45,7 +82,7 @@ $_CONF['site_enabled'] = true;
 // on and get detailed error messages. You can set this to 'force' (which the
 // Config UI won't allow you to do) to override hiding of password and cookie
 // items in the debug trace.
-//$_CONF['rootdebug'] = true;
+$_CONF['rootdebug'] = false;
 
 /**
  * Developer mode
