@@ -385,6 +385,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['topic_assignments']} (
   tid varchar(75) NOT NULL,
   type varchar(30) NOT NULL,
+  subtype varchar(30) NOT NULL DEFAULT '',
   id varchar(128) NOT NULL,
   inherit smallint NOT NULL default '1',
   tdefault smallint NOT NULL default '0',
