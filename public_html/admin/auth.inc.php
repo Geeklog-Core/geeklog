@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog admin authentication module                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -35,6 +35,8 @@
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'auth.inc.php') !== false) {
     die('This file can not be used on its own.');
 }
+
+global $_TABLES;
 
 // MAIN
 COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
@@ -65,22 +67,15 @@ $display = '';
 if ($status == USER_ACCOUNT_ACTIVE) {
     DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
     $_USER = SESS_getUserDataFromId($uid);
-    $sessid = SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'],
-            $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
-    SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'],
-            $_CONF['cookie_session'], $_CONF['cookie_path'],
-            $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+    SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
     PLG_loginUser($_USER['uid']);
 
-    // Now that we handled session cookies, handle longterm cookie
-    if (!isset($_COOKIE[$_CONF['cookie_name']])) {
-        // Either their cookie expired or they are new
-        $cooktime = COM_getUserCookieTimeout();
-
-        if (!empty($cooktime)) {
-            // They want their cookie to persist for some amount of time so set it now
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() + $cooktime);
-        }
+    // Now that we handled session cookies, handle long-term cookie
+    $cookieTime = COM_getUserCookieTimeout();
+    if (!empty($cookieTime) && ($cookieTime > 0)) {
+        SESS_handleAutoLogin($cookieTime);
+    } else {
+        SESS_deleteAutoLoginKey();
     }
 
     if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,syndication.edit,theme.edit','OR')) {

@@ -414,12 +414,10 @@ function install_config()
     $c->add('fs_cookies', NULL, 'fieldset', 7, 30, NULL, 0, TRUE, $me, 30);
     $c->add('cookie_session','gl_session','text',7,30,NULL,530,TRUE, $me, 30);
     $c->add('cookie_name','geeklog','text',7,30,NULL,540,TRUE, $me, 30);
-    $c->add('cookie_password','password','text',7,30,NULL,550,TRUE, $me, 30);
     $c->add('cookie_theme','theme','text',7,30,NULL,560,TRUE, $me, 30);
     $c->add('cookie_language','language','text',7,30,NULL,570,TRUE, $me, 30);
     $c->add('cookie_tzid','timezone','text',7,30,NULL,575,TRUE, $me, 30);
     $c->add('cookie_anon_name','anon_name','text',7,30,NULL,577,TRUE, $me, 30);
-    $c->add('cookie_ip',0,'select',7,30,0,580,TRUE, $me, 30);
     $c->add('default_perm_cookie_timeout',28800,'select',7,30,NULL,590,TRUE, $me, 30);
     $c->add('session_cookie_timeout',7200,'text',7,30,NULL,600,TRUE, $me, 30);
     $c->add('cookie_path','/','text',7,30,NULL,610,TRUE, $me, 30);

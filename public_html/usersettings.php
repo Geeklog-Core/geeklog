@@ -1142,12 +1142,6 @@ function saveuser(array $A)
                     (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) == 0)
                 ) {
                     SEC_updateUserPassword($A['passwd'], $_USER['uid']);
-                    if ($A['cooktime'] > 0) {
-                        $cooktime = $A['cooktime'];
-                    } else {
-                        $cooktime = -1000;
-                    }
-                    SEC_setCookie($_CONF['cookie_password'], $passwd, time() + $cooktime);
                 } elseif (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0) {
                     COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=68');
                 } elseif ($A['passwd'] != $A['passwd_conf']) {
@@ -1158,12 +1152,6 @@ function saveuser(array $A)
             }
         } else {
             // Cookie
-            if ($A['cooktime'] > 0) {
-                $cooktime = $A['cooktime'];
-            } else {
-                $cooktime = -1000;
-            }
-            SEC_setCookie($_CONF['cookie_password'], $passwd, time() + $cooktime);
         }
 
         if ($_US_VERBOSE) {
@@ -1171,10 +1159,9 @@ function saveuser(array $A)
         }
 
         if ($A['cooktime'] <= 0) {
-            $cooktime = 1000;
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() - $cooktime);
+            SESS_deleteAutoLoginKey();
         } else {
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() + $A['cooktime']);
+            SESS_handleAutoLogin();
         }
 
         if ($_CONF['allow_user_photo'] == 1) {

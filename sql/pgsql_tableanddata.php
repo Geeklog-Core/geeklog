@@ -254,13 +254,11 @@ $_SQL[] = "CREATE TABLE {$_TABLES['routes']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
-  sess_id int NOT NULL default '0',
+  sess_id VARCHAR(250) NOT NULL default '',
   start_time int NOT NULL default '0',
   remote_ip varchar(39) NOT NULL default '',
   uid smallint NOT NULL default '1',
-  md5_sess_id varchar(128) default NULL,
   whos_online smallint NOT NULL default '1',
-  topic varchar(75) NOT NULL default '',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
@@ -521,6 +519,7 @@ CREATE TABLE {$_TABLES['users']} (
   lastinvalid int(10) unsigned default NULL, 
   twofactorauth_enabled SMALLINT NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
+  autologin_key VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (uid)
 );
   CREATE INDEX {$_TABLES['users']}_LOGIN ON {$_TABLES['users']}(uid,passwd,username);

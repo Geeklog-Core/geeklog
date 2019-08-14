@@ -1,5 +1,7 @@
 <?php
 
+global $_TABLES;
+
 $_SQL[] = "
 CREATE TABLE {$_TABLES['access']} (
   acc_ft_id mediumint(8) NOT NULL default '0',
@@ -241,26 +243,24 @@ CREATE TABLE {$_TABLES['plugins']} (
 ";
 
 $_SQL[] = "CREATE TABLE {$_TABLES['routes']} (
-    rid int(11) NOT NULL AUTO_INCREMENT,
-    method int(11) NOT NULL DEFAULT 1,
-    rule varchar(255) NOT NULL DEFAULT '',
-    route varchar(255) NOT NULL DEFAULT '',
-    status_code int(11) NOT NULL DEFAULT 200,
-    priority int(11) NOT NULL DEFAULT 100,
-    enabled tinyint(1) unsigned NOT NULL default '1',
-    PRIMARY KEY (rid)
+  rid int(11) NOT NULL AUTO_INCREMENT,
+  method int(11) NOT NULL DEFAULT 1,
+  rule varchar(255) NOT NULL DEFAULT '',
+  route varchar(255) NOT NULL DEFAULT '',
+  status_code int(11) NOT NULL DEFAULT 200,
+  priority int(11) NOT NULL DEFAULT 100,
+  enabled tinyint(1) unsigned NOT NULL default '1',
+  PRIMARY KEY (rid)
 ) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
-  sess_id int(10) unsigned NOT NULL default '0',
-  start_time int(10) unsigned NOT NULL default '0',
-  remote_ip varchar(39) NOT NULL default '',
-  uid mediumint(8) NOT NULL default '1',
-  md5_sess_id varchar(128) default NULL,
-  whos_online tinyint(1) NOT NULL default '1',
-  topic varchar(75) NOT NULL default '',
+  sess_id VARCHAR(250) NOT NULL DEFAULT '',
+  start_time INT(10) unsigned NOT NULL DEFAULT '0',
+  remote_ip VARCHAR(39) NOT NULL DEFAULT '',
+  uid MEDIUMINT(8) NOT NULL DEFAULT '1',
+  whos_online TINYINT(1) NOT NULL DEFAULT '1',
   PRIMARY KEY  (sess_id),
   KEY sess_id (sess_id),
   KEY start_time (start_time),
@@ -521,6 +521,7 @@ CREATE TABLE {$_TABLES['users']} (
   lastinvalid int(10) unsigned default NULL,
   twofactorauth_enabled TINYINT(3) NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
+  autologin_key VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username),
   UNIQUE KEY users_username (username), 
