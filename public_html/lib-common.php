@@ -33,6 +33,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Autoload;
+use Geeklog\Cache;
+use Geeklog\Input;
+use Geeklog\Mail;
+use Geeklog\Resource;
+
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 
@@ -66,7 +72,7 @@ if (COM_isDeveloperMode() &&
 
 /**
  * Here, we shall establish an error handler. This will mean that whenever a
- * php level error is encountered, our own code handles it. This will hopefuly
+ * php level error is encountered, our own code handles it. This will hopefully
  * go someway towards preventing nasties like path exposures from ever being
  * possible. That is, unless someone has overridden our error handler with one
  * with a path exposure issue...
@@ -95,10 +101,10 @@ COM_checkInstalled();
 
 // Register autoloader
 require_once $_CONF['path_system'] . 'classes/Autoload.php';
-Geeklog\Autoload::initialize();
+Autoload::initialize();
 
 // Initialize system classes
-Geeklog\Input::init();
+Input::init();
 
 // Load configuration
 $config = config::get_instance();
@@ -112,7 +118,7 @@ $_CONF = $config->get_config('Core');
 $_CONF_FT = $config->_get_config_features();
 
 // Load Cache class
-Geeklog\Cache::init(new Geeklog\Cache\FileSystem($_CONF['path'] . 'data/cache/'));
+Cache::init(new Cache\FileSystem($_CONF['path'] . 'data/cache/'));
 
 // Load in Geeklog Variables Table
 
@@ -292,7 +298,7 @@ if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_c
 /**
  * This provides the ability to set css and javascript.
  *
- * @global \Geeklog\Resource $_SCRIPTS
+ * @global Resource $_SCRIPTS
  */
 //$_SCRIPTS = new Scripts();
 
@@ -339,7 +345,7 @@ if (function_exists($func)) {
  *
  * @global $_SCRIPTS Geeklog\Resource
  */
-$_SCRIPTS = new Geeklog\Resource($_CONF);
+$_SCRIPTS = new Resource($_CONF);
 
 /**
  * themes can specify the default image type
@@ -394,7 +400,7 @@ $TEMPLATE_OPTIONS = array(
     'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes. CTL_setTemplateRoot will be depreciated as of Geeklog 3.0.0. 
 //    'hook'                => array() //
 );
-\Geeklog\Autoload::load('template');
+Autoload::load('template');
 // Template library contains helper functions for template class
 require_once $_CONF['path_system'] . 'lib-template.php';
 
@@ -520,7 +526,7 @@ if ($_SCRIPTS->getCompatibilityWithMC()) {
 
 // Disable Resource cache (combined and minified CSS and JavaScript files)
 if (isset($_CONF['cache_resource']) && !$_CONF['cache_resource']) {
-    Geeklog\Cache::disable();
+    Cache::disable();
 };
 
 // Clear out any expired sessions
@@ -594,7 +600,7 @@ if ($_VARS['last_article_publish'] != $A['date']) {
 /**
  * This provides the ability to generate structure data based on types from schema.org to
  */
-\Geeklog\Autoload::load('structureddata');
+Autoload::load('structureddata');
 $_STRUCT_DATA = new StructuredData();
 
 // +---------------------------------------------------------------------------+
@@ -3643,13 +3649,13 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
     if (!empty($status) && ($status == USER_ACCOUNT_DISABLED || $status == USER_ACCOUNT_LOCKED || $status == USER_ACCOUNT_NEW_EMAIL)) {
         return false;
     } else {
-        return Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+        return Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
         /* NOT IMPLEMENTED YET FOR DEMO MODE NEED TO UPDATE SESSION HANDLING AND COM_showMessageText FIRST SEE https://github.com/Geeklog-Core/geeklog/issues/765
         if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
             // Don't send any emails in demo mode
             return true;
         } else {
-            Geeklog\Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+            Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
         }
         */
     }
@@ -4997,7 +5003,7 @@ function COM_showMessage($msg, $plugin = '')
 
             // Ugly workaround for mailstory function (public_html/profiles.php)
             if ($msg === 153) {
-                $speedLimit = (int) Geeklog\Input::fGet('speedlimit', 0);
+                $speedLimit = (int) Input::fGet('speedlimit', 0);
                 $message = sprintf($message, $speedLimit, $_CONF['speedlimit']);
             }
         }
@@ -5024,9 +5030,9 @@ function COM_showMessageFromParameter()
 {
     $retval = '';
 
-    $msg = (int) Geeklog\Input::fGet('msg', 0);
+    $msg = (int) Input::fGet('msg', 0);
     if ($msg > 0) {
-        $plugin = Geeklog\Input::fGet('plugin', '');
+        $plugin = Input::fGet('plugin', '');
         $retval .= COM_showMessage($msg, $plugin);
     }
 
@@ -7119,7 +7125,7 @@ function _getLanguageInfoFromURL()
             } else {
                 if ($curdirectory . "/" . $curfilename == $value[1] . "/" . $value[2]) {
                     // Found a matching variable
-                    $var = Geeklog\Input::fRequest($value[3], '');
+                    $var = Input::fRequest($value[3], '');
                 }
             }
             

@@ -32,6 +32,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\TwoFactorAuthentication;
+
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
 
@@ -168,7 +170,7 @@ function edituser()
                 . $text . '</option>' . PHP_EOL;
         }
 
-        $tfa = new \Geeklog\TwoFactorAuthentication($_USER['uid']);
+        $tfa = new TwoFactorAuthentication($_USER['uid']);
         $secret = $tfa->loadSecretFromDatabase();
 
         if (empty($secret)) {
@@ -1511,7 +1513,7 @@ function downloadBackupCodes()
     if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&
         !COM_isAnonUser() && isset($_USER['uid']) && ($_USER['uid'] > 1)) {
         SEC_checkToken();
-        $tfa = new \Geeklog\TwoFactorAuthentication($_USER['uid']);
+        $tfa = new TwoFactorAuthentication($_USER['uid']);
 
         try {
             $secret = $tfa->loadSecretFromDatabase();

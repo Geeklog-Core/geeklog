@@ -23,14 +23,6 @@ abstract class Session
     const ANON_USER_ID = 1;
 
     /**
-     * Lifespan of the current user's session
-     *
-     * @var int the length of time after which the session will expire.  0 means
-     *          the session will expire when the user closes the browser window.
-     */
-    private static $sessionLifeTime = 0;
-
-    /**
      * "flash", i.e., one-time session variables
      *
      * @var array

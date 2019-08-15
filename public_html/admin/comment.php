@@ -39,6 +39,8 @@
  * Comment administration page: Moderate, edit, delete, comments for your Geeklog site.
  */
 
+use Geeklog\Input;
+
 define('SUFFIX_COMMENTS', '_comments');
 define('SUFFIX_COMMENT_SUBMISSIONS', '_submissions');
 define('COMMENT_MAX_LENGTH', 60);
@@ -70,7 +72,7 @@ require_once $_CONF['path_system'] . 'lib-comment.php';
  */
 function getCommentIds($suffix)
 {
-    $commentIds = \Geeklog\Input::fPost('cids' . $suffix, array());
+    $commentIds = Input::fPost('cids' . $suffix, array());
 
     if (count($commentIds) > 0) {
         $commentIds = array_map('intval', $commentIds);
@@ -308,7 +310,7 @@ function ADMIN_buildCommentList($suffix, $tableName, $securityToken)
         'form_url'   => $_CONF['site_admin_url'] . '/comment.php',
     );
 
-    $itemType = \Geeklog\Input::fPost('item_type', '');
+    $itemType = Input::fPost('item_type', '');
 
     if (($itemType !== 'article') && ($itemType !== 'all') && !in_array($itemType, $_PLUGINS)) {
         $itemType = '';
@@ -623,7 +625,7 @@ function banIpAddresses_ban($suffix)
 
 
 // MAIN
-$list = \Geeklog\Input::fPost('list', '');
+$list = Input::fPost('list', '');
 
 if ($list === SUFFIX_COMMENTS) {
     $suffix = SUFFIX_COMMENTS;
@@ -633,7 +635,7 @@ if ($list === SUFFIX_COMMENTS) {
     $suffix = '';
 }
 
-$action = \Geeklog\Input::fPost('bulk_action' . $suffix, '');
+$action = Input::fPost('bulk_action' . $suffix, '');
 
 switch ($action) {
     case 'bulk_approve':
