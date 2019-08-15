@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -375,7 +375,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $sp_prev = stripslashes($A['sp_prev']);
         if ($sp_prev !== '') {
             $headerCode .= PHP_EOL . sprintf(
-                    '<link rel="prev" href="%s"%s>',
+                    '<link href="%s"%s>',
                     COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_prev),
                     XHTML
                 );
@@ -383,7 +383,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $sp_next = stripslashes($A['sp_next']);
         if ($sp_next !== '') {
             $headerCode .= PHP_EOL . sprintf(
-                    '<link rel="next" href="%s"%s>',
+                    '<link href="%s"%s>',
                     COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_next),
                     XHTML
                 );

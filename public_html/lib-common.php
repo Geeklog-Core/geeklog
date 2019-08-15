@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2018 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -5103,8 +5103,6 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
         $page_navigation->set_var('end_first_anchortag', '</a>');
         $page_navigation->set_var('start_previous_anchortag', '<a href="' . $first_url . $pg . $last_url . '">');
         $page_navigation->set_var('end_previous_anchortag', '</a>');
-        // Add in Pagination for previous page
-        $relLinks['prev'] = '<link rel="prev" href="' . $first_url . $pg . $last_url . '"' . XHTML . '>';
     } else {
         $page_navigation->set_var('start_first_anchortag', '');
         $page_navigation->set_var('end_first_anchortag', '');
@@ -5165,8 +5163,6 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
             $page_navigation->set_var('end_next_anchortag', '</a>');
             $page_navigation->set_var('start_last_anchortag', '<a href="' . $first_url . $sep . $page_str . $num_pages . $last_url . '">');
             $page_navigation->set_var('end_last_anchortag', '</a>');
-            // Add in Pagination for previous page
-            $relLinks['next'] = '<link rel="next" href="' . $first_url . $sep . $page_str . ($currentPage + 1) . $last_url . '"' . XHTML . '>';
         }
         $page_navigation->parse('pages', 'nav-end', true);
     }
