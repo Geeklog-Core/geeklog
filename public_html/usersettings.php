@@ -32,6 +32,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\TwoFactorAuthentication;
+
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
 
@@ -168,7 +170,7 @@ function edituser()
                 . $text . '</option>' . PHP_EOL;
         }
 
-        $tfa = new \Geeklog\TwoFactorAuthentication($_USER['uid']);
+        $tfa = new TwoFactorAuthentication($_USER['uid']);
         $secret = $tfa->loadSecretFromDatabase();
 
         if (empty($secret)) {
@@ -1142,12 +1144,6 @@ function saveuser(array $A)
                     (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) == 0)
                 ) {
                     SEC_updateUserPassword($A['passwd'], $_USER['uid']);
-                    if ($A['cooktime'] > 0) {
-                        $cooktime = $A['cooktime'];
-                    } else {
-                        $cooktime = -1000;
-                    }
-                    SEC_setCookie($_CONF['cookie_password'], $passwd, time() + $cooktime);
                 } elseif (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0) {
                     COM_redirect($_CONF['site_url'] . '/usersettings.php?msg=68');
                 } elseif ($A['passwd'] != $A['passwd_conf']) {
@@ -1158,12 +1154,6 @@ function saveuser(array $A)
             }
         } else {
             // Cookie
-            if ($A['cooktime'] > 0) {
-                $cooktime = $A['cooktime'];
-            } else {
-                $cooktime = -1000;
-            }
-            SEC_setCookie($_CONF['cookie_password'], $passwd, time() + $cooktime);
         }
 
         if ($_US_VERBOSE) {
@@ -1171,10 +1161,9 @@ function saveuser(array $A)
         }
 
         if ($A['cooktime'] <= 0) {
-            $cooktime = 1000;
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() - $cooktime);
+            SESS_deleteAutoLoginKey();
         } else {
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() + $A['cooktime']);
+            SESS_handleAutoLogin();
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
@@ -1524,7 +1513,7 @@ function downloadBackupCodes()
     if (isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth'] &&
         !COM_isAnonUser() && isset($_USER['uid']) && ($_USER['uid'] > 1)) {
         SEC_checkToken();
-        $tfa = new \Geeklog\TwoFactorAuthentication($_USER['uid']);
+        $tfa = new TwoFactorAuthentication($_USER['uid']);
 
         try {
             $secret = $tfa->loadSecretFromDatabase();

@@ -34,6 +34,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Input;
+
 require_once '../../lib-common.php';
 
 if (!defined('XHTML')) {
@@ -93,9 +95,9 @@ function SUCCESS_deleteAll($baseDir)
 // Main
 global $_TABLES, $LANG_SUCCESS, $MESSAGE;
 
-$type = \Geeklog\Input::fGet('type', 'install');
-$submit = \Geeklog\Input::post('submit', '');
-$language = \Geeklog\Input::fGet('language', 'english');
+$type = Input::fGet('type', 'install');
+$submit = Input::post('submit', '');
+$language = Input::fGet('language', 'english');
 $language = preg_replace('/[^a-z0-9\-_]/', '', $language);
 $languagePath = dirname(__FILE__) . '/language/' . $language . '.php';
 

@@ -32,6 +32,9 @@
 /**
  * Geeklog common function library
  */
+
+use Geeklog\Input;
+
 require_once 'lib-common.php';
 
 // configuration option:
@@ -469,9 +472,9 @@ function DIR_canonicalLink($dir_topic, $year = 0, $month = 0)
 $display = '';
 
 if (isset($_POST['topic'], $_POST['year'], $_POST['month'])) {
-    $dir_topic = \Geeklog\Input::post('topic');
-    $year = (int) \Geeklog\Input::post('year');
-    $month = (int) \Geeklog\Input::post('month');
+    $dir_topic = Input::post('topic');
+    $year = (int) Input::post('year');
+    $month = (int) Input::post('month');
 } else {
     COM_setArgNames(array('topic', 'year', 'month'));
     $dir_topic = COM_getArgument('topic');

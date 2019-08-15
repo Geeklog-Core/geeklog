@@ -2,6 +2,8 @@
 
 global $_CONF;
 
+use Geeklog\Autoload;
+
 require_once __DIR__ . '/tst.class.php';
 Tst::init();
 
@@ -108,4 +110,4 @@ if (!defined('VERSION')) {
 }
 
 require_once $_CONF['path_system'] . 'classes/Autoload.php';
-\Geeklog\Autoload::initialize();
+Autoload::initialize();

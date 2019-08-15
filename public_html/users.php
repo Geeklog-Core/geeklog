@@ -40,6 +40,8 @@
  * @author   Jason Whittenburg
  */
 
+use Geeklog\Session;
+
 /**
  * Geeklog common function library
  */
@@ -656,50 +658,13 @@ function USER_doLogin()
     global $_CONF, $_USER, $USER_VERBOSE;
 
     COM_resetSpeedlimit('login');
-    $sessionId = SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
-    SESS_setSessionCookie(
-        $sessionId, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'],
-        $_CONF['cookiedomain'], $_CONF['cookiesecure']
-    );
+    SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout']);
     PLG_loginUser($_USER['uid']);
 
-    // Now that we handled session cookies, handle long-term cookie
-    if (!isset($_COOKIE[$_CONF['cookie_name']]) || !isset($_COOKIE['cookie_password'])) {
-        // Either their cookie expired or they are new
-        $cookTime = COM_getUserCookieTimeout();
-        if ($USER_VERBOSE) {
-            COM_errorLog("Trying to set permanent cookie with time of $cookTime", 1);
-        }
-        if ($cookTime > 0) {
-            // They want their cookie to persist for some amount of time so set it now
-            if ($USER_VERBOSE) {
-                COM_errorLog('Trying to set permanent cookie', 1);
-            }
-            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'], time() + $cookTime);
-            SEC_setCookie($_CONF['cookie_password'], $_USER['passwd'], time() + $cookTime);
-        }
-    } else {
-        $userId = Geeklog\Input::fCookie($_CONF['cookie_name']);
+    // Issue an auto-login key
+    SESS_issueAutoLoginCookie($_USER['uid']);
 
-        if (!empty($userId) && ($userId !== 'deleted')) {
-            $userId = (int) $userId;
-
-            if ($userId > 1) {
-                if ($USER_VERBOSE) {
-                    COM_errorLog('NOW trying to set permanent cookie', 1);
-                    COM_errorLog('Got ' . $userId . ' from perm cookie in users.php', 1);
-                }
-
-                // Create new session
-                $_USER = SESS_getUserDataFromId($userId);
-                if ($USER_VERBOSE) {
-                    COM_errorLog('Got ' . $_USER['username'] . ' for the username in user.php', 1);
-                }
-            }
-        }
-    }
-
-    // Now that we have users data see if their theme cookie is set.
+    // Now that we have user's data see if their theme cookie is set.
     // If not set it
     if (!empty($_USER['theme'])) {
         setcookie(
@@ -905,10 +870,8 @@ switch ($mode) {
             SESS_endUserSession($_USER['uid']);
             PLG_logoutUser($_USER['uid']);
         }
-        SEC_setCookie($_CONF['cookie_session'], '', time() - 10000);
-        SEC_setCookie($_CONF['cookie_password'], '', time() - 10000);
-        SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
-        
+        SESS_deleteAutoLoginKey();
+
         $msg = (int) Geeklog\Input::fGet('msg', 0);
         if ($msg == 0) {
             $msg = 8;

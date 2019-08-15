@@ -44,6 +44,8 @@
  * @author    Michael Jervis, mike AT fuckingbrit DOT com
  */
 
+use Geeklog\Autoload;
+
 /**
  * Constants for stories:
  * Loading from database:
@@ -338,7 +340,7 @@ class Article
      */
     public function __construct($mode = 'admin')
     {
-        \Geeklog\Autoload::load('gltext');
+        Autoload::load('gltext');
         $this->mode = $mode;
     }
 

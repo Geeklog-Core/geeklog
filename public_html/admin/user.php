@@ -38,6 +38,8 @@
  * group membership.
  */
 
+use Geeklog\Input;
+
 /**
  * Geeklog common function library
  */
@@ -838,7 +840,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 
         // Send password to the user
         if (!empty($uid) && ($uid > 1) &&
-            (\Geeklog\Input::fPost('send_passwd') === 'on') &&
+            (Input::fPost('send_passwd') === 'on') &&
             ($emailData['is_new_user'] || $passwd_changed)) {
             $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
             $mailText = $emailData['is_new_user'] ? $LANG04[15] : $LANG04[170];

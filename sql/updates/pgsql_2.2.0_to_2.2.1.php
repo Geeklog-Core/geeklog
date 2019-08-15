@@ -49,6 +49,15 @@ ALTER TABLE {$_TABLES['topic_assignments']}
      `id`);
 ";
 
+// Modify `sessions` table
+$_SQL[] = "DELETE FROM {$_TABLES['sessions']}";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ALTER COLUMN sess_id TYPE VARCHAR(250) NOT NULL default ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN md5_sess_id}";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN topic}";
+
+// Add `autologin_key` column to `users' table
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD COLUMN autologin_key VARCHAR(250) NOT NULL DEFAULT ''";
+
 /**
  * Upgrade Messages
  */
@@ -111,6 +120,10 @@ function update_ConfValuesFor221()
     $so += 10;
     $c->add('likes_speedlimit',20,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);    
     $so += 10;
+
+    // Delete some cookie-related settings
+    $c->del('cookie_password', $me);
+    $c->del('cookie_ip', $me);
 
     return true;
 }

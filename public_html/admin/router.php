@@ -33,6 +33,9 @@
  * URL routing administration page: Create, edit, delete routing rules
  * for your Geeklog site.
  */
+
+use Geeklog\Input;
+
 // Geeklog common function library
 require_once '../lib-common.php';
 
@@ -555,7 +558,7 @@ function moveRoute($rid)
     global $_TABLES;
 
     $rid = intval($rid, 10);
-    $direction = \Geeklog\Input::fGet('dir', '');
+    $direction = Input::fGet('dir', '');
 
     // if the router id exists
     if (DB_count($_TABLES['routes'], 'rid', $rid)) {
@@ -621,8 +624,8 @@ function deleteRoute($rid)
 // MAIN
 $display = '';
 
-$mode = \Geeklog\Input::fGet('mode', \Geeklog\Input::fPost('mode', ''));
-$rid = \Geeklog\Input::fGet('rid', \Geeklog\Input::fPost('rid', 0));
+$mode = Input::fGet('mode', Input::fPost('mode', ''));
+$rid = Input::fGet('rid', Input::fPost('rid', 0));
 $rid = intval($rid, 10);
 
 if (isset($_POST['routeenabler']) && SEC_checkToken()) {
@@ -653,12 +656,12 @@ switch ($mode) {
             COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
 
-        $method = \Geeklog\Input::fPost('method', '');
-        $rule = \Geeklog\Input::post('rule', '');
-        $route = \Geeklog\Input::post('route', '');
-        $statusCode = (int) \Geeklog\Input::fPost('status_code', 302);
-        $priority = \Geeklog\Input::fPost('priority', Router::DEFAULT_PRIORITY);
-        $enabled = \Geeklog\Input::fPost('enabled', '');
+        $method = Input::fPost('method', '');
+        $rule = Input::post('rule', '');
+        $route = Input::post('route', '');
+        $statusCode = (int) Input::fPost('status_code', 302);
+        $priority = Input::fPost('priority', Router::DEFAULT_PRIORITY);
+        $enabled = Input::fPost('enabled', '');
         $display = saveRoute($rid, $method, $rule, $route, $statusCode, $priority, $enabled);
         break;
 

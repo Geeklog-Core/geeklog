@@ -29,6 +29,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Input;
+
 /**
  * Class Language
  */
@@ -129,7 +131,7 @@ class Language
 
         self::checkAccessRights();
 
-        $id = \Geeklog\Input::fGet('id', \Geeklog\Input::fPost('id', 0));
+        $id = Input::fGet('id', Input::fPost('id', 0));
         $id = intval($id, 10);
 
         if ($id < 1) {
@@ -341,12 +343,12 @@ class Language
         self::checkAccessRights();
         self::checkSecurityToken();
 
-        $id = \Geeklog\Input::fPost('id', 0);
+        $id = Input::fPost('id', 0);
         $id = intval($id, 10);
-        $varName = trim(\Geeklog\Input::fPost('var_name', ''));
-        $language = \Geeklog\Input::fPost('language', '');
-        $name = trim(\Geeklog\Input::fPost('name', ''));
-        $value = COM_stripslashes(\Geeklog\Input::Post('value', ''));
+        $varName = trim(Input::fPost('var_name', ''));
+        $language = Input::fPost('language', '');
+        $name = trim(Input::fPost('name', ''));
+        $value = COM_stripslashes(Input::Post('value', ''));
 
         if (($id >= 0) && !empty($varName) && !empty($language)) {
             $varName = DB_escapeString($varName);
@@ -390,7 +392,7 @@ class Language
         self::checkAccessRights();
         self::checkSecurityToken();
 
-        $id = \Geeklog\Input::fPost('id', 0);
+        $id = Input::fPost('id', 0);
         $id = intval($id, 10);
         $redirect = $_CONF['site_admin_url'] . '/language.php';
 
@@ -413,7 +415,7 @@ class Language
         self::checkAccessRights();
         self::checkSecurityToken();
 
-        $ids = \Geeklog\Input::fPost('delitem', array());
+        $ids = Input::fPost('delitem', array());
 
         if (!is_array($ids)) {
             $ids = (array) $ids;

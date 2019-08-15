@@ -93,8 +93,6 @@ class MicroTemplate
 
     /**
      * Evaluate the content of a template
-     *
-     * @return string
      */
     private function evaluate()
     {

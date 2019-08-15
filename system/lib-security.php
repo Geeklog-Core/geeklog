@@ -2125,7 +2125,7 @@ function SEC_randomBytes($length)
 
     try {
         $retval = random_bytes($length);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         $retval = false;
 
         if (is_callable('openssl_random_pseudo_bytes ')) {

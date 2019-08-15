@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog class to include javascript, javascript files and css files.      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2018 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer, tomhomer AT gmail DOT com                             |
 // |          Kenji ITO, mystralkk AT gmail DOT com                            |
@@ -34,6 +34,7 @@ namespace Geeklog;
 
 use JSMin\JSMin;
 use MatthiasMullie\Minify;
+use Mobile_Detect;
 
 class Resource
 {
@@ -568,7 +569,7 @@ class Resource
 
         $attributes = $this->checkCssAttributes($attributes);
 
-        if ($this->isExternal($file) && array_search($file, array_column($this->localJsFiles[$externalCssFiles], 'file')) == 0) {
+        if ($this->isExternal($file) && array_search($file, array_column($this->localJsFiles, 'file')) == 0) {
             $this->externalCssFiles[] = array(
                 'file'       => $file,
                 'attributes' => $attributes,
@@ -615,7 +616,7 @@ class Resource
     /**
      * Make a key for caching based on contents
      *
-     * @param  array $contents
+     * @param  string $contents
      * @return string
      */
     private function makeCacheKey($contents)
@@ -703,6 +704,8 @@ class Resource
     {
         global $LANG_DIRECTION;
 
+        // While debugging or when caching is disabled, we just output
+        // <link rel="stylesheet" href="some-file-location"> tags
         if ($this->debug || !Cache::isEnabled()) {
             $retval = '';
 
@@ -713,30 +716,25 @@ class Resource
             return $retval;
         }
 
-        $isUseMinify = false;
+        // Calculate cache key
+        $key = '';
+
+        foreach ($files as $file) {
+            $key .= $key . $file['file'] . '|';
+        }
+        $key = $this->makeCacheKey($key);
+
+        // See if cached data already exists
+        $data = Cache::get($key, null);
+        if ($data !== null) {
+            // Such (already minified) data exists
+            return $this->buildLinkTag($this->config['site_url'] . '/r.php?k=' . $key, array());
+        }
+
         $min = new Minify\CSS();
         $contents = '';
         $relativePaths = array();
-/*
-        // Concatenate all CSS files
-        foreach ($files as $file) {
-            if (preg_match('@min\.css$@', $file['file'])) {
-                $chunk = @file_get_contents($this->config['path_html'] . $file['file']);
 
-                if ($chunk !== false) {
-                    $relativePaths[] = $file['file'];
-                    $contents .= $chunk . PHP_EOL;
-                }
-            } else {
-                $min->add($this->config['path_html'] . $file['file']);
-                $isUseMinify = true;
-            }
-        }
-
-        if ($isUseMinify) {
-            $contents .= $min->execute($this->config['path_html']);
-        }
-*/
         // Concatenate all CSS files
         foreach ($files as $file) {
             // even if the target file is a minified css, relative paths need to be rewritten
@@ -757,7 +755,7 @@ class Resource
             $right = 'right';
         }
 
-        if ($this->getCompatibilityWithMC()) {
+        if ($this->isCompatibleWithModernCurveTheme()) {
             $search  = array('{left}', '{right}', '../images/',  './images/');
             $replace = array($left,    $right,    './images/',  '../images/');
             $contents = str_replace($search, $replace, $contents);
@@ -765,8 +763,6 @@ class Resource
 
         // Unify line ends
         $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
-
-        $key = $this->makeCacheKey($contents);
         $data = array(
             'createdAt' => microtime(true),
             'data'      => $contents,
@@ -851,7 +847,7 @@ class Resource
 
         // Minify JavaScript
         $retval = '';
-        $excludedfiles = '';
+        $excludedFiles = '';
 
         // *******************************
         // Exclude files for advanced editor 
@@ -869,7 +865,7 @@ class Resource
 
         foreach ($temp as $file) {
             if (stripos($file['file'], $editorPath) === 0) {
-                $excludedfiles .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
+                $excludedFiles .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
             } else {
                 $files[] = $file;
             }
@@ -918,7 +914,7 @@ class Resource
         }
         
         // Add excluded files at the end 
-        $retval .= $excludedfiles;
+        $retval .= $excludedFiles;
 
         return $retval;
     }
@@ -1161,7 +1157,7 @@ class Resource
             $lang = array_merge($lang, $this->lang);
         }
 
-        $detect = new \Mobile_Detect;
+        $detect = new Mobile_Detect;
         $device = array(
             'isMobile' => $detect->isMobile(),
             'isTablet' => $detect->isTablet(),
@@ -1245,7 +1241,7 @@ class Resource
      *
      * @return bool
      */
-    public function getCompatibilityWithMC()
+    public function isCompatibleWithModernCurveTheme()
     {
         return $this->compatibleWithMC;
     }
