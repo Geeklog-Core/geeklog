@@ -520,7 +520,7 @@ if (function_exists($func)) {
 unset($theme_config, $func);
 
 // Forcibly enable Resource cache if current theme is compatible with Modern Curve theme
-if ($_SCRIPTS->getCompatibilityWithMC()) {
+if ($_SCRIPTS->isCompatibleWithModernCurveTheme()) {
     $_CONF['cache_resource'] = true;
 }
 

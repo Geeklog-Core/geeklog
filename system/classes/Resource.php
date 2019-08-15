@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog class to include javascript, javascript files and css files.      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2018 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer, tomhomer AT gmail DOT com                             |
 // |          Kenji ITO, mystralkk AT gmail DOT com                            |
@@ -34,6 +34,7 @@ namespace Geeklog;
 
 use JSMin\JSMin;
 use MatthiasMullie\Minify;
+use Mobile_Detect;
 
 class Resource
 {
@@ -568,7 +569,7 @@ class Resource
 
         $attributes = $this->checkCssAttributes($attributes);
 
-        if ($this->isExternal($file) && array_search($file, array_column($this->localJsFiles[$externalCssFiles], 'file')) == 0) {
+        if ($this->isExternal($file) && array_search($file, array_column($this->localJsFiles, 'file')) == 0) {
             $this->externalCssFiles[] = array(
                 'file'       => $file,
                 'attributes' => $attributes,
@@ -615,7 +616,7 @@ class Resource
     /**
      * Make a key for caching based on contents
      *
-     * @param  array $contents
+     * @param  string $contents
      * @return string
      */
     private function makeCacheKey($contents)
@@ -757,7 +758,7 @@ class Resource
             $right = 'right';
         }
 
-        if ($this->getCompatibilityWithMC()) {
+        if ($this->isCompatibleWithModernCurveTheme()) {
             $search  = array('{left}', '{right}', '../images/',  './images/');
             $replace = array($left,    $right,    './images/',  '../images/');
             $contents = str_replace($search, $replace, $contents);
@@ -851,7 +852,7 @@ class Resource
 
         // Minify JavaScript
         $retval = '';
-        $excludedfiles = '';
+        $excludedFiles = '';
 
         // *******************************
         // Exclude files for advanced editor 
@@ -869,7 +870,7 @@ class Resource
 
         foreach ($temp as $file) {
             if (stripos($file['file'], $editorPath) === 0) {
-                $excludedfiles .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
+                $excludedFiles .= sprintf(self::JS_TAG_TEMPLATE, $this->config['site_url'] . $file['file']) . PHP_EOL;
             } else {
                 $files[] = $file;
             }
@@ -918,7 +919,7 @@ class Resource
         }
         
         // Add excluded files at the end 
-        $retval .= $excludedfiles;
+        $retval .= $excludedFiles;
 
         return $retval;
     }
@@ -1161,7 +1162,7 @@ class Resource
             $lang = array_merge($lang, $this->lang);
         }
 
-        $detect = new \Mobile_Detect;
+        $detect = new Mobile_Detect;
         $device = array(
             'isMobile' => $detect->isMobile(),
             'isTablet' => $detect->isTablet(),
@@ -1245,7 +1246,7 @@ class Resource
      *
      * @return bool
      */
-    public function getCompatibilityWithMC()
+    public function isCompatibleWithModernCurveTheme()
     {
         return $this->compatibleWithMC;
     }
