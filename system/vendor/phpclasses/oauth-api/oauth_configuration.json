@@ -1,5 +1,5 @@
 {
-	"version": "$Id: oauth_configuration.json,v 1.41 2018/08/16 07:06:13 mlemos Exp $",
+	"version": "$Id: oauth_configuration.json,v 1.42 2019/07/19 00:43:08 mlemos Exp $",
 	"comments": [
 		"The servers entry should be an object with a list of object",
 		"entries, one for each server type. The server object entry name is",
@@ -260,8 +260,8 @@
 		"LinkedIn2":
 		{
 			"oauth_version": "2.0",
-			"dialog_url": "https://www.linkedin.com/uas/oauth2/authorization?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope={SCOPE}&response_type=code&state={STATE}",
-			"access_token_url": "https://www.linkedin.com/uas/oauth2/accessToken",
+			"dialog_url": "https://www.linkedin.com/oauth/v2/authorization?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope={SCOPE}&response_type=code&state={STATE}",
+			"access_token_url": "https://www.linkedin.com/oauth/v2/accessToken",
 			"default_access_token_type": "Bearer"
 		},
 

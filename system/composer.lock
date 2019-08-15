@@ -497,7 +497,7 @@
         },
         {
             "name": "phpclasses/oauth-api",
-            "version": "1.0.104",
+            "version": "1.0.105",
             "dist": {
                 "type": "zip",
                 "url": "https://www.phpclasses.org/install/package/oauth-api.zip"
@@ -539,16 +539,16 @@
         },
         {
             "name": "robthree/twofactorauth",
-            "version": "1.6.6",
+            "version": "1.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobThree/TwoFactorAuth.git",
-                "reference": "7477d5d65625b7fe33cb338b98e419d394e9e9fd"
+                "reference": "3407c33775391fa8c36f7d766f26c5e59a736374"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobThree/TwoFactorAuth/zipball/7477d5d65625b7fe33cb338b98e419d394e9e9fd",
-                "reference": "7477d5d65625b7fe33cb338b98e419d394e9e9fd",
+                "url": "https://api.github.com/repos/RobThree/TwoFactorAuth/zipball/3407c33775391fa8c36f7d766f26c5e59a736374",
+                "reference": "3407c33775391fa8c36f7d766f26c5e59a736374",
                 "shasum": ""
             },
             "require": {
@@ -570,8 +570,8 @@
             "authors": [
                 {
                     "name": "Rob Janssen",
-                    "homepage": "http://robiii.me",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://robiii.me"
                 }
             ],
             "description": "Two Factor Authentication",
@@ -586,7 +586,7 @@
                 "php",
                 "tfa"
             ],
-            "time": "2019-03-19T21:51:19+00:00"
+            "time": "2019-06-21T08:51:04+00:00"
         },
         {
             "name": "splitbrain/php-archive",
