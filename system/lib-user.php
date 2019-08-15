@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2017 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -84,11 +84,6 @@ function USER_deleteAccount($uid)
 
     // let plugins update their data for this user
     PLG_deleteUser($uid);
-
-    // Call custom account profile delete function if enabled and exists
-    if ($_CONF['custom_registration'] && function_exists('CUSTOM_userDelete')) {
-        CUSTOM_userDelete($uid);
-    }
 
     // remove from all security groups
     DB_delete($_TABLES['group_assignments'], 'ug_uid', $uid);
@@ -329,10 +324,7 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
     DB_query("INSERT INTO {$_TABLES['usercomment']} (uid,commentmode,commentorder,commentlimit) VALUES ($uid,'{$_CONF['comment_mode']}','{$_CONF['comment_order']}','{$_CONF['comment_limit']}')");
     DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
 
-    // call custom registration function and plugins
-    if ($_CONF['custom_registration'] && function_exists('CUSTOM_userCreate')) {
-        CUSTOM_userCreate($uid, $batchImport);
-    }
+    // Call plugins back on user creation
     PLG_createUser($uid);
 
     // Notify the admin?

@@ -1192,7 +1192,7 @@ function PLG_deleteUser($uid)
     }
 
     if ($_CONF['custom_registration']) {
-        $function = 'CUSTOM_user_delete';
+        $function = 'CUSTOM_userDelete';
         if (function_exists($function)) {
             $function($uid);
         }
