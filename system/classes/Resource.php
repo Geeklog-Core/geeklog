@@ -704,6 +704,8 @@ class Resource
     {
         global $LANG_DIRECTION;
 
+        // While debugging or when caching is disabled, we just output
+        // <link rel="stylesheet" href="some-file-location"> tags
         if ($this->debug || !Cache::isEnabled()) {
             $retval = '';
 
@@ -714,30 +716,25 @@ class Resource
             return $retval;
         }
 
-        $isUseMinify = false;
+        // Calculate cache key
+        $key = '';
+
+        foreach ($files as $file) {
+            $key .= $key . $file['file'] . '|';
+        }
+        $key = $this->makeCacheKey($key);
+
+        // See if cached data already exists
+        $data = Cache::get($key, null);
+        if ($data !== null) {
+            // Such (already minified) data exists
+            return $this->buildLinkTag($this->config['site_url'] . '/r.php?k=' . $key, array());
+        }
+
         $min = new Minify\CSS();
         $contents = '';
         $relativePaths = array();
-/*
-        // Concatenate all CSS files
-        foreach ($files as $file) {
-            if (preg_match('@min\.css$@', $file['file'])) {
-                $chunk = @file_get_contents($this->config['path_html'] . $file['file']);
 
-                if ($chunk !== false) {
-                    $relativePaths[] = $file['file'];
-                    $contents .= $chunk . PHP_EOL;
-                }
-            } else {
-                $min->add($this->config['path_html'] . $file['file']);
-                $isUseMinify = true;
-            }
-        }
-
-        if ($isUseMinify) {
-            $contents .= $min->execute($this->config['path_html']);
-        }
-*/
         // Concatenate all CSS files
         foreach ($files as $file) {
             // even if the target file is a minified css, relative paths need to be rewritten
@@ -766,8 +763,6 @@ class Resource
 
         // Unify line ends
         $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
-
-        $key = $this->makeCacheKey($contents);
         $data = array(
             'createdAt' => microtime(true),
             'data'      => $contents,
