@@ -42,8 +42,8 @@ class Language
     /**
      * Apply overrides to the given language arrays
      *
-     * @param array $varNames
      * This method should be called just after you have included a language file
+     *
      * @param array $varNames
      */
     public static function override(array $varNames)
@@ -166,13 +166,7 @@ class Language
         }
 
         $isNew = ($id === 0);
-
-        if ($isNew) {
-            $deleteOption = '';
-            $allow_delete = false;
-        } else {
-            $allow_delete = true;
-        }
+        $allow_delete = !$isNew;
 
         $token = SEC_createToken(self::SEC_TOKEN_LIFESPAN);
         $content = COM_startBlock(
