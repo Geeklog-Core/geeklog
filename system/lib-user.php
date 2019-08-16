@@ -130,9 +130,11 @@ function USER_deleteAccount($uid)
 /**
  * Create a new password and send it to the user
  *
- * @param    string $username  user's login name
- * @param    string $useremail user's email address
- * @return   boolean             true = success, false = an error occurred
+ * @param    string $username   user's login name
+ * @param    string $useremail  user's email address
+ * @param    int    $uid        user ID
+ * @param    string $email_type
+ * @return   boolean            true = success, false = an error occurred
  */
 function USER_createAndSendPassword($username, $useremail, $uid, $email_type = '')
 {
@@ -381,7 +383,7 @@ function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
  */
 function USER_sendInvalidLoginAlert($userName, $email, $uid, $mode = 'inactive')
 {
-    global $_CONF, $LANG01, $LANG04, $LANG08, $LANG28, $LANG29;
+    global $_CONF, $LANG04, $LANG08, $LANG29;
     
     $remoteAddress = $_SERVER['REMOTE_ADDR'];
 
@@ -1289,9 +1291,10 @@ function plugin_autotags_user($op, $content = '', $autotag = array())
         }
 
         return $content;
+    } else {
+        return '';
     }
 }
-
 
 /**
  * User required to confirm new email address - send email with a link and confirm id
@@ -1364,4 +1367,66 @@ function USER_emailConfirmation($email)
     }
 
     return $retval;
+}
+
+/**
+ * Check if the email address given is valid for a new user
+ *
+ * @param  string $email  an email address
+ * @return bool           true if valid email address, false otherwise
+ */
+function USER_isValidEmailAddress($email)
+{
+    global $_CONF, $_TABLES;
+
+    $email = trim($email);
+    if ($email === '') {
+        return false;
+    }
+
+    // Valid as an email address?
+    if (!COM_isEmail($email)) {
+        return false;
+    }
+
+    // In disallowed domains?
+    if (USER_emailMatches($email, $_CONF['disallow_domains'])) {
+        return false;
+    }
+
+    // Anonymous function to make an email address uniform
+    $emailMutator = function ($email) {
+        $email = strtolower($email);
+        $parts = explode('@', $email, 2);
+
+        // Additional check for Gmail.  See Issue #918
+        if ($parts[1] === 'gmail.com') {
+            // Ignore all dots '.' and anything after plus sign '+'
+            $parts[0] = str_replace('.', '', $parts[0]);
+            $plusSign = strpos($parts[0], '+');
+            if ($plusSign !== false) {
+                $parts[0] = substr($parts[0], 0, $plusSign);
+            }
+            $email = $parts[0] . '@gmail.com';
+        }
+
+        return $email;
+    };
+
+    $email = $emailMutator($email);
+
+    // Check database for a similar email address
+    $sql = "SELECT email FROM {$_TABLES['users']}";
+    $result = DB_query($sql);
+    if (DB_error()) {
+        return false;
+    }
+
+    while (($A = DB_fetchArray($result, false)) !== false) {
+        if ($email === $emailMutator($A['email'])) {
+            return false;
+        }
+    }
+
+    return true;
 }

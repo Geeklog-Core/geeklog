@@ -245,10 +245,8 @@ function USER_createUser($username, $email, $email_conf)
         $_CONF['disallow_domains'] = '';
     }
 
-    if (COM_isEmail($email) && !empty($username) && ($email === $email_conf)
-        && !USER_emailMatches($email, $_CONF['disallow_domains'])
-        && (strlen($username) <= 16)
-    ) {
+    if (USER_isValidEmailAddress($email) && !empty($username) && ($email === $email_conf) &&
+        (strlen($username) <= 16)) {
         $ucount = DB_count($_TABLES['users'], 'username', DB_escapeString($username));
         $ecount = DB_count($_TABLES['users'], 'email', DB_escapeString($email));
 
@@ -816,7 +814,7 @@ function USER_loginFailed($loginName, $password, $service, $mode, $status, $mess
  * Try to authenticate the user against the code given after user name and password is confirmed
  *
  * @return string
- * @throws \LogicException
+ * @throws LogicException
  */
 function USER_tryTwoFactorAuth()
 {
@@ -826,7 +824,7 @@ function USER_tryTwoFactorAuth()
 
     // Is Two Factor Auth enabled?
     if (!isset($_CONF['enable_twofactorauth']) || !$_CONF['enable_twofactorauth']) {
-        throw new \LogicException(__FUNCTION__ . ': Two Factor Authentication is disabled.');
+        throw new LogicException(__FUNCTION__ . ': Two Factor Authentication is disabled.');
     }
 
     // Check security token
