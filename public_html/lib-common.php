@@ -295,13 +295,6 @@ if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_c
     }
 }
 
-/**
- * This provides the ability to set css and javascript.
- *
- * @global Resource $_SCRIPTS
- */
-//$_SCRIPTS = new Scripts();
-
 // Include theme functions file which may/may not do anything
 if (file_exists($_CONF['path_layout'] . 'functions.php')) {
     require_once $_CONF['path_layout'] . 'functions.php';
@@ -398,7 +391,6 @@ $TEMPLATE_OPTIONS = array(
         'current_url'     => COM_getCurrentURL()
     ),
     'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes. CTL_setTemplateRoot will be depreciated as of Geeklog 3.0.0. 
-//    'hook'                => array() //
 );
 Autoload::load('template');
 // Template library contains helper functions for template class
@@ -533,14 +525,6 @@ if (isset($_CONF['cache_resource']) && !$_CONF['cache_resource']) {
 DB_lockTable($_TABLES['sessions']);
 DB_query("UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . (time() - $_CONF['whosonline_threshold']));
 DB_unlockTable($_TABLES['sessions']);
-
-/**
- * Build global array of Link Tags used by the header of a page. This is a stop
- * gap measure to support pagination with rel="next" and rel="prev" in
- * COM_printPageNavigation. When the GL Page class is finished this global
- * function will no longer be accessible.
- */
-$relLinks = array();
 
 /**
  * Build global array of Topics current user has access to
@@ -933,7 +917,7 @@ function COM_renderMenu($header, $plugin_menu)
 function COM_createHTMLDocument(&$content = '', $information = array())
 {
     global $_CONF, $_VARS, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
-           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_STRUCT_DATA, $_PAGE_TIMER, $relLinks;
+           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_STRUCT_DATA, $_PAGE_TIMER;
 
     // Retrieve required variables from information array
     $what = isset($information['what']) ? $information['what'] : 'menu';
@@ -942,6 +926,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $breadcrumbs = isset($information['breadcrumbs']) ? $information['breadcrumbs'] : '';
     $rightBlock = isset($information['rightblock']) ? $information['rightblock'] : -1;
     $custom = isset($information['custom']) ? $information['custom'] : '';
+    $relLinks = array();
 
     // If the theme does not support the CSS layout then call the legacy functions (Geeklog 1.8.1 and older).
     if ($_CONF['supported_version_theme'] === '1.8.1') {
@@ -1497,18 +1482,18 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
     }
 
     // need to check if template file found for plugin if not then use regular theme location
-    $templatefound = false;        
+    $templateFound = false;
     if (!empty($plugin)) {
         $plugin_template_paths = CTL_plugin_templatePath($plugin);
         foreach($plugin_template_paths as $plugin_template_path) {
              if (file_exists($plugin_template_path . '/' . $template)) {
                  $block = COM_newTemplate(CTL_plugin_templatePath($plugin));
-                 $templatefound = true; // If found don't need to search theme or theme default if exist
+                 $templateFound = true; // If found don't need to search theme or theme default if exist
                  break;
              }
         }
     }    
-    if (!$templatefound) {
+    if (!$templateFound) {
         // If error happens early in the process (ie COM_handleException is called) the caching template library may not be loaded so fall back
         if (function_exists('CTL_core_templatePath')) {
             $block = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
@@ -1516,8 +1501,7 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
             $block = COM_newTemplate($_CONF['path_layout']);
         }
     }
-    $retval = $block->set_file('block', $template);
-
+    $block->set_file('block', $template);
 
     $block->set_var(array(
         'block_title' => stripslashes($title),
@@ -1567,6 +1551,7 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
  * Closes out COM_startBlock
  *
  * @param    string $template HTML template file used to format block footer
+ * @param    string $plugin   plugin name
  * @return   string           Formatted HTML to close block
  * @see function COM_startBlock
  */
@@ -1581,18 +1566,18 @@ function COM_endBlock($template = 'blockfooter.thtml', $plugin = '')
     }
 
     // need to check if template file found for plugin if not then use regular theme location
-    $templatefound = false;        
+    $templateFound = false;
     if (!empty($plugin)) {
         $plugin_template_paths = CTL_plugin_templatePath($plugin);
         foreach($plugin_template_paths as $plugin_template_path) {
              if (file_exists($plugin_template_path . '/' . $template)) {
                  $block = COM_newTemplate(CTL_plugin_templatePath($plugin));
-                 $templatefound = true; // If found don't need to search theme or theme default if exist
+                 $templateFound = true; // If found don't need to search theme or theme default if exist
                  break;
              }
         }
     }    
-    if (!$templatefound) {
+    if (!$templateFound) {
         // If error happens early in the process (ie COM_handleException is called) the caching template library may not be loaded so fall back
         if (function_exists('CTL_core_templatePath')) {
             $block = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
@@ -1824,7 +1809,7 @@ function COM_topicArray($selection, $sortCol = 0, $ignoreLang = false)
  * Create and return some control for use in forms
  *
  * @param    string $type      Type of control
- * @param    string $variables Hash of variable name/value pairs
+ * @param    array  $variables Hash of variable name/value pairs
  * @return   string            Formatted HTML of control code
  */
 function COM_createControl($type, $variables = array())
@@ -2169,7 +2154,6 @@ function COM_errorLog($logEntry, $actionId = '')
  * @param   string $deprecated_version Version of Geeklog that object was depreciated in
  * @param   string $removed_version    Planned version of Geeklog object will be removed
  * @param   string $new_object         New object developer should be using instead
- * @return
  * @since   since v2.1.2
  */
 function COM_deprecatedLog($deprecated_object, $deprecated_version, $removed_version, $new_object = '')
@@ -3269,8 +3253,6 @@ function COM_adminMenu($help = '', $title = '', $position = '', $cssId = '', $cs
  */
 function COM_redirect($url)
 {
-    global $_CONF;
-
     if (!headers_sent($file, $line)) {
         $url = str_ireplace('&amp;', '&', $url);
         header('Location: ' . $url);
@@ -3828,7 +3810,6 @@ function COM_showBlock($name, $help = '', $title = '', $position = '', $cssId = 
  * a given topic. Currently only used by static pages.
  *
  * @param  string $location  Side to get blocks for (right or left) OR other block location id
- * @param  string $tempvar   Template variable currently assigned for blocks (not used for left or right)
  * @see    function COM_showBlock
  * @return string        HTML Formatted blocks
  */
@@ -4243,7 +4224,6 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
 {
     global $_CONF, $LANG01;
 
-    $retval = '';
     $has_list = false;
     if ((SEC_hasRights('htmlfilter.skip') || (isset($_CONF['skip_html_filter_for_root']) &&
                 ($_CONF['skip_html_filter_for_root'] == 1) &&
@@ -4309,8 +4289,6 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
 function COM_allowedAutotags($list_only = false, $allowed_tags = array())
 {
     global $LANG01;
-
-    $retval = '';
 
     $list = '';
     if (count($allowed_tags) > 0) {
@@ -5056,7 +5034,7 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
                                  $page_str = 'page=', $do_rewrite = false, $msg = '',
                                  $open_ended = '')
 {
-    global $_CONF, $_DEVICE, $LANG05, $relLinks;
+    global $_CONF, $_DEVICE, $LANG05;
 
     if (function_exists('CUSTOM_printPageNavigation')) {
         return CUSTOM_printPageNavigation($base_url, $currentPage, $num_pages, $page_str, $do_rewrite, $msg, $open_ended);
@@ -6740,7 +6718,8 @@ function COM_convertDate2Timestamp($date, $time = '')
  *
  * @param    string  $file  full path to the file
  * @param    boolean $html  flag to return html source or array
- * @return   string         if $html true then html that will be included in the img-tag. Else an array will be returned with the information
+ * @return   string|array   if $html true then html that will be included in the img-tag.
+ *                           Else an array will be returned with the information
  */
 function COM_getImgSizeAttributes($file, $html = true)
 {
@@ -6770,8 +6749,10 @@ function COM_getImgSizeAttributes($file, $html = true)
                     if ($html) {
                         $sizeAttributes = 'width="' . $width . '" height="' . $height . '" ';
                     } else {
-                        $sizeAttributes['width'] = $width;
-                        $sizeAttributes['height'] = $height;
+                        $sizeAttributes = array(
+                            'width'  => $width,
+                            'height' => $height,
+                        );
                     }
                 }
             }
@@ -6782,8 +6763,10 @@ function COM_getImgSizeAttributes($file, $html = true)
                 if ($html) {
                     $sizeAttributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
                 } else {
-                    $sizeAttributes['width'] = $dimensions[0];
-                    $sizeAttributes['height'] = $dimensions[1];
+                    $sizeAttributes = array(
+                        'width'  => $dimensions[0],
+                        'height' => $dimensions[1],
+                    );
                 }
             }
         }
