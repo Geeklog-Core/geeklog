@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Initial configuration setup.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2010 by the following authors:                         |
+// | Copyright (C) 2007-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -29,17 +29,18 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\ConfigInterface;
+
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
-function install_config()
+function install_config(ConfigInterface $c)
 {
     global $_CONF, $_TABLES;
 
     // Parameters for add function:  $param_name, $default_value, $type, $subgroup, $fieldset=null, $selection_array=null, $sort=0, $set=true, $group='Core', $tab=null
     $me = 'Core';
-    $c = config::get_instance();
 
     // Subgroup: Site
     $c->add('sg_site', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, $me, 0);

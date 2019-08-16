@@ -1,5 +1,6 @@
 <?php
 
+use Geeklog\ConfigInterface;
 use \PHPUnit\Framework\TestCase as TestCase;
 
 /**
@@ -62,13 +63,13 @@ class langConfValidation extends TestCase
         $system_timezone = @date_default_timezone_get();
         date_default_timezone_set($system_timezone);
 
-        $this->c = config::get_instance();
+        $this->c = DummyConfig::get_instance();
 
         include Tst::$root . 'language/english.php';
         include Tst::$public . 'admin/configuration_validation.php';
         require_once Tst::$public . 'admin/install/config-install.php';
 
-        install_config();
+        install_config($this->c);
     }
 
     /**
@@ -264,7 +265,7 @@ class langConfValidation extends TestCase
  *
  * This class is a dummy for testing the langConfValidation class
  */
-class config
+class DummyConfig implements ConfigInterface
 {
     private $cfg;
 

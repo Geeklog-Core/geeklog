@@ -31,7 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-class config
+use Geeklog\ConfigInterface;
+
+class config implements ConfigInterface
 {
     /**
      * Path to db-config.php file

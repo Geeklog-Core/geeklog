@@ -4704,11 +4704,12 @@ HTML;
                                 $site_slogan = urldecode($site_slogan);
                                 $site_slogan = $this->cleanString($site_slogan);
 
+                                require_once $_CONF['path_system'] . 'classes/ConfigInterface.php';
                                 require_once $_CONF['path_system'] . 'classes/config.class.php';
                                 require_once PATH_INSTALL . 'config-install.php';
-                                install_config();
-
                                 $config = config::get_instance();
+                                install_config($config);
+
                                 $config->set('site_name', $site_name);
                                 $config->set('site_slogan', $site_slogan);
                                 $config->set('site_url', urldecode($site_url));
