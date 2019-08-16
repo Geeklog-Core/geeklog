@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | timezoneconfig.class.php                                                  |
 // |                                                                           |
 // | Helper class for time zone handling                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun             - dirk AT haun-online DOT de               |
 // | based on earlier work by Oliver Spiesshofer, Yew Loong, and others        |
@@ -107,11 +107,10 @@ class TimeZoneConfig
             $timezone = $_USER['tzid'];
         } elseif (!empty($_CONF['timezone'])) {
             $timezone = $_CONF['timezone'];
-        } elseif (function_exists('date_default_timezone_get')) {
+        } elseif (is_callable('date_default_timezone_get')) {
             $timezone = @date_default_timezone_get();
         } else {
-            $tz_obj = Date_TimeZone::getDefault();
-            $timezone = $tz_obj->id;
+            $timezone = 'UTC';
         }
 
         return $timezone;
@@ -126,8 +125,6 @@ class TimeZoneConfig
      */
     public static function getTimeZoneDropDown($selected = '', $attributes = array())
     {
-        global $_CONF;
-
         $timezones = self::listAvailableTimeZones();
         $items = '';
         foreach ($timezones as $tzId => $tzDisplay) {
@@ -158,69 +155,27 @@ class TimeZoneConfig
             'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific', 'UTC',
         );
 
-        // check if we can use the DateTimeZone class
-        $useDateTimeZone = false;
-        if (class_exists('DateTimeZone') && class_exists('ReflectionClass')) {
-            $rc = new ReflectionClass('DateTimeZone');
-            if ($rc->hasMethod('listAbbreviations')) {
-                $useDateTimeZone = true;
-            }
-        }
+        $T = DateTimeZone::listAbbreviations();
 
-        if ($useDateTimeZone) {
-            $T = DateTimeZone::listAbbreviations();
-
-            foreach ($T as $tzId => $entries) {
-                $shortName = strtoupper($tzId);
-                foreach ($entries as $data) {
-                    $tzCheck = explode('/', $data['timezone_id']);
-                    if (!in_array($tzCheck[0], $useOnly)) {
-                        continue;
-                    }
-
-                    $hours = $data['offset'] / 3600;
-                    $hours = ((int) ($hours * 100) / 100);
-                    if ($hours > 0) {
-                        $hours = "+$hours";
-                    }
-
-                    $tzCode = str_replace('_', ' ', $data['timezone_id']);
-                    $tzCode = htmlspecialchars($tzCode);
-                    $formattedTimezone = "$hours, $shortName ($tzCode)";
-                    $timezones[$data['timezone_id']] = $formattedTimezone;
-                }
-            }
-
-        } else { // DateTimeZone not available - use PEAR Date class
-            // Load Date_TimeZone class
-            Date_TimeZone::getDefault();
-            $T = $GLOBALS['_DATE_TIMEZONE_DATA'];
-
-            foreach ($T as $tzId => $tDetails) {
-                $tzCheck = explode('/', $tzId);
+        foreach ($T as $tzId => $entries) {
+            $shortName = strtoupper($tzId);
+            foreach ($entries as $data) {
+                $tzCheck = explode('/', $data['timezone_id']);
                 if (!in_array($tzCheck[0], $useOnly)) {
                     continue;
                 }
-                if (!empty($tzCheck[1]) &&
-                    (strpos($tzCheck[1], 'Riyadh') === 0)
-                ) {
-                    // these time zones are based on solar time and not widely
-                    // supported - skip
-                    continue;
-                }
 
-                $tzCode = str_replace('_', ' ', $tzId);
-                $tzCode = htmlspecialchars($tzCode);
-                $hours = $tDetails['offset'] / (3600 * 1000);
+                $hours = $data['offset'] / 3600;
                 $hours = ((int) ($hours * 100) / 100);
                 if ($hours > 0) {
                     $hours = "+$hours";
                 }
 
-                $formattedTimezone = "$hours, {$tDetails['shortname']} ($tzCode)";
-                $timezones[$tzId] = $formattedTimezone;
+                $tzCode = str_replace('_', ' ', $data['timezone_id']);
+                $tzCode = htmlspecialchars($tzCode);
+                $formattedTimezone = "$hours, $shortName ($tzCode)";
+                $timezones[$data['timezone_id']] = $formattedTimezone;
             }
-
         }
 
         uasort($timezones, array('TimeZoneConfig', '_sort_by_timezone'));
