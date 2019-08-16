@@ -431,6 +431,7 @@ if (setlocale(LC_ALL, $_CONF['locale']) === false) {
 }
 
 // Override language items (since v2.1.2)
+Language::init();
 $language_overrides = array(
     'LANG01', 'LANG03', 'LANG04', 'LANG_MYACCOUNT', 'LANG05', 'LANG08', 'LANG09',
     'LANG10', 'LANG11', 'LANG12', 'LANG_LOGVIEW', 'LANG_ENVCHECK', 'LANG20',

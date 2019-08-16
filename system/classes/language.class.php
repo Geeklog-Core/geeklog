@@ -40,6 +40,47 @@ class Language
     const SEC_TOKEN_LIFESPAN = 1200; // 20 * 60
 
     /**
+     * @var bool
+     */
+    private static $isInitialized = false;
+
+    /**
+     * @var array of ['id', 'var_name', 'language', 'name', 'Value']
+     */
+    private static $data = array();
+
+    /**
+     * Initialize the Language class
+     */
+    public static function init()
+    {
+        global $_TABLES;
+
+        if (self::$isInitialized) {
+            return;
+        }
+
+        // Cache data in database into memory
+        $sql = "SELECT * FROM {$_TABLES['language_items']} ORDER BY id";
+        $result = DB_query($sql);
+
+        if (!DB_error()) {
+            while (($A = DB_fetchArray($result, false)) !== false) {
+                if (!array_key_exists($A['var_name'], self::$data)) {
+                    self::$data[$A['var_name']] = array();
+                }
+                if (!array_key_exists($A['language'], self::$data[$A['var_name']])) {
+                    self::$data[$A['var_name']][$A['language']] = array();
+                }
+
+                self::$data[$A['var_name']][$A['language']][$A['name']] = $A['value'];
+            }
+        }
+
+        self::$isInitialized = true;
+    }
+
+    /**
      * Apply overrides to the given language arrays
      *
      * This method should be called just after you have included a language file
@@ -48,9 +89,7 @@ class Language
      */
     public static function override(array $varNames)
     {
-        global $_TABLES;
-
-        $escapedLanguage = DB_escapeString(COM_getLanguage());
+        $language = COM_getLanguage();
 
         foreach ($varNames as $varName) {
             if (!isset($GLOBALS[$varName])) {
@@ -59,16 +98,13 @@ class Language
                 $varIsArray = is_array($GLOBALS[$varName]);
             }
 
-            $escapedVarName = DB_escapeString($varName);
-            $sql = "SELECT name, value FROM {$_TABLES['language_items']} "
-                . " WHERE (var_name = '{$escapedVarName}') AND (language = '{$escapedLanguage}') ";
-            $resultSet = DB_query($sql);
-
-            while (($A = DB_fetchArray($resultSet, false)) !== false) {
+            if (isset(self::$data[$varName], self::$data[$varName][$language])) {
                 if ($varIsArray) {
-                    $GLOBALS[$varName][$A['name']] = $A['value'];
+                    foreach (self::$data[$varName][$language] as $name => $value) {
+                        $GLOBALS[$varName][$name] = $value;
+                    }
                 } else {
-                    $GLOBALS[$varName] = $A['value'];
+                    $GLOBALS[$varName] = self::$data[$varName][$language][$varName];
                 }
             }
         }
