@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
 * File: hebrew_utf-8.php
@@ -99,14 +99,14 @@ $LANG_SX00 = array(
     'note4' => 'חיזרו לכאן ותנו ל-Spam-X לבדוק את התגובות האחרונות בשביל ספאם.</li></ul>התגובות ',
     'note5' => 'נבדקות מהחדשות לישנות -- ככל שיבדקו יותר תגובות ',
     'note6' => 'זמן הבדיקה יהיה ארוך יותר.</p>',
-    'masshead' => '<hr' . XHTML . '><h1 align="center">מחיקה המונית של הפניות ספאם</h1>',
-    'masstb' => '<hr' . XHTML . '><h1 align="center">מחיקה המונית של הפניות ספאם</h1>',
+    'masshead' => '<hr' . XHTML . '><h1 style="text-align: center;">מחיקה המונית של הפניות ספאם</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 style="text-align: center;">מחיקה המונית של הפניות ספאם</h1>',
     'comdel' => ' תגובות נמחקו.',
     'initial_Pimport' => '<p>יבוא רשימה שחורה אישית"',
     'initial_import' => 'יבוא רשימת MT-Blacklist ראשונית',
     'import_success' => '<p>יובאו בהצלחה %d פרטי רשימות שחורות.',
     'import_failure' => '<p><strong>שגיאה:</strong> לא נמצאו פריטים.',
-    'allow_url_fopen' => '<p>מצטערים, כיוון השרת שלכם לא מרשה לקרוא קבצים לא מקומיים (<code>allow_url_fopen</code> הוא במצב off). אנא הורידו את הרשימה השחורה מהכתובת הבאה והעלו אותה לספריית ה-"data" של התוכנה, <tt>%s</tt>, לפנו שתנסו שוב:',
+    'allow_url_fopen' => '<p>מצטערים, כיוון השרת שלכם לא מרשה לקרוא קבצים לא מקומיים (<code>allow_url_fopen</code> הוא במצב off). אנא הורידו את הרשימה השחורה מהכתובת הבאה והעלו אותה לספריית ה-"data" של התוכנה, <span style="font-family: monospace;">%s</span>, לפנו שתנסו שוב:',
     'documentation' => 'הדוקומנטציה של ה-Spam-X Plugin',
     'emailmsg' => "פריט ספאם חדש נשלח ב: \"%s\"\nקוד זיהוי משתמש: \"%s\"\n\nתוכן:\"%s\"",
     'emailsubject' => 'פריט ספאם ב: %s',

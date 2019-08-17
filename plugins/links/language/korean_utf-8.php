@@ -137,7 +137,7 @@ $LANG_LINKS_ADMIN = array(
     12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => '카테고리',
     16 => '접속에 실패했습니다',
-    17 => "권한이 없는 링크에 접속하려고 하셨기 때문에 로그에 기록 되었습니다.<aref=\"{$_CONF['site_admin_url']}/plugins/links/index.php\"> 링크의 관리화면으로 돌아가시기</a>바랍니다。",
+    17 => "권한이 없는 링크에 접속하려고 하셨기 때문에 로그에 기록 되었습니다.<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\"> 링크의 관리화면으로 돌아가시기</a>바랍니다。",
     20 => '그 외를 지정',
     21 => '보존',
     22 => '취소',

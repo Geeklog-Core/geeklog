@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * File: french_canada.php
@@ -101,14 +101,14 @@ $LANG_SX00 = array(
     'note4' => 'revenez ici et exécutez Spam-X pour vérifier les derniers commentaires.</li></ul><p>Les commentaires ',
     'note5' => 'sont vérifiés à partir des plus récents -- vérifier plus de commentaires ',
     'note6' => 'nécessite plus de temps pour la vérification</p>',
-    'masshead' => '<hr' . XHTML . '><h1 align="center">Suppression de commentaires en lot</h1>',
-    'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
+    'masshead' => '<hr' . XHTML . '><h1 style="text-align: center;">Suppression de commentaires en lot</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 style="text-align: center;">Mass Delete Trackback Spam</h1>',
     'comdel' => ' commentaires supprimés.',
     'initial_Pimport' => '<p>Importer Liste Noire Personnelle"',
     'initial_import' => 'Importer Liste Noire Principale Originale',
     'import_success' => '<p>Importation avec succès de %d entrées dans la liste noire.',
     'import_failure' => '<p><strong>Erreur:</strong> Aucune entrée trouvée.',
-    'allow_url_fopen' => '<p>Désolé, la configuration de votre serveur web ne permet pas la lecture de fichiers distants (<code>allow_url_fopen</code> est désactivé). Veuillez télécharger la liste noire de l\'adresse suivante et placez-la dans le répertoire "data" de Geeklog, <tt>%s</tt>, avant un nouvel essai:',
+    'allow_url_fopen' => '<p>Désolé, la configuration de votre serveur web ne permet pas la lecture de fichiers distants (<code>allow_url_fopen</code> est désactivé). Veuillez télécharger la liste noire de l\'adresse suivante et placez-la dans le répertoire "data" de Geeklog, <span style="font-family: monospace;">%s</span>, avant un nouvel essai:',
     'documentation' => 'Documentation du Plugin Spam-X',
     'emailmsg' => "Un nouveau commentaire indésirable a été envoyé à \"%s\"\nUser UID:\"%s\"\n\nContent:\"%s\"",
     'emailsubject' => 'Spam post at %s',

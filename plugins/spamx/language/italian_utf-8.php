@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ###############################################################################
 # italian_utf-8.php
@@ -113,14 +113,14 @@ $LANG_SX00 = array(
     'note4' => 'torna qui a fai controllare a Spam-X se gli ultimi commenti sono spam.</li></ul><p>I commenti ',
     'note5' => 'vengono controllati dal piú recente al meno recente -- controllare piú commenti ',
     'note6' => 'richiede piú tempo per il controllo</p>',
-    'masshead' => '<hr' . XHTML . '><h1 align="center">Eliminazione in Blocco Commenti Spam</h1>',
-    'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
+    'masshead' => '<hr' . XHTML . '><h1 style="text-align: center;">Eliminazione in Blocco Commenti Spam</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 style="text-align: center;">Mass Delete Trackback Spam</h1>',
     'comdel' => ' commenti eliminati.',
     'initial_Pimport' => '<p>Importazione Blacklist Personale"',
     'initial_import' => 'Importazione Iniziale MT-Blacklist',
     'import_success' => '<p>Importati con successo %d elementi della blacklist.',
     'import_failure' => '<p><strong>Errore:</strong> Nessun elemento trovato.',
-    'allow_url_fopen' => '<p>Spiacente, la configurazione del tuo webserver non permette la lettura di file remoti (<code>allow_url_fopen</code> é off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:',
+    'allow_url_fopen' => '<p>Spiacente, la configurazione del tuo webserver non permette la lettura di file remoti (<code>allow_url_fopen</code> é off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <span style="font-family: monospace;">%s</span>, before trying again:',
     'documentation' => 'Documentazione di Spam-X',
     'emailmsg' => "Un nuovo commento spam é stato inviato su \"%s\"\nUID utente:\"%s\"\n\nContenuto:\"%s\"",
     'emailsubject' => 'Commento Spam, %s',

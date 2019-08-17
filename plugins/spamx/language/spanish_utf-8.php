@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * File: spanish_utf-8.php
@@ -99,14 +99,14 @@ $LANG_SX00 = array(
     'note4' => 'vuelve aquí y haz que Spam-X compruebe los últimos comentarios de spam.</li></ul><p>Los comentarios ',
     'note5' => 'se comprueban desde los más nuevos hasta los más antiguos -- La comprobación de más comentarios ',
     'note6' => 'requiere más tiempo para llevarse a cabo</p>',
-    'masshead' => '<hr' . XHTML . '><center><h1>Borrado Masivo de Comentarios Spam</h1></center>',
-    'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
+    'masshead' => '<hr' . XHTML . '><h1 style="text-align: center;">Borrado Masivo de Comentarios Spam</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 style="text-align: center;">Mass Delete Trackback Spam</h1>',
     'comdel' => ' comentarios borrados.',
     'initial_Pimport' => '<p>Importar la Lista Negra Personal"',
     'initial_import' => 'Importar la lista Negra-MT inicial',
     'import_success' => '<p>Se ha importado con éxito los datos de la Lista Negra de %d.',
     'import_failure' => '<p><strong>Error:</strong> No se han encontrado datos.',
-    'allow_url_fopen' => '<p>Lo sentimos, la configuración de tu servidor de web no permite la lectura de ficheros remotos (<code>allow_url_fopen</code> is off). Por favor, descarga la Lista Negra desde el siguiente URL y súbelo al directorio de "datos" de Geeklog\'s, <tt>%s</tt>, antes de intentarlo de nuevo:',
+    'allow_url_fopen' => '<p>Lo sentimos, la configuración de tu servidor de web no permite la lectura de ficheros remotos (<code>allow_url_fopen</code> is off). Por favor, descarga la Lista Negra desde el siguiente URL y súbelo al directorio de "datos" de Geeklog\'s, <span style="font-family: monospace;">%s</span>, antes de intentarlo de nuevo:',
     'documentation' => 'Documentación del Plugin de Spam-X',
     'emailmsg' => "Un nuevo comentario de spam ha sido enviado en/desde \"%s\"\nUser UID:\"%s\"\n\nContent:\"%s\"",
     'emailsubject' => 'Spam post at %s',

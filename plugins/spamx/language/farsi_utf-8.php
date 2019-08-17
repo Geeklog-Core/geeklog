@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * File: farsi.php
@@ -101,14 +101,14 @@ $LANG_SX00 = array(
     'note4' => 'come back here and have Spam-X check the latest comments for spam.</li></ul><p>Comments ',
     'note5' => 'are checked from newest comment to oldest -- checking more comments ',
     'note6' => 'requires more time for the check.</p>',
-    'masshead' => '<hr' . XHTML . '><h1 align="center">Mass Delete Spam Comments</h1>',
-    'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
+    'masshead' => '<hr' . XHTML . '><h1 style="text-align: center;">Mass Delete Spam Comments</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 style="text-align: center;">Mass Delete Trackback Spam</h1>',
     'comdel' => ' comments deleted.',
     'initial_Pimport' => '<p>Personal Blacklist Import"',
     'initial_import' => 'Initial MT-Blacklist Import',
     'import_success' => '<p>Successfully imported %d blacklist entries.',
     'import_failure' => '<p><strong>Error:</strong> No entries found.',
-    'allow_url_fopen' => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:',
+    'allow_url_fopen' => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <span style="font-family: monospace;">%s</span>, before trying again:',
     'documentation' => 'Spam-X Plugin Documentation',
     'emailmsg' => "A new spam post has been submitted at \"%s\"\nUser UID: \"%s\"\n\nContent:\"%s\"",
     'emailsubject' => 'Spam post at %s',

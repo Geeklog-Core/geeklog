@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * File: japanese_utf-8.php
@@ -109,7 +109,7 @@ $LANG_SX00 = array(
     'initial_import' => 'MT-ブラックリストの初期インポート',
     'import_success' => '<p> %d 個のブラックリストエントリをインポートしました。',
     'import_failure' => '<p><strong>エラー:</strong> エントリが1つもありません。',
-    'allow_url_fopen' => '<p>あなたのWebサーバーのコンフィギュレーションはリモートファイルの読み込みを許可していません。 (<code>allow_url_fopen</code> がオフ)。次のURLからブラックリストをダウンロードしてGeeklogの "data" ディレクトリにアップロードしてください。<tt>%s</tt>, 再実行の前に:',
+    'allow_url_fopen' => '<p>あなたのWebサーバーのコンフィギュレーションはリモートファイルの読み込みを許可していません。 (<code>allow_url_fopen</code> がオフ)。次のURLからブラックリストをダウンロードしてGeeklogの "data" ディレクトリにアップロードしてください。<span style="font-family: monospace;">%s</span>, 再実行の前に:',
     'documentation' => 'Spam-X プラグインドキュメント',
     'emailmsg' => "新しいスパム投稿 \"%s\"\nUser UID: \"%s\"\n\nコンテンツ: \"%s\"",
     'emailsubject' => 'スパム投稿: %s',

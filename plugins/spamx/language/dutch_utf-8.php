@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * File: dutch.php
@@ -97,14 +97,14 @@ $LANG_SX00 = array(
     'note4' => 'kom terug hier en laat spam-X laatste commentaren voor spam controleren.</li></ul><p>Commentaren ',
     'note5' => 'worden gecontroleerd van het nieuwste naar het oudste -- controleren van meer commentaren ',
     'note6' => 'vragen meer tijd voor de controle.</p>',
-    'masshead' => '<hr' . XHTML . '><h1 align="center">Massa verwijdering Spam Commentaren</h1>',
-    'masstb' => '<hr' . XHTML . '><h1 align="center">Massa verwijdering Trackback Spam</h1>',
+    'masshead' => '<hr' . XHTML . '><h1 style="text-align: center;">Massa verwijdering Spam Commentaren</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 style="text-align: center;">Massa verwijdering Trackback Spam</h1>',
     'comdel' => ' commentaren verwijderd.',
     'initial_Pimport' => '<p>Persoonlijke Zwarte Lijst Importeren"',
     'initial_import' => 'Initiële MT-Zwarte Lijst Importeren',
     'import_success' => '<p>Succesvol %d Zwarte Lijst data geïmporteerd.',
     'import_failure' => '<p><strong>Fout:</strong> Niets gevonden.',
-    'allow_url_fopen' => '<p>Sorry, jouw webserver configuratie laat geen lezen van bestanden op afstand toe (<code>allow_url_fopen</code> staat uit). Download de Zwarte Lijst van de volgende URL en upload hem in Geeklog\'s "data" directory, <tt>%s</tt>, voor opnieuw te proberen:',
+    'allow_url_fopen' => '<p>Sorry, jouw webserver configuratie laat geen lezen van bestanden op afstand toe (<code>allow_url_fopen</code> staat uit). Download de Zwarte Lijst van de volgende URL en upload hem in Geeklog\'s "data" directory, <span style="font-family: monospace;">%s</span>, voor opnieuw te proberen:',
     'documentation' => 'Spam-X Plugin Documentatie',
     'emailmsg' => "Een nieuw spam bericht is verstuurd: \"%s\"\nGebruiker UID: \"%s\"\n\nInhoud:\"%s\"",
     'emailsubject' => 'Spam bericht bij %s',
