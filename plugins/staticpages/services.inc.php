@@ -644,10 +644,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 /**
  * Delete an existing static page
  *
- * @param   array   args    Contains all the data provided by the client
- * @param   string  &output OUTPUT parameter containing the returned text
- * @param   string  &svc_msg OUTPUT parameter containing any service messages
- * @return  int         Response code as defined in lib-plugins.php
+ * @param   array   $args      Contains all the data provided by the client
+ * @param   string  &$output   OUTPUT parameter containing the returned text
+ * @param   string  &$svc_msg  OUTPUT parameter containing any service messages
+ * @return  int                Response code as defined in lib-plugins.php
  */
 function service_delete_staticpages($args, &$output, &$svc_msg)
 {
@@ -718,10 +718,10 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
 /**
  * Get an existing static page
  *
- * @param   array   args    Contains all the data provided by the client
- * @param   string  &output OUTPUT parameter containing the returned text
- * @param   string  &svc_msg OUTPUT parameter containing any service messages
- * @return  int         Response code as defined in lib-plugins.php
+ * @param   array   $args      Contains all the data provided by the client
+ * @param   string  &$output   OUTPUT parameter containing the returned text
+ * @param   string  &$svc_msg  OUTPUT parameter containing any service messages
+ * @return  int                Response code as defined in lib-plugins.php
  */
 function service_get_staticpages($args, &$output, &$svc_msg)
 {

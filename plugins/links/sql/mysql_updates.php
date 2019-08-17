@@ -94,8 +94,8 @@ function links_update_set_categories()
     // loop through adding to category table, then update links table with cids
     $result = DB_query("SELECT DISTINCT cid AS category FROM {$_TABLES['links']}");
     $nrows = DB_numRows($result);
-    for ($i = 0; $i < $nrows; $i++) {
 
+    for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $category = DB_escapeString($A['category']);
         $cid = $category;
@@ -104,8 +104,7 @@ function links_update_set_categories()
             DB_query("UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$category}'",1);
         }
         if (DB_error()) {
-            echo "Error inserting categories into linkcategories table";
-            return false;
+            echo 'Error inserting categories into linkcategories table';
         }
     }
 }

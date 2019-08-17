@@ -65,8 +65,6 @@ Language::override(array(
  * Check and see if we need to load the plugin configuration
  */
 if (!isset($_SP_CONF['allow_php'])) {
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $sp_config = config::get_instance();
     $_SP_CONF = $sp_config->get_config('staticpages');
 }
@@ -1335,6 +1333,7 @@ function plugin_chkVersion_staticpages()
  * @param  string $content
  * @param  array  $autotag
  * @return string|array
+ * @throws InvalidArgumentException
  */
 function plugin_autotags_staticpages($op, $content = '', $autotag = array())
 {
@@ -1429,6 +1428,8 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = array())
         }
 
         return $content;
+    } else {
+        throw new InvalidArgumentException('Bad argument for "$op"');
     }
 }
 
@@ -1480,8 +1481,6 @@ function plugin_upgrade_staticpages()
     while (!$done) {
         switch ($current_version) {
             case '1.4.3':
-                require_once $_CONF['path_system'] . 'classes/config.class.php';
-
                 $plugin_path = $_CONF['path'] . 'plugins/staticpages/';
                 require_once $plugin_path . 'install_defaults.php';
 
@@ -2270,15 +2269,17 @@ function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
             . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . "{$stwhere} ORDER BY unixdate DESC LIMIT $numreturn";
     }
+
+    $A = array();
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($x = 0; $x < $nrows; $x++) {
             $A[] = DB_fetchArray($result);
         }
-
-        return $A;
     }
+
+    return $A;
 }
 
 /**

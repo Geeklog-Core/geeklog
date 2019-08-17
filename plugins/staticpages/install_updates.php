@@ -4,8 +4,6 @@ function SP_update_ConfValues_1_6_3()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $c = config::get_instance();
 
     require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
@@ -60,8 +58,6 @@ function SP_update_ConfValues_1_6_4()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $c = config::get_instance();
 
     require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
@@ -76,8 +72,6 @@ function SP_update_ConfValues_1_6_4()
 function SP_update_ConfValues_1_6_5()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
-
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $c = config::get_instance();
 
@@ -94,8 +88,6 @@ function SP_update_ConfValues_1_7_0()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $c = config::get_instance();
 
     require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
@@ -109,8 +101,6 @@ function SP_update_ConfValues_1_7_0()
 function staticpages_update_ConfValues_1_7_1()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
-
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $c = config::get_instance();
 

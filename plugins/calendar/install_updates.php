@@ -4,8 +4,6 @@ function calendar_update_ConfValues_1_1_1()
 {
     global $_CONF, $_CA_DEFAULT, $_CA_CONF;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $c = config::get_instance();
 
     require_once $_CONF['path'] . 'plugins/calendar/install_defaults.php';
@@ -27,8 +25,6 @@ function calendar_update_ConfValues_1_1_1()
 function calendar_update_ConfValues_1_1_2()
 {
     global $_CONF, $_CA_DEFAULT, $_CA_CONF, $_GROUPS, $_TABLES;
-
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $c = config::get_instance();
 

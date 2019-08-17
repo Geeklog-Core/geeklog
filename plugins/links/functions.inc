@@ -70,8 +70,6 @@ Language::override(array(
 * Check and see if we need to load the plugin configuration
 */
 if (!isset($_LI_CONF['linksloginrequired'])) {
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $li_config = config::get_instance();
     $_LI_CONF = $li_config->get_config('links');
 }
@@ -180,13 +178,14 @@ function plugin_getwhatsnew_links()
 }
 
 /**
-* Implements the [link:] autotag.
-*
-* @param    string  $op         operation to perform
-* @param    string  $content    item (e.g. story text), including the autotag
-* @param    array   $autotag    parameters used in the autotag
-* @return   string|array
-*/
+ * Implements the [link:] autotag.
+ *
+ * @param    string  $op         operation to perform
+ * @param    string  $content    item (e.g. story text), including the autotag
+ * @param    array   $autotag    parameters used in the autotag
+ * @return   string|array
+ * @throws  InvalidArgumentException
+ */
 function plugin_autotags_links($op, $content = '', $autotag = array())
 {
     global $_CONF, $_TABLES, $LANG_DIRECTION, $LANG_LINKS, $_LI_CONF, $_GROUPS;
@@ -220,7 +219,7 @@ function plugin_autotags_links($op, $content = '', $autotag = array())
         return array (
             'link' => $LANG_LINKS['autotag_desc_link']
             );
-    } else if ($op == 'parse') {
+    } elseif ($op == 'parse') {
         $lid = COM_applyFilter($autotag['parm1']);
         if (! empty($lid)) {
             $result = DB_query("SELECT COUNT(*) AS count "
@@ -252,6 +251,8 @@ function plugin_autotags_links($op, $content = '', $autotag = array())
         }
 
         return $content;
+    } else {
+        throw new InvalidArgumentException('Bad argument for "$op"');
     }
 }
 
@@ -459,7 +460,7 @@ function plugin_cclabel_links()
 /**
 * returns the administrative option for this plugin
 *
-* @return   mixed   array(title, url, num. links), or void when not allowed
+* @return   mixed   array(title, url, num. links), or array() when not allowed
 *
 */
 function plugin_getadminoption_links()
@@ -473,6 +474,8 @@ function plugin_getadminoption_links()
         return array ($LANG_LINKS[14],
                       $_CONF['site_admin_url'] . '/plugins/links/index.php',
                       $total_links);
+    } else {
+        return array();
     }
 }
 
@@ -537,8 +540,8 @@ function plugin_getfeednames_links()
 * Provide feed data
 *
 * @param    int     $feed       feed ID
-* @param    ref     $link
-* @param    ref     $update
+* @param    string  &$link
+* @param    string  &$update
 * @return   array               feed entries
 *
 */
@@ -710,8 +713,6 @@ function plugin_upgrade_links()
     while (! $done) {
         switch ($current_version) {
         case '1.0.1':
-            require_once $_CONF['path_system'] . 'classes/config.class.php';
-
             $plugin_path = $_CONF['path'] . 'plugins/links/';
             require_once $plugin_path . 'install_defaults.php';
 
@@ -1373,8 +1374,8 @@ function links_validateUrl($url)
 /**
 * Set template variables
 *
-* @param    string  $templatename   name of template, e.g. 'header'
-* @param    ref     $template       reference of actual template
+* @param    string    $templatename   name of template, e.g. 'header'
+* @param    Template  $template       reference of actual template
 * @return   void
 *
 * Note: A plugin should use its name as a prefix for the names of its
@@ -1384,12 +1385,12 @@ function links_validateUrl($url)
 * of Geeklog. It is added here for backward-compatibility.
 *
 */
-function plugin_templatesetvars_links ($templatename, &$template)
+function plugin_templatesetvars_links ($templatename, $template)
 {
     global $LANG_LINKS;
 
     if (($templatename == 'header') || ($templatename == 'footer')) {
-        $template->set_var ('button_links', $LANG_LINKS[14]);
+        $template->set_var('button_links', $LANG_LINKS[14]);
     }
 }
 

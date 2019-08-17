@@ -98,7 +98,6 @@ function plugin_load_configuration_calendar($pi_name)
 
     $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
     require_once $base_path . 'install_defaults.php';
 
     return plugin_initconfig_calendar();

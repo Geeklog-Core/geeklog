@@ -130,9 +130,7 @@ function polls_update_polltopics()
     foreach ($P_SQL as $sql) {
         $rst = DB_query($sql);
         if (DB_error()) {
-            echo "There was an error upgrading the polls, SQL: $sql<br>";
-
-            return false;
+            echo "There was an error upgrading the polls, SQL: {$sql}<br>";
         }
     }
 }
@@ -141,7 +139,6 @@ function polls_update_ConfValues_2_1_0()
 {
     global $_CONF, $_PO_DEFAULT;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
     require_once $_CONF['path'] . 'plugins/polls/install_defaults.php';
 
     $c = config::get_instance();
@@ -156,7 +153,6 @@ function polls_update_ConfValues_2_1_1()
 {
     global $_CONF, $_PO_DEFAULT, $_PO_CONF;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
     require_once $_CONF['path'] . 'plugins/polls/install_defaults.php';
 
     $c = config::get_instance();

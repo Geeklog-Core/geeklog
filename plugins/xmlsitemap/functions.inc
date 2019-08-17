@@ -212,8 +212,6 @@ function XMLSMAP_loadConfig()
 {
     global $_CONF;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $config = config::get_instance();
     if ($config->group_exists('xmlsitemap')) {
         return $config->get_config('xmlsitemap');
@@ -476,8 +474,6 @@ function XMLSITEMAP_checkChange($name)
     // If $valids is different from the current value, we have to update config
     if ($_XMLSMAP_CONF[$name] != $valids) {
         $_XMLSMAP_CONF[$name] = $valids;
-
-        require_once $_CONF['path_system'] . 'classes/config.class.php';
         $config = config::get_instance();
         $config->set($name, $valids, 'xmlsitemap');
     }
@@ -507,7 +503,6 @@ function XMLSITEMAP_checkChange($name)
             }
         }
 
-        require_once $_CONF['path_system'] . 'classes/config.class.php';
         $config = config::get_instance();
         ksort($priorities);
         $config->set('priorities',  $priorities, 'xmlsitemap');
@@ -625,8 +620,6 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
                 $_XMLSMAP_CONF['priorities'][$type]  = 0.5;
                 $_XMLSMAP_CONF['frequencies'][$type] = 'daily';
 
-                require_once $_CONF['path_system'] . 'classes/config.class.php';
-
                 $config = config::get_instance();
                 $config->set('types', $_XMLSMAP_CONF['types'], 'xmlsitemap');
                 $config->set('priorities', $_XMLSMAP_CONF['priorities'], 'xmlsitemap');
@@ -643,8 +636,6 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
                 unset($_XMLSMAP_CONF['types'][$pos]);
                 unset($_XMLSMAP_CONF['priorities'][$type]);
                 unset($_XMLSMAP_CONF['frequencies'][$type]);
-
-                require_once $_CONF['path_system'] . 'classes/config.class.php';
 
                 $config = config::get_instance();
                 $config->set('types', $_XMLSMAP_CONF['types'], 'xmlsitemap');

@@ -127,8 +127,6 @@ function SP_update_ConfValues_1_6_0()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $c = config::get_instance();
 
     require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
@@ -181,8 +179,6 @@ function SP_update_ConfValues_1_6_0()
 function SP_update_ConfValues_1_6_1()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
-
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $c = config::get_instance();
 

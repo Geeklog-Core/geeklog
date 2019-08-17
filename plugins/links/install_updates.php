@@ -4,8 +4,6 @@ function links_update_ConfValues_2_1_0()
 {
     global $_CONF, $_LI_DEFAULT, $_LI_CONF;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $c = config::get_instance();
 
     require_once $_CONF['path'] . 'plugins/links/install_defaults.php';

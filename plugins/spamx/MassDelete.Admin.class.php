@@ -137,7 +137,6 @@ class MassDelete extends BaseAdmin
      * @param    int    $cid  Comment ID
      * @param    string $sid  ID of object comment belongs to
      * @param    string $type Comment type (e.g. article, poll, etc)
-     * @return   string      Returns string needed to redirect page to right place
      */
     public function delcomment($cid, $sid, $type)
     {

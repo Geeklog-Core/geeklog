@@ -272,7 +272,7 @@ class SitemapXML
      */
     public function setNewsTopics($topics)
     {
-        $this->_news_topics = array_unique($topics);
+        $this->news_topics = array_unique($topics);
     }
 
     /**
@@ -292,7 +292,7 @@ class SitemapXML
      */
     public function setNewsAge($MaxAge)
     {
-        $this->_news_age = intval($MaxAge);
+        $this->news_age = intval($MaxAge);
     }
 
     /**

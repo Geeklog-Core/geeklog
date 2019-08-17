@@ -4,8 +4,6 @@ function polls_update_ConfValues_2_1_2()
 {
     global $_CONF, $_PO_DEFAULT, $_PO_CONF;
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $c = config::get_instance();
 
     require_once $_CONF['path'] . 'plugins/polls/install_defaults.php';
@@ -32,8 +30,6 @@ function polls_update_ConfValues_2_1_2()
 function polls_update_ConfValues_2_1_3()
 {
     global $_CONF, $_PO_DEFAULT, $_PO_CONF, $_GROUPS, $_TABLES;
-
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $c = config::get_instance();
 

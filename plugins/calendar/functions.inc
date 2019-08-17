@@ -63,8 +63,6 @@ Language::override(array(
 * Check and see if we need to load the plugin configuration
 */
 if (!isset($_CA_CONF['calendarloginrequired'])) {
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $ca_config = config::get_instance();
     $_CA_CONF = $ca_config->get_config('calendar');
 }
@@ -862,7 +860,6 @@ function plugin_submit_calendar($mode = 'master')
  *
  * @param    string $eid  id of event to delete
  * @param    string $type 'submission' when attempting to delete a submission
- * @return            string          HTML redirect
  */
 function CALENDAR_deleteEvent($eid, $type = '')
 {
@@ -1138,6 +1135,7 @@ function plugin_submissioncount_calendar()
  * @param   string  $content
  * @param   array   $autotag
  * @return  array|string
+ * @throws  InvalidArgumentException
  */
 function plugin_autotags_calendar($op, $content = '', $autotag = array())
 {
@@ -1193,6 +1191,8 @@ function plugin_autotags_calendar($op, $content = '', $autotag = array())
         }
 
         return $content;
+    } else {
+        throw new InvalidArgumentException('Bad argument for "$op"');
     }
 }
 
@@ -1417,6 +1417,8 @@ function plugin_cclabel_calendar()
 
 /**
  * returns the administrative option for this plugin
+ *
+ * @return  array
  */
 function plugin_getadminoption_calendar()
 {
@@ -1430,9 +1432,14 @@ function plugin_getadminoption_calendar()
         return array($LANG_CAL_1[16],
             $_CONF['site_admin_url'] . '/plugins/calendar/index.php',
             $total_events);
+    } else {
+        return array();
     }
 }
 
+/**
+ * @return array
+ */
 function plugin_getuseroption_calendar()
 {
     global $_CONF, $LANG_CAL_1, $_CA_CONF;
@@ -1441,6 +1448,8 @@ function plugin_getuseroption_calendar()
         $url = $_CONF['site_url'] . '/calendar/index.php?mode=personal';
 
         return array($LANG_CAL_1[42], $url, '');
+    } else {
+        return array();
     }
 }
 
@@ -1522,8 +1531,6 @@ function plugin_upgrade_calendar()
     while (!$done) {
         switch ($current_version) {
             case '1.0.0':
-                require_once $_CONF['path_system'] . 'classes/config.class.php';
-
                 $plugin_path = $_CONF['path'] . 'plugins/calendar/';
                 require_once $plugin_path . 'install_defaults.php';
 
@@ -1820,16 +1827,15 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 /**
  * Set template variables
  *
- * @param    string $templatename name of template, e.g. 'header'
- * @param    ref    $template     reference of actual template
- * @return   void
- *                                Note: A plugin should use its name as a prefix for the names of its
- *                                template variables, e.g. 'calendar_xxx' and 'lang_calendar_xxx'.
- *                                'button_calendar' is an exception, as such a variable existed for header.thtml
- *                                in Geeklog 1.4.0 and earlier, where the Calendar was an integral part
- *                                of Geeklog. It is added here for backward-compatibility.
+ * @param    string    $templatename name of template, e.g. 'header'
+ * @param    Template  $template     reference of actual template
+ * @note                             A plugin should use its name as a prefix for the names
+ *                                   of its template variables, e.g. 'calendar_xxx' and 'lang_calendar_xxx'.
+ *                                   'button_calendar' is an exception, as such a variable existed for header.thtml
+ *                                   in Geeklog 1.4.0 and earlier, where the Calendar was an integral part
+ *                                   of Geeklog. It is added here for backward-compatibility.
  */
-function plugin_templatesetvars_calendar($templatename, &$template)
+function plugin_templatesetvars_calendar($templatename, $template)
 {
     global $LANG_CAL_1;
 

@@ -64,8 +64,6 @@ Language::override(array(
  * Check and see if we need to load the plugin configuration
  */
 if (!isset($_PO_CONF['pollsloginrequired'])) {
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $po_config = config::get_instance();
     $_PO_CONF = $po_config->get_config('polls');
 }
@@ -1167,8 +1165,6 @@ function plugin_upgrade_polls()
     while (!$done) {
         switch ($current_version) {
             case '1.1.0':
-                require_once $_CONF['path_system'] . 'classes/config.class.php';
-
                 $plugin_path = $_CONF['path'] . 'plugins/polls/';
                 require_once $plugin_path . 'install_defaults.php';
 

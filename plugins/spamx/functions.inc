@@ -49,8 +49,6 @@ Language::override(array(
 
 // Check and see if we need to load the plugin configuration
 if (!isset($_SPX_CONF['timeout'])) {
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
-
     $spx_config = config::get_instance();
     $_SPX_CONF = $spx_config->get_config('spamx');
 }
@@ -232,8 +230,6 @@ function plugin_upgrade_spamx()
     while (!$done) {
         switch ($current_version) {
             case '1.1.0':
-                require_once $_CONF['path_system'] . 'classes/config.class.php';
-
                 $plugin_path = $_CONF['path'] . 'plugins/spamx/';
                 require_once $plugin_path . 'install_defaults.php';
 

@@ -113,7 +113,6 @@ function plugin_load_configuration_links($pi_name)
 
     $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
     require_once $base_path . 'install_defaults.php';
 
     return plugin_initconfig_links();
@@ -131,8 +130,6 @@ function plugin_load_configuration_links($pi_name)
 function plugin_postinstall_links($pi_name)
 {
     global $_CONF, $_TABLES;
-
-    require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $li_config = config::get_instance();
     $_LI_CONF = $li_config->get_config('links');
