@@ -1428,6 +1428,8 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = array())
         }
 
         return $content;
+    } elseif ($op === 'closetag') {
+        return array();
     } else {
         throw new InvalidArgumentException('Bad argument for "$op"');
     }
