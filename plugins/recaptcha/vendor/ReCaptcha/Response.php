@@ -47,7 +47,7 @@ class Response
      * Build the response from the expected JSON returned by the service.
      *
      * @param string $json
-     * @return \ReCaptcha\Response
+     * @return Response
      */
     public static function fromJson($json)
     {

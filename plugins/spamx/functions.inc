@@ -454,7 +454,7 @@ function plugin_migrate_spamx($old_conf)
  * @return int    either PLG_SPAM_NOT_FOUND, PLG_SPAM_FOUND or PLG_SPAM_UNSURE
  * @note As for valid value for $commentType, see system/classes/Akismet.php
  */
-function plugin_checkforSpam_spamx($comment, $action = -1, $permanentLink,
+function plugin_checkforSpam_spamx($comment, $action, $permanentLink,
                                    $commentType = Geeklog\Akismet::COMMENT_TYPE_COMMENT,
                                    $commentAuthor = null, $commentAuthorEmail = null, $commentAuthorURL = null)
 {

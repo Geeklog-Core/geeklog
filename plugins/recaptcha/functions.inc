@@ -30,6 +30,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use ReCaptcha\ReCaptcha;
+use ReCaptcha\RequestMethod\CurlPost;
+use ReCaptcha\RequestMethod\Post;
+use ReCaptcha\RequestMethod\SocketPost;
+
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file cannot be used on its own.');
 }
@@ -207,6 +212,7 @@ function plugin_autouninstall_recaptcha()
 /**
  * Return the URL to a given document
  *
+ * @param  string  $file
  * @return string
  */
 function plugin_getdocumentationurl_recaptcha($file)
@@ -336,11 +342,11 @@ function plugin_itemPreSave_recaptcha($type, $content = '')
         }
 
         if (is_callable('curl_init')) {
-            $recaptcha = new \ReCaptcha\ReCaptcha($secretKey, new \ReCaptcha\RequestMethod\CurlPost());
+            $recaptcha = new ReCaptcha($secretKey, new CurlPost());
         } elseif (@ini_get('allow_url_fopen')) {
-            $recaptcha = new \ReCaptcha\ReCaptcha($secretKey, new \ReCaptcha\RequestMethod\Post());
+            $recaptcha = new ReCaptcha($secretKey, new Post());
         } else {
-            $recaptcha = new \ReCaptcha\ReCaptcha($secretKey, new \ReCaptcha\RequestMethod\SocketPost());
+            $recaptcha = new ReCaptcha($secretKey, new SocketPost());
         }
 
         $resp = $recaptcha->verify(@$_POST['g-recaptcha-response'], RECAPTCHA_getIP());

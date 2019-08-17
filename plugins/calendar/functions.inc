@@ -578,13 +578,13 @@ function plugin_savesubmission_calendar($A)
     $A['end_minute'] = COM_applyFilter($A['end_minute'], true);
 
     if ($A['start_ampm'] == 'pm' && $A['start_hour'] != 12) {
-        $A['start_hour'] = $A['start_hour'] + 12;
+        $A['start_hour'] = (int) $A['start_hour'] + 12;
     }
     if ($A['start_ampm'] == 'am' && $A['start_hour'] == 12) {
         $A['start_hour'] = '00';
     }
     if ($A['end_ampm'] == 'pm' && $A['end_hour'] != 12) {
-        $A['end_hour'] = $A['end_hour'] + 12;
+        $A['end_hour'] = (int) $A['end_hour'] + 12;
     }
     if ($A['end_ampm'] == 'am' && $A['end_hour'] == 12) {
         $A['end_hour'] = '00';
@@ -1133,8 +1133,13 @@ function plugin_submissioncount_calendar()
 
 /**
  * Implements the [event:] autotag.
+ *
+ * @param   string  $op
+ * @param   string  $content
+ * @param   array   $autotag
+ * @return  array|string
  */
-function plugin_autotags_calendar($op, $content = '', $autotag = '')
+function plugin_autotags_calendar($op, $content = '', $autotag = array())
 {
     global $_CONF, $_TABLES, $LANG_CAL_1, $_CA_CONF, $_GROUPS;
 
@@ -1211,6 +1216,8 @@ function plugin_getfeednames_calendar()
  * @param    string $feed   feed ID
  * @param    string $link   link to homepage
  * @param    string $update list of story ids
+ * @param    string $feedType
+ * @param    int    $feedVersion
  * @return   array              content of the feed
  */
 function plugin_getfeedcontent_calendar($feed, &$link, &$update, $feedType, $feedVersion)
@@ -2310,7 +2317,8 @@ function plugin_itemdeleted_calendar($id, $type)
 /**
  * Did user create any events
  *
- * @return   string   number of events user contributed. If nothing leave blank
+ * @param    int     $uid
+ * @return   string        number of events user contributed. If nothing leave blank
  */
 function plugin_usercontributed_calendar($uid)
 {

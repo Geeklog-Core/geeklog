@@ -46,5 +46,3 @@ $DEFVALUES = array();
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('xmlsitemap_filename', '" . DB_escapeString($_XMLSMAP_DEFAULT['sitemap_file']) . "')";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('xmlsitemap_mobile', '" . DB_escapeString($_XMLSMAP_DEFAULT['mobile_sitemap_file']) . "')";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('xmlsitemap_news', '" . DB_escapeString($_XMLSMAP_DEFAULT['news_sitemap_file']) . "')";
-
-?>

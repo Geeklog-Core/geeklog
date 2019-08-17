@@ -271,7 +271,8 @@ function plugin_deletecomment_staticpages($cid, $id)
 /**
  * Did user create any pages
  *
- * @return   string   number of pages user contributed. If nothing leave blank
+ * @param    int     $uid
+ * @return   string        number of pages user contributed. If nothing leave blank
  */
 function plugin_usercontributed_staticpages($uid)
 {
@@ -714,6 +715,7 @@ function SP_printPage($page, $A)
  * @param    string $mode          type of display to return ('', 'print', 'autotag'
  * @param    string $comment_order sorting of comments
  * @param    string $comment_mode  comment mode (nested, flat, etc.)
+ * @param    int    $comment_page
  * @param    int    $msg           optional message number
  * @param    string $query         optional search query string to highlight
  * @return   string                  HTML for the static page
@@ -730,7 +732,7 @@ function SP_returnStaticpage($page = '', $mode = '', $comment_order = 'ASC', $co
     );
     $svc_msg = array();
 
-    if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
+    if (PLG_invokeService('staticpages', 'get', $args, $output, $svc_msg) == PLG_RET_OK) {
         // Grab page id from database since some comparisons are case sensitive
         // and staticpage ids are not.
         $result = DB_query(
@@ -745,11 +747,11 @@ function SP_returnStaticpage($page = '', $mode = '', $comment_order = 'ASC', $co
         }
 
         if ($mode === 'print') {
-            $retval = SP_printPage($page, $retval);
+            $retval = SP_printPage($page, $output);
         } elseif ($mode === 'autotag') {
-            $retval = $retval['sp_content'];
+            $retval = $output['sp_content'];
         } else {
-            $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode, $comment_page, $msg, $query);
+            $retval = SP_displayPage($page, $output, $comment_order, $comment_mode, $comment_page, $msg, $query);
         }
 
         // Increment hit counter for page, but don't count views for the author
@@ -876,13 +878,14 @@ function plugin_searchtypes_staticpages()
  * @param    string $keyType   search key type: 'all', 'phrase', 'any'
  * @param    int    $page      page number of current search (deprecated)
  * @param    int    $perpage   number of results per page (deprecated)
+ * @return   array
  */
 function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
     global $_TABLES, $_DB_dbms, $LANG_STATIC, $LANG09, $_SP_CONF;
 
     if ($_SP_CONF['includesearch'] != 1) {
-        return;
+        return array();
     }
 
     // Make sure the query is SQL safe
@@ -1036,7 +1039,7 @@ function plugin_getadminoption_staticpages()
  * @param    int    $u_id   User ID if blank current user
  * @return   string          Where clause of sql statement
  */
-function SP_getPerms($table = '', $access = '2', $u_id = '')
+function SP_getPerms($table = '', $access = 2, $u_id = 0)
 {
     global $_USER, $_GROUPS;
 
@@ -1044,7 +1047,7 @@ function SP_getPerms($table = '', $access = '2', $u_id = '')
         $table .= '.';
     }
 
-    if ($u_id == '') {
+    if (empty($u_id)) {
         if (isset ($_USER['uid'])) {
             $uid = $_USER['uid'];
         } else {
@@ -1220,7 +1223,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic = '')
                 $spage->set_var('hits', $hits);
             }
 
-            $SP_retval = '';
+            $SP_retval = array();
             $mode = '';
             $args = array(
                 'sp_id' => $S['sp_id'],
@@ -1330,10 +1333,10 @@ function plugin_chkVersion_staticpages()
  *
  * @param  string $op
  * @param  string $content
- * @param         string
- * @return string
+ * @param  array  $autotag
+ * @return string|array
  */
-function plugin_autotags_staticpages($op, $content = '', $autotag = '')
+function plugin_autotags_staticpages($op, $content = '', $autotag = array())
 {
     global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC, $_GROUPS;
 
@@ -1890,17 +1893,9 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 /**
  * Render the actual content of a static page (without any surrounding blocks)
  *
- * @param    string $sp_id       the id
- * @param    string $sp_id       the title of the page. Used to set {sp_title} template variable
- * @param    string $sp_content  the content (HTML or PHP source)
- * @param    int    $sp_php      flag: 1 = content is PHP source, 0 = is HTML
- * @param    int    $cache_time  the max cache time of this page
- * @param    string $template_id Template used for content
- * @param    string $created     Created date of page
- * @param    string $modified    Last modified date of page
+ * @param    array  $A
  * @return   string                  rendered content (HTML)
  */
-//function SP_render_content($sp_id, $sp_title, $sp_content, $sp_php, $cache_time = 0, $template_id = '', $created = '', $modified = '')
 function SP_render_content($A)
 {
     global $_CONF, $_SP_CONF, $LANG_STATIC, $_STRUCT_DATA;
@@ -1977,7 +1972,7 @@ function SP_render_content($A)
         );
         $svc_msg = array();
 
-        if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
+        if (PLG_invokeService('staticpages', 'get', $args, $output, $svc_msg) == PLG_RET_OK) {
 
             // Need to do below twice for backwards compatibility with pre Staticpage plugin v1.6.8 way of handling templates
             // Reason is in case [staticpage_content: autotag is in staticpage template page variable which is used to load staticpage within staticpage template. 
@@ -1986,7 +1981,7 @@ function SP_render_content($A)
                 // Treat as normal staticpage template but really just want to use a view and load no files
                 $sp_template = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
                 $sp_template->set_view(array(
-                    'page_view' => $retval['sp_content'],
+                    'page_view' => $output['sp_content'],
                 ));
                 
                 // Staticpage specific template variables
@@ -2001,7 +1996,7 @@ function SP_render_content($A)
                     $sp_template->set_var($key, $value);
                 }
 
-                $retval['sp_content'] = $sp_template->finish($sp_template->parse('output', 'page_view'));
+                $output['sp_content'] = $sp_template->finish($sp_template->parse('output', 'page_view'));
             }
 
             /* Old way of applying variables left for bug checking (Staticpage plugin v1.6.8, Geeklog v2.1.2)
@@ -2010,7 +2005,7 @@ function SP_render_content($A)
             // If template variable format is different then any unused ones will display
             $retval['sp_content'] = preg_replace('/{[^ \t\r\n}]+}/', '', $retval['sp_content']);
             */
-            $sp_content = $retval['sp_content'];
+            $sp_content = $output['sp_content'];
         }
     }
 
@@ -2386,8 +2381,8 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                     );
                     $svc_msg = array();
 
-                    if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
-                        $props[$p] = $retval['sp_content'];
+                    if (PLG_invokeService('staticpages', 'get', $args, $output, $svc_msg) == PLG_RET_OK) {
+                        $props[$p] = $output['sp_content'];
                     }
                     break;
 

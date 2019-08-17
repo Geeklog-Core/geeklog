@@ -78,5 +78,3 @@ function links_update_ConfigSecurity_2_1_0()
     }
 
 }
-
-?>

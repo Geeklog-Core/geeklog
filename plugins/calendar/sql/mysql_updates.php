@@ -140,5 +140,3 @@ function calendar_update_Zipcode_1_1_2()
 {
     // Nothing to do
 }
-
-?>

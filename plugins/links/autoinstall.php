@@ -120,14 +120,14 @@ function plugin_load_configuration_links($pi_name)
 }
 
 /**
-* Plugin postinstall
-*
-* We're inserting our default data here since it depends on other stuff that
-* has to happen first ...
-*
-* @return   boolean     true = proceed with install, false = an error occurred
-*
-*/
+ * Plugin postinstall
+ *
+ * We're inserting our default data here since it depends on other stuff that
+ * has to happen first ...
+ *
+ * @param  string $pi_name
+ * @return bool            true = proceed with install, false = an error occurred
+ */
 function plugin_postinstall_links($pi_name)
 {
     global $_CONF, $_TABLES;
@@ -204,5 +204,3 @@ function plugin_compatible_with_this_version_links($pi_name)
 
     return true;
 }
-
-?>

@@ -25,5 +25,3 @@ function links_update_ConfValues_2_1_0()
 
     return true;
 }
-
-?>

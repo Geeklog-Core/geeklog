@@ -126,5 +126,3 @@ function calendar_update_Zipcode_1_1_2()
         DB_query($sql);
     }
 }
-
-?>

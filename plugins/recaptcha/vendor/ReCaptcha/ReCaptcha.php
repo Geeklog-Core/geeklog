@@ -26,6 +26,8 @@
 
 namespace ReCaptcha;
 
+use RuntimeException;
+
 /**
  * reCAPTCHA client.
  */
@@ -54,16 +56,16 @@ class ReCaptcha
      *
      * @param string $secret shared secret between site and reCAPTCHA server.
      * @param RequestMethod $requestMethod method used to send the request. Defaults to POST.
-     * @throws \RuntimeException if $secret is invalid
+     * @throws RuntimeException if $secret is invalid
      */
     public function __construct($secret, RequestMethod $requestMethod = null)
     {
         if (empty($secret)) {
-            throw new \RuntimeException('No secret provided');
+            throw new RuntimeException('No secret provided');
         }
 
         if (!is_string($secret)) {
-            throw new \RuntimeException('The provided secret must be a string');
+            throw new RuntimeException('The provided secret must be a string');
         }
 
         $this->secret = $secret;

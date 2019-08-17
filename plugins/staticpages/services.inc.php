@@ -54,8 +54,8 @@ define('STATICPAGE_MAX_ID_LENGTH', 128);
  *
  * @param   array  $args    Contains all the data provided by the client
  * @param   string $output  OUTPUT parameter containing the returned text
- * @param   string $svc_msg OUTPUT parameter containing any service messages
- * @return  int          Response code as defined in lib-plugins.php
+ * @param   array  $svc_msg OUTPUT parameter containing any service messages
+ * @return  int             Response code as defined in lib-plugins.php
  */
 function service_submit_staticpages($args, &$output, &$svc_msg)
 {
@@ -995,9 +995,10 @@ SQL;
 /**
  * Get all the topics available
  *
- * @param   array  $args    Contains all the data provided by the client
- * @param   string &$output OUTPUT parameter containing the returned text
- * @return  int         Response code as defined in lib-plugins.php
+ * @param   array  $args     Contains all the data provided by the client
+ * @param   string &$output  OUTPUT parameter containing the returned text
+ * @param   string &$svc_msg
+ * @return  int              Response code as defined in lib-plugins.php
  */
 function service_getTopicList_staticpages($args, &$output, &$svc_msg)
 {

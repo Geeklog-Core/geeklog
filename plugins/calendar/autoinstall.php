@@ -30,10 +30,12 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Calendar plugin automatic plugin install
-*
-* @package Calendar
-*/
+ * Calendar plugin automatic plugin install
+ *
+ * @package Calendar
+ * @param   string  $pi_name
+ * @return  array
+ */
 
 function plugin_autoinstall_calendar($pi_name)
 {
@@ -151,5 +153,3 @@ function plugin_compatible_with_this_version_calendar($pi_name)
 
     return true;
 }
-
-?>

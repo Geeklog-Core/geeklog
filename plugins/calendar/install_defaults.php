@@ -223,5 +223,3 @@ function plugin_initconfig_calendar()
 
     return true;
 }
-
-?>

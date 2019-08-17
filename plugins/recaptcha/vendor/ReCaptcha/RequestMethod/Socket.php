@@ -43,7 +43,7 @@ class Socket
      * @param int $errno
      * @param string $errstr
      * @param float $timeout
-     * @return resource
+     * @return resource|false
      */
     public function fsockopen($hostname, $port = -1, &$errno = 0, &$errstr = '', $timeout = null)
     {

@@ -748,6 +748,7 @@ function POLLS_pollsave($pid, $aid)
  * @param        int    $scale       Size in pixels to scale formatted results to
  * @param        string $order       'ASC' or 'DESC' for Comment ordering (SQL statment ordering)
  * @param        string $mode        Comment Mode possible values 'nocomment', 'flat', 'nested', 'threaded'
+ * @param        int    $page
  * @param        int    $displaytype Possible values 0 = Normal, 1 = In Block, 2 = autotag
  * @see POLLS_pollVote
  * @see POLLS_showPoll
@@ -1568,10 +1569,10 @@ function plugin_getcommenturlid_polls()
  *
  * @param  string $op
  * @param  string $content
- * @param  string $autotag
- * @return mixed
+ * @param  array $autotag
+ * @return array|string
  */
-function plugin_autotags_polls($op, $content = '', $autotag = '')
+function plugin_autotags_polls($op, $content = '', $autotag = array())
 {
     global $_CONF, $_PO_CONF, $_TABLES, $LANG_POLLS, $_GROUPS;
 

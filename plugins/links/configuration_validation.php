@@ -95,5 +95,3 @@ $_CONF_VALIDATE['links']['autotag_permissions_link[2]'] = array(
 $_CONF_VALIDATE['links']['autotag_permissions_link[3]'] = array(
     'rule' => array('inList', array(0, 2), true)
 );
-
-?>

@@ -608,9 +608,9 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postM
  *
  * @author Mark Evans, mevans AT ecsnet DOT com
  * @access public
- * @param string $type    Type of item, i.e.; registration, contact ...
- * @param string $content item specific content
- * @return string empty is no error, error message if error was encountered
+ * @param string        $type     Type of item, i.e.; registration, contact ...
+ * @param string|array  $content  item specific content
+ * @return string                 empty is no error, error message if error was encountered
  * @see    PLG_commentPreSave
  */
 function PLG_itemPreSave($type, $content)

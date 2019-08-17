@@ -68,5 +68,3 @@ function calendar_update_ConfValues_1_1_2()
 
     return true;
 }
-
-?>

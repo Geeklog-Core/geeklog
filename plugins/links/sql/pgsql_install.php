@@ -101,5 +101,3 @@ CREATE TABLE {$_TABLES['linksubmission']} (
   PRIMARY KEY (lid)
 )
 ";
-
-?>

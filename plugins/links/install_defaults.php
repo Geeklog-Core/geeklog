@@ -254,5 +254,3 @@ function plugin_initconfig_links()
 
     return true;
 }
-
-?>

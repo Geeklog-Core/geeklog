@@ -128,5 +128,3 @@ function xmlsitemap_update_ConfigSecurity_1_0_1()
     }
 
 }
-
-?>

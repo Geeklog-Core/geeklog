@@ -70,7 +70,8 @@ abstract class BaseAdmin
     /**
      * Removes an entry from database
      *
-     * @return    boolean    true = success, false = otherwise
+     * @param   string $entry
+     * @return  bool          true = success, false = otherwise
      */
     protected function deleteEntry($entry)
     {
@@ -89,7 +90,8 @@ abstract class BaseAdmin
     /**
      * Removes all entries the user selected from database
      *
-     * @return    boolean    true = success, false = otherwise
+     * @param   array  $entries
+     * @return  bool            true = success, false = otherwise
      */
     protected function deleteSelectedEntries(array $entries)
     {

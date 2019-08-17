@@ -185,10 +185,9 @@ function plugin_getwhatsnew_links()
 * @param    string  $op         operation to perform
 * @param    string  $content    item (e.g. story text), including the autotag
 * @param    array   $autotag    parameters used in the autotag
-* @param    mixed               tag names (for $op='tagname') or formatted content
-*
+* @return   string|array
 */
-function plugin_autotags_links($op, $content = '', $autotag = '')
+function plugin_autotags_links($op, $content = '', $autotag = array())
 {
     global $_CONF, $_TABLES, $LANG_DIRECTION, $LANG_LINKS, $_LI_CONF, $_GROUPS;
 
@@ -301,11 +300,9 @@ function LINKS_countLinksAndClicks()
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats
 *
-* @param    int     $showsitestate  Flag to let us know which stats to get
-* @param    string                  HTML for the stats section
-*
+* @return   string
 */
-function plugin_showstats_links ($showsitestats)
+function plugin_showstats_links ()
 {
     global $_CONF, $_TABLES, $LANG_LINKS_STATS;
 
@@ -838,8 +835,7 @@ function plugin_upgrade_links()
 * Called during site migration - handle changed URLs or paths
 *
 * @param    array   $old_conf   contents of the $_CONF array on the old site
-* @param    boolean             true on success, otherwise false
-*
+* @return   bool                true on success, otherwise false
 */
 function plugin_migrate_links($old_conf)
 {
@@ -1152,9 +1148,10 @@ function plugin_save_submit_links($A)
     }
 
     if (($_LI_CONF['linksubmission'] == 1) && !SEC_hasRights('links.submit')) {
-        $result = DB_save($_TABLES['linksubmission'],
-                    'lid,cid,url,description,title,date,owner_id',
-                    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
+        DB_save(
+            $_TABLES['linksubmission'], 'lid,cid,url,description,title,date,owner_id',
+    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id"
+        );
 
         if ($_LI_CONF['notification'] == 1) {
             LINKS_sendNotification($_TABLES['linksubmission'], $A);
@@ -1170,9 +1167,10 @@ function plugin_save_submit_links($A)
         }
         SEC_setDefaultPermissions($A, $_LI_CONF['default_permissions']);
 
-        $result = DB_save($_TABLES['links'],
-                    'lid,cid,url,description,title,date,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
-                    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}");
+        DB_save(
+            $_TABLES['links'], 'lid,cid,url,description,title,date,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
+    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}"
+        );
 
         PLG_itemSaved($A['lid'], 'links');
 
@@ -1354,10 +1352,9 @@ function links_validateUrl($url)
 {
     global $LANG_LINKS_STATUS;
 
-    $req = new HTTP_Request2($url, HTTP_Request2::METHOD_HEAD);
-    $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
-
     try {
+        $req = new HTTP_Request2($url, HTTP_Request2::METHOD_HEAD);
+        $req->setHeader('User-Agent', 'Geeklog/' . VERSION);
         $response = $req->send();
         $status_code = $response->getStatus();
 
@@ -1917,7 +1914,8 @@ function plugin_group_changed_links($grp_id, $mode)
 /**
  * Did user create any links
  *
- * @return   string   number of links user contributed. If nothing leave blank
+ * @param   int  $uid
+ * @return  string   number of links user contributed. If nothing leave blank
  */
 function plugin_usercontributed_links($uid)
 {

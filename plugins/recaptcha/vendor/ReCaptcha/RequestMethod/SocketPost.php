@@ -66,7 +66,7 @@ class SocketPost implements RequestMethod
     /**
      * Constructor
      *
-     * @param \ReCaptcha\RequestMethod\Socket $socket optional socket, injectable for testing
+     * @param  Socket  $socket  optional socket, injectable for testing
      */
     public function __construct(Socket $socket = null)
     {
