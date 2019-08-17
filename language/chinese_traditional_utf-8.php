@@ -164,7 +164,7 @@ $LANG01 = array(
     116 => '跡回',
     117 => '目錄',
     118 => '請繼續看下頁',
-    119 => "丟失了<a ref=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">密碼</a>?",
+    119 => "丟失了<a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">密碼</a>?",
     120 => '永久聯結此評論',
     121 => '評論 (%d)',
     122 => '跡回 (%d)',

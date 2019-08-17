@@ -164,7 +164,7 @@ $LANG01 = array(
     116 => '迹回',
     117 => '目录',
     118 => '请继续看下页',
-    119 => "丢失了<a ref=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">密码</a>?",
+    119 => "丢失了<a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">密码</a>?",
     120 => '永久联结此评论',
     121 => '评论 (%d)',
     122 => '迹回 (%d)',
