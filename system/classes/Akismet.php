@@ -2,6 +2,8 @@
 
 namespace Geeklog;
 
+use InvalidArgumentException;
+
 class Akismet
 {
     // Akismet class version
@@ -59,7 +61,7 @@ class Akismet
      *
      * @param  string $APIKey
      * @param  string $siteURL
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct($APIKey, $siteURL)
     {
@@ -67,11 +69,11 @@ class Akismet
         $siteURL = trim($siteURL);
 
         if (empty($APIKey)) {
-            throw new \InvalidArgumentException('You have to set a valid API key for Akismet.');
+            throw new InvalidArgumentException('You have to set a valid API key for Akismet.');
         }
 
         if (empty($siteURL)) {
-            throw new \InvalidArgumentException('You have to set your site URL.');
+            throw new InvalidArgumentException('You have to set your site URL.');
         }
 
         $this->APIKey = $APIKey;
