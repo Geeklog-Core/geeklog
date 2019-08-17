@@ -713,7 +713,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             $emailData['is_new_user'] = false;
 
             // Do these ones here since USER_createAccount will do its own filtering
-            $fullname = DB_escapeString($fullname);
+            $escFullName = DB_escapeString($fullname);
             $homepage = DB_escapeString($homepage);
 
             $curphoto = DB_getItem($_TABLES['users'], 'photo', "uid = $uid");
@@ -739,7 +739,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             }
 
             $username = GLText::remove4byteUtf8Chars($username);
-            $username = DB_escapeString($username);
+            $escUserName = DB_escapeString($username);
             $curphoto = DB_escapeString($curphoto);
             
             // Only allow Admins to disable other users 2 Factor Authentication (if enabled for entire site)
@@ -750,7 +750,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                 $sql_enable_twofactorauth = ""; // Only allowed to disable
             }
 
-            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status = '$userstatus' $sql_enable_twofactorauth WHERE uid = $uid");
+            DB_query("UPDATE {$_TABLES['users']} SET username = '{$escUserName}', fullname = '{$escFullName}', email = '$email', homepage = '$homepage', sig = '$signature', photo = '$curphoto', status = '$userstatus' $sql_enable_twofactorauth WHERE uid = {$uid}");
             DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='$pgpkey',about='$about',location='$location' WHERE uid=$uid");
             if ($passwd_changed && !empty($passwd)) {
                 SEC_updateUserPassword($passwd, $uid);
