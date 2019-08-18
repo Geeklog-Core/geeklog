@@ -1301,7 +1301,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         );
         $_SCRIPTS->setJavaScriptFile(
             'cookie_consent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js',
-            true, 100
+            false, 100, false,
+            array('data-cfasync' => 'false')
         );
 
         // To customize appearance and behavior, edit the following file
