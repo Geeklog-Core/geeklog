@@ -41,7 +41,7 @@ class Resource
     const DEFAULT_CACHE_LIFESPAN = 604800; // 1 week
 
     const JS_TAG_TEMPLATE = '<script type="text/javascript" src="%s"></script>';
-    const EXTERNAL_JS_TAG_TEMPLATE = '<script type="text/javascript" src="%s" async defer></script>';
+    const EXTERNAL_JS_TAG_TEMPLATE = '<script type="text/javascript" src="%s"%s%s></script>';
 
     // Default theme
     const DEFAULT_THEME = 'denim';
@@ -501,13 +501,15 @@ class Resource
     /**
      * Set JavaScript file to load
      *
-     * @param  string $name (not used)
-     * @param  string $file relative to public_html (must start with '/')
+     * @param  string $name        (not used)
+     * @param  string $file        relative to public_html (must start with '/')
      * @param  bool   $isFooter
      * @param  int    $priority
+     * @param  bool   $isDefer     whether to set "defer" property for external files
+     * @param  array  $attributes  additional attributes for script tag
      * @return bool
      */
-    public function setJavaScriptFile($name, $file, $isFooter = true, $priority = 100)
+    public function setJavaScriptFile($name, $file, $isFooter = true, $priority = 100, $isDefer = true, array $attributes = array())
     {
         if ($this->isHeaderSet && !$isFooter) {
             return false;
@@ -517,8 +519,10 @@ class Resource
     
         if ($this->isExternal($file) && array_search($file, array_column($this->externalJsFiles[$position], 'file')) == 0) {
             $this->externalJsFiles[$position][] = array(
-                'file'     => $file,
-                'priority' => $priority,
+                'file'       => $file,
+                'priority'   => (int) $priority,
+                'isDefer'    => (bool) $isDefer,
+                'attributes' => $attributes,
             );
 
             return true;
@@ -526,8 +530,9 @@ class Resource
             // See if file exists and has not already been added (could happen on multiple calls of the same function by different plugins)
             if ($this->exists($this->config['path_html'] . $file) && array_search($file, array_column($this->localJsFiles[$position], 'file')) == 0) {
                 $this->localJsFiles[$position][] = array(
-                    'file'     => $file,
-                    'priority' => $priority,
+                    'file'       => $file,
+                    'priority'   => (int) $priority,
+                    'attributes' => $attributes,
                 );
 
                 return true;
@@ -1056,6 +1061,29 @@ class Resource
     }
 
     /**
+     * Format attributes for script tag
+     *
+     * @param  array  $attributes
+     * @return string
+     */
+    private function formatAttributes(array $attributes = array())
+    {
+        $retval = '';
+
+        if (count($attributes) > 0) {
+            foreach ($attributes as $key => $value) {
+                $retval .= sprintf(
+                    ' %s="%s"',
+                    htmlspecialchars($key, ENT_QUOTES, 'utf-8'),
+                    htmlspecialchars($value, ENT_QUOTES, 'utf-8')
+                );
+            }
+        }
+
+        return $retval;
+    }
+
+    /**
      * Returns header code (JavaScript and CSS) to include in the Head of the web page
      *
      * @return string
@@ -1138,7 +1166,13 @@ class Resource
             usort($this->externalJsFiles['header'], array('\\Geeklog\\Resource', 'comparePriority'));
 
             foreach ($this->externalJsFiles['header'] as $jsFile) {
-                $retval .= sprintf(self::EXTERNAL_JS_TAG_TEMPLATE, $jsFile['file']) . PHP_EOL;
+                $defer = isset($jsFile['isDefer']) && $jsFile['isDefer'] ? ' defer' : '';
+                $attributes = '';
+                if (isset($jsFile['attributes'])) {
+                    $attributes = $this->formatAttributes($jsFile['attributes']);
+                }
+
+                $retval .= sprintf(self::EXTERNAL_JS_TAG_TEMPLATE, $jsFile['file'], $defer, $attributes) . PHP_EOL;
             }
         }
 
@@ -1213,7 +1247,13 @@ class Resource
             usort($this->externalJsFiles['footer'], array('\\Geeklog\\Resource', 'comparePriority'));
 
             foreach ($this->externalJsFiles['footer'] as $jsFile) {
-                $retval .= sprintf(self::EXTERNAL_JS_TAG_TEMPLATE, $jsFile['file']) . PHP_EOL;
+                $defer = isset($jsFile['isDefer']) && $jsFile['isDefer'] ? ' defer' : '';
+                $attributes = '';
+                if (isset($jsFile['attributes'])) {
+                    $attributes = $this->formatAttributes($jsFile['attributes']);
+                }
+
+                $retval .= sprintf(self::EXTERNAL_JS_TAG_TEMPLATE, $jsFile['file'], $defer, $attributes) . PHP_EOL;
             }
         }
 
