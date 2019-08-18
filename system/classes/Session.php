@@ -23,18 +23,39 @@ abstract class Session
     const ANON_USER_ID = 1;
 
     /**
-     * "flash", i.e., one-time session variables
-     *
-     * @var array
-     */
-    private static $flashVars = array();
-
-    /**
      * The flag to show if the class is initialized
      *
      * @var bool
      */
     private static $isInitialized = false;
+
+    /**
+     * The flag to show if the session is enabled
+     *
+     * @var bool
+     */
+    private static $isEnabled = false;
+
+    /**
+     * The flag to show if the session has started
+     *
+     * @var bool
+     */
+    private static $isSessionHasStarted = false;
+
+    /**
+     * Log function
+     *
+     * @var callable
+     */
+    private static $logFunction;
+
+    /**
+     * "flash", i.e., one-time session variables
+     *
+     * @var array
+     */
+    private static $flashVars = array();
 
     /**
      * Init the Session class
@@ -75,9 +96,18 @@ abstract class Session
         // Set session cookie parameters
         self::setSessionCookieParameters($config);
 
-        // Start a new session
-        if (!session_start()) {
-            die(__METHOD__ . ': Cannot start session.');
+        // Set logger
+        if (isset($config['logger']) && is_callable($config['logger'])) {
+            self::$logFunction = $config['logger'];
+        }
+
+        if (isset($config['cookie_disabled']) && !$config['cookie_disabled']) {
+            return false;
+        }
+
+        self::enable();
+        if (!self::start()) {
+            return false;
         }
 
         // Initialize the $_SESSION var if this is the first visit to the site
@@ -110,13 +140,126 @@ abstract class Session
     }
 
     /**
+     * Return if session is enabled
+     *
+     * @return bool
+     */
+    public static function isEnabled()
+    {
+        return self::$isEnabled;
+    }
+
+    /**
+     * Disable session
+     */
+    public static function Disable()
+    {
+        self::$isEnabled = false;
+    }
+
+    /**
+     * Enable session
+     */
+    public static function enable()
+    {
+        self::$isEnabled = true;
+    }
+
+    /**
+     * Check if session is enabled and has started normally
+     *
+     * @return bool
+     */
+    private static function check()
+    {
+        if (self::$isEnabled) {
+            if (self::$isSessionHasStarted) {
+                return true;
+            } else {
+                self::log('Session has not started yet.');
+            }
+        } else {
+            self::log('Session is disabled.');
+        }
+
+        return false;
+    }
+
+    /**
+     * Log an entry
+     *
+     * @param  string $entry
+     */
+    private static function log($entry)
+    {
+        if (is_callable(self::$logFunction)) {
+            $f = self::$logFunction;
+            $f($entry);
+        }
+    }
+
+    /**
+     * Start a new session
+     *
+     * @return  bool  true if session started successfully, false otherwise
+     */
+    public static function start()
+    {
+        if (!self::$isEnabled ) {
+            self::log('Session is disabled.');
+
+            return false;
+        }
+
+        if (self::$isSessionHasStarted) {
+            return true;
+        }
+
+        // Start a new session
+        self::$isSessionHasStarted = session_start();
+        if (!self::$isSessionHasStarted) {
+            self::disable();
+            self::log(__METHOD__ . ': Cannot start a new session.  Session was disabled.');
+        }
+
+        return self::$isSessionHasStarted;
+    }
+
+    /**
+     * End the current session
+     *
+     * @return  bool  true on success, false otherwise
+     */
+    public static function end()
+    {
+        if (!self::$isEnabled ) {
+            self::log('Session is disabled.');
+
+            return false;
+        }
+
+        if (!self::$isSessionHasStarted) {
+            return true;
+        }
+
+        session_write_close();
+        self::$isSessionHasStarted = false;
+
+        return true;
+    }
+
+    /**
      * Return if the current user is logged in to the site
      *
      * @return bool
      */
     public static function isLoggedIn()
     {
-        return (self::getUid() > self::ANON_USER_ID);
+        if (self::check()) {
+            return (self::getUid() > self::ANON_USER_ID);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -126,7 +269,11 @@ abstract class Session
      */
     public static function getUid()
     {
-        return $_SESSION[self::NS_GL][self::NS_VAR]['uid'];
+        if (self::check()) {
+            return $_SESSION[self::NS_GL][self::NS_VAR]['uid'];
+        } else {
+            return self::ANON_USER_ID;
+        }
     }
 
     /**
@@ -137,12 +284,14 @@ abstract class Session
      */
     public static function setUid($uid)
     {
-        $uid = (int) $uid;
+        if (self::check()) {
+            $uid = (int) $uid;
 
-        if ($uid >= self::ANON_USER_ID) {
-            $_SESSION[self::NS_GL][self::NS_VAR]['uid'] = $uid;
-        } else {
-            throw new InvalidArgumentException('User id must be ' . self::ANON_USER_ID . ' or greater.');
+            if ($uid >= self::ANON_USER_ID) {
+                $_SESSION[self::NS_GL][self::NS_VAR]['uid'] = $uid;
+            } else {
+                throw new InvalidArgumentException('User id must be ' . self::ANON_USER_ID . ' or greater.');
+            }
         }
     }
 
@@ -154,7 +303,9 @@ abstract class Session
      */
     public static function setVar($name, $value)
     {
-        $_SESSION[self::NS_GL][self::NS_VAR][$name] = $value;
+        if (self::check()) {
+            $_SESSION[self::NS_GL][self::NS_VAR][$name] = $value;
+        }
     }
 
     /**
@@ -165,7 +316,9 @@ abstract class Session
      */
     public static function setFlashVar($name, $value)
     {
-        $_SESSION[self::NS_GL][self::NS_FLASH_VAR][$name] = $value;
+        if (self::check()) {
+            $_SESSION[self::NS_GL][self::NS_FLASH_VAR][$name] = $value;
+        }
     }
 
     /**
@@ -177,9 +330,13 @@ abstract class Session
      */
     public static function getVar($name, $defaultValue = null)
     {
-        return isset($_SESSION[self::NS_GL][self::NS_VAR][$name])
-            ? $_SESSION[self::NS_GL][self::NS_VAR][$name]
-            : $defaultValue;
+        if (self::check()) {
+            return isset($_SESSION[self::NS_GL][self::NS_VAR][$name])
+                ? $_SESSION[self::NS_GL][self::NS_VAR][$name]
+                : $defaultValue;
+        } else {
+            return $defaultValue;
+        }
     }
 
     /**
@@ -191,7 +348,11 @@ abstract class Session
      */
     public static function getFlashVar($name, $defaultValue = null)
     {
-        return isset(self::$flashVars[$name]) ? self::$flashVars[$name] : $defaultValue;
+        if (self::check()) {
+            return isset(self::$flashVars[$name]) ? self::$flashVars[$name] : $defaultValue;
+        } else {
+            return $defaultValue;
+        }
     }
 
     /**
@@ -201,9 +362,13 @@ abstract class Session
      */
     public static function regenerateId()
     {
-        session_regenerate_id(false);
+        if (self::check()) {
+            session_regenerate_id(false);
 
-        return self::getSessionId();
+            return self::getSessionId();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -249,6 +414,10 @@ abstract class Session
      */
     public static function getSessionId()
     {
-        return session_id();
+        if (self::check()) {
+            return session_id();
+        } else {
+            return null;
+        }
     }
 }

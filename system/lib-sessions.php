@@ -85,6 +85,8 @@ function SESS_sessionCheck()
 
     // Flag indicates if session cookie and session data exist
     $sessionExists = Session::init(array(
+        'logger'          => 'COM_errorLog',
+        'cookie_disabled' => false,
         'cookie_lifetime' => $_CONF['session_cookie_timeout'],
         'cookie_path'     => $_CONF['cookie_path'],
         'cookie_domain'   => $_CONF['cookiedomain'],
