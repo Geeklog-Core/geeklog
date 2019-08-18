@@ -1,7 +1,7 @@
 <?php
 
 /*
-htmLawed 1.2.4.1, 12 September 2017
+htmLawed 1.2.4.2, 16 May 2019
 Copyright Santosh Patnaik
 Dual licensed with LGPL 3 and GPL 2+
 A PHP Labware internal utility - www.bioinformatics.org/phplabware/internal_utilities/htmLawed
@@ -43,7 +43,7 @@ $C['deny_attribute'] = $x;
 // config URLs
 $x = (isset($C['schemes'][2]) && strpos($C['schemes'], ':')) ? strtolower($C['schemes']) : 'href: aim, feed, file, ftp, gopher, http, https, irc, mailto, news, nntp, sftp, ssh, tel, telnet'. (empty($C['safe']) ? ', app, javascript; *: data, javascript, ' : '; *:'). 'file, http, https';
 $C['schemes'] = array();
-foreach(explode(';', str_replace(array(' ', "\t", "\r", "\n"), '', $x)) as $v){
+foreach(explode(';', trim(str_replace(array(' ', "\t", "\r", "\n"), '', $x), ';')) as $v){
  $x = $x2 = null; list($x, $x2) = explode(':', $v, 2);
  if($x2){$C['schemes'][$x] = array_flip(explode(',', $x2));}
 }
@@ -725,5 +725,5 @@ return str_replace(array("\x01", "\x02", "\x03", "\x04", "\x05", "\x07"), array(
 
 function hl_version(){
 // version
-return '1.2.4.1';
+return '1.2.4.2';
 }

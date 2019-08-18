@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Text Abstraction.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2006-2013 by the following authors:                         |
+// | Copyright (C) 2006-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Michael Jervis, mike AT fuckingbrit DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -150,7 +150,7 @@ class GLText
     /**
      * Apply HTML filter to the text
      *
-     * @param   string $text        Text to prepare for store to databese
+     * @param   string $text        Text to prepare for store to database
      * @param   string $postMode    Indicates if text is html, adveditor, wikitext or plaintext
      * @param   string $permissions comma-separated list of rights which identify the current user as an "Admin"
      * @param   int    $version     version of GLText engine
@@ -199,7 +199,7 @@ class GLText
     /**
      * Returns text ready for preview.
      *
-     * @param   string $text        Text to prepare for store to databese
+     * @param   string $text        Text to prepare for store to database
      * @param   string $postMode    Indicates if text is html, adveditor, wikitext or plaintext
      * @param   string $permissions comma-separated list of rights which identify the current user as an "Admin"
      * @param   int    $version     version of GLText engine
@@ -226,7 +226,7 @@ class GLText
      */
     public static function checkHTML($str, $permissions = 'story.edit')
     {
-        global $_CONF, $_USER;
+        global $_CONF;
 
         //        $str = COM_stripslashes($str); // it should not be here
 
@@ -294,34 +294,47 @@ class GLText
     {
         global $_CONF, $_USER;
 
-        // Sets config options for htmLawed.  See http://www.bioinformatics.org/
-        // phplabware/internal_utilities/htmLawed/htmLawed_README.htm
+        // Sets config options for htmLawed.
+        // See http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/htmLawed_README.htm
         $config = array(
-            'balance'        => 1, // Balance tags for well-formedness and proper nesting
-            'comment'        => 3, // Allow HTML comment
-            'css_expression' => 1, // Allow dynamic CSS expression in "style" attributes
-            //            'keep_bad'       => 1, // Neutralize both tags and element content
-            'keep_bad'       => 0, // Neutralize both tags and element content
-            'tidy'           => 0, // Don't beautify or compact HTML code
-            'unique_ids'     => 1, // Remove duplicate and/or invalid ids
-            'valid_xhtml'    => 1, // Magic parameter to make input the most valid XHTML
+            'abs_url'            => 0, // No action
+            'anti_link_spam'     => 0, // No measure taken
+            'anti_mail_spam'     => 0, // No measure taken
+            'balance'            => 1, // Balance tags for well-formedness and proper nesting
+            'cdata'              => 3, // Allow CDATA sections
+            'clean_ms_char'      => 0, // Don't replace discouraged characters introduced by Microsoft Word, etc.
+            'comment'            => 3, // Allow HTML comment
+            'css_expression'     => 1, // Allow dynamic CSS expression in "style" attributes
+            'deny_attribute'     => 0, // No denied HTML attributes
+            'direct_nest_list'   => 0, // Don' allow direct nesting of a list within another without requiring it to be a list item
+            'hexdec_entity'      => 1, // Allow hexadecimal numeric entities
+            'hook'               => 0, // No hook function
+            'hook_tag'           => 0, // No hook function
+            'keep_bad'           => 1, // Neutralize both tags and element content
+            'lc_std_val'         => 1, // Yes
+            'make_tag_strict'    => 0, // No
+            'named_entity'       => 1, // Allow non-universal named HTML entities
+            'no_deprecated_attr' => 1, // Transform deprecated attributes, but name attributes for a and map are retained
+            'safe'               => 0, // No
+            'style_pass'         => 0, // Don't ignore style attribute values
+            'tidy'               => 0, // Don't beautify or compact HTML code
+            'unique_ids'         => 1, // Remove duplicate and/or invalid ids
+            'valid_xhtml'        => 1, // Magic parameter to make input the most valid XHTML
+            'xml:lang'           => 0, // Don't auto-add xml:lang attribute
         );
 
-        if (isset($_CONF['allowed_protocols']) &&
-            is_array($_CONF['allowed_protocols']) &&
+        if (isset($_CONF['allowed_protocols']) && is_array($_CONF['allowed_protocols']) &&
             (count($_CONF['allowed_protocols']) > 0)
         ) {
             $schemes = $_CONF['allowed_protocols'];
         } else {
-            $schemes = array('http:', 'https:', 'ftp:');
+            $schemes = array('http:', 'https:', 'ftp:', 'ftps:');
         }
 
         $schemes = str_replace(':', '', implode(', ', $schemes));
         $config['schemes'] = 'href: ' . $schemes . '; *: ' . $schemes;
 
-        if (empty($permissions) || !SEC_hasRights($permissions) ||
-            empty($_CONF['admin_html'])
-        ) {
+        if (empty($permissions) || !SEC_hasRights($permissions) || empty($_CONF['admin_html'])) {
             $html = $_CONF['user_html'];
         } else {
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
@@ -395,7 +408,7 @@ class GLText
 
         // Raw and code blocks need entity decoding. Other areas do not.
         // otherwise, annoyingly, &lt; will end up as < on preview 1, on
-        // preview 2 it'll be stripped by KSES. Can't beleive I missed that
+        // preview 2 it'll be stripped by KSES. Can't believe I missed that
         // in rewrite phase 1.
         //
         // First, raw
@@ -604,7 +617,7 @@ class GLText
                 }
 
                 $part = substr($text, 0, $posEnd);
-                $marker = sprintf(self::SCRIPT_MARKER, self::_getUnqiueStr());
+                $marker = sprintf(self::SCRIPT_MARKER, self::_getUniqueStr());
                 $marker = str_replace('.', '', $marker);
                 $markers[] = array(
                     'text'   => $part,
@@ -654,12 +667,12 @@ class GLText
     }
 
     /**
-     * Generate unqiue string
+     * Generate unique string
      *
      * @param  int  $length length of string to generate
      * @return string
      */
-    private static function _getUnqiueStr($length = 8)
+    private static function _getUniqueStr($length = 8)
     {
         static $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJLKMNOPQRSTUVWXYZ0123456789';
         $str = '';
