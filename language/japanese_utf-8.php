@@ -2496,7 +2496,8 @@ $LANG_confignames['Core'] = array(
     'filemanager_videos_player_width' => '動画プレーヤーの幅',
     'filemanager_videos_player_height' => '動画プレーヤーの高さ',
     'filemanager_show_audio_player' => 'オーディオプレーヤーを表示する',
-    'filemanager_audios_ext' => 'オーディオファイルの拡張子'
+    'filemanager_audios_ext' => 'オーディオファイルの拡張子',
+    'cookie_consent' => 'Cookie Consent(クッキー使用通知)を有効にする'
 );
 
 $LANG_configsubgroups['Core'] = array(

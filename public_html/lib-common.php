@@ -1293,6 +1293,24 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     $header->set_var('breadcrumb_trail', $breadcrumbs);
 
+    // Add Cookie Consent ( https://cookieconsent.osano.com )
+    if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
+        $_SCRIPTS->setCssFile(
+            'cookiconsent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css',
+            true, array(), 100
+        );
+        $_SCRIPTS->setJavaScriptFile(
+            'cookie_consent', 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js',
+            true, 100
+        );
+
+        // To customize appearance and behavior, edit the following file
+        $_SCRIPTS->setJavaScriptFile(
+            'cookie_consent_config', '/javascript/cookie_consent.js',
+            true, 110
+        );
+    }
+
     COM_hit();
 
     // Set template directory

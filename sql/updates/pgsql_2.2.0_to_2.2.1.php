@@ -125,6 +125,9 @@ function update_ConfValuesFor221()
     $c->del('cookie_password', $me);
     $c->del('cookie_ip', $me);
 
+    // Add cookie consent
+    $c->add('cookie_consent',true,'select',0,0,1,2030,true, $me, 0);
+
     return true;
 }
 

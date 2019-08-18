@@ -2498,7 +2498,8 @@ $LANG_confignames['Core'] = array(
     'filemanager_videos_player_width' => 'Video player width (px)',
     'filemanager_videos_player_height' => 'Video player height (px)',
     'filemanager_show_audio_player' => 'Show audio player?',
-    'filemanager_audios_ext' => 'Audio file extensions'
+    'filemanager_audios_ext' => 'Audio file extensions',
+    'cookie_consent' => 'Enable Cookie Consent'
 );
 
 $LANG_configsubgroups['Core'] = array(
