@@ -2127,9 +2127,14 @@ function SEC_randomBytes($length)
         $retval = random_bytes($length);
     } catch (Exception $e) {
         $retval = false;
+        $isStrong = true;
 
         if (is_callable('openssl_random_pseudo_bytes ')) {
-            $retval = openssl_random_pseudo_bytes($length);
+            $retval = openssl_random_pseudo_bytes($length, $isStrong);
+
+            if ($isStrong === false) {
+                $retval = false;
+            }
         }
 
         if ($retval === false) {
