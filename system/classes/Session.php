@@ -30,6 +30,13 @@ abstract class Session
     private static $isInitialized = false;
 
     /**
+     * The flag to show if the debug mode is on
+     *
+     * @var bool
+     */
+    private static $isDebug = false;
+
+    /**
      * The flag to show if the session is enabled
      *
      * @var bool
@@ -65,6 +72,10 @@ abstract class Session
      */
     public static function init(array $config)
     {
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': started');
+        }
+
         $retval = true;
 
         if (self::$isInitialized) {
@@ -93,6 +104,9 @@ abstract class Session
             ini_set('session.cookie_lifetime', 0);
         }
 
+        // Set debug mode
+        self::setDebug(isset($config['debug']) && $config['debug']);
+
         // Set session cookie parameters
         self::setSessionCookieParameters($config);
 
@@ -101,7 +115,7 @@ abstract class Session
             self::$logFunction = $config['logger'];
         }
 
-        if (isset($config['cookie_disabled']) && !$config['cookie_disabled']) {
+        if (isset($config['cookie_disabled']) && $config['cookie_disabled']) {
             return false;
         }
 
@@ -135,8 +149,21 @@ abstract class Session
 
         // Finish initialization
         self::$isInitialized = true;
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': finished');
+        }
 
         return $retval;
+    }
+
+    /**
+     * Set debug mode
+     *
+     * @param  bool  $switch
+     */
+    public static function setDebug($switch)
+    {
+        self::$isDebug = (bool) $switch;
     }
 
     /**
@@ -146,15 +173,23 @@ abstract class Session
      */
     public static function isEnabled()
     {
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': ' . (self::$isEnabled ? 'true' : 'false'));
+        }
+
         return self::$isEnabled;
     }
 
     /**
      * Disable session
      */
-    public static function Disable()
+    public static function disable()
     {
         self::$isEnabled = false;
+
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ' was called.');
+        }
     }
 
     /**
@@ -163,6 +198,10 @@ abstract class Session
     public static function enable()
     {
         self::$isEnabled = true;
+
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ' was called.');
+        }
     }
 
     /**
@@ -172,28 +211,42 @@ abstract class Session
      */
     private static function check()
     {
+        $retval = false;
+        $msg = '';
+
         if (self::$isEnabled) {
             if (self::$isSessionHasStarted) {
-                return true;
+                if (self::$isDebug) {
+                    $msg = 'session is valid.';
+                }
+
+                $retval = true;
             } else {
-                self::log('Session has not started yet.');
+                if (self::$isDebug) {
+                    $msg = 'session has not started yet.';
+                }
             }
         } else {
-            self::log('Session is disabled.');
+            $msg = 'session is disabled.';
         }
 
-        return false;
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': ' . $msg);
+        }
+
+        return $retval;
     }
 
     /**
      * Log an entry
      *
-     * @param  string $entry
+     * @param  string  $entry
      */
     private static function log($entry)
     {
-        if (is_callable(self::$logFunction)) {
-            $f = self::$logFunction;
+        $f = self::$logFunction;
+
+        if (is_callable($f)) {
             $f($entry);
         }
     }
@@ -205,13 +258,19 @@ abstract class Session
      */
     public static function start()
     {
-        if (!self::$isEnabled ) {
-            self::log('Session is disabled.');
+        if (!self::$isEnabled) {
+            if (self::$isDebug) {
+                self::log(__METHOD__ . ': session is disabled.');
+            }
 
             return false;
         }
 
         if (self::$isSessionHasStarted) {
+            if (self::$isDebug) {
+                self::log(__METHOD__ . ': session has already started.');
+            }
+
             return true;
         }
 
@@ -220,6 +279,10 @@ abstract class Session
         if (!self::$isSessionHasStarted) {
             self::disable();
             self::log(__METHOD__ . ': Cannot start a new session.  Session was disabled.');
+        } else {
+            if (self::$isDebug) {
+                self::log(__METHOD__ . ': session has successfully started.');
+            }
         }
 
         return self::$isSessionHasStarted;
@@ -232,18 +295,28 @@ abstract class Session
      */
     public static function end()
     {
-        if (!self::$isEnabled ) {
-            self::log('Session is disabled.');
+        if (!self::$isEnabled) {
+            if (self::$isDebug) {
+                self::log(__METHOD__ . ': session is disabled.');
+            }
 
             return false;
         }
 
         if (!self::$isSessionHasStarted) {
+            if (self::$isDebug) {
+                self::log(__METHOD__ . ': session has not started.');
+            }
+
             return true;
         }
 
         session_write_close();
         self::$isSessionHasStarted = false;
+
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': session has successfully ended.');
+        }
 
         return true;
     }
@@ -256,10 +329,17 @@ abstract class Session
     public static function isLoggedIn()
     {
         if (self::check()) {
-            return (self::getUid() > self::ANON_USER_ID);
+            $retval = (self::getUid() > self::ANON_USER_ID);
         } else {
-            return false;
+            $retval = false;
         }
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': login status = ' . ($retval ? 'true' : 'false'));
+        }
+
+        return $retval;
     }
 
     /**
@@ -270,10 +350,17 @@ abstract class Session
     public static function getUid()
     {
         if (self::check()) {
-            return $_SESSION[self::NS_GL][self::NS_VAR]['uid'];
+            $retval = $_SESSION[self::NS_GL][self::NS_VAR]['uid'];
         } else {
-            return self::ANON_USER_ID;
+            $retval = self::ANON_USER_ID;
         }
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(sprintf(__METHOD__ . ': uid = %d', $retval));
+        }
+
+        return $retval;
     }
 
     /**
@@ -286,12 +373,20 @@ abstract class Session
     {
         if (self::check()) {
             $uid = (int) $uid;
+            $msg = 'uid = ' . $uid;
 
             if ($uid >= self::ANON_USER_ID) {
                 $_SESSION[self::NS_GL][self::NS_VAR]['uid'] = $uid;
             } else {
                 throw new InvalidArgumentException('User id must be ' . self::ANON_USER_ID . ' or greater.');
             }
+        } else {
+            $msg = '(skipped)';
+        }
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': ' . $msg);
         }
     }
 
@@ -305,6 +400,14 @@ abstract class Session
     {
         if (self::check()) {
             $_SESSION[self::NS_GL][self::NS_VAR][$name] = $value;
+            $msg = sprintf('name = %s, value = %s', $name, $value);
+        } else {
+            $msg = '(skipped)';
+        }
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': ' . $msg);
         }
     }
 
@@ -318,6 +421,14 @@ abstract class Session
     {
         if (self::check()) {
             $_SESSION[self::NS_GL][self::NS_FLASH_VAR][$name] = $value;
+            $msg = sprintf('name = %s, value = %s', $name, $value);
+        } else {
+            $msg = '(skipped)';
+        }
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ': ' . $msg);
         }
     }
 
@@ -331,12 +442,19 @@ abstract class Session
     public static function getVar($name, $defaultValue = null)
     {
         if (self::check()) {
-            return isset($_SESSION[self::NS_GL][self::NS_VAR][$name])
+            $retval = isset($_SESSION[self::NS_GL][self::NS_VAR][$name])
                 ? $_SESSION[self::NS_GL][self::NS_VAR][$name]
                 : $defaultValue;
         } else {
-            return $defaultValue;
+            $retval = $defaultValue;
         }
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(sprintf(__METHOD__ . ': name = "%s", value = "%s"', $name, $retval));
+        }
+
+        return $retval;
     }
 
     /**
@@ -349,10 +467,17 @@ abstract class Session
     public static function getFlashVar($name, $defaultValue = null)
     {
         if (self::check()) {
-            return isset(self::$flashVars[$name]) ? self::$flashVars[$name] : $defaultValue;
+            $retval = isset(self::$flashVars[$name]) ? self::$flashVars[$name] : $defaultValue;
         } else {
-            return $defaultValue;
+            $retval = $defaultValue;
         }
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(sprintf(__METHOD__ . ': name = "%s", value = "%s"', $name, $retval));
+        }
+
+        return $retval;
     }
 
     /**
@@ -362,6 +487,11 @@ abstract class Session
      */
     public static function regenerateId()
     {
+        // Debug info
+        if (self::$isDebug) {
+            self::log(__METHOD__ . ' was called');
+        }
+
         if (self::check()) {
             session_regenerate_id(false);
 
@@ -405,6 +535,16 @@ abstract class Session
         $args['httponly'] = true;
         session_set_cookie_params($args['lifetime'], $args['path'], $args['domain'], $args['secure'], $args['httponly']);
         session_name($config['session_name']);
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(sprintf(
+                __METHOD__ . ': lifetime = %d, path = %s, domain = %s, secure = %s, httponly = %s',
+                $args['lifetime'], $args['path'], $args['domain'], ($args['secure'] ? 'true' : 'false'),
+                ($args['httponly'] ? 'true' : 'false')
+            ));
+            self::log(sprintf(__METHOD__ . ': session name = %s', $config['session_name']));
+        }
     }
 
     /**
@@ -414,10 +554,13 @@ abstract class Session
      */
     public static function getSessionId()
     {
-        if (self::check()) {
-            return session_id();
-        } else {
-            return null;
+        $retval = self::check() ? session_id() : '';
+
+        // Debug info
+        if (self::$isDebug) {
+            self::log(sprintf(__METHOD__ . ': session id = %s', $retval));
         }
+
+        return $retval;
     }
 }
