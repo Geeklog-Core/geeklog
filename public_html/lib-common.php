@@ -1465,6 +1465,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $footerCode .= $pluginFooterCode;
 
     $footer->set_var('plg_footercode', $footerCode);
+    $footer->set_var('layout_columns', $layout_columns);
 
     // Actually parse the template and make variable substitutions
     $footer->parse('index_footer', 'footer');
