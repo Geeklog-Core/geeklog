@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * File: japanese_utf-8.php
