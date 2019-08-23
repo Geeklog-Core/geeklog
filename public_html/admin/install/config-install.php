@@ -530,9 +530,9 @@ function install_config(ConfigInterface $c)
     $so += 10;
     $c->add('filemanager_file_sorting', 'default', 'select', $sg, $fs, 35, $so, TRUE, $me, $tab);
     $so += 10;
-    $c->add('filemanager_chars_only_latin', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $c->add('filemanager_chars_only_latin', false, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
     $so += 10;
-    $c->add('filemanager_date_format', 'Y-m-d H:i:s', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $c->add('filemanager_date_format', 'yMMMdHm', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
     $so += 10;
     $c->add('filemanager_logger', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
     $so += 10;
@@ -548,21 +548,9 @@ function install_config(ConfigInterface $c)
     $c->add('tab_filemanager_upload', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
     $c->add('fs_filemanager_upload', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
 
-    $c->add('filemanager_upload_restrictions', array('jpg', 'jpeg', 'gif', 'png', 'svg', 'txt', 'pdf', 'odp', 'ods', 'odt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'ogv', 'mp4', 'webm', 'ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
     $c->add('filemanager_upload_overwrite', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
     $so += 10;
-    $c->add('filemanager_upload_images_only', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
-    $so += 10;
     $c->add('filemanager_upload_file_size_limit', 16, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
-    $c->add('filemanager_unallowed_files', array('.htaccess'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
-    $c->add('filemanager_unallowed_dirs', array('_thumbs', '.CDN_ACCESS_LOGS', 'cloudservers'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
-    $c->add('filemanager_unallowed_files_regexp', '/^\\./uis', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
-    $c->add('filemanager_unallowed_dirs_regexp', '/^\\./uis', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
     $so += 10;
 
     // Subgroup: File Manager - Images

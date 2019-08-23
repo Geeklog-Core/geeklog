@@ -207,7 +207,8 @@ $LANG01 = array(
     'ctl' => 'キャッシュ一括削除',
     'ok' => 'OK',
     'filemanager' => 'ファイルマネージャー',
-    'error_invalid_password' => 'エラー: パスワードが無効です'
+    'error_invalid_password' => 'エラー: パスワードが無効です',
+    'error_filemanager_disabled' => 'ファイルマネージャーは無効にされています。'
 );
 
 ###############################################################################
@@ -2482,14 +2483,8 @@ $LANG_confignames['Core'] = array(
     'filemanager_logger' => 'ロガーを有効にする',
     'filemanager_show_thumbs' => 'サムネイル画像を表示する',
     'filemanager_generate_thumbnails' => 'サムネイル画像を作成する',
-    'filemanager_upload_restrictions' => '許可するファイル拡張子',
     'filemanager_upload_overwrite' => '既存のファイルを上書きする',
-    'filemanager_upload_images_only' => '画像ファイルだけをアップロードする',
     'filemanager_upload_file_size_limit' => 'アップロードするファイルサイズの上限',
-    'filemanager_unallowed_files' => '表示しないファイル名',
-    'filemanager_unallowed_dirs' => '表示しないディレクトリ',
-    'filemanager_unallowed_files_regexp' => '表示しないファイル名の正規表現',
-    'filemanager_unallowed_dirs_regexp' => '表示しないディレクトリ名の正規表現',
     'filemanager_images_ext' => '画像ファイルの拡張子',
     'filemanager_show_video_player' => '動画プレーヤーを表示する',
     'filemanager_videos_ext' => '動画ファイルの拡張子',

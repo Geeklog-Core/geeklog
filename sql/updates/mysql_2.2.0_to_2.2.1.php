@@ -126,6 +126,15 @@ function update_ConfValuesFor221()
     // Add cookie consent
     $c->add('cookie_consent',true,'select',0,0,1,2030,true, $me, 0);
 
+    // Change some Filemanager settings
+    $c->del('filemanager_upload_restrictions', 'Core');
+    $c->del('filemanager_upload_images_only', 'Core');
+    $c->del('filemanager_unallowed_files', 'Core');
+    $c->del('filemanager_unallowed_dirs', 'Core');
+    $c->del('filemanager_unallowed_files_regexp', 'Core');
+    $c->del('filemanager_unallowed_dirs_regexp', 'Core');
+    $c->set('filemanager_date_format', 'yMMMdHm', 'Core');
+
     return true;
 }
 

@@ -199,7 +199,8 @@ $LANG01 = array(
     'ctl' => 'Clear Cache',
     'ok' => 'OK',
     'filemanager' => 'File Manager',
-    'error_invalid_password' => 'Error, invalid password for username'
+    'error_invalid_password' => 'Error, invalid password for username',
+    'error_filemanager_disabled' => 'Filemanager is disabled'
 );
 
 ###############################################################################
@@ -2484,14 +2485,8 @@ $LANG_confignames['Core'] = array(
     'filemanager_logger' => 'Enable logger?',
     'filemanager_show_thumbs' => 'Show thumbnails?',
     'filemanager_generate_thumbnails' => 'Generate thumbnails?',
-    'filemanager_upload_restrictions' => 'Allowed file extensions',
     'filemanager_upload_overwrite' => 'Overwrite existing file?',
-    'filemanager_upload_images_only' => 'Upload images only?',
     'filemanager_upload_file_size_limit' => 'Upload file size limit (MiB)',
-    'filemanager_unallowed_files' => 'Unallowed files',
-    'filemanager_unallowed_dirs' => 'Unallowed directories',
-    'filemanager_unallowed_files_regexp' => 'Regular expression for unallowed files',
-    'filemanager_unallowed_dirs_regexp' => 'Regular expression for unallowed directories',
     'filemanager_images_ext' => 'Image file extensions',
     'filemanager_show_video_player' => 'Show video player?',
     'filemanager_videos_ext' => 'Video file extensions',

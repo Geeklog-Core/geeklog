@@ -1,182 +1,200 @@
 <?php
+/**
+ * Entry point for PHP connector, put your customizations here.
+ *
+ * @license     MIT License
+ * @author      Pavel Solomienko <https://github.com/servocoder/>
+ * @copyright   Authors
+ */
+
 // only for debug
 // error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 // ini_set('display_errors', '1');
-/**
- *	Filemanager PHP connector
- *
- *	filemanager.php
- *	use for ckeditor filemanager plug-in by Core Five - http://labs.corefive.com/Projects/FileManager/
- *
- *	@license	MIT License
- *	@author		Riaan Los <mail (at) riaanlos (dot) nl>
- *  @author		Simon Georget <simon (at) linea21 (dot) com>
- *	@copyright	Authors
- */
 
-require_once('filemanager.class.php');
+global $_CONF_FCK, $_USER;
 
-// for php 5.2 compatibility
-if (!function_exists('array_replace_recursive')) {
-	function array_replace_recursive($array, $array1) {
-		function recurse($array, $array1) {
-			foreach($array1 as $key => $value) {
-				// create new key in $array, if it is empty or not an array
-				if (!isset($array[$key]) || (isset($array[$key]) && !is_array($array[$key]))) {
-					$array[$key] = array();
-				}
+require_once __DIR__ . '/../../../lib-common.php';
+require_once __DIR__ . '/events.php';
 
-				// overwrite the value in the base array
-				if (is_array($value)) {
-					$value = recurse($array[$key], $value);
-				}
-				$array[$key] = $value;
-			}
-			return $array;
-		}
+// fix display non-latin chars correctly
+// https://github.com/servocoder/RichFilemanager/issues/7
+setlocale(LC_CTYPE, 'en_US.UTF-8');
 
-		// handle the arguments, merge one by one
-		$args = func_get_args();
-		$array = $args[0];
-		if (!is_array($array)) {
-			return $array;
-		}
-		for ($i = 1; $i < count($args); $i++) {
-			if (is_array($args[$i])) {
-				$array = recurse($array, $args[$i]);
-			}
-		}
-		return $array;
-
-	}
+// fix for undefined timezone in php.ini
+// https://github.com/servocoder/RichFilemanager/issues/43
+if (!ini_get('date.timezone')) {
+    date_default_timezone_set('GMT');
 }
 
-// if user file is defined we include it, else we include the default file
-(file_exists('user.config.php')) ? include_once('user.config.php') : include_once('default.config.php');
 
-// auth() function is already defined
-// and Filemanager is instantiated as $fm
+// This function is called for every server connection. It must return true.
+//
+// Implement this function to authenticate the user, for example to check a
+// password login, or restrict client IP address.
+//
+// This function only authorizes the user to connect and/or load the initial page.
+// Authorization for individual files or dirs is provided by the two functions below.
+//
+// NOTE: If using session variables, the session must be started first (session_start()).
+function fm_authenticate()
+{
+    global $_CONF;
 
-$response = '';
+    if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+        return false;
+    } else {
+        return SEC_inGroup('Root') || (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')));
+    }
 
-if(!auth()) {
-  $fm->error($fm->lang('AUTHORIZATION_REQUIRED'));
+    // If this function returns false, the user will just see an error.
+    // If this function returns an array with "redirect" key, the user will be redirected to the specified URL:
+    // return ['redirect' => 'http://domain.my/login'];
 }
 
-if(!isset($_GET)) {
-  $fm->error($fm->lang('INVALID_ACTION'));
+
+// This function is called before any filesystem read operation, where
+// $filepath is the file or directory being read. It must return true,
+// otherwise the read operation will be denied.
+//
+// Implement this function to do custom individual-file permission checks, such as
+// user/group authorization from a database, or session variables, or any other custom logic.
+//
+// Note that this is not the only permissions check that must pass. The read operation
+// must also pass:
+//   * Filesystem permissions (if any), e.g. POSIX `rwx` permissions on Linux
+//   * The $filepath must be allowed according to config['patterns'] and config['extensions']
+//
+function fm_has_read_permission($filepath)
+{
+    // Customize this code as desired.
+    return true;
+}
+
+
+// This function is called before any filesystem write operation, where
+// $filepath is the file or directory being written to. It must return true,
+// otherwise the write operation will be denied.
+//
+// Implement this function to do custom individual-file permission checks, such as
+// user/group authorization from a database, or session variables, or any other custom logic.
+//
+// Note that this is not the only permissions check that must pass. The write operation
+// must also pass:
+//   * Filesystem permissions (if any), e.g. POSIX `rwx` permissions on Linux
+//   * The $filepath must be allowed according to config['patterns'] and config['extensions']
+//   * config['read_only'] must be set to false, otherwise all writes are disabled
+//
+function fm_has_write_permission($filepath)
+{
+    // Customize this code as desired.
+    return true;
+}
+
+$isAdmin = false;
+
+if (SEC_inGroup('Root') || SEC_inGroup('Filemanager Admin')
+    || SEC_hasRights('filemanager.admin')) {
+    $isAdmin = true;
+} elseif (SEC_hasRights('story.edit') || SEC_hasRights('story.submit')) {
+    $isAdmin = false;
 } else {
+    $content = COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($content, ['pagetitle' => $MESSAGE[30]] );
 
-  if(isset($_GET['mode']) && $_GET['mode']!='') {
-
-    switch($_GET['mode']) {
-      	
-      default:
-
-        $fm->error($fm->lang('MODE_ERROR'));
-        break;
-
-      case 'getinfo':
-
-        if($fm->getvar('path')) {
-          $response = $fm->getinfo();
-        }
-        break;
-
-      case 'getfolder':
-        	
-        if($fm->getvar('path')) {
-          $response = $fm->getfolder();
-        }
-        break;
-
-      case 'rename':
-
-        if($fm->getvar('old') && $fm->getvar('new')) {
-          $response = $fm->rename();
-        }
-        break;
-
-      case 'move':
-        // allow "../"
-        if($fm->getvar('old') && $fm->getvar('new') && $fm->getvar('root')) {
-          $response = $fm->move();
-        }
-        break;
-
-      case 'editfile':
-        	 
-        if($fm->getvar('path')) {
-        	$response = $fm->editfile();
-        }
-        break;
-        
-      case 'delete':
-
-        if($fm->getvar('path')) {
-          $response = $fm->delete();
-        }
-        break;
-
-      case 'addfolder':
-
-        if($fm->getvar('path') && $fm->getvar('name')) {
-          $response = $fm->addfolder();
-        }
-        break;
-
-      case 'download':
-        if($fm->getvar('path')) {
-          $fm->download();
-        }
-        break;
-        
-      case 'preview':
-        if($fm->getvar('path')) {
-        	if(isset($_GET['thumbnail'])) {
-        		$thumbnail = true;
-        	} else {
-        		$thumbnail = false;
-        	}
-          $fm->preview($thumbnail);
-        }
-        break;
-    }
-
-  } else if(isset($_POST['mode']) && $_POST['mode']!='') {
-
-    switch($_POST['mode']) {
-      	
-      default:
-
-        $fm->error($fm->lang('MODE_ERROR'));
-        break;
-        	
-      case 'add':
-
-        if($fm->postvar('currentpath')) {
-          $fm->add();
-        }
-        break;
-
-    	case 'replace':
-    
-	    	if($fm->postvar('newfilepath')) {
-	    		$fm->replace();
-	    	}
-	    	break;
-    
-	    case 'savefile':
-	    	
-	    	if($fm->postvar('content', false) && $fm->postvar('path')) {
-	    		$response = $fm->savefile();
-	    	}
-	    	break;
-    }
-
-  }
+    // Log illegal attempt to access.log
+    COM_accessLog("User {$_USER['username']} tried to illegally access the Filemanager.");
+    COM_output($display);
+    exit;
 }
 
-echo json_encode($response);
-die();
-?>
+if ($isAdmin) {
+    $fileRoot = $_CONF['path_images'];
+} else {
+    if (isset($_CONF_FCK['imgl'])) {
+        $fileRoot = $_CONF['path_html'] . trim($_CONF_FCK['imgl'], '/\\') . '/';
+    } elseif (isset($_CONF_FCK['imagelibrary'])) {
+        $fileRoot = $_CONF['path_html'] . trim($_CONF_FCK['imagelibrary'], '/\\') . '/';
+    } else {
+        $fileRoot = $_CONF['path_html'] . 'images/library/';
+    }
+}
+
+$restrictions = array_merge(
+    $_CONF['filemanager_images_ext'],
+    $_CONF['filemanager_videos_ext'],
+    $_CONF['filemanager_audios_ext']
+);
+
+// See https://github.com/servocoder/RichFilemanager-PHP/blob/master/src/config/config.local.php for detail
+$config = [
+    'logger'     => [
+        'enabled' => $_CONF['filemanager_logger'],
+        'file'    => ($_CONF['filemanager_logger'] ? $_CONF['path_log'] . 'error.log' : null),
+    ],
+    'options'    => [
+        'serverRoot'        => true,
+        'fileRoot'          => $fileRoot,
+        'fileRootSizeLimit' => false,
+        'charsLatinOnly'    => $_CONF['filemanager_chars_only_latin'],
+    ],
+    'security'   => [
+        'readOnly'          => $_CONF['filemanager_browse_only'],
+        'normalizeFilename' => true,
+        'extensions'        => [
+            'policy'       => 'ALLOW_LIST',
+            'ignoreCase'   => true,
+            'restrictions' => $restrictions,
+        ],
+    ],
+    'patterns'   => [
+        'policy'       => 'DISALLOW_LIST',
+        'ignoreCase'   => true,
+        'restrictions' => [
+            // files
+            '*/.htaccess',
+            '*/web.config',
+            // directories
+            '*/.CDN_ACCESS_LOGS/',
+            '*/_thumbs/',
+            '*/cache/',
+        ],
+    ],
+    'symlinks'   => [
+        'allowAll'   => false,
+        'allowPaths' => [],
+    ],
+    'upload'     => [
+        'fileSizeLimit' => $_CONF['filemanager_upload_file_size_limit'],
+        'overwrite'     => $_CONF['filemanager_upload_overwrite'],
+        'paramName'     => 'upload',
+    ],
+    'images'     => [
+        'main'      => [
+            'autoOrient' => true,
+            'maxWidth'   => 1280,
+            'maxHeight'  => 1024,
+        ],
+        'thumbnail' => [
+            'enabled'   => $_CONF['filemanager_generate_thumbnails'],
+            'cache'     => true,
+            'dir'       => '_thumbs',
+            'crop'      => true,
+            'maxWidth'  => 64,
+            'maxHeight' => 64,
+        ],
+    ],
+    'mkdir_mode' => 0755,
+];
+
+$app = new RFM\Application();
+
+// uncomment to use events
+//$app->registerEventsListeners();
+
+$local = new RFM\Repository\Local\Storage($config);
+$local->setRoot($fileRoot, false, false);
+$app->setStorage($local);
+
+// set application API
+$app->api = new RFM\Api\LocalApi();
+$app->run();
