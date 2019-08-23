@@ -47,7 +47,7 @@ class Resource
     const DEFAULT_THEME = 'denim';
 
     // Local library versions
-    const JQUERY_VERSION = '3.3.1';
+    const JQUERY_VERSION = '3.4.1';
     const JQUERY_PRIORITY = -5000;
 
     const JQUERY_UI_VERSION = '1.12.1';
