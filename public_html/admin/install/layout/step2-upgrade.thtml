@@ -15,7 +15,7 @@
             </select></div>
         </div>
         <div class="uk-form-row">
-            <button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large" value="{{ LANG.INSTALL.25 }}">{{ LANG.INSTALL.25 }}</button>
+            <button type="submit" name="submit" class="uk-button uk-button-secondary uk-button-large" value="{{ LANG.INSTALL.25 }}">{{ LANG.INSTALL.25 }}</button>
         </div>
     </form>
 </div>

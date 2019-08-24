@@ -239,7 +239,7 @@ switch ($step) {
 
                 . '<div class="uk-overflow-container">' . PHP_EOL
                 
-                . '<table style="width:650px" class="uk-table">' . PHP_EOL
+                . '<table style="max-width: 650px;" class="uk-table">' . PHP_EOL
                 . '<tr>' . PHP_EOL
                 . '<th style="width:60px">' . $LANG_PLUGINS[13] . '</th>' . PHP_EOL
                 . '<th>' . $LANG_PLUGINS[14] . '</th>' . PHP_EOL

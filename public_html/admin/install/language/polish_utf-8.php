@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | polish.php                                                                |
 // |                                                                           |
 // | Polish language file for the Geeklog installation script                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -48,6 +48,11 @@ $LANG_CHARSET = 'ISO-8859-2';
 // +---------------------------------------------------------------------------+
 // install.php
 
+$LANG_INFO = [
+    'langCode' => 'pl',
+    'langName' => 'polski',
+];
+
 $LANG_INSTALL = array(
     0 => 'Geeklog - The secure CMS.',
     1 => 'Instalacja Pomoc',
@@ -55,10 +60,10 @@ $LANG_INSTALL = array(
     3 => 'Geeklog - Instalacja',
     4 => 'Wymagane PHP %s',
     5 => 'Sorry, ale Geeklog wymaga do uruchomienia co najmniej PHP %s (wersja zainstalowana to ',
-    6 => '). Proszê <a href="http://www.php.net/downloads.php">uaktualniæ wersjê PHP</a> lub zg³osiæ to do swojego providera hostingu.',
-    7 => 'Nie mo¿na zlokalizowaæ plików Geeklog-a',
+    6 => '). ProszÄ™ <a href="http://www.php.net/downloads.php">uaktualniÄ‡ wersjÄ™ PHP</a> lub zgÅ‚osiÄ‡ to do swojego providera hostingu.',
+    7 => 'Nie moÅ¼na zlokalizowaÄ‡ plikÃ³w Geeklog-a',
     8 => 'The installation script was unable to locate critical Geeklog files. This is probably because you have moved them from their default location. Please specify the paths to the files and directories below:',
-    9 => 'Witamy i dziêkujemy za wybranie Geeklog-a!',
+    9 => 'Witamy i dziÄ™kujemy za wybranie Geeklog-a!',
     10 => 'File/Directory',
     11 => 'Permissions',
     12 => 'Change to',
@@ -69,7 +74,7 @@ $LANG_INSTALL = array(
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
     19 => 'Geeklog requires certain files and directories to be writeable by the web server. Below is a list of which files and directories need to be changed.',
-    20 => 'Ostrze¿enie!',
+    20 => 'OstrzeÅ¼enie!',
     21 => 'Your Geeklog and site will not work properly until the errors listed above are corrected. Not following this step is the #1 reason why people receive errors when they first try to use Geeklog. Please make the necessary changes before you continue.',
     22 => 'unknown',
     23 => 'Wybierz rodzaj instalacji:',
@@ -90,20 +95,20 @@ $LANG_INSTALL = array(
     38 => 'Error',
     39 => 'Database Hostname',
     40 => 'Nazwa Bazy Danych',
-    41 => 'U¿ytkownik Bazy Danych',
-    42 => 'Has³o do Bazy Danych',
+    41 => 'UÅ¼ytkownik Bazy Danych',
+    42 => 'HasÅ‚o do Bazy Danych',
     43 => 'Prefix Tabeli w Bazie Danych',
     44 => 'Ustawienia Opcjonalne',
     45 => 'Adres URL strony',
-    46 => '(Bez koñcowego slasha)',
-    47 => '¦cie¿ka do katalogu administratora',
+    46 => '(Bez koÅ„cowego slasha)',
+    47 => 'ÅšcieÅ¼ka do katalogu administratora',
     48 => 'Adres email strony',
     49 => 'Bezzwrotny adres email strony',
     50 => 'Instaluj',
     51 => 'Wymagana baza MySQL %s',
     52 => 'Sorry, but Geeklog requires at least MySQL %s to run (you have version ',
     53 => '). Please <a href="http://dev.mysql.com/downloads/mysql/">upgrade your MySQL</a> install or ask your hosting service to do it for you.',
-    54 => 'Ba³êdne informacje o bazie danych',
+    54 => 'BaÅ‚Ä™dne informacje o bazie danych',
     55 => 'Sorry, but the database information you entered does not appear to be correct. Please go back and try again.',
     56 => 'Could not connect to database',
     57 => 'Sorry, but the installer could not find the database you specified. Either the database does not exist or you misspelled the name. Please go back and try again.',
@@ -115,7 +120,7 @@ $LANG_INSTALL = array(
     63 => 'An installed Geeklog database already exists. The installer will not allow you to run a fresh install on an existing Geeklog database. To continue you must do one of the following:',
     64 => 'Delete the tables from the existing database. Or simply drop the database and recreate it. Then click "Retry" below.',
     65 => 'Perform an upgrade on your database (to a newer Geeklog version) by selecting the "Upgrade" option below.',
-    66 => 'Spróbuj ponownie',
+    66 => 'SprÃ³buj ponownie',
     67 => 'Error Setting up the Geeklog Database',
     68 => 'The database is not empty. Please drop all tables in the database and start again.',
     69 => 'Aktualizacja Geeklog-a',
@@ -132,16 +137,16 @@ $LANG_INSTALL = array(
     80 => 'Change',
     81 => 'Stop!',
     82 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
-    83 => 'B³±d Podczas Instalacji',
-    84 => '¦cie¿ka "',
-    85 => '" jest b³êdna. Wróæ i srpóbuj ponownie.',
-    86 => 'Jêzyk',
+    83 => 'BÅ‚Ä…d Podczas Instalacji',
+    84 => 'ÅšcieÅ¼ka "',
+    85 => '" jest bÅ‚Ä™dna. WrÃ³Ä‡ i srpÃ³buj ponownie.',
+    86 => 'JÄ™zyk',
     87 => 'https://www.geeklog.net/forum/index.php?forum=1',
     88 => 'Change directory and containing files to',
     89 => 'Wersja Obecna:',
-    90 => 'Opró¿niæ bazê danych?',
+    90 => 'OprÃ³Å¼niÄ‡ bazÄ™ danych?',
     91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.',
-    92 => 'U¿yj kodowania UTF-8',
+    92 => 'UÅ¼yj kodowania UTF-8',
     93 => 'Success',
     94 => 'Here are some hints to find the correct path:',
     95 => 'The complete path to this file (the install script) is:',
@@ -172,23 +177,23 @@ $LANG_INSTALL = array(
 // success.php
 
 $LANG_SUCCESS = array(
-    0 => 'Instalacja zakoñczona',
+    0 => 'Instalacja zakoÅ„czona',
     1 => 'Instalacja Geeklog-a ',
-    2 => ' zakoñczona!',
-    3 => 'Gratulacje, pomy¶lnie ',
-    4 => ' Geeklog-a. Proszê po¶wiêciæ chwilê na przeczytanie informacji poni¿ej.',
-    5 => 'Aby zalogowaæ siê proszê u¿yæ nastêpuj±cego konta:',
-    6 => 'U¿ytkownik:',
+    2 => ' zakoÅ„czona!',
+    3 => 'Gratulacje, pomyÅ›lnie ',
+    4 => ' Geeklog-a. ProszÄ™ poÅ›wiÄ™ciÄ‡ chwilÄ™ na przeczytanie informacji poniÅ¼ej.',
+    5 => 'Aby zalogowaÄ‡ siÄ™ proszÄ™ uÅ¼yÄ‡ nastÄ™pujÄ…cego konta:',
+    6 => 'UÅ¼ytkownik:',
     7 => 'Admin',
-    8 => 'Has³o:',
+    8 => 'HasÅ‚o:',
     9 => 'password',
     10 => 'UWAGA!',
     11 => 'Nie zapomnij o ',
     12 => 'rzeczach',
-    13 => 'Usuñ lub zmieñ nazwê katalogu z plikami instalacyjnymi,',
-    14 => 'Zmieñ has³o dla konta',
+    13 => 'UsuÅ„ lub zmieÅ„ nazwÄ™ katalogu z plikami instalacyjnymi,',
+    14 => 'ZmieÅ„ hasÅ‚o dla konta',
     15 => '.',
-    16 => 'Zmieñ atrybuty dostêpu do plików ',
+    16 => 'ZmieÅ„ atrybuty dostÄ™pu do plikÃ³w ',
     17 => 'i',
     18 => 'z powrotem na',
     19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
@@ -344,13 +349,13 @@ $LANG_ERROR = array(
     20 => 'Plugin Compatibility',
     21 => 'Geeklog internally has undergone some changes which may affect compatibility of some older plugins which have not been updated in a while. Please make sure all the plugins you have installed have been updated to the latest version before upgrading Geeklog to v2.2.0.<br><br>If you still wish to upgrade Geeklog to v2.2.0 and you are not sure about a plugin please post a question about it on our <a href="https://www.geeklog.net/forum/index.php?forum=2" target="_blank">Geeklog Forum</a>. Else, you can also disable or uninstall the plugin and then perform the Geeklog upgrade.<br><br>If you do perform the upgrade and run into problems you can then use the <a href="/admin/install/rescue.php">Geeklog Emergency Rescue Tool</a> to disable the plugin with the issue.',
     22 => 'Default Security Group Assignments',
-    23 => 'User security group assignments for groups "Root" and "All Users" will be fixed along with the security group assignments for the "Admin" (2) user. The "Admin" user had duplicate permissions in some cases and these will be removed after this upgrade.<br><br>Please Note: The issue that caused duplicate permissions has been fixed but it does mean any user that you may have edited in the Admin User Editor before Geeklog v2.2.1 may have been affected. This only really affects permissions when you have security groups within security groups. While these permissions at the time of saving the user are correct if you modified security groups since then these users may still have access to groups they may have been removed from now. As each site is setup differently, the only way to fix this is for the Admin to review each user manually and confirm their security privileges.', 
+    23 => 'User security group assignments for groups "Root" and "All Users" will be fixed along with the security group assignments for the "Admin" (2) user. The "Admin" user had duplicate permissions in some cases and these will be removed after this upgrade.<br><br>Please Note: The issue that caused duplicate permissions has been fixed but it does mean any user that you may have edited in the Admin User Editor before Geeklog v2.2.1 may have been affected. This only really affects permissions when you have security groups within security groups. While these permissions at the time of saving the user are correct if you modified security groups since then these users may still have access to groups they may have been removed from now. As each site is setup differently, the only way to fix this is for the Admin to review each user manually and confirm their security privileges.',
     24 => 'FCKEditor Removed',
     25 => 'The Advanced Editor FCKEditor has been removed from Geeklog since development for it has been stopped. If your Geeklog website is currently set to use the FCKEditor it will be updated to use the editor which currently ships with Geeklog called the CKEditor.',
     26 => 'Google+ OAuth Login',
     27 => 'The <a href="https://support.google.com/plus/answer/9195133" target="_blank">Google+ service shut down on April 2, 2019</a>. As of Geeklog v2.2.1 we will move from the Google+ OAuth authentication method and scope to the Google OAuth authentication method and scope. Because of this change and depending on when you created your Google API keys, you may need to update these keys in the Geeklog configuration or users who use this login method may receive an error.<br><br>Geeklog now offers the option to convert remote accounts to local accounts. If you have any remote accounts (like Google OAuth, Facebook OAuth, OpenID, etc..) you want to convert, edit the user account from the User Manager and then check off the "convert from remote to a local account" option and click on save. At this point the account will be converted to a local account and a random password will be generated. If the account has an email address and the status is set to "Active" an email will be automatically sent to the user about how to access their account. If not, you will manually have to fill in this information and let the user know how they can access their local account.',
     28 => 'Duplicate Usernames & Usernames with Trailing Spaces',
-    29 => 'In some cases through remote accounts blank or duplicate usernames (some may have had trailing spaces) could be created. Blank username accounts are the results of remote account login errors so they will be deleted. Accounts that have duplicate names (could include local accounts) will have their accounts renamed. Some local account users may need to use the "Forget Your Password" to retrieve their new username.<br><br>Please note: This issue is a very rare occurrence and can only happen if you have remote user accounts. Most users will be unaffected.'    
+    29 => 'In some cases through remote accounts blank or duplicate usernames (some may have had trailing spaces) could be created. Blank username accounts are the results of remote account login errors so they will be deleted. Accounts that have duplicate names (could include local accounts) will have their accounts renamed. Some local account users may need to use the "Forget Your Password" to retrieve their new username.<br><br>Please note: This issue is a very rare occurrence and can only happen if you have remote user accounts. Most users will be unaffected.'
 );
 
 // +---------------------------------------------------------------------------+

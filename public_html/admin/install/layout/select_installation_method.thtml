@@ -6,7 +6,7 @@
         <input type="hidden" name="language" value="{! language !}">
         <input type="hidden" name="display_step" value="{! display_step !}">
         <button type="submit" name="install_type" class="uk-button uk-button-primary uk-button-large" value="{{ LANG.INSTALL.24 }}">{{ LANG.INSTALL.24 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
-        <button type="submit" name="install_type" class="uk-button uk-button-primary uk-button-large" value="{{ LANG.INSTALL.25 }}">{{ LANG.INSTALL.25 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
-        <button type="submit" name="install_type" class="uk-button uk-button-primary uk-button-large" value="{{ LANG.INSTALL.16 }}">{{ LANG.INSTALL.16 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
+        <button type="submit" name="install_type" class="uk-button uk-button-secondary uk-button-large" value="{{ LANG.INSTALL.25 }}">{{ LANG.INSTALL.25 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
+        <button type="submit" name="install_type" class="uk-button uk-button-danger uk-button-large" value="{{ LANG.INSTALL.16 }}">{{ LANG.INSTALL.16 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
     </form>
 </div>

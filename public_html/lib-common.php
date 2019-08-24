@@ -8320,11 +8320,15 @@ function COM_checkInstalled()
 
         $version = VERSION;
         $display = <<<HTML
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Welcome to Geeklog</title>
   <meta name="robots" content="noindex,nofollow" />
+  <link rel="stylesheet" href="vendor/uikit3/css/uikit.min.css">
+  <script src="vendor/uikit3/js/uikit.min.js"></script>
+  <script src="vendor/uikit3/js/uikit-icons.min.js"></script>
   <style type="text/css">
     html, body {
       color: #000;
@@ -8336,11 +8340,19 @@ function COM_checkInstalled()
 </head>
 
 <body>
-<img src="{$rel}docs/images/logo.gif" alt="" />
+<div class="uk-container">
+  <div class="uk-grid" style="max-width: 600px; margin: 5px auto;">
+    <div class="uk-align-center">
+      <img src="{$rel}docs/images/logo.gif" alt="" />
+    </div>
 
-<h1>Geeklog {$version}</h1>
-  <p>Please run the <a href="{$rel}admin/install/index.php" rel="nofollow">install script</a> first.</p>
-  <p>For more information, please refer to the <a href="{$rel}docs/english/install.html" rel="nofollow">installation instructions</a>.</p>
+    <div>
+      <h1 class="uk-align-center">Geeklog {$version}</h1>
+      <p class="uk-align-center"><span uk-icon="icon: warning; ratio: 2" style="color: red;"></span>  Please run the <a href="{$rel}admin/install/index.php" rel="nofollow">install script</a> first.</p>
+      <p class="uk-align-center">For more information, please refer to the <a href="{$rel}docs/english/install.html" rel="nofollow">installation instructions</a>.</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 HTML;

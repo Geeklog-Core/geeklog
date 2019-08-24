@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | success.php                                                               |
 // |                                                                           |
 // | Page that is displayed upon a successful Geeklog installation or upgrade  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2016 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -102,9 +102,9 @@ $language = preg_replace('/[^a-z0-9\-_]/', '', $language);
 $languagePath = dirname(__FILE__) . '/language/' . $language . '.php';
 
 if (is_readable($languagePath)) {
-    require_once dirname(__FILE__) . '/language/' . $language . '.php';
+    require_once __DIR__ . '/language/' . $language . '.php';
 } else {
-    require_once dirname(__FILE__) . '/language/english.php';
+    require_once __DIR__ . '/language/english.php';
 }
 
 // enable detailed error reporting
@@ -115,7 +115,7 @@ $_CONF['cache_templates'] = false;
 
 switch ($submit) {
     case $LANG_SUCCESS[24]:  // Delete all the fies and directories
-        $failures = SUCCESS_deleteAll(dirname(__FILE__));
+        $failures = SUCCESS_deleteAll(__DIR__);
         $redirect = $_CONF['site_url'] . '/index.php?msg='
             . ((count($failures) === 0) ? 150 : 151);
         header('Location: ' . $redirect);
@@ -130,7 +130,7 @@ switch ($submit) {
         break;
 }
 
-$T = COM_newTemplate(CTL_core_templatePath(dirname(__FILE__) . '/layout'));
+$T = COM_newTemplate(CTL_core_templatePath(__DIR__ . '/layout'));
 $T->set_file('success', 'success.thtml');
 
 if ($type === 'install') {
