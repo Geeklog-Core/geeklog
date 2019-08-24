@@ -1,0 +1,24 @@
+{# begin {templatelocation} #}
+
+<p>{intro_msg}</p>
+<dl class="uk-description-list-horizontal">
+  <dt>{lang_event}</dt>
+  <dd>{event_title}</dd>
+  <dt>{lang_starts}</dt>
+  <dd>{event_start}</dd>
+  <dt>{lang_ends}</dt>
+  <dd>{event_end}</dd>
+  <dt>{lang_where}</dt>
+  <dd>{event_location}</dd>
+  <dt>{lang_description}</dt>
+  <dd>{event_description}</dd>
+</dl>
+
+<form name="userevent" method="post" action="{site_url}/calendar/event.php" class="uk-form uk-form-horizontal">
+  <input type="hidden" name="action" value="saveuserevent"{xhtml}>
+  <input type="hidden" name="eid" value="{event_id}"{xhtml}>
+  <input type="submit" value="{lang_addtomycalendar}" class="uk-form-width-medium"{xhtml}>
+  <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+</form>
+
+{# end {templatelocation} #}

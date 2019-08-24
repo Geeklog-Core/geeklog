@@ -1,0 +1,48 @@
+{# begin {templatelocation} #}
+
+{start_block_editor}
+<form action="{site_admin_url}/plugins.php" method="post" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label" id="title">{title}</label>
+    <div class="uk-form-controls"><img src="{pi_icon}" alt=""{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_pluginname}</label>
+    <div class="uk-form-controls">{pi_display_name}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_pluginhomepage}</label>
+    <div class="uk-form-controls">{pi_homepage}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_pluginversion}</label>
+    <div class="uk-form-controls">{pi_version}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_plugincodeversion}</label>
+    <div class="uk-form-controls">{pi_codeversion}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_dependencies}</label>
+    <div class="uk-form-controls">{pi_dependencies}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_load}</label>
+    <div class="uk-form-controls">{pi_load}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_enabled}</label>
+    <div class="uk-form-controls">{pi_enabled}</div>
+  </div>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="submit" id="close" value="{back}" class="uk-button uk-form-width-medium"{xhtml}>
+    </div>
+  </div>
+
+</form>
+{end_block}
+
+{# end {templatelocation} #}

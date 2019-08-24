@@ -1,0 +1,10 @@
+{# begin {templatelocation} #}
+
+<div class="uk-margin">
+  <h2 class="uk-text-bold">{lang_question}{lang_question_number}{poll_question}</h2>
+  <dl class="uk-description-list-horizontal">
+    {poll_votes}
+  </dl>
+</div>
+
+{# end {templatelocation} #}

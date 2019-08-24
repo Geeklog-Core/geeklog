@@ -1,0 +1,9 @@
+{# begin {templatelocation} #}
+
+<tr>
+  <td><a href="{url_to_ping}">{link_text}</a> ({host_name})</td>
+  <td>{pingback_result}</td>
+  <td>{resend}</td>
+</tr>
+
+{# end {templatelocation} #}

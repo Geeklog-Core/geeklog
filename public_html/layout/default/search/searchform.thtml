@@ -1,0 +1,66 @@
+{# begin {templatelocation} #}
+
+<form action="{site_url}/search.php" method="get" id="advsearchform" class="uk-form uk-form-horizontal">
+
+        <p class="uk-margin">{search_intro}</p>
+
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="advsearchform-query">{lang_keywords}</label>
+            <div class="uk-form-controls">
+                <input type="text" maxlength="35" value="{query}" name="query" id="advsearchform-query" class="uk-form-width-medium"{xhtml}>
+                <select name="keyType" title="{lang_keytype}" id="advsearchform-keyType">
+                    <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
+                    <option value="all" {key_all_selected}>{lang_all_words}</option>
+                    <option value="any" {key_any_selected}>{lang_any_word}</option>
+                </select>
+            </div>
+        </div>
+        <div class="uk-form-row">
+            <label><input type="checkbox" value="true" name="title"{title_checked}{xhtml}>{lang_titles}</label>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="advsearchform-datestart">{lang_date}</label>
+            <div class="uk-form-controls">
+                <input type="text" maxlength="10" name="datestart" value="{datestart}" id="advsearchform-datestart" class="uk-form-width-small"{xhtml}> <span class="loose">{lang_to}</span> <input type="text" maxlength="10" name="dateend" value="{dateend}" id="advsearchform-dateend" class="uk-form-width-small"{xhtml}>
+                <span class="uk-form-help-inline">{date_format}</span>
+            </div>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="advsearchform-topic">{lang_topic}</label>
+            <div class="uk-form-controls">
+                <select name="topic" id="advsearchform-topic">
+                    {topic_option_list}
+                </select>
+            </div>
+        </div>
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="advsearchform-type">{lang_type}</label>
+            <div class="uk-form-controls">
+                <select name="type" id="advsearchform-type">
+                {plugin_types}
+                </select>
+            </div>
+        </div>
+
+        {author_form_element}
+
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="advsearchform-results">{lang_results}</label>
+            <div class="uk-form-controls">
+                <select name="results" id="advsearchform-results">
+                    {search_limits}
+                </select>
+                {lang_per_page}
+            </div>
+        </div>
+
+        <div class="uk-form-row uk-margin-large-top">
+            <div class="uk-form-controls">
+                <input type="hidden" name="mode" value="search"{xhtml}>
+                <input type="submit" value="{lang_search}" class="uk-button uk-form-width-medium"{xhtml}>
+            </div>
+        </div>
+
+</form>
+
+{# end {templatelocation} #}

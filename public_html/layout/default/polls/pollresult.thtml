@@ -1,0 +1,10 @@
+{# begin {templatelocation} #}
+
+<span class="uk-float-right">{edit_icon}</span>
+<h1 class="uk-text-bold">{poll_topic}</h1>
+{poll_questions}
+<ul class="uk-subnav uk-subnav-line uk-flex-center">
+  <li>{notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a></li><li>{num_votes} {lang_voters} {poll_comments}</li>
+</ul>
+
+{# end {templatelocation} #}

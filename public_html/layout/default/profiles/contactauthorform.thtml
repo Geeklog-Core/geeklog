@@ -1,0 +1,49 @@
+{# begin {templatelocation} #}
+
+{start_block_mailstory2friend}
+<form action="{site_url}/profiles.php" method="post" id="contactauthorform" class="uk-form uk-form-horizontal">
+
+  <div class="uk-form-row">
+    <label class="uk-form-label">{lang_title}</label>
+    <div class="uk-form-controls">{story_link}</div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="contactauthorform-from">{lang_fromname}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="96" value="{name}" name="from" id="contactauthorform-from" class="uk-form-width-medium"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="contactauthorform-fromemail">{lang_fromemailaddress}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="96" value="{email}" name="fromemail" id="contactauthorform-fromemail" class="uk-form-width-medium"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="contactauthorform-to">{lang_toname}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="96" value="{toname}" name="to" id="contactauthorform-to" class="uk-form-width-medium"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="contactauthorform-toemail">{lang_toemailaddress}</label>
+    <div class="uk-form-controls"><input type="text" maxlength="96" value="{toemail}" name="toemail" id="contactauthorform-toemail" class="uk-form-width-medium"{xhtml}></div>
+  </div>
+  <div class="uk-form-row">
+    <label class="uk-form-label" for="contactauthorform-shortmsg">{lang_shortmessage}</label>
+    <div class="uk-form-controls"><textarea rows="8" cols="50" name="shortmsg" id="contactauthorform-shortmsg" class="uk-width-1-1">{shortmsg}</textarea></div>
+  </div>
+  <div class="uk-form-row"{cc_enabled}>
+    <label class="uk-form-label" for="contactauthorform-cc">{lang_cc}</label>
+    <div class="uk-form-controls"><input type="checkbox" name="cc" id="contactauthorform-cc"{cc}{xhtml}>&nbsp;{lang_cc_description}</div>
+  </div>
+
+  {captcha}
+
+  <p class="uk-text-warning">{lang_warning}</p>
+
+  <div class="uk-form-row uk-margin-large-top">
+    <div class="uk-form-controls">
+      <input type="hidden" name="sid" value="{story_id}"{xhtml}>
+      <input type="hidden" name="what" value="sendstory"{xhtml}>
+      <input type="submit" value="{lang_sendmessage}" onclick="return postconfirm();" onkeypress="return postconfirm();"{xhtml}>
+    </div>
+  </div>
+</form>
+{end_block}
+
+{# end {templatelocation} #}

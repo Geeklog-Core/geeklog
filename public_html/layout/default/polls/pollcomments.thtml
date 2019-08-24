@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<ul class="uk-list"><li><a href="{poll_comments_url}">{num_comments} {lang_comments}</a></li></ul>
+
+{# end {templatelocation} #}

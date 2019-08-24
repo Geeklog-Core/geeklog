@@ -1,0 +1,5 @@
+{# begin {templatelocation} #}
+
+<li class="li-navlist"><a {csscurrent} class="a-navlist" href="{link}{parms}"{onclick}><span class="label-navlist">{label}</span></a></li>
+
+{# end {templatelocation} #}

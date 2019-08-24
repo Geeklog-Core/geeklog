@@ -1,0 +1,9 @@
+{# begin {templatelocation} #}
+
+<div class="uk-margin">
+    [ <a href="{site_url}/submit.php?type=calendar{calendar_mode}">{lang_addevent}</a> ][ <a href="{site_url}/calendar/index.php{calendar_mode}">{lang_backtocalendar}</a> ]
+</div>
+<h2 class="uk-h2">{lang_month}&nbsp;&nbsp;{event_year}</h2>
+{event_details}
+
+{# end {templatelocation} #}

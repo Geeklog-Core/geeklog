@@ -1,0 +1,13 @@
+/* Geeklog Horizon Theme 1.0 | Copyright (C) 2012-2015 by Ivy | http://www.ivywe.co.jp | License:GPLv2 */
+
+.gl-edit:hover {
+  border: 1px solid #e8e8e8 !important;
+  border-radius: 4px;
+}
+
+.uk-form-row + .uk-form-row {margin-top: 8px;}
+
+.uk-navbar-nav > li > a[href='#'],
+.uk-navbar-nav > li > a[href=''] {
+  cursor: default;
+}

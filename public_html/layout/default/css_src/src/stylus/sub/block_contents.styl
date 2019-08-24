@@ -1,0 +1,771 @@
+
+$stage = 'block_contents'
+
+/*!--------------------------------------
+  Container
+--------------------------------------*/
+
+#container
+    background-color: $container-background
+    margin-top: $container-margin-top
+    margin-bottom: $container-margin-bottom
+    padding: $container-padding
+    build-border("$container")
+    @media only screen and (max-width: $breakpoint-small-max)
+        margin-top: 0
+        margin-bottom: 0
+        padding: 0
+        border: none
+    hook-selector($stage, "" + selector())
+
+#wrapper
+    /*! Adjust floating element */
+    overflow: visible;
+    background-color: $wrapper-background
+    padding: $wrapper-padding
+    padding-bottom: 2em;
+    build-border("$wrapper")
+    @media only screen and (max-width: $breakpoint-small-max)
+        padding: 0;
+        border: none
+    hook-selector($stage, "" + selector())
+
+/*!--------------------------------------
+  Header Content
+--------------------------------------*/
+
+$denim_logo ?= "../images/logo2.png"
+
+$logo-height = 0
+$logo-width  = 0
+if $var-sitename-style == 'image'
+    $logo-height = img-height("../../../" + $denim_logo)
+    $logo-width  = img-width( "../../../" + $denim_logo)
+
+$logo-top ?= 12px
+if ($logo-height + 24px) > $header-height
+    $header-height = $logo-height + 24px
+else
+    $logo-top = ($header-height - $logo-height) / 2
+
+
+$header_texture ?= "../images/texture.jpg"
+$texture-height = img-height("../../../" + $header_texture)
+$texture-width  = img-width( "../../../" + $header_texture)
+
+$header-height-mobile = 60px
+
+#header
+    padding: $header-padding
+    build-border("$header")
+    @media only screen and (max-width: $breakpoint-small-max)
+        padding: 0
+        border: none
+
+    if $var-header-style == 'normal'
+        background: linear-gradient(top, $header-background-dark, 50% $header-background, 90% $header-background, $header-background-dark)
+        height: $header-height
+        // All Mobile Sizes
+        @media only screen and (max-width: $breakpoint-small-max)
+            background-size: 256px auto
+            height: $header-height-mobile
+            margin-top: 0
+
+    if $var-header-style == 'texture'
+        position: relative
+        background-color: $header-background
+        background-image: url($header_texture)
+        background-position: center
+        background-repeat: repeat-x
+        height: $header-height
+        &:before
+            position: absolute
+            content: ""
+            height: $header-height
+            //background: linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.2) 100%)
+            background: linear-gradient(top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.4) 100%)
+            top: 0px
+        // All Mobile Sizes
+        @media only screen and (max-width: $breakpoint-small-max)
+            background-size: ($texture-width / 2) auto
+            height: $header-height-mobile
+            margin-top: 0
+            &:before
+                height: $header-height-mobile
+
+    hook-selector($stage, "" + selector())
+
+/*! Site Name */
+.site_name
+    if $var-sitename-style == 'text'
+        position: relative
+        float: left
+        font-size: 30px
+        font-weight: bold
+        text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5)
+        line-height: @font-size + 6px
+        margin: (($header-height - @line-height) / 2) 0 0 20px
+        padding: 0
+        a:link,
+        a:visited,
+        a:hover
+            color: #EEEEEE
+            text-decoration: none
+        // All Mobile Sizes
+        @media only screen and (max-width: $breakpoint-small-max)
+            margin: 6px 0 0 8px
+            font-size: 1.6em
+            line-height: 1.6em
+
+    if $var-sitename-style == 'image'
+        position: relative
+        //margin: 12px 0 0 16px
+        margin: $logo-top 0 0 16px
+        padding: 0
+        float: left
+        width: $logo-width
+        height: $logo-height
+        a
+            background: url($denim_logo) 0 0 no-repeat
+            text-indent: -3000px
+            display: block
+            //width: 151px
+            //height: 56px
+            width: 100%
+            height: 100%
+        // All Mobile Sizes
+        @media only screen and (max-width: $breakpoint-small-max)
+            $percentage = ($header-height-mobile - 10px) / $logo-height
+            $h = $header-height-mobile - 10px
+            $w = $logo-width * $percentage
+            //margin: 9px 0 0 7px
+            margin: 5px 0 0 7px
+            padding: 0
+            float: left
+            width: $w
+            height: $h
+            a
+                background-size: $w auto
+
+    hook-selector($stage, "" + selector())
+
+/*! Slogan */
+.site_slogan
+    position: relative
+    margin: 0
+    padding: 16px 16px 0 16px
+    float: right
+    color: #FFF
+    text-align: right
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        font-size: 75%
+        if $var-sitename-style == 'text'
+            clear: both
+            float: none
+            padding: 0px 10px 0
+            text-align: left
+            line-height: 1.2em
+
+    hook-selector($stage, "" + selector())
+
+/*!--------------------------------------
+  Gloval Navigation Content
+--------------------------------------*/
+
+// variables
+$bg = $navigation-background // #E7E7E7
+$navigation-border-top        = lighten($bg, 28%) // $EEE
+$navigation-border-bottom     = darken($bg, 14%)  // #C7C7C7
+$navigation-border-right      = darken($bg, 7%)   // #D7D7D7
+$navigation-background-active = darken($bg, 3.5%) // #DFDFDF
+
+/*! Navigation Menu List */
+first-child-border-left(mode, bl) // mixin
+    if mode == 1
+        border-left: 1px solid bl
+
+#navigation
+    padding: $navigation-padding
+    @media only screen and (max-width: $breakpoint-small-max)
+        padding: 0
+
+    if $var-global-navigation-style == 'normal'
+        background: $navigation-background
+        border-top:    1px solid $navigation-border-top
+        border-bottom: 1px solid $navigation-border-bottom
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+        text-align: left
+        text-shadow: 0 1px 0 #FFF
+        ul
+            list-style: none
+            margin: 0
+            padding: 0
+            //font-weight: bold
+        li
+            float: left
+            margin: 0
+            padding: 0
+            a
+                font-size: 13px
+                display: block
+                line-height: 30px
+                margin: 0
+                padding: 0 7px
+                border-right: 1px solid $navigation-border-right
+            &:first-child a
+                first-child-border-left($var-style-mode, $navigation-border-right)
+
+    if $var-global-navigation-style == 'frame'
+        build-border("$navigation")
+        @media only screen and (max-width: $breakpoint-small-max)
+            border: none
+
+        background: $navigation-background
+        //border-top:    1px solid $navigation-border-top
+        //border-bottom: 1px solid $navigation-border-bottom
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+        text-align: left
+        text-shadow: 0 1px 0 #FFF
+        ul
+            list-style: none
+            margin: 0
+            padding: 0
+            font-weight: bold
+        li
+            float: left
+            margin: 0
+            padding: 0
+            a
+                font-size: 13px
+                display: block
+                line-height: 30px
+                margin: 0
+                padding: 0 7px
+                border-right: 1px solid $navigation-border-right
+            &:first-child a
+                first-child-border-left($var-style-mode, $navigation-border-right)
+
+    hook-selector($stage, "" + selector())
+
+/*! Navigation Menu */
+.menuitem
+    a,
+    a:link,
+    a:visited
+        color: #666
+    a:hover,
+    a:focus,
+    a:active
+        color: $base-anker-color
+        text-decoration: none
+        background: $navigation-background-active
+
+.tinynav
+    display: none
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        display: block
+        width: 95%
+        max-width:none
+        margin: auto
+
+/*!--------------------------------------
+  Center Block Content
+--------------------------------------*/
+
+#centerblocks
+    //line-height: 1.5em
+    hook-selector($stage, "" + selector())
+
+/*! Welcome Message */
+.welcome_msg
+    margin: 0.5em 0 1.5em
+    padding: 0.5em 0
+    border-bottom: 1px solid $center-separator-color
+    color: #888
+
+/*! Block */
+#centerblocks section.block-center,
+#centerblocks div.block-center
+    margin: 0 0 1em 0
+    padding: 0 0 2em 0
+    border-bottom: 1px solid #CCC
+
+/*!--------------------------------------
+  Footer Content
+--------------------------------------*/
+
+#footer
+    border-top: 1px solid #CCC
+    build-border("$footer")
+    @media only screen and (max-width: $breakpoint-small-max)
+        border: none
+
+    font-size: 12px
+    color: #666
+    background-color: $footer-background
+    a:link,
+    a:visited,
+    a:active
+        color: #666
+        text-decoration: none
+    a:hover
+        color: $base-anker-color
+        text-decoration: underline
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        border: none
+        color: #999
+        background-color: $mobile-footer-background
+        a:link,
+        a:visited,
+        a:active
+            color: #999
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+    hook-selector($stage, "" + selector())
+
+/*! Copyright */
+.copyright
+    float: left
+    margin: 0
+    padding-left: 8px
+    line-height: 1.4em
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        float: none
+        margin: 0 0 1em 0
+        padding-left: 0px
+        padding-right: 8px
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+    hook-selector($stage, "" + selector())
+
+/*! Powered by & Page Execution Time */
+.site_info
+    float: right
+    margin: 0
+    padding-right: 15px
+    text-align: right
+    line-height: 1.4em
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        float: none
+        text-align: left
+        margin: 0
+        padding-left: 4px
+        padding-right: 8px
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+    hook-selector($stage, "" + selector())
+
+/*!--------------------------------------
+  Common Block Style
+--------------------------------------*/
+
+#leftblocks,
+#rightblocks
+    p
+        line-height: 1.25
+        margin: 0.7em 0
+    ul
+        list-style-position: inside
+        margin: 0.7em 0
+        padding-left: 0.5em
+    ol
+        list-style-position: inside
+        margin: 0.7em 0
+        padding-left: 0.9em
+    li
+        margin: 0 0 0.25em 0
+        padding: 0
+    dl
+        margin: 0.7em 0
+    input
+        font-size: 95%
+        margin-left: 0
+        margin-right: 0
+
+    /*--------------------------------------
+      Admin Option
+      Topic Menu
+      User Menu
+    --------------------------------------*/
+
+    /* Menu Enabled */
+    .sideoption
+        list-style: none outside
+        color: #999
+        margin: 0
+        padding: 0
+        a
+            display: block
+            color: #222
+            height: 1.8em
+            line-height: 1.8em
+            overflow: hidden
+            padding: 0 5px
+            white-space: nowrap
+            text-decoration: none
+            &:hover
+                background-color: #F1F1F1
+        span
+            color: #999
+            text-decoration: none
+            margin-left: 3px
+
+    /* Menu Disabled */
+    .sideoption_off
+        list-style: none outside
+        color: #999
+        display: block
+        height: 1.8em
+        line-height: 1.8em
+        overflow: hidden
+        margin: 0
+        padding: 0 5px
+        white-space: nowrap
+        span
+            color: #999
+            text-decoration: none
+            margin-left: 3px
+
+    /* Group Label */
+    .sideoption_group_label
+        color: #630
+        font-size: 103%
+        font-weight: bold
+        height: 1.6em
+        line-height: 1.6em
+        overflow: hidden
+        margin: 0
+        padding: 0 5px
+        white-space: nowrap
+        border-bottom: 1px dotted #ccc
+    .noliststyle
+        padding-left: 0
+    .branch_level2 a
+        padding-left: 15px
+    .branch_level3 a
+        padding-left: 25px
+    .branch_level4 a
+        padding-left: 35px
+    .sideoption_off.branch_level2
+        padding-left: 15px
+    .sideoption_off.branch_level3
+        padding-left: 25px
+    .sideoption_off.branch_level4
+        padding-left: 35px
+
+    /* Block Title */
+    h3, h4
+        font-size: 100%
+
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        background: $mobile-blocks-background //#E7E7E7
+        input
+            font-size: 16px
+        input[type="submit"]
+            font-size: 14px
+
+        .sideoption a,
+        .sideoption a:hover,
+        .sideoption_off
+            background: url(../images/arrow-right.png) no-repeat #F7F7F7
+            background-size: 24px auto
+            background-position: right 50%
+            border: 1px solid #CACACA
+            color: #222
+            display: block
+            font-size: 16px
+            font-weight: bold
+            margin-bottom: -1px
+            padding: 4px 10px
+            text-decoration: none
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+
+        .sideoption_off
+            color: #999
+
+#leftblocks
+    hook-selector($stage, "" + selector())
+
+#rightblocks
+    hook-selector($stage, "" + selector())
+
+#loginform-loginname,
+#loginform-passwd
+    width: 50%
+
+/*! Help Icon */
+h1 img,
+h2 img,
+h3 img,
+h4 img
+    vertical-align: middle
+
+/*!--------------------------------------
+  System Message Block
+--------------------------------------*/
+
+.block-message
+    // variables
+    $rd = $msgbox-border-radius
+    $bd = $msgbox-border-size
+
+    margin: 1.5em 0
+    padding: 0
+    border-radius: $rd
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+    dl
+        margin: 0
+        padding: 0
+
+    /*! Title */
+    dt
+        margin: 0
+        padding: 4px 8px
+        background: $msgbox-title-background // #3E6C9A
+        color: $msgbox-title-color // #EEEEEC
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+        font-weight: bold
+        border: $bd solid rgba(0, 0, 0, 0.2)
+        border-radius: $rd $rd 0px 0px
+
+    /*! Message */
+    dd
+        margin: 0
+        padding: 8px 12px
+        background: $msgbox-message-background // #EEE
+        color: $msgbox-message-color // #404040
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5)
+        border: $bd solid rgba(0, 0, 0, 0.2)
+        //border-top: 2px
+        border-radius: 0px 0px $rd $rd
+    p
+        margin: 0.2em 0
+        line-height: 1.25
+
+    hook-selector($stage, "" + selector())
+
+/*!--------------------------------------
+  Left Block and Right Block
+--------------------------------------*/
+
+/*! Block */
+.block-left,
+.block-right,
+.block-list
+    margin: 0 8px 0.5em 8px
+    padding: 8px 0
+    font-size: 13px
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        font-size: 100%
+        margin: 0 10px
+        padding: 0
+
+
+/*! Block Title */
+.block-title
+    margin: 0 0 0.5em 0
+    padding: 0 0 0.1em 0
+    border-bottom: 1px solid #CCC
+    font-size: 14px
+    font-weight: bold
+    line-height: 20px
+
+/*!--------------------------------------
+  Search Form
+--------------------------------------*/
+
+#searchform
+    fieldset
+        margin-top: 15px
+        padding: 0px
+    a
+        line-height: 1.5em
+    // All Mobile Sizes
+    @media only screen and (max-width: $breakpoint-small-max)
+        fieldset
+            margin-top: 10px
+            margin-bottom: 10px
+            padding: 0px
+            text-align: center
+        .searchform
+            text-align: center
+
+.searchform
+    line-height: 2.2em
+    margin-bottom: 0.3em
+
+input[type="text"].search
+    background: url(../images/search.png) left center no-repeat #FFF
+    padding-left: 24px
+    width: 120px
+    color: #999
+
+/*!--------------------------------------
+  Login Form
+--------------------------------------*/
+
+/*! authentication buttons */
+login_form(pos) // mixin
+    left: 0px
+    width: 141px
+    background: url('/images/oauth-login-with-sprite.png') no-repeat
+    background-position: 0 pos
+
+#login
+    &_facebook
+        login_form(0)
+    &_twitter
+        login_form(-23px)
+    &_linkedin
+        login_form(-44px)
+    &_google
+        login_form(-66px)
+    &_yahoo
+        login_form(-88px)
+    &_microsoft
+        login_form(-110px)
+    &_github
+        login_form(-132px)
+    &_openid
+        login_form(-154px)
+
+#loginform
+    fieldset
+        margin-top: 15px
+        padding: 0px
+    .submit
+        margin-bottom: 0.3em
+    a
+        line-height: 1.5em
+
+.form_part
+    margin-bottom: 0.3em
+    label
+        display: block
+        line-height: 1.2em
+        margin-bottom: 0.3em
+
+/*! Third party login */
+form.third-party-login
+    margin: 0.1em 0
+    div
+        position: relative
+        img
+            position: absolute
+            left: 6px
+            top: 6px
+        input
+            box-sizing: border-box
+            &.submit
+                text-indent: 24px
+                font-size: 12px
+                height: 28px
+
+div.third-party-login
+    width: 164px
+
+/*! All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: $breakpoint-small-max)
+
+    /*--------------------------------------
+      Gloval Navigation Content
+    --------------------------------------*/
+
+    #navigation_ul
+        display: none
+
+    /*--------------------------------------
+      Left And Right Block
+    --------------------------------------*/
+
+    $hue = hue($mobile-block-title-background)
+
+    .block-title,
+    #block-left-search > h2
+        background: $mobile-block-title-background
+        color: #EEEEEC
+        font-weight: bold
+        padding: 8px 5px
+        text-align: left
+        font-size: 16px
+        margin-left: -10px
+        margin-right: -10px
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+        border-top: 1px solid hue(#6F99C7, $hue)
+        border-bottom: 1px solid hue(#1F364F, $hue)
+
+    h2.show,
+    #block-left-search > h2.show
+        background: url(../images/arrow-down.png) no-repeat $mobile-block-title-background
+        background-size: 36px auto
+        background-position: right 50%
+
+    h2.hide,
+    #block-left-search > h2.hide
+        background: url(../images/arrow-up.png) no-repeat $mobile-block-title-background
+        background-size: 36px auto
+        background-position: right 50%
+
+    h2.block-title
+        margin-top: 0
+        margin-bottom: 0
+
+    #block-left-search > h2
+        margin-top: 0
+        margin-bottom: 0
+
+    #config_menu .block-title
+        margin-left: -10px
+        margin-right: -10px
+
+    #search-configuration-container label
+        margin: 0 0 0.5em 0
+        padding: 0 0 0.1em 0
+        display: block
+        border-bottom: 1px solid #CCC
+        background: $mobile-block-title-background
+        color: #EEEEEC
+        font-weight: bold
+        padding: 8px 5px
+        text-align: left
+        font-size: 16px
+        margin-left: -10px
+        margin-right: -10px
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+
+    #search-configuration
+        font-size: 16px
+
+    .block-left-content,
+    .block-right-content,
+    .block-list-content
+        padding: 10px 0
+        text-shadow: 0 1px 0 #FFF
+
+
+    #block-left-search > .block-left-content
+        background: $mobile-blocks-background // #E7E7E7
+        padding: 10px
+        margin: 0px
+
+    .noliststyle
+        list-style: none
+        padding: 0px
+        margin: 0px
+
+    .sideoption:first-child a,
+    .sideoption_off:first-child
+        -webkit-border-top-left-radius: 8px
+        -webkit-border-top-right-radius: 8px
+
+    .sideoption:last-child a,
+    .sideoption_off:last-child
+        -webkit-border-bottom-left-radius: 8px
+        -webkit-border-bottom-right-radius: 8px
+
+hook-root($stage)

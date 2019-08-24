@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+<div class="uk-form-row">
+    <p>{lang_groupinstructions}</p>
+    <div class="uk-overflow-container">{group_options}</div>
+</div>
+
+{# end {templatelocation} #}

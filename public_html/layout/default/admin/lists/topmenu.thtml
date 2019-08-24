@@ -1,0 +1,11 @@
+{# begin {templatelocation} #}
+
+<div id="admin-topmenu" class="uk-panel uk-panel-box">
+  {icon}
+  <div id="admin-menu-fields">
+    {menu_fields_pre}{menu_fields}{menu_fields_aft}
+  </div>
+  <div id="instructions">{lang_instructions}</div>
+</div>
+
+{# end {templatelocation} #}

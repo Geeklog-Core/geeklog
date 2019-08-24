@@ -1,0 +1,18 @@
+{# begin {templatelocation} #}
+
+<form action="{site_admin_url}/syndication.php" method="post" id="admin-selecttype" class="uk-form uk-form-horizontal">
+  <fieldset>
+    <legend>{lang_go}</legend>
+
+    <p class="uk-margin-bottom">{lang_explain}</p>
+
+    <div class="uk-form-row uk-margin-large-top">
+      <label class="uk-form-label">{type_selection}</label>
+      <div class="uk-form-controls">
+        <input type="submit" value="{lang_go}" name="mode" class="uk-button uk-form-width-medium"{xhtml}>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+{# end {templatelocation} #}

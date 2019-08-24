@@ -1,0 +1,10 @@
+{# begin {templatelocation} #}
+
+<div class="uk-form-row uk-margin-large-top">
+  <div class="uk-form-controls">
+    <input type="submit" name="mode" value="{action_reminder}" aria-describedby="reminder-submit-d1" class="uk-button uk-form-width-medium"{xhtml}>
+    <span class="uk-form-help-inline" id="reminder-submit-d1">{lang_reminder}</span>
+  </div>
+</div>
+
+{# end {templatelocation} #}

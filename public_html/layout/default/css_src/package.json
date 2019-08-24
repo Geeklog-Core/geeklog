@@ -1,0 +1,39 @@
+{
+  "name": "Denim",
+  "title": "Geeklog Denim Theme",
+  "version": "1.1.0",
+  "homepage": "http://www.trybese.com/~dengen/log/",
+  "description": "Geeklog Denim Theme Project",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp build",
+    "watch": "gulp watch"
+  },
+  "keywords": [
+    "geeklog",
+    "denim",
+    "theme"
+  ],
+  "author": "dengen",
+  "license": "GPLv2",
+  "devDependencies": {
+    "R2": "^1.4.3",
+    "browser-sync": "^2.2.4",
+    "glob": "^5.0.3",
+    "gulp": "^3.8.10",
+    "gulp-combine-media-queries": "^0.2.0",
+    "gulp-csscomb": "^3.0.3",
+    "gulp-csso": "^0.2.9",
+    "gulp-header": "^1.2.2",
+    "gulp-minify-css": "^0.3.11",
+    "gulp-rename": "^1.2.0",
+    "gulp-replace": "^0.5.3",
+    "gulp-shell": "^0.2.11",
+    "gulp-stylus": "^2.0.0",
+    "gulp-watch": "^4.2.1",
+    "mkdirp": "^0.5.0",
+    "nib": "^1.1.0",
+    "run-sequence": "^1.0.2",
+    "stylus": "^0.49.3"
+  }
+}

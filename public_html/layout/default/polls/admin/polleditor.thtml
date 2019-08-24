@@ -1,0 +1,88 @@
+{# begin {templatelocation} #}
+
+{noscript}
+<div id="advanced_editor" style="display:none;">
+  <form class="uk-form uk-form-stacked" action="{site_admin_url}/plugins/polls/index.php" method="post" id="polls-polleditor">
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="polls-polleditor-pid">{lang_pollid}</label>
+      <div class="uk-form-controls">
+        <input type="text" dir="ltr" name="pid" value="{poll_id}" maxlength="128" id="polls-polleditor-pid" class="uk-form-width-large" required{xhtml}>
+        <span class="uk-form-help-inline">{lang_donotusespaces}</span>
+      </div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="polls-polleditor-topic">{lang_topic}</label>
+      <div class="uk-form-controls">
+        <input type="text" name="topic" value="{poll_topic}" maxlength="255" id="polls-polleditor-topic" class="uk-width-1-1" required{xhtml}>
+        <span class="uk-form-help-inline">{poll_topic_info}</span>
+      </div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="polls-polleditor-meta_description"{hide_meta}>{lang_metadescription}</label>
+      <div class="uk-form-controls"{hide_meta}><textarea name="meta_description" cols="45" rows="2" id="polls-polleditor-meta_description" class="uk-width-1-1">{meta_description}</textarea></div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="polls-polleditor-meta_keywords"{hide_meta}>{lang_metakeywords}</label>
+      <div class="uk-form-controls"{hide_meta}><textarea name="meta_keywords" cols="45" rows="2" id="polls-polleditor-meta_keywords" class="uk-width-1-1">{meta_keywords}</textarea></div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="polls-polleditor-commentcode">{lang_mode}</label>
+      <div class="uk-form-controls"><select name="commentcode" id="polls-polleditor-commentcode">{comment_options}</select></div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="polls-polleditor-mainpage">{lang_appearsonhomepage}
+      <input type="checkbox" name="mainpage" id="polls-polleditor-mainpage" {poll_display}{xhtml}></label>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="polls-polleditor-open">{lang_openforvoting}
+      <input type="checkbox" name="open" id="polls-polleditor-open" {poll_open}{xhtml}></label>      </div>
+    <div class="uk-form-row uk-margin-bottom">
+      <label class="uk-form-label" for="polls-polleditor-hideresults">{lang_hideresults}
+      <input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}><span class="uk-form-help-inline">{poll_hideresults_explain}</span></label>
+    </div>
+
+    <div id="po_navbar" class="jsenabled_show">
+        {navbar}
+    </div>
+      {question_list}
+
+  <fieldset class="uk-margin-large-top uk-form-horizontal">
+    <legend>{lang_accessrights}</legend>
+
+    <div class="uk-form-row">
+      <label class="uk-form-label">{lang_owner}</label>
+      <div class="uk-form-controls">
+        {owner_name}
+        <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+      </div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label" for="group_id">{lang_group}</label>
+      <div class="uk-form-controls">{group_dropdown}</div>
+    </div>
+    <div class="uk-form-row">
+      <label class="uk-form-label">{lang_permissions}</label>
+      <div class="uk-form-controls">
+        {permissions_editor}
+        <span class="uk-form-help-inline">{lang_perm_key}</span>
+        <span class="uk-form-help-inline">{lang_permissions_msg}</span>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="uk-form-horizontal">
+    <div class="uk-form-row uk-margin-large-top">
+      <div class="uk-form-controls">
+            <input type="submit" value="{lang_save}" name="mode" class="uk-form-width-medium"{xhtml}>
+            <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
+            {delete_option}
+            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+            <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
+          </div>
+    </div>
+  </div>
+
+  </form>
+</div>
+
+{# end {templatelocation} #}

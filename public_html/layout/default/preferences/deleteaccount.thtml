@@ -1,0 +1,17 @@
+{# begin {templatelocation} #}
+
+<div class="uk-form-row uk-panel-box">
+  <p class="uk-text-bold">{lang_deleteaccount}</p>
+  <div class="uk-margin-left">{delete_text}</div>
+</div>
+
+<div class="uk-form-row">
+  <label class="uk-form-label" for="deleteaccount-submit">{lang_deleteoption}</label>
+  <div class="uk-form-controls">
+    <input type="hidden" name="mode" value="{delete_mode}"{xhtml}>
+    <input type="hidden" name="account_id" value="{account_id}"{xhtml}>
+    <input type="submit" name="btnsubmit" value="{lang_button_delete}" id="deleteaccount-submit" class="uk-button"{xhtml}>
+  </div>
+</div>
+
+{# end {templatelocation} #}

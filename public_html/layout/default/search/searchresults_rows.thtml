@@ -1,0 +1,7 @@
+{# begin {templatelocation} #}
+
+<tr>
+  {results_columns}
+</tr>
+
+{# end {templatelocation} #}

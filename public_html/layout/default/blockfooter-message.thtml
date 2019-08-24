@@ -1,0 +1,13 @@
+{# begin {templatelocation} #}
+
+    </aside>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$.UIkit.modal('#gl-message').show();
+});
+</script>
+
+{# end {templatelocation} #}

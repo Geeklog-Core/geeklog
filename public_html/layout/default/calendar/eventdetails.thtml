@@ -1,0 +1,22 @@
+{# begin {templatelocation} #}
+
+<h3 class="cal-event-title">{event_title}</h3>
+<dl class="uk-description-list-line">
+  <dt>{lang_when}</dt>
+  <dd>{event_start} - {event_end}</dd>
+  <dt>{lang_event_type}</dt>
+  <dd>{event_type}</dd>
+  <dt>{lang_where}</dt>
+  <dt>
+            {event_location}{br0}
+            {event_address1}{br1}
+            {event_address2}{br2}
+            {event_city}{event_state} {event_zip}
+  <dt>{lang_description}</dt>
+  <dd>{event_description}</dd>
+</dl>
+<ul class="uk-subnav uk-flex-center">
+  <li>{addremove_event}</li><li>{edit_icon}</li>
+</ul>
+
+{# end {templatelocation} #}

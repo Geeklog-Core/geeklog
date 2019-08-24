@@ -1,0 +1,207 @@
+
+$stage = 'form_basic'
+
+/*!--------------------------------------
+  Basic Form
+--------------------------------------*/
+
+.form_block
+    margin: 0
+    padding: 0
+    &:after
+        denim-clearfix()
+
+/*! Message */
+.form_message
+    margin: 0 0 1em 0
+    padding: 0
+
+.noborder_fieldset
+    margin: 0
+    border: none
+
+.hidden_legend
+    display: none
+
+/*! Basic editor */
+.user_basic
+    padding: 0.5em 2em
+    @media only screen and (max-width: $breakpoint-medium-max)
+        padding: 0.5em 0
+
+.wide
+    width: 98%
+    resize: vertical
+
+.separator
+    display: none
+
+.speech
+    overflow: hidden
+    position: absolute
+    left: -999px
+    width: 0
+    height: 0
+
+#save_button
+    padding-bottom: 1em
+
+.loose
+    display: inline
+    // All Mobile Sizes (devices and browser)
+    @media only screen and (max-width: $breakpoint-small-max)
+        display: block
+
+/*! Style for legacy table layout */
+.layout,
+.layout tr,
+.layout td
+    margin: 0
+    padding: 0
+    border: none
+    background: none
+
+for num in (1..10)
+    .size{num}
+        width: (num * 60)px
+
+//@media only screen and (min-width: 600px) and (max-width: 759px)
+@media only screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-medium-max)
+    .size6
+        width: 75%
+    .size7
+        width: 80%
+    .size8
+        width: 85%
+    .size9
+        width: 90%
+    .size10
+        width: 95%
+
+/*! All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: $breakpoint-small-max)
+    .size1, .size2, .size3, .size4, .size5,
+    .size6, .size7, .size8, .size9, .size10, .wide
+        width: 100%
+
+/*!--------------------------------------
+  2 Culumn Form
+--------------------------------------*/
+
+.compact
+    dt
+        float: left
+        clear: left
+        width: 24%
+        margin: 0 0 1em 0
+        padding: 0 1% 0 0
+        font-weight: normal
+    dd
+        float: left
+        width: 75%
+        margin: 0 0 1em 0
+        padding: 0
+
+    /*! Description */
+    dd.description
+        margin: -0.5em 0 1em 25%
+        padding: 0
+    p.description
+        margin: 0 0 1em 0
+        padding: 0
+
+@media only screen and (max-width: $breakpoint-medium-max)
+
+    /*!--------------------------------------
+      From 2 Column Form To 1 Column Form
+    --------------------------------------*/
+
+    .compact
+        dt
+            float: none
+            width: auto
+            margin: 0
+            padding: 0
+            font-weight: bold
+        dd
+            float: none
+            width: auto
+            margin: 0 0 0.5em 0
+            padding: 0
+
+        /*! Description */
+        dd.description
+            margin: -0.5em 0 1em 0
+            padding: 0
+        p.description
+            margin: 0 0 1em 0
+            padding: 0
+
+/*!--------------------------------------
+  1 Column Form
+--------------------------------------*/
+
+.linear
+    dt
+        margin: 0
+        padding: 0
+        font-weight: bold
+    dd
+        margin: 0 0 0.5em 0
+        padding: 0
+
+    /*! Description */
+    dd.description
+        margin: -0.5em 0 1em 0
+        padding: 0
+    p.description
+        margin: 0 0 1em 0
+        padding: 0
+
+/*!--------------------------------------
+  Profile Notes
+--------------------------------------*/
+
+.profile_notes
+    margin: 0 0 1em 0
+    padding: 8px
+    border-style: solid
+    border-width: 1px
+    border-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2)
+    border-radius: 6px
+    background: #FFFFE1
+    line-height: 1.3em
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5)
+    dt
+        margin: 0 0 0.5em 0
+        padding: 0 0 0 24px
+        border-bottom: 1px solid #CCC
+        background: url(../images/icon_info.png) no-repeat 0 0
+        font-weight: bold
+        color: #666
+    dd
+        margin-bottom: 0
+        font-size: 90%
+        color: #666
+    ul
+        list-style-position: inside
+        margin: 0
+        padding: 0
+    li
+        margin: 0 0 0 5px
+        padding: 0
+
+/*!--------------------------------------
+  List Compact
+--------------------------------------*/
+
+ul.compact
+    margin: 0
+    padding: 0
+    li
+        display: inline
+        margin: 0
+        padding: 0
+
+hook-root($stage)

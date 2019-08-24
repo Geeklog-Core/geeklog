@@ -1,0 +1,11 @@
+{# begin {templatelocation} #}
+
+        <div class="uk-form-row">
+            <label class="uk-form-label" for="profile-photo" aria-describedby="userphoto-photo">{lang_userphoto}</label>
+            <div class="uk-form-controls">
+                <input type="file" name="photo" id="profile-photo"{xhtml}>
+                <div id="userphoto-photo">{lang_userphoto_text}{display_photo}<br{xhtml}>{photo_max_dimensions}</div>
+            </div>
+        </div>
+
+{# end {templatelocation} #}

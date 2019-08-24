@@ -1,0 +1,8 @@
+{# begin {templatelocation} #}
+
+<section class="block-list">
+  <h2 class="uk-h2 block-title">{block_title}{block_help}</h2>
+  <nav class="block-list-content" role="navigation">
+    <ul class="uk-list">
+
+{# end {templatelocation} #}

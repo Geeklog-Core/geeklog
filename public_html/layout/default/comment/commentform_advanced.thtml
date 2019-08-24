@@ -1,0 +1,78 @@
+{# begin {templatelocation} #}
+
+{noscript}
+<div id="advanced_editor" style="display:none;">
+  {start_block_postacomment}
+  <div class="uk-panel uk-panel-box">
+    <form action="{form_url}" method="post" onsubmit='set_postcontent();' id="commentform_advanced" class="uk-form uk-form-horizontal">
+      <div class="uk-form-row">
+        <label class="uk-form-label">{lang_username}</label>
+        <div class="uk-form-controls">{cid}
+          <input type="hidden" name="order" value="{order}"{xhtml}>
+          <input type="hidden" name="format" value="{format}"{xhtml}>
+          <input type="hidden" name="cpage" value="{cpage}"{xhtml}>
+          <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+          <input type="hidden" name="{nprefix}pid" value="{pid}"{xhtml}>
+          <input type="hidden" name="{nprefix}type" value="{type}"{xhtml}>
+          <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+          <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>{username}&nbsp;
+          <span{hidewhenediting}>[<a href="{action_url}" rel="nofollow" class="logoutorcreateaccount">{lang_logoutorcreateaccount}</a>]</span>
+        </div>
+      </div>
+      <div class="uk-form-row">
+        <label class="uk-form-label" for="commentform-title">{lang_title}</label>
+        <div class="uk-form-controls">
+          <input type="text" value="{title}" maxlength="96" name="title" id="commentform-title" class="uk-width-1-1" required{xhtml}>
+        </div>
+      </div>
+      <div class="uk-form-row">
+        <label>{lang_comment}</label>
+        <div id="text_editor" style="display: {show_texteditor};">
+          <textarea cols="45" rows="10" name="comment" id="comment_text" class="uk-width-1-1" aria-describedby="comment-html-d1" required>{comment}</textarea>
+        </div>
+        <div id="html_editor" style="display: {show_htmleditor};">
+          <textarea cols="45" rows="10" name="comment_html" id="comment_html" class="uk-width-1-1">{comment}</textarea>
+          <span class="uk-form-help-inline">{allowed_html}</span>
+        </div>
+      </div>
+      <div class="uk-form-row">
+        <label class="uk-form-label" for="sel_editmode">{lang_postmode}</label>
+        <div class="uk-form-controls">
+          <select id="sel_editmode" name="postmode" onchange="change_editmode(this);">
+            {postmode_options}
+          </select>
+        </div>
+      </div>
+
+      {captcha}
+
+      <div class="uk-form-row">
+        <label class="uk-form-label">{lang_importantstuff}</label>
+        <div class="uk-form-controls">
+          <ul class="uk-list">
+            <li class="li-importantstuff">{lang_instr_line1}</li>
+            <li class="li-importantstuff">{lang_instr_line2}</li>
+            <li class="li-importantstuff">{lang_instr_line3}</li>
+            <li class="li-importantstuff">{lang_instr_line4}</li>
+            <li class="li-importantstuff">{lang_instr_line5}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="uk-form-row uk-margin-large-top">
+        <div class="uk-form-controls">
+          <input type="submit" name="{nprefix}mode" value="{lang_preview}" class="uk-button"{xhtml}>
+          <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
+          {save_option}
+          <input type="submit" value="{lang_cancel}" name="{nprefix}mode" class="uk-button"{xhtml}>
+          {delete_option}
+          {notification}
+        </div>
+      </div>
+
+    </form>
+  </div>
+  {end_block}
+</div>
+
+{# end {templatelocation} #}
