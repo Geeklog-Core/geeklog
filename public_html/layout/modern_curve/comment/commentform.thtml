@@ -35,6 +35,7 @@
       </dd>
     </dl>
 
+    {!if is_anon}
     <dl class="importantstuff">
       <dt>{lang_importantstuff}</dt>
       <dd>
@@ -47,6 +48,7 @@
         </ul>
       </dd>
     </dl>
+    {!endif}
 
     {captcha}
 

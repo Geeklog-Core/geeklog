@@ -855,8 +855,9 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
     if (empty($_USER['uid'])) {
         $uid = 1;
     } else {
-        $uid = $_USER['uid'];
+        $uid = (int) $_USER['uid'];
     }
+    $isAnon = ($uid <= 1);
 
     if (empty($format)) {
         if (isset($_REQUEST['format'])) {
@@ -1248,6 +1249,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $allowed_html .= COM_allowedHTML($permission, false, 1, $pm);
             }
             $allowed_html .= COM_allowedAutotags();
+            $comment_template->set_var('is_anon', $isAnon);
             $comment_template->set_var('allowed_html', $allowed_html);
             $comment_template->set_var('lang_importantstuff', $LANG03[18]);
             $comment_template->set_var('lang_instr_line1', $LANG03[19]);
