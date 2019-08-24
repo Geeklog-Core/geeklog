@@ -30,22 +30,23 @@ a,
 a:hover {
   color: #2664a2;
 }
-html {
-  background: #1A3955;
-}
+/*html {*/
+/*  background: #1A3955;*/
+/*}*/
 .container {
-  width: 1080px;
-  margin: 30px auto;
+  max-width: 600px;
+  margin: 10px auto;
+  padding: 5px;
 }
-h1 {
-  font-size: 24px;
-}
-h2 {
-  font-size: 20px;
-}
-h3 {
-  font-size: 16px;
-}
+/*h1 {*/
+/*  font-size: 24px;*/
+/*}*/
+/*h2 {*/
+/*  font-size: 20px;*/
+/*}*/
+/*h3 {*/
+/*  font-size: 16px;*/
+/*}*/
 .perms-label {
   float: right;
   text-align: right;
@@ -136,20 +137,21 @@ h3 {
   margin: 10px 0;
   border: 1px solid transparent;
 }
-.input_file {
-  width: 270px;
-}
+
 /* Misc ******************************************************************/
 .code {
-  font-family: "Courier New";
+  font-family: "Courier New", monospace;
 }
+
 .indent {
   margin-right: 1em;
   margin-left: 1em;
 }
+
 .clearboth {
   clear: both;
 }
+
 /* UIkit Modifier ******************************************************************/
 * + .uk-table {
   margin-top: 15px;
@@ -190,7 +192,7 @@ h3 {
 .uk-table-condensed td {
   padding: 4px 8px;
 }
-.uk-table-hover tbody tr: hover {
+.uk-table-hover tbody tr:hover {
   background: #f0f0f0;
 }
 * + .uk-margin {

@@ -33,6 +33,8 @@
 // | docs/english/install.html which describes how to install Geeklog.         |
 // +---------------------------------------------------------------------------+
 
+error_reporting(-1);
+
 define('PATH_INSTALL', __DIR__ . '/');
 define('PATH_LAYOUT', PATH_INSTALL . 'layout');
 define('BASE_FILE', str_replace('\\', '/', __FILE__));

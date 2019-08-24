@@ -30,26 +30,27 @@ a,
 a:hover {
   color: #2664a2;
 }
-html {
-  background: #1A3955;
-}
+/*html {*/
+/*  background: #1A3955;*/
+/*}*/
 .container {
-  width: 1080px;
-  margin: 30px auto;
+  max-width: 600px;
+  margin: 10px auto;
+  padding: 5px;
 }
-h1 {
-  font-size: 24px;
-}
-h2 {
-  font-size: 20px;
-}
-h3 {
-  font-size: 16px;
-}
+/*h1 {*/
+/*  font-size: 24px;*/
+/*}*/
+/*h2 {*/
+/*  font-size: 20px;*/
+/*}*/
+/*h3 {*/
+/*  font-size: 16px;*/
+/*}*/
 .perms-label {
   float: left;
   text-align: left;
-  padding: 0px;
+  padding: 0;
   width: 32em;
   margin-top: 5px;
   display: block;
@@ -96,11 +97,11 @@ h3 {
   min-height: 400px;
 }
 .file-permissions {
-  padding: 0px;
+  padding: 0;
   text-align: left;
-  margin: 0px;
+  margin: 0;
   display: block;
-  border: 0px solid;
+  border: 0 solid;
 }
 #migration-select {
   display: none;
@@ -114,12 +115,12 @@ h3 {
 .error {
   color: #FF0000;
   font-weight: bold;
-  margin-right: 2px;
+  /*margin-right: 2px;*/
 }
 .success {
   color: #41A317;
   font-weight: bold;
-  margin-right: 2px;
+  /*margin-right: 2px;*/
 }
 .permissions-list {
   color: #FF0000;
@@ -127,29 +128,30 @@ h3 {
 .help_highlight {
   background-color: #EEE;
   padding: 10px;
-  margin: 10px 0;
+  /*margin: 10px 0;*/
   border: 1px dashed #999;
 }
 .help_normal {
   color: #000;
   padding: 10px;
-  margin: 10px 0;
+  /*margin: 10px 0;*/
   border: 1px solid transparent;
 }
-.input_file {
-  width: 270px;
-}
+
 /* Misc ******************************************************************/
 .code {
-  font-family: "Courier New";
+  font-family: "Courier New", monospace;
 }
+
 .indent {
   margin-left: 1em;
   margin-right: 1em;
 }
+
 .clearboth {
   clear: both;
 }
+
 /* UIkit Modifier ******************************************************************/
 * + .uk-table {
   margin-top: 15px;
@@ -182,7 +184,7 @@ h3 {
 }
 .uk-table-middle,
 .uk-table-middle td {
-  vertical-align: middle!important;
+  vertical-align: middle !important;
 }
 .uk-table-striped tbody tr:nth-of-type(odd) {
   background: #fafafa;
@@ -190,7 +192,7 @@ h3 {
 .uk-table-condensed td {
   padding: 4px 8px;
 }
-.uk-table-hover tbody tr: hover {
+.uk-table-hover tbody tr:hover {
   background: #f0f0f0;
 }
 * + .uk-margin {
