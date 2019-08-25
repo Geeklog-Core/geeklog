@@ -379,6 +379,7 @@ function install_config(ConfigInterface $c)
     $c->add('max_photo_size',65536,'text',5,26,NULL,1590,TRUE, $me, 26);
     $c->add('force_photo_width',75,'text',5,26,NULL,1620,FALSE, $me, 26);
     $c->add('default_photo','http://example.com/images/userphotos/default.png','text',5,26,NULL,1630,FALSE, $me, 26);
+    $c->add('generate_user_icon',true,'select',5,26,1,1640,true, $me, 26);
 
     $c->add('tab_gravatar', NULL, 'tab', 5, 27, NULL, 0, TRUE, $me, 27);
     $c->add('fs_gravatar', NULL, 'fieldset', 5, 27, NULL, 0, TRUE, $me, 27);

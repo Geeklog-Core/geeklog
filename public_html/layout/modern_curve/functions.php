@@ -109,6 +109,7 @@ function theme_css_modern_curve()
          array('file' => '/layout/' . $_CONF['theme'] . '/css/plugin/sitecalendar.css', 'priority' => 1.30),
 
          array('file' => '/layout/' . $_CONF['theme'] . '/css/tooltips/tooltips.css', 'priority' => 1.31),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/additional.css', 'priority' => 1.32),
     );
 }
 
