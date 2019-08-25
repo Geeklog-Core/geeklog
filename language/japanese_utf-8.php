@@ -2389,6 +2389,7 @@ $LANG_confignames['Core'] = array(
     'max_photo_width' => '幅の最大値',
     'max_photo_height' => '高さの最大値',
     'max_photo_size' => 'ファイルサイズの最大値',
+    'generate_user_icon' => 'ユーザーのアイコンを自動作成する',
     'use_gravatar' => 'Gravatarを使用する',
     'gravatar_rating' => 'Gravatarの評価',
     'gravatar_identicon' => 'Gravtarのデフォルト画像',

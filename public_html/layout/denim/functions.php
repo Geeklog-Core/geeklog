@@ -145,12 +145,20 @@ function theme_css_denim()
         'priority'   => 90
     );
 
+    // add additional css of this theme
+    $css_items[] = array(
+        'name'       => 'additional',
+        'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/additional.css',
+        'attributes' => array('media' => 'all'),
+        'priority'   => 91
+    );
+
     // add custom css of this theme
     $css_items[] = array(
         'name'       => 'custom',
         'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/custom.css',
         'attributes' => array('media' => 'all'),
-        'priority'   => 91
+        'priority'   => 92
     );
 
     // register main css package

@@ -492,10 +492,54 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0)
                 $userPhoto .= ' width="' . $width . '"';
             }
             $userPhoto .= ' alt="" class="userphoto"' . XHTML . '>';
+        } else {
+            $userPhoto = USER_generateUserICON($uid);
         }
     }
 
     return $userPhoto;
+}
+
+/**
+ * Generate an icon for a logged-in user who has no profile photo
+ *
+ * @param  int $uid
+ * @return string
+ * @see    https://stackoverflow.com/questions/34310271/css-place-in-circle-first-letter-of-the-name
+ */
+function USER_generateUserICON($uid)
+{
+    global $_CONF, $_USER;
+
+    $retval = '';
+
+    if (!isset($_CONF['generate_user_icon']) || !$_CONF['generate_user_icon']) {
+        return $retval;
+    }
+
+    $uid = (int) $uid;
+
+    if (($uid > 1) && (!empty($_USER['fullname']) || !empty($_USER['username']))) {
+        $letters = '';
+
+        if (MBYTE_strpos($_USER['fullname'], ' ') !== false) {
+            $parts = explode(' ', $_USER['fullname'], 2);
+        } elseif (MBYTE_strpos($_USER['username'], ' ') !== false) {
+            $parts = explode(' ', $_USER['username']);
+        } else {
+            $parts = [
+                MBYTE_substr($_USER['username'], 0, 1),
+                MBYTE_substr($_USER['username'], -1)
+            ];
+        }
+
+        $letters = MBYTE_strtoupper(MBYTE_substr($parts[0], 0, 1))
+            . MBYTE_strtoupper(MBYTE_substr($parts[1], 0, 1));
+        $letters = htmlspecialchars($letters, ENT_QUOTES, 'utf-8');
+        $retval = '<span data-letters="' . $letters . '"></span>';
+    }
+
+    return $retval;
 }
 
 /**

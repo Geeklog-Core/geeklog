@@ -2391,6 +2391,7 @@ $LANG_confignames['Core'] = array(
     'max_photo_width' => 'Max Photo Width?',
     'max_photo_height' => 'Max Photo Height?',
     'max_photo_size' => 'Max Photo Size?',
+    'generate_user_icon' => 'Generate User Icon automatically?',
     'use_gravatar' => 'Use Gravatar?',
     'gravatar_rating' => 'Gravatar Rating',
     'gravatar_identicon' => 'Gravatar Identicon',

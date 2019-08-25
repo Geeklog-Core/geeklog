@@ -137,6 +137,9 @@ function update_ConfValuesFor221()
     $c->del('filemanager_unallowed_dirs_regexp', 'Core');
     $c->set('filemanager_date_format', 'yMMMdHm', 'Core');
 
+    // Add generate user icon option
+    $c->add('generate_user_icon',true,'select',5,26,1,1640,true, $me, 26);
+
     return true;
 }
 
