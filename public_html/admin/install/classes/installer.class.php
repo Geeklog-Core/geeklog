@@ -1067,6 +1067,8 @@ class Installer
     {
         global $_CONF, $_TABLES, $_USER, $_DB_dbms, $_DB_table_prefix;
 
+        // Don't use 'include' or 'require' here! (bug #951)
+        $this->includeConfig($this->env['dbconfig_path']);
         $fake_uid = false;
 
         if (!isset($_USER['uid'])) {
@@ -1080,7 +1082,7 @@ class Installer
             COM_errorLog("Attempting to install the '{$plugin}' plugin", 1);
         }
 
-        // sanity checks for $inst_parms
+        // sanity checks for $inst_params
         if (isset($inst_params['info'])) {
             $pi_name = $inst_params['info']['pi_name'];
             $pi_version = $inst_params['info']['pi_version'];
@@ -1917,7 +1919,7 @@ class Installer
                $_DB_dbms, $_DB_charset;
 
         $dbConfigData = @file_get_contents($dbConfigFilePath);
-        $dbConfigData =str_replace('<' . '?php', '', $dbConfigData);
+        $dbConfigData = str_replace('<' . '?php', '', $dbConfigData);
         eval($dbConfigData);
     }
 
@@ -4283,9 +4285,10 @@ HTML;
      * Installer engine
      * The guts of the installation and upgrade package.
      *
-     * @param  string $installType 'install' or 'upgrade'
-     * @param  int    $installStep 1 - 4
+     * @param  string  $installType  'install' or 'upgrade'
+     * @param  int     $installStep  1 - 4
      * @return string
+     * @throws Exception
      */
     private function installEngine($installType, $installStep)
     {
