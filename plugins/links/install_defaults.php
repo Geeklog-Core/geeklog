@@ -143,6 +143,10 @@ $_LI_DEFAULT['show_category_descriptions'] = true;
  */
 $_LI_DEFAULT['new_window'] = false;
 
+// Which reCAPTCHA version the plugin supports (since Geeklog 2.2.1)
+// Possible values are: RECAPTCHA_SUPPORT_NONE, RECAPTCHA_SUPPORT_V2, RECAPTCHA_SUPPORT_V2_INVISIBLE
+$_LI_DEFAULT['recaptcha'] = RECAPTCHA_SUPPORT_V2;
+
 /**
  * Links root category id
  */
@@ -215,6 +219,8 @@ function plugin_initconfig_links()
                 'select', 0, 0, 1, 50, true, 'links', 0);
         $c->add('new_window', $_LI_DEFAULT['new_window'], 'select',
                 0, 0, 1, 55, true, 'links',0);
+        $c->add('recaptcha', $_LI_DEFAULT['recaptcha'], 'select',
+            0, 0, 14, 58, true, 'links',0);
 
         $c->add('tab_admin', NULL, 'tab', 0, 1, NULL, 0, true, 'links', 1);
         $c->add('fs_admin', NULL, 'fieldset', 0, 1, NULL, 0, true, 'links', 1);

@@ -65,6 +65,7 @@ Language::override(array(
 if (!isset($_CA_CONF['calendarloginrequired'])) {
     $ca_config = config::get_instance();
     $_CA_CONF = $ca_config->get_config('calendar');
+    $_CA_CONF['recaptcha'] = (int) $_CA_CONF['recaptcha'];
 }
 
 // +---------------------------------------------------------------------------+
@@ -1636,7 +1637,12 @@ function plugin_upgrade_calendar()
             case '1.1.6':
                 $current_version = '1.1.7';
                 break;
-                
+
+            case '1.1.7':
+                calendar_update_ConfValues_1_1_7();
+                $current_version = '1.1.8';  // Shipped with Geeklog-2.2.1
+                break;
+
             default:
                 $done = true;
                 break;
@@ -2353,4 +2359,28 @@ function plugin_getlanguageoverrides_calendar()
 {
 
     return array('LANG_CAL_1', 'LANG_CAL_2', '_LANG_CAL_SEARCH', 'LANG_CAL_MESSAGE', 'PLG_calendar_MESSAGE4');
+}
+
+/**
+ * Return the info asked by PLG_collectRecaptchaInfo().
+ *
+ * @return  array of type => [
+ *              'type'     => type               // required, passed as the 1st parameter to
+ *                                                  plugin_templatesetvars_xxx()
+ *              'version'  => reCAPTCHA version, // required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1),
+ *                                                  RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
+ *              'form_id'  => form id,           // required only for reCAPTCHA V2 Invisible
+ *           ]
+ */
+function plugin_supportsRecaptcha_calendar()
+{
+    global $_CA_CONF;
+
+    return [
+        [
+            'type'    => 'calendar',
+            'version' => (isset($_CA_CONF['recaptcha']) ? (int) $_CA_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V2_INVISIBLE),
+            'form_id' => 'submit_event_form',
+        ],
+    ];
 }

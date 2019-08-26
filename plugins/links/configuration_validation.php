@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links                                                              |
+// | Links                                                                     |
 // +---------------------------------------------------------------------------+
 // | configuration_validation.php                                              |
 // |                                                                           |
-// | List of validation rules for the Links plugin configurations                          |
+// | List of validation rules for the Links plugin configurations              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2010 by the following authors:                         |
+// | Copyright (C) 2007-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Akeda Bagus       - admin AT gedex DOT web DOT id                |
 // |          Tom Homer         - tomhomer AT gmail DOT com                    |
@@ -41,6 +41,7 @@ $_CONF_VALIDATE['links']['linksperpage'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['links']['show_top10'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['links']['show_category_descriptions'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['links']['new_window'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['links']['recaptcha'] = ['rule' => ['inList', ['0', '1', '2'], true]];
 
 // Links Admin Settings
 $_CONF_VALIDATE['links']['hidenewlinks'] = array('rule' => 'boolean');

@@ -36,7 +36,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 $LANG_RECAPTCHA = array(
     'plugin'      => 'reCAPTCHA',
     'admin'       => 'reCAPTCHA',
-    'msg_error'   => 'Error, reCAPTCHA was invalid.',
+    'msg_error'   => 'エラーが発生しました。reCAPTCHAがリクエストを拒否しました。',
     'entry_error' => '%1sで無効な入力を検出しました。IPアドレス: %2s  エラーコード: %3s',    // %1s = $type, %2s = $ip, %3s = $errorCode
 );
 

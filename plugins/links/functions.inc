@@ -72,6 +72,7 @@ Language::override(array(
 if (!isset($_LI_CONF['linksloginrequired'])) {
     $li_config = config::get_instance();
     $_LI_CONF = $li_config->get_config('links');
+    $_LI_CONF['recaptcha'] = (int) $_LI_CONF['recaptcha'];
 }
 
 
@@ -818,6 +819,7 @@ function plugin_upgrade_links()
             break;
 
         case '2.1.6':
+            links_update_ConfValues_2_1_6();
             $current_version = '2.1.7'; // Shipped with Geeklog-2.2.1
             break;              
 
@@ -1945,4 +1947,29 @@ function plugin_getlanguageoverrides_links()
 {
 
     return array('LANG_LINKS', 'LANG_LINKS_STATS', 'LANG_LINKS_SEARCH', 'LANG_LINKS_SUBMIT', 'PLG_links_MESSAGE1', 'PLG_links_MESSAGE4', 'PLG_links_MESSAGE1');
+}
+
+/**
+ * Return the info asked by PLG_collectRecaptchaInfo().
+ *
+ * @return  array of type => [
+ *              'type'     => type               // required, passed as the 1st parameter to
+ *                                                  plugin_templatesetvars_xxx()
+ *              'version'  => reCAPTCHA version, // required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1),
+ *                                                  RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
+ *              'form_id'  => form id,           // required only for reCAPTCHA V2 Invisible
+ *           ]
+ */
+function plugin_supportsRecaptcha_links()
+{
+    global $_LI_CONF;
+
+    return [
+        [
+            'type'    => 'links',
+            'version' => (isset($_LI_CONF['recaptcha']) ? (int) $_LI_CONF['recaptcha'] : RECAPTCHA_SUPPORT_V2),
+            'form_id' => 'submitlink',
+        ],
+
+    ];
 }
