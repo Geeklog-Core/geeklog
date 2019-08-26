@@ -217,6 +217,7 @@ function submitstory()
          $storyForm->set_var('allow_save', true);
     } else {
         $storyForm->set_var('allow_save', false);
+        $storyForm->set_var('captcha', '');
     }
 
     $retval .= COM_startBlock($LANG12[6], 'submitstory.html');
