@@ -45,7 +45,7 @@ function plugin_autoinstall_recaptcha($pi_name)
     global $_CONF, $_RECAPTCHA_CONF;
 
     // IF demo mode (since GL 2.2.0) is in effect, return no valid information
-    if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+    if (COM_isDemoMode()) {
         return [];
     }
 

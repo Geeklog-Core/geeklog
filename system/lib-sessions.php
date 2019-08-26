@@ -336,7 +336,7 @@ function SESS_endUserSession($userId)
 
     $userId = (int) $userId;
 
-    if (!(isset($_CONF['demo_mode']) && $_CONF['demo_mode'])) {
+    if (!COM_isDemoMode()) {
         DB_delete($_TABLES['sessions'], 'uid', $userId);
         Session::setUid(Session::ANON_USER_ID);
     }

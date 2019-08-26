@@ -40,7 +40,7 @@ function fm_authenticate()
 {
     global $_CONF;
 
-    if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+    if (COM_isDemoMode()) {
         return false;
     } else {
         return SEC_inGroup('Root') || (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')));

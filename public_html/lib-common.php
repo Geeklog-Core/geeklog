@@ -8583,7 +8583,7 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor
     // Check if the current user has access to Filemanager
     $geeklogFileManager = "false";
     if (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Root') || (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')))) {
-        if ((isset($_CONF['demo_mode']) && !$_CONF['demo_mode']) || !isset($_CONF['demo_mode'])) {
+        if (!COM_isDemoMode()) {
             $geeklogFileManager = "true";
         }
     }
@@ -8703,6 +8703,19 @@ function COM_isEnableDeveloperModeLog($type)
         $_CONF['developer_mode_log'][$type];
 
     return $retval;
+}
+
+/**
+ * Return if we are in demo mode
+ *
+ * @return bool  true if we are in demo mode, false otherwise
+ * @since  Geeklog 2.2.1
+ */
+function COM_isDemoMode()
+{
+    global $_CONF;
+
+    return isset($_CONF['demo_mode']) && $_CONF['demo_mode'];
 }
 
 // Now include all plugin functions

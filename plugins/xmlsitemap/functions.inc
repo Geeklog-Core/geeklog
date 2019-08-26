@@ -333,7 +333,7 @@ function XMLSMAP_update($type = null, $include = null, $exclude = null)
         $pingTargets[] = 'bing';
     }
 
-    if ((isset($_CONF['demo_mode']) && !$_CONF['demo_mode']) || !isset($_CONF['demo_mode'])) {
+    if (!COM_isDemoMode()) {
         if (count($pingTargets) > 0) {
             $sitemap->sendPing($pingTargets);
         }

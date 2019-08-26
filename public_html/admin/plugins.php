@@ -599,7 +599,7 @@ function plugin_upload_enabled()
     // and the plugin directories are writable by the web server.
     $errors = array();
     
-    if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+    if (COM_isDemoMode()) {
         $errors[] = $LANG32[69];
     }
     if (!ini_get('file_uploads')) {

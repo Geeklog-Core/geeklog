@@ -262,7 +262,7 @@ function send_messages(array $vars)
 
         $tempTo = is_array($to) ? implode('', array_keys($to)) : $to;
         
-        if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+        if (COM_isDemoMode()) {
             $successes[] = htmlspecialchars ($tempTo);
         } else {
             if (! COM_mail($to, $subject, $message, $from, $html, $priority)) {

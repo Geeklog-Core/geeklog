@@ -44,7 +44,7 @@ if ($_CONF['filemanager_disabled']) {
     COM_accessLog("User {$_USER['username']} tried to illegally access the Filemanager.");
     COM_output($display);
     exit;
-} elseif (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+} elseif (COM_isDemoMode()) {
     $content = COM_showMessageText($LANG_ACCESS['demo_mode_denied_msg'], $LANG_ACCESS['accessdenied']);
     $display = COM_createHTMLDocument($content, ['pagetitle' => $LANG_ACCESS['accessdenied']]);
     COM_output($display);
