@@ -195,7 +195,7 @@ $LANG01 = array(
     141 => 'エラーが発生しました',
     142 => 'このページを表示する際にエラーが発生しました。しばらくしてから、もう一度お試しください。',
     143 => 'コメント (%d件)',
-    'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">Login Here</a>",
+    'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">ログイン</a>",
     'remoteloginoptions' => "Remote Login Options",
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
@@ -269,7 +269,7 @@ $LANG03 = array(
     106 => 'ユーザーやIPアドレスの一括承認・削除・禁止を含めて、コメントに対するアクションを一括して行います。<span style="color: red;">赤字のIPアドレス</span>は、承認待ちのコメントをSpam-Xプラグインで禁止されたユーザーかBanプラグインで退去処分を受けたユーザーのIPです。</span><span style="color: red;">赤字のユーザー名</span>は退去処分を受けたユーザーです。',
     'record_edit' => '編集者と編集時刻を記録する',
     'ban_plugin_ban_ip' => 'BanプラグインでこのIPアドレスを禁止する',
-    'num_comments' => '%s Comment(s)'
+    'num_comments' => '%s件のコメント'
 );
 
 ###############################################################################
@@ -2683,7 +2683,7 @@ $LANG_VALIDATION = array(
     'range' => 'このフィールドは指定範囲内の数値を入力してください',
     'url' => 'このフィールドは正しいフォーマットのURLを入力してください',
     'inList' => 'このフィールドは特定のリストの要素を含まなければなりません',
-    'mail_settings_backend' => 'このフィールドは \'smtp\', \'smtps\', \'sendmail\', or \'mail\'のどれか1つだけです',
+    'mail_settings_backend' => 'このフィールドは \'smtp\', \'smtps\', \'sendmail\', \'mail\'のどれか1つだけです',
     'mail_settings_sendmail_path' => 'このフィールドにはsendmail binaryへのパスを入力してください',
     'mail_settings_host' => 'このフィールドには正しいホスト名を入力してください',
     'mail_settings_port' => 'このフィールドには0から65535の数値を入力してください',
@@ -2703,4 +2703,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-
