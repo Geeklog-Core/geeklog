@@ -38,6 +38,7 @@ use Geeklog\Cache;
 use Geeklog\Input;
 use Geeklog\Mail;
 use Geeklog\Resource;
+use Geeklog\Session;
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
@@ -3652,15 +3653,47 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
     if (!empty($status) && ($status == USER_ACCOUNT_DISABLED || $status == USER_ACCOUNT_LOCKED || $status == USER_ACCOUNT_NEW_EMAIL)) {
         return false;
     } else {
-        return Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
-        /* NOT IMPLEMENTED YET FOR DEMO MODE NEED TO UPDATE SESSION HANDLING AND COM_showMessageText FIRST SEE https://github.com/Geeklog-Core/geeklog/issues/765
-        if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
-            // Don't send any emails in demo mode
+        if (COM_isDemoMode()) {
+            // Don't send any emails in demo mode.  Instead, redirect to the home page and show a message.
+            $charset = COM_getCharset();
+            $subject = htmlspecialchars($subject, ENT_QUOTES, $charset);
+            $toAddress = array_keys($to)[0];
+            $toAlias = array_values($to)[0];
+            $to = htmlspecialchars(
+                $toAlias . ' <' . $toAddress . '>',
+                ENT_QUOTES, 
+                $charset
+            );
+            $fromAddress = array_keys($from)[0];
+            $fromAlias = array_values($from)[0];
+            $from = htmlspecialchars(
+                $fromAlias . ' <' . $fromAddress . '>',
+                ENT_QUOTES,
+                $charset
+            );
+            $priority = htmlspecialchars($priority, ENT_QUOTES, $charset);
+            $message = htmlspecialchars($message, ENT_QUOTES, $charset);
+            $message = str_replace(["\r\n", "\n", "\r"], '<br>', $message);
+            $msg = <<<EOD
+<h2>Notice</h2>
+<p>Please note sending emails is disabled in Demo mode. The last email which would have been sent was:</p>
+---------- Header ----------<br>
+Subject: {$subject}<br>
+To: {$to}<br>
+From: {$from}<br>
+Priority: {$priority}<br>
+<br>
+---------- Body ------------<br>
+{$message}<br>
+----------------------------<br>
+EOD;
+            Session::setFlashVar('msg', $msg);
+            COM_redirect($_CONF['site_url']);
+
             return true;
         } else {
-            Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+            return Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
         }
-        */
     }
 }
 
@@ -4955,15 +4988,6 @@ function COM_showMessageText($message, $title = '')
         $tcc->set_var('end_block_msg', COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer')));
         
         $retval = $tcc->finish($tcc->parse('output', 'system_message'));        
-        
-        /* NOT IMPLEMENTED YET FOR DEMO MODE NEED TO UPDATE SESSION HANDLING AND com_mail FIRST SEE https://github.com/Geeklog-Core/geeklog/issues/765    
-        if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
-            if (!empty($_SESSION['LAST_EMAIL'])) {
-                $retval .= '<p>Please note sending emails is disabled in Demo mode. The last email which would have been sent was:</p>' . $_SESSION['LAST_EMAIL'];
-                $_SESSION['LAST_EMAIL'] = '';
-            }
-        }
-        */
     }
 
     return $retval;
@@ -4974,8 +4998,8 @@ function COM_showMessageText($message, $title = '')
  * Display one of the predefined messages from the $MESSAGE array. If a plugin
  * name is provided, display that plugin's message instead.
  *
- * @param    int    $msg    ID of message to show
- * @param    string $plugin Optional name of plugin to lookup plugin defined message
+ * @param    int|string  $msg    ID of message to show or a string message WHICH MUST BE SAFE AS HTML TEXT
+ * @param    string      $plugin Optional name of plugin to lookup plugin defined message
  * @return   string              HTML block with message
  * @see      COM_showMessageFromParameter
  * @see      COM_showMessageText
@@ -4986,30 +5010,36 @@ function COM_showMessage($msg, $plugin = '')
 
     $retval = '';
 
-    $msg = (int) $msg;
-    if ($msg > 0) {
-        if (!empty($plugin)) {
-            $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
-            global $$var;
-            if (isset($$var)) {
-                $message = $$var;
+    if (is_int($msg)) {
+        $msg = (int) $msg;
+
+        if ($msg > 0) {
+            if (!empty($plugin)) {
+                $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
+                global $$var;
+                if (isset($$var)) {
+                    $message = $$var;
+                } else {
+                    $message = sprintf($MESSAGE[61], $plugin);
+                    COM_errorLog($message . ": " . $var, 1);
+                }
             } else {
-                $message = sprintf($MESSAGE[61], $plugin);
-                COM_errorLog($message . ": " . $var, 1);
-            }
-        } else {
-            $message = $MESSAGE[$msg];
+                $message = $MESSAGE[$msg];
 
-            // Ugly workaround for mailstory function (public_html/profiles.php)
-            if ($msg === 153) {
-                $speedLimit = (int) Input::fGet('speedlimit', 0);
-                $message = sprintf($message, $speedLimit, $_CONF['speedlimit']);
+                // Ugly workaround for mailstory function (public_html/profiles.php)
+                if ($msg === 153) {
+                    $speedLimit = (int) Input::fGet('speedlimit', 0);
+                    $message = sprintf($message, $speedLimit, $_CONF['speedlimit']);
+                }
+            }
+
+            if (!empty($message)) {
+                $retval .= COM_showMessageText($message);
             }
         }
-
-        if (!empty($message)) {
-            $retval .= COM_showMessageText($message);
-        }
+    } elseif (is_string($msg) && !empty($msg)) {
+        // $msg MUST BE SAFE AS HTML TEXT!
+        $retval .= COM_showMessageText($msg);
     }
 
     return $retval;

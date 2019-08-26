@@ -32,6 +32,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Session;
+
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-article.php';
 
@@ -179,6 +181,12 @@ if (!$displayAll) {
 if (isset($_GET['msg'])) {
     $plugin = Geeklog\Input::fGet('plugin', '');
     $display .= COM_showMessage((int) Geeklog\Input::fGet('msg'), $plugin);
+} else {
+    $msg = Session::getFlashVar('msg');
+    if (!empty($msg)) {
+        $display .= COM_showMessage($msg, '');
+    }
+    unset($msg);
 }
 
 if (SEC_inGroup('Root') && ($page === 1)) {
