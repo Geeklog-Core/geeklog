@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2018 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -43,6 +43,8 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file can not be used on its own!');
 }
 
+global $_TABLES;
+
 /**
  * Response codes for the service invocation PLG_invokeService(). Note that
  * these are intentionally vague so as not to give away too much information.
@@ -62,6 +64,14 @@ define('PLG_SPAM_UNSURE', 2);
 define('PLG_SPAM_ACTION_NONE', 0);
 define('PLG_SPAM_ACTION_NOTIFY', 8);
 define('PLG_SPAM_ACTION_DELETE', 128);
+
+// Global constants to show which reCAPTCHA version each plugin supports (since Geeklog 2.2.1)
+define('RECAPTCHA_NO_SUPPORT', 0);
+define('RECAPTCHA_SUPPORT_V2', 1);
+define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
+
+// Not supported as of v1.2.1 (Geeklog 2.2.1)
+define('RECAPTCHA_SUPPORT_V3', 4);
 
 // buffer for function names for the center block API
 $PLG_bufferCenterAPI = array();
@@ -3882,6 +3892,97 @@ function PLG_itemLike($type, $sub_type, $item_id, $action)
     $function = 'plugin_itemlikesaction_' . $type;
 
     $retval = PLG_callFunctionForOnePlugin($function,$args);
+
+    return $retval;
+}
+
+/**
+ * Ask plugins which reCAPTCHA version they support and what the id attribute of
+ * the form is to which reCAPTCHA will be attached.
+ *
+ * @return  array of type => [
+ *              'type'     => type               // required, passed as the 1st parameter to plugin_templatesetvars_xxx()
+ *              'version'  => reCAPTCHA version, // required: RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1), RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
+ *              'form_id'  => form id,           // required only for reCAPTCHA V2 Invisible
+ *              'plugin'   => plugin name,       // added by the function for debugging
+ *           ]
+ */
+function PLG_collectRecaptchaInfo()
+{
+    global $_PLUGINS;
+    static $retval = null;
+
+    // Use cached info if available
+    if ($retval !== null) {
+        return $retval;
+    }
+
+    $retval = [];
+    
+    if (!in_array('recaptcha', $_PLUGINS)) {
+        return $retval;
+    }
+
+    foreach ($_PLUGINS as $pluginName) {
+        $function = 'plugin_supportsRecaptcha_' . $pluginName;
+        if (!is_callable($function)) {
+            continue;
+        }
+
+        $items = $function();
+        if (empty($items) || !is_array($items)) {
+            continue;
+        }
+
+        foreach ($items as $item) {
+            // Type
+            if (empty($item['type'])) {
+                COM_errorLog(__METHOD__ . ': type was empty for "' . $pluginName . '".');
+                continue;
+            }
+
+            // Check which reCAPTCHA version each plugin supports.  Valid values are:
+            // RECAPTCHA_NO_SUPPORT(0), RECAPTCHA_SUPPORT_V2(1), RECAPTCHA_SUPPORT_V2_INVISIBLE(2)
+            if (isset($item['version'])) {
+                $item['version'] = (int) $item['version'];
+
+                if (($item['version'] < RECAPTCHA_NO_SUPPORT) ||
+                        ($item['version'] > RECAPTCHA_SUPPORT_V2_INVISIBLE)) {
+                    COM_errorLog(__METHOD__ . ': bad reCAPTCHA version for "' . $pluginName . '".');
+                    continue;
+                }
+            } else {
+                COM_errorLog(__METHOD__ . ': no reCAPTCHA version was given for "' . $pluginName . '".');
+                continue;
+            }
+
+            // Check for the id attribute of a form to which reCAPTCHA will be attached
+            if (empty($item['form_id'])) {
+                $item['form_id'] = '';
+
+                // reCAPTCHA V2 Invisible requires a form id, but none was given
+                if ($item['version'] == RECAPTCHA_SUPPORT_V2_INVISIBLE) {
+                    COM_errorLog(__METHOD__ . ': form id was not given.  reCAPTCHA is disabled for "' . $pluginName . '".');
+                    continue;
+                }
+            }
+
+            // For debugging
+            $item['plugin'] = $pluginName;
+
+            if (isset($retval[$item['type']] )) {
+                COM_errorLog(
+                    sprintf(
+                        '%s: type "%s" was duplicated for "%s" and "%s".',
+                        __METHOD__, $item['type'], $item['plugin'], $retval[$item['type']]['plugin']
+                    )
+                );
+                continue;
+            }
+
+            $retval[$item['type']] = $item;
+        }
+    }
 
     return $retval;
 }

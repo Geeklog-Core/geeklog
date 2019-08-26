@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/language/japanese_utf-8.php                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2017 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                   - ben AT geeklog DOT fr |
@@ -36,7 +36,7 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 $LANG_RECAPTCHA = array(
     'plugin'      => 'reCAPTCHA',
     'admin'       => 'reCAPTCHA',
-    'msg_error'   => 'Error, reCAPTCHA was invalid.',
+    'msg_error'   => 'エラーが発生しました。reCAPTCHAがリクエストを拒否しました。',
     'entry_error' => '%1sで無効な入力を検出しました。IPアドレス: %2s  エラーコード: %3s',    // %1s = $type, %2s = $ip, %3s = $errorCode
 );
 
@@ -57,15 +57,10 @@ $LANG_confignames['recaptcha'] = array(
     'enable_comment'       => 'コメントをサポートする',
     'enable_contact'       => 'メール送信をサポートする',
     'enable_emailstory'    => '「記事をメールする」をサポートする',
-    'enable_forum'         => '掲示板プラグインをサポートする',
     'enable_registration'  => 'ユーザー登録をサポートする',
     'enable_loginform'     => 'ログインフォームをサポートする',
     'enable_getpassword'   => 'パスワード再設定フォームをサポートする',
-    'enable_mediagallery'  => 'メディアギャラリープラグインをサポートする',
-    'enable_rating'        => 'レーティングプラグインをサポートする',
     'enable_story'         => '記事投稿をサポートする',
-    'enable_calendar'      => 'カレンダープラグインをサポートする',
-    'enable_links'         => 'リンクプラグインをサポートする',
 );
 
 $LANG_configsubgroups['recaptcha'] = array(
@@ -79,12 +74,11 @@ $LANG_tab['recaptcha'] = array(
 
 $LANG_fs['recaptcha'] = array(
     'fs_system'         => 'システム',
-    'fs_location'       => '使用箇所',
     'fs_integration'    => 'Geeklogへの統合',
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['recaptcha'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    2 => array('無効' => 0, 'reCAPTCHA v2' => 1, 'Invisible reCAPTCHA' => 2),
+    2 => array('無効' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2),
 );

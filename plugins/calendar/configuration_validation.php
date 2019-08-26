@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar                                                              |
+// | Calendar                                                                  |
 // +---------------------------------------------------------------------------+
 // | configuration_validation.php                                              |
 // |                                                                           |
-// | List of validation rules for the Links plugin configurations                          |
+// | List of validation rules for the Links plugin configurations              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2010 by the following authors:                         |
+// | Copyright (C) 2007-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Akeda Bagus       - admin AT gedex DOT web DOT id                |
 // |          Tom Homer         - tomhomer AT gmail DOT com                    |
@@ -50,6 +50,7 @@ $_CONF_VALIDATE['calendar']['delete_event'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['calendar']['aftersave'] = array(
     'rule' => array('inList', array('item', 'list', 'plugin', 'home', 'admin'), true)
 );
+$_CONF_VALIDATE['calendar']['recaptcha'] = ['rule' => ['inList', ['0', '1', '2'], true]];
 
 // Default Permissions
 $_CONF_VALIDATE['calendar']['default_permissions[0]'] = array(

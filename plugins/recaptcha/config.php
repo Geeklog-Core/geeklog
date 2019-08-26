@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/config.php                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2017 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -34,24 +34,26 @@ if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die('This file cannot be used on its own!');
 }
 
-$_RECAPTCHA_CONF = array();
-
 // Plugin info
-$_RECAPTCHA_CONF['pi_version'] = '1.2.1';											// Plugin Version
-$_RECAPTCHA_CONF['gl_version'] = '2.2.0';											// GL Version plugin for
-$_RECAPTCHA_CONF['pi_url']     = 'https://github.com/Geeklog-Plugins/recaptcha';	// Plugin Homepage
-$_RECAPTCHA_CONF['GROUPS']     = array(
-	'reCAPTCHA Admin' => 'Users in this group can administer the ReCAPTCHA plugin',
-);
-$_RECAPTCHA_CONF['FEATURES']   = array(
-	'recaptcha.edit' => 'Access to reCAPTCHA editor',
-);
-$_RECAPTCHA_CONF['MAPPINGS']   = array(
-	'recaptcha.edit' => array('reCAPTCHA Admin'),
-);
+$_RECAPTCHA_CONF = [
+    'pi_version' => '1.2.1',                                        // Plugin Version
+    'gl_version' => '2.2.1',                                        // GL Version plugin for];
+    'pi_url'     => 'https://github.com/Geeklog-Plugins/recaptcha', // Plugin Homepage
+    'GROUPS'     => [
+        'reCAPTCHA Admin' => 'Users in this group can administer the ReCAPTCHA plugin',
+    ],
+    'FEATURES'   => [
+        'recaptcha.edit' => 'Access to reCAPTCHA editor',
+    ],
+    'MAPPINGS'   => [
+        'recaptcha.edit' => ['reCAPTCHA Admin'],
+    ],
 
-// Items the reCAPTCHA plugin supports
-$_RECAPTCHA_CONF['supported_items'] = array(
-	'comment', 'story', 'registration', 'loginform', 'getpassword', 'contact',
-	'emailstory', 'forum', 'mediagallery', 'rating', 'links', 'calendar',
-);
+    'enable_comment'       => RECAPTCHA_SUPPORT_V2,
+    'enable_contact'       => RECAPTCHA_SUPPORT_V2,
+    'enable_emailstory'    => RECAPTCHA_SUPPORT_V2,
+    'enable_registration'  => RECAPTCHA_SUPPORT_V2,
+    'enable_getpassword'   => RECAPTCHA_SUPPORT_V2,
+    'enable_loginform'     => RECAPTCHA_SUPPORT_V2,
+    'enable_story'         => RECAPTCHA_SUPPORT_V2,
+];

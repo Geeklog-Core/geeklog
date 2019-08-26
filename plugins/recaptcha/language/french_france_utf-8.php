@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/language/french_france_utf-8.php                |
 // +---------------------------------------------------------------------------|
-// | Copyright (C) 2014-2017 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -57,15 +57,10 @@ $LANG_confignames['recaptcha'] = array(
     'enable_comment'       => 'Enable Comment Support',
     'enable_contact'       => 'Enable Contact Support',
     'enable_emailstory'    => 'Enable Email Story Support',
-    'enable_forum'         => 'Enable Forum Support',
     'enable_registration'  => 'Enable Registration Support',
     'enable_loginform'     => 'Enable Login Form Support',
     'enable_getpassword'   => 'Enable Get Password Form Support',
-    'enable_mediagallery'  => 'Enable Media Gallery (Postcards) Support',
-    'enable_rating'        => 'Enable Rating Plugin Support',
     'enable_story'         => 'Enable Story Support',
-    'enable_calendar'      => 'Enable Calendar Plugin Support',
-    'enable_links'         => 'Enable Links Plugin Support',
 );
 
 $LANG_configsubgroups['recaptcha'] = array(
@@ -79,12 +74,11 @@ $LANG_tab['recaptcha'] = array(
 
 $LANG_fs['recaptcha'] = array(
     'fs_system'         => 'System',
-    'fs_location'       => 'Where to use reCAPTCHA',
     'fs_integration'    => 'Geeklog Integration'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['recaptcha'] = array(
     0 => array('Yes' => 1, 'No' => 0),
-    2 => array('Disabled' => 0, 'reCAPTCHA v2' => 1, 'Invisible reCAPTCHA' => 2),
+    2 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2),
 );

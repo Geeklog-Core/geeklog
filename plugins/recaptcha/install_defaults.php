@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/install_defaults.php                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2017 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -49,23 +49,17 @@ $_RECAPTCHA_DEFAULT = array(
     'invisible_site_key'   => '',
     'invisible_secret_key' => '',
 
-    'logging'             => 0,
-    'anonymous_only'      => 0,
-    'remoteusers'         => 0,
+    'logging'        => 0,
+    'anonymous_only' => 0,
+    'remoteusers'    => 0,
 
-    // 0 = disabled, 1 = reCAPTCHA v2, 2 = Invisible reCAPTCHA
-    'enable_comment'      => 1,
-    'enable_contact'      => 1,
-    'enable_emailstory'   => 1,
-    'enable_forum'        => 1,
-    'enable_registration' => 1,
-    'enable_loginform'    => 1,
-    'enable_getpassword'  => 1,
-    'enable_mediagallery' => 1,
-    'enable_rating'       => 1,
-    'enable_story'        => 1,
-    'enable_calendar'     => 1,
-    'enable_links'        => 1,
+    'enable_comment'      => RECAPTCHA_SUPPORT_V2,
+    'enable_contact'      => RECAPTCHA_SUPPORT_V2,
+    'enable_emailstory'   => RECAPTCHA_SUPPORT_V2,
+    'enable_registration' => RECAPTCHA_SUPPORT_V2,
+    'enable_getpassword'  => RECAPTCHA_SUPPORT_V2,
+    'enable_loginform'    => RECAPTCHA_SUPPORT_V2,
+    'enable_story'        => RECAPTCHA_SUPPORT_V2,
 );
 
 /**
@@ -110,7 +104,6 @@ function plugin_initconfig_recaptcha()
         $c->add('anonymous_only', $_RECAPTCHA_DEFAULT['anonymous_only'], 'select', $sg, $fs, 0, $so, true, $me, $tab);
         $so += 10;
         $c->add('remoteusers', $_RECAPTCHA_DEFAULT['remoteusers'], 'select', $sg, $fs, 0, $so, true, $me, $tab);
-        $so += 10;
 
         // Subgroup = 0, Fieldset = 0, Tab = 1
         $tab++;
@@ -124,22 +117,13 @@ function plugin_initconfig_recaptcha()
         $so += 10;
         $c->add('enable_emailstory', $_RECAPTCHA_DEFAULT['enable_emailstory'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
         $so += 10;
-        $c->add('enable_forum', $_RECAPTCHA_DEFAULT['enable_forum'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
-        $so += 10;
         $c->add('enable_registration', $_RECAPTCHA_DEFAULT['enable_registration'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
         $so += 10;
         $c->add('enable_getpassword', $_RECAPTCHA_DEFAULT['enable_getpassword'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
         $so += 10;
         $c->add('enable_loginform', $_RECAPTCHA_DEFAULT['enable_loginform'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
-        $c->add('enable_mediagallery', $_RECAPTCHA_DEFAULT['enable_mediagallery'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
-        $so += 10;
-        $c->add('enable_rating', $_RECAPTCHA_DEFAULT['enable_rating'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
         $so += 10;
         $c->add('enable_story', $_RECAPTCHA_DEFAULT['enable_story'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
-        $so += 10;
-        $c->add('enable_calendar', $_RECAPTCHA_DEFAULT['enable_calendar'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
-        $so += 10;
-        $c->add('enable_links', $_RECAPTCHA_DEFAULT['enable_links'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
     }
 
     return true;
