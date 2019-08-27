@@ -15,7 +15,8 @@
     "robthree/twofactorauth": "^1.6",
     "matthiasmullie/minify": "^1.3",
     "paragonie/random_compat": "<9.99",
-    "servocoder/richfilemanager-php": "^1.2"
+    "servocoder/richfilemanager-php": "^1.2",
+    "mlocati/ip-lib": "1.*"
   },
   "repositories": [
     {

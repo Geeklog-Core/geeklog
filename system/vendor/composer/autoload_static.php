@@ -54,6 +54,7 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
             'Illuminate\\Contracts\\' => 21,
             'Illuminate\\Container\\' => 21,
             'Illuminate\\Config\\' => 18,
+            'IPLib\\' => 6,
         ),
         'D' => 
         array (
@@ -145,6 +146,10 @@ class ComposerStaticInite72621cdbb7ab1eae4754470aabe0609
         'Illuminate\\Config\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/config',
+        ),
+        'IPLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mlocati/ip-lib/src',
         ),
         'Doctrine\\Common\\Inflector\\' => 
         array (

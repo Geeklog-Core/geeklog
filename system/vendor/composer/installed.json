@@ -427,6 +427,64 @@
         ]
     },
     {
+        "name": "mlocati/ip-lib",
+        "version": "1.8.0",
+        "version_normalized": "1.8.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mlocati/ip-lib.git",
+            "reference": "c8d6d1fc370e748c3400a9cc614b26af2ae3b197"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/c8d6d1fc370e748c3400a9cc614b26af2ae3b197",
+            "reference": "c8d6d1fc370e748c3400a9cc614b26af2ae3b197",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "ext-pdo_sqlite": "*",
+            "phpunit/dbunit": "^1.4 || ^2 || ^3 || ^4",
+            "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5"
+        },
+        "time": "2019-07-30T16:27:54+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "IPLib\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michele Locati",
+                "role": "Author",
+                "email": "mlocati@gmail.com",
+                "homepage": "https://github.com/mlocati"
+            }
+        ],
+        "description": "Handle IPv4, IPv6 addresses and ranges",
+        "homepage": "https://github.com/mlocati/ip-lib",
+        "keywords": [
+            "IP",
+            "address",
+            "addresses",
+            "ipv4",
+            "ipv6",
+            "matching",
+            "network",
+            "networking",
+            "range",
+            "subnet"
+        ]
+    },
+    {
         "name": "nesbot/carbon",
         "version": "1.25.3",
         "version_normalized": "1.25.3.0",
@@ -1245,17 +1303,17 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v4.3.3",
-        "version_normalized": "4.3.3.0",
+        "version": "v4.3.4",
+        "version_normalized": "4.3.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
-            "reference": "212b020949331b6531250584531363844b34a94e"
+            "reference": "429d0a1451d4c9c4abe1959b2986b88794b9b7d2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/212b020949331b6531250584531363844b34a94e",
-            "reference": "212b020949331b6531250584531363844b34a94e",
+            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/429d0a1451d4c9c4abe1959b2986b88794b9b7d2",
+            "reference": "429d0a1451d4c9c4abe1959b2986b88794b9b7d2",
             "shasum": ""
         },
         "require": {
@@ -1282,7 +1340,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2019-06-27T06:42:14+00:00",
+        "time": "2019-08-26T08:55:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1377,17 +1435,17 @@
     },
     {
         "name": "symfony/http-foundation",
-        "version": "v4.3.3",
-        "version_normalized": "4.3.3.0",
+        "version": "v4.3.4",
+        "version_normalized": "4.3.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/http-foundation.git",
-            "reference": "8b778ee0c27731105fbf1535f51793ad1ae0ba2b"
+            "reference": "d804bea118ff340a12e22a79f9c7e7eb56b35adc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/http-foundation/zipball/8b778ee0c27731105fbf1535f51793ad1ae0ba2b",
-            "reference": "8b778ee0c27731105fbf1535f51793ad1ae0ba2b",
+            "url": "https://api.github.com/repos/symfony/http-foundation/zipball/d804bea118ff340a12e22a79f9c7e7eb56b35adc",
+            "reference": "d804bea118ff340a12e22a79f9c7e7eb56b35adc",
             "shasum": ""
         },
         "require": {
@@ -1399,7 +1457,7 @@
             "predis/predis": "~1.0",
             "symfony/expression-language": "~3.4|~4.0"
         },
-        "time": "2019-07-23T11:21:36+00:00",
+        "time": "2019-08-26T08:55:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1434,17 +1492,17 @@
     },
     {
         "name": "symfony/mime",
-        "version": "v4.3.3",
-        "version_normalized": "4.3.3.0",
+        "version": "v4.3.4",
+        "version_normalized": "4.3.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/mime.git",
-            "reference": "6b7148029b1dd5eda1502064f06d01357b7b2d8b"
+            "reference": "987a05df1c6ac259b34008b932551353f4f408df"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/mime/zipball/6b7148029b1dd5eda1502064f06d01357b7b2d8b",
-            "reference": "6b7148029b1dd5eda1502064f06d01357b7b2d8b",
+            "url": "https://api.github.com/repos/symfony/mime/zipball/987a05df1c6ac259b34008b932551353f4f408df",
+            "reference": "987a05df1c6ac259b34008b932551353f4f408df",
             "shasum": ""
         },
         "require": {
@@ -1453,10 +1511,10 @@
             "symfony/polyfill-mbstring": "^1.0"
         },
         "require-dev": {
-            "egulias/email-validator": "^2.0",
+            "egulias/email-validator": "^2.1.10",
             "symfony/dependency-injection": "~3.4|^4.1"
         },
-        "time": "2019-07-19T16:21:19+00:00",
+        "time": "2019-08-22T08:16:11+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1677,23 +1735,23 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v4.3.3",
-        "version_normalized": "4.3.3.0",
+        "version": "v4.3.4",
+        "version_normalized": "4.3.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation.git",
-            "reference": "4e3e39cc485304f807622bdc64938e4633396406"
+            "reference": "28498169dd334095fa981827992f3a24d50fed0f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/4e3e39cc485304f807622bdc64938e4633396406",
-            "reference": "4e3e39cc485304f807622bdc64938e4633396406",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/28498169dd334095fa981827992f3a24d50fed0f",
+            "reference": "28498169dd334095fa981827992f3a24d50fed0f",
             "shasum": ""
         },
         "require": {
             "php": "^7.1.3",
             "symfony/polyfill-mbstring": "~1.0",
-            "symfony/translation-contracts": "^1.1.2"
+            "symfony/translation-contracts": "^1.1.6"
         },
         "conflict": {
             "symfony/config": "<3.4",
@@ -1720,7 +1778,7 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2019-07-18T10:34:59+00:00",
+        "time": "2019-08-26T08:55:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1755,17 +1813,17 @@
     },
     {
         "name": "symfony/translation-contracts",
-        "version": "v1.1.5",
-        "version_normalized": "1.1.5.0",
+        "version": "v1.1.6",
+        "version_normalized": "1.1.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation-contracts.git",
-            "reference": "cb4b18ad7b92a26e83b65dde940fab78339e6f3c"
+            "reference": "325b17c24f3ee23cbecfa63ba809c6d89b5fa04a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/cb4b18ad7b92a26e83b65dde940fab78339e6f3c",
-            "reference": "cb4b18ad7b92a26e83b65dde940fab78339e6f3c",
+            "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/325b17c24f3ee23cbecfa63ba809c6d89b5fa04a",
+            "reference": "325b17c24f3ee23cbecfa63ba809c6d89b5fa04a",
             "shasum": ""
         },
         "require": {
@@ -1774,7 +1832,7 @@
         "suggest": {
             "symfony/translation-implementation": ""
         },
-        "time": "2019-06-13T11:15:36+00:00",
+        "time": "2019-08-02T12:15:04+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
