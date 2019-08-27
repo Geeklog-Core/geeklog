@@ -290,6 +290,25 @@ class GLText
         return $wiki->transform($wikiText, 'Xhtml');
     }
 
+    /**
+     * Remove all HTML tags and attributes
+     *
+     * @param  string  $text
+     * @return string
+     */
+    public static function removeAllHTMLTagsAndAttributes($text)
+    {
+        // Use htmLawed to remove all HTML tags
+        // http://www.bioinformatics.org/phplabware/forum/viewtopic.php?id=88
+        $config = [
+            'elements' => '-*',
+            'keep_bad' => 0,
+        ];
+        $text = htmLawed($text, $config);
+
+        return $text;
+    }
+
     private static function _htmLawed($str, $permissions)
     {
         global $_CONF, $_USER;

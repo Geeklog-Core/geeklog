@@ -3672,6 +3672,12 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
                 $charset
             );
             $priority = htmlspecialchars($priority, ENT_QUOTES, $charset);
+
+            if (!$html) {
+                $message = GLText::removeAllHTMLTagsAndAttributes($message);
+            }
+
+            // Just in case
             $message = htmlspecialchars($message, ENT_QUOTES, $charset);
             $message = str_replace(["\r\n", "\n", "\r"], '<br>', $message);
             $msg = <<<EOD

@@ -3,6 +3,7 @@
 namespace Geeklog;
 
 use Exception;
+use GLText;
 use Swift_Attachment;
 use Swift_Mailer;
 use Swift_MailTransport;
@@ -157,6 +158,11 @@ class Mail
         }
 
         // Set body
+        if (!$html) {
+            // bug #430
+            $body = GLText::removeAllHTMLTagsAndAttributes($body);
+        }
+
         $message->setBody($body);
 
         if ($html) {
