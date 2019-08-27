@@ -18,6 +18,7 @@ class templateClass extends TestCase
 
         $_CONF['language'] = Tst::LANGUAGE;
         $_CONF['theme'] = Tst::THEME;
+        $_CONF['path_system'] = Tst::$root . 'system/';
         $_CONF['path_data'] = Tst::$root . 'data/';
         $_CONF['path_themes'] = Tst::$public . 'layout/';
         $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';

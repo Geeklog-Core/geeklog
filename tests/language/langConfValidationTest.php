@@ -59,6 +59,19 @@ class langConfValidation extends TestCase
             define('TOPIC_ROOT', 'root');
         }
 
+        // The three following constants are defined in lib-plugins.php (since Geeklog 2..1)
+        if (!defined('RECAPTCHA_NO_SUPPORT')) {
+            define('RECAPTCHA_NO_SUPPORT', 0);
+        }
+
+        if (!defined('RECAPTCHA_SUPPORT_V2')) {
+            define('RECAPTCHA_SUPPORT_V2', 1);
+        }
+
+        if (!defined('RECAPTCHA_SUPPORT_V2_INVISIBLE')) {
+            define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
+        }
+
         // there's a date() call somewhere - make PHP 5.2 shut up
         $system_timezone = @date_default_timezone_get();
         date_default_timezone_set($system_timezone);
