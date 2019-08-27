@@ -17,10 +17,33 @@ class IpClassTest extends TestCase
             '204.0.127.255' => true,
             '204.0.128.0.0' => false,
         ];
-        $ipInCIDR = '204.0.113.1/18';
+        $CIDR = '204.0.113.1/18';
 
         foreach ($data as $ip => $expected) {
-            $got = \Geeklog\IP::matchCIDR($ip, $ipInCIDR);
+            $got = \Geeklog\IP::matchCIDR($ip, $CIDR);
+            $this->assertEquals(
+                $expected,
+                $got,
+                'Expected: ' . self::$boolString[$expected] . ', Got: ' . self::$boolString[$got]
+            );
+        }
+    }
+
+    /**
+     * Test for IPv6 CIDR matching
+     */
+    public function testMatchCIDRIPv6()
+    {
+        $data = [
+            '2001:4760:4800:0000:0000:0000:0000:0000' => false,
+            '2001:4860:4860:0000:0000:0000:0000:8888' => true,
+            '2001:4860:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF' => true,
+            '2001:4900:0000:0000:0000:0000:0000:0000' => false,
+        ];
+        $CIDR = '2001:4860:4860::8888/32';
+
+        foreach ($data as $ip => $expected) {
+            $got = \Geeklog\IP::matchCIDR($ip, $CIDR);
             $this->assertEquals(
                 $expected,
                 $got,
@@ -34,6 +57,7 @@ class IpClassTest extends TestCase
      */
     public function testMatchRange()
     {
+        // IPv4
         $data = [
             '::1-::2'                   => false,
             '100.0.112.0-100.0.127.255' => true,
@@ -41,6 +65,21 @@ class IpClassTest extends TestCase
             '100.0.128.0-100.0.128.255' => false,
         ];
         $ipToCheck = '100.0.113.0';
+
+        foreach ($data as $range => $expected) {
+            $got = \Geeklog\IP::matchRange($ipToCheck, $range);
+            $this->assertEquals(
+                $expected,
+                $got,
+                'Expected: ' . self::$boolString[$expected] . ', Got: ' . self::$boolString[$got]
+            );
+        }
+
+        // IPv6
+        $data = [
+            '2001:4860:4860:0000:0000:0000:0000:8888-2001:4860:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF' => true,
+        ];
+        $ipToCheck = '2001:4860:4860:0000:0000:0000:1000:8888';
 
         foreach ($data as $range => $expected) {
             $got = \Geeklog\IP::matchRange($ipToCheck, $range);
