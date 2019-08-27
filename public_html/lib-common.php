@@ -7762,34 +7762,41 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
             if (!empty($_CONF['site_name'])) {
                 $title = $_CONF['site_name'] . ' - ' . $title;
             }
-            echo "<html><head><meta charset=\"" . $_CONF['default_charset'] . "\"><title>$title</title></head>\n<body>\n";
-
-            echo '<h1>An error has occurred:</h1>';
+            $output = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="{$_CONF['default_charset']}">
+  <title>{$title}</title>
+</head>
+<body>
+<h1>An error has occurred:</h1>
+HTML;
             if ($_CONF['rootdebug']) {
-                echo '<h2 style="color: red">This is being displayed as "Root Debugging" is enabled
-                        in your Geeklog configuration.</h2><p>If this is a production
-                        website you <strong><em>must disable</em></strong> this
-                        option once you have resolved any issues you are
-                        investigating.</p>';
+                $output .= <<<HTML
+<h2 style="color: red;">This is being displayed as "Root Debugging" is enabled in your Geeklog configuration.</h2>
+<p>If this is a production website you <strong><em>must disable</em></strong> this option once you have resolved any issues you are investigating.</p>
+HTML;
             } else {
-                echo '<p>(This text is only displayed to users in the group \'Root\')</p>';
+                $output .= '<p>(This text is only displayed to users in the group \'Root\')</p>';
             }
-            echo "<p>$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine</p>";
+
+            $output .= "<p>$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine</p>";
 
             if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
                 if ('force' != '' . $_CONF['rootdebug']) {
                     $errContext = COM_rootDebugClean($errContext);
                 } else {
-                    echo '<h2 style="color: red">Root Debug is set to "force", this
-                    means that passwords and session cookies are exposed in this
-                    message!!!</h2>';
+                    $output .= <<<HTML
+<h2 style="color: red;">Root Debug is set to "force", this means that passwords and session cookies are exposed in this message!!!</h2>
+HTML;
                 }
             }
             if (@ini_get('xdebug.default_enable') == 1) {
                 ob_start();
                 var_dump($errContext);
-                $errContext = ob_get_clean();
-                echo "$errContext</body></html>";
+                $output .= ob_get_clean() . PHP_EOL . '</body></html>';
+                echo $output;
             } else {
                 $btr = debug_backtrace();
                 if (count($btr) > 0) {
@@ -7798,9 +7805,19 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
                     }
                 }
                 if (count($btr) > 0) {
-                    echo "<font size='1'><table class='xdebug-error' dir='ltr' border='1' cellspacing='0' cellpadding='1'>\n";
-                    echo "<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>\n";
-                    echo "<tr><th align='right' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>File</th><th align='right' bgcolor='#eeeeec'>Line</th></tr>\n";
+                    $output .= <<<HTML
+<table class="xdebug-error" dir="ltr" style="font-size: xx-small; border-width: 1px; border-collapse: collapse;">
+  <tr>
+    <th style="text-align: left; background-color: #e9b96e;" colspan="5">Call Stack</th>
+  </tr>
+  <tr>
+    <th style="text-align: right; background-color: #eeeeec;">#</th>
+    <th style="text-align: left; background-color: #eeeeec;">Function</th>
+    <th style="text-align: left; background-color: #eeeeec;">File</th>
+    <th style="text-align: right; background-color: #eeeeec;">Line</th>
+  </tr>
+HTML;
+
                     $i = 1;
                     foreach ($btr as $b) {
                         $f = '';
@@ -7811,20 +7828,34 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
                         if (!empty($b['line'])) {
                             $l = $b['line'];
                         }
-                        echo "<tr><td bgcolor='#eeeeec' align='right'>$i</td><td bgcolor='#eeeeec'>{$b['function']}</td><td bgcolor='#eeeeec'>{$f}</td><td bgcolor='#eeeeec' align='right'>{$l}</td></tr>\n";
+
+                        $output .= <<<HTML
+  <tr>
+    <td style="text-align: right; background-color: #eeeeec;">{$i}</td>
+    <td style="background-color: #eeeeec;">{$b['function']}</td>
+    <td style="background-color: #eeeeec;">{$f}</td>
+    <td style="text-align: right; background-color: #eeeeec;">{$l}</td>
+  </tr>
+HTML;
                         $i++;
                         if ($i > 100) {
-                            echo "<tr><td bgcolor='#eeeeec' align='left' colspan='4'>Possible recursion - aborting.</td></tr>\n";
+                            $output .= <<<HTML
+  <tr>
+    <td style="text-align: left; background-color: #eeeeec;" colspan="4">Possible recursion - aborting.</td>
+  </tr>
+HTML;
                             break;
                         }
                     }
-                    echo "</table></font>\n";
-                }
-                echo '<pre>';
+
+                    $output .= '</table>' . PHP_EOL;
+;               }
+
+                $output .= '<pre>';
                 ob_start();
                 var_dump($errContext);
-                $errContext = htmlspecialchars(ob_get_clean());
-                echo "$errContext</pre></body></html>";
+                $output .= htmlspecialchars(ob_get_clean()) . '</pre></body></html>';
+                echo $output;
             }
             exit;
         }
