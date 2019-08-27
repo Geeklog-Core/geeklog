@@ -1823,7 +1823,7 @@ $LANG_TRB = array(
     'select_url' => 'Scegli l\'indirizzo di Trackback',
     'not_found' => 'Indirizzo di Trackback non trovato',
     'autodetect_failed' => 'Geeklog non é stato in grado di trovare l\'indirizzo di Trackback per l\'articolo scelto. Prego scrivilo manualmente qui sotto.',
-    'trackback_explain' => 'Scegli dove vuoi inviare il commento di trackback da gli indirizzi sottostanti. Geeklog cercher &arave; di determinare l\'indirizzo corretto. Or puoi <a href="%s">inserirlo manualmente</a> se lo conosci gia.',
+    'trackback_explain' => 'Scegli dove vuoi inviare il commento di trackback da gli indirizzi sottostanti. Geeklog cercher &agrave; di determinare l\'indirizzo corretto. Or puoi <a href="%s">inserirlo manualmente</a> se lo conosci gia.',
     'no_links_trackback' => 'Non é statto trovato nessun collegamento. Quindi non é possibile inviare un commento di trackback.',
     'pingback' => 'Pingback',
     'pingback_results' => 'Risultati di Pingback',

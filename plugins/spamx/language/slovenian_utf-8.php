@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * File: # slovenian_utf-8.php - version 1.7

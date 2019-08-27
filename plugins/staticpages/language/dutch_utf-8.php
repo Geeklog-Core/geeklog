@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 
 ###############################################################################
-# dutch.php
+# dutch_utf-8.php
 # This is the Dutch language page for the Geeklog Static Page Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs

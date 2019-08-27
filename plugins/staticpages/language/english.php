@@ -116,8 +116,7 @@ $LANG_STATIC = array(
     'use_template' => 'Use Template',
     'template_msg' => 'When checked, this Static Page will be marked as a template.',
     'none' => 'None',
-    'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format. For more information see the <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a>.',
-    'draft' => 'Draft',
+    'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format. For more information see the <a href="http://wiki.geeklog.net/Static_Pages_Plugin#Template_Static_Pages" target="_blank">Geeklog Wiki</a>.',    'draft' => 'Draft',
     'draft_yes' => 'Yes',
     'draft_no' => 'No',
     'show_on_page' => 'Show on Page',
@@ -125,7 +124,7 @@ $LANG_STATIC = array(
     'cache_time'        => 'Cache Time',
     'cache_time_desc'   => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until page is edited again. Staticpages with PHP enabled or are a template will not be cached. (3600 = 1 hour,  86400 = 1 day)',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id] - Displays the contents of a staticpage.', 
+    'autotag_desc_staticpage_content' => '[staticpage_content: id] - Displays the contents of a staticpage.',
     'autotag_desc_page' => '[page: id alternate title] - Displays a link to a page (from the Static Page plugin) using the page title as the title. An alternate title may be specified but is not required.',
     'autotag_desc_page_content' => '[page_content: id] - Displays the contents of a page. (from Static Page plugin)',
     'yes' => 'Yes', 
@@ -133,7 +132,7 @@ $LANG_STATIC = array(
     'prev_page' => 'Previous page',
     'next_page' => 'Next page',
     'parent_page' => 'Parent page',
-    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=”next” and rel=”prev” to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
+    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel="next" and rel="prev" to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
     'num_pages' => '%s Page(s)'
 );
 
