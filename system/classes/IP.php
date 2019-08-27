@@ -4,10 +4,8 @@ namespace Geeklog;
 
 use InvalidArgumentException;
 use IPLib\Address\AddressInterface;
-use IPLib\Address\IPv4;
 use IPLib\Factory;
 use IPLib\Range\RangeInterface;
-use IPLib\Range\Subnet;
 
 /**
  * Class IP

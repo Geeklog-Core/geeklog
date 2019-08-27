@@ -721,7 +721,7 @@ function plugin_getlanguageoverrides_spamx()
  */
 
 /**
- * @param  string $ipToCheck
+ * @param  string $ipToCheck (IPv4 or IPv6)
  * @return bool
  */
 function SPAMX_isIPBanned($ipToCheck)
