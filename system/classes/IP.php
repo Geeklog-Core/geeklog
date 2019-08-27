@@ -129,18 +129,4 @@ class IP
     {
         return (filter_var($ip, FILTER_VALIDATE_IP, array('flags' => FILTER_FLAG_IPV6)) !== false);
     }
-
-    /**
-     * Return if the IP is a private address
-     *
-     * @param  string $ip
-     * @return bool
-     */
-    public static function isGlobalIP($ip)
-    {
-        $retval = self::isValidIP($ip) &&
-            filter_var($ip, FILTER_VALIDATE_IP, array('flags' => FILTER_FLAG_NO_PRIV_RANGE || FILTER_FLAG_NO_RES_RANGE));
-
-        return $retval;
-    }
 }
