@@ -91,6 +91,10 @@ $_CA_DEFAULT['delete_event'] = 0;
  */
 $_CA_DEFAULT['aftersave'] = 'list';
 
+// Which reCAPTCHA version the plugin supports (since Geeklog 2.2.1)
+// Possible values are: RECAPTCHA_SUPPORT_NONE, RECAPTCHA_SUPPORT_V2, RECAPTCHA_SUPPORT_V2_INVISIBLE
+$_CA_DEFAULT['recaptcha'] = RECAPTCHA_SUPPORT_V2;
+
 // Events Block
 $_CA_DEFAULT['block_isleft'] = 1;
 $_CA_DEFAULT['block_order'] = 50;
@@ -177,6 +181,8 @@ function plugin_initconfig_calendar()
                 'select', 0, 0, 0, 100, true, 'calendar', 0);
         $c->add('aftersave', $_CA_DEFAULT['aftersave'],
                 'select', 0, 0, 9, 110, true, 'calendar', 0);
+        $c->add('recaptcha', $_CA_DEFAULT['recaptcha'],
+                'select', 0, 0, 16, 120, true, 'calendar', 0);
 
         $c->add('tab_permissions', NULL, 'tab', 0, 1, NULL, 0, true, 'calendar', 1);
         $c->add('fs_permissions', NULL, 'fieldset', 0, 1, NULL, 0, true, 'calendar', 1);

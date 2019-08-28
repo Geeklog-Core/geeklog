@@ -1435,7 +1435,7 @@ function SEC_createToken($ttl = 1200)
     DB_query($sql);
 
     /* Destroy tokens for this user/url combination. Since anonymous user share same id do not delete */
-    if (!(isset($_CONF['demo_mode']) && $_CONF['demo_mode'])) {
+    if (!COM_isDemoMode()) {
         if ($uid != 1) {
             $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id = '{$uid}' AND urlfor= '$pageURL'";
             DB_query($sql);

@@ -1,32 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="noindex,nofollow">
     <title>{{ LANG.INSTALL.0 }}</title>
-    <link rel="stylesheet" type="text/css" href="../../vendor/uikit/css{{ rtl }}/uikit.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/uikit3/css/uikit{{ rtl }}.min.css">
     <link rel="stylesheet" type="text/css" href="layout/style{{ rtl }}.css">
+    <script src="../../vendor/uikit3/js/uikit.min.js"></script>
+    <script src="../../vendor/uikit3/js/uikit-icons.min.js"></script>
 </head>
 
 <body dir="{{ LANG.DIRECTION }}">
-<div class="container">
-    <div class="header-navigation-container">
-        <div class="header-navigation-line">
-            <a href="rescue.php" class="header-navigation">{{ LANG.INSTALL.109 }}</a>&nbsp;&nbsp;&nbsp;
-            <a href="{{ LANG.INSTALL.87 }}" class="header-navigation">{{ LANG.INSTALL.1 }}</a>
+<div class="uk-container-center container">
+    <div class="uk-grid">
+        <div>
+            <a href="rescue.php">{{ LANG.INSTALL.109 }}</a>&nbsp;&nbsp;&nbsp;
+        </div>
+        <div>
+            <a href="{{ LANG.INSTALL.87 }}">{{ LANG.INSTALL.1 }}</a>
         </div>
     </div>
-    <div class="header-logobg-container">
-        <a class="header-logo" href="https://www.geeklog.net/">
-            <img src="layout/logo.png" alt="Geeklog">
-        </a>
-        <div class="header-slogan">{{ LANG.INSTALL.2 }}</div>
-        <div class="header-lang-selector">{{ language_selector }}</div>
+
+    <div class="uk-grid">
+        <div class="uk-grid">
+            <div>
+                <a href="https://www.geeklog.net/">
+                    <img data-src="layout/logo.png" width="180" height="63.7" alt="Geeklog" style="background-color: #426f9c;" uk-img>
+                </a>
+            </div>
+            <div>
+                <span class="uk-align-right">{{ LANG.INSTALL.2 }}</span>
+            </div>
+        </div>
+        <div class="uk-grid">
+            {{ language_selector }}
+        </div>
     </div>
-    <div class="installation-container">
-        <div class="installation-body-container">
+
+    <div class="uk-grid">
+        <div>
             {{ content }}
         </div>
     </div>

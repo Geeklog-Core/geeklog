@@ -170,7 +170,8 @@ $LANG_LINKS_ADMIN = array(
     58 => 'Valider maintenant',
     59 => '<p>Pour valider tous les liens affichés, merci de cliquer sur le lien "Valider maintenant" ci-dessous. Notez que cela peut prendre un peu de temps en fonction du nombre de liens.</p>',
     60 => 'Le membre %s a essayé illégalement d\'étiter la catégorie %s.',
-    61 => 'Liens daans la catégorie'
+    61 => 'Liens daans la catégorie',
+    'num_links' => '%s Link(s)'
 );
 
 
@@ -238,6 +239,7 @@ $LANG_confignames['links'] = array(
     'aftersave' => 'Après la sauvegarde du lien',
     'show_category_descriptions' => 'Afficher la description de la catégorie?',
     'new_window' => 'Ouvrir les liens externes dans une nouvelle fenêtre?',
+    'recaptcha' => 'reCAPTCHA',
     'root' => 'ID de la catégorie Root',
     'default_permissions' => 'Permissions par défaut des liens',
     'category_permissions' => 'Permissions par défaut des catégories',
@@ -270,5 +272,6 @@ $LANG_configselects['links'] = array(
     1 => array('Oui' => true, 'Non' => false),
     9 => array('Afficher le lien' => 'item', 'Afficher la liste administrateur' => 'list', 'Afficher la liste publique' => 'plugin', 'Afficher page d\'accueil' => 'home', 'Afficher l\'interface Admin' => 'admin'),
     12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
-    13 => array('Pas d\'accès' => 0, 'Utiliser' => 2)
+    13 => array('Pas d\'accès' => 0, 'Utiliser' => 2),
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

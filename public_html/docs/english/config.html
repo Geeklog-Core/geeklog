@@ -1498,6 +1498,12 @@ the admin panel.</p>
     this option is not set and a user does not have a user photo (or an <a
     href="#images_gravatar">avatar</a>) then Geeklog will simply not display
     anything.</td></tr>
+<tr>
+    <td valign="top"><a name="desc_generate_user_icon">generate_user_icon</a></td>
+    <td valign="top"><em>true</em></td>
+    <td valign="top">If enabled (set to <span class="tt">true</span>), a user's avatar icon will
+        be automatically generated from their username if they don't have one.  The appearance is
+        controlled by "<span class="tt">additional.css</span>" in respective themes.</td></tr>
 </table>
 
 <h3><a name="images_gravatar">Images: Gravatar</a></h3>
@@ -2192,7 +2198,7 @@ the admin panel.</p>
   <td valign="top">Whether to allow non-latin characters into folder names.</td></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_date_format">filemanager_date_format</a></td>
-  <td valign="top">Y-m-d H:i:s</td>
+  <td valign="top">yMMMdHm</td>
   <td valign="top">Format of the date to display.  See <a href="http://www.php.net/manual/en/function.date.php" title="Move to an external page in a new window">this page</a> for details.</td></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_logger">filemanager_logger</a></td>
@@ -2215,37 +2221,13 @@ the admin panel.</p>
     <th style="width:25%">Default Value</th>
     <th style="width:50%">Description</th></tr>
 <tr>
-  <td valign="top"><a name="desc_filemanager_upload_restrictions">filemanager_upload_restrictions</a></td>
-  <td valign="top">'jpg', 'jpeg', 'gif', 'png', 'svg', 'txt', 'pdf', 'odp', 'ods', 'odt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'ogv', 'mp4', 'webm', 'ogg', 'mp3', 'wav'</td>
-  <td valign="top">Files with one of the above extensions will be allowed on upload.</td></tr>
-<tr>
   <td valign="top"><a name="desc_filemanager_upload_overwrite">filemanager_upload_overwrite</a></td>
   <td valign="top">false</td>
   <td valign="top">If set to true, files will be overwritten on uploads if they have same names. If set to false, an index will be added.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_filemanager_upload_images_only">filemanager_upload_images_only</a></td>
-  <td valign="top">false</td>
-  <td valign="top">If set to true, only images are accepted for upload.</td></tr>
-<tr>
   <td valign="top"><a name="desc_filemanager_upload_file_size_limit">filemanager_upload_file_size_limit</a></td>
   <td valign="top">16</td>
   <td valign="top">File size limit for HTML5 and the PHP connector file size check in MiB.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_filemanager_unallowed_files">filemanager_unallowed_files</a></td>
-  <td valign="top">'.htaccess'</td>
-  <td valign="top">An array of files excluded from listing.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_filemanager_unallowed_dirs">filemanager_unallowed_dirs</a></td>
-  <td valign="top">'_thumbs', '.CDN_ACCESS_LOGS', 'cloudservers'</td>
-  <td valign="top">An array of directories excluded from listing.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_filemanager_unallowed_files_regexp">filemanager_unallowed_files_regexp</a></td>
-  <td valign="top">'/^\\./uis'</td>
-  <td valign="top">Files excluded from listing, using a regular expression.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_filemanager_unallowed_dirs_regexp">filemanager_unallowed_dirs_regexp</a></td>
-  <td valign="top">'/^\\./uis'</td>
-  <td valign="top">Directories excluded from listing, using a regular expression.</td></tr>
 </table>
 
 <h3><a name="filemanager_images">File Manager: Images</a></h3>

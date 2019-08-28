@@ -998,7 +998,7 @@ class config implements ConfigInterface
             $table_flag = false;
             //print_r($params);
             foreach ($params as $name => $e) {
-                if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+                if (COM_isDemoMode()) {
                     if ( in_array($name,array(
                     'site_url','site_admin_url'
                     ,'url_routing'

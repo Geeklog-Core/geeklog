@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * File: spanish_utf-8.php

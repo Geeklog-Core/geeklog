@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * File: estonian_utf-8.php

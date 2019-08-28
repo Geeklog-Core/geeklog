@@ -1,0 +1,203 @@
+/* STYLESHEET FORMAT GUIDE *****************************************************
+
+  split the following sections:
+  - semantics (direct formatting for <td>, <a > etc
+  - classes (.whatever)
+  - common plugin CSS
+  - navbar
+  Within these sections, entries are to be strictly alphabetized.
+
+  SAMPLE:
+  .poll-vote,
+  .poll-vote-results {
+    background: transparent;
+    color: #000000;
+    font-size: smaller;
+  }
+
+  These are the rough rules:
+  - always put a ';' after the last entry
+  - always a linebreak before .
+  - always a linebreak after , ; { and }
+  - always a . before all classes
+  - two spaces indent
+  - no tabs
+  - no spaces after colons
+*/
+
+/* SEMANTICS ******************************************************************/
+a,
+a:hover {
+  color: #2664a2;
+}
+/*html {*/
+/*  background: #1A3955;*/
+/*}*/
+.container {
+  max-width: 600px;
+  margin: 10px auto;
+  padding: 5px;
+}
+/*h1 {*/
+/*  font-size: 24px;*/
+/*}*/
+/*h2 {*/
+/*  font-size: 20px;*/
+/*}*/
+/*h3 {*/
+/*  font-size: 16px;*/
+/*}*/
+.perms-label {
+  float: right;
+  text-align: right;
+  padding: 0px;
+  width: 32em;
+  margin-top: 5px;
+  display: block;
+  position: relative;
+  top: -4px;
+}
+/* Header ******************************************************************/
+.header-navigation-line {
+  background: #E7E7E7;
+  padding: 10px 15px;
+  text-align: left;
+}
+.header-logobg-container {
+  position: relative;
+  background: #426f9c;
+  height: 120px;
+}
+.header-logo {
+  float: right;
+  margin: 20px 15px 0 0;
+}
+.header-slogan {
+  float: left;
+  margin: 15px 0 0 15px;
+  color: #fff;
+  text-align: left;
+}
+.header-lang-selector {
+  color: #fff;
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  text-align: left;
+}
+/* Installation ******************************************************************/
+.heading {
+  border-bottom: 1px dotted #666;
+  margin-bottom: 30px;
+}
+.installation-body-container {
+  background: #FFF;
+  color: #000;
+  padding: 50px 50px;
+  min-height: 400px;
+}
+.file-permissions {
+  padding: 0px;
+  text-align: right;
+  margin: 0px;
+  display: block;
+  border: 0px solid;
+}
+#migration-select {
+  display: none;
+}
+#migration-upload {
+  display: none;
+}
+#migration-upload-warning {
+  display: none;
+}
+.error {
+  color: #FF0000;
+  font-weight: bold;
+  margin-left: 2px;
+}
+.success {
+  color: #41A317;
+  font-weight: bold;
+  margin-left: 2px;
+}
+.permissions-list {
+  color: #FF0000;
+}
+.help_highlight {
+  background-color: #EEE;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px dashed #999;
+}
+.help_normal {
+  color: #000;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid transparent;
+}
+
+/* Misc ******************************************************************/
+.code {
+  font-family: "Courier New", monospace;
+}
+
+.indent {
+  margin-right: 1em;
+  margin-left: 1em;
+}
+
+.clearboth {
+  clear: both;
+}
+
+/* UIkit Modifier ******************************************************************/
+* + .uk-table {
+  margin-top: 15px;
+}
+.uk-table td,
+.uk-table th {
+  padding: 8px 8px;
+  border-bottom: 1px solid #E5E5E5;
+}
+.uk-table th {
+  text-align: right;
+}
+.uk-table td {
+  vertical-align: top;
+}
+.uk-table thead th {
+  vertical-align: bottom;
+}
+.uk-table caption,
+.uk-table tfoot {
+  font-size: 12px;
+  font-style: italic;
+}
+.uk-table caption {
+  text-align: right;
+  color: #999;
+}
+.uk-table tbody tr.uk-active {
+  background: #f0f0f0;
+}
+.uk-table-middle,
+.uk-table-middle td {
+  vertical-align: middle!important;
+}
+.uk-table-striped tbody tr:nth-of-type(odd) {
+  background: #fafafa;
+}
+.uk-table-condensed td {
+  padding: 4px 8px;
+}
+.uk-table-hover tbody tr:hover {
+  background: #f0f0f0;
+}
+* + .uk-margin {
+    margin-top: 30px !important;
+}
+.uk-margin {
+    margin-bottom: 30px;
+}

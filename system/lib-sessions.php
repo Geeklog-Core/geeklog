@@ -85,6 +85,7 @@ function SESS_sessionCheck()
 
     // Flag indicates if session cookie and session data exist
     $sessionExists = Session::init(array(
+        'debug'           => isset($_CONF['developer_mode_log']['session']) && $_CONF['developer_mode_log']['session'],
         'logger'          => 'COM_errorLog',
         'cookie_disabled' => false,
         'cookie_lifetime' => $_CONF['session_cookie_timeout'],
@@ -335,7 +336,7 @@ function SESS_endUserSession($userId)
 
     $userId = (int) $userId;
 
-    if (!(isset($_CONF['demo_mode']) && $_CONF['demo_mode'])) {
+    if (!COM_isDemoMode()) {
         DB_delete($_TABLES['sessions'], 'uid', $userId);
         Session::setUid(Session::ANON_USER_ID);
     }

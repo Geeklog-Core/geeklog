@@ -2,6 +2,18 @@
 
 namespace Geeklog;
 
+use Exception;
+use GLText;
+use Swift_Attachment;
+use Swift_Mailer;
+use Swift_MailTransport;
+use Swift_Message;
+use Swift_Mime_ContentEncoder_Base64ContentEncoder;
+use Swift_Plugins_DecoratorPlugin;
+use Swift_RfcComplianceException;
+use Swift_SendmailTransport;
+use Swift_SmtpTransport;
+
 /**
  * Class Mail
  *
@@ -35,15 +47,15 @@ class Mail
      * NOTE: Please note that using CC: will expose the email addresses of
      *       all recipients. Use with care.
      *
-     * @param    string $to          recipients name and email address
-     * @param    string $subject     subject of the email
-     * @param    string $body        the text of the email
-     * @param    string $from        (optional) sender of the the email
-     * @param    bool   $html        (optional) true if to be sent as HTML email
-     * @param    int    $priority    (optional) add X-Priority header, if > 0
-     * @param    mixed  $optional    (optional) other headers or CC:
-     * @param    array  $attachments (optional) attachment files
-     * @return   bool                true if successful,  otherwise false
+     * @param    string|array $to          recipients name and email address
+     * @param    string       $subject     subject of the email
+     * @param    string       $body        the text of the email
+     * @param    string|array $from        (optional) sender of the the email
+     * @param    bool         $html        (optional) true if to be sent as HTML email
+     * @param    int          $priority    (optional) add X-Priority header, if > 0
+     * @param    mixed        $optional    (optional) other headers or CC:
+     * @param    array        $attachments (optional) attachment files
+     * @return   bool                      true if successful,  otherwise false
      */
     public static function send($to, $subject, $body, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
     {
@@ -64,11 +76,11 @@ class Mail
         switch ($_CONF['mail_settings']['backend']) {
             case 'sendmail':
                 $arg = $_CONF['mail_settings']['sendmail_path'] . ' ' . $_CONF['mail_settings']['sendmail_args'];
-                $transport = \Swift_SendmailTransport::newInstance($arg);
+                $transport = Swift_SendmailTransport::newInstance($arg);
                 break;
 
             case 'smtp':
-                $transport = \Swift_SmtpTransport::newInstance($_CONF['mail_settings']['host'], $_CONF['mail_settings']['port']);
+                $transport = Swift_SmtpTransport::newInstance($_CONF['mail_settings']['host'], $_CONF['mail_settings']['port']);
 
                 if (!empty($_CONF['mail_settings']['auth'])) {
                     $transport->setUsername($_CONF['mail_settings']['username']);
@@ -78,7 +90,7 @@ class Mail
                 break;
                 
             case 'smtps':
-                $transport = \Swift_SmtpTransport::newInstance($_CONF['mail_settings']['host'], $_CONF['mail_settings']['port'], 'ssl');
+                $transport = Swift_SmtpTransport::newInstance($_CONF['mail_settings']['host'], $_CONF['mail_settings']['port'], 'ssl');
 
                 if (!empty($_CONF['mail_settings']['auth'])) {
                     $transport->setUsername($_CONF['mail_settings']['username']);
@@ -89,21 +101,21 @@ class Mail
 
             case 'mail':
             default:
-                $transport = \Swift_MailTransport::newInstance();
+                $transport = Swift_MailTransport::newInstance();
                 break;
         }
 
-        $mailer = \Swift_Mailer::newInstance($transport);
+        $mailer = Swift_Mailer::newInstance($transport);
 
         // Set up replacements
-        $decorator = new \Swift_Plugins_DecoratorPlugin(new MailReplacements());
+        $decorator = new Swift_Plugins_DecoratorPlugin(new MailReplacements());
         $mailer->registerPlugin($decorator);
 
         // Create a message
-        $message = \Swift_Message::newInstance();
+        $message = Swift_Message::newInstance();
 
         // Avoid double dots problem
-        $message->setEncoder(new \Swift_Mime_ContentEncoder_Base64ContentEncoder());
+        $message->setEncoder(new Swift_Mime_ContentEncoder_Base64ContentEncoder());
 
         if (!empty($_CONF['mail_charset'])) {
             $message->setCharset($_CONF['mail_charset']);
@@ -124,7 +136,7 @@ class Mail
         // Set to
         try {
             $message->setTo($to);
-        } catch (\Swift_RfcComplianceException $e) {
+        } catch (Swift_RfcComplianceException $e) {
             COM_errorLog(__METHOD__ . ': bad "to" ' . $to);
 
             return false;
@@ -138,7 +150,7 @@ class Mail
             // assume old (optional) CC: header
             try {
                 $message->setCc($optional);
-            } catch (\Swift_RfcComplianceException $e) {
+            } catch (Swift_RfcComplianceException $e) {
                 COM_errorLog(__METHOD__ . ': bad "Cc" ' . $optional);
 
                 return false;
@@ -146,6 +158,11 @@ class Mail
         }
 
         // Set body
+        if (!$html) {
+            // bug #430
+            $body = GLText::removeAllHTMLTagsAndAttributes($body);
+        }
+
         $message->setBody($body);
 
         if ($html) {
@@ -181,7 +198,7 @@ class Mail
                 if (strcasecmp($h, 'Cc') === 0) {
                     try {
                         $message->setCc($v);
-                    } catch (\Swift_RfcComplianceException $e) {
+                    } catch (Swift_RfcComplianceException $e) {
                         COM_errorLog(__METHOD__ . ': bad "Cc" ' . $v);
 
                         return false;
@@ -189,7 +206,7 @@ class Mail
                 } elseif (strcasecmp($h, 'Bcc') === 0) {
                     try {
                         $message->setBcc($v);
-                    } catch (\Swift_RfcComplianceException $e) {
+                    } catch (Swift_RfcComplianceException $e) {
                         COM_errorLog(__METHOD__ . ': bad "Bcc" ' . $v);
 
                         return false;
@@ -203,7 +220,7 @@ class Mail
         // Set attachments
         if (count($attachments) > 0) {
             foreach ($attachments as $attachment) {
-                $message->attach(\Swift_Attachment::fromPath($attachment));
+                $message->attach(Swift_Attachment::fromPath($attachment));
             }
         }
 
@@ -216,7 +233,7 @@ class Mail
             if ($numSent != 1) {
                 COM_errorLog(__METHOD__ . ': failed to send an email to ' . @$failures[0]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             COM_errorLog(__METHOD__ . 'Failed to send an email to ' . $to . '.  Error message: ' . $e->getMessage());
         }
 

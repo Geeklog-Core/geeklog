@@ -92,11 +92,11 @@ class Validator
     }
 
     /**
-     * @throws \LogicException
+     * @throws LogicException
      */
     public final function __clone()
     {
-        throw new \LogicException('You cannot clone this object');
+        throw new LogicException('You cannot clone this object');
     }
 
     /**
@@ -260,7 +260,7 @@ class Validator
      * @param  integer $check2   only needed if $check1 is a string
      * @return boolean Success
      */
-    public function comparison($check1, $operator = null, $check2 = null)
+    private function comparison($check1, $operator = null, $check2 = null)
     {
         if (is_array($check1)) {
             extract($check1, EXTR_OVERWRITE);
@@ -501,11 +501,14 @@ class Validator
     public function extension($check, $extensions = array('gif', 'jpeg', 'png', 'jpg'))
     {
         if (is_array($check)) {
-            return Validator::extension(array_shift($check), $extensions);
+            return self::extension(array_shift($check), $extensions);
         }
-        $extension = strtolower(array_pop(explode('.', $check)));
+
+        $parts = explode('.', $check);
+        $extension = strtolower(array_pop($parts));
+
         foreach ($extensions as $value) {
-            if ($extension == strtolower($value)) {
+            if ($extension === strtolower($value)) {
                 return true;
             }
         }

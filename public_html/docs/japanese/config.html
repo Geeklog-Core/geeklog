@@ -1295,6 +1295,10 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_default_photo">写真のデフォルト(default_photo)</a></td>
   <td valign="top"><em>(無効)</em></td>
   <td valign="top">有効にする場合には、画像ファイルの完全なURLを指定します。写真のないユーザーの場合、この既定の写真が表示されます。この設定が無効で、ユーザーが写真も<a href="#images_gravatar">アバター</a>も持っていない場合、何も表示されません。</td></tr>
+<tr>
+    <td valign="top"><a name="desc_generate_user_icon">ユーザーのアイコンを自動作成する(generate_user_icon)</a></td>
+    <td valign="top"><em>はい</em></td>
+    <td valign="top">「はい」にすると、ユーザーがアバター用の画像を設定していない場合、ユーザー名から自動的にアイコンを作成します。アイコンの外見は各テーマの"<span class="tt">additional.css</span>"によって定義されています。</td></tr>
 </table>
 
 <h3><a name="images_gravatar">画像: Gravatar</a></h3>
@@ -1921,7 +1925,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top">「はい」にすると、フォルダー名としてラテン文字しか使えなくなります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_date_format">日付のフォーマット(filemanager_date_format)</a></td>
-  <td valign="top">Y-m-d H:i:s</td>
+  <td valign="top">yMMMdHm</td>
   <td valign="top">日時の表示フォーマットを指定します。詳しくは、<a href="http://www.php.net/manual/ja/function.date.php" title="別ウィンドウで外部サイトを表示します">このページ</a>をご覧ください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_filemanager_logger">ロガーを有効にする(filemanager_logger)</a></td>
@@ -1944,37 +1948,13 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <th style="width:25%">デフォルト</th>
     <th style="width:50%">説明</th></tr>
 <tr>
-  <td valign="top"><a name="desc_filemanager_upload_restrictions">許可するファイル拡張子(filemanager_upload_restrictions)</a></td>
-  <td valign="top">jpg, jpeg, gif, png, svg, txt, pdf, odp, ods, odt, rtf, doc, docx, xls, xlsx, ppt, pptx, ogv, mp4, webm, ogg, mp3, wav</td>
-  <td valign="top">アップロードできるファイルの拡張子を指定します。</td></tr>
-<tr>
   <td valign="top"><a name="desc_filemanager_upload_overwrite">既存のファイルを上書きする(filemanager_upload_overwrite)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">同名のファイルをアップロードする場合、「はい」にすると、既存のファイルを上書きします。「いいえ」にするとファイル名にインデックスを付加します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_filemanager_upload_images_only">画像ファイルだけをアップロードする(filemanager_upload_images_only)</a></td>
-  <td valign="top">いいえ</td>
-  <td valign="top">「はい」にすると、画像ファイルしかアップロードできなくなります。</td></tr>
-<tr>
   <td valign="top"><a name="desc_filemanager_upload_file_size_limit">アップロードするファイルサイズの上限(filemanager_upload_file_size_limit)</a></td>
   <td valign="top">16</td>
   <td valign="top">HTML5とPHPコネクターでアップロードできるファイルサイズの上限をメガバイト単位で指定します。</td></tr>
-<tr>
-  <td valign="top"><a name="desc_filemanager_unallowed_files">表示しないファイル名(filemanager_unallowed_files)</a></td>
-  <td valign="top">.htaccess</td>
-  <td valign="top">表示しないファイル名を指定します。</td></tr>
-<tr>
-  <td valign="top"><a name="desc_filemanager_unallowed_dirs">表示しないディレクトリ(filemanager_unallowed_dirs)</a></td>
-  <td valign="top">_thumbs, .CDN_ACCESS_LOGS, cloudservers</td>
-  <td valign="top">表示しないディレクトリ名を指定します。</td></tr>
-<tr>
-  <td valign="top"><a name="desc_filemanager_unallowed_files_regexp">表示しないファイル名の正規表現(filemanager_unallowed_files_regexp)</a></td>
-  <td valign="top">/^\\./uis</td>
-  <td valign="top">表示しないファイル名を正規表現で指定します。</td></tr>
-<tr>
-  <td valign="top"><a name="desc_filemanager_unallowed_dirs_regexp">表示しないディレクトリ名の正規表現(filemanager_unallowed_dirs_regexp)</a></td>
-  <td valign="top">/^\\./uis</td>
-  <td valign="top">表示しないディレクトリ名を正規表現で指定します。</td></tr>
 </table>
 
 <h3><a name="filemanager_images">ファイルマネージャー: 画像</a></h3>

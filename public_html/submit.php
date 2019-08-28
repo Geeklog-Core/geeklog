@@ -217,6 +217,7 @@ function submitstory()
          $storyForm->set_var('allow_save', true);
     } else {
         $storyForm->set_var('allow_save', false);
+        $storyForm->set_var('captcha', '');
     }
 
     $retval .= COM_startBlock($LANG12[6], 'submitstory.html');
@@ -428,8 +429,8 @@ if (!empty($LANG12[8]) && ($mode === $LANG12[8])) { // submit
     }
 } else {
     if ((strlen($type) > 0) && ($type !== 'story')) {
-        if (SEC_hasRights("$type.edit") ||
-            SEC_hasRights("$type.admin")) {
+        if (SEC_hasRights('type.edit') ||
+            SEC_hasRights('type.admin')) {
             COM_redirect($_CONF['site_admin_url'] . "/plugins/$type/index.php?mode=edit");
         }
     } elseif (SEC_hasRights('story.edit')) {

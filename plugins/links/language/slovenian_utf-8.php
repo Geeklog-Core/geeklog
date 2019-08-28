@@ -171,7 +171,8 @@ $LANG_LINKS_ADMIN = array(
     58 => 'Preveri zdaj',
     59 => '<p>Za preveritev vseh prikazanih povezav klikni na "Preveri zdaj" spodaj. Vedi prosim, da to lahko traja nekaj èasa, odvisno od kolièine prikazanih povezav.</p>',
     60 => 'Uporabnik %s je poskusil nedovoljeno urejati kategorijo %s.',
-    61 => 'Povezave v kategoriji'
+    61 => 'Povezave v kategoriji',
+    'num_links' => '%s Link(s)'
 );
 
 
@@ -239,6 +240,7 @@ $LANG_confignames['links'] = array(
     'aftersave' => 'Po shranitvi povezave',
     'show_category_descriptions' => 'Pokaži opis kategorije?',
     'new_window' => 'Odpri zunanje povezave v drugem oknu?',
+    'recaptcha' => 'reCAPTCHA',
     'root' => 'ID korenske kategorije',
     'default_permissions' => 'Prednastavljene pravice povezave',
     'category_permissions' => 'Prednastavljene pravice kategorije',
@@ -271,5 +273,6 @@ $LANG_configselects['links'] = array(
     1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
     9 => array('Naprej na povezano stran' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži javni seznam' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('No access' => 0, 'Use' => 2),
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

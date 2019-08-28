@@ -215,6 +215,7 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'メールで通知する',
     'delete_event' => '所有者の削除と共に削除する',
     'aftersave' => 'イベント保存後の画面遷移',
+    'recaptcha' => 'reCAPTCHA',
     'default_permissions' => 'パーミッション',
     'autotag_permissions_event' => '[event: ] パーミッション',
     'block_enable' => '有効',
@@ -254,5 +255,6 @@ $LANG_configselects['calendar'] = array(
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('アクセス不可' => 0, '利用する' => 2),
     14 => array('アクセス不可' => 0, '表示' => 2),
-    15 => array('すべて' => 'all', 'ホームページのみ' => 'homeonly', '話題を選択する' => 'selectedtopics')
+    15 => array('すべて' => 'all', 'ホームページのみ' => 'homeonly', '話題を選択する' => 'selectedtopics'),
+    16 => array('無効' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

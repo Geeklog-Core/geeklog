@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
 * File: hebrew_utf-8.php

@@ -659,7 +659,7 @@ function _checkEnvironment()
         'lang_showhide_phpinfo'     => $LANG_ENVCHECK['showhide_phpinfo'],
     ));
     
-   if (!(isset($_CONF['demo_mode']) && $_CONF['demo_mode'])) {
+   if (!COM_isDemoMode()) {
         _phpinfo($T);
     }
     

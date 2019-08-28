@@ -1,0 +1,95 @@
+{{ alert_message1 }}
+
+<h2>{{ LANG.MIGRATE.1 }}</h2>
+
+<ul>
+    <li>{{ LANG.MIGRATE.2 }}</li>
+    <li>{{ LANG.MIGRATE.3 }}</li>
+    <li>{{ LANG.MIGRATE.5 }}</li>
+    <li>{{ LANG.MIGRATE.4 }}</li>
+</ul>
+
+<h2>{{ LANG.INSTALL.31 }}</h2>
+
+<form action="index.php" method="post" name="migrate" enctype="multipart/form-data" class="uk-form">
+    <fieldset class="uk-fieldset uk-form-stacked">
+        <input type="hidden" name="step" value="2">
+        <input type="hidden" name="language" value="{! language !}">
+        <input type="hidden" name="mode" value="migrate">
+        <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+
+        <div>
+            <label class="uk-form-label">{{ LANG.INSTALL.34 }} {{ help_db_type }}</label>
+            <div class="uk-form-controls">
+                <select name="db[type]" class="uk-select">
+                    <option value="mysql">{{ LANG.INSTALL.35 }}</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="uk-form-label">{{ LANG.INSTALL.39 }} {{ help_db_host }}</label>
+            <div class="uk-form-controls">
+                <input type="text" name="db[host]" value="{! host !}" class="uk-input">
+            </div>
+        </div>
+        <div>
+            <label class="uk-form-label">{{ LANG.INSTALL.40 }} {{ help_db_name }}</label>
+            <div class="uk-form-controls">
+                <input type="text" name="db[name]" value="{! name !}" class="uk-input">
+            </div>
+        </div>
+        <div>
+            <label class="uk-form-label">{{ LANG.INSTALL.41 }} {{ help_db_user }}</label>
+            <div class="uk-form-controls">
+                <input type="text" name="db[user]" value="{! user !}" class="uk-input">
+            </div>
+        </div>
+        <div>
+            <label class="uk-form-label">{{ LANG.INSTALL.42 }} {{ help_db_pass }}</label>
+            <div class="uk-form-controls">
+                <input type="password" name="db[pass]" value="{! pass !}" class="uk-input">
+            </div>
+        </div>
+        <div>
+            <label class="uk-form-label">{{ LANG.INSTALL.45 }} {{ help_site_url }}</label>
+            <div class="uk-form-controls">
+                <input type="text" name="site_url" value="{! site_url !}" class="uk-input">&nbsp;{{ LANG.INSTALL.46 }}
+            </div>
+        </div>
+        <div>
+            <label class="uk-form-label">{{ LANG.INSTALL.47 }} {{ help_site_admin_url }}</label>
+            <div class="uk-form-controls">
+                <input type="text" name="site_admin_url" value="{! site_admin_url !}" class="uk-input">&nbsp;{{ LANG.INSTALL.46 }}
+            </div>
+        </div>
+
+        <div>
+            <label class="uk-form-label">{{ LANG.MIGRATE.6 }} {{ help_migrate_file }}</label>
+            <div class="uk-form-controls">
+                <select name="migration_type" onchange="INST_selectMigrationType()" class="uk-select">
+                    <option value="">{{ LANG.MIGRATE.7 }}</option>
+                    <option value="select">{{ LANG.MIGRATE.8 }}</option>
+                    <option value="upload">{{ LANG.MIGRATE.9 }}</option>
+                    <option value="dbcontent">{{ LANG.MIGRATE.49 }}</option>
+                </select>
+                <span id="migration-select">
+                    {{ backup_file_selector }}
+                </span>
+                <span id="migration-upload">
+                    {{ backup_file }}
+                </span>
+            </div>
+        </div>
+
+        <div class="uk-margin">
+            <div id="migration-upload-warning">
+                {{ alert_message2 }}
+            </div>
+        </div>
+
+        <div class="uk-margin">
+            <!-- <button type="button" name="refresh" class="uk-button uk-button-primary uk-button-large" value="Refresh" onclick="INST_refreshBackupList()" class="uk-button">Refresh</button>-->
+            <button type="submit" name="submit" class="uk-button uk-button-danger uk-button-large" value="{{ LANG.MIGRATE.16 }}">{{ LANG.MIGRATE.16 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
+        </div>
+    </fieldset>
+</form>

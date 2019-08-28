@@ -65,87 +65,25 @@ class IP extends BaseCommand
     /**
      * Private internal method to match an IP address against a CIDR
      *
-     * @param   string $ipToCheck IP address to check
-     * @param   string $CIDR      IP address range to check against
-     * @return  boolean             true if IP falls into the CIDR, else false
-     * @todo    CIDR support for IPv6 addresses
-     *                            Original author: Ian B, taken from
-     * @link    http://www.php.net/manual/en/function.ip2long.php#71939
+     * @param   string $ipToCheck  IP address (IPv4 or IPv6) to check
+     * @param   string $CIDR       IP address range to check against
+     * @return  boolean            true if IP falls into the CIDR, else false
      */
     private function _matchCIDR($ipToCheck, $CIDR)
     {
-        // not for IPv6 addresses
-        if (strpos($ipToCheck, ':') !== false) {
-            return false;
-        }
-
-        // get the base and the bits from the ban in the database
-        list($base, $bits) = explode('/', $CIDR);
-
-        // now split it up into its classes
-        $classes = explode('.', $base);
-        $elements = count($classes);
-        if ($elements < 4) {
-            for ($i = $elements; $i < 4; $i++) {
-                $classes[$i] = 0;
-            }
-        }
-        list($a, $b, $c, $d) = $classes;
-
-        // now do some bit shifting/switching to convert to ints
-        $i = ($a << 24) + ($b << 16) + ($c << 8) + $d;
-        $mask = $bits == 0 ? 0 : (~0 << (32 - $bits));
-
-        // here's our lowest int
-        $low = $i & $mask;
-
-        // here's our highest int
-        $high = $i | (~$mask & 0xFFFFFFFF);
-
-        // now split the ip we're checking against up into classes
-        $ex = explode('.', $ipToCheck);
-
-        if (count($ex) == 4) {
-            // now convert the ip we're checking against to an int
-            $check = ($ex[0] << 24) + ($ex[1] << 16) + ($ex[2] << 8) + $ex[3];
-
-            // if the ip is within the range, including
-            // highest/lowest values, then it's witin the CIDR range
-            if (($check >= $low) && ($check <= $high)) {
-                return true;
-            }
-        }
-
-        return false;
+        return Geeklog\IP::matchCIDR($ipToCheck, $CIDR);
     }
 
     /**
      * Private internal method to match an IP address against an address range
-     * Original authors: dh06 and Stephane, taken from
      *
-     * @link http://www.php.net/manual/en/function.ip2long.php#70707
-     * @param   string $ip    IP address to check
+     * @param   string $ip    IP address (IPv4 or IPv6) to check
      * @param   string $range IP address range to check against
-     * @return  boolean         true if IP falls into the IP range, else false
+     * @return  boolean       true if IP falls into the IP range, else false
      */
     private function _matchRange($ip, $range)
     {
-        // not for IPv6 addresses
-        if (strpos($ip, ':') !== false) {
-            return false;
-        }
-
-        $d = strpos($range, '-');
-        if ($d !== false) {
-            $from = ip2long(trim(substr($range, 0, $d)));
-            $to = ip2long(trim(substr($range, $d + 1)));
-
-            $ip = ip2long($ip);
-
-            return (($ip >= $from) && ($ip <= $to));
-        }
-
-        return false;
+        return Geeklog\IP::matchRange($ip, $range);
     }
 
     /**

@@ -9,7 +9,7 @@ class Installer
     const GL_VERSION = '2.2.1';
 
     // System requirements
-    const SUPPORTED_PHP_VER = '5.3.3';
+    const SUPPORTED_PHP_VER = '5.6.4';
     const SUPPORTED_MYSQL_VER = '4.1.3';
 
     // Default UI language
@@ -20,6 +20,13 @@ class Installer
 
     // Database configuration file
     const DB_CONFIG_FILE = 'db-config.php';
+
+    /**
+     * Language meta data
+     *
+     * @var array of ['name' => language name, 'code' => ISO 639-1 (regional tag)
+     */
+    private $languages = [];
 
     /**
      * @var array
@@ -81,16 +88,21 @@ class Installer
         // this is not ideal but will stop PHP 5.3.0ff from complaining ...
         date_default_timezone_set(@date_default_timezone_get());
 
+        $langInfo = @include_once __DIR__ . '/../language/_list.php';
+        uasort($langInfo, function ($a, $b) { return strcasecmp($a['langName'], $b['langName']); });
+        $this->languages = $langInfo;
+
         $this->isMagicQuotes = (bool) get_magic_quotes_gpc();
         $this->env['mode'] = $this->get('mode', $this->post('mode', ''));
         $this->env['step'] = intval($this->get('step', $this->post('step', 1)), 10);
         $this->env['language_selector'] = '';
-        $language = $this->post('language', $this->get('language', self::DEFAULT_LANGUAGE));
+        $language = $this->post('language', $this->get('language', $this->getDefaultLanguage()));
 
         // Upgrade Message check flag for if continue button clicked if any messages present
         $this->env['upgrade_check'] = $this->get('upgrade_check', $this->post('upgrade_check', ''));
 
         // Include language file
+
         if (!file_exists(PATH_INSTALL . 'language/' . $language . '.php')) {
             $language = self::DEFAULT_LANGUAGE;
         }
@@ -101,13 +113,13 @@ class Installer
         if (!isset($LANG_DIRECTION)) {
             $LANG_DIRECTION = 'ltr';
         }
-        $this->env['rtl'] = $LANG_DIRECTION ==='rtl' ? '_rtl' : '';
+        $this->env['rtl'] = $LANG_DIRECTION ==='rtl' ? '-rtl' : '';
         if ($LANG_DIRECTION === 'rtl') {
-            $this->env['icon_arrow_next'] = '<i class="uk-icon-angle-double-left"></i>';
-            $this->env['icon_arrow_prev'] = '<i class="uk-icon-angle-double-right"></i>';
+            $this->env['icon_arrow_next'] = '<span uk-icon="icon: chevron-double-left"></span>';
+            $this->env['icon_arrow_prev'] = '<span uk-icon="icon: chevron-double-right"></span>';
         } else {
-            $this->env['icon_arrow_next'] = '<i class="uk-icon-angle-double-right"></i>';
-            $this->env['icon_arrow_prev'] = '<i class="uk-icon-angle-double-left"></i>';
+            $this->env['icon_arrow_next'] = '<span uk-icon="icon: chevron-double-right"></span>';
+            $this->env['icon_arrow_prev'] = '<span uk-icon="icon: chevron-double-left"></span>';
         }
 
         /** @noinspection PhpUndefinedVariableInspection */
@@ -182,7 +194,7 @@ class Installer
 
             default:
                 $type = $this->LANG['INSTALL'][59];
-                $style = 'notice';
+                $style = 'warning';
                 break;
         }
 
@@ -190,7 +202,7 @@ class Installer
         if (!empty($title)) {
             $retval .= '<h3>' . $title . '</h3>';
         }
-        $retval .= '<div class="uk-alert uk-alert-large uk-alert-' . $style . '">';
+        $retval .= '<div class="uk-alert uk-alert-' . $style . '">';
         $retval .= '<span class="uk-badge uk-badge-' . $style . '">' . $type . '</span> ' . $message . '</div>' . PHP_EOL;
             
         return $retval;
@@ -373,38 +385,50 @@ class Installer
     }
 
     /**
-     * Make a nice display name from the language filename
+     * Return a list of acceptable language of the user
      *
-     * @param   string $filename filename without the extension
-     * @return  string           language name to display to the user
+     * @return array
      */
-    private function prettifyLanguageName($filename)
+    private function getLanguagesFromUserAgent()
     {
-        $filename = str_replace('_utf-8', '', $filename);
-        $underscore = strpos($filename, '_');
+        $retval = [];
 
-        if ($underscore === false) {
-            $langName = ucfirst($filename);
-        } else {
-            $langName = ucfirst(substr($filename, 0, $underscore));
-            $langAdd = substr($filename, $underscore + 1);
-            $langAdd = str_replace('utf-8', '', $langAdd);
-            $langAdd = str_replace('_', ', ', $langAdd);
-            $word = explode(' ', $langAdd);
-            $langAdd = '';
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $languages = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
-            foreach ($word as $w) {
-                if (preg_match('/[0-9]+/', $w)) {
-                    $langAdd .= strtoupper($w) . ' ';
-                } else {
-                    $langAdd .= ucfirst($w) . ' ';
+            if (count($languages) > 0) {
+                foreach ($languages as $language) {
+                    if (strpos($language, ';') !== false) {
+                        list ($langName, $temp) = explode(';', $language, 2);
+
+                        if (strpos('=', $temp) !== false) {
+                            list (, $quality) = explode('=', $temp, 2);
+                        } else {
+                            $quality = 1.0;
+                        }
+                    } else {
+                        $langName = $language;
+                        $quality = 1.0;
+                    }
+
+                    $retval[] = [
+                        'name' => trim($langName),
+                        'quality' => (float) trim($quality)
+                    ];
                 }
-            }
 
-            $langName .= ' (' . trim($langAdd) . ')';
+                uasort($retval, function ($a, $b) { return -($a['quality'] - $b['quality']); });
+                $temp = [];
+
+                foreach ($retval as $r) {
+                    $temp[] = $r['name'];
+                }
+
+                $retval = $temp;
+            }
         }
 
-        return $langName;
+        return $retval;
     }
 
     /**
@@ -436,13 +460,13 @@ class Installer
             }
         }
 
-        foreach (glob(PATH_INSTALL . 'language/*.php') as $filename) {
-            $filename = basename($filename);
-            $filename = str_replace('.php', '', $filename);
+        foreach ($this->languages as $languageName => $data) {
+            $languageName = strtolower($languageName);
+            $languageName = str_replace('.php', '', $languageName);
             $env['languages'][] = array(
-                'value'    => $filename,
-                'selected' => (($filename === $this->env['language']) ? ' selected="selected"' : ''),
-                'text'     => $this->prettifyLanguageName($filename),
+                'value'    => $languageName,
+                'selected' => (($languageName === $this->env['language']) ? ' selected="selected"' : ''),
+                'text'     => $data['langName'] . ' (' . $data['english'] . ')',
             );
         }
 
@@ -867,8 +891,14 @@ class Installer
      */
     public function getHelpLink($var)
     {
-        return '(<a href="help.php?language=' . $this->env['language'] . '&amp;label=' . $var
-            . '#' . $var . '" target="_blank">?</a>)';
+        global $LANG_HELP, $LANG_LABEL;
+
+        $id = 'help-' . $var;
+        return '<button uk-toggle="target: #' . $id . '; mode: click" type="button">?</button>' . PHP_EOL
+            . '<div id="' . $id . '" class="uk-card uk-card-secondary uk-card-body" hidden>'
+            . '<h3 class="uk-card-title">' . $LANG_LABEL[$var] . '</h3>'
+            . '<p>' . $LANG_HELP[$var] . '</p>'
+            . '</div>';
     }
 
     /**
@@ -882,10 +912,11 @@ class Installer
      * @param  string $gl_path         base Geeklog install path
      * @param  string $selected_dbtype currently selected db type
      * @param  bool   $list_innodb     whether to list InnoDB option
+     * @param  bool   $isInstall       whether to install or update
      * @return string
      * @throws Exception
      */
-    private function listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = false)
+    private function listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = false, $isInstall = true)
     {
         $retval = '';
 
@@ -960,18 +991,18 @@ class Installer
             }
         }
 
-        $numDbs = count($dbs);
-
-        if ($numDbs === 0) {
+        if (count($dbs) === 0) {
             $retval = '<span class="error">' . $this->LANG['INSTALL'][108] . '</span>' . PHP_EOL;
-        } elseif ($numDbs === 1) {
-            $remaining = array_keys($dbs);
-            $retval = $dbs[$remaining[0]]['label']
-                . ' <input type="hidden" name="db_type" value="' . $remaining[0] . '">' . PHP_EOL;
         } else {
-            $retval = '<select id="db_type" name="db_type">' . PHP_EOL
+            $disabled = $isInstall ? '' : ' disabled';
+            $retval = '<select id="db_type" name="db_type"' . $disabled . ' class="uk-select">' . PHP_EOL
                 . $retval
                 . '</select>' . PHP_EOL;
+
+            if ($disabled) {
+                $retval .= '<input type="hidden" name="db_type" value="' . $selected_dbtype . '">'
+                    . PHP_EOL;
+            }
         }
 
         return $retval;
@@ -1036,6 +1067,8 @@ class Installer
     {
         global $_CONF, $_TABLES, $_USER, $_DB_dbms, $_DB_table_prefix;
 
+        // Don't use 'include' or 'require' here! (bug #951)
+        $this->includeConfig($this->env['dbconfig_path']);
         $fake_uid = false;
 
         if (!isset($_USER['uid'])) {
@@ -1049,7 +1082,7 @@ class Installer
             COM_errorLog("Attempting to install the '{$plugin}' plugin", 1);
         }
 
-        // sanity checks for $inst_parms
+        // sanity checks for $inst_params
         if (isset($inst_params['info'])) {
             $pi_name = $inst_params['info']['pi_name'];
             $pi_version = $inst_params['info']['pi_version'];
@@ -1886,7 +1919,7 @@ class Installer
                $_DB_dbms, $_DB_charset;
 
         $dbConfigData = @file_get_contents($dbConfigFilePath);
-        $dbConfigData =str_replace('<' . '?php', '', $dbConfigData);
+        $dbConfigData = str_replace('<' . '?php', '', $dbConfigData);
         eval($dbConfigData);
     }
 
@@ -2209,32 +2242,37 @@ class Installer
     /**
      * Derive site's default language from available information
      *
-     * @param    string  $langPath path where the language files are kept
-     * @param    string  $language language used in the install script
-     * @param    boolean $utf8     whether to use UTF-8
-     * @return   string              name of default language (for the config)
+     * @return   string  name of default language (for the config)
      */
-    private function getDefaultLanguage($langPath, $language, $utf8 = false)
+    private function getDefaultLanguage()
     {
-        $pos = strpos($language, '_utf-8');
+        $languagesFromUserAgent = $this->getLanguagesFromUserAgent();
 
-        if ($pos !== false) {
-            $language = substr($language, 0, $pos);
-        }
+        if (count($languagesFromUserAgent) > 0) {
+            foreach ($languagesFromUserAgent as $languageFromUserAgent) {
+                if (strpos($languageFromUserAgent, '_') !== false) {
+                    $languageFromUserAgent = str_replace('_', '-', $languageFromUserAgent);
+                }
 
-        $languageName = $utf8 ? $language . '_utf-8' : $language;
-        $languageFile = $languageName . '.php';
+                foreach ($this->languages as $languageFileName => $data) {
+                    $languageFileName = str_ireplace('.php', '', $languageFileName);
 
-        if (!file_exists($langPath . $languageFile)) {
-            // doesn't exist - fall back to English
-            $languageName = self::DEFAULT_LANGUAGE;
+                    if (strcasecmp($data['langCode'], $languageFromUserAgent) === 0) {
+                        return $languageFileName;
+                    }
 
-            if ($utf8) {
-                $languageName .= '_utf-8';
+                    if (strpos($languageFromUserAgent, '-')) {
+                        list ($country, ) = explode('-', $languageFromUserAgent, 2);
+
+                        if (strcasecmp($data['langCode'], $country) === 0) {
+                            return $languageFileName;
+                        }
+                    }
+                }
             }
         }
 
-        return $languageName;
+        return self::DEFAULT_LANGUAGE;
     }
 
     /**
@@ -3507,14 +3545,7 @@ class Installer
         global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
                $LANG_INSTALL, $LANG_MIGRATE;
 
-        $display = $this->getAlertMessage($LANG_MIGRATE[0]) . PHP_EOL
-            . '<h2>' . $LANG_MIGRATE[1] . '</h2>' . PHP_EOL
-            . '<ul>' . PHP_EOL
-            . '<li>' . $LANG_MIGRATE[2] . '</li>' . PHP_EOL
-            . '<li>' . $LANG_MIGRATE[3] . '</li>' . PHP_EOL
-            . '<li>' . $LANG_MIGRATE[5] . '</li>' . PHP_EOL
-            . '<li>' . $LANG_MIGRATE[4] . '</li>' . PHP_EOL
-            . '</ul>' . PHP_EOL . PHP_EOL;
+        $this->env['alert_message1'] = $this->getAlertMessage($LANG_MIGRATE[0]);
 
         // Default form values
         $_FORM = array(
@@ -3544,25 +3575,23 @@ class Installer
             $_FORM['prefix'] = $_DB_table_prefix;
         }
 
-        // Set up the URL and admin URL paths.
-        $site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : $this->getSiteUrl();
-        $site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : $this->getSiteAdminUrl();
+        $this->env['host'] = $_FORM['host'];
+        $this->env['name'] = $_FORM['name'];
+        $this->env['user'] = $_FORM['user'];
+        $this->env['pass'] = '';
+        $this->env['prefix'] = $_FORM['prefix'];
 
-        $display .= '<h2>' . $LANG_INSTALL[31] . '</h2>' . PHP_EOL
-            . '<form action="index.php" method="post" name="migrate" enctype="multipart/form-data" class="uk-form uk-form-horizontal">' . PHP_EOL
-            . '<input type="hidden" name="step" value="2">' . PHP_EOL
-            . '<input type="hidden" name="language" value="' . $this->env['language'] . '">' . PHP_EOL
-            . '<input type="hidden" name="mode" value="migrate">'
-            . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($this->env['dbconfig_path']) . '">' . PHP_EOL
-            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[34] . ' ' . $this->getHelpLink('db_type') . '</label> <div class="uk-form-controls"><select name="db[type]">' . PHP_EOL
-            . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . PHP_EOL
-            . '</select></div></div>' . PHP_EOL
-            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[39] . ' ' . $this->getHelpLink('db_host') . '</label> <div class="uk-form-controls"><input type="text" name="db[host]" value="' . $_FORM['host'] . '" size="20"></div></div>' . PHP_EOL
-            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[40] . ' ' . $this->getHelpLink('db_name') . '</label> <div class="uk-form-controls"><input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"></div></div>' . PHP_EOL
-            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[41] . ' ' . $this->getHelpLink('db_user') . '</label> <div class="uk-form-controls"><input type="text" name="db[user]" value="' . $_FORM['user'] . '" size="20"></div></div>' . PHP_EOL
-            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[42] . ' ' . $this->getHelpLink('db_pass') . '</label> <div class="uk-form-controls"><input type="password" name="db[pass]" value="' . $_FORM['pass'] . '" size="20"></div></div>' . PHP_EOL
-            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[45] . ' ' . $this->getHelpLink('site_url') . '</label> <div class="uk-form-controls"><input type="text" name="site_url" value="' . htmlspecialchars($site_url) . '" size="50">  &nbsp; ' . $LANG_INSTALL[46] . '</div></div>' . PHP_EOL
-            . '<div class="uk-form-row"><label class="uk-form-label">' . $LANG_INSTALL[47] . ' ' . $this->getHelpLink('site_admin_url') . '</label> <div class="uk-form-controls"><input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50">  &nbsp; ' . $LANG_INSTALL[46] . '</div></div>' . PHP_EOL;
+        // Set up the URL and admin URL paths.
+        $this->env['site_url'] = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : $this->getSiteUrl();
+        $this->env['site_admin_url'] = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : $this->getSiteAdminUrl();
+        $this->env['help_db_type'] = $this->getHelpLink('db_type');
+        $this->env['help_db_host'] = $this->getHelpLink('db_host');
+        $this->env['help_db_name'] = $this->getHelpLink('db_name');
+        $this->env['help_db_user'] = $this->getHelpLink('db_user');
+        $this->env['help_db_pass'] = $this->getHelpLink('db_pass');
+        $this->env['help_site_url'] = $this->getHelpLink('site_url');
+        $this->env['help_site_admin_url'] = $this->getHelpLink('site_admin_url');
+        $this->env['help_migrate_file'] = $this->getHelpLink('migrate_file');
 
         // Identify the backup files in backups/ and order them newest to oldest
         $gl_path = str_replace(self::DB_CONFIG_FILE, '', $this->env['dbconfig_path']);
@@ -3579,20 +3608,9 @@ class Installer
 
         rsort($backupFiles);
 
-        $display .= '<div class="uk-form-row"><label class="uk-form-label">'
-            . $LANG_MIGRATE[6] . ' ' . $this->getHelpLink('migrate_file')
-            . '</label>' . PHP_EOL
-            . '<div class="uk-form-controls"><select name="migration_type" onchange="INST_selectMigrationType()">' . PHP_EOL
-            . '<option value="">' . $LANG_MIGRATE[7] . '</option>' . PHP_EOL
-            . '<option value="select">' . $LANG_MIGRATE[8] . '</option>' . PHP_EOL
-            . '<option value="upload">' . $LANG_MIGRATE[9] . '</option>' . PHP_EOL
-            . '<option value="dbcontent">' . $LANG_MIGRATE[49] . '</option>' . PHP_EOL
-            . '</select> ' . PHP_EOL
-            . '<span id="migration-select">' . PHP_EOL;
-
         // Check if there are any files in the backups directory
         if (count($backupFiles) > 0) {
-            $display .= '<select name="backup_file">' . PHP_EOL
+            $backupFileSelector = '<select name="backup_file" class="uk-select">' . PHP_EOL
                 . '<option value="">' . $LANG_MIGRATE[10] . '</option>' . PHP_EOL;
 
             // List each of the backup files in the backups directory
@@ -3601,49 +3619,40 @@ class Installer
                 $filename = str_replace($backup_dir, '', $filePath);
                 $backupFile = str_replace($backup_dir, '', $filePath);
 
-                $display .= '<option value="' . $filename . '">' . $backupFile
-                    . ' (' . $this->formatSize(@filesize($filePath))
-                    . ')</option>' . PHP_EOL;
+                $backupFileSelector .= '<option value="' . $filename . '">'
+                    . $backupFile . ' (' . $this->formatSize(@filesize($filePath)) . ')' . PHP_EOL
+                    . '</option>' . PHP_EOL;
             }
 
-            $display .= '</select>' . PHP_EOL;
+            $backupFileSelector .= '</select>' . PHP_EOL;
         } else {
-            $display .= $LANG_MIGRATE[11] . PHP_EOL;
+            $backupFileSelector = $LANG_MIGRATE[11] . PHP_EOL;
         }
 
-        $display .= '</span>' . PHP_EOL
-            . '<span id="migration-upload">' . PHP_EOL;
+        $this->env['backup_file_selector'] = $backupFileSelector;
 
         // Check if the user's PHP configuration has 'file_uploads' enabled
         $fileUploads = (bool) ini_get('file_uploads');
 
         // Check if the plugins directory is writable by the web server before we even bother uploading anything
         $isWritable = is_writable($backup_dir);
-
-        if ($fileUploads && $isWritable) {
-            $display .= '<input class="input_file" type="file" name="backup_file"><br>' . PHP_EOL;
-        }
-
-        $display .= '</span>' . PHP_EOL
-            . '</div></div>' . PHP_EOL
-            . '<div class="uk-margin"><div id="migration-upload-warning">' . PHP_EOL;
+        $this->env['backup_file'] = ($fileUploads && $isWritable)
+            ? '<input class="uk-input" type="file" name="backup_file"><br>' . PHP_EOL
+            : '';
 
         if ($fileUploads) {
             if ($isWritable) {
-                $display .= $this->getAlertMessage($LANG_MIGRATE[12] . ini_get('upload_max_filesize') . $LANG_MIGRATE[13] . ini_get('upload_max_filesize') . $LANG_MIGRATE[14], 'notice');
+                $alertMessage2 = $this->getAlertMessage($LANG_MIGRATE[12] . ini_get('upload_max_filesize') . $LANG_MIGRATE[13] . ini_get('upload_max_filesize') . $LANG_MIGRATE[14], 'notice');
             } else {
-                $display .= $this->getAlertMessage($LANG_MIGRATE[15], 'warning');
+                $alertMessage2 = $this->getAlertMessage($LANG_MIGRATE[15], 'warning');
             }
+        } else {
+            $alertMessage2 = '';
         }
 
-        $display .= '</div></div>' . PHP_EOL
-            . '<div class="uk-margin">'
-            // Todo: Add "Refresh" button to refresh the list of files in the backups directory
-            // . '<button type="button" name="refresh" class="uk-button uk-button-primary uk-button-large" value="' . 'Refresh' . '" onclick="INST_refreshBackupList()">' . 'Refresh' . '</button>' . PHP_EOL
-            . '<button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large" value="' . $LANG_MIGRATE[16] . '">' . $LANG_MIGRATE[16] . '&nbsp;&nbsp;' . $this->env['icon_arrow_next'] . '</button></div>' . PHP_EOL
-            . '</form>' . PHP_EOL;
+        $this->env['alert_message2'] = $alertMessage2;
 
-        return $display;
+        return MicroTemplate::quick(PATH_LAYOUT, 'step1-migrate', $this->env);
     }
 
     /**
@@ -4276,9 +4285,10 @@ HTML;
      * Installer engine
      * The guts of the installation and upgrade package.
      *
-     * @param  string $installType 'install' or 'upgrade'
-     * @param  int    $installStep 1 - 4
+     * @param  string  $installType  'install' or 'upgrade'
+     * @param  int     $installStep  1 - 4
      * @return string
+     * @throws Exception
      */
     private function installEngine($installType, $installStep)
     {
@@ -4414,7 +4424,9 @@ HTML;
                 $this->env['site_slogan'] = $site_slogan;
                 $this->env['help_db_type'] = $this->getHelpLink('db_type');
                 $this->env['db_type_selector'] = $this->listOfSupportedDBs(
-                    $this->env['dbconfig_path'], $db_selected,
+                    $this->env['dbconfig_path'],
+                    $db_selected,
+                    ($installType === 'install'),
                     ($installType === 'install')
                 );
                 $this->env['help_db_host'] = $this->getHelpLink('db_host');

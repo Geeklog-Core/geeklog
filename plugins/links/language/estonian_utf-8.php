@@ -171,7 +171,8 @@ $LANG_LINKS_ADMIN = array(
     58 => 'Kontrolli nüüd',
     59 => '<p>Kõigi nähtaval olevate linkide kontrollimiseks, klõpsa palun allpool oleval lingil "Kontrolli nüüd". Pane tähele, et kontrollimine võib sõltuvalt nähtaval olevate linkide arvust võtta veidi aega.</p>',
     60 => 'Kasutaja %s proov<is õigustamatult  muuta kategooriat: %s.',
-    61 => 'Linke kategoorias'
+    61 => 'Linke kategoorias',
+    'num_links' => '%s Link(s)'
 );
 
 
@@ -239,6 +240,7 @@ $LANG_confignames['links'] = array(
     'aftersave' => 'Pärast linkide salvestamist',
     'show_category_descriptions' => 'Näita kategooriate kirjeldust?',
     'new_window' => 'Ava välised lingid uues aknas?',
+    'recaptcha' => 'reCAPTCHA',
     'root' => 'Peakategooria ID',
     'default_permissions' => 'Linkide vaikimisi õigused',
     'category_permissions' => 'Kategooria vaikimisi õigused',
@@ -271,5 +273,6 @@ $LANG_configselects['links'] = array(
     1 => array('Jah' => true, 'Ei' => false),
     9 => array('Suuna edasi lingitud lehele' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita avalikku loetelu' => 'plugin', 'Näita avalehte' => 'home', 'Näita Admini lehte' => 'admin'),
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('No access' => 0, 'Use' => 2),
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

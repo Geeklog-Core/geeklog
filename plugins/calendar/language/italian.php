@@ -165,7 +165,8 @@ $LANG_CAL_ADMIN = array(
     33 => 'Nessun evento selezionato per la rimozione',
     34 => 'ID dell\'Evento',
     35 => 'non rimosso',
-    36 => 'Rimosso con successo'
+    36 => 'Rimosso con successo',
+    'num_events' => '%s Event(s)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -206,6 +207,7 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'Notifica via Email?',
     'delete_event' => 'Rimuovere gli Eventi se l\'Utente che li ha create é rimosso?',
     'aftersave' => 'Dopo aver Salvato l\'Evento',
+    'recaptcha' => 'reCAPTCHA',
     'default_permissions' => 'Permessi Predefiniti per Eventi',
     'autotag_permissions_event' => '[event: ] Permessi',
     'block_enable' => 'Enabled',
@@ -245,5 +247,6 @@ $LANG_configselects['calendar'] = array(
     12 => array('Nessun Accesso' => 0, 'Sola lettura' => 2, 'Lettura e Scrittura' => 3),
     13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
+    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

@@ -1,14 +1,24 @@
 <form action="index.php" method="post" style="display: inline;" class="uk-form">
     {% for item in hidden_items %}
-        <input type="hidden" name="{! item.name !}" value="{! item.value !}">
+    <input type="hidden" name="{! item.name !}" value="{! item.value !}">
     {% endfor %}
-
-    {{ LANG.INSTALL.86 }}: <select name="language">
-        {% for language in languages %}
-            <option value="{! language.value !}"{{ language.selected }}>
-                {! language.text !}
-            </option>
-        {% endfor %}
-    </select>&nbsp;
-    <button type="submit" class="uk-button" value="{{ LANG.INSTALL.80 }}">{{ LANG.INSTALL.80 }}</button>
+    <fieldset class="uk-form-horizontal">
+    <div class="uk-grid">
+        <div>
+            <label for="select">{{ LANG.INSTALL.86 }}:</label>
+        </div>
+        <div>
+            <select name="language" id="select" class="uk-select uk-dropdown-small">
+                {% for language in languages %}
+                <option value="{! language.value !}" {{ language.selected }}>
+                    {! language.text !}
+                </option>
+                {% endfor %}
+            </select>&nbsp;
+        </div>
+        <div>
+            <button type="submit" class="uk-button" value="{{ LANG.INSTALL.80 }}">{{ LANG.INSTALL.80 }}</button>
+        </div>
+    </div>
+    </fieldset>
 </form>

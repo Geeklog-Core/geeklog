@@ -244,6 +244,7 @@ $LANG_confignames['links'] = array(
     'aftersave' => 'リンク保存後の画面遷移',
     'show_category_descriptions' => 'カテゴリの説明を表示する',
     'new_window' => 'リンクを新しいウィンドウで開く',
+    'recaptcha' => 'reCAPTCHA',
     'root' => 'トップカテゴリのID',
     'default_permissions' => 'パーミッション',
     'category_permissions' => 'パーミッション',
@@ -276,5 +277,6 @@ $LANG_configselects['links'] = array(
     1 => array('はい' => true, 'いいえ' => false),
     9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'プラグイントップを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    13 => array('アクセス不可' => 0, '利用する' => 2)
+    13 => array('アクセス不可' => 0, '利用する' => 2),
+    14 => array('無効' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

@@ -64,3 +64,14 @@ function calendar_update_ConfValues_1_1_2()
 
     return true;
 }
+
+function calendar_update_ConfValues_1_1_7()
+{
+    global $_CONF, $_CA_DEFAULT, $_CA_CONF, $_GROUPS, $_TABLES;
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/calendar/install_defaults.php';
+    $c->add('recaptcha', $_CA_DEFAULT['recaptcha'],
+        'select', 0, 0, 16, 120, true, 'calendar', 0);
+}

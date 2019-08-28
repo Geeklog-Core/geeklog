@@ -38,6 +38,7 @@ use Geeklog\Cache;
 use Geeklog\Input;
 use Geeklog\Mail;
 use Geeklog\Resource;
+use Geeklog\Session;
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
@@ -1465,6 +1466,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $footerCode .= $pluginFooterCode;
 
     $footer->set_var('plg_footercode', $footerCode);
+    $footer->set_var('layout_columns', $layout_columns);
 
     // Actually parse the template and make variable substitutions
     $footer->parse('index_footer', 'footer');
@@ -3651,15 +3653,53 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
     if (!empty($status) && ($status == USER_ACCOUNT_DISABLED || $status == USER_ACCOUNT_LOCKED || $status == USER_ACCOUNT_NEW_EMAIL)) {
         return false;
     } else {
-        return Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
-        /* NOT IMPLEMENTED YET FOR DEMO MODE NEED TO UPDATE SESSION HANDLING AND COM_showMessageText FIRST SEE https://github.com/Geeklog-Core/geeklog/issues/765
-        if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
-            // Don't send any emails in demo mode
+        if (COM_isDemoMode()) {
+            // Don't send any emails in demo mode.  Instead, redirect to the home page and show a message.
+            $charset = COM_getCharset();
+            $subject = htmlspecialchars($subject, ENT_QUOTES, $charset);
+            $toAddress = array_keys($to)[0];
+            $toAlias = array_values($to)[0];
+            $to = htmlspecialchars(
+                $toAlias . ' <' . $toAddress . '>',
+                ENT_QUOTES, 
+                $charset
+            );
+            $fromAddress = array_keys($from)[0];
+            $fromAlias = array_values($from)[0];
+            $from = htmlspecialchars(
+                $fromAlias . ' <' . $fromAddress . '>',
+                ENT_QUOTES,
+                $charset
+            );
+            $priority = htmlspecialchars($priority, ENT_QUOTES, $charset);
+
+            if (!$html) {
+                $message = GLText::removeAllHTMLTagsAndAttributes($message);
+            }
+
+            // Just in case
+            $message = htmlspecialchars($message, ENT_QUOTES, $charset);
+            $message = str_replace(["\r\n", "\n", "\r"], '<br>', $message);
+            $msg = <<<EOD
+<h2>Notice</h2>
+<p>Please note sending emails is disabled in Demo mode. The last email which would have been sent was:</p>
+---------- Header ----------<br>
+Subject: {$subject}<br>
+To: {$to}<br>
+From: {$from}<br>
+Priority: {$priority}<br>
+<br>
+---------- Body ------------<br>
+{$message}<br>
+----------------------------<br>
+EOD;
+            Session::setFlashVar('msg', $msg);
+            COM_redirect($_CONF['site_url']);
+
             return true;
         } else {
-            Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
+            return Mail::send($to, $subject, $message, $from, $html, $priority, $optional, $attachments);
         }
-        */
     }
 }
 
@@ -4954,15 +4994,6 @@ function COM_showMessageText($message, $title = '')
         $tcc->set_var('end_block_msg', COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer')));
         
         $retval = $tcc->finish($tcc->parse('output', 'system_message'));        
-        
-        /* NOT IMPLEMENTED YET FOR DEMO MODE NEED TO UPDATE SESSION HANDLING AND com_mail FIRST SEE https://github.com/Geeklog-Core/geeklog/issues/765    
-        if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
-            if (!empty($_SESSION['LAST_EMAIL'])) {
-                $retval .= '<p>Please note sending emails is disabled in Demo mode. The last email which would have been sent was:</p>' . $_SESSION['LAST_EMAIL'];
-                $_SESSION['LAST_EMAIL'] = '';
-            }
-        }
-        */
     }
 
     return $retval;
@@ -4973,8 +5004,8 @@ function COM_showMessageText($message, $title = '')
  * Display one of the predefined messages from the $MESSAGE array. If a plugin
  * name is provided, display that plugin's message instead.
  *
- * @param    int    $msg    ID of message to show
- * @param    string $plugin Optional name of plugin to lookup plugin defined message
+ * @param    int|string  $msg    ID of message to show or a string message WHICH MUST BE SAFE AS HTML TEXT
+ * @param    string      $plugin Optional name of plugin to lookup plugin defined message
  * @return   string              HTML block with message
  * @see      COM_showMessageFromParameter
  * @see      COM_showMessageText
@@ -4985,30 +5016,36 @@ function COM_showMessage($msg, $plugin = '')
 
     $retval = '';
 
-    $msg = (int) $msg;
-    if ($msg > 0) {
-        if (!empty($plugin)) {
-            $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
-            global $$var;
-            if (isset($$var)) {
-                $message = $$var;
+    if (is_int($msg)) {
+        $msg = (int) $msg;
+
+        if ($msg > 0) {
+            if (!empty($plugin)) {
+                $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
+                global $$var;
+                if (isset($$var)) {
+                    $message = $$var;
+                } else {
+                    $message = sprintf($MESSAGE[61], $plugin);
+                    COM_errorLog($message . ": " . $var, 1);
+                }
             } else {
-                $message = sprintf($MESSAGE[61], $plugin);
-                COM_errorLog($message . ": " . $var, 1);
-            }
-        } else {
-            $message = $MESSAGE[$msg];
+                $message = $MESSAGE[$msg];
 
-            // Ugly workaround for mailstory function (public_html/profiles.php)
-            if ($msg === 153) {
-                $speedLimit = (int) Input::fGet('speedlimit', 0);
-                $message = sprintf($message, $speedLimit, $_CONF['speedlimit']);
+                // Ugly workaround for mailstory function (public_html/profiles.php)
+                if ($msg === 153) {
+                    $speedLimit = (int) Input::fGet('speedlimit', 0);
+                    $message = sprintf($message, $speedLimit, $_CONF['speedlimit']);
+                }
+            }
+
+            if (!empty($message)) {
+                $retval .= COM_showMessageText($message);
             }
         }
-
-        if (!empty($message)) {
-            $retval .= COM_showMessageText($message);
-        }
+    } elseif (is_string($msg) && !empty($msg)) {
+        // $msg MUST BE SAFE AS HTML TEXT!
+        $retval .= COM_showMessageText($msg);
     }
 
     return $retval;
@@ -7731,34 +7768,41 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
             if (!empty($_CONF['site_name'])) {
                 $title = $_CONF['site_name'] . ' - ' . $title;
             }
-            echo "<html><head><meta charset=\"" . $_CONF['default_charset'] . "\"><title>$title</title></head>\n<body>\n";
-
-            echo '<h1>An error has occurred:</h1>';
+            $output = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="{$_CONF['default_charset']}">
+  <title>{$title}</title>
+</head>
+<body>
+<h1>An error has occurred:</h1>
+HTML;
             if ($_CONF['rootdebug']) {
-                echo '<h2 style="color: red">This is being displayed as "Root Debugging" is enabled
-                        in your Geeklog configuration.</h2><p>If this is a production
-                        website you <strong><em>must disable</em></strong> this
-                        option once you have resolved any issues you are
-                        investigating.</p>';
+                $output .= <<<HTML
+<h2 style="color: red;">This is being displayed as "Root Debugging" is enabled in your Geeklog configuration.</h2>
+<p>If this is a production website you <strong><em>must disable</em></strong> this option once you have resolved any issues you are investigating.</p>
+HTML;
             } else {
-                echo '<p>(This text is only displayed to users in the group \'Root\')</p>';
+                $output .= '<p>(This text is only displayed to users in the group \'Root\')</p>';
             }
-            echo "<p>$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine</p>";
+
+            $output .= "<p>$errorTypes[$errNo]($errNo) - $errStr @ $errFile line $errLine</p>";
 
             if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
                 if ('force' != '' . $_CONF['rootdebug']) {
                     $errContext = COM_rootDebugClean($errContext);
                 } else {
-                    echo '<h2 style="color: red">Root Debug is set to "force", this
-                    means that passwords and session cookies are exposed in this
-                    message!!!</h2>';
+                    $output .= <<<HTML
+<h2 style="color: red;">Root Debug is set to "force", this means that passwords and session cookies are exposed in this message!!!</h2>
+HTML;
                 }
             }
             if (@ini_get('xdebug.default_enable') == 1) {
                 ob_start();
                 var_dump($errContext);
-                $errContext = ob_get_clean();
-                echo "$errContext</body></html>";
+                $output .= ob_get_clean() . PHP_EOL . '</body></html>';
+                echo $output;
             } else {
                 $btr = debug_backtrace();
                 if (count($btr) > 0) {
@@ -7767,9 +7811,19 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
                     }
                 }
                 if (count($btr) > 0) {
-                    echo "<font size='1'><table class='xdebug-error' dir='ltr' border='1' cellspacing='0' cellpadding='1'>\n";
-                    echo "<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>\n";
-                    echo "<tr><th align='right' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>File</th><th align='right' bgcolor='#eeeeec'>Line</th></tr>\n";
+                    $output .= <<<HTML
+<table class="xdebug-error" dir="ltr" style="font-size: xx-small; border-width: 1px; border-collapse: collapse;">
+  <tr>
+    <th style="text-align: left; background-color: #e9b96e;" colspan="5">Call Stack</th>
+  </tr>
+  <tr>
+    <th style="text-align: right; background-color: #eeeeec;">#</th>
+    <th style="text-align: left; background-color: #eeeeec;">Function</th>
+    <th style="text-align: left; background-color: #eeeeec;">File</th>
+    <th style="text-align: right; background-color: #eeeeec;">Line</th>
+  </tr>
+HTML;
+
                     $i = 1;
                     foreach ($btr as $b) {
                         $f = '';
@@ -7780,20 +7834,34 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
                         if (!empty($b['line'])) {
                             $l = $b['line'];
                         }
-                        echo "<tr><td bgcolor='#eeeeec' align='right'>$i</td><td bgcolor='#eeeeec'>{$b['function']}</td><td bgcolor='#eeeeec'>{$f}</td><td bgcolor='#eeeeec' align='right'>{$l}</td></tr>\n";
+
+                        $output .= <<<HTML
+  <tr>
+    <td style="text-align: right; background-color: #eeeeec;">{$i}</td>
+    <td style="background-color: #eeeeec;">{$b['function']}</td>
+    <td style="background-color: #eeeeec;">{$f}</td>
+    <td style="text-align: right; background-color: #eeeeec;">{$l}</td>
+  </tr>
+HTML;
                         $i++;
                         if ($i > 100) {
-                            echo "<tr><td bgcolor='#eeeeec' align='left' colspan='4'>Possible recursion - aborting.</td></tr>\n";
+                            $output .= <<<HTML
+  <tr>
+    <td style="text-align: left; background-color: #eeeeec;" colspan="4">Possible recursion - aborting.</td>
+  </tr>
+HTML;
                             break;
                         }
                     }
-                    echo "</table></font>\n";
-                }
-                echo '<pre>';
+
+                    $output .= '</table>' . PHP_EOL;
+;               }
+
+                $output .= '<pre>';
                 ob_start();
                 var_dump($errContext);
-                $errContext = htmlspecialchars(ob_get_clean());
-                echo "$errContext</pre></body></html>";
+                $output .= htmlspecialchars(ob_get_clean()) . '</pre></body></html>';
+                echo $output;
             }
             exit;
         }
@@ -8319,11 +8387,15 @@ function COM_checkInstalled()
 
         $version = VERSION;
         $display = <<<HTML
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Welcome to Geeklog</title>
   <meta name="robots" content="noindex,nofollow" />
+  <link rel="stylesheet" href="vendor/uikit3/css/uikit.min.css">
+  <script src="vendor/uikit3/js/uikit.min.js"></script>
+  <script src="vendor/uikit3/js/uikit-icons.min.js"></script>
   <style type="text/css">
     html, body {
       color: #000;
@@ -8335,11 +8407,19 @@ function COM_checkInstalled()
 </head>
 
 <body>
-<img src="{$rel}docs/images/logo.gif" alt="" />
+<div class="uk-container">
+  <div class="uk-grid" style="max-width: 600px; margin: 5px auto;">
+    <div class="uk-align-center">
+      <img src="{$rel}docs/images/logo.gif" alt="" />
+    </div>
 
-<h1>Geeklog {$version}</h1>
-  <p>Please run the <a href="{$rel}admin/install/index.php" rel="nofollow">install script</a> first.</p>
-  <p>For more information, please refer to the <a href="{$rel}docs/english/install.html" rel="nofollow">installation instructions</a>.</p>
+    <div>
+      <h1 class="uk-align-center">Geeklog {$version}</h1>
+      <p class="uk-align-center"><span uk-icon="icon: warning; ratio: 2" style="color: red;"></span>  Please run the <a href="{$rel}admin/install/index.php" rel="nofollow">install script</a> first.</p>
+      <p class="uk-align-center">For more information, please refer to the <a href="{$rel}docs/english/install.html" rel="nofollow">installation instructions</a>.</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 HTML;
@@ -8570,7 +8650,7 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor
     // Check if the current user has access to Filemanager
     $geeklogFileManager = "false";
     if (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Root') || (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')))) {
-        if ((isset($_CONF['demo_mode']) && !$_CONF['demo_mode']) || !isset($_CONF['demo_mode'])) {
+        if (!COM_isDemoMode()) {
             $geeklogFileManager = "true";
         }
     }
@@ -8690,6 +8770,19 @@ function COM_isEnableDeveloperModeLog($type)
         $_CONF['developer_mode_log'][$type];
 
     return $retval;
+}
+
+/**
+ * Return if we are in demo mode
+ *
+ * @return bool  true if we are in demo mode, false otherwise
+ * @since  Geeklog 2.2.1
+ */
+function COM_isDemoMode()
+{
+    global $_CONF;
+
+    return isset($_CONF['demo_mode']) && $_CONF['demo_mode'];
 }
 
 // Now include all plugin functions

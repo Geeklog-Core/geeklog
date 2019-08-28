@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // | geeklog/plugins/recaptcha/install_updates.php                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2014-2017 mystral-kk - geeklog AT mystral-kk DOT net        |
+// | Copyright (C) 2014-2019 mystral-kk - geeklog AT mystral-kk DOT net        |
 // |                                                                           |
 // | Based on the CAPTCHA Plugin by Ben                                        |
 // |                                                - ben AT geeklog DOT fr    |
@@ -125,6 +125,27 @@ function recaptcha_update_ConfValues_1_1_6()
     $c->add('enable_calendar', $_RECAPTCHA_CONF['enable_calendar'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
     $so += 10;
     $c->add('enable_links', $_RECAPTCHA_CONF['enable_links'], 'select', $sg, $fs, 2, $so, true, $me, $tab);
+
+    return true;
+}
+
+/**
+ * Update Configuration settings for reCAPTCHA plugin v1.2.1 (Geeklog 2.2.1)
+ *
+ * @return bool true on success, false otherwise
+ */
+function recaptcha_update_ConfValues_1_2_0()
+{
+    $c = config::get_instance();
+    $me = 'recaptcha';
+
+    // Remove plugins from "Integration" tab, since the information on the tab will be
+    // obtained through calling "plugin_supportsRecaptcha_xxx"
+    $c->del('enable_forum', $me);
+    $c->del('enable_mediagallery', $me);
+    $c->del('enable_rating', $me);
+    $c->del('enable_calendar', $me);
+    $c->del('enable_links', $me);
 
     return true;
 }

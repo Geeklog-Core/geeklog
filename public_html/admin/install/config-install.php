@@ -379,6 +379,7 @@ function install_config(ConfigInterface $c)
     $c->add('max_photo_size',65536,'text',5,26,NULL,1590,TRUE, $me, 26);
     $c->add('force_photo_width',75,'text',5,26,NULL,1620,FALSE, $me, 26);
     $c->add('default_photo','http://example.com/images/userphotos/default.png','text',5,26,NULL,1630,FALSE, $me, 26);
+    $c->add('generate_user_icon',true,'select',5,26,1,1640,true, $me, 26);
 
     $c->add('tab_gravatar', NULL, 'tab', 5, 27, NULL, 0, TRUE, $me, 27);
     $c->add('fs_gravatar', NULL, 'fieldset', 5, 27, NULL, 0, TRUE, $me, 27);
@@ -530,9 +531,9 @@ function install_config(ConfigInterface $c)
     $so += 10;
     $c->add('filemanager_file_sorting', 'default', 'select', $sg, $fs, 35, $so, TRUE, $me, $tab);
     $so += 10;
-    $c->add('filemanager_chars_only_latin', TRUE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
+    $c->add('filemanager_chars_only_latin', false, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
     $so += 10;
-    $c->add('filemanager_date_format', 'Y-m-d H:i:s', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
+    $c->add('filemanager_date_format', 'yMMMdHm', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
     $so += 10;
     $c->add('filemanager_logger', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
     $so += 10;
@@ -548,21 +549,9 @@ function install_config(ConfigInterface $c)
     $c->add('tab_filemanager_upload', NULL, 'tab', $sg, $fs, NULL, 0, TRUE, $me, $tab);
     $c->add('fs_filemanager_upload', NULL, 'fieldset', $sg, $fs, NULL, 0, TRUE, $me, $tab);
 
-    $c->add('filemanager_upload_restrictions', array('jpg', 'jpeg', 'gif', 'png', 'svg', 'txt', 'pdf', 'odp', 'ods', 'odt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'ogv', 'mp4', 'webm', 'ogg', 'mp3', 'wav'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
     $c->add('filemanager_upload_overwrite', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
     $so += 10;
-    $c->add('filemanager_upload_images_only', FALSE, 'select', $sg, $fs, 1, $so, TRUE, $me, $tab);
-    $so += 10;
     $c->add('filemanager_upload_file_size_limit', 16, 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
-    $c->add('filemanager_unallowed_files', array('.htaccess'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
-    $c->add('filemanager_unallowed_dirs', array('_thumbs', '.CDN_ACCESS_LOGS', 'cloudservers'), '%text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
-    $c->add('filemanager_unallowed_files_regexp', '/^\\./uis', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
-    $so += 10;
-    $c->add('filemanager_unallowed_dirs_regexp', '/^\\./uis', 'text', $sg, $fs, NULL, $so, TRUE, $me, $tab);
     $so += 10;
 
     // Subgroup: File Manager - Images

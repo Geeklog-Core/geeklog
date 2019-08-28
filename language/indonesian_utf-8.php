@@ -186,6 +186,8 @@ $LANG01 = array(
     141 => 'An Error Occurred',
     142 => 'Unfortunately, an error has occurred rendering this page. Please try again later.',
     143 => 'Comment (%d)',
+    'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">Login Here</a>",
+    'remoteloginoptions' => 'Remote Login Options',
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
     'linkedin' => 'Login with LinkedIn',
@@ -196,7 +198,8 @@ $LANG01 = array(
     'ctl' => 'Clear Cache',
     'ok' => 'OK',
     'filemanager' => 'File Manager',
-    'error_invalid_password' => 'Error, invalid password for username'
+    'error_invalid_password' => 'Error, invalid password for username',
+    'error_filemanager_disabled' => 'Filemanager is disabled'
 );
 
 ###############################################################################
@@ -256,7 +259,8 @@ $LANG03 = array(
     105 => 'IP Address',
     106 => 'Perform bulk action on comments and comment submissions including approval, deleting, and banning of user or IP address.',
     'record_edit' => 'Record user and time of edit?',
-    'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin'
+    'ban_plugin_ban_ip' => 'Ban this IP address with the Ban plugin',
+    'num_comments' => '%s Comment(s)'
 );
 
 ###############################################################################
@@ -278,6 +282,7 @@ $LANG04 = array(
     13 => 'Email Nightly Digest',
     14 => 'pasword ini telah diacak oleh mesin pengacak. Sangat disarankan untuk merubah password ini secepatnya. Untuk merubah password anda, log in kemudian klik Informasi Account dari menu Fungsi User.',
     15 => "Account {$_CONF['site_name']} telah terbuat dengan sukses. Untuk dapat menggunakannya, anda harus login menggunakan informasi di bawah ini. Simpan email ini untuk referensi berikutnya.",
+    'email_convert_remote' => "Your {$_CONF['site_name']} remote account has been converted to a local account. To continue to use your account, you must login using the information below. Please save this mail for further reference.",
     16 => 'Informasi Account anda',
     17 => 'Account belum ada',
     18 => 'Email yang anda masukkan sepertinya bukan email yang valid',
@@ -488,7 +493,8 @@ $LANG05 = array(
     5 => 'Berikutnya',
     6 => 'Sebelumnya',
     7 => 'First',
-    8 => 'Last'
+    8 => 'Last',
+    9 => 'Page navigation'
 );
 
 ###############################################################################
@@ -655,7 +661,9 @@ $LANG10 = array(
     28 => '',
     29 => '',
     30 => 'Hits',
-    31 => ''
+    31 => '',
+    32 => 'Top Ten Liked Articles',
+    33 => 'No liked articles found.'
 );
 
 ###############################################################################
@@ -729,6 +737,27 @@ $LANG12 = array(
     53 => 'Buat Account',
     54 => 'Article Introduction',
     55 => 'Article Body'
+);
+
+###############################################################################
+# LIKES feature since Geeklog 2.2.1
+
+$LANG_LIKES = array(
+    'like' => 'Like',
+    'unlike' => 'Unlike',
+    'dislike' => 'Dislike',
+    'undislike' => 'Undislike',
+    'likes' => 'Likes',
+    'unlikes' => 'Unlikes',
+    'dislikes' => 'Dislikes',
+    'undislikes' => 'Undislikes',
+    'i_like_this' => 'I like this',
+    'i_dislike_this' => 'I dislike this',
+    'thanks_for_action' => 'Thanks for voting!',
+    'likes_speedlimit' => 'You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system',
+    'likes_ip_error' => 'Your IP address has already performed this Likes action.',
+    'likes_uid_error' => 'Your User account has already performed this Likes action.',
+    'own_item_error' => 'Either you own the item or do not have permission to Like/Dislike it.'
 );
 
 ###############################################################################
@@ -1090,6 +1119,9 @@ $LANG27 = array(
     39 => 'Homepage Only',
     40 => 'Assign one or more topics. ',
     41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item to. ',
+    'topic_control_select_topics' => 'Else you must select at least one topic to assign the item to. ',
+    'topic_control_select_topics_disabled' => 'Else you must select at least one topic you have edit access for, to assign the item to (text is darker). ',
+    'topic_control_no_topics' => 'Unfortunately you do not have edit access to any topics so none can be selected. ',
     42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. You must save your item first before anything is listed in the inherit box. ',
     43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actual topic the user is in is not found. ',
     44 => 'Inherit',
@@ -1113,7 +1145,11 @@ $LANG27 = array(
     'topics:' => 'Topics:',
     'filed_under:' => 'Filed under:',
     'topic_title' => 'Topic Title',
-    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.'
+    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.',
+    'move_topic_up' => 'Move topic up the sort order',
+    'move_topic_down' => 'Move topic down in the sort order',
+    'topics_edit_access_select' => 'You can only select topics you have Edit access to you (text is darker).',
+    'topics_edit_access_listed' => 'Only topics with Edit access are listed.'
 );
 
 ###############################################################################
@@ -1212,6 +1248,11 @@ $LANG28 = array(
     90 => 'Apply "Default Group" change to existing user accounts',
     91 => 'Send password to user',
     92 => 'Only for new users or when changing password for existing user.',
+    'convert_remote' => 'Check here to convert from remote to a local account',
+    'convert_remote_desc' => 'When a remote account is converted to a local account, a password will be automatically generated. If the account does not have a confirmed email address, the account will be locked after it is converted since the user will have no way of retrieving the password. Once converted and if the account is active and has an email address the user will be emailed the password or they can request the password by using the forget password link from the Login page. For user accounts that do not have an active status and valid email you will have to manually notify the user of the account change and how to login.',
+    'contributed' => 'Contributed',
+    'na' => 'NA',
+    'nothing' => 'Nothing',
     'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.',
     'USER_ACCOUNT_LOCKED' => 'Locked',
     'USER_ACCOUNT_NEW_EMAIL' => 'New Email Required',
@@ -1429,7 +1470,8 @@ $LANG33 = array(
     52 => 'Error: existing Filename',
     53 => 'All Frontpage Articles',
     54 => 'Please select the type of feed to create.',
-    55 => 'Articles'
+    55 => 'Articles',
+    'num_articles' => '%s Article(s)'
 );
 
 ###############################################################################
@@ -1444,6 +1486,8 @@ $LANG_LANG = array(
     'language' => 'Language',
     'name' => 'Name',
     'var_name' => 'Var Name',
+    'name_tip' => 'Required just for language arrays.',
+    'var_name_tip' => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
     'value' => 'Value'
 );
 
@@ -2088,6 +2132,19 @@ $LANG_trackbackcodes = array(
     -1 => 'Trackback Disabled'
 );
 
+$LANG_structureddatatypes = array(
+    0 => 'None',
+    1 => 'WebPage',
+    2 => 'Article',
+    3 => 'NewsArticle',
+    4 => 'BlogPosting'
+);
+
+$LANG_STRUCT_DATA = array(
+    'lang_structured_data_type' => 'Structured Data Type',
+    'autotag_desc_structureddata' => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
+);
+
 ###############################################################################
 # Localization of the Admin Configuration UI
 
@@ -2124,6 +2181,7 @@ $LANG_confignames['Core'] = array(
     'mail_charset' => 'Email Character Set',
     'site_name' => 'Site Name',
     'site_slogan' => 'Slogan',
+    'path_site_logo' => 'Site Logo',
     'owner_name' => 'Owner Name',
     'microsummary_short' => 'Microsummary',
     'path_log' => 'Log',
@@ -2148,6 +2206,7 @@ $LANG_confignames['Core'] = array(
     'allow_user_themes' => 'Allow User Themes',
     'allow_user_language' => 'Allow User Language',
     'switchlang_homepage' => 'Switch Language Block Redirects to Homepage',
+    'new_item_set_current_lang' => 'Add Current Language Id to New Item',
     'allow_user_photo' => 'Allow User Photo',
     'allow_username_change' => 'Allow Username Changes',
     'allow_account_delete' => 'Allow Account Deletion',
@@ -2276,6 +2335,7 @@ $LANG_confignames['Core'] = array(
     'page_break_comments' => 'Comments on Multi-Page Articles',
     'article_image_align' => 'Topic Icon Alignment',
     'show_topic_icon' => 'Show Topic Icon?',
+    'structured_data_type_default' => 'Structured Data Type Default',
     'draft_flag' => 'Draft Flag Default',
     'frontpage' => 'Frontpage Default',
     'hide_no_news_msg' => 'Hide "No News" Message?',
@@ -2320,8 +2380,10 @@ $LANG_confignames['Core'] = array(
     'max_photo_width' => 'Max Photo Width?',
     'max_photo_height' => 'Max Photo Height?',
     'max_photo_size' => 'Max Photo Size?',
+    'generate_user_icon' => 'Generate User Icon automatically?',
     'use_gravatar' => 'Use Gravatar?',
     'gravatar_rating' => 'Gravatar Rating',
+    'gravatar_identicon' => 'Gravatar Identicon',
     'force_photo_width' => 'Force Photo Width',
     'default_photo' => 'Default Photo',
     'commentspeedlimit' => 'Comment Speed Limit',
@@ -2332,6 +2394,10 @@ $LANG_confignames['Core'] = array(
     'comment_edit' => 'Allow Comment Edit?',
     'comment_edittime' => 'Comment Edit Time (seconds)',
     'commentsubmission' => 'Queue Comment Submissions',
+    'likes_enabled' => 'Likes Enabled',
+    'likes_articles' => 'Article Likes',
+    'likes_comments' => 'Comment Likes',
+    'likes_speedlimit' => 'Likes Speed Limit',
     'passwordspeedlimit' => 'Password Speed Limit',
     'login_attempts' => 'Max. Login Attempts',
     'login_speedlimit' => 'Login Speed Limit',
@@ -2409,21 +2475,16 @@ $LANG_confignames['Core'] = array(
     'filemanager_logger' => 'Enable logger?',
     'filemanager_show_thumbs' => 'Show thumbnails?',
     'filemanager_generate_thumbnails' => 'Generate thumbnails?',
-    'filemanager_upload_restrictions' => 'Allowed file extensions',
     'filemanager_upload_overwrite' => 'Overwrite existing file?',
-    'filemanager_upload_images_only' => 'Upload images only?',
     'filemanager_upload_file_size_limit' => 'Upload file size limit (MiB)',
-    'filemanager_unallowed_files' => 'Unallowed files',
-    'filemanager_unallowed_dirs' => 'Unallowed directories',
-    'filemanager_unallowed_files_regexp' => 'Regular expression for unallowed files',
-    'filemanager_unallowed_dirs_regexp' => 'Regular expression for unallowed directories',
     'filemanager_images_ext' => 'Image file extensions',
     'filemanager_show_video_player' => 'Show video player?',
     'filemanager_videos_ext' => 'Video file extensions',
     'filemanager_videos_player_width' => 'Video player width (px)',
     'filemanager_videos_player_height' => 'Video player height (px)',
     'filemanager_show_audio_player' => 'Show audio player?',
-    'filemanager_audios_ext' => 'Audio file extensions'
+    'filemanager_audios_ext' => 'Audio file extensions',
+    'cookie_consent' => 'Enable Cookie Consent'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2474,6 +2535,7 @@ $LANG_fs['Core'] = array(
     'fs_userphoto' => 'Photos',
     'fs_gravatar' => 'Gravatar',
     'fs_comments' => 'Comments',
+    'fs_likes' => 'Likes',
     'fs_htmlfilter' => 'HTML Filtering',
     'fs_censoring' => 'Censoring',
     'fs_iplookup' => 'IP Lookup',
@@ -2525,6 +2587,7 @@ $LANG_tab['Core'] = array(
     'tab_userphoto' => 'Photos',
     'tab_gravatar' => 'Gravatar',
     'tab_comments' => 'Comments',
+    'tab_likes' => 'Likes',
     'tab_htmlfilter' => 'HTML Filtering',
     'tab_censoring' => 'Censoring',
     'tab_iplookup' => 'IP Lookup',
@@ -2577,7 +2640,10 @@ $LANG_configselects['Core'] = array(
     35 => array('default' => 'default', 'Name (asc)' => 'NAME_ASC', 'Name (desc)' => 'NAME_DESC', 'Type (asc)' => 'TYPE_ASC', 'Type (desc)' => 'TYPE_DESC', 'Modified (asc)' => 'MODIFIED_ASC', 'Modified (desc)' => 'MODIFIED_DESC'),
     36 => array('False' => 'false', 'Frontpage only' => 'frontpage', 'Frontpage and Topics' => 'frontpage_topics'),
     37 => array('Disabled' => 0, 'Enabled (with "index.php")' => 1, 'Enabled (without "index.php")' => 2),
-    38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro')
+    38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
+    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
+    40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );
 
 ###############################################################################

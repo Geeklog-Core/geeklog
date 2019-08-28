@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * File: french_canada.php

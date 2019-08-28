@@ -75,7 +75,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         return PLG_RET_AUTH_FAILED;
     }
     
-    if (isset($_CONF['demo_mode']) && $_CONF['demo_mode']) {
+    if (COM_isDemoMode()) {
         $output .= COM_showMessageText($LANG_ACCESS['demo_mode_denied_msg'], $LANG_ACCESS['accessdenied']);
         $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_ACCESS['accessdenied']));
 

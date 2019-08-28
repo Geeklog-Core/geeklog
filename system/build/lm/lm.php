@@ -77,6 +77,10 @@ define('TOPIC_HOMEONLY_OPTION', 'homeonly');
 define('TOPIC_SELECTED_OPTION', 'selectedtopics');
 define('TOPIC_ROOT', 'root');
 
+define('RECAPTCHA_NO_SUPPORT', 0);
+define('RECAPTCHA_SUPPORT_V2', 1);
+define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
+
 // list of all variables accessed in the language file
 $_DB_mysqldump_path = '{$_DB_mysqldump_path}';
 $_CONF['backup_path'] = '{$_CONF[\'backup_path\']}';
@@ -85,6 +89,8 @@ $_CONF['site_admin_url'] = '{$_CONF[\'site_admin_url\']}';
 $_CONF['site_name'] = '{$_CONF[\'site_name\']}';
 $_CONF['site_url'] = '{$_CONF[\'site_url\']}';
 $_CONF['speedlimit'] = '{$_CONF[\'speedlimit\']}';
+$_CONF['invalidloginattempts'] = '{$_CONF[\'invalidloginattempts\']}';
+$_CONF['invalidloginmaxtime'] = '{$_CONF[\'invalidloginmaxtime\']}';
 $_USER['username'] = '{$_USER[\'username\']}';
 
 $failures = '{$failures}';
