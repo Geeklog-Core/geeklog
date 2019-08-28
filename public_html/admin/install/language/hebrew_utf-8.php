@@ -43,11 +43,6 @@ $LANG_DIRECTION = 'rtl';
 // +---------------------------------------------------------------------------+
 // install.php
 
-$LANG_INFO = [
-    'langCode' => 'he',
-    'langName' => 'עברית',
-];
-
 $LANG_INSTALL = array(
     0 => 'Geeklog - The secure CMS.',
     1 => 'תמיכת התקנה',

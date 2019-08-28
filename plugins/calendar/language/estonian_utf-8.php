@@ -169,7 +169,8 @@ $LANG_CAL_ADMIN = array(
     33 => 'Kustutamiseks pole valitud ühtegi sündmust',
     34 => 'Sündmuse ID',
     35 => 'ei kustutatud ',
-    36 => 'Edukalt kustutatud'
+    36 => 'Edukalt kustutatud',
+    'num_events' => '%s Event(s)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -210,6 +211,7 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'Teavituskiri?',
     'delete_event' => 'Kustuta sündmused, omanikuks?',
     'aftersave' => 'Pärast sündmuste salvestamist',
+    'recaptcha' => 'reCAPTCHA',
     'default_permissions' => 'Sündmuste vaikimisi õigused',
     'autotag_permissions_event' => '[event: ] Permissions',
     'block_enable' => 'Enabled',
@@ -249,5 +251,6 @@ $LANG_configselects['calendar'] = array(
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
+    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

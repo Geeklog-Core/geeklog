@@ -50,11 +50,6 @@ $LANG_CHARSET = 'utf-8';
 // +---------------------------------------------------------------------------+
 // install.php
 
-$LANG_INFO = [
-    'langCode' => 'ja',
-    'langName' => '日本語',
-];
-
 $LANG_INSTALL = array(
     0 => 'Geeklog - The secure CMS.',
     1 => 'インストールで困ったら、こちらのサイトへ',

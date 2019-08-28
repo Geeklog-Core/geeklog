@@ -146,6 +146,7 @@ $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフに�
 $PLG_staticpages_MESSAGE19 = '静的ページを保存しました。';
 $PLG_staticpages_MESSAGE20 = '静的ページを削除しました。';
 $PLG_staticpages_MESSAGE21 = 'このページはまだ存在しません。ページを作成するには、下のフォームにすべてを入力してください。何かの間違いでしたらキャンセルボタンをクリックしてください。';
+$PLG_staticpages_MESSAGE22 = 'You could not delete the page. It is a template staticpage and it is currently assigned to 1 or more staticpages.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'プラグインはアップグレードをサポートしていません。';
@@ -209,7 +210,7 @@ $LANG_fs['staticpages'] = array(
     'fs_autotag_permissions' => '自動タグのパーミッション([0]所有者 [1]グループ [2]メンバー [3]ゲスト)'
 );
 
-// Note: entries 0, 1, 9, 12, 17, 39 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),

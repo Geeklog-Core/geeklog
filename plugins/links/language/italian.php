@@ -167,7 +167,8 @@ $LANG_LINKS_ADMIN = array(
     58 => 'Controlla Collegamenti',
     59 => '<p>Per controllare tutti i collegamenti, clicca su "Controlla Collegamenti". Nota che questa operazione potrebbe richiedere del tempo a seconda del numero di collegamenti visualizzati.</p>',
     60 => 'Utente %s ha cercato di modificare la categoria %s senza le necessarie autorizzazioni.',
-    61 => 'Collegamenti Nella Categoria'
+    61 => 'Collegamenti Nella Categoria',
+    'num_links' => '%s Link(s)'
 );
 
 
@@ -235,6 +236,7 @@ $LANG_confignames['links'] = array(
     'aftersave' => 'Dopo Aver Salvato il Collegamento',
     'show_category_descriptions' => 'Mostrare la Descrizoine della Categoria?',
     'new_window' => 'Aprire Collegamenti in una Nuova Finestra?',
+    'recaptcha' => 'reCAPTCHA',
     'root' => 'ID della Categoria Principale',
     'default_permissions' => 'Permessi Predefiniti per i Collegamenti',
     'category_permissions' => 'Permessi Predefiniti per le Categorie',
@@ -267,5 +269,6 @@ $LANG_configselects['links'] = array(
     1 => array('Vero' => true, 'Falso' => false),
     9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Display Public List' => 'plugin', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
-    13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2)
+    13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

@@ -48,11 +48,6 @@ $LANG_CHARSET = 'ISO-8859-2';
 // +---------------------------------------------------------------------------+
 // install.php
 
-$LANG_INFO = [
-    'langCode' => 'pl',
-    'langName' => 'polski',
-];
-
 $LANG_INSTALL = array(
     0 => 'Geeklog - The secure CMS.',
     1 => 'Instalacja Pomoc',

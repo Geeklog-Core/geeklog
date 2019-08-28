@@ -121,22 +121,27 @@ $LANG_STATIC = array(
     'draft_yes' => 'Oui',
     'draft_no' => 'Non',
     'show_on_page' => 'Show on Page',
+    'show_on_page_disabled' => 'Note: This is currently disabled for all pages in the Staticpage Configuration.',
     'cache_time' => 'Cache Time',
     'cache_time_desc' => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.',
+    'autotag_desc_page' => '[page: id alternate title] - Displays a link to a page (from the Static Page plugin) using the page title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_page_content' => '[page_content: id] - Displays the contents of a page. (from Static Page plugin)',
     'yes' => 'Yes',
     'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.',
     'prev_page' => 'Previous page',
     'next_page' => 'Next page',
     'parent_page' => 'Parent page',
-    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=â€nextâ€ and rel=â€prevâ€ to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.'
+    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=â€nextâ€ and rel=â€prevâ€ to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
+    'num_pages' => '%s Page(s)'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Votre commentaire à bien été soumis et sera publié après avoir été approuvé par un modérateur.';
 $PLG_staticpages_MESSAGE19 = 'La page à bien été sauvegardée.';
 $PLG_staticpages_MESSAGE20 = 'La page à bien été effacée.';
 $PLG_staticpages_MESSAGE21 = 'Cette page n\'existe pas encore. Pour créer la page, merci de comléter le formulaire ci-dessous. Si vous êtes là par erreur, cliquer sur le bouton Annuler.';
+$PLG_staticpages_MESSAGE22 = 'You could not delete the page. It is a template staticpage and it is currently assigned to 1 or more staticpages.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
@@ -166,6 +171,7 @@ $LANG_confignames['staticpages'] = array(
     'atom_max_items' => 'Max. de pages dans le flux des Webservices',
     'meta_tags' => 'Activer les Meta Tags',
     'comment_code' => 'Commentaires par défaut',
+    'structured_data_type_default' => 'Structured Data Type Default',
     'draft_flag' => 'Drapeux brouillon par défaut',
     'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
     'default_cache_time' => 'Default Cache Time',
@@ -210,5 +216,6 @@ $LANG_configselects['staticpages'] = array(
     9 => array('Aller à la page' => 'item', 'Afficher la liste des pages' => 'list', 'Page d\'accueil' => 'home', 'Panneau d\'administration' => 'admin'),
     12 => array('Pas d\'acces' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
     13 => array('No access' => 0, 'Use' => 2),
-    17 => array('Commentaires activés' => 0, 'Commentaires désactivés' => -1)
+    17 => array('Commentaires activés' => 0, 'Commentaires désactivés' => -1),
+    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
 );

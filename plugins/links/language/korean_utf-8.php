@@ -171,7 +171,8 @@ $LANG_LINKS_ADMIN = array(
     58 => 'Validate now',
     59 => '<p>To validate all links displayed, please click on the "Validate now" link below. Please note that this might take some time depending on the amount of links displayed.</p>',
     60 => 'User %s tried illegally to edit category %s.',
-    61 => 'Links in Category'
+    61 => 'Links in Category',
+    'num_links' => '%s Link(s)'
 );
 
 
@@ -239,6 +240,7 @@ $LANG_confignames['links'] = array(
     'aftersave' => 'After Saving Link',
     'show_category_descriptions' => 'Show Category Description?',
     'new_window' => 'Open external links in new window?',
+    'recaptcha' => 'reCAPTCHA',
     'root' => 'ID of Root Category',
     'default_permissions' => 'Link Default Permissions',
     'category_permissions' => 'Category Default Permissions',
@@ -271,5 +273,6 @@ $LANG_configselects['links'] = array(
     1 => array('True' => true, 'False' => false),
     9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('No access' => 0, 'Use' => 2),
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

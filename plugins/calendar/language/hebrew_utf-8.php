@@ -166,7 +166,8 @@ $LANG_CAL_ADMIN = array(
     33 => 'שום אירועים לא סומנו למחיקה',
     34 => 'קוד זיהוי אירוע',
     35 => 'לא הצליח להימחק',
-    36 => 'נמחק בהצלחה'
+    36 => 'נמחק בהצלחה',
+    'num_events' => '%s Event(s)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -207,6 +208,7 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'הודעת תזכורת באימייל?',
     'delete_event' => 'מחיקת אירועים ביחד עם שולחיהם?',
     'aftersave' => 'לאחר שמירת האירוע',
+    'recaptcha' => 'reCAPTCHA',
     'default_permissions' => 'אישורי ברירת המחדל של אירוע',
     'autotag_permissions_event' => '[event: ] הרשאות',
     'block_enable' => 'מאופשר',
@@ -246,5 +248,6 @@ $LANG_configselects['calendar'] = array(
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
     13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
     14 => array('אין גישה' => 0, 'קריאה בלבד' => 2),
-    15 => array('כולם' => 'all', 'דף הבית בלבד' => 'homeonly', 'בחירת נושאים' => 'selectedtopics')
+    15 => array('כולם' => 'all', 'דף הבית בלבד' => 'homeonly', 'בחירת נושאים' => 'selectedtopics'),
+    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

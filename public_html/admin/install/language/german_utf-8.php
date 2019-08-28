@@ -48,11 +48,6 @@ $LANG_CHARSET = 'utf-8';
 // +---------------------------------------------------------------------------+
 // install.php
 
-$LANG_INFO = [
-    'langCode' => 'de',
-    'langName' => 'Deutsch',
-];
-
 $LANG_INSTALL = array(
     0 => 'Geeklog - Zuverl&auml;ssigkeit eingebaut',
     1 => 'Hilfe zur Installation',

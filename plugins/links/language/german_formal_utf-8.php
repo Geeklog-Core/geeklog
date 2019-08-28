@@ -169,7 +169,8 @@ $LANG_LINKS_ADMIN = array(
     58 => 'Jetzt überprüfen',
     59 => '<p>Um alle aufgeführten Links zu überprüfen, einfach "Jetzt überprüfen" unten anklicken. Es kann etwas dauern, abhängig davon, wie viele Links aufgeführt sind.</p>',
     60 => 'User %s hat unrechtmäßig versucht, die Kategorie %s zu editieren.',
-    61 => 'Links in der Kategorie'
+    61 => 'Links in der Kategorie',
+    'num_links' => '%s Link(s)'
 );
 
 
@@ -237,6 +238,7 @@ $LANG_confignames['links'] = array(
     'aftersave' => 'Nach Abspeichern des Links',
     'show_category_descriptions' => 'Kategoriebeschreibung anzeigen?',
     'new_window' => 'Externe Links in neuem Fenster öffnen?',
+    'recaptcha' => 'reCAPTCHA',
     'root' => 'ID der Oberkategorie',
     'default_permissions' => 'Grundeinstellung Rechte',
     'category_permissions' => 'Category Default Permissions',
@@ -269,5 +271,6 @@ $LANG_configselects['links'] = array(
     1 => array('Ja' => true, 'Nein' => false),
     9 => array('Weiterleiten zur verlinkten Seite' => 'item', 'Admin Liste anzeigen' => 'list', 'Öffentliche Liste anzeigen' => 'plugin', 'Startseite anzeigen' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('No access' => 0, 'Use' => 2),
+    14 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

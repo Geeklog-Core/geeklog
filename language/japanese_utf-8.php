@@ -196,7 +196,7 @@ $LANG01 = array(
     142 => 'このページを表示する際にエラーが発生しました。しばらくしてから、もう一度お試しください。',
     143 => 'コメント (%d件)',
     'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">ログイン</a>",
-    'remoteloginoptions' => "Remote Login Options",
+    'remoteloginoptions' => 'Remote Login Options',
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
     'linkedin' => 'LinkedInでログイン',
@@ -291,7 +291,7 @@ $LANG04 = array(
     13 => 'メールでダイジェストを読む',
     14 => "なお、パスワードの変更をおすすめします。\nサイトにログインして、「マイアカウント」をクリックすると、\nパスワードを変更できます。",
     15 => "{$_CONF['site_name']}からのお知らせです。\n\n{$_CONF['site_name']} であなたのアカウントを作成しました。\n下記のユーザー名とパスワードでログインしてください。\nこのメールは念のため保存してください。",
-    'email_convert_remote' => "Your {$_CONF['site_name']} remote account has been converted to a local account. To continue to use your account, you must login using the information below. Please save this mail for further reference.",    
+    'email_convert_remote' => "Your {$_CONF['site_name']} remote account has been converted to a local account. To continue to use your account, you must login using the information below. Please save this mail for further reference.",
     16 => 'ユーザー情報',
     17 => 'アカウントがありません',
     18 => 'このメールアドレスは有効なアドレスではないようです',
@@ -672,7 +672,7 @@ $LANG10 = array(
     30 => '表示回数',
     31 => '',
     32 => 'Top Ten Liked Articles',
-    33 => 'No liked articles found.',    
+    33 => 'No liked articles found.'
 );
 
 ###############################################################################
@@ -749,24 +749,24 @@ $LANG12 = array(
 );
 
 ###############################################################################
-# likes.php - likes and dislikes
+# LIKES feature since Geeklog 2.2.1
 
 $LANG_LIKES = array(
-    'like'              => 'Like',
-    'unlike'            => 'Unlike',
-    'dislike'           => 'Dislike',
-    'undislike'         => 'Undislike',
-    'likes'             => 'Likes',
-    'unlikes'           => 'Unlikes',
-    'dislikes'          => 'Dislikes',
-    'undislikes'        => 'Undislikes',
-    'i_like_this'       => 'I like this',
-    'i_dislike_this'    => 'I dislike this',
+    'like' => 'Like',
+    'unlike' => 'Unlike',
+    'dislike' => 'Dislike',
+    'undislike' => 'Undislike',
+    'likes' => 'Likes',
+    'unlikes' => 'Unlikes',
+    'dislikes' => 'Dislikes',
+    'undislikes' => 'Undislikes',
+    'i_like_this' => 'I like this',
+    'i_dislike_this' => 'I dislike this',
     'thanks_for_action' => 'Thanks for voting!',
-    'likes_speedlimit'  => "You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system",
-    'likes_ip_error'    => 'Your IP address has already performed this Likes action.',
-    'likes_uid_error'   => 'Your User account has already performed this Likes action.',
-    'own_item_error'    => 'Either you own the item or do not have permission to Like/Dislike it.'
+    'likes_speedlimit' => 'You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system',
+    'likes_ip_error' => 'Your IP address has already performed this Likes action.',
+    'likes_uid_error' => 'Your User account has already performed this Likes action.',
+    'own_item_error' => 'Either you own the item or do not have permission to Like/Dislike it.'
 );
 
 ###############################################################################
@@ -1154,7 +1154,7 @@ $LANG27 = array(
     'topics:' => '話題:',
     'filed_under:' => '話題:',
     'topic_title' => '話題タイトル',
-    'topic_title_desc' => '話題のページタイトルとして使用されます。 空の場合、話題名が使用されます。', 
+    'topic_title_desc' => '話題のページタイトルとして使用されます。 空の場合、話題名が使用されます。',
     'move_topic_up' => 'Move topic up the sort order',
     'move_topic_down' => 'Move topic down in the sort order',
     'topics_edit_access_select' => 'You can only select topics you have Edit access to you (text is darker).',
@@ -1494,8 +1494,8 @@ $LANG_LANG = array(
     'id' => 'ID',
     'language' => '言語',
     'name' => '名前',
-    'name_tip' => 'Required just for language arrays.',
     'var_name' => '変数名',
+    'name_tip' => 'Required just for language arrays.',
     'var_name_tip' => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
     'value' => '値'
 );
@@ -2150,8 +2150,8 @@ $LANG_structureddatatypes = array(
 );
 
 $LANG_STRUCT_DATA = array(
-    'lang_structured_data_type'     => 'Structured Data Type', 
-    'autotag_desc_structureddata'   => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
+    'lang_structured_data_type' => 'Structured Data Type',
+    'autotag_desc_structureddata' => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
 );
 
 ###############################################################################
@@ -2652,7 +2652,7 @@ $LANG_configselects['Core'] = array(
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
     39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
     40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
-    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2) 
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );
 
 ###############################################################################
@@ -2703,3 +2703,4 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
+

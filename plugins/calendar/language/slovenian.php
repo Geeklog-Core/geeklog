@@ -169,7 +169,8 @@ $LANG_CAL_ADMIN = array(
     33 => 'Noben dogodek ni izbran za brisanje',
     34 => 'ID dogodka',
     35 => 'se ni dalo izbrisati',
-    36 => 'uspešno izbrisano'
+    36 => 'uspešno izbrisano',
+    'num_events' => '%s Event(s)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -210,6 +211,7 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'Obvestilo po e-pošti?',
     'delete_event' => 'Izbriši dogodke skupaj z lastnikom?',
     'aftersave' => 'Po shranitvi dogodka',
+    'recaptcha' => 'reCAPTCHA',
     'default_permissions' => 'Prednastavljene pravice dogodka',
     'autotag_permissions_event' => '[event: ] Permissions',
     'block_enable' => 'Enabled',
@@ -249,5 +251,6 @@ $LANG_configselects['calendar'] = array(
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
+    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );

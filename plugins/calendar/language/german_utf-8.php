@@ -166,7 +166,8 @@ $LANG_CAL_ADMIN = array(
     33 => 'Keine Termine zum Löschen ausgewählt',
     34 => 'Termin ID',
     35 => 'konnte nicht gelöscht werden',
-    36 => 'Erfolgreich gelöscht'
+    36 => 'Erfolgreich gelöscht',
+    'num_events' => '%s Event(s)'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -207,6 +208,7 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'Benachrichtigungs-eMail?',
     'delete_event' => 'Termine mit User löschen?',
     'aftersave' => 'Nach Speichern des Termins',
+    'recaptcha' => 'reCAPTCHA',
     'default_permissions' => 'Grundeinstellungen Termine',
     'autotag_permissions_event' => '[event: ] Permissions',
     'block_enable' => 'Enabled',
@@ -246,5 +248,6 @@ $LANG_configselects['calendar'] = array(
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
     13 => array('No access' => 0, 'Use' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics')
+    15 => array('All' => 'all', 'Homepage Only' => 'homeonly', 'Select Topics' => 'selectedtopics'),
+    16 => array('Disabled' => 0, 'reCAPTCHA V2' => 1, 'reCAPTCHA V2 Invisible' => 2)
 );
