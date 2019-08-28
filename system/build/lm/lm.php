@@ -90,6 +90,7 @@ $_CONF['site_name'] = '{$_CONF[\'site_name\']}';
 $_CONF['site_url'] = '{$_CONF[\'site_url\']}';
 $_CONF['speedlimit'] = '{$_CONF[\'speedlimit\']}';
 $_CONF['invalidloginattempts'] = '{$_CONF[\'invalidloginattempts\']}';
+$_CONF['invalidloginmaxtime'] = '{$_CONF[\'invalidloginmaxtime\']}';
 $_USER['username'] = '{$_USER[\'username\']}';
 
 $failures = '{$failures}';
