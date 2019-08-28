@@ -61,6 +61,8 @@ $ENG09 = $LANG09;
 $ENG10 = $LANG10;
 $ENG11 = $LANG11;
 $ENG12 = $LANG12;
+$ENGLIKES = $LANG_LIKES;
+
 // there are no $LANG13-$LANG19
 $ENG20 = $LANG20;
 $ENG21 = $LANG21;
@@ -107,6 +109,8 @@ $ENG_postmodes = $LANG_postmodes;
 $ENG_sortcodes = $LANG_sortcodes;
 $ENG_statuscodes = $LANG_statuscodes;
 $ENG_trackbackcodes = $LANG_trackbackcodes;
+$ENG_structureddatatypes = $LANG_structureddatatypes;
+$ENG_STRUCT_DATA = $LANG_STRUCT_DATA;
 
 $ENG_CONFIG = $LANG_CONFIG;
 $ENG_configsections['Core'] = $LANG_configsections['Core'];
@@ -173,6 +177,7 @@ mergeArrays($ENG09, $LANG09, 'LANG09', 'search.php');
 mergeArrays($ENG10, $LANG10, 'LANG10', 'stats.php');
 mergeArrays($ENG11, $LANG11, 'LANG11', 'article.php');
 mergeArrays($ENG12, $LANG12, 'LANG12', 'submit.php');
+mergeArrays($ENGLIKES, $LANG_LIKES, 'LANG_LIKES', 'LIKES feature since Geeklog 2.2.1');
 
 separator();
 echo "# ADMIN PHRASES - These are file phrases used in admin scripts\n";
@@ -222,6 +227,8 @@ mergeArrays($ENG_postmodes, $LANG_postmodes, 'LANG_postmodes', false);
 mergeArrays($ENG_sortcodes, $LANG_sortcodes, 'LANG_sortcodes', false);
 mergeArrays($ENG_statuscodes, $LANG_statuscodes, 'LANG_statuscodes', false);
 mergeArrays($ENG_trackbackcodes, $LANG_trackbackcodes, 'LANG_trackbackcodes', false);
+mergeArrays($ENG_structureddatatypes, $LANG_structureddatatypes, 'LANG_structureddatatypes', false);
+mergeArrays($ENG_STRUCT_DATA, $LANG_STRUCT_DATA, 'LANG_STRUCT_DATA', false);
 
 echo "\n";
 separator();
@@ -236,4 +243,4 @@ mergeArrays($ENG_tab['Core'], $LANG_tab['Core'], "LANG_tab['Core']", false);
 mergeArrays($ENG_configselects['Core'], $LANG_configselects['Core'], "LANG_configselects['Core']", false);
 
 echo "\n";
-mergeArrays($ENGVA,  $LANG_VALIDATION, 'LANG_VALIDATION', "Localization of validation error messages", false);
+mergeArrays($ENGVA,  $LANG_VALIDATION, 'LANG_VALIDATION', "Localization of validation error messages");

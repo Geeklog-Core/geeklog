@@ -36,6 +36,7 @@ $ENG_MSG15 = $PLG_staticpages_MESSAGE15;
 $ENG_MSG19 = $PLG_staticpages_MESSAGE19;
 $ENG_MSG20 = $PLG_staticpages_MESSAGE20;
 $ENG_MSG21 = $PLG_staticpages_MESSAGE21;
+$ENG_MSG22 = $PLG_staticpages_MESSAGE22;
 $ENG_MSG3001 = $PLG_staticpages_MESSAGE3001;
 
 $ENG_configsections['staticpages'] = $LANG_configsections['staticpages'];
@@ -64,6 +65,7 @@ mergeString($ENG_MSG15, $PLG_staticpages_MESSAGE15, 'PLG_staticpages_MESSAGE15')
 mergeString($ENG_MSG19, $PLG_staticpages_MESSAGE19, 'PLG_staticpages_MESSAGE19');
 mergeString($ENG_MSG20, $PLG_staticpages_MESSAGE20, 'PLG_staticpages_MESSAGE20');
 mergeString($ENG_MSG21, $PLG_staticpages_MESSAGE21, 'PLG_staticpages_MESSAGE21');
+mergeString($ENG_MSG22, $PLG_staticpages_MESSAGE22, 'PLG_staticpages_MESSAGE22');
 
 echo "\n";
 echo "// Messages for the plugin upgrade\n";
