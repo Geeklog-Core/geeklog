@@ -136,4 +136,15 @@ abstract class Cache
     {
         return self::$isEnabled ? self::$instance->exists($key) : false;
     }
+
+    /**
+     * Return the timestamp of cached item
+     *
+     * @param  string $key
+     * @return int|false    the timestamp when the item exists, false otherwise
+     */
+    public static function getAge($key)
+    {
+        return self::$isEnabled ? self::$instance->getAge($key) : false;
+    }
 }

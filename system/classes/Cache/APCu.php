@@ -3,16 +3,19 @@
 namespace Geeklog\Cache;
 
 use Geeklog\CacheInterface;
+use RuntimeException;
 
 class APCu implements CacheInterface
 {
     /**
      * APCu constructor.
+     *
+     * @throws RuntimeException
      */
     public function __construct()
     {
         if (!is_callable('apcu_store')) {
-            throw new \RuntimeException('APCu extension is not loaded');
+            throw new RuntimeException('APCu extension is not loaded');
         }
     }
 
@@ -88,5 +91,16 @@ class APCu implements CacheInterface
     public function exists($key)
     {
         return apcu_exists($key);
+    }
+
+    /**
+     * Return the timestamp of cached item
+     *
+     * @param  string $key
+     * @return int|false    the timestamp when the item exists, false otherwise
+     */
+    public function getAge($key)
+    {
+        return $this->exists($key) ? time() : false;
     }
 }

@@ -58,4 +58,12 @@ interface CacheInterface
      * @return bool
      */
     public function exists($key);
+
+    /**
+     * Return the timestamp of cached item
+     *
+     * @param  string $key
+     * @return int|false    the timestamp when the item exists, false otherwise
+     */
+    public function getAge($key);
 }
