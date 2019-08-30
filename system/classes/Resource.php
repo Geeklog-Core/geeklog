@@ -57,7 +57,7 @@ class Resource
     const UIKIT_VERSION = '2.27.5';
     const UIKIT_PRIORITY = -3000;
 
-    const UIKIT3_VERSION = '3.1.7';
+    const UIKIT3_VERSION = '3.1.8';
     const UIKIT3_PRIORITY = -3000;
 
     /**
