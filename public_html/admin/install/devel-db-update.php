@@ -113,7 +113,16 @@ function update_DatabaseFor221()
          `type`,
          `subtype`,
          `id`);
-    ";    
+    ";
+
+    // Modify `sessions` table
+    $_SQL[] = "DELETE FROM {$_TABLES['sessions']}";
+    $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} MODIFY `sess_id` VARCHAR(250) NOT NULL default ''";
+    $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `md5_sess_id`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `topic`";
+
+    // Add `autologin_key` column to `users' table
+    $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `autologin_key` VARCHAR(250) NOT NULL DEFAULT '' AFTER `twofactorauth_secret`";    
 
     // ***************************************     
     // Core Plugin Updates Here (including version update)
