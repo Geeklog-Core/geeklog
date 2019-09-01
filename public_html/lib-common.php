@@ -7085,7 +7085,7 @@ function COM_isMultiLanguageEnabled()
 
 /**
  * Get language name and plugin name and id from current URL 
- * Note: This function starts with _ therefore it should only call from within core
+ * Note: This function starts with _ therefore it is only meant to be called from within Geeklog Core for a specific task
  * 
  * @param       boolean    Tells function to return either language or id of plugin item if found
  * @return      array       e.g., 'english', 'japanese', ... , plugin name, id

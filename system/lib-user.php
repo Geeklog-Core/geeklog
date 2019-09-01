@@ -519,27 +519,76 @@ function USER_generateUserICON($uid)
 
     $uid = (int) $uid;
 
-    if (($uid > 1) && (!empty($_USER['fullname']) || !empty($_USER['username']))) {
-        $letters = '';
 
-        if (MBYTE_strpos($_USER['fullname'], ' ') !== false) {
-            $parts = explode(' ', $_USER['fullname'], 2);
-        } elseif (MBYTE_strpos($_USER['username'], ' ') !== false) {
-            $parts = explode(' ', $_USER['username']);
-        } else {
-            $parts = [
-                MBYTE_substr($_USER['username'], 0, 1),
-                MBYTE_substr($_USER['username'], -1)
-            ];
+
+    if (($uid > 1)) {
+        $displayName = COM_getDisplayName($uid);
+        if (!empty($displayName)) {
+            $letters = '';
+
+            if (MBYTE_strpos($displayName, ' ') !== false) {
+                $parts = explode(' ', $displayName, 2);
+            //} elseif (MBYTE_strpos($_USER['username'], ' ') !== false) {
+            //    $parts = explode(' ', $_USER['username']);
+            } else {
+                $parts = [
+                    MBYTE_substr($displayName, 0, 1),
+                    MBYTE_substr($displayName, -1)
+                ];
+            }
+
+            $letters = MBYTE_strtoupper(MBYTE_substr($parts[0], 0, 1))
+                . MBYTE_strtoupper(MBYTE_substr($parts[1], 0, 1));
+            $letters = htmlspecialchars($letters, ENT_QUOTES, 'utf-8');
+            $bg_color = _textToColor($displayName);
+            $text_color = _textColorBasedOnBgColor($bg_color, '#FFFFFF', '#000000');
+            // Note custom css properties not supported by older browsers
+            $retval = '<span data-letters="' . $letters . '" style="--bg-color:' . $bg_color . '; --text-color: ' . $text_color . ';"></span>';
         }
-
-        $letters = MBYTE_strtoupper(MBYTE_substr($parts[0], 0, 1))
-            . MBYTE_strtoupper(MBYTE_substr($parts[1], 0, 1));
-        $letters = htmlspecialchars($letters, ENT_QUOTES, 'utf-8');
-        $retval = '<span data-letters="' . $letters . '"></span>';
     }
 
     return $retval;
+}
+
+/**
+ * Figures out text color to display on a specific RBG background color
+ * Note: This function starts with _ therefore it is only meant to be called from within the user library for a specific task
+ *
+ * @param  string $bgColor      hexadecimal background color
+ * @param  string $lightColor   Light text color to use
+ * @param  string $darkColor    Dark text color to use
+ * @return string               hexadecimal color to use
+ */
+function _textColorBasedOnBgColor($bgColor, $lightColor, $darkColor) 
+{
+    $color = (substr($bgColor, 0, 1) === '#') ? substr($bgColor, 1, 7) : $bgColor;
+    $r = hexdec(substr($color, 0, 2)); // hexToR
+    $g = hexdec(substr($color, 2, 2)); // hexToG
+    $b = hexdec(substr($color, 4, 2)); // hexToB
+    $retval = ((($r * 0.299) + ($g * 0.587) + ($b * 0.114)) > 186) ? $darkColor : $lightColor;
+    
+    return $retval;
+}
+
+/**
+ * Converts text to a corresponding RGB color
+ * Note: This function starts with _ therefore it is only meant to be called from within the user library for a specific task
+ *
+ * @param  string $text
+ * @return string           hexadecimal color to use
+ */
+function _textToColor($text)
+{
+    // random color
+    $rgb = substr(dechex(crc32($text)), 0, 6);
+    
+    // make it darker
+    $darker = 1; // 1 means leave it, 2 will darken so text is always light
+    list($R16, $G16, $B16) = str_split($rgb, 2);
+    $R = sprintf('%02X', floor(hexdec($R16) / $darker));
+    $G = sprintf('%02X', floor(hexdec($G16) / $darker));
+    $B = sprintf('%02X', floor(hexdec($B16) / $darker));
+    return '#' . $R . $G . $B;
 }
 
 /**
