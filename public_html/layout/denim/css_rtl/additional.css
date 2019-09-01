@@ -7,8 +7,7 @@
     line-height: 4em;
     text-align: center;
     border-radius: 50%;
-    background: dodgerblue;
+    background: var(--bg-color);
     vertical-align: middle;
-    margin-right: 1em;
-    color: white;
+    color: var(--text-color)    
 }
