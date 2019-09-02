@@ -406,6 +406,7 @@ function USER_sendInvalidLoginAlert($userName, $email, $uid, $mode = 'inactive')
 /**
  * Get a user's photo, either uploaded or from an external service
  * NOTE:     All parameters are optional and can be passed as 0 / empty string.
+ *           User Id of 1 will return the default anonymous photo if default set
  *
  * @param    int    $uid   User ID
  * @param    string $photo name of the user's uploaded image
@@ -423,69 +424,78 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0)
         if (($width == 0) && !empty($_CONF['force_photo_width'])) {
             $width = $_CONF['force_photo_width'];
         }
+        
+        $img = '';        
 
-        // collect user's information with as few SQL requests as possible
-        if ($uid == 0) {
-            $uid = $_USER['uid'];
-            if (empty($email)) {
-                $email = $_USER['email'];
-            }
-            if (!empty($_USER['photo']) && (empty($photo) || ($photo === '(none)'))) {
-                $photo = $_USER['photo'];
-            }
-        }
-        if ((empty($photo) || ($photo === '(none)')) || (empty($email) && $_CONF['use_gravatar'])) {
-            $result = DB_query("SELECT email,photo FROM {$_TABLES['users']} WHERE uid = '{$uid}'");
-            list($newEmail, $newPhoto) = DB_fetchArray($result);
-            if (empty($photo) || ($photo === '(none)')) {
-                $photo = $newPhoto;
-            }
-            if (empty($email)) {
-                $email = $newEmail;
-            }
-        }
-
-        $img = '';
-        if (empty($photo) || ($photo == 'none')) {
-            // no photo - try gravatar.com, if allowed
-            if ($_CONF['use_gravatar']) {
-                $img = 'https://www.gravatar.com/avatar/' . md5($email);
-                $params = array();
-
-                if ($width > 0) {
-                    $params[] = 's=' . $width;
+        if ($uid == 1) {
+            // For anonymous users
+            if (!empty($_CONF['default_photo'])) {
+                $img = $_CONF['default_photo'];
+            }            
+        } else {
+            // collect user's information with as few SQL requests as possible
+            if ($uid == 0) {
+                $uid = $_USER['uid'];
+                if (empty($email)) {
+                    $email = $_USER['email'];
                 }
-
-                if (!empty($_CONF['gravatar_rating'])) {
-                    $params[] = 'r=' . $_CONF['gravatar_rating'];
+                if (!empty($_USER['photo']) && (empty($photo) || ($photo === '(none)'))) {
+                    $photo = $_USER['photo'];
                 }
+            }
+            if ((empty($photo) || ($photo === '(none)')) || (empty($email) && $_CONF['use_gravatar'])) {
+                $result = DB_query("SELECT email,photo FROM {$_TABLES['users']} WHERE uid = '{$uid}'");
+                list($newEmail, $newPhoto) = DB_fetchArray($result);
+                if (empty($photo) || ($photo === '(none)')) {
+                    $photo = $newPhoto;
+                }
+                if (empty($email)) {
+                    $email = $newEmail;
+                }
+            }
 
-                // Since Geeklog-2.1.2
-                if (!empty($_CONF['gravatar_identicon'])) {
-                    if (!in_array($_CONF['gravatar_identicon'], array('mm', 'identicon', 'monsterid', 'wavatar', 'retro'))) {
-                        $_CONF['gravatar_identicon'] = 'identicon';
+            if (empty($photo) || ($photo == 'none')) {
+                // no photo - try gravatar.com, if allowed
+                if ($_CONF['use_gravatar']) {
+                    $img = 'https://www.gravatar.com/avatar/' . md5($email);
+                    $params = array();
+
+                    if ($width > 0) {
+                        $params[] = 's=' . $width;
                     }
 
-                    $params[] = 'd=' . urlencode($_CONF['gravatar_identicon']);
-                }
+                    if (!empty($_CONF['gravatar_rating'])) {
+                        $params[] = 'r=' . $_CONF['gravatar_rating'];
+                    }
 
-                if (count($params) > 0) {
-                    $img .= '?' . implode('&amp;', $params);
+                    // Since Geeklog-2.1.2
+                    if (!empty($_CONF['gravatar_identicon'])) {
+                        if (!in_array($_CONF['gravatar_identicon'], array('mm', 'identicon', 'monsterid', 'wavatar', 'retro'))) {
+                            $_CONF['gravatar_identicon'] = 'identicon';
+                        }
+
+                        $params[] = 'd=' . urlencode($_CONF['gravatar_identicon']);
+                    }
+
+                    if (count($params) > 0) {
+                        $img .= '?' . implode('&amp;', $params);
+                    }
                 }
-            }
-        } else {
-            // check if images are inside or outside the document root
-            if (strstr($_CONF['path_images'], $_CONF['path_html'])) {
-                $imgPath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
-                $img = $_CONF['site_url'] . '/' . $imgPath . 'userphotos/' . $photo;
             } else {
-                $img = $_CONF['site_url'] . '/getimage.php?mode=userphotos&amp;image=' . $photo;
+                // check if images are inside or outside the document root
+                if (strstr($_CONF['path_images'], $_CONF['path_html'])) {
+                    $imgPath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
+                    $img = $_CONF['site_url'] . '/' . $imgPath . 'userphotos/' . $photo;
+                } else {
+                    $img = $_CONF['site_url'] . '/getimage.php?mode=userphotos&amp;image=' . $photo;
+                }
+            }
+
+            if (empty($img) && !empty($_CONF['default_photo'])) {
+                $img = $_CONF['default_photo'];
             }
         }
-
-        if (empty($img) && !empty($_CONF['default_photo'])) {
-            $img = $_CONF['default_photo'];
-        }
+        
         if (!empty($img)) {
             $userPhoto = '<img src="' . $img . '"';
             if ($width > 0) {
@@ -519,9 +529,7 @@ function USER_generateUserICON($uid)
 
     $uid = (int) $uid;
 
-
-
-    if (($uid > 1)) {
+    if (($uid > 0)) {
         $displayName = COM_getDisplayName($uid);
         if (!empty($displayName)) {
             $letters = '';
@@ -531,14 +539,24 @@ function USER_generateUserICON($uid)
             //} elseif (MBYTE_strpos($_USER['username'], ' ') !== false) {
             //    $parts = explode(' ', $_USER['username']);
             } else {
-                $parts = [
-                    MBYTE_substr($displayName, 0, 1),
-                    MBYTE_substr($displayName, -1)
-                ];
+                if ($uid == 1) {
+                    $parts = [
+                        MBYTE_substr($displayName, 0, 1)
+                    ];
+                } else {
+                    $parts = [
+                        MBYTE_substr($displayName, 0, 1),
+                        MBYTE_substr($displayName, -1)
+                    ];
+                }
             }
 
-            $letters = MBYTE_strtoupper(MBYTE_substr($parts[0], 0, 1))
-                . MBYTE_strtoupper(MBYTE_substr($parts[1], 0, 1));
+            if ($uid == 1) {
+                $letters = MBYTE_strtoupper(MBYTE_substr($parts[0], 0, 1));
+            } else {
+                $letters = MBYTE_strtoupper(MBYTE_substr($parts[0], 0, 1))
+                    . MBYTE_strtoupper(MBYTE_substr($parts[1], 0, 1));
+            }
             $letters = htmlspecialchars($letters, ENT_QUOTES, 'utf-8');
             $bg_color = _textToColor($displayName);
             $text_color = _textColorBasedOnBgColor($bg_color, '#FFFFFF', '#000000');
