@@ -491,7 +491,7 @@ function _checkEnvironment()
         $_CONF['path_log'] . 'spamx.log',
         $feedPath,
         $_CONF['rdf_file'],
-        $_CONF['path_html'] . 'filemanager/scripts/filemanager.config.json',
+        $_CONF['path_html'] . 'filemanager/config/filemanager.config.json',
         // Image Directories
         $_CONF['path_images'] . 'articles/',                   // Used by article editor for when image is uploaded (to be included in article)
         $_CONF['path_images'] . 'topics/',                     // Used by topic editor for when image is uploaded

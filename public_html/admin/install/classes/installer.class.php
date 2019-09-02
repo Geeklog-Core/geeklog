@@ -682,7 +682,7 @@ class Installer
             $this->env['gl_path'] . 'logs/spamx.log',
             $paths['public_html/'] . 'siteconfig.php',
             $paths['public_html/'] . 'backend/geeklog.rss',
-            $paths['public_html/'] . 'filemanager/scripts/filemanager.config.json',
+            $paths['public_html/'] . 'filemanager/config/filemanager.config.json',
             $paths['public_html/'] . 'images/articles/',                // Used by article editor for when image is uploaded (to be included in article)
             $paths['public_html/'] . 'images/topics/',                  // Used by topic editor for when image is uploaded
             $paths['public_html/'] . 'images/userphotos',               // Used by user editor for when image is uploaded

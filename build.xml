@@ -101,8 +101,8 @@
         <copy file="${srcDir}/public_html/siteconfig.php.dist" tofile="${dstDir}/public_html/siteconfig.php"/>
 
         <!-- Move filemanager configuration file -->
-        <copy file="${srcDir}/public_html/filemanager/scripts/filemanager.config.default.json"
-              tofile="${dstDir}/public_html/filemanager/scripts/filemanager.config.json" overwrite="true"/>
+        <copy file="${srcDir}/public_html/filemanager/config/filemanager.config.default.json"
+              tofile="${dstDir}/public_html/filemanager/config/filemanager.config.json" overwrite="true"/>
 
         <!-- Change permissions -->
         <echo msg="Changing directory and file permissions..."/>
