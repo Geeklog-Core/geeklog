@@ -50,10 +50,11 @@
  *
  */
 
-global $_CONF, $_PLUGINS, $_TABLES;
+// Geeklog common function library. Required to specify document root for URL Routing functionality
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib-common.php';
 
-// Geeklog common function library
-require_once '../lib-common.php';
+// Required to declare global variables for URL Routing functionality (as scope changes)
+global $_CONF, $_PLUGINS, $_TABLES;
 
 if (!in_array('links', $_PLUGINS)) {
     COM_handle404();

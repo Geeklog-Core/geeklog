@@ -167,6 +167,8 @@ if ($A['count'] > 0) {
             'professional' => 'layout/' . $theme . '/print.css',
             'other'        => 'layout/' . $theme . '/css/print.css',
         );
+        
+        global $_SCRIPTS;
         foreach ($paths as $path) {
             if (file_exists($_CONF['path_html'] . $path)) {
                 $_SCRIPTS->setCssFile('print', '/' . $path, true, array('media' => 'print'));

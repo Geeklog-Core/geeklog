@@ -109,14 +109,20 @@ class Url
     public function setArgNames(array $names)
     {
         if ($this->urlRewrite) {
-            $this->arguments = $this->originalArguments;
-            $newArray = array();
+            if ($this->urlRouting) {
+                // Grab converted orginal route url from router class and then parse query string into array
+                parse_str( parse_url(Router::getRoute(), PHP_URL_QUERY), $this->arguments);
+            } else {
+                $this->arguments = $this->originalArguments;
+                
+                $newArray = array();
 
-            foreach ($names as $name) {
-                $newArray[$name] = array_shift($this->arguments);
+                foreach ($names as $name) {
+                    $newArray[$name] = array_shift($this->arguments);
+                }
+
+                $this->arguments = $newArray;
             }
-
-            $this->arguments = $newArray;
 
             return true;
         } else {

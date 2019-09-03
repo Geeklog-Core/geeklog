@@ -57,6 +57,8 @@ class Router
 
     // Default priority
     const DEFAULT_PRIORITY = 100;
+    
+    private static $route = '';
 
     /**
      * @var bool
@@ -72,6 +74,15 @@ class Router
     {
         self::$debug = (bool) $switch;
     }
+    
+    /**
+     * Store converted route so we can grab any variables later
+     *
+     */    
+    public static function getRoute()
+    {
+        return self::$route;
+    }    
 
     /**
      * Act as a proxy
@@ -209,7 +220,16 @@ class Router
                 }
 
                 if ($responseCode === 200) {
-                    self::proxy($route);
+                    self::$route = $route; // Store converted route for later to retrieve URL variables
+                    $path = preg_replace('/\?.*/', '', $A['route']);
+                    // If returning to where router dispatch is called from (like for topic routing), then just return
+                    if ($path == '/index.php') {
+                        return;
+                    } else {
+                        // Lets load in the required file
+                        require_once $_CONF['path_html'] . $path;
+                    }
+                    //self::proxy($route); // old way that used a redirect which causes the page to basically load twice. See issue #945
                     die();
                 } else {
                     header('Location: ' . $route, $responseCode);
@@ -266,7 +286,16 @@ class Router
                 }
 
                 if ($responseCode === 200) {
-                    self::proxy($route);
+                    self::$route = $route; // Store converted route for later to retrieve URL variables
+                    $path = preg_replace('/\?.*/', '', $A['route']);
+                    // If returning to where router dispatch is called from (like for topic routing), then just return
+                    if ($path == '/index.php') {
+                        return;
+                    } else {
+                        // Lets load in the required file
+                        require_once $_CONF['path_html'] . $path;
+                    }
+                    //self::proxy($route); // old way that used a redirect which causes the page to basically load twice. See issue #945
                     die();
                 } else {
                     header('Location: ' . $route, $responseCode);
