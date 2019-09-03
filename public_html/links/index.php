@@ -83,10 +83,8 @@ function links_list($message)
         COM_setArgNames(array('category'));
         $cid = COM_applyFilter(COM_getArgument('category'));
     } elseif ($_CONF['url_rewrite'] && $_CONF['url_routing']) {
-            // NOTE: this does not work if site_url config option contains a directory as URL class has issues grabbing variables
-            // See: https://github.com/Geeklog-Core/geeklog/issues/937 and /index.php for more about topics that suffer from this issue
-            COM_setArgNames(array(LINKS_PLACEHOLDER, 'category'));
-            $cid = COM_applyFilter(COM_getArgument('category'));
+        COM_setArgNames(array(LINKS_PLACEHOLDER, 'category'));
+        $cid = COM_applyFilter(COM_getArgument('category'));
     } else {
         $cid = GLText::stripTags(Geeklog\Input::fGet('category'));
     }
