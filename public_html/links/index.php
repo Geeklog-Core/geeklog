@@ -74,14 +74,28 @@ function links_list($message)
 {
     global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN, $LANG_LINKS,
            $LANG_LINKS_STATS;
+           
+    define('LINKS_PLACEHOLDER', 'links_placeholder');
 
-    $cid = $_LI_CONF['root'];
     $display = '';
-    if (isset($_GET['category'])) {
-        $cid = GLText::stripTags(Geeklog\Input::get('category'));
-    } elseif (isset($_POST['category'])) {
-        $cid = GLText::stripTags(Geeklog\Input::post('category'));
+    
+    if ($_CONF['url_rewrite'] && !$_CONF['url_routing']) {
+        COM_setArgNames(array('category'));
+        $cid = COM_applyFilter(COM_getArgument('category'));
+    } elseif ($_CONF['url_rewrite'] && $_CONF['url_routing']) {
+            // NOTE: this does not work if site_url config option contains a directory as URL class has issues grabbing variables
+            // See: https://github.com/Geeklog-Core/geeklog/issues/937 and /index.php for more about topics that suffer from this issue
+            COM_setArgNames(array(LINKS_PLACEHOLDER, 'category'));
+            $cid = COM_applyFilter(COM_getArgument('category'));
+    } else {
+        $cid = GLText::stripTags(Geeklog\Input::fGet('category'));
     }
+
+    // If empty assume root 
+    if (empty($cid)) {
+        $cid = $_LI_CONF['root'];
+    }
+    
     $cat = DB_escapeString($cid);
     $page = (int) Geeklog\Input::fGet('page', 0);
     if ($page == 0) {

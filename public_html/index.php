@@ -116,7 +116,7 @@ if ($_CONF['url_rewrite'] && !$_CONF['url_routing']) {
         $page = (int) COM_getArgument('page');
     }
 } elseif ($_CONF['url_rewrite'] && $_CONF['url_routing']) {
-        // NOTE: this does not work if site_url config option contains a directory as URL class has issues grabing variables
+        // NOTE: this does not work if site_url config option contains a directory as URL class has issues grabbing variables
         // See: https://github.com/Geeklog-Core/geeklog/issues/937
         COM_setArgNames(array('topic', 'page'));
         $topic = COM_getArgument('topic');
