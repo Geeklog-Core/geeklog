@@ -725,7 +725,7 @@ class Resource
         $key = '';
 
         foreach ($files as $file) {
-            $key .= $key . $file['file'] . '|';
+            $key .= $file['file'] . '|';
         }
         $key = $this->makeCacheKey($key);
 
