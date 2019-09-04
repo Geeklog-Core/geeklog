@@ -2514,7 +2514,7 @@ The topic Id that will be used to represent the homepage is a dash "-". This is 
 <ol>
     <li>Install the rewrite module on your web server if it has not been already (use the Microsoft Web Platform Installer for this).</li>
     <li>Create a file named "web.config" in the top of the public directory of your
-        Geeklog installation (where lib-common.php is located) and add the following lines. If you have installed Geeklog in a subdirectory of the document root, you may need to modify the code below.<br>
+        Geeklog installation (where lib-common.php is located) and add the following lines. If you have installed Geeklog in a subdirectory of the document root, you will need to modify the code below and include the appropriate sub directory in front of index.php.<br>
     <pre>
         &lt;configuration&gt;
             &lt;system.webServer&gt;
@@ -2550,28 +2550,25 @@ The topic Id that will be used to represent the homepage is a dash "-". This is 
         reboot your Web server.</li>
     <li>Create a file named ".htaccess" in the top of the public directory of your
         Geeklog installation (where lib-common.php is located) and add the following lines.<br>
-    <pre>
-        &lt;IfModule mod_rewrite.c&gt;
-            RewriteEngine On
-            # RewriteBase /
-            # Directs all Geeklog requests through the site index file
-            RewriteCond %{REQUEST_FILENAME} !-f
-            RewriteCond %{REQUEST_FILENAME} !-d
-            RewriteRule ^(.*)$ /index.php/$1 [L]
-        &lt;/IfModule&gt;
-    </pre><br>
-    If you have installed Geeklog in a subdirectory of the document root, you will
-        have to change the line<br>
-    <pre>
-            RewriteRule ^(.*)$ /index.php/$1 [L]
-    </pre>into<br>
         <pre>
-            RewriteRule ^(.*)$ <strong>[sub_directory]</strong>/index.php/$1 [L]
+            &lt;IfModule mod_rewrite.c&gt;
+                RewriteEngine On
+                # RewriteBase /
+                # Directs all Geeklog requests through the site index file
+                RewriteCond %{REQUEST_FILENAME} !-f
+                RewriteCond %{REQUEST_FILENAME} !-d
+                RewriteRule ^(.*)$ /index.php/$1 [L]
+            &lt;/IfModule&gt;
         </pre><br>
+        If you have installed Geeklog in a subdirectory of the document root, you will
+            have to change the line<br>
+        <pre>RewriteRule ^(.*)$ /index.php/$1 [L]</pre>
+        into<br>
+        <pre>RewriteRule ^(.*)$ <strong>[sub_directory]</strong>/index.php/$1 [L]</pre>
         or<br>
-        <pre>
-            RewriteRule ^(.*)$ /<strong>[sub_directory]</strong>/index.php/$1 [L]
-        </pre>
+        <pre>RewriteRule ^(.*)$ /<strong>[sub_directory]</strong>/index.php/$1 [L]</pre>
+        <strong>Please Note:</strong> In this case only (URL Routing enabled without "index.php" along with installing Geeklog in a subdirectory) 
+        you will have to edit all the rules in the Route Manager and add the sub directory in front of each Rule (but not the Route) so the proper rule can be found.
     </li>
     <li>
         Finally, log in as admin and go to the Configuration screen, and set URL Routing

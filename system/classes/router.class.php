@@ -161,6 +161,10 @@ class Router
         }
 
         $pathInfo = COM_applyBasicFilter($_SERVER['PATH_INFO']);
+        // Note: For URL Routing with no "Index.php" and when Geeklog site url has a sub directory the rules in the Route Manager
+        // need to be updated to include the sub directory in the rule part only (not the route).
+        // At some point we should look into striping the sub directory from the pathinfo for this case only instead of having the Admins do 
+        // this extra step so that the path and rule will match when needed below in the loop
 
         if (self::$debug) {
             COM_errorLog(__METHOD__ . ': PATH_INFO = ' . $pathInfo);
