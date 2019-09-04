@@ -6,7 +6,6 @@
 <form action="{form_url}" method="post" id="commentform" class="compact uk-form">
 
   <div class="user_basic">
-    {!if is_anon}
     <dl class="importantstuff clearfix">
       <dt>{lang_importantstuff}</dt>
       <dd>
@@ -15,11 +14,14 @@
           <li class="li-importantstuff">{lang_instr_line2}</li>
           <li class="li-importantstuff">{lang_instr_line3}</li>
           <li class="li-importantstuff">{lang_instr_line4}</li>
+          {!if is_anon}
+          <li class="li-importantstuff">{lang_instr_line6}</li>
+          {!else}
           <li class="li-importantstuff">{lang_instr_line5}</li>
+          {!endif}
         </ul>
       </dd>
     </dl>
-    {!endif}
 
     <dl class="form_block">
       <dt class="dt-commentform-username">{lang_username}</dt>

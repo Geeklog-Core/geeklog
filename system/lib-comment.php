@@ -1257,6 +1257,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             $comment_template->set_var('lang_instr_line3', $LANG03[21]);
             $comment_template->set_var('lang_instr_line4', $LANG03[22]);
             $comment_template->set_var('lang_instr_line5', $LANG03[23]);
+            $comment_template->set_var('lang_instr_line6', $LANG03['instr_line6']);
 
             if ($mode == 'edit' || $mode == $LANG03[28]) {
                 //editing comment or preview changes

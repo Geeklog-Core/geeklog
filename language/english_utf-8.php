@@ -230,6 +230,7 @@ $LANG03 = array(
     21 => 'Read other people\'s messages before posting your own to avoid simply duplicating what has already been said.',
     22 => 'Use a clear subject that describes what your message is about.',
     23 => 'Your email address will NOT be made public.',
+    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.', 
     24 => 'Anonymous User',
     25 => 'Are you sure you want to report this post to the site admin?',
     26 => '%s reported the following abusive comment post:',

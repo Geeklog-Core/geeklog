@@ -238,6 +238,7 @@ $LANG03 = array(
     21 => '他の人のコメントをよく読んで同じようなコメントを投稿しないようにしてください。',
     22 => '内容がよくわかるタイトルをつけてください。',
     23 => 'あなたのメールアドレスは公開しません!',
+    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.', 
     24 => 'ゲストユーザー',
     25 => 'この投稿をサイト管理者に不正な投稿として報告してよいですか?',
     26 => '%s さんが以下を不正なコメントの投稿と報告しています:',

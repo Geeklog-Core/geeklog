@@ -42,7 +42,6 @@
           </dd>
         </dl>
 
-        {!if is_anon}
         <dl class="importantstuff">
           <dt>{lang_importantstuff}</dt>
           <dd>
@@ -51,11 +50,14 @@
               <li>{lang_instr_line2}</li>
               <li>{lang_instr_line3}</li>
               <li>{lang_instr_line4}</li>
+              {!if is_anon}
+              <li>{lang_instr_line6}</li>
+              {!else}
               <li>{lang_instr_line5}</li>
+              {!endif}              
             </ul>
           </dd>
         </dl>
-        {!endif}
 
         {captcha}
 
