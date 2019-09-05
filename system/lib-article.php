@@ -2427,10 +2427,13 @@ function service_submit_story($args, &$output, &$svc_msg)
             $upload->uploadFiles();
 
             if ($upload->areErrors()) {
-                $retval = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
-                $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
-                echo $retval;
-                exit;
+                $output .= COM_errorLog($upload->printErrors(false), 2);
+                if (!$args['gl_svc']) {
+                    $output .= storyeditor($sid);
+                }
+                $output = COM_createHTMLDocument($output);
+
+                return PLG_RET_ERROR;
             }
 
             foreach ($ai_fnames as $k => $ai_fname) {
