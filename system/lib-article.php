@@ -1772,7 +1772,7 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $id);
         $url .= (strpos($url, '?') ? '&' : '?') . 'msg=15';
         COM_redirect($url);
-    } elseif ($ret > 0) { // failure
+    } elseif (($ret > 0) || is_string($ret)) { // failure
         // FIXME: some failures should not return to comment form
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'article',
             $LANG03[14], $postmode);
