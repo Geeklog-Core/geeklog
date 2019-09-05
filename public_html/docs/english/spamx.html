@@ -160,10 +160,11 @@
 <h3><a id="akismet">Akismet</a></h3>
 
 <p>With this module enabled, you can use Akismet service provided at
-    <a href="https://akismet.com/">https://akismet.com/</a>.  However, to enable this module,
-    you have to sign up at <a href="https://akismet.com/plans/">this page</a>,
+    <a href="https://akismet.com/">https://akismet.com/</a> to check submitted content to determine if it is spam or not.  
+    To enable this module, you have to sign up at <a href="https://akismet.com/plans/">this page</a>,
     get your API key, and set it at the Configuration &gt; Spam-X &gt; Modules &gt;
-    Akismet &gt; API Key.
+    Akismet &gt; API Key. This module takes the author name, ip and text of the submitted content and sends it to the Akismet service 
+    which then returns a response indicating if it thinks it is spam or not.
 </p>
 
 <h2><a name="action">Action Modules</a></h2>
@@ -326,7 +327,9 @@
         <td><a name="desc_sfs_enabled">sfs_enabled</a></td>
         <td><code>true</code></td>
         <td>Whether the Stop Forum Spam (SFS) module is enabled or not. If enabled then email and ip addresses of new
-            user registrations will be checked with StopForumSpam.com to see if they are spam.
+            user registrations will be checked with StopForumSpam.com to see if they are spam. For more information see the 
+            <a href="#sfs">SFS introduction</a>.
+        </td>
         </td>
     </tr>
     <tr>
@@ -341,7 +344,8 @@
         <td><a name="desc_snl_enabled">snl_enabled</a></td>
         <td><code>true</code></td>
         <td>Whether the Spam Number of Links (SNL) module is enabled or not. If enabled it will only allow a specified
-            number of links in a post or when a user creates or updates their profile.
+            number of links in a post or when a user creates or updates their profile. For more information see the 
+            <a href="#snl">SNL introduction</a>.
         </td>
     </tr>
     <tr>
@@ -352,7 +356,9 @@
     <tr>
         <td><a name="desc_akismet_enabled">akismet_enabled</a></td>
         <td><code>false</code></td>
-        <td>Whether the Akismet module is enabled or not. If enabled it will check with Akismet service.
+        <td>Whether the Akismet module is enabled or not. If enabled it will check with the Akismet service to determine 
+            if the submitted content is spam (using the ip, author name, and text of the content). For more information see the 
+            <a href="#akismet">Akismet introduction</a>.
         </td>
     </tr>
     <tr>

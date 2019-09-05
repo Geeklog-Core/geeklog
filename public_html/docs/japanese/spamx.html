@@ -128,11 +128,12 @@
 
 <h3><a id="akismet">Akismet</a></h3>
 
-<p>このモジュールを有効にすると、
-    <a href="https://akismet.com/">https://akismet.com/</a>で提供されているサービスを利用できます。しかしながら、このモジュールを有効にするには、
-    <a href="https://akismet.com/plans/">このページ</a>でサインアップして、
-    APIキーを取得し、そのキーを コンフィギュレーション &gt; Spam-X &gt; モジュール &gt;
-    Akismet &gt; APIキー で有効にする必要があります。
+<p>With this module enabled, you can use Akismet service provided at
+    <a href="https://akismet.com/">https://akismet.com/</a> to check submitted content to determine if it is spam or not.  
+    To enable this module, you have to sign up at <a href="https://akismet.com/plans/">this page</a>,
+    get your API key, and set it at the Configuration &gt; Spam-X &gt; Modules &gt;
+    Akismet &gt; API Key. This module takes the author name, ip and text of the submitted content and sends it to the Akismet service 
+    which then returns a response indicating if it thinks it is spam or not.
 </p>
 
 <h2><a name="action">アクションモジュール</a></h2>
@@ -254,7 +255,8 @@
         <td><a name="desc_sfs_enabled">Stop Forum Spamモジュールを有効(sfs_enabled)</a></td>
         <td><code>いいえ(false)</code></td>
         <td>Stop Forum Spam
-            (SFS)モジュールを有効にするかどうかを指定します。有効にすると、ユーザー新規登録時にユーザーのメールアドレスとIPアドレスをStopForumSpam.comに照会してスパム判定を行います。
+            (SFS)モジュールを有効にするかどうかを指定します。有効にすると、ユーザー新規登録時にユーザーのメールアドレスとIPアドレスをStopForumSpam.comに照会してスパム判定を行います。 
+             For more information see the <a href="#sfs">SFS introduction</a>.
         </td>
     </tr>
     <tr>
@@ -267,7 +269,8 @@
         <td><a name="desc_snl_enabled">Spam Number of Linksモジュールを有効(snl_enabled)</a></td>
         <td><code>いいえ(false)</code></td>
         <td>Spam Number of Links
-            (SNL)モジュールを有効にするかどうかを指定します。有効にすると、ユーザーが投稿したり、プロフィールを作成・更新したりする際に、含まれるリンクの数を指定された数に制限するようになります。
+            (SNL)モジュールを有効にするかどうかを指定します。有効にすると、ユーザーが投稿したり、プロフィールを作成・更新したりする際に、含まれるリンクの数を指定された数に制限するようになります。 
+             For more information see the <a href="#snl">SNL introduction</a>.
         </td>
     </tr>
     <tr>
@@ -278,7 +281,9 @@
     <tr>
         <td><a name="desc_akismet_enabled">Akismetモジュールを有効にする</a></td>
         <td><code>いいえ</code></td>
-        <td>Akismetを有効にするかどうかを指定します。有効にすると、Akismetサービスを利用します。
+        <td>Whether the Akismet module is enabled or not. If enabled it will check with the Akismet service to determine 
+            if the submitted content is spam (using the ip, author name, and text of the content). For more information see the 
+            <a href="#akismet">Akismet introduction</a>.
         </td>
     </tr>
     <tr>
