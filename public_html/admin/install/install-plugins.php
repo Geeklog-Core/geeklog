@@ -95,13 +95,13 @@ if (!isset($LANG_DIRECTION)) {
     $LANG_DIRECTION = 'ltr';
 }
 if ($LANG_DIRECTION === 'rtl') {
-    $icon_arrow_next = '<i class="uk-icon-angle-double-left"></i>';
+    $icon_arrow_next = '<span uk-icon="icon: chevron-double-left"></span>';
 } else {
-    $icon_arrow_next = '<i class="uk-icon-angle-double-right"></i>';
+    $icon_arrow_next = '<span uk-icon="icon: chevron-double-right"></span>';
 }
 
 // $content holds all the outputted HTML and content
-$content = '<h1 class="heading">' . $LANG_PLUGINS[2] . ' 3 - ' . $LANG_PLUGINS[1] . '</h1>' . PHP_EOL;
+$content = '<h1>' . $LANG_PLUGINS[2] . ' 3 - ' . $LANG_PLUGINS[1] . '</h1>' . PHP_EOL;
 
 // Make sure the version of PHP is supported.
 $installer->checkPhpVersion();
@@ -127,7 +127,12 @@ switch ($step) {
 
         if (isset($_FILES['plugin'])) {
             if ($error_msg = $installer->getUploadError($_FILES['plugin'])) { // If an error occurred while uploading the file.
-                $content .= '<div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' . $error_msg . '</div>' . PHP_EOL;
+                $content .= '
+                    <div class="uk-alert-danger" uk-alert>
+                        <p><span class="uk-label uk-label-danger">
+                            ' . $LANG_INSTALL[38] . '</span> ' . $error_msg . '
+                        </p>
+                    </div>' . PHP_EOL;
             } else {
                 $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file
                 $archive = new Unpacker($_CONF['path_data'] . $_FILES['plugin']['name'], $_FILES['plugin']['type']);
@@ -135,9 +140,19 @@ switch ($step) {
                 $dirName = preg_replace('/\/.*$/', '', $contents[0]['filename']);
 
                 if (empty($dirName)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
-                    $content .= '<div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' . $LANG_PLUGINS[5] . '</div>' . PHP_EOL;
+                    $content .= '
+                        <div class="uk-alert-danger" uk-alert>
+                            <p><span class="uk-label uk-label-danger">
+                                ' . $LANG_INSTALL[38] . '</span> ' . $LANG_PLUGINS[5] . '
+                            </p>
+                        </div>' . PHP_EOL;
                 } elseif (file_exists($_CONF['path'] . 'plugins/' . $dirName)) { // If plugin directory already exists
-                    $content .= '<div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' . $LANG_PLUGINS[6] . '</div>' . PHP_EOL;
+                    $content .= '
+                        <div class="uk-alert-danger" uk-alert>
+                            <p><span class="uk-label uk-label-danger">
+                                ' . $LANG_INSTALL[38] . '</span> ' . $LANG_PLUGINS[6] . '
+                            </p>
+                        </div>' . PHP_EOL;
                 } else {
                     /**
                      * Install the plugin
@@ -195,16 +210,21 @@ switch ($step) {
         // If the web server will allow the user to upload a plugin
         if ($upload_enabled) {
             // Show the upload form
-            $content .= '<br>' . PHP_EOL
-                . ($upload_success
-                    ? '<div class="notice"><span class="success">' . $LANG_PLUGINS[7] . '</span> ' . sprintf($LANG_PLUGINS[8], $pi_name) . '</div>'
+            $content .= 
+                  ($upload_success
+                    ? '<div class="uk-alert-success" uk-alert><p><span class="uk-label uk-label-success">' . $LANG_PLUGINS[7] . '</span> ' . sprintf($LANG_PLUGINS[8], $pi_name) . '</p></div>'
                     : '') . PHP_EOL
                 . '<h2>' . $LANG_PLUGINS[9] . '</h2>' . PHP_EOL
                 . '<form name="plugins_upload" action="install-plugins.php" method="post" enctype="multipart/form-data">' . PHP_EOL
                 . '<input type="hidden" name="language" value="' . $language . '">' . PHP_EOL
-                . '<p><label class="uk-form-label">' . $LANG_PLUGINS[10] . ' ' . $installer->getHelpLink('plugin_upload') . '</label> ' . PHP_EOL
-                . '<input type="file" name="plugin" size="25"></p>' . PHP_EOL
-                . '<p><button type="submit" class="uk-button uk-button-primary uk-button-large" name="upload" value="' . $LANG_PLUGINS[11] . '">' . $LANG_PLUGINS[11] . '</button></p>' . PHP_EOL
+                
+                . ' <div class="uk-margin" uk-margin>
+                        <div uk-form-custom="target: true">
+                            <input type="file" name="plugin">
+                            <input class="uk-input uk-form-width-medium" type="text" placeholder="' . $LANG_PLUGINS[10] . '" disabled>
+                        </div>
+                        <button type="submit" class="uk-button uk-button-primary" name="upload" value="' . $LANG_PLUGINS[11] . '">' . $LANG_PLUGINS[11] . '</button>
+                    </div>'                
                 . '</form>' . PHP_EOL;
         }
 
@@ -228,25 +248,28 @@ switch ($step) {
             }
         }
 
-        $content .= '<br><h2>' . $LANG_PLUGINS[12] . '</h2>' . PHP_EOL;
+        $content .= '<h2>' . $LANG_PLUGINS[12] . '</h2>' . PHP_EOL;
 
         // If there are new plugins
         if ($numNewPlugins > 0) {
             // Form header
-            $content .= '<p><form action="install-plugins.php" method="post" name="plugin_list" class="uk-form">' . PHP_EOL
+            $content .= '<form action="install-plugins.php" method="post" name="plugin_list">' . PHP_EOL
                 . '<input type="hidden" name="language" value="' . $language . '">' . PHP_EOL
                 . '<input type="hidden" name="step" value="2">' . PHP_EOL
 
-                . '<div class="uk-overflow-container">' . PHP_EOL
+                . '<div class="uk-overflow-auto">' . PHP_EOL
                 
-                . '<table style="max-width: 650px;" class="uk-table">' . PHP_EOL
+                . '<table class="uk-table uk-table-small uk-table-middle">' . PHP_EOL
+                . '<thead>' . PHP_EOL
                 . '<tr>' . PHP_EOL
-                . '<th style="width:60px">' . $LANG_PLUGINS[13] . '</th>' . PHP_EOL
+                . '<th class="uk-text-center">' . $LANG_PLUGINS[13] . '</th>' . PHP_EOL
                 . '<th>' . $LANG_PLUGINS[14] . '</th>' . PHP_EOL
-                . '<th style="width:75px">' . $LANG_PLUGINS[15] . '</th>' . PHP_EOL
-                . '</tr>' . PHP_EOL;
+                . '<th class="uk-text-center">' . $LANG_PLUGINS[15] . '</th>' . PHP_EOL
+                . '</tr>' . PHP_EOL
+                . '</thead>' . PHP_EOL;
 
             // List plugins that are available for install
+            $content .= '<tbody>' . PHP_EOL;
             foreach ($newPlugins as $plugin) {
                 $pi_name = '';
                 $pi_display_name = '';
@@ -343,34 +366,35 @@ switch ($step) {
                 }
 
                 $content .= '<tr>' . PHP_EOL
-                    . '<td align="center"><input type="checkbox" name="plugins[' . $plugin . '][install]"'
+                    . '<td><input type="checkbox" class="uk-check uk-align-center" name="plugins[' . $plugin . '][install]"'
                     . ($missing_autoinstall ? ' disabled="disabled"' : ' checked="checked"') . '>' . PHP_EOL
                     . '</td>' . PHP_EOL
-                    . '<td valign="top">' . PHP_EOL
+                    . '<td>' . PHP_EOL
                     . '<input type="hidden" name="plugins[' . $plugin . '][name]" value="' . $plugin . '">'
                     . '<input type="hidden" name="plugins[' . $plugin . '][pi_url]" value="' . $pi_url . '">'
                     . $pi_display_name . PHP_EOL
-                    . ($missing_autoinstall ? '<p><small><b>' . $LANG_PLUGINS[17] . ':</b> ' . $LANG_PLUGINS[18] . '</small></p>' : '')
+                    . ($missing_autoinstall ? '<div class="uk-alert-warning" uk-alert><p><span class="uk-label uk-label-warning">' . $LANG_PLUGINS[17] . '</span> ' . $LANG_PLUGINS[18] . '</p></div>' : '')
                     . '</td>' . PHP_EOL
-                    . '<td align="center"><input type="hidden" name="plugins[' . $plugin . '][version]" value="' . $pi_version . '">'
+                    . '<td class="uk-text-center"><input type="hidden" name="plugins[' . $plugin . '][version]" value="' . $pi_version . '">'
                     . $pi_version
                     . '</td>' . PHP_EOL
                     . '</tr>' . PHP_EOL;
             }
+            $content .= '</tbody>' . PHP_EOL;
 
             // Form footer
             $content .= '</table><br>' . PHP_EOL
                 . '</div>' . PHP_EOL
-                . '<button type="button" class="uk-button uk-button-primary uk-button-large" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()">' . $LANG_PLUGINS[19] . '</button>' . PHP_EOL
-                . '<button type="submit" class="uk-button uk-button-primary uk-button-large" name="submit" value="' . $LANG_INSTALL[50] . '">'
+                . '<button type="button" class="uk-button uk-button-secondary" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()">' . $LANG_PLUGINS[19] . '</button>' . PHP_EOL
+                . '<button type="submit" class="uk-button uk-button-primary" name="submit" value="' . $LANG_INSTALL[50] . '">'
                 . $LANG_INSTALL[50] . '&nbsp;&nbsp;' . $icon_arrow_next . '</button>'  . PHP_EOL
-                . '</form></p>' . PHP_EOL;
+                . '</form>' . PHP_EOL;
         } else {
             $content .= '<p>' . $LANG_PLUGINS[20] . '</p>' . PHP_EOL
                 . '<form action="install-plugins.php" method="post">' . PHP_EOL
-                . '<button type="submit" class="uk-button uk-button-primary uk-button-large" name="refresh" value="' 
+                . '<button type="submit" class="uk-button uk-button-primary" name="refresh" value="' 
                 . $LANG_PLUGINS[19] . '">' . $LANG_INSTALL[50] . '</button>' . PHP_EOL
-                . '</form></p>' . PHP_EOL;
+                . '</form>' . PHP_EOL;
         }
 
         break;

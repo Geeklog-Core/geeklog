@@ -102,7 +102,7 @@ if (function_exists("date_default_timezone_set") && function_exists("date_defaul
     @date_default_timezone_set(@date_default_timezone_get());
 }
 
-$content = '<h1 class="heading">' . $LANG_MIGRATE[17] . '</h1>' . PHP_EOL;
+$content = '<h1>' . $LANG_MIGRATE[17] . '</h1>' . PHP_EOL;
 
 $error = false;
 $file = false;
@@ -380,7 +380,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                     $queries_tota = $totalQueries;
                 }
 
-                $pct_bar = '<div style="height: 15px; width: ' . $pct_done . '% ;background-color: #000080; margin: 0;"></div>';
+                $pct_bar = '<progress class="uk-progress" value="' . $pct_done . '" max="100"></progress>';
             } else {
                 $bytes_togo = ' ? ';
                 $bytes_tota = ' ? ';
@@ -433,7 +433,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
 // If there was an error, we offer a link to retry migration
 if ($error) {
     $error_gobackUrl .= '&site_url=' . urlencode($site_url) . '&site_admin_url=' . urlencode($site_admin_url);
-    $content .= '<p><a class="uk-button uk-button-primary uk-button-large" href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[30] . '</a></p><p>'
+    $content .= '<p><a class="uk-button uk-button-primary" href="' . $error_gobackUrl . '">' . $LANG_BIGDUMP[30] . '</a></p><p>'
         . $LANG_BIGDUMP[31] . '</p>' . PHP_EOL;
 }
 

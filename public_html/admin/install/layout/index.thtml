@@ -13,38 +13,48 @@
 </head>
 
 <body dir="{{ LANG.DIRECTION }}">
-<div class="uk-container-center container">
-    <div class="uk-grid">
-        <div>
-            <a href="rescue.php">{{ LANG.INSTALL.109 }}</a>&nbsp;&nbsp;&nbsp;
+    <!--HEADER-->
+    <header class="uk-box-shadow-small" style="background-color: #426f9c; color: white">
+        <div class="uk-container">
+            <nav class="uk-navbar uk-light" id="navbar" data-uk-navbar>
+                <div class="uk-navbar-left">
+                    <a class="uk-navbar-item uk-logo" href="https://www.geeklog.net/"><img data-src="layout/logo.png" width="180" height="63.7" alt="Geeklog" style="background-color: #426f9c;" uk-img></a>
+                    <span>{{ LANG.INSTALL.2 }}</span>
+                </div>
+                
+                <div class="uk-navbar-right">
+                    <ul class="uk-navbar-nav uk-visible@m">
+                        <li><a href="rescue.php">{{ LANG.INSTALL.109 }}</a></li>
+                        <li><a href="{{ LANG.INSTALL.87 }}">{{ LANG.INSTALL.1 }}</a></li>
+                        <li><a href="#modal-language" uk-toggle>{{ LANG.INSTALL.118 }}</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-        <div>
-            <a href="{{ LANG.INSTALL.87 }}">{{ LANG.INSTALL.1 }}</a>
-        </div>
-    </div>
-
-    <div class="uk-grid">
-        <div class="uk-grid">
-            <div>
-                <a href="https://www.geeklog.net/">
-                    <img data-src="layout/logo.png" width="180" height="63.7" alt="Geeklog" style="background-color: #426f9c;" uk-img>
-                </a>
-            </div>
-            <div>
-                <span class="uk-align-right">{{ LANG.INSTALL.2 }}</span>
-            </div>
-        </div>
-        <div class="uk-grid">
+    </header>
+    <div id="modal-language" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">{{ LANG.INSTALL.118 }}</h2>
             {{ language_selector }}
         </div>
-    </div>
-
-    <div class="uk-grid">
-        <div>
+    </div>    
+    <!--/HEADER-->
+    <!-- CONTENT -->
+    <section class="uk-section uk-section-muted">
+        <div class="uk-container uk-container-small uk-flex-auto">
             {{ content }}
         </div>
-    </div>
-</div>
+    </section>
+    <!-- /CONTENT -->
+    <!--FOOTER-->
+    <footer class="uk-section uk-section-default uk-section-small">
+        <div class="uk-container">
+            <p class="uk-text-small uk-text-center">{{ LANG.INSTALL.119 }}</p>
+        </div>
+    </footer>
+    <!--/FOOTER-->                
+                
+                
 <script>
     function INST_selectMigrationType() {
         var myType = document.migrate.migration_type.value;

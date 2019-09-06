@@ -1,130 +1,123 @@
 <h2>{{ LANG.INSTALL.31 }}</h2>
 
-<form action="index.php" method="post" name="install" class="uk-form uk-form-stacked">
+<form action="index.php" method="post" name="install" class="uk-form-horizontal">
     <input type="hidden" name="mode" value="{! install_type !}">
     <input type="hidden" name="step" value="2">
     <input type="hidden" name="display_step" value="{! display_step !}">
     <input type="hidden" name="language" value="{{ language }}">
     <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
 
-    <fieldset class="uk-fieldset uk-form-stacked">
-        <div>
+    <fieldset class="uk-fieldset">
+        <div class="uk-margin">
             <label class="uk-form-label" for="site_name">{{ LANG.INSTALL.32 }} {{ help_site_name }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="site_name" name="site_name" value="{! site_name !}" class="uk-input">
+                <input type="text" id="site_name" name="site_name" value="{! site_name !}" class="uk-input uk-width-medium">
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="site_slogan">{{ LANG.INSTALL.33 }} {{ help_site_slogan }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="site_slogan" name="site_slogan" value="{! site_slogan !}" class="uk-input">
+                <input type="text" id="site_slogan" name="site_slogan" value="{! site_slogan !}" class="uk-input uk-width-large">
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="db_type">{{ LANG.INSTALL.34 }} {{ help_db_type }}</label>
             <div class="uk-form-controls">{{ db_type_selector }}</div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="db_host">{{ LANG.INSTALL.39 }} {{ help_db_host }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="db_host" name="db_host" value="{! db_host !}" class="uk-input">
+                <input type="text" id="db_host" name="db_host" value="{! db_host !}" class="uk-input uk-width-medium">
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="db_name">{{ LANG.INSTALL.40 }} {{ help_db_name }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="db_name" name="db_name" value="{! db_name !}" class="uk-input">
+                <input type="text" id="db_name" name="db_name" value="{! db_name !}" class="uk-input uk-width-medium">
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="db_user">{{ LANG.INSTALL.41 }} {{ help_db_user }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="db_user" name="db_user" value="{! db_user !}" class="uk-input">
+                <input type="text" id="db_user" name="db_user" value="{! db_user !}" class="uk-input uk-width-small">
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="db_pass">{{ LANG.INSTALL.42 }} {{ help_db_pass }}</label>
             <div class="uk-form-controls">
-                <input type="password" id="db_pass" name="db_pass" value="{! db_pass !}" class="uk-input">
+                <input type="password" id="db_pass" name="db_pass" value="{! db_pass !}" class="uk-input uk-width-small">
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="db_prefix">{{ LANG.INSTALL.43 }} {{ help_db_prefix }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="db_prefix" name="db_prefix" value="{! db_prefix !}" class="uk-input">
+                <input type="text" id="db_prefix" name="db_prefix" value="{! db_prefix !}" class="uk-input uk-width-small">
             </div>
         </div>
     </fieldset>
 
     <h2>{{ LANG.INSTALL.44 }}</h2>
 
-    <fieldset class="uk-fieldset uk-form-stacked">
-        <div>
+    <fieldset class="uk-fieldset">
+        <div class="uk-margin">
             <label class="uk-form-label" for="site_url">{{ LANG.INSTALL.45 }} {{ help_site_url }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="site_url" name="site_url" value="{! site_url !}" class="uk-input"> &nbsp; {{ LANG.INSTALL.46 }}
+                <input type="text" id="site_url" name="site_url" value="{! site_url !}" class="uk-input uk-width-large"> &nbsp; {{ LANG.INSTALL.46 }}
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="site_admin_url">{{ LANG.INSTALL.47 }} {{ help_site_admin_url }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="site_admin_url" name="site_admin_url" value="{! site_admin_url !}" class="uk-input"> &nbsp; {{ LANG.INSTALL.46 }}
+                <input type="text" id="site_admin_url" name="site_admin_url" value="{! site_admin_url !}" class="uk-input uk-width-large"> &nbsp; {{ LANG.INSTALL.46 }}
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="site_mail">{{ LANG.INSTALL.48 }} {{ help_site_mail }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="site_mail" name="site_mail" value="{! site_mail !}" class="uk-input">
+                <input type="text" id="site_mail" name="site_mail" value="{! site_mail !}" class="uk-input uk-width-medium">
             </div>
         </div>
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="noreply_mail">{{ LANG.INSTALL.49 }} {{ help_noreply_mail }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="noreply_mail" name="noreply_mail" value="{! noreply_mail !}" class="uk-input">
+                <input type="text" id="noreply_mail" name="noreply_mail" value="{! noreply_mail !}" class="uk-input uk-width-medium">
             </div>
         </div>
 
         {% if new_install %}
-        <div>
+        <div class="uk-margin">
             <label class="uk-form-label" for="utf8">{{ LANG.INSTALL.92 }} {{ help_utf8 }}</label>
             <div class="uk-form-controls uk-form-controls-text">
                 <input type="checkbox" id="utf8" name="utf8" {% if utf8 %} checked="checked" {% endif %} class="uk-checkbox">
             </div>
         </div>
-
         {% else %}
-        <div>
-            <div class="uk-alert uk-alert-large uk-alert-notice">
-                <span class="uk-badge uk-badge-notice">{{ LANG.INSTALL.59 }}</span> {{ LANG.INSTALL.116 }}
-            </div>
+        <div class="uk-alert-warning" uk-alert>
+            <p><span class="uk-label uk-label-warning">{{ LANG.INSTALL.59 }}</span> {{ LANG.INSTALL.116 }}</p>
         </div>
         {% endif %}
     </fieldset>
 
-    <fieldset class="uk-fieldset uk-form-horizontal" style="border: none; !important;">
-        <div class="uk-grid">
-            {% if new_install %}
-            <div>
-                <div class="uk-alert uk-alert-large uk-alert-notice">
-                    <span class="uk-badge uk-badge-notice">{{ LANG.INSTALL.59 }}</span> {{ LANG.INSTALL.114 }}
-                </div>
-            </div>
-
-            <div>
-                <button type="submit" name="submit" class="uk-button uk-button-primary uk-button-large"
-                        value="{{ button_text }}">{{ LANG.INSTALL.112 }}&nbsp;&nbsp;{{ icon_arrow_next }}
-                </button>
-                <button type="submit" name="install_plugins" class="uk-button uk-button-secondary uk-button-large"
-                        value="{{ button_text }}">{{ LANG.INSTALL.113 }}&nbsp;&nbsp;{{ icon_arrow_next }}
-                </button>
-            </div>
-            {% else %}
-            <div>
-                <button type="submit" name="submit" class="uk-button uk-button-secondary uk-button-large"
-                        value="{{ button_text }}">{{ LANG.INSTALL.115 }}&nbsp;&nbsp;{{ icon_arrow_next }}
-                </button>
-            </div>
-            {% endif %}
+    <fieldset class="uk-fieldset">
+        {% if new_install %}
+        <div class="uk-alert-warning" uk-alert>
+            <p><span class="uk-label uk-label-warning">{{ LANG.INSTALL.59 }}</span> {{ LANG.INSTALL.114 }}</p>
         </div>
+
+        <div>
+            <button type="submit" name="submit" class="uk-button uk-button-primary"
+                    value="{{ button_text }}">{{ LANG.INSTALL.112 }}&nbsp;&nbsp;{{ icon_arrow_next }}
+            </button>
+            <button type="submit" name="install_plugins" class="uk-button uk-button-secondary"
+                    value="{{ button_text }}">{{ LANG.INSTALL.113 }}&nbsp;&nbsp;{{ icon_arrow_next }}
+            </button>
+        </div>
+        {% else %}
+        <div>
+            <button type="submit" name="submit" class="uk-button uk-button-primary"
+                    value="{{ button_text }}">{{ LANG.INSTALL.115 }}&nbsp;&nbsp;{{ icon_arrow_next }}
+            </button>
+        </div>
+        {% endif %}
     </fieldset>
 </form>

@@ -60,7 +60,7 @@ if (isset($_GET['label'])) {
     $label = preg_replace('/[^a-z0-9_]/', '', $_GET['label']);
 }
 
-$content = '<h1 class="heading">' . $LANG_HELP[0] . '</h1>' . PHP_EOL;
+$content = '<h1>' . $LANG_HELP[0] . '</h1>' . PHP_EOL;
 
 foreach ($LANG_LABEL as $key => $labeltext) {
     $content .= '

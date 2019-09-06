@@ -58,18 +58,40 @@ if (isset($_CONF['mail_settings']['password'])) {
     unset($_CONF['mail_settings']['password']);
 }
 
-$display = "<html>\n<head><title>Configuration Settings</title></head>\n<body>\n";
-$n = 0;
-$display .= '<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border: thin black solid;">';
+if (!isset($LANG_DIRECTION)) {
+    $LANG_DIRECTION = 'ltr';
+}
+$env['rtl'] = $LANG_DIRECTION ==='rtl' ? '-rtl' : '';
 
+$display = '
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Configuration Settings</title>
+    <link rel="stylesheet" type="text/css" href="../../vendor/uikit3/css/uikit' . $env['rtl'] . '.min.css">
+    <link rel="stylesheet" type="text/css" href="layout/style' . $env['rtl'] . '.css">
+    <script src="../../vendor/uikit3/js/uikit.min.js"></script>
+    <script src="../../vendor/uikit3/js/uikit-icons.min.js"></script>
+</head>
+
+<body dir="' . $LANG_DIRECTION . '">';
+
+$display .= '
+    <div class="uk-container">
+        <section class="uk-section uk-section-default uk-section-small">
+            <h1>Configuration Settings</h1>
+            <div class="uk-overflow-auto">
+                <table class="uk-table uk-table-striped">
+                    <thead><tr><th>Option</th><th>Value</th></tr></thead>
+                    <tbody>';
+                
 foreach ($_CONF as $option => $value) {
-    $display .= '<tr';
-    if ($n % 2 == 0) {
-        $display .= ' style="background-color: ' . $highlight_on . '">';
-    } else {
-        $display .= ' style="background-color: ' . $highlight_off . '">';
-    }
-    $display .= '<td style="border: thin black solid; padding: 2px;"><strong>$_CONF[\'<a href="'
+    $display .= '<tr>';
+    $display .= '<td><strong>$_CONF[\'<a href="'
               . $docs . $option . '">' . $option . '</a>\']</strong></td>';
     if (is_array($value)) {
         ob_start();
@@ -82,10 +104,16 @@ foreach ($_CONF as $option => $value) {
     } elseif (!isset($value)) {
         $value = '&nbsp;';
     }
-    $display .= '<td style="border: thin black solid; padding: 2px;"><strong>' . $value . '</strong></td>';
+    $display .= '<td>' . $value . '</td>';
     $display .= '</tr>';
-    $n++;
 }
-$display .= "</table>\n</body>\n</html>";
+$display .= '
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>';
 
 echo $display;

@@ -1,24 +1,17 @@
-<form action="index.php" method="post" style="display: inline;" class="uk-form">
+<form action="index.php" method="post" class="uk-form-stacked">
     {% for item in hidden_items %}
     <input type="hidden" name="{! item.name !}" value="{! item.value !}">
     {% endfor %}
-    <fieldset class="uk-form-horizontal">
-    <div class="uk-grid">
-        <div>
-            <label for="select">{{ LANG.INSTALL.86 }}:</label>
-        </div>
-        <div>
-            <select name="language" id="select" class="uk-select uk-dropdown-small">
-                {% for language in languages %}
-                <option value="{! language.value !}" {{ language.selected }}>
-                    {! language.text !}
-                </option>
-                {% endfor %}
-            </select>&nbsp;
-        </div>
-        <div>
-            <button type="submit" class="uk-button" value="{{ LANG.INSTALL.80 }}">{{ LANG.INSTALL.80 }}</button>
-        </div>
+    <label class="uk-form-label" for="select">{{ LANG.INSTALL.86 }}:</label>
+    <div class="uk-form-controls">
+        <select name="language" id="select" class="uk-select uk-width-auto uk-form-small">
+            {% for language in languages %}
+            <option value="{! language.value !}" {{ language.selected }}>
+                {! language.text !}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="uk-button uk-button-primary" value="{{ LANG.INSTALL.80 }}">{{ LANG.INSTALL.80 }}</button>
+        <button class="uk-button uk-button-default uk-modal-close" type="button">{{ LANG.INSTALL.117 }}</button>
     </div>
-    </fieldset>
 </form>

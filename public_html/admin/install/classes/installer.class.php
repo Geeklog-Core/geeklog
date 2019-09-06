@@ -203,7 +203,7 @@ class Installer
             $retval .= '<h3>' . $title . '</h3>';
         }
         $retval .= '<div class="uk-alert uk-alert-' . $style . '">';
-        $retval .= '<span class="uk-badge uk-badge-' . $style . '">' . $type . '</span> ' . $message . '</div>' . PHP_EOL;
+        $retval .= '<span class="uk-label uk-label-' . $style . '">' . $type . '</span> ' . $message . '</div>' . PHP_EOL;
             
         return $retval;
     }
@@ -222,7 +222,7 @@ class Installer
             if ($postMaxSize && ($contentLength > $postMaxSize)) {
                 // If size exceeds, display an error message
                 $template = $this->getTemplateObject();
-                $content = '<h1 class="heading">' . $this->LANG['ERROR'][8] . '</h1>' . PHP_EOL
+                $content = '<h1>' . $this->LANG['ERROR'][8] . '</h1>' . PHP_EOL
                     . $this->getAlertMessage($this->LANG['ERROR'][7]);
                 $template->set('content', $content);
                 $template->display('index');
@@ -243,7 +243,7 @@ class Installer
 
         if ($this->doDatabaseUpgrades($currentVersion, true) && !empty($this->upgradeMessages)) {
             $prompt = 'information';
-            $retval = '<h1 class="heading">' . $this->LANG['ERROR'][14] . '</h1>' . PHP_EOL; // Upgrade Notice
+            $retval = '<h1>' . $this->LANG['ERROR'][14] . '</h1>' . PHP_EOL; // Upgrade Notice
             $this->env['site_url'] = $this->get('site_url', $this->post('site_url', $this->getSiteUrl()));
             $this->env['site_admin_url'] = $this->get('site_admin_url', $this->post('site_admin_url', $this->getSiteAdminUrl()));
 
@@ -664,9 +664,16 @@ class Installer
 
         // number of files with wrong permissions
         $numWrong = 0;
-        $retval_permissions = '<p><label class="perms-label"><strong>'
-            . $this->LANG['INSTALL'][10] . '</strong></label> ' . PHP_EOL
-            . '<strong>' . $this->LANG['INSTALL'][11] . '</strong></p>' . PHP_EOL;
+        $retval_permissions = '
+            <table class="uk-table uk-table-small">
+                <thead>
+                    <tr>
+                        <th><strong>' . $this->LANG['INSTALL'][10] . '</strong></th>
+                        <th><strong>' . $this->LANG['INSTALL'][11] . '</strong></th>
+                    </tr>
+                </thead>
+                <tbody>';
+
         $chmodString = 'chmod -R 777 ';
 
         // Files to check if writable
@@ -719,22 +726,24 @@ class Installer
                     $checkSelinux = true;
                     $cmdSelinux .= $file . ' ';
                 }
-
-                $retval_permissions .= '<p class="clearboth">'
-                    . '<label class="perms-label"><code>' . $file . '</code></label>' . PHP_EOL
-                    . ' <span class="permissions-list">' . $this->LANG['INSTALL'][12] . ' ' . $permShouldBe . '</span> ('
-                    . $this->LANG['INSTALL'][13] . ' ' . $permission . ')'
-                    . '</p>' . PHP_EOL;
+                
+                $retval_permissions .= '
+                    <tr>
+                        <td><code>' . $file . '</code></td>
+                        <td><span class="uk-text-danger">' . $this->LANG['INSTALL'][12] . ' ' . $permShouldBe . '</span> (' . $this->LANG['INSTALL'][13] . ' ' . $permission . ')</td>
+                    </tr>';
+                    
                 $chmodString .= $file . ' ';
                 $numWrong++;
             }
         }
+        $retval_permissions .= '</tbody></table>';
 
         $retval_step = 1;
 
         // Display permissions, etc
         if ($checkSelinux) {
-            $retval .= '<h1 class="heading">' . $this->LANG['INSTALL'][101] . ' ' . $retval_step . ' - ' . $this->LANG['INSTALL'][97] . '</h1>' . PHP_EOL
+            $retval .= '<h1>' . $this->LANG['INSTALL'][101] . ' ' . $retval_step . ' - ' . $this->LANG['INSTALL'][97] . '</h1>' . PHP_EOL
                 . $this->LANG['INSTALL'][110];
             $cmd = 'chcon -Rt httpd_user_rw_content_t ' . $cmdSelinux;
             $retval .= '<pre><code>' . $cmd . PHP_EOL
@@ -742,17 +751,17 @@ class Installer
             $retval_step++;
         } elseif ($numWrong) {
             // If any files have incorrect permissions
-            $retval .= '<h1 class="heading">' . $this->LANG['INSTALL'][101] . ' ' . $retval_step . ' - ' . $this->LANG['INSTALL'][97] . '</h1>' . PHP_EOL;
+            $retval .= '<h1>' . $this->LANG['INSTALL'][101] . ' ' . $retval_step . ' - ' . $this->LANG['INSTALL'][97] . '</h1>' . PHP_EOL;
             $retval_step++;
 
             if ($this->get('install_type') !== null) {
                 // If the user tried to start an installation before setting file permissions
                 $retval .= '<p>'
-                    . '<div class="notice">'
-                    . '<span class="error">' . $this->LANG['INSTALL'][38] . '</span> '
+                    . '<div class="uk-alert-danger" uk-alert>'
+                    . '<a class="uk-alert-close" uk-close></a>'
+                    . '<span class="uk-label uk-label-danger">' . $this->LANG['INSTALL'][38] . '</span> '
                     . $this->LANG['INSTALL'][21]
-                    . '</div>'
-                    . '</p>' . PHP_EOL;
+                    . '</div>' . PHP_EOL;
             } else {
                 // The first page that is displayed during the "check_permissions" step
                 $retval .= '<p>' . $this->LANG['INSTALL'][9] . '</p>' . PHP_EOL
@@ -761,12 +770,11 @@ class Installer
 
             // List the files that have incorrect permissions and also what the permissions should be
             // Also, list the auto-generated chmod command for advanced users
-            $retval .= '<div class="file-permissions">' . PHP_EOL
-                . $retval_permissions . '</div>' . PHP_EOL
-                . '<h2 class="clearboth">' . $this->LANG['INSTALL'][98] . '</h2>' . PHP_EOL
+            $retval .= $retval_permissions . PHP_EOL
+                . '<h2>' . $this->LANG['INSTALL'][98] . '</h2>' . PHP_EOL
                 . '<p>' . $this->LANG['INSTALL'][99] . '</p>' . PHP_EOL
                 . '<pre><code>' . $chmodString . PHP_EOL
-                . '</code></pre><br>' . PHP_EOL;
+                . '</code></pre>' . PHP_EOL;
             $this->env['step']++;
         } else {
             // Set the install type if the user clicked one
@@ -894,11 +902,8 @@ class Installer
         global $LANG_HELP, $LANG_LABEL;
 
         $id = 'help-' . $var;
-        return '<button uk-toggle="target: #' . $id . '; mode: click" type="button">?</button>' . PHP_EOL
-            . '<div id="' . $id . '" class="uk-card uk-card-secondary uk-card-body" hidden>'
-            . '<h3 class="uk-card-title">' . $LANG_LABEL[$var] . '</h3>'
-            . '<p>' . $LANG_HELP[$var] . '</p>'
-            . '</div>';
+        
+        return '<span uk-icon="icon: info" uk-tooltip="' . htmlentities($LANG_HELP[$var]) . '"</span>';
     }
 
     /**
@@ -992,10 +997,10 @@ class Installer
         }
 
         if (count($dbs) === 0) {
-            $retval = '<span class="error">' . $this->LANG['INSTALL'][108] . '</span>' . PHP_EOL;
+            $retval = '<span class="uk-text-danger uk-text-emphasis">' . $this->LANG['INSTALL'][108] . '</span>' . PHP_EOL;
         } else {
             $disabled = $isInstall ? '' : ' disabled';
-            $retval = '<select id="db_type" name="db_type"' . $disabled . ' class="uk-select">' . PHP_EOL
+            $retval = '<select id="db_type" name="db_type"' . $disabled . ' class="uk-select uk-width-auto">' . PHP_EOL
                 . $retval
                 . '</select>' . PHP_EOL;
 
@@ -3302,12 +3307,12 @@ class Installer
 
             default:
                 $mType = $LANG_INSTALL[59];
-                $mStyle = 'notice';
+                $mStyle = 'primary';
                 break;
         }
 
-        return '<div class="uk-alert uk-alert-large uk-alert-' . $mStyle . '">'
-            . '<span class="uk-badge uk-badge-' . $mStyle . '">' . $mType . '</span> ' . $mMessage . '</div>' . PHP_EOL;
+        return '<div class="uk-alert uk-alert-' . $mStyle . '">'
+            . '<span class="uk-label uk-label-' . $mStyle . '">' . $mType . '</span> ' . $mMessage . '</div>' . PHP_EOL;
     }
 
     /**
@@ -3610,7 +3615,7 @@ class Installer
 
         // Check if there are any files in the backups directory
         if (count($backupFiles) > 0) {
-            $backupFileSelector = '<select name="backup_file" class="uk-select">' . PHP_EOL
+            $backupFileSelector = '<select name="backup_file" class="uk-select uk-width-auto">' . PHP_EOL
                 . '<option value="">' . $LANG_MIGRATE[10] . '</option>' . PHP_EOL;
 
             // List each of the backup files in the backups directory
@@ -3637,7 +3642,7 @@ class Installer
         // Check if the plugins directory is writable by the web server before we even bother uploading anything
         $isWritable = is_writable($backup_dir);
         $this->env['backup_file'] = ($fileUploads && $isWritable)
-            ? '<input class="uk-input" type="file" name="backup_file"><br>' . PHP_EOL
+            ? '<input type="file" name="backup_file">' . PHP_EOL
             : '';
 
         if ($fileUploads) {
@@ -3759,7 +3764,7 @@ class Installer
                             $display .= $LANG_MIGRATE[19] . $backup_file_copy . $LANG_MIGRATE[20] . $backup_dir . '.' . PHP_EOL;
                         } else {
                             $display .= '<p>' . $LANG_MIGRATE[21] . ' <code>' . $backupFile['name'] . '</code> ' . $LANG_MIGRATE[22] . '</p><br>' . PHP_EOL
-                                . '<form action="index.php" method="post" class="uk-form"><p align="center">' . PHP_EOL
+                                . '<form action="index.php" method="post"><p align="center">' . PHP_EOL
                                 . '<input type="hidden" name="mode" value="migrate">' . PHP_EOL
                                 . '<input type="hidden" name="step" value="3">' . PHP_EOL
                                 . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($this->env['dbconfig_path']) . '">' . PHP_EOL
@@ -3767,8 +3772,8 @@ class Installer
                                 . '<input type="hidden" name="site_admin_url" value="' . urlencode($_REQUEST['site_admin_url']) . '">' . PHP_EOL
                                 . '<input type="hidden" name="backup_file" value="' . $backupFile['name'] . '">' . PHP_EOL
                                 . '<input type="hidden" name="language" value="' . $this->env['language'] . '">' . PHP_EOL
-                                . '<button type="submit" class="uk-button uk-button-primary uk-button-large" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '">' . $LANG_MIGRATE[23] . '</button>' . PHP_EOL
-                                . '<button type="submit" class="uk-button uk-button-primary uk-button-large" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'index.php\'">' . $LANG_MIGRATE[24] . '</button>' . PHP_EOL
+                                . '<button type="submit" class="uk-button uk-button-primary" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '">' . $LANG_MIGRATE[23] . '</button>' . PHP_EOL
+                                . '<button type="submit" class="uk-button uk-button-primary" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'index.php\'">' . $LANG_MIGRATE[24] . '</button>' . PHP_EOL
                                 . '</p></form>' . PHP_EOL;
                         }
                     } else {
@@ -3840,6 +3845,10 @@ class Installer
                         . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
                     break;
             } // End switch ($_REQUEST['migration_type']
+        } else {
+            // Add prompt
+            $this->env['migrate_errors'] = $display;
+            $display = MicroTemplate::quick(PATH_LAYOUT, 'migrate_prompt_error', $this->env);
         }
 
         return $display;
@@ -4268,11 +4277,11 @@ HTML;
             }
 
             $display .= '<p>' . $LANG_MIGRATE[36] . '</p>' . PHP_EOL
-                . '<form action="success.php" method="get" class="uk-form">' . PHP_EOL
+                . '<form action="success.php" method="get">' . PHP_EOL
                 . '<input type="hidden" name="type" value="migrate">' . PHP_EOL
                 . '<input type="hidden" name="language" value="' . $language . '">' . PHP_EOL
                 . '<input type="hidden" name="" value="">' . PHP_EOL
-                . '<p><button type="submit" class="uk-button uk-button-primary uk-button-large" name="" value="' . $LANG_INSTALL[62] . '">' . $LANG_INSTALL[62] . '&nbsp;&nbsp;' . $this->env['icon_arrow_next'] . '</button></p>' . PHP_EOL
+                . '<div class="uk-margin"><button type="submit" class="uk-button uk-button-primary" name="" value="' . $LANG_INSTALL[62] . '">' . $LANG_INSTALL[62] . '&nbsp;&nbsp;' . $this->env['icon_arrow_next'] . '</button></div>' . PHP_EOL
                 . '</form>';
         } else {
             header('Location: success.php?type=migrate&language=' . $language);
@@ -4319,7 +4328,7 @@ HTML;
                     }
                 }
 
-                $retval .= '<h1 class="heading">'
+                $retval .= '<h1>'
                     . $this->LANG['INSTALL'][101] . ' ' . htmlspecialchars($this->request('display_step'))
                     . ' - ' . $this->LANG['INSTALL'][102]
                     . '</h1>' . PHP_EOL;
@@ -4560,7 +4569,7 @@ HTML;
                             // If using MySQL check to see if InnoDB is supported
                             if ($DB['type'] === 'mysql-innodb' && !$this->isInnodbSupported()) {
                                 // Warn that InnoDB tables are not supported
-                                $retval .= MicroTemplate::quick(PATH_LAYOUT, 'step2-install', $this->env);
+                                $retval .= MicroTemplate::quick(PATH_LAYOUT, 'step2-install', array_merge($this->env, $params));
                             } else {
                                 // Continue on to step 3 where the installation will happen
                                 if ($DB['type'] === 'mysql-innodb') {

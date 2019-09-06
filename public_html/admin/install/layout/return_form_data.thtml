@@ -1,23 +1,21 @@
-<div class="uk-margin" style="margin: 0 auto; width: 100%; text-align: center;">
-    <div style="display: inline-block;">
-        <form action="index.php" method="post" class="uk-form">
-            <input type="hidden" name="mode" value="{! mode !}">
-            <input type="hidden" name="step" value="1">
-            <input type="hidden" name="display_step" value="{! req_display_step !}">
-            <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
-            <input type="hidden" name="language" value="{! language !}">
-            <input type="hidden" name="site_name" value="{! postData.site_name !}">
-            <input type="hidden" name="site_slogan" value="{! postData.site_slogan !}">
-            <input type="hidden" name="db_type" value="{! postData.db_type !}">
-            <input type="hidden" name="db_host" value="{! postData.db_host !}">
-            <input type="hidden" name="db_name" value="{! postData.db_name !}">
-            <input type="hidden" name="db_user" value="{! postData.db_user !}">
-            <input type="hidden" name="db_prefix" value="{! postData.db_prefix !}">
-            <input type="hidden" name="site_url" value="{! postData.site_url !}">
-            <input type="hidden" name="site_admin_url" value="{! postData.site_admin_url !}">
-            <input type="hidden" name="site_mail" value="{! postData.site_mail !}">
-            <input type="hidden" name="noreply_mail" value="{! postData.noreply_mail !}">
-            <button type="submit" class="uk-button uk-button-primary uk-button-large" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
-        </form>
-    </div>
+<div class="uk-margin">
+    <form action="index.php" method="post">
+        <input type="hidden" name="mode" value="{! mode !}">
+        <input type="hidden" name="step" value="1">
+        <input type="hidden" name="display_step" value="{! req_display_step !}">
+        <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+        <input type="hidden" name="language" value="{! language !}">
+        <input type="hidden" name="site_name" value="{! postData.site_name !}">
+        <input type="hidden" name="site_slogan" value="{! postData.site_slogan !}">
+        <input type="hidden" name="db_type" value="{! postData.db_type !}">
+        <input type="hidden" name="db_host" value="{! postData.db_host !}">
+        <input type="hidden" name="db_name" value="{! postData.db_name !}">
+        <input type="hidden" name="db_user" value="{! postData.db_user !}">
+        <input type="hidden" name="db_prefix" value="{! postData.db_prefix !}">
+        <input type="hidden" name="site_url" value="{! postData.site_url !}">
+        <input type="hidden" name="site_admin_url" value="{! postData.site_admin_url !}">
+        <input type="hidden" name="site_mail" value="{! postData.site_mail !}">
+        <input type="hidden" name="noreply_mail" value="{! postData.noreply_mail !}">
+        <button type="submit" class="uk-button uk-button-primary" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
+    </form>
 </div>
