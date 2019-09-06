@@ -1,6 +1,6 @@
 {# start {templatelocation} #}
 
-<ul id="navlist" class="uk-tab" data-uk-tab>
+<ul id="navlist" class="uk-tab" >
 {menuitems}
 </ul>
 
