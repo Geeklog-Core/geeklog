@@ -5,12 +5,12 @@
 return [
     'chinese_simplified_utf-8.php'  => [
         'langCode' => 'zh-CN',
-        'langName' => '中文(简体字)',
+        'langName' => '简体中文',
         'english'  => 'Simplified Chinese',
     ],
     'chinese_traditional_utf-8.php' => [
         'langCode' => 'zh-TW',
-        'langName' => '中文(繁體字)',
+        'langName' => '繁體中文',
         'english'  => 'Traditional Chinese',
     ],
     'english_utf-8.php'             => [

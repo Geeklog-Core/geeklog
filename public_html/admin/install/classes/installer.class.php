@@ -1284,6 +1284,7 @@ class Installer
                 return false;
             }
 
+            require_once $_CONF['path'] . 'system/classes/ConfigInterface.php';
             require_once $_CONF['path'] . 'system/classes/config.class.php';
             $config = config::get_instance();
             $config->initConfig(); // force re-reading, including new plugin conf
@@ -1533,6 +1534,7 @@ class Installer
                 return false;
             }
 
+            require_once $_CONF['path'] . 'system/classes/ConfigInterface.php';
             require_once $_CONF['path'] . 'system/classes/config.class.php';
             $config = config::get_instance();
             $config->initConfig(); // force re-reading, including new plugin conf
@@ -2801,6 +2803,7 @@ class Installer
                     $this->updateDB($_SQL, $progress);
                     upgrade_addWebservicesFeature();
                     create_ConfValues();
+                    require_once $_CONF['path_system'] . 'classes/ConfigInterface.php';
                     require_once $_CONF['path_system'] . 'classes/config.class.php';
                     $config = config::get_instance();
 
@@ -3008,6 +3011,7 @@ class Installer
      */
     private function fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
     {
+        require_once $path . 'system/classes/ConfigInterface.php';
         require_once $path . 'system/classes/config.class.php';
 
         $config = config::get_instance();
@@ -4823,6 +4827,7 @@ HTML;
                                 $site_slogan = urldecode($site_slogan);
                                 $site_slogan = $this->cleanString($site_slogan);
 
+                                require_once $_CONF['path_system'] . 'classes/ConfigInterface.php';
                                 require_once $_CONF['path_system'] . 'classes/config.class.php';
                                 $config = config::get_instance();
                                 $config->set('site_name', $site_name);
