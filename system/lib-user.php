@@ -1387,17 +1387,8 @@ function plugin_autotags_user($op, $content = '', $autotag = array())
         $result = DB_query($sql);
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
-            $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
-            $linkText = $autotag['parm2'];
-            if (empty($linkText)) {
-                $linkText = COM_getDisplayName($A['uid'], $A['username'], $A['fullname']);
-                if ($A['status'] == USER_ACCOUNT_DISABLED) {
-                    $linkText = sprintf('<s title="%s">%s</s>', $LANG28[42],
-                        $linkText);
-                }
-            }
-
-            $link = COM_createLink($linkText, $url);
+            $linkText = $autotag['parm2'] ?: COM_getDisplayName($A['uid'], $A['username'], $A['fullname']);
+            $link = COM_getProfileLink($A['uid'], $linkText, $A['fullname'], '', '');
             $content = str_replace($autotag['tagstr'], $link, $content);
         }
 
@@ -1540,4 +1531,38 @@ function USER_isValidEmailAddress($email)
     }
 
     return true;
+}
+
+/**
+ * Return if the user is banned
+ *
+ * @param  int $uid user id.  Specify 0 in case of the current user
+ * @return bool
+ */
+function USER_isBanned($uid = 0)
+{
+    global $_TABLES, $_USER;
+
+    $uid = (int) $uid;
+    if ($uid < 1) {
+        $uid = (int) $_USER['uid'];
+    }
+
+    if ($uid < 1) {
+        return true;
+    } elseif ($uid === 1) {
+        return false;
+    } else {
+        $sql = "SELECT status FROM {$_TABLES['users']} WHERE uid = {$uid}";
+        $result = DB_query($sql);
+
+        if (DB_error() || (DB_numRows($result) == 0)) {
+            return true;
+        }
+
+        $A = DB_fetchArray($result, false);
+        $status = (int) $A['status'];
+
+        return ($status == USER_ACCOUNT_DISABLED) || ($status == USER_ACCOUNT_LOCKED);
+    }
 }

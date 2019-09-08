@@ -4461,6 +4461,62 @@ function COM_getDisplayName($uid = 0, $username = '', $fullname = '', $remoteUse
 }
 
 /**
+ * Return an <a> tag linking to a user's profile page or a <span> tag just showing a user's name
+ *
+ * @param    int    $uid            user id
+ * @param    string $userName       Username, if this is set no lookup is done.
+ * @param    string $fullName       Users full name.
+ * @param    string $remoteUserName Username on remote service
+ * @param    string $remoteService  Remote login service.
+ * @param    array  $attributes     Additional HTML attributes
+ * @return   string                 an <a> or a <span> tag
+ */
+function COM_getProfileLink($uid = 0, $userName = '', $fullName = '', $remoteUserName = '', $remoteService = '', array $attributes = [])
+{
+    global $_CONF, $_USER;
+
+    // Check user id
+    if (empty($uid)) {
+        $uid = COM_isAnonUser() ? 1 : $_USER['uid'];
+    }
+
+    $uid = (int) $uid;
+
+    // "this shouldn't happen"
+    if ($uid == 0) {
+        $uid = 1;
+    }
+
+    // Get display text
+    $text = COM_getDisplayName($uid, $userName, $fullName, $remoteUserName, $remoteService);
+
+    // Build an <a> or a <span> tag
+    if ($uid <= 1) {
+        $retval = COM_escHTML($text);
+    } else {
+        require_once $_CONF['path_system'] . 'lib-security.php';
+        require_once $_CONF['path_system'] . 'lib-user.php';
+
+        $isUserBanned = USER_isBanned($uid);
+        if (!$isUserBanned || SEC_hasRights('user.edit')) {
+            if ($isUserBanned) {
+                $attributes = array_merge($attributes, ['style' => 'text-decoration: line-through;']);
+            }
+
+            $retval = COM_createLink(
+                $text,
+                $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $uid,
+                $attributes
+            );
+        } else {
+            $retval = '<span style="text-decoration: line-through;">' . COM_escHTML($text) . '</span>';
+        }
+    }
+
+    return $retval;
+}
+
+/**
  * Adds a hit to the system
  * This function is called in the footer of every page and is used to
  * track the number of hits to the Geeklog system.  This information is
@@ -5401,8 +5457,7 @@ function phpblock_whosonline()
             } else {
                 $username = COM_getDisplayName($A['uid'], $A['username'], $fullname);
             }
-            $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
-            $retval .= COM_createLink($username, $url);
+            $retval .= COM_getProfileLink($A['uid'], $username, $fullname, '');
 
             if (!empty($A['photo']) && ($_CONF['allow_user_photo'] == 1)) {
                 if ($_CONF['whosonline_photo'] == true) {
@@ -5415,7 +5470,12 @@ function phpblock_whosonline()
                         . '" alt=""' . XHTML . '>';
                 }
 
-                $retval .= '&nbsp;' . COM_createLink($userImage, $url);
+                require_once $_CONF['path_system'] . 'lib-user.php';
+
+                if (!USER_isBanned($A['uid'])) {
+                    $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
+                    $retval .= '&nbsp;' . COM_createLink($userImage, $url);
+                }
             }
             $retval .= '<br' . XHTML . '>';
             $num_reg++;
@@ -8498,6 +8558,24 @@ function COM_getEncodingt()
     }
 
     return $encoding;
+}
+
+/**
+ * Escape text so that it can safely be displayed as HTML
+ *
+ * @param  string       $str
+ * @param  int          $flags
+ * @param  bool         $isDoubleEncode
+ * @param  string|null  $encoding
+ * @return string
+ */
+function COM_escHTML($str, $flags = ENT_QUOTES, $isDoubleEncode = true, $encoding = null)
+{
+    if (empty($encoding)) {
+        $encoding = COM_getEncodingt();
+    }
+
+    return htmlspecialchars($str, $flags, $encoding, $isDoubleEncode);
 }
 
 /**

@@ -234,11 +234,10 @@ function staticpageeditor_form(array $A)
     $sp_template->set_var('owner_username', $owner_username);
 
     if ($A['owner_id'] > 1) {
-        $profile_link = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
-        $sp_template->set_var('start_owner_anchortag',
-            '<a href="' . $profile_link . '">');
-        $sp_template->set_var('end_owner_anchortag', '</a>');
-        $sp_template->set_var('owner_link', COM_createLink($owner_name, $profile_link));
+        $ownerDisplayTag = COM_getProfileLink($A['owner_id'], $owner_username, $owner_name, '');
+        $sp_template->set_var('start_owner_anchortag', $ownerDisplayTag);
+        $sp_template->set_var('end_owner_anchortag', '');
+        $sp_template->set_var('owner_link', $ownerDisplayTag);
 
         $photo = '';
         if ($_CONF['allow_user_photo']) {
@@ -248,6 +247,7 @@ function staticpageeditor_form(array $A)
                 $camera_icon = '<img src="' . $_CONF['layout_url']
                     . '/images/smallcamera.' . $_IMAGE_TYPE
                     . '" alt=""' . XHTML . '>';
+                $profile_link = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
                 $sp_template->set_var('camera_icon',
                     COM_createLink($camera_icon, $profile_link));
             }
