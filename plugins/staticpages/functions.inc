@@ -438,13 +438,11 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         if ($A['owner_id'] > 1) {
             $profile_link = $_CONF['site_url']
                 . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
-
+            $authorNameTag = COM_getProfileLink($A['owner_id'], $author_username, $author_name, '', '');
             $spage->set_var('lang_author', $LANG_STATIC['author']);
-            $spage->set_var('start_author_anchortag',
-                '<a href="' . $profile_link . '">');
-            $spage->set_var('end_author_anchortag', '</a>');
-            $spage->set_var('author_link',
-                COM_createLink($author_name, $profile_link));
+            $spage->set_var('start_author_anchortag', $authorNameTag);
+            $spage->set_var('end_author_anchortag', '');
+            $spage->set_var('author_link', $authorNameTag);
 
             $photo = '';
             if ($_CONF['allow_user_photo']) {
@@ -623,13 +621,10 @@ function SP_printPage($page, $A)
     if ($A['owner_id'] > 1) {
         $profile_link = $_CONF['site_url']
             . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
-
-        $print->set_var('lang_author', $LANG_STATIC['author']);
-        $print->set_var('start_author_anchortag',
-            '<a href="' . $profile_link . '">');
-        $print->set_var('end_author_anchortag', '</a>');
-        $print->set_var('author_link',
-            COM_createLink($author_name, $profile_link));
+        $authorNameTag = COM_getProfileLink($A['owner_id'], $author_username, $author_name, '');
+        $print->set_var('start_author_anchortag', $authorNameTag);
+        $print->set_var('end_author_anchortag', '');
+        $print->set_var('author_link', $authorNameTag);
 
         $photo = '';
         if ($_CONF['allow_user_photo']) {
