@@ -757,9 +757,8 @@ class Search
             if (is_numeric($row['uid'])) {
                 if (empty($this->_names[$row['uid']])) {
                     $this->_names[$row['uid']] = htmlspecialchars(COM_getDisplayName($row['uid']));
-                    if ($row['uid'] != 1) {
-                        $this->_names[$row['uid']] = COM_createLink($this->_names[$row['uid']],
-                            $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $row['uid']);
+                    if ($row['uid'] > 1) {
+                        $this->_names[$row['uid']] = COM_getProfileLink($row['uid'], $this->_names[$row['uid']]);
                     }
                 }
                 $row['uid'] = $this->_names[$row['uid']];

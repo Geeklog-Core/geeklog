@@ -267,13 +267,19 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                 $article->set_var('contributedby_fullname', $fullname);
             }
 
-            $authorname = COM_getDisplayName($story->DisplayElements('uid'),
-                $username, $fullname);
+            $isBanned = USER_isBanned($story->DisplayElements('uid'));
+            $authorname = COM_getDisplayName(
+                $story->DisplayElements('uid'), $username, $fullname
+            );
+            if ($isBanned) {
+                $authorname = '<span style="text-decoration: line-through;">' . $authorname . '</span>';
+            }
             $article->set_var('contributedby_author', $authorname);
             $article->set_var('author', $authorname);
 
             $profileUrl = '';
-            if ($story->DisplayElements('uid') > 1) {
+            if (($story->DisplayElements('uid') > 1) &&
+                (!$isBanned || SEC_hasRights('user.edit'))) {
                 $profileUrl = $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid='
                     . $story->DisplayElements('uid');

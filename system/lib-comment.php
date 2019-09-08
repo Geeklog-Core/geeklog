@@ -361,7 +361,8 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
 
             $template->set_var('start_author_anchortag', '<a href="' . $profile_link . '">');
             $template->set_var('end_author_anchortag', '</a>');
-            $template->set_var('author_link', COM_createLink($fullname, $profile_link));
+//            $template->set_var('author_link', COM_createLink($fullname, $profile_link));
+            $template->set_var('author_link', COM_getProfileLink($A['uid'], $A['username'], $fullname));
         } else {
             // comment is from anonymous user
             if (isset($A['name'])) {
