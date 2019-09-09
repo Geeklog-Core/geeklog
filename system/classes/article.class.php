@@ -460,12 +460,12 @@ class Article
             $sql['pgsql'] = 'SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
             */
-            $sql['mysql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl, t.group_id, t.perm_owner, t.perm_group, t.perm_members, t.perm_anon
+            $sql['mysql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl 
                 FROM {$_TABLES['storysubmission']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE (s.uid = u.uid) AND  (ta.tid = t.tid) AND (sid = '$sid')
                 AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1";
 
-            $sql['pgsql'] = "SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl, t.group_id, t.perm_owner, t.perm_group, t.perm_members, t.perm_anon
+            $sql['pgsql'] = "SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl 
                 FROM {$_TABLES['storysubmission']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE (s.uid = u.uid) AND  (ta.tid = t.tid) AND (sid = '$sid')
                 AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1";
@@ -547,7 +547,7 @@ class Article
 
             if (isset($_GROUPS['Story Admin'])) {
                 $this->_group_id = $_GROUPS['Story Admin'];
-            } else {
+            } else { 
                 $this->_group_id = SEC_getFeatureGroup('story.edit');
             }
 
@@ -646,6 +646,19 @@ class Article
             } else {
                 $this->_frontpage = 1;
             }
+
+            if (isset($_GROUPS['Story Admin'])) {
+                $this->_group_id = $_GROUPS['Story Admin'];
+            } else { 
+                $this->_group_id = SEC_getFeatureGroup('story.edit');
+            }
+
+            $array = array();
+            SEC_setDefaultPermissions($array, $_CONF['default_permissions_story']);
+            $this->_perm_owner = $array['perm_owner'];
+            $this->_perm_group = $array['perm_group'];
+            $this->_perm_anon = $array['perm_anon'];
+            $this->_perm_members = $array['perm_members'];
 
             $this->_text_version = GLTEXT_LATEST_VERSION;
             $this->_comments = 0;
