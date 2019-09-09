@@ -72,7 +72,8 @@ function upgrade_message220()
         1 => array('warning', 22, 23),  // Fix User Security Group assignments for Groups: Root, Admin, All Users - Fix User Security Group assignments for Users: Admin
         2 => array('warning', 24, 25),  // FCKEditor removed
         3 => array('warning', 26, 27),  // Google+ OAuth Login switched to Google OAuth Login 
-        4 => array('warning', 28, 29)   // Fixed spaces around user names and removed duplicate usernames
+        4 => array('warning', 28, 29),   // Fixed spaces around user names and removed duplicate usernames
+        5 => array('warning', 30, 31)   // Warning of Submitted Articles may have incorrect group and permissions saved
     );
 
     return $upgradeMessages;

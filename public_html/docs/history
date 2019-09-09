@@ -1,5 +1,15 @@
 Geeklog History/Changes:
 
+Fall 2019 (2.2.1)
+------------
+
+- [Improvement] The FCKEditor has been removed since support has been dropped for several years [Tom]     
+- [Improvement] The Google+ OAuth authentication method and scope has been changed to the Google OAuth authentication method and scope [Tom]     
+
+- [Bug] Fixed saving of permissions for users when you have security groups within security groups [Tom]
+- [Bug] Fix for Duplicate Usernames & Usernames with Trailing Spaces [Tom]
+- [Bug] Submitted articles when approved or brought up in the Article Editor will now use the Story Admin Group and the Article Default Permissions as the defaults (Since Geeklog v2.0.0 it was using the Topic Admin Group) [Tom]
+
 June 26, 2018 (2.2.0)
 ------------
 
