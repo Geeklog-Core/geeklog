@@ -2,23 +2,20 @@
 
 <p>{{ LANG.INSTALL.77 }}</p>
 
-<div class="uk-margin">
-    <form action="index.php" method="post" class="uk-form-horizontal">
-        <input type="hidden" name="mode" value="upgrade">
-        <input type="hidden" name="step" value="3">
-        <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
-        <div class="uk-margin">
-            <label class="uk-form-label" for="version">{{ LANG.INSTALL.89 }}</label>
-            <div class="uk-form-controls">
-                <select id="version" name="version" class="uk-select">
-                    {% for item in old_versions %}
-                    <option{{ item.selected }}>{! item.value !}</option>
-                    {% endfor %}
-                </select>
-            </div>
+<form action="index.php" method="post" class="uk-form-horizontal">
+    <input type="hidden" name="mode" value="upgrade">
+    <input type="hidden" name="step" value="3">
+    <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+    <div class="uk-margin">
+        <label class="uk-form-label" for="version">{{ LANG.INSTALL.89 }}</label>
+        <div class="uk-form-controls">
+            <select id="version" name="version" class="uk-select">
+                {% for item in old_versions %}
+                <option{{ item.selected }}>{! item.value !}</option>
+                {% endfor %}
+            </select>
         </div>
-        <div class="uk-margin">
-            <button type="submit" name="submit" class="uk-button uk-button-secondary" value="{{ LANG.INSTALL.25 }}">{{ LANG.INSTALL.25 }}</button>
-        </div>
-    </form>
-</div>
+    </div>
+
+    <button type="submit" name="submit" class="uk-button uk-button-secondary uk-margin-small" value="{{ LANG.INSTALL.25 }}">{{ LANG.INSTALL.25 }}</button>
+</form>

@@ -17,7 +17,7 @@
         <div class="uk-margin">
             <label class="uk-form-label" for="site_slogan">{{ LANG.INSTALL.33 }} {{ help_site_slogan }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="site_slogan" name="site_slogan" value="{! site_slogan !}" class="uk-input uk-width-large">
+                <input type="text" id="site_slogan" name="site_slogan" value="{! site_slogan !}" class="uk-input uk-width-medium uk-width-large@s">
             </div>
         </div>
         <div class="uk-margin">
@@ -62,13 +62,13 @@
         <div class="uk-margin">
             <label class="uk-form-label" for="site_url">{{ LANG.INSTALL.45 }} {{ help_site_url }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="site_url" name="site_url" value="{! site_url !}" class="uk-input uk-width-large"> &nbsp; {{ LANG.INSTALL.46 }}
+                <input type="text" id="site_url" name="site_url" value="{! site_url !}" class="uk-input uk-width-medium uk-width-large@s"> <span class="uk-text-nowrap">{{ LANG.INSTALL.46 }}</span>
             </div>
         </div>
         <div class="uk-margin">
             <label class="uk-form-label" for="site_admin_url">{{ LANG.INSTALL.47 }} {{ help_site_admin_url }}</label>
             <div class="uk-form-controls">
-                <input type="text" id="site_admin_url" name="site_admin_url" value="{! site_admin_url !}" class="uk-input uk-width-large"> &nbsp; {{ LANG.INSTALL.46 }}
+                <input type="text" id="site_admin_url" name="site_admin_url" value="{! site_admin_url !}" class="uk-input uk-width-medium uk-width-large@s"> <span class="uk-text-nowrap">{{ LANG.INSTALL.46 }}</span>
             </div>
         </div>
         <div class="uk-margin">
@@ -104,20 +104,16 @@
             <p><span class="uk-label uk-label-warning">{{ LANG.INSTALL.59 }}</span> {{ LANG.INSTALL.114 }}</p>
         </div>
 
-        <div>
-            <button type="submit" name="submit" class="uk-button uk-button-primary"
-                    value="{{ button_text }}">{{ LANG.INSTALL.112 }}&nbsp;&nbsp;{{ icon_arrow_next }}
-            </button>
-            <button type="submit" name="install_plugins" class="uk-button uk-button-secondary"
-                    value="{{ button_text }}">{{ LANG.INSTALL.113 }}&nbsp;&nbsp;{{ icon_arrow_next }}
-            </button>
-        </div>
+        <button type="submit" name="submit" class="uk-button uk-button-primary uk-margin-small"
+                value="{{ button_text }}">{{ LANG.INSTALL.112 }}&nbsp;&nbsp;{{ icon_arrow_next }}
+        </button>
+        <button type="submit" name="install_plugins" class="uk-button uk-button-secondary uk-margin-small"
+                value="{{ button_text }}">{{ LANG.INSTALL.113 }}&nbsp;&nbsp;{{ icon_arrow_next }}
+        </button>
         {% else %}
-        <div>
-            <button type="submit" name="submit" class="uk-button uk-button-primary"
-                    value="{{ button_text }}">{{ LANG.INSTALL.115 }}&nbsp;&nbsp;{{ icon_arrow_next }}
-            </button>
-        </div>
+        <button type="submit" name="submit" class="uk-button uk-button-primary"
+                value="{{ button_text }}">{{ LANG.INSTALL.115 }}&nbsp;&nbsp;{{ icon_arrow_next }}
+        </button>
         {% endif %}
     </fieldset>
 </form>

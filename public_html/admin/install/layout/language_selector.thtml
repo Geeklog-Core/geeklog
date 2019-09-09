@@ -1,17 +1,24 @@
-<form action="index.php" method="post" class="uk-form-stacked">
-    {% for item in hidden_items %}
-    <input type="hidden" name="{! item.name !}" value="{! item.value !}">
-    {% endfor %}
-    <label class="uk-form-label" for="select">{{ LANG.INSTALL.86 }}:</label>
-    <div class="uk-form-controls">
-        <select name="language" id="select" class="uk-select uk-width-auto uk-form-small">
-            {% for language in languages %}
-            <option value="{! language.value !}" {{ language.selected }}>
-                {! language.text !}
-            </option>
+<div id="modal-language" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">{{ LANG.INSTALL.118 }}</h2>
+        
+        <form action="index.php" method="post" class="uk-form-stacked">
+            {% for item in hidden_items %}
+            <input type="hidden" name="{! item.name !}" value="{! item.value !}">
             {% endfor %}
-        </select>
-        <button type="submit" class="uk-button uk-button-primary" value="{{ LANG.INSTALL.80 }}">{{ LANG.INSTALL.80 }}</button>
-        <button class="uk-button uk-button-default uk-modal-close" type="button">{{ LANG.INSTALL.117 }}</button>
+            <label class="uk-form-label" for="select">{{ LANG.INSTALL.86 }}:</label>
+            <div class="uk-margin">
+                <select name="language" id="select" class="uk-select uk-width-auto uk-form-small">
+                    {% for language in languages %}
+                    <option value="{! language.value !}" {{ language.selected }}>
+                        {! language.text !}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="uk-button uk-button-primary uk-margin-small" value="{{ LANG.INSTALL.80 }}">{{ LANG.INSTALL.80 }}</button>
+                <button class="uk-button uk-button-default uk-margin-small uk-modal-close" type="button">{{ LANG.INSTALL.117 }}</button>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+    

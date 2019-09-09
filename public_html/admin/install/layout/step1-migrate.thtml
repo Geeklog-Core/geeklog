@@ -51,13 +51,13 @@
         <div class="uk-margin">
             <label class="uk-form-label">{{ LANG.INSTALL.45 }} {{ help_site_url }}</label>
             <div class="uk-form-controls">
-                <input type="text" name="site_url" value="{! site_url !}" class="uk-input uk-width-large">&nbsp;{{ LANG.INSTALL.46 }}
+                <input type="text" name="site_url" value="{! site_url !}" class="uk-input uk-width-medium uk-width-large@s"> <span class="uk-text-nowrap">{{ LANG.INSTALL.46 }}</span>
             </div>
         </div>
         <div class="uk-margin">
             <label class="uk-form-label">{{ LANG.INSTALL.47 }} {{ help_site_admin_url }}</label>
             <div class="uk-form-controls">
-                <input type="text" name="site_admin_url" value="{! site_admin_url !}" class="uk-input uk-width-large">&nbsp;{{ LANG.INSTALL.46 }}
+                <input type="text" name="site_admin_url" value="{! site_admin_url !}" class="uk-input uk-width-medium uk-width-large@s"> <span class="uk-text-nowrap">{{ LANG.INSTALL.46 }}</span>
             </div>
         </div>
         <div class="uk-margin">
@@ -83,8 +83,8 @@
         {{ alert_message2 }}
         
         <div class="uk-margin">
-            <!--<button type="button" name="refresh" class="uk-button uk-button-secondary" value="Refresh" onclick="INST_refreshBackupList()" class="uk-button">Refresh</button>-->
-            <button type="submit" name="submit" class="uk-button uk-button-danger" value="{{ LANG.MIGRATE.16 }}">{{ LANG.MIGRATE.16 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
+            <!--<button type="button" name="refresh" class="uk-button uk-button-secondary uk-margin-small" value="Refresh" onclick="INST_refreshBackupList()" class="uk-button">Refresh</button>-->
+            <button type="submit" name="submit" class="uk-button uk-button-danger uk-margin-small" value="{{ LANG.MIGRATE.16 }}">{{ LANG.MIGRATE.16 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
         </div>
     </fieldset>
 </form>

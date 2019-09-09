@@ -1,5 +1,3 @@
-<div class="uk-margin">
-    <form action="index.php" method="post">
-        <button type="submit" class="uk-button uk-button-primary" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
-    </form>
-</div>
+<form action="index.php" method="post">
+    <button type="submit" class="uk-button uk-button-primary uk-margin-small" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
+</form>

@@ -1,16 +1,14 @@
-<div class="uk-margin">
-        <form action="index.php" method="post" class="uk-inline">
-            <button type="submit" class="uk-button uk-button-primary" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
-        </form>
-        <form action="index.php" method="post" class="uk-inline">
-            <input type="hidden" name="version" value="{! currentVersion !}">
-            <input type="hidden" name="mode" value="{! mode !}">
-            <input type="hidden" name="step" value="{! step !}">
-            <input type="hidden" name="upgrade_check" value="confirmed">
-            <input type="hidden" name="language" value="{! language !}">
-            <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
-            <input type="hidden" name="site_url" value="{! site_url !}">
-            <input type="hidden" name="site_admin_url" value="{! site_admin_url !}">
-            <button type="submit" class="uk-button uk-button-primary" value="{{ LANG.INSTALL.62 }}">{{ LANG.INSTALL.62 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
-        </form>
-</div>
+<form action="index.php" method="post" class="uk-inline">
+    <button type="submit" class="uk-button uk-button-primary uk-margin-small" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
+</form>
+<form action="index.php" method="post" class="uk-inline">
+    <button type="submit" class="uk-button uk-button-primary uk-margin-small" value="{{ LANG.INSTALL.62 }}">{{ LANG.INSTALL.62 }}&nbsp;&nbsp;{{ icon_arrow_next }}</button>
+    <input type="hidden" name="version" value="{! currentVersion !}">
+    <input type="hidden" name="mode" value="{! mode !}">
+    <input type="hidden" name="step" value="{! step !}">
+    <input type="hidden" name="upgrade_check" value="confirmed">
+    <input type="hidden" name="language" value="{! language !}">
+    <input type="hidden" name="dbconfig_path" value="{! dbconfig_path !}">
+    <input type="hidden" name="site_url" value="{! site_url !}">
+    <input type="hidden" name="site_admin_url" value="{! site_admin_url !}">    
+</form>

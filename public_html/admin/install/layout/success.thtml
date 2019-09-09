@@ -23,10 +23,8 @@
     {!endif!}
 
     <form action="" method="post">
-        <div>
-            <p><strong>{lang_success_23}</strong></p>
-            <button type="submit" name="submit" class="uk-button uk-button-primary" value="{lang_success_24}" onclick="return confirm('{lang_confirm_delete}');">{lang_success_24}</button>
-            <button type="submit" name="submit" class="uk-button uk-button-primary" value="{lang_success_25}">{lang_success_25}</button>
-        </div>
+        <p><strong>{lang_success_23}</strong></p>
+        <button type="submit" name="submit" class="uk-button uk-button-primary uk-margin-small" value="{lang_success_24}" onclick="return confirm('{lang_confirm_delete}');">{lang_success_24}</button>
+        <button type="submit" name="submit" class="uk-button uk-button-primary uk-margin-small" value="{lang_success_25}">{lang_success_25}</button>
     </form>
 </div>

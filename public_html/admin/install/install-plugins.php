@@ -223,7 +223,7 @@ switch ($step) {
                             <input type="file" name="plugin">
                             <input class="uk-input uk-form-width-medium" type="text" placeholder="' . $LANG_PLUGINS[10] . '" disabled>
                         </div>
-                        <button type="submit" class="uk-button uk-button-primary" name="upload" value="' . $LANG_PLUGINS[11] . '">' . $LANG_PLUGINS[11] . '</button>
+                        <button type="submit" class="uk-button uk-button-primary uk-margin-small" name="upload" value="' . $LANG_PLUGINS[11] . '">' . $LANG_PLUGINS[11] . '</button>
                     </div>'                
                 . '</form>' . PHP_EOL;
         }
@@ -383,16 +383,16 @@ switch ($step) {
             $content .= '</tbody>' . PHP_EOL;
 
             // Form footer
-            $content .= '</table><br>' . PHP_EOL
+            $content .= '</table>' . PHP_EOL
                 . '</div>' . PHP_EOL
-                . '<button type="button" class="uk-button uk-button-secondary" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()">' . $LANG_PLUGINS[19] . '</button>' . PHP_EOL
-                . '<button type="submit" class="uk-button uk-button-primary" name="submit" value="' . $LANG_INSTALL[50] . '">'
+                . '<button type="button" class="uk-button uk-button-secondary uk-margin-small" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()">' . $LANG_PLUGINS[19] . '</button>' . PHP_EOL
+                . '<button type="submit" class="uk-button uk-button-primary uk-margin-small" name="submit" value="' . $LANG_INSTALL[50] . '">'
                 . $LANG_INSTALL[50] . '&nbsp;&nbsp;' . $icon_arrow_next . '</button>'  . PHP_EOL
                 . '</form>' . PHP_EOL;
         } else {
             $content .= '<p>' . $LANG_PLUGINS[20] . '</p>' . PHP_EOL
                 . '<form action="install-plugins.php" method="post">' . PHP_EOL
-                . '<button type="submit" class="uk-button uk-button-primary" name="refresh" value="' 
+                . '<button type="submit" class="uk-button uk-button-primary uk-margin-small" name="refresh" value="' 
                 . $LANG_PLUGINS[19] . '">' . $LANG_INSTALL[50] . '</button>' . PHP_EOL
                 . '</form>' . PHP_EOL;
         }

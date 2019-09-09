@@ -665,6 +665,7 @@ class Installer
         // number of files with wrong permissions
         $numWrong = 0;
         $retval_permissions = '
+            <div class="uk-overflow-auto">
             <table class="uk-table uk-table-small">
                 <thead>
                     <tr>
@@ -730,14 +731,14 @@ class Installer
                 $retval_permissions .= '
                     <tr>
                         <td><code>' . $file . '</code></td>
-                        <td><span class="uk-text-danger">' . $this->LANG['INSTALL'][12] . ' ' . $permShouldBe . '</span> (' . $this->LANG['INSTALL'][13] . ' ' . $permission . ')</td>
+                        <td><span class="uk-text-danger uk-text-nowrap">' . $this->LANG['INSTALL'][12] . ' ' . $permShouldBe . '</span> (' . $this->LANG['INSTALL'][13] . ' ' . $permission . ')</td>
                     </tr>';
                     
                 $chmodString .= $file . ' ';
                 $numWrong++;
             }
         }
-        $retval_permissions .= '</tbody></table>';
+        $retval_permissions .= '</tbody></table></div>';
 
         $retval_step = 1;
 
@@ -3767,8 +3768,8 @@ class Installer
                         if (!move_uploaded_file($backupFile['tmp_name'], $backup_dir . $backup_file_copy)) { // If able to save the file
                             $display .= $LANG_MIGRATE[19] . $backup_file_copy . $LANG_MIGRATE[20] . $backup_dir . '.' . PHP_EOL;
                         } else {
-                            $display .= '<p>' . $LANG_MIGRATE[21] . ' <code>' . $backupFile['name'] . '</code> ' . $LANG_MIGRATE[22] . '</p><br>' . PHP_EOL
-                                . '<form action="index.php" method="post"><p align="center">' . PHP_EOL
+                            $display .= '<p>' . $LANG_MIGRATE[21] . ' <code>' . $backupFile['name'] . '</code> ' . $LANG_MIGRATE[22] . '</p>' . PHP_EOL
+                                . '<form action="index.php" method="post">' . PHP_EOL
                                 . '<input type="hidden" name="mode" value="migrate">' . PHP_EOL
                                 . '<input type="hidden" name="step" value="3">' . PHP_EOL
                                 . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($this->env['dbconfig_path']) . '">' . PHP_EOL
@@ -3776,9 +3777,9 @@ class Installer
                                 . '<input type="hidden" name="site_admin_url" value="' . urlencode($_REQUEST['site_admin_url']) . '">' . PHP_EOL
                                 . '<input type="hidden" name="backup_file" value="' . $backupFile['name'] . '">' . PHP_EOL
                                 . '<input type="hidden" name="language" value="' . $this->env['language'] . '">' . PHP_EOL
-                                . '<button type="submit" class="uk-button uk-button-primary" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '">' . $LANG_MIGRATE[23] . '</button>' . PHP_EOL
-                                . '<button type="submit" class="uk-button uk-button-primary" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'index.php\'">' . $LANG_MIGRATE[24] . '</button>' . PHP_EOL
-                                . '</p></form>' . PHP_EOL;
+                                . '<button type="submit" class="uk-button uk-button-primary uk-margin-small" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '">' . $LANG_MIGRATE[23] . '</button>' . PHP_EOL
+                                . '<button type="submit" class="uk-button uk-button-primary uk-margin-small" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'index.php\'">' . $LANG_MIGRATE[24] . '</button>' . PHP_EOL
+                                . '</form>' . PHP_EOL;
                         }
                     } else {
                         if (!move_uploaded_file($backupFile['tmp_name'], $backup_dir . $backupFile['name'])) { // If able to save the uploaded file
@@ -4285,7 +4286,7 @@ HTML;
                 . '<input type="hidden" name="type" value="migrate">' . PHP_EOL
                 . '<input type="hidden" name="language" value="' . $language . '">' . PHP_EOL
                 . '<input type="hidden" name="" value="">' . PHP_EOL
-                . '<div class="uk-margin"><button type="submit" class="uk-button uk-button-primary" name="" value="' . $LANG_INSTALL[62] . '">' . $LANG_INSTALL[62] . '&nbsp;&nbsp;' . $this->env['icon_arrow_next'] . '</button></div>' . PHP_EOL
+                . '<button type="submit" class="uk-button uk-button-primary uk-margin-small" name="" value="' . $LANG_INSTALL[62] . '">' . $LANG_INSTALL[62] . '&nbsp;&nbsp;' . $this->env['icon_arrow_next'] . '</button>' . PHP_EOL
                 . '</form>';
         } else {
             header('Location: success.php?type=migrate&language=' . $language);
@@ -4934,9 +4935,14 @@ HTML;
         $this->env['use_innodb'] = false;
 
         // Set UI language selector if necessary
-        $this->env['language_selector'] = (empty($this->env['mode']) || ($this->env['mode'] === 'check_permissions'))
-            ? $this->getLanguageSelector()
-            : '';
+        if (empty($this->env['mode']) || ($this->env['mode'] === 'check_permissions')) {
+            $this->env['language_selector'] = $this->getLanguageSelector();
+            $this->env['language_selector_menu'] = '';
+        } else {
+            // This only works on the first page so hide any language stuff
+            $this->env['language_selector'] = '';
+            $this->env['language_selector_menu'] = 'uk-hidden';
+        }
 
         // Render content
         switch ($this->env['mode']) {

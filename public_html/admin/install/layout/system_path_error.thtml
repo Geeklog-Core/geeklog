@@ -4,9 +4,7 @@
     <p><span class="uk-label uk-label-warning">{{ LANG.INSTALL.38 }}</span> {{ LANG.INSTALL.84 }}<code>{! path_db_config !}</code>{{ LANG.INSTALL.85 }}</p>
 </div>
 
-<div class="uk-margin">
-    <form action="index.php" method="post">
-        <input type="hidden" name="language" value="{{ language }}">
-        <button type="submit" class="uk-button uk-button-primary" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
-    </form>
-</div>
+<form action="index.php" method="post">
+    <input type="hidden" name="language" value="{{ language }}">
+    <button type="submit" class="uk-button uk-button-primary uk-margin-small" value="{{ LANG.INSTALL.61 }}">{{ icon_arrow_prev }}&nbsp;&nbsp;{{ LANG.INSTALL.61 }}</button>
+</form>
