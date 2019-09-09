@@ -396,20 +396,27 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
                 $pct_bar = str_replace(' ', '&nbsp;', '<tt>[         ' . $LANG_BIGDUMP[21] . '          ]</tt>');
             }
 
-            $content .= '
-        <table width="650" border="0" cellpadding="3" cellspacing="1">
-        <tr><th align="left" width="125">' . $LANG_BIGDUMP[22] . ': ' . $pct_done . '%</th><td colspan="4">' . $pct_bar . '</td></tr>
-        </table><br>' . PHP_EOL;
+            $content .= '' . $LANG_BIGDUMP[22] . ': ' . $pct_done . '% ' . $pct_bar . PHP_EOL;
 
             // Finish message and restart the script
             if ($lineNumber < $_REQUEST["start"] + $linesPerSession) {
                 $content .= $installer->getAlertMsg($LANG_BIGDUMP[23], 'success');
                 /*** Go back to Geeklog installer ***/
-                echo("<script language=\"JavaScript\" type=\"text/javascript\">window.setTimeout('location.href=\""
-                    . 'index.php?mode=migrate&step=4'
-                    . '&language=' . urlencode($installer->getLanguage())
-                    . '&site_url=' . urlencode($_REQUEST['site_url'])
-                    . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']) . "\";',3000);</script>\n");
+                $url = 'index.php?mode=migrate&step=4'
+                            . '&language=' . urlencode($installer->getLanguage())
+                            . '&site_url=' . urlencode($_REQUEST['site_url'])
+                            . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']); 
+                            
+                $content .= "<script>
+                    window.setTimeout(function () {
+                        window.location.href=\""
+                            . $url . "\"; 
+                    }, 3000); // Wait 3 seconds before redirect
+                </script>\n";
+                
+                // Add button since above javascript settimeout function doesn't seem to work in development enviroment for Firefox for some reason (at least in 2019)
+                $content .= '<button class="uk-button uk-button-primary uk-margin-small" onClick="location.href=' . "'" . $url . "'" . '">' . $LANG_INSTALL[62] . '</button>';
+                
             } else {
                 if ($delayPerSession != 0) {
                     $content .= '<p><b>' . $LANG_BIGDUMP[24] . $delayPerSession . $LANG_BIGDUMP[25] . PHP_EOL;
