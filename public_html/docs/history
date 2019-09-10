@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Fall 2019 (2.2.1)
 ------------
 
+- [Feature] reCaptcha API added which plugins must now use to enable support [Mystralkk]
+
 - [Improvement] The FCKEditor has been removed since support has been dropped for several years [Tom]     
 - [Improvement] The Google+ OAuth authentication method and scope has been changed to the Google OAuth authentication method and scope [Tom]     
 

@@ -16,13 +16,15 @@
         title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</acronym>を提供する無料の対ボットシステムです。このプラグインを使うことで、GeeklogでreCAPTCHAを簡単に利用できるようになります。
 </p>
 
+<p>As of reCAPTCHA v1.2.1 a reCaptcha API was added which plugins must now use to enable support. Plugin Integration for reCAPTCHA is now controlled in the Plugins own Configuration now (and not the reCAPTCHA configuration).</p>
+
 <h2>システム要件</h2>
 
 <ul>
-    <li style="background-color: #ff99ff;">バージョン1.1.0以降、PHP-5.3.2が必要になりました。PHP-5-3.0やPHP-5.3.1でも動作すると思いますが、確認はしていません。
-    </li>
+    <li style="background-color: #ff99ff;">Since v1.2.1, PHP-5.6.4 or later is required.</li>
     <li>バージョン1.1.6以降、Geeklog 1.8.0以降が必要になりました。</li>
     <li>バージョン1.2.0以降、Geeklog 2.2.0以降が必要になりました。</li>
+    <li>バージョン1.2.1以降、Geeklog 2.2.1以降が必要になりました。</li>
 </ul>
 
 <h2>インストール</h2>
@@ -75,6 +77,16 @@
         <th>日付(YYYY-MM-DD)</th>
         <th>説明</th>
     </tr>
+    <tr>
+        <td>1.2.1</td>
+        <td>2019-?</td>
+        <td>
+            <ul>
+                <li>To enable support Plugins now must support the reCAPTCHA API (all core plugins do).</li>
+                <li>Requires Geeklog 2.2.1.</li>
+            </ul>
+        </td>
+    </tr>     
     <tr>
         <td>1.2.0</td>
         <td>2017-12-02</td>

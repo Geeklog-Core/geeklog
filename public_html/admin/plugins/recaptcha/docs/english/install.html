@@ -15,15 +15,16 @@
 <p>ReCAPTCHA&reg; is a free anti-bot service providing powerful <acronym
         title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</acronym>. This
     plugin makes it easy to use reCAPTCHA with Geeklog.</p>
+    
+<p>As of reCAPTCHA v1.2.1 a reCaptcha API was added which plugins must now use to enable support. Plugin Integration for reCAPTCHA is now controlled in the Plugins own Configuration now (and not the reCAPTCHA configuration).</p>
 
 <h2>System Requirements</h2>
 
 <ul>
-    <li style="background-color: #ff99ff;">Since v1.1.0, PHP-5.3.2 or later is required. Maybe PHP-5-3.0 or PHP-5.3.1
-        will do, but I am not sure.
-    </li>
+    <li style="background-color: #ff99ff;">Since v1.2.1, PHP-5.6.4 or later is required.</li>
     <li>Since v1.1.6, Geeklog 1.8.0 or newer is required.</li>
     <li>Since v1.2.0, Geeklog 2.2.0 or newer is required.</li>
+    <li>Since v1.2.1, Geeklog 2.2.1 or newer is required.</li>
 </ul>
 
 <h2>INSTALL</h2>
@@ -85,6 +86,16 @@
         <th>Date(YYYY-MM-DD)</th>
         <th>Description</th>
     </tr>
+    <tr>
+        <td>1.2.1</td>
+        <td>2019-?</td>
+        <td>
+            <ul>
+                <li>To enable support Plugins now must support the reCAPTCHA API (all core plugins do).</li>
+                <li>Requires Geeklog 2.2.1.</li>
+            </ul>
+        </td>
+    </tr>    
     <tr>
         <td>1.2.0</td>
         <td>2017-12-02</td>
