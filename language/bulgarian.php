@@ -823,7 +823,7 @@ $LANG_ENVCHECK = array(
     'database_pgsql_req_version' => 'Geeklog requires Postgresql version 9.1.7 or newer.',
     'database_dms' => 'Database Management System',
     'database_dms_notes' => 'Failed to determine Database Management System. Geeklog requires either MySQL or Postgresql',
-    'php_req_version' => 'Geeklog requires PHP version 5.2.0 or newer.',
+    'php_req_version' => 'Geeklog requires PHP version 5.6.4 or newer.',
     'php_settings' => 'PHP Settings',
     'php_version' => 'PHP Version',
     'php_warning' => 'If any of the items below are marked in <span class="no">red</span>, you may encounter problems with your Geeklog site.  Check with your hosting provider for information on changing any of these PHP settings.',

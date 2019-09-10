@@ -161,7 +161,7 @@ function _checkEnvironment()
     $data_arr[] = array(
         'settings'    => $LANG_ENVCHECK['php_version'],
         'current'     => $current,
-        'recommended' => '5.3.3+',
+        'recommended' => '5.6.4+',
         'notes'       => $LANG_ENVCHECK['php_req_version']
     );
 
@@ -706,10 +706,10 @@ function php_v()
  */
 function _phpOutOfDate()
 {
-    // Min PHP Version 5.3.3
+    // Min PHP Version 5.6.4
     
     $phpv = php_v();
-    if (($phpv[0] < 5) || (($phpv[0] == 3) && ($phpv[1] < 3))) {
+    if (($phpv[0] < 5) || (($phpv[0] == 6) && ($phpv[1] < 4))) {
         return true;
     } else {
         return false;
