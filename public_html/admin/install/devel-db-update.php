@@ -564,7 +564,7 @@ $display .= '</li></ul>';
 // Geeklog Core Plugins
 $display .= '<li>Performing Geeklog Core Plugin configuration upgrades if necessary...<ul>';
 // Loop through core plugin config updates
-$corePlugins = array('staticpages','spamx','links','polls','calendar', 'recaptcha');
+$corePlugins = array('staticpages','spamx','links','polls','calendar', 'xmlsitemap', 'recaptcha');
 foreach ($corePlugins AS $pi_name) {
     $new_plugin_version = false;
     switch ($pi_name) {
@@ -586,13 +586,13 @@ foreach ($corePlugins AS $pi_name) {
             break;
         case 'calendar':
             $new_plugin_version = true;
-            $plugin_version = '1.1.7';
+            $plugin_version = '1.1.8';
             break;
         case 'xmlsitemap':
             $new_plugin_version = true;
             $plugin_version = '2.0.2';
             break;
-        case 'xmlsitemap':
+        case 'recaptcha':
             $new_plugin_version = true;
             $plugin_version = '1.2.1';
             break;            
