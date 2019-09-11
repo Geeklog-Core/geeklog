@@ -127,6 +127,7 @@ $restrictions = array_merge(
 
 // See https://github.com/servocoder/RichFilemanager-PHP/blob/master/src/config/config.local.php for detail
 $config = [
+    'baseUrl'    => $_CONF['site_url'] . '/filemanager',
     'logger'     => [
         'enabled' => $_CONF['filemanager_logger'],
         'file'    => ($_CONF['filemanager_logger'] ? $_CONF['path_log'] . 'error.log' : null),
