@@ -60,6 +60,7 @@
         <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
 {!if allow_save}
         <button type="submit" name="{nprefix}mode" value="{lang_save}" class="g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_save}</button>
+        <input type="hidden" name="{nprefix}mode" value="{lang_save}"{xhtml}>
 {!endif}
         <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}>
 {!if allow_delete}
