@@ -308,8 +308,13 @@ $_CONF['supported_version_theme'] = '1.8.1'; // if the themes supported version 
 $_CONF['theme_etag'] = false;
 $_CONF['theme_plugins'] = ''; // Default is none - CANNOT be a child theme
 $_CONF['theme_options'] = array(); // Default is empty array
-$func = "theme_config_" . $_CONF['theme'];
-if (function_exists($func)) {
+
+$func = 'theme_config_' . $_CONF['theme'];
+if (!is_callable($func)) {
+    $func = 'theme_config';
+}
+
+if (is_callable($func)) {
     $theme_config = $func();
     $_CONF['doctype'] = $theme_config['doctype'];
     $_IMAGE_TYPE = $theme_config['image_type'];
@@ -462,7 +467,11 @@ $_RIGHTS = explode(',', SEC_getUserPermissions());
 
 // Include scripts on behalf of the theme
 $func = 'theme_css_' . $_CONF['theme'];
-if (function_exists($func)) {
+if (!is_callable($func)) {
+    $func = 'theme_css';
+}
+
+if (is_callable($func)) {
     foreach ($func() as $info) {
         $file = (!empty($info['file'])) ? $info['file'] : '';
         $name = (!empty($info['name'])) ? $info['name'] : md5(!empty($file) ? $file : strval(time()));
@@ -472,8 +481,13 @@ if (function_exists($func)) {
         $_SCRIPTS->setCSSFile($name, $file, $constant, $attributes, $priority, 'theme');
     }
 }
+
 $func = 'theme_js_libs_' . $_CONF['theme'];
-if (function_exists($func)) {
+if (!is_callable($func)) {
+    $func = 'theme_js_libs';
+}
+
+if (is_callable($func)) {
     foreach ($func() as $info) {
         $footer = true;
         if (isset($info['footer']) && !$info['footer']) {
@@ -482,8 +496,13 @@ if (function_exists($func)) {
         $_SCRIPTS->setJavaScriptLibrary($info['library'], $footer);
     }
 }
+
 $func = 'theme_js_files_' . $_CONF['theme'];
-if (function_exists($func)) {
+if (!is_callable($func)) {
+    $func = 'theme_js_files';
+}
+
+if (is_callable($func)) {
     foreach ($func() as $info) {
         $footer = true;
         if (isset($info['footer']) && !$info['footer']) {
@@ -493,8 +512,13 @@ if (function_exists($func)) {
         $_SCRIPTS->setJavaScriptFile(md5($info['file']), $info['file'], $footer, $priority);
     }
 }
+
 $func = 'theme_js_' . $_CONF['theme'];
-if (function_exists($func)) {
+if (!is_callable($func)) {
+    $func = 'theme_js';
+}
+
+if (is_callable($func)) {
     foreach ($func() as $info) {
         $wrap = true;
         if (isset($info['wrap']) && !$info['wrap']) {
@@ -507,8 +531,13 @@ if (function_exists($func)) {
         $_SCRIPTS->setJavaScript($info['code'], $wrap, $footer);
     }
 }
+
 $func = 'theme_init_' . $_CONF['theme'];
-if (function_exists($func)) {
+if (!is_callable($func)) {
+    $func = 'theme_init';
+}
+
+if (is_callable($func)) {
     $func();
 }
 unset($theme_config, $func);
