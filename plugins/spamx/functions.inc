@@ -495,7 +495,8 @@ function plugin_checkforSpam_spamx($comment, $action, $permanentLink,
     if ($dir = @opendir($spamx_path)) {
         while (($file = readdir($dir)) !== false) {
             if (is_file($spamx_path . $file)) {
-                if (substr($file, -18) == '.Examine.class.php') {
+                if ((strpos($file, 'SLV.') !== 0) &&
+                    (substr($file, -18) === '.Examine.class.php')) {
                     $sourceFile = str_replace('.Examine.class.php', '', $file);
                     $spamxExaminerSources[] = $sourceFile;
                 }
