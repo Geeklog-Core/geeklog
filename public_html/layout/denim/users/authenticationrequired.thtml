@@ -23,6 +23,7 @@
 
       <div class="submit">
         <button type="submit" name="mode" value="{value_login}" class="uk-button uk-button-primary uk-margin-small-bottom g-recaptcha"{!if invisible_recaptcha}{invisible_recaptcha}{!endif}>{lang_login}</button>
+        <input type="hidden" name="mode" value="{value_login}"{xhtml}>
         <input type="hidden" name="warn" value="1"{xhtml}>
       </div>      
    </fieldset>
