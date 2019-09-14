@@ -1,12 +1,12 @@
 <?php
 // +--------------------------------------------------------------------------+
-// | Geeklog 2.1                                                              |
+// | Geeklog 2.2                                                              |
 // +--------------------------------------------------------------------------+
 // | logviewer.php                                                            |
 // |                                                                          |
 // | Geeklog log viewer.                                                      |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010 by the following authors:                        |
+// | Copyright (C) 2008-2019 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -33,6 +33,9 @@
 // +--------------------------------------------------------------------------+
 
 // Geeklog common function library
+use Geeklog\Input;
+use Geeklog\Log;
+
 require_once '../lib-common.php';
 
 // Security check to ensure user even belongs on this page
@@ -47,7 +50,7 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
-$log = Geeklog\Input::fGetOrPost('log', '');
+$log = Input::fGetOrPost('log', '');
 $log = COM_sanitizeFilename($log, true);
 if (empty($log)) {
     $log = 'error.log';
@@ -87,16 +90,14 @@ $T->set_var('lang_log_clear', $LANG_LOGVIEW['clear']);
 $T->set_var('lang_confirm_del_message', $MESSAGE[76]);
 
 if (isset($_POST['clearlog'])) {
-    if (@unlink($_CONF['path_log'] . $log)) {
-        $timestamp = strftime("%c");
-        @file_put_contents($_CONF['path_log'] . $log, "$timestamp - Log File Cleared " . PHP_EOL, FILE_APPEND);
+    if (Log::clear($log)) {
         $_POST['viewlog'] = 1;
     }
 }
 if (isset($_POST['viewlog'])) {
     $T->set_var('lang_log_file', $LANG_LOGVIEW['log_file']);
     $T->set_var('log_filename', $log);
-    $T->set_var('log_contents', htmlentities(file_get_contents($_CONF['path_log'] . $log), ENT_NOQUOTES, COM_getEncodingt()));
+    $T->set_var('log_contents', htmlentities(Log::getContents($log), ENT_NOQUOTES, COM_getEncodingt()));
 }
 
 $T->parse('output', 'page');

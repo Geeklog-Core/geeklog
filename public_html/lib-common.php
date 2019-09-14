@@ -36,6 +36,7 @@
 use Geeklog\Autoload;
 use Geeklog\Cache;
 use Geeklog\Input;
+use Geeklog\Log;
 use Geeklog\Mail;
 use Geeklog\Resource;
 use Geeklog\Session;
@@ -117,6 +118,9 @@ $_CONF = $config->get_config('Core');
 
 // Get features that has ft_name like 'config%'
 $_CONF_FT = $config->_get_config_features();
+
+// Load Log class
+Log::init($_CONF['path_log']);
 
 // Load Cache class
 Cache::init(new Cache\FileSystem($_CONF['path'] . 'data/cache/'));
@@ -2240,18 +2244,10 @@ function COM_accessLog($logEntry)
         return '';
     }
 
-    $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
-    $timestamp = @strftime('%c');
-    $byUser = isset($_USER['uid'])
-        ? $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR']
-        : 'anon@' . $_SERVER['REMOTE_ADDR'];
-    $entry = "{$timestamp} ({$byUser}) - {$logEntry}\n";
-    $logFile = $_CONF['path_log'] . 'access.log';
-
-    if (@file_put_contents($logFile, $entry, FILE_APPEND) === false) {
-        return $LANG01[33] . $logFile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
-    } else {
+    if (Log::addEntry($logEntry, 'access.log')) {
         return '';
+    } else {
+        return $LANG01[33] . 'access.log (' . Log::formatTimeStamp() . ')<br' . XHTML . '>' . PHP_EOL;
     }
 }
 
@@ -7776,9 +7772,7 @@ function COM_handle404($alternate_url = '')
         }
 
         // Write into log file
-        $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
-        $logEntry = @strftime('%c') . ' - ' . $logEntry . PHP_EOL;
-        @file_put_contents($_CONF['path_log'] . '404.log', $logEntry, FILE_APPEND | LOCK_EX);
+        Log::addEntry($logEntry, '404.log');
     }
 
     $display = COM_startBlock($LANG_404[1])

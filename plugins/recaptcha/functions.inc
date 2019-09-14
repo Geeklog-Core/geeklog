@@ -30,6 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Log;
 use ReCaptcha\ReCaptcha;
 use ReCaptcha\RequestMethod\CurlPost;
 use ReCaptcha\RequestMethod\Post;
@@ -427,22 +428,7 @@ function RECAPTCHA_errorLog($logEntry, $override = 0)
     }
 
     if (!empty($logEntry)) {
-        $timestamp = date('Y-m-d H:i:s');
-        $logfile = $_CONF['path_log'] . 'recaptcha.log';
-        $entry = "{$timestamp} - {$logEntry} " . PHP_EOL;
-        $isSuccess = false;
-
-        for ($i = 0; $i < 10; $i++) {
-            $isSuccess = (@file_put_contents($logfile, $entry, FILE_APPEND | LOCK_EX) !== false);
-
-            if ($isSuccess) {
-                break;
-            }
-        }
-
-        if (!$isSuccess) {
-            COM_errorLog(__FUNCTION__ . ': cannot open "' . $logfile . '"');
-        }
+        Log::addEntry($logEntry, 'recaptcha.log');
     }
 }
 
