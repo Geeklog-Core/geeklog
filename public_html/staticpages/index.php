@@ -39,8 +39,8 @@
  */
 
 // Geeklog common function library. Required to specify document root for URL Routing functionality
-require_once dirname($_SERVER['DOCUMENT_ROOT'] . $_SERVER['SCRIPT_NAME']) . '/lib-common.php';
-
+//require_once dirname($_SERVER['DOCUMENT_ROOT'] . $_SERVER['SCRIPT_NAME']) . '/lib-common.php';
+require_once '../lib-common.php';
 // Required to declare global variables for URL Routing functionality (as scope changes)
 global $_PLUGINS;
 
