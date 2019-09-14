@@ -29,6 +29,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+use Geeklog\Log;
+
 if (stripos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
     die ('This file can not be used on its own.');
 }
@@ -583,16 +585,7 @@ function SPAMX_log($logEntry)
     global $_CONF, $LANG01, $_SPX_CONF;
 
     if ((!isset($_SPX_CONF['logging']) || ($_SPX_CONF['logging'] === true)) && !empty($logEntry)) {
-        $logEntry = str_replace(array('<?', '?>'), array('(@', '@)'), $logEntry);
-        $timestamp = strftime('%c');
-        $logfile = $_CONF['path_log'] . 'spamx.log';
-
-        if (!$file = fopen($logfile, 'a')) {
-            COM_errorLog($LANG01[33] . $logfile . ' (' . $timestamp . ')', 1);
-        }
-
-        fputs($file, "$timestamp - $logEntry \n");
-        fclose($file);
+        Log::addEntry($logEntry, 'spamx.log');
     }
 }
 
