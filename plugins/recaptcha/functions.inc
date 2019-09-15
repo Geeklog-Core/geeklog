@@ -428,7 +428,7 @@ function RECAPTCHA_errorLog($logEntry, $override = 0)
     }
 
     if (!empty($logEntry)) {
-        Log::addEntry($logEntry, 'recaptcha.log');
+        Log::recaptcha($logEntry);
     }
 }
 

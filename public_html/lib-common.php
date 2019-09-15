@@ -2244,7 +2244,7 @@ function COM_accessLog($logEntry)
         return '';
     }
 
-    if (Log::addEntry($logEntry, 'access.log')) {
+    if (Log::access($logEntry)) {
         return '';
     } else {
         return $LANG01[33] . 'access.log (' . Log::formatTimeStamp() . ')<br' . XHTML . '>' . PHP_EOL;
@@ -7772,7 +7772,7 @@ function COM_handle404($alternate_url = '')
         }
 
         // Write into log file
-        Log::addEntry($logEntry, '404.log');
+        Log::error404($logEntry);
     }
 
     $display = COM_startBlock($LANG_404[1])

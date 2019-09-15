@@ -585,7 +585,7 @@ function SPAMX_log($logEntry)
     global $_CONF, $LANG01, $_SPX_CONF;
 
     if ((!isset($_SPX_CONF['logging']) || ($_SPX_CONF['logging'] === true)) && !empty($logEntry)) {
-        Log::addEntry($logEntry, 'spamx.log');
+        Log::spamx($logEntry);
     }
 }
 

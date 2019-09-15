@@ -130,10 +130,10 @@ abstract class Log
      * Add an entry to a log file
      *
      * @param  string  $entry
-     * @param  string  $fileName
+     * @param  string  $logFileName
      * @return bool
      */
-    public static function addEntry($entry, $fileName = 'error.log')
+    public static function common($entry, $logFileName)
     {
         if (empty($entry)) {
             return true;
@@ -141,31 +141,97 @@ abstract class Log
 
         // Replace PHP start and end tags
         $entry = str_replace(['<?', '?>'], ['(@', '@)'], $entry);
-        $fileName = strtolower(basename($fileName));
-        $path = self::checkPath($fileName);
-        $timestamp = self::formatTimeStamp();
-        $remoteAddress = Input::server('REMOTE_ADDR', '?');
-
-        if ($fileName === 'access.log') {
-            $uid = Session::getUid();
-            $byUser = ($uid > Session::ANON_USER_ID)
-                ? $uid . '@' . $remoteAddress
-                : 'anon@' . $remoteAddress;
-            $entry = "{$timestamp} ({$byUser}) - {$entry}" . PHP_EOL;
-        } else {
-            // for "error.log" and the others
-            $entry = "{$timestamp} - {$remoteAddress} - {$entry}" . PHP_EOL;
-        }
+        $logFileName = strtolower(basename($logFileName));
+        $path = self::checkPath($logFileName);
 
         if (@file_put_contents($path, $entry, FILE_APPEND || LOCK_EX) !== false) {
             return true;
-        } elseif ($fileName !== 'error.log') {
-            self::addEntry('Error, could not write to the log file "' . $fileName . '"', 'error.log');
+        } elseif ($logFileName !== 'error.log') {
+            self::error('Error, could not write to the log file "' . $logFileName . '"');
 
             return false;
         } else {
-            die('Error, could not write to the log file "' . $fileName . '"');
+            die('Error, could not write to the log file "' . $logFileName . '"');
         }
+    }
+
+    /**
+     * Add an entry into "access.log"
+     *
+     * @param string $entry
+     * @return bool
+     */
+    public static function access($entry)
+    {
+        $uid = Session::getUid();
+        $remoteAddress = Input::server('REMOTE_ADDR', '?');
+        $byUser = ($uid > Session::ANON_USER_ID)
+            ? $uid . '@' . $remoteAddress
+            : 'anon@' . $remoteAddress;
+        $timestamp = self::formatTimeStamp();
+        $entry = "{$timestamp} ({$byUser}) - {$entry}" . PHP_EOL;
+
+        return self::common($entry, 'access.log');
+    }
+
+    /**
+     * Add an entry into "error.log"
+     *
+     * @param string $entry
+     * @return bool
+     */
+    public static function error($entry)
+    {
+        $timestamp = self::formatTimeStamp();
+        $remoteAddress = Input::server('REMOTE_ADDR', '?');
+        $entry = "{$timestamp} - {$remoteAddress} - {$entry}" . PHP_EOL;
+
+        return self::common($entry, 'error.log');
+    }
+
+    /**
+     * Add an entry into "404.log"
+     *
+     * @param string $entry
+     * @return bool
+     */
+    public static function error404($entry)
+    {
+        $timestamp = self::formatTimeStamp();
+        $remoteAddress = Input::server('REMOTE_ADDR', '?');
+        $entry = "{$timestamp} - {$remoteAddress} - {$entry}" . PHP_EOL;
+
+        return self::common($entry, '404.log');
+    }
+
+    /**
+     * Add an entry into "recaptcha.log"
+     *
+     * @param string $entry
+     * @return bool
+     */
+    public static function recaptcha($entry)
+    {
+        $timestamp = self::formatTimeStamp();
+        $remoteAddress = Input::server('REMOTE_ADDR', '?');
+        $entry = "{$timestamp} - {$remoteAddress} - {$entry}" . PHP_EOL;
+
+        return self::common($entry, 'recaptcha.log');
+    }
+
+    /**
+     * Add an entry into "spamx.log"
+     *
+     * @param string $entry
+     * @return bool
+     */
+    public static function spamx($entry)
+    {
+        $timestamp = self::formatTimeStamp();
+        $remoteAddress = Input::server('REMOTE_ADDR', '?');
+        $entry = "{$timestamp} - {$remoteAddress} - {$entry}" . PHP_EOL;
+
+        return self::common($entry, 'spamx.log');
     }
 
     /**
