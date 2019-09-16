@@ -1057,6 +1057,8 @@ function STORY_doDeleteThisStoryNow($sid)
     STORY_deleteImages($sid);
     DB_delete($_TABLES['comments'], array('sid', 'type'),
         array($sid, 'article'));
+    DB_delete($_TABLES['commentsubmissions'], array('sid', 'type'),
+        array($sid, 'article'));
     DB_delete($_TABLES['trackback'], array('sid', 'type'),
         array($sid, 'article'));
     DB_delete($_TABLES['stories'], 'sid', $sid);
