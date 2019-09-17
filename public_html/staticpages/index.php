@@ -38,8 +38,10 @@
  * @subpackage public_html
  */
 
-// Geeklog common function library. Required to specify document root for URL Routing functionality
-require_once dirname($_SERVER['DOCUMENT_ROOT'] . $_SERVER['SCRIPT_NAME']) . '/lib-common.php';
+// Geeklog common function library. If VERSION set then lib-common already loaded. Check required for URL Routing functionality
+if (!defined('VERSION')) {
+    require_once '../lib-common.php';
+}
 
 // Required to declare global variables for URL Routing functionality (as scope changes)
 global $_PLUGINS;
