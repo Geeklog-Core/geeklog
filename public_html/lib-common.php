@@ -1420,22 +1420,16 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $headerCode = $_SCRIPTS->getHeader() . $headerCode;
     $page->set_var('plg_headercode', $headerCode);
 
-//    $retval_header = $page->finish($page->parse('index_header', 'header'));
-
     // Call to plugins to set template variables in the footer
     PLG_templateSetVars('footer', $page);
 
     // Call any plugin that may want to include extra JavaScript functions
     $pluginFooterCode = PLG_getFooterCode();
-
     // Retrieve any JavaScript libraries, variables and functions
     $footerCode = $_SCRIPTS->getFooter();
-
     // $_SCRIPTS code should be placed before plugin_footer_code but plugin_footer_code should still be allowed to set $_SCRIPTS
     $footerCode .= $pluginFooterCode;
-
     $page->set_var('plg_footercode', $footerCode);
-//    $footer->set_var('layout_columns', $layout_columns);
 
     $page->set_var('content', $content);
     
@@ -1443,8 +1437,6 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $page->parse('index', 'page');
     
     return $page->finish($page->get_var('index'));
-
-//    return $retval_header . $content . $footer->finish($footer->get_var('index_footer'));
 }
 
 /**
