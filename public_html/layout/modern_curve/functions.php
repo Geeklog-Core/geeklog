@@ -45,10 +45,14 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
 function theme_config_modern_curve()
 {
     return array(
+        'theme_name'        => 'Modern Curve',
+        'theme_version'     => '1.0.0',
+        'theme_gl_version'  => '2.2.1',
+        'theme_author'      => '',
+        'theme_license'     => '',    
         'image_type' => 'png',
         'doctype'    => 'xhtml5',
         'etag'       => true,
-        'supported_version_theme' => '2.0.0' // support new theme format for the later Geeklog 2.0.0
     );
 }
 
@@ -149,13 +153,11 @@ function theme_js_files_modern_curve()
 }
 
 /**
- * Do any other initialisation here
+ * Do any other initialization here
  */
 function theme_init_modern_curve()
 {
     global $_BLOCK_TEMPLATE, $_CONF;
-    
-    $_CONF['theme_oauth_icons'] = 0; // Default is false (not required). Will use Geeklogs own OAuth icons for login form else use icons in theme images directory
 
     /*
      * For left/right block support there is no longer any need for the theme to

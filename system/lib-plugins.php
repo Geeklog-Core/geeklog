@@ -433,7 +433,7 @@ function PLG_isModerator()
  * Note that this is fairly unflexible.  This simply loops through the plugins
  * in the database in the order they were installed and get their menu items.
  * If you want more flexibility in your menu then you should hard code the menu
- * items in header.thtml for the theme(s) you are using.
+ * items in index.thtml for the theme(s) you are using.
  *
  * @return   array   Returns menu options for plugin
  */

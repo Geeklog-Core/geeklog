@@ -58,10 +58,14 @@ function theme_config_denim_three()
     );
 
     return array(
+        'theme_name'        => 'Denim Three',
+        'theme_version'     => '1.0.0',
+        'theme_gl_version'  => '2.2.1',
+        'theme_author'      => '',
+        'theme_license'     => '',    
         'image_type' => 'png',
         'doctype'    => 'xhtml5',
         'etag'       => false, // never set this true. instead use $options['enable_etag'] above.
-        'supported_version_theme' => '2.2.0', // support new theme format for the later Geeklog 2.2.0
         'theme_plugins' => '', // EXPERIMENTAL - Not required - Is used by all plugins - You can specify a COMPATIBLE theme (not a child theme) to use templates stored with some plugins. Can have problems if plugins include css and js files via their own functions.php
         'options'    => $options // Not required, some options of this theme
     );
@@ -202,10 +206,6 @@ function theme_js_files_denim_three()
 function theme_init_denim_three()
 {
     global $_BLOCK_TEMPLATE, $_CONF;
-
-    $_CONF['left_blocks_in_footer'] = 1;
-
-    $_CONF['theme_oauth_icons'] = 0; // Default is false (not required). Will use Geeklogs own OAuth icons for login form else use icons in theme images directory
 
     /*
      * For left/right block support there is no longer any need for the theme to

@@ -11,7 +11,7 @@
 {plg_headercode}
   </head>
   <body dir="{direction}" class="{layout_columns}" itemscope="itemscope" itemtype="http://schema.org/WebPage">
-{# begin {templatelocation} #}
+  {# begin {templatelocation} #}
 
 <!-- #container { -->
     <div id="container">
@@ -50,5 +50,50 @@
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
           <div id="centerblocks-content" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
           {breadcrumb_trail}
+          
+          {content}
+          
+          </div>
+        </div>
+        <!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs <![endif]-->
+        <!--[if !IE]> (When combined with multiple floating elements, floating bug duplicate last element content) <![endif]-->
+        <!--[if !IE]> } #centerblocks <![endif]-->
 
-{# end {templatelocation} #}
+        {right_blocks}
+      </div>
+      <!-- } #wrapper -->
+
+      <hr class="separator"{xhtml}>
+
+      <!-- #footer { -->
+      <div id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+        <div id="footer-content">
+        <ul class="copyright" itemprop="copyrightHolder" itemscope="itemscope" itemtype="http://schema.org/Organization">
+          <li class="copyright_notice" itemprop="name"><address>{copyright_msg}<br{XHTML}>{trademark_msg}</address></li>
+        </ul>
+        <ul class="site_info">
+          <li class="powered_by">{powered_by}&nbsp;<a href="https://www.geeklog.net/">Geeklog</a></li>
+          <!-- Theme by Fumito Arakawa as Phize (http://phize.net/) -->
+          <li class="execution_textandtime">{execution_textandtime}</li>
+        </ul>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
+      <!-- } #footer -->
+
+    </div>
+    <!-- } #container -->
+
+    {plg_footercode}
+
+    {# Depending on the situation, HTML body element's class attribute to specify a value by JavaScript
+       The argument from the left, the right block container, the middle block left the right block id attribute value #}
+    <script type="text/javascript">
+    <!--
+    FixHTML('leftblocks', 'centerblocks', 'rightblocks');
+    -->
+    </script>
+
+  {# end {templatelocation} #}
+  </body>
+</html>

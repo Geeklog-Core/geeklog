@@ -348,10 +348,6 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         $related_topics = '';
 
         if ($index == 'n') {
-            if ($_CONF['supported_version_theme'] == '1.8.1') {
-                $article->set_var('breadcrumb_trail', TOPIC_breadcrumbs('article', $story->getSid()));
-            }
-
             if ($_CONF['related_topics'] > 0) {
                 $related_topics = TOPIC_relatedTopics('article', $story->getSid(), $_CONF['related_topics_max']);
                 $article->set_var('related_topics', $related_topics);

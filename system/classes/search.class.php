@@ -699,37 +699,32 @@ class Search
             $retval .= str_replace('%', '%%', COM_createLink($LANG09[61], $url . 'refine'));
             $retval = '<p>' . $retval . '</p>' . LB;
 
-            if (version_compare($_CONF['supported_version_theme'], '2.0.0', '>=')) {
-                // Make GET params array
-                $params_arr = array();
-                $params_arr['query'] = urlencode($this->_query);
-                if (!empty($this->_keyType)) {
-                    $params_arr['keyType'] = $this->_keyType;
-                }
-                if (!empty($this->_dateStart)) {
-                    $params_arr['datestart'] = $this->_dateStart;
-                }
-                if (!empty($this->_dateEnd)) {
-                    $params_arr['dateend'] = $this->_dateEnd;
-                }
-                if (!empty($this->_topic)) {
-                    $params_arr['topic'] = $this->_topic;
-                }
-                if (!empty($this->_author)) {
-                    $params_arr['author'] = $this->_author;
-                }
-                if ($this->_titlesOnly) {
-                    $params_arr['title'] = true;
-                }
-                $params_arr['type'] = $this->_type;
-                $params_arr['mode'] = 'search';
-
-                $retval = $obj->getFormattedOutput2($results, $LANG09[11], $retval, '',
-                    $_CONF['search_show_sort'], $_CONF['search_show_limit'], $params_arr);
-            } else {
-                $retval = $obj->getFormattedOutput($results, $LANG09[11], $retval, '',
-                    $_CONF['search_show_sort'], $_CONF['search_show_limit']);
+            // Make GET params array
+            $params_arr = array();
+            $params_arr['query'] = urlencode($this->_query);
+            if (!empty($this->_keyType)) {
+                $params_arr['keyType'] = $this->_keyType;
             }
+            if (!empty($this->_dateStart)) {
+                $params_arr['datestart'] = $this->_dateStart;
+            }
+            if (!empty($this->_dateEnd)) {
+                $params_arr['dateend'] = $this->_dateEnd;
+            }
+            if (!empty($this->_topic)) {
+                $params_arr['topic'] = $this->_topic;
+            }
+            if (!empty($this->_author)) {
+                $params_arr['author'] = $this->_author;
+            }
+            if ($this->_titlesOnly) {
+                $params_arr['title'] = true;
+            }
+            $params_arr['type'] = $this->_type;
+            $params_arr['mode'] = 'search';
+
+            $retval = $obj->getFormattedOutput2($results, $LANG09[11], $retval, '',
+                $_CONF['search_show_sort'], $_CONF['search_show_limit'], $params_arr);
         }
 
         return $retval;

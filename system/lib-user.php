@@ -1243,9 +1243,6 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         }
     } else {
         $story_row = $LANG01[37];
-        if ($_CONF['supported_version_theme'] == '1.8.1') {
-            $story_row = '<tr><td>' . $story_row . '</td></tr>';
-        }
         $user_templates->set_var('last10_rows', $story_row);
     }
     $user_templates->parse('last10_blocks', 'last10_block', true);
@@ -1297,9 +1294,6 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         }
     } else {
         $comment_row = $LANG01[29];
-        if ($_CONF['supported_version_theme'] == '1.8.1') {
-            $comment_row = '<tr><td>' . $comment_row . '</td></tr>';
-        }
         $user_templates->set_var('last10_rows', $comment_row);
     }
     $user_templates->parse('last10_blocks', 'last10_block', true);

@@ -178,6 +178,7 @@ if (isset($_GET['msg'])) {
 }
 
 if (SEC_inGroup('Root') && ($page === 1)) {
+    // Security and Install Directory Check
     $done = DB_getItem($_TABLES['vars'], 'value', "name = 'security_check'");
 
     if ($done != 1) {
@@ -185,6 +186,24 @@ if (SEC_inGroup('Root') && ($page === 1)) {
             // deliberately NOT print the actual path to the install dir
             $secMsg = sprintf($LANG_SECTEST['remove_inst'], '') . ' ' . $MESSAGE[92];
             $display .= COM_showMessageText($secMsg);
+        }
+    }
+    // Theme Compatibility Check
+    // If ANY theme changes related to template variables (new or deleted) and template files (name of files, new or deleted files) happened since previous version of Geeklog then current version is required
+    // If nothing has changed related to this then the last version of Geeklog that meet these standards can be used here.
+    if (COM_versionCompare($_CONF['min_theme_gl_version'], $_CONF['theme_gl_version'], '>')) {
+        // Version to low so issue warning message to root users
+        if (empty($_CONF['theme_gl_version'])) {
+            $themeMsg = $MESSAGE[506];
+        } else {
+            $themeMsg = $MESSAGE[505];
+        }
+        $display .= COM_showMessageText($themeMsg);
+    } elseif (COM_versionCompare($_CONF['min_theme_gl_version'], $_CONF['theme_gl_version'], '<')) {
+        // Version to high so issue warning message
+        if (COM_versionCompare(VERSION, $_CONF['theme_gl_version'], '<')) {
+            $themeMsg = $MESSAGE[507];
+            $display .= COM_showMessageText($themeMsg);
         }
     }
 }
@@ -201,7 +220,6 @@ if (!empty($displayBlock)) {
         $topspan->set_file(array('topspan' => 'topcenterblock-span.thtml'));
         $topspan->parse('output', 'topspan');
         $display .= $topspan->finish($topspan->get_var('output'));
-        $GLOBALS['centerspan'] = true;
     }
 }
 
@@ -345,9 +363,6 @@ if ($A = DB_fetchArray($result)) {
     // Display breadcrumb trail
     if (!empty($topic)) {
         $breadcrumbs = TOPIC_breadcrumbs('topic', $topic);
-        if ($_CONF['supported_version_theme'] === '1.8.1') {
-            $display .= $breadcrumbs;
-        }
     }
 
     // display first article

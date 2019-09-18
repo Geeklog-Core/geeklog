@@ -1,0 +1,127 @@
+{doctype}
+<html{lang_attribute}{xmlns}>
+
+<head>
+<meta charset="{charset}"{xhtml}>
+<title>{page_title_and_site_name}</title>
+
+<!-- Mobile Specific Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"{xhtml}>
+
+<!-- Favicons -->
+<link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
+
+<!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
+<link rel="start contents" href="{site_url}"{xhtml}>
+{feed_url}
+{rel_links}
+{plg_headercode}
+
+<!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/ie8.css"{xhtml}><![endif]-->
+<!--[if lt IE 9]><script type="text/javascript" src="{layout_url}/javascript/respond.min.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body dir="{direction}" class="{layout_columns}" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+{# start {templatelocation} #}
+
+  <!-- #container { -->
+  <div id="container">
+    <header id="header" role="banner" class="brand-text" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+      <div id="header-content">
+        <a class="tm-toggle uk-navbar-toggle uk-visible-small" href="#offcanvas" data-uk-offcanvas="{mode:'reveal'}"></a>
+        <div class="nameplate">
+          <h1 class="site_name" itemprop="name"><a href="{site_url}" title="{site_name}" itemprop="url">{site_name}</a></h1>
+          <p class="site_slogan">{site_slogan}</p>
+        </div>
+      </div>
+    </header>
+
+    <hr class="separator"{xhtml}>
+
+    <nav id="navigation" role="navigation" class="uk-hidden-small" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+      <div class="navigation_content uk-navbar uk-navbar-attached gl-navbar-small">
+        <ul id="navigation_ul" class="uk-navbar-nav">
+          {menu_elements}
+        </ul>
+
+        <div id="header-search">
+          <form action="{site_url}/search.php" method="get" id="header-searchform" class="uk-form uk-display-inline-block uk-navbar-flip">
+            <div class="uk-form-icon">
+              <i class="uk-icon-search" aria-hidden="true"></i>
+              <input type="text" id="header-search-box" size="15" maxlength="255" value="" name="query" placeholder="{button_search}" title="{button_search}"{xhtml}>
+              <input type="hidden" value="all" name="type"{xhtml}>
+              <input type="hidden" value="all" name="keyType"{xhtml}>
+              <input type="hidden" value="search" name="mode"{xhtml}>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </nav>
+
+    <div id="offcanvas" class="uk-offcanvas" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+      <div class="uk-offcanvas-bar">
+        <ul class="uk-nav uk-nav-offcanvas">
+          {menu_elements}
+        </ul>
+      </div>
+    </div>
+
+    <hr class="separator"{xhtml}>
+
+    <!-- #wrapper { -->
+    <div id="wrapper">
+
+      <!-- Center Block Container -->
+      <div id="centerblocks">
+        <main id="main-content" role="main" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
+          <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
+          {breadcrumb_trail}
+
+          {content}
+
+        </main>
+      </div>
+
+      {left_blocks}
+
+      {right_blocks}
+
+    </div>
+    <!-- } #wrapper -->
+
+    <hr class="separator"{xhtml}>
+
+    <footer id="footer" role="contentinfo" class="clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+      <div id="footer-content">
+        <div id="copyright" itemprop="copyrightHolder" itemscope="itemscope" itemtype="http://schema.org/Organization"><span itemprop="name">{copyright_msg}</span></div>
+        <div id="trademark">{trademark_msg}</div>
+        <div id="powered_by">{powered_by}&nbsp;<a href="https://www.geeklog.net/">Geeklog</a></div>
+        <div id="execution_textandtime">{execution_textandtime}</div>
+      </div>
+    </footer>
+
+    <div id="totop-scroller" style="display: none;" data-uk-smooth-scroll="{offset: 12}">
+      <i class="uk-icon-chevron-circle-up"></i>
+    </div>
+
+  </div>
+  <!-- } #container -->
+
+  {plg_footercode}
+
+  <!-- Depending on the situation, HTML body element's class attribute to specify a value by JavaScript
+       The argument from the left, the right block container, the middle block left the right block id attribute value -->
+  <script type="text/javascript">
+  <!--
+    FixHTML('leftblocks', 'centerblocks', 'rightblocks');
+  -->
+  </script>
+
+{# end {templatelocation} #}
+
+</body>
+
+</html>
+          

@@ -71,13 +71,6 @@ class config implements ConfigInterface
     private $conf_type = array();
 
     /**
-     * Whether support new theme format for the later Geeklog 2.0 or not
-     *
-     * @var boolean
-     */
-    private $flag_version_2;
-
-    /**
      * List of validation rules. Append entries for validation as
      * ('field_name' => '/^perl_compat_regexp$/') that have to match
      * with preg_match(). Use these rules with config::_validates()
@@ -913,14 +906,7 @@ class config implements ConfigInterface
         $js .= "var frmGroupAction = '" . $_CONF['site_admin_url'] . "/configuration.php';";
         $_SCRIPTS->setJavaScript($js, true);
 
-        $this->flag_version_2 = version_compare($_CONF['supported_version_theme'], '2.0.0', '>=');
-
-        if ($this->flag_version_2 == true) {
-            $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/admin.configuration.js');
-        } else {
-            $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/ver.1.8/admin.configuration.js');
-        }
-
+        $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/admin.configuration.js');
 
         $t->set_var('search_configuration_label', $LANG_CONFIG['search_configuration_label']);
         if (isset($_POST['search-configuration-cached'])) {
@@ -1031,12 +1017,7 @@ class config implements ConfigInterface
                 if ($e['type'] === 'fieldset' && $e['fieldset'] != $current_fs) {
                     $fs_flag = true;
                     if ($current_fs != '') {
-
-                        if ($this->flag_version_2 == true) {
-                            $tab_contents .= '</div></fieldset><!-- END fieldset -->';
-                        } else {
-                            $tab_contents .= '</table></fieldset><!-- END fieldset -->';
-                        }
+                        $tab_contents .= '</div></fieldset><!-- END fieldset -->';
 
                         $table_flag = false;
                     }
@@ -1044,44 +1025,24 @@ class config implements ConfigInterface
                     $current_fs = $e['fieldset'];
                 }
                 if (!$table_flag) {
-                    if ($this->flag_version_2 == true) {
-                        $tab_contents .= '<div class="inputTable">';
-                    } else {
-                        $tab_contents .= '<table class="inputTable">';
-                    }
+                    $tab_contents .= '<div class="inputTable">';
 
                     $table_flag = true;
                 }
 
-                if ($this->flag_version_2 == true) {
-                    $tab_contents .=
-                        $this->_UI_get_conf_element_2(
-                            $grp, $name,
-                            $e['display_name'],
-                            $e['type'],
-                            $e['value'],
-                            $e['selectionArray'], false,
-                            $e['reset']
-                        );
-                } else {
-                    $tab_contents .=
-                        $this->_UI_get_conf_element(
-                            $grp, $name,
-                            $e['display_name'],
-                            $e['type'],
-                            $e['value'],
-                            $e['selectionArray'], false,
-                            $e['reset']
-                        );
-                }
+                $tab_contents .=
+                    $this->_UI_get_conf_element(
+                        $grp, $name,
+                        $e['display_name'],
+                        $e['type'],
+                        $e['value'],
+                        $e['selectionArray'], false,
+                        $e['reset']
+                    );
             }
 
             if ($table_flag) {
-                if ($this->flag_version_2 == true) {
-                    $tab_contents .= '</div>';
-                } else {
-                    $tab_contents .= '</table>';
-                }
+                $tab_contents .= '</div>';
             }
 
             if ($fs_flag) {
@@ -1284,213 +1245,18 @@ class config implements ConfigInterface
      * @param  string $type           Configuration type such as select, text, textarea, @select, etc.
      * @param  string $val            Value of configuration
      * @param  mixed  $selectionArray Array of option of select element
-     * @param  bool   $deletable      If configuration is deleteable
-     * @param  bool   $allow_reset    Allow set and unset of configuration
-     * @return string
-     */
-    private function _UI_get_conf_element($group, $name, $display_name, $type, $val,
-                                          $selectionArray = null, $deletable = false,
-                                          $allow_reset = false)
-    {
-        global $LANG_CONFIG;
-
-        $t = COM_newTemplate(CTL_core_templatePath($GLOBALS['_CONF']['path_layout'] . 'admin/config'));
-        $t->set_file('element', 'config_element.thtml');
-
-        $blocks = array(
-            'delete-button', 'text-element', 'placeholder-element',
-            'select-element', 'list-element', 'unset-param',
-            'keyed-add-button', 'unkeyed-add-button', 'text-area',
-            'validation_error_block',
-        );
-
-        foreach ($blocks as $block) {
-            $t->set_block('element', $block);
-        }
-
-        $t->set_var('lang_restore', $LANG_CONFIG['restore']);
-        $t->set_var('lang_enable', $LANG_CONFIG['enable']);
-        $t->set_var('lang_add_element', $LANG_CONFIG['add_element']);
-
-        $t->set_var('name', $name);
-        $t->set_var('id_name', str_replace(array('[', ']'), array('_', ''), $name));
-        $t->set_var('display_name', $display_name);
-
-        // check tmp values
-        if (isset($this->tmpValues[$group][$name])) {
-            $val = $this->tmpValues[$group][$name];
-        }
-
-        if (!is_array($val)) {
-            if (is_float($val)) {
-                /**
-                 * @todo FIXME: for Locales where the comma is the decimal
-                 *              separator, patch output to a decimal point
-                 *              to prevent it being cut off by COM_applyFilter
-                 */
-                $t->set_var('value', str_replace(',', '.', $val));
-            } else {
-                $t->set_var('value', htmlspecialchars($val));
-            }
-        }
-
-        // if there is a error message to shown
-        if (isset($this->validationErrors[$group][$name])) {
-            $t->set_var('validation_error_message', $this->validationErrors[$group][$name]);
-            $t->set_var('error_block', $t->parse('output', 'validation_error_block'));
-            $t->set_var('error_class', ' input_error');
-            $t->set_var('value', $this->validationErrorValues[$group][$name]);
-        } else {
-            $t->set_var('error_class', '');
-            $t->set_var('error_block', '');
-        }
-
-        if ($deletable) {
-            $t->set_var('delete', $t->parse('output', 'delete-button'));
-        } else {
-            if ($allow_reset) {
-                $t->set_var('unset_link',
-                    "(<a href=\"#{$name}\" class=\"unset_param\" title='"
-                    . $LANG_CONFIG['disable'] . "'>X</a>)");
-            }
-            if (($a = strrchr($name, '[')) !== false) {
-                //$on = substr($a, 1, -1);
-                $o = str_replace(array('[', ']'), array('_', ''), $name);
-            } else {
-                $o = $name;
-                //$on = $name;
-            }
-            /*  As of v2.2.0 Removed numeric check for config help which indicates a config option variable is an array.
-                The only thing that uses config variables which are an array at the moment is Security Default Permissions for items like Articles, Dynamic Blocks and Autotags usage permissions.
-                It was determined tooltip was needed since users where wondering what they are needed for.
-                This should not affect anything else.
-
-            if (!is_numeric($on)) {
-                $this->_set_ConfigHelp($t, $group, $o);
-            }
-            */ 
-            $this->_set_ConfigHelp($t, $group, $o);
-        }
-
-        if ($type === 'unset') {
-            return $t->finish($t->parse('output', 'unset-param'));
-        } elseif ($type === 'text') {
-            return $t->finish($t->parse('output', 'text-element'));
-        } elseif ($type === 'textarea') {
-            return $t->finish($t->parse('output', 'text-area'));
-        } elseif ($type === 'placeholder') {
-            return $t->finish($t->parse('output', 'placeholder-element'));
-        } elseif ($type === 'select') {
-            // if $name is like "blah[0]", separate name and index
-            $n = explode('[', $name);
-            $name = $n[0];
-            $index = null;
-            if (count($n) == 2) {
-                $i = explode(']', $n[1]);
-                $index = $i[0];
-            }
-            $type_name = $type . '_' . $name;
-            if ($group === 'Core') {
-                $fn = 'configmanager_' . $type_name . '_helper';
-            } else {
-                $fn = 'plugin_configmanager_' . $type_name . '_' . $group;
-            }
-            if (function_exists($fn)) {
-                if ($index === null) {
-                    $selectionArray = $fn();
-                } else {
-                    $selectionArray = $fn($index);
-                }
-            } elseif (is_array($selectionArray)) {
-                // leave sorting to the function otherwise
-                uksort($selectionArray, 'strcasecmp');
-            }
-            if (!is_array($selectionArray)) {
-                return $t->finish($t->parse('output', 'text-element'));
-            }
-
-            $t->set_block('select-element', 'select-options', 'myoptions');
-            foreach ($selectionArray as $sName => $sVal) {
-                if (is_bool($sVal)) {
-                    $t->set_var('opt_value', $sVal ? 'b:1' : 'b:0');
-                } else {
-                    $t->set_var('opt_value', $sVal);
-                }
-                $t->set_var('opt_name', $sName);
-                $t->set_var('selected', ($val == $sVal ? 'selected="selected"' : ''));
-                $t->parse('myoptions', 'select-options', true);
-            }
-            if ($index === 'placeholder') {
-                $t->set_var('hide_row', ' style="display:none;"');
-            }
-
-            return $t->parse('output', 'select-element');
-        } elseif (strpos($type, '@') === 0) {
-            $result = '';
-            foreach ($val as $valkey => $valval) {
-                $result .= $this->_UI_get_conf_element($group,
-                    $name . '[' . $valkey . ']',
-                    $display_name . '[' . $valkey . ']',
-                    substr($type, 1), $valval, $selectionArray,
-                    false);
-            }
-
-            return $result;
-        } elseif (strpos($type, '*') === 0 || strpos($type, '%') === 0) {
-            $t->set_var('arr_name', $name);
-            $t->set_var('array_type', $type);
-            $button = $t->parse('output', (strpos($type, '*') === 0 ?
-                'keyed-add-button' :
-                'unkeyed-add-button'));
-            $t->set_var('my_add_element_button', $button);
-            $result = "";
-            if ($type === '%select') {
-                $result .= $this->_UI_get_conf_element($group,
-                    $name . '[placeholder]', 'placeholder',
-                    substr($type, 1), 'placeholder', $selectionArray,
-                    true
-                );
-            }
-            foreach ($val as $valkey => $valval) {
-                $result .= $this->_UI_get_conf_element($group,
-                    $name . '[' . $valkey . ']', $valkey,
-                    substr($type, 1), $valval, $selectionArray,
-                    true);
-            }
-            $t->set_var('my_elements', $result);
-            // if the values are indexed numerically, add a class to the table
-            // for identification. The UI code can take advantage of it
-            if ($val === array_values($val)) {
-                $t->set_var('arr_table_class_list', 'numerical_config_list');
-            }
-
-            return $t->parse('output', 'list-element');
-        }
-    }
-
-    /**
-     * Get a parsed config element based on group $group, name $name,
-     * type $type, value to be shown $val and label $display_name to be shown
-     * on the left based on language.
-     *
-     * @param  string $group          Configuration group.
-     * @param  string $name           Configuration name on table.
-     * @param  string $display_name   Configuration display name based on language.
-     * @param  string $type           Configuration type such as select, text, textarea, @select, etc.
-     * @param  string $val            Value of configuration
-     * @param  mixed  $selectionArray Array of option of select element
      * @param  bool   $deletable      If configuration is deletable
      * @param  bool   $allow_reset    Allow set and unset of configuration
      * @return string
      */
-    private function _UI_get_conf_element_2($group, $name, $display_name, $type, $val,
+    private function _UI_get_conf_element($group, $name, $display_name, $type, $val,
                                             $selectionArray = null, $deletable = false,
                                             $allow_reset = false)
     {
         global $LANG_CONFIG;
 
         $t = COM_newTemplate(CTL_core_templatePath($GLOBALS['_CONF']['path_layout'] . 'admin/config'));
-        $t->set_file('element', 'config_element_2.thtml');
+        $t->set_file('element', 'config_element.thtml');
 
         $blocks = array(
             'delete-button', 'text-element', 'placeholder-element',
@@ -1626,7 +1392,7 @@ class config implements ConfigInterface
         } elseif ($prefix === '@') {
             $result = '';
             foreach ($val as $valkey => $valval) {
-                $result .= $this->_UI_get_conf_element_2($group,
+                $result .= $this->_UI_get_conf_element($group,
                     $name . '[' . $valkey . ']',
                     $display_name . '[' . $valkey . ']',
                     substr($type, 1), $valval, $selectionArray,
@@ -1645,7 +1411,7 @@ class config implements ConfigInterface
 
             $base_type = str_replace(array('*', '%'), '', $type);
             if (in_array($base_type, array('select', 'text', 'placeholder'))) {
-                $result .= $this->_UI_get_conf_element_2($group,
+                $result .= $this->_UI_get_conf_element($group,
                     $name . '[placeholder]', 'skeleton',
                     substr($type, 1), 'placeholder', $selectionArray,
                     true);
@@ -1659,7 +1425,7 @@ class config implements ConfigInterface
             }
 
             foreach ($val as $valkey => $valval) {
-                $result .= $this->_UI_get_conf_element_2($group,
+                $result .= $this->_UI_get_conf_element($group,
                     $name . '[' . $valkey . ']', $valkey,
                     substr($type, 1), $valval, $selectionArray,
                     true
@@ -2075,18 +1841,10 @@ class config implements ConfigInterface
                     $group_display = $LANG_configsections[$group]['label'];
                 }
                 // Create a menu item for each config group - disable the link for the current selected one
-                if ($this->flag_version_2 == true) {
-                    if ($conf_group == $group) {
-                        $link = "<li class=\"configoption_off\">$group_display</li>";
-                    } else {
-                        $link = "<li class=\"configoption\"><a href=\"#\" onclick='open_group(\"$group\");return false;'>$group_display</a></li>";
-                    }
+                if ($conf_group == $group) {
+                    $link = "<li class=\"configoption_off\">$group_display</li>";
                 } else {
-                    if ($conf_group == $group) {
-                        $link = "<div>$group_display</div>";
-                    } else {
-                        $link = "<div><a href=\"#\" onclick='open_group(\"$group\");return false;'>$group_display</a></div>";
-                    }
+                    $link = "<li class=\"configoption\"><a href=\"#\" onclick='open_group(\"$group\");return false;'>$group_display</a></li>";
                 }
                 if ($group === 'Core') {
                     $retval .= $link;
@@ -2101,13 +1859,8 @@ class config implements ConfigInterface
             $retval .= $link;
         }
 
-        if ($this->flag_version_2 == true) {
-            $retval .= '<li class="configoption"><a href="' . $_CONF['site_admin_url'] . '">'
-                . $LANG_ADMIN['admin_home'] . '</a></li>';
-        } else {
-            $retval .= '<div><a href="' . $_CONF['site_admin_url'] . '">'
-                . $LANG_ADMIN['admin_home'] . '</a></div>';
-        }
+        $retval .= '<li class="configoption"><a href="' . $_CONF['site_admin_url'] . '">'
+            . $LANG_ADMIN['admin_home'] . '</a></li>';
         $retval .= COM_endBlock(COM_getBlockTemplate('configmanager_block', 'footer'));
 
         // Now display the sub-group menu for the selected config group
@@ -2131,18 +1884,10 @@ class config implements ConfigInterface
                     $group_display = $sgName;
                 }
                 // Create a menu item for each sub config group - disable the link for the current selected one
-                if ($this->flag_version_2 == true) {
-                    if ($sGroup == $sg) {
-                        $retval .= "<li class=\"configoption_off\">$group_display</li>";
-                    } else {
-                        $retval .= "<li class=\"configoption\"><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sGroup\");return false;'>$group_display</a></li>";
-                    }
+                if ($sGroup == $sg) {
+                    $retval .= "<li class=\"configoption_off\">$group_display</li>";
                 } else {
-                    if ($sGroup == $sg) {
-                        $retval .= "<div>$group_display</div>";
-                    } else {
-                        $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sGroup\");return false;'>$group_display</a></div>";
-                    }
+                    $retval .= "<li class=\"configoption\"><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sGroup\");return false;'>$group_display</a></li>";
                 }
                 $i++;
             }
@@ -2306,24 +2051,13 @@ class config implements ConfigInterface
 
                 $t->set_var('doc_url', $descUrl);
 
-                if ($this->flag_version_2 == true) {
-                    // Does hack need to be used?
-                    if (gettype($configText) == "NULL") {
-                        $t->set_var('doc_link',
-                            '(<a href="javascript:void(0);" id="desc_' . $option . '" class="tooltip">?</a>)');
-                    } else {
-                        $t->set_var('doc_link',
-                            '(<a href="javascript:void(0);" id="desc_' . $option . '">?</a>)');
-                    }
+                // Does hack need to be used?
+                if (gettype($configText) == "NULL") {
+                    $t->set_var('doc_link',
+                        '(<a href="javascript:void(0);" id="desc_' . $option . '" class="tooltip">?</a>)');
                 } else {
-                    // Does hack need to be used?
-                    if (gettype($configText) == "NULL") {
-                        $t->set_var('doc_link',
-                            '(<a href="' . $descUrl . '" target="help" class="tooltip">?</a>)');
-                    } else {
-                        $t->set_var('doc_link',
-                            '(<a href="' . $descUrl . '" target="help">?</a>)');
-                    }
+                    $t->set_var('doc_link',
+                        '(<a href="javascript:void(0);" id="desc_' . $option . '">?</a>)');
                 }
             }
         } else {

@@ -1668,7 +1668,10 @@ $MESSAGE = array(
     501 => '検証のメッセージがあなたのメールアドレスに送信されました。電子メールのリンクをクリックして、メールアドレスを検証し、アカウントを更新してください。 メールアドレスを検証する前に再度アカウントにログインすると、メールアドレスを再度尋ねられます。<br' . XHTML . '><br' . XHTML . '>あなたはこの検証を完了できるように、正常にログアウトされました。',
     502 => '新しいメールアドレスのリクエストが期限切れになりました。以下からもう一度お試しください。',
     503 => 'あなたのメールアドレスは正常に検証されました。',
-    504 => 'パスワードは8文字以上で、少なくとも1つの数字と1文字を含める必要があります。パスワードは大文字と小文字が区別されます。'
+    504 => 'パスワードは8文字以上で、少なくとも1つの数字と1文字を含める必要があります。パスワードは大文字と小文字が区別されます。',
+    505 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is not 100% compatible with this version of Geeklog (v' . VERSION . ') and you will have issues using this site. The required minimum theme Geeklog version is v' . $_CONF['min_theme_gl_version'] . '.',
+    506 => 'Warning - The current theme ' . $_CONF['theme'] . ' (version not known) is not 100% compatible with this version of Geeklog (v' . VERSION . ') and you will have issues using this site. The required minimum theme Geeklog version is v' . $_CONF['min_theme_gl_version'] . '.',
+    507 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is meant for a newer version of Geeklog. You are using Geeklog v' . VERSION . ' and you may experience issues using this site.'    
 );
 
 ###############################################################################

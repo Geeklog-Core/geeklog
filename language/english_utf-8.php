@@ -1668,7 +1668,10 @@ $MESSAGE = array(
     501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
     502 => 'Your request for a new email has expired. Please try again below.',
     503 => 'Your email has been successfully verified.',
-    504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.'
+    504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.',
+    505 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is not 100% compatible with this version of Geeklog (v' . VERSION . ') and you will have issues using this site. The required minimum theme Geeklog version is v' . $_CONF['min_theme_gl_version'] . '.',
+    506 => 'Warning - The current theme ' . $_CONF['theme'] . ' (version not known) is not 100% compatible with this version of Geeklog (v' . VERSION . ') and you will have issues using this site. The required minimum theme Geeklog version is v' . $_CONF['min_theme_gl_version'] . '.',
+    507 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is meant for a newer version of Geeklog. You are using Geeklog v' . VERSION . ' and you may experience issues using this site.'
 );
 
 ###############################################################################
