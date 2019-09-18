@@ -1326,9 +1326,9 @@ function COM_createHTMLDocument(&$content = '', $information = array())
          * This can be used to take control over what blocks are then displayed
          */
         if (is_array($custom)) {
-            $function = $custom['0'];
+            $function = $custom[0];
             if (function_exists($function)) {
-                $rBlocks = $function($custom['1'], 'right');
+                $rBlocks = $function($custom[1], 'right');
             } else {
                 $rBlocks = COM_showBlocks('right');
             }
