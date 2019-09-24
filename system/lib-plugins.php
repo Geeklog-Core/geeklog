@@ -1236,7 +1236,7 @@ function PLG_loginUser($uid)
 }
 
 /**
- * This function will inform all plugins when a user account has reached the Max 
+ * This function will inform all plugins when a user account has reached the Max
  * number of invalid login attempts in the specified number of seconds.
  *
  * @param    int $uid user id of the user account with the max invalid logins
@@ -1460,8 +1460,8 @@ function PLG_profileExtrasSave($plugin = '', $uid = '')
 {
     $args = array(
         1 => $uid
-    );     
-    
+    );
+
     if (empty($plugin)) {
         PLG_callFunctionForAllPlugins('profileextrassave', $args);
     } else {
@@ -1646,8 +1646,8 @@ function PLG_collectTags($type = 'tagname')
  * @param   string $content Content that should be parsed for autotags
  * @param   string $parse_plugin    Optional if you only want to parse using a specific plugin
  * @param   bool   $remove          Optional if you want to remove the autotag from the content
- * @param   string $plugin          Optional plugin of content - requires id - New as of Geeklog 2.2.1 
- *                                      Allows autotag to know what has called it (what content it is embedded in) 
+ * @param   string $plugin          Optional plugin of content - requires id - New as of Geeklog 2.2.1
+ *                                      Allows autotag to know what has called it (what content it is embedded in)
  *                                      so it can use functions like PLG_getItemInfo.
  *                                      Note: not supported for things like autotags in templates or blocks
  * @param   string $id              Optional id of content - requires plugin - New as of Geeklog 2.2.1
@@ -1670,9 +1670,15 @@ function PLG_replaceTags($content, $parse_plugin = '', $remove = false, $plugin 
     } else {
         $autolinkModules = PLG_collectTags();
     }
-    
+
     //See if any tags require close tags
-    $tags_requireclose = array_flip(PLG_collectTags('closetag'));
+    $tags_requireclose = array();
+    $collectclosetags = PLG_collectTags('closetag');
+    $i = 0;
+    foreach ($collectclosetags as $key => $val) {
+        $tags_requireclose[$i] = $key;
+        $i++;
+    }
 
     for ($i = 1; $i <= 5; $i++) {
         // list($content, $markers) = GLText::protectJavascript($content);
@@ -1714,7 +1720,7 @@ function PLG_replaceTags($content, $parse_plugin = '', $remove = false, $plugin 
                                 $tagId = $params[1];
                             }
                         }
-                        
+
                         // [tag:parameter1 And the rest here is parameter2]This is parameter3 if exist.[/tag]
                         $newTag = array(
                             'module'   => $module,
@@ -1725,7 +1731,7 @@ function PLG_replaceTags($content, $parse_plugin = '', $remove = false, $plugin 
                             'parm1'    => str_replace(']', '', $tagId),
                             'parm2'    => $label,
                         );
-                        
+
                         if (in_array($moduleTag, $tags_requireclose)) {
                             // Check for close tag after end of start tag. if exist we have a parm3
                             $close_tag = '[/' . $moduleTag . ']';
@@ -1734,13 +1740,13 @@ function PLG_replaceTags($content, $parse_plugin = '', $remove = false, $plugin 
                                 $end_of_whole_tag_pos = $start_pos_close_tag + strlen($close_tag);
                                 $wrapped_text_length = $start_pos_close_tag - ($end_pos_tag + 1);
                                 $wrapped_text = MBYTE_substr($content, ($end_pos_tag + 1), $wrapped_text_length);
-                                
+
                                 // New parm3
                                 $newTag['parm3'] = $wrapped_text;
                                 // Since parm3 now update tagstr and length as well
                                 $newTag['tagstr'] = $tag . $wrapped_text . $close_tag;
                                 $newTag['length'] = $end_of_whole_tag_pos - $start_pos_tag;
-                                
+
                                 $tags[] = $newTag; // add completed tag to list
                             } else {
                                 // Error: no close tag found - return with no changes
@@ -1773,9 +1779,9 @@ function PLG_replaceTags($content, $parse_plugin = '', $remove = false, $plugin 
                         if ($info->getNumberOfParameters() == 4) {
                             $parameters['type'] = $plugin;
                             $parameters['id'] = $id;
-                            
+
                             $content = $function('parse', $content, $autotag, $parameters);
-                        } else {                     
+                        } else {
                             $content = $function('parse', $content, $autotag);
                         }
                     }
@@ -2353,7 +2359,7 @@ function PLG_spamAction($content, $action = -1)
  * @param    string $id      ID of an item under the plugin's control or '*'
  * @param    string $what    comma-separated list of item properties
  * @param    int    $uid     user ID or 0 = current user
- * @param    array  $options not required and may not be supported. 
+ * @param    array  $options not required and may not be supported.
  *           string $options['filter']                 Filters work only for returning multiple items (using *). Allows filtering based on different supported properties. Unsupported filters are ignored
  *           string $options['filter']['topic-ids']    Comma separated list of topic ids in single quotes to be used in a sql statement ie: 'topicid1','topicid2'
  *           string $options['filter']['date-created'] Returns items created from this Unix timestamp till current date
@@ -2670,9 +2676,9 @@ function PLG_itemDisplay($id, $type)
 function PLG_getCSSClasses($id, $type)
 {
     global $_CONF;
-    
+
     $retval = '';
-    
+
     switch($type)
     {
         case 'core';
@@ -2691,11 +2697,11 @@ function PLG_getCSSClasses($id, $type)
                     $retval = $function($id);
                 }
             }
-        
+
             break;
-            
+
         default;
-            // Assume type is plugin so check plugin specific theme templates 
+            // Assume type is plugin so check plugin specific theme templates
             $function = $type . '_getCSSClasses_' . $_CONF['theme'];
             if (function_exists($function)) {
                 $retval = $function($id);
@@ -2705,8 +2711,8 @@ function PLG_getCSSClasses($id, $type)
                 if (function_exists($function)) {
                     $retval = $function($id);
                 }
-            }        
-            
+            }
+
             break;
     }
 
@@ -2723,9 +2729,9 @@ function PLG_getCSSClasses($id, $type)
 function PLG_getBlockLocations()
 {
     global $_PLUGINS, $_CONF;
-    
+
     $ret = array();
-    
+
     // Include block locations on behalf of the theme
     $function = 'theme_getBlockLocations_' . $_CONF['theme'];
     if (function_exists($function)) {
@@ -2748,19 +2754,19 @@ function PLG_getBlockLocations()
                 foreach ($items as &$item) {
                     $item['type'] = 'theme';
                     $item['type_name'] = $_CONF['theme_default'];
-                }                
+                }
                 $ret = array_merge($ret, $items);
             }
         }
     }
-    
-    
+
+
     // Add in components so they can act like plugins
     require_once $_CONF['path_system'] . 'lib-article.php';
     require_once $_CONF['path_system'] . 'lib-comment.php';
 
-    $pluginTypes = array_merge(array('article', 'comment'), $_PLUGINS);    
-    
+    $pluginTypes = array_merge(array('article', 'comment'), $_PLUGINS);
+
     foreach ($pluginTypes as $pi_name) {
         // Check plugin itself (would cover all plugin theme templates)
         $function = 'plugin_getBlockLocations_' . $pi_name;
@@ -2771,11 +2777,11 @@ function PLG_getBlockLocations()
                 foreach ($items as &$item) {
                     $item['type'] = 'plugin';
                     $item['type_name'] = $pi_name;
-                }                
+                }
                 $ret = array_merge($ret, $items);
             }
         }
-        
+
         // Now check plugin specific theme templates as it may only be assigned here
         $function = $pi_name . '_getBlockLocations_' . $_CONF['theme'];
         if (function_exists($function)) {
@@ -2785,7 +2791,7 @@ function PLG_getBlockLocations()
                 foreach ($items as &$item) {
                     $item['type'] = 'plugin';
                     $item['type_name'] = $pi_name;
-                }                
+                }
                 $ret = array_merge($ret, $items);
             }
         } elseif (!empty($_CONF['theme_default'])) {
@@ -2798,11 +2804,11 @@ function PLG_getBlockLocations()
                     foreach ($items as &$item) {
                         $item['type'] = 'plugin';
                         $item['type_name'] = $pi_name;
-                    }                
+                    }
                     $ret = array_merge($ret, $items);
                 }
             }
-        }        
+        }
     }
 
     if (function_exists('CUSTOM_getBlockLocations')) {
@@ -2952,11 +2958,11 @@ function PLG_getIcon($type)
 function PLG_getLanguageURL()
 {
     global $_CONF, $_PLUGINS;
-    
+
     // Don't use a plugin function or plugin config for this as plugins functions.inc is not loaded yet when COM_getLanguage is called in lib-common
     // Instead grab from a hidden Core conf_values (which are loaded)
     // See _getLanguageInfoFromURL in lib-common for a detailed explanation
-      
+
     $retval = array();
 
     // Add article and topic to enabled plugins
@@ -2972,7 +2978,7 @@ function PLG_getLanguageURL()
             }
         }
     }
-    
+
     return $retval;
 }
 
@@ -3727,14 +3733,14 @@ function PLG_collectSitemapItems($type, $uid = 1, $limit = 0)
 
     return $result;
 }
-    
+
 /**
  * Prepare a list of all plugins that a user has contributed content too.
  * If plugin finds content for user then should return text else then nothing.
  * Used by User Batch Admin to show in user list if user has contributed
  *
  * @param    int    $uid                                user ID
- * 
+ *
  * @return   array   array of plugin names with text (can be empty)
  *
  * @since    Geeklog-2.2.1
@@ -3810,19 +3816,19 @@ function PLG_getLanguageOverrides()
 function PLG_typeLikesEnabled($type, $sub_type)
 {
     global $_CONF;
-    
+
     $retval = false;
-    
+
     // ensure that we're picking up the comment library as it is not always loaded
     if ($type == 'comment') {
-        require_once $_CONF['path_system'] . 'lib-comment.php';    
+        require_once $_CONF['path_system'] . 'lib-comment.php';
     }
 
     if ($_CONF['likes_enabled']) {
         $args[1] = $sub_type;
         $function = 'plugin_likesenabled_' . $type;
 
-        $retval = PLG_callFunctionForOnePlugin($function,$args);        
+        $retval = PLG_callFunctionForOnePlugin($function,$args);
     }
 
     return $retval;
@@ -3831,13 +3837,13 @@ function PLG_typeLikesEnabled($type, $sub_type)
 /**
  * Checks to see if user can perform a likes action on a item
  *
- * @param   string $type     Plugin for which like is for 
+ * @param   string $type     Plugin for which like is for
  * @param   string $sub_type Sub type of plugin to allow plugins to have likes for more than one type of item (not required)
  * @param   string $id       Item id for which like is for
  * @param   int    $uid      User id who is liking item
  * @param   int    $ip       ip who is liking item
  *
- * @return   bool      
+ * @return   bool
  * @since    Geeklog 2.2.1
  */
 function PLG_canUserLike($type, $sub_type, $id, $uid, $ip)
@@ -3845,7 +3851,7 @@ function PLG_canUserLike($type, $sub_type, $id, $uid, $ip)
    global $_CONF, $_TABLES;
 
     $retval = false;
-    
+
     // Check user requirement
     if ( $_CONF['likes_enabled'] != 0 ) {
         if ( $_CONF['likes_enabled'] == 1 ) { // Means both actual user accounts and anonymous users
@@ -3918,7 +3924,7 @@ function PLG_collectRecaptchaInfo()
     }
 
     $retval = [];
-    
+
     if (!in_array('recaptcha', $_PLUGINS)) {
         return $retval;
     }
