@@ -210,9 +210,16 @@ $(function() {
                 // Changes URI fragment into an absolite URI + fragment
                 desc = desc.replace('<a href="spamx.html"', '<a href="' + glConfigDocUrl.substr(0, glConfigDocUrl.lastIndexOf('/')) + '/spamx.html" target="_blank"');
                 desc = desc.replace('<a href="#url-rewrite">', '<a href="' + glConfigDocUrl + '#url-rewrite" target="_blank">');
+                desc = desc.replace('<a href="#url-routing">', '<a href="' + glConfigDocUrl + '#url-routing" target="_blank">');
                 desc = desc.replace('<a href="#date_formats">', '<a href="' + glConfigDocUrl + '#date_formats" target="_blank">');
                 desc = desc.replace('<a href="#Localization">', '<a href="' + glConfigDocUrl + '#Localization" target="_blank">');
+                desc = desc.replace('<a href="#desc_structured_data_type_default">', '<a href="' + glConfigDocUrl + '#desc_structured_data_type_default" target="_blank">');
                 desc = desc.replace('<a href="#desc_advanced_editor">', '<a href="' + glConfigDocUrl + '#desc_advanced_editor" target="_blank">');
+                desc = desc.replace('<a href="#desc_url_routing">', '<a href="' + glConfigDocUrl + '#desc_url_routing" target="_blank">');
+                desc = desc.replace('<a href="#sfs">', '<a href="' + glConfigDocUrl + '#sfs" target="_blank">');
+                desc = desc.replace('<a href="#akismet">', '<a href="' + glConfigDocUrl + '#akismet" target="_blank">');
+                desc = desc.replace('<a href="#php">', '<a href="' + glConfigDocUrl + '#php" target="_blank">');
+                desc = desc.replace('<a href="config.html#desc_structured_data_type_default">', '<a href="' + glConfigDocDir + 'config.html#desc_structured_data_type_default" target="_blank">');
 
                 tds.eq(0).children("a").attr('href', attrHref + '#' + confVar);
                 tds.eq(0).children("a").attr('target', 'help');

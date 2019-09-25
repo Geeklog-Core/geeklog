@@ -2040,6 +2040,13 @@ class config implements ConfigInterface
                 } else { // plugin
                     $docUrl[$group] = PLG_getDocumentationUrl($group, 'config');
                 }
+
+                $docDir = str_ireplace(
+                    'config.html',
+                    '',
+                    COM_getDocumentUrl('docs', 'config.html')
+                );
+                $_SCRIPTS->setJavaScript('var glConfigDocDir = "' . $docDir . '";', true);
                 $_SCRIPTS->setJavaScript('var glConfigDocUrl = "' . $docUrl[$group] . '";', true);
             }
             $descUrl = $docUrl[$group];
