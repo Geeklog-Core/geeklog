@@ -127,7 +127,7 @@ $LANG_STATIC = array(
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - Displays the contents of a staticpage.',
     'autotag_desc_page' => '[page: id alternate title] - Displays a link to a page (from the Static Page plugin) using the page title as the title. An alternate title may be specified but is not required.',
     'autotag_desc_page_content' => '[page_content: id] - Displays the contents of a page. (from Static Page plugin)',
-    'yes' => 'Yes', 
+    'yes' => 'Yes',
     'used_by' => 'This template is assigned to %s page(s). It is possible this template is used more than specified here if the template is being retrieved via an autotag in another template.',
     'prev_page' => 'Previous page',
     'next_page' => 'Next page',
@@ -182,7 +182,8 @@ $LANG_confignames['staticpages'] = array(
     'includephp' => 'Include Static Pages with PHP',
     'includesearch' => 'Enable Static Pages in Search',
     'includesearchcenterblocks' => 'Include Center Block Static Pages',
-    'includesearchphp' => 'Include Static Pages with PHP'
+    'includesearchphp' => 'Include Static Pages with PHP',
+    'includesearchtemplate' => 'Include Template Static Pages'
 );
 
 $LANG_configsubgroups['staticpages'] = array(

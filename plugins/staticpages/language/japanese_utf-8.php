@@ -187,7 +187,8 @@ $LANG_confignames['staticpages'] = array(
     'includephp' => 'PHPモードの静的ページを含む',
     'includesearch' => '静的ページを検索する',
     'includesearchcenterblocks' => 'センターブロックの静的ページを含む',
-    'includesearchphp' => '静的ページPHPを含む'
+    'includesearchphp' => '静的ページPHPを含む',
+    'includesearchtemplate' => 'Include Template Static Pages'
 );
 
 $LANG_configsubgroups['staticpages'] = array(

@@ -29,10 +29,10 @@ CREATE TABLE {$_TABLES['likes']} (
   type varchar(30) NOT NULL,
   subtype varchar(30) NOT NULL DEFAULT '',
   id varchar(30) NOT NULL,
-  uid MEDIUMINT NOT NULL, 
-  ipaddress VARCHAR(39) NOT NULL, 
+  uid MEDIUMINT NOT NULL,
+  ipaddress VARCHAR(39) NOT NULL,
   action TINYINT NOT NULL,
-  created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (lid)
 ) ENGINE=MyISAM
 ";
@@ -69,9 +69,10 @@ function upgrade_message220()
     $upgradeMessages['2.2.0'] = array(
         1 => array('warning', 22, 23),  // Fix User Security Group assignments for Groups: Root, Admin, All Users - Fix User Security Group assignments for Users: Admin
         2 => array('warning', 24, 25),  // FCKEditor removed
-        3 => array('warning', 26, 27),  // Google+ OAuth Login switched to Google OAuth Login 
+        3 => array('warning', 26, 27),  // Google+ OAuth Login switched to Google OAuth Login
         4 => array('warning', 28, 29),   // Fixed spaces around user names and removed duplicate usernames
-        5 => array('warning', 30, 31)   // Warning of Submitted Articles may have incorrect group and permissions saved
+        5 => array('warning', 30, 31),   // Warning of Submitted Articles may have incorrect group and permissions saved
+        6 => array('warning', 32, 33)   // Warning of Static pages that are templates or use PHP must evalute successful or upgrade will fail
     );
 
     return $upgradeMessages;
@@ -89,21 +90,21 @@ function update_ConfValuesFor221()
     $c = config::get_instance();
 
     $me = 'Core';
-    
+
     // FCKEditor removed so make sure config is not set to use it. If is switch advance editor to CKEditor
     if (isset($_CONF['advanced_editor_name']) && $_CONF['advanced_editor_name'] == 'fckeditor') {
         $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
     }
-    
+
     // Default Structured Data type for new articles
     $c->add('structured_data_type_default',2,'select',1,7,39,1275,TRUE, $me, 7); // Setting article as the default
-    
+
     // Add absolute path for logo image which is used by the Publisher property with Structured Data
     $c->add('path_site_logo','','text',0,0,NULL,65,TRUE, $me, 0);
-    
+
     // Add switch to enable setting of language id for item if Geeklog Multi Language is setup
     $c->add('new_item_set_current_lang',0,'select',6,28,0,380,TRUE, $me, 28);
-    
+
     // Add Likes System Tab and config options
     $sg  =  4;      // subgroup
     $fs  = 51;      // fieldset
@@ -117,7 +118,7 @@ function update_ConfValuesFor221()
     $so += 10;
     $c->add('likes_comments',1,'select',$sg,$fs,41,$so,TRUE, $me, $tab);
     $so += 10;
-    $c->add('likes_speedlimit',20,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);    
+    $c->add('likes_speedlimit',20,'text',$sg,$fs,NULL,$so,TRUE, $me, $tab);
     $so += 10;
 
     // Delete some cookie-related settings
@@ -151,7 +152,7 @@ function update_ConfValuesFor221()
 function fixDuplicateUsernames221()
 {
     global $_TABLES;
-    
+
     // Delete blank usernames first
     // Left users that are just spaces... hopefully none of these
     $sql = "SELECT uid, username FROM {$_TABLES['users']} WHERE username = ''";
@@ -159,7 +160,7 @@ function fixDuplicateUsernames221()
     $numRows = DB_numRows($result);
     for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result);
-        
+
         $uid = $A['uid'];
 
         // Blank usernames were sometimes generated via new Facebook Oauth accounts for Geeklog 2.2.0 and older.
@@ -183,18 +184,18 @@ function fixDuplicateUsernames221()
         // delete submissions
         DB_delete($_TABLES['storysubmission'], 'uid', $uid);
         DB_delete($_TABLES['commentsubmissions'], 'uid', $uid); // Includes article and plugin submissions
-        
+
         // now delete the user itself
-        DB_delete($_TABLES['users'], 'uid', $uid);                
+        DB_delete($_TABLES['users'], 'uid', $uid);
     }
-    
+
     // Must find and remove all duplicate usernames before adding index
     $sql = "SELECT username, COUNT(*) c FROM {$_TABLES['users']} GROUP BY username HAVING c > 1";
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
     for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result);
-        
+
         $dup_username = DB_escapeString(trim($A['username']));
 
         // Now fix if possible. List local account last as it will be not considered dup since all others have been changed
@@ -203,10 +204,10 @@ function fixDuplicateUsernames221()
         $numRows_B = DB_numRows($result_B);
         for ($i_B = 0; $i_B < $numRows_B; $i_B++) {
             $B = DB_fetchArray($result_B);
-            
+
             $uid = $B['uid'];
             $username = trim($B['username']); // Need to trim spaces as this may have been in part what caused the duplicates
-            
+
             $checkName = DB_getItem($_TABLES['users'], 'username', "TRIM(username)='" . DB_escapeString($username) . "' AND uid != $uid");
             if (!empty($checkName)) {
                 /*
@@ -231,20 +232,20 @@ function fixDuplicateUsernames221()
                             }
                         }
                     } while (!empty($test_uid));
-                    $username = $try;                        
+                    $username = $try;
                 }
-                
+
                 // Save new name
                 DB_query("UPDATE {$_TABLES['users']} SET username = '" . DB_escapeString($username) . "' WHERE uid=$uid");
             }
         }
     }
-    
+
     // Remove old username index and add unique index on username
     $sql = "ALTER TABLE {$_TABLES['users']} DROP INDEX users_username;";
     DB_query($sql);
     $sql = "ALTER TABLE {$_TABLES['users']} ADD UNIQUE KEY users_username (username);";
-    DB_query($sql);    
-    
+    DB_query($sql);
+
     return true;
 }

@@ -108,6 +108,7 @@ $_SP_DEFAULT['include_PHP'] = 0;
 $_SP_DEFAULT['include_search'] = 1;
 $_SP_DEFAULT['include_search_centerblocks'] = 0;
 $_SP_DEFAULT['include_search_PHP'] = 0;
+$_SP_DEFAULT['include_search_template'] = 0;
 
 // The maximum number of items displayed when an Atom feed is requested
 $_SP_DEFAULT['atom_max_items'] = 10;
@@ -234,6 +235,8 @@ function plugin_initconfig_staticpages()
                 0, 2, 0, 20, TRUE, 'staticpages', 2);
         $c->add('includesearchphp',$_SP_DEFAULT['include_search_PHP'],'select',
                 0, 2, 0, 30, TRUE, 'staticpages', 2);
+        $c->add('includesearchtemplate',$_SP_DEFAULT['include_search_template'],'select',
+                0, 2, 0, 40, TRUE, 'staticpages', 2);
 
         $c->add('tab_permissions', NULL, 'tab', 0, 3, NULL, 0, true, 'staticpages', 3);
         $c->add('fs_permissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'staticpages', 3);
