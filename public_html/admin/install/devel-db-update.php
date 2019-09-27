@@ -65,8 +65,8 @@ function update_DatabaseFor221()
 {
     global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
 
-    // ***************************************     
-    // Add database Geeklog Core updates here. 
+    // ***************************************
+    // Add database Geeklog Core updates here.
     // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
 
     // *************************************
@@ -74,20 +74,20 @@ function update_DatabaseFor221()
 
     // Remove Admin User (2) from all default groups assignments from the install except Root (1), All Users (2), Logged-In Users (13)
     $_SQL[] = "DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_main_grp_id != 1 AND ug_main_grp_id != 2 AND ug_main_grp_id != 13) AND ug_uid = 2 AND ug_grp_id IS NULL";
-        
+
     // Remove All Users (2) from any other group (should be just for users)
     $_SQL[] = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 2 AND ug_uid IS NULL AND ug_grp_id > 0";
     // Remove Root Group (1) from All Users Group (2) (which all users already belong too)
     $_SQL[] = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 2 AND ug_uid IS NULL AND ug_grp_id = 1";
-    // *************************************    
-    
+    // *************************************
+
     // Remove unused Vars table record (originally inserted by devel-db-update script on previous version upgrades)
     $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
-    
+
     // Add structured data type to article table and modified date
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
-    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";    
-    
+    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";
+
     // New Likes System table
     $_SQL[] = "
     CREATE TABLE IF NOT EXISTS {$_TABLES['likes']} (
@@ -95,10 +95,10 @@ function update_DatabaseFor221()
       type varchar(30) NOT NULL,
       subtype varchar(30) NOT NULL DEFAULT '',
       id varchar(30) NOT NULL,
-      uid MEDIUMINT NOT NULL, 
-      ipaddress VARCHAR(39) NOT NULL, 
+      uid MEDIUMINT NOT NULL,
+      ipaddress VARCHAR(39) NOT NULL,
       action TINYINT NOT NULL,
-      created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+      created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (lid)
     ) ENGINE=MyISAM
     ";
@@ -122,28 +122,34 @@ function update_DatabaseFor221()
     $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN `topic`";
 
     // Add `autologin_key` column to `users' table
-    $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `autologin_key` VARCHAR(250) NOT NULL DEFAULT '' AFTER `twofactorauth_secret`";    
+    $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `autologin_key` VARCHAR(250) NOT NULL DEFAULT '' AFTER `twofactorauth_secret`";
 
-    // ***************************************     
+    // ***************************************
     // Core Plugin Updates Here (including version update)
-    
+
     // Staticpages
     // Add column for structured data
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
-    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.1', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
-    
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD page_data TEXT NOT NULL DEFAULT '' AFTER sp_content";
+    $plugin_install_updates_file = $_CONF['path'] . 'plugins/staticpages/install_updates.php';
+    if (file_exists($plugin_install_updates_file)) {
+        require_once $plugin_install_updates_file;
+        staticpages_update_search_cache_1_7_1();
+    }
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.1', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";
+
     // SpamX
-    //$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.5' WHERE pi_name='spamx'";
-    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.6' WHERE pi_name='spamx'";
+
     // Links
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.7' WHERE pi_name='links'";
-    
+
     // Polls
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.2.0' WHERE pi_name='polls'";
 
     // Calendar
-    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.7', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
-        
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.8', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
+
     // XMLSiteMap
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.2', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
 
@@ -164,7 +170,7 @@ function update_DatabaseFor221()
     // update Geeklog version number
     DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='database_version'",1);
     DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='database_version'",1);
-    
+
     return true;
 }
 
@@ -172,13 +178,13 @@ function update_DatabaseFor220()
 {
     global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
 
-    // ***************************************     
-    // Add database Geeklog Core updates here. 
+    // ***************************************
+    // Add database Geeklog Core updates here.
     // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
-    
+
     // Add `meta_description` and `meta_keywords` columns to the `storysubmission` table
     $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_description` TEXT NULL AFTER `postmode`";
-    $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_keywords` TEXT NULL AFTER `meta_description`";    
+    $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `meta_keywords` TEXT NULL AFTER `meta_description`";
 
     // Add `status_code` and `enabled` column to the `routes` table
     $_SQL[] = "ALTER TABLE {$_TABLES['routes']} ADD `status_code` INT(11) NOT NULL DEFAULT 200 AFTER `route`";
@@ -186,7 +192,7 @@ function update_DatabaseFor220()
     // Add new topic routes
     // Add theme admin
     $result = DB_query("SELECT * FROM {$_TABLES['routes']} WHERE rule='/topic/@topic'");
-    if ( DB_numRows($result) == 0 ) {    
+    if ( DB_numRows($result) == 0 ) {
         $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic', '/index.php?topic=@topic', 160)";
         $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/topic/@topic/@page', '/index.php?topic=@topic&page=@page', 170)";
         $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALUES (1, '/page/@page/print', '/staticpages/index.php?page=@page&disp_mode=print', 180)";
@@ -194,12 +200,12 @@ function update_DatabaseFor220()
 
     // Add `css_id` and `css_classes` columns to the `blocks` table
     $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `help`";
-    $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_classes` VARCHAR(255) NOT NULL DEFAULT '' AFTER `css_id`";   
+    $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `css_classes` VARCHAR(255) NOT NULL DEFAULT '' AFTER `css_id`";
     // Add column to enable/disable convert newlines for normal blocks
     $_SQL[] = "ALTER TABLE `{$_TABLES['blocks']}` ADD `convert_newlines` tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER `allow_autotags`";
     // Add column to enable blocks appearing in other locations
     $_SQL[] = "ALTER TABLE `{$_TABLES['blocks']}` ADD `location` VARCHAR(48) NOT NULL DEFAULT '' AFTER `onleft`";
-    
+
     // Drop small, read-only tables
     $_SQL[] = "DROP TABLE {$_TABLES['commentcodes']}";
     $_SQL[] = "DROP TABLE {$_TABLES['commentmodes']}";
@@ -213,11 +219,11 @@ function update_DatabaseFor220()
     // Add columns to track invalid user login attempts
     $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `invalidlogins` SMALLINT NOT NULL DEFAULT '0' AFTER `num_reminders`";
     $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `lastinvalid` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `invalidlogins`";
-    
+
     // Add columns for two factor authentication
     $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `twofactorauth_enabled` TINYINT(3) NOT NULL DEFAULT 0 AFTER `lastinvalid`";
-    $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `twofactorauth_secret` VARCHAR(255) NOT NULL DEFAULT '' AFTER `twofactorauth_enabled`";    
-    
+    $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `twofactorauth_secret` VARCHAR(255) NOT NULL DEFAULT '' AFTER `twofactorauth_enabled`";
+
     // Add a table to store backup codes for two factor authentication
     $_SQL[] = "
     CREATE TABLE IF NOT EXISTS {$_TABLES['backup_codes']} (
@@ -226,22 +232,22 @@ function update_DatabaseFor220()
       is_used TINYINT(1) NOT NULL DEFAULT 0,
       PRIMARY KEY (code)
     ) ENGINE=MyISAM
-    ";    
-    
+    ";
+
     // Add column to confirm new email address
     $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `emailconfirmid` VARCHAR(16) NULL DEFAULT NULL AFTER `pwrequestid`";
     $_SQL[] = "ALTER TABLE `{$_TABLES['users']}` ADD `emailtoconfirm` VARCHAR(96) NULL DEFAULT NULL AFTER `emailconfirmid`";
-    
+
     // Fix for password request id getting set to a string with the word "NULL" instead of actually NULL
     $_SQL[] = "UPDATE `{$_TABLES['users']}` SET pwrequestid = NULL WHERE pwrequestid = 'NULL'";
-    
+
     // Add column for Topic Title
     $_SQL[] = "ALTER TABLE `{$_TABLES['topics']}` ADD `title` VARCHAR(128) NULL DEFAULT NULL AFTER `topic`";
-    
+
     // Make sure any lastlogin in user info table that equals '' or NULL is 0
     $_SQL[] = "UPDATE `{$_TABLES['userinfo']}` SET `lastlogin` = '0' WHERE `lastlogin` = '' OR `lastlogin` IS NULL;";
     // Make sure User Info Last Login defaults to 0
-    $_SQL[] = "ALTER TABLE `{$_TABLES['userinfo']}` CHANGE `lastlogin` `lastlogin` VARCHAR(10) NOT NULL DEFAULT '0';";    
+    $_SQL[] = "ALTER TABLE `{$_TABLES['userinfo']}` CHANGE `lastlogin` `lastlogin` VARCHAR(10) NOT NULL DEFAULT '0';";
 
     // Add theme admin
     $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_name='Theme Admin'");
@@ -286,35 +292,35 @@ function update_DatabaseFor220()
             DB_rollBack();
         }
     }
-    
-    // ***************************************     
+
+    // ***************************************
     // Core Plugin Updates Here
-    
+
     // Staticpages
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_prev` VARCHAR(128) NOT NULL DEFAULT '' AFTER `postmode`";
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_next` VARCHAR(128) NOT NULL DEFAULT '' AFTER `sp_prev`";
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_parent` VARCHAR(128) NOT NULL DEFAULT '' AFTER `sp_next`";
-    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.0', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
-    
-    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.7.0', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";
+
+
     // SpamX
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.5' WHERE pi_name='spamx'";
-    
-    
+
+
     // Links
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.6' WHERE pi_name='links'";
-    
-    
+
+
     // Polls
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.9' WHERE pi_name='polls'";
 
     // XMLSiteMap
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.1', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
-    
+
     // Calendar
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.6', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
-    
-    
+
+
 
     if ($use_innodb) {
         $statements = count($_SQL);
@@ -330,7 +336,7 @@ function update_DatabaseFor220()
     // update Geeklog version number
     DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='geeklog'",1);
     DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='geeklog'",1);
-    
+
     return true;
 }
 
@@ -338,37 +344,37 @@ function update_DatabaseFor213()
 {
     global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
 
-    // ***************************************     
-    // Add database Geeklog Core updates here. 
+    // ***************************************
+    // Add database Geeklog Core updates here.
     // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
-    
-    
-    
-    
-    
-    // ***************************************     
+
+
+
+
+
+    // ***************************************
     // Core Plugin Updates Here
-    
+
     // Staticpages
-    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.6.9', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";    
-    
-    
+    $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.6.9', pi_gl_version='". VERSION ."' WHERE pi_name='staticpages'";
+
+
     // SpamX
     $_SQL[] = "DROP INDEX `primary` ON {$_TABLES['spamx']}";
     $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN `value` VARCHAR(191)";
-    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)";    
+    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name, value)";
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.4' WHERE pi_name='spamx'";
-    
-    
+
+
     // Links
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.5' WHERE pi_name='links'";
-    
-    
+
+
     // Polls
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.8' WHERE pi_name='polls'";
 
-    
-    
+
+
 
     if ($use_innodb) {
         $statements = count($_SQL);
@@ -384,7 +390,7 @@ function update_DatabaseFor213()
     // update Geeklog version number
     DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='geeklog'",1);
     DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='geeklog'",1);
-    
+
     return true;
 }
 
@@ -392,10 +398,10 @@ function update_DatabaseFor212()
 {
     global $_TABLES, $_CONF, $_PLUGINS, $use_innodb, $_DB_table_prefix, $gl_devel_version;
 
-    // ***************************************     
-    // Add database Geeklog Core updates here. 
+    // ***************************************
+    // Add database Geeklog Core updates here.
     // NOTE: Cannot use ones found in normal upgrade script as no checks are performed to see if already done.
-    
+
     // Modify DATETIME columns with '0000-00-00 00:00:00' being the default value to DATETIME DEFAULT NULL
     // to make Geeklog compatible with MySQL-5.7 with NO_ZERO_DATE in sql_mode
     $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} MODIFY COLUMN `rdfupdated` DATETIME DEFAULT NULL";
@@ -421,7 +427,7 @@ function update_DatabaseFor212()
           PRIMARY KEY (id)
         ) ENGINE=MyISAM
         ";
-    
+
         // Add `Language Admin` group
         $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (18, 'Language Admin', 'Has full access to language', 1);";
 
@@ -469,40 +475,40 @@ function update_DatabaseFor212()
 
     // Change Url from 255 to 250 since the field has too many bytes for tables with a utf8mb4 collation
     $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE `url` `url` VARCHAR(250) DEFAULT NULL";
-    
-    // Change the type of `value' column of `vars` table from VARCHAR(128) to TEXT
-    $_SQL[] = "ALTER TABLE {$_TABLES['vars']} CHANGE `value` `value` text NULL AFTER `name`";    
 
-    
-    // ***************************************     
+    // Change the type of `value' column of `vars` table from VARCHAR(128) to TEXT
+    $_SQL[] = "ALTER TABLE {$_TABLES['vars']} CHANGE `value` `value` text NULL AFTER `name`";
+
+
+    // ***************************************
     // Core Plugin Updates Here
-    
+
     // Staticpages
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} MODIFY COLUMN `created` DATETIME DEFAULT NULL";
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} MODIFY COLUMN `modified` DATETIME DEFAULT NULL";
-    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onmenu`"; 
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onhits` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onmenu`";
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_onlastupdate` TINYINT NOT NULL DEFAULT '1' AFTER `sp_onhits`";
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.6.8', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='staticpages'";
-    
+
     // SpamX
     $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} MODIFY COLUMN regdate DATETIME DEFAULT NULL";
     $_SQL[] = "DROP INDEX `primary` ON {$_TABLES['spamx']}";
     $_SQL[] = "DROP INDEX `spamx_name` ON {$_TABLES['spamx']}";
-    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name)";    
+    $_SQL[] = "ALTER TABLE {$_TABLES['spamx']} ADD PRIMARY KEY (name)";
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.3.3', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='spamx'";
-    
+
     // Links
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.6', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='links'";
-    
+
     // Polls
     $_SQL[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD `allow_multipleanswers` TINYINT(1) NULL DEFAULT NULL";
     $_SQL[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD `description` MEDIUMTEXT NULL";
-    $_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD `description` MEDIUMTEXT NULL";    
+    $_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD `description` MEDIUMTEXT NULL";
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.1.7', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='polls'";
-    
+
     // Calendar
     $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='1.1.6', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='calendar'";
-    
+
     // XMLSiteMap
     // $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version='2.0.0', pi_gl_version='". VERSION ."', pi_homepage='https://www.geeklog.net' WHERE pi_name='xmlsitemap'";
 
@@ -521,7 +527,7 @@ function update_DatabaseFor212()
     // update Geeklog version number
     DB_query("INSERT INTO {$_TABLES['vars']} SET value='$gl_devel_version',name='geeklog'",1);
     DB_query("UPDATE {$_TABLES['vars']} SET value='$gl_devel_version' WHERE name='geeklog'",1);
-    
+
     return true;
 }
 
@@ -530,11 +536,11 @@ $display = '<h2>Development Database Update</h2>';
 $gl_prev_version = "2.2.0";
 $gl_devel_version = "2.2.1";
 
-$display .= "<p>This update is for Geeklog Core and Core Plugins. Can include changes to database structure and data, along with configuration options. All Core plugins must be installed when you run this script.</p> 
+$display .= "<p>This update is for Geeklog Core and Core Plugins. Can include changes to database structure and data, along with configuration options. All Core plugins must be installed when you run this script.</p>
              <p>Update works for Geeklog $gl_prev_version up to latest Geeklog development version for $gl_devel_version.</p>";
 
 
-// ***************************************             
+// ***************************************
 // Geeklog Core Updates
 $display .= '<ul><li>Performing Geeklog Core configuration upgrades if necessary...<ul><li>';
 
@@ -573,8 +579,8 @@ foreach ($corePlugins AS $pi_name) {
             $plugin_version = '1.7.1';
             break;
         case 'spamx':
-            $new_plugin_version = false;
-            $plugin_version = '1.3.5';
+            $new_plugin_version = true;
+            $plugin_version = '1.3.6';
             break;
         case 'links':
             $new_plugin_version = true;
@@ -595,9 +601,9 @@ foreach ($corePlugins AS $pi_name) {
         case 'recaptcha':
             $new_plugin_version = true;
             $plugin_version = '1.2.1';
-            break;            
+            break;
     }
-    
+
     $display .= "<li>";
     if ($new_plugin_version) {
         $plugin_install_updates_file = $_CONF['path'] . 'plugins/' . $pi_name . '/install_updates.php';
@@ -605,7 +611,7 @@ foreach ($corePlugins AS $pi_name) {
             require_once $plugin_install_updates_file;
 
             $function = $pi_name . '_update_ConfValues_' . str_replace(".","_", $plugin_version);
-            
+
             if (function_exists($function)) {
                 if ($function()) {;
                     $display .= "Configuration settings updated successfully for $pi_name plugin.";
@@ -619,7 +625,7 @@ foreach ($corePlugins AS $pi_name) {
             $display .= "No configuration settings found for updating $pi_name plugin.";
         }
     } else {
-        $display .= "No new version found for $pi_name plugin.";    
+        $display .= "No new version found for $pi_name plugin.";
     }
     $display .= "</li>";
 }
