@@ -94,8 +94,7 @@ class IPv6 implements AddressInterface
                     $address = substr($address, 0, $percentagePos);
                 }
             }
-            if (preg_match('/^([0:]+:ffff:)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/i', $address, $matches)) {
-                // IPv4 embedded in IPv6
+            if (preg_match('/^((?:[0-9a-f]*:+)+)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/i', $address, $matches)) {
                 $address6 = static::fromString($matches[1].'0:0', false);
                 if ($address6 !== null) {
                     $address4 = IPv4::fromString($matches[2], false);
@@ -427,6 +426,32 @@ class IPv6 implements AddressInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Render this IPv6 address in the "mixed" IPv6 (first 12 bytes) + IPv4 (last 4 bytes) mixed syntax.
+     *
+     * @param bool $ipV6Long render the IPv6 part in "long" format?
+     * @param bool $ipV4Long render the IPv4 part in "long" format?
+     *
+     * @return string
+     *
+     * @example '::13.1.68.3'
+     * @example '0000:0000:0000:0000:0000:0000:13.1.68.3' when $ipV6Long is true
+     * @example '::013.001.068.003' when $ipV4Long is true
+     * @example '0000:0000:0000:0000:0000:0000:013.001.068.003' when $ipV6Long and $ipV4Long are true
+     *
+     * @see https://tools.ietf.org/html/rfc4291#section-2.2 point 3.
+     */
+    public function toMixedIPv6IPv4String($ipV6Long = false, $ipV4Long = false)
+    {
+        $myBytes = $this->getBytes();
+        $ipv6Bytes = array_merge(array_slice($myBytes, 0, 12), array(0xff, 0xff, 0xff, 0xff));
+        $ipv6String = static::fromBytes($ipv6Bytes)->toString($ipV6Long);
+        $ipv4Bytes = array_slice($myBytes, 12, 4);
+        $ipv4String = IPv4::fromBytes($ipv4Bytes)->toString($ipV4Long);
+
+        return preg_replace('/((ffff:ffff)|(\d+(\.\d+){3}))$/i', $ipv4String, $ipv6String);
     }
 
     /**

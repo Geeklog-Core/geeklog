@@ -428,17 +428,17 @@
     },
     {
         "name": "mlocati/ip-lib",
-        "version": "1.8.0",
-        "version_normalized": "1.8.0.0",
+        "version": "1.9.0",
+        "version_normalized": "1.9.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/mlocati/ip-lib.git",
-            "reference": "c8d6d1fc370e748c3400a9cc614b26af2ae3b197"
+            "reference": "b844659e3b87a461d1a8fe8e3e374aa6c4a5d902"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/c8d6d1fc370e748c3400a9cc614b26af2ae3b197",
-            "reference": "c8d6d1fc370e748c3400a9cc614b26af2ae3b197",
+            "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/b844659e3b87a461d1a8fe8e3e374aa6c4a5d902",
+            "reference": "b844659e3b87a461d1a8fe8e3e374aa6c4a5d902",
             "shasum": ""
         },
         "require": {
@@ -449,7 +449,7 @@
             "phpunit/dbunit": "^1.4 || ^2 || ^3 || ^4",
             "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5"
         },
-        "time": "2019-07-30T16:27:54+00:00",
+        "time": "2019-09-20T08:26:10+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -464,9 +464,9 @@
         "authors": [
             {
                 "name": "Michele Locati",
-                "role": "Author",
                 "email": "mlocati@gmail.com",
-                "homepage": "https://github.com/mlocati"
+                "homepage": "https://github.com/mlocati",
+                "role": "Author"
             }
         ],
         "description": "Handle IPv4, IPv6 addresses and ranges",
