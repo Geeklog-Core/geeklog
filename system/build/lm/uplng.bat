@@ -35,43 +35,51 @@ rem - copy this script into the /path/to/geeklog of a local Geeklog install
 rem   Note that all *.php files in all of the language directories will be
 rem   updated.
 
+if "%1"=="" (
+	echo Usage: uplng.bat GL_VERSION
+	echo where GL_VERSION is 2.2.0, 2.2.1, ...
+	exit 1
+)
+
 echo Syncing language files ...
+set gl_version=%1
 set root=%~dp0\..\..\..\
 
 rem path to the lm.php script and the include directory
 set lm=%root%\system\build\lm\lm.php
 
-call :doConvert %root%
-call :doConvert %root% calendar
-call :doConvert %root% links
-call :doConvert %root% polls
-call :doConvert %root% spamx
-call :doConvert %root% staticpages
-call :doConvert %root% xmlsitemap
-call :doConvert %root% install
+call :doConvert %gl_version% %root%
+call :doConvert %gl_version% %root% calendar
+call :doConvert %gl_version% %root% links
+call :doConvert %gl_version% %root% polls
+call :doConvert %gl_version% %root% spamx
+call :doConvert %gl_version% %root% staticpages
+call :doConvert %gl_version% %root% xmlsitemap
+call :doConvert %gl_version% %root% install
 
 echo Done.
 exit /b
 
 :doConvert
-rem @param  %1 = path
-rem @param  %2 = module
+rem @param  %1 = version
+rem @param  %2 = path
+rem @param  %3 = module
 
-if "%2"=="" (
+if "%3"=="" (
 	echo ===== Core =====
 	set langpath=%root%\language
-) else if  "%2"=="install" (
+) else if  "%3"=="install" (
 	echo ===== Install =====
 	set langpath=%root%\public_html\admin\install\language
 ) else (
-	echo ===== Plugin - %2 =====
-	set langpath=%root%\plugins\%2\language
+	echo ===== Plugin - %3 =====
+	set langpath=%root%\plugins\%3\language
 )
 
 pushd %langpath%
-	for /F "usebackq" %%f in (`dir /A-D /B *.php ^| findstr /V ^english`) do (
+	for /F "usebackq" %%f in (`dir /A-D /B *.php ^| findstr /V ^english ^| findstr /V ^_list`) do (
 		echo %%f
-		php.exe -f %lm% %langpath%\%%f %2 > %langpath%\%%f.tmp
+		php.exe -f %lm% %1 %langpath%\%%f %3 > %langpath%\%%f.tmp
 		del %langpath%\%%f
 		ren %langpath%\%%f.tmp %%f
 	)

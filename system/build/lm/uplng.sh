@@ -1,13 +1,13 @@
 #!/bin/bash
 # +---------------------------------------------------------------------------+
-# | Geeklog 2.1.0                                                             |
+# | Geeklog 2.2.0                                                             |
 # +---------------------------------------------------------------------------+
 # | uplng.sh                                                                  |
 # |                                                                           |
 # | Helper script to update the Geeklog language files,                       |
 # | using the lm.php script.                                                  |
 # +---------------------------------------------------------------------------+
-# | Copyright (C) 2004-2018 by the following authors:                         |
+# | Copyright (C) 2004-2019 by the following authors:                         |
 # |                                                                           |
 # | Author:  Dirk Haun         - dirk AT haun-online DOT de                   |
 # +---------------------------------------------------------------------------+
@@ -36,27 +36,28 @@
 echo Syncing language files ...
 
 root=`pwd`
-
+gl_version=$1
 # path to the lm.php script and the include directory
 lm=$root/system/build/lm/lm.php
 
 # you shouldn't need to change anything below ...
 
-# @param  $1 = path
-# @param  $2 = module
+# @param  $1 = version
+# @param  $2 = path
+# @param  $3 = module
 function doConvert() {
 
-  if [ -z "$2" ]; then
+  if [ -z "$3" ]; then
     echo "=== Core ==="
     #echo $1
     #echo $2
-    langpath=$1/language
-  elif [ "$2" = "install" ]; then
+    langpath=$2/language
+  elif [ "$3" = "install" ]; then
     echo "=== Install ==="
-    langpath=$1/public_html/admin/$2/language
+    langpath=$2/public_html/admin/$3/language
   else
-    echo "=== Plugin - $2 ==="
-    langpath=$1/plugins/$2/language
+    echo "=== Plugin - $3 ==="
+    langpath=$2/plugins/$3/language
   fi
 
   #cd $modpath
@@ -64,7 +65,7 @@ function doConvert() {
 
   cd $langpath
   #files=`ls -1 *.php | grep -v english.php | grep -v english_utf-8.php`
-  files=`ls -1 *.php | grep -v english.php`
+  files=`ls -1 *.php | grep -v english.php | grep -v _list.php`
 
   #cp english.php $modpath
   #if [ -e english_utf-8.php ]; then
@@ -73,21 +74,20 @@ function doConvert() {
 
   for l in $files; do
     echo $l
-    php $lm $langpath/$l "$2" > $langpath/$l.tmp
+    php $lm $1 $langpath/$l "$3" > $langpath/$l.tmp
 	rm -f $langpath/$l
 	mv -f $langpath/$l.tmp $langpath/$l
   done
 
 }
 
-doConvert $root
-doConvert $root "calendar"
-doConvert $root "links"
-doConvert $root "polls"
-doConvert $root "spamx"
-doConvert $root "staticpages"
-doConvert $root "xmlsitemap"
-doConvert $root "install"
+doConvert $1 $root
+doConvert $1 $root "calendar"
+doConvert $1 $root "links"
+doConvert $1 $root "polls"
+doConvert $1 $root "spamx"
+doConvert $1 $root "staticpages"
+doConvert $1 $root "xmlsitemap"
+doConvert $1 $root "install"
 
 echo Done.
-

@@ -3,13 +3,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | lm.php                                                                    |
 // |                                                                           |
 // | Update a language file by merging it with english.php                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2018 by the following authors:                         |
+// | Copyright (C) 2004-2019 by the following authors:                         |
 // |                                                                           |
 // | Author:  Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-$VERSION = '1.0.7';
+$VERSION = $GLOBALS['argv'][1];
 define('ROOT', dirname(dirname(dirname(__DIR__))) . '/');
 
 // Prevent PHP from reporting uninitialized variables
@@ -38,7 +38,7 @@ define('ROOT', dirname(dirname(dirname(__DIR__))) . '/');
 error_reporting(-1);
 
 // name of the language file should be passed on the command line
-$langfile = $GLOBALS['argv'][1];
+$langfile = $GLOBALS['argv'][2];
 
 if (empty($langfile)) {
     echo "lm.php v{$VERSION}\n";
@@ -49,8 +49,8 @@ if (empty($langfile)) {
 
 $module = '';
 
-if (!empty($GLOBALS['argv'][2])) {
-    $module = $GLOBALS['argv'][2];
+if (!empty($GLOBALS['argv'][3])) {
+    $module = $GLOBALS['argv'][3];
 }
 
 $mb = false;
@@ -70,6 +70,7 @@ if (strpos($langfile, '_utf-8') !== false) {
     mb_internal_encoding('UTF-8');
 }
 
+define('VERSION', $GLOBALS['argv'][1]); // Geeklog version
 define('XHTML', '');
 define('TOPIC_ALL_OPTION', 'all');
 define('TOPIC_NONE_OPTION', 'none');
@@ -85,12 +86,15 @@ define('RECAPTCHA_SUPPORT_V2_INVISIBLE', 2);
 $_DB_mysqldump_path = '{$_DB_mysqldump_path}';
 $_CONF['backup_path'] = '{$_CONF[\'backup_path\']}';
 $_CONF['commentspeedlimit'] = '{$_CONF[\'commentspeedlimit\']}';
+$_CONF['min_theme_gl_version'] = '{$_CONF[\'min_theme_gl_version\']}';
 $_CONF['site_admin_url'] = '{$_CONF[\'site_admin_url\']}';
 $_CONF['site_name'] = '{$_CONF[\'site_name\']}';
 $_CONF['site_url'] = '{$_CONF[\'site_url\']}';
 $_CONF['speedlimit'] = '{$_CONF[\'speedlimit\']}';
 $_CONF['invalidloginattempts'] = '{$_CONF[\'invalidloginattempts\']}';
 $_CONF['invalidloginmaxtime'] = '{$_CONF[\'invalidloginmaxtime\']}';
+$_CONF['theme'] = '{$_CONF[\'theme\']}';
+$_CONF['theme_gl_version'] = '{$_CONF[\'theme_gl_version\']}';
 $_USER['username'] = '{$_USER[\'username\']}';
 
 $failures = '{$failures}';

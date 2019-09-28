@@ -100,18 +100,18 @@
         "authors": [
             {
                 "name": "Greg Beaver",
-                "role": "Helper",
-                "email": "cellog@php.net"
+                "email": "cellog@php.net",
+                "role": "Helper"
             },
             {
                 "name": "Andrei Zmievski",
-                "role": "Lead",
-                "email": "andrei@php.net"
+                "email": "andrei@php.net",
+                "role": "Lead"
             },
             {
                 "name": "Stig Bakken",
-                "role": "Developer",
-                "email": "stig@php.net"
+                "email": "stig@php.net",
+                "role": "Developer"
             }
         ],
         "description": "More info available on: http://pear.php.net/package/Console_Getopt"
@@ -156,8 +156,8 @@
         "authors": [
             {
                 "name": "Christian Weiske",
-                "role": "Lead",
-                "email": "cweiske@php.net"
+                "email": "cweiske@php.net",
+                "role": "Lead"
             }
         ],
         "description": "Minimal set of PEAR core files to be used as composer dependency"

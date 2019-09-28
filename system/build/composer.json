@@ -1,6 +1,6 @@
 {
   "require": {
-    "phing/phing": "~2.0",
+    "phing/phing": "2.*",
     "pear/archive_tar": "~1.0"
   }
 }

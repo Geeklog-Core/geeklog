@@ -38,10 +38,14 @@
         <if>
             <os family="windows"/>
             <then>
-                <exec command="uplng.bat" dir="${srcDir}/system/build/lm"/>
+                <exec executable="uplng.bat" dir="${srcDir}/system/build/lm">
+                    <arg value="${version}"/>
+                </exec>
             </then>
             <else>
-                <exec command="${srcDir}/system/build/lm/uplng.sh" dir="${srcDir}"/>
+                <exec executable="${srcDir}/system/build/lm/uplng.sh" dir="${srcDir}">
+                    <arg value="${version}"/>
+                </exec>
             </else>
         </if>
 
@@ -135,7 +139,6 @@
         <chmod file="${dstDir}/public_html/images/library/Flash" mode="0777"/>
         <chmod file="${dstDir}/public_html/images/library/Image" mode="0777"/>
         <chmod file="${dstDir}/public_html/images/library/Image/_thumbs" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/library/Image/icons" mode="0777"/>
         <chmod file="${dstDir}/public_html/images/library/Media" mode="0777"/>
         <chmod file="${dstDir}/public_html/images/topics" mode="0777"/>
         <chmod mode="0666">
@@ -151,9 +154,8 @@
         </chmod>
         <chmod file="${dstDir}/public_html/images/_thumbs" mode="0777"/>
         <chmod file="${dstDir}/public_html/images/_thumbs/articles" mode="0777"/>
-        <chmod file="${dstDir}/public_html/images/_thumbs/library/Image" mode="0777"/>
         <chmod file="${dstDir}/public_html/images/_thumbs/userphotos" mode="0777"/>
-        <chmod file="${dstDir}/public_html/filemanager/scripts/filemanager.config.json" mode="0666"/>
+        <chmod file="${dstDir}/public_html/filemanager/config/filemanager.config.json" mode="0666"/>
         <chmod file="${dstDir}/public_html/siteconfig.php" mode="0666"/>
     </target>
 
