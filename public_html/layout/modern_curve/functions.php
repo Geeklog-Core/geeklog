@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 2.1                                                               |
+// | Geeklog 2.2                                                               |
 // +---------------------------------------------------------------------------+
 // | functions.php                                                             |
 // |                                                                           |
 // | Functions implementing the theme API                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2012 by the following authors:                         |
+// | Copyright (C) 2000-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -220,5 +220,3 @@ function theme_getCSSClasses_denim($item)
     
     return $retval;
 }
-
-?>
