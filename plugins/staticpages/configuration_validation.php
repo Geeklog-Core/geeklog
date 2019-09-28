@@ -79,6 +79,7 @@ $_CONF_VALIDATE['staticpages']['includephp'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['staticpages']['includesearch'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['staticpages']['includesearchcenterblocks'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['staticpages']['includesearchphp'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['staticpages']['includesearchtemplate'] = array('rule' => 'boolean');
 
 // Default Permissions
 $_CONF_VALIDATE['staticpages']['default_permissions[0]'] = array(

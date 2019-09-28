@@ -279,7 +279,7 @@ function plugin_usercontributed_staticpages($uid)
     $retval = '';
 
     $count = DB_getItem($_TABLES['staticpage'], 'COUNT(owner_id)', "owner_id = {$uid}");
-    
+
     if ($count > 0) {
         $retval = str_replace('%s', $count, $LANG_STATIC['num_pages']);
     }
@@ -362,7 +362,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
                     )
                 );
         }
-        
+
         // Add hreflang link element if Multi Language Content is setup
         // Only allow hreflang link element to be visible when on canonical url
         // ie no second pages which can happen with comments or with extra trailing variables like from a search query
@@ -418,7 +418,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         if (XHTML != '') {
             $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
         }
-        
+
         $author_name = COM_getDisplayName($A['owner_id']);
         $author_username = DB_getItem($_TABLES['users'], 'username',
             "uid = {$A['owner_id']}");
@@ -734,7 +734,12 @@ function SP_returnStaticpage($page = '', $mode = '', $comment_order = 'ASC', $co
         if ($mode === 'print') {
             $retval = SP_printPage($page, $output);
         } elseif ($mode === 'autotag') {
-            $retval = $output['sp_content'];
+            // This allows for the autotag to be used within templates and return page templates
+            if ($output['template_flag']  == 1) {
+                $retval = $output['page_data'];
+            } else {
+                $retval = $output['sp_content'];
+            }
         } else {
             $retval = SP_displayPage($page, $output, $comment_order, $comment_mode, $comment_page, $msg, $query);
         }
@@ -883,7 +888,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "WHERE (sp.owner_id = u.uid) AND (draft_flag = 0) AND (template_flag = 0) ";
     $sql .= "AND ta.type = 'staticpages' AND ta.id = sp.sp_id ";
     $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
-    
+
     // Topic Permissions
     $topic_perms = COM_getTopicSQL('', 0, 'ta');
     if ($topic_perms != '') {
@@ -905,13 +910,17 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
             $sql .= "AND (ta.tid IN('" . TOPIC_ALL_OPTION . "',{$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND (ta.tid = '" . $topic . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')))) ";
         }
     }
-    
+
     if ($_SP_CONF['includesearchcenterblocks'] == 0) {
         $sql .= 'AND sp_centerblock = 0 ';
     }
 
     if ($_SP_CONF['includesearchphp'] == 0) {
         $sql .= 'AND sp_php = 0 ';
+    }
+
+    if ($_SP_CONF['includesearchtemplate'] == 0) {
+        $sql .= 'AND template_id = "" ';
     }
 
     $search_p = new SearchCriteria('staticpages', $LANG_STATIC['pages']);
@@ -939,7 +948,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 
     // Topic Permissions
     $sql .= $topic_perms;
-    
+
     if (!empty($author)) {
         $sql .= "AND (c.uid = '$author') ";
     }
@@ -957,7 +966,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $columns = array('title' => 'c.title', 'comment');
     $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $datestart, $dateend);
     list($sql, $ftsql) = $search_c->buildSearchSQL($keyType, $query, $columns, $sql);
-    
+
     $sql .= " GROUP BY c.cid, c.title, c.comment, c.date, c.uid ";
 
     $search_c->setSQL($sql);
@@ -1263,8 +1272,8 @@ function plugin_user_delete_staticpages($uid)
     if (DB_count($_TABLES['staticpage'], 'owner_id', $uid) == 0) {
         return;
     }
-    
-    // Figure out root user 
+
+    // Figure out root user
     $rootgroup = DB_getItem($_TABLES['groups'], 'grp_id',
         "grp_name = 'Root'");
     $result = DB_query("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
@@ -1273,15 +1282,15 @@ function plugin_user_delete_staticpages($uid)
 
     if ($_SP_CONF['delete_pages'] == 1) {
         // delete the pages for the user if able
-        
+
         $sql = "SELECT sp_id FROM {$_TABLES['staticpage']} WHERE owner_id = $uid";
 
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
 
         for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);        
-            
+            $A = DB_fetchArray($result);
+
             $args = array(
                 'sp_id' => $A['sp_id'],
             );
@@ -1455,9 +1464,9 @@ function plugin_upgrade_staticpages()
     if (!plugin_compatible_with_this_version_staticpages('staticpages')) {
         return 3002;
     }
-    
-    // Retrieve other plugin info like min geeklog version and homepage 
-    $inst_parms = plugin_autoinstall_staticpages('staticpages');    
+
+    // Retrieve other plugin info like min geeklog version and homepage
+    $inst_parms = plugin_autoinstall_staticpages('staticpages');
 
     require_once $_CONF['path'] . 'plugins/staticpages/sql/'
         . $_DB_dbms . '_updates.php';
@@ -1638,12 +1647,12 @@ function plugin_upgrade_staticpages()
                         DB_query($sql);
                     }
                 }
-                
+
                 SP_update_ConfValues_1_7_0();
 
                 $current_version = '1.7.0';
                 break;
-                
+
             case '1.7.0':
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
@@ -1651,11 +1660,13 @@ function plugin_upgrade_staticpages()
                         DB_query($sql);
                     }
                 }
-                
+
                 staticpages_update_ConfValues_1_7_1();
-                
+
+                staticpages_update_search_cache_1_7_1();
+
                 $current_version = '1.7.1';
-                break;                
+                break;
 
             default:
                 $done = true;
@@ -1664,7 +1675,7 @@ function plugin_upgrade_staticpages()
 
     // update plugin version number and other info
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'staticpages'");
-    
+
     COM_errorLog( "Updated staticpages plugin from v$installed_version to v$code_version", 1 );
 
     return true;
@@ -1705,11 +1716,11 @@ function plugin_migrate_staticpages($old_conf)
  */
 function plugin_autouninstall_staticpages()
 {
-    
+
     // Delete multi-language support Core Config option for Staticpage Plugin
     $c = config::get_instance();
     $c->del('langurl_staticpages', 'Core');
-    
+
     $out = array(
         /* give the name of the tables, without $_TABLES[] */
         'tables'     => array('staticpage'),
@@ -1740,9 +1751,9 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
     global $_CONF, $LANG_ACCESS, $LANG_STATIC, $_TABLES;
 
     $retval = '';
-    
-    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);    
-    
+
+    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+
     switch ($fieldname) {
         case 'edit':
             if ($access == 3) {
@@ -1826,7 +1837,7 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
                 $result = DB_query("SELECT * FROM {$_TABLES['staticpage']} WHERE sp_id = '{$A['template_id']}'" . COM_getPermSQL('AND'));
                 if (DB_numRows($result)) {
                     $B = DB_fetchArray($result);
-                    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);    
+                    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
                     $sp_title = trim(stripslashes($B['sp_title']));
                     if (empty($sp_title)) {
                         $sp_title = $B['sp_page_title'];
@@ -1886,21 +1897,23 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
  */
 function SP_render_content($A)
 {
-    global $_CONF, $_SP_CONF, $LANG_STATIC, $_STRUCT_DATA;
+    global $_CONF, $_SP_CONF, $LANG_STATIC, $_STRUCT_DATA, $_TABLES;
 
     $retval = '';
-    
+
     $sp_id = $A['sp_id'];
     $sp_url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $sp_id);
     $sp_content = $A['sp_content'];
+    $page_data = $A['page_data'];
     $sp_php = $A['sp_php'];
+    $draft_flag = $A['draft_flag'];
     $cache_time = $A['cache_time'];
     $template_id = $A['template_id'];
 
     // Retrieve non php staticpage from cache
-    if ($cache_time > -1 && $sp_php == 0) {
+    if ($cache_time > -1 AND !$draft_flag) {
         $cache_found = false;
-        
+
         // Don't need to cache per theme since not rendered in a block yet
         $cacheInstance = 'staticpage__' . $sp_id . '__' . CACHE_security_hash();
         $retval = CACHE_check_instance($cacheInstance);
@@ -1915,7 +1928,7 @@ function SP_render_content($A)
                 $retval = '';
             }
         }
-        
+
         // Now find structured data cache if required
         // Structured Data is cached by itself. Need to cache in case structured data autotags exist in page.
         // Since autotags are executed when the page is rendered therefore we have to cache structred data if page is cached.
@@ -1928,15 +1941,15 @@ function SP_render_content($A)
             }
         } elseif ($cache_found) {
             return $retval;
-        }      
-        
+        }
+
     }
 
     // See if uses template, if so get it
     if ($template_id != '') {
         $retval = '';
         $mode = '';
-        $xmlObject = simplexml_load_string($sp_content);
+        $xmlObject = simplexml_load_string($page_data);
 
         // create array of XML data
         $tag = array();
@@ -1963,15 +1976,15 @@ function SP_render_content($A)
         if (PLG_invokeService('staticpages', 'get', $args, $output, $svc_msg) == PLG_RET_OK) {
 
             // Need to do below twice for backwards compatibility with pre Staticpage plugin v1.6.8 way of handling templates
-            // Reason is in case [staticpage_content: autotag is in staticpage template page variable which is used to load staticpage within staticpage template. 
+            // Reason is in case [staticpage_content: autotag is in staticpage template page variable which is used to load staticpage within staticpage template.
             // This staticpage may be a template and have may have template variables as well which we need to compile
             for ($i = 1; $i <= 2; $i++) { // only do for 2 levels (this could become a setting of how deep to check for each staticpage which uses a template???)
                 // Treat as normal staticpage template but really just want to use a view and load no files
                 $sp_template = COM_newTemplate(CTL_plugin_templatePath('staticpages'));
                 $sp_template->set_view(array(
-                    'page_view' => $output['sp_content'],
+                    'page_view' => $output['page_data'],
                 ));
-                
+
                 // Staticpage specific template variables
                 // Set Staticpage Title
                 $sp_template->set_var('sp_title', stripslashes($A['sp_title']));
@@ -1984,7 +1997,7 @@ function SP_render_content($A)
                     $sp_template->set_var($key, $value);
                 }
 
-                $output['sp_content'] = $sp_template->finish($sp_template->parse('output', 'page_view'));
+                $output['page_data'] = $sp_template->finish($sp_template->parse('output', 'page_view'));
             }
 
             /* Old way of applying variables left for bug checking (Staticpage plugin v1.6.8, Geeklog v2.1.2)
@@ -1993,17 +2006,17 @@ function SP_render_content($A)
             // If template variable format is different then any unused ones will display
             $retval['sp_content'] = preg_replace('/{[^ \t\r\n}]+}/', '', $retval['sp_content']);
             */
-            $sp_content = $output['sp_content'];
+            $sp_content = $output['page_data'];
         }
     }
 
     if ($_SP_CONF['allow_php'] == 1) {
         // Check for type (ie html or php)
         if ($sp_php == 1) {
-            $sp_content = eval($sp_content);
+            $sp_content = eval($page_data);
         } elseif ($sp_php == 2) {
             ob_start();
-            eval($sp_content);
+            eval($page_data);
             $sp_content = ob_get_contents();
             ob_end_clean();
         }
@@ -2019,7 +2032,7 @@ function SP_render_content($A)
     }
 
     $sp_content = stripslashes($sp_content);
-    
+
     // Figure out structured data if need be
     if ($A['structured_data_type'] > 0 ) {
         $properties['headline'] = $A['sp_title'];
@@ -2032,10 +2045,10 @@ function SP_render_content($A)
             require_once $_CONF['path_system'] . 'lib-comment.php';
             $properties['commentCount'] = CMT_commentCount($sp_id, 'staticpages');
         }
-        
+
         $attributes['multi_language'] = true;
         // Since staticpage can be cached and autotags within content may insert structured data properties need to cache structured data info as well.
-        if (($cache_time > 0 || $cache_time == -1) && $sp_php == 0) {
+        if (($cache_time > 0 || $cache_time == -1) AND !$draft_flag) {
             $attributes['cache'] = true;
         }
         $_STRUCT_DATA->add_type('staticpages', $sp_id, $A['structured_data_type'], $properties, $attributes);
@@ -2049,10 +2062,17 @@ function SP_render_content($A)
         }
         */
     }
-    
-    
-    if (($cache_time > 0 || $cache_time == -1) && $sp_php == 0) {
+
+
+    if (($cache_time > 0 || $cache_time == -1) AND !$draft_flag) {
         CACHE_create_instance($cacheInstance, $sp_content);
+
+        // Also update search cache for pages that use templates at this point
+        if ($template_id != '' OR $sp_php) {
+            $search_sp_content = DB_escapeString($sp_content);
+            $sql = "UPDATE {$_TABLES['staticpage']} SET sp_content = '$search_sp_content' WHERE sp_id = '$sp_id'";
+            $result = DB_query($sql);
+        }
     }
 
     return $sp_content;

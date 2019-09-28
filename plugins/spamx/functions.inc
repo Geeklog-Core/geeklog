@@ -355,7 +355,7 @@ function plugin_upgrade_spamx()
                         DB_query($sql);
                     }
                 }
-                
+
                 $current_version = '1.3.2'; // Shipped with Geeklog-2.1.1
                 break;
 
@@ -365,19 +365,19 @@ function plugin_upgrade_spamx()
                     foreach ($_SQL as $sql) {
                         DB_query($sql);
                     }
-                } 
-                
+                }
+
                 $current_version = '1.3.3'; // Shipped with Geeklog-2.1.2
                 break;
-                
+
             case '1.3.3':
                 if (isset($_UPDATES[$current_version])) {
                     $_SQL = $_UPDATES[$current_version];
                     foreach ($_SQL as $sql) {
                         DB_query($sql);
                     }
-                }            
-            
+                }
+
                 $current_version = '1.3.4'; // Shipped with Geeklog-2.1.3
                 break;
 
@@ -394,6 +394,19 @@ function plugin_upgrade_spamx()
                 $current_version = '1.3.5'; // Shipped with Geeklog-2.2.0
                 break;
 
+            case '1.3.5':
+                    if (isset($_UPDATES[$current_version])) {
+                        $_SQL = $_UPDATES[$current_version];
+                        foreach ($_SQL as $sql) {
+                            DB_query($sql);
+                        }
+                    }
+
+                    //spamx_update_ConfValues_1_3_5();
+
+                    $current_version = '1.3.6'; // Shipped with Geeklog-2.2.1
+                    break;
+
             default:
                 $done = true;
         }
@@ -402,7 +415,7 @@ function plugin_upgrade_spamx()
     // update plugin version number and other info
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'spamx'");
 
-    COM_errorLog( "Updated spamx plugin from v$installed_version to v$code_version", 1 );      
+    COM_errorLog( "Updated spamx plugin from v$installed_version to v$code_version", 1 );
 
     return true;
 }

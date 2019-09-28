@@ -307,9 +307,15 @@
   <td valign="top">false</td>
   <td valign="top">検索結果にセンターブロックの静的ページを含ませるかどうかを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_includesearchphp">PHPモードの静的ページを含む(includesearchphp)</a></td>
+  <td valign="top"><a name="desc_includesearchphp">includesearchphp</a></td>
   <td valign="top">false</td>
-  <td valign="top">検索結果にPHPモードの静的ページを含ませるかどうかを指定します。</td></tr>
+  <td valign="top">Set to true to include static pages that execute PHP in the search results.<br><br>Please note since php static pages have to be executed a search cached version of the page is used.  This cached page is generated on the save of the page in the editor and (if cache enabled) when a new cached file of the page is made. This means that all users that have access to the page will use the same search cache.  
+  If autotags or PHP is used by the page this may generate different contents depending on the user. Since the search cache is only one view of the page it will be the one searched. Therefore what the search result returns may be slighyly different than what the user will see when they visit the page. Please take this short coming into consideration when using php pages and having this config option set to true.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_includesearchtemplate">includesearchtemplate</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include template static pages in the search results.<br><br>Please note since template pages have to be executed a search cached version of the template page is used. This cached page is generated on the save of the page in the editor and (if cache enabled) when a new cached file of the page is made. This means that all users that have access to the page will use the same search cache.  
+  If autotags, PHP, or the is device_mobile template variable is used by the page this may generate different contents depending on the user. Since the search cache is only one view of the page it will be the one searched. Therefore what the search result returns may be slighyly different than what the user will see when they visit the page. Please take this short coming into consideration when using template pages and having this config option set to true.</td></tr>
 </table>
 
 <h3><a name="search">パーミッションのデフォルト</a></h3>

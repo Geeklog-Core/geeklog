@@ -39,6 +39,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_title varchar(128) NOT NULL default '',
   sp_page_title varchar(128) NOT NULL default '',
   sp_content text NOT NULL,
+  page_data text DEFAULT NULL,
   sp_hits int NOT NULL default '0',
   created timestamp NOT NULL default NULL,
   modified timestamp NOT NULL default NULL,

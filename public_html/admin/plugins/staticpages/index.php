@@ -132,7 +132,7 @@ function staticpageeditor_form(array $A)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
            $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG01, $LANG24,
-           $LANG_postmodes, $LANG_structureddatatypes, $LANG_STRUCT_DATA, 
+           $LANG_postmodes, $LANG_structureddatatypes, $LANG_STRUCT_DATA,
            $MESSAGE, $_IMAGE_TYPE, $_SCRIPTS;
 
     if (!empty($sp_id) && $mode === 'edit') {
@@ -215,12 +215,12 @@ function staticpageeditor_form(array $A)
         'comment_options',
         COM_optionList($_TABLES['commentcodes'], 'code,name', $A['commentcode'])
     );
-    
+
     $sp_template->set_var('lang_structured_data_type', $LANG_STRUCT_DATA['lang_structured_data_type']);
     $sp_template->set_var(
         'structured_data_options',
-        COM_optionListFromLangVariables('LANG_structureddatatypes', $A['structured_data_type']) 
-    );    
+        COM_optionListFromLangVariables('LANG_structureddatatypes', $A['structured_data_type'])
+    );
 
     $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -497,7 +497,7 @@ function staticpageeditor_form(array $A)
     }
     if ($_SP_CONF['show_date'] != 1) {
         $sp_template->set_var('lang_show_on_page_date_disabled', $LANG_STATIC['show_on_page_disabled']);
-    }    
+    }
 
     $sp_template->set_var('lang_label', $LANG_STATIC['label']);
     if (isset($A['sp_label'])) {
@@ -699,11 +699,11 @@ function liststaticpages()
         'has_extras' => true,
         'form_url'   => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php',
     );
-        
+
     $sql = "SELECT *,UNIX_TIMESTAMP(modified) AS unixdate, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
         . "FROM {$_TABLES['staticpage']} "
         . "LEFT JOIN {$_TABLES['users']} ON {$_TABLES['staticpage']}.owner_id = {$_TABLES['users']}.uid "
-        . "WHERE 1=1 ";  
+        . "WHERE 1=1 ";
 
     $query_arr = array(
         'table'          => 'staticpage',
@@ -803,6 +803,10 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         }
 
         $A['editor'] = $editor;
+
+        if ($A['template_id'] != '' OR $A['template_flag'] OR $A['sp_php']) {
+            $A['sp_content'] = $A['page_data'];
+        }
 
         $retval = staticpageeditor_form($A);
     } else {
