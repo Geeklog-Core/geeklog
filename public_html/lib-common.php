@@ -324,7 +324,7 @@ if (!is_callable($func)) {
 if (is_callable($func)) {
     $theme_config = $func();
     $_CONF['doctype'] = $theme_config['doctype'];
-    $_CONF['theme_oauth_icons'] = $theme_config['theme_oauth_icons'];
+    $_CONF['theme_oauth_icons'] = @$theme_config['theme_oauth_icons'];
     $_IMAGE_TYPE = $theme_config['image_type'];
     if (isset($theme_config['theme_default'])) {
         $_CONF['theme_default'] = $theme_config['theme_default'];
