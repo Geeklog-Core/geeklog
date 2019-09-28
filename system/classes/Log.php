@@ -6,6 +6,7 @@ use InvalidArgumentException;
 
 /**
  * Class Log
+ *
  * @package Geeklog
  */
 abstract class Log
@@ -45,6 +46,48 @@ abstract class Log
 
         self::$pathToLogDir = $pathToLogDir;
         self::$isInitialized = true;
+    }
+
+    /**
+     * Magic method for those plugins that want to output their own log files
+     *
+     * @param  string  $name  log file name  e.g., 'ban', 'gus'
+     * @param  array   $arguments
+     * @return bool
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        $fileName = strtolower(basename($name));
+        if (substr($fileName, -4) !== '.log') {
+            $fileName .= '.log';
+        }
+
+        if (in_array($fileName, ['error.log', 'access.log', '404.log', 'spamx.log', 'recaptcha.log'])) {
+            // Possible attack
+            $msg = sprintf(
+                ': Possible attack detected: user id = %d, IP = %s',
+                Session::getUid(), Input::server('REMOTE_ADDR', '?')
+            );
+            self::error(__METHOD__ . $msg);
+            die($msg);
+        }
+
+        $filePath = self::$pathToLogDir . $fileName;
+        if (!is_readable($filePath)) {
+            if (!touch($filePath)) {
+                self::error(sprintf('Could\'t create "%s" in the log directory.', $fileName));
+
+                return false;
+            }
+        }
+
+        if (count($arguments) === 0) {
+            self::error(__METHOD__ . ': log entry must be present.');
+
+            return false;
+        }
+
+        return self::common($arguments[0], $fileName);
     }
 
     /**
@@ -158,7 +201,7 @@ abstract class Log
     /**
      * Add an entry into "access.log"
      *
-     * @param string $entry
+     * @param  string  $entry
      * @return bool
      */
     public static function access($entry)
@@ -177,7 +220,7 @@ abstract class Log
     /**
      * Add an entry into "error.log"
      *
-     * @param string $entry
+     * @param  string  $entry
      * @return bool
      */
     public static function error($entry)
@@ -192,7 +235,7 @@ abstract class Log
     /**
      * Add an entry into "404.log"
      *
-     * @param string $entry
+     * @param  string  $entry
      * @return bool
      */
     public static function error404($entry)
@@ -207,7 +250,7 @@ abstract class Log
     /**
      * Add an entry into "recaptcha.log"
      *
-     * @param string $entry
+     * @param  string  $entry
      * @return bool
      */
     public static function recaptcha($entry)
@@ -222,7 +265,7 @@ abstract class Log
     /**
      * Add an entry into "spamx.log"
      *
-     * @param string $entry
+     * @param  string  $entry
      * @return bool
      */
     public static function spamx($entry)
