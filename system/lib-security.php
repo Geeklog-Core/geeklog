@@ -2008,7 +2008,7 @@ function SEC_loginForm($use_config = array())
         } else {
             $html_oauth = '';
             // Grab oauth icons from theme
-            if ($_CONF['theme_oauth_icons']) {
+            if (!empty($_CONF['theme_oauth_icons'])) {
                 $icon_path = $_CONF['layout_url'] . '/images/';
             } else {
                 $icon_path = $_CONF['site_url'] . '/images/';

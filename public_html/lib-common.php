@@ -324,7 +324,9 @@ if (!is_callable($func)) {
 if (is_callable($func)) {
     $theme_config = $func();
     $_CONF['doctype'] = $theme_config['doctype'];
-    $_CONF['theme_oauth_icons'] = @$theme_config['theme_oauth_icons'];
+    $_CONF['theme_oauth_icons'] = isset($theme_config['theme_oauth_icons'])
+        ? $theme_config['theme_oauth_icons']
+        : '';
     $_IMAGE_TYPE = $theme_config['image_type'];
     if (isset($theme_config['theme_default'])) {
         $_CONF['theme_default'] = $theme_config['theme_default'];
@@ -2576,7 +2578,7 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
             } else {
                 $html_oauth = '';
                 // Grab oauth icons from theme
-                if (isset($_CONF['theme_oauth_icons']) && $_CONF['theme_oauth_icons']) {
+                if (!empty($_CONF['theme_oauth_icons'])) {
                     $icon_path = $_CONF['layout_url'] . '/images/';
                 } else {
                     $icon_path = $_CONF['site_url'] . '/images/';
