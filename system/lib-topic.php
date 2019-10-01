@@ -1545,7 +1545,7 @@ function TOPIC_inPath($tid, $current_tid = '')
         while ($found == false) {
             if ($check_tid != TOPIC_ROOT) {
                 $index = TOPIC_getIndex($check_tid);
-                if ($_TOPICS[$index]['access'] > 0 && $index != 0) {
+                if (isset($_TOPICS[$index]) && ($_TOPICS[$index]['access'] > 0) && ($index != 0)) {
                     if ($check_tid == $tid) {
                         $found = true;
                     }
