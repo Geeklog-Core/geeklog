@@ -104,7 +104,9 @@ class Language
                         $GLOBALS[$varName][$name] = $value;
                     }
                 } else {
-                    $GLOBALS[$varName] = self::$data[$varName][$language][$varName];
+					// Since this override is not a part of an array but actually just a variable there is no element
+					// Use empty string for element since override still stored as an array
+                    $GLOBALS[$varName] = self::$data[$varName][$language][''];
                 }
             }
         }
