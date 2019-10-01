@@ -72,9 +72,8 @@ Language::override(array(
 if (!isset($_LI_CONF['linksloginrequired'])) {
     $li_config = config::get_instance();
     $_LI_CONF = $li_config->get_config('links');
-    $_LI_CONF['recaptcha'] = (int) $_LI_CONF['recaptcha'];
+	$_LI_CONF['recaptcha'] = (isset($_LI_CONF['recaptcha'])) ? (int) $_LI_CONF['recaptcha'] : 0;
 }
-
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementation                                         |
