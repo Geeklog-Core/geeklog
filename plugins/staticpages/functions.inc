@@ -86,7 +86,7 @@ include_once $plugin_path . 'services.inc.php';
  */
 function plugin_getmenuitems_staticpages()
 {
-    global $_CONF, $_TABLES, $_SP_CONF, $topic;
+    global $_CONF, $_TABLES, $_SP_CONF;
 
     $order = '';
     if (!empty($_SP_CONF['sort_menu_by'])) {
@@ -102,8 +102,9 @@ function plugin_getmenuitems_staticpages()
         }
     }
 
-    if (!empty($topic)) {
-        $topic_sql = " AND (ta.tid = '$topic' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
+    $current_topic = TOPIC_currentTopic();
+if (!empty($current_topic)) {
+        $topic_sql = " AND (ta.tid = '{$current_topic}' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
     } else {
         if (COM_onFrontpage()) {
             $topic_sql = " AND (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";

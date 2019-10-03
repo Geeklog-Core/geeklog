@@ -184,6 +184,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $args['structured_data_type'] = $_SP_CONF['structured_data_type_default'];
     }
 
+    // This will never be set by the page editor
+    if (!isset($args['page_data'])) {
+        $args['page_data'] = '';
+    }
+
     if ($args['gl_svc']) {
         // Permissions
         if (!isset($args['perm_owner'])) {
@@ -255,10 +260,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         if (empty($args['template_id'])) {
             $args['template_id'] = '';
-        }
-
-        if (empty($args['page_data'])) {
-            $args['page_data'] = '';
         }
 
         if (empty($args['sp_prev'])) {
@@ -765,7 +766,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
  */
 function service_get_staticpages($args, &$output, &$svc_msg)
 {
-    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG12, $LANG_STATIC, $_SP_CONF, $topic, $_USER;
+    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG12, $LANG_STATIC, $_SP_CONF, $_USER;
 
     $output = '';
 

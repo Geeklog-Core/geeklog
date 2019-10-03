@@ -232,10 +232,10 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         'comment' => 'comment.thtml',
         'thread'  => 'thread.thtml',
     ));
-    
+
     // Blocks
     $template->set_block('comment', 'comment_signature');
-    $template->set_block('comment', 'comment_edit');    
+    $template->set_block('comment', 'comment_edit');
 
     // generic template variables
     $template->set_var('lang_authoredby', $LANG01[42]);
@@ -320,7 +320,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         $template->set_var('author_id', $A['uid']);
         $template->set_var('cid', $A['cid']);
         $template->set_var('cssid', $row % 2);
-        
+
         if ($_CONF['likes_enabled'] != 0 && $_CONF['likes_comments'] != 0) {
             $likes_control = LIKES_control('comment', '', $A['cid'], $_CONF['likes_comments']) . ' | ';
             $template->set_var('likes_control', $likes_control);
@@ -369,7 +369,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
                 $A['username'] = GLText::stripTags($A['name']);
             }
             $A['username'] = GLText::remove4byteUtf8Chars($A['username']); // Need to do this if doing a comment preview when adding/editing a comment
-            
+
             $template->set_var('author', $A['username']);
             $template->set_var('author_fullname', $A['username']);
             $template->set_var('author_link', $A['username']);
@@ -539,7 +539,7 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
         // Comments really should a postmode that is saved with the comment (ie store either 'html' or 'plaintext') but they don't so lets figure out if comment is html by searching for html tags
         if (preg_match('/<.*>/', $A['comment']) == 0) {
             $A['comment'] = COM_nl2br($A['comment']);
-        }        
+        }
 
         // highlight search terms if specified
         if (!empty($_REQUEST['query'])) {
@@ -574,17 +574,17 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             $template->set_var('reply_option', '');
         }
         $template->set_var('reply_link', $reply_link);
-        
+
         // Check for User Signature and add first
         // Get signature of comment owner
         if ($A['uid'] > 1) {
             $sig = DB_getItem($_TABLES['users'], 'sig', "uid = {$A['uid']}");
             if (!empty($sig)) {
                 $template->set_var('user_signature', COM_nl2br($sig));
-                $template->parse('comment_signature', 'comment_signature');     
+                $template->parse('comment_signature', 'comment_signature');
             }
         }
-        
+
         // check for comment edit
         $commentEdit = DB_query("SELECT cid,uid,UNIX_TIMESTAMP(time) AS time FROM {$_TABLES['commentedits']} WHERE cid = {$A['cid']}");
         $B = DB_fetchArray($commentEdit);
@@ -595,12 +595,12 @@ function CMT_getComment(&$comments, $mode, $type, $order, $delete_option = false
             } else {
                 $editName = DB_getItem($_TABLES['users'], 'username', "uid={$B['uid']}");
             }
-            
+
             // add edit info to text
             list($date, ) = COM_getUserDateTimeFormat($B['time'], 'date');
             $edit_info = $LANG03[30] . ' ' . $date . ' ' . $LANG03[31] . ' ' . $editName;
             $template->set_var('user_edit_info', $edit_info);
-            $template->parse('comment_edit', 'comment_edit');              
+            $template->parse('comment_edit', 'comment_edit');
         } else{
             $template->unset_var('comment_edit');
         }
@@ -679,7 +679,7 @@ function CMT_userComments($sid, $title, $type = 'article', $order = '', $mode = 
     $pluginLink = '';
     if (!empty($pluginUrl)) {
         $pluginLink = "$pluginUrl?$pluginId=$sid";
-    }        
+    }
 
     if ($page == '') {
         // Assume first page if none given
@@ -887,7 +887,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
             }
         }
     }
-    
+
     $commentUid = $uid;
     $table = '';
     $edit_comment = false;
@@ -972,13 +972,13 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
 
             $title = COM_checkWords(GLText::stripTags(COM_stripslashes($title)), 'comment');
             $title = GLText::remove4byteUtf8Chars($title);
-            
+
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
 
             $_POST['title'] = $title;
 
             $newComment = CMT_prepareText($comment, $postMode, $type);
-            
+
             $_POST['comment'] = $newComment;
 
             // Preview mode:
@@ -1015,7 +1015,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                         }
                     }
                 }
-                
+
                 if (($commentUid != 1) || empty($A[CMT_USERNAME])) {
                     //if (!($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34])) { // Preview mode
                         $A[CMT_USERNAME] = DB_getItem($_TABLES['users'], 'username', "uid = $commentUid");
@@ -1093,7 +1093,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 // Only allow admins to disable record of edit
                 if (SEC_hasRights('comment.moderate') AND !$edit_comment_submission) {
                     $comment_template->set_var('lang_record_edit', $LANG03['record_edit']);
-                    
+
                     if ($mode == 'edit') {
                         $record_edit = true;
                     } elseif (isset($_POST['record_edit'])) {
@@ -1106,12 +1106,12 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     } else {
                         $comment_template->set_var('record_edit_checked', "");
                     }
-                    
+
                     $comment_template->parse('record_edit', 'record_edit'); // Add record_edit block to record_edit variable
                 } else {
                     $comment_template->set_var('record_edit', '');
                 }
-                
+
                 $comment_template->set_var('hidewhenediting',
                     ' style="display:none;"');
             } else {
@@ -1187,7 +1187,7 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                 $comment_template->set_var('gltoken_name', CSRF_TOKEN);
                 $comment_template->set_var('gltoken', SEC_createToken());
                 $comment_template->set_var('uid', $commentUid);
-              
+
                 if (COM_isAnonUser($commentUid)) {
                     // Since anonymous user get name stored with comment
                     if ($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) { // // Preview mode
@@ -1200,14 +1200,14 @@ function CMT_commentForm($title, $comment, $sid, $pid = 0, $type, $mode, $postMo
                     $comment_template->set_var('lang_anonymous', $LANG03[24]);
                     //$comment_template->set_var('CMT_USERNAME', CMT_USERNAME);
                     $comment_template->set_var('username_value', $name);
-                    $comment_template->parse('username', 'username_anon');               
+                    $comment_template->parse('username', 'username_anon');
                 } else {
-               
+
                     $name = COM_getDisplayName($commentUid, $username, $fullname);
                     $comment_template->set_var('username', $name);
 
                 }
-                
+
                 $comment_template->set_var('action_url',
                     $_CONF['site_url'] . '/users.php?mode=logout');
                 $comment_template->set_var('lang_logoutorcreateaccount',
@@ -1319,7 +1319,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     $ret = 0;
     $cid = 0;
-    
+
     // Get a valid uid
     if (empty($_USER['uid'])) {
         $uid = 1;
@@ -1357,7 +1357,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     // Let plugins have a chance to check for spam
     $spamCheck = '<h1>' . $title . '</h1><p>' . $comment . '</p>';
-    
+
     $permanentlink = COM_getCurrentURL(); // Should be link to article, staticpage, etc.. of comment
     $authorname = null;
     $authoremail = null;
@@ -1371,7 +1371,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             $authorurl = $_USER['homepage'];
         }
     }
-    
+
     $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_COMMENT, $authorname, $authoremail, $authorurl);
 
     // Now check the result and display message if spam action was taken
@@ -1384,7 +1384,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     if ($someError = PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode)) {
         return $someError;
     }
-    
+
     // Store unescaped comment and title for use in notification.
     $comment0 = CMT_prepareText($comment, $postmode, $type);
     $title0 = COM_checkWords(GLText::stripTags($title), 'comment');
@@ -1447,7 +1447,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
                 . "WHERE sid = '$sid' AND type = '$type' AND lft >= $rht");
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
                 . "WHERE sid = '$sid' AND type = '$type' AND rht >= $rht");
-                
+
             if (isset($name) AND trim($name) == '') {
                 DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
                     "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");
@@ -1505,7 +1505,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         $rht3 = $rht + 2;  // value of new comment's "rht"
         if (isset($name) AND trim($name) == '') {
             DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");            
+                "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}',NULL");
         } elseif (isset($name)) {
             DB_save($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
@@ -1590,7 +1590,7 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     if (preg_match('/<.*>/', $comment) != 0) {
         $comment = GLText::stripTags($comment);
     }
-    
+
     $comment = PLG_replaceTags($comment, '', false, 'comment', $cid);
 
     if ($uid < 1) {
@@ -1615,10 +1615,10 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $comment = COM_truncate($comment, $_CONF['emailstorieslength'], '...'); 
+            $comment = COM_truncate($comment, $_CONF['emailstorieslength'], '...');
         }
         $comment = htmlspecialchars_decode($comment);
-        
+
         $mailbody .= $comment . "\n\n";
     }
 
@@ -1679,9 +1679,9 @@ function CMT_deleteComment($cid, $sid, $type)
         list($pid, $lft, $rht) = DB_fetchArray($result);
         DB_change($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
         DB_delete($_TABLES['comments'], 'cid', $cid);
-        
+
         LIKES_deleteActions('comment', '', $cid);
-        
+
         DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
             . "WHERE sid = '$sid' AND type = '$type' AND lft BETWEEN $lft AND $rht");
         DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
@@ -1810,7 +1810,7 @@ function CMT_sendReport($cid, $type)
     if (preg_match('/<.*>/', $comment) != 0) {
         $comment = GLText::stripTags($comment);
     }
-    
+
     $comment = PLG_replaceTags($comment, '', false, 'comment', $cid);
 
     $author = COM_getDisplayName($A['uid']);
@@ -1830,10 +1830,10 @@ function CMT_sendReport($cid, $type)
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $comment = COM_truncate($comment, $_CONF['emailstorieslength'], '...'); 
+            $comment = COM_truncate($comment, $_CONF['emailstorieslength'], '...');
         }
         $comment = htmlspecialchars_decode($comment);
-        
+
         $mailBody .= $comment . "\n\n";
     }
 
@@ -1897,7 +1897,7 @@ function CMT_handleEditSubmit($mode = null)
     } else {
         $table = $_TABLES['comments'];
     }
-    
+
     $commentuid = DB_getItem($table, 'uid', "cid = '$cid'");
     $uid = 1;
     if (!empty($_USER['uid'])) {
@@ -1928,7 +1928,7 @@ function CMT_handleEditSubmit($mode = null)
                 $username = COM_checkWords(GLText::stripTags(Geeklog\Input::post(CMT_USERNAME)), 'comment');
                 $username = GLText::remove4byteUtf8Chars($username);
                 $name = DB_escapeString($username);
-                
+
                 // Add name to update sql
                 if (trim($name) != '') {
                     $sql_name = ", name = '$name' ";
@@ -2394,7 +2394,7 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
         $A = DB_fetchArray($result);
         $title = COM_stripslashes($A['title']);
         $commentText = COM_stripslashes(COM_undoSpecialChars($A['comment']));
-        
+
         // Comments really should a postmode that is saved with the comment (ie store either 'html' or 'plaintext') but they don't so lets figure out if comment is html by searching for html tags
         if (preg_match('/<.*>/', $commentText) != 0) {
             $postMode = 'html';
@@ -2423,7 +2423,10 @@ function CMT_handleEdit($mode = '', $postMode = '', $format, $order, $page)
  */
 function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $format = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG_ADMIN, $topic, $_PLUGINS;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG_ADMIN, $_PLUGINS;
+
+	// Some plugin may still be using Global $topic variable so check and update $_USER array as needed
+	_depreciatedCheckGlobalTopicVariableUsed();
 
     $commentMode = Geeklog\Input::fRequest(CMT_MODE, '');
 
@@ -2638,8 +2641,7 @@ function CMT_handleComment($mode = '', $type = '', $title = '', $sid = '', $form
                     "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW()) AND (commentcode = 0)"
                     . COM_getPermSQL('AND'));
 
-                // if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid) < 2) { // Make sure have at least read access to topics to post comment
-                if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid, $topic) < 2) { // Make sure have at least read access (2 or greater) to current topic of article to post comment
+                if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid, TOPIC_currentTopic()) < 2) { // Make sure have at least read access (2 or greater) to current topic of article to post comment
                     // no permissions, or no story of that title
                     $abort = true;
                 }
@@ -2924,7 +2926,7 @@ function plugin_feedupdatecheck_comment($feed, $topic, $update_data, $limit, $up
  *
  * @param    string $sid   ID of item in question
  * @param    string $type  Type of item (i.e. article, photo, etc)
- * @return   int           Number of comments 
+ * @return   int           Number of comments
  */
 function CMT_commentCount($sid, $type)
 {
@@ -2932,7 +2934,7 @@ function CMT_commentCount($sid, $type)
 
     $nrows = DB_count($_TABLES['comments'], array('sid', 'type'),
         array($sid, $type));
-        
+
     return $nrows;
 }
 
@@ -2949,7 +2951,7 @@ function plugin_usercontributed_comment($uid)
 
     // Include comments and comment submissions
     $count = DB_getItem($_TABLES['comments'], 'COUNT(uid)', "uid = {$uid}") + DB_getItem($_TABLES['commentsubmissions'], 'COUNT(uid)', "uid = {$uid}");
-    
+
     if ($count > 0) {
         $retval = str_replace('%s', $count, $LANG03['num_comments']);
     }
@@ -2967,7 +2969,7 @@ function plugin_likesenabled_comment($sub_type)
     global $_CONF;
 
     $retval = false;
-    
+
     if ($_CONF['likes_enabled'] AND $_CONF['likes_comments'] > 0) {
         $retval = $_CONF['likes_comments'];
     }
@@ -2994,9 +2996,9 @@ function plugin_canuserlike_comment($sub_type, $id, $uid, $ip)
             $retval = true;
         } elseif ($uid == 1 AND $owner_id == 1 AND $ip != $owner_ip) {
             $retval = true;
-        } 
+        }
 
-    }   
-    
+    }
+
     return $retval;
 }

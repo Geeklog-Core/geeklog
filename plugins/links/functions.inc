@@ -133,7 +133,7 @@ function plugin_whatsnewsupported_links()
 */
 function plugin_getwhatsnew_links()
 {
-    global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG_LINKS,$_DB_dbms;
+    global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS,$_DB_dbms;
 
     $retval = '';
 
@@ -700,9 +700,9 @@ function plugin_upgrade_links()
     if (! plugin_compatible_with_this_version_links('links')) {
         return 3002;
     }
-    
-    // Retrieve other plugin info like min geeklog version and homepage 
-    $inst_parms = plugin_autoinstall_links('links');      
+
+    // Retrieve other plugin info like min geeklog version and homepage
+    $inst_parms = plugin_autoinstall_links('links');
 
     require_once $_CONF['path'] . 'plugins/links/sql/'
                                 . $_DB_dbms . '_updates.php';
@@ -808,10 +808,10 @@ function plugin_upgrade_links()
         case '2.1.3':
             $current_version = '2.1.4';
             break;
-            
+
         case '2.1.4':
             $current_version = '2.1.5'; // Shipped with Geeklog-2.1.3
-            break;    
+            break;
 
         case '2.1.5':
             $current_version = '2.1.6'; // Shipped with Geeklog-2.2.0
@@ -820,7 +820,7 @@ function plugin_upgrade_links()
         case '2.1.6':
             links_update_ConfValues_2_1_6();
             $current_version = '2.1.7'; // Shipped with Geeklog-2.2.1
-            break;              
+            break;
 
         default:
             $done = true;
@@ -830,7 +830,7 @@ function plugin_upgrade_links()
     // update plugin version number and other info
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'links'");
 
-    COM_errorLog( "Updated links plugin from v$installed_version to v$code_version", 1 );      
+    COM_errorLog( "Updated links plugin from v$installed_version to v$code_version", 1 );
 
     return true;
 }
@@ -965,7 +965,7 @@ function plugin_moderationvalues_links()
 */
 function plugin_moderationapprove_links($id)
 {
-    global $_TABLES, $_USER, $_GROUPS, $_LI_CONF;
+    global $_TABLES, $_GROUPS, $_LI_CONF;
 
     // The linksubmission only keeps track of the submitter's uid, but not
     // of grous and permissions. So set those to sensible defaults.
@@ -1085,7 +1085,7 @@ function plugin_save_submit_links($A)
     }
     $spamCheck = '<p>'. $link .' (' . $A['categorydd'] . ')<br' . XHTML . '>'
                . $A['description'] . '</p>';
-               
+
     $permanentlink = null; // Setting this to null as links can appear on a number of different pages like Category view and links homepage in topten list (there is no true permanent page that the link is being added too)
     $authorname = null;
     $authoremail = null;
@@ -1099,7 +1099,7 @@ function plugin_save_submit_links($A)
             $authorurl = $_USER['homepage'];
         }
     }
-    
+
     $result = PLG_checkForSpam($spamCheck, $_CONF['spamx'], $permanentlink, Geeklog\Akismet::COMMENT_TYPE_LINK, $authorname, $authoremail, $authorurl);
 
     if ($result > PLG_SPAM_NOT_FOUND) {
@@ -1560,12 +1560,13 @@ function links_breadcrumbs($root, $cid)
  */
 function phpblock_topic_links()
 {
-    global $_CONF, $_TABLES, $LANG_LINKS, $topic;
+    global $_CONF, $_TABLES, $LANG_LINKS;
 
     $retval = '';
 
-    if (!empty($topic)) {
-        $tid = DB_escapeString($topic);
+    $current_topic = TOPIC_currentTopic();
+    if (!empty($current_topic)) {
+        $tid = DB_escapeString($current_topic);
         $topic_sql = "(c.tid='{$tid}' OR c.tid='" . TOPIC_ALL_OPTION . "') ";
     } else {
         $topic_sql = "(c.tid='" . TOPIC_ALL_OPTION . "') ";
@@ -1596,17 +1597,17 @@ function phpblock_topic_links()
  */
 function phpblock_topic_categories()
 {
-    global $_CONF, $_TABLES, $LANG_LINKS, $topic;
+    global $_CONF, $_TABLES, $LANG_LINKS;
 
     $retval = '';
 
-    if (!empty($topic)) {
-        $tid = DB_escapeString($topic);
+    $current_topic = TOPIC_currentTopic();
+    if (!empty($current_topic)) {
+        $tid = DB_escapeString($current_topic);
         $topic_sql = "(tid='{$tid}' OR tid='" . TOPIC_ALL_OPTION . "') ";
     } else {
         $topic_sql = "(tid='" . TOPIC_ALL_OPTION . "') ";
     }
-
 
     $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']} WHERE " . $topic_sql . COM_getPermSQL ('AND'));
     $nrows = DB_numRows($result);
@@ -1929,7 +1930,7 @@ function plugin_usercontributed_links($uid)
 
     // Include links and link submissions
     $count = DB_getItem($_TABLES['links'], 'COUNT(owner_id)', "owner_id = {$uid}") + DB_getItem($_TABLES['linksubmission'], 'COUNT(owner_id)', "owner_id = {$uid}");
-    
+
     if ($count > 0) {
         $retval = str_replace('%s', $count, $LANG_LINKS_ADMIN['num_links']);
     }

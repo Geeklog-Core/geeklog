@@ -756,6 +756,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['sp_where'] = 1; // default new pages to "top of page"
         $A['draft_flag'] = $_SP_CONF['draft_flag'];
         $A['cache_time'] = $_SP_CONF['default_cache_time'];
+        $A['sp_php'] = 0;
         $A['template_flag'] = ''; // Defaults to not a template
         $A['template_id'] = ''; // Defaults to None
 

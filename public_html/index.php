@@ -45,15 +45,17 @@ require_once $_CONF['path_system'] . 'lib-article.php';
  */
 function fixTopic(&$A, $tid_list)
 {
-    global $_TABLES, $topic;
+    global $_TABLES;
+
+    $current_topic = TOPIC_currentTopic();
 
     // This case may happen if a article belongs to the current topic but the default topic for the article is a child  of the current topic.
     $sql = "SELECT t.tid, t.topic, t.imageurl
         FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
         WHERE t.tid = ta.tid";
     // If all topics (blank) then find default topic
-    if (!empty($topic)) {
-        $sql .= " AND ta.type = 'article' AND ta.id = '{$A['sid']}' AND ta.tid = '$topic'";
+    if (!empty($current_topic)) {
+        $sql .= " AND ta.type = 'article' AND ta.id = '{$A['sid']}' AND ta.tid = '{$current_topic}'";
     } else {
         $sql .= " AND ta.type = 'article' AND ta.id = '{$A['sid']}'";
     }
@@ -69,14 +71,14 @@ function fixTopic(&$A, $tid_list)
         $A['topic'] = $B['topic'];
         $A['imageurl'] = $B['imageurl'];
     } else {
-        if (!empty($topic)) {
+        if (!empty($current_topic)) {
             // Does not belong to current topic so check inherited
             // Make sure sort order the same as in TOPIC_getTopic or articles with multiple topics might not display in the right topic when clicked
             $sql = "SELECT t.tid, t.topic, t.imageurl
                 FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta
                 WHERE t.tid = ta.tid
                 AND ta.type = 'article' AND ta.id = '{$A['sid']}'
-                AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')))
+                AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$current_topic}')))
                 " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't') . "
                 GROUP BY t.tid, topic, imageurl, ta.tdefault, ta.tid
                 ORDER BY ta.tdefault DESC, ta.tid ASC";
@@ -107,32 +109,36 @@ if ($_CONF['url_rewrite'] && isset($_CONF['url_routing']) && !empty($_CONF['url_
 // See if user has access to view topic else display message.
 // This check has already been done in lib-common so re-check to figure out if
 // 404 message needs to be displayed.
-$topic = '';
+$current_topic = '';
+
 $page = 0;
 if ($_CONF['url_rewrite'] && !$_CONF['url_routing']) {
     COM_setArgNames(array(TOPIC_PLACEHOLDER, 'topic', 'page'));
     if (strcasecmp(COM_getArgument(TOPIC_PLACEHOLDER), 'topic') === 0) {
-        $topic = COM_getArgument('topic');
+        $current_topic = COM_getArgument('topic');
         $page = (int) COM_getArgument('page');
     }
 } elseif ($_CONF['url_rewrite'] && $_CONF['url_routing']) {
         COM_setArgNames(array('topic', 'page'));
-        $topic = COM_getArgument('topic');
+        $current_topic = COM_getArgument('topic');
         $page = (int) COM_getArgument('page');
 } else {
-    $topic = Geeklog\Input::fGet('topic', Geeklog\Input::fPost('topic', ''));
+    $current_topic = Geeklog\Input::fGet('topic', Geeklog\Input::fPost('topic', ''));
     $page = (int) Geeklog\Input::get('page', 0);
 }
 
-if ($topic === '-') {
-    $topic = '';
+// Check if all topics
+if ($current_topic === '-') {
+    $current_topic = '';
+    $current_topic = TOPIC_setTopic($current_topic);
 }
 
-if ($topic != '') {
-    if (strtolower($topic) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($topic) . "' " . COM_getPermSQL('AND')))) {
-        // Topic doesn't exist (or user doesn't have access) so reset topic variable
-        $topic = '';
-        
+if (!empty($current_topic)) {
+    // Now actual set the current topic
+    $current_topic = TOPIC_setTopic($current_topic);
+
+    // Topic doesn't exist (or user doesn't have access)
+    if (empty($current_topic)) {
         // Now display 404
         COM_handle404();
     }
@@ -143,13 +149,13 @@ if ($page == 0) {
 } elseif ($page < 0) {
     // No negative page numbers. Bail here since it will create an error in the SQL statement below
     $topic_url = '';
-    if (!empty($topic)) {
-        $topic_url = TOPIC_getUrl($topic);
+    if (!empty($current_topic)) {
+        $topic_url = TOPIC_getUrl($current_topic);
     }
-    COM_handle404($topic_url);    
+    COM_handle404($topic_url);
 }
 
-$displayAll = (Geeklog\Input::get('display') === 'all') && empty($topic);
+$displayAll = (Geeklog\Input::get('display') === 'all') && empty($current_topic);
 
 // Retrieve the archive topic - currently only one supported
 $archiveTid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
@@ -159,7 +165,7 @@ $page_navigation = '';
 
 if (!$displayAll) {
     // give plugins a chance to replace this page entirely
-    $newContent = PLG_showCenterblock(0, $page, $topic);
+    $newContent = PLG_showCenterblock(0, $page, $current_topic);
     if (!empty($newContent)) {
         COM_output($newContent);
         exit;
@@ -210,7 +216,7 @@ if (SEC_inGroup('Root') && ($page === 1)) {
 
 // Show any Plugin formatted blocks
 // Requires a plugin to have a function called plugin_centerblock_<plugin_name>
-$displayBlock = PLG_showCenterblock(1, $page, $topic); // top blocks
+$displayBlock = PLG_showCenterblock(1, $page, $current_topic); // top blocks
 if (!empty($displayBlock)) {
     $display .= $displayBlock;
     // Check if theme has added the template which allows the centerblock
@@ -234,8 +240,8 @@ $maxstories = 0;
 if ($U['maxstories'] >= $_CONF['minnews']) {
     $maxstories = $U['maxstories'];
 }
-if ((!empty($topic)) && ($maxstories == 0)) {
-    $topiclimit = DB_getItem($_TABLES['topics'], 'limitnews', "tid = '" . DB_escapeString($topic) . "'");
+if ((!empty($current_topic)) && ($maxstories == 0)) {
+    $topiclimit = DB_getItem($_TABLES['topics'], 'limitnews', "tid = '" . DB_escapeString($current_topic) . "'");
     if ($topiclimit >= $_CONF['minnews']) {
         $maxstories = $topiclimit;
     }
@@ -283,26 +289,26 @@ while (list($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetcharray($e
 // Figure out different settings to display stories in a topic
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
-if (empty($topic)) {
+if (empty($current_topic)) {
     $sql .= COM_getLangSQL('tid', 'AND', 'ta');
 }
 
 // if a topic was provided only select those stories.
 $tid_list = '';
-if (!empty($topic)) {
+if (!empty($current_topic)) {
     // Retrieve list of inherited topics
-    $tid_list = TOPIC_getChildList($topic);
+    $tid_list = TOPIC_getChildList($current_topic);
 
-    // Could have empty list if $topic does not exist or does not have permission so let it equal topic and will error out properly at end
+    // Could have empty list if $current_topic does not exist or does not have permission so let it equal topic and will error out properly at end
     if (empty($tid_list)) {
-        $tid_list = "'" . DB_escapeString($topic) . "'";
+        $tid_list = "'" . DB_escapeString($current_topic) . "'";
     }
-    $sql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . DB_escapeString($topic) . "')))";
+    $sql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '" . DB_escapeString($current_topic) . "')))";
 } else {
     $sql .= " AND frontpage = 1 AND ta.tdefault = 1";
 }
 
-if (strtolower($topic) != strtolower($archiveTid)) {
+if (strtolower($current_topic) != strtolower($archiveTid)) {
     $sql .= " AND ta.tid != '" . DB_escapeString($archiveTid) . "' ";
 }
 
@@ -335,18 +341,19 @@ $msql = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND
             ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND
-            {$sql} GROUP BY s.sid, s.uid, s.draft_flag, s.date, s.title, s.page_title, s.introtext,  
-            s.bodytext, s.text_version, s.hits, s.numemails, s.comments, s.comment_expire, s.trackbacks, 
-            s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, 
-            s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, s.meta_keywords,  
-            s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon,  
-            expireunix, {$userfields}, date 
+            {$sql} GROUP BY s.sid, s.uid, s.draft_flag, s.date, s.title, s.page_title, s.introtext,
+            s.bodytext, s.text_version, s.hits, s.numemails, s.comments, s.comment_expire, s.trackbacks,
+            s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire,
+            s.postmode, s.advanced_editor_mode, s.frontpage, s.meta_description, s.meta_keywords,
+            s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon,
+            expireunix, {$userfields}, date
             ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";
 
 $result = DB_query($msql);
 
 // Figure out number of total pages
-$data = DB_query("SELECT s.sid FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta WHERE ta.type = 'article' AND ta.id = s.sid AND $sql GROUP BY s.sid");
+$data = DB_query("SELECT s.sid FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta WHERE ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND $sql GROUP BY s.sid");
+
 $nrows = DB_numRows($data);
 $num_pages = ceil($nrows / $limit);
 
@@ -361,8 +368,8 @@ if ($A = DB_fetchArray($result)) {
     }
 
     // Display breadcrumb trail
-    if (!empty($topic)) {
-        $breadcrumbs = TOPIC_breadcrumbs('topic', $topic);
+    if (!empty($current_topic)) {
+        $breadcrumbs = TOPIC_breadcrumbs('topic', $current_topic);
     }
 
     // display first article
@@ -371,7 +378,7 @@ if ($A = DB_fetchArray($result)) {
 
     // get plugin center blocks after featured article
     if ($story->DisplayElements('featured') == 1) {
-        $display .= PLG_showCenterblock(2, $page, $topic);
+        $display .= PLG_showCenterblock(2, $page, $current_topic);
     }
 
     // get remaining stories
@@ -384,26 +391,26 @@ if ($A = DB_fetchArray($result)) {
     }
 
     // get plugin center blocks that follow articles
-    $display .= PLG_showCenterblock(3, $page, $topic); // bottom blocks
+    $display .= PLG_showCenterblock(3, $page, $current_topic); // bottom blocks
 
     // Print Google-like paging navigation
     if (!isset($_CONF['hide_main_page_navigation']) ||
         ($_CONF['hide_main_page_navigation'] == 'false') ||
-        ($_CONF['hide_main_page_navigation'] === 'frontpage' && !empty($topic))) {
-        
+        ($_CONF['hide_main_page_navigation'] === 'frontpage' && ($current_topic != TOPIC_ALL_OPTION))) {
+
         if ($_CONF['url_rewrite']) {
-            $tempTopic = empty($topic) ? '-' : $topic;
+            $tempTopic = empty($current_topic) ? '-' : $current_topic;
             $base_url = TOPIC_getUrl($tempTopic);
         } else {
-            if (!empty($topic)) {
-                $base_url = TOPIC_getUrl($topic);
+            if (!empty($current_topic)) {
+                $base_url = TOPIC_getUrl($current_topic);
             } else {
                 $base_url = $_CONF['site_url'] . '/index.php';
             }
         }
-        /*    
+        /*
         if ($_CONF['url_rewrite']) {
-            $tempTopic = empty($topic) ? '-' : $topic;
+            $tempTopic = empty($current_topic) ? '-' : $current_topic;
             $base_url = COM_buildURL(
                 $_CONF['site_url'] . '/index.php?'
                 . http_build_query(array(
@@ -412,11 +419,11 @@ if ($A = DB_fetchArray($result)) {
                 ))
             );
         } else {
-            if (!empty($topic)) {
+            if (!empty($current_topic)) {
                 $base_url = COM_buildURL(
                     $_CONF['site_url'] . '/index.php?'
                     . http_build_query(array(
-                        'topic' => $topic,
+                        'topic' => $current_topic,
                     ))
                 );
             } else {
@@ -434,11 +441,11 @@ if ($A = DB_fetchArray($result)) {
             $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
         }
 
-        $display .= PLG_showCenterblock(3, $page, $topic); // bottom blocks
+        $display .= PLG_showCenterblock(3, $page, $current_topic); // bottom blocks
     } else {
         $topic_url = '';
-        if (!empty($topic)) {
-            $topic_url = TOPIC_getUrl($topic);
+        if (!empty($current_topic)) {
+            $topic_url = TOPIC_getUrl($current_topic);
         }
         COM_handle404($topic_url);
     }
@@ -446,7 +453,7 @@ if ($A = DB_fetchArray($result)) {
 
 
 // Retrieve info about topic
-$result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid = '" . DB_escapeString($topic) . "'");
+$result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid = '" . DB_escapeString($current_topic) . "'");
 $A = DB_fetcharray($result);
 
 
@@ -454,7 +461,7 @@ $tt = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
 $tt->set_file(array('topic' => 'topic.thtml'));
 $tt->set_var('topic_content', $display);
 $tt->set_var('page_navigation', $page_navigation);
-if ($topic) {
+if (!empty($current_topic)) {
     if (empty($A['title'])) {
         $title = $A['topic'];
     } else {
@@ -464,7 +471,7 @@ if ($topic) {
     // Homepage then
     $title = $_CONF['site_name'];
 }
-$tt->set_var('topic_id', $topic);
+$tt->set_var('topic_id', $current_topic);
 $tt->set_var('topic_title', $title);
 if ($page == 1) {
     $tt->set_var('first_page', true);
@@ -473,7 +480,7 @@ $tt->parse('output', 'topic');
 $display = $tt->finish($tt->get_var('output'));
 
 $header = '';
-if ($topic) {
+if (!empty($current_topic)) {
     // Meta Tags
     if ($_CONF['meta_tags'] > 0) {
         $header .= LB . PLG_getMetaTags(
@@ -490,13 +497,13 @@ if ($topic) {
                 )
             );
     }
-    
+
     // Add hreflang link element if Multi Language Content is setup
-    // Only allow hreflang link element to be visible when on canonical url. 
+    // Only allow hreflang link element to be visible when on canonical url.
     // NOTE: Since Topic does not have canonical do it just for first page (as other languages for same topic may not have the same number of articles in each)
     if ($page == 1) {
-        $header .= COM_createHREFLang('topic', $topic);
-    }    
+        $header .= COM_createHREFLang('topic', $current_topic);
+    }
 }
 
 $display = COM_createHTMLDocument(

@@ -273,7 +273,7 @@ class Article
         'structured_data_type' => array(
             STORY_AL_NUMERIC,
             '_structured_data_type',
-        ),        
+        ),
         'trackbackcode'    => array(
             STORY_AL_NUMERIC,
             '_trackbackcode',
@@ -430,16 +430,18 @@ class Article
      */
     public function loadFromDatabase($sid, $mode = 'edit')
     {
-        global $_TABLES, $_CONF, $_GROUPS, $_USER, $topic;
+        global $_TABLES, $_CONF, $_GROUPS, $_USER;
 
         $sid = DB_escapeString(COM_applyFilter($sid));
 
+        $current_topic = TOPIC_currentTopic();
+
         $sql = array();
         if (!empty($sid) && (($mode === 'edit') || ($mode === 'view') || ($mode === 'clone'))) {
-            if (empty($topic)) {
+            if (empty($current_topic)) {
                 $topic_sql = ' AND ta.tdefault = 1';
             } else {
-                $topic_sql = " AND ta.tid = '{$topic}'";
+                $topic_sql = " AND ta.tid = '{$current_topic}'";
             }
 
             /* Original
@@ -460,12 +462,12 @@ class Article
             $sql['pgsql'] = 'SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
             */
-            $sql['mysql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl 
+            $sql['mysql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
                 FROM {$_TABLES['storysubmission']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE (s.uid = u.uid) AND  (ta.tid = t.tid) AND (sid = '$sid')
                 AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1";
 
-            $sql['pgsql'] = "SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl 
+            $sql['pgsql'] = "SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
                 FROM {$_TABLES['storysubmission']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE (s.uid = u.uid) AND  (ta.tid = t.tid) AND (sid = '$sid')
                 AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1";
@@ -547,7 +549,7 @@ class Article
 
             if (isset($_GROUPS['Story Admin'])) {
                 $this->_group_id = $_GROUPS['Story Admin'];
-            } else { 
+            } else {
                 $this->_group_id = SEC_getFeatureGroup('story.edit');
             }
 
@@ -600,7 +602,7 @@ class Article
                     $this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid));
                 } else {
                     // When viewing a article we only care about if it has access to the current topic and article
-                    $this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid, $topic));
+                    $this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid, $current_topic));
                 }
 
                 if ($this->_access == 0) {
@@ -649,7 +651,7 @@ class Article
 
             if (isset($_GROUPS['Story Admin'])) {
                 $this->_group_id = $_GROUPS['Story Admin'];
-            } else { 
+            } else {
                 $this->_group_id = SEC_getFeatureGroup('story.edit');
             }
 
@@ -981,13 +983,15 @@ class Article
      */
     public function initSubmission()
     {
-        global $_USER, $_CONF, $_TABLES, $topic;
+        global $_USER, $_CONF, $_TABLES;
 
         if (COM_isAnonUser()) {
             $this->_uid = 1;
         } else {
             $this->_uid = $_USER['uid'];
         }
+
+        $current_topic = TOPIC_currentTopic();
 
         // initialize the GLText version to the latest version
         $this->_text_version = GLTEXT_LATEST_VERSION;
@@ -999,22 +1003,19 @@ class Article
         // if we still don't have one...
 
         // Have we specified a permitted topic?
-        if (!empty($topic)) {
-            $allowed = DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($topic) . "'" . COM_getTopicSql('AND'));
-
-            if ($allowed != $topic) {
-                $topic = '';
-            }
+        // Dobule check
+        if (!empty($current_topic)) {
+            $current_topic = TOPIC_setTopic($current_topic);
         }
 
         // Do we now not have a topic?
-        if (empty($topic)) {
-            // Get default permitted:
-            $topic = DB_getItem($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND'));
+        if (empty($current_topic)) {
+            // Get default permitted. User should have access to this... 
+            $current_topic = TOPIC_setTopic(DB_getItem($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND')));
         }
 
         // Use what we have:
-        $this->_tid = $topic;
+        $this->_tid = $current_topic;
         $this->_date = time();
     }
 
@@ -1829,8 +1830,8 @@ class Article
                 $return = GLText::getDisplayText(
                     $return,
                     $this->_postmode,
-                    $this->_text_version, 
-                    'article', 
+                    $this->_text_version,
+                    'article',
                     $this->_sid);
                 $return = $this->renderImageTags($return);
 
@@ -1872,17 +1873,17 @@ class Article
                 $return = $return[0];
 
                 break;
-                
+
             case 'modified':
                 if (!empty($this->_modified)) {
                     $return = COM_getUserDateTimeFormat($this->_modified);
-                    
+
                     $return = $return[0];
                 } else {
                     $return = "";
                 }
 
-                break;                
+                break;
 
             case 'datetime':
                 $return = strftime('%FT%T', $this->_date);
@@ -1893,12 +1894,12 @@ class Article
                 $return = $this->_date;
 
                 break;
-                
+
             case 'unixmodified':
                 $return = $this->_modified;
 
                 break;
-                
+
             case 'hits':
                 $return = COM_numberFormat($this->_hits);
 

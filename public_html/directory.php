@@ -190,7 +190,7 @@ function DIR_navBar($dir_topic, $year, $month = 0)
     $retval .= ' | ';
 
     $url = COM_buildURL($_CONF['site_url'] . '/' . THIS_SCRIPT);
-    if ($dir_topic !== 'all') {
+    if ($dir_topic !== TOPIC_ALL_OPTION) {
         $url = COM_buildURL(
             $_CONF['site_url'] . '/' . THIS_SCRIPT . '?' . http_build_query(array('topic' => $dir_topic))
         );
@@ -252,7 +252,7 @@ function DIR_displayMonth($template, $dir_topic, $year, $month)
         WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())
         AND ta.type = 'article' AND ta.id = sid ";
 
-    if ($dir_topic !== 'all') {
+    if ($dir_topic !== TOPIC_ALL_OPTION) {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($dir_topic);
         $sql['mysql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic}')))";
@@ -336,7 +336,7 @@ function DIR_displayYear($template, $dir_topic, $year)
         WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())
         AND ta.type = 'article' AND ta.id = sid ";
 
-    if ($dir_topic !== 'all') {
+    if ($dir_topic !== TOPIC_ALL_OPTION) {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($dir_topic);
         $dir_topic_escaped = DB_escapeString($dir_topic);
@@ -455,7 +455,7 @@ function DIR_canonicalLink($dir_topic, $year = 0, $month = 0)
         $args['month'] = $month;
     } elseif ($year != 0) {
         $args['year'] = $year;
-    } elseif ($dir_topic === 'all') {
+    } elseif ($dir_topic === TOPIC_ALL_OPTION) {
         unset($args['topic']);
     }
 
@@ -484,27 +484,14 @@ if (isset($_POST['topic'], $_POST['year'], $_POST['month'])) {
 
 $dir_topic = COM_applyFilter($dir_topic);
 if (empty($dir_topic)) {
-    $dir_topic = 'all';
+    $dir_topic = TOPIC_ALL_OPTION;
 }
 
 // Topic stuff already set in lib-common but need to double check if URL_Write is_a enabled
 // Set topic for rest of site
-if ($dir_topic === 'all') {
-    $topic = '';
-} else {
-    $topic = $dir_topic;
-}
-
-// See if user has access to view topic.
-if ($topic != '') {
-    $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($topic) . "' " . COM_getPermSQL('AND'));
-    if (strtolower($topic) !== strtolower($test_topic)) {
-        $topic = '';
-        $dir_topic = 'all';
-    } else {
-        $topic = $test_topic;
-        $dir_topic = $test_topic;
-    }
+$dir_topic = TOPIC_setTopic($dir_topic);
+if (!empty($dir_topic)) {
+    $dir_topic = TOPIC_ALL_OPTION
 }
 
 if ($year < 0) {
@@ -516,7 +503,7 @@ if (($month < 1) || ($month > 12)) {
 }
 
 $dir_topicName = '';
-if ($dir_topic !== 'all') {
+if ($dir_topic !== TOPIC_ALL_OPTION) {
     $dir_topicName = DB_getItem($_TABLES['topics'], 'topic', "tid = '" . DB_escapeString($dir_topic) . "'");
 }
 
@@ -529,7 +516,7 @@ $template->set_var('lang_no_articles', $LANG_DIR['no_articles']);
 
 if (($year != 0) && ($month != 0)) {
     $title = sprintf($LANG_DIR['title_month_year'], $LANG_MONTH[$month], $year);
-    if ($dir_topic !== 'all') {
+    if ($dir_topic !== TOPIC_ALL_OPTION) {
         $title .= ': ' . $dir_topicName;
     }
 
@@ -541,7 +528,7 @@ if (($year != 0) && ($month != 0)) {
     $val_month = $month;
 } elseif ($year != 0) {
     $title = sprintf($LANG_DIR['title_year'], $year);
-    if ($dir_topic !== 'all') {
+    if ($dir_topic !== TOPIC_ALL_OPTION) {
         $title .= ': ' . $dir_topicName;
     }
     $headerCode = DIR_canonicalLink($dir_topic, $year);
@@ -552,7 +539,7 @@ if (($year != 0) && ($month != 0)) {
     $val_month = 0;
 } else {
     $title = $LANG_DIR['title'];
-    if ($dir_topic !== 'all') {
+    if ($dir_topic !== TOPIC_ALL_OPTION) {
         $title .= ': ' . $dir_topicName;
     }
     $headerCode = DIR_canonicalLink($dir_topic);

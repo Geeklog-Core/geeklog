@@ -140,9 +140,9 @@ class Search
             $this->_topic = $tid;
         } else {
             if ($_CONF['search_use_topic']) {
-                $last_topic = SESS_getVariable('topic');
-                if ($last_topic != '') {
-                    $this->_topic = $last_topic;
+                $current_topic = TOPIC_currentTopic();
+                if (!empty($current_topic)) {
+                    $this->_topic = $current_topic;
                 }
             }
         }
@@ -672,7 +672,7 @@ class Search
 
         if ($this->_keyType == 'any' OR $this->_keyType == 'all') {
             $words = array_unique(explode(' ', $escQuery));
-            $words = array_filter($words); // filter out empty strings            
+            $words = array_filter($words); // filter out empty strings
             $escQuery = implode(' ', $words);
             if ($this->_keyType == 'any') {
                 $lang_search_op = $LANG09[57];

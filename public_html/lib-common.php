@@ -47,7 +47,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR |
 /**
  * This is the common library for Geeklog.  Through our code, you will see
  * functions with the COM_ prefix (e.g. COM_createHTMLDocument()).  Any such functions
- * can be found in this file and called by plugins. 
+ * can be found in this file and called by plugins.
  * Note: functions with the _ prefix should only be called by Core and not any plugins.
  * --- You don't need to modify anything in this file! ---
  * WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
@@ -241,12 +241,32 @@ if (COM_isAnonUser()) {
 }
 
 
-// Initiate global topic variable
-// This variable contains the current topic id
-// It can be set by anything that uses topics like index.php (topics), article, directory, staticpages, other potential plugins. 
-// Retrieved usually via TOPIC_getTopic by the page (last topic is stored as a session var which TOPIC_getTopic uses)
-// Was retrieved here at one point but url_rewrite caused issues as lib-common doesn't know the difference between url rewritten topic urls, article urls, staticpage urls, etc...
-$topic = '';
+// Initiate global topic variable (as of Geeklog v2.2.1 is $_USER['topic_id'], before was $topic). This variable contains the current topic id
+// It can be set by anything that uses topics like index.php (topics), article, directory, staticpages, other potential plugins.
+// Actual topic id is retrieved via TOPIC_getTopic by the page. This function checks for the topic assignment of the item and if not found uses  the last topic which is stored as a session var topic_id
+// Not all pages will use TOPIC_getTopic since the item being displayed may not be topic aware therefore we need to set the default all topics here.
+// The topic id was retrieved here at one point (instead of using TOPIC_getTopic) but url_rewrite caused issues as lib-common doesn't know the difference between url rewritten topic urls, article urls, staticpage urls, etc...
+// NOTE: Global $topic variable has been depreciated as of Geeklog v2.2.1 and checks for it by Core with the function _depreciatedCheckGlobalTopicVariableUsed will be removed by Geeklog v3.0.0. use $_USER['topic_id'] instead of $topic
+// Please use the functions TOPIC_setTopic to set the current topic if needed or TOPIC_currentTopic to retrieve the current topic id
+TOPIC_setTopic(''); // Initialize current topic id variable and set current topic to All Topics - Current user topic id at this point untill TOPIC_getTopic is called (if ever) or TOPIC_setTopic is called by something else
+
+/**
+ * Figure out if depreciated global $topic array is used. If so update $_USER array as needed
+ * Note: This function starts with _ therefore it is only meant to be called from within Geeklog Core for a specific task
+ *
+ */
+function _depreciatedCheckGlobalTopicVariableUsed() {
+	global $_USER;
+
+    // NOTE: currently for backwards compatibility the functions TOPIC_getTopic and TOPIC_setTopic will set the global $topic variable (as well as the proper variable)
+    // These functions will need to be updated to remove this for Geeklog v3.0.0
+
+	// Check if global $topic variable exists
+	if (array_key_exists('topic', $GLOBALS)) {
+		COM_deprecatedLog('Global $topic Variable', '2.2.1', '3.0.0', '$_USER[' . "'topic_id'" . '] variable instead to determine the current user topic id');
+		$_USER['topic_id'] = $GLOBALS['topic']; // not sure if needed for backwards compatibility but kept anyways...
+	}
+}
 
 // Set theme
 $useTheme = '';
@@ -295,12 +315,12 @@ if (($_CONF['theme'] === 'professional') || ($_CONF['theme'] === 'professional_c
 // Geeklog Theme Support
 // If ANY theme changes related to:
 //      template variables (new or deleted)
-//      template files (name of files, new or deleted files) 
+//      template files (name of files, new or deleted files)
 //      New/Updated Features (for example added the scripts class to handle css and javascript)
 // has happened since previous version of Geeklog then current Geeklog version is required.
 // If nothing has changed related to this, then the last version of Geeklog that meet these standards can be used here.
 // If versions are not compatible then a warning message will be displayed to the Root user on the homepage
-$_CONF['min_theme_gl_version'] = VERSION; 
+$_CONF['min_theme_gl_version'] = VERSION;
 
 
 // Include theme functions file (required)
@@ -332,11 +352,12 @@ if (is_callable($func)) {
         $_CONF['theme_default'] = $theme_config['theme_default'];
         $_CONF['path_layout_default'] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/';
     }
+	// Remove references to supported_version_theme by Geeklog v3.0.0
     if (isset($theme_config['supported_version_theme'])) {
+		COM_deprecatedLog('Theme Variable $theme_config[' . "'supported_version_theme'" . ']', '2.2.1', '3.0.0', '$theme_config[' . "'supported_version_theme'" . '] instead');
         $_CONF['theme_gl_version'] = $theme_config['supported_version_theme'];
-        COM_deprecatedLog('"supported_version_theme"', '2.2.1', '3.0.0', 'Set "theme_gl_version" config option in themes theme_config function');
     } else {
-        $_CONF['theme_gl_version'] = $theme_config['theme_gl_version'];      
+        $_CONF['theme_gl_version'] = $theme_config['theme_gl_version'];
     }
     $_CONF['theme_etag'] = (!isset($theme_config['etag']))
         ? $_CONF['theme_etag'] : $theme_config['etag'];
@@ -407,10 +428,10 @@ $TEMPLATE_OPTIONS = array(
         'layout_url'      => $_CONF['layout_url'], // Can be set by lib-common on theme change
         'anonymous_user'  => COM_isAnonUser(),
         'device_mobile'   => $_DEVICE->is_mobile(),
-        'front_page'      => COM_onFrontpage(), 
+        'front_page'      => COM_onFrontpage(),
         'current_url'     => COM_getCurrentURL()
     ),
-    'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes. CTL_setTemplateRoot will be depreciated as of Geeklog 3.0.0. 
+    'hook'                => array('set_root' => 'CTL_setTemplateRoot'), // Function found in lib-template and is used to add the ability for child themes. CTL_setTemplateRoot will be depreciated as of Geeklog 3.0.0.
 );
 Autoload::load('template');
 // Template library contains helper functions for template class
@@ -537,7 +558,7 @@ if (is_callable($func)) {
         $wrap = true;
         if (isset($info['wrap']) && !$info['wrap']) {
             $wrap = false;
-        }        
+        }
         $footer = true;
         if (isset($info['footer']) && !$info['footer']) {
             $footer = false;
@@ -623,7 +644,7 @@ if ($_VARS['last_article_publish'] != $A['date']) {
     if ($_CONF['whatsnew_cache_time'] > 0) {
         $cacheInstance = 'whatsnew__'; // remove all what's new instances
         CACHE_remove_instance($cacheInstance);
-    }    
+    }
 }
 
 /**
@@ -680,7 +701,7 @@ function COM_getBlockTemplate($blockName, $which, $position = '', $plugin = '')
         $positionSpecific = substr($template, 0, strlen($template) - 6);
         $positionSpecific .= '-' . $position . '.thtml';
 
-        $templatefound = false;        
+        $templatefound = false;
         if (!empty($plugin)) {
             $plugin_template_paths = CTL_plugin_templatePath($plugin);
             foreach($plugin_template_paths as $plugin_template_path) {
@@ -691,7 +712,7 @@ function COM_getBlockTemplate($blockName, $which, $position = '', $plugin = '')
                  }
             }
         }
-        
+
         if (!$templatefound && file_exists($_CONF['path_layout'] . $positionSpecific)) {
             $template = $positionSpecific;
             $templatefound = true; // If found don't need to search theme default if exist
@@ -756,7 +777,7 @@ function COM_getThemes($all = false)
  */
 function COM_renderMenu($header, $plugin_menu)
 {
-    global $_CONF, $LANG01, $topic;
+    global $_CONF, $LANG01;
 
     if (empty($_CONF['menu_elements'])) {
         $_CONF['menu_elements'] = array( // default set of links
@@ -837,8 +858,9 @@ function COM_renderMenu($header, $plugin_menu)
 
             case 'directory':
                 $url = $_CONF['site_url'] . '/directory.php';
-                if (!empty($topic)) {
-                    $url = COM_buildURL($url . '?topic=' . urlencode($topic));
+                $current_topic = TOPIC_currentTopic();
+                if (!empty($current_topic)) {
+                    $url = COM_buildURL($url . '?topic=' . urlencode($current_topic));
                 }
                 $label = $LANG01[117];
                 if ($anon && ($_CONF['loginrequired'] || $_CONF['directoryloginrequired'])) {
@@ -962,7 +984,10 @@ function COM_renderMenu($header, $plugin_menu)
 function COM_createHTMLDocument(&$content = '', $information = array())
 {
     global $_CONF, $_VARS, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
-           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_STRUCT_DATA, $_PAGE_TIMER;
+           $_IMAGE_TYPE, $_COM_VERBOSE, $_SCRIPTS, $_STRUCT_DATA, $_PAGE_TIMER;
+
+	// Some plugin may still be using Global $topic variable so check and update $_USER array as needed
+	_depreciatedCheckGlobalTopicVariableUsed();
 
     // Retrieve required variables from information array
     $what = isset($information['what']) ? $information['what'] : 'menu';
@@ -1042,14 +1067,17 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $page->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $langId . '"');
     }
 
+    // Retrieve current topic. Topic should not be changed by anything from here on
+    $current_topic = TOPIC_currentTopic();
+
     $feed_url = array();
     if ($_CONF['backend'] == 1) { // add feed-link to header if applicable
         $baseUrl = SYND_getFeedUrl();
 
         $sql = "SELECT format, filename, title, language FROM {$_TABLES['syndication']} "
             . " WHERE (header_tid = 'all')";
-        if (!empty($topic)) {
-            $sql .= " OR (header_tid = '" . DB_escapeString($topic) . "')";
+        if (!empty($current_topic)) {
+            $sql .= " OR (header_tid = '" . DB_escapeString($current_topic) . "')";
         }
         $result = DB_query($sql);
         $numRows = DB_numRows($result);
@@ -1102,11 +1130,11 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     $pageTitle_siteSlogan = false;
     if (empty($pageTitle)) {
-        if (empty($topic)) {
+        if (empty($current_topic)) {
             $pageTitle = $_CONF['site_slogan'];
             $pageTitle_siteSlogan = true;
         } else {
-            $pageTitle = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '$topic'"));
+		$pageTitle = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '{$current_topic}'"));
         }
     }
     if (!empty($pageTitle)) {
@@ -1199,10 +1227,12 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     PLG_templateSetVars('header', $page);
 
     // Set last topic session variable
-    if ($topic == TOPIC_ALL_OPTION) {
-        $topic = ''; // Do not save 'all' option. Nothing is the same thing
+	// Since TOPIC_getTopic may not get called by the page being visited if it doesn't care about topics.
+	// lib-common sets the topic initially to all topics
+    if ($current_topic == TOPIC_ALL_OPTION) { // All Topics should not be set this way and this should not happen but just incase...
+        $current_topic = ''; // Nothing means all topics
     }
-    SESS_setVariable('topic', $topic);
+    SESS_setVariable('topic_id', $current_topic);
 
     // Call any plugin that may want to include extra Meta tags
     // or Javascript functions
@@ -1304,7 +1334,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $page->set_var($template_vars);
 
     /* Right blocks. Argh. Don't talk to me about right blocks...
-     * Right blocks will be displayed if this function has been asked to show them (first param) 
+     * Right blocks will be displayed if this function has been asked to show them (first param)
      * OR the show_right_blocks conf variable has been set to override what the code
      * wants to do.
      *
@@ -1345,7 +1375,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
             } elseif ($what !== 'none') {
                 // Now show any blocks -- need to get the topic if not on home page
                 $rBlocks = COM_showBlocks('right');
-            }        
+            }
         }
         if (empty($rBlocks)) {
             $page->set_var('geeklog_blocks', '');
@@ -1359,7 +1389,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $page->set_var('geeklog_blocks', '');
         $page->set_var('right_blocks', '');
     }
-    
+
    // Figure out Left blocks
     $lBlocks = '';
 
@@ -1383,7 +1413,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         } elseif ($what !== 'none') {
             // Now show any blocks -- need to get the topic if not on home page
             $lBlocks = COM_showBlocks('left');
-        }            
+        }
     }
 
     if (empty($lBlocks)) {
@@ -1434,10 +1464,10 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $page->set_var('plg_footercode', $footerCode);
 
     $page->set_var('content', $content);
-    
+
     // Actually parse the template and make variable substitutions
     $page->parse('index', 'page');
-    
+
     return $page->finish($page->get_var('index'));
 }
 
@@ -1481,7 +1511,7 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
                  break;
              }
         }
-    }    
+    }
     if (!$templateFound) {
         // If error happens early in the process (ie COM_handleException is called) the caching template library may not be loaded so fall back
         if (function_exists('CTL_core_templatePath')) {
@@ -1511,7 +1541,7 @@ function COM_startBlock($title = '', $helpFile = '', $template = 'blockheader.th
                 // Add in jQuery dialog for help file
                 $_SCRIPTS->setJavaScriptLibrary('jquery-ui'); // Requires dialog, draggable, droppable, resizable, and button
                 $_SCRIPTS->setJavaScriptLibrary('jquery-ui-dialogoptions'); // extends jquery dialog functions to include responsive
-                
+
                 // Add Language variables
                 $_SCRIPTS->setLang(array('close' => $LANG32[60]));
 
@@ -1565,7 +1595,7 @@ function COM_endBlock($template = 'blockfooter.thtml', $plugin = '')
                  break;
              }
         }
-    }    
+    }
     if (!$templateFound) {
         // If error happens early in the process (ie COM_handleException is called) the caching template library may not be loaded so fall back
         if (function_exists('CTL_core_templatePath')) {
@@ -1573,8 +1603,8 @@ function COM_endBlock($template = 'blockfooter.thtml', $plugin = '')
         } else {
             $block = COM_newTemplate($_CONF['path_layout']);
         }
-    } 
-    
+    }
+
     $block->set_file('block', $template);
 
     $block->parse('endHTML', 'block');
@@ -1817,13 +1847,13 @@ function COM_createControl($type, $variables = array())
             'type-radio',
             'type-select',
             'type-submit',
-            
+
             'type-select-width-small',
-            
+
             'controls-center',
             'controls-left',
             'controls-right',
-            
+
             'display-text-warning',
             'display-text-warning-small',
             'display-text-strikethrough',
@@ -1884,12 +1914,12 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldNa
 
     $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
     $tcc->set_file('checklist', 'checklist.thtml');
-    $tcc->set_block('checklist', 'item'); 
+    $tcc->set_block('checklist', 'item');
     $tcc->set_block('checklist', 'item-default');
-    
+
     for ($i = 0; $i < $numRows; $i++) {
         $access = true;
-        
+
         $A = DB_fetchArray($result, true);
 
         if (($table == $_TABLES['topics']) && (SEC_hasTopicAccess($A['tid']) == 0)) {
@@ -1919,7 +1949,7 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldNa
 
             if (($table == $_TABLES['blocks']) && isset($A[2]) && ($A[2] === 'gldefault')) {
                 $tcc->parse('items', 'item-default', true);
-                
+
             } else {
                 $tcc->parse('items', 'item', true);
             }
@@ -2506,7 +2536,7 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
         $login->set_var('lang_login', $LANG01[58]);
         $login->set_var('lang_loginform', $LANG01['loginform']);
         $login->set_var('lang_remoteloginoptions', $LANG01['remoteloginoptions']);
-        
+
         if ($_CONF['disable_new_user_registration']) {
             $login->set_var('lang_signup', '');
         } else {
@@ -2609,7 +2639,7 @@ function COM_userMenu($help = '', $title = '', $position = '', $cssId = '', $css
             $login->set_var('oauth_login', '');
         }
 
-        PLG_templateSetVars('loginblock', $login); 
+        PLG_templateSetVars('loginblock', $login);
         PLG_templateSetVars('loginform', $login); // Need to set loginform as well since this is what Geeklog checks when logging in users. This will allow things like recaptcha work
         $retval .= $login->finish($login->parse('output', 'form'));
         $retval .= COM_endBlock(COM_getBlockTemplate('user_block', 'footer', $position));
@@ -3332,11 +3362,11 @@ function COM_checkWords($message, $type = '')
                 case 1: // Exact match
                     // Intentional fall-through
                 default:
-                    // Check words surround by any white-space character. 
+                    // Check words surround by any white-space character.
                     $RegExPrefix[] = '(\s)';
                     $RegExSuffix[] = '(\W)';
 
-                    // Check words surround by multiple white-space characters. 
+                    // Check words surround by multiple white-space characters.
                     $RegExPrefix[] = '(\s+)';
                     $RegExSuffix[] = '(\W)';
 
@@ -3478,15 +3508,15 @@ function COM_undoSpecialChars($string)
 function COM_makeSid($multilang_support = false)
 {
     global $_CONF;
-    
+
     $id = date('YmdHis');
     $id .= rand(0, 999);
-    
+
     if ($multilang_support && $_CONF['new_item_set_current_lang'] && COM_isMultiLanguageEnabled()) {
         $langid = COM_getLanguageId();
         if (!empty($langid)) {
             $id .= '_' . $langid;
-        }    
+        }
     }
 
     return $id;
@@ -3526,7 +3556,7 @@ function COM_emailEscape($string)
     if (($charset === 'utf-8') && ($string !== utf8_decode($string))) {
         // Current hack to bypass the use of iconv_mime_encode until proper fix found
         // In some cases emails being sent fail when using COM_Mail when the email subject contain certain characters in another language (like Japanese)
-        // This bug usually happens when the Geeklog forum sends out a notification email of a reply to a topic. 
+        // This bug usually happens when the Geeklog forum sends out a notification email of a reply to a topic.
         // For more info see https://github.com/Geeklog-Core/geeklog/issues/684
         if (false) {
             //if (function_exists('iconv_mime_encode')) {
@@ -3597,15 +3627,15 @@ function COM_formatEmailAddress($name, $address)
 function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null, array $attachments = array())
 {
     global $_TABLES, $_CONF;
-    
+
     // Need to check email address to ensure they are not from account that have a status of locked or new email. If so we need to remove them so no email sent
     // Email addresses without accounts are not affected
     if (is_array($to)) {
-        $email = key($to);    
+        $email = key($to);
     } else {
         $email = $to;
     }
-    
+
     // If no status exists then assume no user account and email is being sent to someone else (which is fine and should be sent like to new users)
     $status = DB_getItem($_TABLES['users'], 'status', "email = '$email'");
 
@@ -3620,7 +3650,7 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
             $toAlias = array_values($to)[0];
             $to = htmlspecialchars(
                 $toAlias . ' <' . $toAddress . '>',
-                ENT_QUOTES, 
+                ENT_QUOTES,
                 $charset
             );
             $fromAddress = array_keys($from)[0];
@@ -3688,7 +3718,7 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
         COM_getBlockTemplate('older_stories_block', 'header', $position),
         $cssId, $cssClasses
     );
-    
+
     $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'blocks/'));
     $t->set_file(array('olderarticles' => 'olderarticles.thtml'));
 
@@ -3696,14 +3726,14 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
         WHERE ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND') . "
         AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-        GROUP BY sid, featured, date, title, comments, day 
+        GROUP BY sid, featured, date, title, comments, day
         ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
     $sql['pgsql'] = "SELECT sid,title,comments,date_part('epoch',date) AS day
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta
         WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "
         AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-        GROUP BY sid, featured, date, title, comments, day  
+        GROUP BY sid, featured, date, title, comments, day
         ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
     $result = DB_query($sql);
@@ -3723,14 +3753,14 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
                     $dayList = COM_makeList($oldNews, PLG_getCSSClasses('article-list-older', 'article'));
                     $oldNews = array(); // Reset old news array
                     $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
-                    
+
                     $t->set_var('older-articles-list', $dayList);
                     $t->set_var('date-divider', true);
-                    $string .= $t->parse('output', 'olderarticles');                       
+                    $string .= $t->parse('output', 'olderarticles');
                 }
 
                 list($day2,) = COM_getUserDateTimeFormat($A['day'], 'dateonly');
-                
+
                 $t->set_var('weekday', $dayCheck);
                 $t->set_var('short-date', $day2);
                 $day = $dayCheck;
@@ -3744,10 +3774,10 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
         if (!empty($oldNews)) {
             $dayList = COM_makeList($oldNews, 'article-list-older');
             $dayList = preg_replace("/(\015\012)|(\015)|(\012)/", '', $dayList);
-            
+
             $t->set_var('older-articles-list', $dayList);
-            $string .= $t->parse('output', 'olderarticles');                  
-            
+            $string .= $t->parse('output', 'olderarticles');
+
             $retval .= $string;
         }
     } else {
@@ -3778,7 +3808,10 @@ function COM_olderStoriesBlock($help = '', $title = '', $position = '', $cssId =
  */
 function COM_showBlock($name, $help = '', $title = '', $position = '', $cssId = '', $cssClasses = '')
 {
-    global $topic, $_TABLES, $_USER;
+    global $_TABLES, $_USER;
+
+	// Some plugin may still be using Global $topic variable so check and update $_USER array as needed
+	_depreciatedCheckGlobalTopicVariableUsed();
 
     $retval = '';
 
@@ -3803,7 +3836,7 @@ function COM_showBlock($name, $help = '', $title = '', $position = '', $cssId = 
                     COM_getBlockTemplate($name, 'header', $position),
                     $cssId, $cssClasses
                 )
-                . COM_showTopics($topic)
+                . COM_showTopics(TOPIC_currentTopic())
                 . COM_endBlock(COM_getBlockTemplate($name, 'footer', $position));
             break;
 
@@ -3834,7 +3867,10 @@ function COM_showBlock($name, $help = '', $title = '', $position = '', $cssId = 
  */
 function COM_showBlocks($location)
 {
-    global $_TABLES, $_USER, $topic, $_TOPICS;
+    global $_TABLES, $_USER, $_TOPICS;
+
+	// Some plugin may still be using Global $topic variable so check and update $_USER array as needed
+	_depreciatedCheckGlobalTopicVariableUsed();
 
     $retval = '';
 
@@ -3867,21 +3903,25 @@ function COM_showBlocks($location)
 
     // Figure out topic access
     $topic_access = 0;
-    if (!empty($topic) && ($topic != TOPIC_ALL_OPTION) && ($topic != TOPIC_HOMEONLY_OPTION)) {
-        $topic_index = TOPIC_getIndex($topic);
+    $current_topic = TOPIC_currentTopic();
+
+    // Updated if statement in Geeklog v2.2.1. Don't think TOPIC_ALL_OPTION and TOPIC_HOMEONLY_OPTION check needs to be done as this shouldn't be passed this way. Not sure so left in just in case
+    //if (!empty($current_topic) && ($current_topic != TOPIC_ALL_OPTION) && ($current_topic != TOPIC_HOMEONLY_OPTION)) {
+    if (!empty($current_topic)) {
+        $topic_index = TOPIC_getIndex($current_topic);
         if ($topic_index > 0) {
             $topic_access = $_TOPICS[$topic_index]['access'];
         }
     }
 
-    if (!empty($topic) && ($topic != TOPIC_ALL_OPTION) && ($topic != TOPIC_HOMEONLY_OPTION) &&
-        ($topic_access > 0)
-    ) {
+    // Updated if statement in Geeklog v2.2.1. Don't think TOPIC_ALL_OPTION and TOPIC_HOMEONLY_OPTION check needs to be done as this shouldn't be passed this way. Not sure so left in just in case
+    //if (!empty($current_topic) && ($current_topic != TOPIC_ALL_OPTION) && ($current_topic != TOPIC_HOMEONLY_OPTION) && ($topic_access > 0)) {
+    if (!empty($current_topic) && ($topic_access > 0)) {
         // Retrieve list of inherited topics
-        $tid_list = TOPIC_getChildList($topic);
+        $tid_list = TOPIC_getChildList($current_topic);
         // Get list of blocks to display (except for dynamic). This includes blocks
         // for all topics, and child blocks that are inherited
-        $commonSql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')) OR ta.tid = 'all')";
+        $commonSql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$current_topic}')) OR ta.tid = 'all')";
     } else {
         if (COM_onFrontpage()) {
             $commonSql .= " AND (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
@@ -3913,7 +3953,7 @@ function COM_showBlocks($location)
     }
 
     // Check and see if any plugins have blocks to show
-    $pluginBlocks = PLG_getBlocks($location, $topic);
+    $pluginBlocks = PLG_getBlocks($location, $current_topic);
     $blocks = array_merge($blocks, $pluginBlocks);
 
     // sort the resulting array by block order
@@ -3998,7 +4038,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
                 // Make sure location exists before checking it (in case dynamic block did not pass one)
                 if (array_key_exists('location', $A) && !empty($A['location'])) {
                     $position = $A['location']; // This means it is a custom block location as defined by a theme or another plugin
-                    
+
                     // Determine if Plugin as it could be theme (need to pass plugin name to COM_startBlock and COM_getBlockTemplate so can find proper templates)
                     $block_locations = PLG_getBlockLocations();
                     $key = array_search($position, array_column($block_locations, 'id'));
@@ -4082,7 +4122,7 @@ function COM_formatBlock($A, $noBoxes = false, $noPosition = false)
             $blockContent = stripslashes($A['content']);
 
             // Introduced in Geeklog v2.2.0
-            // Dynamic Blocks from older plugins may not have convert_newlines set so check this 
+            // Dynamic Blocks from older plugins may not have convert_newlines set so check this
             if (isset($A['convert_newlines']) && ($A['convert_newlines'] == 1) && ($A['type'] === 'normal')) {
                 $blockContent = COM_nl2br($blockContent);
             }
@@ -4285,13 +4325,13 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
     }
 
     $class = !empty($post_mode) ? ' post_mode_' . $post_mode : '';
-        
+
     $retval = COM_createControl('display-allowed-html', array(
         'list_only' => $list_only,
         'post_mode_class' => $class,
         'html_description' => $description,
         'html_list' => $list
-    ));        
+    ));
 
     return $retval;
 }
@@ -4339,7 +4379,7 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = array())
         'list_only' => $list_only,
         'autotags_description' => $LANG01[140],
         'autotags_list' => $list
-    ));     
+    ));
 
     return $retval;
 }
@@ -4687,9 +4727,9 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         COM_getBlockTemplate('whats_new_block', 'header', $position),
         $cssId, $cssClasses
     );
-    
+
     $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'blocks/'));
-    $t->set_file(array('whatsnew' => 'whatsnew.thtml'));    
+    $t->set_file(array('whatsnew' => 'whatsnew.thtml'));
 
     $topicSql = '';
     if (($_CONF['hidenewstories'] == 0) || ($_CONF['hidenewcomments'] == 0)
@@ -4725,7 +4765,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         // Any late breaking news stories?
         $t->set_var('item', $LANG01[99]);
         $t->set_var('time-span', COM_formatTimeString($LANG_WHATSNEW['new_last'], $_CONF['newstoriesinterval']));
-            
+
         if ($numRows > 0) {
             $newArticles = array();
 
@@ -4758,7 +4798,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         ) {
             $t->set_var('item-divider', true);
         }
-        
+
         $retval .= $t->parse('output', 'whatsnew');
     }
     $t->clear_var('no-items');
@@ -4766,7 +4806,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
     if ($_CONF['hidenewcomments'] == 0) {
         // Go get the newest comments
         $t->set_var('item', $LANG01[83]);
-        $t->set_var('time-span', COM_formatTimeString($LANG_WHATSNEW['new_last'], $_CONF['newcommentsinterval']));            
+        $t->set_var('time-span', COM_formatTimeString($LANG_WHATSNEW['new_last'], $_CONF['newcommentsinterval']));
 
         $new_plugin_comments = PLG_getWhatsNewComment();
 
@@ -4832,14 +4872,14 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         ) {
             $t->set_var('item-divider', true);
         }
-        
+
         $retval .= $t->parse('output', 'whatsnew');
     }
     $t->clear_var('no-items');
 
     if ($_CONF['trackback_enabled'] && ($_CONF['hidenewtrackbacks'] == 0)) {
         $t->set_var('item', $LANG01[114]);
-        $t->set_var('time-span', COM_formatTimeString($LANG_WHATSNEW['new_last'], $_CONF['newtrackbackinterval']));              
+        $t->set_var('time-span', COM_formatTimeString($LANG_WHATSNEW['new_last'], $_CONF['newtrackbackinterval']));
 
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
@@ -4888,7 +4928,7 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         if ($_CONF['hidenewplugins'] == 0) {
             $t->set_var('item-divider', true);
         }
-        
+
         $retval .= $t->parse('output', 'whatsnew');
     }
     $t->clear_var('no-items');
@@ -4899,8 +4939,8 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
         if ($plugins > 0) {
             for ($i = 0; $i < $plugins; $i++) {
                 $t->set_var('item', $headlines[$i]);
-                $t->set_var('time-span', $smallHeadlines[$i]);              
-                
+                $t->set_var('time-span', $smallHeadlines[$i]);
+
                 if (is_array($content[$i])) {
                     $t->set_var('new-item-list', COM_makeList($content[$i], PLG_getCSSClasses('core-list-new', 'core')));
                 } else {
@@ -4911,14 +4951,14 @@ function COM_whatsNewBlock($help = '', $title = '', $position = '', $cssId = '',
                 if ($i + 1 < $plugins) {
                     $t->set_var('item-divider', true);
                 }
-                
+
                 $retval .= $t->parse('output', 'whatsnew');
-                
+
                 $t->clear_var('no-items');
             }
         }
     }
-    
+
     $retval .= COM_endBlock(COM_getBlockTemplate('whats_new_block', 'footer', $position));
     if ($_CONF['whatsnew_cache_time'] > 0) {
         CACHE_create_instance($cacheInstance, $retval);
@@ -4996,19 +5036,19 @@ function COM_showMessageText($message, $title = '')
     if (!empty($message)) {
         $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
         $tcc->set_file('system_message', 'system_message.thtml');
-        
+
         if (empty($title)) {
             $title = $MESSAGE[40];
         }
         list($timestamp,) = COM_getUserDateTimeFormat(time(), 'daytime');
         $tcc->set_var('start_block_msg', COM_startBlock($title . ' - ' . $timestamp, ''
-                                       , COM_getBlockTemplate('_msg_block', 'header')));           
-        
+                                       , COM_getBlockTemplate('_msg_block', 'header')));
+
         $tcc->set_var('lang_message', $message);
-        
+
         $tcc->set_var('end_block_msg', COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer')));
-        
-        $retval = $tcc->finish($tcc->parse('output', 'system_message'));        
+
+        $retval = $tcc->finish($tcc->parse('output', 'system_message'));
     }
 
     return $retval;
@@ -5165,7 +5205,7 @@ function COM_printPageNavigation($base_url, $currentPage, $num_pages,
     } else {
         $max_pages = $_CONF['page_navigation_max_pages'];
     }
-    
+
     $page_nav_left = intval($max_pages / 2);
     $page_nav_right = $max_pages - $page_nav_left - 1;
     $page_start = $currentPage - $page_nav_left;
@@ -6546,8 +6586,8 @@ function COM_dateDiff($interval, $date1, $date2)
  * @param  array    $leave_dirs     Array of directory names to not delete
  * @param  array    $leave_files    Array of file names to not delete
  */
-function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array()) 
-{ 
+function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array())
+{
     // Need to array merge glob to include regular file list AND hidden file lists (that ignore '.' and '..')
     $merged = array_merge(glob(rtrim($dir, '/') . '/*'), glob(rtrim($dir, '/') . '/{*,.[!.]*,..?*}', GLOB_BRACE));
     foreach ($merged as $file) {
@@ -6570,18 +6610,18 @@ function COM_cleanDirectory($dir, $leave_dirs = array(), $leave_files = array())
  * @param  string   $dir            Directory to clean of files and folders
  */
 function COM_deleteFiles($dir)
-{ 
+{
     $merged = array_merge(glob(rtrim($dir, '/') . '/*'), glob(rtrim($dir, '/') . '/{*,.[!.]*,..?*}', GLOB_BRACE));
-    foreach ($merged as $file) {  
+    foreach ($merged as $file) {
         if (is_dir($file)) {
-            COM_deleteFiles($file); 
+            COM_deleteFiles($file);
         } else {
             if (is_file($file)) {
                 unlink($file);
             }
         }
     }
-    rmdir($dir); 
+    rmdir($dir);
 }
 
 /**
@@ -6681,15 +6721,20 @@ function COM_getCurrentURL()
  */
 function COM_onFrontpage()
 {
-    global $_CONF, $topic, $page;
+    global $_CONF, $page;
+
+	// Some plugin may still be using Global $topic variable so check and update $_USER array as needed
+	_depreciatedCheckGlobalTopicVariableUsed();
 
     // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
     $onFrontPage = false;
 
+    $current_topic = TOPIC_currentTopic();
+
     $scriptName = empty($_SERVER['PATH_INFO']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PATH_INFO'];
     preg_match('/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly);
     if (($scriptName == $pathonly[1] . '/index.php') &&
-        empty($topic) && (empty($page) || ($page == 1))
+        empty($current_topic) && (empty($page) || ($page == 1))
     ) {
         $onFrontPage = true;
     }
@@ -7053,7 +7098,7 @@ function COM_getLanguage()
     }
 
     // 1. Try to get language from URL
-    // $langFile = COM_getLanguageFromBrowser(); - Removed line as it doesn't work with the switch language block (that uses phpblock_switch_language) for some setups when a language cookie is set, need to check that first. 
+    // $langFile = COM_getLanguageFromBrowser(); - Removed line as it doesn't work with the switch language block (that uses phpblock_switch_language) for some setups when a language cookie is set, need to check that first.
     $langURLinfo = _getLanguageInfoFromURL();
     $langFile = $langURLinfo[0];
 
@@ -7085,27 +7130,27 @@ function COM_getLanguage()
 
 /**
  * Figure out if Geeklog is setup correctly for a multi language site and is enabled
- * 
+ *
  * @return      boolean
   */
 function COM_isMultiLanguageEnabled()
 {
     global $_CONF;
-    
+
     $retval = false;
 
     // If user allowed to switch language and Multi Language Content setup (because config languages and language_files exist (and assume setup correctly))
     if ($_CONF['allow_user_language'] AND !empty($_CONF['languages']) AND !empty($_CONF['language_files']) AND (count($_CONF['languages']) == count($_CONF['language_files']))) {
         $retval = true;
     }
-    
+
     return $retval;
 }
 
 /**
- * Get language name and plugin name and id from current URL 
+ * Get language name and plugin name and id from current URL
  * Note: This function starts with _ therefore it is only meant to be called from within Geeklog Core for a specific task
- * 
+ *
  * @param       boolean    Tells function to return either language or id of plugin item if found
  * @return      array       e.g., 'english', 'japanese', ... , plugin name, id
   */
@@ -7116,14 +7161,14 @@ function _getLanguageInfoFromURL()
     $retval = array('','','');
 
     if (COM_isMultiLanguageEnabled()) {
-        
+
         $langId = '';
         // Need to see if language is set for url. Supports normal, rewrite, and routing urls.
         // To support multi-language items plugins need to include an extra config option for Core that is called langurl_pluginname
-        // This allows this function to figure out by looping through these config options langurl_ what plugin the url is for and if it is an 
-        // item that supports multiple languages. 
+        // This allows this function to figure out by looping through these config options langurl_ what plugin the url is for and if it is an
+        // item that supports multiple languages.
         // This function is used by COM_getLanguage which is called for anonymous visitors when then first visit a page. It is called very early in the process
-        // so no plugin config options or actual functions are available so that is why we need to store the config option in Core since these are already loaded and 
+        // so no plugin config options or actual functions are available so that is why we need to store the config option in Core since these are already loaded and
         // we already know which plugins are enabled.
         // This function also allows the switch block (phpblock_switch_language) to determine if the url is of an item of a plugin which supports multiple languages.
         // This means the plugin must also support PLG_getItemInfo (specifically checking the id) so the new id with the switched language of the item can be checked to see if it exists or not.
@@ -7133,20 +7178,20 @@ function _getLanguageInfoFromURL()
         // $c->add('langurl_topic',array('', 'index.php', 'topic'),'@hidden',7,31,1,1830,TRUE, 'Core', 31);
         // $c->add('langurl_article',array('', 'article.php', 'story'),'@hidden',7,31,1,1830,TRUE, 'Core', 31);
         // $c->add('langurl_staticpages',array('staticpages', 'index.php', 'page'),'@hidden',7,31,1,1830,TRUE, 'Core', 31);
-        
+
         // ***************************
         // Addtional Notes for Debugging
         // For some reason this function gets called 2 times on a page load for the default URLs and URL_Rewrite URLs. It gets called 3 times if URL_Routing is enabled.
         // Because of this after the first call to this function the $_SERVER['REQUEST_URI'] reverts back to the default URL for some unknown reason (I think it has to do with the URL Class)
-        // So that is why with URL_Routing enabled we check it just the same way as the default url. 
+        // So that is why with URL_Routing enabled we check it just the same way as the default url.
         // ***************************
-        //echo $_SERVER['REQUEST_URI']; // /article.php/english_en/article.php/english_en 
+        //echo $_SERVER['REQUEST_URI']; // /article.php/english_en/article.php/english_en
         $curdirectory = ltrim(ltrim(dirname($_SERVER['REQUEST_URI']), '\\'), '/');
         $site_path = ltrim(ltrim(parse_url($_CONF['site_url'], PHP_URL_PATH), '\\'), '/'); // Need to compare in case site_url has a directory ie www.domain.com/site/
         $curdirectory = ltrim(ltrim(ltrim($curdirectory, $site_path), '\\'), '/');
 
-        $curfilename = basename($_SERVER['SCRIPT_NAME']);        
-        
+        $curfilename = basename($_SERVER['SCRIPT_NAME']);
+
         // URL parts of array returned are: plugin name, directory, filename, id
         $url_lang = PLG_getLanguageURL();
 
@@ -7154,7 +7199,7 @@ function _getLanguageInfoFromURL()
             $var = "";
 
             // Find a Match
-            
+
             // Check for URL Rewrite enabled only
             if ($_CONF['url_rewrite'] AND !$_CONF['url_routing']) {
                 if ($value[0] == 'topic') { // For Topic - Special Case
@@ -7163,7 +7208,7 @@ function _getLanguageInfoFromURL()
                     $checkdir = $value[2];
                 } else { // For Plugins
                     $checkdir = $value[1] . "/" . $value[2];
-                }                
+                }
                 if ($curdirectory == $checkdir) {
                     // Retrieve matching Variable
                     if ($value[0] == 'topic') { // For Topic - Special Case
@@ -7183,23 +7228,23 @@ function _getLanguageInfoFromURL()
                     $var = Input::fRequest($value[3], '');
                 }
             }
-            
+
             if (!empty($var)) {
                 // Now lets see if language id
                 $l = strrpos($var, '_');
                 if ($l !== false) {
                     $langId = substr($var, $l + 1);
                     break;
-                }                        
+                }
             }
-        } 
+        }
 
         if (!empty($langId)) {
             if (isset($_CONF['language_files']) && is_array($_CONF['language_files']) &&
                 array_key_exists($langId, $_CONF['language_files'])) {
                 $retval = array($_CONF['language_files'][$langId], $value[0], $var);
             }
-        }        
+        }
     }
 
     return $retval;
@@ -7347,7 +7392,7 @@ function phpblock_switch_language()
 
         $t = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'blocks/'));
         $t->set_file(array('switchlanguage' => 'switchlanguage.thtml'));
-            
+
         $t->set_var('langId', $langId);
         $t->set_var('itemId', $itemId);
         $t->set_var('itemType', $itemType);
@@ -7360,9 +7405,9 @@ function phpblock_switch_language()
             $retval .= '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
         }
         $t->set_var('language_options', $retval);
-        
 
-        $retval = $t->finish($t->parse('output', 'switchlanguage'));        
+
+        $retval = $t->finish($t->parse('output', 'switchlanguage'));
     }
 
     return $retval;
@@ -7562,7 +7607,7 @@ function COM_truncateHTML($htmlText, $maxLen, $filler = '', $endChars = 0)
         // *******************************
         // Note: At some point we should probably use htmLawed here or the GLText class which uses htmLawed???
         // something like GLText::applyHTMLFilter but needs to be run with the view of an anonymous user
-        
+
         // put all opened tags into an array
         preg_match_all("#<([a-z]+)( .*)?(?!/)>#iU", $htmlText, $result);
         $openedTags = $result[1];
@@ -7752,7 +7797,7 @@ function COM_handleError($errNo, $errStr, $errFile = '', $errLine = 0, $errConte
 
     // Table of error code and error type
     $errorTypes = array(
-        0     => 'E_SYNTAX',            // Since Geeklog 2.2.0 - Handles syntax errors. Used when Developer Mode is on and PHP is set to show all errors 
+        0     => 'E_SYNTAX',            // Since Geeklog 2.2.0 - Handles syntax errors. Used when Developer Mode is on and PHP is set to show all errors
         1     => 'E_ERROR',
         2     => 'E_WARNING',
         4     => 'E_PARSE',
@@ -8077,7 +8122,7 @@ function COM_createMetaTags($meta_description, $meta_keywords)
 
 /**
  * Create hreflang HTML link element in header to be used by COM_createHTMLDocument in the headercode variable.
- * Plugin needs to support the function PLG_getItemInfo and be able to return the id and url of the item 
+ * Plugin needs to support the function PLG_getItemInfo and be able to return the id and url of the item
  * Plugin also needs to support the function _getLanguageInfoFromURL which requires extra config options present (see _getLanguageInfoFromURL for more details)
  *
  * @param    string $type    plugin type (incl. 'article' for stories and 'topic' for topic)
@@ -8098,25 +8143,25 @@ function COM_createHREFLang($type, $id)
         if (empty($lang_id)) {
             // Non Language specific item id found
 
-            // Can set hreflang="x-default" when 
+            // Can set hreflang="x-default" when
             // See video at: https://support.google.com/webmasters/answer/189077?hl=en
             // 1) url language is broad
             // 2) Content can be dynamic (ie language displayed is based on IP)
             // 3) Is a page that acts as a language selector)
             // 4) Should only be included on the canonical url and not the duplicates
-            
+
             $headerCode .= LB . '<link rel="alternate" hreflang="x-default" href="' . PLG_getItemInfo($type, $id, 'url') . '"' . XHTML . '>';
         } else {
             // Language specific item Id found
-            
+
             // Find non language id of item then
             $nonlang_item_id = MBYTE_substr($id, 0, (-(MBYTE_strlen($lang_id)+1))); // remove length of lang_id plus the underscore character
-        
+
             // Cycle through each language and determine if item exists and is accessible
             foreach ($_CONF['languages'] as $key => $value) {
                 $lang_id = $key;
                 $lang_item_id = $nonlang_item_id . '_' . $lang_id;
-                
+
                 // See if item for language found and user has access, not in draft, etc..
                 $tempId = PLG_getItemInfo($type, $lang_item_id, 'id');
                 if (!empty($tempId)) {
@@ -8457,7 +8502,7 @@ HTML;
 function COM_newTemplate($root, $options = array())
 {
     global $TEMPLATE_OPTIONS;
-    
+
     if (function_exists('OVERRIDE_newTemplate')) {
         if (is_string($options)) {
             $options = array('unknowns', $options);
@@ -8474,19 +8519,19 @@ function COM_newTemplate($root, $options = array())
             $options = 'remove';
         }
 
-        // Note: as of Geeklog 2.2.0 
-        // CTL_setTemplateRoot before was set back when child themes support was added (not sure which Geeklog version) as a hook to run as a template preprocessor. 
+        // Note: as of Geeklog 2.2.0
+        // CTL_setTemplateRoot before was set back when child themes support was added (not sure which Geeklog version) as a hook to run as a template preprocessor.
         // This was fine for Geeklog Core but could create issues for plugins as it could not tell the difference and would add in theme and theme_default root dir locations (among other custom folders)
         // Now if root is passed as a single directory (not an array) it is assumed that Geeklog Core is setting the template or an old style plugin
         // If root is an array assume it is a plugin that supports multiple locations for its template (uses CTL_plugin_templatePath)
         // For more info see template class set_root function, CTL_setTemplateRoot, CTL_core_templatePath, CTL_plugin_templatePath
-        
+
         // CTL_setTemplateRoot will be depreciated as of Geeklog 3.0.0. This means plugins will not be allowed to set the template class directly. They must use COM_newTemplate and either CTL_core_templatePath or CTL_plugin_templatePath
-        
+
         if (is_array($root)) {
             $TEMPLATE_OPTIONS['hook'] = array(); // Remove default hook that sets CTL_setTemplateRoot Function found in lib-template. It is used to add the ability for child themes (old way)
         }
-        
+
         $T = new Template($root, $options);
     }
 
@@ -8681,7 +8726,7 @@ function COM_setupAdvancedEditor($custom, $permissions = 'story.edit', $myEditor
             $_CONF['admin_html'],
             $_CONF['advanced_html']);
     }
-    
+
     // Check if the current user has access to Filemanager
     $geeklogFileManager = "false";
     if (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Root') || (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')))) {
@@ -8721,7 +8766,7 @@ HTML;
     $_SCRIPTS->setJavaScriptFile("adveditor_$name", "/$dir/$name/$js", $footer, $priority);
     $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', $footer, $priority + 1);
     $_SCRIPTS->setJavaScriptFile("adveditor_api_$name", "/$dir/$name/functions.js", $footer, $priority + 2);
-    $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom, $footer, $priority + 3);      
+    $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom, $footer, $priority + 3);
 }
 
 /**

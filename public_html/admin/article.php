@@ -578,13 +578,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     } else {
         $story_templates->set_var('show_topic_icon_checked', '');
     }
-    
+
     $story_templates->set_var('lang_structured_data_type', $LANG_STRUCT_DATA['lang_structured_data_type']);
     $story_templates->set_var(
         'structured_data_options',
-        COM_optionListFromLangVariables('LANG_structureddatatypes', $story->EditElements('structured_data_type')) 
-    );      
-    
+        COM_optionListFromLangVariables('LANG_structureddatatypes', $story->EditElements('structured_data_type'))
+    );
+
     $story_templates->set_var('lang_cachetime', $LANG24['cache_time']);
     $story_templates->set_var('lang_cachetime_desc', $LANG24['cache_time_desc']);
     $story_templates->set_var('cache_time', $story->EditElements('cache_time'));

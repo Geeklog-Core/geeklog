@@ -33,10 +33,10 @@
 
 require_once __DIR__ . '/lib-common.php';
 
-$searchObj = new Search();
-
-// Figure out topic to display
+// Figure out topic to display (do before setting search class as it may use it)
 TOPIC_getTopic();
+
+$searchObj = new Search();
 
 if (Geeklog\Input::get('mode') === 'search') {
     $content = $searchObj->doSearch();
