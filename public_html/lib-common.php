@@ -250,24 +250,6 @@ if (COM_isAnonUser()) {
 // Please use the functions TOPIC_setTopic to set the current topic if needed or TOPIC_currentTopic to retrieve the current topic id
 TOPIC_setTopic(''); // Initialize current topic id variable and set current topic to All Topics - Current user topic id at this point untill TOPIC_getTopic is called (if ever) or TOPIC_setTopic is called by something else
 
-/**
- * Figure out if depreciated global $topic array is used. If so update $_USER array as needed
- * Note: This function starts with _ therefore it is only meant to be called from within Geeklog Core for a specific task
- *
- */
-function _depreciatedCheckGlobalTopicVariableUsed() {
-	global $_USER;
-
-    // NOTE: currently for backwards compatibility the functions TOPIC_getTopic and TOPIC_setTopic will set the global $topic variable (as well as the proper variable)
-    // These functions will need to be updated to remove this for Geeklog v3.0.0
-
-	// Check if global $topic variable exists
-	if (array_key_exists('topic', $GLOBALS)) {
-		COM_deprecatedLog('Global $topic Variable', '2.2.1', '3.0.0', '$_USER[' . "'topic_id'" . '] variable instead to determine the current user topic id');
-		$_USER['topic_id'] = $GLOBALS['topic']; // not sure if needed for backwards compatibility but kept anyways...
-	}
-}
-
 // Set theme
 $useTheme = '';
 if (isset($_POST['usetheme'])) {
