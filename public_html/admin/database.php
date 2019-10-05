@@ -1164,7 +1164,7 @@ switch ($action) {
             $page .= DBADMIN_backup();
         } else {
             COM_accessLog("User {$_USER['username']} tried to access the DB administration and failed CSRF checks.");
-            echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
         break;
 
@@ -1197,7 +1197,7 @@ switch ($action) {
             }
         } else {
             COM_accessLog("User {$_USER['username']} tried to delete database backup(s) and failed CSRF checks.");
-            echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+            COM_redirect($_CONF['site_admin_url'] . '/index.php');
         }
         $page = DBADMIN_list();
         break;

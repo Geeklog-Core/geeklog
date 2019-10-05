@@ -107,9 +107,8 @@ function CUSTOM_loginErrorHandler($msg = '')
     } elseif ($msg == '') {
         $msg = 81;
     }
-    $retval = COM_refresh($_CONF['site_url'] . '/index.php?mode=loginfail&amp;msg=' . $msg);
-    echo $retval;
-    exit;
+
+    COM_redirect($_CONF['site_url'] . '/index.php?mode=loginfail&amp;msg=' . $msg);
 }
 
 

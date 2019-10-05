@@ -2003,8 +2003,7 @@ function PLG_getWhatsNew()
 * The caller should check for return values > 0 in which case spam has been
 * detected and the poster should be told, either via
 * <code>
-*   echo COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $result
-*                    . '&amp;plugin=spamx');
+*   COM_redirect($_CONF['site_url'] . '/index.php?msg=' . $result . '&amp;plugin=spamx');
 * </code>
 * or by
 * <code>
