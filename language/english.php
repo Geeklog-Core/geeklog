@@ -11,7 +11,7 @@
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
+# as published by the Free Software Foundation; either version 2LANG
 # of the License, or (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -230,7 +230,7 @@ $LANG03 = array(
     21 => 'Read other people\'s messages before posting your own to avoid simply duplicating what has already been said.',
     22 => 'Use a clear subject that describes what your message is about.',
     23 => 'Your email address will NOT be made public.',
-    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.', 
+    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.',
     24 => 'Anonymous User',
     25 => 'Are you sure you want to report this post to the site admin?',
     26 => '%s reported the following abusive comment post:',
@@ -455,7 +455,7 @@ $LANG04 = array(
     'tfa_download' => 'Download Backup Codes',
     'tfa_new_backup_code' => 'Generate a new set of backup codes',
     'tfa_generate_confirm' => 'Go ahead?',
-    'lang_tfa_user_edit_desc' => 'You are only allowed to disable Two Factor Authentication (2FA) from this form if needed (like the user does not have their backup codes). It should not be enabled by Admins as the user themselves are required to enable and setup 2FA from their Account, including the Google Authenticator App for their phone and coping the backup codes.',    
+    'lang_tfa_user_edit_desc' => 'You are only allowed to disable Two Factor Authentication (2FA) from this form if needed (like the user does not have their backup codes). It should not be enabled by Admins as the user themselves are required to enable and setup 2FA from their Account, including the Google Authenticator App for their phone and coping the backup codes.',
     'desc_new_pwd_status' => 'You are required to enter a new password for your account. You can enter a new password for your account below. <em>Please note you will not be able to do anything with your account until your password is updated.</em>',
     'new_email' => 'New Email',
     'set_new_email' => 'Set New Email',
@@ -468,7 +468,7 @@ $LANG04 = array(
     'email_verify_delete' => 'Delete email to be verified',
     'email_verify_msg' => "You have previously updated your email address for your account but it still needs to be verified. Please check your email account for an email from {$_CONF['site_name']} that contains a verification link. Once you click on that link your new email address will be verified and your account will be updated to use it.<br" . XHTML . "><br" . XHTML . ">If you wish you may update the new email to be verified with the email fields above or you can delete it.",
     'remove_account_msg' => 'To remove your account from our database, enter your current password into the above "Current Password", check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
-    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'    
+    'remove_remote_account_msg' => 'To remove your remote account from our database, check the checkbox next to "Delete Option" below and click on "Save" . Please note that any articles and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".'
 );
 
 ###############################################################################
@@ -666,7 +666,7 @@ $LANG10 = array(
     31 => '',
     32 => 'Top Ten Liked Articles',
     33 => 'No liked articles found.',
-    
+
 );
 
 ###############################################################################
@@ -999,7 +999,7 @@ $LANG24 = array(
     20 => 'Ping',
     21 => 'Send Ping',
     22 => 'Article List',
-    23 => 'To modify or delete an article, click on that article\'s edit icon below. To view an article, click on the title of the article you wish to view. To create a new article, click on "Create New" above. Edit and Read access to articles depends not only on the article access itself, but the minimum topic access the article is assigned to.',
+    23 => 'To modify or delete an article, click on that article\'s edit icon below. To view an article, click on the title of the article you wish to view. To create a new article, click on "Create New" above.<br><br>Edit and Read access to articles depends not only on the article access itself, but the minimum topic access the article is assigned to.<br><br>"Edit Access Only" displays articles (and topics in the dropdown for searching) that you have edit access to. If an article is listed when this is checked that is read only, this means that you have edit access for the article but one of the topics that the article is assigned to, you do not.',
     24 => 'The ID you chose for this article is already in use. Please use another ID.',
     25 => 'Error when saving article',
     26 => 'Article Preview',
@@ -1151,7 +1151,7 @@ $LANG27 = array(
     'topics:' => 'Topics:',
     'filed_under:' => 'Filed under:',
     'topic_title' => 'Topic Title',
-    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.', 
+    'topic_title_desc' => 'Used as the page title for the topic. If empty the topic name will be used.',
     'move_topic_up' => 'Move topic up the sort order',
     'move_topic_down' => 'Move topic down in the sort order',
     'topics_edit_access_select' => 'You can only select topics you have Edit access to you (text is darker).',
@@ -1671,7 +1671,7 @@ $MESSAGE = array(
     504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.',
     505 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is not 100% compatible with this version of Geeklog (v' . VERSION . ') and you will have issues using this site. The required minimum theme Geeklog version is v' . $_CONF['min_theme_gl_version'] . '.',
     506 => 'Warning - The current theme ' . $_CONF['theme'] . ' (version not known) is not 100% compatible with this version of Geeklog (v' . VERSION . ') and you will have issues using this site. The required minimum theme Geeklog version is v' . $_CONF['min_theme_gl_version'] . '.',
-    507 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is meant for a newer version of Geeklog. You are using Geeklog v' . VERSION . ' and you may experience issues using this site.'    
+    507 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is meant for a newer version of Geeklog. You are using Geeklog v' . VERSION . ' and you may experience issues using this site.'
 );
 
 ###############################################################################
@@ -1968,7 +1968,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2027,7 +2027,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2080,7 +2080,8 @@ $LANG_ADMIN = array(
     'for_computer'  => 'For Computer',
     'all'           => 'All',
     'mobile'        => 'Mobile',
-    'computer'      => 'Computer'
+    'computer'      => 'Computer',
+    'edit_access_only'  => 'Edit Access Only'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -2155,7 +2156,7 @@ $LANG_structureddatatypes = array(
 );
 
 $LANG_STRUCT_DATA = array(
-    'lang_structured_data_type'     => 'Structured Data Type', 
+    'lang_structured_data_type'     => 'Structured Data Type',
     'autotag_desc_structureddata'   => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
 );
 
@@ -2665,7 +2666,7 @@ $LANG_configselects['Core'] = array(
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
     39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
     40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
-    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)   
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );
 
 ###############################################################################
@@ -2716,4 +2717,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
-

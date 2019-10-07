@@ -238,7 +238,7 @@ $LANG03 = array(
     21 => '他の人のコメントをよく読んで同じようなコメントを投稿しないようにしてください。',
     22 => '内容がよくわかるタイトルをつけてください。',
     23 => 'あなたのメールアドレスは公開しません!',
-    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.', 
+    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.',
     24 => 'ゲストユーザー',
     25 => 'この投稿をサイト管理者に不正な投稿として報告してよいですか?',
     26 => '%s さんが以下を不正なコメントの投稿と報告しています:',
@@ -1003,7 +1003,7 @@ $LANG24 = array(
     20 => 'ピング',
     21 => 'トラックバック・ピングを送る',
     22 => '記事の一覧',
-    23 => '記事の編集や削除をするには編集アイコンを、記事を表示するには記事のタイトルを、記事の作成は上の「新規作成」をクリックしてください。',
+    23 => 'To modify or delete an article, click on that article\'s edit icon below. To view an article, click on the title of the article you wish to view. To create a new article, click on "Create New" above.<br><br>Edit and Read access to articles depends not only on the article access itself, but the minimum topic access the article is assigned to.<br><br>"Edit Access Only" displays articles (and topics in the dropdown for searching) that you have edit access to. If an article is listed when this is checked that is read only, this means that you have edit access for the article but one of the topics that the article is assigned to, you do not.',
     24 => '指定した記事IDは既に使われています。別の記事IDを入力してください。',
     25 => '記事の登録中にエラーが発生しました',
     26 => '記事のプレビュー',
@@ -1671,7 +1671,7 @@ $MESSAGE = array(
     504 => 'パスワードは8文字以上で、少なくとも1つの数字と1文字を含める必要があります。パスワードは大文字と小文字が区別されます。',
     505 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is not 100% compatible with this version of Geeklog (v' . VERSION . ') and you will have issues using this site. The required minimum theme Geeklog version is v' . $_CONF['min_theme_gl_version'] . '.',
     506 => 'Warning - The current theme ' . $_CONF['theme'] . ' (version not known) is not 100% compatible with this version of Geeklog (v' . VERSION . ') and you will have issues using this site. The required minimum theme Geeklog version is v' . $_CONF['min_theme_gl_version'] . '.',
-    507 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is meant for a newer version of Geeklog. You are using Geeklog v' . VERSION . ' and you may experience issues using this site.'    
+    507 => 'Warning - The current theme ' . $_CONF['theme'] . ' v' . $_CONF['theme_gl_version'] . ' is meant for a newer version of Geeklog. You are using Geeklog v' . VERSION . ' and you may experience issues using this site.'
 );
 
 ###############################################################################
@@ -1968,7 +1968,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2026,7 +2026,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2079,7 +2079,8 @@ $LANG_ADMIN = array(
     'for_computer' => 'コンピューター用',
     'all' => '全て',
     'mobile' => 'モバイル',
-    'computer' => 'コンピューター'
+    'computer' => 'コンピューター',
+    'edit_access_only'  => 'Edit Access Only'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -2707,4 +2708,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-

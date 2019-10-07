@@ -815,7 +815,7 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
                 $retval = strftime($_CONF['shortdate'], $fieldValue);
             }
             break;
-            
+
         case 'contributed':
             // Has user ever logged in?
             if ($A['lastlogin_short'] < 1) {
@@ -830,8 +830,8 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
                         }
                         $retval .= $pluginname;
                     }
-                }                
-                
+                }
+
                 if (empty($retval)) {
                     $retval = $LANG28['nothing'];
                 } else {
@@ -840,8 +840,8 @@ function ADMIN_getListField_users($fieldName, $fieldValue, $A, $icon_arr)
                     $retval = COM_createLink($retval, $url);
                 }
             }
-            
-            break;            
+
+            break;
 
         case 'lastlogin_short':
             if ($fieldValue < 1) {

@@ -106,7 +106,7 @@ function userlist($uid = 0)
  * @param    string $current_topic (optional) currently selected topic
  * @return   string                  HTML for the list of stories
  */
-function liststories($current_topic = '')
+function liststories($current_topic = '', $editaccessonly = '')
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE,
            $LANG09, $LANG_ADMIN, $LANG_ACCESS, $LANG24;
@@ -119,7 +119,22 @@ function liststories($current_topic = '')
         $current_topic = TOPIC_ALL_OPTION;
     }
 
-    $seltopics = TOPIC_getTopicListSelect($current_topic, 2);
+    if ($editaccessonly == 'on') {
+        // 3 = edit only, 2 = read and edit
+        $access = 3;
+    } else {
+        $editaccessonly = '';
+        // 3 = edit only, 2 = read and edit
+        $access = 2;
+    }
+
+    if ($access == 3) { // Edit only
+        // TOPIC_getTopicListSelect access uses different definitions
+        $seltopics = TOPIC_getTopicListSelect($current_topic, 2, false, '', false, 0, 2);
+    } else { // 0 = Read and Edit
+        $seltopics = TOPIC_getTopicListSelect($current_topic, 2, false, '', false, 0, 0);
+    }
+
     if (empty($seltopics)) {
         $retval .= COM_showMessage(101);
 
@@ -130,7 +145,7 @@ function liststories($current_topic = '')
         // $tid_list = TOPIC_getChildList(TOPIC_ROOT);
 
         // Retrieve list of all topics user has access to (did not do inherit way since may not see all stories has access too)
-        $tid_list = TOPIC_getList(0, true, false);
+        $tid_list = TOPIC_getList(0, true, false, $access);
 
         if (empty($tid_list)) {
             $retval .= COM_showMessage(101);
@@ -140,13 +155,19 @@ function liststories($current_topic = '')
         $excludetopics = " (tid IN ('" . implode("','", $tid_list) . "')) ";
     } else {
         // Retrieve list of inherited topics
-        $tid_list = TOPIC_getChildList($current_topic);
+        $tid_list = TOPIC_getChildList($current_topic, 0, $access);
 
-        // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
         $excludetopics = " (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$current_topic}')))";
     }
 
-    $filter = COM_createControl('type-select-width-small', array(
+    $switch = ($editaccessonly == 'on') ? 'checked="checked"' : '';
+    $filter = COM_createControl('type-checkbox', array(
+        'name' => 'editaccessonly',
+        'onclick' => 'this.form.submit()',
+        'checked' => $switch,
+        'lang_label'   => $LANG_ADMIN['edit_access_only'] . "&nbsp;&nbsp;"
+    ));
+    $filter .= COM_createControl('type-select-width-small', array(
         'name'         => 'tid',
         'onchange'     => 'this.form.submit()',
         'select_items' => $seltopics,
@@ -203,8 +224,8 @@ function liststories($current_topic = '')
     $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
         . "UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} "
         . "LEFT JOIN {$_TABLES['users']} ON {$_TABLES['stories']}.uid={$_TABLES['users']}.uid "
-        . "LEFT JOIN {$_TABLES['topic_assignments']} ta ON ta.type = 'article' AND ta.id = sid "
-        . "WHERE 1=1 ";
+        . "LEFT JOIN {$_TABLES['topic_assignments']} ta ON ta.type = 'article' AND ta.id = sid ";
+    $sql .= COM_getPermSQL('WHERE', 0, $access);
 
     if (!empty($excludetopics)) {
         $excludetopics = 'AND ' . $excludetopics;
@@ -1009,11 +1030,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
         COM_redirect($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $current_topic = '';
+        $editaccessonly = '';
         if (empty($mode)) {
             $current_topic = Geeklog\Input::fGetOrPost('tid', '');
+            $editaccessonly = Geeklog\Input::fGetOrPost('editaccessonly', '');
         }
         $display .= COM_showMessageFromParameter();
-        $display .= liststories($current_topic);
+        $display .= liststories($current_topic, $editaccessonly);
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[22]));
     }
     COM_output($display);

@@ -205,9 +205,10 @@ function TOPIC_getIndex($id)
  *
  * @param        string $id  The id of the parent topic
  * @param        int    $uid user id or 0 = current user
+ * @param        int    $access access to check for (2=read, 3=r&write)
  * @return       string
  */
-function TOPIC_getChildList($id, $uid = 0)
+function TOPIC_getChildList($id, $uid = 0, $access = 2)
 {
     global $_TOPICS;
 
@@ -238,7 +239,7 @@ function TOPIC_getChildList($id, $uid = 0)
                 }
 
                 // Make sure to show topics for proper language and access level only
-                if ($specified_user_access > 0 && (($min_branch_level < $_TOPICS[$count_topic]['branch_level']) && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == ''))))) {
+                if ($specified_user_access >= $access && (($min_branch_level < $_TOPICS[$count_topic]['branch_level']) && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == ''))))) {
 
                     if ($_TOPICS[$count_topic]['inherit'] == 1) {
                         $retval .= ", '" . $_TOPICS[$count_topic]['id'] . "'";
@@ -560,7 +561,7 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
  * @param    boolean $title      Return topic ids as well as topic titles
  * @return   array               Array of topics
  */
-function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true)
+function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true, $access = 2)
 {
     global $_TABLES;
 
@@ -579,9 +580,9 @@ function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true)
 
     $sql = "SELECT $selection FROM $table";
     if ($ignorelang) {
-        $sql .= COM_getPermSQL();
+        $sql .= COM_getPermSQL('WHERE', 0, $access);
     } else {
-        $permsql = COM_getPermSQL();
+        $permsql = COM_getPermSQL('WHERE', 0, $access);
         if (empty($permsql)) {
             $sql .= COM_getLangSQL($id);
         } else {

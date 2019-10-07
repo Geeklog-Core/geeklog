@@ -349,7 +349,7 @@ function SEC_hasTopicAccess($tid)
 
     $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '$tid'");
     $A = DB_fetchArray($result);
-    
+
     if (DB_numrows($result) > 0) { // Make sure record return else no access
         return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
     } else {
@@ -1504,7 +1504,7 @@ function SEC_checkToken()
             . SECINT_authform($returnurl, $method, $postdata, $getdata, $files);
     }
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG20[1]));
-    
+
     COM_output($display);
     exit;
 
@@ -1732,11 +1732,11 @@ function SEC_getTokenExpiryNotice($token, $extra_msg = '')
         if ($expirytime > 0) {
             $tcc = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'controls'));
             $tcc->set_file('expiry_message', 'expiry_message.thtml');
-            
+
             $tcc->set_var('lang_token_expiry', sprintf($LANG_ADMIN['token_expiry'], strftime($_CONF['timeonly'], $expirytime)));
             $tcc->set_var('lang_extra_msg', $extra_msg);
-            
-            $retval = $tcc->finish($tcc->parse('output', 'expiry_message'));        
+
+            $retval = $tcc->finish($tcc->parse('output', 'expiry_message'));
         }
     }
 

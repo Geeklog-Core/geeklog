@@ -6128,9 +6128,10 @@ function COM_getPermSQL($type = 'WHERE', $u_id = 0, $access = 2, $table = '')
  * @param    string $type  part of the SQL expr. e.g. 'WHERE', 'AND'
  * @param    int    $u_id  user id or 0 = current user
  * @param    string $table table name if ambiguous (e.g. in JOINs)
+ * @param    int    $access access to check for (2=read, 3=r&write)
  * @return   string        SQL expression string (may be empty)
  */
-function COM_getTopicSQL($type = 'WHERE', $u_id = 0, $table = '')
+function COM_getTopicSQL($type = 'WHERE', $u_id = 0, $table = '', $access = 2)
 {
     global $_TABLES, $_USER, $_GROUPS;
 
@@ -6163,7 +6164,7 @@ function COM_getTopicSQL($type = 'WHERE', $u_id = 0, $table = '')
     }
 
     $result = DB_query("SELECT tid FROM {$_TABLES['topics']}"
-        . COM_getPermSQL('WHERE', $uid));
+        . COM_getPermSQL('WHERE', $uid, $access));
     $tids = array();
     while ($T = DB_fetchArray($result)) {
         $tids[] = $T['tid'];
