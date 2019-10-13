@@ -1775,11 +1775,16 @@ function PLG_replaceTags($content, $parse_plugin = '', $remove = false, $plugin 
                 } else {
                     $function = 'plugin_autotags_' . $autotag['module'];
                     if (function_exists($function) && (empty($parse_plugin) || ($parse_plugin == $autotag['module']))) {
-                        $info = new ReflectionFunction($function);
-                        if ($info->getNumberOfParameters() == 4) {
+                        try {
+                            $info = new ReflectionFunction($function);
+                            $numParameters = $info->getNumberOfParameters();
+                        } catch (ReflectionException $e) {
+                            $numParameters = 0;
+                        }
+
+                        if ($numParameters == 4) {
                             $parameters['type'] = $plugin;
                             $parameters['id'] = $id;
-
                             $content = $function('parse', $content, $autotag, $parameters);
                         } else {
                             $content = $function('parse', $content, $autotag);

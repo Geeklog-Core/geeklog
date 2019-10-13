@@ -86,11 +86,12 @@ class GLText
     /**
      * Returns text ready for display.
      *
-     * @param   string $text     Text to prepare for display
-     * @param   string $postMode Indicates if text is html, adveditor, wikitext or plaintext
-     * @param   int    $version  version of GLText engine
-     * @return  string  Escaped String
-     * @access  public
+     * @param   string  $text      Text to prepare for display
+     * @param   string  $postMode  Indicates if text is html, adveditor, wikitext or plaintext
+     * @param   int     $version   Version of GLText engine
+     * @param   string  $type      Content type
+     * @param   string  $id        Content Id
+     * @return  string             Escaped String
      */
     public static function getDisplayText($text, $postMode, $version, $type = NULL, $id = NULL)
     {
@@ -138,7 +139,7 @@ class GLText
             $text = COM_checkWords($text, 'story');
         }
 
-        if (isset($type) && isset($id)) {
+        if (isset($type, $id)) {
             $text = PLG_replaceTags(self::_displayEscape($text), '', false, $type, $id);
         } else {
             $text = PLG_replaceTags(self::_displayEscape($text));
