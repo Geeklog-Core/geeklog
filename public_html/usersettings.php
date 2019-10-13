@@ -53,11 +53,16 @@ $_US_VERBOSE = false;
  */
 function edituser()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN, $LANG_confignames,
-           $LANG_configselects, $_SCRIPTS;
+    global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG12, $LANG_ADMIN,
+           $LANG_confignames, $LANG_configselects, $LANG_postmodes, $_SCRIPTS;
 
-    $result = DB_query("SELECT fullname,cookietimeout,email,emailtoconfirm,emailconfirmid,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
+    $result = DB_query(
+        "SELECT fullname,cookietimeout,email,emailtoconfirm,emailconfirmid,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice,postmode "
+        . "FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} "
+        . "WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}"
+    );
     $A = DB_fetchArray($result);
+    $postMode = $A['postmode'];
 
     $preferences = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout'] . 'preferences'));
     $preferences->set_file(array(
@@ -151,6 +156,10 @@ function edituser()
     $preferences->set_var('lang_about_text', $LANG04[38]);
     $preferences->set_var('lang_pgpkey', $LANG04[8]);
     $preferences->set_var('lang_pgpkey_text', $LANG04[39]);
+    $preferences->set_var('lang_postmode', $LANG12[36]);
+    $preferences->set_var('lang_plaintext', $LANG_postmodes['plaintext']);
+    $preferences->set_var('lang_html', $LANG_postmodes['html']);
+    $preferences->set_var('lang_postmode_text', $LANG04[171]);
     $preferences->set_var('lang_submit', $LANG04[9]);
     $preferences->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $preferences->set_var('lang_preview_title', $LANG04[145]);
@@ -272,7 +281,10 @@ function edituser()
         htmlspecialchars(COM_killJS($A['homepage'])));
     $preferences->set_var('location_value',
         htmlspecialchars(GLText::stripTags($A['location'])));
-    $preferences->set_var('signature_value', htmlspecialchars($A['sig']));
+    $preferences->set_var(
+        'signature_value',
+        GLText::getEditText($A['sig'], $postMode, GLTEXT_LATEST_VERSION)
+    );
 
     if ($_CONF['allow_user_photo'] == 1) {
         $photo = USER_getPhoto($_USER['uid'], $A['photo'], $A['email'], -1);
@@ -327,8 +339,15 @@ function edituser()
     $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
-    $preferences->set_var('about_value', htmlspecialchars($A['about']));
+    $preferences->set_var(
+        'about_value',
+        GLText::getEditText($A['about'], $postMode, GLTEXT_LATEST_VERSION)
+    );
     $preferences->set_var('pgpkey_value', htmlspecialchars($A['pgpkey']));
+    $preferences->set_var(array(
+        'plaintext_selected' => (($postMode === 'plaintext') ? ' selected="selected"' : ''),
+        'html_selected'      => (($postMode === 'html') ? ' selected="selected"' : ''),
+    ));
     $preferences->set_var('uid_value', $reqid);
     $preferences->set_var('username_value', htmlspecialchars($_USER['username']));
 
@@ -1121,12 +1140,22 @@ function saveuser(array $A)
     $A['email'] = COM_applyFilter($A['email']);
     $A['email_conf'] = COM_applyFilter($A['email_conf']);
     $A['homepage'] = COM_applyFilter($A['homepage']);
+    $A['postmode'] = ($A['postmode'] === 'html') ? 'html' : 'plaintext';
 
     // basic filtering only
     $A['fullname'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['fullname'])));
     $A['location'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['location'])));
-    $A['sig'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['sig'])));
-    $A['about'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['about'])));
+
+    if ($A['postmode'] === 'html') {
+        // HTML
+        $A['sig'] = GLText::checkHTML(GLText::remove4byteUtf8Chars(COM_stripslashes($A['sig'])), '');
+        $A['about'] = GLText::checkHTML(GLText::remove4byteUtf8Chars(COM_stripslashes($A['about'])), '');
+    } else {
+        // Plaintext
+        $A['sig'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['sig'])));
+        $A['about'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['about'])));
+    }
+
     $A['pgpkey'] = GLText::stripTags(GLText::remove4byteUtf8Chars(COM_stripslashes($A['pgpkey'])));
 
     if (!COM_isEmail($A['email'])) {
@@ -1193,6 +1222,7 @@ function saveuser(array $A)
         $A['sig'] = DB_escapeString($A['sig']);
         $A['about'] = DB_escapeString($A['about']);
         $A['pgpkey'] = DB_escapeString($A['pgpkey']);
+        $A['postmode'] = DB_escapeString($A['postmode']);
 
         if (!empty($filename)) {
             if (!file_exists($_CONF['path_images'] . 'userphotos/' . $filename)) {
@@ -1211,7 +1241,7 @@ function saveuser(array $A)
             $sql_emailconfirm = ",emailtoconfirm=NULL";
         }
 
-        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']},photo='$filename'{$sql_emailconfirm} WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']},photo='$filename'{$sql_emailconfirm},postmode='{$A['postmode']}' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}',location='{$A['location']}' WHERE uid={$_USER['uid']}");
 
         // Call custom registration save function if enabled and exists
