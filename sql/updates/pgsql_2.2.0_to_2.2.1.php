@@ -58,6 +58,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} DROP COLUMN topic";
 // Add `autologin_key` column to `users' table
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD COLUMN autologin_key VARCHAR(250) NOT NULL DEFAULT ''";
 
+// Add `postmode` column to `users' table
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD COLUMN postmode VARCHAR(10) NOT NULL DEFAULT 'plaintext'";
+
 /**
  * Upgrade Messages
  */

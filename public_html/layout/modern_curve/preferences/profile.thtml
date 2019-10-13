@@ -151,6 +151,15 @@
       <dd class="description">{lang_pgpkey_text}</dd>
       
       {display_fields}
+
+      <dt><label for="profile-postmode">{lang_postmode}</label></dt>
+      <dd>
+        <select id="profile-postmode" name="postmode">
+          <option value="plaintext"{plaintext_selected}>{lang_plaintext}</option>
+          <option value="html"{html_selected}>{lang_html}</option>
+        </select>
+      </dd>
+      <dd class="description" id="desc-profile-postmode">{lang_postmode_text}</dd>
     </dl>
   </fieldset>
 </div>

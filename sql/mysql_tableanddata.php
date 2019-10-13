@@ -523,6 +523,7 @@ CREATE TABLE {$_TABLES['users']} (
   twofactorauth_enabled TINYINT(3) NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
   autologin_key VARCHAR(255) NOT NULL DEFAULT '',
+  postmode VARCHAR (10) NOT NULL DEFAULT 'plaintext',
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username),
   UNIQUE KEY users_username (username), 

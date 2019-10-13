@@ -521,6 +521,7 @@ CREATE TABLE {$_TABLES['users']} (
   twofactorauth_enabled SMALLINT NOT NULL DEFAULT 0,
   twofactorauth_secret VARCHAR(255) NOT NULL DEFAULT '',
   autologin_key VARCHAR(255) NOT NULL DEFAULT '',
+  postmode VARCHAR (10) NOT NULL DEFAULT 'plaintext',
   PRIMARY KEY (uid)
 );
   CREATE INDEX {$_TABLES['users']}_LOGIN ON {$_TABLES['users']}(uid,passwd,username);

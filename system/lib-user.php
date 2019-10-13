@@ -1072,7 +1072,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         return $retval;
     }
 
-    $result = DB_query("SELECT {$_TABLES['users']}.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email,status FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $uid");
+    $result = DB_query("SELECT {$_TABLES['users']}.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email,status,postmode FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $uid");
     $numRows = DB_numRows($result);
     if ($numRows == 0) { // no such user
         COM_handle404();
@@ -1185,7 +1185,10 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('lang_location', $LANG04[106]);
     $user_templates->set_var('user_location', GLText::stripTags($A['location']));
     $user_templates->set_var('lang_bio', $LANG04[7]);
-    $user_templates->set_var('user_bio', COM_nl2br(stripslashes($A['about'])));
+    $user_templates->set_var(
+        'user_bio',
+        GLText::getDisplayText(stripslashes($A['about']), $A['postmode'], GLTEXT_LATEST_VERSION)
+    );
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
     $user_templates->set_var('user_pgp', COM_nl2br($A['pgpkey']));
     
