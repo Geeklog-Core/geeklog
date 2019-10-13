@@ -3435,7 +3435,7 @@ class Installer
      */
     private function pluginUpgrades($migration = false, $old_conf = array())
     {
-        global $_CONF, $_TABLES;
+        global $_CONF, $_PLUGINS, $_TABLES;
 
         $failed = 0;
 
@@ -3445,25 +3445,32 @@ class Installer
         for ($i = 0; $i < $numPlugins; $i++) {
             list($pi_name, $pi_version) = DB_fetchArray($result);
 
-            $success = true;
+            $isSuccess = true;
             if ($migration) {
-                $success = PLG_migrate($pi_name, $old_conf);
+                $isSuccess = PLG_migrate($pi_name, $old_conf);
             }
 
-            if ($success === true) {
+            if ($isSuccess) {
                 $code_version = PLG_chkVersion($pi_name);
                 if (!empty($code_version) && ($code_version != $pi_version)) {
-                    $success = PLG_upgrade($pi_name);
+                    $isSuccess = PLG_upgrade($pi_name);
                 }
             }
 
-            if ($success !== true) {
+            if (!$isSuccess) {
                 // migration or upgrade failed - disable plugin
                 DB_change($_TABLES['plugins'], 'pi_enabled', 0,
                     'pi_name', $pi_name);
-                COM_errorLog("Migration or upgrade for '$pi_name' plugin failed - plugin disabled");
+                COM_errorLog("Migration or upgrade for '{$pi_name}' plugin failed - plugin disabled");
                 $failed++;
             }
+        }
+
+        // Only after all the other plugins are updated can we update sitemaps
+        if (in_array('xmlsitemap', $_PLUGINS)) {
+            require_once $_CONF['path'] . 'plugins/xmlsitemap/functions.inc';
+            XMLSMAP_update();
+            COM_errorLog('Successfully updated/migrated the "XMLSitemap" plugin');
         }
 
         return $failed;
