@@ -337,11 +337,20 @@ function DIR_displayYear($template, $dir_topic, $year)
         AND ta.type = 'article' AND ta.id = sid ";
 
     if ($dir_topic !== TOPIC_ALL_OPTION) {
+        $monthSql['mysql'] .= " AND (";
+        $monthSql['pgsql'] .= " AND (";
+
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($dir_topic);
         $dir_topic_escaped = DB_escapeString($dir_topic);
-        $monthSql['mysql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic_escaped}')))";
-        $monthSql['pgsql'] .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic_escaped}')))";
+
+        if (!empty($tid_list)) {
+            $monthSql['mysql'] .= "ta.tid IN({$tid_list}) AND ";
+            $monthSql['pgsql'] .= "ta.tid IN({$tid_list}) AND ";
+        }
+
+        $monthSql['mysql'] .= "(ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic_escaped}')))";
+        $monthSql['pgsql'] .= "(ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic_escaped}')))";
     } else {
         $monthSql['mysql'] .= COM_getTopicSQL('AND', 0, 'ta');
         $monthSql['pgsql'] .= COM_getTopicSQL('AND', 0, 'ta');
@@ -491,7 +500,7 @@ if (empty($dir_topic)) {
 // Set topic for rest of site
 $dir_topic = TOPIC_setTopic($dir_topic);
 if (!empty($dir_topic)) {
-    $dir_topic = TOPIC_ALL_OPTION
+    $dir_topic = TOPIC_ALL_OPTION;
 }
 
 if ($year < 0) {
