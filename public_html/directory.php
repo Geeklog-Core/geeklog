@@ -341,13 +341,11 @@ function DIR_displayYear($template, $dir_topic, $year)
         $monthSql['pgsql'] .= " AND (";
 
         // Retrieve list of inherited topics
-        $tid_list = TOPIC_getChildList($dir_topic);
+        $tid_list = TOPIC_getChildList($dir_topic); // function will always return a topic id (as the one passed will be returned)
         $dir_topic_escaped = DB_escapeString($dir_topic);
 
-        if (!empty($tid_list)) {
-            $monthSql['mysql'] .= "ta.tid IN({$tid_list}) AND ";
-            $monthSql['pgsql'] .= "ta.tid IN({$tid_list}) AND ";
-        }
+        $monthSql['mysql'] .= "ta.tid IN({$tid_list}) AND ";
+        $monthSql['pgsql'] .= "ta.tid IN({$tid_list}) AND ";
 
         $monthSql['mysql'] .= "(ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic_escaped}')))";
         $monthSql['pgsql'] .= "(ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$dir_topic_escaped}')))";
@@ -499,7 +497,7 @@ if (empty($dir_topic)) {
 // Topic stuff already set in lib-common but need to double check if URL_Write is_a enabled
 // Set topic for rest of site
 $dir_topic = TOPIC_setTopic($dir_topic);
-if (!empty($dir_topic)) {
+if (empty($dir_topic)) {
     $dir_topic = TOPIC_ALL_OPTION;
 }
 
