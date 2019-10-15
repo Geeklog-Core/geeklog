@@ -232,6 +232,7 @@ $LANG03 = array(
     21 => 'Merci de lire les messages pr&eacute;c&eacute;dants avant d\'envoyer votre propre message afin de ne pas faire de r&eacute;p&eacute;tition.',
     22 => 'Veuillez utiliser un titre en lien avec votre message.',
     23 => 'Votre adresse courriel NE SERA PAS rendue publique.',
+    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.',
     24 => 'Utilisateur anonyme',
     25 => 'Êtes-vous certain de vouloir rapporter cet abus &agrave; l\'administrateur du site ?',
     26 => '%s &agrave; rapport&eacute; ce message abusif :',
@@ -436,6 +437,7 @@ $LANG04 = array(
     168 => 'You may also login with one on of the below remote authentication services',
     169 => 'User has updated his/her profile',
     170 => "Admin at {$_CONF['site_name']} changed the password of your account as follows.  Please save this mail for further reference.",
+    171 => 'Post mode for "Signature" and "Bio".',
     'user_login' => 'User Login',
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?",
@@ -1661,7 +1663,10 @@ $MESSAGE = array(
     501 => 'A verification message has been sent to your email address. Please click on the link in the email to confirm your email address and update your account. If you log into your account again before you verify your email address you will be asked again for a email address.<br' . XHTML . '><br' . XHTML . '>Please note you have now been successfully logged out so you can complete this verification.',
     502 => 'Your request for a new email has expired. Please try again below.',
     503 => 'Your email has been successfully verified.',
-    504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.'
+    504 => 'Passwords must have a minimum of 8 characters and contain at least 1 number and 1 letter. Passwords are case sensitive.',
+    505 => "Warning - The current theme {$_CONF['theme']} v{$_CONF['theme_gl_version']} is not 100% compatible with this version of Geeklog (v2.2.1) and you will have issues using this site. The required minimum theme Geeklog version is v{$_CONF['min_theme_gl_version']}.",
+    506 => "Warning - The current theme {$_CONF['theme']} (version not known) is not 100% compatible with this version of Geeklog (v2.2.1) and you will have issues using this site. The required minimum theme Geeklog version is v{$_CONF['min_theme_gl_version']}.",
+    507 => "Warning - The current theme {$_CONF['theme']} v{$_CONF['theme_gl_version']} is meant for a newer version of Geeklog. You are using Geeklog v2.2.1 and you may experience issues using this site."
 );
 
 ###############################################################################
@@ -2069,7 +2074,8 @@ $LANG_ADMIN = array(
     'for_computer' => 'For Computer',
     'all' => 'All',
     'mobile' => 'Mobile',
-    'computer' => 'Computer'
+    'computer' => 'Computer',
+    'edit_access_only' => 'Edit Access Only'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually

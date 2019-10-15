@@ -183,7 +183,8 @@ $LANG_confignames['staticpages'] = array(
     'includephp' => 'כיללו עמודים סטטיים עם PHP',
     'includesearch' => 'אפשרו עמודים סטטיים בחיפוש',
     'includesearchcenterblocks' => 'כיללו עמודים סטטיים בקוביות מידע מרכזיות',
-    'includesearchphp' => 'כיללו עמודים סטטיים עם PHP'
+    'includesearchphp' => 'כיללו עמודים סטטיים עם PHP',
+    'includesearchtemplate' => 'Include Template Static Pages'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
