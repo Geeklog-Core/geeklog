@@ -3996,3 +3996,27 @@ function PLG_collectRecaptchaInfo()
 
     return $retval;
 }
+
+/**
+ * Gives plugins a chance to specify their own Strutured Data Types
+ *
+ * @return   array   Returns Strutured Data Types from plugins
+ */
+function PLG_getStructuredDataTypes()
+{
+    global $_PLUGINS;
+
+    $structureddatatypes = array();
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_getstructureddatatypes_' . $pi_name;
+        if (function_exists($function)) {
+            $plugin_structureddatatypes = $function();
+            if (is_array($plugin_structureddatatypes)) {
+                $structureddatatypes = array_merge($structureddatatypes, $plugin_structureddatatypes);
+            }
+        }
+    }
+
+    return $structureddatatypes;
+}

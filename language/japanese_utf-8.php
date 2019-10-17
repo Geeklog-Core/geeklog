@@ -2148,11 +2148,11 @@ $LANG_trackbackcodes = array(
 );
 
 $LANG_structureddatatypes = array(
-    0 => 'None',
-    1 => 'WebPage',
-    2 => 'Article',
-    3 => 'NewsArticle',
-    4 => 'BlogPosting'
+    'none'              => 'None',
+    'core-webpage'      => 'WebPage',
+    'core-article'      => 'Article',
+    'core-newsarticle'  => 'NewsArticle',
+    'core-blogposting'  => 'BlogPosting'
 );
 
 $LANG_STRUCT_DATA = array(
@@ -2656,7 +2656,7 @@ $LANG_configselects['Core'] = array(
     36 => array('いいえ' => 'false', 'トップページのみ' => 'frontpage', 'トップページと話題ページ' => 'frontpage_topics'),
     37 => array('無効' => 0, '有効(index.phpあり)' => 1, '有効(index.phpなし)' => 2),
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
+    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsletter', 'BlogPosting' => 'core-blogposting'),
     40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
     41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
 );

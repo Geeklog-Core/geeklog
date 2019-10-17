@@ -132,7 +132,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                 if ($_CONF['cache_templates']) {
                     CACHE_remove_instance($cacheInstance);
                     $_STRUCT_DATA->clear_cachedScript('article', $story->getSid());
-                    
+
                     // Need to close and recreate template class since issues arise when theme templates are cached
                     unset($article); // Close template class
                     $article = COM_newTemplate(CTL_core_templatePath($_CONF['path_layout']));
@@ -154,17 +154,17 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             // Need to reset especially if caching is disabled for a certain story but template caching has been enabled for the theme
             $retval = false;
         }
-        
+
         // Now find structured data cache if required
         // Structured Data is cached by itself. Need to cache in case structured data autotags exist in page.
         // Since autotags are executed when the page is rendered therefore we have to cache structred data if page is cached.
         // Only cache and use structured data on full article view
-        if ($index == 'n' && $story->DisplayElements('structured_data_type') > 0 && $cache_found) {
+        if ($index == 'n' && !empty($story->DisplayElements('structured_data_type')) && $cache_found) {
             if (!$_STRUCT_DATA->get_cachedScript('article', $story->getSid(), $cache_time)) {
                 // Structured Data missing for some reason even though page cache found. Render all again
                 $retval = false;
             }
-        }          
+        }
     }
 
     // ****************************************
@@ -216,13 +216,13 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $article->set_var('story_topic_image_no_align', $topicimage_noalign, false, true);
         }
     }
-    
+
     if ($_CONF['likes_enabled'] != 0 && $_CONF['likes_articles'] != 0) {
         $article->set_var('likes_control',LIKES_control('article', '',$story->getSid(), $_CONF['likes_articles']), false, true);
     } else {
         $article->set_var('likes_control', '', false, true);
-    }    
-    
+    }
+
     // ****************************************
 
     // Create article (and ignore cache) only if preview, or query not empty, or if no cache or cache has been disabled
@@ -243,15 +243,15 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         if (!empty($query)) {
             $introtext = COM_highlightQuery($introtext, $query);
             $bodytext = COM_highlightQuery($bodytext, $query);
-        }        
-        
+        }
+
         $article->set_var('article_filevar', '');
         $article->set_var('site_name', $_CONF['site_name']);
         //$article->set_var( 'story_date', $story->DisplayElements('date') );
         $article->set_var('story_date_short', $story->DisplayElements('shortdate'));
         $article->set_var('story_date_only', $story->DisplayElements('dateonly'));
         $article->set_var('story_id', $story->getSid());
-        // Send index (display type) so theme developers have the option to display things 
+        // Send index (display type) so theme developers have the option to display things
         $article->set_var('story_display_type', $index, false, true);
 
         if ($_CONF['contributedbyline'] == 1) {
@@ -485,7 +485,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                     if ($_CONF['show_comments_at_replying'] == true) {
                         $postCommentUrl .= '#commenteditform';
                     }
-                }                
+                }
 
                 if ($story->DisplayElements('comments') > 0) {
                     $result = DB_query("SELECT UNIX_TIMESTAMP(date) AS day,username,fullname,{$_TABLES['comments']}.uid as cuid FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '" . $story->getSid() . "' ORDER BY date DESC LIMIT 1");
@@ -496,28 +496,28 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                         . $LANG01[104] . ' ' . COM_getDisplayName($C['cuid'],
                             $C['username'], $C['fullname']);
                     $article->set_var('recent_comment_info', $recent_comment_info);
-                    
+
                     $attr = array('title' => htmlspecialchars($recent_comment_info));
                     $comments_with_count = COM_createLink($comments_with_count, $commentsUrl, $attr);
                     $article->set_var('comments_with_count', $comments_with_count);
-                    
+
                     $recent_comment_anchortag = COM_createLink($comments_with_count, $postCommentUrl, $attr);
-                    
+
                     // Not really used anymore but left in for old themes
                     $article->set_var('start_comments_anchortag', '<a href="' . $commentsUrl . '">');
                     $article->set_var('end_comments_anchortag', '</a>');
                 } else {
                     $article->set_var('comments_with_count', $comments_with_count);
-                    
+
                     $recent_comment_anchortag = COM_createLink($LANG01[60], $postCommentUrl);
                 }
-                
+
                 if ($story->DisplayElements('commentcode') == 0) {
                     $post_comment_link = COM_createLink($LANG01[60], $postCommentUrl,
                         array('rel' => 'nofollow'));
                     $article->set_var('post_comment_link', $post_comment_link);
                     $article->set_var('lang_post_comment', $LANG01[60]);
-                    
+
                     // Not really used anymore but left in for old themes
                     $article->set_var('start_post_comment_anchortag',
                         '<a href="' . $postCommentUrl
@@ -642,7 +642,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         $article->set_var('navi_list', $navi_list);
         $article->set_var('feedback_list', $feedback_list);
         $article->set_var('story_footer', $story_footer);
-        
+
         // Set type of view in template so can change display if needed
         // Index variable:  n = Full display of article. p = 'Preview' mode. Else y = introtext only.
         $article->set_var('display_type', $index);
@@ -688,17 +688,16 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             // CACHE_create_instance($cacheInstance, $article);
         }
 
-
-
         // Figure out structured data if needed
-        if ($story->DisplayElements('structured_data_type') > 0 ) {
+        if (!empty($story->DisplayElements('structured_data_type'))) {
+
             $attributes = array();
             $attributes['multi_language'] = true;
             // Only cache if not search and full article view (=n)
             if ($index == 'n' && empty($query) && ($cache_time > 0 || $cache_time == -1)) {
                 $attributes['cache'] = true;
             }
-            
+
             $properties['headline'] = $story->displayElements('title');
             $properties['url'] = $articleUrl;
             $properties['datePublished'] = $story->displayElements('date');
@@ -709,8 +708,8 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $properties['description'] = $story->DisplayElements('meta_description');
             $properties['keywords'] = $story->DisplayElements('meta_keywords');
             $properties['commentCount'] = CMT_commentCount($story->getSid(), 'article');
+            $properties['author']['name'] = $story->DisplayElements('username');
             $_STRUCT_DATA->add_type('article', $story->getSid(), $story->displayElements('structured_data_type'), $properties, $attributes);
-            $_STRUCT_DATA->set_author_item('article', $story->getSid(), $story->DisplayElements('username'));
             // Include any images attached to the article (taken in part from renderImageTags function in article class)
             $result = DB_query("SELECT ai_filename,ai_img_num FROM {$_TABLES['article_images']} WHERE ai_sid = '{$story->getSid()}' ORDER BY ai_img_num");
             $numRows = DB_numRows($result);
@@ -728,10 +727,10 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
                 } else {
                     $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
                 }
-                
+
                 $sizeAttributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename'], false);
                 if (is_array($sizeAttributes)) {
-                    $_STRUCT_DATA->set_image_item('article', $story->getSid(), $imgSrc, $sizeAttributes['width'], $sizeAttributes['height']);        
+                    $_STRUCT_DATA->set_image_item('article', $story->getSid(), $imgSrc, $sizeAttributes['width'], $sizeAttributes['height']);
                 } else {
                     $_STRUCT_DATA->set_image_item('article', $story->getSid(), $imgSrc);
                 }
@@ -742,7 +741,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
 
 
 
-        
+
 
     } else {
         PLG_templateSetVars($article_filevar, $article);
@@ -753,18 +752,18 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             if ($index == 'y' && ($articlecount %$_CONF['blocks_article_topic_list_repeat_after'] == 0)) {
                 PLG_templateSetVars($article_filevar . '_topic_list', $article);
             }
-        }        
+        }
 
         if (!$_CONF['cache_templates']) {
             // This is only triggered if cache_templates is disabled but caching is enabled for the article itself
-            
+
             // Template var was original set with set_file (as it is a template file)
             // Since the article itself is cached but not the rest of the templates we need to reset the templateCode variable in the template class
             // Views use the templateCode variable as well so we can just update the template code variable with set_view as we have already retrieved the cache version of the article
             $article->set_view($article_filevar, $retval);
         }
     }
-   
+
     $article->parse('finalstory', $article_filevar);
 
     return $article->finish($article->get_var('finalstory'));
@@ -1060,7 +1059,7 @@ function STORY_doDeleteThisStoryNow($sid)
     DB_delete($_TABLES['stories'], 'sid', $sid);
 
     TOPIC_deleteTopicAssignments('article', $sid);
-    
+
     LIKES_deleteActions('article', '', $sid);
 
     // notify plugins
@@ -1223,7 +1222,7 @@ function plugin_getwhatsnewcomment_story($numreturn = 0, $uid = 0)
 function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
 {
     global $_CONF, $_TABLES;
-    
+
     // parse $what to see what we need to pull from the database
     $properties = explode(',', $what);
     $fields = array();
@@ -1240,7 +1239,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
                 $fields[] = 'bodytext';
                 $groupby_fields[] = 'introtext';
                 $groupby_fields[] = 'bodytext';
-                
+
                 break;
 
             case 'excerpt':
@@ -1291,7 +1290,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     $filter_flag = false;
     if ($sid == '*') {
         $where = ' WHERE';
-        
+
         // Check options to see if filters enabled
         if (isset($options['filter']['date-created'])) {
             $filter_flag = true;
@@ -1311,14 +1310,14 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
             $permSql = COM_getPermSql('AND', $uid) . " AND ta.type = 'article' AND ta.id = sid " . COM_getTopicSql('AND', $uid, 'ta');
             $groupbySQL = " GROUP BY " . implode(',', $groupby_fields);
         } else {
-            // Without a filter we can select just a the stories from a default topic since all stories are required a default topic. 
+            // Without a filter we can select just a the stories from a default topic since all stories are required a default topic.
             // So no duplicates returned
             $permSql = COM_getPermSql('AND', $uid) . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', $uid, 'ta');
         }
     } else {
         $permSql = COM_getPermSql('AND') . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', 0, 'ta');
     }
-    
+
     $sql = "SELECT " . implode(',', $fields)
         . " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta" . $where . $permSql . $groupbySQL;
     if ($sid != '*') {
@@ -1914,7 +1913,7 @@ function plugin_getfeednames_article()
 function plugin_getBlockLocations_article()
 {
    global $LANG23;
-    
+
     $block_locations = array();
 
     // Add any extra block locations for plugin
@@ -1926,14 +1925,14 @@ function plugin_getBlockLocations_article()
         'template_name'     => 'article_full',
         'template_variable' => 'blocks_article_footer'
     );
-    
+
     $block_locations[] = array(
         'id'                => 'article_topic_list', // Unique string. No other block location (includes Geeklog itself and any other plugins or themes) can share the same id ("left" and "right" are already taken).
         'name'              => $LANG23['blocks_article_topic_list_name'],
-        'description'       => $LANG23['blocks_article_topic_list_desc'], 
+        'description'       => $LANG23['blocks_article_topic_list_desc'],
         'template_name'     => 'article_topic_list',
         'template_variable' => 'blocks_article_topic_list'
-    );    
+    );
 
     return $block_locations;
 }
@@ -2002,7 +2001,7 @@ function plugin_usercontributed_article($uid)
 
     // Include articles and article submissions
     $count = DB_getItem($_TABLES['stories'], 'COUNT(owner_id)', "owner_id = {$uid}") + DB_getItem($_TABLES['storysubmission'], 'COUNT(uid)', "uid = {$uid}");
-    
+
     if ($count > 0) {
         $retval = str_replace('%s', $count, $LANG33['num_articles']);
     }
@@ -2020,7 +2019,7 @@ function plugin_likesenabled_article($sub_type)
     global $_CONF;
 
     $retval = false;
-    
+
     if ($_CONF['likes_enabled'] AND $_CONF['likes_articles'] > 0) {
         $retval = $_CONF['likes_articles'];
     }
@@ -2047,8 +2046,8 @@ function plugin_canuserlike_article($sub_type, $id, $uid, $ip)
         if ($owner_id != $uid) {
             $retval = true;
         }
-    }   
-    
+    }
+
     return $retval;
 }
 

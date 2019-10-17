@@ -85,7 +85,7 @@ function update_DatabaseFor221()
     $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'geeklog'";
 
     // Add structured data type to article table and modified date
-    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `structured_data_type` varchar(40) NOT NULL DEFAULT '' AFTER `commentcode`";
     $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `modified` DATETIME NULL DEFAULT NULL AFTER `date`";
 
     // New Likes System table
@@ -125,14 +125,14 @@ function update_DatabaseFor221()
     $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `autologin_key` VARCHAR(250) NOT NULL DEFAULT '' AFTER `twofactorauth_secret`";
 
     // Add `postmode` column to `users' table
-    $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `postmode` VARCHAR(10) NOT NULL DEFAULT 'plaintext' AFTER `autologin_key`";    
+    $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD `postmode` VARCHAR(10) NOT NULL DEFAULT 'plaintext' AFTER `autologin_key`";
 
     // ***************************************
     // Core Plugin Updates Here (including version update)
 
     // Staticpages
     // Add column for structured data
-    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`";
+    $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD `structured_data_type` varchar(40) NOT NULL DEFAULT '' AFTER `commentcode`";
     $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD page_data TEXT NOT NULL DEFAULT '' AFTER sp_content";
     $plugin_install_updates_file = $_CONF['path'] . 'plugins/staticpages/install_updates.php';
     if (file_exists($plugin_install_updates_file)) {

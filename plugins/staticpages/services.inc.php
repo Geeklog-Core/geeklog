@@ -60,7 +60,7 @@ define('STATICPAGE_MAX_ID_LENGTH', 128);
 function service_submit_staticpages($args, &$output, &$svc_msg)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC,
-           $_GROUPS, $_SP_CONF, $_STRUCT_DATA;
+           $_GROUPS, $_SP_CONF, $_STRUCT_DATA, $LANG_structureddatatypes;
 
     if (!$_CONF['disable_webservices']) {
         require_once $_CONF['path_system'] . 'lib-webservices.php';
@@ -179,8 +179,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $args['commentcode'] = $_SP_CONF['comment_code'];
     }
 
-    // Only 0 (None) and 4 other types supported
-    if (($args['structured_data_type'] < 0) || ($args['structured_data_type'] > 5)) {
+    // Only Core Structured Data Types supported
+    if (!isset($LANG_structureddatatypes[$args['structured_data_type']])) {
         $args['structured_data_type'] = $_SP_CONF['structured_data_type_default'];
     }
 

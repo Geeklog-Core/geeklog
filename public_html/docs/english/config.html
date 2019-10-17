@@ -76,8 +76,8 @@ manually.</p>
 <tr>
   <td valign="top"><a name="desc_path_site_logo">path_site_logo</a></td>
   <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
-  <td valign="top">Logo image filename and absolute path. For example if you use the Denim theme this would be '/layout/denim/images/logo2.png' (without the quotes). This information is used along with the site name 
-  by the Publisher property with Structured Data. For more information also see the section on <a href="#desc_structured_data_type_default">Structured Data</a> below.</td></tr>  
+  <td valign="top">Logo image filename and absolute path. For example if you use the Denim theme this would be '/layout/denim/images/logo2.png' (without the quotes). This information is used along with the site name
+  by the Publisher property with Structured Data. For more information also see the section on <a href="#desc_structured_data_type_default">Structured Data</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_disabled_msg">site_disabled_msg</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
@@ -414,32 +414,32 @@ the admin panel.</p>
   <td valign="top">Default setting for new articles and article submissions: Whether to show the topic icon (1) or not (0).</td></tr>
 <tr>
   <td valign="top"><a name="desc_structured_data_type_default">structured_data_type_default</a></td>
-  <td valign="top">2</td>
+  <td valign="top">'core-article'</td>
   <td valign="top">Default Structured Data Type for new articles. Structured Data markup will only be included when viewing the full article. Some plugins may also use this as the default. Supported types include:<br /><br />
     <ul>
-    <li>0 => None</li>
-    <li>1 => WebPage</li>
-    <li>2 => Article</li>
-    <li>3 => NewsArticle</li>
-    <li>4 => BlogPosting</li>
+    <li>'none' => None</li>
+    <li>'core-webpage' => WebPage</li>
+    <li>'core-article' => Article</li>
+    <li>'core-newsarticle' => NewsArticle</li>
+    <li>'core-blogposting' => BlogPosting</li>
     </ul>
     <br />
     Geeklog will add Structured Data markup (JSON-LD code) to your pages (either in the head of the page or near the actual content as it depends on caching) which increases the understanding of the page by search engines and can enhance your appearance in search results. This does not require any additional changes to your theme (unless your theme contains hard coded conflicting structured data markup). Currently Geeklog supports Structured Data for Breadcrumbs, Articles, and Staticpages. Based on the page (i.e. Article or Staticpage) and structured data type selected, Geeklog will map the data fields to the appropriate Structured Data properties.<br /><br />
-    
+
     Additional Structured Data properties can be added (or some current ones changed) by using the [structureddata: ] autotag in the actual article, static page, and other supported plugins items. For example:<br /><br />
-    
+
     <code>[structureddata:image height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
-    
+
     would add the image property to the sturctured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
-    
+
     <code>[structureddata:image type:staticpages id:page_id height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
-    
+
     For articles and static pages, the meta description is used for the structured data description property. If you wanted to change this without changing the meta description you could include an autotag like so within your content:<br /><br />
-    
-    <code>[structureddata:description]This is my new example description.[/structureddata]</code><br /><br /> 
-      
+
+    <code>[structureddata:description]This is my new example description.[/structureddata]</code><br /><br />
+
     For more on Structured Data itself, see <a href="https://schema.org/" target="_blank">Schema.org</a> and <a href="https://developers.google.com/search/docs/data-types/article" target="_blank">Google Search Reference</a>.<br /><br />
-    
+
     To test your pages for Structured Data and see if it is setup correctly you can use the <a href="https://search.google.com/structured-data/testing-tool" target="_blank">Google Structured Data Testing Tool</a>. Please note this tool test includes checking that the Structured Data supports the AMP specification so if some errors are reported they may only deal with AMP specific issues and may be fine for normal web pages. For more on the tool itself you can read Google's <a href="https://developers.google.com/search/docs/guides/prototype" target="_blank">guide</a>.
   </td></tr>
 <tr>
@@ -513,7 +513,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_blocks_article_topic_list_repeat_after">blocks_article_topic_list_repeat_after</a></td>
   <td valign="top">1</td>
-  <td valign="top">The Article Topic List Blocks location repeats after this many article introductions are displayed on a topic page (includes the homepage). If set to 0 this block location will be disabled.</td></tr>    
+  <td valign="top">The Article Topic List Blocks location repeats after this many article introductions are displayed on a topic page (includes the homepage). If set to 0 this block location will be disabled.</td></tr>
 </table>
 
 <h3><a name="stories_trackback">Articles and Trackback: Trackback</a></h3>
@@ -651,7 +651,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_cache_resource">cache_resource</a></td>
   <td valign="top">true</td>
-  <td valign="top">If set to <span class="tt">true</span>, JavaScript files and CSS files will be combined, minified and cached. 
+  <td valign="top">If set to <span class="tt">true</span>, JavaScript files and CSS files will be combined, minified and cached.
     Note: For themes that use the file "style.css.php" like the Modern Curve theme will ignore this setting and automatically always
     cache resources as some processing on the css files are required for the theme to display correctly.</td></tr>
 </table>
@@ -854,11 +854,11 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_require_user_email">require_user_email</a></td>
   <td valign="top">true</td>
-  <td valign="top">If set to true, users without email addresses will be required to add an email address to their account and need to verify it 
-    before they can continue to use the website while logged in. This affects remote accounts as some 
-    may not return an email address to Geeklog when the account is created due to permissions from the 
-    remote service. When this is set to true Geeklog will check for an email address when a user logs in. If there is not one, the user account 
-    status will be switched from "Active" to "New Email Required".</td></tr>       
+  <td valign="top">If set to true, users without email addresses will be required to add an email address to their account and need to verify it
+    before they can continue to use the website while logged in. This affects remote accounts as some
+    may not return an email address to Geeklog when the account is created due to permissions from the
+    remote service. When this is set to true Geeklog will check for an email address when a user logs in. If there is not one, the user account
+    status will be switched from "Active" to "New Email Required".</td></tr>
 <tr>
   <td valign="top"><a name="desc_show_servicename">show_servicename</a></td>
   <td valign="top">true</td>
@@ -917,7 +917,7 @@ the admin panel.</p>
   <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
   <td valign="top">Required to use Google OAuth login method. Visit the <a href="https://code.google.com/apis/console">Google Developers Console</a>
   to create an application to receive your client ID and client secret.<br />
-  See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>    
+  See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_login">facebook_login</a></td>
   <td valign="top">false</td>
@@ -1574,21 +1574,21 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_new_item_set_current_lang">new_item_set_current_lang</a></td>
   <td valign="top">0</td>
-  <td valign="top">If set to 1, and multiple languages for the site is setup correctly, on new items (that support multiple languages and uses Geeklog's make id function COM_makeSid) the current language id will be added to the item id. Articles and the Staticpages Plugin currently support this option. While Blocks and Topics support multiple languages they do not automatically generate an id on a new item so they do not support this option.</td></tr>    
+  <td valign="top">If set to 1, and multiple languages for the site is setup correctly, on new items (that support multiple languages and uses Geeklog's make id function COM_makeSid) the current language id will be added to the item id. Articles and the Staticpages Plugin currently support this option. While Blocks and Topics support multiple languages they do not automatically generate an id on a new item so they do not support this option.</td></tr>
 <tr>
   <td valign="top"><a name="desc_language_files">language_files</a></td>
   <td valign="top"><em>(disabled)</em></td>
   <td valign="top">For multi-lingual content setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the Geeklog language files to use. These shortcuts must each contain the same number of characters and
     the language file must exist in the Geeklog languages directory.<br /><br />
-    
+
     When creating content that supports multiple langagues (topics, articles, blocks, staticpages, etc.)
     you would end the id of the content with one of these shortcuts ('storyid_en' or 'storyid2_de'). This would then map this content to the specific language.
     For more information on how multi-language content works with Geeklog please visit our <a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>.<br /><br />
-    
-    A hreflang link element(s) will be generated for articles, staticpages and topics (and 3rd party Plugins if they support it) if Multi Language Content is setup for Geeklog. 
+
+    A hreflang link element(s) will be generated for articles, staticpages and topics (and 3rd party Plugins if they support it) if Multi Language Content is setup for Geeklog.
     This element will only appear on the canonical link of the item, or for topics on the first page.<br /><br />
-    
+
     For multi-language content sites Admins must setup both language_files and languages configuration options for the same languages.
     Both must either be enabled (for multi-language content) or disabled (for content of only one language).</td></tr>
 <tr>
@@ -1814,7 +1814,7 @@ the admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_page_navigation_mobile_max_pages">page_navigation_mobile_max_pages</a></td>
   <td valign="top">7</td>
-  <td valign="top">Maximum number of pages to show for the page navigation when visitors are on mobile devices. Minimum of 3 pages to a maximum of 20 pages allowed. If this value differs from the config option page_navigation_max_pages and you have enabled "Cache Templates" (cache_templates) make sure that you have also enabled the config option "Cache Mobile Devices Separately" (cache_mobile) as well.</td></tr>  
+  <td valign="top">Maximum number of pages to show for the page navigation when visitors are on mobile devices. Minimum of 3 pages to a maximum of 20 pages allowed. If this value differs from the config option page_navigation_max_pages and you have enabled "Cache Templates" (cache_templates) make sure that you have also enabled the config option "Cache Mobile Devices Separately" (cache_mobile) as well.</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_cache_time_block">default_cache_time_block</a></td>
   <td valign="top">0</td>
@@ -1969,7 +1969,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_default_permissions_story_3">default_permissions_story[3]</a></td>
   <td valign="top"><em>Read-Only</em></td>
   <td valign="top">Default permission for all anonymous visitors of new articles.</td></tr>
-  
+
 <tr>
   <td valign="top"><a name="desc_default_permissions_topic_0">default_permissions_topic[0]</a></td>
   <td valign="top"><em>Read-Write</em></td>
@@ -1986,7 +1986,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_default_permissions_topic_3">default_permissions_topic[3]</a></td>
   <td valign="top"><em>Read-Only</em></td>
   <td valign="top">Default permission for all anonymous visitors of new topics.</td></tr>
-  
+
 <tr>
   <td valign="top"><a name="desc_default_permissions_block_0">default_permissions_block[0]</a></td>
   <td valign="top"><em>Read-Write</em></td>
@@ -2003,8 +2003,8 @@ the admin panel.</p>
   <td valign="top"><a name="desc_default_permissions_block_3">default_permissions_block[3]</a></td>
   <td valign="top"><em>Read-Only</em></td>
   <td valign="top">Default permission for all anonymous users of new blocks.</td></tr>
-  
-  
+
+
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_story_0">autotag_permissions_story[0]</a></td>
   <td valign="top"><em>Use</em></td>
@@ -2055,7 +2055,7 @@ the admin panel.</p>
   <td valign="top"><a name="desc_autotag_permissions_topic_3">autotag_permissions_topic[3]</a></td>
   <td valign="top"><em>Use</em></td>
   <td valign="top">Usage permission for autotag by anonymous users.</td></tr>
-  
+
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_related_topics_0">autotag_permissions_related_topics[0]</a></td>
   <td valign="top"><em>Use</em></td>
@@ -2388,7 +2388,7 @@ supported for URLs to articles, topics, static pages, the article directory, and
     <tr>
         <td>https://www.example.com/article.php?story=@sid&mode=print</td>
         <td>https://www.example.com/article.php/@sid/print</td>
-    </tr>    
+    </tr>
     <tr>
         <td>https://www.example.com/index.php?topic=@topic</td>
         <td>https://www.example.com/index.php/topic/@topic/</td>
@@ -2404,7 +2404,7 @@ supported for URLs to articles, topics, static pages, the article directory, and
     <tr>
         <td>https://www.example.com/staticpages/index.php?page=@page</td>
         <td>https://www.example.com/staticpages/index.php/@page</td>
-    </tr>    
+    </tr>
     <tr>
         <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
         <td>https://www.example.com/staticpages/index.php/@page/print</td>
@@ -2416,7 +2416,7 @@ supported for URLs to articles, topics, static pages, the article directory, and
     <tr>
         <td>https://www.example.com/links/index.php?category=@cat</td>
         <td>https://www.example.com/links/index.php/@cat</td>
-    </tr>    
+    </tr>
     </tbody>
 </table>
 
@@ -2426,7 +2426,7 @@ prefer the second url format and often ignores the second format.</p>
 is known to work with Apache (all versions) and known <em>not</em> to work
 with IIS (at least some older versions). Please try it out before you go public
 with your site.</p>
-<p><strong>Note:</strong> For the homepage, if on a page other than 1, the topic URL format will be followed. 
+<p><strong>Note:</strong> For the homepage, if on a page other than 1, the topic URL format will be followed.
 The topic Id that will be used to represent the homepage is a dash "-". This is true for URL Routing as well.</p>
 
 
@@ -2461,7 +2461,7 @@ The topic Id that will be used to represent the homepage is a dash "-". This is 
         <td>https://www.example.com/topic/@topic/@page</td>
         <td>https://www.example.com/index.php?topic=@topic&page=@page</td>
         <td>130</td>
-    </tr>    
+    </tr>
     <tr>
         <td>https://www.example.com/archives/@topic/@year/@month</td>
         <td>https://www.example.com/directory.php?topic=@topic&year=@year&month=@month</td>
@@ -2477,7 +2477,7 @@ The topic Id that will be used to represent the homepage is a dash "-". This is 
         <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
         <td>160</td>
     </tr>
-    
+
     <tr>
         <td>https://www.example.com/links/portal/@item</td>
         <td>https://www.example.com/links/portal.php?what=link&item=@item</td>
@@ -2571,7 +2571,7 @@ The topic Id that will be used to represent the homepage is a dash "-". This is 
         <pre>RewriteRule ^(.*)$ <strong>[sub_directory]</strong>/index.php/$1 [L]</pre>
         or<br>
         <pre>RewriteRule ^(.*)$ /<strong>[sub_directory]</strong>/index.php/$1 [L]</pre>
-        <strong>Please Note:</strong> In this case only (URL Routing enabled without "index.php" along with installing Geeklog in a subdirectory) 
+        <strong>Please Note:</strong> In this case only (URL Routing enabled without "index.php" along with installing Geeklog in a subdirectory)
         you will have to edit all the rules in the Route Manager and add the sub directory in front of each Rule (but not the Route) so the proper rule can be found.
     </li>
     <li>

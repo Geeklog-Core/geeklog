@@ -45,7 +45,7 @@ $_CONF_VALIDATE['Core']['path_site_logo'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['owner_name'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['microsummary_short'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['site_disabled_msg'] = array(
-    'sanitize' => 'approvedTags', 
+    'sanitize' => 'approvedTags',
     'rule' => 'stringOrEmpty'
 );
 $_CONF_VALIDATE['Core']['copyrightyear'] = array(
@@ -101,18 +101,18 @@ $_CONF_VALIDATE['Core']['rdf_storytext'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['rdf_language'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['syndication_max_headlines'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['comment_feeds_article_tag'] = array(
-    'sanitize' => 'approvedTags', 
+    'sanitize' => 'approvedTags',
     'rule' => 'notEmpty'
 );
 $_CONF_VALIDATE['Core']['comment_feeds_article_tag_position'] = array(
     'rule' => array('inList', array('start', 'end', 'none'), true)
 );
 $_CONF_VALIDATE['Core']['comment_feeds_article_author_tag'] = array(
-    'sanitize' => 'approvedTags', 
+    'sanitize' => 'approvedTags',
     'rule' => 'stringOrEmpty'
 );
 $_CONF_VALIDATE['Core']['comment_feeds_comment_author_tag'] = array(
-    'sanitize' => 'approvedTags', 
+    'sanitize' => 'approvedTags',
     'rule' => 'stringOrEmpty'
 );
 
@@ -176,7 +176,7 @@ $_CONF_VALIDATE['Core']['search_show_sort'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_show_num'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_show_type'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_separator'] = array(
-    'sanitize' => 'approvedTags', 
+    'sanitize' => 'approvedTags',
     'rule' => 'string'
 );
 $_CONF_VALIDATE['Core']['search_def_keytype'] = array(
@@ -207,7 +207,7 @@ $_CONF_VALIDATE['Core']['article_image_align'] = array(
 );
 $_CONF_VALIDATE['Core']['show_topic_icon'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['structured_data_type_default'] = array(
-    'rule' => array('inList', array('0', '1', '2', '3', '4'), true)
+	'rule' => array('inList', array('', 'core-webpage', 'core-article', 'core-newsarticle', 'core-blogposting'), true)	
 );
 $_CONF_VALIDATE['Core']['draft_flag'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['frontpage'] = array('rule' => 'boolean');
@@ -417,13 +417,13 @@ $_CONF_VALIDATE['Core']['show_comments_at_replying'] = array('rule' => 'boolean'
 /* Subgroup Users and Submissions, Tab Likes */
 $_CONF_VALIDATE['Core']['likes_enabled'] = array(
     'rule' => array('inList', array(0, 1, 2), false)
-);    
+);
 $_CONF_VALIDATE['Core']['likes_articles'] = array(
     'rule' => array('inList', array(0, 1, 2), false)
-);    
+);
 $_CONF_VALIDATE['Core']['likes_comments'] = array(
     'rule' => array('inList', array(0, 1, 2), false)
-);    
+);
 $_CONF_VALIDATE['Core']['likes_speedlimit'] = array('rule' => 'numeric');
 
 /* Subgroup Images, Tab Image Library */

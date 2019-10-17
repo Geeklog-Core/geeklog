@@ -53,7 +53,7 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
     } elseif (($op == 'permission') || ($op == 'nopermission')) {
         if ($op == 'permission') {
             $flag = true;
-            $tagnames[] = 'structureddata'; 
+            $tagnames[] = 'structureddata';
         } else {
             $flag = false;
         }
@@ -78,7 +78,7 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
     } elseif ($op == 'closetag') {
         return array(
             'structureddata'
-        );        
+        );
     } elseif ($op == 'description') {
         return array(
             'structureddata'          => $LANG_STRUCT_DATA['autotag_desc_structureddata']
@@ -90,18 +90,18 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
 
         if ($autotag['tag'] == 'structureddata') {
             $p1 = COM_applyFilter($autotag['parm1']);
-            
+
             $p2 = explode(' ', trim($autotag['parm2']));
             $parameter = '';
 
             // Always need parm3 (autotag with a close tag)
             if (isset($autotag['parm3'])) {
                 $p3 = $autotag['parm3'];
-                
+
                 $type = "";
                 $width = "";
                 $height = "";
-                
+
                 if (is_array($p2)) {
                     foreach ($p2 as $part) {
                         if (substr($part, 0, 3) == 'id:') {
@@ -109,13 +109,13 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
                             $id = $a[1];
                         } elseif (substr($part, 0, 5) == 'type:') {
                             $a = explode(':', $part);
-                            $type = $a[1];                        
+                            $type = $a[1];
                         } elseif (substr($part, 0, 6) == 'width:') {
                             $a = explode(':', $part);
                             $width = (int)$a[1];
                         } elseif (substr($part, 0, 7) == 'height:') {
                             $a = explode(':', $part);
-                            $height = (int)$a[1];                        
+                            $height = (int)$a[1];
                         } else {
                             break;
                         }
@@ -123,7 +123,7 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
                 }
 
                 // Figure out content type and id (depends on how autotag is used)
-                
+
                 // If type or id is missing then assume type and id are passed via function. p1 then would be the property
                 $property = $p1;
                 if (empty($type) || empty($id)) {
@@ -132,31 +132,30 @@ function plugin_autotags_structureddata($op, $content = '', $autotag = '', $para
                         $id = $parameters['id'];
                     }
                 }
-                
+
                 if (!empty($type) && !empty($id)) {
                     switch (strtolower($property)) {
                         case 'author':
                             $_STRUCT_DATA->set_author_item($type, $id, $p3);
-                            
+
                             break;
                         case 'image':
                             $_STRUCT_DATA->set_image_item($type, $id, $p3, $width, $height);
-                            
+
                             break;
                         default:
                             // assume standard
                             $_STRUCT_DATA->set_param_item($type, $id, $property, $p3);
-                            
+
                             break;
                     }
                 }
             }
         }
-        
+
         // Replace autotag with empty string
         $content = str_replace($autotag['tagstr'], '', $content);
 
         return $content;
     }
 }
-

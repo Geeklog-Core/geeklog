@@ -631,9 +631,20 @@ if ($_VARS['last_article_publish'] != $A['date']) {
 
 /**
  * This provides the ability to generate structure data based on types from schema.org to
+ * Plugins can add their own structured data so must load after plugin functions.inc file
  */
 Autoload::load('structureddata');
 $_STRUCT_DATA = new StructuredData();
+// Structured Data library contains helper functions for structured data class
+require_once $_CONF['path_system'] . 'lib-structureddata.php';
+
+// Now include all plugin functions since everything else is loaded
+foreach ($_PLUGINS as $pi_name) {
+    require_once $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc';
+}
+
+// Plugins can provide Structured Data Types, see if any (needs to be done after loading functions.inc)
+$_STRUCT_DATA->load_plugin_types();
 
 // +---------------------------------------------------------------------------+
 // | HTML WIDGETS                                                              |
@@ -8846,11 +8857,6 @@ function COM_isDemoMode()
     global $_CONF;
 
     return isset($_CONF['demo_mode']) && $_CONF['demo_mode'];
-}
-
-// Now include all plugin functions
-foreach ($_PLUGINS as $pi_name) {
-    require_once $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc';
 }
 
 /**

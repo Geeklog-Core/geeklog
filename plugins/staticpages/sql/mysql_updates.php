@@ -86,7 +86,7 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD `sp_parent` VARCHAR(128) NOT NULL DEFAULT '' AFTER `sp_next`",
     ),
     '1.7.0' => array(
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `structured_data_type` tinyint(4) NOT NULL DEFAULT 0 AFTER `commentcode`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `structured_data_type` varchar(40) NOT NULL DEFAULT '' AFTER `commentcode`",
         "ALTER TABLE {$_TABLES['staticpage']} ADD page_data TEXT DEFAULT NULL AFTER sp_content"
     ),
 );

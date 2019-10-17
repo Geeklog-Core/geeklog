@@ -132,7 +132,7 @@ function staticpageeditor_form(array $A)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
            $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG01, $LANG24,
-           $LANG_postmodes, $LANG_structureddatatypes, $LANG_STRUCT_DATA,
+           $LANG_postmodes, $LANG_STRUCT_DATA,
            $MESSAGE, $_IMAGE_TYPE, $_SCRIPTS;
 
     if (!empty($sp_id) && $mode === 'edit') {
@@ -987,7 +987,7 @@ if (!empty($LANG_ADMIN['delete']) && ($mode === $LANG_ADMIN['delete']) && SEC_ch
             Geeklog\Input::post('sp_onlastupdate'),
             Geeklog\Input::post('sp_label'),
             (int) Geeklog\Input::fPost('commentcode'),
-            (int) Geeklog\Input::fPost('structured_data_type'),
+            Geeklog\Input::fPost('structured_data_type'),
             (int) Geeklog\Input::fPost('owner_id'),
             (int) Geeklog\Input::fPost('group_id'),
             Geeklog\Input::post('perm_owner'),

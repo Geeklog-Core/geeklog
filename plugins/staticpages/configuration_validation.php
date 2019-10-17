@@ -60,7 +60,7 @@ $_CONF_VALIDATE['staticpages']['comment_code'] = array(
     'rule' => array('inList', array('0', '-1'), true)
 );
 $_CONF_VALIDATE['staticpages']['structured_data_type_default'] = array(
-    'rule' => array('inList', array('0', '1', '2', '3', '4'), true)
+    'rule' => array('inList', array('', 'core-webpage', 'core-article', 'core-newsarticle', 'core-blogposting'), true)
 );
 $_CONF_VALIDATE['staticpages']['draft_flag'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['staticpages']['disable_breadcrumbs_staticpages'] = array('rule' => 'boolean');

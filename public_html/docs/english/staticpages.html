@@ -191,9 +191,9 @@ the Configuration admin panel:</p>
   <td>Specify what should happen to a static page when its owner (i.e. the user
     who created the page) is deleted. 'True' would delete the page, 'False'
     will assign it to a user in the "Root" group (usually the user with the
-    lowest user ID). Note: If set to 'True' some pages may not be deleted. For 
-    example if the page is a template that is currently be used by other pages, 
-    or other security reasons. If this happens then the page will be assigned 
+    lowest user ID). Note: If set to 'True' some pages may not be deleted. For
+    example if the page is a template that is currently be used by other pages,
+    or other security reasons. If this happens then the page will be assigned
     to a user in the "Root" group.</td>
 </tr>
 <tr>
@@ -255,7 +255,7 @@ the Configuration admin panel:</p>
 </tr>
 <tr>
   <td><a name="desc_structured_data_type_default">structured_data_type_default</a></td>
-  <td>1</td>
+  <td>'core-webpage'</td>
   <td>Default Structured Data Type for new pages. To find out more about Structured Data and its integration into Geeklog see <a href="config.html#desc_structured_data_type_default">this page</a>.
 </tr>
 <tr>
@@ -329,12 +329,12 @@ the Configuration admin panel:</p>
 <tr>
   <td valign="top"><a name="desc_includesearchphp">includesearchphp</a></td>
   <td valign="top">false</td>
-  <td valign="top">Set to true to include static pages that execute PHP in the search results.<br><br>Please note since php static pages have to be executed a search cached version of the page is used.  This cached page is generated on the save of the page in the editor and (if cache enabled) when a new cached file of the page is made. This means that all users that have access to the page will use the same search cache.  
+  <td valign="top">Set to true to include static pages that execute PHP in the search results.<br><br>Please note since php static pages have to be executed a search cached version of the page is used.  This cached page is generated on the save of the page in the editor and (if cache enabled) when a new cached file of the page is made. This means that all users that have access to the page will use the same search cache.
   If autotags or PHP is used by the page this may generate different contents depending on the user. Since the search cache is only one view of the page it will be the one searched. Therefore what the search result returns may be slighyly different than what the user will see when they visit the page. Please take this short coming into consideration when using php pages and having this config option set to true.</td></tr>
 <tr>
   <td valign="top"><a name="desc_includesearchtemplate">includesearchtemplate</a></td>
   <td valign="top">false</td>
-  <td valign="top">Set to true to include template static pages in the search results.<br><br>Please note since template pages have to be executed a search cached version of the template page is used. This cached page is generated on the save of the page in the editor and (if cache enabled) when a new cached file of the page is made. This means that all users that have access to the page will use the same search cache.  
+  <td valign="top">Set to true to include template static pages in the search results.<br><br>Please note since template pages have to be executed a search cached version of the template page is used. This cached page is generated on the save of the page in the editor and (if cache enabled) when a new cached file of the page is made. This means that all users that have access to the page will use the same search cache.
   If autotags, PHP, or the is device_mobile template variable is used by the page this may generate different contents depending on the user. Since the search cache is only one view of the page it will be the one searched. Therefore what the search result returns may be slighyly different than what the user will see when they visit the page. Please take this short coming into consideration when using template pages and having this config option set to true.</td></tr>
 </table>
 
@@ -402,7 +402,7 @@ the Configuration admin panel:</p>
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_staticpage_content_3">autotag_permissions_staticpage_content[3]</a></td>
   <td valign="top"><em>Use</em></td>
-  <td valign="top">Usage permission for autotag [staticpage_content: ] and [page_content: ] by anonymous users.</td></tr> 
+  <td valign="top">Usage permission for autotag [staticpage_content: ] and [page_content: ] by anonymous users.</td></tr>
 </table>
 
 

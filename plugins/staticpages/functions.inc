@@ -1907,6 +1907,7 @@ function SP_render_content($A)
     $sp_content = $A['sp_content'];
     $page_data = $A['page_data'];
     $sp_php = $A['sp_php'];
+    $structured_data_type = $A['structured_data_type'];
     $draft_flag = $A['draft_flag'];
     $cache_time = $A['cache_time'];
     $template_id = $A['template_id'];
@@ -1933,7 +1934,7 @@ function SP_render_content($A)
         // Now find structured data cache if required
         // Structured Data is cached by itself. Need to cache in case structured data autotags exist in page.
         // Since autotags are executed when the page is rendered therefore we have to cache structred data if page is cached.
-        if ($A['structured_data_type'] > 0 && $cache_found) {
+        if (!empty($structured_data_type) && $cache_found) {
             if (!$_STRUCT_DATA->get_cachedScript('staticpages', $sp_id, $cache_time)) {
                 // Structured Data missing for some reason even though page cache found. Render all again
                 $retval = '';
@@ -2035,7 +2036,7 @@ function SP_render_content($A)
     $sp_content = stripslashes($sp_content);
 
     // Figure out structured data if need be
-    if ($A['structured_data_type'] > 0 ) {
+    if (!empty($structured_data_type)) {
         $properties['headline'] = $A['sp_title'];
         $properties['url'] = $sp_url;
         $properties['datePublished'] = $A['created'];
@@ -2046,14 +2047,14 @@ function SP_render_content($A)
             require_once $_CONF['path_system'] . 'lib-comment.php';
             $properties['commentCount'] = CMT_commentCount($sp_id, 'staticpages');
         }
+        $properties['author']['name'] = COM_getDisplayName($A['owner_id']);
 
         $attributes['multi_language'] = true;
         // Since staticpage can be cached and autotags within content may insert structured data properties need to cache structured data info as well.
         if (($cache_time > 0 || $cache_time == -1) AND !$draft_flag) {
             $attributes['cache'] = true;
         }
-        $_STRUCT_DATA->add_type('staticpages', $sp_id, $A['structured_data_type'], $properties, $attributes);
-        $_STRUCT_DATA->set_author_item('staticpages', $sp_id, COM_getDisplayName($A['owner_id']));
+        $_STRUCT_DATA->add_type('staticpages', $sp_id, $structured_data_type, $properties, $attributes);
 
         /* Decided not to included structure data right by page content even though slightly faster. Rather keep all structured data in the head
         // Cache structured data results with staticpage cache

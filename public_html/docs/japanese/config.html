@@ -69,8 +69,8 @@
 <tr>
   <td valign="top"><a name="desc_path_site_logo">path_site_logo</a></td>
   <td valign="top"><span class="tt">''</span> <em>(empty)</em></td>
-  <td valign="top">Logo image filename and absolute path. For example if you use the Denim theme this would be '/layout/denim/images/logo2.png' (without the quotes). This information is used along with the site name 
-  by the Publisher property with Structured Data. For more information also see the section on <a href="#desc_structured_data_type_default">Structured Data</a> below.</td></tr>  
+  <td valign="top">Logo image filename and absolute path. For example if you use the Denim theme this would be '/layout/denim/images/logo2.png' (without the quotes). This information is used along with the site name
+  by the Publisher property with Structured Data. For more information also see the section on <a href="#desc_structured_data_type_default">Structured Data</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_disabled_msg">サイト停止のメッセージまたはURL(site_disabled_msg)</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
@@ -378,35 +378,35 @@
   <td valign="top">はい</td>
   <td valign="top">「はい」にすると、新規記事とユーザーによる投稿の際にデフォルトで話題アイコンを表示するようになります。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_structured_data_type_default">structured_data_type_default</a></td>
-  <td valign="top">2</td>
-  <td valign="top">Default Structured Data Type for new articles. Structured Data markup will only be included when viewing the full article. Some plugins may also use this as the default. Supported types include:<br /><br />
-    <ul>
-    <li>0 => None</li>
-    <li>1 => WebPage</li>
-    <li>2 => Article</li>
-    <li>3 => NewsArticle</li>
-    <li>4 => BlogPosting</li>
-    </ul>
-    <br />
-    Geeklog will add Structured Data markup (JSON-LD code) to your pages (either in the head of the page or near the actual content as it depends on caching) which increases the understanding of the page by search engines and can enhance your appearance in search results. This does not require any additional changes to your theme (unless your theme contains hard coded conflicting structured data markup). Currently Geeklog supports Structured Data for Breadcrumbs, Articles, and Staticpages. Based on the page (i.e. Article or Staticpage) and structured data type selected, Geeklog will map the data fields to the appropriate Structured Data properties.<br /><br />
-    
-    Additional Structured Data properties can be added (or some current ones changed) by using the [structureddata: ] autotag in the actual article, static page, and other supported plugins items. For example:<br /><br />
-    
-    <code>[structureddata:image height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
-    
-    would add the image property to the sturctured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
-    
-    <code>[structureddata:image type:staticpages id:page_id height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
-    
-    For articles and static pages, the meta description is used for the structured data description property. If you wanted to change this without changing the meta description you could include an autotag like so within your content:<br /><br />
-    
-    <code>[structureddata:description]This is my new example description.[/structureddata]</code><br /><br /> 
-      
-    For more on Structured Data itself, see <a href="https://schema.org/" target="_blank">Schema.org</a> and <a href="https://developers.google.com/search/docs/data-types/article" target="_blank">Google Search Reference</a>.<br /><br />
-    
-    To test your pages for Structured Data and see if it is setup correctly you can use the <a href="https://search.google.com/structured-data/testing-tool" target="_blank">Google Structured Data Testing Tool</a>. Please note this tool test includes checking that the Structured Data supports the AMP specification so if some errors are reported they may only deal with AMP specific issues and may be fine for normal web pages. For more on the tool itself you can read Google's <a href="https://developers.google.com/search/docs/guides/prototype" target="_blank">guide</a>.
-  </td></tr>
+    <td valign="top"><a name="desc_structured_data_type_default">structured_data_type_default</a></td>
+    <td valign="top">'core-article'</td>
+    <td valign="top">Default Structured Data Type for new articles. Structured Data markup will only be included when viewing the full article. Some plugins may also use this as the default. Supported types include:<br /><br />
+      <ul>
+      <li>'none' => None</li>
+      <li>'core-webpage' => WebPage</li>
+      <li>'core-article' => Article</li>
+      <li>'core-newsarticle' => NewsArticle</li>
+      <li>'core-blogposting' => BlogPosting</li>
+      </ul>
+      <br />
+      Geeklog will add Structured Data markup (JSON-LD code) to your pages (either in the head of the page or near the actual content as it depends on caching) which increases the understanding of the page by search engines and can enhance your appearance in search results. This does not require any additional changes to your theme (unless your theme contains hard coded conflicting structured data markup). Currently Geeklog supports Structured Data for Breadcrumbs, Articles, and Staticpages. Based on the page (i.e. Article or Staticpage) and structured data type selected, Geeklog will map the data fields to the appropriate Structured Data properties.<br /><br />
+
+      Additional Structured Data properties can be added (or some current ones changed) by using the [structureddata: ] autotag in the actual article, static page, and other supported plugins items. For example:<br /><br />
+
+      <code>[structureddata:image height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
+
+      would add the image property to the sturctured data of the page. You could do this multiple times to add more than one image to the Structured Data. Alternately you could also include the id of the page and the type of item it is (plugin name) as well in the autotag. This has been added since some plugins which support Structured Data may not support the ability of the autotag to know what object it is embedded in.<br /><br />
+
+      <code>[structureddata:image type:staticpages id:page_id height:60 width:200]{site_url}/images/example.jpg[/structureddata]</code><br /><br />
+
+      For articles and static pages, the meta description is used for the structured data description property. If you wanted to change this without changing the meta description you could include an autotag like so within your content:<br /><br />
+
+      <code>[structureddata:description]This is my new example description.[/structureddata]</code><br /><br />
+
+      For more on Structured Data itself, see <a href="https://schema.org/" target="_blank">Schema.org</a> and <a href="https://developers.google.com/search/docs/data-types/article" target="_blank">Google Search Reference</a>.<br /><br />
+
+      To test your pages for Structured Data and see if it is setup correctly you can use the <a href="https://search.google.com/structured-data/testing-tool" target="_blank">Google Structured Data Testing Tool</a>. Please note this tool test includes checking that the Structured Data supports the AMP specification so if some errors are reported they may only deal with AMP specific issues and may be fine for normal web pages. For more on the tool itself you can read Google's <a href="https://developers.google.com/search/docs/guides/prototype" target="_blank">guide</a>.
+    </td></tr>
 <tr>
   <td valign="top"><a name="desc_draft_flag">ドラフトモードをデフォルトにする(draft_flag)</a></td>
   <td valign="top">いいえ</td>
@@ -470,7 +470,7 @@
 <tr>
   <td valign="top"><a name="desc_blocks_article_topic_list_repeat_after">話題リストブロックを続けて配置する(blocks_article_topic_list_repeat_after)</a></td>
   <td valign="top">1</td>
-  <td valign="top">話題ページ(ホームページを含む)で、ここで指定した回数だけ記事の冒頭文が繰り返された後で話題リストブロックを再び表示します。0を指定すると、話題リストブロックを表示しません。</td></tr>    
+  <td valign="top">話題ページ(ホームページを含む)で、ここで指定した回数だけ記事の冒頭文が繰り返された後で話題リストブロックを再び表示します。0を指定すると、話題リストブロックを表示しません。</td></tr>
 </table>
 
 <h3><a name="stories_trackback">記事とトラックバック: トラックバック</a></h3>
@@ -593,7 +593,7 @@ Windowsで共有ドライブにアクセスしている場合です。
 <tr>
   <td valign="top"><a name="desc_cache_resource">CSSとJavaScriptファイルを結合・圧縮しキャッシュする(cache_resource)</a></td>
   <td valign="top">はい</td>
-  <td valign="top"><span class="tt">「はい」</span>に設定すると、JavaScriptとCSSファイルを結合・圧縮し、キャッシュします。 
+  <td valign="top"><span class="tt">「はい」</span>に設定すると、JavaScriptとCSSファイルを結合・圧縮し、キャッシュします。
     注: Modern Curveなどの"style.css.php"を使用するテーマは、この設定を無視し、常にに自動的にリソースをキャッシュします。
     テーマを正確に表示するためにCSSファイルを処理することが必要であるためです。</td></tr>
 </table>
@@ -776,11 +776,11 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_require_user_email">ユーザーにメールアドレスを要求する(require_user_email)</a></td>
   <td valign="top">はい</td>
-  <td valign="top">「はい」に設定すると、メールアドレスを設定していないユーザーは、ログイン中にメールアドレスを設定・検証するよう要求されます。  
-    これはリモートアカウントにも影響します。 
-    リモートサービスの中には、ユーザー登録の際にパーミッションの関係でサーバーがメールアドレスを返さないものがあるためです。 
-    「はい」に設定すると、ユーザーがログインする際にメールアドレスをチェックし、ユーザーが設定していない場合には、 
-    ステータスが「有効」から「メールアドレスの設定が必要」へと変わります。</td></tr>   
+  <td valign="top">「はい」に設定すると、メールアドレスを設定していないユーザーは、ログイン中にメールアドレスを設定・検証するよう要求されます。
+    これはリモートアカウントにも影響します。
+    リモートサービスの中には、ユーザー登録の際にパーミッションの関係でサーバーがメールアドレスを返さないものがあるためです。
+    「はい」に設定すると、ユーザーがログインする際にメールアドレスをチェックし、ユーザーが設定していない場合には、
+    ステータスが「有効」から「メールアドレスの設定が必要」へと変わります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_show_servicename">サービス名を表示する(show_servicename)</a></td>
   <td valign="top">はい</td>
@@ -824,7 +824,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_google_consumer_secret">Google OAuth Consumer Secret(google_consumer_secret)</a></td>
   <td valign="top"><span class="tt">''</span> <em>(空白)</em></td>
   <td valign="top">Google OAuthログインを有効にする場合に入力してください。アプリケーションを作成してConsumer KeyとConsumer Secretを取得するには、<a href="https://code.google.com/apis/console">Google Developers Console</a>を参照してください。<br />
-  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>    
+  さらに詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_facebook_login">FacebookのOAuthを有効にする(facebook_login)</a></td>
   <td valign="top">いいえ</td>
@@ -1357,24 +1357,24 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_switchlang_homepage">言語切り替えブロックからトップページへリダイレクトする(switchlang_homepage)</a></td>
   <td valign="top">いいえ</td>
   <td valign="top">「はい」にすると、常に言語切り替えブロックからトップページへリダイレクトします。
-    自分のサイトである言語ではサポートしているが、他の言語ではサポートしていないコンテンツ(記事、話題、静的ページ)がある場合、「はい」にする必要があるでしょう。たとえば、"topic_en"というIDの英語の話題があって、ユーザーがその話題の記事を読んでいる最中に 
+    自分のサイトである言語ではサポートしているが、他の言語ではサポートしていないコンテンツ(記事、話題、静的ページ)がある場合、「はい」にする必要があるでしょう。たとえば、"topic_en"というIDの英語の話題があって、ユーザーがその話題の記事を読んでいる最中に
     言語を日本語に切り替えた場合、対応する"topic_ja"というIDの話題が存在していないと(あるいはそのユーザーがその話題に対するアクセス権を持っていないと)、404エラー(not found)が発生することになります。</td></tr>
 <tr>
   <td valign="top"><a name="desc_new_item_set_current_lang">new_item_set_current_lang</a></td>
   <td valign="top">0</td>
-  <td valign="top">If set to 1, and multiple languages for the site is setup correctly, on new items (that support multiple languages and uses Geeklog's make id function COM_makeSid) the current language id will be added to the item id. Articles and the Staticpages Plugin currently support this option. While Blocks and Topics support multiple languages they do not automatically generate an id on a new item so they do not support this option.</td></tr>    
+  <td valign="top">If set to 1, and multiple languages for the site is setup correctly, on new items (that support multiple languages and uses Geeklog's make id function COM_makeSid) the current language id will be added to the item id. Articles and the Staticpages Plugin currently support this option. While Blocks and Topics support multiple languages they do not automatically generate an id on a new item so they do not support this option.</td></tr>
 <tr>
   <td valign="top"><a name="desc_language_files">言語ファイル[多言語モード](language_files)</a></td>
   <td valign="top"><em>(無効)</em></td>
   <td valign="top">多言語サイト用です。言語の短縮形('en'、'de'、'ja'など)と言語ファイルの対応関係を指定します。<br /><br />
-    
+
     多言語をサポートするコンテンツ(話題、記事、ブロック、静的ページなど)を作成するときには、
     そのコンテンツのIDがここで指定したショートカットになるようにします('storyid_en'や'storyid2_de'など)。こうすることで、そのコンテンツが指定した言語と結びつけられます。
     多言語コンテンツの詳しい情報については、<a href="http://wiki.geeklog.net/index.php/Multi-Language_Support">Wiki</a>をごらんください。<br /><br />
-    
-    多言語サポートを有効にすると、hreflangリンク要素がその記事、静的ページ、話題(と、サポートしている場合は、サードパーティーのプラグイン)に対して出力されます。 
+
+    多言語サポートを有効にすると、hreflangリンク要素がその記事、静的ページ、話題(と、サポートしている場合は、サードパーティーのプラグイン)に対して出力されます。
     この要素が出力されるのは、記事のcanonicalなリンクと話題の最初のページだけです。<br /><br />
-    
+
     多言語コンテンツをサポートするには、サイト管理者が同じ言語に対して言語ファイルと言語の両方の設定を行う必要があります。
     両方の設定を同時に有効にする(多言語コンテンツ)か無効にする(単一言語コンテンツ)必要があります。</td></tr>
 <tr>
@@ -1563,7 +1563,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <tr>
   <td valign="top"><a name="desc_page_navigation_mobile_max_pages">モバイル用のページナビゲーションの最大ページ数(page_navigation_mobile_max_pages)</a></td>
   <td valign="top">7</td>
-  <td valign="top">モバイル用のページナビゲーションの最大ページ数を指定します。最小値は3、最大値は20です。 この値が「ページナビゲーションの最大ページ数(page_navigation_max_pages)」と違っていて、「テンプレートをキャッシュする(cache_templates)」を有効にしている場合には、「モバイル用のコンテンツを別にキャッシュする(cache_mobile)」も有効にしてください。</td></tr>  
+  <td valign="top">モバイル用のページナビゲーションの最大ページ数を指定します。最小値は3、最大値は20です。 この値が「ページナビゲーションの最大ページ数(page_navigation_max_pages)」と違っていて、「テンプレートをキャッシュする(cache_templates)」を有効にしている場合には、「モバイル用のコンテンツを別にキャッシュする(cache_mobile)」も有効にしてください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_cache_time_block">ブロックのキャッシュ期間のデフォルト(default_cache_time_block)</a></td>
   <td valign="top">0</td>
@@ -1699,7 +1699,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_default_permissions_story_3">記事のパーミッションのデフォルト[3](default_permissions_story[3])</a></td>
   <td valign="top"><em>表示</em></td>
   <td valign="top">記事に関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
-  
+
 <tr>
   <td valign="top"><a name="desc_default_permissions_topic_0">話題のパーミッションのデフォルト[0](default_permissions_topic[0])</a></td>
   <td valign="top"><em>表示・編集</em></td>
@@ -1716,7 +1716,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_default_permissions_topic_3">話題のパーミッションのデフォルト[3](default_permissions_topic[3])</a></td>
   <td valign="top"><em>表示</em></td>
   <td valign="top">話題に関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
-  
+
 <tr>
   <td valign="top"><a name="desc_default_permissions_block_0">ブロックのパーミッションのデフォルト[0](default_permissions_block[0])</a></td>
   <td valign="top"><em>表示・編集</em></td>
@@ -1733,8 +1733,8 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_default_permissions_block_3">ブロックのパーミッションのデフォルト[3](default_permissions_block[3])</a></td>
   <td valign="top"><em>表示</em></td>
   <td valign="top">ブロックに関するゲストユーザーのパーミッションのデフォルトを指定します。</td></tr>
-  
-  
+
+
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_story_0">自動タグ[article: ]のパーミッション[0](autotag_permissions_story[0])</a></td>
   <td valign="top"><em>利用する</em></td>
@@ -1785,7 +1785,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
   <td valign="top"><a name="desc_autotag_permissions_topic_3">自動タグ[topic: ]のパーミッション[3](autotag_permissions_topic[3])</a></td>
   <td valign="top"><em>利用する</em></td>
   <td valign="top">自動タグの利用に関するゲストユーザーのパーミッションを指定します。</td></tr>
-  
+
 <tr>
   <td valign="top"><a name="desc_autotag_permissions_related_topics_0">自動タグ[related_topics: ]のパーミッション[0](autotag_permissions_related_topics[0])</a></td>
   <td valign="top"><em>利用する</em></td>
@@ -2089,7 +2089,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
 <p style="margin-left:4em;"><span class="tt">https://www.geeklog.net/article.php/20021022234959146</span></p>
 <p>となります。1番目の形式のURLを解釈する検索エンジンもありますが、Googleは2番目の形式を好み、1番目の形式を無視するようです。(訳注)この記述は現在では当てはまりません。</p>
 <p><strong>注意:</strong>この機能はすべてのWebサーバーで機能するとは限りません。Apache(全バージョン)では機能しますが、<acronym title="Internt Information Service">IIS</acronym>(の少なくとも一部のバージョン)では<em>動作しない</em> ことが知られています。サイトを公開する前に検証してください。</p>
-<p><strong>注意:</strong> トップページが1ページ目以外の場合、話題のURLを使用します。 
+<p><strong>注意:</strong> トップページが1ページ目以外の場合、話題のURLを使用します。
 トップページを表す話題IDはダッシュ "-" です。これはURLルーティングにも当てはまります。</p>
 
 <table border="1">
@@ -2104,7 +2104,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <tr>
         <td>https://www.example.com/article.php?story=@sid&mode=print</td>
         <td>https://www.example.com/article.php/@sid/print</td>
-    </tr>    
+    </tr>
     <tr>
         <td>https://www.example.com/index.php?topic=@topic</td>
         <td>https://www.example.com/index.php/topic/@topic/</td>
@@ -2120,7 +2120,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <tr>
         <td>https://www.example.com/staticpages/index.php?page=@page</td>
         <td>https://www.example.com/staticpages/index.php/@page</td>
-    </tr>    
+    </tr>
     <tr>
         <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
         <td>https://www.example.com/staticpages/index.php/@page/print</td>
@@ -2132,7 +2132,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
     <tr>
         <td>https://www.example.com/links/index.php?category=@cat</td>
         <td>https://www.example.com/links/index.php/@cat</td>
-    </tr>    
+    </tr>
     </tbody>
 </table>
 
@@ -2183,7 +2183,7 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
         <td>https://www.example.com/staticpages/index.php?page=@page&disp_mode=print</td>
         <td>160</td>
     </tr>
-    
+
     <tr>
         <td>https://www.example.com/links/portal/@item</td>
         <td>https://www.example.com/links/portal.php?what=link&item=@item</td>
@@ -2275,8 +2275,8 @@ Webサーバー上におけるテンプレートの物理パスが出力され�
             RewriteRule ^(.*)$ /<strong>[sub_directory]</strong>/index.php/$1 [L]
         </pre>
         に変える必要があるでしょう。
-            
-        <br><strong>Please Note:</strong> In this case only (URL Routing enabled without "index.php" along with installing Geeklog in a subdirectory) you will have to edit all the rules in the Route Manager and add the sub directory in front of each Rule (but not the Route) so the proper rule can be found.                
+
+        <br><strong>Please Note:</strong> In this case only (URL Routing enabled without "index.php" along with installing Geeklog in a subdirectory) you will have to edit all the rules in the Route Manager and add the sub directory in front of each Rule (but not the Route) so the proper rule can be found.
     </li>
     <li>
         最後に、管理者としてログインし、コンフィギュレーションでURLルーティングの設定を
