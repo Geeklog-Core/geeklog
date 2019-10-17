@@ -184,7 +184,8 @@ $LANG_confignames['staticpages'] = array(
     'includephp' => 'Vkljuèi statiène strani s PHP',
     'includesearch' => 'Omogoèi statiène strani pri iskanju',
     'includesearchcenterblocks' => 'Vkljuèi statiène strani osrednjega bloka',
-    'includesearchphp' => 'Vkljuèi statiène strani s PHP'
+    'includesearchphp' => 'Vkljuèi statiène strani s PHP',
+    'includesearchtemplate' => 'Include Template Static Pages'
 );
 
 $LANG_configsubgroups['staticpages'] = array(

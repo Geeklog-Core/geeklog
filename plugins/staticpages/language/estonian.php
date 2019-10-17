@@ -184,7 +184,8 @@ $LANG_confignames['staticpages'] = array(
     'includephp' => 'Kaasa PHP-ga staatilised lehed',
     'includesearch' => 'Luba staatilised lehed otsingus',
     'includesearchcenterblocks' => 'Kaasa keskploki staatilised lehed',
-    'includesearchphp' => 'Kaasa PHP-ga staatilised lehed'
+    'includesearchphp' => 'Kaasa PHP-ga staatilised lehed',
+    'includesearchtemplate' => 'Include Template Static Pages'
 );
 
 $LANG_configsubgroups['staticpages'] = array(

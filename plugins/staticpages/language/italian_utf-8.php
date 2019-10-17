@@ -183,7 +183,8 @@ $LANG_confignames['staticpages'] = array(
     'includephp' => 'Includi Pagine Statiche con PHP',
     'includesearch' => 'Mostra Pagine Statiche Nei Risultati Di Ricerca',
     'includesearchcenterblocks' => 'Include Center Block Static Pages',
-    'includesearchphp' => 'Mostra Pagine Statiche con PHP'
+    'includesearchphp' => 'Mostra Pagine Statiche con PHP',
+    'includesearchtemplate' => 'Include Template Static Pages'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
