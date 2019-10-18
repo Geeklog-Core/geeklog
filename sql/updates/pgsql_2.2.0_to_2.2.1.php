@@ -104,8 +104,8 @@ function update_ConfValuesFor221()
     // Default Structured Data type for new articles
     $c->add('structured_data_type_default','core-article','select',1,7,39,1275,TRUE, $me, 7); // Setting article as the default
 	
-	// Display Structured Data of Articles in Topics?
-	$c->add('structured_data_article_topic',0,'select',1,7,0,1277,TRUE, $me, 7);	
+	// Structured Data of Articles in Topics
+	$c->add('structured_data_article_topic',0,'select',1,7,42,1277,TRUE, $me, 7);
 
     // Add absolute path for logo image which is used by the Publisher property with Structured Data
     $c->add('path_site_logo','','text',0,0,NULL,65,TRUE, $me, 0);

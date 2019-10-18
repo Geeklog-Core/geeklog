@@ -2353,7 +2353,7 @@ $LANG_confignames['Core'] = array(
     'article_image_align' => 'Topic Icon Alignment',
     'show_topic_icon' => 'Show Topic Icon?',
     'structured_data_type_default' => 'Structured Data Type Default',
-	'structured_data_article_topic' => 'Display Structured Data of Articles in Topics?',
+	'structured_data_article_topic' => 'Structured Data of Articles in Topics',
     'draft_flag' => 'Draft Flag Default',
     'frontpage' => 'Frontpage Default',
     'hide_no_news_msg' => 'Hide "No News" Message?',
@@ -2668,7 +2668,8 @@ $LANG_configselects['Core'] = array(
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
     39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsletter', 'BlogPosting' => 'core-blogposting'),
     40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
-    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2),
+	42 => array('None' => 0, 'Use individual Article Settings' => 1)
 );
 
 ###############################################################################

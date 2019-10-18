@@ -689,7 +689,7 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
         }
 
         // Figure out structured data if needed. Always displayed on article page if set. Depends if in topics
-        if (!empty($story->DisplayElements('structured_data_type')) && ($index == 'n' || ($index == 'y' && $_CONF['structured_data_article_topic']))) {
+        if (!empty($story->DisplayElements('structured_data_type')) && ($index == 'n' || ($index == 'y' && $_CONF['structured_data_article_topic'] == 1))) {
 
             $attributes = array();
             $attributes['multi_language'] = true;
