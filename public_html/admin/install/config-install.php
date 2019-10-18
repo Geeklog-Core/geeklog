@@ -142,6 +142,7 @@ function install_config(ConfigInterface $c)
     $c->add('article_image_align','right','select',1,7,8,1260,TRUE, $me, 7);
     $c->add('show_topic_icon',1,'select',1,7,0,1270,TRUE, $me, 7);
     $c->add('structured_data_type_default','core-article','select',1,7,39,1275,TRUE, $me, 7);
+	$c->add('structured_data_article_topic',0,'select',1,7,0,1277,TRUE, $me, 7);
     $c->add('draft_flag',0,'select',1,7,0,1280,TRUE, $me, 7);
     $c->add('frontpage',1,'select',1,7,0,1290,TRUE, $me, 7);
     $c->add('hide_no_news_msg',0,'select',1,7,0,1300,TRUE, $me, 7);

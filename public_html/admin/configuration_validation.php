@@ -209,6 +209,7 @@ $_CONF_VALIDATE['Core']['show_topic_icon'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['structured_data_type_default'] = array(
 	'rule' => array('inList', array('', 'core-webpage', 'core-article', 'core-newsarticle', 'core-blogposting'), true)	
 );
+$_CONF_VALIDATE['Core']['structured_data_article_topic'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['draft_flag'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['frontpage'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['hide_no_news_msg'] = array('rule' => 'boolean');

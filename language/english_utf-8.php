@@ -2353,6 +2353,7 @@ $LANG_confignames['Core'] = array(
     'article_image_align' => 'Topic Icon Alignment',
     'show_topic_icon' => 'Show Topic Icon?',
     'structured_data_type_default' => 'Structured Data Type Default',
+	'structured_data_article_topic' => 'Display Structured Data of Articles in Topics?',
     'draft_flag' => 'Draft Flag Default',
     'frontpage' => 'Frontpage Default',
     'hide_no_news_msg' => 'Hide "No News" Message?',

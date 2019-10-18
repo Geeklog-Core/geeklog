@@ -2351,6 +2351,7 @@ $LANG_confignames['Core'] = array(
     'article_image_align' => '話題アイコンの表示位置',
     'show_topic_icon' => '話題アイコン表示のデフォルト',
     'structured_data_type_default' => 'Structured Data Type Default',
+	'structured_data_article_topic' => 'Display Structured Data of Articles in Topics?',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
     'frontpage' => 'トップページ配置をデフォルトにする',
     'hide_no_news_msg' => '記事がない場合のメッセージを表示しない',

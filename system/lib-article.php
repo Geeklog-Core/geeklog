@@ -688,8 +688,8 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             // CACHE_create_instance($cacheInstance, $article);
         }
 
-        // Figure out structured data if needed
-        if (!empty($story->DisplayElements('structured_data_type'))) {
+        // Figure out structured data if needed. Always displayed on article page if set. Depends if in topics
+        if (!empty($story->DisplayElements('structured_data_type')) && ($index == 'n' || ($index == 'y' && $_CONF['structured_data_article_topic']))) {
 
             $attributes = array();
             $attributes['multi_language'] = true;
