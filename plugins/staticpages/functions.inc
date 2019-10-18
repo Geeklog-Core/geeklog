@@ -2048,6 +2048,9 @@ function SP_render_content($A)
             $properties['commentCount'] = CMT_commentCount($sp_id, 'staticpages');
         }
         $properties['author']['name'] = COM_getDisplayName($A['owner_id']);
+        if (!USER_isBanned($A['owner_id'])) {
+            $properties['author']['url'] = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+        }
 
         $attributes['multi_language'] = true;
         // Since staticpage can be cached and autotags within content may insert structured data properties need to cache structured data info as well.

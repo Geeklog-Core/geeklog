@@ -709,6 +709,11 @@ function STORY_renderArticle($story, $index = '', $storyTpl = 'articletext.thtml
             $properties['keywords'] = $story->DisplayElements('meta_keywords');
             $properties['commentCount'] = CMT_commentCount($story->getSid(), 'article');
             $properties['author']['name'] = $story->DisplayElements('username');
+            if (!USER_isBanned($story->DisplayElements('uid'))) {
+                $properties['author']['url'] = $_CONF['site_url']
+                    . '/users.php?mode=profile&amp;uid='
+                    . $story->DisplayElements('uid');
+            }
             $_STRUCT_DATA->add_type('article', $story->getSid(), $story->displayElements('structured_data_type'), $properties, $attributes);
             // Include any images attached to the article (taken in part from renderImageTags function in article class)
             $result = DB_query("SELECT ai_filename,ai_img_num FROM {$_TABLES['article_images']} WHERE ai_sid = '{$story->getSid()}' ORDER BY ai_img_num");

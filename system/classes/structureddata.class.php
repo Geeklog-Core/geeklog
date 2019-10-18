@@ -61,6 +61,7 @@ class StructuredData
         $name = 'core-author';
         $this->types[$name]['@type'] = 'Person';
         $this->types[$name]['name']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
+        $this->types[$name]['url']['property'] = $this::SCHEMA_PROPERTY;
 
         // These next structure types all share the same properties
         $sd_types = array(
@@ -282,13 +283,16 @@ class StructuredData
      * @param   string  $id     Id of content
 	 * @param   string $name
 	 */
-	public function set_author_item($type, $id, $name)
+	public function set_author_item($type, $id, $name, $url = '')
     {
         $sd_name = $this->create_name($type, $id);
         $this->items[$sd_name]['author'] = array(
             "@type"   => "Person",
-            "name"  => $name
+            "name"  => $name,
         );
+        if (!empty($url)) {
+            $this->items[$sd_name]['author']['url'] = $url;
+        }
 	}
 
     /**
