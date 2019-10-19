@@ -1344,9 +1344,9 @@ function SEC_generateRandomPassword()
     $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%^&*()_+=-";
     $pass = array(); //remember to declare $pass as an array
     $alphaLength = strlen($alphabet); //put the length in cache
-    $rand = floor(ord(array_pop($entropy)) * 50 / 255.1);
+    $rand = (int) floor(ord(array_pop($entropy)) * 50 / 255.1);
     $pass[] = $alphabet[0 + $rand]; // Grab a random letter.
-    $rand = floor(ord(array_pop($entropy)) * 10 / 255.1);
+    $rand = (int) floor(ord(array_pop($entropy)) * 10 / 255.1);
     $pass[] = $alphabet[50 + $rand]; // Grab a random number.
 
     for ($i = 0; $i < 6; $i++) {
