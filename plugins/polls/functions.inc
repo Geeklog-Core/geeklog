@@ -468,12 +468,12 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                     'block'      => 'pollblock.thtml',
                     'comments'   => 'pollcomments.thtml',
                 ));
-                
+
                 $blocks = array('poll_questions', 'poll_answer');
                 foreach ($blocks as $block) {
                     $poll->set_block('block', $block);
-                }            
-                
+                }
+
                 $poll->set_var('display_type', $displaytype);
                 $poll->set_var('poll_id', $pid);
                 $poll->set_var('poll_topic', $P['topic']);
@@ -806,12 +806,12 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
                 'result'    => 'pollresult.thtml',
                 'comments'  => 'pollcomments.thtml'
             ));
-            
+
             $blocks = array('poll_question', 'poll_votes_bar', 'poll_votes_num');
             foreach ($blocks as $block) {
                 $poll->set_block('result', $block);
-            }            
-            
+            }
+
             $poll->set_var('display_type', $displaytype);
             $poll->set_var('poll_topic', $P['topic']);
             $poll->set_var('poll_topic_description', $P['description']);
@@ -1124,10 +1124,10 @@ function plugin_getheadercode_polls()
     // the poll block or autotag being displayed after COM_SiteHeader being called
     // we need to set it just in case (for Geeklog version older than v2.2.0 - currently polls plugin supports 2.1.1)
     $_SCRIPTS->setCSSFile('polls', CTL_plugin_themeFindFile('polls', 'css', 'style.css'));
-    
+
     // Look for poll templates functions.php for current theme. If exist add in its required javascript and css
     // Currently being used by denim theme to load UIKit progress component
-    CTL_plugin_setTemplatesFunctions("polls");    
+    CTL_plugin_setTemplatesFunctions("polls");
 }
 
 /**
@@ -1151,9 +1151,9 @@ function plugin_upgrade_polls()
     if (!plugin_compatible_with_this_version_polls('polls')) {
         return 3002;
     }
-    
-    // Retrieve other plugin info like min geeklog version and homepage 
-    $inst_parms = plugin_autoinstall_polls('polls');     
+
+    // Retrieve other plugin info like min geeklog version and homepage
+    $inst_parms = plugin_autoinstall_polls('polls');
 
     require_once $_CONF['path'] . 'plugins/polls/sql/' . $_DB_dbms . '_updates.php';
     require_once $_CONF['path'] . 'plugins/polls/install_updates.php';
@@ -1297,18 +1297,25 @@ function plugin_upgrade_polls()
 
                 $current_version = '2.1.7';
                 break;
-                
+
             case '2.1.7':
                 $current_version = '2.1.8';
-                break; 
-                
+                break;
+
             case '2.1.8':
                 $current_version = '2.1.9';
                 break;
 
             case '2.1.9':
-                $current_version = '2.2.0';
-                break;                 
+                if (isset($_UPDATES[$current_version])) {
+                    $_SQL = $_UPDATES[$current_version];
+                    foreach ($_SQL as $sql) {
+                        DB_query($sql);
+                    }
+                }
+
+                $current_version = '2.2.0'; // Ships with Geeklog v2.2.1
+                break;
 
             default:
                 $done = true;
@@ -1318,7 +1325,7 @@ function plugin_upgrade_polls()
     // update plugin version number and other info
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '{$inst_parms['info']['pi_gl_version']}', pi_homepage = '{$inst_parms['info']['pi_homepage']}' WHERE pi_name = 'polls'");
 
-    COM_errorLog( "Updated polls plugin from v$installed_version to v$code_version", 1 );      
+    COM_errorLog( "Updated polls plugin from v$installed_version to v$code_version", 1 );
 
     return true;
 }

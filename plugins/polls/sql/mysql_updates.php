@@ -42,7 +42,7 @@ $_UPDATES = array(
         "ALTER TABLE `{$_TABLES['polltopics']}` ADD is_open tinyint(1) NOT NULL default '1' AFTER display",
         "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL default '0' AFTER is_open",
         "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL",
-        "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;",
+        "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` mediumint(9) NOT NULL DEFAULT '0' AFTER `pid`;", // Fixed in v2.2.0 was set to varchar(20) and not mediumint(9)
         "ALTER TABLE `{$_TABLES['pollanswers']}` DROP PRIMARY KEY;",
         "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX (pid, qid, aid);",
         "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL",
@@ -105,6 +105,12 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['pollquestions']} ADD `description` MEDIUMTEXT NULL",
         "ALTER TABLE {$_TABLES['polltopics']} ADD `description` MEDIUMTEXT NULL",
     ),
+
+    '2.1.9' => array(
+        // Fix for sql upgrade bug in Polls v1.1.0  where qid added as varchar(20) and not mediumint(9)
+        // Only needed for mysql version since pgsql was not available for Polls Plugin v1.1.0
+        "ALTER TABLE {$_TABLES['pollanswers']} CHANGE `qid` `qid` MEDIUMINT(9) NOT NULL DEFAULT '0'"
+    )
 );
 
 /**
