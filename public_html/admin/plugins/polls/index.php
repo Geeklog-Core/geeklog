@@ -78,7 +78,7 @@ function listpolls()
               'text' => $LANG_ADMIN['admin_home']));
 
     $help_url = COM_getDocumentUrl('docs', "polls.html");
-              
+
     $retval .= COM_startBlock($LANG25[18], $help_url,
         COM_getBlockTemplate('_admin_block', 'header'));
 
@@ -132,6 +132,7 @@ function listpolls()
  * @param    array  $Q            Array of poll questions
  * @param    string $mainPage     Checkbox: poll appears on homepage
  * @param    string $topic        The text for the topic
+ * @param    string $topic_description
  * @param    string $meta_description
  * @param    string $meta_keywords
  * @param    int    $statusCode   (unused)
@@ -148,14 +149,13 @@ function listpolls()
  * @param    int    $perm_members Permissions logged in members have on poll
  * @param    int    $perm_anon    Permissions anonymous users have on poll
  * @param    bool   $allow_multipleanswers
- * @param    string $topic_description
- * @param    string $description
+ * @param    array  $description  Questions descriptions
  * @return   string|void
  */
-function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $meta_keywords, $statusCode, $open,
+function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $meta_description, $meta_keywords, $statusCode, $open,
                   $hideResults, $commentCode, $A, $V, $R, $owner_id, $group_id,
                   $perm_owner, $perm_group, $perm_members, $perm_anon,
-                  $allow_multipleanswers, $topic_description, $description)
+                  $allow_multipleanswers, $description)
 {
     global $_CONF, $_TABLES, $_USER, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE,
            $_PO_CONF;
@@ -331,7 +331,7 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
     // save topics after the questions so we can include question count into table
     $created_date = DB_escapeString($created_date);
     $modified_date = DB_escapeString(date('Y-m-d H:i:s'));
-    $sql = "'{$pid}','{$topic}','{$meta_description}','{$meta_keywords}',{$numVoters}, {$k}, '{$created_date}', '{$modified_date}' ";
+    $sql = "'{$pid}','{$topic}','{$topic_description}','{$meta_description}','{$meta_keywords}',{$numVoters}, {$k}, '{$created_date}', '{$modified_date}' ";
 
     if ($mainPage == 'on') {
         $sql .= ",1";
@@ -350,12 +350,12 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $meta_description, $met
     }
 
     $sql .= ", {$statusCode}, {$commentCode}, {$owner_id}, {$group_id}, {$perm_owner}, {$perm_group}, "
-        . "{$perm_members}, {$perm_anon}, '{$topic_description}'";
+        . "{$perm_members}, {$perm_anon}";
 
     // Save poll topic
     DB_save(
         $_TABLES['polltopics'],
-        "pid, topic, meta_description, meta_keywords, voters, questions, created, modified, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon,description",
+        "pid, topic, description, meta_description, meta_keywords, voters, questions, created, modified, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon",
         $sql
     );
 
@@ -485,8 +485,8 @@ function editpoll($pid = '')
     if ($_CONF['titletoid'] && empty($T['pid'])) {
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
         $poll_templates->set_var('titletoid', true);
-    }    
-    
+    }
+
     $poll_templates->set_var('lang_pollid', $LANG25[6]);
     $poll_templates->set_var('poll_id', $T['pid']);
     $poll_templates->set_var('lang_donotusespaces', $LANG25[7]);
@@ -676,6 +676,7 @@ if ($mode === 'edit') {
             $pid, $old_pid,
             Geeklog\Input::post('question'), $mainpage,
             Geeklog\Input::post('topic'),
+            Geeklog\Input::post('topic_description'),
             Geeklog\Input::post('meta_description'),
             Geeklog\Input::post('meta_keywords'),
             $statuscode, $open, $hideresults,
@@ -690,7 +691,6 @@ if ($mode === 'edit') {
             Geeklog\Input::post('perm_members'),
             Geeklog\Input::post('perm_anon'),
             Geeklog\Input::post('allow_multipleanswers'),
-            Geeklog\Input::fPost('topic_description'),
             Geeklog\Input::post('description')
         );
     } else {
