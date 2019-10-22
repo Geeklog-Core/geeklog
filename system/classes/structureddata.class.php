@@ -42,6 +42,7 @@ class StructuredData
     const SCHEMA_PROPERTY = '0';
     const SCHEMA_PROPERTY_REQUIRED = '1';
     const SCHEMA_PROPERTY_TYPE = '@type';
+    const SCHEMA_PROPERTY_TYPE_REPEAT = '@type-repeat';
     const SCHEMA_PROPERTY_inLanguage = 'inLanguage';
     const SCHEMA_TYPE_publisher = 'publisher';
     const SCHEMA_TYPE_mainEntityOfPage = 'mainEntityOfPage';
@@ -58,6 +59,53 @@ class StructuredData
         // Build Available Structured Data Types
         // Core Structure Data Types available to all
         // Name of structured data type should be "plugin-structureddatatype"
+
+        /*
+        // Code for testing the SCHEMA_PROPERTY_TYPE_REPEAT option in the structured data class
+        // core-review and core-product are incomplete and is just meant for testing
+        $name = 'core-review';
+        $this->types[$name]['@type'] = 'Review';
+        $this->types[$name]['name']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
+        $this->types[$name]['reviewBody']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
+
+        $name = 'core-product';
+        $this->types[$name]['@type'] = 'Product';
+        $this->types[$name]['name']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
+        $this->types[$name]['review']['property'] = $this::SCHEMA_PROPERTY_TYPE_REPEAT;
+        $this->types[$name]['review']['value'] = 'core-review'; // Uses a sub type so specify id
+        $this->types[$name]['datePublished']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
+
+        // Code below For testing SCHEMA_PROPERTY_TYPE_REPEAT should be placed in staticpage temporarily functions.inc file when in use
+        // Shows how to handle repeating types properties within structured data
+        $properties['name'] = 'Some Product Name';
+        $properties['datePublished'] = "2019-10-22";
+        $properties['review'][] = array(
+                "name"   => "Widget Review",
+                "reviewBody"  => "This is the body of the widget review"
+        );
+        $properties['review'][] = array(
+                "name"   => "Device Review",
+                "reviewBody"  => "This is the body of the device review"
+        );
+
+        $attributes['multi_language'] = true;
+        // Since staticpage can be cached and autotags within content may insert structured data properties need to cache structured data info as well.
+        if (($cache_time > 0 || $cache_time == -1) AND !$draft_flag) {
+            $attributes['cache'] = true;
+        }
+        $_STRUCT_DATA->add_type('staticpages', $sp_id, 'core-product', $properties, $attributes);
+        */
+
+
+
+        // core-blog is currently not being used but is planed for the home and topic pages
+        /*
+        $name = 'core-blog';
+        $this->types[$name]['@type'] = 'Blog';
+        $this->types[$name]['blogPost']['property'] = $this::SCHEMA_PROPERTY_TYPE_REPEAT;
+        $this->types[$name]['blogPost']['value'] = 'core-blogposting'; // Uses a sub type so specify id
+        */
+
         $name = 'core-author';
         $this->types[$name]['@type'] = 'Person';
         $this->types[$name]['name']['property'] = $this::SCHEMA_PROPERTY_REQUIRED;
@@ -149,7 +197,7 @@ class StructuredData
      *
      * @param   string  $type       Plugin of the content used to create the structured data
      * @param   string  $id         Id of content
-     * @param   numeric $sd_type    Id of Structured Data Type. See $LANG_structureddatatypes language variable for full list
+     * @param   string  $sd_type    Id of Structured Data Type. See $LANG_structureddatatypes language variable for full list
      * @param   string  $properties Properties for structured data type (type, headline, url, datePublished, dateModified, commentCount, keywords, description)
      * @param   string  $attributes Attributes for structured data item (cache, multi language)
      * @param   array   $data is the subset of data that will need to be set for the structured data (passed by reference). if null then full array will be used
@@ -248,9 +296,17 @@ class StructuredData
                             //      $item['value'] is the structured data type for the property
                             //      $properties[$i] is the list of properties for the sub type (which will be matched against the classes defined property types stored in $types)
                             //      $data[$i] is the subset of data that will need to be set for the structured data (passed by reference)
-
                             $data[$i] = array(); // create a space for the new type in the main array
                             $this->add_type($type, $id, $item['value'], $properties[$i], $attributes, $data[$i]);
+                            break;
+
+                        case $this::SCHEMA_PROPERTY_TYPE_REPEAT:
+                            $data[$i] = array(); // create a space for the new type in the main array
+                            // Cycle through each repeating type in the properties array
+                            foreach($properties[$i] as $p => $type_repeat) {
+                                $data[$i][$p] = array(); // create a space for the new type in the main array that allows for multiple entries of the same type
+                                $this->add_type($type, $id, $item['value'], $type_repeat, $attributes, $data[$i][$p]);
+                            }
                             break;
 
                         default:
