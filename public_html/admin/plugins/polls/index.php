@@ -193,12 +193,15 @@ function savepoll($pid, $old_pid, $Q, $mainPage, $topic, $topic_description, $me
         COM_redirect($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     }
 
-    // check for poll id change
-    if (!empty($old_pid) && ($pid != $old_pid)) {
+    // check for poll id change (on edits and new) to see if it matches another existing poll
+    if ((!empty($old_pid) && ($pid != $old_pid)) || (empty($old_pid) && !empty($pid))) {
         // check if new pid is already in use
         if (DB_count($_TABLES['polltopics'], 'pid', DB_escapeString($pid)) > 0) {
-            // TBD: abort, display editor with all content intact again
-            $pid = $old_pid; // for now ...
+            if (empty($old_pid)) { // New poll with no old id
+                $pid = COM_makeSid();
+            } else { // existing poll
+                $pid = $old_pid; // for now ...
+            }
         }
     }
 
@@ -663,9 +666,6 @@ if ($mode === 'edit') {
     $old_pid = Geeklog\Input::fPost('old_pid', '');
     if (empty($pid) && !empty($old_pid)) {
         $pid = $old_pid;
-    }
-    if (empty($old_pid) && (!empty($pid))) {
-        $old_pid = $pid;
     }
     if (!empty($pid)) {
         $statuscode = (int) Geeklog\Input::fPost('statuscode', 0);
