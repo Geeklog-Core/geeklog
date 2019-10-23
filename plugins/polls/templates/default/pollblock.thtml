@@ -1,7 +1,13 @@
 {# begin {templatelocation} #}
 
-<span class="floatright">{edit_icon}</span><div class="poll-topic">{poll_topic}</div>
+{# display_type possible values 0 = Normal, 1 = In Block, 2 = autotag #}
+{# Only display Topic Description as a Tooltip for when poll in block #}
+<div class="poll-topic">{poll_topic}{!!if {display_type} == '1' !!}{poll_topic_description_tooltip}{!endif}</div>
+<span class="floatright">{edit_icon}</span>
+{!!if {display_type} == '0' !!}
 <div class="poll-topic_description">{poll_topic_description}</div>
+{!endif}
+
 <form action="{poll_vote_url}" name="Vote" method="post">
     <div>
     <input type="hidden" name="pid" value="{poll_id}"{xhtml}>
@@ -25,8 +31,10 @@
 
 <!-- BEGIN poll_questions -->
 <div class="poll-questions">
-    <p class="poll-question">{lang_question}{lang_question_number}{poll_question}</p>
+    <p class="poll-question">{lang_question}{lang_question_number} {poll_question}</p>
+    {!if poll_description}
     <p class="poll-description">{poll_description}</p>
+    {!endif}
     <ul>
     {poll_answers}
     </ul>

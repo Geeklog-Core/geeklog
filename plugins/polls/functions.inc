@@ -478,6 +478,11 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                 $poll->set_var('poll_id', $pid);
                 $poll->set_var('poll_topic', $P['topic']);
                 $poll->set_var('poll_topic_description', $P['description']);
+                if (!empty($P['description'])) {
+                    $poll->set_var('poll_topic_description_tooltip', COM_getTooltip('', $P['description']));
+                } else {
+                    $poll->set_var('poll_topic_description_tooltip', '');
+                }
                 $poll->set_var('num_votes', COM_numberFormat($P['voters']));
                 $poll->set_var('poll_vote_url', $_CONF['site_url']
                     . '/polls/index.php');
@@ -815,6 +820,11 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
             $poll->set_var('display_type', $displaytype);
             $poll->set_var('poll_topic', $P['topic']);
             $poll->set_var('poll_topic_description', $P['description']);
+            if (!empty($P['description'])) {
+                $poll->set_var('poll_topic_description_tooltip', COM_getTooltip('', $P['description']));
+            } else {
+                $poll->set_var('poll_topic_description_tooltip', '');
+            }
             $poll->set_var('poll_id', $pid);
             $poll->set_var('num_votes', COM_numberFormat($P['voters']));
             $poll->set_var('lang_voters', $LANG_POLLS['voters']);
@@ -847,7 +857,7 @@ function POLLS_pollResults($pid, $scale = 100, $order = '', $mode = '', $page = 
                     $counter = ($j + 1) . "/$nquestions: ";
                 }
                 $poll->set_var('poll_question_text', $counter . $Q['question']);
-                $poll->set_var('poll_description', $counter . $Q['description']);
+                $poll->set_var('poll_description', $Q['description']);
 
                 $answer_sql = "SELECT votes, answer, remark FROM {$_TABLES['pollanswers']} "
                     . "WHERE pid = '" . DB_escapeString($pid) . "' AND qid = '" . DB_escapeString($Q['qid']) . "' "

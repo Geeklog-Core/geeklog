@@ -108,7 +108,7 @@ $LANG25 = array(
     40 => 'See all answers to this poll',
     1001 => 'Allow multiple answers',
     1002 => 'Description',
-    1003 => 'Description',
+    1003 => 'Topic Description',
 );
 
 $PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';

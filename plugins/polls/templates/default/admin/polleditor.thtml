@@ -7,9 +7,12 @@
       <dl class="form_block">
         <dt><label for="polls-polleditor-topic">{lang_topic}</label></dt>
         <dd><input type="text" name="topic" value="{poll_topic}" maxlength="255" {!if titletoid}onkeyup="TitleToId('polls-polleditor-topic','polls-polleditor-pid');" {!endif}id="polls-polleditor-topic" class="size6"{xhtml}><br{xhtml}>{poll_topic_info}</dd>
-        
+
         <dt><label for="polls-polleditor-pid">{lang_pollid}</label></dt>
         <dd><input type="text" dir="ltr" name="pid" value="{poll_id}" maxlength="128" id="polls-polleditor-pid" class="size6"{xhtml}> {lang_donotusespaces}</dd>
+
+        <dt><label for="polls-polleditor-topic_description">{lang_topic_description}</label></dt>
+        <dd><textarea name="topic_description" rows="2" id="polls-polleditor-topic_description" class="wide">{topic_description}</textarea></dd>
 
         <dt{hide_meta}><label for="polls-polleditor-meta_description">{lang_metadescription}</label></dt>
         <dd{hide_meta}><textarea name="meta_description" cols="45" rows="2" id="polls-polleditor-meta_description" class="wide">{meta_description}</textarea></dd>
@@ -28,9 +31,6 @@
 
         <dt><label for="polls-polleditor-hideresults">{lang_hideresults}</label></dt>
         <dd><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</dd>
-
-        <dt><label for="polls-polleditor-topic_description">{lang_topic_description}</label></dt>
-        <dd><textarea name="topic_description" rows="2" id="polls-polleditor-topic_description" class="wide">{topic_description}</textarea></dd>
       </dl>
 
       <div id="po_navbar" class="jsenabled_show">
@@ -60,7 +60,7 @@
         <input type="submit" name="mode" value="{lang_cancel}" class="submit"{xhtml}>
 {!if allow_delete}
         <input type="submit" name="mode" value="{lang_delete}" class="submit" onclick="return confirm('{confirm_message}');"{xhtml}>
-{!endif}        
+{!endif}
         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
         <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
       </div>
