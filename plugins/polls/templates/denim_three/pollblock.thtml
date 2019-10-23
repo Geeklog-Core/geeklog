@@ -2,10 +2,12 @@
 
 {# display_type possible values 0 = Normal, 1 = In Block, 2 = autotag #}
 {# Only display Topic Description as a Tooltip for when poll in block #}
-<div class="poll-topic">{poll_topic}{!!if {display_type} == '1' !!}{poll_topic_description_tooltip}{!endif}</div>
+<div class="poll-topic">{poll_topic}{!!if {display_type} != '0' !!}{poll_topic_description_tooltip}{!endif}</div>
 <span class="uk-align-right">{edit_icon}</span>
 {!!if {display_type} == '0' !!}
+{!if poll_topic_description}
 <div class="poll-topic_description">{poll_topic_description}</div>
+{!endif}
 {!endif}
 
 <form action="{poll_vote_url}" name="Vote" method="post">
