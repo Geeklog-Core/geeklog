@@ -2142,11 +2142,11 @@ $LANG_trackbackcodes = array(
 );
 
 $LANG_structureddatatypes = array(
-    0 => 'None',
-    1 => 'WebPage',
-    2 => 'Article',
-    3 => 'NewsArticle',
-    4 => 'BlogPosting'
+    'none' => 'None',
+    'core-webpage' => 'WebPage',
+    'core-article' => 'Article',
+    'core-newsarticle' => 'NewsArticle',
+    'core-blogposting' => 'BlogPosting'
 );
 
 $LANG_STRUCT_DATA = array(
@@ -2345,6 +2345,7 @@ $LANG_confignames['Core'] = array(
     'article_image_align' => 'Poravnava ikone rubrike',
     'show_topic_icon' => 'Prikaži ikono rubrike?',
     'structured_data_type_default' => 'Structured Data Type Default',
+    'structured_data_article_topic' => 'Structured Data of Articles in Topics',
     'draft_flag' => 'Èlanek prednastavljen kot osnutek',
     'frontpage' => 'Prednastavljena prva stran',
     'hide_no_news_msg' => 'Skrij sporoèilo "Ni novic"?',
@@ -2652,7 +2653,8 @@ $LANG_configselects['Core'] = array(
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
     39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4),
     40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
-    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2)
+    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2),
+    42 => array('None' => 0, 'Use individual Article Settings' => 1)
 );
 
 ###############################################################################
