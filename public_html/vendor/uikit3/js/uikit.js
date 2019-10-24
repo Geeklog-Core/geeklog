@@ -1,4 +1,4 @@
-/*! UIkit 3.2.0 | http://www.getuikit.com | (c) 2014 - 2019 YOOtheme | MIT License */
+/*! UIkit 3.2.2 | http://www.getuikit.com | (c) 2014 - 2019 YOOtheme | MIT License */
 
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -89,8 +89,9 @@
         return obj !== null && typeof obj === 'object';
     }
 
+    var toString = objPrototype.toString;
     function isPlainObject(obj) {
-        return isObject(obj) && Object.getPrototypeOf(obj) === objPrototype;
+        return toString.call(obj) === '[object Object]';
     }
 
     function isWindow(obj) {
@@ -109,7 +110,6 @@
         return obj instanceof Node || isObject(obj) && obj.nodeType >= 1;
     }
 
-    var toString = objPrototype.toString;
     function isNodeCollection(obj) {
         return toString.call(obj).match(/^\[object (NodeList|HTMLCollection)\]$/);
     }
@@ -620,12 +620,12 @@
             listener = detail(listener);
         }
 
-        if (selector) {
-            listener = delegate(targets, selector, listener);
-        }
-
         if (useCapture && useCapture.self) {
             listener = selfFilter(listener);
+        }
+
+        if (selector) {
+            listener = delegate(targets, selector, listener);
         }
 
         useCapture = useCaptureFilter(useCapture);
@@ -2053,26 +2053,29 @@
 
     };
 
-    function flush() {
+    function flush(recursion) {
+        if ( recursion === void 0 ) recursion = 1;
+
         runTasks(fastdom.reads);
         runTasks(fastdom.writes.splice(0, fastdom.writes.length));
 
         fastdom.scheduled = false;
 
         if (fastdom.reads.length || fastdom.writes.length) {
-            scheduleFlush(true);
+            scheduleFlush(recursion + 1);
         }
     }
 
-    function scheduleFlush(microtask) {
-        if ( microtask === void 0 ) microtask = false;
-
+    var RECURSION_LIMIT = 5;
+    function scheduleFlush(recursion) {
         if (!fastdom.scheduled) {
             fastdom.scheduled = true;
-            if (microtask) {
-                Promise.resolve().then(flush);
+            if (recursion > RECURSION_LIMIT) {
+                throw new Error('Maximum recursion limit reached.');
+            } else if (recursion) {
+                Promise.resolve().then(function () { return flush(recursion); });
             } else {
-                requestAnimationFrame(flush);
+                requestAnimationFrame(function () { return flush(); });
             }
         }
     }
@@ -2815,29 +2818,11 @@
             return;
         }
 
-        if (document.body) {
-
-            fastdom.read(init);
-
-        } else {
-
-            (new MutationObserver(function () {
-
-                if (document.body) {
-                    this.disconnect();
-                    init();
-                }
-
-            })).observe(document, {childList: true, subtree: true});
-
-        }
+        fastdom.read(init);
 
         function init() {
 
             apply(document.body, connect);
-
-            // Safari renders prior to first animation frame
-            fastdom.flush();
 
             (new MutationObserver(function (mutations) { return mutations.forEach(applyMutation); })).observe(document, {
                 childList: true,
@@ -7357,71 +7342,37 @@
                     this.elements.forEach(function (el) {
 
                         var state = el._ukScrollspyState;
-                        var cls = state.cls;
+                        var toggle = function (inview) {
 
-                        if (state.show && !state.inview && !state.queued) {
+                            css(el, 'visibility', !inview && this$1.hidden ? 'hidden' : '');
 
-                            var show = function () {
+                            toggleClass(el, this$1.inViewClass, inview);
+                            toggleClass(el, state.cls);
 
-                                css(el, 'visibility', '');
-                                addClass(el, this$1.inViewClass);
-                                toggleClass(el, cls);
+                            trigger(el, inview ? 'inview' : 'outview');
 
-                                trigger(el, 'inview');
-
-                                this$1.$update(el);
-
-                                state.inview = true;
-                                state.abort && state.abort();
-                            };
-
-                            if (this$1.delay) {
-
-                                state.queued = true;
-                                data.promise = (data.promise || Promise.resolve()).then(function () {
-                                    return !state.inview && new Promise(function (resolve) {
-
-                                        var timer = setTimeout(function () {
-
-                                            show();
-                                            resolve();
-
-                                        }, data.promise || this$1.elements.length === 1 ? this$1.delay : 0);
-
-                                        state.abort = function () {
-                                            clearTimeout(timer);
-                                            resolve();
-                                            state.queued = false;
-                                        };
-
-                                    });
-
-                                });
-
-                            } else {
-                                show();
-                            }
-
-                        } else if (!state.show && (state.inview || state.queued) && this$1.repeat) {
-
-                            state.abort && state.abort();
-
-                            if (!state.inview) {
-                                return;
-                            }
-
-                            css(el, 'visibility', this$1.hidden ? 'hidden' : '');
-                            removeClass(el, this$1.inViewClass);
-                            toggleClass(el, cls);
-
-                            trigger(el, 'outview');
+                            state.inview = inview;
 
                             this$1.$update(el);
 
-                            state.inview = false;
+                        };
+
+                        if (state.show && !state.inview && !state.queued) {
+
+                            state.queued = true;
+
+                            data.promise = (data.promise || Promise.resolve()).then(function () { return new Promise(function (resolve) { return setTimeout(resolve, this$1.delay); }
+                                ); }
+                            ).then(function () {
+                                toggle(true);
+                                setTimeout(function () { return state.queued = false; }, 300);
+                            });
+
+                        } else if (!state.show && state.inview && !state.queued && this$1.repeat) {
+
+                            toggle(false);
 
                         }
-
 
                     });
 
@@ -8004,7 +7955,7 @@
         methods: {
 
             index: function() {
-                return !isEmpty(this.connects) && index(filter(this.connects[0].children, ("." + (this.cls)))[0]);
+                return !isEmpty(this.connects) ? index(filter(this.connects[0].children, ("." + (this.cls)))[0]) : -1;
             },
 
             show: function(item) {
@@ -8028,7 +7979,7 @@
                     }
                 }
 
-                if (!active || prev >= 0 && hasClass(active, this.cls) || prev === next) {
+                if (!active || prev === next) {
                     return;
                 }
 
@@ -8148,7 +8099,7 @@
                     var link;
                     if (closest(e.target, 'a[href="#"], a[href=""]')
                         || (link = closest(e.target, 'a[href]')) && (
-                            this.cls
+                            this.cls && !hasClass(this.target, this.cls.split(' ')[0])
                             || !isVisible(this.target)
                             || link.hash && matches(this.target, link.hash)
                         )
@@ -8249,7 +8200,7 @@
 
     }
 
-    UIkit.version = '3.2.0';
+    UIkit.version = '3.2.2';
 
     core(UIkit);
 
@@ -9105,6 +9056,7 @@
 
                     if (!this.draggable
                         || !isTouch(e) && hasTextNodesOnly(e.target)
+                        || closest(e.target, selInput)
                         || e.button > 0
                         || this.length < 2
                     ) {
@@ -9406,7 +9358,8 @@
             easing: String,
             index: Number,
             finite: Boolean,
-            velocity: Number
+            velocity: Number,
+            selSlides: String
         },
 
         data: function () { return ({
@@ -9453,14 +9406,15 @@
 
             selSlides: function(ref) {
                 var selList = ref.selList;
+                var selSlides = ref.selSlides;
 
-                return (selList + " > *");
+                return (selList + " " + (selSlides || '> *'));
             },
 
             slides: {
 
                 get: function() {
-                    return toNodes(this.list.children);
+                    return $$(this.selSlides, this.$el);
                 },
 
                 watch: function() {
@@ -10962,7 +10916,7 @@
             finite: function(ref) {
                 var finite = ref.finite;
 
-                return finite || getWidth(this.list) < bounds(this.list).width + getMaxWidth(this.list) + this.center;
+                return finite || Math.ceil(getWidth(this.list)) < bounds(this.list).width + getMaxWidth(this.list) + this.center;
             },
 
             maxIndex: function() {
@@ -11060,7 +11014,7 @@
                     this$1.maxIndex && toggleClass(el, 'uk-hidden', isNumeric(index) && (this$1.sets && !includes(this$1.sets, toFloat(index)) || index > this$1.maxIndex));
                 });
 
-                if (!this.dragging && !this.stack.length) {
+                if (this.length && !this.dragging && !this.stack.length) {
                     this._getTransitioner().translate(1);
                 }
 
