@@ -37,13 +37,13 @@ class SessionTest extends TestCase
      */
     protected $session;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->storage = new MockArraySessionStorage();
         $this->session = new Session($this->storage, new AttributeBag(), new FlashBag());
     }
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         $this->storage = null;
         $this->session = null;

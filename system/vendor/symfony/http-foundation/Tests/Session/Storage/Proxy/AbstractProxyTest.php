@@ -27,12 +27,12 @@ class AbstractProxyTest extends TestCase
      */
     protected $proxy;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->proxy = $this->getMockForAbstractClass(AbstractProxy::class);
     }
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         $this->proxy = null;
     }

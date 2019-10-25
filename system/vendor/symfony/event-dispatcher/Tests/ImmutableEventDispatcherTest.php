@@ -31,7 +31,7 @@ class ImmutableEventDispatcherTest extends TestCase
      */
     private $dispatcher;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->innerDispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
         $this->dispatcher = new ImmutableEventDispatcher($this->innerDispatcher);
@@ -44,7 +44,7 @@ class ImmutableEventDispatcherTest extends TestCase
 
         $this->innerDispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($event, 'event')
+            ->with('event', $event)
             ->willReturn($resultEvent);
 
         $this->assertSame($resultEvent, $this->dispatcher->dispatch('event', $event));

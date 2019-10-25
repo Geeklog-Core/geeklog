@@ -29,7 +29,7 @@ class GenericEventTest extends TestCase
     /**
      * Prepares the environment before running a test.
      */
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->subject = new \stdClass();
         $this->event = new GenericEvent($this->subject, ['name' => 'Event']);
@@ -38,7 +38,7 @@ class GenericEventTest extends TestCase
     /**
      * Cleans up the environment after running a test.
      */
-    protected function tearDown(): void
+    protected function tearDown()
     {
         $this->subject = null;
         $this->event = null;

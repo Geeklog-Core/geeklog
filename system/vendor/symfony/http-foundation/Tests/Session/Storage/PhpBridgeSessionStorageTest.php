@@ -29,16 +29,16 @@ class PhpBridgeSessionStorageTest extends TestCase
 {
     private $savePath;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->iniSet('session.save_handler', 'files');
-        $this->iniSet('session.save_path', $this->savePath = sys_get_temp_dir().'/sftest');
+        $this->iniSet('session.save_path', $this->savePath = sys_get_temp_dir().'/sf2test');
         if (!is_dir($this->savePath)) {
             mkdir($this->savePath);
         }
     }
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         session_write_close();
         array_map('unlink', glob($this->savePath.'/*'));
@@ -64,12 +64,13 @@ class PhpBridgeSessionStorageTest extends TestCase
     {
         $storage = $this->getStorage();
 
-        $this->assertNotSame(\PHP_SESSION_ACTIVE, session_status());
+        $this->assertFalse($storage->getSaveHandler()->isActive());
         $this->assertFalse($storage->isStarted());
 
         session_start();
         $this->assertTrue(isset($_SESSION));
-        $this->assertSame(\PHP_SESSION_ACTIVE, session_status());
+        // in PHP 5.4 we can reliably detect a session started
+        $this->assertTrue($storage->getSaveHandler()->isActive());
         // PHP session might have started, but the storage driver has not, so false is correct here
         $this->assertFalse($storage->isStarted());
 
