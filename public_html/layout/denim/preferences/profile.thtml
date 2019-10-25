@@ -57,7 +57,7 @@
         <dt><label for="profile-email_conf">{lang_email_conf}</label></dt>
         <dd><input type="text" maxlength="96" value="{email_value}" name="email_conf" id="profile-email_conf" class="size6"{xhtml}></dd>
         <dd class="description" id="desc-profile-email_conf">{lang_email_conf_text}</dd>
-        
+
         {!if emailtoconfirm}
         <dt><label for="profile-email-verify">{lang_email_verify}</label></dt>
         <dd><em>{emailtoconfirm}</em> <input type="checkbox" name="delete_emailtoconfirm" id="delete_emailtoconfirm">{lang_email_verify_delete}</dd>
@@ -93,7 +93,7 @@
         <dt><label for="enable_tfa">{lang_enable_twofactorauth}</label></dt>
         <dd>
           {# id required to be enable_tfa for javascript #}
-          <select name="enable_twofactorauth" id="enable_tfa">        
+          <select name="enable_twofactorauth" id="enable_tfa">
             {enable_tfa_options}
           </select>
         </dd>
@@ -148,6 +148,15 @@
 
         {userphoto_option}
 
+        <dt><label for="profile-postmode">{lang_postmode}</label></dt>
+        <dd>
+          <select id="profile-postmode" name="postmode">
+            <option value="plaintext"{plaintext_selected}>{lang_plaintext}</option>
+            <option value="html"{html_selected}>{lang_html}</option>
+          </select>
+        </dd>
+        <dd class="description" id="desc-profile-postmode">{lang_postmode_text}</dd>
+
         <dt><label for="profile-sig">{lang_signature}</label></dt>
         <dd><textarea cols="45" rows="4" name="sig" id="profile-sig" class="wide" aria-describedby="desc-profile-sig">{signature_value}</textarea></dd>
         <dd class="description" id="desc-profile-sig">{lang_signature_text}</dd>
@@ -161,15 +170,6 @@
         <dd class="description" id="desc-profile-pgpkey">{lang_pgpkey_text}</dd>
 
         {display_fields}
-
-        <dt><label for="profile-postmode">{lang_postmode}</label></dt>
-        <dd>
-          <select id="profile-postmode" name="postmode">
-            <option value="plaintext"{plaintext_selected}>{lang_plaintext}</option>
-            <option value="html"{html_selected}>{lang_html}</option>
-          </select>
-        </dd>
-        <dd class="description" id="desc-profile-postmode">{lang_postmode_text}</dd>
       </dl>
     </div>
   </fieldset>

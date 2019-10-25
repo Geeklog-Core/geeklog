@@ -51,13 +51,13 @@
       <dt><label for="profile-email_conf">{lang_email_conf}</label></dt>
       <dd><input type="text" size="60" maxlength="96" value="{email_value}" name="email_conf" id="profile-email_conf" class="text"{xhtml}></dd>
       <dd class="description" id="desc-profile-email_conf">{lang_email_conf_text}</dd>
-        
+
       {!if emailtoconfirm}
       <dt><label for="profile-email-verify">{lang_email_verify}</label></dt>
       <dd><em>{emailtoconfirm}</em> <input type="checkbox" name="delete_emailtoconfirm" id="delete_emailtoconfirm">{lang_email_verify_delete}</dd>
       <dd class="description" id="desc-email-verify">{lang_email_verify_msg}</dd>
       {!endif}
-        
+
       {current_password_option}
 
       {delete_account_option}
@@ -89,7 +89,7 @@
         <dt><label for="enable_tfa">{lang_enable_twofactorauth}</label></dt>
         <dd>
           {# id required to be enable_tfa for javascript #}
-          <select name="enable_twofactorauth" id="enable_tfa">        
+          <select name="enable_twofactorauth" id="enable_tfa">
             {enable_tfa_options}
           </select>
         </dd>
@@ -138,6 +138,15 @@
 
       {userphoto_option}
 
+      <dt><label for="profile-postmode">{lang_postmode}</label></dt>
+      <dd>
+        <select id="profile-postmode" name="postmode">
+          <option value="plaintext"{plaintext_selected}>{lang_plaintext}</option>
+          <option value="html"{html_selected}>{lang_html}</option>
+        </select>
+      </dd>
+      <dd class="description" id="desc-profile-postmode">{lang_postmode_text}</dd>      
+
       <dt><label for="profile-sig">{lang_signature}</label></dt>
       <dd><textarea cols="45" rows="4" name="sig" id="profile-sig">{signature_value}</textarea></dd>
       <dd class="description">{lang_signature_text}</dd>
@@ -149,17 +158,8 @@
       <dt><label for="profile-pgpkey">{lang_pgpkey}</label></dt>
       <dd><textarea cols="45" rows="6" name="pgpkey" id="profile-pgpkey">{pgpkey_value}</textarea></dd>
       <dd class="description">{lang_pgpkey_text}</dd>
-      
-      {display_fields}
 
-      <dt><label for="profile-postmode">{lang_postmode}</label></dt>
-      <dd>
-        <select id="profile-postmode" name="postmode">
-          <option value="plaintext"{plaintext_selected}>{lang_plaintext}</option>
-          <option value="html"{html_selected}>{lang_html}</option>
-        </select>
-      </dd>
-      <dd class="description" id="desc-profile-postmode">{lang_postmode_text}</dd>
+      {display_fields}
     </dl>
   </fieldset>
 </div>
@@ -181,7 +181,7 @@
         <dt><label for="profile-{fieldname}">{lang_field}</label></dt>
         <dd><textarea cols="45" rows="4" name="{fieldname}" id="profile-{fieldname}" class="wide" aria-describedby="desc-profile-{fieldname}">{signature_value}</textarea></dd>
         {!if lang_field_text}
-        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>      
+        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>
         {!endif}
 <!-- END display_field_text -->
 
@@ -189,7 +189,7 @@
         <dt><label for="profile-{fieldname}">{lang_field}</label></dt>
         <dd><input type="text" maxlength="{fieldmaxlength}" value="{field}" name="{fieldname}" id="profile-{fieldname}" class="size7" aria-describedby="desc-profile-{fieldname}"{xhtml}></dd>
         {!if lang_field_text}
-        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>      
+        <dd class="description" id="desc-profile-{fieldname}">{lang_field_text}</dd>
         {!endif}
 <!-- END display_field -->
 
