@@ -7,7 +7,7 @@ interface ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]
+     * @return array
      */
     public function broadcastOn();
 }

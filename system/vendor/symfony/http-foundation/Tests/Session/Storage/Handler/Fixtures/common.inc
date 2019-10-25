@@ -60,14 +60,14 @@ class TestSessionHandler extends AbstractSessionHandler
         $this->data = $data;
     }
 
-    public function open($path, $name): bool
+    public function open($path, $name)
     {
         echo __FUNCTION__, "\n";
 
         return parent::open($path, $name);
     }
 
-    public function validateId($sessionId): bool
+    public function validateId($sessionId)
     {
         echo __FUNCTION__, "\n";
 
@@ -77,7 +77,7 @@ class TestSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId): string
+    public function read($sessionId)
     {
         echo __FUNCTION__, "\n";
 
@@ -87,7 +87,7 @@ class TestSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function updateTimestamp($sessionId, $data): bool
+    public function updateTimestamp($sessionId, $data)
     {
         echo __FUNCTION__, "\n";
 
@@ -97,7 +97,7 @@ class TestSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data): bool
+    public function write($sessionId, $data)
     {
         echo __FUNCTION__, "\n";
 
@@ -107,42 +107,42 @@ class TestSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId): bool
+    public function destroy($sessionId)
     {
         echo __FUNCTION__, "\n";
 
         return parent::destroy($sessionId);
     }
 
-    public function close(): bool
+    public function close()
     {
         echo __FUNCTION__, "\n";
 
         return true;
     }
 
-    public function gc($maxLifetime): bool
+    public function gc($maxLifetime)
     {
         echo __FUNCTION__, "\n";
 
         return true;
     }
 
-    protected function doRead($sessionId): string
+    protected function doRead($sessionId)
     {
         echo __FUNCTION__.': ', $this->data, "\n";
 
         return $this->data;
     }
 
-    protected function doWrite($sessionId, $data): bool
+    protected function doWrite($sessionId, $data)
     {
         echo __FUNCTION__.': ', $data, "\n";
 
         return true;
     }
 
-    protected function doDestroy($sessionId): bool
+    protected function doDestroy($sessionId)
     {
         echo __FUNCTION__, "\n";
 

@@ -20,7 +20,7 @@ class ResponseFunctionalTest extends TestCase
 {
     private static $server;
 
-    public static function setUpBeforeClass(): void
+    public static function setUpBeforeClass()
     {
         $spec = [
             1 => ['file', '/dev/null', 'w'],
@@ -32,7 +32,7 @@ class ResponseFunctionalTest extends TestCase
         sleep(1);
     }
 
-    public static function tearDownAfterClass(): void
+    public static function tearDownAfterClass()
     {
         if (self::$server) {
             proc_terminate(self::$server);

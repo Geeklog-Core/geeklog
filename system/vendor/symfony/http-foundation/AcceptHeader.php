@@ -52,17 +52,12 @@ class AcceptHeader
     {
         $index = 0;
 
-        $parts = HeaderUtils::split((string) $headerValue, ',;=');
-
-        return new self(array_map(function ($subParts) use (&$index) {
-            $part = array_shift($subParts);
-            $attributes = HeaderUtils::combine($subParts);
-
-            $item = new AcceptHeaderItem($part[0], $attributes);
+        return new self(array_map(function ($itemValue) use (&$index) {
+            $item = AcceptHeaderItem::fromString($itemValue);
             $item->setIndex($index++);
 
             return $item;
-        }, $parts));
+        }, preg_split('/\s*(?:,*("[^"]+"),*|,*(\'[^\']+\'),*|,+)\s*/', $headerValue, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE)));
     }
 
     /**
@@ -96,7 +91,7 @@ class AcceptHeader
      */
     public function get($value)
     {
-        return $this->items[$value] ?? $this->items[explode('/', $value)[0].'/*'] ?? $this->items['*/*'] ?? $this->items['*'] ?? null;
+        return isset($this->items[$value]) ? $this->items[$value] : null;
     }
 
     /**
