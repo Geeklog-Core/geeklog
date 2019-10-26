@@ -1153,15 +1153,15 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $page->set_var('page_title_and_site_name', $title_and_name);
     $page->set_var('background_image', $_CONF['layout_url'] . '/images/bg.' . $_IMAGE_TYPE);
 
-    $msg = rtrim($LANG01[67]) . ' ' . $_CONF['site_name'];
+    $welcome_msg = rtrim($LANG01[67]) . ' ' . $_CONF['site_name'];
 
     if (!empty($_USER['username'])) {
-        $msg .= ', ' . COM_getDisplayName($_USER['uid'], $_USER['username'], $_USER['fullname']);
+        $welcome_msg .= ', ' . COM_getDisplayName($_USER['uid'], $_USER['username'], $_USER['fullname']);
     }
 
     $currentTime = COM_getUserDateTimeFormat();
 
-    $page->set_var('welcome_msg', $msg);
+    $page->set_var('welcome_msg', $welcome_msg);
     $page->set_var('datetime', $currentTime[0]);
     $page->set_var('site_logo', $_CONF['layout_url'] . '/images/logo.' . $_IMAGE_TYPE);
     $page->set_var('theme', $_CONF['theme']);
@@ -1291,6 +1291,18 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     }
 
     $page->set_var('breadcrumb_trail', $breadcrumbs);
+
+    // Display any Geeklog System messages
+    $system_messages = Session::getVar('system-msg');
+    $system_messages = (is_array($system_messages)) ? $system_messages : [$system_messages];
+    $messages_display = '';
+	foreach ($system_messages as $message){
+		if (!empty($message)) {
+			$messages_display .= COM_showMessage($message, '');
+		}
+	}
+	$page->set_var('system_messsages', $messages_display);
+    Session::setVar('system-msg', ''); // Since now displayed. Clear it.
 
     // Add Cookie Consent ( https://cookieconsent.osano.com )
     if (isset($_CONF['cookie_consent']) && $_CONF['cookie_consent']) {
@@ -3636,6 +3648,8 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
         return false;
     } else {
         if (COM_isDemoMode()) {
+            global $LANG_DEMO;
+
             // Don't send any emails in demo mode.  Instead, redirect to the home page and show a message.
             $charset = COM_getCharset();
             $subject = htmlspecialchars($subject, ENT_QUOTES, $charset);
@@ -3662,21 +3676,23 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
             // Just in case
             $message = htmlspecialchars($message, ENT_QUOTES, $charset);
             $message = str_replace(["\r\n", "\n", "\r"], '<br>', $message);
-            $msg = <<<EOD
-<h2>Notice</h2>
-<p>Please note sending emails is disabled in Demo mode. The last email which would have been sent was:</p>
----------- Header ----------<br>
-Subject: {$subject}<br>
-To: {$to}<br>
-From: {$from}<br>
-Priority: {$priority}<br>
+            // Create an array for these emails incase more than one
+            // Have to retrieve previous system-message so we don't overwrite it
+            $system_messages = Session::getVar('system-msg');
+            $system_messages[] = <<<EOD
+<h2>{$LANG_DEMO['notice']}</h2>
+<p>{$LANG_DEMO['emails_disabled_msg']}</p>
+---------- {$LANG_DEMO['header']} ----------<br>
+{$LANG_DEMO['subject']} {$subject}<br>
+{$LANG_DEMO['to']} {$to}<br>
+{$LANG_DEMO['from']} {$from}<br>
+{$LANG_DEMO['proprity']} {$priority}<br>
 <br>
----------- Body ------------<br>
+---------- {$LANG_DEMO['body']} ------------<br>
 {$message}<br>
 ----------------------------<br>
 EOD;
-            Session::setFlashVar('msg', $msg);
-            COM_redirect($_CONF['site_url']);
+            Session::setVar('system-msg', $system_messages);
 
             return true;
         } else {

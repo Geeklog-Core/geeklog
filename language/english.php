@@ -1809,6 +1809,20 @@ $LANG_DB_BACKUP = array(
 );
 
 ###############################################################################
+# Demo mode
+
+$LANG_DEMO = array(
+    'header'                    => 'Header',
+    'subject'                   => 'Subject:',
+    'to'                        => 'To:',
+    'from'                      => 'From:',
+    'priority'                  => 'Priority:',
+    'body'                      => 'Body',
+    'notice'                    => 'Notice',
+    'emails_disabled_msg'       => 'Please note sending emails is disabled in Demo mode. An email which would have been sent was:'
+);
+
+###############################################################################
 
 $LANG_BUTTONS = array(
     1 => 'Home',
