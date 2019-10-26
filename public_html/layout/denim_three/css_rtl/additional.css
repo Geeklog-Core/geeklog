@@ -35,7 +35,7 @@
         content: attr(data-letters);
         display: inline-block;
         font-size: 2em;
-        font-size: 2vmin; /* supported by most browsers */
+        font-size: 3vmin; /* supported by most browsers */
         width: 4em;
         height: 4em;
         line-height: 4em;
