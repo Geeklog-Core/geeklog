@@ -1293,6 +1293,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $page->set_var('breadcrumb_trail', $breadcrumbs);
 
     // Display any Geeklog System messages
+    // You can set system messages by using the function COM_setSystemMessage
     $system_messages = Session::getVar('system-msg');
     $system_messages = (is_array($system_messages)) ? $system_messages : [$system_messages];
     $messages_display = '';
@@ -3676,23 +3677,21 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
             // Just in case
             $message = htmlspecialchars($message, ENT_QUOTES, $charset);
             $message = str_replace(["\r\n", "\n", "\r"], '<br>', $message);
-            // Create an array for these emails incase more than one
-            // Have to retrieve previous system-message so we don't overwrite it
-            $system_messages = Session::getVar('system-msg');
-            $system_messages[] = <<<EOD
+            $system_message = <<<EOD
 <h2>{$LANG_DEMO['notice']}</h2>
 <p>{$LANG_DEMO['emails_disabled_msg']}</p>
 ---------- {$LANG_DEMO['header']} ----------<br>
 {$LANG_DEMO['subject']} {$subject}<br>
 {$LANG_DEMO['to']} {$to}<br>
 {$LANG_DEMO['from']} {$from}<br>
-{$LANG_DEMO['proprity']} {$priority}<br>
+{$LANG_DEMO['priority']} {$priority}<br>
 <br>
 ---------- {$LANG_DEMO['body']} ------------<br>
 {$message}<br>
 ----------------------------<br>
 EOD;
-            Session::setVar('system-msg', $system_messages);
+
+            COM_setSystemMessage($system_message);
 
             return true;
         } else {
@@ -3700,6 +3699,21 @@ EOD;
         }
     }
 }
+
+/**
+ * Sets a system message (which can be stacked) which then will be diplayed by COM_createHTMLDocument
+ * Uses the Session variable system-msg to story an array of Messages
+ * Works not only with the current page but on page loads
+ *
+ * @param    string $message       Message to add to system messages
+ */
+ function COM_setSystemMessage($message) {
+     $system_messages = Session::getVar('system-msg');
+
+     $system_messages[] = $message;
+
+     Session::setVar('system-msg', $system_messages);
+ }
 
 /**
  * Shows older story information in a block
