@@ -241,11 +241,11 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
     global $_CONF, $_TABLES;
 
     $queueUser = false;
-    
+
     // username should have had COM_applyFilter (so no punctuation, etc..) and been trimmed of spaces and checked if unique before this as if not this function does not fail gracefully
     // Might as well double check as having spaces and 4 byte characters could cause issues. Better to fail in this function than later in the process
     // If username filters change remember to change same process for remote accounts (like in ouath helper class and doAction function)
-    $username = trim(GLText::remove4byteUtf8Chars($username)); 
+    $username = trim(GLText::remove4byteUtf8Chars($username));
     $username = DB_escapeString($username);
     $email = DB_escapeString($email);
 
@@ -384,13 +384,13 @@ function USER_sendNotification($userName, $email, $uid, $mode = 'inactive')
 function USER_sendInvalidLoginAlert($userName, $email, $uid, $mode = 'inactive')
 {
     global $_CONF, $LANG04, $LANG08, $LANG29;
-    
+
     $remoteAddress = $_SERVER['REMOTE_ADDR'];
 
     $mailBody = "$LANG04[2]: $userName\n"
         . "$LANG04[5]: $email\n";
-        
-    $mailBody .= sprintf($LANG29['max_invalid_login_msg'] . "\n\n", $remoteAddress);        
+
+    $mailBody .= sprintf($LANG29['max_invalid_login_msg'] . "\n\n", $remoteAddress);
 
     $mailBody .= "{$LANG29[4]} <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\n\n";
 
@@ -424,14 +424,14 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0)
         if (($width == 0) && !empty($_CONF['force_photo_width'])) {
             $width = $_CONF['force_photo_width'];
         }
-        
-        $img = '';        
+
+        $img = '';
 
         if ($uid == 1) {
             // For anonymous users
             if (!empty($_CONF['default_photo'])) {
                 $img = $_CONF['default_photo'];
-            }            
+            }
         } else {
             // collect user's information with as few SQL requests as possible
             if ($uid == 0) {
@@ -495,7 +495,7 @@ function USER_getPhoto($uid = 0, $photo = '', $email = '', $width = 0)
                 $img = $_CONF['default_photo'];
             }
         }
-        
+
         if (!empty($img)) {
             $userPhoto = '<img src="' . $img . '"';
             if ($width > 0) {
@@ -577,14 +577,14 @@ function USER_generateUserICON($uid)
  * @param  string $darkColor    Dark text color to use
  * @return string               hexadecimal color to use
  */
-function _textColorBasedOnBgColor($bgColor, $lightColor, $darkColor) 
+function _textColorBasedOnBgColor($bgColor, $lightColor, $darkColor)
 {
     $color = (substr($bgColor, 0, 1) === '#') ? substr($bgColor, 1, 7) : $bgColor;
     $r = hexdec(substr($color, 0, 2)); // hexToR
     $g = hexdec(substr($color, 2, 2)); // hexToG
     $b = hexdec(substr($color, 4, 2)); // hexToB
     $retval = ((($r * 0.299) + ($g * 0.587) + ($b * 0.114)) > 186) ? $darkColor : $lightColor;
-    
+
     return $retval;
 }
 
@@ -599,7 +599,7 @@ function _textToColor($text)
 {
     // random color
     $rgb = substr(dechex(crc32($text)), 0, 6);
-    
+
     // make it darker
     $darker = 1; // 1 means leave it, 2 will darken so text is always light
     list($R16, $G16, $B16) = str_split($rgb, 2);
@@ -640,7 +640,7 @@ function USER_deletePhoto($photo, $abortOnError = true)
 }
 
 /**
- * Convert a user account from remote to local. 
+ * Convert a user account from remote to local.
  * If user status is active and a email address exists then a new password email will be sent
  *
  * @param    int        $uid    User id
@@ -653,7 +653,7 @@ function USER_convertRemote($uid)
     global $_TABLES;
 
     $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
-    
+
     // Find all Google accounts
     $sql = "SELECT status, username, email, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid = $uid";
     $result = DB_query($sql);
@@ -664,7 +664,7 @@ function USER_convertRemote($uid)
         if (!empty($remoteusername) || !empty($remoteservice)) {
             // Remove them from remote accounts group
             DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $remote_grp AND ug_uid = $uid");
-            
+
             // If user account is active and has no email then it cannot function as a regular account so lock it
             // Cannot set status to USER_ACCOUNT_NEW_EMAIL since user doesn't know his password as a new one is being created
             if ($status == USER_ACCOUNT_ACTIVE && empty($email)) {
@@ -674,27 +674,27 @@ function USER_convertRemote($uid)
             if ($status == USER_ACCOUNT_NEW_EMAIL) {
                 $status = USER_ACCOUNT_LOCKED;
             }
-            
+
             // Add null to remoteusername and remoteservice
-            $sql = "UPDATE {$_TABLES['users']} SET 
-            remoteusername = NULL, remoteservice = NULL, status = $status 
+            $sql = "UPDATE {$_TABLES['users']} SET
+            remoteusername = NULL, remoteservice = NULL, status = $status
             WHERE uid = $uid";
             DB_query($sql);
-            
+
             // Update user with random password
             if ($status == USER_ACCOUNT_ACTIVE && !empty($email)) {
                 USER_createAndSendPassword($username, $email, $uid, 'convert_remote');
-                
+
                 return 1; // Account converted NO email sent
             } else {
                 $passwd = NULL; //Pass null so random will be created
                 SEC_updateUserPassword($passwd, $uid);
-                
+
                 return 2; // Account converted and email sent
             }
         }
     }
-    
+
     return 0;
 }
 
@@ -1104,12 +1104,12 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_file(array(
         'profile' => 'profile.thtml'
     ));
-    
+
     $blocks = array('display_field', 'field_statistic', 'last10_block', 'last10_row');
     foreach ($blocks as $block) {
         $user_templates->set_block('profile', $block);
-    }    
-    
+    }
+
     $user_templates->set_var('start_block_userprofile', COM_startBlock($LANG04[1] . ' ' . $display_name));
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->set_var('lang_username', $LANG04[2]);
@@ -1191,8 +1191,8 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     );
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
     $user_templates->set_var('user_pgp', COM_nl2br($A['pgpkey']));
-    
-    
+
+
     $user_templates->set_var('start_block_postingstats', COM_startBlock($LANG04[83] . ' ' . $display_name));
     $user_templates->set_var('lang_title', $LANG09[16]);
     $user_templates->set_var('lang_date', $LANG09[17]);
@@ -1218,7 +1218,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     } else {
         $numRows = 0;
     }
-    
+
     $user_templates->set_var('start_block_last10', COM_startBlock($LANG04[82] . ' ' . $display_name));
     $user_templates->set_var('end_block', COM_endBlock());
     if ($numRows > 0) {
@@ -1237,12 +1237,12 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             );
             $storyTime = COM_getUserDateTimeFormat($C['unixdate']);
             $user_templates->set_var('item_date', $storyTime[0]);
-            
+
             if ($i == 0) {
                 $user_templates->parse('last10_rows', 'last10_row');
             } else {
                 $user_templates->parse('last10_rows', 'last10_row', true);
-            }            
+            }
         }
     } else {
         $story_row = $LANG01[37];
@@ -1284,13 +1284,13 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $commentTime = COM_getUserDateTimeFormat($C['unixdate']);
             $user_templates->set_var('item_date', $commentTime[0]);
             //$user_templates->parse('item_row', 'row', true);
-            
+
             if ($i == 1) {
                 $user_templates->parse('last10_rows', 'last10_row');
             } else {
                 $user_templates->parse('last10_rows', 'last10_row', true);
-            }            
-            
+            }
+
             if ($i == 10) {
                 break;
             }
@@ -1308,21 +1308,21 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $N = DB_fetchArray($result);
     $user_templates->set_var('number_field', COM_numberFormat($N['count']));
     $user_templates->parse('field_statistics', 'field_statistic', true);
-    
+
     $user_templates->set_var('lang_number_field', $LANG04[85]);
     $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $uid)";
     $result = DB_query($sql);
     $N = DB_fetchArray($result);
     $user_templates->set_var('number_field', COM_numberFormat($N['count']));
     $user_templates->parse('field_statistics', 'field_statistic', true);
-    
+
     $user_templates->set_var('lang_all_postings_by', $LANG04[86] . ' ' . $display_name);
 
     // Call custom registration function if enabled and exists
     if ($_CONF['custom_registration'] && function_exists('CUSTOM_userDisplay')) {
         $user_templates->set_var('customfields', CUSTOM_userDisplay($uid));
     }
-    
+
     // See if other plugins want to add any extra profile informaiton
     PLG_profileVariablesDisplay($uid, $user_templates);
 
@@ -1439,21 +1439,21 @@ function USER_emailConfirmation($email)
                     return true;
                 } else {
                     // Being called by users.php
-                    $redirect = $_CONF['site_url'] . "/users.php?mode=logout&msg=501";    
+                    $redirect = $_CONF['site_url'] . "/users.php?mode=logout&msg=501";
                 }
             } else {
                 if ($A['status'] == USER_ACCOUNT_ACTIVE) {
                     // Being called by usersettings.php
                     return false;
                 } else {
-                    // Being called by users.php                
+                    // Being called by users.php
                     // problem sending the email
-                    $redirect = $_CONF['site_url'] . "/users.php?mode=newemailstatus&msg=85";    
+                    $redirect = $_CONF['site_url'] . "/users.php?mode=newemailstatus&msg=85";
                 }
             }
 
             // Email sent so to confirm new email address so now logoff and tell user go check inbox
-            COM_redirect($redirect);            
+            COM_redirect($redirect);
         } else {
             if ($A['status'] == USER_ACCOUNT_ACTIVE) {
                 // Being called by usersettings.php
