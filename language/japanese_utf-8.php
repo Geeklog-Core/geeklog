@@ -1809,6 +1809,20 @@ $LANG_DB_BACKUP = array(
 );
 
 ###############################################################################
+# Demo mode
+
+$LANG_DEMO = array(
+    'header'                    => 'Header',
+    'subject'                   => 'Subject:',
+    'to'                        => 'To:',
+    'from'                      => 'From:',
+    'priority'                  => 'Priority:',
+    'body'                      => 'Body',
+    'notice'                    => 'Notice',
+    'emails_disabled_msg'       => 'Please note sending emails is disabled in Demo mode. An email which would have been sent was:'
+);
+
+###############################################################################
 
 $LANG_BUTTONS = array(
     1 => 'ホーム',
@@ -1969,7 +1983,7 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
+#
 # This here determines the order of the sentence "No new articles in 2 hrs"
 # order it so it makes sense in your language:
 # %i    item, "Articles"
@@ -2027,7 +2041,7 @@ $LANG_WEEK = array(
 
 ###############################################################################
 # Admin - Strings
-# 
+#
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
@@ -2711,4 +2725,3 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-

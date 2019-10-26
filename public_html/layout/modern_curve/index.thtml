@@ -50,9 +50,11 @@
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
           <div id="centerblocks-content" itemscope="itemscope" itemprop="mainContentOfPage" itemtype="http://schema.org/WebPageElement">
           {breadcrumb_trail}
-          
+
+          {system_messsages}
+
           {content}
-          
+
           </div>
         </div>
         <!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs <![endif]-->

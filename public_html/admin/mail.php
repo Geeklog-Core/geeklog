@@ -35,6 +35,8 @@
 *
 */
 
+use Geeklog\Session;
+
 /**
 * Geeklog common function library
 */
@@ -262,15 +264,11 @@ function send_messages(array $vars)
 
         $tempTo = is_array($to) ? implode('', array_keys($to)) : $to;
         
-        if (COM_isDemoMode()) {
-            $successes[] = htmlspecialchars ($tempTo);
-        } else {
-            if (! COM_mail($to, $subject, $message, $from, $html, $priority)) {
-                $failures[] = htmlspecialchars($tempTo);
-            } else {
-                $successes[] = htmlspecialchars($tempTo);
-            }
-        }
+		if (! COM_mail($to, $subject, $message, $from, $html, $priority)) {
+			$failures[] = htmlspecialchars($tempTo);
+		} else {
+			$successes[] = htmlspecialchars($tempTo);
+		}
     }
 
     $retval .= COM_startBlock($LANG31[1]);

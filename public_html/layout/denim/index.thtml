@@ -79,6 +79,8 @@
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
           {breadcrumb_trail}
 
+          {system_messsages}
+
           {content}
 
         </main>
@@ -124,4 +126,3 @@
 </body>
 
 </html>
-          
