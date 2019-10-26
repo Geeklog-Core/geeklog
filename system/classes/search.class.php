@@ -386,7 +386,7 @@ class Search
 
         $sql = 'SELECT s.sid AS id, s.title AS title, s.introtext AS description, ';
         $sql .= 'UNIX_TIMESTAMP(s.date) AS date, s.uid AS uid, s.hits AS hits, ';
-        $sql .= 'CONCAT(\'/article.php?story=\',s.sid) AS url ';
+        $sql .= "CONCAT('/article.php?story=', s.sid) AS url ";
         $sql .= 'FROM ' . $_TABLES['stories'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topic_assignments'] . ' AS ta ';
         $sql .= 'WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ';
         $sql .= 'AND ta.type = \'article\' AND ta.id = sid ';
@@ -952,7 +952,7 @@ class Search
 
         if ($_DB_dbms === 'pgsql') {
             $callBack = function ($match) {
-                return preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 || ', $match[1]);
+                return preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\1 || ', $match[1]);
             };
 
             if (is_string($sql)) {

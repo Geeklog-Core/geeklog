@@ -3928,7 +3928,7 @@ function COM_showBlocks($location)
         $commonSql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
 
-    $commonSql .= " GROUP BY bid, is_enabled, name, b.type, title, blockorder, device, content, "
+    $commonSql .= " GROUP BY bid, is_enabled, name, b.type, b.location, b.css_id, b.css_classes, title, blockorder, device, content, "
         . "allow_autotags, convert_newlines, cache_time, rdfurl, rdfupdated, rdf_last_modified, rdf_etag, rdflimit, "
         . "onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon ";
     $commonSql .= ' ORDER BY blockorder,title ASC';

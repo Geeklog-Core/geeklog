@@ -921,7 +921,11 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     }
 
     if ($_SP_CONF['includesearchtemplate'] == 0) {
-        $sql .= 'AND template_id = "" ';
+        if ($_DB_dbms === 'pgsql') {
+            $sql .= 'AND ((CASE coalesce (template_id, \'\') WHEN \'\' THEN 0 ELSE 1 END) <> 0) ';
+        } else {
+            $sql .= 'AND template_id = "" ';
+        }
     }
 
     $search_p = new SearchCriteria('staticpages', $LANG_STATIC['pages']);

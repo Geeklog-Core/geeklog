@@ -318,14 +318,14 @@ if ($_CONF['likes_enabled'] != 0 AND $_CONF['likes_articles'] != 0) {
     // dealing articles that can not only belong to multiple topics but with obviously multiple likes
     // Only way around this I see is a sub query so we can count the returned records after
     $sql = "
-        SELECT sid, title, COUNT(sid) count FROM (
+        SELECT sid, title, COUNT(sid) AS count FROM (
             SELECT s.sid, s.title
             FROM {$_TABLES['stories']} s,{$_TABLES['likes']} AS l, {$_TABLES['topic_assignments']} ta
             WHERE ta.type = 'article' AND ta.id = s.sid
             AND (s.draft_flag = 0) AND (s.date <= NOW()) AND (s.sid = l.id) AND (l.type = 'article') AND (l.action = 1)" . COM_getPermSQL('AND') . $topicsql . " 
             GROUP BY l.id, s.sid, s.title, l.lid 
         ) sub
-        GROUP BY sid ORDER BY count DESC LIMIT 10";
+        GROUP BY sid, sub.title ORDER BY count DESC LIMIT 10";
 
     $result = DB_query($sql);
     $nrows = DB_numRows($result);

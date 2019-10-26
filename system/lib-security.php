@@ -759,7 +759,7 @@ function SEC_authenticate($username, $password, &$uid)
 
     $password = str_replace(array("\015", "\012"), '', $password);
 
-    $result = DB_query("SELECT uid, status, passwd, email, uid, invalidlogins, lastinvalid + {$_CONF['invalidloginmaxtime']} lastinvalidcheck, UNIX_TIMESTAMP() currenttime  FROM {$_TABLES['users']} WHERE username='$username' AND ((remoteservice is null) or (remoteservice = ''))");
+    $result = DB_query("SELECT uid, status, passwd, email, uid, invalidlogins, lastinvalid + {$_CONF['invalidloginmaxtime']} AS lastinvalidcheck, UNIX_TIMESTAMP() AS currenttime  FROM {$_TABLES['users']} WHERE username='$username' AND ((remoteservice is null) or (remoteservice = ''))");
     $tmp = DB_error();
     $nrows = DB_numRows($result);
 

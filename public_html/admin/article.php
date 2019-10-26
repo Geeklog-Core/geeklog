@@ -244,7 +244,7 @@ function liststories($current_topic = '', $editaccessonly = '')
             . "{$_TABLES['stories']}.frontpage, {$_TABLES['stories']}.meta_description, {$_TABLES['stories']}.meta_keywords, "
             . "{$_TABLES['stories']}.cache_time, {$_TABLES['stories']}.owner_id, {$_TABLES['stories']}.group_id, "
             . "{$_TABLES['stories']}.perm_owner, {$_TABLES['stories']}.perm_group, {$_TABLES['stories']}.perm_members, "
-            . "{$_TABLES['stories']}.perm_anon ",
+            . "{$_TABLES['stories']}.perm_anon, {$_TABLES['stories']}.modified, {$_TABLES['stories']}.structured_data_type ",
         'query_fields'   => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
         'default_filter' => $excludetopics . COM_getPermSQL('AND'),
     );
