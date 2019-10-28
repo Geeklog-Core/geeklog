@@ -19,11 +19,11 @@
 <p>このドキュメントでは最も重要な変更点や目につく変更点を簡潔に説明しています。変更履歴の詳細なリストは、<a href="history.html">変更詳細履歴</a>をご覧ください。<span class="tt">docs/changed-files</span>には、前回リリース以来変更されたファイルの一覧があります。
 </p>
 
-<h2><a name="changes221">Geeklog 2.2.1</a></h2>
+<h2><a name="changes221">Geeklog v2.2.1</a></h2>
 
-<p>Geeklog 2.2.1 major new features include ...</p>
+<p>Geeklog v2.2.1 includes a number of new features and many bug fixes.</p>
 
-<p>The Geeklog minimum requirements have changed. Geeklog now supports PHP v7.3. The minimum requirements are:</p>
+<p>The Geeklog minimum requirements have also changed. Geeklog now supports PHP v7.3. The minimum requirements are:</p>
 
 <ul>
     <li>PHP v5.6.4 or higher</li>
@@ -31,21 +31,30 @@
     <li>PostgreSQL v9.1.7 or later</li>
 </ul>
 
-<p>Geeklog ships with jQuery v?, jQuery UI v?, CKEditor v?, UIkit v2.?,
-    RichFileManager v?, Mobile Detect v?, and OAuth class v?.</p>
-
 <h3>New Features and Improvements</h3>
 
 <ul>
-    <li>Introduced the built-in PHP sessions (feature #828).</li>
-    <li>Added Cookie Consent feature (feature #866).</li>
-    <li>Updated CKEditor to v4.12.1.</li>
-    <li>Replaced deprecated Filemanager with Rich Filemanager, which supports the drag and drop functionality (feature #806).</li>
-    <li>reCaptcha API added which plugins must now use to enable support (feature #869).</li>
-    <li>Added a feature to limit the size of a log file.<br>
-        Usage: calling Geeklog\Log::truncate('error.log', $logFileSizeInBytes);
-        from, say, CUSTOM_runScheduledTask().
-    </li>
+    <li>Uses PHP built in Session Handling.</li>
+    <li>A new built in configurable Likes and Dislikes system for articles and comments. Plugins can also support this feature.</li>
+    <li>A Cookie Consent feature.</li>
+    <li>Replaced the deprecated Filemanager with Rich Filemanager. This also supports drag and drop.</li>
+    <li>reCaptcha API added which allows any plugin to support it.</li>
+    <li>Geeklog log files can now be limited to a certain size (must be run as a scheduled task).</li>
+    <li>Structured Data directly integrated into Geeklog (with plugin support). Includes initial support for Breadcrumbs, Articles, and Static Pages.</li>
+    <li>For users without a photo you can now automatically generate user image/icon from Username using PHP Dynamically</li>
+    <li>FCKEditor removed since support dropped.</li>
+    <li>Update to User Groups editor to better show groups that are inherited and ones that would create a user group security loop.</li>
+    <li>Can now convert any remote account to local account.</li>
+    <li>All 3rd party libraries have been updated to their latest version that support Geeklogs minimum requirements. This includes jQuery, RichFileManager, UiKit (2 and 3), CKEditor, Mobile Detect, etc...</li>
+</ul>
+
+<h3>Bug Fixes</h3>
+
+<p>Over 20 major bugs have also been fixed. For Geeklog upgrades, some of these bugs require extra changes to the database (more information is included before performing the upgrade with the Geeklog Install). This includes the list below:</p>
+
+<ul>
+    <li>Incorrect user security group assignments for groups "Root" and "All Users". These will be fixed along with the security group assignments for the "Admin" (2) user.</li>
+    <li>Possible duplicate Usernames and Usernames with trailing spaces. Duplicates will be renamed but local account users may need to use the "Forget Your Password" to retrieve their new username.</li>
 </ul>
 
 <h2><a name="changes220">Geeklog 2.2.0</a></h2>

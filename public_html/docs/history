@@ -1,16 +1,85 @@
 Geeklog History/Changes:
 
-Fall 2019 (2.2.1)
+November ?? 2019 (2.2.1)
 ------------
 
-- [Feature] reCaptcha API added which plugins must now use to enable support [Mystralkk]
+Explanation of list item:
+- [Issue Type] [#Github_Issue_Number OR commit reference OR NA] Description of issue [Person who worked on issue]
 
-- [Improvement] The FCKEditor has been removed since support has been dropped for several years [Tom]     
-- [Improvement] The Google+ OAuth authentication method and scope has been changed to the Google OAuth authentication method and scope [Tom]     
+For more in-depth explanation of the issues below see: https://github.com/Geeklog-Core/geeklog/issues/
 
-- [Bug] Fixed saving of permissions for users when you have security groups within security groups [Tom]
-- [Bug] Fix for Duplicate Usernames & Usernames with Trailing Spaces [Tom]
-- [Bug] Submitted articles when approved or brought up in the Article Editor will now use the Story Admin Group and the Article Default Permissions as the defaults (Since Geeklog v2.0.0 it was using the Topic Admin Group) [Tom]
+- [Feature] [#828] Geeklog now uses PHP built in support for sessions [Mystralkk]
+- [Feature] [#902] Structured Data directly integrated into Geeklog (with plugin support). Includes initial support for Breadcrumbs, Articles, and Static Pages [Tom]
+- [Feature] [#971] Article Admin List now allows you to filter by edit access [Tom]
+- [Feature] [#942] Log files can now be limited to a certain size (must be run as a scheduled task) [Mystralkk]
+- [Feature] [#866] EU Cookie Consent added to all themes [Mystralkk]
+- [Feature] [#954] For users without a photo you can now automatically generate user image/icon from Username using PHP Dynamically [Mystralkk]
+- [Feature] [#843] The Geeklog Demo mode now does not send out emails. It displays them right away to the user on the page. This is to prevent spamming [Mystralkk]
+- [Feature] [#940] Added a Likes System for articles, comments, and other plugins to support (like Static Pages). Likes can be enabled for regular users and/or anonymous users. Admin can specify Likes only or Likes and Dislikes [Tom]
+- [Feature] [#906] Language Override now supports regular variables. Plugins can add new language variables to support override [Tom]
+- [Feature] [#876] In Batch Admin, you now can delete users who have not contributed any content. Plugins can support this feature as well [Tom]
+- [Feature] [#806] Switch to RichFileManager since original Filemanager is depreciated [Mystralkk]
+- [Feature] [#869] reCaptcha Plugin - API added which plugins must now use to enable support for reCaptcha [Mystralkk]
+- [Feature] [#898] Can now convert any remote account to local account. If email confirmed and account status is active an email will be sent notfiying user of account change and new password [Tom]
+- [Improvement] [#899] The FCKEditor has been removed since support has been dropped for several years [Tom]
+- [Improvement] [#898] The Google+ OAuth authentication method and scope has been changed to the Google OAuth authentication method and scope [Tom]
+- [Improvement] [#871] Better handling of different theme versions including what version of Geeklog it is for [Mystralkk]
+- [Improvement] [#884] When a search is performed on a Static Page that uses either PHP or templates, a cached version of the final page is searched [Tom]
+- [Improvement] [#964] Banned user Names are handled the same across Geeklog (including plugins) [Mystralkk]
+- [Improvement] [#933] Removed rel=prev/next from page navigation since support for it was dropped by the search engines [Mystralkk]
+- [Improvement] [#915, #917] Better support for screen readers by themes [Milk54]
+- [Improvement] [#903] Removed more hard coded css class names [Tom]
+- [Improvement] [#881] Facebook OAuth updated to support new required permissions [Tom]
+- [Improvement] [#944, #892] Geeklog now supports PHP v5.6.40 and higher (including PHP v7.3) [Mystralkk]
+- [Improvement] [NA] Minor user interface tweaks to themes to improve layout [Tom]
+- [Improvement] [#843] Added "system-msg" session variable which will display any system messages. Use function COM_setSystemMessage to set [Tom]
+- [Improvement] [#918] Users who use gmail email addresses cannot create multiple accounts under the same address (Google treats email addresses with periods and without as the same address ) [Mystralkk]
+- [Improvement] [#849] Installer - Now uses Uikit 3 [Tom] [Mystralkk]
+- [Improvement] [#926] Spam-X Plugin - SLV module removed due to Linksleeve shutting down [Tom]
+- [Improvement] [NA] Staticpage Plugin - Now can use page and page_content for autotags instead of staticpage and staticpage_content [Tom]
+- [Improvement] [fd7bf1668a5afd9a2ce4085cd2e590a776da00be] - User Group Editor shows difference between a group that is inherited and a group that cannot be checked because it would create a security group loop [Tom]
+
+- [Bug] [d8792f2f5f3354ff01045955f43cb6277ef32bf7] Fixed saving of permissions for users when you have security groups within security groups [Tom]
+- [Bug] [#931] Fix for Duplicate Usernames & Usernames with Trailing Spaces [Tom]
+- [Bug] [#893] Fixed Geeklog User Group Assignments which were not correct on new installs [Tom]
+- [Bug] [#886] Fixed issue where Geeklog thinks Plugin User Groups are Core Geeklog Groups [Tom]
+- [Bug] [#861] Fixed issue where users with blank usernames was being added after an OAuth authentication error [Tom]
+- [Bug] [#861] Fixed issue where users could have the same name (local and remote). Trailing spaces are now removed from usernames on save [Tom]
+- [Bug] [#967] Submitted articles when approved or brought up in the Article Editor will now use the Story Admin Group and the Article Default Permissions as the defaults (Since Geeklog v2.0.0 it was using the Topic Admin Group) [Tom]
+- [Bug] [#976] Polls Plugin - Fix saving of polls including when ID is changed [Tom]
+- [Bug] [#973] Fix for certain Autotags that uses a close tag [Ivywe]
+- [Bug] [#966] Links fixed in configuration documentation to work in tooltip and when viewed as a page [Mystralkk]
+- [Bug] [#945] When Routing enabled, the router now only loads page once instead of twice [Tom]
+- [Bug] [NA] Fixed pages and articles that are cached could include highlighted text from previous searches [Tom]
+- [Bug] [#937] Fix for URL Routing if site url has a directory in it [Tom]
+- [Bug] [#934] Switch Language now works for default URLs, URL Rewrite, and URL Routing. Works with Articles, Topics, and Static Pages [Tom]
+- [Bug] [#919] Fixed bug in Article cache which improved speed [Tom]
+- [Bug] [NA] CSS and JS processor to Minify and combine files bug found and fixed. Speed improved [Mystralkk]
+- [Bug] [#890] CKEditor toolbar updated to not display image or flash button if they do not have the appropriate access [Tom]
+- [Bug] [#878] Fixed Rescue in install so it now works [Mystralkk]
+- [Bug] [#859] Installer - Fixed using regular expressions in Personal Blacklist [Mystralkk]
+- [Bug] [#974] Spam-X Plugin - Fixed using regular expressions in Personal Blacklist [Mystralkk]
+- [Bug] [#947] Spam-X Plugin - Akismet Module Reporting false SPAM for all submitted comments [Tom]
+- [Bug] [#863, #965] reCaptcha Plugin - Better handling of failure messages for users [Mystralkk]
+
+The following items are Libraries that have been updated that are not handled by Composer.
+
+- [Update] UIkit 3 framework to version 3.2.2 [Mystralkk] [Tom]
+- [Update] jQuery to version 3.4.1 (jQuery UI is still at latest version 1.12.1) [Mystralkk]
+- [Update] CKEditor to version 4.12.1 [Mystralkk]
+- [Update] Mobile_Detect class to version 2.8.34 [Tom]
+
+The following items are all current Geeklog API, functions, and/or global variables that are planned to be depreciated by a current Geeklog version. Plugin and Theme developers please take note of these changes in case they affect you.
+
+Since Geeklog v2.2.1
+- [Depreciated] [#872] By Geeklog 3.0.0 - Global $topic variable. Please use function TOPIC_getTopic or TOPIC_setTopic instead to determine Geeklog topic
+- [Depreciated] [#871] By Geeklog 3.0.0 - Theme variable $theme_config['supported_version_theme']. Please use $_CONF['theme_gl_version'] instead
+Since Geeklog v2.2.0
+- [Depreciated] [NA] By Geeklog 3.0.0 - Com_refresh. Use COM_redirect instead
+Since Geeklog v2.1.2
+- [Depreciated] [NA] By Geeklog 3.0.0 - CTL_setTemplateRoot. PLugins must use COM_newTemplate and either CTL_core_templatePath or CTL_plugin_templatePath
+Since Geeklog v1.4.0
+- [Depreciated] [NA] By Geeklog 3.0.0 - COM_userComments function. Use CMT_userComments instead
 
 June 26, 2018 (2.2.0)
 ------------
@@ -58,7 +127,7 @@ June 26, 2018 (2.2.0)
 - [Bug] Fixed Spam-X plugin upgrade issue from Geeklog v2.1.2 to v2.1.3 [Tom]
 - [Bug] Fixed Link Edit button to edit link instead of create a new link [Tom]
 - [Bug] Fixed Links plugin Category links when URL Rewrite Enabled  [Mystralkk]
-- [Bug] Fixed when saving group assignments for a user. Inherited groups stay as inhertied and do not become directly related to the user [Tom]
+- [Bug] Fixed when saving group assignments for a user. Inherited groups stay as inherited and do not become directly related to the user [Tom]
 - [Bug] Fixes for PHP 7.2 [hirorongl]
 
 - [Update] UIkit 2 framework to version 2.27.5 [Dengen]
@@ -6590,4 +6659,3 @@ June 17, 2000
   useful.  If you looking for a weblog software that is cool,
   configurable and supported by someone I would recommend you
   check out http://phpweblog.org and party on dudes!
-
