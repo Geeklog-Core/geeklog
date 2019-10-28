@@ -1809,7 +1809,7 @@ $LANG_DB_BACKUP = array(
 );
 
 ###############################################################################
-# Demo mode
+# For Demo Mode (since v2.2.1)
 
 $LANG_DEMO = array(
     'header'                    => 'Header',
