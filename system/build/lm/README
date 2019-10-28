@@ -65,3 +65,4 @@ History
 1.0.4 added $LANG_LOGVIEW
 1.0.5 added quick'n'dirty support for constants in the configselect arrays
 1.0.6 can now detect changes (new/removed options) in the configselect arrays
+1.0.7 added $LANG_DEMO

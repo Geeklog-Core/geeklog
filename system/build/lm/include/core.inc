@@ -98,6 +98,7 @@ $ENGWK = $LANG_WEEK;
 $ENGAD = $LANG_ADMIN;
 $ENG_LOGVIEW = $LANG_LOGVIEW;
 $ENG_ENVCHECK = $LANG_ENVCHECK;
+$ENG_DEMO = $LANG_DEMO;
 
 $ENG_commentcodes = $LANG_commentcodes;
 $ENG_commentmodes = $LANG_commentmodes;
@@ -186,6 +187,7 @@ echo "\n";
 
 mergeArrays($ENG_LOGVIEW, $LANG_LOGVIEW, 'LANG_LOGVIEW', 'admin/logviewer.php');
 mergeArrays($ENG_ENVCHECK, $LANG_ENVCHECK, 'LANG_ENVCHECK', 'admin/envcheck.php - distribution integrity checker');
+mergeArrays($ENG_DEMO, $LANG_DEMO, 'LANG_DEMO', 'For Demo Mode (since v2.2.1)');
 mergeArrays($ENG20, $LANG20, 'LANG20', 'admin/auth.inc.php');
 mergeArrays($ENG21, $LANG21, 'LANG21', 'admin/block.php');
 mergeArrays($ENG23, $LANG23, 'LANG23', 'Block Locations');
