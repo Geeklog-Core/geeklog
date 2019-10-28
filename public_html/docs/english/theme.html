@@ -11,23 +11,25 @@
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Theme How-To</div>
 
 <p><small>(see below for a list of <a href="#changes">theme changes</a> in
-recent Geeklog versions)</small></p>
+recent Geeklog versions - Note: not all changes may be listed)</small></p>
 
 
 <h1>Creating a Theme for Geeklog</h1>
+
+<p>Two types of themes exist in Geeklog. A regular Theme that includes all the required files under its directory, and a Child Theme. A Child Theme is based on a regular Theme (not on another Child Theme) and only include any changed files of the regular Theme within it's own directory. If Geeklog's theme engine doesn't find a required file in the Child Themes directory, it then falls back and uses the assigned regular theme to find the file it needs. Child Themes are a great way for theme developers to make minor adjustments to a regular Theme while keeping updating the theme simple when it is time to upgrade Geeklog itself, since any upgrades to the regular Theme will automatically be included in the Child Theme.</p>
 
 <p>Creating a theme for Geeklog is easy and quite fast. If you can
 manipulate HTML files then you can create a theme! There's no need to learn
 PHP.</p>
 
-<h2>Creating a theme</h2>
+<h2>Creating a regular Theme</h2>
 
 <p>First, copy an existing theme that is most similar to what you want to
 implement (if one exists). If what you will do is radically different (and we
 hope so!) then copying any one will do. Copy the existing theme to the name you
 want your theme to have (please, <em>no</em> spaces in the theme name):</p>
 
-<p><kbd>cp -R /path/to/geeklog/public_html/layout/professional /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces</kbd></p>
+<p><kbd>cp -R /path/to/geeklog/public_html/layout/denim /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces</kbd></p>
 
 <p>Change into your new theme directory:</p>
 
@@ -42,50 +44,57 @@ make a huge impact on the look.</p>
 change:</p>
 
 <ul>
-<li>header.thtml</li>
-<li>footer.thtml</li>
+<li>index.thtml</li>
 <li>blockheader.thtml</li>
 <li>blockfooter.thtml</li>
-<li>storytext.thtml</li>
-<li>storybodytext.thtml</li>
-<li>featuredstorytext.thtml</li>
-<li>featuredstorybodytext.thtml</li>
-<li>archivestorytext.thtml</li>
-<li>archivestorybodytext.thtml</li>
+<li>articletext.thtml</li>
+<li>articlebodytext.thtml</li>
+<li>featuredarticletext.thtml</li>
+<li>featuredarticlebodytext.thtml</li>
+<li>archivearticletext.thtml</li>
+<li>archivearticlebodytext.thtml</li>
 <li>style.css</li>
 </ul>
 
 
 <h3><a name="how-themes-work">How themes work</a></h3>
 
-<p>When rendering a theme, Geeklog starts with <span class="tt">header.thtml</span> which
+<p>When rendering a theme, Geeklog starts with <span class="tt">index.thtml</span> which
 builds the site's header and then goes on to include the left column of blocks
 (look for the variable {left_blocks} and the <span class="tt">leftblocks.thtml</span> file).
-The middle part of a site consists of the stories which are built using the
-<span class="tt">storytext.thtml</span> and <span class="tt">storybodytext.thtml</span> (for normal stories)
-and <span class="tt">featuredstorytext.thtml</span> and <span class="tt">featuredstorybodytext.thtml</span>
-(for featured stories) template files. The <span class="tt">footer.thtml</span> file then
+The middle part of a site consists of the articles which are built using the
+<span class="tt">articletext.thtml</span> and <span class="tt">articlebodytext.thtml</span> (for normal articles)
+and <span class="tt">featuredarticletext.thtml</span> and <span class="tt">featuredarticlebodytext.thtml</span>
+(for featured articles) template files. The <span class="tt">index.thtml</span> file then
 builds the right column of blocks (variable {right_blocks}, file
 <span class="tt">right_blocks.thtml</span>) and the site's footer. Blocks themselves consist
 of the <span class="tt">blockheader.thtml</span> and <span class="tt">blockfooter.thtml</span> files.</p>
 
-<p>The above only describes how Geeklog's main page and stories are rendered.
+<p>The above only describes how Geeklog's main page and articles are rendered.
 More templates exist for the various editors and lists you will see in Geeklog,
-as well as for the calendar and almost every other part of Geeklog.</p>
+as well as for plugins like the Calendar and almost every other part of Geeklog.</p>
 
 <p>There is currently no complete list available that explains which template
 file is used for which part of Geeklog. However, in most cases the use should
 be obvious when you have a look at the file and directory names in your theme's
-layout directory. If you're unsure which template file is used to render a
+layout directory. Enabling the Geeklog Configuration option 'template_comments'
+will also show any template comments (marked by {# foo #}) in the source of the
+html file. All Geeklog themes and Plugins included with the Geeklog Install also
+include template comments which shows which template file is being used. So
+enabling this config option and then viewing the source of the HTML page, you will
+find comments right in the code that shows you when a certain template file is
+being used.</p>
+
+<p>If you're unsure which template file is used to render a
 certain part of Geeklog, have a look at the URL. You will notice the name of
 a PHP file there, e.g. the <span class="tt">users.php</span> file when you view a user's
 profile. Open that file and search for '<kbd>.thtml</kbd>'. For the profile
 you will find these lines (in <code>function userprofile()</code>):</p>
 <pre style="margin-left:4em;"><code>$user_templates = new Template ($_CONF['path_layout'] . 'users');
-$user_templates->set_file (array ('profile'=>'profile.thtml', 'row'=>'commentrow.thtml', 'strow'=>'storyrow.thtml'));</code></pre>
+$user_templates->set_file (array ('profile'=>'profile.thtml', 'row'=>'commentrow.thtml', 'strow'=>'articlerow.thtml'));</code></pre>
 <p>You don't need to understand PHP code to see that this uses the template
 files <span class="tt">profile.thtml</span>, <span class="tt">commentrow.thtml</span>, and
-<span class="tt">storyrow.thtml</span>. The first line also indicates that these are taken
+<span class="tt">articlerow.thtml</span>. The first line also indicates that these are taken
 from the <span class="tt">users</span> directory within the theme's layout directory.</p>
 
 <p>An <a href="themevars.html">incomplete list of variables</a> that can be
@@ -100,18 +109,6 @@ the <em>same</em> name as the directory for your theme).</p>
 
 <p>Finally, you may want to update the logo and other images in your
 theme's images directory.</p>
-
-<p>For the template system we are using PHPLib's template class (<a
-href="http://phplib.sourceforge.net/">http://phplib.sourceforge.net/</a>).
-Read their documentation and, optionally, look at
-/path/to/geeklog/system/classes/template.class.php to see how it is
-implemented. Even with this knowledge it may not be clear which templates
-are used in conjunction with one another (i.e. <span class="tt">storytext.thtml</span> and
-<span class="tt">storybodytext.thtml</span> together make up the complete format of a
-<em>single</em>
-story). If you have questions join our mailing list at <a
-href="http://lists.geeklog.net/listinfo/geeklog-users">http://lists.geeklog.net/listinfo/geeklog-users</a>
-or check us out in IRC at irc.freenode.net in #geeklog.</p>
 
 <h3><a name="tips">Tips and tricks</a></h3>
 
@@ -129,84 +126,35 @@ create themes that are both HTML and XHTML compliant. Please see the article
 <a href="http://wiki.geeklog.net/index.php/Themes_and_XHTML">Themes and
 XHTML</a> entry on the Geeklog Wiki for more information.</p>
 
-<p><strong><a name="php">PHP in themes:</a></strong>
-You can use PHP in the <em>header</em> of a theme, i.e. in the
-<span class="tt">header.thtml</span> file. If you want to use custom PHP functions, you can
-put them in the file <span class="tt">functions.php</span> within your themes directory.</p>
-
-<p><strong><a name="different-look">Different look for left and right blocks:</a></strong>
-You can give the blocks on the left and right a different look. See
-<a href="https://www.geeklog.net/forum/viewtopic.php?showtopic=21070">this story on the Geeklog homepage</a> for details.</p>
-
-<p><strong><a name="polls">Polls:</a></strong>
-To use multi-colored bars in the graphical display of poll results, you can use
-the <code>{answer_counter}</code> and <code>{answer_odd}</code> variables in
-the <span class="tt">pollbooth/pollvotes_bar.thtml</span> template file.
-<code>{answer_counter}</code> will be replaced with a running number for each
-answer, hence <code>bar{answer_counter}.gif</code> would result in
-<span class="tt">bar1.gif</span>, <span class="tt">bar2.gif</span>, etc. Giving each of those GIFs a different
-color would give you a different color for each answer.<br />
-<code>{answer_odd}</code> will alternate between 0 and 1 for every answer, hence
-<code>bar{answer_odd}.gif</code> will result in <span class="tt">bar0.gif</span> for the first,
-third, fifth, etc. answer and <span class="tt">bar1.gif</span> for the second, fourth, etc.
-answer.</p>
-
-<p><strong><a name="left-blocks">Left blocks in the right column:</a></strong>
-<code>$_CONF['left_blocks_in_footer']</code> is a
-rather curious option. It makes the <code>{left_blocks}</code> variable
-available in the site's footer (i.e. <span class="tt">footer.thtml</span>) while at the same
-time disabling it in the header (<span class="tt">header.thtml</span>).<br />
-The idea is that this can be used for two-column layouts (one column for the
-blocks and one column for the content) but when you want to have the blocks
-on the right side. Simply moving all blocks to the right will not work as
-expected, as you'd end up with <em>no blocks</em> at all on those pages that
-normally only display the left blocks (e.g. <span class="tt">article.php</span> or the
-admin pages). Setting <code>$_CONF['left_blocks_in_footer'] = 1</code> will
-fix this, so that the blocks, while internally still treated as <em>left</em>
-blocks, will actually be displayed on the <em>right</em>.<br />
-The theme's <span class="tt">header.thtml</span>, <span class="tt">footer.thtml</span>, and
-<span class="tt">leftblocks.thtml</span> will probably need some adjustments. The
-'left_blocks_in_footer' option is therefore not available in the main
-configuration but should instead be set in the theme's <span class="tt">functions.php</span>
-file.  That way, you can even leave your users a choice between, for example,
-a "normal" theme and one with the blocks on the right.</p>
+<p><strong><a name="php">Logic Processing, Autotags, and PHP in themes:</a></strong>
+Please see our wiki article <a href="http://wiki.geeklog.net/Caching_Template_Library">Caching Template Library</a>
+for more information and examples of how to add PHP, Mobile Detection, Autotags,
+and even logic processing into template files.</p>
 
 <p><strong><a name="error-message">Error Message:</a></strong>
 Since Geeklog 1.4.1 it is possible to control what HTML is displayed to
 non-root users in the event of an error occurring (a crash bug). To do
-so, you need to change the function <code>CUSTOM_handleError</code> in
-lib-custom.php to output any HTML you like.</p>
+so, you need to enable the config option $_CONF['rootdebug'] found in the
+<span class="tt">siteconfig.php</span> file.</p>
 
-<p><strong><a name="permalink">Adding a "permalink" to stories:</a></strong>
-Many websites offer a so-called permalink, i.e. a link to a permanent URL for
-the story. In Geeklog's default Professional theme, the article's headline
-already provides the same functionality - it links to a permanent URL for the
-story (pointing to article.php). However, since this is not very obvious and
-since visitors often expect to find a "permalink" somewhere on the page, here's
-how to add one yourself:</p>
-<ol>
-<li>Find a place in the story template files. The "story-footer" section in
-<span class="tt">storytext.thtml</span> may be a good place since it already contains quite a
-few story-related links.</li>
-<li>Once you've found a place to put the permalink entry, enter this piece of
-code:<br />
-<code style="margin-left:2em">&lt;a href="{article_url}"&gt;{lang_permalink}&lt;a&gt;</code><br />
-This will add a link to the article (<code>article_url</code>) using the word
-"Permalink" from the current language file (<code>lang_permalink</code>).</li>
-<li>Try it out. Be aware that at this point, your permalink entry only shows up
-for non-featured articles. You may want to tweak the appearance a bit (using
-CSS) or move the link around.</li>
-<li>Add the same piece of code to the <span class="tt">featuredstorytext.thtml</span> and
-<span class="tt">archivestorytext.thtml</span> templates so that the link also appears for
-featured and archived stories.</li>
-</ol>
+<h2>Creating a Child Theme</h2>
+
+<p>For an example of a Child Theme and how they work please see the "denim_curve" theme
+which is based on the "denim" regular theme (also called the Parent Theme). Please
+note the extra settings and changes required in the "denim_curve"
+<span class="tt">functions.php</span> file.</p>
 
 <h2><a id="changes">Changes</a></h2>
 
 <h2><a name="changes221">Theme changes in Geeklog 2.2.1</a></h2>
 
 <ul>
-<li>Theme API in a theme's "functions.php" no longer requires the theme name as its suffix.  For example, theme_config_mytheme() is still valid, but theme_config() is accepted as well.  This change will be useful especially when creating a child theme.</li>
+<li>Theme API in a theme's <span class="tt">functions.php</span> no longer requires the theme name as its suffix.  For example, theme_config_mytheme() is still valid, but theme_config() is accepted as well.  This change will be useful especially when creating a child theme.</li>
+<li>The main theme <span class="tt">header.thtml</span> and <span class="tt">footer.thtml</span> files have been combined into one file called <span class="tt">index.thtml</span>. This means any template variable available to either of the old files is now available in the new index file.</li>
+<li>For the new <span class="tt">index.thtml</span> file, the {content} template variable has been added which is where the main page content is placed.</li>
+<li>For the new <span class="tt">index.thtml</span> file, the {system_messsages} template variable has been added which is where system messages may appear.</li>
+<li>New theme config options include: 'theme_name', 'theme_version', 'theme_gl_version', 'theme_author', 'theme_license'</li>
+<li>Theme variable $theme_config['supported_version_theme'] has been depreciated in the <span class="tt">functions.php</span> file. Please use 'theme_gl_version' instead.</li>
 </ul>
 
 <h2><a name="changes220">Theme changes in Geeklog 2.2.0</a></h2>
@@ -249,7 +197,7 @@ featured and archived stories.</li>
 
 <h2><a name="changes211">Theme changes in Geeklog 2.1.1</a></h2>
 
-<p>New template functionality for plugins has been added to Geeklog which when supported allow for specific theme templates for plugins. This means a plugin or theme can include plugin templates designed for individual themes. 
+<p>New template functionality for plugins has been added to Geeklog which when supported allow for specific theme templates for plugins. This means a plugin or theme can include plugin templates designed for individual themes.
 These templates can be included with either the plugin itself, or the theme, or in both places at once. All of Geeklogs core plugins support this new feature. To find out more please visit the Geeklog Wiki about <a href="http://wiki.geeklog.net/index.php/Theme_Developers_Guide#Theme_Specific_Plugin_Templates">Theme Specific Plugin Templates</a>.</p>
 
 <h3>General Changes</h3>
@@ -272,9 +220,9 @@ These templates can be included with either the plugin itself, or the theme, or 
 <li>Removed <span class="tt">menuitem.thtml</span>, <span class="tt">menuitem_last.thtml</span> and <span class="tt">menuitem_none.thtml</span>.
     Added <span class="tt">menunavigation.thtml</span> which uses blocks to reduce the number of template files.</li>
 <li>Removed <span class="tt">adminoption.thtml</span> and <span class="tt">adminoption_off.thtml</span>.
-    Added <span class="tt">adminavigation.thtml</span> which uses blocks to reduce the number of template files.</li>    
+    Added <span class="tt">adminavigation.thtml</span> which uses blocks to reduce the number of template files.</li>
 <li>Removed <span class="tt">adminoption.thtml</span> and <span class="tt">adminoption_off.thtml</span>.
-    Added <span class="tt">adminavigation.thtml</span> which uses blocks to reduce the number of template files.</li>    
+    Added <span class="tt">adminavigation.thtml</span> which uses blocks to reduce the number of template files.</li>
 <li>Removed <span class="tt">useroption.thtml</span> and <span class="tt">useroption.thtml</span>.
     Added <span class="tt">usernavigation.thtml</span> which uses blocks to reduce the number of template files.</li>
 <li>Removed <span class="tt">listitem.thtml</span>. <span class="tt">list.thtml</span> now uses blocks to reduce the number of template files.</li>
@@ -294,7 +242,7 @@ These templates can be included with either the plugin itself, or the theme, or 
 
 <h2><a name="changes200">Theme changes in Geeklog 2.0.0</a></h2>
 
-<p>As of Geeklog 2.0.0 there are now 2 theme engines in Geeklog. Currently the themes Demin and Modern Curve use the 2.0.0 theme engine. The Professional and Professional CSS themes use the 1.8.1 engine. 
+<p>As of Geeklog 2.0.0 there are now 2 theme engines in Geeklog. Currently the themes Demin and Modern Curve use the 2.0.0 theme engine. The Professional and Professional CSS themes use the 1.8.1 engine.
 The 1.8.1 theme engine will eventually be removed from Geeklog so if you are developing a new theme it is best to use the new engine. To find out more about this please visit the Geeklog Wiki <a href="http://wiki.geeklog.net/index.php/Theme_Developers_Guide">Theme Developers Guide</a>.</p>
 
 <h3>General Changes</h3>
@@ -305,7 +253,7 @@ The 1.8.1 theme engine will eventually be removed from Geeklog so if you are dev
 <li>To display breadcrumbs for topics, articles and staticpages add {breadcrumb_trail} template variable to your header.thtml.</li>
 <li>New file edit_topics.thtml for topic selection found in /admin/common folder.</li>
 <li>Updated topicoption.thtml and topicoption_off.thtml files found in root of theme folder.</li>
-<li>Replace topic folder in admin folder. Lots of changes with these files.</li>  
+<li>Replace topic folder in admin folder. Lots of changes with these files.</li>
 <li>For topic selection control you need to add the template variable {topic_selection} to the files /admin/block/blockeditor.thtml, /admin/block/defaultblockeditor.thtml, /admin/article/articleeditor.thtml, /admin/article/articleeditor_advenced.thtml, /submit/submitstory.thtml, and /submit/submitstory_advanced.thtml.</li>
 <li>Comments on same page changed a lot of things. Copy paste the complete comment folder and custom the commentbar.thtml and comment.thtml files as necessary.</li>
 <li>The page navigation uses a new file called page_navigation.thtml.</li>
