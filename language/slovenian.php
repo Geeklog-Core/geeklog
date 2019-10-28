@@ -859,6 +859,20 @@ $LANG_ENVCHECK = array(
 );
 
 ###############################################################################
+# For Demo Mode (since v2.2.1)
+
+$LANG_DEMO = array(
+    'header' => 'Header',
+    'subject' => 'Subject:',
+    'to' => 'To:',
+    'from' => 'From:',
+    'priority' => 'Priority:',
+    'body' => 'Body',
+    'notice' => 'Notice',
+    'emails_disabled_msg' => 'Please note sending emails is disabled in Demo mode. An email which would have been sent was:'
+);
+
+###############################################################################
 # admin/auth.inc.php
 
 $LANG20 = array(
