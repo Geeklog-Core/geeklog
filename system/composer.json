@@ -1,6 +1,8 @@
 {
   "config": {
-    "preferred-install": "dist",
+	"preferred-install": {
+		"*": "dist"
+	},
     "platform": {
       "php": "5.6.4"
     }
@@ -14,17 +16,21 @@
     "pear/http_request2": "~2.3.0",
     "splitbrain/php-archive": "1.0.9",
     "swiftmailer/swiftmailer": "~5",
-    "phpclasses/oauth-api": "^1.0",
+    "phpclasses/oauth-api": ">=1.0.105",
     "robthree/twofactorauth": "^1.6",
     "matthiasmullie/minify": "^1.3",
     "paragonie/random_compat": "<9.99",
     "servocoder/richfilemanager-php": "^1.2",
     "mlocati/ip-lib": "1.*"
   },
-  "repositories": [
+  "repositories":
+  [
     {
       "type": "composer",
       "url": "https:\/\/www.phpclasses.org\/"
+    },
+    {
+      "packagist": false
     }
   ]
 }
