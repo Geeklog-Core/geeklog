@@ -33,6 +33,8 @@
 
 use Geeklog\ConfigInterface;
 
+require_once __DIR__ . '/ConfigInterface.php';
+
 class config implements ConfigInterface
 {
     /**
