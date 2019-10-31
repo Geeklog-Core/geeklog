@@ -79,12 +79,6 @@ class Installer
         global $LANG_BIGDUMP, $LANG_CHARSET, $LANG_DIRECTION, $LANG_ERROR, $LANG_HELP, $LANG_INSTALL,
                $LANG_LABEL, $LANG_MIGRATE, $LANG_PLUGINS, $LANG_RESCUE, $LANG_SUCCESS;
 
-        // Set error reporting
-        if (is_callable('ini_set')) {
-            @ini_set('display_errors', '1');
-        }
-        error_reporting(-1);
-
         // this is not ideal but will stop PHP 5.3.0ff from complaining ...
         date_default_timezone_set(@date_default_timezone_get());
 

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2011 by the following authors:                         |
+// | Copyright (C) 2007-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt AT mattdanger DOT net                   |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -32,8 +32,6 @@
 // | You don't need to change anything in this file.  Please read              |
 // | docs/english/install.html which describes how to install Geeklog.         |
 // +---------------------------------------------------------------------------+
-
-error_reporting(-1);
 
 define('PATH_INSTALL', __DIR__ . '/');
 define('PATH_LAYOUT', PATH_INSTALL . 'layout');
