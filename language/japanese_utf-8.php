@@ -196,7 +196,7 @@ $LANG01 = array(
     142 => 'このページを表示する際にエラーが発生しました。しばらくしてから、もう一度お試しください。',
     143 => 'コメント (%d件)',
     'loginform' => "<a href=\"{$_CONF['site_url']}/users.php\">ログイン</a>",
-    'remoteloginoptions' => 'Remote Login Options',
+    'remoteloginoptions' => 'リモートログイン',
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
     'linkedin' => 'LinkedInでログイン',
@@ -238,7 +238,7 @@ $LANG03 = array(
     21 => '他の人のコメントをよく読んで同じようなコメントを投稿しないようにしてください。',
     22 => '内容がよくわかるタイトルをつけてください。',
     23 => 'あなたのメールアドレスは公開しません!',
-    'instr_line6' => 'When logged in as a user your comments will be linked to your account and you can specify if you would like notifications of any replies.',
+    'instr_line6' => 'ログイン時のコメントはアカウントと関連付けられています。コメントに返信がついたときに通知を受けるかどうかを指定できます。',
     24 => 'ゲストユーザー',
     25 => 'この投稿をサイト管理者に不正な投稿として報告してよいですか?',
     26 => '%s さんが以下を不正なコメントの投稿と報告しています:',
@@ -292,7 +292,7 @@ $LANG04 = array(
     13 => 'メールでダイジェストを読む',
     14 => "なお、パスワードの変更をおすすめします。\nサイトにログインして、「マイアカウント」をクリックすると、\nパスワードを変更できます。",
     15 => "{$_CONF['site_name']}からのお知らせです。\n\n{$_CONF['site_name']} であなたのアカウントを作成しました。\n下記のユーザー名とパスワードでログインしてください。\nこのメールは念のため保存してください。",
-    'email_convert_remote' => "Your {$_CONF['site_name']} remote account has been converted to a local account. To continue to use your account, you must login using the information below. Please save this mail for further reference.",
+    'email_convert_remote' => "{$_CONF['site_name']} さんのリモートアカウントは通常アカウントに変換されました。このアカウントを続けて使用するには、以下の情報を用いてログインする必要があります。このメールは保存してください。",
     16 => 'ユーザー情報',
     17 => 'アカウントがありません',
     18 => 'このメールアドレスは有効なアドレスではないようです',
@@ -673,8 +673,8 @@ $LANG10 = array(
     29 => '',
     30 => '表示回数',
     31 => '',
-    32 => 'Top Ten Liked Articles',
-    33 => 'No liked articles found.'
+    32 => 'お気に入りの記事(上位10件)',
+    33 => 'お気に入りの記事はありません。'
 );
 
 ###############################################################################
@@ -754,21 +754,21 @@ $LANG12 = array(
 # LIKES feature since Geeklog 2.2.1
 
 $LANG_LIKES = array(
-    'like' => 'Like',
-    'unlike' => 'Unlike',
-    'dislike' => 'Dislike',
-    'undislike' => 'Undislike',
-    'likes' => 'Likes',
-    'unlikes' => 'Unlikes',
-    'dislikes' => 'Dislikes',
-    'undislikes' => 'Undislikes',
-    'i_like_this' => 'I like this',
-    'i_dislike_this' => 'I dislike this',
-    'thanks_for_action' => 'Thanks for voting!',
-    'likes_speedlimit' => 'You last used the Likes system on an item %s seconds ago. This site requires at least %s seconds between using the Likes system',
-    'likes_ip_error' => 'Your IP address has already performed this Likes action.',
-    'likes_uid_error' => 'Your User account has already performed this Likes action.',
-    'own_item_error' => 'Either you own the item or do not have permission to Like/Dislike it.'
+    'like' => '気に入った!',
+    'unlike' => '「気に入った!」を取り消す',
+    'dislike' => '好きじゃない!',
+    'undislike' => '「好きじゃない!」を取り消す',
+    'likes' => '気に入った!',
+    'unlikes' => '「気に入った!」を取り消した',
+    'dislikes' => '好きじゃない!',
+    'undislikes' => '「好きじゃあ位!」を取り消した',
+    'i_like_this' => 'この記事が気に入った!',
+    'i_dislike_this' => 'この記事は好きじゃない!',
+    'thanks_for_action' => '投票に感謝します!',
+    'likes_speedlimit' => 'あなたは %s 秒前にお気に入りを投票しました。このサイトでは次にお気に入りの記事を投票する前に少なくとも %s 秒待つ必要があります。',
+    'likes_ip_error' => 'あなたのIPアドレスから既にお気に入りは投票されています。',
+    'likes_uid_error' => 'あなたのアカウントを用いて既にお気に入りは投票されています。',
+    'own_item_error' => '自分自身のアイテムに対してはお気に入りは実行できません。'
 );
 
 ###############################################################################
@@ -834,7 +834,7 @@ $LANG_ENVCHECK = array(
     'database_pgsql_req_version' => 'GeeklogにはPostgreSQLバージョン9.1.7以降が必要です。',
     'database_dms' => 'データベース管理システム',
     'database_dms_notes' => 'データベース管理システムを判断できませんでした。GeeklogにはMySQLかPostgreSQLが必要です。',
-    'php_req_version' => 'GeeklogにはPHP version 5.3.3以降が必要です。',
+    'php_req_version' => 'GeeklogにはPHP version 5.6.4以降が必要です。',
     'php_settings' => 'PHPの設定',
     'php_version' => 'PHPのバージョン',
     'php_warning' => '以下のリストで<span class="no">赤文字の箇所</span>があれば、あなたのGeeklogサイトで問題が発生するかもしれません。これらのPHP設定をホスティングプロバイダーの情報に照らし合わせてチェックしてください。',
@@ -868,14 +868,14 @@ $LANG_ENVCHECK = array(
 # For Demo Mode (since v2.2.1)
 
 $LANG_DEMO = array(
-    'header' => 'Header',
-    'subject' => 'Subject:',
-    'to' => 'To:',
-    'from' => 'From:',
-    'priority' => 'Priority:',
-    'body' => 'Body',
-    'notice' => 'Notice',
-    'emails_disabled_msg' => 'Please note sending emails is disabled in Demo mode. An email which would have been sent was:'
+    'header' => 'ヘッダー',
+    'subject' => '件名:',
+    'to' => '宛先:',
+    'from' => '差出人:',
+    'priority' => '優先度:',
+    'body' => '本文',
+    'notice' => '注意',
+    'emails_disabled_msg' => 'でもモードではメールの送信は行われません。送られるはずのメールは次の通りです:'
 );
 
 ###############################################################################
@@ -1018,7 +1018,7 @@ $LANG24 = array(
     20 => 'ピング',
     21 => 'トラックバック・ピングを送る',
     22 => '記事の一覧',
-    23 => 'To modify or delete an article, click on that article\'s edit icon below. To view an article, click on the title of the article you wish to view. To create a new article, click on "Create New" above.<br' . XHTML . '><br' . XHTML . '>Edit and Read access to articles depends not only on the article access itself, but the minimum topic access the article is assigned to.<br' . XHTML . '><br' . XHTML . '>"Edit Access Only" displays articles (and topics in the dropdown for searching) that you have edit access to. If an article is listed when this is checked that is read only, this means that you have edit access for the article but one of the topics that the article is assigned to, you do not.',
+    23 => '記事を修正/削除するには、該当記事の編集アイコンをクリックしてください。記事を閲覧するには、タイトルをクリックしてください。記事を作成するには上にある「新規作成」をクリックしてください<br' . XHTML . '><br' . XHTML . '>記事の編集・閲覧権は記事自体のアクセス権だけではなく、その記事が割り当てられている話題のアクセス権の最小値でも決定されます。<br' . XHTML . '><br' . XHTML . '>「編集権のみ」は編集権のある記事(とドロップダウンの話題)を表示します。これにチェックを入れて表示される記事が編集禁止になる場合は、記事に対する編集権はあるがその記事に割り当てられている話題に対する編集権がないということを意味します。',
     24 => '指定した記事IDは既に使われています。別の記事IDを入力してください。',
     25 => '記事の登録中にエラーが発生しました',
     26 => '記事のプレビュー',
@@ -1072,7 +1072,7 @@ $LANG24 = array(
     74 => '拡張ツールバーその2',
     75 => '全機能',
     76 => '公開オプション',
-    77 => 'アドバンストエディターを有効にするには、ブラウザーでJavaScriptが使える環境としなければなりません。このオプションはコンフィギュレーションの管理パネルで無効にできます。',
+    77 => 'アドバンストエディターを有効にするには、ブラウザーでJavaScriptを有効にする必要があります。このオプションはコンフィギュレーションの管理パネルで無効にできます。',
     78 => '<a href="%s/article.php?mode=edit&amp;sid=%s&amp;editopt=default">ノーマルエディターを使う場合</a>',
     79 => 'プレビュー',
     80 => 'エディター',
@@ -1111,7 +1111,7 @@ $LANG27 = array(
     6 => '話題を削除すると、(削除する話題にだけ関連付けしている)記事、投稿、ブロックもすべて削除します。',
     7 => '話題IDと話題名を入力してください',
     8 => '話題の管理',
-    9 => '話題の編集や削除をするには、以下の話題のアイコンをクリックしてください。新しい話題を作成するには上の「新規作成」をクリックしてください。括弧内はあなたの話題のアクセスレベルです。アスタリスク(*)題はデフォルトの話題を示します。',
+    9 => '話題の編集や削除をするには、以下の話題のアイコンをクリックしてください。新しい話題を作成するには上の「新規作成」をクリックしてください。括弧内はあなたの話題のアクセスレベルです。アスタリスク(*)はデフォルトの話題を示します。',
     10 => '順序',
     11 => '1ページあたりの記事数',
     12 => 'アクセスできません',
@@ -1142,11 +1142,11 @@ $LANG27 = array(
     37 => 'ルート',
     38 => 'すべて',
     39 => 'ホームページのみ',
-    40 => '1つ以上の話題を割り当ててください。',
-    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. ',
-    'topic_control_select_topics' => 'Else you must select at least one topic to assign the item to. ',
-    'topic_control_select_topics_disabled' => 'Else you must select at least one topic you have edit access for, to assign the item to (text is darker). ',
-    'topic_control_no_topics' => 'Unfortunately you do not have edit access to any topics so none can be selected. ',
+    40 => '話題を少なくとも1つ割り当ててください。',
+    41 => '「すべて」を選択すると、すべての話題に対する記事を表示します。「ホームページのみ」を選択すると、ホームページにしか表示しません。',
+    'topic_control_select_topics' => 'または、この記事に割り当てる話題を少なくとも1つ選択してください。',
+    'topic_control_select_topics_disabled' => 'または、編集権のある話題を少なくとも1つ選択してください。(薄い色で表示されています)。',
+    'topic_control_no_topics' => '残念ながら、編集権のある話題がないので、話題を選択することができません。',
     42 => '継承の欄は割り当てられている話題のリストを含んでいます。話題を選択すると、その話題の親の話題に継承されます。',
     43 => 'デフォルトは、割り当てた話題のリストを含んでいます。これは、ユーザーが実際の話題をみつけられないときに、アイテムを表示する時に使用するデフォルトの話題です。',
     44 => '継承',
@@ -1171,10 +1171,10 @@ $LANG27 = array(
     'filed_under:' => '話題:',
     'topic_title' => '話題タイトル',
     'topic_title_desc' => '話題のページタイトルとして使用されます。 空の場合、話題名が使用されます。',
-    'move_topic_up' => 'Move topic up the sort order',
-    'move_topic_down' => 'Move topic down in the sort order',
-    'topics_edit_access_select' => 'You can only select topics you have Edit access to you (text is darker).',
-    'topics_edit_access_listed' => 'Only topics with Edit access are listed.'
+    'move_topic_up' => '話題のソート順位を上げる',
+    'move_topic_down' => '話題のソート順位を下げる',
+    'topics_edit_access_select' => '編集権のある話題(薄い色で表示されています)しか選択できません。',
+    'topics_edit_access_listed' => '編集権のある話題しか一覧に表示されません。'
 );
 
 ###############################################################################
@@ -1273,8 +1273,8 @@ $LANG28 = array(
     90 => '登録済みユーザーアカウントにデフォルトグループを追加する',
     91 => 'パスワードをメールで送信する',
     92 => '新しいユーザーまたは既存のユーザーのパスワードを変更する場合のみ。',
-    'convert_remote' => 'Check here to convert from remote to a local account',
-    'convert_remote_desc' => 'When a remote account is converted to a local account, a password will be automatically generated. If the account does not have a confirmed email address, the account will be locked after it is converted since the user will have no way of retrieving the password. Once converted and if the account is active and has an email address the user will be emailed the password or they can request the password by using the forget password link from the Login page. For user accounts that do not have an active status and valid email you will have to manually notify the user of the account change and how to login.',
+    'convert_remote' => 'リモートアカウントをローカルアカウントに変換するにはここをチェックしてください。',
+    'convert_remote_desc' => 'リモートアカウントをローカルアカウントに変換すると、パスワードが自動的に生成されます。アカウントに確認済みのメールアドレスがない場合、パスワードを取り出すことができないため変換後にアカウントをロックします。変換を行い、アカウントが有効でかつ有効なメールアドレスを登録している場合、ユーザーにメールでパスワードを送付しますが、ログインページからパスワード再設定のリンクを使用して、パスワードを請求することもできます。無効なアカウントや有効なメールアドレスを登録していないユーザーには手動でアカウントの変更とログイン方法をを通知する必要があります。',
     'contributed' => 'Contributed',
     'na' => 'NA',
     'nothing' => 'Nothing',
@@ -1369,7 +1369,7 @@ $LANG32 = array(
     6 => '警告: プラグインは既にインストール済みです。',
     7 => 'インストールしようとしているプラグインは既に存在します。再インストールする前にいったん削除してください。',
     8 => 'プラグインの互換性チェックに失敗しました。',
-    9 => 'このプラグインは、より新しいバージョンのGeeklogに対応しています。<a href="https://www.geeklog.jp">Geeklog</a>をアップグレードしてください。(訳註: または、Geeklogに対応しているバージョンのプラグインを入手してください。)',
+    9 => 'このプラグインはより新しいバージョンのGeeklogに対応しています。<a href="https://www.geeklog.jp">Geeklog</a>をアップグレードしてください。(訳註: または、Geeklogに対応しているバージョンのプラグインを入手してください。)',
     10 => '<br' . XHTML . '><strong>インストールしているプラグインはありません。</strong><br' . XHTML . '><br' . XHTML . '>',
     11 => 'プラグインを編集や削除するには、プラグインの編集アイコンをクリックしてください。すると、プラグイン作者のWebサイトを含んだ詳細を表示します。インストールしているバージョンとプラグインのコードから得られたバージョンの両方を表示します。これはプラグインのアップグレードが必要かどうかを知るのに役立ちます。プラグインのインストールやアップグレードについては、そのドキュメントをご覧ください。',
     12 => 'plugineditor()にプラグイン名が渡されませんでした',
@@ -1496,7 +1496,7 @@ $LANG33 = array(
     53 => 'トップページのすべての記事',
     54 => '新規作成するフィードのタイプを選んでください。',
     55 => '記事',
-    'num_articles' => '%s Article(s)'
+    'num_articles' => '%s 件の記事'
 );
 
 ###############################################################################
@@ -1511,8 +1511,8 @@ $LANG_LANG = array(
     'language' => '言語',
     'name' => '名前',
     'var_name' => '変数名',
-    'name_tip' => 'Required just for language arrays.',
-    'var_name_tip' => 'Can be a regular variable or array. Do not include the dollar sign at the beginning of the variable/array name.',
+    'name_tip' => '言語変数が配列の場合に限り必要です。',
+    'var_name_tip' => '配列でも普通の変数でも指定できます。変数名の前のドル記号($)は入力しないでください。',
     'value' => '値'
 );
 
@@ -1684,9 +1684,9 @@ $MESSAGE = array(
     502 => '新しいメールアドレスのリクエストが期限切れになりました。以下からもう一度お試しください。',
     503 => 'あなたのメールアドレスは正常に検証されました。',
     504 => 'パスワードは8文字以上で、少なくとも1つの数字と1文字を含める必要があります。パスワードは大文字と小文字が区別されます。',
-    505 => "Warning - The current theme {$_CONF['theme']} v{$_CONF['theme_gl_version']} is not 100% compatible with this version of Geeklog (v2.2.1) and you will have issues using this site. The required minimum theme Geeklog version is v{$_CONF['min_theme_gl_version']}.",
-    506 => "Warning - The current theme {$_CONF['theme']} (version not known) is not 100% compatible with this version of Geeklog (v2.2.1) and you will have issues using this site. The required minimum theme Geeklog version is v{$_CONF['min_theme_gl_version']}.",
-    507 => "Warning - The current theme {$_CONF['theme']} v{$_CONF['theme_gl_version']} is meant for a newer version of Geeklog. You are using Geeklog v2.2.1 and you may experience issues using this site."
+    505 => "警告 - 現在のテーマ {$_CONF['theme']} v{$_CONF['theme_gl_version']} はこのバージョンのGeeklog (v2.2.1) と完全な互換性がないため、サイトの利用で問題が生じる可能性が高いです。要求されるテーマの最低バージョンは v{$_CONF['min_theme_gl_version']} です。",
+    506 => "警告 - 現在のテーマ {$_CONF['theme']} (バージョン不明) このバージョンのGeeklog (v2.2.1) と完全な互換性がないため、サイトの利用で問題が生じる可能性が高いです。要求されるテーマの最低バージョンは v{$_CONF['min_theme_gl_version']} です。",
+    507 => "警告 - 現在のテーマ {$_CONF['theme']} v{$_CONF['theme_gl_version']} はより新しいバージョンのGeeklog用です。現在のGeeklogのバージョンは v2.2.1 であるため、サイトの利用で問題が生じる可能性があります。"
 );
 
 ###############################################################################
@@ -1716,7 +1716,7 @@ $LANG_ACCESS = array(
     'yes' => 'はい',
     'no' => 'いいえ',
     'corerightsdescr' => "このグループは、{$_CONF['site_name']}の「コア(中核)グループ」です。そのため、このグループの権限を編集することはできません。このグループの権限リストを読み取り専用で以下に表示しています。",
-    'groupmsg' => 'Security Groups on this site are hierarchical. By adding this group to any of the groups below you will be giving this group the same rights that those groups have. It also means that users which belong directly to this Group will be inherited by the groups it belongs to.<br' . XHTML . '><br' . XHTML . '>Where possible it is encouraged you use the groups below to give rights to a group. If you need this group to have custom rights then you can select the rights to various site features in the section below called \'Rights\'. To add this group to any of the ones below simply check the box next to the group(s) that you want.<br' . XHTML . '><br' . XHTML . '>Groups that are checked but disabled are inherited groups from other groups that belongs directly to this group. Groups that are disabled and not checked are groups that cannot be added since it would create a security group loop.',
+    'groupmsg' => 'このサイトのセキュリティグループは階層構造になっています。このグループを下記のグループに追加すると、このグループに下記のグループが持つ権限を追加することになります。また、このグループに所属するメンバーは下記のグループにも継承されます。<br' . XHTML . '><br' . XHTML . '>可能な場合には、グループに権限を与える場合、(このグループではなく)下記のグループを使用することをお勧めします。特別な権限を持たせるためにこのグループが必要なら、下記の「権限」セクションで割り当てたい権限にチェックを入れてください。このグループを下記のグループに追加するには、希望するグループにチェックを入れてください。<br' . XHTML . '><br' . XHTML . '>チェックが入っているが無効になっているグループは、このグループ直属しているから他のグループから継承したグループです。無効でチェックの入っていないグループは、セキュリティグループの無限ループの原因となるため、追加できません。',
     'coregroupmsg' => "本グループは{$_CONF['site_name']}の「コア(中核)グループ」です。そのため、本グループの所属するグループは編集できません。このグループの権限リストを読み取り専用で以下に表示しています。",
     'rightsdescr' => '下記の権限は、任意のグループないし任意のグルプープが属している別のグループに直接与えることができます。(チェックが入っていて)選択できないチェックボックスのある権限は、その権限を持つ別のグループに属しているためにこのグループに与えられている権限です。下記のチェックボックスのある権限は、このグループに直接与えることができる権限です。',
     'lock' => 'ロック',
@@ -2095,7 +2095,7 @@ $LANG_ADMIN = array(
     'all' => '全て',
     'mobile' => 'モバイル',
     'computer' => 'コンピューター',
-    'edit_access_only' => 'Edit Access Only'
+    'edit_access_only' => '編集権のみ'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -2162,16 +2162,16 @@ $LANG_trackbackcodes = array(
 );
 
 $LANG_structureddatatypes = array(
-    'none' => 'None',
-    'core-webpage' => 'WebPage',
-    'core-article' => 'Article',
-    'core-newsarticle' => 'NewsArticle',
-    'core-blogposting' => 'BlogPosting'
+    'none' => 'なし',
+    'core-webpage' => 'Webページ',
+    'core-article' => '記事',
+    'core-newsarticle' => 'ニュース記事',
+    'core-blogposting' => 'ブログ記事'
 );
 
 $LANG_STRUCT_DATA = array(
-    'lang_structured_data_type' => 'Structured Data Type',
-    'autotag_desc_structureddata' => '[structureddata:schema_property]Property Value[/structureddata] - Adds a property to the structured data of the content that the autotag is embedded in.'
+    'lang_structured_data_type' => '構造化データタイプ',
+    'autotag_desc_structureddata' => '[structureddata:schema_property]Property Value[/structureddata] - この自動タグを埋め込むコンテンツの構造化データにプロパティ値を追加します。'
 );
 
 ###############################################################################
@@ -2210,7 +2210,7 @@ $LANG_confignames['Core'] = array(
     'mail_charset' => 'メールの文字セット',
     'site_name' => 'サイト名',
     'site_slogan' => 'スローガン',
-    'path_site_logo' => 'Site Logo',
+    'path_site_logo' => 'サイトのロゴ',
     'owner_name' => '管理者名',
     'microsummary_short' => 'マイクロサマリ接頭子',
     'path_log' => 'ログ',
@@ -2235,7 +2235,7 @@ $LANG_confignames['Core'] = array(
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
     'switchlang_homepage' => '言語切り替えブロックからトップページへリダイレクトする',
-    'new_item_set_current_lang' => 'Add Current Language Id to New Item',
+    'new_item_set_current_lang' => '現在の言語IDを追加する',
     'allow_user_photo' => '写真登録を許可する',
     'allow_username_change' => 'ユーザー名変更を許可する',
     'allow_account_delete' => 'アカウント削除を許可する',
@@ -2364,8 +2364,8 @@ $LANG_confignames['Core'] = array(
     'page_break_comments' => '改ページ時のコメント表示位置',
     'article_image_align' => '話題アイコンの表示位置',
     'show_topic_icon' => '話題アイコン表示のデフォルト',
-    'structured_data_type_default' => 'Structured Data Type Default',
-    'structured_data_article_topic' => 'Structured Data of Articles in Topics',
+    'structured_data_type_default' => '構造化データタイプのデフォルト',
+    'structured_data_article_topic' => '記事の構造化データタイプ',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
     'frontpage' => 'トップページ配置をデフォルトにする',
     'hide_no_news_msg' => '記事がない場合のメッセージを表示しない',
@@ -2424,10 +2424,10 @@ $LANG_confignames['Core'] = array(
     'comment_edit' => 'コメントの編集を許可する',
     'comment_edittime' => 'コメントの編集時間(秒)',
     'commentsubmission' => '承認待ちリストに入れる',
-    'likes_enabled' => 'Likes Enabled',
-    'likes_articles' => 'Article Likes',
-    'likes_comments' => 'Comment Likes',
-    'likes_speedlimit' => 'Likes Speed Limit',
+    'likes_enabled' => 'Likesを有効にする',
+    'likes_articles' => '記事のLikes',
+    'likes_comments' => 'コメントのLikes',
+    'likes_speedlimit' => 'Likesの実行制限間隔(秒)',
     'passwordspeedlimit' => 'パスワードの取得制限間隔',
     'login_attempts' => 'ログイン試行最大回数',
     'login_speedlimit' => 'ログイン試行制限間隔',
@@ -2671,10 +2671,10 @@ $LANG_configselects['Core'] = array(
     36 => array('いいえ' => 'false', 'トップページのみ' => 'frontpage', 'トップページと話題ページ' => 'frontpage_topics'),
     37 => array('無効' => 0, '有効(index.phpあり)' => 1, '有効(index.phpなし)' => 2),
     38 => array('Mystery Man' => 'mm', 'Identicon' => 'identicon', 'MonsterId' => 'monsterid', 'WAvatar' => 'wavatar', 'Retro' => 'retro'),
-    39 => array('None' => '', 'WebPage' => 'core-webpage', 'Article' => 'core-article', 'NewsArticle' => 'core-newsletter', 'BlogPosting' => 'core-blogposting'),
-    40 => array('False' => 0, 'Users and Anonymous' => 1, 'Users Only' => 2),
-    41 => array('False' => 0, 'Likes and Dislikes' => 1, 'Likes Only' => 2),
-    42 => array('None' => 0, 'Use individual Article Settings' => 1)
+    39 => array('なし' => '', 'Webページ' => 'core-webpage', '記事' => 'core-article', 'ニュース記事' => 'core-newsletter', 'ブログ記事' => 'core-blogposting'),
+    40 => array('無効' => 0, 'ログインユーザーとゲストユーザー' => 1, 'ログインユーザーのみ' => 2),
+    41 => array('無効' => 0, 'LikesとDislikes' => 1, 'Likesのみ' => 2),
+    42 => array('なし' => 0, 'この記事の設定に従う' => 1)
 );
 
 ###############################################################################
