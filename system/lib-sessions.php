@@ -332,14 +332,11 @@ function SESS_updateSessionTime($sessId)
 */
 function SESS_endUserSession($userId)
 {
-    global $_CONF, $_TABLES;
+    global $_TABLES;
 
     $userId = (int) $userId;
-
-    if (!COM_isDemoMode()) {
-        DB_delete($_TABLES['sessions'], 'uid', $userId);
-        Session::setUid(Session::ANON_USER_ID);
-    }
+    DB_delete($_TABLES['sessions'], 'uid', $userId);
+    Session::setUid(Session::ANON_USER_ID);
 
     return 1;
 }
