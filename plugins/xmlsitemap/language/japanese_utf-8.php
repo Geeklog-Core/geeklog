@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | japanese_utf-8.php                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                         |
+// | Copyright (C) 2009-2019 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO         - geeklog AT mystral-kk DOT net                |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -47,12 +47,12 @@ $LANG_confignames['xmlsitemap'] = array(
     'exclude' => '除外するプラグイン',
     'lastmod' => '最終編集日',
     'priorities' => '優先度',
-    'frequencies' => 'Frequency',
+    'frequencies' => '頻度',
     'ping_google' => 'Googleにpingを送信する',
     'ping_bing' => 'Bingにpingを送信する',
-    'news_sitemap_file' => 'News Sitemap file name',
-    'news_sitemap_topics' => 'Include Articles from these Topics',
-    'news_sitemap_age' => 'Max Age of Articles'
+    'news_sitemap_file' => 'ニュースサイトマップ名',
+    'news_sitemap_topics' => 'この話題の記事を含める',
+    'news_sitemap_age' => '記事の古さの最大値'
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
@@ -64,7 +64,7 @@ $LANG_tab['xmlsitemap'] = array(
     'tab_pri' => '優先度',
     'tab_freq' => '更新頻度',
     'tab_ping' => 'Ping送信',
-    'tab_news' => 'News Sitemap'
+    'tab_news' => 'ニュースサイトマップ'
 );
 
 $LANG_fs['xmlsitemap'] = array(
@@ -72,7 +72,7 @@ $LANG_fs['xmlsitemap'] = array(
     'fs_pri' => '優先度(既定値 = 0.5、0.0 = 最低、1.0 = 最高)',
     'fs_freq' => '更新頻度',
     'fs_ping' => 'サイトマップ更新時にPingを送信する',
-    'fs_news' => 'News Sitemap Settings'
+    'fs_news' => 'ニュースサイトマップの設定'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

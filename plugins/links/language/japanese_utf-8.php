@@ -12,7 +12,7 @@
 # Tranlated by Geeklog Japanese group
 # Copyright (C) 2008 Takahiro Kambe
 # Additional translation to Japanese by taca AT back-street DOT net
-# Copyright (C) 2006,2007,2008 Geeklog.jp group
+# Copyright (C) 2006-2019 Geeklog.jp group
 # Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
@@ -176,7 +176,7 @@ $LANG_LINKS_ADMIN = array(
     59 => '<p>表示しているすべてのリンクを確認する場合は、下の「リンクの確認」をクリックしてください。この処理はリンクの数に応じてかなりの時間がかかるかもしれません。</p>',
     60 => 'ユーザー %s は権限なしにカテゴリ %s を編集しようとしました。',
     61 => 'このカテゴリのリンク数',
-    'num_links' => '%s Link(s)'
+    'num_links' => '%s 件のリンク'
 );
 
 

@@ -9,7 +9,7 @@
 # Tranlated by Geeklog Japanese group SaY and Ivy
 # Copyright (C) 2008 Takahiro Kambe
 # Additional translation to Japanese by taca AT back-street DOT net
-# Copyright (C) 2006,2007,2008 Geeklog.jp group
+# Copyright (C) 2006,2007,2008, 2019 Geeklog.jp group
 # Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
@@ -126,10 +126,10 @@ $LANG_STATIC = array(
     'draft_yes' => '○',
     'draft_no' => '-',
     'show_on_page' => 'ページに表示する',
-    'show_on_page_disabled' => 'Note: This is currently disabled for all pages in the Staticpage Configuration.',
+    'show_on_page_disabled' => '注意: 現在、この設定はコンフィギュレーションですべてのページに対して無効になっています。',
     'cache_time' => 'キャッシュタイム',
     'cache_time_desc' => 'この静的ページコンテンツはここで指定された秒数以上にキャッシュされることはありません。もしキャッシュが0ならキャッシュ無効 (3600 = 1時間,  86400 = 1日)。静的ページPHPまたはテンプレートの場合はキャッシュされません。',
-    'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意です。',
+    'autotag_desc_staticpage' => '[staticpage: id アンカーテキスト] - 静的ページタイトルで静的ページへのリンクを表示。「アンカーテキスト」の指定は任意です。',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - 静的ページのコンテンツを表示します。',
     'autotag_desc_page' => '[page_content: id] - 静的ページのコンテンツを表示します。',
     'autotag_desc_page_content' => '[page_content: id] - 静的ページのコンテンツを表示します。',
@@ -138,15 +138,15 @@ $LANG_STATIC = array(
     'prev_page' => '前のページ',
     'next_page' => '次のページ',
     'parent_page' => '親ページ',
-    'page_desc' => 'Setting a previous and/or next page will add HTML link elements rel=”next” and rel=”prev” to the header to indicate the relationship between pages in a paginated series. Actual page navigation links are not added to the page. You have to add these yourself. NOTE: Parent page is currently not being used.',
-    'num_pages' => '%s Page(s)'
+    'page_desc' => '「前のページ」や「次のページ」を指定すると、HTMLのヘッダーに rel=”next” と rel=”prev” を追加します。表示用のナビゲーションは別に追加してください。注意: 「親ページ」は現在、使用されていません。',
+    'num_pages' => '%s ページ'
 );
 
 $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
 $PLG_staticpages_MESSAGE19 = '静的ページを保存しました。';
 $PLG_staticpages_MESSAGE20 = '静的ページを削除しました。';
 $PLG_staticpages_MESSAGE21 = 'このページはまだ存在しません。ページを作成するには、下のフォームにすべてを入力してください。何かの間違いでしたらキャンセルボタンをクリックしてください。';
-$PLG_staticpages_MESSAGE22 = 'You could not delete the page. It is a template staticpage and it is currently assigned to 1 or more staticpages.';
+$PLG_staticpages_MESSAGE22 = '静的ページを削除できませんでした。このページは他の静的ページのテンプレートとして使用されています。';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'プラグインはアップグレードをサポートしていません。';
@@ -188,7 +188,7 @@ $LANG_confignames['staticpages'] = array(
     'includesearch' => '静的ページを検索する',
     'includesearchcenterblocks' => 'センターブロックの静的ページを含む',
     'includesearchphp' => '静的ページPHPを含む',
-    'includesearchtemplate' => 'Include Template Static Pages'
+    'includesearchtemplate' => 'テンプレートページを含む'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -223,5 +223,5 @@ $LANG_configselects['staticpages'] = array(
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('アクセス不可' => 0, '利用する' => 2),
     17 => array('コメント有効' => 0, 'コメント無効' => -1),
-    39 => array('None' => 0, 'WebPage' => 1, 'Article' => 2, 'NewsArticle' => 3, 'BlogPosting' => 4)
+    39 => array('なし' => 0, 'Webページ' => 1, '記事' => 2, 'ニュース記事' => 3, 'ブログ記事' => 4)
 );

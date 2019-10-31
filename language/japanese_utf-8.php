@@ -14,7 +14,7 @@
 # taca AT back-street DOT net
 # Copyright (C) 2006,2007,2008 Tetsuko Komma
 # ivy AT geeklog DOT jp
-# Copyright (C) 2006,2007,2008 Geeklog.jp group
+# Copyright (C) 2006-2019 Geeklog.jp group
 # info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or

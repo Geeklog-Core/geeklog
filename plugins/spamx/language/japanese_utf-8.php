@@ -9,7 +9,7 @@
  * Tranlated by Ivy (Geeklog Japanese)
  * Copyright (C) 2008 Takahiro Kambe
  * Additional translation to Japanese by taca AT back-street DOT net
- * Copyright (C) 2006-2017 Geeklog.jp group
+ * Copyright (C) 2006-2019 Geeklog.jp group
  * Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
  * 
  * Licensed under GNU General Public License
@@ -41,7 +41,7 @@ $LANG_SX00 = array(
     'clicki' => 'クリックしてブラックリストをインポート',
     'ok' => 'OK',
     'rsscreated' => 'RSSフィードを作成しました',
-    'add1' => 'Added ',
+    'add1' => '',
     'add2' => ' 個のエントリを ',
     'add3' => 'さんのブラックリストから追加しました。',
     'adminc' => '管理者コマンド:',
@@ -130,7 +130,7 @@ $LANG_SX00 = array(
     'stats_ipofurl' => 'URLのIPアドレスによってブロックしました',
     'stats_header' => 'HTTPヘッダー',
     'stats_deleted' => 'スパム投稿削除数',
-    'invalid_email_or_ip' => '不正なe-mailアドレスまたはIPアドレスをブロックしています。',
+    'invalid_email_or_ip' => '不正なメールアドレスまたはIPアドレスをブロックしています。',
     'email_ip_spam' => '%s または %s の登録を試みますが、スパマーだと思われます。',
     'edit_personal_blacklist' => 'Edit パーソナルブラックリストを編集',
     'mass_delete_spam_comments' => 'スパムコメントを一括削除',

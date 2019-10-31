@@ -12,7 +12,7 @@
 # Tranlated by Geeklog Japanese group SaY and Ivy
 # Copyright (C) 2008 Takahiro Kambe
 # Additional translation to Japanese by taca AT back-street DOT net
-# Copyright (C) 2006,2007,2008 Geeklog.jp group
+# Copyright (C) 2006-2019 Geeklog.jp group
 # Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ $LANG_POLLS = array(
     'pollhidden' => 'あなたは既に投票済みです。このアンケートの結果は投票終了後に公開します。',
     'start_poll' => '投稿する',
     'no_new_polls' => '新しいアンケートはありません',
-    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_poll' => '[poll: id アンカーテキスト] - アンケートのテーマをリンクテキストとして表示します。「アンカーテキスト」の指定は任意です。',
     'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - アンケートの投票リンクを表示。Class と showall は必須ではありません。Class は css class を。Showall が 1ならすべての投票を表示',
     'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - 投票結果を表示。Class は必須ではありません。Claはcss classを指定します',
     'deny_msg' => 'このアンケートにアクセスできません。(このアンケートを移動や削除しているか、アクセス権がありません。)'
