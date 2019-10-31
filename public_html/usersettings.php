@@ -312,10 +312,10 @@ function edituser()
     } else {
         $preferences->set_var('userphoto_option', '');
     }
-    
+
     $reqid = substr(md5(uniqid(rand(), 1)), 1, 16);
     DB_change($_TABLES['users'], 'pwrequestid', $reqid, 'uid', $_USER['uid']);
-    
+
     if ($_CONF['allow_account_delete'] == 1) {
         $preferences->set_var('lang_deleteaccount', $LANG04[156]);
         if ($A['remoteservice'] == '') {
@@ -334,7 +334,7 @@ function edituser()
         $preferences->parse('delete_account_option', 'deleteaccount', false);
     } else {
         $preferences->set_var('delete_account_option', '');
-    }    
+    }
 
     $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
@@ -373,12 +373,12 @@ function edituser()
 function confirmAccountDelete($form_reqid)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04;
-    
+
     if (!$_CONF['allow_account_delete'] && DB_count($_TABLES['users'], array('pwrequestid', 'uid'), array($form_reqid, $_USER['uid'])) != 1) {
         // not found - abort
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
-    
+
     // Do not check current password for remote users. At some point we should reauthenticate with the service when deleting the account
     if ($_USER['remoteservice'] == '') {
         // verify the password
@@ -420,7 +420,7 @@ function deleteUserAccount($form_reqid)
         // not found - abort
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
-    
+
     if (!USER_deleteAccount($_USER['uid'])) {
         COM_redirect($_CONF['site_url'] . '/index.php');
     }
@@ -766,7 +766,7 @@ function editpreferences()
             'multiple'     => true,
             'select_items' => $selauthors,
             'size'   => $Selboxsize
-        ));        
+        ));
         $preferences->set_var('exclude_author_checklist', $exclude_author_checklist);
     } else {
         $preferences->set_var('lang_authors', '');
@@ -1096,7 +1096,8 @@ function saveuser(array $A)
         $A['new_username'] = COM_applyFilter($A['new_username']);
         if (!empty($A['new_username']) && ($A['new_username'] != $_USER['username'])) {
             $A['new_username'] = DB_escapeString($A['new_username']);
-            if (DB_count($_TABLES['users'], 'username', $A['new_username']) == 0) {
+            $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)', "TRIM(LOWER(username)) = TRIM(LOWER('{$A['new_username']}'))");
+            if ($ucount == 0) {
                 if ($_CONF['allow_user_photo'] == 1) {
                     $photo = DB_getItem($_TABLES['users'], 'photo', "uid = {$_USER['uid']}");
                     if (!empty($photo)) {

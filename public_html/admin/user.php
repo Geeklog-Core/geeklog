@@ -166,7 +166,7 @@ function edituser($uid = 0, $msg = 0)
     }
     if (isset($_POST['twofactorauth_enabled'])) {
         $A['twofactorauth_enabled'] = COM_applyFilter($_POST['twofactorauth_enabled'], true);
-    }    
+    }
 
     $token = SEC_createToken();
 
@@ -228,7 +228,7 @@ function edituser($uid = 0, $msg = 0)
         $user_templates->set_var('lang_convert_remote_tooltip', COM_getTooltip('', $LANG28['convert_remote_desc'], '', '', 'information'));
         $user_templates->set_var('lang_convert_remote_desc', $LANG28['convert_remote_desc']);
     }
-        
+
     $user_templates->set_var('remoteservice', $remoteservice);
 
     $user_templates->clear_var('show_delete_photo');
@@ -273,7 +273,7 @@ function edituser($uid = 0, $msg = 0)
     } else {
         $user_templates->set_var('user_email', '');
     }
-    
+
     // Two Factor Auth
     if (!$newuser && isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth']) {
         $enableTfaOptions = '';
@@ -282,19 +282,19 @@ function edituser($uid = 0, $msg = 0)
             $enableTfaOptions .= '<option value="' . $value . '"'
                 . ($selected ? ' selected="selected"' : '') . '>'
                 . $text . '</option>' . PHP_EOL;
-        }    
-        
+        }
+
         $user_templates->set_var(array(
             'enable_twofactorauth'      => true,
-            'lang_tfa_two_factor_auth'  => $LANG04['tfa_two_factor_auth'], 
-            'lang_tfa_user_edit_desc'   => $LANG04['lang_tfa_user_edit_desc'], 
+            'lang_tfa_two_factor_auth'  => $LANG04['tfa_two_factor_auth'],
+            'lang_tfa_user_edit_desc'   => $LANG04['lang_tfa_user_edit_desc'],
             'lang_enable_twofactorauth' => $LANG_confignames['Core']['enable_twofactorauth'],
             'enable_tfa_options'        => $enableTfaOptions
         ));
     } else {
         $user_templates->set_var('enable_twofactorauth', false);
     }
-    
+
     $user_templates->set_var('lang_homepage', $LANG28[8]);
     if (isset($A['homepage'])) {
         $user_templates->set_var('user_homepage',
@@ -576,7 +576,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
 
     $retval = '';
     $userChanged = false;
-    
+
     $username = trim($username);
 
     if ($_USER_VERBOSE) {
@@ -624,17 +624,11 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
         }
 
         $uname = DB_escapeString($username);
+        // Remember some database collations are case and accent insensitive and some are not. They would consider "nina", "nina  ", "Nina", and, "niña" as the same
         if (empty($uid)) {
-            $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)', "username = '$uname'");
+            $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)', "TRIM(LOWER(username)) = TRIM(LOWER('$uname'))");
         } else {
-            if (!empty($service)) {
-                $uservice = DB_escapeString($service);
-                $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)',
-                    "username = '$uname' AND uid <> $uid AND remoteservice = '$uservice'");
-            } else {
-                $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)',
-                    "username = '$uname' AND uid <> $uid AND (remoteservice = '' OR remoteservice IS NULL)");
-            }
+            $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)', "TRIM(LOWER(username)) = TRIM(LOWER('$uname')) AND uid <> $uid");
         }
         if ($ucount > 0) {
             // Admin just changed a user's username to one that already exists
@@ -741,7 +735,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             $username = GLText::remove4byteUtf8Chars($username);
             $escUserName = DB_escapeString($username);
             $curphoto = DB_escapeString($curphoto);
-            
+
             // Only allow Admins to disable other users 2 Factor Authentication (if enabled for entire site)
             if (!$enable_twofactorauth && isset($_CONF['enable_twofactorauth']) && $_CONF['enable_twofactorauth']) {
                 $sql_enable_twofactorauth = ", twofactorauth_enabled = $enable_twofactorauth, twofactorauth_secret = '' ";
@@ -758,19 +752,19 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
             if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userSave'))) {
                 CUSTOM_userSave($uid);
             }
-            
+
             $curremote = DB_getItem($_TABLES['users'], 'remoteservice', "uid = $uid");
             $user_convert = 0;
             if (!empty($curremote) && ($convert_remote == 'on')) {
                 $user_convert = USER_convertRemote($uid);
                 $curremote = '';
-            } 
-            
+            }
+
             // If user submission that meets conditions make sure password email not already sent with remote account conversion
             if (($_CONF['usersubmission'] == 1) && ($oldstatus == USER_ACCOUNT_AWAITING_APPROVAL) && ($userstatus == USER_ACCOUNT_ACTIVE) && ($user_convert != 2)) {
                 USER_createAndSendPassword($username, $email, $uid);
             }
-            
+
             // When the admin has disabled Two Factor Authentication, invalidate secret code and all the backup codes he/she might have
             if (!$enable_twofactorauth) {
                 DB_query(
@@ -779,7 +773,7 @@ function saveusers($uid, $username, $fullname, $passwd, $passwd_conf, $email, $r
                 );
                 $tfa = new Geeklog\TwoFactorAuthentication($uid);
                 $tfa->invalidateBackupCodes();
-            }            
+            }
 
             if ($userstatus == USER_ACCOUNT_DISABLED) {
                 SESS_endUserSession($uid);
@@ -1439,11 +1433,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // dele
     } else {
         $passwd = Geeklog\Input::post('passwd', '');
         $passwd_conf = Geeklog\Input::post('passwd_conf', '');
-        
+
         $enable_twofactorauth = (int) Geeklog\Input::fPost('enable_twofactorauth', 0);
         if (($enable_twofactorauth !== 0) && ($enable_twofactorauth !== 1)) {
             $enable_twofactorauth = 0;
-        }        
+        }
 
         $display = saveusers(
             $uid,
@@ -1457,7 +1451,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) { // dele
             Geeklog\Input::post('sig'),
             Geeklog\Input::post('pgpkey'),
             Geeklog\Input::post('about'),
-            Geeklog\Input::post('groups'), $delphoto, $convertremote, 
+            Geeklog\Input::post('groups'), $delphoto, $convertremote,
             Geeklog\Input::post('userstatus'),
             Geeklog\Input::post('oldstatus'),
             $enable_twofactorauth

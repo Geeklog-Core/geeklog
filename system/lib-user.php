@@ -799,7 +799,7 @@ function USER_emailMatches($email, $domain_list)
 }
 
 /**
- * Ensure unique username
+ * Ensure unique username across all services (remote or local)
  * Checks that $username does not exist yet and creates a new unique username
  * (based off of $username) if necessary.
  * Mostly useful for creating accounts for remote users.
@@ -812,6 +812,9 @@ function USER_uniqueUsername($username)
 {
     global $_TABLES;
 
+    // username should have had COM_applyFilter (so no punctuation, etc..) and been trimmed of spaces, BUT lets double check
+    $username = trim(GLText::remove4byteUtf8Chars($username));
+
     if (function_exists('CUSTOM_uniqueUsername')) {
         return CUSTOM_uniqueUsername($username);
     }
@@ -819,7 +822,9 @@ function USER_uniqueUsername($username)
     $try = $username;
     do {
         $try = DB_escapeString($try);
-        $uid = DB_getItem($_TABLES['users'], 'uid', "username = '$try'");
+        // Usernames need to be trimmed and checked as lower case
+        // Remember some database collations are case and accent insensitive and some are not. They would consider "nina", "nina  ", "Nina", and, "niña" as the same
+        $uid = DB_getItem($_TABLES['users'], 'uid', "TRIM(LOWER(username)) = TRIM(LOWER('$try'))");
         if (!empty($uid)) {
             $r = rand(2, 9999);
             if (strlen($username) > 12) {

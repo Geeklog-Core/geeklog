@@ -3654,15 +3654,25 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
             // Don't send any emails in demo mode.  Instead, redirect to the home page and show a message.
             $charset = COM_getCharset();
             $subject = htmlspecialchars($subject, ENT_QUOTES, $charset);
-            $toAddress = array_keys($to)[0];
-            $toAlias = array_values($to)[0];
+            if (is_array($to)) {
+                $toAddress = array_keys($to)[0];
+                $toAlias = array_values($to)[0];
+            } else {
+                $toAddress = $to;
+                $toAlias = '';
+            }
             $to = htmlspecialchars(
                 $toAlias . ' <' . $toAddress . '>',
                 ENT_QUOTES,
                 $charset
             );
-            $fromAddress = array_keys($from)[0];
-            $fromAlias = array_values($from)[0];
+            if (is_array($to)) {
+                $fromAddress = array_keys($from)[0];
+                $fromAlias = array_values($from)[0];
+            } else {
+                $fromAddress = $from;
+                $fromAlias = '';
+            }
             $from = htmlspecialchars(
                 $fromAlias . ' <' . $fromAddress . '>',
                 ENT_QUOTES,
