@@ -103,7 +103,7 @@ function plugin_upgrade_xmlsitemap()
         return 3002;
     }
 
-    // Retrieve other plugin info like min geeklog version and homepage 
+    // Retrieve other plugin info like min geeklog version and homepage
     $inst_parms = plugin_autoinstall_xmlsitemap('xmlsitemap');
 
     require_once $_CONF['path'] . 'plugins/xmlsitemap/sql/' . $_DB_dbms . '_updates.php';
@@ -260,6 +260,13 @@ function XMLSMAP_esc($str)
 function XMLSMAP_update($type = null, $include = null, $exclude = null)
 {
     global $_CONF, $_XMLSMAP_CONF;
+
+    // Fail gracefully here if $_XMLSMAP_CONF not completely loaded
+    // This is for Geeklog install and migrate since it is not loading $_XMLSMAP_CONF correctly
+    // This means after migrate the sitemap most likely will be outdated
+    if (!is_array($_XMLSMAP_CONF['types']) OR !is_array($_XMLSMAP_CONF['exclude']) ) {
+        return true;
+    }
 
     if (($type !== null) && !in_array($type, $_XMLSMAP_CONF['types'])) {
         // Notified about content change, but from an irrelevant plugin, one

@@ -101,7 +101,7 @@ function update_ConfValuesFor221()
 
     // Default Structured Data type for new articles
     $c->add('structured_data_type_default','core-article','select',1,7,39,1275,TRUE, $me, 7); // Setting article as the default
-	
+
 	// Structured Data of Articles in Topics
 	$c->add('structured_data_article_topic',0,'select',1,7,42,1277,TRUE, $me, 7);
 
@@ -196,25 +196,28 @@ function fixDuplicateUsernames221()
     }
 
     // Must find and remove all duplicate usernames before adding index
-    $sql = "SELECT username, COUNT(*) c FROM {$_TABLES['users']} GROUP BY username HAVING c > 1";
+	// NOTE: Depending on the database collation, MySQL may be setup to not differentiate trailing spaces, be case insensitive and accent insensitive which can create problems because PHP functions may see them as different. So group by username trimmed and already lower case
+	// For example the grouping below could and should see "Nina", "Nina  ", "nina", and "Niña" as the same
+	$sql = "SELECT username, COUNT(*) c FROM {$_TABLES['users']} GROUP BY TRIM(LOWER(username)) HAVING c > 1";
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
     for ($i = 0; $i < $numRows; $i++) {
         $A = DB_fetchArray($result);
 
-        $dup_username = DB_escapeString(trim($A['username']));
+        $dup_username = DB_escapeString($A['username']);
 
         // Now fix if possible. List local account last as it will be not considered dup since all others have been changed
-        $sql_B = "SELECT uid, username FROM {$_TABLES['users']} WHERE TRIM(username) = '$dup_username' ORDER BY remoteservice DESC";
+        $sql_B = "SELECT uid, username FROM {$_TABLES['users']} WHERE TRIM(LOWER(username)) = TRIM(LOWER('$dup_username')) ORDER BY remoteservice DESC";
         $result_B = DB_query($sql_B);
         $numRows_B = DB_numRows($result_B);
         for ($i_B = 0; $i_B < $numRows_B; $i_B++) {
             $B = DB_fetchArray($result_B);
 
             $uid = $B['uid'];
-            $username = trim($B['username']); // Need to trim spaces as this may have been in part what caused the duplicates
+            $username = $B['username'];
 
-            $checkName = DB_getItem($_TABLES['users'], 'username', "TRIM(username)='" . DB_escapeString($username) . "' AND uid != $uid");
+			// Now see if same name is used by different id
+            $checkName = DB_getItem($_TABLES['users'], 'username', "TRIM(LOWER(username)) = TRIM(LOWER('" . DB_escapeString($username) . "')) AND uid != $uid");
             if (!empty($checkName)) {
                 /*
                 // Cannot call CUSTOM_uniqueRemoteUsername since in install
@@ -222,24 +225,24 @@ function fixDuplicateUsernames221()
                     $username = CUSTOM_uniqueRemoteUsername($username, $remoteService);
                 }
                 */
-                if (strcasecmp($checkName, $username) == 0) {
-                    // Cannot call USER_uniqueUsername so took code from function
-                    // $username = USER_uniqueUsername($username);
-                    $try = $username;
-                    do {
-                        $try = DB_escapeString($try);
-                        $test_uid = DB_getItem($_TABLES['users'], 'uid', "username = '$try'");
-                        if (!empty($test_uid)) {
-                            $r = rand(2, 9999);
-                            if (strlen($username) > 12) {
-                                $try = sprintf('%s%d', substr($username, 0, 12), $r);
-                            } else {
-                                $try = sprintf('%s%d', $username, $r);
-                            }
-                        }
-                    } while (!empty($test_uid));
-                    $username = $try;
-                }
+
+				// Cannot call USER_uniqueUsername so took code from function
+				// $username = USER_uniqueUsername($username);
+
+				$try = $username;
+				do {
+					$try = DB_escapeString($try);
+					$test_uid = DB_getItem($_TABLES['users'], 'uid', "TRIM(LOWER(username)) = TRIM(LOWER('$try'))");
+					if (!empty($test_uid)) {
+						$r = rand(2, 9999);
+						if (strlen($username) > 12) {
+							$try = sprintf('%s%d', substr($username, 0, 12), $r);
+						} else {
+							$try = sprintf('%s%d', $username, $r);
+						}
+					}
+				} while (!empty($test_uid));
+				$username = $try;
 
                 // Save new name
                 DB_query("UPDATE {$_TABLES['users']} SET username = '" . DB_escapeString($username) . "' WHERE uid=$uid");

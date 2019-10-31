@@ -132,6 +132,9 @@ function staticpages_update_search_cache_1_7_1()
     $result = DB_query($sql);
 
     // Now find the php pages and template pages and update search cache
+    // Code commented out as it can cause runtime errors if the template page or php page requires something that is not accessible by the Geeklog Installer
+    // Therefore before these pages search cache can be created and searched: Pages that are not cached must be saved again, Pages that use the cache must be visited or saved again.
+    /*
     $sql = "SELECT * FROM {$_TABLES['staticpage']}
         WHERE sp_content = '' AND draft_flag = 0 AND (template_id !='' OR sp_php > 0)";
     $result = DB_query($sql);
@@ -157,6 +160,7 @@ function staticpages_update_search_cache_1_7_1()
         $sqlB = "UPDATE {$_TABLES['staticpage']} SET sp_content = '$search_sp_content' WHERE sp_id = '{$A['sp_id']}'";
         $resultB = DB_query($sqlB);
     }
+    */
 
 
     return true;
