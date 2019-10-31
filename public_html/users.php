@@ -171,7 +171,7 @@ function USER_newEmailForm()
 
     $emailForm->set_var('lang_explain', $LANG04['desc_new_email_status']);
     $emailForm->set_var('mode', 'setnewemailstatus');
-    
+
     $emailForm->set_var('lang_username', $LANG04[2]);
     $emailForm->set_var('lang_newemail', $LANG04['new_email']);
     $emailForm->set_var('lang_newemail_conf', $LANG04['confirm_new_email']);
@@ -247,15 +247,15 @@ function USER_createUser($username, $email, $email_conf)
 
     if (USER_isValidEmailAddress($email) && !empty($username) && ($email === $email_conf) &&
         (strlen($username) <= 16)) {
-        $ucount = DB_count($_TABLES['users'], 'username', DB_escapeString($username));
+
+        // Remember some database collations are case and accent insensitive and some are not. They would consider "nina", "nina  ", "Nina", and, "niña" as the same
+        $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)', "TRIM(LOWER(username)) = TRIM(LOWER('$username'))");
         $ecount = DB_count($_TABLES['users'], 'email', DB_escapeString($email));
 
         if (($ucount == 0) && ($ecount == 0)) {
             // For Geeklog, it would be okay to create this user now. But check
             // with a custom userform first, if one exists.
-            if ($_CONF['custom_registration'] &&
-                function_exists('CUSTOM_userCheck')
-            ) {
+            if ($_CONF['custom_registration'] && function_exists('CUSTOM_userCheck')) {
                 $ret = CUSTOM_userCheck($username, $email);
                 if (!empty($ret)) {
                     // no, it's not okay with the custom userform
@@ -344,7 +344,7 @@ function USER_loginForm($hide_forgotpw_link = false, $userStatus = -1, $message 
     $cfg = array(
         'hide_forgotpw_link' => $hide_forgotpw_link,
     );
-    
+
     $display = '';
 
     if ($userStatus == USER_ACCOUNT_DISABLED) {
@@ -365,9 +365,9 @@ function USER_loginForm($hide_forgotpw_link = false, $userStatus = -1, $message 
         $cfg['title'] = $LANG04[65];
         $cfg['message'] = $LANG04[66];
     }
-    
+
     $display .= SEC_loginForm($cfg);
-    
+
     return $display;
 }
 
@@ -539,7 +539,7 @@ function USER_resendRequest()
             'follow_redirects' => TRUE,
             'max_redirects' => 1,
         ));
-        
+
         if ($method === 'POST') {
             $data = unserialize($postData);
             foreach ($data as $key => $value) {
@@ -561,7 +561,7 @@ function USER_resendRequest()
                     $req->addPostParameter('_files_' . $key, $value);
                 }
             }
-            
+
         } else {
             $data = unserialize($getData);
 
@@ -749,12 +749,12 @@ function USER_loginFailed($loginName, $password, $service, $mode, $status, $mess
                 }
 
                 $method = Geeklog\Input::fPost('token_requestmethod', '');
-                
+
                 $postData = Geeklog\Input::post('token_postdata', '');
                 if (!empty($postData)) {
                     $postData = urldecode($postData);
                 }
-                
+
                 $getData = Geeklog\Input::post('token_getdata', '');
                 if (!empty($getData)) {
                     $getData = urldecode($getData);
@@ -874,7 +874,7 @@ switch ($mode) {
         if ($msg == 0) {
             $msg = 8;
         }
-        
+
         COM_redirect($_CONF['site_url'] . "/index.php?msg=$msg");
         break;
 
@@ -897,7 +897,8 @@ switch ($mode) {
         $username = Geeklog\Input::fGet('username');
         if (!empty($username)) {
             $username = DB_escapeString($username);
-            $uid = DB_getItem($_TABLES['users'], 'uid', "username = '$username'");
+            // Remember some database collations are case and accent insensitive and some are not. They would consider "nina", "nina  ", "Nina", and, "niña" as the same
+            $uid = DB_getItem($_TABLES['users'], 'uid', "TRIM(LOWER(username)) = TRIM(LOWER('$username'))");
             if ($uid > 1) {
                 $display .= USER_showProfile($uid);
             } else {
@@ -935,8 +936,8 @@ switch ($mode) {
             $msg = (int) Geeklog\Input::fRequest('msg', 0);
             if ($msg > 0) {
                 $display .= COM_showMessage($msg);
-            }                
-            
+            }
+
             $display .= USER_getPasswordForm();
         }
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[25]));
@@ -951,7 +952,7 @@ switch ($mode) {
                 $msg = (int) Geeklog\Input::fGet('msg', 0);
                 if ($msg > 0) {
                     $display .= COM_showMessage($msg);
-                }                
+                }
                 $display .= USER_newPasswordForm($uid, $reqid);
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[92]));
             } else { // request invalid or expired
@@ -966,9 +967,9 @@ switch ($mode) {
         break;
 
     case 'setnewpwd':
-        $passwd = Geeklog\Input::post('passwd');        
+        $passwd = Geeklog\Input::post('passwd');
         $passwd_conf = Geeklog\Input::post('passwd_conf');
-        
+
         if ((empty($passwd)) || ($passwd != $passwd_conf)) {
             COM_redirect(
                 $_CONF['site_url'] . '/users.php?'
@@ -1017,8 +1018,8 @@ switch ($mode) {
             $msg = (int) Geeklog\Input::fRequest('msg', 0);
             if ($msg > 0) {
                 $display .= COM_showMessage($msg);
-            }   
-            
+            }
+
             $display .= USER_newPasswordForm($_USER['uid']);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[92]));
         } else {
@@ -1028,9 +1029,9 @@ switch ($mode) {
         break;
 
     case 'setnewpwdstatus':
-        $passwd = Geeklog\Input::post('passwd');        
+        $passwd = Geeklog\Input::post('passwd');
         $passwd_conf = Geeklog\Input::post('passwd_conf');
-    
+
         if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_PASSWORD)) {
             if ((empty($passwd)) || ($passwd != $passwd_conf)) {
                 COM_redirect(
@@ -1039,7 +1040,7 @@ switch ($mode) {
                         'mode' => 'newpwdstatus',
                         'msg'  => 23
                     ))
-                );                
+                );
             } elseif (!SEC_checkPasswordStrength($passwd)) {
                 COM_redirect(
                     $_CONF['site_url'] . '/users.php?'
@@ -1059,7 +1060,7 @@ switch ($mode) {
             COM_redirect($_CONF['site_url'] . '/index.php');
         }
 
-        break;    
+        break;
 
     case 'emailpasswd':
         if ($_CONF['passwordspeedlimit'] == 0) {
@@ -1076,7 +1077,7 @@ switch ($mode) {
         } else {
             $username = Geeklog\Input::fPost('username');
             $email = Geeklog\Input::fPost('email');
-            
+
             // Let plugins like captcha have a chance to decide what to do before creating the user, return errors.
             $msg = PLG_itemPreSave('getpassword', $username);
             if (!empty($msg)) {
@@ -1096,10 +1097,10 @@ switch ($mode) {
             }
         }
         break;
-        
+
     case 'newemailstatus':
         $uid = (int) Geeklog\Input::fGet('uid', 0);
-        $ecid = Geeklog\Input::fGet('ecid');        
+        $ecid = Geeklog\Input::fGet('ecid');
         if (!empty($uid) && ($uid > 0) && !empty($ecid) && (strlen($ecid) === 16)) {
             $valid = DB_count($_TABLES['users'], array('uid', 'emailconfirmid'), array($uid, $ecid));
             if ($valid == 1) {
@@ -1107,21 +1108,21 @@ switch ($mode) {
                 $user_status = DB_getItem($_TABLES['users'], 'status', "uid = $uid");
 
                 DB_delete($_TABLES['sessions'], 'uid', $uid);
-                
+
                 DB_change($_TABLES['users'], 'email', $confirmed_email, 'uid', $uid);
                 if ($user_status == USER_ACCOUNT_NEW_EMAIL) {
                     DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $uid);
                 }
                 DB_query("UPDATE {$_TABLES['users']} SET emailconfirmid = NULL, emailtoconfirm = NULL WHERE uid = $uid");
-                
-                COM_redirect($_CONF['site_url'] . '/users.php?msg=503');    
+
+                COM_redirect($_CONF['site_url'] . '/users.php?msg=503');
             }
         } elseif (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_EMAIL)) {
             $msg = (int) Geeklog\Input::fRequest('msg', 0);
             if ($msg > 0) {
                 $display .= COM_showMessage($msg);
-            }            
-            
+            }
+
             $display .= USER_newEmailForm();
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04['new_email']));
         } else {
@@ -1129,11 +1130,11 @@ switch ($mode) {
             COM_redirect($_CONF['site_url'] . '/index.php');
         }
         break;
-        
+
     case 'setnewemailstatus':
         if (!empty($_USER['uid']) && ($_USER['uid'] > 1) && ($_USER['status'] == USER_ACCOUNT_NEW_EMAIL)) {
             $email = trim(Geeklog\Input::fPost('email'));
-            $email_conf = trim(Geeklog\Input::fPost('email_conf'));            
+            $email_conf = trim(Geeklog\Input::fPost('email_conf'));
             if ($email != $email_conf) {
                 COM_redirect($_CONF['site_url'] . '/users.php?mode=newemailstatus&msg=24');
             } elseif (empty($email) || !COM_isEmail($email)) {
@@ -1149,8 +1150,8 @@ switch ($mode) {
             COM_redirect($_CONF['site_url'] . '/index.php');
         }
 
-        break;          
-        
+        break;
+
     case 'new':
         if ($_CONF['disable_new_user_registration']) {
             $display .= COM_showMessageText($LANG04[122], $LANG04[22]);
@@ -1184,7 +1185,7 @@ switch ($mode) {
         $service = Geeklog\Input::fPost('service', '');
         $uid = '';
         if (!empty($loginname) && !empty($passwd) && empty($service)) {
-            
+
             // Let plugins like captcha have a chance to decide what to do before creating the user, return errors.
             $msg = PLG_itemPreSave('loginform', $loginname);
             if (!empty($msg)) {
@@ -1318,7 +1319,7 @@ switch ($mode) {
             if ($mode === 'tokenexpired') {
                 USER_resendRequest(); // won't come back
             }
-            
+
             DB_query("UPDATE {$_TABLES['users']} SET pwrequestid = NULL WHERE uid = $uid");
             $_USER = SESS_getUserDataFromId($uid);
 
@@ -1330,7 +1331,7 @@ switch ($mode) {
                 USER_doLogin(); // Never return
             }
         }elseif ($status == USER_ACCOUNT_LOCKED) {
-            COM_redirect($_CONF['site_url'] . '/index.php?msg=17');  
+            COM_redirect($_CONF['site_url'] . '/index.php?msg=17');
         } else {
             $display = USER_loginFailed($loginname, $passwd, $service, $mode, $status);
         }

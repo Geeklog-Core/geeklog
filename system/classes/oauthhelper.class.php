@@ -58,12 +58,12 @@ class OAuthConsumer
     {
         global $_CONF, $_SYSTEM;
 
-        $service = strtolower($service); // always deal in lower case since that is how it is stored in the config 
-        
+        $service = strtolower($service); // always deal in lower case since that is how it is stored in the config
+
         if (strpos($service, 'oauth.') === 0) {
             $service = str_replace('oauth.', '', $service);
         }
-        
+
         // Geeklog stores oauth service in all small case
         // Vendor oauth_client.php capitalizes certain letters so update service variable to make sure will match when the vendor oauth_client_class is created
         switch ($service) {
@@ -120,8 +120,8 @@ class OAuthConsumer
 				// About returns no data as of April 4th, 2018 as new version of API
 				// Don't need to request user_friends scope. Fix for permissions now required by Facebook app when requesting non-default data
                 // 2018-10-19 - A link to the person's Timeline. Removed link since even with user_link permission it is not useful anymore.
-                // The link will only resolve if the person clicking the link is logged into Facebook and is a friend of the person whose profile is being viewed. 
-                // At one point it use to be visible to non friends 
+                // The link will only resolve if the person clicking the link is logged into Facebook and is a friend of the person whose profile is being viewed.
+                // At one point it use to be visible to non friends
 				$api_url = 'https://graph.facebook.com/me?fields=name,email,id,first_name,last_name,location';
 				$scope   = 'email,public_profile';
                 $q_api   = array();
@@ -135,7 +135,7 @@ class OAuthConsumer
                 $scope   = 'https://www.googleapis.com/auth/userinfo.email '.'https://www.googleapis.com/auth/userinfo.profile';
                 $q_api   = array();
                 break;
-            
+
             case 'Microsoft' :
                 $api_url = 'https://apis.live.net/v5.0/me';
                 $scope   = 'wl.basic wl.emails';
@@ -246,12 +246,12 @@ class OAuthConsumer
 
         // remote auth precludes user submission, and integrates user activation
         $status = USER_ACCOUNT_ACTIVE;
-        
+
         $users = $this->_getCreateUserInfo($info);
         $userInfo = $this->_getUpdateUserInfo($info);
-        
+
         // We need to make sure we get a remote username. The odd time it may not get returned do to outside server error
-        if (!empty($users['remoteusername'])) { 
+        if (!empty($users['remoteusername'])) {
             $sql = "SELECT uid, status FROM {$_TABLES['users']} "
                 . "WHERE remoteusername = '" . DB_escapeString($users['remoteusername']) . "' "
                 . "AND remoteservice = '" . DB_escapeString($users['remoteservice']) . "'";
@@ -268,8 +268,8 @@ class OAuthConsumer
                 // Treat username same as Geeklog would for normal account (see USER_createAccount) even though they will not use name to login
                 // So remove any unwanted characters
                 $loginName = trim(GLText::remove4byteUtf8Chars(COM_applyFilter($users['loginname'])));
-                
-                $checkName = DB_getItem($_TABLES['users'], 'username', "username='" . DB_escapeString($loginName) . "'");
+                // Remember some database collations are case and accent insensitive and some are not. They would consider "nina", "nina  ", "Nina", and, "niña" as the same
+                $checkName = DB_getItem($_TABLES['users'], 'username', "TRIM(LOWER(username)) = TRIM(LOWER('" . DB_escapeString($loginName) . "'))");
                 if (!empty($checkName) || empty($loginName)) { // also if for some reason blank login name we should create one
                     if (function_exists('CUSTOM_uniqueRemoteUsername')) {
                         /** @noinspection PhpUndefinedVariableInspection */
@@ -293,7 +293,7 @@ class OAuthConsumer
                 $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
                 DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($remote_grp, $uid)");
             }
-            
+
             return true;
         }
     }
@@ -402,7 +402,7 @@ class OAuthConsumer
                     'remoteservice'  => 'oauth.facebook',
                     'remotephoto'    => 'http://graph.facebook.com/'.$info->id.'/picture',
                 );
-                break;            
+                break;
 
             case 'github' :
                 $users = array(
@@ -416,8 +416,8 @@ class OAuthConsumer
                     'remoteservice'  => 'oauth.github',
                     'remotephoto'    => $info->{'avatar_url'},
                 );
-                break;                
-            
+                break;
+
             case 'Google' :
                 $users = array(
                     'loginname'      => (isset($info->given_name) ? $info->given_name : $info->id),
@@ -430,8 +430,8 @@ class OAuthConsumer
                     'remoteservice'  => 'oauth.google',
                     'remotephoto'    => $info->picture,
                 );
-                break;                
-            
+                break;
+
             case 'Twitter' :
                 $mail = '';
                 if ( isset($info->email)) {
@@ -448,7 +448,7 @@ class OAuthConsumer
                     'remoteservice'  => 'oauth.twitter',
                     'remotephoto'    => $info->profile_image_url,
                 );
-                break;                
+                break;
 
             case 'Microsoft' :
                 $users = array(
@@ -463,7 +463,7 @@ class OAuthConsumer
                     'remotephoto'    => 'https://apis.live.net/v5.0/me/picture?access_token=' . $this->client->access_token,
                 );
                 break;
-                
+
             case 'Yahoo' :
                 $users = array(
                     'loginname'      => (isset($info->query->results->profile->nickname) ? $info->query->results->profile->nickname : $info->query->results->profile->guid),
@@ -477,7 +477,7 @@ class OAuthConsumer
                     'remotephoto'    => $info->query->results->profile->image->imageUrl,
                 );
                 break;
-                
+
             case 'LinkedIn' :
                 $users = array(
                     'loginname'      => (isset($info->{'firstName'}) ? $info->{'firstName'} : $info->id),
