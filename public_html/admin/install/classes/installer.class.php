@@ -4544,6 +4544,7 @@ HTML;
 
                     $this->includeConfig($this->env['dbconfig_path']);
                     require_once $this->env['siteconfig_path'];
+                    $_CONF['path_system'] = $this->env['gl_path'] . '/system/';
                     require_once $_CONF['path_system'] . 'lib-database.php';
 
                     $params = array(
@@ -4662,6 +4663,7 @@ HTML;
                         // We need all this just to do one DB query
                         $this->includeConfig($this->env['dbconfig_path']);
                         require_once $this->env['siteconfig_path'];
+                        $_CONF['path_system'] = $this->env['gl_path'] . '/system/';
                         require_once $_CONF['path_system'] . 'lib-database.php';
 
                         if ($_DB_dbms === 'pgsql') {
