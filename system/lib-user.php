@@ -1102,7 +1102,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $retval .= COM_showMessage($msg, $plugin);
         }
 
-        $systemMessages = Session::getVar('system-msg');
+        $systemMessages = COM_getSystemMessages();
         foreach ($systemMessages as $systemMessage) {
             if (!empty($systemMessage)) {
                 $retval .= COM_showMessageText($systemMessage);

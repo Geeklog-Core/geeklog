@@ -1294,8 +1294,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // Display any Geeklog System messages
     // You can set system messages by using the function COM_setSystemMessage
-    $system_messages = Session::getVar('system-msg');
-    $system_messages = is_array($system_messages) ? $system_messages : [$system_messages];
+    $system_messages = COM_getSystemMessages();
     $messages_display = '';
 	foreach ($system_messages as $message){
 		if (!empty($message)) {
@@ -3712,6 +3711,23 @@ EOD;
 }
 
 /**
+ * Return system messages
+
+ * Works not only with the current page but on page loads
+ *
+ * @return   array of string  system messages
+ */
+function COM_getSystemMessages() {
+    $retval = Session::getVar('system-msg', []);
+
+    if (!is_array($retval)) {
+        $retval = (array) $retval;
+    }
+
+    return $retval;
+}
+
+/**
  * Sets a system message (which can be stacked) which then will be diplayed by COM_createHTMLDocument
  * Uses the Session variable system-msg to story an array of Messages
  * Works not only with the current page but on page loads
@@ -3723,14 +3739,8 @@ function COM_setSystemMessage($message) {
         // Clear system messages
         Session::setVar('system-msg', '');
     } else {
-        $system_messages = Session::getVar('system-msg', '');
-
-        if (is_array($system_messages)) {
-            $system_messages[] = $message;
-        } else {
-            $system_messages = (array) $message;
-        }
-
+        $system_messages = COM_getSystemMessages();
+        $system_messages[] = $message;
         Session::setVar('system-msg', $system_messages);
     }
 }
